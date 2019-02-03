@@ -14,7 +14,6 @@ if (contextJsParameters && contextJsParameters.config && contextJsParameters.con
             buttonLabel: 'content-editor:label.contentEditor.edit.contentEdit',
             target: ['contentActions:2.5'],
             showOnNodeTypes: ['qant:allFields'],
-            hideForPaths: '^/sites/.+?/contents/?$',
             mode: 'edit'
         });
         actionsRegistry.add('submitSave', submitAction, {
