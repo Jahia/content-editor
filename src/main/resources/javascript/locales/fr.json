@@ -1,0 +1,17 @@
+{
+    "label": {
+        "contentEditor": {
+            "edit": {
+                "title": "Éditer le contenu",
+                "contentEdit": "Editer le contenu",
+                "action": {
+                    "save": {
+                        "name": "Sauvegarder",
+                        "success": "Contenu enregistré avec succès",
+                        "error": "Une erreur s'est produite lors de l'enregistrement du contenu"
+                    }
+                }
+            }
+        }
+    }
+}

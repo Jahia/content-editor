@@ -1,0 +1,18 @@
+{
+    "label": {
+        "contentEditor": {
+            "edit": {
+                "title": "Inhalt bearbeiten",
+                "contentEdit": "Inhalt bearbeiten",
+                "action": {
+                    "save": {
+                        "name": "Sparen",
+                        "success": "Inhalt wurde erfolgreich gespeichert",
+                        "error": "Beim Speichern des Inhalts ist ein Fehler aufgetreten"
+                    }
+                }
+            },
+
+        }
+    }
+}
