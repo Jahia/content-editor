@@ -1,6 +1,6 @@
 content-editor
 ==============
-[dx-image][dx-url]
+[![DX version][dx-image]][dx-url]
 
 Content Editor React extension for DX modules.
 
