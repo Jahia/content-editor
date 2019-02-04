@@ -10,7 +10,7 @@ module.exports = (env, argv) => {
         },
         output: {
             path: path.resolve(__dirname, 'src/main/resources/javascript/apps/'),
-            filename: 'content-editor.bundle.js',
+            filename: 'content-editor-ext.bundle.js',
             chunkFilename: '[name].content-editor.[chunkhash:6].js'
         },
         optimization: {

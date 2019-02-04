@@ -5,10 +5,11 @@ import submitAction from './EditPanelContainer/EditPanel/actions/submitAction';
 import EditPanelConstants from './EditPanelContainer/EditPanel/EditPanelConstants';
 import EditPanelContainer from './EditPanelContainer';
 
-console.log('Load CE Ext Actions');
+console.log('Load Content Editor Ext Components');
 contextJsParameters.i18nNamespaces.push('content-editor');
 if (contextJsParameters && contextJsParameters.config && contextJsParameters.config.actions) {
     contextJsParameters.config.actions.push(actionsRegistry => {
+        console.log('Register Content Editor actions');
         actionsRegistry.add('contentEdit', actionsRegistry.get('router'), {
             buttonIcon: <Edit/>,
             buttonLabel: 'content-editor:label.contentEditor.edit.contentEdit',
