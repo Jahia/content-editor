@@ -3,25 +3,27 @@ import {FullWidthLayout} from '@jahia/layouts';
 import {buttonRenderer, DisplayActions} from '@jahia/react-material';
 import * as PropTypes from 'prop-types';
 import FormBuilder from './FormBuilder';
+import MainLayout from "@jahia/layouts/page/MainLayout";
 
 export const EditPanel = ({t, fields, title}) => (
-    <FullWidthLayout topBarProps={{
-            title: t('content-editor:label.contentEditor.edit.title'),
-            contextModifiers: title,
-            actions:
-    <>
-        <DisplayActions target="editHeaderActions"
-                        context={{}}
-                        render={buttonRenderer({
-                                        variant: 'contained',
-                                        color: 'primary',
-                                        size: 'small'
-                                    }, true)}/>
-    </>
-        }}
-    >
+    <MainLayout topBarProps={{
+        title: t('content-editor:label.contentEditor.edit.title'),
+        contextModifiers: title,
+        actions:
+            <>
+                <DisplayActions target="editHeaderActions"
+                                context={{}}
+                                render={buttonRenderer({
+                                    variant: 'contained',
+                                    color: 'primary',
+                                    size: 'small'
+                                }, true)}/>
+            </>
+    }}
+    ><FullWidthLayout>
         <FormBuilder fields={fields}/>
     </FullWidthLayout>
+    </MainLayout>
 );
 export default EditPanel;
 
