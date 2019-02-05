@@ -16,7 +16,7 @@ Currently the only integrati    on of the extension is in the Content and Media 
 Update CMM to integrate the extension:
 Add `/modules/content-editor/javascript/apps/content-editor.bundle.js` in `bootstrap` of [template.content-manager.jsp](https://github.com/Jahia/content-media-manager/blob/BACKLOG-9446/src/main/resources/jnt_template/html/template.content-manager.jsp#L52 )
 ```  
-bootstrap(['/modules/content-media-manager/javascript/apps/cmm.bundle.js', '/modules/content-editor/javascript/apps/content-editor.bundle.js']);
+bootstrap(['/modules/content-editor/javascript/apps/content-editor-ext.bundle.js', '/modules/content-media-manager/javascript/apps/cmm.bundle.js']);
 ```
 
 [dx-image]: https://img.shields.io/badge/DX-7.3.0.0-blue.svg
