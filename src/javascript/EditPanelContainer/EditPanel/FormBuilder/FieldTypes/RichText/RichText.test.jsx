@@ -24,7 +24,7 @@ describe('RichText component', () => {
         wrapper = shallow(<RichText {...props}/>);
     });
 
-    it('should contain one RichText editor', () => {
+    it('should contain one RichText component', () => {
         expect(wrapper.find(RICH_TEXT_COMPONENT_TAG).length).toBe(1);
     });
 

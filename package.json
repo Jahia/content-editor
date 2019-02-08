@@ -17,7 +17,8 @@
   "jest": {
     "setupFilesAfterEnv": [
       "<rootDir>/src/javascript/setupTests.js"
-    ]
+    ],
+    "verbose": true
   },
   "description": "Content and Media Manager for DX",
   "main": "index.js",

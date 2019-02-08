@@ -2,6 +2,8 @@ import React from 'react';
 import {shallow} from 'enzyme';
 
 import {FormBuilder} from './FormBuilder';
+import RichText from './FieldTypes/RichText';
+import Text from './FieldTypes/Text';
 
 describe('FormBuilder component', () => {
     let props;
@@ -27,15 +29,40 @@ describe('FormBuilder component', () => {
         expect(props.formik.handleSubmit.mock.calls.length).toBe(1);
     });
 
-    /* Disabled
-    it('should render two field components', () => {
+    it('should render a Text component when field type is "Text"', () => {
         props.fields = [
-            {formDefinition: {name: 'x', fieldType: FieldTypes.Text}},
-            {formDefinition: {name: 'y', fieldType: FieldTypes.RichText}}
+            {formDefinition: {name: 'x', fieldType: 'Text'}}
         ];
+
         wrapper.setProps(props);
 
-        console.log('wrapper:', wrapper.debug());
+        const fieldComponent = wrapper.find(Text);
+        expect(fieldComponent.exists()).toBe(true);
+        expect(fieldComponent.length).toBe(1);
+        expect(fieldComponent.props('field')).toEqual({field: props.fields[0]});
     });
-    */
+
+    it('should render a RichText component when field type is "RichText"', () => {
+        props.fields = [
+            {formDefinition: {name: 'x', fieldType: 'RichText'}}
+        ];
+
+        wrapper.setProps(props);
+
+        const fieldComponent = wrapper.find(RichText);
+        expect(fieldComponent.exists()).toBe(true);
+        expect(fieldComponent.length).toBe(1);
+        expect(fieldComponent.props('field')).toEqual({field: props.fields[0]});
+    });
+
+    it('should render one field component per field definition', () => {
+        props.fields = [
+            {formDefinition: {name: 'x', fieldType: 'Text'}},
+            {formDefinition: {name: 'y', fieldType: 'Text'}}
+        ];
+
+        wrapper.setProps(props);
+
+        expect(wrapper.find(Text).length).toBe(2);
+    });
 });
