@@ -67,7 +67,7 @@
     <properties>
         <jahia-deploy-on-site>all</jahia-deploy-on-site>
         <jahia-module-type>system</jahia-module-type>
-        <yarn.arguments>build</yarn.arguments>
+        <yarn.arguments>build -p</yarn.arguments>
     </properties>
 
     <repositories>

@@ -6,7 +6,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 module.exports = (env, argv) => {
     let config = {
         entry: {
-            main: ['@babel/polyfill', 'whatwg-fetch', path.resolve(__dirname, 'src/javascript/publicPath'), path.resolve(__dirname, 'src/javascript/register')]
+            main: [path.resolve(__dirname, 'src/javascript/register')]
         },
         output: {
             path: path.resolve(__dirname, 'src/main/resources/javascript/apps/'),
@@ -46,12 +46,7 @@ module.exports = (env, argv) => {
                 manifest: require('./target/dependency/dx-commons-webpack-1.0.0-SNAPSHOT-manifest')
             }),
             new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en|fr|de/),
-            new CleanWebpackPlugin(path.resolve(__dirname, 'src/main/resources/javascript/apps/'), {verbose: false}),
-            new webpack.HashedModuleIdsPlugin({
-                hashFunction: 'sha256',
-                hashDigest: 'hex',
-                hashDigestLength: 20
-            })
+            new CleanWebpackPlugin(path.resolve(__dirname, 'src/main/resources/javascript/apps/'), {verbose: false})
         ],
         mode: 'development'
     };

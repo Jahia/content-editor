@@ -19,6 +19,9 @@
   "repository": "git@github.com:Jahia/content-editor.git",
   "author": "Jahia Core Team <core@jahia.com>",
   "license": "MIT",
+  "extension": {
+    "@jahia/content-manager":"^1."
+  },
   "dependencies": {
     "@jahia/apollo-dx": "^1.0.0-beta.20190131152050",
     "@jahia/layouts": "^1.0.0-beta.20190205085738",

@@ -1,11 +1,13 @@
 import React from 'react';
 import {registry} from '@jahia/registry';
 import {Edit, Save} from '@material-ui/icons';
-import submitAction from './EditPanelContainer/EditPanel/actions/submitAction';
+import submitAction from './actions/submitAction';
 import EditPanelConstants from './EditPanelContainer/EditPanel/EditPanelConstants';
 import EditPanelContainer from './EditPanelContainer';
 
 console.log('Load Content Editor Ext Components');
+/* eslint-disable */
+__webpack_public_path__ = window.contextJsParameters.contextPath + '/modules/content-editor/javascript/apps/';
 contextJsParameters.i18nNamespaces.push('content-editor');
 if (contextJsParameters && contextJsParameters.config && contextJsParameters.config.actions) {
     contextJsParameters.config.actions.push(actionsRegistry => {
