@@ -13,11 +13,6 @@ module.exports = (env, argv) => {
             filename: 'content-editor-ext.bundle.js',
             chunkFilename: '[name].content-editor.[chunkhash:6].js'
         },
-        optimization: {
-            splitChunks: {
-                maxSize: 4000000
-            }
-        },
         resolve: {
             mainFields: ['module', 'main'],
             extensions: ['.mjs', '.js', '.jsx', 'json']
