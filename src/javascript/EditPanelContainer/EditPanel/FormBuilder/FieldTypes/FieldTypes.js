@@ -1,5 +1,5 @@
-import Text from './Text/index';
-import RichText from './RichText/index';
+import Text from './Text';
+import RichText from './RichText';
 
 const FieldTypes = {
     Text: Text,
