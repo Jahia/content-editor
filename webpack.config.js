@@ -4,6 +4,14 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
+// get manifest
+var normalizedPath = require("path").join(__dirname, "./target/dependency");
+var manifest = "";
+require("fs").readdirSync(normalizedPath).forEach(function(file) {
+    manifest = "./target/dependency/" + file
+    console.log("use manifest " + manifest);
+});
+
 module.exports = (env, argv) => {
     let config = {
         entry: {
@@ -39,7 +47,7 @@ module.exports = (env, argv) => {
         },
         plugins: [
             new webpack.DllReferencePlugin({
-                manifest: require('./target/dependency/dx-commons-webpack-1.0.0-SNAPSHOT-manifest')
+                manifest: require(manifest)
             }),
             new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en|fr|de/),
             new CleanWebpackPlugin(path.resolve(__dirname, 'src/main/resources/javascript/apps/'), {verbose: false}),
