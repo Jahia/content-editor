@@ -1,7 +1,8 @@
 import React from 'react';
 import {registry} from '@jahia/registry';
-import {Edit, Save} from '@material-ui/icons';
+import {Edit, Save, ArrowBack} from '@material-ui/icons';
 import submitAction from './actions/submitAction';
+import goBackAction from './actions/goBackAction';
 import EditPanelConstants from './EditPanelContainer/EditPanel/EditPanelConstants';
 import EditPanelContainer from './EditPanelContainer';
 
@@ -19,10 +20,17 @@ if (contextJsParameters && contextJsParameters.config && contextJsParameters.con
             showOnNodeTypes: ['qant:allFields'],
             mode: 'edit'
         });
+
+        actionsRegistry.add('backButton', goBackAction, {
+            buttonIcon: <ArrowBack/>,
+            target: ['editHeaderActions:1'],
+            mode: 'browse'
+        });
+
         actionsRegistry.add('submitSave', submitAction, {
             buttonLabel: 'content-editor:label.contentEditor.edit.action.save.name',
             buttonIcon: <Save/>,
-            target: ['editHeaderActions:1'],
+            target: ['editHeaderActions:2'],
             submitOperation: EditPanelConstants.submitOperation.SAVE
         });
     });
