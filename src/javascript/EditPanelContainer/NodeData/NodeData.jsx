@@ -46,10 +46,14 @@ const mapStateToProps = state => ({
 });
 
 NodeData.propTypes = {
-    children: PropTypes.object.isRequired,
-    t: PropTypes.func.isRequired,
+    children: PropTypes.func.isRequired,
+    t: PropTypes.func,
     path: PropTypes.string.isRequired,
-    lang: PropTypes.array.isRequired
+    lang: PropTypes.string.isRequired
+};
+
+NodeData.defaultProps = {
+    t: s => s
 };
 
 export default compose(
