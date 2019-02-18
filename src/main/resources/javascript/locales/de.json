@@ -9,6 +9,12 @@
                         "name": "Sparen",
                         "success": "Inhalt wurde erfolgreich gespeichert",
                         "error": "Beim Speichern des Inhalts ist ein Fehler aufgetreten"
+                    },
+                    "goBack": {
+                        "title": "Änderungen vor dem Schließen speichern?",
+                        "btnContinue": "Weiter bearbeiten",
+                        "btnDiscard": "Änderungen verwerfen",
+                        "btnSave": "Änderungen speichern"
                     }
                 }
             },

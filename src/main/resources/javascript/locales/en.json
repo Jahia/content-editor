@@ -9,6 +9,12 @@
                         "name": "Save",
                         "success": "Content successfully saved",
                         "error": "An error occurred when saving the content"
+                    },
+                    "goBack": {
+                        "title": "Save changes before closing ?",
+                        "btnContinue": "Continue editing",
+                        "btnDiscard": "Discard changes",
+                        "btnSave": "Save changes"
                     }
                 }
             }

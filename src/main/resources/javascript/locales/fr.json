@@ -9,6 +9,12 @@
                         "name": "Sauvegarder",
                         "success": "Contenu enregistré avec succès",
                         "error": "Une erreur s'est produite lors de l'enregistrement du contenu"
+                    },
+                    "goBack": {
+                        "title": "Enregistrer les modifications avant de fermer ?",
+                        "btnContinue": "Poursuivre la modification",
+                        "btnDiscard": "Abandonner les modifications",
+                        "btnSave": "Enregistrer les modifications"
                     }
                 }
             }
