@@ -2,35 +2,35 @@ import React from 'react';
 import wait from 'waait';
 import TestRenderer from 'react-test-renderer';
 import {MockedProvider} from 'react-apollo/test-utils';
+import {InMemoryCache} from 'apollo-cache-inmemory';
+import {fragmentMatcher} from '@jahia/apollo-dx';
 import {ProgressOverlay} from '@jahia/react-material';
 
 import {NodeData} from './NodeData';
 import {NodeQuery} from './NodeData.gql-queries';
 
-describe('<NodeData/>', () => {
-    const query = NodeQuery;
-    const path = '/';
-    const language = 'en';
-
+describe('NodeData component', () => {
     let request;
-    let result;
 
     beforeEach(() => {
-        request = {query: query, variables: {path: path, language: language}};
-        result = {data: {jcr: {result: []}}};
+        request = {
+            query: NodeQuery,
+            variables: {
+                path: '/',
+                language: 'en'
+            }
+        };
     });
 
     describe('on load', () => {
         it('displays a loader', () => {
-            const mock = {request: request, result: result};
-
+            const {path, language} = request.variables;
             const component = TestRenderer.create(
-                <MockedProvider mocks={[mock]} addTypename={false}>
+                <MockedProvider mocks={[]}>
                     <NodeData path={path} lang={language}>
                         {() => {
                             return null;
-                        }
-                    }
+                        }}
                     </NodeData>
                 </MockedProvider>
             );
@@ -42,12 +42,11 @@ describe('<NodeData/>', () => {
 
     describe('on error', () => {
         it('displays an error message', async () => {
-            const errorMessage = 'An error occurred';
-            const mock = {request: request, error: new Error()};
-
+            const {path, language} = request.variables;
+            const mocks = [{request, error: new Error()}];
             const component = TestRenderer.create(
-                <MockedProvider mocks={[mock]}>
-                    <NodeData path={path} lang={language} t={() => errorMessage}>
+                <MockedProvider mocks={mocks}>
+                    <NodeData path={path} lang={language} t={s => s}>
                         {() => {
                             return null;
                         }}
@@ -57,7 +56,53 @@ describe('<NodeData/>', () => {
 
             await wait(0);
 
-            expect(component.toJSON()).toContain(errorMessage);
+            expect(component.toJSON()).toContain(
+                'content-media-manager:label.contentManager.error.queryingContent'
+            );
+        });
+    });
+
+    describe('on success', () => {
+        it('returns query results', async () => {
+            const {path, language} = request.variables;
+            const mockData = {
+                uuid: 'uuid',
+                workspace: 'workspace',
+                path: 'path',
+                displayName: 'A displayName',
+                primaryNodeType: {
+                    name: 'x',
+                    properties: [],
+                    __typename: 'JCRNodeType'
+                },
+                properties: [],
+                __typename: 'GenericJCRNode'
+            };
+            const mocks = [{
+                request: request,
+                result: {
+                    data: {
+                        jcr: {
+                            result: mockData,
+                            __typename: 'JCRQuery'
+                        }
+                    }
+                }
+            }];
+            const component = TestRenderer.create(
+                <MockedProvider mocks={mocks} cache={new InMemoryCache({fragmentMatcher})}>
+                    <NodeData path={path} lang={language}>
+                        {({nodeData}) => {
+                            return nodeData.displayName;
+                        }}
+                    </NodeData>
+                </MockedProvider>
+            );
+
+            await wait(0);
+
+            const output = component.toJSON();
+            expect(output).toEqual(mockData.displayName);
         });
     });
 });
