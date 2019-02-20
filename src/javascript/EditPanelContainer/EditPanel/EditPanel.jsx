@@ -15,7 +15,7 @@ export const EditPanel = ({t, fields, title}) => (
                         context={{}}
                         render={buttonRenderer({
                                     ref: c => {
-                                        if (c.props['data-sel-role'] === 'backButton') {
+                                        if (c && c.props['data-sel-role'] === 'backButton') {
                                             window.addEventListener('beforeunload', ev => {
                                                 ev.preventDefault();
                                                 ev.returnValue = '';
