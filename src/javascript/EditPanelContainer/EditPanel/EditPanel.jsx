@@ -14,6 +14,14 @@ export const EditPanel = ({t, fields, title}) => (
         <DisplayActions target="editHeaderActions"
                         context={{}}
                         render={buttonRenderer({
+                                    ref: c => {
+                                        if (c.props['data-sel-role'] === 'backButton') {
+                                            window.addEventListener('beforeunload', ev => {
+                                                ev.preventDefault();
+                                                ev.returnValue = '';
+                                            });
+                                        }
+                                    },
                                     variant: 'contained',
                                     color: 'primary',
                                     size: 'small'
