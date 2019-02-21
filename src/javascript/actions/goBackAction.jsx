@@ -28,7 +28,6 @@ class DialogConfirmation extends React.Component {
             <Dialog
                 open={open}
                 aria-labelledby="alert-dialog-slide-title"
-                aria-describedby="alert-dialog-slide-description"
                 onClose={onClose}
                 onExited={onExited}
             >
