@@ -44,3 +44,11 @@ registry.add('edit-route', {
         <EditPanelContainer/>
     )
 });
+
+// Prevent close browser's tab when there is unsaved content
+window.addEventListener('beforeunload', ev => {
+    if (window.FORMIK_IS_DIRTY) {
+        ev.preventDefault();
+        ev.returnValue = '';
+    }
+});
