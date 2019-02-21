@@ -1,5 +1,5 @@
 import React from 'react';
-import wait from 'waait';
+import waitForExpect from 'wait-for-expect';
 import TestRenderer from 'react-test-renderer';
 import {MockedProvider} from 'react-apollo/test-utils';
 import {InMemoryCache} from 'apollo-cache-inmemory';
@@ -54,11 +54,11 @@ describe('NodeData component', () => {
                 </MockedProvider>
             );
 
-            await wait(0);
-
-            expect(component.toJSON()).toContain(
-                'content-media-manager:label.contentManager.error.queryingContent'
-            );
+            await waitForExpect(() => {
+                expect(component.toJSON()).toContain(
+                    'content-media-manager:label.contentManager.error.queryingContent'
+                );
+            });
         });
     });
 
@@ -99,10 +99,10 @@ describe('NodeData component', () => {
                 </MockedProvider>
             );
 
-            await wait(0);
-
-            const output = component.toJSON();
-            expect(output).toEqual(mockData.displayName);
+            await waitForExpect(() => {
+                const output = component.toJSON();
+                expect(output).toEqual(mockData.displayName);
+            });
         });
     });
 });

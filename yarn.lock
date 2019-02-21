@@ -6495,10 +6495,10 @@ w3c-hr-time@^1.0.1:
   dependencies:
     browser-process-hrtime "^0.1.2"
 
-waait@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/waait/-/waait-1.0.4.tgz#1d177bab3175bfb56f0f832526582e0ca0b2650d"
-  integrity sha512-fMUqZH5xkzDgzw3b0CzOq7IBjIx9ig09gnpnRpRgonbPOZJWGURXWWHWt3xJa8cpxjh1WGFzRAD96V8i2C8Wmg==
+wait-for-expect@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/wait-for-expect/-/wait-for-expect-1.1.0.tgz#6607375c3f79d32add35cd2c87ce13f351a3d453"
+  integrity sha512-vQDokqxyMyknfX3luCDn16bSaRcOyH6gGuUXMIbxBLeTo6nWuEWYqMTT9a+44FmW8c2m6TRWBdNvBBjA1hwEKg==
 
 walker@~1.0.5:
   version "1.0.7"
