@@ -4,6 +4,9 @@
     "es6": true,
     "jest": true
   },
+  "plugins": [
+    "json"
+  ],
   "parser": "babel-eslint",
   "parserOptions": {
     "allowImportExportEverywhere": true
