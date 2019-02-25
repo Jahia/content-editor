@@ -6,7 +6,7 @@
                 "contentEdit": "Inhalt bearbeiten",
                 "action": {
                     "save": {
-                        "name": "Sparen",
+                        "name": "Speichern",
                         "success": "Inhalt wurde erfolgreich gespeichert",
                         "error": "Beim Speichern des Inhalts ist ein Fehler aufgetreten"
                     },
