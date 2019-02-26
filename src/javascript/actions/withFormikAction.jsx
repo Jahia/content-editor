@@ -6,8 +6,6 @@ let Component = connect(props => props.children(props.formik));
 let withFormikAction = {
     init: (context, props) => {
         context.formik = props.formik;
-
-        window.FORMIK_IS_DIRTY = context.formik.dirty;
     },
 
     wrappers: [
