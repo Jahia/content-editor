@@ -7,14 +7,26 @@ import MainLayout from '@jahia/layouts/page/MainLayout';
 import {connect} from 'formik';
 
 class EditPanel extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.handleBeforeUnloadEvent = this.handleBeforeUnloadEvent.bind(this);
+    }
+
     componentDidMount() {
         // Prevent close browser's tab when there is unsaved content
-        window.addEventListener('beforeunload', ev => {
-            if (this.props.formik.dirty) {
-                ev.preventDefault();
-                ev.returnValue = '';
-            }
-        });
+        window.addEventListener('beforeunload', this.handleBeforeUnloadEvent);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('beforeunload', this.handleBeforeUnloadEvent);
+    }
+
+    handleBeforeUnloadEvent(ev) {
+        if (this.props.formik.dirty) {
+            ev.preventDefault();
+            ev.returnValue = '';
+        }
     }
 
     render() {
