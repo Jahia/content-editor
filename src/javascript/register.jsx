@@ -17,7 +17,7 @@ if (contextJsParameters && contextJsParameters.config && contextJsParameters.con
             buttonIcon: <Edit/>,
             buttonLabel: 'content-editor:label.contentEditor.edit.contentEdit',
             target: ['contentActions:2.5'],
-            showOnNodeTypes: ['qant:allFields'],
+            hideOnNodeTypes: ['jnt:virtualsite'],
             mode: 'edit'
         });
 
