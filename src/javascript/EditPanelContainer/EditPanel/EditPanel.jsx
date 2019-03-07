@@ -1,5 +1,5 @@
 import React from 'react';
-import {FullWidthLayout} from '@jahia/layouts';
+import {FullWidthContent} from '@jahia/layouts';
 import {buttonRenderer, DisplayActions} from '@jahia/react-material';
 import * as PropTypes from 'prop-types';
 import FormBuilder from './FormBuilder';
@@ -45,9 +45,9 @@ class EditPanel extends React.Component {
                                          }, true)}/>
             }}
             >
-                <FullWidthLayout>
+                <FullWidthContent>
                     <FormBuilder fields={fields}/>
-                </FullWidthLayout>
+                </FullWidthContent>
             </MainLayout>
         );
     }
