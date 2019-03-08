@@ -1,5 +1,6 @@
 package org.jahia.modules.contenteditor.graphql.extensions;
 
+import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLTypeExtension;
@@ -14,6 +15,7 @@ public class QueryExtensions {
 
     @GraphQLField
     @GraphQLName("forms")
+    @GraphQLDescription("Main access field to the DX GraphQL Form API")
     public static GqlEditorForms getForms() {
         return new GqlEditorForms();
     }
