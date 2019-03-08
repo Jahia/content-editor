@@ -1,6 +1,5 @@
 package org.jahia.modules.contenteditor.api.forms.impl;
 
-import org.apache.jackrabbit.spi.commons.nodetype.constraint.ValueConstraint;
 import org.jahia.modules.contenteditor.api.forms.EditorForm;
 import org.jahia.modules.contenteditor.api.forms.EditorFormField;
 import org.jahia.modules.contenteditor.api.forms.EditorFormService;
@@ -12,10 +11,10 @@ import org.jahia.services.content.nodetypes.SelectorType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.jcr.PropertyType;
 import javax.jcr.nodetype.NoSuchNodeTypeException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class EditorFormServiceImpl implements EditorFormService {
 
@@ -29,26 +28,28 @@ public class EditorFormServiceImpl implements EditorFormService {
     @Override
     public EditorForm getEditorFormByNodeType(String nodeTypeName) {
         try {
+            Map<String,EditorFormTarget> editorFormTargets = new LinkedHashMap<>();
             ExtendedNodeType nodeType = nodeTypeRegistry.getNodeType(nodeTypeName);
-            List<EditorFormField> editorFormFields = new ArrayList<>();
             for (ExtendedPropertyDefinition propertyDefinition : nodeType.getPropertyDefinitions()) {
+                String target = propertyDefinition.getItemType();
                 EditorFormField editorFormField = new EditorFormField(propertyDefinition.getName(),
                         SelectorType.nameFromValue(propertyDefinition.getSelector()),
                         propertyDefinition.isInternationalized(),
-                        propertyDefinition.isMultiple(),
                         false,
+                        propertyDefinition.isMultiple(),
                         new ArrayList<String>(),
                         null);
-                editorFormFields.add(editorFormField);
+                EditorFormTarget editorFormTarget = editorFormTargets.get(target);
+                if (editorFormTarget == null) {
+                    editorFormTarget = new EditorFormTarget(target);
+                }
+                editorFormTarget.addField(editorFormField);
+                editorFormTargets.put(target, editorFormTarget);
             }
-            // todo define mapping from mixins to targets
-            List<EditorFormTarget> editorFormTargets = new ArrayList<>();
-            EditorFormTarget contentEditorFormTarget = new EditorFormTarget("content", editorFormFields);
-            editorFormTargets.add(contentEditorFormTarget);
             // todo implement overrides
             // todo implement choicelist initializer calls
             // todo implement constraints (read-only, etc...)
-            return new EditorForm(nodeType.getName(), editorFormTargets);
+            return new EditorForm(nodeType.getName(), editorFormTargets.values());
         } catch (NoSuchNodeTypeException e) {
             logger.error("Error looking up node type using name " + nodeTypeName, e);
         }

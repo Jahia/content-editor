@@ -4,6 +4,7 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,11 +13,10 @@ import java.util.List;
 public class EditorFormTarget {
 
     private String name;
-    private List<EditorFormField> editorFormFields;
+    private List<EditorFormField> editorFormFields = new ArrayList<>();
 
-    public EditorFormTarget(String name, List<EditorFormField> editorFormFields) {
+    public EditorFormTarget(String name) {
         this.name = name;
-        this.editorFormFields = editorFormFields;
     }
 
     @GraphQLField
@@ -30,5 +30,9 @@ public class EditorFormTarget {
     @GraphQLDescription("Get the fields contained in the target")
     public List<EditorFormField> getEditorFormFields() {
         return editorFormFields;
+    }
+
+    public boolean addField(EditorFormField editorFormField) {
+        return editorFormFields.add(editorFormField);
     }
 }

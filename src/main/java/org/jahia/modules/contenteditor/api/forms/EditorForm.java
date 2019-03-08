@@ -4,6 +4,7 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -11,9 +12,9 @@ import java.util.List;
  */
 public class EditorForm {
     private String nodeType;
-    private List<EditorFormTarget> editorFormTargets;
+    private Collection<EditorFormTarget> editorFormTargets;
 
-    public EditorForm(String nodeType, List<EditorFormTarget> editorFormTargets) {
+    public EditorForm(String nodeType, Collection<EditorFormTarget> editorFormTargets) {
         this.nodeType = nodeType;
         this.editorFormTargets = editorFormTargets;
     }
@@ -27,7 +28,7 @@ public class EditorForm {
     @GraphQLField
     @GraphQLName("targets")
     @GraphQLDescription("List of editor form targets, ie groupings of editor form fields")
-    public List<EditorFormTarget> getEditorFormTargets() {
+    public Collection<EditorFormTarget> getEditorFormTargets() {
         return editorFormTargets;
     }
 }
