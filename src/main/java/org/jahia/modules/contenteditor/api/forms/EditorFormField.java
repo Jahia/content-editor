@@ -11,7 +11,7 @@ import java.util.List;
 public class EditorFormField {
 
     private String name;
-    private String type;
+    private String fieldType;
     private Boolean i18n;
     private Boolean readOnly;
     private Boolean multiple;
@@ -19,9 +19,9 @@ public class EditorFormField {
     private List<String> values;
     private String defaultValue;
 
-    public EditorFormField(String name, String type, Boolean i18n, Boolean readOnly, Boolean multiple, Boolean mandatory, List<String> values, String defaultValue) {
+    public EditorFormField(String name, String fieldType, Boolean i18n, Boolean readOnly, Boolean multiple, Boolean mandatory, List<String> values, String defaultValue) {
         this.name = name;
-        this.type = type;
+        this.fieldType = fieldType;
         this.i18n = i18n;
         this.readOnly = readOnly;
         this.multiple = multiple;
@@ -38,8 +38,8 @@ public class EditorFormField {
 
     @GraphQLField
     @GraphQLDescription("The type of the field. In the case of fields generated from node types, this is actually the SelectorType.")
-    public String getType() {
-        return type;
+    public String getFieldType() {
+        return fieldType;
     }
 
     @GraphQLField
