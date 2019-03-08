@@ -4,6 +4,9 @@ import graphql.annotations.annotationTypes.GraphQLField;
 
 import java.util.List;
 
+/**
+ * Represents a single field inside a form target.
+ */
 public class EditorFormField {
 
     private String name;

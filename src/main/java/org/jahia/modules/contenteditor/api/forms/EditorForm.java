@@ -6,6 +6,9 @@ import graphql.annotations.annotationTypes.GraphQLName;
 
 import java.util.List;
 
+/**
+ * This is the root class for the editor form structure.
+ */
 public class EditorForm {
     private String nodeType;
     private List<EditorFormTarget> editorFormTargets;

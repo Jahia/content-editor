@@ -6,6 +6,9 @@ import graphql.annotations.annotationTypes.GraphQLName;
 
 import java.util.List;
 
+/**
+ * An editor form target represents a collection of form fields.
+ */
 public class EditorFormTarget {
 
     private String name;
