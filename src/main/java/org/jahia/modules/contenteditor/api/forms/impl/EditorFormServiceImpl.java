@@ -1,9 +1,14 @@
 package org.jahia.modules.contenteditor.api.forms.impl;
 
+import org.apache.commons.lang.LocaleUtils;
+import org.jahia.api.Constants;
 import org.jahia.modules.contenteditor.api.forms.EditorForm;
 import org.jahia.modules.contenteditor.api.forms.EditorFormField;
 import org.jahia.modules.contenteditor.api.forms.EditorFormService;
 import org.jahia.modules.contenteditor.api.forms.EditorFormTarget;
+import org.jahia.services.content.JCRNodeWrapper;
+import org.jahia.services.content.JCRSessionFactory;
+import org.jahia.services.content.JCRSessionWrapper;
 import org.jahia.services.content.nodetypes.ExtendedNodeType;
 import org.jahia.services.content.nodetypes.ExtendedPropertyDefinition;
 import org.jahia.services.content.nodetypes.NodeTypeRegistry;
@@ -11,9 +16,11 @@ import org.jahia.services.content.nodetypes.SelectorType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.jcr.RepositoryException;
 import javax.jcr.nodetype.NoSuchNodeTypeException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class EditorFormServiceImpl implements EditorFormService {
@@ -26,7 +33,16 @@ public class EditorFormServiceImpl implements EditorFormService {
     }
 
     @Override
-    public EditorForm getEditorFormByNodeType(String nodeTypeName) {
+    public EditorForm getEditorFormByNodeType(String nodeTypeName, String locale, String existingNodeIdentifier) {
+        JCRNodeWrapper existingNode = null;
+        if (existingNodeIdentifier != null) {
+            try {
+                existingNode = getSession(locale).getNodeByIdentifier(existingNodeIdentifier);
+            } catch (RepositoryException e) {
+                logger.error("Error retrieving node by using identifier {} : {}", existingNodeIdentifier, e);
+            }
+        }
+
         try {
             Map<String,EditorFormTarget> editorFormTargets = new LinkedHashMap<>();
             ExtendedNodeType nodeType = nodeTypeRegistry.getNodeType(nodeTypeName);
@@ -35,8 +51,9 @@ public class EditorFormServiceImpl implements EditorFormService {
                 EditorFormField editorFormField = new EditorFormField(propertyDefinition.getName(),
                         SelectorType.nameFromValue(propertyDefinition.getSelector()),
                         propertyDefinition.isInternationalized(),
-                        false,
+                        isReadOnly(propertyDefinition, existingNode),
                         propertyDefinition.isMultiple(),
+                        propertyDefinition.isMandatory(),
                         new ArrayList<String>(),
                         null);
                 EditorFormTarget editorFormTarget = editorFormTargets.get(target);
@@ -55,4 +72,27 @@ public class EditorFormServiceImpl implements EditorFormService {
         }
         return null;
     }
+
+    private boolean isReadOnly(ExtendedPropertyDefinition propertyDefinition, JCRNodeWrapper existingNode) {
+        // todo there are more constraints that need to be checked in the case of a readonly property, for example if
+        // we have the modify properties permission.
+        // check from GWT engine : propertiesEditor.setWriteable(!engine.isExistingNode() || (PermissionsUtils.isPermitted("jcr:modifyProperties", engine.getNode()) && !engine.getNode().isLocked()));
+        if (existingNode != null) {
+            if (existingNode.isLocked()) return true;
+        }
+        return propertyDefinition.isProtected();
+    }
+
+    private JCRSessionWrapper getSession() throws RepositoryException {
+        return JCRSessionFactory.getInstance().getCurrentUserSession(Constants.EDIT_WORKSPACE);
+    }
+
+    private JCRSessionWrapper getSession(String language) throws RepositoryException {
+        if (language == null) {
+            return getSession();
+        }
+        Locale locale = LocaleUtils.toLocale(language);
+        return JCRSessionFactory.getInstance().getCurrentUserSession(Constants.EDIT_WORKSPACE, locale);
+    }
+
 }

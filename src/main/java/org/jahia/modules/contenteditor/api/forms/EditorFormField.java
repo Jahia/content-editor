@@ -15,15 +15,17 @@ public class EditorFormField {
     private Boolean i18n;
     private Boolean readOnly;
     private Boolean multiple;
+    private Boolean mandatory;
     private List<String> values;
     private String defaultValue;
 
-    public EditorFormField(String name, String type, Boolean i18n, Boolean readOnly, Boolean multiple, List<String> values, String defaultValue) {
+    public EditorFormField(String name, String type, Boolean i18n, Boolean readOnly, Boolean multiple, Boolean mandatory, List<String> values, String defaultValue) {
         this.name = name;
         this.type = type;
         this.i18n = i18n;
         this.readOnly = readOnly;
         this.multiple = multiple;
+        this.mandatory = mandatory;
         this.values = values;
         this.defaultValue = defaultValue;
     }
@@ -56,6 +58,12 @@ public class EditorFormField {
     @GraphQLDescription("This value is true if the field value is multi-valued.")
     public Boolean getMultiple() {
         return multiple;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("This value is true if the field is mandatory")
+    public Boolean getMandatory() {
+        return mandatory;
     }
 
     @GraphQLField

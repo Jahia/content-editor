@@ -24,8 +24,14 @@ public class GqlEditorForms {
     public EditorForm getEditorFormByNodeType(
             @GraphQLName("nodeType")
             @GraphQLDescription("The name identifying the form we want to retrieve")
-                    String nodeType) {
-        return editorFormService.getEditorFormByNodeType(nodeType);
+                    String nodeType,
+            @GraphQLName("locale")
+            @GraphQLDescription("A string representation of a locale, in IETF BCP 47 language tag format, ie en_US, en, fr, fr_CH, ...")
+                    String locale,
+            @GraphQLName("nodeId")
+            @GraphQLDescription("A node identifier (UUID) of an existing node, which will be used to check contraints such as locks. This is optional and may be null or unspecified")
+            String existingNodeIdentifier) {
+        return editorFormService.getEditorFormByNodeType(nodeType, locale, existingNodeIdentifier);
     }
 
 }
