@@ -12,7 +12,7 @@ export class FormBuilder extends React.Component {
                 <Paper elevation={1}>
                     {fields.map(field => {
                         let FieldComponent = FieldTypes[field.formDefinition.fieldType];
-                        return <FieldComponent key={field.formDefinition.name} field={field}/>;
+                        return FieldComponent && <FieldComponent key={field.formDefinition.name} field={field}/>;
                     })}
                 </Paper>
             </form>

@@ -1,6 +1,7 @@
 package org.jahia.modules.contenteditor.api.forms.impl;
 
 import org.apache.commons.lang.LocaleUtils;
+import org.apache.commons.lang.StringUtils;
 import org.jahia.api.Constants;
 import org.jahia.modules.contenteditor.api.forms.EditorForm;
 import org.jahia.modules.contenteditor.api.forms.EditorFormField;
@@ -37,7 +38,11 @@ public class EditorFormServiceImpl implements EditorFormService {
         JCRNodeWrapper existingNode = null;
         if (existingNodeIdentifier != null) {
             try {
-                existingNode = getSession(locale).getNodeByIdentifier(existingNodeIdentifier);
+                if (StringUtils.startsWith(existingNodeIdentifier, "/")) {
+                    getSession(locale).getNode(existingNodeIdentifier);
+                } else {
+                    existingNode = getSession(locale).getNodeByIdentifier(existingNodeIdentifier);
+                }
             } catch (RepositoryException e) {
                 logger.error("Error retrieving node by using identifier {} : {}", existingNodeIdentifier, e);
             }
@@ -54,7 +59,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                         isReadOnly(propertyDefinition, existingNode),
                         propertyDefinition.isMultiple(),
                         propertyDefinition.isMandatory(),
-                        new ArrayList<String>(),
+                        new ArrayList<>(),
                         null);
                 EditorFormTarget editorFormTarget = editorFormTargets.get(target);
                 if (editorFormTarget == null) {
@@ -77,10 +82,8 @@ public class EditorFormServiceImpl implements EditorFormService {
         // todo there are more constraints that need to be checked in the case of a readonly property, for example if
         // we have the modify properties permission.
         // check from GWT engine : propertiesEditor.setWriteable(!engine.isExistingNode() || (PermissionsUtils.isPermitted("jcr:modifyProperties", engine.getNode()) && !engine.getNode().isLocked()));
-        if (existingNode != null) {
-            if (existingNode.isLocked()) return true;
-        }
-        return propertyDefinition.isProtected();
+
+        return existingNode != null && existingNode.isLocked() || propertyDefinition.isProtected();
     }
 
     private JCRSessionWrapper getSession() throws RepositoryException {

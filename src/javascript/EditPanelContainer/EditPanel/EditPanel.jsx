@@ -30,12 +30,13 @@ class EditPanel extends React.Component {
     }
 
     render() {
-        const {t, fields, title} = this.props;
+        const {t, fields, title, path} = this.props;
 
         return (
             <MainLayout topBarProps={{
+                path: path,
                 title: t('content-editor:label.contentEditor.edit.title'),
-                contextModifiers: title,
+                contextModifiers: <>{title}</>,
                 actions: <DisplayActions target="editHeaderActions"
                                          context={{}}
                                          render={buttonRenderer({
@@ -54,11 +55,13 @@ class EditPanel extends React.Component {
 }
 
 EditPanel.defaultProps = {
-    title: ''
+    title: '',
+    path: ''
 };
 
 EditPanel.propTypes = {
     title: PropTypes.string,
+    path: PropTypes.string,
     t: PropTypes.func.isRequired,
     fields: PropTypes.array.isRequired,
     formik: PropTypes.object.isRequired
