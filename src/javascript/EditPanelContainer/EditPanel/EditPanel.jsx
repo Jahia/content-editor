@@ -1,10 +1,18 @@
 import React from 'react';
-import {FullWidthContent} from '@jahia/layouts';
+import {MainLayout, TwoColumnsContent} from '@jahia/layouts';
 import {buttonRenderer, DisplayActions} from '@jahia/react-material';
 import * as PropTypes from 'prop-types';
 import FormBuilder from './FormBuilder';
-import MainLayout from '@jahia/layouts/page/MainLayout';
 import {connect} from 'formik';
+import {compose} from 'react-apollo';
+import {withStyles} from '@material-ui/core';
+import {translate} from 'react-i18next';
+
+let styles = () => ({
+    left: {
+        overflow: 'auto'
+    }
+});
 
 class EditPanel extends React.Component {
     constructor(props) {
@@ -30,7 +38,7 @@ class EditPanel extends React.Component {
     }
 
     render() {
-        const {t, fields, title, path} = this.props;
+        const {t, fields, title, path, classes} = this.props;
 
         return (
             <MainLayout topBarProps={{
@@ -38,17 +46,17 @@ class EditPanel extends React.Component {
                 title: t('content-editor:label.contentEditor.edit.title'),
                 contextModifiers: <>{title}</>,
                 actions: <DisplayActions target="editHeaderActions"
-                                         context={{}}
                                          render={buttonRenderer({
-                                             variant: 'contained',
-                                             color: 'primary',
-                                             size: 'small'
-                                         }, true)}/>
+                                             variant: 'primary'
+                                         }, true)}
+                />
             }}
             >
-                <FullWidthContent>
+                <TwoColumnsContent classes={{left: classes.left, right: classes.right}}
+                                   rightCol={<></>}
+                >
                     <FormBuilder fields={fields}/>
-                </FullWidthContent>
+                </TwoColumnsContent>
             </MainLayout>
         );
     }
@@ -64,7 +72,12 @@ EditPanel.propTypes = {
     path: PropTypes.string,
     t: PropTypes.func.isRequired,
     fields: PropTypes.array.isRequired,
-    formik: PropTypes.object.isRequired
+    formik: PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired
 };
 
-export default connect(EditPanel);
+export default compose(
+    translate(),
+    connect,
+    withStyles(styles)
+)(EditPanel);
