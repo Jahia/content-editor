@@ -6,7 +6,7 @@
                            http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd">
 
 
-    <bean id="editFormServiceImpl" class="org.jahia.modules.contenteditor.api.forms.impl.EditorFormServiceImpl">
+    <bean id="editFormServiceImpl" class="org.jahia.modules.contenteditor.api.forms.impl.EditorFormServiceImpl" init-method="init" destroy-method="destroy">
         <property name="nodeTypeRegistry" ref="nodeTypeRegistry"/>
     </bean>
 

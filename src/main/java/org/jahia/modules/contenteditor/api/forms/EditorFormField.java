@@ -18,8 +18,13 @@ public class EditorFormField {
     private Boolean mandatory;
     private List<String> values;
     private String defaultValue;
+    private Boolean removed;
+    private Double rank;
 
-    public EditorFormField(String name, String fieldType, Boolean i18n, Boolean readOnly, Boolean multiple, Boolean mandatory, List<String> values, String defaultValue) {
+    public EditorFormField() {
+    }
+
+    public EditorFormField(String name, String fieldType, Boolean i18n, Boolean readOnly, Boolean multiple, Boolean mandatory, List<String> values, String defaultValue, Boolean removed, Double rank) {
         this.name = name;
         this.fieldType = fieldType;
         this.i18n = i18n;
@@ -28,6 +33,48 @@ public class EditorFormField {
         this.mandatory = mandatory;
         this.values = values;
         this.defaultValue = defaultValue;
+        this.removed = removed;
+        this.rank = rank;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setFieldType(String fieldType) {
+        this.fieldType = fieldType;
+    }
+
+    public void setI18n(Boolean i18n) {
+        this.i18n = i18n;
+    }
+
+    public void setReadOnly(Boolean readOnly) {
+        this.readOnly = readOnly;
+    }
+
+    public void setMultiple(Boolean multiple) {
+        this.multiple = multiple;
+    }
+
+    public void setMandatory(Boolean mandatory) {
+        this.mandatory = mandatory;
+    }
+
+    public void setValues(List<String> values) {
+        this.values = values;
+    }
+
+    public void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
+    }
+
+    public void setRemoved(Boolean removed) {
+        this.removed = removed;
+    }
+
+    public void setRank(Double rank) {
+        this.rank = rank;
     }
 
     @GraphQLField
@@ -76,5 +123,54 @@ public class EditorFormField {
     @GraphQLDescription("This value contains the default value for the field.")
     public String getDefaultValue() {
         return defaultValue;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("This value contains the rank for the field.")
+    public Double getRank() {
+        return rank;
+    }
+
+    public boolean isRemoved() {
+        if (removed == null) {
+            return false;
+        }
+        return removed;
+    }
+
+    public EditorFormField mergeWith(EditorFormField otherEditorFormField) {
+        if (!name.equals(otherEditorFormField.name)) {
+            return this;
+        }
+        return new EditorFormField(name,
+                otherEditorFormField.fieldType != null ? otherEditorFormField.fieldType : fieldType,
+                mergeBooleanKeepTrue(i18n,otherEditorFormField.i18n),
+                mergeBooleanKeepTrue(readOnly,otherEditorFormField.readOnly),
+                mergeBooleanKeepTrue(multiple, otherEditorFormField.multiple),
+                mergeBooleanKeepTrue(mandatory,otherEditorFormField.mandatory),
+                otherEditorFormField.values != null ? otherEditorFormField.values : values,
+                otherEditorFormField.defaultValue != null ? otherEditorFormField.defaultValue : defaultValue,
+                otherEditorFormField.removed != null ? otherEditorFormField.removed : removed,
+                otherEditorFormField.rank != null ? otherEditorFormField.rank : rank
+                );
+    }
+
+    private Boolean mergeBooleanKeepTrue(Boolean value1, Boolean value2) {
+        if (value1 == null) {
+            if (value2 == null) {
+                return null;
+            } else {
+                return value2;
+            }
+        } else { // value 1 != null
+            if (value1) {
+                return true;
+            } else {
+                if (value2 != null)
+                    return value2;
+                else
+                    return value1;
+            }
+        }
     }
 }
