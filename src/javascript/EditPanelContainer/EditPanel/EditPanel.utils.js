@@ -5,13 +5,14 @@ function isSystemField(fieldKey) {
     return fieldKey in EditPanelConstants.systemFields;
 }
 
-function getPropertiesToSave(formValues, fields) {
+function getPropertiesToSave(formValues, fields, lang) {
     return _.map(_.filter(_.keys(formValues), key => !isSystemField(key)), key => {
         let field = _.find(fields, {formDefinition: {name: key}});
         return {
             name: key,
             type: field.jcrDefinition.requiredType,
-            value: formValues[key]
+            value: formValues[key],
+            language: lang
         };
     });
 }

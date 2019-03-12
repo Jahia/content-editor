@@ -45,7 +45,8 @@ class EditPanel extends React.Component {
                 path: path,
                 title: t('content-editor:label.contentEditor.edit.title'),
                 contextModifiers: <>{title}</>,
-                actions: <DisplayActions target="editHeaderActions"
+                actions: <DisplayActions context={{}}
+                                         target="editHeaderActions"
                                          render={buttonRenderer({
                                              variant: 'primary'
                                          }, true)}

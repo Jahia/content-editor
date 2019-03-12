@@ -50,7 +50,7 @@ export class EditPanelContainer extends React.Component {
                                                     client.mutate({
                                                         variables: {
                                                             path: nodeData.path,
-                                                            properties: getPropertiesToSave(values, fields)
+                                                            properties: getPropertiesToSave(values, fields, lang)
                                                         },
                                                         mutation: SavePropertiesMutation,
                                                         refetchQueries: [
