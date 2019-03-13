@@ -86,6 +86,9 @@ public class EditorFormServiceImpl implements EditorFormService, SynchronousBund
 
     private EditorForm mergeWithStaticForms(String nodeTypeName, EditorForm mergedEditorForm) {
         SortedSet<EditorForm> staticEditorForms = staticEditorFormsByNodeType.get(nodeTypeName);
+        if (staticEditorForms == null) {
+            return mergedEditorForm;
+        }
         for (EditorForm staticEditorForm : staticEditorForms) {
             mergedEditorForm = mergedEditorForm.mergeWith(staticEditorForm);
         }
