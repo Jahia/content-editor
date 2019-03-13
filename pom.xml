@@ -214,6 +214,7 @@
                 <configuration>
                     <instructions>
                         <Import-Package>org.jahia.modules.graphql.provider.dxm;version="1.0.6",${jahia.plugin.projectPackageImport},*</Import-Package>
+                        <_dsannotations>*</_dsannotations>
                     </instructions>
                 </configuration>
             </plugin>
