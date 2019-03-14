@@ -25,8 +25,9 @@ export class EditPanelContainer extends React.Component {
                         <FormDefinition uiLang={uiLang} path={path} nodeType={nodeData.primaryNodeType.name}>
                             {({formDefinition}) => {
                             if (formDefinition) {
-                                let fields = _.map(_.find(formDefinition.targets, {name: 'content'}).fields, fieldDefinition => {
+                                let fields = _.map(formDefinition.fields, fieldDefinition => {
                                     return {
+                                        targets: fieldDefinition.targets,
                                         formDefinition: fieldDefinition,
                                         jcrDefinition: _.find(nodeData.primaryNodeType.properties, {name: fieldDefinition.name}),
                                         data: _.find(nodeData.properties, {name: fieldDefinition.name})
