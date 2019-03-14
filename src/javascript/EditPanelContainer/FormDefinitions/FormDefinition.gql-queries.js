@@ -7,7 +7,7 @@ const FormQuery = gql`
                 nodeType
                 fields {
                     name
-                    fieldType
+                    selectorType
                     i18n
                     readOnly
                     multiple

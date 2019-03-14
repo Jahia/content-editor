@@ -2,8 +2,8 @@ import React from 'react';
 import {shallow} from 'enzyme';
 
 import {FormBuilder} from './FormBuilder';
-import RichText from './FieldTypes/RichText';
-import Text from './FieldTypes/Text';
+import RichText from './SelectorTypes/RichText';
+import Text from './SelectorTypes/Text';
 
 describe('FormBuilder component', () => {
     let props;
@@ -31,7 +31,7 @@ describe('FormBuilder component', () => {
 
     it('should render a Text component when field type is "Text"', () => {
         props.fields = [
-            {formDefinition: {name: 'x', fieldType: 'Text'}}
+            {formDefinition: {name: 'x', selectorType: 'Text'}}
         ];
 
         wrapper.setProps(props);
@@ -44,7 +44,7 @@ describe('FormBuilder component', () => {
 
     it('should render a RichText component when field type is "RichText"', () => {
         props.fields = [
-            {formDefinition: {name: 'x', fieldType: 'RichText'}}
+            {formDefinition: {name: 'x', selectorType: 'RichText'}}
         ];
 
         wrapper.setProps(props);
@@ -57,8 +57,8 @@ describe('FormBuilder component', () => {
 
     it('should render one field component per field definition', () => {
         props.fields = [
-            {formDefinition: {name: 'x', fieldType: 'Text'}},
-            {formDefinition: {name: 'y', fieldType: 'Text'}}
+            {formDefinition: {name: 'x', selectorType: 'Text'}},
+            {formDefinition: {name: 'y', selectorType: 'Text'}}
         ];
 
         wrapper.setProps(props);

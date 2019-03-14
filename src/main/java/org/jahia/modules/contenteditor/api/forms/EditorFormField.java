@@ -14,7 +14,7 @@ import java.util.Map;
 public class EditorFormField {
 
     private String name;
-    private String fieldType;
+    private String selectorType;
     private Boolean i18n;
     private Boolean readOnly;
     private Boolean multiple;
@@ -28,9 +28,9 @@ public class EditorFormField {
     public EditorFormField() {
     }
 
-    public EditorFormField(String name, String fieldType, Boolean i18n, Boolean readOnly, Boolean multiple, Boolean mandatory, List<String> values, String defaultValue, Boolean removed, List<EditorFormFieldTarget> targets) {
+    public EditorFormField(String name, String selectorType, Boolean i18n, Boolean readOnly, Boolean multiple, Boolean mandatory, List<String> values, String defaultValue, Boolean removed, List<EditorFormFieldTarget> targets) {
         this.name = name;
-        this.fieldType = fieldType;
+        this.selectorType = selectorType;
         this.i18n = i18n;
         this.readOnly = readOnly;
         this.multiple = multiple;
@@ -45,8 +45,8 @@ public class EditorFormField {
         this.name = name;
     }
 
-    public void setFieldType(String fieldType) {
-        this.fieldType = fieldType;
+    public void setSelectorType(String selectorType) {
+        this.selectorType = selectorType;
     }
 
     public void setI18n(Boolean i18n) {
@@ -91,9 +91,9 @@ public class EditorFormField {
     }
 
     @GraphQLField
-    @GraphQLDescription("The type of the field. In the case of fields generated from node types, this is actually the SelectorType.")
-    public String getFieldType() {
-        return fieldType;
+    @GraphQLDescription("The selector type for the field. In the case of fields generated from node types, this is actually the SelectorType.")
+    public String getSelectorType() {
+        return selectorType;
     }
 
     @GraphQLField
@@ -150,7 +150,7 @@ public class EditorFormField {
             return this;
         }
         return new EditorFormField(name,
-                otherEditorFormField.fieldType != null ? otherEditorFormField.fieldType : fieldType,
+                otherEditorFormField.selectorType != null ? otherEditorFormField.selectorType : selectorType,
                 mergeBooleanKeepTrue(i18n,otherEditorFormField.i18n),
                 mergeBooleanKeepTrue(readOnly,otherEditorFormField.readOnly),
                 mergeBooleanKeepTrue(multiple, otherEditorFormField.multiple),

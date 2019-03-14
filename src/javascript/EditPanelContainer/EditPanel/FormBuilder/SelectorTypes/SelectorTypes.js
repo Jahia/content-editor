@@ -1,9 +1,9 @@
 import Text from './Text';
 import RichText from './RichText';
 
-const FieldTypes = {
+const SelectorTypes = {
     Text: Text,
     RichText: RichText
 };
 
-export default FieldTypes;
+export default SelectorTypes;

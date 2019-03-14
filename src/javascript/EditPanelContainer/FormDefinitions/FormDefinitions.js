@@ -6,12 +6,12 @@ const QAAllFieldFormDefinition = {
             fields: [
                 {
                     name: 'sharedSmallText',
-                    fieldType: 'Text',
+                    selectorType: 'Text',
                     i18n: false
                 },
                 {
                     name: 'sharedBigtext',
-                    fieldType: 'RichText',
+                    selectorType: 'RichText',
                     i18n: false
                 }
             ]

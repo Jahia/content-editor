@@ -1,5 +1,5 @@
 import React from 'react';
-import FieldTypes from './FieldTypes';
+import SelectorTypes from './SelectorTypes';
 import {connect} from 'formik';
 import {Paper} from '@material-ui/core';
 import * as PropTypes from 'prop-types';
@@ -11,7 +11,7 @@ export class FormBuilder extends React.Component {
             <form onSubmit={formik.handleSubmit}>
                 <Paper elevation={1}>
                     {fields.map(field => {
-                        let FieldComponent = FieldTypes[field.formDefinition.fieldType];
+                        let FieldComponent = SelectorTypes[field.formDefinition.selectorType];
                         return FieldComponent && <FieldComponent key={field.formDefinition.name} field={field}/>;
                     })}
                 </Paper>
