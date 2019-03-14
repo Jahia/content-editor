@@ -1,11 +1,12 @@
 package org.jahia.modules.contenteditor.api.forms.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang.LocaleUtils;
-import org.eclipse.gemini.blueprint.context.BundleContextAware;
 import org.apache.commons.lang.StringUtils;
 import org.jahia.api.Constants;
-import org.jahia.modules.contenteditor.api.forms.*;
+import org.jahia.modules.contenteditor.api.forms.EditorForm;
+import org.jahia.modules.contenteditor.api.forms.EditorFormField;
+import org.jahia.modules.contenteditor.api.forms.EditorFormService;
+import org.jahia.modules.contenteditor.api.forms.EditorFormTarget;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRSessionFactory;
 import org.jahia.services.content.JCRSessionWrapper;
@@ -13,7 +14,6 @@ import org.jahia.services.content.nodetypes.ExtendedNodeType;
 import org.jahia.services.content.nodetypes.ExtendedPropertyDefinition;
 import org.jahia.services.content.nodetypes.NodeTypeRegistry;
 import org.jahia.services.content.nodetypes.SelectorType;
-import org.osgi.framework.*;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
@@ -21,8 +21,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.jcr.RepositoryException;
 import javax.jcr.nodetype.NoSuchNodeTypeException;
-import java.io.IOException;
-import java.net.URL;
 import java.util.*;
 
 /**
