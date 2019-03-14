@@ -7,8 +7,8 @@ import graphql.annotations.annotationTypes.GraphQLName;
 import org.osgi.framework.Bundle;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,17 +16,17 @@ import java.util.Map;
  */
 public class EditorForm implements Comparable<EditorForm> {
     private String nodeType;
-    private Collection<EditorFormTarget> editorFormTargets;
-    private Map<String,EditorFormTarget> editorFormTargetsByName = new LinkedHashMap<>();
     private Bundle originBundle;
     private Double priority;
+    private List<EditorFormField> editorFormFields = new ArrayList<>();
+    private Map<String,EditorFormField> editorFormFieldsByName = new LinkedHashMap<>();
 
     public EditorForm() {
     }
 
-    public EditorForm(String nodeType, Collection<EditorFormTarget> editorFormTargets) {
+    public EditorForm(String nodeType, List<EditorFormField> editorFormFields) {
         this.nodeType = nodeType;
-        setEditorFormTargets(editorFormTargets);
+        setEditorFormFields(editorFormFields);
     }
 
     public void setNodeType(String nodeType) {
@@ -37,22 +37,6 @@ public class EditorForm implements Comparable<EditorForm> {
     @GraphQLDescription("Get the associated node type name")
     public String getNodeType() {
         return nodeType;
-    }
-
-    @GraphQLField
-    @GraphQLName("targets")
-    @GraphQLDescription("List of editor form targets, ie groupings of editor form fields")
-    @JsonProperty("targets")
-    public Collection<EditorFormTarget> getEditorFormTargets() {
-        return editorFormTargets;
-    }
-
-    public void setEditorFormTargets(Collection<EditorFormTarget> editorFormTargets) {
-        this.editorFormTargets = editorFormTargets;
-        editorFormTargetsByName.clear();
-        for (EditorFormTarget editorFormTarget : editorFormTargets) {
-            editorFormTargetsByName.put(editorFormTarget.getName(), editorFormTarget);
-        }
     }
 
     public Bundle getOriginBundle() {
@@ -69,6 +53,27 @@ public class EditorForm implements Comparable<EditorForm> {
 
     public void setPriority(Double priority) {
         this.priority = priority;
+    }
+
+    @GraphQLField
+    @GraphQLName("fields")
+    @GraphQLDescription("Get the fields contained in the target")
+    @JsonProperty("fields")
+    public List<EditorFormField> getEditorFormFields() {
+        return editorFormFields;
+    }
+
+    public boolean addField(EditorFormField editorFormField) {
+        editorFormFieldsByName.put(editorFormField.getName(), editorFormField);
+        return editorFormFields.add(editorFormField);
+    }
+
+    public void setEditorFormFields(List<EditorFormField> editorFormFields) {
+        this.editorFormFields = editorFormFields;
+        editorFormFieldsByName.clear();
+        for (EditorFormField editorFormField : editorFormFields) {
+            editorFormFieldsByName.put(editorFormField.getName(), editorFormField);
+        }
     }
 
     @Override
@@ -117,26 +122,28 @@ public class EditorForm implements Comparable<EditorForm> {
             // nodetypes are not equal, we won't merge anything.
             return this;
         }
-        Collection<EditorFormTarget> mergedEditorFormTargets = new ArrayList<>();
-        for (EditorFormTarget editorFormTarget : editorFormTargets) {
-            EditorFormTarget otherEditorFormTarget = otherEditorForm.editorFormTargetsByName.get(editorFormTarget.getName());
-            if (otherEditorFormTarget == null) {
-                mergedEditorFormTargets.add(editorFormTarget);
+        List<EditorFormField> mergedEditorFormFields = new ArrayList<>();
+        for (EditorFormField editorFormField : editorFormFields) {
+            EditorFormField otherFormField = otherEditorForm.editorFormFieldsByName.get(editorFormField.getName());
+            if (otherFormField == null && !editorFormField.isRemoved()) {
+                mergedEditorFormFields.add(editorFormField);
+                continue;
             }
-            // we now have equivalent targets, we need to merge them.
-            EditorFormTarget mergedEditorFormTarget = editorFormTarget.mergeWith(otherEditorFormTarget);
-            if (mergedEditorFormTarget != null) {
-                mergedEditorFormTargets.add(mergedEditorFormTarget);
-            }
-        }
-        // we now need to add all the targets that only exist in the other editor form but not in ours.
-        for (EditorFormTarget otherEditorFormTarget : otherEditorForm.editorFormTargets) {
-            EditorFormTarget editorFormTarget = editorFormTargetsByName.get(otherEditorFormTarget.getName());
-            if (editorFormTarget == null) {
-                mergedEditorFormTargets.add(otherEditorFormTarget);
+            EditorFormField mergedEditorFormField = editorFormField.mergeWith(otherFormField);
+            if (mergedEditorFormField != null && !mergedEditorFormField.isRemoved()) {
+                mergedEditorFormFields.add(mergedEditorFormField);
             }
         }
-        EditorForm newEditorForm = new EditorForm(nodeType, mergedEditorFormTargets);
+        // we now need to add all the fields that are in the other but not in ours, but only if they are not removed fields
+        for (EditorFormField otherEditorFormField : otherEditorForm.editorFormFields) {
+            if (editorFormFieldsByName.get(otherEditorFormField.getName()) == null && !otherEditorFormField.isRemoved()) {
+                mergedEditorFormFields.add(otherEditorFormField);
+            }
+        }
+        if (mergedEditorFormFields.isEmpty()) {
+            return null;
+        }
+        EditorForm newEditorForm = new EditorForm(nodeType, mergedEditorFormFields);
         if (otherEditorForm.priority != null) {
             newEditorForm.setPriority(otherEditorForm.priority);
         }

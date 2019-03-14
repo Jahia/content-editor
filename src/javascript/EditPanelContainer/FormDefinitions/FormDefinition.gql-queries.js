@@ -5,17 +5,18 @@ const FormQuery = gql`
         forms {
             formByNodeType(nodeType: $nodeType, locale: $uiLang, nodeId : $nodeId) {
                 nodeType
-                targets {
+                fields {
                     name
-                    fields {
+                    fieldType
+                    i18n
+                    readOnly
+                    multiple
+                    mandatory
+                    values
+                    defaultValue
+                    targets {
                         name
-                        fieldType
-                        i18n
-                        readOnly
-                        multiple
-                        mandatory
-                        values
-                        defaultValue
+                        rank
                     }
                 }
             }

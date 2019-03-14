@@ -5,8 +5,8 @@ import org.apache.commons.lang.StringUtils;
 import org.jahia.api.Constants;
 import org.jahia.modules.contenteditor.api.forms.EditorForm;
 import org.jahia.modules.contenteditor.api.forms.EditorFormField;
+import org.jahia.modules.contenteditor.api.forms.EditorFormFieldTarget;
 import org.jahia.modules.contenteditor.api.forms.EditorFormService;
-import org.jahia.modules.contenteditor.api.forms.EditorFormTarget;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRSessionFactory;
 import org.jahia.services.content.JCRSessionWrapper;
@@ -83,11 +83,19 @@ public class EditorFormServiceImpl implements EditorFormService {
     }
 
     private EditorForm generateEditorFormFromNodeType(String nodeTypeName, JCRNodeWrapper existingNode) throws NoSuchNodeTypeException {
-        Map<String, EditorFormTarget> editorFormTargets = new LinkedHashMap<>();
         ExtendedNodeType nodeType = nodeTypeRegistry.getNodeType(nodeTypeName);
-        double rank = 0;
+        Map<String,Double> maxTargetRank = new HashMap<>();
+        List<EditorFormField> editorFormFields = new ArrayList<>();
         for (ExtendedPropertyDefinition propertyDefinition : nodeType.getPropertyDefinitions()) {
             String target = propertyDefinition.getItemType();
+            Double rank = maxTargetRank.get(target);
+            if (rank == null) {
+                rank = -1.0;
+            }
+            rank++;
+            List<EditorFormFieldTarget> fieldTargets = new ArrayList<>();
+            fieldTargets.add(new EditorFormFieldTarget(target, rank));
+            maxTargetRank.put(target, rank);
             EditorFormField editorFormField = new EditorFormField(propertyDefinition.getName(),
                     SelectorType.nameFromValue(propertyDefinition.getSelector()),
                     propertyDefinition.isInternationalized(),
@@ -97,15 +105,10 @@ public class EditorFormServiceImpl implements EditorFormService {
                     new ArrayList<String>(),
                     null,
                     null,
-                    rank++);
-            EditorFormTarget editorFormTarget = editorFormTargets.get(target);
-            if (editorFormTarget == null) {
-                editorFormTarget = new EditorFormTarget(target);
-            }
-            editorFormTarget.addField(editorFormField);
-            editorFormTargets.put(target, editorFormTarget);
+                    fieldTargets);
+            editorFormFields.add(editorFormField);
         }
-        return new EditorForm(nodeTypeName, editorFormTargets.values());
+        return new EditorForm(nodeTypeName, editorFormFields);
     }
 
     private boolean isReadOnly(ExtendedPropertyDefinition propertyDefinition, JCRNodeWrapper existingNode) {
