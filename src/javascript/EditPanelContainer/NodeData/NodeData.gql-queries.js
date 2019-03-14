@@ -14,9 +14,10 @@ const NodeQuery = gql`
                         requiredType
                     }
                 }
-                properties(names: ["sharedSmallText", "sharedBigtext"]) {
+                properties(language: $language) {
                     name
                     value
+                    values
                 }
             }
         }
