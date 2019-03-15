@@ -3,10 +3,7 @@ package org.jahia.modules.contenteditor.api.forms.impl;
 import org.apache.commons.lang.LocaleUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jahia.api.Constants;
-import org.jahia.modules.contenteditor.api.forms.EditorForm;
-import org.jahia.modules.contenteditor.api.forms.EditorFormField;
-import org.jahia.modules.contenteditor.api.forms.EditorFormFieldTarget;
-import org.jahia.modules.contenteditor.api.forms.EditorFormService;
+import org.jahia.modules.contenteditor.api.forms.*;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRSessionFactory;
 import org.jahia.services.content.JCRSessionWrapper;
@@ -14,12 +11,16 @@ import org.jahia.services.content.nodetypes.ExtendedNodeType;
 import org.jahia.services.content.nodetypes.ExtendedPropertyDefinition;
 import org.jahia.services.content.nodetypes.NodeTypeRegistry;
 import org.jahia.services.content.nodetypes.SelectorType;
+import org.jahia.services.content.nodetypes.initializers.ChoiceListInitializer;
+import org.jahia.services.content.nodetypes.initializers.ChoiceListInitializerService;
+import org.jahia.services.content.nodetypes.initializers.ChoiceListValue;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jcr.RepositoryException;
+import javax.jcr.Value;
 import javax.jcr.nodetype.NoSuchNodeTypeException;
 import java.util.*;
 
@@ -32,6 +33,7 @@ public class EditorFormServiceImpl implements EditorFormService {
 
     private static final Logger logger = LoggerFactory.getLogger(EditorFormServiceImpl.class);
     private NodeTypeRegistry nodeTypeRegistry;
+    private ChoiceListInitializerService choiceListInitializerService = ChoiceListInitializerService.getInstance(); // todo we should inject this but currently DX doesn't expose it as an OSGi service.
     private StaticFormRegistry staticFormRegistry;
 
     @Reference
@@ -45,30 +47,41 @@ public class EditorFormServiceImpl implements EditorFormService {
     }
 
     @Override
-    public EditorForm getEditorFormByNodeType(String nodeTypeName, String locale, String existingNodeIdentifier) {
-        JCRNodeWrapper existingNode = null;
-        if (existingNodeIdentifier != null) {
+    public EditorForm getEditorForm(String nodeTypeName, String localeTag, String existingNodeIdOrPath, String parentNodeIdOrPath) throws EditorFormException {
+        Locale locale = LocaleUtils.toLocale(localeTag);
+        JCRNodeWrapper existingNode = getNode(existingNodeIdOrPath, locale);
+        JCRNodeWrapper parentNode = getNode(parentNodeIdOrPath, locale);
+        if (parentNode == null && existingNode != null) {
             try {
-                if (StringUtils.startsWith(existingNodeIdentifier, "/")) {
-                    getSession(locale).getNode(existingNodeIdentifier);
-                } else {
-                    existingNode = getSession(locale).getNodeByIdentifier(existingNodeIdentifier);
-                }
+                parentNode = existingNode.getParent();
             } catch (RepositoryException e) {
-                logger.error("Error retrieving node by using identifier {} : {}", existingNodeIdentifier, e);
+                throw new EditorFormException("Error retrieving parent node of node " + existingNode.getPath(), e);
             }
         }
-
         try {
-            EditorForm mergedEditorForm = generateEditorFormFromNodeType(nodeTypeName, existingNode);
+            EditorForm mergedEditorForm = generateEditorFormFromNodeType(nodeTypeName, existingNode, parentNode, locale);
             mergedEditorForm = mergeWithStaticForms(nodeTypeName, mergedEditorForm);
-            // todo implement choicelist initializer calls
             // todo implement constraints (read-only, etc...)
             return mergedEditorForm;
         } catch (NoSuchNodeTypeException e) {
-            logger.error("Error looking up node type using name " + nodeTypeName, e);
+            throw new EditorFormException("Error looking up node type using name " + nodeTypeName, e);
         }
-        return null;
+    }
+
+    private JCRNodeWrapper getNode(String nodeIdOrPath, Locale locale) {
+        JCRNodeWrapper node = null;
+        if (nodeIdOrPath != null) {
+            try {
+                if (StringUtils.startsWith(nodeIdOrPath, "/")) {
+                    getSession(locale).getNode(nodeIdOrPath);
+                } else {
+                    node = getSession(locale).getNodeByIdentifier(nodeIdOrPath);
+                }
+            } catch (RepositoryException e) {
+                logger.error("Error retrieving node by using identifier or path " + nodeIdOrPath, e);
+            }
+        }
+        return node;
     }
 
     private EditorForm mergeWithStaticForms(String nodeTypeName, EditorForm mergedEditorForm) {
@@ -82,8 +95,9 @@ public class EditorFormServiceImpl implements EditorFormService {
         return mergedEditorForm;
     }
 
-    private EditorForm generateEditorFormFromNodeType(String nodeTypeName, JCRNodeWrapper existingNode) throws NoSuchNodeTypeException {
+    private EditorForm generateEditorFormFromNodeType(String nodeTypeName, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale locale) throws NoSuchNodeTypeException {
         ExtendedNodeType nodeType = nodeTypeRegistry.getNodeType(nodeTypeName);
+        Map<String, ChoiceListInitializer> initializers = choiceListInitializerService.getInitializers();
         Map<String,Double> maxTargetRank = new HashMap<>();
         List<EditorFormField> editorFormFields = new ArrayList<>();
         for (ExtendedPropertyDefinition propertyDefinition : nodeType.getPropertyDefinitions()) {
@@ -96,19 +110,77 @@ public class EditorFormServiceImpl implements EditorFormService {
             List<EditorFormFieldTarget> fieldTargets = new ArrayList<>();
             fieldTargets.add(new EditorFormFieldTarget(target, rank));
             maxTargetRank.put(target, rank);
+            List<EditorFormFieldValueConstraint> valueConstraints = getValueConstraints(existingNode, parentNode, locale, nodeType, initializers, propertyDefinition);
+            List<EditorFormProperty> selectorOptions = null;
+            if (propertyDefinition.getSelectorOptions() != null) {
+                selectorOptions = new ArrayList<>();
+                for (Map.Entry<String, String> selectorOptionsEntry : propertyDefinition.getSelectorOptions().entrySet()) {
+                    selectorOptions.add(new EditorFormProperty(selectorOptionsEntry.getKey(), selectorOptionsEntry.getValue()));
+                }
+            }
+            List<EditorFormFieldValue> defaultValues = null;
+            if (propertyDefinition.getDefaultValues() != null) {
+                defaultValues = new ArrayList<>();
+                for (Value defaultValue : propertyDefinition.getDefaultValues()) {
+                    try {
+                        defaultValues.add(new EditorFormFieldValue(defaultValue));
+                    } catch (RepositoryException e) {
+                        logger.error("Error converting field " + propertyDefinition.getName() + " default value", e);
+                    }
+                }
+            }
             EditorFormField editorFormField = new EditorFormField(propertyDefinition.getName(),
                     SelectorType.nameFromValue(propertyDefinition.getSelector()),
+                    selectorOptions,
                     propertyDefinition.isInternationalized(),
                     isReadOnly(propertyDefinition, existingNode),
                     propertyDefinition.isMultiple(),
                     propertyDefinition.isMandatory(),
-                    new ArrayList<String>(),
+                    valueConstraints,
+                    defaultValues,
                     null,
-                    null,
-                    fieldTargets);
+                    fieldTargets,
+                    propertyDefinition);
             editorFormFields.add(editorFormField);
         }
         return new EditorForm(nodeTypeName, editorFormFields);
+    }
+
+    private List<EditorFormFieldValueConstraint> getValueConstraints(JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale locale, ExtendedNodeType nodeType, Map<String, ChoiceListInitializer> initializers, ExtendedPropertyDefinition propertyDefinition) {
+        // let's retrieve choicelist initializer values
+        Map<String, Object> context = new HashMap<>();
+        context.put("contextType", nodeType);
+        context.put("contextNode", existingNode);
+        context.put("contextParent", parentNode);
+        List<ChoiceListValue> listValues = null;
+        for (Map.Entry<String, String> entry : propertyDefinition.getSelectorOptions().entrySet()) {
+            if (initializers.containsKey(entry.getKey())) {
+                listValues = initializers.get(entry.getKey()).getChoiceListValues(propertyDefinition, entry.getValue(),
+                        listValues, locale, context);
+            }
+        }
+
+        List<EditorFormFieldValueConstraint> valueConstraints = null;
+        if (listValues != null) {
+            valueConstraints = new ArrayList<>();
+            for (ChoiceListValue choiceListValue : listValues) {
+                List<EditorFormProperty> propertyList = new ArrayList<>();
+                if (choiceListValue.getProperties() != null) {
+                    for (Map.Entry<String, Object> choiceListPropertyEntry : choiceListValue.getProperties().entrySet()) {
+                        propertyList.add(new EditorFormProperty(choiceListPropertyEntry.getKey(), choiceListPropertyEntry.getValue().toString()));
+                    }
+                }
+                try {
+                    valueConstraints.add(new EditorFormFieldValueConstraint(choiceListValue.getDisplayName(),
+                            new EditorFormFieldValue(choiceListValue.getValue()),
+                            propertyList
+                    ));
+                } catch (RepositoryException e) {
+                    logger.error("Error retrieving choice list value", e);
+                }
+            }
+        }
+        return valueConstraints;
     }
 
     private boolean isReadOnly(ExtendedPropertyDefinition propertyDefinition, JCRNodeWrapper existingNode) {
@@ -123,11 +195,10 @@ public class EditorFormServiceImpl implements EditorFormService {
         return JCRSessionFactory.getInstance().getCurrentUserSession(Constants.EDIT_WORKSPACE);
     }
 
-    private JCRSessionWrapper getSession(String language) throws RepositoryException {
-        if (language == null) {
+    private JCRSessionWrapper getSession(Locale locale) throws RepositoryException {
+        if (locale == null) {
             return getSession();
         }
-        Locale locale = LocaleUtils.toLocale(language);
         return JCRSessionFactory.getInstance().getCurrentUserSession(Constants.EDIT_WORKSPACE, locale);
     }
 

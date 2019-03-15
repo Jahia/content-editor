@@ -1,7 +1,9 @@
 package org.jahia.modules.contenteditor.api.forms;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
+import org.jahia.services.content.nodetypes.ExtendedPropertyDefinition;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,30 +17,45 @@ public class EditorFormField {
 
     private String name;
     private String selectorType;
+    private List<EditorFormProperty> selectorOptions;
     private Boolean i18n;
     private Boolean readOnly;
     private Boolean multiple;
     private Boolean mandatory;
-    private List<String> values;
-    private String defaultValue;
+    private List<EditorFormFieldValueConstraint> valueConstraints;
+    private List<EditorFormFieldValue> defaultValues;
     private Boolean removed;
     private List<EditorFormFieldTarget> targets;
     private Map<String,Double> targetsByName = new HashMap<>();
+    private ExtendedPropertyDefinition extendedPropertyDefinition;
 
     public EditorFormField() {
     }
 
-    public EditorFormField(String name, String selectorType, Boolean i18n, Boolean readOnly, Boolean multiple, Boolean mandatory, List<String> values, String defaultValue, Boolean removed, List<EditorFormFieldTarget> targets) {
+    public EditorFormField(String name,
+                           String selectorType,
+                           List<EditorFormProperty> selectorOptions,
+                           Boolean i18n,
+                           Boolean readOnly,
+                           Boolean multiple,
+                           Boolean mandatory,
+                           List<EditorFormFieldValueConstraint> valueConstraints,
+                           List<EditorFormFieldValue> defaultValues,
+                           Boolean removed,
+                           List<EditorFormFieldTarget> targets,
+                           ExtendedPropertyDefinition extendedPropertyDefinition) {
         this.name = name;
         this.selectorType = selectorType;
+        this.selectorOptions = selectorOptions;
         this.i18n = i18n;
         this.readOnly = readOnly;
         this.multiple = multiple;
         this.mandatory = mandatory;
-        this.values = values;
-        this.defaultValue = defaultValue;
+        this.valueConstraints = valueConstraints;
+        this.defaultValues = defaultValues;
         this.removed = removed;
         setTargets(targets);
+        this.extendedPropertyDefinition = extendedPropertyDefinition;
     }
 
     public void setName(String name) {
@@ -47,6 +64,12 @@ public class EditorFormField {
 
     public void setSelectorType(String selectorType) {
         this.selectorType = selectorType;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("Options for the selector type. For JCR definitions, this will usually include choicelist initializer name and properties.")
+    public List<EditorFormProperty> getSelectorOptions() {
+        return selectorOptions;
     }
 
     public void setI18n(Boolean i18n) {
@@ -65,12 +88,14 @@ public class EditorFormField {
         this.mandatory = mandatory;
     }
 
-    public void setValues(List<String> values) {
-        this.values = values;
+    public void setSelectorOptions(List<EditorFormProperty> selectorOptions) {
+        this.selectorOptions = selectorOptions;
     }
 
-    public void setDefaultValue(String defaultValue) {
-        this.defaultValue = defaultValue;
+    @GraphQLField
+    @GraphQLDescription("This array contains the list of possible values to choose from")
+    public List<EditorFormFieldValueConstraint> getValueConstraints() {
+        return valueConstraints;
     }
 
     public void setRemoved(Boolean removed) {
@@ -84,6 +109,10 @@ public class EditorFormField {
         }
     }
 
+    public void setValueConstraints(List<EditorFormFieldValueConstraint> valueConstraints) {
+        this.valueConstraints = valueConstraints;
+    }
+
     @GraphQLField
     @GraphQLDescription("The name of the field")
     public String getName() {
@@ -94,6 +123,12 @@ public class EditorFormField {
     @GraphQLDescription("The selector type for the field. In the case of fields generated from node types, this is actually the SelectorType.")
     public String getSelectorType() {
         return selectorType;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("This value contains the default values for the field.")
+    public List<EditorFormFieldValue> getDefaultValues() {
+        return defaultValues;
     }
 
     @GraphQLField
@@ -120,22 +155,23 @@ public class EditorFormField {
         return mandatory;
     }
 
-    @GraphQLField
-    @GraphQLDescription("This array contains the list of possible values to choose from")
-    public List<String> getValues() {
-        return values;
+    public void setDefaultValues(List<EditorFormFieldValue> defaultValues) {
+        this.defaultValues = defaultValues;
     }
 
-    @GraphQLField
-    @GraphQLDescription("This value contains the default value for the field.")
-    public String getDefaultValue() {
-        return defaultValue;
+    public ExtendedPropertyDefinition getExtendedPropertyDefinition() {
+        return extendedPropertyDefinition;
     }
 
     @GraphQLField
     @GraphQLDescription("The targets this fields should be present in and the ranking in each target")
     public List<EditorFormFieldTarget> getTargets() {
         return targets;
+    }
+
+    @JsonIgnore
+    public void setExtendedPropertyDefinition(ExtendedPropertyDefinition extendedPropertyDefinition) {
+        this.extendedPropertyDefinition = extendedPropertyDefinition;
     }
 
     public boolean isRemoved() {
@@ -151,14 +187,16 @@ public class EditorFormField {
         }
         return new EditorFormField(name,
                 otherEditorFormField.selectorType != null ? otherEditorFormField.selectorType : selectorType,
-                mergeBooleanKeepTrue(i18n,otherEditorFormField.i18n),
+                otherEditorFormField.selectorOptions != null ? otherEditorFormField.selectorOptions : selectorOptions,
+                i18n != null ? i18n : otherEditorFormField.i18n,
                 mergeBooleanKeepTrue(readOnly,otherEditorFormField.readOnly),
-                mergeBooleanKeepTrue(multiple, otherEditorFormField.multiple),
+                multiple != null ? multiple : otherEditorFormField.multiple,
                 mergeBooleanKeepTrue(mandatory,otherEditorFormField.mandatory),
-                otherEditorFormField.values != null ? otherEditorFormField.values : values,
-                otherEditorFormField.defaultValue != null ? otherEditorFormField.defaultValue : defaultValue,
+                otherEditorFormField.valueConstraints != null ? otherEditorFormField.valueConstraints : valueConstraints,
+                otherEditorFormField.defaultValues != null ? otherEditorFormField.defaultValues : defaultValues,
                 otherEditorFormField.removed != null ? otherEditorFormField.removed : removed,
-                mergeTargets(otherEditorFormField)
+                mergeTargets(otherEditorFormField),
+                extendedPropertyDefinition != null ? extendedPropertyDefinition : otherEditorFormField.extendedPropertyDefinition
                 );
     }
 

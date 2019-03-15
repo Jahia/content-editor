@@ -1,19 +1,36 @@
 import gql from 'graphql-tag';
 
 const FormQuery = gql`
-    query getFormDefinition($nodeType:String!, $uiLang:String!, $nodeId:String ) {
+    query getFormDefinition($nodeType:String!, $uiLang:String!, $nodeIdOrPath:String ) {
         forms {
-            formByNodeType(nodeType: $nodeType, locale: $uiLang, nodeId : $nodeId) {
+            form(nodeType: $nodeType, locale: $uiLang, nodeIdOrPath : $nodeIdOrPath) {
                 nodeType
                 fields {
                     name
                     selectorType
+                    selectorOptions {
+                        name
+                        value
+                    }
                     i18n
                     readOnly
                     multiple
                     mandatory
-                    values
-                    defaultValue
+                    valueConstraints {
+                        displayValue
+                        value {
+                            type
+                            string
+                        }
+                        properties {
+                            name
+                            value
+                        }
+                    }
+                    defaultValues {
+                        type
+                        string
+                    }
                     targets {
                         name
                         rank

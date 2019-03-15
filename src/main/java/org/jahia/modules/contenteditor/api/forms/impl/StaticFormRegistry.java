@@ -79,6 +79,7 @@ public class StaticFormRegistry implements SynchronousBundleListener {
                 nodeTypeEditorForms.add(editorForm);
                 staticEditorFormsByNodeType.put(editorForm.getNodeType(), nodeTypeEditorForms);
                 bundleEditorForms.add(editorForm);
+                logger.info("Successfully loaded static form for nodeType {} from {}", editorForm.getNodeType(), editorFormURL);
             } catch (IOException e) {
                 logger.error("Error loading editor form from " + editorFormURL, e);
             }
