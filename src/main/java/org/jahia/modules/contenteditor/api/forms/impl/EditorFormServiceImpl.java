@@ -61,11 +61,43 @@ public class EditorFormServiceImpl implements EditorFormService {
         try {
             EditorForm mergedEditorForm = generateEditorFormFromNodeType(nodeTypeName, existingNode, parentNode, locale);
             mergedEditorForm = mergeWithStaticForms(nodeTypeName, mergedEditorForm);
+            mergedEditorForm = processValueConstraints(mergedEditorForm, locale, existingNode, parentNode);
             // todo implement constraints (read-only, etc...)
             return mergedEditorForm;
         } catch (NoSuchNodeTypeException e) {
             throw new EditorFormException("Error looking up node type using name " + nodeTypeName, e);
         }
+    }
+
+    private EditorForm processValueConstraints(EditorForm editForm, Locale locale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode) throws NoSuchNodeTypeException {
+        List<EditorFormField> newEditorFormFields = new ArrayList<>();
+        ExtendedNodeType nodeType = nodeTypeRegistry.getNodeType(editForm.getNodeType());
+        Map<String, ChoiceListInitializer> initializers = choiceListInitializerService.getInitializers();
+        for (EditorFormField editorFormField : editForm.getEditorFormFields()) {
+            if (editorFormField.getValueConstraints() == null || editorFormField.getExtendedPropertyDefinition() == null) {
+                newEditorFormFields.add(editorFormField);
+                continue;
+            }
+            List<ChoiceListValue> initialChoiceListValues = new ArrayList<>();
+            for (EditorFormFieldValueConstraint editorFormFieldValueConstraint : editorFormField.getValueConstraints()) {
+                initialChoiceListValues.add(new ChoiceListValue(editorFormFieldValueConstraint.getDisplayValue(), editorFormFieldValueConstraint.getValue().getStringValue()));
+            }
+            List<EditorFormFieldValueConstraint> valueConstraints = getValueConstraints(initialChoiceListValues, editorFormField.getSelectorOptions(),
+                    existingNode, parentNode, locale, nodeType, initializers, editorFormField.getExtendedPropertyDefinition());
+            newEditorFormFields.add(new EditorFormField(editorFormField.getName(),
+                    editorFormField.getSelectorType(),
+                    editorFormField.getSelectorOptions(),
+                    editorFormField.getI18n(),
+                    editorFormField.getReadOnly(),
+                    editorFormField.getMultiple(),
+                    editorFormField.getMandatory(),
+                    valueConstraints,
+                    editorFormField.getDefaultValues(),
+                    editorFormField.isRemoved(),
+                    editorFormField.getTargets(),
+                    editorFormField.getExtendedPropertyDefinition()));
+        }
+        return new EditorForm(editForm.getNodeType(), newEditorFormFields);
     }
 
     private JCRNodeWrapper getNode(String nodeIdOrPath, Locale locale) {
@@ -97,7 +129,6 @@ public class EditorFormServiceImpl implements EditorFormService {
 
     private EditorForm generateEditorFormFromNodeType(String nodeTypeName, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale locale) throws NoSuchNodeTypeException {
         ExtendedNodeType nodeType = nodeTypeRegistry.getNodeType(nodeTypeName);
-        Map<String, ChoiceListInitializer> initializers = choiceListInitializerService.getInitializers();
         Map<String,Double> maxTargetRank = new HashMap<>();
         List<EditorFormField> editorFormFields = new ArrayList<>();
         for (ExtendedPropertyDefinition propertyDefinition : nodeType.getPropertyDefinitions()) {
@@ -110,7 +141,10 @@ public class EditorFormServiceImpl implements EditorFormService {
             List<EditorFormFieldTarget> fieldTargets = new ArrayList<>();
             fieldTargets.add(new EditorFormFieldTarget(target, rank));
             maxTargetRank.put(target, rank);
-            List<EditorFormFieldValueConstraint> valueConstraints = getValueConstraints(existingNode, parentNode, locale, nodeType, initializers, propertyDefinition);
+            List<EditorFormFieldValueConstraint> valueConstraints = new ArrayList<>();
+            for (String valueConstraint : propertyDefinition.getValueConstraints()) {
+                valueConstraints.add(new EditorFormFieldValueConstraint(valueConstraint, new EditorFormFieldValue("String", valueConstraint), null));
+            }
             List<EditorFormProperty> selectorOptions = null;
             if (propertyDefinition.getSelectorOptions() != null) {
                 selectorOptions = new ArrayList<>();
@@ -146,17 +180,31 @@ public class EditorFormServiceImpl implements EditorFormService {
         return new EditorForm(nodeTypeName, editorFormFields);
     }
 
-    private List<EditorFormFieldValueConstraint> getValueConstraints(JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale locale, ExtendedNodeType nodeType, Map<String, ChoiceListInitializer> initializers, ExtendedPropertyDefinition propertyDefinition) {
+    private List<EditorFormFieldValueConstraint> getValueConstraints(List<ChoiceListValue> listValues,
+                                                                     List<EditorFormProperty> selectorOptions,
+                                                                     JCRNodeWrapper existingNode,
+                                                                     JCRNodeWrapper parentNode,
+                                                                     Locale locale,
+                                                                     ExtendedNodeType nodeType,
+                                                                     Map<String, ChoiceListInitializer> initializers,
+                                                                     ExtendedPropertyDefinition propertyDefinition) {
+
+        if (propertyDefinition == null) {
+            logger.error("Missing property definition to resolve choice list values, cannot process");
+            return null;
+        }
+
         // let's retrieve choicelist initializer values
-        Map<String, Object> context = new HashMap<>();
-        context.put("contextType", nodeType);
-        context.put("contextNode", existingNode);
-        context.put("contextParent", parentNode);
-        List<ChoiceListValue> listValues = null;
-        for (Map.Entry<String, String> entry : propertyDefinition.getSelectorOptions().entrySet()) {
-            if (initializers.containsKey(entry.getKey())) {
-                listValues = initializers.get(entry.getKey()).getChoiceListValues(propertyDefinition, entry.getValue(),
-                        listValues, locale, context);
+        if (selectorOptions != null) {
+            Map<String, Object> context = new HashMap<>();
+            context.put("contextType", nodeType);
+            context.put("contextNode", existingNode);
+            context.put("contextParent", parentNode);
+            for (EditorFormProperty selectorProperty : selectorOptions) {
+                if (initializers.containsKey(selectorProperty.getName())) {
+                    listValues = initializers.get(selectorProperty.getName()).getChoiceListValues(propertyDefinition, selectorProperty.getValue(),
+                            listValues, locale, context);
+                }
             }
         }
 
