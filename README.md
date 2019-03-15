@@ -163,18 +163,22 @@ There are some rules for the merging of the field properties. Basically the foll
 
 Here are the association between cases and field properties:
 
-- selectorType : case 1
-- i18n : case 3
-- readOnly : case 2
-- multiple : case 3
-- mandatory : case 2
-- values : case 1
-- defaultValue : case 1
-- targets : case 1
-- removed : case 1
+| property      | case 1 | case 2 | case 3 |
+| :------------ | :----: | :----: | :----: |
+| selectorType  | x      |        |        |
+| i18n          |        |        | x      |
+| readOnly      |        | x      |        |
+| multiple      |        |        | x      |
+| mandatory     |        | x      |        |
+| values        | x      |        |        |
+| defaultValue  | x      |        |        |
+| targets       | x      |        |        |
+| removed       | x      |        |        |
 
 As you can see these overrides will be done in order of priority so it is very important to remember that if you have 
 multiple modules overriding the same node type (although this is not recommended but can be useful)
+
+The `removed` property is a special one, which will actually remove a property from the resulting form definition.
 
 #### Selector types
 
