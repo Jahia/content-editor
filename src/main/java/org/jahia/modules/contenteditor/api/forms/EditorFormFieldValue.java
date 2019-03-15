@@ -8,6 +8,7 @@ import graphql.annotations.annotationTypes.GraphQLName;
 import javax.jcr.PropertyType;
 import javax.jcr.RepositoryException;
 import javax.jcr.Value;
+import java.util.Objects;
 
 /**
  * Represents a form field value
@@ -110,4 +111,30 @@ public class EditorFormFieldValue {
     public Boolean getBooleanValue() {
         return booleanValue;
     }
+
+    @Override
+    public String toString() {
+        return "EditorFormFieldValue{type='" + type + '\''+ ", stringValue='" + stringValue + '\'' + ", longValue=" + longValue
+                + ", doubleValue=" + doubleValue + ", booleanValue=" + booleanValue + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        EditorFormFieldValue that = (EditorFormFieldValue) o;
+        return Objects.equals(type, that.type)
+                && Objects.equals(stringValue, that.stringValue)
+                && Objects.equals(longValue, that.longValue)
+                && Objects.equals(doubleValue, that.doubleValue)
+                && Objects.equals(booleanValue, that.booleanValue);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, stringValue, longValue, doubleValue, booleanValue);
+    }
+
 }

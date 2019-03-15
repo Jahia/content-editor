@@ -78,4 +78,9 @@ public class EditorFormFieldTarget implements Comparable<EditorFormFieldTarget> 
         }
         return 0;
     }
+
+    @Override
+    public String toString() {
+        return "EditorFormFieldTarget{" + "name='" + name + '\'' + ", rank=" + rank + '}';
+    }
 }

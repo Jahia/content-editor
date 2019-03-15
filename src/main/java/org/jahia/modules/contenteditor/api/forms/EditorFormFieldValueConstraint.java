@@ -5,6 +5,7 @@ import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 
 import java.util.List;
+import java.util.Objects;
 
 /*
  * Represents a single value constraint among a list of possible values for a field
@@ -53,5 +54,28 @@ public class EditorFormFieldValueConstraint {
 
     public void setPropertyList(List<EditorFormProperty> propertyList) {
         this.propertyList = propertyList;
+    }
+
+    @Override
+    public String toString() {
+        return "EditorFormFieldValueConstraint{displayValue='" + displayValue + '\'' + ", value=" + value + ", propertyList="
+                + propertyList + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        EditorFormFieldValueConstraint that = (EditorFormFieldValueConstraint) o;
+        return Objects.equals(displayValue, that.displayValue)
+                && Objects.equals(value, that.value)
+                && Objects.equals(propertyList, that.propertyList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(displayValue, value, propertyList);
     }
 }

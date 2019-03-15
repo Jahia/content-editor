@@ -5,10 +5,7 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import org.jahia.services.content.nodetypes.ExtendedPropertyDefinition;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Represents a single field inside a form
@@ -104,8 +101,10 @@ public class EditorFormField {
 
     public void setTargets(List<EditorFormFieldTarget> targets) {
         this.targets = targets;
-        for (EditorFormFieldTarget editorFormFieldTarget : targets) {
-            this.targetsByName.put(editorFormFieldTarget.getName(), editorFormFieldTarget.getRank());
+        if (targets != null) {
+            for (EditorFormFieldTarget editorFormFieldTarget : targets) {
+                this.targetsByName.put(editorFormFieldTarget.getName(), editorFormFieldTarget.getRank());
+            }
         }
     }
 
@@ -200,6 +199,43 @@ public class EditorFormField {
                 );
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        EditorFormField that = (EditorFormField) o;
+        return Objects.equals(name, that.name)
+                && Objects.equals(selectorType, that.selectorType)
+                && Objects.equals(selectorOptions, that.selectorOptions)
+                && Objects.equals(i18n, that.i18n)
+                && Objects.equals(readOnly, that.readOnly)
+                && Objects.equals(multiple, that.multiple)
+                && Objects.equals(mandatory, that.mandatory)
+                && Objects.equals(valueConstraints, that.valueConstraints)
+                && Objects.equals(defaultValues, that.defaultValues)
+                && Objects.equals(removed, that.removed)
+                && Objects.equals(targets, that.targets)
+                && Objects.equals(targetsByName, that.targetsByName)
+                && Objects.equals(extendedPropertyDefinition, that.extendedPropertyDefinition);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects
+                .hash(name, selectorType, selectorOptions, i18n, readOnly, multiple, mandatory, valueConstraints, defaultValues, removed,
+                        targets, targetsByName, extendedPropertyDefinition);
+    }
+
+    @Override
+    public String toString() {
+        return "EditorFormField{name='" + name + '\'' + ", selectorType='" + selectorType + '\'' + ", selectorOptions="
+                + selectorOptions + ", i18n=" + i18n + ", readOnly=" + readOnly + ", multiple=" + multiple + ", mandatory=" + mandatory
+                + ", valueConstraints=" + valueConstraints + ", defaultValues=" + defaultValues + ", removed=" + removed + ", targets="
+                + targets + ", targetsByName=" + targetsByName + ", extendedPropertyDefinition=" + extendedPropertyDefinition + '}';
+    }
+
     private Boolean mergeBooleanKeepTrue(Boolean value1, Boolean value2) {
         if (value1 == null) {
             if (value2 == null) {
@@ -225,12 +261,15 @@ public class EditorFormField {
             mergedEditorFormFieldTargets.addAll(otherEditorFormField.targets);
             return mergedEditorFormFieldTargets;
         }
-        for (EditorFormFieldTarget editorFormFieldTarget : targets) {
-            Double otherEditorFormFieldTargetRank = otherEditorFormField.targetsByName.get(editorFormFieldTarget.getName());
-            if (otherEditorFormFieldTargetRank != null) {
-                mergedEditorFormFieldTargets.add(new EditorFormFieldTarget(editorFormFieldTarget.getName(), otherEditorFormFieldTargetRank));
-            } else {
-                mergedEditorFormFieldTargets.add(new EditorFormFieldTarget(editorFormFieldTarget.getName(), editorFormFieldTarget.getRank()));
+        if (targets != null) {
+            for (EditorFormFieldTarget editorFormFieldTarget : targets) {
+                Double otherEditorFormFieldTargetRank = otherEditorFormField.targetsByName.get(editorFormFieldTarget.getName());
+                if (otherEditorFormFieldTargetRank != null) {
+                    mergedEditorFormFieldTargets
+                            .add(new EditorFormFieldTarget(editorFormFieldTarget.getName(), otherEditorFormFieldTargetRank));
+                } else {
+                    mergedEditorFormFieldTargets.add(new EditorFormFieldTarget(editorFormFieldTarget.getName(), editorFormFieldTarget.getRank()));
+                }
             }
         }
         if (otherEditorFormField.targets != null) {
