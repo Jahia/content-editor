@@ -15,7 +15,7 @@ import java.util.Objects;
  */
 public class EditorFormFieldValue {
 
-    private String type;
+    private String type; // for the moment the type names used are the same as the JCR PropertyType names.
     private String stringValue;
     private Long longValue;
     private Double doubleValue;
@@ -30,14 +30,17 @@ public class EditorFormFieldValue {
     }
 
     public EditorFormFieldValue(Long longValue) {
+        this.type = PropertyType.TYPENAME_LONG;
         this.longValue = longValue;
     }
 
     public EditorFormFieldValue(Double doubleValue) {
+        this.type = PropertyType.TYPENAME_DOUBLE;
         this.doubleValue = doubleValue;
     }
 
     public EditorFormFieldValue(Boolean booleanValue) {
+        this.type = PropertyType.TYPENAME_BOOLEAN;
         this.booleanValue = booleanValue;
     }
 
