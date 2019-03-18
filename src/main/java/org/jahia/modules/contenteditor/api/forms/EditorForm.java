@@ -115,7 +115,7 @@ public class EditorForm implements Comparable<EditorForm> {
      * This method will merge another editor form into this one, with special rules as to which fields may be overriden
      * or not, as well as how to add/remove targets and/or fields inside targets.
      * @param otherEditorForm the other editor for to merge with.
-     * @return the resulting merged object, or null if the nodetypes didn't match.
+     * @return the resulting merged object.
      */
     public EditorForm mergeWith(EditorForm otherEditorForm) {
         if (!nodeType.equals(otherEditorForm.nodeType)) {
@@ -139,9 +139,6 @@ public class EditorForm implements Comparable<EditorForm> {
             if (editorFormFieldsByName.get(otherEditorFormField.getName()) == null && !otherEditorFormField.isRemoved()) {
                 mergedEditorFormFields.add(otherEditorFormField);
             }
-        }
-        if (mergedEditorFormFields.isEmpty()) {
-            return null;
         }
         EditorForm newEditorForm = new EditorForm(nodeType, mergedEditorFormFields);
         if (otherEditorForm.priority != null) {
