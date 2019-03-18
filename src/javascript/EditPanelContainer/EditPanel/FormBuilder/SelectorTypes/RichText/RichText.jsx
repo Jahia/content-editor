@@ -20,18 +20,11 @@ export class RichText extends React.Component {
         };
 
         return (
-            <div>
-                <h3>{field.formDefinition.name}</h3>
-
-                <CKEditor
+            <CKEditor
                     data={values[field.formDefinition.name]}
                     config={{toolbar: 'Mini'}}
                     onChange={onEditorChange}
                 />
-
-                <br/>
-                <br/>
-            </div>
         );
     }
 }

@@ -1,28 +1,64 @@
 import React from 'react';
-import SelectorTypes from './SelectorTypes';
-import {connect} from 'formik';
-import {Paper} from '@material-ui/core';
-import * as PropTypes from 'prop-types';
 
-export class FormBuilder extends React.Component {
-    render() {
-        let {fields, formik} = this.props;
-        return (
-            <form onSubmit={formik.handleSubmit}>
-                <Paper elevation={1}>
-                    {fields.map(field => {
-                        let FieldComponent = SelectorTypes[field.formDefinition.selectorType];
-                        return FieldComponent && <FieldComponent key={field.formDefinition.name} field={field}/>;
-                    })}
-                </Paper>
-            </form>
-        );
+import {
+    ExpansionPanel,
+    ExpansionPanelDetails,
+    ExpansionPanelSummary,
+    Typography
+} from '@jahia/ds-mui-theme';
+import {connect} from 'formik';
+import {compose} from 'react-apollo';
+import {translate} from 'react-i18next';
+import * as PropTypes from 'prop-types';
+import {FormGroup, withStyles} from '@material-ui/core';
+import {ExpandMore} from '@material-ui/icons';
+import EditNodeProperty from './EditNodeProperty';
+
+let styles = theme => ({
+    inputLabel: {
+        color: theme.palette.font.alpha
+    },
+    formGroup: {
+        width: '100%'
     }
-}
+});
+
+export const FormBuilder = ({classes, fields, formik}) => {
+    // Get fields name
+    let targetsName = new Set();
+    fields.forEach(field => field.targets.forEach(target => targetsName.add(target.name)));
+    return (
+        <form onSubmit={formik.handleSubmit}>
+            {Array.from(targetsName).map((target, index) => {
+                let fieldsByTarget = fields.filter(field => field.targets.filter(t => t.name === target).length > 0);
+                return (
+                    <ExpansionPanel key={target} variant="normal" defaultExpanded={index === 0}>
+                        <ExpansionPanelSummary expandIcon={<ExpandMore/>}>
+                            <Typography variant="epsilon" color="alpha">{target}</Typography>
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelDetails>
+                            <FormGroup variant="normal" className={classes.formGroup}>
+                                {fieldsByTarget.map(field => {
+                                    return <EditNodeProperty key={field.formDefinition.name} field={field}/>;
+                                })}
+                            </FormGroup>
+                        </ExpansionPanelDetails>
+                    </ExpansionPanel>
+
+                );
+            })}
+        </form>
+    );
+};
 
 FormBuilder.propTypes = {
+    classes: PropTypes.object.isRequired,
     fields: PropTypes.array.isRequired,
     formik: PropTypes.object.isRequired
 };
 
-export default connect(FormBuilder);
+export default compose(
+    translate(),
+    withStyles(styles),
+    connect
+)(FormBuilder);
