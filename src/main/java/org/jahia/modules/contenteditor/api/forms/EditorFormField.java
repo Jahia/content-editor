@@ -6,6 +6,7 @@ import graphql.annotations.annotationTypes.GraphQLField;
 import org.jahia.services.content.nodetypes.ExtendedPropertyDefinition;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Represents a single field inside a form
@@ -53,6 +54,30 @@ public class EditorFormField {
         this.removed = removed;
         setTargets(targets);
         this.extendedPropertyDefinition = extendedPropertyDefinition;
+    }
+
+    public EditorFormField(EditorFormField field) {
+        this(
+                field.name,
+                field.selectorType,
+                field.selectorOptions == null ? null : field.selectorOptions.stream()
+                        .map(option -> new EditorFormProperty(option))
+                        .collect(Collectors.toList()),
+                field.i18n,
+                field.readOnly,
+                field.multiple,
+                field.mandatory,
+                field.valueConstraints == null ? null : field.valueConstraints.stream()
+                        .map(constraint -> new EditorFormFieldValueConstraint(constraint))
+                        .collect(Collectors.toList()),
+                field.defaultValues == null ? null : new ArrayList<>(field.defaultValues),
+                field.removed,
+                field.targets == null ? null : field.targets.stream()
+                        .map(target -> new EditorFormFieldTarget(target))
+                        .collect(Collectors.toList()),
+                // FIXME no deep copy here
+                field.extendedPropertyDefinition
+        );
     }
 
     public void setName(String name) {

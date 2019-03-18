@@ -18,6 +18,10 @@ public class EditorFormFieldTarget implements Comparable<EditorFormFieldTarget> 
         this.rank = rank;
     }
 
+    public EditorFormFieldTarget(EditorFormFieldTarget target) {
+        this(target.name, target.rank);
+    }
+
     @GraphQLField
     @GraphQLDescription("The name identifying the target")
     public String getName() {

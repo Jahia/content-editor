@@ -6,6 +6,7 @@ import graphql.annotations.annotationTypes.GraphQLName;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /*
  * Represents a single value constraint among a list of possible values for a field
@@ -23,6 +24,16 @@ public class EditorFormFieldValueConstraint {
         this.displayValue = displayValue;
         this.value = value;
         this.propertyList = propertyList;
+    }
+
+    public EditorFormFieldValueConstraint(EditorFormFieldValueConstraint constraint) {
+        this(
+                constraint.displayValue,
+                constraint.value,
+                constraint.propertyList == null ? null : constraint.propertyList.stream()
+                        .map(property -> new EditorFormProperty(property))
+                        .collect(Collectors.toList())
+        );
     }
 
     @GraphQLField

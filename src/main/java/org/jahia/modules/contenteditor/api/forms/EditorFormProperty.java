@@ -20,6 +20,10 @@ public class EditorFormProperty {
         this.value = value;
     }
 
+    public EditorFormProperty(EditorFormProperty property) {
+        this(property.name, property.value);
+    }
+
     @GraphQLField
     @GraphQLDescription("Property name")
     public String getName() {
