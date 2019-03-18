@@ -71,9 +71,17 @@ public class EditorForm implements Comparable<EditorForm> {
     public void setEditorFormFields(List<EditorFormField> editorFormFields) {
         this.editorFormFields = editorFormFields;
         editorFormFieldsByName.clear();
-        for (EditorFormField editorFormField : editorFormFields) {
-            editorFormFieldsByName.put(editorFormField.getName(), editorFormField);
+        if (editorFormFields != null) {
+            for (EditorFormField editorFormField : editorFormFields) {
+                editorFormFieldsByName.put(editorFormField.getName(), editorFormField);
+            }
         }
+    }
+
+    @Override
+    public String toString() {
+        return "EditorForm{" + "nodeType='" + nodeType + '\'' + ", originBundle=" + originBundle + ", priority=" + priority
+                + ", editorFormFields=" + editorFormFields + ", editorFormFieldsByName=" + editorFormFieldsByName + '}';
     }
 
     @Override
@@ -123,25 +131,31 @@ public class EditorForm implements Comparable<EditorForm> {
             return this;
         }
         List<EditorFormField> mergedEditorFormFields = new ArrayList<>();
-        for (EditorFormField editorFormField : editorFormFields) {
-            EditorFormField otherFormField = otherEditorForm.editorFormFieldsByName.get(editorFormField.getName());
-            if (otherFormField == null && !editorFormField.isRemoved()) {
-                mergedEditorFormFields.add(editorFormField);
-                continue;
-            }
-            EditorFormField mergedEditorFormField = editorFormField.mergeWith(otherFormField);
-            if (mergedEditorFormField != null && !mergedEditorFormField.isRemoved()) {
-                mergedEditorFormFields.add(mergedEditorFormField);
+        if (editorFormFields != null) {
+            for (EditorFormField editorFormField : editorFormFields) {
+                EditorFormField otherFormField = otherEditorForm.editorFormFieldsByName.get(editorFormField.getName());
+                if (otherFormField == null && !editorFormField.isRemoved()) {
+                    mergedEditorFormFields.add(editorFormField);
+                    continue;
+                }
+                EditorFormField mergedEditorFormField = editorFormField.mergeWith(otherFormField);
+                if (mergedEditorFormField != null && !mergedEditorFormField.isRemoved()) {
+                    mergedEditorFormFields.add(mergedEditorFormField);
+                }
             }
         }
         // we now need to add all the fields that are in the other but not in ours, but only if they are not removed fields
-        for (EditorFormField otherEditorFormField : otherEditorForm.editorFormFields) {
-            if (editorFormFieldsByName.get(otherEditorFormField.getName()) == null && !otherEditorFormField.isRemoved()) {
-                mergedEditorFormFields.add(otherEditorFormField);
+        if (otherEditorForm.editorFormFields != null) {
+            for (EditorFormField otherEditorFormField : otherEditorForm.editorFormFields) {
+                if (editorFormFieldsByName.get(otherEditorFormField.getName()) == null && !otherEditorFormField.isRemoved()) {
+                    mergedEditorFormFields.add(otherEditorFormField);
+                }
             }
         }
         EditorForm newEditorForm = new EditorForm(nodeType, mergedEditorFormFields);
-        if (otherEditorForm.priority != null) {
+        if (otherEditorForm.priority == null) {
+            newEditorForm.setPriority(priority);
+        } else {
             newEditorForm.setPriority(otherEditorForm.priority);
         }
         return newEditorForm;
