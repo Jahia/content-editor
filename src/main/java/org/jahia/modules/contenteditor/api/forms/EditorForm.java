@@ -138,9 +138,11 @@ public class EditorForm implements Comparable<EditorForm> {
                     mergedEditorFormFields.add(editorFormField);
                     continue;
                 }
-                EditorFormField mergedEditorFormField = editorFormField.mergeWith(otherFormField);
-                if (mergedEditorFormField != null && !mergedEditorFormField.isRemoved()) {
-                    mergedEditorFormFields.add(mergedEditorFormField);
+                if (otherFormField != null) {
+                    EditorFormField mergedEditorFormField = editorFormField.mergeWith(otherFormField);
+                    if (mergedEditorFormField != null && !mergedEditorFormField.isRemoved()) {
+                        mergedEditorFormFields.add(mergedEditorFormField);
+                    }
                 }
             }
         }
