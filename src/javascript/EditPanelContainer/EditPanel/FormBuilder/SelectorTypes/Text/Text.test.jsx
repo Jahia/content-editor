@@ -1,6 +1,6 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import {TextField} from '@material-ui/core';
+import {Input} from '@material-ui/core';
 
 import {Text} from './Text';
 
@@ -13,7 +13,8 @@ describe('Text component', () => {
             field: {
                 formDefinition: {
                     name: 'x'
-                }
+                },
+                targets: [{name: 'test'}]
             },
             formik: {
                 handleBlur: () => {},
@@ -25,12 +26,12 @@ describe('Text component', () => {
     });
 
     it('should contain one TextField component', () => {
-        expect(wrapper.find(TextField).length).toBe(1);
+        expect(wrapper.find(Input).length).toBe(1);
     });
 
     it('should contain a matching TextField component', () => {
         const fieldName = props.field.formDefinition.name;
-        const expectedMatch = <TextField id={fieldName} name={fieldName} label={fieldName}/>;
+        const expectedMatch = <Input id={fieldName} name={fieldName}/>;
 
         expect(wrapper.containsMatchingElement(expectedMatch)).toBe(true);
     });
@@ -42,7 +43,7 @@ describe('Text component', () => {
         props.formik.values[fieldName] = fieldValue;
 
         expect(wrapper.setProps(props)
-            .find(TextField)
+            .find(Input)
             .prop('value')
         ).toEqual(fieldValue);
     });
@@ -51,7 +52,7 @@ describe('Text component', () => {
         props.formik.handleChange = jest.fn();
 
         wrapper.setProps(props)
-            .find(TextField)
+            .find(Input)
             .simulate('change');
 
         expect(props.formik.handleChange.mock.calls.length).toBe(1);
@@ -61,7 +62,7 @@ describe('Text component', () => {
         props.formik.handleBlur = jest.fn();
 
         wrapper.setProps(props)
-            .find(TextField)
+            .find(Input)
             .simulate('blur');
 
         expect(props.formik.handleBlur.mock.calls.length).toBe(1);

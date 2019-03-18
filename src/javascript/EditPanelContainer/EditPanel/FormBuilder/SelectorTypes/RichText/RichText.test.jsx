@@ -14,7 +14,8 @@ describe('RichText component', () => {
             field: {
                 formDefinition: {
                     name: 'x'
-                }
+                },
+                targets: [{name: 'test'}]
             },
             formik: {
                 setFieldValue: () => {},

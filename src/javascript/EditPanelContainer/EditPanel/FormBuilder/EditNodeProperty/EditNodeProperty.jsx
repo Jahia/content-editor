@@ -5,7 +5,6 @@ import {Button} from '@jahia/ds-mui-theme';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
 import * as PropTypes from 'prop-types';
-import SelectorTypes from '../SelectorTypes';
 
 let styles = theme => ({
     formControl: Object.assign(theme.typography.zeta, {
@@ -19,18 +18,13 @@ let styles = theme => ({
     }
 });
 
-export const EditNodeProperty = ({classes, field}) => {
-    let FieldComponent = SelectorTypes[field.formDefinition.selectorType];
-    if (!FieldComponent) {
-        console.warn('no Renderer for ', field);
-        return <></>;
-    }
+export const EditNodeProperty = ({classes, children, field}) => {
     return (
         <FormControl className={classes.formControl}>
             <InputLabel shrink className={classes.inputLabel}>
                 {field.formDefinition.name}
             </InputLabel>
-            <FieldComponent field={field}/>
+            {children}
             <Button><MoreVert/></Button>
         </FormControl>
     );
@@ -38,6 +32,7 @@ export const EditNodeProperty = ({classes, field}) => {
 
 EditNodeProperty.propTypes = {
     classes: PropTypes.object.isRequired,
+    children: PropTypes.object.isRequired,
     field: PropTypes.object.isRequired
 };
 
