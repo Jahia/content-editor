@@ -1,6 +1,7 @@
 import React from 'react';
 import {MainLayout, TwoColumnsContent} from '@jahia/layouts';
 import {buttonRenderer, DisplayActions} from '@jahia/react-material';
+import {Typography} from '@jahia/ds-mui-theme';
 import * as PropTypes from 'prop-types';
 import FormBuilder from './FormBuilder';
 import {connect} from 'formik';
@@ -43,8 +44,8 @@ class EditPanel extends React.Component {
         return (
             <MainLayout topBarProps={{
                 path: path,
-                title: t('content-editor:label.contentEditor.edit.title'),
-                contextModifiers: <>{title}</>,
+                title: title,
+                contextModifiers: <Typography variant="omega" color="invert">{t('content-editor:label.contentEditor.edit.title')}</Typography>,
                 actions: <DisplayActions context={{}}
                                          target="editHeaderActions"
                                          render={buttonRenderer({
