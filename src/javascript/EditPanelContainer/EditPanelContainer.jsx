@@ -12,7 +12,7 @@ import {NodeQuery} from './NodeData/NodeData.gql-queries';
 import EditPanel from './EditPanel';
 import NodeData from './NodeData';
 import * as PropTypes from 'prop-types';
-import FormDefinition from './FormDefinitions/FormDefinition';
+import FormDefinition from './FormDefinitions';
 
 export class EditPanelContainer extends React.Component {
     render() {
@@ -25,7 +25,7 @@ export class EditPanelContainer extends React.Component {
                         <FormDefinition uiLang={uiLang} path={path} nodeType={nodeData.primaryNodeType.name}>
                             {({formDefinition}) => {
                             if (formDefinition) {
-                                let fields = _.map(formDefinition.fields, fieldDefinition => {
+                                let fields = _.map(formDefinition.fields.filter(field => !field.readOnly), fieldDefinition => {
                                     return {
                                         targets: fieldDefinition.targets,
                                         formDefinition: fieldDefinition,
