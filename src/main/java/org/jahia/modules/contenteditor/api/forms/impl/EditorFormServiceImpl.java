@@ -105,7 +105,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         if (nodeIdOrPath != null) {
             try {
                 if (StringUtils.startsWith(nodeIdOrPath, "/")) {
-                    getSession(locale).getNode(nodeIdOrPath);
+                    node = getSession(locale).getNode(nodeIdOrPath);
                 } else {
                     node = getSession(locale).getNodeByIdentifier(nodeIdOrPath);
                 }
