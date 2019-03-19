@@ -31,6 +31,7 @@ For a given nodeType:
 - If DX modules define static forms that either override or define new forms, they will be merged in order of priority
 with first the dynamically generated forms from the JCR definition (if it exists) and then with the static JSON form 
 definitions that have a higher priority.
+- Once this is done, the choicelist initializers will be called to generate the initial values for each field.
 
 #### GraphQL API
 
@@ -38,7 +39,7 @@ Here's an example of a GraphQL query to generate a form for an existing node:
 
     {
       forms {
-        formByNodeType(nodeType: "qant:allFields", locale: "en", nodeIdOrPath: "e4809aae-6df1-4566-8d76-9fdfb97f258a") {
+        form(nodeType: "qant:allFields", locale: "en", nodeIdOrPath: "e4809aae-6df1-4566-8d76-9fdfb97f258a") {
           nodeType
           fields {
             name
@@ -47,15 +48,21 @@ Here's an example of a GraphQL query to generate a form for an existing node:
             readOnly
             multiple
             mandatory
-            values {
+            valueConstraints {
               displayValue
-              value
-              propertyList {
+              value {
+                type
+                string
+              }
+              properties {
                 name
                 value
               }
             }
-            defaultValue
+            defaultValues {
+              type
+              string
+            }
             targets {
               name
               rank
@@ -70,18 +77,18 @@ The result will look something like this (truncated for length) :
     {
       "data": {
         "forms": {
-          "formByNodeType": {
+          "form": {
             "nodeType": "qant:allFields",
             "fields": [
               {
                 "name": "sharedSmallText",
-                "selectorType": "Text",
+                "selectorType": "SmallText",
                 "i18n": false,
                 "readOnly": false,
                 "multiple": false,
                 "mandatory": false,
-                "values": [],
-                "defaultValue": null,
+                "valueConstraints": [],
+                "defaultValues": [],
                 "targets": [
                   {
                     "name": "content",
@@ -89,24 +96,105 @@ The result will look something like this (truncated for length) :
                   }
                 ]
               },
+              ...
               {
-                "name": "smallText",
-                "selectorType": "Text",
+                "name": "choicelist",
+                "selectorType": "Choicelist",
                 "i18n": true,
                 "readOnly": false,
                 "multiple": false,
                 "mandatory": false,
-                "values": [],
-                "defaultValue": null,
+                "valueConstraints": [
+                  {
+                    "displayValue": "Choice 1",
+                    "value": {
+                      "type": "String",
+                      "string": "choice1"
+                    },
+                    "properties": []
+                  },
+                  {
+                    "displayValue": "Choice 2",
+                    "value": {
+                      "type": "String",
+                      "string": "choice2"
+                    },
+                    "properties": []
+                  },
+                  {
+                    "displayValue": "Choice 3",
+                    "value": {
+                      "type": "String",
+                      "string": "choice3"
+                    },
+                    "properties": []
+                  }
+                ],
+                "defaultValues": [
+                  {
+                    "type": "String",
+                    "string": "choice1"
+                  }
+                ],
                 "targets": [
                   {
                     "name": "content",
-                    "rank": 1
+                    "rank": 5
                   }
                 ]
               },
-
-
+              ...
+              {
+                "name": "customField",
+                "selectorType": "Text",
+                "i18n": true,
+                "readOnly": false,
+                "multiple": true,
+                "mandatory": true,
+                "valueConstraints": [
+                  {
+                    "displayValue": "Value 1",
+                    "value": {
+                      "type": "String",
+                      "string": "value1"
+                    },
+                    "properties": null
+                  },
+                  {
+                    "displayValue": "Value 2",
+                    "value": {
+                      "type": "String",
+                      "string": "value2"
+                    },
+                    "properties": null
+                  },
+                  {
+                    "displayValue": "Value 3",
+                    "value": {
+                      "type": "String",
+                      "string": "value3"
+                    },
+                    "properties": null
+                  }
+                ],
+                "defaultValues": [
+                  {
+                    "type": "String",
+                    "string": "value1"
+                  }
+                ],
+                "targets": [
+                  {
+                    "name": "content",
+                    "rank": -1
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    }
 
 #### Defining static forms in DX modules
 
@@ -127,11 +215,20 @@ Here's an example of a JSON static form definition coming from this [example mod
         {
           "name": "smallText",
           "removed": true,
-          "targets": [{ "name" : "content" }]
+          "targets": [
+            {
+              "name": "content"
+            }
+          ]
         },
         {
-          "name" : "sharedTextArea",
-          "targets": [{ "name" : "content", "rank" : 1.0 }]
+          "name": "sharedTextArea",
+          "targets": [
+            {
+              "name": "content",
+              "rank": 1.0
+            }
+          ]
         },
         {
           "name": "customField",
@@ -140,22 +237,58 @@ Here's an example of a JSON static form definition coming from this [example mod
           "readOnly": false,
           "multiple": true,
           "mandatory": true,
-          "values": [
-            "value1",
-            "value2",
-            "value3"
+          "valueConstraints": [
+            {
+              "displayValue": "Value 1",
+              "value": {
+                "type": "String",
+                "string": "value1"
+              }
+            },
+            {
+              "displayValue": "Value 2",
+              "value": {
+                "type": "String",
+                "string": "value2"
+              }
+            },
+            {
+              "displayValue": "Value 3",
+              "value": {
+                "type": "String",
+                "string": "value3"
+              }
+            }
           ],
-          "defaultValue": "value1",
-          "targets": [{ "name": "content", "rank" : -1.0 }]
+          "defaultValues": [
+            {
+              "type": "String",
+              "string": "value1"
+            }
+          ],
+          "targets": [
+            {
+              "name": "content",
+              "rank": -1.0
+            }
+          ]
         },
         {
           "name": "jcr:lastModifiedBy",
           "removed": true,
-          "targets": [{"name" : "metadata"}]
+          "targets": [
+            {
+              "name": "metadata"
+            }
+          ]
         }
       ]
-    } 
+    }
     
+Basically for a single node type, it can have : 
+- a JCR definition, which will be used as the basis to generate a form dynamically
+- one or multiple static JSON definition files, that will be merged, in order of priority to produce the final resulting form.        
+
 There are some rules for the merging of the field properties. Basically the following cases may apply to a given property:
 - case 1 : the property can always be overriden 
 - case 2 : the property can only be overridden if its value is not true
@@ -178,7 +311,12 @@ Here are the association between cases and field properties:
 As you can see these overrides will be done in order of priority so it is very important to remember that if you have 
 multiple modules overriding the same node type (although this is not recommended but can be useful)
 
-The `removed` property is a special one, which will actually remove a property from the resulting form definition.
+#### Priority
+
+The priority field in the JSON static files is used to define in which order the definitions will be used to merge into
+the final form. The JCR definition will always be used first, and then the JSON files will be used in order of ascending
+priority. This makes it possible for multiple different modules to change a form definition and inject themselves where
+they need in the form generation process.
 
 #### Selector types
 
@@ -187,3 +325,37 @@ field value. It is therefore very useful to set this value according to the need
 are easy to use for end-users. In the (near) future it will also be possible to add new selector types in DX modules,
 making the form UI expandable.
         
+#### Selector options
+
+Selector options make it possible to override the default options that are specified in the JCR definition. These options
+are used for the moment to configure choicelist initializers. Here's an example of what selection options could look like:
+
+For example if we have the following CND definition:
+
+    [jnt:latestBlogContent] > jnt:content, jmix:blogContent, jmix:list, mix:title, jmix:renderableList, jmix:studioOnly, jmix:bindedComponent
+     - j:subNodesView (string, choicelist[templates=jnt:blogPost,resourceBundle,image]) nofulltext  itemtype = layout
+
+The equivalent part for the `j:subNodeView` property would look like this: 
+
+    {
+        "name" :  "j:subNodeView",
+        "selectorType" : "Choicelist",
+        "selectorOptions" : [
+            { "name" : "templates", "value" : "jnt:blogPost" },
+            { "name" : "resourceBundle", "value" : null },
+            { "name" : "image", "value" : null }
+        ],
+        "targets" : [ { "name" : "layout", "rank" : 0 } ]
+    }
+    
+Using static form JSON files you could override the selector options to for example change the templates allowed for this 
+choicelist.
+
+Important : selectorOptions can *only* be used with fields that have a CND definition !
+
+If you are using purely JSON field definitions, you will instead simply have to use the valueConstraints array, which is
+static and not dynamic.
+
+#### Removing a field 
+
+The `removed` property is a special one, which will actually remove a property from the resulting form definition.
