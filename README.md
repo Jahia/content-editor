@@ -296,17 +296,18 @@ There are some rules for the merging of the field properties. Basically the foll
 
 Here are the association between cases and field properties:
 
-| property      | case 1 | case 2 | case 3 |
-| :------------ | :----: | :----: | :----: |
-| selectorType  | x      |        |        |
-| i18n          |        |        | x      |
-| readOnly      |        | x      |        |
-| multiple      |        |        | x      |
-| mandatory     |        | x      |        |
-| values        | x      |        |        |
-| defaultValue  | x      |        |        |
-| targets       | x      |        |        |
-| removed       | x      |        |        |
+| property         | case 1 | case 2 | case 3 |
+| :--------------: | :----: | :----: | :----: |
+| selectorType     | x      |        |        |
+| i18n             |        |        | x      |
+| readOnly         |        | x      |        |
+| multiple         |        |        | x      |
+| mandatory        |        | x      |        |
+| defaultValues    | x      |        |        |
+| targets          | x      |        |        |
+| removed          | x      |        |        |
+| selectorOptions  | x      |        |        |
+| valueConstraints | x      |        |        |
 
 As you can see these overrides will be done in order of priority so it is very important to remember that if you have 
 multiple modules overriding the same node type (although this is not recommended but can be useful)
