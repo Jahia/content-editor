@@ -297,7 +297,7 @@ There are some rules for the merging of the field properties. Basically the foll
 Here are the association between cases and field properties:
 
 | property         | case 1 | case 2 | case 3 |
-| :--------------: | :----: | :----: | :----: |
+| :--------------- | :----: | :----: | :----: |
 | selectorType     | x      |        |        |
 | i18n             |        |        | x      |
 | readOnly         |        | x      |        |
