@@ -2,7 +2,7 @@
   "name": "@jahia/content-editor",
   "version": "1.0.0",
   "scripts": {
-    "build": "yarn lint && yarn webpack",
+    "build": "yarn test && yarn webpack",
     "webpack": "npx --node-arg=--max_old_space_size=2048 webpack",
     "build:analyze": "yarn build --analyze",
     "build:production": "yarn test && yarn build -p",
@@ -10,7 +10,7 @@
     "watch": "yarn webpack --watch",
     "clean": "rimraf *.log src/main/resources/javascript/apps",
     "clean:all": "yarn clean && rimraf node_modules node",
-    "test": "yarn lint && jest",
+    "test": "jest",
     "lint": "eslint --ext js,jsx,json .",
     "lint:fix": "eslint --ext js,jsx,json --fix ."
   },
@@ -24,7 +24,9 @@
   },
   "dependencies": {
     "@jahia/apollo-dx": "^1.0.0-beta.20190131152050",
+    "@jahia/ds-mui-theme": "^1.0.0-beta.20190325151338",
     "@jahia/layouts": "^1.0.0-beta.20190205085738",
+    "@jahia/react-apollo": "^1.0.0-beta.20190325151341",
     "@jahia/react-material": "^1.0.0-beta.20190131144149",
     "@jahia/registry": "^1.0.0-beta.20190131152051",
     "@material-ui/core": "^3.6.2",

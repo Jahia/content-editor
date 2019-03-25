@@ -1,42 +1,43 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 
-import EditNodePropertyContainer from './EditNodeProperty.container';
-import RichText from '../SelectorTypes/RichText';
-import Text from '../SelectorTypes/Text';
+import {EditNodeProperty} from './EditNodeProperty';
 
-describe('EditNodeProperty container component', () => {
+describe('EditNodeProperty component', () => {
     let props;
     let wrapper;
 
     beforeEach(() => {
         props = {
-            field: {formDefinition: ''}
+            classes: {},
+            siteInfo: {languages: []},
+            field: {formDefinition: {name: 'x'}},
+            t: i18nKey => i18nKey
         };
-        wrapper = shallow(<EditNodePropertyContainer {...props}/>);
+        wrapper = shallow(<EditNodeProperty {...props}><div>test</div></EditNodeProperty>);
     });
 
-    it('should render a Text component when field type is "Text"', () => {
+    it('should render a "Shared in all languages" when field is not i18n and site have multiple languages', () => {
+        let lang1 = {displayName: 'Deutsch', language: 'de', activeInEdit: true};
+        let lang2 = {displayName: 'English', language: 'en', activeInEdit: true};
+
+        testI18nChipRender(false, [lang1, lang2], true);
+        testI18nChipRender(true, [lang1, lang2], false);
+        testI18nChipRender(false, [lang1], false);
+        testI18nChipRender(true, [lang1], false);
+    });
+
+    let testI18nChipRender = function (i18n, siteLanguages, expectedChipRendered) {
         props.field =
-            {formDefinition: {name: 'x', selectorType: 'Text'},
+            {formDefinition: {name: 'x', selectorType: 'Text', i18n: i18n},
                 targets: [{name: 'test'}]};
+        props.siteInfo = {
+            languages: siteLanguages
+        };
 
         wrapper.setProps(props);
 
-        const fieldComponent = wrapper.find(Text);
-        expect(fieldComponent.exists()).toBe(true);
-        expect(fieldComponent.length).toBe(1);
-    });
-
-    it('should render a RichText component when field type is "RichText"', () => {
-        props.field =
-            {formDefinition: {name: 'x', selectorType: 'RichText'},
-                targets: [{name: 'test'}]};
-
-        wrapper.setProps(props);
-
-        const fieldComponent = wrapper.find(RichText);
-        expect(fieldComponent.exists()).toBe(true);
-        expect(fieldComponent.length).toBe(1);
-    });
+        const chipComponent = wrapper.find({label: 'content-editor:label.contentEditor.edit.sharedLanguages'});
+        expect(chipComponent.exists()).toBe(expectedChipRendered);
+    };
 });

@@ -42,7 +42,7 @@ class EditPanel extends React.Component {
     }
 
     render() {
-        const {t, fields, title, path, classes} = this.props;
+        const {t, fields, title, path, siteInfo, classes} = this.props;
 
         return (
             <MainLayout topBarProps={{
@@ -60,7 +60,7 @@ class EditPanel extends React.Component {
                 <TwoColumnsContent classes={{root: classes.root, left: classes.left, right: classes.right}}
                                    rightCol={<></>}
                 >
-                    <FormBuilder fields={fields}/>
+                    <FormBuilder fields={fields} siteInfo={siteInfo}/>
                 </TwoColumnsContent>
             </MainLayout>
         );
@@ -78,7 +78,8 @@ EditPanel.propTypes = {
     t: PropTypes.func.isRequired,
     fields: PropTypes.array.isRequired,
     formik: PropTypes.object.isRequired,
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
+    siteInfo: PropTypes.object.isRequired
 };
 
 export default compose(

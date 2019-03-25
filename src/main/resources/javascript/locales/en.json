@@ -16,7 +16,8 @@
                         "btnDiscard": "Discard changes",
                         "btnSave": "Save changes"
                     }
-                }
+                },
+                "sharedLanguages": "Shared by all languages"
             }
         }
     }

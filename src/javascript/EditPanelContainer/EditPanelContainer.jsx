@@ -13,83 +13,89 @@ import EditPanel from './EditPanel';
 import NodeData from './NodeData';
 import * as PropTypes from 'prop-types';
 import FormDefinition from './FormDefinitions';
+import SiteData from './SiteData';
 
 export class EditPanelContainer extends React.Component {
     render() {
         const {client, notificationContext, t, path, lang, uiLang} = this.props;
 
         return (
-            <NodeData>
-                {({nodeData}) => {
+            <SiteData>
+                {({siteInfo}) => {
                     return (
-                        <FormDefinition uiLang={uiLang} path={path} nodeType={nodeData.primaryNodeType.name}>
-                            {({formDefinition}) => {
-                            if (formDefinition) {
-                                let fields = _.map(formDefinition.fields.filter(field => !field.readOnly), fieldDefinition => {
-                                    return {
-                                        targets: fieldDefinition.targets,
-                                        formDefinition: fieldDefinition,
-                                        jcrDefinition: _.find(nodeData.primaryNodeType.properties, {name: fieldDefinition.name}),
-                                        data: _.find(nodeData.properties, {name: fieldDefinition.name})
-                                    };
-                                });
-
-                                let initialValues = _.mapValues(_.keyBy(fields, 'formDefinition.name'), 'data.value');
-
+                        <NodeData>
+                            {({nodeData}) => {
                                 return (
-                                    <Formik
-                                        initialValues={initialValues}
-                                        render={() => {
-                                            return (
-                                                <EditPanel path={path} t={t} fields={fields} title={nodeData.displayName}/>
+                                    <FormDefinition uiLang={uiLang} path={path} nodeType={nodeData.primaryNodeType.name}>
+                                        {({formDefinition}) => {
+                                            if (formDefinition) {
+                                                let fields = _.map(formDefinition.fields.filter(field => !field.readOnly), fieldDefinition => {
+                                                    return {
+                                                        targets: fieldDefinition.targets,
+                                                        formDefinition: fieldDefinition,
+                                                        jcrDefinition: _.find(nodeData.primaryNodeType.properties, {name: fieldDefinition.name}),
+                                                        data: _.find(nodeData.properties, {name: fieldDefinition.name})
+                                                    };
+                                                });
 
-                                            );
-                                        }}
-                                        onSubmit={(values, actions) => {
-                                            switch (values[EditPanelConstants.systemFields.SYSTEM_SUBMIT_OPERATION]) {
-                                                case EditPanelConstants.submitOperation.SAVE:
-                                                    client.mutate({
-                                                        variables: {
-                                                            path: nodeData.path,
-                                                            properties: getPropertiesToSave(values, fields, lang)
-                                                        },
-                                                        mutation: SavePropertiesMutation,
-                                                        refetchQueries: [
-                                                            {
-                                                                query: NodeQuery,
-                                                                variables: {
-                                                                    path: path,
-                                                                    language: lang
-                                                                }
+                                                let initialValues = _.mapValues(_.keyBy(fields, 'formDefinition.name'), 'data.value');
+
+                                                return (
+                                                    <Formik
+                                                        initialValues={initialValues}
+                                                        render={() => {
+                                                            return (
+                                                                <EditPanel path={path} t={t} fields={fields} title={nodeData.displayName} siteInfo={siteInfo}/>
+                                                            );
+                                                        }}
+                                                        onSubmit={(values, actions) => {
+                                                            switch (values[EditPanelConstants.systemFields.SYSTEM_SUBMIT_OPERATION]) {
+                                                                case EditPanelConstants.submitOperation.SAVE:
+                                                                    client.mutate({
+                                                                        variables: {
+                                                                            path: nodeData.path,
+                                                                            properties: getPropertiesToSave(values, fields, lang)
+                                                                        },
+                                                                        mutation: SavePropertiesMutation,
+                                                                        refetchQueries: [
+                                                                            {
+                                                                                query: NodeQuery,
+                                                                                variables: {
+                                                                                    path: path,
+                                                                                    language: lang
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }).then(() => {
+                                                                        notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.success'), ['closeButton']);
+                                                                        actions.setSubmitting(false);
+                                                                    }, error => {
+                                                                        console.error(error);
+                                                                        notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.error'), ['closeButton']);
+                                                                        actions.setSubmitting(false);
+                                                                    });
+                                                                    break;
+                                                                case EditPanelConstants.submitOperation.SAVE_PUBLISH:
+                                                                    console.log('TODO SAVE_PUBLISH');
+                                                                    actions.setSubmitting(false);
+                                                                    break;
+                                                                default:
+                                                                    console.log('Unknown submit operation: ' + values[EditPanelConstants.systemFields.SYSTEM_SUBMIT_OPERATION]);
+                                                                    actions.setSubmitting(false);
+                                                                    break;
                                                             }
-                                                        ]
-                                                    }).then(() => {
-                                                        notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.success'), ['closeButton']);
-                                                        actions.setSubmitting(false);
-                                                    }, error => {
-                                                        console.error(error);
-                                                        notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.error'), ['closeButton']);
-                                                        actions.setSubmitting(false);
-                                                    });
-                                                    break;
-                                                case EditPanelConstants.submitOperation.SAVE_PUBLISH:
-                                                    console.log('TODO SAVE_PUBLISH');
-                                                    actions.setSubmitting(false);
-                                                    break;
-                                                default:
-                                                    console.log('Unknown submit operation: ' + values[EditPanelConstants.systemFields.SYSTEM_SUBMIT_OPERATION]);
-                                                    actions.setSubmitting(false);
-                                                    break;
+                                                        }}
+                                                    />
+                                                );
                                             }
                                         }}
-                                    />
+                                    </FormDefinition>
                                 );
-                            }
-                        }}
-                        </FormDefinition>
-);
+                            }}
+                        </NodeData>
+                    );
                 }}
-            </NodeData>
+            </SiteData>
         );
     }
 }

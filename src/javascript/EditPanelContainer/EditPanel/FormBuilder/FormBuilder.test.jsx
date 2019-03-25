@@ -14,7 +14,8 @@ describe('FormBuilder component', () => {
             fields: [],
             formik: {
                 handleSubmit: () => {}
-            }
+            },
+            siteInfo: {}
         };
         wrapper = shallow(<FormBuilder {...props}/>);
     });

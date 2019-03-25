@@ -16,7 +16,8 @@
                         "btnDiscard": "Änderungen verwerfen",
                         "btnSave": "Änderungen speichern"
                     }
-                }
+                },
+                "sharedLanguages": "Von allen Sprachen geteilt"
             }
         }
     }

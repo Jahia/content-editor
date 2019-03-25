@@ -16,7 +16,8 @@
                         "btnDiscard": "Abandonner les modifications",
                         "btnSave": "Enregistrer les modifications"
                     }
-                }
+                },
+                "sharedLanguages": "Partagé par toutes les langues"
             }
         }
     }
