@@ -10,6 +10,9 @@ import {withStyles} from '@material-ui/core';
 import {translate} from 'react-i18next';
 
 let styles = () => ({
+    root: {
+        minHeight: 0
+    },
     left: {
         overflow: 'auto'
     }
@@ -54,7 +57,7 @@ class EditPanel extends React.Component {
                 />
             }}
             >
-                <TwoColumnsContent classes={{left: classes.left, right: classes.right}}
+                <TwoColumnsContent classes={{root: classes.root, left: classes.left, right: classes.right}}
                                    rightCol={<></>}
                 >
                     <FormBuilder fields={fields}/>
