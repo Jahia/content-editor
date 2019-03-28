@@ -18,6 +18,9 @@
                     }
                 },
                 "sharedLanguages": "Partagé par toutes les langues"
+            },
+            "error": {
+                "queryingContent": "Erreur lors de l'interrogation du contenu: {{details}}"
             }
         }
     }

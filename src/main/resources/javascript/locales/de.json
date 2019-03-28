@@ -19,6 +19,9 @@
                 },
                 "sharedLanguages": "Von allen Sprachen geteilt"
             }
+        },
+        "error": {
+            "queryingContent": "Fehler während Content-Abfrage: {{details}}"
         }
     }
 }

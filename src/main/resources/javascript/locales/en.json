@@ -18,6 +18,9 @@
                     }
                 },
                 "sharedLanguages": "Shared by all languages"
+            },
+            "error": {
+                "queryingContent": "Error querying content: {{details}}"
             }
         }
     }

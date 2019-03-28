@@ -15,7 +15,7 @@ export class SiteData extends React.Component {
                 {({siteInfo, error, loading}) => {
                     if (error) {
                         console.log('Error when fetching data: ' + error);
-                        let message = t('label.contentManager.error.queryingContent', {details: (error.message ? error.message : '')});
+                        let message = t('label.contentEditor.error.queryingContent', {details: (error.message ? error.message : '')});
                         notificationContext.notify(message, ['closeButton', 'noAutomaticClose']);
                         return null;
                     }
