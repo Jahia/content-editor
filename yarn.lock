@@ -4271,10 +4271,6 @@ jest-snapshot@^24.5.0:
     pretty-format "^24.5.0"
     semver "^5.5.0"
 
-jest-transform-stub@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/jest-transform-stub/-/jest-transform-stub-2.0.0.tgz#19018b0851f7568972147a5d60074b55f0225a7d"
-
 jest-util@^24.3.0:
   version "24.3.0"
   resolved "https://registry.yarnpkg.com/jest-util/-/jest-util-24.3.0.tgz#a549ae9910fedbd4c5912b204bb1bcc122ea0057"

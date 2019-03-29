@@ -65,7 +65,6 @@
     "eslint-plugin-jest": "^22.2.2",
     "eslint-plugin-json": "^1.4.0",
     "eslint-plugin-react": "^7.11.1",
-    "jest-transform-stub": "^2.0.0",
     "react-test-renderer": "16.2.0",
     "wait-for-expect": "^1.1.0",
     "webpack": "^4.26.0",
