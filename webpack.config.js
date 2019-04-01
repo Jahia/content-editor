@@ -50,7 +50,10 @@ module.exports = (env, argv) => {
                 manifest: require(manifest)
             }),
             new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en|fr|de/),
-            new CleanWebpackPlugin(path.resolve(__dirname, 'src/main/resources/javascript/apps/'), {verbose: false}),
+            new CleanWebpackPlugin({
+              cleanOnceBeforeBuildPatterns: [`${path.resolve(__dirname, 'src/main/resources/javascript/apps/')}/**/*`],
+              verbose: false
+            }),
             new CopyWebpackPlugin([{ from: './package.json', to: '' }])
         ],
         mode: 'development'

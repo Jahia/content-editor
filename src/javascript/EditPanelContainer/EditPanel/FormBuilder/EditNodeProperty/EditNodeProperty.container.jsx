@@ -9,6 +9,7 @@ export const EditNodePropertyContainer = ({field, siteInfo}) => {
         console.warn('no Renderer for ', field.formDefinition.selectorType);
         return <></>;
     }
+
     return (
         <EditNodeProperty field={field} siteInfo={siteInfo}>
             <FieldComponent field={field}/>
@@ -22,4 +23,3 @@ EditNodePropertyContainer.propTypes = {
 };
 
 export default EditNodePropertyContainer;
-

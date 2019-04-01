@@ -16,7 +16,11 @@ export class RichText extends React.Component {
         const {values, setFieldValue} = this.props.formik;
 
         const onEditorChange = evt => {
-            setFieldValue(field.formDefinition.name, evt.editor.getData(), true);
+            setFieldValue(
+                field.formDefinition.name,
+                evt.editor.getData(),
+                true
+            );
         };
 
         return (
@@ -35,6 +39,4 @@ RichText.propTypes = {
     formik: PropTypes.object.isRequired
 };
 
-export default compose(
-    connect,
-)(RichText);
+export default compose(connect)(RichText);
