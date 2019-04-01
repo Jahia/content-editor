@@ -1,5 +1,5 @@
 import React from 'react';
-import {shallow} from 'enzyme';
+import {shallow} from '@jahia/test-framework';
 
 import {RichText} from './RichText';
 
