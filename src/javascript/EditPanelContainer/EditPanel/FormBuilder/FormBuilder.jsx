@@ -32,7 +32,7 @@ export const FormBuilder = ({classes, fields, formik, siteInfo}) => {
             {Array.from(targetsName).map((target, index) => {
                 let fieldsByTarget = fields.filter(field => field.targets.filter(t => t.name === target).length > 0);
                 return (
-                    <ExpansionPanel key={target} variant="normal" defaultExpanded={index === 0}>
+                    <ExpansionPanel key={target} variant="normal" defaultExpanded={index === 0} data-sel-content-editor-fields-group={target}>
                         <ExpansionPanelSummary expandIcon={<ExpandMore/>}>
                             <Typography variant="epsilon" color="alpha">{target}</Typography>
                         </ExpansionPanelSummary>

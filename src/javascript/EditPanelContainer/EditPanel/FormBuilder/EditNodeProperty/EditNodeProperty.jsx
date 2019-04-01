@@ -25,7 +25,7 @@ let styles = theme => ({
 
 export const EditNodeProperty = ({t, classes, children, field, siteInfo}) => {
     return (
-        <FormControl className={classes.formControl}>
+        <FormControl className={classes.formControl} data-sel-content-editor-field={field.formDefinition.name}>
             <Grid
                 container
                 direction="row"
