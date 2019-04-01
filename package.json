@@ -50,7 +50,7 @@
     "@babel/polyfill": "^7.0.0",
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-react": "^7.0.0",
-    "@jahia/test-framework": "^1.0.0-beta.20190329132929",
+    "@jahia/test-framework": "^1.0.0-beta.20190401120854",
     "apollo-cache-inmemory": "^1.4.3",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.1.0",

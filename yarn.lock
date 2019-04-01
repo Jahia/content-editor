@@ -773,14 +773,20 @@
     lodash "^4.17.10"
     prop-types "^15.6.1"
 
-"@jahia/test-framework@^1.0.0-beta.20190329132929":
-  version "1.0.0-beta.20190329143843"
-  resolved "http://npm.int.jahia.com:4873/@jahia%2ftest-framework/-/test-framework-1.0.0-beta.20190329143843.tgz#d977c489c2f7051145cec43935f486007a37f3d8"
-  integrity sha512-sIpkwuVsJ/zXIMmkLQ2ucADLeBv8/k1qfA36wUCGdHA8l1uwcgXAeftyktp6o1tAyq55RGnJou9bij8OFMxPGw==
+"@jahia/test-framework@^1.0.0-beta.20190401120854":
+  version "1.0.0-beta.20190401120854"
+  resolved "http://npm.int.jahia.com:4873/@jahia%2ftest-framework/-/test-framework-1.0.0-beta.20190401120854.tgz#14146d31ba69fd59e426a7c30b344ea5f0424b7c"
+  integrity sha512-BhBjxSBdI7JwYLRNfwQRElVrTdgFe0iNHMvOKIDRwd9yjexXFm0GKqkHtXY4lKm9F9HEn9P813ELkeVVbbwXEw==
   dependencies:
     babel-jest "^24.5.0"
     enzyme "^3.9.0"
     enzyme-adapter-react-16 "^1.11.2"
+    eslint "^5.15.1"
+    eslint-config-xo "^0.25.0"
+    eslint-config-xo-react "^0.17.0"
+    eslint-loader "2.1.0"
+    eslint-plugin-jest "^22.3.0"
+    eslint-plugin-react "^7.11.1"
     jest "^24.5.0"
 
 "@jest/console@^24.3.0":
@@ -2751,6 +2757,11 @@ eslint-plugin-jest@^22.2.2:
   version "22.3.1"
   resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-22.3.1.tgz#18d5484fbba0eec41ce70cb30234ed757c69dc99"
 
+eslint-plugin-jest@^22.3.0:
+  version "22.4.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-22.4.1.tgz#a5fd6f7a2a41388d16f527073b778013c5189a9c"
+  integrity sha512-gcLfn6P2PrFAVx3AobaOzlIEevpAEf9chTpFZz7bYfc7pz8XRv7vuKTIE4hxPKZSha6XWKKplDQ0x9Pq8xX2mg==
+
 eslint-plugin-json@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-json/-/eslint-plugin-json-1.4.0.tgz#4d29f3a4c08d412df739bd65049ce23636515af8"
@@ -2783,6 +2794,14 @@ eslint-scope@^4.0.0, eslint-scope@^4.0.2:
     esrecurse "^4.1.0"
     estraverse "^4.1.1"
 
+eslint-scope@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/eslint-scope/-/eslint-scope-4.0.3.tgz#ca03833310f6889a3264781aa82e63eb9cfe7848"
+  integrity sha512-p7VutNr1O/QrxysMo3E45FjYDTeXBy0iTltPFNSqKAIfjDSXC+4dj+qfyuD8bfAXrW/y6lW3O76VaYNPKfpKrg==
+  dependencies:
+    esrecurse "^4.1.0"
+    estraverse "^4.1.1"
+
 eslint-utils@^1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/eslint-utils/-/eslint-utils-1.3.1.tgz#9a851ba89ee7c460346f97cf8939c7298827e512"
@@ -2790,6 +2809,48 @@ eslint-utils@^1.3.1:
 eslint-visitor-keys@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#3f3180fb2e291017716acb4c9d6d5b5c34a6a81d"
+
+eslint@^5.15.1:
+  version "5.16.0"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-5.16.0.tgz#a1e3ac1aae4a3fbd8296fcf8f7ab7314cbb6abea"
+  integrity sha512-S3Rz11i7c8AA5JPv7xAH+dOyq/Cu/VXHiHXBPOU1k/JAM5dXqQPt3qcrhpHSorXmrpu2g0gkIBVXAqCpzfoZIg==
+  dependencies:
+    "@babel/code-frame" "^7.0.0"
+    ajv "^6.9.1"
+    chalk "^2.1.0"
+    cross-spawn "^6.0.5"
+    debug "^4.0.1"
+    doctrine "^3.0.0"
+    eslint-scope "^4.0.3"
+    eslint-utils "^1.3.1"
+    eslint-visitor-keys "^1.0.0"
+    espree "^5.0.1"
+    esquery "^1.0.1"
+    esutils "^2.0.2"
+    file-entry-cache "^5.0.1"
+    functional-red-black-tree "^1.0.1"
+    glob "^7.1.2"
+    globals "^11.7.0"
+    ignore "^4.0.6"
+    import-fresh "^3.0.0"
+    imurmurhash "^0.1.4"
+    inquirer "^6.2.2"
+    js-yaml "^3.13.0"
+    json-stable-stringify-without-jsonify "^1.0.1"
+    levn "^0.3.0"
+    lodash "^4.17.11"
+    minimatch "^3.0.4"
+    mkdirp "^0.5.1"
+    natural-compare "^1.4.0"
+    optionator "^0.8.2"
+    path-is-inside "^1.0.2"
+    progress "^2.0.0"
+    regexpp "^2.0.1"
+    semver "^5.5.1"
+    strip-ansi "^4.0.0"
+    strip-json-comments "^2.0.1"
+    table "^5.2.3"
+    text-table "^0.2.0"
 
 eslint@^5.9.0:
   version "5.15.1"
@@ -4361,6 +4422,14 @@ js-levenshtein@^1.1.3:
 js-yaml@^3.12.0, js-yaml@^3.9.0:
   version "3.12.2"
   resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.12.2.tgz#ef1d067c5a9d9cb65bd72f285b5d8105c77f14fc"
+  dependencies:
+    argparse "^1.0.7"
+    esprima "^4.0.0"
+
+js-yaml@^3.13.0:
+  version "3.13.0"
+  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.13.0.tgz#38ee7178ac0eea2c97ff6d96fff4b18c7d8cf98e"
+  integrity sha512-pZZoSxcCYco+DIKBTimr67J6Hy+EYGZDY/HCWC+iAEA9h1ByhMXAIVUXMcMFpOCxQ/xjXmPI2MkDL5HRm5eFrQ==
   dependencies:
     argparse "^1.0.7"
     esprima "^4.0.0"
