@@ -1,7 +1,7 @@
 import React from 'react';
 import {registry} from '@jahia/registry';
-import {Edit, Save, ArrowBack} from '@material-ui/icons';
-import submitAction from './actions/submitAction';
+import {Edit, Save, ArrowBack/* , CloudUpload */} from '@material-ui/icons';
+import saveAction from './actions/saveAction';
 import goBackAction from './actions/goBackAction';
 import EditPanelConstants from './EditPanelContainer/EditPanel/EditPanelConstants';
 import EditPanelContainer from './EditPanelContainer';
@@ -27,7 +27,7 @@ if (contextJsParameters && contextJsParameters.config && contextJsParameters.con
             mode: 'browse'
         });
 
-        actionsRegistry.add('submitSave', submitAction, {
+        actionsRegistry.add('submitSave', saveAction, {
             buttonLabel: 'content-editor:label.contentEditor.edit.action.save.name',
             buttonIcon: <Save/>,
             target: ['editHeaderActions:2'],

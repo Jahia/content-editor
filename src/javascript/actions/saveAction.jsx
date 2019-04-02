@@ -3,7 +3,10 @@ import EditPanelConstants from '../EditPanelContainer/EditPanel/EditPanelConstan
 import {withFormikAction} from './withFormikAction';
 
 export default composeActions(withFormikAction, {
-    init: () => {
+    init: context => {
+        // It's weird, formik set dirty when intialValue === currentValue
+        // event when form had been modified
+        context.enabled = context.formik.dirty;
     },
     onClick: context => {
         if (context.formik) {

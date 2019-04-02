@@ -7,10 +7,11 @@
         "build:analyze": "yarn build --analyze",
         "build:production": "yarn test && yarn build -p",
         "build:production-analyze": "yarn build -p --analyze",
-        "watch": "yarn webpack --watch",
+        "watch": "NODE_ENV=dev yarn webpack --watch",
         "clean": "rimraf *.log src/main/resources/javascript/apps",
         "clean:all": "yarn clean && rimraf node_modules node",
         "test": "jest --coverage",
+        "tdd": "jest --watch",
         "lint": "eslint --ext js,jsx,json .",
         "lint:fix": "eslint --ext js,jsx,json --fix ."
     },

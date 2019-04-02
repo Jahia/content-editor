@@ -15,6 +15,11 @@
                         "btnContinue": "Weiter bearbeiten",
                         "btnDiscard": "Änderungen verwerfen",
                         "btnSave": "Änderungen speichern"
+                    },
+                    "publish": {
+                      "name": "Publier",
+                      "success": "Contenu enregistré avec succès",
+                      "error": "Une erreur s'est produite lors de la publication du contenu"
                     }
                 },
                 "sharedLanguages": "Von allen Sprachen geteilt"
