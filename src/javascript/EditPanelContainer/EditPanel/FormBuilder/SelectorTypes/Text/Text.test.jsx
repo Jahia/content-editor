@@ -67,4 +67,18 @@ describe('Text component', () => {
 
         expect(props.formik.handleBlur.mock.calls.length).toBe(1);
     });
+
+    it('should be readOnly when formDefinition say so', () => {
+        testReadOnly(true);
+        testReadOnly(false);
+    });
+
+    let testReadOnly = function (readOnly) {
+        props.field.formDefinition.readOnly = readOnly;
+
+        expect(wrapper.setProps(props)
+            .find(Input)
+            .prop('readOnly')
+        ).toEqual(readOnly);
+    };
 });

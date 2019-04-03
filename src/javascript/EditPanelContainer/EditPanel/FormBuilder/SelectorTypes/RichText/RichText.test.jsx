@@ -57,4 +57,18 @@ describe('RichText component', () => {
             props.field.formDefinition.name, dummyEditor.getData(), true
         ]]);
     });
+
+    it('should be readOnly when formDefinition say so', () => {
+        testReadOnly(true);
+        testReadOnly(false);
+    });
+
+    let testReadOnly = function (readOnly) {
+        props.field.formDefinition.readOnly = readOnly;
+
+        expect(wrapper.setProps(props)
+            .find(RICH_TEXT_COMPONENT_TAG)
+            .prop('readOnly')
+        ).toEqual(readOnly);
+    };
 });
