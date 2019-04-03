@@ -21,7 +21,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.jcr.RepositoryException;
 import javax.jcr.Value;
-import javax.jcr.nodetype.NoSuchNodeTypeException;
 import java.util.*;
 
 /**
@@ -64,12 +63,12 @@ public class EditorFormServiceImpl implements EditorFormService {
             mergedEditorForm = processValueConstraints(mergedEditorForm, locale, existingNode, parentNode);
             // todo implement constraints (read-only, etc...)
             return mergedEditorForm;
-        } catch (NoSuchNodeTypeException e) {
+        } catch (RepositoryException e) {
             throw new EditorFormException("Error looking up node type using name " + nodeTypeName, e);
         }
     }
 
-    private EditorForm processValueConstraints(EditorForm editForm, Locale locale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode) throws NoSuchNodeTypeException {
+    private EditorForm processValueConstraints(EditorForm editForm, Locale locale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode) throws RepositoryException {
         List<EditorFormField> newEditorFormFields = new ArrayList<>();
         ExtendedNodeType nodeType = nodeTypeRegistry.getNodeType(editForm.getNodeType());
         Map<String, ChoiceListInitializer> initializers = choiceListInitializerService.getInitializers();
@@ -127,10 +126,15 @@ public class EditorFormServiceImpl implements EditorFormService {
         return mergedEditorForm;
     }
 
-    private EditorForm generateEditorFormFromNodeType(String nodeTypeName, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale locale) throws NoSuchNodeTypeException {
+    private EditorForm generateEditorFormFromNodeType(String nodeTypeName, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale locale) throws RepositoryException {
+        JCRSessionWrapper session = existingNode != null ? existingNode.getSession() : getSession(locale);
         ExtendedNodeType nodeType = nodeTypeRegistry.getNodeType(nodeTypeName);
         Map<String,Double> maxTargetRank = new HashMap<>();
         List<EditorFormField> editorFormFields = new ArrayList<>();
+
+        boolean sharedFieldsEditable = existingNode == null || (!existingNode.isLocked() && existingNode.hasPermission("jcr:modifyProperties"));
+        boolean i18nFieldsEditable = existingNode == null || (!existingNode.isLocked() && existingNode.hasPermission("jcr:modifyProperties_" + session.getWorkspace().getName() + "_" + locale.toString()));
+
         for (ExtendedPropertyDefinition propertyDefinition : nodeType.getPropertyDefinitions()) {
             String target = propertyDefinition.getItemType();
             Double rank = maxTargetRank.get(target);
@@ -167,7 +171,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                     SelectorType.nameFromValue(propertyDefinition.getSelector()),
                     selectorOptions,
                     propertyDefinition.isInternationalized(),
-                    isReadOnly(propertyDefinition, existingNode),
+                    isFieldReadOnly(propertyDefinition, sharedFieldsEditable, i18nFieldsEditable),
                     propertyDefinition.isMultiple(),
                     propertyDefinition.isMandatory(),
                     valueConstraints,
@@ -231,12 +235,12 @@ public class EditorFormServiceImpl implements EditorFormService {
         return valueConstraints;
     }
 
-    private boolean isReadOnly(ExtendedPropertyDefinition propertyDefinition, JCRNodeWrapper existingNode) {
-        // todo there are more constraints that need to be checked in the case of a readonly property, for example if
-        // we have the modify properties permission.
-        // check from GWT engine : propertiesEditor.setWriteable(!engine.isExistingNode() || (PermissionsUtils.isPermitted("jcr:modifyProperties", engine.getNode()) && !engine.getNode().isLocked()));
+    private boolean isFieldReadOnly(ExtendedPropertyDefinition propertyDefinition, boolean sharedFieldsEditable, boolean i18nFieldsEditable) {
+        if (propertyDefinition.isProtected()) {
+            return true;
+        }
 
-        return existingNode != null && existingNode.isLocked() || propertyDefinition.isProtected();
+        return propertyDefinition.isInternationalized() ? !i18nFieldsEditable : !sharedFieldsEditable;
     }
 
     private JCRSessionWrapper getSession() throws RepositoryException {
