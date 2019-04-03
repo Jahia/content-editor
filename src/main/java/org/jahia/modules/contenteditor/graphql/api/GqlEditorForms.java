@@ -3,6 +3,7 @@ package org.jahia.modules.contenteditor.graphql.api;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
+import org.apache.commons.lang.LocaleUtils;
 import org.jahia.modules.contenteditor.api.forms.EditorForm;
 import org.jahia.modules.contenteditor.api.forms.EditorFormException;
 import org.jahia.modules.contenteditor.api.forms.EditorFormService;
@@ -27,6 +28,9 @@ public class GqlEditorForms {
             @GraphQLName("nodeType")
             @GraphQLDescription("The name identifying the form we want to retrieve")
                     String nodeType,
+            @GraphQLName("uiLocale")
+            @GraphQLDescription("A string representation of a locale, in IETF BCP 47 language tag format, ie en_US, en, fr, fr_CH, ...")
+                    String uiLocale,
             @GraphQLName("locale")
             @GraphQLDescription("A string representation of a locale, in IETF BCP 47 language tag format, ie en_US, en, fr, fr_CH, ...")
                     String locale,
@@ -37,7 +41,8 @@ public class GqlEditorForms {
             @GraphQLDescription("Node identifier (UUID) or path of the parent node of an existing node or where we will create the new node")
                     String parentNodeIdOrPath) {
         try {
-            return editorFormService.getEditorForm(nodeType, locale, existingNodeIdOrPath, parentNodeIdOrPath);
+            return editorFormService.getEditorForm(nodeType, LocaleUtils.toLocale(uiLocale), LocaleUtils.toLocale(locale),
+                    existingNodeIdOrPath, parentNodeIdOrPath);
         } catch (EditorFormException e) {
             throw new DataFetchingException(e);
         }

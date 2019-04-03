@@ -1,9 +1,9 @@
 import gql from 'graphql-tag';
 
 const FormQuery = gql`
-    query getFormDefinition($nodeType:String!, $uiLang:String!, $nodeIdOrPath:String ) {
+    query getFormDefinition($nodeType:String!, $uiLang:String!, $lang:String!, $nodeIdOrPath:String ) {
         forms {
-            form(nodeType: $nodeType, locale: $uiLang, nodeIdOrPath : $nodeIdOrPath) {
+            form(nodeType: $nodeType, uiLocale: $uiLang, locale: $lang, nodeIdOrPath : $nodeIdOrPath) {
                 nodeType
                 fields {
                     name

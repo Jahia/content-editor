@@ -1,6 +1,5 @@
 package org.jahia.modules.contenteditor.api.forms.impl;
 
-import org.apache.commons.lang.LocaleUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jahia.api.Constants;
 import org.jahia.modules.contenteditor.api.forms.*;
@@ -46,29 +45,32 @@ public class EditorFormServiceImpl implements EditorFormService {
     }
 
     @Override
-    public EditorForm getEditorForm(String nodeTypeName, String localeTag, String existingNodeIdOrPath, String parentNodeIdOrPath) throws EditorFormException {
-        Locale locale = LocaleUtils.toLocale(localeTag);
-        JCRNodeWrapper existingNode = getNode(existingNodeIdOrPath, locale);
-        JCRNodeWrapper parentNode = getNode(parentNodeIdOrPath, locale);
-        if (parentNode == null && existingNode != null) {
-            try {
-                parentNode = existingNode.getParent();
-            } catch (RepositoryException e) {
-                throw new EditorFormException("Error retrieving parent node of node " + existingNode.getPath(), e);
-            }
-        }
+    public EditorForm getEditorForm(String nodeTypeName, Locale uiLocale, Locale locale, String existingNodeIdOrPath, String parentNodeIdOrPath) throws EditorFormException {
         try {
-            EditorForm mergedEditorForm = generateEditorFormFromNodeType(nodeTypeName, existingNode, parentNode, locale);
+            JCRSessionWrapper session = getSession(locale);
+            JCRNodeWrapper existingNode = getNode(existingNodeIdOrPath, session);
+            JCRNodeWrapper parentNode = getParentNode(existingNode, parentNodeIdOrPath, session);
+
+            EditorForm mergedEditorForm = generateEditorFormFromNodeType(nodeTypeName, existingNode, locale);
+
             mergedEditorForm = mergeWithStaticForms(nodeTypeName, mergedEditorForm);
             mergedEditorForm = processValueConstraints(mergedEditorForm, locale, existingNode, parentNode);
-            // todo implement constraints (read-only, etc...)
+
             return mergedEditorForm;
         } catch (RepositoryException e) {
-            throw new EditorFormException("Error looking up node type using name " + nodeTypeName, e);
+            throw new EditorFormException("Error while building edit form definition for node: " + existingNodeIdOrPath + " and nodeType: " + nodeTypeName, e);
         }
     }
 
-    private EditorForm processValueConstraints(EditorForm editForm, Locale locale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode) throws RepositoryException {
+    private JCRNodeWrapper getParentNode(JCRNodeWrapper existingNode, String parentNodeIdOrPath, JCRSessionWrapper session) throws RepositoryException {
+        JCRNodeWrapper parentNode = getNode(parentNodeIdOrPath, session);
+        if (parentNode == null && existingNode != null) {
+            parentNode = existingNode.getParent();
+        }
+        return parentNode;
+    }
+
+    private EditorForm processValueConstraints(EditorForm editForm, Locale uiLocale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode) throws RepositoryException {
         List<EditorFormField> newEditorFormFields = new ArrayList<>();
         ExtendedNodeType nodeType = nodeTypeRegistry.getNodeType(editForm.getNodeType());
         Map<String, ChoiceListInitializer> initializers = choiceListInitializerService.getInitializers();
@@ -82,7 +84,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                 initialChoiceListValues.add(new ChoiceListValue(editorFormFieldValueConstraint.getDisplayValue(), editorFormFieldValueConstraint.getValue().getStringValue()));
             }
             List<EditorFormFieldValueConstraint> valueConstraints = getValueConstraints(initialChoiceListValues, editorFormField.getSelectorOptions(),
-                    existingNode, parentNode, locale, nodeType, initializers, editorFormField.getExtendedPropertyDefinition());
+                    existingNode, parentNode, uiLocale, nodeType, initializers, editorFormField.getExtendedPropertyDefinition());
             newEditorFormFields.add(new EditorFormField(editorFormField.getName(),
                     editorFormField.getSelectorType(),
                     editorFormField.getSelectorOptions(),
@@ -99,17 +101,13 @@ public class EditorFormServiceImpl implements EditorFormService {
         return new EditorForm(editForm.getNodeType(), newEditorFormFields);
     }
 
-    private JCRNodeWrapper getNode(String nodeIdOrPath, Locale locale) {
+    private JCRNodeWrapper getNode(String nodeIdOrPath, JCRSessionWrapper session) throws RepositoryException {
         JCRNodeWrapper node = null;
         if (nodeIdOrPath != null) {
-            try {
-                if (StringUtils.startsWith(nodeIdOrPath, "/")) {
-                    node = getSession(locale).getNode(nodeIdOrPath);
-                } else {
-                    node = getSession(locale).getNodeByIdentifier(nodeIdOrPath);
-                }
-            } catch (RepositoryException e) {
-                logger.error("Error retrieving node by using identifier or path " + nodeIdOrPath, e);
+            if (StringUtils.startsWith(nodeIdOrPath, "/")) {
+                node = session.getNode(nodeIdOrPath);
+            } else {
+                node = session.getNodeByIdentifier(nodeIdOrPath);
             }
         }
         return node;
@@ -126,7 +124,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         return mergedEditorForm;
     }
 
-    private EditorForm generateEditorFormFromNodeType(String nodeTypeName, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale locale) throws RepositoryException {
+    private EditorForm generateEditorFormFromNodeType(String nodeTypeName, JCRNodeWrapper existingNode, Locale locale) throws RepositoryException {
         JCRSessionWrapper session = existingNode != null ? existingNode.getSession() : getSession(locale);
         ExtendedNodeType nodeType = nodeTypeRegistry.getNodeType(nodeTypeName);
         Map<String,Double> maxTargetRank = new HashMap<>();
@@ -136,6 +134,12 @@ public class EditorFormServiceImpl implements EditorFormService {
         boolean i18nFieldsEditable = existingNode == null || (!existingNode.isLocked() && existingNode.hasPermission("jcr:modifyProperties_" + session.getWorkspace().getName() + "_" + locale.toString()));
 
         for (ExtendedPropertyDefinition propertyDefinition : nodeType.getPropertyDefinitions()) {
+
+            // do not return hidden props
+            if (propertyDefinition.isHidden()) {
+                continue;
+            }
+
             String target = propertyDefinition.getItemType();
             Double rank = maxTargetRank.get(target);
             if (rank == null) {
@@ -188,7 +192,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                                                                      List<EditorFormProperty> selectorOptions,
                                                                      JCRNodeWrapper existingNode,
                                                                      JCRNodeWrapper parentNode,
-                                                                     Locale locale,
+                                                                     Locale uiLocale,
                                                                      ExtendedNodeType nodeType,
                                                                      Map<String, ChoiceListInitializer> initializers,
                                                                      ExtendedPropertyDefinition propertyDefinition) {
@@ -207,7 +211,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             for (EditorFormProperty selectorProperty : selectorOptions) {
                 if (initializers.containsKey(selectorProperty.getName())) {
                     listValues = initializers.get(selectorProperty.getName()).getChoiceListValues(propertyDefinition, selectorProperty.getValue(),
-                            listValues, locale, context);
+                            listValues, uiLocale, context);
                 }
             }
         }

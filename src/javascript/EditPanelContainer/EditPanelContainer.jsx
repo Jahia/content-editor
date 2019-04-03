@@ -26,10 +26,10 @@ export class EditPanelContainer extends React.Component {
                         <NodeData>
                             {({nodeData}) => {
                                 return (
-                                    <FormDefinition uiLang={uiLang} path={path} nodeType={nodeData.primaryNodeType.name}>
+                                    <FormDefinition uiLang={uiLang} lang={lang} path={path} nodeType={nodeData.primaryNodeType.name}>
                                         {({formDefinition}) => {
                                             if (formDefinition) {
-                                                let fields = _.map(formDefinition.fields.filter(field => !field.readOnly), fieldDefinition => {
+                                                let fields = _.map(formDefinition.fields, fieldDefinition => {
                                                     return {
                                                         targets: fieldDefinition.targets,
                                                         formDefinition: fieldDefinition,

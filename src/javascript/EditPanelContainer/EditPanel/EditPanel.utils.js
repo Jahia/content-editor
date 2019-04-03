@@ -6,15 +6,18 @@ function isSystemField(fieldKey) {
 }
 
 function getPropertiesToSave(formValues, fields, lang) {
-    return _.map(_.filter(_.keys(formValues), key => !isSystemField(key)), key => {
-        let field = _.find(fields, {formDefinition: {name: key}});
-        return {
+    const keys = _.filter(_.keys(formValues), key => !isSystemField(key));
+    const filteredFields = _.filter(fields, field => !field.formDefinition.readOnly);
+
+    return _.compact(_.map(keys, key => {
+        let field = _.find(filteredFields, {formDefinition: {name: key}});
+        return field ? {
             name: key,
             type: field.jcrDefinition.requiredType,
             value: formValues[key],
             language: lang
-        };
-    });
+        } : null;
+    }));
 }
 
 export {

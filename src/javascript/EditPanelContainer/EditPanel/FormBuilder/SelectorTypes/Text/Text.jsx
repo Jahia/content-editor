@@ -15,6 +15,7 @@ export class Text extends React.Component {
                 id={field.formDefinition.name}
                 name={field.formDefinition.name}
                 value={values[field.formDefinition.name]}
+                readOnly={field.formDefinition.readOnly}
                 onChange={handleChange}
                 onBlur={handleBlur}
             />
