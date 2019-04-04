@@ -19,10 +19,15 @@ export class RichText extends React.Component {
             setFieldValue(field.formDefinition.name, evt.editor.getData(), true);
         };
 
+        const config = {
+            toolbar: 'Mini',
+            contentEditorFieldName: field.formDefinition.name // Used by selenium to get CKEditor instance
+        };
+
         return (
             <CKEditor
                     data={values[field.formDefinition.name]}
-                    config={{toolbar: 'Mini'}}
+                    config={config}
                     readOnly={field.formDefinition.readOnly}
                     onChange={onEditorChange}
                 />
