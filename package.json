@@ -7,7 +7,7 @@
         "build:analyze": "yarn build --analyze",
         "build:production": "yarn test && yarn build -p",
         "build:production-analyze": "yarn build -p --analyze",
-        "watch": "NODE_ENV=dev yarn webpack --watch",
+        "watch": "yarn webpack --watch",
         "clean": "rimraf *.log src/main/resources/javascript/apps",
         "clean:all": "yarn clean && rimraf node_modules node",
         "test": "jest --coverage",

@@ -5,23 +5,19 @@ import {withNotifications} from '@jahia/react-material';
 import EditPanelConstants from './EditPanel/EditPanelConstants';
 import {Formik} from 'formik';
 import * as _ from 'lodash';
-import {getPropertiesToSave} from './EditPanel/EditPanel.utils';
-import {SavePropertiesMutation} from './NodeData/NodeData.gql-mutation';
 import {connect} from 'react-redux';
-import {NodeQuery} from './NodeData/NodeData.gql-queries';
 import EditPanel from './EditPanel';
 import NodeData from './NodeData';
 import * as PropTypes from 'prop-types';
 import FormDefinition from './FormDefinitions';
 import SiteData from './SiteData';
+import {publishNode, saveNode} from './EditPanel.redux-actions';
 
-export class EditPanelContainer extends React.Component {
-    render() {
-        const {client, notificationContext, t, path, lang, uiLang} = this.props;
-
-        return (
-            <SiteData>
-                {({siteInfo}) => {
+// TODO modify SiteData with HOC, as well NodeData
+export const EditPanelContainer = ({client, notificationContext, t, path, lang, uiLang}) => {
+    return (
+        <SiteData>
+            {({siteInfo}) => {
                     return (
                         <NodeData>
                             {({nodeData}) => {
@@ -51,36 +47,30 @@ export class EditPanelContainer extends React.Component {
                                                         onSubmit={(values, actions) => {
                                                             switch (values[EditPanelConstants.systemFields.SYSTEM_SUBMIT_OPERATION]) {
                                                                 case EditPanelConstants.submitOperation.SAVE:
-                                                                    client.mutate({
-                                                                        variables: {
-                                                                            path: nodeData.path,
-                                                                            properties: getPropertiesToSave(values, fields, lang)
-                                                                        },
-                                                                        mutation: SavePropertiesMutation,
-                                                                        refetchQueries: [
-                                                                            {
-                                                                                query: NodeQuery,
-                                                                                variables: {
-                                                                                    path: path,
-                                                                                    language: lang
-                                                                                }
-                                                                            }
-                                                                        ]
-                                                                    }).then(() => {
-                                                                        notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.success'), ['closeButton']);
-                                                                        actions.setSubmitting(false);
-                                                                    }, error => {
-                                                                        console.error(error);
-                                                                        notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.error'), ['closeButton']);
-                                                                        actions.setSubmitting(false);
+                                                                    saveNode({
+                                                                        client,
+                                                                        nodeData,
+                                                                        notificationContext,
+                                                                        actions,
+                                                                        path,
+                                                                        lang,
+                                                                        values,
+                                                                        fields,
+                                                                        t
                                                                     });
                                                                     break;
                                                                 case EditPanelConstants.submitOperation.SAVE_PUBLISH:
-                                                                    console.log('TODO SAVE_PUBLISH');
-                                                                    actions.setSubmitting(false);
+                                                                    publishNode({
+                                                                        client,
+                                                                        nodeData,
+                                                                        lang,
+                                                                        notificationContext,
+                                                                        actions,
+                                                                        t
+                                                                    });
                                                                     break;
                                                                 default:
-                                                                    console.log('Unknown submit operation: ' + values[EditPanelConstants.systemFields.SYSTEM_SUBMIT_OPERATION]);
+                                                                    console.warn('Unknown submit operation: ' + values[EditPanelConstants.systemFields.SYSTEM_SUBMIT_OPERATION]);
                                                                     actions.setSubmitting(false);
                                                                     break;
                                                             }
@@ -95,10 +85,9 @@ export class EditPanelContainer extends React.Component {
                         </NodeData>
                     );
                 }}
-            </SiteData>
-        );
-    }
-}
+        </SiteData>
+    );
+};
 
 const mapStateToProps = state => ({
     path: state.path,

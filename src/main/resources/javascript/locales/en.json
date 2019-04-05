@@ -18,8 +18,8 @@
                     },
                     "publish": {
                       "name": "Publish",
-                      "success": "Successfully saved",
-                      "error": "Error happened"
+                      "success": "Content published",
+                      "error": "Error during publication"
                     }
                 },
                 "sharedLanguages": "Shared by all languages"

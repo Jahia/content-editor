@@ -1,15 +1,20 @@
 import React from 'react';
 import {registry} from '@jahia/registry';
-import {Edit, Save, ArrowBack/* , CloudUpload */} from '@material-ui/icons';
+import {Edit, Save, ArrowBack, CloudUpload} from '@material-ui/icons';
 import saveAction from './actions/saveAction';
+import publishAction from './actions/publishAction';
 import goBackAction from './actions/goBackAction';
 import EditPanelConstants from './EditPanelContainer/EditPanel/EditPanelConstants';
 import EditPanelContainer from './EditPanelContainer';
 
 console.log('Load Content Editor Ext Components');
-/* eslint-disable */
-__webpack_public_path__ = window.contextJsParameters.contextPath + '/modules/content-editor/javascript/apps/';
+
+const contextJsParameters = window.contextJsParameters;
+/* eslint-disable-next-line */
+__webpack_public_path__ = contextJsParameters.contextPath + '/modules/content-editor/javascript/apps/';
+
 contextJsParameters.i18nNamespaces.push('content-editor');
+
 if (contextJsParameters && contextJsParameters.config && contextJsParameters.config.actions) {
     contextJsParameters.config.actions.push(actionsRegistry => {
         console.log('Register Content Editor actions');
@@ -30,6 +35,13 @@ if (contextJsParameters && contextJsParameters.config && contextJsParameters.con
         actionsRegistry.add('submitSave', saveAction, {
             buttonLabel: 'content-editor:label.contentEditor.edit.action.save.name',
             buttonIcon: <Save/>,
+            target: ['editHeaderActions:2'],
+            submitOperation: EditPanelConstants.submitOperation.SAVE
+        });
+
+        actionsRegistry.add('publishAction', publishAction, {
+            buttonLabel: 'content-editor:label.contentEditor.edit.action.publish.name',
+            buttonIcon: <CloudUpload/>,
             target: ['editHeaderActions:2'],
             submitOperation: EditPanelConstants.submitOperation.SAVE
         });

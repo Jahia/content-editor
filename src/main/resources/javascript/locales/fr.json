@@ -18,8 +18,8 @@
                     },
                     "publish": {
                       "name": "Publier",
-                      "success": "Contenu enregistré avec succès",
-                      "error": "Une erreur s'est produite lors de la publication du contenu"
+                      "success": "Contenu publié",
+                      "error": "Erreur pendant la publication"
                     }
                 },
                 "sharedLanguages": "Partagé par toutes les langues"
