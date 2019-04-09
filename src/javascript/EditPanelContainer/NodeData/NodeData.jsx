@@ -6,18 +6,15 @@ import {connect} from 'react-redux';
 import {NodeQuery} from './NodeData.gql-queries';
 import * as PropTypes from 'prop-types';
 
-export class NodeData extends React.Component {
-    render() {
-        const {t, path, lang, children} = this.props;
+export const NodeData = ({t, path, lang, children}) => {
+    let queryParams = {
+        path: path,
+        language: lang
+    };
 
-        let queryParams = {
-            path: path,
-            language: lang
-        };
-
-        return (
-            <Query query={NodeQuery} variables={queryParams} fetchPolicy="cache-first">
-                {({loading, error, data}) => {
+    return (
+        <Query query={NodeQuery} variables={queryParams} fetchPolicy="cache-first">
+            {({loading, error, data}) => {
                 if (error) {
                     let message = t('content-media-manager:label.contentManager.error.queryingContent', {details: (error.message ? error.message : '')});
                     return (<>{message}</>);
@@ -35,10 +32,9 @@ export class NodeData extends React.Component {
                     </>
                 );
             }}
-            </Query>
-        );
-    }
-}
+        </Query>
+    );
+};
 
 const mapStateToProps = state => ({
     path: state.path,

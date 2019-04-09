@@ -42,14 +42,14 @@ class EditPanel extends React.Component {
     }
 
     render() {
-        const {t, fields, title, path, siteInfo, classes} = this.props;
+        const {t, fields, title, path, siteInfo, classes, nodeData} = this.props;
 
         return (
             <MainLayout topBarProps={{
                 path: path,
                 title: title,
                 contextModifiers: <Typography variant="omega" color="invert">{t('content-editor:label.contentEditor.edit.title')}</Typography>,
-                actions: <DisplayActions context={{}}
+                actions: <DisplayActions context={{nodeData}}
                                          target="editHeaderActions"
                                          render={buttonRenderer({
                                              variant: 'primary'
@@ -79,7 +79,12 @@ EditPanel.propTypes = {
     fields: PropTypes.array.isRequired,
     formik: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
-    siteInfo: PropTypes.object.isRequired
+    siteInfo: PropTypes.object.isRequired,
+    nodeData: PropTypes.shape({
+        aggregatedPublicationInfo: PropTypes.shape({
+            publicationStatus: PropTypes.string.isRequired
+        }).isRequired
+    }).isRequired
 };
 
 export default compose(

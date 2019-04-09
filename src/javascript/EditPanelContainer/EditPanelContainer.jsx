@@ -41,7 +41,7 @@ export const EditPanelContainer = ({client, notificationContext, t, path, lang, 
                                                         initialValues={initialValues}
                                                         render={() => {
                                                             return (
-                                                                <EditPanel path={path} t={t} fields={fields} title={nodeData.displayName} siteInfo={siteInfo}/>
+                                                                <EditPanel path={path} t={t} fields={fields} title={nodeData.displayName} siteInfo={siteInfo} nodeData={nodeData}/>
                                                             );
                                                         }}
                                                         onSubmit={(values, actions) => {

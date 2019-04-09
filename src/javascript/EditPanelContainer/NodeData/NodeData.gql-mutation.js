@@ -16,7 +16,7 @@ export const PublishPropertiesMutation = gql`
     mutation saveNodeProperties($path:String!, $languages: [String] ) {
         jcr {
             mutateNode(pathOrId: $path) {
-                publish(languages: $languages, publishSubNodes: false)
+                publish(languages: $languages)
             }
         }
     }
