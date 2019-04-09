@@ -7,7 +7,7 @@ const NodeQuery = gql`
             result:nodeByPath(path: $path) {
                 ...NodeCacheRequiredFields
                 displayName(language: $language)
-                primaryNodeType { 
+                primaryNodeType {
                     name
                     properties {
                         name
@@ -18,6 +18,9 @@ const NodeQuery = gql`
                     name
                     value
                     values
+                }
+                aggregatedPublicationInfo(language: $language, subNodes: false, references: false) {
+                    publicationStatus
                 }
             }
         }
