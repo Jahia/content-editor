@@ -8,7 +8,16 @@ export const publishNode = ({client, nodeData, lang, notificationContext, action
             path: nodeData.path,
             languages: [lang]
         },
-        mutation: PublishPropertiesMutation
+        mutation: PublishPropertiesMutation,
+        refetchQueries: [
+            {
+                query: NodeQuery,
+                variables: {
+                    path: nodeData.path,
+                    language: lang
+                }
+            }
+        ]
     })
         .then(() => {
             notificationContext.notify(t('content-editor:label.contentEditor.edit.action.publish.success'), ['closeButton']);

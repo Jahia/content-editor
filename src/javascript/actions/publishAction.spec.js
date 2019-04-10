@@ -1,7 +1,17 @@
 import publishAction from './publishAction';
 
 describe('publish action', () => {
-    describe('onClik', () => {
+    describe('onClick', () => {
+        let context;
+        beforeEach(() => {
+            context = {
+                formik: {
+                    submitForm: jest.fn(() => Promise.resolve()),
+                    setFieldValue: jest.fn()
+                }
+            };
+        });
+
         it('should do nothing when formik is not available', () => {
             const context = {};
 
@@ -11,26 +21,12 @@ describe('publish action', () => {
         });
 
         it('should submit form when formik is available', () => {
-            const context = {
-                formik: {
-                    submitForm: jest.fn(),
-                    setFieldValue: jest.fn()
-                }
-            };
-
             publishAction.onClick(context);
 
             expect(context.formik.submitForm).toHaveBeenCalled();
         });
 
         it('should set context submitOperation to appriopriate publish value', () => {
-            const context = {
-                formik: {
-                    submitForm: jest.fn(),
-                    setFieldValue: jest.fn()
-                }
-            };
-
             publishAction.onClick(context);
 
             expect(context.submitOperation).toBe('PUBLISH');
@@ -38,8 +34,19 @@ describe('publish action', () => {
     });
 
     describe('onInit', () => {
+        let context;
+        beforeEach(() => {
+            context = {
+                nodeData: {
+                    aggregatedPublicationInfo: {
+                        publicationStatus: 'MODIFIED'
+                    },
+                    hasPermission: true
+                }
+            };
+        });
+
         it('should not enable submit action when form is not saved', () => {
-            const context = {};
             const props = {
                 formik: {
                     dirty: true
@@ -53,7 +60,6 @@ describe('publish action', () => {
         });
 
         it('should enable submit action when form is saved', () => {
-            const context = {};
             const props = {
                 formik: {
                     dirty: false
@@ -62,8 +68,45 @@ describe('publish action', () => {
 
             publishAction.init(context, props);
 
-            // As action expect impure function, testing params
             expect(context.enabled).toBe(true);
+        });
+
+        it('should enable submit action when node is already published', () => {
+            context.nodeData.aggregatedPublicationInfo.publicationStatus = 'PUBLISHED';
+            const props = {
+                formik: {
+                    dirty: false
+                }
+            };
+
+            publishAction.init(context, props);
+
+            expect(context.enabled).toBe(false);
+        });
+
+        it('should enable submit action when node is UNPUBLISHABLE', () => {
+            context.nodeData.aggregatedPublicationInfo.publicationStatus = 'MANDATORY_LANGUAGE_UNPUBLISHABLE';
+            const props = {
+                formik: {
+                    dirty: false
+                }
+            };
+
+            publishAction.init(context, props);
+
+            expect(context.enabled).toBe(false);
+        });
+
+        it('should disable publish action when you haven\'t the proper permission', () => {
+            context.nodeData.hasPermission = false;
+            const props = {
+                formik: {
+                    dirty: false
+                }
+            };
+            publishAction.init(context, props);
+
+            expect(context.enabled).toBe(false);
         });
     });
 });
