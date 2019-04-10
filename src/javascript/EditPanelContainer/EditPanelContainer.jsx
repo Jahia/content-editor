@@ -4,7 +4,6 @@ import {translate} from 'react-i18next';
 import {withNotifications} from '@jahia/react-material';
 import EditPanelConstants from './EditPanel/EditPanelConstants';
 import {Formik} from 'formik';
-import * as _ from 'lodash';
 import {connect} from 'react-redux';
 import EditPanel from './EditPanel';
 import NodeData from './NodeData';
@@ -25,16 +24,21 @@ export const EditPanelContainer = ({client, notificationContext, t, path, lang, 
                                     <FormDefinition uiLang={uiLang} lang={lang} path={path} nodeType={nodeData.primaryNodeType.name}>
                                         {({formDefinition}) => {
                                             if (formDefinition) {
-                                                let fields = _.map(formDefinition.fields, fieldDefinition => {
+                                                let fields = formDefinition.fields.map(fieldDefinition => {
                                                     return {
                                                         targets: fieldDefinition.targets,
                                                         formDefinition: fieldDefinition,
-                                                        jcrDefinition: _.find(nodeData.primaryNodeType.properties, {name: fieldDefinition.name}),
-                                                        data: _.find(nodeData.properties, {name: fieldDefinition.name})
+                                                        jcrDefinition: nodeData.primaryNodeType.properties.find(prop => prop.name === fieldDefinition.name),
+                                                        data: nodeData.properties.find(prop => prop.name === fieldDefinition.name)
                                                     };
                                                 });
 
-                                                let initialValues = _.mapValues(_.keyBy(fields, 'formDefinition.name'), 'data.value');
+                                                const initialValues = fields.reduce((initialValues, field) => {
+                                                    return {
+                                                        ...initialValues,
+                                                        [field.formDefinition.name]: field.data && field.data.value
+                                                    };
+                                                }, {});
 
                                                 return (
                                                     <Formik
