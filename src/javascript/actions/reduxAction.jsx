@@ -4,19 +4,24 @@
 
 import React from 'react';
 import {connect} from 'react-redux';
-import * as _ from 'lodash';
 
 let count = 0;
 let reduxAction = (mapStateToProps, mapDispatchToProps) => {
-    let Component = connect(mapStateToProps, mapDispatchToProps)(props => props.children(_.omit(props, ['children', 'context'])));
+    let Component = connect(mapStateToProps, mapDispatchToProps)(props => {
+        const {children, context, ...rest} = props;
+        return props.children(rest);
+    });
     let id = 'reduxProps' + (count++);
     return {
         init(context, props) {
-            _.assign(context, props[id]);
+            context = {
+                ...context,
+                ...props[id]
+            };
         },
 
         wrappers: [
-            component => <Component>{reduxProps => React.cloneElement(component, _.set({}, id, reduxProps))}</Component>
+            component => <Component>{reduxProps => React.cloneElement(component, {[id]: reduxProps})}</Component>
         ]
     };
 };
