@@ -40,13 +40,13 @@ describe('publish action', () => {
                 nodeData: {
                     aggregatedPublicationInfo: {
                         publicationStatus: 'MODIFIED'
-                    }
+                    },
+                    hasPermission: true
                 }
             };
         });
 
         it('should not enable submit action when form is not saved', () => {
-            const context = {};
             const props = {
                 formik: {
                     dirty: true
@@ -92,6 +92,18 @@ describe('publish action', () => {
                 }
             };
 
+            publishAction.init(context, props);
+
+            expect(context.enabled).toBe(false);
+        });
+
+        it('should disable publish action when you haven\'t the proper permission', () => {
+            context.nodeData.hasPermission = false;
+            const props = {
+                formik: {
+                    dirty: false
+                }
+            };
             publishAction.init(context, props);
 
             expect(context.enabled).toBe(false);
