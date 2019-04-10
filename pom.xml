@@ -49,7 +49,7 @@
     <parent>
         <artifactId>jahia-modules</artifactId>
         <groupId>org.jahia.modules</groupId>
-        <version>7.3.0.0</version>
+        <version>7.3.1.0-SNAPSHOT</version>
         <relativePath />
     </parent>
     <artifactId>content-editor</artifactId>
@@ -114,14 +114,14 @@
         <dependency>
             <groupId>org.jahia.modules</groupId>
             <artifactId>graphql-dxm-provider</artifactId>
-            <version>1.0.6</version>
+            <version>1.1.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>io.github.graphql-java</groupId>
             <artifactId>graphql-java-annotations</artifactId>
-            <version>6.1</version>
+            <version>${graphql-java-annotations.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -227,7 +227,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Import-Package>org.jahia.modules.graphql.provider.dxm;version="1.0.6",${jahia.plugin.projectPackageImport},*</Import-Package>
+                        <Import-Package>org.jahia.modules.graphql.provider.dxm;version="1.1.0",${jahia.plugin.projectPackageImport},*</Import-Package>
                         <_dsannotations>*</_dsannotations>
                     </instructions>
                 </configuration>
