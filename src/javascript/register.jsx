@@ -1,8 +1,9 @@
 import React from 'react';
 import {registry} from '@jahia/registry';
-import {Edit, Save, ArrowBack, CloudUpload} from '@material-ui/icons';
+import {Edit, Save, ArrowBack, CloudUpload, CloudOff} from '@material-ui/icons';
 import saveAction from './actions/saveAction';
 import publishAction from './actions/publishAction';
+import unpublishAction from './actions/unpublishAction';
 import goBackAction from './actions/goBackAction';
 import EditPanelConstants from './EditPanelContainer/EditPanel/EditPanelConstants';
 import EditPanelContainer from './EditPanelContainer';
@@ -43,7 +44,14 @@ if (contextJsParameters && contextJsParameters.config && contextJsParameters.con
             buttonLabel: 'content-editor:label.contentEditor.edit.action.publish.name',
             buttonIcon: <CloudUpload/>,
             target: ['editHeaderActions:2'],
-            submitOperation: EditPanelConstants.submitOperation.SAVE
+            submitOperation: EditPanelConstants.submitOperation.SAVE_PUBLISH
+        });
+
+        actionsRegistry.add('unpublishAction', unpublishAction, {
+            buttonLabel: 'content-editor:label.contentEditor.edit.action.unpublish.name',
+            buttonIcon: <CloudOff/>,
+            target: ['editHeaderActions:2'],
+            submitOperation: EditPanelConstants.submitOperation.UNPUBLISH
         });
     });
 }

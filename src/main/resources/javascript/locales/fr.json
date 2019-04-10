@@ -20,6 +20,11 @@
                       "name": "Publier",
                       "success": "Contenu publié",
                       "error": "Erreur pendant la publication"
+                    },
+                    "unpublish": {
+                      "name": "Dépublier",
+                      "success": "Contenu dépublié",
+                      "error": "Erreur pendant la dépublication"
                     }
                 },
                 "sharedLanguages": "Partagé par toutes les langues"

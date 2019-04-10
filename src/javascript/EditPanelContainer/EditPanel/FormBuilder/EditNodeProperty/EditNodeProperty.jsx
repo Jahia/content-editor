@@ -62,7 +62,7 @@ export const EditNodeProperty = ({t, classes, children, field, siteInfo}) => {
                     {children}
                 </Grid>
                 <Grid item>
-                    <Button variant="iconGhost" icon={<MoreVert/>}/>
+                    <Button variant="ghost" icon={<MoreVert/>}/>
                 </Grid>
             </Grid>
         </FormControl>

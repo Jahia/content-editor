@@ -51,9 +51,11 @@ class EditPanel extends React.Component {
                 contextModifiers: <Typography variant="omega" color="invert">{t('content-editor:label.contentEditor.edit.title')}</Typography>,
                 actions: <DisplayActions context={{nodeData}}
                                          target="editHeaderActions"
-                                         render={buttonRenderer({
-                                             variant: 'primary'
-                                         }, true)}
+                                         render={({context}) => {
+                                             const variant = context.actionKey === 'unpublishAction' ? 'secondary' : 'primary';
+                                             const Button = buttonRenderer({variant}, true);
+                                             return <Button context={context}/>;
+                                        }}
                 />
             }}
             >

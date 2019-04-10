@@ -10,7 +10,13 @@ import NodeData from './NodeData';
 import * as PropTypes from 'prop-types';
 import FormDefinition from './FormDefinitions';
 import SiteData from './SiteData';
-import {publishNode, saveNode} from './EditPanel.redux-actions';
+import {publishNode, saveNode, unpublishNode} from './EditPanel.redux-actions';
+
+const submitActionMapper = {
+    [EditPanelConstants.submitOperation.SAVE]: saveNode,
+    [EditPanelConstants.submitOperation.SAVE_PUBLISH]: publishNode,
+    [EditPanelConstants.submitOperation.UNPUBLISH]: unpublishNode
+};
 
 // TODO modify SiteData with HOC, as well NodeData
 export const EditPanelContainer = ({client, notificationContext, t, path, lang, uiLang}) => {
@@ -49,35 +55,24 @@ export const EditPanelContainer = ({client, notificationContext, t, path, lang, 
                                                             );
                                                         }}
                                                         onSubmit={(values, actions) => {
-                                                            switch (values[EditPanelConstants.systemFields.SYSTEM_SUBMIT_OPERATION]) {
-                                                                case EditPanelConstants.submitOperation.SAVE:
-                                                                    saveNode({
-                                                                        client,
-                                                                        nodeData,
-                                                                        notificationContext,
-                                                                        actions,
-                                                                        path,
-                                                                        lang,
-                                                                        values,
-                                                                        fields,
-                                                                        t
-                                                                    });
-                                                                    break;
-                                                                case EditPanelConstants.submitOperation.SAVE_PUBLISH:
-                                                                    publishNode({
-                                                                        client,
-                                                                        nodeData,
-                                                                        lang,
-                                                                        notificationContext,
-                                                                        actions,
-                                                                        t
-                                                                    });
-                                                                    break;
-                                                                default:
-                                                                    console.warn('Unknown submit operation: ' + values[EditPanelConstants.systemFields.SYSTEM_SUBMIT_OPERATION]);
-                                                                    actions.setSubmitting(false);
-                                                                    break;
+                                                            const submitAction = submitActionMapper[values[EditPanelConstants.systemFields.SYSTEM_SUBMIT_OPERATION]];
+
+                                                            if (!submitAction) {
+                                                                console.warn('Unknown submit operation: ' + values[EditPanelConstants.systemFields.SYSTEM_SUBMIT_OPERATION]);
+                                                                actions.setSubmitting(false);
                                                             }
+
+                                                            submitAction({
+                                                                client,
+                                                                nodeData,
+                                                                lang,
+                                                                notificationContext,
+                                                                actions,
+                                                                t,
+                                                                path,
+                                                                values,
+                                                                fields
+                                                            });
                                                         }}
                                                     />
                                                 );
