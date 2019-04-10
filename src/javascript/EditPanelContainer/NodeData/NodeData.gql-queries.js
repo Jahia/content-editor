@@ -22,6 +22,7 @@ const NodeQuery = gql`
                 aggregatedPublicationInfo(language: $language, subNodes: false, references: false) {
                     publicationStatus
                 }
+                hasPermission(permissionName: "publish")
             }
         }
     }

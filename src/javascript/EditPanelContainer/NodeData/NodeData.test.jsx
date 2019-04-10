@@ -79,6 +79,7 @@ describe('NodeData component', () => {
                     publicationStatus: 'PUBLISHED',
                     __typename: 'GqlPublicationInfo'
                 },
+                hasPermission: false,
                 properties: [],
                 __typename: 'GenericJCRNode'
             };

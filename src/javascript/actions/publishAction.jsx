@@ -6,7 +6,8 @@ export default composeActions(withFormikAction, {
     init: context => {
         // It's weird, formik set dirty when intialValue === currentValue
         // event when form had been modified
-        context.enabled = !context.formik.dirty &&
+        context.enabled = context.nodeData.hasPermission &&
+            !context.formik.dirty &&
             ![
                 EditPanelConstants.publicationStatus.PUBLISHED,
                 EditPanelConstants.publicationStatus.MANDATORY_LANGUAGE_UNPUBLISHABLE
