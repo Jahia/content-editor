@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-const SavePropertiesMutation = gql`
+export const SavePropertiesMutation = gql`
     mutation saveNodeProperties($path:String!, $properties:[InputJCRProperty]) {
         jcr {
             mutateNode(pathOrId: $path) {
@@ -12,6 +12,12 @@ const SavePropertiesMutation = gql`
     }
 `;
 
-export {
-    SavePropertiesMutation
-};
+export const PublishPropertiesMutation = gql`
+    mutation saveNodeProperties($path:String!, $languages: [String] ) {
+        jcr {
+            mutateNode(pathOrId: $path) {
+                publish(languages: $languages, publishSubNodes: false)
+            }
+        }
+    }
+`;

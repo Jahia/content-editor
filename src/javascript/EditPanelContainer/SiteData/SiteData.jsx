@@ -6,13 +6,10 @@ import {connect} from 'react-redux';
 import * as PropTypes from 'prop-types';
 import {SiteInfo} from '@jahia/react-apollo';
 
-export class SiteData extends React.Component {
-    render() {
-        const {notificationContext, t, site, lang} = this.props;
-
-        return (
-            <SiteInfo siteKey={site} displayLanguage={lang}>
-                {({siteInfo, error, loading}) => {
+export const SiteData = ({notificationContext, t, site, lang, children}) => {
+    return (
+        <SiteInfo siteKey={site} displayLanguage={lang}>
+            {({siteInfo, error, loading}) => {
                     if (error) {
                         console.log('Error when fetching data: ' + error);
                         let message = t('label.contentEditor.error.queryingContent', {details: (error.message ? error.message : '')});
@@ -24,13 +21,12 @@ export class SiteData extends React.Component {
                         return <ProgressOverlay/>;
                     }
 
-                    let renderProp = this.props.children;
-                    return renderProp({siteInfo});
+                    const Children = children;
+                    return <Children siteInfo={siteInfo}/>;
                 }}
-            </SiteInfo>
-        );
-    }
-}
+        </SiteInfo>
+    );
+};
 
 const mapStateToProps = state => ({
     site: state.site,

@@ -15,6 +15,11 @@
                         "btnContinue": "Continue editing",
                         "btnDiscard": "Discard changes",
                         "btnSave": "Save changes"
+                    },
+                    "publish": {
+                      "name": "Publish",
+                      "success": "Content published",
+                      "error": "Error during publication"
                     }
                 },
                 "sharedLanguages": "Shared by all languages"
