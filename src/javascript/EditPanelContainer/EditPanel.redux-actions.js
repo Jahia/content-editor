@@ -1,4 +1,4 @@
-import {SavePropertiesMutation, PublishPropertiesMutation} from './NodeData/NodeData.gql-mutation';
+import {SavePropertiesMutation, PublishPropertiesMutation, UnpublishPropertiesMutation} from './NodeData/NodeData.gql-mutation';
 import {getPropertiesToSave} from './EditPanel/EditPanel.utils';
 import {NodeQuery} from './NodeData/NodeData.gql-queries';
 
@@ -25,6 +25,33 @@ export const publishNode = ({client, nodeData, lang, notificationContext, action
         }, error => {
             console.error(error);
             notificationContext.notify(t('content-editor:label.contentEditor.edit.action.publish.error'), ['closeButton']);
+            actions.setSubmitting(false);
+        });
+};
+
+export const unpublishNode = ({client, nodeData, lang, notificationContext, actions, t}) => {
+    return client.mutate({
+        variables: {
+            path: nodeData.path,
+            languages: [lang]
+        },
+        mutation: UnpublishPropertiesMutation,
+        refetchQueries: [
+            {
+                query: NodeQuery,
+                variables: {
+                    path: nodeData.path,
+                    language: lang
+                }
+            }
+        ]
+    })
+        .then(() => {
+            notificationContext.notify(t('content-editor:label.contentEditor.edit.action.unpublish.success'), ['closeButton']);
+            actions.setSubmitting(false);
+        }, error => {
+            console.error(error);
+            notificationContext.notify(t('content-editor:label.contentEditor.edit.action.unpublish.error'), ['closeButton']);
             actions.setSubmitting(false);
         });
 };

@@ -18,8 +18,13 @@
                     },
                     "publish": {
                       "name": "Veröffentlichen",
-                      "success": "Content wurde veröffentlichen",
+                      "success": "Content wurde veröffentlicht",
                       "error": "Während der Veröffentlichung ist ein Fehler aufgetreten."
+                    },
+                    "unpublish": {
+                      "name": "Veröffentlichung rückgängig machen",
+                      "success": "Veröffentlichung für Content wurde rückgängig gemacht",
+                      "error": "Während dem rückgängig machen der Veröffentlichung ist ein Fehler aufgetreten"
                     }
                 },
                 "sharedLanguages": "Von allen Sprachen geteilt"

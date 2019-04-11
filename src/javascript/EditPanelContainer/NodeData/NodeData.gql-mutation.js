@@ -21,3 +21,13 @@ export const PublishPropertiesMutation = gql`
         }
     }
 `;
+
+export const UnpublishPropertiesMutation = gql`
+    mutation saveNodeProperties($path:String!, $languages: [String] ) {
+        jcr {
+            mutateNode(pathOrId: $path) {
+                unpublish(languages: $languages)
+            }
+        }
+    }
+`;

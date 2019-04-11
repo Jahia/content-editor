@@ -4,11 +4,18 @@ jest.mock('./actions/publishAction', () => {
     };
 });
 
+jest.mock('./actions/unpublishAction', () => {
+    return {
+
+    };
+});
+
 const publishAction = require('./actions/publishAction');
+const unpublishAction = require('./actions/unpublishAction');
 
 describe('register', () => {
     let actionsRegistry;
-    beforeEach(() => {
+    beforeAll(() => {
         actionsRegistry = {
             get: jest.fn(),
             add: jest.fn()
@@ -28,17 +35,27 @@ describe('register', () => {
         global.__webpack_public_path__ = '';
 
         console.log = jest.fn();
+        require('./register.jsx');
     });
 
     it('should register publish action', () => {
-        require('./register.jsx');
-
         expect(
             actionsRegistry
                 .add
                 .mock
                 .calls
                 .find(call => call[1] === publishAction)
+        )
+            .toBeTruthy();
+    });
+
+    it('should register unpublish action', () => {
+        expect(
+            actionsRegistry
+                .add
+                .mock
+                .calls
+                .find(call => call[1] === unpublishAction)
         )
             .toBeTruthy();
     });

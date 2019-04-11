@@ -1,7 +1,8 @@
 const EditPanelConstants = {
     submitOperation: {
         SAVE: 'SAVE',
-        SAVE_PUBLISH: 'PUBLISH'
+        SAVE_PUBLISH: 'PUBLISH',
+        UNPUBLISH: 'UNPUBLISH'
     },
     systemFields: {
         SYSTEM_SUBMIT_OPERATION: 'SYSTEM_SUBMIT_OPERATION'

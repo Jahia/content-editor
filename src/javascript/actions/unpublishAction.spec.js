@@ -1,6 +1,6 @@
-import publishAction from './publishAction';
+import unpublishAction from './unpublishAction';
 
-describe('publish action', () => {
+describe('unpublish action', () => {
     describe('onClick', () => {
         let context;
         beforeEach(() => {
@@ -16,21 +16,21 @@ describe('publish action', () => {
         it('should do nothing when formik is not available', () => {
             const context = {};
 
-            publishAction.onClick(context);
+            unpublishAction.onClick(context);
 
             expect(Object.keys(context).length).toBe(0);
         });
 
         it('should submit form when formik is available', () => {
-            publishAction.onClick(context);
+            unpublishAction.onClick(context);
 
             expect(context.formik.submitForm).toHaveBeenCalled();
         });
 
         it('should set context submitOperation to appriopriate publish value', () => {
-            publishAction.onClick(context);
+            unpublishAction.onClick(context);
 
-            expect(context.submitOperation).toBe('PUBLISH');
+            expect(context.submitOperation).toBe('UNPUBLISH');
         });
     });
 
@@ -40,72 +40,59 @@ describe('publish action', () => {
             context = {
                 nodeData: {
                     aggregatedPublicationInfo: {
-                        publicationStatus: 'MODIFIED'
+                        publicationStatus: 'PUBLISHED'
                     },
                     hasPermission: true
                 }
             };
         });
 
-        it('should not enable submit action when form is not saved', () => {
+        it('should not enable unpublish action when form is not saved', () => {
             const props = {
                 formik: {
                     dirty: true
                 }
             };
 
-            publishAction.init(context, props);
+            unpublishAction.init(context, props);
 
             // As action expect impure function, testing params
             expect(context.enabled).toBe(false);
         });
 
-        it('should enable submit action when form is saved', () => {
+        it('should enable unpublish action when form is saved and published', () => {
             const props = {
                 formik: {
                     dirty: false
                 }
             };
 
-            publishAction.init(context, props);
+            unpublishAction.init(context, props);
 
             expect(context.enabled).toBe(true);
         });
 
-        it('should enable submit action when node is already published', () => {
-            context.nodeData.aggregatedPublicationInfo.publicationStatus = 'PUBLISHED';
+        it('should not enable unpublish action when node is not published', () => {
+            context.nodeData.aggregatedPublicationInfo.publicationStatus = 'MODIFIED';
             const props = {
                 formik: {
                     dirty: false
                 }
             };
 
-            publishAction.init(context, props);
+            unpublishAction.init(context, props);
 
             expect(context.enabled).toBe(false);
         });
 
-        it('should enable submit action when node is UNPUBLISHABLE', () => {
-            context.nodeData.aggregatedPublicationInfo.publicationStatus = 'MANDATORY_LANGUAGE_UNPUBLISHABLE';
-            const props = {
-                formik: {
-                    dirty: false
-                }
-            };
-
-            publishAction.init(context, props);
-
-            expect(context.enabled).toBe(false);
-        });
-
-        it('should disable publish action when you haven\'t the proper permission', () => {
+        it('should disable unpublish action when you haven\'t the proper permission', () => {
             context.nodeData.hasPermission = false;
             const props = {
                 formik: {
                     dirty: false
                 }
             };
-            publishAction.init(context, props);
+            unpublishAction.init(context, props);
 
             expect(context.enabled).toBe(false);
         });
