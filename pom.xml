@@ -107,7 +107,7 @@
         <dependency>
             <groupId>org.jahia.modules</groupId>
             <artifactId>dx-commons-webpack</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.0-backlog_9621-SNAPSHOT</version>
             <type>json</type>
             <classifier>manifest</classifier>
         </dependency>
