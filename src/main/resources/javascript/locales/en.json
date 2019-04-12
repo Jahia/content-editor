@@ -31,6 +31,13 @@
             },
             "error": {
                 "queryingContent": "Error querying content: {{details}}"
+            },
+            "preview": {
+                "toggleButtons": {
+                    "preview" : "Preview",
+                    "details": "Details",
+                    "off": "Off"
+                }
             }
         }
     }

@@ -28,10 +28,17 @@
                     }
                 },
                 "sharedLanguages": "Von allen Sprachen geteilt"
+            },
+            "error": {
+                "queryingContent": "Fehler während Content-Abfrage: {{details}}"
+            },
+            "preview": {
+                "toggleButtons": {
+                    "preview": "Vorschau",
+                    "details": "Details",
+                    "off": "Aus"
+                }
             }
-        },
-        "error": {
-            "queryingContent": "Fehler während Content-Abfrage: {{details}}"
         }
     }
 }
