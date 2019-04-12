@@ -11,7 +11,7 @@ import Button from '@material-ui/core/Button';
 import * as PropTypes from 'prop-types';
 import EditPanelConstants from '../EditPanelContainer/EditPanel/EditPanelConstants';
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToContext = dispatch => ({
     setUrl: (site, language, mode, path, params) => dispatch(cmGoto({site, language, mode, path, params}))
 });
 
@@ -64,10 +64,8 @@ const DialogConfirmationTranslated = translate()(DialogConfirmation);
 export default composeActions(
     withFormikAction,
     componentRendererAction,
-    reduxAction(mapStateToProps, mapDispatchToProps),
+    reduxAction(mapStateToProps, mapDispatchToContext),
     {
-        init: () => {
-        },
         onClick: context => {
             if (context.formik) {
                 const {mode, siteKey, language, setUrl} = context;
