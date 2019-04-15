@@ -13,7 +13,9 @@ export const NodeData = ({t, path, lang, children}) => {
     };
 
     return (
-        <Query query={NodeQuery} variables={queryParams} fetchPolicy="cache-first">
+        // Should be fetchPolicy="cache-first", but CMM is still using GWT actions (like publish), and cached data is probaly not good after using CMM GWT actions.
+        // TODO set fetchPolicy="cache-first" and use refetchQuery when CMM will be able to use react publish actions
+        <Query query={NodeQuery} variables={queryParams} fetchPolicy="network-only">
             {({loading, error, data}) => {
                 if (error) {
                     let message = t('content-media-manager:label.contentManager.error.queryingContent', {details: (error.message ? error.message : '')});
