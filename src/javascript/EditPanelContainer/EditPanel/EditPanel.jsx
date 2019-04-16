@@ -1,6 +1,6 @@
 import React from 'react';
 import {MainLayout} from '@jahia/layouts';
-import {buttonRenderer, DisplayActions, DxContext} from '@jahia/react-material';
+import {buttonRenderer, DisplayActions} from '@jahia/react-material';
 import {Typography} from '@jahia/ds-mui-theme';
 import PropTypes from 'prop-types';
 import EditPanelContent from './EditPanelContent/EditPanelContent';
@@ -49,15 +49,10 @@ class EditPanel extends React.Component {
                 />
             }}
             >
-                <DxContext.Consumer>
-                    {dxContext => (
-                        <EditPanelContent dxContext={dxContext}
-                                          path={path}
-                                          siteInfo={siteInfo}
-                                          fields={fields}
-                                          language={language}/>
-                    )}
-                </DxContext.Consumer>
+                <EditPanelContent path={path}
+                                  siteInfo={siteInfo}
+                                  fields={fields}
+                                  language={language}/>
             </MainLayout>
         );
     }

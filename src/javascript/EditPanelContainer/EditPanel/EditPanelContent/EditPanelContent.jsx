@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {FullWidthContent, TwoColumnsContent} from '@jahia/layouts';
-import {PreviewComponent} from '@jahia/react-material';
+import {ContentPreview} from '@jahia/react-material';
 import {Typography} from '@jahia/ds-mui-theme';
 import * as PropTypes from 'prop-types';
 import FormBuilder from '../FormBuilder';
@@ -25,15 +25,17 @@ const styles = () => ({
 
 const DetailsPreviewComponent = () => (<></>);
 
-const EditPanelContent = ({dxContext, t, path, language, classes, fields, siteInfo}) => {
+const EditPanelContent = ({t, path, language, classes, fields, siteInfo}) => {
     const [previewMode, setPreviewMode] = useState('preview');
 
     const PreviewCmp = previewMode === 'preview' ? (
-        <PreviewComponent dxContext={dxContext}
-                          t={t}
-                          path={path}
-                          language={language}
-                          previewMode="EDIT"
+        <ContentPreview path={path}
+                        language={language}
+                        workspace="EDIT"
+                        fullScreen={false}
+                        templateType="html"
+                        view="cm"
+                        contextConfiguration="preview"
         />
     ) : previewMode === 'details' ? <DetailsPreviewComponent/> : null;
 
@@ -86,8 +88,7 @@ EditPanelContent.propTypes = {
     language: PropTypes.string.isRequired,
     fields: PropTypes.array.isRequired,
     classes: PropTypes.object.isRequired,
-    siteInfo: PropTypes.object.isRequired,
-    dxContext: PropTypes.object.isRequired
+    siteInfo: PropTypes.object.isRequired
 };
 
 export default compose(

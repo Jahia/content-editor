@@ -7,11 +7,12 @@ describe('EditPanelContent', () => {
 
     beforeEach(() => {
         defaultProps = {
+            t: i18nKey => i18nKey,
             path: '',
-            lang: '',
+            language: 'en',
             fields: [],
             siteInfo: {},
-            dxContext: {}
+            classes: {}
         };
     });
 
