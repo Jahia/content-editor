@@ -106,6 +106,7 @@ export const EditPanelContainer = ({
                                                                     nodeData
                                                                 }
                                                                 language={lang}
+
                                                             />
                                                         );
                                                     }}
