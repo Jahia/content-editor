@@ -27,7 +27,12 @@
                       "error": "Error during unpublication"
                     }
                 },
-                "sharedLanguages": "Shared by all languages"
+                "sharedLanguages": "Shared by all languages",
+                "fields": {
+                  "ImagePicker": {
+                    "addImage": "Add Image"
+                  }
+                }
             },
             "error": {
                 "queryingContent": "Error querying content: {{details}}"

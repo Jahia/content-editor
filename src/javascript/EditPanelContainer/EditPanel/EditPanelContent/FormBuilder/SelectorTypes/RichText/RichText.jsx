@@ -12,7 +12,7 @@ export class RichText extends React.Component {
     }
 
     render() {
-        const {field} = this.props;
+        const {field, id} = this.props;
         const {values, setFieldValue} = this.props.formik;
 
         const onEditorChange = evt => {
@@ -30,6 +30,7 @@ export class RichText extends React.Component {
 
         return (
             <CKEditor
+                    id={id}
                     data={values[field.formDefinition.name]}
                     config={config}
                     readOnly={field.formDefinition.readOnly}
@@ -40,6 +41,7 @@ export class RichText extends React.Component {
 }
 
 RichText.propTypes = {
+    id: PropTypes.string.isRequired,
     field: PropTypes.object.isRequired,
     formik: PropTypes.object.isRequired
 };
