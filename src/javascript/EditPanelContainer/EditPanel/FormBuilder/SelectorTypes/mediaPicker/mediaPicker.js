@@ -1,12 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {compose} from 'react-apollo';
 import {withStyles} from '@material-ui/core';
+import {translate} from 'react-i18next';
 import {Typography} from '@jahia/ds-mui-theme';
 import {DisplayActions} from '@jahia/react-material';
 import IconButton from '@material-ui/core/IconButton';
-import {MediaPickerEmpty} from './mediaPicker_empty';
+import ImageIcon from '@material-ui/icons/Image';
 
 const styles = theme => ({
+    addImage: {
+        width: '100%',
+        height: theme.spacing.unit * 9,
+        backgroundColor: theme.palette.ui.omega,
+        // TODO border: `1px ${theme.palette.ui.zeta} dashed`,
+        border: '1px #C1C8D5 dashed',
+        fontSize: '0.875rem',
+        borderRadius: '2px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        '&:hover': {
+            // TODO border: `1px ${theme.palette.ui.zeta} dashed`,
+            border: '1px #C1C8D5 solid'
+        }
+    },
     imageSelectedContainer: {
         height: theme.spacing.unit * 9,
         display: 'flex',
@@ -34,9 +52,20 @@ const styles = theme => ({
     }
 });
 
-const MediaPickerCmp = ({field, id, classes}) => {
-    if (!field.data || !field.data.value) {
-        return <MediaPickerEmpty idInput={id}/>;
+// TODO use the ID to link it to the input field
+// eslint-disable-next-line
+const MediaPickerCmp = ({field, id, t, classes}) => {
+    if (!field.data.value) {
+        return (
+            <>
+                <button className={classes.addImage} type="button">
+                    <ImageIcon/>
+                    {t(
+                        'content-editor:label.contentEditor.edit.fields.imagePicker.addImage'
+                    )}
+                </button>
+            </>
+        );
     }
 
     return (
@@ -53,8 +82,7 @@ const MediaPickerCmp = ({field, id, classes}) => {
                     {field.imageData.name}
                 </Typography>
                 <Typography variant="omega" color="gamma">
-                    {field.imageData.type} - {field.imageData.size[0]}x
-                    {field.imageData.size[1]}px - {field.imageData.weight}mb
+                    {field.imageData.type} - {field.imageData.size[0]}x{field.imageData.size[1]}px - {field.imageData.weight}mb
                 </Typography>
             </div>
             <DisplayActions
@@ -84,7 +112,7 @@ MediaPickerCmp.propTypes = {
     field: PropTypes.shape({
         data: PropTypes.shape({
             value: PropTypes.string
-        }),
+        }).isRequired,
         imageData: PropTypes.shape({
             url: PropTypes.string.isRequired,
             name: PropTypes.string.isRequired,
@@ -94,7 +122,11 @@ MediaPickerCmp.propTypes = {
         })
     }).isRequired,
     id: PropTypes.string.isRequired,
+    t: PropTypes.func.isRequired,
     classes: PropTypes.object
 };
 
-export const MediaPicker = withStyles(styles)(MediaPickerCmp);
+export const MediaPicker = compose(
+    translate(),
+    withStyles(styles)
+)(MediaPickerCmp);
