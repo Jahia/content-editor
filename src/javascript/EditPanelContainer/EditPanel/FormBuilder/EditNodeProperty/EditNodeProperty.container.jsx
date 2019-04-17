@@ -11,14 +11,18 @@ export const EditNodePropertyContainer = ({field, siteInfo}) => {
     }
 
     return (
-        <EditNodeProperty field={field} siteInfo={siteInfo}>
-            <FieldComponent field={field}/>
+        <EditNodeProperty field={field} labelHtmlFor={field.formDefinition.name} siteInfo={siteInfo}>
+            <FieldComponent field={field} id={field.formDefinition.name}/>
         </EditNodeProperty>
     );
 };
 
 EditNodePropertyContainer.propTypes = {
-    field: PropTypes.object.isRequired,
+    field: PropTypes.shape({
+        formDefinition: PropTypes.shape({
+            name: PropTypes.string.isRequired
+        }).isRequired
+    }).isRequired,
     siteInfo: PropTypes.object.isRequired
 };
 

@@ -27,7 +27,12 @@
                       "error": "Während dem rückgängig machen der Veröffentlichung ist ein Fehler aufgetreten"
                     }
                 },
-                "sharedLanguages": "Von allen Sprachen geteilt"
+                "sharedLanguages": "Von allen Sprachen geteilt",
+                "fields": {
+                  "ImagePicker": {
+                    "addImage": "TODO"
+                  }
+                }
             }
         },
         "error": {

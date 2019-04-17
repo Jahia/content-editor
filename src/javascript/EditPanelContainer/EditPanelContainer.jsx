@@ -19,71 +19,144 @@ const submitActionMapper = {
 };
 
 // TODO modify SiteData with HOC, as well NodeData
-export const EditPanelContainer = ({client, notificationContext, t, path, lang, uiLang}) => {
+export const EditPanelContainer = ({
+    client,
+    notificationContext,
+    t,
+    path,
+    lang,
+    uiLang
+}) => {
     return (
         <SiteData>
             {({siteInfo}) => {
-                    return (
-                        <NodeData>
-                            {({nodeData}) => {
-                                return (
-                                    <FormDefinition uiLang={uiLang} lang={lang} path={path} nodeType={nodeData.primaryNodeType.name}>
-                                        {({formDefinition}) => {
-                                            if (formDefinition) {
-                                                let fields = formDefinition.fields.map(fieldDefinition => {
-                                                    return {
-                                                        targets: fieldDefinition.targets,
-                                                        formDefinition: fieldDefinition,
-                                                        jcrDefinition: nodeData.primaryNodeType.properties.find(prop => prop.name === fieldDefinition.name),
-                                                        data: nodeData.properties.find(prop => prop.name === fieldDefinition.name)
-                                                    };
-                                                });
+                return (
+                    <NodeData>
+                        {({nodeData}) => {
+                            return (
+                                <FormDefinition
+                                    uiLang={uiLang}
+                                    lang={lang}
+                                    path={path}
+                                    nodeType={nodeData.primaryNodeType.name}
+                                >
+                                    {({formDefinition}) => {
+                                        if (formDefinition) {
+                                            let fields = formDefinition.fields.map(
+                                                fieldDefinition => {
+                                                    // TODO replace this mock with actual data getting in nodeData query (work in progress for graphql API)
+                                                    const imageDataMock = fieldDefinition.selectorType === 'Picker' ? {
+                                                        url: 'http://placekitten.com/g/200/300',
+                                                        name: 'Beautiful_hairy_pussy.jpg',
+                                                        size: [1200, 1200],
+                                                        weight: 1.2,
+                                                        type: 'Jpeg'
+                                                    } : null;
 
-                                                const initialValues = fields.reduce((initialValues, field) => {
+                                                    return {
+                                                        targets:
+                                                            fieldDefinition.targets,
+                                                        formDefinition: fieldDefinition,
+                                                        jcrDefinition: nodeData.primaryNodeType.properties.find(
+                                                            prop =>
+                                                                prop.name ===
+                                                                fieldDefinition.name
+                                                        ),
+                                                        data: nodeData.properties.find(
+                                                            prop =>
+                                                                prop.name ===
+                                                                fieldDefinition.name
+                                                        ),
+                                                        imageData: imageDataMock
+                                                    };
+                                                }
+                                            );
+
+                                            const initialValues = fields.reduce(
+                                                (initialValues, field) => {
                                                     return {
                                                         ...initialValues,
-                                                        [field.formDefinition.name]: field.data && field.data.value
+                                                        [field.formDefinition
+                                                            .name]:
+                                                            field.data &&
+                                                            field.data.value
                                                     };
-                                                }, {});
+                                                },
+                                                {}
+                                            );
 
-                                                return (
-                                                    <Formik
-                                                        initialValues={initialValues}
-                                                        render={() => {
-                                                            return (
-                                                                <EditPanel path={path} t={t} fields={fields} title={nodeData.displayName} siteInfo={siteInfo} nodeData={nodeData}/>
+                                            return (
+                                                <Formik
+                                                    initialValues={
+                                                        initialValues
+                                                    }
+                                                    render={() => {
+                                                        return (
+                                                            <EditPanel
+                                                                path={path}
+                                                                t={t}
+                                                                fields={fields}
+                                                                title={
+                                                                    nodeData.displayName
+                                                                }
+                                                                siteInfo={
+                                                                    siteInfo
+                                                                }
+                                                                nodeData={
+                                                                    nodeData
+                                                                }
+                                                            />
+                                                        );
+                                                    }}
+                                                    onSubmit={(
+                                                        values,
+                                                        actions
+                                                    ) => {
+                                                        const submitAction =
+                                                            submitActionMapper[
+                                                                values[
+                                                                    EditPanelConstants
+                                                                        .systemFields
+                                                                        .SYSTEM_SUBMIT_OPERATION
+                                                                ]
+                                                            ];
+
+                                                        if (!submitAction) {
+                                                            console.warn(
+                                                                'Unknown submit operation: ' +
+                                                                    values[
+                                                                        EditPanelConstants
+                                                                            .systemFields
+                                                                            .SYSTEM_SUBMIT_OPERATION
+                                                                    ]
                                                             );
-                                                        }}
-                                                        onSubmit={(values, actions) => {
-                                                            const submitAction = submitActionMapper[values[EditPanelConstants.systemFields.SYSTEM_SUBMIT_OPERATION]];
+                                                            actions.setSubmitting(
+                                                                false
+                                                            );
+                                                        }
 
-                                                            if (!submitAction) {
-                                                                console.warn('Unknown submit operation: ' + values[EditPanelConstants.systemFields.SYSTEM_SUBMIT_OPERATION]);
-                                                                actions.setSubmitting(false);
-                                                            }
-
-                                                            submitAction({
-                                                                client,
-                                                                nodeData,
-                                                                lang,
-                                                                notificationContext,
-                                                                actions,
-                                                                t,
-                                                                path,
-                                                                values,
-                                                                fields
-                                                            });
-                                                        }}
-                                                    />
-                                                );
-                                            }
-                                        }}
-                                    </FormDefinition>
-                                );
-                            }}
-                        </NodeData>
-                    );
-                }}
+                                                        submitAction({
+                                                            client,
+                                                            nodeData,
+                                                            lang,
+                                                            notificationContext,
+                                                            actions,
+                                                            t,
+                                                            path,
+                                                            values,
+                                                            fields
+                                                        });
+                                                    }}
+                                                />
+                                            );
+                                        }
+                                    }}
+                                </FormDefinition>
+                            );
+                        }}
+                    </NodeData>
+                );
+            }}
         </SiteData>
     );
 };

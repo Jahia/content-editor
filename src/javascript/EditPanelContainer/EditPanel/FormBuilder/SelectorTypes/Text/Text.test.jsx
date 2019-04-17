@@ -10,6 +10,7 @@ describe('Text component', () => {
 
     beforeEach(() => {
         props = {
+            id: 'toto',
             field: {
                 formDefinition: {
                     name: 'x'
@@ -31,7 +32,7 @@ describe('Text component', () => {
 
     it('should contain a matching TextField component', () => {
         const fieldName = props.field.formDefinition.name;
-        const expectedMatch = <Input id={fieldName} name={fieldName}/>;
+        const expectedMatch = <Input id={props.id} name={fieldName}/>;
 
         expect(wrapper.containsMatchingElement(expectedMatch)).toBe(true);
     });

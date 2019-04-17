@@ -4,39 +4,48 @@ import {shallow} from '@jahia/test-framework';
 import EditNodePropertyContainer from './EditNodeProperty.container';
 import RichText from '../SelectorTypes/RichText';
 import Text from '../SelectorTypes/Text';
+import {MediaPicker} from '../SelectorTypes/mediaPicker/mediaPicker';
 
 describe('EditNodeProperty container component', () => {
-    let props;
-    let wrapper;
-
+    let defaultProps;
     beforeEach(() => {
-        props = {
-            field: {formDefinition: ''}
+        defaultProps = {
+            field: {formDefinition: {name: 'x', selectorType: 'RichText'}},
+            targets: [{name: 'test'}],
+            siteInfo: {}
         };
-        wrapper = shallow(<EditNodePropertyContainer {...props}/>);
     });
 
     it('should render a Text component when field type is "Text"', () => {
-        props.field =
-            {formDefinition: {name: 'x', selectorType: 'Text'},
-                targets: [{name: 'test'}]};
+        defaultProps.field.formDefinition.selectorType = 'Text';
+        const cmp = shallow(<EditNodePropertyContainer {...defaultProps}/>);
 
-        wrapper.setProps(props);
-
-        const fieldComponent = wrapper.find(Text);
+        const fieldComponent = cmp.find(Text);
         expect(fieldComponent.exists()).toBe(true);
         expect(fieldComponent.length).toBe(1);
     });
 
     it('should render a RichText component when field type is "RichText"', () => {
-        props.field =
-            {formDefinition: {name: 'x', selectorType: 'RichText'},
-                targets: [{name: 'test'}]};
+        const cmp = shallow(<EditNodePropertyContainer {...defaultProps}/>);
 
-        wrapper.setProps(props);
-
-        const fieldComponent = wrapper.find(RichText);
+        const fieldComponent = cmp.find(RichText);
         expect(fieldComponent.exists()).toBe(true);
         expect(fieldComponent.length).toBe(1);
+    });
+
+    it('should render a Picker component when field type is "picker"', () => {
+        defaultProps.field.formDefinition.selectorType = 'Picker';
+        const cmp = shallow(<EditNodePropertyContainer {...defaultProps}/>);
+
+        const fieldComponent = cmp.find(MediaPicker);
+        expect(fieldComponent.exists()).toBe(true);
+        expect(fieldComponent.length).toBe(1);
+    });
+
+    it('should generate an ID for EditNodeProperty and selectorType composant', () => {
+        const cmp = shallow(<EditNodePropertyContainer {...defaultProps}/>);
+
+        expect(cmp.find(RichText).props().id).toBe('x');
+        expect(cmp.props().labelHtmlFor).toEqual('x');
     });
 });
