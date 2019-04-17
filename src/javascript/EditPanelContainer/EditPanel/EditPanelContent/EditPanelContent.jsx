@@ -9,9 +9,16 @@ import {withStyles} from '@material-ui/core';
 import {translate} from 'react-i18next';
 import {ToggleButton, ToggleButtonGroup} from '@material-ui/lab';
 
-const styles = () => ({
-    root: {
+const styles = theme => ({
+    twoColumnsRoot: {
         minHeight: 0
+    },
+    fullWidthRoot: {
+        backgroundColor: theme.palette.ui.alpha,
+        padding: (theme.spacing.unit * 4) + 'px ' + (theme.spacing.unit * 4) + 'px 0'
+    },
+    fullWidthForm: {
+        overflow: 'auto'
     },
     left: {
         overflow: 'auto'
@@ -25,7 +32,7 @@ const styles = () => ({
 
 const DetailsPreviewComponent = () => (<></>);
 
-const EditPanelContent = ({t, path, language, classes, fields, siteInfo}) => {
+export const EditPanelContent = ({t, path, language, classes, fields, siteInfo}) => {
     const [previewMode, setPreviewMode] = useState('preview');
 
     const PreviewCmp = previewMode === 'preview' ? (
@@ -69,13 +76,13 @@ const EditPanelContent = ({t, path, language, classes, fields, siteInfo}) => {
 
             {
                 PreviewCmp ?
-                    <TwoColumnsContent classes={{root: classes.root, left: classes.left, right: classes.right}}
+                    <TwoColumnsContent classes={{root: classes.twoColumnsRoot, left: classes.left, right: classes.right}}
                                        rightCol={PreviewCmp}
                     >
                         <FormBuilder fields={fields} siteInfo={siteInfo}/>
                     </TwoColumnsContent> :
-                    <FullWidthContent>
-                        <FormBuilder fields={fields} siteInfo={siteInfo}/>
+                    <FullWidthContent classes={{root: classes.fullWidthRoot}}>
+                        <FormBuilder classes={{form: classes.fullWidthForm}} fields={fields} siteInfo={siteInfo}/>
                     </FullWidthContent>
             }
         </>
