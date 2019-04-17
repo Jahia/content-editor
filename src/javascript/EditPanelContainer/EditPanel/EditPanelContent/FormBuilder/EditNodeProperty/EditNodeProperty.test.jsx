@@ -4,34 +4,57 @@ import {shallow} from '@jahia/test-framework';
 import {EditNodeProperty} from './EditNodeProperty';
 
 describe('EditNodeProperty component', () => {
-    let props;
-    let wrapper;
+    let defaultProps;
 
     beforeEach(() => {
-        props = {
+        defaultProps = {
             classes: {},
             siteInfo: {languages: []},
             field: {
-                formDefinition: {
-                    name: 'text',
-                    nodeType: {
-                        properties: [
-                            {
-                                name: 'text',
-                                displayName: 'Text'
-                            }
-                        ]
-                    }
-                }
+                formDefinition: {name: 'x'},
+                targets: [{name: 'test'}]
             },
+            labelHtmlFor: 'yoloHtmlFor',
             t: i18nKey => i18nKey
         };
-        wrapper = shallow(<EditNodeProperty {...props}><div>test</div></EditNodeProperty>);
     });
 
     it('should render a "Shared in all languages" when field is not i18n and site have multiple languages', () => {
-        let lang1 = {displayName: 'Deutsch', language: 'de', activeInEdit: true};
-        let lang2 = {displayName: 'English', language: 'en', activeInEdit: true};
+        let lang1 = {
+            displayName: 'Deutsch',
+            language: 'de',
+            activeInEdit: true
+        };
+        let lang2 = {
+            displayName: 'English',
+            language: 'en',
+            activeInEdit: true
+        };
+
+        const testI18nBadgeRender = (
+            i18n,
+            siteLanguages,
+            expectedBadgeRendered
+        ) => {
+            defaultProps.field = {
+                formDefinition: {name: 'x', selectorType: 'Text', i18n: i18n}
+            };
+            defaultProps.siteInfo = {
+                languages: siteLanguages
+            };
+
+            const cmp = shallow(
+                <EditNodeProperty {...defaultProps}>
+                    <div>test</div>
+                </EditNodeProperty>
+            );
+
+            const badgeComponent = cmp.find({
+                badgeContent:
+                    'content-editor:label.contentEditor.edit.sharedLanguages'
+            });
+            expect(badgeComponent.exists()).toBe(expectedBadgeRendered);
+        };
 
         testI18nBadgeRender(false, [lang1, lang2], true);
         testI18nBadgeRender(true, [lang1, lang2], false);
@@ -39,6 +62,7 @@ describe('EditNodeProperty component', () => {
         testI18nBadgeRender(true, [lang1], false);
     });
 
+<<<<<<< HEAD
     const testI18nBadgeRender = function (i18n, siteLanguages, expectedBadgeRendered) {
         props.field = {
             formDefinition: {
@@ -61,8 +85,15 @@ describe('EditNodeProperty component', () => {
         };
 
         wrapper.setProps(props);
+=======
+    it('should add labelHtmlFor to the label', () => {
+        const cmp = shallow(
+            <EditNodeProperty {...defaultProps}>
+                <div>test</div>
+            </EditNodeProperty>
+        );
+>>>>>>> 21d551d... BACKLOG-10115: Add mediaPicker field with mocked data
 
-        const badgeComponent = wrapper.find({badgeContent: 'content-editor:label.contentEditor.edit.sharedLanguages'});
-        expect(badgeComponent.exists()).toBe(expectedBadgeRendered);
-    };
+        expect(cmp.debug()).toContain('yoloHtmlFor');
+    });
 });
