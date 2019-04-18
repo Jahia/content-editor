@@ -8,6 +8,7 @@ import {compose} from 'react-apollo';
 import {withStyles} from '@material-ui/core';
 import {translate} from 'react-i18next';
 import {ToggleButton, ToggleButtonGroup} from '@material-ui/lab';
+import {setPreviewRefetcher} from '../../EditPanel.refetches';
 
 const styles = theme => ({
     twoColumnsRoot: {
@@ -43,6 +44,7 @@ export const EditPanelContent = ({t, path, language, classes, fields, siteInfo})
                         templateType="html"
                         view="cm"
                         contextConfiguration="preview"
+                        setRefetch={refetchingData => setPreviewRefetcher(refetchingData)}
         />
     ) : previewMode === 'details' ? <DetailsPreviewComponent/> : null;
 
