@@ -3,7 +3,7 @@ import {FullWidthContent, TwoColumnsContent} from '@jahia/layouts';
 import {ContentPreview} from '@jahia/react-material';
 import {Typography} from '@jahia/ds-mui-theme';
 import * as PropTypes from 'prop-types';
-import FormBuilder from '../FormBuilder';
+import FormBuilder from './FormBuilder';
 import {compose} from 'react-apollo';
 import {withStyles} from '@material-ui/core';
 import {translate} from 'react-i18next';
