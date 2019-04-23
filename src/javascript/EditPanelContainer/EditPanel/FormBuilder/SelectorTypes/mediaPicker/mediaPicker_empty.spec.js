@@ -8,6 +8,7 @@ describe('mediaPicker empty', () => {
 
     beforeEach(() => {
         defaultProps = {
+            idInput: 'idInput'
         };
     });
 
@@ -48,7 +49,7 @@ describe('mediaPicker empty', () => {
 
         cmp.find('button').simulate('click');
 
-        cmp.find('WithStyles(ModalCmp)').props().onCloseDialog();
+        cmp.find('[idInput="idInput"]').props().onCloseDialog();
 
         expect(cmp.find('WithStyles(Dialog)').props().open).toBe(false);
     });
