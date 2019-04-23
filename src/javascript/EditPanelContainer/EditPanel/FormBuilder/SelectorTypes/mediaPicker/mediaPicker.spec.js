@@ -5,8 +5,6 @@ import {MediaPicker} from './mediaPicker';
 
 describe('mediaPicker', () => {
     let defaultProps;
-    const addImageText =
-        'content-editor:label.contentEditor.edit.fields.imagePicker.addImage';
 
     beforeEach(() => {
         defaultProps = {
@@ -33,9 +31,8 @@ describe('mediaPicker', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
-        expect(cmp.debug()).toContain(addImageText);
+        expect(cmp.find('MediaPickerEmpty').exists()).toBe(false);
     });
 
     it('should not display add image when field value is empty', () => {
@@ -44,9 +41,8 @@ describe('mediaPicker', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
-        expect(cmp.debug()).not.toContain(addImageText);
+        expect(cmp.find('MediaPickerEmpty').exists()).toBe(false);
     });
 
     it('should display the src from field', () => {
@@ -55,7 +51,6 @@ describe('mediaPicker', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
         expect(cmp.debug()).toContain(defaultProps.field.imageData.url);
     });
@@ -66,7 +61,6 @@ describe('mediaPicker', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
         expect(cmp.debug()).toContain(defaultProps.field.imageData.weight);
     });
@@ -77,7 +71,6 @@ describe('mediaPicker', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
         expect(cmp.debug()).toContain(defaultProps.field.imageData.type);
     });
@@ -88,7 +81,6 @@ describe('mediaPicker', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
         expect(cmp.debug()).toContain(defaultProps.field.imageData.name);
     });
@@ -99,7 +91,6 @@ describe('mediaPicker', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
         expect(cmp.debug()).toContain(defaultProps.field.imageData.size[0]);
         expect(cmp.debug()).toContain(defaultProps.field.imageData.size[1]);
