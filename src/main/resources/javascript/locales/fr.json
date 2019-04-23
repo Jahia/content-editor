@@ -30,7 +30,9 @@
                 "sharedLanguages": "Partagé par toutes les langues",
                 "fields": {
                   "imagePicker": {
-                    "addImage": "Ajouter une image"
+                    "addImage": "Ajouter une image",
+                    "modalCancel": "Annuler",
+                    "modalDone": "Selectioner"
                   }
                 }
             },

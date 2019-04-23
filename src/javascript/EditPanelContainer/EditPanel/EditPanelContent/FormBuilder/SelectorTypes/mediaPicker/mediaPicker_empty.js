@@ -37,7 +37,7 @@ function Transition(props) {
     return <Slide direction="up" {...props}/>;
 }
 
-export const MediaPickerEmptyCmp = ({classes, t}) => {
+export const MediaPickerEmptyCmp = ({classes, t, idInput}) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -46,8 +46,8 @@ export const MediaPickerEmptyCmp = ({classes, t}) => {
                 <ImageIcon/>
                 <Typography variant="omega" color="beta">
                     {t(
-                    'content-editor:label.contentEditor.edit.fields.imagePicker.addImage'
-                )}
+                        'content-editor:label.contentEditor.edit.fields.imagePicker.addImage'
+                    )}
                 </Typography>
             </button>
             <Dialog
@@ -55,7 +55,7 @@ export const MediaPickerEmptyCmp = ({classes, t}) => {
              open={isOpen}
              TransitionComponent={Transition}
             >
-                <Modal onCloseDialog={() => setIsOpen(false)}/>
+                <Modal idInput={idInput} onCloseDialog={() => setIsOpen(false)}/>
             </Dialog>
         </>
     );
@@ -66,19 +66,7 @@ MediaPickerEmptyCmp.defaultProps = {
 };
 
 MediaPickerEmptyCmp.propTypes = {
-    /* Field: PropTypes.shape({
-        data: PropTypes.shape({
-            value: PropTypes.string
-        }),
-        imageData: PropTypes.shape({
-            url: PropTypes.string.isRequired,
-            name: PropTypes.string.isRequired,
-            size: PropTypes.arrayOf(PropTypes.number).isRequired,
-            weight: PropTypes.number.isRequired,
-            type: PropTypes.string.isRequired
-        })
-    }).isRequired,
-    id: PropTypes.string.isRequired, */
+    idInput: PropTypes.string.isRequired,
     t: PropTypes.func.isRequired,
     classes: PropTypes.object
 };

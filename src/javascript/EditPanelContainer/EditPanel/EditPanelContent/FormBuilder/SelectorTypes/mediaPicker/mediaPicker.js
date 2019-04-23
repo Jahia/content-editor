@@ -34,11 +34,9 @@ const styles = theme => ({
     }
 });
 
-// TODO use the ID to link it to the input field
-// eslint-disable-next-line
 const MediaPickerCmp = ({field, id, classes}) => {
     if (!field.data || !field.data.value) {
-        return <MediaPickerEmpty/>;
+        return <MediaPickerEmpty idInput={id}/>;
     }
 
     return (
