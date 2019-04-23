@@ -30,7 +30,9 @@
                 "sharedLanguages": "Von allen Sprachen geteilt",
                 "fields": {
                   "ImagePicker": {
-                    "addImage": "TODO"
+                    "addImage": "TODO",
+                    "modalCancel": "TODO",
+                    "modalDone": "TODO"
                   }
                 }
             },
