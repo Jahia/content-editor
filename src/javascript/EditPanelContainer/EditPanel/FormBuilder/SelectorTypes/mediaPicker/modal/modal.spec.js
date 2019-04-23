@@ -7,17 +7,23 @@ describe('mediaPicker modal', () => {
     let defaultProps;
 
     beforeEach(() => {
-        defaultProps = {};
+        defaultProps = {
+            idInput: 'IDdd',
+            onCloseDialog: jest.fn()
+        };
     });
 
-    it('should just work', () => {
+    it('should close the modal when click on Cancel button', () => {
         const cmp = shallowWithTheme(
             <Modal {...defaultProps}/>,
             {},
             dsGenericTheme
         )
+            .dive()
             .dive();
 
-        expect(cmp).toBeTruthy();
+        cmp.find('WithStyles(Button)[color="secondary"]').simulate('click');
+
+        expect(defaultProps.onCloseDialog).toHaveBeenCalled();
     });
 });
