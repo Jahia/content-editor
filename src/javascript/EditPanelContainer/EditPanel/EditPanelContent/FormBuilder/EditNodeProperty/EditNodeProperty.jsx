@@ -37,7 +37,7 @@ export const EditNodeProperty = ({t, classes, children, field, siteInfo}) => {
                                 className={classes.inputLabel}
                                 style={(!field.formDefinition.i18n && siteInfo.languages.length > 1) ? {paddingTop: 32} : {}}
                     >
-                        {field.formDefinition.name}
+                        {field.formDefinition.nodeType.properties.find(property => property.name === field.formDefinition.name).displayName}
                     </InputLabel>
                 </Grid>
 
