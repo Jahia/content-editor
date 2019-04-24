@@ -44,12 +44,30 @@ public class EditorFormServiceImpl implements EditorFormService {
         this.staticFormRegistry = staticFormRegistry;
     }
 
+
     @Override
-    public EditorForm getEditorForm(String nodeTypeName, Locale uiLocale, Locale locale, String existingNodeIdOrPath, String parentNodeIdOrPath) throws EditorFormException {
+    public EditorForm getCreateForm(String nodeTypeName, Locale uiLocale, Locale locale, String contextPath) throws EditorFormException {
+        return getEditorForm(nodeTypeName, uiLocale, locale, null, contextPath);
+    }
+
+    @Override
+    public EditorForm getEditorForm(Locale uiLocale, Locale locale, String contextPath) throws EditorFormException {
+        return getEditorForm(null, uiLocale, locale, contextPath, null);
+    }
+
+    private EditorForm getEditorForm(String nodeTypeName, Locale uiLocale, Locale locale, String nodePath, String parentNodePath) throws EditorFormException {
         try {
+
+            if (nodePath == null && (parentNodePath == null || nodeTypeName == null)) {
+                throw new EditorFormException("nodePath, or parentNodePath and nodetypeName, must be set.");
+            }
             JCRSessionWrapper session = getSession(locale);
-            JCRNodeWrapper existingNode = getNode(existingNodeIdOrPath, session);
-            JCRNodeWrapper parentNode = getParentNode(existingNode, parentNodeIdOrPath, session);
+            JCRNodeWrapper existingNode = session.getNode(nodePath);
+            if (existingNode != null) {
+                nodeTypeName = existingNode.getPrimaryNodeTypeName();
+            }
+
+            JCRNodeWrapper parentNode = getParentNode(existingNode, parentNodePath, session);
 
             EditorForm mergedEditorForm = generateEditorFormFromNodeType(nodeTypeName, existingNode, locale);
 
@@ -58,16 +76,15 @@ public class EditorFormServiceImpl implements EditorFormService {
 
             return mergedEditorForm;
         } catch (RepositoryException e) {
-            throw new EditorFormException("Error while building edit form definition for node: " + existingNodeIdOrPath + " and nodeType: " + nodeTypeName, e);
+            throw new EditorFormException("Error while building edit form definition for node: " + nodePath + " and nodeType: " + nodeTypeName, e);
         }
     }
 
-    private JCRNodeWrapper getParentNode(JCRNodeWrapper existingNode, String parentNodeIdOrPath, JCRSessionWrapper session) throws RepositoryException {
-        JCRNodeWrapper parentNode = getNode(parentNodeIdOrPath, session);
-        if (parentNode == null && existingNode != null) {
-            parentNode = existingNode.getParent();
+    private JCRNodeWrapper getParentNode(JCRNodeWrapper existingNode, String parentPath, JCRSessionWrapper session) throws RepositoryException {
+        if (parentPath == null) {
+           return  existingNode.getParent();
         }
-        return parentNode;
+        return session.getNode(parentPath);
     }
 
     private EditorForm processValueConstraints(EditorForm editForm, Locale uiLocale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode) throws RepositoryException {

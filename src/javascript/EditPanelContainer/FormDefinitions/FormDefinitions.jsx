@@ -9,8 +9,8 @@ const FormDefinitions = ({t, path, nodeType, uiLang, lang, children}) => {
     let queryParams = {
         nodeType: nodeType,
         uiLang: uiLang,
-        lang: lang,
-        nodeIdOrPath: path
+        language: lang,
+        path: path
     };
     return (
         <Query query={FormQuery} variables={queryParams} fetchPolicy="cache-first">
@@ -27,7 +27,8 @@ const FormDefinitions = ({t, path, nodeType, uiLang, lang, children}) => {
                 return (
                     <>
                         {children({
-                            formDefinition: data.forms.form
+                            formDefinition: data.forms.editForm,
+                            nodeData: data.jcr.result
                         })}
                     </>
                 );
