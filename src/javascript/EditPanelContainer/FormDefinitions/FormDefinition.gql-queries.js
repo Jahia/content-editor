@@ -1,9 +1,10 @@
 import gql from 'graphql-tag';
+import {NodeDataFragment} from '../NodeData/NodeData.gql-queries';
 
 const FormQuery = gql`
-    query getFormDefinition($nodeType:String!, $uiLang:String!, $lang:String!, $nodeIdOrPath:String ) {
+    query editForm($uiLang:String!, $language:String!, $path: String!) {
         forms {
-            form(nodeType: $nodeType, uiLocale: $uiLang, locale: $lang, nodeIdOrPath : $nodeIdOrPath) {
+            editForm(uiLocale: $uiLang, locale: $language, contextPath : $path) {
                 nodeType
                 fields {
                     name
@@ -44,7 +45,11 @@ const FormQuery = gql`
                 }
             }
         }
+        jcr {
+            ...NodeData
+        }
     }
+    ${NodeDataFragment.nodeData.gql}
 `;
 
 export {
