@@ -720,9 +720,10 @@
     lodash "^4.17.10"
     prop-types "^15.6.2"
 
-"@jahia/icons@^1.0.0-featureBACKLOG9621.20190411163417":
-  version "1.0.0-featureBACKLOG9621.20190411163417"
-  resolved "http://npm.int.jahia.com:4873/@jahia%2ficons/-/icons-1.0.0-featureBACKLOG9621.20190411163417.tgz#0e5bf3708ebbb8d9e4d378ae854327289d36ab86"
+"@jahia/icons@^1.0.0-beta.20190424084353":
+  version "1.0.0-beta.20190424084353"
+  resolved "http://npm.int.jahia.com:4873/@jahia%2ficons/-/icons-1.0.0-beta.20190424084353.tgz#593ac0a451eef2188ebd2abe7ba5df24478115af"
+  integrity sha512-ErgGeX2jKFH0gy3fxZc4ixKvOtbIlcafRa7K4EH7i5aBGo3oNo82QZCFlhWLHScByjyv5U09+uhXsQYX7hGOmg==
   dependencies:
     "@material-ui/icons" "^3.0.2"
     mdi-material-ui "^5.10.0"
@@ -750,10 +751,10 @@
     react "^16.4.0"
     react-apollo "^2.1.4"
 
-"@jahia/react-material@^1.0.0-featureBACKLOG9621.20190418090115":
-  version "1.0.0-featureBACKLOG9621.20190418090115"
-  resolved "http://npm.int.jahia.com:4873/@jahia%2freact-material/-/react-material-1.0.0-featureBACKLOG9621.20190418090115.tgz#b4f631fdf2d6cb2e1b6d08003d0fa40fdcf6d0e9"
-  integrity sha512-EvXQzDoBpvGgjCblTIdbQyBw7bEdmlXN6Tt3g9Owl6dmvq5sOInXrdn3YJaSLfO6+RhdTniQNSuXqb14pwGorQ==
+"@jahia/react-material@^1.0.0-beta.20190424084354":
+  version "1.0.0-beta.20190424084354"
+  resolved "http://npm.int.jahia.com:4873/@jahia%2freact-material/-/react-material-1.0.0-beta.20190424084354.tgz#654a7b77a09cad08b74bb33c40887a8cdd8f866a"
+  integrity sha512-ipDAGPWj7uiEjlBxByZR7pLgZkVINtYitx7znvacogFjLyCOBL4+KkoqBvAlTIHD3szl/tjm5uzwcXXFH/WtLQ==
   dependencies:
     lodash "^4.17.10"
     prop-types "^15.6.1"
