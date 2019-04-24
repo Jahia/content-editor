@@ -20,7 +20,8 @@ let styles = theme => ({
     },
     formGroup: {
         width: '100%'
-    }
+    },
+    form: {}
 });
 
 export const FormBuilder = ({classes, fields, formik, siteInfo}) => {
@@ -28,7 +29,7 @@ export const FormBuilder = ({classes, fields, formik, siteInfo}) => {
     let targetsName = new Set();
     fields.forEach(field => field.targets.forEach(target => targetsName.add(target.name)));
     return (
-        <form onSubmit={formik.handleSubmit}>
+        <form className={classes.form} onSubmit={formik.handleSubmit}>
             {Array.from(targetsName).map((target, index) => {
                 let fieldsByTarget = fields.filter(field => field.targets.filter(t => t.name === target).length > 0);
                 return (

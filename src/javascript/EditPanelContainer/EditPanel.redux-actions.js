@@ -1,6 +1,7 @@
 import {SavePropertiesMutation, PublishPropertiesMutation, UnpublishPropertiesMutation} from './NodeData/NodeData.gql-mutation';
 import {getPropertiesToSave} from './EditPanel/EditPanel.utils';
 import {NodeQuery} from './NodeData/NodeData.gql-queries';
+import {refetchPreview} from './EditPanel.refetches';
 
 export const publishNode = ({client, nodeData, lang, notificationContext, actions, t}) => {
     return client.mutate({
@@ -75,6 +76,7 @@ export const saveNode = ({client, nodeData, notificationContext, actions, path, 
     }).then(() => {
         notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.success'), ['closeButton']);
         actions.setSubmitting(false);
+        refetchPreview(path, lang);
     }, error => {
         console.error(error);
         notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.error'), ['closeButton']);
