@@ -4,7 +4,7 @@ import {NodeDataFragment} from '../NodeData/NodeData.gql-queries';
 const FormQuery = gql`
     query editForm($uiLang:String!, $language:String!, $path: String!) {
         forms {
-            editForm(uiLocale: $uiLang, locale: $language, contextPath : $path) {
+            editForm(uiLocale: $uiLang, locale: $language, nodePath : $path) {
                 nodeType
                 fields {
                     name
