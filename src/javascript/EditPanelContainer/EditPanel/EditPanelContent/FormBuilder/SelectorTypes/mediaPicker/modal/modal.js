@@ -1,10 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import {useImagesData} from './modal.gql-queries';
+
 import Drawer from '@material-ui/core/Drawer';
 import Button from '@material-ui/core/Button';
 import CloudUpload from '@material-ui/icons/CloudUpload';
 import {Typography} from '@jahia/ds-mui-theme';
+import {ImageList} from '../../../../../../../design-sytem/image-list/image-list';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const TreeView = () => 'TODO TreeView';
 
@@ -18,9 +22,9 @@ const styles = theme => ({
         backgroundColor: theme.palette.ui.beta
     },
     modalContent: {
-        width: '100%',
-        minHeight: '100vh',
-        paddingLeft: '15vw'
+        width: '85vw',
+        marginLeft: '15vw',
+        padding: theme.spacing.unit
     },
     selectImg: {
         height: '30vh',
@@ -31,7 +35,7 @@ const styles = theme => ({
         width: '85vw',
         backgroundColor: theme.palette.ui.epsilon,
         bottom: 0,
-        padding: theme.spacing.unit * 4,
+        padding: `0 ${theme.spacing.unit * 4}`,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between'
@@ -54,6 +58,16 @@ const styles = theme => ({
 });
 
 export const ModalCmp = ({onCloseDialog, classes, idInput, t}) => {
+    const {images, error, loading} = useImagesData('/sites/digitall/files/images/backgrounds');
+
+    if (loading) {
+        return (
+            <section>
+                <CircularProgress/>
+            </section>
+        );
+    }
+
     return (
         <>
             <Drawer
@@ -68,10 +82,7 @@ export const ModalCmp = ({onCloseDialog, classes, idInput, t}) => {
                 <TreeView/>
             </Drawer>
             <main className={classes.modalContent}>
-                <section className={classes.selectImg}>
-                    <img src="https://www.fillmurray.com/200/300"/>
-                    <img src="https://www.fillmurray.com/300/300"/>
-                </section>
+                <ImageList component="section" images={images} error={error}/>
 
                 <div className={classes.actions}>
                     <div className={classes.actionUpload}>

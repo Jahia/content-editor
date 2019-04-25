@@ -61,6 +61,7 @@ registry.add('edit-route', {
     type: 'route',
     path: '/:siteKey/:lang/edit',
     render: () => (
+
         <EditPanelContainer/>
     )
 });
