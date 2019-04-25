@@ -3,6 +3,16 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/ds-mui-theme';
 import {Modal} from './modal';
 
+jest.mock('./modal.gql-queries', () => {
+    return {
+        useImagesData: () => ({
+            images: [],
+            loading: false,
+            error: null
+        })
+    };
+});
+
 describe('mediaPicker modal', () => {
     let defaultProps;
 

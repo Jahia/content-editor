@@ -10,6 +10,7 @@ import * as PropTypes from 'prop-types';
 import FormDefinition from './FormDefinitions';
 import SiteData from './SiteData';
 import {publishNode, saveNode, unpublishNode} from './EditPanel.redux-actions';
+import {ApolloProvider as ApolloHooksProvider} from 'react-apollo-hooks';
 
 const submitActionMapper = {
     [EditPanelConstants.submitOperation.SAVE]: saveNode,
@@ -27,8 +28,9 @@ export const EditPanelContainer = ({
     uiLang
 }) => {
     return (
-        <SiteData>
-            {({siteInfo}) => {
+        <ApolloHooksProvider client={client}>
+            <SiteData>
+                {({siteInfo}) => {
                 return (
                     <FormDefinition
                         uiLang={uiLang}
@@ -151,7 +153,8 @@ export const EditPanelContainer = ({
                     </FormDefinition>
                 );
             }}
-        </SiteData>
+            </SiteData>
+        </ApolloHooksProvider>
     );
 };
 
