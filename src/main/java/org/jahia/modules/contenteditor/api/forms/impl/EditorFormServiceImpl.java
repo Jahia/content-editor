@@ -47,13 +47,13 @@ public class EditorFormServiceImpl implements EditorFormService {
 
 
     @Override
-    public EditorForm getCreateForm(String nodeTypeName, Locale uiLocale, Locale locale, String contextPath) throws EditorFormException {
-        return getEditorForm(nodeTypeName, uiLocale, locale, null, contextPath);
+    public EditorForm getCreateForm(String nodeTypeName, Locale uiLocale, Locale locale, String parentPath) throws EditorFormException {
+        return getEditorForm(nodeTypeName, uiLocale, locale, null, parentPath);
     }
 
     @Override
-    public EditorForm getEditorForm(Locale uiLocale, Locale locale, String contextPath) throws EditorFormException {
-        return getEditorForm(null, uiLocale, locale, contextPath, null);
+    public EditorForm getEditorForm(Locale uiLocale, Locale locale, String nodePath) throws EditorFormException {
+        return getEditorForm(null, uiLocale, locale, nodePath, null);
     }
 
     private EditorForm getEditorForm(String nodeTypeName, Locale uiLocale, Locale locale, String nodePath, String parentNodePath) throws EditorFormException {
