@@ -13,13 +13,22 @@ public interface EditorFormService {
      * @param nodeTypeName the name of the node type for which we want to generate the form structure
      * @param uiLocale The locale used to display the labels
      * @param locale The locale used to get nodes data
-     * @param existingNodeIdOrPath the node identifier (UUID) or path of an existing node. This is optional, if specified it will be
-     *                               used to check constraints such as locks.
-     * @param parentNodeIdOrPath the node identifier (UUID) or path of the parent of an existing node or the node we are trying
-     *                           to create. If the node already exists this parameter is optional.
+     * @param parentPath the parent node path under with the new node will be created.
      * @return the generated form structure with all the proper default values (as well as choicelists) as well as meta-
      * data such as readonly, etc...
-     * @throws if there was an error during the generation of the form.
+     * @throws EditorFormException if there was an error during the generation of the form.
      */
-    EditorForm getEditorForm(String nodeTypeName, Locale uiLocale, Locale locale, String existingNodeIdOrPath, String parentNodeIdOrPath) throws EditorFormException;
+    EditorForm getCreateForm(String nodeTypeName, Locale uiLocale, Locale locale, String parentPath) throws EditorFormException;
+
+    /**
+     * Retrieves a form editor structure for a given node, by combining automatically generated structures from
+     * existing node type definitions and also merging with overrides defined in other modules.
+     * @param uiLocale The locale used to display the labels
+     * @param locale The locale used to get nodes data
+     * @param nodePath the node path of the node to be edited.
+     * @return the generated form structure with all the proper default values (as well as choicelists) as well as meta-
+     * data such as readonly, etc...
+     * @throws EditorFormException if there was an error during the generation of the form.
+     */
+    EditorForm getEditorForm(Locale uiLocale, Locale locale, String nodePath) throws EditorFormException;
 }
