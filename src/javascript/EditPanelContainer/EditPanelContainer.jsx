@@ -83,7 +83,7 @@ export const EditPanelContainer = ({
                                     {}
                                 );
 
-                                const context = {
+                                const editorContext = {
                                     path: path,
                                     site: site,
                                     lang: lang,
@@ -98,7 +98,7 @@ export const EditPanelContainer = ({
                                                     render={() => {
                                                         return (
                                                             <EditPanel
-                                                                context={context}
+                                                                editorContext={editorContext}
                                                                 t={t}
                                                                 fields={fields}
                                                                 title={
