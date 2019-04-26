@@ -2,9 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core';
 import {Typography} from '@jahia/ds-mui-theme';
-import {DisplayActions} from '@jahia/react-material';
+import {DisplayActions, ProgressOverlay} from '@jahia/react-material';
 import IconButton from '@material-ui/core/IconButton';
-import {MediaPickerEmpty} from './mediaPicker_empty';
+import {compose} from 'react-apollo';
+import {useQuery} from 'react-apollo-hooks';
+import {translate} from 'react-i18next';
+import {MediaPickerQuery} from './MediaPicker.gql-queries';
 
 const styles = theme => ({
     imageSelectedContainer: {
@@ -34,27 +37,52 @@ const styles = theme => ({
     }
 });
 
-const MediaPickerCmp = ({field, id, classes, editorContext}) => {
-    if (!field.data || !field.data.value) {
-        return <MediaPickerEmpty idInput={id} editorContext={editorContext}/>;
+const MediaPickerCmp = ({t, field, classes}) => {
+    const {data, error, loading} = useQuery(MediaPickerQuery, {
+        variables: {
+            uuid: field.data.value
+        }
+    });
+
+    if (error) {
+        const message = t('content-media-manager:label.contentManager.error.queryingContent', {details: (error.message ? error.message : '')});
+        return (<>{message}</>);
     }
+
+    if (loading) {
+        return (<ProgressOverlay/>);
+    }
+
+    const imageData = data.jcr.result;
+    const fieldData = {
+        data: {
+            value: field.data.value
+        },
+        imageData: {
+            url: `${window.contextJsParameters.contextPath}/files/default${imageData.path}`,
+            name: imageData.name,
+            size: [parseInt(imageData.height.value, 10), parseInt(imageData.width.value, 10)],
+            weight: 1.2,
+            type: imageData.children.nodes[0].mimeType.value
+        }
+    };
 
     return (
         <article className={classes.imageSelectedContainer}>
             <div className={classes.imageSelectedImgContainer}>
                 <img
                     className={classes.imageSelectedImg}
-                    src={field.imageData.url}
+                    src={fieldData.imageData.url}
                     alt=""
                 />
             </div>
             <div className={classes.imageSelectedMetadata}>
                 <Typography variant="zeta" color="alpha">
-                    {field.imageData.name}
+                    {fieldData.imageData.name}
                 </Typography>
                 <Typography variant="omega" color="gamma">
-                    {field.imageData.type} - {field.imageData.size[0]}x
-                    {field.imageData.size[1]}px - {field.imageData.weight}mb
+                    {fieldData.imageData.type} - {fieldData.imageData.size[0]}x
+                    {fieldData.imageData.size[1]}px - {fieldData.imageData.weight}mb
                 </Typography>
             </div>
             <DisplayActions
@@ -81,7 +109,7 @@ MediaPickerCmp.defaultProps = {
 };
 
 MediaPickerCmp.propTypes = {
-    editorContext: PropTypes.object.isRequired,
+    t: PropTypes.func.isRequired,
     field: PropTypes.shape({
         data: PropTypes.shape({
             value: PropTypes.string
@@ -94,8 +122,10 @@ MediaPickerCmp.propTypes = {
             type: PropTypes.string.isRequired
         })
     }).isRequired,
-    id: PropTypes.string.isRequired,
     classes: PropTypes.object
 };
 
-export const MediaPicker = withStyles(styles)(MediaPickerCmp);
+export const MediaPicker = compose(
+    translate(),
+    withStyles(styles)
+)(MediaPickerCmp);
