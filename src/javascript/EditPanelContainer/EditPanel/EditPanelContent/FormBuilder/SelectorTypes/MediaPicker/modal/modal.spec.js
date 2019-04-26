@@ -19,6 +19,10 @@ describe('mediaPicker modal', () => {
     beforeEach(() => {
         defaultProps = {
             idInput: 'IDdd',
+            context: {
+                site: 'mySite',
+                lang: 'en'
+            },
             onCloseDialog: jest.fn()
         };
     });

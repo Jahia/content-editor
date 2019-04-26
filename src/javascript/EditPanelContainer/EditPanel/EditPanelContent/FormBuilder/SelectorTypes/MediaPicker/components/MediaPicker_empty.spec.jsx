@@ -8,7 +8,11 @@ describe('mediaPicker empty', () => {
 
     beforeEach(() => {
         defaultProps = {
-            idInput: 'idInput'
+            idInput: 'idInput',
+            context: {
+                site: 'mySite',
+                lang: 'en'
+            }
         };
     });
 
