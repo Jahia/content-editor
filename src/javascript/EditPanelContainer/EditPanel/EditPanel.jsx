@@ -32,11 +32,11 @@ class EditPanel extends React.Component {
     }
 
     render() {
-        const {context, t, fields, title, siteInfo, nodeData} = this.props;
+        const {editorContext, t, fields, title, siteInfo, nodeData} = this.props;
 
         return (
             <MainLayout topBarProps={{
-                path: context.path,
+                path: editorContext.path,
                 title: title,
                 contextModifiers: <Typography variant="omega" color="invert">{t('content-editor:label.contentEditor.edit.title')}</Typography>,
                 actions: <DisplayActions context={{nodeData}}
@@ -49,7 +49,7 @@ class EditPanel extends React.Component {
                 />
             }}
             >
-                <EditPanelContent context={context}
+                <EditPanelContent editorContext={editorContext}
                                   siteInfo={siteInfo}
                                   fields={fields}
                 />
@@ -63,7 +63,7 @@ EditPanel.defaultProps = {
 };
 
 EditPanel.propTypes = {
-    context: PropTypes.object.isRequired,
+    editorContext: PropTypes.object.isRequired,
     title: PropTypes.string,
     t: PropTypes.func.isRequired,
     fields: PropTypes.array.isRequired,

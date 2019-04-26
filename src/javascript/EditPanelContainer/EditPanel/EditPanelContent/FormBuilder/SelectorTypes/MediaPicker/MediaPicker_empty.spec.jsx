@@ -9,7 +9,7 @@ describe('mediaPicker empty', () => {
     beforeEach(() => {
         defaultProps = {
             idInput: 'idInput',
-            context: {
+            editorContext: {
                 site: 'mySite',
                 lang: 'en'
             },

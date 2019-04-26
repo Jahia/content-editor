@@ -33,12 +33,12 @@ const styles = theme => ({
 
 const DetailsPreviewComponent = () => (<></>);
 
-export const EditPanelContent = ({t, context, classes, fields, siteInfo}) => {
+export const EditPanelContent = ({t, editorContext, classes, fields, siteInfo}) => {
     const [previewMode, setPreviewMode] = useState('preview');
 
     const PreviewCmp = previewMode === 'preview' ? (
-        <ContentPreview path={context.path}
-                        language={context.lang}
+        <ContentPreview path={editorContext.path}
+                        language={editorContext.lang}
                         workspace="EDIT"
                         fullScreen={false}
                         templateType="html"
@@ -82,10 +82,10 @@ export const EditPanelContent = ({t, context, classes, fields, siteInfo}) => {
                     <TwoColumnsContent classes={{root: classes.twoColumnsRoot, left: classes.left, right: classes.right}}
                                        rightCol={PreviewCmp}
                     >
-                        <FormBuilder fields={fields} siteInfo={siteInfo} context={context}/>
+                        <FormBuilder fields={fields} siteInfo={siteInfo} editorContext={editorContext}/>
                     </TwoColumnsContent> :
                     <FullWidthContent classes={{root: classes.fullWidthRoot}}>
-                        <FormBuilder classes={{form: classes.fullWidthForm}} fields={fields} siteInfo={siteInfo} context={context}/>
+                        <FormBuilder classes={{form: classes.fullWidthForm}} fields={fields} siteInfo={siteInfo} editorContext={editorContext}/>
                     </FullWidthContent>
             }
         </>
@@ -93,7 +93,7 @@ export const EditPanelContent = ({t, context, classes, fields, siteInfo}) => {
 };
 
 EditPanelContent.propTypes = {
-    context: PropTypes.object.isRequired,
+    editorContext: PropTypes.object.isRequired,
     t: PropTypes.func.isRequired,
     fields: PropTypes.array.isRequired,
     classes: PropTypes.object.isRequired,
