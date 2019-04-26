@@ -5,9 +5,8 @@ import {translate} from 'react-i18next';
 import {FormQuery} from './FormDefinition.gql-queries';
 import * as PropTypes from 'prop-types';
 
-const FormDefinitions = ({t, path, nodeType, uiLang, lang, children}) => {
-    let queryParams = {
-        nodeType: nodeType,
+const FormDefinitions = ({t, path, uiLang, lang, children}) => {
+    const queryParams = {
         uiLang: uiLang,
         language: lang,
         path: path
@@ -42,7 +41,6 @@ FormDefinitions.propTypes = {
     path: PropTypes.string.isRequired,
     uiLang: PropTypes.string.isRequired,
     lang: PropTypes.string.isRequired,
-    nodeType: PropTypes.string.isRequired,
     t: PropTypes.func
 };
 
