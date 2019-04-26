@@ -41,30 +41,16 @@ export const EditPanelContainer = ({
                             if (formDefinition) {
                                 let fields = formDefinition.fields.map(
                                     fieldDefinition => {
-                                        // TODO replace this mock with actual data getting in nodeData query (work in progress for graphql API)
-                                        const imageDataMock = fieldDefinition.selectorType === 'Picker' ? {
-                                            url: 'http://placekitten.com/g/200/300',
-                                            name: 'Beautiful_hairy_pussy.jpg',
-                                            size: [1200, 1200],
-                                            weight: 1.2,
-                                            type: 'Jpeg'
-                                        } : null;
-
                                         return {
                                             targets:
                                             fieldDefinition.targets,
                                             formDefinition: fieldDefinition,
                                             jcrDefinition: nodeData.primaryNodeType.properties.find(
-                                                prop =>
-                                                    prop.name ===
-                                                    fieldDefinition.name
+                                                prop => prop.name === fieldDefinition.name
                                             ),
                                             data: nodeData.properties.find(
-                                                prop =>
-                                                    prop.name ===
-                                                    fieldDefinition.name
-                                            ),
-                                            imageData: imageDataMock
+                                                prop => prop.name === fieldDefinition.name
+                                            )
                                         };
                                     }
                                 );
@@ -103,7 +89,6 @@ export const EditPanelContainer = ({
                                                                     nodeData
                                                                 }
                                                                 language={lang}
-
                                                             />
                                                         );
                                                     }}
