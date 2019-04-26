@@ -24,7 +24,7 @@ let styles = theme => ({
     form: {}
 });
 
-export const FormBuilder = ({classes, fields, formik, siteInfo}) => {
+export const FormBuilder = ({classes, fields, formik, siteInfo, context}) => {
     // Get fields name
     let targetsName = new Set();
     fields.forEach(field => field.targets.forEach(target => targetsName.add(target.name)));
@@ -40,7 +40,7 @@ export const FormBuilder = ({classes, fields, formik, siteInfo}) => {
                         <ExpansionPanelDetails>
                             <FormGroup variant="normal" className={classes.formGroup}>
                                 {fieldsByTarget.map(field => {
-                                    return <EditNodeProperty key={field.formDefinition.name} field={field} siteInfo={siteInfo}/>;
+                                    return <EditNodeProperty key={field.formDefinition.name} field={field} siteInfo={siteInfo} context={context}/>;
                                 })}
                             </FormGroup>
                         </ExpansionPanelDetails>
@@ -53,6 +53,7 @@ export const FormBuilder = ({classes, fields, formik, siteInfo}) => {
 };
 
 FormBuilder.propTypes = {
+    context: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     fields: PropTypes.array.isRequired,
     formik: PropTypes.object.isRequired,

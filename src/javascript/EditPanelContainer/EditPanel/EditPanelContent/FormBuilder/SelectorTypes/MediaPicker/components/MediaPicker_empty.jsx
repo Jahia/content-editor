@@ -37,7 +37,7 @@ function Transition(props) {
     return <Slide direction="up" {...props}/>;
 }
 
-export const MediaPickerEmptyCmp = ({classes, t, idInput}) => {
+export const MediaPickerEmptyCmp = ({classes, t, idInput, context}) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -55,7 +55,10 @@ export const MediaPickerEmptyCmp = ({classes, t, idInput}) => {
              open={isOpen}
              TransitionComponent={Transition}
             >
-                <Modal idInput={idInput} onCloseDialog={() => setIsOpen(false)}/>
+                <Modal idInput={idInput}
+                       site={context.site}
+                       lang={context.lang}
+                       onCloseDialog={() => setIsOpen(false)}/>
             </Dialog>
         </>
     );
@@ -66,6 +69,7 @@ MediaPickerEmptyCmp.defaultProps = {
 };
 
 MediaPickerEmptyCmp.propTypes = {
+    context: PropTypes.object.isRequired,
     idInput: PropTypes.string.isRequired,
     t: PropTypes.func.isRequired,
     classes: PropTypes.object

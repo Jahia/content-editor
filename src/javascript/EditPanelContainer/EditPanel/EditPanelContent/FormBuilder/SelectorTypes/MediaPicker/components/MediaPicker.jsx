@@ -34,9 +34,9 @@ const styles = theme => ({
     }
 });
 
-const MediaPickerCmp = ({field, id, classes}) => {
+const MediaPickerCmp = ({field, id, classes, context}) => {
     if (!field.data || !field.data.value) {
-        return <MediaPickerEmpty idInput={id}/>;
+        return <MediaPickerEmpty idInput={id} context={context}/>;
     }
 
     return (
@@ -81,6 +81,7 @@ MediaPickerCmp.defaultProps = {
 };
 
 MediaPickerCmp.propTypes = {
+    context: PropTypes.object.isRequired,
     field: PropTypes.shape({
         data: PropTypes.shape({
             value: PropTypes.string

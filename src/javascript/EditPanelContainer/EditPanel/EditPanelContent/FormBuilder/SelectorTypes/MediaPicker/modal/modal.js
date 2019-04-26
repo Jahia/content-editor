@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
 import {useImagesData} from './modal.gql-queries';
@@ -10,11 +10,10 @@ import {Typography} from '@jahia/ds-mui-theme';
 import {ImageList} from '../../../../../../../design-sytem/image-list/image-list';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-const TreeView = () => 'TODO TreeView';
-
 import {compose} from 'react-apollo';
 import {withStyles} from '@material-ui/core';
 import {translate} from 'react-i18next';
+import {NodeTrees} from '@jahia/react-material';
 
 const styles = theme => ({
     drawerPaper: {
@@ -54,11 +53,18 @@ const styles = theme => ({
         '& input': {
             display: 'none'
         }
+    },
+
+    // Tree css
+    listItem: {
+        color: theme.palette.primary.contrastText
     }
 });
 
-export const ModalCmp = ({onCloseDialog, classes, idInput, t}) => {
-    const {images, error, loading} = useImagesData('/sites/digitall/files/images/backgrounds');
+export const ModalCmp = ({onCloseDialog, classes, idInput, t, site, lang}) => {
+    const [selectedPath, setSelectedPath] = useState('/sites/' + site + '/files');
+    const [openPaths, setOpenPaths] = useState([]);
+    const {images, error, loading} = useImagesData(selectedPath);
 
     if (loading) {
         return (
@@ -79,7 +85,27 @@ export const ModalCmp = ({onCloseDialog, classes, idInput, t}) => {
                  paper: classes.drawerPaper
                }}
             >
-                <TreeView/>
+                <NodeTrees isOpen
+                           path={selectedPath}
+                           openPaths={openPaths}
+                           siteKey={site}
+                           lang={lang}
+                           nodeTreeConfigs={[{
+                               rootPath: '/files',
+                               selectableTypes: ['jnt:folder'],
+                               type: 'files',
+                               openableTypes: ['jnt:folder'],
+                               rootLabel: 'Browse files',
+                               key: 'browse-tree-files'
+                           }]}
+                           setPath={path => setSelectedPath(path)}
+                           classes={{
+                               listItem: classes.listItem
+                           }}
+                           openPath={path => setOpenPaths(previousOpenPaths => previousOpenPaths.concat([path]))}
+                           closePath={path => setOpenPaths(previousOpenPaths => previousOpenPaths.filter(item => item !== path))}
+                           closeTree={() => console.log('close tree')}
+                />
             </Drawer>
             <main className={classes.modalContent}>
                 <ImageList component="section" images={images} error={error}/>
@@ -119,6 +145,8 @@ ModalCmp.propTypes = {
     t: PropTypes.func.isRequired,
     idInput: PropTypes.string.isRequired,
     classes: PropTypes.object,
+    lang: PropTypes.string.isRequired,
+    site: PropTypes.string.isRequired,
     onCloseDialog: PropTypes.func.isRequired
 };
 
