@@ -3,6 +3,20 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/ds-mui-theme';
 import {MediaPickerFilled} from './MediaPicker_filled';
 
+jest.mock('react-apollo-hooks', () => {
+    let queryResultmock;
+    return {
+        useQuery: jest.fn(() => {
+            return {data: queryResultmock, error: null, loading: false};
+        }),
+        setQueryResult: r => {
+            queryResultmock = r;
+        }
+    };
+});
+
+import {setQueryResult} from 'react-apollo-hooks';
+
 describe('mediaPicker', () => {
     let defaultProps;
 
@@ -10,90 +24,88 @@ describe('mediaPicker', () => {
         defaultProps = {
             field: {
                 data: {
-                    value: 'imageid'
+                    value: 'someUuid'
                 },
-                imageData: {
-                    url: 'http://placekitten.com/g/200/300',
-                    name: 'Beautiful_hairy_pussy.jpg',
-                    size: [1532400, 1234134],
-                    weight: 1.2,
-                    type: 'Jpeg'
+                formDefinition: {
+                    name: 'yoloo'
                 }
             },
             id: 'yoloID'
         };
+
+        window.contextJsParameters = {
+            contextPath: ''
+        };
+
+        setQueryResult({
+            jcr: {
+                result: {
+                    path: 'http://placekitten.com/g/200/300',
+                    name: 'Beautiful_hairy_pussy.jpg',
+                    height: {value: 1532400},
+                    width: {value: 1234134},
+                    weight: 1.2,
+                    children: {
+                        nodes: [{mimeType: {value: 'jpeg'}}]
+                    }
+                }
+            }
+        });
     });
 
-    it('should display add image when field value is empty', () => {
-        delete defaultProps.field.data.value;
+    it('should display the src from field', () => {
         const cmp = shallowWithTheme(
             <MediaPickerFilled {...defaultProps}/>,
             {},
             dsGenericTheme
         )
+            .dive()
             .dive();
-        expect(cmp.find('MediaPickerEmpty').exists()).toBe(false);
+        expect(cmp.debug()).toContain('http://placekitten.com/g/200/300');
     });
 
-    it('should not display add image when field value is empty', () => {
+    it('should display the weight of image from field', () => {
         const cmp = shallowWithTheme(
             <MediaPickerFilled {...defaultProps}/>,
             {},
             dsGenericTheme
         )
+            .dive()
             .dive();
-        expect(cmp.find('MediaPickerEmpty').exists()).toBe(false);
+        expect(cmp.debug()).toContain(1.2);
     });
 
-    // TODO: Mocking react-apollo query (sub-task: BACKLOG-10145)
-    // it('should display the src from field', () => {
-    //     const cmp = shallowWithTheme(
-    //         <MediaPicker {...defaultProps}/>,
-    //         {},
-    //         dsGenericTheme
-    //     )
-    //         .dive();
-    //     expect(cmp.debug()).toContain(defaultProps.field.imageData.url);
-    // });
-    //
-    // it('should display the weight of image from field', () => {
-    //     const cmp = shallowWithTheme(
-    //         <MediaPicker {...defaultProps}/>,
-    //         {},
-    //         dsGenericTheme
-    //     )
-    //         .dive();
-    //     expect(cmp.debug()).toContain(defaultProps.field.imageData.weight);
-    // });
-    //
-    // it('should display the type of image from field', () => {
-    //     const cmp = shallowWithTheme(
-    //         <MediaPicker {...defaultProps}/>,
-    //         {},
-    //         dsGenericTheme
-    //     )
-    //         .dive();
-    //     expect(cmp.debug()).toContain(defaultProps.field.imageData.type);
-    // });
-    //
-    // it('should display the name of image from field', () => {
-    //     const cmp = shallowWithTheme(
-    //         <MediaPicker {...defaultProps}/>,
-    //         {},
-    //         dsGenericTheme
-    //     )
-    //         .dive();
-    //     expect(cmp.debug()).toContain(defaultProps.field.imageData.name);
-    // });
-    //
-    // it('should display the size of image from field', () => {
-    //     const cmp = shallowWithTheme(
-    //         <MediaPicker {...defaultProps}/>,
-    //         {},
-    //         dsGenericTheme
-    //     )
-    //         .dive();
-    //     expect(cmp.debug()).toContain(defaultProps.field.imageData.size[0]);
-    //     expect(cmp.debug()).toContain(defaultProps.field.imageData.size[1]);
-    // });
+    it('should display the type of image from field', () => {
+        const cmp = shallowWithTheme(
+            <MediaPickerFilled {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        )
+            .dive()
+            .dive();
+        expect(cmp.debug()).toContain('jpeg');
+    });
+
+    it('should display the name of image from field', () => {
+        const cmp = shallowWithTheme(
+            <MediaPickerFilled {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        )
+            .dive()
+            .dive();
+        expect(cmp.debug()).toContain('Beautiful_hairy_pussy.jpg');
+    });
+
+    it('should display the size of image from field', () => {
+        const cmp = shallowWithTheme(
+            <MediaPickerFilled {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        )
+            .dive()
+            .dive();
+        expect(cmp.debug()).toContain(1532400);
+        expect(cmp.debug()).toContain(1234134);
+    });
 });

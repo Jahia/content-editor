@@ -1,11 +1,14 @@
 import gql from 'graphql-tag';
 
 export const SavePropertiesMutation = gql`
-    mutation saveNodeProperties($path:String!, $properties:[InputJCRProperty]) {
+    mutation saveNodeProperties($path:String!, $propertiesToSave:[InputJCRProperty], $propertiesToDelete: [String], $language: String) {
         jcr {
             mutateNode(pathOrId: $path) {
-                setPropertiesBatch(properties: $properties){
+                setPropertiesBatch(properties: $propertiesToSave){
                     path
+                }
+                mutateProperties(names: $propertiesToDelete) {
+                    delete(language: $language)
                 }
             }
         }
