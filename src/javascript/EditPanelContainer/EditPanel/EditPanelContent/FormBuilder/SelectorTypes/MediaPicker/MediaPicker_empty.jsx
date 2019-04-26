@@ -8,7 +8,7 @@ import Slide from '@material-ui/core/Slide';
 import {compose} from 'react-apollo';
 import {withStyles} from '@material-ui/core';
 import {translate} from 'react-i18next';
-import MediaPickerDialog from "./MediaPickerDialog";
+import MediaPickerDialog from './MediaPickerDialog';
 
 const styles = theme => ({
     addImage: {
@@ -56,9 +56,9 @@ export const MediaPickerEmptyCmp = ({classes, t, idInput, context}) => {
              TransitionComponent={Transition}
             >
                 <MediaPickerDialog idInput={idInput}
-                       site={editorContext.site}
-                       lang={editorContext.lang}
-                       onCloseDialog={() => setIsOpen(false)}/>
+                                   site={editorContext.site}
+                                   lang={editorContext.lang}
+                                   onCloseDialog={() => setIsOpen(false)}/>
             </Dialog>
         </>
     );
@@ -79,3 +79,5 @@ export const MediaPickerEmpty = compose(
     translate(),
     withStyles(styles)
 )(MediaPickerEmptyCmp);
+
+MediaPickerEmpty.displayName = 'MediaPickerEmpty';

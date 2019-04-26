@@ -43,8 +43,7 @@ export const EditPanelContainer = ({
                                 let fields = formDefinition.fields.map(
                                     fieldDefinition => {
                                         return {
-                                            targets:
-                                            fieldDefinition.targets,
+                                            targets: fieldDefinition.targets,
                                             formDefinition: fieldDefinition,
                                             jcrDefinition: nodeData.primaryNodeType.properties.find(
                                                 prop => prop.name === fieldDefinition.name
