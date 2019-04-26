@@ -25,7 +25,8 @@ export const EditPanelContainer = ({
     t,
     path,
     lang,
-    uiLang
+    uiLang,
+    site
 }) => {
     return (
         <ApolloHooksProvider client={client}>
@@ -68,6 +69,13 @@ export const EditPanelContainer = ({
                                     {}
                                 );
 
+                                const context = {
+                                    path: path,
+                                    site: site,
+                                    lang: lang,
+                                    uiLang: uiLang
+                                };
+
                                             return (
                                                 <Formik
                                                     initialValues={
@@ -76,7 +84,7 @@ export const EditPanelContainer = ({
                                                     render={() => {
                                                         return (
                                                             <EditPanel
-                                                                path={path}
+                                                                context={context}
                                                                 t={t}
                                                                 fields={fields}
                                                                 title={
@@ -88,7 +96,6 @@ export const EditPanelContainer = ({
                                                                 nodeData={
                                                                     nodeData
                                                                 }
-                                                                language={lang}
                                                             />
                                                         );
                                                     }}
@@ -146,7 +153,8 @@ export const EditPanelContainer = ({
 const mapStateToProps = state => ({
     path: state.path,
     lang: state.language,
-    uiLang: state.uiLang
+    uiLang: state.uiLang,
+    site: state.site
 });
 
 EditPanelContainer.propTypes = {
@@ -155,7 +163,8 @@ EditPanelContainer.propTypes = {
     path: PropTypes.string.isRequired,
     notificationContext: PropTypes.object.isRequired,
     lang: PropTypes.string.isRequired,
-    uiLang: PropTypes.string.isRequired
+    uiLang: PropTypes.string.isRequired,
+    site: PropTypes.string.isRequired
 };
 
 export default compose(
