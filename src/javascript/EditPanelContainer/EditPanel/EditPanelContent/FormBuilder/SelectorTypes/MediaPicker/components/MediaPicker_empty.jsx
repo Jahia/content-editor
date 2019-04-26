@@ -4,7 +4,7 @@ import ImageIcon from '@material-ui/icons/Image';
 import {Typography} from '@jahia/ds-mui-theme';
 import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
-import {Modal} from './modal/modal';
+import {Modal} from '../modal/modal';
 
 import {compose} from 'react-apollo';
 import {withStyles} from '@material-ui/core';

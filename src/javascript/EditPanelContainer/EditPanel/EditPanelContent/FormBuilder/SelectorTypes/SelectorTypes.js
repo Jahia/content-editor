@@ -1,6 +1,6 @@
 import Text from './Text';
 import RichText from './RichText';
-import {MediaPicker} from './mediaPicker/mediaPicker';
+import MediaPicker from './MediaPicker';
 
 const SelectorTypes = {
     Text: Text,
