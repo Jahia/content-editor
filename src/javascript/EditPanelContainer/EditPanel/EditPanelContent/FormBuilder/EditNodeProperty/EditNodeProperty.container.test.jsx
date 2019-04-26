@@ -4,7 +4,7 @@ import {shallow} from '@jahia/test-framework';
 import EditNodePropertyContainer from './EditNodeProperty.container';
 import RichText from '../SelectorTypes/RichText';
 import Text from '../SelectorTypes/Text';
-import {MediaPicker} from '../SelectorTypes/mediaPicker/mediaPicker';
+import MediaPicker from '../SelectorTypes/MediaPicker';
 
 describe('EditNodeProperty container component', () => {
     let defaultProps;
