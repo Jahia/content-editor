@@ -34,15 +34,9 @@ const styles = theme => ({
     }
 });
 
-<<<<<<< HEAD:src/javascript/EditPanelContainer/EditPanel/EditPanelContent/FormBuilder/SelectorTypes/MediaPicker/components/MediaPicker.jsx
 const MediaPickerCmp = ({field, id, classes, context}) => {
     if (!field.data || !field.data.value) {
         return <MediaPickerEmpty idInput={id} context={context}/>;
-=======
-const MediaPickerCmp = ({field, id, classes}) => {
-    if (!field.data || !field.data.value) {
-        return <MediaPickerEmpty idInput={id}/>;
->>>>>>> parent of a04ba5d... BACKLOG-10113 add MediaPickerContainer to query for media properties:src/javascript/EditPanelContainer/EditPanel/EditPanelContent/FormBuilder/SelectorTypes/mediaPicker/mediaPicker.js
     }
 
     return (
@@ -87,10 +81,7 @@ MediaPickerCmp.defaultProps = {
 };
 
 MediaPickerCmp.propTypes = {
-<<<<<<< HEAD:src/javascript/EditPanelContainer/EditPanel/EditPanelContent/FormBuilder/SelectorTypes/MediaPicker/components/MediaPicker.jsx
     context: PropTypes.object.isRequired,
-=======
->>>>>>> parent of a04ba5d... BACKLOG-10113 add MediaPickerContainer to query for media properties:src/javascript/EditPanelContainer/EditPanel/EditPanelContent/FormBuilder/SelectorTypes/mediaPicker/mediaPicker.js
     field: PropTypes.shape({
         data: PropTypes.shape({
             value: PropTypes.string
