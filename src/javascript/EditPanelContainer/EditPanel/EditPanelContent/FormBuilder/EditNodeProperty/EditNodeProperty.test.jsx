@@ -11,7 +11,17 @@ describe('EditNodeProperty component', () => {
             classes: {},
             siteInfo: {languages: []},
             field: {
-                formDefinition: {name: 'x'},
+                formDefinition: {
+                    name: 'text',
+                    nodeType: {
+                        properties: [
+                            {
+                                name: 'text',
+                                displayName: 'Text'
+                            }
+                        ]
+                    }
+                },
                 targets: [{name: 'test'}]
             },
             labelHtmlFor: 'yoloHtmlFor',
@@ -37,7 +47,20 @@ describe('EditNodeProperty component', () => {
             expectedBadgeRendered
         ) => {
             defaultProps.field = {
-                formDefinition: {name: 'x', selectorType: 'Text', i18n: i18n}
+                formDefinition: {
+                    name: 'text',
+                    nodeType: {
+                        properties: [
+                            {
+                                name: 'text',
+                                displayName: 'Text'
+                            }
+                        ]
+                    },
+                    selectorType: 'Text',
+                    i18n: i18n
+                },
+                targets: [{name: 'test'}]
             };
             defaultProps.siteInfo = {
                 languages: siteLanguages
@@ -62,37 +85,12 @@ describe('EditNodeProperty component', () => {
         testI18nBadgeRender(true, [lang1], false);
     });
 
-<<<<<<< HEAD
-    const testI18nBadgeRender = function (i18n, siteLanguages, expectedBadgeRendered) {
-        props.field = {
-            formDefinition: {
-                name: 'text',
-                nodeType: {
-                    properties: [
-                        {
-                            name: 'text',
-                            displayName: 'Text'
-                        }
-                    ]
-                },
-                selectorType: 'Text',
-                i18n: i18n
-            },
-            targets: [{name: 'test'}]
-        };
-        props.siteInfo = {
-            languages: siteLanguages
-        };
-
-        wrapper.setProps(props);
-=======
     it('should add labelHtmlFor to the label', () => {
         const cmp = shallow(
             <EditNodeProperty {...defaultProps}>
                 <div>test</div>
             </EditNodeProperty>
         );
->>>>>>> 21d551d... BACKLOG-10115: Add mediaPicker field with mocked data
 
         expect(cmp.debug()).toContain('yoloHtmlFor');
     });
