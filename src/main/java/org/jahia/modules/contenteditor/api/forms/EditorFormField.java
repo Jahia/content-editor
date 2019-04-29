@@ -80,7 +80,7 @@ public class EditorFormField {
             field.targets == null ? null : field.targets.stream()
                 .map(target -> new EditorFormFieldTarget(target))
                 .collect(Collectors.toList()),
-            // FIXME no deep copy here
+            // No deep copy is needed as this object is just read and only references are used
             field.extendedPropertyDefinition
         );
     }
