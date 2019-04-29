@@ -44,6 +44,7 @@ export const EditPanelContent = ({t, path, language, classes, fields, siteInfo})
                         templateType="html"
                         view="cm"
                         contextConfiguration="preview"
+                        fetchPolicy="network-only"
                         setRefetch={refetchingData => setPreviewRefetcher(refetchingData)}
         />
     ) : previewMode === 'details' ? <DetailsPreviewComponent/> : null;
