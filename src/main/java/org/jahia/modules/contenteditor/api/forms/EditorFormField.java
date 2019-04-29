@@ -3,6 +3,7 @@ package org.jahia.modules.contenteditor.api.forms;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
+import org.jahia.modules.graphql.provider.dxm.nodetype.GqlJcrNodeType;
 import org.jahia.services.content.nodetypes.ExtendedPropertyDefinition;
 
 import java.util.*;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 public class EditorFormField {
 
     private String name;
+    private GqlJcrNodeType nodeType;
     private String selectorType;
     private List<EditorFormProperty> selectorOptions;
     private Boolean i18n;
@@ -24,13 +26,14 @@ public class EditorFormField {
     private List<EditorFormFieldValue> defaultValues;
     private Boolean removed;
     private List<EditorFormFieldTarget> targets;
-    private Map<String,Double> targetsByName = new HashMap<>();
+    private Map<String, Double> targetsByName = new HashMap<>();
     private ExtendedPropertyDefinition extendedPropertyDefinition;
 
     public EditorFormField() {
     }
 
     public EditorFormField(String name,
+                           GqlJcrNodeType nodeType,
                            String selectorType,
                            List<EditorFormProperty> selectorOptions,
                            Boolean i18n,
@@ -43,6 +46,7 @@ public class EditorFormField {
                            List<EditorFormFieldTarget> targets,
                            ExtendedPropertyDefinition extendedPropertyDefinition) {
         this.name = name;
+        this.nodeType = nodeType;
         this.selectorType = selectorType;
         this.selectorOptions = selectorOptions;
         this.i18n = i18n;
@@ -58,30 +62,35 @@ public class EditorFormField {
 
     public EditorFormField(EditorFormField field) {
         this(
-                field.name,
-                field.selectorType,
-                field.selectorOptions == null ? null : field.selectorOptions.stream()
-                        .map(option -> new EditorFormProperty(option))
-                        .collect(Collectors.toList()),
-                field.i18n,
-                field.readOnly,
-                field.multiple,
-                field.mandatory,
-                field.valueConstraints == null ? null : field.valueConstraints.stream()
-                        .map(constraint -> new EditorFormFieldValueConstraint(constraint))
-                        .collect(Collectors.toList()),
-                field.defaultValues == null ? null : new ArrayList<>(field.defaultValues),
-                field.removed,
-                field.targets == null ? null : field.targets.stream()
-                        .map(target -> new EditorFormFieldTarget(target))
-                        .collect(Collectors.toList()),
-                // FIXME no deep copy here
-                field.extendedPropertyDefinition
+            field.name,
+            field.nodeType,
+            field.selectorType,
+            field.selectorOptions == null ? null : field.selectorOptions.stream()
+                .map(option -> new EditorFormProperty(option))
+                .collect(Collectors.toList()),
+            field.i18n,
+            field.readOnly,
+            field.multiple,
+            field.mandatory,
+            field.valueConstraints == null ? null : field.valueConstraints.stream()
+                .map(constraint -> new EditorFormFieldValueConstraint(constraint))
+                .collect(Collectors.toList()),
+            field.defaultValues == null ? null : new ArrayList<>(field.defaultValues),
+            field.removed,
+            field.targets == null ? null : field.targets.stream()
+                .map(target -> new EditorFormFieldTarget(target))
+                .collect(Collectors.toList()),
+            // FIXME no deep copy here
+            field.extendedPropertyDefinition
         );
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setNodeType(GqlJcrNodeType nodeType) {
+        this.nodeType = nodeType;
     }
 
     public void setSelectorType(String selectorType) {
@@ -141,6 +150,12 @@ public class EditorFormField {
     @GraphQLDescription("The name of the field")
     public String getName() {
         return name;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("The node type of the field")
+    public GqlJcrNodeType getNodeType() {
+        return nodeType;
     }
 
     @GraphQLField
@@ -210,18 +225,19 @@ public class EditorFormField {
             return this;
         }
         return new EditorFormField(name,
-                otherEditorFormField.selectorType != null ? otherEditorFormField.selectorType : selectorType,
-                otherEditorFormField.selectorOptions != null ? otherEditorFormField.selectorOptions : selectorOptions,
-                i18n != null ? i18n : otherEditorFormField.i18n,
-                mergeBooleanKeepTrue(readOnly,otherEditorFormField.readOnly),
-                multiple != null ? multiple : otherEditorFormField.multiple,
-                mergeBooleanKeepTrue(mandatory,otherEditorFormField.mandatory),
-                otherEditorFormField.valueConstraints != null ? otherEditorFormField.valueConstraints : valueConstraints,
-                otherEditorFormField.defaultValues != null ? otherEditorFormField.defaultValues : defaultValues,
-                otherEditorFormField.removed != null ? otherEditorFormField.removed : removed,
-                mergeTargets(otherEditorFormField),
-                extendedPropertyDefinition != null ? extendedPropertyDefinition : otherEditorFormField.extendedPropertyDefinition
-                );
+            nodeType,
+            otherEditorFormField.selectorType != null ? otherEditorFormField.selectorType : selectorType,
+            otherEditorFormField.selectorOptions != null ? otherEditorFormField.selectorOptions : selectorOptions,
+            i18n != null ? i18n : otherEditorFormField.i18n,
+            mergeBooleanKeepTrue(readOnly, otherEditorFormField.readOnly),
+            multiple != null ? multiple : otherEditorFormField.multiple,
+            mergeBooleanKeepTrue(mandatory, otherEditorFormField.mandatory),
+            otherEditorFormField.valueConstraints != null ? otherEditorFormField.valueConstraints : valueConstraints,
+            otherEditorFormField.defaultValues != null ? otherEditorFormField.defaultValues : defaultValues,
+            otherEditorFormField.removed != null ? otherEditorFormField.removed : removed,
+            mergeTargets(otherEditorFormField),
+            extendedPropertyDefinition != null ? extendedPropertyDefinition : otherEditorFormField.extendedPropertyDefinition
+        );
     }
 
     @Override
@@ -232,33 +248,46 @@ public class EditorFormField {
             return false;
         EditorFormField that = (EditorFormField) o;
         return Objects.equals(name, that.name)
-                && Objects.equals(selectorType, that.selectorType)
-                && Objects.equals(selectorOptions, that.selectorOptions)
-                && Objects.equals(i18n, that.i18n)
-                && Objects.equals(readOnly, that.readOnly)
-                && Objects.equals(multiple, that.multiple)
-                && Objects.equals(mandatory, that.mandatory)
-                && Objects.equals(valueConstraints, that.valueConstraints)
-                && Objects.equals(defaultValues, that.defaultValues)
-                && Objects.equals(removed, that.removed)
-                && Objects.equals(targets, that.targets)
-                && Objects.equals(targetsByName, that.targetsByName)
-                && Objects.equals(extendedPropertyDefinition, that.extendedPropertyDefinition);
+            && Objects.equals(nodeType, that.nodeType)
+            && Objects.equals(selectorType, that.selectorType)
+            && Objects.equals(selectorOptions, that.selectorOptions)
+            && Objects.equals(i18n, that.i18n)
+            && Objects.equals(readOnly, that.readOnly)
+            && Objects.equals(multiple, that.multiple)
+            && Objects.equals(mandatory, that.mandatory)
+            && Objects.equals(valueConstraints, that.valueConstraints)
+            && Objects.equals(defaultValues, that.defaultValues)
+            && Objects.equals(removed, that.removed)
+            && Objects.equals(targets, that.targets)
+            && Objects.equals(targetsByName, that.targetsByName)
+            && Objects.equals(extendedPropertyDefinition, that.extendedPropertyDefinition);
     }
 
     @Override
     public int hashCode() {
-        return Objects
-                .hash(name, selectorType, selectorOptions, i18n, readOnly, multiple, mandatory, valueConstraints, defaultValues, removed,
-                        targets, targetsByName, extendedPropertyDefinition);
+        return Objects.hash(name, nodeType, selectorType, selectorOptions, i18n,
+            readOnly, multiple, mandatory, valueConstraints, defaultValues, removed,
+            targets, targetsByName, extendedPropertyDefinition);
     }
 
     @Override
     public String toString() {
-        return "EditorFormField{name='" + name + '\'' + ", selectorType='" + selectorType + '\'' + ", selectorOptions="
-                + selectorOptions + ", i18n=" + i18n + ", readOnly=" + readOnly + ", multiple=" + multiple + ", mandatory=" + mandatory
-                + ", valueConstraints=" + valueConstraints + ", defaultValues=" + defaultValues + ", removed=" + removed + ", targets="
-                + targets + ", targetsByName=" + targetsByName + ", extendedPropertyDefinition=" + extendedPropertyDefinition + '}';
+        return "EditorFormField{" +
+            "name='" + name + '\'' +
+            ", nodeType=" + nodeType +
+            ", selectorType='" + selectorType + '\'' +
+            ", selectorOptions=" + selectorOptions +
+            ", i18n=" + i18n +
+            ", readOnly=" + readOnly +
+            ", multiple=" + multiple +
+            ", mandatory=" + mandatory +
+            ", valueConstraints=" + valueConstraints +
+            ", defaultValues=" + defaultValues +
+            ", removed=" + removed +
+            ", targets=" + targets +
+            ", targetsByName=" + targetsByName +
+            ", extendedPropertyDefinition=" + extendedPropertyDefinition +
+            '}';
     }
 
     private Boolean mergeBooleanKeepTrue(Boolean value1, Boolean value2) {
@@ -291,7 +320,7 @@ public class EditorFormField {
                 Double otherEditorFormFieldTargetRank = otherEditorFormField.targetsByName.get(editorFormFieldTarget.getName());
                 if (otherEditorFormFieldTargetRank != null) {
                     mergedEditorFormFieldTargets
-                            .add(new EditorFormFieldTarget(editorFormFieldTarget.getName(), otherEditorFormFieldTargetRank));
+                        .add(new EditorFormFieldTarget(editorFormFieldTarget.getName(), otherEditorFormFieldTargetRank));
                 } else {
                     mergedEditorFormFieldTargets.add(new EditorFormFieldTarget(editorFormFieldTarget.getName(), editorFormFieldTarget.getRank()));
                 }

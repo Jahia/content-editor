@@ -35,6 +35,12 @@ const FormQuery = gql`
                         name
                         rank
                     }
+                    nodeType {
+                        properties {
+                            name
+                            displayName(language: $lang)
+                        }
+                    }
                 }
             }
         }

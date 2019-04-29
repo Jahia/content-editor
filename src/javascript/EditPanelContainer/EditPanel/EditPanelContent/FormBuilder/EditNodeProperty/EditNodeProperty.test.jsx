@@ -11,7 +11,19 @@ describe('EditNodeProperty component', () => {
         props = {
             classes: {},
             siteInfo: {languages: []},
-            field: {formDefinition: {name: 'x'}},
+            field: {
+                formDefinition: {
+                    name: 'text',
+                    nodeType: {
+                        properties: [
+                            {
+                                name: 'text',
+                                displayName: 'Text'
+                            }
+                        ]
+                    }
+                }
+            },
             t: i18nKey => i18nKey
         };
         wrapper = shallow(<EditNodeProperty {...props}><div>test</div></EditNodeProperty>);
@@ -27,10 +39,23 @@ describe('EditNodeProperty component', () => {
         testI18nBadgeRender(true, [lang1], false);
     });
 
-    let testI18nBadgeRender = function (i18n, siteLanguages, expectedBadgeRendered) {
-        props.field =
-            {formDefinition: {name: 'x', selectorType: 'Text', i18n: i18n},
-                targets: [{name: 'test'}]};
+    const testI18nBadgeRender = function (i18n, siteLanguages, expectedBadgeRendered) {
+        props.field = {
+            formDefinition: {
+                name: 'text',
+                nodeType: {
+                    properties: [
+                        {
+                            name: 'text',
+                            displayName: 'Text'
+                        }
+                    ]
+                },
+                selectorType: 'Text',
+                i18n: i18n
+            },
+            targets: [{name: 'test'}]
+        };
         props.siteInfo = {
             languages: siteLanguages
         };

@@ -3,6 +3,7 @@ package org.jahia.modules.contenteditor.api.forms.impl;
 import org.apache.commons.lang.StringUtils;
 import org.jahia.api.Constants;
 import org.jahia.modules.contenteditor.api.forms.*;
+import org.jahia.modules.graphql.provider.dxm.nodetype.GqlJcrNodeType;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRSessionFactory;
 import org.jahia.services.content.JCRSessionWrapper;
@@ -86,6 +87,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             List<EditorFormFieldValueConstraint> valueConstraints = getValueConstraints(initialChoiceListValues, editorFormField.getSelectorOptions(),
                     existingNode, parentNode, uiLocale, nodeType, initializers, editorFormField.getExtendedPropertyDefinition());
             newEditorFormFields.add(new EditorFormField(editorFormField.getName(),
+                    editorFormField.getNodeType(),
                     editorFormField.getSelectorType(),
                     editorFormField.getSelectorOptions(),
                     editorFormField.getI18n(),
@@ -172,6 +174,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                 }
             }
             EditorFormField editorFormField = new EditorFormField(propertyDefinition.getName(),
+                    new GqlJcrNodeType(NodeTypeRegistry.getInstance().getNodeType(propertyDefinition.getDeclaringNodeType().getAlias())),
                     SelectorType.nameFromValue(propertyDefinition.getSelector()),
                     selectorOptions,
                     propertyDefinition.isInternationalized(),
