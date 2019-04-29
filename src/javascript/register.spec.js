@@ -12,7 +12,7 @@ jest.mock('./actions/unpublishAction', () => {
 
 const publishAction = require('./actions/publishAction');
 const unpublishAction = require('./actions/unpublishAction');
-const {mediaPickerUnsetAction} = require('./EditPanelContainer/EditPanel/EditPanelContent/FormBuilder/SelectorTypes/mediaPicker/MediaPicker.actions');
+const {mediaPickerUnsetAction} = require('./EditPanelContainer/EditPanel/EditPanelContent/FormBuilder/SelectorTypes/MediaPicker/MediaPicker.actions');
 
 describe('register', () => {
     let actionsRegistry;

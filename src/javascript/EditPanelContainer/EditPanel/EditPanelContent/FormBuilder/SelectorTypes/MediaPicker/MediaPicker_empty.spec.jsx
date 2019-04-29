@@ -12,7 +12,8 @@ describe('mediaPicker empty', () => {
             editorContext: {
                 site: 'mySite',
                 lang: 'en'
-            }
+            },
+            onImageSelection: jest.fn()
         };
     });
 
@@ -56,5 +57,37 @@ describe('mediaPicker empty', () => {
         cmp.find('[idInput="idInput"]').props().onCloseDialog();
 
         expect(cmp.find('WithStyles(Dialog)').props().open).toBe(false);
+    });
+
+    it('should setModalOpen to false when imageIsSelected', () => {
+        const cmp = shallowWithTheme(
+            <MediaPickerEmpty {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        )
+            .dive()
+            .dive();
+
+        cmp.find('button').simulate('click');
+
+        cmp.find('[idInput="idInput"]').simulate('imageSelection');
+
+        expect(cmp.find('WithStyles(Dialog)').props().open).toBe(false);
+    });
+
+    it('should trigger onImageSelection whend imageIsSelected', () => {
+        const cmp = shallowWithTheme(
+            <MediaPickerEmpty {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        )
+            .dive()
+            .dive();
+
+        cmp.find('button').simulate('click');
+
+        cmp.find('[idInput="idInput"]').simulate('imageSelection', [{name: 'imageName'}]);
+
+        expect(defaultProps.onImageSelection).toHaveBeenCalledWith([{name: 'imageName'}]);
     });
 });

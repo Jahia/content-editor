@@ -14,7 +14,7 @@ const styles = () => ({
     }
 });
 
-export const ImageListCmp = ({error, images, classes}) => {
+export const ImageListCmp = ({error, images, classes, onImageDoubleClick}) => {
     if (error) {
         return <Typography component="section">Erreur : {error.message}</Typography>;
     }
@@ -22,13 +22,14 @@ export const ImageListCmp = ({error, images, classes}) => {
     return (
         <section className={classes.container}>
             {images.map(img => {
-                return <ImageCard key={img.path} image={img}/>;
+                return <ImageCard key={img.path} image={img} onDoubleClick={() => onImageDoubleClick(img)}/>;
             })}
         </section>
     );
 };
 
 ImageListCmp.defaultProps = {
+    onImageDoubleClick: () => {},
     error: null,
     images: []
 };
@@ -40,7 +41,8 @@ ImageListCmp.propTypes = {
         width: PropTypes.string.isRequired,
         height: PropTypes.string.isRequired
     })),
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
+    onImageDoubleClick: PropTypes.func
 };
 
 export const ImageList = withStyles(styles)(ImageListCmp);

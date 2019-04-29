@@ -10,6 +10,7 @@ query ($path: String!, $typeFilter: [String]!) {
           totalCount
         }
         nodes {
+            uuid
             path
             width: property(name: "j:width") {
              value
@@ -52,6 +53,7 @@ export const useImagesData = path => {
     return {
         images: data.jcr.result.children.nodes.map(rawImg => {
             return {
+                uuid: rawImg.uuid,
                 path: `${window.contextJsParameters.contextPath}/files/default${rawImg.path}`,
                 name: rawImg.fileName.value,
                 type: rawImg.children.nodes[0].mimeType.value.replace('image/', ''),

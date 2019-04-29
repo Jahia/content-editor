@@ -60,7 +60,7 @@ const styles = theme => ({
     }
 });
 
-export const MediaPickerDialogCmp = ({onCloseDialog, classes, idInput, t, site, lang}) => {
+export const MediaPickerDialogCmp = ({onCloseDialog, classes, idInput, t, site, lang, onImageSelection}) => {
     const [selectedPath, setSelectedPath] = useState('/sites/' + site + '/files');
     const [openPaths, setOpenPaths] = useState([]);
     const {images, error, loading} = useImagesData(selectedPath);
@@ -107,7 +107,12 @@ export const MediaPickerDialogCmp = ({onCloseDialog, classes, idInput, t, site, 
                 />
             </Drawer>
             <main className={classes.modalContent}>
-                <ImageList component="section" images={images} error={error}/>
+                <ImageList
+                    component="section"
+                    images={images}
+                    error={error}
+                    onImageDoubleClick={img => onImageSelection([img])}
+                    />
 
                 <div className={classes.actions}>
                     <div className={classes.actionUpload}>
@@ -146,7 +151,8 @@ MediaPickerDialogCmp.propTypes = {
     classes: PropTypes.object,
     lang: PropTypes.string.isRequired,
     site: PropTypes.string.isRequired,
-    onCloseDialog: PropTypes.func.isRequired
+    onCloseDialog: PropTypes.func.isRequired,
+    onImageSelection: PropTypes.func.isRequired
 };
 
 export const MediaPickerDialog = compose(

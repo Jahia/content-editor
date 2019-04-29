@@ -19,11 +19,10 @@ describe('mediaPicker modal', () => {
     beforeEach(() => {
         defaultProps = {
             idInput: 'IDdd',
-            context: {
-                site: 'mySite',
-                lang: 'en'
-            },
-            onCloseDialog: jest.fn()
+            site: 'mySite',
+            lang: 'en',
+            onCloseDialog: jest.fn(),
+            onImageSelection: jest.fn()
         };
     });
 
@@ -39,5 +38,19 @@ describe('mediaPicker modal', () => {
         cmp.find('WithStyles(Button)[color="secondary"]').simulate('click');
 
         expect(defaultProps.onCloseDialog).toHaveBeenCalled();
+    });
+
+    it('should emmit onImageSelection when an image is doubleClicked', () => {
+        const cmp = shallowWithTheme(
+            <MediaPickerDialog {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        )
+            .dive()
+            .dive();
+
+        cmp.find('WithStyles(ImageListCmp)').simulate('imageDoubleClick', {name: 'imageName'});
+
+        expect(defaultProps.onImageSelection).toHaveBeenCalledWith([{name: 'imageName'}]);
     });
 });

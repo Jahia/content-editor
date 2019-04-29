@@ -38,10 +38,10 @@ const styles = theme => ({
     }
 });
 
-const MediaPickerFilledCmp = ({t, field, classes}) => {
+const MediaPickerFilledCmp = ({t, field, selectedImgId, classes}) => {
     const {data, error, loading} = useQuery(MediaPickerFilledQuery, {
         variables: {
-            uuid: field.data.value
+            uuid: selectedImgId
         }
     });
 
@@ -56,10 +56,8 @@ const MediaPickerFilledCmp = ({t, field, classes}) => {
 
     const imageData = data.jcr.result;
     const fieldData = {
-        data: {
-            value: field.data.value
-        },
         imageData: {
+            uuid: selectedImgId,
             url: `${window.contextJsParameters.contextPath}/files/default${imageData.path}`,
             name: imageData.name,
             size: [parseInt(imageData.height.value, 10), parseInt(imageData.width.value, 10)],
@@ -111,18 +109,8 @@ MediaPickerFilledCmp.defaultProps = {
 
 MediaPickerFilledCmp.propTypes = {
     t: PropTypes.func.isRequired,
-    field: PropTypes.shape({
-        data: PropTypes.shape({
-            value: PropTypes.string
-        }),
-        imageData: PropTypes.shape({
-            url: PropTypes.string.isRequired,
-            name: PropTypes.string.isRequired,
-            size: PropTypes.arrayOf(PropTypes.number).isRequired,
-            weight: PropTypes.number.isRequired,
-            type: PropTypes.string.isRequired
-        })
-    }).isRequired,
+    field: PropTypes.object.isRequired,
+    selectedImgId: PropTypes.string.isRequired,
     classes: PropTypes.object
 };
 
@@ -130,3 +118,5 @@ export const MediaPickerFilled = compose(
     translate(),
     withStyles(styles)
 )(MediaPickerFilledCmp);
+
+MediaPickerFilled.displayName = 'MediaPickerFilled';

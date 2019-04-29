@@ -7,7 +7,7 @@ import unpublishAction from './actions/unpublishAction';
 import goBackAction from './actions/goBackAction';
 import EditPanelConstants from './EditPanelContainer/EditPanel/EditPanelConstants';
 import EditPanelContainer from './EditPanelContainer';
-import {mediaPickerUnsetAction} from './EditPanelContainer/EditPanel/EditPanelContent/FormBuilder/SelectorTypes/mediaPicker/MediaPicker.actions';
+import {mediaPickerUnsetAction} from './EditPanelContainer/EditPanel/EditPanelContent/FormBuilder/SelectorTypes/MediaPicker/MediaPicker.actions';
 
 console.log('Load Content Editor Ext Components');
 
