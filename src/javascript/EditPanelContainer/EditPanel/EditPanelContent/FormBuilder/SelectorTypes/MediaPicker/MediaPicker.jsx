@@ -7,10 +7,16 @@ import {MediaPickerFilled} from './MediaPicker_filled';
 
 const MediaPickerCmp = ({field, id, editorContext, formik}) => {
     if (!formik.values[field.formDefinition.name]) {
-        return <MediaPickerEmpty idInput={id} editorContext={editorContext}/>;
+        return (
+            <MediaPickerEmpty idInput={id}
+                              editorContext={editorContext}
+                              onImageSelection={img => {
+                                  formik.setFieldValue(field.formDefinition.name, img[0].uuid, true);
+                              }}/>
+        );
     }
 
-    return <MediaPickerFilled field={field} id={id}/>;
+    return <MediaPickerFilled field={field} selectedImgId={formik.values[field.formDefinition.name]} id={id}/>;
 };
 
 MediaPickerCmp.propTypes = {

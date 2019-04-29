@@ -12,7 +12,8 @@ describe('EditNodeProperty container component', () => {
         defaultProps = {
             field: {formDefinition: {name: 'x', selectorType: 'RichText'}},
             targets: [{name: 'test'}],
-            siteInfo: {}
+            siteInfo: {},
+            editorContext: {}
         };
     });
 

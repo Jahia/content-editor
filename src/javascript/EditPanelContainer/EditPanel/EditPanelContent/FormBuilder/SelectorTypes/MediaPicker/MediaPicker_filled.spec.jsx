@@ -22,14 +22,8 @@ describe('mediaPicker', () => {
 
     beforeEach(() => {
         defaultProps = {
-            field: {
-                data: {
-                    value: 'someUuid'
-                },
-                formDefinition: {
-                    name: 'yoloo'
-                }
-            },
+            field: {},
+            selectedImgId: 'uuidOfTheImage',
             id: 'yoloID'
         };
 

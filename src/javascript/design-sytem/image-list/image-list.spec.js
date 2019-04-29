@@ -21,7 +21,8 @@ describe('imageCard', () => {
                 width: '5002',
                 height: '8002',
                 type: 'jpeg2'
-            }]
+            }],
+            onImageDoubleClick: jest.fn()
         };
     });
 
@@ -47,5 +48,18 @@ describe('imageCard', () => {
             .dive();
 
         expect(cmp.find('WithStyles(ImageCardCmp)').length).toBe(2);
+    });
+
+    it('should return an array with the selected image when double', () => {
+        const cmp = shallowWithTheme(
+            <ImageList {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        )
+            .dive();
+
+        cmp.find('WithStyles(ImageCardCmp)').at(0).simulate('doubleClick');
+
+        expect(defaultProps.onImageDoubleClick).toHaveBeenCalledWith(defaultProps.images[0]);
     });
 });

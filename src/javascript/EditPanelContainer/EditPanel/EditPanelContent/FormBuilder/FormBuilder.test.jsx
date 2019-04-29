@@ -15,7 +15,8 @@ describe('FormBuilder component', () => {
             formik: {
                 handleSubmit: () => {}
             },
-            siteInfo: {}
+            siteInfo: {},
+            editorContext: {}
         };
         wrapper = shallow(<FormBuilder {...props}/>);
     });

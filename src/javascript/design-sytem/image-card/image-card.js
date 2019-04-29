@@ -36,9 +36,9 @@ const styles = theme => ({
     }
 });
 
-const ImageCardCmp = ({image, classes}) => {
+const ImageCardCmp = ({image, classes, onDoubleClick, onClick}) => {
     return (
-        <Paper elevation={1} className={classes.container}>
+        <Paper elevation={1} className={classes.container} onDoubleClick={onDoubleClick} onClick={onClick}>
             <div className={classes.imgContainer}>
                 <img src={image.path} alt={image.name}/>
             </div>
@@ -52,6 +52,11 @@ const ImageCardCmp = ({image, classes}) => {
     );
 };
 
+ImageCardCmp.defaultProps = {
+    onDoubleClick: () => {},
+    onClick: () => {}
+};
+
 ImageCardCmp.propTypes = {
     image: PropTypes.shape({
         path: PropTypes.string.isRequired,
@@ -60,7 +65,9 @@ ImageCardCmp.propTypes = {
         width: PropTypes.string.isRequired,
         height: PropTypes.string.isRequired
     }).isRequired,
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
+    onDoubleClick: PropTypes.func,
+    onClick: PropTypes.func
 };
 
 export const ImageCard = withStyles(styles)(ImageCardCmp);
