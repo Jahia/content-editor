@@ -65,6 +65,20 @@ describe('imageCard', () => {
         expect(cmp.debug()).toContain('800');
     });
 
+    it('should not display the image width and height if there is no', () => {
+        defaultProps.image.width = null;
+        defaultProps.image.height = null;
+
+        const cmp = shallowWithTheme(
+            <ImageCard {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        )
+            .dive();
+
+        expect(cmp.debug()).not.toContain('px');
+    });
+
     it('should call onDoubleClick when double clicking on the the card', () => {
         const cmp = shallowWithTheme(
             <ImageCard {...defaultProps}/>,
