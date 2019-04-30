@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/ds-mui-theme';
-import {ImageList} from './image-list';
+import {ImageList} from './ImageList';
 
 describe('imageCard', () => {
     let defaultProps;

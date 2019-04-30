@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {ImageCard} from '../image-card/image-card';
+import {ImageCard} from '../ImageCard/ImageCard';
 import {Typography} from '@jahia/ds-mui-theme';
 
 import {withStyles} from '@material-ui/core';

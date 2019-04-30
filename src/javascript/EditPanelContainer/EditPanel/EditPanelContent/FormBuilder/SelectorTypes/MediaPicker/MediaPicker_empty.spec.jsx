@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/ds-mui-theme';
-import {MediaPickerEmpty} from './mediaPicker_empty';
+import {MediaPickerEmpty} from './MediaPicker_empty';
 
 describe('mediaPicker empty', () => {
     let defaultProps;
