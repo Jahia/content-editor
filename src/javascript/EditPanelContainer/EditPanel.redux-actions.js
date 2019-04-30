@@ -58,10 +58,17 @@ export const unpublishNode = ({client, nodeData, lang, notificationContext, acti
 };
 
 export const saveNode = ({client, nodeData, notificationContext, actions, path, lang, values, fields, t}) => {
+    const propertiesToSave = getPropertiesToSave(values, fields, lang);
+    const propertiesToDelete = propertiesToSave
+        .filter(propertyInfo => propertyInfo.type === 'WEAKREFERENCE' && !propertyInfo.value)
+        .map(propertyInfo => propertyInfo.name);
+
     client.mutate({
         variables: {
             path: nodeData.path,
-            properties: getPropertiesToSave(values, fields, lang)
+            propertiesToSave,
+            propertiesToDelete,
+            language: lang
         },
         mutation: SavePropertiesMutation,
         refetchQueries: [

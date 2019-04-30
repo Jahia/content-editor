@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core';
+import {compose} from 'react-apollo';
 import {Typography} from '@jahia/ds-mui-theme';
 import {DisplayActions, ProgressOverlay} from '@jahia/react-material';
 import IconButton from '@material-ui/core/IconButton';
-import {compose} from 'react-apollo';
 import {useQuery} from 'react-apollo-hooks';
 import {translate} from 'react-i18next';
 import {MediaPickerFilledQuery} from './MediaPicker_filled.gql-queries';
@@ -17,7 +17,8 @@ const styles = theme => ({
         justifyContent: 'space-between',
         // TODO border: `1px ${theme.palette.ui.zeta} solid`,
         border: '1px #C1C8D5 solid',
-        borderRadius: '2px'
+        borderRadius: '2px',
+        paddingRight: theme.spacing.unit
     },
     imageSelectedImgContainer: {
         height: theme.spacing.unit * 9,
@@ -86,7 +87,7 @@ const MediaPickerFilledCmp = ({t, field, classes}) => {
                 </Typography>
             </div>
             <DisplayActions
-                context={{}}
+                context={{field}}
                 target="mediaPickerActions"
                 render={({context}) => {
                     return (
