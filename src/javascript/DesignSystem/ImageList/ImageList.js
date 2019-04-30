@@ -38,8 +38,8 @@ ImageListCmp.propTypes = {
     error: PropTypes.shape({message: PropTypes.string}),
     images: PropTypes.arrayOf(PropTypes.shape({
         path: PropTypes.string.isRequired,
-        width: PropTypes.string.isRequired,
-        height: PropTypes.string.isRequired
+        width: PropTypes.string,
+        height: PropTypes.string
     })),
     classes: PropTypes.object.isRequired,
     onImageDoubleClick: PropTypes.func
