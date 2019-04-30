@@ -29,7 +29,7 @@
                 },
                 "sharedLanguages": "Shared by all languages",
                 "fields": {
-                  "ImagePicker": {
+                  "imagePicker": {
                     "addImage": "Add Image",
                     "modalCancel": "Cancel",
                     "modalDone": "Done"
