@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/ds-mui-theme';
-import {ImageCard} from './image-card';
+import {ImageCard} from './ImageCard';
 
 describe('imageCard', () => {
     let defaultProps;
@@ -14,7 +14,9 @@ describe('imageCard', () => {
                 width: '500',
                 height: '800',
                 type: 'jpeg'
-            }
+            },
+            onDoubleClick: jest.fn(),
+            onClick: jest.fn()
         };
     });
 
@@ -61,5 +63,31 @@ describe('imageCard', () => {
 
         expect(cmp.debug()).toContain('500');
         expect(cmp.debug()).toContain('800');
+    });
+
+    it('should call onDoubleClick when double clicking on the the card', () => {
+        const cmp = shallowWithTheme(
+            <ImageCard {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        )
+            .dive();
+
+        cmp.simulate('doubleClick');
+
+        expect(defaultProps.onDoubleClick).toHaveBeenCalled();
+    });
+
+    it('should call onClick when simple clicking on the the card', () => {
+        const cmp = shallowWithTheme(
+            <ImageCard {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        )
+            .dive();
+
+        cmp.simulate('click');
+
+        expect(defaultProps.onClick).toHaveBeenCalled();
     });
 });
