@@ -1,8 +1,6 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
-import {useImagesData} from './modal.gql-queries';
-
 import Drawer from '@material-ui/core/Drawer';
 import Button from '@material-ui/core/Button';
 import CloudUpload from '@material-ui/icons/CloudUpload';
@@ -14,6 +12,7 @@ import {compose} from 'react-apollo';
 import {withStyles} from '@material-ui/core';
 import {translate} from 'react-i18next';
 import {NodeTrees} from '@jahia/react-material';
+import {useImagesData} from './MediaPickerDialog.gql-queries';
 
 const styles = theme => ({
     drawerPaper: {
@@ -61,7 +60,7 @@ const styles = theme => ({
     }
 });
 
-export const ModalCmp = ({onCloseDialog, classes, idInput, t, site, lang}) => {
+export const MediaPickerDialogCmp = ({onCloseDialog, classes, idInput, t, site, lang}) => {
     const [selectedPath, setSelectedPath] = useState('/sites/' + site + '/files');
     const [openPaths, setOpenPaths] = useState([]);
     const {images, error, loading} = useImagesData(selectedPath);
@@ -137,11 +136,11 @@ export const ModalCmp = ({onCloseDialog, classes, idInput, t, site, lang}) => {
     );
 };
 
-ModalCmp.defaultProps = {
+MediaPickerDialogCmp.defaultProps = {
     classes: {}
 };
 
-ModalCmp.propTypes = {
+MediaPickerDialogCmp.propTypes = {
     t: PropTypes.func.isRequired,
     idInput: PropTypes.string.isRequired,
     classes: PropTypes.object,
@@ -150,7 +149,7 @@ ModalCmp.propTypes = {
     onCloseDialog: PropTypes.func.isRequired
 };
 
-export const Modal = compose(
+export const MediaPickerDialog = compose(
     translate(),
     withStyles(styles)
-)(ModalCmp);
+)(MediaPickerDialogCmp);

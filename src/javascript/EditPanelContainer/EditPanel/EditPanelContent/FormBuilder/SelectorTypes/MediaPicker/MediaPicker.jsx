@@ -1,16 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {MediaPicker, MediaPickerEmpty} from './components';
+import {MediaPickerEmpty} from './MediaPicker_empty';
+import {MediaPickerFilled} from './MediaPicker_filled';
 
-const MediaPickerContainer = ({field, id, editorContext}) => {
+const MediaPicker = ({field, id, editorContext}) => {
     if (!field.data || !field.data.value) {
         return <MediaPickerEmpty idInput={id} editorContext={editorContext}/>;
     }
 
-    return <MediaPicker field={field} id={id}/>;
+    return <MediaPickerFilled field={field} id={id}/>;
 };
 
-MediaPickerContainer.propTypes = {
+MediaPicker.propTypes = {
     editorContext: PropTypes.object.isRequired,
     field: PropTypes.shape({
         data: PropTypes.shape({
@@ -27,4 +28,4 @@ MediaPickerContainer.propTypes = {
     id: PropTypes.string.isRequired
 };
 
-export {MediaPickerContainer};
+export {MediaPicker};

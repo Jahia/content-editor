@@ -4,11 +4,11 @@ import ImageIcon from '@material-ui/icons/Image';
 import {Typography} from '@jahia/ds-mui-theme';
 import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
-import {Modal} from '../modal/modal';
 
 import {compose} from 'react-apollo';
 import {withStyles} from '@material-ui/core';
 import {translate} from 'react-i18next';
+import MediaPickerDialog from "./MediaPickerDialog";
 
 const styles = theme => ({
     addImage: {
@@ -55,7 +55,7 @@ export const MediaPickerEmptyCmp = ({classes, t, idInput, editorContext}) => {
              open={isOpen}
              TransitionComponent={Transition}
             >
-                <Modal idInput={idInput}
+                <MediaPickerDialog idInput={idInput}
                        site={editorContext.site}
                        lang={editorContext.lang}
                        onCloseDialog={() => setIsOpen(false)}/>
