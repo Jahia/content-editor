@@ -7,7 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import {compose} from 'react-apollo';
 import {useQuery} from 'react-apollo-hooks';
 import {translate} from 'react-i18next';
-import {MediaPickerQuery} from './MediaPicker.gql-queries';
+import {MediaPickerFilledQuery} from './MediaPicker_filled.gql-queries';
 
 const styles = theme => ({
     imageSelectedContainer: {
@@ -37,8 +37,8 @@ const styles = theme => ({
     }
 });
 
-const MediaPickerCmp = ({t, field, classes}) => {
-    const {data, error, loading} = useQuery(MediaPickerQuery, {
+const MediaPickerFilledCmp = ({t, field, classes}) => {
+    const {data, error, loading} = useQuery(MediaPickerFilledQuery, {
         variables: {
             uuid: field.data.value
         }
@@ -104,11 +104,11 @@ const MediaPickerCmp = ({t, field, classes}) => {
     );
 };
 
-MediaPickerCmp.defaultProps = {
+MediaPickerFilledCmp.defaultProps = {
     classes: {}
 };
 
-MediaPickerCmp.propTypes = {
+MediaPickerFilledCmp.propTypes = {
     t: PropTypes.func.isRequired,
     field: PropTypes.shape({
         data: PropTypes.shape({
@@ -125,7 +125,7 @@ MediaPickerCmp.propTypes = {
     classes: PropTypes.object
 };
 
-export const MediaPicker = compose(
+export const MediaPickerFilled = compose(
     translate(),
     withStyles(styles)
-)(MediaPickerCmp);
+)(MediaPickerFilledCmp);

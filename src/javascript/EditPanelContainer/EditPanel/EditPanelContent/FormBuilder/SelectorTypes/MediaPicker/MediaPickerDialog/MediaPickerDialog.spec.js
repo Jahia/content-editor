@@ -1,9 +1,9 @@
 import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/ds-mui-theme';
-import {Modal} from './modal';
+import {MediaPickerDialog} from './MediaPickerDialog';
 
-jest.mock('./modal.gql-queries', () => {
+jest.mock('./MediaPickerDialog.gql-queries', () => {
     return {
         useImagesData: () => ({
             images: [],
@@ -29,7 +29,7 @@ describe('mediaPicker modal', () => {
 
     it('should close the modal when click on Cancel button', () => {
         const cmp = shallowWithTheme(
-            <Modal {...defaultProps}/>,
+            <MediaPickerDialog {...defaultProps}/>,
             {},
             dsGenericTheme
         )
