@@ -5,7 +5,7 @@ import Drawer from '@material-ui/core/Drawer';
 import Button from '@material-ui/core/Button';
 import CloudUpload from '@material-ui/icons/CloudUpload';
 import {Typography} from '@jahia/ds-mui-theme';
-import {ImageList} from '../../../../../../../design-sytem/image-list/image-list';
+import {ImageList} from '../../../../../../../DesignSystem/ImageList/ImageList';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import {compose} from 'react-apollo';
