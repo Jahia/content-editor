@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 import {PredefinedFragments} from '@jahia/apollo-dx';
 
-const MediaPickerQuery = gql`
+const MediaPickerFilledQuery = gql`
     query mediaPickerQuery($uuid: String!) {
         jcr {
             result: nodeById(uuid: $uuid) {
@@ -27,5 +27,5 @@ const MediaPickerQuery = gql`
 `;
 
 export {
-    MediaPickerQuery
+    MediaPickerFilledQuery
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/ds-mui-theme';
-import {MediaPicker} from './mediaPicker';
+import {MediaPickerFilled} from './MediaPicker_filled';
 
 describe('mediaPicker', () => {
     let defaultProps;
@@ -27,7 +27,7 @@ describe('mediaPicker', () => {
     it('should display add image when field value is empty', () => {
         delete defaultProps.field.data.value;
         const cmp = shallowWithTheme(
-            <MediaPicker {...defaultProps}/>,
+            <MediaPickerFilled {...defaultProps}/>,
             {},
             dsGenericTheme
         )
@@ -37,7 +37,7 @@ describe('mediaPicker', () => {
 
     it('should not display add image when field value is empty', () => {
         const cmp = shallowWithTheme(
-            <MediaPicker {...defaultProps}/>,
+            <MediaPickerFilled {...defaultProps}/>,
             {},
             dsGenericTheme
         )

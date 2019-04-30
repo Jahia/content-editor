@@ -1,3 +1,3 @@
-import {MediaPickerContainer as MediaPicker} from './MediaPicker.container';
+import {MediaPicker} from './MediaPicker';
 
 export default MediaPicker;
