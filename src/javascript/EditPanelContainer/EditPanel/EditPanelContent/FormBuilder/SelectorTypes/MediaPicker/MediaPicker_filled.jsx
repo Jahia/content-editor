@@ -75,7 +75,7 @@ const MediaPickerFilledCmp = ({t, field, selectedImgId, classes}) => {
                     alt=""
                 />
             </div>
-            <div className={classes.imageSelectedMetadata}>
+            <div className={classes.imageSelectedMetadata} data-sel-content-editor-image-picker="filled">
                 <Typography variant="zeta" color="alpha">
                     {fieldData.imageData.name}
                 </Typography>
