@@ -49,7 +49,7 @@ describe('imageList', () => {
         )
             .dive();
 
-        expect(cmp.find('WithStyles(ImageCardCmp)').length).toBe(2);
+        expect(cmp.find('Card').length).toBe(2);
     });
 
     it('should the selected image when double click on it', () => {
@@ -60,7 +60,7 @@ describe('imageList', () => {
         )
             .dive();
 
-        cmp.find('WithStyles(ImageCardCmp)').at(0).simulate('doubleClick');
+        cmp.find('Card').at(0).simulate('doubleClick');
 
         expect(defaultProps.onImageDoubleClick).toHaveBeenCalledWith(defaultProps.images[0]);
     });
@@ -73,7 +73,7 @@ describe('imageList', () => {
         )
             .dive();
 
-        cmp.find('WithStyles(ImageCardCmp)').at(0).simulate('click');
+        cmp.find('Card').at(0).simulate('click');
 
         expect(defaultProps.onImageSelection).toHaveBeenCalledWith([defaultProps.images[0]]);
     });
@@ -86,11 +86,11 @@ describe('imageList', () => {
         )
             .dive();
 
-        expect(cmp.find('WithStyles(ImageCardCmp)').at(0).props().selected).toBe(false);
+        expect(cmp.find('Card').at(0).props().selected).toBe(false);
 
-        cmp.find('WithStyles(ImageCardCmp)').at(0).simulate('click');
+        cmp.find('Card').at(0).simulate('click');
 
-        expect(cmp.find('WithStyles(ImageCardCmp)').at(0).props().selected).toBe(true);
+        expect(cmp.find('Card').at(0).props().selected).toBe(true);
     });
 
     it('should set image unselected when simple click on it twice', () => {
@@ -101,10 +101,10 @@ describe('imageList', () => {
         )
             .dive();
 
-        cmp.find('WithStyles(ImageCardCmp)').at(0).simulate('click');
-        cmp.find('WithStyles(ImageCardCmp)').at(0).simulate('click');
+        cmp.find('Card').at(0).simulate('click');
+        cmp.find('Card').at(0).simulate('click');
 
-        expect(cmp.find('WithStyles(ImageCardCmp)').at(0).props().selected).toBe(false);
+        expect(cmp.find('Card').at(0).props().selected).toBe(false);
     });
 
     it('should return an array with all selected images when simple click', () => {
@@ -115,8 +115,8 @@ describe('imageList', () => {
         )
             .dive();
 
-        cmp.find('WithStyles(ImageCardCmp)').at(1).simulate('click');
-        cmp.find('WithStyles(ImageCardCmp)').at(0).simulate('click');
+        cmp.find('Card').at(1).simulate('click');
+        cmp.find('Card').at(0).simulate('click');
 
         expect(defaultProps.onImageSelection).toHaveBeenCalledWith([defaultProps.images[1], defaultProps.images[0]]);
     });
@@ -131,9 +131,38 @@ describe('imageList', () => {
         )
             .dive();
 
-        cmp.find('WithStyles(ImageCardCmp)').at(1).simulate('click');
-        cmp.find('WithStyles(ImageCardCmp)').at(0).simulate('click');
+        cmp.find('Card').at(1).simulate('click');
+        cmp.find('Card').at(0).simulate('click');
 
         expect(defaultProps.onImageSelection).toHaveBeenCalledWith([defaultProps.images[0]]);
+    });
+
+    it('should not display the image width and height if there is no', () => {
+        defaultProps.images[0].width = null;
+        defaultProps.images[0].height = null;
+
+        const cmp = shallowWithTheme(
+            <ImageList {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        )
+            .dive()
+            .find('Card')
+            .at(0);
+
+        expect(cmp.debug()).not.toContain('px');
+    });
+
+    it('should display the image width and height if there is', () => {
+        const cmp = shallowWithTheme(
+            <ImageList {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        )
+            .dive()
+            .find('Card')
+            .at(0);
+
+        expect(cmp.debug()).toContain('jpeg - 500x800px');
     });
 });
