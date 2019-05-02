@@ -36,7 +36,7 @@ const styles = theme => ({
     }
 });
 
-const ImageCardCmp = ({image, classes, onDoubleClick, onClick}) => {
+const ImageCardCmp = ({image, classes, selected, onDoubleClick, onClick}) => {
     return (
         <Paper elevation={1} className={classes.container} onDoubleClick={onDoubleClick} onClick={onClick}>
             <div className={classes.imgContainer}>
@@ -47,6 +47,7 @@ const ImageCardCmp = ({image, classes, onDoubleClick, onClick}) => {
                 <Typography variant="omega" color="gamma">
                     {image.type}{(image.width && image.height) && ` - ${image.width}x${image.height}px`}
                 </Typography>
+                {selected}
             </div>
         </Paper>
     );
@@ -54,7 +55,8 @@ const ImageCardCmp = ({image, classes, onDoubleClick, onClick}) => {
 
 ImageCardCmp.defaultProps = {
     onDoubleClick: () => {},
-    onClick: () => {}
+    onClick: () => {},
+    selected: false
 };
 
 ImageCardCmp.propTypes = {
@@ -65,6 +67,7 @@ ImageCardCmp.propTypes = {
         width: PropTypes.string,
         height: PropTypes.string
     }).isRequired,
+    selected: PropTypes.bool,
     classes: PropTypes.object.isRequired,
     onDoubleClick: PropTypes.func,
     onClick: PropTypes.func
