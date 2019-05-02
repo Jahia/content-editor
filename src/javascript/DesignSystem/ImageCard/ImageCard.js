@@ -45,7 +45,7 @@ const ImageCardCmp = ({image, classes, onDoubleClick, onClick}) => {
             <div className={classes.infoContainer}>
                 <Typography component="h3" variant="zeta" color="alpha">{image.name}</Typography>
                 <Typography variant="omega" color="gamma">
-                    {image.type} - {image.width}x{image.height}px
+                    {image.type}{(image.width && image.height) && ` - ${image.width}x${image.height}px`}
                 </Typography>
             </div>
         </Paper>
@@ -62,8 +62,8 @@ ImageCardCmp.propTypes = {
         path: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
         type: PropTypes.string.isRequired,
-        width: PropTypes.string.isRequired,
-        height: PropTypes.string.isRequired
+        width: PropTypes.string,
+        height: PropTypes.string
     }).isRequired,
     classes: PropTypes.object.isRequired,
     onDoubleClick: PropTypes.func,

@@ -39,7 +39,7 @@ query ($path: String!, $typeFilter: [String]!) {
 export const useImagesData = path => {
     const {data, error, loading} = useQuery(GET_FILES_QUERY, {
         variables: {
-            typeFilter: ['jnt:file'],
+            typeFilter: ['jmix:image'],
             path: path
         }
     });
@@ -57,8 +57,8 @@ export const useImagesData = path => {
                 path: `${window.contextJsParameters.contextPath}/files/default${rawImg.path}`,
                 name: rawImg.fileName.value,
                 type: rawImg.children.nodes[0].mimeType.value.replace('image/', ''),
-                width: rawImg.width.value,
-                height: rawImg.height.value
+                width: rawImg.width ? rawImg.width.value : null,
+                height: rawImg.height ? rawImg.height.value : null
             };
         }),
         error,
