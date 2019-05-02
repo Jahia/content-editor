@@ -32,8 +32,13 @@ public class EditorFormServiceImpl implements EditorFormService {
 
     private static final Logger logger = LoggerFactory.getLogger(EditorFormServiceImpl.class);
     private NodeTypeRegistry nodeTypeRegistry;
-    private ChoiceListInitializerService choiceListInitializerService = ChoiceListInitializerService.getInstance(); // todo we should inject this but currently DX doesn't expose it as an OSGi service.
+    private ChoiceListInitializerService choiceListInitializerService;
     private StaticFormRegistry staticFormRegistry;
+
+    @Reference
+    public void setChoiceListInitializerService(ChoiceListInitializerService choiceListInitializerService) {
+        this.choiceListInitializerService = choiceListInitializerService;
+    }
 
     @Reference
     public void setNodeTypeRegistry(NodeTypeRegistry nodeTypeRegistry) {
