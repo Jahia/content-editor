@@ -1,5 +1,5 @@
 import {SavePropertiesMutation, PublishPropertiesMutation, UnpublishPropertiesMutation} from './NodeData/NodeData.gql-mutation';
-import {getPropertiesToSave} from './EditPanel/EditPanel.utils';
+import {getPropertiesToMutate} from './EditPanel/EditPanel.utils';
 import {NodeQuery} from './NodeData/NodeData.gql-queries';
 import {refetchPreview} from './EditPanel.refetches';
 
@@ -58,16 +58,13 @@ export const unpublishNode = ({client, nodeData, lang, notificationContext, acti
 };
 
 export const saveNode = ({client, nodeData, notificationContext, actions, path, lang, values, fields, t}) => {
-    const propertiesToSave = getPropertiesToSave(values, fields, lang);
-    const propertiesToDelete = propertiesToSave
-        .filter(propertyInfo => propertyInfo.type === 'WEAKREFERENCE' && !propertyInfo.value)
-        .map(propertyInfo => propertyInfo.name);
+    const propertiesToMutate = getPropertiesToMutate(nodeData, values, fields, lang);
 
     client.mutate({
         variables: {
             path: nodeData.path,
-            propertiesToSave,
-            propertiesToDelete,
+            propertiesToSave: propertiesToMutate.propsToSave,
+            propertiesToDelete: propertiesToMutate.propsToDelete,
             language: lang
         },
         mutation: SavePropertiesMutation,

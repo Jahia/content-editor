@@ -4,18 +4,36 @@ export function isSystemField(fieldKey) {
     return fieldKey in EditPanelConstants.systemFields;
 }
 
-export function getPropertiesToSave(formValues = {}, fields = [], lang) {
+export function getPropertiesToMutate(nodeData = {}, formValues = {}, fields = [], lang) {
     const keys = Object.keys(formValues).filter(key => !isSystemField(key));
     const filteredFields = fields.filter(field => !field.formDefinition.readOnly);
 
-    return keys.map(key => {
-        let field = filteredFields.find(field => field.formDefinition && field.formDefinition.name === key);
-        return field ? {
-            name: key,
-            type: field.jcrDefinition.requiredType,
-            value: formValues[key],
-            language: lang
-        } : null;
-    })
-        .filter(Boolean);
+    let propsToSave = [];
+    let propsToDelete = [];
+
+    keys.forEach(key => {
+        const field = filteredFields.find(field => field.formDefinition && field.formDefinition.name === key);
+
+        if (field) {
+            if (formValues[key]) {
+                propsToSave.push({
+                    name: key,
+                    type: field.jcrDefinition.requiredType,
+                    value: formValues[key],
+                    language: lang
+                });
+            } else {
+                const nodeProperty = nodeData.properties.find(prop => prop.name === key);
+
+                if (nodeProperty && (field.multiple ? nodeProperty.values : nodeProperty.value)) {
+                    propsToDelete.push(key);
+                }
+            }
+        }
+    });
+
+    return {
+        propsToSave,
+        propsToDelete
+    };
 }
