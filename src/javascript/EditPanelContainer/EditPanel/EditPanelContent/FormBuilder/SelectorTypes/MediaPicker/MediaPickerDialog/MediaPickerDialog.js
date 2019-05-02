@@ -5,7 +5,7 @@ import Drawer from '@material-ui/core/Drawer';
 import Button from '@material-ui/core/Button';
 import CloudUpload from '@material-ui/icons/CloudUpload';
 import {Typography} from '@jahia/ds-mui-theme';
-import {ImageList} from '../../../../../../../DesignSystem/ImageList/ImageList';
+import {ImageList} from '../../../../../../../DesignSystem/ImageList/';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import {compose} from 'react-apollo';
@@ -109,7 +109,6 @@ export const MediaPickerDialogCmp = ({onCloseDialog, classes, idInput, t, site, 
             </Drawer>
             <main className={classes.modalContent}>
                 <ImageList
-                    component="section"
                     images={images}
                     error={error}
                     onImageDoubleClick={img => onImageSelection([img])}

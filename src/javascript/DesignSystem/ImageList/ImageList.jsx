@@ -1,6 +1,6 @@
 import React, {useState, useCallback} from 'react';
 import PropTypes from 'prop-types';
-import {ImageCard} from '../ImageCard/ImageCard';
+import {Card} from '../Card/';
 import {Typography} from '@jahia/ds-mui-theme';
 
 import {withStyles} from '@material-ui/core';
@@ -21,10 +21,10 @@ export const ImageListCmp = ({error, images, multipleSelectable, classes, onImag
         let newSelectedImg;
         if (imgSelectedIndex === -1) {
             newSelectedImg = multipleSelectable ? [...selectedImages, img] : [img];
-        } else if (multipleSelectable) {
+        } else if (multipleSelectable) { // If it's an unselect for multipleSelectable
             newSelectedImg = [...selectedImages];
             newSelectedImg.splice(imgSelectedIndex, 1);
-        } else {
+        } else { // If it's an unselect for singleSelectable then, set array empty
             newSelectedImg = [];
         }
 
@@ -40,9 +40,11 @@ export const ImageListCmp = ({error, images, multipleSelectable, classes, onImag
         <section className={classes.container}>
             {images.map(img => {
                 return (
-                    <ImageCard
+                    <Card
                         key={img.uuid}
-                        image={img}
+                        image={{src: img.path, alt: img.name}}
+                        headerText={img.name}
+                        subhead={`${img.type}${img.width && img.height ? ` - ${img.width}x${img.height}px` : ''}`}
                         selected={Boolean(selectedImages.find(i => i.uuid === img.uuid))}
                         onDoubleClick={() => onImageDoubleClick(img)}
                         onClick={() => onClickHandler(img)}
@@ -54,11 +56,11 @@ export const ImageListCmp = ({error, images, multipleSelectable, classes, onImag
 };
 
 ImageListCmp.defaultProps = {
-    onImageSelection: () => {},
-    onImageDoubleClick: () => {},
     error: null,
-    multipleSelectable: true,
-    images: []
+    images: [],
+    multipleSelectable: false,
+    onImageSelection: () => {},
+    onImageDoubleClick: () => {}
 };
 
 ImageListCmp.propTypes = {
@@ -66,10 +68,13 @@ ImageListCmp.propTypes = {
     images: PropTypes.arrayOf(PropTypes.shape({
         uuid: PropTypes.string.isRequired,
         width: PropTypes.string,
-        height: PropTypes.string
+        height: PropTypes.string,
+        type: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        path: PropTypes.string.isRequired
     })),
-    classes: PropTypes.object.isRequired,
     multipleSelectable: PropTypes.bool,
+    classes: PropTypes.object.isRequired,
     onImageDoubleClick: PropTypes.func,
     onImageSelection: PropTypes.func
 };
