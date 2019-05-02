@@ -63,6 +63,7 @@ const styles = theme => ({
 export const MediaPickerDialogCmp = ({onCloseDialog, classes, idInput, t, site, lang, onImageSelection}) => {
     const [selectedPath, setSelectedPath] = useState('/sites/' + site + '/files');
     const [openPaths, setOpenPaths] = useState([]);
+    const [selectedImages, setSelectedImages] = useState([]);
     const {images, error, loading} = useImagesData(selectedPath);
 
     if (loading) {
@@ -112,6 +113,7 @@ export const MediaPickerDialogCmp = ({onCloseDialog, classes, idInput, t, site, 
                     images={images}
                     error={error}
                     onImageDoubleClick={img => onImageSelection([img])}
+                    onImageSelection={setSelectedImages}
                     />
 
                 <div className={classes.actions}>
@@ -129,7 +131,13 @@ export const MediaPickerDialogCmp = ({onCloseDialog, classes, idInput, t, site, 
                                 'content-editor:label.contentEditor.edit.fields.imagePicker.modalCancel'
                             )}
                         </Button>
-                        <Button disabled variant="contained" color="primary" type="button">
+                        <Button
+                            disabled={!selectedImages.length}
+                            variant="contained"
+                            color="primary"
+                            type="button"
+                            onClick={() => onImageSelection(selectedImages)}
+                        >
                             {t(
                                 'content-editor:label.contentEditor.edit.fields.imagePicker.modalDone'
                             )}
