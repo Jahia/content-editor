@@ -66,24 +66,21 @@ export const MediaPickerDialogCmp = ({onCloseDialog, classes, idInput, t, site, 
     const [selectedImages, setSelectedImages] = useState([]);
     const {images, error, loading} = useImagesData(selectedPath);
 
-    if (loading) {
-        return (
-            <section>
-                <CircularProgress/>
-            </section>
-        );
-    }
-
     return (
-        <>
+        <>{
+            loading ?
+                <section>
+                    <CircularProgress/>
+                </section> :
+                ''}
             <Drawer
                 open
                 component="nav"
                 variant="permanent"
                 anchor="left"
                 classes={{
-                 paper: classes.drawerPaper
-               }}
+                    paper: classes.drawerPaper
+                }}
             >
                 <NodeTrees isOpen
                            path={selectedPath}
@@ -113,7 +110,7 @@ export const MediaPickerDialogCmp = ({onCloseDialog, classes, idInput, t, site, 
                     error={error}
                     onImageDoubleClick={img => onImageSelection([img])}
                     onImageSelection={setSelectedImages}
-                    />
+                />
 
                 <div className={classes.actions}>
                     <div className={classes.actionUpload}>
