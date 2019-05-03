@@ -1,14 +1,41 @@
-import {getPropertiesToSave} from './EditPanel.utils';
+import {getPropertiesToMutate} from './EditPanel.utils';
 
 describe('EditPanel utils', () => {
     describe('getPropertiesToSave', () => {
         it('should return the properties', () => {
+            const nodeData = {
+                properties: [{
+                    name: 'fieldToDelete',
+                    value: 'will be deleted'
+                }]
+            };
             const formValues = {
-                fieldName: 'valueOfField'
+                fieldToSave: 'will be saved',
+                fieldToDelete: undefined,
+                fieldToIgnore: undefined
             };
             const fields = [{
                 formDefinition: {
-                    name: 'fieldName'
+                    name: 'fieldToSave',
+                    multiple: false
+                },
+                jcrDefinition: {
+                    requiredType: 'typeBG'
+                }
+            },
+            {
+                formDefinition: {
+                    name: 'fieldToDelete',
+                    multiple: false
+                },
+                jcrDefinition: {
+                    requiredType: 'typeBG'
+                }
+            },
+            {
+                formDefinition: {
+                    name: 'fieldToIgnore',
+                    multiple: false
                 },
                 jcrDefinition: {
                     requiredType: 'typeBG'
@@ -16,14 +43,16 @@ describe('EditPanel utils', () => {
             }];
             const lang = 'fr';
 
-            const properties = getPropertiesToSave(formValues, fields, lang);
+            const properties = getPropertiesToMutate(nodeData, formValues, fields, lang);
 
-            expect(properties).toEqual([{
+            expect(properties.propsToSave).toEqual([{
                 language: 'fr',
-                name: 'fieldName',
+                name: 'fieldToSave',
                 type: 'typeBG',
-                value: 'valueOfField'
+                value: 'will be saved'
             }]);
+
+            expect(properties.propsToDelete).toEqual(['fieldToDelete']);
         });
     });
 });

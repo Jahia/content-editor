@@ -27,7 +27,14 @@
                       "error": "Erreur pendant la dépublication"
                     }
                 },
-                "sharedLanguages": "Partagé par toutes les langues"
+                "sharedLanguages": "Partagé par toutes les langues",
+                "fields": {
+                  "imagePicker": {
+                    "addImage": "Ajouter une image",
+                    "modalCancel": "Annuler",
+                    "modalDone": "Selectioner"
+                  }
+                }
             },
             "error": {
                 "queryingContent": "Erreur lors de l'interrogation du contenu: {{details}}"

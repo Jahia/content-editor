@@ -1,9 +1,14 @@
 import gql from 'graphql-tag';
 import {PredefinedFragments} from '@jahia/apollo-dx';
 
-const NodeQuery = gql`
-    query getNodeProperties($path:String!, $language:String!) {
-        jcr {
+const NodeDataFragment = {
+    nodeData: {
+        variables: {
+            language: 'String!',
+            path: 'String!'
+        },
+        applyFor: 'node',
+        gql: gql`fragment NodeData on JCRQuery {
             result:nodeByPath(path: $path) {
                 ...NodeCacheRequiredFields
                 displayName(language: $language)
@@ -25,10 +30,20 @@ const NodeQuery = gql`
                 hasPermission(permissionName: "publish")
             }
         }
+        ${PredefinedFragments.nodeCacheRequiredFields.gql}`
     }
-    ${PredefinedFragments.nodeCacheRequiredFields.gql}
+};
+
+const NodeQuery = gql`
+    query getNodeProperties($path:String!, $language:String!) {
+        jcr {
+            ...NodeData
+        }
+    }
+    ${NodeDataFragment.nodeData.gql}
 `;
 
 export {
-    NodeQuery
+    NodeQuery,
+    NodeDataFragment
 };

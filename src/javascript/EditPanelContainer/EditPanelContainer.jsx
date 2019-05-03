@@ -6,11 +6,11 @@ import EditPanelConstants from './EditPanel/EditPanelConstants';
 import {Formik} from 'formik';
 import {connect} from 'react-redux';
 import EditPanel from './EditPanel';
-import NodeData from './NodeData';
 import * as PropTypes from 'prop-types';
 import FormDefinition from './FormDefinitions';
 import SiteData from './SiteData';
 import {publishNode, saveNode, unpublishNode} from './EditPanel.redux-actions';
+import {ApolloProvider as ApolloHooksProvider} from 'react-apollo-hooks';
 
 const submitActionMapper = {
     [EditPanelConstants.submitOperation.SAVE]: saveNode,
@@ -19,79 +19,141 @@ const submitActionMapper = {
 };
 
 // TODO modify SiteData with HOC, as well NodeData
-export const EditPanelContainer = ({client, notificationContext, t, path, lang, uiLang}) => {
+export const EditPanelContainer = ({
+    client,
+    notificationContext,
+    t,
+    path,
+    lang,
+    uiLang,
+    site
+}) => {
     return (
-        <SiteData>
-            {({siteInfo}) => {
-                    return (
-                        <NodeData>
-                            {({nodeData}) => {
-                                return (
-                                    <FormDefinition uiLang={uiLang} lang={lang} path={path} nodeType={nodeData.primaryNodeType.name}>
-                                        {({formDefinition}) => {
-                                            if (formDefinition) {
-                                                let fields = formDefinition.fields.map(fieldDefinition => {
-                                                    return {
-                                                        targets: fieldDefinition.targets,
-                                                        formDefinition: fieldDefinition,
-                                                        jcrDefinition: nodeData.primaryNodeType.properties.find(prop => prop.name === fieldDefinition.name),
-                                                        data: nodeData.properties.find(prop => prop.name === fieldDefinition.name)
-                                                    };
-                                                });
+        <ApolloHooksProvider client={client}>
+            <SiteData>
+                {({siteInfo}) => {
+                return (
+                    <FormDefinition
+                        uiLang={uiLang}
+                        lang={lang}
+                        path={path}
+                    >
+                        {({formDefinition, nodeData}) => {
+                            if (formDefinition) {
+                                let fields = formDefinition.fields.map(
+                                    fieldDefinition => {
+                                        return {
+                                            targets: fieldDefinition.targets,
+                                            formDefinition: fieldDefinition,
+                                            jcrDefinition: nodeData.primaryNodeType.properties.find(
+                                                prop => prop.name === fieldDefinition.name
+                                            ),
+                                            data: nodeData.properties.find(
+                                                prop => prop.name === fieldDefinition.name
+                                            )
+                                        };
+                                    }
+                                );
 
-                                                const initialValues = fields.reduce((initialValues, field) => {
-                                                    return {
-                                                        ...initialValues,
-                                                        [field.formDefinition.name]: field.data && field.data.value
-                                                    };
-                                                }, {});
+                                const initialValues = fields.reduce(
+                                    (initialValues, field) => {
+                                        return {
+                                            ...initialValues,
+                                            [field.formDefinition
+                                                .name]:
+                                            field.data &&
+                                            field.data.value
+                                        };
+                                    },
+                                    {}
+                                );
 
-                                                return (
-                                                    <Formik
-                                                        initialValues={initialValues}
-                                                        render={() => {
-                                                            return (
-                                                                <EditPanel path={path} t={t} fields={fields} title={nodeData.displayName} siteInfo={siteInfo} nodeData={nodeData} language={lang}/>
-                                                            );
-                                                        }}
-                                                        onSubmit={(values, actions) => {
-                                                            const submitAction = submitActionMapper[values[EditPanelConstants.systemFields.SYSTEM_SUBMIT_OPERATION]];
+                                const editorContext = {
+                                    path: path,
+                                    site: site,
+                                    lang: lang,
+                                    uiLang: uiLang
+                                };
 
-                                                            if (!submitAction) {
-                                                                console.warn('Unknown submit operation: ' + values[EditPanelConstants.systemFields.SYSTEM_SUBMIT_OPERATION]);
-                                                                actions.setSubmitting(false);
-                                                            }
+                                            return (
+                                                <Formik
+                                                    initialValues={
+                                                        initialValues
+                                                    }
+                                                    render={() => {
+                                                        return (
+                                                            <EditPanel
+                                                                editorContext={editorContext}
+                                                                t={t}
+                                                                fields={fields}
+                                                                title={
+                                                                    nodeData.displayName
+                                                                }
+                                                                siteInfo={
+                                                                    siteInfo
+                                                                }
+                                                                nodeData={
+                                                                    nodeData
+                                                                }
+                                                            />
+                                                        );
+                                                    }}
+                                                    onSubmit={(
+                                                        values,
+                                                        actions
+                                                    ) => {
+                                                        const submitAction =
+                                                            submitActionMapper[
+                                                                values[
+                                                                    EditPanelConstants
+                                                                        .systemFields
+                                                                        .SYSTEM_SUBMIT_OPERATION
+                                                                ]
+                                                            ];
 
-                                                            submitAction({
-                                                                client,
-                                                                nodeData,
-                                                                lang,
-                                                                notificationContext,
-                                                                actions,
-                                                                t,
-                                                                path,
-                                                                values,
-                                                                fields
-                                                            });
-                                                        }}
-                                                    />
+                                            if (!submitAction) {
+                                                console.warn(
+                                                    'Unknown submit operation: ' +
+                                                    values[
+                                                        EditPanelConstants
+                                                            .systemFields
+                                                            .SYSTEM_SUBMIT_OPERATION
+                                                        ]
+                                                );
+                                                actions.setSubmitting(
+                                                    false
                                                 );
                                             }
+
+                                            submitAction({
+                                                client,
+                                                nodeData,
+                                                lang,
+                                                notificationContext,
+                                                actions,
+                                                t,
+                                                path,
+                                                values,
+                                                fields
+                                            });
                                         }}
-                                    </FormDefinition>
+                                    />
                                 );
-                            }}
-                        </NodeData>
-                    );
-                }}
-        </SiteData>
+                            }
+                        }}
+                    </FormDefinition>
+                );
+            }}
+            </SiteData>
+        </ApolloHooksProvider>
     );
 };
 
 const mapStateToProps = state => ({
     path: state.path,
     lang: state.language,
-    uiLang: state.uiLang
+    uiLang: state.uiLang,
+    site: state.site
 });
 
 EditPanelContainer.propTypes = {
@@ -100,7 +162,8 @@ EditPanelContainer.propTypes = {
     path: PropTypes.string.isRequired,
     notificationContext: PropTypes.object.isRequired,
     lang: PropTypes.string.isRequired,
-    uiLang: PropTypes.string.isRequired
+    uiLang: PropTypes.string.isRequired,
+    site: PropTypes.string.isRequired
 };
 
 export default compose(

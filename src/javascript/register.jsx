@@ -1,12 +1,13 @@
 import React from 'react';
 import {registry} from '@jahia/registry';
-import {Edit, Save, ArrowBack, CloudUpload, CloudOff} from '@material-ui/icons';
+import {Edit, Save, ArrowBack, CloudUpload, CloudOff, Cancel} from '@material-ui/icons';
 import saveAction from './actions/saveAction';
 import publishAction from './actions/publishAction';
 import unpublishAction from './actions/unpublishAction';
 import goBackAction from './actions/goBackAction';
 import EditPanelConstants from './EditPanelContainer/EditPanel/EditPanelConstants';
 import EditPanelContainer from './EditPanelContainer';
+import {mediaPickerUnsetAction} from './EditPanelContainer/EditPanel/EditPanelContent/FormBuilder/SelectorTypes/MediaPicker/MediaPicker.actions';
 
 console.log('Load Content Editor Ext Components');
 
@@ -53,6 +54,11 @@ if (contextJsParameters && contextJsParameters.config && contextJsParameters.con
             target: ['editHeaderActions:2'],
             submitOperation: EditPanelConstants.submitOperation.UNPUBLISH
         });
+
+        actionsRegistry.add('unsetLinkAction', mediaPickerUnsetAction, {
+            buttonIcon: <Cancel/>,
+            target: ['mediaPickerActions:1']
+        });
     });
 }
 
@@ -61,6 +67,7 @@ registry.add('edit-route', {
     type: 'route',
     path: '/:siteKey/:lang/edit',
     render: () => (
+
         <EditPanelContainer/>
     )
 });

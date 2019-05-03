@@ -23,7 +23,7 @@ let styles = theme => ({
     }
 });
 
-export const EditNodeProperty = ({t, classes, children, field, siteInfo}) => {
+export const EditNodeProperty = ({t, classes, children, field, siteInfo, labelHtmlFor}) => {
     return (
         <FormControl className={classes.formControl} data-sel-content-editor-field={field.formDefinition.name} data-sel-content-editor-field-type={field.formDefinition.selectorType}>
             <Grid
@@ -35,6 +35,7 @@ export const EditNodeProperty = ({t, classes, children, field, siteInfo}) => {
                 <Grid item>
                     <InputLabel shrink
                                 className={classes.inputLabel}
+                                htmlFor={labelHtmlFor}
                                 style={(!field.formDefinition.i18n && siteInfo.languages.length > 1) ? {paddingTop: 32} : {}}
                     >
                         {field.formDefinition.nodeType.properties.find(property => property.name === field.formDefinition.name).displayName}
@@ -74,7 +75,8 @@ EditNodeProperty.propTypes = {
     classes: PropTypes.object.isRequired,
     children: PropTypes.object.isRequired,
     field: PropTypes.object.isRequired,
-    siteInfo: PropTypes.object.isRequired
+    siteInfo: PropTypes.object.isRequired,
+    labelHtmlFor: PropTypes.string.isRequired
 };
 
 export default compose(

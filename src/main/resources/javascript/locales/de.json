@@ -27,7 +27,14 @@
                       "error": "Während dem rückgängig machen der Veröffentlichung ist ein Fehler aufgetreten"
                     }
                 },
-                "sharedLanguages": "Von allen Sprachen geteilt"
+                "sharedLanguages": "Von allen Sprachen geteilt",
+                "fields": {
+                  "imagePicker": {
+                    "addImage": "Bild hinzufügen",
+                    "modalCancel": "Abbrechen",
+                    "modalDone": "Erledigt"
+                  }
+                }
             },
             "error": {
                 "queryingContent": "Fehler während Content-Abfrage: {{details}}"
