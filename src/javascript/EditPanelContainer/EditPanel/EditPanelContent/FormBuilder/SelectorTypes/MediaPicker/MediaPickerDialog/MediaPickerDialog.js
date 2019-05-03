@@ -6,12 +6,11 @@ import Button from '@material-ui/core/Button';
 import CloudUpload from '@material-ui/icons/CloudUpload';
 import {Typography} from '@jahia/ds-mui-theme';
 import {ImageList} from '../../../../../../../DesignSystem/ImageList/';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 import {compose} from 'react-apollo';
 import {withStyles} from '@material-ui/core';
 import {translate} from 'react-i18next';
-import {NodeTrees} from '@jahia/react-material';
+import {NodeTrees, ProgressOverlay} from '@jahia/react-material';
 import {useImagesData} from './MediaPickerDialog.gql-queries';
 
 const styles = theme => ({
@@ -66,24 +65,21 @@ export const MediaPickerDialogCmp = ({onCloseDialog, classes, idInput, t, site, 
     const [selectedImages, setSelectedImages] = useState([]);
     const {images, error, loading} = useImagesData(selectedPath);
 
-    if (loading) {
-        return (
-            <section>
-                <CircularProgress/>
-            </section>
-        );
-    }
-
     return (
-        <>
+        <>{
+            loading &&
+            <section>
+                <ProgressOverlay/>
+            </section>
+        }
             <Drawer
                 open
                 component="nav"
                 variant="permanent"
                 anchor="left"
                 classes={{
-                 paper: classes.drawerPaper
-               }}
+                    paper: classes.drawerPaper
+                }}
             >
                 <NodeTrees isOpen
                            path={selectedPath}
@@ -113,7 +109,7 @@ export const MediaPickerDialogCmp = ({onCloseDialog, classes, idInput, t, site, 
                     error={error}
                     onImageDoubleClick={img => onImageSelection([img])}
                     onImageSelection={setSelectedImages}
-                    />
+                />
 
                 <div className={classes.actions}>
                     <div className={classes.actionUpload}>
