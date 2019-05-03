@@ -39,7 +39,7 @@ const FormQuery = gql`
                     nodeType {
                         properties {
                             name
-                            displayName(language: $language)
+                            displayName(language: $uiLang)
                         }
                     }
                 }
