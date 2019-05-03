@@ -25,14 +25,14 @@ const styles = theme => ({
 const CheckBoxCmp = ({checked, classes, className}) => {
     if (checked) {
         return (
-            <svg viewBox="0 0 24 24" className={`${classes.checkBoxChecked} ${className}`}>
+            <svg data-sel-role-checkbox="checked" viewBox="0 0 24 24" className={`${classes.checkBoxChecked} ${className}`}>
                 <path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
             </svg>
         );
     }
 
     return (
-        <svg viewBox="0 0 24 24" className={`${classes.checkBoxUnchecked} ${className}`}>
+        <svg data-sel-role-checkbox="unchecked" viewBox="0 0 24 24" className={`${classes.checkBoxUnchecked} ${className}`}>
             <rect x="4" y="4" width="16" height="16" rx="1"/>
         </svg>
     );

@@ -54,6 +54,7 @@ const styles = theme => ({
 const CardCmp = ({image, headerText, subhead, classes, selected, onDoubleClick, onClick}) => {
     return (
         <article
+            data-sel-role-card={image.alt}
             className={`${classes.container} ${selected ? classes.containerSelected : ''}`}
             aria-checked={selected}
             onDoubleClick={onDoubleClick}

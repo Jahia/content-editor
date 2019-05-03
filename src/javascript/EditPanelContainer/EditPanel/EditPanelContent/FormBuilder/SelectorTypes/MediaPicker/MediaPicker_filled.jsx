@@ -69,7 +69,7 @@ const MediaPickerFilledCmp = ({t, field, selectedImgId, classes}) => {
     };
 
     return (
-        <article className={classes.imageSelectedContainer}>
+        <article className={classes.imageSelectedContainer} data-sel-media-picker="filled">
             <div className={classes.imageSelectedImgContainer}>
                 <img
                     className={classes.imageSelectedImg}
@@ -77,11 +77,11 @@ const MediaPickerFilledCmp = ({t, field, selectedImgId, classes}) => {
                     alt=""
                 />
             </div>
-            <div className={classes.imageSelectedMetadata} data-sel-content-editor-image-picker="filled">
-                <Typography variant="zeta" color="alpha">
+            <div className={classes.imageSelectedMetadata}>
+                <Typography data-sel-media-picker-name variant="zeta" color="alpha">
                     {fieldData.imageData.name}
                 </Typography>
-                <Typography variant="omega" color="gamma">
+                <Typography data-sel-media-picker-info variant="omega" color="gamma">
                     {fieldData.imageData.type} - {fieldData.imageData.size[0]}x
                     {fieldData.imageData.size[1]}px - {fieldData.imageData.weight}mb
                 </Typography>
@@ -92,6 +92,7 @@ const MediaPickerFilledCmp = ({t, field, selectedImgId, classes}) => {
                 render={({context}) => {
                     return (
                         <IconButton
+                            data-sel-media-picker-action={context.actionKey}
                             onClick={e => {
                                 context.onClick(context, e);
                             }}
