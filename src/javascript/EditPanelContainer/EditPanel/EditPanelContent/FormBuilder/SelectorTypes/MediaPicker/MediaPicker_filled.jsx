@@ -30,6 +30,8 @@ const styles = theme => ({
     },
     imageSelectedImg: {
         width: '100%',
+        height: '100%',
+        padding: '2px',
         position: 'relative'
     },
     imageSelectedMetadata: {
