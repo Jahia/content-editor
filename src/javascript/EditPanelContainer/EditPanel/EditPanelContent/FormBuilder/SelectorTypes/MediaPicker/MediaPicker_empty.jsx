@@ -37,11 +37,7 @@ function Transition(props) {
     return <Slide direction="up" {...props}/>;
 }
 
-<<<<<<< HEAD:src/javascript/EditPanelContainer/EditPanel/EditPanelContent/FormBuilder/SelectorTypes/MediaPicker/MediaPicker_empty.jsx
 export const MediaPickerEmptyCmp = ({classes, t, idInput, editorContext, onImageSelection}) => {
-=======
-export const MediaPickerEmptyCmp = ({classes, t, idInput, editorContext}) => {
->>>>>>> 59c442b... BACKLOG-10146: rename context to editorContext:src/javascript/EditPanelContainer/EditPanel/EditPanelContent/FormBuilder/SelectorTypes/mediaPicker/mediaPicker_empty.js
     const [isOpen, setIsOpen] = useState(false);
 
     return (
