@@ -67,11 +67,11 @@ export const MediaPickerDialogCmp = ({onCloseDialog, classes, idInput, t, site, 
 
     return (
         <>{
-            loading ?
-                <section>
-                    <ProgressOverlay/>
-                </section> :
-                ''}
+            loading &&
+            <section>
+                <ProgressOverlay/>
+            </section>
+        }
             <Drawer
                 open
                 component="nav"
