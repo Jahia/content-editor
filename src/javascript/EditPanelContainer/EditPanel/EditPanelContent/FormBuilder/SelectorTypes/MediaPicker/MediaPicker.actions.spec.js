@@ -8,7 +8,7 @@ describe('mediaPickerUnsetAction', () => {
                     setFieldValue: jest.fn()
                 },
                 field: {
-                    data: {
+                    formDefinition: {
                         name: 'fieldName'
                     }
                 }
