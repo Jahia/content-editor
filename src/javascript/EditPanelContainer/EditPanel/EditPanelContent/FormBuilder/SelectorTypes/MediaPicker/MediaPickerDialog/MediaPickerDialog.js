@@ -6,12 +6,11 @@ import Button from '@material-ui/core/Button';
 import CloudUpload from '@material-ui/icons/CloudUpload';
 import {Typography} from '@jahia/ds-mui-theme';
 import {ImageList} from '../../../../../../../DesignSystem/ImageList/';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 import {compose} from 'react-apollo';
 import {withStyles} from '@material-ui/core';
 import {translate} from 'react-i18next';
-import {NodeTrees} from '@jahia/react-material';
+import {NodeTrees, ProgressOverlay} from '@jahia/react-material';
 import {useImagesData} from './MediaPickerDialog.gql-queries';
 
 const styles = theme => ({
@@ -70,7 +69,7 @@ export const MediaPickerDialogCmp = ({onCloseDialog, classes, idInput, t, site, 
         <>{
             loading ?
                 <section>
-                    <CircularProgress/>
+                    <ProgressOverlay/>
                 </section> :
                 ''}
             <Drawer
