@@ -41,8 +41,12 @@ export const MediaPickerEmptyCmp = ({classes, t, idInput, editorContext, onImage
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <>
-            <button className={classes.addImage} type="button" onClick={() => setIsOpen(true)}>
+        <div data-sel-media-picker="empty">
+            <button data-sel-media-picker-action="openPicker"
+                    className={classes.addImage}
+                    type="button"
+                    onClick={() => setIsOpen(true)}
+            >
                 <ImageIcon/>
                 <Typography variant="omega" color="beta">
                     {t(
@@ -65,7 +69,7 @@ export const MediaPickerEmptyCmp = ({classes, t, idInput, editorContext, onImage
                                    }}
                                    />
             </Dialog>
-        </>
+        </div>
     );
 };
 

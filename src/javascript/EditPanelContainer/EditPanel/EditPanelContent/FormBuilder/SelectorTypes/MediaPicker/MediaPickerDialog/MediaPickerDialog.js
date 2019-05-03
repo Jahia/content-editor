@@ -121,21 +121,21 @@ export const MediaPickerDialogCmp = ({onCloseDialog, classes, idInput, t, site, 
                         </label>
                     </div>
                     <div className={classes.actionButtons}>
-                        <Button type="button" color="secondary" onClick={onCloseDialog}>
-                            {t(
-                                'content-editor:label.contentEditor.edit.fields.imagePicker.modalCancel'
-                            )}
-                        </Button>
-                        <Button
-                            disabled={!selectedImages.length}
-                            variant="contained"
-                            color="primary"
-                            type="button"
-                            onClick={() => onImageSelection(selectedImages)}
+                        <Button data-sel-media-picker-dialog-action="cancel"
+                                type="button"
+                                color="secondary"
+                                onClick={onCloseDialog}
                         >
-                            {t(
-                                'content-editor:label.contentEditor.edit.fields.imagePicker.modalDone'
-                            )}
+                            {t('content-editor:label.contentEditor.edit.fields.imagePicker.modalCancel')}
+                        </Button>
+                        <Button data-sel-media-picker-dialog-action="done"
+                                disabled={!selectedImages.length}
+                                variant="contained"
+                                color="primary"
+                                type="button"
+                                onClick={() => onImageSelection(selectedImages)}
+                        >
+                            {t('content-editor:label.contentEditor.edit.fields.imagePicker.modalDone')}
                         </Button>
                     </div>
                 </div>
