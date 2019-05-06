@@ -24,15 +24,17 @@ const styles = theme => ({
         height: theme.spacing.unit * 9,
         width: theme.spacing.unit * 9,
         overflow: 'hidden',
-        display: 'flex',
-        alignItems: 'center',
+        display: 'inline-block',
+        padding: '2px',
         backgroundColor: theme.palette.ui.zeta
     },
     imageSelectedImg: {
         width: '100%',
         height: '100%',
-        padding: '2px',
-        position: 'relative'
+        margin: 0,
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'contain'
     },
     imageSelectedMetadata: {
         flexGrow: 1,
@@ -71,10 +73,9 @@ const MediaPickerFilledCmp = ({t, field, selectedImgId, classes}) => {
     return (
         <article className={classes.imageSelectedContainer} data-sel-media-picker="filled">
             <div className={classes.imageSelectedImgContainer}>
-                <img
+                <figure
                     className={classes.imageSelectedImg}
-                    src={fieldData.imageData.url}
-                    alt=""
+                    style={{backgroundImage: `url(${fieldData.imageData.url})`}}
                 />
             </div>
             <div className={classes.imageSelectedMetadata}>
