@@ -37,3 +37,7 @@ export function getPropertiesToMutate(nodeData = {}, formValues = {}, fields = [
         propsToDelete
     };
 }
+
+export function encodeJCRPath(path) {
+    return path.split('/').map(entry => encodeURIComponent(entry)).join('/');
+}

@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
 import {useQuery} from 'react-apollo-hooks';
+import {encodeJCRPath} from '../../../../../EditPanel.utils';
 
 export const GET_FILES_QUERY = gql`
 query ($path: String!, $typeFilter: [String]!) {
@@ -54,7 +55,7 @@ export const useImagesData = path => {
         images: data.jcr.result.children.nodes.map(rawImg => {
             return {
                 uuid: rawImg.uuid,
-                path: `${window.contextJsParameters.contextPath}/files/default${rawImg.path}`,
+                path: `${window.contextJsParameters.contextPath}/files/default${encodeJCRPath(rawImg.path)}`,
                 name: rawImg.fileName.value,
                 type: rawImg.children.nodes[0].mimeType.value.replace('image/', ''),
                 width: rawImg.width ? rawImg.width.value : null,

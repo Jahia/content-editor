@@ -16,6 +16,18 @@ jest.mock('react-apollo-hooks', () => {
 });
 
 import {setQueryResult} from 'react-apollo-hooks';
+import {encodeJCRPath} from '../../../../EditPanel.utils';
+
+const queryResult = {
+    path: '/a/valid/jcrPath/#/g/200/300',
+    name: 'Beautiful_hairy_pussy.jpg',
+    height: {value: 1532400},
+    width: {value: 1234134},
+    weight: 1.2,
+    children: {
+        nodes: [{mimeType: {value: 'jpeg'}}]
+    }
+};
 
 describe('mediaPicker', () => {
     let defaultProps;
@@ -33,16 +45,7 @@ describe('mediaPicker', () => {
 
         setQueryResult({
             jcr: {
-                result: {
-                    path: 'http://placekitten.com/g/200/300',
-                    name: 'Beautiful_hairy_pussy.jpg',
-                    height: {value: 1532400},
-                    width: {value: 1234134},
-                    weight: 1.2,
-                    children: {
-                        nodes: [{mimeType: {value: 'jpeg'}}]
-                    }
-                }
+                result: queryResult
             }
         });
     });
@@ -55,7 +58,7 @@ describe('mediaPicker', () => {
         )
             .dive()
             .dive();
-        expect(cmp.debug()).toContain('http://placekitten.com/g/200/300');
+        expect(cmp.debug()).toContain(encodeJCRPath(queryResult.path));
     });
 
     it('should display the weight of image from field', () => {
@@ -66,7 +69,7 @@ describe('mediaPicker', () => {
         )
             .dive()
             .dive();
-        expect(cmp.debug()).toContain(1.2);
+        expect(cmp.debug()).toContain(queryResult.weight);
     });
 
     it('should display the type of image from field', () => {
@@ -77,7 +80,7 @@ describe('mediaPicker', () => {
         )
             .dive()
             .dive();
-        expect(cmp.debug()).toContain('jpeg');
+        expect(cmp.debug()).toContain(queryResult.children.nodes[0].mimeType.value);
     });
 
     it('should display the name of image from field', () => {
@@ -88,7 +91,7 @@ describe('mediaPicker', () => {
         )
             .dive()
             .dive();
-        expect(cmp.debug()).toContain('Beautiful_hairy_pussy.jpg');
+        expect(cmp.debug()).toContain(queryResult.name);
     });
 
     it('should display the size of image from field', () => {
@@ -99,7 +102,7 @@ describe('mediaPicker', () => {
         )
             .dive()
             .dive();
-        expect(cmp.debug()).toContain(1532400);
-        expect(cmp.debug()).toContain(1234134);
+        expect(cmp.debug()).toContain(queryResult.height.value);
+        expect(cmp.debug()).toContain(queryResult.width.value);
     });
 });

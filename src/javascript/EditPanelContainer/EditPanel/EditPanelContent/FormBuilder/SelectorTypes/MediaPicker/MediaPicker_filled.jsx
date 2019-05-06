@@ -8,6 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import {useQuery} from 'react-apollo-hooks';
 import {translate} from 'react-i18next';
 import {MediaPickerFilledQuery} from './MediaPicker_filled.gql-queries';
+import {encodeJCRPath} from '../../../../EditPanel.utils';
 
 const styles = theme => ({
     imageSelectedContainer: {
@@ -60,7 +61,7 @@ const MediaPickerFilledCmp = ({t, field, selectedImgId, classes}) => {
     const fieldData = {
         imageData: {
             uuid: selectedImgId,
-            url: `${window.contextJsParameters.contextPath}/files/default${imageData.path}`,
+            url: `${window.contextJsParameters.contextPath}/files/default${encodeJCRPath(imageData.path)}`,
             name: imageData.name,
             size: [parseInt(imageData.height.value, 10), parseInt(imageData.width.value, 10)],
             weight: 1.2,
