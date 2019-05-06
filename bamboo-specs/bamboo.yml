@@ -5,5 +5,5 @@ project:
         name: Content Editor Spec Test
 stages:
     - jobs:
-          - scripts:
+          - Maven 3.x:
                 - mvn clean install
