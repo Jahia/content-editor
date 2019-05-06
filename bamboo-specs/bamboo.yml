@@ -1,7 +1,7 @@
 project:
     key: FORGEMODULESSET
     plan:
-        key: FORGEMODULESSET-CEST
+        key: CEST
         name: Content Editor Spec Test
 stages:
     - jobs:
