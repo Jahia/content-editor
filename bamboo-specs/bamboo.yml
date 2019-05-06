@@ -1,0 +1,9 @@
+project:
+    key: FORGEMODULESSET
+    plan:
+        key: FORGEMODULESSET-CEST
+        name: Content Editor Spec Test
+stages:
+    - jobs:
+          - scripts:
+                - mvn clean install
