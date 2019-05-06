@@ -6,6 +6,13 @@ project:
 stages:
     - jobs:
           - scripts:
-                - mvn clean install
-          - requirements:
-                - Maven 3.x
+                - M2_HOME=${bamboo_capability_system_builder_mvn3_Maven_3}
+                - ${bamboo_capability_system_builder_mvn3_Maven_3}/bin/mvn clean install
+            requirements:
+                - system.builder.mvn3.Maven 3
+                - linux
+            artifacts:
+                - name: library
+                  path: target/*.jar
+            testParsers:
+                - junit
