@@ -10,7 +10,7 @@ stages:
                 - ${bamboo_capability_system_builder_mvn3_Maven_3}/bin/mvn clean install
             requirements:
                 - system.builder.mvn3.Maven 3
-                - linux
+                - module_agent
             artifacts:
                 - name: library
                   path: target/*.jar
