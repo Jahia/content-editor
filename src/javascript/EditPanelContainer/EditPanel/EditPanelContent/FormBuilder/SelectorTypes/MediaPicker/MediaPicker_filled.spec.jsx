@@ -58,7 +58,8 @@ describe('mediaPicker', () => {
         )
             .dive()
             .dive();
-        expect(cmp.debug()).toContain(encodeJCRPath(queryResult.path));
+
+        expect(cmp.find('figure').props().style.backgroundImage).toContain(encodeJCRPath(queryResult.path));
     });
 
     it('should display the weight of image from field', () => {
