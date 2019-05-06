@@ -11,8 +11,7 @@ stages:
             requirements:
                 - system.builder.mvn3.Maven 3
                 - module_agent
+                - JDK 1.8
             artifacts:
                 - name: library
                   path: target/*.jar
-            testParsers:
-                - junit
