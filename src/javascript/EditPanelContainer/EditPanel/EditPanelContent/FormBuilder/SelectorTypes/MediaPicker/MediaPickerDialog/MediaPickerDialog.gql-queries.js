@@ -1,18 +1,19 @@
 import gql from 'graphql-tag';
 import {useQuery} from 'react-apollo-hooks';
 import {encodeJCRPath} from '../../../../../EditPanel.utils';
+import {PredefinedFragments} from '@jahia/apollo-dx';
 
 export const GET_FILES_QUERY = gql`
-query ($path: String!, $typeFilter: [String]!) {
+query mediaPickerFetchData($path: String!, $typeFilter: [String]!) {
   jcr {
     result: nodeByPath(path: $path) {
+          ...NodeCacheRequiredFields
       children(offset: 0, limit: 50, typesFilter: {types: $typeFilter, multi: ANY}) {
         pageInfo {
           totalCount
         }
         nodes {
-            uuid
-            path
+            ...NodeCacheRequiredFields
             width: property(name: "j:width") {
              value
             }
@@ -22,7 +23,6 @@ query ($path: String!, $typeFilter: [String]!) {
             fileName: property(name: "j:nodename") {
              value
             }
-
             children(names:["jcr:content"]) {
              nodes {
                mimeType: property(name:"jcr:mimeType") {
@@ -35,6 +35,7 @@ query ($path: String!, $typeFilter: [String]!) {
     }
   }
 }
+${PredefinedFragments.nodeCacheRequiredFields.gql}
 `;
 
 export const useImagesData = path => {
