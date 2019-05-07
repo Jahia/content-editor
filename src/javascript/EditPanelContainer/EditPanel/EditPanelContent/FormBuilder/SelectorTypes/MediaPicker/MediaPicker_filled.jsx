@@ -39,7 +39,15 @@ const styles = theme => ({
     },
     imageSelectedMetadata: {
         flexGrow: 1,
-        padding: '2rem'
+        padding: '1rem 2rem',
+        width: 'calc(100% - 144px)',
+        '& p': {
+            width: '360px',
+            padding: 0,
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis'
+        }
     }
 });
 
