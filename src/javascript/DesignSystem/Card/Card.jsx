@@ -45,17 +45,36 @@ const styles = theme => ({
         justifyContent: 'space-between',
         alignItems: 'center'
     },
+    textContainer: {
+        width: '80%',
+        '& h3, & p': {
+            width: '100%',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis'
+        }
+    },
     checkBox: {
         height: '24px',
         width: '24px'
     }
 });
 
-const CardCmp = ({image, headerText, subhead, classes, selected, onDoubleClick, onClick}) => {
+const CardCmp = ({
+    image,
+    headerText,
+    subhead,
+    classes,
+    selected,
+    onDoubleClick,
+    onClick
+}) => {
     return (
         <article
             data-sel-role-card={image.alt}
-            className={`${classes.container} ${selected ? classes.containerSelected : ''}`}
+            className={`${classes.container} ${
+                selected ? classes.containerSelected : ''
+            }`}
             aria-checked={selected}
             onDoubleClick={onDoubleClick}
             onClick={onClick}
@@ -64,9 +83,16 @@ const CardCmp = ({image, headerText, subhead, classes, selected, onDoubleClick, 
                 <img src={image.src} alt={image.alt}/>
             </div>
             <div className={classes.infoContainer}>
-                <div>
-                    <Typography component="h3" variant="zeta" color="alpha">{headerText}</Typography>
-                    <Typography variant="omega" color="gamma">
+                <div className={classes.textContainer}>
+                    <Typography
+                        component="h3"
+                        variant="zeta"
+                        color="alpha"
+                        title={headerText}
+                    >
+                        {headerText}
+                    </Typography>
+                    <Typography variant="omega" color="gamma" title={subhead}>
                         {subhead}
                     </Typography>
                 </div>
