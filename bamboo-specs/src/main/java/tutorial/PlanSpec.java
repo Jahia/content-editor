@@ -8,6 +8,7 @@ import com.atlassian.bamboo.specs.api.builders.plan.Stage;
 import com.atlassian.bamboo.specs.api.builders.plan.artifact.Artifact;
 import com.atlassian.bamboo.specs.api.builders.project.Project;
 import com.atlassian.bamboo.specs.api.builders.requirement.Requirement;
+import com.atlassian.bamboo.specs.builders.task.CheckoutItem;
 import com.atlassian.bamboo.specs.builders.task.MavenTask;
 import com.atlassian.bamboo.specs.builders.task.ScriptTask;
 import com.atlassian.bamboo.specs.builders.task.VcsCheckoutTask;
@@ -67,7 +68,10 @@ public class PlanSpec {
         Artifact artifact = new Artifact("library").location("target/*.jar");
 
         Job job = new Job("Maven clean install", "JOB1")
-            .tasks(new VcsCheckoutTask().addCheckoutOfDefaultRepository())
+            .tasks(new VcsCheckoutTask()
+            .description("Checkout Default Repository")
+            .checkoutItems(new CheckoutItem().defaultRepository())
+            .cleanCheckout(true))
             .tasks(mavenTask)
             .requirements(new Requirement("system.builder.mvn3.Maven 3"))
             .requirements(new Requirement("module_agent"))
