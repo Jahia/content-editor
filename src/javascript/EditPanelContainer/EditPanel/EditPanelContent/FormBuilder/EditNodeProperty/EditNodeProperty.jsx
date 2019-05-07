@@ -56,6 +56,7 @@ export const EditNodeProperty = ({t, classes, children, field, siteInfo, labelHt
 
             <Grid
                 container
+                wrap="nowrap"
                 direction="row"
                 alignItems="center"
             >
