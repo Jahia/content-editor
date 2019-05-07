@@ -67,6 +67,7 @@ public class PlanSpec {
         Artifact artifact = new Artifact("library").location("target/*.jar");
 
         Job job = new Job("Maven clean install", "JOB1")
+            .tasks(new VcsCheckoutTask().addCheckoutOfDefaultRepository())
             .tasks(mavenTask)
             .requirements(new Requirement("system.builder.mvn3.Maven 3"))
             .requirements(new Requirement("module_agent"))
