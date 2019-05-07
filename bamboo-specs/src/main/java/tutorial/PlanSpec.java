@@ -62,7 +62,7 @@ public class PlanSpec {
             .hasTests(false)
             .version3()
             .jdk("JDK 1.8")
-            .executableLabel("Maven 3.x");
+            .executableLabel("Maven 3");
 
         Artifact artifact = new Artifact("library").location("target/*.jar");
 
