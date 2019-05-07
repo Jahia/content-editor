@@ -55,7 +55,7 @@ public class PlanSpec {
     }
 
     Plan createPlan() {
-        Project project = new Project().key("FORGEMODULESSET");
+        Project project = new Project().name("Forge 2.x and 3.x - Modules").key("FORGEMODULESSET");
 
         MavenTask mavenTask = new MavenTask()
             .goal("clean install")
