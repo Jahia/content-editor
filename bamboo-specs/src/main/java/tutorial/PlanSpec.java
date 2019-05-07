@@ -34,9 +34,9 @@ public class PlanSpec {
 
         bambooServer.publish(plan);
 
-        PlanPermissions planPermission = new PlanSpec().createPlanPermission(plan.getIdentifier());
+        //PlanPermissions planPermission = new PlanSpec().createPlanPermission(plan.getIdentifier());
 
-        bambooServer.publish(planPermission);
+        //bambooServer.publish(planPermission);
     }
 
     PlanPermissions createPlanPermission(PlanIdentifier planIdentifier) {
@@ -67,7 +67,6 @@ public class PlanSpec {
         Artifact artifact = new Artifact("library").location("target/*.jar");
 
         Job job = new Job("Maven clean install", "JOB1")
-            .tasks(new VcsCheckoutTask().addCheckoutOfDefaultRepository())
             .tasks(mavenTask)
             .requirements(new Requirement("system.builder.mvn3.Maven 3"))
             .requirements(new Requirement("module_agent"))
