@@ -72,7 +72,7 @@ public class PlanSpec {
             .requirements(new Requirement("system.builder.mvn3.Maven 3"))
             .requirements(new Requirement("module_agent"))
             .artifacts(artifact)
-            .finalTasks(new ScriptTask().fileFromPath("cleanup.sh"));
+            .finalTasks(new ScriptTask().fileFromPath("scripts/github-status.sh"));
 
         Stage stage = new Stage("Build Stage")
             .description("Main stage")
