@@ -20,19 +20,20 @@ describe('Text component', () => {
                     }]
 
                 }
-            }
+            },
+            classes: {}
         };
     });
 
     it('should bind id correctly', () => {
-        const RenderProps = shallow(<ChoiceList {...props}/>).props().render;
+        const RenderProps = shallow(<ChoiceList {...props}/>).dive().props().render;
         const cmp = shallow(<RenderProps field={{value: 'Yolooo'}}/>);
 
         expect(cmp.props().inputProps.id).toBe(props.id);
     });
 
     it('should display each option given', () => {
-        const RenderProps = shallow(<ChoiceList {...props}/>).props().render;
+        const RenderProps = shallow(<ChoiceList {...props}/>).dive().props().render;
         const cmp = shallow(<RenderProps field={{value: 'Yolooo'}}/>);
 
         props.field.formDefinition.valueConstraints.forEach(constraint => {
@@ -41,14 +42,14 @@ describe('Text component', () => {
     });
 
     it('should replace null value as empty string', () => {
-        const RenderProps = shallow(<ChoiceList {...props}/>).props().render;
+        const RenderProps = shallow(<ChoiceList {...props}/>).dive().props().render;
         const cmp = shallow(<RenderProps field={{}}/>);
 
         expect(cmp.props().value).toBe('');
     });
 
     it('should select formik value', () => {
-        const RenderProps = shallow(<ChoiceList {...props}/>).props().render;
+        const RenderProps = shallow(<ChoiceList {...props}/>).dive().props().render;
         const cmp = shallow(<RenderProps field={{value: 'Yolooo'}}/>);
 
         expect(cmp.props().value).toBe('Yolooo');
@@ -64,7 +65,7 @@ describe('Text component', () => {
 
     const testReadOnly = function (readOnly) {
         props.field.formDefinition.readOnly = readOnly;
-        const RenderProps = shallow(<ChoiceList {...props}/>).props().render;
+        const RenderProps = shallow(<ChoiceList {...props}/>).dive().props().render;
         const cmp = shallow(<RenderProps field={{}}/>);
         const inputCmp = shallow(cmp.props().input);
 
