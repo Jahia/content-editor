@@ -53,4 +53,21 @@ describe('Text component', () => {
 
         expect(cmp.props().value).toBe('Yolooo');
     });
+
+    it('should set readOnly to true when fromdefinition is readOnly', () => {
+        testReadOnly(true);
+    });
+
+    it('should set readOnly to false when fromdefinition is not readOnly', () => {
+        testReadOnly(false);
+    });
+
+    const testReadOnly = function (readOnly) {
+        props.field.formDefinition.readOnly = readOnly;
+        const RenderProps = shallow(<ChoiceList {...props}/>).props().render;
+        const cmp = shallow(<RenderProps field={{}}/>);
+        const inputCmp = shallow(cmp.props().input);
+
+        expect(inputCmp.props().readOnly).toEqual(readOnly);
+    };
 });

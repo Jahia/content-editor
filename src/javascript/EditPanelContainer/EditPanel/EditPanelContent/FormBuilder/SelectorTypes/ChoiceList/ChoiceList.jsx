@@ -1,4 +1,5 @@
 import {Select} from '@jahia/ds-mui-theme';
+import Input from '@material-ui/core/Input';
 import MenuItem from '@material-ui/core/MenuItem';
 import {Field} from 'formik';
 import React from 'react';
@@ -18,6 +19,7 @@ const ChoiceList = ({field, id}) => {
                             name: field.formDefinition.name,
                             id: id
                         }}
+                        input={<Input id={id} name={field.formDefinition.name} readOnly={field.formDefinition.readOnly}/>}
                     >
                         {
                             field.formDefinition.valueConstraints.map(item => {
