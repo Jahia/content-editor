@@ -19,15 +19,16 @@ const styles = theme => ({
         // TODO border: `1px ${theme.palette.ui.zeta} solid`,
         border: '1px #C1C8D5 solid',
         borderRadius: '2px',
-        paddingRight: theme.spacing.unit
+        paddingRight: theme.spacing.unit,
+        boxShadow: '1px 5px 6px rgba(64, 77, 86, 0.1)'
     },
     imageSelectedImgContainer: {
-        height: theme.spacing.unit * 9,
+        height: `calc(${theme.spacing.unit * 9}px - 2px)`,
         width: theme.spacing.unit * 9,
         overflow: 'hidden',
         display: 'inline-block',
         padding: '2px',
-        backgroundColor: theme.palette.ui.zeta
+        backgroundColor: theme.palette.ui.omega
     },
     imageSelectedImg: {
         width: '100%',
@@ -48,6 +49,9 @@ const styles = theme => ({
             overflow: 'hidden',
             textOverflow: 'ellipsis'
         }
+    },
+    actionButton: {
+        color: theme.palette.font.beta
     }
 });
 
@@ -103,6 +107,7 @@ const MediaPickerFilledCmp = ({t, field, selectedImgId, classes}) => {
                     return (
                         <IconButton
                             data-sel-media-picker-action={context.actionKey}
+                            className={classes.actionButton}
                             onClick={e => {
                                 context.onClick(context, e);
                             }}

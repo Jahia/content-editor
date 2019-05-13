@@ -43,6 +43,20 @@ describe('mediaPicker empty', () => {
         expect(cmp.find('WithStyles(Dialog)').props().open).toBe(true);
     });
 
+    it('should not set modal open when clicking on the button when readOnly', () => {
+        const cmp = shallowWithTheme(
+            <MediaPickerEmpty {...defaultProps} readOnly/>,
+            {},
+            dsGenericTheme
+        )
+            .dive()
+            .dive();
+
+        cmp.find('button').simulate('click');
+
+        expect(cmp.find('WithStyles(Dialog)').props().open).toBe(false);
+    });
+
     it('should give onCloseDialog props to the modal that close the Dialog', () => {
         const cmp = shallowWithTheme(
             <MediaPickerEmpty {...defaultProps}/>,
