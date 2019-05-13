@@ -25,7 +25,8 @@ describe('mediaPicker empty', () => {
         defaultProps = {
             field: {
                 formDefinition: {
-                    name: 'imageid'
+                    name: 'imageid',
+                    readOnly: false
                 }
             },
             id: 'imageid',
@@ -55,5 +56,20 @@ describe('mediaPicker empty', () => {
         const cmp = shallow(<MediaPicker {...defaultProps}/>).dive();
 
         expect(cmp.debug()).toContain('MediaPickerFilled');
+    });
+
+    it('should set readOnly to false if formDefinition is not set readOnly', () => {
+        setFormikValues({imageid: null});
+        const cmp = shallow(<MediaPicker {...defaultProps}/>).dive();
+
+        expect(cmp.props().readOnly).toBe(false);
+    });
+
+    it('should set readOnly to true if formDefinition is set readOnly', () => {
+        setFormikValues({imageid: null});
+        defaultProps.field.formDefinition.readOnly = true;
+        const cmp = shallow(<MediaPicker {...defaultProps}/>).dive();
+
+        expect(cmp.props().readOnly).toBe(true);
     });
 });

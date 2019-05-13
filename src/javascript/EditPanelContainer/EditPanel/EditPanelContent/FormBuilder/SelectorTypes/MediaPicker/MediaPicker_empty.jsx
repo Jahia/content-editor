@@ -24,11 +24,18 @@ const styles = theme => ({
         justifyContent: 'center',
         '&:hover': {
             // TODO border: `1px ${theme.palette.ui.zeta} dashed`,
-            border: '1px #C1C8D5 solid'
+            border: '1px #C1C8D5 solid',
+            cursor: 'pointer'
         },
         '& svg': {
             marginRight: theme.spacing.unit,
-            color: theme.palette.ui.beta
+            color: theme.palette.font.gamma
+        }
+    },
+    addImageReadOnly: {
+        '&:hover': {
+            cursor: 'auto',
+            border: '1px #C1C8D5 dashed'
         }
     }
 });
@@ -37,15 +44,21 @@ function Transition(props) {
     return <Slide direction="up" {...props}/>;
 }
 
-export const MediaPickerEmptyCmp = ({classes, t, idInput, editorContext, onImageSelection}) => {
+export const MediaPickerEmptyCmp = ({classes, t, idInput, editorContext, onImageSelection, readOnly}) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
         <div data-sel-media-picker="empty">
             <button data-sel-media-picker-action="openPicker"
-                    className={classes.addImage}
+                    className={`${classes.addImage} ${readOnly ? classes.addImageReadOnly : ''}`}
                     type="button"
-                    onClick={() => setIsOpen(true)}
+                    onClick={() => {
+                        if (readOnly) {
+                            return;
+                        }
+
+                        setIsOpen(true);
+                    }}
             >
                 <ImageIcon/>
                 <Typography variant="omega" color="beta">
@@ -74,10 +87,12 @@ export const MediaPickerEmptyCmp = ({classes, t, idInput, editorContext, onImage
 };
 
 MediaPickerEmptyCmp.defaultProps = {
-    classes: {}
+    classes: {},
+    readOnly: false
 };
 
 MediaPickerEmptyCmp.propTypes = {
+    readOnly: PropTypes.bool,
     editorContext: PropTypes.object.isRequired,
     idInput: PropTypes.string.isRequired,
     t: PropTypes.func.isRequired,

@@ -9,6 +9,7 @@ const MediaPickerCmp = ({field, id, editorContext, formik}) => {
     if (!formik.values[field.formDefinition.name]) {
         return (
             <MediaPickerEmpty idInput={id}
+                              readOnly={field.formDefinition.readOnly}
                               editorContext={editorContext}
                               onImageSelection={img => {
                                   formik.setFieldValue(field.formDefinition.name, img[0].uuid, true);

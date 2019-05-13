@@ -2,7 +2,7 @@ import {mediaPickerUnsetAction} from './MediaPicker.actions';
 
 describe('mediaPickerUnsetAction', () => {
     describe('onclick', () => {
-        it('should not display anything when form is at his initialValues', () => {
+        it('should set field value to null', () => {
             const context = {
                 formik: {
                     setFieldValue: jest.fn()
@@ -18,6 +18,35 @@ describe('mediaPickerUnsetAction', () => {
 
             // As action expect impure function, testing params
             expect(context.formik.setFieldValue).toHaveBeenCalledWith('fieldName', null, true);
+        });
+    });
+    describe('init', () => {
+        it('should enable action on editable mode', () => {
+            const context = {
+                field: {
+                    formDefinition: {
+                        readOnly: false
+                    }
+                }
+            };
+
+            mediaPickerUnsetAction.init(context, {formik: {}});
+
+            expect(context.enabled).toBe(true);
+        });
+
+        it('should not enable action on readOnly mode', () => {
+            const context = {
+                field: {
+                    formDefinition: {
+                        readOnly: true
+                    }
+                }
+            };
+
+            mediaPickerUnsetAction.init(context, {formik: {}});
+
+            expect(context.enabled).toBe(false);
         });
     });
 });
