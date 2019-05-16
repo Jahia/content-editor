@@ -777,22 +777,6 @@
     lodash "^4.17.10"
     prop-types "^15.6.1"
 
-"@jahia/test-framework@^1.0.0-beta.20190515094514":
-  version "1.0.0-beta.20190515094514"
-  resolved "http://npm.int.jahia.com:4873/@jahia%2ftest-framework/-/test-framework-1.0.0-beta.20190515094514.tgz#95d7d7aac061bdc1fa96471d09f6231ea6cc1160"
-  dependencies:
-    babel-jest "^24.7.1"
-    enzyme "^3.9.0"
-    enzyme-adapter-react-16 "^1.12.1"
-    eslint "^5.15.1"
-    eslint-config-xo "^0.26.0"
-    eslint-config-xo-react "^0.19.0"
-    eslint-loader "2.1.2"
-    eslint-plugin-jest "^22.3.0"
-    eslint-plugin-react "^7.11.1"
-    eslint-plugin-react-hooks "^1.6.0"
-    jest "^24.7.1"
-
 "@jahia/test-framework@^1.0.0-beta.20190515122206":
   version "1.0.0-beta.20190515122206"
   resolved "http://npm.int.jahia.com:4873/@jahia%2ftest-framework/-/test-framework-1.0.0-beta.20190515122206.tgz#d0792373a9e4c38efaf3729eaf4146c7dca4c03b"
