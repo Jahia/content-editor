@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {FullWidthContent, TwoColumnsContent} from '@jahia/layouts';
-import {ContentPreview} from '@jahia/react-material';
+import {ContentPreview} from '@jahia/react-apollo';
+import {PreviewComponent} from '@jahia/react-material';
 import {Typography} from '@jahia/ds-mui-theme';
 import * as PropTypes from 'prop-types';
 import FormBuilder from './FormBuilder';
@@ -36,17 +37,19 @@ const DetailsPreviewComponent = () => (<></>);
 export const EditPanelContent = ({t, editorContext, classes, fields, siteInfo}) => {
     const [previewMode, setPreviewMode] = useState('preview');
 
+    const workspace = 'EDIT';
     const PreviewCmp = previewMode === 'preview' ? (
         <ContentPreview path={editorContext.path}
                         language={editorContext.lang}
-                        workspace="EDIT"
-                        fullScreen={false}
+                        workspace={workspace}
                         templateType="html"
                         view="cm"
                         contextConfiguration="preview"
                         fetchPolicy="network-only"
                         setRefetch={refetchingData => setPreviewRefetcher(refetchingData)}
-        />
+        >
+            {data => <PreviewComponent data={data.jcr ? data.jcr : {}} workspace={workspace}/>}
+        </ContentPreview>
     ) : previewMode === 'details' ? <DetailsPreviewComponent/> : null;
 
     return (
