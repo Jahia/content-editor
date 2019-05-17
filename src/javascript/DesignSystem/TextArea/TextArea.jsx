@@ -20,7 +20,8 @@ const styles = theme => ({
         fontWeight: 600,
         fontSize: '13px',
         lineHeight: '24px',
-        flex: '0 1 100%'
+        flex: '0 1 100%',
+        resize: 'vertical'
     },
     disabled: {
         backgroundColor: theme.palette.ui.alpha,
