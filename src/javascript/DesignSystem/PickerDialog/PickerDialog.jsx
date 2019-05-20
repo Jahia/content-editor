@@ -9,7 +9,7 @@ import {Typography} from '@jahia/ds-mui-theme';
 import {compose} from 'react-apollo';
 import {withStyles} from '@material-ui/core';
 import {translate} from 'react-i18next';
-import {NodeTrees, ProgressOverlay} from '@jahia/react-material';
+import {NodeTrees} from '@jahia/react-material';
 
 const styles = theme => ({
     drawerPaper: {
@@ -51,17 +51,13 @@ const styles = theme => ({
     }
 });
 
-const PickerDialogCmp = ({onCloseDialog, classes, idInput, t, site, lang, onItemSelection, loading, selectedPath, setSelectedPath, nodeTreeConfigs, children}) => {
+const PickerDialogCmp = ({onCloseDialog, classes, idInput, t, site, lang, onItemSelection, nodeTreeConfigs, children}) => {
+    const [selectedPath, setSelectedPath] = useState('/sites/' + site + '/files');
     const [openPaths, setOpenPaths] = useState([]);
     const [selectedItem, setSelectedItem] = useState(false);
 
     return (
-        <>{
-            loading &&
-            <section>
-                <ProgressOverlay/>
-            </section>
-        }
+        <>
             <Drawer
                 open
                 component="nav"
@@ -88,7 +84,7 @@ const PickerDialogCmp = ({onCloseDialog, classes, idInput, t, site, lang, onItem
             </Drawer>
 
             <main className={classes.modalContent}>
-                {children(setSelectedItem)}
+                {children(setSelectedItem, selectedPath)}
 
                 <div className={classes.actions}>
                     <div className={classes.actionUpload}>
@@ -126,9 +122,6 @@ const PickerDialogCmp = ({onCloseDialog, classes, idInput, t, site, lang, onItem
 PickerDialogCmp.propTypes = {
     children: PropTypes.func.isRequired,
     nodeTreeConfigs: PropTypes.array.isRequired,
-    loading: PropTypes.bool.isRequired,
-    selectedPath: PropTypes.string.isRequired,
-    setSelectedPath: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     site: PropTypes.string.isRequired,
     onCloseDialog: PropTypes.func.isRequired,

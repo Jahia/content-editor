@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/ds-mui-theme';
-import {FieldPickerFilled} from './fieldPicker_filled';
+import {FieldPickerFilled} from './FieldPickerFilled';
 
 describe('fieldPicker filled', () => {
     let defaultProps;

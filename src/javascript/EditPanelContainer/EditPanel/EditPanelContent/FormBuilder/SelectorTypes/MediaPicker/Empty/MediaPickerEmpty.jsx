@@ -1,0 +1,54 @@
+import ImageIcon from '@material-ui/icons/Image';
+import * as PropTypes from 'prop-types';
+import React from 'react';
+import {FieldPickerEmpty} from '../../../../../../../DesignSystem/FieldPicker';
+import {PickerDialog} from '../../../../../../../DesignSystem/PickerDialog';
+import {ImageListQuery} from '../ImageListQuery/ImageListQuery';
+import {translate} from 'react-i18next';
+
+const MediaPickerEmptyCmp = ({t, id, field, formik, editorContext}) => {
+    return (
+        <FieldPickerEmpty readOnly={field.formDefinition.readOnly}
+                          pickerLabel={t('content-editor:label.contentEditor.edit.fields.imagePicker.addImage')}
+                          pickerIcon={<ImageIcon/>}
+        >
+            {setIsOpen => (
+                <PickerDialog idInput={id}
+                              site={editorContext.site}
+                              lang={editorContext.lang}
+                              nodeTreeConfigs={[{
+                                  rootPath: '/files',
+                                  selectableTypes: ['jnt:folder'],
+                                  type: 'files',
+                                  openableTypes: ['jnt:folder'],
+                                  rootLabel: 'Browse files',
+                                  key: 'browse-tree-files'
+                              }]}
+                              onCloseDialog={() => setIsOpen(false)}
+                              onItemSelection={image => {
+                                  formik.setFieldValue(field.formDefinition.name, image[0].uuid, true);
+                                  setIsOpen(false);
+                              }}
+                >
+                    {(setSelectedItem, selectedPath) => (
+                        <ImageListQuery field={field}
+                                        setSelectedItem={setSelectedItem}
+                                        selectedPath={selectedPath}
+                                        formik={formik}
+                        />
+                    )}
+                </PickerDialog>
+            )}
+        </FieldPickerEmpty>
+    );
+};
+
+MediaPickerEmptyCmp.propTypes = {
+    t: PropTypes.func.isRequired,
+    field: PropTypes.object.isRequired,
+    editorContext: PropTypes.object.isRequired,
+    formik: PropTypes.object.isRequired,
+    id: PropTypes.string.isRequired
+};
+
+export const MediaPickerEmpty = translate()(MediaPickerEmptyCmp);

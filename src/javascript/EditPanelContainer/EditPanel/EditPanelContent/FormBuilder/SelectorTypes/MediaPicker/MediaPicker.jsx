@@ -1,23 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'formik';
-
-import {MediaPickerEmpty} from './MediaPicker_empty';
-import {MediaPickerFilled} from './MediaPicker_filled';
+import {MediaPickerEmpty} from './Empty/MediaPickerEmpty';
+import {MediaPickerFilled} from './Filled/MediaPickerFilled';
 
 const MediaPickerCmp = ({field, id, editorContext, formik}) => {
-    if (!formik.values[field.formDefinition.name]) {
+    const uuid = formik.values[field.formDefinition.name];
+    if (uuid) {
         return (
-            <MediaPickerEmpty idInput={id}
-                              readOnly={field.formDefinition.readOnly}
-                              editorContext={editorContext}
-                              onImageSelection={img => {
-                                  formik.setFieldValue(field.formDefinition.name, img[0].uuid, true);
-                              }}/>
+            <MediaPickerFilled id={id}
+                               uuid={uuid}
+                               field={field}
+            />
         );
     }
 
-    return <MediaPickerFilled field={field} selectedImgId={formik.values[field.formDefinition.name]} id={id}/>;
+    return (
+        <MediaPickerEmpty id={id}
+                          field={field}
+                          formik={formik}
+                          editorContext={editorContext}
+        />
+    );
 };
 
 MediaPickerCmp.propTypes = {

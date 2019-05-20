@@ -1,22 +1,22 @@
 import React from 'react';
-import {shallow} from '@jahia/test-framework';
 import {MediaPicker} from './MediaPicker';
+import {shallowWithTheme} from '@jahia/test-framework';
+import {dsGenericTheme} from '@jahia/ds-mui-theme';
 
 jest.mock('formik', () => {
     let formikvaluesmock;
-    const setFieldValuemock = jest.fn();
+
     return {
         setFormikValues: values => {
             formikvaluesmock = values;
         },
-        setFieldValue: setFieldValuemock,
         connect: Cmp => props => (
-            <Cmp {...props} formik={{values: formikvaluesmock, setFieldValue: setFieldValuemock}}/>
+            <Cmp {...props} formik={{values: formikvaluesmock}}/>
         )
     };
 });
 
-import {setFormikValues, setFieldValue} from 'formik';
+import {setFormikValues} from 'formik';
 
 describe('mediaPicker', () => {
     let defaultProps;
@@ -36,40 +36,29 @@ describe('mediaPicker', () => {
         setFormikValues({imageid: 'ojrzoij'});
     });
 
-    it('should display the MediaPickerFilled when the field is filed', () => {
+    it('should display the MediaPickerEmpty when the field is not filed', () => {
         setFormikValues({imageid: null});
-        const cmp = shallow(<MediaPicker {...defaultProps}/>).dive();
 
-        expect(cmp.debug()).toContain('MediaPickerEmpty');
-    });
+        const cmp = shallowWithTheme(
+            <MediaPicker {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        )
+            .dive()
+            .dive();
 
-    it('should set formik value when image is Selected', () => {
-        setFormikValues({imageid: null});
-        const cmp = shallow(<MediaPicker {...defaultProps}/>).dive();
-
-        cmp.simulate('imageSelection', [{uuid: 'img'}]);
-
-        expect(setFieldValue).toHaveBeenCalledWith('imageid', 'img', true);
+        expect(cmp.debug()).toContain('MediaPickerEmptyCmp');
     });
 
     it('should display the MediaPickerFilled when the field is filed', () => {
-        const cmp = shallow(<MediaPicker {...defaultProps}/>).dive();
+        const cmp = shallowWithTheme(
+            <MediaPicker {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        )
+            .dive()
+            .dive();
 
-        expect(cmp.debug()).toContain('MediaPickerFilled');
-    });
-
-    it('should set readOnly to false if formDefinition is not set readOnly', () => {
-        setFormikValues({imageid: null});
-        const cmp = shallow(<MediaPicker {...defaultProps}/>).dive();
-
-        expect(cmp.props().readOnly).toBe(false);
-    });
-
-    it('should set readOnly to true if formDefinition is set readOnly', () => {
-        setFormikValues({imageid: null});
-        defaultProps.field.formDefinition.readOnly = true;
-        const cmp = shallow(<MediaPicker {...defaultProps}/>).dive();
-
-        expect(cmp.props().readOnly).toBe(true);
+        expect(cmp.debug()).toContain('MediaPickerFilledCmp');
     });
 });

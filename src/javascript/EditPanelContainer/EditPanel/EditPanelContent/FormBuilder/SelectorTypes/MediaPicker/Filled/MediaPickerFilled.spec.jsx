@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/ds-mui-theme';
-import {MediaPickerFilled} from './MediaPicker_filled';
+import {MediaPickerFilled} from './MediaPickerFilled';
 
 jest.mock('react-apollo-hooks', () => {
     let queryResultmock;
@@ -16,7 +16,7 @@ jest.mock('react-apollo-hooks', () => {
 });
 
 import {setQueryResult} from 'react-apollo-hooks';
-import {encodeJCRPath} from '../../../../EditPanel.utils';
+import {encodeJCRPath} from '../../../../../EditPanel.utils';
 
 const queryResult = {
     path: '/a/valid/jcrPath/#/g/200/300',
@@ -29,13 +29,13 @@ const queryResult = {
     }
 };
 
-describe('mediaPicker filled', () => {
+describe('mediaPickerFilled', () => {
     let defaultProps;
 
     beforeEach(() => {
         defaultProps = {
             field: {},
-            selectedImgId: 'uuidOfTheImage',
+            uuid: 'uuidOfTheImage',
             id: 'yoloID'
         };
 
@@ -59,29 +59,7 @@ describe('mediaPicker filled', () => {
             .dive()
             .dive();
 
-        expect(cmp.find('figure').props().style.backgroundImage).toContain(encodeJCRPath(queryResult.path));
-    });
-
-    it('should display the weight of image from field', () => {
-        const cmp = shallowWithTheme(
-            <MediaPickerFilled {...defaultProps}/>,
-            {},
-            dsGenericTheme
-        )
-            .dive()
-            .dive();
-        expect(cmp.debug()).toContain(queryResult.weight);
-    });
-
-    it('should display the type of image from field', () => {
-        const cmp = shallowWithTheme(
-            <MediaPickerFilled {...defaultProps}/>,
-            {},
-            dsGenericTheme
-        )
-            .dive()
-            .dive();
-        expect(cmp.debug()).toContain(queryResult.children.nodes[0].mimeType.value);
+        expect(cmp.props().fieldData.url).toContain(encodeJCRPath(queryResult.path));
     });
 
     it('should display the name of image from field', () => {
@@ -92,10 +70,11 @@ describe('mediaPicker filled', () => {
         )
             .dive()
             .dive();
-        expect(cmp.debug()).toContain(queryResult.name);
+
+        expect(cmp.props().fieldData.name).toContain(queryResult.name);
     });
 
-    it('should display the size of image from field', () => {
+    it('should display the information (type, size and weight) of image from field', () => {
         const cmp = shallowWithTheme(
             <MediaPickerFilled {...defaultProps}/>,
             {},
@@ -103,7 +82,11 @@ describe('mediaPicker filled', () => {
         )
             .dive()
             .dive();
-        expect(cmp.debug()).toContain(queryResult.height.value);
-        expect(cmp.debug()).toContain(queryResult.width.value);
+
+        const imageInfo = cmp.props().fieldData.info;
+        expect(imageInfo).toContain(queryResult.width.value);
+        expect(imageInfo).toContain(queryResult.height.value);
+        expect(imageInfo).toContain(queryResult.weight);
+        expect(imageInfo).toContain(queryResult.children.nodes[0].mimeType.value);
     });
 });

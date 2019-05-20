@@ -7,7 +7,6 @@ import unpublishAction from './actions/unpublishAction';
 import goBackAction from './actions/goBackAction';
 import EditPanelConstants from './EditPanelContainer/EditPanel/EditPanelConstants';
 import EditPanelContainer from './EditPanelContainer';
-import {mediaPickerUnsetAction} from './EditPanelContainer/EditPanel/EditPanelContent/FormBuilder/SelectorTypes/MediaPicker/MediaPicker.actions';
 import {unsetFieldAction} from './actions/unsetFieldAction';
 
 console.log('Load Content Editor Ext Components');
@@ -54,11 +53,6 @@ if (contextJsParameters && contextJsParameters.config && contextJsParameters.con
             buttonIcon: <CloudOff/>,
             target: ['editHeaderActions:2'],
             submitOperation: EditPanelConstants.submitOperation.UNPUBLISH
-        });
-
-        actionsRegistry.add('unsetLinkAction', mediaPickerUnsetAction, {
-            buttonIcon: <Cancel/>,
-            target: ['mediaPickerActions:1']
         });
 
         actionsRegistry.add('unsetFieldAction', unsetFieldAction, {

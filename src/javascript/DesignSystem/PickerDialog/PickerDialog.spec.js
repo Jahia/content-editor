@@ -18,38 +18,10 @@ describe('Picker dialog', () => {
                 </>
             ),
             nodeTreeConfigs: [],
-            loading: false,
-            selectedPath: '',
-            setSelectedPath: jest.fn(),
             onItemSelection: jest.fn(),
             onCloseDialog: jest.fn(),
             onImageSelection: jest.fn()
         };
-    });
-
-    it('should not display ProgressOverlay when loading is not completed', () => {
-        const cmp = shallowWithTheme(
-            <PickerDialog {...defaultProps}/>,
-            {},
-            dsGenericTheme
-        )
-            .dive()
-            .dive();
-
-        expect(cmp.find('WithStyles(ProgressOverlayCmp)').exists()).toBe(false);
-    });
-
-    it('should display ProgressOverlay when loading is not completed', () => {
-        defaultProps.loading = true;
-        const cmp = shallowWithTheme(
-            <PickerDialog {...defaultProps}/>,
-            {},
-            dsGenericTheme
-        )
-            .dive()
-            .dive();
-
-        expect(cmp.find('WithStyles(ProgressOverlayCmp)').exists()).toBe(true);
     });
 
     it('should close the modal when click on Cancel button', () => {

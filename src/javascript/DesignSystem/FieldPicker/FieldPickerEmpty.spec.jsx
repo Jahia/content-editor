@@ -4,21 +4,17 @@ import ImageIcon from '@material-ui/icons/Image';
 
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/ds-mui-theme';
-import {FieldPickerEmpty} from './FieldPicker_empty';
+import {FieldPickerEmpty} from './FieldPickerEmpty';
 
 describe('fieldPicker empty', () => {
     let defaultProps;
 
     beforeEach(() => {
         defaultProps = {
-            idInput: 'idInput',
-            editorContext: {
-                site: 'mySite',
-                lang: 'en'
-            },
+            pickerLabel: '',
             PickerIcon: <ImageIcon/>,
-            onSelection: jest.fn(),
-            picker: () => <div>picker</div>
+            children: jest.fn(),
+            classes: {}
         };
     });
 
@@ -60,37 +56,5 @@ describe('fieldPicker empty', () => {
         cmp.find('button').simulate('click');
 
         expect(cmp.find('WithStyles(Dialog)').props().open).toBe(false);
-    });
-
-    it('should setModalOpen to false when isSelected', () => {
-        const cmp = shallowWithTheme(
-            <FieldPickerEmpty {...defaultProps}/>,
-            {},
-            dsGenericTheme
-        )
-            .dive()
-            .dive();
-
-        cmp.find('button').simulate('click');
-
-        cmp.find('[idInput="idInput"]').simulate('selection');
-
-        expect(cmp.find('WithStyles(Dialog)').props().open).toBe(false);
-    });
-
-    it('should trigger onSelection when isSelected', () => {
-        const cmp = shallowWithTheme(
-            <FieldPickerEmpty {...defaultProps}/>,
-            {},
-            dsGenericTheme
-        )
-            .dive()
-            .dive();
-
-        cmp.find('button').simulate('click');
-
-        cmp.find('[idInput="idInput"]').simulate('selection', [{name: 'item name'}]);
-
-        expect(defaultProps.onSelection).toHaveBeenCalledWith([{name: 'item name'}]);
     });
 });

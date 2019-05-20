@@ -1,3 +1,7 @@
-import {FieldPicker} from './FieldPicker';
+import {FieldPickerFilled} from './FieldPickerFilled';
+import {FieldPickerEmpty} from './FieldPickerEmpty';
 
-export default FieldPicker;
+export {
+    FieldPickerFilled,
+    FieldPickerEmpty
+};

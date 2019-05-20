@@ -104,5 +104,3 @@ export const FieldPickerFilled = compose(
     translate(),
     withStyles(styles)
 )(fieldPickerFilledCmp);
-
-FieldPickerFilled.displayName = 'FieldPickerFilled';
