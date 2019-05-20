@@ -33,7 +33,9 @@
                     "addImage": "Add Image",
                     "modalCancel": "Cancel",
                     "modalDone": "Done"
-                  }
+                  },
+                  "modalCancel": "Cancel",
+                  "modalDone": "Done"
                 }
             },
             "error": {
