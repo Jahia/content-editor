@@ -3,7 +3,7 @@ import {shallow} from '@jahia/test-framework';
 
 import ChoiceList from './ChoiceList';
 
-describe('Text component', () => {
+describe('Choicelist component', () => {
     let props;
 
     beforeEach(() => {

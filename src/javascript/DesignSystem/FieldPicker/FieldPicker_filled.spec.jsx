@@ -3,7 +3,7 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/ds-mui-theme';
 import {FieldPickerFilled} from './fieldPicker_filled';
 
-describe('fieldPicker', () => {
+describe('fieldPicker filled', () => {
     let defaultProps;
 
     beforeEach(() => {

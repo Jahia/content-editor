@@ -1,4 +1,4 @@
-import {SavePropertiesMutation, PublishPropertiesMutation, UnpublishPropertiesMutation} from './NodeData/NodeData.gql-mutation';
+import {SavePropertiesMutation, PublishNodeMutation, UnpublishNodeMutation} from './NodeData/NodeData.gql-mutation';
 import {getPropertiesToMutate} from './EditPanel/EditPanel.utils';
 import {NodeQuery} from './NodeData/NodeData.gql-queries';
 import {refetchPreview} from './EditPanel.refetches';
@@ -9,7 +9,7 @@ export const publishNode = ({client, nodeData, lang, notificationContext, action
             path: nodeData.path,
             languages: [lang]
         },
-        mutation: PublishPropertiesMutation,
+        mutation: PublishNodeMutation,
         refetchQueries: [
             {
                 query: NodeQuery,
@@ -36,7 +36,7 @@ export const unpublishNode = ({client, nodeData, lang, notificationContext, acti
             path: nodeData.path,
             languages: [lang]
         },
-        mutation: UnpublishPropertiesMutation,
+        mutation: UnpublishNodeMutation,
         refetchQueries: [
             {
                 query: NodeQuery,

@@ -6,7 +6,7 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/ds-mui-theme';
 import {FieldPickerEmpty} from './FieldPicker_empty';
 
-describe('mediaPicker empty', () => {
+describe('fieldPicker empty', () => {
     let defaultProps;
 
     beforeEach(() => {

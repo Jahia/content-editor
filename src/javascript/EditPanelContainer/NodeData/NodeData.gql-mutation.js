@@ -15,8 +15,8 @@ export const SavePropertiesMutation = gql`
     }
 `;
 
-export const PublishPropertiesMutation = gql`
-    mutation saveNodeProperties($path:String!, $languages: [String] ) {
+export const PublishNodeMutation = gql`
+    mutation publishNode($path:String!, $languages: [String] ) {
         jcr {
             mutateNode(pathOrId: $path) {
                 publish(languages: $languages)
@@ -25,8 +25,8 @@ export const PublishPropertiesMutation = gql`
     }
 `;
 
-export const UnpublishPropertiesMutation = gql`
-    mutation saveNodeProperties($path:String!, $languages: [String] ) {
+export const UnpublishNodeMutation = gql`
+    mutation unpublishNode($path:String!, $languages: [String] ) {
         jcr {
             mutateNode(pathOrId: $path) {
                 unpublish(languages: $languages)

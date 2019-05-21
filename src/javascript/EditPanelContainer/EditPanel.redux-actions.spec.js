@@ -2,8 +2,8 @@ import {publishNode, saveNode, unpublishNode} from './EditPanel.redux-actions';
 
 jest.mock('./NodeData/NodeData.gql-mutation', () => {
     return {
-        PublishPropertiesMutation: 'PublishPropertiesMutation',
-        UnpublishPropertiesMutation: 'UnpublishPropertiesMutation',
+        PublishNodeMutation: 'PublishNodeMutation',
+        UnpublishNodeMutation: 'UnpublishNodeMutation',
         SavePropertiesMutation: 'SavePropertiesMutation'
     };
 });
@@ -23,11 +23,11 @@ describe('EditPanel redux actions', () => {
             };
         });
 
-        it('should call PublishPropertiesMutation', async () => {
+        it('should call PublishNodeMutation', async () => {
             await publishNode(params);
 
             expect(params.client.mutate).toHaveBeenCalled();
-            expect(params.client.mutate.mock.calls[0][0].mutation).toBe('PublishPropertiesMutation');
+            expect(params.client.mutate.mock.calls[0][0].mutation).toBe('PublishNodeMutation');
         });
 
         it('should display a notification when request is a success', async () => {
@@ -58,11 +58,11 @@ describe('EditPanel redux actions', () => {
             };
         });
 
-        it('should call PublishPropertiesMutation', async () => {
+        it('should call UnpublishNodeMutation', async () => {
             await unpublishNode(params);
 
             expect(params.client.mutate).toHaveBeenCalled();
-            expect(params.client.mutate.mock.calls[0][0].mutation).toBe('UnpublishPropertiesMutation');
+            expect(params.client.mutate.mock.calls[0][0].mutation).toBe('UnpublishNodeMutation');
         });
 
         it('should display a notification when request is a success', async () => {
@@ -93,7 +93,7 @@ describe('EditPanel redux actions', () => {
             };
         });
 
-        it('should call PublishPropertiesMutation', async () => {
+        it('should call SaveNodeMutation', async () => {
             await saveNode(params);
 
             expect(params.client.mutate).toHaveBeenCalled();

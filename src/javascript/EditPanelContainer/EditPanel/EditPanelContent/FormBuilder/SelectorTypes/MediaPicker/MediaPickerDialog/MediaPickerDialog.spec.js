@@ -13,7 +13,7 @@ jest.mock('./MediaPickerDialog.gql-queries', () => {
     };
 });
 
-describe('mediaPicker modal', () => {
+describe('MediaPickerDialog', () => {
     let defaultProps;
 
     beforeEach(() => {

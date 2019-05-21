@@ -3,7 +3,7 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/ds-mui-theme';
 import {TextArea} from './TextArea';
 
-describe('imageList', () => {
+describe('TextArea', () => {
     let defaultProps;
 
     beforeEach(() => {

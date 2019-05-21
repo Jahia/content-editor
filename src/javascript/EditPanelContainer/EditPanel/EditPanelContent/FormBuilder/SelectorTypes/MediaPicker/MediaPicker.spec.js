@@ -18,7 +18,7 @@ jest.mock('formik', () => {
 
 import {setFormikValues, setFieldValue} from 'formik';
 
-describe('mediaPicker empty', () => {
+describe('mediaPicker', () => {
     let defaultProps;
 
     beforeEach(() => {

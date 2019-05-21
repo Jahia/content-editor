@@ -3,12 +3,12 @@ import {shallow} from '@jahia/test-framework';
 
 import TextArea from './index';
 
-describe('Text component', () => {
+describe('TextArea component', () => {
     let props;
 
     beforeEach(() => {
         props = {
-            id: 'choiceList1',
+            id: 'textArea1',
             field: {
                 formDefinition: {
                     name: 'myOption',

@@ -4,7 +4,7 @@ import {dsGenericTheme} from '@jahia/ds-mui-theme';
 import {PickerDialog} from './PickerDialog';
 import Button from '@material-ui/core/Button';
 
-describe('picker modal', () => {
+describe('Picker dialog', () => {
     let defaultProps;
 
     beforeEach(() => {
