@@ -1,6 +1,7 @@
-import {composeActions, actionsRegistry} from '@jahia/react-material';
+import {composeActions} from '@jahia/react-material';
+import {withFormikAction} from './withFormikAction';
 
-export const unsetFieldAction = composeActions('unsetFieldAction', actionsRegistry.get('withFormikAction'), {
+export const unsetFieldAction = composeActions(withFormikAction, {
     init: context => {
         context.enabled = !context.field.formDefinition.readOnly;
     },

@@ -18,38 +18,12 @@ describe('Picker dialog', () => {
                 </>
             ),
             nodeTreeConfigs: [],
-            loading: false,
-            selectedPath: '',
-            setSelectedPath: jest.fn(),
             onItemSelection: jest.fn(),
             onCloseDialog: jest.fn(),
-            onImageSelection: jest.fn()
+            onImageSelection: jest.fn(),
+            modalCancelLabel: '',
+            modalDoneLabel: ''
         };
-    });
-
-    it('should not display ProgressOverlay when loading is not completed', () => {
-        const cmp = shallowWithTheme(
-            <PickerDialog {...defaultProps}/>,
-            {},
-            dsGenericTheme
-        )
-            .dive()
-            .dive();
-
-        expect(cmp.find('WithStyles(ProgressOverlayCmp)').exists()).toBe(false);
-    });
-
-    it('should display ProgressOverlay when loading is not completed', () => {
-        defaultProps.loading = true;
-        const cmp = shallowWithTheme(
-            <PickerDialog {...defaultProps}/>,
-            {},
-            dsGenericTheme
-        )
-            .dive()
-            .dive();
-
-        expect(cmp.find('WithStyles(ProgressOverlayCmp)').exists()).toBe(true);
     });
 
     it('should close the modal when click on Cancel button', () => {
@@ -57,9 +31,7 @@ describe('Picker dialog', () => {
             <PickerDialog {...defaultProps}/>,
             {},
             dsGenericTheme
-        )
-            .dive()
-            .dive();
+        ).dive();
 
         cmp.find('WithStyles(Button)[color="secondary"]').simulate('click');
 
@@ -71,9 +43,7 @@ describe('Picker dialog', () => {
             <PickerDialog {...defaultProps}/>,
             {},
             dsGenericTheme
-        )
-            .dive()
-            .dive();
+        ).dive();
 
         cmp.find('WithStyles(Button)[id="select-item"]').simulate('click', false);
 
@@ -85,9 +55,7 @@ describe('Picker dialog', () => {
             <PickerDialog {...defaultProps}/>,
             {},
             dsGenericTheme
-        )
-            .dive()
-            .dive();
+        ).dive();
 
         cmp.find('WithStyles(Button)[id="select-item"]').simulate('click', true);
 

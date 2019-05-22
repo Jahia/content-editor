@@ -1,9 +1,9 @@
 import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/ds-mui-theme';
-import {FieldPickerFilled} from './fieldPicker_filled';
+import {PickerFilled} from './PickerFilled';
 
-describe('fieldPicker filled', () => {
+describe('picker filled', () => {
     let defaultProps;
 
     beforeEach(() => {
@@ -25,7 +25,7 @@ describe('fieldPicker filled', () => {
 
     it('should display the url from field data', () => {
         const cmp = shallowWithTheme(
-            <FieldPickerFilled {...defaultProps}/>,
+            <PickerFilled {...defaultProps}/>,
             {},
             dsGenericTheme
         )
@@ -37,7 +37,7 @@ describe('fieldPicker filled', () => {
 
     it('should display the name part from field data', () => {
         const cmp = shallowWithTheme(
-            <FieldPickerFilled {...defaultProps}/>,
+            <PickerFilled {...defaultProps}/>,
             {},
             dsGenericTheme
         )
@@ -48,7 +48,7 @@ describe('fieldPicker filled', () => {
 
     it('should display the info part from field data', () => {
         const cmp = shallowWithTheme(
-            <FieldPickerFilled {...defaultProps}/>,
+            <PickerFilled {...defaultProps}/>,
             {},
             dsGenericTheme
         )

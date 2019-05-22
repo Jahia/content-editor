@@ -12,7 +12,7 @@ jest.mock('./actions/unpublishAction', () => {
 
 const publishAction = require('./actions/publishAction');
 const unpublishAction = require('./actions/unpublishAction');
-const {mediaPickerUnsetAction} = require('./EditPanelContainer/EditPanel/EditPanelContent/FormBuilder/SelectorTypes/MediaPicker/MediaPicker.actions');
+const {unsetFieldAction} = require('./actions/unsetFieldAction');
 
 describe('register', () => {
     let actionsRegistry;
@@ -67,7 +67,7 @@ describe('register', () => {
                 .add
                 .mock
                 .calls
-                .find(call => call[1] === mediaPickerUnsetAction)
+                .find(call => call[1] === unsetFieldAction)
         )
             .toBeTruthy();
     });
