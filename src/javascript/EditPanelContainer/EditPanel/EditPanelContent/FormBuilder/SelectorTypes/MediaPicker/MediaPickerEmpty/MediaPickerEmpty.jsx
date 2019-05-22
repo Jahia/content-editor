@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import React from 'react';
 import {FieldPickerEmpty} from '../../../../../../../DesignSystem/FieldPicker';
 import {PickerDialog} from '../../../../../../../DesignSystem/PickerDialog';
-import {ImageListQuery} from '../ImageListQuery/ImageListQuery';
+import {ImageListQuery} from './ImageListQuery';
 import {translate} from 'react-i18next';
 
 const MediaPickerEmptyCmp = ({t, id, field, formik, editorContext}) => {
@@ -24,11 +24,14 @@ const MediaPickerEmptyCmp = ({t, id, field, formik, editorContext}) => {
                                   rootLabel: 'Browse files',
                                   key: 'browse-tree-files'
                               }]}
+                              modalCancelLabel={t('content-editor:label.contentEditor.edit.fields.modalCancel')}
+                              modalDoneLabel={t('content-editor:label.contentEditor.edit.fields.modalDone')}
                               onCloseDialog={() => setIsOpen(false)}
                               onItemSelection={image => {
                                   formik.setFieldValue(field.formDefinition.name, image[0].uuid, true);
                                   setIsOpen(false);
                               }}
+
                 >
                     {(setSelectedItem, selectedPath) => (
                         <ImageListQuery field={field}

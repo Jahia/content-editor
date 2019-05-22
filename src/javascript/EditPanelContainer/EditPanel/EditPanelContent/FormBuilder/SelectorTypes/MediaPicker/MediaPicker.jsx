@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'formik';
-import {MediaPickerEmpty} from './Empty/MediaPickerEmpty';
-import {MediaPickerFilled} from './Filled/MediaPickerFilled';
+import {MediaPickerEmpty} from './MediaPickerEmpty/MediaPickerEmpty';
+import {MediaPickerFilled} from './MediaPickerFilled/MediaPickerFilled';
 
 const MediaPickerCmp = ({field, id, editorContext, formik}) => {
     const uuid = formik.values[field.formDefinition.name];

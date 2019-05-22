@@ -20,7 +20,9 @@ describe('Picker dialog', () => {
             nodeTreeConfigs: [],
             onItemSelection: jest.fn(),
             onCloseDialog: jest.fn(),
-            onImageSelection: jest.fn()
+            onImageSelection: jest.fn(),
+            modalCancelLabel: '',
+            modalDoneLabel: ''
         };
     });
 
@@ -29,9 +31,7 @@ describe('Picker dialog', () => {
             <PickerDialog {...defaultProps}/>,
             {},
             dsGenericTheme
-        )
-            .dive()
-            .dive();
+        ).dive();
 
         cmp.find('WithStyles(Button)[color="secondary"]').simulate('click');
 
@@ -43,9 +43,7 @@ describe('Picker dialog', () => {
             <PickerDialog {...defaultProps}/>,
             {},
             dsGenericTheme
-        )
-            .dive()
-            .dive();
+        ).dive();
 
         cmp.find('WithStyles(Button)[id="select-item"]').simulate('click', false);
 
@@ -57,9 +55,7 @@ describe('Picker dialog', () => {
             <PickerDialog {...defaultProps}/>,
             {},
             dsGenericTheme
-        )
-            .dive()
-            .dive();
+        ).dive();
 
         cmp.find('WithStyles(Button)[id="select-item"]').simulate('click', true);
 

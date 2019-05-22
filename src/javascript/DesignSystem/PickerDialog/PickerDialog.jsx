@@ -6,9 +6,7 @@ import Button from '@material-ui/core/Button';
 import CloudUpload from '@material-ui/icons/CloudUpload';
 import {Typography} from '@jahia/ds-mui-theme';
 
-import {compose} from 'react-apollo';
 import {withStyles} from '@material-ui/core';
-import {translate} from 'react-i18next';
 import {NodeTrees} from '@jahia/react-material';
 
 const styles = theme => ({
@@ -51,7 +49,7 @@ const styles = theme => ({
     }
 });
 
-const PickerDialogCmp = ({onCloseDialog, classes, idInput, t, site, lang, onItemSelection, nodeTreeConfigs, children}) => {
+const PickerDialogCmp = ({onCloseDialog, classes, idInput, site, lang, onItemSelection, nodeTreeConfigs, children, modalCancelLabel, modalDoneLabel}) => {
     const [selectedPath, setSelectedPath] = useState('/sites/' + site + '/files');
     const [openPaths, setOpenPaths] = useState([]);
     const [selectedItem, setSelectedItem] = useState(false);
@@ -101,7 +99,7 @@ const PickerDialogCmp = ({onCloseDialog, classes, idInput, t, site, lang, onItem
                                 color="secondary"
                                 onClick={onCloseDialog}
                         >
-                            {t('content-editor:label.contentEditor.edit.fields.modalCancel')}
+                            {modalCancelLabel}
                         </Button>
                         <Button data-sel-media-picker-dialog-action="done"
                                 disabled={!selectedItem}
@@ -110,7 +108,7 @@ const PickerDialogCmp = ({onCloseDialog, classes, idInput, t, site, lang, onItem
                                 type="button"
                                 onClick={() => onItemSelection(selectedItem)}
                         >
-                            {t('content-editor:label.contentEditor.edit.fields.modalDone')}
+                            {modalDoneLabel}
                         </Button>
                     </div>
                 </div>
@@ -127,13 +125,11 @@ PickerDialogCmp.propTypes = {
     onCloseDialog: PropTypes.func.isRequired,
     onItemSelection: PropTypes.func.isRequired,
     idInput: PropTypes.string.isRequired,
-    t: PropTypes.func.isRequired,
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
+    modalCancelLabel: PropTypes.string.isRequired,
+    modalDoneLabel: PropTypes.string.isRequired
 };
 
-const PickerDialog = compose(
-    translate(),
-    withStyles(styles)
-)(PickerDialogCmp);
+const PickerDialog = withStyles(styles)(PickerDialogCmp);
 
 export {PickerDialog};
