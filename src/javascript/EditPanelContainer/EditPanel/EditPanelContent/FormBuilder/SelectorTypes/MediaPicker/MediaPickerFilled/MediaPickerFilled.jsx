@@ -2,7 +2,7 @@ import React from 'react';
 import {ProgressOverlay} from '@jahia/react-material';
 import * as PropTypes from 'prop-types';
 import {translate} from 'react-i18next';
-import {FieldPickerFilled} from '../../../../../../../DesignSystem/FieldPicker';
+import {PickerFilled} from '../../../../../../../DesignSystem/Picker';
 import {encodeJCRPath} from '../../../../../EditPanel.utils';
 import {MediaPickerFilledQuery} from './MediaPickerFilled.gql-queries';
 import {useQuery} from 'react-apollo-hooks';
@@ -31,10 +31,10 @@ const MediaPickerFilledCmp = ({t, field, id, uuid}) => {
     };
 
     return (
-        <FieldPickerFilled field={field}
-                           fieldData={fieldData}
-                           selectedId={uuid}
-                           id={id}
+        <PickerFilled field={field}
+                      fieldData={fieldData}
+                      selectedId={uuid}
+                      id={id}
         />
     );
 };

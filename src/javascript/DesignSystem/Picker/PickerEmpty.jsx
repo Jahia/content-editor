@@ -42,7 +42,7 @@ function Transition(props) {
     return <Slide direction="up" {...props}/>;
 }
 
-const FieldPickerEmptyCmp = ({classes, readOnly, pickerLabel, pickerIcon, children}) => {
+const PickerEmptyCmp = ({classes, readOnly, pickerLabel, pickerIcon, children}) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -74,11 +74,11 @@ const FieldPickerEmptyCmp = ({classes, readOnly, pickerLabel, pickerIcon, childr
     );
 };
 
-FieldPickerEmptyCmp.defaultProps = {
+PickerEmptyCmp.defaultProps = {
     readOnly: false
 };
 
-FieldPickerEmptyCmp.propTypes = {
+PickerEmptyCmp.propTypes = {
     readOnly: PropTypes.bool,
     pickerLabel: PropTypes.string.isRequired,
     pickerIcon: PropTypes.element.isRequired,
@@ -86,9 +86,9 @@ FieldPickerEmptyCmp.propTypes = {
     classes: PropTypes.object.isRequired
 };
 
-const FieldPickerEmpty = compose(
+const PickerEmpty = compose(
     translate(),
     withStyles(styles)
-)(FieldPickerEmptyCmp);
+)(PickerEmptyCmp);
 
-export {FieldPickerEmpty};
+export {PickerEmpty};

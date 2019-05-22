@@ -1,16 +1,16 @@
 import ImageIcon from '@material-ui/icons/Image';
 import * as PropTypes from 'prop-types';
 import React from 'react';
-import {FieldPickerEmpty} from '../../../../../../../DesignSystem/FieldPicker';
+import {PickerEmpty} from '../../../../../../../DesignSystem/Picker';
 import {PickerDialog} from '../../../../../../../DesignSystem/PickerDialog';
 import {ImageListQuery} from './ImageListQuery';
 import {translate} from 'react-i18next';
 
 const MediaPickerEmptyCmp = ({t, id, field, formik, editorContext}) => {
     return (
-        <FieldPickerEmpty readOnly={field.formDefinition.readOnly}
-                          pickerLabel={t('content-editor:label.contentEditor.edit.fields.imagePicker.addImage')}
-                          pickerIcon={<ImageIcon/>}
+        <PickerEmpty readOnly={field.formDefinition.readOnly}
+                     pickerLabel={t('content-editor:label.contentEditor.edit.fields.imagePicker.addImage')}
+                     pickerIcon={<ImageIcon/>}
         >
             {setIsOpen => (
                 <PickerDialog idInput={id}
@@ -42,7 +42,7 @@ const MediaPickerEmptyCmp = ({t, id, field, formik, editorContext}) => {
                     )}
                 </PickerDialog>
             )}
-        </FieldPickerEmpty>
+        </PickerEmpty>
     );
 };
 

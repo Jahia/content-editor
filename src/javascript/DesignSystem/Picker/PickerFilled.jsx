@@ -100,7 +100,7 @@ fieldPickerFilledCmp.propTypes = {
     classes: PropTypes.object
 };
 
-export const FieldPickerFilled = compose(
+export const PickerFilled = compose(
     translate(),
     withStyles(styles)
 )(fieldPickerFilledCmp);

@@ -4,9 +4,9 @@ import ImageIcon from '@material-ui/icons/Image';
 
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/ds-mui-theme';
-import {FieldPickerEmpty} from './FieldPickerEmpty';
+import {PickerEmpty} from './PickerEmpty';
 
-describe('fieldPicker empty', () => {
+describe('picker empty', () => {
     let defaultProps;
 
     beforeEach(() => {
@@ -20,7 +20,7 @@ describe('fieldPicker empty', () => {
 
     it('should set modal not open by default', () => {
         const cmp = shallowWithTheme(
-            <FieldPickerEmpty {...defaultProps}/>,
+            <PickerEmpty {...defaultProps}/>,
             {},
             dsGenericTheme
         )
@@ -32,7 +32,7 @@ describe('fieldPicker empty', () => {
 
     it('should set modal open when clicking on the button', () => {
         const cmp = shallowWithTheme(
-            <FieldPickerEmpty {...defaultProps}/>,
+            <PickerEmpty {...defaultProps}/>,
             {},
             dsGenericTheme
         )
@@ -46,7 +46,7 @@ describe('fieldPicker empty', () => {
 
     it('should not set modal open when clicking on the button when readOnly', () => {
         const cmp = shallowWithTheme(
-            <FieldPickerEmpty {...defaultProps} readOnly/>,
+            <PickerEmpty {...defaultProps} readOnly/>,
             {},
             dsGenericTheme
         )
