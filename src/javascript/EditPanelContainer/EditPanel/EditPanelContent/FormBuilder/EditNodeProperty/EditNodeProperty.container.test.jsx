@@ -5,6 +5,7 @@ import EditNodePropertyContainer from './EditNodeProperty.container';
 import RichText from '../SelectorTypes/RichText';
 import Text from '../SelectorTypes/Text';
 import MediaPicker from '../SelectorTypes/MediaPicker';
+import {ContentPicker} from '../SelectorTypes/ContentPicker/ContentPicker';
 
 describe('EditNodeProperty container component', () => {
     let defaultProps;
@@ -34,8 +35,19 @@ describe('EditNodeProperty container component', () => {
         expect(fieldComponent.length).toBe(1);
     });
 
-    it('should render a Picker component when field type is "picker"', () => {
+    it('should render a ContentPicker component when field type is "picker"', () => {
         defaultProps.field.formDefinition.selectorType = 'Picker';
+        const cmp = shallow(<EditNodePropertyContainer {...defaultProps}/>);
+
+        const fieldComponent = cmp.find(ContentPicker);
+        expect(fieldComponent.exists()).toBe(true);
+        expect(fieldComponent.length).toBe(1);
+    });
+
+    it('should render a MediaPicker component when field type is "picker" and option type is "image"', () => {
+        defaultProps.field.formDefinition.selectorType = 'Picker';
+        defaultProps.field.formDefinition.selectorOptions = {type: 'image'};
+
         const cmp = shallow(<EditNodePropertyContainer {...defaultProps}/>);
 
         const fieldComponent = cmp.find(MediaPicker);
