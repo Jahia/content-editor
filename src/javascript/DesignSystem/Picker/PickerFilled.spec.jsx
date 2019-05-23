@@ -56,4 +56,27 @@ describe('picker filled', () => {
             .dive();
         expect(cmp.debug()).toContain(defaultProps.fieldData.info);
     });
+
+    it('should be in read only', () => {
+        defaultProps.readOnly = true;
+        const cmp = shallowWithTheme(
+            <PickerFilled {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        )
+            .dive()
+            .dive();
+        expect(cmp.props().className).toContain('fieldContainerReadOnly');
+    });
+
+    it('should NOT be in read only', () => {
+        const cmp = shallowWithTheme(
+            <PickerFilled {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        )
+            .dive()
+            .dive();
+        expect(cmp.props().className).not.toContain('fieldContainerReadOnly');
+    });
 });

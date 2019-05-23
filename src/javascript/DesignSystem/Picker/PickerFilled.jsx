@@ -15,9 +15,13 @@ const styles = theme => ({
         justifyContent: 'space-between',
         // TODO border: `1px ${theme.palette.ui.zeta} solid`,
         border: '1px #C1C8D5 solid',
+        boxShadow: '1px 5px 6px rgba(64, 77, 86, 0.1)',
         borderRadius: '2px',
-        paddingRight: theme.spacing.unit,
-        boxShadow: '1px 5px 6px rgba(64, 77, 86, 0.1)'
+        paddingRight: theme.spacing.unit
+    },
+    fieldContainerReadOnly: {
+        border: `1px ${theme.palette.ui.omega} solid`,
+        boxShadow: 'none'
     },
     fieldFigureContainer: {
         display: 'flex',
@@ -54,9 +58,9 @@ const styles = theme => ({
     }
 });
 
-const fieldPickerFilledCmp = ({field, fieldData, classes}) => {
+const PickerFilledCmp = ({readOnly, field, fieldData, classes}) => {
     return (
-        <article className={classes.fieldContainer} data-sel-field-picker="filled">
+        <article className={classes.fieldContainer + ' ' + (readOnly ? classes.fieldContainerReadOnly : '')} data-sel-field-picker="filled">
             <div className={classes.fieldFigureContainer}>
                 <img src={fieldData.url}
                      className={classes.fieldImage}
@@ -91,17 +95,18 @@ const fieldPickerFilledCmp = ({field, fieldData, classes}) => {
     );
 };
 
-fieldPickerFilledCmp.defaultProps = {
-    classes: {}
+PickerFilledCmp.defaultProps = {
+    readOnly: false
 };
 
-fieldPickerFilledCmp.propTypes = {
+PickerFilledCmp.propTypes = {
+    readOnly: PropTypes.bool,
     field: PropTypes.object.isRequired,
     fieldData: PropTypes.object.isRequired,
-    classes: PropTypes.object
+    classes: PropTypes.object.isRequired
 };
 
 export const PickerFilled = compose(
     translate(),
     withStyles(styles)
-)(fieldPickerFilledCmp);
+)(PickerFilledCmp);
