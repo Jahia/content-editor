@@ -21,7 +21,7 @@ const MediaPickerEmptyCmp = ({t, id, field, formik, editorContext}) => {
                                   selectableTypes: ['jnt:folder'],
                                   type: 'files',
                                   openableTypes: ['jnt:folder'],
-                                  rootLabel: 'Browse files',
+                                  rootLabel: t('content-editor:label.contentEditor.edit.fields.imagePicker.rootLabel'),
                                   key: 'browse-tree-files'
                               }]}
                               modalCancelLabel={t('content-editor:label.contentEditor.edit.fields.modalCancel')}

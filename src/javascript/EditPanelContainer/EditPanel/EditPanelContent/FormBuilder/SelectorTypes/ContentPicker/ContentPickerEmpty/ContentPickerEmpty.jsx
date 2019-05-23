@@ -20,7 +20,7 @@ const ContentPickerEmptyCmp = ({t, id, field, formik, editorContext}) => {
                                   selectableTypes: ['jnt:contentFolder'],
                                   type: 'contents',
                                   openableTypes: ['jnt:contentFolder'],
-                                  rootLabel: 'Browse contents',
+                                  rootLabel: t('content-editor:label.contentEditor.edit.fields.contentPicker.rootLabel'),
                                   key: 'browse-tree-contents'
                               }]}
                               modalCancelLabel={t('content-editor:label.contentEditor.edit.fields.modalCancel')}

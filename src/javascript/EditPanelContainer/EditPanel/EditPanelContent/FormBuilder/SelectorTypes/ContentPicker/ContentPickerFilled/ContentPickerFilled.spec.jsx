@@ -27,7 +27,7 @@ const queryResult = {
     }
 };
 
-describe('mediaPickerFilled', () => {
+describe('contentPickerFilled', () => {
     let defaultProps;
 
     beforeEach(() => {

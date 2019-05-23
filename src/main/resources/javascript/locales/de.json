@@ -30,10 +30,12 @@
                 "sharedLanguages": "Von allen Sprachen geteilt",
                 "fields": {
                   "imagePicker": {
-                    "addImage": "Bild hinzufügen"
+                    "addImage": "Bild hinzufügen",
+                    "rootLabel": "Dateien"
                   },
                   "contentPicker": {
-                    "addContent": "Inhalt hinzufügen"
+                    "addContent": "Inhalt hinzufügen",
+                    "rootLabel": "Contents"
                   },
                   "modalCancel": "Abbrechen",
                   "modalDone": "Fertig"
