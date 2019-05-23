@@ -32,7 +32,7 @@ describe('picker filled', () => {
             .dive()
             .dive();
 
-        expect(cmp.find('figure').props().style.backgroundImage).toContain(defaultProps.fieldData.url);
+        expect(cmp.find('img').props().src).toContain(defaultProps.fieldData.url);
     });
 
     it('should display the name part from field data', () => {

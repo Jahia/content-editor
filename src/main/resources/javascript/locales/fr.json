@@ -31,8 +31,11 @@
                 "fields": {
                   "imagePicker": {
                     "addImage": "Ajouter une image",
-                    "modalCancel": "Annuler",
-                    "modalDone": "Selectioner"
+                    "rootLabel": "Fichiers"
+                  },
+                  "contentPicker": {
+                    "addContent": "Ajouter un contenu",
+                    "rootLabel": "Contenus"
                   },
                   "modalCancel": "Annuler",
                   "modalDone": "Selectioner"

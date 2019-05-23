@@ -4,11 +4,13 @@ import SelectorTypes from '../SelectorTypes';
 import EditNodeProperty from './EditNodeProperty';
 
 export const EditNodePropertyContainer = ({field, siteInfo, editorContext}) => {
-    let FieldComponent = SelectorTypes[field.formDefinition.selectorType];
-    if (!FieldComponent) {
+    let componentType = SelectorTypes[field.formDefinition.selectorType];
+    if (!componentType) {
         console.warn('no Renderer for ', field.formDefinition.selectorType);
         return <></>;
     }
+
+    let FieldComponent = componentType(field.formDefinition.selectorOptions);
 
     return (
         <EditNodeProperty field={field} labelHtmlFor={field.formDefinition.name} siteInfo={siteInfo}>

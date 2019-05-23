@@ -20,16 +20,16 @@ const styles = theme => ({
         boxShadow: '1px 5px 6px rgba(64, 77, 86, 0.1)'
     },
     fieldFigureContainer: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         height: `calc(${theme.spacing.unit * 9}px - 2px)`,
         width: theme.spacing.unit * 9,
         overflow: 'hidden',
-        display: 'inline-block',
-        padding: '2px',
         backgroundColor: theme.palette.ui.omega
     },
     fieldFigure: {
-        width: '100%',
-        height: '100%',
+        textAlign: 'center',
         margin: 0,
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
@@ -56,9 +56,8 @@ const fieldPickerFilledCmp = ({field, fieldData, classes}) => {
     return (
         <article className={classes.fieldContainer} data-sel-field-picker="filled">
             <div className={classes.fieldFigureContainer}>
-                <figure
-                    className={classes.fieldFigure}
-                    style={{backgroundImage: `url(${fieldData.url})`}}
+                <img src={fieldData.url}
+                     className={classes.fieldFigure}
                 />
             </div>
             <div className={classes.fieldSelectedMetadata}>
