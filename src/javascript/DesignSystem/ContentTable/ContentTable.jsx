@@ -28,6 +28,7 @@ const styles = theme => ({
             backgroundColor: theme.palette.background.default
         }
     }
+
 });
 
 const ContentTable = ({data, order, orderBy, columns, labelEmpty, classes}) => {
