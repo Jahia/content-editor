@@ -28,9 +28,11 @@ const styles = theme => ({
         overflow: 'hidden',
         backgroundColor: theme.palette.ui.omega
     },
-    fieldFigure: {
+    fieldImage: {
         textAlign: 'center',
         margin: 0,
+        maxWidth: theme.spacing.unit * 9,
+        maxHeight: `calc(${theme.spacing.unit * 9}px - 2px)`,
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'contain'
@@ -57,7 +59,7 @@ const fieldPickerFilledCmp = ({field, fieldData, classes}) => {
         <article className={classes.fieldContainer} data-sel-field-picker="filled">
             <div className={classes.fieldFigureContainer}>
                 <img src={fieldData.url}
-                     className={classes.fieldFigure}
+                     className={classes.fieldImage}
                 />
             </div>
             <div className={classes.fieldSelectedMetadata}>

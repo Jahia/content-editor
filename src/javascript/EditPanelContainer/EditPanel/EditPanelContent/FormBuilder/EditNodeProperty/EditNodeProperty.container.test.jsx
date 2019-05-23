@@ -46,7 +46,7 @@ describe('EditNodeProperty container component', () => {
 
     it('should render a MediaPicker component when field type is "picker" and option type is "image"', () => {
         defaultProps.field.formDefinition.selectorType = 'Picker';
-        defaultProps.field.formDefinition.selectorOptions = {type: 'image'};
+        defaultProps.field.formDefinition.selectorOptions = [{name: 'type', value: 'image'}];
 
         const cmp = shallow(<EditNodePropertyContainer {...defaultProps}/>);
 

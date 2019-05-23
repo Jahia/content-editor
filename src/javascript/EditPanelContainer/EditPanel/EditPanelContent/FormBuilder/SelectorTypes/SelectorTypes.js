@@ -13,7 +13,8 @@ const SelectorTypes = {
     Text: () => Text,
     RichText: () => RichText,
     Picker: options => {
-        return (options && PickerOptions[options.type]) || ContentPicker;
+        const option = options && options.find(option => option.name === 'type' && PickerOptions[option.value]);
+        return (option && PickerOptions[option.value]) || ContentPicker;
     },
     Choicelist: () => ChoiceList,
     TextArea: () => TextArea
