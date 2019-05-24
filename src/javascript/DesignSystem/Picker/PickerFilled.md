@@ -5,6 +5,7 @@ This component is used to display the picker inside the field to show field info
 ### Props
 
 -   _field_ : object value of the field
+-   _readOnly_: read only status of the selector
 -   _fieldData_ :
         - _url_ : url of the displayed image / icon
         - _name_ : name part of the field
