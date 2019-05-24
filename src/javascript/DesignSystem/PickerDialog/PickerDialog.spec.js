@@ -17,7 +17,7 @@ describe('Picker dialog', () => {
                     <Button id="select-item" onClick={selected => setSelectedItem(selected)}>Select item</Button>
                 </>
             ),
-            nodeTreeConfigs: [],
+            nodeTreeConfigs: [{rootPath: '/contents'}],
             onItemSelection: jest.fn(),
             onCloseDialog: jest.fn(),
             onImageSelection: jest.fn(),

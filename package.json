@@ -35,6 +35,7 @@
         "@material-ui/icons": "^3.0.1",
         "@material-ui/lab": "^3.0.0-alpha.30",
         "ckeditor4-react": "^0.1.0",
+        "dayjs": "^1.8.14",
         "formik": "^1.4.3",
         "graphql-tag": "^2.9.1",
         "prop-types": "^15.6.2",

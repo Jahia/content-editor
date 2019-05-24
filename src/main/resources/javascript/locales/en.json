@@ -35,7 +35,15 @@
                   },
                   "contentPicker": {
                     "addContent": "Add Content",
-                    "rootLabel": "Contents"
+                    "contentsRootLabel": "Contents",
+                    "pagesRootLabel": "Pages",
+                    "tableEmpty": "No Content",
+                    "tableHeader": {
+                      "name": "Name",
+                      "type": "Type",
+                      "createdBy": "Created By",
+                      "lastModified": "Modification Date"
+                    }
                   },
                   "modalCancel": "Cancel",
                   "modalDone": "Done"

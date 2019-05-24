@@ -50,7 +50,9 @@ const styles = theme => ({
 });
 
 const PickerDialogCmp = ({onCloseDialog, classes, idInput, site, lang, onItemSelection, nodeTreeConfigs, children, modalCancelLabel, modalDoneLabel}) => {
-    const [selectedPath, setSelectedPath] = useState('/sites/' + site + '/files');
+    // Use root path of the first tree config by default
+
+    const [selectedPath, setSelectedPath] = useState('/sites/' + site + nodeTreeConfigs[0].rootPath);
     const [openPaths, setOpenPaths] = useState([]);
     const [selectedItem, setSelectedItem] = useState(false);
 

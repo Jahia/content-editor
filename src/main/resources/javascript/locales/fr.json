@@ -35,7 +35,15 @@
                   },
                   "contentPicker": {
                     "addContent": "Ajouter un contenu",
-                    "rootLabel": "Contenus"
+                    "contentsRootLabel": "Contenus",
+                    "pagesRootLabel": "Pages",
+                    "tableEmpty": "No Content",
+                    "tableHeader": {
+                      "name": "Nom",
+                      "type": "Type",
+                      "createdBy": "Créé par",
+                      "lastModified": "Date de modification"
+                    }
                   },
                   "modalCancel": "Annuler",
                   "modalDone": "Selectioner"
