@@ -31,7 +31,8 @@ const MediaPickerFilledCmp = ({t, field, id, uuid}) => {
     };
 
     return (
-        <PickerFilled field={field}
+        <PickerFilled readOnly={field.formDefinition && field.formDefinition.readOnly}
+                      field={field}
                       fieldData={fieldData}
                       selectedId={uuid}
                       id={id}
