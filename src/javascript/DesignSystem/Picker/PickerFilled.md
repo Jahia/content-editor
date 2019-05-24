@@ -1,4 +1,4 @@
-## Picker
+## PickerFilled
 
 This component is used to display the picker inside the field to show field information.
 
