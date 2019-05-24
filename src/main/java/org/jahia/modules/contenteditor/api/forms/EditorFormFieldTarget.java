@@ -7,6 +7,7 @@ import graphql.annotations.annotationTypes.GraphQLField;
  * Represents a form target (aka classification) alongside with the rank within that target.
  */
 public class EditorFormFieldTarget implements Comparable<EditorFormFieldTarget> {
+    private static final double THRESHOLD = .0001;
     private String name;
     private Double rank;
 
@@ -50,7 +51,7 @@ public class EditorFormFieldTarget implements Comparable<EditorFormFieldTarget> 
         EditorFormFieldTarget that = (EditorFormFieldTarget) o;
 
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        return rank != null ? rank.equals(that.rank) : that.rank == null;
+        return rank != null ? Math.abs(rank - that.rank) < THRESHOLD : that.rank == null;
     }
 
     @Override
