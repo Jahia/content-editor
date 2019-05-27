@@ -15,6 +15,7 @@ import java.util.Map;
  * This is the root class for the editor form structure.
  */
 public class EditorForm implements Comparable<EditorForm> {
+    private static final double THRESHOLD = .0001;
     private String nodeType;
     private Bundle originBundle;
     private Double priority;
@@ -92,7 +93,7 @@ public class EditorForm implements Comparable<EditorForm> {
         EditorForm that = (EditorForm) o;
 
         if (nodeType != null ? !nodeType.equals(that.nodeType) : that.nodeType != null) return false;
-        return priority != null ? priority.equals(that.priority) : that.priority == null;
+        return priority != null ? Math.abs(priority - that.priority) < THRESHOLD : that.priority == null;
     }
 
     @Override
