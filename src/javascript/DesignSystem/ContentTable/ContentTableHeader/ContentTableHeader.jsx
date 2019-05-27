@@ -10,7 +10,7 @@ const ContentTableHeader = ({columns, order, orderBy}) => {
         <TableHead>
             <TableRow>
                 <TableCell padding="checkbox">
-                    {/* Checkbox location */}
+                    {/* TODO: handle global Checkbox */}
                 </TableCell>
                 {columns.map(column => (
                     <TableCell key={column.property}
