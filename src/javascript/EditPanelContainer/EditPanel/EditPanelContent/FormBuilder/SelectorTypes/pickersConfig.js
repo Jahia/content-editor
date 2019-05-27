@@ -6,22 +6,21 @@ const treeConfig = {
         rootPath: '/contents',
         openableTypes: ['jnt:contentFolder'],
         selectableTypes: ['jnt:contentFolder'],
-        type: 'files',
+        type: 'contents',
         rootLabelKey: 'content-editor:label.contentEditor.edit.fields.contentPicker.contentsRootLabel'
     },
     allContents: {
         rootPath: '/',
         openableTypes: ['jnt:page', 'jnt:navMenuText', 'jnt:virtualsite', 'jnt:contentList', 'jnt:contentFolder', 'nt:folder', 'jmix:siteContent', 'jmix:browsableInEditorialPicker'],
         selectableTypes: ['jnt:page', 'jnt:navMenuText', 'jnt:virtualsite', 'jnt:contentList', 'jnt:contentFolder', 'nt:folder', 'jmix:siteContent', 'jmix:browsableInEditorialPicker'],
-        type: 'files',
+        type: 'allContents',
         rootLabelKey: 'content-editor:label.contentEditor.edit.fields.contentPicker.allContentsRootLabel'
-
     },
     files: {
         rootPath: '/files',
         openableTypes: ['nt:folder'],
         selectableTypes: ['nt:folder'],
-        type: 'contents',
+        type: 'files',
         rootLabelKey: 'content-editor:label.contentEditor.edit.fields.imagePicker.rootLabel'
     },
     pages: {

@@ -24,8 +24,21 @@ let styles = theme => ({
 });
 
 export const EditNodeProperty = ({t, classes, children, field, siteInfo, labelHtmlFor}) => {
+    // Todo improve selenium detection of the field type
+    let seleniumType = children.type.name;
+    if (children.type.WrappedComponent) {
+        seleniumType = children.type.WrappedComponent.name;
+    }
+
+    if (children.type.Naked) {
+        seleniumType = children.type.Naked.name;
+    }
+
     return (
-        <FormControl className={classes.formControl} data-sel-content-editor-field={field.formDefinition.name} data-sel-content-editor-field-type={field.formDefinition.selectorType}>
+        <FormControl className={classes.formControl}
+                     data-sel-content-editor-field={field.formDefinition.name}
+                     data-sel-content-editor-field-type={seleniumType}
+        >
             <Grid
                 container
                 direction="row"

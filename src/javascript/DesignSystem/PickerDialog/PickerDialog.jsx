@@ -96,14 +96,14 @@ const PickerDialogCmp = ({onCloseDialog, classes, idInput, site, lang, onItemSel
                         </label>
                     </div>
                     <div className={classes.actionButtons}>
-                        <Button data-sel-media-picker-dialog-action="cancel"
+                        <Button data-sel-picker-dialog-action="cancel"
                                 type="button"
                                 color="secondary"
                                 onClick={onCloseDialog}
                         >
                             {modalCancelLabel}
                         </Button>
-                        <Button data-sel-media-picker-dialog-action="done"
+                        <Button data-sel-picker-dialog-action="done"
                                 disabled={!selectedItem}
                                 variant="contained"
                                 color="primary"

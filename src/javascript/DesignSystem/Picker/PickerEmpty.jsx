@@ -47,7 +47,7 @@ const PickerEmptyCmp = ({classes, readOnly, pickerLabel, pickerIcon, children}) 
 
     return (
         <div data-sel-media-picker="empty">
-            <button data-sel-media-picker-action="openPicker"
+            <button data-sel-field-picker-action="openPicker"
                     className={`${classes.add} ${readOnly ? classes.addReadOnly : ''}`}
                     type="button"
                     onClick={() => {
