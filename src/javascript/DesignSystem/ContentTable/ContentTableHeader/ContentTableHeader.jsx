@@ -1,4 +1,3 @@
-import Checkbox from '@material-ui/core/Checkbox';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
@@ -11,7 +10,7 @@ const ContentTableHeader = ({columns, order, orderBy}) => {
         <TableHead>
             <TableRow>
                 <TableCell padding="checkbox">
-                    <Checkbox indeterminate/>
+                    {/* TODO: handle global Checkbox */}
                 </TableCell>
                 {columns.map(column => (
                     <TableCell key={column.property}

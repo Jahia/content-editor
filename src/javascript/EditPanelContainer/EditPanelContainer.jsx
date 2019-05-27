@@ -12,6 +12,8 @@ import SiteData from './SiteData';
 import {publishNode, saveNode, unpublishNode} from './EditPanel.redux-actions';
 import {ApolloProvider as ApolloHooksProvider} from 'react-apollo-hooks';
 
+import '../date.config';
+
 const submitActionMapper = {
     [EditPanelConstants.submitOperation.SAVE]: saveNode,
     [EditPanelConstants.submitOperation.SAVE_PUBLISH]: publishNode,
