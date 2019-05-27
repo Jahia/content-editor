@@ -32,10 +32,6 @@ const styles = theme => ({
         '&&&': {
             backgroundColor: theme.palette.primary.main,
             color: theme.palette.common.white
-        },
-        '& $badge': {
-            color: theme.palette.brand.alpha,
-            backgroundColor: theme.palette.invert.beta
         }
     }
 });
@@ -88,7 +84,7 @@ const ContentTable = ({data, order, orderBy, columns, labelEmpty, classes, multi
 
                                     {columns.map(column => {
                                         return (
-                                            <TableCell key={row.id}>{row[column.property]}</TableCell>
+                                            <TableCell key={row.id + ' ' + column.property}>{row[column.property]}</TableCell>
                                         );
                                     })}
                                 </TableRow>

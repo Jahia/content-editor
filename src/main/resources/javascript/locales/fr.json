@@ -36,6 +36,7 @@
                   "contentPicker": {
                     "addContent": "Ajouter un contenu",
                     "contentsRootLabel": "Contenus",
+                    "allContentsRootLabel": "{{siteName}}",
                     "pagesRootLabel": "Pages",
                     "tableEmpty": "No Content",
                     "tableHeader": {

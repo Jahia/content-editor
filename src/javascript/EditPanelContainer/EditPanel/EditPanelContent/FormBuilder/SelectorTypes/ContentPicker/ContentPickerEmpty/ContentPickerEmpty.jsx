@@ -5,8 +5,23 @@ import {PickerEmpty} from '../../../../../../../DesignSystem/Picker';
 import {PickerDialog} from '../../../../../../../DesignSystem/PickerDialog';
 import {translate} from 'react-i18next';
 import {ContentTable} from './ContentTable';
+import pickersConfig from '../../pickersConfig';
 
 const ContentPickerEmptyCmp = ({t, id, field, formik, editorContext}) => {
+    // Resolve picker configuration
+    const pickerConfig = pickersConfig.resolveConfig(field.formDefinition.selectorOptions, field.formDefinition);
+    // Build tree configs
+    const nodeTreeConfigs = pickerConfig.treeConfigs.map(treeConfig => {
+        return {
+            rootPath: treeConfig.rootPath,
+            selectableTypes: treeConfig.selectableTypes,
+            type: treeConfig.type,
+            openableTypes: treeConfig.openableTypes,
+            rootLabel: t(treeConfig.rootLabelKey, {siteName: window.contextJsParameters.siteDisplayableName}),
+            key: `browse-tree-${treeConfig.type}`
+        };
+    });
+
     return (
         <PickerEmpty readOnly={field.formDefinition.readOnly}
                      pickerLabel={t('content-editor:label.contentEditor.edit.fields.contentPicker.addContent')}
@@ -16,22 +31,7 @@ const ContentPickerEmptyCmp = ({t, id, field, formik, editorContext}) => {
                 <PickerDialog idInput={id}
                               site={editorContext.site}
                               lang={editorContext.lang}
-                              nodeTreeConfigs={[{
-                                  rootPath: '/contents',
-                                  selectableTypes: ['jnt:contentFolder'],
-                                  type: 'contents',
-                                  openableTypes: ['jnt:contentFolder'],
-                                  rootLabel: t('content-editor:label.contentEditor.edit.fields.contentPicker.contentsRootLabel'),
-                                  key: 'browse-tree-contents'
-                              },
-                                  {
-                                      rootPath: '',
-                                      selectableTypes: ['jnt:page', 'jnt:virtualsite'],
-                                      type: 'pages',
-                                      openableTypes: ['jnt:page', 'jnt:virtualsite', 'jnt:navMenuText'],
-                                      rootLabel: t('content-editor:label.contentEditor.edit.fields.contentPicker.pagesRootLabel'),
-                                      key: 'browse-tree-pages'
-                                  }]}
+                              nodeTreeConfigs={nodeTreeConfigs}
                               modalCancelLabel={t('content-editor:label.contentEditor.edit.fields.modalCancel')}
                               modalDoneLabel={t('content-editor:label.contentEditor.edit.fields.modalDone')}
                               onCloseDialog={() => setIsOpen(false)}
@@ -40,15 +40,34 @@ const ContentPickerEmptyCmp = ({t, id, field, formik, editorContext}) => {
                                   setIsOpen(false);
                               }}
 
-                >
-                    {(setSelectedItem, selectedPath) => (
-                        <ContentTable field={field}
+                >{(setSelectedItem, selectedPath) => {
+                    // Build table config from picker config
+                   /*
+                   Todo: make the picker work as CMM, use the recursionTypesFilter to browse all contents within a page
+                    without displaying the content lists.
+                   let isContentOrFile =
+                        selectedPath === '/sites/' + editorContext.site + '/contents' ||
+                        selectedPath.startsWith('/sites/' + editorContext.site + '/contents/') ||
+                        selectedPath === '/sites/' + editorContext.site + '/files' ||
+                        selectedPath.startsWith('/sites/' + editorContext.site + '/files/');
+
+                    recursionTypesFilter: isContentOrFile ? ['nt:base'] : ['jnt:page', 'jnt:contentFolder']
+                    */
+
+                    const tableConfig = {
+                        typeFilter: pickerConfig.selectableTypesTable,
+                        recursionTypesFilter: ['nt:base']
+                    };
+
+                    return (
+                        <ContentTable tableConfig={tableConfig}
                                       setSelectedItem={setSelectedItem}
                                       selectedPath={selectedPath}
                                       formik={formik}
                                       editorContext={editorContext}
                         />
-                    )}
+                    );
+                }}
                 </PickerDialog>
             )}
         </PickerEmpty>
