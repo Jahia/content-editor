@@ -3,7 +3,7 @@ import DSContentTable from '../../../../../../../../DesignSystem/ContentTable/Co
 import {useQuery} from 'react-apollo-hooks';
 import {translate} from 'react-i18next';
 import {ProgressOverlay} from '@jahia/react-material';
-import * as PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import {ContentTableQuery} from './ContentTable.gql-queries';
 import dayjs from 'dayjs';
 
