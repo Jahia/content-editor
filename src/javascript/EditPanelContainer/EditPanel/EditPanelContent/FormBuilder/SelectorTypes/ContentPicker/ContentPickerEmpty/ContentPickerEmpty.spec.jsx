@@ -20,6 +20,9 @@ describe('contentPickerEmpty', () => {
             },
             formik: {}
         };
+        window.contextJsParameters = {
+            siteDisplayableName: 'my site'
+        }
     });
 
     it('should display the fieldPickerEmpty', () => {

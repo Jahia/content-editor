@@ -35,6 +35,7 @@
                   },
                   "contentPicker": {
                     "addContent": "Add Content",
+                    "allContentsRootLabel": "{{siteName}}",
                     "contentsRootLabel": "Contents",
                     "pagesRootLabel": "Pages",
                     "tableEmpty": "No Content",

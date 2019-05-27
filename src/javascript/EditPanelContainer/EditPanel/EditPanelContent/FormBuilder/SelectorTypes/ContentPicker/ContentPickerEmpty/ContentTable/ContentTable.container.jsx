@@ -14,15 +14,13 @@ const columConfig = t => [
     {property: 'lastModified', label: t('content-editor:label.contentEditor.edit.fields.contentPicker.tableHeader.lastModified')}
 ];
 
-const ContentTableContainer = ({t, setSelectedItem, selectedPath, editorContext}) => {
-    let isContent = selectedPath.startsWith('/sites/' + editorContext.site + '/contents');
+const ContentTableContainer = ({t, tableConfig, setSelectedItem, selectedPath, editorContext}) => {
     const {data, error, loading} = useQuery(ContentTableQuery, {
         variables: {
             path: selectedPath,
             language: editorContext.lang,
-            typeFilter: isContent ? ['jnt:content', 'jnt:contentFolder'] : ['jmix:editorialContent', 'jnt:page'],
-            recursionTypesFilter: isContent ? ['nt:base'] : ['jnt:page', 'jnt:contentFolder']
-
+            typeFilter: tableConfig.typeFilter,
+            recursionTypesFilter: tableConfig.recursionTypesFilter
         }
     });
 
@@ -58,6 +56,10 @@ const ContentTableContainer = ({t, setSelectedItem, selectedPath, editorContext}
 
 ContentTableContainer.propTypes = {
     t: PropTypes.func.isRequired,
+    tableConfig: PropTypes.shape({
+        typeFilter: PropTypes.array.isRequired,
+        recursionTypesFilter: PropTypes.array.isRequired
+    }).isRequired,
     setSelectedItem: PropTypes.func.isRequired,
     selectedPath: PropTypes.string.isRequired,
     editorContext: PropTypes.object.isRequired

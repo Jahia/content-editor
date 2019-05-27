@@ -54,6 +54,10 @@ describe('contentListTable', () => {
                 site: 'mySite',
                 lang: 'en'
             },
+            tableConfig: {
+                typeFilter: [],
+                recursionTypesFilter: []
+            },
             formik: {}
         };
 
