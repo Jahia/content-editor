@@ -4,11 +4,19 @@ import ChoiceList from './ChoiceList';
 import TextArea from './TextArea';
 import pickerConfig from './pickersConfig';
 const SelectorTypes = {
-    Text: () => Text,
-    RichText: () => RichText,
+    Text: () => {
+        return {cmp: Text, key: 'Text'};
+    },
+    RichText: () => {
+        return {cmp: RichText, key: 'RichText'};
+    },
     Picker: options => pickerConfig.resolveComponent(options),
-    Choicelist: () => ChoiceList,
-    TextArea: () => TextArea
+    Choicelist: () => {
+        return {cmp: ChoiceList, key: 'ChoiceList'};
+    },
+    TextArea: () => {
+        return {cmp: TextArea, key: 'TextArea'};
+    }
 };
 
 export default SelectorTypes;
