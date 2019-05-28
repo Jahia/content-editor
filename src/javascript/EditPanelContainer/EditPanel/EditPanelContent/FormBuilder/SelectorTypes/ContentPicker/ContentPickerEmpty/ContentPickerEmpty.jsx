@@ -17,7 +17,7 @@ const ContentPickerEmptyCmp = ({t, id, field, formik, editorContext}) => {
             selectableTypes: treeConfig.selectableTypes,
             type: treeConfig.type,
             openableTypes: treeConfig.openableTypes,
-            rootLabel: t(treeConfig.rootLabelKey, {siteName: window.contextJsParameters.siteDisplayableName}),
+            rootLabel: t(treeConfig.rootLabelKey, {siteName: editorContext.siteDisplayableName}),
             key: `browse-tree-${treeConfig.type}`
         };
     });

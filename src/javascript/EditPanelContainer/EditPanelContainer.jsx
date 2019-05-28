@@ -28,7 +28,8 @@ export const EditPanelContainer = ({
     path,
     lang,
     uiLang,
-    site
+    site,
+    siteDisplayableName
 }) => {
     return (
         <ApolloHooksProvider client={client}>
@@ -74,7 +75,8 @@ export const EditPanelContainer = ({
                                     path: path,
                                     site: site,
                                     lang: lang,
-                                    uiLang: uiLang
+                                    uiLang: uiLang,
+                                    siteDisplayableName: siteDisplayableName
                                 };
 
                                             return (
@@ -155,7 +157,8 @@ const mapStateToProps = state => ({
     path: state.path,
     lang: state.language,
     uiLang: state.uiLang,
-    site: state.site
+    site: state.site,
+    siteDisplayableName: state.siteDisplayableName
 });
 
 EditPanelContainer.propTypes = {
@@ -165,7 +168,8 @@ EditPanelContainer.propTypes = {
     notificationContext: PropTypes.object.isRequired,
     lang: PropTypes.string.isRequired,
     uiLang: PropTypes.string.isRequired,
-    site: PropTypes.string.isRequired
+    site: PropTypes.string.isRequired,
+    siteDisplayableName: PropTypes.string.isRequired
 };
 
 export default compose(
