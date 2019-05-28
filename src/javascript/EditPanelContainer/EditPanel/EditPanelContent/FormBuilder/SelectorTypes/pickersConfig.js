@@ -74,7 +74,7 @@ const pickersConfig = {
         const config = Object.assign({}, this[_getPickerType(options)]);
         if (formDefinition && formDefinition.valueConstraints) {
             const constraints = formDefinition.valueConstraints.map(constraint => constraint.value.string);
-            if (constraints) {
+            if (constraints && constraints.length > 0) {
                 config.selectableTypesTable = constraints;
             }
         }
