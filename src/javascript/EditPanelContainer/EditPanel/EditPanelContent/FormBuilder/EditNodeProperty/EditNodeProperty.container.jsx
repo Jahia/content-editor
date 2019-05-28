@@ -10,10 +10,15 @@ export const EditNodePropertyContainer = ({field, siteInfo, editorContext}) => {
         return <></>;
     }
 
-    let FieldComponent = componentType(field.formDefinition.selectorOptions);
+    let fieldComponentDefinition = componentType(field.formDefinition.selectorOptions);
+    let FieldComponent = fieldComponentDefinition.cmp;
 
     return (
-        <EditNodeProperty field={field} labelHtmlFor={field.formDefinition.name} siteInfo={siteInfo}>
+        <EditNodeProperty field={field}
+                          labelHtmlFor={field.formDefinition.name}
+                          siteInfo={siteInfo}
+                          fieldComponentKey={fieldComponentDefinition.key}
+        >
             <FieldComponent field={field} id={field.formDefinition.name} editorContext={editorContext}/>
         </EditNodeProperty>
     );

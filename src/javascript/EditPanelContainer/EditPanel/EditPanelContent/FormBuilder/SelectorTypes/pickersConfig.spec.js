@@ -3,8 +3,9 @@ import pickersConfig from './pickersConfig';
 describe('Pickers Configs', () => {
     describe('resolveComponent', () => {
         it('should always return a component', () => {
-            const Component = pickersConfig.resolveComponent();
-            expect(Component).toBeDefined();
+            const cmpDefinition = pickersConfig.resolveComponent();
+            expect(cmpDefinition.cmp).toBeDefined();
+            expect(cmpDefinition.key).toBeDefined();
         });
     });
     describe('resolveConfig', () => {

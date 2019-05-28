@@ -32,34 +32,29 @@ const treeConfig = {
     }
 };
 
-const _getPickerType = options => {
-    const option = options && options.find(option => option.name === 'type' && pickersConfig[option.value]);
-    return (option && option.value) || 'editorial';
-};
-
 const pickersConfig = {
     image: {
-        picker: MediaPicker,
+        picker: {cmp: MediaPicker, key: 'MediaPicker'},
         treeConfigs: [treeConfig.files],
         selectableTypesTable: ['jmix:image']
     },
     folder: {
-        picker: ContentPicker,
+        picker: {cmp: ContentPicker, key: 'ContentPicker'},
         treeConfigs: [treeConfig.files],
         selectableTypesTable: ['nt:folder']
     },
     contentfolder: {
+        picker: {cmp: ContentPicker, key: 'ContentPicker'},
         treeConfigs: [treeConfig.content],
-        picker: ContentPicker,
         selectableTypesTable: ['jnt:contentFolder']
     },
     page: {
-        picker: ContentPicker,
+        picker: {cmp: ContentPicker, key: 'ContentPicker'},
         treeConfigs: [treeConfig.pages],
         selectableTypesTable: ['jnt:page']
     },
     editorial: {
-        picker: ContentPicker,
+        picker: {cmp: ContentPicker, key: 'ContentPicker'},
         treeConfigs: [treeConfig.allContents],
         selectableTypesTable: ['jnt:page', 'jmix:editorialContent', 'jnt:contentList', 'jnt:contentFolder', 'nt:folder', 'jmix:siteContent']
     },
@@ -68,10 +63,10 @@ const pickersConfig = {
      }, */
 
     resolveComponent(options) {
-        return this[_getPickerType(options)].picker;
+        return this[this._getPickerType(options)].picker;
     },
     resolveConfig(options, formDefinition) {
-        const config = Object.assign({}, this[_getPickerType(options)]);
+        const config = Object.assign({}, this[this._getPickerType(options)]);
         if (formDefinition && formDefinition.valueConstraints) {
             const constraints = formDefinition.valueConstraints.map(constraint => constraint.value.string);
             if (constraints && constraints.length > 0) {
@@ -80,6 +75,10 @@ const pickersConfig = {
         }
 
         return config;
+    },
+    _getPickerType(options) {
+        const option = options && options.find(option => option.name === 'type' && this[option.value]);
+        return (option && option.value) || 'editorial';
     }
 };
 
