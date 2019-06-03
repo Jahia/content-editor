@@ -48,7 +48,7 @@ const styles = theme => {
     };
 };
 
-export const Input = ({classes, defaultValue, disabled, error, fullWidth, id, variant, inputProps, name, onBlur, onChange, onFocus, readOnly, value, ...others}) => {
+export const InputCmp = ({classes, disabled, error, inputProps, onBlur, onFocus, readOnly, variant, ...others}) => {
     const [focus, setFocus] = useState(false);
     const handleFocus = () => {
         onFocus();
@@ -63,17 +63,13 @@ export const Input = ({classes, defaultValue, disabled, error, fullWidth, id, va
     const {icon, interactive} = variant;
 
     const {readOnly: readOnlyClass, inputDisabled, inputAdornedStart, inputAdornedStartFocus, inputAdornedStartError, ...containerClasses} = classes;
+
     return (
         <InputBase
-            id={id}
-            defaultValue={defaultValue}
-            name={name}
             classes={containerClasses}
             className={`${readOnly ? readOnlyClass : ''} ${disabled ? inputDisabled : ''}`}
             disabled={disabled}
             error={error}
-            fullWidth={fullWidth}
-            inputProps={inputProps}
             readOnly={readOnly}
             startAdornment={icon &&
             <InputAdornment
@@ -83,16 +79,14 @@ export const Input = ({classes, defaultValue, disabled, error, fullWidth, id, va
                 {icon}
             </InputAdornment>}
             endAdornment={interactive && <InputAdornment position="end">{interactive}</InputAdornment>}
-            value={value}
             onBlur={handleBlur}
             onFocus={handleFocus}
-            onChange={onChange}
             {...others}
         />
     );
 };
 
-Input.defaultProps = {
+InputCmp.defaultProps = {
     classes: {},
     disabled: false,
     defaultValue: undefined,
@@ -112,7 +106,7 @@ Input.defaultProps = {
     variant: undefined
 };
 
-Input.propTypes = {
+InputCmp.propTypes = {
     classes: PropTypes.object,
     defaultValue: PropTypes.string,
     disabled: PropTypes.bool,
@@ -132,4 +126,7 @@ Input.propTypes = {
     })
 };
 
-export default withStyles(styles)(Input);
+InputCmp.displayName = 'Input';
+
+export const Input = withStyles(styles)(InputCmp);
+

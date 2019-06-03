@@ -1,6 +1,7 @@
 import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/ds-mui-theme';
+import {Input} from '../../../../../../DesignSystem/Input';
 
 import {Text} from './Text';
 
@@ -27,7 +28,7 @@ describe('Text component', () => {
     });
 
     it('should contain one Input component', () => {
-        expect(wrapper.find('Input').length).toBe(1);
+        expect(wrapper.find(Input).length).toBe(1);
     });
 
     it('should contain a matching Input props values', () => {
@@ -40,18 +41,15 @@ describe('Text component', () => {
         const fieldValue = 'some dummy value';
 
         props.formik.values[fieldName] = fieldValue;
-
-        expect(wrapper.setProps(props)
-            .find('Input')
-            .prop('defaultValue')
-        ).toEqual(fieldValue);
+        wrapper.setProps(props);
+        expect(wrapper.props().defaultValue).toBe(fieldValue);
     });
 
     it('should call formik.handleChange on change', () => {
         props.formik.handleChange = jest.fn();
 
         wrapper.setProps(props)
-            .find('Input')
+            .find(Input)
             .simulate('change');
 
         expect(props.formik.handleChange.mock.calls.length).toBe(1);
@@ -61,7 +59,7 @@ describe('Text component', () => {
         props.formik.handleBlur = jest.fn();
 
         wrapper.setProps(props)
-            .find('Input')
+            .find(Input)
             .simulate('blur');
 
         expect(props.formik.handleBlur.mock.calls.length).toBe(1);
@@ -74,10 +72,7 @@ describe('Text component', () => {
 
     let testReadOnly = function (readOnly) {
         props.field.formDefinition.readOnly = readOnly;
-
-        expect(wrapper.setProps(props)
-            .find('Input')
-            .prop('readOnly')
-        ).toEqual(readOnly);
+        wrapper.setProps(props);
+        expect(wrapper.props().readOnly).toBe(readOnly);
     };
 });
