@@ -1,6 +1,7 @@
 import React from 'react';
-import {shallow} from '@jahia/test-framework';
-import {Input} from '@material-ui/core';
+import {shallowWithTheme} from '@jahia/test-framework';
+import {dsGenericTheme} from '@jahia/ds-mui-theme';
+import {Input} from '../../../../../../DesignSystem/Input';
 
 import {Text} from './Text';
 
@@ -23,18 +24,16 @@ describe('Text component', () => {
                 values: []
             }
         };
-        wrapper = shallow(<Text {...props}/>);
+        wrapper = shallowWithTheme(<Text {...props}/>, {}, dsGenericTheme);
     });
 
-    it('should contain one TextField component', () => {
+    it('should contain one Input component', () => {
         expect(wrapper.find(Input).length).toBe(1);
     });
 
-    it('should contain a matching TextField component', () => {
-        const fieldName = props.field.formDefinition.name;
-        const expectedMatch = <Input id={props.id} name={fieldName}/>;
-
-        expect(wrapper.containsMatchingElement(expectedMatch)).toBe(true);
+    it('should contain a matching Input props values', () => {
+        expect(wrapper.props().id).toBe(props.id);
+        expect(wrapper.props().name).toBe(props.field.formDefinition.name);
     });
 
     it('should obtain its initial value from formik.values', () => {
@@ -42,11 +41,8 @@ describe('Text component', () => {
         const fieldValue = 'some dummy value';
 
         props.formik.values[fieldName] = fieldValue;
-
-        expect(wrapper.setProps(props)
-            .find(Input)
-            .prop('value')
-        ).toEqual(fieldValue);
+        wrapper.setProps(props);
+        expect(wrapper.props().defaultValue).toBe(fieldValue);
     });
 
     it('should call formik.handleChange on change', () => {
@@ -76,10 +72,7 @@ describe('Text component', () => {
 
     let testReadOnly = function (readOnly) {
         props.field.formDefinition.readOnly = readOnly;
-
-        expect(wrapper.setProps(props)
-            .find(Input)
-            .prop('readOnly')
-        ).toEqual(readOnly);
+        wrapper.setProps(props);
+        expect(wrapper.props().readOnly).toBe(readOnly);
     };
 });
