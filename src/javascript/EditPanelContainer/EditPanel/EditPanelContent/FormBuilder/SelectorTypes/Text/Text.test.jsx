@@ -1,6 +1,6 @@
 import React from 'react';
-import {shallow} from '@jahia/test-framework';
-import {Input} from '@material-ui/core';
+import {shallowWithTheme} from '@jahia/test-framework';
+import {dsGenericTheme} from '@jahia/ds-mui-theme';
 
 import {Text} from './Text';
 
@@ -23,18 +23,16 @@ describe('Text component', () => {
                 values: []
             }
         };
-        wrapper = shallow(<Text {...props}/>);
+        wrapper = shallowWithTheme(<Text {...props}/>, {}, dsGenericTheme);
     });
 
-    it('should contain one TextField component', () => {
-        expect(wrapper.find(Input).length).toBe(1);
+    it('should contain one Input component', () => {
+        expect(wrapper.find('Input').length).toBe(1);
     });
 
-    it('should contain a matching TextField component', () => {
-        const fieldName = props.field.formDefinition.name;
-        const expectedMatch = <Input id={props.id} name={fieldName}/>;
-
-        expect(wrapper.containsMatchingElement(expectedMatch)).toBe(true);
+    it('should contain a matching Input props values', () => {
+        expect(wrapper.props().id).toBe(props.id);
+        expect(wrapper.props().name).toBe(props.field.formDefinition.name);
     });
 
     it('should obtain its initial value from formik.values', () => {
@@ -44,8 +42,8 @@ describe('Text component', () => {
         props.formik.values[fieldName] = fieldValue;
 
         expect(wrapper.setProps(props)
-            .find(Input)
-            .prop('value')
+            .find('Input')
+            .prop('defaultValue')
         ).toEqual(fieldValue);
     });
 
@@ -53,7 +51,7 @@ describe('Text component', () => {
         props.formik.handleChange = jest.fn();
 
         wrapper.setProps(props)
-            .find(Input)
+            .find('Input')
             .simulate('change');
 
         expect(props.formik.handleChange.mock.calls.length).toBe(1);
@@ -63,7 +61,7 @@ describe('Text component', () => {
         props.formik.handleBlur = jest.fn();
 
         wrapper.setProps(props)
-            .find(Input)
+            .find('Input')
             .simulate('blur');
 
         expect(props.formik.handleBlur.mock.calls.length).toBe(1);
@@ -78,7 +76,7 @@ describe('Text component', () => {
         props.field.formDefinition.readOnly = readOnly;
 
         expect(wrapper.setProps(props)
-            .find(Input)
+            .find('Input')
             .prop('readOnly')
         ).toEqual(readOnly);
     };

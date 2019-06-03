@@ -1,8 +1,8 @@
 import React from 'react';
-import {Input} from '@material-ui/core';
 import {compose} from 'react-apollo';
 import {connect} from 'formik';
-import * as PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
+import {Input} from '../../../../../../DesignSystem/Input';
 
 export class Text extends React.Component {
     render() {
@@ -14,7 +14,7 @@ export class Text extends React.Component {
                 fullWidth
                 id={id}
                 name={field.formDefinition.name}
-                value={values[field.formDefinition.name]}
+                defaultValue={values[field.formDefinition.name]}
                 readOnly={field.formDefinition.readOnly}
                 onChange={handleChange}
                 onBlur={handleBlur}
