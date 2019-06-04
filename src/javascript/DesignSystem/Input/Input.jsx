@@ -103,7 +103,7 @@ InputCmp.defaultProps = {
     },
     readOnly: false,
     value: undefined,
-    variant: undefined
+    variant: {}
 };
 
 InputCmp.propTypes = {
