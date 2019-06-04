@@ -19,14 +19,26 @@ const datetimeFormat = {
 };
 
 const formatDateTime = (datetime, lang, variant) => {
+    if (!datetime) {
+        return '';
+    }
+
     return dayjs(datetime)
         .locale(lang)
         .format(datetimeFormat[variant]);
 };
 
-const DatePickerInputCmp = ({variant, lang, classes, ...props}) => {
+const DatePickerInputCmp = ({
+    variant,
+    lang,
+    classes,
+    onBlur,
+    onChange,
+    initialValue,
+    ...props
+}) => {
     const [overlayShowed, showOverlay] = useState(false);
-    const [datetime, setDatetime] = useState(new Date());
+    const [datetime, setDatetime] = useState(initialValue);
     const [datetimeString, setDatetimeString] = useState(
         formatDateTime(datetime, lang, variant)
     );
@@ -44,12 +56,17 @@ const DatePickerInputCmp = ({variant, lang, classes, ...props}) => {
         const timeout = setTimeout(() => {
             showOverlay(eventQueue[eventQueue.length - 1]);
             setEventQueue([]);
+
+            // If datepicker overlay is not showed anymore, it's an onblur event
+            if (eventQueue[eventQueue.length - 1] === false) {
+                onBlur();
+            }
         }, 100);
 
         return () => {
             clearTimeout(timeout);
         };
-    }, [eventQueue]);
+    }, [eventQueue, onBlur]);
 
     useEffect(() => {
         setDatetimeString(formatDateTime(datetime, lang, variant));
@@ -73,8 +90,10 @@ const DatePickerInputCmp = ({variant, lang, classes, ...props}) => {
                     );
                     if (newDate.isValid()) {
                         setDatetime(newDate.toDate());
+                        onChange(newDate.toDate().toISOString());
                     }
                 }}
+                {...props}
             />
             <div className={classes.overlay}>
                 {overlayShowed && (
@@ -89,12 +108,12 @@ const DatePickerInputCmp = ({variant, lang, classes, ...props}) => {
                             pushToEventQueue(false);
                         }}
                         onSelectDateTime={datetime => {
+                            onChange(datetime.toISOString());
                             setDatetime(datetime);
                             setDatetimeString(
                                 formatDateTime(datetime, lang, variant)
                             );
                         }}
-                        {...props}
                     />
                 )}
             </div>
@@ -103,13 +122,19 @@ const DatePickerInputCmp = ({variant, lang, classes, ...props}) => {
 };
 
 DatePickerInputCmp.defaultProps = {
-    variant: 'date'
+    variant: 'date',
+    onBlur: () => {},
+    onChange: () => {},
+    initialValue: null
 };
 
 DatePickerInputCmp.propTypes = {
     classes: PropTypes.object.isRequired,
     lang: PropTypes.oneOf(['fr', 'en', 'de']).isRequired,
-    variant: PropTypes.oneOf(['date', 'datetime'])
+    variant: PropTypes.oneOf(['date', 'datetime']),
+    initialValue: PropTypes.object,
+    onBlur: PropTypes.func,
+    onChange: PropTypes.func
 };
 
 export const DatePickerInput = withStyles(style)(DatePickerInputCmp);

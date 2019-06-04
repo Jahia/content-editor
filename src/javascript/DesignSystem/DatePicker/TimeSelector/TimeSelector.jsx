@@ -6,6 +6,7 @@ import {withStyles} from '@material-ui/core/styles';
 
 const style = theme => ({
     container: {
+        backgroundColor: 'white',
         listStyle: 'none',
         height: '100%',
         overflowY: 'auto',

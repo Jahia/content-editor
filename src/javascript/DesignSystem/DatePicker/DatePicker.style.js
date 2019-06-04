@@ -2,6 +2,7 @@ export const style = theme => ({
     container: {
         display: 'flex',
         position: 'relative',
+        backgroundColor: 'white',
         '& ul': {
             position: 'absolute',
             boxSizing: 'border-box',
