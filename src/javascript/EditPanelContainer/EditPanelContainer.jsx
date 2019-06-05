@@ -13,6 +13,7 @@ import {publishNode, saveNode, unpublishNode} from './EditPanel.redux-actions';
 import {ApolloProvider as ApolloHooksProvider} from 'react-apollo-hooks';
 
 import '../date.config';
+import SelectorTypes from './EditPanel/EditPanelContent/FormBuilder/SelectorTypes/SelectorTypes';
 
 const submitActionMapper = {
     [EditPanelConstants.submitOperation.SAVE]: saveNode,
@@ -58,14 +59,23 @@ export const EditPanelContainer = ({
                                     }
                                 );
 
+                                const getFieldValue = (formDefinition, value) => {
+                                    let selectorType = SelectorTypes[formDefinition.selectorType];
+                                    if (selectorType) {
+                                        let resolvedSelectorType = selectorType(formDefinition.selectorOptions);
+                                        if (resolvedSelectorType.formatValue) {
+                                            return resolvedSelectorType.formatValue(value);
+                                        }
+                                    }
+
+                                    return value;
+                                };
+
                                 const initialValues = fields.reduce(
                                     (initialValues, field) => {
                                         return {
                                             ...initialValues,
-                                            [field.formDefinition
-                                                .name]:
-                                            field.data &&
-                                            field.data.value
+                                            [field.formDefinition.name]: field.data && getFieldValue(field.formDefinition, field.data.value)
                                         };
                                     },
                                     {}

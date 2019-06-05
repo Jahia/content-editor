@@ -4,6 +4,7 @@ import ChoiceList from './ChoiceList';
 import TextArea from './TextArea';
 import DateTimePicker from './DateTimePicker';
 import pickerConfig from './pickersConfig';
+import Checkbox from './Checkbox';
 
 const SelectorTypes = {
     Text: () => {
@@ -24,6 +25,11 @@ const SelectorTypes = {
     },
     DatePicker: () => {
         return {cmp: DateTimePicker, key: 'DatePicker'};
+    },
+    Checkbox: () => {
+        return {cmp: Checkbox, key: 'Checkbox', formatValue: value => {
+            return value === 'true'; // Value from JCR GraphQL API is a String
+        }};
     }
 };
 
