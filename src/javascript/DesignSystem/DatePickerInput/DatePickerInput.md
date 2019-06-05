@@ -16,6 +16,10 @@ All props from React-Day-picker library + :
 
 -   lang: String ['EN', 'FR', 'DE']
 -   variant: String ['date', 'datetime']
+-   onBlur: function
+-   onChange: function
+-   initialValue: Date
+-   readOnly: Boolean
 
 ### Examples
 

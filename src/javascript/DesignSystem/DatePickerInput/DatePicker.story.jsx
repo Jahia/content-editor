@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {storiesOf} from '@storybook/react';
-import {withKnobs, select} from '@storybook/addon-knobs';
+import {withKnobs, select, boolean} from '@storybook/addon-knobs';
 
 import {DatePickerInput} from './DatePickerInput';
 import doc from './DatePickerInput.md';
@@ -11,6 +11,7 @@ import {MuiThemeProvider} from '@material-ui/core';
 import '../../date.config';
 
 const lang = () => select('lang', ['en', 'fr', 'de']);
+const readOnly = () => boolean('readOnly', false);
 
 storiesOf('DatePickerInput', module)
     .addDecorator(withKnobs)
@@ -18,7 +19,7 @@ storiesOf('DatePickerInput', module)
         'default',
         () => (
             <MuiThemeProvider theme={theme}>
-                <DatePickerInput lang={lang() || 'en'}/>
+                <DatePickerInput lang={lang() || 'en'} readOnly={readOnly()}/>
             </MuiThemeProvider>
         ),
         {notes: {markdown: doc}}
@@ -27,7 +28,7 @@ storiesOf('DatePickerInput', module)
         'datetime',
         () => (
             <MuiThemeProvider theme={theme}>
-                <DatePickerInput lang={lang() || 'en'} variant="datetime"/>
+                <DatePickerInput lang={lang() || 'en'} variant="datetime" readOnly={readOnly()}/>
             </MuiThemeProvider>
         ),
         {notes: {markdown: doc}}
