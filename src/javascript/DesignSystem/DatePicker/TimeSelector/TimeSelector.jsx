@@ -37,7 +37,7 @@ const hours = new Array(24).fill().reduce((acc, _, i) => {
 
 const TimeSelectorCmp = ({classes, selectedHour, onHourSelected, ...props}) => {
     return (
-        <ul className={classes.container} {...props}>
+        <ul className={`TimePicker ${classes.container}`} {...props}>
             {hours.map(hour => (
                 <Typography
                     key={hour}
