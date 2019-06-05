@@ -13,7 +13,8 @@ describe('DateTimePicker component', () => {
                 formDefinition: {
                     name: 'myOption',
                     readOnly: true,
-                    selectorOptions: []
+                    selectorOptions: [],
+                    selectorType: 'DatePicker'
                 }
             },
             editorContext: {
@@ -79,5 +80,22 @@ describe('DateTimePicker component', () => {
         const cmp = shallow(<RenderProps field={{value: new Date().toISOString()}} form={{setFieldValue: () => {}}}/>);
 
         expect(cmp.props().displayDateFormat).toBe(undefined);
+    });
+
+    it('should display date variant for DatePicker', () => {
+        const RenderProps = shallow(<DateTimePicker {...props}/>)
+            .props().render;
+        const cmp = shallow(<RenderProps field={{value: new Date().toISOString()}} form={{setFieldValue: () => {}}}/>);
+
+        expect(cmp.props().variant).toBe('date');
+    });
+
+    it('should display datetime variant for DateTimePicker', () => {
+        props.field.formDefinition.selectorType = 'DateTimePicker';
+        const RenderProps = shallow(<DateTimePicker {...props}/>)
+            .props().render;
+        const cmp = shallow(<RenderProps field={{value: new Date().toISOString()}} form={{setFieldValue: () => {}}}/>);
+
+        expect(cmp.props().variant).toBe('datetime');
     });
 });
