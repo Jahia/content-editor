@@ -23,7 +23,7 @@ describe('DatePickerInput', () => {
 
         expect(cmp.exists('DatePicker')).toBe(false);
 
-        cmp.find('input').simulate('focus');
+        cmp.find('Input').simulate('focus');
 
         jest.runAllTimers();
 

@@ -126,7 +126,6 @@ InputCmp.propTypes = {
     })
 };
 
-InputCmp.displayName = 'Input';
-
 export const Input = withStyles(styles)(InputCmp);
 
+Input.displayName = 'Input';
