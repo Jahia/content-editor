@@ -48,7 +48,7 @@ const styles = theme => {
     };
 };
 
-export const InputCmp = ({classes, disabled, error, inputProps, onBlur, onFocus, readOnly, variant, ...others}) => {
+export const InputCmp = ({classes, disabled, error, onBlur, onFocus, readOnly, variant, ...others}) => {
     const [focus, setFocus] = useState(false);
     const handleFocus = () => {
         onFocus();
@@ -87,7 +87,6 @@ export const InputCmp = ({classes, disabled, error, inputProps, onBlur, onFocus,
 };
 
 InputCmp.defaultProps = {
-    classes: {},
     disabled: false,
     defaultValue: undefined,
     error: false,
@@ -107,7 +106,7 @@ InputCmp.defaultProps = {
 };
 
 InputCmp.propTypes = {
-    classes: PropTypes.object,
+    classes: PropTypes.object.isRequired,
     defaultValue: PropTypes.string,
     disabled: PropTypes.bool,
     error: PropTypes.bool,
