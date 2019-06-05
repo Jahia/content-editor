@@ -11,7 +11,8 @@ describe('DateTimePicker component', () => {
             id: 'dtp1',
             field: {
                 formDefinition: {
-                    name: 'myOption'
+                    name: 'myOption',
+                    readOnly: true
                 }
             },
             editorContext: {
@@ -40,5 +41,22 @@ describe('DateTimePicker component', () => {
         cmp.simulate('change', 'stringdate');
 
         expect(formikOnChange).toHaveBeenCalledWith('myOption', 'stringdate', true);
+    });
+
+    it('should give readOnly', () => {
+        const RenderProps = shallow(<DateTimePicker {...props}/>)
+            .props().render;
+        const cmp = shallow(<RenderProps field={{value: new Date().toISOString()}} form={{setFieldValue: () => {}}}/>);
+
+        expect(cmp.props().readOnly).toBe(true);
+    });
+
+    it('should give readOnly at false', () => {
+        props.field.formDefinition.readOnly = false;
+        const RenderProps = shallow(<DateTimePicker {...props}/>)
+            .props().render;
+        const cmp = shallow(<RenderProps field={{value: new Date().toISOString()}} form={{setFieldValue: () => {}}}/>);
+
+        expect(cmp.props().readOnly).toBe(false);
     });
 });

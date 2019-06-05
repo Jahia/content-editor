@@ -19,6 +19,7 @@ All props from React-Day-picker library + :
 -   onBlur: function
 -   onChange: function
 -   initialValue: Date
+-   readOnly: Boolean
 
 ### Examples
 

@@ -22,6 +22,7 @@ export const DateTimePicker = ({id, field, editorContext}) => {
                             }
                         }
                         {...formikField}
+                        readOnly={field.formDefinition.readOnly}
                         variant="datetime"
                         id={id}
                     />

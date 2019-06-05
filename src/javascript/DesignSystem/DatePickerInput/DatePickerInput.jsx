@@ -36,6 +36,7 @@ const DatePickerInputCmp = ({
     onBlur,
     onChange,
     initialValue,
+    readOnly,
     ...props
 }) => {
     const [overlayShowed, showOverlay] = useState(false);
@@ -77,8 +78,11 @@ const DatePickerInputCmp = ({
         <div>
             <Input
                 value={datetimeString}
+                readOnly={readOnly}
                 onFocus={() => {
-                    pushToEventQueue(true);
+                    if (!readOnly) {
+                            pushToEventQueue(true);
+                    }
                 }}
                 onBlur={() => {
                     pushToEventQueue(false);
@@ -126,7 +130,8 @@ DatePickerInputCmp.defaultProps = {
     variant: 'date',
     onBlur: () => {},
     onChange: () => {},
-    initialValue: null
+    initialValue: null,
+    readOnly: false
 };
 
 DatePickerInputCmp.propTypes = {
@@ -135,7 +140,8 @@ DatePickerInputCmp.propTypes = {
     variant: PropTypes.oneOf(['date', 'datetime']),
     initialValue: PropTypes.object,
     onBlur: PropTypes.func,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    readOnly: PropTypes.bool
 };
 
 export const DatePickerInput = withStyles(style)(DatePickerInputCmp);
