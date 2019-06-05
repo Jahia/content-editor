@@ -5,6 +5,11 @@ import {Field} from 'formik';
 import {DatePickerInput} from '../../../../../../DesignSystem/DatePickerInput';
 import dayjs from 'dayjs';
 
+const variantMapper = {
+    DatePicker: 'date',
+    DateTimePicker: 'datetime'
+};
+
 export const DateTimePicker = ({id, field, editorContext}) => {
     return (
         <Field
@@ -26,7 +31,7 @@ export const DateTimePicker = ({id, field, editorContext}) => {
                         {...formikField}
                         displayDateFormat={displayDateFormat && displayDateFormat.value}
                         readOnly={field.formDefinition.readOnly}
-                        variant="datetime"
+                        variant={variantMapper[field.formDefinition.selectorType]}
                         id={id}
                     />
                 );

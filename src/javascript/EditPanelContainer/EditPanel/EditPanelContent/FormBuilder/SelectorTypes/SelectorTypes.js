@@ -21,6 +21,9 @@ const SelectorTypes = {
     },
     DateTimePicker: () => {
         return {cmp: DateTimePicker, key: 'DateTimePicker'};
+    },
+    DatePicker: () => {
+        return {cmp: DateTimePicker, key: 'DatePicker'};
     }
 };
 
