@@ -12,7 +12,8 @@ describe('DateTimePicker component', () => {
             field: {
                 formDefinition: {
                     name: 'myOption',
-                    readOnly: true
+                    readOnly: true,
+                    selectorOptions: []
                 }
             },
             editorContext: {
@@ -58,5 +59,25 @@ describe('DateTimePicker component', () => {
         const cmp = shallow(<RenderProps field={{value: new Date().toISOString()}} form={{setFieldValue: () => {}}}/>);
 
         expect(cmp.props().readOnly).toBe(false);
+    });
+
+    it('should send display format when there is one', () => {
+        props.field.formDefinition.selectorOptions = [{
+            name: 'format',
+            value: 'toto'
+        }];
+        const RenderProps = shallow(<DateTimePicker {...props}/>)
+            .props().render;
+        const cmp = shallow(<RenderProps field={{value: new Date().toISOString()}} form={{setFieldValue: () => {}}}/>);
+
+        expect(cmp.props().displayDateFormat).toBe('toto');
+    });
+
+    it('should send null as display format when no format is given', () => {
+        const RenderProps = shallow(<DateTimePicker {...props}/>)
+            .props().render;
+        const cmp = shallow(<RenderProps field={{value: new Date().toISOString()}} form={{setFieldValue: () => {}}}/>);
+
+        expect(cmp.props().displayDateFormat).toBe(undefined);
     });
 });

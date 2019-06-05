@@ -20,6 +20,7 @@ All props from React-Day-picker library + :
 -   onChange: function
 -   initialValue: Date
 -   readOnly: Boolean
+-   displayDateFormat: string
 
 ### Examples
 

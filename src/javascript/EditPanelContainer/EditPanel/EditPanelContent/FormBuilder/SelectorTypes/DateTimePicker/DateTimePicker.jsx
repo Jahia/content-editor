@@ -11,6 +11,8 @@ export const DateTimePicker = ({id, field, editorContext}) => {
             name={field.formDefinition.name}
             render={props => {
                 const {value, onChange, ...formikField} = props.field;
+                const displayDateFormat = field.formDefinition.selectorOptions.find(option => option.name === 'format');
+
                 return (
                     <DatePickerInput
                         lang={editorContext.lang}
@@ -22,6 +24,7 @@ export const DateTimePicker = ({id, field, editorContext}) => {
                             }
                         }
                         {...formikField}
+                        displayDateFormat={displayDateFormat && displayDateFormat.value}
                         readOnly={field.formDefinition.readOnly}
                         variant="datetime"
                         id={id}
@@ -39,7 +42,11 @@ DateTimePicker.propTypes = {
     }).isRequired,
     field: PropTypes.shape({
         formDefinition: PropTypes.shape({
-            name: PropTypes.string.isRequired
+            name: PropTypes.string.isRequired,
+            selectorOptions: PropTypes.arrayOf(PropTypes.shape({
+                name: PropTypes.string,
+                value: PropTypes.string
+            })).isRequired
         }).isRequired
     }).isRequired
 };

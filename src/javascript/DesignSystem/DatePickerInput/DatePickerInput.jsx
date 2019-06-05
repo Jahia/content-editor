@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {DatePicker} from '../DatePicker';
 import {withStyles} from '@material-ui/core/styles';
 import {Input} from '../Input';
+import {javaDateFormatToJSDF} from './date.util';
 
 import dayjs from 'dayjs';
 
@@ -19,14 +20,14 @@ const datetimeFormat = {
     datetime: 'L HH:mm'
 };
 
-const formatDateTime = (datetime, lang, variant) => {
+const formatDateTime = (datetime, lang, variant, displayDateFormat) => {
     if (!datetime) {
         return '';
     }
 
     return dayjs(datetime)
         .locale(lang)
-        .format(datetimeFormat[variant]);
+        .format(javaDateFormatToJSDF(displayDateFormat) || datetimeFormat[variant]);
 };
 
 const DatePickerInputCmp = ({
@@ -37,12 +38,13 @@ const DatePickerInputCmp = ({
     onChange,
     initialValue,
     readOnly,
+    displayDateFormat,
     ...props
 }) => {
     const [overlayShowed, showOverlay] = useState(false);
     const [datetime, setDatetime] = useState(initialValue);
     const [datetimeString, setDatetimeString] = useState(
-        formatDateTime(datetime, lang, variant)
+        formatDateTime(datetime, lang, variant, displayDateFormat)
     );
 
     const [eventQueue, setEventQueue] = useState([]);
@@ -71,8 +73,8 @@ const DatePickerInputCmp = ({
     }, [eventQueue, onBlur]);
 
     useEffect(() => {
-        setDatetimeString(formatDateTime(datetime, lang, variant));
-    }, [lang, variant]); // eslint-disable-line react-hooks/exhaustive-deps
+        setDatetimeString(formatDateTime(datetime, lang, variant, displayDateFormat));
+    }, [lang, variant, displayDateFormat]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <div>
@@ -116,7 +118,7 @@ const DatePickerInputCmp = ({
                             onChange(datetime.toISOString());
                             setDatetime(datetime);
                             setDatetimeString(
-                                formatDateTime(datetime, lang, variant)
+                                formatDateTime(datetime, lang, variant, displayDateFormat)
                             );
                         }}
                     />
@@ -131,7 +133,8 @@ DatePickerInputCmp.defaultProps = {
     onBlur: () => {},
     onChange: () => {},
     initialValue: null,
-    readOnly: false
+    readOnly: false,
+    displayDateFormat: null
 };
 
 DatePickerInputCmp.propTypes = {
@@ -141,7 +144,8 @@ DatePickerInputCmp.propTypes = {
     initialValue: PropTypes.object,
     onBlur: PropTypes.func,
     onChange: PropTypes.func,
-    readOnly: PropTypes.bool
+    readOnly: PropTypes.bool,
+    displayDateFormat: PropTypes.string
 };
 
 export const DatePickerInput = withStyles(style)(DatePickerInputCmp);
