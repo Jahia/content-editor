@@ -7,7 +7,7 @@ import {Input} from '../Input';
 import {javaDateFormatToJSDF} from './date.util';
 
 import dayjs from 'dayjs';
-import IconButton from '@material-ui/core/IconButton/IconButton';
+import {IconButton} from '@material-ui/core';
 import {DateRange} from '@material-ui/icons';
 
 const style = {
