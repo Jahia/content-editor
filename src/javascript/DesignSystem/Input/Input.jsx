@@ -18,7 +18,7 @@ const styles = theme => {
             },
             fontSize: theme.typography.iota.fontSize,
             transitionDuration: '.3s',
-            padding: '3px 12px 3px 12px'
+            padding: '3px 0px 3px 12px'
         },
         focused: {
             border: `1px solid ${theme.palette.brand.alpha}`
