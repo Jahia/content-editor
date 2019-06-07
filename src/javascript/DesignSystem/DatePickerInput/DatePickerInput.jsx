@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 
 import {DatePicker} from '../DatePicker';
@@ -7,6 +7,8 @@ import {Input} from '../Input';
 import {javaDateFormatToJSDF} from './date.util';
 
 import dayjs from 'dayjs';
+import {IconButton} from '@material-ui/core';
+import {DateRange} from '@material-ui/icons';
 
 const style = {
     overlay: {
@@ -46,6 +48,7 @@ const DatePickerInputCmp = ({
     const [datetimeString, setDatetimeString] = useState(
         formatDateTime(datetime, lang, variant, displayDateFormat)
     );
+    const htmlInput = useRef();
 
     const [eventQueue, setEventQueue] = useState([]);
     const pushToEventQueue = valueWanted => {
@@ -76,14 +79,29 @@ const DatePickerInputCmp = ({
         setDatetimeString(formatDateTime(datetime, lang, variant, displayDateFormat));
     }, [lang, variant, displayDateFormat]); // eslint-disable-line react-hooks/exhaustive-deps
 
+    const InteractiveVariant = (
+        <IconButton disableRipple
+                    aria-label="Open date picker"
+                    onClick={() => {
+                        htmlInput.current.focus();
+                    }}
+        >
+            <DateRange/>
+        </IconButton>
+    );
+
     return (
         <div>
             <Input
-                value={datetimeString}
+                inputRef={htmlInput}
                 readOnly={readOnly}
+                value={datetimeString}
+                variant={{
+                    interactive: InteractiveVariant
+                }}
                 onFocus={() => {
                     if (!readOnly) {
-                            pushToEventQueue(true);
+                        pushToEventQueue(true);
                     }
                 }}
                 onBlur={() => {
