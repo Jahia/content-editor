@@ -4,9 +4,10 @@ import {connect} from 'formik';
 import * as PropTypes from 'prop-types';
 import {Toggle} from '../../../../../../DesignSystem/Toggle';
 
-const Checkbox = ({field, formik: {values, setFieldValue, handleBlur}}) => {
+const Checkbox = ({field, id, formik: {values, setFieldValue, handleBlur}}) => {
     return (
-        <Toggle checked={values[field.formDefinition.name] === true}
+        <Toggle id={id}
+                checked={values[field.formDefinition.name] === true}
                 readOnly={field.formDefinition.readOnly}
                 onChange={(event, checked) => setFieldValue(field.formDefinition.name, checked)}
                 onBlur={handleBlur}
@@ -16,6 +17,7 @@ const Checkbox = ({field, formik: {values, setFieldValue, handleBlur}}) => {
 
 Checkbox.propTypes = {
     field: PropTypes.object.isRequired,
+    id: PropTypes.string.isRequired,
     formik: PropTypes.object.isRequired
 };
 
