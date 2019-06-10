@@ -33,14 +33,26 @@ const style = theme => ({
     }
 });
 
-const hours = new Array(24).fill().reduce((acc, _, i) => {
-    return [...acc, `${i}:00`, `${i}:30`];
+const hours = disabledHours => new Array(48).fill().reduce((acc, _, i) => {
+    // Compute hour from the loop entry
+    const hour = `${(Math.floor(i / 2) < 10 ? '0' : '') + Math.floor(i / 2)}:${i % 2 === 0 ? '00' : '30'}`;
+    // Transform it as integer
+    const hourAsInt = hour.split(':').join('');
+    // Transform hours to int to compare them
+    const afterHourAsInt = disabledHours.after ? disabledHours.after.split(':').join('') : 9999;
+    const beforeHourAsInt = disabledHours.before ? disabledHours.before.split(':').join('') : -1;
+
+    if (hourAsInt >= beforeHourAsInt && hourAsInt <= afterHourAsInt) {
+        acc.push(hour);
+    }
+
+    return acc;
 }, []);
 
-const TimeSelectorCmp = ({classes, selectedHour, onHourSelected, ...props}) => {
+const TimeSelectorCmp = ({classes, disabledHours, selectedHour, onHourSelected, ...props}) => {
     return (
         <ul className={`TimePicker ${classes.container}`} {...props}>
-            {hours.map(hour => (
+            {hours(disabledHours).map(hour => (
                 <Typography
                     key={hour}
                     tabIndex="0"
@@ -65,13 +77,21 @@ const TimeSelectorCmp = ({classes, selectedHour, onHourSelected, ...props}) => {
 
 TimeSelectorCmp.defaultProps = {
     onHourSelected: () => {},
-    selectedHour: null
+    selectedHour: null,
+    disabledHours: {}
 };
 
 TimeSelectorCmp.propTypes = {
+
     classes: PropTypes.object.isRequired,
     onHourSelected: PropTypes.func,
-    selectedHour: PropTypes.string
+    selectedHour: PropTypes.string,
+    disabledHours: PropTypes.shape({
+        before: PropTypes.string,
+        after: PropTypes.string
+    })
 };
 
 export const TimeSelector = withStyles(style)(TimeSelectorCmp);
+
+TimeSelector.displayName = 'TimeSelector';

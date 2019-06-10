@@ -65,4 +65,40 @@ describe('DatePicker', () => {
 
         expect(cmp.find('DayPicker').props().selectedDays).toEqual([date]);
     });
+
+    it('should still support disabledDays', () => {
+        const disabledDays = [new Date(), {before: new Date(), after: new Date()}];
+        const cmp = shallowWithTheme(
+            <DatePicker disabledDays={disabledDays} {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        const date = new Date();
+        cmp.find('DayPicker').simulate('dayClick', date);
+
+        expect(cmp.find('DayPicker').props().disabledDays).toEqual(disabledDays);
+    });
+
+    it('should support custom disabledDays', () => {
+        const disabledDays = [{before: {date: new Date(), include: true}}];
+        const cmp = shallowWithTheme(
+            <DatePicker disabledDays={disabledDays} {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        expect(cmp.find('DayPicker').props().disabledDays).toEqual([disabledDays[0].before.date, {before: disabledDays[0].before.date}]);
+    });
+
+    it('should support disableHours', () => {
+        const disabledDays = [{before: {date: new Date('1972-11-22T03:03'), include: true}}];
+        const cmp = shallowWithTheme(
+            <DatePicker selectedDateTime={new Date('1972-11-22')} variant="datetime" disabledDays={disabledDays} {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        expect(cmp.find('TimeSelector').props().disabledHours).toEqual({before: '03:04'});
+    });
 });

@@ -41,3 +41,17 @@ export function getPropertiesToMutate(nodeData = {}, formValues = {}, fields = [
 export function encodeJCRPath(path) {
     return path.split('/').map(entry => encodeURIComponent(entry)).join('/');
 }
+
+export function extractRangeConstraints(constraint) {
+    // Validate constraint
+    if (!RegExp('[\\(\\[]+.*,.*[\\)\\]]').test(constraint)) {
+        throw new Error(`unable to parse constraint ${constraint}`);
+    }
+
+    return {
+        lowerBoundary: constraint.substring(1, constraint.lastIndexOf(',')).trim(),
+        includeLowerBoundary: constraint.startsWith('['),
+        upperBoundary: constraint.substring(constraint.lastIndexOf(',') + 1, constraint.length - 1).trim(),
+        includeUpperBoundary: constraint.endsWith(']')
+    };
+}

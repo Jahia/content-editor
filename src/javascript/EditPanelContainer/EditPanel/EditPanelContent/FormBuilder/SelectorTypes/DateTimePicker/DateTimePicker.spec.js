@@ -98,4 +98,34 @@ describe('DateTimePicker component', () => {
 
         expect(cmp.props().variant).toBe('datetime');
     });
+
+    it('should set constraints on DatePicker', () => {
+        props.field.formDefinition.selectorType = 'DatePicker';
+        props.field.formDefinition.valueConstraints = [{value: {string: '(2019-06-04T00:00:00.000,)'}}];
+        const RenderProps = shallow(<DateTimePicker {...props}/>)
+            .props().render;
+        const cmp = shallow(<RenderProps field={{value: new Date().toISOString()}} form={{setFieldValue: () => {}}}/>);
+
+        expect(cmp.props().dayPickerProps.disabledDays).toEqual([{before: {date: new Date('2019-06-04T00:00:00.000'), include: true}}]);
+    });
+
+    it('should set constraints on DateTimePicker', () => {
+        props.field.formDefinition.selectorType = 'DateTimePicker';
+        props.field.formDefinition.valueConstraints = [{value: {string: '(2019-06-04T00:00:00.000,)'}}];
+        const RenderProps = shallow(<DateTimePicker {...props}/>)
+            .props().render;
+        const cmp = shallow(<RenderProps field={{value: new Date().toISOString()}} form={{setFieldValue: () => {}}}/>);
+
+        expect(cmp.props().dayPickerProps.disabledDays).toEqual([{before: {date: new Date('2019-06-04T00:00:00.000'), include: true}}]);
+    });
+
+    it('should set constraints on DateTimePicker with limit inclusion', () => {
+        props.field.formDefinition.selectorType = 'DateTimePicker';
+        props.field.formDefinition.valueConstraints = [{value: {string: '[2019-06-04T00:00:00.000,)'}}];
+        const RenderProps = shallow(<DateTimePicker {...props}/>)
+            .props().render;
+        const cmp = shallow(<RenderProps field={{value: new Date().toISOString()}} form={{setFieldValue: () => {}}}/>);
+
+        expect(cmp.props().dayPickerProps.disabledDays).toEqual([{before: {date: new Date('2019-06-04T00:00:00.000'), include: false}}]);
+    });
 });
