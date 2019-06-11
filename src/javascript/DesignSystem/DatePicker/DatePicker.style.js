@@ -6,12 +6,15 @@ export const style = theme => ({
         '& ul': {
             position: 'absolute',
             boxSizing: 'border-box',
-            right: '-152px'
+            right: '0px'
         },
         '& .DayPicker': {
             borderRadius: '2px 0 0 2px',
             borderRight: 'none'
         }
+    },
+    containerDateTime: {
+        paddingRight: '152px'
     },
 
     // DayPicker styling

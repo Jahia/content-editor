@@ -9,6 +9,7 @@ import {javaDateFormatToJSDF} from './date.util';
 import dayjs from 'dayjs';
 import {IconButton} from '@material-ui/core';
 import {DateRange} from '@material-ui/icons';
+import Popover from '@material-ui/core/Popover/Popover';
 
 const style = {
     overlay: {
@@ -43,37 +44,17 @@ const DatePickerInputCmp = ({
     displayDateFormat,
     ...props
 }) => {
-    const [overlayShowed, showOverlay] = useState(false);
+    const [anchorEl, setAnchorEl] = useState(null);
     const [datetime, setDatetime] = useState(initialValue);
     const [datetimeString, setDatetimeString] = useState(
         formatDateTime(datetime, lang, variant, displayDateFormat)
     );
+
     const htmlInput = useRef();
 
-    const [eventQueue, setEventQueue] = useState([]);
-    const pushToEventQueue = valueWanted => {
-        setEventQueue([...eventQueue, valueWanted]);
+    const handleOpenPicker = () => {
+        setAnchorEl(htmlInput.current.parentElement);
     };
-
-    useEffect(() => {
-        if (eventQueue.length === 0) {
-            return;
-        }
-
-        const timeout = setTimeout(() => {
-            showOverlay(eventQueue[eventQueue.length - 1]);
-            setEventQueue([]);
-
-            // If datepicker overlay is not showed anymore, it's an onblur event
-            if (eventQueue[eventQueue.length - 1] === false) {
-                onBlur();
-            }
-        }, 100);
-
-        return () => {
-            clearTimeout(timeout);
-        };
-    }, [eventQueue, onBlur]);
 
     useEffect(() => {
         setDatetimeString(formatDateTime(datetime, lang, variant, displayDateFormat));
@@ -82,9 +63,7 @@ const DatePickerInputCmp = ({
     const InteractiveVariant = (
         <IconButton disableRipple
                     aria-label="Open date picker"
-                    onClick={() => {
-                        htmlInput.current.focus();
-                    }}
+                    onClick={handleOpenPicker}
         >
             <DateRange/>
         </IconButton>
@@ -99,14 +78,6 @@ const DatePickerInputCmp = ({
                 variant={{
                     interactive: InteractiveVariant
                 }}
-                onFocus={() => {
-                    if (!readOnly) {
-                        pushToEventQueue(true);
-                    }
-                }}
-                onBlur={() => {
-                    pushToEventQueue(false);
-                }}
                 onChange={e => {
                     setDatetimeString(e.target.value);
                     const newDate = dayjs(
@@ -120,28 +91,33 @@ const DatePickerInputCmp = ({
                 }}
                 {...props}
             />
-            <div className={classes.overlay}>
-                {overlayShowed && (
-                    <DatePicker
-                        variant={variant}
-                        lang={lang}
-                        selectedDateTime={datetime}
-                        onFocus={() => {
-                            pushToEventQueue(true);
-                        }}
-                        onBlur={() => {
-                            pushToEventQueue(false);
-                        }}
-                        onSelectDateTime={datetime => {
-                            onChange(datetime.toISOString());
-                            setDatetime(datetime);
-                            setDatetimeString(
-                                formatDateTime(datetime, lang, variant, displayDateFormat)
-                            );
-                        }}
-                    />
-                )}
-            </div>
+            <Popover open={Boolean(anchorEl)}
+                     anchorEl={anchorEl}
+                     anchorOrigin={{
+                         vertical: 'bottom',
+                         horizontal: 'left'
+                     }}
+                     transformOrigin={{
+                         vertical: 'top',
+                         horizontal: 'left'
+                     }}
+                     onClose={() => {
+                        setAnchorEl(null);
+                    }}
+            >
+                <DatePicker
+                    variant={variant}
+                    lang={lang}
+                    selectedDateTime={datetime}
+                    onSelectDateTime={datetime => {
+                        onChange(datetime.toISOString());
+                        setDatetime(datetime);
+                        setDatetimeString(
+                            formatDateTime(datetime, lang, variant, displayDateFormat)
+                        );
+                    }}
+                />
+            </Popover>
         </div>
     );
 };

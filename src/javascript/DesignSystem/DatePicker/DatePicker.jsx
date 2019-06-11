@@ -37,8 +37,6 @@ const DatePickerCmp = ({
     lang,
     variant,
     classes,
-    onFocus,
-    onBlur,
     onSelectDateTime,
     selectedDateTime,
     ...props
@@ -49,9 +47,10 @@ const DatePickerCmp = ({
     const locale = locales[lang] || {};
 
     const selectedDate = selectedDateTime ? [selectedDateTime] : selectedDays;
+    const isDateTime = variant === 'datetime';
 
     return (
-        <div className={classes.container} onFocus={onFocus} onBlur={onBlur}>
+        <div className={classes.container + ' ' + (isDateTime ? classes.containerDateTime : '')}>
             <DayPicker
                 locale={lang}
                 selectedDays={selectedDate}
@@ -66,7 +65,7 @@ const DatePickerCmp = ({
                 }}
                 {...props}
             />
-            {variant === 'datetime' && (
+            {isDateTime && (
                 <TimeSelector
                     selectedHour={
                         selectedDateTime ?
@@ -77,8 +76,6 @@ const DatePickerCmp = ({
                         onSelectDateTime(getDateTime(selectedDays[0], hour));
                         setSelectedHour(hour);
                     }}
-                    onFocus={onFocus}
-                    onBlur={onBlur}
                 />
             )}
         </div>
@@ -87,8 +84,6 @@ const DatePickerCmp = ({
 
 DatePickerCmp.defaultProps = {
     variant: 'date',
-    onFocus: () => {},
-    onBlur: () => {},
     onSelectDateTime: () => {},
     selectedDateTime: null
 };
@@ -97,8 +92,6 @@ DatePickerCmp.propTypes = {
     classes: PropTypes.object.isRequired,
     lang: PropTypes.oneOf(['fr', 'en', 'de']).isRequired,
     variant: PropTypes.oneOf(['date', 'datetime']),
-    onFocus: PropTypes.func,
-    onBlur: PropTypes.func,
     onSelectDateTime: PropTypes.func,
     selectedDateTime: PropTypes.object
 };
