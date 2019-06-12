@@ -37,6 +37,14 @@ const formatDateTime = (datetime, lang, variant, displayDateFormat) => {
         .format(javaDateFormatToJSDF(displayDateFormat) || datetimeFormat[variant]);
 };
 
+export const getMaskOptions = (displayDateFormat, isDateTime) => {
+    const mask = displayDateFormat ? displayDateFormat.replace(/[a-zA-Z]/g, '9') : (isDateTime ? '99/99/9999 99:99' : '99/99/9999');
+    return {
+        mask: mask,
+        empty: mask.replace(/9/g, '_')
+    };
+};
+
 const DatePickerInputCmp = ({
     variant,
     lang,
@@ -56,11 +64,7 @@ const DatePickerInputCmp = ({
 
     const isDateTime = variant === 'datetime';
     const htmlInput = useRef();
-
-    const maskOptions = {
-        mask: isDateTime ? '99/99/9999 99:99' : '99/99/9999',
-        empty: isDateTime ? '__/__/____ __:__' : '__/__/____'
-    };
+    const maskOptions = getMaskOptions(displayDateFormat, isDateTime);
 
     const handleOpenPicker = () => {
         if (!readOnly) {
