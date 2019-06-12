@@ -1,10 +1,11 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useRef} from 'react';
 import PropTypes from 'prop-types';
 
 import {DatePicker} from '../DatePicker';
 import {withStyles} from '@material-ui/core/styles';
 import {Input} from '../Input';
 import {javaDateFormatToJSDF} from './date.util';
+import InputMask from 'react-input-mask';
 
 import dayjs from 'dayjs';
 import {IconButton} from '@material-ui/core';
@@ -53,7 +54,13 @@ const DatePickerInputCmp = ({
         formatDateTime(datetime, lang, variant, displayDateFormat)
     );
 
+    const isDateTime = variant === 'datetime';
     const htmlInput = useRef();
+
+    const maskOptions = {
+        mask: isDateTime ? '99/99/9999 99:99' : '99/99/9999',
+        empty: isDateTime ? '__/__/____ __:__' : '__/__/____'
+    };
 
     const handleOpenPicker = () => {
         if (!readOnly) {
@@ -61,9 +68,21 @@ const DatePickerInputCmp = ({
         }
     };
 
-    useEffect(() => {
-        setDatetimeString(formatDateTime(datetime, lang, variant, displayDateFormat));
-    }, [lang, variant, displayDateFormat]); // eslint-disable-line react-hooks/exhaustive-deps
+    const handleInputChange = e => {
+        if (e && e.target) {
+            setDatetimeString(e.target.value);
+            if (maskOptions.empty === e.target.value) {
+                setDatetime(null);
+                onChange(null);
+            }
+
+            const newDate = dayjs(e.target.value, datetimeFormat[variant]);
+            if (newDate.isValid()) {
+                setDatetime(newDate.toDate());
+                onChange(newDate.toDate().toISOString());
+            }
+        }
+    };
 
     const InteractiveVariant = (
         <IconButton aria-label="Open date picker"
@@ -78,26 +97,22 @@ const DatePickerInputCmp = ({
 
     return (
         <div>
-            <Input
-                inputRef={htmlInput}
-                readOnly={readOnly}
-                value={datetimeString}
-                variant={{
-                    interactive: InteractiveVariant
-                }}
-                onChange={e => {
-                    setDatetimeString(e.target.value);
-                    const newDate = dayjs(
-                        e.target.value,
-                        datetimeFormat[variant]
-                    );
-                    if (newDate.isValid()) {
-                        setDatetime(newDate.toDate());
-                        onChange(newDate.toDate().toISOString());
-                    }
-                }}
-                {...props}
-            />
+            <InputMask mask={maskOptions.mask}
+                       value={datetimeString}
+                       readOnly={readOnly}
+                       onChange={handleInputChange}
+            >
+                {inputProps => (
+                    <Input
+                        inputRef={htmlInput}
+                        variant={{
+                            interactive: InteractiveVariant
+                        }}
+                        {...inputProps}
+                        {...props}
+                    />
+                )}
+            </InputMask>
             <Popover open={Boolean(anchorEl)}
                      anchorEl={anchorEl}
                      anchorOrigin={{
