@@ -37,7 +37,10 @@ describe('contentPickerFilled', () => {
             id: 'yoloID',
             editorContext: {
                 lang: 'en'
-            }
+            },
+            formik: {},
+            nodeTreeConfigs: {},
+            pickerConfig: {}
         };
 
         window.contextJsParameters = {
@@ -56,11 +59,11 @@ describe('contentPickerFilled', () => {
             <ContentPickerFilled {...defaultProps}/>,
             {},
             dsGenericTheme
-        )
-            .dive()
-            .dive();
+        ).dive();
 
-        expect(cmp.props().fieldData.url).toContain(encodeJCRPath(queryResult.primaryNodeType.icon));
+        expect(cmp.find('Picker').props().fieldData.url).toContain(
+            encodeJCRPath(queryResult.primaryNodeType.icon)
+        );
     });
 
     it('should display the display name of the content from field', () => {
@@ -68,11 +71,11 @@ describe('contentPickerFilled', () => {
             <ContentPickerFilled {...defaultProps}/>,
             {},
             dsGenericTheme
-        )
-            .dive()
-            .dive();
+        ).dive();
 
-        expect(cmp.props().fieldData.name).toContain(queryResult.displayName);
+        expect(cmp.find('Picker').props().fieldData.name).toContain(
+            queryResult.displayName
+        );
     });
 
     it('should display the information (nodeType display name) of the content from field', () => {
@@ -80,11 +83,21 @@ describe('contentPickerFilled', () => {
             <ContentPickerFilled {...defaultProps}/>,
             {},
             dsGenericTheme
-        )
-            .dive()
-            .dive();
+        ).dive();
 
-        const contentInfo = cmp.props().fieldData.info;
+        const contentInfo = cmp.find('Picker').props().fieldData.info;
         expect(contentInfo).toContain(queryResult.primaryNodeType.displayName);
+    });
+
+    it('should display the Dialog when clicking on the picker', () => {
+        const cmp = shallowWithTheme(
+            <ContentPickerFilled {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        cmp.find('Picker').simulate('click');
+
+        expect(cmp.find('DialogPickerDialog').props().isOpen).toBe(true);
     });
 });

@@ -18,7 +18,9 @@ describe('contentPickerEmpty', () => {
                     readOnly: false
                 }
             },
-            formik: {}
+            formik: {},
+            nodeTreeConfigs: {},
+            pickerConfig: {}
         };
         window.contextJsParameters = {
             siteDisplayableName: 'my site'
@@ -30,9 +32,7 @@ describe('contentPickerEmpty', () => {
             <ContentPickerEmpty {...defaultProps}/>,
             {},
             dsGenericTheme
-        )
-            .dive()
-            .dive();
+        ).dive();
 
         cmp.find('WithStyles(FieldPickerEmptyCmp)').exists();
     });

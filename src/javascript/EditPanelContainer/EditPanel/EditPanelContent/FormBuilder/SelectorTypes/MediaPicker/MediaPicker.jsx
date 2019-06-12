@@ -8,18 +8,22 @@ const MediaPickerCmp = ({field, id, editorContext, formik}) => {
     const uuid = formik.values[field.formDefinition.name];
     if (uuid) {
         return (
-            <MediaPickerFilled id={id}
-                               uuid={uuid}
-                               field={field}
+            <MediaPickerFilled
+                id={id}
+                uuid={uuid}
+                field={field}
+                formik={formik}
+                editorContext={editorContext}
             />
         );
     }
 
     return (
-        <MediaPickerEmpty id={id}
-                          field={field}
-                          formik={formik}
-                          editorContext={editorContext}
+        <MediaPickerEmpty
+            id={id}
+            field={field}
+            formik={formik}
+            editorContext={editorContext}
         />
     );
 };

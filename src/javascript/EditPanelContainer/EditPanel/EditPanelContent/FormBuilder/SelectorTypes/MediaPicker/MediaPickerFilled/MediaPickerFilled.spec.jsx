@@ -36,7 +36,9 @@ describe('mediaPickerFilled', () => {
         defaultProps = {
             field: {},
             uuid: 'uuidOfTheImage',
-            id: 'yoloID'
+            id: 'yoloID',
+            formik: {},
+            editorContext: {}
         };
 
         window.contextJsParameters = {
@@ -57,9 +59,11 @@ describe('mediaPickerFilled', () => {
             dsGenericTheme
         )
             .dive()
-            .dive();
+            .find('Picker');
 
-        expect(cmp.props().fieldData.url).toContain(encodeJCRPath(queryResult.path));
+        expect(cmp.props().fieldData.url).toContain(
+            encodeJCRPath(queryResult.path)
+        );
     });
 
     it('should display the name of image from field', () => {
@@ -69,7 +73,7 @@ describe('mediaPickerFilled', () => {
             dsGenericTheme
         )
             .dive()
-            .dive();
+            .find('Picker');
 
         expect(cmp.props().fieldData.name).toContain(queryResult.name);
     });
@@ -81,12 +85,14 @@ describe('mediaPickerFilled', () => {
             dsGenericTheme
         )
             .dive()
-            .dive();
+            .find('Picker');
 
         const imageInfo = cmp.props().fieldData.info;
         expect(imageInfo).toContain(queryResult.width.value);
         expect(imageInfo).toContain(queryResult.height.value);
         expect(imageInfo).toContain(queryResult.weight);
-        expect(imageInfo).toContain(queryResult.children.nodes[0].mimeType.value);
+        expect(imageInfo).toContain(
+            queryResult.children.nodes[0].mimeType.value
+        );
     });
 });

@@ -45,6 +45,7 @@ describe('contentPicker', () => {
             dsGenericTheme
         )
             .dive()
+            .dive()
             .dive();
 
         expect(cmp.debug()).toContain('ContentPickerEmptyCmp');
@@ -56,6 +57,7 @@ describe('contentPicker', () => {
             {},
             dsGenericTheme
         )
+            .dive()
             .dive()
             .dive();
 
