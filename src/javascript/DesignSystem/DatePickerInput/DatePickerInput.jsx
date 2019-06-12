@@ -112,6 +112,7 @@ const DatePickerInputCmp = ({
                         variant={{
                             interactive: InteractiveVariant
                         }}
+                        data-sel-readonly={readOnly}
                         {...inputProps}
                         {...props}
                     />
