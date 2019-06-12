@@ -6,7 +6,7 @@ import {action} from '@storybook/addon-actions';
 
 import {DatePicker} from './DatePicker';
 import doc from './DatePicker.md';
-import {dsGenericTheme as theme} from '@jahia/ds-mui-theme';
+import {dsGenericTheme as theme} from '@jahia/design-system-kit';
 import {MuiThemeProvider} from '@material-ui/core';
 
 const wrapperStyle = {

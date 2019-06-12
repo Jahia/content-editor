@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Drawer from '@material-ui/core/Drawer';
 import Button from '@material-ui/core/Button';
 import CloudUpload from '@material-ui/icons/CloudUpload';
-import {Typography} from '@jahia/ds-mui-theme';
+import {Typography} from '@jahia/design-system-kit';
 
 import {withStyles} from '@material-ui/core';
 import {NodeTrees} from '@jahia/react-material';

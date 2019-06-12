@@ -5,7 +5,7 @@ import {withKnobs, select, boolean, text} from '@storybook/addon-knobs';
 
 import {DatePickerInput} from './DatePickerInput';
 import doc from './DatePickerInput.md';
-import {dsGenericTheme as theme} from '@jahia/ds-mui-theme';
+import {dsGenericTheme as theme} from '@jahia/design-system-kit';
 import {MuiThemeProvider} from '@material-ui/core';
 
 import '../../date.config';

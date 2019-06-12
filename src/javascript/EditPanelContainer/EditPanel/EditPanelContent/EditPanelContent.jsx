@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import {FullWidthContent, TwoColumnsContent} from '@jahia/layouts';
+import {FullWidthContent, TwoColumnsContent} from '@jahia/design-system-kit';
 import {ContentPreview} from '@jahia/react-apollo';
 import {PreviewComponent} from '@jahia/react-material';
-import {Typography} from '@jahia/ds-mui-theme';
+import {Typography} from '@jahia/design-system-kit';
 import * as PropTypes from 'prop-types';
 import FormBuilder from './FormBuilder';
 import {compose} from 'react-apollo';

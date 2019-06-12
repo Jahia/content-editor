@@ -1,4 +1,4 @@
-import {Select} from '@jahia/ds-mui-theme';
+import {Select} from '@jahia/design-system-kit';
 import Input from '@material-ui/core/Input';
 import {withStyles, MenuItem} from '@material-ui/core';
 import {Field} from 'formik';

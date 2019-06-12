@@ -5,7 +5,7 @@ import {
     ExpansionPanelDetails,
     ExpansionPanelSummary,
     Typography
-} from '@jahia/ds-mui-theme';
+} from '@jahia/design-system-kit';
 import {connect} from 'formik';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';

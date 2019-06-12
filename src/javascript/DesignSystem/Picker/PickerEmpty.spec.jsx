@@ -3,7 +3,7 @@ import React from 'react';
 import ImageIcon from '@material-ui/icons/Image';
 
 import {shallowWithTheme} from '@jahia/test-framework';
-import {dsGenericTheme} from '@jahia/ds-mui-theme';
+import {dsGenericTheme} from '@jahia/design-system-kit';
 import {PickerEmpty} from './PickerEmpty';
 
 describe('picker empty', () => {
