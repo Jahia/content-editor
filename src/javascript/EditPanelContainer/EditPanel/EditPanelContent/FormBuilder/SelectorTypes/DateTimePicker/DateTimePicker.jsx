@@ -15,6 +15,7 @@ export const DateTimePicker = ({id, field, editorContext}) => {
     const displayDateFormat = field.formDefinition.selectorOptions.find(option => option.name === 'format');
     const variant = variantMapper[field.formDefinition.selectorType];
     const disabledDays = [];
+    // Todo extract in fct
     if (field.formDefinition.valueConstraints && field.formDefinition.valueConstraints.length > 0) {
         const constraints = extractRangeConstraints(field.formDefinition.valueConstraints[0].value.string);
         let lowerBoundary = constraints.lowerBoundary;

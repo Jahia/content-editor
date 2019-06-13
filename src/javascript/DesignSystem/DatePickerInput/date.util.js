@@ -122,48 +122,57 @@ export const getDateTime = (day, hour) => {
         .toDate();
 };
 
-export const extractDateAndHours = (isDateTime, selectedDate, day, boundIncludeOffset) => {
-    let date = dayjs(day.date);
-    return {
-        date: !isDateTime && day.include ? day.date : undefined,
-        hours: isDateTime && date.format('YYYYMMDD') === dayjs(selectedDate).format('YYYYMMDD') ? day.include ? date.add(boundIncludeOffset, 'minute').format('HH:mm') : date.format('HH:mm') : undefined
-    };
+export const processJCRBoundary = (isDateTime, selectedDate, toBeProcessBoundary, disabledDays, disabledHours, boundaryName, offset) => {
+    if (toBeProcessBoundary[boundaryName] && toBeProcessBoundary[boundaryName].date) {
+
+        // TODO disable the after or before days using after or before notation
+        // Todo disabledDays.push({'after': toBeProcessBoundary[boundaryName].date})
+
+        let date = dayjs(toBeProcessBoundary[boundaryName].date);
+
+        // disable the exact date
+        if (!isDateTime && toBeProcessBoundary[boundaryName].include) {
+            disabledDays.push(toBeProcessBoundary[boundaryName].date);
+        }
+
+        // disable the hours using before or after notation
+        if (isDateTime && date.format('YYYYMMDD') === dayjs(selectedDate).format('YYYYMMDD')) {
+            disabledHours[boundaryName] = toBeProcessBoundary[boundaryName].include ?
+                date.add(offset, 'minute').format('HH:mm') :
+                date.format('HH:mm');
+        }
+    }
 };
 
 export const extractDatesAndHours = (isDateTime, selectedDate, incomingDisabledDays) => {
-    const disabled = {};
     const disabledHours = {};
     const disabledDays = [];
 
+    // Todo remove loop
     incomingDisabledDays.forEach(disabledDay => {
+        const disabled = {};
+
         if (disabledDay instanceof Date) {
+            // TODO remove handling of Day-picker props
             disabledDays.push(disabledDay);
         } else {
-            if (disabledDay.before) {
-                disabled.before = disabledDay.before.date || disabledDay.before;
-                let {date: dateBefore, hours: hoursBefore} = extractDateAndHours(isDateTime, selectedDate, disabledDay.before, 1);
-                if (dateBefore) {
-                    disabledDays.push(dateBefore);
+            processJCRBoundary(isDateTime, selectedDate, disabledDay, disabledDays, disabledHours, 'before', 1);
+            processJCRBoundary(isDateTime, selectedDate, disabledDay, disabledDays, disabledHours, 'after', -1);
+
+            // TODO remove handling of Day-picker props
+            if (disabledDay.before || disabledDay.after) {
+                if (disabledDay.before) {
+                    disabled.before = disabledDay.before.date || disabledDay.before;
                 }
 
-                if (hoursBefore) {
-                    disabledHours.before = hoursBefore;
-                }
-            }
-
-            if (disabledDay.after) {
-                disabled.after = disabledDay.after.date || disabledDay.after;
-                let {date: dateAfter, hours: hoursAfter} = extractDateAndHours(isDateTime, selectedDate, disabledDay.after, -1);
-                if (dateAfter) {
-                    disabledDays.push(dateAfter);
+                if (disabledDay.after) {
+                    disabled.after = disabledDay.after.date || disabledDay.after;
                 }
 
-                if (hoursAfter) {
-                    disabledHours.after = hoursAfter;
-                }
+                disabledDays.push(disabled);
             }
         }
     });
-    disabledDays.push(disabled);
+
     return {disabledDays, disabledHours};
 };

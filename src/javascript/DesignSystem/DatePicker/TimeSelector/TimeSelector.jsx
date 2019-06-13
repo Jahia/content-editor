@@ -33,6 +33,7 @@ const style = theme => ({
     }
 });
 
+// Todo extract in date utils
 const hours = disabledHours => new Array(48).fill().reduce((acc, _, i) => {
     // Compute hour from the loop entry
     const hour = `${(Math.floor(i / 2) < 10 ? '0' : '') + Math.floor(i / 2)}:${i % 2 === 0 ? '00' : '30'}`;

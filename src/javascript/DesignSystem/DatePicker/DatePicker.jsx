@@ -30,6 +30,7 @@ const DatePickerCmp = ({
     onSelectDateTime,
     selectedDateTime,
     disabledDays: incomingDisabledDays,
+
     ...props
 }) => {
     const [selectedDays, setSelectedDays] = useState([]);
