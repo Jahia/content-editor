@@ -11,7 +11,7 @@ function Transition(props) {
     return <Slide direction="up" {...props}/>;
 }
 
-export const DialogPickerDialog = ({
+export const ContentPickerDialog = ({
     isOpen,
     setIsOpen,
     editorContext,
@@ -79,7 +79,7 @@ export const DialogPickerDialog = ({
     );
 };
 
-DialogPickerDialog.propTypes = {
+ContentPickerDialog.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     setIsOpen: PropTypes.func.isRequired,
     editorContext: PropTypes.object.isRequired,

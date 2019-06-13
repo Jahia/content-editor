@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import React, {useState} from 'react';
 import {Picker} from '../../../../../../../DesignSystem/Picker';
 import {translate} from 'react-i18next';
-import {DialogPickerDialog} from '../DialogPickerDialog';
+import {ContentPickerDialog} from '../ContentPickerDialog';
 
 const ContentPickerEmptyCmp = ({
     t,
@@ -26,7 +26,7 @@ const ContentPickerEmptyCmp = ({
                 emptyIcon={<InsertDriveFile/>}
                 onClick={() => setIsOpen(!isOpen)}
             />
-            <DialogPickerDialog
+            <ContentPickerDialog
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
                 editorContext={editorContext}

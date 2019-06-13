@@ -98,6 +98,6 @@ describe('contentPickerFilled', () => {
 
         cmp.find('Picker').simulate('click');
 
-        expect(cmp.find('DialogPickerDialog').props().isOpen).toBe(true);
+        expect(cmp.find('ContentPickerDialog').props().isOpen).toBe(true);
     });
 });

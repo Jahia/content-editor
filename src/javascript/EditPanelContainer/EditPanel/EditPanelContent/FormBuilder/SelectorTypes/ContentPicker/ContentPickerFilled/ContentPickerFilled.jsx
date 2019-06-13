@@ -9,7 +9,7 @@ import {useQuery} from 'react-apollo-hooks';
 import {DisplayActions} from '@jahia/react-material';
 import IconButton from '@material-ui/core/IconButton';
 
-import {DialogPickerDialog} from '../DialogPickerDialog';
+import {ContentPickerDialog} from '../ContentPickerDialog';
 
 const ContentPickerFilledCmp = ({
     t,
@@ -73,7 +73,7 @@ const ContentPickerFilledCmp = ({
                     }}
                 />
             </Picker>
-            <DialogPickerDialog
+            <ContentPickerDialog
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
                 editorContext={editorContext}
