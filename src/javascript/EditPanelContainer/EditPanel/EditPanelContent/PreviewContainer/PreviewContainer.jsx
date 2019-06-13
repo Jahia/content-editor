@@ -74,7 +74,7 @@ PreviewContainerCmp.propTypes = {
     formik: PropTypes.object.isRequired
 };
 
-const PreviewContainer = compose(
+export const PreviewContainer = compose(
     translate(),
     withStyles(styles),
     connect
