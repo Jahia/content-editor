@@ -61,4 +61,25 @@ describe('Picker dialog', () => {
 
         expect(cmp.find('WithStyles(Button)[variant="contained"]').props().disabled).toBe(false);
     });
+
+    it('should initialize NodeTrees openPaths with empty array when no initialPath is given', () => {
+        const cmp = shallowWithTheme(
+            <PickerDialog {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        expect(cmp.find('WithStyles(NodeTreesCmp)').props().openPaths).toEqual([]);
+    });
+
+    it('should open each NodeTrees parent path when initialPath is given', () => {
+        defaultProps.initialPath = '/files/background/cats';
+        const cmp = shallowWithTheme(
+            <PickerDialog {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        expect(cmp.find('WithStyles(NodeTreesCmp)').props().openPaths).toEqual(['/sites/mySite', '/sites/mySite/files', '/sites/mySite/files/background']);
+    });
 });

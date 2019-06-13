@@ -47,7 +47,7 @@ ContentPickerEmptyCmp.propTypes = {
     editorContext: PropTypes.object.isRequired,
     formik: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,
-    nodeTreeConfigs: PropTypes.object.isRequired,
+    nodeTreeConfigs: PropTypes.array.isRequired,
     pickerConfig: PropTypes.object.isRequired
 };
 

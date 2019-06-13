@@ -27,10 +27,10 @@
     },
     "dependencies": {
         "@jahia/apollo-dx": "^1.0.0-beta.20190515122203",
-        "@jahia/design-system-kit": "^1.0.0-beta.20190612152106",
+        "@jahia/design-system-kit": "^1.0.0-beta.20190613122950",
         "@jahia/icons": "^1.0.0-beta.20190515122203",
         "@jahia/react-apollo": "^1.0.0-beta.20190516124448",
-        "@jahia/react-material": "^1.0.0-beta.20190612152107",
+        "@jahia/react-material": "^1.0.0-beta.20190613122951",
         "@jahia/registry": "^1.0.0-beta.20190515122205",
         "@material-ui/core": "^3.9.3",
         "@material-ui/icons": "^3.0.1",

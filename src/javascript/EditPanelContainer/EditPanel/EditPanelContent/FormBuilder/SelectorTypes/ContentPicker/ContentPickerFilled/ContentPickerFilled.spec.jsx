@@ -19,7 +19,7 @@ import {setQueryResult} from 'react-apollo-hooks';
 import {encodeJCRPath} from '../../../../../EditPanel.utils';
 
 const queryResult = {
-    path: '/Nothings/going/to/happen',
+    path: '/sites/digitall/files/app.css',
     displayName: 'maybe all the aunts in the world will sip sweetly',
     primaryNodeType: {
         icon: 'at/their/trough/of/tea',
@@ -36,10 +36,11 @@ describe('contentPickerFilled', () => {
             uuid: 'uuidOfTheImage',
             id: 'yoloID',
             editorContext: {
-                lang: 'en'
+                lang: 'en',
+                site: 'digitall'
             },
             formik: {},
-            nodeTreeConfigs: {},
+            nodeTreeConfigs: [],
             pickerConfig: {}
         };
 
@@ -99,5 +100,15 @@ describe('contentPickerFilled', () => {
         cmp.find('Picker').simulate('click');
 
         expect(cmp.find('ContentPickerDialog').props().isOpen).toBe(true);
+    });
+
+    it('should specify the initialPath with data selected', () => {
+        const cmp = shallowWithTheme(
+            <ContentPickerFilled {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        expect(cmp.find('DialogPickerDialog').props().initialPath).toBe('/files');
     });
 });
