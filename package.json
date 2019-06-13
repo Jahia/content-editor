@@ -47,6 +47,7 @@
         "react-dom": "^16.8.6",
         "react-file-viewer": "^1.1.0",
         "react-i18next": "^7.3.1",
+        "react-input-mask": "^2.0.4",
         "react-pdf-js": "^4.0.2",
         "react-redux": "^5.0.7",
         "redux": "^4.0.0"
