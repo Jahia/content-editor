@@ -50,8 +50,8 @@ export function extractRangeConstraints(constraint) {
 
     return {
         lowerBoundary: constraint.substring(1, constraint.lastIndexOf(',')).trim(),
-        includeLowerBoundary: constraint.startsWith('['),
+        disableLowerBoundary: constraint.startsWith('('),
         upperBoundary: constraint.substring(constraint.lastIndexOf(',') + 1, constraint.length - 1).trim(),
-        includeUpperBoundary: constraint.endsWith(']')
+        disableUpperBoundary: constraint.endsWith(')')
     };
 }

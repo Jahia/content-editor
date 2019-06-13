@@ -18,17 +18,23 @@ export const DateTimePicker = ({id, field, editorContext}) => {
     if (field.formDefinition.valueConstraints && field.formDefinition.valueConstraints.length > 0) {
         const constraints = extractRangeConstraints(field.formDefinition.valueConstraints[0].value.string);
         let lowerBoundary = constraints.lowerBoundary;
-        let boundaries = {};
+        let disabledBoundaries = {};
         if (lowerBoundary && lowerBoundary.length > 0) {
-            boundaries.before = {date: new Date(lowerBoundary), include: !constraints.includeLowerBoundary};
+            disabledBoundaries.before = {
+                date: new Date(lowerBoundary),
+                include: constraints.disableLowerBoundary
+            };
         }
 
         let upperBoundary = constraints.upperBoundary;
         if (upperBoundary && upperBoundary.length > 0) {
-            boundaries.after = {date: new Date(upperBoundary), include: !constraints.includeUpperBoundary};
+            disabledBoundaries.after = {
+                date: new Date(upperBoundary),
+                include: constraints.disableUpperBoundary
+            };
         }
 
-        disabledDays.push(boundaries);
+        disabledDays.push(disabledBoundaries);
     }
 
     return (

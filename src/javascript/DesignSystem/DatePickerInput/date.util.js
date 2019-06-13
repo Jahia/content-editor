@@ -1,6 +1,8 @@
 // Look at https://github.com/MadMG/moment-jdateformatparser/blob/master/moment-jdateformatparser.js
 // for the javaFormatMapping
 
+import dayjs from 'dayjs';
+
 const javaFormatMapping = {
     d: 'D',
     dd: 'DD',
@@ -103,4 +105,65 @@ export const javaDateFormatToJSDF = javaFormat => {
     }
 
     return mapped;
+};
+
+export const generateWeekdaysShort = locale => {
+    return {
+        ...locale,
+        weekdaysShort: locale.weekdays.map(day => day[0])
+    };
+};
+
+export const getDateTime = (day, hour) => {
+    const [hourParsed, minutes] = hour.split(':');
+    return dayjs(day)
+        .hour(Number(hourParsed))
+        .minute(Number(minutes))
+        .toDate();
+};
+
+export const extractDateAndHours = (isDateTime, selectedDate, day, boundIncludeOffset) => {
+    let date = dayjs(day.date);
+    return {
+        date: !isDateTime && day.include ? day.date : undefined,
+        hours: isDateTime && date.format('YYYYMMDD') === dayjs(selectedDate).format('YYYYMMDD') ? day.include ? date.add(boundIncludeOffset, 'minute').format('HH:mm') : date.format('HH:mm') : undefined
+    };
+};
+
+export const extractDatesAndHours = (isDateTime, selectedDate, incomingDisabledDays) => {
+    const disabled = {};
+    const disabledHours = {};
+    const disabledDays = [];
+
+    incomingDisabledDays.forEach(disabledDay => {
+        if (disabledDay instanceof Date) {
+            disabledDays.push(disabledDay);
+        } else {
+            if (disabledDay.before) {
+                disabled.before = disabledDay.before.date || disabledDay.before;
+                let {date: dateBefore, hours: hoursBefore} = extractDateAndHours(isDateTime, selectedDate, disabledDay.before, 1);
+                if (dateBefore) {
+                    disabledDays.push(dateBefore);
+                }
+
+                if (hoursBefore) {
+                    disabledHours.before = hoursBefore;
+                }
+            }
+
+            if (disabledDay.after) {
+                disabled.after = disabledDay.after.date || disabledDay.after;
+                let {date: dateAfter, hours: hoursAfter} = extractDateAndHours(isDateTime, selectedDate, disabledDay.after, -1);
+                if (dateAfter) {
+                    disabledDays.push(dateAfter);
+                }
+
+                if (hoursAfter) {
+                    disabledHours.after = hoursAfter;
+                }
+            }
+        }
+    });
+    disabledDays.push(disabled);
+    return {disabledDays, disabledHours};
 };

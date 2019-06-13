@@ -79,33 +79,33 @@ describe('EditPanel utils', () => {
                 {
                     entry: '(a,b)', result: {
                         lowerBoundary: 'a',
-                        includeLowerBoundary: false,
+                        disableLowerBoundary: true,
                         upperBoundary: 'b',
-                        includeUpperBoundary: false
+                        disableUpperBoundary: true
                     }
                 },
                 {
                     entry: '(a,b]', result: {
                         lowerBoundary: 'a',
-                        includeLowerBoundary: false,
+                        disableLowerBoundary: true,
                         upperBoundary: 'b',
-                        includeUpperBoundary: true
+                        disableUpperBoundary: false
                     }
                 },
                 {
                     entry: '[a,b)', result: {
                         lowerBoundary: 'a',
-                        includeLowerBoundary: true,
+                        disableLowerBoundary: false,
                         upperBoundary: 'b',
-                        includeUpperBoundary: false
+                        disableUpperBoundary: true
                     }
                 },
                 {
                     entry: '[a,b]', result: {
                         lowerBoundary: 'a',
-                        includeLowerBoundary: true,
+                        disableLowerBoundary: false,
                         upperBoundary: 'b',
-                        includeUpperBoundary: true
+                        disableUpperBoundary: false
                     }
                 }
             ];

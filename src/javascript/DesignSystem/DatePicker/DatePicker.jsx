@@ -11,13 +11,11 @@ import deLocale from 'dayjs/locale/de';
 import enLocale from 'dayjs/locale/en';
 
 import dayjs from 'dayjs';
-
-const generateWeekdaysShort = locale => {
-    return {
-        ...locale,
-        weekdaysShort: locale.weekdays.map(day => day[0])
-    };
-};
+import {
+    extractDatesAndHours,
+    generateWeekdaysShort,
+    getDateTime
+} from '../DatePickerInput/date.util';
 
 const locales = {
     fr: generateWeekdaysShort(frLocale),
@@ -25,21 +23,13 @@ const locales = {
     en: generateWeekdaysShort(enLocale)
 };
 
-function getDateTime(day, hour) {
-    const [hourParsed, minutes] = hour.split(':');
-    return dayjs(day)
-        .hour(Number(hourParsed))
-        .minute(Number(minutes))
-        .toDate();
-}
-
 const DatePickerCmp = ({
     lang,
     variant,
     classes,
     onSelectDateTime,
     selectedDateTime,
-    disabledDays: incomingDisableDays,
+    disabledDays: incomingDisabledDays,
     ...props
 }) => {
     const [selectedDays, setSelectedDays] = useState([]);
@@ -49,47 +39,9 @@ const DatePickerCmp = ({
     const locale = locales[lang] || {};
 
     const selectedDate = selectedDateTime ? [selectedDateTime] : selectedDays;
-    let disabledHours = {};
-    const disabledDays = [];
-    const extractDateAndHours = (entry, boundIncludeOffset) => {
-        return {
-            date: !isDateTime && entry.include ? entry.date : undefined,
-            hours: isDateTime && dayjs(entry.date).format('YYYYMMDD') === dayjs(selectedDate).format('YYYYMMDD') ? dayjs(entry.date).add(entry.include ? boundIncludeOffset : 0, 'minute').format('HH:mm') : undefined
-        };
-    };
 
-    const disabled = {};
-    incomingDisableDays.forEach(entry => {
-        if (entry instanceof Date) {
-            disabledDays.push(entry);
-        } else {
-            if (entry.before) {
-                disabled.before = entry.before.date || entry.before;
-                let {date: dateBefore, hours: hoursBefore} = extractDateAndHours(entry.before, 1);
-                if (dateBefore) {
-                    disabledDays.push(dateBefore);
-                }
+    const {disabledDays, disabledHours} = extractDatesAndHours(isDateTime, selectedDate, incomingDisabledDays);
 
-                if (hoursBefore) {
-                    disabledHours.before = hoursBefore;
-                }
-            }
-
-            if (entry.after) {
-                disabled.after = entry.after.date || entry.after;
-                let {date: dateAfter, hours: hoursAfter} = extractDateAndHours(entry.after, -1);
-                if (dateAfter) {
-                    disabledDays.push(dateAfter);
-                }
-
-                if (hoursAfter) {
-                    disabledHours.after = hoursAfter;
-                }
-            }
-        }
-    });
-    disabledDays.push(disabled);
-    console.log('picker disabledDays', disabled);
     return (
         <div className={classes.container + ' ' + (isDateTime ? classes.containerDateTime : '')}>
             <DayPicker
