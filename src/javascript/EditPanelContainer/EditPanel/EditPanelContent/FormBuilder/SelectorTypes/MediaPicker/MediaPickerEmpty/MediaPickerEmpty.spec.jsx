@@ -27,9 +27,7 @@ describe('mediaPickerEmpty', () => {
             <MediaPickerEmpty {...defaultProps}/>,
             {},
             dsGenericTheme
-        )
-            .dive()
-            .dive();
+        ).dive();
 
         cmp.find('WithStyles(FieldPickerEmptyCmp)').exists();
     });

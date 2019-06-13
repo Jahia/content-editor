@@ -3,11 +3,17 @@ import {ProgressOverlay} from '@jahia/react-material';
 import * as PropTypes from 'prop-types';
 import {useQuery} from 'react-apollo-hooks';
 import {translate} from 'react-i18next';
-import {ImageList} from '../../../../../../../../DesignSystem/ImageList';
-import {encodeJCRPath} from '../../../../../../EditPanel.utils';
+import {ImageList} from '../../../../../../../DesignSystem/ImageList';
+import {encodeJCRPath} from '../../../../../EditPanel.utils';
 import {MediaPickerImages} from './ImageListQuery.gql-queries';
 
-const ImageListQueryCmp = ({t, field, setSelectedItem, selectedPath, formik}) => {
+const ImageListQueryCmp = ({
+    t,
+    field,
+    setSelectedItem,
+    selectedPath,
+    formik
+}) => {
     const {data, error, loading} = useQuery(MediaPickerImages, {
         variables: {
             typeFilter: ['jmix:image'],
@@ -16,18 +22,23 @@ const ImageListQueryCmp = ({t, field, setSelectedItem, selectedPath, formik}) =>
     });
 
     if (error) {
-        const message = t('content-media-manager:label.contentManager.error.queryingContent', {details: (error.message ? error.message : '')});
-        return (<>{message}</>);
+        const message = t(
+            'content-media-manager:label.contentManager.error.queryingContent',
+            {details: error.message ? error.message : ''}
+        );
+        return <>{message}</>;
     }
 
     if (loading) {
-        return (<ProgressOverlay/>);
+        return <ProgressOverlay/>;
     }
 
     const images = data.jcr.result.children.nodes.map(rawImg => {
         return {
             uuid: rawImg.uuid,
-            path: `${window.contextJsParameters.contextPath}/files/default${encodeJCRPath(rawImg.path)}`,
+            path: `${
+                window.contextJsParameters.contextPath
+            }/files/default${encodeJCRPath(rawImg.path)}`,
             name: rawImg.fileName.value,
             type: rawImg.children.nodes[0].mimeType.value.replace('image/', ''),
             width: rawImg.width ? rawImg.width.value : null,
@@ -41,7 +52,11 @@ const ImageListQueryCmp = ({t, field, setSelectedItem, selectedPath, formik}) =>
             error={error}
             onImageSelection={setSelectedItem}
             onImageDoubleClick={image => {
-                formik.setFieldValue(field.formDefinition.name, image.uuid, true);
+                formik.setFieldValue(
+                    field.formDefinition.name,
+                    image.uuid,
+                    true
+                );
             }}
         />
     );
