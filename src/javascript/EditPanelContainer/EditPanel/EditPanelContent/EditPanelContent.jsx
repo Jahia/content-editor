@@ -1,7 +1,5 @@
 import React, {useState} from 'react';
 import {FullWidthContent, TwoColumnsContent} from '@jahia/design-system-kit';
-import {ContentPreview} from '@jahia/react-apollo';
-import {PreviewComponent} from '@jahia/react-material';
 import {Typography} from '@jahia/design-system-kit';
 import * as PropTypes from 'prop-types';
 import FormBuilder from './FormBuilder';
@@ -9,7 +7,7 @@ import {compose} from 'react-apollo';
 import {withStyles} from '@material-ui/core';
 import {translate} from 'react-i18next';
 import {ToggleButton, ToggleButtonGroup} from '@material-ui/lab';
-import {setPreviewRefetcher} from '../../EditPanel.refetches';
+import {PreviewContainer} from './PreviewContainer';
 
 const styles = theme => ({
     twoColumnsRoot: {
@@ -37,19 +35,8 @@ const DetailsPreviewComponent = () => (<></>);
 export const EditPanelContent = ({t, editorContext, classes, fields, siteInfo}) => {
     const [previewMode, setPreviewMode] = useState('preview');
 
-    const workspace = 'EDIT';
     const PreviewCmp = previewMode === 'preview' ? (
-        <ContentPreview path={editorContext.path}
-                        language={editorContext.lang}
-                        workspace={workspace}
-                        templateType="html"
-                        view="cm"
-                        contextConfiguration="preview"
-                        fetchPolicy="network-only"
-                        setRefetch={refetchingData => setPreviewRefetcher(refetchingData)}
-        >
-            {data => <PreviewComponent data={data.jcr ? data.jcr : {}} workspace={workspace}/>}
-        </ContentPreview>
+        <PreviewContainer editorContext={editorContext}/>
     ) : previewMode === 'details' ? <DetailsPreviewComponent/> : null;
 
     return (
@@ -88,7 +75,10 @@ export const EditPanelContent = ({t, editorContext, classes, fields, siteInfo}) 
                         <FormBuilder fields={fields} siteInfo={siteInfo} editorContext={editorContext}/>
                     </TwoColumnsContent> :
                     <FullWidthContent classes={{root: classes.fullWidthRoot}}>
-                        <FormBuilder classes={{form: classes.fullWidthForm}} fields={fields} siteInfo={siteInfo} editorContext={editorContext}/>
+                        <FormBuilder classes={{form: classes.fullWidthForm}}
+                                     fields={fields}
+                                     siteInfo={siteInfo}
+                                     editorContext={editorContext}/>
                     </FullWidthContent>
             }
         </>
