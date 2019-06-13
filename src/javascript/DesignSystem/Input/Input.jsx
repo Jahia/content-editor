@@ -44,6 +44,9 @@ const styles = theme => {
         },
         inputAdornedStartError: {
             color: theme.palette.support.alpha
+        },
+        inputAdornedEndReadonly: {
+            pointerEvents: 'none !important'
         }
     };
 };
@@ -62,7 +65,8 @@ export const InputCmp = ({classes, disabled, error, onBlur, onFocus, readOnly, v
 
     const {icon, interactive} = variant;
 
-    const {readOnly: readOnlyClass, inputDisabled, inputAdornedStart, inputAdornedStartFocus, inputAdornedStartError, ...containerClasses} = classes;
+    const {readOnly: readOnlyClass, inputDisabled, inputAdornedStart, inputAdornedStartFocus,
+        inputAdornedStartError, inputAdornedEndReadonly, ...containerClasses} = classes;
 
     return (
         <InputBase
@@ -78,7 +82,13 @@ export const InputCmp = ({classes, disabled, error, onBlur, onFocus, readOnly, v
             >
                 {icon}
             </InputAdornment>}
-            endAdornment={interactive && <InputAdornment position="end">{interactive}</InputAdornment>}
+            endAdornment={interactive &&
+            <InputAdornment
+                className={`${readOnly ? inputAdornedEndReadonly : ''}`}
+                position="end"
+            >
+                {interactive}
+            </InputAdornment>}
             onBlur={handleBlur}
             onFocus={handleFocus}
             {...others}

@@ -11,12 +11,15 @@ import {IconButton} from '@material-ui/core';
 import {DateRange} from '@material-ui/icons';
 import Popover from '@material-ui/core/Popover/Popover';
 
-const style = {
+const styles = theme => ({
     overlay: {
         position: 'absolute',
         zIndex: 1
+    },
+    datePickerIcon: {
+        color: theme.palette.font.gamma + ' !important'
     }
-};
+});
 
 const datetimeFormat = {
     date: 'L',
@@ -53,7 +56,9 @@ const DatePickerInputCmp = ({
     const htmlInput = useRef();
 
     const handleOpenPicker = () => {
-        setAnchorEl(htmlInput.current.parentElement);
+        if (!readOnly) {
+            setAnchorEl(htmlInput.current.parentElement);
+        }
     };
 
     useEffect(() => {
@@ -61,8 +66,10 @@ const DatePickerInputCmp = ({
     }, [lang, variant, displayDateFormat]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const InteractiveVariant = (
-        <IconButton disableRipple
-                    aria-label="Open date picker"
+        <IconButton aria-label="Open date picker"
+                    classes={{
+                        root: classes.datePickerIcon
+                    }}
                     onClick={handleOpenPicker}
         >
             <DateRange/>
@@ -142,6 +149,6 @@ DatePickerInputCmp.propTypes = {
     displayDateFormat: PropTypes.string
 };
 
-export const DatePickerInput = withStyles(style)(DatePickerInputCmp);
+export const DatePickerInput = withStyles(styles)(DatePickerInputCmp);
 
 DatePickerInput.displayName = 'DatePickerInput';
