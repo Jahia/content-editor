@@ -5,7 +5,7 @@ import {withKnobs, boolean} from '@storybook/addon-knobs';
 
 import {Input} from './Input';
 import doc from './Input.md';
-import {dsGenericTheme as theme} from '@jahia/ds-mui-theme';
+import {dsGenericTheme as theme} from '@jahia/design-system-kit';
 import {MuiThemeProvider} from '@material-ui/core';
 
 import {Close, Search} from '@material-ui/icons';

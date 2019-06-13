@@ -1,7 +1,8 @@
 import React from 'react';
 import {FormControl, InputLabel, withStyles, Grid} from '@material-ui/core';
 import {MoreVert, Public} from '@material-ui/icons';
-import {Button, Badge} from '@jahia/ds-mui-theme';
+import {Button} from '@jahia/design-system-kit';
+import {Badge} from '@jahia/design-system-kit';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
 import * as PropTypes from 'prop-types';

@@ -1,7 +1,7 @@
 import React from 'react';
 import {ContentPicker} from './ContentPicker';
 import {shallowWithTheme} from '@jahia/test-framework';
-import {dsGenericTheme} from '@jahia/ds-mui-theme';
+import {dsGenericTheme} from '@jahia/design-system-kit';
 
 jest.mock('formik', () => {
     let formikvaluesmock;

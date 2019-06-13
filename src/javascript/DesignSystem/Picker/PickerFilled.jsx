@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core';
 import {compose} from 'react-apollo';
-import {Typography} from '@jahia/ds-mui-theme';
+import {Typography} from '@jahia/design-system-kit';
 import {DisplayActions} from '@jahia/react-material';
 import IconButton from '@material-ui/core/IconButton';
 import {translate} from 'react-i18next';

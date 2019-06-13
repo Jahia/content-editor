@@ -1391,9 +1391,10 @@
     lodash "^4.17.10"
     zen-observable "^0.8.8"
 
-"@jahia/ds-mui-theme@^1.0.0-beta.20190515122203":
-  version "1.0.0-beta.20190515122203"
-  resolved "http://npm.int.jahia.com:4873/@jahia%2fds-mui-theme/-/ds-mui-theme-1.0.0-beta.20190515122203.tgz#70b005b10d11a5a0ee8dbd8ee472e8c8f70ae558"
+"@jahia/design-system-kit@^1.0.0-beta.20190612152106":
+  version "1.0.0-beta.20190612152106"
+  resolved "http://npm.int.jahia.com:4873/@jahia%2fdesign-system-kit/-/design-system-kit-1.0.0-beta.20190612152106.tgz#20477d1aa7d9ffe17218d61c97f9cd424e7867de"
+  integrity sha512-VDBcSm+oGI4egr0Efzjj5oncw97QCw0ODY1rN3ZrYBmKn+nYiYlw+Wkmt4US+7IM1zp9AQ255VsHiw0eXJoo9A==
   dependencies:
     "@material-ui/core" "^3.9.3"
     classnames "^2.2.6"
@@ -1421,16 +1422,6 @@
     mdi-material-ui "^5.10.0"
     recompose "^0.30.0"
 
-"@jahia/layouts@^1.0.0-beta.20190515122204":
-  version "1.0.0-beta.20190515122204"
-  resolved "http://npm.int.jahia.com:4873/@jahia%2flayouts/-/layouts-1.0.0-beta.20190515122204.tgz#42df3f920c3908b03b4bb09232022d7603b5dc4e"
-  dependencies:
-    classnames "^2.2.6"
-    lodash "^4.17.10"
-    prop-types "^15.6.2"
-    react-i18next "^7.6.1"
-    recompose "^0.30.0"
-
 "@jahia/react-apollo@^1.0.0-beta.20190516124448":
   version "1.0.0-beta.20190516124448"
   resolved "http://npm.int.jahia.com:4873/@jahia%2freact-apollo/-/react-apollo-1.0.0-beta.20190516124448.tgz#bded93b6a81898902c412a856eebf9e7574926f1"
@@ -1442,14 +1433,15 @@
     prop-types "^15.6.1"
     react-apollo "^2.5.3"
 
-"@jahia/react-material@^1.0.0-beta.20190516124448":
-  version "1.0.0-beta.20190516124448"
-  resolved "http://npm.int.jahia.com:4873/@jahia%2freact-material/-/react-material-1.0.0-beta.20190516124448.tgz#12a9cdecc70dda13ec2347ff3958a1c4812e6c52"
-  integrity sha512-7fEKXvMAnCFUJQ1ZiHlA8ED3P3V2zHUaZikjwY4nflOgh1PoaitoHMOn0l3tsRpOPZ5d9+amlgLQvKEqx2UbEA==
+"@jahia/react-material@^1.0.0-beta.20190612152107":
+  version "1.0.0-beta.20190612152107"
+  resolved "http://npm.int.jahia.com:4873/@jahia%2freact-material/-/react-material-1.0.0-beta.20190612152107.tgz#cc18da986458e89113553600e318715e134b02d2"
+  integrity sha512-uki6fqk2d23PYTMKwUA38sxzj1g89LRmrZrjYS1PVkE4sBjpf5oeHgqnIVurK9VCBN1MofqYxax2IMToPhqpCw==
   dependencies:
     lodash "^4.17.10"
     prop-types "^15.6.1"
     react-i18next "^7.6.1"
+    react-loadable "^5.5.0"
     react-select "^2.4.2"
     recompose "^0.30.0"
 
@@ -8901,7 +8893,7 @@ prop-types-exact@^1.2.0:
     object.assign "^4.1.0"
     reflect.ownkeys "^0.2.0"
 
-prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.5.0, prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   dependencies:
@@ -9278,6 +9270,13 @@ react-is@^16.6.0, react-is@^16.6.3, react-is@^16.7.0, react-is@^16.8.1, react-is
 react-lifecycles-compat@^3.0.0, react-lifecycles-compat@^3.0.2, react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
+
+react-loadable@^5.5.0:
+  version "5.5.0"
+  resolved "https://registry.yarnpkg.com/react-loadable/-/react-loadable-5.5.0.tgz#582251679d3da86c32aae2c8e689c59f1196d8c4"
+  integrity sha512-C8Aui0ZpMd4KokxRdVAm2bQtI03k2RMRNzOB+IipV3yxFTSVICv7WoUr5L9ALB5BmKO1iHgZtWM8EvYG83otdg==
+  dependencies:
+    prop-types "^15.5.0"
 
 react-modal@^3.8.1:
   version "3.8.1"

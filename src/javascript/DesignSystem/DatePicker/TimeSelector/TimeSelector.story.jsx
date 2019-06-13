@@ -5,7 +5,7 @@ import {withKnobs, select} from '@storybook/addon-knobs';
 
 import {TimeSelector} from './TimeSelector';
 import doc from './TimeSelector.md';
-import {dsGenericTheme as theme} from '@jahia/ds-mui-theme';
+import {dsGenericTheme as theme} from '@jahia/design-system-kit';
 import {MuiThemeProvider} from '@material-ui/core';
 
 import {action} from '@storybook/addon-actions';

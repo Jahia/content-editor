@@ -1,4 +1,4 @@
-import {dsGenericTheme} from '@jahia/ds-mui-theme';
+import {dsGenericTheme} from '@jahia/design-system-kit';
 import {shallowWithTheme} from '@jahia/test-framework';
 import React from 'react';
 import {Input} from './Input';

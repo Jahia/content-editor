@@ -1,6 +1,6 @@
 import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
-import {dsGenericTheme} from '@jahia/ds-mui-theme';
+import {dsGenericTheme} from '@jahia/design-system-kit';
 import {Input} from '../../../../../../DesignSystem/Input';
 
 import {Text} from './Text';
