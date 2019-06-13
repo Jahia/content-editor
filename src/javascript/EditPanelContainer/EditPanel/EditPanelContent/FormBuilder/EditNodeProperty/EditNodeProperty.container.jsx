@@ -6,7 +6,12 @@ import EditNodeProperty from './EditNodeProperty';
 export const EditNodePropertyContainer = ({field, siteInfo, editorContext}) => {
     let componentType = SelectorTypes[field.formDefinition.selectorType];
     if (!componentType) {
-        console.warn('no Renderer for ', field.formDefinition.selectorType);
+        if (!field.formDefinition.selectorType) {
+            console.warn('Field ', field.formDefinition.name, ' has no selectorType !');
+        } else {
+            console.warn('No renderer component for selectorType=', field.formDefinition.selectorType, ' for field ', field.formDefinition.name);
+        }
+
         return <></>;
     }
 
