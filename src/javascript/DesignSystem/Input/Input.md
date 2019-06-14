@@ -22,20 +22,20 @@ https://www.figma.com/file/LBIDgVFfAqt8BhycUZwVU0/Design-System?node-id=2695%3A2
 - *onFocus*: Callback fired when the `input` has focus.
 - *readOnly*: It prevents the user from changing the value of the field (not from interacting with the field).
 - *value*: The `input` value, required for a controlled component.
+- *type*: Type of the input element. It should be [a valid HTML5 input type](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#Form_%3Cinput%3E_types).
 
 Any other props will be propagated to the root container of the inner component. 
 
 ### Examples
 
 ``` 
-<Input
-                fullWidth
-                variant={{icon: <Chat/>, interactive: <Search/>}}
-                id={id}
-                name={field.formDefinition.name}
-                defaultValue={values[field.formDefinition.name]}
-                readOnly={field.formDefinition.readOnly}
-                onChange={handleChange}
-                onBlur={handleBlur}
-            />
+<Input fullWidth
+       variant={{icon: <Chat/>, interactive: <Search/>}}
+       id={id}
+       name={field.formDefinition.name}
+       defaultValue={values[field.formDefinition.name]}
+       readOnly={field.formDefinition.readOnly}
+       onChange={handleChange}
+       onBlur={handleBlur}
+/>
 ```

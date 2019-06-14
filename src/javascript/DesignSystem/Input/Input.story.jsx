@@ -22,8 +22,7 @@ const onFocus = () => action('onFocus');
 
 storiesOf('Input', module)
     .addDecorator(withKnobs)
-    .add(
-        'default',
+    .add('default',
         () => (
             <MuiThemeProvider theme={theme}>
                 <Input
@@ -38,8 +37,23 @@ storiesOf('Input', module)
         ),
         {notes: {markdown: doc}}
     )
-    .add(
-        'icon',
+    .add('number',
+        () => (
+            <MuiThemeProvider theme={theme}>
+                <Input
+                    type="number"
+                    disabled={disabled()}
+                    error={error()}
+                    readOnly={readOnly()}
+                    onBlur={onBlur()}
+                    onChange={onChange()}
+                    onFocus={onFocus()}
+                />
+            </MuiThemeProvider>
+        ),
+        {notes: {markdown: doc}}
+    )
+    .add('icon',
         () => (
             <MuiThemeProvider theme={theme}>
                 <Input variant={{icon: <Search/>}}
@@ -53,8 +67,8 @@ storiesOf('Input', module)
             </MuiThemeProvider>
         ),
         {notes: {markdown: doc}}
-    ).add(
-        'interactive',
+    )
+    .add('interactive',
         () => (
             <MuiThemeProvider theme={theme}>
                 <Input variant={{interactive: <Close/>}}
@@ -64,7 +78,7 @@ storiesOf('Input', module)
                        onBlur={onBlur()}
                        onChange={onChange()}
                        onFocus={onFocus()}
-            />
+                />
             </MuiThemeProvider>
         ),
         {notes: {markdown: doc}}
