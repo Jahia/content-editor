@@ -111,6 +111,7 @@ InputCmp.defaultProps = {
     onFocus: () => {
     },
     readOnly: false,
+    type: 'text',
     value: undefined,
     variant: {}
 };
@@ -128,6 +129,7 @@ InputCmp.propTypes = {
     onChange: PropTypes.func,
     onFocus: PropTypes.func,
     readOnly: PropTypes.bool,
+    type: PropTypes.string,
     value: PropTypes.string,
     variant: PropTypes.shape({
         icon: PropTypes.node,
