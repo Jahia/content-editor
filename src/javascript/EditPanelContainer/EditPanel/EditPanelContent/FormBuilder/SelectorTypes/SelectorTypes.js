@@ -3,7 +3,7 @@ import RichText from './RichText';
 import ChoiceList from './ChoiceList';
 import TextArea from './TextArea';
 import DateTimePicker from './DateTimePicker';
-import pickerConfig from './pickersConfig';
+import pickerConfigs from './Picker';
 import Checkbox from './Checkbox';
 
 const SelectorTypes = {
@@ -13,7 +13,7 @@ const SelectorTypes = {
     RichText: () => {
         return {cmp: RichText, key: 'RichText'};
     },
-    Picker: options => pickerConfig.resolveComponent(options),
+    Picker: options => pickerConfigs.resolveComponent(options),
     Choicelist: () => {
         return {cmp: ChoiceList, key: 'ChoiceList'};
     },
