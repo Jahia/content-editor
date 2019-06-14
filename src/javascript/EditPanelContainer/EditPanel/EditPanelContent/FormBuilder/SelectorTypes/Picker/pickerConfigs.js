@@ -1,7 +1,7 @@
 import MediaPicker from './MediaPicker';
 import ContentPicker from './ContentPicker';
 
-const treeConfig = {
+const treeConfigs = {
     content: {
         rootPath: '/contents',
         openableTypes: ['jnt:contentFolder'],
@@ -32,30 +32,30 @@ const treeConfig = {
     }
 };
 
-const pickersConfig = {
+const pickerConfigs = {
     image: {
         picker: {cmp: MediaPicker, key: 'MediaPicker'},
-        treeConfigs: [treeConfig.files],
+        treeConfigs: [treeConfigs.files],
         selectableTypesTable: ['jmix:image']
     },
     folder: {
         picker: {cmp: ContentPicker, key: 'ContentPicker'},
-        treeConfigs: [treeConfig.files],
+        treeConfigs: [treeConfigs.files],
         selectableTypesTable: ['nt:folder']
     },
     contentfolder: {
         picker: {cmp: ContentPicker, key: 'ContentPicker'},
-        treeConfigs: [treeConfig.content],
+        treeConfigs: [treeConfigs.content],
         selectableTypesTable: ['jnt:contentFolder']
     },
     page: {
         picker: {cmp: ContentPicker, key: 'ContentPicker'},
-        treeConfigs: [treeConfig.pages],
+        treeConfigs: [treeConfigs.pages],
         selectableTypesTable: ['jnt:page']
     },
     editorial: {
         picker: {cmp: ContentPicker, key: 'ContentPicker'},
-        treeConfigs: [treeConfig.allContents],
+        treeConfigs: [treeConfigs.allContents],
         selectableTypesTable: ['jnt:page', 'jmix:editorialContent', 'jnt:contentList', 'jnt:contentFolder', 'nt:folder', 'jmix:siteContent']
     },
     /* Todo: Editoriallink: {
@@ -82,4 +82,4 @@ const pickersConfig = {
     }
 };
 
-export default pickersConfig;
+export default pickerConfigs;

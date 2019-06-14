@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import {connect} from 'formik';
 import {ContentPickerEmpty} from './ContentPickerEmpty/ContentPickerEmpty';
 import {ContentPickerFilled} from './ContentPickerFilled/ContentPickerFilled';
-import pickersConfig from '../pickersConfig';
+import pickerConfigs from '../pickerConfigs';
 import {translate} from 'react-i18next';
 
 const ContentPickerCmp = ({field, id, editorContext, formik, t}) => {
     const uuid = formik.values[field.formDefinition.name];
 
     // Resolve picker configuration
-    const pickerConfig = pickersConfig.resolveConfig(
+    const pickerConfig = pickerConfigs.resolveConfig(
         field.formDefinition.selectorOptions,
         field.formDefinition
     );

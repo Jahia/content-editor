@@ -2,6 +2,8 @@ import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {ContentPickerFilled} from './ContentPickerFilled';
+import {setQueryResult} from 'react-apollo-hooks';
+import {encodeJCRPath} from '../../../../../../EditPanel.utils';
 
 jest.mock('react-apollo-hooks', () => {
     let queryResultmock;
@@ -14,9 +16,6 @@ jest.mock('react-apollo-hooks', () => {
         }
     };
 });
-
-import {setQueryResult} from 'react-apollo-hooks';
-import {encodeJCRPath} from '../../../../../EditPanel.utils';
 
 const queryResult = {
     path: '/sites/digitall/files/app.css',
