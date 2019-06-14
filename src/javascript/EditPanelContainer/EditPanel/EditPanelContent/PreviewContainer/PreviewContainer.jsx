@@ -80,4 +80,4 @@ export const PreviewContainer = compose(
     connect
 )(PreviewContainerCmp);
 
-export {PreviewContainer};
+PreviewContainer.displayName = 'PreviewContainer';
