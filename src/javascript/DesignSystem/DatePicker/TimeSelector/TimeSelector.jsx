@@ -26,7 +26,7 @@ const style = theme => ({
         width: '100%'
     },
     childSelected: {
-        backgroundColor: theme.palette.hover.beta || '#F2F5F6',
+        backgroundColor: theme.palette.hover.beta,
         '&:focus': {
             outline: 0
         }
