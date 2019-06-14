@@ -58,7 +58,8 @@
                     "preview" : "Aperçu",
                     "details": "Détails",
                     "off": "Désactivé"
-                }
+                },
+                "updateOnSave": "L'aperçu sera mis à jour lors de l'enregistrement"
             }
         }
     }

@@ -58,7 +58,8 @@
                     "preview" : "Preview",
                     "details": "Details",
                     "off": "Off"
-                }
+                },
+                "updateOnSave": "Preview will update on save"
             }
         }
     }

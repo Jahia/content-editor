@@ -27,14 +27,14 @@ describe('EditPanelContent', () => {
     it('should render preview by default', () => {
         const rightColCmp = shallow(wrapper.find('WithStyles(TwoColumnsContent)').props().rightCol);
 
-        expect(rightColCmp.name()).toContain('Query');
+        expect(rightColCmp.name()).toContain('PreviewContainerCmp');
     });
 
     it('should still display preview when clicking on preview button', () => {
         const rightColCmp = shallow(wrapper.find('WithStyles(TwoColumnsContent)').props().rightCol);
 
         wrapper.find('WithStyles(ToggleButtonGroup)').props().onChange(null, null);
-        expect(rightColCmp.name()).toContain('Query');
+        expect(rightColCmp.name()).toContain('PreviewContainerCmp');
     });
 
     it('should notRender preview when clicking on off button', () => {

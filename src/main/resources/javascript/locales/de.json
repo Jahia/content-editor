@@ -58,7 +58,8 @@
                     "preview": "Vorschau",
                     "details": "Details",
                     "off": "Aus"
-                }
+                },
+                "updateOnSave": "Vorschau wird mit dem Speichern aktualisiert"
             }
         }
     }
