@@ -21,13 +21,15 @@ const style = theme => ({
         height: '2rem',
         paddingLeft: '1rem',
         boxSizing: 'border-box',
-
         display: 'flex',
         alignItems: 'center',
         width: '100%'
     },
     childSelected: {
-        backgroundColor: theme.palette.hover.beta || '#F2F5F6'
+        backgroundColor: theme.palette.hover.beta || '#F2F5F6',
+        '&:focus': {
+            outline: 0
+        }
     }
 });
 
