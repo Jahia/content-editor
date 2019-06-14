@@ -14,7 +14,7 @@ export const style = theme => ({
         }
     },
     containerDateTime: {
-        paddingRight: '152px'
+        paddingRight: '150px'
     },
 
     // DayPicker styling
@@ -35,6 +35,10 @@ export const style = theme => ({
             paddingBottom: '1em',
 
             userSelect: 'none'
+        },
+
+        '.DayPicker-wrapper:focus': {
+            outline: 0
         },
 
         '.DayPicker-Months': {
@@ -108,7 +112,7 @@ export const style = theme => ({
         '.DayPicker-Weekdays': {
             display: 'table-header-group',
             marginTop: '1em',
-            ...theme.typography.root,
+            ...theme.typography.zeta,
             color: theme.palette.font.gamma
         },
 
@@ -145,7 +149,7 @@ export const style = theme => ({
             verticalAlign: 'middle',
             textAlign: 'center',
             cursor: 'pointer',
-            ...theme.typography.root,
+            ...theme.typography.iota,
             color: theme.palette.font.beta
         },
 
@@ -182,7 +186,8 @@ export const style = theme => ({
         /* Default modifiers */
 
         '.DayPicker-Day--today': {
-            backgroundColor: '#F2F5F6'
+            borderRadius: theme.spacing.unit / 2,
+            backgroundColor: theme.palette.hover.beta
         },
 
         '.DayPicker-Day--outside': {
@@ -207,17 +212,22 @@ export const style = theme => ({
 
         '.DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside)': {
             position: 'relative',
-
+            borderRadius: theme.spacing.unit / 2,
             backgroundColor: theme.palette.brand.alpha,
-            color: '#FFFFFF'
+            color: theme.palette.invert.beta
+        },
+        '.DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):focus': {
+            outline: 0
         },
 
         '.DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):hover': {
+            borderRadius: theme.spacing.unit / 2,
             backgroundColor: theme.palette.brand.beta
         },
 
         '.DayPicker:not(.DayPicker--interactionDisabled) .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover': {
-            backgroundColor: '#F0F8FF'
+            borderRadius: theme.spacing.unit / 2,
+            backgroundColor: theme.palette.hover.beta
         },
 
         /* DayPickerInput */
