@@ -109,6 +109,6 @@ describe('contentPickerFilled', () => {
             dsGenericTheme
         ).dive();
 
-        expect(cmp.find('DialogPickerDialog').props().initialPath).toBe('/files');
+        expect(cmp.find('ContentPickerDialog').props().initialPath).toBe('/files');
     });
 });
