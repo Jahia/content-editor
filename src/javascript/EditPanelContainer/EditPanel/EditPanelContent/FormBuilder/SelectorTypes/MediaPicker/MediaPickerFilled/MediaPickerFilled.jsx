@@ -75,6 +75,7 @@ const MediaPickerFilledCmp = ({t, field, id, uuid, editorContext, formik}) => {
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
                 editorContext={editorContext}
+                initialPath={imageData.path.split('/').slice(0, -1).join('/').replace(`/sites/${editorContext.site}`, '')}
                 id={id}
                 t={t}
                 formik={formik}

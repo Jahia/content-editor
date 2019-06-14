@@ -77,6 +77,7 @@ const ContentPickerFilledCmp = ({
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
                 editorContext={editorContext}
+                initialPath={contentData.path.split('/').slice(0, -1).join('/').replace(`/sites/${editorContext.site}`, '')}
                 id={id}
                 nodeTreeConfigs={nodeTreeConfigs}
                 t={t}
@@ -95,7 +96,7 @@ ContentPickerFilledCmp.propTypes = {
     id: PropTypes.string.isRequired,
     editorContext: PropTypes.object.isRequired,
     formik: PropTypes.object.isRequired,
-    nodeTreeConfigs: PropTypes.object.isRequired,
+    nodeTreeConfigs: PropTypes.array.isRequired,
     pickerConfig: PropTypes.object.isRequired
 };
 

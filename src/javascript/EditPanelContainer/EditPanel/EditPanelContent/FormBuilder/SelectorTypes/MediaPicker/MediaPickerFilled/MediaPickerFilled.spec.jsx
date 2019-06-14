@@ -19,7 +19,7 @@ import {setQueryResult} from 'react-apollo-hooks';
 import {encodeJCRPath} from '../../../../../EditPanel.utils';
 
 const queryResult = {
-    path: '/a/valid/jcrPath/#/g/200/300',
+    path: '/sites/digitall/files/Beautiful_hairy_pussy.jpg',
     name: 'Beautiful_hairy_pussy.jpg',
     height: {value: 1532400},
     width: {value: 1234134},
@@ -38,7 +38,9 @@ describe('mediaPickerFilled', () => {
             uuid: 'uuidOfTheImage',
             id: 'yoloID',
             formik: {},
-            editorContext: {}
+            editorContext: {
+                site: 'digitall'
+            }
         };
 
         window.contextJsParameters = {
@@ -94,5 +96,15 @@ describe('mediaPickerFilled', () => {
         expect(imageInfo).toContain(
             queryResult.children.nodes[0].mimeType.value
         );
+    });
+
+    it('should specify the initialPath with data selected', () => {
+        const cmp = shallowWithTheme(
+            <MediaPickerFilled {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        expect(cmp.find('MediaPickerDialog').props().initialPath).toBe('/files');
     });
 });

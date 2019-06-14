@@ -19,7 +19,7 @@ describe('contentPickerEmpty', () => {
                 }
             },
             formik: {},
-            nodeTreeConfigs: {},
+            nodeTreeConfigs: [],
             pickerConfig: {}
         };
         window.contextJsParameters = {

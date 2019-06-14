@@ -49,11 +49,18 @@ const styles = theme => ({
     }
 });
 
-const PickerDialogCmp = ({onCloseDialog, classes, idInput, site, lang, onItemSelection, nodeTreeConfigs, children, modalCancelLabel, modalDoneLabel}) => {
+const PickerDialogCmp = ({onCloseDialog, classes, idInput, initialPath, site, lang, onItemSelection, nodeTreeConfigs, children, modalCancelLabel, modalDoneLabel}) => {
     // Use root path of the first tree config by default
 
-    const [selectedPath, setSelectedPath] = useState('/sites/' + site + nodeTreeConfigs[0].rootPath);
-    const [openPaths, setOpenPaths] = useState([]);
+    const [selectedPath, setSelectedPath] = useState('/sites/' + site + (initialPath || nodeTreeConfigs[0].rootPath));
+
+    const initialPathOpenPath = initialPath ? initialPath
+        .split('/')
+        .slice(0, -1)
+        .reduce((openPaths, slug, i, init) => {
+            return [...openPaths, `/sites/${site}${init.slice(0, i + 1).join('/')}`];
+        }, []) : [];
+    const [openPaths, setOpenPaths] = useState(initialPathOpenPath);
     const [selectedItem, setSelectedItem] = useState(false);
 
     return (
@@ -119,6 +126,10 @@ const PickerDialogCmp = ({onCloseDialog, classes, idInput, site, lang, onItemSel
     );
 };
 
+PickerDialogCmp.defaultProps = {
+    initialPath: null
+};
+
 PickerDialogCmp.propTypes = {
     children: PropTypes.func.isRequired,
     nodeTreeConfigs: PropTypes.array.isRequired,
@@ -129,9 +140,10 @@ PickerDialogCmp.propTypes = {
     idInput: PropTypes.string.isRequired,
     classes: PropTypes.object.isRequired,
     modalCancelLabel: PropTypes.string.isRequired,
-    modalDoneLabel: PropTypes.string.isRequired
+    modalDoneLabel: PropTypes.string.isRequired,
+    initialPath: PropTypes.string
 };
 
-const PickerDialog = withStyles(styles)(PickerDialogCmp);
+export const PickerDialog = withStyles(styles)(PickerDialogCmp);
 
-export {PickerDialog};
+PickerDialog.displayName = 'PickerDialog';

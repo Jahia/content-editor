@@ -18,6 +18,7 @@ export const MediaPickerDialog = ({
     id,
     t,
     formik,
+    initialPath,
     field
 }) => {
     return (
@@ -26,6 +27,7 @@ export const MediaPickerDialog = ({
                 idInput={id}
                 site={editorContext.site}
                 lang={editorContext.lang}
+                initialPath={initialPath}
                 nodeTreeConfigs={[
                     {
                         rootPath: '/files',
@@ -67,6 +69,10 @@ export const MediaPickerDialog = ({
     );
 };
 
+MediaPickerDialog.defaultProps = {
+    initialPath: null
+};
+
 MediaPickerDialog.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     setIsOpen: PropTypes.func.isRequired,
@@ -74,5 +80,6 @@ MediaPickerDialog.propTypes = {
     id: PropTypes.string.isRequired,
     t: PropTypes.func.isRequired,
     formik: PropTypes.object.isRequired,
-    field: PropTypes.object.isRequired
+    field: PropTypes.object.isRequired,
+    initialPath: PropTypes.string
 };

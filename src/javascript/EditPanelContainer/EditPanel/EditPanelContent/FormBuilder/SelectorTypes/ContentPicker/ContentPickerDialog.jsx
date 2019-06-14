@@ -14,6 +14,7 @@ function Transition(props) {
 export const ContentPickerDialog = ({
     isOpen,
     setIsOpen,
+    initialPath,
     editorContext,
     id,
     nodeTreeConfigs,
@@ -28,6 +29,7 @@ export const ContentPickerDialog = ({
                 idInput={id}
                 site={editorContext.site}
                 lang={editorContext.lang}
+                initialPath={initialPath}
                 nodeTreeConfigs={nodeTreeConfigs}
                 modalCancelLabel={t(
                     'content-editor:label.contentEditor.edit.fields.modalCancel'
@@ -79,14 +81,19 @@ export const ContentPickerDialog = ({
     );
 };
 
+ContentPickerDialog.defaultProps = {
+    initialPath: null
+};
+
 ContentPickerDialog.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     setIsOpen: PropTypes.func.isRequired,
     editorContext: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,
-    nodeTreeConfigs: PropTypes.object.isRequired,
+    nodeTreeConfigs: PropTypes.array.isRequired,
     t: PropTypes.func.isRequired,
     formik: PropTypes.object.isRequired,
     field: PropTypes.object.isRequired,
-    pickerConfig: PropTypes.object.isRequired
+    pickerConfig: PropTypes.object.isRequired,
+    initialPath: PropTypes.string
 };
