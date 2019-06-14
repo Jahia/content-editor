@@ -1,8 +1,7 @@
 import React from 'react';
-import {FormControl, InputLabel, withStyles, Grid} from '@material-ui/core';
+import {FormControl, Grid, InputLabel, withStyles} from '@material-ui/core';
 import {MoreVert, Public} from '@material-ui/icons';
-import {Button} from '@jahia/design-system-kit';
-import {Badge} from '@jahia/design-system-kit';
+import {Badge, Button} from '@jahia/design-system-kit';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
 import * as PropTypes from 'prop-types';
@@ -42,7 +41,7 @@ export const EditNodeProperty = ({t, classes, children, field, siteInfo, labelHt
                                 htmlFor={labelHtmlFor}
                                 style={(!field.formDefinition.i18n && siteInfo.languages.length > 1) ? {paddingTop: 32} : {}}
                     >
-                        {field.formDefinition.nodeType.properties.find(property => property.name === field.formDefinition.name).displayName}
+                        {field.formDefinition.displayName}
                     </InputLabel>
                 </Grid>
 

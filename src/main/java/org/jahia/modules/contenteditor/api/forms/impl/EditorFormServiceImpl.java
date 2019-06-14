@@ -3,7 +3,6 @@ package org.jahia.modules.contenteditor.api.forms.impl;
 import org.apache.commons.lang.StringUtils;
 import org.jahia.api.Constants;
 import org.jahia.modules.contenteditor.api.forms.*;
-import org.jahia.modules.graphql.provider.dxm.nodetype.GqlJcrNodeType;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRSessionFactory;
 import org.jahia.services.content.JCRSessionWrapper;
@@ -19,6 +18,7 @@ import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.jcr.PropertyType;
 import javax.jcr.RepositoryException;
 import javax.jcr.Value;
 import java.util.*;
@@ -34,6 +34,24 @@ public class EditorFormServiceImpl implements EditorFormService {
     private NodeTypeRegistry nodeTypeRegistry;
     private ChoiceListInitializerService choiceListInitializerService;
     private StaticFormRegistry staticFormRegistry;
+
+    // we extend the map from SelectorType.defaultSelectors to add more.
+    private static Map<Integer, Integer> defaultSelectors = new HashMap<>();
+
+    static {
+        defaultSelectors.put(PropertyType.STRING, SelectorType.SMALLTEXT);
+        defaultSelectors.put(PropertyType.LONG, SelectorType.SMALLTEXT);
+        defaultSelectors.put(PropertyType.DOUBLE, SelectorType.SMALLTEXT);
+        defaultSelectors.put(PropertyType.DATE, SelectorType.DATETIMEPICKER);
+        defaultSelectors.put(PropertyType.BOOLEAN, SelectorType.CHECKBOX);
+        defaultSelectors.put(PropertyType.NAME, SelectorType.SMALLTEXT);
+        defaultSelectors.put(PropertyType.PATH, SelectorType.SMALLTEXT);
+        defaultSelectors.put(PropertyType.WEAKREFERENCE, SelectorType.CONTENTPICKER);
+        defaultSelectors.put(PropertyType.DECIMAL, SelectorType.SMALLTEXT);
+        defaultSelectors.put(PropertyType.URI, SelectorType.SMALLTEXT);
+        defaultSelectors.put(PropertyType.REFERENCE, SelectorType.CONTENTPICKER);
+        defaultSelectors.put(PropertyType.BINARY, SelectorType.SMALLTEXT);
+    }
 
     @Reference
     public void setChoiceListInitializerService(ChoiceListInitializerService choiceListInitializerService) {
@@ -75,7 +93,7 @@ public class EditorFormServiceImpl implements EditorFormService {
 
             JCRNodeWrapper parentNode = getParentNode(existingNode, parentNodePath, session);
 
-            EditorForm mergedEditorForm = generateEditorFormFromNodeType(nodeTypeName, existingNode, locale);
+            EditorForm mergedEditorForm = generateEditorFormFromNodeType(nodeTypeName, existingNode, locale, uiLocale);
 
             mergedEditorForm = mergeWithStaticForms(nodeTypeName, mergedEditorForm);
             mergedEditorForm = processValueConstraints(mergedEditorForm, locale, existingNode, parentNode);
@@ -109,7 +127,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             List<EditorFormFieldValueConstraint> valueConstraints = getValueConstraints(initialChoiceListValues, editorFormField.getSelectorOptions(),
                     existingNode, parentNode, uiLocale, nodeType, initializers, editorFormField.getExtendedPropertyDefinition());
             newEditorFormFields.add(new EditorFormField(editorFormField.getName(),
-                    editorFormField.getNodeType(),
+                editorFormField.getDisplayName(),
                     editorFormField.getSelectorType(),
                     editorFormField.getSelectorOptions(),
                     editorFormField.getI18n(),
@@ -148,7 +166,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         return mergedEditorForm;
     }
 
-    private EditorForm generateEditorFormFromNodeType(String nodeTypeName, JCRNodeWrapper existingNode, Locale locale) throws RepositoryException {
+    private EditorForm generateEditorFormFromNodeType(String nodeTypeName, JCRNodeWrapper existingNode, Locale locale, Locale uiLocale) throws RepositoryException {
         JCRSessionWrapper session = existingNode != null ? existingNode.getSession() : getSession(locale);
         ExtendedNodeType nodeType = nodeTypeRegistry.getNodeType(nodeTypeName);
         Map<String,Double> maxTargetRank = new HashMap<>();
@@ -195,9 +213,28 @@ public class EditorFormServiceImpl implements EditorFormService {
                     }
                 }
             }
+            ExtendedNodeType extendedNodeType = NodeTypeRegistry.getInstance().getNodeType(propertyDefinition.getDeclaringNodeType().getAlias());
+            String aliasPropertyLabel = extendedNodeType.getPropertyDefinition(propertyDefinition.getName()).getLabel(uiLocale);
+            String propertyLabel = propertyDefinition.getLabel(uiLocale);
+            if (!propertyLabel.equals(aliasPropertyLabel)) {
+                // we do this check because the old code was accessing the node type using the alias, so we prefer to
+                // be 100% compatible for the moment but we should get rid of this if there is no real reason to use
+                // the alias.
+                logger.warn("Alias label and regular label are not equal !");
+                propertyLabel = aliasPropertyLabel;
+            }
+            String selectorType = SelectorType.nameFromValue(propertyDefinition.getSelector());
+            if (selectorType == null) {
+                // selector type was not found in the list of selector types in the core, let's try our more expanded one
+                if (defaultSelectors.containsKey(propertyDefinition.getRequiredType())) {
+                    selectorType = SelectorType.nameFromValue(defaultSelectors.get(propertyDefinition.getRequiredType()));
+                } else {
+                    logger.warn("Couldn't resolve a default selector type for property " + propertyDefinition.getName());
+                }
+            }
             EditorFormField editorFormField = new EditorFormField(propertyDefinition.getName(),
-                    new GqlJcrNodeType(NodeTypeRegistry.getInstance().getNodeType(propertyDefinition.getDeclaringNodeType().getAlias())),
-                    SelectorType.nameFromValue(propertyDefinition.getSelector()),
+                propertyLabel,
+                selectorType,
                     selectorOptions,
                     propertyDefinition.isInternationalized(),
                     isFieldReadOnly(propertyDefinition, sharedFieldsEditable, i18nFieldsEditable),

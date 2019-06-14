@@ -3,7 +3,6 @@ package org.jahia.modules.contenteditor.api.forms;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
-import org.jahia.modules.graphql.provider.dxm.nodetype.GqlJcrNodeType;
 import org.jahia.services.content.nodetypes.ExtendedPropertyDefinition;
 
 import java.util.*;
@@ -15,7 +14,7 @@ import java.util.stream.Collectors;
 public class EditorFormField {
 
     private String name;
-    private GqlJcrNodeType nodeType;
+    private String displayName;
     private String selectorType;
     private List<EditorFormProperty> selectorOptions;
     private Boolean i18n;
@@ -33,7 +32,7 @@ public class EditorFormField {
     }
 
     public EditorFormField(String name,
-                           GqlJcrNodeType nodeType,
+                           String displayName,
                            String selectorType,
                            List<EditorFormProperty> selectorOptions,
                            Boolean i18n,
@@ -46,7 +45,7 @@ public class EditorFormField {
                            List<EditorFormFieldTarget> targets,
                            ExtendedPropertyDefinition extendedPropertyDefinition) {
         this.name = name;
-        this.nodeType = nodeType;
+        this.displayName = displayName;
         this.selectorType = selectorType;
         this.selectorOptions = selectorOptions;
         this.i18n = i18n;
@@ -63,7 +62,7 @@ public class EditorFormField {
     public EditorFormField(EditorFormField field) {
         this(
             field.name,
-            field.nodeType,
+            field.displayName,
             field.selectorType,
             field.selectorOptions == null ? null : field.selectorOptions.stream()
                 .map(option -> new EditorFormProperty(option))
@@ -87,10 +86,6 @@ public class EditorFormField {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setNodeType(GqlJcrNodeType nodeType) {
-        this.nodeType = nodeType;
     }
 
     public void setSelectorType(String selectorType) {
@@ -153,9 +148,9 @@ public class EditorFormField {
     }
 
     @GraphQLField
-    @GraphQLDescription("The node type of the field")
-    public GqlJcrNodeType getNodeType() {
-        return nodeType;
+    @GraphQLDescription("The displayable name of the field")
+    public String getDisplayName() {
+        return displayName;
     }
 
     @GraphQLField
@@ -225,7 +220,7 @@ public class EditorFormField {
             return this;
         }
         return new EditorFormField(name,
-            nodeType,
+            otherEditorFormField.displayName != null ? otherEditorFormField.displayName : displayName,
             otherEditorFormField.selectorType != null ? otherEditorFormField.selectorType : selectorType,
             otherEditorFormField.selectorOptions != null ? otherEditorFormField.selectorOptions : selectorOptions,
             i18n != null ? i18n : otherEditorFormField.i18n,
@@ -248,7 +243,7 @@ public class EditorFormField {
             return false;
         EditorFormField that = (EditorFormField) o;
         return Objects.equals(name, that.name)
-            && Objects.equals(nodeType, that.nodeType)
+            && Objects.equals(displayName, that.displayName)
             && Objects.equals(selectorType, that.selectorType)
             && Objects.equals(selectorOptions, that.selectorOptions)
             && Objects.equals(i18n, that.i18n)
@@ -265,7 +260,7 @@ public class EditorFormField {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, nodeType, selectorType, selectorOptions, i18n,
+        return Objects.hash(name, displayName, selectorType, selectorOptions, i18n,
             readOnly, multiple, mandatory, valueConstraints, defaultValues, removed,
             targets, targetsByName, extendedPropertyDefinition);
     }
@@ -274,7 +269,7 @@ public class EditorFormField {
     public String toString() {
         return "EditorFormField{" +
             "name='" + name + '\'' +
-            ", nodeType=" + nodeType +
+            ", displayName='" + displayName + '\'' +
             ", selectorType='" + selectorType + '\'' +
             ", selectorOptions=" + selectorOptions +
             ", i18n=" + i18n +

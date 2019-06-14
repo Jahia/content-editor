@@ -8,6 +8,7 @@ const FormQuery = gql`
                 nodeType
                 fields {
                     name
+                    displayName
                     selectorType
                     selectorOptions {
                         name
@@ -35,12 +36,6 @@ const FormQuery = gql`
                     targets {
                         name
                         rank
-                    }
-                    nodeType {
-                        properties {
-                            name
-                            displayName(language: $uiLang)
-                        }
                     }
                 }
             }
