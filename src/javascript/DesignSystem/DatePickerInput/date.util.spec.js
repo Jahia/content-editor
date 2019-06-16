@@ -1,7 +1,6 @@
 import {
-    extractDatesAndHours,
     generateWeekdaysShort,
-    getDateTime,
+    getDateTime, getHourFromDisabledDays, hours,
     javaDateFormatToJSDF
 } from './date.util';
 import frLocale from 'dayjs/locale/fr';
@@ -20,76 +19,33 @@ describe('date util', () => {
     });
 
     it('should getDateTime returns what expected', () => {
-        expect(getDateTime(new Date('1972-11-22'), '05:10')).toEqual(new Date('1972-11-22T05:10:00'));
+        expect(getDateTime(new Date('1972-11-22T00:00:00'), '05:10')).toEqual(new Date('1972-11-22T05:10:00'));
     });
 
-    /* It('should extractDateAndHour returns what expected', () => {
-        let isDateTime = true;
-        const day = {date: new Date('1972-11-22T05:00:00'), include: true};
-        const selectedDate = [new Date('1972-11-22T00:00:00')];
-        const boundIncludeOffset = 1;
+    it('should getHourFromDisabledDays returns what expected', () => {
+        const disabledDays = [
+            {before: new Date('1972-11-22T01:10:00')},
+            {after: new Date('1972-11-22T02:20:00')}
+        ];
+        let selectedDate = new Date('1972-11-23T00:00:00');
+        let res = getHourFromDisabledDays(selectedDate, disabledDays, 'before');
+        expect(res).toEqual(undefined);
 
-        let res = extractDateAndHour(isDateTime, selectedDate, day, boundIncludeOffset);
-        expect(res).toEqual({date: undefined, hours: '05:01'});
+        selectedDate = new Date('1972-11-22T00:00:00');
+        res = getHourFromDisabledDays(selectedDate, disabledDays, 'before');
+        expect(res).toEqual('01:10');
+        res = getHourFromDisabledDays(selectedDate, disabledDays, 'after');
+        expect(res).toEqual('02:20');
+    });
 
-        isDateTime = false;
-        res = extractDateAndHour(isDateTime, selectedDate, day, boundIncludeOffset);
-        expect(res).toEqual({date: day.date, hours: undefined});
+    it('should hours returns what expected', () => {
+        const disabledHours = {before: '02:01', after: '22:00'};
 
-        day.include = false;
-        res = extractDateAndHour(isDateTime, selectedDate, day, boundIncludeOffset);
-        expect(res).toEqual({date: undefined, hours: undefined});
-
-        isDateTime = true;
-        res = extractDateAndHour(isDateTime, selectedDate, day, boundIncludeOffset);
-        expect(res).toEqual({date: undefined, hours: '05:00'});
-    }); */
-
-    it('should extractDatesAndHours returns what expected', () => {
-        const before = {
-            date: new Date('1972-11-22T05:00:00'),
-            include: false
-        };
-        const after = {
-            date: new Date('2019-11-22T06:00:00'),
-            include: false
-        };
-        const incomingDisabledDays = [{before, after}];
-        let isDateTime = false;
-        let selectedDate = new Date('1972-11-22T00:00:00');
-        let res = extractDatesAndHours(isDateTime, selectedDate, incomingDisabledDays);
-        expect(res).toEqual({
-            disabledDays: [
-                {
-                    before: before.date,
-                    after: after.date
-                }
-            ],
-            disabledHours: {}
-        });
-
-        isDateTime = true;
-        res = extractDatesAndHours(isDateTime, selectedDate, incomingDisabledDays);
-        expect(res).toEqual({
-            disabledDays: [
-                {
-                    before: before.date,
-                    after: after.date
-                }
-            ],
-            disabledHours: {before: '05:00'}
-        });
-
-        incomingDisabledDays[0].before.include = true;
-        res = extractDatesAndHours(isDateTime, selectedDate, incomingDisabledDays);
-        expect(res).toEqual({
-            disabledDays: [
-                {
-                    before: before.date,
-                    after: after.date
-                }
-            ],
-            disabledHours: {before: '05:01'}
-        });
+        ['00:00', '00:30', '01:00', '01:30', '02:00', '22:30', '23:00', '23:30'].forEach(
+            date => expect(hours(disabledHours)).not.toContain(date)
+        );
+        ['02:30', '22:00'].forEach(
+            date => expect(hours(disabledHours)).toContain(date)
+        );
     });
 });

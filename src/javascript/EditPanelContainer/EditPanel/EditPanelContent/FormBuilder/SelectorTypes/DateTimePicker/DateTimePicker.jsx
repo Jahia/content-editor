@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import {Field} from 'formik';
 
 import {DatePickerInput} from '../../../../../../DesignSystem/DatePickerInput';
-import {extractRangeConstraints} from '../../../../EditPanel.utils';
 import dayjs from 'dayjs';
+import {fillDisabledDaysFromJCRConstraints} from './DateTimePicker.utils';
 
 const variantMapper = {
     DatePicker: 'date',
@@ -14,30 +14,7 @@ const variantMapper = {
 export const DateTimePicker = ({id, field, editorContext}) => {
     const displayDateFormat = field.formDefinition.selectorOptions.find(option => option.name === 'format');
     const variant = variantMapper[field.formDefinition.selectorType];
-    const disabledDays = [];
-    // Todo extract in fct
-    if (field.formDefinition.valueConstraints && field.formDefinition.valueConstraints.length > 0) {
-        const constraints = extractRangeConstraints(field.formDefinition.valueConstraints[0].value.string);
-        let lowerBoundary = constraints.lowerBoundary;
-        let disabledBoundaries = {};
-        if (lowerBoundary && lowerBoundary.length > 0) {
-            disabledBoundaries.before = {
-                date: new Date(lowerBoundary),
-                include: constraints.disableLowerBoundary
-            };
-        }
-
-        let upperBoundary = constraints.upperBoundary;
-        if (upperBoundary && upperBoundary.length > 0) {
-            disabledBoundaries.after = {
-                date: new Date(upperBoundary),
-                include: constraints.disableUpperBoundary
-            };
-        }
-
-        disabledDays.push(disabledBoundaries);
-    }
-
+    const disabledDays = fillDisabledDaysFromJCRConstraints(field, variant === 'datetime');
     return (
         <Field
             name={field.formDefinition.name}
@@ -46,21 +23,21 @@ export const DateTimePicker = ({id, field, editorContext}) => {
                 const {value, onChange, ...formikField} = props.field;
                   return (
                       <DatePickerInput
-                        dayPickerProps={{disabledDays}}
-                        lang={editorContext.lang}
-                        initialValue={value ? dayjs(value).toDate() : value}
-                        onChange={
+                          dayPickerProps={{disabledDays}}
+                          lang={editorContext.lang}
+                          initialValue={value ? dayjs(value).toDate() : value}
+                          onChange={
                             date => {
                                 // TODO: QA-11925 - save date in ISO format without timezone
                                 // eslint-disable-next-line
                                 props.form.setFieldValue(field.formDefinition.name, date, true);
                             }
                         }
-                        {...formikField}
-                        displayDateFormat={displayDateFormat && displayDateFormat.value}
-                        readOnly={field.formDefinition.readOnly}
-                        variant={variant}
-                        id={id}
+                          {...formikField}
+                          displayDateFormat={displayDateFormat && displayDateFormat.value}
+                          readOnly={field.formDefinition.readOnly}
+                          variant={variant}
+                          id={id}
                     />
                 );
             }}

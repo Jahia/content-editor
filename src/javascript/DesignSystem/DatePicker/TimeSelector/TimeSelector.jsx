@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import {Typography} from '@jahia/design-system-kit';
 import {withStyles} from '@material-ui/core/styles';
+import {hours} from '../../DatePickerInput/date.util';
 
 const style = theme => ({
     container: {
@@ -33,29 +34,8 @@ const style = theme => ({
     }
 });
 
-// Todo extract in date utils
-const hours = disabledHours => new Array(48).fill().reduce((acc, _, i) => {
-    // Compute hour from the loop entry
-    const hour = `${(Math.floor(i / 2) < 10 ? '0' : '') + Math.floor(i / 2)}:${i % 2 === 0 ? '00' : '30'}`;
-
-    if (disabledHours && (disabledHours.after || disabledHours.before)) {
-        // Transform it as integer
-        const hourAsInt = hour.split(':').join('');
-        // Transform hours to int to compare them
-        const afterHourAsInt = disabledHours.after ? disabledHours.after.split(':').join('') : 9999;
-        const beforeHourAsInt = disabledHours.before ? disabledHours.before.split(':').join('') : -1;
-
-        if (hourAsInt >= beforeHourAsInt && hourAsInt <= afterHourAsInt) {
-            acc.push(hour);
-        }
-    } else {
-        acc.push(hour);
-    }
-
-    return acc;
-}, []);
-
 const TimeSelectorCmp = ({classes, disabledHours, selectedHour, onHourSelected, ...props}) => {
+    console.log('timeSelector', disabledHours);
     return (
         <ul className={`TimePicker ${classes.container}`} {...props}>
             {hours(disabledHours).map(hour => (

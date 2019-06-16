@@ -122,57 +122,38 @@ export const getDateTime = (day, hour) => {
         .toDate();
 };
 
-export const processJCRBoundary = (isDateTime, selectedDate, toBeProcessBoundary, disabledDays, disabledHours, boundaryName, offset) => {
-    if (toBeProcessBoundary[boundaryName] && toBeProcessBoundary[boundaryName].date) {
-
-        // TODO disable the after or before days using after or before notation
-        // Todo disabledDays.push({'after': toBeProcessBoundary[boundaryName].date})
-
-        let date = dayjs(toBeProcessBoundary[boundaryName].date);
-
-        // disable the exact date
-        if (!isDateTime && toBeProcessBoundary[boundaryName].include) {
-            disabledDays.push(toBeProcessBoundary[boundaryName].date);
-        }
-
-        // disable the hours using before or after notation
-        if (isDateTime && date.format('YYYYMMDD') === dayjs(selectedDate).format('YYYYMMDD')) {
-            disabledHours[boundaryName] = toBeProcessBoundary[boundaryName].include ?
-                date.add(offset, 'minute').format('HH:mm') :
-                date.format('HH:mm');
-        }
-    }
-};
-
-export const extractDatesAndHours = (isDateTime, selectedDate, incomingDisabledDays) => {
-    const disabledHours = {};
-    const disabledDays = [];
-
-    // Todo remove loop
-    incomingDisabledDays.forEach(disabledDay => {
-        const disabled = {};
-
-        if (disabledDay instanceof Date) {
-            // TODO remove handling of Day-picker props
-            disabledDays.push(disabledDay);
-        } else {
-            processJCRBoundary(isDateTime, selectedDate, disabledDay, disabledDays, disabledHours, 'before', 1);
-            processJCRBoundary(isDateTime, selectedDate, disabledDay, disabledDays, disabledHours, 'after', -1);
-
-            // TODO remove handling of Day-picker props
-            if (disabledDay.before || disabledDay.after) {
-                if (disabledDay.before) {
-                    disabled.before = disabledDay.before.date || disabledDay.before;
-                }
-
-                if (disabledDay.after) {
-                    disabled.after = disabledDay.after.date || disabledDay.after;
-                }
-
-                disabledDays.push(disabled);
-            }
+export const getHourFromDisabledDays = (selectedDate, disabledDays, boundaryName) => {
+    // Extract the hour from the matching disabled day from disabledDays
+    // If several dates from disabledDays match the selectedDate for a boundaryName the last one is returned
+    let hour;
+    disabledDays.forEach(disabledDay => {
+        let date = disabledDay[boundaryName];
+        let day = dayjs(date).format('YYYYMMDD');
+        let currentDay = dayjs(selectedDate).format('YYYYMMDD');
+        if (date && day === currentDay) {
+            hour = dayjs(date).format('HH:mm');
         }
     });
-
-    return {disabledDays, disabledHours};
+    return hour;
 };
+
+export const hours = disabledHours => new Array(48).fill().reduce((acc, _, i) => {
+    // Compute hour from the loop entry
+    const hour = `${(Math.floor(i / 2) < 10 ? '0' : '') + Math.floor(i / 2)}:${i % 2 === 0 ? '00' : '30'}`;
+
+    if (disabledHours && (disabledHours.after || disabledHours.before)) {
+        // Transform it as integer
+        const hourAsInt = hour.split(':').join('');
+        // Transform hours to int to compare them
+        const afterHourAsInt = disabledHours.after ? disabledHours.after.split(':').join('') : 9999;
+        const beforeHourAsInt = disabledHours.before ? disabledHours.before.split(':').join('') : -1;
+
+        if (hourAsInt >= beforeHourAsInt && hourAsInt <= afterHourAsInt) {
+            acc.push(hour);
+        }
+    } else {
+        acc.push(hour);
+    }
+
+    return acc;
+}, []);

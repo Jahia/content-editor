@@ -12,9 +12,9 @@ import enLocale from 'dayjs/locale/en';
 
 import dayjs from 'dayjs';
 import {
-    extractDatesAndHours,
     generateWeekdaysShort,
-    getDateTime
+    getDateTime,
+    getHourFromDisabledDays
 } from '../DatePickerInput/date.util';
 
 const locales = {
@@ -29,19 +29,15 @@ const DatePickerCmp = ({
     classes,
     onSelectDateTime,
     selectedDateTime,
-    disabledDays: incomingDisabledDays,
-
+    disabledDays,
     ...props
 }) => {
     const [selectedDays, setSelectedDays] = useState([]);
     const [selectedHour, setSelectedHour] = useState('00:00');
     const isDateTime = variant === 'datetime';
-
     const locale = locales[lang] || {};
 
     const selectedDate = selectedDateTime ? [selectedDateTime] : selectedDays;
-
-    const {disabledDays, disabledHours} = extractDatesAndHours(isDateTime, selectedDate, incomingDisabledDays);
 
     return (
         <div className={classes.container + ' ' + (isDateTime ? classes.containerDateTime : '')}>
@@ -65,14 +61,17 @@ const DatePickerCmp = ({
             />
             {isDateTime && (
                 <TimeSelector
-                    disabledHours={disabledHours}
+                    disabledHours={{
+                        before: getHourFromDisabledDays(selectedDate[0], disabledDays, 'before'),
+                        after: getHourFromDisabledDays(selectedDate[0], disabledDays, 'after')
+                    }}
                     selectedHour={
                         selectedDateTime ?
                             dayjs(selectedDateTime).format('HH:mm') :
                             selectedHour
                     }
                     onHourSelected={hour => {
-                        onSelectDateTime(getDateTime(selectedDays[0], hour));
+                        onSelectDateTime(getDateTime(selectedDate[0], hour));
                         setSelectedHour(hour);
                     }}
                 />

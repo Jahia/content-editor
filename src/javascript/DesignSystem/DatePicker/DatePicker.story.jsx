@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {storiesOf} from '@storybook/react';
-import {withKnobs, select, text, boolean} from '@storybook/addon-knobs';
+import {withKnobs, select, text} from '@storybook/addon-knobs';
 import {action} from '@storybook/addon-actions';
 
 import {DatePicker} from './DatePicker';
@@ -15,34 +15,26 @@ const wrapperStyle = {
     justifyContent: 'center',
     alignItems: 'center'
 };
+const beforeDefaultDate = new Date().toISOString().replace('Z', '');
+const disabledBefore = () => text('Disable Before', beforeDefaultDate);
 
-const disabledBefore = () => text('DisableBefore', '');
-const disabledBeforeInclude = () => boolean('IncludeBefore', false);
-
-const disabledAfter = () => text('DisableAfter', '');
-const disabledAfterInclude = () => boolean('IncludeAfter');
+const disabledAfter = () => text('Disable After', '');
 
 const lang = () => select('lang', ['en', 'fr', 'de']);
 
 const isValidDate = date => date && date.toString() !== 'Invalid Date';
 
-function getDisabled(dateBefore, beforeInclude, dateAfter, afterInclude) {
-    const disabled = {};
+function getDisabledDays(dateBefore, beforeInclude, dateAfter) {
+    const disabledDays = [];
     if (isValidDate(dateBefore)) {
-        disabled.before = {
-            date: dateBefore,
-            include: beforeInclude
-        };
+        disabledDays.push({before: new Date(dateBefore)});
     }
 
     if (isValidDate(dateAfter)) {
-        disabled.after = {
-            date: dateAfter,
-            include: afterInclude
-        };
+        disabledDays.push({after: new Date(dateAfter)});
     }
 
-    return disabled;
+    return disabledDays;
 }
 
 storiesOf('DatePicker', module)
@@ -50,17 +42,14 @@ storiesOf('DatePicker', module)
     .add(
         'Dropdown/date',
         () => {
-            const before = disabledBefore();
-            const dateBefore = new Date(before);
-            const beforeInclude = disabledBeforeInclude();
+            const dateBefore = disabledBefore();
             const dateAfter = disabledAfter();
-            const afterInclude = disabledAfterInclude();
-            const disabled = getDisabled(dateBefore, beforeInclude, dateAfter, afterInclude);
+            const disabledDays = getDisabledDays(dateBefore, dateAfter);
             return (
                 <MuiThemeProvider theme={theme}>
                     <div style={wrapperStyle}>
                         <DatePicker
-                            disabledDays={[disabled]}
+                            disabledDays={disabledDays}
                             lang={lang() || 'en'}
                             onSelectDateTime={action('onSelectDateTime')}
                         />
@@ -73,17 +62,14 @@ storiesOf('DatePicker', module)
     .add(
         'Dropdown/datetime',
         () => {
-            const before = disabledBefore();
-            const dateBefore = new Date(before);
-            const beforeInclude = disabledBeforeInclude();
+            const dateBefore = disabledBefore();
             const dateAfter = disabledAfter();
-            const afterInclude = disabledAfterInclude();
-            const disabled = getDisabled(dateBefore, beforeInclude, dateAfter, afterInclude);
+            const disabledDays = getDisabledDays(dateBefore, dateAfter);
             return (
                 <MuiThemeProvider theme={theme}>
                     <div style={wrapperStyle}>
                         <DatePicker
-                            disabledDays={[disabled]}
+                            disabledDays={disabledDays}
                             lang={lang() || 'en'}
                             variant="datetime"
                             onSelectDateTime={action('onSelectDateTime')}
