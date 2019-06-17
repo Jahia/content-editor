@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {InputBase, InputAdornment, withStyles} from '@material-ui/core';
+import NumberFormat from 'react-number-format';
 
 const styles = theme => {
     // Todo: DESIGN-178 - use theme colors
@@ -51,7 +52,7 @@ const styles = theme => {
     };
 };
 
-export const InputCmp = ({classes, disabled, error, onBlur, onFocus, readOnly, variant, ...others}) => {
+const InputCmp = ({classes, disabled, error, onBlur, onFocus, readOnly, variant, ...others}) => {
     const [focus, setFocus] = useState(false);
     const handleFocus = () => {
         onFocus();
@@ -65,8 +66,10 @@ export const InputCmp = ({classes, disabled, error, onBlur, onFocus, readOnly, v
 
     const {icon, interactive} = variant;
 
-    const {readOnly: readOnlyClass, inputDisabled, inputAdornedStart, inputAdornedStartFocus,
-        inputAdornedStartError, inputAdornedEndReadonly, ...containerClasses} = classes;
+    const {
+        readOnly: readOnlyClass, inputDisabled, inputAdornedStart, inputAdornedStartFocus,
+        inputAdornedStartError, inputAdornedEndReadonly, ...containerClasses
+    } = classes;
 
     return (
         <InputBase
@@ -96,6 +99,20 @@ export const InputCmp = ({classes, disabled, error, onBlur, onFocus, readOnly, v
     );
 };
 
+const WrappedInputCmp = ({decimalSeparator, decimalScale, type, ...others}) => {
+    if (type && type === 'number') {
+        return (
+            <NumberFormat customInput={InputCmp}
+                          decimalScale={decimalScale}
+                          decimalSeparator={decimalSeparator}
+                          {...others}
+            />
+        );
+    }
+
+    return <InputCmp {...others}/>;
+};
+
 InputCmp.defaultProps = {
     disabled: false,
     defaultValue: undefined,
@@ -111,7 +128,6 @@ InputCmp.defaultProps = {
     onFocus: () => {
     },
     readOnly: false,
-    type: 'text',
     value: undefined,
     variant: {}
 };
@@ -129,7 +145,6 @@ InputCmp.propTypes = {
     onChange: PropTypes.func,
     onFocus: PropTypes.func,
     readOnly: PropTypes.bool,
-    type: PropTypes.string,
     value: PropTypes.string,
     variant: PropTypes.shape({
         icon: PropTypes.node,
@@ -137,6 +152,18 @@ InputCmp.propTypes = {
     })
 };
 
-export const Input = withStyles(styles)(InputCmp);
+WrappedInputCmp.defaultProps = {
+    decimalSeparator: '.',
+    decimalScale: 0,
+    type: 'text'
+};
+
+WrappedInputCmp.propTypes = {
+    decimalSeparator: PropTypes.string,
+    decimalScale: PropTypes.number,
+    type: PropTypes.string
+};
+
+export const Input = withStyles(styles)(WrappedInputCmp);
 
 Input.displayName = 'Input';

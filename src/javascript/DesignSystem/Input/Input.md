@@ -10,6 +10,8 @@ https://www.figma.com/file/LBIDgVFfAqt8BhycUZwVU0/Design-System?node-id=2695%3A2
 ### Props
 
 - *defaultValue*: The default input value, useful when not controlling the component.
+- *decimalSeparator*: single character string ['.' or ','] to separate decimal number.
+- *decimalScale*: If defined it limits to given decimal scale, otherwise the number is long.
 - *disabled*: If `true`, the input will be disabled.
 - *error*: If `true`, the input will indicate an error. This is normally obtained via context from FormControl.
 - *fullWidth*: If `true`, the input will take up the full width of its container.
@@ -21,8 +23,8 @@ https://www.figma.com/file/LBIDgVFfAqt8BhycUZwVU0/Design-System?node-id=2695%3A2
 - *onChange*: Callback fired when the value is changed.
 - *onFocus*: Callback fired when the `input` has focus.
 - *readOnly*: It prevents the user from changing the value of the field (not from interacting with the field).
-- *value*: The `input` value, required for a controlled component.
 - *type*: Type of the input element. It should be [a valid HTML5 input type](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#Form_%3Cinput%3E_types).
+- *value*: The `input` value, required for a controlled component.
 
 Any other props will be propagated to the root container of the inner component. 
 
