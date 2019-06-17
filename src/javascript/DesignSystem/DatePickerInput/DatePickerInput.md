@@ -12,8 +12,7 @@
 
 ### Props
 
-All props from React-Day-picker library + :
-
+-   dayPickerProps: All props from React-Day-picker library + 
 -   lang: String ['EN', 'FR', 'DE']
 -   variant: String ['date', 'datetime']
 -   onBlur: function

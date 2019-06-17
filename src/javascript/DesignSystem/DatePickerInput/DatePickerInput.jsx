@@ -49,6 +49,7 @@ const DatePickerInputCmp = ({
     variant,
     lang,
     classes,
+    dayPickerProps,
     onBlur,
     onChange,
     initialValue,
@@ -83,7 +84,7 @@ const DatePickerInputCmp = ({
             const newDate = dayjs(e.target.value, datetimeFormat[variant]);
             if (newDate.isValid()) {
                 setDatetime(newDate.toDate());
-                onChange(newDate.toDate().toISOString());
+                onChange(newDate.toDate());
             }
         }
     };
@@ -137,12 +138,13 @@ const DatePickerInputCmp = ({
                     lang={lang}
                     selectedDateTime={datetime}
                     onSelectDateTime={datetime => {
-                        onChange(datetime.toISOString());
+                        onChange(datetime);
                         setDatetime(datetime);
                         setDatetimeString(
                             formatDateTime(datetime, lang, variant, displayDateFormat)
                         );
                     }}
+                    {...dayPickerProps}
                 />
             </Popover>
         </div>
@@ -150,6 +152,7 @@ const DatePickerInputCmp = ({
 };
 
 DatePickerInputCmp.defaultProps = {
+    dayPickerProps: {},
     variant: 'date',
     onBlur: () => {},
     onChange: () => {},
@@ -160,6 +163,7 @@ DatePickerInputCmp.defaultProps = {
 
 DatePickerInputCmp.propTypes = {
     classes: PropTypes.object.isRequired,
+    dayPickerProps: PropTypes.object,
     lang: PropTypes.oneOf(['fr', 'en', 'de']).isRequired,
     variant: PropTypes.oneOf(['date', 'datetime']),
     initialValue: PropTypes.object,

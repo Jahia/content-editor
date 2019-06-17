@@ -19,12 +19,29 @@ const wrapperStyle = {
 
 const hours = new Array(24).fill().reduce(
     (acc, _, i) => {
-        return [...acc, `${i}:00`, `${i}:30`];
+        return [...acc, `${(i < 10 ? '0' : '')}${i}:00`, `${(i < 10 ? '0' : '')}${i}:30`];
     },
     [null]
 );
 
-const selectedHour = () => select('selectedHour', hours);
+const after = new Array(24).fill().reduce(
+    (acc, _, i) => {
+        return [...acc, `${(i < 10 ? '0' : '')}${i}:00`, `${(i < 10 ? '0' : '')}${i}:30`];
+    },
+    [null]
+);
+
+const before = new Array(24).fill().reduce(
+    (acc, _, i) => {
+        return [...acc, `${(i < 10 ? '0' : '')}${i}:00`, `${(i < 10 ? '0' : '')}${i}:30`];
+    },
+    [null]
+);
+
+const selectedHour = () => select('selected Hour', hours);
+
+const selectedAfter = () => select('Disable After', after);
+const selectedBefore = () => select('Disable Before', before);
 
 storiesOf('DatePicker', module)
     .addDecorator(withKnobs)
@@ -34,6 +51,7 @@ storiesOf('DatePicker', module)
             <MuiThemeProvider theme={theme}>
                 <div style={wrapperStyle}>
                     <TimeSelector
+                        disabledHours={{after: selectedAfter(), before: selectedBefore()}}
                         selectedHour={selectedHour()}
                         onHourSelected={action('onHourSelected')}
                         onFocus={action('onFocus')}

@@ -53,6 +53,21 @@ describe('TimeSelector', () => {
             .at(0)
             .simulate('click');
 
-        expect(defaultProps.onHourSelected).toHaveBeenCalledWith('0:00');
+        expect(defaultProps.onHourSelected).toHaveBeenCalledWith('00:00');
+    });
+
+    it('should not contain disabled hours', () => {
+        const disabledHours = {before: '02:01', after: '22:00'};
+        const cmp = shallowWithTheme(
+            <TimeSelector disabledHours={disabledHours} {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+        ['00:00', '00:30', '01:00', '01:30', '02:00', '22:30', '23:00', '23:30'].forEach(
+            date => expect(cmp.debug()).not.toContain(date)
+        );
+        ['02:30', '22:00'].forEach(
+            date => expect(cmp.debug()).toContain(date)
+        );
     });
 });

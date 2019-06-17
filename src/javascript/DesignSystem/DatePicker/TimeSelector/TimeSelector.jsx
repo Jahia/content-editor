@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import {Typography} from '@jahia/design-system-kit';
 import {withStyles} from '@material-ui/core/styles';
+import {hours} from '../../DatePickerInput/date.util';
 
 const style = theme => ({
     container: {
@@ -33,14 +34,11 @@ const style = theme => ({
     }
 });
 
-const hours = new Array(24).fill().reduce((acc, _, i) => {
-    return [...acc, `${i}:00`, `${i}:30`];
-}, []);
-
-const TimeSelectorCmp = ({classes, selectedHour, onHourSelected, ...props}) => {
+const TimeSelectorCmp = ({classes, disabledHours, selectedHour, onHourSelected, ...props}) => {
+    console.log('timeSelector', disabledHours);
     return (
         <ul className={`TimePicker ${classes.container}`} {...props}>
-            {hours.map(hour => (
+            {hours(disabledHours).map(hour => (
                 <Typography
                     key={hour}
                     tabIndex="0"
@@ -65,13 +63,21 @@ const TimeSelectorCmp = ({classes, selectedHour, onHourSelected, ...props}) => {
 
 TimeSelectorCmp.defaultProps = {
     onHourSelected: () => {},
-    selectedHour: null
+    selectedHour: null,
+    disabledHours: {}
 };
 
 TimeSelectorCmp.propTypes = {
+
     classes: PropTypes.object.isRequired,
     onHourSelected: PropTypes.func,
-    selectedHour: PropTypes.string
+    selectedHour: PropTypes.string,
+    disabledHours: PropTypes.shape({
+        before: PropTypes.string,
+        after: PropTypes.string
+    })
 };
 
 export const TimeSelector = withStyles(style)(TimeSelectorCmp);
+
+TimeSelector.displayName = 'TimeSelector';
