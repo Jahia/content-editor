@@ -10,6 +10,8 @@ describe('imageList', () => {
         defaultProps = {
             images: [{
                 uuid: 'pathUuid',
+                path: 'path1',
+                url: 'url1',
                 name: 'nameImg',
                 width: '500',
                 height: '800',
@@ -17,6 +19,8 @@ describe('imageList', () => {
             },
             {
                 uuid: 'pathUuid2',
+                path: 'path2',
+                url: 'url2',
                 name: 'nameImg2',
                 width: '5002',
                 height: '8002',
@@ -164,5 +168,32 @@ describe('imageList', () => {
             .at(0);
 
         expect(cmp.debug()).toContain('jpeg - 500x800px');
+    });
+
+    it('should not select initially first image', () => {
+        const cmp = shallowWithTheme(
+            <ImageList {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        )
+            .dive()
+            .find('Card')
+            .at(0);
+
+        expect(cmp.props().selected).toBe(false);
+    });
+
+    it('should select initially first image', () => {
+        defaultProps.initialSelection = ['path1'];
+        const cmp = shallowWithTheme(
+            <ImageList {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        )
+            .dive()
+            .find('Card')
+            .at(0);
+
+        expect(cmp.props().selected).toBe(true);
     });
 });

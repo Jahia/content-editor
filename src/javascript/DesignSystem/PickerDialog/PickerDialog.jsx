@@ -8,6 +8,7 @@ import {Typography} from '@jahia/design-system-kit';
 
 import {withStyles} from '@material-ui/core';
 import {NodeTrees} from '@jahia/react-material';
+import {getPathWithoutFile, getSite, getDetailedPathArray} from './PickerDialog.utils';
 
 const styles = theme => ({
     drawerPaper: {
@@ -49,17 +50,24 @@ const styles = theme => ({
     }
 });
 
-const PickerDialogCmp = ({onCloseDialog, classes, idInput, initialPath, site, lang, onItemSelection, nodeTreeConfigs, children, modalCancelLabel, modalDoneLabel}) => {
-    // Use root path of the first tree config by default
+const PickerDialogCmp = ({
+    onCloseDialog,
+    classes,
+    idInput,
+    initialSelectedItem,
+    site,
+    lang,
+    onItemSelection,
+    nodeTreeConfigs,
+    children,
+    modalCancelLabel,
+    modalDoneLabel
+}) => {
+    const initialPath = getPathWithoutFile(initialSelectedItem);
+    const selectedItemSite = getSite(initialSelectedItem);
+    const initialPathOpenPath = getDetailedPathArray(initialSelectedItem, selectedItemSite);
 
-    const [selectedPath, setSelectedPath] = useState('/sites/' + site + (initialPath || nodeTreeConfigs[0].rootPath));
-
-    const initialPathOpenPath = initialPath ? initialPath
-        .split('/')
-        .slice(0, -1)
-        .reduce((openPaths, slug, i, init) => {
-            return [...openPaths, `/sites/${site}${init.slice(0, i + 1).join('/')}`];
-        }, []) : [];
+    const [selectedPath, setSelectedPath] = useState(initialPath || `/sites/${site}${nodeTreeConfigs[0].rootPath}`);
     const [openPaths, setOpenPaths] = useState(initialPathOpenPath);
     const [selectedItem, setSelectedItem] = useState(false);
 
@@ -74,48 +82,61 @@ const PickerDialogCmp = ({onCloseDialog, classes, idInput, initialPath, site, la
                     paper: classes.drawerPaper
                 }}
             >
-                <NodeTrees isOpen
-                           path={selectedPath}
-                           openPaths={openPaths}
-                           siteKey={site}
-                           lang={lang}
-                           nodeTreeConfigs={nodeTreeConfigs}
-                           classes={{
-                               listItem: classes.listItem
-                           }}
-                           setPath={path => setSelectedPath(path)}
-                           openPath={path => setOpenPaths(previousOpenPaths => previousOpenPaths.concat([path]))}
-                           closePath={path => setOpenPaths(previousOpenPaths => previousOpenPaths.filter(item => item !== path))}
-                           closeTree={() => console.log('close tree')}
+                <NodeTrees
+                    isOpen
+                    path={selectedPath}
+                    openPaths={openPaths}
+                    siteKey={site}
+                    lang={lang}
+                    nodeTreeConfigs={nodeTreeConfigs}
+                    classes={{
+                        listItem: classes.listItem
+                    }}
+                    setPath={path => setSelectedPath(path)}
+                    openPath={path =>
+                        setOpenPaths(previousOpenPaths =>
+                            previousOpenPaths.concat([path])
+                        )
+                    }
+                    closePath={path =>
+                        setOpenPaths(previousOpenPaths =>
+                            previousOpenPaths.filter(item => item !== path)
+                        )
+                    }
+                    closeTree={() => console.log('close tree')}
                 />
             </Drawer>
 
             <main className={classes.modalContent}>
-                {children(setSelectedItem, selectedPath)}
+                {children(setSelectedItem, selectedPath, initialSelectedItem && [initialSelectedItem])}
 
                 <div className={classes.actions}>
                     <div className={classes.actionUpload}>
                         <CloudUpload/>
-                        <Typography>drag and drop your files here, or</Typography>
+                        <Typography>
+                            drag and drop your files here, or
+                        </Typography>
                         <label>
                             <Typography>Browse your computer</Typography>
                             <input type="file" id={idInput}/>
                         </label>
                     </div>
                     <div className={classes.actionButtons}>
-                        <Button data-sel-picker-dialog-action="cancel"
-                                type="button"
-                                color="secondary"
-                                onClick={onCloseDialog}
+                        <Button
+                            data-sel-picker-dialog-action="cancel"
+                            type="button"
+                            color="secondary"
+                            onClick={onCloseDialog}
                         >
                             {modalCancelLabel}
                         </Button>
-                        <Button data-sel-picker-dialog-action="done"
-                                disabled={!selectedItem}
-                                variant="contained"
-                                color="primary"
-                                type="button"
-                                onClick={() => onItemSelection(selectedItem)}
+                        <Button
+                            data-sel-picker-dialog-action="done"
+                            disabled={!selectedItem}
+                            variant="contained"
+                            color="primary"
+                            type="button"
+                            onClick={() => onItemSelection(selectedItem)}
                         >
                             {modalDoneLabel}
                         </Button>
@@ -127,7 +148,7 @@ const PickerDialogCmp = ({onCloseDialog, classes, idInput, initialPath, site, la
 };
 
 PickerDialogCmp.defaultProps = {
-    initialPath: null
+    initialSelectedItem: null
 };
 
 PickerDialogCmp.propTypes = {
@@ -141,7 +162,7 @@ PickerDialogCmp.propTypes = {
     classes: PropTypes.object.isRequired,
     modalCancelLabel: PropTypes.string.isRequired,
     modalDoneLabel: PropTypes.string.isRequired,
-    initialPath: PropTypes.string
+    initialSelectedItem: PropTypes.string
 };
 
 export const PickerDialog = withStyles(styles)(PickerDialogCmp);

@@ -97,13 +97,13 @@ describe('mediaPickerFilled', () => {
         );
     });
 
-    it('should specify the initialPath with data selected', () => {
+    it('should specify the initialSelectedItem with data selected', () => {
         const cmp = shallowWithTheme(
             <MediaPickerFilled {...defaultProps}/>,
             {},
             dsGenericTheme
         ).dive();
 
-        expect(cmp.find('MediaPickerDialog').props().initialPath).toBe('/files');
+        expect(cmp.find('MediaPickerDialog').props().initialSelectedItem).toBe('/sites/digitall/files/Beautiful_hairy_pussy.jpg');
     });
 });

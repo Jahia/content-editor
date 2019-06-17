@@ -39,7 +39,8 @@ const ContentTableContainer = ({
     tableConfig,
     setSelectedItem,
     selectedPath,
-    editorContext
+    editorContext,
+    initialSelection
 }) => {
     const {data, error, loading} = useQuery(ContentTableQuery, {
         variables: {
@@ -65,6 +66,7 @@ const ContentTableContainer = ({
     const tableData = data.jcr.result.descendants.nodes.map(content => {
         return {
             id: content.uuid,
+            path: content.path,
             name: content.displayName,
             type: content.primaryNodeType.typeName,
             createdBy: content.createdBy.value,
@@ -79,6 +81,7 @@ const ContentTableContainer = ({
             labelEmpty={t(
                 'content-editor:label.contentEditor.edit.fields.contentPicker.tableEmpty'
             )}
+            initialSelection={initialSelection}
             data={tableData}
             order="asc"
             orderBy="name"
@@ -86,6 +89,10 @@ const ContentTableContainer = ({
             onSelect={setSelectedItem}
         />
     );
+};
+
+ContentTableContainer.defaultProps = {
+    initialSelection: []
 };
 
 ContentTableContainer.propTypes = {
@@ -96,7 +103,8 @@ ContentTableContainer.propTypes = {
     }).isRequired,
     setSelectedItem: PropTypes.func.isRequired,
     selectedPath: PropTypes.string.isRequired,
-    editorContext: PropTypes.object.isRequired
+    editorContext: PropTypes.object.isRequired,
+    initialSelection: PropTypes.array
 };
 
 export const ContentTable = translate()(ContentTableContainer);

@@ -36,8 +36,12 @@ const styles = theme => ({
     }
 });
 
-const ContentTable = ({data, order, orderBy, columns, labelEmpty, classes, multipleSelectable, onSelect}) => {
-    const [selection, setSelection] = useState([]);
+const ContentTable = ({data, order, orderBy, columns, labelEmpty, classes, multipleSelectable, onSelect, initialSelection}) => {
+    const [selection, setSelection] = useState(
+        initialSelection
+            .map(path => data.find(i => i.path === path))
+            .filter(data => Boolean(data))
+    );
 
     const onClickHandler = useCallback(content => {
         const selectedIndex = selection.findIndex(i => i.id === content.id);
@@ -99,13 +103,15 @@ const ContentTable = ({data, order, orderBy, columns, labelEmpty, classes, multi
 
 ContentTable.defaultProps = {
     multipleSelectable: false,
-    onSelect: () => {}
+    onSelect: () => {},
+    initialSelection: []
 };
 
 ContentTable.propTypes = {
     data: PropTypes.PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
+        path: PropTypes.string.isRequired,
         type: PropTypes.string.isRequired,
         createdBy: PropTypes.string.isRequired,
         lastModified: PropTypes.string.isRequired
@@ -116,7 +122,8 @@ ContentTable.propTypes = {
     labelEmpty: PropTypes.string.isRequired,
     classes: PropTypes.object.isRequired,
     multipleSelectable: PropTypes.bool,
-    onSelect: PropTypes.func
+    onSelect: PropTypes.func,
+    initialSelection: PropTypes.array
 };
 
 export default withStyles(styles)(ContentTable);
