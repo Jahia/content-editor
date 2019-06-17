@@ -18,7 +18,10 @@ describe('Input', () => {
             <Input {...props}/>,
             {},
             dsGenericTheme
-        ).dive();
+        )
+            .dive()
+            .dive();
+
         const cmpProps = cmp.props();
         expect(cmpProps[propName]).toBe(true);
         expect(cmpProps.className).toContain(clazz);

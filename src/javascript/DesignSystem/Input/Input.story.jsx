@@ -53,6 +53,41 @@ storiesOf('Input', module)
         ),
         {notes: {markdown: doc}}
     )
+    .add('number long',
+        () => (
+            <MuiThemeProvider theme={theme}>
+                <Input
+                    type="number"
+                    decimalScale={0}
+                    disabled={disabled()}
+                    error={error()}
+                    readOnly={readOnly()}
+                    onBlur={onBlur()}
+                    onChange={onChange()}
+                    onFocus={onFocus()}
+                />
+            </MuiThemeProvider>
+        ),
+        {notes: {markdown: doc}}
+    )
+    .add('number decimal',
+        () => (
+            <MuiThemeProvider theme={theme}>
+                <Input
+                    type="number"
+                    decimalSeparator="."
+                    decimalScale={5}
+                    disabled={disabled()}
+                    error={error()}
+                    readOnly={readOnly()}
+                    onBlur={onBlur()}
+                    onChange={onChange()}
+                    onFocus={onFocus()}
+                />
+            </MuiThemeProvider>
+        ),
+        {notes: {markdown: doc}}
+    )
     .add('icon',
         () => (
             <MuiThemeProvider theme={theme}>
