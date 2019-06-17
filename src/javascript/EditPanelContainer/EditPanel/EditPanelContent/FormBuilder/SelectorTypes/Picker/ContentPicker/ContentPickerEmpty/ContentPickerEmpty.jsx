@@ -12,9 +12,14 @@ const ContentPickerEmptyCmp = ({
     formik,
     editorContext,
     nodeTreeConfigs,
-    pickerConfig
+    pickerConfig,
+    setActionContext
 }) => {
     const [isOpen, setIsOpen] = useState(false);
+
+    setActionContext({
+        noAction: true
+    });
 
     return (
         <>
@@ -48,7 +53,8 @@ ContentPickerEmptyCmp.propTypes = {
     formik: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,
     nodeTreeConfigs: PropTypes.array.isRequired,
-    pickerConfig: PropTypes.object.isRequired
+    pickerConfig: PropTypes.object.isRequired,
+    setActionContext: PropTypes.func.isRequired
 };
 
 export const ContentPickerEmpty = translate()(ContentPickerEmptyCmp);

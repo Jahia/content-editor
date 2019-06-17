@@ -6,7 +6,7 @@ import {ContentPickerFilled} from './ContentPickerFilled/ContentPickerFilled';
 import pickerConfigs from '../pickerConfigs';
 import {translate} from 'react-i18next';
 
-const ContentPickerCmp = ({field, id, editorContext, formik, t}) => {
+const ContentPickerCmp = ({field, id, editorContext, formik, t, setActionContext}) => {
     const uuid = formik.values[field.formDefinition.name];
 
     // Resolve picker configuration
@@ -38,6 +38,7 @@ const ContentPickerCmp = ({field, id, editorContext, formik, t}) => {
                 editorContext={editorContext}
                 pickerConfig={pickerConfig}
                 nodeTreeConfigs={nodeTreeConfigs}
+                setActionContext={setActionContext}
             />
         );
     }
@@ -50,6 +51,7 @@ const ContentPickerCmp = ({field, id, editorContext, formik, t}) => {
             editorContext={editorContext}
             pickerConfig={pickerConfig}
             nodeTreeConfigs={nodeTreeConfigs}
+            setActionContext={setActionContext}
         />
     );
 };
@@ -63,7 +65,8 @@ ContentPickerCmp.propTypes = {
     }).isRequired,
     formik: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,
-    t: PropTypes.func.isRequired
+    t: PropTypes.func.isRequired,
+    setActionContext: PropTypes.func.isRequired
 };
 
 export const ContentPicker = translate()(connect(ContentPickerCmp));

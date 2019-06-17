@@ -11,7 +11,7 @@ import IconButton from '@material-ui/core/IconButton';
 
 import {useQuery} from 'react-apollo-hooks';
 
-const MediaPickerFilledCmp = ({t, field, id, uuid, editorContext, formik}) => {
+const MediaPickerFilledCmp = ({t, field, id, uuid, editorContext, formik, setActionContext}) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const {data, error, loading} = useQuery(MediaPickerFilledQuery, {
@@ -43,6 +43,10 @@ const MediaPickerFilledCmp = ({t, field, id, uuid, editorContext, formik}) => {
             10
         )}x${parseInt(imageData.width.value, 10)}px - 1.2mb`
     };
+
+    setActionContext({
+        open: setIsOpen
+    });
 
     return (
         <>
@@ -91,7 +95,8 @@ MediaPickerFilledCmp.propTypes = {
     uuid: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
     formik: PropTypes.object.isRequired,
-    editorContext: PropTypes.object.isRequired
+    editorContext: PropTypes.object.isRequired,
+    setActionContext: PropTypes.func.isRequired
 };
 
 export const MediaPickerFilled = translate()(MediaPickerFilledCmp);

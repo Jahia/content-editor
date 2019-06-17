@@ -19,7 +19,8 @@ const ContentPickerFilledCmp = ({
     uuid,
     editorContext,
     nodeTreeConfigs,
-    pickerConfig
+    pickerConfig,
+    setActionContext
 }) => {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -48,6 +49,10 @@ const ContentPickerFilledCmp = ({
         name: contentData.displayName,
         info: contentData.primaryNodeType.displayName
     };
+
+    setActionContext({
+        open: setIsOpen
+    });
 
     return (
         <>
@@ -97,7 +102,8 @@ ContentPickerFilledCmp.propTypes = {
     editorContext: PropTypes.object.isRequired,
     formik: PropTypes.object.isRequired,
     nodeTreeConfigs: PropTypes.array.isRequired,
-    pickerConfig: PropTypes.object.isRequired
+    pickerConfig: PropTypes.object.isRequired,
+    setActionContext: PropTypes.func.isRequired
 };
 
 export const ContentPickerFilled = translate()(ContentPickerFilledCmp);

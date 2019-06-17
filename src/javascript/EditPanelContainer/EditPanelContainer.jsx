@@ -60,11 +60,10 @@ export const EditPanelContainer = ({
                                 );
 
                                 const getFieldValue = (formDefinition, value) => {
-                                    let selectorType = SelectorTypes[formDefinition.selectorType];
+                                    let selectorType = SelectorTypes.resolveSelectorType(formDefinition.selectorType, formDefinition.selectorOptions);
                                     if (selectorType) {
-                                        let resolvedSelectorType = selectorType(formDefinition.selectorOptions);
-                                        if (resolvedSelectorType.formatValue) {
-                                            return resolvedSelectorType.formatValue(value);
+                                        if (selectorType.formatValue) {
+                                            return selectorType.formatValue(value);
                                         }
                                     }
 

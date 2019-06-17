@@ -4,8 +4,8 @@ import SelectorTypes from '../SelectorTypes';
 import EditNodeProperty from './EditNodeProperty';
 
 export const EditNodePropertyContainer = ({field, siteInfo, editorContext}) => {
-    let componentType = SelectorTypes[field.formDefinition.selectorType];
-    if (!componentType) {
+    let selectorType = SelectorTypes.resolveSelectorType(field.formDefinition.selectorType, field.formDefinition.selectorOptions);
+    if (!selectorType) {
         if (!field.formDefinition.selectorType) {
             console.warn('Field ', field.formDefinition.name, ' has no selectorType !');
         } else {
@@ -15,17 +15,13 @@ export const EditNodePropertyContainer = ({field, siteInfo, editorContext}) => {
         return <></>;
     }
 
-    let fieldComponentDefinition = componentType(field.formDefinition.selectorOptions);
-    let FieldComponent = fieldComponentDefinition.cmp;
-
     return (
         <EditNodeProperty field={field}
                           labelHtmlFor={field.formDefinition.name}
                           siteInfo={siteInfo}
-                          fieldComponentKey={fieldComponentDefinition.key}
-        >
-            <FieldComponent field={field} id={field.formDefinition.name} editorContext={editorContext}/>
-        </EditNodeProperty>
+                          selectorType={selectorType}
+                          editorContext={editorContext}
+        />
     );
 };
 

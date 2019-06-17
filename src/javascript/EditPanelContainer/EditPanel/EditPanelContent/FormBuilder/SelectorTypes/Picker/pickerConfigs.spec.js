@@ -3,7 +3,7 @@ import pickerConfigs from './pickerConfigs';
 describe('Pickers Configs', () => {
     describe('resolveComponent', () => {
         it('should always return a component', () => {
-            const cmpDefinition = pickerConfigs.resolveComponent();
+            const cmpDefinition = pickerConfigs.getPickerSelectorType();
             expect(cmpDefinition.cmp).toBeDefined();
             expect(cmpDefinition.key).toBeDefined();
         });

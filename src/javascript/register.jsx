@@ -8,6 +8,7 @@ import goBackAction from './actions/goBackAction';
 import EditPanelConstants from './EditPanelContainer/EditPanel/EditPanelConstants';
 import EditPanelContainer from './EditPanelContainer';
 import {unsetFieldAction} from './actions/unsetFieldAction';
+import SelectorTypes from './EditPanelContainer/EditPanel/EditPanelContent/FormBuilder/SelectorTypes/SelectorTypes';
 
 console.log('Load Content Editor Ext Components');
 
@@ -58,6 +59,14 @@ if (contextJsParameters && contextJsParameters.config && contextJsParameters.con
         actionsRegistry.add('unsetFieldAction', unsetFieldAction, {
             buttonIcon: <Cancel/>,
             target: ['unsetFieldActions:1']
+        });
+
+        // Register selectorType actions
+        const selectorTypes = Object.values(SelectorTypes.selectorTypes);
+        selectorTypes.forEach(selectorType => {
+            if (selectorType.actions) {
+                selectorType.actions(actionsRegistry);
+            }
         });
     });
 }
