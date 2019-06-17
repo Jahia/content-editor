@@ -1,5 +1,6 @@
 import MediaPicker from './MediaPicker';
 import ContentPicker from './ContentPicker';
+import pickerActions from './pickerActions';
 
 const treeConfigs = {
     content: {
@@ -32,29 +33,34 @@ const treeConfigs = {
     }
 };
 
+const pickerSelectorTypes = {
+    ContentPicker: {cmp: ContentPicker, key: 'ContentPicker', actions: pickerActions},
+    MediaPicker: {cmp: MediaPicker, key: 'MediaPicker', actions: pickerActions}
+};
+
 const pickerConfigs = {
     image: {
-        picker: {cmp: MediaPicker, key: 'MediaPicker'},
+        picker: pickerSelectorTypes.MediaPicker,
         treeConfigs: [treeConfigs.files],
         selectableTypesTable: ['jmix:image']
     },
     folder: {
-        picker: {cmp: ContentPicker, key: 'ContentPicker'},
+        picker: pickerSelectorTypes.ContentPicker,
         treeConfigs: [treeConfigs.files],
         selectableTypesTable: ['nt:folder']
     },
     contentfolder: {
-        picker: {cmp: ContentPicker, key: 'ContentPicker'},
+        picker: pickerSelectorTypes.ContentPicker,
         treeConfigs: [treeConfigs.content],
         selectableTypesTable: ['jnt:contentFolder']
     },
     page: {
-        picker: {cmp: ContentPicker, key: 'ContentPicker'},
+        picker: pickerSelectorTypes.ContentPicker,
         treeConfigs: [treeConfigs.pages],
         selectableTypesTable: ['jnt:page']
     },
     editorial: {
-        picker: {cmp: ContentPicker, key: 'ContentPicker'},
+        picker: pickerSelectorTypes.ContentPicker,
         treeConfigs: [treeConfigs.allContents],
         selectableTypesTable: ['jnt:page', 'jmix:editorialContent', 'jnt:contentList', 'jnt:contentFolder', 'nt:folder', 'jmix:siteContent']
     },
@@ -62,7 +68,10 @@ const pickerConfigs = {
 
      }, */
 
-    resolveComponent(options) {
+    getPickerSelectorTypes() {
+        return pickerSelectorTypes;
+    },
+    getPickerSelectorType(options) {
         return this[this._getPickerType(options)].picker;
     },
     resolveConfig(options, formDefinition) {

@@ -18,7 +18,8 @@ describe('mediaPickerEmpty', () => {
                     readOnly: false
                 }
             },
-            formik: {}
+            formik: {},
+            setActionContext: () => {}
         };
     });
 

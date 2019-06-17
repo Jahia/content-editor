@@ -2,6 +2,8 @@ import React from 'react';
 import {shallow} from '@jahia/test-framework';
 
 import {EditNodeProperty} from './EditNodeProperty';
+import SelectorTypes from '../SelectorTypes/SelectorTypes';
+import {ContentPicker} from '../SelectorTypes/Picker/ContentPicker/ContentPicker';
 
 describe('EditNodeProperty component', () => {
     let defaultProps;
@@ -25,6 +27,10 @@ describe('EditNodeProperty component', () => {
                 targets: [{name: 'test'}]
             },
             labelHtmlFor: 'yoloHtmlFor',
+            selectorType: {
+                cmp: <div>test</div>,
+                key: 'test'
+            },
             t: i18nKey => i18nKey
         };
     });
@@ -67,9 +73,7 @@ describe('EditNodeProperty component', () => {
             };
 
             const cmp = shallow(
-                <EditNodeProperty {...defaultProps}>
-                    <div>test</div>
-                </EditNodeProperty>
+                <EditNodeProperty {...defaultProps}/>
             );
 
             const badgeComponent = cmp.find({
@@ -85,13 +89,24 @@ describe('EditNodeProperty component', () => {
         testI18nBadgeRender(true, [lang1], false);
     });
 
-    it('should add labelHtmlFor to the label', () => {
+    it('should add labelHtmlFor to the label and the field should have a defined id attribute', () => {
         const cmp = shallow(
-            <EditNodeProperty {...defaultProps}>
-                <div>test</div>
-            </EditNodeProperty>
+            <EditNodeProperty {...defaultProps}/>
         );
 
         expect(cmp.debug()).toContain('yoloHtmlFor');
+        expect(cmp.debug()).toContain('id=\"text\"');
+    });
+
+    it('should display the field component resolved by selector type', () => {
+        defaultProps.selectorType = SelectorTypes.resolveSelectorType('Picker');
+
+        const cmp = shallow(
+            <EditNodeProperty {...defaultProps}/>
+        );
+
+        const fieldComponent = cmp.find(ContentPicker);
+        expect(fieldComponent.exists()).toBe(true);
+        expect(fieldComponent.length).toBe(1);
     });
 });

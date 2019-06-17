@@ -20,7 +20,8 @@ describe('contentPickerEmpty', () => {
             },
             formik: {},
             nodeTreeConfigs: [],
-            pickerConfig: {}
+            pickerConfig: {},
+            setActionContext: () => {}
         };
         window.contextJsParameters = {
             siteDisplayableName: 'my site'

@@ -39,7 +39,8 @@ describe('mediaPickerFilled', () => {
             formik: {},
             editorContext: {
                 site: 'digitall'
-            }
+            },
+            setActionContext: () => {}
         };
 
         window.contextJsParameters = {

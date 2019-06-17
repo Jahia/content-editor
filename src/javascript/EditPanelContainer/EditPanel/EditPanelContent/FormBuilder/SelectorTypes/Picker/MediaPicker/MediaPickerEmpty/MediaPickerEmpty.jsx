@@ -6,8 +6,13 @@ import {translate} from 'react-i18next';
 
 import {MediaPickerDialog} from '../MediaPickerDialog';
 
-const MediaPickerEmptyCmp = ({t, id, field, formik, editorContext}) => {
+const MediaPickerEmptyCmp = ({t, id, field, formik, editorContext, setActionContext}) => {
     const [isOpen, setIsOpen] = useState(false);
+
+    setActionContext({
+        noAction: true
+    });
+
     return (
         <>
             <Picker
@@ -36,7 +41,8 @@ MediaPickerEmptyCmp.propTypes = {
     field: PropTypes.object.isRequired,
     editorContext: PropTypes.object.isRequired,
     formik: PropTypes.object.isRequired,
-    id: PropTypes.string.isRequired
+    id: PropTypes.string.isRequired,
+    setActionContext: PropTypes.func.isRequired
 };
 
 export const MediaPickerEmpty = translate()(MediaPickerEmptyCmp);

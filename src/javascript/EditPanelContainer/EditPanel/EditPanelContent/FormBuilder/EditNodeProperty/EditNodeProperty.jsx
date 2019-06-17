@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useRef, useState} from 'react';
 import {FormControl, Grid, InputLabel, withStyles} from '@material-ui/core';
 import {MoreVert, Public} from '@material-ui/icons';
 import {Badge, Button} from '@jahia/design-system-kit';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
 import * as PropTypes from 'prop-types';
+import {ContextualMenu} from '@jahia/react-material';
 
 let styles = theme => ({
     formControl: Object.assign(theme.typography.zeta, {
@@ -23,11 +24,23 @@ let styles = theme => ({
     }
 });
 
-export const EditNodeProperty = ({t, classes, children, field, siteInfo, labelHtmlFor, fieldComponentKey}) => {
+export const EditNodeProperty = ({t, classes, field, siteInfo, labelHtmlFor, selectorType, editorContext}) => {
+    const contextualMenu = useRef(null);
+    const [actionContext, _setActionContext] = useState({noAction: true});
+
+    const setActionContext = newActionContext => {
+        if ((actionContext.noAction && !newActionContext.noAction) ||
+            (!actionContext.noAction && newActionContext.noAction)) {
+            _setActionContext(newActionContext);
+        }
+    };
+
+    let FieldComponent = selectorType.cmp;
+
     return (
         <FormControl className={classes.formControl}
                      data-sel-content-editor-field={field.formDefinition.name}
-                     data-sel-content-editor-field-type={fieldComponentKey}
+                     data-sel-content-editor-field-type={selectorType.key}
         >
             <Grid
                 container
@@ -64,10 +77,21 @@ export const EditNodeProperty = ({t, classes, children, field, siteInfo, labelHt
                 alignItems="center"
             >
                 <Grid item className={classes.input}>
-                    {children}
+                    <FieldComponent field={field} id={field.formDefinition.name} editorContext={editorContext} setActionContext={setActionContext}/>
                 </Grid>
                 <Grid item>
-                    <Button variant="ghost" icon={<MoreVert/>}/>
+                    {!actionContext.noAction &&
+                    <>
+                        <ContextualMenu ref={contextualMenu} actionKey={selectorType.key + 'Menu'} context={actionContext}/>
+                        <Button variant="ghost"
+                                icon={<MoreVert/>}
+                                onClick={event => {
+                            event.stopPropagation();
+                            contextualMenu.current.open(event);
+}
+                        }/>
+                    </>
+                    }
                 </Grid>
             </Grid>
         </FormControl>
@@ -77,11 +101,11 @@ export const EditNodeProperty = ({t, classes, children, field, siteInfo, labelHt
 EditNodeProperty.propTypes = {
     t: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,
-    children: PropTypes.object.isRequired,
     field: PropTypes.object.isRequired,
     siteInfo: PropTypes.object.isRequired,
     labelHtmlFor: PropTypes.string.isRequired,
-    fieldComponentKey: PropTypes.string.isRequired
+    selectorType: PropTypes.object.isRequired,
+    editorContext: PropTypes.object.isRequired
 };
 
 export default compose(

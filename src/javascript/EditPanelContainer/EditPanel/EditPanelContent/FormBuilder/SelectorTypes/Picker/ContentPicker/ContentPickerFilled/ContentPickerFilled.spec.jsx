@@ -40,7 +40,8 @@ describe('contentPickerFilled', () => {
             },
             formik: {},
             nodeTreeConfigs: [],
-            pickerConfig: {}
+            pickerConfig: {},
+            setActionContext: () => {}
         };
 
         window.contextJsParameters = {
