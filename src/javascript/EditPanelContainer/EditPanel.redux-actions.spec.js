@@ -9,6 +9,16 @@ jest.mock('./NodeData/NodeData.gql-mutation', () => {
 });
 
 describe('EditPanel redux actions', () => {
+    const consoleErrorOriginal = console.error;
+
+    beforeEach(() => {
+        console.error = jest.fn();
+    });
+
+    afterEach(() => {
+        console.error = consoleErrorOriginal;
+    });
+
     describe('publish', () => {
         let params;
         beforeEach(() => {
@@ -41,6 +51,14 @@ describe('EditPanel redux actions', () => {
             await publishNode(params);
 
             expect(params.notificationContext.notify).toHaveBeenCalled();
+        });
+
+        it('should log error when request is a failure', async () => {
+            const err = new Error('yo');
+            params.client.mutate = () => Promise.reject(err);
+            await publishNode(params);
+
+            expect(console.error).toHaveBeenCalledWith(err);
         });
     });
 
@@ -77,6 +95,14 @@ describe('EditPanel redux actions', () => {
 
             expect(params.notificationContext.notify).toHaveBeenCalled();
         });
+
+        it('should log error when request is a failure', async () => {
+            const err = new Error('yo');
+            params.client.mutate = () => Promise.reject(err);
+            await unpublishNode(params);
+
+            expect(console.error).toHaveBeenCalledWith(err);
+        });
     });
 
     describe('saveNode', () => {
@@ -111,6 +137,14 @@ describe('EditPanel redux actions', () => {
             await saveNode(params);
 
             expect(params.notificationContext.notify).toHaveBeenCalled();
+        });
+
+        it('should log error when request is a failure', async () => {
+            const err = new Error('yo');
+            params.client.mutate = () => Promise.reject(err);
+            await saveNode(params);
+
+            expect(console.error).toHaveBeenCalledWith(err);
         });
     });
 });

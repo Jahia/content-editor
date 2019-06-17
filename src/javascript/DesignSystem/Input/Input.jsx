@@ -14,7 +14,7 @@ const styles = theme => {
             background: theme.palette.field.alpha,
             border: `1px solid ${theme.palette.ui.omega}`,
             boxSizing: 'border-box',
-            '&:hover:not($disabled):not($focused):not($error):not($readOnly)': {
+            '&:hover:not($inputDisabled):not($focused):not($error):not($readOnly)': {
                 border: `1px solid ${theme.palette.ui.zeta}`
             },
             fontSize: theme.typography.iota.fontSize,
