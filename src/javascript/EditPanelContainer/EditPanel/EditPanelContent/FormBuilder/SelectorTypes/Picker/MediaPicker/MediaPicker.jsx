@@ -4,7 +4,7 @@ import {connect} from 'formik';
 import {MediaPickerEmpty} from './MediaPickerEmpty/MediaPickerEmpty';
 import {MediaPickerFilled} from './MediaPickerFilled/MediaPickerFilled';
 
-const MediaPickerCmp = ({field, id, editorContext, formik}) => {
+const MediaPickerCmp = ({field, id, editorContext, formik, setActionContext}) => {
     const uuid = formik.values[field.formDefinition.name];
     if (uuid) {
         return (
@@ -14,6 +14,7 @@ const MediaPickerCmp = ({field, id, editorContext, formik}) => {
                 field={field}
                 formik={formik}
                 editorContext={editorContext}
+                setActionContext={setActionContext}
             />
         );
     }
@@ -24,6 +25,7 @@ const MediaPickerCmp = ({field, id, editorContext, formik}) => {
             field={field}
             formik={formik}
             editorContext={editorContext}
+            setActionContext={setActionContext}
         />
     );
 };
@@ -36,7 +38,8 @@ MediaPickerCmp.propTypes = {
         }).isRequired
     }).isRequired,
     formik: PropTypes.object.isRequired,
-    id: PropTypes.string.isRequired
+    id: PropTypes.string.isRequired,
+    setActionContext: PropTypes.func.isRequired
 };
 
 export const MediaPicker = connect(MediaPickerCmp);

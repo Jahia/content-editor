@@ -108,7 +108,7 @@ const PickerDialogCmp = ({
             </Drawer>
 
             <main className={classes.modalContent}>
-                {children(setSelectedItem, selectedPath, initialSelectedItem && [initialSelectedItem])}
+                {children(setSelectedItem, selectedPath, initialSelectedItem ? [initialSelectedItem] : [])}
 
                 <div className={classes.actions}>
                     <div className={classes.actionUpload}>

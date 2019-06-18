@@ -21,7 +21,7 @@ describe('contentPickerEmpty', () => {
             formik: {},
             nodeTreeConfigs: [],
             pickerConfig: {},
-            setActionContext: () => {}
+            setActionContext: jest.fn()
         };
         window.contextJsParameters = {
             siteDisplayableName: 'my site'

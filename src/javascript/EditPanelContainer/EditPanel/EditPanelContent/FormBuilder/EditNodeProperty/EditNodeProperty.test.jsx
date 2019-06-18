@@ -26,10 +26,11 @@ describe('EditNodeProperty component', () => {
                 },
                 targets: [{name: 'test'}]
             },
+            editorContext: {},
             fieldComponentKey: 'fieldComponentKeyForSelenium',
             labelHtmlFor: 'yoloHtmlFor',
             selectorType: {
-                cmp: <div>test</div>,
+                cmp: () => <div>test</div>,
                 key: 'test'
             },
             t: i18nKey => i18nKey

@@ -86,9 +86,9 @@ export const EditNodeProperty = ({t, classes, field, siteInfo, labelHtmlFor, sel
                         <Button variant="ghost"
                                 icon={<MoreVert/>}
                                 onClick={event => {
-                            event.stopPropagation();
-                            contextualMenu.current.open(event);
-}
+                                    event.stopPropagation();
+                                    contextualMenu.current.open(event);
+                                }
                         }/>
                     </>
                     }
