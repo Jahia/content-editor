@@ -25,7 +25,8 @@
                       "name": "Dépublier",
                       "success": "Contenu dépublié",
                       "error": "Erreur pendant la dépublication"
-                    }
+                    },
+                    "moreOptions": "Plus d'options"
                 },
                 "sharedLanguages": "Partagé par toutes les langues",
                 "fields": {

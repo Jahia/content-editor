@@ -84,6 +84,7 @@ export const EditNodeProperty = ({t, classes, field, siteInfo, labelHtmlFor, sel
                     <>
                         <ContextualMenu ref={contextualMenu} actionKey={selectorType.key + 'Menu'} context={actionContext}/>
                         <Button variant="ghost"
+                                aria-label={t('content-editor:label.contentEditor.edit.action.moreOptions')}
                                 icon={<MoreVert/>}
                                 onClick={event => {
                                     event.stopPropagation();
