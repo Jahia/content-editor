@@ -7,14 +7,14 @@ import {replaceContent} from './actions/replaceContent';
 const pickerActions = actionsRegistry => {
     actionsRegistry.add('ContentPickerMenu', menuAction, {
         buttonIcon: <DotsVertical/>,
-        buttonLabel: 'TODO',
+        buttonLabel: 'label.contentEditor.edit.action.moreOptions',
         menu: 'ContentPickerActions',
         showIcons: true
     });
 
     actionsRegistry.add('MediaPickerMenu', menuAction, {
         buttonIcon: <DotsVertical/>,
-        buttonLabel: 'TODO',
+        buttonLabel: 'label.contentEditor.edit.action.moreOptions',
         menu: 'MediaPickerActions',
         showIcons: true
     });

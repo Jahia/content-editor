@@ -25,7 +25,8 @@
                       "name": "Unpublish",
                       "success": "Content unpublished",
                       "error": "Error during unpublication"
-                    }
+                    },
+                    "moreOptions": "More Options"
                 },
                 "sharedLanguages": "Shared by all languages",
                 "fields": {
