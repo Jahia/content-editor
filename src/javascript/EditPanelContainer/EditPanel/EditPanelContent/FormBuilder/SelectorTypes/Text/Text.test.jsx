@@ -12,15 +12,23 @@ describe('Text component', () => {
     beforeEach(() => {
         props = {
             id: 'toto',
+            editorContext: {
+                lang: 'en'
+            },
             field: {
                 formDefinition: {
                     name: 'x'
                 },
+                jcrDefinition: {
+                    requiredType: 'STRING'
+                },
                 targets: [{name: 'test'}]
             },
             formik: {
-                handleBlur: () => {},
-                handleChange: () => {},
+                handleBlur: () => {
+                },
+                handleChange: () => {
+                },
                 values: []
             }
         };
@@ -75,4 +83,43 @@ describe('Text component', () => {
         wrapper.setProps(props);
         expect(wrapper.props().readOnly).toBe(readOnly);
     };
+
+    it('should be the input of type number in case of long, decimal or double', () => {
+        props.field.jcrDefinition.requiredType = 'DOUBLE';
+        wrapper.setProps(props);
+
+        expect(wrapper.props().type).toBe('number');
+    });
+
+    it('should be the input of type text', () => {
+        expect(wrapper.props().type).toBe('text');
+    });
+
+    it('should input of type number have decimal scale equals 0 if it is long', () => {
+        props.field.jcrDefinition.requiredType = 'LONG';
+        wrapper.setProps(props);
+
+        expect(wrapper.props().decimalScale).toBe(0);
+    });
+
+    it('should input of type number have decimal scale undefined if it is double', () => {
+        props.field.jcrDefinition.requiredType = 'DOUBLE';
+        wrapper.setProps(props);
+
+        expect(wrapper.props().decimalScale).toBe(undefined);
+    });
+
+    it('should input of type number use point as decimal separator when language is "en"', () => {
+        props.editorContext.lang = 'en';
+        wrapper.setProps(props);
+
+        expect(wrapper.props().decimalSeparator).toBe('.');
+    });
+
+    it('should input of type number use comma as decimal separator when language is "fr"', () => {
+        props.editorContext.lang = 'fr';
+        wrapper.setProps(props);
+
+        expect(wrapper.props().decimalSeparator).toBe(',');
+    });
 });

@@ -154,7 +154,7 @@ InputCmp.propTypes = {
 
 WrappedInputCmp.defaultProps = {
     decimalSeparator: '.',
-    decimalScale: 0,
+    decimalScale: undefined,
     type: 'text'
 };
 
