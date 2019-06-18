@@ -80,6 +80,37 @@ describe('DatePicker', () => {
         expect(cmp.find('DayPicker').props().disabledDays).toEqual(disabledDays);
     });
 
+    it('should select current month if no date is selected', () => {
+        const OldDate = Date;
+        const freezedTime = new Date();
+        global.Date = jest.fn(function () {
+            return freezedTime;
+        });
+
+        const cmp = shallowWithTheme(
+            <DatePicker {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        const cmpMonth = cmp.find('DayPicker').props().month;
+        expect(cmpMonth).toEqual(freezedTime);
+
+        global.Date = OldDate;
+    });
+
+    it('should initialize DayPicker with selectededDate month', () => {
+        const selectedDateTime = new Date(1972, 11);
+        const cmp = shallowWithTheme(
+            <DatePicker selectedDateTime={selectedDateTime} {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        const cmpMonth = cmp.find('DayPicker').props().month;
+        expect(cmpMonth).toEqual(selectedDateTime);
+    });
+
     it('should support disableHours', () => {
         const disabledDays = [{before: new Date('1972-11-22T03:03')}];
         const cmp = shallowWithTheme(
