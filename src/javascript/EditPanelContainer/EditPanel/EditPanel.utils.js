@@ -15,11 +15,16 @@ export function getPropertiesToMutate(nodeData = {}, formValues = {}, fields = [
         const field = filteredFields.find(field => field.formDefinition && field.formDefinition.name === key);
 
         if (field) {
-            if (formValues[key]) {
+            const value = formValues[key];
+            if (value) {
+                const fieldType = field.jcrDefinition.requiredType;
+
                 propsToSave.push({
                     name: key,
-                    type: field.jcrDefinition.requiredType,
-                    value: formValues[key],
+                    type: fieldType,
+                    // In case we have field of type decimal or double, we should store number
+                    // with a decimal point separator instead of decimal comma separator into JCR.
+                    value: fieldType === 'DECIMAL' || fieldType === 'DOUBLE' ? value && value.replace(',', '.') : value,
                     language: lang
                 });
             } else {
