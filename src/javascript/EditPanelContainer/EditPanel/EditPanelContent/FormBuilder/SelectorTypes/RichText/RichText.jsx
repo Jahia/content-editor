@@ -2,6 +2,7 @@ import React from 'react';
 import {compose} from 'react-apollo';
 import {connect} from 'formik';
 import CKEditor from 'ckeditor4-react';
+CKEditor.displayName = 'CKEditor';
 import * as PropTypes from 'prop-types';
 
 export class RichText extends React.Component {

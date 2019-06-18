@@ -14,8 +14,12 @@ const styles = () => ({
     }
 });
 
-export const ImageListCmp = ({error, images, multipleSelectable, classes, onImageDoubleClick, onImageSelection}) => {
-    const [selectedImages, setSelectedImages] = useState([]);
+export const ImageListCmp = ({error, images, multipleSelectable, classes, onImageDoubleClick, onImageSelection, initialSelection}) => {
+    const [selectedImages, setSelectedImages] = useState(
+        initialSelection
+            .map(path => images.find(i => i.path === path))
+            .filter(img => Boolean(img))
+    );
     const onClickHandler = useCallback(img => {
         const imgSelectedIndex = selectedImages.findIndex(i => i.uuid === img.uuid);
         let newSelectedImg;
@@ -42,7 +46,7 @@ export const ImageListCmp = ({error, images, multipleSelectable, classes, onImag
                 return (
                     <Card
                         key={img.uuid}
-                        image={{src: img.path, alt: img.name}}
+                        image={{src: img.url, alt: img.name}}
                         headerText={img.name}
                         subhead={`${img.type}${img.width && img.height ? ` - ${img.width}x${img.height}px` : ''}`}
                         selected={Boolean(selectedImages.find(i => i.uuid === img.uuid))}
@@ -58,6 +62,7 @@ export const ImageListCmp = ({error, images, multipleSelectable, classes, onImag
 ImageListCmp.defaultProps = {
     error: null,
     images: [],
+    initialSelection: [],
     multipleSelectable: false,
     onImageSelection: () => {},
     onImageDoubleClick: () => {}
@@ -71,8 +76,10 @@ ImageListCmp.propTypes = {
         height: PropTypes.string,
         type: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
+        url: PropTypes.string.isRequired,
         path: PropTypes.string.isRequired
     })),
+    initialSelection: PropTypes.arrayOf(PropTypes.string),
     multipleSelectable: PropTypes.bool,
     classes: PropTypes.object.isRequired,
     onImageDoubleClick: PropTypes.func,

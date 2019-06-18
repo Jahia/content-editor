@@ -18,7 +18,7 @@ export const MediaPickerDialog = ({
     id,
     t,
     formik,
-    initialPath,
+    initialSelectedItem,
     field
 }) => {
     return (
@@ -27,7 +27,7 @@ export const MediaPickerDialog = ({
                 idInput={id}
                 site={editorContext.site}
                 lang={editorContext.lang}
-                initialPath={initialPath}
+                initialSelectedItem={initialSelectedItem}
                 nodeTreeConfigs={[
                     {
                         rootPath: '/files',
@@ -56,11 +56,12 @@ export const MediaPickerDialog = ({
                     setIsOpen(false);
                 }}
             >
-                {(setSelectedItem, selectedPath) => (
+                {(setSelectedItem, selectedPath, initialSelection) => (
                     <ImageListQuery
                         field={field}
                         setSelectedItem={setSelectedItem}
                         selectedPath={selectedPath}
+                        initialSelection={initialSelection}
                         formik={formik}
                     />
                 )}
@@ -70,7 +71,7 @@ export const MediaPickerDialog = ({
 };
 
 MediaPickerDialog.defaultProps = {
-    initialPath: null
+    initialSelectedItem: null
 };
 
 MediaPickerDialog.propTypes = {
@@ -81,5 +82,5 @@ MediaPickerDialog.propTypes = {
     t: PropTypes.func.isRequired,
     formik: PropTypes.object.isRequired,
     field: PropTypes.object.isRequired,
-    initialPath: PropTypes.string
+    initialSelectedItem: PropTypes.string
 };

@@ -3,7 +3,7 @@ import {shallow} from '@jahia/test-framework';
 
 import {RichText} from './RichText';
 
-const RICH_TEXT_COMPONENT_TAG = 'n'; // TODO why is that?
+const RICH_TEXT_COMPONENT_TAG = 'CKEditor';
 
 describe('RichText component', () => {
     let props;
@@ -11,6 +11,7 @@ describe('RichText component', () => {
 
     beforeEach(() => {
         props = {
+            id: 'richID',
             field: {
                 formDefinition: {
                     name: 'x'

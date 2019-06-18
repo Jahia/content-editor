@@ -26,7 +26,8 @@ describe('PreviewContainer', () => {
         defaultProps = {
             editorContext: {
                 path: '',
-                language: 'en'
+                language: 'en',
+                lang: 'fr'
             },
             t: jest.fn(),
             classes: {}

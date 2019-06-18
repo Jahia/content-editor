@@ -12,6 +12,7 @@ const ImageListQueryCmp = ({
     field,
     setSelectedItem,
     selectedPath,
+    initialSelection,
     formik
 }) => {
     const {data, error, loading} = useQuery(MediaPickerImages, {
@@ -36,13 +37,14 @@ const ImageListQueryCmp = ({
     const images = data.jcr.result.children.nodes.map(rawImg => {
         return {
             uuid: rawImg.uuid,
-            path: `${
+            url: `${
                 window.contextJsParameters.contextPath
             }/files/default${encodeJCRPath(rawImg.path)}`,
+            path: rawImg.path,
             name: rawImg.fileName.value,
             type: rawImg.children.nodes[0].mimeType.value.replace('image/', ''),
-            width: rawImg.width ? rawImg.width.value : null,
-            height: rawImg.height ? rawImg.height.value : null
+            width: rawImg.width ? `${rawImg.width.value}` : null,
+            height: rawImg.height ? `${rawImg.height.value}` : null
         };
     });
 
@@ -50,6 +52,7 @@ const ImageListQueryCmp = ({
         <ImageList
             images={images}
             error={error}
+            initialSelection={initialSelection}
             onImageSelection={setSelectedItem}
             onImageDoubleClick={image => {
                 formik.setFieldValue(
@@ -62,12 +65,17 @@ const ImageListQueryCmp = ({
     );
 };
 
+ImageListQueryCmp.defaultProps = {
+    initialSelection: null
+};
+
 ImageListQueryCmp.propTypes = {
     t: PropTypes.func.isRequired,
     field: PropTypes.object.isRequired,
     setSelectedItem: PropTypes.func.isRequired,
     selectedPath: PropTypes.string.isRequired,
-    formik: PropTypes.object.isRequired
+    formik: PropTypes.object.isRequired,
+    initialSelection: PropTypes.array
 };
 
 export const ImageListQuery = translate()(ImageListQueryCmp);

@@ -73,7 +73,7 @@ describe('Picker dialog', () => {
     });
 
     it('should open each NodeTrees parent path when initialPath is given', () => {
-        defaultProps.initialPath = '/files/background/cats';
+        defaultProps.initialSelectedItem = '/sites/mySite/files/background/cats/cat.png';
         const cmp = shallowWithTheme(
             <PickerDialog {...defaultProps}/>,
             {},

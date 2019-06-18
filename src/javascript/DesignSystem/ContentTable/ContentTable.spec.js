@@ -9,8 +9,8 @@ describe('ContentTable', () => {
     beforeEach(() => {
         defaultProps = {
             data: [
-                {id: '1', name: 'name 1', type: 'type 1', createdBy: 'createdBy 1', lastModified: 'lastModified 1'},
-                {id: '2', name: 'name 2', type: 'type 2', createdBy: 'createdBy 2', lastModified: 'lastModified 2'}
+                {id: '1', name: 'name 1', path: 'path1', type: 'type 1', createdBy: 'createdBy 1', lastModified: 'lastModified 1'},
+                {id: '2', name: 'name 2', path: 'path2', type: 'type 2', createdBy: 'createdBy 2', lastModified: 'lastModified 2'}
             ],
             columns: [
                 {property: 'name', label: 'Column 1'},
@@ -78,5 +78,26 @@ describe('ContentTable', () => {
         expect(cmp.find('WithStyles(TableRow)').debug()).toContain('type 1');
         expect(cmp.find('WithStyles(TableRow)').debug()).toContain('createdBy 1');
         expect(cmp.find('WithStyles(TableRow)').debug()).toContain('lastModified 1');
+    });
+
+    it('should not select initially one row', () => {
+        const cmp = shallowWithTheme(
+            <ContentTable {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        expect(cmp.find('WithStyles(TableRow)').at(0).props().selected).toBe(false);
+    });
+
+    it('should select initially one row', () => {
+        defaultProps.initialSelection = ['path1'];
+        const cmp = shallowWithTheme(
+            <ContentTable {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        expect(cmp.find('WithStyles(TableRow)').at(0).props().selected).toBe(true);
     });
 });

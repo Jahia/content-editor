@@ -35,7 +35,6 @@ const style = theme => ({
 });
 
 const TimeSelectorCmp = ({classes, disabledHours, selectedHour, onHourSelected, ...props}) => {
-    console.log('timeSelector', disabledHours);
     return (
         <ul className={`TimePicker ${classes.container}`} {...props}>
             {hours(disabledHours).map(hour => (

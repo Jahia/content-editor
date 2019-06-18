@@ -14,7 +14,7 @@ function Transition(props) {
 export const ContentPickerDialog = ({
     isOpen,
     setIsOpen,
-    initialPath,
+    initialSelectedItem,
     editorContext,
     id,
     nodeTreeConfigs,
@@ -29,7 +29,7 @@ export const ContentPickerDialog = ({
                 idInput={id}
                 site={editorContext.site}
                 lang={editorContext.lang}
-                initialPath={initialPath}
+                initialSelectedItem={initialSelectedItem}
                 nodeTreeConfigs={nodeTreeConfigs}
                 modalCancelLabel={t(
                     'content-editor:label.contentEditor.edit.fields.modalCancel'
@@ -47,7 +47,7 @@ export const ContentPickerDialog = ({
                     setIsOpen(false);
                 }}
             >
-                {(setSelectedItem, selectedPath) => {
+                {(setSelectedItem, selectedPath, initialSelection) => {
                     // Build table config from picker config
                     /*
        Todo: make the picker work as CMM, use the recursionTypesFilter to browse all contents within a page
@@ -71,6 +71,7 @@ export const ContentPickerDialog = ({
                             tableConfig={tableConfig}
                             setSelectedItem={setSelectedItem}
                             selectedPath={selectedPath}
+                            initialSelection={initialSelection}
                             formik={formik}
                             editorContext={editorContext}
                         />
@@ -82,7 +83,7 @@ export const ContentPickerDialog = ({
 };
 
 ContentPickerDialog.defaultProps = {
-    initialPath: null
+    initialSelectedItem: null
 };
 
 ContentPickerDialog.propTypes = {
@@ -95,5 +96,5 @@ ContentPickerDialog.propTypes = {
     formik: PropTypes.object.isRequired,
     field: PropTypes.object.isRequired,
     pickerConfig: PropTypes.object.isRequired,
-    initialPath: PropTypes.string
+    initialSelectedItem: PropTypes.string
 };
