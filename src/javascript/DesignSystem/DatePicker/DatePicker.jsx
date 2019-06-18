@@ -45,6 +45,7 @@ const DatePickerCmp = ({
                 locale={lang}
                 disabledDays={disabledDays}
                 selectedDays={selectedDate}
+                month={(selectedDate && selectedDate.length > 0) ? new Date(selectedDate[0]) : new Date()}
                 months={locale.months}
                 weekdaysLong={locale.weekdays}
                 weekdaysShort={locale.weekdaysShort}
