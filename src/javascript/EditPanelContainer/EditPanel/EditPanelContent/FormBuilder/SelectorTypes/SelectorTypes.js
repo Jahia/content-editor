@@ -10,7 +10,7 @@ const SelectorTypes = {
     Text: {cmp: Text, key: 'Text'},
     TextArea: {cmp: TextArea, key: 'TextArea'},
     RichText: {cmp: RichText, key: 'RichText'},
-    ChoiceList: {cmp: ChoiceList, key: 'ChoiceList'},
+    Choicelist: {cmp: ChoiceList, key: 'Choicelist'},
     DateTimePicker: {cmp: DateTimePicker, key: 'DateTimePicker'},
     DatePicker: {cmp: DateTimePicker, key: 'DatePicker'},
     Checkbox: {
