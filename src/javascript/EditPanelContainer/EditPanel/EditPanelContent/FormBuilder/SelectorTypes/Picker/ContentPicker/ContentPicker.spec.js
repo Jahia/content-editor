@@ -30,7 +30,8 @@ describe('contentPicker', () => {
                 }
             },
             id: 'contentId',
-            editorContext: {}
+            editorContext: {},
+            setActionContext: jest.fn()
         };
 
         setFormikValues({contentId: 'ojrzoij'});

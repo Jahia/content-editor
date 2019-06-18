@@ -41,7 +41,7 @@ describe('contentPickerFilled', () => {
             formik: {},
             nodeTreeConfigs: [],
             pickerConfig: {},
-            setActionContext: () => {}
+            setActionContext: jest.fn()
         };
 
         window.contextJsParameters = {

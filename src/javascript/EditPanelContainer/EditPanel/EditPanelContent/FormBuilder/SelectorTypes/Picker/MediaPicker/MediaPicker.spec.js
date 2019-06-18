@@ -30,7 +30,8 @@ describe('mediaPicker', () => {
                 }
             },
             id: 'imageid',
-            editorContext: {}
+            editorContext: {},
+            setActionContext: jest.fn()
         };
 
         setFormikValues({imageid: 'ojrzoij'});
