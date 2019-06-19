@@ -6,9 +6,6 @@ import {Picker} from '../../../../../../../../DesignSystem/Picker';
 import {encodeJCRPath} from '../../../../../../EditPanel.utils';
 import {MediaPickerFilledQuery} from './MediaPickerFilled.gql-queries';
 import {MediaPickerDialog} from '../MediaPickerDialog';
-import {DisplayActions} from '@jahia/react-material';
-import IconButton from '@material-ui/core/IconButton';
-
 import {useQuery} from 'react-apollo-hooks';
 
 const MediaPickerFilledCmp = ({t, field, id, uuid, editorContext, formik, setActionContext}) => {
@@ -34,9 +31,7 @@ const MediaPickerFilledCmp = ({t, field, id, uuid, editorContext, formik, setAct
 
     const imageData = data.jcr.result;
     const fieldData = {
-        url: `${
-            window.contextJsParameters.contextPath
-        }/files/default${encodeJCRPath(imageData.path)}`,
+        url: `${window.contextJsParameters.contextPath}/files/default${encodeJCRPath(imageData.path)}`,
         name: imageData.name,
         info: `${imageData.children.nodes[0].mimeType.value} - ${parseInt(
             imageData.height.value,
@@ -50,31 +45,14 @@ const MediaPickerFilledCmp = ({t, field, id, uuid, editorContext, formik, setAct
 
     return (
         <>
-            <Picker
-                readOnly={field.formDefinition && field.formDefinition.readOnly}
-                field={field}
-                fieldData={fieldData}
-                selectedId={uuid}
-                id={id}
-                onClick={() => setIsOpen(!isOpen)}
-            >
-                <DisplayActions
-                    context={{field}}
-                    target="unsetFieldActions"
-                    render={({context}) => {
-                        return (
-                            <IconButton
-                                data-sel-field-picker-action={context.actionKey}
-                                onClick={e => {
-                                    context.onClick(context, e);
-                                }}
-                            >
-                                {context.buttonIcon}
-                            </IconButton>
-                        );
-                    }}
-                />
-            </Picker>
+            <Picker readOnly={field.formDefinition && field.formDefinition.readOnly}
+                    field={field}
+                    fieldData={fieldData}
+                    selectedId={uuid}
+                    id={id}
+                    onClick={() => setIsOpen(!isOpen)}
+            />
+
             <MediaPickerDialog
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}

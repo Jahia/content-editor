@@ -14,7 +14,6 @@ describe('picker empty', () => {
             emptyLabel: 'totoprops',
             emptyIcon: <ImageIcon/>,
             onClick: jest.fn(),
-            children: '',
             classes: {}
         };
     });

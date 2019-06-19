@@ -6,22 +6,9 @@ import {Picker} from '../../../../../../../../DesignSystem/Picker';
 import {ContentPickerFilledQuery} from './ContentPickerFilled.gql-queries';
 import {encodeJCRPath} from '../../../../../../EditPanel.utils';
 import {useQuery} from 'react-apollo-hooks';
-import {DisplayActions} from '@jahia/react-material';
-import IconButton from '@material-ui/core/IconButton';
-
 import {ContentPickerDialog} from '../ContentPickerDialog';
 
-const ContentPickerFilledCmp = ({
-    t,
-    field,
-    formik,
-    id,
-    uuid,
-    editorContext,
-    nodeTreeConfigs,
-    pickerConfig,
-    setActionContext
-}) => {
+const ContentPickerFilledCmp = ({t, field, formik, id, uuid, editorContext, nodeTreeConfigs, pickerConfig, setActionContext}) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const {data, error, loading} = useQuery(ContentPickerFilledQuery, {
@@ -56,28 +43,11 @@ const ContentPickerFilledCmp = ({
 
     return (
         <>
-            <Picker
-                readOnly={field.formDefinition && field.formDefinition.readOnly}
-                fieldData={fieldData}
-                onClick={() => setIsOpen(!isOpen)}
-            >
-                <DisplayActions
-                    context={{field}}
-                    target="unsetFieldActions"
-                    render={({context}) => {
-                        return (
-                            <IconButton
-                                data-sel-field-picker-action={context.actionKey}
-                                onClick={e => {
-                                    context.onClick(context, e);
-                                }}
-                            >
-                                {context.buttonIcon}
-                            </IconButton>
-                        );
-                    }}
-                />
-            </Picker>
+            <Picker readOnly={field.formDefinition && field.formDefinition.readOnly}
+                    fieldData={fieldData}
+                    onClick={() => setIsOpen(!isOpen)}
+            />
+
             <ContentPickerDialog
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
