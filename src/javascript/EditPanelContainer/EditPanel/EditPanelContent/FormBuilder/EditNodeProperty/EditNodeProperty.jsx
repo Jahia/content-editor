@@ -1,7 +1,7 @@
 import React, {useRef, useState} from 'react';
 import {FormControl, Grid, InputLabel, withStyles} from '@material-ui/core';
 import {MoreVert, Public} from '@material-ui/icons';
-import {Badge, Button} from '@jahia/design-system-kit';
+import {Badge, IconButton} from '@jahia/design-system-kit';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
 import * as PropTypes from 'prop-types';
@@ -9,18 +9,21 @@ import {ContextualMenu} from '@jahia/react-material';
 
 let styles = theme => ({
     formControl: Object.assign(theme.typography.zeta, {
-        padding: '16px 0',
-        flexGrow: 1
+        padding: '8px 0',
+        flexGrow: 1,
+        transform: 'none!important',
+        position: 'relative'
     }),
     inputLabel: {
-        color: theme.palette.font.beta
+        ...theme.typography.zeta,
+        color: theme.palette.font.beta,
+        display: 'inline-block'
     },
     input: {
         flexGrow: 5
     },
     badge: {
-        marginBottom: theme.spacing.unit,
-        marginRight: 84
+        marginBottom: theme.spacing.unit
     }
 });
 
@@ -42,33 +45,6 @@ export const EditNodeProperty = ({t, classes, field, siteInfo, labelHtmlFor, sel
                      data-sel-content-editor-field={field.formDefinition.name}
                      data-sel-content-editor-field-type={selectorType.key}
         >
-            <Grid
-                container
-                direction="row"
-                justify="space-between"
-                alignItems="center"
-            >
-                <Grid item>
-                    <InputLabel shrink
-                                className={classes.inputLabel}
-                                htmlFor={labelHtmlFor}
-                                style={(!field.formDefinition.i18n && siteInfo.languages.length > 1) ? {paddingTop: 32} : {}}
-                    >
-                        {field.formDefinition.displayName}
-                    </InputLabel>
-                </Grid>
-
-                {(!field.formDefinition.i18n && siteInfo.languages.length > 1) &&
-                <Grid item>
-                    <Badge className={classes.badge}
-                           badgeContent={t('content-editor:label.contentEditor.edit.sharedLanguages')}
-                           icon={<Public/>}
-                           variant="normal"
-                           color="warning"
-                    />
-                </Grid>
-                }
-            </Grid>
 
             <Grid
                 container
@@ -77,16 +53,40 @@ export const EditNodeProperty = ({t, classes, field, siteInfo, labelHtmlFor, sel
                 alignItems="center"
             >
                 <Grid item className={classes.input}>
+                    <Grid
+                        container
+                        direction="row"
+                        justify="space-between"
+                        alignItems="center"
+                    >
+                        <Grid item>
+                            <InputLabel shrink
+                                        className={classes.inputLabel}
+                                        htmlFor={labelHtmlFor}
+                                        style={(!field.formDefinition.i18n && siteInfo.languages.length > 1) ? {paddingTop: 24} : {}}
+                            >
+                                {field.formDefinition.displayName}
+                            </InputLabel>
+                            {(!field.formDefinition.i18n && siteInfo.languages.length > 1) &&
+                                <Badge className={classes.badge}
+                                       badgeContent={t('content-editor:label.contentEditor.edit.sharedLanguages')}
+                                       icon={<Public/>}
+                                       variant="normal"
+                                       color="info"
+                                />
+                            }
+                        </Grid>
+                    </Grid>
                     <FieldComponent field={field} id={field.formDefinition.name} editorContext={editorContext} setActionContext={setActionContext}/>
                 </Grid>
                 <Grid item>
                     {!actionContext.noAction &&
                     <>
                         <ContextualMenu ref={contextualMenu} actionKey={selectorType.key + 'Menu'} context={actionContext}/>
-                        <Button variant="ghost"
-                                aria-label={t('content-editor:label.contentEditor.edit.action.moreOptions')}
-                                icon={<MoreVert/>}
-                                onClick={event => {
+                        <IconButton variant="ghost"
+                                    aria-label={t('content-editor:label.contentEditor.edit.action.moreOptions')}
+                                    icon={<MoreVert/>}
+                                    onClick={event => {
                                     event.stopPropagation();
                                     contextualMenu.current.open(event);
                                 }

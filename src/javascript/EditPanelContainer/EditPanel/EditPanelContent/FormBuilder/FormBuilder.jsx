@@ -35,7 +35,7 @@ export const FormBuilder = ({classes, fields, formik, siteInfo, editorContext}) 
                 return (
                     <ExpansionPanel key={target} variant="normal" defaultExpanded={index === 0} data-sel-content-editor-fields-group={target}>
                         <ExpansionPanelSummary expandIcon={<ExpandMore/>}>
-                            <Typography variant="epsilon" color="alpha">{target}</Typography>
+                            <Typography variant="gamma" color="alpha">{target}</Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
                             <FormGroup variant="normal" className={classes.formGroup}>
