@@ -6,15 +6,12 @@ import {Input} from '../../../../../../DesignSystem/Input';
 
 export class Text extends React.Component {
     render() {
-        let {field, id, editorContext} = this.props;
-        let {values, handleChange, handleBlur} = this.props.formik;
+        const {field, id} = this.props;
+        const {values, handleChange, handleBlur} = this.props.formik;
 
         const fieldType = field.jcrDefinition.requiredType;
-        const isNumber = fieldType === 'DOUBLE' ||
-            fieldType === 'LONG' ||
-            fieldType === 'DECIMAL';
-
-        const decimalSeparator = editorContext.lang === 'en' ? '.' : ',';
+        const isNumber = fieldType === 'DOUBLE' || fieldType === 'LONG' || fieldType === 'DECIMAL';
+        const decimalSeparator = navigator.language.includes('en') ? '.' : ',';
         const value = values[field.formDefinition.name];
 
         return (
@@ -35,7 +32,6 @@ export class Text extends React.Component {
 }
 
 Text.propTypes = {
-    editorContext: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,
     field: PropTypes.object.isRequired,
     formik: PropTypes.object.isRequired
