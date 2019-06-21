@@ -82,15 +82,7 @@ const styles = theme => ({
     }
 });
 
-const PickerCmp = ({
-    classes,
-    readOnly,
-    emptyLabel,
-    emptyIcon,
-    children,
-    fieldData,
-    onClick
-}) => {
+const PickerCmp = ({classes, readOnly, emptyLabel, emptyIcon, fieldData, onClick}) => {
     // If picker have already data
     if (fieldData) {
         return (
@@ -124,7 +116,6 @@ const PickerCmp = ({
                         {fieldData.info}
                     </Typography>
                 </div>
-                {children}
             </article>
         );
     }
@@ -148,7 +139,6 @@ const PickerCmp = ({
             <Typography variant="omega" color="beta" component="span">
                 {emptyLabel}
             </Typography>
-            {children}
         </button>
     );
 };
@@ -158,7 +148,8 @@ PickerCmp.defaultProps = {
     fieldData: null,
     emptyLabel: '',
     emptyIcon: null,
-    onClick: () => {}
+    onClick: () => {
+    }
 };
 
 PickerCmp.propTypes = {
@@ -171,8 +162,7 @@ PickerCmp.propTypes = {
         info: PropTypes.string.isRequired
     }),
     emptyLabel: PropTypes.string,
-    emptyIcon: PropTypes.element,
-    children: PropTypes.node
+    emptyIcon: PropTypes.element
 };
 
 export const Picker = withStyles(styles)(PickerCmp);
