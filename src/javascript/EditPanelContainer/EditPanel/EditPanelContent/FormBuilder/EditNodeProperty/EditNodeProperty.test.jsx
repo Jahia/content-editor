@@ -33,6 +33,7 @@ describe('EditNodeProperty component', () => {
                 cmp: () => <div>test</div>,
                 key: 'test'
             },
+            formik: {},
             t: i18nKey => i18nKey
         };
     });

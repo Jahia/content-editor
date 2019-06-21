@@ -33,6 +33,7 @@ const MediaPickerFilledCmp = ({t, field, id, uuid, editorContext, formik, setAct
     const fieldData = {
         url: `${window.contextJsParameters.contextPath}/files/default${encodeJCRPath(imageData.path)}`,
         name: imageData.name,
+        path: imageData.path,
         info: `${imageData.children.nodes[0].mimeType.value} - ${parseInt(
             imageData.height.value,
             10
@@ -40,7 +41,9 @@ const MediaPickerFilledCmp = ({t, field, id, uuid, editorContext, formik, setAct
     };
 
     setActionContext({
-        open: setIsOpen
+        open: setIsOpen,
+        fieldData,
+        editorContext
     });
 
     return (

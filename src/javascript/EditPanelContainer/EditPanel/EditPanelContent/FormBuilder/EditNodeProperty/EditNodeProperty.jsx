@@ -6,6 +6,7 @@ import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
 import * as PropTypes from 'prop-types';
 import {ContextualMenu} from '@jahia/react-material';
+import {connect} from 'formik';
 
 let styles = theme => ({
     formControl: Object.assign(theme.typography.zeta, {
@@ -27,14 +28,14 @@ let styles = theme => ({
     }
 });
 
-export const EditNodeProperty = ({t, classes, field, siteInfo, labelHtmlFor, selectorType, editorContext}) => {
+export const EditNodeProperty = ({t, classes, field, siteInfo, labelHtmlFor, selectorType, editorContext, formik}) => {
     const contextualMenu = useRef(null);
     const [actionContext, _setActionContext] = useState({noAction: true});
 
     const setActionContext = newActionContext => {
         if ((actionContext.noAction && !newActionContext.noAction) ||
             (!actionContext.noAction && newActionContext.noAction)) {
-            _setActionContext(newActionContext);
+            _setActionContext({field, formik, ...newActionContext});
         }
     };
 
@@ -106,10 +107,12 @@ EditNodeProperty.propTypes = {
     siteInfo: PropTypes.object.isRequired,
     labelHtmlFor: PropTypes.string.isRequired,
     selectorType: PropTypes.object.isRequired,
-    editorContext: PropTypes.object.isRequired
+    editorContext: PropTypes.object.isRequired,
+    formik: PropTypes.object.isRequired
 };
 
 export default compose(
+    connect,
     translate(),
     withStyles(styles)
 )(EditNodeProperty);

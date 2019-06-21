@@ -44,7 +44,8 @@ const styles = theme => ({
         paddingRight: theme.spacing.unit,
         '& button': {
             color: theme.palette.font.beta
-        }
+        },
+        cursor: 'pointer'
     },
     fieldContainerReadOnly: {
         border: `1px ${theme.palette.ui.omega} solid`,

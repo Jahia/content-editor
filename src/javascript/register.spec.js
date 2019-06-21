@@ -12,7 +12,6 @@ jest.mock('./actions/unpublishAction', () => {
 
 const publishAction = require('./actions/publishAction');
 const unpublishAction = require('./actions/unpublishAction');
-const {unsetFieldAction} = require('./actions/unsetFieldAction');
 
 describe('register', () => {
     let actionsRegistry;
@@ -57,17 +56,6 @@ describe('register', () => {
                 .mock
                 .calls
                 .find(call => call[1] === unpublishAction)
-        )
-            .toBeTruthy();
-    });
-
-    it('should register unset action', () => {
-        expect(
-            actionsRegistry
-                .add
-                .mock
-                .calls
-                .find(call => call[1] === unsetFieldAction)
         )
             .toBeTruthy();
     });
