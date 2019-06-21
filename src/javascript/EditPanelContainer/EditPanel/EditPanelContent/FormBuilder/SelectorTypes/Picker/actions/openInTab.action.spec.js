@@ -1,4 +1,5 @@
 import {openInTabAction} from './openInTab.action';
+import EditPanelConstants from '../../../../../EditPanelConstants';
 
 describe('openInTab action', () => {
     it('should open in new tab on click', () => {
@@ -9,10 +10,14 @@ describe('openInTab action', () => {
             },
             editorContext: {
                 lang: 'fr'
+            },
+            dxContext: {
+                contextPath: '',
+                urlBrowser: '/cms/contentmanager'
             }
         };
         openInTabAction.onClick(context);
 
-        expect(window.open).toHaveBeenCalledWith('/cms/contentmanager/digitall/fr/edit/contents', '_blank');
+        expect(window.open).toHaveBeenCalledWith(`/cms/contentmanager/digitall/fr/${EditPanelConstants.baseRoute}/contents`, '_blank');
     });
 });

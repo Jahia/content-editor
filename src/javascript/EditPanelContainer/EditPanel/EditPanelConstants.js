@@ -1,4 +1,5 @@
 const EditPanelConstants = {
+    baseRoute: 'edit',
     submitOperation: {
         SAVE: 'SAVE',
         SAVE_PUBLISH: 'PUBLISH',

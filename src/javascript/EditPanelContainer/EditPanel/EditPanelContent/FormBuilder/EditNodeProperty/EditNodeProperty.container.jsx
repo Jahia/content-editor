@@ -2,6 +2,7 @@ import React from 'react';
 import * as PropTypes from 'prop-types';
 import SelectorTypes from '../SelectorTypes';
 import EditNodeProperty from './EditNodeProperty';
+import {DxContext} from '@jahia/react-material';
 
 export const EditNodePropertyContainer = ({field, siteInfo, editorContext}) => {
     let selectorType = SelectorTypes.resolveSelectorType(field.formDefinition.selectorType, field.formDefinition.selectorOptions);
@@ -16,12 +17,17 @@ export const EditNodePropertyContainer = ({field, siteInfo, editorContext}) => {
     }
 
     return (
-        <EditNodeProperty field={field}
-                          labelHtmlFor={field.formDefinition.name}
-                          siteInfo={siteInfo}
-                          selectorType={selectorType}
-                          editorContext={editorContext}
-        />
+        <DxContext.Consumer>
+            {dxContext => (
+                <EditNodeProperty field={field}
+                                  labelHtmlFor={field.formDefinition.name}
+                                  siteInfo={siteInfo}
+                                  selectorType={selectorType}
+                                  editorContext={editorContext}
+                                  dxContext={dxContext}
+                />
+            )}
+        </DxContext.Consumer>
     );
 };
 

@@ -34,7 +34,8 @@ describe('EditNodeProperty component', () => {
                 key: 'test'
             },
             formik: {},
-            t: i18nKey => i18nKey
+            t: i18nKey => i18nKey,
+            dxContext: {}
         };
     });
 

@@ -16,18 +16,18 @@ describe('EditNodeProperty container component', () => {
 
     it('should render a Text component when field type is "Text"', () => {
         defaultProps.field.formDefinition.selectorType = 'Text';
-        const cmp = shallow(<EditNodePropertyContainer {...defaultProps}/>);
+        const cmp = shallow(<EditNodePropertyContainer {...defaultProps}/>).dive().dive().dive();
         expect(cmp.props().selectorType.key).toBe('Text');
     });
 
     it('should render a RichText component when field type is "RichText"', () => {
-        const cmp = shallow(<EditNodePropertyContainer {...defaultProps}/>);
+        const cmp = shallow(<EditNodePropertyContainer {...defaultProps}/>).dive().dive().dive();
         expect(cmp.props().selectorType.key).toBe('RichText');
     });
 
     it('should render a ContentPicker component when field type is "picker"', () => {
         defaultProps.field.formDefinition.selectorType = 'Picker';
-        const cmp = shallow(<EditNodePropertyContainer {...defaultProps}/>);
+        const cmp = shallow(<EditNodePropertyContainer {...defaultProps}/>).dive().dive().dive();
         expect(cmp.props().selectorType.key).toBe('ContentPicker');
     });
 
@@ -35,7 +35,7 @@ describe('EditNodeProperty container component', () => {
         defaultProps.field.formDefinition.selectorType = 'Picker';
         defaultProps.field.formDefinition.selectorOptions = [{name: 'type', value: 'image'}];
 
-        const cmp = shallow(<EditNodePropertyContainer {...defaultProps}/>);
+        const cmp = shallow(<EditNodePropertyContainer {...defaultProps}/>).dive().dive().dive();
         expect(cmp.props().selectorType.key).toBe('MediaPicker');
     });
 });

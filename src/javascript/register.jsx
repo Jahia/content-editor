@@ -68,9 +68,8 @@ if (contextJsParameters && contextJsParameters.config && contextJsParameters.con
 registry.add('edit-route', {
     target: ['cmm:0.1'],
     type: 'route',
-    path: '/:siteKey/:lang/edit',
+    path: `/:siteKey/:lang/${EditPanelConstants.baseRoute}`,
     render: () => (
-
         <EditPanelContainer/>
     )
 });
