@@ -1,3 +1,5 @@
+import {Picker} from '@jahia/react-apollo';
+import {PickerTreeViewMaterial} from '@jahia/react-material';
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
@@ -71,6 +73,18 @@ const PickerDialogCmp = ({
     const [openPaths, setOpenPaths] = useState(initialPathOpenPath);
     const [selectedItem, setSelectedItem] = useState(false);
 
+    const openPath = path => {
+        setOpenPaths(previousOpenPaths => previousOpenPaths.concat([path]));
+    };
+
+    const closePath = path => {
+        setOpenPaths(previousOpenPaths => previousOpenPaths.filter(item => item !== path));
+    };
+
+    const setPath = path => {
+        setSelectedPath(path);
+    };
+
     return (
         <>
             <Drawer
@@ -82,29 +96,32 @@ const PickerDialogCmp = ({
                     paper: classes.drawerPaper
                 }}
             >
-                <NodeTrees
-                    isOpen
-                    path={selectedPath}
-                    openPaths={openPaths}
-                    siteKey={site}
-                    lang={lang}
-                    nodeTreeConfigs={nodeTreeConfigs}
-                    classes={{
-                        listItem: classes.listItem
-                    }}
-                    setPath={path => setSelectedPath(path)}
-                    openPath={path =>
-                        setOpenPaths(previousOpenPaths =>
-                            previousOpenPaths.concat([path])
-                        )
-                    }
-                    closePath={path =>
-                        setOpenPaths(previousOpenPaths =>
-                            previousOpenPaths.filter(item => item !== path)
-                        )
-                    }
-                    closeTree={() => console.log('close tree')}
-                />
+                <NodeTrees path={selectedPath}
+                           siteKey={site}
+                           nodeTreeConfigs={nodeTreeConfigs}
+                >
+                    {({path, rootPath, openableTypes, selectableTypes, rootLabel, setRefetch, dataCmRole}) => (
+                        <Picker rootPaths={[rootPath]}
+                                openPaths={openPaths}
+                                openableTypes={openableTypes}
+                                selectableTypes={selectableTypes}
+                                queryVariables={{lang: lang}}
+                                selectedPaths={[path]}
+                                openSelection={false}
+                                setRefetch={setRefetch}
+                                onOpenItem={(path, open) => (open ? openPath(path) : closePath(path))}
+                                onSelectItem={path => setPath(path, {sub: false})}
+                        >
+                            {({handleSelect, ...others}) => (
+                                <PickerTreeViewMaterial {...others}
+                                                        dataCmRole={dataCmRole}
+                                                        rootLabel={rootLabel}
+                                                        classes={{listItem: classes.listItem}}
+                                />
+                            )}
+                        </Picker>
+                    )}
+                </NodeTrees>
             </Drawer>
 
             <main className={classes.modalContent}>
