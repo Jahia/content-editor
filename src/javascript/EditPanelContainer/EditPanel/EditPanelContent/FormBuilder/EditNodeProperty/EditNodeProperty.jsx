@@ -19,6 +19,10 @@ let styles = theme => ({
         color: theme.palette.font.beta,
         display: 'inline-block'
     },
+    emptySpace: {
+        display: 'block',
+        width: 48
+    },
     input: {
         flexGrow: 5
     },
@@ -68,30 +72,38 @@ export const EditNodeProperty = ({t, classes, field, siteInfo, labelHtmlFor, sel
                                 {field.formDefinition.displayName}
                             </InputLabel>
                             {(!field.formDefinition.i18n && siteInfo.languages.length > 1) &&
-                                <Badge className={classes.badge}
-                                       badgeContent={t('content-editor:label.contentEditor.edit.sharedLanguages')}
-                                       icon={<Public/>}
-                                       variant="normal"
-                                       color="info"
-                                />
+                            <Badge className={classes.badge}
+                                   badgeContent={t('content-editor:label.contentEditor.edit.sharedLanguages')}
+                                   icon={<Public/>}
+                                   variant="normal"
+                                   color="info"
+                            />
                             }
                         </Grid>
                     </Grid>
-                    <FieldComponent field={field} id={field.formDefinition.name} editorContext={editorContext} setActionContext={setActionContext}/>
+                    <FieldComponent field={field}
+                                    id={field.formDefinition.name}
+                                    editorContext={editorContext}
+                                    setActionContext={setActionContext}/>
                 </Grid>
                 <Grid item>
-                    {!actionContext.noAction &&
-                    <>
-                        <ContextualMenu ref={contextualMenu} actionKey={selectorType.key + 'Menu'} context={actionContext}/>
-                        <IconButton variant="ghost"
-                                    aria-label={t('content-editor:label.contentEditor.edit.action.moreOptions')}
-                                    icon={<MoreVert/>}
-                                    onClick={event => {
-                                    event.stopPropagation();
-                                    contextualMenu.current.open(event);
-                                }
-                        }/>
-                    </>
+                    {!actionContext.noAction ? (
+                        <>
+                            <ContextualMenu ref={contextualMenu}
+                                            actionKey={selectorType.key + 'Menu'}
+                                            context={actionContext}/>
+                            <IconButton variant="ghost"
+                                        aria-label={t('content-editor:label.contentEditor.edit.action.moreOptions')}
+                                        icon={<MoreVert/>}
+                                        onClick={event => {
+                                            event.stopPropagation();
+                                            contextualMenu.current.open(event);
+                                        }
+                                        }/>
+                        </>
+                    ) : (
+                        <span className={classes.emptySpace}/>
+                    )
                     }
                 </Grid>
             </Grid>
