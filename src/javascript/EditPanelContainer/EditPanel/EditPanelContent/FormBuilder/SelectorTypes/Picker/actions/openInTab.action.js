@@ -1,7 +1,13 @@
+import EditPanelConstants from '../../../../../EditPanelConstants';
+
 export const openInTabAction = {
-    onClick({fieldData, editorContext}) {
-        const site = fieldData.path.split('/')[2];
-        const nodePath = fieldData.path.split('/').splice(3).join('/');
-        window.open(`/cms/contentmanager/${site}/${editorContext.lang}/edit/${nodePath}`, '_blank');
+    onClick({fieldData, editorContext, dxContext}) {
+        const splitPath = fieldData.path.split('/');
+        if (splitPath.length > 2 && splitPath[1] === 'sites') {
+            const siteKey = splitPath[2];
+            const relativeNodePath = splitPath.splice(3).join('/');
+
+            window.open(`${dxContext.contextPath}${dxContext.urlBrowser}/${siteKey}/${editorContext.lang}/${EditPanelConstants.baseRoute}/${relativeNodePath}`, '_blank');
+        }
     }
 };

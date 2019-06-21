@@ -32,14 +32,14 @@ let styles = theme => ({
     }
 });
 
-export const EditNodeProperty = ({t, classes, field, siteInfo, labelHtmlFor, selectorType, editorContext, formik}) => {
+export const EditNodeProperty = ({t, classes, field, siteInfo, labelHtmlFor, selectorType, editorContext, formik, dxContext}) => {
     const contextualMenu = useRef(null);
     const [actionContext, _setActionContext] = useState({noAction: true});
 
     const setActionContext = newActionContext => {
         if ((actionContext.noAction && !newActionContext.noAction) ||
             (!actionContext.noAction && newActionContext.noAction)) {
-            _setActionContext({field, formik, ...newActionContext});
+            _setActionContext({field, formik, dxContext, ...newActionContext});
         }
     };
 
@@ -120,7 +120,8 @@ EditNodeProperty.propTypes = {
     labelHtmlFor: PropTypes.string.isRequired,
     selectorType: PropTypes.object.isRequired,
     editorContext: PropTypes.object.isRequired,
-    formik: PropTypes.object.isRequired
+    formik: PropTypes.object.isRequired,
+    dxContext: PropTypes.object.isRequired
 };
 
 export default compose(
