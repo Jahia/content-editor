@@ -69,7 +69,8 @@ describe('Picker dialog', () => {
             dsGenericTheme
         ).dive();
 
-        expect(cmp.find('WithStyles(NodeTreesCmp)').props().openPaths).toEqual([]);
+        const nodeTreesCmp = cmp.find('WithStyles(NodeTreesCmp)').dive().dive();
+        expect(nodeTreesCmp.find('Picker').props().openPaths).toEqual([]);
     });
 
     it('should open each NodeTrees parent path when initialPath is given', () => {
@@ -80,6 +81,7 @@ describe('Picker dialog', () => {
             dsGenericTheme
         ).dive();
 
-        expect(cmp.find('WithStyles(NodeTreesCmp)').props().openPaths).toEqual(['/sites/mySite', '/sites/mySite/files', '/sites/mySite/files/background']);
+        const nodeTreesCmp = cmp.find('WithStyles(NodeTreesCmp)').dive().dive();
+        expect(nodeTreesCmp.find('Picker').props().openPaths).toEqual(['/sites/mySite', '/sites/mySite/files', '/sites/mySite/files/background']);
     });
 });
