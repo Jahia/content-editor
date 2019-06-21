@@ -30,6 +30,11 @@
                 },
                 "sharedLanguages": "Shared by all languages",
                 "fields": {
+                  "pickersAction": {
+                    "replace": "Change",
+                    "newTab": "Open in a new tab",
+                    "clear": "Clear"
+                  },
                   "imagePicker": {
                     "addImage": "Add Image",
                     "rootLabel": "Files"

@@ -1,8 +1,9 @@
-import {Edit} from '@material-ui/icons';
+import {Edit, Cancel} from '@material-ui/icons';
 import {menuAction} from '@jahia/react-material';
 import {DotsVertical} from 'mdi-material-ui';
 import React from 'react';
-import {replaceContent} from './actions/replaceContent';
+import {replaceAction} from './actions/replace.action';
+import {unsetFieldAction} from './actions/unsetField.action';
 
 const pickerActions = actionsRegistry => {
     actionsRegistry.add('ContentPickerMenu', menuAction, {
@@ -19,11 +20,16 @@ const pickerActions = actionsRegistry => {
         showIcons: true
     });
 
-    // Todo finalize the replace content action
-    actionsRegistry.add('replaceContent', replaceContent, {
+    actionsRegistry.add('replaceContent', replaceAction, {
         buttonIcon: <Edit/>,
-        buttonLabel: 'Replace content',
+        buttonLabel: 'content-editor:label.contentEditor.edit.fields.pickersAction.replace',
         target: ['ContentPickerActions:1', 'MediaPickerActions:1']
+    });
+
+    actionsRegistry.add('unsetFieldActionPicker', unsetFieldAction, {
+        buttonIcon: <Cancel/>,
+        buttonLabel: 'content-editor:label.contentEditor.edit.fields.pickersAction.clear',
+        target: ['ContentPickerActions:2', 'MediaPickerActions:2']
     });
 };
 
