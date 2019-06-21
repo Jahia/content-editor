@@ -32,13 +32,16 @@ const ContentPickerFilledCmp = ({t, field, formik, id, uuid, editorContext, node
 
     const contentData = data.jcr.result;
     const fieldData = {
+        path: contentData.path,
         url: encodeJCRPath(`${contentData.primaryNodeType.icon}.png`),
         name: contentData.displayName,
         info: contentData.primaryNodeType.displayName
     };
 
     setActionContext({
-        open: setIsOpen
+        open: setIsOpen,
+        fieldData,
+        editorContext
     });
 
     return (

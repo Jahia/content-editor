@@ -1,9 +1,10 @@
-import {Edit, Cancel} from '@material-ui/icons';
+import {Edit, Cancel, Launch} from '@material-ui/icons';
 import {menuAction} from '@jahia/react-material';
 import {DotsVertical} from 'mdi-material-ui';
 import React from 'react';
 import {replaceAction} from './actions/replace.action';
 import {unsetFieldAction} from './actions/unsetField.action';
+import {openInTabAction} from './actions/openInTab.action';
 
 const pickerActions = actionsRegistry => {
     actionsRegistry.add('ContentPickerMenu', menuAction, {
@@ -26,10 +27,16 @@ const pickerActions = actionsRegistry => {
         target: ['ContentPickerActions:1', 'MediaPickerActions:1']
     });
 
+    actionsRegistry.add('onpenInNewTab', openInTabAction, {
+        buttonIcon: <Launch/>,
+        buttonLabel: 'content-editor:label.contentEditor.edit.fields.pickersAction.newTab',
+        target: ['ContentPickerActions:2', 'MediaPickerActions:2']
+    });
+
     actionsRegistry.add('unsetFieldActionPicker', unsetFieldAction, {
         buttonIcon: <Cancel/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.fields.pickersAction.clear',
-        target: ['ContentPickerActions:2', 'MediaPickerActions:2']
+        target: ['ContentPickerActions:3', 'MediaPickerActions:3']
     });
 };
 
