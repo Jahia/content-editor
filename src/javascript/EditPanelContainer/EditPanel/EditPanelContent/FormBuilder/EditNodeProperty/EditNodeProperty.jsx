@@ -104,8 +104,7 @@ export const EditNodeProperty = ({t, classes, field, siteInfo, labelHtmlFor, sel
                         </>
                     ) : (
                         <span className={classes.emptySpace}/>
-                    )
-                    }
+                    )}
                 </Grid>
             </Grid>
         </FormControl>

@@ -113,4 +113,34 @@ describe('EditNodeProperty component', () => {
         expect(fieldComponent.exists()).toBe(true);
         expect(fieldComponent.length).toBe(1);
     });
+
+    it('should display the contextualMenu when action exists', () => {
+        let setActionContextFn;
+
+        const Component = ({setActionContext}) => {
+            setActionContextFn = setActionContext;
+            return null;
+        };
+
+        defaultProps.selectorType = {
+            cmp: Component
+        };
+
+        const cmp = shallow(
+            <EditNodeProperty {...defaultProps}/>
+        );
+
+        cmp.find('Component').dive();
+        setActionContextFn({noAction: false});
+
+        expect(cmp.debug()).toContain('ContextualMenu');
+    });
+
+    it('should not display the contextualMenu when action does not exist', () => {
+        const cmp = shallow(
+            <EditNodeProperty {...defaultProps}/>
+        );
+
+        expect(cmp.debug()).not.toContain('ContextualMenu');
+    });
 });
