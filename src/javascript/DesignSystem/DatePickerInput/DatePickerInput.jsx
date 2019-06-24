@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import {DatePicker} from '../DatePicker';
 import {withStyles} from '@material-ui/core/styles';
 import {Input} from '../Input';
-import {javaDateFormatToJSDF} from './date.util';
 import InputMask from 'react-input-mask';
 
 import dayjs from 'dayjs';
@@ -34,14 +33,14 @@ const formatDateTime = (datetime, lang, variant, displayDateFormat) => {
 
     return dayjs(datetime)
         .locale(lang)
-        .format(javaDateFormatToJSDF(displayDateFormat) || datetimeFormat[variant]);
+        .format(displayDateFormat || datetimeFormat[variant]);
 };
 
-export const getMaskOptions = (displayDateFormat, isDateTime) => {
-    const mask = displayDateFormat ? displayDateFormat.replace(/[a-zA-Z]/g, '9') : (isDateTime ? '99/99/9999 99:99' : '99/99/9999');
+export const getMaskOptions = (displayDateMask, isDateTime) => {
+    const mask = displayDateMask ? displayDateMask : (isDateTime ? '__/__/____ __:__' : '__/__/____');
     return {
-        mask: mask,
-        empty: mask.replace(/9/g, '_')
+        mask: mask.replace(/_/g, '9'),
+        empty: mask
     };
 };
 
@@ -55,6 +54,7 @@ const DatePickerInputCmp = ({
     initialValue,
     readOnly,
     displayDateFormat,
+    displayDateMask,
     ...props
 }) => {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -65,7 +65,7 @@ const DatePickerInputCmp = ({
 
     const isDateTime = variant === 'datetime';
     const htmlInput = useRef();
-    const maskOptions = getMaskOptions(displayDateFormat, isDateTime);
+    const maskOptions = getMaskOptions(displayDateMask, isDateTime);
 
     const handleOpenPicker = () => {
         if (!readOnly) {
@@ -158,7 +158,8 @@ DatePickerInputCmp.defaultProps = {
     onChange: () => {},
     initialValue: null,
     readOnly: false,
-    displayDateFormat: null
+    displayDateFormat: null,
+    displayDateMask: null
 };
 
 DatePickerInputCmp.propTypes = {
@@ -170,7 +171,8 @@ DatePickerInputCmp.propTypes = {
     onBlur: PropTypes.func,
     onChange: PropTypes.func,
     readOnly: PropTypes.bool,
-    displayDateFormat: PropTypes.string
+    displayDateFormat: PropTypes.string,
+    displayDateMask: PropTypes.string
 };
 
 export const DatePickerInput = withStyles(styles)(DatePickerInputCmp);

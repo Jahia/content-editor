@@ -12,9 +12,15 @@ const variantMapper = {
 };
 
 export const DateTimePicker = ({id, field, editorContext}) => {
-    const displayDateFormat = field.formDefinition.selectorOptions.find(option => option.name === 'format');
     const variant = variantMapper[field.formDefinition.selectorType];
-    const disabledDays = fillDisabledDaysFromJCRConstraints(field, variant === 'datetime');
+    const isDateTime = variant === 'datetime';
+    const disabledDays = fillDisabledDaysFromJCRConstraints(field, isDateTime);
+
+    // Handle the date format, only "en" have a specific format.
+    let displayDateFormat = editorContext.uiLang === 'en' ? 'MM/DD/YYYY' : 'DD/MM/YYYY';
+    displayDateFormat = isDateTime ? (displayDateFormat + ' HH:mm') : displayDateFormat;
+    const displayDateMask = isDateTime ? '__/__/____ __:__' : '__/__/____';
+
     return (
         <Field
             name={field.formDefinition.name}
@@ -24,7 +30,7 @@ export const DateTimePicker = ({id, field, editorContext}) => {
                   return (
                       <DatePickerInput
                           dayPickerProps={{disabledDays}}
-                          lang={editorContext.lang}
+                          lang={editorContext.uiLang}
                           initialValue={value ? dayjs(value).toDate() : value}
                           onChange={
                             date => {
@@ -34,7 +40,8 @@ export const DateTimePicker = ({id, field, editorContext}) => {
                             }
                         }
                           {...formikField}
-                          displayDateFormat={displayDateFormat && displayDateFormat.value}
+                          displayDateFormat={displayDateFormat}
+                          displayDateMask={displayDateMask}
                           readOnly={field.formDefinition.readOnly}
                           variant={variant}
                           id={id}

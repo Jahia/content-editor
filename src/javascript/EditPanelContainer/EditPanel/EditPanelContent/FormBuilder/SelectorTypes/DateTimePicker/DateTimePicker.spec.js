@@ -6,6 +6,15 @@ import {DateTimePicker} from './DateTimePicker';
 describe('DateTimePicker component', () => {
     let props;
 
+    let testDateFormat = (uiLang, format) => {
+        props.editorContext.uiLang = uiLang;
+        const RenderProps = shallow(<DateTimePicker {...props}/>)
+            .props().render;
+        const cmp = shallow(<RenderProps field={{value: new Date().toISOString()}} form={{setFieldValue: () => {}}}/>);
+
+        expect(cmp.props().displayDateFormat).toBe(format);
+    };
+
     beforeEach(() => {
         props = {
             id: 'dtp1',
@@ -18,7 +27,8 @@ describe('DateTimePicker component', () => {
                 }
             },
             editorContext: {
-                lang: 'fr'
+                lang: 'fr',
+                uiLang: 'fr'
             }
         };
     });
@@ -62,24 +72,14 @@ describe('DateTimePicker component', () => {
         expect(cmp.props().readOnly).toBe(false);
     });
 
-    it('should send display format when there is one', () => {
-        props.field.formDefinition.selectorOptions = [{
-            name: 'format',
-            value: 'toto'
-        }];
-        const RenderProps = shallow(<DateTimePicker {...props}/>)
-            .props().render;
-        const cmp = shallow(<RenderProps field={{value: new Date().toISOString()}} form={{setFieldValue: () => {}}}/>);
-
-        expect(cmp.props().displayDateFormat).toBe('toto');
-    });
-
-    it('should send null as display format when no format is given', () => {
-        const RenderProps = shallow(<DateTimePicker {...props}/>)
-            .props().render;
-        const cmp = shallow(<RenderProps field={{value: new Date().toISOString()}} form={{setFieldValue: () => {}}}/>);
-
-        expect(cmp.props().displayDateFormat).toBe(undefined);
+    it('should use MM/DD/YYYY format when EN and DD/MM/YYYY otherwise', () => {
+        testDateFormat('en', 'MM/DD/YYYY');
+        testDateFormat('fr', 'DD/MM/YYYY');
+        testDateFormat('de', 'DD/MM/YYYY');
+        testDateFormat('es', 'DD/MM/YYYY');
+        testDateFormat('pt', 'DD/MM/YYYY');
+        testDateFormat('it', 'DD/MM/YYYY');
+        testDateFormat('random', 'DD/MM/YYYY');
     });
 
     it('should display date variant for DatePicker', () => {

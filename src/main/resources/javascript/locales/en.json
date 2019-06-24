@@ -30,6 +30,10 @@
                 },
                 "sharedLanguages": "Shared by all languages",
                 "fields": {
+                  "date": {
+                    "dateFormat": "DD/MM",
+                    "dateTimeFormat": ""
+                  },
                   "pickersAction": {
                     "replace": "Change",
                     "newTab": "Open in a new tab",
