@@ -50,7 +50,7 @@ export const MediaPickerDialog = ({
                 onItemSelection={image => {
                     formik.setFieldValue(
                         field.formDefinition.name,
-                        image[0].uuid,
+                        image[0] ? image[0].uuid : null,
                         true
                     );
                     setIsOpen(false);

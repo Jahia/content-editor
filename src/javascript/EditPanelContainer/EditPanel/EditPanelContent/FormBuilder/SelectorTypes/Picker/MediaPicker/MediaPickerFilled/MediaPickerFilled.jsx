@@ -8,7 +8,15 @@ import {MediaPickerFilledQuery} from './MediaPickerFilled.gql-queries';
 import {MediaPickerDialog} from '../MediaPickerDialog';
 import {useQuery} from 'react-apollo-hooks';
 
-const MediaPickerFilledCmp = ({t, field, id, uuid, editorContext, formik, setActionContext}) => {
+const MediaPickerFilledCmp = ({
+    t,
+    field,
+    id,
+    uuid,
+    editorContext,
+    formik,
+    setActionContext
+}) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const {data, error, loading} = useQuery(MediaPickerFilledQuery, {
@@ -31,7 +39,9 @@ const MediaPickerFilledCmp = ({t, field, id, uuid, editorContext, formik, setAct
 
     const imageData = data.jcr.result;
     const fieldData = {
-        url: `${window.contextJsParameters.contextPath}/files/default${encodeJCRPath(imageData.path)}`,
+        url: `${
+            window.contextJsParameters.contextPath
+        }/files/default${encodeJCRPath(imageData.path)}`,
         name: imageData.name,
         path: imageData.path,
         info: `${imageData.children.nodes[0].mimeType.value} - ${parseInt(
@@ -48,12 +58,13 @@ const MediaPickerFilledCmp = ({t, field, id, uuid, editorContext, formik, setAct
 
     return (
         <>
-            <Picker readOnly={field.formDefinition && field.formDefinition.readOnly}
-                    field={field}
-                    fieldData={fieldData}
-                    selectedId={uuid}
-                    id={id}
-                    onClick={() => setIsOpen(!isOpen)}
+            <Picker
+                readOnly={field.formDefinition && field.formDefinition.readOnly}
+                field={field}
+                fieldData={fieldData}
+                selectedId={uuid}
+                id={id}
+                onClick={() => setIsOpen(!isOpen)}
             />
 
             <MediaPickerDialog

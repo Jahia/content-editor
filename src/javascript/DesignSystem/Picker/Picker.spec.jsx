@@ -134,4 +134,18 @@ describe('picker filled', () => {
 
         expect(defaultProps.onClick).toHaveBeenCalled();
     });
+
+    it('should not send onClick event when clicking on readOnly component', () => {
+        defaultProps.onClick = jest.fn();
+        defaultProps.readOnly = true;
+        const cmp = shallowWithTheme(
+            <Picker {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        cmp.simulate('click');
+
+        expect(defaultProps.onClick).not.toHaveBeenCalled();
+    });
 });
