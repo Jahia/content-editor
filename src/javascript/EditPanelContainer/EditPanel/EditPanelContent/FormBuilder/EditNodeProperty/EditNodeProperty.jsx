@@ -94,13 +94,13 @@ export const EditNodeProperty = ({t, classes, field, siteInfo, labelHtmlFor, sel
                                             actionKey={selectorType.key + 'Menu'}
                                             context={actionContext}/>
                             <IconButton variant="ghost"
+                                        data-sel-action="moreOptions"
                                         aria-label={t('content-editor:label.contentEditor.edit.action.moreOptions')}
                                         icon={<MoreVert/>}
                                         onClick={event => {
                                             event.stopPropagation();
                                             contextualMenu.current.open(event);
-                                        }
-                                        }/>
+                                        }}/>
                         </>
                     ) : (
                         <span className={classes.emptySpace}/>
