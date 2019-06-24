@@ -123,8 +123,12 @@ EditNodeProperty.propTypes = {
     dxContext: PropTypes.object.isRequired
 };
 
-export default compose(
+const EditNodePropertyCmp = compose(
     connect,
     translate(),
     withStyles(styles)
 )(EditNodeProperty);
+
+EditNodePropertyCmp.displayName = 'EditNodeProperty';
+
+export default EditNodePropertyCmp;

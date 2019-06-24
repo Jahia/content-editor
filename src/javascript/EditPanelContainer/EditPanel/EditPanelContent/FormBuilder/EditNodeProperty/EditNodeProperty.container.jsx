@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import * as PropTypes from 'prop-types';
 import SelectorTypes from '../SelectorTypes';
 import EditNodeProperty from './EditNodeProperty';
@@ -6,6 +6,8 @@ import {DxContext} from '@jahia/react-material';
 
 export const EditNodePropertyContainer = ({field, siteInfo, editorContext}) => {
     let selectorType = SelectorTypes.resolveSelectorType(field.formDefinition.selectorType, field.formDefinition.selectorOptions);
+    const dxContext = useContext(DxContext);
+
     if (!selectorType) {
         if (!field.formDefinition.selectorType) {
             console.warn('Field ', field.formDefinition.name, ' has no selectorType !');
@@ -17,17 +19,13 @@ export const EditNodePropertyContainer = ({field, siteInfo, editorContext}) => {
     }
 
     return (
-        <DxContext.Consumer>
-            {dxContext => (
-                <EditNodeProperty field={field}
-                                  labelHtmlFor={field.formDefinition.name}
-                                  siteInfo={siteInfo}
-                                  selectorType={selectorType}
-                                  editorContext={editorContext}
-                                  dxContext={dxContext}
+        <EditNodeProperty field={field}
+                          labelHtmlFor={field.formDefinition.name}
+                          siteInfo={siteInfo}
+                          selectorType={selectorType}
+                          editorContext={editorContext}
+                          dxContext={dxContext}
                 />
-            )}
-        </DxContext.Consumer>
     );
 };
 
