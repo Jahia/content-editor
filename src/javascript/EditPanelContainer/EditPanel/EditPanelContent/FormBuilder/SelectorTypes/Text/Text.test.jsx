@@ -8,15 +8,13 @@ import {Text} from './Text';
 describe('Text component', () => {
     let props;
     let wrapper;
-    let language;
-
-    Object.defineProperty(navigator, 'language', {
-        get: () => language || 'de'
-    });
 
     beforeEach(() => {
         props = {
             id: 'toto',
+            editorContext: {
+                uiLang: 'en'
+            },
             field: {
                 formDefinition: {
                     name: 'x'
@@ -112,14 +110,14 @@ describe('Text component', () => {
     });
 
     it('should input of type number use point as decimal separator when language is "en"', () => {
-        language = 'en';
+        props.editorContext.uiLang = 'en';
         wrapper.setProps(props);
 
         expect(wrapper.props().decimalSeparator).toBe('.');
     });
 
     it('should input of type number use comma as decimal separator when language is "fr"', () => {
-        language = 'fr';
+        props.editorContext.uiLang = 'fr';
         wrapper.setProps(props);
 
         expect(wrapper.props().decimalSeparator).toBe(',');
