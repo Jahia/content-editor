@@ -41,7 +41,7 @@ export const ContentPickerDialog = ({
                 onItemSelection={content => {
                     formik.setFieldValue(
                         field.formDefinition.name,
-                        content[0].id,
+                        content[0] ? content[0].id : null,
                         true
                     );
                     setIsOpen(false);

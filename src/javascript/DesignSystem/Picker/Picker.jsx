@@ -83,7 +83,14 @@ const styles = theme => ({
     }
 });
 
-const PickerCmp = ({classes, readOnly, emptyLabel, emptyIcon, fieldData, onClick}) => {
+const PickerCmp = ({
+    classes,
+    readOnly,
+    emptyLabel,
+    emptyIcon,
+    fieldData,
+    onClick
+}) => {
     // If picker have already data
     if (fieldData) {
         return (
@@ -96,7 +103,13 @@ const PickerCmp = ({classes, readOnly, emptyLabel, emptyIcon, fieldData, onClick
                 data-sel-field-picker="filled"
                 role="button"
                 tabIndex="0"
-                onClick={onClick}
+                onClick={() => {
+                    if (readOnly) {
+                        return;
+                    }
+
+                    onClick(true);
+                }}
             >
                 <div className={classes.fieldFigureContainer}>
                     <img src={fieldData.url} className={classes.fieldImage}/>
@@ -149,8 +162,7 @@ PickerCmp.defaultProps = {
     fieldData: null,
     emptyLabel: '',
     emptyIcon: null,
-    onClick: () => {
-    }
+    onClick: () => {}
 };
 
 PickerCmp.propTypes = {
