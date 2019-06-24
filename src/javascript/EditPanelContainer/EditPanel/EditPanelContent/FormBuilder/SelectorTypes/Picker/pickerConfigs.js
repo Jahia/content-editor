@@ -35,7 +35,7 @@ const treeConfigs = {
 
 const pickerSelectorTypes = {
     ContentPicker: {cmp: ContentPicker, key: 'ContentPicker', actions: pickerActions},
-    MediaPicker: {cmp: MediaPicker, key: 'MediaPicker', actions: pickerActions}
+    MediaPicker: {cmp: MediaPicker, key: 'MediaPicker'}
 };
 
 const pickerConfigs = {
