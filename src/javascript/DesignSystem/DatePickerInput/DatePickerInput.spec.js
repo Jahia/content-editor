@@ -34,12 +34,12 @@ describe('DatePickerInput', () => {
         expect(maskOptions.mask).toBe('99/99/9999');
         expect(maskOptions.empty).toBe('__/__/____');
 
-        maskOptions = getMaskOptions('yyyy-MM-dd', false);
-        expect(maskOptions.mask).toBe('9999-99-99');
-        expect(maskOptions.empty).toBe('____-__-__');
+        maskOptions = getMaskOptions('__/__/____', false);
+        expect(maskOptions.mask).toBe('99/99/9999');
+        expect(maskOptions.empty).toBe('__/__/____');
 
-        maskOptions = getMaskOptions('yyyy-MM-dd HH:mm', false);
-        expect(maskOptions.mask).toBe('9999-99-99 99:99');
-        expect(maskOptions.empty).toBe('____-__-__ __:__');
+        maskOptions = getMaskOptions('__/__/____ __:__', false);
+        expect(maskOptions.mask).toBe('99/99/9999 99:99');
+        expect(maskOptions.empty).toBe('__/__/____ __:__');
     });
 });

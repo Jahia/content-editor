@@ -20,6 +20,7 @@
 -   initialValue: Date
 -   readOnly: Boolean
 -   displayDateFormat: string
+-   displayDateMask: string
 
 ### Examples
 
