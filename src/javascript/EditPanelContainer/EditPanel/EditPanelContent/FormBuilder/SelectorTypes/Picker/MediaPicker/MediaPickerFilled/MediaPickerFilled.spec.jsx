@@ -22,7 +22,6 @@ const queryResult = {
     name: 'Beautiful_hairy_pussy.jpg',
     height: {value: 1532400},
     width: {value: 1234134},
-    weight: 1.2,
     children: {
         nodes: [{mimeType: {value: 'jpeg'}}]
     }
@@ -80,7 +79,7 @@ describe('mediaPickerFilled', () => {
         expect(cmp.props().fieldData.name).toContain(queryResult.name);
     });
 
-    it('should display the information (type, size and weight) of image from field', () => {
+    it('should display the information (type, size) of image from field', () => {
         const cmp = shallowWithTheme(
             <MediaPickerFilled {...defaultProps}/>,
             {},
@@ -92,7 +91,6 @@ describe('mediaPickerFilled', () => {
         const imageInfo = cmp.props().fieldData.info;
         expect(imageInfo).toContain(queryResult.width.value);
         expect(imageInfo).toContain(queryResult.height.value);
-        expect(imageInfo).toContain(queryResult.weight);
         expect(imageInfo).toContain(
             queryResult.children.nodes[0].mimeType.value
         );
