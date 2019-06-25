@@ -6,15 +6,7 @@ import {withStyles} from '@material-ui/core/styles';
 import {Input} from '../Input';
 import InputMask from 'react-input-mask';
 
-import dayjs from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-
-import 'dayjs/locale/es';
-import 'dayjs/locale/fr';
-import 'dayjs/locale/de';
-import 'dayjs/locale/it';
-import 'dayjs/locale/pt';
-import 'dayjs/locale/en';
+import dayjs from '../../date.config';
 
 import {IconButton} from '@material-ui/core';
 import {DateRange} from '@material-ui/icons';
@@ -41,6 +33,7 @@ const formatDateTime = (datetime, lang, variant, displayDateFormat) => {
     }
 
     return dayjs(datetime)
+        .locale(lang)
         .format(displayDateFormat || datetimeFormat[variant]);
 };
 
@@ -67,7 +60,6 @@ const DatePickerInputCmp = ({
 }) => {
     // Config dayJS
     dayjs.locale(lang);
-    dayjs.extend(customParseFormat);
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [datetime, setDatetime] = useState(initialValue);
@@ -93,7 +85,7 @@ const DatePickerInputCmp = ({
                 onChange(null);
             }
 
-            const newDate = dayjs(e.target.value, displayDateFormat || datetimeFormat[variant]);
+            const newDate = dayjs(e.target.value, displayDateFormat || datetimeFormat[variant], lang);
             if (newDate.isValid()) {
                 setDatetime(newDate.toDate());
                 onChange(newDate.toDate());
