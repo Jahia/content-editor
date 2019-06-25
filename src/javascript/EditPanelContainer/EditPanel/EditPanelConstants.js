@@ -1,4 +1,6 @@
 const EditPanelConstants = {
+    supportedLocales: ['en', 'fr', 'de'],
+    defaultLocale: 'en',
     baseRoute: 'edit',
     submitOperation: {
         SAVE: 'SAVE',

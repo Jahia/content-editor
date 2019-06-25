@@ -32,13 +32,15 @@ export const EditPanelContainer = ({
     site,
     siteDisplayableName
 }) => {
+    let contentEditorUiLang = EditPanelConstants.supportedLocales.includes(uiLang) ? uiLang : EditPanelConstants.defaultLocale;
+
     return (
         <ApolloHooksProvider client={client}>
             <SiteData>
                 {({siteInfo}) => {
                 return (
                     <FormDefinition
-                        uiLang={uiLang}
+                        uiLang={contentEditorUiLang}
                         lang={lang}
                         path={path}
                     >
@@ -84,7 +86,7 @@ export const EditPanelContainer = ({
                                     path: path,
                                     site: site,
                                     lang: lang,
-                                    uiLang: uiLang,
+                                    uiLang: contentEditorUiLang,
                                     siteDisplayableName: siteDisplayableName
                                 };
 
