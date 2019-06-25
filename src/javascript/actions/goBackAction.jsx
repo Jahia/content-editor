@@ -66,6 +66,9 @@ export default composeActions(
     componentRendererAction,
     reduxAction(mapStateToProps, mapDispatchToContext),
     {
+        init: context => {
+            context.buttonLabelParams = {parentNodeDisplayName: context.nodeData.parent.displayName};
+        },
         onClick: context => {
             if (context.formik) {
                 const {mode, siteKey, language, setUrl} = context;

@@ -30,6 +30,7 @@ if (contextJsParameters && contextJsParameters.config && contextJsParameters.con
 
         actionsRegistry.add('backButton', goBackAction, {
             buttonIcon: <ArrowBack/>,
+            buttonLabel: 'content-editor:label.contentEditor.edit.action.goBack.name',
             target: ['editHeaderPathActions:1'],
             mode: 'browse'
         });

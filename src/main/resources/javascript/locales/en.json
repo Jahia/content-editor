@@ -11,6 +11,7 @@
                         "error": "An error occurred when saving the content"
                     },
                     "goBack": {
+                        "name": "Back to {{parentNodeDisplayName}}",
                         "title": "Save changes before closing?",
                         "btnContinue": "Continue editing",
                         "btnDiscard": "Discard changes",
