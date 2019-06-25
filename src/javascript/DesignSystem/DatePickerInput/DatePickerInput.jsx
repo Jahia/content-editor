@@ -58,9 +58,6 @@ const DatePickerInputCmp = ({
     displayDateMask,
     ...props
 }) => {
-    // Config dayJS
-    dayjs.locale(lang);
-
     const [anchorEl, setAnchorEl] = useState(null);
     const [datetime, setDatetime] = useState(initialValue);
     const [datetimeString, setDatetimeString] = useState(
