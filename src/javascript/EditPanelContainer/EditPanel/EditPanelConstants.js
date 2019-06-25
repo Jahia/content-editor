@@ -2,6 +2,8 @@ const EditPanelConstants = {
     supportedLocales: ['en', 'fr', 'de'],
     defaultLocale: 'en',
     baseRoute: 'edit',
+    browseRoute: 'browse',
+    browseFilesRoute: 'browse-files',
     submitOperation: {
         SAVE: 'SAVE',
         SAVE_PUBLISH: 'PUBLISH',
