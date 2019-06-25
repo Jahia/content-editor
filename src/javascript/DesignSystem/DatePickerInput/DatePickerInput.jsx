@@ -7,6 +7,15 @@ import {Input} from '../Input';
 import InputMask from 'react-input-mask';
 
 import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+
+import 'dayjs/locale/es';
+import 'dayjs/locale/fr';
+import 'dayjs/locale/de';
+import 'dayjs/locale/it';
+import 'dayjs/locale/pt';
+import 'dayjs/locale/en';
+
 import {IconButton} from '@material-ui/core';
 import {DateRange} from '@material-ui/icons';
 import Popover from '@material-ui/core/Popover/Popover';
@@ -32,7 +41,6 @@ const formatDateTime = (datetime, lang, variant, displayDateFormat) => {
     }
 
     return dayjs(datetime)
-        .locale(lang)
         .format(displayDateFormat || datetimeFormat[variant]);
 };
 
@@ -57,6 +65,10 @@ const DatePickerInputCmp = ({
     displayDateMask,
     ...props
 }) => {
+    // Config dayJS
+    dayjs.locale(lang);
+    dayjs.extend(customParseFormat);
+
     const [anchorEl, setAnchorEl] = useState(null);
     const [datetime, setDatetime] = useState(initialValue);
     const [datetimeString, setDatetimeString] = useState(
@@ -81,7 +93,7 @@ const DatePickerInputCmp = ({
                 onChange(null);
             }
 
-            const newDate = dayjs(e.target.value, datetimeFormat[variant]);
+            const newDate = dayjs(e.target.value, displayDateFormat || datetimeFormat[variant]);
             if (newDate.isValid()) {
                 setDatetime(newDate.toDate());
                 onChange(newDate.toDate());
