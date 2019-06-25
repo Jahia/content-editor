@@ -36,9 +36,9 @@ export const EditNodeProperty = ({t, classes, field, siteInfo, labelHtmlFor, sel
     const contextualMenu = useRef(null);
     const [actionContext, _setActionContext] = useState({noAction: true});
 
-    const setActionContext = newActionContext => {
-        if ((actionContext.noAction && !newActionContext.noAction) ||
-            (!actionContext.noAction && newActionContext.noAction)) {
+    const setActionContext = getNewActionContext => {
+        const newActionContext = getNewActionContext(actionContext);
+        if (newActionContext.contextHasChange) {
             _setActionContext({field, formik, dxContext, ...newActionContext});
         }
     };

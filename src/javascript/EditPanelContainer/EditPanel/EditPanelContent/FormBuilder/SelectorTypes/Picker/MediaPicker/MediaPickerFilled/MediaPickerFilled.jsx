@@ -47,14 +47,15 @@ const MediaPickerFilledCmp = ({
         info: `${imageData.children.nodes[0].mimeType.value} - ${parseInt(
             imageData.height.value,
             10
-        )}x${parseInt(imageData.width.value, 10)}px - 1.2mb`
+        )}x${parseInt(imageData.width.value, 10)}px`
     };
 
-    setActionContext({
+    setActionContext(prevActionContext => ({
         open: setIsOpen,
         fieldData,
-        editorContext
-    });
+        editorContext,
+        contextHasChange: !prevActionContext.fieldData || prevActionContext.fieldData.path !== fieldData.path
+    }));
 
     return (
         <>

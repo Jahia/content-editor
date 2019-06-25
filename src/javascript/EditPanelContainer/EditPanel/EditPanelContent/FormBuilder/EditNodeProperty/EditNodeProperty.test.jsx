@@ -131,7 +131,7 @@ describe('EditNodeProperty component', () => {
         );
 
         cmp.find('Component').dive();
-        setActionContextFn({noAction: false});
+        setActionContextFn(() => ({noAction: false, contextHasChange: true}));
 
         expect(cmp.debug()).toContain('ContextualMenu');
     });

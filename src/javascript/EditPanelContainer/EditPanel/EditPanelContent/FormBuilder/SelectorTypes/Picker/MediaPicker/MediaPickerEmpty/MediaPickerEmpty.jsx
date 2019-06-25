@@ -9,9 +9,10 @@ import {MediaPickerDialog} from '../MediaPickerDialog';
 const MediaPickerEmptyCmp = ({t, id, field, formik, editorContext, setActionContext}) => {
     const [isOpen, setIsOpen] = useState(false);
 
-    setActionContext({
-        noAction: true
-    });
+    setActionContext(prevActionContext => ({
+        noAction: true,
+        contextHasChange: !prevActionContext.noAction
+    }));
 
     return (
         <>
