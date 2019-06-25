@@ -36,7 +36,13 @@ class EditPanel extends React.Component {
 
         return (
             <MainLayout topBarProps={{
-                path: editorContext.path,
+                path: <DisplayActions context={{nodeData}}
+                                      target="editHeaderPathActions"
+                                      render={({context}) => {
+                                          const Button = buttonRenderer({variant: 'primary'}, true);
+                                          return <Button context={context}/>;
+                                      }}
+                />,
                 title: title,
                 contextModifiers: <Typography variant="omega" color="invert">{t('content-editor:label.contentEditor.edit.title')}</Typography>,
                 actions: <DisplayActions context={{nodeData}}
