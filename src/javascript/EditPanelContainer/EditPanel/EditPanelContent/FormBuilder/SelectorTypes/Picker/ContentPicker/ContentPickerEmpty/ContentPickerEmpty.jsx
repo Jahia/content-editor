@@ -17,9 +17,10 @@ const ContentPickerEmptyCmp = ({
 }) => {
     const [isOpen, setIsOpen] = useState(false);
 
-    setActionContext({
-        noAction: true
-    });
+    setActionContext(prevActionContext => ({
+        noAction: true,
+        contextHasChange: !prevActionContext.noAction
+    }));
 
     return (
         <>

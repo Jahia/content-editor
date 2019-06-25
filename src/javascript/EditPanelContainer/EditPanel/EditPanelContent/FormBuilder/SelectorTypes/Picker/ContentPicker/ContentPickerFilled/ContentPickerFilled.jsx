@@ -38,11 +38,12 @@ const ContentPickerFilledCmp = ({t, field, formik, id, uuid, editorContext, node
         info: contentData.primaryNodeType.displayName
     };
 
-    setActionContext({
+    setActionContext(prevActionContext => ({
         open: setIsOpen,
         fieldData,
-        editorContext
-    });
+        editorContext,
+        contextHasChange: !prevActionContext.fieldData || prevActionContext.fieldData.path !== fieldData.path
+    }));
 
     return (
         <>
