@@ -61,17 +61,22 @@ DialogConfirmation.propTypes = {
 
 const DialogConfirmationTranslated = translate()(DialogConfirmation);
 
-export const resolveUrl = (path, parentPath, siteKey) => {
+export const resolveGoBackContext = (path, parentPath, parentDisplayName, siteKey, siteDisplayName) => {
     const splitPath = path.split('/');
     let isFilePath = splitPath && splitPath.length >= 4 && splitPath[3] === 'files'; // 4: path at least contains files or contents info
 
     let resolvedPath = isFilePath ? `/sites/${siteKey}/files` : `/sites/${siteKey}/contents`;
     let resolvedMode = isFilePath ? EditPanelConstants.browseFilesRoute : EditPanelConstants.browseRoute;
+    let resolvedDisplayName = siteDisplayName;
 
     // Resolve parent if possible
-    resolvedPath = splitPath.length >= 5 ? parentPath : resolvedPath; // 5: path at least contains a displayable parent in CMM
+    if (splitPath.length >= 5) { // 5: path at least contains a displayable parent in CMM
+        resolvedPath = parentPath;
+        resolvedDisplayName = parentDisplayName;
+    }
 
     return {
+        displayName: resolvedDisplayName,
         path: resolvedPath,
         mode: resolvedMode
     };
@@ -83,15 +88,15 @@ export default composeActions(
     reduxAction(mapStateToProps, mapDispatchToContext),
     {
         init: context => {
-            context.buttonLabelParams = {parentNodeDisplayName: context.nodeData.parent.displayName};
+            context.resolveUrlContext = resolveGoBackContext(context.nodeData.path, context.nodeData.parent.path, context.nodeData.parent.displayName, context.siteKey, context.siteInfo.displayName);
+            context.buttonLabelParams = {parentNodeDisplayName: context.resolveUrlContext.displayName};
         },
         onClick: context => {
             if (context.formik) {
                 const {siteKey, language, setUrl} = context;
 
                 const executeGoBackAction = () => {
-                    const resolvedUrl = resolveUrl(context.nodeData.path, context.nodeData.parent.path, siteKey);
-                    setUrl(siteKey, language, resolvedUrl.mode, resolvedUrl.path, {});
+                    setUrl(siteKey, language, context.resolveUrlContext.mode, context.resolveUrlContext.path, {});
                 };
 
                 if (context.formik.dirty) {

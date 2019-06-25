@@ -36,7 +36,7 @@ class EditPanel extends React.Component {
 
         return (
             <MainLayout topBarProps={{
-                path: <DisplayActions context={{nodeData}}
+                path: <DisplayActions context={{nodeData, siteInfo}}
                                       target="editHeaderPathActions"
                                       render={({context}) => {
                                           const Button = buttonRenderer({variant: 'primary'}, true);

@@ -1,29 +1,31 @@
-import {resolveUrl} from './goBackAction';
+import {resolveGoBackContext} from './goBackAction';
 
 describe('go back action url resolution', () => {
-    const testURLResolution = (path, parentPath, siteKey, resolvedPath, resolvedMode) => {
-        const resolvedUrl = resolveUrl(path, parentPath, siteKey);
+    const testGoBackContextResolution = (path, parentPath, parentDisplayName, resolvedPath, resolvedMode, shouldUseParentDisplayName) => {
+        const resolvedUrl = resolveGoBackContext(path, parentPath, parentDisplayName, 'digitall', 'Digitall');
+
+        expect(resolvedUrl.displayName).toBe(shouldUseParentDisplayName ? parentDisplayName : 'Digitall');
         expect(resolvedUrl.path).toBe(resolvedPath);
         expect(resolvedUrl.mode).toBe(resolvedMode);
     };
 
     it('Should resolve parent url parent correctly', () => {
-        testURLResolution('/sites/digitall', '/sites', 'digitall', '/sites/digitall/contents', 'browse');
+        testGoBackContextResolution('/sites/digitall', '/sites', 'sites', '/sites/digitall/contents', 'browse', false);
 
-        testURLResolution('/sites/digitall/contents', '/sites/digitall', 'digitall', '/sites/digitall/contents', 'browse');
-        testURLResolution('/sites/digitall/home', '/sites/digitall', 'digitall', '/sites/digitall/contents', 'browse');
-        testURLResolution('/sites/digitall/files', '/sites/digitall', 'digitall', '/sites/digitall/files', 'browse-files');
+        testGoBackContextResolution('/sites/digitall/contents', '/sites/digitall', 'digitall', '/sites/digitall/contents', 'browse', false);
+        testGoBackContextResolution('/sites/digitall/home', '/sites/digitall', 'digitall', '/sites/digitall/contents', 'browse', false);
+        testGoBackContextResolution('/sites/digitall/files', '/sites/digitall', 'digitall', '/sites/digitall/files', 'browse-files', false);
 
-        testURLResolution('/sites/digitall/contents/contentA', '/sites/digitall/contents', 'digitall', '/sites/digitall/contents', 'browse');
-        testURLResolution('/sites/digitall/home/richTextA', '/sites/digitall/home', 'digitall', '/sites/digitall/home', 'browse');
-        testURLResolution('/sites/digitall/files/fileA', '/sites/digitall/files', 'digitall', '/sites/digitall/files', 'browse-files');
+        testGoBackContextResolution('/sites/digitall/contents/contentA', '/sites/digitall/contents', 'contents', '/sites/digitall/contents', 'browse', true);
+        testGoBackContextResolution('/sites/digitall/home/richTextA', '/sites/digitall/home', 'home', '/sites/digitall/home', 'browse', true);
+        testGoBackContextResolution('/sites/digitall/files/fileA', '/sites/digitall/files', 'files', '/sites/digitall/files', 'browse-files', true);
 
-        testURLResolution('/sites/digitall/contents/listA/contentA', '/sites/digitall/contents/listA', 'digitall', '/sites/digitall/contents/listA', 'browse');
-        testURLResolution('/sites/digitall/home/subPageA/richTextA', '/sites/digitall/home/subPageA', 'digitall', '/sites/digitall/home/subPageA', 'browse');
-        testURLResolution('/sites/digitall/files/folderA/fileA', '/sites/digitall/files/folderA', 'digitall', '/sites/digitall/files/folderA', 'browse-files');
+        testGoBackContextResolution('/sites/digitall/contents/listA/contentA', '/sites/digitall/contents/listA', 'listA', '/sites/digitall/contents/listA', 'browse', true);
+        testGoBackContextResolution('/sites/digitall/home/subPageA/richTextA', '/sites/digitall/home/subPageA', 'subPageA', '/sites/digitall/home/subPageA', 'browse', true);
+        testGoBackContextResolution('/sites/digitall/files/folderA/fileA', '/sites/digitall/files/folderA', 'folderA', '/sites/digitall/files/folderA', 'browse-files', true);
 
-        testURLResolution('/sites/digitall/contents/listA/listB/listC/contentA', '/sites/digitall/contents/listA/listB/listC', 'digitall', '/sites/digitall/contents/listA/listB/listC', 'browse');
-        testURLResolution('/sites/digitall/home/subPageA/subPageB/subPageC/richTextA', '/sites/digitall/home/subPageA/subPageB/subPageC', 'digitall', '/sites/digitall/home/subPageA/subPageB/subPageC', 'browse');
-        testURLResolution('/sites/digitall/files/folderA/folderB/folderC/fileA', '/sites/digitall/files/folderA/folderB/folderC', 'digitall', '/sites/digitall/files/folderA/folderB/folderC', 'browse-files');
+        testGoBackContextResolution('/sites/digitall/contents/listA/listB/listC/contentA', '/sites/digitall/contents/listA/listB/listC', 'listC', '/sites/digitall/contents/listA/listB/listC', 'browse', true);
+        testGoBackContextResolution('/sites/digitall/home/subPageA/subPageB/subPageC/richTextA', '/sites/digitall/home/subPageA/subPageB/subPageC', 'subPageC', '/sites/digitall/home/subPageA/subPageB/subPageC', 'browse', true);
+        testGoBackContextResolution('/sites/digitall/files/folderA/folderB/folderC/fileA', '/sites/digitall/files/folderA/folderB/folderC', 'folderC', '/sites/digitall/files/folderA/folderB/folderC', 'browse-files', true);
     });
 });
