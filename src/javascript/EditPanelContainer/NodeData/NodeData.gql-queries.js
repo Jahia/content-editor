@@ -12,6 +12,10 @@ const NodeDataFragment = {
             result:nodeByPath(path: $path) {
                 ...NodeCacheRequiredFields
                 displayName(language: $language)
+                parent {
+                    displayName(language: $language)
+                    path
+                }
                 primaryNodeType {
                     name
                     properties {

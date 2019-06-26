@@ -11,6 +11,7 @@
                         "error": "Beim Speichern des Inhalts ist ein Fehler aufgetreten"
                     },
                     "goBack": {
+                        "name": "Zurück zu {{parentNodeDisplayName}}",
                         "title": "Änderungen vor dem Schließen speichern?",
                         "btnContinue": "Weiter bearbeiten",
                         "btnDiscard": "Änderungen verwerfen",

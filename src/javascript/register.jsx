@@ -30,28 +30,28 @@ if (contextJsParameters && contextJsParameters.config && contextJsParameters.con
 
         actionsRegistry.add('backButton', goBackAction, {
             buttonIcon: <ArrowBack/>,
-            target: ['editHeaderActions:1'],
-            mode: 'browse'
+            buttonLabel: 'content-editor:label.contentEditor.edit.action.goBack.name',
+            target: ['editHeaderPathActions:1']
         });
 
         actionsRegistry.add('submitSave', saveAction, {
             buttonLabel: 'content-editor:label.contentEditor.edit.action.save.name',
             buttonIcon: <Save/>,
-            target: ['editHeaderActions:2'],
+            target: ['editHeaderActions:1'],
             submitOperation: EditPanelConstants.submitOperation.SAVE
         });
 
         actionsRegistry.add('publishAction', publishAction, {
             buttonLabel: 'content-editor:label.contentEditor.edit.action.publish.name',
             buttonIcon: <CloudUpload/>,
-            target: ['editHeaderActions:2'],
+            target: ['editHeaderActions:1'],
             submitOperation: EditPanelConstants.submitOperation.SAVE_PUBLISH
         });
 
         actionsRegistry.add('unpublishAction', unpublishAction, {
             buttonLabel: 'content-editor:label.contentEditor.edit.action.unpublish.name',
             buttonIcon: <CloudOff/>,
-            target: ['editHeaderActions:2'],
+            target: ['editHeaderActions:1'],
             submitOperation: EditPanelConstants.submitOperation.UNPUBLISH
         });
 

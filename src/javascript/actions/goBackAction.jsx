@@ -61,15 +61,43 @@ DialogConfirmation.propTypes = {
 
 const DialogConfirmationTranslated = translate()(DialogConfirmation);
 
+export const resolveGoBackContext = (path, parentPath, parentDisplayName, siteKey, siteDisplayName) => {
+    const splitPath = path.split('/');
+    let isFilePath = splitPath && splitPath.length >= 4 && splitPath[3] === 'files'; // 4: path at least contains files or contents info
+
+    let resolvedPath = isFilePath ? `/sites/${siteKey}/files` : `/sites/${siteKey}/contents`;
+    let resolvedMode = isFilePath ? EditPanelConstants.browseFilesRoute : EditPanelConstants.browseRoute;
+    let resolvedDisplayName = siteDisplayName;
+
+    // Resolve parent if possible
+    if (splitPath.length >= 5) { // 5: path at least contains a displayable parent in CMM
+        resolvedPath = parentPath;
+        resolvedDisplayName = parentDisplayName;
+    }
+
+    return {
+        displayName: resolvedDisplayName,
+        path: resolvedPath,
+        mode: resolvedMode
+    };
+};
+
 export default composeActions(
     withFormikAction,
     componentRendererAction,
     reduxAction(mapStateToProps, mapDispatchToContext),
     {
+        init: context => {
+            context.resolveUrlContext = resolveGoBackContext(context.nodeData.path, context.nodeData.parent.path, context.nodeData.parent.displayName, context.siteKey, context.siteInfo.displayName);
+            context.buttonLabelParams = {parentNodeDisplayName: context.resolveUrlContext.displayName};
+        },
         onClick: context => {
             if (context.formik) {
-                const {mode, siteKey, language, setUrl} = context;
-                const resolvedPath = `/sites/${siteKey}/contents`;
+                const {siteKey, language, setUrl} = context;
+
+                const executeGoBackAction = () => {
+                    setUrl(siteKey, language, context.resolveUrlContext.mode, context.resolveUrlContext.path, {});
+                };
 
                 if (context.formik.dirty) {
                     const handler = context.renderComponent(
@@ -81,7 +109,7 @@ export default composeActions(
                             onCloseWithoutSave={() => {
                                 handler.setProps({open: false});
 
-                                setUrl(siteKey, language, mode, resolvedPath, {});
+                                executeGoBackAction();
                             }}
                             onCloseAndSave={() => {
                                 handler.setProps({open: false});
@@ -89,7 +117,7 @@ export default composeActions(
                                 const {setFieldValue, submitForm} = context.formik;
                                 setFieldValue(EditPanelConstants.systemFields.SYSTEM_SUBMIT_OPERATION, EditPanelConstants.submitOperation.SAVE, false);
 
-                                submitForm().then(() => setUrl(siteKey, language, mode, resolvedPath, {}));
+                                submitForm().then(executeGoBackAction);
                             }}
                             onExited={() => {
                                 handler.destroy();
@@ -97,7 +125,7 @@ export default composeActions(
                         />
                     );
                 } else {
-                    setUrl(siteKey, language, mode, resolvedPath, {});
+                    executeGoBackAction();
                 }
             }
         }
