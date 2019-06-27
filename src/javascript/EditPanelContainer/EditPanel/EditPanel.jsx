@@ -39,7 +39,7 @@ class EditPanel extends React.Component {
                 path: <DisplayActions context={{nodeData, siteInfo}}
                                       target="editHeaderPathActions"
                                       render={({context}) => {
-                                          const Button = buttonRenderer({variant: 'primary'}, true);
+                                          const Button = buttonRenderer({variant: 'ghost', color: 'inverted'}, true);
                                           return <Button context={context}/>;
                                       }}
                 />,
@@ -48,8 +48,7 @@ class EditPanel extends React.Component {
                 actions: <DisplayActions context={{nodeData}}
                                          target="editHeaderActions"
                                          render={({context}) => {
-                                             const variant = context.actionKey === 'unpublishAction' ? 'secondary' : 'primary';
-                                             const Button = buttonRenderer({variant}, true);
+                                             const Button = buttonRenderer({variant: 'primary'}, true, null, true);
                                              return <Button context={context}/>;
                                          }}
                 />
@@ -84,5 +83,5 @@ EditPanel.propTypes = {
 
 export default compose(
     translate(),
-    connect,
+    connect
 )(EditPanel);
