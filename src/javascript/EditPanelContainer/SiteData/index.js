@@ -1,3 +1,1 @@
-import SiteData from './SiteData';
-
-export default SiteData;
+export * from './SiteData';

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useContext} from 'react';
 import {MainLayout} from '@jahia/design-system-kit';
 import {buttonRenderer, DisplayActions} from '@jahia/react-material';
 import {Typography} from '@jahia/design-system-kit';
@@ -7,35 +7,32 @@ import EditPanelContent from './EditPanelContent/EditPanelContent';
 import {connect} from 'formik';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
+import {ContentEditorContext} from '../ContentEditor.context';
 
-class EditPanel extends React.Component {
-    constructor(props) {
-        super(props);
+const EditPanel = ({t, fields, title, siteInfo, nodeData, formik}) => {
+    const editorContext = useContext(ContentEditorContext);
 
-        this.handleBeforeUnloadEvent = this.handleBeforeUnloadEvent.bind(this);
-    }
+    useEffect(() => {
+        const handleBeforeUnloadEvent = ev => {
+            if (formik.dirty) {
+                ev.preventDefault();
+                ev.returnValue = '';
+            }
+        };
 
-    componentDidMount() {
         // Prevent close browser's tab when there is unsaved content
-        window.addEventListener('beforeunload', this.handleBeforeUnloadEvent);
-    }
+        window.addEventListener('beforeunload', handleBeforeUnloadEvent);
+        return () => {
+            window.removeEventListener(
+                'beforeunload',
+                handleBeforeUnloadEvent
+            );
+        };
+    }, [formik.dirty]);
 
-    componentWillUnmount() {
-        window.removeEventListener('beforeunload', this.handleBeforeUnloadEvent);
-    }
-
-    handleBeforeUnloadEvent(ev) {
-        if (this.props.formik.dirty) {
-            ev.preventDefault();
-            ev.returnValue = '';
-        }
-    }
-
-    render() {
-        const {editorContext, t, fields, title, siteInfo, nodeData} = this.props;
-
-        return (
-            <MainLayout topBarProps={{
+    return (
+        <MainLayout
+            topBarProps={{
                 path: <DisplayActions context={{nodeData, siteInfo}}
                                       target="editHeaderPathActions"
                                       render={({context}) => {
@@ -44,31 +41,37 @@ class EditPanel extends React.Component {
                                       }}
                 />,
                 title: title,
-                contextModifiers: <Typography variant="omega" color="invert">{t('content-editor:label.contentEditor.edit.title')}</Typography>,
-                actions: <DisplayActions context={{nodeData}}
-                                         target="editHeaderActions"
-                                         render={({context}) => {
-                                             const Button = buttonRenderer({variant: 'primary'}, true, null, true);
-                                             return <Button context={context}/>;
-                                         }}
-                />
+                contextModifiers: (
+                    <Typography variant="omega" color="invert">
+                        {t('content-editor:label.contentEditor.edit.title')}
+                    </Typography>
+                ),
+                actions: (
+                    <DisplayActions
+                        context={{nodeData}}
+                        target="editHeaderActions"
+                        render={({context}) => {
+                            const Button = buttonRenderer({variant: 'primary'}, true, null, true);
+                            return <Button context={context}/>;
+                        }}
+                    />
+                )
             }}
-            >
-                <EditPanelContent editorContext={editorContext}
-                                  siteInfo={siteInfo}
-                                  fields={fields}
-                />
-            </MainLayout>
-        );
-    }
-}
+        >
+            <EditPanelContent
+                editorContext={editorContext}
+                siteInfo={siteInfo}
+                fields={fields}
+            />
+        </MainLayout>
+    );
+};
 
 EditPanel.defaultProps = {
     title: ''
 };
 
 EditPanel.propTypes = {
-    editorContext: PropTypes.object.isRequired,
     title: PropTypes.string,
     t: PropTypes.func.isRequired,
     fields: PropTypes.array.isRequired,
@@ -81,7 +84,11 @@ EditPanel.propTypes = {
     }).isRequired
 };
 
-export default compose(
+const EditPanelCmp = compose(
     translate(),
     connect
 )(EditPanel);
+
+EditPanelCmp.displayName = 'EditPanel';
+
+export default EditPanelCmp;

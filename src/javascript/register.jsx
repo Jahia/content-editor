@@ -6,7 +6,7 @@ import publishAction from './actions/publishAction';
 import unpublishAction from './actions/unpublishAction';
 import goBackAction from './actions/goBackAction';
 import EditPanelConstants from './EditPanelContainer/EditPanel/EditPanelConstants';
-import EditPanelContainer from './EditPanelContainer';
+import ContentEditor from './ContentEditor';
 import SelectorTypes from './EditPanelContainer/EditPanel/EditPanelContent/FormBuilder/SelectorTypes/SelectorTypes';
 
 console.log('Load Content Editor Ext Components');
@@ -70,6 +70,6 @@ registry.add('edit-route', {
     type: 'route',
     path: `/:siteKey/:lang/${EditPanelConstants.baseRoute}`,
     render: () => (
-        <EditPanelContainer/>
+        <ContentEditor/>
     )
 });
