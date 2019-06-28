@@ -5,8 +5,7 @@ import {withKnobs, boolean} from '@storybook/addon-knobs';
 
 import {Input} from './Input';
 import doc from './Input.md';
-import {dsGenericTheme as theme} from '@jahia/design-system-kit';
-import {MuiThemeProvider} from '@material-ui/core';
+import {DSProvider} from '@jahia/design-system-kit';
 
 import {Close, Search} from '@material-ui/icons';
 
@@ -24,7 +23,7 @@ storiesOf('Input', module)
     .addDecorator(withKnobs)
     .add('default',
         () => (
-            <MuiThemeProvider theme={theme}>
+            <DSProvider>
                 <Input
                     disabled={disabled()}
                     error={error()}
@@ -33,13 +32,13 @@ storiesOf('Input', module)
                     onChange={onChange()}
                     onFocus={onFocus()}
                 />
-            </MuiThemeProvider>
+            </DSProvider>
         ),
         {notes: {markdown: doc}}
     )
     .add('number',
         () => (
-            <MuiThemeProvider theme={theme}>
+            <DSProvider>
                 <Input
                     type="number"
                     disabled={disabled()}
@@ -49,13 +48,13 @@ storiesOf('Input', module)
                     onChange={onChange()}
                     onFocus={onFocus()}
                 />
-            </MuiThemeProvider>
+            </DSProvider>
         ),
         {notes: {markdown: doc}}
     )
     .add('number long',
         () => (
-            <MuiThemeProvider theme={theme}>
+            <DSProvider>
                 <Input
                     type="number"
                     decimalScale={0}
@@ -66,13 +65,13 @@ storiesOf('Input', module)
                     onChange={onChange()}
                     onFocus={onFocus()}
                 />
-            </MuiThemeProvider>
+            </DSProvider>
         ),
         {notes: {markdown: doc}}
     )
     .add('number decimal',
         () => (
-            <MuiThemeProvider theme={theme}>
+            <DSProvider>
                 <Input
                     type="number"
                     decimalSeparator="."
@@ -84,13 +83,13 @@ storiesOf('Input', module)
                     onChange={onChange()}
                     onFocus={onFocus()}
                 />
-            </MuiThemeProvider>
+            </DSProvider>
         ),
         {notes: {markdown: doc}}
     )
     .add('icon',
         () => (
-            <MuiThemeProvider theme={theme}>
+            <DSProvider>
                 <Input variant={{icon: <Search/>}}
                        disabled={disabled()}
                        error={error()}
@@ -99,13 +98,13 @@ storiesOf('Input', module)
                        onChange={onChange()}
                        onFocus={onFocus()}
                 />
-            </MuiThemeProvider>
+            </DSProvider>
         ),
         {notes: {markdown: doc}}
     )
     .add('interactive',
         () => (
-            <MuiThemeProvider theme={theme}>
+            <DSProvider>
                 <Input variant={{interactive: <Close/>}}
                        disabled={disabled()}
                        error={error()}
@@ -114,7 +113,7 @@ storiesOf('Input', module)
                        onChange={onChange()}
                        onFocus={onFocus()}
                 />
-            </MuiThemeProvider>
+            </DSProvider>
         ),
         {notes: {markdown: doc}}
     );

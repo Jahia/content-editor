@@ -5,22 +5,21 @@ import {withKnobs, boolean, text} from '@storybook/addon-knobs';
 
 import {Picker} from './Picker';
 import doc from './Picker.md';
-import {dsGenericTheme as theme} from '@jahia/design-system-kit';
-import {MuiThemeProvider} from '@material-ui/core';
+import {DSProvider} from '@jahia/design-system-kit';
 import {InsertDriveFile} from '@material-ui/icons';
 
-storiesOf('picker', module)
+storiesOf('Picker', module)
     .addDecorator(withKnobs)
     .add(
         'picker/empty',
         () => (
-            <MuiThemeProvider theme={theme}>
+            <DSProvider>
                 <Picker
                     readOnly={boolean('readOnly', false)}
                     emptyLabel={text('pickerLabel', 'add image')}
                     emptyIcon={<InsertDriveFile/>}
                 />
-            </MuiThemeProvider>
+            </DSProvider>
         ),
         {
             notes: {markdown: doc}
@@ -29,7 +28,7 @@ storiesOf('picker', module)
     .add(
         'picker/filled',
         () => (
-            <MuiThemeProvider theme={theme}>
+            <DSProvider>
                 <Picker
                     readOnly={boolean('readOnly', false)}
                     fieldData={{
@@ -39,7 +38,7 @@ storiesOf('picker', module)
                         info: 'best company in the world'
                     }}
                 />
-            </MuiThemeProvider>
+            </DSProvider>
         ),
         {
             notes: {markdown: doc}
