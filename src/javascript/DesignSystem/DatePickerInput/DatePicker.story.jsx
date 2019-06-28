@@ -5,8 +5,7 @@ import {withKnobs, select, boolean, text} from '@storybook/addon-knobs';
 
 import {DatePickerInput} from './DatePickerInput';
 import doc from './DatePickerInput.md';
-import {dsGenericTheme as theme} from '@jahia/design-system-kit';
-import {MuiThemeProvider} from '@material-ui/core';
+import {DSProvider} from '@jahia/design-system-kit';
 
 import '../../date.config';
 
@@ -19,18 +18,18 @@ storiesOf('DatePickerInput', module)
     .add(
         'default',
         () => (
-            <MuiThemeProvider theme={theme}>
+            <DSProvider>
                 <DatePickerInput lang={lang() || 'en'} readOnly={readOnly()} displayDateFormat={displayDateFormat()}/>
-            </MuiThemeProvider>
+            </DSProvider>
         ),
         {notes: {markdown: doc}}
     )
     .add(
         'datetime',
         () => (
-            <MuiThemeProvider theme={theme}>
+            <DSProvider>
                 <DatePickerInput lang={lang() || 'en'} variant="datetime" readOnly={readOnly()}/>
-            </MuiThemeProvider>
+            </DSProvider>
         ),
         {notes: {markdown: doc}}
     );
