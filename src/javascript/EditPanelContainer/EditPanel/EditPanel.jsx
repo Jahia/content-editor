@@ -1,15 +1,12 @@
 import React, {useEffect, useContext} from 'react';
-import {MainLayout} from '@jahia/design-system-kit';
+import {Badge, MainLayout} from '@jahia/design-system-kit';
 import {buttonRenderer, DisplayActions} from '@jahia/react-material';
-import {Typography} from '@jahia/design-system-kit';
 import PropTypes from 'prop-types';
 import EditPanelContent from './EditPanelContent/EditPanelContent';
 import {connect} from 'formik';
-import {compose} from 'react-apollo';
-import {translate} from 'react-i18next';
 import {ContentEditorContext} from '../ContentEditor.context';
 
-const EditPanel = ({t, fields, title, siteInfo, nodeData, formik}) => {
+const EditPanel = ({fields, siteInfo, nodeData, formik}) => {
     const editorContext = useContext(ContentEditorContext);
 
     useEffect(() => {
@@ -40,11 +37,12 @@ const EditPanel = ({t, fields, title, siteInfo, nodeData, formik}) => {
                                           return <Button context={context}/>;
                                       }}
                 />,
-                title: title,
+                title: nodeData.displayName,
                 contextModifiers: (
-                    <Typography variant="omega" color="invert">
-                        {t('content-editor:label.contentEditor.edit.title')}
-                    </Typography>
+                    <Badge badgeContent={nodeData.primaryNodeType.displayName}
+                           variant="normal"
+                           color="ghost"
+                    />
                 ),
                 actions: (
                     <DisplayActions
@@ -67,13 +65,7 @@ const EditPanel = ({t, fields, title, siteInfo, nodeData, formik}) => {
     );
 };
 
-EditPanel.defaultProps = {
-    title: ''
-};
-
 EditPanel.propTypes = {
-    title: PropTypes.string,
-    t: PropTypes.func.isRequired,
     fields: PropTypes.array.isRequired,
     formik: PropTypes.object.isRequired,
     siteInfo: PropTypes.object.isRequired,
@@ -84,10 +76,7 @@ EditPanel.propTypes = {
     }).isRequired
 };
 
-const EditPanelCmp = compose(
-    translate(),
-    connect
-)(EditPanel);
+const EditPanelCmp = connect(EditPanel);
 
 EditPanelCmp.displayName = 'EditPanel';
 
