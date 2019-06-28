@@ -49,6 +49,6 @@ describe('EditPanelContent', () => {
         expect(wrapper.find('WithStyles(ToggleButtonGroup)').props().value).toBe('details');
 
         const rightColCmp = wrapper.find('WithStyles(TwoColumnsContent)').props().rightCol;
-        expect(rightColCmp.type.name).toBe('DetailsPreviewComponent');
+        expect(rightColCmp.type.displayName).toBe('Details');
     });
 });

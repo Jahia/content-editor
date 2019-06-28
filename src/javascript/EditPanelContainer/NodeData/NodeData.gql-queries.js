@@ -12,10 +12,14 @@ const NodeDataFragment = {
             result:nodeByPath(path: $path) {
                 ...NodeCacheRequiredFields
                 displayName(language: $language)
+                mixinTypes {
+                    name
+                }
                 parent {
                     displayName(language: $language)
                     path
                 }
+
                 primaryNodeType {
                     name
                     displayName(language: $language)

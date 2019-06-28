@@ -8,6 +8,7 @@ import {withStyles} from '@material-ui/core';
 import {translate} from 'react-i18next';
 import {ToggleButton, ToggleButtonGroup} from '@material-ui/lab';
 import {PreviewContainer} from './PreviewContainer';
+import {Details} from './Details';
 
 const styles = theme => ({
     twoColumnsRoot: {
@@ -30,14 +31,16 @@ const styles = theme => ({
     }
 });
 
-const DetailsPreviewComponent = () => (<></>);
+const SelectedTabComponents = {
+    preview: PreviewContainer,
+    details: Details
+};
 
 export const EditPanelContent = ({t, editorContext, classes, fields, siteInfo}) => {
     const [previewMode, setPreviewMode] = useState('preview');
 
-    const PreviewCmp = previewMode === 'preview' ? (
-        <PreviewContainer editorContext={editorContext}/>
-    ) : previewMode === 'details' ? <DetailsPreviewComponent/> : null;
+    const SelectedTabComponent = SelectedTabComponents[previewMode];
+    const PreviewCmp = SelectedTabComponent ? <SelectedTabComponent/> : null;
 
     return (
         <>

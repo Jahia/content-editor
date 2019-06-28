@@ -4,7 +4,7 @@ import SelectorTypes from '../SelectorTypes';
 import EditNodeProperty from './EditNodeProperty';
 import {DxContext} from '@jahia/react-material';
 
-export const EditNodePropertyContainer = ({field, siteInfo, editorContext}) => {
+export const EditNodePropertyContainer = ({field, siteInfo}) => {
     let selectorType = SelectorTypes.resolveSelectorType(field.formDefinition.selectorType, field.formDefinition.selectorOptions);
     const dxContext = useContext(DxContext);
 
@@ -23,14 +23,12 @@ export const EditNodePropertyContainer = ({field, siteInfo, editorContext}) => {
                           labelHtmlFor={field.formDefinition.name}
                           siteInfo={siteInfo}
                           selectorType={selectorType}
-                          editorContext={editorContext}
                           dxContext={dxContext}
                 />
     );
 };
 
 EditNodePropertyContainer.propTypes = {
-    editorContext: PropTypes.object.isRequired,
     field: PropTypes.shape({
         formDefinition: PropTypes.shape({
             name: PropTypes.string.isRequired

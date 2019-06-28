@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useContext} from 'react';
 import {FormControl, Grid, InputLabel, withStyles} from '@material-ui/core';
 import {MoreVert, Public} from '@material-ui/icons';
 import {Badge, IconButton} from '@jahia/design-system-kit';
@@ -7,6 +7,8 @@ import {translate} from 'react-i18next';
 import * as PropTypes from 'prop-types';
 import {ContextualMenu} from '@jahia/react-material';
 import {connect} from 'formik';
+
+import {ContentEditorContext} from '../../../../ContentEditor.context';
 
 let styles = theme => ({
     formControl: Object.assign(theme.typography.zeta, {
@@ -32,9 +34,10 @@ let styles = theme => ({
     }
 });
 
-export const EditNodeProperty = ({t, classes, field, siteInfo, labelHtmlFor, selectorType, editorContext, formik, dxContext}) => {
+export const EditNodeProperty = ({t, classes, field, siteInfo, labelHtmlFor, selectorType, formik, dxContext}) => {
     const contextualMenu = useRef(null);
     const [actionContext, _setActionContext] = useState({noAction: true});
+    const editorContext = useContext(ContentEditorContext);
 
     const setActionContext = getNewActionContext => {
         const newActionContext = getNewActionContext(actionContext);
@@ -118,7 +121,6 @@ EditNodeProperty.propTypes = {
     siteInfo: PropTypes.object.isRequired,
     labelHtmlFor: PropTypes.string.isRequired,
     selectorType: PropTypes.object.isRequired,
-    editorContext: PropTypes.object.isRequired,
     formik: PropTypes.object.isRequired,
     dxContext: PropTypes.object.isRequired
 };

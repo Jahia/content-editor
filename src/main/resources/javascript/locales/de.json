@@ -67,6 +67,14 @@
                     "off": "Aus"
                 },
                 "updateOnSave": "Vorschau wird mit dem Speichern aktualisiert"
+            },
+            "details": {
+              "details": "Details",
+              "technicalInfo": "Technische Informationen",
+              "contentType": "Haupt Content Typ",
+              "mixinTypes": "Content Typ",
+              "path": "Pfad",
+              "uuid": "UUID"
             }
         }
     }
