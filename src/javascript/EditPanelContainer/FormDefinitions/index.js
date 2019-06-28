@@ -1,3 +1,1 @@
-import FormDefinitions from './FormDefinitions';
-
-export default FormDefinitions;
+export * from './FormDefinitions';

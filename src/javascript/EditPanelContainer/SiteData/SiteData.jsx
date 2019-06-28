@@ -6,10 +6,12 @@ import {connect} from 'react-redux';
 import * as PropTypes from 'prop-types';
 import {SiteInfo} from '@jahia/react-apollo';
 
-export const SiteData = ({notificationContext, t, site, lang, children}) => {
-    return (
-        <SiteInfo siteKey={site} displayLanguage={lang}>
-            {({siteInfo, error, loading}) => {
+export const withSiteInfo = Children => {
+    const SiteData = props => {
+        const {notificationContext, t, site, lang} = props;
+        return (
+            <SiteInfo siteKey={site} displayLanguage={lang}>
+                {({siteInfo, error, loading}) => {
                     if (error) {
                         console.log('Error when fetching data: ' + error);
                         let message = t('label.contentEditor.error.queryingContent', {details: (error.message ? error.message : '')});
@@ -21,32 +23,33 @@ export const SiteData = ({notificationContext, t, site, lang, children}) => {
                         return <ProgressOverlay/>;
                     }
 
-                    const Children = children;
-                    return <Children siteInfo={siteInfo}/>;
+                    return <Children siteInfo={siteInfo} {...props}/>;
                 }}
-        </SiteInfo>
-    );
+            </SiteInfo>
+        );
+    };
+
+    const mapStateToProps = state => ({
+        site: state.site,
+        lang: state.language
+    });
+
+    SiteData.propTypes = {
+        t: PropTypes.func,
+        lang: PropTypes.string.isRequired,
+        notificationContext: PropTypes.object.isRequired,
+        site: PropTypes.string.isRequired
+    };
+
+    SiteData.defaultProps = {
+        t: s => s
+    };
+
+    return compose(
+        withNotifications(),
+        translate(),
+        connect(mapStateToProps)
+    )(SiteData);
 };
 
-const mapStateToProps = state => ({
-    site: state.site,
-    lang: state.language
-});
-
-SiteData.propTypes = {
-    children: PropTypes.func.isRequired,
-    t: PropTypes.func,
-    lang: PropTypes.string.isRequired,
-    notificationContext: PropTypes.object.isRequired,
-    site: PropTypes.string.isRequired
-};
-
-SiteData.defaultProps = {
-    t: s => s
-};
-
-export default compose(
-    withNotifications(),
-    translate(),
-    connect(mapStateToProps)
-)(SiteData);
+withSiteInfo.displayName = 'withSiteInfo';
