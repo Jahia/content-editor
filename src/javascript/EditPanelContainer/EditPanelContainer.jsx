@@ -21,17 +21,7 @@ const submitActionMapper = {
     [EditPanelConstants.submitOperation.UNPUBLISH]: unpublishNode
 };
 
-export const EditPanelContainer = ({
-    client,
-    notificationContext,
-    t,
-    path,
-    lang,
-    uiLang,
-    site,
-    siteDisplayableName,
-    siteInfo
-}) => {
+export const EditPanelContainer = ({client, notificationContext, t, path, lang, uiLang, site, siteDisplayableName, siteInfo}) => {
     const contentEditorUiLang = EditPanelConstants.supportedLocales.includes(uiLang) ?
         uiLang :
         EditPanelConstants.defaultLocale;
@@ -65,21 +55,12 @@ export const EditPanelContainer = ({
     };
 
     const handleSubmit = (values, actions) => {
-        const submitAction =
-            submitActionMapper[
-                values[
-                    EditPanelConstants.systemFields
-                        .SYSTEM_SUBMIT_OPERATION
-                ]
-            ];
+        const submitAction = submitActionMapper[values[EditPanelConstants.systemFields.SYSTEM_SUBMIT_OPERATION]];
 
         if (!submitAction) {
             console.warn(
                 'Unknown submit operation: ' +
-                    values[
-                        EditPanelConstants.systemFields
-                            .SYSTEM_SUBMIT_OPERATION
-                    ]
+                values[EditPanelConstants.systemFields.SYSTEM_SUBMIT_OPERATION]
             );
             actions.setSubmitting(false);
         }
@@ -100,19 +81,17 @@ export const EditPanelContainer = ({
     return (
         <ContentEditorContext.Provider value={editorContext}>
             <Formik
-                    initialValues={initialValues}
-                    render={() => {
-                        return (
-                            <EditPanel
-                                fields={fields}
-                                title={nodeData.displayName}
-                                siteInfo={siteInfo}
-                                nodeData={nodeData}
-                            />
-                        );
-                    }}
-                    onSubmit={handleSubmit}
-                />
+                initialValues={initialValues}
+                render={() => {
+                    return (
+                        <EditPanel fields={fields}
+                                   siteInfo={siteInfo}
+                                   nodeData={nodeData}
+                        />
+                    );
+                }}
+                onSubmit={handleSubmit}
+            />
         </ContentEditorContext.Provider>
     );
 };

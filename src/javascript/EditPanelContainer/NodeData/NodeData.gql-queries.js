@@ -18,6 +18,7 @@ const NodeDataFragment = {
                 }
                 primaryNodeType {
                     name
+                    displayName(language: $language)
                     properties {
                         name
                         requiredType
