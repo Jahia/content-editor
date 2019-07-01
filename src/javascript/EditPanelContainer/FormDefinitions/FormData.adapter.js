@@ -1,4 +1,5 @@
 import SelectorTypes from '../EditPanel/EditPanelContent/FormBuilder/SelectorTypes/SelectorTypes';
+import dayjs from '../../date.config';
 
 const isDetailField = field => field.readOnly && field.targets.find(target => target.name === 'metadata');
 
@@ -44,7 +45,7 @@ const getInitialValue = fields => {
     );
 };
 
-const getDetailsValue = (formDefinition, nodeData) => {
+const getDetailsValue = (formDefinition, nodeData, lang) => {
     return formDefinition.fields
         .filter(isDetailField)
         .map(field => {
@@ -52,14 +53,32 @@ const getDetailsValue = (formDefinition, nodeData) => {
                 prop => prop.name === field.name
             );
 
+            if (field.selectorType.includes('Date')) {
+                return {
+                    label: field.displayName,
+                    value: jcrDefinition &&
+                        jcrDefinition.value &&
+                        dayjs(jcrDefinition.value).locale(lang).format('L HH:mm')
+                };
+            }
+
             return {
-                name: field.name,
+                label: field.displayName,
                 value: jcrDefinition && jcrDefinition.value
             };
         });
 };
 
-export const adaptFormData = data => {
+const getTechnicalInfo = (nodeData, t) => {
+    return [
+        {label: t('content-editor:label.contentEditor.details.contentType'), value: nodeData.primaryNodeType.displayName},
+        {label: t('content-editor:label.contentEditor.details.mixinTypes'), value: nodeData.mixinTypes.map(m => m.name).join('; ')},
+        {label: t('content-editor:label.contentEditor.details.path'), value: nodeData.path},
+        {label: t('content-editor:label.contentEditor.details.uuid'), value: nodeData.uuid}
+    ];
+};
+
+export const adaptFormData = (data, lang, t) => {
     const formDefinition = data.forms.editForm;
     const nodeData = data.jcr.result;
     const fields = getFields(formDefinition, nodeData);
@@ -68,6 +87,7 @@ export const adaptFormData = data => {
         nodeData,
         fields,
         initialValues: getInitialValue(fields),
-        details: getDetailsValue(formDefinition, nodeData)
+        details: getDetailsValue(formDefinition, nodeData, lang),
+        technicalInfo: getTechnicalInfo(nodeData, t)
     };
 };

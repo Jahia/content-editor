@@ -67,6 +67,14 @@
                     "off": "Désactivé"
                 },
                 "updateOnSave": "L'aperçu sera mis à jour lors de l'enregistrement"
+            },
+            "details": {
+              "details": "Détails",
+              "technicalInfo": "Informations techniques",
+              "contentType": "Type de contenu principal",
+              "mixinTypes": "Type de contenu complet",
+              "path": "Chemin",
+              "uuid": "UUID"
             }
         }
     }

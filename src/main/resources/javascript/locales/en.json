@@ -67,6 +67,14 @@
                     "off": "Off"
                 },
                 "updateOnSave": "Preview will update on save"
+            },
+            "details": {
+              "details": "Details",
+              "technicalInfo": "Technical information",
+              "contentType": "Main content type",
+              "mixinTypes": "Full content type",
+              "path": "Path",
+              "uuid": "UUID"
             }
         }
     }

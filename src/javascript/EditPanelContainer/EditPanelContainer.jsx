@@ -33,7 +33,8 @@ export const EditPanelContainer = ({client, notificationContext, t, path, lang, 
         nodeData,
         fields,
         initialValues,
-        details
+        details,
+        technicalInfo
     } = useFormDefinition({path, language: lang, uiLang: contentEditorUiLang}, t);
 
     if (error) {
@@ -51,7 +52,8 @@ export const EditPanelContainer = ({client, notificationContext, t, path, lang, 
         lang: lang,
         uiLang: contentEditorUiLang,
         siteDisplayableName: siteDisplayableName,
-        details
+        details,
+        technicalInfo
     };
 
     const handleSubmit = (values, actions) => {

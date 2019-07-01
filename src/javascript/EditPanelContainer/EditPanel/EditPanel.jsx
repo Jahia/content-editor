@@ -1,14 +1,11 @@
-import React, {useEffect, useContext} from 'react';
+import React, {useEffect} from 'react';
 import {Badge, MainLayout} from '@jahia/design-system-kit';
 import {buttonRenderer, DisplayActions} from '@jahia/react-material';
 import PropTypes from 'prop-types';
 import EditPanelContent from './EditPanelContent/EditPanelContent';
 import {connect} from 'formik';
-import {ContentEditorContext} from '../ContentEditor.context';
 
 const EditPanel = ({fields, siteInfo, nodeData, formik}) => {
-    const editorContext = useContext(ContentEditorContext);
-
     useEffect(() => {
         const handleBeforeUnloadEvent = ev => {
             if (formik.dirty) {
@@ -57,7 +54,6 @@ const EditPanel = ({fields, siteInfo, nodeData, formik}) => {
             }}
         >
             <EditPanelContent
-                editorContext={editorContext}
                 siteInfo={siteInfo}
                 fields={fields}
             />

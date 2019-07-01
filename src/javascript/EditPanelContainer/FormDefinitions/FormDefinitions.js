@@ -16,5 +16,5 @@ export const useFormDefinition = (queryParams, t) => {
         };
     }
 
-    return adaptFormData(data);
+    return adaptFormData(data, queryParams.uiLang, t);
 };
