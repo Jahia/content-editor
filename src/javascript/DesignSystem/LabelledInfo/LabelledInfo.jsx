@@ -11,7 +11,7 @@ const style = theme => ({
 
 const LabelledInfoCmp = ({label, value, classes}) => {
     return (
-        <div className={classes.container}>
+        <div className={classes.container} data-sel-labelled-info={label}>
             <Typography variant="caption" color="gamma">{label}</Typography>
             <Typography variant="omega" color="alpha">{value}</Typography>
         </div>

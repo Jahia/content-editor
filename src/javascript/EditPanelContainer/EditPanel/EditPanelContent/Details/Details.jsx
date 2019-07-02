@@ -16,7 +16,7 @@ export const DetailsCmp = ({classes, t}) => {
     const editorContext = useContext(ContentEditorContext);
 
     return (
-        <section className={classes.container}>
+        <section data-sel-details-section className={classes.container}>
             <InfoPanel panelTitle={t('content-editor:label.contentEditor.details.details')} infos={editorContext.details}/>
             <InfoPanel panelTitle={t('content-editor:label.contentEditor.details.technicalInfo')} variant="oneColumn" infos={editorContext.technicalInfo}/>
         </section>
