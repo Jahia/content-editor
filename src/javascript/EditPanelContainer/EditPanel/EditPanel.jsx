@@ -40,7 +40,7 @@ const EditPanel = ({fields, siteInfo, nodeData, lang, formik}) => {
                 />,
                 title: nodeData.displayName,
                 contextModifiers: (
-                    <React.Fragment>
+                    <>
                         <LanguageSwitcher lang={lang} languages={siteInfo.languages}
                                           onSelectLanguage={onSelectLanguage}/>
                         <Badge badgeContent={nodeData.primaryNodeType.displayName}
