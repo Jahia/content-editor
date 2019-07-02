@@ -42,8 +42,10 @@ const EditPanel = ({fields, siteInfo, nodeData, lang, formik}) => {
                 title: nodeData.displayName,
                 contextModifiers: (
                     <>
-                        <LanguageSwitcher lang={lang} languages={siteInfo.languages}
-                                          onSelectLanguage={onSelectLanguage}/>
+                        <LanguageSwitcher lang={lang}
+                                          languages={siteInfo.languages}
+                                          onSelectLanguage={onSelectLanguage}
+                        />
                         <Badge badgeContent={nodeData.primaryNodeType.displayName}
                                variant="normal"
                                color="ghost"
