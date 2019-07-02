@@ -14,6 +14,20 @@ jest.mock('../EditPanel/EditPanelContent/FormBuilder/SelectorTypes/SelectorTypes
     };
 });
 
+jest.mock('../../date.config', () => {
+    return date => {
+        return {
+            locale() {
+                return {
+                    format(format) {
+                        return `formatted date: ${date} format: ${format}`;
+                    }
+                };
+            }
+        };
+    };
+});
+
 const t = val => val;
 
 describe('adaptFormData', () => {
@@ -43,7 +57,7 @@ describe('adaptFormData', () => {
                         ]
                     },
                     properties: [
-                        {name: 'field1', properties: true, value: '2019-05-07T11:33:31.056+02:00'}
+                        {name: 'field1', properties: true, value: '2019-05-07T11:33:31.056'}
                     ],
                     mixinTypes: [
                         {name: 'Mixin1'},
@@ -84,13 +98,13 @@ describe('adaptFormData', () => {
             data: {
                 name: 'field1',
                 properties: true,
-                value: '2019-05-07T11:33:31.056+02:00'
+                value: '2019-05-07T11:33:31.056'
             }
         }]);
     });
 
     it('should extract initialValues from fields', () => {
-        expect(adaptFormData(graphqlResponse, 'fr', t).initialValues).toEqual({field1: '2019-05-07T11:33:31.056+02:00'});
+        expect(adaptFormData(graphqlResponse, 'fr', t).initialValues).toEqual({field1: '2019-05-07T11:33:31.056'});
     });
 
     it('should extract initialValues with selectorType own logic', () => {
@@ -109,7 +123,7 @@ describe('adaptFormData', () => {
         expect(adaptFormData(graphqlResponse, 'fr', t).details).toEqual([
             {
                 label: 'labelled',
-                value: '2019-05-07T11:33:31.056+02:00'
+                value: '2019-05-07T11:33:31.056'
             }
         ]);
     });
@@ -120,7 +134,7 @@ describe('adaptFormData', () => {
         expect(adaptFormData(graphqlResponse, 'fr', t).details).toEqual([
             {
                 label: 'labelled',
-                value: '07/05/2019 11:33'
+                value: 'formatted date: 2019-05-07T11:33:31.056 format: L HH:mm'
             }
         ]);
     });
