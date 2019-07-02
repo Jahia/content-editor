@@ -25,6 +25,7 @@ const EditPanel = ({fields, siteInfo, nodeData, lang, formik}) => {
     }, [formik.dirty]);
 
     const onSelectLanguage = lang => {
+        // TODO BACKLOG-10541: remove this log and implement this function
         console.log('Switching language to: ' + lang);
     };
 
