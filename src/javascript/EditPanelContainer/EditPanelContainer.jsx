@@ -1,7 +1,7 @@
 import React from 'react';
 import {compose, withApollo} from 'react-apollo';
 import {translate} from 'react-i18next';
-import {withNotifications, ProgressOverlay} from '@jahia/react-material';
+import {ProgressOverlay, withNotifications} from '@jahia/react-material';
 import EditPanelConstants from './EditPanel/EditPanelConstants';
 import {Formik} from 'formik';
 import {connect} from 'react-redux';
@@ -89,6 +89,7 @@ export const EditPanelContainer = ({client, notificationContext, t, path, lang, 
                         <EditPanel fields={fields}
                                    siteInfo={siteInfo}
                                    nodeData={nodeData}
+                                   lang={lang}
                         />
                     );
                 }}

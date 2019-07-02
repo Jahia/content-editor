@@ -1,11 +1,11 @@
 import React, {useEffect} from 'react';
-import {Badge, MainLayout} from '@jahia/design-system-kit';
+import {Badge, LanguageSwitcher, MainLayout} from '@jahia/design-system-kit';
 import {buttonRenderer, DisplayActions} from '@jahia/react-material';
 import PropTypes from 'prop-types';
 import EditPanelContent from './EditPanelContent/EditPanelContent';
 import {connect} from 'formik';
 
-const EditPanel = ({fields, siteInfo, nodeData, formik}) => {
+const EditPanel = ({fields, siteInfo, nodeData, lang, formik}) => {
     useEffect(() => {
         const handleBeforeUnloadEvent = ev => {
             if (formik.dirty) {
@@ -24,6 +24,11 @@ const EditPanel = ({fields, siteInfo, nodeData, formik}) => {
         };
     }, [formik.dirty]);
 
+    const onSelectLanguage = lang => {
+        // TODO BACKLOG-10541: remove this log and implement this function
+        console.log('Switching language to: ' + lang);
+    };
+
     return (
         <MainLayout
             topBarProps={{
@@ -36,10 +41,14 @@ const EditPanel = ({fields, siteInfo, nodeData, formik}) => {
                 />,
                 title: nodeData.displayName,
                 contextModifiers: (
-                    <Badge badgeContent={nodeData.primaryNodeType.displayName}
-                           variant="normal"
-                           color="ghost"
-                    />
+                    <>
+                        <LanguageSwitcher lang={lang} languages={siteInfo.languages}
+                                          onSelectLanguage={onSelectLanguage}/>
+                        <Badge badgeContent={nodeData.primaryNodeType.displayName}
+                               variant="normal"
+                               color="ghost"
+                        />
+                    </>
                 ),
                 actions: (
                     <DisplayActions
@@ -69,7 +78,8 @@ EditPanel.propTypes = {
         aggregatedPublicationInfo: PropTypes.shape({
             publicationStatus: PropTypes.string.isRequired
         }).isRequired
-    }).isRequired
+    }).isRequired,
+    lang: PropTypes.string.isRequired
 };
 
 const EditPanelCmp = connect(EditPanel);
