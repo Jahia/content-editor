@@ -20,6 +20,7 @@ const ChoiceList = ({classes, field, id}) => {
                 return (
                     <Select className={classes.selectField}
                             {...formikField}
+                            // eslint-disable-next-line react/prop-types
                             value={formikField.value || ''}
                             inputProps={{
                                 name: field.formDefinition.name,
@@ -55,7 +56,8 @@ ChoiceList.propTypes = {
                     value: PropTypes.shape({
                         string: PropTypes.string.isRequired
                     }).isRequired
-                })).isRequired
+                })).isRequired,
+            readOnly: PropTypes.bool
         }).isRequired
     }).isRequired,
     classes: PropTypes.object.isRequired

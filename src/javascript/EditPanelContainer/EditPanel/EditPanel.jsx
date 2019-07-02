@@ -77,6 +77,10 @@ EditPanel.propTypes = {
     formik: PropTypes.object.isRequired,
     siteInfo: PropTypes.object.isRequired,
     nodeData: PropTypes.shape({
+        displayName: PropTypes.string.isRequired,
+        primaryNodeType: PropTypes.shape({
+            displayName: PropTypes.string
+        }),
         aggregatedPublicationInfo: PropTypes.shape({
             publicationStatus: PropTypes.string.isRequired
         }).isRequired
