@@ -2,10 +2,13 @@ import React, {useEffect} from 'react';
 import {Badge, LanguageSwitcher, MainLayout} from '@jahia/design-system-kit';
 import {buttonRenderer, DisplayActions} from '@jahia/react-material';
 import PropTypes from 'prop-types';
+import {compose} from 'react-apollo';
+import {cmGoto} from '../../ContentManager.redux-actions';
 import EditPanelContent from './EditPanelContent/EditPanelContent';
 import {connect} from 'formik';
+import {connect as connectReactRedux} from 'react-redux';
 
-const EditPanel = ({fields, siteInfo, nodeData, lang, formik}) => {
+const EditPanel = ({fields, siteInfo, nodeData, lang, formik, onSelectLanguage}) => {
     useEffect(() => {
         const handleBeforeUnloadEvent = ev => {
             if (formik.dirty) {
@@ -24,11 +27,6 @@ const EditPanel = ({fields, siteInfo, nodeData, lang, formik}) => {
         };
     }, [formik.dirty]);
 
-    const onSelectLanguage = lang => {
-        // TODO BACKLOG-10541: remove this log and implement this function
-        console.log('Switching language to: ' + lang);
-    };
-
     return (
         <MainLayout
             topBarProps={{
@@ -44,6 +42,7 @@ const EditPanel = ({fields, siteInfo, nodeData, lang, formik}) => {
                     <>
                         <LanguageSwitcher lang={lang}
                                           languages={siteInfo.languages}
+                                          color="inverted"
                                           onSelectLanguage={onSelectLanguage}
                         />
                         <Badge badgeContent={nodeData.primaryNodeType.displayName}
@@ -72,6 +71,16 @@ const EditPanel = ({fields, siteInfo, nodeData, lang, formik}) => {
     );
 };
 
+const mapStateToProps = state => ({
+    lang: state.language
+});
+
+const mapDispatchToProps = dispatch => ({
+    onSelectLanguage: language => {
+        dispatch(cmGoto({language}));
+    }
+});
+
 EditPanel.propTypes = {
     fields: PropTypes.array.isRequired,
     formik: PropTypes.object.isRequired,
@@ -85,10 +94,14 @@ EditPanel.propTypes = {
             publicationStatus: PropTypes.string.isRequired
         }).isRequired
     }).isRequired,
-    lang: PropTypes.string.isRequired
+    lang: PropTypes.string.isRequired,
+    onSelectLanguage: PropTypes.func.isRequired
 };
 
-const EditPanelCmp = connect(EditPanel);
+const EditPanelCmp = compose(
+    connect,
+    connectReactRedux(mapStateToProps, mapDispatchToProps)
+)(EditPanel);
 
 EditPanelCmp.displayName = 'EditPanel';
 
