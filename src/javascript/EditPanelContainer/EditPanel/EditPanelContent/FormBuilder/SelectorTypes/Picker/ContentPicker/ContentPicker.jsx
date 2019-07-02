@@ -60,7 +60,8 @@ ContentPickerCmp.propTypes = {
     editorContext: PropTypes.object.isRequired,
     field: PropTypes.shape({
         formDefinition: PropTypes.shape({
-            name: PropTypes.string.isRequired
+            name: PropTypes.string.isRequired,
+            selectorOptions: PropTypes.array
         }).isRequired
     }).isRequired,
     formik: PropTypes.object.isRequired,

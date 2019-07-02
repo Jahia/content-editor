@@ -31,7 +31,9 @@ export const EditNodePropertyContainer = ({field, siteInfo}) => {
 EditNodePropertyContainer.propTypes = {
     field: PropTypes.shape({
         formDefinition: PropTypes.shape({
-            name: PropTypes.string.isRequired
+            name: PropTypes.string.isRequired,
+            selectorType: PropTypes.string,
+            selectorOptions: PropTypes.array
         }).isRequired
     }).isRequired,
     siteInfo: PropTypes.object.isRequired
