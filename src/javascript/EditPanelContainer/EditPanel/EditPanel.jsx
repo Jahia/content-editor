@@ -47,7 +47,7 @@ const EditPanel = ({fields, siteInfo, nodeData, lang, formik}) => {
                                variant="normal"
                                color="ghost"
                         />
-                    </React.Fragment>
+                    </>
                 ),
                 actions: (
                     <DisplayActions
