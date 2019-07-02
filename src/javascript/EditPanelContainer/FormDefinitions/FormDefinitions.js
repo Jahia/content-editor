@@ -5,7 +5,7 @@ import {adaptFormData} from './FormData.adapter';
 export const useFormDefinition = (queryParams, t) => {
     const {loading, error, data} = useQuery(FormQuery, {
         variables: queryParams,
-        fetchPolicy: 'cache-first'
+        fetchPolicy: 'cache-and-network'
     });
 
     if (error || loading) {
