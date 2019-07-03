@@ -3,7 +3,7 @@ import {getPropertiesToMutate} from './EditPanel/EditPanel.utils';
 import {NodeQuery} from './NodeData/NodeData.gql-queries';
 import {refetchPreview} from './EditPanel.refetches';
 
-export const publishNode = ({client, nodeData, lang, notificationContext, actions, t}) => {
+export const publishNode = ({client, nodeData, lang, uiLang, notificationContext, actions, t}) => {
     return client.mutate({
         variables: {
             path: nodeData.path,
@@ -15,7 +15,8 @@ export const publishNode = ({client, nodeData, lang, notificationContext, action
                 query: NodeQuery,
                 variables: {
                     path: nodeData.path,
-                    language: lang
+                    language: lang,
+                    uiLang: uiLang
                 }
             }
         ]
@@ -30,7 +31,7 @@ export const publishNode = ({client, nodeData, lang, notificationContext, action
         });
 };
 
-export const unpublishNode = ({client, nodeData, lang, notificationContext, actions, t}) => {
+export const unpublishNode = ({client, nodeData, lang, uiLang, notificationContext, actions, t}) => {
     return client.mutate({
         variables: {
             path: nodeData.path,
@@ -42,7 +43,8 @@ export const unpublishNode = ({client, nodeData, lang, notificationContext, acti
                 query: NodeQuery,
                 variables: {
                     path: nodeData.path,
-                    language: lang
+                    language: lang,
+                    uiLang: uiLang
                 }
             }
         ]
@@ -57,7 +59,7 @@ export const unpublishNode = ({client, nodeData, lang, notificationContext, acti
         });
 };
 
-export const saveNode = ({client, nodeData, notificationContext, actions, path, lang, values, fields, t}) => {
+export const saveNode = ({client, nodeData, notificationContext, actions, path, lang, uiLang, values, fields, t}) => {
     const propertiesToMutate = getPropertiesToMutate(nodeData, values, fields, lang);
 
     client.mutate({
@@ -73,7 +75,8 @@ export const saveNode = ({client, nodeData, notificationContext, actions, path, 
                 query: NodeQuery,
                 variables: {
                     path: path,
-                    language: lang
+                    language: lang,
+                    uiLang: uiLang
                 }
             }
         ]
