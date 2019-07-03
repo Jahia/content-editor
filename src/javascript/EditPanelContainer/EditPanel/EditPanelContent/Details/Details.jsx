@@ -8,7 +8,8 @@ import {translate} from 'react-i18next';
 
 const styles = theme => ({
     container: {
-        backgroundColor: theme.palette.ui.alpha
+        backgroundColor: theme.palette.ui.alpha,
+        overflowY: 'auto'
     }
 });
 
