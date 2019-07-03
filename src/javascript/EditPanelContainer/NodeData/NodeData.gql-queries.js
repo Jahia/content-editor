@@ -4,6 +4,7 @@ import {PredefinedFragments} from '@jahia/apollo-dx';
 const NodeDataFragment = {
     nodeData: {
         variables: {
+            uiLang: 'String!',
             language: 'String!',
             path: 'String!'
         },
@@ -22,7 +23,7 @@ const NodeDataFragment = {
 
                 primaryNodeType {
                     name
-                    displayName(language: $language)
+                    displayName(language: $uiLang)
                     properties {
                         name
                         requiredType
