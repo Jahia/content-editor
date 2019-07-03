@@ -5,6 +5,7 @@ import {Field} from 'formik';
 import {DatePickerInput} from '../../../../../../DesignSystem/DatePickerInput';
 import dayjs from 'dayjs';
 import {fillDisabledDaysFromJCRConstraints} from './DateTimePicker.utils';
+import {FieldPropTypes} from '../../../../../FormDefinitions/FromData.proptypes';
 
 const variantMapper = {
     DatePicker: 'date',
@@ -59,15 +60,5 @@ DateTimePicker.propTypes = {
         lng: PropTypes.string,
         uiLang: PropTypes.string.isRequired
     }).isRequired,
-    field: PropTypes.shape({
-        formDefinition: PropTypes.shape({
-            name: PropTypes.string.isRequired,
-            selectorOptions: PropTypes.arrayOf(PropTypes.shape({
-                name: PropTypes.string,
-                value: PropTypes.string
-            })).isRequired,
-            selectorType: PropTypes.string,
-            readOnly: PropTypes.bool
-        }).isRequired
-    }).isRequired
+    field: FieldPropTypes.isRequired
 };

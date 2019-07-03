@@ -9,6 +9,7 @@ import {translate} from 'react-i18next';
 import {ToggleButton, ToggleButtonGroup} from '@material-ui/lab';
 import {PreviewContainer} from './PreviewContainer';
 import {Details} from './Details';
+import {FieldsPropTypes} from '../../FormDefinitions/';
 
 const styles = theme => ({
     twoColumnsRoot: {
@@ -90,7 +91,7 @@ export const EditPanelContent = ({t, classes, fields, siteInfo}) => {
 
 EditPanelContent.propTypes = {
     t: PropTypes.func.isRequired,
-    fields: PropTypes.array.isRequired,
+    fields: FieldsPropTypes.isRequired,
     classes: PropTypes.object.isRequired,
     siteInfo: PropTypes.object.isRequired
 };

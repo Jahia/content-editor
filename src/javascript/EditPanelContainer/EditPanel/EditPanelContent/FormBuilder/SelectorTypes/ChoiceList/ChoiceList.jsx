@@ -4,6 +4,7 @@ import {withStyles, MenuItem} from '@material-ui/core';
 import {Field} from 'formik';
 import React from 'react';
 import PropTypes from 'prop-types';
+import {FieldPropTypes} from '../../../../../FormDefinitions/FromData.proptypes';
 
 const styles = () => ({
     selectField: {
@@ -44,22 +45,7 @@ const ChoiceList = ({classes, field, id}) => {
 
 ChoiceList.propTypes = {
     id: PropTypes.string.isRequired,
-    field: PropTypes.shape({
-        data: PropTypes.shape({
-            value: PropTypes.string
-        }),
-        formDefinition: PropTypes.shape({
-            name: PropTypes.string.isRequired,
-            valueConstraints: PropTypes.arrayOf(
-                PropTypes.shape({
-                    displayValue: PropTypes.string.isRequired,
-                    value: PropTypes.shape({
-                        string: PropTypes.string.isRequired
-                    }).isRequired
-                })).isRequired,
-            readOnly: PropTypes.bool
-        }).isRequired
-    }).isRequired,
+    field: FieldPropTypes.isRequired,
     classes: PropTypes.object.isRequired
 };
 

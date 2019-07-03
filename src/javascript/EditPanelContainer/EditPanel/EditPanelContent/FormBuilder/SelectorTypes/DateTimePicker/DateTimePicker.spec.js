@@ -24,7 +24,12 @@ describe('DateTimePicker component', () => {
                     readOnly: true,
                     selectorOptions: [],
                     selectorType: 'DatePicker'
-                }
+                },
+                targets: [],
+                data: {
+                    name: 'myOption'
+                },
+                jcrDefinition: {}
             },
             editorContext: {
                 lang: 'fr',
@@ -101,7 +106,10 @@ describe('DateTimePicker component', () => {
 
     it('should set constraints on DatePicker', () => {
         props.field.formDefinition.selectorType = 'DatePicker';
-        props.field.formDefinition.valueConstraints = [{value: {string: '(2019-06-04T00:00:00.000,)'}}];
+        props.field.formDefinition.valueConstraints = [{
+            value: {string: '(2019-06-04T00:00:00.000,)'},
+            displayValue: 'yolo'
+        }];
         const RenderProps = shallow(<DateTimePicker {...props}/>)
             .props().render;
         const cmp = shallow(<RenderProps field={{value: new Date().toISOString()}} form={{setFieldValue: () => {}}}/>);
@@ -111,7 +119,10 @@ describe('DateTimePicker component', () => {
 
     it('should set constraints on DateTimePicker', () => {
         props.field.formDefinition.selectorType = 'DateTimePicker';
-        props.field.formDefinition.valueConstraints = [{value: {string: '(2019-06-04T10:00:00.000,2019-06-05T10:00:00.000)'}}];
+        props.field.formDefinition.valueConstraints = [{
+            value: {string: '(2019-06-04T10:00:00.000,2019-06-05T10:00:00.000)'},
+            displayValue: 'yolo'
+        }];
         const RenderProps = shallow(<DateTimePicker {...props}/>)
             .props().render;
         const cmp = shallow(<RenderProps field={{value: new Date().toISOString()}} form={{setFieldValue: () => {}}}/>);
@@ -121,7 +132,10 @@ describe('DateTimePicker component', () => {
 
     it('should set constraints on DateTimePicker with limit inclusion', () => {
         props.field.formDefinition.selectorType = 'DateTimePicker';
-        props.field.formDefinition.valueConstraints = [{value: {string: '[2019-06-04T00:00:00.000,)'}}];
+        props.field.formDefinition.valueConstraints = [{
+            value: {string: '[2019-06-04T00:00:00.000,)'},
+            displayValue: 'toto'
+        }];
         const RenderProps = shallow(<DateTimePicker {...props}/>)
             .props().render;
         const cmp = shallow(<RenderProps field={{value: new Date().toISOString()}} form={{setFieldValue: () => {}}}/>);

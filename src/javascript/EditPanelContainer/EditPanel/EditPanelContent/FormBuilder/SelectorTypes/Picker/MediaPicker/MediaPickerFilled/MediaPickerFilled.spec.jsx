@@ -32,7 +32,16 @@ describe('mediaPickerFilled', () => {
 
     beforeEach(() => {
         defaultProps = {
-            field: {},
+            field: {
+                jcrDefinition: {},
+                targets: [],
+                data: {name: 'x'},
+                formDefinition: {
+                    name: 'x',
+                    readOnly: false,
+                    selectorType: 'MediaPicker'
+                }
+            },
             uuid: 'uuidOfTheImage',
             id: 'yoloID',
             formik: {},

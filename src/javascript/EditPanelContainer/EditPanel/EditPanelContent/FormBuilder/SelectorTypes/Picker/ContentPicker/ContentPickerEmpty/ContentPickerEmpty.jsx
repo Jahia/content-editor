@@ -4,6 +4,7 @@ import React, {useState} from 'react';
 import {Picker} from '../../../../../../../../DesignSystem/Picker';
 import {translate} from 'react-i18next';
 import {ContentPickerDialog} from '../ContentPickerDialog';
+import {FieldPropTypes} from '../../../../../../../FormDefinitions/FromData.proptypes';
 
 const ContentPickerEmptyCmp = ({
     t,
@@ -49,7 +50,7 @@ const ContentPickerEmptyCmp = ({
 
 ContentPickerEmptyCmp.propTypes = {
     t: PropTypes.func.isRequired,
-    field: PropTypes.object.isRequired,
+    field: FieldPropTypes.isRequired,
     editorContext: PropTypes.object.isRequired,
     formik: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,

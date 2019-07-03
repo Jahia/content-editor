@@ -14,8 +14,14 @@ describe('RichText component', () => {
             id: 'richID',
             field: {
                 formDefinition: {
+                    name: 'x',
+                    readOnly: false,
+                    selectorType: 'RichText'
+                },
+                data: {
                     name: 'x'
                 },
+                jcrDefinition: {},
                 targets: [{name: 'test'}]
             },
             formik: {

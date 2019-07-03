@@ -17,10 +17,15 @@ describe('Text component', () => {
             },
             field: {
                 formDefinition: {
-                    name: 'x'
+                    name: 'x',
+                    readOnly: false,
+                    selectorType: 'Text'
                 },
                 jcrDefinition: {
                     requiredType: 'STRING'
+                },
+                data: {
+                    name: 'x'
                 },
                 targets: [{name: 'test'}]
             },

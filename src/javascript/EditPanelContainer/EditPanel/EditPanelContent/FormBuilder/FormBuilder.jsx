@@ -13,6 +13,7 @@ import * as PropTypes from 'prop-types';
 import {FormGroup, withStyles} from '@material-ui/core';
 import {ExpandMore} from '@material-ui/icons';
 import EditNodeProperty from './EditNodeProperty';
+import {FieldsPropTypes} from '../../../FormDefinitions';
 
 let styles = theme => ({
     inputLabel: {
@@ -54,7 +55,7 @@ export const FormBuilder = ({classes, fields, formik, siteInfo}) => {
 
 FormBuilder.propTypes = {
     classes: PropTypes.object.isRequired,
-    fields: PropTypes.array.isRequired,
+    fields: FieldsPropTypes.isRequired,
     formik: PropTypes.object.isRequired,
     siteInfo: PropTypes.object.isRequired
 };

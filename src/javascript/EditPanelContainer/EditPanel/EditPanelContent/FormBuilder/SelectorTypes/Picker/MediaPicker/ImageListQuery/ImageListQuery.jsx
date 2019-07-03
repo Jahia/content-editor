@@ -6,6 +6,7 @@ import {translate} from 'react-i18next';
 import {ImageList} from '../../../../../../../../DesignSystem/ImageList';
 import {encodeJCRPath} from '../../../../../../EditPanel.utils';
 import {MediaPickerImages} from './ImageListQuery.gql-queries';
+import {FieldPropTypes} from '../../../../../../../FormDefinitions/FromData.proptypes';
 
 const ImageListQueryCmp = ({
     t,
@@ -71,7 +72,7 @@ ImageListQueryCmp.defaultProps = {
 
 ImageListQueryCmp.propTypes = {
     t: PropTypes.func.isRequired,
-    field: PropTypes.object.isRequired,
+    field: FieldPropTypes.isRequired,
     setSelectedItem: PropTypes.func.isRequired,
     selectedPath: PropTypes.string.isRequired,
     formik: PropTypes.object.isRequired,

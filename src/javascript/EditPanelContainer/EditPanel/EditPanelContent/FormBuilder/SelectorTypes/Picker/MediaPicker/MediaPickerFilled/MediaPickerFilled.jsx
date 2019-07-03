@@ -7,6 +7,7 @@ import {encodeJCRPath} from '../../../../../../EditPanel.utils';
 import {MediaPickerFilledQuery} from './MediaPickerFilled.gql-queries';
 import {MediaPickerDialog} from '../MediaPickerDialog';
 import {useQuery} from 'react-apollo-hooks';
+import {FieldPropTypes} from '../../../../.././../../FormDefinitions/FromData.proptypes';
 
 const MediaPickerFilledCmp = ({
     t,
@@ -84,7 +85,7 @@ const MediaPickerFilledCmp = ({
 
 MediaPickerFilledCmp.propTypes = {
     t: PropTypes.func.isRequired,
-    field: PropTypes.object.isRequired,
+    field: FieldPropTypes.isRequired,
     uuid: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
     formik: PropTypes.object.isRequired,

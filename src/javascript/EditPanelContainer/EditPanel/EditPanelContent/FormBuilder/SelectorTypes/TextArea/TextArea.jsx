@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Field} from 'formik';
+import {FieldPropTypes} from '../../../../../FormDefinitions/FromData.proptypes';
 
 import {TextArea} from '../../../../../../DesignSystem/TextArea';
 
@@ -18,5 +19,5 @@ export const TextAreaField = ({id, field}) => {
 
 TextAreaField.propTypes = {
     id: PropTypes.string.isRequired,
-    field: PropTypes.object.isRequired
+    field: FieldPropTypes.isRequired
 };

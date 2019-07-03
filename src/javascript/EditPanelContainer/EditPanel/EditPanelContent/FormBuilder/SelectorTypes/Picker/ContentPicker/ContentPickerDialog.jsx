@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import {ContentTable} from './ContentTable';
 import {PickerDialog} from '../../../../../../../DesignSystem/PickerDialog';
+import {FieldPropTypes} from '../../../../.././../FormDefinitions/FromData.proptypes';
 
 import Slide from '@material-ui/core/Slide';
 
@@ -94,7 +95,7 @@ ContentPickerDialog.propTypes = {
     nodeTreeConfigs: PropTypes.array.isRequired,
     t: PropTypes.func.isRequired,
     formik: PropTypes.object.isRequired,
-    field: PropTypes.object.isRequired,
+    field: FieldPropTypes.isRequired,
     pickerConfig: PropTypes.object.isRequired,
     initialSelectedItem: PropTypes.string
 };

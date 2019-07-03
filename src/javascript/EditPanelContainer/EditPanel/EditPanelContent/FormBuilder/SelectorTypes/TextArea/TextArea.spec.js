@@ -12,8 +12,14 @@ describe('TextArea component', () => {
             field: {
                 formDefinition: {
                     name: 'myOption',
-                    readOnly: false
-                }
+                    readOnly: false,
+                    selectorType: 'TextArea'
+                },
+                data: {
+                    name: 'myOption'
+                },
+                jcrDefinition: {},
+                targets: []
             },
             classes: {}
         };

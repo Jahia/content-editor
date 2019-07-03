@@ -7,6 +7,8 @@ import {translate} from 'react-i18next';
 import * as PropTypes from 'prop-types';
 import {ContextualMenu} from '@jahia/react-material';
 import {connect} from 'formik';
+import {FieldPropTypes} from '../../../../FormDefinitions';
+import {SiteInfoPropTypes} from '../../../../SiteData';
 
 import {ContentEditorContext} from '../../../../ContentEditor.context';
 
@@ -91,7 +93,9 @@ export const EditNodeProperty = ({t, classes, field, siteInfo, labelHtmlFor, sel
                                     setActionContext={setActionContext}/>
                 </Grid>
                 <Grid item>
-                    {!actionContext.noAction ? (
+                    {actionContext.noAction ? (
+                        <span className={classes.emptySpace}/>
+                    ) : (
                         <>
                             <ContextualMenu ref={contextualMenu}
                                             actionKey={selectorType.key + 'Menu'}
@@ -105,8 +109,6 @@ export const EditNodeProperty = ({t, classes, field, siteInfo, labelHtmlFor, sel
                                             contextualMenu.current.open(event);
                                         }}/>
                         </>
-                    ) : (
-                        <span className={classes.emptySpace}/>
                     )}
                 </Grid>
             </Grid>
@@ -117,8 +119,8 @@ export const EditNodeProperty = ({t, classes, field, siteInfo, labelHtmlFor, sel
 EditNodeProperty.propTypes = {
     t: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,
-    field: PropTypes.object.isRequired,
-    siteInfo: PropTypes.object.isRequired,
+    field: FieldPropTypes.isRequired,
+    siteInfo: SiteInfoPropTypes.isRequired,
     labelHtmlFor: PropTypes.string.isRequired,
     selectorType: PropTypes.object.isRequired,
     formik: PropTypes.object.isRequired,

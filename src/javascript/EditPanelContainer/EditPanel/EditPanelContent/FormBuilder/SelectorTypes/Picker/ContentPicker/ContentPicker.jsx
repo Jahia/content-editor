@@ -5,6 +5,7 @@ import {ContentPickerEmpty} from './ContentPickerEmpty/ContentPickerEmpty';
 import {ContentPickerFilled} from './ContentPickerFilled/ContentPickerFilled';
 import pickerConfigs from '../pickerConfigs';
 import {translate} from 'react-i18next';
+import {FieldPropTypes} from '../../../../../../FormDefinitions/FromData.proptypes';
 
 const ContentPickerCmp = ({field, id, editorContext, formik, t, setActionContext}) => {
     const uuid = formik.values[field.formDefinition.name];
@@ -58,12 +59,7 @@ const ContentPickerCmp = ({field, id, editorContext, formik, t, setActionContext
 
 ContentPickerCmp.propTypes = {
     editorContext: PropTypes.object.isRequired,
-    field: PropTypes.shape({
-        formDefinition: PropTypes.shape({
-            name: PropTypes.string.isRequired,
-            selectorOptions: PropTypes.array
-        }).isRequired
-    }).isRequired,
+    field: FieldPropTypes.isRequired,
     formik: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,
     t: PropTypes.func.isRequired,

@@ -26,8 +26,14 @@ describe('mediaPicker', () => {
             field: {
                 formDefinition: {
                     name: 'imageid',
+                    selectorType: 'MediaPicker',
                     readOnly: false
-                }
+                },
+                targets: [],
+                data: {
+                    name: 'imageid'
+                },
+                jcrDefinition: {}
             },
             id: 'imageid',
             editorContext: {},

@@ -17,9 +17,15 @@ describe('Choicelist component', () => {
                         value: {
                             string: 'Yolooo'
                         }
-                    }]
-
-                }
+                    }],
+                    selectorType: 'ChoiceList',
+                    readOnly: false
+                },
+                data: {
+                    name: 'myOption'
+                },
+                jcrDefinition: {},
+                targets: []
             },
             classes: {}
         };

@@ -31,7 +31,16 @@ describe('contentPickerFilled', () => {
 
     beforeEach(() => {
         defaultProps = {
-            field: {},
+            field: {
+                jcrDefinition: {},
+                targets: [],
+                data: {name: 'x'},
+                formDefinition: {
+                    name: 'x',
+                    readOnly: false,
+                    selectorType: 'ContentPicker'
+                }
+            },
             uuid: 'uuidOfTheImage',
             id: 'yoloID',
             editorContext: {

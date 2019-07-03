@@ -7,7 +7,20 @@ describe('EditNodeProperty container component', () => {
     let defaultProps;
     beforeEach(() => {
         defaultProps = {
-            field: {formDefinition: {name: 'x', selectorType: 'RichText'}},
+            field: {
+                formDefinition: {
+                    name: 'x',
+                    displayName: 'displayName',
+                    selectorType: 'RichText',
+                    readOnly: false,
+                    selectorOptions: []
+                },
+                jcrDefinition: {},
+                data: {
+                    name: 'x'
+                },
+                targets: []
+            },
             targets: [{name: 'test'}],
             siteInfo: {},
             editorContext: {}

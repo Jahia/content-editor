@@ -4,12 +4,12 @@ import {PreviewComponent} from '@jahia/react-material';
 import {Grid, withStyles} from '@material-ui/core';
 import {connect} from 'formik';
 import * as PropTypes from 'prop-types';
-import React, {useContext} from 'react';
+import React from 'react';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
 import {setPreviewRefetcher} from '../../../EditPanel.refetches';
 
-import {ContentEditorContext} from '../../../ContentEditor.context';
+import {useContentEditorContext} from '../../../ContentEditor.context';
 
 const styles = theme => ({
     contentPaper: {
@@ -27,7 +27,7 @@ const styles = theme => ({
 });
 
 const PreviewContainerCmp = ({t, classes, formik}) => {
-    const editorContext = useContext(ContentEditorContext);
+    const editorContext = useContentEditorContext();
 
     const workspace = 'EDIT';
 

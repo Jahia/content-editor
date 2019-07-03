@@ -33,10 +33,22 @@ describe('FormBuilder component', () => {
 
     it('should render one field component per field definition', () => {
         props.fields = [
-            {formDefinition: {name: 'x', selectorType: 'Text'},
-                targets: [{name: 'test'}]},
-            {formDefinition: {name: 'y', selectorType: 'Text'},
-                targets: [{name: 'test'}]}
+            {
+                formDefinition: {name: 'x', selectorType: 'Text', displayName: 'hello', readOnly: false, selectorOptions: []},
+                targets: [{name: 'test'}],
+                jcrDefinition: {},
+                data: {
+                    name: 'test'
+                }
+            },
+            {
+                formDefinition: {name: 'y', selectorType: 'Text', displayName: 'world', readOnly: false, selectorOptions: []},
+                targets: [{name: 'test'}],
+                jcrDefinition: {},
+                data: {
+                    name: 'test'
+                }
+            }
         ];
 
         wrapper.setProps(props);
