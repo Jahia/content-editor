@@ -45,7 +45,7 @@ const NodeDataFragment = {
 };
 
 const NodeQuery = gql`
-    query getNodeProperties($path:String!, $language:String!) {
+    query getNodeProperties($path:String!, $language:String!, $uiLang:String!) {
         jcr {
             ...NodeData
         }
