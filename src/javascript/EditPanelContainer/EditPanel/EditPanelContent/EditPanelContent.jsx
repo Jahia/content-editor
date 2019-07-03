@@ -36,7 +36,7 @@ const SelectedTabComponents = {
     details: Details
 };
 
-export const EditPanelContent = ({t, editorContext, classes, fields, siteInfo}) => {
+export const EditPanelContent = ({t, classes, fields, siteInfo}) => {
     const [previewMode, setPreviewMode] = useState('preview');
 
     const SelectedTabComponent = SelectedTabComponents[previewMode];
@@ -75,13 +75,13 @@ export const EditPanelContent = ({t, editorContext, classes, fields, siteInfo}) 
                     <TwoColumnsContent classes={{root: classes.twoColumnsRoot, left: classes.left, right: classes.right}}
                                        rightCol={PreviewCmp}
                     >
-                        <FormBuilder fields={fields} siteInfo={siteInfo} editorContext={editorContext}/>
+                        <FormBuilder fields={fields} siteInfo={siteInfo}/>
                     </TwoColumnsContent> :
                     <FullWidthContent classes={{root: classes.fullWidthRoot}}>
                         <FormBuilder classes={{form: classes.fullWidthForm}}
                                      fields={fields}
                                      siteInfo={siteInfo}
-                                     editorContext={editorContext}/>
+                        />
                     </FullWidthContent>
             }
         </>
@@ -89,7 +89,6 @@ export const EditPanelContent = ({t, editorContext, classes, fields, siteInfo}) 
 };
 
 EditPanelContent.propTypes = {
-    editorContext: PropTypes.object.isRequired,
     t: PropTypes.func.isRequired,
     fields: PropTypes.array.isRequired,
     classes: PropTypes.object.isRequired,
