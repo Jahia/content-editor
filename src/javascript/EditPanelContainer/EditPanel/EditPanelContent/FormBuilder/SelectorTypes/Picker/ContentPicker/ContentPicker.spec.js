@@ -26,7 +26,13 @@ describe('contentPicker', () => {
             field: {
                 formDefinition: {
                     name: 'contentId',
-                    readOnly: false
+                    readOnly: false,
+                    selectorType: 'ContentPicker'
+                },
+                jcrDefinition: {},
+                targets: [],
+                data: {
+                    name: 'contentId'
                 }
             },
             id: 'contentId',

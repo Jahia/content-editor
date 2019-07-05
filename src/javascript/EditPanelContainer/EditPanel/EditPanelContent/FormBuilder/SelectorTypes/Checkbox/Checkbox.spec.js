@@ -27,8 +27,13 @@ describe('Checkbox component', () => {
         props = {
             id: 'checkbox1',
             field: {
+                jcrDefinition: {},
+                targets: [],
+                data: {name: 'x'},
                 formDefinition: {
-                    name: 'myCheckbox'
+                    name: 'myCheckbox',
+                    readOnly: false,
+                    selectorType: 'ContentPicker'
                 }
             },
             classes: {}

@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import EditPanelContent from './EditPanelContent/EditPanelContent';
 import {connect} from 'formik';
 import {EditPanelLanguageSwitcher} from './EditPanelLanguageSwitcher';
+import {FieldsPropTypes, NodeDataPropTypes} from '../FormDefinitions';
+import {SiteInfoPropTypes} from '../SiteData';
 
 const EditPanel = ({fields, siteInfo, nodeData, lang, formik}) => {
     useEffect(() => {
@@ -68,19 +70,11 @@ const EditPanel = ({fields, siteInfo, nodeData, lang, formik}) => {
 };
 
 EditPanel.propTypes = {
-    fields: PropTypes.array.isRequired,
-    formik: PropTypes.object.isRequired,
-    siteInfo: PropTypes.object.isRequired,
-    nodeData: PropTypes.shape({
-        displayName: PropTypes.string.isRequired,
-        primaryNodeType: PropTypes.shape({
-            displayName: PropTypes.string
-        }),
-        aggregatedPublicationInfo: PropTypes.shape({
-            publicationStatus: PropTypes.string.isRequired
-        }).isRequired
-    }).isRequired,
-    lang: PropTypes.string.isRequired
+    fields: FieldsPropTypes.isRequired,
+    siteInfo: SiteInfoPropTypes.isRequired,
+    nodeData: NodeDataPropTypes.isRequired,
+    lang: PropTypes.string.isRequired,
+    formik: PropTypes.object.isRequired
 };
 
 EditPanel.displayName = 'EditPanel';

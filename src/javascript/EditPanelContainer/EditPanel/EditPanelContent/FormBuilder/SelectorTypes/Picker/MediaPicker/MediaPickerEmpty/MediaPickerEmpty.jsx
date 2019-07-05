@@ -3,6 +3,7 @@ import * as PropTypes from 'prop-types';
 import React, {useState} from 'react';
 import {Picker} from '../../../../../../../../DesignSystem/Picker';
 import {translate} from 'react-i18next';
+import {FieldPropTypes} from '../../../../.././../../FormDefinitions/FromData.proptypes';
 
 import {MediaPickerDialog} from '../MediaPickerDialog';
 
@@ -39,7 +40,7 @@ const MediaPickerEmptyCmp = ({t, id, field, formik, editorContext, setActionCont
 
 MediaPickerEmptyCmp.propTypes = {
     t: PropTypes.func.isRequired,
-    field: PropTypes.object.isRequired,
+    field: FieldPropTypes.isRequired,
     editorContext: PropTypes.object.isRequired,
     formik: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,

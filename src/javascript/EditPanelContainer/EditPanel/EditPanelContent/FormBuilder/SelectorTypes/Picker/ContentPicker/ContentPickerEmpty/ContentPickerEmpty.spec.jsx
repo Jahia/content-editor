@@ -14,8 +14,13 @@ describe('contentPickerEmpty', () => {
                 lang: 'en'
             },
             field: {
+                jcrDefinition: {},
+                targets: [],
+                data: {name: 'x'},
                 formDefinition: {
-                    readOnly: false
+                    name: 'x',
+                    readOnly: false,
+                    selectorType: 'ContentPicker'
                 }
             },
             formik: {},

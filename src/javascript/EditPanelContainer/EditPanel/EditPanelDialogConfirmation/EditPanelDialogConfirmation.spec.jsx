@@ -13,18 +13,16 @@ describe('EditPanelDialogConfirmation', () => {
             t: jest.fn(),
             onCloseDialog: jest.fn(),
             actionCallback: jest.fn(),
-            formik: jest.fn()
+            formik: {}
         };
     });
 
-    // TODO
-    it('should show dialog confirmation', () => {
-        const cmp = shallowWithTheme(
+    // TODO BACKLOG-10542
+    it('should not', () => {
+        shallowWithTheme(
             <EditPanelDialogConfirmation {...defaultProps}/>,
             {},
             dsGenericTheme
         );
-
-        console.log(cmp.debug());
     });
 });

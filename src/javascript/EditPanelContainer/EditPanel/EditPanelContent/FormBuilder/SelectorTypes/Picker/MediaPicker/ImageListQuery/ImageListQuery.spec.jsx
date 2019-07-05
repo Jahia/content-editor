@@ -41,7 +41,18 @@ describe('imageListQuery', () => {
 
     beforeEach(() => {
         defaultProps = {
-            field: {},
+            field: {
+                jcrDefinition: {},
+                targets: [],
+                data: {
+                    name: 'x'
+                },
+                formDefinition: {
+                    name: 'x',
+                    readOnly: false,
+                    selectorType: 'MediaPicker'
+                }
+            },
             selectedPath: '',
             setSelectedItem: jest.fn(),
             formik: {}

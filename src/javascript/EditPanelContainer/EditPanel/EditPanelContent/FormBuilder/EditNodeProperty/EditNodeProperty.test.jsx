@@ -15,6 +15,7 @@ describe('EditNodeProperty component', () => {
             field: {
                 formDefinition: {
                     name: 'text',
+                    displayName: 'displayName',
                     nodeType: {
                         properties: [
                             {
@@ -22,7 +23,14 @@ describe('EditNodeProperty component', () => {
                                 displayName: 'Text'
                             }
                         ]
-                    }
+                    },
+                    readOnly: false,
+                    selectorType: 'DatePicker',
+                    selectorOptions: []
+                },
+                jcrDefinition: {},
+                data: {
+                    name: 'text'
                 },
                 targets: [{name: 'test'}]
             },
@@ -59,6 +67,9 @@ describe('EditNodeProperty component', () => {
             defaultProps.field = {
                 formDefinition: {
                     name: 'text',
+                    displayName: 'text',
+                    readOnly: false,
+                    selectorOptions: [],
                     nodeType: {
                         properties: [
                             {
@@ -69,6 +80,10 @@ describe('EditNodeProperty component', () => {
                     },
                     selectorType: 'Text',
                     i18n: i18n
+                },
+                jcrDefinition: {},
+                data: {
+                    name: 'text'
                 },
                 targets: [{name: 'test'}]
             };
@@ -99,7 +114,7 @@ describe('EditNodeProperty component', () => {
         );
 
         expect(cmp.debug()).toContain('yoloHtmlFor');
-        expect(cmp.debug()).toContain('id=\"text\"');
+        expect(cmp.debug()).toContain('id="text"');
     });
 
     it('should display the field component resolved by selector type', () => {

@@ -15,8 +15,15 @@ describe('mediaPickerEmpty', () => {
             },
             field: {
                 formDefinition: {
-                    readOnly: false
-                }
+                    name: 'x',
+                    readOnly: false,
+                    selectorType: 'MediaPicker'
+                },
+                jcrDefinition: {},
+                data: {
+                    name: 'x'
+                },
+                targets: []
             },
             formik: {},
             setActionContext: () => {}

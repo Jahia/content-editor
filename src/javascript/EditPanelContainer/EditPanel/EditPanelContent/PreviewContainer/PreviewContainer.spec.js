@@ -19,6 +19,13 @@ jest.mock('formik', () => {
 
 import {setFormikValue} from 'formik';
 
+jest.mock('../../../ContentEditor.context', () => ({
+    useContentEditorContext: () => ({
+        path: '/site/digitall',
+        lang: 'fr'
+    })
+}));
+
 describe('PreviewContainer', () => {
     let defaultProps;
 
