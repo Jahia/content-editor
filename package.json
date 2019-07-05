@@ -80,6 +80,7 @@
         "eslint-plugin-json": "^1.4.0",
         "jest": "^24.5.0",
         "react-test-renderer": "16.8.6",
+        "redux-test-utils": "^0.3.0",
         "wait-for-expect": "^1.1.1",
         "webpack": "^4.26.0",
         "webpack-bundle-analyzer": "^3.0.3",
