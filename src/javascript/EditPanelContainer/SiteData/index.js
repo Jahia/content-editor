@@ -1,2 +1,2 @@
 export * from './SiteData';
-export * from './SiteDate.proptypes';
+export * from './SiteData.proptypes';
