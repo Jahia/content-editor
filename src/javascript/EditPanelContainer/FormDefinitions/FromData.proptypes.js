@@ -46,7 +46,7 @@ export const FieldPropTypes = PropTypes.shape({
                 PropTypes.object
             ])
         )
-    }).isRequired
+    })
 });
 
 export const FieldsPropTypes = PropTypes.arrayOf(FieldPropTypes);

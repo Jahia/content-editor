@@ -16,10 +16,12 @@ const EditPanelLanguageSwitcher = ({lang, siteInfo, onSelectLanguage, formik}) =
                               languages={siteInfo.languages}
                               color="inverted"
                               onSelectLanguage={language => {
-                                  if (formik.dirty) {
-                                      setDialogConfirmation({open: true, lang: language});
-                                  } else {
-                                      onSelectLanguage(language);
+                                  if (language !== lang) {
+                                      if (formik.dirty) {
+                                          setDialogConfirmation({open: true, lang: language});
+                                      } else {
+                                          onSelectLanguage(language);
+                                      }
                                   }
                               }}
             />
