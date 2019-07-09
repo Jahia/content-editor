@@ -30,7 +30,7 @@ const styles = theme => ({
         padding: `0 ${theme.spacing.unit * 4}`,
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'flex-end'
     },
     actionButtons: {
         '& button': {
@@ -38,7 +38,9 @@ const styles = theme => ({
         }
     },
     actionUpload: {
-        display: 'flex',
+        // TODO: update display of action upload
+        // ticket: https://jira.jahia.org/browse/BACKLOG-10624
+        display: 'none',
         alignItems: 'center',
         '& label': {
             marginLeft: '0.7rem'
