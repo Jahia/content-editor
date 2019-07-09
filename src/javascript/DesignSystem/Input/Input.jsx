@@ -4,10 +4,6 @@ import {InputBase, InputAdornment, withStyles} from '@material-ui/core';
 import NumberFormat from 'react-number-format';
 
 const styles = theme => {
-    // Todo: DESIGN-178 - use theme colors
-    theme.palette.field.alpha = '#F9FBFC';
-    theme.palette.ui.omega = '#E0E6EA';
-    theme.palette.ui.zeta = '#C1C8D5';
     return {
         root: {
             borderRadius: '1px',
@@ -52,7 +48,16 @@ const styles = theme => {
     };
 };
 
-const InputCmp = ({classes, disabled, error, onBlur, onFocus, readOnly, variant, ...others}) => {
+const InputCmp = React.forwardRef(({
+    classes,
+    disabled,
+    error,
+    onBlur,
+    onFocus,
+    readOnly,
+    variant,
+    ...others
+}, ref) => {
     const [focus, setFocus] = useState(false);
     const handleFocus = () => {
         onFocus();
@@ -67,51 +72,69 @@ const InputCmp = ({classes, disabled, error, onBlur, onFocus, readOnly, variant,
     const {icon, interactive} = variant;
 
     const {
-        readOnly: readOnlyClass, inputDisabled, inputAdornedStart, inputAdornedStartFocus,
-        inputAdornedStartError, inputAdornedEndReadonly, ...containerClasses
+        readOnly: readOnlyClass,
+        inputDisabled,
+        inputAdornedStart,
+        inputAdornedStartFocus,
+        inputAdornedStartError,
+        inputAdornedEndReadonly,
+        ...containerClasses
     } = classes;
 
     return (
         <InputBase
+            ref={ref}
             classes={containerClasses}
-            className={`${readOnly ? readOnlyClass : ''} ${disabled ? inputDisabled : ''}`}
+            className={`${readOnly ? readOnlyClass : ''} ${
+                disabled ? inputDisabled : ''
+            }`}
             disabled={disabled}
             error={error}
             readOnly={readOnly}
-            startAdornment={icon &&
-            <InputAdornment
-                className={`${inputAdornedStart} ${!readOnly && focus ? inputAdornedStartFocus : ''} ${!readOnly && error ? inputAdornedStartError : ''}`}
-                position="start"
-            >
-                {icon}
-            </InputAdornment>}
-            endAdornment={interactive &&
-            <InputAdornment
-                className={`${readOnly ? inputAdornedEndReadonly : ''}`}
-                position="end"
-            >
-                {interactive}
-            </InputAdornment>}
+            startAdornment={
+                icon && (
+                    <InputAdornment
+                        className={`${inputAdornedStart} ${
+                            !readOnly && focus ? inputAdornedStartFocus : ''
+                        } ${!readOnly && error ? inputAdornedStartError : ''}`}
+                        position="start"
+                    >
+                        {icon}
+                    </InputAdornment>
+                )
+            }
+            endAdornment={
+                interactive && (
+                    <InputAdornment
+                        className={`${readOnly ? inputAdornedEndReadonly : ''}`}
+                        position="end"
+                    >
+                        {interactive}
+                    </InputAdornment>
+                )
+            }
             onBlur={handleBlur}
             onFocus={handleFocus}
             {...others}
         />
     );
-};
+});
 
-const WrappedInputCmp = ({decimalSeparator, decimalScale, type, ...others}) => {
+const WrappedInputCmp = React.forwardRef(({decimalSeparator, decimalScale, type, ...others}, ref) => {
     if (type && type === 'number') {
         return (
-            <NumberFormat customInput={InputCmp}
-                          decimalScale={decimalScale}
-                          decimalSeparator={decimalSeparator}
-                          {...others}
-            />
+            <NumberFormat
+                ref={ref}
+                customInput={InputCmp}
+                decimalScale={decimalScale}
+                decimalSeparator={decimalSeparator}
+                {...others}
+                />
         );
     }
 
-    return <InputCmp {...others}/>;
-};
+    return <InputCmp ref={ref} {...others}/>;
+});
 
 InputCmp.defaultProps = {
     disabled: false,
@@ -121,12 +144,9 @@ InputCmp.defaultProps = {
     inputProps: {},
     id: undefined,
     name: undefined,
-    onBlur: () => {
-    },
-    onChange: () => {
-    },
-    onFocus: () => {
-    },
+    onBlur: () => {},
+    onChange: () => {},
+    onFocus: () => {},
     readOnly: false,
     value: undefined,
     variant: {}
