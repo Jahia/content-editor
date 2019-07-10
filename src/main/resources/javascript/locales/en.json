@@ -57,6 +57,11 @@
                   "modalDone": "Done"
                 }
             },
+            "switchLanguage": {
+              "dialog": {
+                "title": "Save changes before switching language?"
+              }
+            },
             "error": {
                 "queryingContent": "Error querying content: {{details}}"
             },

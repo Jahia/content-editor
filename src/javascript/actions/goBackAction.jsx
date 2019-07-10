@@ -57,7 +57,7 @@ export default composeActions(
                     const handler = context.renderComponent(
                         <EditPanelDialogConfirmation
                             open
-                            allowDiscard
+                            titleKey="content-editor:label.contentEditor.edit.action.goBack.title"
                             formik={context.formik}
                             actionCallback={() => executeGoBackAction()}
                             onCloseDialog={() => handler.setProps({open: false})}

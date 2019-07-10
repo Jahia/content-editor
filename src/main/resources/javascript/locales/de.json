@@ -57,6 +57,11 @@
                   "modalDone": "Fertig"
                 }
             },
+            "switchLanguage": {
+              "dialog": {
+                "title": "Wollen Sie die Änderungen speichern, bevor Sie die Sprache wechseln?"
+              }
+            },
             "error": {
                 "queryingContent": "Fehler während Content-Abfrage: {{details}}"
             },
