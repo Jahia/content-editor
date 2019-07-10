@@ -10,7 +10,16 @@ export const TextAreaField = ({id, field}) => {
         <Field
             name={field.formDefinition.name}
             render={props => {
-                return <TextArea id={id} disabled={field.formDefinition.readOnly} {...props.field}/>;
+                const {name, value, onChange} = props.field;
+
+                return (
+                    <TextArea id={id}
+                              name={name}
+                              value={value}
+                              disabled={field.formDefinition.readOnly}
+                              onChange={onChange}
+                    />
+                );
             }}
         />
 
