@@ -7,7 +7,7 @@ import React from 'react';
 import {translate} from 'react-i18next';
 import EditPanelConstants from '../EditPanelConstants';
 
-export const EditPanelDialogConfirmation = ({t, open, onCloseDialog, actionCallback, allowDiscard, formik}) => {
+export const EditPanelDialogConfirmation = ({t, titleKey, open, onCloseDialog, actionCallback, formik}) => {
     const handleDiscard = () => {
         onCloseDialog();
 
@@ -29,19 +29,15 @@ export const EditPanelDialogConfirmation = ({t, open, onCloseDialog, actionCallb
                 onClose={onCloseDialog}
         >
             <DialogTitle id="alert-dialog-slide-title">
-                {t('content-editor:label.contentEditor.edit.action.goBack.title')}
+                {t(titleKey)}
             </DialogTitle>
             <DialogActions>
                 <Button color="default" onClick={onCloseDialog}>
                     {t('content-editor:label.contentEditor.edit.action.goBack.btnContinue')}
                 </Button>
-
-                {allowDiscard &&
                 <Button color="default" onClick={handleDiscard}>
                     {t('content-editor:label.contentEditor.edit.action.goBack.btnDiscard')}
                 </Button>
-                }
-
                 <Button color="primary" onClick={handleSave}>
                     {t('content-editor:label.contentEditor.edit.action.goBack.btnSave')}
                 </Button>
@@ -50,13 +46,9 @@ export const EditPanelDialogConfirmation = ({t, open, onCloseDialog, actionCallb
     );
 };
 
-EditPanelDialogConfirmation.defaultProps = {
-    allowDiscard: false
-};
-
 EditPanelDialogConfirmation.propTypes = {
     t: PropTypes.func.isRequired,
-    allowDiscard: PropTypes.bool,
+    titleKey: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
     formik: PropTypes.object.isRequired,
     actionCallback: PropTypes.func.isRequired,

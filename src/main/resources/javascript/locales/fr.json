@@ -57,6 +57,11 @@
                   "modalDone": "Selectioner"
                 }
             },
+            "switchLanguage": {
+              "dialog": {
+                "title": "Enregistrer les modifications avant de changer de langue ?"
+              }
+            },
             "error": {
                 "queryingContent": "Erreur lors de l'interrogation du contenu: {{details}}"
             },

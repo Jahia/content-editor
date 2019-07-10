@@ -9,8 +9,8 @@ describe('EditPanelDialogConfirmation', () => {
     beforeEach(() => {
         defaultProps = {
             open: false,
-            allowDiscard: false,
-            t: jest.fn(),
+            titleKey: 'titleKey',
+            t: jest.fn(key => 'translated_' + key),
             onCloseDialog: jest.fn(),
             actionCallback: jest.fn(),
             formik: {}
@@ -27,6 +27,16 @@ describe('EditPanelDialogConfirmation', () => {
         expect(cmp.props().open).toBe(false);
     });
 
+    it('should contain translated titleKey', () => {
+        const cmp = shallowWithTheme(
+            <EditPanelDialogConfirmation {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        expect(cmp.debug()).toContain('translated_' + defaultProps.titleKey);
+    });
+
     it('should show dialog confirmation when open is true', () => {
         defaultProps.open = true;
 
@@ -37,27 +47,5 @@ describe('EditPanelDialogConfirmation', () => {
         ).dive();
 
         expect(cmp.props().open).toBe(true);
-    });
-
-    it('should display cancel and save buttons in dialog confirmation when it is not allowed to discard', () => {
-        const cmp = shallowWithTheme(
-            <EditPanelDialogConfirmation {...defaultProps}/>,
-            {},
-            dsGenericTheme
-        ).dive();
-
-        expect(cmp.find('WithStyles(Button)').length).toBe(2);
-    });
-
-    it('should display cancel, discard and save buttons in dialog confirmation when it is allowed to discard', () => {
-        defaultProps.allowDiscard = true;
-
-        const cmp = shallowWithTheme(
-            <EditPanelDialogConfirmation {...defaultProps}/>,
-            {},
-            dsGenericTheme
-        ).dive();
-
-        expect(cmp.find('WithStyles(Button)').length).toBe(3);
     });
 });
