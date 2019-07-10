@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {Input} from '../../../../../../DesignSystem/Input';
 import {FieldPropTypes} from '../../../../../FormDefinitions/FromData.proptypes';
 
-export const Text = ({field, id, editorContext, formik: {values, handleChange, handleBlur}}) => {
+export const Text = ({field, id, editorContext, formik: {values, handleChange}}) => {
     const fieldType = field.jcrDefinition.requiredType;
     const isNumber = fieldType === 'DOUBLE' || fieldType === 'LONG' || fieldType === 'DECIMAL';
     const decimalSeparator = editorContext.uiLang === 'en' ? '.' : ',';
@@ -22,7 +22,6 @@ export const Text = ({field, id, editorContext, formik: {values, handleChange, h
             decimalScale={fieldType === 'LONG' ? 0 : undefined}
             decimalSeparator={decimalSeparator}
             onChange={handleChange}
-            onBlur={handleBlur}
         />
     );
 };

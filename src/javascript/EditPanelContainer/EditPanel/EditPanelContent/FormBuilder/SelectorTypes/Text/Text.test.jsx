@@ -68,16 +68,6 @@ describe('Text component', () => {
         expect(props.formik.handleChange.mock.calls.length).toBe(1);
     });
 
-    it('should call formik.handleBlur on blur', () => {
-        props.formik.handleBlur = jest.fn();
-
-        wrapper.setProps(props)
-            .find(Input)
-            .simulate('blur');
-
-        expect(props.formik.handleBlur.mock.calls.length).toBe(1);
-    });
-
     it('should be readOnly when formDefinition say so', () => {
         testReadOnly(true);
         testReadOnly(false);
