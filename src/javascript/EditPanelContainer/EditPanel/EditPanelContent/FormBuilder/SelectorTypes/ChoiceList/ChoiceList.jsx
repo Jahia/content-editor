@@ -1,52 +1,19 @@
-import {Select} from '@jahia/design-system-kit';
-import Input from '@material-ui/core/Input';
-import {withStyles, MenuItem} from '@material-ui/core';
-import {Field} from 'formik';
 import React from 'react';
-import PropTypes from 'prop-types';
 import {FieldPropTypes} from '../../../../../FormDefinitions/FromData.proptypes';
 
-const styles = () => ({
-    selectField: {
-        width: '100%'
-    }
-});
+import SingleSelect from './SingleSelect/SingleSelect';
+import MultipleSelect from './MultipleSelect/MultipleSelect';
 
-const ChoiceList = ({classes, field, id}) => {
-    return (
-        <Field
-            name={field.formDefinition.name}
-            render={props => {
-                const formikField = props.field;
-                return (
-                    <Select className={classes.selectField}
-                            {...formikField}
-                            // eslint-disable-next-line react/prop-types
-                            value={formikField.value || ''}
-                            inputProps={{
-                                name: field.formDefinition.name,
-                                id: id
-                            }}
-                            input={<Input id={id} name={field.formDefinition.name} readOnly={field.formDefinition.readOnly}/>}
-                    >
-                        {
-                            field.formDefinition.valueConstraints.map(item => {
-                                return (
-                                    <MenuItem key={item.value.string} value={item.value.string}>{item.displayValue}</MenuItem>
-                                );
-                            })
-                        }
-                    </Select>
-                );
-            }}
-        />
-    );
+export const ChoiceList = ({field, ...props}) => {
+    if (field.formDefinition.multiple) {
+        return <MultipleSelect field={field} {...props}/>;
+    }
+
+    return <SingleSelect field={field} {...props}/>;
 };
 
 ChoiceList.propTypes = {
-    id: PropTypes.string.isRequired,
-    field: FieldPropTypes.isRequired,
-    classes: PropTypes.object.isRequired
+    field: FieldPropTypes.isRequired
 };
 
-export default withStyles(styles)(ChoiceList);
+export default ChoiceList;

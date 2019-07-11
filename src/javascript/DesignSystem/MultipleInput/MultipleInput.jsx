@@ -33,6 +33,11 @@ const MultipleInputComponent = ({classes, creatable, readOnly, ...props}) => {
     };
 
     const [selection, setSelection] = useState();
+    const handleChange = selection => {
+        setSelection(selection);
+        props.onChange(selection);
+    };
+
     return (
         <>
             <Cmp
@@ -42,8 +47,8 @@ const MultipleInputComponent = ({classes, creatable, readOnly, ...props}) => {
                 value={selection}
                 styles={classes}
                 isDisabled={readOnly}
-                onChange={setSelection}
                 {...props}
+                onChange={handleChange}
             />
         </>
     );
@@ -51,13 +56,15 @@ const MultipleInputComponent = ({classes, creatable, readOnly, ...props}) => {
 
 MultipleInputComponent.defaut = {
     creatable: false,
-    readOnly: false
+    readOnly: false,
+    onChange: () => {}
 };
 
 MultipleInputComponent.propTypes = {
     classes: PropTypes.object.isRequired,
     readOnly: PropTypes.bool,
-    creatable: PropTypes.bool
+    creatable: PropTypes.bool,
+    onChange: PropTypes.func
 };
 
 export const MultipleInput = withStyles(style)(MultipleInputComponent);

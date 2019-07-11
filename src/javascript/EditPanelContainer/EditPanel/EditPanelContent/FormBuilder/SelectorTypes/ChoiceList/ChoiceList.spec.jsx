@@ -3,12 +3,12 @@ import {shallow} from '@jahia/test-framework';
 
 import ChoiceList from './ChoiceList';
 
-describe('Choicelist component', () => {
+describe('ChoiceList component', () => {
     let props;
 
     beforeEach(() => {
         props = {
-            id: 'choiceList1',
+            id: 'MultipleSelect1',
             field: {
                 formDefinition: {
                     name: 'myOption',
@@ -18,7 +18,7 @@ describe('Choicelist component', () => {
                             string: 'Yolooo'
                         }
                     }],
-                    selectorType: 'ChoiceList',
+                    selectorType: 'MultipleSelect',
                     readOnly: false
                 },
                 data: {
@@ -31,50 +31,16 @@ describe('Choicelist component', () => {
         };
     });
 
-    it('should bind id correctly', () => {
-        const RenderProps = shallow(<ChoiceList {...props}/>).dive().props().render;
-        const cmp = shallow(<RenderProps field={{value: 'Yolooo'}}/>);
+    it('should display MultipleSelect when multiple value can be selected', () => {
+        props.field.formDefinition.multiple = true;
+        const cmp = shallow(<ChoiceList {...props}/>);
 
-        expect(cmp.props().inputProps.id).toBe(props.id);
+        expect(cmp.find('MultipleSelect').exists()).toBe(true);
     });
 
-    it('should display each option given', () => {
-        const RenderProps = shallow(<ChoiceList {...props}/>).dive().props().render;
-        const cmp = shallow(<RenderProps field={{value: 'Yolooo'}}/>);
+    it('should display SingleChoiceList when only one value can be selected', () => {
+        const cmp = shallow(<ChoiceList {...props}/>);
 
-        props.field.formDefinition.valueConstraints.forEach(constraint => {
-            expect(cmp.debug()).toContain(constraint.displayValue);
-        });
+        expect(cmp.find('SingleSelect').exists()).toBe(true);
     });
-
-    it('should replace null value as empty string', () => {
-        const RenderProps = shallow(<ChoiceList {...props}/>).dive().props().render;
-        const cmp = shallow(<RenderProps field={{}}/>);
-
-        expect(cmp.props().value).toBe('');
-    });
-
-    it('should select formik value', () => {
-        const RenderProps = shallow(<ChoiceList {...props}/>).dive().props().render;
-        const cmp = shallow(<RenderProps field={{value: 'Yolooo'}}/>);
-
-        expect(cmp.props().value).toBe('Yolooo');
-    });
-
-    it('should set readOnly to true when fromdefinition is readOnly', () => {
-        testReadOnly(true);
-    });
-
-    it('should set readOnly to false when fromdefinition is not readOnly', () => {
-        testReadOnly(false);
-    });
-
-    const testReadOnly = function (readOnly) {
-        props.field.formDefinition.readOnly = readOnly;
-        const RenderProps = shallow(<ChoiceList {...props}/>).dive().props().render;
-        const cmp = shallow(<RenderProps field={{}}/>);
-        const inputCmp = shallow(cmp.props().input);
-
-        expect(inputCmp.props().readOnly).toEqual(readOnly);
-    };
 });

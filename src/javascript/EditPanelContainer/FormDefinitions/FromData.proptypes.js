@@ -18,6 +18,7 @@ export const FieldPropTypes = PropTypes.shape({
         name: PropTypes.string.isRequired,
         displayName: PropTypes.string,
         readOnly: PropTypes.bool.isRequired,
+        multiple: PropTypes.bool,
         selectorType: PropTypes.string.isRequired,
         selectorOptions: PropTypes.arrayOf(PropTypes.shape({
             name: PropTypes.string
