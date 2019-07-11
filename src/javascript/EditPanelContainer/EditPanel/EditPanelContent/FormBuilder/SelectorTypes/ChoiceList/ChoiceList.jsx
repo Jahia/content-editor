@@ -17,17 +17,19 @@ const ChoiceList = ({classes, field, id}) => {
         <Field
             name={field.formDefinition.name}
             render={props => {
-                const formikField = props.field;
+                const {name, value, onChange} = props.field;
+
                 return (
                     <Select className={classes.selectField}
-                            {...formikField}
+                            name={name}
                             // eslint-disable-next-line react/prop-types
-                            value={formikField.value || ''}
+                            value={value || ''}
                             inputProps={{
                                 name: field.formDefinition.name,
                                 id: id
                             }}
                             input={<Input id={id} name={field.formDefinition.name} readOnly={field.formDefinition.readOnly}/>}
+                            onChange={onChange}
                     >
                         {
                             field.formDefinition.valueConstraints.map(item => {
