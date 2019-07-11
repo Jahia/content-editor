@@ -19,12 +19,20 @@ export function getPropertiesToMutate(nodeData = {}, formValues = {}, fields = [
             if (value) {
                 const fieldType = field.jcrDefinition.requiredType;
 
+                const valueObj = {};
+
+                if (field.formDefinition.multiple) {
+                    valueObj.values = value;
+                } else {
+                    // In case we have field of type decimal or double, we should store number
+                    // with a decimal point separator instead of decimal comma separator into JCR.
+                    valueObj.value = fieldType === 'DECIMAL' || fieldType === 'DOUBLE' ? value && value.replace(',', '.') : value;
+                }
+
                 propsToSave.push({
                     name: key,
                     type: fieldType,
-                    // In case we have field of type decimal or double, we should store number
-                    // with a decimal point separator instead of decimal comma separator into JCR.
-                    value: fieldType === 'DECIMAL' || fieldType === 'DOUBLE' ? value && value.replace(',', '.') : value,
+                    ...valueObj,
                     language: lang
                 });
             } else {

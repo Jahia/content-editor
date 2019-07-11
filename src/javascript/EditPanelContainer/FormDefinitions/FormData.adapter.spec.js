@@ -112,6 +112,12 @@ describe('adaptFormData', () => {
         expect(adaptFormData(graphqlResponse, 'fr', t).initialValues).toEqual({field1: false});
     });
 
+    it('should set values and no value as initialValue when multiple is at true', () => {
+        graphqlResponse.forms.editForm.fields[0].multiple = true;
+        graphqlResponse.jcr.result.properties[0].values = ['value1', 'value2'];
+        expect(adaptFormData(graphqlResponse, 'fr', t).initialValues).toEqual({field1: ['value1', 'value2']});
+    });
+
     it('should not consider readOnly field that targeting metadata', () => {
         graphqlResponse.forms.editForm.fields[0].readOnly = true;
         expect(adaptFormData(graphqlResponse, 'fr', t).fields).toEqual([]);

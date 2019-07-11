@@ -22,15 +22,15 @@ const getFields = (formDefinition, nodeData) => {
         );
 };
 
-const getFieldValue = (formDefinition, value) => {
+const getFieldValue = (formDefinition, fieldData) => {
     const selectorType = SelectorTypes.resolveSelectorType(formDefinition.selectorType, formDefinition.selectorOptions);
     if (selectorType) {
         if (selectorType.formatValue) {
-            return selectorType.formatValue(value);
+            return selectorType.formatValue(fieldData);
         }
     }
 
-    return value;
+    return formDefinition.multiple ? fieldData.values : fieldData.value;
 };
 
 const getInitialValue = fields => {
@@ -38,7 +38,7 @@ const getInitialValue = fields => {
         (initialValues, field) => {
             return {
                 ...initialValues,
-                [field.formDefinition.name]: field.data && getFieldValue(field.formDefinition, field.data.value)
+                [field.formDefinition.name]: field.data && getFieldValue(field.formDefinition, field.data)
             };
         },
         {}
