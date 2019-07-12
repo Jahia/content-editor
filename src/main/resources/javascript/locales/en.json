@@ -31,7 +31,7 @@
                 },
                 "sharedLanguages": "Shared by all languages",
                 "fields": {
-                  "pickersAction": {
+                  "actions": {
                     "replace": "Change",
                     "newTab": "Open in a new tab",
                     "clear": "Clear"

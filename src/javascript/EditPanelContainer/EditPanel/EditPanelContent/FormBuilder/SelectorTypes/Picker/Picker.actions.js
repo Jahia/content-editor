@@ -3,7 +3,7 @@ import {menuAction} from '@jahia/react-material';
 import {DotsVertical} from 'mdi-material-ui';
 import React from 'react';
 import {replaceAction} from './actions/replace.action';
-import {unsetFieldAction} from './actions/unsetField.action';
+import {unsetFieldAction} from '../../FieldsActions/unsetField.action';
 import {openInTabAction} from './actions/openInTab.action';
 
 const pickerActions = actionsRegistry => {
@@ -35,7 +35,7 @@ const pickerActions = actionsRegistry => {
 
     actionsRegistry.add('unsetFieldActionPicker', unsetFieldAction, {
         buttonIcon: <Cancel/>,
-        buttonLabel: 'content-editor:label.contentEditor.edit.fields.pickersAction.clear',
+        buttonLabel: 'content-editor:label.contentEditor.edit.fields.actions.clear',
         target: ['ContentPickerActions:3', 'MediaPickerActions:3']
     });
 };

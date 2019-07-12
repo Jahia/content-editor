@@ -27,7 +27,7 @@ describe('ChoiceList component', () => {
                 jcrDefinition: {},
                 targets: []
             },
-            classes: {}
+            setActionContext: jest.fn()
         };
     });
 

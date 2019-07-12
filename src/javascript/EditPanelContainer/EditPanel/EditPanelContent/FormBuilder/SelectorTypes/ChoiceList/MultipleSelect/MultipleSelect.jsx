@@ -4,7 +4,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {FieldPropTypes} from '../../../../../../FormDefinitions/FromData.proptypes';
 
-const MultipleSelect = ({field, id}) => {
+const MultipleSelect = ({field, id, setActionContext}) => {
+    setActionContext(prevActionContext => ({
+        initialized: true,
+        contextHasChange: !prevActionContext.initialized
+    }));
+
     return (
         <Field
             name={field.formDefinition.name}
@@ -42,7 +47,8 @@ const MultipleSelect = ({field, id}) => {
 
 MultipleSelect.propTypes = {
     id: PropTypes.string.isRequired,
-    field: FieldPropTypes.isRequired
+    field: FieldPropTypes.isRequired,
+    setActionContext: PropTypes.func.isRequired
 };
 
 export default MultipleSelect;

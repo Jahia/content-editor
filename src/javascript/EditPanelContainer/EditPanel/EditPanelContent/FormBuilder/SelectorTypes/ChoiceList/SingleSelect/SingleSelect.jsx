@@ -12,7 +12,12 @@ const styles = () => ({
     }
 });
 
-const SingleSelectCmp = ({classes, field, id}) => {
+const SingleSelectCmp = ({classes, field, id, setActionContext}) => {
+    setActionContext(prevActionContext => ({
+        initialized: true,
+        contextHasChange: !prevActionContext.initialized
+    }));
+
     return (
         <Field
             name={field.formDefinition.name}
@@ -47,7 +52,8 @@ const SingleSelectCmp = ({classes, field, id}) => {
 SingleSelectCmp.propTypes = {
     id: PropTypes.string.isRequired,
     field: FieldPropTypes.isRequired,
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
+    setActionContext: PropTypes.func.isRequired
 };
 
 const SingleSelect = withStyles(styles)(SingleSelectCmp);
