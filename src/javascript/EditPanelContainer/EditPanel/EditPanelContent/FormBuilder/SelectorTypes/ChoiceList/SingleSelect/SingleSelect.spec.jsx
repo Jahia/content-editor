@@ -27,7 +27,7 @@ describe('SingleSelect component', () => {
                 jcrDefinition: {},
                 targets: []
             },
-            classes: {}
+            setActionContext: jest.fn()
         };
     });
 

@@ -1,3 +1,3 @@
-import pickerConfigs from './pickerConfigs';
+import pickerConfigs from './Picker.configs';
 
 export default pickerConfigs;

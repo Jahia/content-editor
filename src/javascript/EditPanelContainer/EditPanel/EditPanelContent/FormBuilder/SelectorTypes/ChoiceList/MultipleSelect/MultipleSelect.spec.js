@@ -33,7 +33,7 @@ describe('MultipleSelect component', () => {
                 jcrDefinition: {},
                 targets: []
             },
-            classes: {}
+            setActionContext: jest.fn()
         };
     });
 

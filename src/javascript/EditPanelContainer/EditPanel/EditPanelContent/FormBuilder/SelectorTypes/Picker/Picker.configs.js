@@ -1,6 +1,6 @@
 import MediaPicker from './MediaPicker';
 import ContentPicker from './ContentPicker';
-import pickerActions from './pickerActions';
+import pickerActions from './Picker.actions';
 
 const treeConfigs = {
     content: {
