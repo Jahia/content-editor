@@ -37,8 +37,7 @@ export function getPropertiesToMutate(nodeData = {}, formValues = {}, fields = [
                 });
             } else {
                 const nodeProperty = nodeData.properties.find(prop => prop.name === key);
-
-                if (nodeProperty && (field.multiple ? nodeProperty.values : nodeProperty.value)) {
+                if (nodeProperty && (field.formDefinition.multiple ? nodeProperty.values : nodeProperty.value)) {
                     propsToDelete.push(key);
                 }
             }
