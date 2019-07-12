@@ -5,11 +5,6 @@ import PropTypes from 'prop-types';
 import {FieldPropTypes} from '../../../../../../FormDefinitions/FromData.proptypes';
 
 const MultipleSelect = ({field, id, setActionContext}) => {
-    setActionContext(prevActionContext => ({
-        initialized: true,
-        contextHasChange: !prevActionContext.initialized
-    }));
-
     return (
         <Field
             name={field.formDefinition.name}
@@ -20,6 +15,14 @@ const MultipleSelect = ({field, id, setActionContext}) => {
                     .map(constraint => ({
                         label: constraint.displayValue,
                         value: constraint.value.string
+                    }));
+
+                    setActionContext(prevActionContext => ({
+                        initialized: true,
+                        menuDisplayDisabled: true,
+                        contextHasChange: !prevActionContext.initialized ||
+                            // As action system make deep copy of formik each time value change we must update the context !
+                            prevActionContext.formik.values[field.formDefinition.name] !== formikField.value
                     }));
 
                 return (

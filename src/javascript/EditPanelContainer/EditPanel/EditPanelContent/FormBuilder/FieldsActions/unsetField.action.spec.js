@@ -28,9 +28,15 @@ describe('unsetFieldAction', () => {
     describe('init', () => {
         it('should enabled the action if field is not readonly', () => {
             const context = {
+                formik: {
+                    values: {
+                        yoolo: 'value'
+                    }
+                },
                 field: {
                     formDefinition: {
-                        readOnly: false
+                        readOnly: false,
+                        name: 'yoolo'
                     }
                 }
             };
@@ -41,15 +47,97 @@ describe('unsetFieldAction', () => {
 
         it('should not enabled the action if field is readonly', () => {
             const context = {
+                formik: {
+                    values: {
+                        yoolo: 'value'
+                    }
+                },
                 field: {
                     formDefinition: {
-                        readOnly: true
+                        readOnly: true,
+                        name: 'yoolo'
                     }
                 }
             };
             unsetFieldAction.init(context);
 
             expect(context.enabled).toBe(false);
+        });
+
+        it('should disabled the action if field value is empty', () => {
+            const context = {
+                formik: {
+                    values: {
+                        yoolo: ''
+                    }
+                },
+                field: {
+                    formDefinition: {
+                        readOnly: false,
+                        name: 'yoolo'
+                    }
+                }
+            };
+            unsetFieldAction.init(context);
+
+            expect(context.enabled).toBe(false);
+        });
+
+        it('should disabled the action if field values is empty', () => {
+            const context = {
+                formik: {
+                    values: {
+                        yoolo: []
+                    }
+                },
+                field: {
+                    formDefinition: {
+                        readOnly: false,
+                        name: 'yoolo'
+                    }
+                }
+            };
+            unsetFieldAction.init(context);
+
+            expect(context.enabled).toBe(false);
+        });
+
+        it('should disabled the action if field values is null', () => {
+            const context = {
+                formik: {
+                    values: {
+                        yoolo: null
+                    }
+                },
+                field: {
+                    formDefinition: {
+                        readOnly: false,
+                        name: 'yoolo'
+                    }
+                }
+            };
+            unsetFieldAction.init(context);
+
+            expect(context.enabled).toBe(false);
+        });
+
+        it('should enable the action if field values is filled', () => {
+            const context = {
+                formik: {
+                    values: {
+                        yoolo: ['value']
+                    }
+                },
+                field: {
+                    formDefinition: {
+                        readOnly: false,
+                        name: 'yoolo'
+                    }
+                }
+            };
+            unsetFieldAction.init(context);
+
+            expect(context.enabled).toBe(true);
         });
     });
 });
