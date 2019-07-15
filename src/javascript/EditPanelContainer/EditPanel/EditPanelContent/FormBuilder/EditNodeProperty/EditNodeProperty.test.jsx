@@ -2,8 +2,8 @@ import React from 'react';
 import {shallow} from '@jahia/test-framework';
 
 import {EditNodeProperty} from './EditNodeProperty';
-import SelectorTypes from '../SelectorTypes/SelectorTypes';
 import {ContentPicker} from '../SelectorTypes/Picker/ContentPicker/ContentPicker';
+import {resolveSelectorType} from '../SelectorTypes/SelectorTypes.utils';
 
 describe('EditNodeProperty component', () => {
     let defaultProps;
@@ -118,7 +118,7 @@ describe('EditNodeProperty component', () => {
     });
 
     it('should display the field component resolved by selector type', () => {
-        defaultProps.selectorType = SelectorTypes.resolveSelectorType('Picker');
+        defaultProps.selectorType = resolveSelectorType({selectorType: 'Picker'});
 
         const cmp = shallow(
             <EditNodeProperty {...defaultProps}/>
