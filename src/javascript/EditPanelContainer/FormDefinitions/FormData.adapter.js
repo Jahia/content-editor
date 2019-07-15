@@ -28,6 +28,10 @@ const getFieldValue = (formDefinition, fieldData) => {
         if (selectorType.formatValue) {
             return selectorType.formatValue(fieldData);
         }
+
+        if (selectorType.key === 'DateTimePicker' || selectorType.key === 'DatePicker') {
+            return formDefinition.multiple ? fieldData.formattedDateValues : fieldData.formattedDateValue;
+        }
     }
 
     return formDefinition.multiple ? fieldData.values : fieldData.value;

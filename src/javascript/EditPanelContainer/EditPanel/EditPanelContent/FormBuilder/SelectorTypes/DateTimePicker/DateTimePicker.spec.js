@@ -55,9 +55,9 @@ describe('DateTimePicker component', () => {
 
         const cmp = shallow(<RenderProps field={{value: new Date().toISOString()}} form={{setFieldValue: formikOnChange}}/>);
 
-        cmp.simulate('change', 'stringdate');
+        cmp.simulate('change', '2019-07-14T21:07:12.000');
 
-        expect(formikOnChange).toHaveBeenCalledWith('myOption', 'stringdate', true);
+        expect(formikOnChange).toHaveBeenCalledWith('myOption', '2019-07-14T21:07:12.000', true);
     });
 
     it('should give readOnly', () => {

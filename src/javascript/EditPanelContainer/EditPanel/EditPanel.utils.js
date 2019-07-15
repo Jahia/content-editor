@@ -23,10 +23,18 @@ export function getPropertiesToMutate(nodeData = {}, formValues = {}, fields = [
 
                 if (field.formDefinition.multiple) {
                     valueObj.values = value;
+
+                    if (fieldType === 'DATE') {
+                        valueObj.formattedDateValues = value;
+                    }
                 } else {
                     // In case we have field of type decimal or double, we should store number
                     // with a decimal point separator instead of decimal comma separator into JCR.
                     valueObj.value = fieldType === 'DECIMAL' || fieldType === 'DOUBLE' ? value && value.replace(',', '.') : value;
+
+                    if (fieldType === 'DATE') {
+                        valueObj.formattedDateValue = value;
+                    }
                 }
 
                 propsToSave.push({
