@@ -7,38 +7,24 @@ import DateTimePicker from './DateTimePicker';
 import pickerConfigs from './Picker';
 import Checkbox from './Checkbox';
 
-const SelectorTypes = {
-    Text: {cmp: Text, key: 'Text'},
-    TextArea: {cmp: TextArea, key: 'TextArea'},
-    RichText: {cmp: RichText, key: 'RichText'},
-    Choicelist: {cmp: ChoiceList, key: 'Choicelist', actions: choiceListActions},
-    DateTimePicker: {cmp: DateTimePicker, key: 'DateTimePicker'},
-    DatePicker: {cmp: DateTimePicker, key: 'DatePicker'},
+export const SelectorTypes = {
+    Text: {cmp: Text, key: 'Text', supportMultiple: false},
+    TextArea: {cmp: TextArea, key: 'TextArea', supportMultiple: false},
+    RichText: {cmp: RichText, key: 'RichText', supportMultiple: false},
+    Choicelist: {cmp: ChoiceList, key: 'Choicelist', actions: choiceListActions, supportMultiple: true},
+    DateTimePicker: {cmp: DateTimePicker, key: 'DateTimePicker', supportMultiple: false},
+    DatePicker: {cmp: DateTimePicker, key: 'DatePicker', supportMultiple: false},
     Checkbox: {
         cmp: Checkbox,
         key: 'Checkbox',
         formatValue: value => {
             return value === 'true'; // Value from JCR GraphQL API is a String
-        }
+        },
+        supportMultiple: false
     },
     ...pickerConfigs.getPickerSelectorTypes()
 };
 
-const SelectorTypeResolvers = {
+export const SelectorTypeResolvers = {
     Picker: options => pickerConfigs.getPickerSelectorType(options)
-};
-
-const resolveSelectorType = (key, options) => {
-    if (SelectorTypes[key]) {
-        return SelectorTypes[key];
-    }
-
-    if (SelectorTypeResolvers[key]) {
-        return SelectorTypeResolvers[key](options);
-    }
-};
-
-export default {
-    selectorTypes: SelectorTypes,
-    resolveSelectorType: resolveSelectorType
 };

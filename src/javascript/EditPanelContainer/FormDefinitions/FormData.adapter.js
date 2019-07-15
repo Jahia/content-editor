@@ -1,5 +1,5 @@
-import SelectorTypes from '../EditPanel/EditPanelContent/FormBuilder/SelectorTypes/SelectorTypes';
 import dayjs from '../../date.config';
+import {resolveSelectorType} from '../EditPanel/EditPanelContent/FormBuilder/SelectorTypes/SelectorTypes.utils';
 
 const isDetailField = field => field.readOnly && field.targets.find(target => target.name === 'metadata');
 
@@ -23,7 +23,7 @@ const getFields = (formDefinition, nodeData) => {
 };
 
 const getFieldValue = (formDefinition, fieldData) => {
-    const selectorType = SelectorTypes.resolveSelectorType(formDefinition.selectorType, formDefinition.selectorOptions);
+    const selectorType = resolveSelectorType(formDefinition);
     if (selectorType) {
         if (selectorType.formatValue) {
             return selectorType.formatValue(fieldData);
