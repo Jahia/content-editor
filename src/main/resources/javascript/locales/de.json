@@ -34,7 +34,8 @@
                   "pickersAction": {
                     "replace": "Änderung",
                     "newTab": "In einem neuen Tab öffnen",
-                    "clear": "Leeren"
+                    "clear": "Leeren",
+                    "selectAll": "Wählen Sie alle Werte aus"
                   },
                   "imagePicker": {
                     "addImage": "Bild hinzufügen",
