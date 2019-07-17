@@ -30,7 +30,7 @@ const getFieldValue = (formDefinition, fieldData) => {
         }
 
         if (selectorType.key === 'DateTimePicker' || selectorType.key === 'DatePicker') {
-            return formDefinition.multiple ? fieldData.formattedDateValues : fieldData.formattedDateValue;
+            return formDefinition.multiple ? fieldData.notZonedDateValues : fieldData.notZonedDateValue;
         }
     }
 

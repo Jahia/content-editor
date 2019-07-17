@@ -25,7 +25,7 @@ export function getPropertiesToMutate(nodeData = {}, formValues = {}, fields = [
                     valueObj.values = value;
 
                     if (fieldType === 'DATE') {
-                        valueObj.formattedDateValues = value;
+                        valueObj.notZonedDateValues = value;
                     }
                 } else {
                     // In case we have field of type decimal or double, we should store number
@@ -33,7 +33,7 @@ export function getPropertiesToMutate(nodeData = {}, formValues = {}, fields = [
                     valueObj.value = fieldType === 'DECIMAL' || fieldType === 'DOUBLE' ? value && value.replace(',', '.') : value;
 
                     if (fieldType === 'DATE') {
-                        valueObj.formattedDateValue = value;
+                        valueObj.notZonedDateValue = value;
                     }
                 }
 
