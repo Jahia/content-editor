@@ -53,7 +53,7 @@ export const EditNodeProperty = ({t, classes, field, siteInfo, labelHtmlFor, sel
     return (
         <FormControl className={classes.formControl}
                      data-sel-content-editor-field={field.formDefinition.name}
-                     data-sel-content-editor-field-type={selectorType.key}
+                     data-sel-content-editor-field-type={`${field.formDefinition.multiple ? 'Multiple' : ''}${selectorType.key}`}
         >
 
             <Grid
