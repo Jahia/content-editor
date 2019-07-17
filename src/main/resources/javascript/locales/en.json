@@ -31,10 +31,11 @@
                 },
                 "sharedLanguages": "Shared by all languages",
                 "fields": {
-                  "pickersAction": {
+                  "actions": {
                     "replace": "Change",
                     "newTab": "Open in a new tab",
-                    "clear": "Clear"
+                    "clear": "Clear",
+                    "selectAll": "Select all values"
                   },
                   "imagePicker": {
                     "addImage": "Add Image",

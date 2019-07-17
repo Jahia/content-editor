@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'formik';
 import {ContentPickerEmpty} from './ContentPickerEmpty/ContentPickerEmpty';
 import {ContentPickerFilled} from './ContentPickerFilled/ContentPickerFilled';
-import pickerConfigs from '../pickerConfigs';
+import pickerConfigs from '../Picker.configs';
 import {translate} from 'react-i18next';
 import {FieldPropTypes} from '../../../../../../FormDefinitions/FromData.proptypes';
 

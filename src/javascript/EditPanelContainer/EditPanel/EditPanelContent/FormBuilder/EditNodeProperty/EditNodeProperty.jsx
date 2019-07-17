@@ -53,7 +53,7 @@ export const EditNodeProperty = ({t, classes, field, siteInfo, labelHtmlFor, sel
     return (
         <FormControl className={classes.formControl}
                      data-sel-content-editor-field={field.formDefinition.name}
-                     data-sel-content-editor-field-type={selectorType.key}
+                     data-sel-content-editor-field-type={`${field.formDefinition.multiple ? 'Multiple' : ''}${selectorType.key}`}
         >
 
             <Grid
@@ -87,29 +87,38 @@ export const EditNodeProperty = ({t, classes, field, siteInfo, labelHtmlFor, sel
                             }
                         </Grid>
                     </Grid>
-                    <FieldComponent field={field}
-                                    id={field.formDefinition.name}
-                                    editorContext={editorContext}
-                                    setActionContext={setActionContext}/>
-                </Grid>
-                <Grid item>
-                    {actionContext.noAction ? (
-                        <span className={classes.emptySpace}/>
-                    ) : (
-                        <>
-                            <ContextualMenu ref={contextualMenu}
-                                            actionKey={selectorType.key + 'Menu'}
-                                            context={actionContext}/>
-                            <IconButton variant="ghost"
-                                        data-sel-action="moreOptions"
-                                        aria-label={t('content-editor:label.contentEditor.edit.action.moreOptions')}
-                                        icon={<MoreVert/>}
-                                        onClick={event => {
-                                            event.stopPropagation();
-                                            contextualMenu.current.open(event);
-                                        }}/>
-                        </>
-                    )}
+                    <Grid
+                        container
+                        wrap="nowrap"
+                        direction="row"
+                        alignItems="center"
+                    >
+                        <Grid item className={classes.input}>
+                            <FieldComponent field={field}
+                                            id={field.formDefinition.name}
+                                            editorContext={editorContext}
+                                            setActionContext={setActionContext}/>
+                        </Grid>
+                        <Grid item>
+                            {actionContext.noAction ? (
+                                <span className={classes.emptySpace}/>
+                            ) : (
+                                <>
+                                    <ContextualMenu ref={contextualMenu}
+                                                    actionKey={selectorType.key + 'Menu'}
+                                                    context={actionContext}/>
+                                    <IconButton variant="ghost"
+                                                data-sel-action="moreOptions"
+                                                aria-label={t('content-editor:label.contentEditor.edit.action.moreOptions')}
+                                                icon={<MoreVert/>}
+                                                onClick={event => {
+                                                    event.stopPropagation();
+                                                    contextualMenu.current.open(event);
+                                                }}/>
+                                </>
+                            )}
+                        </Grid>
+                    </Grid>
                 </Grid>
             </Grid>
         </FormControl>

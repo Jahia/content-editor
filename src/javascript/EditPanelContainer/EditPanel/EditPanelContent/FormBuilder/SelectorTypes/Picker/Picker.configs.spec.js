@@ -1,4 +1,4 @@
-import pickerConfigs from './pickerConfigs';
+import pickerConfigs from './Picker.configs';
 
 describe('Pickers Configs', () => {
     describe('resolveComponent', () => {

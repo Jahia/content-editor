@@ -1,9 +1,9 @@
 import {adaptFormData} from './FormData.adapter';
 
-jest.mock('../EditPanel/EditPanelContent/FormBuilder/SelectorTypes/SelectorTypes', () => {
+jest.mock('../EditPanel/EditPanelContent/FormBuilder/SelectorTypes/SelectorTypes.utils', () => {
     return {
-        resolveSelectorType: key => {
-            if (key === 'Checkbox') {
+        resolveSelectorType: ({selectorType}) => {
+            if (selectorType === 'Checkbox') {
                 return {
                     formatValue: value => {
                         return value === 'true'; // Value from JCR GraphQL API is a String
