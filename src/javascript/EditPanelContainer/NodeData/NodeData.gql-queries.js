@@ -32,7 +32,9 @@ const NodeDataFragment = {
                 properties(language: $language) {
                     name
                     value
+                    formattedDateValue
                     values
+                    formattedDateValues
                 }
                 aggregatedPublicationInfo(language: $language, subNodes: false, references: false) {
                     publicationStatus
