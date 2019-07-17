@@ -23,13 +23,13 @@ const pickerActions = actionsRegistry => {
 
     actionsRegistry.add('replaceContent', replaceAction, {
         buttonIcon: <Edit/>,
-        buttonLabel: 'content-editor:label.contentEditor.edit.fields.pickersAction.replace',
+        buttonLabel: 'content-editor:label.contentEditor.edit.fields.actions.replace',
         target: ['ContentPickerActions:1', 'MediaPickerActions:1']
     });
 
     actionsRegistry.add('onpenInNewTab', openInTabAction, {
         buttonIcon: <Launch/>,
-        buttonLabel: 'content-editor:label.contentEditor.edit.fields.pickersAction.newTab',
+        buttonLabel: 'content-editor:label.contentEditor.edit.fields.actions.newTab',
         target: ['ContentPickerActions:2', 'MediaPickerActions:2']
     });
 
