@@ -26,7 +26,7 @@ const getFieldValue = (formDefinition, fieldData) => {
     const selectorType = resolveSelectorType(formDefinition);
     if (selectorType) {
         if (selectorType.formatValue) {
-            return selectorType.formatValue(fieldData);
+            return selectorType.formatValue(fieldData.value);
         }
 
         if (selectorType.key === 'DateTimePicker' || selectorType.key === 'DatePicker') {
