@@ -54,6 +54,7 @@ export const EditNodeProperty = ({t, classes, field, siteInfo, labelHtmlFor, sel
         <FormControl className={classes.formControl}
                      data-sel-content-editor-field={field.formDefinition.name}
                      data-sel-content-editor-field-type={`${field.formDefinition.multiple ? 'Multiple' : ''}${selectorType.key}`}
+                     data-sel-content-editor-field-readonly={field.formDefinition.readOnly}
         >
 
             <Grid
