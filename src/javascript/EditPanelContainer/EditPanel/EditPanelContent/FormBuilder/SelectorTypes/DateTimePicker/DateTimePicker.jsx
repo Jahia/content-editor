@@ -35,8 +35,10 @@ export const DateTimePicker = ({id, field, editorContext}) => {
                         lang={editorContext.uiLang}
                         initialValue={value ? dayjs(value).toDate() : value}
                         onChange={date => {
+                            // Null is received when the date is reset
+                            const newDate = date && dayjs(date).format('YYYY-MM-DDTHH:mm:ss.SSS');
                             // eslint-disable-next-line
-                            props.form.setFieldValue(field.formDefinition.name, dayjs(date).format('YYYY-MM-DDTHH:mm:ss.SSS'), true);
+                            props.form.setFieldValue(field.formDefinition.name, newDate, true);
                         }}
                         {...formikField}
                         displayDateFormat={displayDateFormat}
