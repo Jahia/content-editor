@@ -9,8 +9,6 @@ describe('Option', () => {
 
     beforeEach(() => {
         defaultProps = {
-            innerRef: () => {},
-            isFocused: false,
             innerProps: {},
             children: <div/>
         };
