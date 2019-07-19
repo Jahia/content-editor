@@ -10,23 +10,20 @@ const styles = {
     }
 };
 
-export const OptionCmp = props => {
+export const OptionCmp = React.forwardRef(({classes, innerProps, children}, ref) => {
     return (
         <MenuItem
-            buttonRef={props.innerRef}
-            selected={props.isFocused}
+            buttonRef={ref}
             component="div"
-            className={props.classes.item}
-            {...props.innerProps}
+            className={classes.item}
+            {...innerProps}
         >
-            {props.children}
+            {children}
         </MenuItem>
     );
-};
+});
 
 OptionCmp.propTypes = {
-    innerRef: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
-    isFocused: PropTypes.bool.isRequired,
     innerProps: PropTypes.object.isRequired,
     children: PropTypes.node.isRequired,
     classes: PropTypes.object.isRequired

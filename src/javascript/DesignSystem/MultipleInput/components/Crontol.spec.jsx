@@ -10,7 +10,6 @@ describe('Control', () => {
     beforeEach(() => {
         defaultProps = {
             innerProps: {},
-            innerRef: {},
             children: ''
         };
     });

@@ -11,26 +11,25 @@ const styles = {
     }
 };
 
-export const ControlCmp = props => {
+export const ControlCmp = React.forwardRef(({classes, children, innerProps}, ref) => {
     return (
         <>
             <Input
-                ref={props.innerRef}
+                ref={ref}
                 fullWidth
                 inputComponent={InputComponent}
-                className={props.classes.input}
+                className={classes.input}
                 inputProps={{
-                    inputRef: props.innerRef,
-                    children: props.children,
-                    ...props.innerProps
+                    inputRef: ref,
+                    children: children,
+                    ...innerProps
                 }}
             />
         </>
     );
-};
+});
 
 ControlCmp.propTypes = {
-    innerRef: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     innerProps: PropTypes.object.isRequired,
     children: PropTypes.node.isRequired,
     classes: PropTypes.object.isRequired
