@@ -32,7 +32,8 @@ let styles = theme => ({
         flexGrow: 5
     },
     badge: {
-        marginBottom: theme.spacing.unit
+        marginBottom: theme.spacing.unit,
+        position: 'sticky'
     }
 });
 
