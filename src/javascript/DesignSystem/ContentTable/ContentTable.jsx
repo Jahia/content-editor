@@ -17,7 +17,7 @@ const styles = theme => ({
         marginTop: theme.spacing.unit * 3,
         marginBottom: theme.spacing.unit * 9
     },
-    tableCellName: {
+    nameColumn: {
         maxWidth: 0,
         width: '50%',
         overflow: 'hidden',
@@ -93,7 +93,7 @@ const ContentTable = ({data, order, orderBy, columns, labelEmpty, classes, multi
                                     {columns.map(column => {
                                         return (
                                             <TableCell key={row.id + ' ' + column.property}
-                                                       className={column.property === 'name' ? classes.tableCellName : ''}
+                                                       className={classes[column.property + 'Column']}
                                             >
                                                 {row[column.property]}
                                             </TableCell>
