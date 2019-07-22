@@ -1,9 +1,11 @@
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import * as PropTypes from 'prop-types';
 import React from 'react';
+import {
+    Dialog,
+    DialogActions,
+    DialogTitle
+} from '@material-ui/core';
+import {Button} from '@jahia/design-system-kit';
+import * as PropTypes from 'prop-types';
 import {translate} from 'react-i18next';
 import EditPanelConstants from '../EditPanelConstants';
 
@@ -32,13 +34,13 @@ export const EditPanelDialogConfirmation = ({t, titleKey, open, onCloseDialog, a
                 {t(titleKey)}
             </DialogTitle>
             <DialogActions>
-                <Button color="default" onClick={onCloseDialog}>
+                <Button variant="secondary" onClick={onCloseDialog}>
                     {t('content-editor:label.contentEditor.edit.action.goBack.btnContinue')}
                 </Button>
-                <Button color="default" onClick={handleDiscard}>
+                <Button variant="secondary" onClick={handleDiscard}>
                     {t('content-editor:label.contentEditor.edit.action.goBack.btnDiscard')}
                 </Button>
-                <Button color="primary" onClick={handleSave}>
+                <Button variant="primary" onClick={handleSave}>
                     {t('content-editor:label.contentEditor.edit.action.goBack.btnSave')}
                 </Button>
             </DialogActions>
