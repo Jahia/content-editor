@@ -17,8 +17,12 @@ const styles = theme => ({
         marginTop: theme.spacing.unit * 3,
         marginBottom: theme.spacing.unit * 9
     },
-    table: {
-
+    tableCellName: {
+        maxWidth: 0,
+        width: '50%',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap'
     },
     row: {
         '&:nth-of-type(odd)': {
@@ -88,7 +92,11 @@ const ContentTable = ({data, order, orderBy, columns, labelEmpty, classes, multi
 
                                     {columns.map(column => {
                                         return (
-                                            <TableCell key={row.id + ' ' + column.property}>{row[column.property]}</TableCell>
+                                            <TableCell key={row.id + ' ' + column.property}
+                                                       className={column.property === 'name' ? classes.tableCellName : ''}
+                                            >
+                                                {row[column.property]}
+                                            </TableCell>
                                         );
                                     })}
                                 </TableRow>
