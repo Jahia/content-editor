@@ -31,7 +31,7 @@
                 },
                 "sharedLanguages": "Von allen Sprachen geteilt",
                 "fields": {
-                  "pickersAction": {
+                  "actions": {
                     "replace": "Änderung",
                     "newTab": "In einem neuen Tab öffnen",
                     "clear": "Leeren",
