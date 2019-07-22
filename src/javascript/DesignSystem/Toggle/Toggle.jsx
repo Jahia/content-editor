@@ -5,8 +5,6 @@ import {withStyles} from '@material-ui/core/styles';
 
 const styles = theme => {
     // Todo: DESIGN-178 - use theme colors
-    theme.palette.brand.gamma = '#75BAD6';
-    theme.palette.hover.beta = '#F2F5F6';
     theme.palette.ui.zeta = '#C1C8D5';
 
     const switchBase = {
