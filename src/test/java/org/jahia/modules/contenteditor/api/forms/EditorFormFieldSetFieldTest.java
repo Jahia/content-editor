@@ -25,13 +25,14 @@ package org.jahia.modules.contenteditor.api.forms;
 
 import org.junit.Test;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.*;
 
 /**
  * Tests for {@link EditorFormField}
  */
-public final class EditorFormFieldTest {
+public final class EditorFormFieldSetFieldTest {
 
     @Test
     public void mergeWithReturnsThisUnmodifiedWhenNameDoesNotMatch() {

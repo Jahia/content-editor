@@ -47,9 +47,9 @@ final class EditorFormBuilder {
         return this;
     }
 
-    EditorForm build() {
-        EditorForm form = new EditorForm();
-        form.setNodeType(nodeType);
+    EditorFormFieldSet build() {
+        EditorFormFieldSet form = new EditorFormFieldSet();
+        form.setName(nodeType);
         form.setPriority(priority);
         form.setEditorFormFields(fields == null ? null : fields.stream()
                 .map(field -> new EditorFormField(field))

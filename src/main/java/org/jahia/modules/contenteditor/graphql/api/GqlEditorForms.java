@@ -26,9 +26,9 @@ public class GqlEditorForms {
     @GraphQLName("createForm")
     @GraphQLDescription("Get a editor form to create a new content from its nodetype and parent")
     public EditorForm getCreateForm(
-        @GraphQLName("nodeType")
+        @GraphQLName("primaryNodeType")
         @GraphQLNonNull
-        @GraphQLDescription("The name identifying the form we want to retrieve")
+        @GraphQLDescription("The primary node type name identifying the form we want to retrieve")
             String nodeType,
         @GraphQLName("uiLocale")
         @GraphQLNonNull
@@ -66,7 +66,7 @@ public class GqlEditorForms {
         @GraphQLDescription("Path of an existing node under with the new content will be created.")
             String nodePath) {
         try {
-            return editorFormService.getEditorForm(LocaleUtils.toLocale(uiLocale), LocaleUtils.toLocale(locale), nodePath);
+            return editorFormService.getEditForm(LocaleUtils.toLocale(uiLocale), LocaleUtils.toLocale(locale), nodePath);
         } catch (EditorFormException e) {
             throw new DataFetchingException(e);
         }

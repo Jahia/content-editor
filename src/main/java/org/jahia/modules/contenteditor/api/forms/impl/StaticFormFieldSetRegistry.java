@@ -1,7 +1,7 @@
 package org.jahia.modules.contenteditor.api.forms.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.jahia.modules.contenteditor.api.forms.EditorForm;
+import org.jahia.modules.contenteditor.api.forms.EditorFormFieldSet;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
@@ -16,13 +16,13 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-@Component(immediate = true, service= StaticFormRegistry.class)
-public class StaticFormRegistry implements SynchronousBundleListener {
+@Component(immediate = true, service = StaticFormFieldSetRegistry.class)
+public class StaticFormFieldSetRegistry implements SynchronousBundleListener {
 
-    private static final Logger logger = LoggerFactory.getLogger(StaticFormRegistry.class);
+    private static final Logger logger = LoggerFactory.getLogger(StaticFormFieldSetRegistry.class);
 
-    private Map<Bundle,List<EditorForm>> staticEditorFormsByBundle = new LinkedHashMap<>();
-    private Map<String,SortedSet<EditorForm>> staticEditorFormsByNodeType = new LinkedHashMap<>();
+    private Map<Bundle, List<EditorFormFieldSet>> staticEditorFormsByBundle = new LinkedHashMap<>();
+    private Map<String, SortedSet<EditorFormFieldSet>> staticEditorFormsByNodeType = new LinkedHashMap<>();
     private ObjectMapper objectMapper = new ObjectMapper();
     private BundleContext bundleContext;
 
@@ -53,7 +53,7 @@ public class StaticFormRegistry implements SynchronousBundleListener {
         }
     }
 
-    public SortedSet<EditorForm> getForm(String nodeTypeName) {
+    public SortedSet<EditorFormFieldSet> getForm(String nodeTypeName) {
         return staticEditorFormsByNodeType.get(nodeTypeName);
     }
 
@@ -65,38 +65,38 @@ public class StaticFormRegistry implements SynchronousBundleListener {
         if (editorFormURLs == null) {
             return;
         }
-        List<EditorForm> bundleEditorForms = new ArrayList<>();
+        List<EditorFormFieldSet> bundleEditorFormFieldSets = new ArrayList<>();
         while (editorFormURLs.hasMoreElements()) {
             URL editorFormURL = editorFormURLs.nextElement();
-            EditorForm editorForm;
+            EditorFormFieldSet editorFormFieldSet;
             try {
-                editorForm = objectMapper.readValue(editorFormURL, EditorForm.class);
-                editorForm.setOriginBundle(bundle);
-                SortedSet nodeTypeEditorForms = staticEditorFormsByNodeType.get(editorForm.getNodeType());
+                editorFormFieldSet = objectMapper.readValue(editorFormURL, EditorFormFieldSet.class);
+                editorFormFieldSet.setOriginBundle(bundle);
+                SortedSet nodeTypeEditorForms = staticEditorFormsByNodeType.get(editorFormFieldSet.getName());
                 if (nodeTypeEditorForms == null) {
                     nodeTypeEditorForms = new TreeSet();
                 }
-                nodeTypeEditorForms.add(editorForm);
-                staticEditorFormsByNodeType.put(editorForm.getNodeType(), nodeTypeEditorForms);
-                bundleEditorForms.add(editorForm);
-                logger.info("Successfully loaded static form for nodeType {} from {}", editorForm.getNodeType(), editorFormURL);
+                nodeTypeEditorForms.add(editorFormFieldSet);
+                staticEditorFormsByNodeType.put(editorFormFieldSet.getName(), nodeTypeEditorForms);
+                bundleEditorFormFieldSets.add(editorFormFieldSet);
+                logger.info("Successfully loaded static form for nodeType {} from {}", editorFormFieldSet.getName(), editorFormURL);
             } catch (IOException e) {
                 logger.error("Error loading editor form from " + editorFormURL, e);
             }
         }
-        staticEditorFormsByBundle.put(bundle, bundleEditorForms);
+        staticEditorFormsByBundle.put(bundle, bundleEditorFormFieldSets);
     }
 
     private void unregisterStaticEditorForms(Bundle bundle) {
-        List<EditorForm> bundleEditorForms = staticEditorFormsByBundle.remove(bundle);
-        if (bundleEditorForms == null) {
+        List<EditorFormFieldSet> bundleEditorFormFieldSets = staticEditorFormsByBundle.remove(bundle);
+        if (bundleEditorFormFieldSets == null) {
             return;
         }
-        for (EditorForm bundleEditorForm : bundleEditorForms) {
-            SortedSet<EditorForm> nodeTypeEditorForms = staticEditorFormsByNodeType.get(bundleEditorForm.getNodeType());
-            if (nodeTypeEditorForms != null) {
-                nodeTypeEditorForms.remove(bundleEditorForm);
-                staticEditorFormsByNodeType.put(bundleEditorForm.getNodeType(), nodeTypeEditorForms);
+        for (EditorFormFieldSet bundleEditorFormFieldSet : bundleEditorFormFieldSets) {
+            SortedSet<EditorFormFieldSet> nodeTypeEditorFormFieldSets = staticEditorFormsByNodeType.get(bundleEditorFormFieldSet.getName());
+            if (nodeTypeEditorFormFieldSets != null) {
+                nodeTypeEditorFormFieldSets.remove(bundleEditorFormFieldSet);
+                staticEditorFormsByNodeType.put(bundleEditorFormFieldSet.getName(), nodeTypeEditorFormFieldSets);
             }
         }
     }

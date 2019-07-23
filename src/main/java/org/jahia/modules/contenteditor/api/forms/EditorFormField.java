@@ -132,7 +132,7 @@ public class EditorFormField {
         this.targets = targets;
         if (targets != null) {
             for (EditorFormFieldTarget editorFormFieldTarget : targets) {
-                this.targetsByName.put(editorFormFieldTarget.getName(), editorFormFieldTarget.getRank());
+                this.targetsByName.put(editorFormFieldTarget.getSectionName(), editorFormFieldTarget.getRank());
             }
         }
     }
@@ -312,19 +312,19 @@ public class EditorFormField {
         }
         if (targets != null) {
             for (EditorFormFieldTarget editorFormFieldTarget : targets) {
-                Double otherEditorFormFieldTargetRank = otherEditorFormField.targetsByName.get(editorFormFieldTarget.getName());
+                Double otherEditorFormFieldTargetRank = otherEditorFormField.targetsByName.get(editorFormFieldTarget.getSectionName());
                 if (otherEditorFormFieldTargetRank != null) {
                     mergedEditorFormFieldTargets
-                        .add(new EditorFormFieldTarget(editorFormFieldTarget.getName(), otherEditorFormFieldTargetRank));
+                        .add(new EditorFormFieldTarget(editorFormFieldTarget.getSectionName(), otherEditorFormFieldTargetRank));
                 } else {
-                    mergedEditorFormFieldTargets.add(new EditorFormFieldTarget(editorFormFieldTarget.getName(), editorFormFieldTarget.getRank()));
+                    mergedEditorFormFieldTargets.add(new EditorFormFieldTarget(editorFormFieldTarget.getSectionName(), editorFormFieldTarget.getRank()));
                 }
             }
         }
         if (otherEditorFormField.targets != null) {
             for (EditorFormFieldTarget otherEditorFormFieldTarget : otherEditorFormField.targets) {
-                if (targetsByName.get(otherEditorFormFieldTarget.getName()) == null) {
-                    mergedEditorFormFieldTargets.add(new EditorFormFieldTarget(otherEditorFormFieldTarget.getName(), otherEditorFormFieldTarget.getRank()));
+                if (targetsByName.get(otherEditorFormFieldTarget.getSectionName()) == null) {
+                    mergedEditorFormFieldTargets.add(new EditorFormFieldTarget(otherEditorFormFieldTarget.getSectionName(), otherEditorFormFieldTarget.getRank()));
                 }
             }
         }
