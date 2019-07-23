@@ -45,6 +45,14 @@ public class EditorFormFieldTarget implements Comparable<EditorFormFieldTarget> 
         this.rank = rank;
     }
 
+    public String getFieldSetName() {
+        return fieldSetName;
+    }
+
+    public void setFieldSetName(String fieldSetName) {
+        this.fieldSetName = fieldSetName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

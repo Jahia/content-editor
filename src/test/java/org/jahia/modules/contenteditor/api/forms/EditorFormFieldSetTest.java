@@ -39,8 +39,8 @@ public final class EditorFormFieldSetTest {
 
     @Test
     public void mergeWithReturnsThisUnmodifiedWhenNodeTypeDoesNotMatch() {
-        final EditorFormFieldSet form1 = new EditorFormBuilder("form1").build();
-        final EditorFormFieldSet form2 = new EditorFormBuilder("form2").build();
+        final EditorFormFieldSet form1 = new EditorFormFieldSetBuilder("form1").build();
+        final EditorFormFieldSet form2 = new EditorFormFieldSetBuilder("form2").build();
 
         EditorFormFieldSet result = form1.mergeWith(form2);
 
@@ -50,8 +50,8 @@ public final class EditorFormFieldSetTest {
 
     @Test
     public void mergeWithCanOverrideAnyUnsetProperty() {
-        final EditorFormFieldSet form1 = new EditorFormBuilder("form").build();
-        final EditorFormFieldSet form2 = new EditorFormBuilder("form")
+        final EditorFormFieldSet form1 = new EditorFormFieldSetBuilder("form").build();
+        final EditorFormFieldSet form2 = new EditorFormFieldSetBuilder("form")
                 .withPriority(1d)
                 .withFields(new EditorFormFieldBuilder("x").build())
                 .build();
@@ -66,11 +66,11 @@ public final class EditorFormFieldSetTest {
 
     @Test
     public void mergeWithCannotUnsetProperties() {
-        final EditorFormFieldSet form1 = new EditorFormBuilder("form")
+        final EditorFormFieldSet form1 = new EditorFormFieldSetBuilder("form")
                 .withPriority(1d)
                 .withFields(new EditorFormFieldBuilder("x").build())
                 .build();
-        final EditorFormFieldSet form2 = new EditorFormBuilder("form").build();
+        final EditorFormFieldSet form2 = new EditorFormFieldSetBuilder("form").build();
 
         EditorFormFieldSet result = form1.mergeWith(form2);
 
@@ -82,8 +82,8 @@ public final class EditorFormFieldSetTest {
 
     @Test
     public void mergeWithCanOverridePriority() {
-        final EditorFormFieldSet form1 = new EditorFormBuilder("form").withPriority(1d).build();
-        final EditorFormFieldSet form2 = new EditorFormBuilder("form").withPriority(2d).build();
+        final EditorFormFieldSet form1 = new EditorFormFieldSetBuilder("form").withPriority(1d).build();
+        final EditorFormFieldSet form2 = new EditorFormFieldSetBuilder("form").withPriority(2d).build();
 
         EditorFormFieldSet result = form1.mergeWith(form2);
 

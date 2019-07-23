@@ -98,7 +98,9 @@ public class EditorFormServiceImpl implements EditorFormService {
             mergedEditorFormFieldSet = mergeWithStaticForms(nodeTypeName, mergedEditorFormFieldSet);
             mergedEditorFormFieldSet = processValueConstraints(mergedEditorFormFieldSet, locale, existingNode, parentNode);
 
-            return mergedEditorFormFieldSet;
+            EditorForm editorForm = new EditorForm();
+
+            return editorForm;
         } catch (RepositoryException e) {
             throw new EditorFormException("Error while building edit form definition for node: " + nodePath + " and nodeType: " + nodeTypeName, e);
         }
@@ -137,7 +139,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                     valueConstraints,
                     editorFormField.getDefaultValues(),
                     editorFormField.isRemoved(),
-                    editorFormField.getTargets(),
+                editorFormField.getTarget(),
                     editorFormField.getExtendedPropertyDefinition()));
         }
         return new EditorFormFieldSet(editForm.getName(), newEditorFormFields);
@@ -188,8 +190,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                 rank = -1.0;
             }
             rank++;
-            List<EditorFormFieldTarget> fieldTargets = new ArrayList<>();
-            fieldTargets.add(new EditorFormFieldTarget(itemType, nodeTypeName, rank));
+            EditorFormFieldTarget fieldTarget = new EditorFormFieldTarget(itemType, nodeType.getName(), rank);
             maxTargetRank.put(itemType, rank);
             List<EditorFormFieldValueConstraint> valueConstraints = new ArrayList<>();
             for (String valueConstraint : propertyDefinition.getValueConstraints()) {
@@ -243,7 +244,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                     valueConstraints,
                     defaultValues,
                     null,
-                    fieldTargets,
+                fieldTarget,
                     propertyDefinition);
             editorFormFields.add(editorFormField);
         }

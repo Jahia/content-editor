@@ -39,7 +39,7 @@ final class EditorFormFieldBuilder {
     private Boolean removed;
     private List<EditorFormFieldValue> defaultValues;
     private List<EditorFormFieldValueConstraint> valueConstraints;
-    private List<EditorFormFieldTarget> targets;
+    private EditorFormFieldTarget target;
     private List<EditorFormProperty> selectorOptions;
 
     EditorFormFieldBuilder(String name) {
@@ -76,6 +76,11 @@ final class EditorFormFieldBuilder {
         return this;
     }
 
+    EditorFormFieldBuilder target(EditorFormFieldTarget target) {
+        this.target = target;
+        return this;
+    }
+
     EditorFormFieldBuilder withDefaultValues(EditorFormFieldValue ...defaultValues) {
         this.defaultValues = (defaultValues.length == 0) ? null : Arrays.asList(defaultValues);
         return this;
@@ -83,11 +88,6 @@ final class EditorFormFieldBuilder {
 
     EditorFormFieldBuilder withSelectorOptions(EditorFormProperty ...selectorOptions) {
         this.selectorOptions = (selectorOptions.length == 0) ? null : Arrays.asList(selectorOptions);
-        return this;
-    }
-
-    EditorFormFieldBuilder withTargets(EditorFormFieldTarget ...targets) {
-        this.targets = (targets.length == 0) ? null : Arrays.asList(targets);
         return this;
     }
 
@@ -114,10 +114,7 @@ final class EditorFormFieldBuilder {
         );
         field.setDefaultValues((defaultValues == null) ? null : new ArrayList<>(defaultValues));
         field.setRemoved(removed);
-        field.setTargets((targets == null) ? null : targets.stream()
-                .map(target -> new EditorFormFieldTarget(target))
-                .collect(Collectors.toList())
-        );
+        field.setTarget(target);
         return field;
     }
 

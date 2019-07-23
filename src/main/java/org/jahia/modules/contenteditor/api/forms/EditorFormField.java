@@ -5,7 +5,9 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import org.jahia.services.content.nodetypes.ExtendedPropertyDefinition;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -24,8 +26,7 @@ public class EditorFormField {
     private List<EditorFormFieldValueConstraint> valueConstraints;
     private List<EditorFormFieldValue> defaultValues;
     private Boolean removed;
-    private List<EditorFormFieldTarget> targets;
-    private Map<String, Double> targetsByName = new HashMap<>();
+    private EditorFormFieldTarget target;
     private ExtendedPropertyDefinition extendedPropertyDefinition;
 
     public EditorFormField() {
@@ -42,7 +43,7 @@ public class EditorFormField {
                            List<EditorFormFieldValueConstraint> valueConstraints,
                            List<EditorFormFieldValue> defaultValues,
                            Boolean removed,
-                           List<EditorFormFieldTarget> targets,
+                           EditorFormFieldTarget target,
                            ExtendedPropertyDefinition extendedPropertyDefinition) {
         this.name = name;
         this.displayName = displayName;
@@ -55,7 +56,7 @@ public class EditorFormField {
         this.valueConstraints = valueConstraints;
         this.defaultValues = defaultValues;
         this.removed = removed;
-        setTargets(targets);
+        this.target = target;
         this.extendedPropertyDefinition = extendedPropertyDefinition;
     }
 
@@ -76,9 +77,7 @@ public class EditorFormField {
                 .collect(Collectors.toList()),
             field.defaultValues == null ? null : new ArrayList<>(field.defaultValues),
             field.removed,
-            field.targets == null ? null : field.targets.stream()
-                .map(target -> new EditorFormFieldTarget(target))
-                .collect(Collectors.toList()),
+            field.target == null ? null : field.target,
             // No deep copy is needed as this object is just read and only references are used
             field.extendedPropertyDefinition
         );
@@ -126,15 +125,6 @@ public class EditorFormField {
 
     public void setRemoved(Boolean removed) {
         this.removed = removed;
-    }
-
-    public void setTargets(List<EditorFormFieldTarget> targets) {
-        this.targets = targets;
-        if (targets != null) {
-            for (EditorFormFieldTarget editorFormFieldTarget : targets) {
-                this.targetsByName.put(editorFormFieldTarget.getSectionName(), editorFormFieldTarget.getRank());
-            }
-        }
     }
 
     public void setValueConstraints(List<EditorFormFieldValueConstraint> valueConstraints) {
@@ -189,18 +179,24 @@ public class EditorFormField {
         return mandatory;
     }
 
+    public EditorFormFieldTarget getTarget() {
+        return target;
+    }
+
+    public void setTarget(EditorFormFieldTarget target) {
+        this.target = target;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
     public void setDefaultValues(List<EditorFormFieldValue> defaultValues) {
         this.defaultValues = defaultValues;
     }
 
     public ExtendedPropertyDefinition getExtendedPropertyDefinition() {
         return extendedPropertyDefinition;
-    }
-
-    @GraphQLField
-    @GraphQLDescription("The targets this fields should be present in and the ranking in each target")
-    public List<EditorFormFieldTarget> getTargets() {
-        return targets;
     }
 
     @JsonIgnore
@@ -253,8 +249,7 @@ public class EditorFormField {
             && Objects.equals(valueConstraints, that.valueConstraints)
             && Objects.equals(defaultValues, that.defaultValues)
             && Objects.equals(removed, that.removed)
-            && Objects.equals(targets, that.targets)
-            && Objects.equals(targetsByName, that.targetsByName)
+            && Objects.equals(target, that.target)
             && Objects.equals(extendedPropertyDefinition, that.extendedPropertyDefinition);
     }
 
@@ -262,7 +257,7 @@ public class EditorFormField {
     public int hashCode() {
         return Objects.hash(name, displayName, selectorType, selectorOptions, i18n,
             readOnly, multiple, mandatory, valueConstraints, defaultValues, removed,
-            targets, targetsByName, extendedPropertyDefinition);
+            target, extendedPropertyDefinition);
     }
 
     @Override
@@ -279,8 +274,7 @@ public class EditorFormField {
             ", valueConstraints=" + valueConstraints +
             ", defaultValues=" + defaultValues +
             ", removed=" + removed +
-            ", targets=" + targets +
-            ", targetsByName=" + targetsByName +
+            ", target=" + target +
             ", extendedPropertyDefinition=" + extendedPropertyDefinition +
             '}';
     }
@@ -304,30 +298,25 @@ public class EditorFormField {
         }
     }
 
-    private List<EditorFormFieldTarget> mergeTargets(EditorFormField otherEditorFormField) {
-        List<EditorFormFieldTarget> mergedEditorFormFieldTargets = new ArrayList<>();
-        if (targets == null && otherEditorFormField.targets != null) {
-            mergedEditorFormFieldTargets.addAll(otherEditorFormField.targets);
-            return mergedEditorFormFieldTargets;
-        }
-        if (targets != null) {
-            for (EditorFormFieldTarget editorFormFieldTarget : targets) {
-                Double otherEditorFormFieldTargetRank = otherEditorFormField.targetsByName.get(editorFormFieldTarget.getSectionName());
-                if (otherEditorFormFieldTargetRank != null) {
-                    mergedEditorFormFieldTargets
-                        .add(new EditorFormFieldTarget(editorFormFieldTarget.getSectionName(), otherEditorFormFieldTargetRank));
-                } else {
-                    mergedEditorFormFieldTargets.add(new EditorFormFieldTarget(editorFormFieldTarget.getSectionName(), editorFormFieldTarget.getRank()));
-                }
+    private EditorFormFieldTarget mergeTargets(EditorFormField otherEditorFormField) {
+        if (target == null) {
+            if (otherEditorFormField.target != null) {
+                return otherEditorFormField.target;
+            } else {
+                return null;
             }
         }
-        if (otherEditorFormField.targets != null) {
-            for (EditorFormFieldTarget otherEditorFormFieldTarget : otherEditorFormField.targets) {
-                if (targetsByName.get(otherEditorFormFieldTarget.getSectionName()) == null) {
-                    mergedEditorFormFieldTargets.add(new EditorFormFieldTarget(otherEditorFormFieldTarget.getSectionName(), otherEditorFormFieldTarget.getRank()));
-                }
+        EditorFormFieldTarget mergedEditorFormFieldTarget = new EditorFormFieldTarget(target.getSectionName(), target.getFieldSetName(), target.getRank());
+        if (otherEditorFormField.target != null) {
+            Double otherEditorFormFieldTargetRank = otherEditorFormField.target.getRank();
+            if (otherEditorFormFieldTargetRank != null) {
+                mergedEditorFormFieldTarget.setRank(otherEditorFormFieldTargetRank);
+            }
+            if (otherEditorFormField.target.getSectionName() != null && otherEditorFormField.target.getFieldSetName() != null) {
+                mergedEditorFormFieldTarget.setSectionName(otherEditorFormField.target.getSectionName());
+                mergedEditorFormFieldTarget.setFieldSetName(otherEditorFormField.target.getFieldSetName());
             }
         }
-        return mergedEditorFormFieldTargets;
+        return mergedEditorFormFieldTarget;
     }
 }

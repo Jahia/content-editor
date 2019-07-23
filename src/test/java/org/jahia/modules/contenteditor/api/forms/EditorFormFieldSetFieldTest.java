@@ -26,7 +26,6 @@ package org.jahia.modules.contenteditor.api.forms;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.*;
 
 /**
@@ -159,29 +158,22 @@ public final class EditorFormFieldSetFieldTest {
         ));
     }
 
-    @Test
-    public void mergeWithCanOverrideTargets() {
-        final EditorFormField field1 = new EditorFormFieldBuilder("a")
-                .withTargets(
-                        new EditorFormFieldTarget("x", 0d),
-                        new EditorFormFieldTarget("y", 1d)
-                ).build();
-        final EditorFormField field2 = new EditorFormFieldBuilder("a")
-                .withTargets(
-                        new EditorFormFieldTarget("x", 2d),
-                        new EditorFormFieldTarget("z", 3d)
-                ).build();
-
-        assertThat(field1.mergeWith(field2).getTargets(), containsInAnyOrder(
-                new EditorFormFieldTarget("x", 2d),
-                new EditorFormFieldTarget("y", 1d),
-                new EditorFormFieldTarget("z", 3d)
-        ));
-        assertThat(field2.mergeWith(field1).getTargets(), containsInAnyOrder(
-                new EditorFormFieldTarget("x", 0d),
-                new EditorFormFieldTarget("y", 1d),
-                new EditorFormFieldTarget("z", 3d)
-        ));
+    /*
+     * Returns a new EditorFormField with the given name and all properties populated with some data.
+     */
+    private static EditorFormField createAndFillEditorFormField(String name) {
+        return new EditorFormFieldBuilder(name)
+            .withDefaultValues(new EditorFormFieldValue(true))
+            .withSelectorType("MyCustomSelector")
+            .withSelectorOptions(new EditorFormProperty("x", "y"))
+            .target(new EditorFormFieldTarget("MySection", "MyFieldSet", 0d))
+            .withValueConstraints(new EditorFormFieldValueConstraint("MyConstraint", null, null))
+            .i18n(true)
+            .mandatory(true)
+            .multiple(true)
+            .readOnly(true)
+            .removed(true)
+            .build();
     }
 
     @Test
@@ -236,22 +228,22 @@ public final class EditorFormFieldSetFieldTest {
         assertEquals(false, single.mergeWith(multiple).getMultiple());
     }
 
-    /*
-     * Returns a new EditorFormField with the given name and all properties populated with some data.
-     */
-    private static EditorFormField createAndFillEditorFormField(String name) {
-        return new EditorFormFieldBuilder(name)
-                .withDefaultValues(new EditorFormFieldValue(true))
-                .withSelectorType("MyCustomSelector")
-                .withSelectorOptions(new EditorFormProperty("x", "y"))
-                .withTargets(new EditorFormFieldTarget("MyTarget", 0d))
-                .withValueConstraints(new EditorFormFieldValueConstraint("MyConstraint", null, null))
-                .i18n(true)
-                .mandatory(true)
-                .multiple(true)
-                .readOnly(true)
-                .removed(true)
+    @Test
+    public void mergeWithCanOverrideTargets() {
+        final EditorFormField field1 = new EditorFormFieldBuilder("a")
+            .target(new EditorFormFieldTarget("x", "m1", 0d))
                 .build();
+        final EditorFormField field2 = new EditorFormFieldBuilder("a")
+            .target(new EditorFormFieldTarget("y", "m2", 1d))
+            .build();
+
+        assertEquals("Result of field target merge is incorrect",
+            new EditorFormFieldTarget("y", "m2", 1d),
+            field1.mergeWith(field2).getTarget());
+        assertEquals("Result of field target merge is incorrect",
+            new EditorFormFieldTarget("x", "m1", 0d),
+            field2.mergeWith(field1).getTarget()
+        );
     }
 
 }

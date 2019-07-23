@@ -27,22 +27,22 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-final class EditorFormBuilder {
+final class EditorFormFieldSetBuilder {
 
     private String nodeType;
     private Double priority;
     private List<EditorFormField> fields;
 
-    EditorFormBuilder(String nodeType) {
+    EditorFormFieldSetBuilder(String nodeType) {
         this.nodeType = nodeType;
     }
 
-    EditorFormBuilder withPriority(Double priority) {
+    EditorFormFieldSetBuilder withPriority(Double priority) {
         this.priority = priority;
         return this;
     }
 
-    EditorFormBuilder withFields(EditorFormField ...fields) {
+    EditorFormFieldSetBuilder withFields(EditorFormField... fields) {
         this.fields = (fields.length == 0) ? null : Arrays.asList(fields);
         return this;
     }
