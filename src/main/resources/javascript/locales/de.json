@@ -56,7 +56,9 @@
                   },
                   "modalCancel": "Abbrechen",
                   "modalDone": "Fertig"
-                }
+                },
+                "tagPlaceholder" : "Tag eingeben",
+                "createTagPlaceholder" : "Mit Enter bestätigen um \"{{tagName}}\" hinzuzufügen"
             },
             "switchLanguage": {
               "dialog": {

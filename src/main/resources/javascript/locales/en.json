@@ -56,7 +56,9 @@
                   },
                   "modalCancel": "Cancel",
                   "modalDone": "Done"
-                }
+                },
+                "tagPlaceholder" : "Type to add tag",
+                "createTagPlaceholder" : "Press enter to add \"{{tagName}}\""
             },
             "switchLanguage": {
               "dialog": {
