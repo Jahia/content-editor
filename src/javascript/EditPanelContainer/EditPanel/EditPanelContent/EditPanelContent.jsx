@@ -37,11 +37,12 @@ const SelectedTabComponents = {
     details: Details
 };
 
-export const EditPanelContent = ({t, classes, fields, siteInfo}) => {
+export const EditPanelContent = ({t, classes, fields, siteInfo, isDirty}) => {
     const [previewMode, setPreviewMode] = useState('preview');
 
     const SelectedTabComponent = SelectedTabComponents[previewMode];
-    const PreviewCmp = SelectedTabComponent ? <SelectedTabComponent/> : null;
+    const PreviewCmp = SelectedTabComponent ?
+        <SelectedTabComponent isDirty={isDirty}/> : null;
 
     return (
         <>
@@ -89,11 +90,16 @@ export const EditPanelContent = ({t, classes, fields, siteInfo}) => {
     );
 };
 
+EditPanelContent.defaultProps = {
+    isDirty: false
+};
+
 EditPanelContent.propTypes = {
     t: PropTypes.func.isRequired,
     fields: FieldsPropTypes.isRequired,
     classes: PropTypes.object.isRequired,
-    siteInfo: PropTypes.object.isRequired
+    siteInfo: PropTypes.object.isRequired,
+    isDirty: PropTypes.bool
 };
 
 export default compose(

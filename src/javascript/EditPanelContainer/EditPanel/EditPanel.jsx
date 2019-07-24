@@ -64,6 +64,7 @@ const EditPanel = ({fields, siteInfo, nodeData, lang, formik}) => {
         >
             <EditPanelContent siteInfo={siteInfo}
                               fields={fields}
+                              isDirty={formik.dirty}
             />
         </MainLayout>
     );

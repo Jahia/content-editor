@@ -4,21 +4,6 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {PreviewContainer} from './PreviewContainer';
 
-jest.mock('formik', () => {
-    let formikvaluemock;
-
-    return {
-        setFormikValue: value => {
-            formikvaluemock = value;
-        },
-        connect: Cmp => props => (
-            <Cmp {...props} formik={{dirty: formikvaluemock}}/>
-        )
-    };
-});
-
-import {setFormikValue} from 'formik';
-
 jest.mock('../../../ContentEditor.context', () => ({
     useContentEditorContext: () => ({
         path: '/site/digitall',
@@ -37,10 +22,9 @@ describe('PreviewContainer', () => {
                 lang: 'fr'
             },
             t: jest.fn(),
-            classes: {}
+            classes: {},
+            isDirty: false
         };
-
-        setFormikValue(false);
     });
 
     it('should display content preview', () => {
@@ -58,7 +42,7 @@ describe('PreviewContainer', () => {
     });
 
     it('should display the badge preview update on save when content is updated', () => {
-        setFormikValue(true);
+        defaultProps.isDirty = true;
 
         const cmp = shallowWithTheme(
             <PreviewContainer {...defaultProps}/>,
