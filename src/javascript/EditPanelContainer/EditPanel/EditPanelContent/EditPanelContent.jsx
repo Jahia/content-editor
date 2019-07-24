@@ -9,21 +9,22 @@ import {translate} from 'react-i18next';
 import {ToggleButton, ToggleButtonGroup} from '@material-ui/lab';
 import {PreviewContainer} from './PreviewContainer';
 import {Details} from './Details';
-import {FieldsPropTypes} from '../../FormDefinitions/';
 
 const styles = theme => ({
     twoColumnsRoot: {
-        minHeight: 0
+        minHeight: 0,
+        padding: 0
     },
     fullWidthRoot: {
-        backgroundColor: theme.palette.ui.alpha,
-        padding: (theme.spacing.unit * 4) + 'px ' + (theme.spacing.unit * 4) + 'px 0'
+        backgroundColor: theme.palette.ui.alpha
     },
-    fullWidthForm: {
+    right: {
+        padding: 0,
         overflow: 'auto'
     },
     left: {
-        overflow: 'auto'
+        overflow: 'auto',
+        padding: 0
     },
     toggleButtons: {
         display: 'flex',
@@ -37,7 +38,7 @@ const SelectedTabComponents = {
     details: Details
 };
 
-export const EditPanelContent = ({t, classes, fields, siteInfo, isDirty}) => {
+export const EditPanelContent = ({t, classes, isDirty}) => {
     const [previewMode, setPreviewMode] = useState('preview');
 
     const SelectedTabComponent = SelectedTabComponents[previewMode];
@@ -77,13 +78,10 @@ export const EditPanelContent = ({t, classes, fields, siteInfo, isDirty}) => {
                     <TwoColumnsContent classes={{root: classes.twoColumnsRoot, left: classes.left, right: classes.right}}
                                        rightCol={PreviewCmp}
                     >
-                        <FormBuilder fields={fields} siteInfo={siteInfo}/>
+                        <FormBuilder/>
                     </TwoColumnsContent> :
                     <FullWidthContent classes={{root: classes.fullWidthRoot}}>
-                        <FormBuilder classes={{form: classes.fullWidthForm}}
-                                     fields={fields}
-                                     siteInfo={siteInfo}
-                        />
+                        <FormBuilder/>
                     </FullWidthContent>
             }
         </>
@@ -96,9 +94,7 @@ EditPanelContent.defaultProps = {
 
 EditPanelContent.propTypes = {
     t: PropTypes.func.isRequired,
-    fields: FieldsPropTypes.isRequired,
     classes: PropTypes.object.isRequired,
-    siteInfo: PropTypes.object.isRequired,
     isDirty: PropTypes.bool
 };
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {FieldPropTypes} from '../../../../../FormDefinitions/FromData.proptypes';
+import {FieldPropTypes} from '../../../../../FormDefinitions/FormData.proptypes';
 
 import SingleSelect from './SingleSelect/SingleSelect';
 import MultipleSelect from './MultipleSelect/MultipleSelect';

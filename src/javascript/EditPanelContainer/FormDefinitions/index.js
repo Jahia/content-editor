@@ -5,4 +5,4 @@ export {
     FieldPropTypes,
     FieldsPropTypes,
     NodeDataPropTypes
-} from './FromData.proptypes';
+} from './FormData.proptypes';

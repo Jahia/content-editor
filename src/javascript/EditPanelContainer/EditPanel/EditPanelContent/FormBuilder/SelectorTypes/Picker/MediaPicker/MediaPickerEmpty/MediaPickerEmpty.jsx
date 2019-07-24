@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import React, {useState} from 'react';
 import {Picker} from '../../../../../../../../DesignSystem/Picker';
 import {translate} from 'react-i18next';
-import {FieldPropTypes} from '../../../../.././../../FormDefinitions/FromData.proptypes';
+import {FieldPropTypes} from '../../../../.././../../FormDefinitions/FormData.proptypes';
 
 import {MediaPickerDialog} from '../MediaPickerDialog';
 

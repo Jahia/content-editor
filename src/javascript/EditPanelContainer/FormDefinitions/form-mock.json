@@ -1,0 +1,129 @@
+{
+  "data": {
+    "form": {
+      "sections": [
+        {
+          "name": "content",
+          "displayName": "Content",
+          "display": "block",
+          "fieldsets": [
+            {
+              "name": "jnt:news",
+              "displayName": "News",
+              "itemType": "content",
+              "rank": 0,
+              "display": "block",
+              "fields": [
+                {
+                  "name": "jcr:title",
+                  "displayName": "Title",
+                  "selectorType": "Text",
+                  "fieldDescription": "",
+                  "selectorOptions": [],
+                  "i18n": true,
+                  "readOnly": false,
+                  "multiple": false,
+                  "mandatory": true,
+                  "valueConstraints": [],
+                  "defaultValues": []
+                },
+                {
+                  "name": "description",
+                  "displayName": "Description",
+                  "fieldDescription": "",
+                  "selectorType": "Richtext",
+                  "selectorOptions": [],
+                  "i18n": true,
+                  "readOnly": false,
+                  "multiple": false,
+                  "mandatory": false,
+                  "valueConstraints": [],
+                  "defaultValues": []
+                }
+              ]
+            },
+            {
+              "name": "jmix:title",
+              "displayName": "Title",
+              "itemType": "content",
+              "display": "hidden",
+              "dynamic": false,
+              "fieldsetDescription": "",
+              "targets": [
+                {
+                  "section": "content",
+                  "rank": -100
+                }
+              ],
+              "fields": []
+            }
+          ]
+        },
+        {
+          "name": "layout",
+          "displayName": "Layout",
+          "display": "block",
+          "fieldsets": [
+            {
+              "name": "jmix:view",
+              "displayName": "View",
+              "itemType": "layout",
+              "display": "block",
+              "fieldDescription": "",
+              "dynamic": true,
+              "activated": "false",
+              "targets": [
+                {
+                  "section": "layout",
+                  "rank": 0
+                }
+              ],
+              "fields": [
+                {
+                  "name": "view",
+                  "displayName": "View",
+                  "fieldDescription": "",
+                  "selectorType": "Choicelist",
+                  "selectorOptions": [
+                    {
+                      "name": "resourceBundle",
+                      "value": "",
+                      "__typename": "EditorFormProperty"
+                    }
+                  ],
+                  "i18n": true,
+                  "readOnly": false,
+                  "multiple": false,
+                  "mandatory": false,
+                  "valueConstraints": [
+                    {
+                      "displayValue": "sales",
+                      "value": {
+                        "type": "String",
+                        "string": "sales",
+                        "__typename": "EditorFormFieldValue"
+                      },
+                      "properties": [],
+                      "__typename": "EditorFormFieldValueConstraint"
+                    },
+                    {
+                      "displayValue": "marketing",
+                      "value": {
+                        "type": "String",
+                        "string": "marketing",
+                        "__typename": "EditorFormFieldValue"
+                      },
+                      "properties": [],
+                      "__typename": "EditorFormFieldValueConstraint"
+                    }
+                  ],
+                  "defaultValues": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

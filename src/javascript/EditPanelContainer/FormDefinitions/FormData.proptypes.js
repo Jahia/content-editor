@@ -61,3 +61,9 @@ export const NodeDataPropTypes = PropTypes.shape({
         publicationStatus: PropTypes.string.isRequired
     }).isRequired
 });
+
+export const SectionPropTypes = PropTypes.shape({
+    name: PropTypes.string,
+    displayName: PropTypes.string.isRequired
+});
+export const SectionsPropTypes = PropTypes.arrayOf(SectionPropTypes);

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Field} from 'formik';
-import {FieldPropTypes} from '../../../../../FormDefinitions/FromData.proptypes';
+import {FieldPropTypes} from '../../../../../FormDefinitions/FormData.proptypes';
 
 import {TextArea} from '../../../../../../DesignSystem/TextArea';
 

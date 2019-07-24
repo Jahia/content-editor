@@ -5,7 +5,7 @@ import {ContentPickerEmpty} from './ContentPickerEmpty/ContentPickerEmpty';
 import {ContentPickerFilled} from './ContentPickerFilled/ContentPickerFilled';
 import pickerConfigs from '../Picker.configs';
 import {translate} from 'react-i18next';
-import {FieldPropTypes} from '../../../../../../FormDefinitions/FromData.proptypes';
+import {FieldPropTypes} from '../../../../../../FormDefinitions/FormData.proptypes';
 
 const ContentPickerCmp = ({field, id, editorContext, formik, t, setActionContext}) => {
     const uuid = formik.values[field.formDefinition.name];

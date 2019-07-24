@@ -3,7 +3,7 @@ import {compose} from 'react-apollo';
 import {connect} from 'formik';
 import PropTypes from 'prop-types';
 import {Input} from '../../../../../../DesignSystem/Input';
-import {FieldPropTypes} from '../../../../../FormDefinitions/FromData.proptypes';
+import {FieldPropTypes} from '../../../../../FormDefinitions/FormData.proptypes';
 
 export const Text = ({field, id, editorContext, formik: {values, handleChange}}) => {
     const fieldType = field.jcrDefinition.requiredType;

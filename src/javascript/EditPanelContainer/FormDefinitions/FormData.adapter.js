@@ -1,4 +1,5 @@
 import dayjs from '../../date.config';
+import mockData from './form-mock.json';
 import {resolveSelectorType} from '../EditPanel/EditPanelContent/FormBuilder/SelectorTypes/SelectorTypes.utils';
 
 const isDetailField = field => field.readOnly && field.targets.find(target => target.name === 'metadata');
@@ -89,8 +90,9 @@ export const adaptFormData = (data, lang, t) => {
 
     return {
         nodeData,
-        fields,
-        initialValues: getInitialValue(fields),
+        sections: mockData.data.form.sections,
+        fields: [],
+        initialValues: {} || getInitialValue(fields),
         details: getDetailsValue(formDefinition, nodeData, lang),
         technicalInfo: getTechnicalInfo(nodeData, t)
     };
