@@ -1,14 +1,11 @@
 import {Badge, Paper, Typography} from '@jahia/design-system-kit';
-import {PreviewComponent} from '@jahia/react-material';
 import {Grid, withStyles} from '@material-ui/core';
 import * as PropTypes from 'prop-types';
 import React from 'react';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
-import {setPreviewRefetcher} from '../../../EditPanel.refetches';
-
-import {ContentPreview} from '@jahia/react-apollo';
 import {useContentEditorContext} from '../../../ContentEditor.context';
+import {ContentPreviewMemoWrapper} from './Preview';
 
 const styles = theme => ({
     contentPaper: {
@@ -24,28 +21,6 @@ const styles = theme => ({
         marginBottom: theme.spacing.unit * 2
     }
 });
-
-const Preview = React.memo(({path, lang, workspace}) => {
-    return (
-        <ContentPreview path={path}
-                        language={lang}
-                        workspace={workspace}
-                        templateType="html"
-                        view="cm"
-                        contextConfiguration="preview"
-                        fetchPolicy="network-only"
-                        setRefetch={refetchingData => setPreviewRefetcher(refetchingData)}
-        >
-            {data => <PreviewComponent data={data.jcr ? data.jcr : {}} workspace={workspace}/>}
-        </ContentPreview>
-    );
-});
-
-Preview.propTypes = {
-    path: PropTypes.string.isRequired,
-    lang: PropTypes.string.isRequired,
-    workspace: PropTypes.string.isRequired
-};
 
 const PreviewContainerCmp = ({classes, t, isDirty}) => {
     const workspace = 'EDIT';
@@ -74,7 +49,7 @@ const PreviewContainerCmp = ({classes, t, isDirty}) => {
                 </Grid>
                 }
             </Grid>
-            <Preview path={editorContext.path} lang={editorContext.lang} workspace={workspace}/>
+            <ContentPreviewMemoWrapper path={editorContext.path} lang={editorContext.lang} workspace={workspace}/>
         </Paper>
     );
 };
