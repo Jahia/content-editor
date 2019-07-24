@@ -6,7 +6,7 @@ import {translate} from 'react-i18next';
 import {ImageList} from '../../../../../../../../DesignSystem/ImageList';
 import {encodeJCRPath} from '../../../../../../EditPanel.utils';
 import {MediaPickerImages} from './ImageListQuery.gql-queries';
-import {FieldPropTypes} from '../../../../../../../FormDefinitions/FromData.proptypes';
+import {FieldPropTypes} from '../../../../../../../FormDefinitions/FormData.proptypes';
 
 const ImageListQueryCmp = ({
     t,

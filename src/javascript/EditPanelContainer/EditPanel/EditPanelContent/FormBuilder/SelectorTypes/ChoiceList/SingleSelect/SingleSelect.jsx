@@ -4,7 +4,7 @@ import {withStyles, MenuItem} from '@material-ui/core';
 import {Field} from 'formik';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {FieldPropTypes} from '../../../../../../FormDefinitions/FromData.proptypes';
+import {FieldPropTypes} from '../../../../../../FormDefinitions/FormData.proptypes';
 
 const styles = () => ({
     selectField: {

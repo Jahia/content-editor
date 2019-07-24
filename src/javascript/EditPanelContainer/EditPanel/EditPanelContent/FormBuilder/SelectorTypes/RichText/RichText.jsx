@@ -4,7 +4,7 @@ import {connect} from 'formik';
 import CKEditor from 'ckeditor4-react';
 CKEditor.displayName = 'CKEditor';
 import * as PropTypes from 'prop-types';
-import {FieldPropTypes} from '../../../../../FormDefinitions/FromData.proptypes';
+import {FieldPropTypes} from '../../../../../FormDefinitions/FormData.proptypes';
 
 export class RichText extends React.Component {
     constructor(props) {

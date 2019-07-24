@@ -2,7 +2,7 @@ import {MultipleInput} from '../../../../../../../DesignSystem/MultipleInput';
 import {Field} from 'formik';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {FieldPropTypes} from '../../../../../../FormDefinitions/FromData.proptypes';
+import {FieldPropTypes} from '../../../../../../FormDefinitions/FormData.proptypes';
 
 const MultipleSelect = ({field, id, setActionContext}) => {
     return (
