@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core';
 import {Typography} from '@jahia/design-system-kit';
 
-import {FieldSetPropTypes} from '../../../../../FormDefinitions/FromData.proptypes';
+import {FieldSetPropTypes} from '../../../../../FormDefinitions/FormData.proptypes';
 
 let styles = theme => ({
     fieldsetContainer: {
