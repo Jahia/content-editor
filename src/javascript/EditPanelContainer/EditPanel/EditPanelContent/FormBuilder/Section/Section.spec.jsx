@@ -9,7 +9,13 @@ describe('Section component', () => {
 
     beforeEach(() => {
         props = {
-            section: {displayName: 'content'}
+            section: {
+                displayName: 'content',
+                fieldsets: [
+                    {displayName: 'yo'},
+                    {displayName: 'yo4'}
+                ]
+            }
         };
     });
 
@@ -17,5 +23,13 @@ describe('Section component', () => {
         const cmp = shallowWithTheme(<Section {...props}/>, {}, dsGenericTheme).dive();
 
         expect(cmp.debug()).toContain(props.section.displayName);
+    });
+
+    it('should display each FieldSet', () => {
+        const cmp = shallowWithTheme(<Section {...props}/>, {}, dsGenericTheme).dive();
+
+        props.section.fieldsets.forEach(fieldset => {
+            expect(cmp.find({fieldset}).exists()).toBe(true);
+        });
     });
 });
