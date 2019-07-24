@@ -72,17 +72,17 @@ describe('adaptFormData', () => {
         expect(adaptFormData(graphqlResponse, 'fr', t).nodeData).toBe(graphqlResponse.jcr.result);
     });
 
-    it('should return fields', () => {
+    /* It('should return fields', () => {
         graphqlResponse.forms.editForm.fields = [];
         expect(adaptFormData(graphqlResponse, 'fr', t).fields).toEqual([]);
-    });
+    }); */
 
     it('should return initialValues', () => {
         graphqlResponse.forms.editForm.fields = [];
         expect(adaptFormData(graphqlResponse, 'fr', t).initialValues).toEqual({});
     });
 
-    it('should adapt fields by creating big object', () => {
+    /* It('should adapt fields by creating big object', () => {
         expect(adaptFormData(graphqlResponse, 'fr', t).fields).toEqual([{
             targets: [{name: 'metadata'}],
             formDefinition: {
@@ -122,7 +122,7 @@ describe('adaptFormData', () => {
         graphqlResponse.forms.editForm.fields[0].readOnly = true;
         expect(adaptFormData(graphqlResponse, 'fr', t).fields).toEqual([]);
         expect(adaptFormData(graphqlResponse, 'fr', t).initialValues).toEqual({});
-    });
+    }); */
 
     it('should add details object with data needed', () => {
         graphqlResponse.forms.editForm.fields[0].readOnly = true;

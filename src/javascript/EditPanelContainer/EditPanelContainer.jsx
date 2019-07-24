@@ -13,8 +13,6 @@ import {publishNode, saveNode, unpublishNode} from './EditPanel.redux-actions';
 
 import {ContentEditorContext} from './ContentEditor.context';
 
-import '../date.config';
-
 const submitActionMapper = {
     [EditPanelConstants.submitOperation.SAVE]: saveNode,
     [EditPanelConstants.submitOperation.SAVE_PUBLISH]: publishNode,
@@ -34,7 +32,8 @@ export const EditPanelContainer = ({client, notificationContext, t, path, lang, 
         fields,
         initialValues,
         details,
-        technicalInfo
+        technicalInfo,
+        sections
     } = useFormDefinition({path, language: lang, uiLang: contentEditorUiLang}, t);
 
     if (error) {
@@ -51,7 +50,8 @@ export const EditPanelContainer = ({client, notificationContext, t, path, lang, 
         site: site,
         lang: lang,
         uiLang: contentEditorUiLang,
-        siteDisplayableName: siteDisplayableName,
+        sections,
+        siteDisplayableName,
         details,
         technicalInfo
     };

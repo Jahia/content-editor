@@ -8,6 +8,7 @@ import {translate} from 'react-i18next';
 
 const styles = theme => ({
     container: {
+        padding: theme.spacing.unit * 2,
         backgroundColor: theme.palette.ui.alpha,
         overflowY: 'auto'
     }
