@@ -56,7 +56,9 @@
                   },
                   "modalCancel": "Annuler",
                   "modalDone": "Selectioner"
-                }
+                },
+                "tagPlaceholder" : "Saisir les tags",
+                "createTagPlaceholder" : "Taper entrée pour ajouter \"{{tagName}}\""
             },
             "switchLanguage": {
               "dialog": {
