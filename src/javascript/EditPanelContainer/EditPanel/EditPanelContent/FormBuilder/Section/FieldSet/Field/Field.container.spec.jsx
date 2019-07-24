@@ -1,9 +1,9 @@
 import React from 'react';
 import {shallow} from '@jahia/test-framework';
 
-import EditNodePropertyContainer from './EditNodeProperty.container';
+import FieldContainer from './Field.container';
 
-describe('EditNodeProperty container component', () => {
+describe('Field container component', () => {
     let defaultProps;
     beforeEach(() => {
         defaultProps = {
@@ -29,18 +29,18 @@ describe('EditNodeProperty container component', () => {
 
     it('should render a Text component when field type is "Text"', () => {
         defaultProps.field.formDefinition.selectorType = 'Text';
-        const cmp = shallow(<EditNodePropertyContainer {...defaultProps}/>).find('EditNodeProperty');
+        const cmp = shallow(<FieldContainer {...defaultProps}/>).find('EditNodeProperty');
         expect(cmp.props().selectorType.key).toBe('Text');
     });
 
     it('should render a RichText component when field type is "RichText"', () => {
-        const cmp = shallow(<EditNodePropertyContainer {...defaultProps}/>).find('EditNodeProperty');
+        const cmp = shallow(<FieldContainer {...defaultProps}/>).find('EditNodeProperty');
         expect(cmp.props().selectorType.key).toBe('RichText');
     });
 
     it('should render a ContentPicker component when field type is "picker"', () => {
         defaultProps.field.formDefinition.selectorType = 'Picker';
-        const cmp = shallow(<EditNodePropertyContainer {...defaultProps}/>).find('EditNodeProperty');
+        const cmp = shallow(<FieldContainer {...defaultProps}/>).find('EditNodeProperty');
         expect(cmp.props().selectorType.key).toBe('ContentPicker');
     });
 
@@ -48,7 +48,7 @@ describe('EditNodeProperty container component', () => {
         defaultProps.field.formDefinition.selectorType = 'Picker';
         defaultProps.field.formDefinition.selectorOptions = [{name: 'type', value: 'image'}];
 
-        const cmp = shallow(<EditNodePropertyContainer {...defaultProps}/>).find('EditNodeProperty');
+        const cmp = shallow(<FieldContainer {...defaultProps}/>).find('EditNodeProperty');
         expect(cmp.props().selectorType.key).toBe('MediaPicker');
     });
 });
