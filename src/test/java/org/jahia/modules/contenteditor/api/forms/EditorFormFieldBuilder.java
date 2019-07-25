@@ -31,6 +31,8 @@ import java.util.stream.Collectors;
 final class EditorFormFieldBuilder {
 
     private final String name;
+    private String displayName;
+    private String description;
     private String selectorType;
     private Boolean i18n;
     private Boolean readOnly;
@@ -38,8 +40,9 @@ final class EditorFormFieldBuilder {
     private Boolean mandatory;
     private Boolean removed;
     private List<EditorFormFieldValue> defaultValues;
+    private List<EditorFormFieldValue> currentValues;
     private List<EditorFormFieldValueConstraint> valueConstraints;
-    private List<EditorFormFieldTarget> targets;
+    private EditorFormFieldTarget target;
     private List<EditorFormProperty> selectorOptions;
 
     EditorFormFieldBuilder(String name) {
@@ -76,18 +79,23 @@ final class EditorFormFieldBuilder {
         return this;
     }
 
+    EditorFormFieldBuilder target(EditorFormFieldTarget target) {
+        this.target = target;
+        return this;
+    }
+
     EditorFormFieldBuilder withDefaultValues(EditorFormFieldValue ...defaultValues) {
         this.defaultValues = (defaultValues.length == 0) ? null : Arrays.asList(defaultValues);
         return this;
     }
 
-    EditorFormFieldBuilder withSelectorOptions(EditorFormProperty ...selectorOptions) {
-        this.selectorOptions = (selectorOptions.length == 0) ? null : Arrays.asList(selectorOptions);
+    EditorFormFieldBuilder withCurrentValues(EditorFormFieldValue... currentValues) {
+        this.currentValues = (currentValues.length == 0) ? null : Arrays.asList(currentValues);
         return this;
     }
 
-    EditorFormFieldBuilder withTargets(EditorFormFieldTarget ...targets) {
-        this.targets = (targets.length == 0) ? null : Arrays.asList(targets);
+    EditorFormFieldBuilder withSelectorOptions(EditorFormProperty ...selectorOptions) {
+        this.selectorOptions = (selectorOptions.length == 0) ? null : Arrays.asList(selectorOptions);
         return this;
     }
 
@@ -113,11 +121,9 @@ final class EditorFormFieldBuilder {
                 .collect(Collectors.toList())
         );
         field.setDefaultValues((defaultValues == null) ? null : new ArrayList<>(defaultValues));
+        field.setCurrentValues((currentValues == null) ? null : new ArrayList<>(currentValues));
         field.setRemoved(removed);
-        field.setTargets((targets == null) ? null : targets.stream()
-                .map(target -> new EditorFormFieldTarget(target))
-                .collect(Collectors.toList())
-        );
+        field.setTarget(target);
         return field;
     }
 

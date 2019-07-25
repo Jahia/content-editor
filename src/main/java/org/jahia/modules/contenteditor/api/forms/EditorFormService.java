@@ -8,9 +8,9 @@ import java.util.Locale;
 public interface EditorFormService {
 
     /**
-     * Retrieves a form editor structure for a given node type, by combining automatically generated structures from
+     * Retrieves a form editor structure for a given primary node type, by combining automatically generated structures from
      * existing node type definitions and also merging with overrides defined in other modules.
-     * @param nodeTypeName the name of the node type for which we want to generate the form structure
+     * @param primaryNodeTypeName the name of the primary node type for which we want to generate the form structure
      * @param uiLocale The locale used to display the labels
      * @param locale The locale used to get nodes data
      * @param parentPath the parent node path under with the new node will be created.
@@ -18,7 +18,7 @@ public interface EditorFormService {
      * data such as readonly, etc...
      * @throws EditorFormException if there was an error during the generation of the form.
      */
-    EditorForm getCreateForm(String nodeTypeName, Locale uiLocale, Locale locale, String parentPath) throws EditorFormException;
+    EditorForm getCreateForm(String primaryNodeTypeName, Locale uiLocale, Locale locale, String parentPath) throws EditorFormException;
 
     /**
      * Retrieves a form editor structure for a given node, by combining automatically generated structures from
@@ -30,5 +30,5 @@ public interface EditorFormService {
      * data such as readonly, etc...
      * @throws EditorFormException if there was an error during the generation of the form.
      */
-    EditorForm getEditorForm(Locale uiLocale, Locale locale, String nodePath) throws EditorFormException;
+    EditorForm getEditForm(Locale uiLocale, Locale locale, String nodePath) throws EditorFormException;
 }

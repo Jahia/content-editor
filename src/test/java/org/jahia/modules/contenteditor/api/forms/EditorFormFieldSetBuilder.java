@@ -27,30 +27,41 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-final class EditorFormBuilder {
+final class EditorFormFieldSetBuilder {
 
-    private String nodeType;
-    private Double priority;
+    private String name;
+    private String displayName;
+    private String description;
+    private Double rank = 1.0;
+    private Double priority = 1.0;
+    private Boolean dynamic = false;
+    private Boolean activated = true;
+
     private List<EditorFormField> fields;
 
-    EditorFormBuilder(String nodeType) {
-        this.nodeType = nodeType;
+    EditorFormFieldSetBuilder(String name) {
+        this.name = name;
     }
 
-    EditorFormBuilder withPriority(Double priority) {
+    EditorFormFieldSetBuilder withPriority(Double priority) {
         this.priority = priority;
         return this;
     }
 
-    EditorFormBuilder withFields(EditorFormField ...fields) {
+    EditorFormFieldSetBuilder withFields(EditorFormField... fields) {
         this.fields = (fields.length == 0) ? null : Arrays.asList(fields);
         return this;
     }
 
-    EditorForm build() {
-        EditorForm form = new EditorForm();
-        form.setNodeType(nodeType);
+    EditorFormFieldSet build() {
+        EditorFormFieldSet form = new EditorFormFieldSet();
+        form.setName(name);
+        form.setDisplayName(displayName);
+        form.setDescription(description);
+        form.setRank(rank);
         form.setPriority(priority);
+        form.setDynamic(dynamic);
+        form.setActivated(activated);
         form.setEditorFormFields(fields == null ? null : fields.stream()
                 .map(field -> new EditorFormField(field))
                 .collect(Collectors.toList())

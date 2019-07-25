@@ -8,29 +8,31 @@ import graphql.annotations.annotationTypes.GraphQLField;
  */
 public class EditorFormFieldTarget implements Comparable<EditorFormFieldTarget> {
     private static final double THRESHOLD = .0001;
-    private String name;
+    private String sectionName;
+    private String fieldSetName;
     private Double rank;
 
     public EditorFormFieldTarget() {
     }
 
-    public EditorFormFieldTarget(String name, Double rank) {
-        this.name = name;
+    public EditorFormFieldTarget(String sectionName, String fieldSetName, Double rank) {
+        this.sectionName = sectionName;
+        this.fieldSetName = fieldSetName;
         this.rank = rank;
     }
 
     public EditorFormFieldTarget(EditorFormFieldTarget target) {
-        this(target.name, target.rank);
+        this(target.sectionName, target.fieldSetName, target.rank);
     }
 
     @GraphQLField
     @GraphQLDescription("The name identifying the target")
-    public String getName() {
-        return name;
+    public String getSectionName() {
+        return sectionName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setSectionName(String sectionName) {
+        this.sectionName = sectionName;
     }
 
     @GraphQLField
@@ -43,6 +45,14 @@ public class EditorFormFieldTarget implements Comparable<EditorFormFieldTarget> 
         this.rank = rank;
     }
 
+    public String getFieldSetName() {
+        return fieldSetName;
+    }
+
+    public void setFieldSetName(String fieldSetName) {
+        this.fieldSetName = fieldSetName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -50,13 +60,14 @@ public class EditorFormFieldTarget implements Comparable<EditorFormFieldTarget> 
 
         EditorFormFieldTarget that = (EditorFormFieldTarget) o;
 
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (sectionName != null ? !sectionName.equals(that.sectionName) : that.sectionName != null) return false;
+        if (fieldSetName != null ? !fieldSetName.equals(that.fieldSetName) : that.fieldSetName != null) return false;
         return rank != null ? Math.abs(rank - that.rank) < THRESHOLD : that.rank == null;
     }
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
+        int result = sectionName != null ? sectionName.hashCode() : 0;
         result = 31 * result + (rank != null ? rank.hashCode() : 0);
         return result;
     }
@@ -64,12 +75,12 @@ public class EditorFormFieldTarget implements Comparable<EditorFormFieldTarget> 
     @Override
     public int compareTo(EditorFormFieldTarget otherEditorFormFieldTarget) {
         int result = 0;
-        if (this.name == null) {
-            if (otherEditorFormFieldTarget.name != null) {
+        if (this.sectionName == null) {
+            if (otherEditorFormFieldTarget.sectionName != null) {
                 return -1;
             }
         } else {
-            result = this.name.compareTo(otherEditorFormFieldTarget.name);
+            result = this.sectionName.compareTo(otherEditorFormFieldTarget.sectionName);
             if (result != 0) {
                 return result;
             }
@@ -86,6 +97,6 @@ public class EditorFormFieldTarget implements Comparable<EditorFormFieldTarget> 
 
     @Override
     public String toString() {
-        return "EditorFormFieldTarget{" + "name='" + name + '\'' + ", rank=" + rank + '}';
+        return "EditorFormFieldTarget{" + "name='" + sectionName + '\'' + ", rank=" + rank + '}';
     }
 }

@@ -33,30 +33,30 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.*;
 
 /**
- * Tests for {@link EditorForm}
+ * Tests for {@link EditorFormFieldSet}
  */
-public final class EditorFormTest {
+public final class EditorFormFieldSetTest {
 
     @Test
     public void mergeWithReturnsThisUnmodifiedWhenNodeTypeDoesNotMatch() {
-        final EditorForm form1 = new EditorFormBuilder("form1").build();
-        final EditorForm form2 = new EditorFormBuilder("form2").build();
+        final EditorFormFieldSet form1 = new EditorFormFieldSetBuilder("form1").build();
+        final EditorFormFieldSet form2 = new EditorFormFieldSetBuilder("form2").build();
 
-        EditorForm result = form1.mergeWith(form2);
+        EditorFormFieldSet result = form1.mergeWith(form2);
 
         assertSame(form1, result);
-        assertEquals(new EditorForm("form1", Collections.emptyList()), result);
+        assertEquals(new EditorFormFieldSet("form1", "form1DisplayName", "form1Description", 1.0, 1.0, false, true, Collections.emptyList()), result);
     }
 
     @Test
     public void mergeWithCanOverrideAnyUnsetProperty() {
-        final EditorForm form1 = new EditorFormBuilder("form").build();
-        final EditorForm form2 = new EditorFormBuilder("form")
+        final EditorFormFieldSet form1 = new EditorFormFieldSetBuilder("form").build();
+        final EditorFormFieldSet form2 = new EditorFormFieldSetBuilder("form")
                 .withPriority(1d)
                 .withFields(new EditorFormFieldBuilder("x").build())
                 .build();
 
-        EditorForm result = form1.mergeWith(form2);
+        EditorFormFieldSet result = form1.mergeWith(form2);
 
         assertNotSame(form1, result);
         assertNotSame(form2, result);
@@ -66,13 +66,13 @@ public final class EditorFormTest {
 
     @Test
     public void mergeWithCannotUnsetProperties() {
-        final EditorForm form1 = new EditorFormBuilder("form")
+        final EditorFormFieldSet form1 = new EditorFormFieldSetBuilder("form")
                 .withPriority(1d)
                 .withFields(new EditorFormFieldBuilder("x").build())
                 .build();
-        final EditorForm form2 = new EditorFormBuilder("form").build();
+        final EditorFormFieldSet form2 = new EditorFormFieldSetBuilder("form").build();
 
-        EditorForm result = form1.mergeWith(form2);
+        EditorFormFieldSet result = form1.mergeWith(form2);
 
         assertNotSame(form1, result);
         assertNotSame(form2, result);
@@ -82,26 +82,26 @@ public final class EditorFormTest {
 
     @Test
     public void mergeWithCanOverridePriority() {
-        final EditorForm form1 = new EditorFormBuilder("form").withPriority(1d).build();
-        final EditorForm form2 = new EditorFormBuilder("form").withPriority(2d).build();
+        final EditorFormFieldSet form1 = new EditorFormFieldSetBuilder("form").withPriority(1d).build();
+        final EditorFormFieldSet form2 = new EditorFormFieldSetBuilder("form").withPriority(2d).build();
 
-        EditorForm result = form1.mergeWith(form2);
+        EditorFormFieldSet result = form1.mergeWith(form2);
 
         assertEquals(Double.valueOf(2d), result.getPriority());
     }
 
     @Test
     public void mergeWithDoesNotRetainRemovedFields() {
-        final EditorForm form1 = new EditorForm("form", Arrays.asList(
+        final EditorFormFieldSet form1 = new EditorFormFieldSet("form", "displayName", "description", 1.0, 1.0, false, true, Arrays.asList(
                 new EditorFormFieldBuilder("x").removed(true).build(),
                 new EditorFormFieldBuilder("y").build()
         ));
-        final EditorForm form2 = new EditorForm("form", Arrays.asList(
+        final EditorFormFieldSet form2 = new EditorFormFieldSet("form", "displayName", "description", 1.0, 1.0, false, true, Arrays.asList(
                 new EditorFormFieldBuilder("y").removed(true).build(),
                 new EditorFormFieldBuilder("z").build()
         ));
 
-        EditorForm result = form1.mergeWith(form2);
+        EditorFormFieldSet result = form1.mergeWith(form2);
 
         assertThat(result.getEditorFormFields(), containsInAnyOrder(
                 new EditorFormFieldBuilder("z").build()
@@ -110,14 +110,14 @@ public final class EditorFormTest {
 
     @Test
     public void mergeWithDoesNotAddRemovedFields() {
-        final EditorForm form1 = new EditorForm("form", Arrays.asList(
+        final EditorFormFieldSet form1 = new EditorFormFieldSet("form", "displayName", "description", 1.0, 1.0, false, true, Arrays.asList(
                 new EditorFormFieldBuilder("x").build()
         ));
-        final EditorForm form2 = new EditorForm("form", Arrays.asList(
+        final EditorFormFieldSet form2 = new EditorFormFieldSet("form", "displayName", "description", 1.0, 1.0, false, true, Arrays.asList(
                 new EditorFormFieldBuilder("y").removed(true).build()
         ));
 
-        EditorForm result = form1.mergeWith(form2);
+        EditorFormFieldSet result = form1.mergeWith(form2);
 
         assertThat(result.getEditorFormFields(), containsInAnyOrder(
                 new EditorFormFieldBuilder("x").build()
