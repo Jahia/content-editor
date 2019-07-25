@@ -13,6 +13,9 @@ const Tag = ({field, id, t}) => {
         }))
     );
 
+    const selectorOption = field.formDefinition.selectorOptions && field.formDefinition.selectorOptions.find(option => option.name === 'separator');
+    const separator = selectorOption ? selectorOption.value : ',';
+
     return (
         <Field
             name={field.formDefinition.name}
@@ -37,9 +40,23 @@ const Tag = ({field, id, t}) => {
                             /* Do Nothing on blur BACKLOG-10095 */
                         }}
                         onChange={selection => {
+                            let adaptedSelection = [];
                             const newSelection = selection && selection.map(data => data.value);
+
+                            if (newSelection) {
+                                newSelection.map(s => {
+                                    if (s.includes(separator)) {
+                                        s.split(separator).map(s => adaptedSelection.push(s.trim()));
+                                    } else {
+                                        adaptedSelection.push(s);
+                                    }
+
+                                    return true;
+                                });
+                            }
+
                             // eslint-disable-next-line react/prop-types
-                            props.form.setFieldValue(field.formDefinition.name, newSelection, false);
+                            props.form.setFieldValue(field.formDefinition.name, adaptedSelection, false);
                         }}
                     />
                 );
