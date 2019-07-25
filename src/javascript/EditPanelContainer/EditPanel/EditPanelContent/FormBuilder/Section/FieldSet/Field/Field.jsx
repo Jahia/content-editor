@@ -1,4 +1,4 @@
-import React, {useRef, useState, useContext} from 'react';
+import React, {useRef} from 'react';
 import {FormControl, Grid, InputLabel, withStyles} from '@material-ui/core';
 import {MoreVert, Public} from '@material-ui/icons';
 import {Badge, IconButton} from '@jahia/design-system-kit';
@@ -6,11 +6,8 @@ import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
 import * as PropTypes from 'prop-types';
 import {ContextualMenu} from '@jahia/react-material';
-import {connect} from 'formik';
-import {FieldPropTypes} from '../../../../FormDefinitions';
-import {SiteInfoPropTypes} from '../../../../SiteData';
-
-import {ContentEditorContext} from '../../../../ContentEditor.context';
+import {FieldPropTypes} from '../../../../../../FormDefinitions';
+import {SiteInfoPropTypes} from '../../../../../../SiteData';
 
 let styles = theme => ({
     formControl: Object.assign(theme.typography.zeta, {
@@ -37,25 +34,14 @@ let styles = theme => ({
     }
 });
 
-export const EditNodeProperty = ({t, classes, field, siteInfo, labelHtmlFor, selectorType, formik, dxContext}) => {
+export const FieldCmp = ({t, classes, input, idInput, selectorType, field, siteInfo, actionContext}) => {
     const contextualMenu = useRef(null);
-    const [actionContext, _setActionContext] = useState({noAction: true});
-    const editorContext = useContext(ContentEditorContext);
-
-    const setActionContext = getNewActionContext => {
-        const newActionContext = getNewActionContext(actionContext);
-        if (newActionContext.contextHasChange) {
-            _setActionContext({field, formik, dxContext, ...newActionContext});
-        }
-    };
-
-    let FieldComponent = selectorType.cmp;
 
     return (
         <FormControl className={classes.formControl}
-                     data-sel-content-editor-field={field.formDefinition.name}
-                     data-sel-content-editor-field-type={`${field.formDefinition.multiple ? 'Multiple' : ''}${selectorType.key}`}
-                     data-sel-content-editor-field-readonly={field.formDefinition.readOnly}
+                     data-sel-content-editor-field={field.name}
+                     data-sel-content-editor-field-type={`${field.multiple ? 'Multiple' : ''}${selectorType.key}`}
+                     data-sel-content-editor-field-readonly={field.readOnly}
         >
 
             <Grid
@@ -74,18 +60,18 @@ export const EditNodeProperty = ({t, classes, field, siteInfo, labelHtmlFor, sel
                         <Grid item>
                             <InputLabel shrink
                                         className={classes.inputLabel}
-                                        htmlFor={labelHtmlFor}
-                                        style={(!field.formDefinition.i18n && siteInfo.languages.length > 1) ? {paddingTop: 24} : {}}
+                                        htmlFor={idInput}
+                                        style={(!field.i18n && siteInfo.languages.length > 1) ? {paddingTop: 24} : {}}
                             >
-                                {field.formDefinition.displayName}
+                                {field.displayName}
                             </InputLabel>
-                            {(!field.formDefinition.i18n && siteInfo.languages.length > 1) &&
-                            <Badge className={classes.badge}
-                                   badgeContent={t('content-editor:label.contentEditor.edit.sharedLanguages')}
-                                   icon={<Public/>}
-                                   variant="normal"
-                                   color="info"
-                            />
+                            {(!field.i18n && siteInfo.languages.length > 1) &&
+                                <Badge className={classes.badge}
+                                       badgeContent={t('content-editor:label.contentEditor.edit.sharedLanguages')}
+                                       icon={<Public/>}
+                                       variant="normal"
+                                       color="info"
+                                />
                             }
                         </Grid>
                     </Grid>
@@ -96,10 +82,7 @@ export const EditNodeProperty = ({t, classes, field, siteInfo, labelHtmlFor, sel
                         alignItems="center"
                     >
                         <Grid item className={classes.input}>
-                            <FieldComponent field={field}
-                                            id={field.formDefinition.name}
-                                            editorContext={editorContext}
-                                            setActionContext={setActionContext}/>
+                            {input}
                         </Grid>
                         <Grid item>
                             {actionContext.noAction ? (
@@ -127,23 +110,25 @@ export const EditNodeProperty = ({t, classes, field, siteInfo, labelHtmlFor, sel
     );
 };
 
-EditNodeProperty.propTypes = {
+FieldCmp.propTypes = {
     t: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,
-    field: FieldPropTypes.isRequired,
+
+    input: PropTypes.element.isRequired,
+    idInput: PropTypes.string.isRequired,
+    selectorType: PropTypes.shape({
+        key: PropTypes.string
+    }).isRequired,
     siteInfo: SiteInfoPropTypes.isRequired,
-    labelHtmlFor: PropTypes.string.isRequired,
-    selectorType: PropTypes.object.isRequired,
-    formik: PropTypes.object.isRequired,
-    dxContext: PropTypes.object.isRequired
+    field: FieldPropTypes.isRequired,
+    actionContext: PropTypes.shape({
+        noAction: PropTypes.bool
+    }).isRequired
 };
 
-const EditNodePropertyCmp = compose(
-    connect,
+export const Field = compose(
     translate(),
     withStyles(styles)
-)(EditNodeProperty);
+)(FieldCmp);
 
-EditNodePropertyCmp.displayName = 'EditNodeProperty';
-
-export default EditNodePropertyCmp;
+Field.displayName = 'Field';

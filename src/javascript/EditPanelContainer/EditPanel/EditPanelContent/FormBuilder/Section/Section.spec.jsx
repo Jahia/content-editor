@@ -11,7 +11,7 @@ describe('Section component', () => {
         props = {
             section: {
                 displayName: 'content',
-                fieldsets: [
+                fieldSets: [
                     {displayName: 'yo'},
                     {displayName: 'yo4'}
                 ]
@@ -28,7 +28,7 @@ describe('Section component', () => {
     it('should display each FieldSet', () => {
         const cmp = shallowWithTheme(<Section {...props}/>, {}, dsGenericTheme).dive();
 
-        props.section.fieldsets.forEach(fieldset => {
+        props.section.fieldSets.forEach(fieldset => {
             expect(cmp.find({fieldset}).exists()).toBe(true);
         });
     });

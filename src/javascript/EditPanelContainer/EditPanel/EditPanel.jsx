@@ -5,10 +5,11 @@ import PropTypes from 'prop-types';
 import EditPanelContent from './EditPanelContent/EditPanelContent';
 import {connect} from 'formik';
 import {EditPanelLanguageSwitcher} from './EditPanelLanguageSwitcher';
-import {FieldsPropTypes, NodeDataPropTypes} from '../FormDefinitions';
-import {SiteInfoPropTypes} from '../SiteData';
+import {useContentEditorContext} from '../ContentEditor.context';
 
-const EditPanel = ({fields, siteInfo, nodeData, lang, formik}) => {
+const EditPanelCmp = ({formik}) => {
+    const {nodeData, siteInfo, lang} = useContentEditorContext();
+
     useEffect(() => {
         const handleBeforeUnloadEvent = ev => {
             if (formik.dirty) {
@@ -62,22 +63,15 @@ const EditPanel = ({fields, siteInfo, nodeData, lang, formik}) => {
                 )
             }}
         >
-            <EditPanelContent siteInfo={siteInfo}
-                              fields={fields}
-                              isDirty={formik.dirty}
-            />
+            <EditPanelContent isDirty={formik.dirty}/>
         </MainLayout>
     );
 };
 
-EditPanel.propTypes = {
-    fields: FieldsPropTypes.isRequired,
-    siteInfo: SiteInfoPropTypes.isRequired,
-    nodeData: NodeDataPropTypes.isRequired,
-    lang: PropTypes.string.isRequired,
+EditPanelCmp.propTypes = {
     formik: PropTypes.object.isRequired
 };
 
+const EditPanel = connect(EditPanelCmp);
 EditPanel.displayName = 'EditPanel';
-
-export default connect(EditPanel);
+export default EditPanel;

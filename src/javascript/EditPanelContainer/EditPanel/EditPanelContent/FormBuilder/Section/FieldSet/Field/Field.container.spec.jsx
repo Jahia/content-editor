@@ -1,25 +1,18 @@
 import React from 'react';
 import {shallow} from '@jahia/test-framework';
 
-import FieldContainer from './Field.container';
+import {FieldContainer} from './Field.container';
 
 describe('Field container component', () => {
     let defaultProps;
     beforeEach(() => {
         defaultProps = {
             field: {
-                formDefinition: {
-                    name: 'x',
-                    displayName: 'displayName',
-                    selectorType: 'RichText',
-                    readOnly: false,
-                    selectorOptions: []
-                },
-                jcrDefinition: {},
-                data: {
-                    name: 'x'
-                },
-                targets: []
+                name: 'x',
+                displayName: 'displayName',
+                selectorType: 'RichText',
+                readOnly: false,
+                selectorOptions: []
             },
             targets: [{name: 'test'}],
             siteInfo: {},
@@ -28,7 +21,7 @@ describe('Field container component', () => {
     });
 
     it('should render a Text component when field type is "Text"', () => {
-        defaultProps.field.formDefinition.selectorType = 'Text';
+        defaultProps.field.selectorType = 'Text';
         const cmp = shallow(<FieldContainer {...defaultProps}/>).find('EditNodeProperty');
         expect(cmp.props().selectorType.key).toBe('Text');
     });
@@ -39,14 +32,14 @@ describe('Field container component', () => {
     });
 
     it('should render a ContentPicker component when field type is "picker"', () => {
-        defaultProps.field.formDefinition.selectorType = 'Picker';
+        defaultProps.field.selectorType = 'Picker';
         const cmp = shallow(<FieldContainer {...defaultProps}/>).find('EditNodeProperty');
         expect(cmp.props().selectorType.key).toBe('ContentPicker');
     });
 
     it('should render a MediaPicker component when field type is "picker" and option type is "image"', () => {
-        defaultProps.field.formDefinition.selectorType = 'Picker';
-        defaultProps.field.formDefinition.selectorOptions = [{name: 'type', value: 'image'}];
+        defaultProps.field.selectorType = 'Picker';
+        defaultProps.field.selectorOptions = [{name: 'type', value: 'image'}];
 
         const cmp = shallow(<FieldContainer {...defaultProps}/>).find('EditNodeProperty');
         expect(cmp.props().selectorType.key).toBe('MediaPicker');

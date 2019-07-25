@@ -1,53 +1,38 @@
 import dayjs from '../../date.config';
 import mockData from './form-mock.json';
-import {resolveSelectorType} from '../EditPanel/EditPanelContent/FormBuilder/SelectorTypes/SelectorTypes.utils';
+import {resolveSelectorType} from '../EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes.utils';
 
 const isDetailField = field => field.readOnly && field.targets.find(target => target.name === 'metadata');
 
-const getFields = (formDefinition, nodeData) => {
-    return formDefinition.fields
-        .filter(field => !isDetailField(field))
-        .map(
-            fieldDefinition => {
-                return {
-                    targets: fieldDefinition.targets,
-                    formDefinition: fieldDefinition,
-                    jcrDefinition: nodeData.primaryNodeType.properties.find(
-                        prop => prop.name === fieldDefinition.name
-                    ),
-                    data: nodeData.properties.find(
-                        prop => prop.name === fieldDefinition.name
-                    )
-                };
-            }
-        );
-};
-
-const getFieldValue = (formDefinition, fieldData) => {
-    const selectorType = resolveSelectorType(formDefinition);
+const getFieldValue = field => {
+    const selectorType = resolveSelectorType(field);
     if (selectorType) {
         if (selectorType.formatValue) {
-            return selectorType.formatValue(fieldData.value);
+            return selectorType.formatValue(field.currentValues);
         }
 
         if (selectorType.key === 'DateTimePicker' || selectorType.key === 'DatePicker') {
-            return formDefinition.multiple ? fieldData.notZonedDateValues : fieldData.notZonedDateValue;
+            return field.multiple ? field.notZonedDateValues : field.notZonedDateValue;
         }
     }
 
-    return formDefinition.multiple ? fieldData.values : fieldData.value;
+    return field.multiple ? field.currentValues : (field.currentValues && field.currentValues[0].string);
 };
 
-const getInitialValue = fields => {
-    return fields.reduce(
-        (initialValues, field) => {
-            return {
-                ...initialValues,
-                [field.formDefinition.name]: field.data && getFieldValue(field.formDefinition, field.data)
-            };
-        },
-        {}
-    );
+const getInitialValues = sections => {
+    const allFields = sections.reduce((fields, section) => {
+        const fieldSetsFields = section.fieldSets.reduce((fieldSetsField, fieldset) => {
+            return [...fieldSetsField, ...fieldset.fields];
+        }, []);
+        return [...fields, ...fieldSetsFields];
+    }, []);
+
+    return allFields.reduce((initialValues, field) => {
+        return {
+            ...initialValues,
+            [field.name]: getFieldValue(field)
+        };
+    }, {});
 };
 
 const getDetailsValue = (formDefinition, nodeData, lang) => {
@@ -86,13 +71,12 @@ const getTechnicalInfo = (nodeData, t) => {
 export const adaptFormData = (data, lang, t) => {
     const formDefinition = data.forms.editForm;
     const nodeData = data.jcr.result;
-    const fields = getFields(formDefinition, nodeData);
+    const sections = mockData.data.forms.editForm.sections;
 
     return {
+        sections,
+        initialValues: getInitialValues(sections),
         nodeData,
-        sections: mockData.data.form.sections,
-        fields: [],
-        initialValues: {} || getInitialValue(fields),
         details: getDetailsValue(formDefinition, nodeData, lang),
         technicalInfo: getTechnicalInfo(nodeData, t)
     };

@@ -1,6 +1,6 @@
 import {adaptFormData} from './FormData.adapter';
 
-jest.mock('../EditPanel/EditPanelContent/FormBuilder/SelectorTypes/SelectorTypes.utils', () => {
+jest.mock('../EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes.utils', () => {
     return {
         resolveSelectorType: ({selectorType}) => {
             if (selectorType === 'Checkbox') {
@@ -72,57 +72,33 @@ describe('adaptFormData', () => {
         expect(adaptFormData(graphqlResponse, 'fr', t).nodeData).toBe(graphqlResponse.jcr.result);
     });
 
-    /* It('should return fields', () => {
-        graphqlResponse.forms.editForm.fields = [];
-        expect(adaptFormData(graphqlResponse, 'fr', t).fields).toEqual([]);
-    }); */
+    describe('initialValues', () => {
+        it('should return initialValues', () => {
+            graphqlResponse.forms.editForm.fields = [];
+            expect(adaptFormData(graphqlResponse, 'fr', t).initialValues).toEqual({});
+        });
 
-    it('should return initialValues', () => {
-        graphqlResponse.forms.editForm.fields = [];
-        expect(adaptFormData(graphqlResponse, 'fr', t).initialValues).toEqual({});
+        xit('should extract initialValues from fields', () => {
+            expect(adaptFormData(graphqlResponse, 'fr', t).initialValues).toEqual({field1: '2019-05-07T11:33:31.056'});
+        });
+
+        xit('should extract initialValues with selectorType own logic', () => {
+            graphqlResponse.forms.editForm.fields[0].selectorType = 'Checkbox';
+            expect(adaptFormData(graphqlResponse, 'fr', t).initialValues).toEqual({field1: false});
+        });
+
+        xit('should set values and no value as initialValue when multiple is at true', () => {
+            graphqlResponse.forms.editForm.fields[0].multiple = true;
+            graphqlResponse.jcr.result.properties[0].values = ['value1', 'value2'];
+            expect(adaptFormData(graphqlResponse, 'fr', t).initialValues).toEqual({field1: ['value1', 'value2']});
+        });
+
+        xit('should not consider readOnly field that targeting metadata', () => {
+            graphqlResponse.forms.editForm.fields[0].readOnly = true;
+            expect(adaptFormData(graphqlResponse, 'fr', t).fields).toEqual([]);
+            expect(adaptFormData(graphqlResponse, 'fr', t).initialValues).toEqual({});
+        });
     });
-
-    /* It('should adapt fields by creating big object', () => {
-        expect(adaptFormData(graphqlResponse, 'fr', t).fields).toEqual([{
-            targets: [{name: 'metadata'}],
-            formDefinition: {
-                displayName: 'labelled',
-                name: 'field1',
-                targets: [{name: 'metadata'}],
-                selectorType: 'ContentPicker'
-            },
-            jcrDefinition: {
-                name: 'field1',
-                primaryNodeType: true
-            },
-            data: {
-                name: 'field1',
-                properties: true,
-                value: '2019-05-07T11:33:31.056'
-            }
-        }]);
-    });
-
-    it('should extract initialValues from fields', () => {
-        expect(adaptFormData(graphqlResponse, 'fr', t).initialValues).toEqual({field1: '2019-05-07T11:33:31.056'});
-    });
-
-    it('should extract initialValues with selectorType own logic', () => {
-        graphqlResponse.forms.editForm.fields[0].selectorType = 'Checkbox';
-        expect(adaptFormData(graphqlResponse, 'fr', t).initialValues).toEqual({field1: false});
-    });
-
-    it('should set values and no value as initialValue when multiple is at true', () => {
-        graphqlResponse.forms.editForm.fields[0].multiple = true;
-        graphqlResponse.jcr.result.properties[0].values = ['value1', 'value2'];
-        expect(adaptFormData(graphqlResponse, 'fr', t).initialValues).toEqual({field1: ['value1', 'value2']});
-    });
-
-    it('should not consider readOnly field that targeting metadata', () => {
-        graphqlResponse.forms.editForm.fields[0].readOnly = true;
-        expect(adaptFormData(graphqlResponse, 'fr', t).fields).toEqual([]);
-        expect(adaptFormData(graphqlResponse, 'fr', t).initialValues).toEqual({});
-    }); */
 
     it('should add details object with data needed', () => {
         graphqlResponse.forms.editForm.fields[0].readOnly = true;

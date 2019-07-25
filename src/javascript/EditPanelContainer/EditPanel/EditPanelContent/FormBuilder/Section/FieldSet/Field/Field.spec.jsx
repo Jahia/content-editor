@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from '@jahia/test-framework';
 
-import {EditNodeProperty} from './EditNodeProperty';
+import {Field} from './Field';
 import {ContentPicker} from '../SelectorTypes/Picker/ContentPicker/ContentPicker';
 import {resolveSelectorType} from '../SelectorTypes/SelectorTypes.utils';
 
@@ -13,26 +13,19 @@ describe('EditNodeProperty component', () => {
             classes: {},
             siteInfo: {languages: []},
             field: {
-                formDefinition: {
-                    name: 'text',
-                    displayName: 'displayName',
-                    nodeType: {
-                        properties: [
-                            {
-                                name: 'text',
-                                displayName: 'Text'
-                            }
-                        ]
-                    },
-                    readOnly: false,
-                    selectorType: 'DatePicker',
-                    selectorOptions: []
+                name: 'text',
+                displayName: 'displayName',
+                nodeType: {
+                    properties: [
+                        {
+                            name: 'text',
+                            displayName: 'Text'
+                        }
+                    ]
                 },
-                jcrDefinition: {},
-                data: {
-                    name: 'text'
-                },
-                targets: [{name: 'test'}]
+                readOnly: false,
+                selectorType: 'DatePicker',
+                selectorOptions: []
             },
             editorContext: {},
             fieldComponentKey: 'fieldComponentKeyForSelenium',
@@ -65,34 +58,27 @@ describe('EditNodeProperty component', () => {
             expectedBadgeRendered
         ) => {
             defaultProps.field = {
-                formDefinition: {
-                    name: 'text',
-                    displayName: 'text',
-                    readOnly: false,
-                    selectorOptions: [],
-                    nodeType: {
-                        properties: [
-                            {
-                                name: 'text',
-                                displayName: 'Text'
-                            }
-                        ]
-                    },
-                    selectorType: 'Text',
-                    i18n: i18n
+                name: 'text',
+                displayName: 'text',
+                readOnly: false,
+                selectorOptions: [],
+                nodeType: {
+                    properties: [
+                        {
+                            name: 'text',
+                            displayName: 'Text'
+                        }
+                    ]
                 },
-                jcrDefinition: {},
-                data: {
-                    name: 'text'
-                },
-                targets: [{name: 'test'}]
+                selectorType: 'Text',
+                i18n: i18n
             };
             defaultProps.siteInfo = {
                 languages: siteLanguages
             };
 
             const cmp = shallow(
-                <EditNodeProperty {...defaultProps}/>
+                <Field {...defaultProps}/>
             );
 
             const badgeComponent = cmp.find({
@@ -110,7 +96,7 @@ describe('EditNodeProperty component', () => {
 
     it('should add labelHtmlFor to the label and the field should have a defined id attribute', () => {
         const cmp = shallow(
-            <EditNodeProperty {...defaultProps}/>
+            <Field {...defaultProps}/>
         );
 
         expect(cmp.debug()).toContain('yoloHtmlFor');
@@ -121,7 +107,7 @@ describe('EditNodeProperty component', () => {
         defaultProps.selectorType = resolveSelectorType({selectorType: 'Picker'});
 
         const cmp = shallow(
-            <EditNodeProperty {...defaultProps}/>
+            <Field {...defaultProps}/>
         );
 
         const fieldComponent = cmp.find(ContentPicker);
@@ -142,7 +128,7 @@ describe('EditNodeProperty component', () => {
         };
 
         const cmp = shallow(
-            <EditNodeProperty {...defaultProps}/>
+            <Field {...defaultProps}/>
         );
 
         cmp.find('Component').dive();
@@ -153,7 +139,7 @@ describe('EditNodeProperty component', () => {
 
     it('should not display the contextualMenu when action does not exist', () => {
         const cmp = shallow(
-            <EditNodeProperty {...defaultProps}/>
+            <Field {...defaultProps}/>
         );
 
         expect(cmp.debug()).not.toContain('ContextualMenu');

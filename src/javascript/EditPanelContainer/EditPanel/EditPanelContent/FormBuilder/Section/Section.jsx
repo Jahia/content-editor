@@ -22,7 +22,7 @@ const SectionCmp = ({section, classes}) => {
         <section className={classes.section}>
             <Typography className={classes.sectionTitle} color="alpha" variant="gamma">{section.displayName}</Typography>
 
-            {section.fieldsets.map(fieldset => {
+            {section.fieldSets.map(fieldset => {
                 return <FieldSet key={fieldset.displayName} fieldset={fieldset}/>;
             })}
         </section>

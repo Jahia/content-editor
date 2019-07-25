@@ -1,3 +1,1 @@
-import EditNodeProperty from './EditNodeProperty.container';
-
-export default EditNodeProperty;
+export * from './Field.container';
