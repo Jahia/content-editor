@@ -61,7 +61,7 @@ public class StaticFormFieldSetRegistry implements SynchronousBundleListener {
         if (bundle.getBundleContext() == null) {
             return;
         }
-        Enumeration<URL> editorFormURLs = bundle.findEntries("META-INF/dx-content-editor-forms", "*.json", true);
+        Enumeration<URL> editorFormURLs = bundle.findEntries("META-INF/jahia-content-editor-forms/fieldsets", "*.json", true);
         if (editorFormURLs == null) {
             return;
         }

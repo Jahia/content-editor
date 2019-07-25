@@ -31,6 +31,8 @@ import java.util.stream.Collectors;
 final class EditorFormFieldBuilder {
 
     private final String name;
+    private String displayName;
+    private String description;
     private String selectorType;
     private Boolean i18n;
     private Boolean readOnly;
@@ -38,6 +40,7 @@ final class EditorFormFieldBuilder {
     private Boolean mandatory;
     private Boolean removed;
     private List<EditorFormFieldValue> defaultValues;
+    private List<EditorFormFieldValue> currentValues;
     private List<EditorFormFieldValueConstraint> valueConstraints;
     private EditorFormFieldTarget target;
     private List<EditorFormProperty> selectorOptions;
@@ -86,6 +89,11 @@ final class EditorFormFieldBuilder {
         return this;
     }
 
+    EditorFormFieldBuilder withCurrentValues(EditorFormFieldValue... currentValues) {
+        this.currentValues = (currentValues.length == 0) ? null : Arrays.asList(currentValues);
+        return this;
+    }
+
     EditorFormFieldBuilder withSelectorOptions(EditorFormProperty ...selectorOptions) {
         this.selectorOptions = (selectorOptions.length == 0) ? null : Arrays.asList(selectorOptions);
         return this;
@@ -113,6 +121,7 @@ final class EditorFormFieldBuilder {
                 .collect(Collectors.toList())
         );
         field.setDefaultValues((defaultValues == null) ? null : new ArrayList<>(defaultValues));
+        field.setCurrentValues((currentValues == null) ? null : new ArrayList<>(currentValues));
         field.setRemoved(removed);
         field.setTarget(target);
         return field;

@@ -17,6 +17,7 @@ public class EditorFormField {
 
     private String name;
     private String displayName;
+    private String description;
     private String selectorType;
     private List<EditorFormProperty> selectorOptions;
     private Boolean i18n;
@@ -25,6 +26,7 @@ public class EditorFormField {
     private Boolean mandatory;
     private List<EditorFormFieldValueConstraint> valueConstraints;
     private List<EditorFormFieldValue> defaultValues;
+    private List<EditorFormFieldValue> currentValues;
     private Boolean removed;
     private EditorFormFieldTarget target;
     private ExtendedPropertyDefinition extendedPropertyDefinition;
@@ -34,6 +36,7 @@ public class EditorFormField {
 
     public EditorFormField(String name,
                            String displayName,
+                           String description,
                            String selectorType,
                            List<EditorFormProperty> selectorOptions,
                            Boolean i18n,
@@ -42,11 +45,13 @@ public class EditorFormField {
                            Boolean mandatory,
                            List<EditorFormFieldValueConstraint> valueConstraints,
                            List<EditorFormFieldValue> defaultValues,
+                           List<EditorFormFieldValue> currentValues,
                            Boolean removed,
                            EditorFormFieldTarget target,
                            ExtendedPropertyDefinition extendedPropertyDefinition) {
         this.name = name;
         this.displayName = displayName;
+        this.description = description;
         this.selectorType = selectorType;
         this.selectorOptions = selectorOptions;
         this.i18n = i18n;
@@ -55,6 +60,7 @@ public class EditorFormField {
         this.mandatory = mandatory;
         this.valueConstraints = valueConstraints;
         this.defaultValues = defaultValues;
+        this.currentValues = currentValues;
         this.removed = removed;
         this.target = target;
         this.extendedPropertyDefinition = extendedPropertyDefinition;
@@ -64,6 +70,7 @@ public class EditorFormField {
         this(
             field.name,
             field.displayName,
+            field.description,
             field.selectorType,
             field.selectorOptions == null ? null : field.selectorOptions.stream()
                 .map(option -> new EditorFormProperty(option))
@@ -76,8 +83,9 @@ public class EditorFormField {
                 .map(constraint -> new EditorFormFieldValueConstraint(constraint))
                 .collect(Collectors.toList()),
             field.defaultValues == null ? null : new ArrayList<>(field.defaultValues),
+            field.currentValues == null ? null : new ArrayList<>(field.currentValues),
             field.removed,
-            field.target == null ? null : field.target,
+            field.target,
             // No deep copy is needed as this object is just read and only references are used
             field.extendedPropertyDefinition
         );
@@ -144,6 +152,12 @@ public class EditorFormField {
     }
 
     @GraphQLField
+    @GraphQLDescription("The description of the field")
+    public String getDescription() {
+        return description;
+    }
+
+    @GraphQLField
     @GraphQLDescription("The selector type for the field. In the case of fields generated from node types, this is actually the SelectorType.")
     public String getSelectorType() {
         return selectorType;
@@ -153,6 +167,10 @@ public class EditorFormField {
     @GraphQLDescription("This value contains the default values for the field.")
     public List<EditorFormFieldValue> getDefaultValues() {
         return defaultValues;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @GraphQLField
@@ -183,6 +201,12 @@ public class EditorFormField {
         return target;
     }
 
+    @GraphQLField
+    @GraphQLDescription("This value contains the current existing values for the field.")
+    public List<EditorFormFieldValue> getCurrentValues() {
+        return currentValues;
+    }
+
     public void setTarget(EditorFormFieldTarget target) {
         this.target = target;
     }
@@ -193,6 +217,10 @@ public class EditorFormField {
 
     public void setDefaultValues(List<EditorFormFieldValue> defaultValues) {
         this.defaultValues = defaultValues;
+    }
+
+    public void setCurrentValues(List<EditorFormFieldValue> currentValues) {
+        this.currentValues = currentValues;
     }
 
     public ExtendedPropertyDefinition getExtendedPropertyDefinition() {
@@ -217,6 +245,7 @@ public class EditorFormField {
         }
         return new EditorFormField(name,
             otherEditorFormField.displayName != null ? otherEditorFormField.displayName : displayName,
+            otherEditorFormField.description != null ? otherEditorFormField.description : description,
             otherEditorFormField.selectorType != null ? otherEditorFormField.selectorType : selectorType,
             otherEditorFormField.selectorOptions != null ? otherEditorFormField.selectorOptions : selectorOptions,
             i18n != null ? i18n : otherEditorFormField.i18n,
@@ -225,6 +254,7 @@ public class EditorFormField {
             mergeBooleanKeepTrue(mandatory, otherEditorFormField.mandatory),
             otherEditorFormField.valueConstraints != null ? otherEditorFormField.valueConstraints : valueConstraints,
             otherEditorFormField.defaultValues != null ? otherEditorFormField.defaultValues : defaultValues,
+            otherEditorFormField.currentValues != null ? otherEditorFormField.currentValues : currentValues,
             otherEditorFormField.removed != null ? otherEditorFormField.removed : removed,
             mergeTargets(otherEditorFormField),
             extendedPropertyDefinition != null ? extendedPropertyDefinition : otherEditorFormField.extendedPropertyDefinition
@@ -248,6 +278,7 @@ public class EditorFormField {
             && Objects.equals(mandatory, that.mandatory)
             && Objects.equals(valueConstraints, that.valueConstraints)
             && Objects.equals(defaultValues, that.defaultValues)
+            && Objects.equals(currentValues, that.currentValues)
             && Objects.equals(removed, that.removed)
             && Objects.equals(target, that.target)
             && Objects.equals(extendedPropertyDefinition, that.extendedPropertyDefinition);
@@ -256,7 +287,7 @@ public class EditorFormField {
     @Override
     public int hashCode() {
         return Objects.hash(name, displayName, selectorType, selectorOptions, i18n,
-            readOnly, multiple, mandatory, valueConstraints, defaultValues, removed,
+            readOnly, multiple, mandatory, valueConstraints, defaultValues, currentValues, removed,
             target, extendedPropertyDefinition);
     }
 
@@ -273,6 +304,7 @@ public class EditorFormField {
             ", mandatory=" + mandatory +
             ", valueConstraints=" + valueConstraints +
             ", defaultValues=" + defaultValues +
+            ", currentValues=" + currentValues +
             ", removed=" + removed +
             ", target=" + target +
             ", extendedPropertyDefinition=" + extendedPropertyDefinition +

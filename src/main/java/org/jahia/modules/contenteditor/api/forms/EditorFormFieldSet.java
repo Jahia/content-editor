@@ -20,8 +20,8 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
     private String displayName;
     private String description;
     private Bundle originBundle;
-    private Double rank;
-    private Double priority;
+    private Double rank = 1.0;
+    private Double priority = 1.0;
     private Boolean dynamic = false;
     private Boolean activated = true; // this is only used when dynamic is true
     private List<EditorFormField> editorFormFields = new ArrayList<>();
@@ -30,13 +30,26 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
     public EditorFormFieldSet() {
     }
 
-    public EditorFormFieldSet(String name, List<EditorFormField> editorFormFields) {
+    public EditorFormFieldSet(String name,
+                              String displayName,
+                              String description,
+                              Double rank,
+                              Double priority,
+                              Boolean dynamic,
+                              Boolean activated,
+                              List<EditorFormField> editorFormFields) {
         this.name = name;
+        this.displayName = displayName;
+        this.description = description;
+        this.rank = rank;
+        this.priority = priority;
+        this.dynamic = dynamic;
+        this.activated = activated;
         setEditorFormFields(editorFormFields);
     }
 
     @GraphQLField
-    @GraphQLDescription("Get the associated node type name")
+    @GraphQLDescription("Get the name of the field set")
     public String getName() {
         return name;
     }
@@ -45,12 +58,60 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
         this.name = name;
     }
 
+    @GraphQLField
+    @GraphQLDescription("Get the internationalized displayable name of the field set")
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("Get the internationalized description of the field set")
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("True if this is dynamic field set (meaningin it can be activated or not)")
+    public Boolean getDynamic() {
+        return dynamic;
+    }
+
+    public void setDynamic(Boolean dynamic) {
+        this.dynamic = dynamic;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("Only used in the case of a dynamic field set. Set to true if it is activated")
+    public Boolean getActivated() {
+        return activated;
+    }
+
+    public void setActivated(Boolean activated) {
+        this.activated = activated;
+    }
+
     public Bundle getOriginBundle() {
         return originBundle;
     }
 
     public void setOriginBundle(Bundle originBundle) {
         this.originBundle = originBundle;
+    }
+
+    public Double getRank() {
+        return rank;
+    }
+
+    public void setRank(Double rank) {
+        this.rank = rank;
     }
 
     public Double getPriority() {
@@ -162,11 +223,24 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
                 }
             }
         }
-        EditorFormFieldSet newEditorFormFieldSet = new EditorFormFieldSet(name, mergedEditorFormFields);
+        EditorFormFieldSet newEditorFormFieldSet = new EditorFormFieldSet(name,
+            displayName,
+            description,
+            rank,
+            priority,
+            dynamic,
+            activated,
+            mergedEditorFormFields);
         if (otherEditorFormFieldSet.priority == null) {
             newEditorFormFieldSet.setPriority(priority);
         } else {
             newEditorFormFieldSet.setPriority(otherEditorFormFieldSet.priority);
+        }
+        if (dynamic) {
+            newEditorFormFieldSet.setDynamic(true);
+        }
+        if (activated) {
+            newEditorFormFieldSet.setActivated(true);
         }
         return newEditorFormFieldSet;
     }
