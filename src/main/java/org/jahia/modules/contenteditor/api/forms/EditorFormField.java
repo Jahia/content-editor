@@ -18,6 +18,7 @@ public class EditorFormField {
     private String name;
     private String displayName;
     private String description;
+    private String requiredType;
     private String selectorType;
     private List<EditorFormProperty> selectorOptions;
     private Boolean i18n;
@@ -37,6 +38,7 @@ public class EditorFormField {
     public EditorFormField(String name,
                            String displayName,
                            String description,
+                           String requiredType,
                            String selectorType,
                            List<EditorFormProperty> selectorOptions,
                            Boolean i18n,
@@ -52,6 +54,7 @@ public class EditorFormField {
         this.name = name;
         this.displayName = displayName;
         this.description = description;
+        this.requiredType = requiredType;
         this.selectorType = selectorType;
         this.selectorOptions = selectorOptions;
         this.i18n = i18n;
@@ -71,6 +74,7 @@ public class EditorFormField {
             field.name,
             field.displayName,
             field.description,
+            field.requiredType,
             field.selectorType,
             field.selectorOptions == null ? null : field.selectorOptions.stream()
                 .map(option -> new EditorFormProperty(option))
@@ -93,6 +97,12 @@ public class EditorFormField {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("The required type for the field")
+    public String getRequiredType() {
+        return requiredType;
     }
 
     public void setSelectorType(String selectorType) {
@@ -155,6 +165,10 @@ public class EditorFormField {
     @GraphQLDescription("The description of the field")
     public String getDescription() {
         return description;
+    }
+
+    public void setRequiredType(String requiredType) {
+        this.requiredType = requiredType;
     }
 
     @GraphQLField
@@ -246,6 +260,7 @@ public class EditorFormField {
         return new EditorFormField(name,
             otherEditorFormField.displayName != null ? otherEditorFormField.displayName : displayName,
             otherEditorFormField.description != null ? otherEditorFormField.description : description,
+            otherEditorFormField.requiredType != null ? otherEditorFormField.requiredType : requiredType,
             otherEditorFormField.selectorType != null ? otherEditorFormField.selectorType : selectorType,
             otherEditorFormField.selectorOptions != null ? otherEditorFormField.selectorOptions : selectorOptions,
             i18n != null ? i18n : otherEditorFormField.i18n,
@@ -270,6 +285,8 @@ public class EditorFormField {
         EditorFormField that = (EditorFormField) o;
         return Objects.equals(name, that.name)
             && Objects.equals(displayName, that.displayName)
+            && Objects.equals(description, that.description)
+            && Objects.equals(requiredType, that.requiredType)
             && Objects.equals(selectorType, that.selectorType)
             && Objects.equals(selectorOptions, that.selectorOptions)
             && Objects.equals(i18n, that.i18n)
@@ -286,7 +303,7 @@ public class EditorFormField {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, displayName, selectorType, selectorOptions, i18n,
+        return Objects.hash(name, displayName, description, requiredType, selectorType, selectorOptions, i18n,
             readOnly, multiple, mandatory, valueConstraints, defaultValues, currentValues, removed,
             target, extendedPropertyDefinition);
     }
@@ -296,6 +313,8 @@ public class EditorFormField {
         return "EditorFormField{" +
             "name='" + name + '\'' +
             ", displayName='" + displayName + '\'' +
+            ", description='" + description + '\'' +
+            ", requiredType='" + requiredType + '\'' +
             ", selectorType='" + selectorType + '\'' +
             ", selectorOptions=" + selectorOptions +
             ", i18n=" + i18n +

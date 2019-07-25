@@ -192,6 +192,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             newEditorFormFields.add(new EditorFormField(editorFormField.getName(),
                 editorFormField.getDisplayName(),
                 editorFormField.getDescription(),
+                editorFormField.getRequiredType(),
                     editorFormField.getSelectorType(),
                     editorFormField.getSelectorOptions(),
                     editorFormField.getI18n(),
@@ -319,9 +320,11 @@ public class EditorFormServiceImpl implements EditorFormService {
                     logger.warn("Couldn't resolve a default selector type for property " + propertyDefinition.getName());
                 }
             }
+            String requiredType = PropertyType.nameFromValue(propertyDefinition.getRequiredType());
             EditorFormField editorFormField = new EditorFormField(propertyDefinition.getName(),
                 propertyLabel,
                 propertyDescription,
+                requiredType,
                 selectorType,
                     selectorOptions,
                     propertyDefinition.isInternationalized(),
