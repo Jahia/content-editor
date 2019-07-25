@@ -4,6 +4,7 @@ import {Field} from 'formik';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {FieldPropTypes} from '../../../../../FormDefinitions/FormData.proptypes';
+import {adaptSelection} from './Tag.utils';
 
 const Tag = ({field, id, t}) => {
     const adaptOptions = options => (
@@ -40,20 +41,8 @@ const Tag = ({field, id, t}) => {
                             /* Do Nothing on blur BACKLOG-10095 */
                         }}
                         onChange={selection => {
-                            let adaptedSelection = [];
                             const newSelection = selection && selection.map(data => data.value);
-
-                            if (newSelection) {
-                                newSelection.map(s => {
-                                    if (s.includes(separator)) {
-                                        s.split(separator).map(s => adaptedSelection.push(s.trim()));
-                                    } else {
-                                        adaptedSelection.push(s);
-                                    }
-
-                                    return true;
-                                });
-                            }
+                            const adaptedSelection = adaptSelection(newSelection, separator);
 
                             // eslint-disable-next-line react/prop-types
                             props.form.setFieldValue(field.formDefinition.name, adaptedSelection, false);
