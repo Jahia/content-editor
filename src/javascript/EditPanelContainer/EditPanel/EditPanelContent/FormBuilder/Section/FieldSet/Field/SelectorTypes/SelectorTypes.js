@@ -1,4 +1,4 @@
-// Import Tag from './Tag';
+import Tag from './Tag';
 import Text from './Text';
 import TextArea from './TextArea';
 import RichText from './RichText';
@@ -9,8 +9,7 @@ import pickerConfigs from './Picker';
 import Checkbox from './Checkbox';
 
 export const SelectorTypes = {
-// TODO BACKLOG-10752
-//    Tag: {cmp: Tag, key: 'Tag', supportMultiple: true},
+    Tag: {cmp: Tag, key: 'Tag', supportMultiple: true},
     Text: {cmp: Text, key: 'Text', supportMultiple: false},
     TextArea: {cmp: TextArea, key: 'TextArea', supportMultiple: false},
     RichText: {cmp: RichText, key: 'RichText', supportMultiple: false},
