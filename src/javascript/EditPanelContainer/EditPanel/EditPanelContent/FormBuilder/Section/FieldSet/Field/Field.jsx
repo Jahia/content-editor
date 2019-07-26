@@ -1,11 +1,11 @@
-import React/* , {useRef} */ from 'react';
+import React, {useRef} from 'react';
 import {FormControl, Grid, InputLabel, withStyles} from '@material-ui/core';
-import {Public} from '@material-ui/icons';
-import {Badge/* , IconButton */} from '@jahia/design-system-kit';
+import {MoreVert, Public} from '@material-ui/icons';
+import {Badge, IconButton} from '@jahia/design-system-kit';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
 import * as PropTypes from 'prop-types';
-// Import {ContextualMenu} from '@jahia/react-material';
+import {ContextualMenu} from '@jahia/react-material';
 import {FieldPropTypes} from '../../../../../../FormDefinitions';
 import {SiteInfoPropTypes} from '../../../../../../SiteData';
 
@@ -41,7 +41,7 @@ let styles = theme => ({
 });
 
 export const FieldCmp = ({t, classes, input, idInput, selectorType, field, siteInfo, actionContext}) => {
-    // Const contextualMenu = useRef(null);
+    const contextualMenu = useRef(null);
 
     return (
         <FormControl className={classes.formControl}
@@ -94,12 +94,10 @@ export const FieldCmp = ({t, classes, input, idInput, selectorType, field, siteI
                                 <span className={classes.emptySpace}/>
                             ) : (
                                 <>
-                                    {/*
-                                        // TODO BACKLOG-10753
-                                    FIXME in next PR !!
                                     <ContextualMenu ref={contextualMenu}
                                                     actionKey={selectorType.key + 'Menu'}
-                                                    context={actionContext}/>
+                                                    context={actionContext}
+                                    />
                                     <IconButton variant="ghost"
                                                 data-sel-action="moreOptions"
                                                 aria-label={t('content-editor:label.contentEditor.edit.action.moreOptions')}
@@ -107,8 +105,8 @@ export const FieldCmp = ({t, classes, input, idInput, selectorType, field, siteI
                                                 onClick={event => {
                                                     event.stopPropagation();
                                                     contextualMenu.current.open(event);
-                                                }}/>
-                                            */}
+                                                }}
+                                    />
                                 </>
                             )}
                         </Grid>
