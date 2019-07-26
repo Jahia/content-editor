@@ -1,8 +1,7 @@
-import dayjs from '../../date.config';
 import mockData from './form-mock.json';
 import {resolveSelectorType} from '../EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes.utils';
 
-const isDetailField = field => field.readOnly && field.targets.find(target => target.name === 'metadata');
+// Const isDetailField = field => field.readOnly && field.targets.find(target => target.name === 'metadata');
 
 const getFieldValue = field => {
     const selectorType = resolveSelectorType(field);
@@ -34,8 +33,9 @@ const getInitialValues = sections => {
         };
     }, {});
 };
-
-const getDetailsValue = (formDefinition, nodeData, lang) => {
+// Todo : restore this code once BACKLOG-10733 is done
+/*
+Const getDetailsValue = (formDefinition, nodeData, lang) => {
     return formDefinition.fields
         .filter(isDetailField)
         .map(field => {
@@ -66,10 +66,9 @@ const getTechnicalInfo = (nodeData, t) => {
         {label: t('content-editor:label.contentEditor.details.path'), value: nodeData.path},
         {label: t('content-editor:label.contentEditor.details.uuid'), value: nodeData.uuid}
     ];
-};
+}; */
 
-export const adaptFormData = (data, lang, t) => {
-    const formDefinition = data.forms.editForm;
+export const adaptFormData = data => {
     const nodeData = data.jcr.result;
     const sections = mockData.data.forms.editForm.sections;
 
@@ -77,7 +76,7 @@ export const adaptFormData = (data, lang, t) => {
         sections,
         initialValues: getInitialValues(sections),
         nodeData,
-        details: getDetailsValue(formDefinition, nodeData, lang),
-        technicalInfo: getTechnicalInfo(nodeData, t)
+        details: {} /* getDetailsValue(formDefinition, nodeData, lang) */,
+        technicalInfo: {} /* GetTechnicalInfo(nodeData, t) */
     };
 };
