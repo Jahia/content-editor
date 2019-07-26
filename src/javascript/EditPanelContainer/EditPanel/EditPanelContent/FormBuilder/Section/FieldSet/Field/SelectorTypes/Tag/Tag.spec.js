@@ -10,12 +10,10 @@ describe('Tag component', () => {
         props = {
             id: 'Tag1',
             field: {
-                formDefinition: {
-                    name: 'myOption',
-                    selectorType: 'Tag',
-                    readOnly: false,
-                    multiple: true
-                },
+                name: 'myOption',
+                selectorType: 'Tag',
+                readOnly: false,
+                multiple: true,
                 data: {
                     name: 'myOption',
                     values: ['tag1', 'tag2', 'tag3']
@@ -70,7 +68,7 @@ describe('Tag component', () => {
     });
 
     const testReadOnly = function (readOnly) {
-        props.field.formDefinition.readOnly = readOnly;
+        props.field.readOnly = readOnly;
         const RenderProps = shallow(<Tag {...props}/>)
             .dive()
             .props()

@@ -1,10 +1,10 @@
 import {translate} from 'react-i18next';
-import {MultipleInput} from '../../../../../../DesignSystem/MultipleInput';
+import {MultipleInput} from '../../../../../../../../../DesignSystem/MultipleInput';
 import {Field} from 'formik';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {FieldPropTypes} from '../../../../../FormDefinitions/FormData.proptypes';
 import {adaptSelection} from './Tag.utils';
+import {FieldPropTypes} from '../../../../../../../../FormDefinitions/FormData.proptypes';
 
 const Tag = ({field, id, t}) => {
     const adaptOptions = options => (
@@ -14,12 +14,12 @@ const Tag = ({field, id, t}) => {
         }))
     );
 
-    const selectorOption = field.formDefinition.selectorOptions && field.formDefinition.selectorOptions.find(option => option.name === 'separator');
+    const selectorOption = field.selectorOptions && field.selectorOptions.find(option => option.name === 'separator');
     const separator = selectorOption ? selectorOption.value : ',';
 
     return (
         <Field
-            name={field.formDefinition.name}
+            name={field.name}
             render={props => {
                 const formikField = props.field;
 
@@ -34,7 +34,7 @@ const Tag = ({field, id, t}) => {
                         value={
                             formikField.value && adaptOptions(formikField.value)
                         }
-                        readOnly={field.formDefinition.readOnly}
+                        readOnly={field.readOnly}
                         placeholder={t('content-editor:label.contentEditor.edit.tagPlaceholder')}
                         formatCreateLabel={value => t('content-editor:label.contentEditor.edit.createTagPlaceholder', {tagName: value})}
                         onBlur={() => {
@@ -45,7 +45,7 @@ const Tag = ({field, id, t}) => {
                             const adaptedSelection = adaptSelection(newSelection, separator);
 
                             // eslint-disable-next-line react/prop-types
-                            props.form.setFieldValue(field.formDefinition.name, adaptedSelection, false);
+                            props.form.setFieldValue(field.name, adaptedSelection, false);
                         }}
                     />
                 );
