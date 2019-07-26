@@ -7,7 +7,7 @@ import unpublishAction from './actions/unpublishAction';
 import goBackAction from './actions/goBackAction';
 import EditPanelConstants from './EditPanelContainer/EditPanel/EditPanelConstants';
 import ContentEditor from './ContentEditor';
-import {SelectorTypes} from './EditPanelContainer/EditPanel/EditPanelContent/FormBuilder/SelectorTypes/SelectorTypes';
+// Import {SelectorTypes} from './EditPanelContainer/EditPanel/EditPanelContent/FormBuilder/SelectorTypes/SelectorTypes';
 
 console.log('Load Content Editor Ext Components');
 
@@ -56,12 +56,12 @@ if (contextJsParameters && contextJsParameters.config && contextJsParameters.con
         });
 
         // Register selectorType actions
-        const selectorTypes = Object.values(SelectorTypes);
+        /* const selectorTypes = Object.values(SelectorTypes);
         selectorTypes.forEach(selectorType => {
             if (selectorType.actions) {
                 selectorType.actions(actionsRegistry);
             }
-        });
+        }); */
     });
 }
 

@@ -28,8 +28,8 @@ export const EditPanelContainer = ({client, notificationContext, t, path, lang, 
         loading,
         error,
         errorMessage,
+
         nodeData,
-        fields,
         initialValues,
         details,
         technicalInfo,
@@ -47,11 +47,13 @@ export const EditPanelContainer = ({client, notificationContext, t, path, lang, 
 
     const editorContext = {
         path: path,
-        site: site,
         lang: lang,
         uiLang: contentEditorUiLang,
-        sections,
+        site: site,
+        siteInfo,
         siteDisplayableName,
+        sections,
+        nodeData,
         details,
         technicalInfo
     };
@@ -67,6 +69,7 @@ export const EditPanelContainer = ({client, notificationContext, t, path, lang, 
             actions.setSubmitting(false);
         }
 
+        // TODO BACKLOG-10734 rewrite this action with less args, maybe add adapter level
         submitAction({
             client,
             nodeData,
@@ -76,8 +79,7 @@ export const EditPanelContainer = ({client, notificationContext, t, path, lang, 
             actions,
             t,
             path,
-            values,
-            fields
+            values
         });
     };
 
@@ -85,15 +87,7 @@ export const EditPanelContainer = ({client, notificationContext, t, path, lang, 
         <ContentEditorContext.Provider value={editorContext}>
             <Formik
                 initialValues={initialValues}
-                render={() => {
-                    return (
-                        <EditPanel fields={fields}
-                                   siteInfo={siteInfo}
-                                   nodeData={nodeData}
-                                   lang={lang}
-                        />
-                    );
-                }}
+                render={EditPanel}
                 onSubmit={handleSubmit}
             />
         </ContentEditorContext.Provider>
