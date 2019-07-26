@@ -4,8 +4,10 @@ import org.apache.commons.lang.StringUtils;
 import org.jahia.api.Constants;
 import org.jahia.modules.contenteditor.api.forms.*;
 import org.jahia.services.content.JCRNodeWrapper;
+import org.jahia.services.content.JCRPropertyWrapper;
 import org.jahia.services.content.JCRSessionFactory;
 import org.jahia.services.content.JCRSessionWrapper;
+import org.jahia.services.content.decorator.JCRSiteNode;
 import org.jahia.services.content.nodetypes.ExtendedNodeType;
 import org.jahia.services.content.nodetypes.ExtendedPropertyDefinition;
 import org.jahia.services.content.nodetypes.NodeTypeRegistry;
@@ -21,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import javax.jcr.PropertyType;
 import javax.jcr.RepositoryException;
 import javax.jcr.Value;
+import javax.jcr.nodetype.NoSuchNodeTypeException;
 import java.util.*;
 
 /**
@@ -33,7 +36,7 @@ public class EditorFormServiceImpl implements EditorFormService {
     private static final Logger logger = LoggerFactory.getLogger(EditorFormServiceImpl.class);
     private NodeTypeRegistry nodeTypeRegistry;
     private ChoiceListInitializerService choiceListInitializerService;
-    private StaticFormRegistry staticFormRegistry;
+    private StaticFormFieldSetRegistry staticFormFieldSetRegistry;
 
     // we extend the map from SelectorType.defaultSelectors to add more.
     private static Map<Integer, Integer> defaultSelectors = new HashMap<>();
@@ -64,43 +67,103 @@ public class EditorFormServiceImpl implements EditorFormService {
     }
 
     @Reference
-    public void setStaticFormRegistry(StaticFormRegistry staticFormRegistry) {
-        this.staticFormRegistry = staticFormRegistry;
+    public void setStaticFormFieldSetRegistry(StaticFormFieldSetRegistry staticFormFieldSetRegistry) {
+        this.staticFormFieldSetRegistry = staticFormFieldSetRegistry;
     }
 
 
     @Override
-    public EditorForm getCreateForm(String nodeTypeName, Locale uiLocale, Locale locale, String parentPath) throws EditorFormException {
-        return getEditorForm(nodeTypeName, uiLocale, locale, null, parentPath);
+    public EditorForm getCreateForm(String primaryNodeTypeName, Locale uiLocale, Locale locale, String parentPath) throws EditorFormException {
+        return getEditorForm(primaryNodeTypeName, uiLocale, locale, null, parentPath);
     }
 
     @Override
-    public EditorForm getEditorForm(Locale uiLocale, Locale locale, String nodePath) throws EditorFormException {
+    public EditorForm getEditForm(Locale uiLocale, Locale locale, String nodePath) throws EditorFormException {
         return getEditorForm(null, uiLocale, locale, nodePath, null);
     }
 
-    private EditorForm getEditorForm(String nodeTypeName, Locale uiLocale, Locale locale, String nodePath, String parentNodePath) throws EditorFormException {
+    private EditorForm getEditorForm(String primaryNodeTypeName, Locale uiLocale, Locale locale, String nodePath, String parentNodePath) throws EditorFormException {
         try {
 
-            if (nodePath == null && (parentNodePath == null || nodeTypeName == null)) {
+            if (nodePath == null && (parentNodePath == null || primaryNodeTypeName == null)) {
                 throw new EditorFormException("nodePath, or parentNodePath and nodetypeName, must be set.");
             }
             JCRSessionWrapper session = getSession(locale);
-            JCRNodeWrapper existingNode = session.getNode(nodePath);
-            if (existingNode != null) {
-                nodeTypeName = existingNode.getPrimaryNodeTypeName();
+            JCRNodeWrapper existingNode = null;
+            if (nodePath != null) {
+                existingNode = session.getNode(nodePath);
+                if (existingNode != null) {
+                    primaryNodeTypeName = existingNode.getPrimaryNodeTypeName();
+                }
+            }
+            JCRNodeWrapper parentNode = getParentNode(existingNode, parentNodePath, session);
+            ExtendedNodeType primaryNodeType = nodeTypeRegistry.getNodeType(primaryNodeTypeName);
+            List<ExtendedNodeType> extendMixins = getAvailableMixin(primaryNodeTypeName, parentNode.getResolveSite());
+
+            Map<String, EditorFormSection> formSectionsByName = new HashMap<>();
+
+            String sectionName = "content";
+            String sectionDisplayName = sectionName;  // todo resolve form resource bundles.
+            String sectionDescription = "";  // todo resolve form resource bundles.
+            Double sectionRank = 1.0;
+            Double sectionPriority = 1.0;
+
+            List<EditorFormFieldSet> sectionFieldSets = new ArrayList<>();
+            EditorFormFieldSet mergedFieldSet = generateEditorFormFieldSet(primaryNodeType, existingNode, locale, uiLocale, false, true);
+
+            mergedFieldSet = mergeWithStaticForms(primaryNodeTypeName, mergedFieldSet);
+            mergedFieldSet = processValueConstraints(mergedFieldSet, locale, existingNode, parentNode);
+
+            sectionFieldSets.add(mergedFieldSet);
+
+            EditorFormSection section = new EditorFormSection(sectionName, sectionDisplayName, sectionDescription, sectionRank, sectionPriority, sectionFieldSets);
+            formSectionsByName.put(section.getName(), section);
+
+            for (ExtendedNodeType extendMixinNodeType : extendMixins) {
+                Boolean activated = false;
+                if (existingNode != null && existingNode.isNodeType(extendMixinNodeType.getName())) {
+                    activated = true;
+                }
+                EditorFormFieldSet extendMixinFieldSet = generateEditorFormFieldSet(extendMixinNodeType, existingNode, locale, uiLocale, true, activated);
+
+                extendMixinFieldSet = mergeWithStaticForms(extendMixinNodeType.getName(), extendMixinFieldSet);
+                extendMixinFieldSet = processValueConstraints(extendMixinFieldSet, locale, existingNode, parentNode);
+
+                String targetSectionName = null;
+                for (EditorFormField field : extendMixinFieldSet.getEditorFormFields()) {
+                    // let's check what target they have in case we have to move them.
+                    if (targetSectionName == null) {
+                        targetSectionName = field.getTarget().getSectionName();
+                    } else if (!targetSectionName.equals(field.getTarget().getSectionName())) {
+                        // field should be moved to another section, but in which field set ?
+                        // todo to be implemented
+                    }
+
+                }
+                if (targetSectionName == null) {
+                    targetSectionName = "content";
+                }
+                EditorFormSection targetSection = formSectionsByName.get(targetSectionName);
+                if (targetSection == null) {
+                    String targetSectionDisplayName = targetSectionName; // todo reso   lve proper display name from resource bundles
+                    String targetSectionDescription = ""; // todo resolve proper description from resource bundles
+                    Double targetSectionRank = 1.0;
+                    Double targetSectionPriority = 1.0;
+                    targetSection = new EditorFormSection(targetSectionName, targetSectionDisplayName, targetSectionDescription, targetSectionRank, targetSectionPriority, new ArrayList<>());
+                }
+                targetSection.getFieldSets().add(extendMixinFieldSet);
+                formSectionsByName.put(targetSection.getName(), targetSection);
             }
 
-            JCRNodeWrapper parentNode = getParentNode(existingNode, parentNodePath, session);
+            String formName = primaryNodeTypeName;
+            String formDisplayName = formName; // todo resolve form resource bundles.
+            String formDescription = "";  // todo resolve form resource bundles.
+            Double formPriority = 1.0; // todo implement merging
+            EditorForm editorForm = new EditorForm(formName, formDisplayName, formDescription, formPriority, new ArrayList<>(formSectionsByName.values())); // todo order form sections by rank
 
-            EditorForm mergedEditorForm = generateEditorFormFromNodeType(nodeTypeName, existingNode, locale, uiLocale);
-
-            mergedEditorForm = mergeWithStaticForms(nodeTypeName, mergedEditorForm);
-            mergedEditorForm = processValueConstraints(mergedEditorForm, locale, existingNode, parentNode);
-
-            return mergedEditorForm;
+            return editorForm;
         } catch (RepositoryException e) {
-            throw new EditorFormException("Error while building edit form definition for node: " + nodePath + " and nodeType: " + nodeTypeName, e);
+            throw new EditorFormException("Error while building edit form definition for node: " + nodePath + " and nodeType: " + primaryNodeTypeName, e);
         }
     }
 
@@ -111,11 +174,11 @@ public class EditorFormServiceImpl implements EditorFormService {
         return session.getNode(parentPath);
     }
 
-    private EditorForm processValueConstraints(EditorForm editForm, Locale uiLocale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode) throws RepositoryException {
+    private EditorFormFieldSet processValueConstraints(EditorFormFieldSet editorFormFieldSet, Locale uiLocale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode) throws RepositoryException {
         List<EditorFormField> newEditorFormFields = new ArrayList<>();
-        ExtendedNodeType nodeType = nodeTypeRegistry.getNodeType(editForm.getNodeType());
+        ExtendedNodeType nodeType = nodeTypeRegistry.getNodeType(editorFormFieldSet.getName());
         Map<String, ChoiceListInitializer> initializers = choiceListInitializerService.getInitializers();
-        for (EditorFormField editorFormField : editForm.getEditorFormFields()) {
+        for (EditorFormField editorFormField : editorFormFieldSet.getEditorFormFields()) {
             if (editorFormField.getValueConstraints() == null || editorFormField.getExtendedPropertyDefinition() == null) {
                 newEditorFormFields.add(editorFormField);
                 continue;
@@ -128,6 +191,8 @@ public class EditorFormServiceImpl implements EditorFormService {
                     existingNode, parentNode, uiLocale, nodeType, initializers, editorFormField.getExtendedPropertyDefinition());
             newEditorFormFields.add(new EditorFormField(editorFormField.getName(),
                 editorFormField.getDisplayName(),
+                editorFormField.getDescription(),
+                editorFormField.getRequiredType(),
                     editorFormField.getSelectorType(),
                     editorFormField.getSelectorOptions(),
                     editorFormField.getI18n(),
@@ -136,11 +201,19 @@ public class EditorFormServiceImpl implements EditorFormService {
                     editorFormField.getMandatory(),
                     valueConstraints,
                     editorFormField.getDefaultValues(),
+                editorFormField.getCurrentValues(),
                     editorFormField.isRemoved(),
-                    editorFormField.getTargets(),
+                editorFormField.getTarget(),
                     editorFormField.getExtendedPropertyDefinition()));
         }
-        return new EditorForm(editForm.getNodeType(), newEditorFormFields);
+        return new EditorFormFieldSet(editorFormFieldSet.getName(),
+            editorFormFieldSet.getDisplayName(),
+            editorFormFieldSet.getDescription(),
+            editorFormFieldSet.getRank(),
+            editorFormFieldSet.getPriority(),
+            editorFormFieldSet.getDynamic(),
+            editorFormFieldSet.getActivated(),
+            newEditorFormFields);
     }
 
     private JCRNodeWrapper getNode(String nodeIdOrPath, JCRSessionWrapper session) throws RepositoryException {
@@ -155,20 +228,19 @@ public class EditorFormServiceImpl implements EditorFormService {
         return node;
     }
 
-    private EditorForm mergeWithStaticForms(String nodeTypeName, EditorForm mergedEditorForm) {
-        SortedSet<EditorForm> staticEditorForms = staticFormRegistry.getForm(nodeTypeName);
-        if (staticEditorForms == null) {
-            return mergedEditorForm;
+    private EditorFormFieldSet mergeWithStaticForms(String nodeTypeName, EditorFormFieldSet mergedEditorFormFieldSet) {
+        SortedSet<EditorFormFieldSet> staticEditorFormFieldSets = staticFormFieldSetRegistry.getForm(nodeTypeName);
+        if (staticEditorFormFieldSets == null) {
+            return mergedEditorFormFieldSet;
         }
-        for (EditorForm staticEditorForm : staticEditorForms) {
-            mergedEditorForm = mergedEditorForm.mergeWith(staticEditorForm);
+        for (EditorFormFieldSet staticEditorFormFieldSet : staticEditorFormFieldSets) {
+            mergedEditorFormFieldSet = mergedEditorFormFieldSet.mergeWith(staticEditorFormFieldSet);
         }
-        return mergedEditorForm;
+        return mergedEditorFormFieldSet;
     }
 
-    private EditorForm generateEditorFormFromNodeType(String nodeTypeName, JCRNodeWrapper existingNode, Locale locale, Locale uiLocale) throws RepositoryException {
+    private EditorFormFieldSet generateEditorFormFieldSet(ExtendedNodeType nodeType, JCRNodeWrapper existingNode, Locale locale, Locale uiLocale, Boolean dynamic, Boolean activated) throws RepositoryException {
         JCRSessionWrapper session = existingNode != null ? existingNode.getSession() : getSession(locale);
-        ExtendedNodeType nodeType = nodeTypeRegistry.getNodeType(nodeTypeName);
         Map<String,Double> maxTargetRank = new HashMap<>();
         List<EditorFormField> editorFormFields = new ArrayList<>();
 
@@ -182,15 +254,14 @@ public class EditorFormServiceImpl implements EditorFormService {
                 continue;
             }
 
-            String target = propertyDefinition.getItemType();
-            Double rank = maxTargetRank.get(target);
+            String itemType = propertyDefinition.getItemType();
+            Double rank = maxTargetRank.get(itemType);
             if (rank == null) {
                 rank = -1.0;
             }
             rank++;
-            List<EditorFormFieldTarget> fieldTargets = new ArrayList<>();
-            fieldTargets.add(new EditorFormFieldTarget(target, rank));
-            maxTargetRank.put(target, rank);
+            EditorFormFieldTarget fieldTarget = new EditorFormFieldTarget(itemType, nodeType.getName(), rank);
+            maxTargetRank.put(itemType, rank);
             List<EditorFormFieldValueConstraint> valueConstraints = new ArrayList<>();
             for (String valueConstraint : propertyDefinition.getValueConstraints()) {
                 valueConstraints.add(new EditorFormFieldValueConstraint(valueConstraint, new EditorFormFieldValue("String", valueConstraint), null));
@@ -213,9 +284,26 @@ public class EditorFormServiceImpl implements EditorFormService {
                     }
                 }
             }
+            List<EditorFormFieldValue> currentValues = null;
+            if (existingNode != null) {
+                if (existingNode.hasProperty(propertyDefinition.getName())) {
+                    currentValues = new ArrayList<>();
+                    JCRPropertyWrapper existingProperty = existingNode.getProperty(propertyDefinition.getName());
+                    if (existingProperty != null) {
+                        if (propertyDefinition.isMultiple()) {
+                            for (Value value : existingProperty.getValues()) {
+                                currentValues.add(new EditorFormFieldValue(value));
+                            }
+                        } else {
+                            currentValues.add(new EditorFormFieldValue(existingProperty.getValue()));
+                        }
+                    }
+                }
+            }
             ExtendedNodeType extendedNodeType = NodeTypeRegistry.getInstance().getNodeType(propertyDefinition.getDeclaringNodeType().getAlias());
             String aliasPropertyLabel = extendedNodeType.getPropertyDefinition(propertyDefinition.getName()).getLabel(uiLocale);
             String propertyLabel = propertyDefinition.getLabel(uiLocale);
+            String propertyDescription = propertyDefinition.getTooltip(uiLocale, extendedNodeType);
             if (!propertyLabel.equals(aliasPropertyLabel)) {
                 // we do this check because the old code was accessing the node type using the alias, so we prefer to
                 // be 100% compatible for the moment but we should get rid of this if there is no real reason to use
@@ -232,8 +320,11 @@ public class EditorFormServiceImpl implements EditorFormService {
                     logger.warn("Couldn't resolve a default selector type for property " + propertyDefinition.getName());
                 }
             }
+            String requiredType = PropertyType.nameFromValue(propertyDefinition.getRequiredType());
             EditorFormField editorFormField = new EditorFormField(propertyDefinition.getName(),
                 propertyLabel,
+                propertyDescription,
+                requiredType,
                 selectorType,
                     selectorOptions,
                     propertyDefinition.isInternationalized(),
@@ -242,12 +333,24 @@ public class EditorFormServiceImpl implements EditorFormService {
                     propertyDefinition.isMandatory(),
                     valueConstraints,
                     defaultValues,
+                currentValues,
                     null,
-                    fieldTargets,
+                fieldTarget,
                     propertyDefinition);
             editorFormFields.add(editorFormField);
         }
-        return new EditorForm(nodeTypeName, editorFormFields);
+        String displayName = nodeType.getLabel(uiLocale);
+        String description = nodeType.getDescription(uiLocale);
+        Double defaultRank = 1.0; // todo implement this properly
+        Double defaultPriority = 1.0; // todo implement this properly
+        return new EditorFormFieldSet(nodeType.getName(),
+            displayName,
+            description,
+            defaultRank,
+            defaultPriority,
+            dynamic,
+            activated,
+            editorFormFields);
     }
 
     private List<EditorFormFieldValueConstraint> getValueConstraints(List<ChoiceListValue> listValues,
@@ -320,5 +423,31 @@ public class EditorFormServiceImpl implements EditorFormService {
         return JCRSessionFactory.getInstance().getCurrentUserSession(Constants.EDIT_WORKSPACE, locale);
     }
 
+    private List<ExtendedNodeType> getAvailableMixin(String type, JCRSiteNode site) throws NoSuchNodeTypeException {
+        ArrayList<ExtendedNodeType> res = new ArrayList<ExtendedNodeType>();
+        Set<String> foundTypes = new HashSet<String>();
+
+        Set<String> installedModules = site != null && site.getPath().startsWith("/sites/") ? site.getInstalledModulesWithAllDependencies()
+            : null;
+
+        Map<ExtendedNodeType, Set<ExtendedNodeType>> m = NodeTypeRegistry.getInstance().getMixinExtensions();
+
+        ExtendedNodeType realType = NodeTypeRegistry.getInstance().getNodeType(type);
+        for (ExtendedNodeType nodeType : m.keySet()) {
+            if (realType.isNodeType(nodeType.getName())) {
+                for (ExtendedNodeType extension : m.get(nodeType)) {
+//                        ctx.put("contextType", realType);
+                    if (installedModules == null || extension.getTemplatePackage() == null ||
+                        extension.getTemplatePackage().getModuleType().equalsIgnoreCase("system") ||
+                        installedModules.contains(extension.getTemplatePackage().getId())) {
+                        res.add(extension);
+                        foundTypes.add(extension.getName());
+                    }
+                }
+            }
+        }
+
+        return res;
+    }
 
 }
