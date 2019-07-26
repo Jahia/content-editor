@@ -2,10 +2,10 @@ import React from 'react';
 import {shallow} from '@jahia/test-framework';
 
 import {Field} from './Field';
-import {ContentPicker} from '../SelectorTypes/Picker/ContentPicker/ContentPicker';
+import {ContentPicker} from './SelectorTypes/Picker/ContentPicker/ContentPicker';
 import {resolveSelectorType} from '../SelectorTypes/SelectorTypes.utils';
 
-describe('EditNodeProperty component', () => {
+describe('Field component', () => {
     let defaultProps;
 
     beforeEach(() => {

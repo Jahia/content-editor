@@ -1,11 +1,11 @@
-import React, {useRef} from 'react';
+import React/* , {useRef} */ from 'react';
 import {FormControl, Grid, InputLabel, withStyles} from '@material-ui/core';
-import {MoreVert, Public} from '@material-ui/icons';
-import {Badge, IconButton} from '@jahia/design-system-kit';
+import {Public} from '@material-ui/icons';
+import {Badge/* , IconButton */} from '@jahia/design-system-kit';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
 import * as PropTypes from 'prop-types';
-import {ContextualMenu} from '@jahia/react-material';
+// Import {ContextualMenu} from '@jahia/react-material';
 import {FieldPropTypes} from '../../../../../../FormDefinitions';
 import {SiteInfoPropTypes} from '../../../../../../SiteData';
 
@@ -14,10 +14,16 @@ let styles = theme => ({
         padding: '8px 0',
         flexGrow: 1,
         transform: 'none!important',
-        position: 'relative'
+        position: 'relative',
+        margin: `0 ${theme.spacing.unit * 4}px`,
+        marginBottom: theme.spacing.unit * 3,
+        width: '100%'
     }),
     inputLabel: {
         ...theme.typography.zeta,
+        margin: 0,
+        width: 'auto',
+        padding: 0,
         color: theme.palette.font.beta,
         display: 'inline-block'
     },
@@ -35,7 +41,7 @@ let styles = theme => ({
 });
 
 export const FieldCmp = ({t, classes, input, idInput, selectorType, field, siteInfo, actionContext}) => {
-    const contextualMenu = useRef(null);
+    // Const contextualMenu = useRef(null);
 
     return (
         <FormControl className={classes.formControl}
@@ -61,7 +67,6 @@ export const FieldCmp = ({t, classes, input, idInput, selectorType, field, siteI
                             <InputLabel shrink
                                         className={classes.inputLabel}
                                         htmlFor={idInput}
-                                        style={(!field.i18n && siteInfo.languages.length > 1) ? {paddingTop: 24} : {}}
                             >
                                 {field.displayName}
                             </InputLabel>
@@ -89,6 +94,9 @@ export const FieldCmp = ({t, classes, input, idInput, selectorType, field, siteI
                                 <span className={classes.emptySpace}/>
                             ) : (
                                 <>
+                                    {/*
+                                        // TODO BACKLOG-10753
+                                    FIXME in next PR !!
                                     <ContextualMenu ref={contextualMenu}
                                                     actionKey={selectorType.key + 'Menu'}
                                                     context={actionContext}/>
@@ -100,6 +108,7 @@ export const FieldCmp = ({t, classes, input, idInput, selectorType, field, siteI
                                                     event.stopPropagation();
                                                     contextualMenu.current.open(event);
                                                 }}/>
+                                            */}
                                 </>
                             )}
                         </Grid>

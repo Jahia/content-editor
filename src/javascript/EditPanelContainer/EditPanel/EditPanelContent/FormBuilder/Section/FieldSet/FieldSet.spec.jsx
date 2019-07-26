@@ -4,7 +4,7 @@ import {dsGenericTheme} from '@jahia/design-system-kit';
 
 import {FieldSet} from './FieldSet';
 
-describe('Section component', () => {
+describe('FieldSet component', () => {
     let props;
 
     beforeEach(() => {
@@ -32,7 +32,7 @@ describe('Section component', () => {
     it('should display Field for each field in the FieldSet', () => {
         const cmp = shallowWithTheme(<FieldSet {...props}/>, {}, dsGenericTheme).dive();
 
-        props.fieldsets.fields.forEach(field => {
+        props.fieldset.fields.forEach(field => {
             expect(cmp.find({field}).exists()).toBe(true);
         });
     });

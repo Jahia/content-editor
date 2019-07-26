@@ -20,7 +20,7 @@ let styles = theme => ({
 const SectionCmp = ({section, classes}) => {
     return (
         <section className={classes.section}>
-            <Typography className={classes.sectionTitle} color="alpha" variant="gamma">{section.displayName}</Typography>
+            <Typography component="h2" className={classes.sectionTitle} color="alpha" variant="gamma">{section.displayName}</Typography>
 
             {section.fieldSets.map(fieldset => {
                 return <FieldSet key={fieldset.displayName} fieldset={fieldset}/>;

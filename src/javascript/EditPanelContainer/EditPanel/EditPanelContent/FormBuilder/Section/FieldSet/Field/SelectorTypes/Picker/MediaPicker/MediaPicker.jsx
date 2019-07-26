@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'formik';
 import {MediaPickerEmpty} from './MediaPickerEmpty/MediaPickerEmpty';
 import {MediaPickerFilled} from './MediaPickerFilled/MediaPickerFilled';
-import {FieldPropTypes} from '../../../../.././../../../../FormDefinitions';
+import {FieldPropTypes} from '../../../../.././../../../../FormDefinitions/FormData.proptypes';
 
 const MediaPickerCmp = ({field, id, editorContext, formik, setActionContext}) => {
     const uuid = formik.values[field.name];

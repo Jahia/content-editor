@@ -20,7 +20,7 @@ let styles = theme => ({
 const FieldSetCmp = ({fieldset, classes}) => {
     return (
         <article className={classes.fieldsetContainer}>
-            <Typography className={classes.fieldSetTitle} color="alpha" variant="zeta">{fieldset.displayName}</Typography>
+            <Typography component="h3" className={classes.fieldSetTitle} color="alpha" variant="zeta">{fieldset.displayName}</Typography>
             {fieldset.fields.map(field => {
                 return <FieldContainer key={field.displayName} field={field}/>;
             })}

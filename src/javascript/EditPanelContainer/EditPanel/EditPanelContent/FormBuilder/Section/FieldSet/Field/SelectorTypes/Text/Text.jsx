@@ -3,7 +3,7 @@ import {compose} from 'react-apollo';
 import {connect} from 'formik';
 import PropTypes from 'prop-types';
 import {Input} from '../../../../../../../../../DesignSystem/Input';
-import {FieldPropTypes} from '../../../../../../../../FormDefinitions';
+import {FieldPropTypes} from '../../../../../../../../FormDefinitions/FormData.proptypes';
 
 export const TextCmp = ({field, id, editorContext, formik: {values, handleChange}}) => {
     const fieldType = field.requiredType;

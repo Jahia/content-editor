@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import {ImageListQuery} from './ImageListQuery';
 import {PickerDialog} from '../../../../../../../../../../DesignSystem/PickerDialog';
-import {FieldPropTypes} from '../../../../../../../../../FormDefinitions/';
+import {FieldPropTypes} from '../../../../../../../../../FormDefinitions/FormData.proptypes';
 
 import Slide from '@material-ui/core/Slide';
 

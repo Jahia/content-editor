@@ -76,7 +76,7 @@ const pickerConfigs = {
     },
     resolveConfig(options, field) {
         const config = Object.assign({}, this[this._getPickerType(options)]);
-        if (field.valueConstraints) {
+        if (field && field.valueConstraints) {
             const constraints = field.valueConstraints.map(constraint => constraint.value.string);
             if (constraints && constraints.length > 0) {
                 config.selectableTypesTable = constraints;
