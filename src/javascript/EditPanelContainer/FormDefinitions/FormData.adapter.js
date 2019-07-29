@@ -1,8 +1,11 @@
-import mockData from './form-mock.json';
+/* TODO: BACKLOG-10772 fix/re-implement details panel
+import dayjs from '../../date.config';
+ */
 import {resolveSelectorType} from '../EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes.utils';
 
-// Const isDetailField = field => field.readOnly && field.targets.find(target => target.name === 'metadata');
-
+/* TODO: BACKLOG-10772 fix/re-implement details panel
+const isDetailField = field => field.readOnly && field.targets.find(target => target.name === 'metadata');
+*/
 const getFieldValue = field => {
     const selectorType = resolveSelectorType(field);
     if (selectorType) {
@@ -33,10 +36,10 @@ const getInitialValues = sections => {
         };
     }, {});
 };
-// Todo : restore this code once BACKLOG-10733 is done
-/*
-Const getDetailsValue = (formDefinition, nodeData, lang) => {
-    return formDefinition.fields
+
+/* TODO: BACKLOG-10772 fix/re-implement details panel
+const getDetailsValue = (formDefinition, nodeData, lang) => {
+    return formDefinition.sections.fieldSets.fields
         .filter(isDetailField)
         .map(field => {
             const jcrDefinition = nodeData.properties.find(
@@ -57,7 +60,7 @@ Const getDetailsValue = (formDefinition, nodeData, lang) => {
                 value: jcrDefinition && jcrDefinition.value
             };
         });
-};
+}; */
 
 const getTechnicalInfo = (nodeData, t) => {
     return [
@@ -66,17 +69,20 @@ const getTechnicalInfo = (nodeData, t) => {
         {label: t('content-editor:label.contentEditor.details.path'), value: nodeData.path},
         {label: t('content-editor:label.contentEditor.details.uuid'), value: nodeData.uuid}
     ];
-}; */
+};
 
-export const adaptFormData = data => {
+export const adaptFormData = (data, lang, t) => {
+    /* TODO: BACKLOG-10772 fix/re-implement details panel
+    const formDefinition = data.forms.editForm;
+    */
     const nodeData = data.jcr.result;
-    const sections = mockData.data.forms.editForm.sections;
+    const sections = data.forms.editForm.sections;
 
     return {
         sections,
         initialValues: getInitialValues(sections),
         nodeData,
-        details: {} /* getDetailsValue(formDefinition, nodeData, lang) */,
-        technicalInfo: {} /* GetTechnicalInfo(nodeData, t) */
+        details: [], // TODO: BACKLOG-10772 fix/re-implement details panel. getDetailsValue(formDefinition, nodeData, lang),
+        technicalInfo: getTechnicalInfo(nodeData, t)
     };
 };
