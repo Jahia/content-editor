@@ -36,12 +36,24 @@ describe('adaptFormData', () => {
         graphqlResponse = {
             forms: {
                 editForm: {
-                    fields: [
+                    sections: [
                         {
-                            name: 'field1',
-                            displayName: 'labelled',
-                            selectorType: 'ContentPicker',
-                            targets: [{name: 'metadata'}]
+                            fieldSets: [
+                                {
+                                    fields: [
+                                        {
+                                            name: 'field1',
+                                            displayName: 'labelled',
+                                            selectorType: 'ContentPicker',
+                                            currentValues: [
+                                                {
+                                                    string: '2019-05-07T11:33:31.056'
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
                         }
                     ]
                 }
@@ -72,36 +84,42 @@ describe('adaptFormData', () => {
         expect(adaptFormData(graphqlResponse, 'fr', t).nodeData).toBe(graphqlResponse.jcr.result);
     });
 
-    /*
-    Describe('initialValues', () => {
-        // TODO BACKLOG-10733 rewrite this tests with new data
-        xit('should return initialValues', () => {
-            graphqlResponse.forms.editForm.fields = [];
-            expect(adaptFormData(graphqlResponse, 'fr', t).initialValues).toEqual({});
-        });
+    it('should return initialValues', () => {
+        graphqlResponse.forms.editForm.sections = [];
+        expect(adaptFormData(graphqlResponse, 'fr', t).initialValues).toEqual({});
+    });
 
-        xit('should extract initialValues from fields', () => {
-            expect(adaptFormData(graphqlResponse, 'fr', t).initialValues).toEqual({field1: '2019-05-07T11:33:31.056'});
-        });
+    it('should extract initialValues from fields', () => {
+        const initialValues = adaptFormData(graphqlResponse, 'fr', t).initialValues;
 
-        xit('should extract initialValues with selectorType own logic', () => {
-            graphqlResponse.forms.editForm.fields[0].selectorType = 'Checkbox';
-            expect(adaptFormData(graphqlResponse, 'fr', t).initialValues).toEqual({field1: false});
-        });
+        expect(initialValues).toEqual({field1: '2019-05-07T11:33:31.056'});
+    });
 
-        xit('should set values and no value as initialValue when multiple is at true', () => {
-            graphqlResponse.forms.editForm.fields[0].multiple = true;
-            graphqlResponse.jcr.result.properties[0].values = ['value1', 'value2'];
-            expect(adaptFormData(graphqlResponse, 'fr', t).initialValues).toEqual({field1: ['value1', 'value2']});
-        });
+    it('should extract initialValues with selectorType own logic', () => {
+        graphqlResponse.forms.editForm.sections[0].fieldSets[0].fields[0].selectorType = 'Checkbox';
+        const initialValues = adaptFormData(graphqlResponse, 'fr', t).initialValues;
 
-        xit('should not consider readOnly field that targeting metadata', () => {
-            graphqlResponse.forms.editForm.fields[0].readOnly = true;
-            expect(adaptFormData(graphqlResponse, 'fr', t).fields).toEqual([]);
-            expect(adaptFormData(graphqlResponse, 'fr', t).initialValues).toEqual({});
+        expect(initialValues).toEqual({field1: false});
+    });
+
+    it('should set values and no value as initialValue when multiple is at true', () => {
+        graphqlResponse.forms.editForm.sections[0].fieldSets[0].fields[0].multiple = true;
+        graphqlResponse.forms.editForm.sections[0].fieldSets[0].fields[0].currentValues = [
+            {string: 'value1'},
+            {string: 'value2'}
+        ];
+
+        const initialValues = adaptFormData(graphqlResponse, 'fr', t).initialValues;
+
+        expect(initialValues).toEqual({
+            field1: [
+                {string: 'value1'},
+                {string: 'value2'}
+            ]
         });
     });
 
+    /* TODO: BACKLOG-10772 fix/re-implement details panel
     it('should add details object with data needed', () => {
         graphqlResponse.forms.editForm.fields[0].readOnly = true;
         expect(adaptFormData(graphqlResponse, 'fr', t).details).toEqual([
@@ -121,26 +139,26 @@ describe('adaptFormData', () => {
                 value: 'formatted date: 2019-05-07T11:33:31.056 format: L HH:mm'
             }
         ]);
-    });
+    }); */
 
     it('should add technicalInfo object', () => {
-         expect(adaptFormData(graphqlResponse, 'fr', t).technicalInfo).toEqual([
-             {
-                 label: 'content-editor:label.contentEditor.details.contentType',
-                 value: 'ContentType'
-             },
-             {
-                 label: 'content-editor:label.contentEditor.details.mixinTypes',
-                 value: 'Mixin1; Mixin2'
-             },
-             {
-                 label: 'content-editor:label.contentEditor.details.path',
-                 value: '/site/digitall/home'
-             },
-             {
-                 label: 'content-editor:label.contentEditor.details.uuid',
-                 value: 'uuid1'
-             }
-         ]);
-     }); */
+        expect(adaptFormData(graphqlResponse, 'fr', t).technicalInfo).toEqual([
+            {
+                label: 'content-editor:label.contentEditor.details.contentType',
+                value: 'ContentType'
+            },
+            {
+                label: 'content-editor:label.contentEditor.details.mixinTypes',
+                value: 'Mixin1; Mixin2'
+            },
+            {
+                label: 'content-editor:label.contentEditor.details.path',
+                value: '/site/digitall/home'
+            },
+            {
+                label: 'content-editor:label.contentEditor.details.uuid',
+                value: 'uuid1'
+            }
+        ]);
+    });
 });
