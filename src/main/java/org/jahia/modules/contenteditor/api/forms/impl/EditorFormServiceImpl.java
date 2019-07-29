@@ -98,7 +98,6 @@ public class EditorFormServiceImpl implements EditorFormService {
             }
             JCRNodeWrapper parentNode = getParentNode(existingNode, parentNodePath, session);
             ExtendedNodeType primaryNodeType = nodeTypeRegistry.getNodeType(primaryNodeTypeName);
-            List<ExtendedNodeType> extendMixins = getExtendMixins(primaryNodeTypeName, parentNode.getResolveSite());
 
             SortedSet<EditorFormDefinition> editorFormDefinitions = staticDefinitionsRegistry.getFormDefinitions(primaryNodeTypeName);
             if (editorFormDefinitions == null) {
@@ -112,24 +111,19 @@ public class EditorFormServiceImpl implements EditorFormService {
 
             Map<String, EditorFormSection> formSectionsByName = new HashMap<>();
 
-            EditorFormFieldSet primaryNodeTypeFieldSet = generateEditorFormFieldSet(primaryNodeType, existingNode, locale, uiLocale, false, true);
+            generateAndMergeFieldSetForType(primaryNodeTypeName, uiLocale, locale, existingNode, parentNode, primaryNodeType, formSectionsByName, false, true);
 
-            primaryNodeTypeFieldSet = mergeWithStaticFormFieldSets(primaryNodeTypeName, primaryNodeTypeFieldSet);
-            primaryNodeTypeFieldSet = processValueConstraints(primaryNodeTypeFieldSet, locale, existingNode, parentNode);
+            for (ExtendedNodeType superType : primaryNodeType.getSupertypes()) {
+                generateAndMergeFieldSetForType(superType.getName(), uiLocale, locale, existingNode, parentNode, superType, formSectionsByName, false, true);
+            }
 
-            addFieldSetToSections(formSectionsByName, primaryNodeTypeFieldSet);
-
+            List<ExtendedNodeType> extendMixins = getExtendMixins(primaryNodeTypeName, parentNode.getResolveSite());
             for (ExtendedNodeType extendMixinNodeType : extendMixins) {
                 Boolean activated = false;
                 if (existingNode != null && existingNode.isNodeType(extendMixinNodeType.getName())) {
                     activated = true;
                 }
-                EditorFormFieldSet extendMixinFieldSet = generateEditorFormFieldSet(extendMixinNodeType, existingNode, locale, uiLocale, true, activated);
-
-                extendMixinFieldSet = mergeWithStaticFormFieldSets(extendMixinNodeType.getName(), extendMixinFieldSet);
-                extendMixinFieldSet = processValueConstraints(extendMixinFieldSet, locale, existingNode, parentNode);
-
-                addFieldSetToSections(formSectionsByName, extendMixinFieldSet);
+                generateAndMergeFieldSetForType(extendMixinNodeType.getName(), uiLocale, locale, existingNode, parentNode, extendMixinNodeType, formSectionsByName, true, activated);
             }
 
             List<EditorFormSection> sortedSections = sortSections(formSectionsByName, mergedFormDefinition);
@@ -143,6 +137,13 @@ public class EditorFormServiceImpl implements EditorFormService {
         } catch (RepositoryException e) {
             throw new EditorFormException("Error while building edit form definition for node: " + nodePath + " and nodeType: " + primaryNodeTypeName, e);
         }
+    }
+
+    private void generateAndMergeFieldSetForType(String nodeTypeName, Locale uiLocale, Locale locale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, ExtendedNodeType primaryNodeType, Map<String, EditorFormSection> formSectionsByName, boolean dynamic, boolean activated) throws RepositoryException {
+        EditorFormFieldSet nodeTypeFieldSet = generateEditorFormFieldSet(primaryNodeType, existingNode, locale, uiLocale, dynamic, activated);
+        nodeTypeFieldSet = mergeWithStaticFormFieldSets(nodeTypeName, nodeTypeFieldSet);
+        nodeTypeFieldSet = processValueConstraints(nodeTypeFieldSet, locale, existingNode, parentNode);
+        addFieldSetToSections(formSectionsByName, nodeTypeFieldSet);
     }
 
     private EditorFormDefinition mergeFormDefinitions(SortedSet<EditorFormDefinition> editorFormDefinitions) {
@@ -180,6 +181,10 @@ public class EditorFormServiceImpl implements EditorFormService {
             targetSection = new EditorFormSection(targetSectionName, targetSectionDisplayName, targetSectionDescription, targetSectionRank, targetSectionPriority, new ArrayList<>());
         }
         formFieldSet.setRank((double) targetSection.getFieldSets().size() + 1);
+        if (!formFieldSet.getDynamic() && formFieldSet.getEditorFormFields().size() == 0) {
+            // in the case of an empty static mixin or parent type we don't add it to the form
+            return;
+        }
         targetSection.getFieldSets().add(formFieldSet);
         formSectionsByName.put(targetSection.getName(), targetSection);
     }
@@ -281,7 +286,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         boolean sharedFieldsEditable = existingNode == null || (!existingNode.isLocked() && existingNode.hasPermission("jcr:modifyProperties"));
         boolean i18nFieldsEditable = existingNode == null || (!existingNode.isLocked() && existingNode.hasPermission("jcr:modifyProperties_" + session.getWorkspace().getName() + "_" + locale.toString()));
 
-        for (ExtendedPropertyDefinition propertyDefinition : nodeType.getPropertyDefinitions()) {
+        for (ExtendedPropertyDefinition propertyDefinition : nodeType.getDeclaredPropertyDefinitions()) {
 
             // do not return hidden props
             if (propertyDefinition.isHidden()) {
@@ -294,7 +299,9 @@ public class EditorFormServiceImpl implements EditorFormService {
                 rank = -1.0;
             }
             rank++;
-            EditorFormFieldTarget fieldTarget = new EditorFormFieldTarget(itemType, nodeType.getName(), rank);
+
+            ExtendedNodeType declaringNodeType = propertyDefinition.getDeclaringNodeType();
+            EditorFormFieldTarget fieldTarget = new EditorFormFieldTarget(itemType, declaringNodeType.getName(), rank);
             maxTargetRank.put(itemType, rank);
             List<EditorFormFieldValueConstraint> valueConstraints = new ArrayList<>();
             for (String valueConstraint : propertyDefinition.getValueConstraints()) {
