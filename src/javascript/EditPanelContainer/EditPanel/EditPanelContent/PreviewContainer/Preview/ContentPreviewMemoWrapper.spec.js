@@ -19,7 +19,7 @@ describe('Preview', () => {
         const cmp = shallowWithTheme(<ContentPreviewMemoWrapper {...defaultProps}/>,
             {},
             dsGenericTheme);
-        const props = cmp.find('ContentPreview').props();
+        const props = cmp.dive().find('ContentPreview').props();
         expect(props.language).toBe(defaultProps.lang);
         expect(props.path).toBe(defaultProps.path);
         expect(props.workspace).toBe(defaultProps.workspace);

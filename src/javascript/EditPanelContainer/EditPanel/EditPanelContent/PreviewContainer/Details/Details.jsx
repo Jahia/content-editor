@@ -1,14 +1,13 @@
 import React, {useContext} from 'react';
 import PropTypes from 'prop-types';
-import {ContentEditorContext} from '../../../ContentEditor.context';
-import {InfoPanel} from '../../../../DesignSystem/InfoPanel';
+import {ContentEditorContext} from '../../../../ContentEditor.context';
+import {InfoPanel} from '../../../../../DesignSystem/InfoPanel/index';
 import {withStyles} from '@material-ui/core';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
 
-const styles = theme => ({
+const styles = () => ({
     container: {
-        backgroundColor: theme.palette.ui.alpha,
         overflowY: 'auto'
     }
 });

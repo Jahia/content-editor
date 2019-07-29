@@ -1,11 +1,13 @@
 import {Badge, Paper, Typography} from '@jahia/design-system-kit';
 import {Grid, withStyles} from '@material-ui/core';
 import * as PropTypes from 'prop-types';
-import React from 'react';
+import React, {useState} from 'react';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
 import {useContentEditorContext} from '../../../ContentEditor.context';
 import {ContentPreviewMemoWrapper} from './Preview';
+import {ToggleButton, ToggleButtonGroup} from '@material-ui/lab';
+import {Details} from './Details';
 
 const styles = theme => ({
     contentPaper: {
@@ -18,13 +20,50 @@ const styles = theme => ({
         margin: 0
     },
     preview: {
-        marginBottom: theme.spacing.unit * 2
+        marginBottom: theme.spacing.unit * 3,
+        marginTop: theme.spacing.unit * -3
+    },
+    toggleButtons: {
+        boxShadow: 'none'
+    },
+    buttonRoot: {
+        backgroundColor: theme.palette.common.white + ' !important',
+        borderBottomStyle: 'solid',
+        borderBottomWidth: 2,
+        borderBottomColor: theme.palette.common.white,
+        '&:hover': {
+            borderBottomColor: theme.palette.border.main
+        }
+
+    },
+    buttonLabel: {},
+    buttonSelected: {
+        borderBottomColor: theme.palette.primary.main + ' !important'
+    },
+    ButtonDisabled: {
     }
 });
 
+const SelectedTabComponents = {
+    preview: ContentPreviewMemoWrapper,
+    details: Details
+};
+
 const PreviewContainerCmp = ({classes, t, isDirty}) => {
+    const [previewMode, setPreviewMode] = useState('preview');
     const workspace = 'EDIT';
     const editorContext = useContentEditorContext();
+
+    const toggleButtonClasses = {
+        root: classes.buttonRoot,
+        selected: classes.buttonSelected
+
+    };
+
+    const SelectedTabComponent = SelectedTabComponents[previewMode];
+    const PreviewCmp = SelectedTabComponent ?
+        <SelectedTabComponent path={editorContext.path} lang={editorContext.lang} workspace={workspace}/> : null;
+
     return (
         <Paper className={classes.contentPaper}>
             <Grid container
@@ -34,9 +73,30 @@ const PreviewContainerCmp = ({classes, t, isDirty}) => {
                   className={classes.preview}
             >
                 <Grid item>
-                    <Typography variant="epsilon" color="alpha">
-                        {t('content-editor:label.contentEditor.preview.toggleButtons.preview')}
-                    </Typography>
+                    <ToggleButtonGroup exclusive
+                                       value={previewMode}
+                                       className={classes.toggleButtons}
+                                       onChange={(_, mode) => {
+                                           if (mode) {
+                                               setPreviewMode(mode);
+                                           }
+                                       }}
+                    >
+                        <ToggleButton value="preview"
+                                      classes={toggleButtonClasses}
+                        >
+                            <Typography>
+                                {t('content-editor:label.contentEditor.preview.toggleButtons.preview')}
+                            </Typography>
+                        </ToggleButton>
+                        <ToggleButton value="details"
+                                      classes={toggleButtonClasses}
+                        >
+                            <Typography>
+                                {t('content-editor:label.contentEditor.preview.toggleButtons.details')}
+                            </Typography>
+                        </ToggleButton>
+                    </ToggleButtonGroup>
                 </Grid>
 
                 {isDirty &&
@@ -49,7 +109,7 @@ const PreviewContainerCmp = ({classes, t, isDirty}) => {
                 </Grid>
                 }
             </Grid>
-            <ContentPreviewMemoWrapper path={editorContext.path} lang={editorContext.lang} workspace={workspace}/>
+            {PreviewCmp}
         </Paper>
     );
 };
