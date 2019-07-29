@@ -20,8 +20,9 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
     private String displayName;
     private String description;
     private Bundle originBundle;
-    private Double rank = 1.0;
+    private Double rank = null;
     private Double priority = 1.0;
+    private Boolean removed = false;
     private Boolean dynamic = false;
     private Boolean activated = true; // this is only used when dynamic is true
     private List<EditorFormField> editorFormFields = new ArrayList<>();
@@ -174,9 +175,14 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
         if (otherEditorFormFieldSet == null) {
             return -1;
         }
-        int compareNodeType = name.compareTo(otherEditorFormFieldSet.name);
-        if (compareNodeType != 0) {
-            return compareNodeType;
+        int compareName = name.compareTo(otherEditorFormFieldSet.name);
+        if (compareName != 0) {
+            int compareRank = rank.compareTo(otherEditorFormFieldSet.rank);
+            if (compareRank == 0) {
+                return compareName;
+            } else {
+                return compareRank;
+            }
         }
         if (priority == null) {
             if (otherEditorFormFieldSet.priority != null) return -1;
@@ -226,7 +232,7 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
         EditorFormFieldSet newEditorFormFieldSet = new EditorFormFieldSet(name,
             displayName,
             description,
-            rank,
+            otherEditorFormFieldSet.rank != null ? otherEditorFormFieldSet.rank : rank,
             priority,
             dynamic,
             activated,

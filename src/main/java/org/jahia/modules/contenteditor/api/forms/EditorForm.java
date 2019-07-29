@@ -15,18 +15,16 @@ public class EditorForm {
     String name;
     String displayName;
     String description;
-    Double priority;
 
     List<EditorFormSection> sections = new ArrayList<>();
 
     public EditorForm() {
     }
 
-    public EditorForm(String name, String displayName, String description, Double priority, List<EditorFormSection> sections) {
+    public EditorForm(String name, String displayName, String description, List<EditorFormSection> sections) {
         this.name = name;
         this.displayName = displayName;
         this.description = description;
-        this.priority = priority;
         this.sections = sections;
     }
 
@@ -68,14 +66,6 @@ public class EditorForm {
 
     public void setSections(List<EditorFormSection> sections) {
         this.sections = sections;
-    }
-
-    public Double getPriority() {
-        return priority;
-    }
-
-    public void setPriority(Double priority) {
-        this.priority = priority;
     }
 
 }

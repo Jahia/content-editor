@@ -34,9 +34,10 @@ import java.util.*;
 public class EditorFormServiceImpl implements EditorFormService {
 
     private static final Logger logger = LoggerFactory.getLogger(EditorFormServiceImpl.class);
+    public static final String DEFAULT_FORM_DEFINITION_NAME = "default";
     private NodeTypeRegistry nodeTypeRegistry;
     private ChoiceListInitializerService choiceListInitializerService;
-    private StaticFormFieldSetRegistry staticFormFieldSetRegistry;
+    private StaticDefinitionsRegistry staticDefinitionsRegistry;
 
     // we extend the map from SelectorType.defaultSelectors to add more.
     private static Map<Integer, Integer> defaultSelectors = new HashMap<>();
@@ -67,10 +68,9 @@ public class EditorFormServiceImpl implements EditorFormService {
     }
 
     @Reference
-    public void setStaticFormFieldSetRegistry(StaticFormFieldSetRegistry staticFormFieldSetRegistry) {
-        this.staticFormFieldSetRegistry = staticFormFieldSetRegistry;
+    public void setStaticDefinitionsRegistry(StaticDefinitionsRegistry staticDefinitionsRegistry) {
+        this.staticDefinitionsRegistry = staticDefinitionsRegistry;
     }
-
 
     @Override
     public EditorForm getCreateForm(String primaryNodeTypeName, Locale uiLocale, Locale locale, String parentPath) throws EditorFormException {
@@ -98,26 +98,26 @@ public class EditorFormServiceImpl implements EditorFormService {
             }
             JCRNodeWrapper parentNode = getParentNode(existingNode, parentNodePath, session);
             ExtendedNodeType primaryNodeType = nodeTypeRegistry.getNodeType(primaryNodeTypeName);
-            List<ExtendedNodeType> extendMixins = getAvailableMixin(primaryNodeTypeName, parentNode.getResolveSite());
+            List<ExtendedNodeType> extendMixins = getExtendMixins(primaryNodeTypeName, parentNode.getResolveSite());
+
+            SortedSet<EditorFormDefinition> editorFormDefinitions = staticDefinitionsRegistry.getFormDefinitions(primaryNodeTypeName);
+            if (editorFormDefinitions == null) {
+                editorFormDefinitions = staticDefinitionsRegistry.getFormDefinitions(DEFAULT_FORM_DEFINITION_NAME);
+            }
+            if (editorFormDefinitions == null) {
+                logger.error("Couldn't find any form definitions, even default is missing !");
+                return null;
+            }
+            EditorFormDefinition mergedFormDefinition = mergeFormDefinitions(editorFormDefinitions);
 
             Map<String, EditorFormSection> formSectionsByName = new HashMap<>();
 
-            String sectionName = "content";
-            String sectionDisplayName = sectionName;  // todo resolve form resource bundles.
-            String sectionDescription = "";  // todo resolve form resource bundles.
-            Double sectionRank = 1.0;
-            Double sectionPriority = 1.0;
+            EditorFormFieldSet primaryNodeTypeFieldSet = generateEditorFormFieldSet(primaryNodeType, existingNode, locale, uiLocale, false, true);
 
-            List<EditorFormFieldSet> sectionFieldSets = new ArrayList<>();
-            EditorFormFieldSet mergedFieldSet = generateEditorFormFieldSet(primaryNodeType, existingNode, locale, uiLocale, false, true);
+            primaryNodeTypeFieldSet = mergeWithStaticFormFieldSets(primaryNodeTypeName, primaryNodeTypeFieldSet);
+            primaryNodeTypeFieldSet = processValueConstraints(primaryNodeTypeFieldSet, locale, existingNode, parentNode);
 
-            mergedFieldSet = mergeWithStaticForms(primaryNodeTypeName, mergedFieldSet);
-            mergedFieldSet = processValueConstraints(mergedFieldSet, locale, existingNode, parentNode);
-
-            sectionFieldSets.add(mergedFieldSet);
-
-            EditorFormSection section = new EditorFormSection(sectionName, sectionDisplayName, sectionDescription, sectionRank, sectionPriority, sectionFieldSets);
-            formSectionsByName.put(section.getName(), section);
+            addFieldSetToSections(formSectionsByName, primaryNodeTypeFieldSet);
 
             for (ExtendedNodeType extendMixinNodeType : extendMixins) {
                 Boolean activated = false;
@@ -126,45 +126,79 @@ public class EditorFormServiceImpl implements EditorFormService {
                 }
                 EditorFormFieldSet extendMixinFieldSet = generateEditorFormFieldSet(extendMixinNodeType, existingNode, locale, uiLocale, true, activated);
 
-                extendMixinFieldSet = mergeWithStaticForms(extendMixinNodeType.getName(), extendMixinFieldSet);
+                extendMixinFieldSet = mergeWithStaticFormFieldSets(extendMixinNodeType.getName(), extendMixinFieldSet);
                 extendMixinFieldSet = processValueConstraints(extendMixinFieldSet, locale, existingNode, parentNode);
 
-                String targetSectionName = null;
-                for (EditorFormField field : extendMixinFieldSet.getEditorFormFields()) {
-                    // let's check what target they have in case we have to move them.
-                    if (targetSectionName == null) {
-                        targetSectionName = field.getTarget().getSectionName();
-                    } else if (!targetSectionName.equals(field.getTarget().getSectionName())) {
-                        // field should be moved to another section, but in which field set ?
-                        // todo to be implemented
-                    }
-
-                }
-                if (targetSectionName == null) {
-                    targetSectionName = "content";
-                }
-                EditorFormSection targetSection = formSectionsByName.get(targetSectionName);
-                if (targetSection == null) {
-                    String targetSectionDisplayName = targetSectionName; // todo reso   lve proper display name from resource bundles
-                    String targetSectionDescription = ""; // todo resolve proper description from resource bundles
-                    Double targetSectionRank = 1.0;
-                    Double targetSectionPriority = 1.0;
-                    targetSection = new EditorFormSection(targetSectionName, targetSectionDisplayName, targetSectionDescription, targetSectionRank, targetSectionPriority, new ArrayList<>());
-                }
-                targetSection.getFieldSets().add(extendMixinFieldSet);
-                formSectionsByName.put(targetSection.getName(), targetSection);
+                addFieldSetToSections(formSectionsByName, extendMixinFieldSet);
             }
 
+            List<EditorFormSection> sortedSections = sortSections(formSectionsByName, mergedFormDefinition);
+
             String formName = primaryNodeTypeName;
-            String formDisplayName = formName; // todo resolve form resource bundles.
-            String formDescription = "";  // todo resolve form resource bundles.
-            Double formPriority = 1.0; // todo implement merging
-            EditorForm editorForm = new EditorForm(formName, formDisplayName, formDescription, formPriority, new ArrayList<>(formSectionsByName.values())); // todo order form sections by rank
+            String formDisplayName = primaryNodeType.getLabel(uiLocale);
+            String formDescription = primaryNodeType.getDescription(uiLocale);
+            EditorForm editorForm = new EditorForm(formName, formDisplayName, formDescription, sortedSections);
 
             return editorForm;
         } catch (RepositoryException e) {
             throw new EditorFormException("Error while building edit form definition for node: " + nodePath + " and nodeType: " + primaryNodeTypeName, e);
         }
+    }
+
+    private EditorFormDefinition mergeFormDefinitions(SortedSet<EditorFormDefinition> editorFormDefinitions) {
+        EditorFormDefinition mergedEditorFormDefinition = null;
+        for (EditorFormDefinition editorFormDefinition : editorFormDefinitions) {
+            if (mergedEditorFormDefinition == null) {
+                mergedEditorFormDefinition = editorFormDefinition;
+            } else {
+                mergedEditorFormDefinition = mergedEditorFormDefinition.mergeWith(editorFormDefinition);
+            }
+        }
+        return mergedEditorFormDefinition;
+    }
+
+    private List<EditorFormSection> sortSections(Map<String, EditorFormSection> formSectionsByName, EditorFormDefinition editorFormDefinition) {
+        List<EditorFormSection> sortedFormSections = new ArrayList<>();
+        for (EditorFormSectionDefinition sectionDefinition : editorFormDefinition.getSections()) {
+            EditorFormSection formSection = formSectionsByName.get(sectionDefinition.getName());
+            if (formSection != null) {
+                Collections.sort(formSection.getFieldSets());
+                sortedFormSections.add(formSection);
+            }
+        }
+        return sortedFormSections;
+    }
+
+    private void addFieldSetToSections(Map<String, EditorFormSection> formSectionsByName, EditorFormFieldSet formFieldSet) {
+        String targetSectionName = resolveMainSectionName(formFieldSet);
+        EditorFormSection targetSection = formSectionsByName.get(targetSectionName);
+        if (targetSection == null) {
+            String targetSectionDisplayName = targetSectionName; // todo resolve proper display name from resource bundles
+            String targetSectionDescription = ""; // todo resolve proper description from resource bundles
+            Double targetSectionRank = 1.0;
+            Double targetSectionPriority = 1.0;
+            targetSection = new EditorFormSection(targetSectionName, targetSectionDisplayName, targetSectionDescription, targetSectionRank, targetSectionPriority, new ArrayList<>());
+        }
+        formFieldSet.setRank((double) targetSection.getFieldSets().size() + 1);
+        targetSection.getFieldSets().add(formFieldSet);
+        formSectionsByName.put(targetSection.getName(), targetSection);
+    }
+
+    private String resolveMainSectionName(EditorFormFieldSet extendMixinFieldSet) {
+        String targetSectionName = null;
+        for (EditorFormField field : extendMixinFieldSet.getEditorFormFields()) {
+            // let's check what target they have in case we have to move them.
+            if (targetSectionName == null) {
+                targetSectionName = field.getTarget().getSectionName();
+            } else if (!targetSectionName.equals(field.getTarget().getSectionName())) {
+                // field should be moved to another section, but in which field set ?
+                // todo to be implemented
+            }
+        }
+        if (targetSectionName == null) {
+            targetSectionName = "content";
+        }
+        return targetSectionName;
     }
 
     private JCRNodeWrapper getParentNode(JCRNodeWrapper existingNode, String parentPath, JCRSessionWrapper session) throws RepositoryException {
@@ -228,8 +262,8 @@ public class EditorFormServiceImpl implements EditorFormService {
         return node;
     }
 
-    private EditorFormFieldSet mergeWithStaticForms(String nodeTypeName, EditorFormFieldSet mergedEditorFormFieldSet) {
-        SortedSet<EditorFormFieldSet> staticEditorFormFieldSets = staticFormFieldSetRegistry.getForm(nodeTypeName);
+    private EditorFormFieldSet mergeWithStaticFormFieldSets(String nodeTypeName, EditorFormFieldSet mergedEditorFormFieldSet) {
+        SortedSet<EditorFormFieldSet> staticEditorFormFieldSets = staticDefinitionsRegistry.getFormFieldSets(nodeTypeName);
         if (staticEditorFormFieldSets == null) {
             return mergedEditorFormFieldSet;
         }
@@ -423,7 +457,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         return JCRSessionFactory.getInstance().getCurrentUserSession(Constants.EDIT_WORKSPACE, locale);
     }
 
-    private List<ExtendedNodeType> getAvailableMixin(String type, JCRSiteNode site) throws NoSuchNodeTypeException {
+    private List<ExtendedNodeType> getExtendMixins(String type, JCRSiteNode site) throws NoSuchNodeTypeException {
         ArrayList<ExtendedNodeType> res = new ArrayList<ExtendedNodeType>();
         Set<String> foundTypes = new HashSet<String>();
 
