@@ -15,7 +15,7 @@ export const TextAreaField = ({id, field}) => {
                 return (
                     <TextArea id={id}
                               name={name}
-                              value={value}
+                              value={value || ''}
                               disabled={field.readOnly}
                               onChange={onChange}
                     />
