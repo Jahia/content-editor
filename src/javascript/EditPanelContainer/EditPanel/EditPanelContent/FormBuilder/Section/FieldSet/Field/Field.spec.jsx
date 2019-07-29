@@ -37,7 +37,9 @@ describe('Field component', () => {
             formik: {},
             t: i18nKey => i18nKey,
             dxContext: {},
-            actionContext: {}
+            actionContext: {},
+            input: <></>,
+            idInput: 'FieldID'
         };
     });
 
@@ -100,7 +102,7 @@ describe('Field component', () => {
     });
 
     it('should add labelHtmlFor to the label and the field should have a defined id attribute', () => {
-        defaultProps.input = <Text/>;
+        defaultProps.input = <Text id="text"/>;
         const cmp = shallowWithTheme(
             <Field {...defaultProps}/>,
             {},
@@ -108,21 +110,11 @@ describe('Field component', () => {
         );
 
         expect(cmp.debug()).toContain('yoloHtmlFor');
-        // Todo: BACKLOG-10755 fix test on id (move it to Field,container if necessary
-        // expect(cmp.dive().dive().debug()).toContain('id="text"');
+        expect(cmp.dive().dive().debug()).toContain('id="text"');
     });
-    // Todo: BACKLOG-10753 fix it !
-    /* it('should display the contextualMenu when action exists', () => {
-        let setActionContextFn;
 
-        const Component = ({setActionContext}) => {
-            setActionContextFn = setActionContext;
-            return null;
-        };
-
-        defaultProps.selectorType = {
-            cmp: Component
-        };
+    it('should display the contextualMenu when action exists', () => {
+        defaultProps.actionContext.noAction = false;
 
         const cmp = shallowWithTheme(
             <Field {...defaultProps}/>,
@@ -130,19 +122,18 @@ describe('Field component', () => {
             dsGenericTheme
         );
 
-        cmp.dive().dive().find('Component').dive();
-        setActionContextFn(() => ({noAction: false, contextHasChange: true}));
-
-        expect(cmp.debug()).toContain('ContextualMenu');
+        expect(cmp.dive().dive().debug()).toContain('ContextualMenu');
     });
 
     it('should not display the contextualMenu when action does not exist', () => {
+        defaultProps.actionContext.noAction = true;
+
         const cmp = shallowWithTheme(
             <Field {...defaultProps}/>,
             {},
             dsGenericTheme
         );
 
-        expect(cmp.debug()).not.toContain('ContextualMenu');
-    }); */
+        expect(cmp.dive().dive().debug()).not.toContain('ContextualMenu');
+    });
 });
