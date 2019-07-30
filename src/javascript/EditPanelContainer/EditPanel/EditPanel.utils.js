@@ -4,24 +4,34 @@ export function isSystemField(fieldKey) {
     return fieldKey in EditPanelConstants.systemFields;
 }
 
-export function getPropertiesToMutate(nodeData = {}, formValues = {}, fields = [], lang) {
+export function getAllFields(sections) {
+    return sections.reduce((fields, section) => {
+        const fieldSetsFields = section.fieldSets.reduce((fieldSetsField, fieldset) => {
+            return [...fieldSetsField, ...fieldset.fields];
+        }, []);
+        return [...fields, ...fieldSetsFields];
+    }, []);
+}
+
+export function getPropertiesToMutate(nodeData = {}, formValues = {}, sections, lang) {
     const keys = Object.keys(formValues).filter(key => !isSystemField(key));
-    const filteredFields = fields.filter(field => !field.formDefinition.readOnly);
+    const allFields = sections && getAllFields(sections);
+    const filteredFields = allFields && allFields.filter(field => !field.readOnly);
 
     let propsToSave = [];
     let propsToDelete = [];
 
     keys.forEach(key => {
-        const field = filteredFields.find(field => field.formDefinition && field.formDefinition.name === key);
+        const field = filteredFields.find(field => field.name === key);
 
         if (field) {
             const value = formValues[key];
             if (value) {
-                const fieldType = field.jcrDefinition.requiredType;
+                const fieldType = field.requiredType;
 
                 const valueObj = {};
 
-                if (field.formDefinition.multiple) {
+                if (field.multiple) {
                     valueObj.values = value;
 
                     if (fieldType === 'DATE') {
@@ -45,7 +55,7 @@ export function getPropertiesToMutate(nodeData = {}, formValues = {}, fields = [
                 });
             } else {
                 const nodeProperty = nodeData.properties.find(prop => prop.name === key);
-                if (nodeProperty && (field.formDefinition.multiple ? nodeProperty.values : nodeProperty.value)) {
+                if (nodeProperty && (field.multiple ? nodeProperty.values : nodeProperty.value)) {
                     propsToDelete.push(key);
                 }
             }

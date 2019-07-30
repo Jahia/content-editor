@@ -59,8 +59,8 @@ export const unpublishNode = ({client, nodeData, lang, uiLang, notificationConte
         });
 };
 
-export const saveNode = ({client, nodeData, notificationContext, actions, path, lang, uiLang, values, fields, t}) => {
-    const propertiesToMutate = getPropertiesToMutate(nodeData, values, fields, lang);
+export const saveNode = ({sections, client, nodeData, notificationContext, actions, path, lang, uiLang, values, t}) => {
+    const propertiesToMutate = getPropertiesToMutate(nodeData, values, sections, lang);
 
     client.mutate({
         variables: {

@@ -1,6 +1,7 @@
 /* TODO: BACKLOG-10772 fix/re-implement details panel
 import dayjs from '../../date.config';
  */
+import {getAllFields} from '../EditPanel/EditPanel.utils';
 import {resolveSelectorType} from '../EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes.utils';
 
 /* TODO: BACKLOG-10772 fix/re-implement details panel
@@ -22,12 +23,7 @@ const getFieldValue = field => {
 };
 
 const getInitialValues = sections => {
-    const allFields = sections.reduce((fields, section) => {
-        const fieldSetsFields = section.fieldSets.reduce((fieldSetsField, fieldset) => {
-            return [...fieldSetsField, ...fieldset.fields];
-        }, []);
-        return [...fields, ...fieldSetsFields];
-    }, []);
+    const allFields = getAllFields(sections);
 
     return allFields.reduce((initialValues, field) => {
         return {

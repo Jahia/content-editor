@@ -1,7 +1,76 @@
-import {getPropertiesToMutate, encodeJCRPath, extractRangeConstraints} from './EditPanel.utils';
+import {getPropertiesToMutate, encodeJCRPath, extractRangeConstraints, getAllFields} from './EditPanel.utils';
 
 describe('EditPanel utils', () => {
-    describe('getPropertiesToSave', () => {
+    describe('getAllFields', () => {
+        it('should return all fields', () => {
+            const sections = [
+                {
+                    name: 'section1',
+                    fieldSets: [
+                        {
+                            fields: [
+                                {
+                                    name: 'field1',
+                                    requiredType: 'TYPE1',
+                                    multiple: false
+                                },
+                                {
+                                    name: 'field4',
+                                    requiredType: 'TYPE2',
+                                    multiple: false
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'section2',
+                    fieldSets: [
+                        {
+                            fields: [
+                                {
+                                    name: 'field2',
+                                    requiredType: 'TYPE1',
+                                    multiple: false
+                                },
+                                {
+                                    name: 'field3',
+                                    requiredType: 'TYPE2',
+                                    multiple: false
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ];
+
+            const fields = getAllFields(sections);
+
+            expect(fields).toEqual([
+                {
+                    name: 'field1',
+                    requiredType: 'TYPE1',
+                    multiple: false
+                },
+                {
+                    name: 'field4',
+                    requiredType: 'TYPE2',
+                    multiple: false
+                },
+                {
+                    name: 'field2',
+                    requiredType: 'TYPE1',
+                    multiple: false
+                },
+                {
+                    name: 'field3',
+                    requiredType: 'TYPE2',
+                    multiple: false
+                }
+            ]);
+        });
+    });
+    describe('getPropertiesToMutate', () => {
         it('should return the properties', () => {
             const nodeData = {
                 properties: [{
@@ -14,41 +83,35 @@ describe('EditPanel utils', () => {
                 fieldToDelete: undefined,
                 fieldToIgnore: undefined
             };
-            const fields = [{
-                formDefinition: {
-                    name: 'fieldToSave',
-                    multiple: false
-                },
-                jcrDefinition: {
-                    requiredType: 'typeBG'
+            const sections = [
+                {
+                    fieldSets: [
+                        {
+                            fields: [
+                                {
+                                    name: 'fieldToSave',
+                                    requiredType: 'TYPE1',
+                                    multiple: false
+                                },
+                                {
+                                    name: 'fieldToDelete',
+                                    requiredType: 'TYPE2',
+                                    multiple: false
+                                }
+                            ]
+                        }
+                    ]
                 }
-            },
-            {
-                formDefinition: {
-                    name: 'fieldToDelete',
-                    multiple: false
-                },
-                jcrDefinition: {
-                    requiredType: 'typeBG'
-                }
-            },
-            {
-                formDefinition: {
-                    name: 'fieldToIgnore',
-                    multiple: false
-                },
-                jcrDefinition: {
-                    requiredType: 'typeBG'
-                }
-            }];
+            ];
+
             const lang = 'fr';
 
-            const properties = getPropertiesToMutate(nodeData, formValues, fields, lang);
+            const properties = getPropertiesToMutate(nodeData, formValues, sections, lang);
 
             expect(properties.propsToSave).toEqual([{
                 language: 'fr',
                 name: 'fieldToSave',
-                type: 'typeBG',
+                type: 'TYPE1',
                 value: 'will be saved'
             }]);
 
