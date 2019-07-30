@@ -28,7 +28,6 @@ export const EditPanelContainer = ({client, notificationContext, t, path, lang, 
         loading,
         error,
         errorMessage,
-
         nodeData,
         initialValues,
         details,
@@ -69,7 +68,6 @@ export const EditPanelContainer = ({client, notificationContext, t, path, lang, 
             actions.setSubmitting(false);
         }
 
-        // TODO BACKLOG-10734 rewrite this action with less args, maybe add adapter level
         submitAction({
             client,
             nodeData,
@@ -79,7 +77,8 @@ export const EditPanelContainer = ({client, notificationContext, t, path, lang, 
             actions,
             t,
             path,
-            values
+            values,
+            sections
         });
     };
 

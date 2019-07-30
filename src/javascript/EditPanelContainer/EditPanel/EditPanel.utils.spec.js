@@ -1,7 +1,7 @@
 import {getPropertiesToMutate, encodeJCRPath, extractRangeConstraints} from './EditPanel.utils';
 
 describe('EditPanel utils', () => {
-    describe('getPropertiesToSave', () => {
+    describe('getPropertiesToMutate', () => {
         it('should return the properties', () => {
             const nodeData = {
                 properties: [{
@@ -14,41 +14,35 @@ describe('EditPanel utils', () => {
                 fieldToDelete: undefined,
                 fieldToIgnore: undefined
             };
-            const fields = [{
-                formDefinition: {
-                    name: 'fieldToSave',
-                    multiple: false
-                },
-                jcrDefinition: {
-                    requiredType: 'typeBG'
+            const sections = [
+                {
+                    fieldSets: [
+                        {
+                            fields: [
+                                {
+                                    name: 'fieldToSave',
+                                    requiredType: 'TYPE1',
+                                    multiple: false
+                                },
+                                {
+                                    name: 'fieldToDelete',
+                                    requiredType: 'TYPE2',
+                                    multiple: false
+                                }
+                            ]
+                        }
+                    ]
                 }
-            },
-            {
-                formDefinition: {
-                    name: 'fieldToDelete',
-                    multiple: false
-                },
-                jcrDefinition: {
-                    requiredType: 'typeBG'
-                }
-            },
-            {
-                formDefinition: {
-                    name: 'fieldToIgnore',
-                    multiple: false
-                },
-                jcrDefinition: {
-                    requiredType: 'typeBG'
-                }
-            }];
+            ];
+
             const lang = 'fr';
 
-            const properties = getPropertiesToMutate(nodeData, formValues, fields, lang);
+            const properties = getPropertiesToMutate(nodeData, formValues, sections, lang);
 
             expect(properties.propsToSave).toEqual([{
                 language: 'fr',
                 name: 'fieldToSave',
-                type: 'typeBG',
+                type: 'TYPE1',
                 value: 'will be saved'
             }]);
 
