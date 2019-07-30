@@ -119,9 +119,9 @@ describe('adaptFormData', () => {
         });
     });
 
-    /* TODO: BACKLOG-10772 fix/re-implement details panel
     it('should add details object with data needed', () => {
-        graphqlResponse.forms.editForm.fields[0].readOnly = true;
+        graphqlResponse.forms.editForm.sections[0].name = 'metadata';
+        graphqlResponse.forms.editForm.sections[0].fieldSets[0].fields[0].readOnly = true;
         expect(adaptFormData(graphqlResponse, 'fr', t).details).toEqual([
             {
                 label: 'labelled',
@@ -131,15 +131,16 @@ describe('adaptFormData', () => {
     });
 
     it('should display the date according to user preference', () => {
-        graphqlResponse.forms.editForm.fields[0].selectorType = 'DatePicker';
-        graphqlResponse.forms.editForm.fields[0].readOnly = true;
+        graphqlResponse.forms.editForm.sections[0].name = 'metadata';
+        graphqlResponse.forms.editForm.sections[0].fieldSets[0].fields[0].selectorType = 'DatePicker';
+        graphqlResponse.forms.editForm.sections[0].fieldSets[0].fields[0].readOnly = true;
         expect(adaptFormData(graphqlResponse, 'fr', t).details).toEqual([
             {
                 label: 'labelled',
                 value: 'formatted date: 2019-05-07T11:33:31.056 format: L HH:mm'
             }
         ]);
-    }); */
+    });
 
     it('should add technicalInfo object', () => {
         expect(adaptFormData(graphqlResponse, 'fr', t).technicalInfo).toEqual([
