@@ -111,19 +111,27 @@ public class EditorFormServiceImpl implements EditorFormService {
 
             Map<String, EditorFormSection> formSectionsByName = new HashMap<>();
 
+            Set<String> processedNodeTypes = new HashSet<>();
             generateAndMergeFieldSetForType(primaryNodeTypeName, uiLocale, locale, existingNode, parentNode, primaryNodeType, formSectionsByName, false, true);
+            processedNodeTypes.add(primaryNodeTypeName);
 
             for (ExtendedNodeType superType : primaryNodeType.getSupertypes()) {
                 generateAndMergeFieldSetForType(superType.getName(), uiLocale, locale, existingNode, parentNode, superType, formSectionsByName, false, true);
+                processedNodeTypes.add(superType.getName());
             }
 
             List<ExtendedNodeType> extendMixins = getExtendMixins(primaryNodeTypeName, parentNode.getResolveSite());
             for (ExtendedNodeType extendMixinNodeType : extendMixins) {
+                if (processedNodeTypes.contains(extendMixinNodeType.getName())) {
+                    // ignore already process node types
+                    continue;
+                }
                 Boolean activated = false;
                 if (existingNode != null && existingNode.isNodeType(extendMixinNodeType.getName())) {
                     activated = true;
                 }
                 generateAndMergeFieldSetForType(extendMixinNodeType.getName(), uiLocale, locale, existingNode, parentNode, extendMixinNodeType, formSectionsByName, true, activated);
+                processedNodeTypes.add(extendMixinNodeType.getName());
             }
 
             List<EditorFormSection> sortedSections = sortSections(formSectionsByName, mergedFormDefinition);
