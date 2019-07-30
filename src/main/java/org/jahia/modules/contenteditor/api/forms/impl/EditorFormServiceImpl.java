@@ -183,8 +183,8 @@ public class EditorFormServiceImpl implements EditorFormService {
         String targetSectionName = resolveMainSectionName(formFieldSet);
         EditorFormSection targetSection = formSectionsByName.get(targetSectionName);
         if (targetSection == null) {
-            String targetSectionDisplayName = targetSectionName; // todo resolve proper display name from resource bundles
-            String targetSectionDescription = ""; // todo resolve proper description from resource bundles
+            String targetSectionDisplayName = targetSectionName; // todo https://jira.jahia.org/browse/BACKLOG-10736 resolve proper display name from resource bundles
+            String targetSectionDescription = ""; // todo https://jira.jahia.org/browse/BACKLOG-10736 resolve proper description from resource bundles
             Double targetSectionRank = 1.0;
             Double targetSectionPriority = 1.0;
             targetSection = new EditorFormSection(targetSectionName, targetSectionDisplayName, targetSectionDescription, targetSectionRank, targetSectionPriority, new ArrayList<>());
@@ -206,7 +206,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                 targetSectionName = field.getTarget().getSectionName();
             } else if (!targetSectionName.equals(field.getTarget().getSectionName())) {
                 // field should be moved to another section, but in which field set ?
-                // todo to be implemented
+                // todo should we do this ?
             }
         }
         if (targetSectionName == null) {
