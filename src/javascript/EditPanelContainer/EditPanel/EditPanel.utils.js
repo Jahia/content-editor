@@ -4,11 +4,15 @@ export function isSystemField(fieldKey) {
     return fieldKey in EditPanelConstants.systemFields;
 }
 
-export function getAllFields(sections) {
+export function getAllFields(sections, sectionName) {
     return sections.reduce((fields, section) => {
-        const fieldSetsFields = section.fieldSets.reduce((fieldSetsField, fieldset) => {
-            return [...fieldSetsField, ...fieldset.fields];
-        }, []);
+        let fieldSetsFields = [];
+        if (!sectionName || sectionName === section.name) {
+            fieldSetsFields = section.fieldSets.reduce((fieldSetsField, fieldset) => {
+                return [...fieldSetsField, ...fieldset.fields];
+            }, []);
+        }
+
         return [...fields, ...fieldSetsFields];
     }, []);
 }

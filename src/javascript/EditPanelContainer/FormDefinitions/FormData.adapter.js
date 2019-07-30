@@ -1,12 +1,7 @@
-/* TODO: BACKLOG-10772 fix/re-implement details panel
 import dayjs from '../../date.config';
- */
 import {getAllFields} from '../EditPanel/EditPanel.utils';
 import {resolveSelectorType} from '../EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes.utils';
 
-/* TODO: BACKLOG-10772 fix/re-implement details panel
-const isDetailField = field => field.readOnly && field.targets.find(target => target.name === 'metadata');
-*/
 const getFieldValue = field => {
     const selectorType = resolveSelectorType(field);
     if (selectorType) {
@@ -33,10 +28,15 @@ const getInitialValues = sections => {
     }, {});
 };
 
-/* TODO: BACKLOG-10772 fix/re-implement details panel
-const getDetailsValue = (formDefinition, nodeData, lang) => {
-    return formDefinition.sections.fieldSets.fields
-        .filter(isDetailField)
+const getDetailsValue = (sections = [], nodeData, lang) => {
+    const allFields = getAllFields(sections, 'metadata');
+
+    if (!allFields) {
+        return [];
+    }
+
+    return allFields
+        .filter(field => field.readOnly)
         .map(field => {
             const jcrDefinition = nodeData.properties.find(
                 prop => prop.name === field.name
@@ -56,7 +56,7 @@ const getDetailsValue = (formDefinition, nodeData, lang) => {
                 value: jcrDefinition && jcrDefinition.value
             };
         });
-}; */
+};
 
 const getTechnicalInfo = (nodeData, t) => {
     return [
@@ -68,9 +68,6 @@ const getTechnicalInfo = (nodeData, t) => {
 };
 
 export const adaptFormData = (data, lang, t) => {
-    /* TODO: BACKLOG-10772 fix/re-implement details panel
-    const formDefinition = data.forms.editForm;
-    */
     const nodeData = data.jcr.result;
     const sections = data.forms.editForm.sections;
 
@@ -78,7 +75,7 @@ export const adaptFormData = (data, lang, t) => {
         sections,
         initialValues: getInitialValues(sections),
         nodeData,
-        details: [], // TODO: BACKLOG-10772 fix/re-implement details panel. getDetailsValue(formDefinition, nodeData, lang),
+        details: getDetailsValue(sections, nodeData, lang),
         technicalInfo: getTechnicalInfo(nodeData, t)
     };
 };
