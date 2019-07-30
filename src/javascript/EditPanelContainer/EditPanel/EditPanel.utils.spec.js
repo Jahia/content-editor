@@ -1,6 +1,75 @@
-import {getPropertiesToMutate, encodeJCRPath, extractRangeConstraints} from './EditPanel.utils';
+import {getPropertiesToMutate, encodeJCRPath, extractRangeConstraints, getAllFields} from './EditPanel.utils';
 
 describe('EditPanel utils', () => {
+    describe('getAllFields', () => {
+        it('should return all fields', () => {
+            const sections = [
+                {
+                    name: 'section1',
+                    fieldSets: [
+                        {
+                            fields: [
+                                {
+                                    name: 'field1',
+                                    requiredType: 'TYPE1',
+                                    multiple: false
+                                },
+                                {
+                                    name: 'field4',
+                                    requiredType: 'TYPE2',
+                                    multiple: false
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'section2',
+                    fieldSets: [
+                        {
+                            fields: [
+                                {
+                                    name: 'field2',
+                                    requiredType: 'TYPE1',
+                                    multiple: false
+                                },
+                                {
+                                    name: 'field3',
+                                    requiredType: 'TYPE2',
+                                    multiple: false
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ];
+
+            const fields = getAllFields(sections);
+
+            expect(fields).toEqual([
+                {
+                    name: 'field1',
+                    requiredType: 'TYPE1',
+                    multiple: false
+                },
+                {
+                    name: 'field4',
+                    requiredType: 'TYPE2',
+                    multiple: false
+                },
+                {
+                    name: 'field2',
+                    requiredType: 'TYPE1',
+                    multiple: false
+                },
+                {
+                    name: 'field3',
+                    requiredType: 'TYPE2',
+                    multiple: false
+                }
+            ]);
+        });
+    });
     describe('getPropertiesToMutate', () => {
         it('should return the properties', () => {
             const nodeData = {
