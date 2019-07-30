@@ -3,6 +3,7 @@ package org.jahia.modules.contenteditor.api.forms;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
+import org.jahia.modules.graphql.provider.dxm.node.GqlJcrPropertyType;
 import org.jahia.services.content.nodetypes.ExtendedPropertyDefinition;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class EditorFormField {
     private String name;
     private String displayName;
     private String description;
-    private String requiredType;
+    private GqlJcrPropertyType requiredType;
     private String selectorType;
     private List<EditorFormProperty> selectorOptions;
     private Boolean i18n;
@@ -38,7 +39,7 @@ public class EditorFormField {
     public EditorFormField(String name,
                            String displayName,
                            String description,
-                           String requiredType,
+                           GqlJcrPropertyType requiredType,
                            String selectorType,
                            List<EditorFormProperty> selectorOptions,
                            Boolean i18n,
@@ -101,7 +102,7 @@ public class EditorFormField {
 
     @GraphQLField
     @GraphQLDescription("The required type for the field")
-    public String getRequiredType() {
+    public GqlJcrPropertyType getRequiredType() {
         return requiredType;
     }
 
@@ -167,7 +168,7 @@ public class EditorFormField {
         return description;
     }
 
-    public void setRequiredType(String requiredType) {
+    public void setRequiredType(GqlJcrPropertyType requiredType) {
         this.requiredType = requiredType;
     }
 

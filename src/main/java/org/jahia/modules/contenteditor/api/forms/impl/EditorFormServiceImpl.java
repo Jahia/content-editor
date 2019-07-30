@@ -3,6 +3,7 @@ package org.jahia.modules.contenteditor.api.forms.impl;
 import org.apache.commons.lang.StringUtils;
 import org.jahia.api.Constants;
 import org.jahia.modules.contenteditor.api.forms.*;
+import org.jahia.modules.graphql.provider.dxm.node.GqlJcrPropertyType;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRPropertyWrapper;
 import org.jahia.services.content.JCRSessionFactory;
@@ -369,7 +370,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                     logger.warn("Couldn't resolve a default selector type for property " + propertyDefinition.getName());
                 }
             }
-            String requiredType = PropertyType.nameFromValue(propertyDefinition.getRequiredType());
+            GqlJcrPropertyType requiredType = GqlJcrPropertyType.fromValue(propertyDefinition.getRequiredType());
             EditorFormField editorFormField = new EditorFormField(propertyDefinition.getName(),
                 propertyLabel,
                 propertyDescription,
