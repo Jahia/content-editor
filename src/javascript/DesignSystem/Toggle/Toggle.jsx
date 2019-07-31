@@ -27,6 +27,9 @@ const styles = theme => {
     };
 
     return {
+        root: {
+            marginLeft: -(theme.spacing.unit + 3)
+        },
         icon: {
             color: theme.palette.ui.epsilon,
             border: `1px solid ${theme.palette.ui.zeta}`,
@@ -134,6 +137,7 @@ const ToggleCmp = ({classes, checked, disabled, readOnly, onChange, onFocus, onB
         <Switch
             disableRipple
             classes={{
+                root: classes.root,
                 icon: classes.icon,
                 iconChecked: classes.iconChecked,
                 switchBase: getSwitchBaseClass(),

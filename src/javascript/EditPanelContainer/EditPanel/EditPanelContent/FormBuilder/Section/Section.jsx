@@ -13,13 +13,14 @@ let styles = theme => ({
         paddingBottom: theme.spacing.unit * 2
     },
     sectionTitle: {
+        textTransform: 'uppercase',
         padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 4}px`
     }
 });
 
 const SectionCmp = ({section, classes}) => {
     return (
-        <section className={classes.section}>
+        <section className={classes.section} data-sel-content-editor-fields-group={section.displayName}>
             <Typography component="h2" className={classes.sectionTitle} color="alpha" variant="gamma">{section.displayName}</Typography>
 
             {section.fieldSets.map(fieldset => {

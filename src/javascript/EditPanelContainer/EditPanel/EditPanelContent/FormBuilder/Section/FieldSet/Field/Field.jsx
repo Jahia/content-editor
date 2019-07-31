@@ -15,8 +15,8 @@ let styles = theme => ({
         flexGrow: 1,
         transform: 'none!important',
         position: 'relative',
-        margin: `0 ${theme.spacing.unit * 4}px`,
-        marginBottom: theme.spacing.unit * 3,
+        paddingLeft: theme.spacing.unit * 4,
+        marginBottom: theme.spacing.unit,
         width: '100%'
     }),
     inputLabel: {
@@ -24,6 +24,7 @@ let styles = theme => ({
         margin: 0,
         width: 'auto',
         padding: 0,
+        paddingLeft: 0,
         color: theme.palette.font.beta,
         display: 'inline-block'
     },
