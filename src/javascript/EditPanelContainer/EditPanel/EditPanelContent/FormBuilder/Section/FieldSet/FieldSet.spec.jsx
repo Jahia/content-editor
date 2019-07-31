@@ -11,6 +11,7 @@ describe('FieldSet component', () => {
         props = {
             fieldset: {
                 displayName: 'FieldSet1',
+                activated: true,
                 fields: [
                     {displayName: 'field1'},
                     {displayName: 'field2'}
@@ -36,4 +37,6 @@ describe('FieldSet component', () => {
             expect(cmp.find({field}).exists()).toBe(true);
         });
     });
+
+    // TODO: Add unit tests for dynamic fieldSets (sub-task: BACKLOG-10732)
 });
