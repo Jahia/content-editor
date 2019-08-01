@@ -104,15 +104,18 @@ describe('adaptFormData', () => {
 
     it('should set values and no value as initialValue when multiple is at true', () => {
         graphqlResponse.forms.editForm.sections[0].fieldSets[0].fields[0].multiple = true;
-        graphqlResponse.jcr.result.properties = [{
-            name: 'field1',
-            values: ['value1', 'value2']
-        }];
+        graphqlResponse.forms.editForm.sections[0].fieldSets[0].fields[0].currentValues = [
+            {string: 'value1'},
+            {string: 'value2'}
+        ];
 
         const initialValues = adaptFormData(graphqlResponse, 'fr', t).initialValues;
 
         expect(initialValues).toEqual({
-            field1: ['value1', 'value2']
+            field1: [
+                {string: 'value1'},
+                {string: 'value2'}
+            ]
         });
     });
 

@@ -2,33 +2,28 @@ import dayjs from '../../date.config';
 import {getAllFields} from '../EditPanel/EditPanel.utils';
 import {resolveSelectorType} from '../EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes.utils';
 
-const getFieldValue = (nodeData, field) => {
-    const property = nodeData.properties.find(prop => prop.name === field.name);
-    if (!property) {
-        return;
-    }
-
+const getFieldValue = field => {
     const selectorType = resolveSelectorType(field);
     if (selectorType) {
         if (selectorType.formatValue) {
-            return selectorType.formatValue(property.value);
+            return selectorType.formatValue(field.currentValues);
         }
 
         if (selectorType.key === 'DateTimePicker' || selectorType.key === 'DatePicker') {
-            return field.multiple ? property.notZonedDateValues : property.notZonedDateValue;
+            return field.multiple ? field.notZonedDateValues : field.notZonedDateValue;
         }
     }
 
-    return field.multiple ? property.values : property.value;
+    return field.multiple ? field.currentValues : (field.currentValues && field.currentValues[0].string);
 };
 
-const getInitialValues = (nodeData, sections) => {
+const getInitialValues = sections => {
     const allFields = getAllFields(sections);
 
     return allFields.reduce((initialValues, field) => {
         return {
             ...initialValues,
-            [field.name]: getFieldValue(nodeData, field)
+            [field.name]: getFieldValue(field)
         };
     }, {});
 };
@@ -78,7 +73,7 @@ export const adaptFormData = (data, lang, t) => {
 
     return {
         sections,
-        initialValues: getInitialValues(nodeData, sections),
+        initialValues: getInitialValues(sections),
         nodeData,
         details: getDetailsValue(sections, nodeData, lang),
         technicalInfo: getTechnicalInfo(nodeData, t)

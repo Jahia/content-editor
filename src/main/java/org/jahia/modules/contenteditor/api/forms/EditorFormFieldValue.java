@@ -8,10 +8,7 @@ import graphql.annotations.annotationTypes.GraphQLName;
 import javax.jcr.PropertyType;
 import javax.jcr.RepositoryException;
 import javax.jcr.Value;
-import java.text.SimpleDateFormat;
 import java.util.Objects;
-
-import static org.jahia.utils.DateUtils.DEFAULT_DATE_FORMAT;
 
 /**
  * Represents a form field value
@@ -19,14 +16,32 @@ import static org.jahia.utils.DateUtils.DEFAULT_DATE_FORMAT;
 public class EditorFormFieldValue {
 
     private String type; // for the moment the type names used are the same as the JCR PropertyType names.
-    private String value;
+    private String stringValue;
+    private Long longValue;
+    private Double doubleValue;
+    private Boolean booleanValue;
 
     public EditorFormFieldValue() {
     }
 
-    public EditorFormFieldValue(String type, String value) {
+    public EditorFormFieldValue(String type, String stringValue) {
         this.type = type;
-        this.value = value;
+        this.stringValue = stringValue;
+    }
+
+    public EditorFormFieldValue(Long longValue) {
+        this.type = PropertyType.TYPENAME_LONG;
+        this.longValue = longValue;
+    }
+
+    public EditorFormFieldValue(Double doubleValue) {
+        this.type = PropertyType.TYPENAME_DOUBLE;
+        this.doubleValue = doubleValue;
+    }
+
+    public EditorFormFieldValue(Boolean booleanValue) {
+        this.type = PropertyType.TYPENAME_BOOLEAN;
+        this.booleanValue = booleanValue;
     }
 
     public EditorFormFieldValue(Value value) throws RepositoryException {
@@ -39,37 +54,27 @@ public class EditorFormFieldValue {
             case PropertyType.UNDEFINED:
             case PropertyType.URI:
             case PropertyType.WEAKREFERENCE:
-                this.value = value.getString();
+                this.stringValue = value.getString();
                 break;
             case PropertyType.LONG:
-                this.value = String.valueOf(value.getLong());
+                this.longValue = value.getLong();
                 break;
             case PropertyType.DOUBLE:
-                this.value = String.valueOf(value.getDouble());
-                break;
-            case PropertyType.DECIMAL:
-                this.value = String.valueOf(value.getDecimal());
+                this.doubleValue = value.getDouble();
                 break;
             case PropertyType.DATE:
-                // Handle date for the content editor
-                SimpleDateFormat defaultDataFormat = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
-                this.value = defaultDataFormat.format(value.getDate().getTime());
+                this.longValue = value.getDate().getTimeInMillis();
                 break;
             case PropertyType.BOOLEAN:
-                this.value = String.valueOf(value.getBoolean());
+                this.booleanValue = value.getBoolean();
                 break;
             case PropertyType.BINARY:
                 // todo to be implemented
                 break;
+            case PropertyType.DECIMAL:
+                // todo not yet supported
+                break;
         }
-    }
-
-    @GraphQLField
-    @GraphQLName("string")
-    @GraphQLDescription("This value's string representation")
-    @JsonProperty("string")
-    public String getStringValue() {
-        return value;
     }
 
     @GraphQLField
@@ -78,8 +83,61 @@ public class EditorFormFieldValue {
         return type;
     }
 
+    @GraphQLField
+    @GraphQLName("string")
+    @GraphQLDescription("This value's string representation")
+    @JsonProperty("string")
+    public String getStringValue() {
+        return stringValue;
+    }
+
+    @GraphQLField
+    @GraphQLName("long")
+    @GraphQLDescription("This value's long representation")
+    @JsonProperty("long")
+    public Long getLongValue() {
+        return longValue;
+    }
+
+    @GraphQLField
+    @GraphQLName("double")
+    @GraphQLDescription("This value's double representation")
+    @JsonProperty("double")
+    public Double getDoubleValue() {
+        return doubleValue;
+    }
+
+    @GraphQLField
+    @GraphQLName("boolean")
+    @GraphQLDescription("This value's boolean representation")
+    @JsonProperty("boolean")
+    public Boolean getBooleanValue() {
+        return booleanValue;
+    }
+
     @Override
     public String toString() {
-        return "EditorFormFieldValue{type='" + type + '\''+ ", value='" + value + '\'' + '}';
+        return "EditorFormFieldValue{type='" + type + '\''+ ", stringValue='" + stringValue + '\'' + ", longValue=" + longValue
+                + ", doubleValue=" + doubleValue + ", booleanValue=" + booleanValue + '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        EditorFormFieldValue that = (EditorFormFieldValue) o;
+        return Objects.equals(type, that.type)
+                && Objects.equals(stringValue, that.stringValue)
+                && Objects.equals(longValue, that.longValue)
+                && Objects.equals(doubleValue, that.doubleValue)
+                && Objects.equals(booleanValue, that.booleanValue);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, stringValue, longValue, doubleValue, booleanValue);
+    }
+
 }
