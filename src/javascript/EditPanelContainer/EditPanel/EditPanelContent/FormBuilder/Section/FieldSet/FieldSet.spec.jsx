@@ -16,7 +16,8 @@ describe('FieldSet component', () => {
                     {displayName: 'field1'},
                     {displayName: 'field2'}
                 ]
-            }
+            },
+            formik: {}
         };
     });
 
@@ -25,13 +26,23 @@ describe('FieldSet component', () => {
             <FieldSet {...props}/>,
             {},
             dsGenericTheme
-        ).dive();
+        )
+            .dive()
+            .dive()
+            .dive();
 
         expect(cmp.debug()).toContain(props.fieldset.displayName);
     });
 
     it('should display Field for each field in the FieldSet', () => {
-        const cmp = shallowWithTheme(<FieldSet {...props}/>, {}, dsGenericTheme).dive();
+        const cmp = shallowWithTheme(
+            <FieldSet {...props}/>,
+            {},
+            dsGenericTheme
+        )
+            .dive()
+            .dive()
+            .dive();
 
         props.fieldset.fields.forEach(field => {
             expect(cmp.find({field}).exists()).toBe(true);

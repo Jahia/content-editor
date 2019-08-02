@@ -1,15 +1,17 @@
 import gql from 'graphql-tag';
 
 export const SavePropertiesMutation = gql`
-    mutation saveNodeProperties($path:String!, $propertiesToSave:[InputJCRProperty], $propertiesToDelete: [String], $language: String) {
+    mutation saveNodeProperties($path:String!, $propertiesToSave: [InputJCRProperty], $propertiesToDelete: [String], $mixinsToAdd: [String]!, $mixinsToDelete: [String]!, $language: String) {
         jcr {
             mutateNode(pathOrId: $path) {
-                setPropertiesBatch(properties: $propertiesToSave){
+                addMixins(mixins: $mixinsToAdd)
+                setPropertiesBatch(properties: $propertiesToSave) {
                     path
                 }
                 mutateProperties(names: $propertiesToDelete) {
                     delete(language: $language)
                 }
+                removeMixins(mixins: $mixinsToDelete)
             }
         }
     }

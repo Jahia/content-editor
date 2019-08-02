@@ -1,4 +1,9 @@
-import {getPropertiesToMutate, encodeJCRPath, extractRangeConstraints, getAllFields} from './EditPanel.utils';
+import {
+    encodeJCRPath,
+    extractRangeConstraints,
+    getAllFields,
+    getDataToMutate
+} from './EditPanel.utils';
 
 describe('EditPanel utils', () => {
     describe('getAllFields', () => {
@@ -70,7 +75,7 @@ describe('EditPanel utils', () => {
             ]);
         });
     });
-    describe('getPropertiesToMutate', () => {
+    describe('getDataToMutate', () => {
         it('should return the properties', () => {
             const nodeData = {
                 properties: [{
@@ -106,7 +111,7 @@ describe('EditPanel utils', () => {
 
             const lang = 'fr';
 
-            const properties = getPropertiesToMutate(nodeData, formValues, sections, lang);
+            const properties = getDataToMutate(nodeData, formValues, sections, lang);
 
             expect(properties.propsToSave).toEqual([{
                 language: 'fr',

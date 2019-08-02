@@ -113,6 +113,7 @@ describe('EditPanel redux actions', () => {
                     mutate: jest.fn(() => Promise.resolve())
                 },
                 nodeData: {},
+                sections: [],
                 notificationContext: {notify: jest.fn()},
                 actions: {setSubmitting: jest.fn()},
                 t: jest.fn()

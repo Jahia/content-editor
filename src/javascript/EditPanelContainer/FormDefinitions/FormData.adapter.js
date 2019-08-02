@@ -1,35 +1,18 @@
 import dayjs from '../../date.config';
-import {getAllFields} from '../EditPanel/EditPanel.utils';
-import {resolveSelectorType} from '../EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes.utils';
-
-const getFieldValue = field => {
-    const selectorType = resolveSelectorType(field);
-    if (selectorType) {
-        if (selectorType.formatValue) {
-            return selectorType.formatValue(field.currentValues);
-        }
-
-        if (selectorType.key === 'DateTimePicker' || selectorType.key === 'DatePicker') {
-            return field.multiple ? field.notZonedDateValues : field.notZonedDateValue;
-        }
-    }
-
-    return field.multiple ? field.currentValues : (field.currentValues && field.currentValues[0].string);
-};
+import {getAllFields, getReducedFields} from '../EditPanel/EditPanel.utils';
 
 const getInitialValues = sections => {
     const allFields = getAllFields(sections);
+    const allDynamicFieldSets = getAllFields(sections, true);
 
-    return allFields.reduce((initialValues, field) => {
-        return {
-            ...initialValues,
-            [field.name]: getFieldValue(field)
-        };
-    }, {});
+    const fields = getReducedFields(allFields, false);
+    const fieldSets = getReducedFields(allDynamicFieldSets, true);
+
+    return {...fields, ...fieldSets};
 };
 
 const getDetailsValue = (sections = [], nodeData, lang) => {
-    const allFields = getAllFields(sections, 'metadata');
+    const allFields = getAllFields(sections, false, 'metadata');
 
     if (!allFields) {
         return [];
