@@ -11,6 +11,7 @@ describe('Tag component', () => {
             id: 'Tag1',
             field: {
                 name: 'myOption',
+                displayName: 'My option',
                 selectorType: 'Tag',
                 readOnly: false,
                 multiple: true,

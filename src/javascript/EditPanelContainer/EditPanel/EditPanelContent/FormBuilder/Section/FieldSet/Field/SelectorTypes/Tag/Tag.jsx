@@ -8,9 +8,9 @@ import {FieldPropTypes} from '../../../../../../../../FormDefinitions/FormData.p
 
 const Tag = ({field, id, t}) => {
     const adaptOptions = options => (
-        options.map(value => ({
-            value: value,
-            label: value
+        options.map(data => ({
+            value: data.string ? data.string : data,
+            label: data.string ? data.string : data
         }))
     );
 
@@ -22,7 +22,6 @@ const Tag = ({field, id, t}) => {
             name={field.name}
             render={props => {
                 const formikField = props.field;
-
                 const options = field.data && field.data.values && adaptOptions(field.data.values);
 
                 return (
