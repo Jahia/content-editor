@@ -11,7 +11,7 @@ describe('FieldSet component', () => {
         props = {
             fieldset: {
                 displayName: 'FieldSet1',
-                activated: true,
+                dynamic: false,
                 fields: [
                     {displayName: 'field1'},
                     {displayName: 'field2'}
@@ -49,5 +49,33 @@ describe('FieldSet component', () => {
         });
     });
 
-    // TODO: Add unit tests for dynamic fieldSets (sub-task: BACKLOG-10732)
+    it('should display toggle for dynamic FieldSet', () => {
+        props.fieldset.dynamic = true;
+
+        const cmp = shallowWithTheme(
+            <FieldSet {...props}/>,
+            {},
+            dsGenericTheme
+        )
+            .dive()
+            .dive()
+            .dive();
+
+        expect(cmp.find('WithStyles(ToggleCmp)').exists()).toBe(true);
+    });
+
+    it('should not display toggle for non dynamic FieldSet', () => {
+        props.fieldset.dynamic = false;
+
+        const cmp = shallowWithTheme(
+            <FieldSet {...props}/>,
+            {},
+            dsGenericTheme
+        )
+            .dive()
+            .dive()
+            .dive();
+
+        expect(cmp.find('WithStyles(ToggleCmp)').exists()).toBe(false);
+    });
 });
