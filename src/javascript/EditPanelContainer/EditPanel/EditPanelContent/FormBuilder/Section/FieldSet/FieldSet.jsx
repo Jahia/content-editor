@@ -6,6 +6,7 @@ import {withStyles} from '@material-ui/core';
 import {Typography} from '@jahia/design-system-kit';
 import {compose} from 'react-apollo';
 import {Toggle} from '../../../../../../DesignSystem/Toggle';
+import {useContentEditorContext} from '../../../../../ContentEditor.context';
 
 import {FieldSetPropTypes} from '../../../../../FormDefinitions/FormData.proptypes';
 
@@ -29,6 +30,22 @@ let styles = theme => ({
 const FieldSetCmp = ({fieldset, classes, formik: {values, handleChange}}) => {
     const isDynamicFieldSet = fieldset.dynamic;
     const activatedFieldSet = (values && values[fieldset.name]) || !isDynamicFieldSet;
+    const context = useContentEditorContext();
+
+    const isUnderMetadataSection = fieldName => {
+        return context.sections
+            .find(section => section.name === 'metadata')
+            .fieldSets
+            .reduce((result, fieldSet) => {
+                const fieldSetsToHide = [];
+
+                if (fieldSet.fields.find(field => field.name === fieldName)) {
+                    fieldSetsToHide.push(fieldSet);
+                }
+
+                return [...result, ...fieldSetsToHide];
+            }, []);
+    };
 
     return (
         <article className={classes.fieldsetContainer}>
@@ -45,6 +62,10 @@ const FieldSetCmp = ({fieldset, classes, formik: {values, handleChange}}) => {
             </div>
 
             {activatedFieldSet && fieldset.fields.map(field => {
+                if (isUnderMetadataSection(field.name) && field.readOnly) {
+                    return null;
+                }
+
                 return <FieldContainer key={field.name} field={field}/>;
             })}
         </article>
