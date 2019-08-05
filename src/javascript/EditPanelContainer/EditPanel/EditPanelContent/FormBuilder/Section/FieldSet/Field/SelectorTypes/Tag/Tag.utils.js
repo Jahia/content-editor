@@ -20,5 +20,7 @@ export const adaptSelection = (selection, separator) => {
         });
     }
 
-    return adaptedSelection;
+    // We receive from the adaptation of the selection a set of tags, so we should destructure the options in
+    // the array to iterate through it.
+    return [...adaptedSelection];
 };

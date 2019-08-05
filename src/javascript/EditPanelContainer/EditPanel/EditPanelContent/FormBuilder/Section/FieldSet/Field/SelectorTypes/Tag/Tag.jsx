@@ -8,9 +8,7 @@ import {FieldPropTypes} from '../../../../../../../../FormDefinitions/FormData.p
 
 const Tag = ({field, id, t}) => {
     const adaptOptions = options => (
-        // We receive from the adaptation of the selection a set of tags, so we should destructure the options in
-        // the array to iterate through it.
-        [...options].map(data => ({
+        options.map(data => ({
             value: data,
             label: data
         }))

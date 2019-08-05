@@ -7,14 +7,14 @@ describe('Tag utils', () => {
 
         it('should return correct values', () => {
             const adaptedSelection = adaptSelection(selection, separator);
-            expect([...adaptedSelection]).toEqual(selection);
+            expect(adaptedSelection).toEqual(selection);
         });
 
         it('should adapt selection', () => {
             selection = ['engineer , software , data', 'cloud'];
 
             const adaptedSelection = adaptSelection(selection, separator);
-            expect([...adaptedSelection]).toEqual(['engineer', 'software', 'data', 'cloud']);
+            expect(adaptedSelection).toEqual(['engineer', 'software', 'data', 'cloud']);
         });
 
         it('should adapt selection depends on the separator', () => {
@@ -22,7 +22,7 @@ describe('Tag utils', () => {
             selection = ['dev , back , scalable # tdd , ddd , scrum', 'solution'];
 
             const adaptedSelection = adaptSelection(selection, separator);
-            expect([...adaptedSelection]).toEqual(['dev , back , scalable', 'tdd , ddd , scrum', 'solution']);
+            expect(adaptedSelection).toEqual(['dev , back , scalable', 'tdd , ddd , scrum', 'solution']);
         });
     });
 });
