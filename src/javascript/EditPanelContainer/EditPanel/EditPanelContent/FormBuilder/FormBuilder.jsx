@@ -25,8 +25,10 @@ const FormBuilderCmp = ({classes}) => {
     );
 };
 
-FormBuilderCmp.contextType = {
-    sections: SectionsPropTypes.isRequired
+FormBuilderCmp.contextTypes = {
+    context: PropTypes.shape({
+        sections: SectionsPropTypes.isRequired
+    })
 };
 
 FormBuilderCmp.propTypes = {

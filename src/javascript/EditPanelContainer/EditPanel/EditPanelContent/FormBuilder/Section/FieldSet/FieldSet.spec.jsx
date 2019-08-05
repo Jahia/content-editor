@@ -4,6 +4,20 @@ import {dsGenericTheme} from '@jahia/design-system-kit';
 
 import {FieldSet} from './FieldSet';
 
+jest.mock('../../../../../ContentEditor.context', () => {
+    let contextmock;
+    return {
+        useContentEditorContext: () => {
+            return contextmock;
+        },
+        setContext: c => {
+            contextmock = c;
+        }
+    };
+});
+
+import {setContext} from '../../../../../ContentEditor.context';
+
 describe('FieldSet component', () => {
     let props;
 
@@ -19,6 +33,23 @@ describe('FieldSet component', () => {
             },
             formik: {}
         };
+
+        setContext({
+            sections: [
+                {
+                    name: 'metadata',
+                    displayName: 'metadata',
+                    fieldSets: [{
+                        displayName: 'FieldSet1',
+                        dynamic: false,
+                        fields: [
+                            {displayName: 'field1'},
+                            {displayName: 'field2'}
+                        ]
+                    }]
+                }
+            ]
+        });
     });
 
     it('should display FieldSet name', () => {
