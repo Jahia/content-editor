@@ -1,12 +1,12 @@
 import dayjs from '../../date.config';
 import {getAllFields, getReducedFields} from '../EditPanel/EditPanel.utils';
 
-const getInitialValues = sections => {
+const getInitialValues = (nodeData, sections) => {
     const allFields = getAllFields(sections);
     const allDynamicFieldSets = getAllFields(sections, true);
 
-    const fields = getReducedFields(allFields, false);
-    const fieldSets = getReducedFields(allDynamicFieldSets, true);
+    const fields = getReducedFields(allFields, false, nodeData);
+    const fieldSets = getReducedFields(allDynamicFieldSets, true, nodeData);
 
     return {...fields, ...fieldSets};
 };
@@ -56,7 +56,7 @@ export const adaptFormData = (data, lang, t) => {
 
     return {
         sections,
-        initialValues: getInitialValues(sections),
+        initialValues: getInitialValues(nodeData, sections),
         nodeData,
         details: getDetailsValue(sections, nodeData, lang),
         technicalInfo: getTechnicalInfo(nodeData, t)

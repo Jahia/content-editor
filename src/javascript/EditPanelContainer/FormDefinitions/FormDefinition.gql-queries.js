@@ -35,10 +35,7 @@ export const FormQuery = gql`
                             valueConstraints {
                                 value {
                                     type
-                                    boolean
-                                    double
-                                    long
-                                    string  
+                                    string
                                 }
                                 displayValue
                                 properties {
@@ -47,17 +44,6 @@ export const FormQuery = gql`
                                 }
                             }
                             defaultValues {
-                                type
-                                boolean
-                                double
-                                long
-                                string
-                            }
-                            currentValues {
-                                type
-                                boolean
-                                double
-                                long
                                 string
                             }
                         }
