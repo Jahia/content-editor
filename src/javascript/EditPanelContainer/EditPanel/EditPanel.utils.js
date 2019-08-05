@@ -96,11 +96,11 @@ export function getDataToMutate(nodeData = {}, formValues = {}, sections, lang) 
     };
 }
 
-export function getReducedFields(allFields = [], isDynamicFieldSets) {
+export function getReducedFields(allFields = [], isDynamicFieldSets, nodeData) {
     return allFields.reduce((initialValues, field) => {
         return {
             ...initialValues,
-            [field.name]: isDynamicFieldSets ? field.activated : getFieldValue(field)
+            [field.name]: isDynamicFieldSets ? field.activated : getFieldValue(field, nodeData)
         };
     }, {});
 }
@@ -128,7 +128,7 @@ function getMixinsToMutate(nodeData = {}, formValues = {}, sections) {
     let mixinsToDelete = [];
 
     const allDynamicFieldSets = getAllFields(sections, true);
-    const reducedFieldSets = getReducedFields(allDynamicFieldSets, true);
+    const reducedFieldSets = getReducedFields(allDynamicFieldSets, true, nodeData);
     const fieldSets = Object.keys(reducedFieldSets).map(key => ({name: key}));
 
     fieldSets.forEach(fieldSet => {
@@ -148,18 +148,22 @@ function getMixinsToMutate(nodeData = {}, formValues = {}, sections) {
     };
 }
 
-const getFieldValue = field => {
-    const selectorType = resolveSelectorType(field);
+const getFieldValue = (field, nodeData) => {
+    const property = nodeData.properties.find(prop => prop.name === field.name);
+    if (!property) {
+        return;
+    }
 
+    const selectorType = resolveSelectorType(field);
     if (selectorType) {
         if (selectorType.formatValue) {
-            return selectorType.formatValue(field.currentValues);
+            return selectorType.formatValue(property.value);
         }
 
         if (selectorType.key === 'DateTimePicker' || selectorType.key === 'DatePicker') {
-            return field.multiple ? field.notZonedDateValues : field.notZonedDateValue;
+            return field.multiple ? property.notZonedDateValues : property.notZonedDateValue;
         }
     }
 
-    return field.multiple ? field.currentValues : (field.currentValues && field.currentValues[0].string);
+    return field.multiple ? property.values : property.value;
 };
