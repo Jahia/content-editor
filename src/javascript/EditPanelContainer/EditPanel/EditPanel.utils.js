@@ -73,21 +73,6 @@ export function getDataToMutate(nodeData = {}, formValues = {}, sections, lang) 
         }
     });
 
-    mixinsToMutate.mixinsToDelete.forEach(mixin => {
-        const fieldsToDelete = sections
-            .map(section => section.fieldSets.find(fieldSet => fieldSet.name === mixin))
-            .reduce((result, fieldSet) => {
-                if (fieldSet) {
-                    return {...result, ...fieldSet};
-                }
-
-                return {...result};
-            }, {})
-            .fields;
-
-        fieldsToDelete.map(field => propsToDelete.push(field.name));
-    });
-
     return {
         propsToSave,
         propsToDelete,
