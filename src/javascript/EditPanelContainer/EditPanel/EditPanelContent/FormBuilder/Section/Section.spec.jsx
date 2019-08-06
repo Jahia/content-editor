@@ -126,31 +126,4 @@ describe('Section component', () => {
             expect(cmp.find({fieldset}).exists()).toBe(false);
         });
     });
-
-    it('should hide not dynamic fieldSets that contain readOnly fields ', () => {
-        props.section = {
-            name: 'content',
-            displayName: 'content',
-            fieldSets: [
-                {
-                    displayName: 'yo1',
-                    dynamic: false,
-                    fields: []
-                },
-                {
-                    displayName: 'yo2',
-                    dynamic: false,
-                    fields: [
-                        {name: 'field21', displayName: 'field 21', readOnly: true},
-                        {name: 'field22', displayName: 'field 22', readOnly: true}
-                    ]
-                }
-            ]
-        };
-        const cmp = shallowWithTheme(<Section {...props}/>, {}, dsGenericTheme).dive();
-
-        props.section.fieldSets.forEach(fieldset => {
-            expect(cmp.find({fieldset}).exists()).toBe(false);
-        });
-    });
 });

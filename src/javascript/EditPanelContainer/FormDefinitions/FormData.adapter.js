@@ -76,7 +76,7 @@ export const adaptFormData = (data, lang, t) => {
     const sections = data.forms.editForm.sections;
 
     return {
-        sections,
+        sections: adaptSections(sections),
         initialValues: getInitialValues(nodeData, sections),
         nodeData,
         details: getDetailsValue(sections, nodeData, lang),
