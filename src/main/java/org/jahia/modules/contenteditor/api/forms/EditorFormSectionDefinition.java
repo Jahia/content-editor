@@ -6,6 +6,8 @@ package org.jahia.modules.contenteditor.api.forms;
  */
 public class EditorFormSectionDefinition {
     private String name;
+    private String labelKey;
+    private String descriptionKey;
 
     public EditorFormSectionDefinition() {
     }
@@ -22,4 +24,19 @@ public class EditorFormSectionDefinition {
         this.name = name;
     }
 
+    public String getLabelKey() {
+        return labelKey;
+    }
+
+    public void setLabelKey(String labelKey) {
+        this.labelKey = labelKey;
+    }
+
+    public String getDescriptionKey() {
+        return descriptionKey;
+    }
+
+    public void setDescriptionKey(String descriptionKey) {
+        this.descriptionKey = descriptionKey;
+    }
 }

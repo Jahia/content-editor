@@ -3,22 +3,28 @@
   "priority": 1.0,
   "sections": [
     {
-      "name": "content"
+      "name": "content",
+      "labelKey": "label.engineTab.content"
     },
     {
-      "name": "classification"
+      "name": "classification",
+      "labelKey": "label.engineTab.classification"
     },
     {
-      "name": "metadata"
+      "name": "metadata",
+      "labelKey": "label.engineTab.metadata"
     },
     {
-      "name": "layout"
+      "name": "layout",
+      "labelKey": "label.engineTab.layout"
     },
     {
-      "name": "options"
+      "name": "options",
+      "labelKey": "label.engineTab.options"
     },
     {
-      "name": "seo"
+      "name": "seo",
+      "labelKey": "label.engineTab.seo"
     }
   ]
 }
