@@ -9,37 +9,41 @@ import {ContextualMenu} from '@jahia/react-material';
 import {FieldPropTypes} from '../../../../../../FormDefinitions';
 import {SiteInfoPropTypes} from '../../../../../../SiteData';
 
-let styles = theme => ({
-    formControl: Object.assign(theme.typography.zeta, {
-        padding: '8px 0',
+let styles = theme => {
+    const common = {
         flexGrow: 1,
         transform: 'none!important',
         position: 'relative',
-        paddingLeft: theme.spacing.unit * 4,
-        marginBottom: theme.spacing.unit,
-        width: '100%'
-    }),
-    inputLabel: {
-        ...theme.typography.zeta,
-        margin: 0,
-        width: 'auto',
-        padding: 0,
-        paddingLeft: 0,
-        color: theme.palette.font.beta,
-        display: 'inline-block'
-    },
-    emptySpace: {
-        display: 'block',
-        width: 48
-    },
-    input: {
-        flexGrow: 5
-    },
-    badge: {
-        marginBottom: theme.spacing.unit,
-        position: 'sticky'
-    }
-});
+        marginBottom: theme.spacing.unit
+    };
+
+    return {
+        formControl: {
+            ...theme.typography.zeta,
+            ...common,
+            paddingLeft: theme.spacing.unit * 4,
+            width: '100%',
+            padding: '8px 0'
+        },
+        inputLabel: {
+            ...theme.typography.zeta,
+            ...common,
+            color: theme.palette.font.beta,
+            display: 'inline-block'
+        },
+        emptySpace: {
+            display: 'block',
+            width: 48
+        },
+        input: {
+            flexGrow: 5
+        },
+        badge: {
+            marginBottom: theme.spacing.unit,
+            position: 'sticky'
+        }
+    };
+};
 
 export const FieldCmp = ({t, classes, input, idInput, selectorType, field, siteInfo, actionContext}) => {
     const contextualMenu = useRef(null);
