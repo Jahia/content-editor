@@ -19,11 +19,25 @@ let styles = theme => ({
 });
 
 const SectionCmp = ({section, classes}) => {
+    const hideFieldSets = fieldSet => {
+        if (!fieldSet) {
+            return false;
+        }
+
+        // We must hide fieldSet in the section when the fieldSet is not dynamic and
+        // the fieldSet doesn't contain any fields (empty).
+        return !fieldSet.dynamic && fieldSet.fields.length === 0;
+    };
+
     return (
         <section className={classes.section} data-sel-content-editor-fields-group={section.displayName}>
             <Typography component="h2" className={classes.sectionTitle} color="alpha" variant="gamma">{section.displayName}</Typography>
 
             {section.fieldSets.map(fieldset => {
+                if (hideFieldSets(fieldset)) {
+                    return null;
+                }
+
                 return <FieldSet key={fieldset.displayName} fieldset={fieldset}/>;
             })}
         </section>

@@ -159,4 +159,14 @@ describe('adaptFormData', () => {
             }
         ]);
     });
+
+    it('should adapt sections ', () => {
+        graphqlResponse.forms.editForm.sections[0].name = 'metadata';
+        graphqlResponse.forms.editForm.sections[0].fieldSets[0].fields[0].readOnly = true;
+
+        expect(adaptFormData(graphqlResponse, 'fr', t).sections).toEqual([{
+            name: 'metadata',
+            fieldSets: []
+        }]);
+    });
 });
