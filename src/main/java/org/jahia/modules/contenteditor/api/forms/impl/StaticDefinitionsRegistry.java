@@ -1,5 +1,6 @@
 package org.jahia.modules.contenteditor.api.forms.impl;
 
+import org.apache.commons.lang.StringUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jahia.modules.contenteditor.api.forms.EditorFormDefinition;
 import org.jahia.modules.contenteditor.api.forms.EditorFormFieldSet;
@@ -82,14 +83,20 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
             try {
                 editorFormFieldSet = objectMapper.readValue(editorFormURL, EditorFormFieldSet.class);
                 editorFormFieldSet.setOriginBundle(bundle);
-                SortedSet<EditorFormFieldSet> editorFormFieldSets = staticEditorFormFieldSetsByName.get(editorFormFieldSet.getName());
-                if (editorFormFieldSets == null) {
-                    editorFormFieldSets = new TreeSet<>();
+                String name = editorFormFieldSet.getName();
+
+                if (StringUtils.isNotBlank(name)) {
+                    SortedSet<EditorFormFieldSet> editorFormFieldSets = staticEditorFormFieldSetsByName.get(name);
+                    if (editorFormFieldSets == null) {
+                        editorFormFieldSets = new TreeSet<>();
+                    }
+                    editorFormFieldSets.add(editorFormFieldSet);
+                    staticEditorFormFieldSetsByName.put(name, editorFormFieldSets);
+                    bundleEditorFormFieldSets.add(editorFormFieldSet);
+                    logger.info("Successfully loaded static form for name {} from {}", name, editorFormURL);
+                } else {
+                    logger.error("Could not serialize the object with the {} from {}", EditorFormFieldSet.class, editorFormURL);
                 }
-                editorFormFieldSets.add(editorFormFieldSet);
-                staticEditorFormFieldSetsByName.put(editorFormFieldSet.getName(), editorFormFieldSets);
-                bundleEditorFormFieldSets.add(editorFormFieldSet);
-                logger.info("Successfully loaded static form for name {} from {}", editorFormFieldSet.getName(), editorFormURL);
             } catch (IOException e) {
                 logger.error("Error loading editor form from " + editorFormURL, e);
             }
@@ -126,14 +133,20 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
             try {
                 editorFormDefinition = objectMapper.readValue(editorFormURL, EditorFormDefinition.class);
                 editorFormDefinition.setOriginBundle(bundle);
-                SortedSet<EditorFormDefinition> editorFormDefinitions = staticEditorFormDefinitionsByName.get(editorFormDefinition.getName());
-                if (editorFormDefinitions == null) {
-                    editorFormDefinitions = new TreeSet<>();
+                String name = editorFormDefinition.getName();
+
+                if (StringUtils.isNotBlank(name)) {
+                    SortedSet<EditorFormDefinition> editorFormDefinitions = staticEditorFormDefinitionsByName.get(name);
+                    if (editorFormDefinitions == null) {
+                        editorFormDefinitions = new TreeSet<>();
+                    }
+                    editorFormDefinitions.add(editorFormDefinition);
+                    staticEditorFormDefinitionsByName.put(name, editorFormDefinitions);
+                    bundleEditorFormDefinitions.add(editorFormDefinition);
+                    logger.info("Successfully loaded static form for name {} from {}", name, editorFormURL);
+                } else {
+                    logger.error("Could not serialize the object with the {} from {}", EditorFormDefinition.class, editorFormURL);
                 }
-                editorFormDefinitions.add(editorFormDefinition);
-                staticEditorFormDefinitionsByName.put(editorFormDefinition.getName(), editorFormDefinitions);
-                bundleEditorFormDefinitions.add(editorFormDefinition);
-                logger.info("Successfully loaded static form for name {} from {}", editorFormDefinition.getName(), editorFormURL);
             } catch (IOException e) {
                 logger.error("Error loading editor form from " + editorFormURL, e);
             }
