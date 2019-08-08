@@ -93,7 +93,7 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
                     editorFormFieldSets.add(editorFormFieldSet);
                     staticEditorFormFieldSetsByName.put(name, editorFormFieldSets);
                     bundleEditorFormFieldSets.add(editorFormFieldSet);
-                    logger.info("Successfully loaded static form for name {} from {}", name, editorFormURL);
+                    logger.info("Successfully loaded static fieldSets for name {} from {}", name, editorFormURL);
                 } else {
                     logger.error("Could not serialize the object with the {} from {}", EditorFormFieldSet.class, editorFormURL);
                 }
