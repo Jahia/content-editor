@@ -114,11 +114,11 @@ public class EditorFormServiceImpl implements EditorFormService {
             Map<String, EditorFormSection> formSectionsByName = new HashMap<>();
 
             Set<String> processedNodeTypes = new HashSet<>();
-            generateAndMergeFieldSetForType(primaryNodeTypeName, uiLocale, locale, existingNode, parentNode, primaryNodeType, formSectionsByName, false, true);
+            generateAndMergeFieldSetForType(primaryNodeTypeName, uiLocale, locale, existingNode, parentNode, primaryNodeType, formSectionsByName, false,false, true);
             processedNodeTypes.add(primaryNodeTypeName);
 
             for (ExtendedNodeType superType : primaryNodeType.getSupertypes()) {
-                generateAndMergeFieldSetForType(superType.getName(), uiLocale, locale, existingNode, parentNode, superType, formSectionsByName, false, true);
+                generateAndMergeFieldSetForType(superType.getName(), uiLocale, locale, existingNode, parentNode, superType, formSectionsByName, false,false, true);
                 processedNodeTypes.add(superType.getName());
             }
 
@@ -132,7 +132,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                 if (existingNode != null && existingNode.isNodeType(extendMixinNodeType.getName())) {
                     activated = true;
                 }
-                generateAndMergeFieldSetForType(extendMixinNodeType.getName(), uiLocale, locale, existingNode, parentNode, extendMixinNodeType, formSectionsByName, true, activated);
+                generateAndMergeFieldSetForType(extendMixinNodeType.getName(), uiLocale, locale, existingNode, parentNode, extendMixinNodeType, formSectionsByName, false, true, activated);
                 processedNodeTypes.add(extendMixinNodeType.getName());
             }
 
@@ -149,11 +149,13 @@ public class EditorFormServiceImpl implements EditorFormService {
         }
     }
 
-    private void generateAndMergeFieldSetForType(String nodeTypeName, Locale uiLocale, Locale locale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, ExtendedNodeType primaryNodeType, Map<String, EditorFormSection> formSectionsByName, boolean dynamic, boolean activated) throws RepositoryException {
-        EditorFormFieldSet nodeTypeFieldSet = generateEditorFormFieldSet(primaryNodeType, existingNode, locale, uiLocale, dynamic, activated);
+    private void generateAndMergeFieldSetForType(String nodeTypeName, Locale uiLocale, Locale locale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, ExtendedNodeType primaryNodeType, Map<String, EditorFormSection> formSectionsByName, boolean removed, boolean dynamic, boolean activated) throws RepositoryException {
+        EditorFormFieldSet nodeTypeFieldSet = generateEditorFormFieldSet(primaryNodeType, existingNode, locale, uiLocale, removed, dynamic, activated);
         nodeTypeFieldSet = mergeWithStaticFormFieldSets(nodeTypeName, nodeTypeFieldSet);
         nodeTypeFieldSet = processValueConstraints(nodeTypeFieldSet, locale, existingNode, parentNode);
-        addFieldSetToSections(formSectionsByName, nodeTypeFieldSet);
+        if (!nodeTypeFieldSet.isRemoved()) {
+            addFieldSetToSections(formSectionsByName, nodeTypeFieldSet);
+        }
     }
 
     private EditorFormDefinition mergeFormDefinitions(SortedSet<EditorFormDefinition> editorFormDefinitions) {
@@ -287,6 +289,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             editorFormFieldSet.getDescription(),
             editorFormFieldSet.getRank(),
             editorFormFieldSet.getPriority(),
+            editorFormFieldSet.getRemoved(),
             editorFormFieldSet.getDynamic(),
             editorFormFieldSet.getActivated(),
             newEditorFormFields);
@@ -315,7 +318,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         return mergedEditorFormFieldSet;
     }
 
-    private EditorFormFieldSet generateEditorFormFieldSet(ExtendedNodeType nodeType, JCRNodeWrapper existingNode, Locale locale, Locale uiLocale, Boolean dynamic, Boolean activated) throws RepositoryException {
+    private EditorFormFieldSet generateEditorFormFieldSet(ExtendedNodeType nodeType, JCRNodeWrapper existingNode, Locale locale, Locale uiLocale, Boolean removed, Boolean dynamic, Boolean activated) throws RepositoryException {
         JCRSessionWrapper session = existingNode != null ? existingNode.getSession() : getSession(locale);
         Map<String,Double> maxTargetRank = new HashMap<>();
         List<EditorFormField> editorFormFields = new ArrayList<>();
@@ -426,6 +429,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             description,
             defaultRank,
             defaultPriority,
+            removed,
             dynamic,
             activated,
             editorFormFields);

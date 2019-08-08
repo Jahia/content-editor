@@ -45,7 +45,7 @@ public final class EditorFormFieldSetTest {
         EditorFormFieldSet result = form1.mergeWith(form2);
 
         assertSame(form1, result);
-        assertEquals(new EditorFormFieldSet("form1", "form1DisplayName", "form1Description", 1.0, 1.0, false, true, Collections.emptyList()), result);
+        assertEquals(new EditorFormFieldSet("form1", "form1DisplayName", "form1Description", 1.0, 1.0, false, false, true, Collections.emptyList()), result);
     }
 
     @Test
@@ -92,11 +92,11 @@ public final class EditorFormFieldSetTest {
 
     @Test
     public void mergeWithDoesNotRetainRemovedFields() {
-        final EditorFormFieldSet form1 = new EditorFormFieldSet("form", "displayName", "description", 1.0, 1.0, false, true, Arrays.asList(
+        final EditorFormFieldSet form1 = new EditorFormFieldSet("form", "displayName", "description", 1.0, 1.0, false, false, true, Arrays.asList(
                 new EditorFormFieldBuilder("x").removed(true).build(),
                 new EditorFormFieldBuilder("y").build()
         ));
-        final EditorFormFieldSet form2 = new EditorFormFieldSet("form", "displayName", "description", 1.0, 1.0, false, true, Arrays.asList(
+        final EditorFormFieldSet form2 = new EditorFormFieldSet("form", "displayName", "description", 1.0, 1.0, false, false, true, Arrays.asList(
                 new EditorFormFieldBuilder("y").removed(true).build(),
                 new EditorFormFieldBuilder("z").build()
         ));
@@ -110,10 +110,10 @@ public final class EditorFormFieldSetTest {
 
     @Test
     public void mergeWithDoesNotAddRemovedFields() {
-        final EditorFormFieldSet form1 = new EditorFormFieldSet("form", "displayName", "description", 1.0, 1.0, false, true, Arrays.asList(
+        final EditorFormFieldSet form1 = new EditorFormFieldSet("form", "displayName", "description", 1.0, 1.0, false, false, true, Arrays.asList(
                 new EditorFormFieldBuilder("x").build()
         ));
-        final EditorFormFieldSet form2 = new EditorFormFieldSet("form", "displayName", "description", 1.0, 1.0, false, true, Arrays.asList(
+        final EditorFormFieldSet form2 = new EditorFormFieldSet("form", "displayName", "description", 1.0, 1.0, false, false, true, Arrays.asList(
                 new EditorFormFieldBuilder("y").removed(true).build()
         ));
 

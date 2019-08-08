@@ -36,6 +36,7 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
                               String description,
                               Double rank,
                               Double priority,
+                              Boolean removed,
                               Boolean dynamic,
                               Boolean activated,
                               List<EditorFormField> editorFormFields) {
@@ -44,6 +45,7 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
         this.description = description;
         this.rank = rank;
         this.priority = priority;
+        this.removed = removed;
         this.dynamic = dynamic;
         this.activated = activated;
         setEditorFormFields(editorFormFields);
@@ -78,6 +80,10 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public Boolean getRemoved() { return removed; }
+
+    public void setRemoved(Boolean removed) { this.removed = removed; }
 
     @GraphQLField
     @GraphQLDescription("True if this is dynamic field set (meaningin it can be activated or not)")
@@ -193,6 +199,13 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
         }
     }
 
+    public boolean isRemoved() {
+        if (removed == null) {
+            return false;
+        }
+        return removed;
+    }
+
     /**
      * This method will merge another editor form into this one, with special rules as to which fields may be overriden
      * or not, as well as how to add/remove targets and/or fields inside targets.
@@ -234,6 +247,7 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
             description,
             otherEditorFormFieldSet.rank != null ? otherEditorFormFieldSet.rank : rank,
             priority,
+            removed,
             dynamic,
             activated,
             mergedEditorFormFields);
@@ -241,6 +255,9 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
             newEditorFormFieldSet.setPriority(priority);
         } else {
             newEditorFormFieldSet.setPriority(otherEditorFormFieldSet.priority);
+        }
+        if (otherEditorFormFieldSet.isRemoved()) {
+            newEditorFormFieldSet.setRemoved(true);
         }
         if (dynamic) {
             newEditorFormFieldSet.setDynamic(true);
