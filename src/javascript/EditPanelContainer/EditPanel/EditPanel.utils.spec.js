@@ -1,12 +1,13 @@
 import {
     encodeJCRPath,
     extractRangeConstraints,
-    getAllFields,
-    getDataToMutate
+    getFields,
+    getDataToMutate,
+    getDynamicFieldSets
 } from './EditPanel.utils';
 
 describe('EditPanel utils', () => {
-    describe('getAllFields', () => {
+    describe('getFields', () => {
         it('should return all fields', () => {
             const sections = [
                 {
@@ -49,7 +50,7 @@ describe('EditPanel utils', () => {
                 }
             ];
 
-            const fields = getAllFields(sections);
+            const fields = getFields(sections);
 
             expect(fields).toEqual([
                 {
@@ -73,6 +74,49 @@ describe('EditPanel utils', () => {
                     multiple: false
                 }
             ]);
+        });
+    });
+    describe('getDynamicFieldSets', () => {
+        it('should return dynamic fieldSets', () => {
+            const sections = [
+                {
+                    name: 'section1',
+                    fieldSets: [
+                        {name: 'fieldSet1', dynamic: false, activated: false, fields: []},
+                        {name: 'fieldSet2', dynamic: true, activated: false, fields: []},
+                        {name: 'fieldSet3', dynamic: true, activated: true, fields: []},
+                        {name: 'fieldSet4', dynamic: false, activated: false, fields: []}
+                    ]
+                },
+                {
+                    name: 'section2',
+                    fieldSets: [
+                        {name: 'fieldSet21', dynamic: true, activated: true, fields: []},
+                        {name: 'fieldSet22', dynamic: false, activated: false, fields: []},
+                        {name: 'fieldSet23', dynamic: true, activated: true, fields: []},
+                        {name: 'fieldSet24', dynamic: false, activated: false, fields: []}
+                    ]
+                },
+                {
+                    name: 'section3',
+                    fieldSets: [
+                        {name: 'fieldSet31', dynamic: false, activated: false, fields: []},
+                        {name: 'fieldSet32', dynamic: false, activated: false, fields: []},
+                        {name: 'fieldSet33', dynamic: false, activated: false, fields: []},
+                        {name: 'fieldSet34', dynamic: true, activated: false, fields: []}
+                    ]
+                }
+            ];
+
+            const dynamicFieldSets = getDynamicFieldSets(sections);
+
+            expect(dynamicFieldSets).toEqual({
+                fieldSet2: false,
+                fieldSet3: true,
+                fieldSet21: true,
+                fieldSet23: true,
+                fieldSet34: false
+            });
         });
     });
     describe('getDataToMutate', () => {

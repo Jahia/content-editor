@@ -5,27 +5,63 @@ export function isSystemField(fieldKey) {
     return fieldKey in EditPanelConstants.systemFields;
 }
 
-export function getAllFields(sections, isDynamicFieldSets, sectionName) {
-    return sections.reduce((fields, section) => {
-        let fieldSetsFields = [];
+/**
+ * This function perform creation of object contains only dynamic fieldSets
+ * The dynamic fieldSet retrieved from sections will be added to object with
+ * name as key and activated property as value.
+ *
+ * Example:
+ * {
+ *     "jmix:tagged": true,
+ *     "jmix:keywords": false,
+ *     ...
+ * }
+ *
+ * Note: the activated property will be used to determine if the dynamic
+ * fieldSet will be active on the form or not.
+ *
+ * @param sections array object contains sections
+ * @returns dynamic fieldSets with key value object
+ */
+export function getDynamicFieldSets(sections) {
+    return sections.reduce((result, section) => {
+        const fieldSets = section
+            .fieldSets
+            .filter(filedSet => filedSet.dynamic)
+            .reduce((result, fieldSet) => ({...result, [fieldSet.name]: fieldSet.activated}), {});
+
+        return {...result, ...fieldSets};
+    }, []);
+}
+
+/**
+ * The function used to retrieve all the fields within fieldSets of each section
+ *
+ * There is specific case:
+ * - When the sectionName parameter is provided, the function returns all
+ * the fields in fieldSets of only the specified section.
+ *
+ * @param sections    array object contains sections
+ * @param sectionName string value refer to the section name
+ * @returns fields    array object contains fields
+ */
+export function getFields(sections, sectionName) {
+    return sections.reduce((result, section) => {
+        let fields = [];
+
         if (!sectionName || sectionName === section.name) {
-            fieldSetsFields = section.fieldSets
-                .filter(filedSet => !isDynamicFieldSets || (isDynamicFieldSets && filedSet.dynamic))
-                .reduce((fieldSetsField, fieldset) => {
-                    return isDynamicFieldSets ?
-                        [...fieldSetsField, fieldset] :
-                        [...fieldSetsField, ...fieldset.fields];
-                }, []);
+            fields = section
+                .fieldSets
+                .reduce((result, fieldset) => ([...result, ...fieldset.fields]), []);
         }
 
-        return [...fields, ...fieldSetsFields];
+        return [...result, ...fields];
     }, []);
 }
 
 export function getDataToMutate(nodeData = {}, formValues = {}, sections, lang) {
     const keys = Object.keys(formValues).filter(key => !isSystemField(key));
-    const allFields = sections && getAllFields(sections);
-    const filteredFields = allFields && allFields.filter(field => !field.readOnly);
+    const fields = sections && getFields(sections).filter(field => !field.readOnly);
 
     const mixinsToMutate = getMixinsToMutate(nodeData, formValues, sections);
 
@@ -33,7 +69,7 @@ export function getDataToMutate(nodeData = {}, formValues = {}, sections, lang) 
     let propsToDelete = [];
 
     keys.forEach(key => {
-        const field = filteredFields.find(field => field.name === key);
+        const field = fields.find(field => field.name === key);
 
         if (field) {
             const value = formValues[key];
@@ -81,15 +117,6 @@ export function getDataToMutate(nodeData = {}, formValues = {}, sections, lang) 
     };
 }
 
-export function getReducedFields(allFields = [], isDynamicFieldSets, nodeData) {
-    return allFields.reduce((initialValues, field) => {
-        return {
-            ...initialValues,
-            [field.name]: isDynamicFieldSets ? field.activated : getFieldValue(field, nodeData)
-        };
-    }, {});
-}
-
 export function encodeJCRPath(path) {
     return path.split('/').map(entry => encodeURIComponent(entry)).join('/');
 }
@@ -112,28 +139,41 @@ function getMixinsToMutate(nodeData = {}, formValues = {}, sections) {
     let mixinsToAdd = [];
     let mixinsToDelete = [];
 
-    const allDynamicFieldSets = getAllFields(sections, true);
-    const reducedFieldSets = getReducedFields(allDynamicFieldSets, true, nodeData);
-    const fieldSets = Object.keys(reducedFieldSets).map(key => ({name: key}));
+    // Retrieve dynamic fieldSets
+    const dynamicFieldSets = getDynamicFieldSets(sections);
 
-    fieldSets.forEach(fieldSet => {
-        const mixin = fieldSet.name;
+    // Get keys of the dynamic fieldSets object
+    const mixins = Object.keys(dynamicFieldSets);
+
+    // Check if node contains the mixin
+    const hasNodeMixin = mixin => nodeData.mixinTypes.find(mixinType => mixinType.name === mixin);
+
+    /**
+     * Iterate trough mixins:
+     * - Check if the node has the mixin
+     * - Check if the value is defined on the form values
+     *
+     * Depending on the conditions, add the mixin to the dedicated
+     * remove/add array.
+     **/
+    mixins.forEach(mixin => {
         const value = formValues[mixin];
 
-        if (value) {
+        if (!hasNodeMixin(mixin) && value) {
             mixinsToAdd.push(mixin);
-        } else if (nodeData.mixinTypes.find(mixinType => mixinType.name === mixin)) {
+        } else if (hasNodeMixin(mixin) && !value) {
             mixinsToDelete.push(mixin);
         }
     });
 
+    // Return object contains an array of mixins to add and an array of mixins to delete
     return {
         mixinsToAdd,
         mixinsToDelete
     };
 }
 
-const getFieldValue = (field, nodeData) => {
+export const getFieldValue = (field, nodeData) => {
     const property = nodeData.properties.find(prop => prop.name === field.name);
     if (!property) {
         return;
