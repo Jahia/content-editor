@@ -8,7 +8,7 @@
     },
     {
       "name": "classification",
-      "labelKey": "label.engineTab.classification"
+      "labelKey": "label.engineTab.categories"
     },
     {
       "name": "metadata",
