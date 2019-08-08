@@ -10,6 +10,7 @@ import Checkbox from './Checkbox';
 
 let SelectorTypes = {};
 
+// Workaround for unit tests to avoid: "Couldn't call getPickerSelectorTypes() of undefined."
 if (pickerConfigs) {
     SelectorTypes = {
         Tag: {cmp: Tag, key: 'Tag', supportMultiple: true},

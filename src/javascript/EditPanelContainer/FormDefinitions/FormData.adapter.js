@@ -1,24 +1,27 @@
 import dayjs from '../../date.config';
-import {getAllFields, getReducedFields} from '../EditPanel/EditPanel.utils';
+import {getFields, getDynamicFieldSets, getFieldValue} from '../EditPanel/EditPanel.utils';
 
 const getInitialValues = (nodeData, sections) => {
-    const allFields = getAllFields(sections);
-    const allDynamicFieldSets = getAllFields(sections, true);
+    // Retrieve dynamic fieldSets
+    const dynamicFieldSets = getDynamicFieldSets(sections);
 
-    const fields = getReducedFields(allFields, false, nodeData);
-    const fieldSets = getReducedFields(allDynamicFieldSets, true, nodeData);
+    // Retrieve fields and the return object contains the field name as the key and the field value as the value
+    const fields = getFields(sections)
+        .reduce((result, field) => ({...result, [field.name]: getFieldValue(field, nodeData)}), {});
 
-    return {...fields, ...fieldSets};
+    // Return object contains fields and dynamic fieldSets
+    return {...fields, ...dynamicFieldSets};
 };
 
 const getDetailsValue = (sections = [], nodeData, lang) => {
-    const allFields = getAllFields(sections, false, 'metadata');
+    // Retrieve only fields inside the metadata section
+    const fields = getFields(sections, 'metadata');
 
-    if (!allFields) {
+    if (!fields) {
         return [];
     }
 
-    return allFields
+    return fields
         .filter(field => field.readOnly)
         .map(field => {
             const jcrDefinition = nodeData.properties.find(
