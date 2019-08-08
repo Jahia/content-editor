@@ -34,7 +34,8 @@ const FieldSetCmp = ({fieldset, classes, formik: {values, handleChange}}) => {
         <article className={classes.fieldsetContainer}>
             <div className={classes.fieldsetTitleContainer}>
                 {isDynamicFieldSet &&
-                <Toggle id={fieldset.name}
+                <Toggle data-sel-role-dynamic-fieldset={fieldset.name}
+                        id={fieldset.name}
                         checked={activatedFieldSet}
                         onChange={handleChange}
                 />}
