@@ -16,6 +16,7 @@ import org.jahia.services.content.nodetypes.SelectorType;
 import org.jahia.services.content.nodetypes.initializers.ChoiceListInitializer;
 import org.jahia.services.content.nodetypes.initializers.ChoiceListInitializerService;
 import org.jahia.services.content.nodetypes.initializers.ChoiceListValue;
+import org.jahia.utils.i18n.Messages;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
@@ -135,7 +136,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                 processedNodeTypes.add(extendMixinNodeType.getName());
             }
 
-            List<EditorFormSection> sortedSections = sortSections(formSectionsByName, mergedFormDefinition);
+            List<EditorFormSection> sortedSections = sortSections(formSectionsByName, mergedFormDefinition, uiLocale, parentNode.getResolveSite());
 
             String formName = primaryNodeTypeName;
             String formDisplayName = primaryNodeType.getLabel(uiLocale);
@@ -167,11 +168,19 @@ public class EditorFormServiceImpl implements EditorFormService {
         return mergedEditorFormDefinition;
     }
 
-    private List<EditorFormSection> sortSections(Map<String, EditorFormSection> formSectionsByName, EditorFormDefinition editorFormDefinition) {
+    private List<EditorFormSection> sortSections(Map<String, EditorFormSection> formSectionsByName, EditorFormDefinition editorFormDefinition, Locale uiLocale, JCRSiteNode site) {
         List<EditorFormSection> sortedFormSections = new ArrayList<>();
         for (EditorFormSectionDefinition sectionDefinition : editorFormDefinition.getSections()) {
             EditorFormSection formSection = formSectionsByName.get(sectionDefinition.getName());
             if (formSection != null) {
+                String displayName = resolveResourceKey(sectionDefinition.getLabelKey(), uiLocale, site);
+                if (displayName != null) {
+                    formSection.setDisplayName(displayName);
+                }
+                String description = resolveResourceKey(sectionDefinition.getDescriptionKey(), uiLocale, site);
+                if (description != null) {
+                    formSection.setDescription(description);
+                }
                 Collections.sort(formSection.getFieldSets());
                 sortedFormSections.add(formSection);
             }
@@ -179,15 +188,34 @@ public class EditorFormServiceImpl implements EditorFormService {
         return sortedFormSections;
     }
 
+    private static String resolveResourceKey(String key, Locale locale, JCRSiteNode site) {
+        // Copied from org.jahia.ajax.gwt.helper.UIConfigHelper.getResources
+        // Todo: BACKLOG-10823 - avoid code duplication and use a static shared utility function
+        if (key == null || key.length() == 0) {
+            return key;
+        }
+        logger.debug("Resources key: {}", key);
+        String baseName = null;
+        String value = null;
+        if (key.contains("@")) {
+            baseName = StringUtils.substringAfter(key, "@");
+            key = StringUtils.substringBefore(key, "@");
+        }
+
+        value = Messages.get(baseName, site != null ? site.getTemplatePackage() : null, key, locale, null);
+        if (value == null || value.length() == 0) {
+            value = Messages.getInternal(key, locale);
+        }
+        return value;
+    }
+
     private void addFieldSetToSections(Map<String, EditorFormSection> formSectionsByName, EditorFormFieldSet formFieldSet) {
         String targetSectionName = resolveMainSectionName(formFieldSet);
         EditorFormSection targetSection = formSectionsByName.get(targetSectionName);
         if (targetSection == null) {
-            String targetSectionDisplayName = targetSectionName; // todo https://jira.jahia.org/browse/BACKLOG-10736 resolve proper display name from resource bundles
-            String targetSectionDescription = ""; // todo https://jira.jahia.org/browse/BACKLOG-10736 resolve proper description from resource bundles
             Double targetSectionRank = 1.0;
             Double targetSectionPriority = 1.0;
-            targetSection = new EditorFormSection(targetSectionName, targetSectionDisplayName, targetSectionDescription, targetSectionRank, targetSectionPriority, new ArrayList<>());
+            targetSection = new EditorFormSection(targetSectionName, targetSectionName, null, targetSectionRank, targetSectionPriority, new ArrayList<>());
         }
         formFieldSet.setRank((double) targetSection.getFieldSets().size() + 1);
         if (!formFieldSet.getDynamic() && formFieldSet.getEditorFormFields().size() == 0) {
@@ -198,9 +226,9 @@ public class EditorFormServiceImpl implements EditorFormService {
         formSectionsByName.put(targetSection.getName(), targetSection);
     }
 
-    private String resolveMainSectionName(EditorFormFieldSet extendMixinFieldSet) {
+    private String resolveMainSectionName(EditorFormFieldSet fieldSet) {
         String targetSectionName = null;
-        for (EditorFormField field : extendMixinFieldSet.getEditorFormFields()) {
+        for (EditorFormField field : fieldSet.getEditorFormFields()) {
             // let's check what target they have in case we have to move them.
             if (targetSectionName == null) {
                 targetSectionName = field.getTarget().getSectionName();
