@@ -4,27 +4,33 @@
   "sections": [
     {
       "name": "content",
-      "labelKey": "label.engineTab.content"
+      "labelKey": "label.engineTab.content",
+      "requiredPermission": "viewContentTab"
     },
     {
       "name": "classification",
-      "labelKey": "label.engineTab.categories"
+      "labelKey": "label.engineTab.categories",
+      "requiredPermission": "viewCategoriesTab"
     },
     {
       "name": "metadata",
-      "labelKey": "label.engineTab.metadata"
+      "labelKey": "label.engineTab.metadata",
+      "requiredPermission": "viewMetadataTab"
     },
     {
       "name": "layout",
-      "labelKey": "label.engineTab.layout"
+      "labelKey": "label.engineTab.layout",
+      "requiredPermission": "viewLayoutTab"
     },
     {
       "name": "options",
-      "labelKey": "label.engineTab.options"
+      "labelKey": "label.engineTab.options",
+      "requiredPermission": "viewOptionsTab"
     },
     {
       "name": "seo",
-      "labelKey": "label.engineTab.seo"
+      "labelKey": "label.engineTab.seo",
+      "requiredPermission": "viewSeoTab"
     }
   ]
 }

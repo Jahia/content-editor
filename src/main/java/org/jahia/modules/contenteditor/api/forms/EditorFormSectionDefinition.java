@@ -8,6 +8,7 @@ public class EditorFormSectionDefinition {
     private String name;
     private String labelKey;
     private String descriptionKey;
+    private String requiredPermission;
 
     public EditorFormSectionDefinition() {
     }
@@ -38,5 +39,13 @@ public class EditorFormSectionDefinition {
 
     public void setDescriptionKey(String descriptionKey) {
         this.descriptionKey = descriptionKey;
+    }
+
+    public String getRequiredPermission() {
+        return requiredPermission;
+    }
+
+    public void setRequiredPermission(String requiredPermission) {
+        this.requiredPermission = requiredPermission;
     }
 }
