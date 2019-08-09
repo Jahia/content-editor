@@ -94,12 +94,17 @@ export function getDataToMutate(nodeData = {}, formValues = {}, sections, lang) 
                     }
                 }
 
-                propsToSave.push({
-                    name: key,
-                    type: fieldType,
-                    ...valueObj,
-                    language: lang
-                });
+                const fieldSet = getDynamicFieldSetOfField(sections, key);
+
+                if (!fieldSet.name ||
+                    (fieldSet.name && (hasNodeMixin(nodeData, fieldSet.name) || mixinsToMutate.mixinsToAdd.includes(fieldSet.name)))) {
+                    propsToSave.push({
+                        name: key,
+                        type: fieldType,
+                        ...valueObj,
+                        language: lang
+                    });
+                }
             } else {
                 const nodeProperty = nodeData.properties.find(prop => prop.name === key);
                 if (nodeProperty && (field.multiple ? nodeProperty.values : nodeProperty.value)) {
@@ -135,6 +140,40 @@ export function extractRangeConstraints(constraint) {
     };
 }
 
+/**
+ * This function allow to fet the fieldSet name of given field name
+ *
+ * @param sections
+ * @param fieldName
+ * @returns name of fieldSet
+ */
+function getDynamicFieldSetOfField(sections, fieldName) {
+    return sections.reduce((result, section) => {
+        const value = section.fieldSets
+            .filter(filedSet => filedSet.dynamic)
+            .reduce((result, fieldSet) => {
+                if (fieldSet.fields.find(field => field.name === fieldName)) {
+                    const name = fieldSet.name;
+                    return {...result, name};
+                }
+
+                return {...result};
+            }, {});
+        return {...result, ...value};
+    }, {});
+}
+
+/**
+ * This function check if the node has mixin or not.
+ *
+ * @param node
+ * @param mixin
+ * @returns boolean value, true if the node has mixin, false otherwise.
+ */
+function hasNodeMixin(node, mixin) {
+    return node.mixinTypes.find(mixinType => mixinType.name === mixin);
+}
+
 function getMixinsToMutate(nodeData = {}, formValues = {}, sections) {
     let mixinsToAdd = [];
     let mixinsToDelete = [];
@@ -144,9 +183,6 @@ function getMixinsToMutate(nodeData = {}, formValues = {}, sections) {
 
     // Get keys of the dynamic fieldSets object
     const mixins = Object.keys(dynamicFieldSets);
-
-    // Check if node contains the mixin
-    const hasNodeMixin = mixin => nodeData.mixinTypes.find(mixinType => mixinType.name === mixin);
 
     /**
      * Iterate trough mixins:
@@ -159,9 +195,9 @@ function getMixinsToMutate(nodeData = {}, formValues = {}, sections) {
     mixins.forEach(mixin => {
         const value = formValues[mixin];
 
-        if (!hasNodeMixin(mixin) && value) {
+        if (!hasNodeMixin(nodeData, mixin) && value) {
             mixinsToAdd.push(mixin);
-        } else if (hasNodeMixin(mixin) && !value) {
+        } else if (hasNodeMixin(nodeData, mixin) && !value) {
             mixinsToDelete.push(mixin);
         }
     });
