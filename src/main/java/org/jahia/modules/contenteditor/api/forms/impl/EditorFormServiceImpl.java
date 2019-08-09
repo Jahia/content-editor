@@ -150,11 +150,15 @@ public class EditorFormServiceImpl implements EditorFormService {
     }
 
     private void generateAndMergeFieldSetForType(String nodeTypeName, Locale uiLocale, Locale locale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, ExtendedNodeType primaryNodeType, Map<String, EditorFormSection> formSectionsByName, boolean removed, boolean dynamic, boolean activated) throws RepositoryException {
-        EditorFormFieldSet nodeTypeFieldSet = generateEditorFormFieldSet(primaryNodeType, existingNode, locale, uiLocale, removed, dynamic, activated);
-        nodeTypeFieldSet = mergeWithStaticFormFieldSets(nodeTypeName, nodeTypeFieldSet);
-        nodeTypeFieldSet = processValueConstraints(nodeTypeFieldSet, locale, existingNode, parentNode);
-        if (!nodeTypeFieldSet.isRemoved()) {
-            addFieldSetToSections(formSectionsByName, nodeTypeFieldSet);
+        // We should hide fieldSets that have "jmix:templateMixin" as mixin to be coherent with the edit engine.
+        // TODO: BACKLOG-10857 support fieldSet has "jmix:templateMixin" mixin
+        if (!primaryNodeType.isNodeType("jmix:templateMixin")) {
+            EditorFormFieldSet nodeTypeFieldSet = generateEditorFormFieldSet(primaryNodeType, existingNode, locale, uiLocale, removed, dynamic, activated);
+            nodeTypeFieldSet = mergeWithStaticFormFieldSets(nodeTypeName, nodeTypeFieldSet);
+            nodeTypeFieldSet = processValueConstraints(nodeTypeFieldSet, locale, existingNode, parentNode);
+            if (!nodeTypeFieldSet.isRemoved()) {
+                addFieldSetToSections(formSectionsByName, nodeTypeFieldSet);
+            }
         }
     }
 
