@@ -1,0 +1,12 @@
+{
+  "name": "default",
+  "priority": 3.0,
+  "sections": [
+    {
+      "name": "options"
+    },
+    {
+      "name": "content"
+    }
+  ]
+}
