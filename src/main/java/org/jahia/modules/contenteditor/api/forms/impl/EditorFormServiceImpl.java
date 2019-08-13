@@ -27,6 +27,7 @@ import javax.jcr.RepositoryException;
 import javax.jcr.Value;
 import javax.jcr.nodetype.NoSuchNodeTypeException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Implementation of the DX Content Editor Form service. This implementation supports merging with static form
@@ -90,6 +91,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             if (nodePath == null && (parentNodePath == null || primaryNodeTypeName == null)) {
                 throw new EditorFormException("nodePath, or parentNodePath and nodetypeName, must be set.");
             }
+            // Todo better handling of existingNode / parentNode
             JCRSessionWrapper session = getSession(locale);
             JCRNodeWrapper existingNode = null;
             if (nodePath != null) {
@@ -110,6 +112,11 @@ public class EditorFormServiceImpl implements EditorFormService {
                 return null;
             }
             EditorFormDefinition mergedFormDefinition = mergeFormDefinitions(editorFormDefinitions);
+
+            // filter section permission
+            final JCRNodeWrapper currentNode = existingNode != null ? existingNode : parentNode;
+            List<EditorFormSectionDefinition> filteredSections = mergedFormDefinition.getSections().stream().filter(section -> section.getRequiredPermission() == null || currentNode.hasPermission(section.getRequiredPermission())).collect(Collectors.toList());
+            mergedFormDefinition.setSections(filteredSections);
 
             Map<String, EditorFormSection> formSectionsByName = new HashMap<>();
 
