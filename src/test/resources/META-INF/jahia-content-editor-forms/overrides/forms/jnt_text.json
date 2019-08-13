@@ -1,0 +1,9 @@
+{
+  "name": "jnt:text",
+  "priority": 1.0,
+  "sections": [
+    {
+      "name": "metadata"
+    }
+  ]
+}
