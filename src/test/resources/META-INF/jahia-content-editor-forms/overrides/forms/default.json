@@ -1,0 +1,9 @@
+{
+  "name": "default",
+  "priority": 2.0,
+  "sections": [
+    {
+      "name": "layout"
+    }
+  ]
+}

@@ -60,11 +60,11 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
         }
     }
 
-    public SortedSet<EditorFormFieldSet> getFormFieldSets(String name) {
+    SortedSet<EditorFormFieldSet> getFormFieldSets(String name) {
         return staticEditorFormFieldSetsByName.get(name);
     }
 
-    public SortedSet<EditorFormDefinition> getFormDefinitions(String name) {
+    SortedSet<EditorFormDefinition> getFormDefinitions(String name) {
         return staticEditorFormDefinitionsByName.get(name);
     }
 
@@ -79,29 +79,37 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
         List<EditorFormFieldSet> bundleEditorFormFieldSets = new ArrayList<>();
         while (editorFormURLs.hasMoreElements()) {
             URL editorFormURL = editorFormURLs.nextElement();
-            EditorFormFieldSet editorFormFieldSet;
-            try {
-                editorFormFieldSet = objectMapper.readValue(editorFormURL, EditorFormFieldSet.class);
+            EditorFormFieldSet editorFormFieldSet = readEditorFormFieldSet(editorFormURL);
+            if (editorFormFieldSet != null) {
                 editorFormFieldSet.setOriginBundle(bundle);
-                String name = editorFormFieldSet.getName();
-
-                if (StringUtils.isNotBlank(name)) {
-                    SortedSet<EditorFormFieldSet> editorFormFieldSets = staticEditorFormFieldSetsByName.get(name);
-                    if (editorFormFieldSets == null) {
-                        editorFormFieldSets = new TreeSet<>();
-                    }
-                    editorFormFieldSets.add(editorFormFieldSet);
-                    staticEditorFormFieldSetsByName.put(name, editorFormFieldSets);
-                    bundleEditorFormFieldSets.add(editorFormFieldSet);
-                    logger.info("Successfully loaded static fieldSets for name {} from {}", name, editorFormURL);
-                } else {
-                    logger.error("Could not serialize the object with the {} from {}", EditorFormFieldSet.class, editorFormURL);
-                }
-            } catch (IOException e) {
-                logger.error("Error loading editor form from " + editorFormURL, e);
+                bundleEditorFormFieldSets.add(editorFormFieldSet);
             }
+
         }
         staticEditorFormFieldSetsByBundle.put(bundle, bundleEditorFormFieldSets);
+    }
+
+    EditorFormFieldSet readEditorFormFieldSet(URL editorFormURL) {
+        EditorFormFieldSet editorFormFieldSet = null;
+        try {
+            editorFormFieldSet = objectMapper.readValue(editorFormURL, EditorFormFieldSet.class);
+            String name = editorFormFieldSet.getName();
+
+            if (StringUtils.isNotBlank(name)) {
+                SortedSet<EditorFormFieldSet> editorFormFieldSets = staticEditorFormFieldSetsByName.get(name);
+                if (editorFormFieldSets == null) {
+                    editorFormFieldSets = new TreeSet<>();
+                }
+                editorFormFieldSets.add(editorFormFieldSet);
+                staticEditorFormFieldSetsByName.put(name, editorFormFieldSets);
+                logger.info("Successfully loaded static fieldSets for name {} from {}", name, editorFormURL);
+            } else {
+                logger.error("Could not serialize the object with the {} from {}", EditorFormFieldSet.class, editorFormURL);
+            }
+        } catch (IOException e) {
+            logger.error("Error loading editor form from " + editorFormURL, e);
+        }
+        return editorFormFieldSet;
     }
 
     private void unregisterStaticEditorFormFieldSets(Bundle bundle) {
@@ -129,29 +137,38 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
         List<EditorFormDefinition> bundleEditorFormDefinitions = new ArrayList<>();
         while (editorFormURLs.hasMoreElements()) {
             URL editorFormURL = editorFormURLs.nextElement();
-            EditorFormDefinition editorFormDefinition;
-            try {
-                editorFormDefinition = objectMapper.readValue(editorFormURL, EditorFormDefinition.class);
-                editorFormDefinition.setOriginBundle(bundle);
-                String name = editorFormDefinition.getName();
+            EditorFormDefinition editorFormDefinition = readEditorFormDefinition(editorFormURL);
 
-                if (StringUtils.isNotBlank(name)) {
-                    SortedSet<EditorFormDefinition> editorFormDefinitions = staticEditorFormDefinitionsByName.get(name);
-                    if (editorFormDefinitions == null) {
-                        editorFormDefinitions = new TreeSet<>();
-                    }
-                    editorFormDefinitions.add(editorFormDefinition);
-                    staticEditorFormDefinitionsByName.put(name, editorFormDefinitions);
-                    bundleEditorFormDefinitions.add(editorFormDefinition);
-                    logger.info("Successfully loaded static form for name {} from {}", name, editorFormURL);
-                } else {
-                    logger.error("Could not serialize the object with the {} from {}", EditorFormDefinition.class, editorFormURL);
-                }
-            } catch (IOException e) {
-                logger.error("Error loading editor form from " + editorFormURL, e);
+            if (editorFormDefinition != null) {
+                bundleEditorFormDefinitions.add(editorFormDefinition);
+                editorFormDefinition.setOriginBundle(bundle);
             }
+
         }
         staticEditorFormDefinitionsByBundle.put(bundle, bundleEditorFormDefinitions);
+    }
+
+    EditorFormDefinition readEditorFormDefinition(URL editorFormURL) {
+        EditorFormDefinition editorFormDefinition = null;
+        try {
+            editorFormDefinition = objectMapper.readValue(editorFormURL, EditorFormDefinition.class);
+            String name = editorFormDefinition.getName();
+
+            if (StringUtils.isNotBlank(name)) {
+                SortedSet<EditorFormDefinition> editorFormDefinitions = staticEditorFormDefinitionsByName.get(name);
+                if (editorFormDefinitions == null) {
+                    editorFormDefinitions = new TreeSet<>();
+                }
+                editorFormDefinitions.add(editorFormDefinition);
+                staticEditorFormDefinitionsByName.put(name, editorFormDefinitions);
+                logger.info("Successfully loaded static form for name {} from {}", name, editorFormURL);
+            } else {
+                logger.error("Could not serialize the object with the {} from {}", EditorFormDefinition.class, editorFormURL);
+            }
+        } catch (IOException e) {
+            logger.error("Error loading editor form from " + editorFormURL, e);
+        }
+        return editorFormDefinition;
     }
 
     private void unregisterStaticEditorFormDefinitions(Bundle bundle) {

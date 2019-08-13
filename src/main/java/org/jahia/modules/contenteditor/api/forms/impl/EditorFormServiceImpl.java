@@ -340,7 +340,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         for (ExtendedPropertyDefinition propertyDefinition : nodeType.getDeclaredPropertyDefinitions()) {
 
             // do not return hidden props
-            if (propertyDefinition.isHidden()) {
+            if (propertyDefinition.isHidden() || propertyDefinition.isUnstructured()) {
                 continue;
             }
 
