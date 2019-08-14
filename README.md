@@ -37,33 +37,36 @@ Here's an example of a GraphQL query to generate a form for an existing node:
 
     {
       forms {
-        form(nodeType: "qant:allFields", locale: "en", nodeIdOrPath: "e4809aae-6df1-4566-8d76-9fdfb97f258a") {
-          nodeType
-          fields {
+        editForm(uiLocale: "en", locale: "en", nodePath: "/sites/mySite/home/area-main") {
+          sections {
             name
-            selectorType
-            i18n
-            readOnly
-            multiple
-            mandatory
-            valueConstraints {
-              displayValue
-              value {
-                type
-                string
-              }
-              properties {
-                name
-                value
-              }
-            }
-            defaultValues {
-              type
-              string
-            }
-            targets {
+            displayName
+            fieldSets {
               name
-              rank
+              displayName
+              fields {
+                name
+                selectorType
+                i18n
+                readOnly
+                multiple
+                mandatory
+                valueConstraints {
+                  displayValue
+                  value {
+                    type
+                    string
+                  }
+                  properties {
+                    name
+                    value
+                  }
+                }
+                defaultValues {
+                  type
+                  string
+                }
+              }
             }
           }
         }
@@ -75,213 +78,96 @@ The result will look something like this (truncated for length) :
     {
       "data": {
         "forms": {
-          "form": {
-            "nodeType": "qant:allFields",
-            "fields": [
+          "editForm": {
+            "sections": [
               {
-                "name": "sharedSmallText",
-                "selectorType": "SmallText",
-                "i18n": false,
-                "readOnly": false,
-                "multiple": false,
-                "mandatory": false,
-                "valueConstraints": [],
-                "defaultValues": [],
-                "targets": [
+                "name": "content",
+                "displayName": "Content",
+                "fieldSets": [
                   {
-                    "name": "content",
-                    "rank": 0
+                    "name": "mix:title",
+                    "displayName": "Title",
+                    "fields": [
+                      {
+                        "name": "jcr:title",
+                        "selectorType": "Text",
+                        "i18n": true,
+                        "readOnly": false,
+                        "multiple": false,
+                        "mandatory": false,
+                        "valueConstraints": [],
+                        "defaultValues": []
+                      }
+                    ]
                   }
                 ]
               },
-              ...
               {
-                "name": "choicelist",
-                "selectorType": "Choicelist",
-                "i18n": true,
-                "readOnly": false,
-                "multiple": false,
-                "mandatory": false,
-                "valueConstraints": [
+                "name": "classification",
+                "displayName": "Categories",
+                "fieldSets": [
                   {
-                    "displayValue": "Choice 1",
-                    "value": {
-                      "type": "String",
-                      "string": "choice1"
-                    },
-                    "properties": []
-                  },
-                  {
-                    "displayValue": "Choice 2",
-                    "value": {
-                      "type": "String",
-                      "string": "choice2"
-                    },
-                    "properties": []
-                  },
-                  {
-                    "displayValue": "Choice 3",
-                    "value": {
-                      "type": "String",
-                      "string": "choice3"
-                    },
-                    "properties": []
-                  }
-                ],
-                "defaultValues": [
-                  {
-                    "type": "String",
-                    "string": "choice1"
-                  }
-                ],
-                "targets": [
-                  {
-                    "name": "content",
-                    "rank": 5
+                    "name": "jmix:categorized",
+                    "displayName": "categorized",
+                    "fields": [
+                      {
+                        "name": "j:defaultCategory",
+                        "selectorType": "Category",
+                        "i18n": false,
+                        "readOnly": false,
+                        "multiple": true,
+                        "mandatory": false,
+                        "valueConstraints": [],
+                        "defaultValues": []
+                      }
+                    ]
                   }
                 ]
               },
-              ...
               {
-                "name": "customField",
-                "selectorType": "Text",
-                "i18n": true,
-                "readOnly": false,
-                "multiple": true,
-                "mandatory": true,
-                "valueConstraints": [
+                "name": "metadata",
+                "displayName": "Metadata",
+                "fieldSets": [
                   {
-                    "displayValue": "Value 1",
-                    "value": {
-                      "type": "String",
-                      "string": "value1"
-                    },
-                    "properties": null
-                  },
-                  {
-                    "displayValue": "Value 2",
-                    "value": {
-                      "type": "String",
-                      "string": "value2"
-                    },
-                    "properties": null
-                  },
-                  {
-                    "displayValue": "Value 3",
-                    "value": {
-                      "type": "String",
-                      "string": "value3"
-                    },
-                    "properties": null
-                  }
-                ],
-                "defaultValues": [
-                  {
-                    "type": "String",
-                    "string": "value1"
-                  }
-                ],
-                "targets": [
-                  {
-                    "name": "content",
-                    "rank": -1
-                  }
-                ]
-              }
-            ]
-          }
-        }
-      }
-    }
+                    "name": "mix:created",
+                    "displayName": "Creation",
+                    "fields": [
+                      {
+                        "name": "jcr:created",
+                        "selectorType": "DateTimePicker",
+                        "i18n": false,
+                        "readOnly": true,
+                        "multiple": false,
+                        "mandatory": false,
+                        "valueConstraints": [],
+                        "defaultValues": []
+                      },
+                      {
+                        "name": "jcr:createdBy",
+                        "selectorType": "Text",
+                        "i18n": false,
+                        "readOnly": true,
+                        "multiple": false,
+                        "mandatory": false,
+                        "valueConstraints": [],
+                        "defaultValues": []
+                      }
+                    ]
+                  }, ...
 
-#### Defining static forms in DX modules
+## Defining static forms in DX modules
 
-A DX Module can define static forms by adding JSON files in the META-INF/dx-content-editor-forms directory. The files 
+A DX Module can define static forms and fieldSets by adding JSON files in the `META-INF/dx-content-editor-forms` location, then in `forms` or `fieldSets` directory. The files 
 should have a meaning full name, for example for the qant:allFields node type we recommend replacing the colon (:) by an 
 underscore so that the file name become qant_allFields.json.
 
-Here's an example of a JSON static form definition coming from this [example module](https://github.com/Jahia/content-editor-formdef-test-module): 
+Here's an example of a JSON static form definition coming from this [example overrides](https://github.com/Jahia/content-editor/tree/master/src/test/resources/META-INF/jahia-content-editor-forms/overrides): 
 
-    {
-      "nodeType": "qant:allFields",
-      "priority": 0.5,
-      "fields": [
-        {
-          "name": "sharedSmallText",
-          "selectorType": "SmallText"
-        },
-        {
-          "name": "smallText",
-          "removed": true,
-          "targets": [
-            {
-              "name": "content"
-            }
-          ]
-        },
-        {
-          "name": "sharedTextArea",
-          "targets": [
-            {
-              "name": "content",
-              "rank": 1.0
-            }
-          ]
-        },
-        {
-          "name": "customField",
-          "selectorType": "Text",
-          "i18n": true,
-          "readOnly": false,
-          "multiple": true,
-          "mandatory": true,
-          "valueConstraints": [
-            {
-              "displayValue": "Value 1",
-              "value": {
-                "type": "String",
-                "string": "value1"
-              }
-            },
-            {
-              "displayValue": "Value 2",
-              "value": {
-                "type": "String",
-                "string": "value2"
-              }
-            },
-            {
-              "displayValue": "Value 3",
-              "value": {
-                "type": "String",
-                "string": "value3"
-              }
-            }
-          ],
-          "defaultValues": [
-            {
-              "type": "String",
-              "string": "value1"
-            }
-          ],
-          "targets": [
-            {
-              "name": "content",
-              "rank": -1.0
-            }
-          ]
-        },
-        {
-          "name": "jcr:lastModifiedBy",
-          "removed": true,
-          "targets": [
-            {
-              "name": "metadata"
-            }
-          ]
-        }
-      ]
-    }
+### Section
+
+### Field Set
+
+### Field     
     
 Basically for a single node type, it can have : 
 - a JCR definition, which will be used as the basis to generate a form dynamically
