@@ -3,8 +3,7 @@ package org.jahia.modules.contenteditor.api.forms.impl;
 import org.eclipse.core.runtime.Assert;
 import org.jahia.api.Constants;
 import org.jahia.data.templates.JahiaTemplatesPackage;
-import org.jahia.modules.contenteditor.api.forms.EditorForm;
-import org.jahia.modules.contenteditor.api.forms.EditorFormService;
+import org.jahia.modules.contenteditor.api.forms.*;
 import org.jahia.registries.ServicesRegistry;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRSessionFactory;
@@ -22,6 +21,7 @@ import org.junit.Test;
 
 import java.net.URL;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class EditorFormServiceImplTest extends AbstractJUnitTest {
 
@@ -80,6 +80,87 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         JCRSessionFactory.getInstance().closeAllSessions();
     }
 
+    /**
+     * Given the content type inherits mixins defined in the cnd
+     * When the API for a content type is called
+     * Then the API returns a list of json forms
+     */
+    @Test
+    public void simpleDefinition() throws Exception {
+        JCRNodeWrapper simpleContent = session.getNode(testSite.getJCRLocalPath()).addNode("testNode", "jnt:simple");
+        simpleContent.setProperty("prop", "propValue");
+        session.save();
+        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
+        String sectionName = "content";
+        Map<String, List<String>> expectedFieldsSet = new HashMap<>();
+        expectedFieldsSet.put("jnt:simple", Collections.singletonList("prop"));
+
+        checkResults(form, sectionName, expectedFieldsSet);
+
+    }
+
+    /**
+     * Given the content type extends mixins defined in the cnd
+     * When the API for a content type is called
+     * Then the API returns the extend mixins as a list forms defining a fieldset and including fields
+     */
+    @Test
+    public void simpleWithMixinDefinition() throws Exception {
+        JCRNodeWrapper simpleContent = session.getNode(testSite.getJCRLocalPath()).addNode("testNode", "jnt:simpleWithMix");
+        simpleContent.setProperty("prop", "propValue");
+        session.save();
+        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
+        String sectionName = "content";
+        Map<String, List<String>> expectedFieldsSet = new HashMap<>();
+        expectedFieldsSet.put("jnt:simpleWithMix", Collections.singletonList("prop"));
+        expectedFieldsSet.put("jmix:mix1", Collections.singletonList("propMix1"));
+        expectedFieldsSet.put("jmix:mix2", Collections.singletonList("propMix2"));
+
+        checkResults(form, sectionName, expectedFieldsSet);
+    }
+
+    /**
+     * Given the content type amd a mixin defined in the cnd
+     * When the API for a content type is called for a node from that type that has that mixin
+     * Then the API returns the extend mixins as a list forms defining a fieldset and including fields
+     */
+    @Test
+    public void simpleWithMixinContent() throws Exception {
+        JCRNodeWrapper simpleContent = session.getNode(testSite.getJCRLocalPath()).addNode("testNode", "jnt:simple");
+        simpleContent.addMixin("jmix:mix1");
+        simpleContent.setProperty("prop", "propValue");
+        session.save();
+        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
+        String sectionName = "content";
+        Map<String, List<String>> expectedFieldsSet = new HashMap<>();
+        expectedFieldsSet.put("jnt:simple", Collections.singletonList("prop"));
+        expectedFieldsSet.put("jmix:mix1", Collections.singletonList("propMix1"));
+
+        checkResults(form, sectionName, expectedFieldsSet);
+    }
+
+    @Test
+    public void simpleWithRank() throws Exception {
+        JCRNodeWrapper simpleContent = session.getNode(testSite.getJCRLocalPath()).addNode("testNode", "jnt:simpleRank");
+        session.save();
+        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
+        String sectionName = "content";
+        // validate that the 'prop3' rank is the last one
+        EditorFormFieldSet fieldSet = getFieldSet(form, sectionName, "jnt:simpleRank");
+        Assert.isTrue(fieldSet.getEditorFormFields().get(2).getName().equals("prop3"), "according to the definition, prop3 is not the last proprety but should be");
+        // Apply the override
+        staticDefinitionsRegistry.readEditorFormFieldSet(getResource("META-INF/jahia-content-editor-forms/overrides/fieldSets/jnt_simple_rank_field.json"));
+        EditorForm newForm = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
+        // validate that the 'prop3' rank is the first one
+        fieldSet = getFieldSet(newForm, sectionName, "jnt:simpleRank");
+        Assert.isTrue(getField(newForm, sectionName, "jnt:simpleRank", "prop3").getTarget().getRank() == 0, "Overrided rank in target should be 0");
+        // todo: does not work yet - BACKLOG-10902
+        // validate that the 'prop3' is the first in the set
+        //Assert.isTrue(fieldSet.getEditorFormFields().get(0).getName().equals("prop3"), "according to the definition, prop3 is not the 1st property but should be");
+        //Assert.isTrue(fieldSet.getEditorFormFields().get(1).getName().equals("prop1"), "according to the definition, prop1 is not the 2nd property but should be");
+        //Assert.isTrue(fieldSet.getEditorFormFields().get(2).getName().equals("prop2"), "according to the definition, prop2 is not the last property but should be");
+    }
+
     @Test
     public void testSectionOverride() throws Exception {
         // inject custom section
@@ -125,6 +206,16 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         Assert.isTrue(!hasFieldSet(newForm, "metadata", "jmix:description"), "description is found but should not");
     }
 
+    /**
+     * Given I define a JSON override next to my mixin cnd definition that set a target for a fieldset: "target":{"itemType":"layout"}
+     *
+     * When the API for a content type is called
+     *
+     * Then the API will take the override into account and return the JSON with the fieldset in the right itemType
+     *
+     * Fields can also support target : "target":{"itemType":"layout", "fieldset":"view" }
+     * @throws Exception
+     */
     @Test
     public void testMoveFieldSetOverride() throws Exception {
         EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
@@ -151,15 +242,76 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         return getClass().getClassLoader().getResource(s);
     }
 
+    private EditorFormSection getSection(EditorForm form, final String searchedSection) {
+        List<EditorFormSection> sections = form.getSections().stream().filter(section -> section.getName().equals(searchedSection)).collect(Collectors.toList());
+        Assert.isTrue(sections.size() < 2, "More than one section match : " + searchedSection);
+        if (sections.size() > 0) {
+            return sections.get(0);
+        } else {
+            throw new NoSuchElementException("No section match " + searchedSection);
+        }
+    }
+
+    private boolean hasSection(EditorForm form, final String searchedSection) {
+        try {
+            getSection(form, searchedSection);
+            return true;
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
+    private EditorFormFieldSet getFieldSet(EditorForm form, final String searchedSection, final String searchedFieldSet) {
+        List<EditorFormFieldSet> formFieldSets = getSection(form, searchedSection).getFieldSets().stream().filter(fieldSets -> fieldSets.getName().equals(searchedFieldSet)).collect(Collectors.toList());
+        Assert.isTrue(formFieldSets.size() < 2, "More than one fieldSet match section / fieldset : " + searchedSection + " / " + searchedFieldSet);
+        if (formFieldSets.size() > 0) {
+            return formFieldSets.get(0);
+        } else {
+            throw new NoSuchElementException("No fieldSet match section / fieldset : " + searchedSection + " / " + searchedFieldSet);
+        }
+    }
 
     private boolean hasFieldSet(EditorForm form, final String searchedSection, final String searchedFieldSet) {
-        return form.getSections().stream().filter(section -> section.getName().equals(searchedSection)).findFirst().get()
-            .getFieldSets().stream().filter(fieldSets -> fieldSets.getName().equals(searchedFieldSet)).findFirst().isPresent();
+        try {
+            getFieldSet(form, searchedSection, searchedFieldSet);
+            return true;
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
+    private EditorFormField getField(EditorForm form, final String searchedSection, final String searchedFieldSet, final String searchedField) {
+        EditorFormFieldSet fieldSet = getFieldSet(form, searchedSection, searchedFieldSet);
+        List<EditorFormField> fields = fieldSet.getEditorFormFields().stream().filter(field -> field.getName().equals(searchedField)).collect(Collectors.toList());
+        Assert.isTrue(fields.size() < 2, "More than one field match section / fieldset / field : " + searchedSection + " / " + searchedFieldSet + " / " + searchedField);
+        if (fields.size() > 0) {
+            return fields.get(0);
+        } else {
+            throw new NoSuchElementException("No field match section / fieldset / field : " + searchedSection + " / " + searchedFieldSet + " / " + searchedField);
+        }
     }
 
     private boolean hasField(EditorForm form, final String searchedSection, final String searchedFieldSet, final String searchedField) {
-        return form.getSections().stream().filter(section -> section.getName().equals(searchedSection)).findFirst().get()
-            .getFieldSets().stream().filter(fieldSets -> fieldSets.getName().equals(searchedFieldSet)).findFirst().get()
-            .getEditorFormFields().stream().filter(field -> field.getName().equals(searchedField)).findFirst().isPresent();
+        try {
+            getField(form, searchedSection, searchedFieldSet, searchedField);
+            return true;
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
+    private void checkResults(EditorForm form, String sectionName, Map<String, List<String>> expectedFieldsSet) {
+        // one section
+        Assert.isTrue(form.getSections().size() == 1, "Override contains more than one section");
+        // Section is content
+        Assert.isTrue(hasSection(form, sectionName), "unable to find section " + sectionName);
+        // 3 fields Set
+        Assert.isTrue(form.getSections().get(0).getFieldSets().size() == expectedFieldsSet.size(), "Expected " + expectedFieldsSet.size() + " fields set but get " + form.getSections().get(0).getFieldSets().size());
+        for (Map.Entry<String, List<String>> expectedFieldSet : expectedFieldsSet.entrySet()) {
+            Assert.isTrue(hasFieldSet(form, sectionName, expectedFieldSet.getKey()), "unable to find expected FieldSet " + expectedFieldSet.getKey() + " for section " + sectionName);
+            for (String fieldName : expectedFieldSet.getValue()) {
+                Assert.isTrue(hasField(form, sectionName, expectedFieldSet.getKey(), fieldName), "unable to find expected Field " + fieldName + " for  FieldSet " + expectedFieldSet.getKey() + " and section " + sectionName);
+            }
+        }
     }
 }

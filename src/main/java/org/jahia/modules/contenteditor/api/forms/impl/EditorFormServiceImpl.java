@@ -112,7 +112,6 @@ public class EditorFormServiceImpl implements EditorFormService {
                 return null;
             }
             EditorFormDefinition mergedFormDefinition = mergeFormDefinitions(editorFormDefinitions);
-
             // filter section permission
             final JCRNodeWrapper currentNode = existingNode != null ? existingNode : parentNode;
             List<EditorFormSectionDefinition> filteredSections = mergedFormDefinition.getSections().stream().filter(section -> section.getRequiredPermission() == null || currentNode.hasPermission(section.getRequiredPermission())).collect(Collectors.toList());
@@ -124,7 +123,12 @@ public class EditorFormServiceImpl implements EditorFormService {
             generateAndMergeFieldSetForType(primaryNodeTypeName, uiLocale, locale, existingNode, parentNode, primaryNodeType, formSectionsByName, false,false, true);
             processedNodeTypes.add(primaryNodeTypeName);
 
-            for (ExtendedNodeType superType : primaryNodeType.getSupertypes()) {
+            Set<ExtendedNodeType> nodeTypesToProcess = Arrays.stream(primaryNodeType.getSupertypes()).collect(Collectors.toSet());
+            if (existingNode != null) {
+                nodeTypesToProcess.addAll(Arrays.stream(existingNode.getMixinNodeTypes()).collect(Collectors.toSet()));
+            }
+
+            for (ExtendedNodeType superType : nodeTypesToProcess) {
                 generateAndMergeFieldSetForType(superType.getName(), uiLocale, locale, existingNode, parentNode, superType, formSectionsByName, false,false, true);
                 processedNodeTypes.add(superType.getName());
             }
