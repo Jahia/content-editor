@@ -1,0 +1,12 @@
+{
+  "name": "jnt:simpleRank",
+  "priority": 1.0,
+  "fields": [
+    {
+      "name": "prop3",
+      "target": {
+        "rank": 0
+      }
+    }
+  ]
+}
