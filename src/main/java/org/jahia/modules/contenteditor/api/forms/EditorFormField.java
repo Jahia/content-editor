@@ -7,6 +7,7 @@ import org.jahia.modules.graphql.provider.dxm.node.GqlJcrPropertyType;
 import org.jahia.services.content.nodetypes.ExtendedPropertyDefinition;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 /**
  * Represents a single field inside a form
  */
-public class EditorFormField {
+public class EditorFormField implements Comparable<EditorFormField> {
 
     private String name;
     private String displayName;
@@ -32,6 +33,10 @@ public class EditorFormField {
     private Boolean removed;
     private EditorFormFieldTarget target;
     private ExtendedPropertyDefinition extendedPropertyDefinition;
+
+    private static final Comparator<EditorFormField> editorFormFieldComparator = Comparator
+        .comparing(EditorFormField::getTarget, Comparator.nullsFirst(EditorFormFieldTarget::compareTo))
+        .thenComparing(EditorFormField::getName, Comparator.nullsFirst(String::compareToIgnoreCase));
 
     public EditorFormField() {
     }
@@ -370,5 +375,10 @@ public class EditorFormField {
             }
         }
         return mergedEditorFormFieldTarget;
+    }
+
+    @Override
+    public int compareTo(EditorFormField other) {
+        return editorFormFieldComparator.compare(this, other);
     }
 }

@@ -147,18 +147,20 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         String sectionName = "content";
         // validate that the 'prop3' rank is the last one
         EditorFormFieldSet fieldSet = getFieldSet(form, sectionName, "jnt:simpleRank");
-        Assert.isTrue(fieldSet.getEditorFormFields().get(2).getName().equals("prop3"), "according to the definition, prop3 is not the last proprety but should be");
+        ArrayList<EditorFormField> fields = new ArrayList<>(fieldSet.getEditorFormFields());
+        Assert.isTrue(fields.get(2).getName().equals("prop3"), "according to the definition, prop3 is not the last proprety but should be");
         // Apply the override
         staticDefinitionsRegistry.readEditorFormFieldSet(getResource("META-INF/jahia-content-editor-forms/overrides/fieldSets/jnt_simple_rank_field.json"));
         EditorForm newForm = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
         // validate that the 'prop3' rank is the first one
         fieldSet = getFieldSet(newForm, sectionName, "jnt:simpleRank");
+        fields = new ArrayList<>(fieldSet.getEditorFormFields());
         Assert.isTrue(getField(newForm, sectionName, "jnt:simpleRank", "prop3").getTarget().getRank() == 0, "Overrided rank in target should be 0");
-        // todo: does not work yet - BACKLOG-10902
+
         // validate that the 'prop3' is the first in the set
-        //Assert.isTrue(fieldSet.getEditorFormFields().get(0).getName().equals("prop3"), "according to the definition, prop3 is not the 1st property but should be");
-        //Assert.isTrue(fieldSet.getEditorFormFields().get(1).getName().equals("prop1"), "according to the definition, prop1 is not the 2nd property but should be");
-        //Assert.isTrue(fieldSet.getEditorFormFields().get(2).getName().equals("prop2"), "according to the definition, prop2 is not the last property but should be");
+        Assert.isTrue(fields.get(0).getName().equals("prop1"), "according to the definition, prop1 is not the 1st property but should be");
+        Assert.isTrue(fields.get(1).getName().equals("prop3"), "according to the definition, prop3 is not the 2nd property but should be");
+        Assert.isTrue(fields.get(2).getName().equals("prop2"), "according to the definition, prop2 is not the last property but should be");
     }
 
     @Test

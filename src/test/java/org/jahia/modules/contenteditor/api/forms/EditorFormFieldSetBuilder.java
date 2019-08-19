@@ -63,8 +63,8 @@ final class EditorFormFieldSetBuilder {
         form.setDynamic(dynamic);
         form.setActivated(activated);
         form.setEditorFormFields(fields == null ? null : fields.stream()
-                .map(field -> new EditorFormField(field))
-                .collect(Collectors.toList())
+                .map(EditorFormField::new)
+                .collect(Collectors.toSet())
         );
         return form;
     }
