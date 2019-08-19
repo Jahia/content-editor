@@ -6,10 +6,7 @@ import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import org.osgi.framework.Bundle;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This structure represents a logical set of fields
@@ -25,7 +22,7 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
     private Boolean removed = false;
     private Boolean dynamic = false;
     private Boolean activated = true; // this is only used when dynamic is true
-    private List<EditorFormField> editorFormFields = new ArrayList<>();
+    private Set<EditorFormField> editorFormFields = new HashSet<>();
     private Map<String, EditorFormField> editorFormFieldsByName = new LinkedHashMap<>();
 
     public EditorFormFieldSet() {
@@ -39,7 +36,7 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
                               Boolean removed,
                               Boolean dynamic,
                               Boolean activated,
-                              List<EditorFormField> editorFormFields) {
+                              Set<EditorFormField> editorFormFields) {
         this.name = name;
         this.displayName = displayName;
         this.description = description;
@@ -133,11 +130,11 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
     @GraphQLName("fields")
     @GraphQLDescription("Get the fields contained in the target")
     @JsonProperty("fields")
-    public List<EditorFormField> getEditorFormFields() {
+    public Set<EditorFormField> getEditorFormFields() {
         return editorFormFields;
     }
 
-    public void setEditorFormFields(List<EditorFormField> editorFormFields) {
+    public void setEditorFormFields(Set<EditorFormField> editorFormFields) {
         this.editorFormFields = editorFormFields;
         editorFormFieldsByName.clear();
         if (editorFormFields != null) {
@@ -218,7 +215,7 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
             // nodetypes are not equal, we won't merge anything.
             return this;
         }
-        List<EditorFormField> mergedEditorFormFields = new ArrayList<>();
+        SortedSet<EditorFormField> mergedEditorFormFields = new TreeSet<>();
         if (editorFormFields != null) {
             for (EditorFormField editorFormField : editorFormFields) {
                 EditorFormField otherFormField = otherEditorFormFieldSet.editorFormFieldsByName.get(editorFormField.getName());

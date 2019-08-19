@@ -268,7 +268,7 @@ public class EditorFormServiceImpl implements EditorFormService {
     }
 
     private EditorFormFieldSet processValueConstraints(EditorFormFieldSet editorFormFieldSet, Locale uiLocale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode) throws RepositoryException {
-        List<EditorFormField> newEditorFormFields = new ArrayList<>();
+        SortedSet<EditorFormField> newEditorFormFields = new TreeSet<>();
         ExtendedNodeType nodeType = nodeTypeRegistry.getNodeType(editorFormFieldSet.getName());
         Map<String, ChoiceListInitializer> initializers = choiceListInitializerService.getInitializers();
         for (EditorFormField editorFormField : editorFormFieldSet.getEditorFormFields()) {
@@ -336,7 +336,7 @@ public class EditorFormServiceImpl implements EditorFormService {
     private EditorFormFieldSet generateEditorFormFieldSet(ExtendedNodeType nodeType, JCRNodeWrapper existingNode, Locale locale, Locale uiLocale, Boolean removed, Boolean dynamic, Boolean activated) throws RepositoryException {
         JCRSessionWrapper session = existingNode != null ? existingNode.getSession() : getSession(locale);
         Map<String,Double> maxTargetRank = new HashMap<>();
-        List<EditorFormField> editorFormFields = new ArrayList<>();
+        SortedSet<EditorFormField> editorFormFields = new TreeSet<>();
 
         boolean sharedFieldsEditable = existingNode == null || (!existingNode.isLocked() && existingNode.hasPermission("jcr:modifyProperties"));
         boolean i18nFieldsEditable = existingNode == null || (!existingNode.isLocked() && existingNode.hasPermission("jcr:modifyProperties_" + session.getWorkspace().getName() + "_" + locale.toString()));

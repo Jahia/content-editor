@@ -27,6 +27,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -45,7 +46,7 @@ public final class EditorFormFieldSetTest {
         EditorFormFieldSet result = form1.mergeWith(form2);
 
         assertSame(form1, result);
-        assertEquals(new EditorFormFieldSet("form1", "form1DisplayName", "form1Description", 1.0, 1.0, false, false, true, Collections.emptyList()), result);
+        assertEquals(new EditorFormFieldSet("form1", "form1DisplayName", "form1Description", 1.0, 1.0, false, false, true, Collections.emptySet()), result);
     }
 
     @Test
@@ -92,14 +93,14 @@ public final class EditorFormFieldSetTest {
 
     @Test
     public void mergeWithDoesNotRetainRemovedFields() {
-        final EditorFormFieldSet form1 = new EditorFormFieldSet("form", "displayName", "description", 1.0, 1.0, false, false, true, Arrays.asList(
+        final EditorFormFieldSet form1 = new EditorFormFieldSet("form", "displayName", "description", 1.0, 1.0, false, false, true, new HashSet<>(Arrays.asList(
                 new EditorFormFieldBuilder("x").removed(true).build(),
                 new EditorFormFieldBuilder("y").build()
-        ));
-        final EditorFormFieldSet form2 = new EditorFormFieldSet("form", "displayName", "description", 1.0, 1.0, false, false, true, Arrays.asList(
+        )));
+        final EditorFormFieldSet form2 = new EditorFormFieldSet("form", "displayName", "description", 1.0, 1.0, false, false, true, new HashSet<>(Arrays.asList(
                 new EditorFormFieldBuilder("y").removed(true).build(),
                 new EditorFormFieldBuilder("z").build()
-        ));
+        )));
 
         EditorFormFieldSet result = form1.mergeWith(form2);
 
@@ -110,11 +111,11 @@ public final class EditorFormFieldSetTest {
 
     @Test
     public void mergeWithDoesNotAddRemovedFields() {
-        final EditorFormFieldSet form1 = new EditorFormFieldSet("form", "displayName", "description", 1.0, 1.0, false, false, true, Arrays.asList(
-                new EditorFormFieldBuilder("x").build()
+        final EditorFormFieldSet form1 = new EditorFormFieldSet("form", "displayName", "description", 1.0, 1.0, false, false, true, Collections.singleton(
+            new EditorFormFieldBuilder("x").build()
         ));
-        final EditorFormFieldSet form2 = new EditorFormFieldSet("form", "displayName", "description", 1.0, 1.0, false, false, true, Arrays.asList(
-                new EditorFormFieldBuilder("y").removed(true).build()
+        final EditorFormFieldSet form2 = new EditorFormFieldSet("form", "displayName", "description", 1.0, 1.0, false, false, true, Collections.singleton(
+            new EditorFormFieldBuilder("y").removed(true).build()
         ));
 
         EditorFormFieldSet result = form1.mergeWith(form2);
