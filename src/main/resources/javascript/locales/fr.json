@@ -83,6 +83,13 @@
               "mixinTypes": "Type de contenu complet",
               "path": "Chemin",
               "uuid": "UUID"
+            },
+            "CMMActions": {
+              "createNewContent": {
+                "label": "Nouveau contenu",
+                "btnDiscard": "Annuler",
+                "btnCreate": "Créer"
+              }
             }
         }
     }

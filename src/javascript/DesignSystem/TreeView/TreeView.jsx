@@ -17,7 +17,8 @@ const style = theme => ({
         margin: '0.25rem 0',
         width: '100%',
         textAlign: 'left',
-        display: 'flex'
+        display: 'flex',
+        background: 'transparent'
     },
     nodeWithChildArrow: {
         color: theme.palette.ui.gamma
