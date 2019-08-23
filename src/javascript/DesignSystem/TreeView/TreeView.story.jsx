@@ -8,7 +8,7 @@ import doc from './TreeView.md';
 import {DSProvider} from '@jahia/design-system-kit';
 
 const ParentComponent = () => {
-    const [tree, setTree] = useState([
+    const [tree] = useState([
         {id: 'A',
             label: 'A level1',
             iconURL: 'https://image.flaticon.com/icons/svg/1973/1973617.svg',
@@ -42,27 +42,9 @@ const ParentComponent = () => {
         }
     ]);
 
-    function toogleOpenInTree(level, nodeToModify) {
-        return level.map(node => {
-            if (node === nodeToModify) {
-                node.opened = !node.opened;
-            }
-
-            if (node.childs) {
-                node.childs = toogleOpenInTree(node.childs, nodeToModify);
-            }
-
-            return node;
-        });
-    }
-
-    const handleNodeClick = node => {
-        setTree(toogleOpenInTree(tree, node));
-    };
-
     return (
         <DSProvider>
-            <TreeView tree={tree} onNodeClick={handleNodeClick}/>
+            <TreeView tree={tree}/>
         </DSProvider>
     );
 };

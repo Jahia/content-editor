@@ -1,9 +1,20 @@
 import React from 'react';
 import {CreateNewContentDialog} from './CreateNewContentDialog';
 import {composeActions, componentRendererAction} from '@jahia/react-material';
+import {reduxAction} from '../reduxAction';
 
-export default composeActions(componentRendererAction, {
-    onClick: context => {
-        context.renderComponent(<CreateNewContentDialog/>);
+const mapStateToProps = state => {
+    return {
+        uiLang: state.uiLang
+    };
+};
+
+export default composeActions(
+    componentRendererAction,
+    reduxAction(mapStateToProps),
+    {
+        onClick: context => {
+            context.renderComponent(<CreateNewContentDialog uiLang={context.uiLang}/>);
+        }
     }
-});
+);
