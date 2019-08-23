@@ -83,6 +83,13 @@
               "mixinTypes": "Full content type",
               "path": "Path",
               "uuid": "UUID"
+            },
+            "CMMActions": {
+              "createNewContent": {
+                "label": "New content",
+                "btnDiscard": "Cancel",
+                "btnCreate": "Create"
+              }
             }
         }
     }

@@ -83,6 +83,13 @@
               "mixinTypes": "Content Typ",
               "path": "Pfad",
               "uuid": "UUID"
+            },
+            "CMMActions": {
+              "createNewContent": {
+                "label": "Neuer Content",
+                "btnDiscard": "Abbrechen",
+                "btnCreate": "Erstellen"
+              }
             }
         }
     }
