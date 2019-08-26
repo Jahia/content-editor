@@ -14,7 +14,17 @@ export default composeActions(
     reduxAction(mapStateToProps),
     {
         onClick: context => {
-            context.renderComponent(<CreateNewContentDialog uiLang={context.uiLang}/>);
+            let handler = context.renderComponent(
+                <CreateNewContentDialog
+                    open
+                    uiLang={context.uiLang}
+                    onClose={() => {
+                        handler.setProps({open: false});
+                    }}
+                    onExited={() => {
+                        handler.destroy();
+                    }}
+                />);
         }
     }
 );

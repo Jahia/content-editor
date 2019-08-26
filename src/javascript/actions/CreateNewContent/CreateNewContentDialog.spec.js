@@ -19,7 +19,7 @@ jest.mock('./CreateNewContent.adapter', () => {
 describe('CreateNewContentDialog', () => {
     it('should display the dialog by default', () => {
         const cmp = shallowWithTheme(
-            <CreateNewContentDialog/>,
+            <CreateNewContentDialog open onClose={() => {}} onExited={() => {}}/>,
             {},
             dsGenericTheme
         ).dive().dive().dive();
@@ -28,26 +28,21 @@ describe('CreateNewContentDialog', () => {
     });
 
     it('should close the dialog when click on the cancel button', () => {
+        let open = true;
         const cmp = shallowWithTheme(
-            <CreateNewContentDialog/>,
+            <CreateNewContentDialog open={open}
+                                    onClose={() => {
+                                        open = false;
+                                    }}
+                                    onExited={() => {
+                                        open = false;
+                                    }}/>,
             {},
             dsGenericTheme
         ).dive().dive().dive();
 
         cmp.find('DsButton').at(0).simulate('click');
 
-        expect(cmp.find('WithStyles(Dialog)').props().open).toBe(false);
-    });
-
-    it('should close the dialog when click on the dialog backdrop', () => {
-        const cmp = shallowWithTheme(
-            <CreateNewContentDialog/>,
-            {},
-            dsGenericTheme
-        ).dive().dive().dive();
-
-        cmp.find('WithStyles(Dialog)').simulate('backdropClick');
-
-        expect(cmp.find('WithStyles(Dialog)').props().open).toBe(false);
+        expect(open).toBe(false);
     });
 });
