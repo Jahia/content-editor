@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useState} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core';
 
@@ -37,15 +37,30 @@ const style = theme => ({
 });
 
 const TreeViewCmp = ({tree, onNodeClick, classes}) => {
+    // By default everything is closed
+    const [openedNodes, setOpenedNode] = useState([]);
+
     function generateLevelJSX(level) {
         return level.map(node => {
+            const nodeIsOpen = Boolean(openedNodes.includes(node));
+
+            const handleNodeClick = () => {
+                if (nodeIsOpen) {
+                    setOpenedNode(openedNodes.filter(n => n !== node));
+                } else {
+                    setOpenedNode([...openedNodes, node]);
+                }
+
+                onNodeClick(node);
+            };
+
             if (node.childs && node.childs.length !== 0) {
-                const Arrow = node.opened ? ArrowDropDown : ArrowRight;
-                const Childs = node.opened ? generateLevelJSX(node.childs) : <></>;
+                const Arrow = nodeIsOpen || node.opened ? ArrowDropDown : ArrowRight;
+                const Childs = nodeIsOpen || node.opened ? generateLevelJSX(node.childs) : <></>;
 
                 return (
                     <Fragment key={level.id + node.id}>
-                        <button type="button" className={classes.nodeWithChild} onClick={() => onNodeClick(node)}>
+                        <button type="button" className={classes.nodeWithChild} onClick={handleNodeClick}>
                             <Arrow className={classes.nodeWithChildArrow} color="secondary"/>
                             <span>
                                 <IconLabel label={node.label} iconURL={node.iconURL}/>
@@ -59,7 +74,7 @@ const TreeViewCmp = ({tree, onNodeClick, classes}) => {
             }
 
             return (
-                <div key={level.id + node.id} className={classes.simpleNode}>
+                <div key={level.id + node.id} className={classes.simpleNode} onClick={handleNodeClick}>
                     <IconLabel label={node.label} iconURL={node.iconURL}/>
                 </div>
             );
