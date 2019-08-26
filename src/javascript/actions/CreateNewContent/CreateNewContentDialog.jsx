@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {
     Dialog,
@@ -27,10 +27,7 @@ const styles = theme => ({
     }
 });
 
-const CreateNewContentDialogCmp = ({uiLang, client, classes, t}) => {
-    const [isOpen, setIsOpen] = useState(true);
-    const closeModal = () => setIsOpen(false);
-
+const CreateNewContentDialogCmp = ({open, onExited, onClose, uiLang, client, classes, t}) => {
     const {tree, error, loading} = useTreeOfNewContent({
         uiLang: uiLang
     }, client);
@@ -45,7 +42,7 @@ const CreateNewContentDialogCmp = ({uiLang, client, classes, t}) => {
     }
 
     return (
-        <Dialog open={isOpen} aria-labelledby="dialog-createNewContent" onBackdropClick={closeModal}>
+        <Dialog open={open} aria-labelledby="dialog-createNewContent" onExited={onExited} onClose={onClose}>
             <DialogTitle id="dialog-createNewContent">
                 {t('content-editor:label.contentEditor.CMMActions.createNewContent.label')}
             </DialogTitle>
@@ -53,7 +50,7 @@ const CreateNewContentDialogCmp = ({uiLang, client, classes, t}) => {
                 <TreeView tree={tree}/>
             </div>
             <DialogActions>
-                <Button variant="secondary" onClick={closeModal}>
+                <Button variant="secondary" onClick={onClose}>
                     {t('content-editor:label.contentEditor.CMMActions.createNewContent.btnDiscard')}
                 </Button>
                 <Button disabled variant="primary">
@@ -72,7 +69,10 @@ CreateNewContentDialogCmp.propTypes = {
     uiLang: PropTypes.string,
     classes: PropTypes.object.isRequired,
     client: PropTypes.object.isRequired,
-    t: PropTypes.func.isRequired
+    t: PropTypes.func.isRequired,
+    onClose: PropTypes.func.isRequired,
+    onExited: PropTypes.func.isRequired,
+    open: PropTypes.bool.isRequired
 };
 
 export const CreateNewContentDialog = compose(
