@@ -13,6 +13,9 @@ export default composeActions(
     componentRendererAction,
     reduxAction(mapStateToProps),
     {
+        init: context => {
+            context.enabled = context.path.startsWith(`/sites/${contextJsParameters.siteKey}/contents/`);
+        },
         onClick: context => {
             let handler = context.renderComponent(
                 <CreateNewContentDialog

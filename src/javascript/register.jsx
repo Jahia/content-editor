@@ -39,8 +39,7 @@ if (
             buttonIcon: <Edit/>,
             buttonLabel:
                 'content-editor:label.contentEditor.CMMActions.createNewContent.label',
-            target: ['createMenuActions:3.2', 'contentActions:3.2'],
-            showOnNodeTypes: ['jnt:content']
+            target: ['createMenuActions:3.2', 'contentActions:3.2']
         });
 
         // In app actions
