@@ -1,7 +1,7 @@
 import React from 'react';
 import {CreateNewContentDialog} from './CreateNewContentDialog';
 import {composeActions, componentRendererAction} from '@jahia/react-material';
-import {reduxAction} from '../reduxAction';
+import {reduxAction} from '../redux.action';
 
 const mapStateToProps = state => {
     return {

@@ -1,10 +1,10 @@
 import React from 'react';
 import {registry} from '@jahia/registry';
 import {Edit, Save, ArrowBack, CloudUpload, CloudOff} from '@material-ui/icons';
-import saveAction from './actions/saveAction';
-import publishAction from './actions/publishAction';
-import unpublishAction from './actions/unpublishAction';
-import goBackAction from './actions/goBackAction';
+import saveAction from './actions/save.action';
+import publishAction from './actions/publish.action';
+import unpublishAction from './actions/unpublish.action';
+import goBackAction from './actions/goBack.action';
 import createNewContentAction from './actions/CreateNewContent/createNewContent.action';
 import EditPanelConstants from './EditPanelContainer/EditPanel/EditPanelConstants';
 import ContentEditor from './ContentEditor';
