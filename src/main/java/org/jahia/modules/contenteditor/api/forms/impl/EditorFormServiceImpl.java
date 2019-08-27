@@ -177,7 +177,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         EditorFormDefinition mergedEditorFormDefinition = null;
         for (EditorFormDefinition editorFormDefinition : editorFormDefinitions) {
             if (mergedEditorFormDefinition == null) {
-                mergedEditorFormDefinition = editorFormDefinition;
+                mergedEditorFormDefinition = new EditorFormDefinition(editorFormDefinition.getName(), editorFormDefinition.getPriority(), editorFormDefinition.getSections(), editorFormDefinition.getOriginBundle());
             } else {
                 mergedEditorFormDefinition = mergedEditorFormDefinition.mergeWith(editorFormDefinition);
             }
