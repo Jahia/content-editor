@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {
     Dialog,
@@ -27,10 +27,18 @@ const styles = theme => ({
     }
 });
 
-const CreateNewContentDialogCmp = ({open, onExited, onClose, uiLang, client, classes, t}) => {
+const CreateNewContentDialogCmp = ({open, onExited, onClose, onCreateContent, uiLang, client, classes, t}) => {
     const {tree, error, loading} = useTreeOfNewContent({
         uiLang: uiLang
     }, client);
+
+    const [selectedType, setSelectedType] = useState(null);
+
+    // Never close selected content category
+    if (selectedType) {
+        const categorySelected = tree.find(cat => cat.id === selectedType.parent.name);
+        categorySelected.opened = true;
+    }
 
     if (loading) {
         return <ProgressOverlay/>;
@@ -47,13 +55,23 @@ const CreateNewContentDialogCmp = ({open, onExited, onClose, uiLang, client, cla
                 {t('content-editor:label.contentEditor.CMMActions.createNewContent.label')}
             </DialogTitle>
             <div className={classes.treeContainer}>
-                <TreeView tree={tree}/>
+                <TreeView tree={tree}
+                          onNodeClick={node => {
+                              if (!node.childs) {
+                                setSelectedType(node);
+                              }
+                          }}/>
             </div>
             <DialogActions>
                 <Button variant="secondary" onClick={onClose}>
                     {t('content-editor:label.contentEditor.CMMActions.createNewContent.btnDiscard')}
                 </Button>
-                <Button disabled variant="primary">
+                <Button disabled={!selectedType}
+                        variant="primary"
+                        onClick={() => {
+                            onCreateContent(selectedType);
+                        }}
+                >
                     {t('content-editor:label.contentEditor.CMMActions.createNewContent.btnCreate')}
                 </Button>
             </DialogActions>
@@ -72,6 +90,7 @@ CreateNewContentDialogCmp.propTypes = {
     t: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
     onExited: PropTypes.func.isRequired,
+    onCreateContent: PropTypes.func.isRequired,
     open: PropTypes.bool.isRequired
 };
 

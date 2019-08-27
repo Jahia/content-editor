@@ -45,4 +45,17 @@ describe('CreateNewContentDialog', () => {
 
         expect(open).toBe(false);
     });
+
+    it('should call onCreateContent when clicking on create button Button', () => {
+        const onCreateContent = jest.fn();
+        const cmp = shallowWithTheme(
+            <CreateNewContentDialog open onCreateContent={onCreateContent}/>,
+            {},
+            dsGenericTheme
+        ).dive().dive().dive();
+
+        cmp.find('DsButton').at(1).simulate('click');
+
+        expect(onCreateContent).toHaveBeenCalledWith(null);
+    });
 });

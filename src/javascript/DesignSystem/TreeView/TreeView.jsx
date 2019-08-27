@@ -44,14 +44,14 @@ const TreeViewCmp = ({tree, onNodeClick, classes}) => {
         return level.map(node => {
             const nodeIsOpen = Boolean(openedNodes.includes(node));
 
-            const handleNodeClick = () => {
+            const handleNodeClick = e => {
                 if (nodeIsOpen) {
                     setOpenedNode(openedNodes.filter(n => n !== node));
                 } else {
                     setOpenedNode([...openedNodes, node]);
                 }
 
-                onNodeClick(node);
+                onNodeClick(node, e);
             };
 
             if (node.childs && node.childs.length !== 0) {
@@ -74,7 +74,16 @@ const TreeViewCmp = ({tree, onNodeClick, classes}) => {
             }
 
             return (
-                <div key={level.id + node.id} className={classes.simpleNode} onClick={handleNodeClick}>
+                <div key={level.id + node.id}
+                     tabIndex="0"
+                     className={classes.simpleNode}
+                     onKeyPress={event => {
+                         if (event.key === 'Enter') {
+                             handleNodeClick(event);
+                         }
+                     }}
+                     onClick={handleNodeClick}
+                >
                     <IconLabel label={node.label} iconURL={node.iconURL}/>
                 </div>
             );
