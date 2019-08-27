@@ -27,8 +27,8 @@ describe('FieldSet component', () => {
                 displayName: 'FieldSet1',
                 dynamic: false,
                 fields: [
-                    {displayName: 'field1'},
-                    {displayName: 'field2'}
+                    {displayName: 'field1', name: 'field1'},
+                    {displayName: 'field2', name: 'field2'}
                 ]
             },
             formik: {}
