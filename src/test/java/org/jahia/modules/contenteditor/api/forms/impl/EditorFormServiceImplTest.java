@@ -31,6 +31,7 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
     private JahiaSite testSite;
     private JCRNodeWrapper textNode;
     private JCRNodeWrapper unstructuredNews;
+    private JCRNodeWrapper defaultOverrideContent;
 
     private static JCRSessionWrapper session;
 
@@ -72,6 +73,9 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         unstructuredNews = session.getNode(testSite.getJCRLocalPath()).addNode("unstructuredNews", "jnt:unstructuredNews");
         session.save();
 
+        //create default override content
+        defaultOverrideContent = session.getNode(testSite.getJCRLocalPath()).addNode("defaultOverrideContent","jnt:defaultOverrideContent");
+        session.save();
     }
 
     @After
@@ -266,6 +270,28 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         Assert.isTrue(hasField(form, "content", "jnt:unstructuredNews", "description"), "cannot find jmix:tagged in metadata section");
 
 
+    }
+
+    @Test
+    public void testOverrides() throws Exception {
+        //First, check if the concerned fields are present
+        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, defaultOverrideContent.getPath());
+        Assert.isTrue(hasField(form, "options", "jmix:cache", "j:expiration"), "could find jmix:cache in options section");
+        Assert.isTrue(hasField(form, "options", "jmix:cache", "j:perUser"), "could find jmix:cache in options section");
+        Assert.isTrue(hasField(form, "classification", "jmix:categorized", "j:defaultCategory"), "could find jmix:categorized in classification section");
+        Assert.isTrue(hasField(form, "metadata", "jmix:keywords", "j:keywords"), "could find jmix:tags in options section");
+
+        //Reading the overrides json files
+        staticDefinitionsRegistry.readEditorFormFieldSet(getResource("META-INF/jahia-content-editor-forms/overrides/fieldSets/jmix_cache.json"));
+        staticDefinitionsRegistry.readEditorFormFieldSet(getResource("META-INF/jahia-content-editor-forms/overrides/fieldSets/jmix_categorized.json"));
+        staticDefinitionsRegistry.readEditorFormFieldSet(getResource("META-INF/jahia-content-editor-forms/overrides/fieldSets/jmix_keywords.json"));
+        form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, defaultOverrideContent.getPath());
+
+        //Checking if the fields disappeared
+        Assert.isTrue(!hasField(form, "options", "jmix:cache", "j:expiration"), "could find jmix:cache in options section");
+        Assert.isTrue(!hasField(form, "options", "jmix:cache", "j:perUser"), "could find jmix:cache in options section");
+        Assert.isTrue(!hasField(form, "classification", "jmix:categorized", "j:defaultCategory"), "could find jmix:categorized in classification section");
+        Assert.isTrue(!hasField(form, "metadata", "jmix:keywords", "j:keywords"), "could find jmix:tags in options section");
     }
 
     private URL getResource(String s) {
