@@ -29,3 +29,5 @@
 [jmix:extendsSimpleMixin] mixin
 extends=jnt:simpleWithExtends
     - extension (string)
+
+[jnt:defaultOverrideContent] > jnt:content, jmix:cache, jmix:categorized, jmix:keywords, jmix:tagged
