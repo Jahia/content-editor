@@ -20,7 +20,7 @@ export default composeActions(
     reduxAction(mapStateToProps, mapDispatchToProps),
     {
         init: context => {
-            context.enabled = context.path.startsWith(`/sites/${contextJsParameters.siteKey}/contents/`);
+            context.enabled = context.path.startsWith(`/sites/${contextJsParameters.siteKey}/contents`);
         },
         onClick: context => {
             window.toto = context;
