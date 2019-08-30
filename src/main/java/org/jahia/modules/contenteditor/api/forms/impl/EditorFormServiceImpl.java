@@ -124,9 +124,6 @@ public class EditorFormServiceImpl implements EditorFormService {
             processedNodeTypes.add(primaryNodeTypeName);
 
             Set<ExtendedNodeType> nodeTypesToProcess = Arrays.stream(primaryNodeType.getSupertypes()).collect(Collectors.toSet());
-            if (existingNode != null) {
-                nodeTypesToProcess.addAll(Arrays.stream(existingNode.getMixinNodeTypes()).collect(Collectors.toSet()));
-            }
 
             for (ExtendedNodeType superType : nodeTypesToProcess) {
                 generateAndMergeFieldSetForType(superType.getName(), uiLocale, locale, existingNode, parentNode, superType, formSectionsByName, false,false, true);
@@ -145,6 +142,14 @@ public class EditorFormServiceImpl implements EditorFormService {
                 }
                 generateAndMergeFieldSetForType(extendMixinNodeType.getName(), uiLocale, locale, existingNode, parentNode, extendMixinNodeType, formSectionsByName, false, true, activated);
                 processedNodeTypes.add(extendMixinNodeType.getName());
+            }
+
+            if (existingNode != null) {
+                Set<ExtendedNodeType> addMixins = Arrays.stream(existingNode.getMixinNodeTypes()).filter(nodetype -> !processedNodeTypes.contains(nodetype.getName())).collect(Collectors.toSet());
+                for (ExtendedNodeType addMixin : addMixins) {
+                    generateAndMergeFieldSetForType(addMixin.getName(), uiLocale, locale, existingNode, parentNode, addMixin, formSectionsByName, false, false, true);
+                }
+
             }
 
             List<EditorFormSection> sortedSections = sortSections(formSectionsByName, mergedFormDefinition, uiLocale, parentNode.getResolveSite());

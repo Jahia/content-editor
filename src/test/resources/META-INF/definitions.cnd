@@ -13,6 +13,9 @@
 [jnt:simple] > nt:base
     - prop (string)
 
+[jnt:simpleWithExtends] > nt:base
+    - prop (string)
+
 [jnt:simpleRank] > nt:base
     - prop1 (string)
     - prop2 (string)
@@ -22,3 +25,7 @@
     - prop (string)
 
 [jnt:unstructuredNews] > jnt:content, jmix:unstructured, jmix:editorialContent
+
+[jmix:extendsSimpleMixin] mixin
+extends=jnt:simpleWithExtends
+    - extension (string)

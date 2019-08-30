@@ -140,6 +140,34 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
     }
 
     @Test
+    public void simpleWithExtendsWithMixinContent() throws Exception {
+        JCRNodeWrapper simpleContent = session.getNode(testSite.getJCRLocalPath()).addNode("testNode", "jnt:simpleWithExtends");
+        simpleContent.addMixin("jmix:mix1");
+        simpleContent.setProperty("prop", "propValue");
+        session.save();
+        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
+        String sectionName = "content";
+
+        Map<String, List<String>> expectedFieldsSet = new HashMap<>();
+        expectedFieldsSet.put("jnt:simpleWithExtends", Collections.singletonList("prop:false:true"));
+        expectedFieldsSet.put("jmix:mix1", Collections.singletonList("propMix1:false:true"));
+        expectedFieldsSet.put("jmix:extendsSimpleMixin", Collections.singletonList("extension:true:false"));
+        checkResults(form, sectionName, expectedFieldsSet);
+
+
+        simpleContent.addMixin("jmix:extendsSimpleMixin");
+        simpleContent.setProperty("extension", "extension Value");
+        session.save();
+
+        EditorForm newForm = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
+        expectedFieldsSet = new HashMap<>();
+        expectedFieldsSet.put("jnt:simpleWithExtends", Collections.singletonList("prop:false:true"));
+        expectedFieldsSet.put("jmix:mix1", Collections.singletonList("propMix1:false:true"));
+        expectedFieldsSet.put("jmix:extendsSimpleMixin", Collections.singletonList("extension:true:true"));
+        checkResults(newForm, sectionName, expectedFieldsSet);
+    }
+
+    @Test
     public void simpleWithRank() throws Exception {
         JCRNodeWrapper simpleContent = session.getNode(testSite.getJCRLocalPath()).addNode("testNode", "jnt:simpleRank");
         session.save();
@@ -311,8 +339,25 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         Assert.isTrue(form.getSections().get(0).getFieldSets().size() == expectedFieldsSet.size(), "Expected " + expectedFieldsSet.size() + " fields set but get " + form.getSections().get(0).getFieldSets().size());
         for (Map.Entry<String, List<String>> expectedFieldSet : expectedFieldsSet.entrySet()) {
             Assert.isTrue(hasFieldSet(form, sectionName, expectedFieldSet.getKey()), "unable to find expected FieldSet " + expectedFieldSet.getKey() + " for section " + sectionName);
-            for (String fieldName : expectedFieldSet.getValue()) {
-                Assert.isTrue(hasField(form, sectionName, expectedFieldSet.getKey(), fieldName), "unable to find expected Field " + fieldName + " for  FieldSet " + expectedFieldSet.getKey() + " and section " + sectionName);
+            for (String fieldDesc : expectedFieldSet.getValue()) {
+                String[] fieldArray = fieldDesc.split(":");
+                String fieldName = "";
+                Boolean fieldDynamic;
+                Boolean fieldActivated;
+
+                if (fieldArray.length > 0) {
+                    fieldName = fieldArray[0];
+                    Assert.isTrue(hasField(form, sectionName, expectedFieldSet.getKey(), fieldName), "unable to find expected Field " + fieldName + " for  FieldSet " + expectedFieldSet.getKey() + " and section " + sectionName);
+                }
+                if (fieldArray.length > 1) {
+                    fieldDynamic = Boolean.parseBoolean(fieldArray[1]);
+                    Assert.isTrue(getFieldSet(form, sectionName, expectedFieldSet.getKey()).getDynamic() == fieldDynamic, "unable to find expected FieldSet " + expectedFieldSet.getKey() + " to be dynamic " + fieldDynamic);
+                }
+                if (fieldArray.length > 2) {
+                    fieldActivated = Boolean.parseBoolean(fieldArray[2]);
+                    Assert.isTrue(getFieldSet(form, sectionName, expectedFieldSet.getKey()).getActivated() == fieldActivated, "unable to find expected FieldSet " + expectedFieldSet.getKey() + " to be activated " + fieldActivated);
+                }
+
             }
         }
     }
