@@ -24,15 +24,21 @@ const style = theme => ({
         color: theme.palette.ui.gamma
     },
     simpleNode: {
-        margin: '0.5rem 0 0.5rem 20px',
+        padding: '0.5rem 0 0.5rem 0',
         width: '100%',
         textAlign: 'left'
     },
+    selected: {
+        backgroundColor: theme.palette.brand.alpha,
+        '& span': {
+            color: theme.palette.background.paper
+        }
+    },
     childContainer: {
-        marginLeft: '1rem',
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'flex-start'
+        alignItems: 'flex-start',
+        width: '100%'
     }
 });
 
@@ -40,7 +46,7 @@ const TreeViewCmp = ({tree, onNodeClick, classes}) => {
     // By default everything is closed
     const [openedNodes, setOpenedNode] = useState([]);
 
-    function generateLevelJSX(level) {
+    function generateLevelJSX(level, deep) {
         return level.map(node => {
             const nodeIsOpen = Boolean(openedNodes.includes(node));
 
@@ -56,7 +62,7 @@ const TreeViewCmp = ({tree, onNodeClick, classes}) => {
 
             if (node.childs && node.childs.length !== 0) {
                 const Arrow = nodeIsOpen || node.opened ? ArrowDropDown : ArrowRight;
-                const Childs = nodeIsOpen || node.opened ? generateLevelJSX(node.childs) : <></>;
+                const Childs = nodeIsOpen || node.opened ? generateLevelJSX(node.childs, deep + 1) : <></>;
 
                 return (
                     <Fragment key={level.id + node.id}>
@@ -76,7 +82,8 @@ const TreeViewCmp = ({tree, onNodeClick, classes}) => {
             return (
                 <div key={level.id + node.id}
                      tabIndex="0"
-                     className={classes.simpleNode}
+                     style={{paddingLeft: `calc(${deep}rem + 20px)`}}
+                     className={`${classes.simpleNode} ${node.selected ? classes.selected : ''}`}
                      onKeyPress={event => {
                          if (event.key === 'Enter') {
                              handleNodeClick(event);
@@ -92,7 +99,7 @@ const TreeViewCmp = ({tree, onNodeClick, classes}) => {
 
     return (
         <div className={classes.container}>
-            {generateLevelJSX(tree)}
+            {generateLevelJSX(tree, 0)}
         </div>
     );
 };

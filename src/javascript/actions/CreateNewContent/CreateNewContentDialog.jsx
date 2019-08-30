@@ -5,7 +5,8 @@ import {
     DialogTitle,
     DialogActions
 } from '@material-ui/core';
-import {Button} from '@jahia/design-system-kit';
+import {Search} from '@material-ui/icons';
+import {Button, Typography} from '@jahia/design-system-kit';
 import {translate} from 'react-i18next';
 import {compose} from 'react-apollo';
 import {withStyles} from '@material-ui/core';
@@ -62,7 +63,12 @@ const CreateNewContentDialogCmp = ({open, onExited, onClose, onCreateContent, ui
             return {
                 ...category,
                 opened: filter ? true : (category.opened || isCategorySelected),
-                childs: filteredNodes
+                childs: filteredNodes.map(node => {
+                    return {
+                        ...node,
+                        selected: isCategorySelected && selectedType.id === node.id
+                    };
+                })
             };
         })
         .filter(category => category.childs.length !== 0);
@@ -70,12 +76,15 @@ const CreateNewContentDialogCmp = ({open, onExited, onClose, onCreateContent, ui
     return (
         <Dialog open={open} aria-labelledby="dialog-createNewContent" onExited={onExited} onClose={onClose}>
             <DialogTitle id="dialog-createNewContent">
-                {t('content-editor:label.contentEditor.CMMActions.createNewContent.label')}
+                <Typography color="alpha" variant="delta">
+                    {t('content-editor:label.contentEditor.CMMActions.createNewContent.label')}
+                </Typography>
             </DialogTitle>
 
             <Input
                 placeholder={t('content-editor:label.contentEditor.CMMActions.createNewContent.filterLabel')}
                 className={classes.filterInput}
+                variant={{interactive: <Search/>}}
                 onChange={e => {
                     setFilter(e.target.value.toLowerCase());
                     setSelectedType(null);
