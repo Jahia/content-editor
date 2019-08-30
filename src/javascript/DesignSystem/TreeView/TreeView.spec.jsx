@@ -94,7 +94,7 @@ describe('TreeView', () => {
 
         cmp.find('button').at(0).simulate('click');
 
-        //expect(props.onNodeClick).toHaveBeenCalledWith(props.tree[0]);
+        // Expect(props.onNodeClick).toHaveBeenCalledWith(props.tree[0]);
     });
 
     it('should display a second level of a node when it\'s opened', () => {
