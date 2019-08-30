@@ -92,9 +92,9 @@ describe('TreeView', () => {
             dsGenericTheme
         ).dive();
 
-        cmp.find('button').at(0).simulate('click');
+        cmp.find('button').at(0).simulate('click', {toto: 42});
 
-        // Expect(props.onNodeClick).toHaveBeenCalledWith(props.tree[0]);
+        expect(props.onNodeClick).toHaveBeenCalledWith(props.tree[0], {toto: 42});
     });
 
     it('should display a second level of a node when it\'s opened', () => {
