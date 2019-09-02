@@ -19,8 +19,7 @@ const styles = theme => ({
         alignItems: 'center',
         margin: theme.spacing.unit,
         '&:hover': {
-            // TODO replace next line with border: `1px solid ${theme.palette.ui.zeta}`
-            border: '1px solid #C1C8D5'
+            border: `1px solid ${theme.palette.ui.zeta}`
         }
     },
     containerSelected: {

@@ -9,16 +9,14 @@ const styles = theme => ({
         width: '100%',
         height: theme.spacing.unit * 9,
         backgroundColor: theme.palette.ui.omega,
-        // TODO border: `1px ${theme.palette.ui.zeta} dashed`,
-        border: '1px #C1C8D5 dashed',
+        border: `1px ${theme.palette.ui.zeta} dashed`,
         fontSize: '0.875rem',
         borderRadius: '2px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         '&:hover': {
-            // TODO border: `1px ${theme.palette.ui.zeta} dashed`,
-            border: '1px #C1C8D5 solid',
+            border: `1px ${theme.palette.ui.zeta} solid`,
             cursor: 'pointer'
         },
         '& svg': {
@@ -37,8 +35,7 @@ const styles = theme => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        // TODO border: `1px ${theme.palette.ui.zeta} solid`,
-        border: '1px #C1C8D5 solid',
+        border: `1px ${theme.palette.ui.zeta} solid`,
         boxShadow: '1px 5px 6px rgba(64, 77, 86, 0.1)',
         borderRadius: '2px',
         paddingRight: theme.spacing.unit,
