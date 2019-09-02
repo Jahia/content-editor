@@ -4,7 +4,7 @@ import {dsGenericTheme} from '@jahia/design-system-kit';
 
 import {FieldSet} from './FieldSet';
 
-jest.mock('../../../../../ContentEditor.context', () => {
+jest.mock('../../../../../../ContentEditor.context', () => {
     let contextmock;
     return {
         useContentEditorContext: () => {
@@ -16,7 +16,7 @@ jest.mock('../../../../../ContentEditor.context', () => {
     };
 });
 
-import {setContext} from '../../../../../ContentEditor.context';
+import {setContext} from '../../../../../../ContentEditor.context';
 
 describe('FieldSet component', () => {
     let props;

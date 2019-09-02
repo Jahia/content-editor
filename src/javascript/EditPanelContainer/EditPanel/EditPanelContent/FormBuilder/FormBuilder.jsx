@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core';
 import {Section} from './Section';
 
-import {useContentEditorContext} from '../../../ContentEditor.context';
+import {useContentEditorContext} from '../../../../ContentEditor.context';
 import {SectionsPropTypes} from '../../../FormDefinitions/FormData.proptypes';
 
 let styles = theme => ({
