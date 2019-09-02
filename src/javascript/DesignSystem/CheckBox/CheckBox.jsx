@@ -12,8 +12,7 @@ const styles = theme => ({
     },
     checkBoxUnchecked: {
         '& rect': {
-            // TODO replace next line by "fill: theme.palette.fields.alpha,""
-            fill: '#F9FBFC',
+            fill: theme.palette.fields.alpha,
             stroke: theme.palette.ui.delta,
             '&:focus, &:hover': {
                 stroke: theme.palette.brand.alpha

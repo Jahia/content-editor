@@ -10,9 +10,8 @@ const styles = theme => ({
     },
     textarea: {
         backgroundColor: theme.palette.field.alpha,
-        // TODO replace next line with border: `1px solid ${theme.palette.ui.zeta}`,
         padding: theme.spacing.unit,
-        border: '1px solid #C1C8D5',
+        border: `1px solid ${theme.palette.ui.zeta}`,
         borderRadius: '3px',
         color: theme.palette.font.alpha,
         fontFamily: 'Nunito Sans',

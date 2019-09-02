@@ -4,9 +4,6 @@ import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 
 const styles = theme => {
-    // Todo: DESIGN-178 - use theme colors
-    theme.palette.ui.zeta = '#C1C8D5';
-
     const switchBase = {
         '&$checked + $bar': {
             opacity: 0.5,
