@@ -88,7 +88,7 @@ if (
 registry.add('edit-route', {
     target: ['cmm:0.1'],
     type: 'route',
-    path: `/:siteKey/:lang/${EditPanelConstants.baseRoute}`,
+    path: `/:siteKey/:lang/${EditPanelConstants.baseEditRoute}`,
     render: () => <ContentEditor/>
 });
 
