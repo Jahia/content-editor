@@ -22,7 +22,7 @@ const styles = theme => ({
         border: `1px solid ${theme.palette.ui.omega}`,
         backgroundColor: theme.palette.field.alpha,
         overflow: 'auto',
-        height: '100%',
+        height: '100vh',
         minHeight: '20vh',
         minWidth: '30vw',
         margin: '0 24px',
