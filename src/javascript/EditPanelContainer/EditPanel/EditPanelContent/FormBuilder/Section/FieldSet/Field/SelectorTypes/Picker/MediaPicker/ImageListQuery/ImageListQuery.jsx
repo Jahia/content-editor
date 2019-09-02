@@ -3,7 +3,7 @@ import {ProgressOverlay} from '@jahia/react-material';
 import * as PropTypes from 'prop-types';
 import {useQuery} from 'react-apollo-hooks';
 import {translate} from 'react-i18next';
-import {ImageList} from '../../../../../../../../../../../DesignSystem/ImageList';
+import {ImageList} from '~design-system/ImageList';
 import {encodeJCRPath} from '../../../../../../../../../EditPanel.utils';
 import {MediaPickerImages} from './ImageListQuery.gql-queries';
 import {FieldPropTypes} from '../../../../../../../../../../FormDefinitions/FormData.proptypes';

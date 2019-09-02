@@ -4,7 +4,7 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {PreviewContainer} from './PreviewContainer';
 
-jest.mock('../../../ContentEditor.context', () => ({
+jest.mock('../../../../ContentEditor.context', () => ({
     useContentEditorContext: () => ({
         path: '/site/digitall',
         lang: 'fr'

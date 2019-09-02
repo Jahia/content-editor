@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Field} from 'formik';
 
 import {FieldPropTypes} from '../../../../../../../../FormDefinitions/FormData.proptypes';
-import {TextArea} from '../../../../../../../../../DesignSystem/TextArea';
+import {TextArea} from '~design-system/TextArea';
 
 export const TextAreaField = ({id, field}) => {
     return (

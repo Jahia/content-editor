@@ -4,7 +4,7 @@ import {dsGenericTheme} from '@jahia/design-system-kit';
 
 import FormBuilder from './FormBuilder';
 
-jest.mock('../../../ContentEditor.context', () => {
+jest.mock('../../../../ContentEditor.context', () => {
     let contextmock;
     return {
         useContentEditorContext: () => {
@@ -15,7 +15,7 @@ jest.mock('../../../ContentEditor.context', () => {
         }
     };
 });
-import {setContext} from '../../../ContentEditor.context';
+import {setContext} from '../../../../ContentEditor.context';
 
 describe('FormBuilder component', () => {
     let context;

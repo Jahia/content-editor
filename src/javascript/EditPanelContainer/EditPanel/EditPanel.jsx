@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import EditPanelContent from './EditPanelContent/EditPanelContent';
 import {connect} from 'formik';
 import {EditPanelLanguageSwitcher} from './EditPanelLanguageSwitcher';
-import {useContentEditorContext} from '../ContentEditor.context';
+import {useContentEditorContext} from '../../ContentEditor.context';
 
 const EditPanelCmp = ({formik}) => {
     const {nodeData, siteInfo, lang} = useContentEditorContext();

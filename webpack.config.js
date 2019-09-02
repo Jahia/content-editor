@@ -24,7 +24,10 @@ module.exports = (env, argv) => {
         },
         resolve: {
             mainFields: ['module', 'main'],
-            extensions: ['.mjs', '.js', '.jsx', 'json']
+            extensions: ['.mjs', '.js', '.jsx', 'json'],
+            alias: {
+                '~design-system': path.resolve(__dirname, './src/javascript/DesignSystem')
+            }
         },
         module: {
             rules: [
