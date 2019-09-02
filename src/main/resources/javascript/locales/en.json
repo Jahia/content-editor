@@ -88,7 +88,8 @@
               "createNewContent": {
                 "label": "New content",
                 "btnDiscard": "Cancel",
-                "btnCreate": "Create"
+                "btnCreate": "Create",
+                "filterLabel": "Filter elements"
               }
             }
         }

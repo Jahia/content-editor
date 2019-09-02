@@ -5,13 +5,15 @@ import {
     DialogTitle,
     DialogActions
 } from '@material-ui/core';
-import {Button} from '@jahia/design-system-kit';
+import {Search} from '@material-ui/icons';
+import {Button, Typography} from '@jahia/design-system-kit';
 import {translate} from 'react-i18next';
 import {compose} from 'react-apollo';
 import {withStyles} from '@material-ui/core';
 import {withApollo} from 'react-apollo';
 import {useTreeOfNewContent} from './CreateNewContent.adapter';
 import {ProgressOverlay} from '@jahia/react-material';
+import {Input} from '../../DesignSystem/Input';
 
 import {TreeView} from '../../DesignSystem/TreeView';
 
@@ -21,9 +23,13 @@ const styles = theme => ({
         backgroundColor: theme.palette.field.alpha,
         overflow: 'auto',
         maxHeight: '60vh',
+        minHeight: '20vh',
         minWidth: '30vw',
         margin: '0 24px',
         padding: theme.spacing.unit
+    },
+    filterInput: {
+        margin: '0 24px 12px 24px'
     }
 });
 
@@ -33,12 +39,7 @@ const CreateNewContentDialogCmp = ({open, onExited, onClose, onCreateContent, ui
     }, client);
 
     const [selectedType, setSelectedType] = useState(null);
-
-    // Never close selected content category
-    if (selectedType) {
-        const categorySelected = tree.find(cat => cat.id === selectedType.parent.name);
-        categorySelected.opened = true;
-    }
+    const [filter, setFilter] = useState();
 
     if (loading) {
         return <ProgressOverlay/>;
@@ -49,13 +50,49 @@ const CreateNewContentDialogCmp = ({open, onExited, onClose, onCreateContent, ui
         return <>{error}</>;
     }
 
+    // Filtering the tree
+    const filteredTree = tree
+        .map(category => {
+            const filteredNodes = filter ? category.childs.filter(node => {
+                return node.id.toLowerCase().includes(filter) || node.label.toLowerCase().includes(filter);
+            }) : category.childs;
+
+            // Never close selected content category
+            const isCategorySelected = selectedType ? category.id === selectedType.parent.name : null;
+
+            return {
+                ...category,
+                opened: filter ? true : (category.opened || isCategorySelected),
+                childs: filteredNodes.map(node => {
+                    return {
+                        ...node,
+                        selected: isCategorySelected && selectedType.id === node.id
+                    };
+                })
+            };
+        })
+        .filter(category => category.childs.length !== 0);
+
     return (
         <Dialog open={open} aria-labelledby="dialog-createNewContent" onExited={onExited} onClose={onClose}>
             <DialogTitle id="dialog-createNewContent">
-                {t('content-editor:label.contentEditor.CMMActions.createNewContent.label')}
+                <Typography color="alpha" variant="delta">
+                    {t('content-editor:label.contentEditor.CMMActions.createNewContent.label')}
+                </Typography>
             </DialogTitle>
+
+            <Input
+                placeholder={t('content-editor:label.contentEditor.CMMActions.createNewContent.filterLabel')}
+                className={classes.filterInput}
+                variant={{interactive: <Search/>}}
+                onChange={e => {
+                    setFilter(e.target.value.toLowerCase());
+                    setSelectedType(null);
+                }}
+                />
+
             <div className={classes.treeContainer}>
-                <TreeView tree={tree}
+                <TreeView tree={filteredTree}
                           onNodeClick={node => {
                               if (!node.childs) {
                                 setSelectedType(node);
