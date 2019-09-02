@@ -4,7 +4,7 @@ import * as PropTypes from 'prop-types';
 import React from 'react';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
-import {useContentEditorContext} from '../../../ContentEditor.context';
+import {useContentEditorContext} from '../../../../ContentEditor.context';
 import {ContentPreviewMemoWrapper} from './Preview';
 
 const styles = theme => ({

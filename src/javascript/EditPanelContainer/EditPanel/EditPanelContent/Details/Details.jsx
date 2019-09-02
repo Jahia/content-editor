@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import PropTypes from 'prop-types';
-import {ContentEditorContext} from '../../../ContentEditor.context';
+import {ContentEditorContext} from '../../../../ContentEditor.context';
 import {InfoPanel} from '../../../../DesignSystem/InfoPanel';
 import {withStyles} from '@material-ui/core';
 import {compose} from 'react-apollo';

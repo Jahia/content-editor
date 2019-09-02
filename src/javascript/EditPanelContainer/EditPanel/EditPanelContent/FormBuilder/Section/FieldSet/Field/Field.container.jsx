@@ -5,7 +5,7 @@ import {connect} from 'formik';
 
 import {FieldPropTypes} from '../../../../../../FormDefinitions';
 import {resolveSelectorType} from './SelectorTypes/SelectorTypes.utils';
-import {ContentEditorContext} from '../../../../../../ContentEditor.context';
+import {ContentEditorContext} from '../../../../../../../ContentEditor.context';
 import {Field} from './Field';
 
 const FieldContainerCmp = ({field, formik}) => {

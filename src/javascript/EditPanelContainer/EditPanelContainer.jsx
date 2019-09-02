@@ -11,7 +11,7 @@ import {useFormDefinition} from './FormDefinitions';
 import {withSiteInfo} from './SiteData';
 import {publishNode, saveNode, unpublishNode} from './EditPanel.redux-actions';
 
-import {ContentEditorContext} from './ContentEditor.context';
+import {ContentEditorContext} from '../ContentEditor.context';
 
 const submitActionMapper = {
     [EditPanelConstants.submitOperation.SAVE]: saveNode,
