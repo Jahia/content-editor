@@ -1,7 +1,7 @@
 import {InsertDriveFile} from '@material-ui/icons';
 import * as PropTypes from 'prop-types';
 import React, {useState} from 'react';
-import {Picker} from '../../../../../../../../../../../DesignSystem/Picker';
+import {Picker} from '~design-system/Picker';
 import {translate} from 'react-i18next';
 import {ContentPickerDialog} from '../ContentPickerDialog';
 import {FieldPropTypes} from '../../../../../../../../../../FormDefinitions/FormData.proptypes';

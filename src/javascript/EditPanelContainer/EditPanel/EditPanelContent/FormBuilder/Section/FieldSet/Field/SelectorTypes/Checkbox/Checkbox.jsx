@@ -2,7 +2,7 @@ import React from 'react';
 import {compose} from 'react-apollo';
 import {connect} from 'formik';
 import * as PropTypes from 'prop-types';
-import {Toggle} from '../../../../../../../../../DesignSystem/Toggle';
+import {Toggle} from '~design-system/Toggle';
 import {FieldPropTypes} from '../../../../../../../../FormDefinitions/FormData.proptypes';
 
 const Checkbox = ({field, id, formik: {values, setFieldValue}}) => {

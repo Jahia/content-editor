@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {ProgressOverlay} from '@jahia/react-material';
 import * as PropTypes from 'prop-types';
 import {translate} from 'react-i18next';
-import {Picker} from '../../../../../../../../../../../DesignSystem/Picker';
+import {Picker} from '~design-system/Picker';
 import {encodeJCRPath} from '../../../../../../../../../EditPanel.utils';
 import {MediaPickerFilledQuery} from './MediaPickerFilled.gql-queries';
 import {MediaPickerDialog} from '../MediaPickerDialog';
