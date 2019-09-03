@@ -6,14 +6,13 @@ import {
     DialogActions
 } from '@material-ui/core';
 import {Search} from '@material-ui/icons';
-import {Button, Typography} from '@jahia/design-system-kit';
+import {Button, Typography, Input} from '@jahia/design-system-kit';
 import {translate} from 'react-i18next';
 import {compose} from 'react-apollo';
 import {withStyles} from '@material-ui/core';
 import {withApollo} from 'react-apollo';
 import {useTreeOfNewContent} from './CreateNewContent.adapter';
 import {ProgressOverlay} from '@jahia/react-material';
-import {Input} from '~design-system/Input';
 
 import {TreeView} from '~design-system/TreeView';
 

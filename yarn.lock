@@ -1165,16 +1165,17 @@
     lodash "^4.17.13"
     zen-observable "^0.8.8"
 
-"@jahia/design-system-kit@^1.0.0-beta.20190902130652":
-  version "1.0.0-beta.20190902130652"
-  resolved "https://npm.jahia.com/@jahia%2fdesign-system-kit/-/design-system-kit-1.0.0-beta.20190902130652.tgz#0c9dededb295b8641f79260eb959bcc54c39599e"
-  integrity sha512-HlRDZutBRAtQY8+celUKcdB62POnrjRiQ8KpxEkgQMgFwTuVJ3HK3WBiSIi/lIxyJy2Wh/gnhzOvbwwoN4USeA==
+"@jahia/design-system-kit@^1.0.0-beta.20190904123434":
+  version "1.0.0-beta.20190904123434"
+  resolved "https://npm.jahia.com/@jahia%2fdesign-system-kit/-/design-system-kit-1.0.0-beta.20190904123434.tgz#80e66d5272b97d96840fa0328f2322a41b085fba"
+  integrity sha512-Fw4aINE04wskHFut3Qa3am5tSayMrJgQRPszUZFkrfEcBh8inpqnIJXOv2a8XwXmGdOhfII55gfmDEh+zB3AnQ==
   dependencies:
     "@material-ui/core" "^3.9.3"
     classnames "^2.2.6"
     lodash "^4.17.13"
     prop-types "^15.6.2"
     react-i18next "^7.6.1"
+    react-number-format "^4.2.0"
 
 "@jahia/eslint-config@^1.0.0-beta.20190724063717":
   version "1.0.0-beta.20190724063717"
@@ -9310,10 +9311,10 @@ react-loadable@^5.5.0:
   dependencies:
     prop-types "^15.5.0"
 
-react-number-format@^4.0.8:
-  version "4.0.8"
-  resolved "https://registry.yarnpkg.com/react-number-format/-/react-number-format-4.0.8.tgz#f0a0dfbeded9a746f4d8b309926cf55d7effebb2"
-  integrity sha512-A7Gi4BSkdgnyY1DO98lwFvWujcyxZCOfNP6tkiOKkwMY6oFP+JTQhd/vQ9dXXs6TpyXfl1eBJdueokM7o98YTQ==
+react-number-format@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/react-number-format/-/react-number-format-4.2.0.tgz#297efac961504b72cdd3fd0c33442302191c52d8"
+  integrity sha512-LJY0+JUEdQG1Taj6qbL1Cd/8CfBn3X4ohBPGewWNRyRAGyxV/+zP02CQrMkCfPh1iXXx6V3oguJcZWXUwpQ3ow==
   dependencies:
     prop-types "^15.7.2"
 
