@@ -7,7 +7,7 @@ export const openInTabAction = {
             const siteKey = splitPath[2];
             const relativeNodePath = splitPath.splice(3).join('/');
 
-            window.open(`${dxContext.contextPath}${dxContext.urlBrowser}/${siteKey}/${editorContext.lang}/${EditPanelConstants.baseRoute}/${relativeNodePath}`, '_blank');
+            window.open(`${dxContext.contextPath}${dxContext.urlBrowser}/${siteKey}/${editorContext.lang}/${EditPanelConstants.baseEditRoute}/${relativeNodePath}`, '_blank');
         }
     }
 };
