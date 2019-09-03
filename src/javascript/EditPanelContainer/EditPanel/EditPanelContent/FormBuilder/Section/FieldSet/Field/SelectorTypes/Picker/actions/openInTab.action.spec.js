@@ -18,6 +18,6 @@ describe('openInTab action', () => {
         };
         openInTabAction.onClick(context);
 
-        expect(window.open).toHaveBeenCalledWith(`/cms/contentmanager/digitall/fr/${EditPanelConstants.baseRoute}/contents`, '_blank');
+        expect(window.open).toHaveBeenCalledWith(`/cms/contentmanager/digitall/fr/${EditPanelConstants.baseEditRoute}/contents`, '_blank');
     });
 });
