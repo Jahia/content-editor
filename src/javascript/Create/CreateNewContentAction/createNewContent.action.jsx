@@ -1,7 +1,7 @@
 import React from 'react';
 import {CreateNewContentDialog} from './CreateNewContentDialog';
 import {composeActions, componentRendererAction} from '@jahia/react-material';
-import {reduxAction} from '../redux.action';
+import {reduxAction} from '../../actions/redux.action';
 import EditPanelConstants from '../../EditPanelContainer/EditPanel/EditPanelConstants';
 import {cmGoto} from '../../ContentManager.redux-actions';
 
