@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import {DatePicker} from '../DatePicker';
 import {withStyles} from '@material-ui/core/styles';
-import {Input} from '../Input';
+import {Input} from '@jahia/design-system-kit';
 import InputMask from 'react-input-mask';
 
 import dayjs from '../../date.config';

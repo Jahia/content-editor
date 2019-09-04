@@ -27,7 +27,7 @@
     },
     "dependencies": {
         "@jahia/apollo-dx": "^1.0.0-beta.20190724063717",
-        "@jahia/design-system-kit": "^1.0.0-beta.20190902130652",
+        "@jahia/design-system-kit": "^1.0.0-beta.20190904123434",
         "@jahia/icons": "^1.0.0-beta.20190724063718",
         "@jahia/react-apollo": "^1.0.0-beta.20190724063721",
         "@jahia/react-material": "^1.0.0-beta.20190724063718",
@@ -48,7 +48,6 @@
         "react-file-viewer": "^1.1.0",
         "react-i18next": "^7.3.1",
         "react-input-mask": "^2.0.4",
-        "react-number-format": "^4.0.8",
         "react-pdf-js": "^4.0.2",
         "react-redux": "^5.0.7",
         "react-select": "^3.0.4",
