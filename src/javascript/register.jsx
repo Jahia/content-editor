@@ -5,7 +5,7 @@ import saveAction from './actions/save.action';
 import publishAction from './actions/publish.action';
 import unpublishAction from './actions/unpublish.action';
 import goBackAction from './actions/goBack.action';
-import createNewContentAction from './actions/CreateNewContent/createNewContent.action';
+import createNewContentAction from '~Create/createNewContentAction/createNewContent.action';
 import EditPanelConstants from './EditPanelContainer/EditPanel/EditPanelConstants';
 import ContentEditor from './ContentEditor';
 import {SelectorTypes} from './EditPanelContainer/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes';

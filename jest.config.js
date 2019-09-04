@@ -4,6 +4,7 @@ module.exports = {
     ...jestConfig,
     moduleNameMapper: {
         ...jestConfig.moduleNameMapper,
-        '~design-system(.*)': '<rootDir>/src/javascript/DesignSystem/$1'
+        '~design-system(.*)': '<rootDir>/src/javascript/DesignSystem/$1',
+        '~Create(.*)': '<rootDir>/src/javascript/Create/$1'
     }
 };
