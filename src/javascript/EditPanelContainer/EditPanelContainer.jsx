@@ -4,7 +4,6 @@ import {translate} from 'react-i18next';
 import {ProgressOverlay, withNotifications} from '@jahia/react-material';
 import EditPanelConstants from './EditPanel/EditPanelConstants';
 import {Formik} from 'formik';
-import {connect} from 'react-redux';
 import EditPanel from './EditPanel';
 import * as PropTypes from 'prop-types';
 import {useFormDefinition} from './FormDefinitions';
@@ -19,11 +18,19 @@ const submitActionMapper = {
     [EditPanelConstants.submitOperation.UNPUBLISH]: unpublishNode
 };
 
-export const EditPanelContainer = ({client, notificationContext, t, path, lang, uiLang, site, siteDisplayableName, siteInfo}) => {
-    const contentEditorUiLang = EditPanelConstants.supportedLocales.includes(uiLang) ?
-        uiLang :
-        EditPanelConstants.defaultLocale;
-
+export const EditPanelContainer = ({
+    client,
+    notificationContext,
+    t,
+    path,
+    lang,
+    uiLang,
+    site,
+    siteDisplayableName,
+    siteInfo,
+    formQuery,
+    formQueryParams
+}) => {
     const {
         loading,
         error,
@@ -33,7 +40,7 @@ export const EditPanelContainer = ({client, notificationContext, t, path, lang, 
         details,
         technicalInfo,
         sections
-    } = useFormDefinition({path, language: lang, uiLang: contentEditorUiLang}, t);
+    } = useFormDefinition(formQuery, formQueryParams, t);
 
     if (error) {
         console.error(error);
@@ -45,10 +52,10 @@ export const EditPanelContainer = ({client, notificationContext, t, path, lang, 
     }
 
     const editorContext = {
-        path: path,
-        lang: lang,
-        uiLang: contentEditorUiLang,
-        site: site,
+        path,
+        lang,
+        uiLang,
+        site,
         siteInfo,
         siteDisplayableName,
         sections,
@@ -93,14 +100,6 @@ export const EditPanelContainer = ({client, notificationContext, t, path, lang, 
     );
 };
 
-const mapStateToProps = state => ({
-    path: state.path,
-    lang: state.language,
-    uiLang: state.uiLang,
-    site: state.site,
-    siteDisplayableName: state.siteDisplayableName
-});
-
 EditPanelContainer.propTypes = {
     client: PropTypes.object.isRequired,
     t: PropTypes.func.isRequired,
@@ -110,13 +109,14 @@ EditPanelContainer.propTypes = {
     uiLang: PropTypes.string.isRequired,
     site: PropTypes.string.isRequired,
     siteDisplayableName: PropTypes.string.isRequired,
-    siteInfo: PropTypes.object.isRequired
+    siteInfo: PropTypes.object.isRequired,
+    formQuery: PropTypes.object.isRequired,
+    formQueryParams: PropTypes.object.isRequired
 };
 
 const EditPanelContainerCmp = compose(
     translate(),
     withNotifications(),
-    connect(mapStateToProps),
     withApollo,
     withSiteInfo
 )(EditPanelContainer);

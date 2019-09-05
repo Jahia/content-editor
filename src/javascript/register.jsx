@@ -89,12 +89,12 @@ registry.add('edit-route', {
     target: ['cmm:0.1'],
     type: 'route',
     path: `/:siteKey/:lang/${EditPanelConstants.baseEditRoute}`,
-    render: () => <ContentEditor/>
+    render: () => <ContentEditor mode="edit"/>
 });
 
 registry.add('create-route', {
     target: ['cmm:0.1'],
     type: 'route',
     path: `/:siteKey/:lang/${EditPanelConstants.baseCreateRoute}`,
-    render: () => <div>Not implemented yet</div>
+    render: () => <ContentEditor mode="create"/>
 });

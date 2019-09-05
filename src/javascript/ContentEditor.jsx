@@ -1,19 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {ApolloProvider as ApolloHooksProvider} from 'react-apollo-hooks';
-import EditPanelContainer from './EditPanelContainer';
 import {withApollo} from 'react-apollo';
 
-const ContentEditor = ({client}) => {
+import {Create} from '~Create/Create.container';
+import {Edit} from '~Edit/Edit.container';
+
+const Routes = {
+    edit: Edit,
+    create: Create
+};
+
+const ContentEditorCmp = ({client, mode}) => {
+    const CurrentRouteCmp = Routes[mode];
+
     return (
         <ApolloHooksProvider client={client}>
-            <EditPanelContainer/>
+            <CurrentRouteCmp/>
         </ApolloHooksProvider>
     );
 };
 
-ContentEditor.propTypes = {
-    client: PropTypes.object.isRequired
+ContentEditorCmp.propTypes = {
+    client: PropTypes.object.isRequired,
+    mode: PropTypes.oneOf(['create', 'edit']).isRequired
 };
 
-export default withApollo(ContentEditor);
+const ContentEditor = withApollo(ContentEditorCmp);
+ContentEditor.displayName = 'ContentEditor';
+export default ContentEditor;

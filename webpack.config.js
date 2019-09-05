@@ -27,7 +27,8 @@ module.exports = (env, argv) => {
             extensions: ['.mjs', '.js', '.jsx', 'json'],
             alias: {
                 '~design-system': path.resolve(__dirname, './src/javascript/DesignSystem'),
-                '~Create': path.resolve(__dirname, './src/javascript/Create')
+                '~Create': path.resolve(__dirname, './src/javascript/Create'),
+                '~Edit': path.resolve(__dirname, './src/javascript/Edit')
             }
         },
         module: {
