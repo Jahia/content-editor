@@ -73,7 +73,7 @@ const adaptSections = sections => {
 
 export const adaptFormData = (data, lang, t) => {
     const nodeData = data.jcr.result;
-    const sections = data.forms.editForm.sections;
+    const sections = data.forms.editForm ? data.forms.editForm.sections : data.forms.createForm.sections;
 
     return {
         sections: adaptSections(sections),
