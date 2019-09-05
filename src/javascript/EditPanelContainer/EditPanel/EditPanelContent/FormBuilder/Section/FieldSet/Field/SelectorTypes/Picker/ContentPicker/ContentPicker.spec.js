@@ -7,16 +7,11 @@ jest.mock('formik', () => {
     let formikvaluesmock;
 
     return {
-        setFormikValues: values => {
-            formikvaluesmock = values;
-        },
         connect: Cmp => props => (
             <Cmp {...props} formik={{values: formikvaluesmock}}/>
         )
     };
 });
-
-import {setFormikValues} from 'formik';
 
 describe('contentPicker', () => {
     let defaultProps;
@@ -33,13 +28,9 @@ describe('contentPicker', () => {
             editorContext: {},
             setActionContext: jest.fn()
         };
-
-        setFormikValues({contentId: 'ojrzoij'});
     });
 
     it('should display the ContentPickerEmpty when the field is not filed', () => {
-        setFormikValues({contentId: null});
-
         const cmp = shallowWithTheme(
             <ContentPicker {...defaultProps}/>,
             {},
@@ -53,6 +44,8 @@ describe('contentPicker', () => {
     });
 
     it('should display the ContentPickerFilled when the field is filed', () => {
+        defaultProps.value = 'DummyValue';
+
         const cmp = shallowWithTheme(
             <ContentPicker {...defaultProps}/>,
             {},

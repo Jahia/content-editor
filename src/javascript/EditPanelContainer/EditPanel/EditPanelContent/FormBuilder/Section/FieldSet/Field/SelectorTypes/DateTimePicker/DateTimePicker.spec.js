@@ -17,7 +17,7 @@ describe('DateTimePicker component', () => {
 
     beforeEach(() => {
         props = {
-            id: 'dtp1',
+            id: 'myOption',
             field: {
                 name: 'myOption',
                 displayName: 'myOption',

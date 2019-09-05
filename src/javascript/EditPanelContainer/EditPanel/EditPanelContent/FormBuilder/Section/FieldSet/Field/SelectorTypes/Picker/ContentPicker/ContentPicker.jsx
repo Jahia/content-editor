@@ -7,9 +7,7 @@ import pickerConfigs from '../Picker.configs';
 import {translate} from 'react-i18next';
 import {FieldPropTypes} from '../../../../../../../../../FormDefinitions/FormData.proptypes';
 
-const ContentPickerCmp = ({field, id, editorContext, formik, t, setActionContext}) => {
-    const uuid = formik.values[field.name];
-
+const ContentPickerCmp = ({field, value, id, editorContext, formik, t, setActionContext}) => {
     // Resolve picker configuration
     const pickerConfig = pickerConfigs.resolveConfig(
         field.selectorOptions,
@@ -29,11 +27,11 @@ const ContentPickerCmp = ({field, id, editorContext, formik, t, setActionContext
         };
     });
 
-    if (uuid) {
+    if (value) {
         return (
             <ContentPickerFilled
                 id={id}
-                uuid={uuid}
+                uuid={value}
                 field={field}
                 formik={formik}
                 editorContext={editorContext}
@@ -59,6 +57,7 @@ const ContentPickerCmp = ({field, id, editorContext, formik, t, setActionContext
 
 ContentPickerCmp.propTypes = {
     editorContext: PropTypes.object.isRequired,
+    value: FieldPropTypes.string,
     field: FieldPropTypes.isRequired,
     formik: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,

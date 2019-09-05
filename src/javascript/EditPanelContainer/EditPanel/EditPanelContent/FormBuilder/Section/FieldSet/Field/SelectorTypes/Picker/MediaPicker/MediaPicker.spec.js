@@ -7,16 +7,11 @@ jest.mock('formik', () => {
     let formikvaluesmock;
 
     return {
-        setFormikValues: values => {
-            formikvaluesmock = values;
-        },
         connect: Cmp => props => (
             <Cmp {...props} formik={{values: formikvaluesmock}}/>
         )
     };
 });
-
-import {setFormikValues} from 'formik';
 
 describe('mediaPicker', () => {
     let defaultProps;
@@ -33,13 +28,9 @@ describe('mediaPicker', () => {
             editorContext: {},
             setActionContext: jest.fn()
         };
-
-        setFormikValues({imageid: 'ojrzoij'});
     });
 
     it('should display the MediaPickerEmpty when the field is not filed', () => {
-        setFormikValues({imageid: null});
-
         const cmp = shallowWithTheme(
             <MediaPicker {...defaultProps}/>,
             {},
@@ -52,6 +43,8 @@ describe('mediaPicker', () => {
     });
 
     it('should display the MediaPickerFilled when the field is filed', () => {
+        defaultProps.value = 'DummyValue';
+
         const cmp = shallowWithTheme(
             <MediaPicker {...defaultProps}/>,
             {},

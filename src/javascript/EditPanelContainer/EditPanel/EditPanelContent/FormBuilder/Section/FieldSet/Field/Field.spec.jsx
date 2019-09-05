@@ -101,7 +101,7 @@ describe('Field component', () => {
         testI18nBadgeRender(true, [lang1], false);
     });
 
-    it('should add labelHtmlFor to the label and the field should have a defined id attribute', () => {
+    it('should add labelHtmlFor to the label', () => {
         defaultProps.input = <Text id="text"/>;
         const cmp = shallowWithTheme(
             <Field {...defaultProps}/>,
@@ -110,7 +110,6 @@ describe('Field component', () => {
         );
 
         expect(cmp.debug()).toContain('yoloHtmlFor');
-        expect(cmp.dive().dive().debug()).toContain('id="text"');
     });
 
     it('should display the contextualMenu when action exists', () => {

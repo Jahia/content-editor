@@ -14,12 +14,12 @@ export class RichTextCmp extends React.Component {
     }
 
     render() {
-        const {field, id} = this.props;
-        const {values, setFieldValue} = this.props.formik;
+        const {field, id, value} = this.props;
+        const {setFieldValue} = this.props.formik;
 
         const onEditorChange = evt => {
             setFieldValue(
-                field.name,
+                id,
                 evt.editor.getData(),
                 true
             );
@@ -27,13 +27,13 @@ export class RichTextCmp extends React.Component {
 
         const config = {
             toolbar: 'Mini',
-            contentEditorFieldName: field.name // Used by selenium to get CKEditor instance
+            contentEditorFieldName: id // Used by selenium to get CKEditor instance
         };
 
         return (
             <CKEditor
                     id={id}
-                    data={values[field.name]}
+                    data={value}
                     config={config}
                     readOnly={field.readOnly}
                     onChange={onEditorChange}
@@ -44,6 +44,7 @@ export class RichTextCmp extends React.Component {
 
 RichTextCmp.propTypes = {
     id: PropTypes.string.isRequired,
+    value: PropTypes.string,
     field: FieldPropTypes.isRequired,
     formik: PropTypes.object.isRequired
 };

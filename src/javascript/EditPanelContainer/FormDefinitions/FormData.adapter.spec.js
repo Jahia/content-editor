@@ -5,11 +5,13 @@ jest.mock('../EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/Sele
         resolveSelectorType: ({selectorType}) => {
             if (selectorType === 'Checkbox') {
                 return {
-                    formatValue: value => {
-                        return value === 'true'; // Value from JCR GraphQL API is a String
+                    adaptPropertyValue: (field, property) => {
+                        return field.multiple ? property.values.map(value => value === 'true') : property.value === 'true';
                     }
                 };
             }
+
+            return {};
         }
     };
 });
@@ -90,9 +92,9 @@ describe('adaptFormData', () => {
     });
 
     it('should extract initialValues from fields', () => {
-        const initialValues = adaptFormData(graphqlResponse, 'fr', t).initialValues;
+        const adaptedForm = adaptFormData(graphqlResponse, 'fr', t);
 
-        expect(initialValues).toEqual({field1: '2019-05-07T11:33:31.056'});
+        expect(adaptedForm.initialValues).toEqual({field1: '2019-05-07T11:33:31.056'});
     });
 
     it('should extract initialValues with selectorType own logic', () => {

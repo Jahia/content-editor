@@ -30,16 +30,13 @@ describe('RichText component', () => {
         expect(wrapper.find(RICH_TEXT_COMPONENT_TAG).length).toBe(1);
     });
 
-    it('should obtain its initial value from formik.values', () => {
-        const fieldName = props.field.name;
-        const fieldValue = 'some dummy value';
-
-        props.formik.values[fieldName] = fieldValue;
+    it('should obtain its initial value from value prop', () => {
+        props.value = 'some dummy value';
 
         expect(wrapper.setProps(props)
             .find(RICH_TEXT_COMPONENT_TAG)
             .prop('data')
-        ).toEqual(fieldValue);
+        ).toEqual('some dummy value');
     });
 
     it('should call formik.setFieldValue on change', () => {
@@ -55,7 +52,7 @@ describe('RichText component', () => {
 
         expect(props.formik.setFieldValue.mock.calls.length).toBe(1);
         expect(props.formik.setFieldValue.mock.calls).toEqual([[
-            props.field.name, dummyEditor.getData(), true
+            props.id, dummyEditor.getData(), true
         ]]);
     });
 

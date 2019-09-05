@@ -13,9 +13,9 @@ describe('Selector Types', () => {
             expect(selector.cmp).toEqual(Text);
         });
 
-        it('should not return the unset multiple selector types', () => {
+        it('should return the unset multiple selector types', () => {
             const selector = resolveSelectorType({selectorType: 'dummy', multiple: true});
-            expect(selector).toEqual(undefined);
+            expect(selector.cmp).toEqual(Text);
         });
 
         it('should return the proper multiple selector types', () => {

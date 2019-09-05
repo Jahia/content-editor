@@ -1,5 +1,6 @@
 import dayjs from '../../date.config';
-import {getFields, getDynamicFieldSets, getFieldValue} from '../EditPanel/EditPanel.utils';
+import {getDynamicFieldSets, getFields} from '../EditPanel/EditPanel.utils';
+import {resolveSelectorType} from '../EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes.utils';
 
 const getInitialValues = (nodeData, sections) => {
     // Retrieve dynamic fieldSets
@@ -7,10 +8,32 @@ const getInitialValues = (nodeData, sections) => {
 
     // Retrieve fields and the return object contains the field name as the key and the field value as the value
     const fields = getFields(sections)
-        .reduce((result, field) => ({...result, [field.name]: getFieldValue(field, nodeData)}), {});
+        .reduce((result, field) => ({...result, ...getFieldValues(field, nodeData)}), {});
 
     // Return object contains fields and dynamic fieldSets
     return {...fields, ...dynamicFieldSets};
+};
+
+const getFieldValues = (field, nodeData) => {
+    const property = nodeData.properties.find(prop => prop.name === field.name);
+    if (!property) {
+        return;
+    }
+
+    let formFields = {};
+    const selectorType = resolveSelectorType(field);
+    if (selectorType) {
+        let adaptedPropertyValue;
+        if (selectorType.adaptPropertyValue) {
+            adaptedPropertyValue = selectorType.adaptPropertyValue(field, property);
+        } else {
+            adaptedPropertyValue = field.multiple ? property.values : property.value;
+        }
+
+        formFields[field.name] = adaptedPropertyValue;
+    }
+
+    return formFields;
 };
 
 const getDetailsValue = (sections = [], nodeData, lang) => {

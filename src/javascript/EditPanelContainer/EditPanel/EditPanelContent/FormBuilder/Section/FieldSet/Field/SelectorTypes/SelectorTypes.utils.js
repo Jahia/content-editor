@@ -1,6 +1,6 @@
 import {SelectorTypes, SelectorTypeResolvers} from './SelectorTypes';
 
-export const resolveSelectorType = ({selectorType, selectorOptions, multiple}) => {
+export const resolveSelectorType = ({selectorType, selectorOptions}) => {
     let selector;
     if (SelectorTypes[selectorType]) {
         selector = SelectorTypes[selectorType];
@@ -10,8 +10,5 @@ export const resolveSelectorType = ({selectorType, selectorOptions, multiple}) =
         selector = SelectorTypeResolvers[selectorType](selectorOptions);
     }
 
-    // Check if selector exist and multiple support
-    if (selector && (!multiple || selector.supportMultiple)) {
-        return selector;
-    }
+    return selector;
 };
