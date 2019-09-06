@@ -33,7 +33,9 @@ describe('Multiple component', () => {
             },
             inputContext: {
                 fieldComponent: <></>
-            }
+            },
+            classes: {},
+            t: jest.fn()
         };
     });
 
