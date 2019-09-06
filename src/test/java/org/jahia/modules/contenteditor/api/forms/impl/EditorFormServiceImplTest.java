@@ -95,11 +95,13 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         simpleContent.setProperty("prop", "propValue");
         session.save();
         EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
+        EditorForm createForm = editorFormService.getCreateForm("jnt:simple", Locale.ENGLISH, Locale.ENGLISH, testSite.getJCRLocalPath());
         String sectionName = "content";
         Map<String, List<String>> expectedFieldsSet = new HashMap<>();
         expectedFieldsSet.put("jnt:simple", Collections.singletonList("prop"));
 
         checkResults(form, sectionName, expectedFieldsSet);
+        checkResults(createForm, sectionName, expectedFieldsSet);
 
     }
 
@@ -114,6 +116,7 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         simpleContent.setProperty("prop", "propValue");
         session.save();
         EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
+        EditorForm createForm = editorFormService.getCreateForm("jnt:simpleWithMix", Locale.ENGLISH, Locale.ENGLISH, testSite.getJCRLocalPath());
         String sectionName = "content";
         Map<String, List<String>> expectedFieldsSet = new HashMap<>();
         expectedFieldsSet.put("jnt:simpleWithMix", Collections.singletonList("prop"));
@@ -121,6 +124,7 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         expectedFieldsSet.put("jmix:mix2", Collections.singletonList("propMix2"));
 
         checkResults(form, sectionName, expectedFieldsSet);
+        checkResults(createForm, sectionName, expectedFieldsSet);
     }
 
     /**
@@ -150,12 +154,16 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         simpleContent.setProperty("prop", "propValue");
         session.save();
         EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
+        EditorForm createForm = editorFormService.getCreateForm("jnt:simpleWithExtends", Locale.ENGLISH, Locale.ENGLISH, testSite.getJCRLocalPath());
         String sectionName = "content";
 
         Map<String, List<String>> expectedFieldsSet = new HashMap<>();
         expectedFieldsSet.put("jnt:simpleWithExtends", Collections.singletonList("prop:false:true"));
-        expectedFieldsSet.put("jmix:mix1", Collections.singletonList("propMix1:false:true"));
         expectedFieldsSet.put("jmix:extendsSimpleMixin", Collections.singletonList("extension:true:false"));
+        // Create
+        checkResults(createForm, sectionName, expectedFieldsSet);
+        // Edit
+        expectedFieldsSet.put("jmix:mix1", Collections.singletonList("propMix1:false:true"));
         checkResults(form, sectionName, expectedFieldsSet);
 
 
