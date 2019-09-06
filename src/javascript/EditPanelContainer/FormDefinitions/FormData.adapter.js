@@ -20,7 +20,7 @@ const getFieldValues = (field, nodeData) => {
         return;
     }
 
-    let formFields = {};
+    const formFields = {};
     const selectorType = resolveSelectorType(field);
     if (selectorType) {
         let adaptedPropertyValue;
