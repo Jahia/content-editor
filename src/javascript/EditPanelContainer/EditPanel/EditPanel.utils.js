@@ -1,5 +1,4 @@
 import EditPanelConstants from './EditPanelConstants';
-import {resolveSelectorType} from './EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes.utils';
 
 export function isSystemField(fieldKey) {
     return fieldKey in EditPanelConstants.systemFields;
@@ -208,23 +207,3 @@ function getMixinsToMutate(nodeData = {}, formValues = {}, sections) {
         mixinsToDelete
     };
 }
-
-export const getFieldValue = (field, nodeData) => {
-    const property = nodeData.properties.find(prop => prop.name === field.name);
-    if (!property) {
-        return;
-    }
-
-    const selectorType = resolveSelectorType(field);
-    if (selectorType) {
-        if (selectorType.formatValue) {
-            return selectorType.formatValue(property.value);
-        }
-
-        if (selectorType.key === 'DateTimePicker' || selectorType.key === 'DatePicker') {
-            return field.multiple ? property.notZonedDateValues : property.notZonedDateValue;
-        }
-    }
-
-    return field.multiple ? property.values : property.value;
-};

@@ -10,6 +10,10 @@ import Checkbox from './Checkbox';
 
 let SelectorTypes = {};
 
+const adaptDateProperty = (field, property) => {
+    return field.multiple ? property.notZonedDateValues : property.notZonedDateValue;
+};
+
 // Workaround for unit tests to avoid: "Couldn't call getPickerSelectorTypes() of undefined."
 if (pickerConfigs) {
     SelectorTypes = {
@@ -18,13 +22,22 @@ if (pickerConfigs) {
         TextArea: {cmp: TextArea, key: 'TextArea', supportMultiple: false},
         RichText: {cmp: RichText, key: 'RichText', supportMultiple: false},
         Choicelist: {cmp: ChoiceList, key: 'Choicelist', actions: choiceListActions, supportMultiple: true},
-        DateTimePicker: {cmp: DateTimePicker, key: 'DateTimePicker', supportMultiple: false},
-        DatePicker: {cmp: DateTimePicker, key: 'DatePicker', supportMultiple: false},
+        DateTimePicker: {
+            cmp: DateTimePicker,
+            key: 'DateTimePicker',
+            supportMultiple: false,
+            adaptPropertyValue: adaptDateProperty
+        },
+        DatePicker: {
+            cmp: DateTimePicker,
+            key: 'DatePicker',
+            supportMultiple: false,
+            adaptPropertyValue: adaptDateProperty},
         Checkbox: {
             cmp: Checkbox,
             key: 'Checkbox',
-            formatValue: value => {
-                return value === 'true'; // Value from JCR GraphQL API is a String
+            adaptPropertyValue: (field, property) => {
+                return field.multiple ? property.values.map(value => value === 'true') : property.value === 'true';
             },
             supportMultiple: false
         },

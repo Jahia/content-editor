@@ -5,13 +5,12 @@ import {MediaPickerEmpty} from './MediaPickerEmpty/MediaPickerEmpty';
 import {MediaPickerFilled} from './MediaPickerFilled/MediaPickerFilled';
 import {FieldPropTypes} from '../../../../.././../../../../FormDefinitions/FormData.proptypes';
 
-const MediaPickerCmp = ({field, id, editorContext, formik, setActionContext}) => {
-    const uuid = formik.values[field.name];
-    if (uuid) {
+const MediaPickerCmp = ({field, value, id, editorContext, formik, setActionContext}) => {
+    if (value) {
         return (
             <MediaPickerFilled
                 id={id}
-                uuid={uuid}
+                uuid={value}
                 field={field}
                 formik={formik}
                 editorContext={editorContext}
@@ -36,6 +35,7 @@ MediaPickerCmp.propTypes = {
     field: FieldPropTypes.isRequired,
     formik: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,
+    value: PropTypes.string,
     setActionContext: PropTypes.func.isRequired
 };
 

@@ -8,6 +8,8 @@ import * as PropTypes from 'prop-types';
 import {ContextualMenu} from '@jahia/react-material';
 import {FieldPropTypes} from '../../../../../../FormDefinitions';
 import {SiteInfoPropTypes} from '../../../../../../SiteData';
+import {MultipleField} from './MultipleField';
+import {SingleField} from './SingleField';
 
 let styles = theme => {
     const common = {
@@ -45,7 +47,7 @@ let styles = theme => {
     };
 };
 
-export const FieldCmp = ({t, classes, input, idInput, selectorType, field, siteInfo, actionContext}) => {
+export const FieldCmp = ({t, classes, inputContext, idInput, selectorType, field, siteInfo, actionContext}) => {
     const contextualMenu = useRef(null);
 
     return (
@@ -92,7 +94,10 @@ export const FieldCmp = ({t, classes, input, idInput, selectorType, field, siteI
                         alignItems="center"
                     >
                         <Grid item className={classes.input}>
-                            {input}
+                            {(field.multiple && !selectorType.supportMultiple) ?
+                                <MultipleField inputContext={inputContext} field={field}/> :
+                                <SingleField inputContext={inputContext} field={field}/>
+                            }
                         </Grid>
                         <Grid item>
                             {actionContext.noAction ? (
@@ -125,11 +130,11 @@ export const FieldCmp = ({t, classes, input, idInput, selectorType, field, siteI
 FieldCmp.propTypes = {
     t: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,
-
-    input: PropTypes.element.isRequired,
+    inputContext: PropTypes.object.isRequired,
     idInput: PropTypes.string.isRequired,
     selectorType: PropTypes.shape({
-        key: PropTypes.string
+        key: PropTypes.string,
+        supportMultiple: PropTypes.bool
     }).isRequired,
     siteInfo: SiteInfoPropTypes.isRequired,
     field: FieldPropTypes.isRequired,

@@ -24,7 +24,7 @@ export const DateTimePicker = ({id, field, editorContext}) => {
 
     return (
         <Field
-            name={field.name}
+            name={id}
             render={props => {
                 // Remove onChange from props pass to the input component as it is set in it.
                 // eslint-disable-next-line react/prop-types
@@ -38,7 +38,7 @@ export const DateTimePicker = ({id, field, editorContext}) => {
                             // Null is received when the date is reset
                             const newDate = date && dayjs(date).format('YYYY-MM-DDTHH:mm:ss.SSS');
                             // eslint-disable-next-line
-                            props.form.setFieldValue(field.name, newDate, true);
+                            props.form.setFieldValue(id, newDate, true);
                         }}
                         {...formikField}
                         displayDateFormat={displayDateFormat}

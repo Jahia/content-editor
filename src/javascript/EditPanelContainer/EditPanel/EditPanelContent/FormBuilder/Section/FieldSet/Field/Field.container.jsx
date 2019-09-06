@@ -31,19 +31,14 @@ const FieldContainerCmp = ({field, formik}) => {
         }
     };
 
-    const idInput = field.name;
-    const FieldComponent = selectorType.cmp;
-    const Input = (
-        <FieldComponent field={field}
-                        id={idInput}
-                        editorContext={editorContext}
-                        setActionContext={setActionContext}/>
-    );
-
     return (
         <Field
-            idInput={idInput}
-            input={Input}
+            idInput={field.name}
+            inputContext={{
+                fieldComponent: selectorType.cmp,
+                editorContext: editorContext,
+                setActionContext: setActionContext
+            }}
             selectorType={selectorType}
             siteInfo={editorContext.siteInfo}
             field={field}

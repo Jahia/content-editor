@@ -51,7 +51,7 @@ describe('Checkbox component', () => {
     });
 
     it('should display checked', () => {
-        formikProps.values.myCheckbox = true;
+        props.value = true;
         setFormikProps(formikProps);
         const checkboxCmp = shallowWithTheme(<Checkbox {...props}/>, {}, dsGenericTheme);
         expect(checkboxCmp.dive().dive().props().checked).toBe(true);
@@ -62,7 +62,7 @@ describe('Checkbox component', () => {
         const checkboxCmp = shallowWithTheme(<Checkbox {...props}/>, {}, dsGenericTheme);
         const innerCmp = checkboxCmp.dive().dive();
         innerCmp.simulate('change', null, true);
-        expect(formikProps.setFieldValue).toHaveBeenCalledWith('myCheckbox', true);
+        expect(formikProps.setFieldValue).toHaveBeenCalledWith('checkbox1', true);
     });
 
     it('should be readonly', () => {

@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import {ImageListQuery} from './ImageListQuery';
 import {PickerDialog} from '~design-system/PickerDialog';
-import {FieldPropTypes} from '../../../../../../../../../FormDefinitions/FormData.proptypes';
 
 import Slide from '@material-ui/core/Slide';
 
@@ -19,8 +18,7 @@ export const MediaPickerDialog = ({
     id,
     t,
     formik,
-    initialSelectedItem,
-    field
+    initialSelectedItem
 }) => {
     return (
         <Dialog fullScreen open={isOpen} TransitionComponent={Transition}>
@@ -50,7 +48,7 @@ export const MediaPickerDialog = ({
                 onCloseDialog={() => setIsOpen(false)}
                 onItemSelection={image => {
                     formik.setFieldValue(
-                        field.name,
+                        id,
                         image[0] ? image[0].uuid : null,
                         true
                     );
@@ -59,7 +57,7 @@ export const MediaPickerDialog = ({
             >
                 {(setSelectedItem, selectedPath, initialSelection) => (
                     <ImageListQuery
-                        field={field}
+                        id={id}
                         setSelectedItem={setSelectedItem}
                         selectedPath={selectedPath}
                         initialSelection={initialSelection}
@@ -82,6 +80,5 @@ MediaPickerDialog.propTypes = {
     id: PropTypes.string.isRequired,
     t: PropTypes.func.isRequired,
     formik: PropTypes.object.isRequired,
-    field: FieldPropTypes.isRequired,
     initialSelectedItem: PropTypes.string
 };

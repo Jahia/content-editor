@@ -17,7 +17,7 @@ describe('DateTimePicker component', () => {
 
     beforeEach(() => {
         props = {
-            id: 'dtp1',
+            id: 'myOption[0]',
             field: {
                 name: 'myOption',
                 displayName: 'myOption',
@@ -51,7 +51,7 @@ describe('DateTimePicker component', () => {
 
         cmp.simulate('change', '2019-07-14T21:07:12.000');
 
-        expect(formikOnChange).toHaveBeenCalledWith('myOption', '2019-07-14T21:07:12.000', true);
+        expect(formikOnChange).toHaveBeenCalledWith('myOption[0]', '2019-07-14T21:07:12.000', true);
     });
 
     it('should give readOnly', () => {

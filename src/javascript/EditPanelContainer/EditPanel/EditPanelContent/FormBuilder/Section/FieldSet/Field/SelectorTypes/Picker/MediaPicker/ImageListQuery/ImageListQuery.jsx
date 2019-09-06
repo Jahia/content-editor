@@ -6,11 +6,10 @@ import {translate} from 'react-i18next';
 import {ImageList} from '~design-system/ImageList';
 import {encodeJCRPath} from '../../../../../../../../../EditPanel.utils';
 import {MediaPickerImages} from './ImageListQuery.gql-queries';
-import {FieldPropTypes} from '../../../../../../../../../../FormDefinitions/FormData.proptypes';
 
 const ImageListQueryCmp = ({
     t,
-    field,
+    id,
     setSelectedItem,
     selectedPath,
     initialSelection,
@@ -57,7 +56,7 @@ const ImageListQueryCmp = ({
             onImageSelection={setSelectedItem}
             onImageDoubleClick={image => {
                 formik.setFieldValue(
-                    field.name,
+                    id,
                     image.uuid,
                     true
                 );
@@ -72,7 +71,7 @@ ImageListQueryCmp.defaultProps = {
 
 ImageListQueryCmp.propTypes = {
     t: PropTypes.func.isRequired,
-    field: FieldPropTypes.isRequired,
+    id: PropTypes.string.isRequired,
     setSelectedItem: PropTypes.func.isRequired,
     selectedPath: PropTypes.string.isRequired,
     formik: PropTypes.object.isRequired,

@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import {ContentTable} from './ContentTable';
 import {PickerDialog} from '~design-system/PickerDialog';
-import {FieldPropTypes} from '../../../../../../../../../FormDefinitions/FormData.proptypes';
 
 import Slide from '@material-ui/core/Slide';
 
@@ -21,7 +20,6 @@ export const ContentPickerDialog = ({
     nodeTreeConfigs,
     t,
     formik,
-    field,
     pickerConfig
 }) => {
     return (
@@ -41,7 +39,7 @@ export const ContentPickerDialog = ({
                 onCloseDialog={() => setIsOpen(false)}
                 onItemSelection={content => {
                     formik.setFieldValue(
-                        field.name,
+                        id,
                         content[0] ? content[0].id : null,
                         true
                     );
@@ -95,7 +93,6 @@ ContentPickerDialog.propTypes = {
     nodeTreeConfigs: PropTypes.array.isRequired,
     t: PropTypes.func.isRequired,
     formik: PropTypes.object.isRequired,
-    field: FieldPropTypes.isRequired,
     pickerConfig: PropTypes.object.isRequired,
     initialSelectedItem: PropTypes.string
 };

@@ -5,12 +5,12 @@ import * as PropTypes from 'prop-types';
 import {Toggle} from '@jahia/design-system-kit';
 import {FieldPropTypes} from '../../../../../../../../FormDefinitions/FormData.proptypes';
 
-const Checkbox = ({field, id, formik: {values, setFieldValue}}) => {
+const Checkbox = ({field, value, id, formik: {setFieldValue}}) => {
     return (
         <Toggle id={id}
-                checked={values[field.name] === true}
+                checked={value === true}
                 readOnly={field.readOnly}
-                onChange={(event, checked) => setFieldValue(field.name, checked)}
+                onChange={(event, checked) => setFieldValue(id, checked)}
         />
     );
 };
@@ -18,6 +18,7 @@ const Checkbox = ({field, id, formik: {values, setFieldValue}}) => {
 Checkbox.propTypes = {
     field: FieldPropTypes.isRequired,
     id: PropTypes.string.isRequired,
+    value: PropTypes.string,
     formik: PropTypes.object.isRequired
 };
 

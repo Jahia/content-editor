@@ -5,17 +5,16 @@ import PropTypes from 'prop-types';
 import {Input} from '@jahia/design-system-kit';
 import {FieldPropTypes} from '../../../../../../../../FormDefinitions/FormData.proptypes';
 
-export const TextCmp = ({field, id, editorContext, formik: {values, handleChange}}) => {
+export const TextCmp = ({field, value, id, editorContext, formik: {handleChange}}) => {
     const fieldType = field.requiredType;
     const isNumber = fieldType === 'DOUBLE' || fieldType === 'LONG' || fieldType === 'DECIMAL';
     const decimalSeparator = editorContext.uiLang === 'en' ? '.' : ',';
-    const value = values[field.name];
 
     return (
         <Input
             fullWidth
             id={id}
-            name={field.name}
+            name={id}
             defaultValue={isNumber ? value && value.replace('.', decimalSeparator) : value}
             readOnly={field.readOnly}
             type={isNumber ? 'number' : 'text'}
@@ -28,6 +27,7 @@ export const TextCmp = ({field, id, editorContext, formik: {values, handleChange
 
 TextCmp.propTypes = {
     id: PropTypes.string.isRequired,
+    value: PropTypes.string,
     editorContext: PropTypes.object.isRequired,
     field: FieldPropTypes.isRequired,
     formik: PropTypes.object.isRequired

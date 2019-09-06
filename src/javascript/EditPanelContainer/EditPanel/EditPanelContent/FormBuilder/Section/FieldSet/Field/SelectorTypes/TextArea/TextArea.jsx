@@ -8,7 +8,7 @@ import {TextArea} from '~design-system/TextArea';
 export const TextAreaField = ({id, field}) => {
     return (
         <Field
-            name={field.name}
+            name={id}
             render={props => {
                 const {name, value, onChange} = props.field;
 

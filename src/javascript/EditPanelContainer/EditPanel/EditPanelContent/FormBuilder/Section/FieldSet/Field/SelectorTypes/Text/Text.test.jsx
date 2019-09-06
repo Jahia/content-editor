@@ -10,13 +10,13 @@ describe('Text component', () => {
 
     beforeEach(() => {
         props = {
-            id: 'toto',
+            id: 'toto[1]',
             editorContext: {
                 uiLang: 'en'
             },
             field: {
-                name: 'x',
-                displayName: 'x',
+                name: 'toto',
+                displayName: 'toto',
                 readOnly: false,
                 selectorType: 'Text',
                 requiredType: 'STRING',
@@ -39,14 +39,13 @@ describe('Text component', () => {
 
     it('should contain a matching Input props values', () => {
         expect(wrapper.props().id).toBe(props.id);
-        expect(wrapper.props().name).toBe(props.field.name);
+        expect(wrapper.props().name).toBe(props.id);
     });
 
-    it('should obtain its initial value from formik.values', () => {
-        const fieldName = props.field.name;
+    it('should obtain its initial value from value param', () => {
         const fieldValue = 'some dummy value';
 
-        props.formik.values[fieldName] = fieldValue;
+        props.value = fieldValue;
         wrapper.setProps(props);
         expect(wrapper.props().defaultValue).toBe(fieldValue);
     });
