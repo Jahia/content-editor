@@ -45,7 +45,7 @@ describe('Multiple component', () => {
             dsGenericTheme
         );
 
-        let debug = cmp.dive().dive().dive().debug();
+        const debug = cmp.dive().dive().dive().debug();
         expect(debug).toContain('value="Dummy1" id="text[0]"');
         expect(debug).toContain('value="Dummy2" id="text[1]"');
     });
