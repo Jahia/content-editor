@@ -53,6 +53,9 @@ export const FormQuery = gql`
         }
         jcr {
             ...NodeData
+            nodeTypeByName(name: $primaryNodeType) {
+                displayName(language: $uiLang)
+            }
         }
     }
     ${NodeDataFragment.nodeData.gql}

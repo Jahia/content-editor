@@ -2,7 +2,6 @@ import {useQuery} from 'react-apollo-hooks';
 import {adaptFormData} from './FormData.adapter';
 
 export const useFormDefinition = (query, queryParams, t) => {
-    console.log(queryParams);
     const {loading, error, data} = useQuery(query, {
         variables: queryParams,
         fetchPolicy: 'cache-and-network'

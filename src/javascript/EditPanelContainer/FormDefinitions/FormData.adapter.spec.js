@@ -64,6 +64,7 @@ describe('adaptFormData', () => {
                 result: {
                     uuid: 'uuid1',
                     path: '/site/digitall/home',
+                    displayName: 'nameOfNode',
                     primaryNodeType: {
                         displayName: 'ContentType',
                         properties: [
@@ -170,5 +171,17 @@ describe('adaptFormData', () => {
             name: 'metadata',
             fieldSets: []
         }]);
+    });
+
+    it('should return the nodeData name when editing', () => {
+        expect(adaptFormData(graphqlResponse, 'fr', t).title).toEqual('nameOfNode');
+    });
+
+    it('should return the content type name when Creating', () => {
+        graphqlResponse.jcr.nodeTypeByName = {
+            displayName: 'nodeType'
+        };
+
+        expect(adaptFormData(graphqlResponse, 'fr', t).title).toEqual('content-editor:label.contentEditor.create.title');
     });
 });

@@ -103,6 +103,9 @@ export const adaptFormData = (data, lang, t) => {
         initialValues: getInitialValues(nodeData, sections),
         nodeData,
         details: getDetailsValue(sections, nodeData, lang),
-        technicalInfo: getTechnicalInfo(nodeData, t)
+        technicalInfo: getTechnicalInfo(nodeData, t),
+        title: data.jcr.nodeTypeByName ?
+            t('content-editor:label.contentEditor.create.title', {type: data.jcr.nodeTypeByName.displayName}) :
+            nodeData.displayName
     };
 };
