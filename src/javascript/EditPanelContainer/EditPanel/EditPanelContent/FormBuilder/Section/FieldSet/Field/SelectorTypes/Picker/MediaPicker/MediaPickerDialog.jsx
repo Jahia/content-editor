@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import {ImageListQuery} from './ImageListQuery';
-import {PickerDialog} from '~design-system/PickerDialog';
+import {PickerDialog} from '~DesignSystem/PickerDialog';
 
 import Slide from '@material-ui/core/Slide';
 

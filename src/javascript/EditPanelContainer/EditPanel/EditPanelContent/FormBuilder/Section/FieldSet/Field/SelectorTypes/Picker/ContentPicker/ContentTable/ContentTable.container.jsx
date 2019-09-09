@@ -1,5 +1,5 @@
 import React from 'react';
-import DSContentTable from '~design-system/ContentTable/ContentTable';
+import DSContentTable from '~DesignSystem/ContentTable/ContentTable';
 import {useQuery} from 'react-apollo-hooks';
 import {translate} from 'react-i18next';
 import {ProgressOverlay} from '@jahia/react-material';

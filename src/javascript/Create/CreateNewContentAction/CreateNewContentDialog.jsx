@@ -14,7 +14,7 @@ import {withApollo} from 'react-apollo';
 import {useTreeOfNewContent} from './CreateNewContent.adapter';
 import {ProgressOverlay} from '@jahia/react-material';
 
-import {TreeView} from '~design-system/TreeView';
+import {TreeView} from '~DesignSystem/TreeView';
 
 const styles = theme => ({
     treeContainer: {
