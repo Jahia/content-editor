@@ -1,6 +1,9 @@
 {
     "label": {
         "contentEditor": {
+            "create": {
+              "title": "Erstellen {{type}}"
+            },
             "edit": {
                 "title": "Inhalt bearbeiten",
                 "contentEdit": "Inhalt bearbeiten",

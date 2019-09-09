@@ -7,7 +7,7 @@ import {connect} from 'formik';
 import {EditPanelLanguageSwitcher} from './EditPanelLanguageSwitcher';
 import {useContentEditorContext} from '../../ContentEditor.context';
 
-const EditPanelCmp = ({formik}) => {
+const EditPanelCmp = ({formik, title}) => {
     const {nodeData, siteInfo, lang} = useContentEditorContext();
 
     useEffect(() => {
@@ -38,7 +38,7 @@ const EditPanelCmp = ({formik}) => {
                                           return <Button context={context}/>;
                                       }}
                 />,
-                title: nodeData.displayName,
+                title,
                 contextModifiers: (
                     <>
                         <EditPanelLanguageSwitcher lang={lang}
@@ -69,7 +69,8 @@ const EditPanelCmp = ({formik}) => {
 };
 
 EditPanelCmp.propTypes = {
-    formik: PropTypes.object.isRequired
+    formik: PropTypes.object.isRequired,
+    title: PropTypes.string.isRequired
 };
 
 const EditPanel = connect(EditPanelCmp);

@@ -39,7 +39,8 @@ export const EditPanelContainer = ({
         initialValues,
         details,
         technicalInfo,
-        sections
+        sections,
+        title
     } = useFormDefinition(formQuery, formQueryParams, t);
 
     if (error) {
@@ -93,7 +94,7 @@ export const EditPanelContainer = ({
         <ContentEditorContext.Provider value={editorContext}>
             <Formik
                 initialValues={initialValues}
-                render={EditPanel}
+                render={props => <EditPanel {...props} title={title}/>}
                 onSubmit={handleSubmit}
             />
         </ContentEditorContext.Provider>
