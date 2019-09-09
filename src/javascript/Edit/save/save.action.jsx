@@ -1,6 +1,6 @@
 import {composeActions} from '@jahia/react-material';
-import EditPanelConstants from '../EditPanelContainer/EditPanel/EditPanelConstants';
-import {withFormikAction} from './withFormik.action';
+import EditPanelConstants from '../../EditPanelContainer/EditPanel/EditPanelConstants';
+import {withFormikAction} from '../../actions/withFormik.action';
 
 export default composeActions(withFormikAction, {
     init: context => {

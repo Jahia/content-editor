@@ -4,8 +4,8 @@ module.exports = {
     ...jestConfig,
     moduleNameMapper: {
         ...jestConfig.moduleNameMapper,
-        '~design-system(.*)': '<rootDir>/src/javascript/DesignSystem/$1',
-        '~Create/(.*)': '<rootDir>/src/javascript/Create/$1',
-        '~Edit/(.*)': '<rootDir>/src/javascript/Edit/$1'
+        '~DesignSystem(.*)': '<rootDir>/src/javascript/DesignSystem$1',
+        '~Create(.*)': '<rootDir>/src/javascript/Create$1',
+        '~Edit(.*)': '<rootDir>/src/javascript/Edit$1'
     }
 };
