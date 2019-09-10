@@ -49,12 +49,6 @@ describe('save action', () => {
             expect(context.formik.submitForm).toHaveBeenCalled();
         });
 
-        it('should set context submitOperation to appriopriate publish value', async () => {
-            await saveAction.onClick(context);
-
-            expect(context.submitOperation).toBe('SAVE');
-        });
-
         it('should resetForm when submitting', async () => {
             await saveAction.onClick(context);
 

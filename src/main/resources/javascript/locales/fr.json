@@ -2,7 +2,12 @@
     "label": {
         "contentEditor": {
             "create": {
-              "title": "Créer {{type}}"
+              "title": "Créer {{type}}",
+              "createButton": {
+                "name": "Créer",
+                "success": "Contenu enregistré avec succès",
+                "error": "Une erreur s'est produite lors de la création du contenu"
+              }
             },
             "edit": {
                 "title": "Éditer le contenu",

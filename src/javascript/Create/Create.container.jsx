@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 
-import {FormQuery} from './CreateForm.gql-queries';
+import {FormQuery} from './createForm.gql-queries';
 import EditPanelContainer from '../EditPanelContainer';
 
 import EditPanelConstants from '../EditPanelContainer/EditPanel/EditPanelConstants';

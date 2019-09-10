@@ -3,8 +3,22 @@ import {getDataToMutate} from '../../EditPanelContainer/EditPanel/EditPanel.util
 import {NodeQuery} from '../../EditPanelContainer/NodeData/NodeData.gql-queries';
 import {refetchPreview} from '../../EditPanelContainer/EditPanel.refetches';
 
-export const saveNode = ({sections, client, nodeData, notificationContext, actions, path, lang, uiLang, values, t}) => {
-    const dataToMutate = getDataToMutate(nodeData, values, sections, lang);
+export const saveNode = ({
+    client,
+    t,
+    notificationContext,
+    actions,
+
+    data: {
+        path,
+        nodeData,
+        sections,
+        values,
+        language,
+        uiLang
+    }
+}) => {
+    const dataToMutate = getDataToMutate(nodeData, values, sections, language);
 
     client.mutate({
         variables: {
@@ -13,15 +27,15 @@ export const saveNode = ({sections, client, nodeData, notificationContext, actio
             propertiesToDelete: dataToMutate.propsToDelete,
             mixinsToAdd: dataToMutate.mixinsToAdd,
             mixinsToDelete: dataToMutate.mixinsToDelete,
-            language: lang
+            language
         },
         mutation: SavePropertiesMutation,
         refetchQueries: [
             {
                 query: NodeQuery,
                 variables: {
-                    path: path,
-                    language: lang,
+                    path,
+                    language,
                     uiLang: uiLang
                 }
             }
@@ -29,7 +43,7 @@ export const saveNode = ({sections, client, nodeData, notificationContext, actio
     }).then(() => {
         notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.success'), ['closeButton']);
         actions.setSubmitting(false);
-        refetchPreview(path, lang);
+        refetchPreview(path, language);
     }, error => {
         console.error(error);
         notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.error'), ['closeButton']);

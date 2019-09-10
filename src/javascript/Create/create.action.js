@@ -1,23 +1,21 @@
 import {composeActions} from '@jahia/react-material';
-import {Constants} from '~/ContentEditor.constants';
 import {withFormikAction} from '~/actions/withFormik.action';
+import {Constants} from '~/ContentEditor.constants';
 
 export default composeActions(withFormikAction, {
-    init: context => {
-        // It's weird, formik set dirty when intialValue === currentValue
-        // event when form had been modified
-        context.enabled = context.formik.dirty;
+    init: () => {
+        // TODO BACKLOG-11052
     },
     onClick: ({formik}) => {
         if (!formik) {
             return;
         }
 
-        const {submitForm, resetForm, setFieldValue} = formik;
+        const {submitForm, setFieldValue, resetForm} = formik;
 
         setFieldValue(
             Constants.editPanel.OPERATION_FIELD,
-            Constants.editPanel.submitOperation.SAVE,
+            Constants.editPanel.submitOperation.CREATE,
             false
         );
 

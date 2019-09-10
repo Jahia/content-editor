@@ -1,5 +1,6 @@
 import {composeActions} from '@jahia/react-material';
 import {withFormikAction} from '../../actions/withFormik.action';
+import {Constants} from '~/ContentEditor.constants';
 import EditPanelConstants from '../../EditPanelContainer/EditPanel/EditPanelConstants';
 
 export default composeActions(withFormikAction, {
@@ -13,18 +14,20 @@ export default composeActions(withFormikAction, {
                 EditPanelConstants.publicationStatus.MANDATORY_LANGUAGE_UNPUBLISHABLE
             ].includes(context.nodeData.aggregatedPublicationInfo.publicationStatus);
     },
-    onClick: context => {
-        if (!context.formik) {
+    onClick: ({formik}) => {
+        if (!formik) {
             return;
         }
 
-        const {submitForm, setFieldValue, resetForm} = context.formik;
+        const {submitForm, setFieldValue, resetForm} = formik;
 
-        context.submitOperation = EditPanelConstants.submitOperation.SAVE_PUBLISH;
-        setFieldValue(EditPanelConstants.systemFields.SYSTEM_SUBMIT_OPERATION, context.submitOperation, false);
+        setFieldValue(
+            Constants.editPanel.OPERATION_FIELD,
+            Constants.editPanel.submitOperation.SAVE_PUBLISH,
+            false
+        );
 
-        submitForm().then(() => {
-            return resetForm(context.formik.values);
-        });
+        submitForm()
+            .then(() => resetForm(formik.values));
     }
 });

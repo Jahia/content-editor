@@ -23,10 +23,12 @@ describe('unpublish', () => {
             client: {
                 mutate: jest.fn(() => Promise.resolve())
             },
-            nodeData: {},
             notificationContext: {notify: jest.fn()},
             actions: {setSubmitting: jest.fn()},
-            t: jest.fn()
+            t: jest.fn(),
+            data: {
+                nodeData: {}
+            }
         };
     });
 
