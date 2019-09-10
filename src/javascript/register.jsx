@@ -6,8 +6,8 @@ import goBackAction from './actions/goBack.action';
 import EditPanelConstants from './EditPanelContainer/EditPanel/EditPanelConstants';
 import ContentEditor from './ContentEditor';
 import {SelectorTypes} from './EditPanelContainer/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes';
-import {registerActions as registerEditActions} from '~Edit';
-import {registerActions as registerCreateActions} from '~Create';
+import {registerActions as registerEditActions} from '~/Edit';
+import {registerActions as registerCreateActions} from '~/Create';
 
 console.log('%c Content Editor is activated', 'color: #3c8cba');
 

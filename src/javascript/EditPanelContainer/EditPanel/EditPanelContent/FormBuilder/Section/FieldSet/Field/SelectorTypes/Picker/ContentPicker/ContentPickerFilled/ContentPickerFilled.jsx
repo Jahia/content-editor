@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {ProgressOverlay} from '@jahia/react-material';
 import * as PropTypes from 'prop-types';
 import {translate} from 'react-i18next';
-import {Picker} from '~DesignSystem/Picker';
+import {Picker} from '~/DesignSystem/Picker';
 import {ContentPickerFilledQuery} from './ContentPickerFilled.gql-queries';
 import {encodeJCRPath} from '../../../../../../../../../EditPanel.utils';
 import {useQuery} from 'react-apollo-hooks';

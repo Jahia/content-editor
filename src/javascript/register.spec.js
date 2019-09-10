@@ -1,13 +1,13 @@
-jest.mock('~Edit/publish/publish.action', () => {
+jest.mock('~/Edit/publish/publish.action', () => {
     return {};
 });
 
-jest.mock('~Edit/unpublish/unpublish.action', () => {
+jest.mock('~/Edit/unpublish/unpublish.action', () => {
     return {};
 });
 
-const publishAction = require('~Edit/publish/publish.action');
-const unpublishAction = require('~Edit/unpublish/unpublish.action');
+const publishAction = require('~/Edit/publish/publish.action');
+const unpublishAction = require('~/Edit/unpublish/unpublish.action');
 
 describe('register', () => {
     let actionsRegistry;
