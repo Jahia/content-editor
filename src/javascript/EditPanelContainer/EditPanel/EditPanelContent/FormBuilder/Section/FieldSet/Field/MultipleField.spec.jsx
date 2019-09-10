@@ -35,7 +35,8 @@ describe('Multiple component', () => {
                 fieldComponent: <></>
             },
             classes: {},
-            t: jest.fn()
+            t: jest.fn(),
+            remove: jest.fn()
         };
     });
 
@@ -50,5 +51,30 @@ describe('Multiple component', () => {
         const debug = cmp.dive().dive().dive().debug();
         expect(debug).toContain('value="Dummy1" id="text[0]"');
         expect(debug).toContain('value="Dummy2" id="text[1]"');
+    });
+
+    it('should call onClick when click on remove button', () => {
+        defaultProps.formik = {
+            values: {
+                text: ['Dummy1', 'Dummy2', 'Dummy3']
+            }
+        };
+
+        defaultProps.inputContext.fieldComponent = <Text id="text"/>;
+        let cmp = shallowWithTheme(
+            <MultipleFieldCmp {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        );
+
+        const FieldArrayRender = cmp.dive().dive().props().render;
+        cmp = shallowWithTheme(
+            <FieldArrayRender {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        );
+
+        cmp.find('DsIconButton').at(1).simulate('click');
+        expect(defaultProps.remove).toHaveBeenCalled();
     });
 });

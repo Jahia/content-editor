@@ -1,5 +1,5 @@
 import React, {useRef} from 'react';
-import {FormControl, Grid, InputLabel, withStyles} from '@material-ui/core';
+import {Grid, InputLabel, withStyles} from '@material-ui/core';
 import {MoreVert, Public} from '@material-ui/icons';
 import {Badge, IconButton} from '@jahia/design-system-kit';
 import {compose} from 'react-apollo';
@@ -51,10 +51,10 @@ export const FieldCmp = ({t, classes, inputContext, idInput, selectorType, field
     const contextualMenu = useRef(null);
 
     return (
-        <FormControl className={classes.formControl}
-                     data-sel-content-editor-field={field.name}
-                     data-sel-content-editor-field-type={`${field.multiple ? 'Multiple' : ''}${selectorType.key}`}
-                     data-sel-content-editor-field-readonly={field.readOnly}
+        <div className={classes.formControl}
+             data-sel-content-editor-field={field.name}
+             data-sel-content-editor-field-type={`${field.multiple ? 'Multiple' : ''}${selectorType.key}`}
+             data-sel-content-editor-field-readonly={field.readOnly}
         >
 
             <Grid
@@ -123,7 +123,7 @@ export const FieldCmp = ({t, classes, inputContext, idInput, selectorType, field
                     </Grid>
                 </Grid>
             </Grid>
-        </FormControl>
+        </div>
     );
 };
 
