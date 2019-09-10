@@ -18,7 +18,7 @@ const Checkbox = ({field, value, id, formik: {setFieldValue}}) => {
 Checkbox.propTypes = {
     field: FieldPropTypes.isRequired,
     id: PropTypes.string.isRequired,
-    value: PropTypes.string,
+    value: PropTypes.bool,
     formik: PropTypes.object.isRequired
 };
 

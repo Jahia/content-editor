@@ -9,13 +9,14 @@ export const TextCmp = ({field, value, id, editorContext, formik: {handleChange,
     const fieldType = field.requiredType;
     const isNumber = fieldType === 'DOUBLE' || fieldType === 'LONG' || fieldType === 'DECIMAL';
     const decimalSeparator = editorContext.uiLang === 'en' ? '.' : ',';
+    const controlledValue = value === undefined ? '' : value;
 
     return (
         <Input
             fullWidth
             id={id}
             name={id}
-            value={isNumber ? value && value.replace('.', decimalSeparator) : value}
+            value={isNumber ? controlledValue && controlledValue.replace('.', decimalSeparator) : controlledValue}
             readOnly={field.readOnly}
             type={isNumber ? 'number' : 'text'}
             decimalScale={fieldType === 'LONG' ? 0 : undefined}

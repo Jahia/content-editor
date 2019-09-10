@@ -57,7 +57,7 @@ const ContentPickerCmp = ({field, value, id, editorContext, formik, t, setAction
 
 ContentPickerCmp.propTypes = {
     editorContext: PropTypes.object.isRequired,
-    value: FieldPropTypes.string,
+    value: PropTypes.string,
     field: FieldPropTypes.isRequired,
     formik: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,

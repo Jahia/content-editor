@@ -38,7 +38,8 @@
                     "replace": "Modifier",
                     "newTab": "Ouvrir dans un nouvel onglet",
                     "clear": "Effacer",
-                    "selectAll": "Sélectionnez toutes les valeurs"
+                    "selectAll": "Sélectionnez toutes les valeurs",
+                    "add": "Ajouter"
                   },
                   "imagePicker": {
                     "addImage": "Ajouter une image",

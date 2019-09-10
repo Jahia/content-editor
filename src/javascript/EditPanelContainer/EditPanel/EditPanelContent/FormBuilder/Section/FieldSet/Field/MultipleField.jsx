@@ -1,4 +1,4 @@
-import {IconButton} from '@jahia/design-system-kit';
+import {Button, IconButton} from '@jahia/design-system-kit';
 import {withStyles} from '@material-ui/core';
 import {Close} from '@material-ui/icons';
 import React from 'react';
@@ -48,10 +48,9 @@ export const MultipleFieldCmp = ({classes, t, inputContext, field, formik: {valu
                         })
                     )}
 
-                    <button type="button" onClick={() => arrayHelpers.push('')}>
-                        {/* TODO BACKLOG-11022 finish add button */}
-                        Add
-                    </button>
+                    <Button variant="secondary" onClick={() => arrayHelpers.push(undefined)}>
+                        {t('content-editor:label.contentEditor.edit.fields.actions.add')}
+                    </Button>
                 </>
             )}
         />
