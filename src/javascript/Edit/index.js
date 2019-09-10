@@ -1,7 +1,7 @@
 import React from 'react';
 import saveAction from './save/save.action';
 import publishAction from './publish/publish.action';
-import unpublishAction from './publish/unpublish.action';
+import unpublishAction from './unpublish/unpublish.action';
 import {Edit, Save, CloudUpload, CloudOff} from '@material-ui/icons';
 
 import EditPanelConstants from '../EditPanelContainer/EditPanel/EditPanelConstants';
