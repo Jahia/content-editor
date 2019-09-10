@@ -8,9 +8,9 @@ import EditPanel from './EditPanel';
 import * as PropTypes from 'prop-types';
 import {useFormDefinition} from './FormDefinitions';
 import {withSiteInfo} from './SiteData';
-import {publishNode} from '~Edit/publish/publish.redux-actions';
-import {saveNode} from '~Edit/save/save.redux-actions';
-import {unpublishNode} from '~Edit/unpublish/unpublish.redux-actions';
+import {publishNode} from '~/Edit/publish/publish.redux-actions';
+import {saveNode} from '~/Edit/save/save.redux-actions';
+import {unpublishNode} from '~/Edit/unpublish/unpublish.redux-actions';
 
 import {ContentEditorContext} from '../ContentEditor.context';
 

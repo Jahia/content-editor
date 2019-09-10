@@ -1,4 +1,4 @@
-import {MultipleInput} from '~DesignSystem/MultipleInput';
+import {MultipleInput} from '~/DesignSystem/MultipleInput';
 import {Field} from 'formik';
 import React from 'react';
 import PropTypes from 'prop-types';

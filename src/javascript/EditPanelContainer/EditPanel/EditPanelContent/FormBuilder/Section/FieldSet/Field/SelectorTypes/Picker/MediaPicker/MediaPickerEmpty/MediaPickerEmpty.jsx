@@ -1,7 +1,7 @@
 import ImageIcon from '@material-ui/icons/Image';
 import * as PropTypes from 'prop-types';
 import React, {useState} from 'react';
-import {Picker} from '~DesignSystem/Picker';
+import {Picker} from '~/DesignSystem/Picker';
 import {translate} from 'react-i18next';
 import {FieldPropTypes} from '../../../../.././../../../../../FormDefinitions/FormData.proptypes';
 

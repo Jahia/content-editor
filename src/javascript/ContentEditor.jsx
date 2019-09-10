@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import {ApolloProvider as ApolloHooksProvider} from 'react-apollo-hooks';
 import {withApollo} from 'react-apollo';
 
-import {Create} from '~Create/Create.container';
-import {Edit} from '~Edit/Edit.container';
+import {Create} from '~/Create/Create.container';
+import {Edit} from '~/Edit/Edit.container';
 
 const Routes = {
     edit: Edit,
