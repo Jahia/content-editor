@@ -2,12 +2,12 @@ jest.mock('~Edit/publish/publish.action', () => {
     return {};
 });
 
-jest.mock('~Edit/publish/unpublish.action', () => {
+jest.mock('~Edit/unpublish/unpublish.action', () => {
     return {};
 });
 
 const publishAction = require('~Edit/publish/publish.action');
-const unpublishAction = require('~Edit/publish/unpublish.action');
+const unpublishAction = require('~Edit/unpublish/unpublish.action');
 
 describe('register', () => {
     let actionsRegistry;
