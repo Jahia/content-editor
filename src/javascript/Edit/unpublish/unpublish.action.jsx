@@ -1,27 +1,29 @@
 import {composeActions} from '@jahia/react-material';
-import {withFormikAction} from '../../actions/withFormik.action';
-import EditPanelConstants from '../../EditPanelContainer/EditPanel/EditPanelConstants';
+import {withFormikAction} from '~/actions/withFormik.action';
+import EditPanelConstants from '~/EditPanelContainer/EditPanel/EditPanelConstants';
+import {Constants} from '~/ContentEditor.constants';
 
 export default composeActions(withFormikAction, {
     init: context => {
-        // It's weird, formik set dirty when intialValue === currentValue
-        // event when form had been modified
+        // BACKLOG-11052
         context.enabled = context.nodeData.hasPermission &&
             !context.formik.dirty &&
             context.nodeData.aggregatedPublicationInfo.publicationStatus === EditPanelConstants.publicationStatus.PUBLISHED;
     },
-    onClick: context => {
-        if (!context.formik) {
+    onClick: ({formik}) => {
+        if (!formik) {
             return;
         }
 
-        const {submitForm, setFieldValue, resetForm} = context.formik;
+        const {submitForm, setFieldValue, resetForm} = formik;
 
-        context.submitOperation = EditPanelConstants.submitOperation.UNPUBLISH;
-        setFieldValue(EditPanelConstants.systemFields.SYSTEM_SUBMIT_OPERATION, context.submitOperation, false);
+        setFieldValue(
+            Constants.editPanel.OPERATION_FIELD,
+            Constants.editPanel.submitOperation.UNPUBLISH,
+            false
+        );
 
-        submitForm().then(() => {
-            return resetForm(context.formik.values);
-        });
+        submitForm()
+            .then(() => resetForm(formik.values));
     }
 });

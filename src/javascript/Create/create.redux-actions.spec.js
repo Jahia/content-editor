@@ -1,12 +1,12 @@
-import {publishNode} from './publish.redux-actions';
+import {createNode} from './create.redux-actions';
 
-jest.mock('./publish.gql-mutation', () => {
+jest.mock('./createForm.gql-mutation', () => {
     return {
-        PublishNodeMutation: 'PublishNodeMutation'
+        CreateNode: 'CreateNode'
     };
 });
 
-describe('publish', () => {
+describe('createNode', () => {
     const consoleErrorOriginal = console.error;
 
     beforeEach(() => {
@@ -27,27 +27,28 @@ describe('publish', () => {
             actions: {setSubmitting: jest.fn()},
             t: jest.fn(),
             data: {
-                nodeData: {}
+                nodeData: {},
+                sections: []
             }
         };
     });
 
-    it('should call PublishNodeMutation', async () => {
-        await publishNode(params);
+    it('should call CreateNode mutation', async () => {
+        await createNode(params);
 
         expect(params.client.mutate).toHaveBeenCalled();
-        expect(params.client.mutate.mock.calls[0][0].mutation).toBe('PublishNodeMutation');
+        expect(params.client.mutate.mock.calls[0][0].mutation).toBe('CreateNode');
     });
 
     it('should display a notification when request is a success', async () => {
-        await publishNode(params);
+        await createNode(params);
 
         expect(params.notificationContext.notify).toHaveBeenCalled();
     });
 
     it('should display a notification when request is a failure', async () => {
         params.client.mutate = () => Promise.reject();
-        await publishNode(params);
+        await createNode(params);
 
         expect(params.notificationContext.notify).toHaveBeenCalled();
     });
@@ -55,7 +56,7 @@ describe('publish', () => {
     it('should log error when request is a failure', async () => {
         const err = new Error('yo');
         params.client.mutate = () => Promise.reject(err);
-        await publishNode(params);
+        await createNode(params);
 
         expect(console.error).toHaveBeenCalledWith(err);
     });

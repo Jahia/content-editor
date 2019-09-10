@@ -26,12 +26,6 @@ describe('unpublish action', () => {
 
             expect(context.formik.submitForm).toHaveBeenCalled();
         });
-
-        it('should set context submitOperation to appriopriate publish value', () => {
-            unpublishAction.onClick(context);
-
-            expect(context.submitOperation).toBe('UNPUBLISH');
-        });
     });
 
     describe('onInit', () => {

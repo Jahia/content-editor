@@ -4,8 +4,6 @@ import publishAction from './publish/publish.action';
 import unpublishAction from './unpublish/unpublish.action';
 import {Edit, Save, CloudUpload, CloudOff} from '@material-ui/icons';
 
-import EditPanelConstants from '../EditPanelContainer/EditPanel/EditPanelConstants';
-
 export const registerActions = actionsRegistry => {
     // Content Media Manager Action
     actionsRegistry.add('contentEdit', actionsRegistry.get('router'), {
@@ -22,23 +20,20 @@ export const registerActions = actionsRegistry => {
         buttonLabel:
             'content-editor:label.contentEditor.edit.action.save.name',
         buttonIcon: <Save/>,
-        target: ['editHeaderActions:1'],
-        submitOperation: EditPanelConstants.submitOperation.SAVE
+        target: ['editHeaderActions:1']
     });
 
     actionsRegistry.add('publishAction', publishAction, {
         buttonLabel:
             'content-editor:label.contentEditor.edit.action.publish.name',
         buttonIcon: <CloudUpload/>,
-        target: ['editHeaderActions:1'],
-        submitOperation: EditPanelConstants.submitOperation.SAVE_PUBLISH
+        target: ['editHeaderActions:1']
     });
 
     actionsRegistry.add('unpublishAction', unpublishAction, {
         buttonLabel:
             'content-editor:label.contentEditor.edit.action.unpublish.name',
         buttonIcon: <CloudOff/>,
-        target: ['editHeaderActions:1'],
-        submitOperation: EditPanelConstants.submitOperation.UNPUBLISH
+        target: ['editHeaderActions:1']
     });
 };

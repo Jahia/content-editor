@@ -1,7 +1,7 @@
-import EditPanelConstants from './EditPanelConstants';
+import {Constants} from '~/ContentEditor.constants';
 
 export function isSystemField(fieldKey) {
-    return fieldKey in EditPanelConstants.systemFields;
+    return fieldKey === Constants.editPanel.OPERATION_FIELD;
 }
 
 /**
@@ -140,11 +140,11 @@ export function extractRangeConstraints(constraint) {
 }
 
 /**
- * This function allow to fet the fieldSet name of given field name
+ * This function allow to get the fieldSet name of given field name
  *
- * @param sections
- * @param fieldName
- * @returns name of fieldSet
+ * @param {array} sections sections datas
+ * @param {string} fieldName field name to search fieldSet
+ * @returns {object} name of fieldSet
  */
 function getDynamicFieldSetOfField(sections, fieldName) {
     return sections.reduce((result, section) => {
@@ -170,7 +170,7 @@ function getDynamicFieldSetOfField(sections, fieldName) {
  * @returns boolean value, true if the node has mixin, false otherwise.
  */
 function hasNodeMixin(node, mixin) {
-    return node.mixinTypes.find(mixinType => mixinType.name === mixin);
+    return node.mixinTypes && node.mixinTypes.find(mixinType => mixinType.name === mixin);
 }
 
 function getMixinsToMutate(nodeData = {}, formValues = {}, sections) {

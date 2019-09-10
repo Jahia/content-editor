@@ -26,12 +26,6 @@ describe('publish action', () => {
 
             expect(context.formik.submitForm).toHaveBeenCalled();
         });
-
-        it('should set context submitOperation to appriopriate publish value', () => {
-            publishAction.onClick(context);
-
-            expect(context.submitOperation).toBe('PUBLISH');
-        });
     });
 
     describe('onInit', () => {

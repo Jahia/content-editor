@@ -2,7 +2,7 @@ import React from 'react';
 import {compose, withApollo} from 'react-apollo';
 import {translate} from 'react-i18next';
 import {ProgressOverlay, withNotifications} from '@jahia/react-material';
-import EditPanelConstants from './EditPanel/EditPanelConstants';
+import {Constants} from '~/ContentEditor.constants';
 import {Formik} from 'formik';
 import EditPanel from './EditPanel';
 import * as PropTypes from 'prop-types';
@@ -11,13 +11,15 @@ import {withSiteInfo} from './SiteData';
 import {publishNode} from '~/Edit/publish/publish.redux-actions';
 import {saveNode} from '~/Edit/save/save.redux-actions';
 import {unpublishNode} from '~/Edit/unpublish/unpublish.redux-actions';
+import {createNode} from '~/Create/create.redux-actions';
 
 import {ContentEditorContext} from '../ContentEditor.context';
 
 const submitActionMapper = {
-    [EditPanelConstants.submitOperation.SAVE]: saveNode,
-    [EditPanelConstants.submitOperation.SAVE_PUBLISH]: publishNode,
-    [EditPanelConstants.submitOperation.UNPUBLISH]: unpublishNode
+    [Constants.editPanel.submitOperation.SAVE]: saveNode,
+    [Constants.editPanel.submitOperation.SAVE_PUBLISH]: publishNode,
+    [Constants.editPanel.submitOperation.UNPUBLISH]: unpublishNode,
+    [Constants.editPanel.submitOperation.CREATE]: createNode
 };
 
 export const EditPanelContainer = ({
@@ -68,27 +70,26 @@ export const EditPanelContainer = ({
     };
 
     const handleSubmit = (values, actions) => {
-        const submitAction = submitActionMapper[values[EditPanelConstants.systemFields.SYSTEM_SUBMIT_OPERATION]];
+        const operation = values[Constants.editPanel.OPERATION_FIELD];
+        const submitAction = submitActionMapper[operation];
 
         if (!submitAction) {
-            console.warn(
-                'Unknown submit operation: ' +
-                values[EditPanelConstants.systemFields.SYSTEM_SUBMIT_OPERATION]
-            );
+            console.warn(`Unknown submit operation: ${operation}`);
             actions.setSubmitting(false);
         }
 
         submitAction({
             client,
-            nodeData,
-            lang,
-            uiLang,
+            t,
             notificationContext,
             actions,
-            t,
-            path,
-            values,
-            sections
+
+            data: {
+                ...formQueryParams,
+                nodeData,
+                sections,
+                values
+            }
         });
     };
 

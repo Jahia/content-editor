@@ -1,11 +1,22 @@
 import {PublishNodeMutation} from './publish.gql-mutation';
 import {NodeQuery} from '../../EditPanelContainer/NodeData/NodeData.gql-queries';
 
-export const publishNode = ({client, nodeData, lang, uiLang, notificationContext, actions, t}) => {
+export const publishNode = ({
+    client,
+    t,
+    notificationContext,
+    actions,
+
+    data: {
+        nodeData,
+        language,
+        uiLang
+    }
+}) => {
     return client.mutate({
         variables: {
             path: nodeData.path,
-            languages: [lang]
+            languages: [language]
         },
         mutation: PublishNodeMutation,
         refetchQueries: [
@@ -13,7 +24,7 @@ export const publishNode = ({client, nodeData, lang, uiLang, notificationContext
                 query: NodeQuery,
                 variables: {
                     path: nodeData.path,
-                    language: lang,
+                    language,
                     uiLang: uiLang
                 }
             }

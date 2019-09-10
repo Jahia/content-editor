@@ -1,7 +1,8 @@
 import React from 'react';
-import {Edit} from '@material-ui/icons';
+import {Edit, AddCircle} from '@material-ui/icons';
 
 import createNewContentAction from './CreateNewContentAction/createNewContent.action';
+import createButtonAction from './create.action';
 
 export const registerActions = actionsRegistry => {
     // Content Media Manager Action
@@ -13,4 +14,10 @@ export const registerActions = actionsRegistry => {
     });
 
     // In app actions
+    actionsRegistry.add('createButton', createButtonAction, {
+        buttonLabel:
+            'content-editor:label.contentEditor.create.createButton.name',
+        buttonIcon: <AddCircle/>,
+        target: ['editHeaderActions:1']
+    });
 };

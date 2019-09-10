@@ -23,11 +23,13 @@ describe('saveNode', () => {
             client: {
                 mutate: jest.fn(() => Promise.resolve())
             },
-            nodeData: {},
-            sections: [],
             notificationContext: {notify: jest.fn()},
             actions: {setSubmitting: jest.fn()},
-            t: jest.fn()
+            t: jest.fn(),
+            data: {
+                nodeData: {},
+                sections: []
+            }
         };
     });
 

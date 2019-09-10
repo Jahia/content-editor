@@ -5,14 +5,6 @@ const EditPanelConstants = {
     baseCreateRoute: 'create',
     browseRoute: 'browse',
     browseFilesRoute: 'browse-files',
-    submitOperation: {
-        SAVE: 'SAVE',
-        SAVE_PUBLISH: 'PUBLISH',
-        UNPUBLISH: 'UNPUBLISH'
-    },
-    systemFields: {
-        SYSTEM_SUBMIT_OPERATION: 'SYSTEM_SUBMIT_OPERATION'
-    },
     publicationStatus: {
         NOT_PUBLISHED: 'NOT_PUBLISHED',
         PUBLISHED: 'PUBLISHED',
