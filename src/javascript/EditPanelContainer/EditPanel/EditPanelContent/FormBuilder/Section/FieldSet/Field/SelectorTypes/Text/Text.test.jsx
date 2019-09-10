@@ -47,7 +47,7 @@ describe('Text component', () => {
 
         props.value = fieldValue;
         wrapper.setProps(props);
-        expect(wrapper.props().defaultValue).toBe(fieldValue);
+        expect(wrapper.props().value).toBe(fieldValue);
     });
 
     it('should call formik.handleChange on change', () => {

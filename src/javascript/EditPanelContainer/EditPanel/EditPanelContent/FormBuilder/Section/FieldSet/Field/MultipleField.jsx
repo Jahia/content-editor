@@ -41,9 +41,7 @@ export const MultipleFieldCmp = ({classes, t, inputContext, field, formik: {valu
                                                 data-sel-action="removeField"
                                                 aria-label={t('content-editor:label.contentEditor.edit.fields.actions.clear')}
                                                 icon={<Close/>}
-                                                onClick={() => {
-                                                    arrayHelpers.remove(index);
-                                                }}
+                                                onClick={() => arrayHelpers.remove(index)}
                                     />
                                 </div>
                             );
