@@ -78,10 +78,10 @@ export function getDataToMutate(nodeData = {}, formValues = {}, sections, lang) 
                 const valueObj = {};
 
                 if (field.multiple) {
-                    valueObj.values = value.filter(v => v !== undefined);
+                    valueObj.values = value.filter(v !== undefined);
 
                     if (fieldType === 'DATE') {
-                        valueObj.notZonedDateValues = value;
+                        valueObj.notZonedDateValues = value.filter(v !== undefined);
                     }
                 } else {
                     // In case we have field of type decimal or double, we should store number
