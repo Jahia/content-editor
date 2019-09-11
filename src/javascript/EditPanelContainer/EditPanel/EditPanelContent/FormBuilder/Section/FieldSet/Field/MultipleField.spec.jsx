@@ -7,6 +7,7 @@ import {MultipleFieldCmp} from './MultipleField';
 
 describe('Multiple component', () => {
     let defaultProps;
+    let defaultPropsFieldArray;
 
     beforeEach(() => {
         defaultProps = {
@@ -38,6 +39,11 @@ describe('Multiple component', () => {
             t: jest.fn(),
             remove: jest.fn()
         };
+
+        defaultPropsFieldArray = {
+            remove: jest.fn(),
+            push: jest.fn()
+        };
     });
 
     it('should contains multiple fields', () => {
@@ -54,6 +60,16 @@ describe('Multiple component', () => {
     });
 
     it('should call onClick when click on remove button', () => {
+        generateFieldArrayCmp().find('DsIconButton').at(1).simulate('click');
+        expect(defaultPropsFieldArray.remove).toHaveBeenCalled();
+    });
+
+    it('should call onClick when click on add button', () => {
+        generateFieldArrayCmp().find('DsButton').simulate('click');
+        expect(defaultPropsFieldArray.push).toHaveBeenCalled();
+    });
+
+    let generateFieldArrayCmp = () => {
         defaultProps.formik = {
             values: {
                 text: ['Dummy1', 'Dummy2', 'Dummy3']
@@ -68,13 +84,10 @@ describe('Multiple component', () => {
         );
 
         const FieldArrayRender = cmp.dive().dive().props().render;
-        cmp = shallowWithTheme(
-            <FieldArrayRender {...defaultProps}/>,
+        return shallowWithTheme(
+            <FieldArrayRender {...defaultPropsFieldArray}/>,
             {},
             dsGenericTheme
         );
-
-        cmp.find('DsIconButton').at(1).simulate('click');
-        expect(defaultProps.remove).toHaveBeenCalled();
-    });
+    };
 });
