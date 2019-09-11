@@ -13,6 +13,10 @@ const styles = theme => {
         fieldComponentContainer: {
             display: 'flex',
             marginBottom: theme.spacing.unit
+        },
+        addButton: {
+            margin: `${theme.spacing.unit * 2}px 0`,
+            textTransform: 'uppercase'
         }
     };
 };
@@ -48,7 +52,10 @@ export const MultipleFieldCmp = ({classes, t, inputContext, field, formik: {valu
                         })
                     )}
 
-                    <Button variant="secondary" onClick={() => arrayHelpers.push(undefined)}>
+                    <Button className={classes.addButton}
+                            variant="secondary"
+                            onClick={() => arrayHelpers.push(undefined)}
+                    >
                         {t('content-editor:label.contentEditor.edit.fields.actions.add')}
                     </Button>
                 </>
