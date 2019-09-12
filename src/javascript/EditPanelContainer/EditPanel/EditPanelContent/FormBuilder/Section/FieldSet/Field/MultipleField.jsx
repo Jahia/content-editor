@@ -12,7 +12,8 @@ const styles = theme => {
     return {
         fieldComponentContainer: {
             display: 'flex',
-            marginBottom: theme.spacing.unit
+            marginBottom: theme.spacing.unit,
+            alignItems: 'center'
         },
         addButton: {
             margin: `${theme.spacing.unit * 2}px 0`,
