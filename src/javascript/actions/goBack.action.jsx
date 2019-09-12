@@ -4,7 +4,7 @@ import {EditPanelDialogConfirmation} from '../EditPanelContainer/EditPanel/EditP
 import {withFormikAction} from './withFormik.action';
 import {reduxAction} from './redux.action';
 import {cmGoto} from '../ContentManager.redux-actions';
-import EditPanelConstants from '../EditPanelContainer/EditPanel/EditPanelConstants';
+import {Constants} from '~/ContentEditor.constants';
 
 const mapDispatchToContext = dispatch => ({
     setUrl: (site, language, mode, path, params) => dispatch(cmGoto({site, language, mode, path, params}))
@@ -20,7 +20,7 @@ export const resolveGoBackContext = (path, parentPath, parentDisplayName, siteKe
     let isFilePath = splitPath && splitPath.length >= 4 && splitPath[3] === 'files'; // 4: path at least contains files or contents info
 
     let resolvedPath = isFilePath ? `/sites/${siteKey}/files` : `/sites/${siteKey}/contents`;
-    let resolvedMode = isFilePath ? EditPanelConstants.browseFilesRoute : EditPanelConstants.browseRoute;
+    let resolvedMode = isFilePath ? Constants.routes.browseFilesRoute : Constants.routes.browseRoute;
     let resolvedDisplayName = siteDisplayName;
 
     // Resolve parent if possible

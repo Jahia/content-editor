@@ -2,7 +2,7 @@ import React from 'react';
 import {CreateNewContentDialog} from './CreateNewContentDialog';
 import {composeActions, componentRendererAction} from '@jahia/react-material';
 import {reduxAction} from '../../actions/redux.action';
-import EditPanelConstants from '../../EditPanelContainer/EditPanel/EditPanelConstants';
+import {Constants} from '~/ContentEditor.constants';
 import {cmGoto} from '../../ContentManager.redux-actions';
 
 const mapDispatchToProps = dispatch => ({
@@ -38,7 +38,7 @@ export default composeActions(
                         context.gotToCE({
                             site: contextJsParameters.siteKey,
                             language: contextJsParameters.lang,
-                            mode: EditPanelConstants.baseCreateRoute,
+                            mode: Constants.routes.baseCreateRoute,
                             path: context.path,
                             params: {
                                 contentType: contentType.name

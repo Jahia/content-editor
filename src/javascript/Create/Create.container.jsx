@@ -3,12 +3,12 @@ import {connect} from 'react-redux';
 import {FormQuery} from './createForm.gql-queries';
 import EditPanelContainer from '../EditPanelContainer';
 
-import EditPanelConstants from '../EditPanelContainer/EditPanel/EditPanelConstants';
+import {Constants} from '~/ContentEditor.constants';
 
 const mapStateToProps = state => {
-    const contentEditorUiLang = EditPanelConstants.supportedLocales.includes(state.uiLang) ?
+    const contentEditorUiLang = Constants.supportedLocales.includes(state.uiLang) ?
         state.uiLang :
-        EditPanelConstants.defaultLocale;
+        Constants.defaultLocale;
 
     return {
         path: state.path,

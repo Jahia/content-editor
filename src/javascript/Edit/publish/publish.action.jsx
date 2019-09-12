@@ -1,7 +1,6 @@
 import {composeActions} from '@jahia/react-material';
 import {withFormikAction} from '../../actions/withFormik.action';
 import {Constants} from '~/ContentEditor.constants';
-import EditPanelConstants from '../../EditPanelContainer/EditPanel/EditPanelConstants';
 
 export default composeActions(withFormikAction, {
     init: context => {
@@ -10,8 +9,8 @@ export default composeActions(withFormikAction, {
         context.enabled = context.nodeData.hasPermission &&
             !context.formik.dirty &&
             ![
-                EditPanelConstants.publicationStatus.PUBLISHED,
-                EditPanelConstants.publicationStatus.MANDATORY_LANGUAGE_UNPUBLISHABLE
+                Constants.editPanel.publicationStatus.PUBLISHED,
+                Constants.editPanel.publicationStatus.MANDATORY_LANGUAGE_UNPUBLISHABLE
             ].includes(context.nodeData.aggregatedPublicationInfo.publicationStatus);
     },
     onClick: ({formik}) => {
