@@ -46,7 +46,8 @@ describe('TreeView', () => {
                     iconURL: 'https://image.flaticon.com/icons/svg/1973/1973617.svg'
                 }
             ],
-            onNodeClick: jest.fn()
+            onNodeClick: jest.fn(),
+            onNodeDoubleClick: jest.fn()
         };
     });
 
@@ -95,6 +96,18 @@ describe('TreeView', () => {
         cmp.find('button').at(0).simulate('click', {toto: 42});
 
         expect(props.onNodeClick).toHaveBeenCalledWith(props.tree[0], {toto: 42});
+    });
+
+    it('should trigger onNodeDoubleClick event when double click on a node', () => {
+        const cmp = shallowWithTheme(
+            <TreeView {...props}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        cmp.find('button').at(0).simulate('doubleClick', {toto: 42});
+
+        expect(props.onNodeDoubleClick).toHaveBeenCalledWith(props.tree[0], {toto: 42});
     });
 
     it('should display a second level of a node when it\'s opened', () => {
