@@ -34,6 +34,7 @@ export class RichTextCmp extends React.Component {
             <CKEditor
                     id={id}
                     data={value}
+                    aria-labelledby={`${field.name}-label`}
                     config={config}
                     readOnly={field.readOnly}
                     onChange={onEditorChange}

@@ -23,6 +23,7 @@ const MediaPickerEmptyCmp = ({t, id, field, formik, editorContext, setActionCont
                     'content-editor:label.contentEditor.edit.fields.imagePicker.addImage'
                 )}
                 emptyIcon={<ImageIcon/>}
+                labelledBy={`${field.name}-label`}
                 onClick={() => setIsOpen(!isOpen)}
             />
             <MediaPickerDialog

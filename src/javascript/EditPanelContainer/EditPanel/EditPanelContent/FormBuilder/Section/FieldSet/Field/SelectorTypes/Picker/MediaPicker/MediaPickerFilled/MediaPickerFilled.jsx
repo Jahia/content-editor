@@ -66,6 +66,7 @@ const MediaPickerFilledCmp = ({
                 fieldData={fieldData}
                 selectedId={uuid}
                 id={id}
+                labelledBy={`${field.name}-label`}
                 onClick={() => setIsOpen(!isOpen)}
             />
 

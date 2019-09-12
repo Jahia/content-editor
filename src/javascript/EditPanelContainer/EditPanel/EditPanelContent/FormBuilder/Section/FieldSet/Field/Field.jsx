@@ -49,6 +49,7 @@ let styles = theme => {
 
 export const FieldCmp = ({t, classes, inputContext, idInput, selectorType, field, siteInfo, actionContext}) => {
     const contextualMenu = useRef(null);
+    const isMultipleField = field.multiple && !selectorType.supportMultiple;
 
     return (
         <div className={classes.formControl}
@@ -72,8 +73,9 @@ export const FieldCmp = ({t, classes, inputContext, idInput, selectorType, field
                     >
                         <Grid item>
                             <InputLabel shrink
+                                        id={`${field.name}-label`}
                                         className={classes.inputLabel}
-                                        htmlFor={idInput}
+                                        htmlFor={!isMultipleField ? idInput : null}
                             >
                                 {field.displayName}
                             </InputLabel>
@@ -94,7 +96,7 @@ export const FieldCmp = ({t, classes, inputContext, idInput, selectorType, field
                         alignItems="center"
                     >
                         <Grid item className={classes.input}>
-                            {(field.multiple && !selectorType.supportMultiple) ?
+                            {isMultipleField ?
                                 <MultipleField inputContext={inputContext} field={field}/> :
                                 <SingleField inputContext={inputContext} field={field}/>
                             }

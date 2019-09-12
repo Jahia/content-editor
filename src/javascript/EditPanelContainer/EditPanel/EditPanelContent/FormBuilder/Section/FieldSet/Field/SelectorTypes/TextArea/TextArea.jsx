@@ -15,6 +15,7 @@ export const TextAreaField = ({id, field}) => {
                 return (
                     <TextArea id={id}
                               name={name}
+                              aria-labelledby={`${field.name}-label`}
                               value={value || ''}
                               disabled={field.readOnly}
                               onChange={onChange}

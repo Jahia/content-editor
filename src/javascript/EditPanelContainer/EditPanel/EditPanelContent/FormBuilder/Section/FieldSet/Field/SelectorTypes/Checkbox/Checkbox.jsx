@@ -8,6 +8,9 @@ import {FieldPropTypes} from '../../../../../../../../FormDefinitions/FormData.p
 const Checkbox = ({field, value, id, formik: {setFieldValue}}) => {
     return (
         <Toggle id={id}
+                inputProps={{
+                    'aria-labelledby': `${field.name}-label`
+                }}
                 checked={value === true}
                 readOnly={field.readOnly}
                 onChange={(event, checked) => setFieldValue(id, checked)}
