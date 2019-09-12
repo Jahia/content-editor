@@ -11,9 +11,16 @@ describe('EditPanelContent', () => {
             t: i18nKey => i18nKey,
             fields: [],
             siteInfo: {},
-            classes: {}
+            classes: {},
+            mode: 'edit'
         };
         wrapper = shallow(<EditPanelContent {...defaultProps}/>);
+    });
+
+    it('should not display preview in create mode', () => {
+        defaultProps.mode = 'create';
+        wrapper = shallow(<EditPanelContent {...defaultProps}/>);
+        expect(wrapper.find('WithStyles(ToggleButtonGroup)').props().value).toBe('preview');
     });
 
     it('should select preview by default', () => {
