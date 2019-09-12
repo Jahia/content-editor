@@ -16,6 +16,9 @@ export const TextCmp = ({field, value, id, editorContext, formik: {handleChange,
             fullWidth
             id={id}
             name={id}
+            inputProps={{
+                'aria-labelledby': `${field.name}-label`
+            }}
             value={isNumber ? controlledValue && controlledValue.replace('.', decimalSeparator) : controlledValue}
             readOnly={field.readOnly}
             type={isNumber ? 'number' : 'text'}

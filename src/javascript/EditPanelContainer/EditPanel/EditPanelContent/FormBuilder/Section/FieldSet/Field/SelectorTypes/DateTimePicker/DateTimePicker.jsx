@@ -46,6 +46,9 @@ export const DateTimePicker = ({id, field, editorContext}) => {
                         readOnly={field.readOnly}
                         variant={variant}
                         id={id}
+                        inputProps={{
+                            'aria-labelledby': `${field.name}-label`
+                        }}
                     />
                 );
             }}

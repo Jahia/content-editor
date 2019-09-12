@@ -52,6 +52,7 @@ const ContentPickerFilledCmp = ({t, field, formik, id, uuid, editorContext, node
         <>
             <Picker readOnly={field.readOnly}
                     fieldData={fieldData}
+                    labelledBy={`${field.name}-label`}
                     onClick={() => setIsOpen(!isOpen)}
             />
 

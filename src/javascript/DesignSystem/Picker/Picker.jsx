@@ -86,6 +86,7 @@ const PickerCmp = ({
     emptyLabel,
     emptyIcon,
     fieldData,
+    labelledBy,
     onClick
 }) => {
     // If picker have already data
@@ -100,6 +101,7 @@ const PickerCmp = ({
                 data-sel-field-picker="filled"
                 role="button"
                 tabIndex="0"
+                aria-labelledby={labelledBy}
                 onClick={() => {
                     if (readOnly) {
                         return;
@@ -138,6 +140,7 @@ const PickerCmp = ({
             className={`${classes.add} ${readOnly ? classes.addReadOnly : ''}`}
             type="button"
             aria-disabled={readOnly}
+            aria-labelledby={labelledBy}
             onClick={() => {
                 if (readOnly) {
                     return;
@@ -172,7 +175,8 @@ PickerCmp.propTypes = {
         info: PropTypes.string.isRequired
     }),
     emptyLabel: PropTypes.string,
-    emptyIcon: PropTypes.element
+    emptyIcon: PropTypes.element,
+    labelledBy: PropTypes.string
 };
 
 export const Picker = withStyles(styles)(PickerCmp);

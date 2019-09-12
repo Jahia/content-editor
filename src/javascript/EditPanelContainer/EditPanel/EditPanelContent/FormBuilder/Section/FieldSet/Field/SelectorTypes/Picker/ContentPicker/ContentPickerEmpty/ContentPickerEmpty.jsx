@@ -34,6 +34,7 @@ const ContentPickerEmptyCmp = ({
                     'content-editor:label.contentEditor.edit.fields.contentPicker.addContent'
                 )}
                 emptyIcon={<InsertDriveFile/>}
+                labelledBy={`${field.name}-label`}
                 onClick={() => setIsOpen(!isOpen)}
             />
             <ContentPickerDialog

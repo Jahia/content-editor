@@ -101,15 +101,28 @@ describe('Field component', () => {
         testI18nBadgeRender(true, [lang1], false);
     });
 
-    it('should add labelHtmlFor to the label', () => {
+    it('should add htmlFor to the label', () => {
         defaultProps.input = <Text id="text"/>;
+        defaultProps.field.multiple = false;
         const cmp = shallowWithTheme(
             <Field {...defaultProps}/>,
             {},
             dsGenericTheme
         );
 
-        expect(cmp.debug()).toContain('yoloHtmlFor');
+        expect(cmp.dive().dive().debug()).toContain('htmlFor="FieldID"');
+    });
+
+    it('should not add htmlFor to the label when field is multiple', () => {
+        defaultProps.input = <Text id="text"/>;
+        defaultProps.field.multiple = true;
+        const cmp = shallowWithTheme(
+            <Field {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        );
+
+        expect(cmp.dive().dive().debug()).not.toContain('htmlFor="FieldID"');
     });
 
     it('should display the contextualMenu when action exists', () => {
