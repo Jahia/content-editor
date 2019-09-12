@@ -166,7 +166,81 @@ describe('EditPanel utils', () => {
 
             expect(properties.propsToDelete).toEqual(['fieldToDelete']);
         });
+
+        it('should filtered undefined multiple values', function () {
+            const nodeData = {
+                properties: [{
+                    name: 'multipleField',
+                    value: []
+                }]
+            };
+            const formValues = {
+                multipleField: ['value1', undefined, 'value2']
+            };
+            const sections = [
+                {
+                    fieldSets: [
+                        {
+                            fields: [
+                                {
+                                    name: 'multipleField',
+                                    requiredType: 'TYPE1',
+                                    multiple: true
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ];
+
+            const lang = 'fr';
+
+            const properties = getDataToMutate(nodeData, formValues, sections, lang);
+            expect(properties.propsToSave[0].values).toEqual(['value1', 'value2']);
+        });
+
+        it('should use specific "notZonedDateValues" and "notZonedDateValue" property in case field is a DATE', function () {
+            const nodeData = {
+                properties: [{
+                    name: 'dateField',
+                    value: []
+                }]
+            };
+            const formValues = {
+                dateField: ['date1', 'date2']
+            };
+            const sections = [
+                {
+                    fieldSets: [
+                        {
+                            fields: [
+                                {
+                                    name: 'dateField',
+                                    requiredType: 'DATE',
+                                    multiple: true
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ];
+
+            const lang = 'fr';
+
+            let properties = getDataToMutate(nodeData, formValues, sections, lang);
+            expect(properties.propsToSave[0].notZonedDateValues).toEqual(['date1', 'date2']);
+            expect(properties.propsToSave[0].values).toEqual(undefined);
+
+            nodeData.properties[0].value = undefined;
+            formValues.dateField = 'date1';
+            sections[0].fieldSets[0].fields[0].multiple = false;
+
+            properties = getDataToMutate(nodeData, formValues, sections, lang);
+            expect(properties.propsToSave[0].notZonedDateValue).toEqual('date1');
+            expect(properties.propsToSave[0].value).toEqual(undefined);
+        });
     });
+
     describe('encodeJCRPath', () => {
         it('should encode jcr path', () => {
             [

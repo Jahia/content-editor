@@ -78,19 +78,19 @@ export function getDataToMutate(nodeData = {}, formValues = {}, sections, lang) 
                 const valueObj = {};
 
                 if (field.multiple) {
-                    valueObj.values = value.filter(v !== undefined);
+                    const filteredUndefinedValues = value.filter(v => v !== undefined);
 
                     if (fieldType === 'DATE') {
-                        valueObj.notZonedDateValues = value.filter(v !== undefined);
+                        valueObj.notZonedDateValues = filteredUndefinedValues;
+                    } else {
+                        valueObj.values = filteredUndefinedValues;
                     }
+                } else if (fieldType === 'DATE') {
+                    valueObj.notZonedDateValue = value;
                 } else {
                     // In case we have field of type decimal or double, we should store number
                     // with a decimal point separator instead of decimal comma separator into JCR.
                     valueObj.value = fieldType === 'DECIMAL' || fieldType === 'DOUBLE' ? value && value.replace(',', '.') : value;
-
-                    if (fieldType === 'DATE') {
-                        valueObj.notZonedDateValue = value;
-                    }
                 }
 
                 const fieldSet = getDynamicFieldSetOfField(sections, key);
