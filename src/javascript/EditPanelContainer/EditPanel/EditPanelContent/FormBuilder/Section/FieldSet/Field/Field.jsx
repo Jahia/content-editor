@@ -75,7 +75,7 @@ export const FieldCmp = ({t, classes, inputContext, idInput, selectorType, field
                             <InputLabel shrink
                                         id={`${field.name}-label`}
                                         className={classes.inputLabel}
-                                        htmlFor={!isMultipleField ? idInput : null}
+                                        htmlFor={isMultipleField ? null : idInput}
                             >
                                 {field.displayName}
                             </InputLabel>

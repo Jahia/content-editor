@@ -33,6 +33,10 @@ describe('Text component', () => {
         wrapper = shallowWithTheme(<TextCmp {...props}/>, {}, dsGenericTheme);
     });
 
+    it('should contain aria-labelledby attribute', () => {
+        expect(wrapper.props().inputProps['aria-labelledby']).toBe('toto-label');
+    });
+
     it('should contain one Input component', () => {
         expect(wrapper.find('Input').length).toBe(1);
     });
