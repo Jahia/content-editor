@@ -3,7 +3,7 @@ import {registry} from '@jahia/registry';
 import {ArrowBack} from '@material-ui/icons';
 
 import goBackAction from './actions/goBack.action';
-import EditPanelConstants from './EditPanelContainer/EditPanel/EditPanelConstants';
+import {Constants} from '~/ContentEditor.constants';
 import ContentEditor from './ContentEditor';
 import {SelectorTypes} from './EditPanelContainer/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes';
 import {registerActions as registerEditActions} from '~/Edit';
@@ -49,13 +49,13 @@ if (
 registry.add('edit-route', {
     target: ['cmm:0.1'],
     type: 'route',
-    path: `/:siteKey/:lang/${EditPanelConstants.baseEditRoute}`,
+    path: `/:siteKey/:lang/${Constants.routes.baseEditRoute}`,
     render: () => <ContentEditor mode="edit"/>
 });
 
 registry.add('create-route', {
     target: ['cmm:0.1'],
     type: 'route',
-    path: `/:siteKey/:lang/${EditPanelConstants.baseCreateRoute}`,
+    path: `/:siteKey/:lang/${Constants.routes.baseCreateRoute}`,
     render: () => <ContentEditor mode="create"/>
 });

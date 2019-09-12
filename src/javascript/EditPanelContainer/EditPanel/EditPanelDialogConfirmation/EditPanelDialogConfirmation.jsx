@@ -7,7 +7,7 @@ import {
 import {Button} from '@jahia/design-system-kit';
 import * as PropTypes from 'prop-types';
 import {translate} from 'react-i18next';
-import EditPanelConstants from '../EditPanelConstants';
+import {Constants} from '~/ContentEditor.constants';
 
 export const EditPanelDialogConfirmation = ({t, titleKey, open, onCloseDialog, actionCallback, formik}) => {
     const handleDiscard = () => {
@@ -20,7 +20,7 @@ export const EditPanelDialogConfirmation = ({t, titleKey, open, onCloseDialog, a
         onCloseDialog();
 
         const {setFieldValue, submitForm} = formik;
-        setFieldValue(EditPanelConstants.systemFields.SYSTEM_SUBMIT_OPERATION, EditPanelConstants.submitOperation.SAVE, false);
+        setFieldValue(Constants.systemFields.SYSTEM_SUBMIT_OPERATION, Constants.routes.submitOperation.SAVE, false);
 
         submitForm().then(() => actionCallback());
     };
