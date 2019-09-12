@@ -4,6 +4,11 @@ import {FormQuery} from './createForm.gql-queries';
 import EditPanelContainer from '../EditPanelContainer';
 
 import {Constants} from '~/ContentEditor.constants';
+import {cmGoto} from '../ContentManager.redux-actions';
+
+const mapDispatchToContext = dispatch => ({
+    setUrl: gotoParams => dispatch(cmGoto(gotoParams))
+});
 
 const mapStateToProps = state => {
     const contentEditorUiLang = Constants.supportedLocales.includes(state.uiLang) ?
@@ -27,5 +32,5 @@ const mapStateToProps = state => {
     };
 };
 
-export const Create = connect(mapStateToProps)(EditPanelContainer);
+export const Create = connect(mapStateToProps, mapDispatchToContext)(EditPanelContainer);
 Create.displayName = 'CreateContainer';

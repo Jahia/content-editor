@@ -26,6 +26,7 @@ export const EditPanelContainer = ({
     client,
     notificationContext,
     t,
+    setUrl,
     path,
     lang,
     uiLang,
@@ -83,7 +84,7 @@ export const EditPanelContainer = ({
             t,
             notificationContext,
             actions,
-
+            setUrl,
             data: {
                 ...formQueryParams,
                 nodeData,
@@ -104,9 +105,14 @@ export const EditPanelContainer = ({
     );
 };
 
+EditPanelContainer.defaultProps = {
+    setUrl: () => {}
+};
+
 EditPanelContainer.propTypes = {
     client: PropTypes.object.isRequired,
     t: PropTypes.func.isRequired,
+    setUrl: PropTypes.func,
     path: PropTypes.string.isRequired,
     notificationContext: PropTypes.object.isRequired,
     lang: PropTypes.string.isRequired,

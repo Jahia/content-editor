@@ -20,6 +20,9 @@ export const CreateNode = gql`
             ) {
                 uuid
             }
+            modifiedNodes {
+                path
+            }
         }
     }
 `;
