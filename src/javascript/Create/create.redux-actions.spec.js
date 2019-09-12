@@ -21,11 +21,20 @@ describe('createNode', () => {
     beforeEach(() => {
         params = {
             client: {
-                mutate: jest.fn(() => Promise.resolve())
+                mutate: jest.fn(() => Promise.resolve({
+                    data: {
+                        jcr: {
+                            modifiedNodes: [{
+                                path: '/this/is/sparta'
+                            }]
+                        }
+                    }
+                }))
             },
             notificationContext: {notify: jest.fn()},
             actions: {setSubmitting: jest.fn()},
             t: jest.fn(),
+            setUrl: jest.fn(),
             data: {
                 nodeData: {},
                 sections: []
@@ -37,6 +46,13 @@ describe('createNode', () => {
         await createNode(params);
 
         expect(params.client.mutate).toHaveBeenCalled();
+        expect(params.client.mutate.mock.calls[0][0].mutation).toBe('CreateNode');
+    });
+
+    it('should call setUrl function', async () => {
+        await createNode(params);
+
+        expect(params.setUrl).toHaveBeenCalled();
         expect(params.client.mutate.mock.calls[0][0].mutation).toBe('CreateNode');
     });
 

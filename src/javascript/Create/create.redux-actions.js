@@ -1,5 +1,6 @@
 import {CreateNode} from './createForm.gql-mutation';
 
+import {Constants} from '~/ContentEditor.constants';
 import {getDataToMutate} from '~/EditPanelContainer/EditPanel/EditPanel.utils';
 
 export const createNode = ({
@@ -7,7 +8,7 @@ export const createNode = ({
     t,
     notificationContext,
     actions,
-
+    setUrl,
     data: {
         primaryNodeType,
         nodeData,
@@ -28,10 +29,16 @@ export const createNode = ({
             properties: propsToSave
         },
         mutation: CreateNode
-    }).then(() => {
+    }).then(data => {
+        const path = data.data.jcr.modifiedNodes[0].path;
+        setUrl({
+            language,
+            mode: Constants.baseEditRoute,
+            path: path,
+            params: {}
+        });
         notificationContext.notify(t('content-editor:label.contentEditor.create.createButton.success'), ['closeButton']);
         actions.setSubmitting(false);
-        // TODO BACKLOG-11051
     }, error => {
         console.error(error);
         notificationContext.notify(t('content-editor:label.contentEditor.create.createButton.error'), ['closeButton']);
