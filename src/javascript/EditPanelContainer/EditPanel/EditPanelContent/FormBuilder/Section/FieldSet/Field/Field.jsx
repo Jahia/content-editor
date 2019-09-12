@@ -73,7 +73,7 @@ export const FieldCmp = ({t, classes, inputContext, idInput, selectorType, field
                         <Grid item>
                             <InputLabel shrink
                                         className={classes.inputLabel}
-                                        aria-labelledby={idInput}
+                                        htmlFor={idInput}
                             >
                                 {field.displayName}
                             </InputLabel>
