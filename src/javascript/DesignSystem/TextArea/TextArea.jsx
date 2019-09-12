@@ -6,7 +6,8 @@ import ErrrorOutline from '@material-ui/icons/ErrorOutline';
 
 const styles = theme => ({
     textareaContainer: {
-        display: 'flex'
+        display: 'flex',
+        flexGrow: 1
     },
     textarea: {
         backgroundColor: theme.palette.field.alpha,
