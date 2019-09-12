@@ -78,7 +78,7 @@ export function getDataToMutate(nodeData = {}, formValues = {}, sections, lang) 
                 const valueObj = {};
 
                 if (field.multiple) {
-                    valueObj.values = value.reduce((result, v) => (v === undefined) ? [...result] : [...result, v], []);
+                    valueObj.values = value.filter(v => v !== undefined);
 
                     if (fieldType === 'DATE') {
                         valueObj.notZonedDateValues = value;
