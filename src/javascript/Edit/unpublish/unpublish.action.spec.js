@@ -1,5 +1,26 @@
 import unpublishAction from './unpublish.action';
 
+jest.mock('~/actions/redux.action', () => {
+    let statemock;
+    return {
+        reduxAction: mapStateToContext => {
+            return {
+                init: context => {
+                    const contextToAdd = mapStateToContext(statemock);
+                    Object.keys(contextToAdd).forEach(key => {
+                        context[key] = contextToAdd[key];
+                    });
+                }
+            };
+        },
+        setReduxState: s => {
+            statemock = s;
+        }
+    };
+});
+
+import {setReduxState} from '~/actions/redux.action';
+
 describe('unpublish action', () => {
     describe('onClick', () => {
         let context;
@@ -39,6 +60,10 @@ describe('unpublish action', () => {
                     hasPermission: true
                 }
             };
+
+            setReduxState({
+                mode: 'edit'
+            });
         });
 
         it('should not enable unpublish action when form is not saved', () => {
@@ -86,6 +111,22 @@ describe('unpublish action', () => {
                     dirty: false
                 }
             };
+            unpublishAction.init(context, props);
+
+            expect(context.enabled).toBe(false);
+        });
+
+        it('should disable unpublish action when it isn\'t the edit mode', () => {
+            setReduxState({
+                mode: 'create'
+            });
+
+            const props = {
+                formik: {
+                    dirty: false
+                }
+            };
+
             unpublishAction.init(context, props);
 
             expect(context.enabled).toBe(false);

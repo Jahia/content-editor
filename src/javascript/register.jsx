@@ -50,7 +50,7 @@ registry.add('edit-route', {
     target: ['cmm:0.1'],
     type: 'route',
     path: `/:siteKey/:lang/${Constants.routes.baseEditRoute}`,
-    render: () => <ContentEditor mode="edit"/>
+    render: () => <ContentEditor mode={Constants.routes.baseEditRoute}/>
 });
 
 registry.add('create-route', {

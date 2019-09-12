@@ -1,5 +1,26 @@
 import saveAction from './save.action';
 
+jest.mock('~/actions/redux.action', () => {
+    let statemock;
+    return {
+        reduxAction: mapStateToContext => {
+            return {
+                init: context => {
+                    const contextToAdd = mapStateToContext(statemock);
+                    Object.keys(contextToAdd).forEach(key => {
+                        context[key] = contextToAdd[key];
+                    });
+                }
+            };
+        },
+        setReduxState: s => {
+            statemock = s;
+        }
+    };
+});
+
+import {setReduxState} from '~/actions/redux.action';
+
 describe('save action', () => {
     describe('init', () => {
         it('should not display anything when form is at his initialValues', () => {
@@ -10,6 +31,10 @@ describe('save action', () => {
                 }
             };
 
+            setReduxState({
+                mode: 'edit'
+            });
+
             saveAction.init(context, props);
 
             // As action expect impure function, testing params
@@ -18,6 +43,9 @@ describe('save action', () => {
 
         it('should display save button when form is not at his initialValues', () => {
             const context = {};
+            setReduxState({
+                mode: 'edit'
+            });
             const props = {
                 formik: {
                     dirty: true
@@ -28,6 +56,22 @@ describe('save action', () => {
 
             // As action expect impure function, testing params
             expect(context.enabled).toBe(true);
+        });
+
+        it('should disable save action when it isn\'t the edit mode', () => {
+            const context = {};
+            setReduxState({
+                mode: 'create'
+            });
+
+            const props = {
+                formik: {
+                    dirty: true
+                }
+            };
+
+            saveAction.init(context, props);
+            expect(context.enabled).toBe(false);
         });
     });
 
