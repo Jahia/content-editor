@@ -4,11 +4,17 @@ import {Typography} from '@jahia/design-system-kit';
 import * as PropTypes from 'prop-types';
 import FormBuilder from './FormBuilder';
 import {compose} from 'react-apollo';
+import {connect} from 'react-redux';
 import {withStyles} from '@material-ui/core';
 import {translate} from 'react-i18next';
 import {ToggleButton, ToggleButtonGroup} from '@material-ui/lab';
 import {PreviewContainer} from './PreviewContainer';
 import {Details} from './Details';
+import {Constants} from '~/ContentEditor.constants';
+
+const mapStateToProps = state => ({
+    mode: state.mode
+});
 
 const styles = theme => ({
     twoColumnsRoot: {
@@ -38,11 +44,11 @@ const SelectedTabComponents = {
     details: Details
 };
 
-export const EditPanelContent = ({t, classes, isDirty}) => {
+export const EditPanelContent = ({t, classes, isDirty, mode}) => {
     const [previewMode, setPreviewMode] = useState('preview');
 
     const SelectedTabComponent = SelectedTabComponents[previewMode];
-    const PreviewCmp = SelectedTabComponent ?
+    const PreviewCmp = mode === Constants.routes.baseEditRoute && SelectedTabComponent ?
         <SelectedTabComponent isDirty={isDirty}/> : null;
 
     return (
@@ -95,10 +101,12 @@ EditPanelContent.defaultProps = {
 EditPanelContent.propTypes = {
     t: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,
+    mode: PropTypes.string.isRequired,
     isDirty: PropTypes.bool
 };
 
 export default compose(
     translate(),
-    withStyles(styles)
+    withStyles(styles),
+    connect(mapStateToProps)
 )(EditPanelContent);
