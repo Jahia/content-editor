@@ -20,7 +20,7 @@ export const EditPanelDialogConfirmation = ({t, titleKey, open, onCloseDialog, a
         onCloseDialog();
 
         const {setFieldValue, submitForm} = formik;
-        setFieldValue(Constants.systemFields.SYSTEM_SUBMIT_OPERATION, Constants.routes.submitOperation.SAVE, false);
+        setFieldValue(Constants.editPanel.OPERATION_FIELD, Constants.editPanel.submitOperation.SAVE, false);
 
         submitForm().then(() => actionCallback());
     };
