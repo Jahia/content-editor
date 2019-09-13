@@ -42,7 +42,7 @@ const style = theme => ({
     }
 });
 
-const TreeViewCmp = ({tree, onNodeClick, classes}) => {
+const TreeViewCmp = ({tree, onNodeClick, onNodeDoubleClick, classes}) => {
     // By default everything is closed
     const [openedNodes, setOpenedNode] = useState([]);
 
@@ -50,14 +50,22 @@ const TreeViewCmp = ({tree, onNodeClick, classes}) => {
         return level.map(node => {
             const nodeIsOpen = Boolean(openedNodes.includes(node));
 
-            const handleNodeClick = e => {
+            const toggleNode = () => {
                 if (nodeIsOpen) {
                     setOpenedNode(openedNodes.filter(n => n !== node));
                 } else {
                     setOpenedNode([...openedNodes, node]);
                 }
+            };
 
+            const handleNodeClick = e => {
+                toggleNode();
                 onNodeClick(node, e);
+            };
+
+            const handleNodeDoubleClick = e => {
+                toggleNode();
+                onNodeDoubleClick(node, e);
             };
 
             if (node.childs && node.childs.length !== 0) {
@@ -66,7 +74,12 @@ const TreeViewCmp = ({tree, onNodeClick, classes}) => {
 
                 return (
                     <Fragment key={level.id + node.id}>
-                        <button type="button" className={classes.nodeWithChild} onClick={handleNodeClick}>
+                        <button
+                            type="button"
+                            className={classes.nodeWithChild}
+                            onClick={handleNodeClick}
+                            onDoubleClick={handleNodeDoubleClick}
+                        >
                             <Arrow className={classes.nodeWithChildArrow} color="secondary"/>
                             <span>
                                 <IconLabel label={node.label} iconURL={node.iconURL}/>
@@ -90,6 +103,7 @@ const TreeViewCmp = ({tree, onNodeClick, classes}) => {
                          }
                      }}
                      onClick={handleNodeClick}
+                     onDoubleClick={handleNodeDoubleClick}
                 >
                     <IconLabel label={node.label} iconURL={node.iconURL}/>
                 </div>
@@ -105,7 +119,8 @@ const TreeViewCmp = ({tree, onNodeClick, classes}) => {
 };
 
 TreeViewCmp.defaultProps = {
-    onNodeClick: () => {}
+    onNodeClick: () => {},
+    onNodeDoubleClick: () => {}
 };
 
 TreeViewCmp.propTypes = {
@@ -116,6 +131,7 @@ TreeViewCmp.propTypes = {
         childs: PropTypes.arrayOf(PropTypes.object)
     })).isRequired,
     onNodeClick: PropTypes.func,
+    onNodeDoubleClick: PropTypes.func,
     classes: PropTypes.object.isRequired
 };
 

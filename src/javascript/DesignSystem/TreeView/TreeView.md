@@ -12,7 +12,8 @@ This component is used to display a tree list with icon and expendable things
 
 ### Events
 
-- _onNodeClick_: trigger when clicking on an expendable node
+- _onNodeClick_: trigger when clicking on a node
+- _onNodeDoubleClick_: trigger when double clicking on a node
 
 ### Example
 

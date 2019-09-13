@@ -96,7 +96,13 @@ const CreateNewContentDialogCmp = ({open, onExited, onClose, onCreateContent, ui
                               if (!node.childs) {
                                 setSelectedType(node);
                               }
-                          }}/>
+                          }}
+                          onNodeDoubleClick={node => {
+                              if (!node.childs) {
+                                onCreateContent(node);
+                              }
+                          }}
+                          />
             </div>
             <DialogActions>
                 <Button variant="secondary" onClick={onClose}>
