@@ -25,7 +25,7 @@ export const DateTimePicker = ({id, field, editorContext}) => {
     return (
         <Field
             name={id}
-            render={props => {
+            component={props => {
                 // Remove onChange from props pass to the input component as it is set in it.
                 // eslint-disable-next-line react/prop-types
                 const {value, onChange, ...formikField} = props.field;
