@@ -22,7 +22,8 @@ const styles = theme => ({
         padding: 0
     },
     fullWidthRoot: {
-        backgroundColor: theme.palette.ui.alpha
+        backgroundColor: theme.palette.ui.alpha,
+        overflow: 'auto'
     },
     right: {
         padding: 0,
