@@ -33,7 +33,7 @@ export const createNode = ({
         const path = data.data.jcr.modifiedNodes[0].path;
         setUrl({
             language,
-            mode: Constants.baseEditRoute,
+            mode: Constants.routes.baseEditRoute,
             path: path,
             params: {}
         });
