@@ -27,6 +27,7 @@ export class RichTextCmp extends React.Component {
 
         const config = {
             toolbar: 'Mini',
+            width: '100%',
             contentEditorFieldName: id // Used by selenium to get CKEditor instance
         };
 

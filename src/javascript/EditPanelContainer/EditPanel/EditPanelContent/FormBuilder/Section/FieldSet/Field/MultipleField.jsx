@@ -55,7 +55,7 @@ export const MultipleFieldCmp = ({classes, t, inputContext, field, formik: {valu
 
                     <Button className={classes.addButton}
                             variant="secondary"
-                            onClick={() => arrayHelpers.push(undefined)}
+                            onClick={() => arrayHelpers.push(field.requiredType === 'BOOLEAN' ? false : undefined)}
                     >
                         {t('content-editor:label.contentEditor.edit.fields.actions.add')}
                     </Button>
