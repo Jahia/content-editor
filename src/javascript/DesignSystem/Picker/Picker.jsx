@@ -31,6 +31,7 @@ const styles = theme => ({
         }
     },
     fieldContainer: {
+        width: '100%',
         height: theme.spacing.unit * 9,
         display: 'flex',
         alignItems: 'center',
