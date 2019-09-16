@@ -5,13 +5,16 @@
               "title": "Erstellen {{type}}",
               "createButton": {
                 "name": "Erstellen",
-                "success": "TODO",
-                "error": "TODO"
+                "success": "Inhalt wurde erfolgreich gespeichert",
+                "error": "Beim Speichern des Inhalts ist ein Fehler aufgetreten"
               }
             },
             "edit": {
                 "title": "Inhalt bearbeiten",
                 "contentEdit": "Inhalt bearbeiten",
+                "validation": {
+                    "required": "erforderlich"
+                },
                 "action": {
                     "save": {
                         "name": "Speichern",

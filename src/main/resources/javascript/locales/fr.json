@@ -12,6 +12,9 @@
             "edit": {
                 "title": "Éditer le contenu",
                 "contentEdit": "Editer le contenu",
+                "validation": {
+                    "required": "Requis"
+                },
                 "action": {
                     "save": {
                         "name": "Sauvegarder",

@@ -47,7 +47,7 @@ let styles = theme => {
     };
 };
 
-export const FieldCmp = ({t, classes, inputContext, idInput, selectorType, field, siteInfo, actionContext}) => {
+export const FieldCmp = ({t, classes, inputContext, idInput, selectorType, field, siteInfo, actionContext, formik: {errors}}) => {
     const contextualMenu = useRef(null);
     const isMultipleField = field.multiple && !selectorType.supportMultiple;
 
@@ -79,6 +79,13 @@ export const FieldCmp = ({t, classes, inputContext, idInput, selectorType, field
                             >
                                 {field.displayName}
                             </InputLabel>
+                            {field.mandatory && (
+                                <Badge className={classes.badge}
+                                       badgeContent={t('content-editor:label.contentEditor.edit.validation.required')}
+                                       variant="normal"
+                                       color={errors[field.name] && errors[field.name] === 'required' ? 'warning' : 'primary'}
+                                />
+                            )}
                             {(!field.i18n && siteInfo.languages.length > 1) &&
                                 <Badge className={classes.badge}
                                        badgeContent={t('content-editor:label.contentEditor.edit.sharedLanguages')}
@@ -140,6 +147,10 @@ FieldCmp.propTypes = {
     }).isRequired,
     siteInfo: SiteInfoPropTypes.isRequired,
     field: FieldPropTypes.isRequired,
+    formik: PropTypes.shape({
+        errors: PropTypes.object,
+        touched: PropTypes.object
+    }).isRequired,
     actionContext: PropTypes.shape({
         noAction: PropTypes.bool
     }).isRequired

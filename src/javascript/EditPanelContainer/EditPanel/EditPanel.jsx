@@ -29,7 +29,8 @@ const EditPanelCmp = ({formik, title}) => {
     }, [formik.dirty]);
 
     return (
-        <MainLayout
+        <form>
+            <MainLayout
             topBarProps={{
                 path: <DisplayActions context={{nodeData, siteInfo}}
                                       target="editHeaderPathActions"
@@ -62,9 +63,10 @@ const EditPanelCmp = ({formik, title}) => {
                     />
                 )
             }}
-        >
-            <EditPanelContent isDirty={formik.dirty}/>
-        </MainLayout>
+            >
+                <EditPanelContent isDirty={formik.dirty}/>
+            </MainLayout>
+        </form>
     );
 };
 

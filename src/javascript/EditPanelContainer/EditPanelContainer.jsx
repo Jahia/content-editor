@@ -15,6 +15,8 @@ import {createNode} from '~/Create/create.redux-actions';
 
 import {ContentEditorContext} from '../ContentEditor.context';
 
+import {requiredValidation} from './validation/required';
+
 const submitActionMapper = {
     [Constants.editPanel.submitOperation.SAVE]: saveNode,
     [Constants.editPanel.submitOperation.SAVE_PUBLISH]: publishNode,
@@ -99,6 +101,7 @@ export const EditPanelContainer = ({
             <Formik
                 initialValues={initialValues}
                 render={props => <EditPanel {...props} title={title}/>}
+                validate={requiredValidation(sections)}
                 onSubmit={handleSubmit}
             />
         </ContentEditorContext.Provider>
