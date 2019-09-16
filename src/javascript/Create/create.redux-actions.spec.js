@@ -36,6 +36,7 @@ describe('createNode', () => {
             t: jest.fn(),
             setUrl: jest.fn(),
             data: {
+                primaryNodeType: 'jnt:text',
                 nodeData: {},
                 sections: []
             }

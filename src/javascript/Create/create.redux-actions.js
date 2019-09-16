@@ -2,6 +2,7 @@ import {CreateNode} from './createForm.gql-mutation';
 
 import {Constants} from '~/ContentEditor.constants';
 import {getDataToMutate} from '~/EditPanelContainer/EditPanel/EditPanel.utils';
+import {nodeTypeFormatter} from './create.utils';
 
 export const createNode = ({
     client,
@@ -18,12 +19,12 @@ export const createNode = ({
     }
 }) => {
     const {propsToSave, mixinsToAdd} = getDataToMutate({}, values, sections, language);
-
+    // Todo generate node name from the title or primary property if any - BACKLOG-11079
+    const nodeName = nodeTypeFormatter(primaryNodeType);
     client.mutate({
         variables: {
             parentPathOrId: nodeData.path,
-            // TODO BACKLOG-11050
-            name: (Math.random() * 1000).toString(),
+            name: nodeName,
             primaryNodeType,
             mixins: mixinsToAdd,
             properties: propsToSave
