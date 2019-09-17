@@ -182,8 +182,8 @@
             <id>javascript</id>
             <activation>
                 <property>
-                <name>!skipJS</name>
-            </property>
+                    <name>!skipJS</name>
+                </property>
             </activation>
             <build>
                 <resources>
