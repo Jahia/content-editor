@@ -31,10 +31,13 @@ describe('FormBuilder component', () => {
 
     it('should display each section', () => {
         setContext(context);
-        const cmp = shallowWithTheme(<FormBuilder/>, {}, dsGenericTheme).dive();
+        const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).dive();
 
         context.sections.forEach(section => {
             expect(cmp.find({section}).exists()).toBe(true);
+            if (section.displayName === 'content') {
+                expect(cmp.props()['data-sel-mode']).toBe('create');
+            }
         });
     });
 });

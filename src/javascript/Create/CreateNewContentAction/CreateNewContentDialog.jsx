@@ -81,6 +81,7 @@ const CreateNewContentDialogCmp = ({open, onExited, onClose, onCreateContent, ui
             </DialogTitle>
 
             <Input
+                data-sel-role="content-type-dialog-input"
                 placeholder={t('content-editor:label.contentEditor.CMMActions.createNewContent.filterLabel')}
                 className={classes.filterInput}
                 variant={{interactive: <Search/>}}
@@ -90,14 +91,15 @@ const CreateNewContentDialogCmp = ({open, onExited, onClose, onCreateContent, ui
                 }}
                 />
 
-            <div className={classes.treeContainer}>
-                <TreeView tree={filteredTree}
-                          onNodeClick={node => {
+            <div className={classes.treeContainer} data-sel-role="content-type-tree">
+                <TreeView
+                    tree={filteredTree}
+                    onNodeClick={node => {
                               if (!node.childs) {
                                 setSelectedType(node);
                               }
                           }}
-                          onNodeDoubleClick={node => {
+                    onNodeDoubleClick={node => {
                               if (!node.childs) {
                                 onCreateContent(node);
                               }
@@ -105,12 +107,14 @@ const CreateNewContentDialogCmp = ({open, onExited, onClose, onCreateContent, ui
                           />
             </div>
             <DialogActions>
-                <Button variant="secondary" onClick={onClose}>
+                <Button variant="secondary" data-sel-role="content-type-dialog-cancel" onClick={onClose}>
                     {t('content-editor:label.contentEditor.CMMActions.createNewContent.btnDiscard')}
                 </Button>
-                <Button disabled={!selectedType}
-                        variant="primary"
-                        onClick={() => {
+                <Button
+                    data-sel-role="content-type-dialog-create"
+                    disabled={!selectedType}
+                    variant="primary"
+                    onClick={() => {
                             onCreateContent(selectedType);
                         }}
                 >
