@@ -27,19 +27,19 @@ describe('DatePickerInput', () => {
 
     it('it should generate the good input mask', () => {
         let maskOptions = getMaskOptions(null, true);
-        expect(maskOptions.mask).toBe('99/99/9999 99:99');
+        expect(maskOptions.mask).toBe('##/##/#### ##:##');
         expect(maskOptions.empty).toBe('__/__/____ __:__');
 
         maskOptions = getMaskOptions(null, false);
-        expect(maskOptions.mask).toBe('99/99/9999');
+        expect(maskOptions.mask).toBe('##/##/####');
         expect(maskOptions.empty).toBe('__/__/____');
 
         maskOptions = getMaskOptions('__/__/____', false);
-        expect(maskOptions.mask).toBe('99/99/9999');
+        expect(maskOptions.mask).toBe('##/##/####');
         expect(maskOptions.empty).toBe('__/__/____');
 
         maskOptions = getMaskOptions('__/__/____ __:__', false);
-        expect(maskOptions.mask).toBe('99/99/9999 99:99');
+        expect(maskOptions.mask).toBe('##/##/#### ##:##');
         expect(maskOptions.empty).toBe('__/__/____ __:__');
     });
 });
