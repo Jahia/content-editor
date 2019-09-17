@@ -181,7 +181,9 @@
         <profile>
             <id>javascript</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <property>
+                <name>!skipJS</name>
+            </property>
             </activation>
             <build>
                 <resources>
