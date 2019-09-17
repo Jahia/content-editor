@@ -13,11 +13,11 @@ let styles = theme => ({
     }
 });
 
-const FormBuilderCmp = ({classes}) => {
+const FormBuilderCmp = ({classes, mode}) => {
     const context = useContentEditorContext();
 
     return (
-        <section className={classes.container}>
+        <section className={classes.container} data-sel-mode={mode}>
             {context.sections.map(section => {
                 return <Section key={section.displayName} section={section}/>;
             })}
@@ -32,7 +32,8 @@ FormBuilderCmp.contextTypes = {
 };
 
 FormBuilderCmp.propTypes = {
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
+    mode: PropTypes.string.isRequired
 };
 
 const FormBuilder = withStyles(styles)(FormBuilderCmp);

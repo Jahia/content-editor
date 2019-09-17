@@ -84,11 +84,12 @@ export const EditPanelContent = ({t, classes, isDirty, mode}) => {
                 PreviewCmp ?
                     <TwoColumnsContent classes={{root: classes.twoColumnsRoot, left: classes.left, right: classes.right}}
                                        rightCol={PreviewCmp}
+                                       data-sel-mode={mode}
                     >
-                        <FormBuilder/>
+                        <FormBuilder mode={mode}/>
                     </TwoColumnsContent> :
                     <FullWidthContent classes={{root: classes.fullWidthRoot}}>
-                        <FormBuilder/>
+                        <FormBuilder mode={mode}/>
                     </FullWidthContent>
             }
         </>
