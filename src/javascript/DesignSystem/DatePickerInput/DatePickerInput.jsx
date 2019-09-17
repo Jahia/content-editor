@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 import {DatePicker} from '../DatePicker';
 import {withStyles} from '@material-ui/core/styles';
 import {Input} from '@jahia/design-system-kit';
-import InputMask from 'react-input-mask';
 
 import dayjs from '../../date.config';
 
 import {IconButton} from '@material-ui/core';
 import {DateRange} from '@material-ui/icons';
 import Popover from '@material-ui/core/Popover/Popover';
+import NumberFormat from 'react-number-format';
 
 const styles = theme => ({
     overlay: {
@@ -40,9 +40,18 @@ const formatDateTime = (datetime, lang, variant, displayDateFormat) => {
 export const getMaskOptions = (displayDateMask, isDateTime) => {
     const mask = displayDateMask ? displayDateMask : (isDateTime ? '__/__/____ __:__' : '__/__/____');
     return {
-        mask: mask.replace(/_/g, '9'),
+        mask: mask.replace(/_/g, '#'),
         empty: mask
     };
+};
+
+const CustomInput = ({value, ...others}) => {
+    return (
+        <Input
+            value={value}
+            {...others}
+        />
+    );
 };
 
 const DatePickerInputCmp = ({
@@ -82,10 +91,12 @@ const DatePickerInputCmp = ({
                 onChange(null);
             }
 
-            const newDate = dayjs(e.target.value, displayDateFormat || datetimeFormat[variant], lang);
-            if (newDate.isValid()) {
-                setDatetime(newDate.toDate());
-                onChange(newDate.toDate());
+            if (!e.target.value.includes('_')) {
+                const newDate = dayjs(e.target.value, displayDateFormat || datetimeFormat[variant], lang);
+                if (newDate.isValid()) {
+                    setDatetime(newDate.toDate());
+                    onChange(newDate.toDate());
+                }
             }
         }
     };
@@ -103,23 +114,21 @@ const DatePickerInputCmp = ({
 
     return (
         <div>
-            <InputMask mask={maskOptions.mask}
-                       value={datetimeString}
-                       readOnly={readOnly}
-                       onChange={handleInputChange}
-            >
-                {inputProps => (
-                    <Input
-                        inputRef={htmlInput}
-                        variant={{
-                            interactive: InteractiveVariant
-                        }}
-                        data-sel-readonly={readOnly}
-                        {...inputProps}
-                        {...props}
-                    />
-                )}
-            </InputMask>
+            <NumberFormat
+                inputRef={htmlInput}
+                customInput={CustomInput}
+                format={maskOptions.mask}
+                placeholder={maskOptions.empty}
+                mask="_"
+                data-sel-readonly={readOnly}
+                variant={{
+                    interactive: InteractiveVariant
+                }}
+                readOnly={readOnly}
+                value={datetimeString}
+                onChange={handleInputChange}
+                {...props}
+            />
             <Popover open={Boolean(anchorEl)}
                      anchorEl={anchorEl}
                      anchorOrigin={{
@@ -131,7 +140,8 @@ const DatePickerInputCmp = ({
                          horizontal: 'left'
                      }}
                      onClose={() => {
-                        setAnchorEl(null);
+                         onChange(datetime);
+                         setAnchorEl(null);
                     }}
             >
                 <DatePicker
@@ -139,7 +149,6 @@ const DatePickerInputCmp = ({
                     lang={lang}
                     selectedDateTime={datetime}
                     onSelectDateTime={datetime => {
-                        onChange(datetime);
                         setDatetime(datetime);
                         setDatetimeString(
                             formatDateTime(datetime, lang, variant, displayDateFormat)
@@ -150,6 +159,14 @@ const DatePickerInputCmp = ({
             </Popover>
         </div>
     );
+};
+
+CustomInput.propTypes = {
+    value: PropTypes.object
+};
+
+CustomInput.defaultProps = {
+    value: undefined
 };
 
 DatePickerInputCmp.defaultProps = {
