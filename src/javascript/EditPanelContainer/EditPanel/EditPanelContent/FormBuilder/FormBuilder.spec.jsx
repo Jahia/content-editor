@@ -31,7 +31,7 @@ describe('FormBuilder component', () => {
 
     it('should display each section', () => {
         setContext(context);
-        const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).dive();
+        const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).dive().find('section');
 
         context.sections.forEach(section => {
             expect(cmp.find({section}).exists()).toBe(true);
