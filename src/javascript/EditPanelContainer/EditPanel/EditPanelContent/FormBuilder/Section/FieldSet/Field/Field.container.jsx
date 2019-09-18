@@ -42,6 +42,7 @@ const FieldContainerCmp = ({field, formik}) => {
             selectorType={selectorType}
             siteInfo={editorContext.siteInfo}
             field={field}
+            formik={formik}
             actionContext={actionContext}/>
     );
 };
