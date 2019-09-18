@@ -100,6 +100,7 @@ const PickerCmp = ({
                     (readOnly ? classes.fieldContainerReadOnly : '')
                 }
                 data-sel-field-picker="filled"
+                data-sel-field-picker-action="openPicker"
                 role="button"
                 tabIndex="0"
                 aria-labelledby={labelledBy}
