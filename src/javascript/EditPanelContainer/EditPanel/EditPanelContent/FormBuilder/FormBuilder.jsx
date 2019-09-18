@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import {withStyles} from '@material-ui/core';
 import {Section} from './Section';
+import {Form} from 'formik';
 
 import {useContentEditorContext} from '../../../../ContentEditor.context';
 import {SectionsPropTypes} from '../../../FormDefinitions/FormData.proptypes';
@@ -17,11 +18,13 @@ const FormBuilderCmp = ({classes, mode}) => {
     const context = useContentEditorContext();
 
     return (
-        <section className={classes.container} data-sel-mode={mode}>
-            {context.sections.map(section => {
-                return <Section key={section.displayName} section={section}/>;
-            })}
-        </section>
+        <Form>
+            <section className={classes.container} data-sel-mode={mode}>
+                {context.sections.map(section => {
+                    return <Section key={section.displayName} section={section}/>;
+                })}
+            </section>
+        </Form>
     );
 };
 
