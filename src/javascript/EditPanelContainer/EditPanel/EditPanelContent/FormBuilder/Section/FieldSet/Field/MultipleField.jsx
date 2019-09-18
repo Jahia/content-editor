@@ -34,7 +34,12 @@ export const MultipleFieldCmp = ({classes, t, inputContext, field, formik: {valu
                             const name = `${field.name}[${index}]`;
 
                             return (
-                                <div key={name} className={classes.fieldComponentContainer}>
+                                <div key={name}
+                                     className={classes.fieldComponentContainer}
+                                     data-sel-content-editor-multiple-generic-field={name}
+                                     data-sel-content-editor-field-readonly={field.readOnly}
+                                >
+
                                     <FieldComponent field={field}
                                                     value={value}
                                                     id={name}
@@ -43,7 +48,7 @@ export const MultipleFieldCmp = ({classes, t, inputContext, field, formik: {valu
                                     />
 
                                     <IconButton variant="ghost"
-                                                data-sel-action="removeField"
+                                                data-sel-action={`removeField_${index}`}
                                                 aria-label={t('content-editor:label.contentEditor.edit.fields.actions.clear')}
                                                 icon={<Close/>}
                                                 onClick={() => arrayHelpers.remove(index)}
@@ -54,6 +59,7 @@ export const MultipleFieldCmp = ({classes, t, inputContext, field, formik: {valu
                     )}
 
                     <Button className={classes.addButton}
+                            data-sel-action="addField"
                             variant="secondary"
                             onClick={() => arrayHelpers.push(field.requiredType === 'BOOLEAN' ? false : undefined)}
                     >

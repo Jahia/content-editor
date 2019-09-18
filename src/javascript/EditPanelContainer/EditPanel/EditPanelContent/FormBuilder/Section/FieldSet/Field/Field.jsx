@@ -50,11 +50,12 @@ let styles = theme => {
 export const FieldCmp = ({t, classes, inputContext, idInput, selectorType, field, siteInfo, actionContext}) => {
     const contextualMenu = useRef(null);
     const isMultipleField = field.multiple && !selectorType.supportMultiple;
+    const seleniumFieldType = isMultipleField ? `GenericMultipleField${selectorType.key}` : (field.multiple ? `Multiple${selectorType.key}` : selectorType.key);
 
     return (
         <div className={classes.formControl}
              data-sel-content-editor-field={field.name}
-             data-sel-content-editor-field-type={`${field.multiple ? 'Multiple' : ''}${selectorType.key}`}
+             data-sel-content-editor-field-type={seleniumFieldType}
              data-sel-content-editor-field-readonly={field.readOnly}
         >
 
