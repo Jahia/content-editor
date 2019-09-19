@@ -58,6 +58,43 @@ describe('save action', () => {
             expect(context.enabled).toBe(true);
         });
 
+        it('should display save button when all required fields were filled', () => {
+            const context = {};
+            setReduxState({
+                mode: 'edit'
+            });
+            const props = {
+                formik: {
+                    errors: {}
+                }
+            };
+
+            saveAction.init(context, props);
+
+            // As action expect impure function, testing params
+            expect(context.disabled).toBe(false);
+        });
+
+        it('should display save button but disabled when required fields were not filled', () => {
+            const context = {};
+            setReduxState({
+                mode: 'edit'
+            });
+            const props = {
+                formik: {
+                    errors: {
+                        myFiled1: 'required',
+                        myFiled2: 'required'
+                    }
+                }
+            };
+
+            saveAction.init(context, props);
+
+            // As action expect impure function, testing params
+            expect(context.disabled).toBe(true);
+        });
+
         it('should disable save action when it isn\'t the edit mode', () => {
             const context = {};
             setReduxState({
