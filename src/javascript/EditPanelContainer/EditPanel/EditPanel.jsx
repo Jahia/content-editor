@@ -56,8 +56,10 @@ const EditPanelCmp = ({formik, title}) => {
                         context={{nodeData}}
                         target="editHeaderActions"
                         render={({context}) => {
-                            const Button = buttonRenderer({variant: 'primary'}, true, null, true);
-                            return <Button context={context}/>;
+                            const disabled = context.disabled ? 'disabled' : null;
+                            const Button = buttonRenderer({variant: 'primary', disabled}, true, null, true);
+
+                            return <Button disabled context={context}/>;
                         }}
                     />
                 )
