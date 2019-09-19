@@ -15,7 +15,8 @@
         "lint": "eslint --ext js,jsx,json .",
         "lint:fix": "eslint --ext js,jsx,json --fix .",
         "storybook": "start-storybook -p 6006",
-        "build-storybook": "build-storybook"
+        "build-storybook": "build-storybook",
+        "publish-storybook": "rsync -r ./storybook-static/ jahia@design.int.jahia.com:/var/www/vhosts/contenteditor.jahia.design/html"
     },
     "description": "Content and Media Manager for DX",
     "main": "index.js",
