@@ -4,7 +4,6 @@ import * as PropTypes from 'prop-types';
 import React from 'react';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
-import {useContentEditorContext} from '../../../../ContentEditor.context';
 import {ContentPreviewMemoWrapper} from './Preview';
 
 const styles = theme => ({
@@ -23,8 +22,6 @@ const styles = theme => ({
 });
 
 const PreviewContainerCmp = ({classes, t, isDirty}) => {
-    const workspace = 'EDIT';
-    const editorContext = useContentEditorContext();
     return (
         <Paper className={classes.contentPaper}>
             <Grid container
@@ -49,7 +46,7 @@ const PreviewContainerCmp = ({classes, t, isDirty}) => {
                 </Grid>
                 }
             </Grid>
-            <ContentPreviewMemoWrapper path={editorContext.path} lang={editorContext.lang} workspace={workspace}/>
+            <ContentPreviewMemoWrapper/>
         </Paper>
     );
 };

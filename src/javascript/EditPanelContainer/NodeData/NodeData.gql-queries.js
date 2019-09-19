@@ -12,6 +12,10 @@ const NodeDataFragment = {
         gql: gql`fragment NodeData on JCRQuery {
             result:nodeByPath(path: $path) {
                 ...NodeCacheRequiredFields
+                displayableNode {
+                    path
+                    isFolder:isNodeType(type: {multi: ALL, types: ["jnt:contentFolder"]})
+                }
                 displayName(language: $language)
                 mixinTypes {
                     name
