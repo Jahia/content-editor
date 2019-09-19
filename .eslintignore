@@ -4,4 +4,5 @@ target
 src/main/resources/javascript/apps
 src/main/resources/javascript/polyfills.js
 src/javascript/publicPath.js
+storybook-static/
 webpack.config.js
