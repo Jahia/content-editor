@@ -16,7 +16,7 @@ jest.mock('../../../../../ContentEditor.context', () => ({
 
 describe('Preview', () => {
     it('should display the preview with the provided path', () => {
-        const cmp = shallowWithTheme(<ContentPreviewMemoWrapper />,
+        const cmp = shallowWithTheme(<ContentPreviewMemoWrapper/>,
             {},
             dsGenericTheme);
         const props = cmp.find('ContentPreview').props();

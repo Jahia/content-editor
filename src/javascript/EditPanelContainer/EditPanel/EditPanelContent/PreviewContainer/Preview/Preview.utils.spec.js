@@ -58,7 +58,7 @@ describe('Preview.utils', () => {
 
         expect(previewContext.language).toBe('en');
         expect(previewContext.path).toBe('/sites/digitall/contents/rich_text');
-        expect(previewContext.view).toBe(null);
+        expect(previewContext.view).toBe('default');
         expect(previewContext.contextConfiguration).toBe('page');
         expect(previewContext.templateType).toBe('html');
         expect(previewContext.workspace).toBe('EDIT');
@@ -80,7 +80,7 @@ describe('Preview.utils', () => {
 
         expect(previewContext.language).toBe('en');
         expect(previewContext.path).toBe('/sites/digitall/home');
-        expect(previewContext.view).toBe(null);
+        expect(previewContext.view).toBe('default');
         expect(previewContext.contextConfiguration).toBe('page');
         expect(previewContext.templateType).toBe('html');
         expect(previewContext.workspace).toBe('EDIT');
