@@ -44,7 +44,7 @@ const Tag = ({field, id, t}) => {
                             const adaptedSelection = adaptSelection(newSelection, separator);
 
                             // eslint-disable-next-line react/prop-types
-                            props.form.setFieldValue(field.name, adaptedSelection, false);
+                            props.form.setFieldValue(field.name, adaptedSelection, true);
                         }}
                     />
                 );

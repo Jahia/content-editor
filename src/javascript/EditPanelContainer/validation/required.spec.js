@@ -95,5 +95,26 @@ describe('required validation', () => {
                 field4: undefined
             });
         });
+
+        it('should return object with all field with errors when all fields are multiple and required', () => {
+            sections[0].fieldSets[0].fields[0].multiple = true;
+            sections[0].fieldSets[0].fields[1].multiple = true;
+            sections[0].fieldSets[1].fields[0].multiple = true;
+            sections[1].fieldSets[0].fields[0].multiple = true;
+
+            values = {
+                field1: null,
+                field2: undefined,
+                field3: [],
+                field4: ['notEmpty1', 'notEmpty2']
+            };
+
+            expect(requiredValidation(sections)(values)).toEqual({
+                field1: 'required',
+                field2: 'required',
+                field3: 'required',
+                field4: undefined
+            });
+        });
     });
 });
