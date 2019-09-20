@@ -18,6 +18,7 @@ describe('Preview.utils', () => {
         expect(previewContext.contextConfiguration).toBe('module');
         expect(previewContext.templateType).toBe('html');
         expect(previewContext.workspace).toBe('EDIT');
+        expect(previewContext.requestAttributes).toBe(null);
     });
 
     it('Should preview the content in case displayable node is a folder', () => {
@@ -40,6 +41,7 @@ describe('Preview.utils', () => {
         expect(previewContext.contextConfiguration).toBe('module');
         expect(previewContext.templateType).toBe('html');
         expect(previewContext.workspace).toBe('EDIT');
+        expect(previewContext.requestAttributes).toBe(null);
     });
 
     it('Should preview the content as a page in case displayable node is the content itself', () => {
@@ -62,6 +64,7 @@ describe('Preview.utils', () => {
         expect(previewContext.contextConfiguration).toBe('page');
         expect(previewContext.templateType).toBe('html');
         expect(previewContext.workspace).toBe('EDIT');
+        expect(previewContext.requestAttributes).toBe(null);
     });
 
     it('Should preview the displayable node as a page in case displayable node exist and it\'s not a folder', () => {
@@ -84,5 +87,7 @@ describe('Preview.utils', () => {
         expect(previewContext.contextConfiguration).toBe('page');
         expect(previewContext.templateType).toBe('html');
         expect(previewContext.workspace).toBe('EDIT');
+        expect(previewContext.requestAttributes[0].name).toBe('ce_preview_wrapper');
+        expect(previewContext.requestAttributes[0].value).toBe('/sites/digitall/home/rich_text');
     });
 });
