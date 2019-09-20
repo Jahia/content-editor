@@ -7,11 +7,18 @@ export const requiredValidation = sections => {
         const errors = sections.reduce((errors, section) => {
             const fieldSetErrors = section.fieldSets.reduce((fieldSetErrors, fieldset) => {
                 const fieldErrors = fieldset.fields.reduce((fieldErrors, field) => {
-                    if (!field.mandatory || field.requiredType === 'BOOLEAN') {
+                    if (!field.mandatory || (!field.multiple && field.requiredType === 'BOOLEAN')) {
                         return fieldErrors;
                     }
 
-                    const fieldError = requiredFieldValidation(values[field.name]);
+                    let value = values[field.name];
+                    if (field.multiple) {
+                        value = values[field.name] && values[field.name]
+                            .filter(value => value !== '' && value !== undefined)
+                            .length > 0;
+                    }
+
+                    const fieldError = requiredFieldValidation(value);
                     if (fieldError) {
                         fieldErrors[field.name] = fieldError;
                     }

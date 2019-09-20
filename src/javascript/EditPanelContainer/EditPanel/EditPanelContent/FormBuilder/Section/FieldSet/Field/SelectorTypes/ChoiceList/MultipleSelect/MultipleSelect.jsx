@@ -9,37 +9,31 @@ const MultipleSelect = ({field, id, setActionContext}) => {
         <Field
             name={field.name}
             render={props => {
-                const formikField = props.field;
+                const {value} = props.field;
 
-                const options = field.valueConstraints
-                    .map(constraint => ({
-                        label: constraint.displayValue,
-                        value: constraint.value.string
-                    }));
+                const options = field.valueConstraints.map(constraint => ({
+                    label: constraint.displayValue,
+                    value: constraint.value.string
+                }));
 
-                    setActionContext(prevActionContext => ({
-                        initialized: true,
-                        menuDisplayDisabled: true,
-                        contextHasChange: !prevActionContext.initialized ||
-                            // As action system make deep copy of formik each time value change we must update the context !
-                            prevActionContext.formik.values[field.name] !== formikField.value
-                    }));
+                setActionContext(prevActionContext => ({
+                    initialized: true,
+                    menuDisplayDisabled: true,
+                    contextHasChange: !prevActionContext.initialized ||
+                        // As action system make deep copy of formik each time value change we must update the context !
+                        prevActionContext.formik.values[field.name] !== value
+                }));
 
                 return (
                     <MultipleInput
-                        {...formikField}
                         id={id}
                         options={options}
-                        value={
-                            formikField.value &&
-                            options.filter(data => formikField.value.includes(data.value))
-                        }
+                        value={value && options.filter(data => value.includes(data.value))}
                         readOnly={field.readOnly}
-                        onBlur={() => {/* Do Nothing on blur BACKLOG-10095 */}}
                         onChange={selection => {
                             const newSelection = selection && selection.map(data => data.value);
                             // eslint-disable-next-line react/prop-types
-                            props.form.setFieldValue(field.name, newSelection, false);
+                            props.form.setFieldValue(field.name, newSelection, true);
                         }}
                     />
                 );
