@@ -29,21 +29,26 @@ describe('required validation', () => {
                     fieldSets: [
                         {
                             fields: [
-                                {mandatory: false, name: 'field1'},
-                                {mandatory: false, name: 'field2'}
-                            ]},
+                                {mandatory: true, name: 'field1'},
+                                {mandatory: true, name: 'field2'}
+                            ]
+                        },
                         {
                             fields: [
-                                {mandatory: false, name: 'field3'}
-                            ]}
-                    ]},
+                                {mandatory: true, name: 'field3'}
+                            ]
+                        }
+                    ]
+                },
                 {
                     fieldSets: [
                         {
                             fields: [
-                                {mandatory: false, name: 'field4'}
-                            ]}
-                    ]}
+                                {mandatory: true, name: 'field4'}
+                            ]
+                        }
+                    ]
+                }
             ];
 
             values = {
@@ -54,7 +59,12 @@ describe('required validation', () => {
             };
         });
 
-        it('should return object with all field with no erros when none of field is required', () => {
+        it('should return object with all field with no errors when none of field is required', () => {
+            sections[0].fieldSets[0].fields[0].mandatory = false;
+            sections[0].fieldSets[0].fields[1].mandatory = false;
+            sections[0].fieldSets[1].fields[0].mandatory = false;
+            sections[1].fieldSets[0].fields[0].mandatory = false;
+
             expect(requiredValidation(sections)(values)).toEqual({
                 field1: undefined,
                 field2: undefined,
@@ -63,16 +73,25 @@ describe('required validation', () => {
             });
         });
 
-        it('should return object with all field with erros when some of field are required', () => {
-            sections[0].fieldSets[0].fields[0].mandatory = true;
-            sections[0].fieldSets[0].fields[1].mandatory = true;
-            sections[0].fieldSets[1].fields[0].mandatory = true;
-            sections[1].fieldSets[0].fields[0].mandatory = true;
-
+        it('should return object with all field with errors when some of field are required', () => {
             expect(requiredValidation(sections)(values)).toEqual({
                 field1: 'required',
                 field2: 'required',
                 field3: 'required',
+                field4: undefined
+            });
+        });
+
+        it('should return object with all field with no errors when all fields are BOOLEAN', () => {
+            sections[0].fieldSets[0].fields[0].requiredType = 'BOOLEAN';
+            sections[0].fieldSets[0].fields[1].requiredType = 'BOOLEAN';
+            sections[0].fieldSets[1].fields[0].requiredType = 'BOOLEAN';
+            sections[1].fieldSets[0].fields[0].requiredType = 'BOOLEAN';
+
+            expect(requiredValidation(sections)(values)).toEqual({
+                field1: undefined,
+                field2: undefined,
+                field3: undefined,
                 field4: undefined
             });
         });
