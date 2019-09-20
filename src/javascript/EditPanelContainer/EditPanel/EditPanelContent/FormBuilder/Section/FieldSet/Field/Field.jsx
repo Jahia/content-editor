@@ -120,7 +120,7 @@ export const FieldCmp = ({t, classes, inputContext, idInput, selectorType, field
                                     />
                                     <IconButton variant="ghost"
                                                 data-sel-action="moreOptions"
-                                                aria-label={t('content-editor:label.contentEditor.edit.action.moreOptions')}
+                                                aria-label={t('content-editor:label.contentEditor.edit.action.fieldMoreOptions')}
                                                 icon={<MoreVert/>}
                                                 onClick={event => {
                                                     event.stopPropagation();

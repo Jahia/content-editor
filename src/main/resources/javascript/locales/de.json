@@ -38,7 +38,8 @@
                       "success": "Veröffentlichung für Content wurde rückgängig gemacht",
                       "error": "Während dem rückgängig machen der Veröffentlichung ist ein Fehler aufgetreten"
                     },
-                    "moreOptions": "Mehr Optionen"
+                    "moreOptions": "Mehr Optionen",
+                    "fieldMoreOptions": "Mehr Optionen"
                 },
                 "sharedLanguages": "Von allen Sprachen geteilt",
                 "fields": {

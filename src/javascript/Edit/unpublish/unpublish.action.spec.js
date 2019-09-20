@@ -58,6 +58,9 @@ describe('unpublish action', () => {
                         publicationStatus: 'PUBLISHED'
                     },
                     hasPermission: true
+                },
+                formik: {
+                    dirty: true
                 }
             };
 
@@ -67,51 +70,33 @@ describe('unpublish action', () => {
         });
 
         it('should not enable unpublish action when form is not saved', () => {
-            const props = {
-                formik: {
-                    dirty: true
-                }
-            };
-
-            unpublishAction.init(context, props);
+            unpublishAction.init(context);
 
             // As action expect impure function, testing params
             expect(context.enabled).toBe(false);
         });
 
         it('should enable unpublish action when form is saved and published', () => {
-            const props = {
-                formik: {
-                    dirty: false
-                }
-            };
+            context.formik.dirty = false;
 
-            unpublishAction.init(context, props);
+            unpublishAction.init(context);
 
             expect(context.enabled).toBe(true);
         });
 
         it('should not enable unpublish action when node is not published', () => {
             context.nodeData.aggregatedPublicationInfo.publicationStatus = 'MODIFIED';
-            const props = {
-                formik: {
-                    dirty: false
-                }
-            };
+            context.formik.dirty = false;
 
-            unpublishAction.init(context, props);
+            unpublishAction.init(context);
 
             expect(context.enabled).toBe(false);
         });
 
         it('should disable unpublish action when you haven\'t the proper permission', () => {
             context.nodeData.hasPermission = false;
-            const props = {
-                formik: {
-                    dirty: false
-                }
-            };
-            unpublishAction.init(context, props);
+            context.formik.dirty = false;
+            unpublishAction.init(context);
 
             expect(context.enabled).toBe(false);
         });
@@ -120,14 +105,19 @@ describe('unpublish action', () => {
             setReduxState({
                 mode: 'create'
             });
+            context.formik.dirty = false;
 
-            const props = {
-                formik: {
-                    dirty: false
-                }
-            };
+            unpublishAction.init(context);
 
-            unpublishAction.init(context, props);
+            expect(context.enabled).toBe(false);
+        });
+
+        it('should disable unpublish action when it is submmitting form', () => {
+            context.nodeData.aggregatedPublicationInfo.publicationStatus = 'MODIFIED';
+            context.formik.dirty = false;
+            context.formik.isSubmitting = true;
+
+            unpublishAction.init(context);
 
             expect(context.enabled).toBe(false);
         });

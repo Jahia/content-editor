@@ -63,67 +63,39 @@ describe('publish action', () => {
                     hasPermission: true
                 }
             };
+
+            setReduxState({
+                mode: 'edit'
+            });
         });
 
-        it('should not enable submit action when form is not saved', () => {
-            const props = {
-                formik: {
-                    dirty: true
-                }
-            };
-
-            publishAction.init(context, props);
-
-            // As action expect impure function, testing params
-            expect(context.enabled).toBe(false);
+        it('should not disabled submit action when node is not already published', () => {
+            context.nodeData.aggregatedPublicationInfo.publicationStatus = 'NOT_PUBLISHED';
+            publishAction.init(context, {});
+            expect(context.disabled).toBe(false);
         });
 
-        it('should enable submit action when form is saved', () => {
-            const props = {
-                formik: {
-                    dirty: false
-                }
-            };
+        it('should disabled submit action when node is already published', () => {
+            context.nodeData.aggregatedPublicationInfo.publicationStatus = 'PUBLISHED';
+            publishAction.init(context, {});
+            expect(context.disabled).toBe(true);
+        });
 
-            publishAction.init(context, props);
+        it('should disabled submit action when node is UNPUBLISHABLE', () => {
+            context.nodeData.aggregatedPublicationInfo.publicationStatus = 'MANDATORY_LANGUAGE_UNPUBLISHABLE';
+            publishAction.init(context, {});
 
+            expect(context.disabled).toBe(true);
+        });
+
+        it('should display publish action when you have the proper permission and it\'s edit mode', () => {
+            publishAction.init(context, {});
             expect(context.enabled).toBe(true);
         });
 
-        it('should enable submit action when node is already published', () => {
-            context.nodeData.aggregatedPublicationInfo.publicationStatus = 'PUBLISHED';
-            const props = {
-                formik: {
-                    dirty: false
-                }
-            };
-
-            publishAction.init(context, props);
-
-            expect(context.enabled).toBe(false);
-        });
-
-        it('should enable submit action when node is UNPUBLISHABLE', () => {
-            context.nodeData.aggregatedPublicationInfo.publicationStatus = 'MANDATORY_LANGUAGE_UNPUBLISHABLE';
-            const props = {
-                formik: {
-                    dirty: false
-                }
-            };
-
-            publishAction.init(context, props);
-
-            expect(context.enabled).toBe(false);
-        });
-
-        it('should disable publish action when you haven\'t the proper permission', () => {
+        it('should undisplay publish action when you haven\'t the proper permission', () => {
             context.nodeData.hasPermission = false;
-            const props = {
-                formik: {
-                    dirty: false
-                }
-            };
-            publishAction.init(context, props);
+            publishAction.init(context, {});
 
             expect(context.enabled).toBe(false);
         });
@@ -132,13 +104,7 @@ describe('publish action', () => {
             setReduxState({
                 mode: 'create'
             });
-
-            const props = {
-                formik: {
-                    dirty: false
-                }
-            };
-            publishAction.init(context, props);
+            publishAction.init(context, {});
 
             expect(context.enabled).toBe(false);
         });

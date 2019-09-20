@@ -12,12 +12,9 @@ const stateMapToContext = state => {
 export default composeActions(withFormikAction,
     reduxAction(stateMapToContext), {
         init: context => {
-        // It's weird, formik set dirty when intialValue === currentValue
-        // event when form had been modified
-            context.enabled = context.mode === Constants.routes.baseEditRoute &&
-            context.nodeData.hasPermission &&
-            !context.formik.dirty &&
-            ![
+            context.enabled = context.mode === Constants.routes.baseEditRoute && context.nodeData.hasPermission;
+
+            context.disabled = [
                 Constants.editPanel.publicationStatus.PUBLISHED,
                 Constants.editPanel.publicationStatus.MANDATORY_LANGUAGE_UNPUBLISHABLE
             ].includes(context.nodeData.aggregatedPublicationInfo.publicationStatus);
