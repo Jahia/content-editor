@@ -7,7 +7,7 @@ export const requiredValidation = sections => {
         const errors = sections.reduce((errors, section) => {
             const fieldSetErrors = section.fieldSets.reduce((fieldSetErrors, fieldset) => {
                 const fieldErrors = fieldset.fields.reduce((fieldErrors, field) => {
-                    if (!field.mandatory) {
+                    if (!field.mandatory || field.requiredType === 'BOOLEAN') {
                         return fieldErrors;
                     }
 
