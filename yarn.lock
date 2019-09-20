@@ -1153,10 +1153,10 @@
     mdi-material-ui "^5.10.0"
     recompose "^0.30.0"
 
-"@jahia/react-apollo@^1.0.0-beta.20190724063721":
-  version "1.0.0-beta.20190910160630"
-  resolved "https://npm.jahia.com/@jahia%2freact-apollo/-/react-apollo-1.0.0-beta.20190910160630.tgz#5bb6fd57a36cd5aa5e5b5146677af219cf80dc1d"
-  integrity sha512-H0FECyEwulIeXSJou9brq9w5ynyuc1+XOibKYJ0hdHXC6LOLzcRj7JUSZ5cJGOcDewyyjgMdOpYCjbZL2zhZYA==
+"@jahia/react-apollo@^1.0.0-beta.20190920084628":
+  version "1.0.0-beta.20190920084628"
+  resolved "https://npm.jahia.com/@jahia%2freact-apollo/-/react-apollo-1.0.0-beta.20190920084628.tgz#eabdb6df156e8b6e2f6b252a2bdeb5750271b440"
+  integrity sha512-dzZ2gnp39IdannEZR1+bvxk0N43ggW+LK8XBC/J3JfjKGtrRijqm8UyLnOLJ9VtHNKqXYlVGXk7DCT1QOhY4dw==
   dependencies:
     "@jahia/apollo-dx" "^1.0.0-beta.1"
     apollo-client "^2.5.1"

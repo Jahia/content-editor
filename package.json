@@ -29,7 +29,7 @@
         "@jahia/apollo-dx": "^1.0.0-beta.20190724063717",
         "@jahia/design-system-kit": "^1.0.0-beta.20190910160625",
         "@jahia/icons": "^1.0.0-beta.20190724063718",
-        "@jahia/react-apollo": "^1.0.0-beta.20190724063721",
+        "@jahia/react-apollo": "^1.0.0-beta.20190920084628",
         "@jahia/react-material": "^1.0.0-beta.20190724063718",
         "@jahia/registry": "^1.0.0-beta.20190724063719",
         "@material-ui/core": "^3.9.3",
