@@ -25,6 +25,6 @@ export const getPreviewContext = editorContext => {
         contextConfiguration: config,
         templateType: 'html',
         language: editorContext.lang,
-        requestAttributes: requestAttributes
+        requestAttributes
     };
 };
