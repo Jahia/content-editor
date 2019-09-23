@@ -23,7 +23,8 @@ describe('PreviewContainer', () => {
             },
             t: jest.fn(),
             classes: {},
-            isDirty: false
+            isDirty: false,
+            mode: 'edit'
         };
     });
 

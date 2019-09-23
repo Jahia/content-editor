@@ -1,27 +1,66 @@
 import {Badge, Paper, Typography} from '@jahia/design-system-kit';
 import {Grid, withStyles} from '@material-ui/core';
 import * as PropTypes from 'prop-types';
-import React from 'react';
+import React, {useState} from 'react';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
+import {Constants} from '../../../../ContentEditor.constants';
+import {Details} from './Details';
 import {ContentPreviewMemoWrapper} from './Preview';
+import {ToggleButton, ToggleButtonGroup} from '@material-ui/lab';
 
 const styles = theme => ({
     contentPaper: {
         display: 'flex',
         flex: '1 1 auto',
         flexDirection: 'column',
-        minWidth: 0
+        minWidth: 0,
+        paddingTop: theme.spacing.unit * 5,
+        backgroundColor: theme.palette.ui.alpha
     },
     badge: {
         margin: 0
     },
     preview: {
-        marginBottom: theme.spacing.unit * 2
+        marginBottom: theme.spacing.unit * 3,
+        marginTop: theme.spacing.unit * -3
+    },
+    toggleButtons: {
+        boxShadow: 'none'
+    },
+    buttonRoot: {
+        margin: 0,
+        backgroundColor: theme.palette.ui.alpha + ' !important',
+        borderBottomStyle: 'solid',
+        borderBottomWidth: 2,
+        borderBottomColor: theme.palette.common.white,
+        '&:hover': {
+            borderBottomColor: theme.palette.border.main
+        }
+    },
+    buttonLabel: {},
+    buttonSelected: {
+        borderBottomColor: theme.palette.primary.main + ' !important'
     }
 });
 
-const PreviewContainerCmp = ({classes, t, isDirty}) => {
+const SelectedTabComponents = {
+    preview: ContentPreviewMemoWrapper,
+    details: Details
+};
+
+const PreviewContainerCmp = ({classes, t, isDirty, mode}) => {
+    const [previewMode, setPreviewMode] = useState('preview');
+
+    const SelectedTabComponent = SelectedTabComponents[previewMode];
+    const PreviewCmp = mode === Constants.routes.baseEditRoute && SelectedTabComponent ?
+        <SelectedTabComponent isDirty={isDirty}/> : null;
+
+    const toggleButtonClasses = {
+        root: classes.buttonRoot,
+        selected: classes.buttonSelected
+    };
+
     return (
         <Paper className={classes.contentPaper}>
             <Grid container
@@ -31,9 +70,26 @@ const PreviewContainerCmp = ({classes, t, isDirty}) => {
                   className={classes.preview}
             >
                 <Grid item>
-                    <Typography variant="epsilon" color="alpha">
-                        {t('content-editor:label.contentEditor.preview.toggleButtons.preview')}
-                    </Typography>
+                    <ToggleButtonGroup exclusive
+                                       value={previewMode}
+                                       className={classes.toggleButtons}
+                                       onChange={(_, mode) => {
+                                           if (mode) {
+                                               setPreviewMode(mode);
+                                           }
+                                       }}
+                    >
+                        <ToggleButton value="preview" classes={toggleButtonClasses}>
+                            <Typography>
+                                {t('content-editor:label.contentEditor.preview.toggleButtons.preview')}
+                            </Typography>
+                        </ToggleButton>
+                        <ToggleButton value="details" classes={toggleButtonClasses}>
+                            <Typography>
+                                {t('content-editor:label.contentEditor.preview.toggleButtons.details')}
+                            </Typography>
+                        </ToggleButton>
+                    </ToggleButtonGroup>
                 </Grid>
 
                 {isDirty &&
@@ -46,7 +102,7 @@ const PreviewContainerCmp = ({classes, t, isDirty}) => {
                 </Grid>
                 }
             </Grid>
-            <ContentPreviewMemoWrapper/>
+            {PreviewCmp}
         </Paper>
     );
 };
@@ -58,6 +114,7 @@ PreviewContainerCmp.defaultProps = {
 PreviewContainerCmp.propTypes = {
     t: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,
+    mode: PropTypes.string.isRequired,
     isDirty: PropTypes.bool
 };
 

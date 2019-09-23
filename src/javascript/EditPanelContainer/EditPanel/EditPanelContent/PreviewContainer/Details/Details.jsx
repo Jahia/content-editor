@@ -1,10 +1,10 @@
 import React, {useContext} from 'react';
 import PropTypes from 'prop-types';
-import {ContentEditorContext} from '../../../../ContentEditor.context';
 import {InfoPanel} from '~/DesignSystem/InfoPanel';
 import {withStyles} from '@material-ui/core';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
+import {ContentEditorContext} from '../../../../../ContentEditor.context';
 
 const styles = theme => ({
     container: {
