@@ -2,6 +2,7 @@ import {getPreviewContext, getPreviewPath, removeSiblings} from './Preview.utils
 const fs = require('fs');
 const path = require('path');
 const html = fs.readFileSync(path.resolve(__dirname, './Preview.utils.test.html'), 'utf8');
+import {getPreviewContext, getPreviewPath} from './Preview.utils';
 
 describe('Preview.utils', () => {
     it('Should preview the content in case no displayable node', () => {
@@ -140,5 +141,44 @@ describe('Preview.utils', () => {
         removeSiblings(document.getElementById('ce_preview_content'));
         expect(document.getElementsByClassName('should_be_removed').length).toBe(0);
         expect(document.getElementsByClassName('should_be_keeped').length).toBe(10);
+    });
+
+    it('Should return the path of the previewed node', () => {
+        let nodeData = {
+            path: '/sites/digitall/home/banner',
+            displayableNode: {
+                path: '/sites/digitall/home',
+                isFolder: false
+            }
+        };
+
+        expect(getPreviewPath(nodeData)).toBe('/sites/digitall/home');
+
+        nodeData = {
+            path: '/sites/digitall/contents/banner',
+            displayableNode: {
+                path: '/sites/digitall/contents',
+                isFolder: true
+            }
+        };
+
+        expect(getPreviewPath(nodeData)).toBe('/sites/digitall/contents/banner');
+
+        nodeData = {
+            path: '/sites/digitall/home/news1',
+            displayableNode: {
+                path: '/sites/digitall/home/news1',
+                isFolder: false
+            }
+        };
+
+        expect(getPreviewPath(nodeData)).toBe('/sites/digitall/home/news1');
+
+        nodeData = {
+            path: '/sites/digitall/home/news1',
+            displayableNode: null
+        };
+
+        expect(getPreviewPath(nodeData)).toBe('/sites/digitall/home/news1');
     });
 });
