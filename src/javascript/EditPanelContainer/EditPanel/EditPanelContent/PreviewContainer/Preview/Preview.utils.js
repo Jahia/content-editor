@@ -28,3 +28,29 @@ export const getPreviewContext = editorContext => {
         requestAttributes
     };
 };
+
+export const getSiblings = function (elem) {
+    let siblings = [];
+    let sibling = elem.parentNode.firstChild;
+
+    while (sibling) {
+        if (sibling.nodeType === 1 && sibling !== elem && sibling.tagName !== 'LINK' && sibling.tagName !== 'SCRIPT') {
+            siblings.push(sibling);
+        }
+
+        sibling = sibling.nextSibling;
+    }
+
+    return siblings;
+};
+
+export const removeSiblings = element => {
+    for (const sibling of getSiblings(element)) {
+        element.parentNode.removeChild(sibling);
+    }
+
+    // Stop recursion if no parent, or body is parent
+    if (element.parentNode && element.parentNode.tagName !== 'BODY') {
+        removeSiblings(element.parentNode);
+    }
+};

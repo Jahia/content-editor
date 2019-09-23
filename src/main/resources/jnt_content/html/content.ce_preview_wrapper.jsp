@@ -13,6 +13,6 @@
 <%--@elvariable id="currentResource" type="org.jahia.services.render.Resource"--%>
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
 
-<div data-todo="todo marker to detect CE previewed content">
+<div id="ce_preview_content">
     ${wrappedContent}
 </div>
