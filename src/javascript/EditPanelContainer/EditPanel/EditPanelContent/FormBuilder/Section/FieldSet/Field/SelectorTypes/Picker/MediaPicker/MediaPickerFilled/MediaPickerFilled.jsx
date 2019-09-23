@@ -51,12 +51,14 @@ const MediaPickerFilledCmp = ({
         )}x${parseInt(imageData.width.value, 10)}px`
     };
 
-    setActionContext(prevActionContext => ({
-        open: setIsOpen,
-        fieldData,
-        editorContext,
-        contextHasChange: !prevActionContext.fieldData || prevActionContext.fieldData.path !== fieldData.path
-    }));
+    if (!field.multiple) {
+        setActionContext(prevActionContext => ({
+            open: setIsOpen,
+            fieldData,
+            editorContext,
+            contextHasChange: !prevActionContext.fieldData || prevActionContext.fieldData.path !== fieldData.path
+        }));
+    }
 
     return (
         <>
