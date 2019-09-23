@@ -1,24 +1,25 @@
-export const requiredFieldValidation = value => {
-    return value ? undefined : 'required';
+export const requiredFieldValidation = (value, multiple) => {
+    const error = 'required';
+
+    if (!value) {
+        return error;
+    }
+
+    if (multiple && (value.length === 0 || value.filter(value => value !== '' && value !== undefined).length === 0)) {
+        return error;
+    }
 };
 
 export const requiredValidation = sections => {
     return values => {
-        const errors = sections.reduce((errors, section) => {
+        return sections.reduce((errors, section) => {
             const fieldSetErrors = section.fieldSets.reduce((fieldSetErrors, fieldset) => {
                 const fieldErrors = fieldset.fields.reduce((fieldErrors, field) => {
                     if (!field.mandatory || (!field.multiple && field.requiredType === 'BOOLEAN')) {
                         return fieldErrors;
                     }
 
-                    let value = values[field.name];
-                    if (field.multiple) {
-                        value = values[field.name] && values[field.name]
-                            .filter(value => value !== '' && value !== undefined)
-                            .length > 0;
-                    }
-
-                    const fieldError = requiredFieldValidation(value);
+                    const fieldError = requiredFieldValidation(values[field.name], field.multiple);
                     if (fieldError) {
                         fieldErrors[field.name] = fieldError;
                     }
@@ -37,7 +38,5 @@ export const requiredValidation = sections => {
                 ...fieldSetErrors
             };
         }, {});
-
-        return errors;
     };
 };
