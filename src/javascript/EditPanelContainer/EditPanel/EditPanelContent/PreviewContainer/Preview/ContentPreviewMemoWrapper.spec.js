@@ -19,7 +19,7 @@ describe('Preview', () => {
         const cmp = shallowWithTheme(<ContentPreviewMemoWrapper/>,
             {},
             dsGenericTheme);
-        const props = cmp.find('ContentPreview').props();
+        const props = cmp.dive().find('ContentPreview').props();
         expect(props.language).toBe('fr');
         expect(props.path).toBe('/site/digitall');
         expect(props.workspace).toBe('EDIT');
