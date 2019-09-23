@@ -1,4 +1,4 @@
-import {getPreviewContext} from './Preview.utils';
+import {getPreviewContext, getPreviewPath} from './Preview.utils';
 
 describe('Preview.utils', () => {
     it('Should preview the content in case no displayable node', () => {
@@ -89,5 +89,44 @@ describe('Preview.utils', () => {
         expect(previewContext.workspace).toBe('EDIT');
         expect(previewContext.requestAttributes[0].name).toBe('ce_preview_wrapper');
         expect(previewContext.requestAttributes[0].value).toBe('/sites/digitall/home/rich_text');
+    });
+
+    it('Should return the path of the previewed node', () => {
+        let nodeData = {
+            path: '/sites/digitall/home/banner',
+            displayableNode: {
+                path: '/sites/digitall/home',
+                isFolder: false
+            }
+        };
+
+        expect(getPreviewPath(nodeData)).toBe('/sites/digitall/home');
+
+        nodeData = {
+            path: '/sites/digitall/contents/banner',
+            displayableNode: {
+                path: '/sites/digitall/contents',
+                isFolder: true
+            }
+        };
+
+        expect(getPreviewPath(nodeData)).toBe('/sites/digitall/contents/banner');
+
+        nodeData = {
+            path: '/sites/digitall/home/news1',
+            displayableNode: {
+                path: '/sites/digitall/home/news1',
+                isFolder: false
+            }
+        };
+
+        expect(getPreviewPath(nodeData)).toBe('/sites/digitall/home/news1');
+
+        nodeData = {
+            path: '/sites/digitall/home/news1',
+            displayableNode: null
+        };
+
+        expect(getPreviewPath(nodeData)).toBe('/sites/digitall/home/news1');
     });
 });
