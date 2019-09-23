@@ -17,11 +17,11 @@ export const TextCmp = ({field, value, id, editorContext, formik: {handleChange}
             id={id}
             name={id}
             inputProps={{
-                'aria-labelledby': `${field.name}-label`
+                'aria-labelledby': `${field.name}-label`,
+                'aria-required': field.mandatory
             }}
             value={isNumber ? controlledValue && controlledValue.replace('.', decimalSeparator) : controlledValue}
             readOnly={field.readOnly}
-            ariaRequired={field.mandatory}
             type={isNumber ? 'number' : 'text'}
             decimalScale={fieldType === 'LONG' ? 0 : undefined}
             decimalSeparator={decimalSeparator}
