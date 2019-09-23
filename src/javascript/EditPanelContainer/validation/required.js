@@ -1,4 +1,4 @@
-export const requiredFieldValidation = (value, multiple) => {
+const requiredFieldValidation = (value, multiple) => {
     const error = 'required';
 
     if (!value) {
