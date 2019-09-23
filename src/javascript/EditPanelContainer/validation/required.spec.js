@@ -1,41 +1,27 @@
-import {requiredFieldValidation, requiredValidation} from './required';
+import {requiredValidation} from './required';
 
 describe('required validation', () => {
-    describe('requiredFieldValidation', () => {
-        it('should return "required" when value is null', () => {
-            expect(requiredFieldValidation(null)).toBe('required');
-        });
-
-        it('should return "required" when value is empty', () => {
-            expect(requiredFieldValidation('')).toBe('required');
-        });
-
-        it('should return "required" when value is undefined', () => {
-            expect(requiredFieldValidation()).toBe('required');
-        });
-
-        it('should return undefined when value is not empty', () => {
-            expect(requiredFieldValidation('notEmpty')).toBe(undefined);
-        });
-    });
-
     describe('requiredValidation', () => {
         let sections;
         let values;
 
-        beforeEach(() => {
+        const buildSections = (mandatory, multiple, requiredType) => {
+            const buildField = name => {
+                return {name: name, mandatory: mandatory, multiple: multiple, requiredType: requiredType};
+            };
+
             sections = [
                 {
                     fieldSets: [
                         {
                             fields: [
-                                {mandatory: true, name: 'field1'},
-                                {mandatory: true, name: 'field2'}
+                                buildField('field1'),
+                                buildField('field2')
                             ]
                         },
                         {
                             fields: [
-                                {mandatory: true, name: 'field3'}
+                                buildField('field3')
                             ]
                         }
                     ]
@@ -44,7 +30,7 @@ describe('required validation', () => {
                     fieldSets: [
                         {
                             fields: [
-                                {mandatory: true, name: 'field4'}
+                                buildField('field4')
                             ]
                         }
                     ]
@@ -57,13 +43,13 @@ describe('required validation', () => {
                 field3: '',
                 field4: 'notEmpty'
             };
-        });
+            return {sections, values};
+        };
 
-        it('should return object with all field with no errors when none of field is required', () => {
-            sections[0].fieldSets[0].fields[0].mandatory = false;
-            sections[0].fieldSets[0].fields[1].mandatory = false;
-            sections[0].fieldSets[1].fields[0].mandatory = false;
-            sections[1].fieldSets[0].fields[0].mandatory = false;
+        it('should return object with all field with no errors when fields are NOT mandatory', () => {
+            const mandatory = false;
+            const multiple = false;
+            const {sections, values} = buildSections(mandatory, multiple);
 
             expect(requiredValidation(sections)(values)).toEqual({
                 field1: undefined,
@@ -73,7 +59,10 @@ describe('required validation', () => {
             });
         });
 
-        it('should return object with all field with errors when some of field are required', () => {
+        it('should return object with all field with errors when fields are mandatory', () => {
+            const mandatory = true;
+            const multiple = false;
+            const {sections, values} = buildSections(mandatory, multiple);
             expect(requiredValidation(sections)(values)).toEqual({
                 field1: 'required',
                 field2: 'required',
@@ -82,13 +71,31 @@ describe('required validation', () => {
             });
         });
 
-        it('should return object with all field with no errors when all fields are BOOLEAN', () => {
-            sections[0].fieldSets[0].fields[0].requiredType = 'BOOLEAN';
-            sections[0].fieldSets[0].fields[1].requiredType = 'BOOLEAN';
-            sections[0].fieldSets[1].fields[0].requiredType = 'BOOLEAN';
-            sections[1].fieldSets[0].fields[0].requiredType = 'BOOLEAN';
+        it('should return object with all field with errors when all fields are multiple and mandatory', () => {
+            const mandatory = true;
+            const multiple = true;
+            const {sections} = buildSections(mandatory, multiple);
+            const values = {
+                field1: null,
+                field2: undefined,
+                field3: [],
+                field4: ['notEmpty1', 'notEmpty2']
+            };
 
             expect(requiredValidation(sections)(values)).toEqual({
+                field1: 'required',
+                field2: 'required',
+                field3: 'required',
+                field4: undefined
+            });
+        });
+
+        it('should return object with all field with no errors when all fields are BOOLEAN and mandatory', () => {
+            const mandatory = true;
+            const multiple = false;
+            const {sections, values} = buildSections(mandatory, multiple, 'BOOLEAN');
+            const fn = requiredValidation(sections);
+            expect(fn(values)).toEqual({
                 field1: undefined,
                 field2: undefined,
                 field3: undefined,
@@ -96,19 +103,16 @@ describe('required validation', () => {
             });
         });
 
-        it('should return object with all field with errors when all fields are multiple and required', () => {
-            sections[0].fieldSets[0].fields[0].multiple = true;
-            sections[0].fieldSets[0].fields[1].multiple = true;
-            sections[0].fieldSets[1].fields[0].multiple = true;
-            sections[1].fieldSets[0].fields[0].multiple = true;
-
-            values = {
+        it('should return object with some errors when all fields are BOOLEAN, mandatory and multiple but with or without values', () => {
+            const mandatory = true;
+            const multiple = true;
+            const {sections} = buildSections(mandatory, multiple, 'BOOLEAN');
+            const values = {
                 field1: null,
                 field2: undefined,
                 field3: [],
-                field4: ['notEmpty1', 'notEmpty2']
+                field4: [true, false]
             };
-
             expect(requiredValidation(sections)(values)).toEqual({
                 field1: 'required',
                 field2: 'required',
