@@ -2,6 +2,7 @@ import {SavePropertiesMutation} from './save.gql-mutation';
 import {getDataToMutate} from '../../EditPanelContainer/EditPanel/EditPanel.utils';
 import {NodeQuery} from '../../EditPanelContainer/NodeData/NodeData.gql-queries';
 import {refetchPreview} from '../../EditPanelContainer/EditPanel.refetches';
+import {getPreviewPath} from '../../EditPanelContainer/EditPanel/EditPanelContent/PreviewContainer/Preview/Preview.utils';
 
 export const saveNode = ({
     client,
@@ -43,7 +44,7 @@ export const saveNode = ({
     }).then(() => {
         notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.success'), ['closeButton']);
         actions.setSubmitting(false);
-        refetchPreview(path, language);
+        refetchPreview(getPreviewPath(nodeData), language);
     }, error => {
         console.error(error);
         notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.error'), ['closeButton']);
