@@ -102,7 +102,6 @@ describe('Preview.utils', () => {
         expect(previewContext.requestAttributes[0].value).toBe('/sites/digitall/home/rich_text');
     });
 
-
     it('Should zoom on the content by cleaning the html', () => {
         document.documentElement.innerHTML = html.toString();
         expect(document.getElementsByClassName('should_be_removed').length).toBe(9);
