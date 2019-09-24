@@ -90,7 +90,7 @@ describe('Preview.utils', () => {
         };
 
         const previewContext = getPreviewContext(editorContext);
-        expect(getPreviewPath(editorContext.nodeData)).toBe('/sites/digitall/home/rich_text');
+        expect(getPreviewPath(editorContext.nodeData)).toBe('/sites/digitall/home');
 
         expect(previewContext.language).toBe('en');
         expect(previewContext.path).toBe('/sites/digitall/home');
