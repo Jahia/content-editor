@@ -29,6 +29,14 @@ export const getPreviewContext = editorContext => {
     };
 };
 
+export const getPreviewPath = nodeData => {
+    if (nodeData.displayableNode && !nodeData.displayableNode.isFolder) {
+        return nodeData.displayableNode.path;
+    }
+
+    return nodeData.path;
+};
+
 export const getSiblings = function (elem) {
     let siblings = [];
     let sibling = elem.parentNode.firstChild;

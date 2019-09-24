@@ -1,4 +1,4 @@
-import {getPreviewContext, removeSiblings} from './Preview.utils';
+import {getPreviewContext, removeSiblings, getPreviewPath} from './Preview.utils';
 const fs = require('fs');
 const path = require('path');
 const html = fs.readFileSync(path.resolve(__dirname, './Preview.utils.test.html'), 'utf8');
@@ -9,11 +9,13 @@ describe('Preview.utils', () => {
             path: '/sites/digitall/contents/rich_text',
             lang: 'en',
             nodeData: {
+                path: '/sites/digitall/contents/rich_text',
                 displayableNode: null
             }
         };
 
         const previewContext = getPreviewContext(editorContext);
+        expect(getPreviewPath(editorContext.nodeData)).toBe('/sites/digitall/contents/rich_text');
 
         expect(previewContext.language).toBe('en');
         expect(previewContext.path).toBe('/sites/digitall/contents/rich_text');
@@ -29,6 +31,7 @@ describe('Preview.utils', () => {
             path: '/sites/digitall/contents/rich_text',
             lang: 'en',
             nodeData: {
+                path: '/sites/digitall/contents/rich_text',
                 displayableNode: {
                     path: '/sites/digitall/contents',
                     isFolder: true
@@ -37,6 +40,7 @@ describe('Preview.utils', () => {
         };
 
         const previewContext = getPreviewContext(editorContext);
+        expect(getPreviewPath(editorContext.nodeData)).toBe('/sites/digitall/contents/rich_text');
 
         expect(previewContext.language).toBe('en');
         expect(previewContext.path).toBe('/sites/digitall/contents/rich_text');
@@ -52,6 +56,7 @@ describe('Preview.utils', () => {
             path: '/sites/digitall/contents/rich_text',
             lang: 'en',
             nodeData: {
+                path: '/sites/digitall/contents/rich_text',
                 displayableNode: {
                     path: '/sites/digitall/contents/rich_text',
                     isFolder: false
@@ -60,6 +65,7 @@ describe('Preview.utils', () => {
         };
 
         const previewContext = getPreviewContext(editorContext);
+        expect(getPreviewPath(editorContext.nodeData)).toBe('/sites/digitall/contents/rich_text');
 
         expect(previewContext.language).toBe('en');
         expect(previewContext.path).toBe('/sites/digitall/contents/rich_text');
@@ -75,6 +81,7 @@ describe('Preview.utils', () => {
             path: '/sites/digitall/home/rich_text',
             lang: 'en',
             nodeData: {
+                path: '/sites/digitall/home/rich_text',
                 displayableNode: {
                     path: '/sites/digitall/home',
                     isFolder: false
@@ -83,6 +90,7 @@ describe('Preview.utils', () => {
         };
 
         const previewContext = getPreviewContext(editorContext);
+        expect(getPreviewPath(editorContext.nodeData)).toBe('/sites/digitall/home/rich_text');
 
         expect(previewContext.language).toBe('en');
         expect(previewContext.path).toBe('/sites/digitall/home');
@@ -93,6 +101,7 @@ describe('Preview.utils', () => {
         expect(previewContext.requestAttributes[0].name).toBe('ce_preview_wrapper');
         expect(previewContext.requestAttributes[0].value).toBe('/sites/digitall/home/rich_text');
     });
+
 
     it('Should zoom on the content by cleaning the html', () => {
         document.documentElement.innerHTML = html.toString();
