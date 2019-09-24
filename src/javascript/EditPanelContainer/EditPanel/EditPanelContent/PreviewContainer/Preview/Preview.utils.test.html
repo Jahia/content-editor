@@ -1,0 +1,33 @@
+<html class="should_be_keeped">
+<head class="should_be_keeped">
+    <link href="http://foo.bar" class="should_be_keeped"/>
+    <script src="http://foo.bar/script" class="should_be_keeped"></script>
+</head>
+<body class="should_be_keeped">
+    <link href="http://foo.bar" class="should_be_keeped"/>
+    <script src="http://foo.bar/script" class="should_be_keeped"></script>
+
+    <div class="should_be_removed">
+        <div class="should_be_removed">
+            <p class="should_be_removed">header</p>
+        </div>
+    </div>
+    <div class="should_be_keeped">
+        <div class="should_be_keeped">
+            <div class="should_be_removed">
+                <div class="should_be_removed">
+                    <p class="should_be_removed">title</p>
+                </div>
+            </div>
+            <div id="ce_preview_content" class="should_be_keeped">
+                <p class="should_be_keeped">Previewed content</p>
+            </div>
+        </div>
+        <div class="should_be_removed">
+            <div class="should_be_removed">
+                <p class="should_be_removed">footer</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

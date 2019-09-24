@@ -1,4 +1,7 @@
-import {getPreviewContext, getPreviewPath} from './Preview.utils';
+import {getPreviewContext, getPreviewPath, removeSiblings} from './Preview.utils';
+const fs = require('fs');
+const path = require('path');
+const html = fs.readFileSync(path.resolve(__dirname, './Preview.utils.test.html'), 'utf8');
 
 describe('Preview.utils', () => {
     it('Should preview the content in case no displayable node', () => {
@@ -128,5 +131,14 @@ describe('Preview.utils', () => {
         };
 
         expect(getPreviewPath(nodeData)).toBe('/sites/digitall/home/news1');
+    });
+
+    it('Should zoom on the content by cleaning the html', () => {
+        document.documentElement.innerHTML = html.toString();
+        expect(document.getElementsByClassName('should_be_removed').length).toBe(9);
+        expect(document.getElementsByClassName('should_be_keeped').length).toBe(10);
+        removeSiblings(document.getElementById('ce_preview_content'));
+        expect(document.getElementsByClassName('should_be_removed').length).toBe(0);
+        expect(document.getElementsByClassName('should_be_keeped').length).toBe(10);
     });
 });
