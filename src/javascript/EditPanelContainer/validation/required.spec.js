@@ -177,7 +177,7 @@ describe('required validation', () => {
             });
         });
 
-        it('should return object with some errors when all fields are mandatory and dynamic fieldSet are deactivated', () => {
+        it('should return object with no errors when all fields are mandatory and dynamic fieldSet are deactivated', () => {
             const mandatory = true;
             const {sections} = buildSections(mandatory);
             const values = {
