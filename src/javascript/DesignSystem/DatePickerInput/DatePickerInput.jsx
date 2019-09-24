@@ -96,6 +96,8 @@ const DatePickerInputCmp = ({
                 if (newDate.isValid()) {
                     setDatetime(newDate.toDate());
                     onChange(newDate.toDate());
+                } else {
+                    onChange(e.target.value);
                 }
             }
         }
