@@ -11,6 +11,10 @@ import {withStyles} from '@material-ui/core';
 const styles = () => ({
     previewContainer: {
         padding: 0
+    },
+    contentIframe: {
+        pointerEvents: 'none',
+        cursor: 'default'
     }
 });
 
@@ -38,10 +42,11 @@ export const ContentPreviewMemoWrapperCmp = React.memo(({classes}) => {
                         setRefetch={refetchingData => setPreviewRefetcher(refetchingData)}
         >
             {data => (
-                <PreviewComponent classes={{previewContainer: classes.previewContainer}}
-                                  data={data.jcr ? data.jcr : {}}
-                                  workspace={previewContext.workspace}
-                                  domLoadedCallback={domLoadedCallback}
+                <PreviewComponent
+                    classes={{previewContainer: classes.previewContainer, contentIframe: classes.contentIframe}}
+                    data={data.jcr ? data.jcr : {}}
+                    workspace={previewContext.workspace}
+                    domLoadedCallback={domLoadedCallback}
                 />
             )}
         </ContentPreview>
