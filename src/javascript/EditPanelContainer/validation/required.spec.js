@@ -14,12 +14,16 @@ describe('required validation', () => {
                 {
                     fieldSets: [
                         {
+                            name: 'fieldSet1',
+                            dynamic: false,
                             fields: [
                                 buildField('field1'),
                                 buildField('field2')
                             ]
                         },
                         {
+                            name: 'fieldSet2',
+                            dynamic: false,
                             fields: [
                                 buildField('field3')
                             ]
@@ -29,6 +33,8 @@ describe('required validation', () => {
                 {
                     fieldSets: [
                         {
+                            name: 'fieldSet3',
+                            dynamic: false,
                             fields: [
                                 buildField('field4')
                             ]
@@ -119,6 +125,76 @@ describe('required validation', () => {
                 field3: 'required',
                 field4: undefined
             });
+        });
+
+        it('should return object with some errors when all fields are mandatory and dynamic fieldSet are activated', () => {
+            const mandatory = true;
+            const {sections} = buildSections(mandatory);
+            const values = {
+                field1: null,
+                field2: undefined,
+                field3: '',
+                field4: 'notEmpty',
+                fieldSet1: true,
+                fieldSet2: true,
+                fieldSet3: true
+            };
+
+            sections[0].fieldSets[0].dynamic = true;
+            sections[0].fieldSets[1].dynamic = true;
+            sections[1].fieldSets[0].dynamic = true;
+
+            expect(requiredValidation(sections)(values)).toEqual({
+                field1: 'required',
+                field2: 'required',
+                field3: 'required',
+                field4: undefined
+            });
+        });
+
+        it('should return object with some errors when all fields are mandatory and multiple and dynamic fieldSet are activated', () => {
+            const mandatory = true;
+            const multiple = true;
+            const {sections} = buildSections(mandatory, multiple);
+            const values = {
+                field1: null,
+                field2: undefined,
+                field3: [],
+                field4: ['value1', 'value2'],
+                fieldSet1: true,
+                fieldSet2: true,
+                fieldSet3: true
+            };
+
+            sections[0].fieldSets[1].dynamic = true;
+            sections[1].fieldSets[0].dynamic = true;
+
+            expect(requiredValidation(sections)(values)).toEqual({
+                field1: 'required',
+                field2: 'required',
+                field3: 'required',
+                field4: undefined
+            });
+        });
+
+        it('should return object with no errors when all fields are mandatory and dynamic fieldSet are deactivated', () => {
+            const mandatory = true;
+            const {sections} = buildSections(mandatory);
+            const values = {
+                field1: null,
+                field2: undefined,
+                field3: [],
+                field4: [true, false],
+                fieldSet1: false,
+                fieldSet2: false,
+                fieldSet3: false
+            };
+
+            sections[0].fieldSets[0].dynamic = true;
+            sections[0].fieldSets[1].dynamic = true;
+            sections[1].fieldSets[0].dynamic = true;
+
+            expect(requiredValidation(sections)(values)).toEqual({});
         });
     });
 });

@@ -146,7 +146,7 @@ export function extractRangeConstraints(constraint) {
  * @param {string} fieldName field name to search fieldSet
  * @returns {object} name of fieldSet
  */
-function getDynamicFieldSetOfField(sections, fieldName) {
+export function getDynamicFieldSetOfField(sections, fieldName) {
     return sections.reduce((result, section) => {
         const value = section.fieldSets
             .filter(filedSet => filedSet.dynamic)

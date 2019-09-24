@@ -1,3 +1,5 @@
+import {getDynamicFieldSetOfField} from '../EditPanel/EditPanel.utils';
+
 const requiredFieldValidation = (value, multiple) => {
     const error = 'required';
 
@@ -15,7 +17,12 @@ export const requiredValidation = sections => {
         return sections.reduce((errors, section) => {
             const fieldSetErrors = section.fieldSets.reduce((fieldSetErrors, fieldset) => {
                 const fieldErrors = fieldset.fields.reduce((fieldErrors, field) => {
-                    if (!field.mandatory || (!field.multiple && field.requiredType === 'BOOLEAN')) {
+                    const dynamicFieldSet = getDynamicFieldSetOfField(sections, field.name);
+
+                    if (!field.mandatory ||
+                        (!field.multiple && field.requiredType === 'BOOLEAN') ||
+                        (dynamicFieldSet.name && !values[dynamicFieldSet.name])
+                    ) {
                         return fieldErrors;
                     }
 
