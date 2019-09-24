@@ -2,7 +2,6 @@ import {getPreviewContext, getPreviewPath, removeSiblings} from './Preview.utils
 const fs = require('fs');
 const path = require('path');
 const html = fs.readFileSync(path.resolve(__dirname, './Preview.utils.test.html'), 'utf8');
-import {getPreviewContext, getPreviewPath} from './Preview.utils';
 
 describe('Preview.utils', () => {
     it('Should preview the content in case no displayable node', () => {
@@ -10,11 +9,13 @@ describe('Preview.utils', () => {
             path: '/sites/digitall/contents/rich_text',
             lang: 'en',
             nodeData: {
+                path: '/sites/digitall/contents/rich_text',
                 displayableNode: null
             }
         };
 
         const previewContext = getPreviewContext(editorContext);
+        expect(getPreviewPath(editorContext.nodeData)).toBe('/sites/digitall/contents/rich_text');
 
         expect(previewContext.language).toBe('en');
         expect(previewContext.path).toBe('/sites/digitall/contents/rich_text');
@@ -30,6 +31,7 @@ describe('Preview.utils', () => {
             path: '/sites/digitall/contents/rich_text',
             lang: 'en',
             nodeData: {
+                path: '/sites/digitall/contents/rich_text',
                 displayableNode: {
                     path: '/sites/digitall/contents',
                     isFolder: true
@@ -38,6 +40,7 @@ describe('Preview.utils', () => {
         };
 
         const previewContext = getPreviewContext(editorContext);
+        expect(getPreviewPath(editorContext.nodeData)).toBe('/sites/digitall/contents/rich_text');
 
         expect(previewContext.language).toBe('en');
         expect(previewContext.path).toBe('/sites/digitall/contents/rich_text');
@@ -53,6 +56,7 @@ describe('Preview.utils', () => {
             path: '/sites/digitall/contents/rich_text',
             lang: 'en',
             nodeData: {
+                path: '/sites/digitall/contents/rich_text',
                 displayableNode: {
                     path: '/sites/digitall/contents/rich_text',
                     isFolder: false
@@ -61,6 +65,7 @@ describe('Preview.utils', () => {
         };
 
         const previewContext = getPreviewContext(editorContext);
+        expect(getPreviewPath(editorContext.nodeData)).toBe('/sites/digitall/contents/rich_text');
 
         expect(previewContext.language).toBe('en');
         expect(previewContext.path).toBe('/sites/digitall/contents/rich_text');
@@ -76,6 +81,7 @@ describe('Preview.utils', () => {
             path: '/sites/digitall/home/rich_text',
             lang: 'en',
             nodeData: {
+                path: '/sites/digitall/home/rich_text',
                 displayableNode: {
                     path: '/sites/digitall/home',
                     isFolder: false
@@ -84,6 +90,7 @@ describe('Preview.utils', () => {
         };
 
         const previewContext = getPreviewContext(editorContext);
+        expect(getPreviewPath(editorContext.nodeData)).toBe('/sites/digitall/home');
 
         expect(previewContext.language).toBe('en');
         expect(previewContext.path).toBe('/sites/digitall/home');
@@ -95,45 +102,6 @@ describe('Preview.utils', () => {
         expect(previewContext.requestAttributes[0].value).toBe('/sites/digitall/home/rich_text');
     });
 
-    it('Should return the path of the previewed node', () => {
-        let nodeData = {
-            path: '/sites/digitall/home/banner',
-            displayableNode: {
-                path: '/sites/digitall/home',
-                isFolder: false
-            }
-        };
-
-        expect(getPreviewPath(nodeData)).toBe('/sites/digitall/home');
-
-        nodeData = {
-            path: '/sites/digitall/contents/banner',
-            displayableNode: {
-                path: '/sites/digitall/contents',
-                isFolder: true
-            }
-        };
-
-        expect(getPreviewPath(nodeData)).toBe('/sites/digitall/contents/banner');
-
-        nodeData = {
-            path: '/sites/digitall/home/news1',
-            displayableNode: {
-                path: '/sites/digitall/home/news1',
-                isFolder: false
-            }
-        };
-
-        expect(getPreviewPath(nodeData)).toBe('/sites/digitall/home/news1');
-
-        nodeData = {
-            path: '/sites/digitall/home/news1',
-            displayableNode: null
-        };
-
-        expect(getPreviewPath(nodeData)).toBe('/sites/digitall/home/news1');
-    });
-
     it('Should zoom on the content by cleaning the html', () => {
         document.documentElement.innerHTML = html.toString();
         expect(document.getElementsByClassName('should_be_removed').length).toBe(9);
@@ -141,44 +109,5 @@ describe('Preview.utils', () => {
         removeSiblings(document.getElementById('ce_preview_content'));
         expect(document.getElementsByClassName('should_be_removed').length).toBe(0);
         expect(document.getElementsByClassName('should_be_keeped').length).toBe(10);
-    });
-
-    it('Should return the path of the previewed node', () => {
-        let nodeData = {
-            path: '/sites/digitall/home/banner',
-            displayableNode: {
-                path: '/sites/digitall/home',
-                isFolder: false
-            }
-        };
-
-        expect(getPreviewPath(nodeData)).toBe('/sites/digitall/home');
-
-        nodeData = {
-            path: '/sites/digitall/contents/banner',
-            displayableNode: {
-                path: '/sites/digitall/contents',
-                isFolder: true
-            }
-        };
-
-        expect(getPreviewPath(nodeData)).toBe('/sites/digitall/contents/banner');
-
-        nodeData = {
-            path: '/sites/digitall/home/news1',
-            displayableNode: {
-                path: '/sites/digitall/home/news1',
-                isFolder: false
-            }
-        };
-
-        expect(getPreviewPath(nodeData)).toBe('/sites/digitall/home/news1');
-
-        nodeData = {
-            path: '/sites/digitall/home/news1',
-            displayableNode: null
-        };
-
-        expect(getPreviewPath(nodeData)).toBe('/sites/digitall/home/news1');
     });
 });
