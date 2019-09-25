@@ -78,6 +78,7 @@
         "eslint": "^5.16.0",
         "eslint-loader": "2.1.2",
         "eslint-plugin-json": "^1.4.0",
+        "husky": "^3.0.5",
         "jest": "^24.9.0",
         "react-test-renderer": "16.8.6",
         "redux-mock-store": "^1.5.3",
@@ -86,5 +87,11 @@
         "webpack": "^4.26.0",
         "webpack-bundle-analyzer": "^3.0.3",
         "webpack-cli": "^3.3.0"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "yarn lint:fix",
+            "pre-push": "yarn test"
+        }
     }
 }
