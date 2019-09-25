@@ -6,7 +6,7 @@
         "webpack": "node --max_old_space_size=2048 ./node_modules/webpack/bin/webpack.js",
         "build:analyze": "yarn build --analyze",
         "build:production": "yarn build -p",
-        "build:production-analyze": "yarn build -p --analyze",
+        "build:production-analyze": "yarn build:production --analyze",
         "watch": "yarn webpack --watch",
         "clean": "rimraf *.log src/main/resources/javascript/apps",
         "clean:all": "yarn clean && rimraf node_modules node",
@@ -17,6 +17,12 @@
         "storybook": "start-storybook -p 6006",
         "build-storybook": "build-storybook",
         "publish-storybook": "rsync -r ./storybook-static/ jahia@design.int.jahia.com:/var/www/vhosts/contenteditor.jahia.design/html"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "yarn lint",
+            "pre-push": "yarn test"
+        }
     },
     "description": "Content and Media Manager for DX",
     "main": "index.js",
@@ -87,11 +93,5 @@
         "webpack": "^4.26.0",
         "webpack-bundle-analyzer": "^3.0.3",
         "webpack-cli": "^3.3.0"
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "yarn lint:fix",
-            "pre-push": "yarn test"
-        }
     }
 }
