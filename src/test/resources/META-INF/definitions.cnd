@@ -9,7 +9,6 @@
 [jmix:mix2] mixin
     - propMix2 (string)
 
-
 [jnt:simple] > nt:base
     - prop (string)
 
@@ -23,6 +22,12 @@
 
 [jnt:simpleWithMix] > nt:base, jmix:mix1, jmix:mix2
     - prop (string)
+
+[jnt:simpleWithMixProperties] > nt:base, jmix:mix1, jmix:mix2
+    - propMix1 (string) = 'propValue' mandatory
+    - prop1 (string)
+    - prop2 (string)
+    + * (jnt:simple)
 
 [jnt:unstructuredNews] > jnt:content, jmix:unstructured, jmix:editorialContent
 

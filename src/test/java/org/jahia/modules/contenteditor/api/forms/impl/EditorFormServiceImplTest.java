@@ -204,6 +204,25 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
     }
 
     @Test
+    public void simpleWithMixinPropertiesOverride() throws Exception {
+        JCRNodeWrapper simpleContent = session.getNode(testSite.getJCRLocalPath()).addNode("testNode", "jnt:simpleWithMixProperties");
+        simpleContent.setProperty("propMix1", "propMixinValue");
+
+        session.save();
+
+        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
+        String sectionName = "content";
+
+        EditorFormFieldSet fieldSet = getFieldSet(form, sectionName, "jnt:simpleWithMixProperties");
+        ArrayList<EditorFormField> fields = new ArrayList<>(fieldSet.getEditorFormFields());
+
+        Assert.isTrue(fields.get(0).getName().equals("propMix1"), "Override of field does not contain propMix1");
+        Assert.isTrue(fields.get(0).getMandatory(), "Override of field is not mandatory");
+        Assert.isTrue(fields.get(1).getName().equals("prop1"), "Override of field does not contain prop1");
+        Assert.isTrue(fields.get(2).getName().equals("prop2"), "Override of field does not contain prop2");
+    }
+
+    @Test
     public void testSectionOverride() throws Exception {
         // inject custom section
         staticDefinitionsRegistry.readEditorFormDefinition(getResource("META-INF/jahia-content-editor-forms/overrides/forms/default.json"));

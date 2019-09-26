@@ -9,10 +9,7 @@ import org.jahia.services.content.JCRPropertyWrapper;
 import org.jahia.services.content.JCRSessionFactory;
 import org.jahia.services.content.JCRSessionWrapper;
 import org.jahia.services.content.decorator.JCRSiteNode;
-import org.jahia.services.content.nodetypes.ExtendedNodeType;
-import org.jahia.services.content.nodetypes.ExtendedPropertyDefinition;
-import org.jahia.services.content.nodetypes.NodeTypeRegistry;
-import org.jahia.services.content.nodetypes.SelectorType;
+import org.jahia.services.content.nodetypes.*;
 import org.jahia.services.content.nodetypes.initializers.ChoiceListInitializer;
 import org.jahia.services.content.nodetypes.initializers.ChoiceListInitializerService;
 import org.jahia.services.content.nodetypes.initializers.ChoiceListValue;
@@ -346,12 +343,13 @@ public class EditorFormServiceImpl implements EditorFormService {
         boolean sharedFieldsEditable = existingNode == null || (!existingNode.isLocked() && existingNode.hasPermission("jcr:modifyProperties"));
         boolean i18nFieldsEditable = existingNode == null || (!existingNode.isLocked() && existingNode.hasPermission("jcr:modifyProperties_" + session.getWorkspace().getName() + "_" + locale.toString()));
 
-        for (ExtendedPropertyDefinition propertyDefinition : nodeType.getDeclaredPropertyDefinitions()) {
-
+        for (ExtendedItemDefinition itemDefinition : nodeType.getDeclaredItems(true)) {
             // do not return hidden props
-            if (propertyDefinition.isHidden() || propertyDefinition.isUnstructured()) {
+            if (itemDefinition.isNode() || itemDefinition.isHidden() || itemDefinition.isUnstructured()) {
                 continue;
             }
+
+            ExtendedPropertyDefinition propertyDefinition = (ExtendedPropertyDefinition) itemDefinition;
 
             String itemType = propertyDefinition.getItemType();
             Double rank = maxTargetRank.get(itemType);
