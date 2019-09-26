@@ -48,4 +48,29 @@ describe('EditPanelDialogConfirmation', () => {
 
         expect(cmp.props().open).toBe(true);
     });
+
+    it('should not disable the save changes button when there are no validation errors', () => {
+        const cmp = shallowWithTheme(
+            <EditPanelDialogConfirmation {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        expect(cmp.find('DsButton').at(2).props().disabled).toBe(false);
+    });
+
+    it('should disable the save changes button when there are validation errors', () => {
+        defaultProps.formik.errors = {
+            field1: 'required',
+            field2: 'required'
+        };
+
+        const cmp = shallowWithTheme(
+            <EditPanelDialogConfirmation {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        expect(cmp.find('DsButton').at(2).props().disabled).toBe(true);
+    });
 });

@@ -25,6 +25,13 @@ export const EditPanelDialogConfirmation = ({t, titleKey, open, onCloseDialog, a
         submitForm().then(() => actionCallback());
     };
 
+    let disabled = false;
+
+    const errors = formik.errors;
+    if (errors) {
+        disabled = Object.keys(errors).length > 0;
+    }
+
     return (
         <Dialog aria-labelledby="alert-dialog-slide-title"
                 open={open}
@@ -40,7 +47,7 @@ export const EditPanelDialogConfirmation = ({t, titleKey, open, onCloseDialog, a
                 <Button variant="secondary" onClick={handleDiscard}>
                     {t('content-editor:label.contentEditor.edit.action.goBack.btnDiscard')}
                 </Button>
-                <Button variant="primary" onClick={handleSave}>
+                <Button variant="primary" disabled={disabled} onClick={handleSave}>
                     {t('content-editor:label.contentEditor.edit.action.goBack.btnSave')}
                 </Button>
             </DialogActions>
