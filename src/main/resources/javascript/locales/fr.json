@@ -81,6 +81,7 @@
                 "queryingContent": "Erreur lors de l'interrogation du contenu: {{details}}"
             },
             "preview": {
+                "contentNotFound": "Le contenu ne peut pas être prévisualisé dans la page",
                 "toggleButtons": {
                     "preview" : "Aperçu",
                     "details": "Détails",

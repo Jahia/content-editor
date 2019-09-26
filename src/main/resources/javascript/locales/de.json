@@ -81,6 +81,7 @@
                 "queryingContent": "Fehler während Content-Abfrage: {{details}}"
             },
             "preview": {
+                "contentNotFound": "Inhalte können auf der Seite nicht in der Vorschau angezeigt werden",
                 "toggleButtons": {
                     "preview": "Vorschau",
                     "details": "Details",

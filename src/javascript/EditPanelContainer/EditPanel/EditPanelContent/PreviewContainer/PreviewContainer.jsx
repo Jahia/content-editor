@@ -4,7 +4,7 @@ import * as PropTypes from 'prop-types';
 import React, {useState} from 'react';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
-import {Constants} from '../../../../ContentEditor.constants';
+import {Constants} from '~/ContentEditor.constants';
 import {Details} from './Details';
 import {ContentPreviewMemoWrapper} from './Preview';
 import {ToggleButton, ToggleButtonGroup} from '@material-ui/lab';
