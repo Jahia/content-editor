@@ -81,6 +81,7 @@
                 "queryingContent": "Error querying content: {{details}}"
             },
             "preview": {
+                "contentNotFound": "Content cannot be previewed in the page",
                 "toggleButtons": {
                     "preview" : "Preview",
                     "details": "Details",
