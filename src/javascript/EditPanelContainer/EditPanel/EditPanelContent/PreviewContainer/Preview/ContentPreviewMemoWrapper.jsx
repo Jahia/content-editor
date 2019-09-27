@@ -14,10 +14,6 @@ const styles = theme => ({
     previewContainer: {
         padding: 0
     },
-    contentIframe: {
-        pointerEvents: 'none',
-        cursor: 'default'
-    },
     badges: {
         marginTop: -(theme.spacing.unit * 2),
         marginBottom: theme.spacing.unit
@@ -43,6 +39,8 @@ export const ContentPreviewMemoWrapperCmp = React.memo(({t, classes}) => {
         }
     };
 
+    const style = 'pointer-events: none';
+
     return (
         <>
             {contentNoFound &&
@@ -59,15 +57,15 @@ export const ContentPreviewMemoWrapperCmp = React.memo(({t, classes}) => {
                             fetchPolicy="network-only"
                             setRefetch={refetchingData => setPreviewRefetcher(refetchingData)}
             >
-                {data => {
-                    return (
-                        <PreviewComponent classes={{previewContainer: classes.previewContainer, contentIframe: classes.contentIframe}}
-                                          data={data.jcr ? data.jcr : {}}
-                                          workspace={previewContext.workspace}
-                                          domLoadedCallback={domLoadedCallback}
-                                          />
-                    );
-                }}
+                {data => (
+                    <PreviewComponent
+                        classes={{previewContainer: classes.previewContainer}}
+                        data={data.jcr ? data.jcr : {}}
+                        workspace={previewContext.workspace}
+                        domLoadedCallback={domLoadedCallback}
+                        iFrameStyle={style}
+                    />
+                )}
             </ContentPreview>
         </>
     );
