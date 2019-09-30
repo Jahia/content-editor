@@ -1,16 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Field} from 'formik';
-
-import {FieldPropTypes} from '../../../../../../../../FormDefinitions/FormData.proptypes';
+import {FastField} from 'formik';
 import {TextArea} from '~/DesignSystem/TextArea';
+import {FieldPropTypes} from '~/EditPanelContainer/FormDefinitions/FormData.proptypes';
 
 export const TextAreaField = ({id, field}) => {
     return (
-        <Field
+        <FastField
             name={id}
-            render={props => {
-                const {name, value, onChange} = props.field;
+            render={({field: {name, value, onChange}, form: {setFieldTouched}}) => {
+                const handleChange = evt => {
+                    onChange(evt);
+                    setFieldTouched(id, true);
+                };
 
                 return (
                     <TextArea id={id}
@@ -18,7 +20,7 @@ export const TextAreaField = ({id, field}) => {
                               aria-labelledby={`${field.name}-label`}
                               value={value || ''}
                               disabled={field.readOnly}
-                              onChange={onChange}
+                              onChange={handleChange}
                     />
                 );
             }}

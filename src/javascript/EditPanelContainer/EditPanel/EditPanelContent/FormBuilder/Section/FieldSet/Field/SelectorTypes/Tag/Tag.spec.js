@@ -30,7 +30,7 @@ describe('Tag component', () => {
             .dive()
             .props()
             .render;
-        const cmp = shallow(<RenderProps field={{}}/>);
+        const cmp = shallow(<RenderProps field={{}} form={{setFieldTouched: () => {}, setFieldValue: () => {}}}/>);
 
         expect(cmp.props().id).toBe(props.id);
     });
@@ -40,7 +40,7 @@ describe('Tag component', () => {
             .dive()
             .props()
             .render;
-        const cmp = shallow(<RenderProps field={{}}/>);
+        const cmp = shallow(<RenderProps field={{}} form={{setFieldTouched: () => {}, setFieldValue: () => {}}}/>);
 
         const labels = cmp.props().options.map(o => o.label);
         const values = cmp.props().options.map(o => o.value);
@@ -55,7 +55,7 @@ describe('Tag component', () => {
             .dive()
             .props()
             .render;
-        const cmp = shallow(<RenderProps field={{value: ['healthy']}}/>);
+        const cmp = shallow(<RenderProps field={{value: ['healthy']}} form={{setFieldTouched: () => {}, setFieldValue: () => {}}}/>);
 
         expect(cmp.props().value).toEqual([{label: 'healthy', value: 'healthy'}]);
     });
@@ -74,7 +74,7 @@ describe('Tag component', () => {
             .dive()
             .props()
             .render;
-        const cmp = shallow(<RenderProps field={{}}/>);
+        const cmp = shallow(<RenderProps field={{}} form={{setFieldTouched: () => {}, setFieldValue: () => {}}}/>);
 
         expect(cmp.props().readOnly).toEqual(readOnly);
     };

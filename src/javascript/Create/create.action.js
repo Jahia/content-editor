@@ -21,7 +21,7 @@ export default composeActions(
                 return;
             }
 
-            const {submitForm, setFieldValue, resetForm} = formik;
+            const {submitForm, setFieldValue, resetForm, validateForm, setTouched, values} = formik;
 
             setFieldValue(
                 Constants.editPanel.OPERATION_FIELD,
@@ -30,7 +30,17 @@ export default composeActions(
             );
 
             submitForm()
-                .then(() => resetForm(formik.values));
+                .then(() => {
+                    // Store errors for restore error state
+                    const errors = formik.errors;
+                    resetForm(values);
+                    validateForm(values);
+                    const touched = {};
+                    Object.keys(errors).forEach(key => {
+                        touched[key] = true;
+                    });
+                    setTouched(touched);
+                });
         }
     }
 );

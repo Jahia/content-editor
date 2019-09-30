@@ -19,9 +19,11 @@ describe('TextArea component', () => {
         };
     });
 
+    const handleChange = jest.fn();
+
     it('should bind id correctly', () => {
         const RenderProps = shallow(<TextArea {...props}/>).props().render;
-        const cmp = shallow(<RenderProps field={{value: 'Yolooo'}}/>);
+        const cmp = shallow(<RenderProps field={{value: 'Yolooo'}} form={{setFieldTouched: () => {}, setFieldValue: handleChange}}/>);
 
         expect(cmp.props().id).toBe(props.id);
     });
@@ -29,14 +31,14 @@ describe('TextArea component', () => {
     it('should disabled field when readOnly', () => {
         props.field.readOnly = true;
         const RenderProps = shallow(<TextArea {...props}/>).props().render;
-        const cmp = shallow(<RenderProps field={{value: 'Yolooo'}}/>);
+        const cmp = shallow(<RenderProps field={{value: 'Yolooo'}} form={{setFieldTouched: () => {}, setFieldValue: handleChange}}/>);
 
         expect(cmp.props().disabled).toBe(true);
     });
 
     it('should not disabled field when not readOnly', () => {
         const RenderProps = shallow(<TextArea {...props}/>).props().render;
-        const cmp = shallow(<RenderProps field={{value: 'Yolooo'}}/>);
+        const cmp = shallow(<RenderProps field={{value: 'Yolooo'}} form={{setFieldTouched: () => {}, setFieldValue: handleChange}}/>);
 
         expect(cmp.props().disabled).toBe(false);
     });

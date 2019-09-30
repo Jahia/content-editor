@@ -1,15 +1,17 @@
 import {MultipleInput} from '~/DesignSystem/MultipleInput';
-import {Field} from 'formik';
+import {FastField} from 'formik';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {FieldPropTypes} from '../../../../../../../../../FormDefinitions/FormData.proptypes';
+import {FieldPropTypes} from '~/EditPanelContainer/FormDefinitions/FormData.proptypes';
 
 const MultipleSelect = ({field, id, setActionContext}) => {
     return (
-        <Field
+        <FastField
             name={field.name}
             render={props => {
                 const {value} = props.field;
+                // eslint-disable-next-line react/prop-types
+                const {setFieldValue, setFieldTouched} = props.form;
 
                 const options = field.valueConstraints.map(constraint => ({
                     label: constraint.displayValue,
@@ -32,8 +34,8 @@ const MultipleSelect = ({field, id, setActionContext}) => {
                         readOnly={field.readOnly}
                         onChange={selection => {
                             const newSelection = selection && selection.map(data => data.value);
-                            // eslint-disable-next-line react/prop-types
-                            props.form.setFieldValue(field.name, newSelection, true);
+                            setFieldValue(field.name, newSelection, true);
+                            setFieldTouched(field.name, true);
                         }}
                     />
                 );

@@ -27,14 +27,14 @@ describe('SingleSelect component', () => {
 
     it('should bind id correctly', () => {
         const RenderProps = shallow(<SingleSelect {...props}/>).dive().props().render;
-        const cmp = shallow(<RenderProps field={{value: 'Yolooo'}}/>);
+        const cmp = shallow(<RenderProps field={{value: 'Yolooo'}} form={{setFieldTouched: () => {}, setFieldValue: () => {}}}/>);
 
         expect(cmp.props().inputProps.id).toBe(props.id);
     });
 
     it('should display each option given', () => {
         const RenderProps = shallow(<SingleSelect {...props}/>).dive().props().render;
-        const cmp = shallow(<RenderProps field={{value: 'Yolooo'}}/>);
+        const cmp = shallow(<RenderProps field={{value: 'Yolooo'}} form={{setFieldTouched: () => {}, setFieldValue: () => {}}}/>);
 
         props.field.valueConstraints.forEach(constraint => {
             expect(cmp.debug()).toContain(constraint.displayValue);
@@ -43,14 +43,14 @@ describe('SingleSelect component', () => {
 
     it('should replace null value as empty string', () => {
         const RenderProps = shallow(<SingleSelect {...props}/>).dive().props().render;
-        const cmp = shallow(<RenderProps field={{}}/>);
+        const cmp = shallow(<RenderProps field={{}} form={{setFieldTouched: () => {}, setFieldValue: () => {}}}/>);
 
         expect(cmp.props().value).toBe('');
     });
 
     it('should select formik value', () => {
         const RenderProps = shallow(<SingleSelect {...props}/>).dive().props().render;
-        const cmp = shallow(<RenderProps field={{value: 'Yolooo'}}/>);
+        const cmp = shallow(<RenderProps field={{value: 'Yolooo'}} form={{setFieldTouched: () => {}, setFieldValue: () => {}}}/>);
 
         expect(cmp.props().value).toBe('Yolooo');
     });
@@ -66,7 +66,7 @@ describe('SingleSelect component', () => {
     const testReadOnly = function (readOnly) {
         props.field.readOnly = readOnly;
         const RenderProps = shallow(<SingleSelect {...props}/>).dive().props().render;
-        const cmp = shallow(<RenderProps field={{}}/>);
+        const cmp = shallow(<RenderProps field={{}} form={{setFieldTouched: () => {}, setFieldValue: () => {}}}/>);
         const inputCmp = shallow(cmp.props().input);
 
         expect(inputCmp.props().readOnly).toEqual(readOnly);

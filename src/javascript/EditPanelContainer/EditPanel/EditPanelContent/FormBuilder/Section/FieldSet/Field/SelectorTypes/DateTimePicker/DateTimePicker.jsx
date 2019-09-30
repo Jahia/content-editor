@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Field} from 'formik';
+import {FastField} from 'formik';
 
 import {DatePickerInput} from '~/DesignSystem/DatePickerInput';
 import dayjs from 'dayjs';
@@ -23,12 +23,10 @@ export const DateTimePicker = ({id, field, editorContext}) => {
     const displayDateMask = isDateTime ? '__/__/____ __:__' : '__/__/____';
 
     return (
-        <Field
+        <FastField
             name={id}
-            component={props => {
+            component={({field: {value, onChange, ...formikField}, form: {setFieldValue, setFieldTouched}}) => {
                 // Remove onChange from props pass to the input component as it is set in it.
-                // eslint-disable-next-line react/prop-types
-                const {value, onChange, ...formikField} = props.field;
                 return (
                     <DatePickerInput
                         dayPickerProps={{disabledDays}}
@@ -37,8 +35,8 @@ export const DateTimePicker = ({id, field, editorContext}) => {
                         onChange={date => {
                             // Null is received when the date is reset
                             const newDate = date && dayjs(date).format('YYYY-MM-DDTHH:mm:ss.SSS');
-                            // eslint-disable-next-line
-                            props.form.setFieldValue(id, newDate, true);
+                            setFieldValue(id, newDate, true);
+                            setFieldTouched(id, true);
                         }}
                         {...formikField}
                         displayDateFormat={displayDateFormat}

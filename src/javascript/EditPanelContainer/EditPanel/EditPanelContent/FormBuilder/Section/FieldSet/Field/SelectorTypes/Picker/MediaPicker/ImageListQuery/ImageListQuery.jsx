@@ -60,6 +60,7 @@ const ImageListQueryCmp = ({
                     image.uuid,
                     true
                 );
+                formik.setFieldTouched(id, true);
             }}
         />
     );

@@ -6,6 +6,7 @@ import {ImageListQuery} from './ImageListQuery';
 import {PickerDialog} from '~/DesignSystem/PickerDialog';
 
 import Slide from '@material-ui/core/Slide';
+import {FastField} from 'formik';
 
 function Transition(props) {
     return <Slide direction="up" {...props}/>;
@@ -17,12 +18,12 @@ export const MediaPickerDialog = ({
     editorContext,
     id,
     t,
-    formik,
     initialSelectedItem
 }) => {
     return (
         <Dialog fullScreen open={isOpen} TransitionComponent={Transition}>
-            <PickerDialog
+            <FastField render={({form}) => (
+                <PickerDialog
                 idInput={id}
                 site={editorContext.site}
                 lang={editorContext.lang}
@@ -47,24 +48,25 @@ export const MediaPickerDialog = ({
                 )}
                 onCloseDialog={() => setIsOpen(false)}
                 onItemSelection={image => {
-                    formik.setFieldValue(
+                    form.setFieldValue(
                         id,
                         image[0] ? image[0].uuid : null,
                         true
                     );
                     setIsOpen(false);
                 }}
-            >
-                {(setSelectedItem, selectedPath, initialSelection) => (
-                    <ImageListQuery
+                >
+                    {(setSelectedItem, selectedPath, initialSelection) => (
+                        <ImageListQuery
                         id={id}
                         setSelectedItem={setSelectedItem}
                         selectedPath={selectedPath}
                         initialSelection={initialSelection}
-                        formik={formik}
+                        formik={form}
                     />
                 )}
-            </PickerDialog>
+                </PickerDialog>
+            )}/>
         </Dialog>
     );
 };
@@ -79,6 +81,5 @@ MediaPickerDialog.propTypes = {
     editorContext: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,
     t: PropTypes.func.isRequired,
-    formik: PropTypes.object.isRequired,
     initialSelectedItem: PropTypes.string
 };

@@ -47,7 +47,7 @@ let styles = theme => {
     };
 };
 
-export const FieldCmp = ({t, classes, inputContext, idInput, selectorType, field, siteInfo, actionContext, formik: {errors}}) => {
+export const FieldCmp = ({t, classes, inputContext, idInput, selectorType, field, siteInfo, actionContext, formik: {errors, touched}}) => {
     const contextualMenu = useRef(null);
     const isMultipleField = field.multiple && !selectorType.supportMultiple;
     const seleniumFieldType = isMultipleField ? `GenericMultipleField${selectorType.key}` : (field.multiple ? `Multiple${selectorType.key}` : selectorType.key);
@@ -84,7 +84,7 @@ export const FieldCmp = ({t, classes, inputContext, idInput, selectorType, field
                                 <Badge className={classes.badge}
                                        badgeContent={t('content-editor:label.contentEditor.edit.validation.required')}
                                        variant="normal"
-                                       color={errors[field.name] && errors[field.name] === 'required' ? 'warning' : 'primary'}
+                                       color={touched[field.name] && errors[field.name] && errors[field.name] === 'required' ? 'warning' : 'primary'}
                                 />
                             )}
                             {(!field.i18n && siteInfo.languages.length > 1) &&

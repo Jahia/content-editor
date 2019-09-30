@@ -4,24 +4,8 @@ import {dsGenericTheme} from '@jahia/design-system-kit';
 
 import Checkbox from './Checkbox';
 
-jest.mock('formik', () => {
-    let formikpropsmock;
-
-    return {
-        setFormikProps: props => {
-            formikpropsmock = props;
-        },
-        connect: Cmp => props => (
-            <Cmp {...props} formik={formikpropsmock}/>
-        )
-    };
-});
-
-import {setFormikProps} from 'formik';
-
 describe('Checkbox component', () => {
     let props;
-    let formikProps;
 
     beforeEach(() => {
         props = {
@@ -34,35 +18,34 @@ describe('Checkbox component', () => {
             },
             classes: {}
         };
-
-        formikProps = {
-            values: {
-                myCheckbox: false
-            },
-            setFieldValue: jest.fn()
-        };
     });
 
-    it('should display unchecked', () => {
-        setFormikProps(formikProps);
+    const handleChange = jest.fn();
+    const fieldTouched = jest.fn();
 
-        const checkboxCmp = shallowWithTheme(<Checkbox {...props}/>, {}, dsGenericTheme);
+    const buildComp = props => {
+        const mainComponent = shallowWithTheme(<Checkbox {...props}/>, {}, dsGenericTheme);
+        const RenderProps = mainComponent.props().render;
+        return shallowWithTheme(<RenderProps form={{setFieldTouched: fieldTouched, setFieldValue: handleChange}}/>, {}, dsGenericTheme);
+    };
+
+    it('should display unchecked', () => {
+        const checkboxCmp = buildComp(props);
         expect(checkboxCmp.dive().dive().props().checked).toBe(false);
     });
 
     it('should display checked', () => {
         props.value = true;
-        setFormikProps(formikProps);
-        const checkboxCmp = shallowWithTheme(<Checkbox {...props}/>, {}, dsGenericTheme);
+        const checkboxCmp = buildComp(props);
         expect(checkboxCmp.dive().dive().props().checked).toBe(true);
     });
 
     it('should change', () => {
-        setFormikProps(formikProps);
-        const checkboxCmp = shallowWithTheme(<Checkbox {...props}/>, {}, dsGenericTheme);
+        const checkboxCmp = buildComp(props);
         const innerCmp = checkboxCmp.dive().dive();
         innerCmp.simulate('change', null, true);
-        expect(formikProps.setFieldValue).toHaveBeenCalledWith('checkbox1', true);
+        expect(handleChange).toHaveBeenCalledWith('checkbox1', true);
+        expect(fieldTouched).toHaveBeenCalledWith('checkbox1', true);
     });
 
     it('should be readonly', () => {
@@ -75,9 +58,8 @@ describe('Checkbox component', () => {
 
     const testReadOnly = function (readOnly) {
         props.field.readOnly = readOnly;
-        setFormikProps(formikProps);
 
-        const checkboxCmp = shallowWithTheme(<Checkbox {...props}/>, {}, dsGenericTheme);
-        expect(checkboxCmp.dive().dive().props().readOnly).toBe(readOnly);
+        const checkboxCmp = buildComp(props);
+        expect(checkboxCmp.props().readOnly).toBe(readOnly);
     };
 });

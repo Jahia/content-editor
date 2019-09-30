@@ -1,13 +1,13 @@
 import React from 'react';
-import {shallow} from '@jahia/test-framework';
+import {shallowWithTheme} from '@jahia/test-framework';
 
 import {RichTextCmp} from './RichText';
+import {dsGenericTheme} from '@jahia/design-system-kit';
 
 const RICH_TEXT_COMPONENT_TAG = 'CKEditor';
 
 describe('RichText component', () => {
     let props;
-    let wrapper;
 
     beforeEach(() => {
         props = {
@@ -23,18 +23,25 @@ describe('RichText component', () => {
                 values: []
             }
         };
-        wrapper = shallow(<RichTextCmp {...props}/>);
     });
 
+    const handleChange = jest.fn();
+
+    const buildComp = props => {
+        const mainComponent = shallowWithTheme(<RichTextCmp {...props}/>, {}, dsGenericTheme);
+        const RenderProps = mainComponent.props().render;
+        return shallowWithTheme(<RenderProps form={{setFieldTouched: () => {}, setFieldValue: handleChange}}/>, {}, dsGenericTheme);
+    };
+
     it('should contain one RichText component', () => {
+        const wrapper = buildComp(props);
         expect(wrapper.find(RICH_TEXT_COMPONENT_TAG).length).toBe(1);
     });
 
     it('should obtain its initial value from value prop', () => {
         props.value = 'some dummy value';
-
-        expect(wrapper.setProps(props)
-            .find(RICH_TEXT_COMPONENT_TAG)
+        const wrapper = buildComp(props);
+        expect(wrapper.find(RICH_TEXT_COMPONENT_TAG)
             .prop('data')
         ).toEqual('some dummy value');
     });
@@ -44,14 +51,12 @@ describe('RichText component', () => {
             getData: () => 'some dummy value'
         };
 
-        props.formik.setFieldValue = jest.fn();
-
-        wrapper.setProps(props)
-            .find(RICH_TEXT_COMPONENT_TAG)
+        const wrapper = buildComp(props);
+        wrapper.find(RICH_TEXT_COMPONENT_TAG)
             .simulate('change', {editor: dummyEditor});
 
-        expect(props.formik.setFieldValue.mock.calls.length).toBe(1);
-        expect(props.formik.setFieldValue.mock.calls).toEqual([[
+        expect(handleChange.mock.calls.length).toBe(1);
+        expect(handleChange.mock.calls).toEqual([[
             props.id, dummyEditor.getData(), true
         ]]);
     });
@@ -63,9 +68,9 @@ describe('RichText component', () => {
 
     let testReadOnly = function (readOnly) {
         props.field.readOnly = readOnly;
+        const wrapper = buildComp(props);
 
-        expect(wrapper.setProps(props)
-            .find(RICH_TEXT_COMPONENT_TAG)
+        expect(wrapper.find(RICH_TEXT_COMPONENT_TAG)
             .prop('readOnly')
         ).toEqual(readOnly);
     };

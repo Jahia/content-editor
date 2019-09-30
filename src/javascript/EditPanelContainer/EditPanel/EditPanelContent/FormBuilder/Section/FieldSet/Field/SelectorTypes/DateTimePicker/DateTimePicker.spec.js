@@ -1,7 +1,8 @@
 import React from 'react';
-import {shallow} from '@jahia/test-framework';
+import {shallow, shallowWithTheme} from '@jahia/test-framework';
 
 import {DateTimePicker} from './DateTimePicker';
+import {dsGenericTheme} from '@jahia/design-system-kit';
 
 describe('DateTimePicker component', () => {
     let props;
@@ -10,7 +11,7 @@ describe('DateTimePicker component', () => {
         props.editorContext.uiLang = uiLang;
         const RenderProps = shallow(<DateTimePicker {...props}/>)
             .props().component;
-        const cmp = shallow(<RenderProps field={{value: new Date().toISOString()}} form={{setFieldValue: () => {}}}/>);
+        const cmp = shallow(<RenderProps field={{value: new Date().toISOString()}} form={{setFieldTouched: () => {}, setFieldValue: () => {}}}/>);
 
         expect(cmp.props().displayDateFormat).toBe(format);
     };
@@ -32,41 +33,35 @@ describe('DateTimePicker component', () => {
         };
     });
 
+    const handleChange = jest.fn();
+
+    const buildComp = componentProps => {
+        const mainComponent = shallowWithTheme(<DateTimePicker {...componentProps}/>, {}, dsGenericTheme);
+        const RenderProps = mainComponent.props().component;
+        return shallowWithTheme(<RenderProps field={{value: new Date().toISOString(), onChange: jest.fn()}} form={{setFieldTouched: () => {}, setFieldValue: handleChange}}/>, {}, dsGenericTheme);
+    };
+
     it('should bind id correctly', () => {
-        const RenderProps = shallow(<DateTimePicker {...props}/>)
-            .props().component;
-
-        const cmp = shallow(<RenderProps field={{value: new Date().toISOString(), onChange: jest.fn()}}/>);
-
+        const cmp = buildComp(props);
         expect(cmp.props().id).toBe(props.id);
     });
 
     it('should call onChange with good arguments when calling DatePickerInput onChange', () => {
-        const RenderProps = shallow(<DateTimePicker {...props}/>)
-            .props().component;
-
-        const formikOnChange = jest.fn();
-
-        const cmp = shallow(<RenderProps field={{value: new Date().toISOString()}} form={{setFieldValue: formikOnChange}}/>);
+        const cmp = buildComp(props);
 
         cmp.simulate('change', '2019-07-14T21:07:12.000');
 
-        expect(formikOnChange).toHaveBeenCalledWith('myOption[0]', '2019-07-14T21:07:12.000', true);
+        expect(handleChange).toHaveBeenCalledWith('myOption[0]', '2019-07-14T21:07:12.000', true);
     });
 
     it('should give readOnly', () => {
-        const RenderProps = shallow(<DateTimePicker {...props}/>)
-            .props().component;
-        const cmp = shallow(<RenderProps field={{value: new Date().toISOString()}} form={{setFieldValue: () => {}}}/>);
-
+        const cmp = buildComp(props);
         expect(cmp.props().readOnly).toBe(true);
     });
 
     it('should give readOnly at false', () => {
         props.field.readOnly = false;
-        const RenderProps = shallow(<DateTimePicker {...props}/>)
-            .props().component;
-        const cmp = shallow(<RenderProps field={{value: new Date().toISOString()}} form={{setFieldValue: () => {}}}/>);
+        const cmp = buildComp(props);
 
         expect(cmp.props().readOnly).toBe(false);
     });
@@ -82,19 +77,13 @@ describe('DateTimePicker component', () => {
     });
 
     it('should display date variant for DatePicker', () => {
-        const RenderProps = shallow(<DateTimePicker {...props}/>)
-            .props().component;
-        const cmp = shallow(<RenderProps field={{value: new Date().toISOString()}} form={{setFieldValue: () => {}}}/>);
-
+        const cmp = buildComp(props);
         expect(cmp.props().variant).toBe('date');
     });
 
     it('should display datetime variant for DateTimePicker', () => {
         props.field.selectorType = 'DateTimePicker';
-        const RenderProps = shallow(<DateTimePicker {...props}/>)
-            .props().component;
-        const cmp = shallow(<RenderProps field={{value: new Date().toISOString()}} form={{setFieldValue: () => {}}}/>);
-
+        const cmp = buildComp(props);
         expect(cmp.props().variant).toBe('datetime');
     });
 
@@ -104,10 +93,7 @@ describe('DateTimePicker component', () => {
             value: {string: '(2019-06-04T00:00:00.000,)'},
             displayValue: 'yolo'
         }];
-        const RenderProps = shallow(<DateTimePicker {...props}/>)
-            .props().component;
-        const cmp = shallow(<RenderProps field={{value: new Date().toISOString()}} form={{setFieldValue: () => {}}}/>);
-
+        const cmp = buildComp(props);
         expect(cmp.props().dayPickerProps.disabledDays).toEqual([{before: new Date('2019-06-05T00:00:00.000')}]);
     });
 
@@ -117,10 +103,7 @@ describe('DateTimePicker component', () => {
             value: {string: '(2019-06-04T10:00:00.000,2019-06-05T10:00:00.000)'},
             displayValue: 'yolo'
         }];
-        const RenderProps = shallow(<DateTimePicker {...props}/>)
-            .props().component;
-        const cmp = shallow(<RenderProps field={{value: new Date().toISOString()}} form={{setFieldValue: () => {}}}/>);
-
+        const cmp = buildComp(props);
         expect(cmp.props().dayPickerProps.disabledDays).toEqual([{before: new Date('2019-06-04T10:01:00.000')}, {after: new Date('2019-06-05T09:59:00.000')}]);
     });
 
@@ -130,10 +113,7 @@ describe('DateTimePicker component', () => {
             value: {string: '[2019-06-04T00:00:00.000,)'},
             displayValue: 'toto'
         }];
-        const RenderProps = shallow(<DateTimePicker {...props}/>)
-            .props().component;
-        const cmp = shallow(<RenderProps field={{value: new Date().toISOString()}} form={{setFieldValue: () => {}}}/>);
-
+        const cmp = buildComp(props);
         expect(cmp.props().dayPickerProps.disabledDays).toEqual([{before: new Date('2019-06-04T00:00:00.000')}]);
     });
 });
