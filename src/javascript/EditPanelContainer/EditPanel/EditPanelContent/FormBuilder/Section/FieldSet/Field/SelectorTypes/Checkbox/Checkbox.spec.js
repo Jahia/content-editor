@@ -46,7 +46,6 @@ describe('Checkbox component', () => {
         innerCmp.simulate('change', null, true);
         expect(handleChange).toHaveBeenCalledWith('checkbox1', true);
         expect(fieldTouched).toHaveBeenCalledWith('checkbox1', true);
-
     });
 
     it('should be readonly', () => {
