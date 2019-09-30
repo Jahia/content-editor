@@ -6,7 +6,10 @@ import {ContentPreviewMemoWrapper} from './ContentPreviewMemoWrapper';
 
 const fs = require('fs');
 const path = require('path');
-const html = fs.readFileSync(path.resolve(__dirname, './Preview.utils.test.html'), 'utf8');
+const html = fs.readFileSync(
+    path.resolve(__dirname, './Preview.utils.test.html'),
+    'utf8'
+);
 
 jest.mock('~/ContentEditor.context', () => ({
     useContentEditorContext: () => ({
@@ -33,11 +36,15 @@ jest.mock('./Preview.utils', () => {
     };
 });
 
-describe('Preview', () => {
+describe('ContentPreviewMemoWrapper', () => {
     it('should display the preview with the provided path', () => {
-        const cmp = shallowWithTheme(<ContentPreviewMemoWrapper/>,
+        const cmp = shallowWithTheme(
+            <ContentPreviewMemoWrapper/>,
             {},
-            dsGenericTheme).dive().dive();
+            dsGenericTheme
+        )
+            .dive()
+            .dive();
         const props = cmp.find('ContentPreview').props();
         expect(props.language).toBe('fr');
         expect(props.path).toBe('/site/digitall');
@@ -46,9 +53,13 @@ describe('Preview', () => {
 
     it('should not display the badge when content is visible', () => {
         document.documentElement.innerHTML = html.toString();
-        const cmp = shallowWithTheme(<ContentPreviewMemoWrapper/>,
+        const cmp = shallowWithTheme(
+            <ContentPreviewMemoWrapper/>,
             {},
-            dsGenericTheme).dive().dive();
+            dsGenericTheme
+        )
+            .dive()
+            .dive();
 
         const RenderProps = cmp.find('ContentPreview').props().children;
         const children = shallowWithTheme(<RenderProps/>, {}, dsGenericTheme);
@@ -59,9 +70,13 @@ describe('Preview', () => {
 
     it('should display the badge when content is not visible', () => {
         document.documentElement.innerHTML = '';
-        const cmp = shallowWithTheme(<ContentPreviewMemoWrapper/>,
+        const cmp = shallowWithTheme(
+            <ContentPreviewMemoWrapper/>,
             {},
-            dsGenericTheme).dive().dive();
+            dsGenericTheme
+        )
+            .dive()
+            .dive();
 
         const RenderProps = cmp.find('ContentPreview').props().children;
         const children = shallowWithTheme(<RenderProps/>, {}, dsGenericTheme);

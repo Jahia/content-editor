@@ -17,7 +17,7 @@ describe('EditPanelContent', () => {
         wrapper = shallow(<EditPanelContent {...defaultProps}/>);
     });
 
-    it('should select preview by default', () => {
+    it('should not throw an error', () => {
         expect(wrapper).toBeDefined();
     });
 });
