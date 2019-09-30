@@ -1,30 +1,35 @@
 import React from 'react';
-import {compose} from 'react-apollo';
-import {connect} from 'formik';
 import * as PropTypes from 'prop-types';
 import {Toggle} from '@jahia/design-system-kit';
 import {FieldPropTypes} from '../../../../../../../../FormDefinitions/FormData.proptypes';
+import {FastField} from 'formik';
 
-const Checkbox = ({field, value, id, formik: {setFieldValue}}) => {
+const Checkbox = ({field, value, id}) => {
     return (
-        <Toggle id={id}
-                inputProps={{
-                    'aria-labelledby': `${field.name}-label`
-                }}
-                checked={value === true}
-                readOnly={field.readOnly}
-                onChange={(event, checked) => setFieldValue(id, checked)}
-        />
+        <FastField render={({form: {setFieldValue, setFieldTouched}}) => {
+            const handleChange = (event, checked) => {
+                setFieldValue(id, checked);
+                setFieldTouched(id, true);
+            };
+
+            return (
+                <Toggle id={id}
+                        inputProps={{
+                            'aria-labelledby': `${field.name}-label`
+                        }}
+                        checked={value === true}
+                        readOnly={field.readOnly}
+                        onChange={handleChange}
+                />
+);
+        }}/>
     );
 };
 
 Checkbox.propTypes = {
     field: FieldPropTypes.isRequired,
     id: PropTypes.string.isRequired,
-    value: PropTypes.bool,
-    formik: PropTypes.object.isRequired
+    value: PropTypes.bool
 };
 
-export default compose(
-    connect,
-)(Checkbox);
+export default Checkbox;

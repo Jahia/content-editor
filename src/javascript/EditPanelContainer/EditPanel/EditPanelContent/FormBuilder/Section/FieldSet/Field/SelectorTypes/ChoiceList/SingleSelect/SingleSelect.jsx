@@ -1,7 +1,7 @@
 import {Select} from '@jahia/design-system-kit';
 import Input from '@material-ui/core/Input';
 import {withStyles, MenuItem} from '@material-ui/core';
-import {Field} from 'formik';
+import {FastField} from 'formik';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {FieldPropTypes} from '../../../../../../../../../FormDefinitions/FormData.proptypes';
@@ -14,10 +14,16 @@ const styles = () => ({
 
 const SingleSelectCmp = ({classes, field, id, setActionContext}) => {
     return (
-        <Field
+        <FastField
             name={field.name}
             render={props => {
-                const formikField = props.field;
+                const {onChange, ...formikField} = props.field;
+                // eslint-disable-next-line react/prop-types
+                const {setFieldTouched} = props.form;
+                const handleChange = evt => {
+                    onChange(evt);
+                    setFieldTouched(field.name, true);
+                };
 
                 setActionContext(prevActionContext => ({
                     initialized: true,
@@ -29,6 +35,7 @@ const SingleSelectCmp = ({classes, field, id, setActionContext}) => {
 
                 return (
                     <Select className={classes.selectField}
+                            onChange={handleChange}
                             {...formikField}
                             // eslint-disable-next-line react/prop-types
                             value={formikField.value || ''}

@@ -33,14 +33,14 @@ describe('MultipleSelect component', () => {
 
     it('should bind id correctly', () => {
         const RenderProps = shallow(<MultipleSelect {...props}/>).props().render;
-        const cmp = shallow(<RenderProps field={{}}/>);
+        const cmp = shallow(<RenderProps field={{}} form={{setFieldTouched: () => {}, setFieldValue: () => {}}}/>);
 
         expect(cmp.props().id).toBe(props.id);
     });
 
     it('should display each option given', () => {
         const RenderProps = shallow(<MultipleSelect {...props}/>).props().render;
-        const cmp = shallow(<RenderProps field={{}}/>);
+        const cmp = shallow(<RenderProps field={{}} form={{setFieldTouched: () => {}, setFieldValue: () => {}}}/>);
 
         const labels = cmp.props().options.map(o => o.label);
         const values = cmp.props().options.map(o => o.value);
@@ -50,9 +50,9 @@ describe('MultipleSelect component', () => {
         });
     });
 
-    it('should select formik value', () => {
+    it('should select value', () => {
         const RenderProps = shallow(<MultipleSelect {...props}/>).props().render;
-        const cmp = shallow(<RenderProps field={{value: ['Yolooo']}}/>);
+        const cmp = shallow(<RenderProps field={{value: ['Yolooo']}} form={{setFieldTouched: () => {}, setFieldValue: () => {}}}/>);
 
         expect(cmp.props().value).toEqual([{label: 'yoloooFR', value: 'Yolooo'}]);
     });
@@ -68,7 +68,7 @@ describe('MultipleSelect component', () => {
     const testReadOnly = function (readOnly) {
         props.field.readOnly = readOnly;
         const RenderProps = shallow(<MultipleSelect {...props}/>).props().render;
-        const cmp = shallow(<RenderProps field={{}}/>);
+        const cmp = shallow(<RenderProps field={{}} form={{setFieldTouched: () => {}, setFieldValue: () => {}}}/>);
 
         expect(cmp.props().readOnly).toEqual(readOnly);
     };

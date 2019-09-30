@@ -6,6 +6,7 @@ import {ContentTable} from './ContentTable';
 import {PickerDialog} from '~/DesignSystem/PickerDialog';
 
 import Slide from '@material-ui/core/Slide';
+import {FastField} from 'formik';
 
 function Transition(props) {
     return <Slide direction="up" {...props}/>;
@@ -19,12 +20,12 @@ export const ContentPickerDialog = ({
     id,
     nodeTreeConfigs,
     t,
-    formik,
     pickerConfig
 }) => {
     return (
         <Dialog fullScreen open={isOpen} TransitionComponent={Transition}>
-            <PickerDialog
+            <FastField render={({form: {setFieldValue, setFieldTouched}}) => (
+                <PickerDialog
                 idInput={id}
                 site={editorContext.site}
                 lang={editorContext.lang}
@@ -38,15 +39,16 @@ export const ContentPickerDialog = ({
                 )}
                 onCloseDialog={() => setIsOpen(false)}
                 onItemSelection={content => {
-                    formik.setFieldValue(
+                    setFieldValue(
                         id,
                         content[0] ? content[0].id : null,
                         true
                     );
                     setIsOpen(false);
+                    setFieldTouched(id, true);
                 }}
-            >
-                {(setSelectedItem, selectedPath, initialSelection) => {
+                >
+                    {(setSelectedItem, selectedPath, initialSelection) => {
                     // Build table config from picker config
                     /*
        Todo: make the picker work as CMM, use the recursionTypesFilter to browse all contents within a page
@@ -71,12 +73,12 @@ export const ContentPickerDialog = ({
                             setSelectedItem={setSelectedItem}
                             selectedPath={selectedPath}
                             initialSelection={initialSelection}
-                            formik={formik}
                             editorContext={editorContext}
                         />
                     );
                 }}
-            </PickerDialog>
+                </PickerDialog>
+)}/>
         </Dialog>
     );
 };
@@ -92,7 +94,6 @@ ContentPickerDialog.propTypes = {
     id: PropTypes.string.isRequired,
     nodeTreeConfigs: PropTypes.array.isRequired,
     t: PropTypes.func.isRequired,
-    formik: PropTypes.object.isRequired,
     pickerConfig: PropTypes.object.isRequired,
     initialSelectedItem: PropTypes.string
 };
