@@ -50,7 +50,7 @@ const SelectedTabComponents = {
 };
 
 const PreviewContainerCmp = ({classes, t, isDirty, mode}) => {
-    const [previewMode, setPreviewMode] = useState('preview');
+    const [previewMode, setPreviewMode] = useState(mode === Constants.routes.baseEditRoute ? 'preview' : null);
 
     const SelectedTabComponent = SelectedTabComponents[previewMode];
     const PreviewCmp = mode === Constants.routes.baseEditRoute && SelectedTabComponent ?

@@ -80,3 +80,4 @@ export const ContentPreviewMemoWrapper = compose(
     translate(),
     withStyles(styles)
 )(ContentPreviewMemoWrapperCmp);
+ContentPreviewMemoWrapper.displayName = 'ContentPreviewMemoWrapper';

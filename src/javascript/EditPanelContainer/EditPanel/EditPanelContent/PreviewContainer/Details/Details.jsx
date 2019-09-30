@@ -4,7 +4,7 @@ import {InfoPanel} from '~/DesignSystem/InfoPanel';
 import {withStyles} from '@material-ui/core';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
-import {ContentEditorContext} from '../../../../../ContentEditor.context';
+import {ContentEditorContext} from '~/ContentEditor.context';
 
 const styles = theme => ({
     container: {
@@ -19,8 +19,17 @@ export const DetailsCmp = ({classes, t}) => {
 
     return (
         <section data-sel-details-section className={classes.container}>
-            <InfoPanel panelTitle={t('content-editor:label.contentEditor.details.details')} infos={editorContext.details}/>
-            <InfoPanel panelTitle={t('content-editor:label.contentEditor.details.technicalInfo')} variant="oneColumn" infos={editorContext.technicalInfo}/>
+            <InfoPanel
+        panelTitle={t('content-editor:label.contentEditor.details.details')}
+        infos={editorContext.details}
+      />
+            <InfoPanel
+        panelTitle={t(
+          'content-editor:label.contentEditor.details.technicalInfo'
+        )}
+        variant="oneColumn"
+        infos={editorContext.technicalInfo}
+      />
         </section>
     );
 };
