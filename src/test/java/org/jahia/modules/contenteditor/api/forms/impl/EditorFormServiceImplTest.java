@@ -209,13 +209,22 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         simpleContent.setProperty("propMix1", "propMixinValue");
 
         session.save();
-
+        // edit
         EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
+        simpleWithMixinPropertiesOverrideResults(form);
+        // create
+        EditorForm createForm = editorFormService.getCreateForm("jnt:simpleWithMixProperties", Locale.ENGLISH, Locale.ENGLISH, testSite.getJCRLocalPath());
+        simpleWithMixinPropertiesOverrideResults(createForm);
+    }
+
+    private void simpleWithMixinPropertiesOverrideResults(EditorForm form) {
         String sectionName = "content";
+        List<EditorFormFieldSet> fieldSets = getSection(form, sectionName).getFieldSets();
+        Assert.isTrue(fieldSets.size() == 2, "Expected 2 fieldsets but got " + fieldSets.size());
 
         EditorFormFieldSet fieldSet = getFieldSet(form, sectionName, "jnt:simpleWithMixProperties");
         ArrayList<EditorFormField> fields = new ArrayList<>(fieldSet.getEditorFormFields());
-
+        Assert.isTrue(fields.size() == 3, "Expected 3 fields but receive " + fields.size());
         Assert.isTrue(fields.get(0).getName().equals("propMix1"), "Override of field does not contain propMix1");
         Assert.isTrue(fields.get(0).getMandatory(), "Override of field is not mandatory");
         Assert.isTrue(fields.get(1).getName().equals("prop1"), "Override of field does not contain prop1");
