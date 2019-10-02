@@ -69,6 +69,30 @@ describe('Multiple component', () => {
         expect(defaultPropsFieldArray.push).toHaveBeenCalled();
     });
 
+    it('should display remove button when field is not readOnly', () => {
+        const removeButton = generateFieldArrayCmp().find('DsIconButton').at(1);
+        expect(removeButton.exists()).toBe(true);
+    });
+
+    it('should display add button when field is not readOnly', () => {
+        const removeButton = generateFieldArrayCmp().find('DsButton');
+        expect(removeButton.exists()).toBe(true);
+    });
+
+    it('should hide remove button when field is readOnly', () => {
+        defaultProps.field.readOnly = true;
+
+        const removeButton = generateFieldArrayCmp().find('DsIconButton');
+        expect(removeButton.exists()).toBe(false);
+    });
+
+    it('should hide add button when field is readOnly', () => {
+        defaultProps.field.readOnly = true;
+
+        const removeButton = generateFieldArrayCmp().find('DsButton');
+        expect(removeButton.exists()).toBe(false);
+    });
+
     let generateFieldArrayCmp = () => {
         defaultProps.formik = {
             values: {
