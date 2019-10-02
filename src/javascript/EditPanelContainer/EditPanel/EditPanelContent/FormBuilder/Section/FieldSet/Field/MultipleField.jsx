@@ -46,25 +46,26 @@ export const MultipleFieldCmp = ({classes, t, inputContext, field, formik: {valu
                                                     editorContext={inputContext.editorContext}
                                                     setActionContext={inputContext.setActionContext}
                                     />
-
+                                    {!field.readOnly &&
                                     <IconButton variant="ghost"
                                                 data-sel-action={`removeField_${index}`}
                                                 aria-label={t('content-editor:label.contentEditor.edit.fields.actions.clear')}
                                                 icon={<Close/>}
                                                 onClick={() => arrayHelpers.remove(index)}
-                                    />
+                                    />}
                                 </div>
                             );
                         })
                     )}
 
+                    {!field.readOnly &&
                     <Button className={classes.addButton}
                             data-sel-action="addField"
                             variant="secondary"
                             onClick={() => arrayHelpers.push(field.requiredType === 'BOOLEAN' ? false : undefined)}
                     >
                         {t('content-editor:label.contentEditor.edit.fields.actions.add')}
-                    </Button>
+                    </Button>}
                 </>
             )}
         />
