@@ -38,7 +38,8 @@
                       "success": "Content unpublished",
                       "error": "Error during unpublication"
                     },
-                    "moreOptions": "More Options"
+                    "moreOptions": "More Options",
+                    "fieldMoreOptions": "More Options"
                 },
                 "sharedLanguages": "Shared by all languages",
                 "fields": {

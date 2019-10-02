@@ -23,65 +23,45 @@ import {setReduxState} from '~/actions/redux.action';
 
 describe('save action', () => {
     describe('init', () => {
-        it('should not display anything when form is at his initialValues', () => {
-            const context = {};
-            const props = {
-                formik: {
-                    dirty: false
-                }
-            };
-
+        beforeEach(() => {
             setReduxState({
                 mode: 'edit'
             });
-
-            saveAction.init(context, props);
-
-            // As action expect impure function, testing params
-            expect(context.enabled).toBe(false);
         });
 
-        it('should display save button when form is not at his initialValues', () => {
+        it('should disabled button when form is at his initialValues and all required fields were filled', () => {
             const context = {};
-            setReduxState({
-                mode: 'edit'
-            });
             const props = {
                 formik: {
-                    dirty: true
-                }
-            };
-
-            saveAction.init(context, props);
-
-            // As action expect impure function, testing params
-            expect(context.enabled).toBe(true);
-        });
-
-        it('should display save button when all required fields were filled', () => {
-            const context = {};
-            setReduxState({
-                mode: 'edit'
-            });
-            const props = {
-                formik: {
+                    dirty: false,
                     errors: {}
                 }
             };
+            saveAction.init(context, props);
 
+            // As action expect impure function, testing params
+            expect(context.disabled).toBe(true);
+        });
+
+        it('should enable button when form is not at his initialValues and all required fields were filled', () => {
+            const context = {};
+            const props = {
+                formik: {
+                    dirty: true,
+                    errors: {}
+                }
+            };
             saveAction.init(context, props);
 
             // As action expect impure function, testing params
             expect(context.disabled).toBe(false);
         });
 
-        it('should display save button but disabled when required fields were not filled', () => {
+        it('should disable save button when required fields were not filled and form is dirty', () => {
             const context = {};
-            setReduxState({
-                mode: 'edit'
-            });
             const props = {
                 formik: {
+                    dirty: true,
                     errors: {
                         myFiled1: 'required',
                         myFiled2: 'required'
@@ -95,20 +75,50 @@ describe('save action', () => {
             expect(context.disabled).toBe(true);
         });
 
-        it('should disable save action when it isn\'t the edit mode', () => {
+        it('should disable save button when required fields were not filled and form is pristine', () => {
+            const context = {};
+            const props = {
+                formik: {
+                    dirty: false,
+                    errors: {
+                        myFiled1: 'required',
+                        myFiled2: 'required'
+                    }
+                }
+            };
+
+            saveAction.init(context, props);
+
+            // As action expect impure function, testing params
+            expect(context.disabled).toBe(true);
+        });
+
+        it('should not display save action when it isn\'t the edit mode', () => {
             const context = {};
             setReduxState({
                 mode: 'create'
             });
-
             const props = {
                 formik: {
-                    dirty: true
+                    dirty: true,
+                    errors: {}
                 }
             };
 
             saveAction.init(context, props);
             expect(context.enabled).toBe(false);
+        });
+
+        it('should disable save action when it is the edit mode', () => {
+            const context = {};
+            const props = {
+                formik: {
+                    dirty: true,
+                    errors: {}
+                }
+            };
+            saveAction.init(context, props);
+            expect(context.enabled).toBe(true);
         });
     });
 

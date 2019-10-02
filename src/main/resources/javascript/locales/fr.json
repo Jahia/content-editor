@@ -38,7 +38,8 @@
                       "success": "Contenu dépublié",
                       "error": "Erreur pendant la dépublication"
                     },
-                    "moreOptions": "Plus d'options"
+                    "moreOptions": "Plus d'options",
+                    "fieldMoreOptions": "Plus d'options"
                 },
                 "sharedLanguages": "Partagé par toutes les langues",
                 "fields": {

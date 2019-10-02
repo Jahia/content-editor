@@ -9,14 +9,14 @@ import {openInTabAction} from './actions/openInTab.action';
 const pickerActions = actionsRegistry => {
     actionsRegistry.add('ContentPickerMenu', menuAction, {
         buttonIcon: <DotsVertical/>,
-        buttonLabel: 'label.contentEditor.edit.action.moreOptions',
+        buttonLabel: 'label.contentEditor.edit.action.fieldMoreOptions',
         menu: 'ContentPickerActions',
         showIcons: true
     });
 
     actionsRegistry.add('MediaPickerMenu', menuAction, {
         buttonIcon: <DotsVertical/>,
-        buttonLabel: 'label.contentEditor.edit.action.moreOptions',
+        buttonLabel: 'label.contentEditor.edit.action.fieldMoreOptions',
         menu: 'MediaPickerActions',
         showIcons: true
     });

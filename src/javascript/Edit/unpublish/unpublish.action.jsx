@@ -1,5 +1,4 @@
 import {composeActions} from '@jahia/react-material';
-import {withFormikAction} from '~/actions/withFormik.action';
 import {Constants} from '~/ContentEditor.constants';
 import {reduxAction} from '~/actions/redux.action';
 
@@ -10,13 +9,13 @@ const mapStateToContext = state => {
 };
 
 export default composeActions(
-    withFormikAction,
     reduxAction(mapStateToContext),
     {
         init: context => {
             context.enabled = context.mode === Constants.routes.baseEditRoute &&
                 context.nodeData.hasPermission &&
                 !context.formik.dirty &&
+                !context.formik.isSubmitting &&
                 context.nodeData.aggregatedPublicationInfo.publicationStatus === Constants.editPanel.publicationStatus.PUBLISHED;
         },
         onClick: ({formik}) => {

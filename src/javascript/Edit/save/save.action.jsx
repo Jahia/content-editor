@@ -16,12 +16,10 @@ export default composeActions(
         init: context => {
             // It's weird, formik set dirty when intialValue === currentValue
             // event when form had been modified
-            context.enabled = context.mode === Constants.routes.baseEditRoute && context.formik.dirty;
+            context.enabled = context.mode === Constants.routes.baseEditRoute;
 
             const errors = context.formik.errors;
-            if (errors) {
-                context.disabled = Object.keys(errors).length > 0;
-            }
+            context.disabled = !context.formik.dirty || Object.keys(errors).length > 0;
         },
         onClick: ({formik}) => {
             if (!formik) {

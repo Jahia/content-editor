@@ -3,6 +3,8 @@ import saveAction from './save/save.action';
 import publishAction from './publish/publish.action';
 import unpublishAction from './unpublish/unpublish.action';
 import {Edit, Save, CloudUpload, CloudOff} from '@material-ui/icons';
+import {menuAction} from '@jahia/react-material';
+import {DotsVertical} from 'mdi-material-ui';
 
 export const registerActions = actionsRegistry => {
     // Content Media Manager Action
@@ -30,10 +32,17 @@ export const registerActions = actionsRegistry => {
         target: ['editHeaderActions:1']
     });
 
+    actionsRegistry.add('ContentEditorHeaderMenu', menuAction, {
+        buttonIcon: <DotsVertical/>,
+        buttonLabel: 'label.contentEditor.edit.action.moreOptions',
+        menu: 'ContentEditorHeaderActions',
+        showIcons: true
+    });
+
     actionsRegistry.add('unpublishAction', unpublishAction, {
         buttonLabel:
             'content-editor:label.contentEditor.edit.action.unpublish.name',
         buttonIcon: <CloudOff/>,
-        target: ['editHeaderActions:1']
+        target: ['ContentEditorHeaderActions:1']
     });
 };

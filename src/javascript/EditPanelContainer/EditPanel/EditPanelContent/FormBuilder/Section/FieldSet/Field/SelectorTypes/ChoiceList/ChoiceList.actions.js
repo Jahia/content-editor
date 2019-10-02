@@ -10,7 +10,7 @@ import {selectAllAction} from './MultipleSelect/actions/selectAll.action';
 const choiceListActions = actionsRegistry => {
     actionsRegistry.add('ChoicelistMenu', menuAction, {
         buttonIcon: <DotsVertical/>,
-        buttonLabel: 'label.contentEditor.edit.action.moreOptions',
+        buttonLabel: 'label.contentEditor.edit.action.fieldMoreOptions',
         menu: 'ChoicelistActions',
         showIcons: true
     });
