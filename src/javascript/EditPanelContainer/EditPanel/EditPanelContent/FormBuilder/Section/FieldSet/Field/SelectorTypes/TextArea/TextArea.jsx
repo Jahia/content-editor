@@ -11,7 +11,7 @@ export const TextAreaField = ({id, field}) => {
             render={({field: {name, value, onChange}, form: {setFieldTouched}}) => {
                 const handleChange = evt => {
                     onChange(evt);
-                    setFieldTouched(id, true);
+                    setFieldTouched(field.name, true);
                 };
 
                 return (

@@ -34,11 +34,12 @@ describe('DateTimePicker component', () => {
     });
 
     const handleChange = jest.fn();
+    const handleFieldTouched = jest.fn();
 
     const buildComp = componentProps => {
         const mainComponent = shallowWithTheme(<DateTimePicker {...componentProps}/>, {}, dsGenericTheme);
         const RenderProps = mainComponent.props().component;
-        return shallowWithTheme(<RenderProps field={{value: new Date().toISOString(), onChange: jest.fn()}} form={{setFieldTouched: () => {}, setFieldValue: handleChange}}/>, {}, dsGenericTheme);
+        return shallowWithTheme(<RenderProps field={{value: new Date().toISOString(), onChange: jest.fn()}} form={{setFieldTouched: handleFieldTouched, setFieldValue: handleChange}}/>, {}, dsGenericTheme);
     };
 
     it('should bind id correctly', () => {
@@ -52,6 +53,7 @@ describe('DateTimePicker component', () => {
         cmp.simulate('change', '2019-07-14T21:07:12.000');
 
         expect(handleChange).toHaveBeenCalledWith('myOption[0]', '2019-07-14T21:07:12.000', true);
+        expect(handleFieldTouched).toHaveBeenCalledWith('myOption', true);
     });
 
     it('should give readOnly', () => {

@@ -26,11 +26,12 @@ describe('RichText component', () => {
     });
 
     const handleChange = jest.fn();
+    const handleFieldTouched = jest.fn();
 
-    const buildComp = props => {
-        const mainComponent = shallowWithTheme(<RichTextCmp {...props}/>, {}, dsGenericTheme);
+    const buildComp = componentProps => {
+        const mainComponent = shallowWithTheme(<RichTextCmp {...componentProps}/>, {}, dsGenericTheme);
         const RenderProps = mainComponent.props().render;
-        return shallowWithTheme(<RenderProps form={{setFieldTouched: () => {}, setFieldValue: handleChange}}/>, {}, dsGenericTheme);
+        return shallowWithTheme(<RenderProps form={{setFieldTouched: handleFieldTouched, setFieldValue: handleChange}}/>, {}, dsGenericTheme);
     };
 
     it('should contain one RichText component', () => {
@@ -59,6 +60,7 @@ describe('RichText component', () => {
         expect(handleChange.mock.calls).toEqual([[
             props.id, dummyEditor.getData(), true
         ]]);
+        expect(handleFieldTouched).toHaveBeenCalledWith('x', true);
     });
 
     it('should be readOnly when formDefinition say so', () => {

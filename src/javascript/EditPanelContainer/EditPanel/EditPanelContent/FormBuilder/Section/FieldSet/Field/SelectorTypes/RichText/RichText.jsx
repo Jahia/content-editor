@@ -31,7 +31,7 @@ export class RichTextCmp extends React.Component {
                             evt.editor.getData(),
                             true
                         );
-                        setFieldTouched(id, true);
+                        setFieldTouched(field.name, true);
                     };
 
                     return (
