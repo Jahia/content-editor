@@ -36,7 +36,7 @@ export const DateTimePicker = ({id, field, editorContext}) => {
                             // Null is received when the date is reset
                             const newDate = date && dayjs(date).format('YYYY-MM-DDTHH:mm:ss.SSS');
                             setFieldValue(id, newDate, true);
-                            setFieldTouched(id, true);
+                            setFieldTouched(field.name, true);
                         }}
                         {...formikField}
                         displayDateFormat={displayDateFormat}

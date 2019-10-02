@@ -12,7 +12,7 @@ const styles = () => ({
     }
 });
 
-const SingleSelectCmp = ({classes, field, id, setActionContext}) => {
+export const SingleSelectCmp = ({classes, field, id, setActionContext}) => {
     return (
         <FastField
             name={field.name}

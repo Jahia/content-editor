@@ -26,11 +26,12 @@ describe('Text component', () => {
     });
 
     const handleChange = jest.fn();
+    const handleFieldTouched = jest.fn();
 
-    const buildComp = props => {
-        mainComponent = shallowWithTheme(<TextCmp {...props}/>, {}, dsGenericTheme);
+    const buildComp = componentProps => {
+        mainComponent = shallowWithTheme(<TextCmp {...componentProps}/>, {}, dsGenericTheme);
         const RenderProps = mainComponent.props().render;
-        return shallowWithTheme(<RenderProps form={{setFieldTouched: () => {}, handleChange: handleChange}}/>, {}, dsGenericTheme);
+        return shallowWithTheme(<RenderProps form={{setFieldTouched: handleFieldTouched, handleChange: handleChange}}/>, {}, dsGenericTheme);
     };
 
     it('should contain aria-labelledby attribute', () => {
@@ -64,6 +65,7 @@ describe('Text component', () => {
         wrapper.find('Input').simulate('change');
 
         expect(handleChange.mock.calls.length).toBe(1);
+        expect(handleFieldTouched).toHaveBeenCalledWith('toto', true);
     });
 
     it('should be readOnly when formDefinition say so', () => {

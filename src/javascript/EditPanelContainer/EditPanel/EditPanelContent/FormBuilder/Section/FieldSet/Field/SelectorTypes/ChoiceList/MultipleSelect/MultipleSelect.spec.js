@@ -1,7 +1,8 @@
 import React from 'react';
-import {shallow} from '@jahia/test-framework';
+import {shallowWithTheme} from '@jahia/test-framework';
 
 import MultipleSelect from './MultipleSelect';
+import {dsGenericTheme} from '@jahia/design-system-kit';
 
 describe('MultipleSelect component', () => {
     let props;
@@ -31,16 +32,23 @@ describe('MultipleSelect component', () => {
         };
     });
 
+    const handleChange = jest.fn();
+    const handleFieldTouched = jest.fn();
+
+    const buildComp = (componentProps, value) => {
+        const mainComponent = shallowWithTheme(<MultipleSelect {...componentProps}/>, {}, dsGenericTheme);
+        const RenderProps = mainComponent.props().render;
+        return shallowWithTheme(<RenderProps field={{value: value}} form={{setFieldTouched: handleFieldTouched, setFieldValue: handleChange}}/>, {}, dsGenericTheme);
+    };
+
     it('should bind id correctly', () => {
-        const RenderProps = shallow(<MultipleSelect {...props}/>).props().render;
-        const cmp = shallow(<RenderProps field={{}} form={{setFieldTouched: () => {}, setFieldValue: () => {}}}/>);
+        const cmp = buildComp(props);
 
         expect(cmp.props().id).toBe(props.id);
     });
 
     it('should display each option given', () => {
-        const RenderProps = shallow(<MultipleSelect {...props}/>).props().render;
-        const cmp = shallow(<RenderProps field={{}} form={{setFieldTouched: () => {}, setFieldValue: () => {}}}/>);
+        const cmp = buildComp(props);
 
         const labels = cmp.props().options.map(o => o.label);
         const values = cmp.props().options.map(o => o.value);
@@ -50,10 +58,16 @@ describe('MultipleSelect component', () => {
         });
     });
 
-    it('should select value', () => {
-        const RenderProps = shallow(<MultipleSelect {...props}/>).props().render;
-        const cmp = shallow(<RenderProps field={{value: ['Yolooo']}} form={{setFieldTouched: () => {}, setFieldValue: () => {}}}/>);
+    it('should select formik value', () => {
+        const cmp = buildComp(props, ['yoloooFR']);
+        const selection = [{value: 'yoloooFR2'}];
+        cmp.simulate('change', selection);
+        expect(handleChange).toHaveBeenCalledWith('myOption', ['yoloooFR2'], true);
+        expect(handleFieldTouched).toHaveBeenCalledWith('myOption', true);
+    });
 
+    it('should select value', () => {
+        const cmp = buildComp(props, ['Yolooo']);
         expect(cmp.props().value).toEqual([{label: 'yoloooFR', value: 'Yolooo'}]);
     });
 
@@ -67,8 +81,7 @@ describe('MultipleSelect component', () => {
 
     const testReadOnly = function (readOnly) {
         props.field.readOnly = readOnly;
-        const RenderProps = shallow(<MultipleSelect {...props}/>).props().render;
-        const cmp = shallow(<RenderProps field={{}} form={{setFieldTouched: () => {}, setFieldValue: () => {}}}/>);
+        const cmp = buildComp(props);
 
         expect(cmp.props().readOnly).toEqual(readOnly);
     };
