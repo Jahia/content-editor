@@ -14,15 +14,12 @@ export default composeActions(
     reduxAction(mapStateToContext),
     {
         init: context => {
-            // It's weird, formik set dirty when intialValue === currentValue
-            // event when form had been modified
             context.enabled = context.mode === Constants.routes.baseEditRoute;
 
-            const errors = context.formik.errors;
-            context.disabled = !context.formik.dirty || Object.keys(errors).length > 0;
+            context.addWarningBadge = Object.keys(context.formik.errors).length > 0;
         },
         onClick: ({formik}) => {
-            if (!formik) {
+            if (!formik || !formik.dirty) {
                 return;
             }
 
