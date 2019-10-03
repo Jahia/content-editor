@@ -2,13 +2,29 @@ import React, {useEffect, useRef} from 'react';
 import {Badge, MainLayout, IconButton} from '@jahia/design-system-kit';
 import {buttonRenderer, DisplayActions, ContextualMenu} from '@jahia/react-material';
 import PropTypes from 'prop-types';
+import {compose} from 'react-apollo';
 import EditPanelContent from './EditPanelContent/EditPanelContent';
 import {connect} from 'formik';
 import {EditPanelLanguageSwitcher} from './EditPanelLanguageSwitcher';
-import {MoreVert} from '@material-ui/icons';
+import {MoreVert, Error} from '@material-ui/icons';
 import {useContentEditorContext} from '~/ContentEditor.context';
+import {withStyles} from '@material-ui/core';
 
-const EditPanelCmp = ({formik, title}) => {
+const styles = theme => ({
+    actionButtonHeaderContainer: {
+        position: 'relative'
+    },
+    warningBadge: {
+        position: 'absolute',
+        top: '-0.5em',
+        right: 0,
+        backgroundColor: theme.palette.layout.dark,
+        borderRadius: '50%',
+        color: theme.palette.support.gamma
+    }
+});
+
+const EditPanelCmp = ({formik, title, classes}) => {
     const {nodeData, siteInfo, lang} = useContentEditorContext();
     const contentEditorHeaderMenu = useRef(null);
 
@@ -64,7 +80,14 @@ const EditPanelCmp = ({formik, title}) => {
                                     disabled: context.disabled
                                 }, true, null, true);
 
-                                    return <Button disabled context={context}/>;
+                                    return (
+                                        <div className={classes.actionButtonHeaderContainer}>
+                                            <Button disabled context={context}/>
+                                            {context.addWarningBadge && (
+                                                <Error className={classes.warningBadge}/>
+                                            )}
+                                        </div>
+                                    );
                                 }}
                             />
                         <ContextualMenu
@@ -92,9 +115,13 @@ const EditPanelCmp = ({formik, title}) => {
 
 EditPanelCmp.propTypes = {
     formik: PropTypes.object.isRequired,
-    title: PropTypes.string.isRequired
+    title: PropTypes.string.isRequired,
+    classes: PropTypes.object.isRequired
 };
 
-const EditPanel = connect(EditPanelCmp);
+const EditPanel = compose(
+    connect,
+    withStyles(styles)
+)(EditPanelCmp);
 EditPanel.displayName = 'EditPanel';
 export default EditPanel;
