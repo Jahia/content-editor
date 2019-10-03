@@ -58,9 +58,6 @@ describe('unpublish action', () => {
                         publicationStatus: 'PUBLISHED'
                     },
                     hasPermission: true
-                },
-                formik: {
-                    dirty: true
                 }
             };
 
@@ -69,53 +66,31 @@ describe('unpublish action', () => {
             });
         });
 
-        it('should not enable unpublish action when form is not saved', () => {
-            unpublishAction.init(context);
-
-            // As action expect impure function, testing params
-            expect(context.enabled).toBe(false);
-        });
-
-        it('should enable unpublish action when form is saved and published', () => {
-            context.formik.dirty = false;
-
+        it('should display unpublish action when form is saved and published', () => {
             unpublishAction.init(context);
 
             expect(context.enabled).toBe(true);
         });
 
-        it('should not enable unpublish action when node is not published', () => {
+        it('should not display unpublish action when node is not published', () => {
             context.nodeData.aggregatedPublicationInfo.publicationStatus = 'MODIFIED';
-            context.formik.dirty = false;
 
             unpublishAction.init(context);
 
             expect(context.enabled).toBe(false);
         });
 
-        it('should disable unpublish action when you haven\'t the proper permission', () => {
+        it('should not display unpublish action when you haven\'t the proper permission', () => {
             context.nodeData.hasPermission = false;
-            context.formik.dirty = false;
             unpublishAction.init(context);
 
             expect(context.enabled).toBe(false);
         });
 
-        it('should disable unpublish action when it isn\'t the edit mode', () => {
+        it('should not display unpublish action when it isn\'t the edit mode', () => {
             setReduxState({
                 mode: 'create'
             });
-            context.formik.dirty = false;
-
-            unpublishAction.init(context);
-
-            expect(context.enabled).toBe(false);
-        });
-
-        it('should disable unpublish action when it is submmitting form', () => {
-            context.nodeData.aggregatedPublicationInfo.publicationStatus = 'MODIFIED';
-            context.formik.dirty = false;
-            context.formik.isSubmitting = true;
 
             unpublishAction.init(context);
 
