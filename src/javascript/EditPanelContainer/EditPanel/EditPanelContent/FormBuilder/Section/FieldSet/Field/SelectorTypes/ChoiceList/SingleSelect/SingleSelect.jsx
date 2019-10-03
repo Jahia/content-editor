@@ -44,7 +44,9 @@ export const SingleSelectCmp = ({classes, field, id, setActionContext}) => {
                                 id: id
                             }}
                             input={<Input id={id} name={field.name} readOnly={field.readOnly}/>}
-                            onBlur={() => {/* Do Nothing on blur BACKLOG-10095 */}}
+                            onBlur={() => {
+                                /* Do Nothing on blur BACKLOG-10095 */
+                            }}
                     >
                         {
                             field.valueConstraints.map(item => {

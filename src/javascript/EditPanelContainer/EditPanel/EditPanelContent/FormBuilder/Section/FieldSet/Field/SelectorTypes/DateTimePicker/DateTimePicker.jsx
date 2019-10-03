@@ -47,6 +47,9 @@ export const DateTimePicker = ({id, field, editorContext}) => {
                         inputProps={{
                             'aria-labelledby': `${field.name}-label`
                         }}
+                        onBlur={() => {
+                            /* Do Nothing on blur BACKLOG-10095 */
+                        }}
                     />
                 );
             }}
