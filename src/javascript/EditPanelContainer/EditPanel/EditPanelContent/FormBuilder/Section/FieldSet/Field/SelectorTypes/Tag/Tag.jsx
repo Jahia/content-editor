@@ -42,6 +42,9 @@ const Tag = ({field, id, t}) => {
                         readOnly={field.readOnly}
                         placeholder={t('content-editor:label.contentEditor.edit.tagPlaceholder')}
                         formatCreateLabel={value => t('content-editor:label.contentEditor.edit.createTagPlaceholder', {tagName: value})}
+                        onBlur={() => {
+                            /* Do Nothing on blur BACKLOG-10095 */
+                        }}
                         onChange={setValue}
                     />
                 );
