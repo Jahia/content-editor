@@ -95,7 +95,7 @@ const EditPanelCmp = ({formik, title, classes}) => {
                             context={{nodeData, formik}}
                             actionKey="ContentEditorHeaderMenu"
                             />
-                        <IconButton data-sel-action="moreOptions"
+                        <IconButton data-sel-action="moreActions"
                                     aria-label="t(content-editor:label.contentEditor.edit.action.fieldMoreOptions)"
                                     icon={<MoreVert/>}
                                     color="inverted"
