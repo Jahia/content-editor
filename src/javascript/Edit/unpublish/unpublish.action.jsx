@@ -14,8 +14,6 @@ export default composeActions(
         init: context => {
             context.enabled = context.mode === Constants.routes.baseEditRoute &&
                 context.nodeData.hasPermission &&
-                !context.formik.dirty &&
-                !context.formik.isSubmitting &&
                 context.nodeData.aggregatedPublicationInfo.publicationStatus === Constants.editPanel.publicationStatus.PUBLISHED;
         },
         onClick: ({formik}) => {
