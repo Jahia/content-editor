@@ -39,7 +39,12 @@
                       "error": "Erreur pendant la dépublication"
                     },
                     "moreOptions": "Plus d'options",
-                    "fieldMoreOptions": "Plus d'options"
+                    "fieldMoreOptions": "Plus d'options",
+                    "versioningTab": "Versions",
+                    "seoTab": "SEO",
+                    "visibilityTab": "Visibilité",
+                    "historyTab": "Historique",
+                    "usagesTab": "Utilisations"
                 },
                 "sharedLanguages": "Partagé par toutes les langues",
                 "fields": {

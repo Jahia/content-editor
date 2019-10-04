@@ -32,6 +32,9 @@ const NodeDataFragment = {
                         name
                         requiredType
                     }
+                    supertypes {
+                        name
+                    }
                 }
                 properties(language: $language) {
                     name
