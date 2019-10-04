@@ -19,7 +19,13 @@
                     "save": {
                         "name": "Save",
                         "success": "Content successfully saved",
-                        "error": "An error occurred when saving the content"
+                        "error": "An error occurred when saving the content",
+                        "validation": {
+                          "modalTitle": "Your content couldn’t be saved",
+                          "modalMessage": "There is one validation error in the form.",
+                          "modalMessage_plural": "There are {{count}} validation errors in the form.",
+                          "modalButton": "OK"
+                        }
                     },
                     "goBack": {
                         "name": "Back to {{parentNodeDisplayName}}",

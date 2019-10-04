@@ -1,5 +1,3 @@
-import saveAction from './save.action';
-
 jest.mock('~/actions/redux.action', () => {
     let statemock;
     return {
@@ -19,7 +17,45 @@ jest.mock('~/actions/redux.action', () => {
     };
 });
 
+jest.mock('@jahia/react-material', () => {
+    let renderComponentmock = jest.fn();
+    return {
+        componentRendererAction: {
+            onClick: context => {
+                context.renderComponent = renderComponentmock;
+            }
+        },
+        renderComponentmock,
+        composeActions: (...actions) => {
+            return actions.reduce((finalAction, action) => {
+                return {
+                    init: (...args) => {
+                        if (finalAction.init) {
+                            finalAction.init(...args);
+                        }
+
+                        if (action.init) {
+                            action.init(...args);
+                        }
+                    },
+                    onClick: (...args) => {
+                        if (finalAction.onClick) {
+                            finalAction.onClick(...args);
+                        }
+
+                        if (action.onClick) {
+                            action.onClick(...args);
+                        }
+                    }
+                };
+            }, {});
+        }
+    };
+});
+
+import {renderComponentmock} from '@jahia/react-material';
 import {setReduxState} from '~/actions/redux.action';
+import saveAction from './save.action';
 
 describe('save action', () => {
     describe('init', () => {
@@ -96,7 +132,8 @@ describe('save action', () => {
                     submitForm: jest.fn(() => Promise.resolve()),
                     resetForm: jest.fn(),
                     setFieldValue: jest.fn(),
-                    dirty: true
+                    dirty: true,
+                    errors: {}
                 }
             };
         });
@@ -126,6 +163,16 @@ describe('save action', () => {
             } catch (e) {}
 
             expect(context.formik.resetForm).not.toHaveBeenCalled();
+        });
+
+        it('should show a modal when form have errors', async () => {
+            context.formik.errors = {
+                field1: 'required'
+            };
+
+            await saveAction.onClick(context);
+
+            expect(renderComponentmock).toHaveBeenCalled();
         });
     });
 });

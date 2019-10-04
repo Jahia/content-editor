@@ -1,7 +1,9 @@
-import {composeActions} from '@jahia/react-material';
+import {composeActions, componentRendererAction} from '@jahia/react-material';
 import {Constants} from '~/ContentEditor.constants';
 import {withFormikAction} from '~/actions/withFormik.action';
 import {reduxAction} from '~/actions/redux.action';
+import {SaveErrorModal} from './SaveErrorModal';
+import React from 'react';
 
 const mapStateToContext = state => {
     return {
@@ -11,6 +13,7 @@ const mapStateToContext = state => {
 
 export default composeActions(
     withFormikAction,
+    componentRendererAction,
     reduxAction(mapStateToContext),
     {
         init: context => {
@@ -18,8 +21,22 @@ export default composeActions(
 
             context.addWarningBadge = Object.keys(context.formik.errors).length > 0;
         },
-        onClick: ({formik}) => {
+        onClick: ({formik, renderComponent}) => {
             if (!formik || !formik.dirty) {
+                return;
+            }
+
+            // If form has errors
+            const nbOfErrors = Object.keys(formik.errors).length;
+            if (nbOfErrors > 0) {
+                const handler = renderComponent(
+                    <SaveErrorModal open
+                                    nbOfErrors={nbOfErrors}
+                                    onClose={() => {
+                                        handler.setProps({open: false});
+                                    }
+                                }/>
+                );
                 return;
             }
 
