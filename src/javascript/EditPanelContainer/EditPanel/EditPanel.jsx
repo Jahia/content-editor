@@ -84,7 +84,7 @@ const EditPanelCmp = ({formik, title, classes}) => {
                                         <div className={classes.actionButtonHeaderContainer}>
                                             <Button disabled context={context}/>
                                             {context.addWarningBadge && (
-                                                <Error className={classes.warningBadge}/>
+                                                <Error data-sel-role={`${context.actionKey}_pastille`} className={classes.warningBadge}/>
                                             )}
                                         </div>
                                     );
