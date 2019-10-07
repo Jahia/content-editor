@@ -52,6 +52,7 @@ export const FieldCmp = ({t, classes, inputContext, idInput, selectorType, field
     const isMultipleField = field.multiple && !selectorType.supportMultiple;
     const seleniumFieldType = isMultipleField ? `GenericMultipleField${selectorType.key}` : (field.multiple ? `Multiple${selectorType.key}` : selectorType.key);
 
+    let mandatory = field.mandatory && touched[field.name] && errors[field.name] && errors[field.name] === 'required';
     return (
         <div className={classes.formControl}
              data-sel-content-editor-field={field.name}
@@ -82,18 +83,19 @@ export const FieldCmp = ({t, classes, inputContext, idInput, selectorType, field
                             </InputLabel>
                             {field.mandatory && (
                                 <Badge className={classes.badge}
+                                       data-sel-content-editor-field-mandatory={Boolean(mandatory)}
                                        badgeContent={t('content-editor:label.contentEditor.edit.validation.required')}
                                        variant="normal"
-                                       color={touched[field.name] && errors[field.name] && errors[field.name] === 'required' ? 'warning' : 'primary'}
+                                       color={mandatory ? 'warning' : 'primary'}
                                 />
                             )}
                             {(!field.i18n && siteInfo.languages.length > 1) &&
-                                <Badge className={classes.badge}
-                                       badgeContent={t('content-editor:label.contentEditor.edit.sharedLanguages')}
-                                       icon={<Public/>}
-                                       variant="normal"
-                                       color="info"
-                                />
+                            <Badge className={classes.badge}
+                                   badgeContent={t('content-editor:label.contentEditor.edit.sharedLanguages')}
+                                   icon={<Public/>}
+                                   variant="normal"
+                                   color="info"
+                            />
                             }
                         </Grid>
                     </Grid>
