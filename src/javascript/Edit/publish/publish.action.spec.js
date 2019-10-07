@@ -27,6 +27,7 @@ describe('publish action', () => {
         beforeEach(() => {
             context = {
                 formik: {
+                    dirty: false,
                     submitForm: jest.fn(() => Promise.resolve()),
                     resetForm: jest.fn(),
                     setFieldValue: jest.fn()
@@ -54,7 +55,15 @@ describe('publish action', () => {
 
     describe('onInit', () => {
         let context;
+        let props;
+
         beforeEach(() => {
+            props = {
+                formik: {
+                    dirty: false
+                }
+            };
+
             context = {
                 nodeData: {
                     aggregatedPublicationInfo: {
@@ -69,33 +78,39 @@ describe('publish action', () => {
             });
         });
 
+        it('should disabled submit action when form is dirty', () => {
+            props.formik.dirty = true;
+            publishAction.init(context, props);
+            expect(context.disabled).toBe(true);
+        });
+
         it('should not disabled submit action when node is not already published', () => {
             context.nodeData.aggregatedPublicationInfo.publicationStatus = 'NOT_PUBLISHED';
-            publishAction.init(context, {});
+            publishAction.init(context, props);
             expect(context.disabled).toBe(false);
         });
 
         it('should disabled submit action when node is already published', () => {
             context.nodeData.aggregatedPublicationInfo.publicationStatus = 'PUBLISHED';
-            publishAction.init(context, {});
+            publishAction.init(context, props);
             expect(context.disabled).toBe(true);
         });
 
         it('should disabled submit action when node is UNPUBLISHABLE', () => {
             context.nodeData.aggregatedPublicationInfo.publicationStatus = 'MANDATORY_LANGUAGE_UNPUBLISHABLE';
-            publishAction.init(context, {});
+            publishAction.init(context, props);
 
             expect(context.disabled).toBe(true);
         });
 
         it('should display publish action when you have the proper permission and it\'s edit mode', () => {
-            publishAction.init(context, {});
+            publishAction.init(context, props);
             expect(context.enabled).toBe(true);
         });
 
         it('should undisplay publish action when you haven\'t the proper permission', () => {
             context.nodeData.hasPermission = false;
-            publishAction.init(context, {});
+            publishAction.init(context, props);
 
             expect(context.enabled).toBe(false);
         });
@@ -104,7 +119,7 @@ describe('publish action', () => {
             setReduxState({
                 mode: 'create'
             });
-            publishAction.init(context, {});
+            publishAction.init(context, props);
 
             expect(context.enabled).toBe(false);
         });
