@@ -23,7 +23,6 @@ export default composeActions(
             context.enabled = context.path.startsWith(`/sites/${contextJsParameters.siteKey}/contents`);
         },
         onClick: context => {
-            window.toto = context;
             let handler = context.renderComponent(
                 <CreateNewContentDialog
                     open

@@ -19,7 +19,13 @@
                     "save": {
                         "name": "Speichern",
                         "success": "Inhalt wurde erfolgreich gespeichert",
-                        "error": "Beim Speichern des Inhalts ist ein Fehler aufgetreten"
+                        "error": "Beim Speichern des Inhalts ist ein Fehler aufgetreten",
+                        "validation": {
+                          "modalTitle": "Ihre Änderungen konnten nicht gespeichert werden.",
+                          "modalMessage": "Es ist ein Validierungsfehler im Formular aufgetreten.",
+                          "modalMessage_plural": "Es sind {{count}} Validierungsfehler im Formular aufgetreten.",
+                          "modalButton": "OK"
+                        }
                     },
                     "goBack": {
                         "name": "Zurück zu {{parentNodeDisplayName}}",

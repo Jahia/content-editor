@@ -19,7 +19,13 @@
                     "save": {
                         "name": "Sauvegarder",
                         "success": "Contenu enregistré avec succès",
-                        "error": "Une erreur s'est produite lors de l'enregistrement du contenu"
+                        "error": "Une erreur s'est produite lors de l'enregistrement du contenu",
+                        "validation": {
+                          "modalTitle": "Le contenu n’a pas pu être enregistré",
+                          "modalMessage": "Il y a une erreur de validation dans le formulaire.",
+                          "modalMessage_plural": "Il y a {{count}} erreurs de validation dans le formulaire.",
+                          "modalButton": "OK"
+                        }
                     },
                     "goBack": {
                         "name": "Retour à {{parentNodeDisplayName}}",
