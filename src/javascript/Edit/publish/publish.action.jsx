@@ -14,10 +14,12 @@ export default composeActions(withFormikAction,
         init: context => {
             context.enabled = context.mode === Constants.routes.baseEditRoute && context.nodeData.hasPermission;
 
-            context.disabled = context.formik.dirty || [
-                Constants.editPanel.publicationStatus.PUBLISHED,
-                Constants.editPanel.publicationStatus.MANDATORY_LANGUAGE_UNPUBLISHABLE
-            ].includes(context.nodeData.aggregatedPublicationInfo.publicationStatus);
+            if (context.enabled) {
+                context.disabled = context.formik.dirty || [
+                    Constants.editPanel.publicationStatus.PUBLISHED,
+                    Constants.editPanel.publicationStatus.MANDATORY_LANGUAGE_UNPUBLISHABLE
+                ].includes(context.nodeData.aggregatedPublicationInfo.publicationStatus);
+            }
         },
         onClick: ({formik}) => {
             if (!formik) {
