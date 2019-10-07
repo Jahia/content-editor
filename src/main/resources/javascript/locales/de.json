@@ -39,7 +39,12 @@
                       "error": "Während dem rückgängig machen der Veröffentlichung ist ein Fehler aufgetreten"
                     },
                     "moreOptions": "Mehr Optionen",
-                    "fieldMoreOptions": "Mehr Optionen"
+                    "fieldMoreOptions": "Mehr Optionen",
+                    "versioningTab": "Versionierung",
+                    "seoTab": "SEO",
+                    "visibilityTab": "Sichtbarkeit",
+                    "historyTab": "Historie",
+                    "usagesTab": "Verwendung"
                 },
                 "sharedLanguages": "Von allen Sprachen geteilt",
                 "fields": {

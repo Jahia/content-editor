@@ -3,6 +3,7 @@ import {Badge, MainLayout, IconButton} from '@jahia/design-system-kit';
 import {buttonRenderer, DisplayActions, ContextualMenu} from '@jahia/react-material';
 import PropTypes from 'prop-types';
 import {compose} from 'react-apollo';
+import {translate} from 'react-i18next';
 import EditPanelContent from './EditPanelContent/EditPanelContent';
 import {connect} from 'formik';
 import {EditPanelLanguageSwitcher} from './EditPanelLanguageSwitcher';
@@ -24,7 +25,7 @@ const styles = theme => ({
     }
 });
 
-const EditPanelCmp = ({formik, title, classes}) => {
+const EditPanelCmp = ({formik, title, classes, t}) => {
     const {nodeData, siteInfo, lang} = useContentEditorContext();
     const contentEditorHeaderMenu = useRef(null);
 
@@ -80,30 +81,30 @@ const EditPanelCmp = ({formik, title, classes}) => {
                                     disabled: context.disabled
                                 }, true, null, true);
 
-                                    return (
-                                        <div className={classes.actionButtonHeaderContainer}>
-                                            <Button disabled context={context}/>
-                                            {context.addWarningBadge && (
-                                                <Error data-sel-role={`${context.actionKey}_pastille`} className={classes.warningBadge}/>
-                                            )}
-                                        </div>
-                                    );
-                                }}
-                            />
+                                return (
+                                    <div className={classes.actionButtonHeaderContainer}>
+                                        <Button disabled context={context}/>
+                                        {context.addWarningBadge && (
+                                            <Error data-sel-role={`${context.actionKey}_pastille`} className={classes.warningBadge}/>
+                                        )}
+                                    </div>
+                                );
+                            }}
+                        />
                         <ContextualMenu
                             ref={contentEditorHeaderMenu}
                             context={{nodeData, formik}}
                             actionKey="ContentEditorHeaderMenu"
-                            />
+                        />
                         <IconButton data-sel-action="moreActions"
-                                    aria-label="t(content-editor:label.contentEditor.edit.action.fieldMoreOptions)"
+                                    aria-label={t('content-editor:label.contentEditor.edit.action.fieldMoreOptions')}
                                     icon={<MoreVert/>}
                                     color="inverted"
                                     onClick={event => {
-                                            event.stopPropagation();
-                                            contentEditorHeaderMenu.current.open(event);
-                                        }}
-                                    />
+                                        event.stopPropagation();
+                                        contentEditorHeaderMenu.current.open(event);
+                                    }}
+                        />
                     </>
                 )
             }}
@@ -115,12 +116,14 @@ const EditPanelCmp = ({formik, title, classes}) => {
 
 EditPanelCmp.propTypes = {
     formik: PropTypes.object.isRequired,
+    t: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
     classes: PropTypes.object.isRequired
 };
 
 const EditPanel = compose(
     connect,
+    translate(),
     withStyles(styles)
 )(EditPanelCmp);
 EditPanel.displayName = 'EditPanel';

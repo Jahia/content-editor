@@ -39,7 +39,12 @@
                       "error": "Error during unpublication"
                     },
                     "moreOptions": "More Options",
-                    "fieldMoreOptions": "More Options"
+                    "fieldMoreOptions": "More Options",
+                    "versioningTab": "Versioning",
+                    "seoTab": "SEO",
+                    "visibilityTab": "Visibility",
+                    "historyTab": "History",
+                    "usagesTab": "Usages"
                 },
                 "sharedLanguages": "Shared by all languages",
                 "fields": {
