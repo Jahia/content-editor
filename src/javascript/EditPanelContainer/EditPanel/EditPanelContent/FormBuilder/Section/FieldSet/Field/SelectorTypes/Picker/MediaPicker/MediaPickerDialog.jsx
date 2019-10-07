@@ -17,6 +17,7 @@ export const MediaPickerDialog = ({
     setIsOpen,
     editorContext,
     id,
+    field,
     t,
     initialSelectedItem
 }) => {
@@ -54,6 +55,7 @@ export const MediaPickerDialog = ({
                         true
                     );
                     setIsOpen(false);
+                    form.setFieldTouched(field.name, field.multiple ? [true] : true);
                 }}
                 >
                     {(setSelectedItem, selectedPath, initialSelection) => (
@@ -63,6 +65,7 @@ export const MediaPickerDialog = ({
                         selectedPath={selectedPath}
                         initialSelection={initialSelection}
                         formik={form}
+                        field={field}
                     />
                 )}
                 </PickerDialog>
@@ -80,6 +83,7 @@ MediaPickerDialog.propTypes = {
     setIsOpen: PropTypes.func.isRequired,
     editorContext: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,
+    field: PropTypes.object.isRequired,
     t: PropTypes.func.isRequired,
     initialSelectedItem: PropTypes.string
 };

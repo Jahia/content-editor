@@ -18,6 +18,7 @@ export const ContentPickerDialog = ({
     initialSelectedItem,
     editorContext,
     id,
+    field,
     nodeTreeConfigs,
     t,
     pickerConfig
@@ -45,7 +46,7 @@ export const ContentPickerDialog = ({
                         true
                     );
                     setIsOpen(false);
-                    setFieldTouched(id, true);
+                    setFieldTouched(field.name, field.multiple ? [true] : true);
                 }}
                 >
                     {(setSelectedItem, selectedPath, initialSelection) => {
@@ -94,6 +95,7 @@ ContentPickerDialog.propTypes = {
     id: PropTypes.string.isRequired,
     nodeTreeConfigs: PropTypes.array.isRequired,
     t: PropTypes.func.isRequired,
+    field: PropTypes.object.isRequired,
     pickerConfig: PropTypes.object.isRequired,
     initialSelectedItem: PropTypes.string
 };

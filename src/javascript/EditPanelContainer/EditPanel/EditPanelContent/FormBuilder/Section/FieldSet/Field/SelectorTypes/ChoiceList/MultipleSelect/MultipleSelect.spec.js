@@ -63,7 +63,7 @@ describe('MultipleSelect component', () => {
         const selection = [{value: 'yoloooFR2'}];
         cmp.simulate('change', selection);
         expect(handleChange).toHaveBeenCalledWith('myOption', ['yoloooFR2'], true);
-        expect(handleFieldTouched).toHaveBeenCalledWith('myOption', true);
+        expect(handleFieldTouched).toHaveBeenCalledWith('myOption', [true]);
     });
 
     it('should select value', () => {

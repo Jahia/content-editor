@@ -13,7 +13,7 @@ export const TextCmp = ({field, value, id, editorContext}) => {
         <FastField render={({form: {handleChange, setFieldTouched}}) => {
             const onChange = evt => {
                 handleChange(evt);
-                setFieldTouched(field.name, true);
+                setFieldTouched(field.name, field.multiple ? [true] : true);
             };
 
             return (
