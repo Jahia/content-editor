@@ -24,5 +24,6 @@ export const selectAllAction = {
             context.mappedValueConstraints,
             true
         );
+        context.formik.setFieldTouched(context.field.name, context.field.multiple ? [true] : true);
     }
 };

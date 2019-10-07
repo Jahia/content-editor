@@ -6,6 +6,7 @@ describe('selectAllAction', () => {
             const context = {
                 formik: {
                     setFieldValue: jest.fn(),
+                    setFieldTouched: jest.fn(),
                     values: {
                         fieldName: ['test1', 'test2']
                     }
@@ -42,6 +43,7 @@ describe('selectAllAction', () => {
                 ['test1', 'test2', 'test3'],
                 true
             );
+            expect(context.formik.setFieldTouched).toHaveBeenCalledTimes(1);
         });
     });
 
@@ -49,7 +51,8 @@ describe('selectAllAction', () => {
         it('should be hide for single choicelist', () => {
             const context = {
                 formik: {
-                    setFieldValue: jest.fn()
+                    setFieldValue: jest.fn(),
+                    setFieldTouched: jest.fn()
                 },
                 field: {
                     name: 'fieldName',

@@ -9,7 +9,7 @@ const Checkbox = ({field, value, id}) => {
         <FastField render={({form: {setFieldValue, setFieldTouched}}) => {
             const handleChange = (event, checked) => {
                 setFieldValue(id, checked);
-                setFieldTouched(id, true);
+                setFieldTouched(id, field.multiple ? [true] : true);
             };
 
             return (

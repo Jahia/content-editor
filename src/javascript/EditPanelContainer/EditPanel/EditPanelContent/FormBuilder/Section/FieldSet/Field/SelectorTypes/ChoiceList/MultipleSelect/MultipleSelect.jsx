@@ -35,7 +35,7 @@ const MultipleSelect = ({field, id, setActionContext}) => {
                         onChange={selection => {
                             const newSelection = selection && selection.map(data => data.value);
                             setFieldValue(field.name, newSelection, true);
-                            setFieldTouched(field.name, true);
+                            setFieldTouched(field.name, field.multiple ? [true] : true);
                         }}
                     />
                 );

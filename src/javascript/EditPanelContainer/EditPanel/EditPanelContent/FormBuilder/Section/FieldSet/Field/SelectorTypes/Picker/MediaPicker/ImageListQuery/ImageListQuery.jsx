@@ -10,6 +10,7 @@ import {MediaPickerImages} from './ImageListQuery.gql-queries';
 const ImageListQueryCmp = ({
     t,
     id,
+    field,
     setSelectedItem,
     selectedPath,
     initialSelection,
@@ -60,7 +61,7 @@ const ImageListQueryCmp = ({
                     image.uuid,
                     true
                 );
-                formik.setFieldTouched(id, true);
+                formik.setFieldTouched(field.name, field.multiple ? [true] : true);
             }}
         />
     );
@@ -75,6 +76,7 @@ ImageListQueryCmp.propTypes = {
     id: PropTypes.string.isRequired,
     setSelectedItem: PropTypes.func.isRequired,
     selectedPath: PropTypes.string.isRequired,
+    field: PropTypes.object.isRequired,
     formik: PropTypes.object.isRequired,
     initialSelection: PropTypes.array
 };

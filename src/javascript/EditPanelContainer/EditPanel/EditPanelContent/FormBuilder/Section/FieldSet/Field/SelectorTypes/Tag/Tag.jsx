@@ -27,7 +27,7 @@ const Tag = ({field, id, t}) => {
                     const adaptedSelection = adaptSelection(newSelection, separator);
 
                     setFieldValue(field.name, adaptedSelection, true);
-                    setFieldTouched(field.name, true);
+                    setFieldTouched(field.name, field.multiple ? [true] : true);
                 };
 
                 return (
