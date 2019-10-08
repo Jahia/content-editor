@@ -26,17 +26,20 @@ if (pickerConfigs) {
             cmp: DateTimePicker,
             key: 'DateTimePicker',
             supportMultiple: false,
-            adaptPropertyValue: adaptDateProperty
+            adaptValue: adaptDateProperty
         },
         DatePicker: {
             cmp: DateTimePicker,
             key: 'DatePicker',
             supportMultiple: false,
-            adaptPropertyValue: adaptDateProperty},
+            adaptValue: adaptDateProperty},
         Checkbox: {
             cmp: Checkbox,
             key: 'Checkbox',
-            adaptPropertyValue: (field, property) => {
+            initValue: field => {
+                return field.mandatory ? false : undefined;
+            },
+            adaptValue: (field, property) => {
                 return field.multiple ? property.values.map(value => value === 'true') : property.value === 'true';
             },
             supportMultiple: false
