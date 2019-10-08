@@ -1,4 +1,4 @@
-import {unpublishNode} from './unpublish.redux-actions';
+import {unpublishNode} from './unpublish.request';
 
 jest.mock('./unpublish.gql-mutation', () => {
     return {

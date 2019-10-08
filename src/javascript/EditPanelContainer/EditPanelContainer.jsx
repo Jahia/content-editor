@@ -8,10 +8,8 @@ import EditPanel from './EditPanel';
 import * as PropTypes from 'prop-types';
 import {useFormDefinition} from './FormDefinitions';
 import {withSiteInfo} from './SiteData';
-import {publishNode} from '~/Edit/publish/publish.redux-actions';
-import {saveNode} from '~/Edit/save/save.redux-actions';
-import {unpublishNode} from '~/Edit/unpublish/unpublish.redux-actions';
-import {createNode} from '~/Create/create.redux-actions';
+import {saveNode} from '~/Edit/save/save.request';
+import {createNode} from '~/Create/create.request';
 
 import {ContentEditorContext} from '../ContentEditor.context';
 
@@ -19,8 +17,6 @@ import {requiredValidation} from './validation/required';
 
 const submitActionMapper = {
     [Constants.editPanel.submitOperation.SAVE]: saveNode,
-    [Constants.editPanel.submitOperation.SAVE_PUBLISH]: publishNode,
-    [Constants.editPanel.submitOperation.UNPUBLISH]: unpublishNode,
     [Constants.editPanel.submitOperation.CREATE]: createNode
 };
 

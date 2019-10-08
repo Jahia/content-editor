@@ -18,34 +18,21 @@ jest.mock('~/actions/redux.action', () => {
         }
     };
 });
+jest.mock('./unpublish.request', () => {
+    return {
+        unpublishNode: jest.fn()
+    };
+});
 
 import {setReduxState} from '~/actions/redux.action';
+import {unpublishNode} from './unpublish.request';
 
 describe('unpublish action', () => {
     describe('onClick', () => {
-        let context;
-        beforeEach(() => {
-            context = {
-                formik: {
-                    submitForm: jest.fn(() => Promise.resolve()),
-                    resetForm: jest.fn(),
-                    setFieldValue: jest.fn()
-                }
-            };
-        });
+        it('should call unpublishNode', () => {
+            unpublishAction.onClick({});
 
-        it('should do nothing when formik is not available', () => {
-            const context = {};
-
-            unpublishAction.onClick(context);
-
-            expect(Object.keys(context).length).toBe(0);
-        });
-
-        it('should submit form when formik is available', () => {
-            unpublishAction.onClick(context);
-
-            expect(context.formik.submitForm).toHaveBeenCalled();
+            expect(unpublishNode).toHaveBeenCalled();
         });
     });
 
