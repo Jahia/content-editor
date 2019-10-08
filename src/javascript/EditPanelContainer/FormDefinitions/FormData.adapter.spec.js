@@ -5,7 +5,7 @@ jest.mock('../EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/Sele
         resolveSelectorType: ({selectorType}) => {
             if (selectorType === 'Checkbox') {
                 return {
-                    adaptPropertyValue: (field, property) => {
+                    adaptValue: (field, property) => {
                         return field.multiple ? property.values.map(value => value === 'true') : property.value === 'true';
                     }
                 };

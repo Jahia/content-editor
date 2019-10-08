@@ -16,16 +16,18 @@ const getInitialValues = (nodeData, sections) => {
 
 const getFieldValues = (field, nodeData) => {
     const property = nodeData.properties.find(prop => prop.name === field.name);
-    if (!property) {
-        return;
-    }
-
-    const formFields = {};
     const selectorType = resolveSelectorType(field);
-    if (selectorType) {
+    const formFields = {};
+
+    if (!property) {
+        // Init value
+        if (selectorType && selectorType.initValue) {
+            formFields[field.name] = selectorType.initValue(field);
+        }
+    } else if (selectorType) {
         let adaptedPropertyValue;
-        if (selectorType.adaptPropertyValue) {
-            adaptedPropertyValue = selectorType.adaptPropertyValue(field, property);
+        if (selectorType.adaptValue) {
+            adaptedPropertyValue = selectorType.adaptValue(field, property);
         } else {
             adaptedPropertyValue = field.multiple ? property.values : property.value;
         }

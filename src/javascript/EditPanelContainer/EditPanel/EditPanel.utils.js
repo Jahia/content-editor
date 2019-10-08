@@ -72,7 +72,7 @@ export function getDataToMutate(nodeData = {}, formValues = {}, sections, lang) 
 
         if (field) {
             const value = formValues[key];
-            if (value) {
+            if (value !== undefined) {
                 const fieldType = field.requiredType;
 
                 const valueObj = {};
