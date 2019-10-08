@@ -1,26 +1,16 @@
 import React from 'react';
-import {compose, withApollo} from 'react-apollo';
-import {translate} from 'react-i18next';
-import {ProgressOverlay, withNotifications} from '@jahia/react-material';
-import {Constants} from '~/ContentEditor.constants';
+import {ProgressOverlay} from '@jahia/react-material';
 import {Formik} from 'formik';
-import EditPanel from './EditPanel';
+import EditPanel from '~/EditPanelContainer/EditPanel';
 import * as PropTypes from 'prop-types';
-import {useFormDefinition} from './FormDefinitions';
-import {withSiteInfo} from './SiteData';
-import {saveNode} from '~/Edit/save/save.request';
-import {createNode} from '~/Create/create.request';
+import {useFormDefinition} from '~/EditPanelContainer/FormDefinitions';
 
-import {ContentEditorContext} from '../ContentEditor.context';
+import {ContentEditorContext} from '~/ContentEditor.context';
 
-import {requiredValidation} from './validation/required';
+import {requiredValidation} from '~/EditPanelContainer/validation/required';
+import {createNode} from './CreateForm/create.request';
 
-const submitActionMapper = {
-    [Constants.editPanel.submitOperation.SAVE]: saveNode,
-    [Constants.editPanel.submitOperation.CREATE]: createNode
-};
-
-export const EditPanelContainer = ({
+export const Create = ({
     client,
     notificationContext,
     t,
@@ -69,15 +59,7 @@ export const EditPanelContainer = ({
     };
 
     const handleSubmit = (values, actions) => {
-        const operation = values[Constants.editPanel.OPERATION_FIELD];
-        const submitAction = submitActionMapper[operation];
-
-        if (!submitAction) {
-            console.warn(`Unknown submit operation: ${operation}`);
-            actions.setSubmitting(false);
-        }
-
-        submitAction({
+        createNode({
             client,
             t,
             notificationContext,
@@ -104,11 +86,11 @@ export const EditPanelContainer = ({
     );
 };
 
-EditPanelContainer.defaultProps = {
+Create.defaultProps = {
     setUrl: () => {}
 };
 
-EditPanelContainer.propTypes = {
+Create.propTypes = {
     client: PropTypes.object.isRequired,
     t: PropTypes.func.isRequired,
     setUrl: PropTypes.func,
@@ -122,14 +104,3 @@ EditPanelContainer.propTypes = {
     formQuery: PropTypes.object.isRequired,
     formQueryParams: PropTypes.object.isRequired
 };
-
-const EditPanelContainerCmp = compose(
-    translate(),
-    withNotifications(),
-    withApollo,
-    withSiteInfo
-)(EditPanelContainer);
-
-EditPanelContainerCmp.displayName = 'EditPanelContainer';
-
-export default EditPanelContainerCmp;

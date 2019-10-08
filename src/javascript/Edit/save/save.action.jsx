@@ -40,13 +40,7 @@ export default composeActions(
                 return;
             }
 
-            const {submitForm, resetForm, setFieldValue} = formik;
-
-            setFieldValue(
-                Constants.editPanel.OPERATION_FIELD,
-                Constants.editPanel.submitOperation.SAVE,
-                false
-            );
+            const {submitForm, resetForm} = formik;
 
             submitForm()
                 .then(() => resetForm(formik.values));

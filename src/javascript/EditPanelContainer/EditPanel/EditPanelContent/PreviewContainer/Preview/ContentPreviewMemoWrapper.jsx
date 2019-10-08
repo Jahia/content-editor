@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {ContentPreview} from '@jahia/react-apollo';
 import {useContentEditorContext} from '~/ContentEditor.context';
-import {setPreviewRefetcher} from '~/EditPanelContainer/EditPanel.refetches';
+import {setPreviewRefetcher} from '~/EditPanelContainer/EditPanel/EditPanel.refetches';
 import {PreviewComponent} from '@jahia/react-material';
 import {Badge} from '@jahia/design-system-kit';
 import {getPreviewContext, removeSiblings} from './Preview.utils';

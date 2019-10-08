@@ -1,10 +1,5 @@
 export const Constants = {
     editPanel: {
-        submitOperation: {
-            SAVE: 'SAVE',
-            CREATE: 'CREATE'
-        },
-        OPERATION_FIELD: 'SYSTEM_SUBMIT_OPERATION',
         publicationStatus: {
             NOT_PUBLISHED: 'NOT_PUBLISHED',
             PUBLISHED: 'PUBLISHED',

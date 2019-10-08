@@ -1,9 +1,3 @@
-import {Constants} from '~/ContentEditor.constants';
-
-export function isSystemField(fieldKey) {
-    return fieldKey === Constants.editPanel.OPERATION_FIELD;
-}
-
 /**
  * This function perform creation of object contains only dynamic fieldSets
  * The dynamic fieldSet retrieved from sections will be added to object with
@@ -59,7 +53,7 @@ export function getFields(sections, sectionName) {
 }
 
 export function getDataToMutate(nodeData = {}, formValues = {}, sections, lang) {
-    const keys = Object.keys(formValues).filter(key => !isSystemField(key));
+    const keys = Object.keys(formValues);
     const fields = sections && getFields(sections).filter(field => !field.readOnly);
 
     const mixinsToMutate = getMixinsToMutate(nodeData, formValues, sections);
