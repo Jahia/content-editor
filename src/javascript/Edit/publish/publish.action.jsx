@@ -2,15 +2,18 @@ import {composeActions} from '@jahia/react-material';
 import {withFormikAction} from '../../actions/withFormik.action';
 import {Constants} from '~/ContentEditor.constants';
 import {reduxAction} from '~/actions/redux.action';
+import {publishNode} from './publish.request';
 
-const stateMapToContext = state => {
+const mapStateToContext = state => {
     return {
         mode: state.mode
     };
 };
 
-export default composeActions(withFormikAction,
-    reduxAction(stateMapToContext), {
+export default composeActions(
+    withFormikAction,
+    reduxAction(mapStateToContext),
+    {
         init: context => {
             context.enabled = context.mode === Constants.routes.baseEditRoute && context.nodeData.hasPermission;
 
@@ -21,20 +24,16 @@ export default composeActions(withFormikAction,
                 ].includes(context.nodeData.aggregatedPublicationInfo.publicationStatus);
             }
         },
-        onClick: ({formik}) => {
-            if (!formik) {
-                return;
-            }
-
-            const {submitForm, setFieldValue, resetForm} = formik;
-
-            setFieldValue(
-                Constants.editPanel.OPERATION_FIELD,
-                Constants.editPanel.submitOperation.SAVE_PUBLISH,
-                false
-            );
-
-            submitForm()
-                .then(() => resetForm(formik.values));
+        onClick: context => {
+            publishNode({
+                client: context.client,
+                t: context.t,
+                notificationContext: context.notificationContext,
+                data: {
+                    nodeData: context.nodeData,
+                    language: context.language,
+                    uiLang: context.uiLang
+                }
+            });
         }
     });

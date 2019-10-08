@@ -1,8 +1,8 @@
 import React, {useEffect, useRef} from 'react';
 import {Badge, MainLayout, IconButton} from '@jahia/design-system-kit';
-import {buttonRenderer, DisplayActions, ContextualMenu} from '@jahia/react-material';
+import {buttonRenderer, DisplayActions, ContextualMenu, withNotifications} from '@jahia/react-material';
 import PropTypes from 'prop-types';
-import {compose} from 'react-apollo';
+import {compose, withApollo} from 'react-apollo';
 import {translate} from 'react-i18next';
 import EditPanelContent from './EditPanelContent/EditPanelContent';
 import {connect} from 'formik';
@@ -25,8 +25,8 @@ const styles = theme => ({
     }
 });
 
-const EditPanelCmp = ({formik, title, classes, t}) => {
-    const {nodeData, siteInfo, lang} = useContentEditorContext();
+const EditPanelCmp = ({formik, title, classes, t, notificationContext, client}) => {
+    const {nodeData, siteInfo, lang, uiLang} = useContentEditorContext();
     const contentEditorHeaderMenu = useRef(null);
 
     useEffect(() => {
@@ -73,7 +73,16 @@ const EditPanelCmp = ({formik, title, classes, t}) => {
                 actions: (
                     <>
                         <DisplayActions
-                            context={{nodeData}}
+                            context={{
+                                nodeData,
+                                language: lang,
+                                uiLang,
+
+                                // TODO BACKLOG-11290 find another way to inject apollo-client, i18n, ...}
+                                t,
+                                client,
+                                notificationContext
+                            }}
                             target="editHeaderActions"
                             render={({context}) => {
                                 const Button = buttonRenderer({
@@ -93,7 +102,17 @@ const EditPanelCmp = ({formik, title, classes, t}) => {
                         />
                         <ContextualMenu
                             ref={contentEditorHeaderMenu}
-                            context={{nodeData, formik}}
+                            context={{
+                                nodeData,
+                                language: lang,
+                                uiLang,
+
+                                // TODO BACKLOG-11290 find another way to inject apollo-client, i18n, ...}
+                                t,
+                                client,
+                                notificationContext,
+                                formik
+                            }}
                             actionKey="ContentEditorHeaderMenu"
                         />
                         <IconButton data-sel-action="moreActions"
@@ -118,12 +137,16 @@ EditPanelCmp.propTypes = {
     formik: PropTypes.object.isRequired,
     t: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
+    client: PropTypes.object.isRequired,
+    notificationContext: PropTypes.object.isRequired
 };
 
 const EditPanel = compose(
     connect,
     translate(),
+    withNotifications(),
+    withApollo,
     withStyles(styles)
 )(EditPanelCmp);
 EditPanel.displayName = 'EditPanel';

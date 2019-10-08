@@ -19,37 +19,21 @@ jest.mock('~/actions/redux.action', () => {
     };
 });
 
+jest.mock('./publish.request', () => {
+    return {
+        publishNode: jest.fn()
+    };
+});
+
+import {publishNode} from './publish.request';
 import {setReduxState} from '~/actions/redux.action';
 
 describe('publish action', () => {
     describe('onClick', () => {
-        let context;
-        beforeEach(() => {
-            context = {
-                formik: {
-                    dirty: false,
-                    submitForm: jest.fn(() => Promise.resolve()),
-                    resetForm: jest.fn(),
-                    setFieldValue: jest.fn()
-                }
-            };
-            setReduxState({
-                mode: 'edit'
-            });
-        });
+        it('should call publishNode request', () => {
+            publishAction.onClick({});
 
-        it('should do nothing when formik is not available', () => {
-            const context = {};
-
-            publishAction.onClick(context);
-
-            expect(Object.keys(context).length).toBe(0);
-        });
-
-        it('should submit form when formik is available', () => {
-            publishAction.onClick(context);
-
-            expect(context.formik.submitForm).toHaveBeenCalled();
+            expect(publishNode).toHaveBeenCalled();
         });
     });
 

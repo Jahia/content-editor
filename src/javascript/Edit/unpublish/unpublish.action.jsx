@@ -1,6 +1,7 @@
 import {composeActions} from '@jahia/react-material';
 import {Constants} from '~/ContentEditor.constants';
 import {reduxAction} from '~/actions/redux.action';
+import {unpublishNode} from './unpublish.request';
 
 const mapStateToContext = state => {
     return {
@@ -16,20 +17,16 @@ export default composeActions(
                 context.nodeData.hasPermission &&
                 context.nodeData.aggregatedPublicationInfo.publicationStatus === Constants.editPanel.publicationStatus.PUBLISHED;
         },
-        onClick: ({formik}) => {
-            if (!formik) {
-                return;
-            }
-
-            const {submitForm, setFieldValue, resetForm} = formik;
-
-            setFieldValue(
-                Constants.editPanel.OPERATION_FIELD,
-                Constants.editPanel.submitOperation.UNPUBLISH,
-                false
-            );
-
-            submitForm()
-                .then(() => resetForm(formik.values));
+        onClick: context => {
+            unpublishNode({
+                client: context.client,
+                t: context.t,
+                notificationContext: context.notificationContext,
+                data: {
+                    nodeData: context.nodeData,
+                    language: context.language,
+                    uiLang: context.uiLang
+                }
+            });
         }
     });

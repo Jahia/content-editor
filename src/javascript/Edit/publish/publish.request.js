@@ -1,11 +1,10 @@
-import {UnpublishNodeMutation} from './unpublish.gql-mutation';
+import {PublishNodeMutation} from './publish.gql-mutation';
 import {NodeQuery} from '../../EditPanelContainer/NodeData/NodeData.gql-queries';
 
-export const unpublishNode = ({
+export const publishNode = ({
     client,
     t,
     notificationContext,
-    actions,
 
     data: {
         nodeData,
@@ -18,24 +17,22 @@ export const unpublishNode = ({
             path: nodeData.path,
             languages: [language]
         },
-        mutation: UnpublishNodeMutation,
+        mutation: PublishNodeMutation,
         refetchQueries: [
             {
                 query: NodeQuery,
                 variables: {
                     path: nodeData.path,
-                    language: language,
+                    language,
                     uiLang: uiLang
                 }
             }
         ]
     })
         .then(() => {
-            notificationContext.notify(t('content-editor:label.contentEditor.edit.action.unpublish.success'), ['closeButton']);
-            actions.setSubmitting(false);
+            notificationContext.notify(t('content-editor:label.contentEditor.edit.action.publish.success'), ['closeButton']);
         }, error => {
             console.error(error);
-            notificationContext.notify(t('content-editor:label.contentEditor.edit.action.unpublish.error'), ['closeButton']);
-            actions.setSubmitting(false);
+            notificationContext.notify(t('content-editor:label.contentEditor.edit.action.publish.error'), ['closeButton']);
         });
 };

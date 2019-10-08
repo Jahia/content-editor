@@ -1,4 +1,4 @@
-import {publishNode} from './publish.redux-actions';
+import {publishNode} from './publish.request';
 
 jest.mock('./publish.gql-mutation', () => {
     return {
