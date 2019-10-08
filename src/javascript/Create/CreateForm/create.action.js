@@ -21,13 +21,7 @@ export default composeActions(
                 return;
             }
 
-            const {submitForm, setFieldValue, resetForm, validateForm, setTouched, values} = formik;
-
-            setFieldValue(
-                Constants.editPanel.OPERATION_FIELD,
-                Constants.editPanel.submitOperation.CREATE,
-                false
-            );
+            const {submitForm, resetForm, validateForm, setTouched, values} = formik;
 
             submitForm()
                 .then(() => {

@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import {NodeDataFragment} from '../EditPanelContainer/NodeData/NodeData.gql-queries';
+import {NodeDataFragment} from '~/EditPanelContainer/NodeData/NodeData.gql-queries';
 
 export const FormQuery = gql`
     query createForm($uiLang:String!, $language:String!, $parentPath:String!, $path:String!, $primaryNodeType:String!) {
