@@ -52,14 +52,22 @@ export function getFields(sections, sectionName) {
     }, []);
 }
 
-export function getDataToMutate(nodeData = {}, formValues = {}, sections, lang) {
+export function getDataToMutate(formValues, sections, lang, nodeData) {
+    let propsToSave = [];
+    let propsToDelete = [];
+
+    if (!formValues) {
+        return {propsToSave, propsToDelete};
+    }
+
     const keys = Object.keys(formValues);
     const fields = sections && getFields(sections).filter(field => !field.readOnly);
 
     const mixinsToMutate = getMixinsToMutate(nodeData, formValues, sections);
 
-    let propsToSave = [];
-    let propsToDelete = [];
+    const _adaptDecimalValues = (fieldType, value) => {
+        return fieldType === 'DECIMAL' || fieldType === 'DOUBLE' ? value && value.replace(',', '.') : value;
+    };
 
     keys.forEach(key => {
         const field = fields.find(field => field.name === key);
@@ -73,18 +81,19 @@ export function getDataToMutate(nodeData = {}, formValues = {}, sections, lang) 
 
                 if (field.multiple) {
                     const filteredUndefinedValues = value.filter(v => v !== undefined);
+                    const adaptDecimalValues = filteredUndefinedValues.map(value => _adaptDecimalValues(fieldType, value));
 
                     if (fieldType === 'DATE') {
                         valueObj.notZonedDateValues = filteredUndefinedValues;
                     } else {
-                        valueObj.values = filteredUndefinedValues;
+                        valueObj.values = adaptDecimalValues;
                     }
                 } else if (fieldType === 'DATE') {
                     valueObj.notZonedDateValue = value;
                 } else {
                     // In case we have field of type decimal or double, we should store number
                     // with a decimal point separator instead of decimal comma separator into JCR.
-                    valueObj.value = fieldType === 'DECIMAL' || fieldType === 'DOUBLE' ? value && value.replace(',', '.') : value;
+                    valueObj.value = _adaptDecimalValues(fieldType, value);
                 }
 
                 const fieldSet = getDynamicFieldSetOfField(sections, key);
@@ -98,11 +107,13 @@ export function getDataToMutate(nodeData = {}, formValues = {}, sections, lang) 
                         language: lang
                     });
                 }
-            } else {
+            } else if (nodeData) {
                 const nodeProperty = nodeData.properties.find(prop => prop.name === key);
                 if (nodeProperty && (field.multiple ? nodeProperty.values : nodeProperty.value)) {
                     propsToDelete.push(key);
                 }
+            } else {
+                propsToDelete.push(key);
             }
         }
     });
@@ -164,10 +175,10 @@ export function getDynamicFieldSetOfField(sections, fieldName) {
  * @returns boolean value, true if the node has mixin, false otherwise.
  */
 function hasNodeMixin(node, mixin) {
-    return node.mixinTypes && node.mixinTypes.find(mixinType => mixinType.name === mixin);
+    return node && node.mixinTypes && node.mixinTypes.find(mixinType => mixinType.name === mixin);
 }
 
-function getMixinsToMutate(nodeData = {}, formValues = {}, sections) {
+function getMixinsToMutate(nodeData, formValues, sections) {
     let mixinsToAdd = [];
     let mixinsToDelete = [];
 
