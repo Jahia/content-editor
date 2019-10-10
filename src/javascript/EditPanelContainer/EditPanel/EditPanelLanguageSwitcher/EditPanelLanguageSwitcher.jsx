@@ -10,6 +10,13 @@ import {EditPanelDialogConfirmation} from '../EditPanelDialogConfirmation';
 const EditPanelLanguageSwitcher = ({lang, siteInfo, onSelectLanguage, formik}) => {
     const [dialogConfirmation, setDialogConfirmation] = useState({open: false, lang: lang});
 
+    const switchLanguage = language => {
+        onSelectLanguage(language);
+
+        // Switch edit mode linker language
+        window.parent.authoringApi.switchLanguage(language);
+    };
+
     return (
         <>
             <LanguageSwitcher lang={lang}
@@ -20,7 +27,7 @@ const EditPanelLanguageSwitcher = ({lang, siteInfo, onSelectLanguage, formik}) =
                                       if (formik.dirty) {
                                           setDialogConfirmation({open: true, lang: language});
                                       } else {
-                                          onSelectLanguage(language);
+                                          switchLanguage(language);
                                       }
                                   }
                               }}
@@ -30,7 +37,7 @@ const EditPanelLanguageSwitcher = ({lang, siteInfo, onSelectLanguage, formik}) =
                 open={dialogConfirmation.open}
                 titleKey="content-editor:label.contentEditor.switchLanguage.dialog.title"
                 formik={formik}
-                actionCallback={() => onSelectLanguage(dialogConfirmation.lang)}
+                actionCallback={() => switchLanguage(dialogConfirmation.lang)}
                 onCloseDialog={() => setDialogConfirmation({open: false})}
             />
         </>
