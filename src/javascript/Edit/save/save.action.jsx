@@ -19,6 +19,10 @@ export default composeActions(
         init: context => {
             context.enabled = context.mode === Constants.routes.baseEditRoute;
 
+            if (context.enabled) {
+                context.disabled = !context.formik.dirty;
+            }
+
             context.addWarningBadge = Object.keys(context.formik.errors).length > 0;
         },
         onClick: ({formik, renderComponent}) => {
