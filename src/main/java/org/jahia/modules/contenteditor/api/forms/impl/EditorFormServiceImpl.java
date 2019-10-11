@@ -401,17 +401,14 @@ public class EditorFormServiceImpl implements EditorFormService {
                     }
                 }
             }
+
             ExtendedNodeType extendedNodeType = NodeTypeRegistry.getInstance().getNodeType(propertyDefinition.getDeclaringNodeType().getAlias());
-            String aliasPropertyLabel = extendedNodeType.getPropertyDefinition(propertyDefinition.getName()).getLabel(uiLocale);
-            String propertyLabel = propertyDefinition.getLabel(uiLocale);
-            String propertyDescription = propertyDefinition.getTooltip(uiLocale, extendedNodeType);
-            if (!propertyLabel.equals(aliasPropertyLabel)) {
-                // we do this check because the old code was accessing the node type using the alias, so we prefer to
-                // be 100% compatible for the moment but we should get rid of this if there is no real reason to use
-                // the alias.
-                logger.warn("Alias label and regular label are not equal !");
-                propertyLabel = aliasPropertyLabel;
-            }
+            // Use item definition to resolve labels. (same way as ContentDefinitionHelper.getGWTJahiaNodeType())
+            Optional<ExtendedItemDefinition> optionalItem = extendedNodeType.getItems().stream().filter(item -> StringUtils.equals(item.getName(), propertyDefinition.getName())).findAny();
+            ExtendedItemDefinition item = optionalItem.isPresent() ? optionalItem.get() : propertyDefinition;
+            String propertyLabel = item.getLabel(uiLocale, extendedNodeType);
+            String propertyDescription = item.getTooltip(uiLocale, extendedNodeType);
+
             String selectorType = SelectorType.nameFromValue(propertyDefinition.getSelector());
             if (selectorType == null) {
                 // selector type was not found in the list of selector types in the core, let's try our more expanded one
