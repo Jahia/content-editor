@@ -52,7 +52,7 @@ export function getFields(sections, sectionName) {
     }, []);
 }
 
-export function getDataToMutate(formValues, sections, lang, nodeData) {
+export function getDataToMutate({nodeData, formValues, sections, lang}) {
     let propsToSave = [];
     let propsToDelete = [];
 
@@ -112,8 +112,6 @@ export function getDataToMutate(formValues, sections, lang, nodeData) {
                 if (nodeProperty && (field.multiple ? nodeProperty.values : nodeProperty.value)) {
                     propsToDelete.push(key);
                 }
-            } else {
-                propsToDelete.push(key);
             }
         }
     });
