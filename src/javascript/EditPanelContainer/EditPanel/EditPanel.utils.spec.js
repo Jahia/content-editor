@@ -218,6 +218,7 @@ describe('EditPanel utils', () => {
         },
         {
             name: 'empty prop',
+            skipCreate: true,
             nodeData: {
                 properties: [{
                     name: 'prop',
@@ -231,6 +232,7 @@ describe('EditPanel utils', () => {
         },
         {
             name: 'null prop',
+            skipCreate: true,
             nodeData: {
                 properties: [{
                     name: 'prop',
@@ -244,6 +246,7 @@ describe('EditPanel utils', () => {
         },
         {
             name: 'undefined prop',
+            skipCreate: true,
             nodeData: {
                 properties: [{
                     name: 'prop',
@@ -436,13 +439,13 @@ describe('EditPanel utils', () => {
     describe('getDataToMutate', () => {
         testCases.forEach(({name, nodeData, formValues, ExpectedPropsToSave, ExpectedPropsToDelete, skipCreate}) => {
             it(`Existing ${name}`, () => {
-                const {propsToSave, propsToDelete} = getDataToMutate(formValues, sections, lang, nodeData);
+                const {propsToSave, propsToDelete} = getDataToMutate({nodeData, formValues, sections, lang});
                 expect(propsToSave).toEqual(ExpectedPropsToSave || []);
                 expect(propsToDelete).toEqual(ExpectedPropsToDelete || []);
             });
             if (!skipCreate) {
                 it(`New ${name}`, () => {
-                    const {propsToSave, propsToDelete} = getDataToMutate(formValues, sections, lang);
+                    const {propsToSave, propsToDelete} = getDataToMutate({formValues, sections, lang});
                     expect(propsToSave).toEqual(ExpectedPropsToSave || []);
                     expect(propsToDelete).toEqual(ExpectedPropsToDelete || []);
                 });
