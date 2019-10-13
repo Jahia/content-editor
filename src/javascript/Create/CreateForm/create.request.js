@@ -18,7 +18,7 @@ export const createNode = ({
         language
     }
 }) => {
-    const {propsToSave, mixinsToAdd} = getDataToMutate({values, sections, language});
+    const {propsToSave, mixinsToAdd} = getDataToMutate({formValues: values, sections, lang: language});
     // Todo generate node name from the title or primary property if any - BACKLOG-11079
     const nodeName = nodeTypeFormatter(primaryNodeType);
     client.mutate({
