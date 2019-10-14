@@ -2,7 +2,7 @@ import {connect} from 'react-redux';
 import {compose, withApollo} from 'react-apollo';
 import {withNotifications} from '@jahia/react-material';
 import {translate} from 'react-i18next';
-import {withSiteInfo} from '~/EditPanelContainer/SiteData';
+import {withSiteInfo} from '~/SiteData';
 
 import {FormQuery} from './EditForm.gql-queries';
 import {Edit as EditComponent} from './Edit';

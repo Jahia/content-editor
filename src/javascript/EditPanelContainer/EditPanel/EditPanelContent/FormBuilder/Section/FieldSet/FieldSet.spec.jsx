@@ -16,7 +16,7 @@ jest.mock('../../../../../../ContentEditor.context', () => {
     };
 });
 
-import {setContext} from '../../../../../../ContentEditor.context';
+import {setContext} from '~/ContentEditor.context';
 
 describe('FieldSet component', () => {
     let props;

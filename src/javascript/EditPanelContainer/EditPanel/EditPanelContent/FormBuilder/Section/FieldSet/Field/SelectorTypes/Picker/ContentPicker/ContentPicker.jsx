@@ -5,7 +5,7 @@ import {ContentPickerEmpty} from './ContentPickerEmpty/ContentPickerEmpty';
 import {ContentPickerFilled} from './ContentPickerFilled/ContentPickerFilled';
 import pickerConfigs from '../Picker.configs';
 import {translate} from 'react-i18next';
-import {FieldPropTypes} from '../../../../../../../../../FormDefinitions/FormData.proptypes';
+import {FieldPropTypes} from '~/EditPanelContainer/EditPanel/FormDefinitions/FormData.proptypes';
 
 const ContentPickerCmp = ({field, value, id, editorContext, formik, t, setActionContext}) => {
     // Resolve picker configuration

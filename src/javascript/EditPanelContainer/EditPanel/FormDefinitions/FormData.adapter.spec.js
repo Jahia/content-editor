@@ -1,6 +1,6 @@
 import {adaptFormData} from './FormData.adapter';
 
-jest.mock('../EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes.utils', () => {
+jest.mock('../EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes.utils', () => {
     return {
         resolveSelectorType: ({selectorType}) => {
             if (selectorType === 'Checkbox') {
@@ -16,7 +16,7 @@ jest.mock('../EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/Sele
     };
 });
 
-jest.mock('../../date.config', () => {
+jest.mock('~/date.config', () => {
     return date => {
         return {
             locale() {

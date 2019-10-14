@@ -4,7 +4,7 @@ import {FastField} from 'formik';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {adaptSelection} from './Tag.utils';
-import {FieldPropTypes} from '../../../../../../../../FormDefinitions/FormData.proptypes';
+import {FieldPropTypes} from '~/EditPanelContainer/EditPanel/FormDefinitions/FormData.proptypes';
 
 const Tag = ({field, id, t}) => {
     const adaptOptions = options => (

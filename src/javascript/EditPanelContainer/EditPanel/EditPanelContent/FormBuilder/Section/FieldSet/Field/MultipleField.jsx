@@ -6,7 +6,7 @@ import * as PropTypes from 'prop-types';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
 import {connect, FieldArray} from 'formik';
-import {FieldPropTypes} from '../../../../../../FormDefinitions';
+import {FieldPropTypes} from '~/EditPanelContainer/EditPanel/FormDefinitions';
 
 const styles = theme => {
     return {

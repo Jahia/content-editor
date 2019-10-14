@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'formik';
 import {MediaPickerEmpty} from './MediaPickerEmpty/MediaPickerEmpty';
 import {MediaPickerFilled} from './MediaPickerFilled/MediaPickerFilled';
-import {FieldPropTypes} from '../../../../.././../../../../FormDefinitions/FormData.proptypes';
+import {FieldPropTypes} from '~/EditPanelContainer/EditPanel/FormDefinitions/FormData.proptypes';
 
 const MediaPickerCmp = ({field, value, id, editorContext, formik, setActionContext}) => {
     if (value) {

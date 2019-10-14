@@ -7,7 +7,7 @@ import {encodeJCRPath} from '../../../../../../../../../EditPanel.utils';
 import {MediaPickerFilledQuery} from './MediaPickerFilled.gql-queries';
 import {MediaPickerDialog} from '../MediaPickerDialog';
 import {useQuery} from 'react-apollo-hooks';
-import {FieldPropTypes} from '../../../../.././../../../../../FormDefinitions/FormData.proptypes';
+import {FieldPropTypes} from '~/EditPanelContainer/EditPanel/FormDefinitions/FormData.proptypes';
 
 const MediaPickerFilledCmp = ({
     t,
