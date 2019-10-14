@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {FastField} from 'formik';
 import {TextArea} from '~/DesignSystem/TextArea';
-import {FieldPropTypes} from '~/EditPanelContainer/FormDefinitions/FormData.proptypes';
+import {FieldPropTypes} from '~/EditPanelContainer/EditPanel/FormDefinitions/FormData.proptypes';
 
 export const TextAreaField = ({id, field}) => {
     return (

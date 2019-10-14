@@ -2,7 +2,7 @@ import {MultipleInput} from '~/DesignSystem/MultipleInput';
 import {FastField} from 'formik';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {FieldPropTypes} from '~/EditPanelContainer/FormDefinitions/FormData.proptypes';
+import {FieldPropTypes} from '~/EditPanelContainer/EditPanel/FormDefinitions/FormData.proptypes';
 
 const MultipleSelect = ({field, id, setActionContext}) => {
     return (

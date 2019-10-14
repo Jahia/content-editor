@@ -6,7 +6,7 @@ import {withStyles} from '@material-ui/core';
 import {Typography, Toggle} from '@jahia/design-system-kit';
 import {compose} from 'react-apollo';
 
-import {FieldSetPropTypes} from '../../../../../FormDefinitions/FormData.proptypes';
+import {FieldSetPropTypes} from '~/EditPanelContainer/EditPanel/FormDefinitions/FormData.proptypes';
 
 import {FieldContainer} from './Field';
 

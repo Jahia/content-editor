@@ -5,8 +5,8 @@ import {withStyles} from '@material-ui/core';
 import {Section} from './Section';
 import {Form} from 'formik';
 
-import {useContentEditorContext} from '../../../../ContentEditor.context';
-import {SectionsPropTypes} from '../../../FormDefinitions/FormData.proptypes';
+import {useContentEditorContext} from '~/ContentEditor.context';
+import {SectionsPropTypes} from '~/EditPanelContainer/EditPanel/FormDefinitions/FormData.proptypes';
 
 let styles = theme => ({
     container: {

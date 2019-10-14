@@ -3,11 +3,11 @@ import {ProgressOverlay} from '@jahia/react-material';
 import {Formik} from 'formik';
 import EditPanel from '~/EditPanelContainer/EditPanel';
 import * as PropTypes from 'prop-types';
-import {useFormDefinition} from '~/EditPanelContainer/FormDefinitions';
+import {useFormDefinition} from '~/EditPanelContainer/EditPanel/FormDefinitions';
 
 import {ContentEditorContext} from '~/ContentEditor.context';
 
-import {requiredValidation} from '~/EditPanelContainer/validation/required';
+import {requiredValidation} from '~/Validation/required';
 import {saveNode} from './save/save.request';
 
 export const Edit = ({

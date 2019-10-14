@@ -4,7 +4,7 @@ import React, {useState} from 'react';
 import {Picker} from '~/DesignSystem/Picker';
 import {translate} from 'react-i18next';
 import {ContentPickerDialog} from '../ContentPickerDialog';
-import {FieldPropTypes} from '../../../../../../../../../../FormDefinitions/FormData.proptypes';
+import {FieldPropTypes} from '~/EditPanelContainer/EditPanel/FormDefinitions/FormData.proptypes';
 
 const ContentPickerEmptyCmp = ({
     t,

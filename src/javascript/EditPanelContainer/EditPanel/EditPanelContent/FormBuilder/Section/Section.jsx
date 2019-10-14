@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core';
 import {Typography} from '@jahia/design-system-kit';
 
-import {SectionPropTypes} from '../../../../FormDefinitions/FormData.proptypes';
+import {SectionPropTypes} from '~/EditPanelContainer/EditPanel/FormDefinitions/FormData.proptypes';
 import {FieldSet} from './FieldSet';
 
 let styles = theme => ({

@@ -6,8 +6,8 @@ import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
 import * as PropTypes from 'prop-types';
 import {ContextualMenu} from '@jahia/react-material';
-import {FieldPropTypes} from '../../../../../../FormDefinitions';
-import {SiteInfoPropTypes} from '../../../../../../SiteData';
+import {FieldPropTypes} from '~/EditPanelContainer/EditPanel/FormDefinitions';
+import {SiteInfoPropTypes} from '~/SiteData';
 import {MultipleField} from './MultipleField';
 import {SingleField} from './SingleField';
 

@@ -15,7 +15,7 @@ jest.mock('../../../../ContentEditor.context', () => {
         }
     };
 });
-import {setContext} from '../../../../ContentEditor.context';
+import {setContext} from '~/ContentEditor.context';
 
 describe('FormBuilder component', () => {
     let context;

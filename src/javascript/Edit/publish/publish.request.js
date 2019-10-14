@@ -1,5 +1,5 @@
 import {PublishNodeMutation} from './publish.gql-mutation';
-import {NodeQuery} from '../../EditPanelContainer/NodeData/NodeData.gql-queries';
+import {NodeQuery} from '~/NodeData/NodeData.gql-queries';
 
 export const publishNode = ({
     client,

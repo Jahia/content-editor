@@ -1,7 +1,7 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
 import {Toggle} from '@jahia/design-system-kit';
-import {FieldPropTypes} from '../../../../../../../../FormDefinitions/FormData.proptypes';
+import {FieldPropTypes} from '~/EditPanelContainer/EditPanel/FormDefinitions/FormData.proptypes';
 import {FastField} from 'formik';
 
 const Checkbox = ({field, value, id}) => {

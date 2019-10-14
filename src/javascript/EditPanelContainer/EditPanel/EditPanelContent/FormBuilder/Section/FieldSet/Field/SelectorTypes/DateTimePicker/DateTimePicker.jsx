@@ -5,7 +5,7 @@ import {FastField} from 'formik';
 import {DatePickerInput} from '~/DesignSystem/DatePickerInput';
 import dayjs from 'dayjs';
 import {fillDisabledDaysFromJCRConstraints} from './DateTimePicker.utils';
-import {FieldPropTypes} from '../../../../../../../../FormDefinitions/FormData.proptypes';
+import {FieldPropTypes} from '~/EditPanelContainer/EditPanel/FormDefinitions/FormData.proptypes';
 
 const variantMapper = {
     DatePicker: 'date',

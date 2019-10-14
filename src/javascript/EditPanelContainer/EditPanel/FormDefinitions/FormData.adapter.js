@@ -1,6 +1,6 @@
-import dayjs from '../../date.config';
-import {getDynamicFieldSets, getFields} from '../EditPanel/EditPanel.utils';
-import {resolveSelectorType} from '../EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes.utils';
+import dayjs from '~/date.config';
+import {getDynamicFieldSets, getFields} from '../EditPanel.utils';
+import {resolveSelectorType} from '../EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes.utils';
 
 const getInitialValues = (nodeData, sections) => {
     // Retrieve dynamic fieldSets

@@ -2,7 +2,7 @@ import React from 'react';
 import CKEditor from 'ckeditor4-react';
 CKEditor.displayName = 'CKEditor';
 import * as PropTypes from 'prop-types';
-import {FieldPropTypes} from '~/EditPanelContainer/FormDefinitions/FormData.proptypes';
+import {FieldPropTypes} from '~/EditPanelContainer/EditPanel/FormDefinitions/FormData.proptypes';
 import {FastField} from 'formik';
 
 export class RichTextCmp extends React.Component {
