@@ -1,4 +1,4 @@
-import {getDynamicFieldSetOfField} from '~/EditPanelContainer/EditPanel/EditPanel.utils';
+import {getDynamicFieldSetOfField} from '~/EditPanel/EditPanel.utils';
 
 const requiredFieldValidation = (value, multiple) => {
     const error = 'required';

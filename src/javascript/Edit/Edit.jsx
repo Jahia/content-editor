@@ -1,9 +1,9 @@
 import React from 'react';
 import {ProgressOverlay} from '@jahia/react-material';
 import {Formik} from 'formik';
-import EditPanel from '~/EditPanelContainer/EditPanel';
+import EditPanel from '~/EditPanel';
 import * as PropTypes from 'prop-types';
-import {useFormDefinition} from '~/EditPanelContainer/EditPanel/FormDefinitions';
+import {useFormDefinition} from '~/EditPanel/FormDefinitions';
 
 import {ContentEditorContext} from '~/ContentEditor.context';
 
