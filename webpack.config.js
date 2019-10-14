@@ -13,6 +13,7 @@ require("fs").readdirSync(normalizedPath).forEach(function(file) {
 });
 
 module.exports = (env, argv) => {
+    let _argv = argv || {};
     let config = {
         entry: {
             main: [path.resolve(__dirname, 'src/javascript/register')]
@@ -61,9 +62,9 @@ module.exports = (env, argv) => {
         mode: 'development'
     };
 
-    config.devtool = (argv.mode === 'production') ? 'source-map' : 'eval-source-map';
+    config.devtool = (_argv.mode === 'production') ? 'source-map' : 'eval-source-map';
 
-    if (argv.analyze) {
+    if (_argv.analyze) {
         config.devtool = 'source-map';
         config.plugins.push(new BundleAnalyzerPlugin());
     }
