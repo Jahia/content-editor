@@ -44,7 +44,7 @@ describe('unpublish action', () => {
                     aggregatedPublicationInfo: {
                         publicationStatus: 'PUBLISHED'
                     },
-                    hasPermission: true
+                    hasPublishPermission: true
                 }
             };
 
@@ -68,7 +68,7 @@ describe('unpublish action', () => {
         });
 
         it('should not display unpublish action when you haven\'t the proper permission', () => {
-            context.nodeData.hasPermission = false;
+            context.nodeData.hasPublishPermission = false;
             unpublishAction.init(context);
 
             expect(context.enabled).toBe(false);

@@ -14,7 +14,7 @@ export default composeActions(
     {
         init: context => {
             context.enabled = context.mode === Constants.routes.baseEditRoute &&
-                context.nodeData.hasPermission &&
+                context.nodeData.hasPublishPermission &&
                 context.nodeData.aggregatedPublicationInfo.publicationStatus === Constants.editPanel.publicationStatus.PUBLISHED;
         },
         onClick: context => {

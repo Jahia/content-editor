@@ -46,7 +46,8 @@ const NodeDataFragment = {
                 aggregatedPublicationInfo(language: $language, subNodes: false, references: false) {
                     publicationStatus
                 }
-                hasPermission(permissionName: "publish")
+                hasPublishPermission: hasPermission(permissionName: "publish")
+                hasStartPublicationWorkflowPermission: hasPermission(permissionName: "publication-start")
             }
         }
         ${PredefinedFragments.nodeCacheRequiredFields.gql}`
