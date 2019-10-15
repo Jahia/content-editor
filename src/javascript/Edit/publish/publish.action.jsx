@@ -15,7 +15,7 @@ export default composeActions(
     reduxAction(mapStateToContext),
     {
         init: context => {
-            context.enabled = context.mode === Constants.routes.baseEditRoute && context.nodeData.hasPermission;
+            context.enabled = context.mode === Constants.routes.baseEditRoute && context.nodeData.hasPublishPermission;
 
             if (context.enabled) {
                 context.disabled = context.formik.dirty || [

@@ -53,7 +53,7 @@ describe('publish action', () => {
                     aggregatedPublicationInfo: {
                         publicationStatus: 'MODIFIED'
                     },
-                    hasPermission: true
+                    hasPublishPermission: true
                 }
             };
 
@@ -93,7 +93,7 @@ describe('publish action', () => {
         });
 
         it('should undisplay publish action when you haven\'t the proper permission', () => {
-            context.nodeData.hasPermission = false;
+            context.nodeData.hasPublishPermission = false;
             publishAction.init(context, props);
 
             expect(context.enabled).toBe(false);
