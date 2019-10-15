@@ -21,7 +21,11 @@ const styles = theme => ({
         fontSize: '13px',
         lineHeight: '24px',
         flex: '0 1 100%',
-        resize: 'vertical'
+        resize: 'vertical',
+        '&:focus': {
+            outline: 'none',
+            border: `1px solid ${theme.palette.brand.alpha}`
+        }
     },
     disabled: {
         backgroundColor: theme.palette.ui.alpha,
@@ -55,7 +59,7 @@ const TextAreaCmp = ({
                 aria-invalid={error}
                 disabled={disabled}
                 {...otherProps}
-             />
+            />
             {error ? <ErrrorOutline className={classes.errorIcon}/> : null}
         </div>
     );
