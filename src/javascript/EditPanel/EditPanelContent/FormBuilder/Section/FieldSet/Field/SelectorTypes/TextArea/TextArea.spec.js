@@ -29,12 +29,12 @@ describe('TextArea component', () => {
         expect(cmp.props().id).toBe(props.id);
     });
 
-    it('should disabled field when readOnly', () => {
+    it('should field be readOnly', () => {
         props.field.readOnly = true;
         const RenderProps = shallow(<TextArea {...props}/>).props().render;
         const cmp = shallow(<RenderProps field={{value: 'Yolooo'}} form={{setFieldTouched: handleFieldTouched, setFieldValue: handleChange}}/>);
 
-        expect(cmp.props().disabled).toBe(true);
+        expect(cmp.props().readonly).toBe(true);
     });
 
     it('should call formik.handleChange on change', () => {
@@ -47,10 +47,10 @@ describe('TextArea component', () => {
         expect(handleFieldTouched).toHaveBeenCalledWith('myOption', true);
     });
 
-    it('should not disabled field when not readOnly', () => {
+    it('should field not be readOnly', () => {
         const RenderProps = shallow(<TextArea {...props}/>).props().render;
         const cmp = shallow(<RenderProps field={{value: 'Yolooo'}} form={{setFieldTouched: handleFieldTouched, setFieldValue: handleChange}}/>);
 
-        expect(cmp.props().disabled).toBe(false);
+        expect(cmp.props().readonly).toBe(false);
     });
 });
