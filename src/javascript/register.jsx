@@ -5,7 +5,7 @@ import {ArrowBack} from '@material-ui/icons';
 import goBackAction from './actions/goBack.action';
 import {Constants} from '~/ContentEditor.constants';
 import ContentEditor from './ContentEditor';
-import {SelectorTypes} from './EditPanelContainer/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes';
+import {SelectorTypes} from '~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes';
 import {registerActions as registerEditActions} from '~/Edit';
 import {registerActions as registerCreateActions} from '~/Create';
 

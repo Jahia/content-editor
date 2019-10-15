@@ -1,6 +1,6 @@
 import React from 'react';
 import {composeActions, componentRendererAction} from '@jahia/react-material';
-import {EditPanelDialogConfirmation} from '../EditPanelContainer/EditPanel/EditPanelDialogConfirmation';
+import {EditPanelDialogConfirmation} from '~/EditPanel/EditPanelDialogConfirmation';
 import {withFormikAction} from './withFormik.action';
 import {reduxAction} from './redux.action';
 import {cmGoto} from '../ContentManager.redux-actions';

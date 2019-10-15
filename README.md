@@ -29,7 +29,8 @@ The file structure reflect the domain and their relations. The Goal is to stay s
 
 We currently have:
 ```
-- EditPanelContainer
+  - Create
+  - Edit
   - EditPanel
     - EditPanelContent
       - Preview

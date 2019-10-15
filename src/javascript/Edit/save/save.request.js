@@ -1,8 +1,8 @@
 import {SavePropertiesMutation} from './save.gql-mutation';
-import {getDataToMutate} from '~/EditPanelContainer/EditPanel/EditPanel.utils';
+import {getDataToMutate} from '~/EditPanel/EditPanel.utils';
 import {NodeQuery} from '~/NodeData/NodeData.gql-queries';
-import {refetchPreview} from '~/EditPanelContainer/EditPanel/EditPanel.refetches';
-import {getPreviewPath} from '~/EditPanelContainer/EditPanel/EditPanelContent/PreviewContainer/Preview/Preview.utils';
+import {refetchPreview} from '~/EditPanel/EditPanel.refetches';
+import {getPreviewPath} from '~/EditPanel/EditPanelContent/PreviewContainer/Preview/Preview.utils';
 
 export const saveNode = ({
     client,
@@ -19,7 +19,7 @@ export const saveNode = ({
         uiLang
     }
 }) => {
-    const dataToMutate = getDataToMutate(nodeData, values, sections, language);
+    const dataToMutate = getDataToMutate({nodeData, formValues: values, sections, lang: language});
 
     client.mutate({
         variables: {
