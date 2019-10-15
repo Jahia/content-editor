@@ -1,12 +1,10 @@
 import {Picker} from '@jahia/react-apollo';
-import {NodeTrees, PickerTreeViewMaterial} from '@jahia/react-material';
+import {NodeTrees, DisplayActions, iconButtonRenderer, PickerTreeViewMaterial} from '@jahia/react-material';
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
 import Drawer from '@material-ui/core/Drawer';
 import Button from '@material-ui/core/Button';
-import CloudUpload from '@material-ui/icons/CloudUpload';
-import {Typography} from '@jahia/design-system-kit';
 
 import {withStyles} from '@material-ui/core';
 import {getDetailedPathArray, getPathWithoutFile, getSite} from './PickerDialog.utils';
@@ -39,9 +37,6 @@ const styles = theme => ({
         }
     },
     actionUpload: {
-        // TODO: update display of action upload
-        // ticket: https://jira.jahia.org/browse/BACKLOG-10624
-        display: 'none',
         alignItems: 'center',
         '& label': {
             marginLeft: '0.7rem'
@@ -135,14 +130,11 @@ const PickerDialogCmp = ({
 
                 <div className={classes.actions}>
                     <div className={classes.actionUpload}>
-                        <CloudUpload/>
-                        <Typography>
-                            drag and drop your files here, or
-                        </Typography>
-                        <label>
-                            <Typography>Browse your computer</Typography>
-                            <input type="file" id={idInput}/>
-                        </label>
+                        <DisplayActions context={{path: selectedPath}}
+                                        target="pickerDialogAction"
+                                        render={iconButtonRenderer({color: 'inherit', size: 'compact'})}
+                        />
+                        <DisplayActions/>
                     </div>
                     <div className={classes.actionButtons}>
                         <Button
