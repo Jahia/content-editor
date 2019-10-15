@@ -19,13 +19,12 @@ export const TextAreaField = ({id, field}) => {
                               name={name}
                               aria-labelledby={`${field.name}-label`}
                               value={value || ''}
-                              disabled={field.readOnly}
+                              readonly={field.readOnly}
                               onChange={handleChange}
                     />
                 );
             }}
         />
-
     );
 };
 
