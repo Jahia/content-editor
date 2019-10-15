@@ -19,7 +19,7 @@ export const TextAreaField = ({id, field}) => {
                               name={name}
                               aria-labelledby={`${field.name}-label`}
                               value={value || ''}
-                              readonly={field.readOnly}
+                              readOnly={field.readOnly}
                               onChange={handleChange}
                     />
                 );

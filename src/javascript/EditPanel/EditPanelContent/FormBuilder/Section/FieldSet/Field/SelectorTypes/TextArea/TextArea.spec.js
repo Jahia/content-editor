@@ -34,7 +34,7 @@ describe('TextArea component', () => {
         const RenderProps = shallow(<TextArea {...props}/>).props().render;
         const cmp = shallow(<RenderProps field={{value: 'Yolooo'}} form={{setFieldTouched: handleFieldTouched, setFieldValue: handleChange}}/>);
 
-        expect(cmp.props().readonly).toBe(true);
+        expect(cmp.props().readOnly).toBe(true);
     });
 
     it('should call formik.handleChange on change', () => {
@@ -51,6 +51,6 @@ describe('TextArea component', () => {
         const RenderProps = shallow(<TextArea {...props}/>).props().render;
         const cmp = shallow(<RenderProps field={{value: 'Yolooo'}} form={{setFieldTouched: handleFieldTouched, setFieldValue: handleChange}}/>);
 
-        expect(cmp.props().readonly).toBe(false);
+        expect(cmp.props().readOnly).toBe(false);
     });
 });
