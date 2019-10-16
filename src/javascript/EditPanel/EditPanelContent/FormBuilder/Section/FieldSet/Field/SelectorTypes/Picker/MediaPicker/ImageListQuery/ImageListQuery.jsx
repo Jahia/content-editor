@@ -9,12 +9,10 @@ import {MediaPickerImages} from './ImageListQuery.gql-queries';
 
 const ImageListQueryCmp = ({
     t,
-    id,
-    field,
     setSelectedItem,
+    onImageDoubleClick,
     selectedPath,
-    initialSelection,
-    formik
+    initialSelection
 }) => {
     const {data, error, loading} = useQuery(MediaPickerImages, {
         variables: {
@@ -55,14 +53,7 @@ const ImageListQueryCmp = ({
             error={error}
             initialSelection={initialSelection}
             onImageSelection={setSelectedItem}
-            onImageDoubleClick={image => {
-                formik.setFieldValue(
-                    id,
-                    image.uuid,
-                    true
-                );
-                formik.setFieldTouched(field.name, field.multiple ? [true] : true);
-            }}
+            onImageDoubleClick={onImageDoubleClick}
         />
     );
 };
@@ -73,11 +64,9 @@ ImageListQueryCmp.defaultProps = {
 
 ImageListQueryCmp.propTypes = {
     t: PropTypes.func.isRequired,
-    id: PropTypes.string.isRequired,
     setSelectedItem: PropTypes.func.isRequired,
+    onImageDoubleClick: PropTypes.func.isRequired,
     selectedPath: PropTypes.string.isRequired,
-    field: PropTypes.object.isRequired,
-    formik: PropTypes.object.isRequired,
     initialSelection: PropTypes.array
 };
 

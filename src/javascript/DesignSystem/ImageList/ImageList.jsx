@@ -33,7 +33,7 @@ export const ImageListCmp = ({error, images, multipleSelectable, classes, onImag
         }
 
         setSelectedImages(newSelectedImg);
-        onImageSelection(newSelectedImg);
+        onImageSelection(multipleSelectable ? newSelectedImg : newSelectedImg[0]);
     }, [multipleSelectable, onImageSelection, selectedImages]);
 
     if (error) {

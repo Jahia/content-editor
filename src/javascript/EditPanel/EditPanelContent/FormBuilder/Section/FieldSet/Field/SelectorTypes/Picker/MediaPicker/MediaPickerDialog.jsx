@@ -23,53 +23,55 @@ export const MediaPickerDialog = ({
 }) => {
     return (
         <Dialog fullScreen open={isOpen} TransitionComponent={Transition}>
-            <FastField render={({form}) => (
-                <PickerDialog
-                idInput={id}
-                site={editorContext.site}
-                lang={editorContext.lang}
-                initialSelectedItem={initialSelectedItem}
-                nodeTreeConfigs={[
-                    {
-                        rootPath: '/files',
-                        selectableTypes: ['jnt:folder'],
-                        type: 'files',
-                        openableTypes: ['jnt:folder'],
-                        rootLabel: t(
-                            'content-editor:label.contentEditor.edit.fields.imagePicker.rootLabel'
-                        ),
-                        key: 'browse-tree-files'
-                    }
-                ]}
-                modalCancelLabel={t(
-                    'content-editor:label.contentEditor.edit.fields.modalCancel'
-                )}
-                modalDoneLabel={t(
-                    'content-editor:label.contentEditor.edit.fields.modalDone'
-                )}
-                onCloseDialog={() => setIsOpen(false)}
-                onItemSelection={image => {
+            <FastField render={({form}) => {
+                const onItemSelection = image => {
                     form.setFieldValue(
                         id,
-                        image[0] ? image[0].uuid : null,
+                        image ? image.uuid : null,
                         true
                     );
                     setIsOpen(false);
                     form.setFieldTouched(field.name, field.multiple ? [true] : true);
-                }}
-                >
-                    {(setSelectedItem, selectedPath, initialSelection) => (
-                        <ImageListQuery
-                        id={id}
-                        setSelectedItem={setSelectedItem}
-                        selectedPath={selectedPath}
-                        initialSelection={initialSelection}
-                        formik={form}
-                        field={field}
-                    />
-                )}
-                </PickerDialog>
-            )}/>
+                };
+
+                return (
+                    <PickerDialog
+                    idInput={id}
+                    site={editorContext.site}
+                    lang={editorContext.lang}
+                    initialSelectedItem={initialSelectedItem}
+                    nodeTreeConfigs={[
+                        {
+                            rootPath: '/files',
+                            selectableTypes: ['jnt:folder'],
+                            type: 'files',
+                            openableTypes: ['jnt:folder'],
+                            rootLabel: t(
+                                'content-editor:label.contentEditor.edit.fields.imagePicker.rootLabel'
+                            ),
+                            key: 'browse-tree-files'
+                        }
+                    ]}
+                    modalCancelLabel={t(
+                        'content-editor:label.contentEditor.edit.fields.modalCancel'
+                    )}
+                    modalDoneLabel={t(
+                        'content-editor:label.contentEditor.edit.fields.modalDone'
+                    )}
+                    onCloseDialog={() => setIsOpen(false)}
+                    onItemSelection={onItemSelection}
+                    >
+                        {(setSelectedItem, selectedPath, initialSelection) => (
+                            <ImageListQuery
+                            setSelectedItem={setSelectedItem}
+                            selectedPath={selectedPath}
+                            initialSelection={initialSelection}
+                            onImageDoubleClick={onItemSelection}
+                        />
+                    )}
+                    </PickerDialog>
+);
+            }}/>
         </Dialog>
     );
 };
