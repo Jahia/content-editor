@@ -35,9 +35,14 @@
                         "btnSave": "Änderungen speichern"
                     },
                     "publish": {
-                      "name": "Veröffentlichen",
-                      "success": "Content wurde veröffentlicht",
-                      "error": "Während der Veröffentlichung ist ein Fehler aufgetreten."
+                      "name": "Jetzt veröffentlichen",
+                      "success": "Veröffentlichung der Warteschlange hinzugefügt",
+                      "error": "Fehler während Veröffentlichung"
+                    },
+                    "startWorkflow": {
+                      "name": "Veröffentlichung anfordern",
+                      "success": "Veröffentlichung erfolgreich angefordert",
+                      "error": "Anforderung der Veröffentlichung fehlgeschlagen"
                     },
                     "unpublish": {
                       "name": "Veröffentlichung rückgängig machen",

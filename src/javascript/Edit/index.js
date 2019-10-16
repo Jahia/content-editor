@@ -1,6 +1,7 @@
 import React from 'react';
 import saveAction from './save/save.action';
 import publishAction from './publish/publish.action';
+import startWorkflowMainButton from './startWorkflow/startWorkflowMainButton.action';
 import unpublishAction from './unpublish/unpublish.action';
 import {Edit, Save, CloudUpload, CloudOff} from '@material-ui/icons';
 import {menuAction} from '@jahia/react-material';
@@ -29,6 +30,13 @@ export const registerActions = actionsRegistry => {
     actionsRegistry.add('publishAction', publishAction, {
         buttonLabel:
             'content-editor:label.contentEditor.edit.action.publish.name',
+        buttonIcon: <CloudUpload/>,
+        target: ['editHeaderActions:1']
+    });
+
+    actionsRegistry.add('startWorkflowMainButton', startWorkflowMainButton, {
+        buttonLabel:
+            'content-editor:label.contentEditor.edit.action.startWorkflow.name',
         buttonIcon: <CloudUpload/>,
         target: ['editHeaderActions:1']
     });

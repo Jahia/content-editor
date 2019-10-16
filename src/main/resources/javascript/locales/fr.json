@@ -35,9 +35,14 @@
                         "btnSave": "Enregistrer les modifications"
                     },
                     "publish": {
-                      "name": "Publier",
-                      "success": "Contenu publié",
-                      "error": "Erreur pendant la publication"
+                      "name": "Publier maintenant",
+                      "success": "La publication a été ajoutée à la file d’attente",
+                      "error": "Erreur durant la publication"
+                    },
+                    "startWorkflow": {
+                      "name": "Demander une publication",
+                      "success": "Démarrage du workflow de publication",
+                      "error": "Erreur dans le démarrage du workflow de publication"
                     },
                     "unpublish": {
                       "name": "Dépublier",

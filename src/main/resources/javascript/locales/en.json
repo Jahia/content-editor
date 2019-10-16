@@ -35,9 +35,14 @@
                         "btnSave": "Save changes"
                     },
                     "publish": {
-                      "name": "Publish",
-                      "success": "Content published",
-                      "error": "Error during publication"
+                      "name": "Publish now",
+                      "success": "Publication has been queued",
+                      "error": "Error while publishing"
+                    },
+                    "startWorkflow": {
+                      "name": "Request publication",
+                      "success": "Publication request succeed",
+                      "error": "Publication request failed"
                     },
                     "unpublish": {
                       "name": "Unpublish",
