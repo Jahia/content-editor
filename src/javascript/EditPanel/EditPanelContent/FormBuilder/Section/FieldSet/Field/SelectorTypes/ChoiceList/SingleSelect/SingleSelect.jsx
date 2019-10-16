@@ -1,14 +1,18 @@
-import {Select} from '@jahia/design-system-kit';
-import Input from '@material-ui/core/Input';
+import {Select, Input} from '@jahia/design-system-kit';
 import {withStyles, MenuItem} from '@material-ui/core';
 import {FastField} from 'formik';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/EditPanel/FormDefinitions/FormData.proptypes';
 
-const styles = () => ({
+const styles = theme => ({
     selectField: {
         width: '100%'
+    },
+    readOnly: {
+        outline: 'none',
+        background: theme.palette.ui.epsilon,
+        border: `1px solid ${theme.palette.ui.omega}!important`
     }
 });
 
@@ -33,20 +37,25 @@ export const SingleSelectCmp = ({classes, field, id, setActionContext}) => {
                         prevActionContext.formik.values[field.name] !== formikField.value
                 }));
 
+                const readOnly = field.readOnly;
+
                 return (
-                    <Select className={classes.selectField}
-                            onChange={handleChange}
-                            {...formikField}
-                            // eslint-disable-next-line react/prop-types
-                            value={formikField.value || ''}
-                            inputProps={{
-                                name: field.name,
-                                id: id
-                            }}
-                            input={<Input id={id} name={field.name} readOnly={field.readOnly}/>}
-                            onBlur={() => {
-                                /* Do Nothing on blur BACKLOG-10095 */
-                            }}
+                    <Select
+                        className={`${classes.selectField}
+                                    ${readOnly ? classes.readOnly : ''}`
+                        }
+                        onChange={handleChange}
+                        {...formikField}
+                        // eslint-disable-next-line react/prop-types
+                        value={formikField.value || ''}
+                        inputProps={{
+                            name: field.name,
+                            id: id
+                        }}
+                        input={<Input id={id} name={field.name} readOnly={readOnly}/>}
+                        onBlur={() => {
+                            /* Do Nothing on blur BACKLOG-10095 */
+                        }}
                     >
                         {
                             field.valueConstraints.map(item => {
