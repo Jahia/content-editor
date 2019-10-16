@@ -42,7 +42,7 @@ const ImageListQueryCmp = ({
                 window.contextJsParameters.contextPath
             }/files/default${encodeJCRPath(rawImg.path)}`,
             path: rawImg.path,
-            name: rawImg.fileName.value,
+            name: rawImg.name,
             type: rawImg.children.nodes[0].mimeType.value.replace('image/', ''),
             width: rawImg.width ? `${rawImg.width.value}` : null,
             height: rawImg.height ? `${rawImg.height.value}` : null

@@ -23,9 +23,7 @@ const queryResult = {
             {
                 uuid: 'image-uuid',
                 path: '/a/valid/jcrPath/#/g/200/300',
-                fileName: {
-                    value: 'Beautiful_hairy_pussy.jpg'
-                },
+                name: 'Beautiful_hedgehog.jpg',
                 height: {value: 1532400},
                 width: {value: 1234134},
                 children: {
@@ -84,7 +82,7 @@ describe('imageListQuery', () => {
             .dive()
             .dive();
 
-        expect(cmp.props().images[0].name).toContain('Beautiful_hairy_pussy.jpg');
+        expect(cmp.props().images[0].name).toContain('Beautiful_hedgehog.jpg');
     });
 
     it('should display the type of image', () => {

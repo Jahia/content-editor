@@ -16,9 +16,7 @@ const MediaPickerImages = gql`
                         height: property(name: "j:height") {
                             value
                         }
-                        fileName: property(name: "j:nodename") {
-                            value
-                        }
+                        name
                         children(names: ["jcr:content"]) {
                             nodes {
                                 mimeType: property(name: "jcr:mimeType") {
