@@ -39,16 +39,14 @@ const MediaPickerFilledCmp = ({
     }
 
     const imageData = data.jcr.result;
+    const sizeInfo = (imageData.height && imageData.width) ? ` - ${parseInt(imageData.height.value, 10)}x${parseInt(imageData.width.value, 10)}px` : '';
     const fieldData = {
         url: `${
             window.contextJsParameters.contextPath
         }/files/default${encodeJCRPath(imageData.path)}`,
         name: imageData.name,
         path: imageData.path,
-        info: `${imageData.children.nodes[0].mimeType.value} - ${parseInt(
-            imageData.height.value,
-            10
-        )}x${parseInt(imageData.width.value, 10)}px`
+        info: `${imageData.children.nodes[0].mimeType.value}${sizeInfo}`
     };
 
     if (!field.multiple) {
