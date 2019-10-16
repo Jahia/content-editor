@@ -1,7 +1,7 @@
 import React from 'react';
 import saveAction from './save/save.action';
 import publishAction from './publish/publish.action';
-import startWorkflowMainButton from './startWorkflow/startWorkflowMainButton.action';
+import startWorkflow from './startWorkflow/startWorkflow.action';
 import unpublishAction from './unpublish/unpublish.action';
 import {Edit, Save, CloudUpload, CloudOff} from '@material-ui/icons';
 import {menuAction} from '@jahia/react-material';
@@ -34,12 +34,14 @@ export const registerActions = actionsRegistry => {
         target: ['editHeaderActions:1']
     });
 
-    actionsRegistry.add('startWorkflowMainButton', startWorkflowMainButton, {
+    actionsRegistry.add('startWorkflowMainButton', startWorkflow, {
         buttonLabel:
             'content-editor:label.contentEditor.edit.action.startWorkflow.name',
         buttonIcon: <CloudUpload/>,
         target: ['editHeaderActions:1']
     });
+
+    /* 3 dots menu */
 
     actionsRegistry.add('ContentEditorHeaderMenu', menuAction, {
         buttonIcon: <DotsVertical/>,
@@ -48,39 +50,46 @@ export const registerActions = actionsRegistry => {
         showIcons: true
     });
 
+    actionsRegistry.add('startWorkflow3dots', startWorkflow, {
+        buttonLabel:
+            'content-editor:label.contentEditor.edit.action.startWorkflow.name',
+        buttonIcon: <CloudUpload/>,
+        target: ['ContentEditorHeaderActions:1']
+    });
+
     actionsRegistry.add('unpublishAction', unpublishAction, {
         buttonLabel: 'content-editor:label.contentEditor.edit.action.unpublish.name',
         buttonIcon: <CloudOff/>,
-        target: ['ContentEditorHeaderActions:1']
+        target: ['ContentEditorHeaderActions:2']
     });
 
     actionsRegistry.add('versioningTabAction', openEngineTabs, {
         buttonLabel: 'content-editor:label.contentEditor.edit.action.versioningTab',
-        target: ['ContentEditorHeaderActions:2'],
+        target: ['ContentEditorHeaderActions:3'],
         tabs: ['versioning']
     });
 
     actionsRegistry.add('seoTabAction', openEngineTabs, {
         buttonLabel: 'content-editor:label.contentEditor.edit.action.seoTab',
-        target: ['ContentEditorHeaderActions:3'],
+        target: ['ContentEditorHeaderActions:4'],
         tabs: ['seo']
     });
 
     actionsRegistry.add('visibilityTabAction', openEngineTabs, {
         buttonLabel: 'content-editor:label.contentEditor.edit.action.visibilityTab',
-        target: ['ContentEditorHeaderActions:4'],
+        target: ['ContentEditorHeaderActions:5'],
         tabs: ['visibility']
     });
 
     actionsRegistry.add('historyTabAction', openEngineTabs, {
         buttonLabel: 'content-editor:label.contentEditor.edit.action.historyTab',
-        target: ['ContentEditorHeaderActions:5'],
+        target: ['ContentEditorHeaderActions:6'],
         tabs: ['history']
     });
 
     actionsRegistry.add('usagesTabAction', openEngineTabs, {
         buttonLabel: 'content-editor:label.contentEditor.edit.action.usagesTab',
-        target: ['ContentEditorHeaderActions:6'],
+        target: ['ContentEditorHeaderActions:7'],
         tabs: ['usages']
     });
 };

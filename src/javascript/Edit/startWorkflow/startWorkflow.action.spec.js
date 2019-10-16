@@ -1,4 +1,4 @@
-import startWorkflowAction from './startWorkflowMainButton.action';
+import startWorkflowAction from './startWorkflow.action';
 
 jest.mock('~/actions/redux.action', () => {
     let statemock;
@@ -21,13 +21,51 @@ jest.mock('~/actions/redux.action', () => {
 
 import {setReduxState} from '~/actions/redux.action';
 
-describe('startWorkflow main button action', () => {
-    describe('onInit', () => {
+describe('startWorkflow action', () => {
+    describe('onInit - 3 dots', () => {
         let context;
 
         beforeEach(() => {
             context = {
-                mode: 'edit',
+                nodeData: {
+                    hasPublishPermission: true
+                }
+            };
+
+            setReduxState({
+                mode: 'edit'
+            });
+        });
+
+        it('should display startWorkflowAction when user have start workflow rights', () => {
+            startWorkflowAction.init(context);
+
+            expect(context.enabled).toBe(true);
+        });
+
+        it('should not display startWorkflowAction when it\'s not edit mode', () => {
+            setReduxState({
+                mode: 'create'
+            });
+            startWorkflowAction.init(context);
+
+            expect(context.enabled).toBe(false);
+        });
+
+        it('should not display startWorkflowAction when user haven\'t publication rights', () => {
+            context.nodeData.hasPublishPermission = false;
+            startWorkflowAction.init(context);
+
+            expect(context.enabled).toBe(false);
+        });
+    });
+
+    describe('onInit - main button', () => {
+        let context;
+
+        beforeEach(() => {
+            context = {
+                isMainButton: true,
                 nodeData: {
                     hasStartPublicationWorkflowPermission: true
                 }
