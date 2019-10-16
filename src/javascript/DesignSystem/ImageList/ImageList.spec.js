@@ -138,7 +138,7 @@ describe('imageList', () => {
         cmp.find('Card').at(1).simulate('click');
         cmp.find('Card').at(0).simulate('click');
 
-        expect(defaultProps.onImageSelection).toHaveBeenCalledWith([defaultProps.images[0]]);
+        expect(defaultProps.onImageSelection).toHaveBeenCalledWith(defaultProps.images[0]);
     });
 
     it('should not display the image width and height if there is no', () => {
