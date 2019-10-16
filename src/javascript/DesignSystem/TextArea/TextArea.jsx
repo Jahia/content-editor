@@ -11,8 +11,8 @@ const styles = theme => ({
     },
     textarea: {
         backgroundColor: theme.palette.field.alpha,
+        border: `1px solid ${theme.palette.ui.omega}`,
         padding: theme.spacing.unit,
-        border: `1px solid ${theme.palette.ui.zeta}`,
         borderRadius: '3px',
         color: theme.palette.font.alpha,
         fontFamily: 'Nunito Sans',
@@ -25,6 +25,9 @@ const styles = theme => ({
         '&:focus:not(:read-only)': {
             outline: 'none',
             border: `1px solid ${theme.palette.brand.alpha}`
+        },
+        '&:hover:not(:focus):not($disabled):not($error):not($readOnly)': {
+            border: `1px solid ${theme.palette.ui.zeta}`
         }
     },
     readOnly: {
