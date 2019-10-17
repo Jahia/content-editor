@@ -16,7 +16,7 @@ const ContentPickerCmp = ({field, value, id, editorContext, formik, t, setAction
     // Build tree configs
     const nodeTreeConfigs = pickerConfig.treeConfigs.map(treeConfig => {
         return {
-            rootPath: treeConfig.rootPath,
+            rootPath: treeConfig.rootPath(editorContext.site),
             selectableTypes: treeConfig.selectableTypes,
             type: treeConfig.type,
             openableTypes: treeConfig.openableTypes,

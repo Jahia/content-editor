@@ -71,7 +71,7 @@ const PickerDialogCmp = ({
     const selectedItemSite = getSite(initialSelectedItem);
     const initialPathOpenPath = getDetailedPathArray(initialSelectedItem, selectedItemSite);
 
-    const [selectedPath, setSelectedPath] = useState(initialPath || `/sites/${site}${nodeTreeConfigs[0].rootPath}`);
+    const [selectedPath, setSelectedPath] = useState(initialPath || nodeTreeConfigs[0].rootPath);
     const [openPaths, setOpenPaths] = useState(initialPathOpenPath);
     const [selectedItem, setSelectedItem] = useState(false);
 
@@ -99,6 +99,7 @@ const PickerDialogCmp = ({
                 }}
             >
                 <NodeTrees path={selectedPath}
+                           rootPath="/"
                            siteKey={site}
                            nodeTreeConfigs={nodeTreeConfigs}
                 >

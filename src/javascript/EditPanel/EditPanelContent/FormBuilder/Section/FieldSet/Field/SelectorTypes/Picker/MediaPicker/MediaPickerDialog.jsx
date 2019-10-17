@@ -42,7 +42,7 @@ export const MediaPickerDialog = ({
                     initialSelectedItem={initialSelectedItem}
                     nodeTreeConfigs={[
                         {
-                            rootPath: '/files',
+                            rootPath: `/sites/${editorContext.site}/files`,
                             selectableTypes: ['jnt:folder'],
                             type: 'files',
                             openableTypes: ['jnt:folder'],
