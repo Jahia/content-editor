@@ -4,32 +4,74 @@ import pickerActions from './Picker.actions';
 
 const treeConfigs = {
     content: {
-        rootPath: '/contents',
+        rootPath: site => `/sites/${site}/contents`,
         openableTypes: ['jnt:contentFolder'],
         selectableTypes: ['jnt:contentFolder'],
         type: 'contents',
         rootLabelKey: 'content-editor:label.contentEditor.edit.fields.contentPicker.contentsRootLabel'
     },
     allContents: {
-        rootPath: '/',
+        rootPath: site => `/sites/${site}/`,
         openableTypes: ['jnt:page', 'jnt:navMenuText', 'jnt:virtualsite', 'jnt:contentList', 'jnt:contentFolder', 'nt:folder', 'jmix:siteContent', 'jmix:browsableInEditorialPicker'],
         selectableTypes: ['jnt:page', 'jnt:navMenuText', 'jnt:virtualsite', 'jnt:contentList', 'jnt:contentFolder', 'nt:folder', 'jmix:siteContent', 'jmix:browsableInEditorialPicker'],
         type: 'allContents',
         rootLabelKey: 'content-editor:label.contentEditor.edit.fields.contentPicker.allContentsRootLabel'
     },
     files: {
-        rootPath: '/files',
+        rootPath: site => `/sites/${site}/files`,
         openableTypes: ['nt:folder'],
         selectableTypes: ['nt:folder'],
         type: 'files',
         rootLabelKey: 'content-editor:label.contentEditor.edit.fields.imagePicker.rootLabel'
     },
     pages: {
-        rootPath: '/',
+        rootPath: site => `/sites/${site}/`,
         openableTypes: ['jnt:page', 'jnt:virtualsite', 'jnt:navMenuText'],
         selectableTypes: ['jnt:page'],
         type: 'pages',
         rootLabelKey: 'content-editor:label.contentEditor.edit.fields.contentPicker.pagesRootLabel'
+    },
+    categories: {
+        rootPath: () => '/sites/systemsite/categories',
+        openableTypes: ['jnt:category'],
+        selectableTypes: ['jnt:category'],
+        type: 'categories',
+        rootLabelKey: 'content-editor:label.contentEditor.edit.fields.contentPicker.categoriesRootLabel'
+    },
+    sites: {
+        rootPath: () => '/sites',
+        openableTypes: ['jnt:virtualsitesFolder'],
+        selectableTypes: ['jnt:virtualsitesFolder'],
+        type: 'sites',
+        rootLabelKey: 'content-editor:label.contentEditor.edit.fields.contentPicker.sitesRootLabel'
+    },
+    users: {
+        rootPath: () => '/users',
+        openableTypes: ['jnt:usersFolder'],
+        selectableTypes: ['jnt:usersFolder'],
+        type: 'users',
+        rootLabelKey: 'content-editor:label.contentEditor.edit.fields.contentPicker.usersRootLabel'
+    },
+    siteUsers: {
+        rootPath: site => `/sites/${site}/users`,
+        openableTypes: ['jnt:usersFolder'],
+        selectableTypes: ['jnt:usersFolder'],
+        type: 'users',
+        rootLabelKey: 'content-editor:label.contentEditor.edit.fields.contentPicker.siteUsersRootLabel'
+    },
+    groups: {
+        rootPath: () => '/groups',
+        openableTypes: ['jnt:groupsFolder'],
+        selectableTypes: ['jnt:groupsFolder'],
+        type: 'groups',
+        rootLabelKey: 'content-editor:label.contentEditor.edit.fields.contentPicker.groupsRootLabel'
+    },
+    siteGroups: {
+        rootPath: site => `/sites/${site}/groups`,
+        openableTypes: ['jnt:groupsFolder'],
+        selectableTypes: ['jnt:groupsFolder'],
+        type: 'groups',
+        rootLabelKey: 'content-editor:label.contentEditor.edit.fields.contentPicker.siteGroupsRootLabel'
     }
 };
 
@@ -64,10 +106,37 @@ const pickerConfigs = {
         treeConfigs: [treeConfigs.allContents],
         selectableTypesTable: ['jnt:page', 'jmix:editorialContent', 'jnt:contentList', 'jnt:contentFolder', 'nt:folder', 'jmix:siteContent']
     },
-    /* Todo: Editoriallink: {
-
-     }, */
-
+    get editorialLink() {
+        return {
+            ...this.editorial,
+            showOnlyNodesWithTemplates: true
+        };
+    },
+    file: {
+        picker: pickerSelectorTypes.ContentPicker,
+        treeConfigs: [treeConfigs.files],
+        selectableTypesTable: ['jnt:file']
+    },
+    user: {
+        picker: pickerSelectorTypes.ContentPicker,
+        treeConfigs: [treeConfigs.users, treeConfigs.siteUsers],
+        selectableTypesTable: ['jnt:user']
+    },
+    usergroup: {
+        picker: pickerSelectorTypes.ContentPicker,
+        treeConfigs: [treeConfigs.users, treeConfigs.siteUsers, treeConfigs.groups, treeConfigs.siteGroups],
+        selectableTypesTable: ['jnt:user', 'jnt:group']
+    },
+    category: {
+        picker: pickerSelectorTypes.ContentPicker,
+        treeConfigs: [treeConfigs.categories],
+        selectableTypesTable: ['jnt:category']
+    },
+    site: {
+        picker: pickerSelectorTypes.ContentPicker,
+        treeConfigs: [treeConfigs.sites],
+        selectableTypesTable: ['jnt:virtualsite']
+    },
     getPickerSelectorTypes() {
         return pickerSelectorTypes;
     },

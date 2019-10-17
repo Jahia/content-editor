@@ -75,6 +75,12 @@
                     "allContentsRootLabel": "{{siteName}}",
                     "contentsRootLabel": "Contents",
                     "pagesRootLabel": "Pages",
+                    "categoriesRootLabel": "Categories repository",
+                    "sitesRootLabel": "Sites",
+                    "usersRootLabel": "Users Workspaces",
+                    "groupsRootLabel": "Groups Workspaces",
+                    "siteUsersRootLabel": "{{siteName}} Users",
+                    "siteGroupsRootLabel": "{{siteName}} Groups",
                     "tableEmpty": "No Content",
                     "tableHeader": {
                       "name": "Name",
