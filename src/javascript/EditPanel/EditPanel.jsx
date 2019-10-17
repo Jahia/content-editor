@@ -77,6 +77,7 @@ const EditPanelCmp = ({formik, title, classes, t, notificationContext, client}) 
                                 nodeData,
                                 language: lang,
                                 uiLang,
+                                isMainButton: true,
 
                                 // TODO BACKLOG-11290 find another way to inject apollo-client, i18n, ...}
                                 t,
