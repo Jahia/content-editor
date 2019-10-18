@@ -8,7 +8,7 @@ const styles = theme => ({
     add: {
         width: '100%',
         height: theme.spacing.unit * 9,
-        backgroundColor: theme.palette.ui.omega,
+        backgroundColor: theme.palette.ui.epsilon,
         border: `1px ${theme.palette.ui.zeta} dashed`,
         fontSize: '0.875rem',
         borderRadius: '2px',
@@ -16,19 +16,22 @@ const styles = theme => ({
         alignItems: 'center',
         justifyContent: 'center',
         '&:hover': {
-            border: `1px ${theme.palette.ui.zeta} solid`,
+            border: `1px solid ${theme.palette.ui.zeta}`,
             cursor: 'pointer'
         },
+        '&:focus': {
+            outline: 'none',
+            border: `1px solid ${theme.palette.brand.alpha}`
+        },
         '& svg': {
-            marginRight: theme.spacing.unit,
-            color: theme.palette.font.gamma
+            margin: theme.spacing.unit,
+            color: theme.palette.ui.zeta
         }
     },
     addReadOnly: {
-        '&:hover': {
-            cursor: 'auto',
-            border: '1px #C1C8D5 dashed'
-        }
+        outline: 'none',
+        background: theme.palette.ui.alpha,
+        border: `1px solid ${theme.palette.ui.alpha}!important`
     },
     fieldContainer: {
         width: '100%',
@@ -78,6 +81,11 @@ const styles = theme => ({
             overflow: 'hidden',
             textOverflow: 'ellipsis'
         }
+    },
+    pickerButtonEmptyContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
     }
 });
 
@@ -151,10 +159,14 @@ const PickerCmp = ({
                 onClick(true);
             }}
         >
-            {emptyIcon}
-            <Typography variant="omega" color="beta" component="span">
-                {emptyLabel}
-            </Typography>
+            {!readOnly &&
+            <div className={classes.pickerButtonEmptyContainer}>
+                {emptyIcon}
+                <Typography variant="omega" color="beta" component="span">
+                    {emptyLabel}
+                </Typography>
+            </div>
+            }
         </button>
     );
 };
