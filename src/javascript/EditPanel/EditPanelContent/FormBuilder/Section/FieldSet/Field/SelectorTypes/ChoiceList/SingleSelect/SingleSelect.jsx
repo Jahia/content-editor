@@ -11,8 +11,8 @@ const styles = theme => ({
     },
     readOnly: {
         outline: 'none',
-        background: theme.palette.ui.epsilon,
-        border: `1px solid ${theme.palette.ui.omega}!important`
+        background: theme.palette.ui.alpha,
+        border: `1px solid ${theme.palette.ui.alpha}!important`
     }
 });
 

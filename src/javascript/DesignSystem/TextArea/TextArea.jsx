@@ -10,7 +10,7 @@ const styles = theme => ({
         flexGrow: 1
     },
     textarea: {
-        backgroundColor: theme.palette.field.alpha,
+        backgroundColor: theme.palette.ui.epsilon,
         border: `1px solid ${theme.palette.ui.omega}`,
         padding: theme.spacing.unit,
         borderRadius: '3px',
@@ -32,8 +32,8 @@ const styles = theme => ({
     },
     readOnly: {
         outline: 'none',
-        background: theme.palette.ui.epsilon,
-        border: `1px solid ${theme.palette.ui.omega}`
+        background: theme.palette.ui.alpha,
+        border: `1px solid ${theme.palette.ui.alpha}`
     },
     disabled: {
         backgroundColor: theme.palette.ui.alpha,
