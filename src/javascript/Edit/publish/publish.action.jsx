@@ -18,7 +18,7 @@ export default composeActions(
             context.enabled = context.mode === Constants.routes.baseEditRoute && context.nodeData.hasPublishPermission;
 
             if (context.enabled) {
-                context.disabled = context.formik.dirty || [
+                context.disabled = context.nodeData.lockInfo.isLocked || context.formik.dirty || [
                     Constants.editPanel.publicationStatus.PUBLISHED,
                     Constants.editPanel.publicationStatus.MANDATORY_LANGUAGE_UNPUBLISHABLE
                 ].includes(context.nodeData.aggregatedPublicationInfo.publicationStatus);

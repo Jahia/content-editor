@@ -96,8 +96,18 @@ const adaptSections = sections => {
     }, []);
 };
 
+const hydrateNodeData = nodeData => {
+    return {
+        ...nodeData,
+        lockInfo: {
+            ...nodeData.lockInfo,
+            isLocked: nodeData.lockInfo.details.length > 0
+        }
+    };
+};
+
 export const adaptFormData = (data, lang, t) => {
-    const nodeData = data.jcr.result;
+    const nodeData = hydrateNodeData(data.jcr.result);
     const sections = data.forms.editForm ? data.forms.editForm.sections : data.forms.createForm.sections;
 
     return {

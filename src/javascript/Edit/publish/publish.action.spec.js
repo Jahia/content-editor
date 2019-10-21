@@ -53,7 +53,10 @@ describe('publish action', () => {
                     aggregatedPublicationInfo: {
                         publicationStatus: 'MODIFIED'
                     },
-                    hasPublishPermission: true
+                    hasPublishPermission: true,
+                    lockInfo: {
+                        isLocked: false
+                    }
                 }
             };
 
@@ -99,13 +102,20 @@ describe('publish action', () => {
             expect(context.enabled).toBe(false);
         });
 
-        it('should disable publish action when mode is not edit', () => {
+        it('should undisplay publish action when mode is not edit', () => {
             setReduxState({
                 mode: 'create'
             });
             publishAction.init(context, props);
 
             expect(context.enabled).toBe(false);
+        });
+
+        it('should disable publish action when node is locked', () => {
+            context.nodeData.lockInfo.isLocked = true;
+            publishAction.init(context, props);
+
+            expect(context.disabled).toBe(true);
         });
     });
 });
