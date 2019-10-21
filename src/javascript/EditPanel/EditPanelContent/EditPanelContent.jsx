@@ -1,5 +1,5 @@
 import React from 'react';
-import {TwoColumnsContent} from '@jahia/design-system-kit';
+import {FullWidthContent, TwoColumnsContent} from '@jahia/design-system-kit';
 import * as PropTypes from 'prop-types';
 import FormBuilder from './FormBuilder';
 import {compose} from 'react-apollo';
@@ -38,12 +38,27 @@ const styles = theme => ({
 
 export const EditPanelContent = ({classes, mode, isDirty}) => {
     return (
-        <TwoColumnsContent classes={{root: classes.twoColumnsRoot, left: classes.left, right: classes.right}}
-                           rightCol={<PreviewContainer isDirty={isDirty} mode={mode}/>}
-                           data-sel-mode={mode}
-        >
-            <FormBuilder mode={mode}/>
-        </TwoColumnsContent>
+        <>
+            {mode === 'create' ?
+                (
+                    <FullWidthContent
+                        classes={{root: classes.fullWidthRoot}}
+                        data-sel-mode={mode}
+                    >
+                        <FormBuilder mode={mode}/>
+                    </FullWidthContent>
+                ) :
+                (
+                    <TwoColumnsContent
+                        classes={{root: classes.twoColumnsRoot, left: classes.left, right: classes.right}}
+                        rightCol={<PreviewContainer isDirty={isDirty} mode={mode}/>}
+                        data-sel-mode={mode}
+                    >
+                        <FormBuilder mode={mode}/>
+                    </TwoColumnsContent>
+                )
+            }
+        </>
     );
 };
 
