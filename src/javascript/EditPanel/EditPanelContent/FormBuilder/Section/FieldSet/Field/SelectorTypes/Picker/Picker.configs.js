@@ -106,7 +106,7 @@ const pickerConfigs = {
         treeConfigs: [treeConfigs.allContents],
         selectableTypesTable: ['jnt:page', 'jmix:editorialContent', 'jnt:contentList', 'jnt:contentFolder', 'nt:folder', 'jmix:siteContent']
     },
-    get editorialLink() {
+    get editoriallink() {
         return {
             ...this.editorial,
             showOnlyNodesWithTemplates: true

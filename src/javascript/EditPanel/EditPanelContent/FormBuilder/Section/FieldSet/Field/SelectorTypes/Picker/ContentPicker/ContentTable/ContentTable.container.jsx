@@ -47,7 +47,8 @@ const ContentTableContainer = ({
             path: selectedPath,
             language: editorContext.lang,
             typeFilter: tableConfig.typeFilter,
-            recursionTypesFilter: tableConfig.recursionTypesFilter
+            recursionTypesFilter: tableConfig.recursionTypesFilter,
+            fieldFilter: tableConfig.showOnlyNodesWithTemplates ? {filters: [{fieldName: 'isDisplayableNode', evaluation: 'EQUAL', value: 'true'}]} : null
         }
     });
 
@@ -99,7 +100,8 @@ ContentTableContainer.propTypes = {
     t: PropTypes.func.isRequired,
     tableConfig: PropTypes.shape({
         typeFilter: PropTypes.array.isRequired,
-        recursionTypesFilter: PropTypes.array.isRequired
+        recursionTypesFilter: PropTypes.array.isRequired,
+        showOnlyNodesWithTemplates: PropTypes.bool.isRequired
     }).isRequired,
     setSelectedItem: PropTypes.func.isRequired,
     selectedPath: PropTypes.string.isRequired,
