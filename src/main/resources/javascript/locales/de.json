@@ -40,9 +40,7 @@
                       "error": "Fehler während Veröffentlichung"
                     },
                     "startWorkflow": {
-                      "name": "Veröffentlichung anfordern",
-                      "success": "Veröffentlichung erfolgreich angefordert",
-                      "error": "Anforderung der Veröffentlichung fehlgeschlagen"
+                      "name": "Veröffentlichung anfordern"
                     },
                     "unpublish": {
                       "name": "Veröffentlichung rückgängig machen",

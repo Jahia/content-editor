@@ -105,4 +105,18 @@ describe('startWorkflow action', () => {
             expect(context.enabled).toBe(false);
         });
     });
+
+    describe('onClick', () => {
+        beforeEach(() => {
+            window.parent.authoringApi = {
+                openPublicationWorkflow: jest.fn()
+            };
+        });
+
+        it('should call GWT command', () => {
+            startWorkflowAction.onClick({nodeData: {uuid: 'hello'}});
+
+            expect(window.parent.authoringApi.openPublicationWorkflow).toHaveBeenCalled();
+        });
+    });
 });

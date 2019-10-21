@@ -40,9 +40,7 @@
                       "error": "Error while publishing"
                     },
                     "startWorkflow": {
-                      "name": "Request publication",
-                      "success": "Publication request succeed",
-                      "error": "Publication request failed"
+                      "name": "Request publication"
                     },
                     "unpublish": {
                       "name": "Unpublish",
