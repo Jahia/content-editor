@@ -48,6 +48,11 @@ const NodeDataFragment = {
                 }
                 hasPublishPermission: hasPermission(permissionName: "publish")
                 hasStartPublicationWorkflowPermission: hasPermission(permissionName: "publication-start")
+                lockInfo {
+                    details(language: $language) {
+                        type
+                    }
+                }
             }
         }
         ${PredefinedFragments.nodeCacheRequiredFields.gql}`

@@ -23,6 +23,7 @@ export default composeActions(
     {
         init: context => {
             context.enabled = shouldEnableAction(context.isMainButton, context);
+            context.disabled = context.nodeData.lockInfo.isLocked;
         },
         onClick: context => {
             window.parent.authoringApi.openPublicationWorkflow(

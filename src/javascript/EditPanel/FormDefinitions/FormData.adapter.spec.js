@@ -77,14 +77,34 @@ describe('adaptFormData', () => {
                     mixinTypes: [
                         {name: 'Mixin1'},
                         {name: 'Mixin2'}
-                    ]
+                    ],
+                    lockInfo: {
+                        details: []
+                    }
                 }
             }
         };
     });
 
-    it('should return nodeData', () => {
-        expect(adaptFormData(graphqlResponse, 'fr', t).nodeData).toBe(graphqlResponse.jcr.result);
+    it('should set nodeData to not locked state when there is no details lockInfo in it', () => {
+        expect(adaptFormData(graphqlResponse, 'fr', t).nodeData).toEqual({
+            ...graphqlResponse.jcr.result,
+            lockInfo: {
+                details: [],
+                isLocked: false
+            }
+        });
+    });
+
+    it('should set nodeData to locked state when there is details lockInfo in it', () => {
+        graphqlResponse.jcr.result.lockInfo.details.push({});
+        expect(adaptFormData(graphqlResponse, 'fr', t).nodeData).toEqual({
+            ...graphqlResponse.jcr.result,
+            lockInfo: {
+                details: [{}],
+                isLocked: true
+            }
+        });
     });
 
     it('should return initialValues', () => {
