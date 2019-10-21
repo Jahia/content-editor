@@ -24,8 +24,13 @@ export default composeActions(
         init: context => {
             context.enabled = shouldEnableAction(context.isMainButton, context);
         },
-        onClick: () => {
-            // TODO BACKLOG-11379 implement the actions
+        onClick: context => {
+            window.parent.authoringApi.openPublicationWorkflow(
+                [context.nodeData.uuid],
+                false, // Not publishing all subNodes (AKA sub pages)
+                false, // Not publishing all language
+                false // Not unpublish action
+            );
         }
     }
 );

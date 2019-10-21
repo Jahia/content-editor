@@ -40,9 +40,7 @@
                       "error": "Erreur durant la publication"
                     },
                     "startWorkflow": {
-                      "name": "Demander une publication",
-                      "success": "Démarrage du workflow de publication",
-                      "error": "Erreur dans le démarrage du workflow de publication"
+                      "name": "Demander une publication"
                     },
                     "unpublish": {
                       "name": "Dépublier",
