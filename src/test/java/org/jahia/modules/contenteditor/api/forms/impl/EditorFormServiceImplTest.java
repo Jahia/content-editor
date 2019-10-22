@@ -3,6 +3,7 @@ package org.jahia.modules.contenteditor.api.forms.impl;
 import org.eclipse.core.runtime.Assert;
 import org.jahia.api.Constants;
 import org.jahia.data.templates.JahiaTemplatesPackage;
+import org.jahia.modules.DummyBundle;
 import org.jahia.modules.contenteditor.api.forms.*;
 import org.jahia.registries.ServicesRegistry;
 import org.jahia.services.content.JCRNodeWrapper;
