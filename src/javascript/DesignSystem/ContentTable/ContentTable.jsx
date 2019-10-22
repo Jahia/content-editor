@@ -121,8 +121,8 @@ ContentTable.propTypes = {
         name: PropTypes.string.isRequired,
         path: PropTypes.string.isRequired,
         type: PropTypes.string.isRequired,
-        createdBy: PropTypes.string.isRequired,
-        lastModified: PropTypes.string.isRequired
+        createdBy: PropTypes.string,
+        lastModified: PropTypes.string
     })).isRequired,
     columns: PropTypes.array.isRequired,
     order: PropTypes.string.isRequired,
