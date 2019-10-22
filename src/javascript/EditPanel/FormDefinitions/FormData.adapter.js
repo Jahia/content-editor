@@ -72,7 +72,10 @@ const getDetailsValue = (sections = [], nodeData, lang) => {
 const getTechnicalInfo = (nodeData, t) => {
     return [
         {label: t('content-editor:label.contentEditor.details.contentType'), value: nodeData.primaryNodeType.displayName},
-        {label: t('content-editor:label.contentEditor.details.mixinTypes'), value: nodeData.mixinTypes.map(m => m.name).join('; ')},
+        {label: t('content-editor:label.contentEditor.details.mixinTypes'), value: [
+            nodeData.primaryNodeType.name,
+            ...nodeData.mixinTypes.map(m => m.name)
+        ].filter(v => v).join('; ')},
         {label: t('content-editor:label.contentEditor.details.path'), value: nodeData.path},
         {label: t('content-editor:label.contentEditor.details.uuid'), value: nodeData.uuid}
     ];
