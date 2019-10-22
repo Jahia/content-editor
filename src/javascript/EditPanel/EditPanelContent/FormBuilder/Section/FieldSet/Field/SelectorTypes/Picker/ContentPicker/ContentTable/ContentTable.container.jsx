@@ -70,10 +70,10 @@ const ContentTableContainer = ({
             path: content.path,
             name: content.displayName,
             type: content.primaryNodeType.typeName,
-            createdBy: content.createdBy.value,
-            lastModified: dayjs(content.lastModified.value)
+            createdBy: content.createdBy ? content.createdBy.value : undefined,
+            lastModified: content.lastModified ? dayjs(content.lastModified.value)
                 .locale(editorContext.lang)
-                .format('LLL')
+                .format('LLL') : undefined
         };
     });
     return (
@@ -101,7 +101,7 @@ ContentTableContainer.propTypes = {
     tableConfig: PropTypes.shape({
         typeFilter: PropTypes.array.isRequired,
         recursionTypesFilter: PropTypes.array.isRequired,
-        showOnlyNodesWithTemplates: PropTypes.bool.isRequired
+        showOnlyNodesWithTemplates: PropTypes.bool
     }).isRequired,
     setSelectedItem: PropTypes.func.isRequired,
     selectedPath: PropTypes.string.isRequired,
