@@ -1,4 +1,4 @@
-package org.jahia.modules.contenteditor.api.forms.impl;
+package org.jahia.modules;
 
 import org.osgi.framework.*;
 
@@ -9,7 +9,7 @@ import java.net.URL;
 import java.security.cert.X509Certificate;
 import java.util.*;
 
-class DummyBundle implements Bundle {
+public class DummyBundle implements Bundle {
     @Override
     public int getState() {
         return 0;
