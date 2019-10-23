@@ -1,6 +1,7 @@
 import {Constants} from '~/ContentEditor.constants';
 import {composeActions} from '@jahia/react-material';
 import {reduxAction} from '~/actions/redux.action';
+import {withFormikAction} from '../../actions/withFormik.action';
 
 const shouldEnableAction = (isMainButton, context) => {
     if (isMainButton) {
@@ -19,11 +20,12 @@ const mapStateToContext = state => {
 };
 
 export default composeActions(
+    withFormikAction,
     reduxAction(mapStateToContext),
     {
         init: context => {
             context.enabled = shouldEnableAction(context.isMainButton, context);
-            context.disabled = context.nodeData.lockInfo.isLocked;
+            context.disabled = context.nodeData.lockInfo.isLocked || context.formik.dirty;
         },
         onClick: context => {
             window.parent.authoringApi.openPublicationWorkflow(
