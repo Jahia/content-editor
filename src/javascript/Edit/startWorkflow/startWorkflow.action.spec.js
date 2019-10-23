@@ -24,8 +24,15 @@ import {setReduxState} from '~/actions/redux.action';
 describe('startWorkflow action', () => {
     describe('onInit - 3 dots', () => {
         let context;
+        let props;
 
         beforeEach(() => {
+            props = {
+                formik: {
+                    dirty: false
+                }
+            };
+
             context = {
                 nodeData: {
                     hasPublishPermission: true,
@@ -41,7 +48,7 @@ describe('startWorkflow action', () => {
         });
 
         it('should display startWorkflowAction when user have start workflow rights', () => {
-            startWorkflowAction.init(context);
+            startWorkflowAction.init(context, props);
 
             expect(context.enabled).toBe(true);
         });
@@ -50,14 +57,14 @@ describe('startWorkflow action', () => {
             setReduxState({
                 mode: 'create'
             });
-            startWorkflowAction.init(context);
+            startWorkflowAction.init(context, props);
 
             expect(context.enabled).toBe(false);
         });
 
         it('should not display startWorkflowAction when user haven\'t publication rights', () => {
             context.nodeData.hasPublishPermission = false;
-            startWorkflowAction.init(context);
+            startWorkflowAction.init(context, props);
 
             expect(context.enabled).toBe(false);
         });
@@ -65,8 +72,15 @@ describe('startWorkflow action', () => {
 
     describe('onInit - main button', () => {
         let context;
+        let props;
 
         beforeEach(() => {
+            props = {
+                formik: {
+                    dirty: false
+                }
+            };
+
             context = {
                 isMainButton: true,
                 nodeData: {
@@ -83,7 +97,7 @@ describe('startWorkflow action', () => {
         });
 
         it('should display startWorkflowAction when user have start workflow rights', () => {
-            startWorkflowAction.init(context);
+            startWorkflowAction.init(context, props);
 
             expect(context.enabled).toBe(true);
         });
@@ -92,34 +106,41 @@ describe('startWorkflow action', () => {
             setReduxState({
                 mode: 'create'
             });
-            startWorkflowAction.init(context);
+            startWorkflowAction.init(context, props);
 
             expect(context.enabled).toBe(false);
         });
 
         it('should not display startWorkflowAction when user doesn\'t have start workflow right', () => {
             context.nodeData.hasStartPublicationWorkflowPermission = false;
-            startWorkflowAction.init(context);
+            startWorkflowAction.init(context, props);
 
             expect(context.enabled).toBe(false);
         });
 
         it('should not display startWorkflowAction when user have publication rights', () => {
             context.nodeData.hasPublishPermission = true;
-            startWorkflowAction.init(context);
+            startWorkflowAction.init(context, props);
 
             expect(context.enabled).toBe(false);
         });
 
         it('should not disable request publication action when node is not locked', () => {
-            startWorkflowAction.init(context);
+            startWorkflowAction.init(context, props);
 
             expect(context.disabled).toBe(false);
         });
 
         it('should disable request publication action when node is locked', () => {
             context.nodeData.lockInfo.isLocked = true;
-            startWorkflowAction.init(context);
+            startWorkflowAction.init(context, props);
+
+            expect(context.disabled).toBe(true);
+        });
+
+        it('should disable request publication action form is dirty', () => {
+            props.formik.dirty = true;
+            startWorkflowAction.init(context, props);
 
             expect(context.disabled).toBe(true);
         });
