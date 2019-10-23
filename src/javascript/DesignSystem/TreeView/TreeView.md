@@ -8,7 +8,7 @@ This component is used to display a tree list with icon and expendable things
   - _label_: String
   - _iconURL_: String
   - _opened_: Boolean
-  - _childs_: Array of object like this one
+  - _children_: Array of object like this one
 
 ### Events
 

@@ -1,20 +1,31 @@
 package org.jahia.modules.contenteditor.graphql.api;
 
-import graphql.annotations.annotationTypes.GraphQLDescription;
-import graphql.annotations.annotationTypes.GraphQLField;
-import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.annotationTypes.*;
 import org.apache.commons.lang.LocaleUtils;
+import org.jahia.api.Constants;
 import org.jahia.modules.contenteditor.api.forms.EditorForm;
 import org.jahia.modules.contenteditor.api.forms.EditorFormException;
 import org.jahia.modules.contenteditor.api.forms.EditorFormService;
+import org.jahia.modules.contenteditor.graphql.api.definitions.GqlNodeTypeTreeEntry;
+import org.jahia.modules.contenteditor.utils.ContentEditorUtils;
 import org.jahia.modules.graphql.provider.dxm.DataFetchingException;
 import org.jahia.osgi.BundleUtils;
+import org.jahia.services.content.JCRSessionFactory;
+import org.jahia.services.content.JCRSessionWrapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.jcr.RepositoryException;
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 /**
  * The root class for the GraphQL form API
  */
 public class GqlEditorForms {
+
+    private static Logger logger = LoggerFactory.getLogger(GqlEditorForms.class);
 
     private EditorFormService editorFormService = null;
 
@@ -72,4 +83,47 @@ public class GqlEditorForms {
         }
     }
 
+    @GraphQLField
+    @GraphQLName("contentTypesAsTree")
+    @GraphQLDescription("Get a list of allowed child nodeTypes for a given nodeType and path")
+    public List<GqlNodeTypeTreeEntry> getContentTypesAsTree(
+        @GraphQLName("nodeTypes")
+        @GraphQLDescription("List of types we want to retrieve, null for all")
+            List<String> nodeTypes,
+        @GraphQLName("excludedNodeTypes")
+        @GraphQLDescription("List of types we want to exclude, null for all")
+            List<String> excludedNodeTypes,
+        @GraphQLName("includeSubTypes")
+        @GraphQLDefaultValue(GqlUtils.SupplierTrue.class)
+        @GraphQLDescription("if true, retrieves all the sub types of the given node types, if false, returns the type only. Default value is true")
+            boolean includeSubTypes,
+        @GraphQLName("nodePath")
+        @GraphQLNonNull
+        @GraphQLDescription("thPath of an existing node under with the new content will be created.")
+            String nodePath,
+        @GraphQLName("uiLocale")
+        @GraphQLNonNull
+        @GraphQLDescription("A string representation of a locale, in IETF BCP 47 language tag format, ie en_US, en, fr, fr_CH, ...")
+            String uiLocale
+    ) {
+        try {
+            Locale locale = LocaleUtils.toLocale(uiLocale);
+            List<NodeTypeTreeEntry> entries = ContentEditorUtils.getContentTypesAsTree(nodeTypes, excludedNodeTypes, includeSubTypes, nodePath, getSession(locale), locale);
+
+            return entries.stream().map(GqlNodeTypeTreeEntry::new).collect(Collectors.toList());
+        } catch (RepositoryException e) {
+            throw  new DataFetchingException(e);
+        }
+    }
+
+    private JCRSessionWrapper getSession() throws RepositoryException {
+        return JCRSessionFactory.getInstance().getCurrentUserSession(Constants.EDIT_WORKSPACE);
+    }
+
+    private JCRSessionWrapper getSession(Locale locale) throws RepositoryException {
+        if (locale == null) {
+            return getSession();
+        }
+        return JCRSessionFactory.getInstance().getCurrentUserSession(Constants.EDIT_WORKSPACE, locale);
+    }
 }

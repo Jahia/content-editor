@@ -1,6 +1,6 @@
 import React from 'react';
 import {CreateNewContentDialog} from './CreateNewContentDialog';
-import {composeActions, componentRendererAction} from '@jahia/react-material';
+import {componentRendererAction, composeActions} from '@jahia/react-material';
 import {reduxAction} from '../../actions/redux.action';
 import {Constants} from '~/ContentEditor.constants';
 import {cmGoto} from '../../ContentManager.redux-actions';
@@ -26,6 +26,7 @@ export default composeActions(
             let handler = context.renderComponent(
                 <CreateNewContentDialog
                     open
+                    parentPath={context.path}
                     uiLang={context.uiLang}
                     onClose={() => {
                         handler.setProps({open: false});

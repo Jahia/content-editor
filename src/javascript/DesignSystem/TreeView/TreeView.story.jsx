@@ -13,7 +13,7 @@ const ParentComponent = () => {
         {id: 'A',
             label: 'A level1',
             iconURL: 'https://image.flaticon.com/icons/svg/1973/1973617.svg',
-            childs: [
+            children: [
                 {id: 'A1', label: 'A-1 level2', iconURL: 'https://image.flaticon.com/icons/svg/1973/1973617.svg'},
                 {id: 'A2', label: 'A-2 level2'},
                 {id: 'A3', label: 'A-3 level2'},
@@ -23,11 +23,11 @@ const ParentComponent = () => {
         {id: 'B',
             label: 'B level1',
             iconURL: 'https://image.flaticon.com/icons/svg/1973/1973617.svg',
-            childs: [
+            children: [
                 {id: 'B1', label: 'B-1 level2'},
                 {id: 'B2', label: 'B-2 level2'},
                 {id: 'B3', label: 'B-3 level2'},
-                {id: 'B4', label: 'B-4 level2', childs: [
+                {id: 'B4', label: 'B-4 level2', children: [
                     {id: 'B11', label: 'B-1-1 level3'},
                     {id: 'B22', label: 'B-2-2 level3', iconURL: 'https://image.flaticon.com/icons/svg/1973/1973617.svg'},
                     {id: 'B33', label: 'B-3-3 level3'},
@@ -39,7 +39,7 @@ const ParentComponent = () => {
             id: 'C',
             label: 'C level1',
             iconURL: 'https://image.flaticon.com/icons/svg/1973/1973617.svg',
-            childs: []
+            children: []
         }
     ]);
 

@@ -4,33 +4,34 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 
 import {CreateNewContentDialog} from './CreateNewContentDialog';
+import {setResponseMock} from 'react-apollo-hooks';
 
 jest.mock('react-apollo', () => ({
     withApollo: Cmp => props => (<Cmp {...props} client={{}}/>),
     compose: jest.requireActual('react-apollo').compose
 }));
 
-jest.mock('./CreateNewContent.adapter', () => {
+jest.mock('react-apollo-hooks', () => {
     let responsemock;
     return {
-        useTreeOfNewContent: () => responsemock,
+        useQuery: () => responsemock,
         setResponseMock: m => {
             responsemock = m;
         }
     };
 });
-import {setResponseMock} from './CreateNewContent.adapter';
 
 describe('CreateNewContentDialog', () => {
     let tree;
+    let emptyTree;
     let props;
     beforeEach(() => {
         console.error = jest.fn();
-        tree = [
+        const result = [
             {
                 id: 'catA',
                 label: 'category A',
-                childs: [
+                children: [
                     {id: 'dan1', label: 'daniela'},
                     {id: 'dan2', label: 'daniel'},
                     {id: 'dan3', label: 'danie'}
@@ -39,7 +40,7 @@ describe('CreateNewContentDialog', () => {
             {
                 id: 'catB',
                 label: 'category B',
-                childs: [
+                children: [
                     {id: 'rom1', label: 'Romain'},
                     {id: 'rom2', label: 'romain'},
                     {id: 'Rom3', label: 'hitler'}
@@ -47,7 +48,12 @@ describe('CreateNewContentDialog', () => {
             }
         ];
 
+        emptyTree = {data: {forms: {contentTypesAsTree: []}}};
+
+        tree = {data: {forms: {contentTypesAsTree: result}}};
+
         props = {
+            parentPath: '',
             onClose: jest.fn(),
             onExited: jest.fn(),
             onCreateContent: jest.fn()
@@ -55,7 +61,7 @@ describe('CreateNewContentDialog', () => {
     });
 
     it('should display the dialog by default', () => {
-        setResponseMock({tree: []});
+        setResponseMock(emptyTree);
 
         const cmp = shallowWithTheme(
             <CreateNewContentDialog {...props} open/>,
@@ -67,7 +73,7 @@ describe('CreateNewContentDialog', () => {
     });
 
     it('should close the dialog when click on the cancel button', () => {
-        setResponseMock({tree: []});
+        setResponseMock(emptyTree);
 
         let open = true;
         const cmp = shallowWithTheme(
@@ -89,7 +95,7 @@ describe('CreateNewContentDialog', () => {
     });
 
     it('should call onCreateContent when clicking on create button Button', () => {
-        setResponseMock({tree: []});
+        setResponseMock(emptyTree);
 
         const cmp = shallowWithTheme(
             <CreateNewContentDialog open {...props}/>,
@@ -115,7 +121,7 @@ describe('CreateNewContentDialog', () => {
     });
 
     it('should filter properly with id hitler', () => {
-        setResponseMock({tree});
+        setResponseMock(tree);
         const cmp = shallowWithTheme(
             <CreateNewContentDialog open {...props}/>,
             {},
@@ -129,7 +135,7 @@ describe('CreateNewContentDialog', () => {
     });
 
     it('should filter properly with id rom3 with no case sensitive', () => {
-        setResponseMock({tree});
+        setResponseMock(tree);
         const cmp = shallowWithTheme(
             <CreateNewContentDialog open {...props}/>,
             {},
@@ -143,7 +149,7 @@ describe('CreateNewContentDialog', () => {
     });
 
     it('should filter properly with n with no case sensitive', () => {
-        setResponseMock({tree});
+        setResponseMock(tree);
         const cmp = shallowWithTheme(
             <CreateNewContentDialog open {...props}/>,
             {},
@@ -154,13 +160,13 @@ describe('CreateNewContentDialog', () => {
 
         expect(cmp.find('TreeView').props().tree.length).toBe(2);
 
-        expect(cmp.find('TreeView').props().tree[0].childs.length).toBe(3);
-        expect(cmp.find('TreeView').props().tree[0].childs[0].id).toBe('dan1');
-        expect(cmp.find('TreeView').props().tree[0].childs[1].id).toBe('dan2');
-        expect(cmp.find('TreeView').props().tree[0].childs[2].id).toBe('dan3');
+        expect(cmp.find('TreeView').props().tree[0].children.length).toBe(3);
+        expect(cmp.find('TreeView').props().tree[0].children[0].id).toBe('dan1');
+        expect(cmp.find('TreeView').props().tree[0].children[1].id).toBe('dan2');
+        expect(cmp.find('TreeView').props().tree[0].children[2].id).toBe('dan3');
 
-        expect(cmp.find('TreeView').props().tree[1].childs.length).toBe(2);
-        expect(cmp.find('TreeView').props().tree[1].childs[0].id).toBe('rom1');
-        expect(cmp.find('TreeView').props().tree[1].childs[1].id).toBe('rom2');
+        expect(cmp.find('TreeView').props().tree[1].children.length).toBe(2);
+        expect(cmp.find('TreeView').props().tree[1].children[0].id).toBe('rom1');
+        expect(cmp.find('TreeView').props().tree[1].children[1].id).toBe('rom2');
     });
 });

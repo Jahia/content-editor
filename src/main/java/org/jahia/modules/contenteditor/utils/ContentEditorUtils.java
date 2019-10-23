@@ -1,6 +1,7 @@
-package org.jahia.modules.contenteditor.graphql.api;
+package org.jahia.modules.contenteditor.utils;
 
 import org.jahia.data.templates.JahiaTemplatesPackage;
+import org.jahia.modules.contenteditor.graphql.api.NodeTypeTreeEntry;
 import org.jahia.registries.ServicesRegistry;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRSessionWrapper;
@@ -17,15 +18,15 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Utility class for Forms
+ * Utility class for Content Editor
  */
-public class GqlEditorFormsUtils {
+public class ContentEditorUtils {
 
-    private GqlEditorFormsUtils() {
+    private ContentEditorUtils() {
         // prevent new instance of this class
     }
 
-    private static Logger logger = LoggerFactory.getLogger(GqlEditorFormsUtils.class);
+    private static Logger logger = LoggerFactory.getLogger(ContentEditorUtils.class);
 
     /**
      * Utility method that build a list of jmix:droppableContent nodeTypes for a given path as a tree.
