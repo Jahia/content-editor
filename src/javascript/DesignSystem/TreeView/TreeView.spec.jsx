@@ -12,7 +12,7 @@ describe('TreeView', () => {
                 {id: 'A',
                     label: 'A level1',
                     iconURL: 'https://image.flaticon.com/icons/svg/1973/1973617.svg',
-                    childs: [
+                    children: [
                         {id: 'A1', label: 'A-1 level2', iconURL: 'https://image.flaticon.com/icons/svg/1973/1973617.svg'},
                         {id: 'A2', label: 'A-2 level2'},
                         {id: 'A3', label: 'A-3 level2'},
@@ -22,11 +22,11 @@ describe('TreeView', () => {
                 {id: 'B',
                     label: 'B level1',
                     iconURL: 'https://image.flaticon.com/icons/svg/1973/1973617.svg',
-                    childs: [
+                    children: [
                         {id: 'B1', label: 'B-1 level2'},
                         {id: 'B2', label: 'B-2 level2'},
                         {id: 'B3', label: 'B-3 level2'},
-                        {id: 'B4', label: 'B-4 level2', childs: [
+                        {id: 'B4', label: 'B-4 level2', children: [
                             {id: 'B11', label: 'B-1-1 level3'},
                             {id: 'B22', label: 'B-2-2 level3', iconURL: 'https://image.flaticon.com/icons/svg/1973/1973617.svg'},
                             {id: 'B33', label: 'B-3-3 level3'},
@@ -38,7 +38,7 @@ describe('TreeView', () => {
                     id: 'C',
                     label: 'C level1',
                     iconURL: 'https://image.flaticon.com/icons/svg/1973/1973617.svg',
-                    childs: []
+                    children: []
                 },
                 {
                     id: 'D',
@@ -119,7 +119,7 @@ describe('TreeView', () => {
         ).dive();
 
         const html = cmp.debug();
-        props.tree[0].childs.forEach(node => {
+        props.tree[0].children.forEach(node => {
             expect(html).toContain(node.label);
         });
     });
@@ -132,7 +132,7 @@ describe('TreeView', () => {
         ).dive();
 
         const html = cmp.debug();
-        props.tree[0].childs.forEach(node => {
+        props.tree[0].children.forEach(node => {
             expect(html).not.toContain(node.label);
         });
     });
@@ -146,14 +146,14 @@ describe('TreeView', () => {
         ).dive();
 
         const html = cmp.debug();
-        props.tree[1].childs[3].childs.forEach(node => {
+        props.tree[1].children[3].children.forEach(node => {
             expect(html).not.toContain(node.label);
         });
     });
 
     it('should display a third level of a node when it\'s opened', () => {
         props.tree[1].opened = true;
-        props.tree[1].childs[3].opened = true;
+        props.tree[1].children[3].opened = true;
         const cmp = shallowWithTheme(
             <TreeView {...props}/>,
             {},
@@ -161,7 +161,7 @@ describe('TreeView', () => {
         ).dive();
 
         const html = cmp.debug();
-        props.tree[1].childs[3].childs.forEach(node => {
+        props.tree[1].children[3].children.forEach(node => {
             expect(html).toContain(node.label);
         });
     });

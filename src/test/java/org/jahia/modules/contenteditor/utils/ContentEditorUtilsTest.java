@@ -1,10 +1,9 @@
-package org.jahia.modules.graphql.api;
+package org.jahia.modules.contenteditor.utils;
 
 import org.apache.commons.lang.StringUtils;
 import org.jahia.api.Constants;
 import org.jahia.data.templates.JahiaTemplatesPackage;
 import org.jahia.modules.DummyBundle;
-import org.jahia.modules.contenteditor.graphql.api.GqlEditorFormsUtils;
 import org.jahia.modules.contenteditor.graphql.api.NodeTypeTreeEntry;
 import org.jahia.registries.ServicesRegistry;
 import org.jahia.services.content.JCRSessionFactory;
@@ -25,9 +24,9 @@ import javax.jcr.nodetype.NodeTypeIterator;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class GqlEditorFormsUtilsTest extends AbstractJUnitTest {
+public class ContentEditorUtilsTest extends AbstractJUnitTest {
 
-    private static final transient Logger logger = org.slf4j.LoggerFactory.getLogger(GqlEditorFormsUtilsTest.class);
+    private static final transient Logger logger = org.slf4j.LoggerFactory.getLogger(ContentEditorUtilsTest.class);
 
     @Test
     public void getNodetypesTest() throws Exception {
@@ -72,7 +71,7 @@ public class GqlEditorFormsUtilsTest extends AbstractJUnitTest {
 
     private void doTest(List<String> nodeType, List<String> excludedNodeType, boolean includeSubTypes, String sitePath, JCRSessionWrapper session) {
         try {
-            final List<NodeTypeTreeEntry> tree = GqlEditorFormsUtils.getContentTypesAsTree(nodeType, excludedNodeType, includeSubTypes, sitePath, session, Locale.ENGLISH);
+            final List<NodeTypeTreeEntry> tree = ContentEditorUtils.getContentTypesAsTree(nodeType, excludedNodeType, includeSubTypes, sitePath, session, Locale.ENGLISH);
             // we are testing that all node types registered that is part of the tree is consistent.
             for (NodeTypeIterator nti = NodeTypeRegistry.getInstance().getNodeTypes("currentmodule"); nti.hasNext(); ) {
                 ExtendedNodeType extendedNodeType = (ExtendedNodeType) nti.nextNodeType();

@@ -1,20 +1,15 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import {
-    Dialog,
-    DialogTitle,
-    DialogActions
-} from '@material-ui/core';
+import {Dialog, DialogActions, DialogTitle, withStyles} from '@material-ui/core';
 import {Search} from '@material-ui/icons';
-import {Button, Typography, Input} from '@jahia/design-system-kit';
+import {Button, Input, Typography} from '@jahia/design-system-kit';
 import {translate} from 'react-i18next';
-import {compose} from 'react-apollo';
-import {withStyles} from '@material-ui/core';
-import {withApollo} from 'react-apollo';
-import {useTreeOfNewContent} from './CreateNewContent.adapter';
+import {compose, withApollo} from 'react-apollo';
 import {ProgressOverlay} from '@jahia/react-material';
 
 import {TreeView} from '~/DesignSystem/TreeView';
+import {useQuery} from 'react-apollo-hooks';
+import {getTreeOfContent} from '~/Create/CreateNewContentAction/CreateNewContent.gql-queries';
 
 const styles = theme => ({
     treeContainer: {
@@ -32,29 +27,31 @@ const styles = theme => ({
     }
 });
 
-const CreateNewContentDialogCmp = ({open, onExited, onClose, onCreateContent, uiLang, client, classes, t}) => {
-    const {tree, error, loading} = useTreeOfNewContent({
-        uiLang: uiLang
-    }, client);
-
+const CreateNewContentDialogCmp = ({open, parentPath, onExited, onClose, onCreateContent, uiLang, client, classes, t}) => {
+    const variables = {
+        uiLang: uiLang,
+        path: parentPath,
+        nodeTypes: ['jmix:editorialContent']
+    };
+    const {data, error, loading} = useQuery(getTreeOfContent, {variables, client});
     const [selectedType, setSelectedType] = useState(null);
     const [filter, setFilter] = useState();
-
-    if (loading) {
-        return <ProgressOverlay/>;
-    }
 
     if (error) {
         console.error(error);
         return <>{error}</>;
     }
 
+    if (loading || !data || !data.forms) {
+        return <ProgressOverlay/>;
+    }
+
     // Filtering the tree
-    const filteredTree = tree
+    const filteredTree = data.forms.contentTypesAsTree
         .map(category => {
-            const filteredNodes = filter ? category.childs.filter(node => {
+            const filteredNodes = filter ? category.children.filter(node => {
                 return node.id.toLowerCase().includes(filter) || node.label.toLowerCase().includes(filter);
-            }) : category.childs;
+            }) : category.children;
 
             // Never close selected content category
             const isCategorySelected = selectedType ? category.id === selectedType.parent.name : null;
@@ -62,7 +59,7 @@ const CreateNewContentDialogCmp = ({open, onExited, onClose, onCreateContent, ui
             return {
                 ...category,
                 opened: filter ? true : (category.opened || isCategorySelected),
-                childs: filteredNodes.map(node => {
+                children: filteredNodes.map(node => {
                     return {
                         ...node,
                         selected: isCategorySelected && selectedType.id === node.id
@@ -70,7 +67,7 @@ const CreateNewContentDialogCmp = ({open, onExited, onClose, onCreateContent, ui
                 })
             };
         })
-        .filter(category => category.childs.length !== 0);
+        .filter(category => category.children.length !== 0);
 
     return (
         <Dialog open={open} aria-labelledby="dialog-createNewContent" onExited={onExited} onClose={onClose}>
@@ -95,12 +92,12 @@ const CreateNewContentDialogCmp = ({open, onExited, onClose, onCreateContent, ui
                 <TreeView
                     tree={filteredTree}
                     onNodeClick={node => {
-                              if (!node.childs) {
+                              if (!node.children) {
                                 setSelectedType(node);
                               }
                           }}
                     onNodeDoubleClick={node => {
-                              if (!node.childs) {
+                              if (!node.children) {
                                 onCreateContent(node);
                               }
                           }}
@@ -131,6 +128,7 @@ CreateNewContentDialogCmp.defaultProps = {
 
 CreateNewContentDialogCmp.propTypes = {
     uiLang: PropTypes.string,
+    parentPath: PropTypes.string,
     classes: PropTypes.object.isRequired,
     client: PropTypes.object.isRequired,
     t: PropTypes.func.isRequired,

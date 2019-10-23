@@ -68,9 +68,9 @@ const TreeViewCmp = ({tree, onNodeClick, onNodeDoubleClick, classes}) => {
                 onNodeDoubleClick(node, e);
             };
 
-            if (node.childs && node.childs.length !== 0) {
+            if (node.children && node.children.length !== 0) {
                 const Arrow = nodeIsOpen || node.opened ? ArrowDropDown : ArrowRight;
-                const Childs = nodeIsOpen || node.opened ? generateLevelJSX(node.childs, deep + 1) : <></>;
+                const Childs = nodeIsOpen || node.opened ? generateLevelJSX(node.children, deep + 1) : <></>;
 
                 return (
                     <Fragment key={level.id + node.id}>
@@ -128,7 +128,7 @@ TreeViewCmp.propTypes = {
         id: PropTypes.string.isRequired,
         label: PropTypes.string,
         iconURL: PropTypes.string,
-        childs: PropTypes.arrayOf(PropTypes.object)
+        children: PropTypes.arrayOf(PropTypes.object)
     })).isRequired,
     onNodeClick: PropTypes.func,
     onNodeDoubleClick: PropTypes.func,
