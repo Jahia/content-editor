@@ -2,16 +2,20 @@ import {unsetFieldAction} from './unsetField.action';
 
 describe('unsetFieldAction', () => {
     describe('onclick', () => {
-        it('should set field value to null', () => {
-            const context = {
+        let context;
+        beforeEach(() => {
+            context = {
                 formik: {
-                    setFieldValue: jest.fn()
+                    setFieldValue: jest.fn(),
+                    setFieldTouched: jest.fn()
                 },
                 field: {
                     name: 'fieldName'
                 }
             };
+        });
 
+        it('should set field value to null', () => {
             unsetFieldAction.onClick(context);
 
             // As action expect impure function, testing params
@@ -20,6 +24,12 @@ describe('unsetFieldAction', () => {
                 null,
                 true
             );
+        });
+
+        it('should set field touched', () => {
+            unsetFieldAction.onClick(context);
+
+            expect(context.formik.setFieldTouched).toHaveBeenCalledWith('fieldName');
         });
     });
 

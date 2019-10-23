@@ -11,5 +11,6 @@ export const unsetFieldAction = {
             null,
             true
         );
+        context.formik.setFieldTouched(context.field.name);
     }
 };
