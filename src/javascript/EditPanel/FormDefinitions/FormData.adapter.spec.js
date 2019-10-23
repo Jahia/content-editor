@@ -67,6 +67,7 @@ describe('adaptFormData', () => {
                     displayName: 'nameOfNode',
                     primaryNodeType: {
                         displayName: 'ContentType',
+                        name: 'jcr:contentType',
                         properties: [
                             {name: 'field1', primaryNodeType: true}
                         ]
@@ -170,7 +171,7 @@ describe('adaptFormData', () => {
             },
             {
                 label: 'content-editor:label.contentEditor.details.mixinTypes',
-                value: 'Mixin1; Mixin2'
+                value: 'jcr:contentType; Mixin1; Mixin2'
             },
             {
                 label: 'content-editor:label.contentEditor.details.path',
