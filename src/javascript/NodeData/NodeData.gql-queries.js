@@ -14,7 +14,7 @@ const NodeDataFragment = {
                 ...NodeCacheRequiredFields
                 displayableNode {
                     path
-                    isFolder:isNodeType(type: {multi: ALL, types: ["jnt:contentFolder"]})
+                    isFolder:isNodeType(type: {multi: ANY, types: ["jnt:contentFolder", "jnt:folder"]})
                 }
                 displayName(language: $language)
                 mixinTypes {
