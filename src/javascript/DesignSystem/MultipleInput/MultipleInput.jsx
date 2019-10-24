@@ -25,7 +25,9 @@ const MultipleInputComponent = ({classes, creatable, readOnly, ...props}) => {
 
     const components = {
         MultiValue,
-        Control,
+        Control: props => {
+            return <Control readOnly={readOnly} {...props}/>;
+        },
         NoOptionsMessage,
         IndicatorSeparator: EmptyCmp,
         DropdownIndicator: creatable ? EmptyCmp : DropdownIndicator,
