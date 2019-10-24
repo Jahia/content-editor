@@ -4,9 +4,10 @@ import publishAction from './publish/publish.action';
 import startWorkflow from './startWorkflow/startWorkflow.action';
 import unpublishAction from './unpublish/unpublish.action';
 import {Edit, Save, CloudUpload, CloudOff} from '@material-ui/icons';
-import {menuAction} from '@jahia/react-material';
+import {menuAction, composeActions} from '@jahia/react-material';
 import {DotsVertical} from 'mdi-material-ui';
 import openEngineTabs from './openEngineTabs/openEngineTabs.action';
+import {withFormikAction} from '../actions/withFormik.action';
 
 export const registerActions = actionsRegistry => {
     // Content Media Manager Action
@@ -43,7 +44,7 @@ export const registerActions = actionsRegistry => {
 
     /* 3 dots menu */
 
-    actionsRegistry.add('ContentEditorHeaderMenu', menuAction, {
+    actionsRegistry.add('ContentEditorHeaderMenu', composeActions(withFormikAction, menuAction), {
         buttonIcon: <DotsVertical/>,
         buttonLabel: 'label.contentEditor.edit.action.moreOptions',
         menu: 'ContentEditorHeaderActions',

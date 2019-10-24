@@ -24,16 +24,15 @@ import {setReduxState} from '~/actions/redux.action';
 describe('startWorkflow action', () => {
     describe('onInit - 3 dots', () => {
         let context;
-        let props;
+        const props = {};
 
         beforeEach(() => {
-            props = {
-                formik: {
-                    dirty: false
-                }
-            };
-
             context = {
+                parent: {
+                    formik: {
+                        dirty: false
+                    }
+                },
                 nodeData: {
                     hasPublishPermission: true,
                     lockInfo: {
@@ -60,6 +59,7 @@ describe('startWorkflow action', () => {
             startWorkflowAction.init(context, props);
 
             expect(context.enabled).toBe(false);
+            expect(context.displayDisabled).toBe(undefined);
         });
 
         it('should not display startWorkflowAction when user haven\'t publication rights', () => {
@@ -67,6 +67,23 @@ describe('startWorkflow action', () => {
             startWorkflowAction.init(context, props);
 
             expect(context.enabled).toBe(false);
+            expect(context.displayDisabled).toBe(undefined);
+        });
+
+        it('should disable startWorkflowAction when form dirty', () => {
+            context.parent.formik.dirty = true;
+            startWorkflowAction.init(context, props);
+
+            expect(context.enabled).toBe(false);
+            expect(context.displayDisabled).toBe(true);
+        });
+
+        it('should disable startWorkflowAction when node locked', () => {
+            context.nodeData.lockInfo.isLocked = true;
+            startWorkflowAction.init(context, props);
+
+            expect(context.enabled).toBe(false);
+            expect(context.displayDisabled).toBe(true);
         });
     });
 
