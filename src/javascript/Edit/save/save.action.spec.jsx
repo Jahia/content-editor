@@ -132,6 +132,7 @@ describe('save action', () => {
                     submitForm: jest.fn(() => Promise.resolve()),
                     resetForm: jest.fn(),
                     setFieldValue: jest.fn(),
+                    setTouched: jest.fn(),
                     dirty: true,
                     errors: {}
                 }

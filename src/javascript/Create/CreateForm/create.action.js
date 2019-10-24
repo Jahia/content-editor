@@ -1,7 +1,8 @@
-import {composeActions} from '@jahia/react-material';
+import {composeActions, componentRendererAction} from '@jahia/react-material';
 import {withFormikAction} from '~/actions/withFormik.action';
 import {Constants} from '~/ContentEditor.constants';
 import {reduxAction} from '~/actions/redux.action';
+import {validateForm} from '~/validation/validation.utils';
 
 const stateMapToContext = state => {
     return {
@@ -11,30 +12,27 @@ const stateMapToContext = state => {
 
 export default composeActions(
     withFormikAction,
+    componentRendererAction,
     reduxAction(stateMapToContext),
     {
         init: context => {
             context.enabled = context.mode === Constants.routes.baseCreateRoute;
+            context.addWarningBadge = Object.keys(context.formik.errors).length > 0;
         },
-        onClick: ({formik}) => {
+        onClick: ({formik, renderComponent}) => {
             if (!formik) {
                 return;
             }
 
-            const {submitForm, resetForm, validateForm, setTouched, values} = formik;
+            const formIsValid = validateForm(formik, renderComponent);
 
-            submitForm()
-                .then(() => {
-                    // Store errors for restore error state
-                    const errors = formik.errors;
-                    resetForm(values);
-                    validateForm(values);
-                    const touched = {};
-                    Object.keys(errors).forEach(key => {
-                        touched[key] = true;
+            if (formIsValid) {
+                formik
+                    .submitForm()
+                    .then(() => {
+                        formik.resetForm(formik.values);
                     });
-                    setTouched(touched);
-                });
+            }
         }
     }
 );
