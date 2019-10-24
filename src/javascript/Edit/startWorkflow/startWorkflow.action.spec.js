@@ -24,16 +24,15 @@ import {setReduxState} from '~/actions/redux.action';
 describe('startWorkflow action', () => {
     describe('onInit - 3 dots', () => {
         let context;
-        let props;
+        let props = {};
 
         beforeEach(() => {
-            props = {
-                formik: {
-                    dirty: false
-                }
-            };
-
             context = {
+                parent: {
+                    formik: {
+                        dirty: false
+                    }
+                },
                 nodeData: {
                     hasPublishPermission: true,
                     lockInfo: {
