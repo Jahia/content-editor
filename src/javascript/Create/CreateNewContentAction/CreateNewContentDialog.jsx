@@ -54,7 +54,7 @@ const CreateNewContentDialogCmp = ({open, parentPath, onExited, onClose, onCreat
             }) : category.children;
 
             // Never close selected content category
-            const isCategorySelected = selectedType ? category.id === selectedType.parent.name : null;
+            const isCategorySelected = selectedType ? category.id === selectedType.parent.id : null;
 
             return {
                 ...category,

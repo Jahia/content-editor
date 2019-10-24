@@ -9,6 +9,9 @@ export const getTreeOfContent = gql`
                 iconURL
                 children {
                     id: name
+                    parent {
+                        id: name
+                    }
                     label
                     iconURL
                 }

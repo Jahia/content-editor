@@ -41,7 +41,7 @@ export default composeActions(
                             mode: Constants.routes.baseCreateRoute,
                             path: context.path,
                             params: {
-                                contentType: contentType.name
+                                contentType: contentType.id
                             }
                         });
                         handler.setProps({open: false});
