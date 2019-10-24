@@ -2,8 +2,7 @@ import {composeActions, componentRendererAction} from '@jahia/react-material';
 import {Constants} from '~/ContentEditor.constants';
 import {withFormikAction} from '~/actions/withFormik.action';
 import {reduxAction} from '~/actions/redux.action';
-import {SaveErrorModal} from './SaveErrorModal';
-import React from 'react';
+import {validateForm} from '~/validation/validation.utils';
 
 const mapStateToContext = state => {
     return {
@@ -30,23 +29,12 @@ export default composeActions(
                 return;
             }
 
-            // If form has errors
-            const nbOfErrors = Object.keys(formik.errors).length;
-            if (nbOfErrors > 0) {
-                const handler = renderComponent(
-                    <SaveErrorModal open
-                                    nbOfErrors={nbOfErrors}
-                                    onClose={() => {
-                                        handler.setProps({open: false});
-                                    }
-                                }/>
-                );
-                return;
+            const formIsValid = validateForm(formik, renderComponent);
+
+            if (formIsValid) {
+                formik
+                    .submitForm()
+                    .then(() => formik.resetForm(formik.values));
             }
-
-            const {submitForm, resetForm} = formik;
-
-            submitForm()
-                .then(() => resetForm(formik.values));
         }
     });
