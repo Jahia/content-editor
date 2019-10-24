@@ -26,14 +26,27 @@ public class GqlNodeTypeTreeEntry {
 
     private NodeTypeTreeEntry nodeTreeEntry;
 
+    private GqlNodeTypeTreeEntry parent;
+
     public GqlNodeTypeTreeEntry(NodeTypeTreeEntry entry) {
         this.nodeTreeEntry = entry;
+    }
+
+    private GqlNodeTypeTreeEntry(NodeTypeTreeEntry entry, GqlNodeTypeTreeEntry parent) {
+        this(entry);
+        this.parent = parent;
     }
 
     @GraphQLField
     @GraphQLDescription("Return nodeType name")
     public String getName() {
         return nodeTreeEntry.getName();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("Return the parent tree entry (if any)")
+    public GqlNodeTypeTreeEntry getParent() {
+        return parent;
     }
 
     @GraphQLField
@@ -53,7 +66,7 @@ public class GqlNodeTypeTreeEntry {
         try {
             return JCRContentUtils.getIconWithContext(nodeTreeEntry.getNodeType()) + (addExtension ? ".png" : "");
         } catch (RepositoryException e) {
-                throw new DataFetchingException(e);
+            throw new DataFetchingException(e);
         }
     }
 
@@ -69,6 +82,6 @@ public class GqlNodeTypeTreeEntry {
         if (nodeTreeEntry.getChildren() == null) {
             return Collections.emptyList();
         }
-        return nodeTreeEntry.getChildren().stream().map(GqlNodeTypeTreeEntry::new).collect(Collectors.toList());
+        return nodeTreeEntry.getChildren().stream().map(entry -> new GqlNodeTypeTreeEntry(entry, this)).collect(Collectors.toList());
     }
 }
