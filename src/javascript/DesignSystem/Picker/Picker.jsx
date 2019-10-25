@@ -15,9 +15,9 @@ const styles = theme => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        cursor: 'pointer',
         '&:hover': {
-            border: `1px solid ${theme.palette.ui.zeta}`,
-            cursor: 'pointer'
+            border: `1px solid ${theme.palette.ui.zeta}`
         },
         '&:focus': {
             outline: 'none',
@@ -31,7 +31,8 @@ const styles = theme => ({
     addReadOnly: {
         outline: 'none',
         background: theme.palette.ui.alpha,
-        border: `1px solid ${theme.palette.ui.alpha}!important`
+        border: `1px solid ${theme.palette.ui.alpha}!important`,
+        cursor: 'default'
     },
     fieldContainer: {
         width: '100%',
@@ -50,7 +51,8 @@ const styles = theme => ({
     },
     fieldContainerReadOnly: {
         border: `1px ${theme.palette.ui.omega} solid`,
-        boxShadow: 'none'
+        boxShadow: 'none',
+        cursor: 'default'
     },
     fieldFigureContainer: {
         display: 'flex',

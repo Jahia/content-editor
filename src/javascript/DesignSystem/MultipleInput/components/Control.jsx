@@ -17,21 +17,19 @@ const styles = theme => ({
 
 export const ControlCmp = React.forwardRef(({classes, children, readOnly, innerProps}, ref) => {
     return (
-        <>
-            <Input
-                ref={ref}
-                fullWidth
-                inputComponent={InputComponent}
-                className={`${classes.input} 
-                            ${readOnly ? classes.readOnly : ''}`
-                }
-                inputProps={{
-                    inputRef: ref,
-                    children: children,
-                    ...innerProps
-                }}
-            />
-        </>
+        <Input
+            ref={ref}
+            fullWidth
+            inputComponent={InputComponent}
+            className={`${classes.input}
+                        ${readOnly ? classes.readOnly : ''}`
+            }
+            inputProps={{
+                inputRef: ref,
+                children: children,
+                ...innerProps
+            }}
+        />
     );
 });
 
