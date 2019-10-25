@@ -1,5 +1,5 @@
 import React from 'react';
-import {Edit, AddCircle} from '@material-ui/icons';
+import {Queue, AddCircle} from '@material-ui/icons';
 
 import createNewContentAction from './CreateNewContentAction/createNewContent.action';
 import createButtonAction from './CreateForm/create.action';
@@ -7,7 +7,7 @@ import createButtonAction from './CreateForm/create.action';
 export const registerActions = actionsRegistry => {
     // Content Media Manager Action
     actionsRegistry.add('createNewContent', createNewContentAction, {
-        buttonIcon: <Edit/>,
+        buttonIcon: <Queue/>,
         buttonLabel:
             'content-editor:label.contentEditor.CMMActions.createNewContent.label',
         target: ['createMenuActions:3.2', 'contentActions:3.2']

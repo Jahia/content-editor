@@ -11,7 +11,7 @@
             },
             "edit": {
                 "title": "Éditer le contenu",
-                "contentEdit": "Editer le contenu",
+                "contentEdit": "Editer le contenu <i>(beta)</i>",
                 "validation": {
                     "required": "Requis"
                 },
@@ -120,7 +120,8 @@
             },
             "CMMActions": {
               "createNewContent": {
-                "label": "Nouveau contenu",
+                "label": "Nouveau contenu <i>(beta)</i>",
+                "labelModal": "Nouveau contenu (beta)",
                 "btnDiscard": "Annuler",
                 "btnCreate": "Créer",
                 "filterLabel": "Filtrer les élements"
