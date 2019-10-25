@@ -11,21 +11,21 @@ describe('validation utils', () => {
                     field1: 'required',
                     field2: 'required'
                 },
-                setTouched: jest.fn()
+                setTouched: jest.fn(() => Promise.resolve())
             };
         });
 
-        it('should return true when there is no errors', () => {
+        it('should return true when there is no errors', async () => {
             formik.errors = {};
-            expect(validateForm(formik, renderComponent)).toBe(true);
+            expect(await validateForm(formik, renderComponent)).toBe(true);
         });
 
-        it('should return false when there is errors', () => {
-            expect(validateForm(formik, renderComponent)).toBe(false);
+        it('should return false when there is errors', async () => {
+            expect(await validateForm(formik, renderComponent)).toBe(false);
         });
 
-        it('should set fields in error to touched', () => {
-            validateForm(formik, renderComponent);
+        it('should set fields in error to touched', async () => {
+            await validateForm(formik, renderComponent);
 
             expect(formik.setTouched).toHaveBeenCalledWith({
                 field1: true,
@@ -33,14 +33,14 @@ describe('validation utils', () => {
             });
         });
 
-        it('should display a modal when field have erros', () => {
-            validateForm(formik, renderComponent);
+        it('should display a modal when field have erros', async () => {
+            await validateForm(formik, renderComponent);
             expect(renderComponent).toHaveBeenCalled();
         });
 
-        it('should not display a modal when field have no erros', () => {
+        it('should not display a modal when field have no erros', async () => {
             formik.errors = {};
-            validateForm(formik, renderComponent);
+            await validateForm(formik, renderComponent);
             expect(renderComponent).not.toHaveBeenCalled();
         });
     });

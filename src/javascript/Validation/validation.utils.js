@@ -8,16 +8,17 @@ const setErrorFieldTouched = (errorsFields, setTouched) => {
             [field]: true
         };
     }, {});
-    setTouched(fieldsTouched);
+    return setTouched(fieldsTouched);
 };
 
-export const validateForm = ({setTouched, errors}, renderComponent) => {
+export const validateForm = async ({setTouched, errors}, renderComponent) => {
     // SetEach values touched to display errors if there is so.
     // If no error, form will be reset after submition
-    setErrorFieldTouched(errors, setTouched);
+    await setErrorFieldTouched(errors, setTouched);
 
     // If form has errors
     const nbOfErrors = Object.keys(errors).length;
+
     if (nbOfErrors > 0) {
         const handler = renderComponent(
             <SaveErrorModal open
@@ -27,6 +28,7 @@ export const validateForm = ({setTouched, errors}, renderComponent) => {
                             }
             }/>
         );
+
         return false;
     }
 

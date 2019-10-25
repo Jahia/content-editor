@@ -73,7 +73,7 @@ const CreateNewContentDialogCmp = ({open, parentPath, onExited, onClose, onCreat
         <Dialog open={open} aria-labelledby="dialog-createNewContent" onExited={onExited} onClose={onClose}>
             <DialogTitle id="dialog-createNewContent">
                 <Typography color="alpha" variant="delta">
-                    {t('content-editor:label.contentEditor.CMMActions.createNewContent.label')}
+                    {t('content-editor:label.contentEditor.CMMActions.createNewContent.labelModal')}
                 </Typography>
             </DialogTitle>
 

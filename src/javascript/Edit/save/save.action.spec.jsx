@@ -17,43 +17,6 @@ jest.mock('~/actions/redux.action', () => {
     };
 });
 
-jest.mock('@jahia/react-material', () => {
-    let renderComponentmock = jest.fn();
-    return {
-        componentRendererAction: {
-            onClick: context => {
-                context.renderComponent = renderComponentmock;
-            }
-        },
-        renderComponentmock,
-        composeActions: (...actions) => {
-            return actions.reduce((finalAction, action) => {
-                return {
-                    init: (...args) => {
-                        if (finalAction.init) {
-                            finalAction.init(...args);
-                        }
-
-                        if (action.init) {
-                            action.init(...args);
-                        }
-                    },
-                    onClick: (...args) => {
-                        if (finalAction.onClick) {
-                            finalAction.onClick(...args);
-                        }
-
-                        if (action.onClick) {
-                            action.onClick(...args);
-                        }
-                    }
-                };
-            }, {});
-        }
-    };
-});
-
-import {renderComponentmock} from '@jahia/react-material';
 import {setReduxState} from '~/actions/redux.action';
 import saveAction from './save.action';
 
@@ -130,12 +93,13 @@ describe('save action', () => {
             context = {
                 formik: {
                     submitForm: jest.fn(() => Promise.resolve()),
-                    resetForm: jest.fn(),
+                    resetForm: jest.fn(() => Promise.resolve()),
                     setFieldValue: jest.fn(),
-                    setTouched: jest.fn(),
+                    setTouched: jest.fn(() => Promise.resolve()),
                     dirty: true,
                     errors: {}
-                }
+                },
+                renderComponent: jest.fn()
             };
         });
 
@@ -173,7 +137,7 @@ describe('save action', () => {
 
             await saveAction.onClick(context);
 
-            expect(renderComponentmock).toHaveBeenCalled();
+            expect(context.renderComponent).toHaveBeenCalled();
         });
     });
 });

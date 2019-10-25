@@ -24,15 +24,15 @@ export default composeActions(
 
             context.addWarningBadge = Object.keys(context.formik.errors).length > 0;
         },
-        onClick: ({formik, renderComponent}) => {
+        onClick: async ({formik, renderComponent}) => {
             if (!formik || !formik.dirty) {
                 return;
             }
 
-            const formIsValid = validateForm(formik, renderComponent);
+            const formIsValid = await validateForm(formik, renderComponent);
 
             if (formIsValid) {
-                formik
+                return formik
                     .submitForm()
                     .then(() => formik.resetForm(formik.values));
             }
