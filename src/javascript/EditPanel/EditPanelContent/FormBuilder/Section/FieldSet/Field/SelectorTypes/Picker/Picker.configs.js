@@ -120,7 +120,8 @@ const pickerConfigs = {
     user: {
         picker: pickerSelectorTypes.ContentPicker,
         treeConfigs: [treeConfigs.users, treeConfigs.siteUsers],
-        selectableTypesTable: ['jnt:user']
+        selectableTypesTable: ['jnt:user'],
+        displayTree: false
     },
     usergroup: {
         picker: pickerSelectorTypes.ContentPicker,

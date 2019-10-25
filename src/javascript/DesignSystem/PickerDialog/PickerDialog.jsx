@@ -1,5 +1,5 @@
 import {Picker} from '@jahia/react-apollo';
-import {PickerTreeViewMaterial} from '@jahia/react-material';
+import {NodeTrees, PickerTreeViewMaterial} from '@jahia/react-material';
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
@@ -9,8 +9,7 @@ import CloudUpload from '@material-ui/icons/CloudUpload';
 import {Typography} from '@jahia/design-system-kit';
 
 import {withStyles} from '@material-ui/core';
-import {NodeTrees} from '@jahia/react-material';
-import {getPathWithoutFile, getSite, getDetailedPathArray} from './PickerDialog.utils';
+import {getDetailedPathArray, getPathWithoutFile, getSite} from './PickerDialog.utils';
 
 const styles = theme => ({
     drawerPaper: {
@@ -18,9 +17,11 @@ const styles = theme => ({
         backgroundColor: theme.palette.ui.beta
     },
     modalContent: {
-        width: '85vw',
-        marginLeft: '15vw',
         padding: theme.spacing.unit
+    },
+    modalContentWithDrawer: {
+        width: '85vw',
+        marginLeft: '15vw'
     },
     actions: {
         position: 'fixed',
@@ -57,6 +58,7 @@ const styles = theme => ({
 const PickerDialogCmp = ({
     onCloseDialog,
     classes,
+    displayTree,
     idInput,
     initialSelectedItem,
     site,
@@ -89,6 +91,7 @@ const PickerDialogCmp = ({
 
     return (
         <>
+            {displayTree &&
             <Drawer
                 open
                 component="nav"
@@ -125,9 +128,9 @@ const PickerDialogCmp = ({
                         </Picker>
                     )}
                 </NodeTrees>
-            </Drawer>
+            </Drawer>}
 
-            <main className={classes.modalContent}>
+            <main className={classes.modalContent + (displayTree ? ` ${classes.modalContentWithDrawer}` : '')}>
                 {children(setSelectedItem, selectedPath, initialSelectedItem ? [initialSelectedItem] : [])}
 
                 <div className={classes.actions}>
@@ -168,6 +171,7 @@ const PickerDialogCmp = ({
 };
 
 PickerDialogCmp.defaultProps = {
+    displayTree: true,
     initialSelectedItem: null
 };
 
@@ -182,6 +186,7 @@ PickerDialogCmp.propTypes = {
     classes: PropTypes.object.isRequired,
     modalCancelLabel: PropTypes.string.isRequired,
     modalDoneLabel: PropTypes.string.isRequired,
+    displayTree: PropTypes.bool,
     initialSelectedItem: PropTypes.string
 };
 
