@@ -43,6 +43,22 @@ describe('Picker dialog', () => {
         expect(defaultProps.onCloseDialog).toHaveBeenCalled();
     });
 
+    it('should not display the drawer when drawerOpen is false', () => {
+        const cmpDrawerOpen = shallowWithTheme(
+            <PickerDialog {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+        expect(cmpDrawerOpen.find('WithStyles(Drawer)').exists()).toBe(true);
+
+        const cmpDrawerClose = shallowWithTheme(
+            <PickerDialog {...defaultProps} displayTree={false}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+        expect(cmpDrawerClose.find('WithStyles(Drawer)').exists()).toBe(false);
+    });
+
     it('should disabled button when no item is selected', () => {
         const cmp = shallowWithTheme(
             <PickerDialog {...defaultProps}/>,

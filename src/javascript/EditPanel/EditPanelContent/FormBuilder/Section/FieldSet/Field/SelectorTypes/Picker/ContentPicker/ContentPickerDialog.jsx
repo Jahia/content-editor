@@ -27,19 +27,20 @@ export const ContentPickerDialog = ({
         <Dialog fullScreen open={isOpen} TransitionComponent={Transition}>
             <FastField render={({form: {setFieldValue, setFieldTouched}}) => (
                 <PickerDialog
-                idInput={id}
-                site={editorContext.site}
-                lang={editorContext.lang}
-                initialSelectedItem={initialSelectedItem}
-                nodeTreeConfigs={nodeTreeConfigs}
-                modalCancelLabel={t(
+                    displayTree={pickerConfig.displayTree}
+                    idInput={id}
+                    site={editorContext.site}
+                    lang={editorContext.lang}
+                    initialSelectedItem={initialSelectedItem}
+                    nodeTreeConfigs={nodeTreeConfigs}
+                    modalCancelLabel={t(
                     'content-editor:label.contentEditor.edit.fields.modalCancel'
                 )}
-                modalDoneLabel={t(
+                    modalDoneLabel={t(
                     'content-editor:label.contentEditor.edit.fields.modalDone'
                 )}
-                onCloseDialog={() => setIsOpen(false)}
-                onItemSelection={content => {
+                    onCloseDialog={() => setIsOpen(false)}
+                    onItemSelection={content => {
                     setFieldValue(
                         id,
                         content[0] ? content[0].id : null,

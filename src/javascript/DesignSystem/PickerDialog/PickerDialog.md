@@ -14,6 +14,7 @@ This component displays the node tree structure and content within each node to 
 -   _modalCancelLabel_: string value of dialog's cancel button label
 -   _modalDoneLabel_: string value of dialog's done button label
 -   _classes_: object with classes for styling the component
+-   _displayTree_ : if false, the left tree is not displayed, default is true.
 -   _initialPath_: string initial path to display
 
 All props is required to use this component
