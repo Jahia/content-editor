@@ -2,7 +2,7 @@ import {composeActions, componentRendererAction} from '@jahia/react-material';
 import {withFormikAction} from '~/actions/withFormik.action';
 import {Constants} from '~/ContentEditor.constants';
 import {reduxAction} from '~/actions/redux.action';
-import {validateForm} from '~/validation/validation.utils';
+import {validateForm} from '~/Validation/validation.utils';
 
 const stateMapToContext = state => {
     return {
