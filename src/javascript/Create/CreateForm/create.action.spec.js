@@ -30,28 +30,28 @@ describe('create action', () => {
                     submitForm: jest.fn(() => Promise.resolve()),
                     resetForm: jest.fn(),
                     setFieldValue: jest.fn(),
-                    setTouched: jest.fn(),
+                    setTouched: jest.fn(() => Promise.resolve()),
                     errors: {}
                 },
                 renderComponent: jest.fn()
             };
         });
 
-        it('should do nothing when formik is not available', () => {
+        it('should do nothing when formik is not available', async () => {
             const context = {};
 
-            createAction.onClick(context);
+            await createAction.onClick(context);
 
             expect(Object.keys(context).length).toBe(0);
         });
 
-        it('should submit form when formik is available', () => {
-            createAction.onClick(context);
+        it('should submit form when formik is available', async () => {
+            await createAction.onClick(context);
 
             expect(context.formik.submitForm).toHaveBeenCalled();
         });
 
-        it('should not submit form when form is invalid', () => {
+        it('should not submit form when form is invalid', async () => {
             context.formik = {
                 ...context.formik,
                 errors: {
@@ -60,7 +60,7 @@ describe('create action', () => {
                 }
             };
 
-            createAction.onClick(context);
+            await createAction.onClick(context);
 
             expect(context.formik.submitForm).not.toHaveBeenCalled();
         });
