@@ -14,7 +14,9 @@ import org.jahia.services.sites.JahiaSite;
 import org.jahia.services.templates.ModuleVersion;
 import org.jahia.test.framework.AbstractJUnitTest;
 import org.jahia.test.utils.TestHelper;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 
@@ -27,54 +29,71 @@ public class ContentEditorUtilsTest extends AbstractJUnitTest {
 
     private static final transient Logger logger = org.slf4j.LoggerFactory.getLogger(ContentEditorUtilsTest.class);
 
-    @Test
-    public void getNodetypesTest() throws Exception {
-        JahiaTemplatesPackage currentModule = new JahiaTemplatesPackage(new DummyBundle());
+    private JCRSessionWrapper session;
+    private JahiaTemplatesPackage currentModule, defaultModule;
+    private JahiaSite testSite;
+
+    @Before
+    public void beforeEach() throws Exception {
+        currentModule = new JahiaTemplatesPackage(new DummyBundle());
         currentModule.setName("currentmodule");
         currentModule.setId("currentmodule");
         currentModule.setVersion(new ModuleVersion("1.0.0"));
         currentModule.setModuleType("module");
         currentModule.setActiveVersion(true);
 
-        JahiaTemplatesPackage defaultModule = new JahiaTemplatesPackage(new DummyBundle());
+        defaultModule = new JahiaTemplatesPackage(new DummyBundle());
         defaultModule.setName("default");
         defaultModule.setId("default");
         defaultModule.setVersion(new ModuleVersion("1.0.0"));
         defaultModule.setModuleType("module");
         defaultModule.setActiveVersion(true);
 
-        try {
-            // init sessions
-            JCRSessionWrapper session = JCRSessionFactory.getInstance().getCurrentSystemSession(Constants.EDIT_WORKSPACE, Locale.ENGLISH, Locale.ENGLISH);
+        // init sessions
+        session = JCRSessionFactory.getInstance().getCurrentSystemSession(Constants.EDIT_WORKSPACE, Locale.ENGLISH, Locale.ENGLISH);
 
-            // init render service
-            RenderService.getInstance().setScriptResolvers(Collections.emptyList());
+        // init render service
+        RenderService.getInstance().setScriptResolvers(Collections.emptyList());
 
-            // set default template package
-            // Todo: Use mockito to mock ChoiceListInitializer instead of dummy Render Service / Bundle .
-            ServicesRegistry.getInstance().getJahiaTemplateManagerService().getTemplatePackageRegistry().register(defaultModule);
-            ServicesRegistry.getInstance().getJahiaTemplateManagerService().getTemplatePackageRegistry().register(currentModule);
+        // Add custom permission
+        session.getNode("/permissions").addNode("jcr:modifyProperties_default_en", "jnt:permission");
+        session.save();
 
-            // init site
-            JahiaSite testSite = TestHelper.createSite("GqlEditorFormsUtilsTestSite");
-            // deploy default module
-            session.getNode(testSite.getJCRLocalPath()).setProperty("j:installedModules", new String[] {"currentmodule"});
-            session.save();
-            // Get all tree
-            // set node type
-            List<List<String>> filterTypes = Arrays.asList(null, Arrays.asList("jnt:parentType"), Arrays.asList("jnt:singleParentType"));
-            // exclude a type
-            List<List<String>> excludedNodeTypes = Arrays.asList(null,  Arrays.asList("jnt:parentType"), Arrays.asList("jnt:singleParentType"));
-            // include sub types
-            List<Boolean> includeSubTypes = Arrays.asList(true, false);
-            // validate that the nodetype is in the right section
-            filterTypes.forEach(filterType -> excludedNodeTypes.forEach( excludedNodeType -> includeSubTypes.forEach(includeSubType -> {
-                doTest(filterType, excludedNodeType, includeSubType, testSite.getJCRLocalPath(), session);
-            })));
-        } finally {
-            ServicesRegistry.getInstance().getJahiaTemplateManagerService().getTemplatePackageRegistry().unregister(defaultModule);
-            ServicesRegistry.getInstance().getJahiaTemplateManagerService().getTemplatePackageRegistry().unregister(currentModule);
-        }
+        // set default template package
+        // Todo: Use mockito to mock ChoiceListInitializer instead of dummy Render Service / Bundle .
+        ServicesRegistry.getInstance().getJahiaTemplateManagerService().getTemplatePackageRegistry().register(defaultModule);
+        ServicesRegistry.getInstance().getJahiaTemplateManagerService().getTemplatePackageRegistry().register(currentModule);
+
+        // init site
+        testSite = TestHelper.createSite("GqlEditorFormsUtilsTestSite");
+    }
+
+    @After
+    public void afterEach() throws Exception {
+        ServicesRegistry.getInstance().getJahiaTemplateManagerService().getTemplatePackageRegistry().unregister(defaultModule);
+        ServicesRegistry.getInstance().getJahiaTemplateManagerService().getTemplatePackageRegistry().unregister(currentModule);
+        TestHelper.deleteSite(testSite.getSiteKey());
+        JCRSessionFactory.getInstance().closeAllSessions();
+    }
+
+
+    @Test
+    public void getNodetypesTest() throws Exception {
+
+        // deploy default module
+        session.getNode(testSite.getJCRLocalPath()).setProperty("j:installedModules", new String[]{"currentmodule"});
+        session.save();
+        // Get all tree
+        // set node type
+        List<List<String>> filterTypes = Arrays.asList(null, Arrays.asList("jnt:parentType"), Arrays.asList("jnt:singleParentType"));
+        // exclude a type
+        List<List<String>> excludedNodeTypes = Arrays.asList(null, Arrays.asList("jnt:parentType"), Arrays.asList("jnt:singleParentType"));
+        // include sub types
+        List<Boolean> includeSubTypes = Arrays.asList(true, false);
+        // validate that the nodetype is in the right section
+        filterTypes.forEach(filterType -> excludedNodeTypes.forEach(excludedNodeType -> includeSubTypes.forEach(includeSubType -> {
+            doTest(filterType, excludedNodeType, includeSubType, testSite.getJCRLocalPath(), session);
+        })));
     }
 
     private void doTest(List<String> nodeType, List<String> excludedNodeType, boolean includeSubTypes, String sitePath, JCRSessionWrapper session) {
@@ -132,11 +151,11 @@ public class ContentEditorUtilsTest extends AbstractJUnitTest {
                     }
                     parentFound = parentFound || matchParentEntry(tree, entry.getName(), "nt:base");
                     if (!parentFound) {
-                            Assert.fail("unable to resolve parent tree entry for type " + entry.getName());
+                        Assert.fail("unable to resolve parent tree entry for type " + entry.getName());
                     }
                 } else {
                     // check root entries
-                    if (!StringUtils.equals(entry.getName(),"nt:base") && !entry.getNodeType().isMixin()) {
+                    if (!StringUtils.equals(entry.getName(), "nt:base") && !entry.getNodeType().isMixin()) {
                         Assert.fail("root entry should be either a mixin or nt:base but found " + entry.getName());
                     }
                 }
@@ -157,7 +176,7 @@ public class ContentEditorUtilsTest extends AbstractJUnitTest {
                 return getEntry(treeEntry.getChildren(), name);
             }
         }
-       return null;
+        return null;
     }
 
     private boolean matchParentEntry(Collection<NodeTypeTreeEntry> tree, String name, String parentName) {
