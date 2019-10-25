@@ -33,12 +33,12 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
     private JCRNodeWrapper textNode;
     private JCRNodeWrapper unstructuredNews;
     private JCRNodeWrapper defaultOverrideContent;
-
+    private JahiaTemplatesPackage defaultModule;
     private static JCRSessionWrapper session;
-
 
     @Before
     public void beforeEach() throws Exception {
+
         staticDefinitionsRegistry = new StaticDefinitionsRegistry();
         // init service
         editorFormService = new EditorFormServiceImpl();
@@ -57,10 +57,11 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
 
         // set default template package
         // Todo: Use mockito to mock ChoiceListInitializer instead of dummy Render Service / Bundle ..
-        JahiaTemplatesPackage defaultModule = new JahiaTemplatesPackage(new DummyBundle());
+        defaultModule = new JahiaTemplatesPackage(new DummyBundle());
         defaultModule.setName("default");
         defaultModule.setId("default");
         defaultModule.setVersion(new ModuleVersion("1.0.0"));
+        defaultModule.setActiveVersion(true);
         ServicesRegistry.getInstance().getJahiaTemplateManagerService().getTemplatePackageRegistry().register(defaultModule);
 
         // init static definition registry
@@ -70,17 +71,24 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         textNode = session.getNode(testSite.getJCRLocalPath()).addNode("test", "jnt:text");
         session.save();
 
+        // Add permission
+        if (!session.itemExists("/permissions/jcr:modifyProperties_default_en")) {
+            session.getNode("/permissions").addNode("jcr:modifyProperties_default_en", "jnt:permission");
+            session.save();
+        }
+
         // create unstructured content
         unstructuredNews = session.getNode(testSite.getJCRLocalPath()).addNode("unstructuredNews", "jnt:unstructuredNews");
         session.save();
 
         //create default override content
-        defaultOverrideContent = session.getNode(testSite.getJCRLocalPath()).addNode("defaultOverrideContent","jnt:defaultOverrideContent");
+        defaultOverrideContent = session.getNode(testSite.getJCRLocalPath()).addNode("defaultOverrideContent", "jnt:defaultOverrideContent");
         session.save();
     }
 
     @After
     public void afterEach() throws Exception {
+        ServicesRegistry.getInstance().getJahiaTemplateManagerService().getTemplatePackageRegistry().unregister(defaultModule);
         TestHelper.deleteSite(testSite.getSiteKey());
         JCRSessionFactory.getInstance().closeAllSessions();
     }
@@ -279,12 +287,13 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
 
     /**
      * Given I define a JSON override next to my mixin cnd definition that set a target for a fieldset: "target":{"itemType":"layout"}
-     *
+     * <p>
      * When the API for a content type is called
-     *
+     * <p>
      * Then the API will take the override into account and return the JSON with the fieldset in the right itemType
-     *
+     * <p>
      * Fields can also support target : "target":{"itemType":"layout", "fieldset":"view" }
+     *
      * @throws Exception
      */
     @Test
