@@ -12,7 +12,10 @@ const styles = theme => ({
     readOnly: {
         outline: 'none',
         background: theme.palette.ui.alpha,
-        border: `1px solid ${theme.palette.ui.alpha}!important`
+        border: `1px solid ${theme.palette.ui.alpha}!important`,
+        '& div': {
+            cursor: 'default'
+        }
     }
 });
 
