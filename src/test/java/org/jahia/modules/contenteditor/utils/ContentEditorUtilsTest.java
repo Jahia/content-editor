@@ -30,43 +30,52 @@ public class ContentEditorUtilsTest extends AbstractJUnitTest {
 
     @Test
     public void getNodetypesTest() throws Exception {
-        // init sessions
-        JCRSessionWrapper session = JCRSessionFactory.getInstance().getCurrentSystemSession(Constants.EDIT_WORKSPACE, Locale.ENGLISH, Locale.ENGLISH);
-
-        // init render service
-        RenderService.getInstance().setScriptResolvers(Collections.emptyList());
-
-        // set default template package
-        // Todo: Use mockito to mock ChoiceListInitializer instead of dummy Render Service / Bundle ..
-        JahiaTemplatesPackage defaultModule = new JahiaTemplatesPackage(new DummyBundle());
-        defaultModule.setName("default");
-        defaultModule.setId("default");
-        defaultModule.setVersion(new ModuleVersion("1.0.0"));
-        defaultModule.setModuleType("module");
-        ServicesRegistry.getInstance().getJahiaTemplateManagerService().getTemplatePackageRegistry().register(defaultModule);
         JahiaTemplatesPackage currentModule = new JahiaTemplatesPackage(new DummyBundle());
         currentModule.setName("currentmodule");
         currentModule.setId("currentmodule");
         currentModule.setVersion(new ModuleVersion("1.0.0"));
         currentModule.setModuleType("module");
-        ServicesRegistry.getInstance().getJahiaTemplateManagerService().getTemplatePackageRegistry().register(currentModule);
+        currentModule.setActiveVersion(true);
 
-        // init site
-        JahiaSite testSite = TestHelper.createSite("GqlEditorFormsUtilsTestSite");
-        // deploy default module
-        session.getNode(testSite.getJCRLocalPath()).setProperty("j:installedModules", new String[] {"currentmodule"});
-        session.save();
-        // Get all tree
-        // set node type
-        List<List<String>> filterTypes = Arrays.asList(null, Arrays.asList("jnt:parentType"), Arrays.asList("jnt:singleParentType"));
-        // exclude a type
-        List<List<String>> excludedNodeTypes = Arrays.asList(null,  Arrays.asList("jnt:parentType"), Arrays.asList("jnt:singleParentType"));
-        // include sub types
-        List<Boolean> includeSubTypes = Arrays.asList(true, false);
-        // validate that the nodetype is in the right section
-        filterTypes.forEach(filterType -> excludedNodeTypes.forEach( excludedNodeType -> includeSubTypes.forEach(includeSubType -> {
-            doTest(filterType, excludedNodeType, includeSubType, testSite.getJCRLocalPath(), session);
-        })));
+        JahiaTemplatesPackage defaultModule = new JahiaTemplatesPackage(new DummyBundle());
+        defaultModule.setName("default");
+        defaultModule.setId("default");
+        defaultModule.setVersion(new ModuleVersion("1.0.0"));
+        defaultModule.setModuleType("module");
+        defaultModule.setActiveVersion(true);
+
+        try {
+            // init sessions
+            JCRSessionWrapper session = JCRSessionFactory.getInstance().getCurrentSystemSession(Constants.EDIT_WORKSPACE, Locale.ENGLISH, Locale.ENGLISH);
+
+            // init render service
+            RenderService.getInstance().setScriptResolvers(Collections.emptyList());
+
+            // set default template package
+            // Todo: Use mockito to mock ChoiceListInitializer instead of dummy Render Service / Bundle .
+            ServicesRegistry.getInstance().getJahiaTemplateManagerService().getTemplatePackageRegistry().register(defaultModule);
+            ServicesRegistry.getInstance().getJahiaTemplateManagerService().getTemplatePackageRegistry().register(currentModule);
+
+            // init site
+            JahiaSite testSite = TestHelper.createSite("GqlEditorFormsUtilsTestSite");
+            // deploy default module
+            session.getNode(testSite.getJCRLocalPath()).setProperty("j:installedModules", new String[] {"currentmodule"});
+            session.save();
+            // Get all tree
+            // set node type
+            List<List<String>> filterTypes = Arrays.asList(null, Arrays.asList("jnt:parentType"), Arrays.asList("jnt:singleParentType"));
+            // exclude a type
+            List<List<String>> excludedNodeTypes = Arrays.asList(null,  Arrays.asList("jnt:parentType"), Arrays.asList("jnt:singleParentType"));
+            // include sub types
+            List<Boolean> includeSubTypes = Arrays.asList(true, false);
+            // validate that the nodetype is in the right section
+            filterTypes.forEach(filterType -> excludedNodeTypes.forEach( excludedNodeType -> includeSubTypes.forEach(includeSubType -> {
+                doTest(filterType, excludedNodeType, includeSubType, testSite.getJCRLocalPath(), session);
+            })));
+        } finally {
+            ServicesRegistry.getInstance().getJahiaTemplateManagerService().getTemplatePackageRegistry().unregister(defaultModule);
+            ServicesRegistry.getInstance().getJahiaTemplateManagerService().getTemplatePackageRegistry().unregister(currentModule);
+        }
     }
 
     private void doTest(List<String> nodeType, List<String> excludedNodeType, boolean includeSubTypes, String sitePath, JCRSessionWrapper session) {
