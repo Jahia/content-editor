@@ -4,7 +4,6 @@ import org.apache.commons.lang.StringUtils;
 import org.jahia.api.Constants;
 import org.jahia.data.templates.JahiaTemplatesPackage;
 import org.jahia.modules.DummyBundle;
-import org.jahia.modules.contenteditor.graphql.api.NodeTypeTreeEntry;
 import org.jahia.registries.ServicesRegistry;
 import org.jahia.services.content.JCRSessionFactory;
 import org.jahia.services.content.JCRSessionWrapper;
@@ -80,7 +79,7 @@ public class ContentEditorUtilsTest extends AbstractJUnitTest {
 
     private void doTest(List<String> nodeType, List<String> excludedNodeType, boolean includeSubTypes, String sitePath, JCRSessionWrapper session) {
         try {
-            final List<NodeTypeTreeEntry> tree = ContentEditorUtils.getContentTypesAsTree(nodeType, excludedNodeType, includeSubTypes, sitePath, session, Locale.ENGLISH);
+            final Set<NodeTypeTreeEntry> tree = ContentEditorUtils.getContentTypesAsTree(nodeType, excludedNodeType, includeSubTypes, sitePath, session, Locale.ENGLISH);
             // we are testing that all node types registered that is part of the tree is consistent.
             for (NodeTypeIterator nti = NodeTypeRegistry.getInstance().getNodeTypes("currentmodule"); nti.hasNext(); ) {
                 ExtendedNodeType extendedNodeType = (ExtendedNodeType) nti.nextNodeType();

@@ -1,7 +1,6 @@
 package org.jahia.modules.contenteditor.utils;
 
 import org.jahia.data.templates.JahiaTemplatesPackage;
-import org.jahia.modules.contenteditor.graphql.api.NodeTypeTreeEntry;
 import org.jahia.registries.ServicesRegistry;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRSessionWrapper;
@@ -39,7 +38,7 @@ public class ContentEditorUtils {
      * @return a list of trees of jmix:droppableContent nodeTypes for a given path.
      * @throws RepositoryException
      */
-    public static List<NodeTypeTreeEntry> getContentTypesAsTree(List<String> nodeTypes, final List<String> excludedNodeTypes, final boolean includeSubTypes, String path, JCRSessionWrapper session, Locale uiLocale) throws RepositoryException {
+    public static Set<NodeTypeTreeEntry> getContentTypesAsTree(List<String> nodeTypes, final List<String> excludedNodeTypes, final boolean includeSubTypes, String path, JCRSessionWrapper session, Locale uiLocale) throws RepositoryException {
         List<JahiaTemplatesPackage> packages = new ArrayList<JahiaTemplatesPackage>();
         JCRSiteNode site = session.getNode(path).getResolveSite();
         if (site.isNodeType("jnt:module")) {
@@ -93,7 +92,7 @@ public class ContentEditorUtils {
             }
         }
 
-        List<NodeTypeTreeEntry> roots = new ArrayList<>();
+        Set<NodeTypeTreeEntry> roots = new TreeSet<>();
         for (Map.Entry<ExtendedNodeType, List<ExtendedNodeType>> entry : r.entrySet()) {
             ExtendedNodeType entryType = entry.getKey() != null ? entry.getKey() : NodeTypeRegistry.getInstance().getNodeType("nt:base");
             NodeTypeTreeEntry nt = new NodeTypeTreeEntry(entryType, uiLocale);
@@ -111,8 +110,8 @@ public class ContentEditorUtils {
             }
         }
 
-        if (roots.size() == 1 && (roots.get(0).getNodeType().isMixin() || roots.get(0).getName().equals("nt:base"))) {
-            Set<NodeTypeTreeEntry> l = roots.get(0).getChildren();
+        if (roots.size() == 1 && (roots.iterator().next().getNodeType().isMixin() || roots.iterator().next().getName().equals("nt:base"))) {
+            Set<NodeTypeTreeEntry> l = roots.iterator().next().getChildren();
             roots.clear();
             roots.addAll(l);
         }

@@ -5,7 +5,7 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import org.jahia.modules.contenteditor.graphql.api.GqlUtils;
-import org.jahia.modules.contenteditor.graphql.api.NodeTypeTreeEntry;
+import org.jahia.modules.contenteditor.utils.NodeTypeTreeEntry;
 import org.jahia.modules.graphql.provider.dxm.DataFetchingException;
 import org.jahia.modules.graphql.provider.dxm.nodetype.GqlJcrNodeType;
 import org.jahia.services.content.JCRContentUtils;
