@@ -8,6 +8,7 @@ import org.jahia.modules.contenteditor.api.forms.EditorFormException;
 import org.jahia.modules.contenteditor.api.forms.EditorFormService;
 import org.jahia.modules.contenteditor.graphql.api.definitions.GqlNodeTypeTreeEntry;
 import org.jahia.modules.contenteditor.utils.ContentEditorUtils;
+import org.jahia.modules.contenteditor.utils.NodeTypeTreeEntry;
 import org.jahia.modules.graphql.provider.dxm.DataFetchingException;
 import org.jahia.osgi.BundleUtils;
 import org.jahia.services.content.JCRSessionFactory;
@@ -18,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import javax.jcr.RepositoryException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -108,7 +110,7 @@ public class GqlEditorForms {
     ) {
         try {
             Locale locale = LocaleUtils.toLocale(uiLocale);
-            List<NodeTypeTreeEntry> entries = ContentEditorUtils.getContentTypesAsTree(nodeTypes, excludedNodeTypes, includeSubTypes, nodePath, getSession(locale), locale);
+            Set<NodeTypeTreeEntry> entries = ContentEditorUtils.getContentTypesAsTree(nodeTypes, excludedNodeTypes, includeSubTypes, nodePath, getSession(locale), locale);
 
             return entries.stream().map(GqlNodeTypeTreeEntry::new).collect(Collectors.toList());
         } catch (RepositoryException e) {
