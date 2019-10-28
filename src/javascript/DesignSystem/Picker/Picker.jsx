@@ -102,6 +102,7 @@ const PickerCmp = ({
 }) => {
     // If picker have already data
     if (fieldData) {
+        const nameId = `${labelledBy}-name`;
         return (
             <article
                 className={
@@ -123,13 +124,14 @@ const PickerCmp = ({
                 }}
             >
                 <div className={classes.fieldFigureContainer}>
-                    <img src={fieldData.url} className={classes.fieldImage}/>
+                    <img src={fieldData.url} className={classes.fieldImage} aria-labelledby={nameId} alt=""/>
                 </div>
                 <div className={classes.fieldSelectedMetadata}>
                     <Typography
                         data-sel-field-picker-name
                         variant="zeta"
                         color="alpha"
+                        id={nameId}
                     >
                         {fieldData.name}
                     </Typography>
