@@ -96,6 +96,13 @@ public class ContentEditorUtilsTest extends AbstractJUnitTest {
                     }
                     continue;
                 }
+                // test disambiguateLabels
+                if (extendedNodeType.isNodeType("jnt:cat2ype1") || extendedNodeType.isNodeType("test:cat2ype1")) {
+                    if (!StringUtils.equals(entry.getLabel(), extendedNodeType.getLabel(Locale.ENGLISH) + " (" + extendedNodeType.getName() + ")")) {
+                        Assert.fail(String.format("Entry expected was [%s], but found [%s]", entry.getLabel(), extendedNodeType.getLabel(Locale.ENGLISH) + " (" + extendedNodeType.getName() + ")"));
+                    }
+                }
+
                 // validate one tree entry
                 if (entry.getNodeType().isNodeType("jnt:singleParentType") || !includeSubTypes) {
                     if (tree.size() != 1 && entry.getChildren() != null) {

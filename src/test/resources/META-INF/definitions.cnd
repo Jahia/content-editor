@@ -1,3 +1,4 @@
+<test = 'http://www.apache.org/jackrabbit/test'>
 <j = 'http://www.jahia.org/jahia/1.0'>
 <jmix = 'http://www.jahia.org/jahia/mix/1.0'>
 <jnt = 'http://www.jahia.org/jahia/nt/1.0'>
@@ -51,3 +52,4 @@ extends=jnt:simpleWithExtends
 [jnt:cat1ype1] > jnt:content, jmix:cat1
 
 [jnt:cat2ype1] > jnt:content, jmix:cat2
+[test:cat2ype1] > jnt:content, jmix:cat2
