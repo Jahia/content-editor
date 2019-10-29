@@ -68,7 +68,7 @@
         <jahia-deploy-on-site>all</jahia-deploy-on-site>
         <jahia-module-type>system</jahia-module-type>
         <yarn.arguments>build -p</yarn.arguments>
-        <jackson.osgi.version>2.9.9</jackson.osgi.version>
+        <jackson.osgi.version>2.10.0</jackson.osgi.version>
     </properties>
 
     <repositories>
