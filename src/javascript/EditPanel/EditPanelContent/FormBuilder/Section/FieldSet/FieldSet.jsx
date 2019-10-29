@@ -39,7 +39,7 @@ const FieldSetCmp = ({fieldset, classes, formik: {values, handleChange}}) => {
                         onChange={handleChange}
                 />}
 
-                <Typography component="h3" className={classes.fieldSetTitle} color="alpha" variant="zeta">
+                <Typography component="label" htmlFor={fieldset.name} className={classes.fieldSetTitle} color="alpha" variant="zeta">
                     {fieldset.displayName}
                 </Typography>
             </div>
