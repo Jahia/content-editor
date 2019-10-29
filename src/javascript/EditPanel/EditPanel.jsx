@@ -58,6 +58,9 @@ const EditPanelCmp = ({formik, title, classes, t, notificationContext, client}) 
                                       }}
                 />,
                 title,
+                titleProps: {
+                    component: 'h1'
+                },
                 contextModifiers: (
                     <>
                         <EditPanelLanguageSwitcher lang={lang}
