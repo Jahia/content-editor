@@ -1,5 +1,5 @@
 import {Picker} from '@jahia/react-apollo';
-import {NodeTrees, DisplayActions, iconButtonRenderer, PickerTreeViewMaterial} from '@jahia/react-material';
+import {DisplayActions, iconButtonRenderer, NodeTrees, PickerTreeViewMaterial} from '@jahia/react-material';
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
@@ -54,7 +54,6 @@ const PickerDialogCmp = ({
     onCloseDialog,
     classes,
     displayTree,
-    idInput,
     initialSelectedItem,
     site,
     lang,
@@ -174,7 +173,6 @@ PickerDialogCmp.propTypes = {
     site: PropTypes.string.isRequired,
     onCloseDialog: PropTypes.func.isRequired,
     onItemSelection: PropTypes.func.isRequired,
-    idInput: PropTypes.string.isRequired,
     classes: PropTypes.object.isRequired,
     modalCancelLabel: PropTypes.string.isRequired,
     modalDoneLabel: PropTypes.string.isRequired,
