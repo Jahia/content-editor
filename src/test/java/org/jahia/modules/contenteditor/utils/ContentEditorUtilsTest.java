@@ -56,8 +56,10 @@ public class ContentEditorUtilsTest extends AbstractJUnitTest {
         RenderService.getInstance().setScriptResolvers(Collections.emptyList());
 
         // Add custom permission
-        session.getNode("/permissions").addNode("jcr:modifyProperties_default_en", "jnt:permission");
-        session.save();
+        if (!session.nodeExists("/permissions/jcr:modifyProperties_default_en")) {
+            session.getNode("/permissions").addNode("jcr:modifyProperties_default_en", "jnt:permission");
+            session.save();
+        }
 
         // set default template package
         // Todo: Use mockito to mock ChoiceListInitializer instead of dummy Render Service / Bundle .
