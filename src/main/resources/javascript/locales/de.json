@@ -85,7 +85,8 @@
                       "type": "Typname",
                       "createdBy": "Erstellt von",
                       "lastModified": "Datum der letzten Änderung"
-                    }
+                    },
+                    "fileUploadBtn": "<span data-jahia-link>Datei hochladen</span>"
                   },
                   "modalCancel": "Abbrechen",
                   "modalDone": "Fertig"

@@ -38,7 +38,7 @@ describe('Picker dialog', () => {
             dsGenericTheme
         ).dive();
 
-        cmp.find('WithStyles(Button)[color="secondary"]').simulate('click');
+        cmp.find('WithStyles(Button)[variant="secondary"]').simulate('click');
 
         expect(defaultProps.onCloseDialog).toHaveBeenCalled();
     });
