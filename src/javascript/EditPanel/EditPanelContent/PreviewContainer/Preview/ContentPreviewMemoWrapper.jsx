@@ -64,6 +64,9 @@ export const ContentPreviewMemoWrapperCmp = React.memo(({t, classes}) => {
                         workspace={previewContext.workspace}
                         domLoadedCallback={domLoadedCallback}
                         iFrameStyle={style}
+                        iframeProps={{
+                            'aria-labelledby': 'preview-tab'
+                        }}
                     />
                 )}
             </ContentPreview>

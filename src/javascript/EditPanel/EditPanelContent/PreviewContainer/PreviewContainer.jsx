@@ -80,7 +80,7 @@ const PreviewContainerCmp = ({classes, t, isDirty, mode}) => {
                                        }}
                     >
                         <ToggleButton value="preview" classes={toggleButtonClasses}>
-                            <Typography>
+                            <Typography id="preview-tab">
                                 {t('content-editor:label.contentEditor.preview.toggleButtons.preview')}
                             </Typography>
                         </ToggleButton>

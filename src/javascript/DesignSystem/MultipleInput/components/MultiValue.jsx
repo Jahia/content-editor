@@ -19,7 +19,19 @@ export const MultiValueCmp = ({data, removeProps, classes, ...other}) => {
             tabIndex="-1"
             label={data.label}
             className={other.isDisabled ? classes.chipReadOnly : ''}
-            deleteIcon={<Close {...removeProps}/>}
+            deleteIcon={
+                <Close
+                    {...removeProps}
+                    focusable
+                    tabIndex="0"
+                    onKeyUp={e => {
+                        e.stopPropagation();
+                        if (e.keyCode === 13) {
+                            removeProps.onClick(e);
+                        }
+                    }}
+                />
+            }
             variant={other.isDisabled ? 'secondary' : 'primary'}
             onDelete={other.isDisabled ? null : removeProps.onClick}
         />
