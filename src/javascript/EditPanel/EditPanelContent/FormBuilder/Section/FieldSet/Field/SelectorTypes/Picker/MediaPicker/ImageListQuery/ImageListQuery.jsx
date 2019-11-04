@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {ProgressOverlay} from '@jahia/react-material';
 import * as PropTypes from 'prop-types';
 import {useQuery} from 'react-apollo-hooks';
@@ -6,6 +6,7 @@ import {translate} from 'react-i18next';
 import {ImageList} from '~/DesignSystem/ImageList';
 import {encodeJCRPath} from '../../../../../../../../../EditPanel.utils';
 import {MediaPickerImages} from './ImageListQuery.gql-queries';
+import {registry} from '@jahia/registry';
 
 const ImageListQueryCmp = ({
     t,
@@ -14,11 +15,18 @@ const ImageListQueryCmp = ({
     selectedPath,
     initialSelection
 }) => {
-    const {data, error, loading} = useQuery(MediaPickerImages, {
+    const {data, error, loading, refetch} = useQuery(MediaPickerImages, {
         variables: {
             typeFilter: ['jmix:image'],
             path: selectedPath
         }
+    });
+
+    useEffect(() => {
+        registry.add('refetch-image-list', {
+            type: 'refetch-upload',
+            refetch: refetch
+        });
     });
 
     if (error) {
