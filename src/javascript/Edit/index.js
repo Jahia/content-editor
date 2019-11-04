@@ -8,6 +8,7 @@ import {menuAction, composeActions} from '@jahia/react-material';
 import {DotsVertical} from 'mdi-material-ui';
 import openEngineTabs from './openEngineTabs/openEngineTabs.action';
 import {withFormikAction} from '../actions/withFormik.action';
+import {withPublicationInfoContextAction} from '../actions/withPublicationInfoContext.action';
 
 export const registerActions = actionsRegistry => {
     // Content Media Manager Action
@@ -44,7 +45,7 @@ export const registerActions = actionsRegistry => {
 
     /* 3 dots menu */
 
-    actionsRegistry.add('ContentEditorHeaderMenu', composeActions(withFormikAction, menuAction), {
+    actionsRegistry.add('ContentEditorHeaderMenu', composeActions(withFormikAction, withPublicationInfoContextAction, menuAction), {
         buttonIcon: <DotsVertical/>,
         buttonLabel: 'label.contentEditor.edit.action.moreOptions',
         menu: 'ContentEditorHeaderActions',

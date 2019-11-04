@@ -43,9 +43,6 @@ const NodeDataFragment = {
                     values
                     notZonedDateValues
                 }
-                aggregatedPublicationInfo(language: $language, subNodes: false, references: false) {
-                    publicationStatus
-                }
                 hasPublishPermission: hasPermission(permissionName: "publish")
                 hasStartPublicationWorkflowPermission: hasPermission(permissionName: "publication-start")
                 lockInfo {

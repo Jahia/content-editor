@@ -31,9 +31,15 @@ import {setReduxState} from '~/actions/redux.action';
 describe('publish action', () => {
     describe('onClick', () => {
         it('should call publishNode request', () => {
-            publishAction.onClick({});
+            const context = {
+                publicationInfoContext: {
+                    startPublicationInfoPolling: jest.fn()
+                }
+            };
+            publishAction.onClick(context);
 
             expect(publishNode).toHaveBeenCalled();
+            expect(context.publicationInfoContext.startPublicationInfoPolling).toHaveBeenCalled();
         });
     });
 
@@ -45,14 +51,17 @@ describe('publish action', () => {
             props = {
                 formik: {
                     dirty: false
+                },
+                publicationInfoContext: {
+                    publicationStatus: 'MODIFIED',
+                    publicationInfoPolling: false,
+                    startPublicationInfoPolling: jest.fn(),
+                    stopPublicationInfoPolling: jest.fn()
                 }
             };
 
             context = {
                 nodeData: {
-                    aggregatedPublicationInfo: {
-                        publicationStatus: 'MODIFIED'
-                    },
                     hasPublishPermission: true,
                     lockInfo: {
                         isLocked: false
@@ -71,20 +80,45 @@ describe('publish action', () => {
             expect(context.disabled).toBe(true);
         });
 
+        it('should disabled submit action when publication info are not loaded', () => {
+            props.publicationInfoContext.publicationStatus = undefined;
+            publishAction.init(context, props);
+            expect(context.disabled).toBe(true);
+        });
+
+        it('should disabled submit action when we are polling publication info', () => {
+            props.publicationInfoContext.publicationInfoPolling = true;
+            publishAction.init(context, props);
+            expect(context.disabled).toBe(true);
+        });
+
+        it('should stop polling if we are polling and node is published', () => {
+            props.publicationInfoContext.publicationStatus = 'PUBLISHED';
+            props.publicationInfoContext.publicationInfoPolling = true;
+            publishAction.init(context, props);
+            expect(props.publicationInfoContext.stopPublicationInfoPolling).toHaveBeenCalled();
+        });
+
+        it('should not stop polling if we are polling and node is not published', () => {
+            props.publicationInfoContext.publicationInfoPolling = true;
+            publishAction.init(context, props);
+            expect(props.publicationInfoContext.stopPublicationInfoPolling).not.toHaveBeenCalled();
+        });
+
         it('should not disabled submit action when node is not already published', () => {
-            context.nodeData.aggregatedPublicationInfo.publicationStatus = 'NOT_PUBLISHED';
+            props.publicationInfoContext.publicationStatus = 'NOT_PUBLISHED';
             publishAction.init(context, props);
             expect(context.disabled).toBe(false);
         });
 
         it('should disabled submit action when node is already published', () => {
-            context.nodeData.aggregatedPublicationInfo.publicationStatus = 'PUBLISHED';
+            props.publicationInfoContext.publicationStatus = 'PUBLISHED';
             publishAction.init(context, props);
             expect(context.disabled).toBe(true);
         });
 
         it('should disabled submit action when node is UNPUBLISHABLE', () => {
-            context.nodeData.aggregatedPublicationInfo.publicationStatus = 'MANDATORY_LANGUAGE_UNPUBLISHABLE';
+            props.publicationInfoContext.publicationStatus = 'MANDATORY_LANGUAGE_UNPUBLISHABLE';
             publishAction.init(context, props);
 
             expect(context.disabled).toBe(true);
