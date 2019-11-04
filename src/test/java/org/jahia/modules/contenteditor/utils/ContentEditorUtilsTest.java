@@ -5,6 +5,7 @@ import org.jahia.api.Constants;
 import org.jahia.data.templates.JahiaTemplatesPackage;
 import org.jahia.modules.DummyBundle;
 import org.jahia.registries.ServicesRegistry;
+import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRSessionFactory;
 import org.jahia.services.content.JCRSessionWrapper;
 import org.jahia.services.content.nodetypes.ExtendedNodeType;
@@ -78,6 +79,101 @@ public class ContentEditorUtilsTest extends AbstractJUnitTest {
         JCRSessionFactory.getInstance().closeAllSessions();
     }
 
+    @Test
+    public void getAllowedNodeTypesAsChildNodeTest() throws Exception {
+        Set<String> expectedResults = new HashSet<>();
+        String testedType = "jnt:AllowedNodeTypes";
+        String testdedNodeName = testedType;
+        // test node
+        JCRNodeWrapper testedNode = session.getNode(testSite.getJCRLocalPath()).addNode(testdedNodeName, testedType);
+        session.save();
+        expectedResults.add("jmix:AllowedNodeTypesParentChild");
+        expectedResults.add("jnt:AllowedNodeTypesChild");
+        expectedResults.add("jnt:AllowedNodeTypesChildEditorial");
+        expectedResults.add("jnt:AllowedNodeTypesChildContribute");
+        Set<String> result = ContentEditorUtils.getAllowedNodeTypesAsChildNode(testedNode, false, null);
+        validateResult(testedType, result, expectedResults);
+        expectedResults.clear();
+
+        // test node with mixin on definition
+        testedType = "jnt:AllowedNodeTypesWithMixin";
+        testdedNodeName = testedType;
+        testedNode = session.getNode(testSite.getJCRLocalPath()).addNode(testdedNodeName, testedType);
+        session.save();
+        expectedResults.add("jnt:AllowedNodeTypesChild");
+        expectedResults.add("jnt:AllowedNodeTypesChildEditorial");
+        expectedResults.add("jnt:AllowedNodeTypesChildContribute");
+        expectedResults.add("jnt:AllowedNodeTypesChildMixinOnDef");
+        expectedResults.add("jnt:AllowedNodeTypesChildEditorialMixinOnDef");
+        expectedResults.add("jnt:AllowedNodeTypesChildContributeMixinOnDef");
+        result = ContentEditorUtils.getAllowedNodeTypesAsChildNode(testedNode, false, null);
+        validateResult(testedType, result, expectedResults);
+        expectedResults.clear();
+
+        // test node with mixin on node
+        testedType = "jnt:AllowedNodeTypes";
+        testdedNodeName = testedType + "withMixinOnNode";
+        testedNode = session.getNode(testSite.getJCRLocalPath()).addNode(testdedNodeName, testedType);
+        testedNode.addMixin("jmix:AllowedNodeTypesMixinOnNode");
+        session.save();
+        expectedResults.add("jmix:AllowedNodeTypesParentChild");
+        expectedResults.add("jnt:AllowedNodeTypesChild");
+        expectedResults.add("jnt:AllowedNodeTypesChildEditorial");
+        expectedResults.add("jnt:AllowedNodeTypesChildContribute");
+        expectedResults.add("jnt:AllowedNodeTypesChildMixinOnNode");
+        expectedResults.add("jnt:AllowedNodeTypesChildEditorialMixinOnNode");
+        expectedResults.add("jnt:AllowedNodeTypesChildContributeMixinOnNode");
+        result = ContentEditorUtils.getAllowedNodeTypesAsChildNode(testedNode, false, null);
+        validateResult(testdedNodeName, result, expectedResults);
+        expectedResults.clear();
+
+        // test filtered node (node with mixin on node)
+        testedType = "jnt:AllowedNodeTypes";
+        testdedNodeName = testedType + "withFilter";
+        testedNode = session.getNode(testSite.getJCRLocalPath()).addNode(testdedNodeName, testedType);
+        testedNode.addMixin("jmix:AllowedNodeTypesMixinOnNode");
+        session.save();
+        expectedResults.add("jnt:AllowedNodeTypesChildEditorial");
+        expectedResults.add("jnt:AllowedNodeTypesChildEditorialMixinOnNode");
+        result = ContentEditorUtils.getAllowedNodeTypesAsChildNode(testedNode, false, Arrays.asList("jmix:editorialContent"));
+        validateResult(testdedNodeName, result, expectedResults);
+        expectedResults.clear();
+
+        // test contribute node (node with mixin on def + on node)
+        testedType = "jnt:AllowedNodeTypesWithMixin";
+        testdedNodeName = testedType + "withContribution";
+        testedNode = session.getNode(testSite.getJCRLocalPath()).addNode(testdedNodeName, testedType);
+        testedNode.addMixin("jmix:AllowedNodeTypesMixinOnNode");
+        testedNode.addMixin("jmix:contributeMode");
+        testedNode.setProperty("j:contributeTypes", new String[]{"jnt:AllowedNodeTypesChildContribute", "jnt:AllowedNodeTypesChildContributeMixinOnNode", "jnt:AllowedNodeTypesChildContributeMixinOnDef"});
+        session.save();
+        expectedResults.add("jnt:AllowedNodeTypesChildContribute");
+        expectedResults.add("jnt:AllowedNodeTypesChildContributeMixinOnDef");
+        expectedResults.add("jnt:AllowedNodeTypesChildContributeMixinOnNode");
+        result = ContentEditorUtils.getAllowedNodeTypesAsChildNode(testedNode, true, null);
+        validateResult(testdedNodeName, result, expectedResults);
+        expectedResults.clear();
+
+        // test no childnode
+        testedType = "jnt:AllowedNodeTypesNone";
+        testdedNodeName = testedType;
+        testedNode = session.getNode(testSite.getJCRLocalPath()).addNode(testdedNodeName, testedType);
+        session.save();
+        result = ContentEditorUtils.getAllowedNodeTypesAsChildNode(testedNode, false, null);
+        validateResult(testdedNodeName, result, expectedResults);
+        expectedResults.clear();
+    }
+
+    private void validateResult(String defName, Set<String> results, Set<String> expectedResults) {
+        if (results.size() != expectedResults.size()) {
+            Assert.fail(String.format("on test def %s expected %s results but got %s", defName, expectedResults.size(), results.size()));
+        }
+        expectedResults.forEach(expectedValue -> {
+            if (!results.contains(expectedValue)) {
+                Assert.fail(String.format("on test %s, unable to find %s in results", defName, expectedValue));
+            }
+        });
+    }
 
     @Test
     public void getNodetypesTest() throws Exception {

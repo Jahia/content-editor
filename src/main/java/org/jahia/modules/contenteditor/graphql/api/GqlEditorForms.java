@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jcr.RepositoryException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -99,6 +100,10 @@ public class GqlEditorForms {
         @GraphQLDefaultValue(GqlUtils.SupplierTrue.class)
         @GraphQLDescription("if true, retrieves all the sub types of the given node types, if false, returns the type only. Default value is true")
             boolean includeSubTypes,
+        @GraphQLName("useContribute")
+        @GraphQLDefaultValue(GqlUtils.SupplierTrue.class)
+        @GraphQLDescription("if true, check the contribute property of the node. Default value is true")
+            boolean useContribute,
         @GraphQLName("nodePath")
         @GraphQLNonNull
         @GraphQLDescription("thPath of an existing node under with the new content will be created.")
@@ -110,11 +115,11 @@ public class GqlEditorForms {
     ) {
         try {
             Locale locale = LocaleUtils.toLocale(uiLocale);
-            Set<NodeTypeTreeEntry> entries = ContentEditorUtils.getContentTypesAsTree(nodeTypes, excludedNodeTypes, includeSubTypes, nodePath, getSession(locale), locale);
-
+            List<String> allowedNodeTypes = new ArrayList<>(ContentEditorUtils.getAllowedNodeTypesAsChildNode(getSession().getNode(nodePath), useContribute, nodeTypes));
+            Set<NodeTypeTreeEntry> entries = ContentEditorUtils.getContentTypesAsTree(allowedNodeTypes, excludedNodeTypes, includeSubTypes, nodePath, getSession(locale), locale);
             return entries.stream().map(GqlNodeTypeTreeEntry::new).collect(Collectors.toList());
         } catch (RepositoryException e) {
-            throw  new DataFetchingException(e);
+            throw new DataFetchingException(e);
         }
     }
 
