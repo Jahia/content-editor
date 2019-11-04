@@ -1,6 +1,7 @@
 package org.jahia.modules.contenteditor.utils;
 
 import org.jahia.data.templates.JahiaTemplatesPackage;
+import org.jahia.modules.graphql.provider.dxm.DataFetchingException;
 import org.jahia.registries.ServicesRegistry;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRSessionWrapper;
@@ -11,10 +12,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jcr.RepositoryException;
+import javax.jcr.Value;
 import javax.jcr.nodetype.NoSuchNodeTypeException;
 import javax.jcr.nodetype.NodeTypeIterator;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Utility class for Content Editor
@@ -119,6 +122,55 @@ public class ContentEditorUtils {
         return roots;
     }
 
+    /**
+     * For the given node, return the allowed node types as child node
+     *
+     * @param currentNode            given node
+     * @param useContributeNodeTypes if true, check the contribute property on the node
+     * @param filterNodeType         returns nodetypes that match this value
+     * @return a Set of nodeTypes name allowed to be set as child node of the given node
+     */
+    public static Set<String> getAllowedNodeTypesAsChildNode(JCRNodeWrapper currentNode, boolean useContributeNodeTypes, List<String> filterNodeType) {
+        try {
+            // look for definition
+            Set<String> allowedTypes = getChildNodeTypes(currentNode.getPrimaryNodeType(), filterNodeType);
+
+            // look for mixin
+            Arrays.stream(currentNode.getMixinNodeTypes()).forEach(type -> allowedTypes.addAll(getChildNodeTypes(type, filterNodeType)));
+            // Filter contribute types
+            Set<String> resolvedContributeTypes = new HashSet<>();
+            if (useContributeNodeTypes &&
+                currentNode.isNodeType("jmix:contributeMode") &&
+                currentNode.hasProperty("j:contributeTypes")) {
+                Value[] contributeTypes = currentNode.getProperty("j:contributeTypes").getValues();
+                Arrays.stream(contributeTypes).forEach(type -> allowedTypes.forEach(allowedType -> {
+                        try {
+                            if (NodeTypeRegistry.getInstance().getNodeType(type.getString()).isNodeType(allowedType)) {
+                                resolvedContributeTypes.add(type.getString());
+                            }
+                        } catch (RepositoryException e) {
+                            throw new DataFetchingException(e);
+                        }
+                    })
+                );
+            }
+            return resolvedContributeTypes.isEmpty() ? allowedTypes : resolvedContributeTypes;
+        } catch (RepositoryException e) {
+            throw new DataFetchingException(e);
+        }
+
+    }
+
+    private static Set<String> getChildNodeTypes(ExtendedNodeType nodeType, List<String> filterNodeType) {
+        Set<String> allowedTypes = new HashSet<>();
+        Arrays.stream(nodeType.getChildNodeDefinitions()).forEach(definition -> {
+            if (definition.isNode()) {
+                Arrays.stream(definition.getRequiredPrimaryTypes()).forEach(type -> allowedTypes.addAll(Stream.concat(type.getSubtypesAsList().stream(), Stream.of(type)).filter(subType -> filterNodeType == null || filterNodeType.stream().anyMatch(subType::isNodeType)).map(ExtendedNodeType::getName).collect(Collectors.toList())));
+            }
+        });
+        return allowedTypes;
+    }
+
     private static ExtendedNodeType findFolder(ExtendedNodeType nt) {
         if (!"jmix:droppableContent".equals(nt.getName()) && nt.isNodeType("jmix:droppableContent")) {
             if (logger.isDebugEnabled()) {
@@ -181,16 +233,7 @@ public class ContentEditorUtils {
     }
 
     private static boolean isNodeType(List<String> nodeTypes, ExtendedNodeType type) {
-        if (nodeTypes != null) {
-            for (String nodeType : nodeTypes) {
-                if (type.isNodeType(nodeType)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        return true;
+        return nodeTypes.stream().anyMatch(type::isNodeType);
     }
 
     /*

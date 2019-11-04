@@ -53,3 +53,39 @@ extends=jnt:simpleWithExtends
 
 [jnt:cat2ype1] > jnt:content, jmix:cat2
 [test:cat2ype1] > jnt:content, jmix:cat2
+
+[jnt:AllowedNodeTypesChildMixinOnDef] > nt:base
+[jnt:AllowedNodeTypesChildEditorialMixinOnDef] > nt:base, jmix:editorialContent
+[jnt:AllowedNodeTypesChildContributeMixinOnDef] > nt:base
+
+[jmix:AllowedNodeTypesMixinOnDef] mixin
++ * (jnt:AllowedNodeTypesChildMixinOnDef)
++ * (jnt:AllowedNodeTypesChildEditorialMixinOnDef)
++ * (jnt:AllowedNodeTypesChildContributeMixinOnDef)
+
+[jnt:AllowedNodeTypesChildMixinOnNode] > nt:base
+[jnt:AllowedNodeTypesChildEditorialMixinOnNode] > nt:base, jmix:editorialContent
+[jnt:AllowedNodeTypesChildContributeMixinOnNode] > nt:base
+
+[jmix:AllowedNodeTypesMixinOnNode] mixin
++ * (jnt:AllowedNodeTypesChildMixinOnNode)
++ * (jnt:AllowedNodeTypesChildEditorialMixinOnNode)
++ * (jnt:AllowedNodeTypesChildContributeMixinOnNode)
+
+[jmix:AllowedNodeTypesParentChild] mixin
+
+[jnt:AllowedNodeTypesChild] > nt:base, jmix:AllowedNodeTypesParentChild
+[jnt:AllowedNodeTypesChildEditorial] > nt:base, jmix:editorialContent, jmix:AllowedNodeTypesParentChild
+[jnt:AllowedNodeTypesChildContribute] > nt:base, jmix:AllowedNodeTypesParentChild
+
+[jnt:AllowedNodeTypes] > nt:base
++ * (jmix:AllowedNodeTypesParentChild)
+
+
+[jnt:AllowedNodeTypesWithMixin] > nt:base, jmix:AllowedNodeTypesMixinOnDef
++ * (jnt:AllowedNodeTypesChild)
++ * (jnt:AllowedNodeTypesChildEditorial)
++ * (jnt:AllowedNodeTypesChildContribute)
+
+
+[jnt:AllowedNodeTypesNone] > nt:base
