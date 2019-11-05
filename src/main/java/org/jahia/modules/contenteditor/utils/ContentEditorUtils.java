@@ -6,6 +6,7 @@ import org.jahia.registries.ServicesRegistry;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRSessionWrapper;
 import org.jahia.services.content.decorator.JCRSiteNode;
+import org.jahia.services.content.nodetypes.ExtendedNodeDefinition;
 import org.jahia.services.content.nodetypes.ExtendedNodeType;
 import org.jahia.services.content.nodetypes.NodeTypeRegistry;
 import org.slf4j.Logger;
@@ -163,11 +164,16 @@ public class ContentEditorUtils {
 
     private static Set<String> getChildNodeTypes(ExtendedNodeType nodeType, List<String> filterNodeType) {
         Set<String> allowedTypes = new HashSet<>();
-        Arrays.stream(nodeType.getChildNodeDefinitions()).forEach(definition -> {
-            if (definition.isNode()) {
-                Arrays.stream(definition.getRequiredPrimaryTypes()).forEach(type -> allowedTypes.addAll(Stream.concat(type.getSubtypesAsList().stream(), Stream.of(type)).filter(subType -> filterNodeType == null || filterNodeType.stream().anyMatch(subType::isNodeType)).map(ExtendedNodeType::getName).collect(Collectors.toList())));
-            }
-        });
+        Arrays.stream(nodeType.getChildNodeDefinitions())
+            .filter(ExtendedNodeDefinition::isNode)
+            .forEach(definition ->
+                Arrays.stream(definition.getRequiredPrimaryTypes())
+                    .forEach(type ->
+                        allowedTypes.addAll(Stream.concat(type.getSubtypesAsList().stream(), Stream.of(type))
+                            .filter(subType -> filterNodeType == null || filterNodeType.stream().anyMatch(subType::isNodeType))
+                            .map(ExtendedNodeType::getName)
+                            .collect(Collectors.toList()))
+                    ));
         return allowedTypes;
     }
 
