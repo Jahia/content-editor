@@ -4,11 +4,11 @@ import {Formik} from 'formik';
 import EditPanel from '~/EditPanel';
 import * as PropTypes from 'prop-types';
 import {useFormDefinition} from '~/EditPanel/FormDefinitions';
-
 import {ContentEditorContext} from '~/ContentEditor.context';
-
 import {requiredValidation} from '~/Validation/required';
 import {saveNode} from './save/save.request';
+import {usePublicationInfo} from '../PublicationInfo/PublicationInfo';
+import {PublicationInfoContext} from '../PublicationInfo/PublicationInfo.context';
 
 export const Edit = ({
     client,
@@ -25,38 +25,32 @@ export const Edit = ({
     formQueryParams
 }) => {
     const {
-        loading,
-        error,
-        errorMessage,
-        nodeData,
-        initialValues,
-        details,
-        technicalInfo,
-        sections,
-        title
+        loading, error, errorMessage, nodeData, initialValues, details, technicalInfo, sections, title
     } = useFormDefinition(formQuery, formQueryParams, t);
+
+    const {
+        publicationInfoError, publicationInfoErrorMessage, publicationStatus, publicationInfoPolling, startPublicationInfoPolling, stopPublicationInfoPolling
+    } = usePublicationInfo({
+        path: path,
+        language: lang
+    }, t);
 
     if (error) {
         console.error(error);
         return <>{errorMessage}</>;
     }
 
+    if (publicationInfoError) {
+        console.error(publicationInfoError);
+        return <>{publicationInfoErrorMessage}</>;
+    }
+
     if (loading) {
         return <ProgressOverlay/>;
     }
 
-    const editorContext = {
-        path,
-        lang,
-        uiLang,
-        site,
-        siteInfo,
-        siteDisplayableName,
-        sections,
-        nodeData,
-        details,
-        technicalInfo
-    };
+    const publicationInfoContext = {publicationStatus, publicationInfoPolling, startPublicationInfoPolling, stopPublicationInfoPolling};
+    const editorContext = {path, lang, uiLang, site, siteInfo, siteDisplayableName, sections, nodeData, details, technicalInfo};
 
     const handleSubmit = (values, actions) => {
         saveNode({
@@ -76,12 +70,14 @@ export const Edit = ({
 
     return (
         <ContentEditorContext.Provider value={editorContext}>
-            <Formik
-                initialValues={initialValues}
-                render={props => <EditPanel {...props} title={title}/>}
-                validate={requiredValidation(sections)}
-                onSubmit={handleSubmit}
-            />
+            <PublicationInfoContext.Provider value={publicationInfoContext}>
+                <Formik
+                    initialValues={initialValues}
+                    render={props => <EditPanel {...props} title={title}/>}
+                    validate={requiredValidation(sections)}
+                    onSubmit={handleSubmit}
+                />
+            </PublicationInfoContext.Provider>
         </ContentEditorContext.Provider>
     );
 };

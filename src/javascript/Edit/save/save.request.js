@@ -3,6 +3,7 @@ import {getDataToMutate} from '~/EditPanel/EditPanel.utils';
 import {NodeQuery} from '~/NodeData/NodeData.gql-queries';
 import {refetchPreview} from '~/EditPanel/EditPanel.refetches';
 import {getPreviewPath} from '~/EditPanel/EditPanelContent/PreviewContainer/Preview/Preview.utils';
+import {PublicationInfoQuery} from '../../PublicationInfo/PublicationInfo.gql-queries';
 
 export const saveNode = ({
     client,
@@ -38,6 +39,13 @@ export const saveNode = ({
                     path,
                     language,
                     uiLang: uiLang
+                }
+            },
+            {
+                query: PublicationInfoQuery,
+                variables: {
+                    path,
+                    language
                 }
             }
         ]
