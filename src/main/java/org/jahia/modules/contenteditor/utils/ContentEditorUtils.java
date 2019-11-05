@@ -239,7 +239,7 @@ public class ContentEditorUtils {
     }
 
     private static boolean isNodeType(List<String> nodeTypes, ExtendedNodeType type) {
-        return nodeTypes.stream().anyMatch(type::isNodeType);
+        return nodeTypes == null || nodeTypes.stream().anyMatch(type::isNodeType);
     }
 
     /*
