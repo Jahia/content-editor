@@ -51,15 +51,6 @@ export const registerActions = actionsRegistry => {
         showIcons: true
     });
 
-    actionsRegistry.add('upload', actionsRegistry.get('fileUpload'), {
-        buttonIcon: <CloudUpload/>,
-        buttonLabel: 'label.contentManager.fileUpload.uploadButtonLabel',
-        target: ['pickerDialogAction:0'],
-        contentType: 'jnt:file',
-        showOnNodeTypes: ['jnt:folder'],
-        requiredPermission: 'jcr:addChildNodes'
-    });
-
     actionsRegistry.add('startWorkflow3dots', startWorkflow, {
         buttonLabel:
             'content-editor:label.contentEditor.edit.action.startWorkflow.name',

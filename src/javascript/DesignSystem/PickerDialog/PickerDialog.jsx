@@ -1,5 +1,5 @@
 import {Picker} from '@jahia/react-apollo';
-import {DisplayActions, iconButtonRenderer, NodeTrees, PickerTreeViewMaterial} from '@jahia/react-material';
+import {DisplayActions, buttonRenderer, NodeTrees, PickerTreeViewMaterial} from '@jahia/react-material';
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
@@ -29,20 +29,14 @@ const styles = theme => ({
         padding: `0 ${theme.spacing.unit * 4}`,
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'flex-end'
+        justifyContent: 'space-between'
     },
-    actionButtons: {
-        '& button': {
-            marginRight: theme.spacing.unit * 2
-        }
-    },
-    actionUpload: {
-        alignItems: 'center',
-        '& label': {
-            marginLeft: '0.7rem'
+    actionsJahiaAction: {
+        '& svg': {
+            color: theme.palette.font.gamma
         },
-        '& input': {
-            display: 'none'
+        '& button span[data-jahia-link]:hover': {
+            textDecoration: 'underline'
         }
     },
     listItem: {
@@ -128,33 +122,33 @@ const PickerDialogCmp = ({
                 {children(setSelectedItem, selectedPath, initialSelectedItem ? [initialSelectedItem] : [])}
 
                 <div className={classes.actions}>
-                    <div className={classes.actionUpload}>
+                    <Button
+                        data-sel-picker-dialog-action="cancel"
+                        type="button"
+                        variant="secondary"
+                        onClick={onCloseDialog}
+                    >
+                        {modalCancelLabel}
+                    </Button>
+                    <div className={classes.actionsJahiaAction}>
                         <DisplayActions context={{path: selectedPath}}
                                         target="pickerDialogAction"
-                                        render={iconButtonRenderer({color: 'inherit', size: 'compact'})}
-                        />
-                        <DisplayActions/>
+                                        render={({context}) => {
+                                            const Button = buttonRenderer({variant: 'ghost'}, true);
+                                            return <Button context={context}/>;
+                                        }}
+                            />
                     </div>
-                    <div className={classes.actionButtons}>
-                        <Button
-                            data-sel-picker-dialog-action="cancel"
-                            type="button"
-                            color="secondary"
-                            onClick={onCloseDialog}
-                        >
-                            {modalCancelLabel}
-                        </Button>
-                        <Button
-                            data-sel-picker-dialog-action="done"
-                            disabled={!selectedItem}
-                            variant="contained"
-                            color="primary"
-                            type="button"
-                            onClick={() => onItemSelection(selectedItem)}
-                        >
-                            {modalDoneLabel}
-                        </Button>
-                    </div>
+                    <Button
+                        data-sel-picker-dialog-action="done"
+                        disabled={!selectedItem}
+                        variant="contained"
+                        color="primary"
+                        type="button"
+                        onClick={() => onItemSelection(selectedItem)}
+                    >
+                        {modalDoneLabel}
+                    </Button>
                 </div>
             </main>
         </>
