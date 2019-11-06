@@ -37,7 +37,8 @@
                     "publish": {
                       "name": "Publier maintenant",
                       "success": "La publication a été ajoutée à la file d’attente",
-                      "error": "Erreur durant la publication"
+                      "error": "Erreur durant la publication",
+                      "badge": "Publication en cours"
                     },
                     "startWorkflow": {
                       "name": "Demander une publication"

@@ -10,6 +10,7 @@ import {EditPanelLanguageSwitcher} from './EditPanelLanguageSwitcher';
 import {MoreVert, Error} from '@material-ui/icons';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {withStyles} from '@material-ui/core';
+import PublicationInfoBadge from '~/PublicationInfo/PublicationInfo.badge';
 
 const styles = theme => ({
     actionButtonHeaderContainer: {
@@ -128,6 +129,7 @@ const EditPanelCmp = ({formik, title, classes, t, notificationContext, client}) 
                                         contentEditorHeaderMenu.current.open(event);
                                     }}
                         />
+                        <PublicationInfoBadge/>
                     </>
                 )
             }}
