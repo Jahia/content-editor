@@ -1,5 +1,5 @@
 import React from 'react';
-import {Queue, AddCircle} from '@material-ui/icons';
+import {AddCircle, Queue} from '@material-ui/icons';
 
 import createNewContentAction from './CreateNewContentAction/createNewContent.action';
 import createButtonAction from './CreateForm/create.action';
@@ -9,7 +9,7 @@ export const registerActions = actionsRegistry => {
     actionsRegistry.add('createNewContent', createNewContentAction, {
         buttonIcon: <Queue/>,
         buttonLabel:
-            'content-editor:label.contentEditor.CMMActions.createNewContent.label',
+            'content-editor:label.contentEditor.CMMActions.createNewContent.menu',
         target: ['createMenuActions:3.2', 'contentActions:3.2']
     });
 

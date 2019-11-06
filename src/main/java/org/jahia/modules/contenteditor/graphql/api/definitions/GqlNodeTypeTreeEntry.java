@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * GraphQL representation of a tree of nodetypes
+ * GraphQL representation of a tree of nodetypes by path
  */
 
 
@@ -28,12 +28,16 @@ public class GqlNodeTypeTreeEntry {
 
     private GqlNodeTypeTreeEntry parent;
 
-    public GqlNodeTypeTreeEntry(NodeTypeTreeEntry entry) {
+    private String id;
+
+    public GqlNodeTypeTreeEntry(NodeTypeTreeEntry entry, String identifier) {
         this.nodeTreeEntry = entry;
+        this.id = entry.getName() + "-" + identifier;
     }
 
     private GqlNodeTypeTreeEntry(NodeTypeTreeEntry entry, GqlNodeTypeTreeEntry parent) {
-        this(entry);
+        this.nodeTreeEntry = entry;
+        this.id = entry.getName() + "-" + parent.getId();
         this.parent = parent;
     }
 
@@ -41,6 +45,14 @@ public class GqlNodeTypeTreeEntry {
     @GraphQLDescription("Return nodeType name")
     public String getName() {
         return nodeTreeEntry.getName();
+    }
+
+
+    @GraphQLField
+    @GraphQLDescription("Return path used to build that tree")
+    public String getId() {
+        return id;
+
     }
 
     @GraphQLField

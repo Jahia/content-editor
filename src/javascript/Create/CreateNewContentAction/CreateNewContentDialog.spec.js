@@ -30,20 +30,22 @@ describe('CreateNewContentDialog', () => {
         const result = [
             {
                 id: 'catA',
+                name: 'catA',
                 label: 'category A',
                 children: [
-                    {id: 'dan1', label: 'daniela'},
-                    {id: 'dan2', label: 'daniel'},
-                    {id: 'dan3', label: 'danie'}
+                    {id: 'dan1', name: 'dan1', label: 'daniela'},
+                    {id: 'dan2', name: 'dan2', label: 'daniel'},
+                    {id: 'dan3', name: 'dan3', label: 'danie'}
                 ]
             },
             {
                 id: 'catB',
+                name: 'catB',
                 label: 'category B',
                 children: [
-                    {id: 'rom1', label: 'Romain'},
-                    {id: 'rom2', label: 'romain'},
-                    {id: 'Rom3', label: 'hitler'}
+                    {id: 'rom1', name: 'rom1', label: 'Romain'},
+                    {id: 'rom2', name: 'rom2', label: 'romain'},
+                    {id: 'Rom3', name: 'Rom3', label: 'hitler'}
                 ]
             }
         ];

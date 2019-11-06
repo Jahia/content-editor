@@ -121,7 +121,8 @@
             },
             "CMMActions": {
               "createNewContent": {
-                "label": "Nouveau contenu <i>(beta)</i>",
+                "menu": "Nouveau contenu <i>(beta)</i>",
+                "contentOfType": "Nouveau : {{typeName}} <i>(beta)</i>",
                 "labelModal": "Nouveau contenu (beta)",
                 "btnDiscard": "Annuler",
                 "btnCreate": "Créer",

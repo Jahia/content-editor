@@ -1,12 +1,13 @@
 package org.jahia.modules.contenteditor.utils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jahia.data.templates.JahiaTemplatesPackage;
 import org.jahia.modules.graphql.provider.dxm.DataFetchingException;
 import org.jahia.registries.ServicesRegistry;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRSessionWrapper;
 import org.jahia.services.content.decorator.JCRSiteNode;
-import org.jahia.services.content.nodetypes.ExtendedNodeDefinition;
+import org.jahia.services.content.nodetypes.ConstraintsHelper;
 import org.jahia.services.content.nodetypes.ExtendedNodeType;
 import org.jahia.services.content.nodetypes.NodeTypeRegistry;
 import org.slf4j.Logger;
@@ -134,10 +135,8 @@ public class ContentEditorUtils {
     public static Set<String> getAllowedNodeTypesAsChildNode(JCRNodeWrapper currentNode, boolean useContributeNodeTypes, List<String> filterNodeType) {
         try {
             // look for definition
-            Set<String> allowedTypes = getChildNodeTypes(currentNode.getPrimaryNodeType(), filterNodeType);
+            Set<String> allowedTypes = getChildNodeTypes(currentNode, filterNodeType);
 
-            // look for mixin
-            Arrays.stream(currentNode.getMixinNodeTypes()).forEach(type -> allowedTypes.addAll(getChildNodeTypes(type, filterNodeType)));
             // Filter contribute types
             Set<String> resolvedContributeTypes = new HashSet<>();
             if (useContributeNodeTypes &&
@@ -162,19 +161,33 @@ public class ContentEditorUtils {
 
     }
 
-    private static Set<String> getChildNodeTypes(ExtendedNodeType nodeType, List<String> filterNodeType) {
+    private static Set<String> getChildNodeTypes(JCRNodeWrapper node, List<String> filterNodeType) throws RepositoryException {
         Set<String> allowedTypes = new HashSet<>();
-        Arrays.stream(nodeType.getChildNodeDefinitions())
-            .filter(ExtendedNodeDefinition::isNode)
-            .forEach(definition ->
-                Arrays.stream(definition.getRequiredPrimaryTypes())
-                    .forEach(type ->
-                        allowedTypes.addAll(Stream.concat(type.getSubtypesAsList().stream(), Stream.of(type))
-                            .filter(subType -> filterNodeType == null || filterNodeType.stream().anyMatch(subType::isNodeType))
-                            .map(ExtendedNodeType::getName)
-                            .collect(Collectors.toList()))
-                    ));
+        Arrays.stream(StringUtils.split(ConstraintsHelper.getConstraints(node), " "))
+            .forEach(type -> {
+                try {
+                    ExtendedNodeType nodeType = NodeTypeRegistry.getInstance().getNodeType(type);
+                    Stream<ExtendedNodeType> typesToCheck = Stream.concat(nodeType.getSubtypesAsList().stream(), Stream.of(nodeType));
+                    typesToCheck.forEach(subTyype -> {
+                        getAllowedTypes(allowedTypes, filterNodeType, subTyype);
+                    });
+                } catch (RepositoryException e) {
+                    // ignore unknown type
+                }
+            });
         return allowedTypes;
+    }
+
+    private static void getAllowedTypes(Set<String> allowedTypes, List<String> filterNodeType, ExtendedNodeType subType) {
+        if (filterNodeType != null) {
+            filterNodeType.forEach(filterType -> {
+                if (subType.isNodeType(filterType)) {
+                    allowedTypes.add(subType.getName());
+                }
+            });
+        } else {
+            allowedTypes.add(subType.getName());
+        }
     }
 
     private static ExtendedNodeType findFolder(ExtendedNodeType nt) {
