@@ -7,7 +7,7 @@ import {connect} from 'react-redux';
 import {withStyles} from '@material-ui/core';
 import {translate} from 'react-i18next';
 import {PreviewContainer} from './PreviewContainer';
-import PublicationInfoProgress from '../../PublicationInfo/PublicationInfo.progress';
+import PublicationInfoProgress from '~/PublicationInfo/PublicationInfo.progress';
 
 const mapStateToProps = state => ({
     mode: state.mode
