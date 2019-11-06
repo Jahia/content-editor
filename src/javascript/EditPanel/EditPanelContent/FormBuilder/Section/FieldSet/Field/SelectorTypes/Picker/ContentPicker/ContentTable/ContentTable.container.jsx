@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import {ContentTableQuery} from './ContentTable.gql-queries';
 import dayjs from 'dayjs';
 
-const columConfig = t => [
+const columnConfig = t => [
     {
         property: 'name',
         label: t(
@@ -78,7 +78,7 @@ const ContentTableContainer = ({
     });
     return (
         <DSContentTable
-            columns={columConfig(t)}
+            columns={columnConfig(t)}
             labelEmpty={t(
                 'content-editor:label.contentEditor.edit.fields.contentPicker.tableEmpty'
             )}

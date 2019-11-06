@@ -5,7 +5,7 @@ import {Picker} from '~/DesignSystem/Picker';
 import {translate} from 'react-i18next';
 import {FieldPropTypes} from '~/EditPanel/FormDefinitions/FormData.proptypes';
 
-import {MediaPickerDialog} from '../MediaPickerDialog';
+import MediaPickerDialog from '../MediaPickerDialog';
 
 const MediaPickerEmptyCmp = ({t, id, field, formik, editorContext, setActionContext}) => {
     const [isOpen, setIsOpen] = useState(false);

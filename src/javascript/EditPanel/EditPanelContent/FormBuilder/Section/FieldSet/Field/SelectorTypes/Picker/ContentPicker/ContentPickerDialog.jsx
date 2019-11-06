@@ -7,12 +7,20 @@ import {PickerDialog} from '~/DesignSystem/PickerDialog';
 
 import Slide from '@material-ui/core/Slide';
 import {FastField} from 'formik';
+import {withStyles} from '@material-ui/core';
 
-function Transition(props) {
+const styles = theme => ({
+    rootDialog: {
+        margin: theme.spacing.unit * 8
+    }
+});
+
+const Transition = props => {
     return <Slide direction="up" {...props}/>;
-}
+};
 
-export const ContentPickerDialog = ({
+const ContentPickerDialog = ({
+    classes,
     isOpen,
     setIsOpen,
     initialSelectedItem,
@@ -24,7 +32,7 @@ export const ContentPickerDialog = ({
     pickerConfig
 }) => {
     return (
-        <Dialog fullScreen open={isOpen} TransitionComponent={Transition}>
+        <Dialog fullScreen classes={{root: classes.rootDialog}} open={isOpen} TransitionComponent={Transition}>
             <FastField render={({form: {setFieldValue, setFieldTouched}}) => (
                 <PickerDialog
                     displayTree={pickerConfig.displayTree}
@@ -33,55 +41,51 @@ export const ContentPickerDialog = ({
                     lang={editorContext.lang}
                     initialSelectedItem={initialSelectedItem}
                     nodeTreeConfigs={nodeTreeConfigs}
-                    modalCancelLabel={t(
-                    'content-editor:label.contentEditor.edit.fields.modalCancel'
-                )}
-                    modalDoneLabel={t(
-                    'content-editor:label.contentEditor.edit.fields.modalDone'
-                )}
+                    modalCancelLabel={t('content-editor:label.contentEditor.edit.fields.modalCancel').toUpperCase()}
+                    modalDoneLabel={t('content-editor:label.contentEditor.edit.fields.modalDone').toUpperCase()}
                     onCloseDialog={() => setIsOpen(false)}
                     onItemSelection={content => {
-                    setFieldValue(
-                        id,
-                        content[0] ? content[0].id : null,
-                        true
-                    );
-                    setIsOpen(false);
-                    setFieldTouched(field.name, field.multiple ? [true] : true);
-                }}
+                        setFieldValue(
+                            id,
+                            content[0] ? content[0].id : null,
+                            true
+                        );
+                        setIsOpen(false);
+                        setFieldTouched(field.name, field.multiple ? [true] : true);
+                    }}
                 >
                     {(setSelectedItem, selectedPath, initialSelection) => {
-                    // Build table config from picker config
-                    /*
-       Todo: make the picker work as CMM, use the recursionTypesFilter to browse all contents within a page
-        without displaying the content lists.
-       let isContentOrFile =
-            selectedPath === '/sites/' + editorContext.site + '/contents' ||
-            selectedPath.startsWith('/sites/' + editorContext.site + '/contents/') ||
-            selectedPath === '/sites/' + editorContext.site + '/files' ||
-            selectedPath.startsWith('/sites/' + editorContext.site + '/files/');
+                        // Build table config from picker config
+                        /*
+           Todo: make the picker work as CMM, use the recursionTypesFilter to browse all contents within a page
+            without displaying the content lists.
+           let isContentOrFile =
+                selectedPath === '/sites/' + editorContext.site + '/contents' ||
+                selectedPath.startsWith('/sites/' + editorContext.site + '/contents/') ||
+                selectedPath === '/sites/' + editorContext.site + '/files' ||
+                selectedPath.startsWith('/sites/' + editorContext.site + '/files/');
 
-        recursionTypesFilter: isContentOrFile ? ['nt:base'] : ['jnt:page', 'jnt:contentFolder']
-        */
+            recursionTypesFilter: isContentOrFile ? ['nt:base'] : ['jnt:page', 'jnt:contentFolder']
+            */
 
-                    const tableConfig = {
-                        typeFilter: pickerConfig.selectableTypesTable,
-                        recursionTypesFilter: ['nt:base'],
-                        showOnlyNodesWithTemplates: pickerConfig.showOnlyNodesWithTemplates
-                    };
+                        const tableConfig = {
+                            typeFilter: pickerConfig.selectableTypesTable,
+                            recursionTypesFilter: ['nt:base'],
+                            showOnlyNodesWithTemplates: pickerConfig.showOnlyNodesWithTemplates
+                        };
 
-                    return (
-                        <ContentTable
-                            tableConfig={tableConfig}
-                            setSelectedItem={setSelectedItem}
-                            selectedPath={selectedPath}
-                            initialSelection={initialSelection}
-                            editorContext={editorContext}
-                        />
-                    );
-                }}
+                        return (
+                            <ContentTable
+                                tableConfig={tableConfig}
+                                setSelectedItem={setSelectedItem}
+                                selectedPath={selectedPath}
+                                initialSelection={initialSelection}
+                                editorContext={editorContext}
+                            />
+                        );
+                    }}
                 </PickerDialog>
-)}/>
+            )}/>
         </Dialog>
     );
 };
@@ -91,6 +95,7 @@ ContentPickerDialog.defaultProps = {
 };
 
 ContentPickerDialog.propTypes = {
+    classes: PropTypes.object.isRequired,
     isOpen: PropTypes.bool.isRequired,
     setIsOpen: PropTypes.func.isRequired,
     editorContext: PropTypes.object.isRequired,
@@ -101,3 +106,5 @@ ContentPickerDialog.propTypes = {
     pickerConfig: PropTypes.object.isRequired,
     initialSelectedItem: PropTypes.string
 };
+
+export default withStyles(styles)(ContentPickerDialog);

@@ -5,7 +5,7 @@ import {translate} from 'react-i18next';
 import {Picker} from '~/DesignSystem/Picker';
 import {encodeJCRPath} from '../../../../../../../../../EditPanel.utils';
 import {MediaPickerFilledQuery} from './MediaPickerFilled.gql-queries';
-import {MediaPickerDialog} from '../MediaPickerDialog';
+import MediaPickerDialog from '../MediaPickerDialog';
 import {useQuery} from 'react-apollo-hooks';
 import {FieldPropTypes} from '~/EditPanel/FormDefinitions/FormData.proptypes';
 

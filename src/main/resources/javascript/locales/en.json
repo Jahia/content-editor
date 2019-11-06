@@ -86,10 +86,10 @@
                       "createdBy": "Created By",
                       "lastModified": "Modification Date"
                     },
-                    "fileUploadBtn": "<span data-jahia-link>Uploade file</span>"
+                    "fileUploadBtn": "<span data-jahia-link>Upload file</span>"
                   },
                   "modalCancel": "Cancel",
-                  "modalDone": "Done"
+                  "modalDone": "Select"
                 },
                 "tagPlaceholder" : "Type to add tag",
                 "createTagPlaceholder" : "Press enter to add \"{{tagName}}\""

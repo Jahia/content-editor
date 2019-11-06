@@ -8,9 +8,9 @@ import {withStyles} from '@material-ui/core';
 const styles = () => ({
     container: {
         display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'flex-start',
-        marginBottom: '6rem'
+        flex: '1 1 0%',
+        overflow: 'auto',
+        flexWrap: 'wrap'
     }
 });
 

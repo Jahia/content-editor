@@ -108,6 +108,6 @@ describe('mediaPickerFilled', () => {
             dsGenericTheme
         ).dive();
 
-        expect(cmp.find('MediaPickerDialog').props().initialSelectedItem).toBe('/sites/digitall/files/Beautiful_hairy_pussy.jpg');
+        expect(cmp.find('WithStyles(MediaPickerDialog)').props().initialSelectedItem).toBe('/sites/digitall/files/Beautiful_hairy_pussy.jpg');
     });
 });
