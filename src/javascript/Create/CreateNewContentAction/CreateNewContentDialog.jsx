@@ -10,6 +10,7 @@ import {ProgressOverlay} from '@jahia/react-material';
 import {TreeView} from '~/DesignSystem/TreeView';
 import {useQuery} from 'react-apollo-hooks';
 import {getTreeOfContent} from '~/Create/CreateNewContentAction/CreateNewContent.gql-queries';
+import {filterTree} from './createNewContent.utits';
 
 const styles = theme => ({
     treeContainer: {
@@ -30,8 +31,7 @@ const styles = theme => ({
 const CreateNewContentDialogCmp = ({open, parentPath, onExited, onClose, onCreateContent, uiLang, client, classes, t}) => {
     const variables = {
         uiLang: uiLang,
-        path: parentPath,
-        nodeTypes: ['jmix:editorialContent']
+        path: parentPath
     };
     const {data, error, loading} = useQuery(getTreeOfContent, {variables, client});
     const [selectedType, setSelectedType] = useState(null);
@@ -47,28 +47,7 @@ const CreateNewContentDialogCmp = ({open, parentPath, onExited, onClose, onCreat
     }
 
     // Filtering the tree
-    const filteredTree = data.forms.contentTypesAsTree
-        .map(category => {
-            const filteredNodes = filter ? category.children.filter(node => {
-                return node.id.toLowerCase().includes(filter) || node.label.toLowerCase().includes(filter);
-            }) : category.children;
-
-            // Never close selected content category
-            const isCategorySelected = selectedType ? category.id === selectedType.parent.id : null;
-
-            return {
-                ...category,
-                opened: filter ? true : (category.opened || isCategorySelected),
-                children: filteredNodes.map(node => {
-                    return {
-                        ...node,
-                        selected: isCategorySelected && selectedType.id === node.id
-                    };
-                })
-            };
-        })
-        .filter(category => category.children.length !== 0);
-
+    const filteredTree = filterTree(data.forms.contentTypesAsTree, selectedType, filter);
     return (
         <Dialog open={open} aria-labelledby="dialog-createNewContent" onExited={onExited} onClose={onClose}>
             <DialogTitle id="dialog-createNewContent">

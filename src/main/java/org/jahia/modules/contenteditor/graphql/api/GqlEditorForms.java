@@ -17,10 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jcr.RepositoryException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -114,10 +111,21 @@ public class GqlEditorForms {
             String uiLocale
     ) {
         try {
+            // Todo: BACKLOG-11556
+            // Special Content Editor Filters to match CMM behavior
+            // No action on jnt:page
+            if (getSession().getNode(nodePath).isNodeType("jnt:page")) {
+                return Collections.emptyList();
+            }
+            // Only jmix:editorialContent on jnt:contentFolder
+            if (nodeTypes == null || nodeTypes.isEmpty()) {
+                nodeTypes = Collections.singletonList("jmix:editorialContent");
+            }
+            final String nodeIdentifier = getSession().getNode(nodePath).getIdentifier();
             Locale locale = LocaleUtils.toLocale(uiLocale);
             List<String> allowedNodeTypes = new ArrayList<>(ContentEditorUtils.getAllowedNodeTypesAsChildNode(getSession().getNode(nodePath), useContribute, nodeTypes));
             Set<NodeTypeTreeEntry> entries = ContentEditorUtils.getContentTypesAsTree(allowedNodeTypes, excludedNodeTypes, includeSubTypes, nodePath, getSession(locale), locale);
-            return entries.stream().map(GqlNodeTypeTreeEntry::new).collect(Collectors.toList());
+            return entries.stream().map(entry -> new GqlNodeTypeTreeEntry(entry, nodeIdentifier)).collect(Collectors.toList());
         } catch (RepositoryException e) {
             throw new DataFetchingException(e);
         }

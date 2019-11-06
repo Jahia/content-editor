@@ -1,16 +1,19 @@
 import gql from 'graphql-tag';
 
 export const getTreeOfContent = gql`
-    query getTreeOfContent($nodeTypes:[String], $uiLang:String!, $path:String!){
+    query getTreeOfContent($nodeTypes:[String], $excludedNodeTypes:[String], $uiLang:String!, $path:String!){
         forms {
-            contentTypesAsTree(nodeTypes:$nodeTypes,nodePath:$path, uiLocale:$uiLang) {
-                id: name
+            contentTypesAsTree(nodeTypes:$nodeTypes,nodePath:$path, uiLocale:$uiLang, excludedNodeTypes:$excludedNodeTypes) {
+                id
+                name
                 label
                 iconURL
                 children {
-                    id: name
+                    id
+                    name
                     parent {
-                        id: name
+                        id
+                        name
                     }
                     label
                     iconURL
