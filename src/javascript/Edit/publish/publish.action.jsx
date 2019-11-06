@@ -32,6 +32,10 @@ export default composeActions(
                         Constants.editPanel.publicationStatus.PUBLISHED,
                         Constants.editPanel.publicationStatus.MANDATORY_LANGUAGE_UNPUBLISHABLE
                     ].includes(context.publicationInfoContext.publicationStatus);
+
+                context.buttonLabel = context.publicationInfoContext.publicationInfoPolling ?
+                    'content-editor:label.contentEditor.edit.action.publish.namePolling' :
+                    'content-editor:label.contentEditor.edit.action.publish.name';
             }
         },
         onClick: context => {

@@ -36,6 +36,7 @@
                     },
                     "publish": {
                       "name": "Jetzt veröffentlichen",
+                      "namePolling": "Veröffentlichung",
                       "success": "Veröffentlichung der Warteschlange hinzugefügt",
                       "error": "Fehler während Veröffentlichung"
                     },

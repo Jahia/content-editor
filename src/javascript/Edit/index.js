@@ -30,8 +30,6 @@ export const registerActions = actionsRegistry => {
     });
 
     actionsRegistry.add('publishAction', publishAction, {
-        buttonLabel:
-            'content-editor:label.contentEditor.edit.action.publish.name',
         buttonIcon: <CloudUpload/>,
         target: ['editHeaderActions:1']
     });

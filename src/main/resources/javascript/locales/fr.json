@@ -36,6 +36,7 @@
                     },
                     "publish": {
                       "name": "Publier maintenant",
+                      "namePolling": "Publication",
                       "success": "La publication a été ajoutée à la file d’attente",
                       "error": "Erreur durant la publication"
                     },
