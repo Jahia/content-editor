@@ -38,7 +38,8 @@
                       "name": "Publish now",
                       "namePolling": "Publishing",
                       "success": "Publication has been queued",
-                      "error": "Error while publishing"
+                      "error": "Error while publishing",
+                      "badge": "Publication in progress"
                     },
                     "startWorkflow": {
                       "name": "Request publication"

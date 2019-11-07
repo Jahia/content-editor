@@ -38,7 +38,8 @@
                       "name": "Jetzt veröffentlichen",
                       "namePolling": "Veröffentlichung",
                       "success": "Veröffentlichung der Warteschlange hinzugefügt",
-                      "error": "Fehler während Veröffentlichung"
+                      "error": "Fehler während Veröffentlichung",
+                      "badge": "Veröffentlichung in Bearbeitung"
                     },
                     "startWorkflow": {
                       "name": "Veröffentlichung anfordern"
