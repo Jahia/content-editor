@@ -39,13 +39,15 @@ const pickerActions = actionsRegistry => {
         target: ['ContentPickerActions:3', 'MediaPickerActions:3']
     });
 
-    actionsRegistry.add('upload', actionsRegistry.get('fileUpload'), {
+    const fileUploadCMMAction = {
+        ...actionsRegistry.get('fileUpload'),
+        target: null // Remove target to avoid entry duplication
+    };
+    actionsRegistry.add('upload', fileUploadCMMAction, {
         buttonIcon: <FileUpload/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.fileUploadBtn',
         target: ['pickerDialogAction:0'],
-        contentType: 'jnt:file',
-        showOnNodeTypes: ['jnt:folder'],
-        requiredPermission: 'jcr:addChildNodes'
+        contentType: 'jnt:file'
     });
 };
 
