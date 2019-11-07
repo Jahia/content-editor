@@ -36,6 +36,7 @@
                     },
                     "publish": {
                       "name": "Publish now",
+                      "namePolling": "Publishing",
                       "success": "Publication has been queued",
                       "error": "Error while publishing"
                     },

@@ -129,6 +129,17 @@ describe('publish action', () => {
             expect(context.enabled).toBe(true);
         });
 
+        it('should use label when polling is OFF', () => {
+            publishAction.init(context, props);
+            expect(context.buttonLabel).toBe('content-editor:label.contentEditor.edit.action.publish.name');
+        });
+
+        it('should use polling label when polling is ON', () => {
+            props.publicationInfoContext.publicationInfoPolling = true;
+            publishAction.init(context, props);
+            expect(context.buttonLabel).toBe('content-editor:label.contentEditor.edit.action.publish.namePolling');
+        });
+
         it('should undisplay publish action when you haven\'t the proper permission', () => {
             context.nodeData.hasPublishPermission = false;
             publishAction.init(context, props);
