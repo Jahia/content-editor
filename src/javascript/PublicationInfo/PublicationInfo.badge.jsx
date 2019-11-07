@@ -2,7 +2,7 @@ import React from 'react';
 import {withStyles} from '@material-ui/core';
 import {usePublicationInfoContext} from './PublicationInfo.context';
 import {compose} from 'react-apollo';
-import * as PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import {Badge} from '@jahia/design-system-kit';
 import {translate} from 'react-i18next';
 
