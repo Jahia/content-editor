@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * GraphQL representation of a tree of nodetypes by path
+ * GraphQL representation of a tree of nodetypes
  */
 
 
@@ -28,6 +28,7 @@ public class GqlNodeTypeTreeEntry {
 
     private GqlNodeTypeTreeEntry parent;
 
+    // If present in the query, id is the field used by the Apollo cache as cache key
     private String id;
 
     public GqlNodeTypeTreeEntry(NodeTypeTreeEntry entry, String identifier) {
@@ -49,7 +50,7 @@ public class GqlNodeTypeTreeEntry {
 
 
     @GraphQLField
-    @GraphQLDescription("Return path used to build that tree")
+    @GraphQLDescription("Return uniq identifier for tree entry")
     public String getId() {
         return id;
 
