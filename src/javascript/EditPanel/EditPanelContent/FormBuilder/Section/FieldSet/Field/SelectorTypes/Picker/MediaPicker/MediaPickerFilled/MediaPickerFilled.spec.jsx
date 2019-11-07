@@ -22,6 +22,7 @@ const queryResult = {
     name: 'Beautiful_hairy_pussy.jpg',
     height: {value: 1532400},
     width: {value: 1234134},
+    lastModified: {value: 55555},
     children: {
         nodes: [{mimeType: {value: 'jpeg'}}]
     }

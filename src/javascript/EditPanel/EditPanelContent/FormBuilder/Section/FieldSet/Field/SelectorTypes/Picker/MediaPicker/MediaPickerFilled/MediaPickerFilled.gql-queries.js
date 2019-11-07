@@ -19,6 +19,9 @@ const MediaPickerFilledQuery = gql`
                         }
                     }
                 }
+                lastModified: property(name: "jcr:lastModified") {
+                    value
+                }
                 ...NodeCacheRequiredFields
             }
         }
