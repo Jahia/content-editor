@@ -5,7 +5,6 @@ export async function getActions(context, variables) {
         query: getTreeOfContent,
         variables
     });
-    console.log(`query result action ${context.key}`, data);
     const nodeTypes = data.forms.contentTypesAsTree.map(category => {
         if (category.children && category.children.length > 0) {
             return category.children;
