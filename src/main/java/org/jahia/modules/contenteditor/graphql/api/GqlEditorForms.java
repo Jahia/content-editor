@@ -86,7 +86,7 @@ public class GqlEditorForms {
 
     @GraphQLField
     @GraphQLName("contentTypesAsTree")
-    @GraphQLDescription("Get a list of allowed child nodeTypes for a given nodeType and path")
+    @GraphQLDescription("Get a list of allowed child nodeTypes for a given nodeType and path. (Note that it returns nothing for type [jnt:page]. [jnt:contentFolder] is filterered by [jmix:editorialContent])")
     public List<GqlNodeTypeTreeEntry> getContentTypesAsTree(
         @GraphQLName("nodeTypes")
         @GraphQLDescription("List of types we want to retrieve, null for all")
