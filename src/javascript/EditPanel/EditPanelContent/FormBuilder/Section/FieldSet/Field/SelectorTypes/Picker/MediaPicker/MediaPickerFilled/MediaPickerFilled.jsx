@@ -43,7 +43,7 @@ const MediaPickerFilledCmp = ({
     const fieldData = {
         url: `${
             window.contextJsParameters.contextPath
-        }/files/default${encodeJCRPath(imageData.path)}`,
+        }/files/default${encodeJCRPath(imageData.path)}?lastModified=${imageData.lastModified.value}`,
         name: imageData.name,
         path: imageData.path,
         info: `${imageData.children.nodes[0].mimeType.value}${sizeInfo}`
