@@ -11,6 +11,7 @@ import org.jahia.modules.contenteditor.utils.ContentEditorUtils;
 import org.jahia.modules.contenteditor.utils.NodeTypeTreeEntry;
 import org.jahia.modules.graphql.provider.dxm.DataFetchingException;
 import org.jahia.osgi.BundleUtils;
+import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRSessionFactory;
 import org.jahia.services.content.JCRSessionWrapper;
 import org.slf4j.Logger;
@@ -114,16 +115,21 @@ public class GqlEditorForms {
             // Todo: BACKLOG-11556
             // Special Content Editor Filters to match CMM behavior
             // No action on jnt:page
-            if (getSession().getNode(nodePath).isNodeType("jnt:page")) {
+            JCRNodeWrapper parentNode = getSession().getNode(nodePath);
+            if (parentNode.isNodeType("jnt:page")) {
                 return Collections.emptyList();
             }
             // Only jmix:editorialContent on jnt:contentFolder
             if (nodeTypes == null || nodeTypes.isEmpty()) {
                 nodeTypes = Collections.singletonList("jmix:editorialContent");
             }
-            final String nodeIdentifier = getSession().getNode(nodePath).getIdentifier();
+            // check write access
+            if (!parentNode.hasPermission("jcr:addChildNodes")) {
+                return Collections.emptyList();
+            }
+            final String nodeIdentifier = parentNode.getIdentifier();
             Locale locale = LocaleUtils.toLocale(uiLocale);
-            List<String> allowedNodeTypes = new ArrayList<>(ContentEditorUtils.getAllowedNodeTypesAsChildNode(getSession().getNode(nodePath), useContribute, nodeTypes));
+            List<String> allowedNodeTypes = new ArrayList<>(ContentEditorUtils.getAllowedNodeTypesAsChildNode(parentNode, useContribute, nodeTypes));
             Set<NodeTypeTreeEntry> entries = ContentEditorUtils.getContentTypesAsTree(allowedNodeTypes, excludedNodeTypes, includeSubTypes, nodePath, getSession(locale), locale);
             return entries.stream().map(entry -> new GqlNodeTypeTreeEntry(entry, nodeIdentifier)).collect(Collectors.toList());
         } catch (RepositoryException e) {
