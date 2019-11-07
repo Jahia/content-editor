@@ -18,18 +18,17 @@ const styles = theme => ({
         padding: theme.spacing.unit
     },
     modalContentWithDrawer: {
-        width: '85vw',
+        display: 'flex',
+        height: '100%',
+        flexDirection: 'column',
         marginLeft: '15vw'
     },
     actions: {
-        position: 'fixed',
-        width: '85vw',
-        backgroundColor: theme.palette.ui.epsilon,
-        bottom: 0,
-        padding: `0 ${theme.spacing.unit * 4}`,
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        padding: `0 ${theme.spacing.unit * 4}`,
+        backgroundColor: theme.palette.ui.epsilon
     },
     actionsJahiaAction: {
         '& svg': {

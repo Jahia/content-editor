@@ -6,7 +6,7 @@ import {Picker} from '~/DesignSystem/Picker';
 import {ContentPickerFilledQuery} from './ContentPickerFilled.gql-queries';
 import {encodeJCRPath} from '../../../../../../../../../EditPanel.utils';
 import {useQuery} from 'react-apollo-hooks';
-import {ContentPickerDialog} from '../ContentPickerDialog';
+import ContentPickerDialog from '../ContentPickerDialog';
 import {FieldPropTypes} from '~/EditPanel/FormDefinitions/FormData.proptypes';
 
 const ContentPickerFilledCmp = ({t, field, formik, id, uuid, editorContext, nodeTreeConfigs, pickerConfig, setActionContext}) => {

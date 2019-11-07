@@ -104,7 +104,7 @@ describe('contentPickerFilled', () => {
 
         cmp.find('Picker').simulate('click');
 
-        expect(cmp.find('ContentPickerDialog').props().isOpen).toBe(true);
+        expect(cmp.find('WithStyles(ContentPickerDialog)').props().isOpen).toBe(true);
     });
 
     it('should specify the initialPath with data selected', () => {
@@ -114,6 +114,6 @@ describe('contentPickerFilled', () => {
             dsGenericTheme
         ).dive();
 
-        expect(cmp.find('ContentPickerDialog').props().initialSelectedItem).toBe('/sites/digitall/files/app.css');
+        expect(cmp.find('WithStyles(ContentPickerDialog)').props().initialSelectedItem).toBe('/sites/digitall/files/app.css');
     });
 });

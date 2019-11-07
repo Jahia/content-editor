@@ -13,9 +13,7 @@ const styles = theme => ({
     tableWrapper: {
         flex: '1 1 0%',
         overflow: 'auto',
-        position: 'relative',
-        marginTop: theme.spacing.unit * 3,
-        marginBottom: theme.spacing.unit * 9
+        position: 'relative'
     },
     nameColumn: {
         maxWidth: 0,
@@ -37,6 +35,12 @@ const styles = theme => ({
             backgroundColor: theme.palette.primary.main,
             color: theme.palette.common.white
         }
+    },
+    tableCell: {
+        color: 'inherit'
+    },
+    selectedCheckbox: {
+        color: `${theme.palette.common.white} !important`
     }
 });
 
@@ -87,13 +91,13 @@ const ContentTable = ({data, order, orderBy, columns, labelEmpty, classes, multi
                                           }}
                                 >
                                     <TableCell padding="checkbox">
-                                        <Checkbox checked={selected}/>
+                                        <Checkbox className={selected ? classes.selectedCheckbox : ''} checked={selected}/>
                                     </TableCell>
 
                                     {columns.map(column => {
                                         return (
                                             <TableCell key={row.id + ' ' + column.property}
-                                                       className={classes[column.property + 'Column']}
+                                                       className={classes.tableCell + ' ' + classes[column.property + 'Column']}
                                             >
                                                 {row[column.property]}
                                             </TableCell>

@@ -89,7 +89,7 @@
                     "fileUploadBtn": "<span data-jahia-link>Datei hochladen</span>"
                   },
                   "modalCancel": "Abbrechen",
-                  "modalDone": "Fertig"
+                  "modalDone": "Auswählen"
                 },
                 "tagPlaceholder" : "Tag eingeben",
                 "createTagPlaceholder" : "Mit Enter bestätigen um \"{{tagName}}\" hinzuzufügen"

@@ -1,6 +1,6 @@
-import {Edit, Cancel, Launch, CloudUpload} from '@material-ui/icons';
+import {Edit, Cancel, Launch} from '@material-ui/icons';
 import {menuAction} from '@jahia/react-material';
-import {DotsVertical} from 'mdi-material-ui';
+import {DotsVertical, FileUpload} from 'mdi-material-ui';
 import React from 'react';
 import {replaceAction} from './actions/replace.action';
 import {unsetFieldAction} from '../../FieldsActions/unsetField.action';
@@ -40,7 +40,7 @@ const pickerActions = actionsRegistry => {
     });
 
     actionsRegistry.add('upload', actionsRegistry.get('fileUpload'), {
-        buttonIcon: <CloudUpload/>,
+        buttonIcon: <FileUpload/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.fileUploadBtn',
         target: ['pickerDialogAction:0'],
         contentType: 'jnt:file',

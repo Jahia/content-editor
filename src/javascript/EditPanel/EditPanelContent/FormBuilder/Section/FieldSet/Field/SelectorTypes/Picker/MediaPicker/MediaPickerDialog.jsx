@@ -7,12 +7,20 @@ import {PickerDialog} from '~/DesignSystem/PickerDialog';
 
 import Slide from '@material-ui/core/Slide';
 import {FastField} from 'formik';
+import {withStyles} from '@material-ui/core';
 
-function Transition(props) {
+const styles = theme => ({
+    rootDialog: {
+        margin: theme.spacing.unit * 8
+    }
+});
+
+const Transition = props => {
     return <Slide direction="up" {...props}/>;
-}
+};
 
-export const MediaPickerDialog = ({
+const MediaPickerDialog = ({
+    classes,
     isOpen,
     setIsOpen,
     editorContext,
@@ -22,7 +30,7 @@ export const MediaPickerDialog = ({
     initialSelectedItem
 }) => {
     return (
-        <Dialog fullScreen open={isOpen} TransitionComponent={Transition}>
+        <Dialog fullScreen classes={{root: classes.rootDialog}} open={isOpen} TransitionComponent={Transition}>
             <FastField render={({form}) => {
                 const onItemSelection = image => {
                     form.setFieldValue(
@@ -36,41 +44,37 @@ export const MediaPickerDialog = ({
 
                 return (
                     <PickerDialog
-                    idInput={id}
-                    site={editorContext.site}
-                    lang={editorContext.lang}
-                    initialSelectedItem={initialSelectedItem}
-                    nodeTreeConfigs={[
-                        {
-                            rootPath: `/sites/${editorContext.site}/files`,
-                            selectableTypes: ['jnt:folder'],
-                            type: 'files',
-                            openableTypes: ['jnt:folder'],
-                            rootLabel: t(
-                                'content-editor:label.contentEditor.edit.fields.imagePicker.rootLabel'
-                            ),
-                            key: 'browse-tree-files'
-                        }
-                    ]}
-                    modalCancelLabel={t(
-                        'content-editor:label.contentEditor.edit.fields.modalCancel'
-                    )}
-                    modalDoneLabel={t(
-                        'content-editor:label.contentEditor.edit.fields.modalDone'
-                    )}
-                    onCloseDialog={() => setIsOpen(false)}
-                    onItemSelection={onItemSelection}
+                        idInput={id}
+                        site={editorContext.site}
+                        lang={editorContext.lang}
+                        initialSelectedItem={initialSelectedItem}
+                        nodeTreeConfigs={[
+                            {
+                                rootPath: `/sites/${editorContext.site}/files`,
+                                selectableTypes: ['jnt:folder'],
+                                type: 'files',
+                                openableTypes: ['jnt:folder'],
+                                rootLabel: t(
+                                    'content-editor:label.contentEditor.edit.fields.imagePicker.rootLabel'
+                                ),
+                                key: 'browse-tree-files'
+                            }
+                        ]}
+                        modalCancelLabel={t('content-editor:label.contentEditor.edit.fields.modalCancel').toUpperCase()}
+                        modalDoneLabel={t('content-editor:label.contentEditor.edit.fields.modalDone').toUpperCase()}
+                        onCloseDialog={() => setIsOpen(false)}
+                        onItemSelection={onItemSelection}
                     >
                         {(setSelectedItem, selectedPath, initialSelection) => (
                             <ImageListQuery
-                            setSelectedItem={setSelectedItem}
-                            selectedPath={selectedPath}
-                            initialSelection={initialSelection}
-                            onImageDoubleClick={onItemSelection}
-                        />
-                    )}
+                                setSelectedItem={setSelectedItem}
+                                selectedPath={selectedPath}
+                                initialSelection={initialSelection}
+                                onImageDoubleClick={onItemSelection}
+                            />
+                        )}
                     </PickerDialog>
-);
+                );
             }}/>
         </Dialog>
     );
@@ -81,6 +85,7 @@ MediaPickerDialog.defaultProps = {
 };
 
 MediaPickerDialog.propTypes = {
+    classes: PropTypes.object.isRequired,
     isOpen: PropTypes.bool.isRequired,
     setIsOpen: PropTypes.func.isRequired,
     editorContext: PropTypes.object.isRequired,
@@ -89,3 +94,5 @@ MediaPickerDialog.propTypes = {
     t: PropTypes.func.isRequired,
     initialSelectedItem: PropTypes.string
 };
+
+export default withStyles(styles)(MediaPickerDialog);
