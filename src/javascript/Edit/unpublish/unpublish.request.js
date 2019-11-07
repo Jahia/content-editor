@@ -1,6 +1,6 @@
 import {UnpublishNodeMutation} from './unpublish.gql-mutation';
 import {NodeQuery} from '~/NodeData/NodeData.gql-queries';
-import {PublicationInfoQuery} from "~/PublicationInfo/PublicationInfo.gql-queries";
+import {PublicationInfoQuery} from '~/PublicationInfo/PublicationInfo.gql-queries';
 
 export const unpublishNode = ({
     client,
@@ -31,8 +31,8 @@ export const unpublishNode = ({
             {
                 query: PublicationInfoQuery,
                 variables: {
-                    path,
-                    language
+                    path: nodeData.path,
+                    language: language
                 }
             }
         ]
