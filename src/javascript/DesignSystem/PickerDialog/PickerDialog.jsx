@@ -62,7 +62,10 @@ const PickerDialogCmp = ({
 
     const [selectedPath, setSelectedPath] = useState(initialPath || nodeTreeConfigs[0].rootPath);
     const [openPaths, setOpenPaths] = useState(initialPathOpenPath);
-    const [selectedItem, setSelectedItem] = useState(false);
+    // SelectedItem is an object when something is selected
+    // undefined when never modified
+    // empty array when no value is selected and something has been unselected
+    const [selectedItem, setSelectedItem] = useState(undefined);
 
     const openPath = path => {
         setOpenPaths(previousOpenPaths => previousOpenPaths.concat([path]));
@@ -75,6 +78,17 @@ const PickerDialogCmp = ({
     const setPath = path => {
         setSelectedPath(path);
     };
+
+    const selectElement = () => {
+        if (selectedItem) {
+            onItemSelection(selectedItem);
+        } else {
+            onCloseDialog();
+        }
+    };
+
+    const isElementSelected = !(selectedItem && selectedItem.length !== 0);
+    const initialItemHasChanged = initialSelectedItem && selectedItem === undefined;
 
     return (
         <>
@@ -140,11 +154,11 @@ const PickerDialogCmp = ({
                     </div>
                     <Button
                         data-sel-picker-dialog-action="done"
-                        disabled={!selectedItem}
+                        disabled={!(!isElementSelected || initialItemHasChanged)}
                         variant="contained"
                         color="primary"
                         type="button"
-                        onClick={() => onItemSelection(selectedItem)}
+                        onClick={selectElement}
                     >
                         {modalDoneLabel}
                     </Button>
