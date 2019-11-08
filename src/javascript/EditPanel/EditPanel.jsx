@@ -1,13 +1,13 @@
-import React, {useEffect, useRef} from 'react';
-import {Badge, MainLayout, IconButton} from '@jahia/design-system-kit';
-import {buttonRenderer, DisplayActions, ContextualMenu, withNotifications} from '@jahia/react-material';
+import React, {useEffect} from 'react';
+import {Badge, MainLayout} from '@jahia/design-system-kit';
+import {buttonRenderer, DisplayActions, withNotifications, DisplayAction, iconButtonRenderer} from '@jahia/react-material';
 import PropTypes from 'prop-types';
 import {compose, withApollo} from 'react-apollo';
 import {translate} from 'react-i18next';
 import EditPanelContent from './EditPanelContent/EditPanelContent';
 import {connect} from 'formik';
 import {EditPanelLanguageSwitcher} from './EditPanelLanguageSwitcher';
-import {MoreVert, Error} from '@material-ui/icons';
+import {Error} from '@material-ui/icons';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {withStyles} from '@material-ui/core';
 import PublicationInfoBadge from '~/PublicationInfo/PublicationInfo.badge';
@@ -27,8 +27,7 @@ const styles = theme => ({
 });
 
 const EditPanelCmp = ({formik, title, classes, t, notificationContext, client}) => {
-    const {nodeData, siteInfo, lang, uiLang} = useContentEditorContext();
-    const contentEditorHeaderMenu = useRef(null);
+    const {nodeData, siteInfo, lang, uiLang, mode} = useContentEditorContext();
 
     useEffect(() => {
         const handleBeforeUnloadEvent = ev => {
@@ -81,6 +80,7 @@ const EditPanelCmp = ({formik, title, classes, t, notificationContext, client}) 
                                 nodeData,
                                 language: lang,
                                 uiLang,
+                                mode,
                                 isMainButton: true,
 
                                 // TODO BACKLOG-11290 find another way to inject apollo-client, i18n, ...}
@@ -105,29 +105,22 @@ const EditPanelCmp = ({formik, title, classes, t, notificationContext, client}) 
                                 );
                             }}
                         />
-                        <ContextualMenu
-                            ref={contentEditorHeaderMenu}
+                        <DisplayAction
+                            actionKey="ContentEditorHeaderMenu"
                             context={{
                                 nodeData,
                                 language: lang,
                                 uiLang,
-
-                                // TODO BACKLOG-11290 find another way to inject apollo-client, i18n, ...}
+                                mode,
                                 t,
-                                client,
+                                client, // TODO BACKLOG-11290 find another way to inject apollo-client, i18n, ...}
                                 notificationContext,
                                 formik
                             }}
-                            actionKey="ContentEditorHeaderMenu"
-                        />
-                        <IconButton data-sel-action="moreActions"
-                                    aria-label={t('content-editor:label.contentEditor.edit.action.fieldMoreOptions')}
-                                    icon={<MoreVert/>}
-                                    color="inverted"
-                                    onClick={event => {
-                                        event.stopPropagation();
-                                        contentEditorHeaderMenu.current.open(event);
-                                    }}
+                            render={iconButtonRenderer({
+                                color: 'inverted',
+                                'data-sel-action': 'moreActions'
+                            })}
                         />
                         <PublicationInfoBadge/>
                     </>

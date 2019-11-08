@@ -24,7 +24,6 @@ jest.mock('./unpublish.request', () => {
     };
 });
 
-import {setReduxState} from '~/actions/redux.action';
 import {unpublishNode} from './unpublish.request';
 
 describe('unpublish action', () => {
@@ -40,6 +39,7 @@ describe('unpublish action', () => {
         let context;
         beforeEach(() => {
             context = {
+                mode: 'edit',
                 parent: {
                     publicationInfoContext: {
                         publicationStatus: 'PUBLISHED'
@@ -49,10 +49,6 @@ describe('unpublish action', () => {
                     hasPublishPermission: true
                 }
             };
-
-            setReduxState({
-                mode: 'edit'
-            });
         });
 
         it('should display unpublish action when form is saved and published', () => {
@@ -83,9 +79,7 @@ describe('unpublish action', () => {
         });
 
         it('should not display unpublish action when it isn\'t the edit mode', () => {
-            setReduxState({
-                mode: 'create'
-            });
+            context.mode = 'create';
 
             unpublishAction.init(context);
 

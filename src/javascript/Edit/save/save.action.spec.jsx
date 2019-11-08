@@ -17,19 +17,18 @@ jest.mock('~/actions/redux.action', () => {
     };
 });
 
-import {setReduxState} from '~/actions/redux.action';
 import saveAction from './save.action';
 
 describe('save action', () => {
     describe('init', () => {
+        let context;
         beforeEach(() => {
-            setReduxState({
+            context = {
                 mode: 'edit'
-            });
+            };
         });
 
         it('should add warn chip on button when all required fields were filled', () => {
-            const context = {};
             const props = {
                 formik: {
                     errors: {}
@@ -42,7 +41,6 @@ describe('save action', () => {
         });
 
         it('should add warning badge on save button when required fields were not filled', () => {
-            const context = {};
             const props = {
                 formik: {
                     errors: {
@@ -59,10 +57,8 @@ describe('save action', () => {
         });
 
         it('should not display save action when it isn\'t the edit mode', () => {
-            const context = {};
-            setReduxState({
-                mode: 'create'
-            });
+            context.mode = 'create';
+
             const props = {
                 formik: {
                     dirty: true,
@@ -75,7 +71,6 @@ describe('save action', () => {
         });
 
         it('should disable save action when it is the edit mode', () => {
-            const context = {};
             const props = {
                 formik: {
                     dirty: true,

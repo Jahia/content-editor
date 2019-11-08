@@ -19,8 +19,6 @@ jest.mock('~/actions/redux.action', () => {
     };
 });
 
-import {setReduxState} from '~/actions/redux.action';
-
 describe('startWorkflow action', () => {
     describe('onInit - 3 dots', () => {
         let context;
@@ -28,6 +26,7 @@ describe('startWorkflow action', () => {
 
         beforeEach(() => {
             context = {
+                mode: 'edit',
                 parent: {
                     formik: {
                         dirty: false
@@ -40,10 +39,6 @@ describe('startWorkflow action', () => {
                     }
                 }
             };
-
-            setReduxState({
-                mode: 'edit'
-            });
         });
 
         it('should display startWorkflowAction when user have start workflow rights', () => {
@@ -53,9 +48,7 @@ describe('startWorkflow action', () => {
         });
 
         it('should not display startWorkflowAction when it\'s not edit mode', () => {
-            setReduxState({
-                mode: 'create'
-            });
+            context.mode = 'create';
             startWorkflowAction.init(context, props);
 
             expect(context.enabled).toBe(false);
@@ -99,6 +92,7 @@ describe('startWorkflow action', () => {
             };
 
             context = {
+                mode: 'edit',
                 isMainButton: true,
                 nodeData: {
                     hasStartPublicationWorkflowPermission: true,
@@ -107,10 +101,6 @@ describe('startWorkflow action', () => {
                     }
                 }
             };
-
-            setReduxState({
-                mode: 'edit'
-            });
         });
 
         it('should display startWorkflowAction when user have start workflow rights', () => {
@@ -120,9 +110,7 @@ describe('startWorkflow action', () => {
         });
 
         it('should not display startWorkflowAction when it\'s not edit mode', () => {
-            setReduxState({
-                mode: 'create'
-            });
+            context.mode = 'create';
             startWorkflowAction.init(context, props);
 
             expect(context.enabled).toBe(false);
