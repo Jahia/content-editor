@@ -8,6 +8,9 @@ export const getTreeOfContent = gql`
                 name
                 label
                 iconURL
+                nodeType {
+                    mixin
+                }
                 children {
                     id
                     name

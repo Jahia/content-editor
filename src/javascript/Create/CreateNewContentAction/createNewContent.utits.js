@@ -1,5 +1,7 @@
 import {getTreeOfContent} from '~/Create/CreateNewContentAction/CreateNewContent.gql-queries';
 
+const NB_OF_DISPLAYED_RESCRICTED_SUB_NODES = 5;
+
 export async function getActions(context, variables) {
     const {data} = await context.client.query({
         query: getTreeOfContent,
@@ -19,7 +21,7 @@ export async function getActions(context, variables) {
             return sum;
         }, []);
 
-    if (nodeTypes.length <= 3) {
+    if (nodeTypes.length <= NB_OF_DISPLAYED_RESCRICTED_SUB_NODES) {
         return nodeTypes.map(nodeType => ({
             key: nodeType.name + '-beta',
             openEditor: true,
@@ -51,5 +53,6 @@ export const filterTree = (tree, selectedType, filter) => tree
         };
     })
     .filter(category => {
-        return category.children === undefined || category.children.length !== 0;
+        const isNodeType = !category.nodeType.mixin;
+        return isNodeType || category.children === undefined || category.children.length !== 0;
     });

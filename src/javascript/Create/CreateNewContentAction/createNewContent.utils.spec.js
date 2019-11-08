@@ -44,9 +44,15 @@ describe('CreateNewContent utils', () => {
             expect(await getActions(context)).toEqual([]);
         });
 
-        it('should return null when there is more than 3 nodeTypes', async () => {
+        it('should return null when there is more than 5 nodeTypes', async () => {
             queryResponse.data.forms.contentTypesAsTree.push({
                 name: 'yolo'
+            });
+            queryResponse.data.forms.contentTypesAsTree.push({
+                name: 'yola'
+            });
+            queryResponse.data.forms.contentTypesAsTree.push({
+                name: 'yole'
             });
             expect(await getActions(context)).toEqual(undefined);
         });
@@ -67,6 +73,9 @@ describe('CreateNewContent utils', () => {
             tree = [
                 {
                     id: 'id1',
+                    nodeType: {
+                        mixin: true
+                    },
                     children: [
                         {
                             name: 'hello',
@@ -79,6 +88,9 @@ describe('CreateNewContent utils', () => {
                 },
                 {
                     id: 'id2',
+                    nodeType: {
+                        mixin: true
+                    },
                     children: [
                         {
                             name: 'logarithm',
@@ -124,6 +136,41 @@ describe('CreateNewContent utils', () => {
             expect(result.length).toBe(2);
             expect(result[0].id).toBe('id1');
             expect(result[1].id).toBe('id2');
+        });
+
+        it('should return nodeType when they are flatten', () => {
+            const result = filterTree([
+                {
+                    id: 'id1',
+                    nodeType: {
+                        mixin: false
+                    },
+                    children: []
+                },
+                {
+                    id: 'id2',
+                    nodeType: {
+                        mixin: false
+                    },
+                    children: []
+                }
+            ]);
+            expect(result.length).toBe(2);
+            expect(result[0].id).toBe('id1');
+            expect(result[1].id).toBe('id2');
+        });
+
+        it('should remove empty category', () => {
+            tree.push({
+                id: 'id3',
+                nodeType: {
+                    mixin: true
+                },
+                children: []
+            });
+
+            const result = filterTree(tree, selectedType);
+            expect(result.length).toBe(2);
         });
     });
 });
