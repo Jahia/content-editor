@@ -26,7 +26,6 @@ jest.mock('./publish.request', () => {
 });
 
 import {publishNode} from './publish.request';
-import {setReduxState} from '~/actions/redux.action';
 
 describe('publish action', () => {
     describe('onClick', () => {
@@ -61,6 +60,7 @@ describe('publish action', () => {
             };
 
             context = {
+                mode: 'edit',
                 nodeData: {
                     hasPublishPermission: true,
                     lockInfo: {
@@ -68,10 +68,6 @@ describe('publish action', () => {
                     }
                 }
             };
-
-            setReduxState({
-                mode: 'edit'
-            });
         });
 
         it('should disabled submit action when form is dirty', () => {
@@ -148,9 +144,7 @@ describe('publish action', () => {
         });
 
         it('should undisplay publish action when mode is not edit', () => {
-            setReduxState({
-                mode: 'create'
-            });
+            context.mode = 'create';
             publishAction.init(context, props);
 
             expect(context.enabled).toBe(false);

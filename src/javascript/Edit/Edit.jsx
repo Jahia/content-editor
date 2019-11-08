@@ -8,6 +8,7 @@ import {ContentEditorContext} from '~/ContentEditor.context';
 import {requiredValidation} from '~/Validation/required';
 import {saveNode} from './save/save.request';
 import {PublicationInfoContextProvider} from '~/PublicationInfo/PublicationInfo.context';
+import {Constants} from '../ContentEditor.constants';
 
 export const Edit = ({
     client,
@@ -36,7 +37,10 @@ export const Edit = ({
         return <ProgressOverlay/>;
     }
 
-    const editorContext = {path, lang, uiLang, site, siteInfo, siteDisplayableName, sections, nodeData, details, technicalInfo};
+    const editorContext = {
+        path, lang, uiLang, site, siteInfo, siteDisplayableName, sections, nodeData, details, technicalInfo,
+        mode: Constants.routes.baseEditRoute
+    };
 
     const handleSubmit = (values, actions) => {
         saveNode({

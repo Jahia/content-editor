@@ -9,6 +9,7 @@ import {ContentEditorContext} from '~/ContentEditor.context';
 
 import {requiredValidation} from '~/Validation/required';
 import {createNode} from './CreateForm/create.request';
+import {Constants} from '../ContentEditor.constants';
 
 export const Create = ({
     client,
@@ -55,7 +56,8 @@ export const Create = ({
         sections,
         nodeData,
         details,
-        technicalInfo
+        technicalInfo,
+        mode: Constants.routes.baseCreateRoute
     };
 
     const handleSubmit = (values, actions) => {

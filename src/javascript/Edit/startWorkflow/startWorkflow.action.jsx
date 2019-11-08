@@ -1,17 +1,9 @@
 import {Constants} from '~/ContentEditor.constants';
 import {composeActions} from '@jahia/react-material';
-import {reduxAction} from '~/actions/redux.action';
 import {withFormikAction} from '../../actions/withFormik.action';
-
-const mapStateToContext = state => {
-    return {
-        mode: state.mode
-    };
-};
 
 export default composeActions(
     withFormikAction,
-    reduxAction(mapStateToContext),
     {
         init: context => {
             if (context.isMainButton) {
