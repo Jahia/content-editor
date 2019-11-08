@@ -32,6 +32,9 @@ describe('CreateNewContentDialog', () => {
                 id: 'catA',
                 name: 'catA',
                 label: 'category A',
+                nodeType: {
+                    mixin: true
+                },
                 children: [
                     {id: 'dan1', name: 'dan1', label: 'daniela'},
                     {id: 'dan2', name: 'dan2', label: 'daniel'},
@@ -42,10 +45,13 @@ describe('CreateNewContentDialog', () => {
                 id: 'catB',
                 name: 'catB',
                 label: 'category B',
+                nodeType: {
+                    mixin: true
+                },
                 children: [
                     {id: 'rom1', name: 'rom1', label: 'Romain'},
                     {id: 'rom2', name: 'rom2', label: 'romain'},
-                    {id: 'Rom3', name: 'Rom3', label: 'hitler'}
+                    {id: 'Rom3', name: 'Rom3', label: 'hichem'}
                 ]
             }
         ];
@@ -122,7 +128,7 @@ describe('CreateNewContentDialog', () => {
         expect(cmp.debug()).toContain('oops');
     });
 
-    it('should filter properly with id hitler', () => {
+    it('should filter properly with id hichem', () => {
         setResponseMock(tree);
         const cmp = shallowWithTheme(
             <CreateNewContentDialog open {...props}/>,
