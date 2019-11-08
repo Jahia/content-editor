@@ -66,9 +66,35 @@ describe('Picker dialog', () => {
             dsGenericTheme
         ).dive();
 
-        cmp.find('WithStyles(Button)[id="select-item"]').simulate('click', false);
+        cmp.find('WithStyles(Button)[id="select-item"]').simulate('click', {name: 'toto.js'});
+        cmp.find('WithStyles(Button)[id="select-item"]').simulate('click', null);
 
         expect(cmp.find('WithStyles(Button)[variant="contained"]').props().disabled).toBe(true);
+    });
+
+    it('should disabled button when no item is selected on a multiple select', () => {
+        const cmp = shallowWithTheme(
+            <PickerDialog {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        cmp.find('WithStyles(Button)[id="select-item"]').simulate('click', [{name: 'toto.js'}]);
+        cmp.find('WithStyles(Button)[id="select-item"]').simulate('click', []);
+
+        expect(cmp.find('WithStyles(Button)[variant="contained"]').props().disabled).toBe(true);
+    });
+
+    it('should not disabled button when items is selected', () => {
+        const cmp = shallowWithTheme(
+            <PickerDialog {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        cmp.find('WithStyles(Button)[id="select-item"]').simulate('click', [{name: 'toto.jpg'}]);
+
+        expect(cmp.find('WithStyles(Button)[variant="contained"]').props().disabled).toBe(false);
     });
 
     it('should not disabled button when item is selected', () => {
@@ -78,9 +104,36 @@ describe('Picker dialog', () => {
             dsGenericTheme
         ).dive();
 
-        cmp.find('WithStyles(Button)[id="select-item"]').simulate('click', true);
+        cmp.find('WithStyles(Button)[id="select-item"]').simulate('click', {name: 'toto.jpg'});
 
         expect(cmp.find('WithStyles(Button)[variant="contained"]').props().disabled).toBe(false);
+    });
+
+    it('should not send anything when no new value is selected', () => {
+        defaultProps.initialSelectedItem = 'toto.jpg';
+        const cmp = shallowWithTheme(
+            <PickerDialog {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        cmp.find('WithStyles(Button)[variant="contained"]').simulate('click');
+
+        expect(defaultProps.onImageSelection).not.toHaveBeenCalled();
+        expect(defaultProps.onCloseDialog).toHaveBeenCalled();
+    });
+
+    it('should disable select button when unselect initial value', () => {
+        defaultProps.initialSelectedItem = 'toto.jpg';
+        const cmp = shallowWithTheme(
+            <PickerDialog {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        cmp.find('WithStyles(Button)[id="select-item"]').simulate('click', []);
+
+        expect(cmp.find('WithStyles(Button)[variant="contained"]').props().disabled).toBe(true);
     });
 
     it('should initialize NodeTrees openPaths with empty array when no initialPath is given', () => {

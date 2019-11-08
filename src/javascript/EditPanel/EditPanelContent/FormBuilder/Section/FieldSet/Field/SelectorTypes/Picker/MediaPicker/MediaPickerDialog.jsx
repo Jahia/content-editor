@@ -30,7 +30,13 @@ const MediaPickerDialog = ({
     initialSelectedItem
 }) => {
     return (
-        <Dialog fullScreen classes={{root: classes.rootDialog}} open={isOpen} TransitionComponent={Transition}>
+        <Dialog
+            fullScreen
+            classes={{root: classes.rootDialog}}
+            open={isOpen}
+            TransitionComponent={Transition}
+            onClose={() => setIsOpen(false)}
+        >
             <FastField render={({form}) => {
                 const onItemSelection = image => {
                     form.setFieldValue(

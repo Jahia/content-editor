@@ -32,7 +32,13 @@ const ContentPickerDialog = ({
     pickerConfig
 }) => {
     return (
-        <Dialog fullScreen classes={{root: classes.rootDialog}} open={isOpen} TransitionComponent={Transition}>
+        <Dialog
+            fullScreen
+            classes={{root: classes.rootDialog}}
+            open={isOpen}
+            TransitionComponent={Transition}
+            onClose={() => setIsOpen(false)}
+        >
             <FastField render={({form: {setFieldValue, setFieldTouched}}) => (
                 <PickerDialog
                     displayTree={pickerConfig.displayTree}
