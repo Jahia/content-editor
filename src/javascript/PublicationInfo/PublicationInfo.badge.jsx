@@ -18,7 +18,8 @@ export const PublicationInfoBadge = ({classes, t}) => {
     const {publicationInfoPolling} = usePublicationInfoContext();
     return (
         <>
-            {publicationInfoPolling && <Badge classes={classes}
+            {publicationInfoPolling && <Badge data-sel-role="publication-info-polling-badge"
+                                              classes={classes}
                                               badgeContent={t('content-editor:label.contentEditor.edit.action.publish.badge')}
                                               variant="normal"
                                               color="info"
