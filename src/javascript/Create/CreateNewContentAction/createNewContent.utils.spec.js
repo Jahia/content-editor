@@ -68,6 +68,7 @@ describe('CreateNewContent utils', () => {
 
     describe('filterTree', () => {
         let tree;
+        let flatTree;
         let selectedType;
         beforeEach(() => {
             tree = [
@@ -100,6 +101,26 @@ describe('CreateNewContent utils', () => {
                             }
                         }
                     ]
+                }
+            ];
+            flatTree = [
+                {
+                    id: 'id1',
+                    name: 'hello',
+                    label: 'pere',
+                    nodeType: {
+                        mixin: false
+                    },
+                    children: []
+                },
+                {
+                    id: 'id2',
+                    name: 'world',
+                    label: 'noel',
+                    nodeType: {
+                        mixin: false
+                    },
+                    children: []
                 }
             ];
             selectedType = tree[0].children[0];
@@ -139,25 +160,21 @@ describe('CreateNewContent utils', () => {
         });
 
         it('should return nodeType when they are flatten', () => {
-            const result = filterTree([
-                {
-                    id: 'id1',
-                    nodeType: {
-                        mixin: false
-                    },
-                    children: []
-                },
-                {
-                    id: 'id2',
-                    nodeType: {
-                        mixin: false
-                    },
-                    children: []
-                }
-            ]);
+            const result = filterTree(flatTree);
             expect(result.length).toBe(2);
             expect(result[0].id).toBe('id1');
             expect(result[1].id).toBe('id2');
+        });
+
+        it('should select flattend nodeType when selectedType say so', () => {
+            const result = filterTree(flatTree, flatTree[0]);
+            expect(result[0].selected).toEqual(true);
+        });
+
+        it('should filter flattend nodeType when filter', () => {
+            const result = filterTree(flatTree, flatTree[0], 'world');
+            expect(result.length).toEqual(1);
+            expect(result[0].id).toEqual('id2');
         });
 
         it('should remove empty category', () => {

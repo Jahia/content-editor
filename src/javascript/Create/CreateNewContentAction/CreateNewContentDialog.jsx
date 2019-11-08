@@ -71,12 +71,12 @@ const CreateNewContentDialogCmp = ({open, parentPath, onExited, onClose, onCreat
                 <TreeView
                     tree={filteredTree}
                     onNodeClick={node => {
-                              if (!node.children) {
+                              if (!node.nodeType.mixin) {
                                 setSelectedType(node);
                               }
                           }}
                     onNodeDoubleClick={node => {
-                              if (!node.children) {
+                              if (!node.nodeType.mixin) {
                                 onCreateContent(node);
                               }
                           }}

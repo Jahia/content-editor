@@ -39,11 +39,12 @@ export const filterTree = (tree, selectedType, filter) => tree
         }) : category.children;
 
         // Never close selected content category
-        const isCategorySelected = selectedType ? category.id === selectedType.parent.id : null;
+        const isCategorySelected = selectedType && category.nodeType.mixin ? category.id === selectedType.parent.id : null;
 
         return {
             ...category,
             opened: filter ? true : (category.opened || isCategorySelected),
+            selected: Boolean(!category.nodeType.mixin && selectedType && selectedType.id === category.id),
             children: filteredNodes.map(node => {
                 return {
                     ...node,
@@ -54,5 +55,11 @@ export const filterTree = (tree, selectedType, filter) => tree
     })
     .filter(category => {
         const isNodeType = !category.nodeType.mixin;
-        return isNodeType || category.children === undefined || category.children.length !== 0;
+        if (isNodeType) {
+            return filter ?
+                category.name.toLowerCase().includes(filter) || category.label.toLowerCase().includes(filter) :
+                true;
+        }
+
+        return category.children.length !== 0;
     });
