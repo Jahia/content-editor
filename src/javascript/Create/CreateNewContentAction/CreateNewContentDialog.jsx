@@ -31,7 +31,8 @@ const styles = theme => ({
 const CreateNewContentDialogCmp = ({open, parentPath, onExited, onClose, onCreateContent, uiLang, client, classes, t}) => {
     const variables = {
         uiLang: uiLang,
-        path: parentPath
+        path: parentPath,
+        excludedNodeTypes: ['jmix:studioOnly', 'jmix:hiddenType']
     };
     const {data, error, loading} = useQuery(getTreeOfContent, {variables, client});
     const [selectedType, setSelectedType] = useState(null);
