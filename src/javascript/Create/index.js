@@ -1,5 +1,5 @@
 import React from 'react';
-import {AddCircle, Queue} from '@material-ui/icons';
+import {Save, Queue} from '@material-ui/icons';
 
 import createNewContentAction from './CreateNewContentAction/createNewContent.action';
 import createButtonAction from './CreateForm/create.action';
@@ -17,7 +17,7 @@ export const registerActions = actionsRegistry => {
     actionsRegistry.add('createButton', createButtonAction, {
         buttonLabel:
             'content-editor:label.contentEditor.create.createButton.name',
-        buttonIcon: <AddCircle/>,
+        buttonIcon: <Save/>,
         target: ['editHeaderActions:1']
     });
 };
