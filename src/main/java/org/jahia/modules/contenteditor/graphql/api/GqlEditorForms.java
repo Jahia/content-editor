@@ -120,7 +120,7 @@ public class GqlEditorForms {
                 return Collections.emptyList();
             }
             // Only jmix:editorialContent on jnt:contentFolder
-            if (nodeTypes == null || nodeTypes.isEmpty()) {
+            if (parentNode.isNodeType("jnt:contentFolder") && (nodeTypes == null || nodeTypes.isEmpty())) {
                 nodeTypes = Collections.singletonList("jmix:editorialContent");
             }
             // check write access
