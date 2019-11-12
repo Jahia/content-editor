@@ -14,6 +14,9 @@ export const getTreeOfContent = gql`
                 children {
                     id
                     name
+                    nodeType {
+                        mixin
+                    }
                     parent {
                         id
                         name
