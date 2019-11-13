@@ -6,6 +6,7 @@ import {Constants} from '~/ContentEditor.constants';
 import {cmGoto} from '../../ContentManager.redux-actions';
 import {withApolloAction} from './withApolloAction';
 import {from} from 'rxjs';
+import {share} from 'rxjs/operators';
 import {getActions} from './createNewContent.utits';
 
 const mapDispatchToProps = dispatch => ({
@@ -31,7 +32,9 @@ export default composeActions(
                 path: context.path,
                 excludedNodeTypes: ['jmix:studioOnly', 'jmix:hiddenType']
             };
-            context.actions = from(getActions(context, variables));
+            const sharedObservable = from(getActions(context, variables)).pipe(share());
+            context.actions = sharedObservable;
+            context.enabled = sharedObservable;
         },
         onClick: context => {
             if (context.openEditor) {
