@@ -4,7 +4,7 @@
             "create": {
               "title": "Erstellen {{type}}",
               "createButton": {
-                "name": "Erstellen",
+                "name": "Speichern",
                 "success": "Inhalt wurde erfolgreich gespeichert",
                 "error": "Beim Speichern des Inhalts ist ein Fehler aufgetreten"
               }
