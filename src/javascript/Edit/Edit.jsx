@@ -8,7 +8,7 @@ import {ContentEditorContext} from '~/ContentEditor.context';
 import {requiredValidation} from '~/Validation/required';
 import {saveNode} from './save/save.request';
 import {PublicationInfoContextProvider} from '~/PublicationInfo/PublicationInfo.context';
-import {Constants} from '../ContentEditor.constants';
+import {Constants} from '~/ContentEditor.constants';
 
 export const Edit = ({
     client,
@@ -53,7 +53,8 @@ export const Edit = ({
                 ...formQueryParams,
                 nodeData,
                 sections,
-                values
+                values,
+                initialValues
             }
         });
     };

@@ -13,8 +13,8 @@
  * Note: the activated property will be used to determine if the dynamic
  * fieldSet will be active on the form or not.
  *
- * @param sections array object contains sections
- * @returns dynamic fieldSets with key value object
+ * @param {array} sections the sections of the form
+ * @returns {array} dynamic fieldSets with key value object
  */
 export function getDynamicFieldSets(sections) {
     return sections.reduce((result, section) => {
@@ -34,9 +34,9 @@ export function getDynamicFieldSets(sections) {
  * - When the sectionName parameter is provided, the function returns all
  * the fields in fieldSets of only the specified section.
  *
- * @param sections    array object contains sections
- * @param sectionName string value refer to the section name
- * @returns fields    array object contains fields
+ * @param {array} sections    array object contains sections
+ * @param {string} sectionName string value refer to the section name
+ * @returns {array} fields    array object contains fields
  */
 export function getFields(sections, sectionName) {
     return sections.reduce((result, section) => {
@@ -52,7 +52,7 @@ export function getFields(sections, sectionName) {
     }, []);
 }
 
-export function getDataToMutate({nodeData, formValues, sections, lang}) {
+export function getDataToMutate({nodeData, formValues, sections, lang, initialValues}) {
     let propsToSave = [];
     let propsToDelete = [];
 
@@ -99,7 +99,14 @@ export function getDataToMutate({nodeData, formValues, sections, lang}) {
                 const fieldSet = getDynamicFieldSetOfField(sections, key);
 
                 if (!fieldSet.name ||
-                    (fieldSet.name && (hasNodeMixin(nodeData, fieldSet.name) || mixinsToMutate.mixinsToAdd.includes(fieldSet.name)))) {
+                    (
+                        fieldSet.name &&
+                        (
+                            hasNodeMixin(nodeData, fieldSet.name) ||
+                            mixinsToMutate.mixinsToAdd.includes(fieldSet.name)
+                        )
+                    )
+                ) {
                     propsToSave.push({
                         name: key,
                         type: fieldType,
@@ -115,6 +122,24 @@ export function getDataToMutate({nodeData, formValues, sections, lang}) {
             }
         }
     });
+
+    // Filter props that is not different than initially
+    if (initialValues) {
+        propsToSave = propsToSave.filter(prop => {
+            if (prop.value !== undefined && prop.value !== null) {
+                return prop.value !== initialValues[prop.name];
+            }
+
+            if (prop.notZonedDateValue) {
+                return prop.value !== initialValues[prop.name];
+            }
+
+            const values = prop.values || prop.notZonedDateValues;
+            // If find a different element in the array values, let's keep it in the mutation
+            return Boolean(values.find((value, i) => value !== initialValues[prop.name][i]));
+        });
+        propsToDelete = propsToDelete.filter(prop => initialValues[prop.name]);
+    }
 
     return {
         propsToSave,
@@ -168,9 +193,9 @@ export function getDynamicFieldSetOfField(sections, fieldName) {
 /**
  * This function check if the node has mixin or not.
  *
- * @param node
- * @param mixin
- * @returns boolean value, true if the node has mixin, false otherwise.
+ * @param {object} node node to check if it has mixin or not
+ * @param {string} mixin mixin name
+ * @returns {boolean} true if the node has mixin, false otherwise.
  */
 function hasNodeMixin(node, mixin) {
     return node && node.mixinTypes && node.mixinTypes.find(mixinType => mixinType.name === mixin);
