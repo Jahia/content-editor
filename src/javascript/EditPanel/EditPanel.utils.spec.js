@@ -431,15 +431,69 @@ describe('EditPanel utils', () => {
                 type: 'DOUBLE',
                 values: ['1.3']
             }]
+        },
+        {
+            name: 'filter values according to initialValues (boolean)',
+            nodeData: {
+                properties: [{
+                    name: 'prop',
+                    value: 'old value'
+                }, {
+                    name: 'boolean',
+                    value: false
+                }]
+            },
+            skipCreate: true,
+            formValues: {
+                prop: 'new value',
+                boolean: false
+            },
+            initialValues: {
+                prop: 'old value',
+                boolean: false
+            },
+            ExpectedPropsToSave: [{
+                language: 'fr',
+                name: 'prop',
+                type: 'type',
+                value: 'new value'
+            }]
+        },
+        {
+            name: 'filter values according to initialValues (array)',
+            nodeData: {
+                properties: [{
+                    name: 'multipleDate',
+                    value: ['old value']
+                }, {
+                    name: 'multipleDecimal',
+                    value: ['1.3', '1.1']
+                }]
+            },
+            skipCreate: true,
+            formValues: {
+                multipleDate: ['new value'],
+                multipleDecimal: ['1.3', '1.1']
+            },
+            initialValues: {
+                multipleDate: ['old value'],
+                multipleDecimal: ['1.3', '1.1']
+            },
+            ExpectedPropsToSave: [{
+                language: 'fr',
+                name: 'multipleDate',
+                type: 'DATE',
+                notZonedDateValues: ['new value']
+            }]
         }
     ];
 
     const lang = 'fr';
 
     describe('getDataToMutate', () => {
-        testCases.forEach(({name, nodeData, formValues, ExpectedPropsToSave, ExpectedPropsToDelete, skipCreate}) => {
+        testCases.forEach(({name, nodeData, formValues, ExpectedPropsToSave, ExpectedPropsToDelete, skipCreate, initialValues}) => {
             it(`Existing ${name}`, () => {
-                const {propsToSave, propsToDelete} = getDataToMutate({nodeData, formValues, sections, lang});
+                const {propsToSave, propsToDelete} = getDataToMutate({nodeData, formValues, sections, lang, initialValues});
                 expect(propsToSave).toEqual(ExpectedPropsToSave || []);
                 expect(propsToDelete).toEqual(ExpectedPropsToDelete || []);
             });
@@ -511,4 +565,3 @@ describe('EditPanel utils', () => {
         });
     });
 });
-
