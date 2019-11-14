@@ -3,7 +3,8 @@ import {
     extractRangeConstraints,
     getFields,
     getDataToMutate,
-    getDynamicFieldSets, getValuePropName
+    getDynamicFieldSets,
+    getValuePropName
 } from './EditPanel.utils';
 
 describe('EditPanel utils', () => {
