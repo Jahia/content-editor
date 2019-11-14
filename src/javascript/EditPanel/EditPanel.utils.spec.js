@@ -540,15 +540,6 @@ describe('EditPanel utils', () => {
         }
     ];
 
-    describe('getValuePropName', () => {
-        it('should return the good value prop name based on the field', () => {
-            expect(getValuePropName({multiple: true, requiredType: 'DATE'})).toEqual('notZonedDateValues');
-            expect(getValuePropName({multiple: false, requiredType: 'DATE'})).toEqual('notZonedDateValue');
-            expect(getValuePropName({multiple: true, requiredType: 'type'})).toEqual('values');
-            expect(getValuePropName({multiple: false, requiredType: 'type'})).toEqual('value');
-        });
-    });
-
     const lang = 'fr';
 
     describe('getDataToMutate', () => {
@@ -565,6 +556,15 @@ describe('EditPanel utils', () => {
                     expect(propsToDelete).toEqual(ExpectedPropsToDelete || []);
                 });
             }
+        });
+    });
+
+    describe('getValuePropName', () => {
+        it('should return the good value prop name based on the field', () => {
+            expect(getValuePropName({multiple: true, requiredType: 'DATE'})).toEqual('notZonedDateValues');
+            expect(getValuePropName({multiple: false, requiredType: 'DATE'})).toEqual('notZonedDateValue');
+            expect(getValuePropName({multiple: true, requiredType: 'type'})).toEqual('values');
+            expect(getValuePropName({multiple: false, requiredType: 'type'})).toEqual('value');
         });
     });
 

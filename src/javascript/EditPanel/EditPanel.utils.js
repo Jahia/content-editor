@@ -139,9 +139,9 @@ export function getValuePropName(field) {
 
 /**
  * Check if the value of a given field have changed, comparing the currentValue with the original value stored in the nodeData object
- * @param currentValue the current field value
- * @param field the field
- * @param nodeData the original node data
+ * @param {*} currentValue the current field value
+ * @param {object} field the field
+ * @param {object} nodeData the original node data
  * @returns {boolean} true if the value have changed.
  */
 export function propertyHasChanged(currentValue, field, nodeData) {
