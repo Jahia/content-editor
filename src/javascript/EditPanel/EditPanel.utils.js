@@ -52,7 +52,7 @@ export function getFields(sections, sectionName) {
     }, []);
 }
 
-export function getDataToMutate({nodeData, formValues, sections, lang, initialValues}) {
+export function getDataToMutate({nodeData, formValues, sections, lang}) {
     let propsToSave = [];
     let propsToDelete = [];
 
@@ -77,69 +77,46 @@ export function getDataToMutate({nodeData, formValues, sections, lang, initialVa
             if (value !== undefined && value !== null && value !== '') {
                 const fieldType = field.requiredType;
 
-                const valueObj = {};
-
+                let valueToSave;
                 if (field.multiple) {
                     const filteredUndefinedValues = value.filter(v => v !== undefined);
-                    const adaptDecimalValues = filteredUndefinedValues.map(value => _adaptDecimalValues(fieldType, value));
-
-                    if (fieldType === 'DATE') {
-                        valueObj.notZonedDateValues = filteredUndefinedValues;
-                    } else {
-                        valueObj.values = adaptDecimalValues;
-                    }
-                } else if (fieldType === 'DATE') {
-                    valueObj.notZonedDateValue = value;
+                    valueToSave = filteredUndefinedValues.map(value => _adaptDecimalValues(fieldType, value));
                 } else {
                     // In case we have field of type decimal or double, we should store number
                     // with a decimal point separator instead of decimal comma separator into JCR.
-                    valueObj.value = _adaptDecimalValues(fieldType, value);
+                    valueToSave = _adaptDecimalValues(fieldType, value);
                 }
 
-                const fieldSet = getDynamicFieldSetOfField(sections, key);
+                // Check if property has changed
+                if (propertyHasChanged(valueToSave, field, nodeData)) {
+                    const fieldSet = getDynamicFieldSetOfField(sections, key);
 
-                if (!fieldSet.name ||
-                    (
-                        fieldSet.name &&
+                    if (!fieldSet.name ||
                         (
-                            hasNodeMixin(nodeData, fieldSet.name) ||
-                            mixinsToMutate.mixinsToAdd.includes(fieldSet.name)
+                            fieldSet.name &&
+                            (
+                                hasNodeMixin(nodeData, fieldSet.name) ||
+                                mixinsToMutate.mixinsToAdd.includes(fieldSet.name)
+                            )
                         )
-                    )
-                ) {
-                    propsToSave.push({
-                        name: key,
-                        type: fieldType,
-                        ...valueObj,
-                        language: lang
-                    });
+                    ) {
+                        propsToSave.push({
+                            name: key,
+                            type: fieldType,
+                            [getValuePropName(field)]: valueToSave,
+                            language: lang
+                        });
+                    }
                 }
             } else if (nodeData) {
+                // Check if props existed before, to remove it
                 const nodeProperty = nodeData.properties.find(prop => prop.name === key);
-                if (nodeProperty && (field.multiple ? nodeProperty.values : nodeProperty.value)) {
+                if (nodeProperty && nodeProperty[getValuePropName(field)]) {
                     propsToDelete.push(key);
                 }
             }
         }
     });
-
-    // Filter props that is not different than initially
-    if (initialValues) {
-        propsToSave = propsToSave.filter(prop => {
-            if (prop.value !== undefined && prop.value !== null) {
-                return prop.value !== initialValues[prop.name];
-            }
-
-            if (prop.notZonedDateValue) {
-                return prop.value !== initialValues[prop.name];
-            }
-
-            const values = prop.values || prop.notZonedDateValues;
-            // If find a different element in the array values, let's keep it in the mutation
-            return Boolean(values.find((value, i) => value !== initialValues[prop.name][i]));
-        });
-        propsToDelete = propsToDelete.filter(prop => initialValues[prop.name]);
-    }
 
     return {
         propsToSave,
@@ -147,6 +124,59 @@ export function getDataToMutate({nodeData, formValues, sections, lang, initialVa
         mixinsToAdd: mixinsToMutate.mixinsToAdd,
         mixinsToDelete: mixinsToMutate.mixinsToDelete
     };
+}
+
+/**
+ * Get the value property name used to read the value(s) of a given property field
+ * @param field the property field
+ * @returns {string} the name of the value property to use
+ */
+export function getValuePropName(field) {
+    return field.multiple ?
+        (field.requiredType === 'DATE' ? 'notZonedDateValues' : 'values') :
+        (field.requiredType === 'DATE' ? 'notZonedDateValue' : 'value');
+}
+
+/**
+ * Check if the value of a given field have changed, comparing the currentValue with the original value stored in the nodeData object
+ * @param currentValue the current field value
+ * @param field the field
+ * @param nodeData the original node data
+ * @returns {boolean} true if the value have changed.
+ */
+export function propertyHasChanged(currentValue, field, nodeData) {
+    // Retrieve previous value
+    const propertyData = nodeData && nodeData.properties && nodeData.properties.find(prop => prop.name === field.name);
+    const previousValue = propertyData && propertyData[getValuePropName(field)];
+
+    // Compare previous value
+    if (field.multiple) {
+        // Check if both array are null or undefined
+        if (!currentValue && !previousValue) {
+            return false;
+        }
+
+        // Check if one array is null or undefined
+        if (!currentValue || !previousValue) {
+            return true;
+        }
+
+        // Check array size
+        if (currentValue.length !== previousValue.length) {
+            return true;
+        }
+
+        // Check values
+        for (var i = 0; i < currentValue.length; ++i) {
+            if (currentValue[i] !== previousValue[i]) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    return currentValue !== previousValue;
 }
 
 export function encodeJCRPath(path) {

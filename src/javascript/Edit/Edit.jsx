@@ -53,8 +53,7 @@ export const Edit = ({
                 ...formQueryParams,
                 nodeData,
                 sections,
-                values,
-                initialValues
+                values
             }
         });
     };

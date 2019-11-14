@@ -3,7 +3,7 @@ import {
     extractRangeConstraints,
     getFields,
     getDataToMutate,
-    getDynamicFieldSets
+    getDynamicFieldSets, getValuePropName
 } from './EditPanel.utils';
 
 describe('EditPanel utils', () => {
@@ -311,7 +311,7 @@ describe('EditPanel utils', () => {
             nodeData: {
                 properties: [{
                     name: 'multipleBoolean',
-                    value: [true]
+                    values: [true]
                 }]
             },
             formValues: {
@@ -329,7 +329,7 @@ describe('EditPanel utils', () => {
             nodeData: {
                 properties: [{
                     name: 'date',
-                    value: 'oldDate'
+                    notZonedDateValue: 'oldDate'
                 }]
             },
             formValues: {
@@ -347,7 +347,7 @@ describe('EditPanel utils', () => {
             nodeData: {
                 properties: [{
                     name: 'multipleDate',
-                    value: ['oldDate']
+                    notZonedDateValues: ['oldDate']
                 }]
             },
             formValues: {
@@ -383,7 +383,7 @@ describe('EditPanel utils', () => {
             nodeData: {
                 properties: [{
                     name: 'multipleDecimal',
-                    value: ['1.2']
+                    values: ['1.2']
                 }]
             },
             formValues: {
@@ -419,7 +419,7 @@ describe('EditPanel utils', () => {
             nodeData: {
                 properties: [{
                     name: 'multipleDouble',
-                    value: ['1.2']
+                    values: ['1.2']
                 }]
             },
             formValues: {
@@ -433,7 +433,7 @@ describe('EditPanel utils', () => {
             }]
         },
         {
-            name: 'filter values according to initialValues (boolean)',
+            name: 'filter values according to modified props only (boolean)',
             nodeData: {
                 properties: [{
                     name: 'prop',
@@ -448,10 +448,6 @@ describe('EditPanel utils', () => {
                 prop: 'new value',
                 boolean: false
             },
-            initialValues: {
-                prop: 'old value',
-                boolean: false
-            },
             ExpectedPropsToSave: [{
                 language: 'fr',
                 name: 'prop',
@@ -460,40 +456,104 @@ describe('EditPanel utils', () => {
             }]
         },
         {
-            name: 'filter values according to initialValues (array)',
+            name: 'should not return date props when not modified',
             nodeData: {
                 properties: [{
                     name: 'multipleDate',
-                    value: ['old value']
+                    notZonedDateValues: ['date1', 'date2']
+                }, {
+                    name: 'date',
+                    notZonedDateValue: 'single-date'
+                }]
+            },
+            skipCreate: true,
+            formValues: {
+                multipleDate: ['date1', 'date2'],
+                date: 'single-date'
+            },
+            ExpectedPropsToSave: []
+        },
+        {
+            name: 'should return date props when date added',
+            nodeData: {
+                properties: [{
+                    name: 'multipleDate',
+                    notZonedDateValues: ['date1', 'date2']
+                }]
+            },
+            skipCreate: true,
+            formValues: {
+                multipleDate: ['date1', 'date2', 'date3']
+            },
+            ExpectedPropsToSave: [{
+                language: 'fr',
+                name: 'multipleDate',
+                type: 'DATE',
+                notZonedDateValues: ['date1', 'date2', 'date3']
+            }]
+        },
+        {
+            name: 'should return date props when date props doesnt exist originally',
+            nodeData: {
+                properties: []
+            },
+            skipCreate: true,
+            formValues: {
+                multipleDate: ['date1', 'date2', 'date3']
+            },
+            ExpectedPropsToSave: [{
+                language: 'fr',
+                name: 'multipleDate',
+                type: 'DATE',
+                notZonedDateValues: ['date1', 'date2', 'date3']
+            }]
+        },
+        {
+            name: 'filter values according to modified props only (array)',
+            nodeData: {
+                properties: [{
+                    name: 'multipleDate',
+                    notZonedDateValues: ['old value']
                 }, {
                     name: 'multipleDecimal',
-                    value: ['1.3', '1.1']
+                    values: ['1.3', '1.1']
                 }]
             },
             skipCreate: true,
             formValues: {
                 multipleDate: ['new value'],
-                multipleDecimal: ['1.3', '1.1']
-            },
-            initialValues: {
-                multipleDate: ['old value'],
-                multipleDecimal: ['1.3', '1.1']
+                multipleDecimal: ['1.3', '1.1'],
+                multiple: ['new prop']
             },
             ExpectedPropsToSave: [{
                 language: 'fr',
                 name: 'multipleDate',
                 type: 'DATE',
                 notZonedDateValues: ['new value']
+            }, {
+                language: 'fr',
+                name: 'multiple',
+                type: 'type',
+                values: ['new prop']
             }]
         }
     ];
 
+    describe('getValuePropName', () => {
+        it('should return the good value prop name based on the field', () => {
+            expect(getValuePropName({multiple: true, requiredType: 'DATE'})).toEqual('notZonedDateValues');
+            expect(getValuePropName({multiple: false, requiredType: 'DATE'})).toEqual('notZonedDateValue');
+            expect(getValuePropName({multiple: true, requiredType: 'type'})).toEqual('values');
+            expect(getValuePropName({multiple: false, requiredType: 'type'})).toEqual('value');
+        });
+    });
+
     const lang = 'fr';
 
     describe('getDataToMutate', () => {
-        testCases.forEach(({name, nodeData, formValues, ExpectedPropsToSave, ExpectedPropsToDelete, skipCreate, initialValues}) => {
+        testCases.forEach(({name, nodeData, formValues, ExpectedPropsToSave, ExpectedPropsToDelete, skipCreate}) => {
             it(`Existing ${name}`, () => {
-                const {propsToSave, propsToDelete} = getDataToMutate({nodeData, formValues, sections, lang, initialValues});
+                const {propsToSave, propsToDelete} = getDataToMutate({nodeData, formValues, sections, lang});
                 expect(propsToSave).toEqual(ExpectedPropsToSave || []);
                 expect(propsToDelete).toEqual(ExpectedPropsToDelete || []);
             });
