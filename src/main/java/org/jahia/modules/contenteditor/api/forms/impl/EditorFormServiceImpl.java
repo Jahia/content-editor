@@ -1,3 +1,46 @@
+/*
+ * ==========================================================================================
+ * =                   JAHIA'S DUAL LICENSING - IMPORTANT INFORMATION                       =
+ * ==========================================================================================
+ *
+ *                                 http://www.jahia.com
+ *
+ *     Copyright (C) 2002-2019 Jahia Solutions Group SA. All rights reserved.
+ *
+ *     THIS FILE IS AVAILABLE UNDER TWO DIFFERENT LICENSES:
+ *     1/GPL OR 2/JSEL
+ *
+ *     1/ GPL
+ *     ==================================================================================
+ *
+ *     IF YOU DECIDE TO CHOOSE THE GPL LICENSE, YOU MUST COMPLY WITH THE FOLLOWING TERMS:
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ *
+ *     2/ JSEL - Commercial and Supported Versions of the program
+ *     ===================================================================================
+ *
+ *     IF YOU DECIDE TO CHOOSE THE JSEL LICENSE, YOU MUST COMPLY WITH THE FOLLOWING TERMS:
+ *
+ *     Alternatively, commercial and supported versions of the program - also known as
+ *     Enterprise Distributions - must be used in accordance with the terms and conditions
+ *     contained in a separate written agreement between you and Jahia Solutions Group SA.
+ *
+ *     If you are unsure which license is appropriate for your use,
+ *     please contact the sales department at sales@jahia.com.
+ */
 package org.jahia.modules.contenteditor.api.forms.impl;
 
 import org.apache.commons.lang.StringUtils;
@@ -266,7 +309,7 @@ public class EditorFormServiceImpl implements EditorFormService {
 
     private JCRNodeWrapper getParentNode(JCRNodeWrapper existingNode, String parentPath, JCRSessionWrapper session) throws RepositoryException {
         if (parentPath == null) {
-           return  existingNode.getParent();
+            return  existingNode.getParent();
         }
         return session.getNode(parentPath);
     }
@@ -285,23 +328,23 @@ public class EditorFormServiceImpl implements EditorFormService {
                 initialChoiceListValues.add(new ChoiceListValue(editorFormFieldValueConstraint.getDisplayValue(), editorFormFieldValueConstraint.getValue().getStringValue()));
             }
             List<EditorFormFieldValueConstraint> valueConstraints = getValueConstraints(initialChoiceListValues, editorFormField.getSelectorOptions(),
-                    existingNode, parentNode, uiLocale, nodeType, initializers, editorFormField.getExtendedPropertyDefinition());
+                existingNode, parentNode, uiLocale, nodeType, initializers, editorFormField.getExtendedPropertyDefinition());
             newEditorFormFields.add(new EditorFormField(editorFormField.getName(),
                 editorFormField.getDisplayName(),
                 editorFormField.getDescription(),
                 editorFormField.getRequiredType(),
-                    editorFormField.getSelectorType(),
-                    editorFormField.getSelectorOptions(),
-                    editorFormField.getI18n(),
-                    editorFormField.getReadOnly(),
-                    editorFormField.getMultiple(),
-                    editorFormField.getMandatory(),
-                    valueConstraints,
-                    editorFormField.getDefaultValues(),
+                editorFormField.getSelectorType(),
+                editorFormField.getSelectorOptions(),
+                editorFormField.getI18n(),
+                editorFormField.getReadOnly(),
+                editorFormField.getMultiple(),
+                editorFormField.getMandatory(),
+                valueConstraints,
+                editorFormField.getDefaultValues(),
                 editorFormField.getCurrentValues(),
-                    editorFormField.isRemoved(),
+                editorFormField.isRemoved(),
                 editorFormField.getTarget(),
-                    editorFormField.getExtendedPropertyDefinition()));
+                editorFormField.getExtendedPropertyDefinition()));
         }
         return new EditorFormFieldSet(editorFormFieldSet.getName(),
             editorFormFieldSet.getDisplayName(),
@@ -424,17 +467,17 @@ public class EditorFormServiceImpl implements EditorFormService {
                 propertyDescription,
                 requiredType,
                 selectorType,
-                    selectorOptions,
-                    propertyDefinition.isInternationalized(),
-                    isFieldReadOnly(propertyDefinition, sharedFieldsEditable, i18nFieldsEditable),
-                    propertyDefinition.isMultiple(),
-                    propertyDefinition.isMandatory(),
-                    valueConstraints,
-                    defaultValues,
+                selectorOptions,
+                propertyDefinition.isInternationalized(),
+                isFieldReadOnly(propertyDefinition, sharedFieldsEditable, i18nFieldsEditable),
+                propertyDefinition.isMultiple(),
+                propertyDefinition.isMandatory(),
+                valueConstraints,
+                defaultValues,
                 currentValues,
-                    null,
+                null,
                 fieldTarget,
-                    propertyDefinition);
+                propertyDefinition);
             editorFormFields.add(editorFormField);
             processedProperties.add(propertyDefinition.getName());
         }
@@ -476,7 +519,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             for (EditorFormProperty selectorProperty : selectorOptions) {
                 if (initializers.containsKey(selectorProperty.getName())) {
                     listValues = initializers.get(selectorProperty.getName()).getChoiceListValues(propertyDefinition, selectorProperty.getValue(),
-                            listValues, uiLocale, context);
+                        listValues, uiLocale, context);
                 }
             }
         }
@@ -493,8 +536,8 @@ public class EditorFormServiceImpl implements EditorFormService {
                 }
                 try {
                     valueConstraints.add(new EditorFormFieldValueConstraint(choiceListValue.getDisplayName(),
-                            new EditorFormFieldValue(choiceListValue.getValue()),
-                            propertyList
+                        new EditorFormFieldValue(choiceListValue.getValue()),
+                        propertyList
                     ));
                 } catch (RepositoryException e) {
                     logger.error("Error retrieving choice list value", e);
