@@ -128,7 +128,7 @@ export function getDataToMutate({nodeData, formValues, sections, lang}) {
 
 /**
  * Get the value property name used to read the value(s) of a given property field
- * @param field the property field
+ * @param {object} field the property field
  * @returns {string} the name of the value property to use
  */
 export function getValuePropName(field) {
