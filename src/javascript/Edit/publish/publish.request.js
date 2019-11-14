@@ -1,5 +1,4 @@
 import {PublishNodeMutation} from './publish.gql-mutation';
-import {NodeQuery} from '~/NodeData/NodeData.gql-queries';
 
 export const publishNode = ({
     client,
@@ -7,8 +6,7 @@ export const publishNode = ({
     notificationContext,
     data: {
         nodeData,
-        language,
-        uiLang
+        language
     },
     successCallback
 }) => {
@@ -17,17 +15,7 @@ export const publishNode = ({
             path: nodeData.path,
             languages: [language]
         },
-        mutation: PublishNodeMutation,
-        refetchQueries: [
-            {
-                query: NodeQuery,
-                variables: {
-                    path: nodeData.path,
-                    language,
-                    uiLang: uiLang
-                }
-            }
-        ]
+        mutation: PublishNodeMutation
     })
         .then(() => {
             notificationContext.notify(t('content-editor:label.contentEditor.edit.action.publish.success'), ['closeButton']);
