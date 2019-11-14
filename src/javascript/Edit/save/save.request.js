@@ -17,11 +17,10 @@ export const saveNode = ({
         sections,
         values,
         language,
-        uiLang,
-        initialValues
+        uiLang
     }
 }) => {
-    const dataToMutate = getDataToMutate({nodeData, formValues: values, sections, lang: language, initialValues});
+    const dataToMutate = getDataToMutate({nodeData, formValues: values, sections, lang: language});
 
     client.mutate({
         variables: {
