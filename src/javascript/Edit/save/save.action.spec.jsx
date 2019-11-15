@@ -70,15 +70,49 @@ describe('save action', () => {
             expect(context.enabled).toBe(false);
         });
 
-        it('should disable save action when it is the edit mode', () => {
+        it('should enable save action when it is the edit mode', () => {
             const props = {
                 formik: {
                     dirty: true,
                     errors: {}
+                },
+                publicationInfoContext: {
+                    publicationInfoPolling: false
                 }
             };
             saveAction.init(context, props);
             expect(context.enabled).toBe(true);
+            expect(context.disabled).toBe(false);
+        });
+
+        it('should disable save action when publication info is polling', () => {
+            const props = {
+                formik: {
+                    dirty: true,
+                    errors: {}
+                },
+                publicationInfoContext: {
+                    publicationInfoPolling: true
+                }
+            };
+            saveAction.init(context, props);
+            expect(context.enabled).toBe(true);
+            expect(context.disabled).toBe(true);
+        });
+
+        it('should disable save action when form is dirty', () => {
+            const props = {
+                formik: {
+                    dirty: false,
+                    errors: {}
+                },
+                publicationInfoContext: {
+                    publicationInfoPolling: false
+                }
+            };
+            saveAction.init(context, props);
+            expect(context.enabled).toBe(true);
+            expect(context.disabled).toBe(true);
         });
     });
 

@@ -37,8 +37,7 @@ export default composeActions(
                 notificationContext: context.notificationContext,
                 data: {
                     nodeData: context.nodeData,
-                    language: context.language,
-                    uiLang: context.uiLang
+                    language: context.language
                 },
                 successCallback: context.publicationInfoContext.startPublicationInfoPolling()
             });
