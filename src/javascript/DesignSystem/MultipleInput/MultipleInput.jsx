@@ -7,9 +7,9 @@ import CreatableSelect from 'react-select/creatable';
 import {
     Control,
     MultiValue,
+    MultiValueRemove,
     NoOptionsMessage,
-    DropdownIndicator,
-    Option
+    DropdownIndicator
 } from './components';
 
 const style = theme => ({
@@ -25,13 +25,11 @@ const MultipleInputComponent = ({classes, creatable, readOnly, ...props}) => {
 
     const components = {
         MultiValue,
-        Control: props => {
-            return <Control readOnly={readOnly} {...props}/>;
-        },
-        NoOptionsMessage,
+        MultiValueRemove,
         IndicatorSeparator: EmptyCmp,
-        DropdownIndicator: creatable ? EmptyCmp : DropdownIndicator,
-        Option
+        Control,
+        NoOptionsMessage,
+        DropdownIndicator: creatable ? EmptyCmp : DropdownIndicator
     };
 
     const [selection, setSelection] = useState();
@@ -50,6 +48,7 @@ const MultipleInputComponent = ({classes, creatable, readOnly, ...props}) => {
                 styles={classes}
                 isDisabled={readOnly}
                 {...props}
+                isReadOnly={readOnly}
                 onChange={handleChange}
             />
         </>

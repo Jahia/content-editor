@@ -10,7 +10,13 @@ describe('Control', () => {
     beforeEach(() => {
         defaultProps = {
             innerProps: {},
-            children: ''
+            children: '',
+            menuIsOpen: false,
+            isFocused: false,
+            isDisabled: false,
+            selectProps: {
+                isReadOnly: false
+            }
         };
     });
 

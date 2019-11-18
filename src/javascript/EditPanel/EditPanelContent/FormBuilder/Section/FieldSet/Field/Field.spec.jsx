@@ -39,6 +39,7 @@ describe('Field component', () => {
             dxContext: {},
             actionContext: {},
             input: <></>,
+            inputContext: {},
             idInput: 'FieldID'
         };
     });
@@ -102,7 +103,7 @@ describe('Field component', () => {
     });
 
     it('should add htmlFor to the label', () => {
-        defaultProps.input = <Text id="text"/>;
+        defaultProps.input = props => <Text {...props}/>;
         defaultProps.field.multiple = false;
         const cmp = shallowWithTheme(
             <Field {...defaultProps}/>,
@@ -114,7 +115,7 @@ describe('Field component', () => {
     });
 
     it('should not add htmlFor to the label when field is multiple', () => {
-        defaultProps.input = <Text id="text"/>;
+        defaultProps.input = props => <Text {...props}/>;
         defaultProps.field.multiple = true;
         const cmp = shallowWithTheme(
             <Field {...defaultProps}/>,

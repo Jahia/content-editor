@@ -31,13 +31,14 @@ describe('Field component', () => {
                 }
             },
             inputContext: {
-                fieldComponent: <></>
+                fieldComponent: () => <></>,
+                editorContext: {}
             }
         };
     });
 
     it('the field should have a defined id attribute', () => {
-        defaultProps.inputContext.fieldComponent = <Text id="text"/>;
+        defaultProps.inputContext.fieldComponent = props => <Text {...props}/>;
         const cmp = shallowWithTheme(
             <SingleFieldCmp {...defaultProps}/>,
             {},

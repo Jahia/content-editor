@@ -1,13 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {Input} from '@jahia/design-system-kit';
-import {InputComponent} from './InputComponent';
 import {withStyles} from '@material-ui/core';
 
 const styles = theme => ({
     input: {
-        paddingLeft: 0
+        paddingLeft: 0,
+        borderRadius: '1px',
+        background: theme.palette.ui.epsilon,
+        border: `1px solid ${theme.palette.ui.omega}`,
+        boxSizing: 'border-box',
+        '&:hover': {
+            border: `1px solid ${theme.palette.ui.zeta}`
+        },
+        fontSize: theme.typography.iota.fontSize,
+        transitionDuration: '.3s',
+        padding: '3px 0px 3px 12px',
+        display: 'flex',
+        minHeight: '44px'
+    },
+    focused: {
+        border: `1px solid ${theme.palette.brand.alpha}`
+    },
+    disabled: {
+        background: theme.palette.ui.epsilon,
+        border: `1px solid ${theme.palette.ui.zeta}`,
+        color: theme.palette.font.gamma
     },
     readOnly: {
         background: theme.palette.ui.alpha,
@@ -15,33 +33,43 @@ const styles = theme => ({
     }
 });
 
-export const ControlCmp = React.forwardRef(({classes, children, readOnly, innerProps}, ref) => {
+export const ControlCmp = ({classes, innerRef, children, innerProps, isDisabled, isFocused, menuIsOpen, selectProps}) => {
+    const isReadOnly = selectProps.isReadOnly;
     return (
-        <Input
-            ref={ref}
-            fullWidth
-            inputComponent={InputComponent}
-            className={`${classes.input}
-                        ${readOnly ? classes.readOnly : ''}`
-            }
-            inputProps={{
-                inputRef: ref,
-                children: children,
-                ...innerProps
-            }}
-        />
+        <div
+          ref={innerRef}
+          className={`
+              ${classes.input}
+              ${isReadOnly ? classes.readOnly : ''}
+              ${isDisabled ? classes.disabled : ''}
+              ${isFocused ? classes.focused : ''}
+              ${menuIsOpen ? classes.menuIsOpen : ''}
+          `}
+          {...innerProps}
+        >
+            {children}
+        </div>
     );
-});
+};
 
 ControlCmp.default = {
-    readOnly: false
+    isReadOnly: false
 };
 
 ControlCmp.propTypes = {
+    classes: PropTypes.object.isRequired,
     innerProps: PropTypes.object.isRequired,
     children: PropTypes.node.isRequired,
-    classes: PropTypes.object.isRequired,
-    readOnly: PropTypes.bool
+    selectProps: PropTypes.shape({
+        isReadOnly: PropTypes.bool.isRequired
+    }).isRequired,
+    isDisabled: PropTypes.bool.isRequired,
+    isFocused: PropTypes.bool.isRequired,
+    menuIsOpen: PropTypes.bool.isRequired,
+    innerRef: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.shape({current: PropTypes.any})
+    ])
 };
 
 export const Control = withStyles(styles)(ControlCmp);

@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {Chip} from '@jahia/design-system-kit';
-import {Close} from '@material-ui/icons';
 
 import {withStyles} from '@material-ui/core';
 
@@ -10,31 +9,27 @@ const styles = theme => ({
     chipReadOnly: {
         backgroundColor: theme.palette.ui.delta,
         color: theme.palette.invert.beta
+    },
+    chipFocused: {
+        backgroundColor: theme.palette.ui.alpha,
+        color: theme.palette.ui.delta
     }
 });
 
-export const MultiValueCmp = ({data, removeProps, classes, ...other}) => {
+export const MultiValueCmp = ({data, removeProps, selectProps, classes, components, isFocused, ...other}) => {
+    const {Container, Remove} = components;
+
     return (
-        <Chip
-            tabIndex="-1"
-            label={data.label}
-            className={other.isDisabled ? classes.chipReadOnly : ''}
-            deleteIcon={
-                <Close
-                    {...removeProps}
-                    focusable
-                    tabIndex="0"
-                    onKeyUp={e => {
-                        e.stopPropagation();
-                        if (e.keyCode === 13) {
-                            removeProps.onClick(e);
-                        }
-                    }}
-                />
-            }
-            variant={other.isDisabled ? 'secondary' : 'primary'}
-            onDelete={other.isDisabled ? null : removeProps.onClick}
-        />
+        <Container data={data} selectProps={selectProps}>
+            <Chip
+                tabIndex="-1"
+                label={data.label}
+                className={`${isFocused ? classes.chipFocused : ''} ${other.isDisabled ? classes.chipReadOnly : ''}`}
+                deleteIcon={<Remove {...removeProps}/>}
+                variant={other.isDisabled ? 'secondary' : 'primary'}
+                onDelete={other.isDisabled ? null : removeProps.onClick}
+            />
+        </Container>
     );
 };
 
@@ -42,9 +37,13 @@ MultiValueCmp.propTypes = {
     data: PropTypes.shape({
         label: PropTypes.string
     }).isRequired,
-    removeProps: PropTypes.shape({
-        onClick: PropTypes.func.isRequired
-    }).isRequired,
+    removeProps: PropTypes.object.isRequired,
+    selectProps: PropTypes.object.isRequired,
+    isFocused: PropTypes.bool.isRequired,
+    components: PropTypes.shape({
+        Container: PropTypes.any.isRequired,
+        Remove: PropTypes.any.isRequired
+    }),
     classes: PropTypes.object.isRequired
 };
 
