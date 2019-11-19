@@ -5,7 +5,7 @@ import EditPanel from '~/EditPanel';
 import * as PropTypes from 'prop-types';
 import {useFormDefinition} from '~/EditPanel/FormDefinitions';
 import {ContentEditorContext} from '~/ContentEditor.context';
-import {requiredValidation} from '~/Validation/required';
+import {validate} from '~/Validation/validation';
 import {saveNode} from './save/save.request';
 import {PublicationInfoContextProvider} from '~/PublicationInfo/PublicationInfo.context';
 import {Constants} from '~/ContentEditor.constants';
@@ -64,7 +64,7 @@ export const Edit = ({
                 <Formik
                     initialValues={initialValues}
                     render={props => <EditPanel {...props} title={title}/>}
-                    validate={requiredValidation(sections)}
+                    validate={validate(sections)}
                     onSubmit={handleSubmit}
                 />
             </PublicationInfoContextProvider>

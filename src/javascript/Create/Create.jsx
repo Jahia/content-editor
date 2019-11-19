@@ -7,7 +7,7 @@ import {useFormDefinition} from '~/EditPanel/FormDefinitions';
 
 import {ContentEditorContext} from '~/ContentEditor.context';
 
-import {requiredValidation} from '~/Validation/required';
+import {validate} from '~/Validation/validation';
 import {createNode} from './CreateForm/create.request';
 import {Constants} from '../ContentEditor.constants';
 
@@ -81,7 +81,7 @@ export const Create = ({
             <Formik
                 initialValues={initialValues}
                 render={props => <EditPanel {...props} title={title}/>}
-                validate={requiredValidation(sections)}
+                validate={validate(sections)}
                 onSubmit={handleSubmit}
             />
         </ContentEditorContext.Provider>
