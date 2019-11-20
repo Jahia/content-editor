@@ -34,7 +34,10 @@ describe('Field component', () => {
                 cmp: () => <div>test</div>,
                 key: 'test'
             },
-            formik: {},
+            formik: {
+                error: {},
+                touched: {}
+            },
             t: i18nKey => i18nKey,
             dxContext: {},
             actionContext: {},
@@ -148,5 +151,41 @@ describe('Field component', () => {
         );
 
         expect(cmp.dive().dive().debug()).not.toContain('ContextualMenu');
+    });
+
+    it('should display an error message when field is in error', () => {
+        defaultProps.formik.errors = {
+            text: 'required'
+        };
+
+        defaultProps.formik.touched = {
+            text: true
+        };
+
+        const cmp = shallowWithTheme(
+            <Field {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        );
+
+        expect(cmp.dive().dive().debug()).toContain('errors.required');
+    });
+
+    it('should not display an error message when field not touched', () => {
+        defaultProps.formik.errors = {
+            text: 'required'
+        };
+
+        defaultProps.formik.touched = {
+            text: false
+        };
+
+        const cmp = shallowWithTheme(
+            <Field {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        );
+
+        expect(cmp.dive().dive().debug()).not.toContain('errors.required');
     });
 });

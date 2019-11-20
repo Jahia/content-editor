@@ -1,5 +1,5 @@
 import React, {useRef} from 'react';
-import {Grid, InputLabel, withStyles} from '@material-ui/core';
+import {Grid, InputLabel, Typography, withStyles} from '@material-ui/core';
 import {MoreVert, Public} from '@material-ui/icons';
 import {Badge, IconButton} from '@jahia/design-system-kit';
 import {compose} from 'react-apollo';
@@ -23,9 +23,18 @@ let styles = theme => {
         formControl: {
             ...theme.typography.zeta,
             ...common,
-            paddingLeft: theme.spacing.unit * 4,
             width: '100%',
-            padding: '8px 0'
+            padding: '8px 0',
+            paddingLeft: '8px',
+            marginLeft: '20px ',
+            borderLeft: '4px solid transparent'
+        },
+        formControlError: {
+            borderLeft: `4px solid ${theme.palette.support.gamma}`
+        },
+        errorMessage: {
+            marginTop: '4px',
+            color: theme.palette.support.gamma
         },
         inputLabel: {
             ...theme.typography.zeta,
@@ -52,14 +61,14 @@ export const FieldCmp = ({t, classes, inputContext, idInput, selectorType, field
     const isMultipleField = field.multiple && !selectorType.supportMultiple;
     const seleniumFieldType = isMultipleField ? `GenericMultipleField${selectorType.key}` : (field.multiple ? `Multiple${selectorType.key}` : selectorType.key);
 
-    let mandatory = field.mandatory && touched[field.name] && errors[field.name] && errors[field.name] === 'required';
+    const shouldDisplayErrors = touched[field.name] && errors[field.name];
+    const hasMandatoryError = shouldDisplayErrors && errors[field.name] === 'required';
     return (
-        <div className={classes.formControl}
+        <div className={`${classes.formControl} ${shouldDisplayErrors ? classes.formControlError : ''}`}
              data-sel-content-editor-field={field.name}
              data-sel-content-editor-field-type={seleniumFieldType}
              data-sel-content-editor-field-readonly={field.readOnly}
         >
-
             <Grid
                 container
                 wrap="nowrap"
@@ -83,10 +92,10 @@ export const FieldCmp = ({t, classes, inputContext, idInput, selectorType, field
                             </InputLabel>
                             {field.mandatory && (
                                 <Badge className={classes.badge}
-                                       data-sel-content-editor-field-mandatory={Boolean(mandatory)}
+                                       data-sel-content-editor-field-mandatory={Boolean(hasMandatoryError)}
                                        badgeContent={t('content-editor:label.contentEditor.edit.validation.required')}
                                        variant="normal"
-                                       color={mandatory ? 'warning' : 'primary'}
+                                       color={hasMandatoryError ? 'warning' : 'primary'}
                                 />
                             )}
                             {(!field.i18n && siteInfo.languages.length > 1) &&
@@ -133,6 +142,13 @@ export const FieldCmp = ({t, classes, inputContext, idInput, selectorType, field
                             )}
                         </Grid>
                     </Grid>
+                    <Typography className={classes.errorMessage}>
+                        {
+                            shouldDisplayErrors ?
+                                t(`content-editor:label.contentEditor.edit.errors.${errors[field.name]}`) :
+                                ''
+                        }&nbsp;
+                    </Typography>
                 </Grid>
             </Grid>
         </div>

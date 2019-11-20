@@ -94,7 +94,11 @@
                   "modalDone": "Sélectionner"
                 },
                 "tagPlaceholder" : "Saisir les tags",
-                "createTagPlaceholder" : "Taper entrée pour ajouter \"{{tagName}}\""
+                "createTagPlaceholder" : "Taper entrée pour ajouter \"{{tagName}}\"",
+                "errors": {
+                  "invalidDate": "La date est mal formatée",
+                  "required": ""
+                }
             },
             "switchLanguage": {
               "dialog": {
