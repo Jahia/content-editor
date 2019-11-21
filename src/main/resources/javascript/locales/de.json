@@ -94,7 +94,11 @@
                   "modalDone": "Auswählen"
                 },
                 "tagPlaceholder" : "Tag eingeben",
-                "createTagPlaceholder" : "Mit Enter bestätigen um \"{{tagName}}\" hinzuzufügen"
+                "createTagPlaceholder" : "Mit Enter bestätigen um \"{{tagName}}\" hinzuzufügen",
+                "errors": {
+                  "invalidDate": "Bitte geben Sie ein gültiges Datum ein",
+                  "required": ""
+                }
             },
             "switchLanguage": {
               "dialog": {
