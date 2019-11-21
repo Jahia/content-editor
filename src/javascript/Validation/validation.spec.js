@@ -396,6 +396,76 @@ describe('validation', () => {
             });
         });
 
+        it('should trigger error when is not valid email and fields are mandatory', () => {
+            const {sections} = buildSections({
+                requiredType: 'STRING',
+                mandatory: true,
+                valueConstraints: [
+                    {value: {string: '^$|[A-Za-z0-9._%+-]+@(?:[A-Za-z0-9-]+\\.)+[A-Za-z]{2,}'}}
+                ]
+            });
+            const values = {
+                field1: '',
+                field2: null,
+                field3: undefined,
+                field4: 'notEmpty'
+            };
+
+            expect(validate(sections)(values)).toEqual({
+                field1: 'required',
+                field2: 'required',
+                field3: 'required',
+                field4: 'invalidEmail'
+            });
+        });
+
+        it('should validate properly multiple email field', () => {
+            const {sections} = buildSections({
+                requiredType: 'STRING',
+                multiple: true,
+                valueConstraints: [
+                    {value: {string: '^$|[A-Za-z0-9._%+-]+@(?:[A-Za-z0-9-]+\\.)+[A-Za-z]{2,}'}}
+                ]
+            });
+            const values = {
+                field1: ['notCorrect@mail'],
+                field2: ['bonjour@support.fr', 'bonjour2@support.fr'],
+                field3: ['hallo@support.de', 'hallo2@support.de'],
+                field4: ['world@support.com']
+            };
+
+            expect(validate(sections)(values)).toEqual({
+                field1: 'invalidEmail',
+                field2: undefined,
+                field3: undefined,
+                field4: undefined
+            });
+        });
+
+        it('should validate properly multiple email field and fields are mandatory', () => {
+            const {sections} = buildSections({
+                requiredType: 'STRING',
+                multiple: true,
+                mandatory: true,
+                valueConstraints: [
+                    {value: {string: '^$|[A-Za-z0-9._%+-]+@(?:[A-Za-z0-9-]+\\.)+[A-Za-z]{2,}'}}
+                ]
+            });
+            const values = {
+                field1: [''],
+                field2: null,
+                field3: ['notEmpty', 'hallo2@support.de'],
+                field4: undefined
+            };
+
+            expect(validate(sections)(values)).toEqual({
+                field1: 'required',
+                field2: 'required',
+                field3: 'invalidEmail',
+                field4: 'required'
+            });
+        });
+
         it('should not trigger error when is valid email', () => {
             const {sections} = buildSections({
                 requiredType: 'STRING',

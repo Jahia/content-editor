@@ -58,11 +58,12 @@ const dateFieldValidation = (values, field) => {
 const emailFieldValidation = (values, field) => {
     const error = 'invalidEmail';
 
-    const fieldValues = Array.isArray(values[field.name]) ? values[field.name] : [values[field.name]];
     const constraints = field.valueConstraints && field.valueConstraints.map(constraint => constraint.value.string);
 
     if (constraints && constraints.length > 0 && field.requiredType === 'STRING') {
-        // If one date is invalid, error !
+        const fieldValues = field.multiple ? values[field.name] : [values[field.name]];
+
+        // If one email is invalid, error!
         if (fieldValues.some(emailValue => !RegExp(constraints[0]).test(String(emailValue).toLowerCase()))) {
             return error;
         }
