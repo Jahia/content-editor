@@ -98,7 +98,7 @@ export const validate = sections => {
                     const fieldError = (
                         requiredFieldValidation(values, field, dynamicFieldSet) ||
                         dateFieldValidation(values, field) ||
-                        emailFieldValidation(values, field)
+                        patternFieldValidation(values, field)
                     );
 
                     if (fieldError) {
