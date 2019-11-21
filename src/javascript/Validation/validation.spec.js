@@ -373,7 +373,7 @@ describe('validation', () => {
         });
     });
 
-    describe('email', () => {
+    describe('pattern', () => {
         it('should trigger error when is not valid pattern', () => {
             const {sections} = buildSections({
                 requiredType: 'STRING',
