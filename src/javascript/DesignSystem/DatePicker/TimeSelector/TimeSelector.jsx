@@ -18,13 +18,14 @@ const style = theme => ({
         margin: 0,
         width: '150px'
     },
-    child: {
+    hour: {
         height: '2rem',
         paddingLeft: '1rem',
         boxSizing: 'border-box',
         display: 'flex',
         alignItems: 'center',
-        width: '100%'
+        width: '100%',
+        cursor: 'pointer'
     },
     childSelected: {
         backgroundColor: theme.palette.hover.beta,
@@ -41,7 +42,7 @@ const TimeSelectorCmp = ({classes, disabledHours, selectedHour, onHourSelected, 
                 <Typography
                     key={hour}
                     tabIndex="0"
-                    className={`${classes.child} ${
+                    className={`${classes.hour} ${
                         selectedHour === hour ? classes.childSelected : ''
                     }`}
                     component="li"
