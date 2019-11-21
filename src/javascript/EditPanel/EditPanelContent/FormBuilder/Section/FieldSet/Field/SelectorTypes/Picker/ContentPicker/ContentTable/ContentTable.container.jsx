@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import DSContentTable from '~/DesignSystem/ContentTable/ContentTable';
 import {useQuery} from 'react-apollo-hooks';
 import {translate} from 'react-i18next';
@@ -6,6 +6,7 @@ import {ProgressOverlay} from '@jahia/react-material';
 import PropTypes from 'prop-types';
 import {ContentTableQuery} from './ContentTable.gql-queries';
 import dayjs from 'dayjs';
+import {registry} from '@jahia/registry';
 
 const columnConfig = t => [
     {
@@ -42,7 +43,7 @@ const ContentTableContainer = ({
     editorContext,
     initialSelection
 }) => {
-    const {data, error, loading} = useQuery(ContentTableQuery, {
+    const {data, error, loading, refetch} = useQuery(ContentTableQuery, {
         variables: {
             path: selectedPath,
             language: editorContext.lang,
@@ -50,6 +51,13 @@ const ContentTableContainer = ({
             recursionTypesFilter: tableConfig.recursionTypesFilter,
             fieldFilter: tableConfig.showOnlyNodesWithTemplates ? {filters: [{fieldName: 'isDisplayableNode', evaluation: 'EQUAL', value: 'true'}]} : null
         }
+    });
+
+    useEffect(() => {
+        registry.add('refetch-content-list', {
+            type: 'refetch-upload',
+            refetch: refetch
+        });
     });
 
     if (error) {
