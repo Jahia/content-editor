@@ -63,7 +63,7 @@ const emailFieldValidation = (values, field) => {
     if (constraints && constraints.length > 0 && field.requiredType === 'STRING') {
         const fieldValues = field.multiple ? values[field.name] : [values[field.name]];
 
-        // If one email is invalid, error!
+        // If one pattern is invalid, error!
         if (fieldValues.some(emailValue => !RegExp(constraints[0]).test(String(emailValue).toLowerCase()))) {
             return error;
         }
