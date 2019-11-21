@@ -374,7 +374,7 @@ describe('validation', () => {
     });
 
     describe('email', () => {
-        it('should trigger error when is not valid email', () => {
+        it('should trigger error when is not valid pattern', () => {
             const {sections} = buildSections({
                 requiredType: 'STRING',
                 valueConstraints: [
