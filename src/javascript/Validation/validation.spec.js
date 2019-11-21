@@ -373,6 +373,52 @@ describe('validation', () => {
         });
     });
 
+    describe('email', () => {
+        it('should trigger error when is not valid email', () => {
+            const {sections} = buildSections({
+                requiredType: 'STRING',
+                valueConstraints: [
+                    {value: {string: '^$|[A-Za-z0-9._%+-]+@(?:[A-Za-z0-9-]+\\.)+[A-Za-z]{2,}'}}
+                ]
+            });
+            const values = {
+                field1: 'toto',
+                field2: 'foo',
+                field3: 'test@support',
+                field4: 'support.fr'
+            };
+
+            expect(validate(sections)(values)).toEqual({
+                field1: 'invalidEmail',
+                field2: 'invalidEmail',
+                field3: 'invalidEmail',
+                field4: 'invalidEmail'
+            });
+        });
+
+        it('should not trigger error when is valid email', () => {
+            const {sections} = buildSections({
+                requiredType: 'STRING',
+                valueConstraints: [
+                    {value: {string: '^$|[A-Za-z0-9._%+-]+@(?:[A-Za-z0-9-]+\\.)+[A-Za-z]{2,}'}}
+                ]
+            });
+            const values = {
+                field1: 'bonjour@support.fr',
+                field2: 'hallo@support.de',
+                field3: 'hello@support.en',
+                field4: 'world@support.com'
+            };
+
+            expect(validate(sections)(values)).toEqual({
+                field1: undefined,
+                field2: undefined,
+                field3: undefined,
+                field4: undefined
+            });
+        });
+    });
+
     describe('validate order', () => {
         it('should validate mandatory with better priority than date validate', () => {
             const {sections} = buildSections({

@@ -55,6 +55,20 @@ const dateFieldValidation = (values, field) => {
     return respectEachConstraint ? undefined : error;
 };
 
+const emailFieldValidation = (values, field) => {
+    const error = 'invalidEmail';
+
+    const fieldValues = Array.isArray(values[field.name]) ? values[field.name] : [values[field.name]];
+    const constraints = field.valueConstraints && field.valueConstraints.map(constraint => constraint.value.string);
+
+    if (constraints && constraints.length > 0 && field.requiredType === 'STRING') {
+        // If one date is invalid, error !
+        if (fieldValues.some(emailValue => !RegExp(constraints[0]).test(String(emailValue).toLowerCase()))) {
+            return error;
+        }
+    }
+};
+
 const requiredFieldValidation = (values, field, dynamicFieldSet) => {
     const error = 'required';
 
@@ -82,7 +96,8 @@ export const validate = sections => {
 
                     const fieldError = (
                         requiredFieldValidation(values, field, dynamicFieldSet) ||
-                        dateFieldValidation(values, field, dynamicFieldSet)
+                        dateFieldValidation(values, field) ||
+                        emailFieldValidation(values, field)
                     );
 
                     if (fieldError) {
