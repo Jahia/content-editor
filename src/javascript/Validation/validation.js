@@ -56,7 +56,7 @@ const dateFieldValidation = (values, field) => {
 };
 
 const emailFieldValidation = (values, field) => {
-    const error = 'invalidEmail';
+    const error = 'invalidPattern';
 
     const constraints = field.valueConstraints && field.valueConstraints.map(constraint => constraint.value.string);
 
