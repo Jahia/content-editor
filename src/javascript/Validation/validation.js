@@ -55,7 +55,7 @@ const dateFieldValidation = (values, field) => {
     return respectEachConstraint ? undefined : error;
 };
 
-const emailFieldValidation = (values, field) => {
+const patternFieldValidation = (values, field) => {
     const error = 'invalidPattern';
 
     const constraints = field.valueConstraints && field.valueConstraints.map(constraint => constraint.value.string);
