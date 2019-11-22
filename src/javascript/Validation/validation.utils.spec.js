@@ -4,19 +4,21 @@ describe('validation utils', () => {
     describe('validateForm', () => {
         let formik;
         let renderComponent;
+        let errors;
         beforeEach(() => {
             renderComponent = jest.fn();
+            errors = {
+                field1: 'required',
+                field2: 'required'
+            };
             formik = {
-                errors: {
-                    field1: 'required',
-                    field2: 'required'
-                },
+                validateForm: jest.fn(() => Promise.resolve(errors)),
                 setTouched: jest.fn(() => Promise.resolve())
             };
         });
 
         it('should return true when there is no errors', async () => {
-            formik.errors = {};
+            errors = {};
             expect(await validateForm(formik, renderComponent)).toBe(true);
         });
 
@@ -39,7 +41,7 @@ describe('validation utils', () => {
         });
 
         it('should not display a modal when field have no erros', async () => {
-            formik.errors = {};
+            errors = {};
             await validateForm(formik, renderComponent);
             expect(renderComponent).not.toHaveBeenCalled();
         });
