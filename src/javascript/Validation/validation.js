@@ -15,7 +15,7 @@ const dateFieldValidation = (values, field) => {
         return error;
     }
 
-    if (!field.valueConstraints) {
+    if (!field.valueConstraints || field.valueConstraints.length === 0) {
         return;
     }
 

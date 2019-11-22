@@ -179,7 +179,7 @@ describe('validation', () => {
         });
 
         it('should not trigger any error when fields is valid DATE and no ', () => {
-            const {sections} = buildSections({requiredType: 'DATE'});
+            const {sections} = buildSections({requiredType: 'DATE', valueConstraints: []});
             const values = {
                 field1: '2019-06-04T00:00:00.000',
                 field2: '2019-06-04T00:00:00.000',
