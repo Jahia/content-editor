@@ -143,10 +143,11 @@ export const FieldCmp = ({t, classes, inputContext, idInput, selectorType, field
                         </Grid>
                     </Grid>
                     <Typography className={classes.errorMessage}>
-                        {
-                            shouldDisplayErrors ?
+                        {shouldDisplayErrors ?
+                            field.errorMessage ?
+                                field.errorMessage :
                                 t(`content-editor:label.contentEditor.edit.errors.${errors[field.name]}`) :
-                                ''
+                            ''
                         }&nbsp;
                     </Typography>
                 </Grid>

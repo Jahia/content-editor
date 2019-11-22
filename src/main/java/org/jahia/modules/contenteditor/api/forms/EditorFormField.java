@@ -63,6 +63,7 @@ public class EditorFormField implements Comparable<EditorFormField> {
     private String name;
     private String displayName;
     private String description;
+    private String errorMessage;
     private GqlJcrPropertyType requiredType;
     private String selectorType;
     private List<EditorFormProperty> selectorOptions;
@@ -87,6 +88,7 @@ public class EditorFormField implements Comparable<EditorFormField> {
     public EditorFormField(String name,
                            String displayName,
                            String description,
+                           String errorMessage,
                            GqlJcrPropertyType requiredType,
                            String selectorType,
                            List<EditorFormProperty> selectorOptions,
@@ -103,6 +105,7 @@ public class EditorFormField implements Comparable<EditorFormField> {
         this.name = name;
         this.displayName = displayName;
         this.description = description;
+        this.errorMessage = errorMessage;
         this.requiredType = requiredType;
         this.selectorType = selectorType;
         this.selectorOptions = selectorOptions;
@@ -123,6 +126,7 @@ public class EditorFormField implements Comparable<EditorFormField> {
             field.name,
             field.displayName,
             field.description,
+            field.errorMessage,
             field.requiredType,
             field.selectorType,
             field.selectorOptions == null ? null : field.selectorOptions.stream()
@@ -216,6 +220,12 @@ public class EditorFormField implements Comparable<EditorFormField> {
         return description;
     }
 
+    @GraphQLField
+    @GraphQLDescription("The error message of the field")
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
     public void setRequiredType(GqlJcrPropertyType requiredType) {
         this.requiredType = requiredType;
     }
@@ -278,6 +288,10 @@ public class EditorFormField implements Comparable<EditorFormField> {
         this.displayName = displayName;
     }
 
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
     public void setDefaultValues(List<EditorFormFieldValue> defaultValues) {
         this.defaultValues = defaultValues;
     }
@@ -309,6 +323,7 @@ public class EditorFormField implements Comparable<EditorFormField> {
         return new EditorFormField(name,
             otherEditorFormField.displayName != null ? otherEditorFormField.displayName : displayName,
             otherEditorFormField.description != null ? otherEditorFormField.description : description,
+            otherEditorFormField.errorMessage != null ? otherEditorFormField.errorMessage : errorMessage,
             otherEditorFormField.requiredType != null ? otherEditorFormField.requiredType : requiredType,
             otherEditorFormField.selectorType != null ? otherEditorFormField.selectorType : selectorType,
             otherEditorFormField.selectorOptions != null ? otherEditorFormField.selectorOptions : selectorOptions,
@@ -335,6 +350,7 @@ public class EditorFormField implements Comparable<EditorFormField> {
         return Objects.equals(name, that.name)
             && Objects.equals(displayName, that.displayName)
             && Objects.equals(description, that.description)
+            && Objects.equals(errorMessage, that.errorMessage)
             && Objects.equals(requiredType, that.requiredType)
             && Objects.equals(selectorType, that.selectorType)
             && Objects.equals(selectorOptions, that.selectorOptions)
@@ -352,8 +368,8 @@ public class EditorFormField implements Comparable<EditorFormField> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, displayName, description, requiredType, selectorType, selectorOptions, i18n,
-            readOnly, multiple, mandatory, valueConstraints, defaultValues, currentValues, removed,
+        return Objects.hash(name, displayName, description, errorMessage, requiredType, selectorType, selectorOptions,
+            i18n, readOnly, multiple, mandatory, valueConstraints, defaultValues, currentValues, removed,
             target, extendedPropertyDefinition);
     }
 
@@ -363,6 +379,7 @@ public class EditorFormField implements Comparable<EditorFormField> {
             "name='" + name + '\'' +
             ", displayName='" + displayName + '\'' +
             ", description='" + description + '\'' +
+            ", errorMessage='" + errorMessage + '\'' +
             ", requiredType='" + requiredType + '\'' +
             ", selectorType='" + selectorType + '\'' +
             ", selectorOptions=" + selectorOptions +

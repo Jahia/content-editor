@@ -22,6 +22,7 @@ export const FormQuery = gql`
                             name
                             displayName
                             description
+                            errorMessage
                             mandatory
                             i18n
                             multiple
