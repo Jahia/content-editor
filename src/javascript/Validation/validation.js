@@ -67,7 +67,7 @@ const patternFieldValidation = (values, field) => {
         if (fieldValues.some(value =>
             value &&
             constraints
-                .map(constraint => RegExp(constraint).test(String(value).toLowerCase()))
+                .map(constraint => RegExp(constraint).test(String(value)))
                 .filter(value => value)
                 .length === 0
         )) {
