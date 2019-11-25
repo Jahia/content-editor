@@ -97,6 +97,7 @@
                 "createTagPlaceholder" : "Mit Enter bestätigen um \"{{tagName}}\" hinzuzufügen",
                 "errors": {
                   "invalidDate": "Bitte geben Sie ein gültiges Datum ein",
+                  "invalidPattern": "Die Eingabe entspricht nicht den Vorgaben der Content-Typ-Definition.",
                   "required": ""
                 }
             },
