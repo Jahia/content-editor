@@ -125,6 +125,7 @@ describe('save action', () => {
                     resetForm: jest.fn(() => Promise.resolve()),
                     setFieldValue: jest.fn(),
                     setTouched: jest.fn(() => Promise.resolve()),
+                    validateForm: jest.fn(() => Promise.resolve(context.formik.errors)),
                     dirty: true,
                     errors: {}
                 },

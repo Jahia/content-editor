@@ -28,6 +28,7 @@ describe('create action', () => {
             context = {
                 formik: {
                     submitForm: jest.fn(() => Promise.resolve()),
+                    validateForm: jest.fn(() => Promise.resolve(context.formik.errors)),
                     resetForm: jest.fn(),
                     setFieldValue: jest.fn(),
                     setTouched: jest.fn(() => Promise.resolve()),
