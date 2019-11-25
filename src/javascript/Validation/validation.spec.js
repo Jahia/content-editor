@@ -373,6 +373,173 @@ describe('validation', () => {
         });
     });
 
+    describe('pattern', () => {
+        it('should trigger error when is not valid pattern', () => {
+            const {sections} = buildSections({
+                requiredType: 'STRING',
+                valueConstraints: [
+                    {value: {string: '^$|[A-Za-z0-9._%+-]+@(?:[A-Za-z0-9-]+\\.)+[A-Za-z]{2,}'}}
+                ]
+            });
+            const values = {
+                field1: 'toto',
+                field2: 'foo',
+                field3: 'test@support',
+                field4: 'support.fr'
+            };
+
+            expect(validate(sections)(values)).toEqual({
+                field1: 'invalidPattern',
+                field2: 'invalidPattern',
+                field3: 'invalidPattern',
+                field4: 'invalidPattern'
+            });
+        });
+
+        it('should validate properly multiple email field', () => {
+            const {sections} = buildSections({
+                requiredType: 'STRING',
+                multiple: true,
+                valueConstraints: [
+                    {value: {string: '^$|[A-Za-z0-9._%+-]+@(?:[A-Za-z0-9-]+\\.)+[A-Za-z]{2,}'}}
+                ]
+            });
+            const values = {
+                field1: ['notCorrect@mail'],
+                field2: ['bonjour@support.fr', 'bonjour2@support.fr'],
+                field3: ['hallo@support.de', 'hallo2@support.de'],
+                field4: ['world@support.com']
+            };
+
+            expect(validate(sections)(values)).toEqual({
+                field1: 'invalidPattern',
+                field2: undefined,
+                field3: undefined,
+                field4: undefined
+            });
+        });
+
+        it('should validate properly multiple email field with mix of valid and invalid values', () => {
+            const {sections} = buildSections({
+                requiredType: 'STRING',
+                multiple: true,
+                valueConstraints: [
+                    {value: {string: '^$|[A-Za-z0-9._%+-]+@(?:[A-Za-z0-9-]+\\.)+[A-Za-z]{2,}'}}
+                ]
+            });
+            const values = {
+                field1: ['notCorrect@mail'],
+                field2: ['bonjour@support.fr', 'bonjour2@support.fr', 'notCorrect@all', 'notEmpty'],
+                field3: ['hallo@support.de', '', 'hallo2@support.de'],
+                field4: ['world@support.com', 'toto']
+            };
+
+            expect(validate(sections)(values)).toEqual({
+                field1: 'invalidPattern',
+                field2: 'invalidPattern',
+                field3: undefined,
+                field4: 'invalidPattern'
+            });
+        });
+
+        it('should validate properly field with constraints', () => {
+            const {sections} = buildSections({
+                requiredType: 'STRING',
+                valueConstraints: [
+                    {value: {string: 'value0'}},
+                    {value: {string: 'value1'}},
+                    {value: {string: 'value2'}},
+                    {value: {string: 'value3'}}
+                ]
+            });
+            const values = {
+                field1: 'myValue',
+                field2: '',
+                field3: 'value1',
+                field4: null
+            };
+
+            expect(validate(sections)(values)).toEqual({
+                field1: 'invalidPattern',
+                field2: undefined,
+                field3: undefined,
+                field4: undefined
+            });
+        });
+
+        it('should validate properly multiple field with constraints', () => {
+            const {sections} = buildSections({
+                requiredType: 'STRING',
+                multiple: true,
+                valueConstraints: [
+                    {value: {string: 'value0'}},
+                    {value: {string: 'value1'}},
+                    {value: {string: 'value2'}},
+                    {value: {string: 'value3'}}
+                ]
+            });
+            const values = {
+                field1: ['myValue', 'value3'],
+                field2: ['', 'toto', 'notCorrect@all', 'notEmpty'],
+                field3: ['hallo@support.de', 'value1', 'hallo2@support.de'],
+                field4: ['value2', 'value3']
+            };
+
+            expect(validate(sections)(values)).toEqual({
+                field1: 'invalidPattern',
+                field2: 'invalidPattern',
+                field3: 'invalidPattern',
+                field4: undefined
+            });
+        });
+
+        it('should validate properly multiple email field and fields are mandatory', () => {
+            const {sections} = buildSections({
+                requiredType: 'STRING',
+                multiple: true,
+                mandatory: true,
+                valueConstraints: [
+                    {value: {string: '^$|[A-Za-z0-9._%+-]+@(?:[A-Za-z0-9-]+\\.)+[A-Za-z]{2,}'}}
+                ]
+            });
+            const values = {
+                field1: [''],
+                field2: null,
+                field3: ['notEmpty', 'hallo2@support.de'],
+                field4: undefined
+            };
+
+            expect(validate(sections)(values)).toEqual({
+                field1: 'required',
+                field2: 'required',
+                field3: 'invalidPattern',
+                field4: 'required'
+            });
+        });
+
+        it('should not trigger error when is valid email', () => {
+            const {sections} = buildSections({
+                requiredType: 'STRING',
+                valueConstraints: [
+                    {value: {string: '^$|[A-Za-z0-9._%+-]+@(?:[A-Za-z0-9-]+\\.)+[A-Za-z]{2,}'}}
+                ]
+            });
+            const values = {
+                field1: 'bonjour@support.fr',
+                field2: 'hallo@support.de',
+                field3: 'hello@support.en',
+                field4: 'world@support.com'
+            };
+
+            expect(validate(sections)(values)).toEqual({
+                field1: undefined,
+                field2: undefined,
+                field3: undefined,
+                field4: undefined
+            });
+        });
+    });
+
     describe('validate order', () => {
         it('should validate mandatory with better priority than date validate', () => {
             const {sections} = buildSections({
@@ -394,6 +561,29 @@ describe('validation', () => {
             expect(validate(sections)(values)).toEqual({
                 field1: 'required',
                 field2: 'required'
+            });
+        });
+
+        it('should trigger error when is not valid email and fields are mandatory', () => {
+            const {sections} = buildSections({
+                requiredType: 'STRING',
+                mandatory: true,
+                valueConstraints: [
+                    {value: {string: '^$|[A-Za-z0-9._%+-]+@(?:[A-Za-z0-9-]+\\.)+[A-Za-z]{2,}'}}
+                ]
+            });
+            const values = {
+                field1: '',
+                field2: null,
+                field3: undefined,
+                field4: 'notEmpty'
+            };
+
+            expect(validate(sections)(values)).toEqual({
+                field1: 'required',
+                field2: 'required',
+                field3: 'required',
+                field4: 'invalidPattern'
             });
         });
     });

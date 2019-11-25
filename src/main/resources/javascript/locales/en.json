@@ -97,6 +97,7 @@
                 "createTagPlaceholder" : "Press enter to add \"{{tagName}}\"",
                 "errors": {
                   "invalidDate": "Please provide a valid date value",
+                  "invalidPattern": "The value does not match the constraints defined in the content type definitions file.",
                   "required": ""
                 }
             },

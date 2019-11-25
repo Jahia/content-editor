@@ -55,6 +55,27 @@ const dateFieldValidation = (values, field) => {
     return respectEachConstraint ? undefined : error;
 };
 
+const patternFieldValidation = (values, field) => {
+    const error = 'invalidPattern';
+
+    const constraints = field.valueConstraints && field.valueConstraints.map(constraint => constraint.value.string);
+
+    if (constraints && constraints.length > 0 && field.requiredType === 'STRING') {
+        const fieldValues = field.multiple ? values[field.name] : [values[field.name]];
+
+        // If one pattern is invalid, error!
+        if (fieldValues.some(value =>
+            value &&
+            constraints
+                .map(constraint => RegExp(constraint).test(String(value)))
+                .filter(value => value)
+                .length === 0
+        )) {
+            return error;
+        }
+    }
+};
+
 const requiredFieldValidation = (values, field, dynamicFieldSet) => {
     const error = 'required';
 
@@ -82,7 +103,8 @@ export const validate = sections => {
 
                     const fieldError = (
                         requiredFieldValidation(values, field, dynamicFieldSet) ||
-                        dateFieldValidation(values, field, dynamicFieldSet)
+                        dateFieldValidation(values, field) ||
+                        patternFieldValidation(values, field)
                     );
 
                     if (fieldError) {
