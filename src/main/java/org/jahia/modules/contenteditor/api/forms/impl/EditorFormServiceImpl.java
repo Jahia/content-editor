@@ -211,7 +211,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         // We should hide fieldSets that have "jmix:templateMixin" as mixin to be coherent with the edit engine.
         // TODO: BACKLOG-10857 support fieldSet has "jmix:templateMixin" mixin
         if (!primaryNodeType.isNodeType("jmix:templateMixin")) {
-            EditorFormFieldSet nodeTypeFieldSet = generateEditorFormFieldSet(processedProperties, primaryNodeType, existingNode, locale, uiLocale, removed, dynamic, activated);
+            EditorFormFieldSet nodeTypeFieldSet = generateEditorFormFieldSet(processedProperties, primaryNodeType, existingNode, parentNode, locale, uiLocale, removed, dynamic, activated);
             nodeTypeFieldSet = mergeWithStaticFormFieldSets(nodeTypeName, nodeTypeFieldSet);
             nodeTypeFieldSet = processValueConstraints(nodeTypeFieldSet, locale, existingNode, parentNode);
             if (!nodeTypeFieldSet.isRemoved()) {
@@ -260,14 +260,14 @@ public class EditorFormServiceImpl implements EditorFormService {
         }
         logger.debug("Resources key: {}", key);
         String baseName = null;
-        String value = null;
+        String value;
         if (key.contains("@")) {
             baseName = StringUtils.substringAfter(key, "@");
             key = StringUtils.substringBefore(key, "@");
         }
 
-        value = Messages.get(baseName, site != null ? site.getTemplatePackage() : null, key, locale, null);
-        if (value == null || value.length() == 0) {
+        value = Messages.get(baseName, site != null ? site.getTemplatePackage() : null, key, locale, StringUtils.EMPTY);
+        if (value == null) {
             value = Messages.getInternal(key, locale);
         }
         return value;
@@ -332,6 +332,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             newEditorFormFields.add(new EditorFormField(editorFormField.getName(),
                 editorFormField.getDisplayName(),
                 editorFormField.getDescription(),
+                editorFormField.getErrorMessage(),
                 editorFormField.getRequiredType(),
                 editorFormField.getSelectorType(),
                 editorFormField.getSelectorOptions(),
@@ -380,7 +381,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         return mergedEditorFormFieldSet;
     }
 
-    private EditorFormFieldSet generateEditorFormFieldSet(Set<String> processedProperties, ExtendedNodeType nodeType, JCRNodeWrapper existingNode, Locale locale, Locale uiLocale, Boolean removed, Boolean dynamic, Boolean activated) throws RepositoryException {
+    private EditorFormFieldSet generateEditorFormFieldSet(Set<String> processedProperties, ExtendedNodeType nodeType, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale locale, Locale uiLocale, Boolean removed, Boolean dynamic, Boolean activated) throws RepositoryException {
         JCRSessionWrapper session = existingNode != null ? existingNode.getSession() : getSession(locale);
         Map<String,Double> maxTargetRank = new HashMap<>();
         SortedSet<EditorFormField> editorFormFields = new TreeSet<>();
@@ -452,6 +453,12 @@ public class EditorFormServiceImpl implements EditorFormService {
             String propertyLabel = item.getLabel(uiLocale, extendedNodeType);
             String propertyDescription = item.getTooltip(uiLocale, extendedNodeType);
 
+            String key =  item.getResourceBundleKey() + ".constraint.error.message";
+            if (item.getDeclaringNodeType().getTemplatePackage() != null) {
+                key += "@" + item.getDeclaringNodeType().getTemplatePackage().getResourceBundleName();
+            }
+            String propertyErrorMessage = resolveResourceKey(key, uiLocale, parentNode.getResolveSite());
+
             String selectorType = SelectorType.nameFromValue(propertyDefinition.getSelector());
             if (selectorType == null) {
                 // selector type was not found in the list of selector types in the core, let's try our more expanded one
@@ -465,6 +472,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             EditorFormField editorFormField = new EditorFormField(propertyDefinition.getName(),
                 propertyLabel,
                 propertyDescription,
+                propertyErrorMessage,
                 requiredType,
                 selectorType,
                 selectorOptions,
