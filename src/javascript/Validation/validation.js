@@ -64,7 +64,13 @@ const patternFieldValidation = (values, field) => {
         const fieldValues = field.multiple ? values[field.name] : [values[field.name]];
 
         // If one pattern is invalid, error!
-        if (fieldValues.some(emailValue => !RegExp(constraints[0]).test(String(emailValue).toLowerCase()))) {
+        if (fieldValues.some(value =>
+            value &&
+            constraints
+                .map(constraint => RegExp(constraint).test(String(value).toLowerCase()))
+                .filter(value => value)
+                .length === 0
+        )) {
             return error;
         }
     }
