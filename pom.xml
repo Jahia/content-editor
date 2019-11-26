@@ -89,14 +89,14 @@
         <dependency>
             <groupId>org.jahia.modules</groupId>
             <artifactId>dx-commons-webpack</artifactId>
-            <version>1.3.0-SNAPSHOT</version>
+            <version>1.3.0</version>
             <type>json</type>
             <classifier>manifest</classifier>
         </dependency>
         <dependency>
             <groupId>org.jahia.modules</groupId>
             <artifactId>graphql-dxm-provider</artifactId>
-            <version>1.3.0-SNAPSHOT</version>
+            <version>1.3.0</version>
             <scope>provided</scope>
         </dependency>
 
