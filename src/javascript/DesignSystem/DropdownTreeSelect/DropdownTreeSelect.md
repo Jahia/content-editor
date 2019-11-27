@@ -1,11 +1,21 @@
-import React from 'react';
+## CheckBox
 
-import {storiesOf} from '@storybook/react';
-import {action} from '@storybook/addon-actions';
-import {withKnobs, boolean} from '@storybook/addon-knobs';
-import {DSProvider} from '@jahia/design-system-kit';
-import {DropdownTreeSelect} from './DropdownTreeSelect';
+### Figma
 
+[https://www.figma.com/file/QzGJqeK0jJDcXb2O15PTTB/Category-imput-picker-multipicker?node-id=0%3A1](https://www.figma.com/file/QzGJqeK0jJDcXb2O15PTTB/Category-imput-picker-multipicker?node-id=0%3A1)
+
+
+### Variants
+
+none
+
+### Props
+
+[All props are detailed in the doc of react-DropdownTreeSelect.](https://dowjones.github.io/react-dropdown-tree-select/#/story/readme)
+
+### Examples
+
+```jsx
 const data = [
     {
         label: 'VP Accounting',
@@ -59,20 +69,12 @@ const data = [
     }
 ];
 
-storiesOf('DropdownTreeSelect', module)
-    .addDecorator(withKnobs)
-    .add(
-        'default',
-        () => (
-            <DSProvider>
-                <DropdownTreeSelect
-                    data={data}
-                    readOnly={boolean('readOnly', false)}
-                    disabled={boolean('disabled', false)}
-                    onChange={action('onChange')}
-                    onAction={action('onAction')}
-                    onNodeToggle={action('onNodeToggle')}
-                />
-            </DSProvider>
-        )
-    );
+<DropdownTreeSelect
+    data={data}
+    readOnly={false}
+    disabled
+    onChange={console.log}
+    onAction={console.log}
+    onNodeToggle={console.log}
+/>
+```
