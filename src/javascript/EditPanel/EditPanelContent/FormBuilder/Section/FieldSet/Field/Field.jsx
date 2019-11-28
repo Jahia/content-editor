@@ -34,7 +34,7 @@ let styles = theme => {
         },
         errorMessage: {
             marginTop: '4px',
-            color: theme.palette.support.gamma
+            color: theme.palette.support.delta
         },
         inputLabel: {
             ...theme.typography.zeta,
