@@ -7,6 +7,7 @@ import choiceListActions from './ChoiceList/ChoiceList.actions';
 import DateTimePicker from './DateTimePicker';
 import pickerConfigs from './Picker';
 import Checkbox from './Checkbox';
+import Category from './Category';
 
 let SelectorTypes = {};
 
@@ -17,6 +18,7 @@ const adaptDateProperty = (field, property) => {
 // Workaround for unit tests to avoid: "Couldn't call getPickerSelectorTypes() of undefined."
 if (pickerConfigs) {
     SelectorTypes = {
+        Category: {cmp: Category, key: 'Category', supportMultiple: true},
         Tag: {cmp: Tag, key: 'Tag', supportMultiple: true},
         Text: {cmp: Text, key: 'Text', supportMultiple: false},
         TextArea: {cmp: TextArea, key: 'TextArea', supportMultiple: false},

@@ -46,6 +46,10 @@ module.exports = (env, argv) => {
                             '@babel/plugin-syntax-dynamic-import'
                         ]
                     }
+                },
+                {
+                    test: /\.(png|svg)$/,
+                    loaders: ['file-loader']
                 }
             ]
         },
