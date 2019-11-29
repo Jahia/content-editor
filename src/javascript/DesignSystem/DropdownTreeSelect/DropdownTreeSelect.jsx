@@ -1,12 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import icon from './close.svg';
+import close from './close.svg';
 import checked from './checked.svg';
 import unchecked from './unchecked.svg';
 
 import DropdownTreeSelectLib from 'react-dropdown-tree-select';
 import {withStyles} from '@material-ui/core/styles';
+
+let icons = {};
+if (process.env.STORYBOOK_ENV) {
+    icons = {
+        close,
+        checked,
+        unchecked
+    };
+} else {
+    icons = {
+        close: `/modules/content-editor/javascript/apps/${close}`,
+        checked: `/modules/content-editor/javascript/apps/${checked}`,
+        unchecked: `/modules/content-editor/javascript/apps/${unchecked}`
+    };
+}
 
 const styles = theme => ({
     container: {
@@ -126,7 +141,7 @@ const styles = theme => ({
             outline: 'none',
             fontSize: '0',
             '&::after': {
-                content: `url(./${icon})`,
+                content: `url(${icons.close})`,
                 height: '1rem',
                 width: '1rem',
                 display: 'block'
@@ -178,12 +193,12 @@ const styles = theme => ({
                 display: 'inline-block',
                 height: '16px',
                 width: '16px',
-                content: `url(${unchecked})`,
+                content: `url(${icons.unchecked})`,
                 marginRight: '4px'
             },
 
             '&.checked > label::before': {
-                content: `url(${checked})`
+                content: `url(${icons.checked})`
             },
 
             '& .checkbox-item, & .radio-item': {

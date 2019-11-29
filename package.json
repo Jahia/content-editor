@@ -14,8 +14,8 @@
         "tdd": "jest --watch",
         "lint": "eslint --ext js,jsx,json .",
         "lint:fix": "eslint --ext js,jsx,json --fix .",
-        "storybook": "start-storybook -p 6006",
-        "build-storybook": "build-storybook",
+        "storybook": "STORYBOOK_ENV=true start-storybook -p 6006",
+        "build-storybook": "STORYBOOK_ENV=true build-storybook",
         "publish-storybook": "rsync -r ./storybook-static/ jahia@design.int.jahia.com:/var/www/vhosts/contenteditor.jahia.design/html"
     },
     "husky": {
