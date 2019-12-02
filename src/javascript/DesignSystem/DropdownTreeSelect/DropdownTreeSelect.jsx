@@ -162,6 +162,7 @@ const styles = theme => ({
             padding: '4px',
 
             '&.leaf': {
+                marginLeft: '8px',
                 '&.collapsed': {
                     display: 'none'
                 }

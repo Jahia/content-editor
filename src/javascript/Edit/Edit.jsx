@@ -38,7 +38,16 @@ export const Edit = ({
     }
 
     const editorContext = {
-        path, lang, uiLang, site, siteInfo, siteDisplayableName, sections, nodeData, details, technicalInfo,
+        path,
+        lang,
+        uiLang,
+        site,
+        siteInfo,
+        siteDisplayableName,
+        sections,
+        nodeData,
+        details,
+        technicalInfo,
         mode: Constants.routes.baseEditRoute
     };
 
