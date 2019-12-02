@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
 import Dialog from '@material-ui/core/Dialog/Dialog';
@@ -8,6 +8,9 @@ import {PickerDialog} from '~/DesignSystem/PickerDialog';
 import Slide from '@material-ui/core/Slide';
 import {FastField} from 'formik';
 import {withStyles} from '@material-ui/core';
+import {useQuery} from 'react-apollo-hooks';
+import {SiteNodesQuery} from '~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/Picker/PickerDialog.gql-queries';
+import {ProgressOverlay} from '@jahia/react-material';
 
 const styles = theme => ({
     rootDialog: {
@@ -31,6 +34,59 @@ const ContentPickerDialog = ({
     t,
     pickerConfig
 }) => {
+    const [site, setSite] = useState(editorContext.site);
+
+    const {data, error, loading} = useQuery(SiteNodesQuery, {
+        variables: {
+            query: 'select * from [jnt:virtualsite] where ischildnode(\'/sites\')',
+            displayLanguage: editorContext.lang
+        }
+    });
+
+    if (error) {
+        const message = t(
+            'content-editor:label.contentEditor.error.queryingContent',
+            {details: error.message ? error.message : ''}
+        );
+        return <>{message}</>;
+    }
+
+    if (loading) {
+        return <ProgressOverlay/>;
+    }
+
+    const onSelectSite = siteNode => {
+        setSite(siteNode.name);
+    };
+
+    const getSiteNodes = data => {
+        const siteNodes = [];
+
+        if (data && data.jcr.result) {
+            for (const siteNode of data.jcr.result.siteNodes) {
+                if (siteNode.hasPermission) {
+                    siteNodes.push(siteNode);
+                }
+            }
+        }
+
+        return siteNodes.sort((elem1, elem2) => {
+            if (elem1.displayName < elem2.displayName) {
+                return -1;
+            }
+
+            if (elem1.displayName > elem2.displayName) {
+                return 1;
+            }
+
+            return 0;
+        });
+    };
+
+    const siteNodes = getSiteNodes(data);
+
+    const siteNode = siteNodes.find(siteNode => siteNode.name === site);
+
     return (
         <Dialog
             fullScreen
@@ -39,59 +95,55 @@ const ContentPickerDialog = ({
             TransitionComponent={Transition}
             onClose={() => setIsOpen(false)}
         >
-            <FastField render={({form: {setFieldValue, setFieldTouched}}) => (
-                <PickerDialog
-                    displayTree={pickerConfig.displayTree}
-                    idInput={id}
-                    site={editorContext.site}
-                    lang={editorContext.lang}
-                    initialSelectedItem={initialSelectedItem}
-                    nodeTreeConfigs={nodeTreeConfigs}
-                    modalCancelLabel={t('content-editor:label.contentEditor.edit.fields.modalCancel').toUpperCase()}
-                    modalDoneLabel={t('content-editor:label.contentEditor.edit.fields.modalDone').toUpperCase()}
-                    onCloseDialog={() => setIsOpen(false)}
-                    onItemSelection={content => {
-                        setFieldValue(
-                            id,
-                            content[0] ? content[0].id : null,
-                            true
-                        );
-                        setIsOpen(false);
-                        setFieldTouched(field.name, field.multiple ? [true] : true);
-                    }}
-                >
-                    {(setSelectedItem, selectedPath, initialSelection) => {
-                        // Build table config from picker config
-                        /*
-           Todo: make the picker work as CMM, use the recursionTypesFilter to browse all contents within a page
-            without displaying the content lists.
-           let isContentOrFile =
-                selectedPath === '/sites/' + editorContext.site + '/contents' ||
-                selectedPath.startsWith('/sites/' + editorContext.site + '/contents/') ||
-                selectedPath === '/sites/' + editorContext.site + '/files' ||
-                selectedPath.startsWith('/sites/' + editorContext.site + '/files/');
+            <FastField shouldUpdate={() => true}
+                       render={({form: {setFieldValue, setFieldTouched}}) => (
+                           <PickerDialog
+                               displayTree={pickerConfig.displayTree}
+                               idInput={id}
+                               site={site}
+                               siteNodes={siteNodes}
+                               lang={editorContext.lang}
+                               initialSelectedItem={initialSelectedItem}
+                               nodeTreeConfigs={nodeTreeConfigs.map(nodeTreeConfig => ({
+                                   ...nodeTreeConfig,
+                                   rootPath: nodeTreeConfig.treeConfig.rootPath(site),
+                                   rootLabel: siteNode.displayName
+                               }))}
+                               modalCancelLabel={t('content-editor:label.contentEditor.edit.fields.modalCancel').toUpperCase()}
+                               modalDoneLabel={t('content-editor:label.contentEditor.edit.fields.modalDone').toUpperCase()}
+                               onSelectSite={siteNode => onSelectSite(siteNode)}
+                               onCloseDialog={() => setIsOpen(false)}
+                               onItemSelection={content => {
+                                   setFieldValue(
+                                       id,
+                                       content[0] ? content[0].id : null,
+                                       true
+                                   );
+                                   setIsOpen(false);
+                                   setFieldTouched(field.name, field.multiple ? [true] : true);
+                               }}
+                           >
+                               {(setSelectedItem, selectedPath, initialSelection) => {
+                                   // Build table config from picker config
+                                   const tableConfig = {
+                                       typeFilter: pickerConfig.selectableTypesTable,
+                                       recursionTypesFilter: ['nt:base'],
+                                       showOnlyNodesWithTemplates: pickerConfig.showOnlyNodesWithTemplates
+                                   };
 
-            recursionTypesFilter: isContentOrFile ? ['nt:base'] : ['jnt:page', 'jnt:contentFolder']
-            */
-
-                        const tableConfig = {
-                            typeFilter: pickerConfig.selectableTypesTable,
-                            recursionTypesFilter: ['nt:base'],
-                            showOnlyNodesWithTemplates: pickerConfig.showOnlyNodesWithTemplates
-                        };
-
-                        return (
-                            <ContentTable
-                                tableConfig={tableConfig}
-                                setSelectedItem={setSelectedItem}
-                                selectedPath={selectedPath}
-                                initialSelection={initialSelection}
-                                editorContext={editorContext}
-                            />
-                        );
-                    }}
-                </PickerDialog>
-            )}/>
+                                   return (
+                                       <ContentTable
+                                           tableConfig={tableConfig}
+                                           setSelectedItem={setSelectedItem}
+                                           selectedPath={selectedPath}
+                                           initialSelection={initialSelection}
+                                           editorContext={editorContext}
+                                       />
+                                   );
+                               }}
+                           </PickerDialog>
+                       )}
+            />
         </Dialog>
     );
 };

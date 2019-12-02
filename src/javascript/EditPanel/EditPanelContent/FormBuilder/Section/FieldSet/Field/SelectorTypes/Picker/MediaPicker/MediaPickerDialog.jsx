@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
 import Dialog from '@material-ui/core/Dialog/Dialog';
@@ -8,6 +8,9 @@ import {PickerDialog} from '~/DesignSystem/PickerDialog';
 import Slide from '@material-ui/core/Slide';
 import {FastField} from 'formik';
 import {withStyles} from '@material-ui/core';
+import {useQuery} from 'react-apollo-hooks';
+import {SiteNodesQuery} from '~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/Picker/PickerDialog.gql-queries';
+import {ProgressOverlay} from '@jahia/react-material';
 
 const styles = theme => ({
     rootDialog: {
@@ -29,6 +32,55 @@ const MediaPickerDialog = ({
     t,
     initialSelectedItem
 }) => {
+    const [site, setSite] = useState(editorContext.site);
+
+    const {data, error, loading} = useQuery(SiteNodesQuery, {
+        variables: {
+            query: 'select * from [jnt:virtualsite] where ischildnode(\'/sites\')',
+            displayLanguage: editorContext.lang
+        }
+    });
+
+    if (error) {
+        const message = t(
+            'content-editor:label.contentEditor.error.queryingContent',
+            {details: error.message ? error.message : ''}
+        );
+        return <>{message}</>;
+    }
+
+    if (loading) {
+        return <ProgressOverlay/>;
+    }
+
+    const onSelectSite = siteNode => {
+        setSite(siteNode.name);
+    };
+
+    const siteNodes = data => {
+        const siteNodes = [];
+
+        if (data && data.jcr.result) {
+            for (const siteNode of data.jcr.result.siteNodes) {
+                if (siteNode.hasPermission) {
+                    siteNodes.push(siteNode);
+                }
+            }
+        }
+
+        return siteNodes.sort((elem1, elem2) => {
+            if (elem1.displayName < elem2.displayName) {
+                return -1;
+            }
+
+            if (elem1.displayName > elem2.displayName) {
+                return 1;
+            }
+
+            return 0;
+        });
+    };
+
     return (
         <Dialog
             fullScreen
@@ -37,51 +89,55 @@ const MediaPickerDialog = ({
             TransitionComponent={Transition}
             onClose={() => setIsOpen(false)}
         >
-            <FastField render={({form}) => {
-                const onItemSelection = image => {
-                    form.setFieldValue(
-                        id,
-                        image ? image.uuid : null,
-                        true
-                    );
-                    setIsOpen(false);
-                    form.setFieldTouched(field.name, field.multiple ? [true] : true);
-                };
+            <FastField shouldUpdate={() => true}
+                       render={({form}) => {
+                           const onItemSelection = image => {
+                               form.setFieldValue(
+                                   id,
+                                   image ? image.uuid : null,
+                                   true
+                               );
+                               setIsOpen(false);
+                               form.setFieldTouched(field.name, field.multiple ? [true] : true);
+                           };
 
-                return (
-                    <PickerDialog
-                        idInput={id}
-                        site={editorContext.site}
-                        lang={editorContext.lang}
-                        initialSelectedItem={initialSelectedItem}
-                        nodeTreeConfigs={[
-                            {
-                                rootPath: `/sites/${editorContext.site}/files`,
-                                selectableTypes: ['jnt:folder'],
-                                type: 'files',
-                                openableTypes: ['jnt:folder'],
-                                rootLabel: t(
-                                    'content-editor:label.contentEditor.edit.fields.imagePicker.rootLabel'
-                                ),
-                                key: 'browse-tree-files'
-                            }
-                        ]}
-                        modalCancelLabel={t('content-editor:label.contentEditor.edit.fields.modalCancel').toUpperCase()}
-                        modalDoneLabel={t('content-editor:label.contentEditor.edit.fields.modalDone').toUpperCase()}
-                        onCloseDialog={() => setIsOpen(false)}
-                        onItemSelection={onItemSelection}
-                    >
-                        {(setSelectedItem, selectedPath, initialSelection) => (
-                            <ImageListQuery
-                                setSelectedItem={setSelectedItem}
-                                selectedPath={selectedPath}
-                                initialSelection={initialSelection}
-                                onImageDoubleClick={onItemSelection}
-                            />
-                        )}
-                    </PickerDialog>
-                );
-            }}/>
+                           return (
+                               <PickerDialog
+                                   idInput={id}
+                                   site={site}
+                                   siteNodes={siteNodes(data)}
+                                   lang={editorContext.lang}
+                                   initialSelectedItem={initialSelectedItem}
+                                   nodeTreeConfigs={[
+                                       {
+                                           rootPath: `/sites/${site}/files`,
+                                           selectableTypes: ['jnt:folder'],
+                                           type: 'files',
+                                           openableTypes: ['jnt:folder'],
+                                           rootLabel: t(
+                                               'content-editor:label.contentEditor.edit.fields.imagePicker.rootLabel'
+                                           ),
+                                           key: 'browse-tree-files'
+                                       }
+                                   ]}
+                                   modalCancelLabel={t('content-editor:label.contentEditor.edit.fields.modalCancel').toUpperCase()}
+                                   modalDoneLabel={t('content-editor:label.contentEditor.edit.fields.modalDone').toUpperCase()}
+                                   onCloseDialog={() => setIsOpen(false)}
+                                   onItemSelection={onItemSelection}
+                                   onSelectSite={siteNode => onSelectSite(siteNode)}
+                               >
+                                   {(setSelectedItem, selectedPath, initialSelection) => (
+                                       <ImageListQuery
+                                           setSelectedItem={setSelectedItem}
+                                           selectedPath={selectedPath}
+                                           initialSelection={initialSelection}
+                                           onImageDoubleClick={onItemSelection}
+                                       />
+                                   )}
+                               </PickerDialog>
+                           );
+                       }}
+            />
         </Dialog>
     );
 };
