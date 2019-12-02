@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {ProgressOverlay} from '@jahia/react-material';
-import * as PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import {translate} from 'react-i18next';
 import {Picker} from '~/DesignSystem/Picker';
-import {encodeJCRPath} from '../../../../../../../../../EditPanel.utils';
+import {encodeJCRPath} from '~/EditPanel/EditPanel.utils';
 import {MediaPickerFilledQuery} from './MediaPickerFilled.gql-queries';
 import MediaPickerDialog from '../MediaPickerDialog';
 import {useQuery} from 'react-apollo-hooks';
