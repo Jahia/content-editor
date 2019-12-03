@@ -61,7 +61,7 @@ const patternFieldValidation = (values, field) => {
     const constraints = field.valueConstraints && field.valueConstraints.map(constraint => constraint.value.string);
 
     if (constraints && constraints.length > 0 && field.requiredType === 'STRING') {
-        const fieldValues = field.multiple ? values[field.name] : [values[field.name]];
+        const fieldValues = field.multiple ? (values[field.name] || []) : [values[field.name]];
 
         // If one pattern is invalid, error!
         if (fieldValues.some(value =>
@@ -119,7 +119,6 @@ export const validate = sections => {
                     ...fieldErrors
                 };
             }, {});
-
             return {
                 ...errors,
                 ...fieldSetErrors
