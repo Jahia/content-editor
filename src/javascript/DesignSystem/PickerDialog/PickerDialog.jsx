@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 
 import {withStyles} from '@material-ui/core';
 import {getDetailedPathArray, getPathWithoutFile, getSite} from './PickerDialog.utils';
+import SiteSwitcher from '~/DesignSystem/SiteSwitcherDisplay/SiteSwitcher';
 
 const styles = theme => ({
     drawerPaper: {
@@ -49,6 +50,8 @@ const PickerDialogCmp = ({
     displayTree,
     initialSelectedItem,
     site,
+    siteNodes,
+    onSelectSite,
     lang,
     onItemSelection,
     nodeTreeConfigs,
@@ -102,6 +105,13 @@ const PickerDialogCmp = ({
                     paper: classes.drawerPaper
                 }}
             >
+                <SiteSwitcher
+                    id="site-switcher"
+                    siteKey={site}
+                    siteNodes={siteNodes}
+                    onSelectSite={onSelectSite}
+                />
+
                 <NodeTrees path={selectedPath}
                            rootPath="/"
                            siteKey={site}
@@ -178,6 +188,8 @@ PickerDialogCmp.propTypes = {
     nodeTreeConfigs: PropTypes.array.isRequired,
     lang: PropTypes.string.isRequired,
     site: PropTypes.string.isRequired,
+    siteNodes: PropTypes.array.isRequired,
+    onSelectSite: PropTypes.func.isRequired,
     onCloseDialog: PropTypes.func.isRequired,
     onItemSelection: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,
