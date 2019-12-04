@@ -35,17 +35,11 @@ const CategoryCmp = ({field, value, id, t}) => {
     });
 
     return (
-        <FastField render={() => {
-            const handleChange = (...args) => {
-                console.log('Change', args);
-            };
-
-            const handleAction = (...args) => {
-                console.log('Action', args);
-            };
-
-            const handleToggle = (...args) => {
-                console.log('Toggle', args);
+        <FastField render={({form: {setFieldValue, setFieldTouched}}) => {
+            const handleChange = (_, selectedValues) => {
+                const newValues = selectedValues.map(v => v.uuid);
+                setFieldValue(id, newValues);
+                setFieldTouched(id, newValues);
             };
 
             return (
@@ -55,8 +49,6 @@ const CategoryCmp = ({field, value, id, t}) => {
                         data={tree}
                         readOnly={field.readOnly}
                         onChange={handleChange}
-                        onAction={handleAction}
-                        onNodeToggle={handleToggle}
                 />
 );
         }}/>
@@ -66,7 +58,7 @@ const CategoryCmp = ({field, value, id, t}) => {
 CategoryCmp.propTypes = {
     field: FieldPropTypes.isRequired,
     id: PropTypes.string.isRequired,
-    value: PropTypes.bool,
+    value: PropTypes.arrayOf(PropTypes.string),
     t: PropTypes.func.isRequired
 };
 
