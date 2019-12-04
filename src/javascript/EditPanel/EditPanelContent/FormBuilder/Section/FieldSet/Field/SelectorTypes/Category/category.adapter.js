@@ -1,4 +1,3 @@
-
 export const adaptToCategoryTree = ({nodes, parent, selectedValues}) => {
     return nodes
         .filter(category => category.parent.uuid === parent.uuid)
