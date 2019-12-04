@@ -1,25 +1,17 @@
 const getSiteNodes = (data, allSitesLabel) => {
-    const siteNodes = [];
-
-    if (data && data.jcr.result) {
-        for (const siteNode of data.jcr.result.siteNodes) {
-            if (siteNode.hasPermission) {
-                siteNodes.push(siteNode);
+    const siteNodes = data && data.jcr.result && data.jcr.result.siteNodes
+        .filter(node => node.hasPermission)
+        .sort((elem1, elem2) => {
+            if (elem1.displayName < elem2.displayName) {
+                return -1;
             }
-        }
-    }
 
-    siteNodes.sort((elem1, elem2) => {
-        if (elem1.displayName < elem2.displayName) {
-            return -1;
-        }
+            if (elem1.displayName > elem2.displayName) {
+                return 1;
+            }
 
-        if (elem1.displayName > elem2.displayName) {
-            return 1;
-        }
-
-        return 0;
-    });
+            return 0;
+        });
 
     if (siteNodes.length > 1) {
         return [allSitesEntry(allSitesLabel), ...siteNodes];
