@@ -60,7 +60,7 @@ const ContentPickerDialog = ({
         setSite(siteNode.name);
     };
 
-    const siteNodes = getSiteNodes(data);
+    const siteNodes = getSiteNodes(data, t('content-editor:label.contentEditor.siteSwitcher.allSites'));
 
     const siteNode = siteNodes.find(siteNode => siteNode.name === site);
 
