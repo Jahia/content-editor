@@ -5,13 +5,13 @@ export const GetCategories = gql`
         jcr {
             result: nodeByPath(path: $path) {
                 displayName
-                name
+                uuid
                 descendants(typesFilter: {types: ["jnt:category"]}) {
                     nodes {
                       displayName
-                      name
+                      uuid
                       parent {
-                        name
+                        uuid
                       }
                     }
                 }

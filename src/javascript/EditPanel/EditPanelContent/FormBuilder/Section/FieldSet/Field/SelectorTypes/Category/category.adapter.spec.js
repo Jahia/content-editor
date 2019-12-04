@@ -1,58 +1,75 @@
-import {adaptToCategoryTree} from './catergory.adapter';
+import {adaptToCategoryTree} from './category.adapter';
 
 describe('category adapter', () => {
     it('should return empty array when there is no nodes', () => {
-        expect(adaptToCategoryTree({nodes: [], parent: {name: 'category'}})).toEqual([]);
+        expect(adaptToCategoryTree({nodes: [], parent: {uuid: 'category'}})).toEqual([]);
     });
 
     it('should build a tree', () => {
-        const parent = {name: 'category'};
+        const parent = {uuid: 'category'};
         const nodes = [
-            {name: 'A', parent: {name: 'category'}},
-            {name: 'B', parent: {name: 'A'}},
-            {name: 'orphan', parent: {name: 'Unkown'}},
-            {name: 'C', parent: {name: 'B'}},
-            {name: 'D', parent: {name: 'C'}},
-            {name: 'E', parent: {name: 'C'}},
-            {name: 'C2', parent: {name: 'B'}},
-            {name: 'leaf', parent: {name: 'category'}}
+            {uuid: 'A', parent: {uuid: 'category'}},
+            {uuid: 'B', parent: {uuid: 'A'}},
+            {uuid: 'orphan', parent: {uuid: 'Unkown'}},
+            {uuid: 'C', parent: {uuid: 'B'}},
+            {uuid: 'D', parent: {uuid: 'C'}},
+            {uuid: 'E', parent: {uuid: 'C'}},
+            {uuid: 'C2', parent: {uuid: 'B'}},
+            {uuid: 'leaf', parent: {uuid: 'category'}}
         ];
 
         expect(adaptToCategoryTree({nodes, parent})).toEqual([
             {
-                name: 'A',
+                uuid: 'A',
                 label: undefined,
                 children: [
                     {
-                        name: 'B',
+                        uuid: 'B',
                         label: undefined,
                         children: [
                             {
-                                name: 'C',
+                                uuid: 'C',
                                 label: undefined,
                                 children: [
-                                    {name: 'D', label: undefined, children: []},
-                                    {name: 'E', label: undefined, children: []}
+                                    {uuid: 'D', label: undefined, children: []},
+                                    {uuid: 'E', label: undefined, children: []}
                                 ]
                             },
-                            {name: 'C2', label: undefined, children: []}
+                            {uuid: 'C2', label: undefined, children: []}
                         ]
                     }
                 ]
             },
-            {name: 'leaf', label: undefined, children: []}
+            {uuid: 'leaf', label: undefined, children: []}
         ]);
     });
 
     it('should build a tree with a label', () => {
-        const parent = {name: 'category'};
+        const parent = {uuid: 'category'};
         const nodes = [
-            {name: 'A', displayName: 'hello', parent: {name: 'category'}},
-            {name: 'B', displayName: 'world', parent: {name: 'A'}}
+            {uuid: 'A', displayName: 'hello', parent: {uuid: 'category'}},
+            {uuid: 'B', displayName: 'world', parent: {uuid: 'A'}}
         ];
 
         expect(adaptToCategoryTree({nodes, parent})).toEqual([
-            {name: 'A', label: 'hello', children: [{name: 'B', label: 'world', children: []}]}
+            {uuid: 'A', label: 'hello', children: [{uuid: 'B', label: 'world', children: []}]}
+        ]);
+    });
+
+    it('should set value checked when uuid correspond to the selectedValues', () => {
+        const parent = {uuid: 'category'};
+        const nodes = [
+            {uuid: 'A', displayName: 'hello', parent: {uuid: 'category'}},
+            {uuid: 'B', displayName: 'world', parent: {uuid: 'A'}},
+            {uuid: 'C', displayName: 'C', parent: {uuid: 'category'}},
+            {uuid: 'D', displayName: 'D', parent: {uuid: 'category'}}
+        ];
+        const selectedValues = ['B', 'C'];
+
+        expect(adaptToCategoryTree({nodes, parent, selectedValues})).toEqual([
+            {uuid: 'A', label: 'hello', checked: false, children: [{uuid: 'B', label: 'world', checked: true, children: []}]},
+            {uuid: 'C', label: 'C', checked: true, children: []},
+            {uuid: 'D', label: 'D', checked: false, children: []}
         ]);
     });
 });
