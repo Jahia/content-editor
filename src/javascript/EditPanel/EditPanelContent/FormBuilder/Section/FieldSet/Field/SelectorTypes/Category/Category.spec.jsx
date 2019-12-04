@@ -43,17 +43,29 @@ describe('Category component', () => {
         });
     });
 
-    const handleChange = jest.fn();
-    const fieldTouched = jest.fn();
+    const setFieldValue = jest.fn();
+    const setFieldTouched = jest.fn();
 
     const buildComp = props => {
         const mainComponent = shallowWithTheme(<Category {...props}/>, {}, dsGenericTheme).dive();
         const RenderProps = mainComponent.props().render;
-        return shallowWithTheme(<RenderProps form={{setFieldTouched: fieldTouched, setFieldValue: handleChange}}/>, {}, dsGenericTheme);
+        return shallowWithTheme(<RenderProps form={{setFieldTouched, setFieldValue}}/>, {}, dsGenericTheme);
     };
 
     it('should bind the id properly', () => {
         const cmp = buildComp(props);
         expect(cmp.props().id).toBe(props.id);
+    });
+
+    it('should setFieldTouched when modify an element', () => {
+        const cmp = buildComp(props);
+        cmp.simulate('change', null, [{uuid: 'A'}, {uuid: 'BG'}]);
+        expect(setFieldTouched).toHaveBeenCalled();
+    });
+
+    it('should setFieldValue when modify an element', () => {
+        const cmp = buildComp(props);
+        cmp.simulate('change', null, [{uuid: 'A'}, {uuid: 'Gauche'}]);
+        expect(setFieldValue).toHaveBeenCalledWith(props.id, ['A', 'Gauche']);
     });
 });
