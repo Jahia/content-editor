@@ -7,9 +7,8 @@ import {useQuery} from 'react-apollo-hooks';
 import {GetCategories} from './category.gql-queries';
 import {ProgressOverlay} from '@jahia/react-material';
 import {translate} from 'react-i18next';
-import {adaptToCategoryTree} from './catergory.adapter';
+import {adaptToCategoryTree} from './category.adapter';
 
-// eslint-disable-next-line
 const CategoryCmp = ({field, value, id, t}) => {
     const {data, error, loading} = useQuery(GetCategories, {
         variables: {
@@ -31,7 +30,8 @@ const CategoryCmp = ({field, value, id, t}) => {
 
     const tree = adaptToCategoryTree({
         nodes: data.jcr.result.descendants.nodes,
-        parent: data.jcr.result
+        parent: data.jcr.result,
+        selectedValues: value
     });
 
     return (
@@ -66,7 +66,8 @@ const CategoryCmp = ({field, value, id, t}) => {
 CategoryCmp.propTypes = {
     field: FieldPropTypes.isRequired,
     id: PropTypes.string.isRequired,
-    value: PropTypes.bool
+    value: PropTypes.bool,
+    t: PropTypes.func.isRequired
 };
 
 const Category = translate()(CategoryCmp);
