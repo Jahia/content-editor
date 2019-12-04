@@ -1,141 +1,144 @@
 {
-    "label": {
-        "contentEditor": {
-            "create": {
-              "title": "Créer {{type}}",
-              "createButton": {
-                "name": "Sauvegarder",
-                "success": "Contenu enregistré avec succès",
-                "error": "Une erreur s'est produite lors de la création du contenu"
-              }
-            },
-            "edit": {
-                "title": "Éditer le contenu",
-                "contentEdit": "Editer le contenu <i>(beta)</i>",
-                "validation": {
-                    "required": "Requis"
-                },
-                "action": {
-                    "save": {
-                        "name": "Sauvegarder",
-                        "success": "Contenu enregistré avec succès",
-                        "error": "Une erreur s'est produite lors de l'enregistrement du contenu",
-                        "validation": {
-                          "modalTitle": "Le contenu n’a pas pu être enregistré",
-                          "modalMessage": "Il y a une erreur de validation dans le formulaire.",
-                          "modalMessage_plural": "Il y a {{count}} erreurs de validation dans le formulaire.",
-                          "modalButton": "OK"
-                        }
-                    },
-                    "goBack": {
-                        "name": "Retour à {{parentNodeDisplayName}}",
-                        "title": "Enregistrer les modifications avant de fermer ?",
-                        "btnContinue": "Poursuivre la modification",
-                        "btnDiscard": "Abandonner les modifications",
-                        "btnSave": "Enregistrer les modifications"
-                    },
-                    "publish": {
-                      "name": "Publier maintenant",
-                      "namePolling": "Publication",
-                      "success": "La publication a été ajoutée à la file d’attente",
-                      "error": "Erreur durant la publication",
-                      "badge": "Publication en cours"
-                    },
-                    "startWorkflow": {
-                      "name": "Demander une publication"
-                    },
-                    "unpublish": {
-                      "name": "Dépublier",
-                      "success": "Contenu dépublié",
-                      "error": "Erreur pendant la dépublication"
-                    },
-                    "moreOptions": "Plus d'options",
-                    "fieldMoreOptions": "Plus d'options",
-                    "versioningTab": "Versions",
-                    "seoTab": "SEO",
-                    "visibilityTab": "Visibilité",
-                    "historyTab": "Historique",
-                    "usagesTab": "Utilisations"
-                },
-                "sharedLanguages": "Partagé par toutes les langues",
-                "fields": {
-                  "actions": {
-                    "replace": "Modifier",
-                    "newTab": "Ouvrir dans un nouvel onglet",
-                    "clear": "Effacer",
-                    "selectAll": "Sélectionnez toutes les valeurs",
-                    "add": "Ajouter"
-                  },
-                  "imagePicker": {
-                    "addImage": "Ajouter une image",
-                    "rootLabel": "Fichiers"
-                  },
-                  "contentPicker": {
-                    "addContent": "Ajouter un contenu",
-                    "contentsRootLabel": "Contenus",
-                    "allContentsRootLabel": "{{siteName}}",
-                    "pagesRootLabel": "Pages",
-                    "categoriesRootLabel": "Répertoire des catégories",
-                    "sitesRootLabel": "Sites",
-                    "usersRootLabel": "Espace des utilisateurs",
-                    "groupsRootLabel": "Espace des groupes",
-                    "siteUsersRootLabel": "Utilisateurs {{siteName}}",
-                    "siteGroupsRootLabel": "Groupes {{siteName}}",
-                    "tableEmpty": "No Content",
-                    "tableHeader": {
-                      "name": "Nom",
-                      "type": "Type",
-                      "createdBy": "Créé par",
-                      "lastModified": "Date de modification"
-                    },
-                    "fileUploadBtn": "<span data-jahia-link>Uploader un fichier</span>"
-                  },
-                  "modalCancel": "Annuler",
-                  "modalDone": "Sélectionner"
-                },
-                "tagPlaceholder" : "Saisir les tags",
-                "createTagPlaceholder" : "Taper entrée pour ajouter \"{{tagName}}\"",
-                "errors": {
-                  "invalidDate": "La date est mal formatée",
-                  "invalidPattern": "La valeur ne correspond pas aux contraintes définies dans le fichier de définition des types de contenu.",
-                  "required": ""
-                }
-            },
-            "switchLanguage": {
-              "dialog": {
-                "title": "Enregistrer les modifications avant de changer de langue ?"
-              }
-            },
-            "error": {
-                "queryingContent": "Erreur lors de l'interrogation du contenu: {{details}}"
-            },
-            "preview": {
-                "contentNotFound": "Le contenu ne peut pas être prévisualisé dans la page",
-                "toggleButtons": {
-                    "preview" : "Aperçu",
-                    "details": "Détails",
-                    "off": "Désactivé"
-                },
-                "updateOnSave": "L'aperçu sera mis à jour lors de l'enregistrement"
-            },
-            "details": {
-              "details": "Détails",
-              "technicalInfo": "Informations techniques",
-              "contentType": "Type de contenu principal",
-              "mixinTypes": "Type de contenu complet",
-              "path": "Chemin",
-              "uuid": "UUID"
-            },
-            "CMMActions": {
-              "createNewContent": {
-                "menu": "Nouveau contenu <i>(beta)</i>",
-                "contentOfType": "Nouveau : {{typeName}} <i>(beta)</i>",
-                "labelModal": "Nouveau contenu (beta)",
-                "btnDiscard": "Annuler",
-                "btnCreate": "Créer",
-                "filterLabel": "Filtrer les élements"
-              }
-            }
+  "label": {
+    "contentEditor": {
+      "create": {
+        "title": "Créer {{type}}",
+        "createButton": {
+          "name": "Sauvegarder",
+          "success": "Contenu enregistré avec succès",
+          "error": "Une erreur s'est produite lors de la création du contenu"
         }
+      },
+      "edit": {
+        "title": "Éditer le contenu",
+        "contentEdit": "Editer le contenu <i>(beta)</i>",
+        "validation": {
+          "required": "Requis"
+        },
+        "action": {
+          "save": {
+            "name": "Sauvegarder",
+            "success": "Contenu enregistré avec succès",
+            "error": "Une erreur s'est produite lors de l'enregistrement du contenu",
+            "validation": {
+              "modalTitle": "Le contenu n’a pas pu être enregistré",
+              "modalMessage": "Il y a une erreur de validation dans le formulaire.",
+              "modalMessage_plural": "Il y a {{count}} erreurs de validation dans le formulaire.",
+              "modalButton": "OK"
+            }
+          },
+          "goBack": {
+            "name": "Retour à {{parentNodeDisplayName}}",
+            "title": "Enregistrer les modifications avant de fermer ?",
+            "btnContinue": "Poursuivre la modification",
+            "btnDiscard": "Abandonner les modifications",
+            "btnSave": "Enregistrer les modifications"
+          },
+          "publish": {
+            "name": "Publier maintenant",
+            "namePolling": "Publication",
+            "success": "La publication a été ajoutée à la file d’attente",
+            "error": "Erreur durant la publication",
+            "badge": "Publication en cours"
+          },
+          "startWorkflow": {
+            "name": "Demander une publication"
+          },
+          "unpublish": {
+            "name": "Dépublier",
+            "success": "Contenu dépublié",
+            "error": "Erreur pendant la dépublication"
+          },
+          "moreOptions": "Plus d'options",
+          "fieldMoreOptions": "Plus d'options",
+          "versioningTab": "Versions",
+          "seoTab": "SEO",
+          "visibilityTab": "Visibilité",
+          "historyTab": "Historique",
+          "usagesTab": "Utilisations"
+        },
+        "sharedLanguages": "Partagé par toutes les langues",
+        "fields": {
+          "actions": {
+            "replace": "Modifier",
+            "newTab": "Ouvrir dans un nouvel onglet",
+            "clear": "Effacer",
+            "selectAll": "Sélectionnez toutes les valeurs",
+            "add": "Ajouter"
+          },
+          "imagePicker": {
+            "addImage": "Ajouter une image",
+            "rootLabel": "Fichiers"
+          },
+          "contentPicker": {
+            "addContent": "Ajouter un contenu",
+            "contentsRootLabel": "Contenus",
+            "allContentsRootLabel": "{{siteName}}",
+            "pagesRootLabel": "Pages",
+            "categoriesRootLabel": "Répertoire des catégories",
+            "sitesRootLabel": "Sites",
+            "usersRootLabel": "Espace des utilisateurs",
+            "groupsRootLabel": "Espace des groupes",
+            "siteUsersRootLabel": "Utilisateurs {{siteName}}",
+            "siteGroupsRootLabel": "Groupes {{siteName}}",
+            "tableEmpty": "No Content",
+            "tableHeader": {
+              "name": "Nom",
+              "type": "Type",
+              "createdBy": "Créé par",
+              "lastModified": "Date de modification"
+            },
+            "fileUploadBtn": "<span data-jahia-link>Uploader un fichier</span>"
+          },
+          "modalCancel": "Annuler",
+          "modalDone": "Sélectionner"
+        },
+        "tagPlaceholder": "Saisir les tags",
+        "createTagPlaceholder": "Taper entrée pour ajouter \"{{tagName}}\"",
+        "errors": {
+          "invalidDate": "La date est mal formatée",
+          "invalidPattern": "La valeur ne correspond pas aux contraintes définies dans le fichier de définition des types de contenu.",
+          "required": ""
+        }
+      },
+      "switchLanguage": {
+        "dialog": {
+          "title": "Enregistrer les modifications avant de changer de langue ?"
+        }
+      },
+      "error": {
+        "queryingContent": "Erreur lors de l'interrogation du contenu: {{details}}"
+      },
+      "preview": {
+        "contentNotFound": "Le contenu ne peut pas être prévisualisé dans la page",
+        "toggleButtons": {
+          "preview": "Aperçu",
+          "details": "Détails",
+          "off": "Désactivé"
+        },
+        "updateOnSave": "L'aperçu sera mis à jour lors de l'enregistrement"
+      },
+      "details": {
+        "details": "Détails",
+        "technicalInfo": "Informations techniques",
+        "contentType": "Type de contenu principal",
+        "mixinTypes": "Type de contenu complet",
+        "path": "Chemin",
+        "uuid": "UUID"
+      },
+      "CMMActions": {
+        "createNewContent": {
+          "menu": "Nouveau contenu <i>(beta)</i>",
+          "contentOfType": "Nouveau : {{typeName}} <i>(beta)</i>",
+          "labelModal": "Nouveau contenu (beta)",
+          "btnDiscard": "Annuler",
+          "btnCreate": "Créer",
+          "filterLabel": "Filtrer les élements"
+        }
+      },
+      "siteSwitcher": {
+        "allSites": "Tous les Sites"
+      }
     }
+  }
 }
