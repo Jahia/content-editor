@@ -11,6 +11,7 @@ import {withStyles} from '@material-ui/core';
 import {useQuery} from 'react-apollo-hooks';
 import {SiteNodesQuery} from '~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/Picker/PickerDialog.gql-queries';
 import {ProgressOverlay} from '@jahia/react-material';
+import {getSiteNodes} from '../Picker.utils';
 
 const styles = theme => ({
     rootDialog: {
@@ -57,29 +58,25 @@ const MediaPickerDialog = ({
         setSite(siteNode.name);
     };
 
-    const siteNodes = data => {
-        const siteNodes = [];
+    const siteNodes = getSiteNodes(data, t('content-editor:label.contentEditor.siteSwitcher.allSites'));
 
-        if (data && data.jcr.result) {
-            for (const siteNode of data.jcr.result.siteNodes) {
-                if (siteNode.hasPermission) {
-                    siteNodes.push(siteNode);
-                }
-            }
-        }
-
-        return siteNodes.sort((elem1, elem2) => {
-            if (elem1.displayName < elem2.displayName) {
-                return -1;
-            }
-
-            if (elem1.displayName > elem2.displayName) {
-                return 1;
-            }
-
-            return 0;
-        });
+    const nodeTreeConfig = {
+        rootPath: `/sites/${site}/files`,
+        selectableTypes: ['jnt:folder'],
+        type: 'files',
+        openableTypes: ['jnt:folder'],
+        rootLabel: t(
+            'content-editor:label.contentEditor.edit.fields.imagePicker.rootLabel'
+        ),
+        key: 'browse-tree-files'
     };
+    const siteNode = siteNodes.find(siteNode => siteNode.name === site);
+    if (siteNode.allSites) {
+        nodeTreeConfig.rootPath = '/sites';
+        nodeTreeConfig.selectableTypes = ['jnt:virtualsitesFolder', 'jnt:folder'];
+        nodeTreeConfig.openableTypes = ['jnt:virtualsitesFolder', 'jnt:virtualsite', 'jnt:folder'];
+        nodeTreeConfig.rootLabel = siteNode.displayName;
+    }
 
     return (
         <Dialog
@@ -105,21 +102,10 @@ const MediaPickerDialog = ({
                                <PickerDialog
                                    idInput={id}
                                    site={site}
-                                   siteNodes={siteNodes(data)}
+                                   siteNodes={siteNodes}
                                    lang={editorContext.lang}
                                    initialSelectedItem={initialSelectedItem}
-                                   nodeTreeConfigs={[
-                                       {
-                                           rootPath: `/sites/${site}/files`,
-                                           selectableTypes: ['jnt:folder'],
-                                           type: 'files',
-                                           openableTypes: ['jnt:folder'],
-                                           rootLabel: t(
-                                               'content-editor:label.contentEditor.edit.fields.imagePicker.rootLabel'
-                                           ),
-                                           key: 'browse-tree-files'
-                                       }
-                                   ]}
+                                   nodeTreeConfigs={[nodeTreeConfig]}
                                    modalCancelLabel={t('content-editor:label.contentEditor.edit.fields.modalCancel').toUpperCase()}
                                    modalDoneLabel={t('content-editor:label.contentEditor.edit.fields.modalDone').toUpperCase()}
                                    onCloseDialog={() => setIsOpen(false)}

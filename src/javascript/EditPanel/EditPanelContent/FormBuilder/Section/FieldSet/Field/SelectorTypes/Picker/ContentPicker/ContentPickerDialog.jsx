@@ -11,6 +11,7 @@ import {withStyles} from '@material-ui/core';
 import {useQuery} from 'react-apollo-hooks';
 import {SiteNodesQuery} from '~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/Picker/PickerDialog.gql-queries';
 import {ProgressOverlay} from '@jahia/react-material';
+import {getSiteNodes} from '../Picker.utils';
 
 const styles = theme => ({
     rootDialog: {
@@ -59,31 +60,7 @@ const ContentPickerDialog = ({
         setSite(siteNode.name);
     };
 
-    const getSiteNodes = data => {
-        const siteNodes = [];
-
-        if (data && data.jcr.result) {
-            for (const siteNode of data.jcr.result.siteNodes) {
-                if (siteNode.hasPermission) {
-                    siteNodes.push(siteNode);
-                }
-            }
-        }
-
-        return siteNodes.sort((elem1, elem2) => {
-            if (elem1.displayName < elem2.displayName) {
-                return -1;
-            }
-
-            if (elem1.displayName > elem2.displayName) {
-                return 1;
-            }
-
-            return 0;
-        });
-    };
-
-    const siteNodes = getSiteNodes(data);
+    const siteNodes = getSiteNodes(data, t('content-editor:label.contentEditor.siteSwitcher.allSites'));
 
     const siteNode = siteNodes.find(siteNode => siteNode.name === site);
 
@@ -106,7 +83,8 @@ const ContentPickerDialog = ({
                                initialSelectedItem={initialSelectedItem}
                                nodeTreeConfigs={nodeTreeConfigs.map(nodeTreeConfig => ({
                                    ...nodeTreeConfig,
-                                   rootPath: nodeTreeConfig.treeConfig.rootPath(site),
+                                   openableTypes: siteNode.allSites ? [...nodeTreeConfig.treeConfig.openableTypes, 'jnt:virtualsitesFolder', 'jnt:virtualsite'] : nodeTreeConfig.treeConfig.openableTypes,
+                                   rootPath: siteNode.allSites ? '/sites' : nodeTreeConfig.treeConfig.rootPath(site),
                                    rootLabel: siteNode.displayName
                                }))}
                                modalCancelLabel={t('content-editor:label.contentEditor.edit.fields.modalCancel').toUpperCase()}
