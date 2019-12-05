@@ -78,7 +78,7 @@ const MediaPickerDialog = ({
         nodeTreeConfig.rootLabel = siteNode.displayName;
     }
 
-    const optionTypeSite = field.selectorOptions && field.selectorOptions.find(option => option.value === 'site');
+    const showSiteSwitcher = !(field.selectorOptions && field.selectorOptions.find(option => option.value === 'site'));
 
     return (
         <Dialog
