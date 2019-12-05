@@ -64,6 +64,8 @@ const ContentPickerDialog = ({
 
     const siteNode = siteNodes.find(siteNode => siteNode.name === site);
 
+    const optionTypeSite = field.selectorOptions && field.selectorOptions.find(option => option.value === 'site');
+
     return (
         <Dialog
             fullScreen
@@ -79,6 +81,7 @@ const ContentPickerDialog = ({
                                idInput={id}
                                site={site}
                                siteNodes={siteNodes}
+                               showSiteSwitcher={optionTypeSite === undefined}
                                lang={editorContext.lang}
                                initialSelectedItem={initialSelectedItem}
                                nodeTreeConfigs={nodeTreeConfigs.map(nodeTreeConfig => ({

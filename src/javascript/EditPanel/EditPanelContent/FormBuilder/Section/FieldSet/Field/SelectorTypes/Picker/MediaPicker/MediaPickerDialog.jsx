@@ -78,6 +78,8 @@ const MediaPickerDialog = ({
         nodeTreeConfig.rootLabel = siteNode.displayName;
     }
 
+    const optionTypeSite = field.selectorOptions && field.selectorOptions.find(option => option.value === 'site');
+
     return (
         <Dialog
             fullScreen
@@ -103,6 +105,7 @@ const MediaPickerDialog = ({
                                    idInput={id}
                                    site={site}
                                    siteNodes={siteNodes}
+                                   showSiteSwitcher={optionTypeSite === undefined}
                                    lang={editorContext.lang}
                                    initialSelectedItem={initialSelectedItem}
                                    nodeTreeConfigs={[nodeTreeConfig]}
