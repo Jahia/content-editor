@@ -12,10 +12,21 @@ import {useQuery} from 'react-apollo-hooks';
 import {SiteNodesQuery} from '~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/Picker/PickerDialog.gql-queries';
 import {ProgressOverlay} from '@jahia/react-material';
 import {getSiteNodes} from '../Picker.utils';
+import {Typography} from '@jahia/design-system-kit';
+import {SearchInput} from '../Search/Search';
 
 const styles = theme => ({
     rootDialog: {
         margin: theme.spacing.unit * 8
+    },
+    modalHeader: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        margin: '10px'
+    },
+    searchInput: {
+        flexGrow: 0.6
     }
 });
 
@@ -116,13 +127,27 @@ const MediaPickerDialog = ({
                                    onSelectSite={siteNode => onSelectSite(siteNode)}
                                >
                                    {(setSelectedItem, selectedPath, initialSelection) => (
-                                       <ImageListQuery
-                                           setSelectedItem={setSelectedItem}
-                                           selectedPath={selectedPath}
-                                           initialSelection={initialSelection}
-                                           onImageDoubleClick={onItemSelection}
-                                       />
-                                   )}
+                                       <>
+                                           <header className={classes.modalHeader}>
+                                               <Typography variant="delta" color="alpha">
+                                                   {t('content-editor:label.contentEditor.edit.fields.imagePicker.modalTitle')}
+                                               </Typography>
+                                               <SearchInput
+                                                    selectedPath={selectedPath}
+                                                    placeholder={t('content-editor:label.contentEditor.edit.fields.imagePicker.searchPlaceholder')}
+                                                    className={classes.searchInput}
+                                                />
+                                           </header>
+                                           <main>
+                                               <ImageListQuery
+                                                   setSelectedItem={setSelectedItem}
+                                                   selectedPath={selectedPath}
+                                                   initialSelection={initialSelection}
+                                                   onImageDoubleClick={onItemSelection}
+                                               />
+                                           </main>
+                                       </>
+                                       )}
                                </PickerDialog>
                            );
                        }}

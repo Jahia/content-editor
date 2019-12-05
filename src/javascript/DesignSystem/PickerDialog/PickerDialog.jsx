@@ -93,7 +93,6 @@ const PickerDialogCmp = ({
 
     const isElementSelected = !(selectedItem && selectedItem.length !== 0);
     const initialItemHasChanged = initialSelectedItem && selectedItem === undefined;
-
     return (
         <>
             {displayTree &&
@@ -149,7 +148,7 @@ const PickerDialogCmp = ({
                 </NodeTrees>
             </Drawer>}
 
-            <main className={classes.modalContent + (displayTree ? ` ${classes.modalContentWithDrawer}` : '')}>
+            <div className={classes.modalContent + (displayTree ? ` ${classes.modalContentWithDrawer}` : '')}>
                 {children(setSelectedItem, selectedPath, initialSelectedItem ? [initialSelectedItem] : [])}
 
                 <div className={classes.actions}>
@@ -181,7 +180,7 @@ const PickerDialogCmp = ({
                         {modalDoneLabel}
                     </Button>
                 </div>
-            </main>
+            </div>
         </>
     );
 };

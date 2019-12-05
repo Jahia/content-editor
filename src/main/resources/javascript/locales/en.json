@@ -68,7 +68,9 @@
           },
           "imagePicker": {
             "addImage": "Add Image",
-            "rootLabel": "Files"
+            "rootLabel": "Files",
+            "modalTitle": "Select an image",
+            "searchPlaceholder": "Search images"
           },
           "contentPicker": {
             "addContent": "Add Content",
@@ -88,7 +90,9 @@
               "createdBy": "Created By",
               "lastModified": "Modification Date"
             },
-            "fileUploadBtn": "<span data-jahia-link>Upload file</span>"
+            "fileUploadBtn": "<span data-jahia-link>Upload file</span>",
+            "modalTitle": "Select a content",
+            "searchPlaceholder": "Search content"
           },
           "modalCancel": "Cancel",
           "modalDone": "Select"
