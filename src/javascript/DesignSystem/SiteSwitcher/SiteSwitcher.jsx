@@ -10,7 +10,7 @@ const styles = theme => ({
     }
 });
 
-const SiteSwitcher = ({id, siteKey, siteNodes, onSelectSite, classes}) => {
+const SiteSwitcherCmp = ({id, siteKey, siteNodes, onSelectSite, classes}) => {
     const [anchorEl, setAnchorEl] = useState(null);
 
     const handleClick = event => {
@@ -58,7 +58,7 @@ const SiteSwitcher = ({id, siteKey, siteNodes, onSelectSite, classes}) => {
     );
 };
 
-SiteSwitcher.propTypes = {
+SiteSwitcherCmp.propTypes = {
     id: PropTypes.string.isRequired,
     classes: PropTypes.object.isRequired,
     onSelectSite: PropTypes.func.isRequired,
@@ -66,4 +66,6 @@ SiteSwitcher.propTypes = {
     siteNodes: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
-export default withStyles(styles)(SiteSwitcher);
+const SiteSwitcher = withStyles(styles)(SiteSwitcherCmp);
+SiteSwitcher.displayName = 'SiteSwitcher';
+export default SiteSwitcher;

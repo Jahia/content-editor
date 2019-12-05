@@ -21,6 +21,7 @@ describe('Picker dialog', () => {
             ),
             nodeTreeConfigs: [{
                 key: 'is the win',
+                type: 'myType',
                 rootPath: '/contents',
                 selectableTypes: [],
                 openableTypes: []
@@ -31,6 +32,22 @@ describe('Picker dialog', () => {
             modalCancelLabel: '',
             modalDoneLabel: ''
         };
+    });
+
+    it('should update the selected and opened path on switch site', () => {
+        const cmp = shallowWithTheme(
+            <PickerDialog {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        cmp.find('SiteSwitcher').simulate('selectSite', {path: '/newPathIsHere'});
+
+        const nodeTreesCmp = cmp.find('WithStyles(NodeTreesCmp)').dive();
+
+        expect(defaultProps.onSelectSite).toHaveBeenCalled();
+        expect(nodeTreesCmp.props().path).toEqual('/newPathIsHere/myType');
+        expect(nodeTreesCmp.dive().find('Picker').props().openPaths).toEqual(['/newPathIsHere/myType']);
     });
 
     it('should close the modal when click on Cancel button', () => {
@@ -168,7 +185,7 @@ describe('Picker dialog', () => {
             dsGenericTheme
         ).dive();
 
-        expect(cmp.find('WithStyles(SiteSwitcher)').exists()).toBe(true);
+        expect(cmp.find('SiteSwitcher').exists()).toBe(true);
     });
 
     it('should hide siteSwitcher when option is false', () => {
@@ -179,6 +196,6 @@ describe('Picker dialog', () => {
             dsGenericTheme
         ).dive();
 
-        expect(cmp.find('WithStyles(SiteSwitcher)').exists()).toBe(false);
+        expect(cmp.find('SiteSwitcher').exists()).toBe(false);
     });
 });
