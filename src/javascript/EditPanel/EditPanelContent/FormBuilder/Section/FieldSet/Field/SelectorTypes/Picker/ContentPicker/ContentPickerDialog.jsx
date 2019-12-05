@@ -64,7 +64,7 @@ const ContentPickerDialog = ({
 
     const siteNode = siteNodes.find(siteNode => siteNode.name === site);
 
-    const optionTypeSite = field.selectorOptions && field.selectorOptions.find(option => option.value === 'site');
+    const showSiteSwitcher = !(field.selectorOptions && field.selectorOptions.find(option => option.value === 'site'));
 
     return (
         <Dialog
