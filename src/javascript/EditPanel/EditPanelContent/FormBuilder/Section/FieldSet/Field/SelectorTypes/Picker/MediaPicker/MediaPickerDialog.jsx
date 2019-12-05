@@ -105,7 +105,7 @@ const MediaPickerDialog = ({
                                    idInput={id}
                                    site={site}
                                    siteNodes={siteNodes}
-                                   showSiteSwitcher={optionTypeSite === undefined}
+                                   showSiteSwitcher={showSiteSwitcher}
                                    lang={editorContext.lang}
                                    initialSelectedItem={initialSelectedItem}
                                    nodeTreeConfigs={[nodeTreeConfig]}
