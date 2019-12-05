@@ -52,6 +52,7 @@ const PickerDialogCmp = ({
     site,
     siteNodes,
     onSelectSite,
+    showSiteSwitcher,
     lang,
     onItemSelection,
     nodeTreeConfigs,
@@ -105,12 +106,13 @@ const PickerDialogCmp = ({
                     paper: classes.drawerPaper
                 }}
             >
+                {showSiteSwitcher &&
                 <SiteSwitcher
                     id="site-switcher"
                     siteKey={site}
                     siteNodes={siteNodes}
                     onSelectSite={onSelectSite}
-                />
+                />}
 
                 <NodeTrees path={selectedPath}
                            rootPath="/"
@@ -180,6 +182,7 @@ const PickerDialogCmp = ({
 
 PickerDialogCmp.defaultProps = {
     displayTree: true,
+    showSiteSwitcher: true,
     initialSelectedItem: null
 };
 
@@ -190,6 +193,7 @@ PickerDialogCmp.propTypes = {
     site: PropTypes.string.isRequired,
     siteNodes: PropTypes.array.isRequired,
     onSelectSite: PropTypes.func.isRequired,
+    showSiteSwitcher: PropTypes.bool,
     onCloseDialog: PropTypes.func.isRequired,
     onItemSelection: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,

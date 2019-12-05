@@ -11,6 +11,8 @@ describe('Picker dialog', () => {
         defaultProps = {
             idInput: 'IDdd',
             site: 'mySite',
+            siteNodes: [],
+            onSelectSite: jest.fn(),
             lang: 'en',
             children: setSelectedItem => (
                 <>
@@ -157,5 +159,26 @@ describe('Picker dialog', () => {
 
         const nodeTreesCmp = cmp.find('WithStyles(NodeTreesCmp)').dive().dive();
         expect(nodeTreesCmp.find('Picker').props().openPaths).toEqual(['/sites/mySite', '/sites/mySite/files', '/sites/mySite/files/background']);
+    });
+
+    it('should show siteSwitcher', () => {
+        const cmp = shallowWithTheme(
+            <PickerDialog {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        expect(cmp.find('WithStyles(SiteSwitcher)').exists()).toBe(true);
+    });
+
+    it('should hide siteSwitcher when option is false', () => {
+        defaultProps.showSiteSwitcher = false;
+        const cmp = shallowWithTheme(
+            <PickerDialog {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        expect(cmp.find('WithStyles(SiteSwitcher)').exists()).toBe(false);
     });
 });
