@@ -46,7 +46,7 @@ const ImageListQueryCmp = ({
             uuid: rawImg.uuid,
             url: `${
                 window.contextJsParameters.contextPath
-            }/files/default${encodeJCRPath(rawImg.path)}?lastModified=${rawImg.lastModified.value}`,
+            }/files/default${encodeJCRPath(rawImg.path)}?lastModified=${rawImg.lastModified.value}&t=thumbnail2`,
             path: rawImg.path,
             name: rawImg.name,
             type: rawImg.children.nodes[0].mimeType.value.replace('image/', ''),
