@@ -12,10 +12,24 @@ import {useQuery} from 'react-apollo-hooks';
 import {SiteNodesQuery} from '~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/Picker/PickerDialog.gql-queries';
 import {ProgressOverlay} from '@jahia/react-material';
 import {getSiteNodes} from '../Picker.utils';
+import {Typography} from '@jahia/design-system-kit';
+import {SearchInput} from '../Search/Search';
 
 const styles = theme => ({
     rootDialog: {
         margin: theme.spacing.unit * 8
+    },
+    modalHeader: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        margin: '10px'
+    },
+    modalMain: {
+        height: '100%'
+    },
+    searchInput: {
+        flexGrow: 0.6
     }
 });
 
@@ -113,13 +127,27 @@ const ContentPickerDialog = ({
                                    };
 
                                    return (
-                                       <ContentTable
-                                           tableConfig={tableConfig}
-                                           setSelectedItem={setSelectedItem}
-                                           selectedPath={selectedPath}
-                                           initialSelection={initialSelection}
-                                           editorContext={editorContext}
-                                       />
+                                       <>
+                                           <header className={classes.modalHeader}>
+                                               <Typography variant="delta" color="alpha">
+                                                   {t('content-editor:label.contentEditor.edit.fields.contentPicker.modalTitle')}
+                                               </Typography>
+                                               <SearchInput
+                                                    selectedPath={selectedPath}
+                                                    placeholder={t('content-editor:label.contentEditor.edit.fields.contentPicker.searchPlaceholder')}
+                                                    className={classes.searchInput}
+                                                />
+                                           </header>
+                                           <main className={classes.modalMain}>
+                                               <ContentTable
+                                                   tableConfig={tableConfig}
+                                                   setSelectedItem={setSelectedItem}
+                                                   selectedPath={selectedPath}
+                                                   initialSelection={initialSelection}
+                                                   editorContext={editorContext}
+                                               />
+                                           </main>
+                                       </>
                                    );
                                }}
                            </PickerDialog>

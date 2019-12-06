@@ -6,7 +6,7 @@ import {ChevronDown} from 'mdi-material-ui';
 
 const styles = theme => ({
     siteSwitcher: {
-        marginRight: theme.spacing.unit
+        margin: theme.spacing.unit * 2
     }
 });
 

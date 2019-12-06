@@ -68,7 +68,9 @@
           },
           "imagePicker": {
             "addImage": "Bild hinzufügen",
-            "rootLabel": "Dateien"
+            "rootLabel": "Dateien",
+            "modalTitle": "Bild auswählen",
+            "searchPlaceholder": "Bilder suchen"
           },
           "contentPicker": {
             "addContent": "Inhalt hinzufügen",
@@ -88,7 +90,9 @@
               "createdBy": "Erstellt von",
               "lastModified": "Datum der letzten Änderung"
             },
-            "fileUploadBtn": "<span data-jahia-link>Datei hochladen</span>"
+            "fileUploadBtn": "<span data-jahia-link>Datei hochladen</span>",
+            "modalTitle": "Content auswählen",
+            "searchPlaceholder": "Content suchen"
           },
           "modalCancel": "Abbrechen",
           "modalDone": "Auswählen"
