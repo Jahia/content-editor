@@ -1,9 +1,9 @@
 import gql from 'graphql-tag';
 
 export const UnpublishNodeMutation = gql`
-    mutation unpublishNode($path:String!, $languages: [String] ) {
+    mutation unpublishNode($uuid:String!, $languages: [String] ) {
         jcr {
-            mutateNode(pathOrId: $path) {
+            mutateNode(pathOrId: $uuid) {
                 unpublish(languages: $languages)
             }
         }
