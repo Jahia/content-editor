@@ -111,10 +111,10 @@ const PickerDialogCmp = ({
                     id="site-switcher"
                     siteKey={site}
                     siteNodes={siteNodes}
-                    onSelectSite={(...args) => {
-                        onSelectSite(...args);
+                    onSelectSite={siteNode => {
+                        onSelectSite(siteNode);
 
-                        const path = args[0].path + '/' + nodeTreeConfigs[0].type;
+                        const path = siteNode.path + '/' + nodeTreeConfigs[0].type;
                         setOpenPaths([path]);
                         setSelectedPath(path);
                     }}
