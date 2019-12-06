@@ -9,17 +9,19 @@ import DropdownTreeSelectLib from 'react-dropdown-tree-select';
 import {withStyles} from '@material-ui/core/styles';
 
 let icons = {};
-if (process.env.STORYBOOK_ENV) {
+if (process.env.STORYBOOK_ENV || process.env.NODE_ENV === 'test') {
     icons = {
         close,
         checked,
         unchecked
     };
 } else {
+    const path = `${window.contextJsParameters.contextPath}/modules/content-editor/javascript/apps/`;
+
     icons = {
-        close: `/modules/content-editor/javascript/apps/${close}`,
-        checked: `/modules/content-editor/javascript/apps/${checked}`,
-        unchecked: `/modules/content-editor/javascript/apps/${unchecked}`
+        close: path + close,
+        checked: path + checked,
+        unchecked: path + unchecked
     };
 }
 
