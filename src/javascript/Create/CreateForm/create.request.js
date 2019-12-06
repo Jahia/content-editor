@@ -22,7 +22,7 @@ export const createNode = ({
     const nodeName = nodeTypeFormatter(primaryNodeType);
     client.mutate({
         variables: {
-            parentPathOrId: nodeData.path,
+            uuid: nodeData.uuid,
             name: nodeName,
             primaryNodeType,
             mixins: mixinsToAdd,

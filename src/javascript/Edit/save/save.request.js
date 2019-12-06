@@ -24,7 +24,7 @@ export const saveNode = ({
 
     client.mutate({
         variables: {
-            path: nodeData.path,
+            uuid: nodeData.uuid,
             propertiesToSave: dataToMutate.propsToSave,
             propertiesToDelete: dataToMutate.propsToDelete,
             mixinsToAdd: dataToMutate.mixinsToAdd,

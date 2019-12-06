@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 export const CreateNode = gql`
     mutation createNode(
-        $parentPathOrId: String!,
+        $uuid: String!,
         $name: String!,
         $primaryNodeType: String!,
         $mixins: [String],
@@ -11,7 +11,7 @@ export const CreateNode = gql`
     ) {
         jcr {
             addNode(
-                parentPathOrId: $parentPathOrId,
+                parentPathOrId: $uuid,
                 name: $name,
                 primaryNodeType: $primaryNodeType,
                 mixins: $mixins,

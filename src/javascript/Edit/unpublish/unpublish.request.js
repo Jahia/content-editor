@@ -15,7 +15,7 @@ export const unpublishNode = ({
 }) => {
     return client.mutate({
         variables: {
-            path: nodeData.path,
+            uuid: nodeData.uuid,
             languages: [language]
         },
         mutation: UnpublishNodeMutation,
