@@ -9,7 +9,8 @@ describe('Picker Search', () => {
     beforeEach(() => {
         props = {
             selectedPath: 'aPath',
-            placeholder: 'hello'
+            placeholder: 'hello',
+            onChange: jest.fn()
         };
     });
 
@@ -21,5 +22,15 @@ describe('Picker Search', () => {
         );
 
         expect(cmp.debug()).toContain('hello');
+    });
+
+    it('should bind onChange correctly', () => {
+        const cmp = shallowWithTheme(
+            <SearchInput {...props}/>,
+            {},
+            dsGenericTheme
+        );
+        cmp.simulate('change');
+        expect(props.onChange).toHaveBeenCalled();
     });
 });

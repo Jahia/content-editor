@@ -6,21 +6,29 @@ import {translate} from 'react-i18next';
 import {ImageList} from '~/DesignSystem/ImageList';
 import {encodeJCRPath} from '../../../../../../../../../EditPanel.utils';
 import {MediaPickerImages} from './ImageListQuery.gql-queries';
+import {builSearchQuery} from '../../Search/search.gql-queries';
 import {registry} from '@jahia/registry';
+import {useContentEditorContext} from '~/ContentEditor.context';
 
 const ImageListQueryCmp = ({
     t,
     setSelectedItem,
     onImageDoubleClick,
     selectedPath,
-    initialSelection
+    initialSelection,
+    searchTerms
 }) => {
-    const {data, error, loading, refetch} = useQuery(MediaPickerImages, {
-        variables: {
-            typeFilter: ['jmix:image'],
-            path: selectedPath
+    const {lang} = useContentEditorContext();
+    const {data, error, loading, refetch} = useQuery(
+        searchTerms ? builSearchQuery(['jmix:image']) : MediaPickerImages,
+        {
+            variables: {
+                path: selectedPath,
+                searchTerms,
+                language: lang
+            }
         }
-    });
+    );
 
     useEffect(() => {
         registry.add('refetch-image-list', {
@@ -41,7 +49,9 @@ const ImageListQueryCmp = ({
         return <ProgressOverlay/>;
     }
 
-    const images = data.jcr.result.children.nodes.map(rawImg => {
+    const nodes = searchTerms ? data.jcr.result.nodes : data.jcr.result.children.nodes;
+
+    const images = nodes.map(rawImg => {
         return {
             uuid: rawImg.uuid,
             url: `${
@@ -67,7 +77,8 @@ const ImageListQueryCmp = ({
 };
 
 ImageListQueryCmp.defaultProps = {
-    initialSelection: null
+    initialSelection: null,
+    searchTerms: ''
 };
 
 ImageListQueryCmp.propTypes = {
@@ -75,7 +86,8 @@ ImageListQueryCmp.propTypes = {
     setSelectedItem: PropTypes.func.isRequired,
     onImageDoubleClick: PropTypes.func.isRequired,
     selectedPath: PropTypes.string.isRequired,
-    initialSelection: PropTypes.array
+    initialSelection: PropTypes.array,
+    searchTerms: PropTypes.string
 };
 
 export const ImageListQuery = translate()(ImageListQueryCmp);

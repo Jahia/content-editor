@@ -1,11 +1,11 @@
 import gql from 'graphql-tag';
 import {PredefinedFragments} from '@jahia/apollo-dx';
 
-const MediaPickerImages = gql`
-    query mediaPickerImages($path: String!, $typeFilter: [String]!) {
+export const MediaPickerImages = gql`
+    query mediaPickerImages($path: String!) {
         jcr {
             result: nodeByPath(path: $path) {
-                children(offset: 0, limit: 50, typesFilter: {types: $typeFilter, multi: ANY}) {
+                children(offset: 0, limit: 50, typesFilter: {types: ["jmix:image"], multi: ANY}) {
                     pageInfo {
                         totalCount
                     }
@@ -36,5 +36,3 @@ const MediaPickerImages = gql`
     }
     ${PredefinedFragments.nodeCacheRequiredFields.gql}
 `;
-
-export {MediaPickerImages};
