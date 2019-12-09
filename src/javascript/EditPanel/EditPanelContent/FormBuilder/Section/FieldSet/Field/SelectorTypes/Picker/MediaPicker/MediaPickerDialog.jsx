@@ -14,6 +14,7 @@ import {ProgressOverlay} from '@jahia/react-material';
 import {getSiteNodes} from '../Picker.utils';
 import {Typography} from '@jahia/design-system-kit';
 import {SearchInput} from '../Search/Search';
+import {getSite} from '~/DesignSystem/PickerDialog/PickerDialog.util';
 
 const styles = theme => ({
     rootDialog: {
@@ -44,7 +45,8 @@ const MediaPickerDialog = ({
     t,
     initialSelectedItem
 }) => {
-    const [site, setSite] = useState(editorContext.site);
+    const selectedSite = initialSelectedItem ? getSite(initialSelectedItem).slice(7) : editorContext.site;
+    const [site, setSite] = useState(selectedSite);
 
     const {data, error, loading} = useQuery(SiteNodesQuery, {
         variables: {
@@ -97,7 +99,10 @@ const MediaPickerDialog = ({
             classes={{root: classes.rootDialog}}
             open={isOpen}
             TransitionComponent={Transition}
-            onClose={() => setIsOpen(false)}
+            onClose={() => {
+                setIsOpen(false);
+                setSite(selectedSite);
+            }}
         >
             <FastField shouldUpdate={() => true}
                        render={({form}) => {
