@@ -1,5 +1,5 @@
 import {Picker} from '@jahia/react-apollo';
-import {DisplayActions, buttonRenderer, NodeTrees, PickerTreeViewMaterial} from '@jahia/react-material';
+import {buttonRenderer, DisplayActions, NodeTrees, PickerTreeViewMaterial} from '@jahia/react-material';
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
@@ -113,7 +113,7 @@ const PickerDialogCmp = ({
                     onSelectSite={siteNode => {
                         onSelectSite(siteNode);
 
-                        const path = siteNode.path + '/' + nodeTreeConfigs[0].type;
+                        const path = siteNode.allSites ? '/sites' : nodeTreeConfigs[0].treeConfig.rootPath(siteNode.name);
                         setOpenPaths([path]);
                         setSelectedPath(path);
                     }}
@@ -167,7 +167,7 @@ const PickerDialogCmp = ({
                                             const Button = buttonRenderer({variant: 'ghost'}, true);
                                             return <Button context={context}/>;
                                         }}
-                            />
+                        />
                     </div>
                     <Button
                         data-sel-picker-dialog-action="done"
