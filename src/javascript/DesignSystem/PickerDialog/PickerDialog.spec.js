@@ -24,7 +24,10 @@ describe('Picker dialog', () => {
                 type: 'myType',
                 rootPath: '/contents',
                 selectableTypes: [],
-                openableTypes: []
+                openableTypes: [],
+                treeConfig: {
+                    rootPath: () => '/contents'
+                }
             }],
             onItemSelection: jest.fn(),
             onCloseDialog: jest.fn(),
@@ -46,8 +49,8 @@ describe('Picker dialog', () => {
         const nodeTreesCmp = cmp.find('WithStyles(NodeTreesCmp)').dive();
 
         expect(defaultProps.onSelectSite).toHaveBeenCalled();
-        expect(nodeTreesCmp.props().path).toEqual('/newPathIsHere/myType');
-        expect(nodeTreesCmp.dive().find('Picker').props().openPaths).toEqual(['/newPathIsHere/myType']);
+        expect(nodeTreesCmp.props().path).toEqual('/contents');
+        expect(nodeTreesCmp.dive().find('Picker').props().openPaths).toEqual(['/contents']);
     });
 
     it('should close the modal when click on Cancel button', () => {

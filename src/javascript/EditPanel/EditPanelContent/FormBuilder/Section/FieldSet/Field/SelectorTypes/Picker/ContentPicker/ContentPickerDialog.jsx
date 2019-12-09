@@ -109,6 +109,7 @@ const ContentPickerDialog = ({
                                initialSelectedItem={initialSelectedItem}
                                nodeTreeConfigs={nodeTreeConfigs.map(nodeTreeConfig => ({
                                    ...nodeTreeConfig,
+                                   selectableTypes: siteNode.allSites ? [...nodeTreeConfig.treeConfig.selectableTypes, 'jnt:virtualsitesFolder'] : nodeTreeConfig.treeConfig.selectableTypes,
                                    openableTypes: siteNode.allSites ? [...nodeTreeConfig.treeConfig.openableTypes, 'jnt:virtualsitesFolder', 'jnt:virtualsite'] : nodeTreeConfig.treeConfig.openableTypes,
                                    rootPath: siteNode.allSites ? '/sites' : nodeTreeConfig.treeConfig.rootPath(site),
                                    rootLabel: siteNode.displayName
