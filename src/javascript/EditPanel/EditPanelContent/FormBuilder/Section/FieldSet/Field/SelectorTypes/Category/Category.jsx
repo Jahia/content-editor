@@ -9,10 +9,11 @@ import {ProgressOverlay} from '@jahia/react-material';
 import {translate} from 'react-i18next';
 import {adaptToCategoryTree} from './category.adapter';
 
-const CategoryCmp = ({field, value, id, t}) => {
+const CategoryCmp = ({field, value, id, t, editorContext}) => {
     const {data, error, loading} = useQuery(GetCategories, {
         variables: {
-            path: '/sites/systemsite/categories'
+            path: '/sites/systemsite/categories',
+            language: editorContext.lang
         }
     });
 
@@ -59,6 +60,9 @@ CategoryCmp.propTypes = {
     field: FieldPropTypes.isRequired,
     id: PropTypes.string.isRequired,
     value: PropTypes.arrayOf(PropTypes.string),
+    editorContext: PropTypes.shape({
+        lang: PropTypes.string.isRequired
+    }).isRequired,
     t: PropTypes.func.isRequired
 };
 

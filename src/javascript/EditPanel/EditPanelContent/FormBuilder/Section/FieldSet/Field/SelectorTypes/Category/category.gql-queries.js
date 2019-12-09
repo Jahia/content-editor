@@ -1,15 +1,16 @@
 import gql from 'graphql-tag';
+import {PredefinedFragments} from '@jahia/apollo-dx';
 
 export const GetCategories = gql`
-    query getCategories($path: String!) {
+    query getCategories($path: String!, $language: String!) {
         jcr {
             result: nodeByPath(path: $path) {
-                displayName
-                uuid
+                ...NodeCacheRequiredFields
+                displayName(language: $language)
                 descendants(typesFilter: {types: ["jnt:category"]}) {
                     nodes {
-                      displayName
-                      uuid
+                      ...NodeCacheRequiredFields
+                      displayName(language: $language)
                       parent {
                         uuid
                       }
@@ -18,4 +19,4 @@ export const GetCategories = gql`
             }
         }
     }
-`;
+    ${PredefinedFragments.nodeCacheRequiredFields.gql}`;
