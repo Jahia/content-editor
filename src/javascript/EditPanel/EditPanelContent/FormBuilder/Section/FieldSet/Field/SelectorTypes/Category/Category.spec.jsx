@@ -29,6 +29,9 @@ describe('Category component', () => {
                 readOnly: false,
                 selectorType: 'Category'
             },
+            editorContext: {
+                lang: 'en'
+            },
             classes: {}
         };
 
