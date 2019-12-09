@@ -236,6 +236,7 @@ const styles = theme => ({
         '& .tag-list': {
             display: 'flex',
             alignItems: 'center',
+            flexWrap: 'wrap',
             flexGrow: 1,
             padding: 0,
             margin: 0
