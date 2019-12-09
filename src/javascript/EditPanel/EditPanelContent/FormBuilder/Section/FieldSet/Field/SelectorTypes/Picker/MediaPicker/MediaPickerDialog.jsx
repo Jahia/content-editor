@@ -14,7 +14,7 @@ import {ProgressOverlay} from '@jahia/react-material';
 import {getSiteNodes} from '../Picker.utils';
 import {Typography} from '@jahia/design-system-kit';
 import {SearchInput} from '../Search/Search';
-import {getSite} from '~/DesignSystem/PickerDialog/PickerDialog.util';
+import {getSite} from '~/DesignSystem/PickerDialog/PickerDialog.utils';
 
 const styles = theme => ({
     rootDialog: {
