@@ -26,6 +26,9 @@ const styles = theme => ({
         alignItems: 'center',
         margin: '10px'
     },
+    modalMain: {
+        height: '100%'
+    },
     searchInput: {
         flexGrow: 0.6
     }
@@ -47,6 +50,10 @@ const MediaPickerDialog = ({
 }) => {
     const selectedSite = initialSelectedItem ? getSite(initialSelectedItem).slice(7) : editorContext.site;
     const [site, setSite] = useState(selectedSite);
+    const [searchTerms, setSearchTerms] = useState('');
+    const handleSearchChange = e => {
+        setSearchTerms(e.target.value);
+    };
 
     const {data, error, loading} = useQuery(SiteNodesQuery, {
         variables: {
@@ -141,13 +148,15 @@ const MediaPickerDialog = ({
                                                     selectedPath={selectedPath}
                                                     placeholder={t('content-editor:label.contentEditor.edit.fields.imagePicker.searchPlaceholder')}
                                                     className={classes.searchInput}
+                                                    onChange={handleSearchChange}
                                                 />
                                            </header>
-                                           <main>
+                                           <main className={classes.modalMain}>
                                                <ImageListQuery
                                                    setSelectedItem={setSelectedItem}
                                                    selectedPath={selectedPath}
                                                    initialSelection={initialSelection}
+                                                   searchTerms={searchTerms}
                                                    onImageDoubleClick={onItemSelection}
                                                />
                                            </main>

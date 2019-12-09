@@ -1,1 +1,1 @@
-export {ContentTable} from './ContentTable.container';
+export {ContentTable} from './ContentTable';

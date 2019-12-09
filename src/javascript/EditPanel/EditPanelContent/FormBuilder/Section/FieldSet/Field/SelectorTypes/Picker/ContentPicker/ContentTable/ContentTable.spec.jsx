@@ -15,7 +15,7 @@ jest.mock('react-apollo-hooks', () => {
 });
 
 import {setQueryResult} from 'react-apollo-hooks';
-import {ContentTable} from './ContentTable.container';
+import {ContentTable} from './ContentTable';
 
 const queryResult = {
     descendants: {
@@ -108,4 +108,3 @@ describe('contentListTable', () => {
         expect(cmp.props().data[0].type).toContain('Page');
     });
 });
-

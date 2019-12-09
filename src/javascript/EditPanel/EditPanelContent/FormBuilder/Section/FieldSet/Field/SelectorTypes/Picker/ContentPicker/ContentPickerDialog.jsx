@@ -52,6 +52,10 @@ const ContentPickerDialog = ({
 }) => {
     const selectedSite = initialSelectedItem ? getSite(initialSelectedItem).slice(7) : editorContext.site;
     const [site, setSite] = useState(selectedSite);
+    const [searchTerms, setSearchTerms] = useState('');
+    const handleSearchChange = e => {
+        setSearchTerms(e.target.value);
+    };
 
     const {data, error, loading} = useQuery(SiteNodesQuery, {
         variables: {
@@ -141,6 +145,7 @@ const ContentPickerDialog = ({
                                                     selectedPath={selectedPath}
                                                     placeholder={t('content-editor:label.contentEditor.edit.fields.contentPicker.searchPlaceholder')}
                                                     className={classes.searchInput}
+                                                    onChange={handleSearchChange}
                                                 />
                                            </header>
                                            <main className={classes.modalMain}>
@@ -150,6 +155,7 @@ const ContentPickerDialog = ({
                                                    selectedPath={selectedPath}
                                                    initialSelection={initialSelection}
                                                    editorContext={editorContext}
+                                                   searchTerms={searchTerms}
                                                />
                                            </main>
                                        </>

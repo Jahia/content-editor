@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import {ContentTableQuery} from './ContentTable.gql-queries';
 import dayjs from 'dayjs';
 import {registry} from '@jahia/registry';
+import {builSearchQuery} from '../../Search/search.gql-queries';
 
 const columnConfig = t => [
     {
@@ -41,17 +42,21 @@ const ContentTableContainer = ({
     setSelectedItem,
     selectedPath,
     editorContext,
-    initialSelection
+    initialSelection,
+    searchTerms
 }) => {
-    const {data, error, loading, refetch} = useQuery(ContentTableQuery, {
-        variables: {
-            path: selectedPath,
-            language: editorContext.lang,
-            typeFilter: tableConfig.typeFilter,
-            recursionTypesFilter: tableConfig.recursionTypesFilter,
-            fieldFilter: tableConfig.showOnlyNodesWithTemplates ? {filters: [{fieldName: 'isDisplayableNode', evaluation: 'EQUAL', value: 'true'}]} : null
-        }
-    });
+    const {data, error, loading, refetch} = useQuery(
+        searchTerms ? builSearchQuery(tableConfig.typeFilter) : ContentTableQuery,
+        {
+            variables: {
+                path: selectedPath,
+                language: editorContext.lang,
+                searchTerms,
+                typeFilter: tableConfig.typeFilter,
+                recursionTypesFilter: tableConfig.recursionTypesFilter,
+                fieldFilter: tableConfig.showOnlyNodesWithTemplates ? {filters: [{fieldName: 'isDisplayableNode', evaluation: 'EQUAL', value: 'true'}]} : null
+            }
+        });
 
     useEffect(() => {
         registry.add('refetch-content-list', {
@@ -72,7 +77,9 @@ const ContentTableContainer = ({
         return <ProgressOverlay/>;
     }
 
-    const tableData = data.jcr.result.descendants.nodes.map(content => {
+    const nodes = searchTerms ? data.jcr.result.nodes : data.jcr.result.descendants.nodes;
+
+    const tableData = nodes.map(content => {
         return {
             id: content.uuid,
             path: content.path,
@@ -101,7 +108,8 @@ const ContentTableContainer = ({
 };
 
 ContentTableContainer.defaultProps = {
-    initialSelection: []
+    initialSelection: [],
+    searchTerms: ''
 };
 
 ContentTableContainer.propTypes = {
@@ -114,7 +122,8 @@ ContentTableContainer.propTypes = {
     setSelectedItem: PropTypes.func.isRequired,
     selectedPath: PropTypes.string.isRequired,
     editorContext: PropTypes.object.isRequired,
-    initialSelection: PropTypes.array
+    initialSelection: PropTypes.array,
+    searchTerms: PropTypes.string
 };
 
 export const ContentTable = translate()(ContentTableContainer);
