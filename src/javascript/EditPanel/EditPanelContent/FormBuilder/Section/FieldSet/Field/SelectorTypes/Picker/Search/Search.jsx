@@ -9,6 +9,7 @@ export const SearchInput = ({selectedPath, placeholder, ...props}) => {
     return (
         <Input
             type="text"
+            data-sel-role="data-sel-picker-search"
             placeholder={placeholder}
             variant={{icon: <Search/>, interactive: <FolderDisplayer selectedPath={selectedPath}/>}}
             {...props}
