@@ -111,9 +111,7 @@ const PickerDialogCmp = ({
                     siteKey={site}
                     siteNodes={siteNodes}
                     onSelectSite={siteNode => {
-                        onSelectSite(siteNode);
-
-                        const path = siteNode.allSites ? '/sites' : nodeTreeConfigs[0].treeConfig.rootPath(siteNode.name);
+                        const path = onSelectSite(siteNode);
                         setOpenPaths([path]);
                         setSelectedPath(path);
                     }}

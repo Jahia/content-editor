@@ -78,6 +78,7 @@ const ContentPickerDialog = ({
 
     const onSelectSite = siteNode => {
         setSite(siteNode.name);
+        return siteNode.allSites ? '/sites' : nodeTreeConfigs[0].treeConfig.rootPath(siteNode.name);
     };
 
     const siteNodes = getSiteNodes(data, t('content-editor:label.contentEditor.siteSwitcher.allSites'));
