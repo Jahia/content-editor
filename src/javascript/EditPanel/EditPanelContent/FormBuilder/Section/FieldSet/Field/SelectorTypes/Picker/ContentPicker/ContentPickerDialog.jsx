@@ -96,6 +96,9 @@ const ContentPickerDialog = ({
                 setIsOpen(false);
                 setSite(selectedSite);
             }}
+            onExited={() => {
+                setSearchTerms('');
+            }}
         >
             <FastField shouldUpdate={() => true}
                        render={({form: {setFieldValue, setFieldTouched}}) => (
