@@ -10,6 +10,7 @@ describe('DatePickerInput', () => {
         defaultProps = {
             disabled: true,
             readOnly: true,
+            noMatchesLabel: 'a label oh',
             data: [
                 {
                     label: 'VP Accounting',

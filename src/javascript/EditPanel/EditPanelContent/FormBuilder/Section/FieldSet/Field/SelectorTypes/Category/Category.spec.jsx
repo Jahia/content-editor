@@ -62,13 +62,13 @@ describe('Category component', () => {
 
     it('should setFieldTouched when modify an element', () => {
         const cmp = buildComp(props);
-        cmp.simulate('change', null, [{uuid: 'A'}, {uuid: 'BG'}]);
+        cmp.simulate('change', null, [{value: 'A'}, {value: 'BG'}]);
         expect(setFieldTouched).toHaveBeenCalled();
     });
 
     it('should setFieldValue when modify an element', () => {
         const cmp = buildComp(props);
-        cmp.simulate('change', null, [{uuid: 'A'}, {uuid: 'Gauche'}]);
+        cmp.simulate('change', null, [{value: 'A'}, {value: 'Gauche'}]);
         expect(setFieldValue).toHaveBeenCalledWith(props.id, ['A', 'Gauche']);
     });
 });

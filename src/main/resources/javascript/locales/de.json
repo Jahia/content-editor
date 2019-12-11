@@ -94,6 +94,9 @@
             "modalTitle": "Content auswählen",
             "searchPlaceholder": "Content suchen"
           },
+          "category": {
+            "noMatches": "Keine Übereinstimmungen gefunden"
+          },
           "modalCancel": "Abbrechen",
           "modalDone": "Auswählen"
         },

@@ -4,7 +4,7 @@ export const adaptToCategoryTree = ({nodes, parent, selectedValues}) => {
         .map(category => {
             return {
                 label: category.displayName,
-                uuid: category.uuid,
+                value: category.uuid,
                 checked: selectedValues ? selectedValues.includes(category.uuid) : undefined,
                 children: adaptToCategoryTree({
                     nodes,

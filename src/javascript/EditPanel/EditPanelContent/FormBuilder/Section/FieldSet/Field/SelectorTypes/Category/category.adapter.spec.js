@@ -20,27 +20,27 @@ describe('category adapter', () => {
 
         expect(adaptToCategoryTree({nodes, parent})).toEqual([
             {
-                uuid: 'A',
+                value: 'A',
                 label: undefined,
                 children: [
                     {
-                        uuid: 'B',
+                        value: 'B',
                         label: undefined,
                         children: [
                             {
-                                uuid: 'C',
+                                value: 'C',
                                 label: undefined,
                                 children: [
-                                    {uuid: 'D', label: undefined, children: []},
-                                    {uuid: 'E', label: undefined, children: []}
+                                    {value: 'D', label: undefined, children: []},
+                                    {value: 'E', label: undefined, children: []}
                                 ]
                             },
-                            {uuid: 'C2', label: undefined, children: []}
+                            {value: 'C2', label: undefined, children: []}
                         ]
                     }
                 ]
             },
-            {uuid: 'leaf', label: undefined, children: []}
+            {value: 'leaf', label: undefined, children: []}
         ]);
     });
 
@@ -52,7 +52,7 @@ describe('category adapter', () => {
         ];
 
         expect(adaptToCategoryTree({nodes, parent})).toEqual([
-            {uuid: 'A', label: 'hello', children: [{uuid: 'B', label: 'world', children: []}]}
+            {value: 'A', label: 'hello', children: [{value: 'B', label: 'world', children: []}]}
         ]);
     });
 
@@ -67,9 +67,9 @@ describe('category adapter', () => {
         const selectedValues = ['B', 'C'];
 
         expect(adaptToCategoryTree({nodes, parent, selectedValues})).toEqual([
-            {uuid: 'A', label: 'hello', checked: false, children: [{uuid: 'B', label: 'world', checked: true, children: []}]},
-            {uuid: 'C', label: 'C', checked: true, children: []},
-            {uuid: 'D', label: 'D', checked: false, children: []}
+            {value: 'A', label: 'hello', checked: false, children: [{value: 'B', label: 'world', checked: true, children: []}]},
+            {value: 'C', label: 'C', checked: true, children: []},
+            {value: 'D', label: 'D', checked: false, children: []}
         ]);
     });
 });

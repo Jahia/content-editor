@@ -36,22 +36,24 @@ const CategoryCmp = ({field, value, id, t, editorContext}) => {
     });
 
     return (
-        <FastField render={({form: {setFieldValue, setFieldTouched}}) => {
+        <FastField data={data}
+                   render={({form: {setFieldValue, setFieldTouched}}) => {
             const handleChange = (_, selectedValues) => {
-                const newValues = selectedValues.map(v => v.uuid);
+                const newValues = selectedValues.map(v => v.value);
                 setFieldValue(id, newValues);
                 setFieldTouched(id, newValues);
             };
 
             return (
                 <DropdownTreeSelect
-                        id={id}
-                        aria-labelledby={`${field.name}-label`}
-                        data={tree}
-                        readOnly={field.readOnly}
-                        onChange={handleChange}
+                    id={id}
+                    noMatchesLabel={t('content-editor:label.contentEditor.edit.fields.category.noMatches')}
+                    aria-labelledby={`${field.name}-label`}
+                    data={tree}
+                    readOnly={field.readOnly}
+                    onChange={handleChange}
                 />
-);
+            );
         }}/>
     );
 };
