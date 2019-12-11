@@ -12,7 +12,7 @@ describe('Picker dialog', () => {
             idInput: 'IDdd',
             site: 'mySite',
             siteNodes: [],
-            onSelectSite: jest.fn(),
+            onSelectSite: jest.fn(site => site.path),
             lang: 'en',
             children: setSelectedItem => (
                 <>
@@ -24,10 +24,7 @@ describe('Picker dialog', () => {
                 type: 'myType',
                 rootPath: '/contents',
                 selectableTypes: [],
-                openableTypes: [],
-                treeConfig: {
-                    rootPath: () => '/contents'
-                }
+                openableTypes: []
             }],
             onItemSelection: jest.fn(),
             onCloseDialog: jest.fn(),
@@ -49,8 +46,8 @@ describe('Picker dialog', () => {
         const nodeTreesCmp = cmp.find('WithStyles(NodeTreesCmp)').dive();
 
         expect(defaultProps.onSelectSite).toHaveBeenCalled();
-        expect(nodeTreesCmp.props().path).toEqual('/contents');
-        expect(nodeTreesCmp.dive().find('Picker').props().openPaths).toEqual(['/contents']);
+        expect(nodeTreesCmp.props().path).toEqual('/newPathIsHere');
+        expect(nodeTreesCmp.dive().find('Picker').props().openPaths).toEqual(['/newPathIsHere']);
     });
 
     it('should close the modal when click on Cancel button', () => {

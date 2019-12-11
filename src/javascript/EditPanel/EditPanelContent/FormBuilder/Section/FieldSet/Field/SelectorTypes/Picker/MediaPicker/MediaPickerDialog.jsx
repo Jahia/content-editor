@@ -9,12 +9,13 @@ import Slide from '@material-ui/core/Slide';
 import {FastField} from 'formik';
 import {withStyles} from '@material-ui/core';
 import {useQuery} from 'react-apollo-hooks';
-import {SiteNodesQuery} from '~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/Picker/PickerDialog.gql-queries';
+import {SiteNodesQuery} from '../PickerDialog.gql-queries';
 import {ProgressOverlay} from '@jahia/react-material';
 import {getSiteNodes} from '../Picker.utils';
 import {Typography} from '@jahia/design-system-kit';
 import {SearchInput} from '../Search/Search';
 import {getSite} from '~/DesignSystem/PickerDialog/PickerDialog.utils';
+import pickerConfigs from '../Picker.configs';
 
 const styles = theme => ({
     rootDialog: {
@@ -76,26 +77,19 @@ const MediaPickerDialog = ({
 
     const onSelectSite = siteNode => {
         setSite(siteNode.name);
+        return siteNode.allSites ? '/sites' : pickerConfigs.image.treeConfigs[0].rootPath(siteNode.name);
     };
 
     const siteNodes = getSiteNodes(data, t('content-editor:label.contentEditor.siteSwitcher.allSites'));
-
-    const nodeTreeConfig = {
-        rootPath: `/sites/${site}/files`,
-        selectableTypes: ['jnt:folder'],
-        type: 'files',
-        openableTypes: ['jnt:folder'],
-        rootLabel: t(
-            'content-editor:label.contentEditor.edit.fields.imagePicker.rootLabel'
-        ),
-        key: 'browse-tree-files'
-    };
+    const mediaPickerTreeConfig = {...pickerConfigs.image.treeConfigs[0]};
     const siteNode = siteNodes.find(siteNode => siteNode.name === site);
+    mediaPickerTreeConfig.rootLabel = t('content-editor:label.contentEditor.edit.fields.imagePicker.rootLabel');
+    mediaPickerTreeConfig.rootPath = mediaPickerTreeConfig.rootPath(site);
     if (siteNode.allSites) {
-        nodeTreeConfig.rootPath = '/sites';
-        nodeTreeConfig.selectableTypes = ['jnt:virtualsitesFolder', 'jnt:folder'];
-        nodeTreeConfig.openableTypes = ['jnt:virtualsitesFolder', 'jnt:virtualsite', 'jnt:folder'];
-        nodeTreeConfig.rootLabel = siteNode.displayName;
+        mediaPickerTreeConfig.rootPath = '/sites';
+        mediaPickerTreeConfig.selectableTypes = ['jnt:virtualsitesFolder', 'jnt:folder'];
+        mediaPickerTreeConfig.openableTypes = ['jnt:virtualsitesFolder', 'jnt:virtualsite', 'jnt:folder'];
+        mediaPickerTreeConfig.rootLabel = siteNode.displayName;
     }
 
     const showSiteSwitcher = !(field.selectorOptions && field.selectorOptions.find(option => option.value === 'site'));
@@ -131,7 +125,7 @@ const MediaPickerDialog = ({
                                    showSiteSwitcher={showSiteSwitcher}
                                    lang={editorContext.lang}
                                    initialSelectedItem={initialSelectedItem}
-                                   nodeTreeConfigs={[nodeTreeConfig]}
+                                   nodeTreeConfigs={[mediaPickerTreeConfig]}
                                    modalCancelLabel={t('content-editor:label.contentEditor.edit.fields.modalCancel').toUpperCase()}
                                    modalDoneLabel={t('content-editor:label.contentEditor.edit.fields.modalDone').toUpperCase()}
                                    onCloseDialog={() => setIsOpen(false)}
