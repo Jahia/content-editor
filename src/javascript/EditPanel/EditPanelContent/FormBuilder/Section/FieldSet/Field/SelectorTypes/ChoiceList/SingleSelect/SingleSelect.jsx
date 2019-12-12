@@ -45,8 +45,7 @@ export const SingleSelectCmp = ({classes, field, id, setActionContext}) => {
                 return (
                     <Select
                         className={`${classes.selectField}
-                                    ${readOnly ? classes.readOnly : ''}`
-                        }
+                                    ${readOnly ? classes.readOnly : ''}`}
                         onChange={handleChange}
                         {...formikField}
                         // eslint-disable-next-line react/prop-types

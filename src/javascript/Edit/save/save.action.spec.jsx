@@ -155,7 +155,8 @@ describe('save action', () => {
             context.formik.submitForm = jest.fn(() => Promise.reject());
             try {
                 await saveAction.onClick(context);
-            } catch (e) {}
+            } catch (_) {
+            }
 
             expect(context.formik.resetForm).not.toHaveBeenCalled();
         });

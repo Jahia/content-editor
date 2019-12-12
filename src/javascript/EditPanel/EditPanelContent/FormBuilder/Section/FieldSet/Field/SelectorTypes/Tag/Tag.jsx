@@ -36,9 +36,7 @@ const Tag = ({field, id, t}) => {
                         {...formikField}
                         id={id}
                         options={options}
-                        value={
-                            formikField.value && adaptOptions(formikField.value)
-                        }
+                        value={formikField.value && adaptOptions(formikField.value)}
                         readOnly={field.readOnly}
                         placeholder={t('content-editor:label.contentEditor.edit.tagPlaceholder')}
                         formatCreateLabel={value => t('content-editor:label.contentEditor.edit.createTagPlaceholder', {tagName: value})}

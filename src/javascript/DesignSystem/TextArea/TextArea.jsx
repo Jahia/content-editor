@@ -65,8 +65,7 @@ const TextAreaCmp = ({
                             ${disabled ? classes.disabled : ''}
                             ${readOnly ? classes.readOnly : ''}
                             ${error ? classes.error : ''}
-                            ${classNames.textarea}`
-                }
+                            ${classNames.textarea}`}
                 rows={rows}
                 aria-invalid={error}
                 disabled={disabled}

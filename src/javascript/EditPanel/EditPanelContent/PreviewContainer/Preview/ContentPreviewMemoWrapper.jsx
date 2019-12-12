@@ -50,8 +50,7 @@ export const ContentPreviewMemoWrapperCmp = React.memo(({t, classes}) => {
                     variant="normal"
                     color="warning"
                 />
-            </div>
-            }
+            </div>}
 
             <ContentPreview {...previewContext}
                             fetchPolicy="network-only"

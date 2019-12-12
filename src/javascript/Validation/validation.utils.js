@@ -26,8 +26,7 @@ export const validateForm = async ({setTouched, validateForm}, renderComponent) 
                             nbOfErrors={nbOfErrors}
                             onClose={() => {
                                 handler.setProps({open: false});
-                            }
-            }/>
+                            }}/>
         );
 
         return false;

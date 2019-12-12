@@ -185,7 +185,7 @@ export function encodeJCRPath(path) {
 
 export function extractRangeConstraints(constraint) {
     // Validate constraint
-    if (!RegExp('[\\(\\[]+.*,.*[\\)\\]]').test(constraint)) {
+    if (!/[([]+.*,.*[)\]]/.test(constraint)) {
         throw new Error(`unable to parse constraint ${constraint}`);
     }
 

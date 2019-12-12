@@ -103,8 +103,7 @@ export const FieldCmp = ({t, classes, inputContext, idInput, selectorType, field
                                    icon={<Public/>}
                                    variant="normal"
                                    color="info"
-                            />
-                            }
+                            />}
                         </Grid>
                     </Grid>
                     <Grid
@@ -116,8 +115,7 @@ export const FieldCmp = ({t, classes, inputContext, idInput, selectorType, field
                         <Grid item className={classes.input}>
                             {isMultipleField ?
                                 <MultipleField inputContext={inputContext} field={field}/> :
-                                <SingleField inputContext={inputContext} field={field}/>
-                            }
+                                <SingleField inputContext={inputContext} field={field}/>}
                         </Grid>
                         <Grid item>
                             {actionContext.noAction ? (
@@ -146,8 +144,7 @@ export const FieldCmp = ({t, classes, inputContext, idInput, selectorType, field
                             field.errorMessage ?
                                 field.errorMessage :
                                 t(`content-editor:label.contentEditor.edit.errors.${errors[field.name]}`) :
-                            ''
-                        }&nbsp;
+                            ''}&nbsp;
                     </Typography>
                 </Grid>
             </Grid>
