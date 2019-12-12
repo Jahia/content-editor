@@ -20,10 +20,10 @@ const styles = theme => ({
         margin: theme.spacing.unit,
         '&:hover': {
             border: `1px solid ${theme.palette.ui.zeta}`
+        },
+        '&.selected': {
+            border: `1px solid ${theme.palette.brand.alpha}`
         }
-    },
-    containerSelected: {
-        border: `1px solid ${theme.palette.brand.alpha}`
     },
     imgContainer: {
         display: 'flex',
@@ -72,7 +72,7 @@ const CardCmp = ({
         <article
             data-sel-role-card={image.alt}
             className={`${classes.container} ${
-                selected ? classes.containerSelected : ''
+                selected ? 'selected' : ''
             }`}
             aria-checked={selected}
             onDoubleClick={onDoubleClick}
