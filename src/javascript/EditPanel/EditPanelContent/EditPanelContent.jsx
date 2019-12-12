@@ -60,8 +60,7 @@ export const EditPanelContent = ({classes, mode, isDirty}) => {
                             <FormBuilder mode={mode}/>
                         </TwoColumnsContent>
                     </>
-                )
-            }
+                )}
         </>
     );
 };

@@ -169,8 +169,7 @@ const PickerCmp = ({
                 <Typography variant="omega" color="beta" component="span">
                     {emptyLabel}
                 </Typography>
-            </div>
-            }
+            </div>}
         </button>
     );
 };

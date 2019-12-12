@@ -99,8 +99,7 @@ const PreviewContainerCmp = ({classes, t, isDirty, mode}) => {
                            variant="normal"
                            color="info"
                     />
-                </Grid>
-                }
+                </Grid>}
             </Grid>
             {PreviewCmp}
         </Paper>

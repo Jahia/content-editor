@@ -33,8 +33,7 @@ export const TextCmp = ({field, value, id, editorContext}) => {
                     onChange={onChange}
                 />
             );
-        }
-        }
+        }}
         />
     );
 };

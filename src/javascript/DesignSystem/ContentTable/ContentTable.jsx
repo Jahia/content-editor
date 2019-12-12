@@ -106,8 +106,7 @@ const ContentTable = ({data, order, orderBy, columns, labelEmpty, classes, multi
                                 </TableRow>
                             );
                         })}
-                    </TableBody>
-                }
+                    </TableBody>}
             </Table>
         </div>
     );

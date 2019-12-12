@@ -38,7 +38,7 @@ const getFieldValues = (field, nodeData) => {
     return formFields;
 };
 
-const getDetailsValue = (sections = [], nodeData, lang) => {
+const getDetailsValue = (sections = [], nodeData = {}, lang = 'en') => {
     // Retrieve only fields inside the metadata section
     const fields = getFields(sections, 'metadata');
 
