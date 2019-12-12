@@ -64,6 +64,18 @@ describe('CreateNewContent utils', () => {
             expect(actions[2].key).toEqual('tata-beta');
             expect(actions.length).toBe(3);
         });
+
+        it('should return actions without jnt:resource', async () => {
+            queryResponse.data.forms.contentTypesAsTree.push({
+                name: 'jnt:resource'
+            });
+
+            const actions = await getActions(context);
+            expect(actions[0].key).toEqual('toto-beta');
+            expect(actions[1].key).toEqual('tete-beta');
+            expect(actions[2].key).toEqual('tata-beta');
+            expect(actions.length).toBe(3);
+        });
     });
 
     describe('filterTree', () => {
