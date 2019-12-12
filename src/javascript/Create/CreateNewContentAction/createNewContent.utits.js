@@ -22,13 +22,15 @@ export async function getActions(context, variables) {
         }, []);
 
     if (nodeTypes.length <= NB_OF_DISPLAYED_RESCRICTED_SUB_NODES) {
-        return nodeTypes.map(nodeType => ({
-            key: nodeType.name + '-beta',
-            openEditor: true,
-            nodeTypes: [nodeType.name],
-            buttonLabel: 'content-editor:label.contentEditor.CMMActions.createNewContent.contentOfType',
-            buttonLabelParams: {typeName: nodeType.label}
-        }));
+        return nodeTypes
+            .filter(f => f.name !== 'jnt:resource')
+            .map(nodeType => ({
+                key: nodeType.name + '-beta',
+                openEditor: true,
+                nodeTypes: [nodeType.name],
+                buttonLabel: 'content-editor:label.contentEditor.CMMActions.createNewContent.contentOfType',
+                buttonLabelParams: {typeName: nodeType.label}
+            }));
     }
 }
 
