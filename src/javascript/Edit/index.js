@@ -6,7 +6,7 @@ import unpublishAction from './unpublish/unpublish.action';
 import {Edit, Save, CloudUpload, CloudOff} from '@material-ui/icons';
 import {menuAction, composeActions} from '@jahia/react-material';
 import {DotsVertical} from 'mdi-material-ui';
-import openEngineTabs from './openEngineTabs/openEngineTabs.action';
+import openEngineTabs from './engineTabs/openEngineTabs.action';
 import {withFormikAction} from '../actions/withFormik.action';
 import {withPublicationInfoContextAction} from '../actions/withPublicationInfoContext.action';
 
@@ -63,33 +63,36 @@ export const registerActions = actionsRegistry => {
         target: ['ContentEditorHeaderActions:2']
     });
 
-    actionsRegistry.add('versioningTabAction', openEngineTabs, {
-        buttonLabel: 'content-editor:label.contentEditor.edit.action.versioningTab',
-        target: ['ContentEditorHeaderActions:3'],
-        tabs: ['versioning']
-    });
+    // SINCE DX 7.5 this fct is introduce, not usable by previous DX version
+    if (!window.parent.authoringApi.getEditTabs) {
+        actionsRegistry.add('versioningTabAction', openEngineTabs, {
+            buttonLabel: 'content-editor:label.contentEditor.edit.action.versioningTab',
+            target: ['ContentEditorHeaderActions:3'],
+            tabs: ['versioning']
+        });
 
-    actionsRegistry.add('seoTabAction', openEngineTabs, {
-        buttonLabel: 'content-editor:label.contentEditor.edit.action.seoTab',
-        target: ['ContentEditorHeaderActions:4'],
-        tabs: ['seo']
-    });
+        actionsRegistry.add('seoTabAction', openEngineTabs, {
+            buttonLabel: 'content-editor:label.contentEditor.edit.action.seoTab',
+            target: ['ContentEditorHeaderActions:4'],
+            tabs: ['seo']
+        });
 
-    actionsRegistry.add('visibilityTabAction', openEngineTabs, {
-        buttonLabel: 'content-editor:label.contentEditor.edit.action.visibilityTab',
-        target: ['ContentEditorHeaderActions:5'],
-        tabs: ['visibility']
-    });
+        actionsRegistry.add('visibilityTabAction', openEngineTabs, {
+            buttonLabel: 'content-editor:label.contentEditor.edit.action.visibilityTab',
+            target: ['ContentEditorHeaderActions:5'],
+            tabs: ['visibility']
+        });
 
-    actionsRegistry.add('historyTabAction', openEngineTabs, {
-        buttonLabel: 'content-editor:label.contentEditor.edit.action.historyTab',
-        target: ['ContentEditorHeaderActions:6'],
-        tabs: ['history']
-    });
+        actionsRegistry.add('historyTabAction', openEngineTabs, {
+            buttonLabel: 'content-editor:label.contentEditor.edit.action.historyTab',
+            target: ['ContentEditorHeaderActions:6'],
+            tabs: ['history']
+        });
 
-    actionsRegistry.add('usagesTabAction', openEngineTabs, {
-        buttonLabel: 'content-editor:label.contentEditor.edit.action.usagesTab',
-        target: ['ContentEditorHeaderActions:7'],
-        tabs: ['usages']
-    });
+        actionsRegistry.add('usagesTabAction', openEngineTabs, {
+            buttonLabel: 'content-editor:label.contentEditor.edit.action.usagesTab',
+            target: ['ContentEditorHeaderActions:7'],
+            tabs: ['usages']
+        });
+    }
 };

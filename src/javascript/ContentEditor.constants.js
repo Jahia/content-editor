@@ -21,5 +21,6 @@ export const Constants = {
         baseCreateRoute: 'create',
         browseRoute: 'browse',
         browseFilesRoute: 'browse-files'
-    }
+    },
+    notSupportedEngineTabs: ['content', 'categories']
 };

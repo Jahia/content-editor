@@ -9,6 +9,7 @@ import {validate} from '~/Validation/validation';
 import {saveNode} from './save/save.request';
 import {PublicationInfoContextProvider} from '~/PublicationInfo/PublicationInfo.context';
 import {Constants} from '~/ContentEditor.constants';
+import {registerEngineTabActions} from './engineTabs/engineTabs.utils';
 
 export const Edit = ({
     client,
@@ -36,6 +37,9 @@ export const Edit = ({
     if (loading) {
         return <ProgressOverlay/>;
     }
+
+    // Engines tabs need the node Data to be registered
+    registerEngineTabActions(nodeData);
 
     const editorContext = {
         path,
