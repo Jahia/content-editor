@@ -12,10 +12,15 @@ const unpublishAction = require('~/Edit/unpublish/unpublish.action');
 describe('register', () => {
     let actionsRegistry;
     beforeAll(() => {
+        window.parent.authoringApi = {
+            getEditTabs: jest.fn()
+        };
+
         actionsRegistry = {
             get: jest.fn(),
             add: jest.fn()
         };
+
         global.contextJsParameters = {
             config: {
                 actions: {

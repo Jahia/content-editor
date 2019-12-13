@@ -35,6 +35,7 @@ const NodeDataFragment = {
                     supertypes {
                         name
                     }
+                    hasOrderableChildNodes
                 }
                 properties(language: $language) {
                     name
