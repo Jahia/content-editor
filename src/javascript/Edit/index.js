@@ -7,8 +7,9 @@ import {Edit, Save, CloudUpload, CloudOff} from '@material-ui/icons';
 import {menuAction, composeActions} from '@jahia/react-material';
 import {DotsVertical} from 'mdi-material-ui';
 import openEngineTabs from './engineTabs/openEngineTabs.action';
-import {withFormikAction} from '../actions/withFormik.action';
-import {withPublicationInfoContextAction} from '../actions/withPublicationInfoContext.action';
+import {withFormikAction} from '~/actions/withFormik.action';
+import {withPublicationInfoContextAction} from '~/actions/withPublicationInfoContext.action';
+import {editRestrictedAction} from '~/actions/editRestricted.action';
 
 export const registerActions = actionsRegistry => {
     // Content Media Manager Action
@@ -43,7 +44,7 @@ export const registerActions = actionsRegistry => {
 
     /* 3 dots menu */
 
-    actionsRegistry.add('ContentEditorHeaderMenu', composeActions(withFormikAction, withPublicationInfoContextAction, menuAction), {
+    actionsRegistry.add('ContentEditorHeaderMenu', composeActions(editRestrictedAction, withFormikAction, withPublicationInfoContextAction, menuAction), {
         buttonIcon: <DotsVertical/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.action.moreOptions',
         menu: 'ContentEditorHeaderActions',

@@ -1,15 +1,17 @@
 import {composeActions} from '@jahia/react-material';
-import {withFormikAction} from '../../actions/withFormik.action';
+import {withFormikAction} from '~/actions/withFormik.action';
 import {Constants} from '~/ContentEditor.constants';
 import {publishNode} from './publish.request';
-import {withPublicationInfoContextAction} from '../../actions/withPublicationInfoContext.action';
+import {withPublicationInfoContextAction} from '~/actions/withPublicationInfoContext.action';
+import {editRestrictedAction} from '~/actions/editRestricted.action';
 
 export default composeActions(
+    editRestrictedAction,
     withFormikAction,
     withPublicationInfoContextAction,
     {
         init: context => {
-            context.enabled = context.mode === Constants.routes.baseEditRoute && context.nodeData.hasPublishPermission;
+            context.enabled = context.enabled && context.nodeData.hasPublishPermission;
 
             if (context.enabled) {
                 if (context.publicationInfoContext.publicationInfoPolling && context.publicationInfoContext.publicationStatus === Constants.editPanel.publicationStatus.PUBLISHED) {

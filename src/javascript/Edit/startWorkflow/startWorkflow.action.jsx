@@ -1,18 +1,19 @@
-import {Constants} from '~/ContentEditor.constants';
 import {composeActions} from '@jahia/react-material';
-import {withFormikAction} from '../../actions/withFormik.action';
+import {withFormikAction} from '~/actions/withFormik.action';
+import {editRestrictedAction} from '~/actions/editRestricted.action';
 
 export default composeActions(
+    editRestrictedAction,
     withFormikAction,
     {
         init: context => {
             if (context.isMainButton) {
-                context.enabled = context.mode === Constants.routes.baseEditRoute &&
+                context.enabled = context.enabled &&
                     !context.nodeData.hasPublishPermission &&
                     context.nodeData.hasStartPublicationWorkflowPermission;
                 context.disabled = context.nodeData.lockInfo.isLocked || context.formik.dirty;
             } else {
-                context.enabled = context.mode === Constants.routes.baseEditRoute && context.nodeData.hasPublishPermission;
+                context.enabled = context.enabled && context.nodeData.hasPublishPermission;
 
                 // In case the action is in the menu, formik is in parent context
                 if (context.enabled && (context.nodeData.lockInfo.isLocked || context.parent.formik.dirty)) {
