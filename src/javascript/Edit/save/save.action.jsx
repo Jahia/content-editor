@@ -1,17 +1,16 @@
 import {composeActions, componentRendererAction} from '@jahia/react-material';
-import {Constants} from '~/ContentEditor.constants';
 import {withFormikAction} from '~/actions/withFormik.action';
 import {validateForm} from '~/Validation/validation.utils';
-import {withPublicationInfoContextAction} from '../../actions/withPublicationInfoContext.action';
+import {withPublicationInfoContextAction} from '~/actions/withPublicationInfoContext.action';
+import {editRestrictedAction} from '~/actions/editRestricted.action';
 
 export default composeActions(
+    editRestrictedAction,
     withFormikAction,
     componentRendererAction,
     withPublicationInfoContextAction,
     {
         init: context => {
-            context.enabled = context.mode === Constants.routes.baseEditRoute;
-
             if (context.enabled) {
                 context.disabled = !context.formik.dirty || context.publicationInfoContext.publicationInfoPolling;
             }
