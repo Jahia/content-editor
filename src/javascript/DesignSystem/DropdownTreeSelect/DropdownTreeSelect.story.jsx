@@ -2,7 +2,7 @@ import React from 'react';
 
 import {storiesOf} from '@storybook/react';
 import {action} from '@storybook/addon-actions';
-import {withKnobs, boolean} from '@storybook/addon-knobs';
+import {withKnobs, boolean, text} from '@storybook/addon-knobs';
 import {DSProvider} from '@jahia/design-system-kit';
 import {DropdownTreeSelect} from './DropdownTreeSelect';
 
@@ -67,6 +67,7 @@ storiesOf('DropdownTreeSelect', module)
             <DSProvider>
                 <DropdownTreeSelect
                     data={data}
+                    noMatchesLabel={text('no match label', 'ho ho ho, there is no result')}
                     readOnly={boolean('readOnly', false)}
                     disabled={boolean('disabled', false)}
                     onChange={action('onChange')}

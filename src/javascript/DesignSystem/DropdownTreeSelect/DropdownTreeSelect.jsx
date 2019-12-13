@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import close from './close.svg';
 import checked from './checked.svg';
 import unchecked from './unchecked.svg';
+import arrow from './arrow.svg';
 
 import DropdownTreeSelectLib from 'react-dropdown-tree-select';
 import {withStyles} from '@material-ui/core/styles';
@@ -13,7 +14,8 @@ if (process.env.STORYBOOK_ENV || process.env.NODE_ENV === 'test') {
     icons = {
         close,
         checked,
-        unchecked
+        unchecked,
+        arrow
     };
 } else {
     const path = `${window.contextJsParameters.contextPath}/modules/content-editor/javascript/apps/`;
@@ -21,7 +23,8 @@ if (process.env.STORYBOOK_ENV || process.env.NODE_ENV === 'test') {
     icons = {
         close: path + close,
         checked: path + checked,
-        unchecked: path + unchecked
+        unchecked: path + unchecked,
+        arrow: path + arrow
     };
 }
 
@@ -52,31 +55,8 @@ const styles = theme => ({
 
                 '&.arrow': {
                     cursor: 'pointer',
-
-                    '&.bottom::after': {
-                        content: '">"',
-                        transform: 'rotate(90deg)',
-                        display: 'inline-block',
-                        verticalAlign: 'middle',
-                        color: '#3c3c3c',
-                        marginRight: '2px'
-                    },
-
-                    '&.top::after': {
-                        content: '">"',
-                        display: 'inline-block',
-                        transform: 'rotate(270deg)',
-                        verticalAlign: 'middle',
-                        color: '#3c3c3c',
-                        marginRight: '2px'
-                    },
-
                     '&.disabled': {
-                        cursor: 'not-allowed',
-
-                        '&.bottom::after': {
-                            color: 'rgb(185, 185, 185)'
-                        }
+                        cursor: 'not-allowed'
                     }
                 }
             },
@@ -144,8 +124,8 @@ const styles = theme => ({
             fontSize: '0',
             '&::after': {
                 content: `url(${icons.close})`,
-                height: '1rem',
-                width: '1rem',
+                height: '20px',
+                width: '20px',
                 display: 'block'
             },
 
@@ -162,6 +142,7 @@ const styles = theme => ({
         '& .node': {
             display: 'flex',
             padding: '4px',
+            color: '#565656',
 
             '&.leaf': {
                 marginLeft: '8px',
@@ -212,7 +193,7 @@ const styles = theme => ({
             whiteSpace: 'pre',
             marginRight: '4px',
             cursor: 'pointer',
-            width: '4px',
+            width: '16px',
 
             '&::after': {
                 content: '""',
@@ -220,11 +201,11 @@ const styles = theme => ({
             },
 
             '&.collapsed::after': {
-                content: '">"'
+                content: `url(${icons.arrow})`
             },
 
             '&.expanded::after': {
-                content: '">"',
+                content: `url(${icons.arrow})`,
                 transform: 'rotate(90deg)'
             }
         },
@@ -236,6 +217,7 @@ const styles = theme => ({
         '& .tag-list': {
             display: 'flex',
             alignItems: 'center',
+            flexWrap: 'wrap',
             flexGrow: 1,
             padding: 0,
             margin: 0
@@ -246,7 +228,6 @@ const styles = theme => ({
 
             '& .search': {
                 border: 'none',
-                borderBottom: 'solid 1px #ccc',
                 outline: 'none'
             }
         },
@@ -256,12 +237,16 @@ const styles = theme => ({
     }
 });
 
-const CustomDropdownTreeSelectCmp = ({classes, readOnly, disabled, ...props}) => {
+const CustomDropdownTreeSelectCmp = ({classes, readOnly, disabled, noMatchesLabel, ...props}) => {
     return (
         <DropdownTreeSelectLib
             className={`${classes.container} ${readOnly ? 'readOnly' : ''} ${disabled ? 'disabled' : ''}`}
             readOnly={readOnly}
             disabled={disabled}
+            texts={{
+                placeholder: '\t',
+                noMatches: noMatchesLabel
+            }}
             {...props}
         />
     );
@@ -276,6 +261,7 @@ CustomDropdownTreeSelectCmp.defaultProps = {
 CustomDropdownTreeSelectCmp.propTypes = {
     classes: PropTypes.object.isRequired,
     mode: PropTypes.string,
+    noMatchesLabel: PropTypes.string.isRequired,
     readOnly: PropTypes.bool,
     disabled: PropTypes.bool
 };
