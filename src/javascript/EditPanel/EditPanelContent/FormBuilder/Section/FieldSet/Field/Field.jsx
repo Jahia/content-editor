@@ -23,7 +23,6 @@ let styles = theme => {
         formControl: {
             ...theme.typography.zeta,
             ...common,
-            width: '100%',
             padding: '8px 0',
             paddingLeft: '8px',
             marginLeft: '20px ',
