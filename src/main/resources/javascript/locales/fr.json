@@ -118,6 +118,7 @@
       },
       "preview": {
         "contentNotFound": "Le contenu ne peut pas être prévisualisé dans la page",
+        "noPreview": "Aucun aperçu disponible",
         "toggleButtons": {
           "preview": "Aperçu",
           "details": "Détails",

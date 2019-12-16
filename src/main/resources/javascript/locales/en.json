@@ -118,6 +118,7 @@
       },
       "preview": {
         "contentNotFound": "Content cannot be previewed in the page",
+        "noPreview": "No preview available",
         "toggleButtons": {
           "preview": "Preview",
           "details": "Details",

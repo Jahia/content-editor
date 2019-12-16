@@ -22,9 +22,21 @@ const styles = theme => ({
 
 export const ContentPreviewMemoWrapperCmp = React.memo(({t, classes}) => {
     const editorContext = useContentEditorContext();
-    const previewContext = getPreviewContext(editorContext);
     const [contentNoFound, setContentNotFound] = useState(false);
 
+    if (editorContext.nodeData.displayableNode && editorContext.nodeData.displayableNode.isFolder) {
+        return (
+            <div className={classes.badges}>
+                <Badge
+                    badgeContent={t('content-editor:label.contentEditor.preview.noPreview')}
+                    variant="normal"
+                    color="warning"
+                />
+            </div>
+        );
+    }
+
+    const previewContext = getPreviewContext(editorContext);
     const domLoadedCallback = frameDoc => {
         // No zoom on full if no content wrapped in the page
         if (!previewContext.requestAttributes) {
@@ -38,8 +50,6 @@ export const ContentPreviewMemoWrapperCmp = React.memo(({t, classes}) => {
             setContentNotFound(true);
         }
     };
-
-    const style = 'pointer-events: none';
 
     return (
         <>
@@ -63,7 +73,7 @@ export const ContentPreviewMemoWrapperCmp = React.memo(({t, classes}) => {
                         data={data.jcr ? data.jcr : {}}
                         workspace={previewContext.workspace}
                         domLoadedCallback={domLoadedCallback}
-                        iFrameStyle={style}
+                        iFrameStyle="pointer-events: none"
                         iframeProps={{
                             'aria-labelledby': 'preview-tab'
                         }}
