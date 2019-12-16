@@ -118,6 +118,7 @@
       },
       "preview": {
         "contentNotFound": "Inhalte können auf der Seite nicht in der Vorschau angezeigt werden",
+        "noPreview": "Keine Vorschau vorhanden",
         "toggleButtons": {
           "preview": "Vorschau",
           "details": "Details",
