@@ -3639,10 +3639,10 @@ cipher-base@^1.0.0, cipher-base@^1.0.1, cipher-base@^1.0.3:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
 
-ckeditor4-react@^0.1.0:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/ckeditor4-react/-/ckeditor4-react-0.1.1.tgz#9b5b280459dd101d49b43ff572b5b27f73d60575"
-  integrity sha512-54Vs5EUd990BnhTR2/nclL31Oi1Ytk5Uu0THvSuT1VpGr7ZKcbGp/KdSQV3Pg8k95y7aVIo6pDShYN6y8fINzA==
+ckeditor4-react@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.npmjs.org/ckeditor4-react/-/ckeditor4-react-1.0.1.tgz#4c626ab31a4bda8b4e50e064ca1072f5ccaca5a0"
+  integrity sha512-Y27p/FZsUhkYBJ0aWzD1MMCu/U26iFiMryCMyQyMx9OTzo0045PYzrmoxgAtminEzW80y5Aln8asYL+QTe/5sg==
   dependencies:
     load-script "^1.0.0"
     prop-types "^15.6.2"
