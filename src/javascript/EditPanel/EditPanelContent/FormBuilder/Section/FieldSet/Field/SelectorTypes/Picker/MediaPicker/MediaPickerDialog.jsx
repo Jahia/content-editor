@@ -83,6 +83,7 @@ const MediaPickerDialog = ({
     const siteNodes = getSiteNodes(data, t('content-editor:label.contentEditor.siteSwitcher.allSites'));
     const mediaPickerTreeConfig = {
         ...pickerConfigs.image.treeConfigs[0],
+        // This key is used by the selenium test, please do not remove it.
         key: 'browse-tree-files'
     };
     const siteNode = siteNodes.find(siteNode => siteNode.name === site);
