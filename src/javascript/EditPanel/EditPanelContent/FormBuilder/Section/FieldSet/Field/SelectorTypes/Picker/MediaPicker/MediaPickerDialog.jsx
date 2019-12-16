@@ -81,7 +81,10 @@ const MediaPickerDialog = ({
     };
 
     const siteNodes = getSiteNodes(data, t('content-editor:label.contentEditor.siteSwitcher.allSites'));
-    const mediaPickerTreeConfig = {...pickerConfigs.image.treeConfigs[0]};
+    const mediaPickerTreeConfig = {
+        ...pickerConfigs.image.treeConfigs[0],
+        key: 'browse-tree-files'
+    };
     const siteNode = siteNodes.find(siteNode => siteNode.name === site);
     mediaPickerTreeConfig.rootLabel = t('content-editor:label.contentEditor.edit.fields.imagePicker.rootLabel');
     mediaPickerTreeConfig.rootPath = mediaPickerTreeConfig.rootPath(site);
