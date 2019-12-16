@@ -41,12 +41,15 @@ export function registerEngineTabActions(nodeData) {
         return;
     }
 
+    let nodeTypes = primaryNodeType.supertypes.map(nodeType => nodeType.name);
+    nodeTypes.unshift(primaryNodeType.name);
+
     const tabs = window.parent.authoringApi.getEditTabs(
         path,
         uuid,
         displayName,
         mixinTypes.map(mixinType => mixinType.name),
-        primaryNodeType.supertypes.map(nodeType => nodeType.name),
+        nodeTypes,
         primaryNodeType.hasOrderableChildNodes
     );
 
