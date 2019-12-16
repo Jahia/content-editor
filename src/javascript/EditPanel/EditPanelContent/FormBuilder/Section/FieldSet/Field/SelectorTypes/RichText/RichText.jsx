@@ -9,7 +9,7 @@ export class RichTextCmp extends React.Component {
     constructor(props) {
         super(props);
 
-        CKEditor.editorUrl = window.CKEDITOR_BASEPATH + '/ckeditor.js';
+        CKEditor.editorUrl = window.CKEDITOR_BASEPATH + 'ckeditor.js';
     }
 
     render() {
