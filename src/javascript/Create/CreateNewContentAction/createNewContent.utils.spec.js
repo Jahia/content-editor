@@ -28,6 +28,11 @@ describe('CreateNewContent utils', () => {
                                 children: []
                             }
                         ]
+                    },
+                    jcr: {
+                        nodeByPath: {
+                            isNodeType: true
+                        }
                     }
                 }
             };
@@ -37,6 +42,11 @@ describe('CreateNewContent utils', () => {
             await getActions(context);
 
             expect(context.client.query).toHaveBeenCalled();
+        });
+
+        it('should return empty array when nodetype is not allowed', async () => {
+            queryResponse.data.jcr.nodeByPath.isNodeType = false;
+            expect(await getActions(context)).toEqual([]);
         });
 
         it('should return empty array when no contentTypesAsTree is returned', async () => {

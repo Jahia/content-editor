@@ -10,7 +10,8 @@ export const registerActions = actionsRegistry => {
         buttonIcon: <Queue/>,
         buttonLabel:
             'content-editor:label.contentEditor.CMMActions.createNewContent.menu',
-        target: ['createMenuActions:3.2', 'contentActions:3.2']
+        target: ['createMenuActions:3.2', 'contentActions:3.2'],
+        showOnNodeTypes: ['jnt:contentFolder', 'jnt:content']
     });
 
     // In app actions
