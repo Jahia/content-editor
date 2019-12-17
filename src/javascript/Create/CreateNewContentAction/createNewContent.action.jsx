@@ -30,7 +30,8 @@ export default composeActions(
             const variables = {
                 uiLang: context.uiLang,
                 path: context.path,
-                excludedNodeTypes: ['jmix:studioOnly', 'jmix:hiddenType']
+                excludedNodeTypes: ['jmix:studioOnly', 'jmix:hiddenType'],
+                showOnNodeTypes: context.showOnNodeTypes
             };
             const sharedObservable = from(getActions(context, variables)).pipe(share());
             context.actions = sharedObservable;

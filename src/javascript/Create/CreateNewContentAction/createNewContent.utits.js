@@ -1,12 +1,17 @@
-import {getTreeOfContent} from '~/Create/CreateNewContentAction/CreateNewContent.gql-queries';
+import {getTreeOfContentWithRequirements} from './CreateNewContent.gql-queries';
 
 const NB_OF_DISPLAYED_RESCRICTED_SUB_NODES = 5;
 
 export async function getActions(context, variables) {
     const {data} = await context.client.query({
-        query: getTreeOfContent,
+        query: getTreeOfContentWithRequirements,
         variables
     });
+
+    const showOnNodeTypes = data.jcr.nodeByPath.isNodeType;
+    if (!showOnNodeTypes) {
+        return [];
+    }
 
     const nodeTypes = data.forms.contentTypesAsTree
         .map(category => {
