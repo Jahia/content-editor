@@ -89,7 +89,7 @@ const pickerConfigs = {
     folder: {
         picker: pickerSelectorTypes.ContentPicker,
         treeConfigs: [treeConfigs.files],
-        selectableTypesTable: ['nt:folder']
+        selectableTypesTable: ['jnt:folder']
     },
     contentfolder: {
         picker: pickerSelectorTypes.ContentPicker,
