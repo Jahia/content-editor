@@ -27,7 +27,7 @@ const getTreeOfContentQuery = `forms {
         }`;
 
 export const getTreeOfContentWithRequirements = gql`
-    query getTreeOfContent($nodeTypes:[String], $excludedNodeTypes:[String], $showOnNodeTypes:[String]!, $uiLang:String!, $path:String!){
+    query getTreeOfContentWithRequirements($nodeTypes:[String], $excludedNodeTypes:[String], $showOnNodeTypes:[String]!, $uiLang:String!, $path:String!){
         ${getTreeOfContentQuery}
         jcr {
             nodeByPath(path: $path) {
