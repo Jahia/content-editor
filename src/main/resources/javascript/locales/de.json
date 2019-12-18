@@ -83,7 +83,8 @@
             "groupsRootLabel": "Gruppen-Workspaces",
             "siteUsersRootLabel": "Benutzer-{{siteName}}",
             "siteGroupsRootLabel": "Gruppen-{{siteName}}",
-            "tableEmpty": "No Content",
+            "noContent": "Kein Content",
+            "noSearchResults": "Keine Suchergebnisse",
             "tableHeader": {
               "name": "Name",
               "type": "Typname",
