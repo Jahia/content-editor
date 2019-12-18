@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 import {PredefinedFragments} from '@jahia/apollo-dx';
 
-export const builSearchQuery = typeFilter => {
+export const buildSearchQuery = typeFilter => {
     return gql`
     query searchPickerQuery(
         $path: String!,
@@ -15,11 +15,9 @@ export const builSearchQuery = typeFilter => {
                     nodeType: "jmix:searchable",
                     paths: [$path],
                     nodeConstraint: {
-                        any: [
-                            {contains: $searchTerms}
-                            {contains: $searchTerms, property: "j:tagList"}
-                            {contains: $searchTerms, property: "j:nodename"}
-                            ${typeFilter.map(type => `{contains: "${type}", property: "jcr:primaryType"}`).join(',')}
+                        all: [
+                            ${typeFilter.map(type => `{equals: "${type}", property: "jcr:primaryType"}`).join(',')}
+                            {equals: $searchTerms, property: "j:nodename"}                        
                         ]
                     }
                 },

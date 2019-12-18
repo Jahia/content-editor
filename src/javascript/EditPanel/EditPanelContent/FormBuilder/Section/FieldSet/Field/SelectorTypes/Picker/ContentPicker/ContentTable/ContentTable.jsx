@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import {ContentTableQuery} from './ContentTable.gql-queries';
 import dayjs from 'dayjs';
 import {registry} from '@jahia/registry';
-import {builSearchQuery} from '../../Search/search.gql-queries';
+import {buildSearchQuery} from '../../Search/search.gql-queries';
 
 const columnConfig = t => [
     {
@@ -46,7 +46,7 @@ const ContentTableContainer = ({
     searchTerms
 }) => {
     const {data, error, loading, refetch} = useQuery(
-        searchTerms ? builSearchQuery(tableConfig.typeFilter) : ContentTableQuery,
+        searchTerms ? buildSearchQuery(tableConfig.typeFilter) : ContentTableQuery,
         {
             variables: {
                 path: selectedPath,
