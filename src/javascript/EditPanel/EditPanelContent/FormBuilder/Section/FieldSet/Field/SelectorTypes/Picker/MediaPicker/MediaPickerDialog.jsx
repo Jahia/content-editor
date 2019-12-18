@@ -146,6 +146,7 @@ const MediaPickerDialog = ({
                                                     selectedPath={selectedPath}
                                                     placeholder={t('content-editor:label.contentEditor.edit.fields.imagePicker.searchPlaceholder')}
                                                     className={classes.searchInput}
+                                                    language={editorContext.lang}
                                                     onChange={handleSearchChange}
                                                 />
                                            </header>

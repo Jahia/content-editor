@@ -27,11 +27,12 @@ const styles = theme => ({
     }
 });
 
-const FolderDisplayerCmp = ({classes, selectedPath}) => {
+const FolderDisplayerCmp = ({classes, selectedPath, language}) => {
     const {data, error, loading} = useQuery(FolderNameQuery, {
         variables: {
             typeFilter: ['jmix:image'],
-            path: selectedPath
+            path: selectedPath,
+            language: language
         }
     });
 
@@ -60,6 +61,7 @@ const FolderDisplayerCmp = ({classes, selectedPath}) => {
 
 FolderDisplayerCmp.propTypes = {
     classes: PropTypes.object.isRequired,
-    selectedPath: PropTypes.string.isRequired
+    selectedPath: PropTypes.string.isRequired,
+    language: PropTypes.string.isRequired
 };
 export const FolderDisplayer = withStyles(styles)(FolderDisplayerCmp);
