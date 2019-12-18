@@ -212,6 +212,9 @@ const styles = theme => ({
         '& .searchModeOn .toggle': {
             display: 'none'
         },
+        '& .searchModeOn .node.leaf': {
+            marginLeft: '0'
+        },
 
         // Input
         '& .tag-list': {
