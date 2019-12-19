@@ -87,6 +87,8 @@ const ContentPickerDialog = ({
 
     const showSiteSwitcher = !(field.selectorOptions && field.selectorOptions.find(option => option.value === 'site'));
 
+    const isPickerTypeFiles = nodeTreeConfigs[0].type === 'files';
+
     return (
         <Dialog
             fullScreen
@@ -144,15 +146,23 @@ const ContentPickerDialog = ({
                                        <>
                                            <header className={classes.modalHeader}>
                                                <Typography variant="delta" color="alpha">
-                                                   {t('content-editor:label.contentEditor.edit.fields.contentPicker.modalTitle')}
+                                                   {
+                                                       isPickerTypeFiles ?
+                                                           t('content-editor:label.contentEditor.edit.fields.contentPicker.modalFileTitle') :
+                                                           t('content-editor:label.contentEditor.edit.fields.contentPicker.modalTitle')
+                                                   }
                                                </Typography>
                                                <SearchInput
-                                                    selectedPath={selectedPath}
-                                                    placeholder={t('content-editor:label.contentEditor.edit.fields.contentPicker.searchPlaceholder')}
-                                                    className={classes.searchInput}
-                                                    language={editorContext.lang}
-                                                    onChange={handleSearchChange}
-                                                />
+                                                   selectedPath={selectedPath}
+                                                   placeholder={
+                                                       isPickerTypeFiles ?
+                                                           t('content-editor:label.contentEditor.edit.fields.contentPicker.searchFilePlaceholder') :
+                                                           t('content-editor:label.contentEditor.edit.fields.contentPicker.searchPlaceholder')
+                                                   }
+                                                   className={classes.searchInput}
+                                                   language={editorContext.lang}
+                                                   onChange={handleSearchChange}
+                                               />
                                            </header>
                                            <main className={classes.modalMain}>
                                                <ContentTable

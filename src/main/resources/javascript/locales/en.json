@@ -93,7 +93,9 @@
             },
             "fileUploadBtn": "<span data-jahia-link>Upload file</span>",
             "modalTitle": "Select a content",
-            "searchPlaceholder": "Search content"
+            "modalFileTitle": "Select a file",
+            "searchPlaceholder": "Search content",
+            "searchFilePlaceholder": "Search file"
           },
           "category": {
             "noMatches": "No matches found"
