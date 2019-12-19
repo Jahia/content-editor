@@ -93,7 +93,9 @@
             },
             "fileUploadBtn": "<span data-jahia-link>Datei hochladen</span>",
             "modalTitle": "Content auswählen",
-            "searchPlaceholder": "Content suchen"
+            "modalFileTitle": "Datei auswählen",
+            "searchPlaceholder": "Content suchen",
+            "searchFilePlaceholder": "Datei suchen"
           },
           "category": {
             "noMatches": "Keine Übereinstimmungen gefunden"
