@@ -5,13 +5,13 @@ import {Input} from '@jahia/design-system-kit';
 import {Search} from '@material-ui/icons';
 import {FolderDisplayer} from './FolderDisplayer';
 
-export const SearchInput = ({selectedPath, placeholder, ...props}) => {
+export const SearchInput = ({selectedPath, placeholder, language, ...props}) => {
     return (
         <Input
             type="text"
             data-sel-role="data-sel-picker-search"
             placeholder={placeholder}
-            variant={{icon: <Search/>, interactive: <FolderDisplayer selectedPath={selectedPath}/>}}
+            variant={{icon: <Search/>, interactive: <FolderDisplayer selectedPath={selectedPath} language={language}/>}}
             {...props}
         />
     );
@@ -19,5 +19,6 @@ export const SearchInput = ({selectedPath, placeholder, ...props}) => {
 
 SearchInput.propTypes = {
     selectedPath: PropTypes.string.isRequired,
-    placeholder: PropTypes.string.isRequired
+    placeholder: PropTypes.string.isRequired,
+    language: PropTypes.string.isRequired
 };

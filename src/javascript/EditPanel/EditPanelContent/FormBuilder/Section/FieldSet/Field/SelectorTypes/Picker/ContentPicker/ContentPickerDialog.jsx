@@ -150,6 +150,7 @@ const ContentPickerDialog = ({
                                                     selectedPath={selectedPath}
                                                     placeholder={t('content-editor:label.contentEditor.edit.fields.contentPicker.searchPlaceholder')}
                                                     className={classes.searchInput}
+                                                    language={editorContext.lang}
                                                     onChange={handleSearchChange}
                                                 />
                                            </header>
