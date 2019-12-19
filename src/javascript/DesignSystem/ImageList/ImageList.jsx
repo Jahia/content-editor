@@ -10,11 +10,12 @@ const styles = () => ({
         display: 'flex',
         flex: '1 1 0%',
         overflow: 'auto',
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
+        justifyContent: 'center'
     }
 });
 
-export const ImageListCmp = ({error, images, multipleSelectable, classes, onImageDoubleClick, onImageSelection, initialSelection}) => {
+export const ImageListCmp = ({error, images, multipleSelectable, classes, onImageDoubleClick, onImageSelection, initialSelection, labelEmpty}) => {
     const [selectedImages, setSelectedImages] = useState(
         initialSelection
             .map(path => images.find(i => i.path === path))
@@ -42,19 +43,24 @@ export const ImageListCmp = ({error, images, multipleSelectable, classes, onImag
 
     return (
         <section className={classes.container}>
-            {images.map(img => {
-                return (
-                    <Card
-                        key={img.uuid}
-                        image={{src: img.url, alt: img.name}}
-                        headerText={img.name}
-                        subhead={`${img.type}${img.width && img.height ? ` - ${img.width}x${img.height}px` : ''}`}
-                        selected={Boolean(selectedImages.find(i => i.uuid === img.uuid))}
-                        onDoubleClick={() => onImageDoubleClick(img)}
-                        onClick={() => onClickHandler(img)}
-                        />
-                );
-            })}
+            {
+                images && images.length === 0 ?
+                    <Typography variant="p">{labelEmpty}</Typography> :
+
+                    images.map(img => {
+                        return (
+                            <Card
+                                key={img.uuid}
+                                image={{src: img.url, alt: img.name}}
+                                headerText={img.name}
+                                subhead={`${img.type}${img.width && img.height ? ` - ${img.width}x${img.height}px` : ''}`}
+                                selected={Boolean(selectedImages.find(i => i.uuid === img.uuid))}
+                                onDoubleClick={() => onImageDoubleClick(img)}
+                                onClick={() => onClickHandler(img)}
+                            />
+                        );
+                    })
+            }
         </section>
     );
 };
@@ -81,6 +87,7 @@ ImageListCmp.propTypes = {
     })),
     initialSelection: PropTypes.arrayOf(PropTypes.string),
     multipleSelectable: PropTypes.bool,
+    labelEmpty: PropTypes.string.isRequired,
     classes: PropTypes.object.isRequired,
     onImageDoubleClick: PropTypes.func,
     onImageSelection: PropTypes.func

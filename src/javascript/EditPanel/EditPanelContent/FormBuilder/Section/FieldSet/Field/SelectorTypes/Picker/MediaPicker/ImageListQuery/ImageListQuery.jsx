@@ -67,6 +67,11 @@ const ImageListQueryCmp = ({
 
     return (
         <ImageList
+            labelEmpty={
+                searchTerms ?
+                    t('content-editor:label.contentEditor.edit.fields.contentPicker.noSearchResults') :
+                    t('content-editor:label.contentEditor.edit.fields.contentPicker.noContent')
+            }
             images={images}
             error={error}
             initialSelection={initialSelection}

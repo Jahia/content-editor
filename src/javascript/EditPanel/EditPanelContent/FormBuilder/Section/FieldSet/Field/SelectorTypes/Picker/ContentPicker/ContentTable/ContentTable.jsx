@@ -94,9 +94,11 @@ const ContentTableContainer = ({
     return (
         <DSContentTable
             columns={columnConfig(t)}
-            labelEmpty={t(
-                'content-editor:label.contentEditor.edit.fields.contentPicker.tableEmpty'
-            )}
+            labelEmpty={
+                searchTerms ?
+                    t('content-editor:label.contentEditor.edit.fields.contentPicker.noSearchResults') :
+                    t('content-editor:label.contentEditor.edit.fields.contentPicker.noContent')
+            }
             initialSelection={initialSelection}
             data={tableData}
             order="asc"

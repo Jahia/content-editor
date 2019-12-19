@@ -83,7 +83,8 @@
             "groupsRootLabel": "Espace des groupes",
             "siteUsersRootLabel": "Utilisateurs {{siteName}}",
             "siteGroupsRootLabel": "Groupes {{siteName}}",
-            "tableEmpty": "No Content",
+            "noContent": "Aucun contenu",
+            "noSearchResults": "Aucun résultat de recherche",
             "tableHeader": {
               "name": "Nom",
               "type": "Type",
