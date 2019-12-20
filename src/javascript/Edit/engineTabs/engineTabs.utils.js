@@ -60,11 +60,11 @@ export function registerEngineTabActions(nodeData) {
         for (let i = 0; i < tabs.length; i++) {
             const tab = tabs[i];
 
-            if (!Constants.notSupportedEngineTabs.includes(tab) && !actionsRegistry.get(actionPrefix + tab)) {
-                actionsRegistry.add(actionPrefix + tab, openEngineTabs, {
-                    buttonLabel: tab,
+            if (!Constants.notSupportedEngineTabs.includes(tab) && !actionsRegistry.get(actionPrefix + tab.id)) {
+                actionsRegistry.add(actionPrefix + tab.id, openEngineTabs, {
+                    buttonLabel: tab.title,
                     target: ['ContentEditorHeaderActions:' + (i + actionStartPriority)],
-                    tabs: [tab]
+                    tabs: [tab.id]
                 });
             }
         }
