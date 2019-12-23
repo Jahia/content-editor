@@ -1,18 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'formik';
-import {ContentPickerEmpty} from './ContentPickerEmpty/ContentPickerEmpty';
-import {ContentPickerFilled} from './ContentPickerFilled/ContentPickerFilled';
-import pickerConfigs from '../Picker.configs';
+import pickerConfigs from './Picker.configs';
 import {translate} from 'react-i18next';
 import {FieldPropTypes} from '~/EditPanel/FormDefinitions/FormData.proptypes';
 
-const ContentPickerCmp = ({field, value, id, editorContext, formik, t, setActionContext}) => {
+const PickerCmp = ({field, value, id, editorContext, formik, t, setActionContext}) => {
     // Resolve picker configuration
     const pickerConfig = pickerConfigs.resolveConfig(
         field.selectorOptions,
         field
     );
+
     // Build tree configs
     const nodeTreeConfigs = pickerConfig.treeConfigs.map(treeConfig => {
         return {
@@ -29,8 +28,10 @@ const ContentPickerCmp = ({field, value, id, editorContext, formik, t, setAction
     });
 
     if (value) {
+        const PickerFilled = pickerConfig.picker.filled;
+
         return (
-            <ContentPickerFilled
+            <PickerFilled
                 id={id}
                 uuid={value}
                 field={field}
@@ -43,8 +44,10 @@ const ContentPickerCmp = ({field, value, id, editorContext, formik, t, setAction
         );
     }
 
+    const PickerEmpty = pickerConfig.picker.empty;
+
     return (
-        <ContentPickerEmpty
+        <PickerEmpty
             id={id}
             field={field}
             formik={formik}
@@ -56,7 +59,7 @@ const ContentPickerCmp = ({field, value, id, editorContext, formik, t, setAction
     );
 };
 
-ContentPickerCmp.propTypes = {
+PickerCmp.propTypes = {
     editorContext: PropTypes.object.isRequired,
     value: PropTypes.string,
     field: FieldPropTypes.isRequired,
@@ -66,4 +69,4 @@ ContentPickerCmp.propTypes = {
     setActionContext: PropTypes.func.isRequired
 };
 
-export const ContentPicker = translate()(connect(ContentPickerCmp));
+export const Picker = translate()(connect(PickerCmp));
