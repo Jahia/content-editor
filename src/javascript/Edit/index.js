@@ -65,7 +65,7 @@ export const registerActions = actionsRegistry => {
     });
 
     // SINCE DX 7.5 this fct is introduce, not usable by previous DX version
-    if (!window.parent.authoringApi.getEditTabs) {
+    if (window.parent.authoringApi && !window.parent.authoringApi.getEditTabs) {
         actionsRegistry.add('versioningTabAction', openEngineTabs, {
             buttonLabel: 'content-editor:label.contentEditor.edit.action.versioningTab',
             target: ['ContentEditorHeaderActions:3'],

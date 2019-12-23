@@ -1,5 +1,5 @@
 import React from 'react';
-import {MediaPicker} from './MediaPicker';
+import {Picker} from './Picker';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 
@@ -13,7 +13,22 @@ jest.mock('formik', () => {
     };
 });
 
-describe('mediaPicker', () => {
+jest.mock('./Picker.configs.js', () => {
+    const EmptyCmp = () => 'empty';
+    const FilledCmp = () => 'filled';
+
+    return {
+        resolveConfig: () => ({
+            picker: {
+                empty: EmptyCmp,
+                filled: FilledCmp
+            },
+            treeConfigs: []
+        })
+    };
+});
+
+describe('Picker', () => {
     let defaultProps;
 
     beforeEach(() => {
@@ -30,29 +45,29 @@ describe('mediaPicker', () => {
         };
     });
 
-    it('should display the MediaPickerEmpty when the field is not filed', () => {
+    it('should display the EmptyCmp when the field is not filed', () => {
         const cmp = shallowWithTheme(
-            <MediaPicker {...defaultProps}/>,
+            <Picker {...defaultProps}/>,
             {},
             dsGenericTheme
         )
             .dive()
             .dive();
 
-        expect(cmp.debug()).toContain('MediaPickerEmptyCmp');
+        expect(cmp.debug()).toContain('EmptyCmp');
     });
 
-    it('should display the MediaPickerFilled when the field is filed', () => {
+    it('should display the FilledCmp when the field is filed', () => {
         defaultProps.value = 'DummyValue';
 
         const cmp = shallowWithTheme(
-            <MediaPicker {...defaultProps}/>,
+            <Picker {...defaultProps}/>,
             {},
             dsGenericTheme
         )
             .dive()
             .dive();
 
-        expect(cmp.debug()).toContain('MediaPickerFilledCmp');
+        expect(cmp.debug()).toContain('FilledCmp');
     });
 });
