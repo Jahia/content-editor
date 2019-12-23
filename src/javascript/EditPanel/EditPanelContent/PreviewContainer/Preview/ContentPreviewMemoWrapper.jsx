@@ -24,7 +24,8 @@ export const ContentPreviewMemoWrapperCmp = React.memo(({t, classes}) => {
     const editorContext = useContentEditorContext();
     const [contentNoFound, setContentNotFound] = useState(false);
 
-    if (editorContext.nodeData.displayableNode && editorContext.nodeData.displayableNode.isFolder) {
+    // No preview for folders
+    if (editorContext.nodeData.isFolder) {
         return (
             <div className={classes.badges}>
                 <Badge

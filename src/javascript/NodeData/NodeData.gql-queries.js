@@ -12,6 +12,7 @@ const NodeDataFragment = {
         gql: gql`fragment NodeData on JCRQuery {
             result:nodeByPath(path: $path) {
                 ...NodeCacheRequiredFields
+                isFolder:isNodeType(type: {multi: ANY, types: ["jnt:contentFolder", "jnt:folder"]})
                 displayableNode {
                     path
                     isFolder:isNodeType(type: {multi: ANY, types: ["jnt:contentFolder", "jnt:folder"]})
