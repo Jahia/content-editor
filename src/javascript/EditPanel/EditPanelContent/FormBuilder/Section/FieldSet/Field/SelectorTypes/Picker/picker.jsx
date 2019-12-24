@@ -1,61 +1,65 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'formik';
-import pickerConfigs from './Picker.configs';
 import {translate} from 'react-i18next';
 import {FieldPropTypes} from '~/EditPanel/FormDefinitions/FormData.proptypes';
+import {ProgressOverlay} from '@jahia/react-material';
+import {Picker as PickerInput} from '~/DesignSystem/picker';
+import {extractConfigs} from './Picker.utils';
+import {PickerDialog} from './PickerDialog';
 
 const PickerCmp = ({field, value, id, editorContext, formik, t, setActionContext}) => {
-    // Resolve picker configuration
-    const pickerConfig = pickerConfigs.resolveConfig(
-        field.selectorOptions,
-        field
-    );
+    const {pickerConfig, nodeTreeConfigs} = extractConfigs(field, editorContext, t);
+    const [isDialogOpen, setDialogOpen] = useState(false);
+    const {fieldData, error, loading} = pickerConfig.picker.pickerInput.usePickerInputData(value, editorContext);
 
-    // Build tree configs
-    const nodeTreeConfigs = pickerConfig.treeConfigs.map(treeConfig => {
-        return {
-            treeConfig,
-            rootPath: treeConfig.rootPath(editorContext.site),
-            selectableTypes: treeConfig.selectableTypes,
-            type: treeConfig.type,
-            openableTypes: treeConfig.openableTypes,
-            rootLabel: t(treeConfig.rootLabelKey, {
-                siteName: editorContext.siteDisplayableName
-            }),
-            key: `browse-tree-${treeConfig.type}`
-        };
-    });
-
-    if (value) {
-        const PickerFilled = pickerConfig.picker.filled;
-
-        return (
-            <PickerFilled
-                id={id}
-                uuid={value}
-                field={field}
-                formik={formik}
-                editorContext={editorContext}
-                pickerConfig={pickerConfig}
-                nodeTreeConfigs={nodeTreeConfigs}
-                setActionContext={setActionContext}
-            />
+    if (error) {
+        const message = t(
+            'content-media-manager:label.contentManager.error.queryingContent',
+            {details: error.message ? error.message : ''}
         );
+        return <>{message}</>;
     }
 
-    const PickerEmpty = pickerConfig.picker.empty;
+    if (loading) {
+        return <ProgressOverlay/>;
+    }
+
+    if (!field.multiple) {
+        setActionContext(prevActionContext => ({
+            open: setDialogOpen,
+            noAction: !value,
+            fieldData,
+            editorContext,
+            contextHasChange:
+                (prevActionContext.fieldData && prevActionContext.fieldData.path) !== (fieldData && fieldData.path)
+        }));
+    }
 
     return (
-        <PickerEmpty
-            id={id}
-            field={field}
-            formik={formik}
-            editorContext={editorContext}
-            pickerConfig={pickerConfig}
-            nodeTreeConfigs={nodeTreeConfigs}
-            setActionContext={setActionContext}
-        />
+        <>
+            <PickerInput
+                readOnly={field.readOnly}
+                emptyLabel={t(pickerConfig.picker.pickerInput.emptyLabel)}
+                emptyIcon={pickerConfig.picker.pickerInput.emptyIcon}
+                labelledBy={`${field.name}-label`}
+                fieldData={fieldData}
+                onClick={() => setDialogOpen(!isDialogOpen)}
+            />
+
+            <PickerDialog
+                isOpen={isDialogOpen}
+                setIsOpen={setDialogOpen}
+                editorContext={editorContext}
+                initialSelectedItem={fieldData && fieldData.path}
+                id={id}
+                nodeTreeConfigs={nodeTreeConfigs}
+                t={t}
+                formik={formik}
+                field={field}
+                pickerConfig={pickerConfig}
+            />
+        </>
     );
 };
 

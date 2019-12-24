@@ -2,8 +2,8 @@ import gql from 'graphql-tag';
 import {PredefinedFragments} from '@jahia/apollo-dx';
 
 const MediaPickerFilledQuery = gql`
-    query mediaPickerFilledQuery($uuid: String!) {
-        jcr {
+    query mediaPickerFilledQuery($uuid: String!, $needToFetch: Boolean!) {
+        jcr @include(if: $needToFetch) {
             result: nodeById(uuid: $uuid) {
                 name
                 width: property(name: "j:width") {
@@ -25,7 +25,7 @@ const MediaPickerFilledQuery = gql`
                 ...NodeCacheRequiredFields
             }
         }
-    }   
+    }
     ${PredefinedFragments.nodeCacheRequiredFields.gql}
 `;
 

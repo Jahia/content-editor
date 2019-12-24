@@ -13,22 +13,29 @@ jest.mock('formik', () => {
     };
 });
 
-jest.mock('./Picker.configs.js', () => {
-    const EmptyCmp = () => 'empty';
-    const FilledCmp = () => 'filled';
-
+jest.mock('./Picker.utils', () => {
     return {
-        resolveConfig: () => ({
-            picker: {
-                empty: EmptyCmp,
-                filled: FilledCmp
+        extractConfigs: () => ({
+            pickerConfig: {
+                picker: {
+                    pickerInput: {
+                        usePickerInputData: () => {
+                            return {
+                                fieldData: {},
+                                loading: false
+                            };
+                        }
+                    }
+                }
             },
-            treeConfigs: []
+            nodeTreeConfigs: {
+
+            }
         })
     };
 });
 
-describe('Picker', () => {
+describe('picker', () => {
     let defaultProps;
 
     beforeEach(() => {
@@ -40,12 +47,12 @@ describe('Picker', () => {
                 readOnly: false
             },
             id: 'imageid',
-            editorContext: {},
+            editorContext: {site: 'digitall'},
             setActionContext: jest.fn()
         };
     });
 
-    it('should display the EmptyCmp when the field is not filed', () => {
+    it('should give to picker input readOnly', () => {
         const cmp = shallowWithTheme(
             <Picker {...defaultProps}/>,
             {},
@@ -54,12 +61,10 @@ describe('Picker', () => {
             .dive()
             .dive();
 
-        expect(cmp.debug()).toContain('EmptyCmp');
+        expect(cmp.find('Picker').props().readOnly).toBe(false);
     });
 
-    it('should display the FilledCmp when the field is filed', () => {
-        defaultProps.value = 'DummyValue';
-
+    it('should close the dialog by default', () => {
         const cmp = shallowWithTheme(
             <Picker {...defaultProps}/>,
             {},
@@ -68,6 +73,20 @@ describe('Picker', () => {
             .dive()
             .dive();
 
-        expect(cmp.debug()).toContain('FilledCmp');
+        expect(cmp.find('PickerDialog').props().isOpen).toBe(false);
+    });
+
+    it('should open the dialog when clicking on the picker input', () => {
+        const cmp = shallowWithTheme(
+            <Picker {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        )
+            .dive()
+            .dive();
+
+        cmp.find('Picker').simulate('click');
+
+        expect(cmp.find('PickerDialog').props().isOpen).toBe(true);
     });
 });

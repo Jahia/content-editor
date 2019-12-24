@@ -1,10 +1,5 @@
-import {Picker} from './picker';
-import {pickerActions} from './actions';
-
-import {ContentPickerEmpty} from './ContentPicker/ContentPickerEmpty/ContentPickerEmpty';
-import {ContentPickerFilled} from './ContentPicker/ContentPickerFilled/ContentPickerFilled';
-import {MediaPickerEmpty} from './MediaPicker/MediaPickerEmpty/MediaPickerEmpty';
-import {MediaPickerFilled} from './MediaPicker/MediaPickerFilled/MediaPickerFilled';
+import {MediaPickerSelectorType} from './MediaPicker';
+import {ContentPickerSelectorType} from './ContentPicker';
 
 const treeConfigs = {
     content: {
@@ -80,8 +75,8 @@ const treeConfigs = {
 };
 
 const pickerSelectorTypes = {
-    ContentPicker: {cmp: Picker, filled: ContentPickerFilled, empty: ContentPickerEmpty, key: 'ContentPicker', actions: pickerActions, supportMultiple: false},
-    MediaPicker: {cmp: Picker, filled: MediaPickerFilled, empty: MediaPickerEmpty, key: 'MediaPicker', supportMultiple: false}
+    ContentPicker: ContentPickerSelectorType,
+    MediaPicker: MediaPickerSelectorType
 };
 
 const pickerConfigs = {

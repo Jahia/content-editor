@@ -1,1 +1,0 @@
-export {ContentPickerFilled} from './ContentPickerFilled';

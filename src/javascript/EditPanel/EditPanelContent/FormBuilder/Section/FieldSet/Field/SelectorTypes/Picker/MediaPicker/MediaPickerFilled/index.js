@@ -1,1 +1,0 @@
-export {MediaPickerFilled} from './MediaPickerFilled';

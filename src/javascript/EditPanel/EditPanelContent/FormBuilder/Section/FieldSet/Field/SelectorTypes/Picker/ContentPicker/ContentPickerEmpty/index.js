@@ -1,1 +1,0 @@
-export {ContentPickerEmpty} from './ContentPickerEmpty';
