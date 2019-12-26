@@ -1,25 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-import {withStyles} from '@material-ui/core';
 import {Section} from './Section';
 import {Form} from 'formik';
 
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {SectionsPropTypes} from '~/EditPanel/FormDefinitions/FormData.proptypes';
 
-let styles = theme => ({
-    container: {
-        backgroundColor: theme.palette.ui.epsilon
-    }
-});
-
-const FormBuilderCmp = ({classes, mode}) => {
+const FormBuilder = ({mode}) => {
     const context = useContentEditorContext();
 
     return (
         <Form>
-            <section className={classes.container} data-sel-mode={mode}>
+            <section data-sel-mode={mode}>
                 {context.sections.map(section => {
                     return <Section key={section.displayName} section={section}/>;
                 })}
@@ -28,18 +20,14 @@ const FormBuilderCmp = ({classes, mode}) => {
     );
 };
 
-FormBuilderCmp.contextTypes = {
+FormBuilder.contextTypes = {
     context: PropTypes.shape({
         sections: SectionsPropTypes.isRequired
     })
 };
 
-FormBuilderCmp.propTypes = {
-    classes: PropTypes.object.isRequired,
+FormBuilder.propTypes = {
     mode: PropTypes.string.isRequired
 };
-
-const FormBuilder = withStyles(styles)(FormBuilderCmp);
-FormBuilder.displayName = 'FormBuilder';
 
 export default FormBuilder;
