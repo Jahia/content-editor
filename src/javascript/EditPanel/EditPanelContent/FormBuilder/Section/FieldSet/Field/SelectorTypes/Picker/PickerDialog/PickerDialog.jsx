@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
 import Dialog from '@material-ui/core/Dialog/Dialog';
-import {PickerDialog as PickerDialogToRefactor} from '~/DesignSystem/PickerDialog';
+import {PickerDialog as PickerDialogToRefactor} from './PickerDialog';
 
 import Slide from '@material-ui/core/Slide';
 import {FastField} from 'formik';
@@ -13,7 +13,7 @@ import {ProgressOverlay} from '@jahia/react-material';
 import {getSiteNodes} from '../Picker.utils';
 import {Typography} from '@jahia/design-system-kit';
 import {SearchInput} from './Search/Search';
-import {getSite} from '~/DesignSystem/PickerDialog/PickerDialog.utils';
+import {getSite} from './PickerDialog/PickerDialog.utils';
 
 const styles = theme => ({
     rootDialog: {
