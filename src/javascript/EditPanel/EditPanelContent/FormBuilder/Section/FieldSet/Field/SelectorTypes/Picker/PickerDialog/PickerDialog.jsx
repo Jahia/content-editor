@@ -26,7 +26,7 @@ const styles = theme => ({
         margin: '10px'
     },
     modalMain: {
-        height: '100%'
+        flexGrow: 1
     },
     searchInput: {
         flexGrow: 0.6
