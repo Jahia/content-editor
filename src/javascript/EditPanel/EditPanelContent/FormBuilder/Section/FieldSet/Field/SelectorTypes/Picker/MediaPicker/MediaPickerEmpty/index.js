@@ -1,1 +1,0 @@
-export {MediaPickerEmpty} from './MediaPickerEmpty';

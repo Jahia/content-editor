@@ -4,9 +4,9 @@ import * as PropTypes from 'prop-types';
 import {useQuery} from 'react-apollo-hooks';
 import {translate} from 'react-i18next';
 import {ImageList} from '~/DesignSystem/ImageList';
-import {encodeJCRPath} from '../../../../../../../../../EditPanel.utils';
+import {encodeJCRPath} from '~/EditPanel/EditPanel.utils';
 import {MediaPickerImages} from './ImageListQuery.gql-queries';
-import {buildSearchQuery} from '../../Search/search.gql-queries';
+import {buildSearchQuery} from '../../PickerDialog/Search/search.gql-queries';
 import {registry} from '@jahia/registry';
 import {useContentEditorContext} from '~/ContentEditor.context';
 

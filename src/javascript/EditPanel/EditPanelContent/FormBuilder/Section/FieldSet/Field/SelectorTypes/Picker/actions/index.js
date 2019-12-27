@@ -2,11 +2,11 @@ import {Edit, Cancel, Launch} from '@material-ui/icons';
 import {menuAction} from '@jahia/react-material';
 import {DotsVertical, FileUpload} from 'mdi-material-ui';
 import React from 'react';
-import {replaceAction} from './actions/replace.action';
-import {unsetFieldAction} from '../../FieldsActions/unsetField.action';
-import {openInTabAction} from './actions/openInTab.action';
+import {unsetFieldAction} from '../../../FieldsActions/unsetField.action';
+import {openInTabAction} from './openInTab.action';
+import {replaceAction} from './replace.action';
 
-const pickerActions = actionsRegistry => {
+export const pickerActions = actionsRegistry => {
     actionsRegistry.add('ContentPickerMenu', menuAction, {
         buttonIcon: <DotsVertical/>,
         buttonLabel: 'label.contentEditor.edit.action.fieldMoreOptions',
@@ -50,5 +50,3 @@ const pickerActions = actionsRegistry => {
         contentType: 'jnt:file'
     });
 };
-
-export default pickerActions;

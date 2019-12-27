@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import {ContentTableQuery} from './ContentTable.gql-queries';
 import dayjs from 'dayjs';
 import {registry} from '@jahia/registry';
-import {buildSearchQuery} from '../../Search/search.gql-queries';
+import {buildSearchQuery} from '../../PickerDialog/Search/search.gql-queries';
 
 const columnConfig = t => [
     {
