@@ -188,10 +188,7 @@ describe('adaptFormData', () => {
         graphqlResponse.forms.editForm.sections[0].name = 'metadata';
         graphqlResponse.forms.editForm.sections[0].fieldSets[0].fields[0].readOnly = true;
 
-        expect(adaptFormData(graphqlResponse, 'fr', t).sections).toEqual([{
-            name: 'metadata',
-            fieldSets: []
-        }]);
+        expect(adaptFormData(graphqlResponse, 'fr', t).sections).toEqual([]);
     });
 
     it('should return the nodeData name when editing', () => {
