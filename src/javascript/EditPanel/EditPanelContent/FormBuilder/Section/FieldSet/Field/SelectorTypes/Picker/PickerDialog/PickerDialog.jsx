@@ -143,6 +143,7 @@ const PickerDialogCmp = ({
                                    // Build table config from picker config
                                    const tableConfig = {
                                        typeFilter: pickerConfig.selectableTypesTable,
+                                       searchSelectorType: pickerConfig.searchSelectorType,
                                        recursionTypesFilter: ['nt:base'],
                                        showOnlyNodesWithTemplates: pickerConfig.showOnlyNodesWithTemplates
                                    };

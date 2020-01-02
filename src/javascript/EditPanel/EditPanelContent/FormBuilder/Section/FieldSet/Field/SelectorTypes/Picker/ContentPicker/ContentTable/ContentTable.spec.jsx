@@ -55,6 +55,7 @@ describe('contentListTable', () => {
                 lang: 'en'
             },
             tableConfig: {
+                searchSelectorType: '   ',
                 typeFilter: [],
                 recursionTypesFilter: []
             },

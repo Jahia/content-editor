@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import {ContentTableQuery} from './ContentTable.gql-queries';
 import dayjs from 'dayjs';
 import {registry} from '@jahia/registry';
-import {buildSearchQuery} from '../../PickerDialog/Search/search.gql-queries';
+import {searchPickerQuery} from '../../PickerDialog/Search/search.gql-queries';
 
 const columnConfig = t => [
     {
@@ -46,12 +46,14 @@ const ContentTableContainer = ({
     searchTerms
 }) => {
     const {data, error, loading, refetch} = useQuery(
-        searchTerms ? buildSearchQuery(tableConfig.typeFilter) : ContentTableQuery,
+        searchTerms ? searchPickerQuery : ContentTableQuery,
         {
             variables: {
                 path: selectedPath,
                 language: editorContext.lang,
                 searchTerms,
+                searchName: '%' + searchTerms + '%',
+                searchSelectorType: tableConfig.searchSelectorType,
                 typeFilter: tableConfig.typeFilter,
                 recursionTypesFilter: tableConfig.recursionTypesFilter,
                 fieldFilter: tableConfig.showOnlyNodesWithTemplates ? {filters: [{fieldName: 'isDisplayableNode', evaluation: 'EQUAL', value: 'true'}]} : null
@@ -118,6 +120,7 @@ ContentTableContainer.propTypes = {
     t: PropTypes.func.isRequired,
     tableConfig: PropTypes.shape({
         typeFilter: PropTypes.array.isRequired,
+        searchSelectorType: PropTypes.string.isRequired,
         recursionTypesFilter: PropTypes.array.isRequired,
         showOnlyNodesWithTemplates: PropTypes.bool
     }).isRequired,

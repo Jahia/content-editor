@@ -6,7 +6,7 @@ import {translate} from 'react-i18next';
 import {ImageList} from '~/DesignSystem/ImageList';
 import {encodeJCRPath} from '~/EditPanel/EditPanel.utils';
 import {MediaPickerImages} from './ImageListQuery.gql-queries';
-import {buildSearchQuery} from '../../PickerDialog/Search/search.gql-queries';
+import {searchPickerQuery} from '../../PickerDialog/Search/search.gql-queries';
 import {registry} from '@jahia/registry';
 import {useContentEditorContext} from '~/ContentEditor.context';
 
@@ -20,9 +20,11 @@ const ImageListQueryCmp = ({
 }) => {
     const {lang} = useContentEditorContext();
     const {data, error, loading, refetch} = useQuery(
-        searchTerms ? buildSearchQuery(['jmix:image']) : MediaPickerImages,
+        searchTerms ? searchPickerQuery : MediaPickerImages,
         {
             variables: {
+                searchName: '%' + searchTerms + '%',
+                searchSelectorType: 'jmix:image',
                 path: selectedPath,
                 searchTerms,
                 language: lang
