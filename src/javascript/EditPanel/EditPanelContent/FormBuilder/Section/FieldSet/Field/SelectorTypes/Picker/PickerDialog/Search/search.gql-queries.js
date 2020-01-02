@@ -1,25 +1,30 @@
 import gql from 'graphql-tag';
 import {PredefinedFragments} from '@jahia/apollo-dx';
 
-export const buildSearchQuery = typeFilter => {
-    return gql`
+export const searchPickerQuery = gql`
     query searchPickerQuery(
         $path: String!,
         $language: String!,
-        $searchTerms: String!
+        $searchTerms: String!,
+        $searchName: String!,
+        $searchSelectorType: String!
     ) {
         jcr {
             result: nodesByCriteria(
                 criteria: {
                     language: $language,
-                    nodeType: "jmix:searchable",
+                    nodeType: $searchSelectorType,
                     paths: [$path],
-                    nodeConstraint: {
-                        all: [
-                            ${typeFilter.map(type => `{equals: "${type}", property: "jcr:primaryType"}`).join(',')}
-                            {equals: $searchTerms, property: "j:nodename"}                        
-                        ]
-                    }
+                    nodeConstraint: {any: [
+                        {contains: $searchTerms}
+                        {contains: $searchTerms, property: "jcr:content"}
+                        {contains: $searchTerms, property: "jcr:description"}
+                        {contains: $searchTerms, property: "jcr:title"}
+                        {contains: $searchTerms, property: "j:keywords"}
+                        {like: $searchName, property: "j:nodename"}
+                        {equals: $searchTerms, property: "j:tagList"}
+                    ]},
+                    ordering: {orderType: DESC, property: "score()"}
                 },
                 offset: 0,
                 limit: 50
@@ -61,4 +66,3 @@ export const buildSearchQuery = typeFilter => {
     }
     ${PredefinedFragments.nodeCacheRequiredFields.gql}
 `;
-};

@@ -83,27 +83,32 @@ const pickerConfigs = {
     image: {
         picker: pickerSelectorTypes.MediaPicker,
         treeConfigs: [treeConfigs.files],
+        searchSelectorType: 'jmix:image',
         selectableTypesTable: ['jmix:image']
     },
     folder: {
         picker: pickerSelectorTypes.ContentPicker,
         treeConfigs: [treeConfigs.files],
+        searchSelectorType: 'jnt:folder',
         selectableTypesTable: ['jnt:folder']
     },
     contentfolder: {
         picker: pickerSelectorTypes.ContentPicker,
         treeConfigs: [treeConfigs.content],
+        searchSelectorType: 'jnt:contentFolder',
         selectableTypesTable: ['jnt:contentFolder']
     },
     page: {
         picker: pickerSelectorTypes.ContentPicker,
         treeConfigs: [treeConfigs.pages],
+        searchSelectorType: 'jnt:page',
         selectableTypesTable: ['jnt:page']
     },
     editorial: {
         picker: pickerSelectorTypes.ContentPicker,
         treeConfigs: [treeConfigs.allContents],
-        selectableTypesTable: ['jnt:page', 'jmix:editorialContent', 'jnt:contentList', 'jnt:contentFolder', 'nt:folder', 'jmix:siteContent']
+        searchSelectorType: 'jmix:searchable',
+        selectableTypesTable: ['jmix:editorialContent', 'jnt:page', 'jnt:contentList', 'jnt:contentFolder', 'nt:folder', 'jmix:siteContent']
     },
     get editoriallink() {
         return {
@@ -114,27 +119,32 @@ const pickerConfigs = {
     file: {
         picker: pickerSelectorTypes.ContentPicker,
         treeConfigs: [treeConfigs.files],
+        searchSelectorType: 'jnt:file',
         selectableTypesTable: ['jnt:file']
     },
     user: {
         picker: pickerSelectorTypes.ContentPicker,
         treeConfigs: [treeConfigs.users, treeConfigs.siteUsers],
+        searchSelectorType: 'jnt:user',
         selectableTypesTable: ['jnt:user'],
         displayTree: false
     },
     usergroup: {
         picker: pickerSelectorTypes.ContentPicker,
         treeConfigs: [treeConfigs.users, treeConfigs.siteUsers, treeConfigs.groups, treeConfigs.siteGroups],
+        searchSelectorType: 'jnt:user',
         selectableTypesTable: ['jnt:user', 'jnt:group']
     },
     category: {
         picker: pickerSelectorTypes.ContentPicker,
         treeConfigs: [treeConfigs.categories],
+        searchSelectorType: 'jnt:category',
         selectableTypesTable: ['jnt:category']
     },
     site: {
         picker: pickerSelectorTypes.ContentPicker,
         treeConfigs: [treeConfigs.sites],
+        searchSelectorType: 'jnt:virtualsite',
         selectableTypesTable: ['jnt:virtualsite']
     },
     getPickerSelectorTypes() {
