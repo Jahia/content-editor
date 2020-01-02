@@ -16,6 +16,7 @@ export const ContentTableQuery = gql`
                     nodes {
                         displayName(language: $language)
                         primaryNodeType {
+                            name
                             typeName: displayName(language: $language)
                             icon
                         }
@@ -26,7 +27,11 @@ export const ContentTableQuery = gql`
                             value
                         }
                         isDisplayableNode
-
+                        children(typesFilter: {types: $typeFilter, multi: ANY}) {
+                            pageInfo {
+                                totalCount
+                            }
+                        }
                         ...NodeCacheRequiredFields
                     }
                 }
