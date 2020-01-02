@@ -1,5 +1,5 @@
 import React from 'react';
-import {Picker} from '../picker';
+import {Picker} from '../Picker';
 import {Image} from '@material-ui/icons';
 import {encodeJCRPath} from '~/EditPanel/EditPanel.utils';
 import {useQuery} from 'react-apollo-hooks';
