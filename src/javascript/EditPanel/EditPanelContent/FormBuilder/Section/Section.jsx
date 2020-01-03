@@ -7,10 +7,12 @@ import {Typography} from '@jahia/design-system-kit';
 import {SectionPropTypes} from '~/EditPanel/FormDefinitions/FormData.proptypes';
 import {FieldSet} from './FieldSet';
 
-let styles = theme => ({
+const styles = theme => ({
     section: {
         borderBottom: `1px solid ${theme.palette.ui.omega}`,
-        paddingBottom: theme.spacing.unit * 2
+        paddingBottom: theme.spacing.unit * 2,
+        marginBottom: theme.spacing.unit * 2,
+        backgroundColor: theme.palette.ui.epsilon
     },
     sectionTitle: {
         textTransform: 'uppercase',
