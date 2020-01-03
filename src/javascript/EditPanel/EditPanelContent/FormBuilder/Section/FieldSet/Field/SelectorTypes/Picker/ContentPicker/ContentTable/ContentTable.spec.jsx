@@ -41,6 +41,53 @@ const queryResult = {
     }
 };
 
+const queryResultWithChildren = {
+    descendants: {
+        pageInfo: {
+            totalCount: 1,
+            __typename: 'PageInfo'
+        },
+        nodes: [{
+            displayName: 'Home',
+            primaryNodeType: {
+                typeName: 'Page',
+                icon: '/jahia/modules/assets/icons/jnt_page',
+                __typename: 'JCRNodeType'
+            },
+            children: {
+                pageInfo: {
+                    totalCount: 5
+                }
+            },
+            createdBy: {value: 'system', __typename: 'JCRProperty'},
+            lastModified: {value: '2019-05-23T14:05:22.674+02:00', __typename: 'JCRProperty'},
+            uuid: 'bfb3bf41-8204-471f-bba7-98e93dcb8bb1',
+            workspace: 'EDIT',
+            path: '/sites/mySite/home',
+            __typename: 'GenericJCRNode'
+        }, {
+            displayName: 'Home',
+            primaryNodeType: {
+                typeName: 'Page',
+                icon: '/jahia/modules/assets/icons/jnt_page',
+                __typename: 'JCRNodeType'
+            },
+            children: {
+                pageInfo: {
+                    totalCount: 0
+                }
+            },
+            createdBy: {value: 'system', __typename: 'JCRProperty'},
+            lastModified: {value: '2019-05-23T14:05:22.674+02:00', __typename: 'JCRProperty'},
+            uuid: 'bfb3bf41-8204-471f-bba7-98e93dcb8bb1',
+            workspace: 'EDIT',
+            path: '/sites/mySite/home',
+            __typename: 'GenericJCRNode'
+        }],
+        __typename: 'JCRNodeConnection'
+    }
+};
+
 describe('contentListTable', () => {
     let defaultProps;
 
@@ -48,6 +95,7 @@ describe('contentListTable', () => {
         defaultProps = {
             field: {},
             selectedPath: '/sites/mySite',
+            setSelectedPath: jest.fn(),
             setSelectedItem: jest.fn(),
             editorContext: {
                 site: 'mySite',
@@ -142,34 +190,7 @@ describe('contentListTable', () => {
     it('should display the sub contents columns if there is content with sub contents', () => {
         setQueryResult({
             jcr: {
-                result: {
-                    descendants: {
-                        pageInfo: {
-                            totalCount: 1,
-                            __typename: 'PageInfo'
-                        },
-                        nodes: [{
-                            displayName: 'Home',
-                            primaryNodeType: {
-                                typeName: 'Page',
-                                icon: '/jahia/modules/assets/icons/jnt_page',
-                                __typename: 'JCRNodeType'
-                            },
-                            children: {
-                                pageInfo: {
-                                    totalCount: 5
-                                }
-                            },
-                            createdBy: {value: 'system', __typename: 'JCRProperty'},
-                            lastModified: {value: '2019-05-23T14:05:22.674+02:00', __typename: 'JCRProperty'},
-                            uuid: 'bfb3bf41-8204-471f-bba7-98e93dcb8bb1',
-                            workspace: 'EDIT',
-                            path: '/sites/mySite/home',
-                            __typename: 'GenericJCRNode'
-                        }],
-                        __typename: 'JCRNodeConnection'
-                    }
-                }
+                result: queryResultWithChildren
             }
         });
 
@@ -183,5 +204,61 @@ describe('contentListTable', () => {
 
         expect(cmp.props().columns[1].property).toContain('subContentsCount');
         expect(cmp.props().data[0].subContentsCount).toBe(5);
+    });
+
+    it('should add button navigateInto when there is subContent', () => {
+        setQueryResult({
+            jcr: {
+                result: queryResultWithChildren
+            }
+        });
+
+        const cmp = shallowWithTheme(
+            <ContentTable {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        )
+            .dive()
+            .dive();
+
+        expect(cmp.props().columns[5].property).toBe('navigateInto');
+        expect(cmp.props().data[0].navigateInto).toBe(true);
+    });
+
+    it('should not add button navigateInto when there is subContent', () => {
+        setQueryResult({
+            jcr: {
+                result: queryResultWithChildren
+            }
+        });
+
+        const cmp = shallowWithTheme(
+            <ContentTable {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        )
+            .dive()
+            .dive();
+
+        expect(cmp.props().data[1].navigateInto).toBe(false);
+    });
+
+    it('should call setSelectedPath when clicking on navigateInto', () => {
+        setQueryResult({
+            jcr: {
+                result: queryResultWithChildren
+            }
+        });
+
+        const cmp = shallowWithTheme(
+            <ContentTable {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        )
+            .dive()
+            .dive();
+
+        cmp.props().data[0].props.navigateInto.onClick({preventDefault: () => {}});
+        expect(defaultProps.setSelectedPath).toHaveBeenCalledWith('/sites/mySite/home');
     });
 });

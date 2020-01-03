@@ -9,6 +9,7 @@ import dayjs from 'dayjs';
 import {registry} from '@jahia/registry';
 import {searchPickerQuery} from '../../PickerDialog/Search/search.gql-queries';
 import ContentTableCellBadgeRenderer from './ContentTableCellBadgeRenderer';
+import {NavigateInto} from './NavigateInto';
 
 const columnConfig = (t, showSubContentsCount) => {
     let columns = [
@@ -36,6 +37,12 @@ const columnConfig = (t, showSubContentsCount) => {
             label: t('content-editor:label.contentEditor.edit.fields.contentPicker.tableHeader.subContents'),
             renderer: ContentTableCellBadgeRenderer
         });
+
+        columns.push({
+            property: 'navigateInto',
+            label: '',
+            renderer: NavigateInto
+        });
     }
 
     return columns;
@@ -46,6 +53,7 @@ const ContentTableContainer = ({
     tableConfig,
     setSelectedItem,
     selectedPath,
+    setSelectedPath,
     editorContext,
     initialSelection,
     searchTerms
@@ -100,7 +108,16 @@ const ContentTableContainer = ({
             createdBy: content.createdBy ? content.createdBy.value : undefined,
             lastModified: content.lastModified ? dayjs(content.lastModified.value)
                 .locale(editorContext.lang)
-                .format('LLL') : undefined
+                .format('LLL') : undefined,
+            navigateInto: haveSubContents,
+            props: {
+                navigateInto: {
+                    onClick: e => {
+                        e.preventDefault();
+                        setSelectedPath(content.path);
+                    }
+                }
+            }
         };
     });
 
@@ -137,6 +154,7 @@ ContentTableContainer.propTypes = {
     }).isRequired,
     setSelectedItem: PropTypes.func.isRequired,
     selectedPath: PropTypes.string.isRequired,
+    setSelectedPath: PropTypes.func.isRequired,
     editorContext: PropTypes.object.isRequired,
     initialSelection: PropTypes.array,
     searchTerms: PropTypes.string

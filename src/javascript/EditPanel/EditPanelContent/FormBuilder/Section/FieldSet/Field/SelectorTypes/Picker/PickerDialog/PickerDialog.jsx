@@ -26,7 +26,7 @@ const styles = theme => ({
         margin: '10px'
     },
     modalMain: {
-        flexGrow: 1
+        height: '100%'
     },
     searchInput: {
         flexGrow: 0.6
@@ -139,11 +139,10 @@ const PickerDialogCmp = ({
                                    onCloseDialog={() => setIsOpen(false)}
                                    onItemSelection={onItemSelection}
                                >
-                                   {(setSelectedItem, selectedPath, initialSelection) => {
+                                   {({setSelectedItem, selectedPath, initialSelection, setSelectedPath}) => {
                                    // Build table config from picker config
                                    const tableConfig = {
                                        typeFilter: pickerConfig.selectableTypesTable,
-                                       searchSelectorType: pickerConfig.searchSelectorType,
                                        recursionTypesFilter: ['nt:base'],
                                        showOnlyNodesWithTemplates: pickerConfig.showOnlyNodesWithTemplates
                                    };
@@ -168,6 +167,7 @@ const PickerDialogCmp = ({
                                                        tableConfig={tableConfig}
                                                        setSelectedItem={setSelectedItem}
                                                        selectedPath={selectedPath}
+                                                       setSelectedPath={setSelectedPath}
                                                        initialSelection={initialSelection}
                                                        editorContext={editorContext}
                                                        searchTerms={searchTerms}

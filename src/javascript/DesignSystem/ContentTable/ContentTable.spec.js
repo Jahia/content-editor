@@ -9,7 +9,7 @@ describe('ContentTable', () => {
     beforeEach(() => {
         defaultProps = {
             data: [
-                {id: '1', name: 'name 1', path: 'path1', type: 'type 1', createdBy: 'createdBy 1', lastModified: 'lastModified 1'},
+                {id: '1', name: 'name 1', path: 'path1', type: 'type 1', createdBy: 'createdBy 1', lastModified: 'lastModified 1', props: {type: {onClick: jest.fn()}}},
                 {id: '2', name: 'name 2', path: 'path2', type: 'type 2', createdBy: 'createdBy 2', lastModified: 'lastModified 2'}
             ],
             columns: [
@@ -102,13 +102,24 @@ describe('ContentTable', () => {
     });
 
     it('should use renderer of the column when defined initially one row', () => {
-        defaultProps.columns[1].renderer = <p>test</p>;
+        defaultProps.columns[1].renderer = () => 'this is a test';
         const cmp = shallowWithTheme(
             <ContentTable {...defaultProps}/>,
             {},
             dsGenericTheme
         ).dive();
 
-        expect(cmp.find('WithStyles(TableCell)').debug()).toContain('tableCellData="type 1"');
+        expect(cmp.find('[tableCellData="type 1"]').dive().debug()).toContain('this is a test');
+    });
+
+    it('should add props to renderer component', () => {
+        defaultProps.columns[1].renderer = () => 'this is a test';
+        const cmp = shallowWithTheme(
+            <ContentTable {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        expect(cmp.find('[tableCellData="type 1"]').props().onClick).toBe(defaultProps.data[0].props.type.onClick);
     });
 });
