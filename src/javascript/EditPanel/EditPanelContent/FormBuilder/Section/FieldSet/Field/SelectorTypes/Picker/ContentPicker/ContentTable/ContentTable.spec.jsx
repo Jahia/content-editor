@@ -39,7 +39,6 @@ const queryResult = {
         }],
         __typename: 'JCRNodeConnection'
     }
-
 };
 
 describe('contentListTable', () => {
@@ -65,15 +64,15 @@ describe('contentListTable', () => {
         window.contextJsParameters = {
             contextPath: ''
         };
+    });
 
+    it('should display the ContentTable', () => {
         setQueryResult({
             jcr: {
                 result: queryResult
             }
         });
-    });
 
-    it('should display the ContentTable', () => {
         const cmp = shallowWithTheme(
             <ContentTable {...defaultProps}/>,
             {},
@@ -86,6 +85,12 @@ describe('contentListTable', () => {
     });
 
     it('should display the name of content', () => {
+        setQueryResult({
+            jcr: {
+                result: queryResult
+            }
+        });
+
         const cmp = shallowWithTheme(
             <ContentTable {...defaultProps}/>,
             {},
@@ -98,6 +103,12 @@ describe('contentListTable', () => {
     });
 
     it('should display the type of the content', () => {
+        setQueryResult({
+            jcr: {
+                result: queryResult
+            }
+        });
+
         const cmp = shallowWithTheme(
             <ContentTable {...defaultProps}/>,
             {},
@@ -107,5 +118,70 @@ describe('contentListTable', () => {
             .dive();
 
         expect(cmp.props().data[0].type).toContain('Page');
+    });
+
+    it('should not display the sub contents columns if there is no content with sub contents', () => {
+        setQueryResult({
+            jcr: {
+                result: queryResult
+            }
+        });
+
+        const cmp = shallowWithTheme(
+            <ContentTable {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        )
+            .dive()
+            .dive();
+
+        expect(cmp.props().columns[1].property).toContain('type');
+        expect(cmp.props().data[0].subContentsCount).toBeUndefined();
+    });
+
+    it('should display the sub contents columns if there is content with sub contents', () => {
+        setQueryResult({
+            jcr: {
+                result: {
+                    descendants: {
+                        pageInfo: {
+                            totalCount: 1,
+                            __typename: 'PageInfo'
+                        },
+                        nodes: [{
+                            displayName: 'Home',
+                            primaryNodeType: {
+                                typeName: 'Page',
+                                icon: '/jahia/modules/assets/icons/jnt_page',
+                                __typename: 'JCRNodeType'
+                            },
+                            children: {
+                                pageInfo: {
+                                    totalCount: 5
+                                }
+                            },
+                            createdBy: {value: 'system', __typename: 'JCRProperty'},
+                            lastModified: {value: '2019-05-23T14:05:22.674+02:00', __typename: 'JCRProperty'},
+                            uuid: 'bfb3bf41-8204-471f-bba7-98e93dcb8bb1',
+                            workspace: 'EDIT',
+                            path: '/sites/mySite/home',
+                            __typename: 'GenericJCRNode'
+                        }],
+                        __typename: 'JCRNodeConnection'
+                    }
+                }
+            }
+        });
+
+        const cmp = shallowWithTheme(
+            <ContentTable {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        )
+            .dive()
+            .dive();
+
+        expect(cmp.props().columns[1].property).toContain('subContentsCount');
+        expect(cmp.props().data[0].subContentsCount).toBe(5);
     });
 });

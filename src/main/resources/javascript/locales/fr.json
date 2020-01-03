@@ -89,7 +89,8 @@
               "name": "Nom",
               "type": "Type",
               "createdBy": "Créé par",
-              "lastModified": "Date de modification"
+              "lastModified": "Date de modification",
+              "subContents":"Sous contenus"
             },
             "fileUploadBtn": "<span data-jahia-link>Uploader un fichier</span>",
             "modalTitle": "Sélectionner un contenu",

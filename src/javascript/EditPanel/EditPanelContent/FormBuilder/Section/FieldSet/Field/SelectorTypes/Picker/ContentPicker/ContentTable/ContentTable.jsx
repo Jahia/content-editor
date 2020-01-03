@@ -9,32 +9,35 @@ import dayjs from 'dayjs';
 import {registry} from '@jahia/registry';
 import {searchPickerQuery} from '../../PickerDialog/Search/search.gql-queries';
 
-const columnConfig = t => [
-    {
-        property: 'name',
-        label: t(
-            'content-editor:label.contentEditor.edit.fields.contentPicker.tableHeader.name'
-        )
-    },
-    {
-        property: 'type',
-        label: t(
-            'content-editor:label.contentEditor.edit.fields.contentPicker.tableHeader.type'
-        )
-    },
-    {
-        property: 'createdBy',
-        label: t(
-            'content-editor:label.contentEditor.edit.fields.contentPicker.tableHeader.createdBy'
-        )
-    },
-    {
-        property: 'lastModified',
-        label: t(
-            'content-editor:label.contentEditor.edit.fields.contentPicker.tableHeader.lastModified'
-        )
+const columnConfig = (t, showSubContentsCount) => {
+    let columns = [
+        {
+            property: 'name',
+            label: t('content-editor:label.contentEditor.edit.fields.contentPicker.tableHeader.name')
+        },
+        {
+            property: 'type',
+            label: t('content-editor:label.contentEditor.edit.fields.contentPicker.tableHeader.type')
+        },
+        {
+            property: 'createdBy',
+            label: t('content-editor:label.contentEditor.edit.fields.contentPicker.tableHeader.createdBy')
+        },
+        {
+            property: 'lastModified',
+            label: t('content-editor:label.contentEditor.edit.fields.contentPicker.tableHeader.lastModified')
+        }
+    ];
+
+    if (showSubContentsCount) {
+        columns.splice(1, 0, {
+            property: 'subContentsCount',
+            label: t('content-editor:label.contentEditor.edit.fields.contentPicker.tableHeader.subContents')
+        });
     }
-];
+
+    return columns;
+};
 
 const ContentTableContainer = ({
     t,
@@ -81,11 +84,16 @@ const ContentTableContainer = ({
 
     const nodes = searchTerms ? data.jcr.result.nodes : data.jcr.result.descendants.nodes;
 
+    let showSubContentsCount = false;
     const tableData = nodes.map(content => {
+        const haveSubContents = content.primaryNodeType.name !== 'jnt:page' && content.children && content.children.pageInfo.totalCount > 0;
+        showSubContentsCount = showSubContentsCount || haveSubContents;
+
         return {
             id: content.uuid,
             path: content.path,
             name: content.displayName,
+            subContentsCount: haveSubContents ? content.children.pageInfo.totalCount : undefined,
             type: content.primaryNodeType.typeName,
             createdBy: content.createdBy ? content.createdBy.value : undefined,
             lastModified: content.lastModified ? dayjs(content.lastModified.value)
@@ -93,9 +101,10 @@ const ContentTableContainer = ({
                 .format('LLL') : undefined
         };
     });
+
     return (
         <DSContentTable
-            columns={columnConfig(t)}
+            columns={columnConfig(t, showSubContentsCount)}
             labelEmpty={
                 searchTerms ?
                     t('content-editor:label.contentEditor.edit.fields.contentPicker.noSearchResults') :
