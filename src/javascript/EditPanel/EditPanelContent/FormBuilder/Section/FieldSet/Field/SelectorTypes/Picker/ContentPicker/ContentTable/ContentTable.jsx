@@ -86,7 +86,7 @@ const ContentTableContainer = ({
 
     let showSubContentsCount = false;
     const tableData = nodes.map(content => {
-        let haveSubContents = content.primaryNodeType.name !== 'jnt:page' && content.children && content.children.pageInfo.totalCount > 0;
+        const haveSubContents = content.primaryNodeType.name !== 'jnt:page' && content.children && content.children.pageInfo.totalCount > 0;
         showSubContentsCount = showSubContentsCount || haveSubContents;
 
         return {
