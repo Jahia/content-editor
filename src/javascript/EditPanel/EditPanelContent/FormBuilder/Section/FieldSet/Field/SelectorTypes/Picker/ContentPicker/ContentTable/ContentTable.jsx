@@ -8,6 +8,7 @@ import {ContentTableQuery} from './ContentTable.gql-queries';
 import dayjs from 'dayjs';
 import {registry} from '@jahia/registry';
 import {searchPickerQuery} from '../../PickerDialog/Search/search.gql-queries';
+import ContentTableCellBadgeRenderer from './ContentTableCellBadgeRenderer';
 
 const columnConfig = (t, showSubContentsCount) => {
     let columns = [
@@ -32,7 +33,8 @@ const columnConfig = (t, showSubContentsCount) => {
     if (showSubContentsCount) {
         columns.splice(1, 0, {
             property: 'subContentsCount',
-            label: t('content-editor:label.contentEditor.edit.fields.contentPicker.tableHeader.subContents')
+            label: t('content-editor:label.contentEditor.edit.fields.contentPicker.tableHeader.subContents'),
+            renderer: ContentTableCellBadgeRenderer
         });
     }
 
