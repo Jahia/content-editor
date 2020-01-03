@@ -95,11 +95,14 @@ const ContentTable = ({data, order, orderBy, columns, labelEmpty, classes, multi
                                     </TableCell>
 
                                     {columns.map(column => {
+                                        const CellRenderer = column.renderer;
                                         return (
                                             <TableCell key={row.id + ' ' + column.property}
                                                        className={classes.tableCell + ' ' + classes[column.property + 'Column']}
                                             >
-                                                {row[column.property]}
+                                                {CellRenderer ?
+                                                    <CellRenderer tableCellData={row[column.property]}/> :
+                                                    row[column.property]}
                                             </TableCell>
                                         );
                                     })}

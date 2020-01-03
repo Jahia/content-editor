@@ -100,4 +100,15 @@ describe('ContentTable', () => {
 
         expect(cmp.find('WithStyles(TableRow)').at(0).props().selected).toBe(true);
     });
+
+    it('should use renderer of the column when defined initially one row', () => {
+        defaultProps.columns[1].renderer = <p>test</p>;
+        const cmp = shallowWithTheme(
+            <ContentTable {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        expect(cmp.find('WithStyles(TableCell)').debug()).toContain('tableCellData="type 1"');
+    });
 });
