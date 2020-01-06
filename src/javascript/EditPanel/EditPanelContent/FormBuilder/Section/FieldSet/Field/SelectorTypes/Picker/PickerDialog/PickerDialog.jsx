@@ -144,7 +144,8 @@ const PickerDialogCmp = ({
                                    const tableConfig = {
                                        typeFilter: pickerConfig.selectableTypesTable,
                                        recursionTypesFilter: ['nt:base'],
-                                       showOnlyNodesWithTemplates: pickerConfig.showOnlyNodesWithTemplates
+                                       showOnlyNodesWithTemplates: pickerConfig.showOnlyNodesWithTemplates,
+                                       searchSelectorType: pickerConfig.searchSelectorType
                                    };
 
                                    return (
