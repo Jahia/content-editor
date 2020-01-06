@@ -99,7 +99,8 @@ describe('contentListTable', () => {
             setSelectedItem: jest.fn(),
             editorContext: {
                 site: 'mySite',
-                lang: 'en'
+                lang: 'fr',
+                uiLang: 'en'
             },
             tableConfig: {
                 searchSelectorType: '   ',

@@ -107,7 +107,7 @@ const ContentTableContainer = ({
             type: content.primaryNodeType.typeName,
             createdBy: content.createdBy ? content.createdBy.value : undefined,
             lastModified: content.lastModified ? dayjs(content.lastModified.value)
-                .locale(editorContext.lang)
+                .locale(editorContext.uiLang)
                 .format('LLL') : undefined,
             navigateInto: haveSubContents,
             props: {
