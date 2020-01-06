@@ -7,7 +7,7 @@ import Drawer from '@material-ui/core/Drawer';
 import Button from '@material-ui/core/Button';
 
 import {withStyles} from '@material-ui/core';
-import {getDetailedPathArray, getPathWithoutFile, getSite} from './PickerDialog.utils';
+import {getDetailedPathArray, getPathWithoutFile, getSite} from '../PickerDialog.utils';
 import SiteSwitcher from '~/DesignSystem/SiteSwitcher/SiteSwitcher';
 
 const styles = theme => ({
