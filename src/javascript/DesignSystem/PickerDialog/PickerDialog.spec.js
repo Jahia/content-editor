@@ -14,7 +14,8 @@ describe('Picker dialog', () => {
             siteNodes: [],
             onSelectSite: jest.fn(site => site.path),
             lang: 'en',
-            children: setSelectedItem => (
+            // eslint-disable-next-line react/prop-types
+            children: ({setSelectedItem}) => (
                 <>
                     <Button id="select-item" onClick={selected => setSelectedItem(selected)}>Select item</Button>
                 </>

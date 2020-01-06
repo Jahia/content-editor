@@ -101,7 +101,7 @@ const ContentTable = ({data, order, orderBy, columns, labelEmpty, classes, multi
                                                        className={classes.tableCell + ' ' + classes[column.property + 'Column']}
                                             >
                                                 {CellRenderer ?
-                                                    <CellRenderer tableCellData={row[column.property]}/> :
+                                                    <CellRenderer tableCellData={row[column.property]} {...(row.props && row.props[column.property] ? row.props[column.property] : {})}/> :
                                                     row[column.property]}
                                             </TableCell>
                                         );

@@ -147,7 +147,12 @@ const PickerDialogCmp = ({
             </Drawer>}
 
             <div className={classes.modalContent + (displayTree ? ` ${classes.modalContentWithDrawer}` : '')}>
-                {children(setSelectedItem, selectedPath, initialSelectedItem ? [initialSelectedItem] : [])}
+                {children({
+                    setSelectedItem,
+                    selectedPath,
+                    setSelectedPath,
+                    initialSelection: initialSelectedItem ? [initialSelectedItem] : []
+                })}
 
                 <div className={classes.actions}>
                     <Button
