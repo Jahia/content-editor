@@ -1,7 +1,7 @@
 import pickerConfigs from './Picker.configs';
 
 export const getSiteNodes = (data, allSitesLabel) => {
-    const siteNodes = data && data.jcr.result && data.jcr.result.siteNodes
+    const siteNodes = data && data.jcr && data.jcr.result ? data.jcr.result.siteNodes
         .filter(node => node.hasPermission)
         .sort((elem1, elem2) => {
             if (elem1.displayName < elem2.displayName) {
@@ -13,7 +13,7 @@ export const getSiteNodes = (data, allSitesLabel) => {
             }
 
             return 0;
-        });
+        }) : [];
 
     if (siteNodes.length > 1) {
         return [allSitesEntry(allSitesLabel), ...siteNodes];
@@ -48,5 +48,36 @@ export const extractConfigs = (field, editorContext, t) => {
         };
     });
 
-    return {pickerConfig, nodeTreeConfigs};
+    return {
+        pickerConfig: {
+            ...pickerConfig,
+            displayTree: pickerConfig.displayTree !== false
+        },
+        nodeTreeConfigs
+    };
+};
+
+export const getPathWithoutFile = fullPath => {
+    return fullPath && fullPath.split('/').slice(0, -1).join('/');
+};
+
+export const getSite = fullPath => {
+    return fullPath && fullPath
+        .split('/')
+        .slice(0, 3)
+        .join('/');
+};
+
+export const getDetailedPathArray = (fullPath, site) => {
+    return fullPath ?
+        fullPath
+            .split('/')
+            .slice(3, -2) // Remove site and path to have the correct number of element to return
+            .reduce((openPaths, slug, i, init) => {
+                return [
+                    ...openPaths,
+                    `${site}/${init.slice(0, i + 1).join('/')}`
+                ];
+            }, [site]) :
+        [];
 };

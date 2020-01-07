@@ -2,39 +2,76 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
 import Dialog from '@material-ui/core/Dialog/Dialog';
-import {PickerDialog as PickerDialogToRefactor} from './PickerDialog';
-
-import Slide from '@material-ui/core/Slide';
 import {FastField} from 'formik';
+import Slide from '@material-ui/core/Slide';
+import {ProgressOverlay} from '@jahia/react-material';
+
+import {LeftPanel} from './LeftPanel';
+import {MainPanel} from './MainPanel';
+
 import {withStyles} from '@material-ui/core';
 import {useQuery} from 'react-apollo-hooks';
 import {SiteNodesQuery} from './PickerDialog.gql-queries';
-import {ProgressOverlay} from '@jahia/react-material';
-import {getSiteNodes} from '../Picker.utils';
-import {Typography} from '@jahia/design-system-kit';
-import {SearchInput} from './Search/Search';
-import {getSite} from './PickerDialog.utils';
+import {getSite, getSiteNodes, getPathWithoutFile} from '../Picker.utils';
 
 const styles = theme => ({
     rootDialog: {
         margin: theme.spacing.unit * 8
     },
-    modalHeader: {
+    modalContent: {
         display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        margin: '10px'
+        flexGrow: 1,
+        flexDirection: 'column',
+        padding: theme.spacing.unit
     },
-    modalMain: {
-        height: '100%'
-    },
-    searchInput: {
-        flexGrow: 0.6
+    modalContentWithDrawer: {
+        marginLeft: '15vw'
     }
 });
 
 const Transition = props => {
     return <Slide direction="up" {...props}/>;
+};
+
+const useSelectedPath = ({initialSelectedItem, nodeTreeConfigs}) => {
+    const initialPath = getPathWithoutFile(initialSelectedItem);
+    const [selectedPath, setSelectedPath] = useState(initialPath || nodeTreeConfigs[0].rootPath);
+    return [selectedPath, setSelectedPath];
+};
+
+const useSiteSwitcher = ({initialSelectedItem, editorContext, nodeTreeConfigs, t}) => {
+    const {data, error, loading} = useQuery(SiteNodesQuery, {
+        variables: {
+            query: 'select * from [jnt:virtualsite] where ischildnode(\'/sites\')',
+            displayLanguage: editorContext.lang
+        }
+    });
+
+    const selectedSite = initialSelectedItem ? getSite(initialSelectedItem).slice(7) : editorContext.site;
+    const [site, setSite] = useState(selectedSite);
+
+    if (error || loading) {
+        return {error, loading};
+    }
+
+    const siteNodes = getSiteNodes(data, t('content-editor:label.contentEditor.siteSwitcher.allSites'));
+    const siteNode = siteNodes.find(siteNode => siteNode.name === site);
+
+    const onSelectSite = siteNode => {
+        setSite(siteNode.name);
+        return siteNode.allSites ? '/sites' : nodeTreeConfigs[0].treeConfig.rootPath(siteNode.name);
+    };
+
+    return {siteNode, siteNodes, site, onSelectSite, setSite, selectedSite};
+};
+
+const useSearch = () => {
+    const [searchTerms, setSearchTerms] = useState('');
+    const handleSearchChange = e => {
+        setSearchTerms(e.target.value);
+    };
+
+    return [searchTerms, handleSearchChange];
 };
 
 const PickerDialogCmp = ({
@@ -49,19 +86,18 @@ const PickerDialogCmp = ({
     t,
     pickerConfig
 }) => {
-    const selectedSite = initialSelectedItem ? getSite(initialSelectedItem).slice(7) : editorContext.site;
-    const [site, setSite] = useState(selectedSite);
-    const [searchTerms, setSearchTerms] = useState('');
-    const handleSearchChange = e => {
-        setSearchTerms(e.target.value);
-    };
+    const {
+        site,
+        selectedSite,
+        setSite,
+        siteNodes,
+        siteNode,
+        error,
+        loading
+    } = useSiteSwitcher({initialSelectedItem, editorContext, nodeTreeConfigs, t});
 
-    const {data, error, loading} = useQuery(SiteNodesQuery, {
-        variables: {
-            query: 'select * from [jnt:virtualsite] where ischildnode(\'/sites\')',
-            displayLanguage: editorContext.lang
-        }
-    });
+    const [selectedPath, setSelectedPath] = useSelectedPath({initialSelectedItem, nodeTreeConfigs});
+    const [searchTerms, handleSearchChange] = useSearch();
 
     if (error) {
         const message = t(
@@ -75,16 +111,14 @@ const PickerDialogCmp = ({
         return <ProgressOverlay/>;
     }
 
-    // TODO BACKLOG-11925 make a hook about the site switcher
-    const siteNodes = getSiteNodes(data, t('content-editor:label.contentEditor.siteSwitcher.allSites'));
-    const siteNode = siteNodes.find(siteNode => siteNode.name === site);
-    const showSiteSwitcher = !(field.selectorOptions && field.selectorOptions.find(option => option.value === 'site'));
-    const onSelectSite = siteNode => {
-        setSite(siteNode.name);
-        return siteNode.allSites ? '/sites' : nodeTreeConfigs[0].treeConfig.rootPath(siteNode.name);
-    };
-
-    const PickerDialogContent = pickerConfig.picker.PickerDialog.DialogContent;
+    const nodeTreeConfigsAdapted = nodeTreeConfigs
+        .map(nodeTreeConfig => ({
+            ...nodeTreeConfig,
+            selectableTypes: siteNode && siteNode.allSites ? [...nodeTreeConfig.treeConfig.selectableTypes, 'jnt:virtualsitesFolder'] : nodeTreeConfig.treeConfig.selectableTypes,
+            openableTypes: siteNode && siteNode.allSites ? [...nodeTreeConfig.treeConfig.openableTypes, 'jnt:virtualsitesFolder', 'jnt:virtualsite'] : nodeTreeConfig.treeConfig.openableTypes,
+            rootPath: siteNode && siteNode.allSites ? '/sites' : nodeTreeConfig.treeConfig.rootPath(site),
+            rootLabel: siteNode && siteNode.displayName
+        }));
 
     return (
         <Dialog
@@ -97,7 +131,7 @@ const PickerDialogCmp = ({
                 setSite(selectedSite);
             }}
             onExited={() => {
-                setSearchTerms('');
+                handleSearchChange({target: {value: ''}});
             }}
         >
             <FastField shouldUpdate={() => true}
@@ -112,76 +146,36 @@ const PickerDialogCmp = ({
                                setFieldTouched(field.name, field.multiple ? [true] : true);
                            };
 
-                           const nodeTreeConfigsAdapted = nodeTreeConfigs
-                               .map(nodeTreeConfig => ({
-                                   ...nodeTreeConfig,
-                                   selectableTypes: siteNode.allSites ? [...nodeTreeConfig.treeConfig.selectableTypes, 'jnt:virtualsitesFolder'] : nodeTreeConfig.treeConfig.selectableTypes,
-                                   openableTypes: siteNode.allSites ? [...nodeTreeConfig.treeConfig.openableTypes, 'jnt:virtualsitesFolder', 'jnt:virtualsite'] : nodeTreeConfig.treeConfig.openableTypes,
-                                   rootPath: siteNode.allSites ? '/sites' : nodeTreeConfig.treeConfig.rootPath(site),
-                                   rootLabel: siteNode.displayName
-                               }));
-
-                           const isPickerTypeFiles = nodeTreeConfigs[0].type === 'files';
-
                            return (
-                               <PickerDialogToRefactor
-                                   displayTree={pickerConfig.displayTree}
-                                   idInput={id}
-                                   site={site}
-                                   siteNodes={siteNodes}
-                                   showSiteSwitcher={showSiteSwitcher}
-                                   lang={editorContext.lang}
-                                   initialSelectedItem={initialSelectedItem}
-                                   nodeTreeConfigs={nodeTreeConfigsAdapted}
-                                   modalCancelLabel={t('content-editor:label.contentEditor.edit.fields.modalCancel').toUpperCase()}
-                                   modalDoneLabel={t('content-editor:label.contentEditor.edit.fields.modalDone').toUpperCase()}
-                                   onSelectSite={siteNode => onSelectSite(siteNode)}
-                                   onCloseDialog={() => setIsOpen(false)}
-                                   onItemSelection={onItemSelection}
-                               >
-                                   {({setSelectedItem, selectedPath, initialSelection, setSelectedPath}) => {
-                                   // Build table config from picker config
-                                   const tableConfig = {
-                                       typeFilter: pickerConfig.selectableTypesTable,
-                                       recursionTypesFilter: ['nt:base'],
-                                       showOnlyNodesWithTemplates: pickerConfig.showOnlyNodesWithTemplates,
-                                       searchSelectorType: pickerConfig.searchSelectorType
-                                   };
-
-                                   return (
-                                       <>
-                                           <header className={classes.modalHeader}>
-                                               <Typography variant="delta" color="alpha">
-                                                   {t(pickerConfig.picker.PickerDialog.dialogTitle(isPickerTypeFiles))}
-                                               </Typography>
-                                               <SearchInput
-                                                   selectedPath={selectedPath}
-                                                   placeholder={t(pickerConfig.picker.PickerDialog.searchPlaceholder())}
-                                                   className={classes.searchInput}
-                                                   language={editorContext.lang}
-                                                   onChange={handleSearchChange}
-                                               />
-                                           </header>
-                                           <main className={classes.modalMain}>
-                                               <PickerDialogContent
-                                                    // For all Picker
-                                                       tableConfig={tableConfig}
-                                                       setSelectedItem={setSelectedItem}
-                                                       selectedPath={selectedPath}
-                                                       setSelectedPath={setSelectedPath}
-                                                       initialSelection={initialSelection}
-                                                       editorContext={editorContext}
-                                                       searchTerms={searchTerms}
-
-                                                    // For mediaPicker
-                                                       onImageDoubleClick={onItemSelection}
-                                               />
-                                           </main>
-                                       </>
-                                   );
-                               }}
-                               </PickerDialogToRefactor>
-                       );
+                               <>
+                                   {pickerConfig.displayTree && (
+                                   <LeftPanel
+                                        site={site}
+                                        siteNodes={siteNodes}
+                                        selectedPath={selectedPath}
+                                        setSelectedPath={setSelectedPath}
+                                        field={field}
+                                        initialSelectedItem={initialSelectedItem}
+                                        lang={editorContext.lang}
+                                        nodeTreeConfigs={nodeTreeConfigsAdapted}
+                                   />)}
+                                   <div className={classes.modalContent + (pickerConfig.displayTree ? ` ${classes.modalContentWithDrawer}` : '')}>
+                                       <MainPanel
+                                            setSelectedPath={setSelectedPath}
+                                            pickerConfig={pickerConfig}
+                                            nodeTreeConfigs={nodeTreeConfigsAdapted}
+                                            initialSelectedItem={initialSelectedItem}
+                                            selectedPath={selectedPath}
+                                            editorContext={editorContext}
+                                            searchTerms={searchTerms}
+                                            handleSearchChange={handleSearchChange}
+                                            t={t}
+                                            onItemSelection={onItemSelection}
+                                            onCloseDialog={() => setIsOpen(false)}
+                                       />
+                                   </div>
+                               </>
+                           );
                    }}
             />
         </Dialog>
