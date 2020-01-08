@@ -5,6 +5,10 @@ import * as PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/EditPanel/FormDefinitions/FormData.proptypes';
 import {FastField} from 'formik';
 
+function loadOption(selectorOptions, name) {
+    return selectorOptions && selectorOptions.find(option => option.name === name);
+}
+
 export class RichTextCmp extends React.Component {
     constructor(props) {
         super(props);
@@ -15,8 +19,12 @@ export class RichTextCmp extends React.Component {
     render() {
         const {field, id, value} = this.props;
 
+        const toolbar = loadOption(field.selectorOptions, 'ckeditor.toolbar');
+        const customConfig = loadOption(field.selectorOptions, 'ckeditor.customConfig');
+
         const config = {
-            toolbar: 'Mini',
+            customConfig: customConfig ? customConfig.value.replace('$context', window.contextJsParameters.contextPath) : '',
+            toolbar: toolbar ? toolbar.value : 'Mini',
             width: '100%',
             contentEditorFieldName: id // Used by selenium to get CKEditor instance
         };

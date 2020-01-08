@@ -16,12 +16,17 @@ describe('RichText component', () => {
                 name: 'x',
                 displayName: 'x',
                 readOnly: false,
-                selectorType: 'RichText'
+                selectorType: 'RichText',
+                selectorOptions: []
             },
             formik: {
                 setFieldValue: () => {},
                 values: []
             }
+        };
+
+        window.contextJsParameters = {
+            contextPath: ''
         };
     });
 
@@ -76,4 +81,30 @@ describe('RichText component', () => {
             .prop('readOnly')
         ).toEqual(readOnly);
     };
+
+    it('should load default configuration if selector options are not available in the definition', () => {
+        const wrapper = buildComp(props);
+        expect(wrapper.find(RICH_TEXT_COMPONENT_TAG).prop('config'))
+            .toEqual({
+                contentEditorFieldName: 'richID',
+                customConfig: '',
+                toolbar: 'Mini',
+                width: '100%'
+            });
+    });
+
+    it('should load configuration if selector options are available in the definition', () => {
+        props.field.selectorOptions = [
+            {name: 'ckeditor.toolbar', value: 'dictionary'},
+            {name: 'ckeditor.customConfig', value: '/path/to/my/custom/config.js'}
+        ];
+        const wrapper = buildComp(props);
+        expect(wrapper.find(RICH_TEXT_COMPONENT_TAG).prop('config'))
+            .toEqual({
+                contentEditorFieldName: 'richID',
+                customConfig: '/path/to/my/custom/config.js',
+                toolbar: 'dictionary',
+                width: '100%'
+            });
+    });
 });
