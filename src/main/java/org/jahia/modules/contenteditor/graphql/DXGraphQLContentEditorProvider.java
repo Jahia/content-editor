@@ -43,6 +43,7 @@
  */
 package org.jahia.modules.contenteditor.graphql;
 
+import org.jahia.modules.contenteditor.graphql.api.GqlEditorSubscriptions;
 import org.jahia.modules.contenteditor.graphql.extensions.QueryExtensions;
 import org.jahia.modules.graphql.provider.dxm.DXGraphQLExtensionsProvider;
 import org.osgi.service.component.annotations.Component;
@@ -57,6 +58,6 @@ import java.util.Collection;
 public class DXGraphQLContentEditorProvider implements DXGraphQLExtensionsProvider {
     @Override
     public Collection<Class<?>> getExtensions() {
-        return Arrays.<Class<?>>asList(QueryExtensions.class);
+        return Arrays.<Class<?>>asList(QueryExtensions.class, GqlEditorSubscriptions.class);
     }
 }
