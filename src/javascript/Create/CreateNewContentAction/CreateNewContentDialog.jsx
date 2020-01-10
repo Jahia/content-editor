@@ -23,8 +23,12 @@ const styles = theme => ({
         margin: '0 24px',
         padding: theme.spacing.unit
     },
+    dialogTitle: {
+        padding: theme.spacing.unit * 3
+    },
     filterInput: {
-        margin: '0 24px 12px 24px'
+        margin: '0 24px 24px 24px',
+        padding: '3px 12px'
     }
 });
 
@@ -51,13 +55,14 @@ const CreateNewContentDialogCmp = ({open, parentPath, onExited, onClose, onCreat
     const filteredTree = filterTree(data.forms.contentTypesAsTree, selectedType, filter);
     return (
         <Dialog open={open} aria-labelledby="dialog-createNewContent" onExited={onExited} onClose={onClose}>
-            <DialogTitle id="dialog-createNewContent">
+            <DialogTitle className={classes.dialogTitle} id="dialog-createNewContent">
                 <Typography color="alpha" variant="delta">
                     {t('content-editor:label.contentEditor.CMMActions.createNewContent.labelModal')}
                 </Typography>
             </DialogTitle>
 
             <Input
+                autoFocus
                 data-sel-role="content-type-dialog-input"
                 placeholder={t('content-editor:label.contentEditor.CMMActions.createNewContent.filterLabel')}
                 className={classes.filterInput}
@@ -66,22 +71,22 @@ const CreateNewContentDialogCmp = ({open, parentPath, onExited, onClose, onCreat
                     setFilter(e.target.value.toLowerCase());
                     setSelectedType(null);
                 }}
-                />
+            />
 
             <div className={classes.treeContainer} data-sel-role="content-type-tree">
                 <TreeView
                     tree={filteredTree}
                     onNodeClick={node => {
-                              if (!node.nodeType.mixin) {
-                                setSelectedType(node);
-                              }
-                          }}
+                        if (!node.nodeType.mixin) {
+                            setSelectedType(node);
+                        }
+                    }}
                     onNodeDoubleClick={node => {
-                              if (!node.nodeType.mixin) {
-                                onCreateContent(node);
-                              }
-                          }}
-                          />
+                        if (!node.nodeType.mixin) {
+                            onCreateContent(node);
+                        }
+                    }}
+                />
             </div>
             <DialogActions>
                 <Button variant="secondary" data-sel-role="content-type-dialog-cancel" onClick={onClose}>
@@ -92,8 +97,8 @@ const CreateNewContentDialogCmp = ({open, parentPath, onExited, onClose, onCreat
                     disabled={!selectedType}
                     variant="primary"
                     onClick={() => {
-                            onCreateContent(selectedType);
-                        }}
+                        onCreateContent(selectedType);
+                    }}
                 >
                     {t('content-editor:label.contentEditor.CMMActions.createNewContent.btnCreate')}
                 </Button>

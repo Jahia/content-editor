@@ -13,25 +13,39 @@ const style = theme => ({
     },
     nodeWithChild: {
         border: 'none',
-        padding: 0,
-        margin: '0.25rem 0',
+        marginTop: `${theme.spacing.unit / 2}px`,
+        padding: `${theme.spacing.unit}px 0`,
         width: '100%',
         textAlign: 'left',
+        cursor: 'pointer',
         display: 'flex',
-        background: 'transparent'
+        background: 'transparent',
+        '&:hover': {
+            background: theme.palette.ui.omega
+        },
+        '&:focus': {
+            outline: 'none',
+            background: theme.palette.ui.zeta
+        }
     },
     nodeWithChildArrow: {
         color: theme.palette.ui.gamma
     },
     simpleNode: {
         padding: '0.5rem 0 0.5rem 0',
+        outline: 'none',
         width: '100%',
-        textAlign: 'left'
-    },
-    selected: {
-        backgroundColor: theme.palette.brand.alpha,
-        '& span': {
-            color: theme.palette.background.paper
+        textAlign: 'left',
+        cursor: 'pointer',
+        '&:hover': {
+            background: theme.palette.ui.omega
+        },
+        '&:focus': {
+            outline: 'none',
+            backgroundColor: theme.palette.brand.alpha,
+            '& span': {
+                color: theme.palette.background.paper
+            }
         }
     },
     childContainer: {
@@ -96,7 +110,7 @@ const TreeViewCmp = ({tree, onNodeClick, onNodeDoubleClick, classes}) => {
                 <div key={level.id + node.id}
                      tabIndex="0"
                      style={{paddingLeft: `calc(${deep}rem + 20px)`}}
-                     className={`${classes.simpleNode} ${node.selected ? classes.selected : ''}`}
+                     className={classes.simpleNode}
                      onKeyPress={event => {
                          if (event.key === 'Enter') {
                              handleNodeClick(event);
