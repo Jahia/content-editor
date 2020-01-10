@@ -142,10 +142,10 @@
         "createNewContent": {
           "menu": "Nouveau contenu <i>(beta)</i>",
           "contentOfType": "Nouveau : {{typeName}} <i>(beta)</i>",
-          "labelModal": "Nouveau contenu (beta)",
-          "btnDiscard": "Annuler",
-          "btnCreate": "Créer",
-          "filterLabel": "Filtrer les élements"
+          "labelModal": "SÉLECTIONNER UN TYPE DE CONTENU",
+          "btnDiscard": "ANNULER",
+          "btnCreate": "CRÉER",
+          "filterLabel": "Rechercher un type de contenu"
         }
       },
       "siteSwitcher": {
