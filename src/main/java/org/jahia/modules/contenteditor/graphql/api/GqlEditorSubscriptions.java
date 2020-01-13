@@ -41,7 +41,6 @@ public class GqlEditorSubscriptions extends GqlJcrMutationSupport {
         "The node is automatically unlocked when the client disconnect or close the connection")
     public static Publisher<GqlEditorLockHeartBeat> subscribeToEditorLock(
             DataFetchingEnvironment environment,
-            @GraphQLName("locale") @GraphQLNonNull @GraphQLDescription("A string representation of a locale, in IETF BCP 47 language tag format, ie en_US, en, fr, fr_CH, ...") String localeStr,
             @GraphQLName("nodePath") @GraphQLNonNull @GraphQLDescription("Path of the node to be locked.") String nodePath,
             @GraphQLName("editorID") @GraphQLNonNull @GraphQLDescription("An ID generated client side used to identify the lock") String editorID) throws EditorFormException {
 
@@ -52,12 +51,11 @@ public class GqlEditorSubscriptions extends GqlJcrMutationSupport {
         }
 
         JCRSessionFactory jcrSessionFactory = JCRSessionFactory.getInstance();
-        Locale locale = LocaleUtils.toLocale(localeStr);
         JahiaUser currentUser = jcrSessionFactory.getCurrentUser();
 
         // lock the node
         try {
-            if (!StaticEditorLockService.tryLock(httpServletRequest.get(), nodePath, locale, editorID)){
+            if (!StaticEditorLockService.tryLock(httpServletRequest.get(), nodePath, editorID)){
                 // lock not supported by the node
                 return null;
             }
@@ -75,7 +73,7 @@ public class GqlEditorSubscriptions extends GqlJcrMutationSupport {
                 logger.debug("Connection lost or closed, unlock the node");
                 try {
                     JCRSessionFactory.getInstance().setCurrentUser(currentUser);
-                    StaticEditorLockService.unlock(httpServletRequest.get(), nodePath, locale, editorID);
+                    StaticEditorLockService.unlock(httpServletRequest.get(), editorID);
                 } finally {
                     JcrSessionFilter.endRequest();
                 }
