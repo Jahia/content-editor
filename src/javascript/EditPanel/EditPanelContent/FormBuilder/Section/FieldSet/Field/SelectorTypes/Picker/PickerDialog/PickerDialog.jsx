@@ -93,7 +93,8 @@ const PickerDialogCmp = ({
         siteNodes,
         siteNode,
         error,
-        loading
+        loading,
+        onSelectSite
     } = useSiteSwitcher({initialSelectedItem, editorContext, nodeTreeConfigs, t});
 
     const [selectedPath, setSelectedPath] = useSelectedPath({initialSelectedItem, nodeTreeConfigs});
@@ -158,6 +159,7 @@ const PickerDialogCmp = ({
                                         initialSelectedItem={initialSelectedItem}
                                         lang={editorContext.lang}
                                         nodeTreeConfigs={nodeTreeConfigsAdapted}
+                                        onSelectSite={onSelectSite}
                                    />)}
                                    <div className={classes.modalContent + (pickerConfig.displayTree ? ` ${classes.modalContentWithDrawer}` : '')}>
                                        <MainPanel
