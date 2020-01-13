@@ -6,11 +6,17 @@ import {connect} from 'formik';
 import {connect as connectReactRedux} from 'react-redux';
 import {cmGoto} from '~/ContentManager.redux-actions';
 import {EditPanelDialogConfirmation} from '../EditPanelDialogConfirmation';
+import {resetLockEditorId} from '~/Lock/LockUtils';
 
 const EditPanelLanguageSwitcher = ({lang, siteInfo, onSelectLanguage, formik}) => {
     const [dialogConfirmation, setDialogConfirmation] = useState({open: false, lang: lang});
 
     const switchLanguage = language => {
+        // Reset lock id, used because the lock should be refreshed with a new ID,
+        // because the language switcher is not reloading the complete page
+        resetLockEditorId();
+
+        // Select callback from CMM
         onSelectLanguage(language);
 
         // Switch edit mode linker language
