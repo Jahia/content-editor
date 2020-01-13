@@ -10,6 +10,7 @@ import {saveNode} from './save/save.request';
 import {PublicationInfoContextProvider} from '~/PublicationInfo/PublicationInfo.context';
 import {Constants} from '~/ContentEditor.constants';
 import {registerEngineTabActions} from './engineTabs/engineTabs.utils';
+import LockEditor from '../Lock/LockEditor';
 
 export const Edit = ({
     client,
@@ -73,6 +74,7 @@ export const Edit = ({
 
     return (
         <ContentEditorContext.Provider value={editorContext}>
+            <LockEditor nodePath={path}/>
             <PublicationInfoContextProvider path={path} lang={lang}>
                 <Formik
                     initialValues={initialValues}
