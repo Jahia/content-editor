@@ -55,7 +55,7 @@ const styles = theme => ({
 
                 '&.arrow': {
                     cursor: 'pointer',
-                    '&.disabled': {
+                    '&.disabled, &.readOnly': {
                         cursor: 'not-allowed'
                     }
                 }
@@ -113,6 +113,9 @@ const styles = theme => ({
             '&:focus-within': {
                 backgroundColor: 'rgb(206, 206, 206)',
                 borderColor: '#a0a0a0'
+            },
+            '&.readOnly, &.disabled': {
+                display: 'none'
             }
         },
         '& .tag-remove': {
@@ -129,12 +132,11 @@ const styles = theme => ({
                 display: 'block'
             },
 
-            '&.readOnly, &.disabled': {
-                cursor: 'not-allowed'
-            },
-
             '&:focus': {
                 color: '#3c3c3c'
+            },
+            '&.readOnly, &.disabled': {
+                display: 'none'
             }
         },
 
@@ -236,6 +238,15 @@ const styles = theme => ({
         },
         '& .tag-item:last-child': {
             marginRight: '4px'
+        },
+        // ReadOnly and disable handling
+        '& .readOnly .tag': {
+            backgroundColor: '#828892',
+            color: theme.palette.invert.beta,
+            paddingRight: '12px'
+        },
+        '& .disabled .tag': {
+            paddingRight: '12px'
         }
     }
 });
