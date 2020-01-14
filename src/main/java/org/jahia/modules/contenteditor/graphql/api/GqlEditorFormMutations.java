@@ -27,18 +27,19 @@ public class GqlEditorFormMutations {
     @GraphQLField
     @GraphQLDescription("Unlock the given node for edition, if the node is locked.")
     @GraphQLName("unlockEditor")
-    public void unlockEditor(
+    public boolean unlockEditor(
         DataFetchingEnvironment environment,
         @GraphQLName("editorID") @GraphQLNonNull @GraphQLDescription("An ID generated client side used to identify the lock") String editorID
     ) throws EditorFormException {
 
         Optional<HttpServletRequest> httpServletRequest = ((GraphQLContext) environment.getContext()).getRequest();
         if(!httpServletRequest.isPresent()) {
-            return;
+            return false;
         }
 
         try {
             StaticEditorLockService.unlock(httpServletRequest.get(), editorID);
+            return true;
         } catch (RepositoryException e) {
             throw new EditorFormException("Unable to unlock content editor", e);
         }
