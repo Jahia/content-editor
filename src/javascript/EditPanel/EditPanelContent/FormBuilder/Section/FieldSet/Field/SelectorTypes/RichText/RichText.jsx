@@ -1,62 +1,89 @@
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
 import CKEditor from 'ckeditor4-react';
 CKEditor.displayName = 'CKEditor';
 import * as PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/EditPanel/FormDefinitions/FormData.proptypes';
 import {FastField} from 'formik';
+import {useQuery} from 'react-apollo-hooks';
+import {ProgressOverlay} from '@jahia/react-material';
+import {getCKEditorConfigurationPath} from './CKEditorConfiguration.gql-queries';
+import {ContentEditorContext} from '~/ContentEditor.context';
 
 function loadOption(selectorOptions, name) {
     return selectorOptions && selectorOptions.find(option => option.name === name);
 }
 
-export class RichTextCmp extends React.Component {
-    constructor(props) {
-        super(props);
-
+export const RichTextCmp = ({field, id, value}) => {
+    useEffect(() => {
         CKEditor.editorUrl = window.CKEDITOR_BASEPATH + 'ckeditor.js';
+    });
+
+    const editorContext = useContext(ContentEditorContext);
+    const {data, error, loading} = useQuery(
+        getCKEditorConfigurationPath,
+        {
+            variables: {
+                nodePath: editorContext.path
+            }
+        }
+    );
+
+    const toolbar = loadOption(field.selectorOptions, 'ckeditor.toolbar');
+    const customConfig = loadOption(field.selectorOptions, 'ckeditor.customConfig');
+
+    let ckeditorCustomConfig = '';
+    if (customConfig) {
+        ckeditorCustomConfig = customConfig.value;
+    } else {
+        ckeditorCustomConfig = data.forms.ckeditorConfigPath;
     }
 
-    render() {
-        const {field, id, value} = this.props;
+    const config = {
+        customConfig: ckeditorCustomConfig.replace('$context', window.contextJsParameters.contextPath),
+        width: '100%',
+        contentEditorFieldName: id // Used by selenium to get CKEditor instance
+    };
 
-        const toolbar = loadOption(field.selectorOptions, 'ckeditor.toolbar');
-        const customConfig = loadOption(field.selectorOptions, 'ckeditor.customConfig');
+    if (toolbar) {
+        config.toolbar = toolbar.value;
+    }
 
-        const config = {
-            customConfig: customConfig ? customConfig.value.replace('$context', window.contextJsParameters.contextPath) : '',
-            toolbar: toolbar ? toolbar.value : 'Mini',
-            width: '100%',
-            contentEditorFieldName: id // Used by selenium to get CKEditor instance
-        };
+    if (error) {
+        console.error(error);
+        return <>{error}</>;
+    }
 
-        return (
-            <FastField
-                name={field.name}
-                render={({form: {setFieldValue, setFieldTouched}}) => {
-                    const onEditorChange = evt => {
-                        setFieldValue(
-                            id,
-                            evt.editor.getData(),
-                            true
-                        );
-                        setFieldTouched(field.name, field.multiple ? [true] : true);
-                    };
+    if (loading || !data || !data.forms) {
+        return <ProgressOverlay/>;
+    }
 
-                    return (
-                        <CKEditor
-                            id={id}
-                            data={value}
-                            aria-labelledby={`${field.name}-label`}
-                            config={config}
-                            readOnly={field.readOnly}
-                            onChange={onEditorChange}
-                        />
+    return (
+        <FastField
+            name={field.name}
+            render={({form: {setFieldValue, setFieldTouched}}) => {
+                const onEditorChange = evt => {
+                    setFieldValue(
+                        id,
+                        evt.editor.getData(),
+                        true
                     );
-                }}
-            />
-        );
-    }
-}
+                    setFieldTouched(field.name, field.multiple ? [true] : true);
+                };
+
+                return (
+                    <CKEditor
+                        id={id}
+                        data={value}
+                        aria-labelledby={`${field.name}-label`}
+                        config={config}
+                        readOnly={field.readOnly}
+                        onChange={onEditorChange}
+                    />
+                );
+            }}
+        />
+    );
+};
 
 RichTextCmp.propTypes = {
     id: PropTypes.string.isRequired,

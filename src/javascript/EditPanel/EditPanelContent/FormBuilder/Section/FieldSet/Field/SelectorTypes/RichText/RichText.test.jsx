@@ -4,6 +4,20 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {RichTextCmp} from './RichText';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 
+jest.mock('react-apollo-hooks', () => {
+    let queryResultmock;
+    return {
+        useQuery: jest.fn(() => {
+            return {data: queryResultmock, error: null, loading: false};
+        }),
+        setQueryResult: r => {
+            queryResultmock = r;
+        }
+    };
+});
+
+import {setQueryResult} from 'react-apollo-hooks';
+
 const RICH_TEXT_COMPONENT_TAG = 'CKEditor';
 
 describe('RichText component', () => {
@@ -24,6 +38,12 @@ describe('RichText component', () => {
                 values: []
             }
         };
+
+        setQueryResult({
+            forms: {
+                ckeditorConfigPath: ''
+            }
+        });
 
         window.contextJsParameters = {
             contextPath: ''
@@ -88,7 +108,6 @@ describe('RichText component', () => {
             .toEqual({
                 contentEditorFieldName: 'richID',
                 customConfig: '',
-                toolbar: 'Mini',
                 width: '100%'
             });
     });

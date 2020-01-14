@@ -46,6 +46,7 @@ package org.jahia.modules.contenteditor.graphql.api;
 import graphql.annotations.annotationTypes.*;
 import org.apache.commons.lang.LocaleUtils;
 import org.jahia.api.Constants;
+import org.jahia.data.templates.JahiaTemplatesPackage;
 import org.jahia.modules.contenteditor.api.forms.EditorForm;
 import org.jahia.modules.contenteditor.api.forms.EditorFormException;
 import org.jahia.modules.contenteditor.api.forms.EditorFormService;
@@ -54,9 +55,11 @@ import org.jahia.modules.contenteditor.utils.ContentEditorUtils;
 import org.jahia.modules.contenteditor.utils.NodeTypeTreeEntry;
 import org.jahia.modules.graphql.provider.dxm.DataFetchingException;
 import org.jahia.osgi.BundleUtils;
+import org.jahia.registries.ServicesRegistry;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRSessionFactory;
 import org.jahia.services.content.JCRSessionWrapper;
+import org.osgi.framework.Bundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -178,6 +181,36 @@ public class GqlEditorForms {
         } catch (RepositoryException e) {
             throw new DataFetchingException(e);
         }
+    }
+
+    @GraphQLField
+    @GraphQLName("ckeditorConfigPath")
+    @GraphQLDescription("Retrieve the custom configuration path for CKEditor")
+    public String ckeditorConfigPath(@GraphQLName("nodePath") @GraphQLDescription("node path") String nodePath) throws RepositoryException {
+        // Retrieve custom configuration from template set module
+        String templatesSet = getSession().getNode(nodePath).getResolveSite().getPropertyAsString("j:templatesSet");
+        String configPath = getConfigPath(templatesSet, "/javascript/ckeditor_config.js");
+
+        // Otherwise, retrieve custom configuration from global configuration
+        if (configPath.isEmpty()) {
+            configPath = getConfigPath("ckeditor", "/javascript/config.js");
+        }
+
+        return configPath;
+    }
+
+    private String getConfigPath(String moduleId, String resource) {
+        String configPath = "";
+        JahiaTemplatesPackage ckeditorModule = ServicesRegistry.getInstance().getJahiaTemplateManagerService().getTemplatePackageById(moduleId);
+
+        if (ckeditorModule != null) {
+            Bundle ckeditorBundle = ckeditorModule.getBundle();
+
+            if (ckeditorBundle != null && ckeditorBundle.getResource(resource) != null) {
+                configPath = "$context" + ckeditorModule.getRootFolderPath() + resource;
+            }
+        }
+        return configPath;
     }
 
     private JCRSessionWrapper getSession() throws RepositoryException {
