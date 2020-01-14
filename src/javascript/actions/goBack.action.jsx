@@ -5,6 +5,7 @@ import {withFormikAction} from './withFormik.action';
 import {reduxAction} from './redux.action';
 import {cmGoto} from '../ContentManager.redux-actions';
 import {Constants} from '~/ContentEditor.constants';
+import {withLockedEditorContextAction} from './withLockedEditorContext.action';
 
 const mapDispatchToContext = dispatch => ({
     setUrl: (site, language, mode, path, params) => dispatch(cmGoto({site, language, mode, path, params}))
@@ -38,6 +39,7 @@ export const resolveGoBackContext = (path, parentPath, parentDisplayName, siteKe
 
 export default composeActions(
     withFormikAction,
+    withLockedEditorContextAction,
     componentRendererAction,
     reduxAction(mapStateToProps, mapDispatchToContext),
     {
@@ -47,10 +49,16 @@ export default composeActions(
         },
         onClick: context => {
             if (context.formik) {
-                const {siteKey, language, setUrl} = context;
+                const {siteKey, language, setUrl, lockedEditorContext} = context;
 
                 const executeGoBackAction = () => {
-                    setUrl(siteKey, language, context.resolveUrlContext.mode, context.resolveUrlContext.path, {});
+                    if (lockedEditorContext.unlockEditor) {
+                        lockedEditorContext.unlockEditor(() => {
+                            setUrl(siteKey, language, context.resolveUrlContext.mode, context.resolveUrlContext.path, {});
+                        });
+                    } else {
+                        setUrl(siteKey, language, context.resolveUrlContext.mode, context.resolveUrlContext.path, {});
+                    }
                 };
 
                 if (context.formik.dirty) {
