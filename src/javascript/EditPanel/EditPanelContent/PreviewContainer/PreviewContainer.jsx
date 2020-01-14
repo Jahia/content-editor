@@ -2,8 +2,7 @@ import {Badge, Paper, Typography} from '@jahia/design-system-kit';
 import {Grid, withStyles} from '@material-ui/core';
 import * as PropTypes from 'prop-types';
 import React, {useState} from 'react';
-import {compose} from 'react-apollo';
-import {translate} from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import {Constants} from '~/ContentEditor.constants';
 import {Details} from './Details';
 import {ContentPreviewMemoWrapper} from './Preview';
@@ -49,7 +48,8 @@ const SelectedTabComponents = {
     details: Details
 };
 
-const PreviewContainerCmp = ({classes, t, isDirty, mode}) => {
+const PreviewContainerCmp = ({classes, isDirty, mode}) => {
+    const {t} = useTranslation();
     const [previewMode, setPreviewMode] = useState(mode === Constants.routes.baseEditRoute ? 'preview' : null);
 
     const SelectedTabComponent = SelectedTabComponents[previewMode];
@@ -111,15 +111,10 @@ PreviewContainerCmp.defaultProps = {
 };
 
 PreviewContainerCmp.propTypes = {
-    t: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,
     mode: PropTypes.string.isRequired,
     isDirty: PropTypes.bool
 };
 
-export const PreviewContainer = compose(
-    translate(),
-    withStyles(styles)
-)(PreviewContainerCmp);
-
+export const PreviewContainer = withStyles(styles)(PreviewContainerCmp);
 PreviewContainer.displayName = 'PreviewContainer';

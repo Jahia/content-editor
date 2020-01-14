@@ -20,7 +20,7 @@ describe('Edit', () => {
     });
 
     it('should return formQueryParams with good params', () => {
-        const props = shallow(<Edit store={store}/>).dive().dive().dive().dive().props();
+        const props = shallow(<Edit store={store}/>).dive().dive().dive().props();
 
         expect(props.formQueryParams).toEqual({
             path: '/toto',

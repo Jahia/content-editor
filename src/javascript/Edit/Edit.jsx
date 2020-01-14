@@ -11,11 +11,11 @@ import {PublicationInfoContextProvider} from '~/PublicationInfo/PublicationInfo.
 import {Constants} from '~/ContentEditor.constants';
 import {registerEngineTabActions} from './engineTabs/engineTabs.utils';
 import {LockedEditorContextProvider} from '~/Lock/LockedEditor.context';
+import {useTranslation} from 'react-i18next';
 
 export const Edit = ({
     client,
     notificationContext,
-    t,
     setUrl,
     path,
     lang,
@@ -26,6 +26,7 @@ export const Edit = ({
     formQuery,
     formQueryParams
 }) => {
+    const {t} = useTranslation();
     const {
         loading, error, errorMessage, nodeData, initialValues, details, technicalInfo, sections, title
     } = useFormDefinition(formQuery, formQueryParams, t);
@@ -94,7 +95,6 @@ Edit.defaultProps = {
 
 Edit.propTypes = {
     client: PropTypes.object.isRequired,
-    t: PropTypes.func.isRequired,
     setUrl: PropTypes.func,
     path: PropTypes.string.isRequired,
     notificationContext: PropTypes.object.isRequired,

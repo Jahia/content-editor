@@ -27,7 +27,6 @@ describe('Tag component', () => {
 
     it('should bind id correctly', () => {
         const RenderProps = shallow(<Tag {...props}/>)
-            .dive()
             .props()
             .render;
         const cmp = shallow(<RenderProps field={{}} form={{setFieldTouched: () => {}, setFieldValue: () => {}}}/>);
@@ -37,7 +36,6 @@ describe('Tag component', () => {
 
     it('should display each option given', () => {
         const RenderProps = shallow(<Tag {...props}/>)
-            .dive()
             .props()
             .render;
         const cmp = shallow(<RenderProps field={{}} form={{setFieldTouched: () => {}, setFieldValue: () => {}}}/>);
@@ -52,7 +50,6 @@ describe('Tag component', () => {
 
     it('should select formik value', () => {
         const RenderProps = shallow(<Tag {...props}/>)
-            .dive()
             .props()
             .render;
         const cmp = shallow(<RenderProps field={{value: ['healthy']}} form={{setFieldTouched: () => {}, setFieldValue: () => {}}}/>);
@@ -71,7 +68,6 @@ describe('Tag component', () => {
     const testReadOnly = function (readOnly) {
         props.field.readOnly = readOnly;
         const RenderProps = shallow(<Tag {...props}/>)
-            .dive()
             .props()
             .render;
         const cmp = shallow(<RenderProps field={{}} form={{setFieldTouched: () => {}, setFieldValue: () => {}}}/>);

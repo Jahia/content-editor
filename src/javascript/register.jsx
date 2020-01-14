@@ -1,50 +1,27 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import {registry} from '@jahia/registry';
-import {ArrowBack} from '@material-ui/icons';
+import {registerCEActions} from './registerCEActions';
 
-import goBackAction from './actions/goBack.action';
 import {Constants} from '~/ContentEditor.constants';
 import ContentEditor from './ContentEditor';
-import {SelectorTypes} from '~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes';
-import {registerActions as registerEditActions} from '~/Edit';
-import {registerActions as registerCreateActions} from '~/Create';
+import {useI18nCENamespace} from '~/useI18n';
 
-console.log('%c Content Editor is activated', 'color: #3c8cba');
+console.debug('%c Content Editor is activated', 'color: #3c8cba');
 
-const contextJsParameters = window.contextJsParameters;
-/* eslint-disable-next-line */
-__webpack_public_path__ =
-    contextJsParameters.contextPath +
-    '/modules/content-editor/javascript/apps/';
+/* eslint-disable-next-line no-undef, camelcase */
+__webpack_public_path__ = `${window.contextJsParameters}/modules/content-editor/javascript/apps/`;
 
-contextJsParameters.i18nNamespaces.push('content-editor');
+// Register i18n loadNamespaces through a empty react component until extender solve the injection issue
+const i18nLoaderElement = document.createElement('div');
+const DependenciesInjector = () => {
+    useI18nCENamespace();
+    return '';
+};
 
-if (
-    contextJsParameters &&
-    contextJsParameters.config &&
-    contextJsParameters.config.actions
-) {
-    contextJsParameters.config.actions.push(actionsRegistry => {
-        // Register actions from domains
-        registerEditActions(actionsRegistry);
-        registerCreateActions(actionsRegistry);
+ReactDOM.render(<DependenciesInjector/>, i18nLoaderElement);
 
-        actionsRegistry.add('backButton', goBackAction, {
-            buttonIcon: <ArrowBack/>,
-            buttonLabel:
-                'content-editor:label.contentEditor.edit.action.goBack.name',
-            target: ['editHeaderPathActions:1']
-        });
-
-        // SelectorType actions
-        const selectorTypes = Object.values(SelectorTypes);
-        selectorTypes.forEach(selectorType => {
-            if (selectorType.actions) {
-                selectorType.actions(actionsRegistry);
-            }
-        });
-    });
-}
+registerCEActions();
 
 registry.add('edit-route', {
     target: ['cmm:0.1'],

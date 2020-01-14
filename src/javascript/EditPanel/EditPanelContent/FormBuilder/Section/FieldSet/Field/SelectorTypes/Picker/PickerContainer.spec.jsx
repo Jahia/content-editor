@@ -1,5 +1,5 @@
 import React from 'react';
-import {Picker} from './Picker';
+import {Picker} from './PickerContainer';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 
@@ -58,7 +58,6 @@ describe('picker', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
 
         expect(cmp.find('Picker').props().readOnly).toBe(false);
@@ -70,7 +69,6 @@ describe('picker', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
 
         expect(cmp.find('PickerDialog').props().isOpen).toBe(false);
@@ -82,7 +80,6 @@ describe('picker', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
 
         cmp.find('Picker').simulate('click');

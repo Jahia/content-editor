@@ -5,7 +5,6 @@ import FormBuilder from './FormBuilder';
 import {compose} from 'react-apollo';
 import {connect} from 'react-redux';
 import {withStyles} from '@material-ui/core';
-import {translate} from 'react-i18next';
 import {PreviewContainer} from './PreviewContainer';
 import PublicationInfoProgress from '~/PublicationInfo/PublicationInfo.progress';
 
@@ -76,7 +75,6 @@ EditPanelContent.propTypes = {
 };
 
 export default compose(
-    translate(),
     withStyles(styles),
     connect(mapStateToProps)
 )(EditPanelContent);

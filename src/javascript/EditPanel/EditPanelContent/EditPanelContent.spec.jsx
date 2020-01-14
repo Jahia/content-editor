@@ -8,7 +8,6 @@ describe('EditPanelContent', () => {
 
     beforeEach(() => {
         defaultProps = {
-            t: i18nKey => i18nKey,
             fields: [],
             siteInfo: {},
             classes: {},

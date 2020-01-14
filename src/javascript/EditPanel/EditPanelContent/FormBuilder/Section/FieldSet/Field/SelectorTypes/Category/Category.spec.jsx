@@ -50,7 +50,7 @@ describe('Category component', () => {
     const setFieldTouched = jest.fn();
 
     const buildComp = props => {
-        const mainComponent = shallowWithTheme(<Category {...props}/>, {}, dsGenericTheme).dive();
+        const mainComponent = shallowWithTheme(<Category {...props}/>, {}, dsGenericTheme);
         const RenderProps = mainComponent.props().render;
         return shallowWithTheme(<RenderProps form={{setFieldTouched, setFieldValue}}/>, {}, dsGenericTheme);
     };

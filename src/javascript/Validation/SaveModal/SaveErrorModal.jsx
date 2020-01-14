@@ -9,8 +9,7 @@ import {
 } from '@material-ui/core';
 import {Error} from '@material-ui/icons';
 import {Button, Typography} from '@jahia/design-system-kit';
-import {translate} from 'react-i18next';
-import {compose} from 'react-apollo';
+import {useTranslation} from 'react-i18next';
 import {withStyles} from '@material-ui/core';
 
 const styles = theme => ({
@@ -28,7 +27,8 @@ const styles = theme => ({
     }
 });
 
-const SaveErrorModalCmp = ({t, nbOfErrors, classes, open, onClose}) => {
+const SaveErrorModalCmp = ({nbOfErrors, classes, open, onClose}) => {
+    const {t} = useTranslation(t);
     return (
         <Dialog open={open} aria-labelledby="dialog-errorBeforeSave" onClose={onClose}>
             <DialogTitle id="dialog-errorBeforeSave" className={classes.dialogTitle}>
@@ -54,15 +54,11 @@ const SaveErrorModalCmp = ({t, nbOfErrors, classes, open, onClose}) => {
 };
 
 SaveErrorModalCmp.propTypes = {
-    t: PropTypes.func.isRequired,
     nbOfErrors: PropTypes.number.isRequired,
     classes: PropTypes.object.isRequired,
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired
 };
 
-export const SaveErrorModal = compose(
-    translate(),
-    withStyles(styles)
-)(SaveErrorModalCmp);
+export const SaveErrorModal = withStyles(styles)(SaveErrorModalCmp);
 SaveErrorModal.displayName = 'SaveErrorModal';

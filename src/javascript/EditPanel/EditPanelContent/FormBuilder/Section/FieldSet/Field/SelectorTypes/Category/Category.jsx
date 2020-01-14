@@ -6,10 +6,11 @@ import {DropdownTreeSelect} from '~/DesignSystem/DropdownTreeSelect';
 import {useQuery} from 'react-apollo-hooks';
 import {GetCategories} from './category.gql-queries';
 import {ProgressOverlay} from '@jahia/react-material';
-import {translate} from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import {adaptToCategoryTree} from './category.adapter';
 
-const CategoryCmp = ({field, value, id, t, editorContext}) => {
+const Category = ({field, value, id, editorContext}) => {
+    const {t} = useTranslation();
     const {data, error, loading} = useQuery(GetCategories, {
         variables: {
             path: '/sites/systemsite/categories',
@@ -58,15 +59,13 @@ const CategoryCmp = ({field, value, id, t, editorContext}) => {
     );
 };
 
-CategoryCmp.propTypes = {
+Category.propTypes = {
     field: FieldPropTypes.isRequired,
     id: PropTypes.string.isRequired,
     value: PropTypes.arrayOf(PropTypes.string),
     editorContext: PropTypes.shape({
         lang: PropTypes.string.isRequired
-    }).isRequired,
-    t: PropTypes.func.isRequired
+    }).isRequired
 };
 
-const Category = translate()(CategoryCmp);
 export default Category;

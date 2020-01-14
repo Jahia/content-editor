@@ -2,8 +2,7 @@ import React, {useRef} from 'react';
 import {Grid, InputLabel, Typography, withStyles} from '@material-ui/core';
 import {MoreVert, Public} from '@material-ui/icons';
 import {Badge, IconButton} from '@jahia/design-system-kit';
-import {compose} from 'react-apollo';
-import {translate} from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import * as PropTypes from 'prop-types';
 import {ContextualMenu} from '@jahia/react-material';
 import {FieldPropTypes} from '~/EditPanel/FormDefinitions';
@@ -55,7 +54,8 @@ let styles = theme => {
     };
 };
 
-export const FieldCmp = ({t, classes, inputContext, idInput, selectorType, field, siteInfo, actionContext, formik: {errors, touched}}) => {
+export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, siteInfo, actionContext, formik: {errors, touched}}) => {
+    const {t} = useTranslation();
     const contextualMenu = useRef(null);
     const isMultipleField = field.multiple && !selectorType.supportMultiple;
     const seleniumFieldType = isMultipleField ? `GenericMultipleField${selectorType.key}` : (field.multiple ? `Multiple${selectorType.key}` : selectorType.key);
@@ -153,7 +153,6 @@ export const FieldCmp = ({t, classes, inputContext, idInput, selectorType, field
 };
 
 FieldCmp.propTypes = {
-    t: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,
     inputContext: PropTypes.object.isRequired,
     idInput: PropTypes.string.isRequired,
@@ -172,9 +171,5 @@ FieldCmp.propTypes = {
     }).isRequired
 };
 
-export const Field = compose(
-    translate(),
-    withStyles(styles)
-)(FieldCmp);
-
+export const Field = withStyles(styles)(FieldCmp);
 Field.displayName = 'Field';

@@ -3,7 +3,7 @@ import {Badge, MainLayout} from '@jahia/design-system-kit';
 import {buttonRenderer, DisplayActions, withNotifications, DisplayAction, iconButtonRenderer} from '@jahia/react-material';
 import PropTypes from 'prop-types';
 import {compose, withApollo} from 'react-apollo';
-import {translate} from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import EditPanelContent from './EditPanelContent/EditPanelContent';
 import {connect} from 'formik';
 import {EditPanelLanguageSwitcher} from './EditPanelLanguageSwitcher';
@@ -26,7 +26,8 @@ const styles = theme => ({
     }
 });
 
-const EditPanelCmp = ({formik, title, classes, t, notificationContext, client}) => {
+const EditPanelCmp = ({formik, title, classes, notificationContext, client}) => {
+    const {t} = useTranslation();
     const {nodeData, siteInfo, lang, uiLang, mode} = useContentEditorContext();
 
     useEffect(() => {
@@ -134,7 +135,6 @@ const EditPanelCmp = ({formik, title, classes, t, notificationContext, client}) 
 
 EditPanelCmp.propTypes = {
     formik: PropTypes.object.isRequired,
-    t: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
     classes: PropTypes.object.isRequired,
     client: PropTypes.object.isRequired,
@@ -143,7 +143,6 @@ EditPanelCmp.propTypes = {
 
 const EditPanel = compose(
     connect,
-    translate(),
     withNotifications(),
     withApollo,
     withStyles(styles)

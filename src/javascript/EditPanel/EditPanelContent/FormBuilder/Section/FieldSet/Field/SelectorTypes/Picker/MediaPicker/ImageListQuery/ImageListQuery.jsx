@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {ProgressOverlay} from '@jahia/react-material';
 import * as PropTypes from 'prop-types';
 import {useQuery} from 'react-apollo-hooks';
-import {translate} from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import {ImageList} from '~/DesignSystem/ImageList';
 import {encodeJCRPath} from '~/EditPanel/EditPanel.utils';
 import {MediaPickerImages} from './ImageListQuery.gql-queries';
@@ -10,14 +10,14 @@ import {searchPickerQuery} from '../../PickerDialog/Search/search.gql-queries';
 import {registry} from '@jahia/registry';
 import {useContentEditorContext} from '~/ContentEditor.context';
 
-const ImageListQueryCmp = ({
-    t,
+export const ImageListQuery = ({
     setSelectedItem,
     onImageDoubleClick,
     selectedPath,
     initialSelection,
     searchTerms
 }) => {
+    const {t} = useTranslation();
     const {lang} = useContentEditorContext();
     const {data, error, loading, refetch} = useQuery(
         searchTerms ? searchPickerQuery : MediaPickerImages,
@@ -83,18 +83,15 @@ const ImageListQueryCmp = ({
     );
 };
 
-ImageListQueryCmp.defaultProps = {
+ImageListQuery.defaultProps = {
     initialSelection: null,
     searchTerms: ''
 };
 
-ImageListQueryCmp.propTypes = {
-    t: PropTypes.func.isRequired,
+ImageListQuery.propTypes = {
     setSelectedItem: PropTypes.func.isRequired,
     onImageDoubleClick: PropTypes.func.isRequired,
     selectedPath: PropTypes.string.isRequired,
     initialSelection: PropTypes.array,
     searchTerms: PropTypes.string
 };
-
-export const ImageListQuery = translate()(ImageListQueryCmp);

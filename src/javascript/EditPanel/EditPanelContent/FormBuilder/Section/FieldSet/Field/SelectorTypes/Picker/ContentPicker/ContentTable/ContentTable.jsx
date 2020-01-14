@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import DSContentTable from '~/DesignSystem/ContentTable/ContentTable';
 import {useQuery} from 'react-apollo-hooks';
-import {translate} from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import {ProgressOverlay} from '@jahia/react-material';
 import PropTypes from 'prop-types';
 import {ContentTableQuery} from './ContentTable.gql-queries';
@@ -48,8 +48,7 @@ const columnConfig = (t, showSubContentsCount) => {
     return columns;
 };
 
-const ContentTableContainer = ({
-    t,
+export const ContentTable = ({
     tableConfig,
     setSelectedItem,
     selectedPath,
@@ -58,6 +57,7 @@ const ContentTableContainer = ({
     initialSelection,
     searchTerms
 }) => {
+    const {t} = useTranslation();
     const {data, error, loading, refetch} = useQuery(
         searchTerms ? searchPickerQuery : ContentTableQuery,
         {
@@ -140,13 +140,12 @@ const ContentTableContainer = ({
     );
 };
 
-ContentTableContainer.defaultProps = {
+ContentTable.defaultProps = {
     initialSelection: [],
     searchTerms: ''
 };
 
-ContentTableContainer.propTypes = {
-    t: PropTypes.func.isRequired,
+ContentTable.propTypes = {
     tableConfig: PropTypes.shape({
         typeFilter: PropTypes.array.isRequired,
         searchSelectorType: PropTypes.string.isRequired,
@@ -160,5 +159,3 @@ ContentTableContainer.propTypes = {
     initialSelection: PropTypes.array,
     searchTerms: PropTypes.string
 };
-
-export const ContentTable = translate()(ContentTableContainer);

@@ -1,14 +1,15 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'formik';
-import {translate} from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import {FieldPropTypes} from '~/EditPanel/FormDefinitions/FormData.proptypes';
 import {ProgressOverlay} from '@jahia/react-material';
 import {Picker as PickerInput} from '~/DesignSystem/Picker';
 import {extractConfigs} from './Picker.utils';
 import {PickerDialog} from './PickerDialog';
 
-const PickerCmp = ({field, value, id, editorContext, formik, t, setActionContext}) => {
+const PickerCmp = ({field, value, id, editorContext, formik, setActionContext}) => {
+    const {t} = useTranslation();
     const {pickerConfig, nodeTreeConfigs} = extractConfigs(field, editorContext, t);
     const [isDialogOpen, setDialogOpen] = useState(false);
     const {fieldData, error, loading} = pickerConfig.picker.pickerInput.usePickerInputData(value, editorContext);
@@ -69,8 +70,8 @@ PickerCmp.propTypes = {
     field: FieldPropTypes.isRequired,
     formik: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,
-    t: PropTypes.func.isRequired,
     setActionContext: PropTypes.func.isRequired
 };
 
-export const Picker = translate()(connect(PickerCmp));
+export const Picker = connect(PickerCmp);
+Picker.displayName = 'Picker';

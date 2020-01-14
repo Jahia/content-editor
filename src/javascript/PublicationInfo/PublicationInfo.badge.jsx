@@ -1,10 +1,9 @@
 import React from 'react';
 import {withStyles} from '@material-ui/core';
 import {usePublicationInfoContext} from './PublicationInfo.context';
-import {compose} from 'react-apollo';
 import PropTypes from 'prop-types';
 import {Badge} from '@jahia/design-system-kit';
-import {translate} from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
 const styles = () => ({
     root: {
@@ -14,7 +13,8 @@ const styles = () => ({
     }
 });
 
-export const PublicationInfoBadge = ({classes, t}) => {
+export const PublicationInfoBadge = ({classes}) => {
+    const {t} = useTranslation();
     const {publicationInfoPolling} = usePublicationInfoContext();
     return (
         <>
@@ -29,11 +29,7 @@ export const PublicationInfoBadge = ({classes, t}) => {
 };
 
 PublicationInfoBadge.propTypes = {
-    classes: PropTypes.object.isRequired,
-    t: PropTypes.func.isRequired
+    classes: PropTypes.object.isRequired
 };
 
-export default compose(
-    translate(),
-    withStyles(styles)
-)(PublicationInfoBadge);
+export default withStyles(styles)(PublicationInfoBadge);
