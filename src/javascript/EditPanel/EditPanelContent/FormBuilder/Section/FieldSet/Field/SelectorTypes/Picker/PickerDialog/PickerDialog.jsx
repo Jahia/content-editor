@@ -97,6 +97,11 @@ const PickerDialogCmp = ({
         onSelectSite
     } = useSiteSwitcher({initialSelectedItem, editorContext, nodeTreeConfigs, t});
 
+    // SelectedItem is an object when something is selected
+    // undefined when never modified
+    // empty array when no value is selected and something has been unselected
+    const [selectedItem, setSelectedItem] = useState(undefined);
+
     const [selectedPath, setSelectedPath] = useSelectedPath({initialSelectedItem, nodeTreeConfigs});
     const [searchTerms, handleSearchChange] = useSearch();
 
@@ -155,6 +160,7 @@ const PickerDialogCmp = ({
                                         siteNodes={siteNodes}
                                         selectedPath={selectedPath}
                                         setSelectedPath={setSelectedPath}
+                                        setSelectedItem={setSelectedItem}
                                         field={field}
                                         initialSelectedItem={initialSelectedItem}
                                         lang={editorContext.lang}
@@ -167,6 +173,8 @@ const PickerDialogCmp = ({
                                             pickerConfig={pickerConfig}
                                             nodeTreeConfigs={nodeTreeConfigsAdapted}
                                             initialSelectedItem={initialSelectedItem}
+                                            selectedItem={selectedItem}
+                                            setSelectedItem={setSelectedItem}
                                             selectedPath={selectedPath}
                                             editorContext={editorContext}
                                             searchTerms={searchTerms}

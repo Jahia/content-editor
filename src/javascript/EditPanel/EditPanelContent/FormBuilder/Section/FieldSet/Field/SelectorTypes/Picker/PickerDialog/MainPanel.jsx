@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import {withStyles, Button} from '@material-ui/core';
@@ -50,12 +50,10 @@ const MainPanelCmp = ({
     searchTerms,
     handleSearchChange,
     onItemSelection,
-    onCloseDialog
+    onCloseDialog,
+    selectedItem,
+    setSelectedItem
 }) => {
-    // SelectedItem is an object when something is selected
-    // undefined when never modified
-    // empty array when no value is selected and something has been unselected
-    const [selectedItem, setSelectedItem] = useState(undefined);
     const selectElement = () => {
         if (selectedItem) {
             onItemSelection(selectedItem);
@@ -65,7 +63,7 @@ const MainPanelCmp = ({
     };
 
     const isElementSelected = !(selectedItem && selectedItem.length !== 0);
-    const initialItemHasChanged = initialSelectedItem && selectedItem === undefined;
+    const initialItemHasChanged = initialSelectedItem && selectedItem !== undefined;
 
     const PickerDialogContent = pickerConfig.picker.PickerDialog.DialogContent;
 
@@ -163,6 +161,8 @@ MainPanelCmp.propTypes = {
     initialSelectedItem: PropTypes.string,
     selectedPath: PropTypes.string,
     setSelectedPath: PropTypes.func.isRequired,
+    selectedItem: PropTypes.isRequired,
+    setSelectedItem: PropTypes.func.isRequired,
     searchTerms: PropTypes.string,
     handleSearchChange: PropTypes.func.isRequired,
     onItemSelection: PropTypes.func.isRequired,
