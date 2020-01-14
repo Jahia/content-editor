@@ -87,27 +87,6 @@ describe('adaptFormData', () => {
         };
     });
 
-    it('should set nodeData to not locked state when there is no details lockInfo in it', () => {
-        expect(adaptFormData(graphqlResponse, 'fr', t).nodeData).toEqual({
-            ...graphqlResponse.jcr.result,
-            lockInfo: {
-                details: [],
-                isLocked: false
-            }
-        });
-    });
-
-    it('should set nodeData to locked state when there is details lockInfo in it', () => {
-        graphqlResponse.jcr.result.lockInfo.details.push({});
-        expect(adaptFormData(graphqlResponse, 'fr', t).nodeData).toEqual({
-            ...graphqlResponse.jcr.result,
-            lockInfo: {
-                details: [{}],
-                isLocked: true
-            }
-        });
-    });
-
     it('should return initialValues', () => {
         graphqlResponse.forms.editForm.sections = [];
         expect(adaptFormData(graphqlResponse, 'fr', t).initialValues).toEqual({});

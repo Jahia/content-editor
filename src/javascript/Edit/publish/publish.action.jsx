@@ -20,7 +20,7 @@ export default composeActions(
 
                 context.disabled = context.publicationInfoContext.publicationStatus === undefined ||
                     context.publicationInfoContext.publicationInfoPolling ||
-                    context.nodeData.lockInfo.isLocked ||
+                    context.nodeData.lockedAndCannotBeEdited ||
                     context.formik.dirty ||
                     [
                         Constants.editPanel.publicationStatus.PUBLISHED,

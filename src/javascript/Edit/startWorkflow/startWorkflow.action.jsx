@@ -11,12 +11,12 @@ export default composeActions(
                 context.enabled = context.enabled &&
                     !context.nodeData.hasPublishPermission &&
                     context.nodeData.hasStartPublicationWorkflowPermission;
-                context.disabled = context.nodeData.lockInfo.isLocked || context.formik.dirty;
+                context.disabled = context.nodeData.lockedAndCannotBeEdited || context.formik.dirty;
             } else {
                 context.enabled = context.enabled && context.nodeData.hasPublishPermission;
 
                 // In case the action is in the menu, formik is in parent context
-                if (context.enabled && (context.nodeData.lockInfo.isLocked || context.parent.formik.dirty)) {
+                if (context.enabled && (context.nodeData.lockedAndCannotBeEdited || context.parent.formik.dirty)) {
                     context.enabled = false;
                     context.displayDisabled = true;
                 }

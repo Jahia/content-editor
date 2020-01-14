@@ -34,9 +34,7 @@ describe('startWorkflow action', () => {
                 },
                 nodeData: {
                     hasPublishPermission: true,
-                    lockInfo: {
-                        isLocked: false
-                    }
+                    lockedAndCannotBeEdited: false
                 }
             };
         });
@@ -72,7 +70,7 @@ describe('startWorkflow action', () => {
         });
 
         it('should disable startWorkflowAction when node locked', () => {
-            context.nodeData.lockInfo.isLocked = true;
+            context.nodeData.lockedAndCannotBeEdited = true;
             startWorkflowAction.init(context, props);
 
             expect(context.enabled).toBe(false);
@@ -96,9 +94,7 @@ describe('startWorkflow action', () => {
                 isMainButton: true,
                 nodeData: {
                     hasStartPublicationWorkflowPermission: true,
-                    lockInfo: {
-                        isLocked: false
-                    }
+                    lockedAndCannotBeEdited: false
                 }
             };
         });
@@ -137,7 +133,7 @@ describe('startWorkflow action', () => {
         });
 
         it('should disable request publication action when node is locked', () => {
-            context.nodeData.lockInfo.isLocked = true;
+            context.nodeData.lockedAndCannotBeEdited = true;
             startWorkflowAction.init(context, props);
 
             expect(context.disabled).toBe(true);
