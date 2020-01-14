@@ -14,16 +14,14 @@ jest.mock('./PublicationInfo.context', () => {
     };
 });
 
-const t = key => key;
-
 describe('PublicationInfo.badge', () => {
     it('Should display badge when publication info is polling', () => {
-        let wrapper = shallow(<PublicationInfoBadge classes={{}} t={t}/>);
+        let wrapper = shallow(<PublicationInfoBadge classes={{}}/>);
         expect(wrapper.debug()).toContain('Badge');
     });
 
     it('Should not display badge when publication info is not polling', () => {
-        let wrapper = shallow(<PublicationInfoBadge classes={{}} t={t}/>);
+        let wrapper = shallow(<PublicationInfoBadge classes={{}}/>);
         expect(wrapper.debug()).not.toContain('Badge');
     });
 });

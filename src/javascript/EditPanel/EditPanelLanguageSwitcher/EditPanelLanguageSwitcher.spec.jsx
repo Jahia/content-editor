@@ -33,7 +33,7 @@ describe('EditPanelLanguageSwitcher', () => {
             .dive()
             .dive();
 
-        expect(cmp.find('LanguageSwitcher').length).toBe(1);
+        expect(cmp.find('LanguageSwitcher').exists()).toBe(true);
     });
 
     it('should contains dialog confirmation', () => {
@@ -46,6 +46,6 @@ describe('EditPanelLanguageSwitcher', () => {
             .dive()
             .dive();
 
-        expect(cmp.debug()).toContain('<Component open={false}');
+        expect(cmp.find('EditPanelDialogConfirmation').exists()).toBe(true);
     });
 });

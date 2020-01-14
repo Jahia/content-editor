@@ -1,13 +1,12 @@
-jest.mock('~/Edit/publish/publish.action', () => {
-    return {};
+jest.mock('@jahia/registry', () => {
+    return {
+        registry: {
+            add: jest.fn()
+        }
+    };
 });
 
-jest.mock('~/Edit/unpublish/unpublish.action', () => {
-    return {};
-});
-
-const publishAction = require('~/Edit/publish/publish.action');
-const unpublishAction = require('~/Edit/unpublish/unpublish.action');
+import {registry} from '@jahia/registry';
 
 describe('register', () => {
     let actionsRegistry;
@@ -35,28 +34,28 @@ describe('register', () => {
         // eslint-disable-next-line
         global.__webpack_public_path__ = '';
 
-        console.log = jest.fn();
+        console.debug = jest.fn();
         require('./register.jsx');
     });
 
-    it('should register publish action', () => {
+    it('should register create route', () => {
         expect(
-            actionsRegistry
+            registry
                 .add
                 .mock
                 .calls
-                .find(call => call[1] === publishAction)
+                .find(call => call[0] === 'create-route')
         )
             .toBeTruthy();
     });
 
-    it('should register unpublish action', () => {
+    it('should register edit route', () => {
         expect(
-            actionsRegistry
+            registry
                 .add
                 .mock
                 .calls
-                .find(call => call[1] === unpublishAction)
+                .find(call => call[0] === 'edit-route')
         )
             .toBeTruthy();
     });

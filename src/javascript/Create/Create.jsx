@@ -3,6 +3,7 @@ import {ProgressOverlay} from '@jahia/react-material';
 import {Formik} from 'formik';
 import EditPanel from '~/EditPanel';
 import * as PropTypes from 'prop-types';
+import {useTranslation} from 'react-i18next';
 import {useFormDefinition} from '~/EditPanel/FormDefinitions';
 
 import {ContentEditorContext} from '~/ContentEditor.context';
@@ -14,7 +15,6 @@ import {Constants} from '../ContentEditor.constants';
 export const Create = ({
     client,
     notificationContext,
-    t,
     setUrl,
     path,
     lang,
@@ -25,6 +25,7 @@ export const Create = ({
     formQuery,
     formQueryParams
 }) => {
+    const {t} = useTranslation();
     const {
         loading,
         error,
@@ -94,7 +95,6 @@ Create.defaultProps = {
 
 Create.propTypes = {
     client: PropTypes.object.isRequired,
-    t: PropTypes.func.isRequired,
     setUrl: PropTypes.func,
     path: PropTypes.string.isRequired,
     notificationContext: PropTypes.object.isRequired,

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Dialog, DialogActions, DialogTitle, withStyles} from '@material-ui/core';
 import {Search} from '@material-ui/icons';
 import {Button, Input, Typography} from '@jahia/design-system-kit';
-import {translate} from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import {compose, withApollo} from 'react-apollo';
 import {ProgressOverlay} from '@jahia/react-material';
 
@@ -32,7 +32,8 @@ const styles = theme => ({
     }
 });
 
-const CreateNewContentDialogCmp = ({open, parentPath, onExited, onClose, onCreateContent, uiLang, client, classes, t}) => {
+const CreateNewContentDialogCmp = ({open, parentPath, onExited, onClose, onCreateContent, uiLang, client, classes}) => {
+    const {t} = useTranslation();
     const variables = {
         uiLang: uiLang,
         path: parentPath,
@@ -116,7 +117,6 @@ CreateNewContentDialogCmp.propTypes = {
     parentPath: PropTypes.string,
     classes: PropTypes.object.isRequired,
     client: PropTypes.object.isRequired,
-    t: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
     onExited: PropTypes.func.isRequired,
     onCreateContent: PropTypes.func.isRequired,
@@ -124,7 +124,6 @@ CreateNewContentDialogCmp.propTypes = {
 };
 
 export const CreateNewContentDialog = compose(
-    translate(),
     withApollo,
     withStyles(styles)
 )(CreateNewContentDialogCmp);

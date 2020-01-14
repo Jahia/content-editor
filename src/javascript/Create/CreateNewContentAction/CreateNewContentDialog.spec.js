@@ -75,7 +75,7 @@ describe('CreateNewContentDialog', () => {
             <CreateNewContentDialog {...props} open/>,
             {},
             dsGenericTheme
-        ).dive().dive().dive();
+        ).dive().dive();
 
         expect(cmp.find('WithStyles(Dialog)').props().open).toBe(true);
     });
@@ -95,7 +95,7 @@ describe('CreateNewContentDialog', () => {
                                     }}/>,
             {},
             dsGenericTheme
-        ).dive().dive().dive();
+        ).dive().dive();
 
         cmp.find('DsButton').at(0).simulate('click');
 
@@ -109,7 +109,7 @@ describe('CreateNewContentDialog', () => {
             <CreateNewContentDialog open {...props}/>,
             {},
             dsGenericTheme
-        ).dive().dive().dive();
+        ).dive().dive();
 
         cmp.find('DsButton').at(1).simulate('click');
 
@@ -123,7 +123,7 @@ describe('CreateNewContentDialog', () => {
             <CreateNewContentDialog open {...props}/>,
             {},
             dsGenericTheme
-        ).dive().dive().dive();
+        ).dive().dive();
 
         expect(cmp.debug()).toContain('oops');
     });
@@ -134,7 +134,7 @@ describe('CreateNewContentDialog', () => {
             <CreateNewContentDialog open {...props}/>,
             {},
             dsGenericTheme
-        ).dive().dive().dive();
+        ).dive().dive();
 
         cmp.find('Input').simulate('change', {target: {value: 'Rom3'}});
 
@@ -148,7 +148,7 @@ describe('CreateNewContentDialog', () => {
             <CreateNewContentDialog open {...props}/>,
             {},
             dsGenericTheme
-        ).dive().dive().dive();
+        ).dive().dive();
 
         cmp.find('Input').simulate('change', {target: {value: 'rom3'}});
 
@@ -162,7 +162,7 @@ describe('CreateNewContentDialog', () => {
             <CreateNewContentDialog open {...props}/>,
             {},
             dsGenericTheme
-        ).dive().dive().dive();
+        ).dive().dive();
 
         cmp.find('Input').simulate('change', {target: {value: 'n'}});
 

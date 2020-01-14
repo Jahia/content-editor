@@ -21,7 +21,6 @@ describe('PreviewContainer', () => {
                 language: 'en',
                 lang: 'fr'
             },
-            t: jest.fn(),
             classes: {},
             isDirty: false,
             mode: 'edit'
@@ -36,7 +35,6 @@ describe('PreviewContainer', () => {
         )
             .dive()
             .dive()
-            .dive()
             .dive();
 
         cmp.find('ContentPreview').exists();
@@ -45,7 +43,6 @@ describe('PreviewContainer', () => {
     it('should not selecte any tab in create mode', () => {
         defaultProps.mode = 'create';
         const cmp = shallowWithTheme(<PreviewContainer {...defaultProps}/>, {}, dsGenericTheme)
-            .dive()
             .dive();
 
         expect(cmp.find('WithStyles(ToggleButtonGroup)').props().value).toBe(null);
@@ -53,7 +50,6 @@ describe('PreviewContainer', () => {
 
     it('should select preview tab by default', () => {
         const cmp = shallowWithTheme(<PreviewContainer {...defaultProps}/>, {}, dsGenericTheme)
-            .dive()
             .dive();
         expect(cmp.find('WithStyles(ToggleButtonGroup)').props().value).toBe(
             'preview'
@@ -62,14 +58,12 @@ describe('PreviewContainer', () => {
 
     it('should render preview by default', () => {
         const cmp = shallowWithTheme(<PreviewContainer {...defaultProps}/>, {}, dsGenericTheme)
-            .dive()
             .dive();
         expect(cmp.find('ContentPreviewMemoWrapper').exists()).toBe(true);
     });
 
     it('should still display preview when clicking on preview button', () => {
         const cmp = shallowWithTheme(<PreviewContainer {...defaultProps}/>, {}, dsGenericTheme)
-            .dive()
             .dive();
         cmp
             .find('WithStyles(ToggleButtonGroup)')
@@ -80,7 +74,6 @@ describe('PreviewContainer', () => {
 
     it('should render detailsPreview and selcted good tab when clicking on details button', () => {
         const cmp = shallowWithTheme(<PreviewContainer {...defaultProps}/>, {}, dsGenericTheme)
-            .dive()
             .dive();
 
         cmp
@@ -103,7 +96,6 @@ describe('PreviewContainer', () => {
         )
             .dive()
             .dive()
-            .dive()
             .dive();
 
         expect(cmp.find('DsBadge').exists()).toBe(true);
@@ -115,7 +107,6 @@ describe('PreviewContainer', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive()
             .dive()
             .dive();

@@ -6,9 +6,8 @@ import {PreviewComponent} from '@jahia/react-material';
 import {Badge} from '@jahia/design-system-kit';
 import {getPreviewContext, removeSiblings} from './Preview.utils';
 import * as PropTypes from 'prop-types';
-import {compose} from 'react-apollo';
 import {withStyles} from '@material-ui/core';
-import {translate} from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
 const styles = theme => ({
     previewContainer: {
@@ -20,7 +19,8 @@ const styles = theme => ({
     }
 });
 
-export const ContentPreviewMemoWrapperCmp = React.memo(({t, classes}) => {
+const ContentPreviewMemoWrapperCmp = React.memo(({classes}) => {
+    const {t} = useTranslation();
     const editorContext = useContentEditorContext();
     const [contentNoFound, setContentNotFound] = useState(false);
 
@@ -85,12 +85,8 @@ export const ContentPreviewMemoWrapperCmp = React.memo(({t, classes}) => {
 });
 
 ContentPreviewMemoWrapperCmp.propTypes = {
-    t: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired
 };
 
-export const ContentPreviewMemoWrapper = compose(
-    translate(),
-    withStyles(styles)
-)(ContentPreviewMemoWrapperCmp);
+export const ContentPreviewMemoWrapper = withStyles(styles)(ContentPreviewMemoWrapperCmp);
 ContentPreviewMemoWrapper.displayName = 'ContentPreviewMemoWrapper';

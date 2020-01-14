@@ -1,5 +1,5 @@
 import React from 'react';
-import {Picker} from '../Picker';
+import {Picker} from '../PickerContainer';
 import {pickerActions} from '../actions';
 import {InsertDriveFile} from '@material-ui/icons';
 import {encodeJCRPath} from '~/EditPanel/EditPanel.utils';

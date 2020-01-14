@@ -20,7 +20,7 @@ describe('SaveErrorModal', () => {
             <SaveErrorModal {...props} open/>,
             {},
             dsGenericTheme
-        ).dive().dive();
+        ).dive();
 
         expect(cmp.find('WithStyles(Dialog)').props().open).toBe(true);
     });
@@ -36,7 +36,7 @@ describe('SaveErrorModal', () => {
             />,
             {},
             dsGenericTheme
-        ).dive().dive();
+        ).dive();
 
         cmp.find('DsButton').at(0).simulate('click');
 

@@ -43,7 +43,6 @@ describe('ContentPreviewMemoWrapper', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
         const props = cmp.find('ContentPreview').props();
         expect(props.language).toBe('fr');
@@ -58,7 +57,6 @@ describe('ContentPreviewMemoWrapper', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
 
         const RenderProps = cmp.find('ContentPreview').props().children;
@@ -75,7 +73,6 @@ describe('ContentPreviewMemoWrapper', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
 
         const RenderProps = cmp.find('ContentPreview').props().children;

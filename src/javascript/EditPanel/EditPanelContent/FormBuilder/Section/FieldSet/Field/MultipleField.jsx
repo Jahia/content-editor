@@ -4,7 +4,7 @@ import {Close} from '@material-ui/icons';
 import React from 'react';
 import * as PropTypes from 'prop-types';
 import {compose} from 'react-apollo';
-import {translate} from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import {connect, FieldArray} from 'formik';
 import {FieldPropTypes} from '~/EditPanel/FormDefinitions';
 
@@ -22,7 +22,8 @@ const styles = theme => {
     };
 };
 
-export const MultipleFieldCmp = ({classes, t, inputContext, field, formik: {values}}) => {
+export const MultipleFieldCmp = ({classes, inputContext, field, formik: {values}}) => {
+    const {t} = useTranslation();
     return (
         <FieldArray
             name={field.name}
@@ -76,13 +77,11 @@ MultipleFieldCmp.propTypes = {
     inputContext: PropTypes.object.isRequired,
     field: FieldPropTypes.isRequired,
     formik: PropTypes.object.isRequired,
-    t: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired
 };
 
 export const MultipleField = compose(
     connect,
-    translate(),
     withStyles(styles)
 )(MultipleFieldCmp);
 

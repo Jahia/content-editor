@@ -68,7 +68,6 @@ describe('imageListQuery', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
 
         cmp.find('WithStyles(ImageList)').exists();
@@ -80,7 +79,6 @@ describe('imageListQuery', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
 
         expect(cmp.props().images[0].name).toContain('Beautiful_hedgehog.jpg');
@@ -92,7 +90,6 @@ describe('imageListQuery', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
 
         expect(cmp.props().images[0].type).toContain('jpeg');

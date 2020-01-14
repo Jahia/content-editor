@@ -89,12 +89,11 @@ describe('Field component', () => {
                 {},
                 dsGenericTheme
             )
-                .dive()
                 .dive();
 
             const badgeComponent = cmp.find({
                 badgeContent:
-                    'content-editor:label.contentEditor.edit.sharedLanguages'
+                    'translated_content-editor:label.contentEditor.edit.sharedLanguages'
             });
             expect(badgeComponent.exists()).toBe(expectedBadgeRendered);
         };
@@ -114,7 +113,7 @@ describe('Field component', () => {
             dsGenericTheme
         );
 
-        expect(cmp.dive().dive().debug()).toContain('htmlFor="FieldID"');
+        expect(cmp.dive().debug()).toContain('htmlFor="FieldID"');
     });
 
     it('should not add htmlFor to the label when field is multiple', () => {
@@ -126,7 +125,7 @@ describe('Field component', () => {
             dsGenericTheme
         );
 
-        expect(cmp.dive().dive().debug()).not.toContain('htmlFor="FieldID"');
+        expect(cmp.dive().debug()).not.toContain('htmlFor="FieldID"');
     });
 
     it('should display the contextualMenu when action exists', () => {
@@ -138,7 +137,7 @@ describe('Field component', () => {
             dsGenericTheme
         );
 
-        expect(cmp.dive().dive().debug()).toContain('ContextualMenu');
+        expect(cmp.dive().debug()).toContain('ContextualMenu');
     });
 
     it('should not display the contextualMenu when action does not exist', () => {
@@ -150,7 +149,7 @@ describe('Field component', () => {
             dsGenericTheme
         );
 
-        expect(cmp.dive().dive().debug()).not.toContain('ContextualMenu');
+        expect(cmp.dive().debug()).not.toContain('ContextualMenu');
     });
 
     it('should display an error message when field is in error', () => {
@@ -168,7 +167,7 @@ describe('Field component', () => {
             dsGenericTheme
         );
 
-        expect(cmp.dive().dive().debug()).toContain('errors.required');
+        expect(cmp.dive().debug()).toContain('errors.required');
     });
 
     it('should not display an error message when field not touched', () => {
@@ -186,6 +185,6 @@ describe('Field component', () => {
             dsGenericTheme
         );
 
-        expect(cmp.dive().dive().debug()).not.toContain('errors.required');
+        expect(cmp.dive().debug()).not.toContain('errors.required');
     });
 });

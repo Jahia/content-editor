@@ -127,7 +127,6 @@ describe('contentListTable', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
 
         cmp.find('WithStyles(ContentTable)').exists();
@@ -145,7 +144,6 @@ describe('contentListTable', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
 
         expect(cmp.props().data[0].name).toContain('Home');
@@ -163,7 +161,6 @@ describe('contentListTable', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
 
         expect(cmp.props().data[0].type).toContain('Page');
@@ -181,7 +178,6 @@ describe('contentListTable', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
 
         expect(cmp.props().columns[1].property).toContain('type');
@@ -200,7 +196,6 @@ describe('contentListTable', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
 
         expect(cmp.props().columns[1].property).toContain('subContentsCount');
@@ -219,7 +214,6 @@ describe('contentListTable', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
 
         expect(cmp.props().columns[5].property).toBe('navigateInto');
@@ -238,7 +232,6 @@ describe('contentListTable', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
 
         expect(cmp.props().data[1].navigateInto).toBe(false);
@@ -256,7 +249,6 @@ describe('contentListTable', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
 
         cmp.props().data[0].props.navigateInto.onClick({preventDefault: () => {}});

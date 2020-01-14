@@ -6,9 +6,10 @@ import {
 } from '@material-ui/core';
 import {Button} from '@jahia/design-system-kit';
 import * as PropTypes from 'prop-types';
-import {translate} from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
-export const EditPanelDialogConfirmation = ({t, titleKey, open, onCloseDialog, actionCallback, formik}) => {
+export const EditPanelDialogConfirmation = ({titleKey, open, onCloseDialog, actionCallback, formik}) => {
+    const {t} = useTranslation();
     const handleDiscard = () => {
         onCloseDialog();
 
@@ -54,7 +55,6 @@ export const EditPanelDialogConfirmation = ({t, titleKey, open, onCloseDialog, a
 };
 
 EditPanelDialogConfirmation.propTypes = {
-    t: PropTypes.func.isRequired,
     titleKey: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
     formik: PropTypes.object.isRequired,
@@ -62,6 +62,4 @@ EditPanelDialogConfirmation.propTypes = {
     onCloseDialog: PropTypes.func.isRequired
 };
 
-EditPanelDialogConfirmation.displayName = 'EditPanelDialogConfirmation';
-
-export default translate()(EditPanelDialogConfirmation);
+export default EditPanelDialogConfirmation;

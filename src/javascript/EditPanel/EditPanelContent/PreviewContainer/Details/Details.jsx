@@ -2,8 +2,7 @@ import React, {useContext} from 'react';
 import PropTypes from 'prop-types';
 import {InfoPanel} from '~/DesignSystem/InfoPanel';
 import {withStyles} from '@material-ui/core';
-import {compose} from 'react-apollo';
-import {translate} from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import {ContentEditorContext} from '~/ContentEditor.context';
 
 const styles = theme => ({
@@ -14,7 +13,8 @@ const styles = theme => ({
     }
 });
 
-export const DetailsCmp = ({classes, t}) => {
+export const DetailsCmp = ({classes}) => {
+    const {t} = useTranslation();
     const editorContext = useContext(ContentEditorContext);
 
     return (
@@ -35,13 +35,8 @@ export const DetailsCmp = ({classes, t}) => {
 };
 
 DetailsCmp.propTypes = {
-    classes: PropTypes.object.isRequired,
-    t: PropTypes.func.isRequired
+    classes: PropTypes.object.isRequired
 };
 
-export const Details = compose(
-    withStyles(styles),
-    translate()
-)(DetailsCmp);
-
+export const Details = withStyles(styles)(DetailsCmp);
 Details.displayName = 'Details';

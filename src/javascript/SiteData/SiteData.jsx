@@ -1,14 +1,15 @@
 import React from 'react';
 import {compose} from 'react-apollo';
 import {ProgressOverlay, withNotifications} from '@jahia/react-material';
-import {translate} from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import {connect} from 'react-redux';
 import * as PropTypes from 'prop-types';
 import {SiteInfo} from '@jahia/react-apollo';
 
 export const withSiteInfo = Children => {
     const SiteData = props => {
-        const {notificationContext, t, site, lang} = props;
+        const {notificationContext, site, lang} = props;
+        const {t} = useTranslation();
         return (
             <SiteInfo siteKey={site} displayLanguage={lang}>
                 {({siteInfo, error, loading}) => {
@@ -35,19 +36,13 @@ export const withSiteInfo = Children => {
     });
 
     SiteData.propTypes = {
-        t: PropTypes.func,
         lang: PropTypes.string.isRequired,
         notificationContext: PropTypes.object.isRequired,
         site: PropTypes.string.isRequired
     };
 
-    SiteData.defaultProps = {
-        t: s => s
-    };
-
     return compose(
         withNotifications(),
-        translate(),
         connect(mapStateToProps)
     )(SiteData);
 };

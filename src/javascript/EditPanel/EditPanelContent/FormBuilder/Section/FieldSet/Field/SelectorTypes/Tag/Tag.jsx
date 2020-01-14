@@ -1,4 +1,4 @@
-import {translate} from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import {MultipleInput} from '~/DesignSystem/MultipleInput';
 import {FastField} from 'formik';
 import React from 'react';
@@ -6,7 +6,10 @@ import PropTypes from 'prop-types';
 import {adaptSelection} from './Tag.utils';
 import {FieldPropTypes} from '~/EditPanel/FormDefinitions/FormData.proptypes';
 
-const Tag = ({field, id, t}) => {
+jest.mock('react-i18next');
+
+const Tag = ({field, id}) => {
+    const {t} = useTranslation();
     const adaptOptions = options => (
         options.map(data => ({
             value: data,
@@ -53,8 +56,7 @@ const Tag = ({field, id, t}) => {
 
 Tag.propTypes = {
     id: PropTypes.string.isRequired,
-    t: PropTypes.func.isRequired,
     field: FieldPropTypes.isRequired
 };
 
-export default translate()(Tag);
+export default Tag;
