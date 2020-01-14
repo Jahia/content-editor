@@ -30,6 +30,7 @@ const LeftPanelCmp = ({
     onSelectSite,
     selectedPath,
     setSelectedPath,
+    setSelectedItem,
     classes
 }) => {
     const selectedItemSite = getSite(initialSelectedItem);
@@ -82,7 +83,10 @@ const LeftPanelCmp = ({
                             openSelection={false}
                             setRefetch={setRefetch}
                             onOpenItem={(path, open) => (open ? openPath(path) : closePath(path))}
-                            onSelectItem={setSelectedPath}
+                            onSelectItem={itemSite => {
+                                setSelectedItem(undefined);
+                                setSelectedPath(itemSite);
+                            }}
                     >
                         {({handleSelect, ...others}) => (
                             <PickerTreeViewMaterial {...others}
@@ -107,6 +111,7 @@ LeftPanelCmp.propTypes = {
     nodeTreeConfigs: PropTypes.array.isRequired,
     selectedPath: PropTypes.string,
     setSelectedPath: PropTypes.func.isRequired,
+    setSelectedItem: PropTypes.func.isRequired,
     onSelectSite: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired
 };
