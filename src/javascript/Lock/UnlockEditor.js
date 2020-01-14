@@ -1,13 +1,15 @@
 import {UnlockEditorMutation} from './UnlockEditor.gql-mutation';
-import {getLockEditorId} from './LockUtils';
 import PropTypes from 'prop-types';
+import {useEditorIdContext} from '../ContentEditorId.context';
 
 export const useUnlockEditor = client => {
+    const {editorId} = useEditorIdContext();
+
     return {
         unlockEditor: unlockCallback => {
             client.mutate({
                 variables: {
-                    editorID: getLockEditorId()
+                    editorID: editorId
                 },
                 mutation: UnlockEditorMutation
             }).then(() => {

@@ -5,6 +5,7 @@ import {withApollo} from 'react-apollo';
 
 import {Create} from '~/Create/Create.container';
 import {Edit} from '~/Edit/Edit.container';
+import {EditorIdContextProvider} from './ContentEditorId.context';
 
 const Routes = {
     edit: Edit,
@@ -15,9 +16,11 @@ const ContentEditorCmp = ({client, mode}) => {
     const CurrentRouteCmp = Routes[mode];
 
     return (
-        <ApolloHooksProvider client={client}>
-            <CurrentRouteCmp/>
-        </ApolloHooksProvider>
+        <EditorIdContextProvider>
+            <ApolloHooksProvider client={client}>
+                <CurrentRouteCmp/>
+            </ApolloHooksProvider>
+        </EditorIdContextProvider>
     );
 };
 
