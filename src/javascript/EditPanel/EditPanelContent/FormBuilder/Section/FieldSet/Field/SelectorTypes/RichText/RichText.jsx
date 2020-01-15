@@ -28,6 +28,15 @@ export const RichTextCmp = ({field, id, value}) => {
         }
     );
 
+    if (error) {
+        console.error(error);
+        return <>{error}</>;
+    }
+
+    if (loading || !data || !data.forms) {
+        return <ProgressOverlay/>;
+    }
+
     const toolbar = loadOption(field.selectorOptions, 'ckeditor.toolbar');
     const customConfig = loadOption(field.selectorOptions, 'ckeditor.customConfig');
 
@@ -40,22 +49,10 @@ export const RichTextCmp = ({field, id, value}) => {
 
     const config = {
         customConfig: ckeditorCustomConfig.replace('$context', window.contextJsParameters.contextPath),
+        toolbar: toolbar ? toolbar.value : data.forms.ckeditorToolbar,
         width: '100%',
         contentEditorFieldName: id // Used by selenium to get CKEditor instance
     };
-
-    if (toolbar) {
-        config.toolbar = toolbar.value;
-    }
-
-    if (error) {
-        console.error(error);
-        return <>{error}</>;
-    }
-
-    if (loading || !data || !data.forms) {
-        return <ProgressOverlay/>;
-    }
 
     return (
         <FastField
