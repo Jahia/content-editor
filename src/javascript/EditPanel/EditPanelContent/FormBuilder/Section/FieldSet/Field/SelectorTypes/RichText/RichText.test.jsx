@@ -41,7 +41,8 @@ describe('RichText component', () => {
 
         setQueryResult({
             forms: {
-                ckeditorConfigPath: ''
+                ckeditorConfigPath: '',
+                ckeditorToolbar: 'Light'
             }
         });
 
@@ -108,6 +109,7 @@ describe('RichText component', () => {
             .toEqual({
                 contentEditorFieldName: 'richID',
                 customConfig: '',
+                toolbar: 'Light',
                 width: '100%'
             });
     });

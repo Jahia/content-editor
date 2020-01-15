@@ -199,6 +199,22 @@ public class GqlEditorForms {
         return configPath;
     }
 
+    @GraphQLField
+    @GraphQLName("ckeditorToolbar")
+    @GraphQLDescription("Retrieve the toolbar type for CKEditor")
+    public String ckeditorToolbar(@GraphQLName("nodePath") @GraphQLDescription("node path") String nodePath) throws RepositoryException {
+        String toolbar = "Light";
+
+        JCRNodeWrapper node = getSession().getNode(nodePath);
+        if (node.hasPermission("view-full-wysiwyg-editor")) {
+            toolbar = "Full";
+        } else if (node.hasPermission("view-basic-wysiwyg-editor")) {
+            toolbar = "Basic";
+        }
+
+        return toolbar;
+    }
+
     private String getConfigPath(String moduleId, String resource) {
         String configPath = "";
         JahiaTemplatesPackage ckeditorModule = ServicesRegistry.getInstance().getJahiaTemplateManagerService().getTemplatePackageById(moduleId);
