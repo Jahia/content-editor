@@ -6,8 +6,6 @@ import PropTypes from 'prop-types';
 import {adaptSelection} from './Tag.utils';
 import {FieldPropTypes} from '~/EditPanel/FormDefinitions/FormData.proptypes';
 
-jest.mock('react-i18next');
-
 const Tag = ({field, id}) => {
     const {t} = useTranslation();
     const adaptOptions = options => (
