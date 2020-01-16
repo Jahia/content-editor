@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 export const generateWeekdaysShort = locale => {
     return {
         ...locale,
-        weekdaysShort: locale.weekdays.map(day => day[0])
+        weekdaysShort: locale.weekdays.map(day => day[0].toUpperCase())
     };
 };
 
