@@ -15,8 +15,9 @@ const styles = theme => ({
         margin: '10px'
     },
     modalMain: {
-        height: '100%',
-        flexGrow: 1
+        height: 0,
+        flexGrow: 1,
+        overflow: 'auto'
     },
     searchInput: {
         flexGrow: 0.6
