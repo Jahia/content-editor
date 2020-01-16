@@ -7,7 +7,7 @@ import {FastField} from 'formik';
 export const TextCmp = ({field, value, id, editorContext}) => {
     const fieldType = field.requiredType;
     const isNumber = fieldType === 'DOUBLE' || fieldType === 'LONG' || fieldType === 'DECIMAL';
-    const decimalSeparator = editorContext.uiLang === 'en' ? '.' : ',';
+    const decimalSeparator = editorContext.uilang === 'en' ? '.' : ',';
     const controlledValue = value === undefined ? '' : value;
     return (
         <FastField render={({form: {handleChange, setFieldTouched}}) => {

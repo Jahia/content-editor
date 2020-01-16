@@ -2,6 +2,7 @@ import {useState, useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
 
 export const useI18nCENamespace = () => {
+    console.log('Load namespace for CE');
     const {i18n} = useTranslation();
     const [loading, setLoading] = useState(true);
 

@@ -28,7 +28,7 @@ const styles = theme => ({
 
 const EditPanelCmp = ({formik, title, classes, notificationContext, client}) => {
     const {t} = useTranslation();
-    const {nodeData, siteInfo, lang, uiLang, mode} = useContentEditorContext();
+    const {nodeData, siteInfo, lang, uilang, mode} = useContentEditorContext();
 
     useEffect(() => {
         const handleBeforeUnloadEvent = ev => {
@@ -80,7 +80,7 @@ const EditPanelCmp = ({formik, title, classes, notificationContext, client}) => 
                             context={{
                                 nodeData,
                                 language: lang,
-                                uiLang,
+                                uilang,
                                 mode,
                                 isMainButton: true,
 
@@ -111,7 +111,7 @@ const EditPanelCmp = ({formik, title, classes, notificationContext, client}) => 
                             context={{
                                 nodeData,
                                 language: lang,
-                                uiLang,
+                                uilang,
                                 mode,
                                 t,
                                 client, // TODO BACKLOG-11290 find another way to inject apollo-client, i18n, ...}

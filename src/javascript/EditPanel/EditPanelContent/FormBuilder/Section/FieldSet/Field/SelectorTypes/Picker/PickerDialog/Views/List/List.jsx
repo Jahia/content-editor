@@ -101,7 +101,7 @@ const ListView = ({
             type: content.primaryNodeType.typeName,
             createdBy: content.createdBy ? content.createdBy.value : undefined,
             lastModified: content.lastModified ? dayjs(content.lastModified.value)
-                .locale(editorContext.uiLang)
+                .locale(editorContext.uilang)
                 .format('LLL') : undefined,
             navigateInto: haveSubContents,
             props: {

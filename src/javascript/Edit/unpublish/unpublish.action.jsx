@@ -19,7 +19,7 @@ export default composeActions(
                 data: {
                     nodeData: context.nodeData,
                     language: context.language,
-                    uiLang: context.uiLang
+                    uilang: context.uilang
                 }
             });
         }

@@ -14,14 +14,14 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = state => {
-    const contentEditorUiLang = Constants.supportedLocales.includes(state.uiLang) ?
-        state.uiLang :
+    const contentEditorUiLang = Constants.supportedLocales.includes(state.uilang) ?
+        state.uilang :
         Constants.defaultLocale;
 
     return {
         path: state.path,
         lang: state.language,
-        uiLang: state.uiLang,
+        uilang: state.uilang,
         site: state.site,
         siteDisplayableName: state.siteDisplayableName,
         formQuery: FormQuery,
@@ -29,7 +29,7 @@ const mapStateToProps = state => {
             path: state.path,
             parentPath: state.path,
             language: state.language,
-            uiLang: contentEditorUiLang,
+            uilang: contentEditorUiLang,
             primaryNodeType: state.params.contentType
         }
     };

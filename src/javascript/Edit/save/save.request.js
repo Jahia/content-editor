@@ -17,7 +17,7 @@ export const saveNode = ({
         sections,
         values,
         language,
-        uiLang
+        uilang
     }
 }) => {
     const dataToMutate = getDataToMutate({nodeData, formValues: values, sections, lang: language});
@@ -38,7 +38,7 @@ export const saveNode = ({
                 variables: {
                     path,
                     language,
-                    uiLang: uiLang
+                    uilang: uilang
                 }
             },
             {

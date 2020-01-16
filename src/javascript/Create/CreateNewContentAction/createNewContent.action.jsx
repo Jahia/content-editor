@@ -15,7 +15,7 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = state => {
     return {
-        uiLang: state.uiLang,
+        uilang: state.uilang,
         language: state.language,
         siteKey: state.site
     };
@@ -28,7 +28,7 @@ export default composeActions(
     {
         init: context => {
             const variables = {
-                uiLang: context.uiLang,
+                uilang: context.uilang,
                 path: context.path,
                 excludedNodeTypes: ['jmix:studioOnly', 'jmix:hiddenType'],
                 showOnNodeTypes: context.showOnNodeTypes
@@ -53,7 +53,7 @@ export default composeActions(
                     <CreateNewContentDialog
                         open
                         parentPath={context.path}
-                        uiLang={context.uiLang}
+                        uilang={context.uilang}
                         onClose={() => {
                             handler.setProps({open: false});
                         }}

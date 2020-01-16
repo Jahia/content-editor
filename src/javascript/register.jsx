@@ -7,10 +7,8 @@ import {Constants} from '~/ContentEditor.constants';
 import ContentEditor from './ContentEditor';
 import {useI18nCENamespace} from '~/useI18n';
 
-console.debug('%c Content Editor is activated', 'color: #3c8cba');
-
 /* eslint-disable-next-line no-undef, camelcase */
-__webpack_public_path__ = `${window.contextJsParameters}/modules/content-editor/javascript/apps/`;
+__webpack_public_path__ = `${window.contextJsParameters.contextPath}/modules/content-editor/javascript/apps/`;
 
 // Register i18n loadNamespaces through a empty react component until extender solve the injection issue
 const i18nLoaderElement = document.createElement('div');
@@ -36,3 +34,5 @@ registry.add('create-route', {
     path: `/:siteKey/:lang/${Constants.routes.baseCreateRoute}`,
     render: () => <ContentEditor mode="create"/>
 });
+
+console.log('%c Content Editor is activated', 'color: #3c8cba');

@@ -22,7 +22,7 @@ describe('Create', () => {
             path: '/toto',
             parentPath: '/toto',
             language: 'fr',
-            uiLang: 'en',
+            uilang: 'en',
             primaryNodeType: 'contentTypeLOL'
         });
     });

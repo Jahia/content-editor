@@ -2,9 +2,9 @@ import gql from 'graphql-tag';
 import {NodeDataFragment} from '~/NodeData/NodeData.gql-queries';
 
 export const FormQuery = gql`
-    query createForm($uiLang:String!, $language:String!, $parentPath:String!, $path:String!, $primaryNodeType:String!) {
+    query createForm($uilang:String!, $language:String!, $parentPath:String!, $path:String!, $primaryNodeType:String!) {
         forms {
-            createForm(primaryNodeType: $primaryNodeType, uiLocale: $uiLang, locale: $language, parentPath: $parentPath) {
+            createForm(primaryNodeType: $primaryNodeType, uiLocale: $uilang, locale: $language, parentPath: $parentPath) {
                 name
                 displayName
                 description
@@ -55,7 +55,7 @@ export const FormQuery = gql`
         jcr {
             ...NodeData
             nodeTypeByName(name: $primaryNodeType) {
-                displayName(language: $uiLang)
+                displayName(language: $uilang)
             }
         }
     }
