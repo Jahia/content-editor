@@ -4,7 +4,7 @@ import {PredefinedFragments} from '@jahia/apollo-dx';
 const NodeDataFragment = {
     nodeData: {
         variables: {
-            uiLang: 'String!',
+            uilang: 'String!',
             language: 'String!',
             path: 'String!'
         },
@@ -29,7 +29,7 @@ const NodeDataFragment = {
 
                 primaryNodeType {
                     name
-                    displayName(language: $uiLang)
+                    displayName(language: $uilang)
                     properties {
                         name
                         requiredType
@@ -60,7 +60,7 @@ const NodeDataFragment = {
 };
 
 const NodeQuery = gql`
-    query getNodeProperties($path:String!, $language:String!, $uiLang:String!) {
+    query getNodeProperties($path:String!, $language:String!, $uilang:String!) {
         jcr {
             ...NodeData
         }

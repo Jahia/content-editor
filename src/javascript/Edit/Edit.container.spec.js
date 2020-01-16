@@ -25,7 +25,7 @@ describe('Edit', () => {
         expect(props.formQueryParams).toEqual({
             path: '/toto',
             language: 'fr',
-            uiLang: 'en'
+            uilang: 'en'
         });
     });
 });

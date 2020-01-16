@@ -112,7 +112,7 @@ describe('PickerDialog - List view', () => {
             editorContext: {
                 site: 'mySite',
                 lang: 'fr',
-                uiLang: 'en'
+                uilang: 'en'
             },
             pickerConfig: {
                 showOnlyNodesWithTemplates: true,

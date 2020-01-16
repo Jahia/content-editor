@@ -10,7 +10,7 @@ export const unpublishNode = ({
     data: {
         nodeData,
         language,
-        uiLang
+        uilang
     }
 }) => {
     return client.mutate({
@@ -25,7 +25,7 @@ export const unpublishNode = ({
                 variables: {
                     path: nodeData.path,
                     language: language,
-                    uiLang: uiLang
+                    uilang: uilang
                 }
             },
             {

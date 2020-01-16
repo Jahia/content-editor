@@ -18,7 +18,7 @@ export const DateTimePicker = ({id, field, editorContext}) => {
     const disabledDays = fillDisabledDaysFromJCRConstraints(field, isDateTime);
 
     // Handle the date format, only "en" have a specific format.
-    let displayDateFormat = editorContext.uiLang === 'en' ? 'MM/DD/YYYY' : 'DD/MM/YYYY';
+    let displayDateFormat = editorContext.uilang === 'en' ? 'MM/DD/YYYY' : 'DD/MM/YYYY';
     displayDateFormat = isDateTime ? (displayDateFormat + ' HH:mm') : displayDateFormat;
     const displayDateMask = isDateTime ? '__/__/____ __:__' : '__/__/____';
 
@@ -30,7 +30,7 @@ export const DateTimePicker = ({id, field, editorContext}) => {
                 return (
                     <DatePickerInput
                         dayPickerProps={{disabledDays}}
-                        lang={editorContext.uiLang}
+                        lang={editorContext.uilang}
                         initialValue={value ? dayjs(value).toDate() : value}
                         onChange={date => {
                             // Null is received when the date is reset
@@ -61,7 +61,7 @@ DateTimePicker.propTypes = {
     id: PropTypes.string.isRequired,
     editorContext: PropTypes.shape({
         lng: PropTypes.string,
-        uiLang: PropTypes.string.isRequired
+        uilang: PropTypes.string.isRequired
     }).isRequired,
     field: FieldPropTypes.isRequired
 };

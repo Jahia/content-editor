@@ -7,8 +7,8 @@ import {dsGenericTheme} from '@jahia/design-system-kit';
 describe('DateTimePicker component', () => {
     let props;
 
-    let testDateFormat = (uiLang, format) => {
-        props.editorContext.uiLang = uiLang;
+    let testDateFormat = (uilang, format) => {
+        props.editorContext.uilang = uilang;
         const RenderProps = shallow(<DateTimePicker {...props}/>)
             .props().component;
         const cmp = shallow(<RenderProps field={{value: new Date().toISOString()}} form={{setFieldTouched: () => {}, setFieldValue: () => {}}}/>);
@@ -28,7 +28,7 @@ describe('DateTimePicker component', () => {
             },
             editorContext: {
                 lang: 'fr',
-                uiLang: 'fr'
+                uilang: 'fr'
             }
         };
     });

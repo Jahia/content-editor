@@ -12,7 +12,7 @@ describe('Text component', () => {
         props = {
             id: 'toto[1]',
             editorContext: {
-                uiLang: 'en'
+                uilang: 'en'
             },
             field: {
                 name: 'toto',
@@ -106,14 +106,14 @@ describe('Text component', () => {
     });
 
     it('should input of type number use point as decimal separator when language is "en"', () => {
-        props.editorContext.uiLang = 'en';
+        props.editorContext.uilang = 'en';
         const wrapper = buildComp(props);
 
         expect(wrapper.props().decimalSeparator).toBe('.');
     });
 
     it('should input of type number use comma as decimal separator when language is "fr"', () => {
-        props.editorContext.uiLang = 'fr';
+        props.editorContext.uilang = 'fr';
         const wrapper = buildComp(props);
 
         expect(wrapper.props().decimalSeparator).toBe(',');
