@@ -63,9 +63,7 @@ describe('publish action', () => {
                 mode: 'edit',
                 nodeData: {
                     hasPublishPermission: true,
-                    lockInfo: {
-                        isLocked: false
-                    }
+                    lockedAndCannotBeEdited: false
                 }
             };
         });
@@ -151,7 +149,7 @@ describe('publish action', () => {
         });
 
         it('should disable publish action when node is locked', () => {
-            context.nodeData.lockInfo.isLocked = true;
+            context.nodeData.lockedAndCannotBeEdited = true;
             publishAction.init(context, props);
 
             expect(context.disabled).toBe(true);

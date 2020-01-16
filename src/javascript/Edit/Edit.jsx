@@ -73,24 +73,29 @@ export const Edit = ({
         });
     };
 
+    const editWithFormik = (
+        <PublicationInfoContextProvider path={path} lang={lang}>
+            <Formik
+                initialValues={initialValues}
+                render={props => <EditPanel {...props} title={title}/>}
+                validate={validate(sections)}
+                onSubmit={handleSubmit}
+            />
+        </PublicationInfoContextProvider>
+    );
     return (
         <ContentEditorContext.Provider value={editorContext}>
+            {nodeData.lockedAndCannotBeEdited ? <>{editWithFormik}</> :
             <LockedEditorContextProvider path={path}>
-                <PublicationInfoContextProvider path={path} lang={lang}>
-                    <Formik
-                        initialValues={initialValues}
-                        render={props => <EditPanel {...props} title={title}/>}
-                        validate={validate(sections)}
-                        onSubmit={handleSubmit}
-                    />
-                </PublicationInfoContextProvider>
-            </LockedEditorContextProvider>
+                {editWithFormik}
+            </LockedEditorContextProvider>}
         </ContentEditorContext.Provider>
     );
 };
 
 Edit.defaultProps = {
-    setUrl: () => {}
+    setUrl: () => {
+    }
 };
 
 Edit.propTypes = {
