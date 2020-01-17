@@ -1,1 +1,0 @@
-export {ContentTable} from './ContentTable';

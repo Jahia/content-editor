@@ -1,36 +1,22 @@
 import React, {useEffect} from 'react';
 import {ProgressOverlay} from '@jahia/react-material';
-import * as PropTypes from 'prop-types';
-import {useQuery} from 'react-apollo-hooks';
+import PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import {ImageList} from '~/DesignSystem/ImageList';
 import {encodeJCRPath} from '~/EditPanel/EditPanel.utils';
-import {MediaPickerImages} from './ImageListQuery.gql-queries';
-import {searchPickerQuery} from '../../PickerDialog/Search/search.gql-queries';
 import {registry} from '@jahia/registry';
-import {useContentEditorContext} from '~/ContentEditor.context';
+import {useDialogPickerContent} from '../useDialogPickerContent';
 
-export const ImageListQuery = ({
+export const Thumbnail = ({
     setSelectedItem,
-    onImageDoubleClick,
+    onThumbnailDoubleClick,
     selectedPath,
     initialSelection,
-    searchTerms
+    searchTerms,
+    pickerConfig
 }) => {
     const {t} = useTranslation();
-    const {lang} = useContentEditorContext();
-    const {data, error, loading, refetch} = useQuery(
-        searchTerms ? searchPickerQuery : MediaPickerImages,
-        {
-            variables: {
-                searchName: '%' + searchTerms + '%',
-                searchSelectorType: 'jmix:image',
-                path: selectedPath,
-                searchTerms,
-                language: lang
-            }
-        }
-    );
+    const {nodes, error, loading, refetch} = useDialogPickerContent(pickerConfig, selectedPath, searchTerms);
 
     useEffect(() => {
         registry.add('refetch-image-list', {
@@ -51,8 +37,6 @@ export const ImageListQuery = ({
         return <ProgressOverlay/>;
     }
 
-    const nodes = searchTerms ? data.jcr.result.nodes : data.jcr.result.children.nodes;
-
     const images = nodes.map(rawImg => {
         return {
             uuid: rawImg.uuid,
@@ -60,8 +44,8 @@ export const ImageListQuery = ({
                 window.contextJsParameters.contextPath
             }/files/default${encodeJCRPath(rawImg.path)}?lastModified=${rawImg.lastModified.value}&t=thumbnail2`,
             path: rawImg.path,
-            name: rawImg.name,
-            type: rawImg.children.nodes[0].mimeType.value.replace('image/', ''),
+            name: rawImg.displayName,
+            type: rawImg.metadata.nodes[0].mimeType.value.replace('image/', ''),
             width: rawImg.width ? `${rawImg.width.value}` : null,
             height: rawImg.height ? `${rawImg.height.value}` : null
         };
@@ -78,20 +62,21 @@ export const ImageListQuery = ({
             error={error}
             initialSelection={initialSelection}
             onImageSelection={setSelectedItem}
-            onImageDoubleClick={onImageDoubleClick}
+            onImageDoubleClick={onThumbnailDoubleClick}
         />
     );
 };
 
-ImageListQuery.defaultProps = {
+Thumbnail.defaultProps = {
     initialSelection: null,
     searchTerms: ''
 };
 
-ImageListQuery.propTypes = {
+Thumbnail.propTypes = {
     setSelectedItem: PropTypes.func.isRequired,
-    onImageDoubleClick: PropTypes.func.isRequired,
+    onThumbnailDoubleClick: PropTypes.func.isRequired,
     selectedPath: PropTypes.string.isRequired,
+    pickerConfig: PropTypes.object.isRequired,
     initialSelection: PropTypes.array,
     searchTerms: PropTypes.string
 };

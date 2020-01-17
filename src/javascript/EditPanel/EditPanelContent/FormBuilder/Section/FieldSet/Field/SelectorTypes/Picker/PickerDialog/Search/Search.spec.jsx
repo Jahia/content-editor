@@ -10,7 +10,8 @@ describe('Picker Search', () => {
         props = {
             selectedPath: 'aPath',
             placeholder: 'hello',
-            onChange: jest.fn()
+            onChange: jest.fn(),
+            language: 'en'
         };
     });
 

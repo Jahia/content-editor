@@ -16,7 +16,7 @@ jest.mock('react-apollo-hooks', () => {
 });
 
 import {setQueryResult} from 'react-apollo-hooks';
-import {ContentTable} from './ContentTable';
+import {List} from './List';
 
 const queryResult = {
     retrieveTotalCount: {
@@ -99,7 +99,7 @@ const queryResultWithChildren = {
     }
 };
 
-describe('contentListTable', () => {
+describe('PickerDialog - List view', () => {
     let defaultProps;
 
     beforeEach(() => {
@@ -114,10 +114,10 @@ describe('contentListTable', () => {
                 lang: 'fr',
                 uiLang: 'en'
             },
-            tableConfig: {
+            pickerConfig: {
+                showOnlyNodesWithTemplates: true,
                 searchSelectorType: '   ',
-                typeFilter: [],
-                recursionTypesFilter: []
+                selectableTypesTable: 'type'
             },
             formik: {}
         };
@@ -135,7 +135,7 @@ describe('contentListTable', () => {
         });
 
         const cmp = shallowWithTheme(
-            <ContentTable {...defaultProps}/>,
+            <List {...defaultProps}/>,
             {},
             dsGenericTheme
         )
@@ -152,7 +152,7 @@ describe('contentListTable', () => {
         });
 
         const cmp = shallowWithTheme(
-            <ContentTable {...defaultProps}/>,
+            <List {...defaultProps}/>,
             {},
             dsGenericTheme
         )
@@ -170,7 +170,7 @@ describe('contentListTable', () => {
         });
 
         const cmp = shallowWithTheme(
-            <ContentTable {...defaultProps}/>,
+            <List {...defaultProps}/>,
             {},
             dsGenericTheme
         )
@@ -188,7 +188,7 @@ describe('contentListTable', () => {
         });
 
         const cmp = shallowWithTheme(
-            <ContentTable {...defaultProps}/>,
+            <List {...defaultProps}/>,
             {},
             dsGenericTheme
         )
@@ -207,7 +207,7 @@ describe('contentListTable', () => {
         });
 
         const cmp = shallowWithTheme(
-            <ContentTable {...defaultProps}/>,
+            <List {...defaultProps}/>,
             {},
             dsGenericTheme
         )
@@ -226,7 +226,7 @@ describe('contentListTable', () => {
         });
 
         const cmp = shallowWithTheme(
-            <ContentTable {...defaultProps}/>,
+            <List {...defaultProps}/>,
             {},
             dsGenericTheme
         )
@@ -245,7 +245,7 @@ describe('contentListTable', () => {
         });
 
         const cmp = shallowWithTheme(
-            <ContentTable {...defaultProps}/>,
+            <List {...defaultProps}/>,
             {},
             dsGenericTheme
         )
@@ -263,7 +263,7 @@ describe('contentListTable', () => {
         });
 
         const cmp = shallowWithTheme(
-            <ContentTable {...defaultProps}/>,
+            <List {...defaultProps}/>,
             {},
             dsGenericTheme
         )
@@ -284,7 +284,7 @@ describe('contentListTable', () => {
         t.mockImplementation((key, value) => value ? `${value.totalCount} items found` : key);
 
         const cmp = shallowWithTheme(
-            <ContentTable {...defaultProps}/>,
+            <List {...defaultProps}/>,
             {},
             dsGenericTheme
         )

@@ -6,6 +6,7 @@ import {buttonRenderer, DisplayActions} from '@jahia/react-material';
 import {Typography} from '@jahia/design-system-kit';
 
 import {SearchInput} from './Search/Search';
+import {List, Thumbnail} from './Views';
 
 const styles = theme => ({
     modalHeader: {
@@ -39,6 +40,11 @@ const styles = theme => ({
     }
 });
 
+const ViewMapper = {
+    List,
+    Thumbnail
+};
+
 const MainPanelCmp = ({
     classes,
     t,
@@ -66,15 +72,7 @@ const MainPanelCmp = ({
     const isElementSelected = !(selectedItem && selectedItem.length !== 0);
     const initialItemHasChanged = initialSelectedItem && selectedItem !== undefined;
 
-    const PickerDialogContent = pickerConfig.picker.PickerDialog.DialogContent;
-
-    // Build table config from picker config
-    const tableConfig = {
-        typeFilter: pickerConfig.selectableTypesTable,
-        recursionTypesFilter: ['nt:base'],
-        showOnlyNodesWithTemplates: pickerConfig.showOnlyNodesWithTemplates,
-        searchSelectorType: pickerConfig.searchSelectorType
-    };
+    const PickerDialogContent = ViewMapper[pickerConfig.picker.PickerDialog.view];
 
     const isPickerTypeFiles = nodeTreeConfigs[0].type === 'files';
 
@@ -94,17 +92,14 @@ const MainPanelCmp = ({
             </header>
             <main className={classes.modalMain}>
                 <PickerDialogContent
-                         // For all Picker
-                            tableConfig={tableConfig}
+                            pickerConfig={pickerConfig}
                             setSelectedItem={setSelectedItem}
                             selectedPath={selectedPath}
                             setSelectedPath={setSelectedPath}
                             initialSelection={initialSelectedItem ? [initialSelectedItem] : []}
                             editorContext={editorContext}
                             searchTerms={searchTerms}
-
-                         // For mediaPicker
-                            onImageDoubleClick={onItemSelection}
+                            onThumbnailDoubleClick={onItemSelection}
                     />
             </main>
 
@@ -147,7 +142,7 @@ MainPanelCmp.propTypes = {
     pickerConfig: PropTypes.shape({
         picker: PropTypes.shape({
             PickerDialog: PropTypes.shape({
-                DialogContent: PropTypes.node.isRequired,
+                view: PropTypes.string.isRequired,
                 dialogTitle: PropTypes.func.isRequired,
                 searchPlaceholder: PropTypes.func.isRequired
             }).isRequired
@@ -162,7 +157,7 @@ MainPanelCmp.propTypes = {
     initialSelectedItem: PropTypes.string,
     selectedPath: PropTypes.string,
     setSelectedPath: PropTypes.func.isRequired,
-    selectedItem: PropTypes.isRequired,
+    selectedItem: PropTypes.string.isRequired,
     setSelectedItem: PropTypes.func.isRequired,
     searchTerms: PropTypes.string,
     handleSearchChange: PropTypes.func.isRequired,

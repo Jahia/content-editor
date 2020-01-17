@@ -6,8 +6,6 @@ import {encodeJCRPath} from '~/EditPanel/EditPanel.utils';
 import {useQuery} from 'react-apollo-hooks';
 import {ContentPickerFilledQuery} from './ContentPicker.gql-queries';
 
-import {ContentTable} from './ContentTable';
-
 const usePickerInputData = (uuid, editorContext) => {
     const {data, error, loading} = useQuery(ContentPickerFilledQuery, {
         variables: {
@@ -44,7 +42,7 @@ export const ContentPickerSelectorType = {
         usePickerInputData
     },
     PickerDialog: {
-        DialogContent: ContentTable,
+        view: 'List',
         dialogTitle: isPickerTypeFiles => isPickerTypeFiles ?
             'content-editor:label.contentEditor.edit.fields.contentPicker.modalFileTitle' :
             'content-editor:label.contentEditor.edit.fields.contentPicker.modalTitle',

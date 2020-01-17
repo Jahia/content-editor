@@ -20,7 +20,8 @@ describe('PickerDialog - LeftPanel', () => {
             nodeTreeConfigs: [{}],
             onSelectSite: jest.fn(),
             selectedPath: '/selectedPath',
-            setSelectedPath: jest.fn()
+            setSelectedPath: jest.fn(),
+            setSelectedItem: jest.fn()
         };
     });
 

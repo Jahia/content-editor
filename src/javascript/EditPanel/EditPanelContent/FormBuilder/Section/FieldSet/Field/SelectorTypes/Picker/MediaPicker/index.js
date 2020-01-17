@@ -4,7 +4,6 @@ import {Image} from '@material-ui/icons';
 import {encodeJCRPath} from '~/EditPanel/EditPanel.utils';
 import {useQuery} from 'react-apollo-hooks';
 import {MediaPickerFilledQuery} from './MediaPicker.gql-queries';
-import {ImageListQuery} from './ImageListQuery';
 
 const usePickerInputData = uuid => {
     const {data, error, loading} = useQuery(MediaPickerFilledQuery, {
@@ -43,7 +42,7 @@ export const MediaPickerSelectorType = {
         usePickerInputData
     },
     PickerDialog: {
-        DialogContent: ImageListQuery,
+        view: 'Thumbnail',
         dialogTitle: () => 'content-editor:label.contentEditor.edit.fields.imagePicker.modalTitle',
         searchPlaceholder: () => 'content-editor:label.contentEditor.edit.fields.imagePicker.searchPlaceholder',
         itemSelectionAdapter: image => image ? image.uuid : null

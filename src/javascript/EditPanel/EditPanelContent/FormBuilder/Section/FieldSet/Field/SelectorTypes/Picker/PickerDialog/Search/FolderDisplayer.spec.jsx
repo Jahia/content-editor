@@ -22,7 +22,8 @@ describe('imageListQuery', () => {
 
     beforeEach(() => {
         props = {
-            selectedPath: 'oneMoreTimeFolder'
+            selectedPath: 'oneMoreTimeFolder',
+            language: 'en'
         };
 
         setQueryResult({

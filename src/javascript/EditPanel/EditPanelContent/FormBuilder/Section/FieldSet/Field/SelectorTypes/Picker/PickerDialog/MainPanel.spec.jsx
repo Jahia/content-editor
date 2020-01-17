@@ -13,7 +13,8 @@ describe('PickerDialog - MainPanel', () => {
                     PickerDialog: {
                         dialogTitle: () => 'yoloooooo',
                         DialogContent: 'DialogContent',
-                        searchPlaceholder: () => 'searchPlaceholder'
+                        searchPlaceholder: () => 'searchPlaceholder',
+                        view: 'List'
                     }
                 }
             },
@@ -25,6 +26,8 @@ describe('PickerDialog - MainPanel', () => {
             },
             selectedPath: '/selectedPath',
             setSelectedPath: jest.fn(),
+            selectedItem: '/path/tata',
+            setSelectedItem: jest.fn(),
             searchTerms: '',
             handleSearchChange: jest.fn(),
             onItemSelection: jest.fn(),
