@@ -1,6 +1,7 @@
 import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
+import {t} from 'react-i18next';
 
 jest.mock('react-apollo-hooks', () => {
     let queryResultmock;
@@ -18,6 +19,11 @@ import {setQueryResult} from 'react-apollo-hooks';
 import {ContentTable} from './ContentTable';
 
 const queryResult = {
+    retrieveTotalCount: {
+        pageInfo: {
+            totalCount: 10
+        }
+    },
     descendants: {
         pageInfo: {
             totalCount: 1,
@@ -42,6 +48,11 @@ const queryResult = {
 };
 
 const queryResultWithChildren = {
+    retrieveTotalCount: {
+        pageInfo: {
+            totalCount: 10
+        }
+    },
     descendants: {
         pageInfo: {
             totalCount: 1,
@@ -93,6 +104,7 @@ describe('contentListTable', () => {
 
     beforeEach(() => {
         defaultProps = {
+            classes: {},
             field: {},
             selectedPath: '/sites/mySite',
             setSelectedPath: jest.fn(),
@@ -144,7 +156,8 @@ describe('contentListTable', () => {
             {},
             dsGenericTheme
         )
-            .dive();
+            .dive()
+            .find('WithStyles(ContentTable)');
 
         expect(cmp.props().data[0].name).toContain('Home');
     });
@@ -161,7 +174,8 @@ describe('contentListTable', () => {
             {},
             dsGenericTheme
         )
-            .dive();
+            .dive()
+            .find('WithStyles(ContentTable)');
 
         expect(cmp.props().data[0].type).toContain('Page');
     });
@@ -178,7 +192,8 @@ describe('contentListTable', () => {
             {},
             dsGenericTheme
         )
-            .dive();
+            .dive()
+            .find('WithStyles(ContentTable)');
 
         expect(cmp.props().columns[1].property).toContain('type');
         expect(cmp.props().data[0].subContentsCount).toBeUndefined();
@@ -196,7 +211,8 @@ describe('contentListTable', () => {
             {},
             dsGenericTheme
         )
-            .dive();
+            .dive()
+            .find('WithStyles(ContentTable)');
 
         expect(cmp.props().columns[1].property).toContain('subContentsCount');
         expect(cmp.props().data[0].subContentsCount).toBe(5);
@@ -214,7 +230,8 @@ describe('contentListTable', () => {
             {},
             dsGenericTheme
         )
-            .dive();
+            .dive()
+            .find('WithStyles(ContentTable)');
 
         expect(cmp.props().columns[5].property).toBe('navigateInto');
         expect(cmp.props().data[0].navigateInto).toBe(true);
@@ -232,7 +249,8 @@ describe('contentListTable', () => {
             {},
             dsGenericTheme
         )
-            .dive();
+            .dive()
+            .find('WithStyles(ContentTable)');
 
         expect(cmp.props().data[1].navigateInto).toBe(false);
     });
@@ -249,9 +267,29 @@ describe('contentListTable', () => {
             {},
             dsGenericTheme
         )
-            .dive();
+            .dive()
+            .find('WithStyles(ContentTable)');
 
         cmp.props().data[0].props.navigateInto.onClick({preventDefault: () => {}});
         expect(defaultProps.setSelectedPath).toHaveBeenCalledWith('/sites/mySite/home');
+    });
+
+    it('should display total number of counts', () => {
+        setQueryResult({
+            jcr: {
+                result: queryResult
+            }
+        });
+
+        t.mockImplementation((key, value) => value ? `${value.totalCount} items found` : key);
+
+        const cmp = shallowWithTheme(
+            <ContentTable {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        )
+            .dive();
+
+        expect(cmp.debug()).toContain('10 items found');
     });
 });

@@ -96,7 +96,8 @@
             "modalTitle": "Select a content",
             "modalFileTitle": "Select a file",
             "searchPlaceholder": "Search content",
-            "searchFilePlaceholder": "Search file"
+            "searchFilePlaceholder": "Search file",
+            "itemsFound": "{{totalCount}} items found"
           },
           "category": {
             "noMatches": "No matches found"
