@@ -10,6 +10,15 @@ import {registry} from '@jahia/registry';
 import {searchPickerQuery} from '../../PickerDialog/Search/search.gql-queries';
 import ContentTableCellBadgeRenderer from './ContentTableCellBadgeRenderer';
 import {NavigateInto} from './NavigateInto';
+import {Typography} from '@jahia/design-system-kit';
+import {withStyles} from '@material-ui/core';
+
+const styles = () => ({
+    itemsFoundLabel: {
+        display: 'flex',
+        justifyContent: 'flex-end'
+    }
+});
 
 const columnConfig = (t, showSubContentsCount) => {
     let columns = [
@@ -48,7 +57,8 @@ const columnConfig = (t, showSubContentsCount) => {
     return columns;
 };
 
-export const ContentTable = ({
+const ContentTableCmp = ({
+    classes,
     tableConfig,
     setSelectedItem,
     selectedPath,
@@ -69,7 +79,13 @@ export const ContentTable = ({
                 searchSelectorType: tableConfig.searchSelectorType,
                 typeFilter: tableConfig.typeFilter,
                 recursionTypesFilter: tableConfig.recursionTypesFilter,
-                fieldFilter: tableConfig.showOnlyNodesWithTemplates ? {filters: [{fieldName: 'isDisplayableNode', evaluation: 'EQUAL', value: 'true'}]} : null
+                fieldFilter: tableConfig.showOnlyNodesWithTemplates ? {
+                    filters: [{
+                        fieldName: 'isDisplayableNode',
+                        evaluation: 'EQUAL',
+                        value: 'true'
+                    }]
+                } : null
             }
         });
 
@@ -122,30 +138,41 @@ export const ContentTable = ({
         };
     });
 
+    const totalCount = data.jcr.result.retrieveTotalCount.pageInfo.totalCount;
+
     return (
-        <DSContentTable
-            columns={columnConfig(t, showSubContentsCount)}
-            labelEmpty={
-                searchTerms ?
-                    t('content-editor:label.contentEditor.edit.fields.contentPicker.noSearchResults') :
-                    t('content-editor:label.contentEditor.edit.fields.contentPicker.noContent')
-            }
-            initialSelection={initialSelection}
-            data={tableData}
-            order="asc"
-            orderBy="name"
-            error={error}
-            onSelect={setSelectedItem}
-        />
+        <>
+            <div className={classes.itemsFoundLabel}>
+                <Typography color="gamma" variant="omega">
+                    {t('content-editor:label.contentEditor.edit.fields.contentPicker.itemsFound', {totalCount: totalCount})}
+                </Typography>
+            </div>
+
+            <DSContentTable
+                columns={columnConfig(t, showSubContentsCount)}
+                labelEmpty={
+                    searchTerms ?
+                        t('content-editor:label.contentEditor.edit.fields.contentPicker.noSearchResults') :
+                        t('content-editor:label.contentEditor.edit.fields.contentPicker.noContent')
+                }
+                initialSelection={initialSelection}
+                data={tableData}
+                order="asc"
+                orderBy="name"
+                error={error}
+                onSelect={setSelectedItem}
+            />
+        </>
     );
 };
 
-ContentTable.defaultProps = {
+ContentTableCmp.defaultProps = {
     initialSelection: [],
     searchTerms: ''
 };
 
-ContentTable.propTypes = {
+ContentTableCmp.propTypes = {
+    classes: PropTypes.object.isRequired,
     tableConfig: PropTypes.shape({
         typeFilter: PropTypes.array.isRequired,
         searchSelectorType: PropTypes.string.isRequired,
@@ -159,3 +186,6 @@ ContentTable.propTypes = {
     initialSelection: PropTypes.array,
     searchTerms: PropTypes.string
 };
+
+export const ContentTable = withStyles(styles)(ContentTableCmp);
+ContentTable.displayName = 'ContentTable';

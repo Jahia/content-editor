@@ -1,8 +1,10 @@
 import React from 'react';
 
+export const t = jest.fn(key => `translated_${key}`);
+
 export const useTranslation = () => {
     return {
-        t: jest.fn(key => `translated_${key}`),
+        t,
         i18n: {
             loadNamespaces: jest.fn()
         }

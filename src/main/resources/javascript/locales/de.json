@@ -96,7 +96,8 @@
             "modalTitle": "Content auswählen",
             "modalFileTitle": "Datei auswählen",
             "searchPlaceholder": "Content suchen",
-            "searchFilePlaceholder": "Datei suchen"
+            "searchFilePlaceholder": "Datei suchen",
+            "itemsFound": "{{totalCount}} Einträge gefunden"
           },
           "category": {
             "noMatches": "Keine Übereinstimmungen gefunden"
