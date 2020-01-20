@@ -35,4 +35,4 @@ registry.add('create-route', {
     render: () => <ContentEditor mode="create"/>
 });
 
-console.log('%c Content Editor is activated', 'color: #3c8cba');
+console.debug('%c Content Editor is activated', 'color: #3c8cba');
