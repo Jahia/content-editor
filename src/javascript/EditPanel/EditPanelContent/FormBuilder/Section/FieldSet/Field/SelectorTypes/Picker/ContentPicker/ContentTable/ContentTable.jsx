@@ -138,7 +138,9 @@ const ContentTableCmp = ({
         };
     });
 
-    const totalCount = data.jcr.result.retrieveTotalCount.pageInfo.totalCount;
+    const totalCount = searchTerms ?
+        data.jcr.retrieveTotalCount.pageInfo.totalCount :
+        data.jcr.result.retrieveTotalCount.pageInfo.totalCount;
 
     return (
         <>
