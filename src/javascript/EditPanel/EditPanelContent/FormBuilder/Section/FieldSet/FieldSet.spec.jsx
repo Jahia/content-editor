@@ -20,6 +20,25 @@ import {setContext} from '~/ContentEditor.context';
 
 describe('FieldSet component', () => {
     let props;
+    let context = {
+        sections: [
+            {
+                name: 'metadata',
+                displayName: 'metadata',
+                fieldSets: [{
+                    displayName: 'FieldSet1',
+                    dynamic: false,
+                    fields: [
+                        {displayName: 'field1'},
+                        {displayName: 'field2'}
+                    ]
+                }]
+            }
+        ],
+        nodeData: {
+            lockedAndCannotBeEdited: false
+        }
+    };
 
     beforeEach(() => {
         props = {
@@ -33,26 +52,10 @@ describe('FieldSet component', () => {
             },
             formik: {}
         };
-
-        setContext({
-            sections: [
-                {
-                    name: 'metadata',
-                    displayName: 'metadata',
-                    fieldSets: [{
-                        displayName: 'FieldSet1',
-                        dynamic: false,
-                        fields: [
-                            {displayName: 'field1'},
-                            {displayName: 'field2'}
-                        ]
-                    }]
-                }
-            ]
-        });
     });
 
     it('should display FieldSet name', () => {
+        setContext(context);
         const cmp = shallowWithTheme(
             <FieldSet {...props}/>,
             {},
@@ -66,6 +69,7 @@ describe('FieldSet component', () => {
     });
 
     it('should display Field for each field in the FieldSet', () => {
+        setContext(context);
         const cmp = shallowWithTheme(
             <FieldSet {...props}/>,
             {},
@@ -80,7 +84,8 @@ describe('FieldSet component', () => {
         });
     });
 
-    it('should display toggle for dynamic FieldSet', () => {
+    it('should display not readOnly toggle for dynamic FieldSet when editor is not locked', () => {
+        setContext(context);
         props.fieldset.dynamic = true;
 
         const cmp = shallowWithTheme(
@@ -92,10 +97,33 @@ describe('FieldSet component', () => {
             .dive()
             .dive();
 
-        expect(cmp.find('WithStyles(ToggleCmp)').exists()).toBe(true);
+        const toggleCmp = cmp.find('WithStyles(ToggleCmp)');
+        expect(toggleCmp.exists()).toBe(true);
+        expect(toggleCmp.props().readOnly).toBe(false);
+    });
+
+    it('should display readOnly toggle for dynamic FieldSet when editor is locked', () => {
+        let overridedContext = context;
+        overridedContext.nodeData.lockedAndCannotBeEdited = true;
+        setContext(overridedContext);
+        props.fieldset.dynamic = true;
+
+        const cmp = shallowWithTheme(
+            <FieldSet {...props}/>,
+            {},
+            dsGenericTheme
+        )
+            .dive()
+            .dive()
+            .dive();
+
+        const toggleCmp = cmp.find('WithStyles(ToggleCmp)');
+        expect(toggleCmp.exists()).toBe(true);
+        expect(toggleCmp.props().readOnly).toBe(true);
     });
 
     it('should not display toggle for non dynamic FieldSet', () => {
+        setContext(context);
         props.fieldset.dynamic = false;
 
         const cmp = shallowWithTheme(

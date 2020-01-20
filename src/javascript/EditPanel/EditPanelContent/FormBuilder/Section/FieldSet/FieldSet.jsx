@@ -9,6 +9,7 @@ import {compose} from 'react-apollo';
 import {FieldSetPropTypes} from '~/EditPanel/FormDefinitions/FormData.proptypes';
 
 import {FieldContainer} from './Field';
+import {useContentEditorContext} from '~/ContentEditor.context';
 
 let styles = theme => ({
     fieldsetContainer: {},
@@ -26,6 +27,8 @@ let styles = theme => ({
 });
 
 const FieldSetCmp = ({fieldset, classes, formik: {values, handleChange}}) => {
+    const context = useContentEditorContext();
+
     const isDynamicFieldSet = fieldset.dynamic;
     const activatedFieldSet = (values && values[fieldset.name]) || !isDynamicFieldSet;
 
@@ -36,6 +39,7 @@ const FieldSetCmp = ({fieldset, classes, formik: {values, handleChange}}) => {
                 <Toggle data-sel-role-dynamic-fieldset={fieldset.name}
                         id={fieldset.name}
                         checked={activatedFieldSet}
+                        readOnly={context.nodeData.lockedAndCannotBeEdited}
                         onChange={handleChange}
                 />}
 
