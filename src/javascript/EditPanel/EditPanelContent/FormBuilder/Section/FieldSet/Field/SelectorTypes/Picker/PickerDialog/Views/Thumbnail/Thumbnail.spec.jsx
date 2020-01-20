@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
-import {ImageListQuery} from './ImageListQuery';
+import {Thumbnail} from './Thumbnail';
 
 jest.mock('react-apollo-hooks', () => {
     let queryResultmock;
@@ -18,16 +18,21 @@ jest.mock('react-apollo-hooks', () => {
 import {setQueryResult} from 'react-apollo-hooks';
 
 const queryResult = {
-    children: {
+    retrieveTotalCount: {
+        pageInfo: {
+            totalCount: 150000
+        }
+    },
+    descendants: {
         nodes: [
             {
                 uuid: 'image-uuid',
                 path: '/a/valid/jcrPath/#/g/200/300',
-                name: 'Beautiful_hedgehog.jpg',
+                displayName: 'Beautiful_hedgehog.jpg',
                 height: {value: 1532400},
                 width: {value: 1234134},
                 lastModified: {value: 55555},
-                children: {
+                metadata: {
                     nodes: [{mimeType: {value: 'image/jpeg'}}]
                 }
             }
@@ -35,7 +40,7 @@ const queryResult = {
     }
 };
 
-describe('imageListQuery', () => {
+describe('PickerDialog - Thumbnail view', () => {
     let defaultProps;
 
     beforeEach(() => {
@@ -48,7 +53,13 @@ describe('imageListQuery', () => {
             },
             selectedPath: '',
             setSelectedItem: jest.fn(),
-            formik: {}
+            formik: {},
+            pickerConfig: {
+                showOnlyNodesWithTemplates: true,
+                searchSelectorType: '   ',
+                selectableTypesTable: 'type'
+            },
+            onThumbnailDoubleClick: jest.fn()
         };
 
         window.contextJsParameters = {
@@ -64,7 +75,7 @@ describe('imageListQuery', () => {
 
     it('should display the ImageList', () => {
         const cmp = shallowWithTheme(
-            <ImageListQuery {...defaultProps}/>,
+            <Thumbnail {...defaultProps}/>,
             {},
             dsGenericTheme
         )
@@ -75,7 +86,7 @@ describe('imageListQuery', () => {
 
     it('should display the name of image', () => {
         const cmp = shallowWithTheme(
-            <ImageListQuery {...defaultProps}/>,
+            <Thumbnail {...defaultProps}/>,
             {},
             dsGenericTheme
         )
@@ -86,7 +97,7 @@ describe('imageListQuery', () => {
 
     it('should display the type of image', () => {
         const cmp = shallowWithTheme(
-            <ImageListQuery {...defaultProps}/>,
+            <Thumbnail {...defaultProps}/>,
             {},
             dsGenericTheme
         )

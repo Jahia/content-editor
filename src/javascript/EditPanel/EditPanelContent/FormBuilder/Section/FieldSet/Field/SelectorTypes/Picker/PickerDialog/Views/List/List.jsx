@@ -1,13 +1,11 @@
 import React, {useEffect} from 'react';
 import DSContentTable from '~/DesignSystem/ContentTable/ContentTable';
-import {useQuery} from 'react-apollo-hooks';
 import {useTranslation} from 'react-i18next';
 import {ProgressOverlay} from '@jahia/react-material';
 import PropTypes from 'prop-types';
-import {ContentTableQuery} from './ContentTable.gql-queries';
+import {useDialogPickerContent} from '../useDialogPickerContent';
 import dayjs from 'dayjs';
 import {registry} from '@jahia/registry';
-import {searchPickerQuery} from '../../PickerDialog/Search/search.gql-queries';
 import ContentTableCellBadgeRenderer from './ContentTableCellBadgeRenderer';
 import {NavigateInto} from './NavigateInto';
 import {Typography} from '@jahia/design-system-kit';
@@ -57,9 +55,9 @@ const columnConfig = (t, showSubContentsCount) => {
     return columns;
 };
 
-const ContentTableCmp = ({
+const ListView = ({
     classes,
-    tableConfig,
+    pickerConfig,
     setSelectedItem,
     selectedPath,
     setSelectedPath,
@@ -68,26 +66,7 @@ const ContentTableCmp = ({
     searchTerms
 }) => {
     const {t} = useTranslation();
-    const {data, error, loading, refetch} = useQuery(
-        searchTerms ? searchPickerQuery : ContentTableQuery,
-        {
-            variables: {
-                path: selectedPath,
-                language: editorContext.lang,
-                searchTerms,
-                searchName: '%' + searchTerms + '%',
-                searchSelectorType: tableConfig.searchSelectorType,
-                typeFilter: tableConfig.typeFilter,
-                recursionTypesFilter: tableConfig.recursionTypesFilter,
-                fieldFilter: tableConfig.showOnlyNodesWithTemplates ? {
-                    filters: [{
-                        fieldName: 'isDisplayableNode',
-                        evaluation: 'EQUAL',
-                        value: 'true'
-                    }]
-                } : null
-            }
-        });
+    const {nodes, totalCount, error, loading, refetch} = useDialogPickerContent(pickerConfig, selectedPath, searchTerms);
 
     useEffect(() => {
         registry.add('refetch-content-list', {
@@ -107,8 +86,6 @@ const ContentTableCmp = ({
     if (loading) {
         return <ProgressOverlay/>;
     }
-
-    const nodes = searchTerms ? data.jcr.result.nodes : data.jcr.result.descendants.nodes;
 
     let showSubContentsCount = false;
     const tableData = nodes.map(content => {
@@ -138,8 +115,6 @@ const ContentTableCmp = ({
         };
     });
 
-    const totalCount = data.jcr.result.retrieveTotalCount.pageInfo.totalCount;
-
     return (
         <>
             <div className={classes.itemsFoundLabel}>
@@ -166,19 +141,14 @@ const ContentTableCmp = ({
     );
 };
 
-ContentTableCmp.defaultProps = {
+ListView.defaultProps = {
     initialSelection: [],
     searchTerms: ''
 };
 
-ContentTableCmp.propTypes = {
+ListView.propTypes = {
     classes: PropTypes.object.isRequired,
-    tableConfig: PropTypes.shape({
-        typeFilter: PropTypes.array.isRequired,
-        searchSelectorType: PropTypes.string.isRequired,
-        recursionTypesFilter: PropTypes.array.isRequired,
-        showOnlyNodesWithTemplates: PropTypes.bool
-    }).isRequired,
+    pickerConfig: PropTypes.object.isRequired,
     setSelectedItem: PropTypes.func.isRequired,
     selectedPath: PropTypes.string.isRequired,
     setSelectedPath: PropTypes.func.isRequired,
@@ -187,5 +157,5 @@ ContentTableCmp.propTypes = {
     searchTerms: PropTypes.string
 };
 
-export const ContentTable = withStyles(styles)(ContentTableCmp);
-ContentTable.displayName = 'ContentTable';
+export const List = withStyles(styles)(ListView);
+List.displayName = 'ListView';
