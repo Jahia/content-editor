@@ -13,6 +13,7 @@ import {withStyles} from '@material-ui/core';
 import {useQuery} from 'react-apollo-hooks';
 import {SiteNodesQuery} from './PickerDialog.gql-queries';
 import {getSite, getSiteNodes, getPathWithoutFile} from '../Picker.utils';
+import {useDebounce} from './useDebounce';
 
 const styles = theme => ({
     rootDialog: {
@@ -66,10 +67,12 @@ const useSiteSwitcher = ({initialSelectedItem, editorContext, nodeTreeConfigs, t
 };
 
 const useSearch = () => {
-    const [searchTerms, setSearchTerms] = useState('');
+    const [searchTermsNotDebounced, setSearchTerms] = useState('');
     const handleSearchChange = e => {
         setSearchTerms(e.target.value);
     };
+
+    const searchTerms = useDebounce(searchTermsNotDebounced, 300);
 
     return [searchTerms, handleSearchChange];
 };
