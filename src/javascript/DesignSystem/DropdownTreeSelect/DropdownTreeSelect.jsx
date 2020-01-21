@@ -256,7 +256,7 @@ const CustomDropdownTreeSelectCmp = ({classes, readOnly, disabled, noMatchesLabe
         <DropdownTreeSelectLib
             className={`${classes.container} ${readOnly ? 'readOnly' : ''} ${disabled ? 'disabled' : ''}`}
             readOnly={readOnly}
-            disabled={disabled}
+            disabled={readOnly || disabled}
             texts={{
                 placeholder: '\t',
                 noMatches: noMatchesLabel
