@@ -19,14 +19,9 @@ import {setQueryResult} from 'react-apollo-hooks';
 import {List} from './List';
 
 const queryResult = {
-    retrieveTotalCount: {
-        pageInfo: {
-            totalCount: 10
-        }
-    },
     descendants: {
         pageInfo: {
-            totalCount: 1,
+            totalCount: 10,
             __typename: 'PageInfo'
         },
         nodes: [{
