@@ -138,8 +138,7 @@ describe('PickerDialog - List view', () => {
             <List {...defaultProps}/>,
             {},
             dsGenericTheme
-        )
-            .dive();
+        );
 
         cmp.find('WithStyles(ContentTable)').exists();
     });
@@ -156,7 +155,6 @@ describe('PickerDialog - List view', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .find('WithStyles(ContentTable)');
 
         expect(cmp.props().data[0].name).toContain('Home');
@@ -174,7 +172,6 @@ describe('PickerDialog - List view', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .find('WithStyles(ContentTable)');
 
         expect(cmp.props().data[0].type).toContain('Page');
@@ -192,7 +189,6 @@ describe('PickerDialog - List view', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .find('WithStyles(ContentTable)');
 
         expect(cmp.props().columns[1].property).toContain('type');
@@ -211,7 +207,6 @@ describe('PickerDialog - List view', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .find('WithStyles(ContentTable)');
 
         expect(cmp.props().columns[1].property).toContain('subContentsCount');
@@ -230,7 +225,6 @@ describe('PickerDialog - List view', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .find('WithStyles(ContentTable)');
 
         expect(cmp.props().columns[5].property).toBe('navigateInto');
@@ -249,7 +243,6 @@ describe('PickerDialog - List view', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .find('WithStyles(ContentTable)');
 
         expect(cmp.props().data[1].navigateInto).toBe(false);
@@ -267,7 +260,6 @@ describe('PickerDialog - List view', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .find('WithStyles(ContentTable)');
 
         cmp.props().data[0].props.navigateInto.onClick({preventDefault: () => {}});
@@ -288,6 +280,8 @@ describe('PickerDialog - List view', () => {
             {},
             dsGenericTheme
         )
+            .find('CountDisplayer')
+            .dive()
             .dive();
 
         expect(cmp.debug()).toContain('10 items found');

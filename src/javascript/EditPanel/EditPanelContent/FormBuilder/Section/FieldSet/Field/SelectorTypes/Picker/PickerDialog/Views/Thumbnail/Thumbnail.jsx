@@ -1,11 +1,12 @@
 import React, {useEffect} from 'react';
-import {ProgressOverlay} from '@jahia/react-material';
 import PropTypes from 'prop-types';
+import {ProgressOverlay} from '@jahia/react-material';
 import {useTranslation} from 'react-i18next';
 import {ImageList} from '~/DesignSystem/ImageList';
 import {encodeJCRPath} from '~/EditPanel/EditPanel.utils';
 import {registry} from '@jahia/registry';
 import {useDialogPickerContent} from '../useDialogPickerContent';
+import {CountDisplayer} from '../CountDisplayer';
 
 export const Thumbnail = ({
     setSelectedItem,
@@ -16,7 +17,15 @@ export const Thumbnail = ({
     pickerConfig
 }) => {
     const {t} = useTranslation();
-    const {nodes, error, loading, refetch} = useDialogPickerContent(pickerConfig, selectedPath, searchTerms);
+    const {
+        nodes,
+        totalCount,
+        hasMore,
+        error,
+        loading,
+        refetch,
+        loadMore
+    } = useDialogPickerContent(pickerConfig, selectedPath, searchTerms);
 
     useEffect(() => {
         registry.add('refetch-image-list', {
@@ -33,7 +42,7 @@ export const Thumbnail = ({
         return <>{message}</>;
     }
 
-    if (loading) {
+    if (loading || !nodes) {
         return <ProgressOverlay/>;
     }
 
@@ -52,18 +61,23 @@ export const Thumbnail = ({
     });
 
     return (
-        <ImageList
+        <>
+            <CountDisplayer totalCount={totalCount}/>
+            <ImageList
             labelEmpty={
                 searchTerms ?
                     t('content-editor:label.contentEditor.edit.fields.contentPicker.noSearchResults') :
                     t('content-editor:label.contentEditor.edit.fields.contentPicker.noContent')
             }
             images={images}
+            hasMore={hasMore}
+            loadMore={loadMore}
             error={error}
             initialSelection={initialSelection}
             onImageSelection={setSelectedItem}
             onImageDoubleClick={onThumbnailDoubleClick}
         />
+        </>
     );
 };
 

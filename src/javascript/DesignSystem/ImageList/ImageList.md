@@ -18,7 +18,7 @@ This component is the list of image used for example in the media picker
   - *path*: String
   - *width*: String
   - *height*: String
-- *multipleSelectable* : Boolean to define if we can select multiple images
+- *isMultipleSelectable* : Boolean to define if we can select multiple images
 - *onImageDoubleClick* : Function
 - *onImageSelection*: Function
 

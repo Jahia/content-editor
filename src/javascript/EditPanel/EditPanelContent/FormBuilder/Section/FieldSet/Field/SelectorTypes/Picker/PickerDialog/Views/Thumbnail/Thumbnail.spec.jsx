@@ -78,10 +78,9 @@ describe('PickerDialog - Thumbnail view', () => {
             <Thumbnail {...defaultProps}/>,
             {},
             dsGenericTheme
-        )
-            .dive();
+        );
 
-        cmp.find('WithStyles(ImageList)').exists();
+        cmp.find('ImageList').exists();
     });
 
     it('should display the name of image', () => {
@@ -90,7 +89,7 @@ describe('PickerDialog - Thumbnail view', () => {
             {},
             dsGenericTheme
         )
-            .dive();
+            .find('ImageList');
 
         expect(cmp.props().images[0].name).toContain('Beautiful_hedgehog.jpg');
     });
@@ -101,7 +100,7 @@ describe('PickerDialog - Thumbnail view', () => {
             {},
             dsGenericTheme
         )
-            .dive();
+            .find('ImageList');
 
         expect(cmp.props().images[0].type).toContain('jpeg');
     });
