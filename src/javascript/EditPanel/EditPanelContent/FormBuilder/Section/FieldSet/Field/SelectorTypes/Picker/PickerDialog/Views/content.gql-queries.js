@@ -7,6 +7,8 @@ export const ContentDialogPickerQuery = gql`
         $recursionTypesFilter: [String]!,
         $typeFilter: [String]!,
         $language: String!,
+        $offset: Int!,
+        $limit: Int!,
 
         $fieldFilter: InputFieldFiltersInput
     ) {
@@ -21,8 +23,8 @@ export const ContentDialogPickerQuery = gql`
                 }
 
                 descendants(
-                    offset: 0,
-                    limit: 50,
+                    offset: $offset,
+                    limit: $limit,
                     typesFilter: {types: $typeFilter, multi: ANY},
                     recursionTypesFilter: {multi: NONE, types: $recursionTypesFilter},
                     fieldFilter: $fieldFilter
@@ -77,7 +79,9 @@ export const SearchContentDialogPickerQuery = gql`
         $language: String!,
         $searchTerms: String!,
         $searchName: String!,
-        $searchSelectorType: String!
+        $searchSelectorType: String!,
+        $offset: Int!,
+        $limit: Int!
     ) {
         jcr {
             retrieveTotalCount: nodesByCriteria(
@@ -118,8 +122,8 @@ export const SearchContentDialogPickerQuery = gql`
                     ]},
                     ordering: {orderType: DESC, property: "score()"}
                 },
-                offset: 0,
-                limit: 50
+                offset: $offset,
+                limit: $limit
             ) {
                 nodes {
                     displayName(language: $language)

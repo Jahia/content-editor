@@ -26,7 +26,7 @@ describe('imageList', () => {
                 height: '8002',
                 type: 'jpeg2'
             }],
-            multipleSelectable: true,
+            isMultipleSelectable: true,
             onImageDoubleClick: jest.fn(),
             onImageSelection: jest.fn()
         };
@@ -126,7 +126,7 @@ describe('imageList', () => {
     });
 
     it('should only select last image when multiple option is at false', () => {
-        defaultProps.multipleSelectable = false;
+        defaultProps.isMultipleSelectable = false;
 
         const cmp = shallowWithTheme(
             <ImageList {...defaultProps}/>,

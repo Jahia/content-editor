@@ -8,12 +8,21 @@ import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
 import {ContentTableHeader} from './ContentTableHeader';
 import {EmptyTable} from './EmptyTable';
+import InfiniteScroll from 'react-infinite-scroller';
 
 const styles = theme => ({
     tableWrapper: {
-        flex: '1 1 0%',
-        overflow: 'auto',
-        position: 'relative'
+        position: 'relative',
+        height: '100%',
+        width: '100%'
+    },
+    tableScroll: {
+        height: '100%',
+        width: '100%',
+        overflow: 'auto'
+    },
+    table: {
+        width: '100%'
     },
     nameColumn: {
         maxWidth: 0,
@@ -44,7 +53,19 @@ const styles = theme => ({
     }
 });
 
-const ContentTable = ({data, order, orderBy, columns, labelEmpty, classes, multipleSelectable, onSelect, initialSelection}) => {
+const ContentTable = ({
+    data,
+    order,
+    orderBy,
+    columns,
+    labelEmpty,
+    classes,
+    isMultipleSelectable,
+    onSelect,
+    initialSelection,
+    hasMore,
+    loadMore
+}) => {
     const [selection, setSelection] = useState(
         initialSelection
             .map(path => data.find(i => i.path === path))
@@ -55,8 +76,8 @@ const ContentTable = ({data, order, orderBy, columns, labelEmpty, classes, multi
         const selectedIndex = selection.findIndex(i => i.id === content.id);
         let newSelection;
         if (selectedIndex === -1) {
-            newSelection = multipleSelectable ? [...selection, content] : [content];
-        } else if (multipleSelectable) { // If it's an unselect for multipleSelectable
+            newSelection = isMultipleSelectable ? [...selection, content] : [content];
+        } else if (isMultipleSelectable) { // If it's an unselect for multipleSelectable
             newSelection = [...selection];
             newSelection.splice(selectedIndex, 1);
         } else { // If it's an unselect for singleSelectable then, set array empty
@@ -65,19 +86,27 @@ const ContentTable = ({data, order, orderBy, columns, labelEmpty, classes, multi
 
         setSelection(newSelection);
         onSelect(newSelection);
-    }, [multipleSelectable, onSelect, selection]);
+    }, [isMultipleSelectable, onSelect, selection]);
+
     return (
         <div className={classes.tableWrapper}>
-            <Table className={classes.table} aria-labelledby="tableTitle">
-                <ContentTableHeader
+            <div className={classes.tableScroll}>
+                <InfiniteScroll
+                pageStart={0}
+                hasMore={hasMore}
+                loadMore={loadMore}
+                useWindow={false}
+                >
+                    <Table className={classes.table} aria-labelledby="tableTitle">
+                        <ContentTableHeader
                     columns={columns}
                     order={order}
                     orderBy={orderBy}
                 />
-                {data && data.length === 0 ?
-                    <EmptyTable labelEmpty={labelEmpty}/> :
-                    <TableBody>
-                        {data.map(row => {
+                        {data && data.length === 0 ?
+                            <EmptyTable labelEmpty={labelEmpty}/> :
+                            <TableBody>
+                                {data.map(row => {
                             let selected = Boolean(selection.find(i => i.id === row.id));
                             return (
                                 <TableRow key={row.id}
@@ -109,16 +138,20 @@ const ContentTable = ({data, order, orderBy, columns, labelEmpty, classes, multi
                                 </TableRow>
                             );
                         })}
-                    </TableBody>}
-            </Table>
+                            </TableBody>}
+                    </Table>
+                </InfiniteScroll>
+            </div>
         </div>
     );
 };
 
 ContentTable.defaultProps = {
-    multipleSelectable: false,
+    isMultipleSelectable: false,
     onSelect: () => {},
-    initialSelection: []
+    initialSelection: [],
+    hasMore: false,
+    loadMore: () => {}
 };
 
 ContentTable.propTypes = {
@@ -135,9 +168,11 @@ ContentTable.propTypes = {
     orderBy: PropTypes.string.isRequired,
     labelEmpty: PropTypes.string.isRequired,
     classes: PropTypes.object.isRequired,
-    multipleSelectable: PropTypes.bool,
+    isMultipleSelectable: PropTypes.bool,
     onSelect: PropTypes.func,
-    initialSelection: PropTypes.array
+    initialSelection: PropTypes.array,
+    hasMore: PropTypes.bool,
+    loadMore: PropTypes.func
 };
 
 export default withStyles(styles)(ContentTable);

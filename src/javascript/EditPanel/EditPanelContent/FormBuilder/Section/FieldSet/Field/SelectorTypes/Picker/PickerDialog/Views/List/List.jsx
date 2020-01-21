@@ -8,15 +8,7 @@ import dayjs from 'dayjs';
 import {registry} from '@jahia/registry';
 import ContentTableCellBadgeRenderer from './ContentTableCellBadgeRenderer';
 import {NavigateInto} from './NavigateInto';
-import {Typography} from '@jahia/design-system-kit';
-import {withStyles} from '@material-ui/core';
-
-const styles = () => ({
-    itemsFoundLabel: {
-        display: 'flex',
-        justifyContent: 'flex-end'
-    }
-});
+import {CountDisplayer} from '../CountDisplayer';
 
 const columnConfig = (t, showSubContentsCount) => {
     let columns = [
@@ -55,8 +47,7 @@ const columnConfig = (t, showSubContentsCount) => {
     return columns;
 };
 
-const ListView = ({
-    classes,
+export const List = ({
     pickerConfig,
     setSelectedItem,
     selectedPath,
@@ -66,7 +57,15 @@ const ListView = ({
     searchTerms
 }) => {
     const {t} = useTranslation();
-    const {nodes, totalCount, error, loading, refetch} = useDialogPickerContent(pickerConfig, selectedPath, searchTerms);
+    const {
+        nodes,
+        totalCount,
+        hasMore,
+        error,
+        loading,
+        refetch,
+        loadMore
+    } = useDialogPickerContent(pickerConfig, selectedPath, searchTerms);
 
     useEffect(() => {
         registry.add('refetch-content-list', {
@@ -117,11 +116,7 @@ const ListView = ({
 
     return (
         <>
-            <div className={classes.itemsFoundLabel}>
-                <Typography color="gamma" variant="omega">
-                    {t('content-editor:label.contentEditor.edit.fields.contentPicker.itemsFound', {totalCount: totalCount})}
-                </Typography>
-            </div>
+            <CountDisplayer totalCount={totalCount}/>
 
             <DSContentTable
                 columns={columnConfig(t, showSubContentsCount)}
@@ -134,6 +129,8 @@ const ListView = ({
                 data={tableData}
                 order="asc"
                 orderBy="name"
+                hasMore={hasMore}
+                loadMore={loadMore}
                 error={error}
                 onSelect={setSelectedItem}
             />
@@ -141,13 +138,12 @@ const ListView = ({
     );
 };
 
-ListView.defaultProps = {
+List.defaultProps = {
     initialSelection: [],
     searchTerms: ''
 };
 
-ListView.propTypes = {
-    classes: PropTypes.object.isRequired,
+List.propTypes = {
     pickerConfig: PropTypes.object.isRequired,
     setSelectedItem: PropTypes.func.isRequired,
     selectedPath: PropTypes.string.isRequired,
@@ -156,6 +152,3 @@ ListView.propTypes = {
     initialSelection: PropTypes.array,
     searchTerms: PropTypes.string
 };
-
-export const List = withStyles(styles)(ListView);
-List.displayName = 'ListView';

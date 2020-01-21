@@ -2,6 +2,8 @@ import {useContentEditorContext} from '~/ContentEditor.context';
 import {useQuery} from 'react-apollo-hooks';
 import {ContentDialogPickerQuery, SearchContentDialogPickerQuery} from './content.gql-queries';
 
+const NB_OF_ELEMENT_PER_PAGE = 20;
+
 export const useDialogPickerContent = (pickerConfig, selectedPath, searchTerms) => {
     // Build table config from picker config
     const tableConfig = {
@@ -18,6 +20,8 @@ export const useDialogPickerContent = (pickerConfig, selectedPath, searchTerms) 
         {
             variables: {
                 path: selectedPath,
+                offset: 0,
+                limit: NB_OF_ELEMENT_PER_PAGE,
                 language: editorContext.lang,
                 searchTerms,
                 searchName: '%' + searchTerms + '%',
@@ -38,13 +42,63 @@ export const useDialogPickerContent = (pickerConfig, selectedPath, searchTerms) 
         return queryData;
     }
 
+    const totalCount = searchTerms ?
+        queryData.data.jcr.retrieveTotalCount.pageInfo.totalCount :
+        queryData.data.jcr.result.retrieveTotalCount.pageInfo.totalCount;
+
+    const nodes = searchTerms ?
+        queryData.data.jcr.result.nodes :
+        queryData.data.jcr.result.descendants.nodes;
+
     return {
         ...queryData,
-        nodes: searchTerms ?
-            queryData.data.jcr.result.nodes :
-            queryData.data.jcr.result.descendants.nodes,
-        totalCount: searchTerms ?
-            queryData.data.jcr.retrieveTotalCount.pageInfo.totalCount :
-            queryData.data.jcr.result.retrieveTotalCount.pageInfo.totalCount
+        nodes,
+        totalCount,
+        hasMore: nodes.length < totalCount,
+        loadMore: page => {
+            queryData.fetchMore({
+                variables: {
+                    offset: page * NB_OF_ELEMENT_PER_PAGE
+                },
+                updateQuery: (prev, {fetchMoreResult}) => {
+                    if (!fetchMoreResult) {
+                        return prev;
+                    }
+
+                    if (searchTerms) {
+                        return {
+                            ...prev,
+                            jcr: {
+                                ...prev.jcr,
+                                result: {
+                                    ...prev.jcr.result,
+                                    nodes: [
+                                        ...prev.jcr.result.nodes,
+                                        ...fetchMoreResult.jcr.result.nodes
+                                    ]
+                                }
+                            }
+                        };
+                    }
+
+                    return {
+                        ...prev,
+                        jcr: {
+                            ...prev.jcr,
+                            result: {
+                                ...prev.jcr.result,
+                                descendants: {
+                                    ...prev.jcr.result.descendants,
+                                    nodes: [
+                                        ...prev.jcr.result.descendants.nodes,
+                                        ...fetchMoreResult.jcr.result.descendants.nodes
+                                    ]
+                                }
+                            }
+                        }
+                    };
+                }
+            });
+        }
     };
 };

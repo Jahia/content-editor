@@ -2,31 +2,36 @@ import React, {useState, useCallback} from 'react';
 import PropTypes from 'prop-types';
 import {Card} from '../Card/';
 import {Typography} from '@jahia/design-system-kit';
+import InfiniteScroll from 'react-infinite-scroller';
 
 import {withStyles} from '@material-ui/core';
 
 const styles = () => ({
     container: {
-        display: 'flex',
-        flex: '1 1 0%',
+        height: '100%',
         overflow: 'auto',
-        flexWrap: 'wrap',
-        justifyContent: 'center'
+        '& > div': {
+            display: 'flex',
+            flex: '1 1 0%',
+            flexWrap: 'wrap',
+            justifyContent: 'center'
+        }
     }
 });
 
-export const ImageListCmp = ({error, images, multipleSelectable, classes, onImageDoubleClick, onImageSelection, initialSelection, labelEmpty}) => {
+export const ImageListCmp = ({error, images, isMultipleSelectable, loadMore, hasMore, classes, onImageDoubleClick, onImageSelection, initialSelection, labelEmpty}) => {
     const [selectedImages, setSelectedImages] = useState(
         initialSelection
             .map(path => images.find(i => i.path === path))
             .filter(img => Boolean(img))
     );
+
     const onClickHandler = useCallback(img => {
         const imgSelectedIndex = selectedImages.findIndex(i => i.uuid === img.uuid);
         let newSelectedImg;
         if (imgSelectedIndex === -1) {
-            newSelectedImg = multipleSelectable ? [...selectedImages, img] : [img];
-        } else if (multipleSelectable) { // If it's an unselect for multipleSelectable
+            newSelectedImg = isMultipleSelectable ? [...selectedImages, img] : [img];
+        } else if (isMultipleSelectable) { // If it's an unselect for multipleSelectable
             newSelectedImg = [...selectedImages];
             newSelectedImg.splice(imgSelectedIndex, 1);
         } else { // If it's an unselect for singleSelectable then, set array empty
@@ -34,8 +39,8 @@ export const ImageListCmp = ({error, images, multipleSelectable, classes, onImag
         }
 
         setSelectedImages(newSelectedImg);
-        onImageSelection(multipleSelectable ? newSelectedImg : (newSelectedImg[0] || null));
-    }, [multipleSelectable, onImageSelection, selectedImages]);
+        onImageSelection(isMultipleSelectable ? newSelectedImg : (newSelectedImg[0] || null));
+    }, [isMultipleSelectable, onImageSelection, selectedImages]);
 
     if (error) {
         return <Typography component="section">Erreur : {error.message}</Typography>;
@@ -43,7 +48,13 @@ export const ImageListCmp = ({error, images, multipleSelectable, classes, onImag
 
     return (
         <section className={classes.container}>
-            {
+            <InfiniteScroll
+                pageStart={0}
+                hasMore={hasMore}
+                loadMore={loadMore}
+                useWindow={false}
+            >
+                {
                 images && images.length === 0 ?
                     <Typography variant="p">{labelEmpty}</Typography> :
 
@@ -61,6 +72,7 @@ export const ImageListCmp = ({error, images, multipleSelectable, classes, onImag
                         );
                     })
             }
+            </InfiniteScroll>
         </section>
     );
 };
@@ -69,9 +81,11 @@ ImageListCmp.defaultProps = {
     error: null,
     images: [],
     initialSelection: [],
-    multipleSelectable: false,
+    isMultipleSelectable: false,
     onImageSelection: () => {},
-    onImageDoubleClick: () => {}
+    onImageDoubleClick: () => {},
+    loadMore: () => {},
+    hasMore: false
 };
 
 ImageListCmp.propTypes = {
@@ -85,8 +99,10 @@ ImageListCmp.propTypes = {
         url: PropTypes.string.isRequired,
         path: PropTypes.string.isRequired
     })),
+    hasMore: PropTypes.bool,
+    loadMore: PropTypes.func,
     initialSelection: PropTypes.arrayOf(PropTypes.string),
-    multipleSelectable: PropTypes.bool,
+    isMultipleSelectable: PropTypes.bool,
     labelEmpty: PropTypes.string.isRequired,
     classes: PropTypes.object.isRequired,
     onImageDoubleClick: PropTypes.func,
@@ -94,3 +110,4 @@ ImageListCmp.propTypes = {
 };
 
 export const ImageList = withStyles(styles)(ImageListCmp);
+ImageList.displayName = 'ImageList';
