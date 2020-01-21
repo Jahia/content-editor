@@ -43,8 +43,8 @@ export const useDialogPickerContent = (pickerConfig, selectedPath, searchTerms) 
     }
 
     const totalCount = searchTerms ?
-        queryData.data.jcr.retrieveTotalCount.pageInfo.totalCount :
-        queryData.data.jcr.result.retrieveTotalCount.pageInfo.totalCount;
+        queryData.data.jcr.result.pageInfo.totalCount :
+        queryData.data.jcr.result.descendants.pageInfo.totalCount;
 
     const nodes = searchTerms ?
         queryData.data.jcr.result.nodes :

@@ -18,12 +18,10 @@ jest.mock('react-apollo-hooks', () => {
 import {setQueryResult} from 'react-apollo-hooks';
 
 const queryResult = {
-    retrieveTotalCount: {
+    descendants: {
         pageInfo: {
             totalCount: 150000
-        }
-    },
-    descendants: {
+        },
         nodes: [
             {
                 uuid: 'image-uuid',

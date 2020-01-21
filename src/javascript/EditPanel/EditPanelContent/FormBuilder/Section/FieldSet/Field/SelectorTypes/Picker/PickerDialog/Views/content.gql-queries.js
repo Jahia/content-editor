@@ -9,19 +9,10 @@ export const ContentDialogPickerQuery = gql`
         $language: String!,
         $offset: Int!,
         $limit: Int!,
-
         $fieldFilter: InputFieldFiltersInput
     ) {
         jcr {
             result: nodeByPath(path: $path) {
-                retrieveTotalCount: descendants(typesFilter: {types: $typeFilter, multi: ANY},
-                            recursionTypesFilter: {multi: NONE, types: $recursionTypesFilter},
-                            fieldFilter: $fieldFilter) {
-                    pageInfo {
-                        totalCount
-                    }
-                }
-
                 descendants(
                     offset: $offset,
                     limit: $limit,
@@ -29,6 +20,9 @@ export const ContentDialogPickerQuery = gql`
                     recursionTypesFilter: {multi: NONE, types: $recursionTypesFilter},
                     fieldFilter: $fieldFilter
                 ) {
+                    pageInfo {
+                        totalCount
+                    }
                     nodes {
                         displayName(language: $language)
                         primaryNodeType {
@@ -84,28 +78,6 @@ export const SearchContentDialogPickerQuery = gql`
         $limit: Int!
     ) {
         jcr {
-            retrieveTotalCount: nodesByCriteria(
-                criteria: {
-                    language: $language,
-                    nodeType: $searchSelectorType,
-                    paths: [$path],
-                    nodeConstraint: {any: [
-                        {contains: $searchTerms}
-                        {contains: $searchTerms, property: "jcr:content"}
-                        {contains: $searchTerms, property: "jcr:description"}
-                        {contains: $searchTerms, property: "jcr:title"}
-                        {contains: $searchTerms, property: "j:keywords"}
-                        {like: $searchName, property: "j:nodename"}
-                        {equals: $searchTerms, property: "j:tagList"}
-                    ]},
-                    ordering: {orderType: DESC, property: "score()"}
-                }
-            ) {
-                pageInfo {
-                    totalCount
-                }
-            }
-
             result: nodesByCriteria(
                 criteria: {
                     language: $language,
@@ -125,6 +97,9 @@ export const SearchContentDialogPickerQuery = gql`
                 offset: $offset,
                 limit: $limit
             ) {
+                pageInfo {
+                    totalCount
+                }
                 nodes {
                     displayName(language: $language)
                     name
