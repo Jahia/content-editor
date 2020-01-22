@@ -257,7 +257,7 @@ const styles = theme => ({
     }
 });
 
-const CustomDropdownTreeSelectCmp = ({classes, readOnly, disabled, noMatchesLabel, ...props}) => {
+const CustomDropdownTreeSelectCmp = React.memo(({classes, readOnly, disabled, noMatchesLabel, ...props}) => {
     return (
         <DropdownTreeSelectLib
             className={`${classes.container} ${readOnly ? 'readOnly' : ''} ${disabled ? 'disabled' : ''}`}
@@ -270,7 +270,7 @@ const CustomDropdownTreeSelectCmp = ({classes, readOnly, disabled, noMatchesLabe
             {...props}
         />
     );
-};
+});
 
 CustomDropdownTreeSelectCmp.defaultProps = {
     mode: 'hierarchical',
