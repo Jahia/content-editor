@@ -30,7 +30,7 @@ export async function getActions(context, variables) {
         return nodeTypes
             .filter(f => f.name !== 'jnt:resource')
             .map(nodeType => ({
-                key: nodeType.name + '-beta',
+                key: nodeType.name,
                 openEditor: true,
                 nodeTypes: [nodeType.name],
                 buttonLabel: 'content-editor:label.contentEditor.CMMActions.createNewContent.contentOfType',
