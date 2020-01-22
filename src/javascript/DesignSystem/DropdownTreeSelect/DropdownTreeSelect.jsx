@@ -247,6 +247,12 @@ const styles = theme => ({
         },
         '& .disabled .tag': {
             paddingRight: '12px'
+        },
+        '& .readOnly .search': {
+            display: 'none'
+        },
+        '& .disabled .search': {
+            display: 'none'
         }
     }
 });
