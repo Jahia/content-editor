@@ -51,8 +51,8 @@ describe('Category component', () => {
 
     const buildComp = props => {
         const mainComponent = shallowWithTheme(<Category {...props}/>, {}, dsGenericTheme);
-        const RenderProps = mainComponent.props().render;
-        return shallowWithTheme(<RenderProps form={{setFieldTouched, setFieldValue}}/>, {}, dsGenericTheme);
+        const RenderProps = mainComponent.props().component;
+        return shallowWithTheme(<RenderProps {...mainComponent.props()} form={{setFieldTouched, setFieldValue}}/>, {}, dsGenericTheme);
     };
 
     it('should bind the id properly', () => {
