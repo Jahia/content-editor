@@ -11,7 +11,7 @@
       },
       "edit": {
         "title": "Edit content",
-        "contentEdit": "Edit Content <i>(beta)</i>",
+        "contentEdit": "Edit Content",
         "validation": {
           "required": "Required"
         },
@@ -141,8 +141,8 @@
       },
       "CMMActions": {
         "createNewContent": {
-          "menu": "New content <i>(beta)</i>",
-          "contentOfType": "New {{typeName}} <i>(beta)</i>",
+          "menu": "New content",
+          "contentOfType": "New {{typeName}}",
           "labelModal": "SELECT CONTENT TYPE",
           "btnDiscard": "CANCEL",
           "btnCreate": "CREATE",

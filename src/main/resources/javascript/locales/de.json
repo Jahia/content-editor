@@ -11,7 +11,7 @@
       },
       "edit": {
         "title": "Inhalt bearbeiten",
-        "contentEdit": "Inhalt bearbeiten <i>(beta)</i>",
+        "contentEdit": "Inhalt bearbeiten",
         "validation": {
           "required": "erforderlich"
         },
@@ -141,8 +141,8 @@
       },
       "CMMActions": {
         "createNewContent": {
-          "menu": "Neuer Content <i>(beta)</i>",
-          "contentOfType": "Hinzufügen: {{typeName}} <i>(beta)</i>",
+          "menu": "Neuer Content",
+          "contentOfType": "Hinzufügen: {{typeName}}",
           "labelModal": "CONTENT-TYP AUSWÄHLEN",
           "btnDiscard": "ABBRECHEN",
           "btnCreate": "ERSTELLEN",
