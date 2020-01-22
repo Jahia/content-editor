@@ -11,7 +11,7 @@
       },
       "edit": {
         "title": "Éditer le contenu",
-        "contentEdit": "Editer le contenu <i>(beta)</i>",
+        "contentEdit": "Editer le contenu",
         "validation": {
           "required": "Requis"
         },
@@ -141,8 +141,8 @@
       },
       "CMMActions": {
         "createNewContent": {
-          "menu": "Nouveau contenu <i>(beta)</i>",
-          "contentOfType": "Nouveau : {{typeName}} <i>(beta)</i>",
+          "menu": "Nouveau contenu",
+          "contentOfType": "Nouveau : {{typeName}}",
           "labelModal": "SÉLECTIONNER UN TYPE DE CONTENU",
           "btnDiscard": "ANNULER",
           "btnCreate": "CRÉER",

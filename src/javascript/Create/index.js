@@ -6,11 +6,15 @@ import createButtonAction from './CreateForm/create.action';
 
 export const registerActions = actionsRegistry => {
     // Content Media Manager Action
+    if (actionsRegistry.registry && actionsRegistry.registry.createContent) {
+        delete actionsRegistry.registry.createContent;
+    }
+
     actionsRegistry.add('createNewContent', createNewContentAction, {
         buttonIcon: <Queue/>,
         buttonLabel:
             'content-editor:label.contentEditor.CMMActions.createNewContent.menu',
-        target: ['createMenuActions:3.2', 'contentActions:3.2'],
+        target: ['createMenuActions:3', 'contentActions:3'],
         showOnNodeTypes: ['jnt:contentFolder', 'jnt:content']
     });
 

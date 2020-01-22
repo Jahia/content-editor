@@ -13,10 +13,14 @@ import {editRestrictedAction} from '~/actions/editRestricted.action';
 
 export const registerActions = actionsRegistry => {
     // Content Media Manager Action
+    if (actionsRegistry.registry && actionsRegistry.registry.edit) {
+        delete actionsRegistry.registry.edit;
+    }
+
     actionsRegistry.add('contentEdit', actionsRegistry.get('router'), {
         buttonIcon: <Edit/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.contentEdit',
-        target: ['contentActions:2.5'],
+        target: ['contentActions:2'],
         hideOnNodeTypes: ['jnt:virtualsite'],
         mode: 'edit'
     });
