@@ -69,9 +69,9 @@ describe('CreateNewContent utils', () => {
 
         it('should return actions', async () => {
             const actions = await getActions(context);
-            expect(actions[0].key).toEqual('toto-beta');
-            expect(actions[1].key).toEqual('tete-beta');
-            expect(actions[2].key).toEqual('tata-beta');
+            expect(actions[0].key).toEqual('toto');
+            expect(actions[1].key).toEqual('tete');
+            expect(actions[2].key).toEqual('tata');
             expect(actions.length).toBe(3);
         });
 
@@ -81,9 +81,9 @@ describe('CreateNewContent utils', () => {
             });
 
             const actions = await getActions(context);
-            expect(actions[0].key).toEqual('toto-beta');
-            expect(actions[1].key).toEqual('tete-beta');
-            expect(actions[2].key).toEqual('tata-beta');
+            expect(actions[0].key).toEqual('toto');
+            expect(actions[1].key).toEqual('tete');
+            expect(actions[2].key).toEqual('tata');
             expect(actions.length).toBe(3);
         });
     });
