@@ -10,7 +10,7 @@ export const registerActions = actionsRegistry => {
         delete actionsRegistry.registry.createContent;
     }
 
-    actionsRegistry.add('createNewContent', createNewContentAction, {
+    actionsRegistry.add('createContent', createNewContentAction, {
         buttonIcon: <Queue/>,
         buttonLabel:
             'content-editor:label.contentEditor.CMMActions.createNewContent.menu',

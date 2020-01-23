@@ -17,7 +17,7 @@ export const registerActions = actionsRegistry => {
         delete actionsRegistry.registry.edit;
     }
 
-    actionsRegistry.add('contentEdit', actionsRegistry.get('router'), {
+    actionsRegistry.add('edit', actionsRegistry.get('router'), {
         buttonIcon: <Edit/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.contentEdit',
         target: ['contentActions:2'],
