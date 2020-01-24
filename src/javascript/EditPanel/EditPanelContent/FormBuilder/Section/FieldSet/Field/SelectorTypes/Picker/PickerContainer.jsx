@@ -16,7 +16,7 @@ const PickerCmp = ({field, value, id, editorContext, formik, setActionContext}) 
 
     if (error) {
         const message = t(
-            'content-media-manager:label.contentManager.error.queryingContent',
+            'jcontent:label.jcontent.error.queryingContent',
             {details: error.message ? error.message : ''}
         );
         return <>{message}</>;

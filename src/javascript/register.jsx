@@ -22,14 +22,14 @@ ReactDOM.render(<DependenciesInjector/>, i18nLoaderElement);
 registerCEActions();
 
 registry.add('edit-route', {
-    target: ['cmm:0.1'],
+    target: ['jcontent:0.1'],
     type: 'route',
     path: `/:siteKey/:lang/${Constants.routes.baseEditRoute}`,
     render: () => <ContentEditor mode={Constants.routes.baseEditRoute}/>
 });
 
 registry.add('create-route', {
-    target: ['cmm:0.1'],
+    target: ['jcontent:0.1'],
     type: 'route',
     path: `/:siteKey/:lang/${Constants.routes.baseCreateRoute}`,
     render: () => <ContentEditor mode="create"/>
