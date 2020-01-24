@@ -50,6 +50,7 @@ const NodeDataFragment = {
                 hasStartPublicationWorkflowPermission: hasPermission(permissionName: "publication-start")
                 lockInfo {
                     details(language: $language) {
+                        owner
                         type
                     }
                 }

@@ -34,6 +34,12 @@
             "btnDiscard": "Discard changes",
             "btnSave": "Save changes"
           },
+          "lock": {
+            "deletion": "Locked: marked for deletion",
+            "engine": "Locked by {{userName}}",
+            "user": "Locked by {{userName}}",
+            "validation": "Locked by a publication workflow"
+          },
           "publish": {
             "name": "Publish now",
             "namePolling": "Publishing",
