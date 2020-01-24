@@ -34,6 +34,12 @@
             "btnDiscard": "Änderungen verwerfen",
             "btnSave": "Änderungen speichern"
           },
+          "lock": {
+            "deletion": "Gesperrt: zur Löschung markiert",
+            "engine": "Gesperrt von {{userName}}",
+            "user": "Gesperrt von {{userName}}",
+            "validation": "Gesperrt von einem Veröffentlichungsprozess"
+          },
           "publish": {
             "name": "Jetzt veröffentlichen",
             "namePolling": "Veröffentlichung",

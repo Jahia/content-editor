@@ -11,6 +11,7 @@ import {Error} from '@material-ui/icons';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {withStyles} from '@material-ui/core';
 import PublicationInfoBadge from '~/PublicationInfo/PublicationInfo.badge';
+import LockInfoBadge from '~/Lock/LockInfo.badge';
 
 const styles = theme => ({
     actionButtonHeaderContainer: {
@@ -23,6 +24,11 @@ const styles = theme => ({
         backgroundColor: theme.palette.layout.dark,
         borderRadius: '50%',
         color: theme.palette.support.gamma
+    },
+    badges: {
+        position: 'absolute',
+        marginTop: '47px',
+        marginLeft: '-50px'
     }
 });
 
@@ -123,7 +129,10 @@ const EditPanelCmp = ({formik, title, classes, notificationContext, client}) => 
                                 'data-sel-action': 'moreActions'
                             })}
                         />
-                        <PublicationInfoBadge/>
+                        <div className={classes.badges}>
+                            <PublicationInfoBadge/>
+                            <LockInfoBadge/>
+                        </div>
                     </>
                 )
             }}
