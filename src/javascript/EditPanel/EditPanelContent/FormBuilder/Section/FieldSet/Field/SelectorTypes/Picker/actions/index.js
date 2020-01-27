@@ -9,14 +9,14 @@ export const pickerActions = actionsRegistry => {
     actionsRegistry.add('ContentPickerMenu', actionsRegistry.get('action', 'menuAction'), {
         buttonIcon: <DotsVertical/>,
         buttonLabel: 'label.contentEditor.edit.action.fieldMoreOptions',
-        menu: 'ContentPickerActions',
+        menuTarget: 'ContentPickerActions',
         showIcons: true
     });
 
     actionsRegistry.add('MediaPickerMenu', actionsRegistry.get('action', 'menuAction'), {
         buttonIcon: <DotsVertical/>,
         buttonLabel: 'label.contentEditor.edit.action.fieldMoreOptions',
-        menu: 'MediaPickerActions',
+        menuTarget: 'MediaPickerActions',
         showIcons: true
     });
 

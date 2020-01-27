@@ -51,7 +51,7 @@ export const registerActions = actionsRegistry => {
     actionsRegistry.add('action', 'ContentEditorHeaderMenu', composeActions(editRestrictedAction, withFormikAction, withPublicationInfoContextAction, actionsRegistry.get('action', 'menuAction')), {
         buttonIcon: <DotsVertical/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.action.moreOptions',
-        menu: 'ContentEditorHeaderActions',
+        menuTarget: 'ContentEditorHeaderActions',
         showIcons: true
     });
 

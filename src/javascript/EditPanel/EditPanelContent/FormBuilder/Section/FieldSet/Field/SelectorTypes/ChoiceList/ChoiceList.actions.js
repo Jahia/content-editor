@@ -10,7 +10,7 @@ const choiceListActions = actionsRegistry => {
     actionsRegistry.add('action', 'ChoicelistMenu', actionsRegistry.get('action', 'menuAction'), {
         buttonIcon: <DotsVertical/>,
         buttonLabel: 'label.contentEditor.edit.action.fieldMoreOptions',
-        menu: 'ChoicelistActions',
+        menuTarget: 'ChoicelistActions',
         showIcons: true
     });
 
