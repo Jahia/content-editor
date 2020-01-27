@@ -90,7 +90,7 @@ const ContentTable = ({
 
     return (
         <div className={classes.tableWrapper}>
-            <div className={classes.tableScroll}>
+            <div className={classes.tableScroll} data-sel-role="table-scrollable">
                 <InfiniteScroll
                 pageStart={0}
                 hasMore={hasMore}
