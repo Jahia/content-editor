@@ -15,7 +15,7 @@ const CountDisplayerCmp = ({totalCount, classes}) => {
     const {t} = useTranslation();
 
     return (
-        <div className={classes.itemsFoundLabel}>
+        <div className={classes.itemsFoundLabel} data-sel-total-count={totalCount}>
             <Typography color="gamma" variant="omega">
                 {t('content-editor:label.contentEditor.edit.fields.contentPicker.itemsFound', {totalCount: totalCount})}
             </Typography>
