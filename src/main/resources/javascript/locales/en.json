@@ -38,7 +38,8 @@
             "deletion": "Locked: marked for deletion",
             "engine": "Locked by {{userName}}",
             "user": "Locked by {{userName}}",
-            "validation": "Locked by a publication workflow"
+            "validation": "Locked by a publication workflow",
+            "unknown": "Locked for unknown reason"
           },
           "publish": {
             "name": "Publish now",

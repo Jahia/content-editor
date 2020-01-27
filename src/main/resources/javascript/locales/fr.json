@@ -39,6 +39,8 @@
             "engine": "Vérouillé par {{userName}}",
             "user": "Vérouillé par {{userName}}",
             "validation": "Vérouiller par un workflow de publication",
+            "unknown": "Vérouillé pour une raison inconnue"
+          },
           "publish": {
             "name": "Publier maintenant",
             "namePolling": "Publication",
