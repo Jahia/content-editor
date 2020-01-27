@@ -34,12 +34,6 @@ const Transition = props => {
     return <Slide direction="up" {...props}/>;
 };
 
-const useSelectedPath = ({initialSelectedItem, nodeTreeConfigs}) => {
-    const initialPath = getPathWithoutFile(initialSelectedItem);
-    const [selectedPath, setSelectedPath] = useState(initialPath || nodeTreeConfigs[0].rootPath);
-    return [selectedPath, setSelectedPath];
-};
-
 const useSiteSwitcher = ({initialSelectedItem, editorContext, nodeTreeConfigs, t}) => {
     const {data, error, loading} = useQuery(SiteNodesQuery, {
         variables: {
@@ -105,7 +99,8 @@ const PickerDialogCmp = ({
     // empty array when no value is selected and something has been unselected
     const [selectedItem, setSelectedItem] = useState(undefined);
 
-    const [selectedPath, setSelectedPath] = useSelectedPath({initialSelectedItem, nodeTreeConfigs});
+    const initialPath = getPathWithoutFile(initialSelectedItem);
+    const [selectedPath, setSelectedPath] = useState(initialPath || nodeTreeConfigs[0].rootPath);
     const [searchTerms, handleSearchChange] = useSearch();
 
     if (error) {
@@ -140,6 +135,7 @@ const PickerDialogCmp = ({
                 setSite(selectedSite);
             }}
             onExited={() => {
+                setSelectedPath(initialPath || nodeTreeConfigs[0].rootPath);
                 handleSearchChange({target: {value: ''}});
             }}
         >

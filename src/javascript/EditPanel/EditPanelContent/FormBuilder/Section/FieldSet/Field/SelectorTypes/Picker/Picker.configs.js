@@ -10,7 +10,7 @@ const treeConfigs = {
         rootLabelKey: 'content-editor:label.contentEditor.edit.fields.contentPicker.contentsRootLabel'
     },
     allContents: {
-        rootPath: site => `/sites/${site}/`,
+        rootPath: site => `/sites/${site}`,
         openableTypes: ['jnt:page', 'jnt:navMenuText', 'jnt:virtualsite', 'jnt:contentFolder', 'nt:folder', 'jmix:siteContent', 'jmix:browsableInEditorialPicker'],
         selectableTypes: ['jnt:page', 'jnt:navMenuText', 'jnt:virtualsite', 'jnt:contentFolder', 'nt:folder', 'jmix:siteContent', 'jmix:browsableInEditorialPicker'],
         type: 'allContents',
@@ -24,7 +24,7 @@ const treeConfigs = {
         rootLabelKey: 'content-editor:label.contentEditor.edit.fields.imagePicker.rootLabel'
     },
     pages: {
-        rootPath: site => `/sites/${site}/`,
+        rootPath: site => `/sites/${site}`,
         openableTypes: ['jnt:page', 'jnt:virtualsite', 'jnt:navMenuText'],
         selectableTypes: ['jnt:page'],
         type: 'pages',
