@@ -2,7 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {withStyles, Button} from '@material-ui/core';
-import {buttonRenderer, DisplayActions} from '@jahia/react-material';
+import {buttonRenderer} from '@jahia/react-material';
+import {DisplayActions} from '@jahia/ui-extender';
+
 import {Typography} from '@jahia/design-system-kit';
 
 import {SearchInput} from './Search/Search';

@@ -4,7 +4,7 @@ import {MoreVert, Public} from '@material-ui/icons';
 import {Badge, IconButton} from '@jahia/design-system-kit';
 import {useTranslation} from 'react-i18next';
 import * as PropTypes from 'prop-types';
-import {ContextualMenu} from '@jahia/react-material';
+import {ContextualMenu} from './ContextualMenu';
 import {FieldPropTypes} from '~/EditPanel/FormDefinitions';
 import {SiteInfoPropTypes} from '~/SiteData';
 import {MultipleField} from './MultipleField';

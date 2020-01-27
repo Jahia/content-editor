@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {Badge, MainLayout} from '@jahia/design-system-kit';
-import {buttonRenderer, DisplayActions, withNotifications, DisplayAction, iconButtonRenderer} from '@jahia/react-material';
+import {buttonRenderer, withNotifications, iconButtonRenderer} from '@jahia/react-material';
+import {DisplayActions, DisplayAction} from '@jahia/ui-extender';
 import PropTypes from 'prop-types';
 import {compose, withApollo} from 'react-apollo';
 import {useTranslation} from 'react-i18next';

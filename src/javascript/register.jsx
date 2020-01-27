@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {registry} from '@jahia/registry';
+import {registry} from '@jahia/ui-extender';
 import {registerCEActions} from './registerCEActions';
 
 import {Constants} from '~/ContentEditor.constants';
@@ -19,18 +19,16 @@ const DependenciesInjector = () => {
 
 ReactDOM.render(<DependenciesInjector/>, i18nLoaderElement);
 
-registerCEActions();
+registerCEActions(registry);
 
-registry.add('edit-route', {
-    target: ['jcontent:0.1'],
-    type: 'route',
+registry.add('route', 'edit-route', {
+    targets: ['jcontent:0.1'],
     path: `/:siteKey/:lang/${Constants.routes.baseEditRoute}`,
     render: () => <ContentEditor mode={Constants.routes.baseEditRoute}/>
 });
 
-registry.add('create-route', {
-    target: ['jcontent:0.1'],
-    type: 'route',
+registry.add('route', 'create-route', {
+    targets: ['jcontent:0.1'],
     path: `/:siteKey/:lang/${Constants.routes.baseCreateRoute}`,
     render: () => <ContentEditor mode="create"/>
 });

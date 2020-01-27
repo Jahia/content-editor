@@ -4,7 +4,7 @@ import {ProgressOverlay} from '@jahia/react-material';
 import {useTranslation} from 'react-i18next';
 import {ImageList} from '~/DesignSystem/ImageList';
 import {encodeJCRPath} from '~/EditPanel/EditPanel.utils';
-import {registry} from '@jahia/registry';
+import {registry} from '@jahia/ui-extender';
 import {useDialogPickerContent} from '../useDialogPickerContent';
 import {CountDisplayer} from '../CountDisplayer';
 
@@ -28,8 +28,7 @@ export const Thumbnail = ({
     } = useDialogPickerContent(pickerConfig, selectedPath, searchTerms);
 
     useEffect(() => {
-        registry.add('refetch-image-list', {
-            type: 'refetch-upload',
+        registry.add('refetch-upload', 'refetch-image-list', {
             refetch: refetch
         });
     });
