@@ -67,7 +67,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Implementation of the DX Content Editor Form service. This implementation supports merging with static form
+ * Implementation of the Jahia Content Editor Form service. This implementation supports merging with static form
  * definitions declared as JSON files inside DX modules.
  */
 @Component(immediate = true)
