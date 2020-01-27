@@ -38,7 +38,8 @@
             "deletion": "Gesperrt: zur Löschung markiert",
             "engine": "Gesperrt von {{userName}}",
             "user": "Gesperrt von {{userName}}",
-            "validation": "Gesperrt von einem Veröffentlichungsprozess"
+            "validation": "Gesperrt von einem Veröffentlichungsprozess",
+            "unknown": "Gesperrt: aus unbekanntem Grund"
           },
           "publish": {
             "name": "Jetzt veröffentlichen",
