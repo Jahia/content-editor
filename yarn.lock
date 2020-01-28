@@ -2047,14 +2047,6 @@
     react-select "^2.4.2"
     recompose "^0.30.0"
 
-"@jahia/registry@^1.0.0-beta.20190724063719":
-  version "1.0.0-beta.20190910160628"
-  resolved "https://npm.jahia.com/@jahia%2fregistry/-/registry-1.0.0-beta.20190910160628.tgz#16cdac763098c3306246cb4c5d17cfe2c2b9b70b"
-  integrity sha512-Ihyi3aJFFuIEfODFgLqJ0SJeqtwglTbPVh3BG0+VCETAob2A+QIsKBlfA1ysES7rA/bvgyW7aF3MZ2Cw0+kmMw==
-  dependencies:
-    lodash "^4.17.13"
-    prop-types "^15.6.1"
-
 "@jahia/test-framework@^1.1.1":
   version "1.1.1"
   resolved "https://npm.jahia.com/@jahia%2ftest-framework/-/test-framework-1.1.1.tgz#6583176361708a6b7cd23f955a5aea4d0144c3b6"
@@ -2062,6 +2054,16 @@
   dependencies:
     enzyme "^3.9.0"
     enzyme-adapter-react-16 "^1.12.1"
+
+"@jahia/ui-extender@^0.2.0":
+  version "0.2.0"
+  resolved "https://npm.jahia.com/@jahia%2fui-extender/-/ui-extender-0.2.0.tgz#66801e94d658960820de99fe19de7a0573d5498f"
+  integrity sha512-wtSMPwKDNBruPEQoa+Rqdmb9IP5aLbJf0tR/XpSIabo+trZmCsv7S7AHKHiPepjV3RCc6F7tupSCZbkvYKD2rg==
+  dependencies:
+    lodash "^4.17.13"
+    prop-types "^15.6.1"
+    react "^16.12.0"
+    rxjs "^6.5.3"
 
 "@jest/console@^24.7.1", "@jest/console@^24.9.0":
   version "24.9.0"
@@ -11782,6 +11784,13 @@ rxjs@^6.4.0:
   version "6.5.3"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.5.3.tgz#510e26317f4db91a7eb1de77d9dd9ba0a4899a3a"
   integrity sha512-wuYsAYYFdWTAnAaPoKGNhfpWwKZbJW+HgAJ+mImp+Epl7BG8oNWBCTyRM8gba9k4lk8BgWdoYm21Mo/RYhhbgA==
+  dependencies:
+    tslib "^1.9.0"
+
+rxjs@^6.5.3:
+  version "6.5.4"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.5.4.tgz#e0777fe0d184cec7872df147f303572d414e211c"
+  integrity sha512-naMQXcgEo3csAEGvw/NydRA0fuS2nDZJiw1YUWFKU7aPPAPGZEsD4Iimit96qwCieH6y614MCLYwdkrWx7z/7Q==
   dependencies:
     tslib "^1.9.0"
 

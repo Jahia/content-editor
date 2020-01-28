@@ -5,7 +5,7 @@ import {ProgressOverlay} from '@jahia/react-material';
 import PropTypes from 'prop-types';
 import {useDialogPickerContent} from '../useDialogPickerContent';
 import dayjs from 'dayjs';
-import {registry} from '@jahia/registry';
+import {registry} from '@jahia/ui-extender';
 import ContentTableCellBadgeRenderer from './ContentTableCellBadgeRenderer';
 import {NavigateInto} from './NavigateInto';
 import {CountDisplayer} from '../CountDisplayer';
@@ -68,8 +68,7 @@ export const List = ({
     } = useDialogPickerContent(pickerConfig, selectedPath, searchTerms);
 
     useEffect(() => {
-        registry.add('refetch-content-list', {
-            type: 'refetch-upload',
+        registry.add('refetch-upload', 'refetch-content-list', {
             refetch: refetch
         });
     });

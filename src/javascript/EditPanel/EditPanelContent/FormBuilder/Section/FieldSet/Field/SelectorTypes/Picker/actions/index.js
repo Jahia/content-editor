@@ -1,5 +1,4 @@
 import {Edit, Cancel, Launch} from '@material-ui/icons';
-import {menuAction} from '@jahia/react-material';
 import {DotsVertical, FileUpload} from 'mdi-material-ui';
 import React from 'react';
 import {unsetFieldAction} from '../../../FieldsActions/unsetField.action';
@@ -7,46 +6,46 @@ import {openInTabAction} from './openInTab.action';
 import {replaceAction} from './replace.action';
 
 export const pickerActions = actionsRegistry => {
-    actionsRegistry.add('ContentPickerMenu', menuAction, {
+    actionsRegistry.add('ContentPickerMenu', actionsRegistry.get('action', 'menuAction'), {
         buttonIcon: <DotsVertical/>,
         buttonLabel: 'label.contentEditor.edit.action.fieldMoreOptions',
-        menu: 'ContentPickerActions',
+        menuTarget: 'ContentPickerActions',
         showIcons: true
     });
 
-    actionsRegistry.add('MediaPickerMenu', menuAction, {
+    actionsRegistry.add('MediaPickerMenu', actionsRegistry.get('action', 'menuAction'), {
         buttonIcon: <DotsVertical/>,
         buttonLabel: 'label.contentEditor.edit.action.fieldMoreOptions',
-        menu: 'MediaPickerActions',
+        menuTarget: 'MediaPickerActions',
         showIcons: true
     });
 
-    actionsRegistry.add('replaceContent', replaceAction, {
+    actionsRegistry.add('action', 'replaceContent', replaceAction, {
         buttonIcon: <Edit/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.fields.actions.replace',
-        target: ['ContentPickerActions:1', 'MediaPickerActions:1']
+        targets: ['ContentPickerActions:1', 'MediaPickerActions:1']
     });
 
-    actionsRegistry.add('onpenInNewTab', openInTabAction, {
+    actionsRegistry.add('action', 'onpenInNewTab', openInTabAction, {
         buttonIcon: <Launch/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.fields.actions.newTab',
-        target: ['ContentPickerActions:2', 'MediaPickerActions:2']
+        targets: ['ContentPickerActions:2', 'MediaPickerActions:2']
     });
 
-    actionsRegistry.add('unsetFieldActionPicker', unsetFieldAction, {
+    actionsRegistry.add('action', 'unsetFieldActionPicker', unsetFieldAction, {
         buttonIcon: <Cancel/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.fields.actions.clear',
-        target: ['ContentPickerActions:3', 'MediaPickerActions:3']
+        targets: ['ContentPickerActions:3', 'MediaPickerActions:3']
     });
 
     const fileUploadCMMAction = {
         ...actionsRegistry.get('fileUpload'),
-        target: null // Remove target to avoid entry duplication
+        targets: null // Remove target to avoid entry duplication
     };
-    actionsRegistry.add('upload', fileUploadCMMAction, {
+    actionsRegistry.add('action', 'upload', fileUploadCMMAction, {
         buttonIcon: <FileUpload/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.fileUploadBtn',
-        target: ['pickerDialogAction:0'],
+        targets: ['pickerDialogAction:0'],
         contentType: 'jnt:file'
     });
 };

@@ -1,12 +1,14 @@
-jest.mock('@jahia/registry', () => {
+jest.mock('@jahia/ui-extender', () => {
     return {
         registry: {
-            add: jest.fn()
+            add: jest.fn(),
+            addOrReplace: jest.fn(),
+            get: jest.fn()
         }
     };
 });
 
-import {registry} from '@jahia/registry';
+import {registry} from '@jahia/ui-extender';
 
 describe('register', () => {
     let actionsRegistry;
@@ -44,7 +46,7 @@ describe('register', () => {
                 .add
                 .mock
                 .calls
-                .find(call => call[0] === 'create-route')
+                .find(call => call[1] === 'create-route')
         )
             .toBeTruthy();
     });
@@ -55,7 +57,7 @@ describe('register', () => {
                 .add
                 .mock
                 .calls
-                .find(call => call[0] === 'edit-route')
+                .find(call => call[1] === 'edit-route')
         )
             .toBeTruthy();
     });

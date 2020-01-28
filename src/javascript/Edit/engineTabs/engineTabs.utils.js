@@ -69,9 +69,9 @@ export function registerEngineTabActions(nodeData) {
             const tab = tabs[i];
 
             if (!Constants.notSupportedEngineTabs.includes(tab.id) && !actionsRegistry.get(actionPrefix + tab.id)) {
-                actionsRegistry.add(actionPrefix + tab.id, openEngineTabs, {
+                actionsRegistry.add('action', actionPrefix + tab.id, openEngineTabs, {
                     buttonLabel: tab.title,
-                    target: ['ContentEditorHeaderActions:' + (i + actionStartPriority)],
+                    targets: ['ContentEditorHeaderActions:' + (i + actionStartPriority)],
                     tabs: [tab.id]
                 });
             }
