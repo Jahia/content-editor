@@ -34,7 +34,7 @@
     },
     "dependencies": {
         "@jahia/apollo-dx": "^1.1.0",
-        "@jahia/design-system-kit": "^1.1.2",
+        "@jahia/design-system-kit": "^1.1.4",
         "@jahia/icons": "^1.1.0",
         "@jahia/react-apollo": "^1.1.0",
         "@jahia/react-material": "^1.1.0",
