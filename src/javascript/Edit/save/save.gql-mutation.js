@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import {PredefinedFragments} from '@jahia/apollo-dx';
 
 export const SavePropertiesMutation = gql`
     mutation saveNodeProperties($uuid:String!, $propertiesToSave: [InputJCRProperty], $propertiesToDelete: [String], $mixinsToAdd: [String]!, $mixinsToDelete: [String]!, $language: String) {
@@ -12,7 +13,11 @@ export const SavePropertiesMutation = gql`
                     delete(language: $language)
                 }
                 removeMixins(mixins: $mixinsToDelete)
+                node {
+                    ...NodeCacheRequiredFields
+                }
             }
         }
     }
+    ${PredefinedFragments.nodeCacheRequiredFields.gql}
 `;

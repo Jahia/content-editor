@@ -10,7 +10,7 @@ export const usePublicationInfo = (queryParams, t) => {
         pollInterval: polling ? 5000 : 0
     });
 
-    if (error || loading) {
+    if (error || loading || !data.jcr) {
         return {
             publicationInfoPolling: polling,
             publicationInfoLoading: loading,
