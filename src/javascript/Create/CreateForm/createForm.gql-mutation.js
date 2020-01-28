@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import {PredefinedFragments} from '@jahia/apollo-dx';
 
 export const CreateNode = gql`
     mutation createNode(
@@ -20,10 +21,14 @@ export const CreateNode = gql`
                 useAvailableNodeName: true
             ) {
                 uuid
+                node {
+                    ...NodeCacheRequiredFields
+                }
             }
             modifiedNodes {
                 path
             }
         }
     }
+    ${PredefinedFragments.nodeCacheRequiredFields.gql}
 `;
