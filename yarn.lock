@@ -2055,8 +2055,10 @@
     enzyme "^3.9.0"
     enzyme-adapter-react-16 "^1.12.1"
 
-"@jahia/ui-extender@file:.yalc/@jahia/ui-extender":
-  version "0.1.0-cea357fe"
+"@jahia/ui-extender@^0.2.0":
+  version "0.2.0"
+  resolved "https://npm.jahia.com/@jahia%2fui-extender/-/ui-extender-0.2.0.tgz#66801e94d658960820de99fe19de7a0573d5498f"
+  integrity sha512-wtSMPwKDNBruPEQoa+Rqdmb9IP5aLbJf0tR/XpSIabo+trZmCsv7S7AHKHiPepjV3RCc6F7tupSCZbkvYKD2rg==
   dependencies:
     lodash "^4.17.13"
     prop-types "^15.6.1"
