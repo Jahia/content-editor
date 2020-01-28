@@ -1992,10 +1992,10 @@
     lodash "^4.17.13"
     zen-observable "^0.8.8"
 
-"@jahia/design-system-kit@^1.1.2":
-  version "1.1.2"
-  resolved "https://npm.jahia.com/@jahia%2fdesign-system-kit/-/design-system-kit-1.1.2.tgz#8d18b4664c1230ec2f7cea9b3dfc99fabb7e59f3"
-  integrity sha512-ydPEmiQyZf4KwGLZP0qYVC0WZwVZ/+3/ZW65+NUeQodY3PC2Pwt9eTJPBj31DZVJUDVkXuiqzUpgqMF7qaWGYw==
+"@jahia/design-system-kit@^1.1.4":
+  version "1.1.4"
+  resolved "https://npm.jahia.com/@jahia%2fdesign-system-kit/-/design-system-kit-1.1.4.tgz#eb121147fbd2ae819f92170391440b01291c4adb"
+  integrity sha512-NyOmOO/fC1JU6rP9Tte14tr0biD7p6ISKxujm7VkXCijH5Rajrc2oGDnqbS2R1k4b8RRu/Zu2tlNNrqbp5Uoeg==
   dependencies:
     "@material-ui/core" "^3.9.3"
     classnames "^2.2.6"
