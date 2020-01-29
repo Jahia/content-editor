@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {Badge, MainLayout} from '@jahia/design-system-kit';
 import {buttonRenderer, withNotifications, iconButtonRenderer} from '@jahia/react-material';
 import {DisplayActions, DisplayAction} from '@jahia/ui-extender';
@@ -13,6 +13,7 @@ import {useContentEditorContext} from '~/ContentEditor.context';
 import {withStyles} from '@material-ui/core';
 import PublicationInfoBadge from '~/PublicationInfo/PublicationInfo.badge';
 import LockInfoBadge from '~/Lock/LockInfo.badge';
+import {PublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
 
 const styles = theme => ({
     actionButtonHeaderContainer: {
@@ -55,10 +56,23 @@ const EditPanelCmp = ({formik, title, classes, notificationContext, client}) => 
         };
     }, [formik.dirty]);
 
+    const publicationInfoContext = useContext(PublicationInfoContext);
+
+    const actionContext = {
+        nodeData,
+        language: lang,
+        uilang,
+        mode,
+        t,
+        client, // TODO BACKLOG-11290 find another way to inject apollo-client, i18n, ...}
+        notificationContext,
+        publicationInfoContext,
+        formik
+    };
     return (
         <MainLayout
             topBarProps={{
-                path: <DisplayActions context={{nodeData, siteInfo}}
+                path: <DisplayActions context={{nodeData, siteInfo, formik}}
                                       target="editHeaderPathActions"
                                       render={({context}) => {
                                           const Button = buttonRenderer({variant: 'ghost', color: 'inverted'}, true);
@@ -85,16 +99,8 @@ const EditPanelCmp = ({formik, title, classes, notificationContext, client}) => 
                     <>
                         <DisplayActions
                             context={{
-                                nodeData,
-                                language: lang,
-                                uilang,
-                                mode,
-                                isMainButton: true,
-
-                                // TODO BACKLOG-11290 find another way to inject apollo-client, i18n, ...}
-                                t,
-                                client,
-                                notificationContext
+                               ...actionContext,
+                                isMainButton: true
                             }}
                             target="editHeaderActions"
                             render={({context}) => {
@@ -115,16 +121,7 @@ const EditPanelCmp = ({formik, title, classes, notificationContext, client}) => 
                         />
                         <DisplayAction
                             actionKey="ContentEditorHeaderMenu"
-                            context={{
-                                nodeData,
-                                language: lang,
-                                uilang,
-                                mode,
-                                t,
-                                client, // TODO BACKLOG-11290 find another way to inject apollo-client, i18n, ...}
-                                notificationContext,
-                                formik
-                            }}
+                            context={actionContext}
                             render={iconButtonRenderer({
                                 color: 'inverted',
                                 'data-sel-action': 'moreActions'

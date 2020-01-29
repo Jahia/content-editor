@@ -1,4 +1,4 @@
-import {actionsRegistry} from '@jahia/react-material';
+import {registry} from '@jahia/ui-extender';
 import openEngineTabs from './openEngineTabs.action';
 import {Constants} from '~/ContentEditor.constants';
 
@@ -23,7 +23,7 @@ const getNodeTypes = primaryNodeType => {
 export function openEngineTab(nodeData, engineTabs) {
     const {path, displayName, uuid, mixinTypes, primaryNodeType} = nodeData;
 
-    window.parent.authoringApi.editContent(
+    window.authoringApi.editContent(
         path,
         displayName,
         mixinTypes.map(mixinType => mixinType.name),
@@ -47,12 +47,12 @@ export function registerEngineTabActions(nodeData) {
     const {path, displayName, uuid, mixinTypes, primaryNodeType} = nodeData;
 
     // SINCE DX 7.5 this fct is introduce, not usable by previous DX version
-    if (!window.parent.authoringApi.getEditTabs) {
+    if (!window.authoringApi.getEditTabs) {
         console.warn('DX version is not able to load GWT engine tabs in content editor');
         return;
     }
 
-    const tabs = window.parent.authoringApi.getEditTabs(
+    const tabs = window.authoringApi.getEditTabs(
         path,
         uuid,
         displayName,
@@ -68,8 +68,8 @@ export function registerEngineTabActions(nodeData) {
         for (let i = 0; i < tabs.length; i++) {
             const tab = tabs[i];
 
-            if (!Constants.notSupportedEngineTabs.includes(tab.id) && !actionsRegistry.get(actionPrefix + tab.id)) {
-                actionsRegistry.add('action', actionPrefix + tab.id, openEngineTabs, {
+            if (!Constants.notSupportedEngineTabs.includes(tab.id) && !registry.get(actionPrefix + tab.id)) {
+                registry.add('action', actionPrefix + tab.id, openEngineTabs, {
                     buttonLabel: tab.title,
                     targets: ['ContentEditorHeaderActions:' + (i + actionStartPriority)],
                     tabs: [tab.id]

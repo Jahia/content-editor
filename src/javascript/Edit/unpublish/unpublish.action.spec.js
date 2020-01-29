@@ -40,10 +40,8 @@ describe('unpublish action', () => {
         beforeEach(() => {
             context = {
                 mode: 'edit',
-                parent: {
-                    publicationInfoContext: {
-                        publicationStatus: 'PUBLISHED'
-                    }
+                publicationInfoContext: {
+                    publicationStatus: 'PUBLISHED'
                 },
                 nodeData: {
                     hasPublishPermission: true
@@ -58,13 +56,13 @@ describe('unpublish action', () => {
         });
 
         it('should not display unpublish action when publication are not loaded', () => {
-            context.parent.publicationInfoContext.publicationStatus = undefined;
+            context.publicationInfoContext.publicationStatus = undefined;
             unpublishAction.init(context);
             expect(context.enabled).toBe(false);
         });
 
         it('should not display unpublish action when node is not published', () => {
-            context.parent.publicationInfoContext.publicationStatus = 'MODIFIED';
+            context.publicationInfoContext.publicationStatus = 'MODIFIED';
 
             unpublishAction.init(context);
 

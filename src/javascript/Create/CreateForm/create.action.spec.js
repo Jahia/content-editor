@@ -69,10 +69,9 @@ describe('create action', () => {
 
     describe('onInit', () => {
         let context;
-        let props;
+        const props = {};
         beforeEach(() => {
-            context = {};
-            props = {
+            context = {
                 formik: {
                     errors: {}
                 }
@@ -105,7 +104,7 @@ describe('create action', () => {
         });
 
         it('should add warning badge on create button when required fields were not filled', () => {
-            props.formik = {
+            context.formik = {
                 errors: {
                     myFiled1: 'required',
                     myFiled2: 'required'

@@ -4,12 +4,8 @@ import publishAction from './publish/publish.action';
 import startWorkflow from './startWorkflow/startWorkflow.action';
 import unpublishAction from './unpublish/unpublish.action';
 import {Edit, Save, CloudUpload, CloudOff} from '@material-ui/icons';
-import {composeActions} from '@jahia/react-material';
 import {DotsVertical} from 'mdi-material-ui';
 import openEngineTabs from './engineTabs/openEngineTabs.action';
-import {withFormikAction} from '~/actions/withFormik.action';
-import {withPublicationInfoContextAction} from '~/actions/withPublicationInfoContext.action';
-import {editRestrictedAction} from '~/actions/editRestricted.action';
 
 export const registerActions = actionsRegistry => {
     // Content Media Manager Action
@@ -48,7 +44,7 @@ export const registerActions = actionsRegistry => {
 
     /* 3 dots menu */
 
-    actionsRegistry.add('action', 'ContentEditorHeaderMenu', composeActions(editRestrictedAction, withFormikAction, withPublicationInfoContextAction, actionsRegistry.get('action', 'menuAction')), {
+    actionsRegistry.add('action', 'ContentEditorHeaderMenu', actionsRegistry.get('action', 'menuAction'), {
         buttonIcon: <DotsVertical/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.action.moreOptions',
         menuTarget: 'ContentEditorHeaderActions',
@@ -69,7 +65,7 @@ export const registerActions = actionsRegistry => {
     });
 
     // SINCE DX 7.5 this fct is introduce, not usable by previous DX version
-    if (window.parent.authoringApi && !window.parent.authoringApi.getEditTabs) {
+    if (window.authoringApi && !window.authoringApi.getEditTabs) {
         actionsRegistry.add('action', 'versioningTabAction', openEngineTabs, {
             buttonLabel: 'content-editor:label.contentEditor.edit.action.versioningTab',
             targets: ['ContentEditorHeaderActions:3'],
