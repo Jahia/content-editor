@@ -9,7 +9,7 @@ export default composeActions(
         init: context => {
             context.enabled = context.enabled &&
                 context.nodeData.hasPublishPermission &&
-                context.parent.publicationInfoContext.publicationStatus === Constants.editPanel.publicationStatus.PUBLISHED;
+                context.publicationInfoContext.publicationStatus === Constants.editPanel.publicationStatus.PUBLISHED;
         },
         onClick: context => {
             unpublishNode({

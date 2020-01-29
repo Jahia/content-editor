@@ -21,18 +21,18 @@ import saveAction from './save.action';
 
 describe('save action', () => {
     describe('init', () => {
+        const props = {};
         let context;
         beforeEach(() => {
             context = {
-                mode: 'edit'
+                mode: 'edit',
+                formik: {}
             };
         });
 
         it('should add warn chip on button when all required fields were filled', () => {
-            const props = {
-                formik: {
-                    errors: {}
-                }
+            context.formik = {
+                errors: {}
             };
             saveAction.init(context, props);
 
@@ -41,12 +41,10 @@ describe('save action', () => {
         });
 
         it('should add warning badge on save button when required fields were not filled', () => {
-            const props = {
-                formik: {
-                    errors: {
-                        myFiled1: 'required',
-                        myFiled2: 'required'
-                    }
+            context.formik = {
+                errors: {
+                    myFiled1: 'required',
+                    myFiled2: 'required'
                 }
             };
 
@@ -59,11 +57,9 @@ describe('save action', () => {
         it('should not display save action when it isn\'t the edit mode', () => {
             context.mode = 'create';
 
-            const props = {
-                formik: {
-                    dirty: true,
-                    errors: {}
-                }
+            context.formik = {
+                dirty: true,
+                errors: {}
             };
 
             saveAction.init(context, props);
@@ -71,14 +67,13 @@ describe('save action', () => {
         });
 
         it('should enable save action when it is the edit mode', () => {
-            const props = {
-                formik: {
-                    dirty: true,
-                    errors: {}
-                },
-                publicationInfoContext: {
-                    publicationInfoPolling: false
-                }
+            context.formik = {
+                dirty: true,
+                errors: {}
+            };
+
+            context.publicationInfoContext = {
+                publicationInfoPolling: false
             };
             saveAction.init(context, props);
             expect(context.enabled).toBe(true);
@@ -86,14 +81,12 @@ describe('save action', () => {
         });
 
         it('should disable save action when publication info is polling', () => {
-            const props = {
-                formik: {
-                    dirty: true,
-                    errors: {}
-                },
-                publicationInfoContext: {
-                    publicationInfoPolling: true
-                }
+            context.formik = {
+                dirty: true,
+                errors: {}
+            };
+            context.publicationInfoContext = {
+                publicationInfoPolling: true
             };
             saveAction.init(context, props);
             expect(context.enabled).toBe(true);
@@ -101,14 +94,12 @@ describe('save action', () => {
         });
 
         it('should disable save action when form is dirty', () => {
-            const props = {
-                formik: {
-                    dirty: false,
-                    errors: {}
-                },
-                publicationInfoContext: {
-                    publicationInfoPolling: false
-                }
+            context.formik = {
+                dirty: false,
+                errors: {}
+            };
+            context.publicationInfoContext = {
+                publicationInfoPolling: false
             };
             saveAction.init(context, props);
             expect(context.enabled).toBe(true);

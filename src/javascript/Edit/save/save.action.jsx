@@ -1,14 +1,10 @@
 import {composeActions, componentRendererAction} from '@jahia/react-material';
-import {withFormikAction} from '~/actions/withFormik.action';
 import {validateForm} from '~/Validation/validation.utils';
-import {withPublicationInfoContextAction} from '~/actions/withPublicationInfoContext.action';
 import {editRestrictedAction} from '~/actions/editRestricted.action';
 
 export default composeActions(
     editRestrictedAction,
-    withFormikAction,
     componentRendererAction,
-    withPublicationInfoContextAction,
     {
         init: context => {
             if (context.enabled) {
