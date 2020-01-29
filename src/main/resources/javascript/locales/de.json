@@ -10,8 +10,8 @@
         }
       },
       "edit": {
-        "title": "Inhalt bearbeiten",
-        "contentEdit": "Inhalt bearbeiten",
+        "title": "Content bearbeiten",
+        "contentEdit": "Content bearbeiten",
         "validation": {
           "required": "erforderlich"
         },
