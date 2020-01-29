@@ -8,11 +8,6 @@ import {DotsVertical} from 'mdi-material-ui';
 import openEngineTabs from './engineTabs/openEngineTabs.action';
 
 export const registerActions = actionsRegistry => {
-    // Content Media Manager Action
-    if (actionsRegistry.registry && actionsRegistry.registry.edit) {
-        delete actionsRegistry.registry.edit;
-    }
-
     actionsRegistry.addOrReplace('action', 'edit', actionsRegistry.get('action', 'router'), {
         buttonIcon: <Edit/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.contentEdit',
