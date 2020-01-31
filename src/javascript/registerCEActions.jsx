@@ -1,8 +1,8 @@
 import React from 'react';
 import {ArrowBack} from '@material-ui/icons';
 import {SelectorTypes} from '~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes';
-import {registerActions as registerEditActions} from '~/Edit';
-import {registerActions as registerCreateActions} from '~/Create';
+import registerEditActions from '~/Edit';
+import registerCreateActions from '~/Create';
 import goBackAction from './actions/goBack.action';
 
 export const registerCEActions = registry => {

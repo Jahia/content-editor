@@ -40,24 +40,13 @@ describe('register', () => {
         require('./register.jsx');
     });
 
-    it('should register create route', () => {
+    it('should register content editor', () => {
         expect(
             registry
                 .add
                 .mock
                 .calls
-                .find(call => call[1] === 'create-route')
-        )
-            .toBeTruthy();
-    });
-
-    it('should register edit route', () => {
-        expect(
-            registry
-                .add
-                .mock
-                .calls
-                .find(call => call[1] === 'edit-route')
+                .find(call => call[1] === 'content-editor')
         )
             .toBeTruthy();
     });
