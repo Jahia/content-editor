@@ -7,7 +7,7 @@ import {Edit, Save, CloudUpload, CloudOff} from '@material-ui/icons';
 import {DotsVertical} from 'mdi-material-ui';
 import openEngineTabs from './engineTabs/openEngineTabs.action';
 
-export default actionsRegistry => {
+export const registerEditActions = actionsRegistry => {
     actionsRegistry.addOrReplace('action', 'edit', actionsRegistry.get('action', 'router'), {
         buttonIcon: <Edit/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.contentEdit',
