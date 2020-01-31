@@ -25,13 +25,13 @@ registry.add('callback', 'content-editor', {
 
         registry.add('route', 'edit-route', {
             targets: ['jcontent:0.1'],
-            path: `/:siteKey/:lang/${Constants.routes.baseEditRoute}`,
+            path: `/jcontent/:siteKey/:lang/${Constants.routes.baseEditRoute}`,
             render: () => <ContentEditor mode={Constants.routes.baseEditRoute}/>
         });
 
         registry.add('route', 'create-route', {
             targets: ['jcontent:0.1'],
-            path: `/:siteKey/:lang/${Constants.routes.baseCreateRoute}`,
+            path: `/jcontent/:siteKey/:lang/${Constants.routes.baseCreateRoute}`,
             render: () => <ContentEditor mode="create"/>
         });
     }
