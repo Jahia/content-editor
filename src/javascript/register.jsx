@@ -18,19 +18,23 @@ const DependenciesInjector = () => {
 };
 
 ReactDOM.render(<DependenciesInjector/>, i18nLoaderElement);
+registry.add('callback', 'content-editor', {
+    targets: ['jahiaApp-init:2'],
+    callback: () => {
+        registerCEActions(registry);
 
-registerCEActions(registry);
+        registry.add('route', 'edit-route', {
+            targets: ['jcontent:0.1'],
+            path: `/:siteKey/:lang/${Constants.routes.baseEditRoute}`,
+            render: () => <ContentEditor mode={Constants.routes.baseEditRoute}/>
+        });
 
-registry.add('route', 'edit-route', {
-    targets: ['jcontent:0.1'],
-    path: `/:siteKey/:lang/${Constants.routes.baseEditRoute}`,
-    render: () => <ContentEditor mode={Constants.routes.baseEditRoute}/>
-});
-
-registry.add('route', 'create-route', {
-    targets: ['jcontent:0.1'],
-    path: `/:siteKey/:lang/${Constants.routes.baseCreateRoute}`,
-    render: () => <ContentEditor mode="create"/>
+        registry.add('route', 'create-route', {
+            targets: ['jcontent:0.1'],
+            path: `/:siteKey/:lang/${Constants.routes.baseCreateRoute}`,
+            render: () => <ContentEditor mode="create"/>
+        });
+    }
 });
 
 console.debug('%c Content Editor is activated', 'color: #3c8cba');

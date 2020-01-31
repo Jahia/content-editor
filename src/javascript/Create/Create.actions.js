@@ -4,7 +4,7 @@ import {Save, Queue} from '@material-ui/icons';
 import createNewContentAction from './CreateNewContentAction/createNewContent.action';
 import createButtonAction from './CreateForm/create.action';
 
-export const registerActions = registry => {
+export const registerCreateActions = registry => {
     registry.addOrReplace('action', 'createContent', createNewContentAction, {
         buttonIcon: <Queue/>,
         buttonLabel:
