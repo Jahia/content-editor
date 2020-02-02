@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import {registry} from '@jahia/ui-extender';
 import {registerCEActions} from './registerCEActions';
 
@@ -11,13 +10,16 @@ import {useI18nCENamespace} from '~/useI18n';
 __webpack_public_path__ = `${window.contextJsParameters.contextPath}/modules/content-editor/javascript/apps/`;
 
 // Register i18n loadNamespaces through a empty react component until extender solve the injection issue
-const i18nLoaderElement = document.createElement('div');
 const DependenciesInjector = () => {
     useI18nCENamespace();
     return '';
 };
 
-ReactDOM.render(<DependenciesInjector/>, i18nLoaderElement);
+registry.add('app', 'content-editor-dependencies-injector', {
+    targets: ['root:0.5'],
+    render: next => <><DependenciesInjector/>{next}</>
+});
+
 registry.add('callback', 'content-editor', {
     targets: ['jahiaApp-init:2'],
     callback: () => {
