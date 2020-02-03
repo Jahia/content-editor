@@ -7,7 +7,7 @@ export const useFormDefinition = (query, queryParams, t) => {
         fetchPolicy: 'cache-and-network'
     });
 
-    if (error || loading) {
+    if (error || loading || !data.jcr) {
         return {
             loading,
             error,
