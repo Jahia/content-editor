@@ -28,7 +28,7 @@ export const Thumbnail = ({
     } = useDialogPickerContent(pickerConfig, selectedPath, searchTerms);
 
     useEffect(() => {
-        registry.add('refetch-upload', 'refetch-image-list', {
+        registry.addOrReplace('refetch-upload', 'refetch-image-list', {
             refetch: refetch
         });
     });

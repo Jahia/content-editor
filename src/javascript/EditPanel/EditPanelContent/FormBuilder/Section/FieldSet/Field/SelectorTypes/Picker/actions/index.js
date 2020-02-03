@@ -6,14 +6,14 @@ import {openInTabAction} from './openInTab.action';
 import {replaceAction} from './replace.action';
 
 export const pickerActions = actionsRegistry => {
-    actionsRegistry.add('ContentPickerMenu', actionsRegistry.get('action', 'menuAction'), {
+    actionsRegistry.add('action', 'ContentPickerMenu', actionsRegistry.get('action', 'menuAction'), {
         buttonIcon: <DotsVertical/>,
         buttonLabel: 'label.contentEditor.edit.action.fieldMoreOptions',
         menuTarget: 'ContentPickerActions',
         showIcons: true
     });
 
-    actionsRegistry.add('MediaPickerMenu', actionsRegistry.get('action', 'menuAction'), {
+    actionsRegistry.add('action', 'MediaPickerMenu', actionsRegistry.get('action', 'menuAction'), {
         buttonIcon: <DotsVertical/>,
         buttonLabel: 'label.contentEditor.edit.action.fieldMoreOptions',
         menuTarget: 'MediaPickerActions',
