@@ -36,7 +36,7 @@ export const Edit = ({
         return <>{errorMessage}</>;
     }
 
-    if (loading) {
+    if (loading || !nodeData) {
         return <ProgressOverlay/>;
     }
 
