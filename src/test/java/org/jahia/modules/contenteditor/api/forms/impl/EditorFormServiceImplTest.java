@@ -76,7 +76,7 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
     private JCRNodeWrapper textNode;
     private JCRNodeWrapper unstructuredNews;
     private JCRNodeWrapper defaultOverrideContent;
-    private JahiaTemplatesPackage defaultModule;
+    private JahiaTemplatesPackage defaultModule, templatesWeb;
     private static JCRSessionWrapper session;
 
     @Before
@@ -89,8 +89,7 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         ((EditorFormServiceImpl) editorFormService).setNodeTypeRegistry(NodeTypeRegistry.getInstance());
         ((EditorFormServiceImpl) editorFormService).setStaticDefinitionsRegistry(staticDefinitionsRegistry);
 
-        // init site
-        testSite = TestHelper.createSite("editorFormServiceSite");
+
 
         // init sessions
         session = JCRSessionFactory.getInstance().getCurrentSystemSession(Constants.EDIT_WORKSPACE, Locale.ENGLISH, Locale.ENGLISH);
@@ -106,6 +105,17 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         defaultModule.setVersion(new ModuleVersion("1.0.0"));
         defaultModule.setActiveVersion(true);
         ServicesRegistry.getInstance().getJahiaTemplateManagerService().getTemplatePackageRegistry().register(defaultModule);
+        ServicesRegistry.getInstance().getJahiaTemplateManagerService().getTemplatePackageRegistry().addPackageForResourceBundle("JahiaTypesResources", defaultModule);
+
+        templatesWeb = new JahiaTemplatesPackage(new DummyBundle());
+        templatesWeb.setName("templates-web");
+        templatesWeb.setId("templates-web");
+        templatesWeb.setVersion(new ModuleVersion("1.0.0"));
+        templatesWeb.setActiveVersion(true);
+        ServicesRegistry.getInstance().getJahiaTemplateManagerService().getTemplatePackageRegistry().register(templatesWeb);
+
+        // init site
+        testSite = TestHelper.createSite("editorFormServiceSite");
 
         // init static definition registry
         staticDefinitionsRegistry.readEditorFormDefinition(EditorFormServiceImpl.class.getClassLoader().getResource("META-INF/jahia-content-editor-forms/forms/default.json"));
