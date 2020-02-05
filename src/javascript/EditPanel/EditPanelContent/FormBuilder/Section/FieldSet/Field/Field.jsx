@@ -1,5 +1,6 @@
 import React, {useRef} from 'react';
-import {Grid, InputLabel, Typography, withStyles} from '@material-ui/core';
+import {Grid, InputLabel, withStyles} from '@material-ui/core';
+import {Typography} from '@jahia/design-system-kit';
 import {MoreVert, Public} from '@material-ui/icons';
 import {Badge, IconButton} from '@jahia/design-system-kit';
 import {useTranslation} from 'react-i18next';
@@ -114,7 +115,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
                         alignItems="center"
                     >
                         <Grid item>
-                            <Typography color="beta" variant="delta">
+                            <Typography color="beta" variant="omega">
                                 {field.description}
                             </Typography>
                         </Grid>
