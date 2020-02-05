@@ -14,6 +14,7 @@ describe('Field component', () => {
             siteInfo: {languages: []},
             field: {
                 name: 'text',
+                description: 'This is a description for this text field.',
                 displayName: 'displayName',
                 nodeType: {
                     properties: [
@@ -114,6 +115,32 @@ describe('Field component', () => {
         );
 
         expect(cmp.dive().debug()).toContain('htmlFor="FieldID"');
+    });
+
+    it('should display the description label when field has a description', () => {
+        defaultProps.input = props => <Text {...props}/>;
+        defaultProps.field.multiple = false;
+        const cmp = shallowWithTheme(
+            <Field {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        );
+
+        expect(cmp.dive().debug()).toContain('This is a description for this text field.');
+    });
+
+    it('should not display the description label when field has not a description', () => {
+        defaultProps.input = props => <Text {...props}/>;
+        defaultProps.field.multiple = false;
+
+        defaultProps.field.description = '';
+        const cmp = shallowWithTheme(
+            <Field {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        );
+
+        expect(cmp.dive().debug()).not.toContain('This is a description for this text field.');
     });
 
     it('should not add htmlFor to the label when field is multiple', () => {
