@@ -106,6 +106,19 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
                             />}
                         </Grid>
                     </Grid>
+                    {field.description &&
+                    <Grid
+                        container
+                        direction="row"
+                        justify="space-between"
+                        alignItems="center"
+                    >
+                        <Grid item>
+                            <Typography color="beta" variant="delta">
+                                {field.description}
+                            </Typography>
+                        </Grid>
+                    </Grid>}
                     <Grid
                         container
                         wrap="nowrap"
