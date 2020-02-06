@@ -19,8 +19,11 @@ export const Constants = {
     routes: {
         baseEditRoute: 'edit',
         baseCreateRoute: 'create',
-        browseRoute: 'browse',
-        browseFilesRoute: 'browse-files'
+        browseMap: {
+            contents: 'contents',
+            files: 'media',
+            pages: 'pages'
+        }
     },
     notSupportedEngineTabs: ['content', 'categories']
 };
