@@ -17,10 +17,10 @@ const mapStateToProps = state => ({
 
 export const resolveGoBackContext = (path, parentPath, parentDisplayName, siteKey, siteDisplayName) => {
     const splitPath = path.split('/');
-    let isFilePath = splitPath && splitPath.length >= 4 && splitPath[3] === 'files'; // 4: path at least contains files or contents info
+    const modePath = splitPath && splitPath.length >= 4 ? splitPath[3] : ''; // 4: path at least contains files or contents info
 
-    let resolvedPath = isFilePath ? `/sites/${siteKey}/files` : `/sites/${siteKey}/contents`;
-    let resolvedMode = isFilePath ? Constants.routes.browseFilesRoute : Constants.routes.browseRoute;
+    let resolvedPath = `/sites/${siteKey}/${modePath}`;
+    let resolvedMode = Constants.routes.browseMap[modePath] || Constants.routes.browseMap.pages;
     let resolvedDisplayName = siteDisplayName;
 
     // Resolve parent if possible
