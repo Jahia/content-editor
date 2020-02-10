@@ -7,7 +7,7 @@ describe('Create', () => {
     let store;
     beforeEach(() => {
         store = configureStore([])({
-            path: '/toto',
+            jcontent: {path: '/toto'},
             language: 'fr',
             params: {
                 contentType: 'contentTypeLOL'

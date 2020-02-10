@@ -19,15 +19,15 @@ const mapStateToProps = state => {
         Constants.defaultLocale;
 
     return {
-        path: state.path,
+        path: state.jcontent.path,
         lang: state.language,
         uilang: state.uilang,
         site: state.site,
         siteDisplayableName: state.siteDisplayableName,
         formQuery: FormQuery,
         formQueryParams: {
-            path: state.path,
-            parentPath: state.path,
+            path: state.jcontent.path,
+            parentPath: state.jcontent.path,
             language: state.language,
             uilang: contentEditorUiLang,
             primaryNodeType: state.params.contentType

@@ -14,7 +14,7 @@ describe('Edit', () => {
     let store;
     beforeEach(() => {
         store = configureStore([])({
-            path: '/toto',
+            jcontent: {path: '/toto'},
             language: 'fr'
         });
     });
