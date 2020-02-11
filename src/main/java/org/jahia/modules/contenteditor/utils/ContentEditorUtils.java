@@ -56,6 +56,7 @@ import org.jahia.services.content.nodetypes.NodeTypeRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.jcr.ItemNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Value;
 import javax.jcr.nodetype.NoSuchNodeTypeException;
@@ -178,30 +179,48 @@ public class ContentEditorUtils {
     public static Set<String> getAllowedNodeTypesAsChildNode(JCRNodeWrapper currentNode, boolean useContributeNodeTypes, List<String> filterNodeType) {
         try {
             // look for definition
-            Set<String> allowedTypes = getChildNodeTypes(currentNode, filterNodeType);
+            Set<String> definitionAllowedTypes = getChildNodeTypes(currentNode, filterNodeType);
 
             // Filter contribute types
-            Set<String> resolvedContributeTypes = new HashSet<>();
-            if (useContributeNodeTypes &&
-                currentNode.isNodeType("jmix:contributeMode") &&
-                currentNode.hasProperty("j:contributeTypes")) {
-                Value[] contributeTypes = currentNode.getProperty("j:contributeTypes").getValues();
-                Arrays.stream(contributeTypes).forEach(type -> allowedTypes.forEach(allowedType -> {
-                        try {
-                            if (NodeTypeRegistry.getInstance().getNodeType(type.getString()).isNodeType(allowedType)) {
-                                resolvedContributeTypes.add(type.getString());
-                            }
-                        } catch (RepositoryException e) {
-                            throw new DataFetchingException(e);
-                        }
-                    })
-                );
+            if (useContributeNodeTypes) {
+                Set<String> resolvedContributeTypes = getContributeTypes(currentNode, definitionAllowedTypes);
+                if (resolvedContributeTypes != null && !resolvedContributeTypes.isEmpty()) {
+                    return resolvedContributeTypes;
+                }
             }
-            return resolvedContributeTypes.isEmpty() ? allowedTypes : resolvedContributeTypes;
+
+            return definitionAllowedTypes;
         } catch (RepositoryException e) {
             throw new DataFetchingException(e);
         }
+    }
 
+    private static Set<String> getContributeTypes(JCRNodeWrapper node, Set<String> definitionAllowedTypes) throws RepositoryException {
+        if (node.isNodeType("jmix:contributeMode") && node.hasProperty("j:contributeTypes")) {
+            Value[] contributeTypes = node.getProperty("j:contributeTypes").getValues();
+            Set<String> resolvedContributeTypes = new HashSet<>();
+            Arrays.stream(contributeTypes).forEach(type -> definitionAllowedTypes.forEach(allowedType -> {
+                    try {
+                        if (NodeTypeRegistry.getInstance().getNodeType(type.getString()).isNodeType(allowedType)) {
+                            resolvedContributeTypes.add(type.getString());
+                        }
+                    } catch (RepositoryException e) {
+                        throw new DataFetchingException(e);
+                    }
+                })
+            );
+            return resolvedContributeTypes;
+        } else {
+            // recurse on parent to check if contribute types exists
+            JCRNodeWrapper parent;
+            try {
+                parent = node.getParent();
+            } catch (ItemNotFoundException e) {
+                // no parent anymore
+                return Collections.emptySet();
+            }
+            return getContributeTypes(parent, definitionAllowedTypes);
+        }
     }
 
     private static Set<String> getChildNodeTypes(JCRNodeWrapper node, List<String> filterNodeType) throws RepositoryException {
