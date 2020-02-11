@@ -9,7 +9,7 @@ import {PreviewContainer} from './PreviewContainer';
 import PublicationInfoProgress from '~/PublicationInfo/PublicationInfo.progress';
 
 const mapStateToProps = state => ({
-    mode: state.mode
+    mode: state.jcontent.mode
 });
 
 const styles = theme => ({

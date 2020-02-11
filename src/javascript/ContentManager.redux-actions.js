@@ -1,13 +1,6 @@
-// TODO: This file should be removed
-// We should use/get the action from CMM directly
-// The task was created: https://jira.jahia.org/browse/QA-11544
+import {registry} from '@jahia/ui-extender';
 
-const CM_NAVIGATE = 'CM_NAVIGATE';
-
-function cmGoto(data) {
-    return Object.assign(data || {}, {type: CM_NAVIGATE});
+export function cmGoto(data) {
+    const jContentActions = registry.get('redux-action', 'jcontentGoto');
+    return jContentActions.action(data);
 }
-
-export {
-    cmGoto
-};
