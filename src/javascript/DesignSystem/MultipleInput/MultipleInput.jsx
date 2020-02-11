@@ -4,6 +4,7 @@ import {withStyles} from '@material-ui/core';
 
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
+import AsyncCreatableSelect from 'react-select/async-creatable';
 import {
     Control,
     MultiValue,
@@ -20,9 +21,8 @@ const style = theme => ({
 
 const EmptyCmp = () => '';
 
-const MultipleInputComponent = ({classes, creatable, readOnly, ...props}) => {
-    const Cmp = creatable ? CreatableSelect : Select;
-
+const MultipleInputComponent = ({classes, creatable, async, readOnly, ...props}) => {
+    const Cmp = creatable ? async ? AsyncCreatableSelect : CreatableSelect : Select;
     const components = {
         MultiValue,
         MultiValueRemove,
@@ -57,6 +57,7 @@ const MultipleInputComponent = ({classes, creatable, readOnly, ...props}) => {
 
 MultipleInputComponent.defaut = {
     creatable: false,
+    async: false,
     readOnly: false,
     onChange: () => {}
 };
@@ -65,6 +66,7 @@ MultipleInputComponent.propTypes = {
     classes: PropTypes.object.isRequired,
     readOnly: PropTypes.bool,
     creatable: PropTypes.bool,
+    async: PropTypes.bool,
     onChange: PropTypes.func
 };
 
