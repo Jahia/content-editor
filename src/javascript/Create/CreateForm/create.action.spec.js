@@ -80,7 +80,9 @@ describe('create action', () => {
 
         it('should enable create action when mode is create', () => {
             setReduxState({
-                mode: 'create'
+                jcontent: {
+                    mode: 'create'
+                }
             });
 
             createAction.init(context, props);
@@ -89,7 +91,9 @@ describe('create action', () => {
 
         it('should disable create action when mode is edit', () => {
             setReduxState({
-                mode: 'edit'
+                jcontent: {
+                    mode: 'edit'
+                }
             });
 
             createAction.init(context, props);

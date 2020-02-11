@@ -5,7 +5,7 @@ import {validateForm} from '~/Validation/validation.utils';
 
 const stateMapToContext = state => {
     return {
-        mode: state.mode
+        mode: state.jcontent.mode
     };
 };
 

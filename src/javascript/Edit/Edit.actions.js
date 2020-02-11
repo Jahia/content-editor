@@ -38,7 +38,6 @@ export const registerEditActions = actionsRegistry => {
     });
 
     /* 3 dots menu */
-
     actionsRegistry.add('action', 'ContentEditorHeaderMenu', actionsRegistry.get('action', 'menuAction'), {
         buttonIcon: <DotsVertical/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.action.moreOptions',

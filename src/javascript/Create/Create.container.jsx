@@ -30,7 +30,7 @@ const mapStateToProps = state => {
             parentPath: state.jcontent.path,
             language: state.language,
             uilang: contentEditorUiLang,
-            primaryNodeType: state.params.contentType
+            primaryNodeType: state.jcontent.params.contentType
         }
     };
 };
