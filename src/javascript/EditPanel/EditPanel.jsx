@@ -14,6 +14,7 @@ import {withStyles} from '@material-ui/core';
 import PublicationInfoBadge from '~/PublicationInfo/PublicationInfo.badge';
 import LockInfoBadge from '~/Lock/LockInfo.badge';
 import {PublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
+import {Constants} from '~/ContentEditor.constants';
 
 const styles = theme => ({
     actionButtonHeaderContainer: {
@@ -119,14 +120,14 @@ const EditPanelCmp = ({formik, title, classes, notificationContext, client}) => 
                                 );
                             }}
                         />
-                        <DisplayAction
+                        {mode === Constants.routes.baseEditRoute && <DisplayAction
                             actionKey="ContentEditorHeaderMenu"
                             context={actionContext}
                             render={iconButtonRenderer({
                                 color: 'inverted',
                                 'data-sel-action': 'moreActions'
                             })}
-                        />
+                        />}
                         <div className={classes.badges}>
                             <PublicationInfoBadge/>
                             <LockInfoBadge/>
