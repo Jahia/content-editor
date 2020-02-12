@@ -32,9 +32,13 @@ const Tag = ({field, id}) => {
 
         const val = await client.query({query: getSuggestionsTagsQuery, variables: variables});
 
-        return val.data.tag.suggest.map(element => {
-            return {value: element.name, label: element.name};
-        });
+        if (val.data && val.data.tag && val.data.tag.suggest) {
+            return val.data.tag.suggest.map(element => {
+                return {value: element.name, label: element.name};
+            });
+        }
+
+        return [];
     };
 
     const selectorOption = field.selectorOptions && field.selectorOptions.find(option => option.name === 'separator');
