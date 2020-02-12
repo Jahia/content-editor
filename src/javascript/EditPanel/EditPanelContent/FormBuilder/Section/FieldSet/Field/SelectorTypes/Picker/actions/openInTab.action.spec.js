@@ -13,11 +13,11 @@ describe('openInTab action', () => {
             },
             dxContext: {
                 contextPath: '',
-                urlBrowser: '/cms/contentmanager'
+                urlbase: '/modules/moonstone'
             }
         };
         openInTabAction.onClick(context);
 
-        expect(window.open).toHaveBeenCalledWith(`/cms/contentmanager/digitall/fr/${Constants.routes.baseEditRoute}/contents`, '_blank');
+        expect(window.open).toHaveBeenCalledWith(`/modules/moonstone/jcontent/digitall/fr/${Constants.routes.baseEditRoute}/contents`, '_blank');
     });
 });
