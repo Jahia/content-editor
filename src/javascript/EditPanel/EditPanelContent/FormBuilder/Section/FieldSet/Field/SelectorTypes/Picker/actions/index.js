@@ -38,11 +38,11 @@ export const pickerActions = actionsRegistry => {
         targets: ['ContentPickerActions:3', 'MediaPickerActions:3']
     });
 
-    const fileUploadCMMAction = {
-        ...actionsRegistry.get('fileUpload'),
+    const fileUploadJContentAction = {
+        ...actionsRegistry.get('action', 'fileUpload'),
         targets: null // Remove target to avoid entry duplication
     };
-    actionsRegistry.add('action', 'upload', fileUploadCMMAction, {
+    actionsRegistry.add('action', 'upload', fileUploadJContentAction, {
         buttonIcon: <FileUpload/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.fileUploadBtn',
         targets: ['pickerDialogAction:0'],
