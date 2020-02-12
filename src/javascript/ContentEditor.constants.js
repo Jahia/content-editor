@@ -20,7 +20,7 @@ export const Constants = {
         baseEditRoute: 'edit',
         baseCreateRoute: 'create',
         browseMap: {
-            contents: 'contents',
+            contents: 'content-folders',
             files: 'media',
             pages: 'pages'
         }
