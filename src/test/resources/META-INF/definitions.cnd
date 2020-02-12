@@ -86,6 +86,7 @@ extends=jnt:simpleWithExtends
 + * (jnt:AllowedNodeTypesChild)
 + * (jnt:AllowedNodeTypesChildEditorial)
 + * (jnt:AllowedNodeTypesChildContribute)
++ * (jnt:AllowedNodeTypesWithMixin)
 
 
 [jnt:AllowedNodeTypesNone] > nt:base

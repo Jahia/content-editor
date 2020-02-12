@@ -149,6 +149,7 @@ public class ContentEditorUtilsTest extends AbstractJUnitTest {
         expectedResults.add("jnt:AllowedNodeTypesChildMixinOnDef");
         expectedResults.add("jnt:AllowedNodeTypesChildEditorialMixinOnDef");
         expectedResults.add("jnt:AllowedNodeTypesChildContributeMixinOnDef");
+        expectedResults.add("jnt:AllowedNodeTypesWithMixin");
         result = ContentEditorUtils.getAllowedNodeTypesAsChildNode(testedNode, false, null);
         validateResult(testedType, result, expectedResults);
         expectedResults.clear();
@@ -188,11 +189,24 @@ public class ContentEditorUtilsTest extends AbstractJUnitTest {
         testedNode = session.getNode(testSite.getJCRLocalPath()).addNode(testdedNodeName, testedType);
         testedNode.addMixin("jmix:AllowedNodeTypesMixinOnNode");
         testedNode.addMixin("jmix:contributeMode");
-        testedNode.setProperty("j:contributeTypes", new String[]{"jnt:AllowedNodeTypesChildContribute", "jnt:AllowedNodeTypesChildContributeMixinOnNode", "jnt:AllowedNodeTypesChildContributeMixinOnDef"});
+        testedNode.setProperty("j:contributeTypes", new String[]{"jnt:AllowedNodeTypesChildContribute", "jnt:AllowedNodeTypesChildContributeMixinOnNode", "jnt:AllowedNodeTypesChildContributeMixinOnDef", "jnt:AllowedNodeTypesWithMixin"});
         session.save();
         expectedResults.add("jnt:AllowedNodeTypesChildContribute");
         expectedResults.add("jnt:AllowedNodeTypesChildContributeMixinOnDef");
         expectedResults.add("jnt:AllowedNodeTypesChildContributeMixinOnNode");
+        expectedResults.add("jnt:AllowedNodeTypesWithMixin");
+        result = ContentEditorUtils.getAllowedNodeTypesAsChildNode(testedNode, true, null);
+        validateResult(testdedNodeName, result, expectedResults);
+        expectedResults.clear();
+
+        // test inherited contribute types restrictions
+        testedType = "jnt:AllowedNodeTypesWithMixin";
+        testdedNodeName = testedType + "withContributionInherited";
+        testedNode = testedNode.addNode(testdedNodeName, testedType);
+        session.save();
+        expectedResults.add("jnt:AllowedNodeTypesChildContribute");
+        expectedResults.add("jnt:AllowedNodeTypesChildContributeMixinOnDef");
+        expectedResults.add("jnt:AllowedNodeTypesWithMixin");
         result = ContentEditorUtils.getAllowedNodeTypesAsChildNode(testedNode, true, null);
         validateResult(testdedNodeName, result, expectedResults);
         expectedResults.clear();
