@@ -1,8 +1,7 @@
 import {registry} from '@jahia/ui-extender';
 import openEngineTabs from './openEngineTabs.action';
 import {Constants} from '~/ContentEditor.constants';
-import gql from 'graphql-tag';
-import {PredefinedFragments} from '@jahia/apollo-dx';
+import {engineTabsPermissionCheckQuery} from './engineTabs.permission.gql-query';
 
 /**
  * There is no test related to those functions as they are supposed to be deprecated soon.
@@ -69,41 +68,14 @@ export function registerEngineTabActions(editorContext, client) {
         // Filter not supported tabs
         tabs = tabs.filter(tab => !Constants.notSupportedEngineTabs.includes(tab.id));
 
-        // Build permission check query
-        let tabsPermissionCheckFields = '';
-        for (let i = 0; i < tabs.length; i++) {
-            const tab = tabs[i];
-            if (tab.requiredPermission) {
-                tabsPermissionCheckFields += `\n${tab.id}:hasPermission(permissionName:"${tab.requiredPermission}")`;
-            }
-        }
-
         // Permission check query
         client.query({
-            query: gql`
-                query tabsPermissionCheck {
-                    jcr {
-                        nodeByPath(path: "/sites/${site}") {
-                            ...NodeCacheRequiredFields
-                            ${tabsPermissionCheckFields}
-                        }
-                    }
-                }
-                ${PredefinedFragments.nodeCacheRequiredFields.gql}
-            `
+            query: engineTabsPermissionCheckQuery(tabs, site)
         }).then(result => {
             const actionPrefix = 'contentEditorGWTTabAction_';
             const actionStartPriority = 3;
 
-            tabs.forEach(tab => {
-                if (!registry.get(actionPrefix + tab.id) && (!tab.requiredPermission || result.data.jcr.nodeByPath[tab.id])) {
-                    registry.addOrReplace('action', actionPrefix + tab.id, openEngineTabs, {
-                        buttonLabel: tab.title,
-                        targets: ['ContentEditorHeaderActions:' + (i + actionStartPriority)],
-                        tabs: [tab.id]
-                    });
-                }
-            });
+            for (let i = 0; i < tabs.length; i++) {
                 const tab = tabs[i];
                 if (!registry.get(actionPrefix + tab.id) && (!tab.requiredPermission || result.data.jcr.nodeByPath[tab.id])) {
                     registry.addOrReplace('action', actionPrefix + tab.id, openEngineTabs, {
