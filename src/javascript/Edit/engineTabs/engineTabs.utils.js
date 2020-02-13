@@ -1,6 +1,7 @@
 import {registry} from '@jahia/ui-extender';
 import openEngineTabs from './openEngineTabs.action';
 import {Constants} from '~/ContentEditor.constants';
+import {engineTabsPermissionCheckQuery} from './engineTabs.permission.gql-query';
 
 /**
  * There is no test related to those functions as they are supposed to be deprecated soon.
@@ -41,10 +42,11 @@ export function openEngineTab(nodeData, engineTabs) {
 /**
  * This function register the actions related to the GWT engine tabs
  *
- * @param nodeData object contains node data
+ * @param editorContext the editor context
+ * @param client the apollo client
  */
-export function registerEngineTabActions(nodeData) {
-    const {path, displayName, uuid, mixinTypes, primaryNodeType} = nodeData;
+export function registerEngineTabActions(editorContext, client) {
+    const {nodeData: {path, displayName, uuid, mixinTypes, primaryNodeType}, site} = editorContext;
 
     // SINCE DX 7.5 this fct is introduce, not usable by previous DX version
     if (!window.authoringApi.getEditTabs) {
@@ -52,7 +54,8 @@ export function registerEngineTabActions(nodeData) {
         return;
     }
 
-    const tabs = window.authoringApi.getEditTabs(
+    // Get tabs from GWT authoring API
+    let tabs = window.authoringApi.getEditTabs(
         path,
         uuid,
         displayName,
@@ -61,19 +64,27 @@ export function registerEngineTabActions(nodeData) {
         primaryNodeType.hasOrderableChildNodes
     );
 
-    const actionPrefix = 'contentEditorGWTTabAction_';
-    const actionStartPriority = 3;
-
     if (tabs && tabs.length > 0) {
-        for (let i = 0; i < tabs.length; i++) {
-            const tab = tabs[i];
-            if (!Constants.notSupportedEngineTabs.includes(tab.id) && !registry.get(actionPrefix + tab.id)) {
-                registry.addOrReplace('action', actionPrefix + tab.id, openEngineTabs, {
-                    buttonLabel: tab.title,
-                    targets: ['ContentEditorHeaderActions:' + (i + actionStartPriority)],
-                    tabs: [tab.id]
-                });
+        // Filter not supported tabs
+        tabs = tabs.filter(tab => !Constants.notSupportedEngineTabs.includes(tab.id));
+
+        // Permission check query
+        client.query({
+            query: engineTabsPermissionCheckQuery(tabs, site)
+        }).then(result => {
+            const actionPrefix = 'contentEditorGWTTabAction_';
+            const actionStartPriority = 3;
+
+            for (let i = 0; i < tabs.length; i++) {
+                const tab = tabs[i];
+                if (!registry.get(actionPrefix + tab.id) && (!tab.requiredPermission || result.data.jcr.nodeByPath[tab.id])) {
+                    registry.addOrReplace('action', actionPrefix + tab.id, openEngineTabs, {
+                        buttonLabel: tab.title,
+                        targets: ['ContentEditorHeaderActions:' + (i + actionStartPriority)],
+                        tabs: [tab.id]
+                    });
+                }
             }
-        }
+        });
     }
 }
