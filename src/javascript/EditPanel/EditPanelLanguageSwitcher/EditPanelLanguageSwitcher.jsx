@@ -4,7 +4,7 @@ import * as PropTypes from 'prop-types';
 import {compose} from 'react-apollo';
 import {connect} from 'formik';
 import {connect as connectReactRedux} from 'react-redux';
-import {cmGoto} from '~/ContentManager.redux-actions';
+import {setLanguage} from '~/JContent.redux-actions';
 import {EditPanelDialogConfirmation} from '../EditPanelDialogConfirmation';
 
 const EditPanelLanguageSwitcher = ({lang, siteInfo, onSelectLanguage, formik}) => {
@@ -51,7 +51,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     onSelectLanguage: language => {
-        dispatch(cmGoto({language}));
+        dispatch(setLanguage(language));
     }
 });
 

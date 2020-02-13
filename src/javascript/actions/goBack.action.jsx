@@ -2,7 +2,7 @@ import React from 'react';
 import {composeActions, componentRendererAction} from '@jahia/react-material';
 import {EditPanelDialogConfirmation} from '~/EditPanel/EditPanelDialogConfirmation';
 import {reduxAction} from './redux.action';
-import {cmGoto} from '../ContentManager.redux-actions';
+import {cmGoto} from '../JContent.redux-actions';
 import {Constants} from '~/ContentEditor.constants';
 import {withLockedEditorContextAction} from './withLockedEditorContext.action';
 

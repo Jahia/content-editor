@@ -3,7 +3,7 @@ import {CreateNewContentDialog} from './CreateNewContentDialog';
 import {componentRendererAction, composeActions} from '@jahia/react-material';
 import {reduxAction} from '../../actions/redux.action';
 import {Constants} from '~/ContentEditor.constants';
-import {cmGoto} from '../../ContentManager.redux-actions';
+import {cmGoto} from '../../JContent.redux-actions';
 import {withApolloAction} from './withApolloAction';
 import {from} from 'rxjs';
 import {share} from 'rxjs/operators';

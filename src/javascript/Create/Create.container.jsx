@@ -7,7 +7,7 @@ import {FormQuery} from './CreateForm/createForm.gql-queries';
 import {Create as CreateComponent} from './Create';
 
 import {Constants} from '~/ContentEditor.constants';
-import {cmGoto} from '~/ContentManager.redux-actions';
+import {cmGoto} from '~/JContent.redux-actions';
 
 const mapDispatchToProps = dispatch => ({
     setUrl: gotoParams => dispatch(cmGoto(gotoParams))
