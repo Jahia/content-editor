@@ -40,9 +40,6 @@ export const Edit = ({
         return <ProgressOverlay/>;
     }
 
-    // Engines tabs need the node Data to be registered
-    registerEngineTabActions(nodeData);
-
     const editorContext = {
         path,
         lang,
@@ -56,6 +53,9 @@ export const Edit = ({
         technicalInfo,
         mode: Constants.routes.baseEditRoute
     };
+
+    // Engines tabs need the node Data to be registered
+    registerEngineTabActions(editorContext, client);
 
     const handleSubmit = (values, actions) => {
         saveNode({
