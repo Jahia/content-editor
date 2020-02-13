@@ -95,7 +95,15 @@ export function registerEngineTabActions(editorContext, client) {
             const actionPrefix = 'contentEditorGWTTabAction_';
             const actionStartPriority = 3;
 
-            for (let i = 0; i < tabs.length; i++) {
+            tabs.forEach(tab => {
+                if (!registry.get(actionPrefix + tab.id) && (!tab.requiredPermission || result.data.jcr.nodeByPath[tab.id])) {
+                    registry.addOrReplace('action', actionPrefix + tab.id, openEngineTabs, {
+                        buttonLabel: tab.title,
+                        targets: ['ContentEditorHeaderActions:' + (i + actionStartPriority)],
+                        tabs: [tab.id]
+                    });
+                }
+            });
                 const tab = tabs[i];
                 if (!registry.get(actionPrefix + tab.id) && (!tab.requiredPermission || result.data.jcr.nodeByPath[tab.id])) {
                     registry.addOrReplace('action', actionPrefix + tab.id, openEngineTabs, {
