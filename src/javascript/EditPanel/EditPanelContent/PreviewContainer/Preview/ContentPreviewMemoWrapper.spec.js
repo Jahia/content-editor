@@ -11,6 +11,17 @@ const html = fs.readFileSync(
     'utf8'
 );
 
+jest.mock('@jahia/data-helper', () => {
+    return {
+        useContentPreview: jest.fn(() => ({
+            data: {},
+            loading: false,
+            error: null
+        }))
+    };
+});
+import {useContentPreview} from '@jahia/data-helper';
+
 jest.mock('~/ContentEditor.context', () => ({
     useContentEditorContext: () => ({
         path: '/site/digitall',
@@ -38,16 +49,16 @@ jest.mock('./Preview.utils', () => {
 
 describe('ContentPreviewMemoWrapper', () => {
     it('should display the preview with the provided path', () => {
-        const cmp = shallowWithTheme(
+        shallowWithTheme(
             <ContentPreviewMemoWrapper/>,
             {},
             dsGenericTheme
         )
             .dive();
-        const props = cmp.find('ContentPreview').props();
-        expect(props.language).toBe('fr');
-        expect(props.path).toBe('/site/digitall');
-        expect(props.workspace).toBe('EDIT');
+        const hookArgs = useContentPreview.mock.calls[0][0];
+        expect(hookArgs.language).toBe('fr');
+        expect(hookArgs.path).toBe('/site/digitall');
+        expect(hookArgs.workspace).toBe('EDIT');
     });
 
     it('should not display the badge when content is visible', () => {
@@ -59,10 +70,9 @@ describe('ContentPreviewMemoWrapper', () => {
         )
             .dive();
 
-        const RenderProps = cmp.find('ContentPreview').props().children;
-        const children = shallowWithTheme(<RenderProps/>, {}, dsGenericTheme);
+        const PreviewComponent = cmp.find({workspace: 'EDIT'});
 
-        children.props().domLoadedCallback(document);
+        PreviewComponent.props().domLoadedCallback(document);
         expect(cmp.find('DsBadge').exists()).toBe(false);
     });
 
@@ -75,10 +85,9 @@ describe('ContentPreviewMemoWrapper', () => {
         )
             .dive();
 
-        const RenderProps = cmp.find('ContentPreview').props().children;
-        const children = shallowWithTheme(<RenderProps/>, {}, dsGenericTheme);
+        const PreviewComponent = cmp.find({workspace: 'EDIT'});
 
-        children.props().domLoadedCallback(document);
+        PreviewComponent.props().domLoadedCallback(document);
         expect(cmp.find('DsBadge').exists()).toBe(true);
     });
 });
