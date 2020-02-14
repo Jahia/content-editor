@@ -4,7 +4,8 @@ import {Dialog, DialogActions, DialogTitle, withStyles} from '@material-ui/core'
 import {Search} from '@material-ui/icons';
 import {Button, Input, Typography} from '@jahia/design-system-kit';
 import {useTranslation} from 'react-i18next';
-import {compose, withApollo} from 'react-apollo';
+import {withApollo} from 'react-apollo';
+import {compose} from '~/utils';
 import {ProgressOverlay} from '@jahia/react-material';
 
 import {TreeView} from '~/DesignSystem/TreeView';

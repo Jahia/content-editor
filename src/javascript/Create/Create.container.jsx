@@ -1,5 +1,6 @@
 import {connect} from 'react-redux';
-import {compose, withApollo} from 'react-apollo';
+import {withApollo} from 'react-apollo';
+import {compose} from '~/utils';
 import {withNotifications} from '@jahia/react-material';
 import {withSiteInfo} from '~/SiteData';
 

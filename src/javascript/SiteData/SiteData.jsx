@@ -1,5 +1,5 @@
 import React from 'react';
-import {compose} from 'react-apollo';
+import {compose} from '~/utils';
 import {ProgressOverlay, withNotifications} from '@jahia/react-material';
 import {useTranslation} from 'react-i18next';
 import {connect} from 'react-redux';
