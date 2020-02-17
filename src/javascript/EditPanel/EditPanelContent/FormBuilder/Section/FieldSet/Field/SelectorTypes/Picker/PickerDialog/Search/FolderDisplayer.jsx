@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {Typography} from '@jahia/design-system-kit';
 import {Folder} from '@material-ui/icons';
 import {withStyles} from '@material-ui/core';
-import {useQuery} from 'react-apollo-hooks';
+import {useQuery} from '@apollo/react-hooks';
 import {FolderNameQuery} from './FolderName.gql-queries';
 
 const styles = theme => ({

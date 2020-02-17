@@ -3,9 +3,9 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 
 import Category from './Category';
-import {setQueryResult} from 'react-apollo-hooks';
+import {setQueryResult} from '@apollo/react-hooks';
 
-jest.mock('react-apollo-hooks', () => {
+jest.mock('@apollo/react-hooks', () => {
     let queryResultmock;
     return {
         useQuery: jest.fn(() => {

@@ -3,7 +3,7 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {t} from 'react-i18next';
 
-jest.mock('react-apollo-hooks', () => {
+jest.mock('@apollo/react-hooks', () => {
     let queryResultmock;
     return {
         useQuery: jest.fn(() => {
@@ -15,7 +15,7 @@ jest.mock('react-apollo-hooks', () => {
     };
 });
 
-import {setQueryResult} from 'react-apollo-hooks';
+import {setQueryResult} from '@apollo/react-hooks';
 import {List} from './List';
 
 const queryResult = {
