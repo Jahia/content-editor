@@ -1,3 +1,5 @@
+import React from 'react';
+
 jest.mock('@jahia/ui-extender', () => {
     return {
         registry: {
@@ -5,6 +7,12 @@ jest.mock('@jahia/ui-extender', () => {
             addOrReplace: jest.fn(),
             get: jest.fn()
         }
+    };
+});
+
+jest.mock('react-apollo', () => {
+    return {
+        withApollo: Cmp => props => (<Cmp {...props} client={{}}/>)
     };
 });
 

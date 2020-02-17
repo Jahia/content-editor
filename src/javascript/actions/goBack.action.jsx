@@ -1,25 +1,15 @@
 import React from 'react';
 import {composeActions, componentRendererAction} from '@jahia/react-material';
 import {EditPanelDialogConfirmation} from '~/EditPanel/EditPanelDialogConfirmation';
-import {reduxAction} from './redux.action';
-import {cmGoto} from '~/JContent.redux-actions';
 import {Constants} from '~/ContentEditor.constants';
 import {withLockedEditorContextAction} from './withLockedEditorContext.action';
+import {withContentEditorConfigContextAction} from './withContentEditorConfigContext';
 
-const mapDispatchToContext = dispatch => ({
-    setUrl: (site, language, mode, path, params) => dispatch(cmGoto({site, language, mode, path, params}))
-});
-
-const mapStateToProps = state => ({
-    language: state.language,
-    siteKey: state.site
-});
-
-export const resolveGoBackContext = (path, parentPath, parentDisplayName, siteKey, siteDisplayName) => {
+export const resolveGoBackContext = (path, parentPath, parentDisplayName, site, siteDisplayName) => {
     const splitPath = path.split('/');
     const modePath = splitPath && splitPath.length >= 4 ? splitPath[3] : ''; // 4: path at least contains files or contents info
 
-    let resolvedPath = `/sites/${siteKey}/${modePath}`;
+    let resolvedPath = `/sites/${site}/${modePath}`;
     let resolvedMode = Constants.routes.browseMap[modePath] || Constants.routes.browseMap.pages;
     let resolvedDisplayName = siteDisplayName;
 
@@ -39,23 +29,29 @@ export const resolveGoBackContext = (path, parentPath, parentDisplayName, siteKe
 export default composeActions(
     withLockedEditorContextAction,
     componentRendererAction,
-    reduxAction(mapStateToProps, mapDispatchToContext),
+    withContentEditorConfigContextAction,
     {
         init: context => {
-            context.resolveUrlContext = resolveGoBackContext(context.nodeData.path, context.nodeData.parent.path, context.nodeData.parent.displayName, context.siteKey, context.siteInfo.displayName);
+            context.resolveUrlContext = resolveGoBackContext(context.nodeData.path, context.nodeData.parent.path, context.nodeData.parent.displayName, context.contentEditorConfigContext.site, context.siteInfo.displayName);
             context.buttonLabelParams = {parentNodeDisplayName: context.resolveUrlContext.displayName};
         },
         onClick: context => {
             if (context.formik) {
-                const {siteKey, language, setUrl, lockedEditorContext} = context;
+                const {contentEditorConfigContext, lockedEditorContext} = context;
 
                 const executeGoBackAction = () => {
+                    const setUrlProps = {
+                        site: contentEditorConfigContext.site,
+                        language: contentEditorConfigContext.lang,
+                        mode: context.resolveUrlContext.mode,
+                        path: context.resolveUrlContext.path
+                    };
                     if (lockedEditorContext.unlockEditor) {
                         lockedEditorContext.unlockEditor(() => {
-                            setUrl(siteKey, language, context.resolveUrlContext.mode, context.resolveUrlContext.path, {});
+                            contentEditorConfigContext.setUrl(setUrlProps);
                         });
                     } else {
-                        setUrl(siteKey, language, context.resolveUrlContext.mode, context.resolveUrlContext.path, {});
+                        contentEditorConfigContext.setUrl(setUrlProps);
                     }
                 };
 

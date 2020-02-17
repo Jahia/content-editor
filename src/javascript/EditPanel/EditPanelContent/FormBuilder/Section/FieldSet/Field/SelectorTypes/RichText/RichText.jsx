@@ -2,7 +2,7 @@ import React, {useContext, useEffect} from 'react';
 import CKEditor from 'ckeditor4-react';
 CKEditor.displayName = 'CKEditor';
 import * as PropTypes from 'prop-types';
-import {FieldPropTypes} from '~/EditPanel/FormDefinitions/FormData.proptypes';
+import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {FastField} from 'formik';
 import {useQuery} from '@apollo/react-hooks';
 import {ProgressOverlay} from '@jahia/react-material';

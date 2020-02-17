@@ -64,12 +64,12 @@ describe('Picker utils', () => {
         });
 
         it('should return the content picker config', () => {
-            const {pickerConfig} = extractConfigs({selectorOptions: [{name: 'type', value: 'folder'}]}, {}, t);
+            const {pickerConfig} = extractConfigs({selectorOptions: [{name: 'type', value: 'folder'}]}, {siteInfo: {}}, t);
             expect(pickerConfig.picker.key).toBe('ContentPicker');
         });
 
         it('should return the image picker config', () => {
-            const {pickerConfig} = extractConfigs({selectorOptions: [{name: 'type', value: 'image'}]}, {}, t);
+            const {pickerConfig} = extractConfigs({selectorOptions: [{name: 'type', value: 'image'}]}, {siteInfo: {}}, t);
             expect(pickerConfig.picker.key).toBe('MediaPicker');
         });
 
@@ -80,7 +80,7 @@ describe('Picker utils', () => {
                     value: 'image'
                 }]
             };
-            const {nodeTreeConfigs} = extractConfigs(field, {site: 'digitall'}, t);
+            const {nodeTreeConfigs} = extractConfigs(field, {site: 'digitall', siteInfo: {}}, t);
 
             expect(nodeTreeConfigs).toMatchObject([{
                 key: 'browse-tree-files',

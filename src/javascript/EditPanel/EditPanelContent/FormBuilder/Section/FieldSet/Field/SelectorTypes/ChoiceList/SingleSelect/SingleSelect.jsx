@@ -3,7 +3,7 @@ import {withStyles, MenuItem} from '@material-ui/core';
 import {FastField} from 'formik';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {FieldPropTypes} from '~/EditPanel/FormDefinitions/FormData.proptypes';
+import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 
 const styles = theme => ({
     selectField: {

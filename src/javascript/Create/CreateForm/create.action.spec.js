@@ -1,26 +1,5 @@
 import createAction from './create.action';
 
-jest.mock('~/actions/redux.action', () => {
-    let statemock;
-    return {
-        reduxAction: mapStateToContext => {
-            return {
-                init: context => {
-                    const contextToAdd = mapStateToContext(statemock);
-                    Object.keys(contextToAdd).forEach(key => {
-                        context[key] = contextToAdd[key];
-                    });
-                }
-            };
-        },
-        setReduxState: s => {
-            statemock = s;
-        }
-    };
-});
-
-import {setReduxState} from '~/actions/redux.action';
-
 describe('create action', () => {
     describe('onClick', () => {
         let context;
@@ -79,22 +58,14 @@ describe('create action', () => {
         });
 
         it('should enable create action when mode is create', () => {
-            setReduxState({
-                jcontent: {
-                    mode: 'create'
-                }
-            });
+            context.mode = 'create';
 
             createAction.init(context, props);
             expect(context.enabled).toBe(true);
         });
 
         it('should disable create action when mode is edit', () => {
-            setReduxState({
-                jcontent: {
-                    mode: 'edit'
-                }
-            });
+            context.mode = 'edit';
 
             createAction.init(context, props);
             expect(context.enabled).toBe(false);

@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import {DxContext} from '@jahia/react-material';
 import {connect} from 'formik';
 
-import {FieldPropTypes} from '~/EditPanel/FormDefinitions';
+import {FieldPropTypes} from '~/FormDefinitions';
 import {resolveSelectorType} from './SelectorTypes/SelectorTypes.utils';
 import {ContentEditorContext} from '~/ContentEditor.context';
 import {Field} from './Field';

@@ -1,24 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {ApolloProvider as ApolloHooksProvider} from '@apollo/react-hooks';
-import {withApollo} from 'react-apollo';
-
-import {Create} from '~/Create/Create.container';
-import {Edit} from '~/Edit/Edit.container';
+import Create from '~/Create/Create';
+import Edit from '~/Edit/Edit';
 import {EditorIdContextProvider} from './ContentEditorId.context';
+import {withApollo} from 'react-apollo';
+import {ContentEditorConfigContext} from './ContentEditor.context';
 
-const Routes = {
+const Modes = {
     edit: Edit,
     create: Create
 };
 
-const ContentEditorCmp = ({client, mode}) => {
-    const CurrentRouteCmp = Routes[mode];
+const ContentEditorCmp = ({mode, path, lang, uilang, site, contentType, client, setUrl}) => {
+    const contentEditorConfig = {
+        path,
+        lang,
+        uilang,
+        site,
+        contentType,
+        mode,
+        setUrl
+    };
 
+    const ContentEditorModeCmp = Modes[mode];
     return (
         <EditorIdContextProvider>
             <ApolloHooksProvider client={client}>
-                <CurrentRouteCmp/>
+                <ContentEditorConfigContext.Provider value={contentEditorConfig}>
+                    <ContentEditorModeCmp/>
+                </ContentEditorConfigContext.Provider>
             </ApolloHooksProvider>
         </EditorIdContextProvider>
     );
@@ -26,9 +37,15 @@ const ContentEditorCmp = ({client, mode}) => {
 
 ContentEditorCmp.propTypes = {
     client: PropTypes.object.isRequired,
-    mode: PropTypes.oneOf(['create', 'edit']).isRequired
+    mode: PropTypes.oneOf(['create', 'edit']).isRequired,
+    path: PropTypes.string.isRequired,
+    lang: PropTypes.string.isRequired,
+    uilang: PropTypes.string.isRequired,
+    site: PropTypes.string.isRequired,
+    contentType: PropTypes.string,
+    setUrl: PropTypes.func
 };
 
-const ContentEditor = withApollo(ContentEditorCmp);
+export const ContentEditor = withApollo(ContentEditorCmp);
 ContentEditor.displayName = 'ContentEditor';
 export default ContentEditor;

@@ -31,12 +31,15 @@ export const createNode = ({
         mutation: CreateNode
     }).then(data => {
         const path = data.data.jcr.modifiedNodes[0].path;
-        setUrl({
-            language,
-            mode: Constants.routes.baseEditRoute,
-            path: path,
-            params: {}
-        });
+        if (setUrl) {
+            setUrl({
+                language,
+                mode: Constants.routes.baseEditRoute,
+                path: path,
+                params: {}
+            });
+        }
+
         notificationContext.notify(t('content-editor:label.contentEditor.create.createButton.success'), ['closeButton']);
         client.cache.flushNodeEntryById(nodeData.uuid);
         actions.setSubmitting(false);

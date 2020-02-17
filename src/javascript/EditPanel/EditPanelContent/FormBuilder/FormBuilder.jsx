@@ -4,7 +4,7 @@ import {Section} from './Section';
 import {Form} from 'formik';
 
 import {useContentEditorContext} from '~/ContentEditor.context';
-import {SectionsPropTypes} from '~/EditPanel/FormDefinitions/FormData.proptypes';
+import {SectionsPropTypes} from '~/FormDefinitions/FormData.proptypes';
 
 const FormBuilder = ({mode}) => {
     const context = useContentEditorContext();

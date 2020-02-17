@@ -9,6 +9,7 @@ import {from} from 'rxjs';
 import {share} from 'rxjs/operators';
 import {getActions} from './createNewContent.utits';
 
+// Should continue to use redux here, because this action is used to replace JContent create action, so it's only displayed in JContent
 const mapDispatchToProps = dispatch => ({
     gotToCE: gotoParams => dispatch(cmGoto(gotoParams))
 });

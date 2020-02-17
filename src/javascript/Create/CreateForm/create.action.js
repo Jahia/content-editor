@@ -1,17 +1,9 @@
 import {composeActions, componentRendererAction} from '@jahia/react-material';
 import {Constants} from '~/ContentEditor.constants';
-import {reduxAction} from '~/actions/redux.action';
 import {validateForm} from '~/Validation/validation.utils';
-
-const stateMapToContext = state => {
-    return {
-        mode: state.jcontent.mode
-    };
-};
 
 export default composeActions(
     componentRendererAction,
-    reduxAction(stateMapToContext),
     {
         init: context => {
             context.enabled = context.mode === Constants.routes.baseCreateRoute;

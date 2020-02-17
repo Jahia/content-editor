@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'formik';
 import {useTranslation} from 'react-i18next';
-import {FieldPropTypes} from '~/EditPanel/FormDefinitions/FormData.proptypes';
+import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {ProgressOverlay} from '@jahia/react-material';
 import {Picker as PickerInput} from '~/DesignSystem/Picker';
 import {extractConfigs} from './Picker.utils';

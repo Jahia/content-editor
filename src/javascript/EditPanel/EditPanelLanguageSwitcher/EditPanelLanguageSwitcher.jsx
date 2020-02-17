@@ -7,6 +7,7 @@ import {connect as connectReactRedux} from 'react-redux';
 import {setLanguage} from '~/JContent.redux-actions';
 import {EditPanelDialogConfirmation} from '../EditPanelDialogConfirmation';
 
+// Todo BACKLOG-12437: handle language switcher outside jcontent and gwt
 const EditPanelLanguageSwitcher = ({lang, siteInfo, onSelectLanguage, formik}) => {
     const [dialogConfirmation, setDialogConfirmation] = useState({open: false, lang: lang});
 
