@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {ApolloProvider as ApolloHooksProvider} from 'react-apollo-hooks';
+import {ApolloProvider as ApolloHooksProvider} from '@apollo/react-hooks';
 import {withApollo} from 'react-apollo';
 
 import {Create} from '~/Create/Create.container';

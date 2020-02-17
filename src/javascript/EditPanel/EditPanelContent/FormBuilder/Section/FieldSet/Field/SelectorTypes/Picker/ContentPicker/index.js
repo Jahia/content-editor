@@ -3,7 +3,7 @@ import {Picker} from '../PickerContainer';
 import {pickerActions} from '../actions';
 import {InsertDriveFile} from '@material-ui/icons';
 import {encodeJCRPath} from '~/EditPanel/EditPanel.utils';
-import {useQuery} from 'react-apollo-hooks';
+import {useQuery} from '@apollo/react-hooks';
 import {ContentPickerFilledQuery} from './ContentPicker.gql-queries';
 
 const usePickerInputData = (uuid, editorContext) => {

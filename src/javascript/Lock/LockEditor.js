@@ -1,4 +1,4 @@
-import {useSubscription} from 'react-apollo-hooks';
+import {useSubscription} from '@apollo/react-hooks';
 import {SubscribeToEditorLock} from './LockEditor.gql-subscription';
 import * as PropTypes from 'prop-types';
 import {useEditorIdContext} from '../ContentEditorId.context';

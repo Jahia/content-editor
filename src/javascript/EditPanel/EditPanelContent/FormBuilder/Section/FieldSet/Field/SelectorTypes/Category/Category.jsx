@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/EditPanel/FormDefinitions/FormData.proptypes';
 import {Field} from 'formik';
 import {DropdownTreeSelect} from '~/DesignSystem/DropdownTreeSelect';
-import {useQuery} from 'react-apollo-hooks';
+import {useQuery} from '@apollo/react-hooks';
 import {GetCategories} from './category.gql-queries';
 import {ProgressOverlay} from '@jahia/react-material';
 import {useTranslation} from 'react-i18next';

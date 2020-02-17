@@ -4,7 +4,7 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {RichTextCmp} from './RichText';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 
-jest.mock('react-apollo-hooks', () => {
+jest.mock('@apollo/react-hooks', () => {
     let queryResultmock;
     return {
         useQuery: jest.fn(() => {
@@ -16,7 +16,7 @@ jest.mock('react-apollo-hooks', () => {
     };
 });
 
-import {setQueryResult} from 'react-apollo-hooks';
+import {setQueryResult} from '@apollo/react-hooks';
 
 const RICH_TEXT_COMPONENT_TAG = 'CKEditor';
 

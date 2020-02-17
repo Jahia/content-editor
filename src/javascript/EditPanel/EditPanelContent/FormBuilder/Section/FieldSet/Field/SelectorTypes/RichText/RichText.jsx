@@ -4,7 +4,7 @@ CKEditor.displayName = 'CKEditor';
 import * as PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/EditPanel/FormDefinitions/FormData.proptypes';
 import {FastField} from 'formik';
-import {useQuery} from 'react-apollo-hooks';
+import {useQuery} from '@apollo/react-hooks';
 import {ProgressOverlay} from '@jahia/react-material';
 import {getCKEditorConfigurationPath} from './CKEditorConfiguration.gql-queries';
 import {ContentEditorContext} from '~/ContentEditor.context';

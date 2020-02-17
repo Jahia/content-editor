@@ -2,7 +2,7 @@ import React from 'react';
 import {Picker} from '../PickerContainer';
 import {Image} from '@material-ui/icons';
 import {encodeJCRPath} from '~/EditPanel/EditPanel.utils';
-import {useQuery} from 'react-apollo-hooks';
+import {useQuery} from '@apollo/react-hooks';
 import {MediaPickerFilledQuery} from './MediaPicker.gql-queries';
 
 const usePickerInputData = uuid => {

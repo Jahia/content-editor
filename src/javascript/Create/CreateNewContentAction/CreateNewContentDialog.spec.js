@@ -4,14 +4,14 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 
 import {CreateNewContentDialog} from './CreateNewContentDialog';
-import {setResponseMock} from 'react-apollo-hooks';
+import {setResponseMock} from '@apollo/react-hooks';
 
 jest.mock('react-apollo', () => ({
     withApollo: Cmp => props => (<Cmp {...props} client={{}}/>),
     compose: jest.requireActual('react-apollo').compose
 }));
 
-jest.mock('react-apollo-hooks', () => {
+jest.mock('@apollo/react-hooks', () => {
     let responsemock;
     return {
         useQuery: () => responsemock,

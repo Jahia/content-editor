@@ -9,7 +9,7 @@ import {compose} from '~/utils';
 import {ProgressOverlay} from '@jahia/react-material';
 
 import {TreeView} from '~/DesignSystem/TreeView';
-import {useQuery} from 'react-apollo-hooks';
+import {useQuery} from '@apollo/react-hooks';
 import {getTreeOfContent} from '~/Create/CreateNewContentAction/CreateNewContent.gql-queries';
 import {filterTree} from './createNewContent.utits';
 
