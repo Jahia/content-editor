@@ -1,6 +1,6 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
-import {compose} from 'react-apollo';
+import {compose} from '~/utils';
 import {connect} from 'formik';
 import {FieldPropTypes} from '~/EditPanel/FormDefinitions';
 

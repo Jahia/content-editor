@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {LanguageSwitcher} from '@jahia/design-system-kit';
 import * as PropTypes from 'prop-types';
-import {compose} from 'react-apollo';
+import {compose} from '~/utils';
 import {connect} from 'formik';
 import {connect as connectReactRedux} from 'react-redux';
 import {setLanguage} from '~/JContent.redux-actions';

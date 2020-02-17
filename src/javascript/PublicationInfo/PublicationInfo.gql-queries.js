@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import {PredefinedFragments} from '@jahia/apollo-dx';
+import {PredefinedFragments} from '@jahia/data-helper';
 
 export const PublicationInfoQuery = gql`
     query getNodeProperties($path:String!, $language:String!) {

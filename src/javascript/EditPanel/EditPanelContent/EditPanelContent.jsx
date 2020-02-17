@@ -2,7 +2,7 @@ import React from 'react';
 import {FullWidthContent, TwoColumnsContent} from '@jahia/design-system-kit';
 import * as PropTypes from 'prop-types';
 import FormBuilder from './FormBuilder';
-import {compose} from 'react-apollo';
+import {compose} from '~/utils';
 import {connect} from 'react-redux';
 import {withStyles} from '@material-ui/core';
 import {PreviewContainer} from './PreviewContainer';

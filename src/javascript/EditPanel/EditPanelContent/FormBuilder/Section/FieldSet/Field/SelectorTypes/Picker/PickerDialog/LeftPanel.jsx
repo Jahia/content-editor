@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Drawer from '@material-ui/core/Drawer';
 import {NodeTrees, PickerTreeViewMaterial} from '@jahia/react-material';
 import SiteSwitcher from '~/DesignSystem/SiteSwitcher/SiteSwitcher';
-import {Picker} from '@jahia/react-apollo';
+import {Picker} from '@jahia/data-helper';
 
 import {withStyles} from '@material-ui/core';
 

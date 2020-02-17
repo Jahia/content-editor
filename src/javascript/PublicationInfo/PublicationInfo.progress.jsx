@@ -1,7 +1,7 @@
 import React from 'react';
 import {LinearProgress, withStyles} from '@material-ui/core';
 import {usePublicationInfoContext} from './PublicationInfo.context';
-import {compose} from 'react-apollo';
+import {compose} from '~/utils';
 import * as PropTypes from 'prop-types';
 
 const styles = theme => ({

@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import {PredefinedFragments} from '@jahia/apollo-dx';
+import {PredefinedFragments} from '@jahia/data-helper';
 
 const MediaPickerFilledQuery = gql`
     query mediaPickerFilledQuery($uuid: String!, $needToFetch: Boolean!) {

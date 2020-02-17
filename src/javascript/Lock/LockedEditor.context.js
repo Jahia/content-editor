@@ -2,7 +2,8 @@ import * as PropTypes from 'prop-types';
 import React, {useContext} from 'react';
 import {useUnlockEditor} from './UnlockEditor';
 import {useLockEditor} from './LockEditor';
-import {compose, withApollo} from 'react-apollo';
+import {withApollo} from 'react-apollo';
+import {compose} from '~/utils';
 
 export const LockedEditorContext = React.createContext({});
 
