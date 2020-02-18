@@ -1,6 +1,6 @@
 import {adaptFormData} from './FormData.adapter';
 
-jest.mock('../EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes.utils', () => {
+jest.mock('~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes.utils', () => {
     return {
         resolveSelectorType: ({selectorType}) => {
             if (selectorType === 'Checkbox') {

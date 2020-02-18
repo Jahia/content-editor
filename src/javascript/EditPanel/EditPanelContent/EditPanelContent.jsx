@@ -3,14 +3,10 @@ import {FullWidthContent, TwoColumnsContent} from '@jahia/design-system-kit';
 import * as PropTypes from 'prop-types';
 import FormBuilder from './FormBuilder';
 import {compose} from '~/utils';
-import {connect} from 'react-redux';
 import {withStyles} from '@material-ui/core';
 import {PreviewContainer} from './PreviewContainer';
 import PublicationInfoProgress from '~/PublicationInfo/PublicationInfo.progress';
-
-const mapStateToProps = state => ({
-    mode: state.jcontent.mode
-});
+import {useContentEditorConfigContext} from '~/ContentEditor.context';
 
 const styles = theme => ({
     twoColumnsRoot: {
@@ -36,7 +32,8 @@ const styles = theme => ({
     }
 });
 
-export const EditPanelContent = ({classes, mode, isDirty}) => {
+export const EditPanelContent = ({classes, isDirty}) => {
+    const {mode} = useContentEditorConfigContext();
     return (
         <>
             {mode === 'create' ?
@@ -70,11 +67,9 @@ EditPanelContent.defaultProps = {
 
 EditPanelContent.propTypes = {
     classes: PropTypes.object.isRequired,
-    mode: PropTypes.string.isRequired,
     isDirty: PropTypes.bool
 };
 
 export default compose(
-    withStyles(styles),
-    connect(mapStateToProps)
+    withStyles(styles)
 )(EditPanelContent);

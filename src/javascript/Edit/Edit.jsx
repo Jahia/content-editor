@@ -1,61 +1,28 @@
 import React from 'react';
-import {ProgressOverlay} from '@jahia/react-material';
+import {withNotifications} from '@jahia/react-material';
 import {Formik} from 'formik';
 import EditPanel from '~/EditPanel';
 import * as PropTypes from 'prop-types';
-import {useFormDefinition} from '~/EditPanel/FormDefinitions';
-import {ContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorContext, withContentEditorDataContextProvider} from '~/ContentEditor.context';
 import {validate} from '~/Validation/validation';
 import {saveNode} from './save/save.request';
 import {PublicationInfoContextProvider} from '~/PublicationInfo/PublicationInfo.context';
-import {Constants} from '~/ContentEditor.constants';
 import {registerEngineTabActions} from './engineTabs/engineTabs.utils';
 import {LockedEditorContextProvider} from '~/Lock/LockedEditor.context';
 import {useTranslation} from 'react-i18next';
+import {FormQuery} from './EditForm.gql-queries';
+import {withApollo} from 'react-apollo';
+import {compose} from '~/utils';
 
-export const Edit = ({
+export const EditCmp = ({
     client,
-    notificationContext,
-    setUrl,
-    path,
-    lang,
-    uilang,
-    site,
-    siteDisplayableName,
-    siteInfo,
-    formQuery,
-    formQueryParams
+    notificationContext
 }) => {
     const {t} = useTranslation();
-    const {
-        loading, error, errorMessage, nodeData, initialValues, details, technicalInfo, sections, title
-    } = useFormDefinition(formQuery, formQueryParams, t);
-
-    if (error) {
-        console.error(error);
-        return <>{errorMessage}</>;
-    }
-
-    if (loading || !nodeData) {
-        return <ProgressOverlay/>;
-    }
-
-    const editorContext = {
-        path,
-        lang,
-        uilang,
-        site,
-        siteInfo,
-        siteDisplayableName,
-        sections,
-        nodeData,
-        details,
-        technicalInfo,
-        mode: Constants.routes.baseEditRoute
-    };
+    const {path, lang, nodeData, sections, formQueryParams, initialValues, title, site} = useContentEditorContext();
 
     // Engines tabs need the node Data to be registered
-    registerEngineTabActions(editorContext, client);
+    registerEngineTabActions(nodeData, site, client);
 
     const handleSubmit = (values, actions) => {
         saveNode({
@@ -63,7 +30,6 @@ export const Edit = ({
             t,
             notificationContext,
             actions,
-            setUrl,
             data: {
                 ...formQueryParams,
                 nodeData,
@@ -84,30 +50,24 @@ export const Edit = ({
         </PublicationInfoContextProvider>
     );
     return (
-        <ContentEditorContext.Provider value={editorContext}>
+        <>
             {nodeData.lockedAndCannotBeEdited ? <>{editWithFormik}</> :
             <LockedEditorContextProvider path={path}>
                 {editWithFormik}
             </LockedEditorContextProvider>}
-        </ContentEditorContext.Provider>
+        </>
     );
 };
 
-Edit.defaultProps = {
-    setUrl: () => {
-    }
+EditCmp.propTypes = {
+    client: PropTypes.object.isRequired,
+    notificationContext: PropTypes.object.isRequired
 };
 
-Edit.propTypes = {
-    client: PropTypes.object.isRequired,
-    setUrl: PropTypes.func,
-    path: PropTypes.string.isRequired,
-    notificationContext: PropTypes.object.isRequired,
-    lang: PropTypes.string.isRequired,
-    uilang: PropTypes.string.isRequired,
-    site: PropTypes.string.isRequired,
-    siteDisplayableName: PropTypes.string.isRequired,
-    siteInfo: PropTypes.object.isRequired,
-    formQuery: PropTypes.object.isRequired,
-    formQueryParams: PropTypes.object.isRequired
-};
+export const Edit = compose(
+    withApollo,
+    withNotifications(),
+    withContentEditorDataContextProvider(FormQuery)
+)(EditCmp);
+Edit.displayName = 'Edit';
+export default Edit;

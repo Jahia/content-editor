@@ -4,7 +4,7 @@ import {FastField} from 'formik';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {adaptSelection} from './Tag.utils';
-import {FieldPropTypes} from '~/EditPanel/FormDefinitions/FormData.proptypes';
+import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {useApolloClient} from '@apollo/react-hooks';
 import {getSuggestionsTagsQuery} from './Tag.gql-queries';
 import {useContentEditorContext} from '~/ContentEditor.context';

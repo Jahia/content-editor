@@ -1,6 +1,6 @@
 import React, {useMemo, useCallback} from 'react';
 import * as PropTypes from 'prop-types';
-import {FieldPropTypes} from '~/EditPanel/FormDefinitions/FormData.proptypes';
+import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {Field} from 'formik';
 import {DropdownTreeSelect} from '~/DesignSystem/DropdownTreeSelect';
 import {useQuery} from '@apollo/react-hooks';

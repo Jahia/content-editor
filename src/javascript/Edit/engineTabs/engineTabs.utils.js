@@ -42,11 +42,12 @@ export function openEngineTab(nodeData, engineTabs) {
 /**
  * This function register the actions related to the GWT engine tabs
  *
- * @param editorContext the editor context
+ * @param nodeData the node data
+ * @param site the current site key
  * @param client the apollo client
  */
-export function registerEngineTabActions(editorContext, client) {
-    const {nodeData: {path, displayName, uuid, mixinTypes, primaryNodeType}, site} = editorContext;
+export function registerEngineTabActions(nodeData, site, client) {
+    const {path, displayName, uuid, mixinTypes, primaryNodeType} = nodeData;
 
     // SINCE DX 7.5 this fct is introduce, not usable by previous DX version
     if (!window.authoringApi.getEditTabs) {

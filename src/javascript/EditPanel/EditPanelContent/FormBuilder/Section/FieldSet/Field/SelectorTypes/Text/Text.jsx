@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Input} from '@jahia/design-system-kit';
-import {FieldPropTypes} from '~/EditPanel/FormDefinitions/FormData.proptypes';
+import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {FastField} from 'formik';
 
 export const TextCmp = ({field, value, id, editorContext}) => {

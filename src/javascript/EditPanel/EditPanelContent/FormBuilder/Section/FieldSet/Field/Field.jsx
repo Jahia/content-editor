@@ -6,8 +6,7 @@ import {Badge, IconButton} from '@jahia/design-system-kit';
 import {useTranslation} from 'react-i18next';
 import * as PropTypes from 'prop-types';
 import {ContextualMenu} from '@jahia/ui-extender';
-import {FieldPropTypes} from '~/EditPanel/FormDefinitions';
-import {SiteInfoPropTypes} from '~/SiteData';
+import {FieldPropTypes} from '~/FormDefinitions';
 import {MultipleField} from './MultipleField';
 import {SingleField} from './SingleField';
 
@@ -174,7 +173,7 @@ FieldCmp.propTypes = {
         key: PropTypes.string,
         supportMultiple: PropTypes.bool
     }).isRequired,
-    siteInfo: SiteInfoPropTypes.isRequired,
+    siteInfo: PropTypes.object.isRequired,
     field: FieldPropTypes.isRequired,
     formik: PropTypes.shape({
         errors: PropTypes.object,

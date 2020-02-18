@@ -1,65 +1,23 @@
 import React from 'react';
-import {ProgressOverlay} from '@jahia/react-material';
+import {withNotifications} from '@jahia/react-material';
 import {Formik} from 'formik';
 import EditPanel from '~/EditPanel';
 import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
-import {useFormDefinition} from '~/EditPanel/FormDefinitions';
-
-import {ContentEditorContext} from '~/ContentEditor.context';
-
+import {useContentEditorConfigContext, useContentEditorContext, withContentEditorDataContextProvider} from '~/ContentEditor.context';
 import {validate} from '~/Validation/validation';
 import {createNode} from './CreateForm/create.request';
-import {Constants} from '../ContentEditor.constants';
+import {FormQuery} from './CreateForm/createForm.gql-queries';
+import {withApollo} from 'react-apollo';
+import {compose} from '~/utils';
 
-export const Create = ({
+const CreateCmp = ({
     client,
-    notificationContext,
-    setUrl,
-    path,
-    lang,
-    uilang,
-    site,
-    siteDisplayableName,
-    siteInfo,
-    formQuery,
-    formQueryParams
+    notificationContext
 }) => {
     const {t} = useTranslation();
-    const {
-        loading,
-        error,
-        errorMessage,
-        nodeData,
-        initialValues,
-        details,
-        technicalInfo,
-        sections,
-        title
-    } = useFormDefinition(formQuery, formQueryParams, t);
-
-    if (error) {
-        console.error(error);
-        return <>{errorMessage}</>;
-    }
-
-    if (loading) {
-        return <ProgressOverlay/>;
-    }
-
-    const editorContext = {
-        path,
-        lang,
-        uilang,
-        site,
-        siteInfo,
-        siteDisplayableName,
-        sections,
-        nodeData,
-        details,
-        technicalInfo,
-        mode: Constants.routes.baseCreateRoute
-    };
+    const {setUrl} = useContentEditorConfigContext();
+    const {nodeData, sections, formQueryParams, initialValues, title} = useContentEditorContext();
 
     const handleSubmit = (values, actions) => {
         createNode({
@@ -78,31 +36,24 @@ export const Create = ({
     };
 
     return (
-        <ContentEditorContext.Provider value={editorContext}>
-            <Formik
-                initialValues={initialValues}
-                render={props => <EditPanel {...props} title={title}/>}
-                validate={validate(sections)}
-                onSubmit={handleSubmit}
-            />
-        </ContentEditorContext.Provider>
+        <Formik
+            initialValues={initialValues}
+            render={props => <EditPanel {...props} title={title}/>}
+            validate={validate(sections)}
+            onSubmit={handleSubmit}
+        />
     );
 };
 
-Create.defaultProps = {
-    setUrl: () => {}
+CreateCmp.propTypes = {
+    client: PropTypes.object.isRequired,
+    notificationContext: PropTypes.object.isRequired
 };
 
-Create.propTypes = {
-    client: PropTypes.object.isRequired,
-    setUrl: PropTypes.func,
-    path: PropTypes.string.isRequired,
-    notificationContext: PropTypes.object.isRequired,
-    lang: PropTypes.string.isRequired,
-    uilang: PropTypes.string.isRequired,
-    site: PropTypes.string.isRequired,
-    siteDisplayableName: PropTypes.string.isRequired,
-    siteInfo: PropTypes.object.isRequired,
-    formQuery: PropTypes.object.isRequired,
-    formQueryParams: PropTypes.object.isRequired
-};
+export const Create = compose(
+    withApollo,
+    withNotifications(),
+    withContentEditorDataContextProvider(FormQuery)
+)(CreateCmp);
+Create.displayName = 'Create';
+export default Create;

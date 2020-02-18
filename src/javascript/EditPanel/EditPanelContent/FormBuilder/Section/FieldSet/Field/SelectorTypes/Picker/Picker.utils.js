@@ -42,7 +42,7 @@ export const extractConfigs = (field, editorContext, t) => {
             type: treeConfig.type,
             openableTypes: treeConfig.openableTypes,
             rootLabel: t(treeConfig.rootLabelKey, {
-                siteName: editorContext.siteDisplayableName
+                siteName: editorContext.siteInfo.displayName
             }),
             key: `browse-tree-${treeConfig.type}`
         };

@@ -2,7 +2,7 @@ import React from 'react';
 import * as PropTypes from 'prop-types';
 import {compose} from '~/utils';
 import {connect} from 'formik';
-import {FieldPropTypes} from '~/EditPanel/FormDefinitions';
+import {FieldPropTypes} from '~/FormDefinitions';
 
 export const SingleFieldCmp = ({inputContext, field, formik}) => {
     const FieldComponent = inputContext.fieldComponent;
