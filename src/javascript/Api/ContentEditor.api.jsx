@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import {Dialog} from '@material-ui/core';
+import ContentEditor from '~/ContentEditor';
+import {Constants} from '~/ContentEditor.constants';
 
 // Todo BACKLOG-12406: expose fct to open CE
 const ContentEditorApi = () => {
@@ -7,8 +9,13 @@ const ContentEditorApi = () => {
     const [create, isCreate] = useState(false);
 
     window.CE_API = window.CE_API || {};
-    window.CE_API.edit = () => {
-        isEdit(true);
+    window.CE_API.edit = (path, site, lang, uilang) => {
+        isEdit({
+            path,
+            site,
+            lang,
+            uilang
+        });
     };
 
     window.CE_API.create = () => {
@@ -18,8 +25,8 @@ const ContentEditorApi = () => {
     return (
         <>
             {edit &&
-            <Dialog open={edit} aria-labelledby="dialog-content-editor">
-                <p>edit</p>
+            <Dialog fullScreen open aria-labelledby="dialog-content-editor">
+                <ContentEditor mode={Constants.routes.baseEditRoute} path={edit.path} lang={edit.lang} uilang={edit.uilang} site={edit.site}/>
             </Dialog>}
 
             {create &&
