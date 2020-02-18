@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Dialog} from '@material-ui/core';
-import ContentEditor from '../ContentEditor';
-import {Constants} from '../ContentEditor.constants';
+import ContentEditor from '~/ContentEditor';
+import {Constants} from '~/ContentEditor.constants';
 
 // Todo BACKLOG-12406: expose fct to open CE
 const ContentEditorApi = () => {
