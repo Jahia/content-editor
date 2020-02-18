@@ -30,7 +30,7 @@ const Tag = ({field, id}) => {
             startPath: '/sites/' + site
         };
 
-        const val = await client.query({query: getSuggestionsTagsQuery, variables: variables});
+        const val = await client.query({query: getSuggestionsTagsQuery, variables: variables, fetchPolicy: 'network-only'});
 
         if (val.data && val.data.tag && val.data.tag.suggest) {
             return val.data.tag.suggest.map(element => {
