@@ -1,6 +1,4 @@
 import {CreateNode} from './createForm.gql-mutation';
-
-import {Constants} from '~/ContentEditor.constants';
 import {getDataToMutate} from '~/EditPanel/EditPanel.utils';
 import {nodeTypeFormatter} from './create.utils';
 

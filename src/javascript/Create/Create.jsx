@@ -10,7 +10,7 @@ import {createNode} from './CreateForm/create.request';
 import {FormQuery} from './CreateForm/createForm.gql-queries';
 import {withApollo} from 'react-apollo';
 import {compose} from '~/utils';
-import {Constants} from "~/ContentEditor.constants";
+import {Constants} from '~/ContentEditor.constants';
 
 const CreateCmp = ({
     client,
@@ -32,7 +32,7 @@ const CreateCmp = ({
                 sections,
                 values
             },
-            createCallback:(createdNodePath) => {
+            createCallback: createdNodePath => {
                 // TODO add genericity here
                 // redux create
                 if (setUrl) {
@@ -42,13 +42,11 @@ const CreateCmp = ({
                         path: createdNodePath,
                         params: {}
                     });
+                // Custom create callback
+                } else if (createCallback) {
+                    createCallback(createdNodePath);
                 }
-
-                // custom create callback
-                if (createCallback) {
-                    createCallback(createdNodePath)
-                }
-            },
+            }
         });
     };
 

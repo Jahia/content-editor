@@ -56,11 +56,15 @@ export default composeActions(
                         } else {
                             contentEditorConfigContext.setUrl(setUrlProps);
                         }
-                    }
-
-                    // custom back action
-                    if (contentEditorConfigContext.closeCallback) {
-                        contentEditorConfigContext.closeCallback();
+                    // Custom back action
+                    } else if (contentEditorConfigContext.closeCallback) {
+                        if (lockedEditorContext.unlockEditor) {
+                            lockedEditorContext.unlockEditor(() => {
+                                contentEditorConfigContext.closeCallback();
+                            });
+                        } else {
+                            contentEditorConfigContext.closeCallback();
+                        }
                     }
                 };
 
