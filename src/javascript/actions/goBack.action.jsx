@@ -40,18 +40,27 @@ export default composeActions(
                 const {contentEditorConfigContext, lockedEditorContext} = context;
 
                 const executeGoBackAction = () => {
-                    const setUrlProps = {
-                        site: contentEditorConfigContext.site,
-                        language: contentEditorConfigContext.lang,
-                        mode: context.resolveUrlContext.mode,
-                        path: context.resolveUrlContext.path
-                    };
-                    if (lockedEditorContext.unlockEditor) {
-                        lockedEditorContext.unlockEditor(() => {
+                    // TODO add genericity here
+                    // redux back action
+                    if (contentEditorConfigContext.setUrl) {
+                        const setUrlProps = {
+                            site: contentEditorConfigContext.site,
+                            language: contentEditorConfigContext.lang,
+                            mode: context.resolveUrlContext.mode,
+                            path: context.resolveUrlContext.path
+                        };
+                        if (lockedEditorContext.unlockEditor) {
+                            lockedEditorContext.unlockEditor(() => {
+                                contentEditorConfigContext.setUrl(setUrlProps);
+                            });
+                        } else {
                             contentEditorConfigContext.setUrl(setUrlProps);
-                        });
-                    } else {
-                        contentEditorConfigContext.setUrl(setUrlProps);
+                        }
+                    }
+
+                    // custom back action
+                    if (contentEditorConfigContext.closeCallback) {
+                        contentEditorConfigContext.closeCallback();
                     }
                 };
 

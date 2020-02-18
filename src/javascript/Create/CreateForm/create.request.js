@@ -9,7 +9,7 @@ export const createNode = ({
     t,
     notificationContext,
     actions,
-    setUrl,
+    createCallback,
     data: {
         primaryNodeType,
         nodeData,
@@ -30,14 +30,8 @@ export const createNode = ({
         },
         mutation: CreateNode
     }).then(data => {
-        const path = data.data.jcr.modifiedNodes[0].path;
-        if (setUrl) {
-            setUrl({
-                language,
-                mode: Constants.routes.baseEditRoute,
-                path: path,
-                params: {}
-            });
+        if (createCallback) {
+            createCallback(data.data.jcr.modifiedNodes[0].path);
         }
 
         notificationContext.notify(t('content-editor:label.contentEditor.create.createButton.success'), ['closeButton']);
