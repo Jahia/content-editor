@@ -3,7 +3,6 @@ import {Dialog} from '@material-ui/core';
 import ContentEditor from '~/ContentEditor';
 import {Constants} from '~/ContentEditor.constants';
 
-// Todo BACKLOG-12406: expose fct to open CE
 const ContentEditorApi = () => {
     const [edit, isEdit] = useState(false);
     const [create, isCreate] = useState(false);
@@ -22,21 +21,39 @@ const ContentEditorApi = () => {
         isCreate(true);
     };
 
-    const closeCallback = () => {
-        isEdit(false);
-        isCreate(false);
+    // Standalone env props
+    const envProps = {
+        closeCallback: () => {
+            isEdit(false);
+            isCreate(false);
+        },
+        setLanguage: lang => {
+            if (edit) {
+                isEdit({
+                    path: edit.path,
+                    site: edit.site,
+                    uilang: edit.uilang,
+                    lang: lang
+                });
+            }
+
+            if (create) {
+                // TODO BACKLOG-12172: handle create
+            }
+        }
     };
 
     return (
         <>
             {edit &&
             <Dialog fullScreen open aria-labelledby="dialog-content-editor">
-                <ContentEditor mode={Constants.routes.baseEditRoute}
+                <ContentEditor env={Constants.env.standalone}
+                               mode={Constants.routes.baseEditRoute}
                                path={edit.path}
                                lang={edit.lang}
                                uilang={edit.uilang}
                                site={edit.site}
-                               closeCallback={closeCallback}/>
+                               envProps={envProps}/>
             </Dialog>}
 
             {create &&

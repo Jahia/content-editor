@@ -3,7 +3,9 @@ import {connect} from 'react-redux';
 import ContentEditor from './ContentEditor';
 import PropTypes from 'prop-types';
 import {cmGoto} from '~/JContent.redux-actions';
+import {setLanguage} from '~/JContent.redux-actions';
 import {compose} from '~/utils';
+import {Constants} from '~/ContentEditor.constants';
 
 const mapStateToProps = state => {
     return {
@@ -16,17 +18,27 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
+    setLanguage: language => {
+        dispatch(setLanguage(language));
+    },
     setUrl: gotoParams => dispatch(cmGoto(gotoParams))
 });
 
-const ContentEditorReduxCmp = ({mode, path, lang, uilang, site, contentType, setUrl}) => {
+const ContentEditorReduxCmp = ({mode, path, lang, uilang, site, contentType, setUrl, setLanguage}) => {
+    // Redux fcts and specific props
+    const envProps = {
+        setUrl,
+        setLanguage
+    };
+
     return (
-        <ContentEditor mode={mode} path={path} lang={lang} uilang={uilang} site={site} contentType={contentType} setUrl={setUrl}/>
+        <ContentEditor env={Constants.env.redux} mode={mode} path={path} lang={lang} uilang={uilang} site={site} contentType={contentType} envProps={envProps}/>
     );
 };
 
 ContentEditorReduxCmp.propTypes = {
-    setUrl: PropTypes.func,
+    setUrl: PropTypes.func.isRequired,
+    setLanguage: PropTypes.func.isRequired,
     mode: PropTypes.oneOf(['create', 'edit']).isRequired,
     path: PropTypes.string.isRequired,
     lang: PropTypes.string.isRequired,

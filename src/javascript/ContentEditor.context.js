@@ -30,7 +30,7 @@ export const withContentEditorDataContextProvider = formQuery => Children => {
             primaryNodeType: contentType
         };
         const {loading, error, errorMessage, nodeData, initialValues, details, technicalInfo, sections, title} = useFormDefinition(formQuery, formQueryParams, t);
-        const {siteInfo, siteError, siteLoading} = useSiteInfo({
+        const siteInfoResult = useSiteInfo({
             siteKey: site,
             displayLanguage: lang
         });
@@ -40,14 +40,14 @@ export const withContentEditorDataContextProvider = formQuery => Children => {
             return <>{errorMessage}</>;
         }
 
-        if (siteError) {
-            console.error('Error when fetching data: ' + error);
-            let message = t('label.contentEditor.error.queryingContent', {details: (error.message ? error.message : '')});
+        if (siteInfoResult.error) {
+            console.error('Error when fetching data: ' + siteInfoResult.error);
+            let message = t('label.contentEditor.error.queryingContent', {details: (siteInfoResult.error.message ? siteInfoResult.error.message : '')});
             notificationContext.notify(message, ['closeButton', 'noAutomaticClose']);
             return null;
         }
 
-        if (loading || siteLoading) {
+        if (loading || siteInfoResult.loading) {
             return <ProgressOverlay/>;
         }
 
@@ -58,7 +58,7 @@ export const withContentEditorDataContextProvider = formQuery => Children => {
             uilang,
             site,
             mode,
-            siteInfo,
+            siteInfo: siteInfoResult.siteInfo,
             sections,
             nodeData,
             details,

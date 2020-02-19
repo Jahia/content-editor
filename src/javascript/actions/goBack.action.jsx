@@ -4,6 +4,7 @@ import {EditPanelDialogConfirmation} from '~/EditPanel/EditPanelDialogConfirmati
 import {Constants} from '~/ContentEditor.constants';
 import {withLockedEditorContextAction} from './withLockedEditorContext.action';
 import {withContentEditorConfigContextAction} from './withContentEditorConfigContext';
+import envBackActions from './goBack.action.env';
 
 export const resolveGoBackContext = (path, parentPath, parentDisplayName, site, siteDisplayName) => {
     const splitPath = path.split('/');
@@ -40,30 +41,14 @@ export default composeActions(
                 const {contentEditorConfigContext, lockedEditorContext} = context;
 
                 const executeGoBackAction = () => {
-                    // TODO add genericity here
-                    // redux back action
-                    if (contentEditorConfigContext.setUrl) {
-                        const setUrlProps = {
-                            site: contentEditorConfigContext.site,
-                            language: contentEditorConfigContext.lang,
-                            mode: context.resolveUrlContext.mode,
-                            path: context.resolveUrlContext.path
-                        };
+                    const envBackAction = envBackActions[contentEditorConfigContext.env];
+                    if (envBackAction) {
                         if (lockedEditorContext.unlockEditor) {
                             lockedEditorContext.unlockEditor(() => {
-                                contentEditorConfigContext.setUrl(setUrlProps);
+                                envBackAction(context);
                             });
                         } else {
-                            contentEditorConfigContext.setUrl(setUrlProps);
-                        }
-                    // Custom back action
-                    } else if (contentEditorConfigContext.closeCallback) {
-                        if (lockedEditorContext.unlockEditor) {
-                            lockedEditorContext.unlockEditor(() => {
-                                contentEditorConfigContext.closeCallback();
-                            });
-                        } else {
-                            contentEditorConfigContext.closeCallback();
+                            envBackAction(context);
                         }
                     }
                 };

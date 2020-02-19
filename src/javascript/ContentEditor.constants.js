@@ -25,5 +25,9 @@ export const Constants = {
             pages: 'pages'
         }
     },
+    env: {
+        redux: 'redux',
+        standalone: 'standalone'
+    },
     notSupportedEngineTabs: ['content', 'categories']
 };
