@@ -46,7 +46,7 @@ const Category = ({field, value, id, editorContext}) => {
     });
 
     const tree = useMemo(() => {
-        if (!data.jcr) {
+        if (error || loading || !data.jcr) {
             return null;
         }
 
