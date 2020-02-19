@@ -34,7 +34,7 @@ describe('createNode', () => {
             notificationContext: {notify: jest.fn()},
             actions: {setSubmitting: jest.fn()},
             t: jest.fn(),
-            setUrl: jest.fn(),
+            createCallback: jest.fn(),
             data: {
                 primaryNodeType: 'jnt:text',
                 nodeData: {},
@@ -50,10 +50,10 @@ describe('createNode', () => {
         expect(params.client.mutate.mock.calls[0][0].mutation).toBe('CreateNode');
     });
 
-    it('should call setUrl function', async () => {
+    it('should call createCallback function', async () => {
         await createNode(params);
 
-        expect(params.setUrl).toHaveBeenCalled();
+        expect(params.createCallback).toHaveBeenCalled();
         expect(params.client.mutate.mock.calls[0][0].mutation).toBe('CreateNode');
     });
 

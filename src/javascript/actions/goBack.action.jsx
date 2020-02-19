@@ -40,18 +40,31 @@ export default composeActions(
                 const {contentEditorConfigContext, lockedEditorContext} = context;
 
                 const executeGoBackAction = () => {
-                    const setUrlProps = {
-                        site: contentEditorConfigContext.site,
-                        language: contentEditorConfigContext.lang,
-                        mode: context.resolveUrlContext.mode,
-                        path: context.resolveUrlContext.path
-                    };
-                    if (lockedEditorContext.unlockEditor) {
-                        lockedEditorContext.unlockEditor(() => {
+                    // TODO add genericity here
+                    // redux back action
+                    if (contentEditorConfigContext.setUrl) {
+                        const setUrlProps = {
+                            site: contentEditorConfigContext.site,
+                            language: contentEditorConfigContext.lang,
+                            mode: context.resolveUrlContext.mode,
+                            path: context.resolveUrlContext.path
+                        };
+                        if (lockedEditorContext.unlockEditor) {
+                            lockedEditorContext.unlockEditor(() => {
+                                contentEditorConfigContext.setUrl(setUrlProps);
+                            });
+                        } else {
                             contentEditorConfigContext.setUrl(setUrlProps);
-                        });
-                    } else {
-                        contentEditorConfigContext.setUrl(setUrlProps);
+                        }
+                    // Custom back action
+                    } else if (contentEditorConfigContext.closeCallback) {
+                        if (lockedEditorContext.unlockEditor) {
+                            lockedEditorContext.unlockEditor(() => {
+                                contentEditorConfigContext.closeCallback();
+                            });
+                        } else {
+                            contentEditorConfigContext.closeCallback();
+                        }
                     }
                 };
 

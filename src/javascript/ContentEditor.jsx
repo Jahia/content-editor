@@ -12,7 +12,7 @@ const Modes = {
     create: Create
 };
 
-const ContentEditorCmp = ({mode, path, lang, uilang, site, contentType, client, setUrl}) => {
+const ContentEditorCmp = ({mode, path, lang, uilang, site, contentType, client, setUrl, createCallback, closeCallback}) => {
     const contentEditorConfig = {
         path,
         lang,
@@ -20,7 +20,9 @@ const ContentEditorCmp = ({mode, path, lang, uilang, site, contentType, client, 
         site,
         contentType,
         mode,
-        setUrl
+        setUrl,
+        createCallback,
+        closeCallback
     };
 
     const ContentEditorModeCmp = Modes[mode];
@@ -43,7 +45,9 @@ ContentEditorCmp.propTypes = {
     uilang: PropTypes.string.isRequired,
     site: PropTypes.string.isRequired,
     contentType: PropTypes.string,
-    setUrl: PropTypes.func
+    setUrl: PropTypes.func,
+    createCallback: PropTypes.func,
+    closeCallback: PropTypes.func
 };
 
 export const ContentEditor = withApollo(ContentEditorCmp);

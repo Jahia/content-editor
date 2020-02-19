@@ -10,13 +10,14 @@ import {createNode} from './CreateForm/create.request';
 import {FormQuery} from './CreateForm/createForm.gql-queries';
 import {withApollo} from 'react-apollo';
 import {compose} from '~/utils';
+import {Constants} from '~/ContentEditor.constants';
 
 const CreateCmp = ({
     client,
     notificationContext
 }) => {
     const {t} = useTranslation();
-    const {setUrl} = useContentEditorConfigContext();
+    const {setUrl, createCallback} = useContentEditorConfigContext();
     const {nodeData, sections, formQueryParams, initialValues, title} = useContentEditorContext();
 
     const handleSubmit = (values, actions) => {
@@ -25,12 +26,26 @@ const CreateCmp = ({
             t,
             notificationContext,
             actions,
-            setUrl,
             data: {
                 ...formQueryParams,
                 nodeData,
                 sections,
                 values
+            },
+            createCallback: createdNodePath => {
+                // TODO add genericity here
+                // redux create
+                if (setUrl) {
+                    setUrl({
+                        language: formQueryParams.language,
+                        mode: Constants.routes.baseEditRoute,
+                        path: createdNodePath,
+                        params: {}
+                    });
+                // Custom create callback
+                } else if (createCallback) {
+                    createCallback(createdNodePath);
+                }
             }
         });
     };

@@ -22,11 +22,21 @@ const ContentEditorApi = () => {
         isCreate(true);
     };
 
+    const closeCallback = () => {
+        isEdit(false);
+        isCreate(false);
+    };
+
     return (
         <>
             {edit &&
             <Dialog fullScreen open aria-labelledby="dialog-content-editor">
-                <ContentEditor mode={Constants.routes.baseEditRoute} path={edit.path} lang={edit.lang} uilang={edit.uilang} site={edit.site}/>
+                <ContentEditor mode={Constants.routes.baseEditRoute}
+                               path={edit.path}
+                               lang={edit.lang}
+                               uilang={edit.uilang}
+                               site={edit.site}
+                               closeCallback={closeCallback}/>
             </Dialog>}
 
             {create &&
