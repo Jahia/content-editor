@@ -44,4 +44,11 @@ registry.add('callback', 'content-editor', {
     }
 });
 
+// Register GWT Hooks
+window.top.jahiaGwtHook = {
+    edit: ({path, lang, siteKey, uilang}) => {
+        window.CE_API.edit(path, siteKey, lang, uilang);
+    }
+};
+
 console.debug('%c Content Editor is activated', 'color: #3c8cba');
