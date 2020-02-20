@@ -77,7 +77,7 @@ const EditPanelCmp = ({formik, title, classes, notificationContext, client}) => 
                 path: <DisplayActions context={{nodeData, siteInfo, formik}}
                                       target="editHeaderPathActions"
                                       render={({context}) => {
-                                          const Button = buttonRenderer({variant: 'ghost'}, true);
+                                          const Button = buttonRenderer({variant: 'ghost', color: 'inverted'}, true);
                                           return <Button context={context}/>;
                                       }}
                 />,
