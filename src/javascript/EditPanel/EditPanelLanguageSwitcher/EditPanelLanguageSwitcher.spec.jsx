@@ -2,7 +2,6 @@ import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {EditPanelLanguageSwitcher} from './';
-import {createMockStore} from 'redux-test-utils';
 
 describe('EditPanelLanguageSwitcher', () => {
     let defaultProps;
@@ -17,9 +16,7 @@ describe('EditPanelLanguageSwitcher', () => {
                     }
                 ]
             },
-            onSelectLanguage: jest.fn(),
-            formik: {},
-            store: createMockStore({language: 'en'})
+            formik: {}
         };
     });
 
@@ -29,7 +26,6 @@ describe('EditPanelLanguageSwitcher', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive()
             .dive();
 
@@ -42,7 +38,6 @@ describe('EditPanelLanguageSwitcher', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive()
             .dive();
 

@@ -3,17 +3,20 @@ import {LanguageSwitcher} from '@jahia/design-system-kit';
 import * as PropTypes from 'prop-types';
 import {compose} from '~/utils';
 import {connect} from 'formik';
-import {connect as connectReactRedux} from 'react-redux';
-import {setLanguage} from '~/JContent.redux-actions';
 import {EditPanelDialogConfirmation} from '../EditPanelDialogConfirmation';
+import {useContentEditorConfigContext} from '~/ContentEditor.context';
+import envSwitchLanguages from './EditPanelLanguageSwitcher.env';
 
-// Todo BACKLOG-12437: handle language switcher outside jcontent and gwt
-const EditPanelLanguageSwitcher = ({lang, siteInfo, onSelectLanguage, formik}) => {
+const EditPanelLanguageSwitcher = ({siteInfo, formik}) => {
+    const contentEditorConfigContext = useContentEditorConfigContext();
+    const {lang} = contentEditorConfigContext;
     const [dialogConfirmation, setDialogConfirmation] = useState({open: false, lang: lang});
 
     const switchLanguage = language => {
-        // Select callback from CMM
-        onSelectLanguage(language);
+        const envSwitchLanguage = envSwitchLanguages[contentEditorConfigContext.env];
+        if (envSwitchLanguage) {
+            envSwitchLanguage(language, contentEditorConfigContext);
+        }
 
         // Switch edit mode linker language
         window.parent.authoringApi.switchLanguage(language);
@@ -46,26 +49,13 @@ const EditPanelLanguageSwitcher = ({lang, siteInfo, onSelectLanguage, formik}) =
     );
 };
 
-const mapStateToProps = state => ({
-    lang: state.language
-});
-
-const mapDispatchToProps = dispatch => ({
-    onSelectLanguage: language => {
-        dispatch(setLanguage(language));
-    }
-});
-
 EditPanelLanguageSwitcher.propTypes = {
-    lang: PropTypes.string.isRequired,
     siteInfo: PropTypes.object.isRequired,
-    formik: PropTypes.object.isRequired,
-    onSelectLanguage: PropTypes.func.isRequired
+    formik: PropTypes.object.isRequired
 };
 
 EditPanelLanguageSwitcher.displayName = 'EditPanelLanguageSwitcher';
 
 export default compose(
-    connect,
-    connectReactRedux(mapStateToProps, mapDispatchToProps)
+    connect
 )(EditPanelLanguageSwitcher);

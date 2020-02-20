@@ -6,13 +6,14 @@ import Edit from '~/Edit/Edit';
 import {EditorIdContextProvider} from './ContentEditorId.context';
 import {withApollo} from 'react-apollo';
 import {ContentEditorConfigContext} from './ContentEditor.context';
+import {Constants} from '~/ContentEditor.constants';
 
 const Modes = {
     edit: Edit,
     create: Create
 };
 
-const ContentEditorCmp = ({mode, path, lang, uilang, site, contentType, client, setUrl, createCallback, closeCallback}) => {
+const ContentEditorCmp = ({mode, path, lang, uilang, site, contentType, client, env, envProps}) => {
     const contentEditorConfig = {
         path,
         lang,
@@ -20,9 +21,8 @@ const ContentEditorCmp = ({mode, path, lang, uilang, site, contentType, client, 
         site,
         contentType,
         mode,
-        setUrl,
-        createCallback,
-        closeCallback
+        env,
+        envProps
     };
 
     const ContentEditorModeCmp = Modes[mode];
@@ -39,15 +39,14 @@ const ContentEditorCmp = ({mode, path, lang, uilang, site, contentType, client, 
 
 ContentEditorCmp.propTypes = {
     client: PropTypes.object.isRequired,
-    mode: PropTypes.oneOf(['create', 'edit']).isRequired,
+    mode: PropTypes.oneOf([Constants.routes.baseCreateRoute, Constants.routes.baseEditRoute]).isRequired,
+    env: PropTypes.oneOf([Constants.env.redux, Constants.env.standalone]).isRequired,
+    envProps: PropTypes.object.isRequired,
     path: PropTypes.string.isRequired,
     lang: PropTypes.string.isRequired,
     uilang: PropTypes.string.isRequired,
     site: PropTypes.string.isRequired,
-    contentType: PropTypes.string,
-    setUrl: PropTypes.func,
-    createCallback: PropTypes.func,
-    closeCallback: PropTypes.func
+    contentType: PropTypes.string
 };
 
 export const ContentEditor = withApollo(ContentEditorCmp);
