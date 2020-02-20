@@ -13,6 +13,7 @@ const NodeDataFragment = {
             result:nodeByPath(path: $path) {
                 ...NodeCacheRequiredFields
                 lockedAndCannotBeEdited
+                isPage: isNodeType(type: {multi: ANY, types: ["jnt:page"]})
                 isFolder:isNodeType(type: {multi: ANY, types: ["jnt:contentFolder", "jnt:folder"]})
                 displayableNode {
                     path
