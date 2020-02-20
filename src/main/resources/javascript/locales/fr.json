@@ -158,7 +158,8 @@
       },
       "section":{
         "listAndOrdering": {
-          "title": "Liste de contenu & ordre"
+          "title": "Liste de contenu & ordre",
+          "ordering": "Ordre"
         }
       },
       "siteSwitcher": {

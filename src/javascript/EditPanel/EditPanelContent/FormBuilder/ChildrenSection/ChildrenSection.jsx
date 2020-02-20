@@ -5,6 +5,7 @@ import {withStyles} from '@material-ui/core';
 import {Typography} from '@jahia/design-system-kit';
 
 import {ChildrenSectionPropTypes} from '~/FormDefinitions/FormData.proptypes';
+import {ChildrenContainer} from './ChildrenContainer';
 
 const styles = theme => ({
     section: {
@@ -23,6 +24,7 @@ const ChildrenSectionCmp = ({section, classes}) => {
     return (
         <section className={classes.section} data-sel-content-editor-fields-group={section.displayName}>
             <Typography component="h2" className={classes.sectionTitle} color="alpha" variant="gamma">{section.displayName}</Typography>
+            <ChildrenContainer/>
         </section>
     );
 };

@@ -27,7 +27,15 @@ const NodeDataFragment = {
                     displayName(language: $language)
                     path
                 }
-
+                children {
+                    nodes {
+                        name
+                        primaryNodeType {
+                            displayName(language: $language)
+                            icon
+                        }
+                    }
+                }
                 primaryNodeType {
                     name
                     displayName(language: $uilang)

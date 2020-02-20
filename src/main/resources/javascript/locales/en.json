@@ -158,7 +158,8 @@
       },
       "section":{
         "listAndOrdering": {
-          "title": "Content list & ordering"
+          "title": "Content list & ordering",
+          "ordering": "Ordering"
         }
       },
       "siteSwitcher": {
