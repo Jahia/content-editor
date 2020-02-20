@@ -1,9 +1,23 @@
 import React, {useState} from 'react';
-import {Dialog} from '@material-ui/core';
+import {Dialog, withStyles} from '@material-ui/core';
 import ContentEditor from '~/ContentEditor';
 import {Constants} from '~/ContentEditor.constants';
+import * as PropTypes from 'prop-types';
 
-const ContentEditorApi = () => {
+let styles = () => {
+    return {
+        mainBackground: {
+            // Color from DX core anthracite, not in the theme
+            backgroundColor: '#363636'
+        },
+        ceDialogRoot: {
+            // reduce zIndex to be able to display the old edit engine tabs
+            zIndex: 1000
+        }
+    };
+};
+
+const ContentEditorApiCmp = ({classes}) => {
     const [edit, isEdit] = useState(false);
     const [create, isCreate] = useState(false);
 
@@ -46,14 +60,17 @@ const ContentEditorApi = () => {
     return (
         <>
             {edit &&
-            <Dialog fullScreen open aria-labelledby="dialog-content-editor">
-                <ContentEditor env={Constants.env.standalone}
-                               mode={Constants.routes.baseEditRoute}
-                               path={edit.path}
-                               lang={edit.lang}
-                               uilang={edit.uilang}
-                               site={edit.site}
-                               envProps={envProps}/>
+            <Dialog fullScreen open aria-labelledby="dialog-content-editor" classes={{root: classes.ceDialogRoot}}>
+                <div className={classes.mainBackground} data-sel-role="test">
+                    <ContentEditor env={Constants.env.standalone}
+                                   mode={Constants.routes.baseEditRoute}
+                                   path={edit.path}
+                                   lang={edit.lang}
+                                   uilang={edit.uilang}
+                                   site={edit.site}
+                                   envProps={envProps}
+                    />
+                </div>
             </Dialog>}
 
             {create &&
@@ -64,5 +81,10 @@ const ContentEditorApi = () => {
     );
 };
 
-ContentEditorApi.displayName = 'ContentEditor';
+ContentEditorApiCmp.propTypes = {
+    classes: PropTypes.object.isRequired
+};
+
+const ContentEditorApi = withStyles(styles)(ContentEditorApiCmp);
+ContentEditorApi.displayName = 'ContentEditorAPI';
 export default ContentEditorApi;
