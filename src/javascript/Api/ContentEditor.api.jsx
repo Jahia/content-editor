@@ -61,7 +61,7 @@ const ContentEditorApiCmp = ({classes}) => {
         <>
             {edit &&
             <Dialog fullScreen open aria-labelledby="dialog-content-editor" classes={{root: classes.ceDialogRoot}}>
-                <div className={classes.mainBackground} data-sel-role="test">
+                <div className={classes.mainBackground}>
                     <ContentEditor env={Constants.env.standalone}
                                    mode={Constants.routes.baseEditRoute}
                                    path={edit.path}
