@@ -156,6 +156,11 @@
           "filterLabel": "Rechercher un type de contenu"
         }
       },
+      "section":{
+        "listAndOrdering": {
+          "title": "Liste de contenu & ordre"
+        }
+      },
       "siteSwitcher": {
         "allSites": "Tous les Sites"
       }

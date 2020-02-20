@@ -25,7 +25,11 @@ describe('FormBuilder component', () => {
             sections: [
                 {displayName: 'content'},
                 {displayName: 'Layout'}
-            ]
+            ],
+            nodeData: {
+                isPage: true,
+                primaryNodeType: {hasOrderableChildNodes: true}
+            }
         };
     });
 

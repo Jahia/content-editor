@@ -20,4 +20,10 @@ export const SectionPropTypes = PropTypes.shape({
     displayName: PropTypes.string.isRequired,
     fieldSets: PropTypes.arrayOf(FieldSetPropTypes)
 });
+
+export const ChildrenSectionPropTypes = PropTypes.shape({
+    name: PropTypes.string,
+    displayName: PropTypes.string.isRequired
+});
+
 export const SectionsPropTypes = PropTypes.arrayOf(SectionPropTypes);
