@@ -11,7 +11,7 @@ let styles = () => {
             backgroundColor: '#363636'
         },
         ceDialogRoot: {
-            // reduce zIndex to be able to display the old edit engine tabs
+            // Reduce zIndex to be able to display the old edit engine tabs
             zIndex: 1000
         }
     };
