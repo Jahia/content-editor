@@ -33,6 +33,9 @@ const styles = theme => ({
         position: 'absolute',
         marginTop: '47px',
         marginLeft: '-50px'
+    },
+    mainLayoutRoot: {
+        minHeight: '100vh'
     }
 });
 
@@ -73,6 +76,7 @@ const EditPanelCmp = ({formik, title, classes, notificationContext, client}) => 
     };
     return (
         <MainLayout
+            classes={{root: classes.mainLayoutRoot}}
             topBarProps={{
                 path: <DisplayActions context={{nodeData, siteInfo, formik}}
                                       target="editHeaderPathActions"

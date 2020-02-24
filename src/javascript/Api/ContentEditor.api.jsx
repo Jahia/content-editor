@@ -3,6 +3,7 @@ import {Dialog, withStyles} from '@material-ui/core';
 import ContentEditor from '~/ContentEditor';
 import {Constants} from '~/ContentEditor.constants';
 import * as PropTypes from 'prop-types';
+import Slide from '@material-ui/core/Slide';
 
 let styles = () => {
     return {
@@ -12,7 +13,10 @@ let styles = () => {
         },
         ceDialogRoot: {
             // Reduce zIndex to be able to display the old edit engine tabs
-            zIndex: 1000
+            zIndex: 1000,
+            width: 'calc(100vw - 56px)',
+            left: 'unset',
+            right: 0
         }
     };
 };
@@ -60,7 +64,7 @@ const ContentEditorApiCmp = ({classes}) => {
     return (
         <>
             {edit &&
-            <Dialog fullScreen open aria-labelledby="dialog-content-editor" classes={{root: classes.ceDialogRoot}}>
+            <Dialog fullScreen open TransitionComponent={Transition} aria-labelledby="dialog-content-editor" classes={{root: classes.ceDialogRoot}} onClose={envProps.closeCallback}>
                 <div className={classes.mainBackground}>
                     <ContentEditor env={Constants.env.standalone}
                                    mode={Constants.routes.baseEditRoute}
@@ -80,6 +84,10 @@ const ContentEditorApiCmp = ({classes}) => {
         </>
     );
 };
+
+const Transition = React.forwardRef((props, ref) => {
+    return <Slide ref={ref} direction="up" {...props}/>;
+});
 
 ContentEditorApiCmp.propTypes = {
     classes: PropTypes.object.isRequired
