@@ -1,6 +1,6 @@
-## Picker
+## Reference card
 
-This component is used to display picker inside the field to allow selecting/edit item.
+This component is used to display a referenced content inside the field to allow selecting/edit item.
 
 ### Props
 
@@ -17,7 +17,7 @@ This component is used to display picker inside the field to allow selecting/edi
 ### Example
 
 ```
-<Picker readOnly={false}
+<RefrerenceCard readOnly={false}
         fieldData={{
             url: 'http://www.open-source-guide.com/var/site_smile/storage/images/guide-os/solutions/applications/cms/jahia-digital-factory/362440-239-fre-FR/Jahia-Digital-Factory_logo_solution_categorie.png',
             name: 'Jahia',

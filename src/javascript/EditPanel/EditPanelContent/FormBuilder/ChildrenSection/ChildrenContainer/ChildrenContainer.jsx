@@ -4,7 +4,7 @@ import {Grid, withStyles} from '@material-ui/core';
 import {Typography} from '@jahia/design-system-kit';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {useTranslation} from 'react-i18next';
-import {Picker as PickerInput} from '~/DesignSystem/Picker';
+import {ReferenceCard} from '~/DesignSystem/ReferenceCard';
 import {InsertDriveFile} from '@material-ui/icons';
 import {encodeJCRPath} from '~/EditPanel/EditPanel.utils';
 
@@ -80,7 +80,7 @@ const ChildrenContainerCmp = ({classes}) => {
                                       alignItems="center"
                                 >
                                     <Grid item className={classes.pickerGrid}>
-                                        <PickerInput
+                                        <ReferenceCard
                                                 key={child.name}
                                                 emptyLabel={t('content-editor:label.contentEditor.edit.fields.imagePicker.addImage')}
                                                 emptyIcon={<InsertDriveFile/>}
