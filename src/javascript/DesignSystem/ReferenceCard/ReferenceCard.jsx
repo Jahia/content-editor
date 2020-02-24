@@ -84,14 +84,14 @@ const styles = theme => ({
             textOverflow: 'ellipsis'
         }
     },
-    pickerButtonEmptyContainer: {
+    referenceButtonEmptyContainer: {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center'
     }
 });
 
-const PickerCmp = ({
+const ReferenceCardCmp = ({
     classes,
     readOnly,
     emptyLabel,
@@ -100,7 +100,7 @@ const PickerCmp = ({
     labelledBy,
     onClick
 }) => {
-    // If picker have already data
+    // If card have already data
     if (fieldData) {
         const nameId = `${labelledBy}-name`;
         return (
@@ -164,7 +164,7 @@ const PickerCmp = ({
             }}
         >
             {!readOnly &&
-            <div className={classes.pickerButtonEmptyContainer}>
+            <div className={classes.referenceButtonEmptyContainer}>
                 {emptyIcon}
                 <Typography variant="omega" color="beta" component="span">
                     {emptyLabel}
@@ -174,7 +174,7 @@ const PickerCmp = ({
     );
 };
 
-PickerCmp.defaultProps = {
+ReferenceCardCmp.defaultProps = {
     readOnly: false,
     fieldData: null,
     emptyLabel: '',
@@ -182,7 +182,7 @@ PickerCmp.defaultProps = {
     onClick: () => {}
 };
 
-PickerCmp.propTypes = {
+ReferenceCardCmp.propTypes = {
     readOnly: PropTypes.bool,
     classes: PropTypes.object.isRequired,
     onClick: PropTypes.func,
@@ -196,6 +196,6 @@ PickerCmp.propTypes = {
     labelledBy: PropTypes.string
 };
 
-export const Picker = withStyles(styles)(PickerCmp);
+export const ReferenceCard = withStyles(styles)(ReferenceCardCmp);
 
-Picker.displayName = 'Picker';
+ReferenceCard.displayName = 'ReferenceCard';

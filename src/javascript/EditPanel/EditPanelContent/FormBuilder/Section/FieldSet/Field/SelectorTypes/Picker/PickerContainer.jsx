@@ -4,7 +4,7 @@ import {connect} from 'formik';
 import {useTranslation} from 'react-i18next';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {ProgressOverlay} from '@jahia/react-material';
-import {Picker as PickerInput} from '~/DesignSystem/Picker';
+import {ReferenceCard} from '~/DesignSystem/ReferenceCard';
 import {extractConfigs} from './Picker.utils';
 import {PickerDialog} from './PickerDialog';
 
@@ -39,7 +39,7 @@ const PickerCmp = ({field, value, id, editorContext, formik, setActionContext}) 
 
     return (
         <>
-            <PickerInput
+            <ReferenceCard
                 readOnly={field.readOnly}
                 emptyLabel={t(pickerConfig.picker.pickerInput.emptyLabel)}
                 emptyIcon={pickerConfig.picker.pickerInput.emptyIcon}

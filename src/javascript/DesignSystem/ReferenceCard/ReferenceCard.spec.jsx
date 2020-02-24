@@ -4,9 +4,9 @@ import ImageIcon from '@material-ui/icons/Image';
 
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
-import {Picker} from './Picker';
+import {ReferenceCard} from './ReferenceCard';
 
-describe('picker empty', () => {
+describe('reference card empty', () => {
     let defaultProps;
 
     beforeEach(() => {
@@ -20,7 +20,7 @@ describe('picker empty', () => {
 
     it('should display the label', () => {
         const cmp = shallowWithTheme(
-            <Picker {...defaultProps}/>,
+            <ReferenceCard {...defaultProps}/>,
             {},
             dsGenericTheme
         ).dive();
@@ -30,7 +30,7 @@ describe('picker empty', () => {
 
     it('should emmit onClick', () => {
         const cmp = shallowWithTheme(
-            <Picker {...defaultProps}/>,
+            <ReferenceCard {...defaultProps}/>,
             {},
             dsGenericTheme
         ).dive();
@@ -42,7 +42,7 @@ describe('picker empty', () => {
 
     it('should not set trigger onClick when clicking on the button when readOnly', () => {
         const cmp = shallowWithTheme(
-            <Picker {...defaultProps} readOnly/>,
+            <ReferenceCard {...defaultProps} readOnly/>,
             {},
             dsGenericTheme
         ).dive();
@@ -53,7 +53,7 @@ describe('picker empty', () => {
     });
 });
 
-describe('picker filled', () => {
+describe('reference card filled', () => {
     let defaultProps;
 
     beforeEach(() => {
@@ -74,7 +74,7 @@ describe('picker filled', () => {
 
     it('should display the url from field data', () => {
         const cmp = shallowWithTheme(
-            <Picker {...defaultProps}/>,
+            <ReferenceCard {...defaultProps}/>,
             {},
             dsGenericTheme
         ).dive();
@@ -86,7 +86,7 @@ describe('picker filled', () => {
 
     it('should display the name part from field data', () => {
         const cmp = shallowWithTheme(
-            <Picker {...defaultProps}/>,
+            <ReferenceCard {...defaultProps}/>,
             {},
             dsGenericTheme
         ).dive();
@@ -96,7 +96,7 @@ describe('picker filled', () => {
 
     it('should display the info part from field data', () => {
         const cmp = shallowWithTheme(
-            <Picker {...defaultProps}/>,
+            <ReferenceCard {...defaultProps}/>,
             {},
             dsGenericTheme
         ).dive();
@@ -106,7 +106,7 @@ describe('picker filled', () => {
     it('should be in read only', () => {
         defaultProps.readOnly = true;
         const cmp = shallowWithTheme(
-            <Picker {...defaultProps}/>,
+            <ReferenceCard {...defaultProps}/>,
             {},
             dsGenericTheme
         ).dive();
@@ -115,7 +115,7 @@ describe('picker filled', () => {
 
     it('should NOT be in read only', () => {
         const cmp = shallowWithTheme(
-            <Picker {...defaultProps}/>,
+            <ReferenceCard {...defaultProps}/>,
             {},
             dsGenericTheme
         ).dive();
@@ -125,7 +125,7 @@ describe('picker filled', () => {
     it('should send onClick event when clicking on the component', () => {
         defaultProps.onClick = jest.fn();
         const cmp = shallowWithTheme(
-            <Picker {...defaultProps}/>,
+            <ReferenceCard {...defaultProps}/>,
             {},
             dsGenericTheme
         ).dive();
@@ -139,7 +139,7 @@ describe('picker filled', () => {
         defaultProps.onClick = jest.fn();
         defaultProps.readOnly = true;
         const cmp = shallowWithTheme(
-            <Picker {...defaultProps}/>,
+            <ReferenceCard {...defaultProps}/>,
             {},
             dsGenericTheme
         ).dive();
