@@ -3,20 +3,20 @@ import React from 'react';
 import {storiesOf} from '@storybook/react';
 import {withKnobs, boolean, text} from '@storybook/addon-knobs';
 
-import {Picker} from './Picker';
-import doc from './Picker.md';
+import {ReferenceCard} from './ReferenceCard';
+import doc from './ReferenceCard.md';
 import {DSProvider} from '@jahia/design-system-kit';
 import {InsertDriveFile} from '@material-ui/icons';
 
-storiesOf('Picker', module)
+storiesOf('ReferenceCard', module)
     .addDecorator(withKnobs)
     .add(
-        'picker/empty',
+        'card/empty',
         () => (
             <DSProvider>
-                <Picker
+                <ReferenceCard
                     readOnly={boolean('readOnly', false)}
-                    emptyLabel={text('pickerLabel', 'add image')}
+                    emptyLabel={text('referenceCardLabel', 'add image')}
                     emptyIcon={<InsertDriveFile/>}
                 />
             </DSProvider>
@@ -26,10 +26,10 @@ storiesOf('Picker', module)
         }
     )
     .add(
-        'picker/filled',
+        'card/filled',
         () => (
             <DSProvider>
-                <Picker
+                <ReferenceCard
                     readOnly={boolean('readOnly', false)}
                     fieldData={{
                         url:

@@ -60,7 +60,7 @@ describe('picker', () => {
         )
             .dive();
 
-        expect(cmp.find('Picker').props().readOnly).toBe(false);
+        expect(cmp.find('ReferenceCard').props().readOnly).toBe(false);
     });
 
     it('should close the dialog by default', () => {
@@ -82,7 +82,7 @@ describe('picker', () => {
         )
             .dive();
 
-        cmp.find('Picker').simulate('click');
+        cmp.find('ReferenceCard').simulate('click');
 
         expect(cmp.find('PickerDialog').props().isOpen).toBe(true);
     });
