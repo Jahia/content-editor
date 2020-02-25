@@ -53,7 +53,9 @@ export const saveNode = ({
         notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.success'), ['closeButton']);
 
         // Refresh GWT content
-        window.top.authoringApi.refreshContent();
+        if (window.top.authoringApi.refreshContent) {
+            window.top.authoringApi.refreshContent();
+        }
 
         actions.setSubmitting(false);
         refetchPreview(getPreviewPath(nodeData), language);
