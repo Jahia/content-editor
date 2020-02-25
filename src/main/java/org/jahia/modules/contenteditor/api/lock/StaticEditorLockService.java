@@ -1,5 +1,6 @@
 package org.jahia.modules.contenteditor.api.lock;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jahia.api.Constants;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRSessionFactory;
@@ -78,12 +79,14 @@ public class StaticEditorLockService {
             locks.remove(lockId);
 
             JCRNodeWrapper node = sessionWrapper.getNodeByIdentifier(lockedIdentifier);
-            if (node.getProvider().isLockingAvailable() &&
-                node.isLocked() &&
-                node.getLockOwner().equals(JCRSessionFactory.getInstance().getCurrentUser().getUsername())) {
+            if (!locks.containsValue(lockedIdentifier) && // unlock JCR only if there is no other lock on this UUID already in session
+                node.getProvider().isLockingAvailable() &&
+                node.isLocked()) {
 
-                // unlock JCR only if there is no other lock on this UUID already in session
-                if (!locks.containsValue(lockedIdentifier)) {
+                String lockOwners = node.getLockOwner();
+                if (StringUtils.isNotEmpty(lockOwners) &&
+                    Arrays.asList(StringUtils.split(lockOwners, " ")).contains(JCRSessionFactory.getInstance().getCurrentUser().getUsername())) {
+
                     node.unlock(LOCK_TYPE);
                 }
             }
