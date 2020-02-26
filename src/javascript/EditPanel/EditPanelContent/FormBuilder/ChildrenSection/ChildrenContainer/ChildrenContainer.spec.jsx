@@ -40,28 +40,25 @@ describe('ChildrenContainer component', () => {
         }
     };
 
-    it('should display an article', () => {
+    it('should display an the title', () => {
         setContext(context);
         const cmp = shallowWithTheme(
             <ChildrenContainer/>,
             {},
             dsGenericTheme
-        )
-            .dive();
+        );
 
-        expect(cmp.debug()).toContain('article');
+        expect(cmp.debug()).toContain('content-editor:label.contentEditor.section.listAndOrdering.ordering');
     });
 
-    it('should display children', () => {
+    it('should display  children', () => {
         setContext(context);
         const cmp = shallowWithTheme(
             <ChildrenContainer/>,
             {},
             dsGenericTheme
-        )
-            .dive();
-        context.nodeData.children.nodes.forEach(node => {
-            expect(cmp.debug()).toContain(node.name);
-        });
+        );
+
+        expect(cmp.find('DraggableReference').length).toBe(context.nodeData.children.nodes.length);
     });
 });
