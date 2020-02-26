@@ -10,8 +10,8 @@ envCreateCallbacks[Constants.env.redux] = (createdNodePath, lang, contentEditorC
     });
 };
 
-envCreateCallbacks[Constants.env.standalone] = () => {
-    // TODO BACKLOG-12172: implement standalone create (should open standalone edit)
+envCreateCallbacks[Constants.env.standalone] = (createdNodePath, lang, contentEditorConfigContext) => {
+    contentEditorConfigContext.envProps.createCallback(createdNodePath);
 };
 
 export default envCreateCallbacks;
