@@ -40,7 +40,7 @@ describe('ChildrenContainer component', () => {
         }
     };
 
-    it('should display an the title', () => {
+    it('should display the title', () => {
         setContext(context);
         const cmp = shallowWithTheme(
             <ChildrenContainer/>,
