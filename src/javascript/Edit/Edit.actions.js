@@ -3,6 +3,7 @@ import saveAction from './save/save.action';
 import publishAction from './publish/publish.action';
 import startWorkflow from './startWorkflow/startWorkflow.action';
 import unpublishAction from './unpublish/unpublish.action';
+import copyLanguageAction from './copyLanguage/copyLanguage.action';
 import {Edit, Save, CloudUpload, CloudOff} from '@material-ui/icons';
 import {DotsVertical} from 'mdi-material-ui';
 import openEngineTabs from './engineTabs/openEngineTabs.action';
@@ -90,4 +91,10 @@ export const registerEditActions = actionsRegistry => {
             tabs: ['usages']
         });
     }
+
+    actionsRegistry.add('action', 'copyLanguageAction', copyLanguageAction, {
+        buttonLabel:
+            'content-editor:label.contentEditor.edit.action.copyLanguage.name',
+        targets: ['ContentEditorHeaderActions:8']
+    });
 };

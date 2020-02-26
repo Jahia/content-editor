@@ -72,7 +72,8 @@ const EditPanelCmp = ({formik, title, classes, notificationContext, client}) => 
         client, // TODO BACKLOG-11290 find another way to inject apollo-client, i18n, ...}
         notificationContext,
         publicationInfoContext,
-        formik
+        formik,
+        siteInfo
     };
     return (
         <MainLayout
