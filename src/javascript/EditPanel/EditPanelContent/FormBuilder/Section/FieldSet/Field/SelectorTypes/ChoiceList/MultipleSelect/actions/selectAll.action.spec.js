@@ -62,8 +62,7 @@ describe('selectAllAction', () => {
 
             selectAllAction.init(context);
 
-            expect(context.enabled).toBe(false);
-            expect(context.displayDisabled).toBe(false);
+            expect(context.isVisible).toBe(false);
         });
 
         it('should be disabled if field is readonly', () => {

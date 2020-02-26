@@ -6,11 +6,13 @@ export const unsetFieldAction = {
         ));
     },
     onClick: context => {
-        context.formik.setFieldValue(
-            context.field.name,
-            null,
-            true
-        );
-        context.formik.setFieldTouched(context.field.name);
+        if (context.enabled) {
+            context.formik.setFieldValue(
+                context.field.name,
+                null,
+                true
+            );
+            context.formik.setFieldTouched(context.field.name);
+        }
     }
 };

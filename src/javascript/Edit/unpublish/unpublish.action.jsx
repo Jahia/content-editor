@@ -12,16 +12,18 @@ export default composeActions(
                 context.publicationInfoContext.publicationStatus === Constants.editPanel.publicationStatus.PUBLISHED;
         },
         onClick: context => {
-            unpublishNode({
-                client: context.client,
-                t: context.t,
-                notificationContext: context.notificationContext,
-                data: {
-                    nodeData: context.nodeData,
-                    language: context.language,
-                    uilang: context.uilang
-                }
-            });
+            if (context.enabled) {
+                unpublishNode({
+                    client: context.client,
+                    t: context.t,
+                    notificationContext: context.notificationContext,
+                    data: {
+                        nodeData: context.nodeData,
+                        language: context.language,
+                        uilang: context.uilang
+                    }
+                });
+            }
         }
     }
 );

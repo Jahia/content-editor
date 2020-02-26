@@ -3,6 +3,8 @@ export const replaceAction = {
         context.enabled = !context.field.readOnly;
     },
     onClick: context => {
-        context.open(true);
+        if (context.enabled) {
+            context.open(true);
+        }
     }
 };

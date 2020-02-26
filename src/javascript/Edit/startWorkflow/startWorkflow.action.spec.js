@@ -49,16 +49,14 @@ describe('startWorkflow action', () => {
             context.mode = 'create';
             startWorkflowAction.init(context);
 
-            expect(context.enabled).toBe(false);
-            expect(context.displayDisabled).toBe(undefined);
+            expect(context.isVisible).toBe(false);
         });
 
         it('should not display startWorkflowAction when user haven\'t publication rights', () => {
             context.nodeData.hasPublishPermission = false;
             startWorkflowAction.init(context);
 
-            expect(context.enabled).toBe(false);
-            expect(context.displayDisabled).toBe(undefined);
+            expect(context.isVisible).toBe(false);
         });
 
         it('should disable startWorkflowAction when form dirty', () => {
@@ -66,7 +64,7 @@ describe('startWorkflow action', () => {
             startWorkflowAction.init(context);
 
             expect(context.enabled).toBe(false);
-            expect(context.displayDisabled).toBe(true);
+            expect(context.isVisible).toBe(true);
         });
 
         it('should disable startWorkflowAction when node locked', () => {
@@ -74,7 +72,7 @@ describe('startWorkflow action', () => {
             startWorkflowAction.init(context);
 
             expect(context.enabled).toBe(false);
-            expect(context.displayDisabled).toBe(true);
+            expect(context.isVisible).toBe(true);
         });
     });
 
