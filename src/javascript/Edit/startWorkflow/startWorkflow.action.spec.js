@@ -150,7 +150,10 @@ describe('startWorkflow action', () => {
         });
 
         it('should call GWT command', () => {
-            startWorkflowAction.onClick({nodeData: {uuid: 'hello'}});
+            startWorkflowAction.onClick({
+                nodeData: {uuid: 'hello'},
+                enabled: true
+            });
 
             expect(window.parent.authoringApi.openPublicationWorkflow).toHaveBeenCalled();
         });
