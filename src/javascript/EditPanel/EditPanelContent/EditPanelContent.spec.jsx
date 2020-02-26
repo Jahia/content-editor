@@ -2,6 +2,14 @@ import {EditPanelContent} from './EditPanelContent';
 import React from 'react';
 import {shallow} from '@jahia/test-framework';
 
+jest.mock('~/ContentEditor.context', () => {
+    return {
+        useContentEditorConfigContext: () => ({
+            mode: 'edit'
+        })
+    };
+});
+
 describe('EditPanelContent', () => {
     let defaultProps;
     let wrapper;
@@ -10,8 +18,7 @@ describe('EditPanelContent', () => {
         defaultProps = {
             fields: [],
             siteInfo: {},
-            classes: {},
-            mode: 'edit'
+            classes: {}
         };
         wrapper = shallow(<EditPanelContent {...defaultProps}/>);
     });

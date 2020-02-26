@@ -1,0 +1,21 @@
+.dropable {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 8px 0;
+}
+
+.referenceDropGhostHidden {
+    width: 100%;
+    height: 0;
+
+    background-color: #e0e6ea; /* TODO use moonstone color */
+
+    transition: all 0.3s ease;
+}
+
+.referenceDropGhost {
+    height: 72px;
+    margin: 8px 0;
+}

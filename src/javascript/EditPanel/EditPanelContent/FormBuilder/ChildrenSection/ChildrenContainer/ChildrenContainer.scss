@@ -1,0 +1,18 @@
+.fieldsetTitleContainer {
+    display: flex;
+    flex-direction: row;
+    margin: 0 24px 0 16px;
+
+    border-top: 1px solid #e0e6ea; /* TODO use moonstone color */
+}
+
+.fieldSetTitle {
+    width: auto;
+    padding: 8px 0;
+
+    text-transform: uppercase;
+}
+
+.formControl {
+    margin: 0 48px 0 32px;
+}

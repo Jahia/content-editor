@@ -7,6 +7,8 @@ import {EditorIdContextProvider} from './ContentEditorId.context';
 import {withApollo} from 'react-apollo';
 import {ContentEditorConfigContext} from './ContentEditor.context';
 import {Constants} from '~/ContentEditor.constants';
+import {DndProvider} from 'react-dnd';
+import Backend from 'react-dnd-html5-backend';
 
 const Modes = {
     edit: Edit,
@@ -30,7 +32,9 @@ const ContentEditorCmp = ({mode, path, lang, uilang, site, contentType, client, 
         <EditorIdContextProvider>
             <ApolloHooksProvider client={client}>
                 <ContentEditorConfigContext.Provider value={contentEditorConfig}>
-                    <ContentEditorModeCmp/>
+                    <DndProvider backend={Backend}>
+                        <ContentEditorModeCmp/>
+                    </DndProvider>
                 </ContentEditorConfigContext.Provider>
             </ApolloHooksProvider>
         </EditorIdContextProvider>
