@@ -49,6 +49,28 @@ module.exports = (env, argv) => {
                     }
                 },
                 {
+                    test: /\.css$/,
+                    use: ['style-loader', 'css-loader']
+                },
+                {
+                    test: /\.scss$/i,
+                    sideEffects: true,
+                    use: [
+                        'style-loader',
+                        // Translates CSS into CommonJS
+                        {
+                            loader: 'css-loader',
+                            options: {
+                                modules: {
+                                    mode: 'local'
+                                }
+                            }
+                        },
+                        // Compiles Sass to CSS
+                        'sass-loader'
+                    ]
+                },
+                {
                     test: /\.(png|svg)$/,
                     loaders: ['file-loader']
                 }
