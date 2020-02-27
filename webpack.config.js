@@ -17,7 +17,7 @@ module.exports = (env, argv) => {
     let _argv = argv || {};
     let config = {
         entry: {
-            main: [path.resolve(__dirname, 'src/javascript/register')]
+            main: [path.resolve(__dirname, 'src/javascript/index')]
         },
         output: {
             path: path.resolve(__dirname, 'src/main/resources/javascript/apps/'),
