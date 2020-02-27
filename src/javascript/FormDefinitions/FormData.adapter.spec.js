@@ -68,6 +68,7 @@ describe('adaptFormData', () => {
                     primaryNodeType: {
                         displayName: 'ContentType',
                         name: 'jcr:contentType',
+                        hasOrderableChildNodes: false,
                         properties: [
                             {name: 'field1', primaryNodeType: true}
                         ]
@@ -81,8 +82,10 @@ describe('adaptFormData', () => {
                     ],
                     lockInfo: {
                         details: []
-                    }
-                }
+                    },
+                    children: {
+                        nodes: []
+                    }}
             }
         };
     });
@@ -180,5 +183,18 @@ describe('adaptFormData', () => {
         };
 
         expect(adaptFormData(graphqlResponse, 'fr', t).title).toEqual('content-editor:label.contentEditor.create.title');
+    });
+
+    it('should add ChildrenOrder field when we are not on a page and hasOrderableChildNodes', () => {
+        graphqlResponse.jcr.result.isPage = false;
+        graphqlResponse.jcr.result.primaryNodeType.hasOrderableChildNodes = true;
+
+        expect(adaptFormData(graphqlResponse, 'fr', t).initialValues['Children::Order']).toEqual([]);
+    });
+
+    it('shouldn\'t add ChildrenOrder field when we are not on a page', () => {
+        graphqlResponse.jcr.result.isPage = true;
+
+        expect(adaptFormData(graphqlResponse, 'fr', t).initialValues['Children::Order']).not.toEqual([]);
     });
 });

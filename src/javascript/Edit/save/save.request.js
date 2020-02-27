@@ -1,5 +1,5 @@
 import {SavePropertiesMutation} from './save.gql-mutation';
-import {getDataToMutate} from '~/EditPanel/EditPanel.utils';
+import {getDataToMutate, getChildrenOrder} from '~/EditPanel/EditPanel.utils';
 import {NodeQuery} from '~/NodeData/NodeData.gql-queries';
 import {refetchPreview} from '~/EditPanel/EditPanel.refetches';
 import {getPreviewPath} from '~/EditPanel/EditPanelContent/PreviewContainer/Preview/Preview.utils';
@@ -21,6 +21,7 @@ export const saveNode = ({
     }
 }) => {
     const dataToMutate = getDataToMutate({nodeData, formValues: values, sections, lang: language});
+    const {childrenOrder, shouldModifyChildren} = getChildrenOrder(values, nodeData);
 
     client.mutate({
         variables: {
@@ -29,7 +30,9 @@ export const saveNode = ({
             propertiesToDelete: dataToMutate.propsToDelete,
             mixinsToAdd: dataToMutate.mixinsToAdd,
             mixinsToDelete: dataToMutate.mixinsToDelete,
-            language
+            language,
+            shouldModifyChildren,
+            childrenOrder
         },
         mutation: SavePropertiesMutation,
         refetchQueries: [

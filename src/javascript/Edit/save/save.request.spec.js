@@ -28,7 +28,8 @@ describe('saveNode', () => {
             t: jest.fn(),
             data: {
                 nodeData: {},
-                sections: []
+                sections: [],
+                values: {}
             }
         };
     });
