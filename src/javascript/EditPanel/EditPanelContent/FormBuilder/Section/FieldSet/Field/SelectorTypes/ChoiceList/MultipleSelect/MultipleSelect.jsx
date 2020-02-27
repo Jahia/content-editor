@@ -20,7 +20,6 @@ const MultipleSelect = ({field, id, setActionContext}) => {
 
                 setActionContext(prevActionContext => ({
                     initialized: true,
-                    menuDisplayDisabled: true,
                     contextHasChange: !prevActionContext.initialized ||
                         // As action system make deep copy of formik each time value change we must update the context !
                         prevActionContext.formik.values[field.name] !== value

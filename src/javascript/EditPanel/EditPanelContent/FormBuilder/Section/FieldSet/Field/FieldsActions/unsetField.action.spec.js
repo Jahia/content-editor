@@ -11,7 +11,8 @@ describe('unsetFieldAction', () => {
                 },
                 field: {
                     name: 'fieldName'
-                }
+                },
+                enabled: true
             };
         });
 

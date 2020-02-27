@@ -14,16 +14,17 @@ export const selectAllAction = {
             }
         } else {
             // This action should not be displayed for single choice list
-            context.enabled = false;
-            context.displayDisabled = false;
+            context.isVisible = false;
         }
     },
     onClick: context => {
-        context.formik.setFieldValue(
-            context.field.name,
-            context.mappedValueConstraints,
-            true
-        );
-        context.formik.setFieldTouched(context.field.name, context.field.multiple ? [true] : true);
+        if (context.enabled) {
+            context.formik.setFieldValue(
+                context.field.name,
+                context.mappedValueConstraints,
+                true
+            );
+            context.formik.setFieldTouched(context.field.name, context.field.multiple ? [true] : true);
+        }
     }
 };

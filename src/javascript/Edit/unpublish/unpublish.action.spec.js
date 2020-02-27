@@ -29,7 +29,9 @@ import {unpublishNode} from './unpublish.request';
 describe('unpublish action', () => {
     describe('onClick', () => {
         it('should call unpublishNode', () => {
-            unpublishAction.onClick({});
+            unpublishAction.onClick({
+                enabled: true
+            });
 
             expect(unpublishNode).toHaveBeenCalled();
         });
