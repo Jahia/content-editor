@@ -38,6 +38,15 @@ jest.mock('./Picker.utils', () => {
 describe('picker', () => {
     let defaultProps;
 
+    let fastField = cmp => {
+        const FastFieldRender = cmp.find('[shouldUpdate]').props().render;
+        return shallowWithTheme(
+            <FastFieldRender form={{setFieldValue: jest.fn(), setFieldTouched: jest.fn()}}/>,
+            {},
+            dsGenericTheme
+        );
+    };
+
     beforeEach(() => {
         defaultProps = {
             field: {
@@ -57,9 +66,7 @@ describe('picker', () => {
             <Picker {...defaultProps}/>,
             {},
             dsGenericTheme
-        )
-            .dive();
-
+        ).dive();
         expect(cmp.find('ReferenceCard').props().readOnly).toBe(false);
     });
 
@@ -68,10 +75,9 @@ describe('picker', () => {
             <Picker {...defaultProps}/>,
             {},
             dsGenericTheme
-        )
-            .dive();
-
-        expect(cmp.find('PickerDialog').props().isOpen).toBe(false);
+        ).dive();
+        const child = fastField(cmp);
+        expect(child.find('PickerDialog').props().isOpen).toBe(false);
     });
 
     it('should open the dialog when clicking on the picker input', () => {
@@ -79,11 +85,10 @@ describe('picker', () => {
             <Picker {...defaultProps}/>,
             {},
             dsGenericTheme
-        )
-            .dive();
+        ).dive();
 
         cmp.find('ReferenceCard').simulate('click');
-
-        expect(cmp.find('PickerDialog').props().isOpen).toBe(true);
+        const child = fastField(cmp);
+        expect(child.find('PickerDialog').props().isOpen).toBe(true);
     });
 });

@@ -50,7 +50,8 @@ const MainPanelCmp = ({
     classes,
     t,
     pickerConfig,
-    editorContext,
+    lang,
+    uilang,
     nodeTreeConfigs,
     initialSelectedItem,
     selectedPath,
@@ -87,7 +88,7 @@ const MainPanelCmp = ({
                         selectedPath={selectedPath}
                         placeholder={t(pickerConfig.picker.PickerDialog.searchPlaceholder())}
                         className={classes.searchInput}
-                        language={editorContext.lang}
+                        language={lang}
                         onChange={handleSearchChange}
                     />
             </header>
@@ -98,7 +99,8 @@ const MainPanelCmp = ({
                             selectedPath={selectedPath}
                             setSelectedPath={setSelectedPath}
                             initialSelection={initialSelectedItem ? [initialSelectedItem] : []}
-                            editorContext={editorContext}
+                            lang={lang}
+                            uilang={uilang}
                             searchTerms={searchTerms}
                             onThumbnailDoubleClick={onItemSelection}
                     />
@@ -150,15 +152,16 @@ MainPanelCmp.propTypes = {
         }).isRequired,
         selectableTypesTable: PropTypes.arrayOf(PropTypes.string),
         showOnlyNodesWithTemplates: PropTypes.bool,
-        searchSelectorType: PropTypes.object,
+        searchSelectorType: PropTypes.string,
         displayTree: PropTypes.bool
     }).isRequired,
     nodeTreeConfigs: PropTypes.array.isRequired,
-    editorContext: PropTypes.object.isRequired,
+    lang: PropTypes.string.isRequired,
+    uilang: PropTypes.string.isRequired,
     initialSelectedItem: PropTypes.string,
     selectedPath: PropTypes.string,
     setSelectedPath: PropTypes.func.isRequired,
-    selectedItem: PropTypes.string.isRequired,
+    selectedItem: PropTypes.string,
     setSelectedItem: PropTypes.func.isRequired,
     searchTerms: PropTypes.string,
     handleSearchChange: PropTypes.func.isRequired,

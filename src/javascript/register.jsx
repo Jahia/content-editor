@@ -5,6 +5,7 @@ import {Constants} from '~/ContentEditor.constants';
 import {useI18nCENamespace} from '~/useI18n';
 import ContentEditorApi from '~/Api/ContentEditor.api';
 import ContentEditorRedux from './ContentEditor.redux';
+import ContentPickerApi from '~/Api/ContentPicker.api';
 
 /* eslint-disable-next-line no-undef, camelcase */
 __webpack_public_path__ = `${window.contextJsParameters.contextPath}/modules/content-editor/javascript/apps/`;
@@ -23,6 +24,11 @@ registry.add('app', 'content-editor-dependencies-injector', {
 registry.add('app', 'content-editor-api', {
     targets: ['root:16.5'],
     render: next => <><ContentEditorApi/>{next}</>
+});
+
+registry.add('app', 'content-picker-api', {
+    targets: ['root:16.6'],
+    render: next => <><ContentPickerApi/>{next}</>
 });
 
 registry.add('callback', 'content-editor', {

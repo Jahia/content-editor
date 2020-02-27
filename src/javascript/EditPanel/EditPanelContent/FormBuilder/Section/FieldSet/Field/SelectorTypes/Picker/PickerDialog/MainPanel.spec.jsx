@@ -21,9 +21,8 @@ describe('PickerDialog - MainPanel', () => {
             nodeTreeConfigs: [{
                 type: 'image'
             }],
-            editorContext: {
-                lang: 'fr'
-            },
+            lang: 'fr',
+            uilang: 'fr',
             selectedPath: '/selectedPath',
             setSelectedPath: jest.fn(),
             selectedItem: '/path/tata',

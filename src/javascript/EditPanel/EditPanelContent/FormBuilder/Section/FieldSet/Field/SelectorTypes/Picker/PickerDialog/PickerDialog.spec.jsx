@@ -22,9 +22,9 @@ describe('PickerDialog', () => {
             isOpen: true,
             setIsOpen: jest.fn(),
             initialSelectedItem: '',
-            editorContext: {
-                site: 'digitall'
-            },
+            siteKey: 'digitall',
+            lang: 'en',
+            uilang: 'en',
             id: 'id1',
             field: {},
             nodeTreeConfigs: [{
@@ -92,14 +92,7 @@ describe('PickerDialog', () => {
             dsGenericTheme
         ).dive();
 
-        const FastFieldRender = cmp.find('FormikConnect(FastFieldInner)').props().render;
-        const child = shallowWithTheme(
-            <FastFieldRender form={{setFieldValue: jest.fn(), setFieldTouched: jest.fn()}}/>,
-            {},
-            dsGenericTheme
-        );
-
-        expect(child.find('LeftPanel').props().site).toBe('digitall');
+        expect(cmp.find('LeftPanel').props().site).toBe('digitall');
     });
 
     it('should not display the LeftPanel when displayTree is false', () => {
@@ -110,14 +103,7 @@ describe('PickerDialog', () => {
             dsGenericTheme
         ).dive();
 
-        const FastFieldRender = cmp.find('FormikConnect(FastFieldInner)').props().render;
-        const child = shallowWithTheme(
-            <FastFieldRender form={{setFieldValue: jest.fn(), setFieldTouched: jest.fn()}}/>,
-            {},
-            dsGenericTheme
-        );
-
-        expect(child.find('LeftPanel').exists()).toBe(false);
+        expect(cmp.find('LeftPanel').exists()).toBe(false);
     });
 
     it('should display the LeftPanel when displayTree is true', () => {
@@ -127,13 +113,6 @@ describe('PickerDialog', () => {
             dsGenericTheme
         ).dive();
 
-        const FastFieldRender = cmp.find('FormikConnect(FastFieldInner)').props().render;
-        const child = shallowWithTheme(
-            <FastFieldRender form={{setFieldValue: jest.fn(), setFieldTouched: jest.fn()}}/>,
-            {},
-            dsGenericTheme
-        );
-
-        expect(child.find('LeftPanel').exists()).toBe(true);
+        expect(cmp.find('LeftPanel').exists()).toBe(true);
     });
 });

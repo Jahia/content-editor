@@ -52,7 +52,8 @@ export const List = ({
     setSelectedItem,
     selectedPath,
     setSelectedPath,
-    editorContext,
+    lang,
+    uilang,
     initialSelection,
     searchTerms
 }) => {
@@ -65,7 +66,7 @@ export const List = ({
         loading,
         refetch,
         loadMore
-    } = useDialogPickerContent(pickerConfig, selectedPath, searchTerms);
+    } = useDialogPickerContent(lang, pickerConfig, selectedPath, searchTerms);
 
     useEffect(() => {
         registry.addOrReplace('refetch-upload', 'refetch-content-list', {
@@ -99,7 +100,7 @@ export const List = ({
             type: content.primaryNodeType.typeName,
             createdBy: content.createdBy ? content.createdBy.value : undefined,
             lastModified: content.lastModified ? dayjs(content.lastModified.value)
-                .locale(editorContext.uilang)
+                .locale(uilang)
                 .format('LLL') : undefined,
             navigateInto: haveSubContents,
             props: {
@@ -147,7 +148,8 @@ List.propTypes = {
     setSelectedItem: PropTypes.func.isRequired,
     selectedPath: PropTypes.string.isRequired,
     setSelectedPath: PropTypes.func.isRequired,
-    editorContext: PropTypes.object.isRequired,
+    lang: PropTypes.string.isRequired,
+    uilang: PropTypes.string.isRequired,
     initialSelection: PropTypes.array,
     searchTerms: PropTypes.string
 };

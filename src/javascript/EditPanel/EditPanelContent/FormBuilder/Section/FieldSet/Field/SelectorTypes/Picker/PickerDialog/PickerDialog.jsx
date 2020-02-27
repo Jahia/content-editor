@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
 import Dialog from '@material-ui/core/Dialog/Dialog';
-import {FastField} from 'formik';
 import Slide from '@material-ui/core/Slide';
 import {ProgressOverlay} from '@jahia/react-material';
 
@@ -34,30 +33,30 @@ const Transition = props => {
     return <Slide direction="up" {...props}/>;
 };
 
-const useSiteSwitcher = ({initialSelectedItem, editorContext, nodeTreeConfigs, t}) => {
+const useSiteSwitcher = ({initialSelectedItem, lang, siteKey, nodeTreeConfigs, t}) => {
     const {data, error, loading} = useQuery(SiteNodesQuery, {
         variables: {
             query: 'select * from [jnt:virtualsite] where ischildnode(\'/sites\')',
-            displayLanguage: editorContext.lang
+            displayLanguage: lang
         }
     });
 
-    const selectedSite = initialSelectedItem ? getSite(initialSelectedItem).slice(7) : editorContext.site;
-    const [site, setSite] = useState(selectedSite);
+    const selectedSite = initialSelectedItem ? getSite(initialSelectedItem).slice(7) : siteKey;
+    const [currentSite, setSite] = useState(selectedSite);
 
     if (error || loading) {
         return {error, loading};
     }
 
     const siteNodes = getSiteNodes(data, t('content-editor:label.contentEditor.siteSwitcher.allSites'));
-    const siteNode = siteNodes.find(siteNode => siteNode.name === site);
+    const siteNode = siteNodes.find(siteNode => siteNode.name === currentSite);
 
     const onSelectSite = siteNode => {
         setSite(siteNode.name);
         return siteNode.allSites ? '/sites' : nodeTreeConfigs[0].treeConfig.rootPath(siteNode.name);
     };
 
-    return {siteNode, siteNodes, site, onSelectSite, setSite, selectedSite};
+    return {siteNode, siteNodes, currentSite, onSelectSite, setSite, selectedSite};
 };
 
 const useSearch = () => {
@@ -76,15 +75,17 @@ const PickerDialogCmp = ({
     isOpen,
     setIsOpen,
     initialSelectedItem,
-    editorContext,
-    id,
+    siteKey,
+    uilang,
+    lang,
     field,
     nodeTreeConfigs,
     t,
-    pickerConfig
+    pickerConfig,
+    onItemSelection
 }) => {
     const {
-        site,
+        currentSite,
         selectedSite,
         setSite,
         siteNodes,
@@ -92,7 +93,7 @@ const PickerDialogCmp = ({
         error,
         loading,
         onSelectSite
-    } = useSiteSwitcher({initialSelectedItem, editorContext, nodeTreeConfigs, t});
+    } = useSiteSwitcher({initialSelectedItem, siteKey, lang, nodeTreeConfigs, t});
 
     // SelectedItem is an object when something is selected
     // undefined when never modified
@@ -120,7 +121,7 @@ const PickerDialogCmp = ({
             ...nodeTreeConfig,
             selectableTypes: siteNode && siteNode.allSites ? [...nodeTreeConfig.treeConfig.selectableTypes, 'jnt:virtualsitesFolder'] : nodeTreeConfig.treeConfig.selectableTypes,
             openableTypes: siteNode && siteNode.allSites ? [...nodeTreeConfig.treeConfig.openableTypes, 'jnt:virtualsitesFolder', 'jnt:virtualsite'] : nodeTreeConfig.treeConfig.openableTypes,
-            rootPath: siteNode && siteNode.allSites ? '/sites' : nodeTreeConfig.treeConfig.rootPath(site),
+            rootPath: siteNode && siteNode.allSites ? '/sites' : nodeTreeConfig.treeConfig.rootPath(currentSite),
             rootLabel: siteNode && siteNode.displayName
         }));
 
@@ -139,54 +140,42 @@ const PickerDialogCmp = ({
                 handleSearchChange({target: {value: ''}});
             }}
         >
-            <FastField shouldUpdate={() => true}
-                       render={({form: {setFieldValue, setFieldTouched}}) => {
-                           const onItemSelection = data => {
-                               setFieldValue(
-                                   id,
-                                   pickerConfig.picker.PickerDialog.itemSelectionAdapter(data),
-                                   true
-                               );
-                               setIsOpen(false);
-                               setFieldTouched(field.name, field.multiple ? [true] : true);
-                           };
-
-                           return (
-                               <>
-                                   {pickerConfig.displayTree && (
-                                   <LeftPanel
-                                        site={site}
-                                        siteNodes={siteNodes}
-                                        selectedPath={selectedPath}
-                                        setSelectedPath={setSelectedPath}
-                                        setSelectedItem={setSelectedItem}
-                                        field={field}
-                                        initialSelectedItem={initialSelectedItem}
-                                        lang={editorContext.lang}
-                                        nodeTreeConfigs={nodeTreeConfigsAdapted}
-                                        onSelectSite={onSelectSite}
-                                   />)}
-                                   <div className={classes.modalContent + (pickerConfig.displayTree ? ` ${classes.modalContentWithDrawer}` : '')}>
-                                       <MainPanel
-                                            setSelectedPath={setSelectedPath}
-                                            pickerConfig={pickerConfig}
-                                            nodeTreeConfigs={nodeTreeConfigsAdapted}
-                                            initialSelectedItem={initialSelectedItem}
-                                            selectedItem={selectedItem}
-                                            setSelectedItem={setSelectedItem}
-                                            selectedPath={selectedPath}
-                                            editorContext={editorContext}
-                                            searchTerms={searchTerms}
-                                            handleSearchChange={handleSearchChange}
-                                            t={t}
-                                            onItemSelection={onItemSelection}
-                                            onCloseDialog={() => setIsOpen(false)}
-                                       />
-                                   </div>
-                               </>
-                           );
-                   }}
-            />
+            <>
+                {pickerConfig.displayTree && (
+                    <LeftPanel
+                        site={currentSite}
+                        siteNodes={siteNodes}
+                        selectedPath={selectedPath}
+                        setSelectedPath={setSelectedPath}
+                        setSelectedItem={setSelectedItem}
+                        field={field}
+                        initialSelectedItem={initialSelectedItem}
+                        lang={lang}
+                        nodeTreeConfigs={nodeTreeConfigsAdapted}
+                        onSelectSite={onSelectSite}
+                    />)}
+                <div
+                    className={classes.modalContent + (pickerConfig.displayTree ? ` ${classes.modalContentWithDrawer}` : '')}
+                >
+                    <MainPanel
+                        setSelectedPath={setSelectedPath}
+                        pickerConfig={pickerConfig}
+                        nodeTreeConfigs={nodeTreeConfigsAdapted}
+                        initialSelectedItem={initialSelectedItem}
+                        selectedItem={selectedItem}
+                        setSelectedItem={setSelectedItem}
+                        selectedPath={selectedPath}
+                        lang={lang}
+                        uilang={uilang}
+                        searchTerms={searchTerms}
+                        handleSearchChange={handleSearchChange}
+                        t={t}
+                        onItemSelection={onItemSelection}
+                        onCloseDialog={() => setIsOpen(false)}
+                    />
+                </div>
+            </>
+            );
         </Dialog>
     );
 };
@@ -199,13 +188,15 @@ PickerDialogCmp.propTypes = {
     classes: PropTypes.object.isRequired,
     isOpen: PropTypes.bool.isRequired,
     setIsOpen: PropTypes.func.isRequired,
-    editorContext: PropTypes.object.isRequired,
-    id: PropTypes.string.isRequired,
+    siteKey: PropTypes.string.isRequired,
+    uilang: PropTypes.string.isRequired,
+    lang: PropTypes.string.isRequired,
     nodeTreeConfigs: PropTypes.array.isRequired,
     t: PropTypes.func.isRequired,
     field: PropTypes.object.isRequired,
     pickerConfig: PropTypes.object.isRequired,
-    initialSelectedItem: PropTypes.string
+    initialSelectedItem: PropTypes.string,
+    onItemSelection: PropTypes.func.isRequired
 };
 
 export const PickerDialog = withStyles(styles)(PickerDialogCmp);
