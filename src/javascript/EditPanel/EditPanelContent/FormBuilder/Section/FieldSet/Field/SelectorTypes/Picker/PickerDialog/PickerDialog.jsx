@@ -16,7 +16,8 @@ import {useDebounce} from './useDebounce';
 
 const styles = theme => ({
     rootDialog: {
-        margin: theme.spacing.unit * 8
+        margin: theme.spacing.unit * 8,
+        zIndex: 11000
     },
     modalContent: {
         display: 'flex',

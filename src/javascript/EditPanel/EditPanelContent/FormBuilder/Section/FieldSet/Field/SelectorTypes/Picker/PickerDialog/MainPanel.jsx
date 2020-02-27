@@ -65,7 +65,8 @@ const MainPanelCmp = ({
 }) => {
     const selectElement = () => {
         if (selectedItem) {
-            onItemSelection(selectedItem);
+            // Todo: BACKLOG-12581 - Multiple is not supported yet in pickers. Always return a single value.
+            onItemSelection(Array.isArray(selectedItem) ? selectedItem[0] : selectedItem);
         } else {
             onCloseDialog();
         }
@@ -85,25 +86,25 @@ const MainPanelCmp = ({
                     {t(pickerConfig.picker.PickerDialog.dialogTitle(isPickerTypeFiles))}
                 </Typography>
                 <SearchInput
-                        selectedPath={selectedPath}
-                        placeholder={t(pickerConfig.picker.PickerDialog.searchPlaceholder())}
-                        className={classes.searchInput}
-                        language={lang}
-                        onChange={handleSearchChange}
-                    />
+                    selectedPath={selectedPath}
+                    placeholder={t(pickerConfig.picker.PickerDialog.searchPlaceholder())}
+                    className={classes.searchInput}
+                    language={lang}
+                    onChange={handleSearchChange}
+                />
             </header>
             <main className={classes.modalMain}>
                 <PickerDialogContent
-                            pickerConfig={pickerConfig}
-                            setSelectedItem={setSelectedItem}
-                            selectedPath={selectedPath}
-                            setSelectedPath={setSelectedPath}
-                            initialSelection={initialSelectedItem ? [initialSelectedItem] : []}
-                            lang={lang}
-                            uilang={uilang}
-                            searchTerms={searchTerms}
-                            onThumbnailDoubleClick={onItemSelection}
-                    />
+                    pickerConfig={pickerConfig}
+                    setSelectedItem={setSelectedItem}
+                    selectedPath={selectedPath}
+                    setSelectedPath={setSelectedPath}
+                    initialSelection={initialSelectedItem ? [initialSelectedItem] : []}
+                    lang={lang}
+                    uilang={uilang}
+                    searchTerms={searchTerms}
+                    onThumbnailDoubleClick={onItemSelection}
+                />
             </main>
 
             <div className={classes.actions}>
