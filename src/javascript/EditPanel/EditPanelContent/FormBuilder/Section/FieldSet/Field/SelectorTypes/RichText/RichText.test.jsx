@@ -56,7 +56,7 @@ describe('RichText component', () => {
 
     const buildComp = componentProps => {
         const mainComponent = shallowWithTheme(<RichTextCmp {...componentProps}/>, {}, dsGenericTheme);
-        const RenderProps = mainComponent.props().render;
+        const RenderProps = mainComponent.find('FormikConnect(FastFieldInner)').props().render;
         return shallowWithTheme(<RenderProps form={{setFieldTouched: handleFieldTouched, setFieldValue: handleChange}}/>, {}, dsGenericTheme);
     };
 
@@ -106,7 +106,7 @@ describe('RichText component', () => {
     it('should load default configuration if selector options are not available in the definition', () => {
         const wrapper = buildComp(props);
         expect(wrapper.find(RICH_TEXT_COMPONENT_TAG).prop('config'))
-            .toEqual({
+            .toMatchObject({
                 contentEditorFieldName: 'richID',
                 customConfig: '',
                 toolbar: 'Light',
@@ -121,7 +121,7 @@ describe('RichText component', () => {
         ];
         const wrapper = buildComp(props);
         expect(wrapper.find(RICH_TEXT_COMPONENT_TAG).prop('config'))
-            .toEqual({
+            .toMatchObject({
                 contentEditorFieldName: 'richID',
                 customConfig: '/path/to/my/custom/config.js',
                 toolbar: 'dictionary',

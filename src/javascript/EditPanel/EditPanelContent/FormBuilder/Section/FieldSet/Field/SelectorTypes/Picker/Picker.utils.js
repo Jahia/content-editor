@@ -26,6 +26,23 @@ export const allSitesEntry = label => {
     return {name: 'allSites', displayName: label, allSites: true};
 };
 
+export function getNodeTreeConfigs(pickerConfig, site, siteName, t) {
+    const nodeTreeConfigs = pickerConfig.treeConfigs.map(treeConfig => {
+        return {
+            treeConfig,
+            rootPath: treeConfig.rootPath(site),
+            selectableTypes: treeConfig.selectableTypes,
+            type: treeConfig.type,
+            openableTypes: treeConfig.openableTypes,
+            rootLabel: t(treeConfig.rootLabelKey, {
+                siteName: siteName
+            }),
+            key: `browse-tree-${treeConfig.type}`
+        };
+    });
+    return nodeTreeConfigs;
+}
+
 export const extractConfigs = (field, editorContext, t) => {
     // Resolve picker configuration
     const pickerConfig = pickerConfigs.resolveConfig(
@@ -34,19 +51,7 @@ export const extractConfigs = (field, editorContext, t) => {
     );
 
     // Build tree configs
-    const nodeTreeConfigs = pickerConfig.treeConfigs.map(treeConfig => {
-        return {
-            treeConfig,
-            rootPath: treeConfig.rootPath(editorContext.site),
-            selectableTypes: treeConfig.selectableTypes,
-            type: treeConfig.type,
-            openableTypes: treeConfig.openableTypes,
-            rootLabel: t(treeConfig.rootLabelKey, {
-                siteName: editorContext.siteInfo.displayName
-            }),
-            key: `browse-tree-${treeConfig.type}`
-        };
-    });
+    const nodeTreeConfigs = getNodeTreeConfigs(pickerConfig, editorContext.site, editorContext.siteInfo.displayName, t);
 
     return {
         pickerConfig: {

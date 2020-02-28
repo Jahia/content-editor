@@ -14,7 +14,8 @@ export const Thumbnail = ({
     selectedPath,
     initialSelection,
     searchTerms,
-    pickerConfig
+    pickerConfig,
+    lang
 }) => {
     const {t} = useTranslation();
     const {
@@ -25,7 +26,7 @@ export const Thumbnail = ({
         loading,
         refetch,
         loadMore
-    } = useDialogPickerContent(pickerConfig, selectedPath, searchTerms);
+    } = useDialogPickerContent(lang, pickerConfig, selectedPath, searchTerms);
 
     useEffect(() => {
         registry.addOrReplace('refetch-upload', 'refetch-image-list', {
@@ -86,6 +87,7 @@ Thumbnail.defaultProps = {
 };
 
 Thumbnail.propTypes = {
+    lang: PropTypes.string.isRequired,
     setSelectedItem: PropTypes.func.isRequired,
     onThumbnailDoubleClick: PropTypes.func.isRequired,
     selectedPath: PropTypes.string.isRequired,

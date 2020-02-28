@@ -107,7 +107,7 @@ LeftPanelCmp.propTypes = {
     siteNodes: PropTypes.array.isRequired,
     field: PropTypes.object.isRequired,
     lang: PropTypes.string.isRequired,
-    initialSelectedItem: PropTypes.array,
+    initialSelectedItem: PropTypes.string,
     nodeTreeConfigs: PropTypes.array.isRequired,
     selectedPath: PropTypes.string,
     setSelectedPath: PropTypes.func.isRequired,

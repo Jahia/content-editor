@@ -1,10 +1,9 @@
-import {useContentEditorContext} from '~/ContentEditor.context';
 import {useQuery} from '@apollo/react-hooks';
 import {ContentDialogPickerQuery, SearchContentDialogPickerQuery} from './content.gql-queries';
 
 const NB_OF_ELEMENT_PER_PAGE = 20;
 
-export const useDialogPickerContent = (pickerConfig, selectedPath, searchTerms) => {
+export const useDialogPickerContent = (lang, pickerConfig, selectedPath, searchTerms) => {
     // Build table config from picker config
     const tableConfig = {
         typeFilter: pickerConfig.selectableTypesTable,
@@ -13,8 +12,6 @@ export const useDialogPickerContent = (pickerConfig, selectedPath, searchTerms) 
         searchSelectorType: pickerConfig.searchSelectorType
     };
 
-    const editorContext = useContentEditorContext();
-
     const queryData = useQuery(
         searchTerms ? SearchContentDialogPickerQuery : ContentDialogPickerQuery,
         {
@@ -22,7 +19,7 @@ export const useDialogPickerContent = (pickerConfig, selectedPath, searchTerms) 
                 path: selectedPath,
                 offset: 0,
                 limit: NB_OF_ELEMENT_PER_PAGE,
-                language: editorContext.lang,
+                language: lang,
                 searchTerms,
                 searchName: '%' + searchTerms + '%',
                 searchSelectorType: tableConfig.searchSelectorType,
