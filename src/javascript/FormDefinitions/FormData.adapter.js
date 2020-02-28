@@ -10,8 +10,10 @@ const getInitialValues = (nodeData, sections) => {
     const fields = getFields(sections)
         .reduce((result, field) => ({...result, ...getFieldValues(field, nodeData)}), {});
 
+    const childrenOrderingFields = getChildrenOrderingFields(nodeData);
+
     // Return object contains fields and dynamic fieldSets
-    return {...fields, ...dynamicFieldSets};
+    return {...fields, ...dynamicFieldSets, ...childrenOrderingFields};
 };
 
 const getFieldValues = (field, nodeData) => {
@@ -99,6 +101,17 @@ const adaptSections = sections => {
             return [...result, section];
         }, [])
         .filter(section => (section.fieldSets && section.fieldSets.length > 0));
+};
+
+const getChildrenOrderingFields = nodeData => {
+    if (!nodeData.isPage && nodeData.primaryNodeType.hasOrderableChildNodes) {
+        return {
+            // The name of this field contain :: because it's forbiden in JCR. With this we avoid collision :)
+            'Children::Order': nodeData.children.nodes
+        };
+    }
+
+    return {};
 };
 
 export const adaptFormData = (data, lang, t) => {

@@ -1,25 +1,21 @@
-import React, {useState, Fragment} from 'react';
+import React, {Fragment} from 'react';
+import {PropTypes} from 'prop-types';
 
 import {Typography} from '@jahia/design-system-kit';
-import {useContentEditorContext} from '~/ContentEditor.context';
 import {useTranslation} from 'react-i18next';
 
-import classes from './ChildrenContainer.scss';
+import classes from './ChildrenOrderField.scss';
 
 import {DropableSpace, DraggableReference} from './DragDrop';
 
-export const ChildrenContainer = () => {
-    const context = useContentEditorContext();
+export const ChildrenOrderField = ({value, onChange}) => {
     const {t} = useTranslation();
 
-    // TODO BACKLOG-12544 remove this states
-    const [nodes, setNodes] = useState(context.nodeData.children.nodes);
-
     const handleReorder = (droppedName, index) => {
-        const droppedChild = nodes.find(child => child.name === droppedName);
-        const childrenWithoutDropped = nodes.filter(child => child.name !== droppedName);
+        const droppedChild = value.find(child => child.name === droppedName);
+        const childrenWithoutDropped = value.filter(child => child.name !== droppedName);
 
-        setNodes([
+        onChange([
             ...childrenWithoutDropped.slice(0, index),
             droppedChild,
             ...childrenWithoutDropped.slice(index, childrenWithoutDropped.length)
@@ -37,18 +33,18 @@ export const ChildrenContainer = () => {
             <div className={classes.formControl}>
                 <DropableSpace
                     childUp={null}
-                    childDown={nodes[0]}
+                    childDown={value[0]}
                     classes={classes}
                     index={0}
                     onReorder={handleReorder}
                     />
-                {nodes.map((child, i) => {
+                {value.map((child, i) => {
                     return (
                         <Fragment key={`${child.name}-grid`}>
                             <DraggableReference child={child}/>
                             <DropableSpace
                                 childUp={child}
-                                childDown={nodes[i + 1]}
+                                childDown={value[i + 1]}
                                 index={i + 1}
                                 onReorder={handleReorder}
                                 />
@@ -58,4 +54,13 @@ export const ChildrenContainer = () => {
             </div>
         </article>
     );
+};
+
+ChildrenOrderField.defaultProps = {
+    value: []
+};
+
+ChildrenOrderField.propTypes = {
+    value: PropTypes.array,
+    onChange: PropTypes.func.isRequired
 };

@@ -3,6 +3,14 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {EditPanelLanguageSwitcher} from './';
 
+jest.mock('~/ContentEditor.context', () => {
+    return {
+        useContentEditorConfigContext: () => ({
+            lang: 'fr'
+        })
+    };
+});
+
 describe('EditPanelLanguageSwitcher', () => {
     let defaultProps;
 
