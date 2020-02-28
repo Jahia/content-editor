@@ -5,6 +5,9 @@ import {Constants} from '~/ContentEditor.constants';
 import * as PropTypes from 'prop-types';
 import Slide from '@material-ui/core/Slide';
 import {CreateNewContentDialog} from '../Create/CreateNewContentAction/CreateNewContentDialog';
+import {withApollo} from 'react-apollo';
+import {compose} from '~/utils';
+import {getCreatableNodetypes} from '~/Create/CreateNewContentAction/createNewContent.utits';
 
 let styles = () => {
     return {
@@ -22,9 +25,9 @@ let styles = () => {
     };
 };
 
-const ContentEditorApiCmp = ({classes}) => {
-    const [edit, isEdit] = useState(false);
-    const [create, isCreate] = useState(false);
+const ContentEditorApiCmp = ({classes, client}) => {
+    const [editorConfig, setEditorConfig] = useState(false);
+    const [contentTypeSelectorConfig, setContentTypeSelectorConfig] = useState(false);
 
     window.CE_API = window.CE_API || {};
     /**
@@ -35,13 +38,7 @@ const ContentEditorApiCmp = ({classes}) => {
      * @param uilang the preferred user lang for ui
      */
     window.CE_API.edit = (path, site, lang, uilang) => {
-        isEdit({
-            path,
-            site,
-            lang,
-            uilang,
-            mode: Constants.routes.baseEditRoute
-        });
+        setEditorConfig({path, site, lang, uilang, mode: Constants.routes.baseEditRoute});
     };
 
     /**
@@ -54,57 +51,63 @@ const ContentEditorApiCmp = ({classes}) => {
      *                    if not specified: will try to resolve the content types available for creation
      *                    - in case of one content type resolved: open directly CE for this content type
      *                    - in case of multiple content types resolved: open content type selector
+     * @param excludedNodeTypes (optional) The node types excluded for creation, by default: ['jmix:studioOnly', 'jmix:hiddenType']
      */
-    window.CE_API.create = (path, site, lang, uilang, contentType) => {
+    window.CE_API.create = (path, site, lang, uilang, contentType, excludedNodeTypes) => {
         if (contentType) {
             // Direct create with a known content type
-            isEdit({
-                path,
-                site,
-                lang,
-                uilang,
-                contentType,
-                mode: Constants.routes.baseCreateRoute
-            });
+            setEditorConfig({path, site, lang, uilang, contentType, mode: Constants.routes.baseCreateRoute});
         } else {
-            // Create from content type selector
-            isCreate({
+            // Resolve creatable node types
+            getCreatableNodetypes(
+                client,
                 path,
-                site,
-                lang,
-                uilang
-            });
+                uilang,
+                (excludedNodeTypes && excludedNodeTypes.length) > 0 ? excludedNodeTypes : ['jmix:studioOnly', 'jmix:hiddenType'],
+                [],
+                creatableNodeTypes => {
+                    // Only one type allowed, open directly CE
+                    if (creatableNodeTypes.length === 1) {
+                        setEditorConfig({path, site, lang, uilang, contentType: creatableNodeTypes[0].name, mode: Constants.routes.baseCreateRoute});
+                    }
+
+                    // Multiple nodetypes allowed, open content type selector
+                    if (creatableNodeTypes.length > 1) {
+                        setContentTypeSelectorConfig({path, site, lang, uilang});
+                    }
+                }
+            );
         }
     };
 
     // Standalone env props
     const envProps = {
         closeCallback: () => {
-            isEdit(false);
-            isCreate(false);
+            setEditorConfig(false);
+            setContentTypeSelectorConfig(false);
         },
         createCallback: createdNodePath => {
             // Redirect to CE edit mode, for the created node
-            if (edit) {
-                isEdit({
+            if (editorConfig) {
+                setEditorConfig({
                     path: createdNodePath,
-                    site: edit.site,
-                    uilang: edit.uilang,
-                    lang: edit.lang,
+                    site: editorConfig.site,
+                    uilang: editorConfig.uilang,
+                    lang: editorConfig.lang,
                     mode: Constants.routes.baseEditRoute
                 });
             }
         },
         setLanguage: lang => {
             // Update the lang of current opened CE
-            if (edit) {
-                isEdit({
-                    path: edit.path,
-                    site: edit.site,
-                    uilang: edit.uilang,
+            if (editorConfig) {
+                setEditorConfig({
+                    path: editorConfig.path,
+                    site: editorConfig.site,
+                    uilang: editorConfig.uilang,
                     lang: lang,
-                    mode: edit.mode,
-                    contentType: edit.contentType
+                    mode: editorConfig.mode,
+                    contentType: editorConfig.contentType
                 });
             }
         }
@@ -112,39 +115,39 @@ const ContentEditorApiCmp = ({classes}) => {
 
     return (
         <>
-            {edit &&
+            {editorConfig &&
             <Dialog fullScreen open TransitionComponent={Transition} aria-labelledby="dialog-content-editor" classes={{root: classes.ceDialogRoot}} onClose={envProps.closeCallback}>
                 <div className={classes.mainBackground}>
                     <ContentEditor env={Constants.env.standalone}
-                                   mode={edit.mode}
-                                   path={edit.path}
-                                   lang={edit.lang}
-                                   uilang={edit.uilang}
-                                   site={edit.site}
-                                   contentType={edit.contentType}
+                                   mode={editorConfig.mode}
+                                   path={editorConfig.path}
+                                   lang={editorConfig.lang}
+                                   uilang={editorConfig.uilang}
+                                   site={editorConfig.site}
+                                   contentType={editorConfig.contentType}
                                    envProps={envProps}
                     />
                 </div>
             </Dialog>}
 
-            {create &&
+            {contentTypeSelectorConfig &&
             <CreateNewContentDialog
                 open
-                parentPath={create.path}
-                uilang={create.uilang}
+                parentPath={contentTypeSelectorConfig.path}
+                uilang={contentTypeSelectorConfig.uilang}
                 onClose={() => {
-                    isCreate(false);
+                    setContentTypeSelectorConfig(false);
                 }}
                 onExited={() => {
-                    isCreate(false);
+                    setContentTypeSelectorConfig(false);
                 }}
                 onCreateContent={contentType => {
-                    isCreate(false);
-                    isEdit({
-                        path: create.path,
-                        site: create.site,
-                        uilang: create.uilang,
-                        lang: create.lang,
+                    setContentTypeSelectorConfig(false);
+                    setEditorConfig({
+                        path: contentTypeSelectorConfig.path,
+                        site: contentTypeSelectorConfig.site,
+                        uilang: contentTypeSelectorConfig.uilang,
+                        lang: contentTypeSelectorConfig.lang,
                         contentType: contentType.name,
                         mode: Constants.routes.baseCreateRoute
                     });
@@ -159,9 +162,14 @@ const Transition = React.forwardRef((props, ref) => {
 });
 
 ContentEditorApiCmp.propTypes = {
+    client: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired
 };
 
-const ContentEditorApi = withStyles(styles)(ContentEditorApiCmp);
+const ContentEditorApi = compose(
+    withApollo,
+    withStyles(styles)
+)(ContentEditorApiCmp);
+
 ContentEditorApi.displayName = 'ContentEditorAPI';
 export default ContentEditorApi;

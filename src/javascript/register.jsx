@@ -50,12 +50,10 @@ window.top.jahiaGwtHook = {
     edit: ({path, lang, siteKey, uilang}) => {
         window.CE_API.edit(path, siteKey, lang, uilang);
     },
-    // Hook on create engine opening
-    create: ({path, lang, siteKey, uilang, contentType}) => {
-        window.CE_API.create(path, siteKey, lang, uilang, contentType);
+    // Hook on create engine opening, also hook on create content type selector
+    create: ({path, lang, siteKey, uilang, contentType, excludedNodeTypes}) => {
+        window.CE_API.create(path, siteKey, lang, uilang, contentType, excludedNodeTypes);
     }
-    // Hook on create content type selection
-    // todo
 };
 
 console.debug('%c Content Editor is activated', 'color: #3c8cba');

@@ -1,15 +1,17 @@
-import {getActions, filterTree} from './createNewContent.utits';
+import {getCreatableNodetypes, filterTree, transformNodeTypesToActions} from './createNewContent.utits';
 
 describe('CreateNewContent utils', () => {
     describe('getActions', () => {
-        let context;
+        let client;
         let queryResponse;
 
+        const getActions = (client, showOnNodeTypes) => {
+            return getCreatableNodetypes(client, '/dummy/path', 'en', ['jmix:studioOnly', 'jmix:hiddenType'], showOnNodeTypes, transformNodeTypesToActions);
+        };
+
         beforeEach(() => {
-            context = {
-                client: {
-                    query: jest.fn(() => Promise.resolve(queryResponse))
-                }
+            client = {
+                query: jest.fn(() => Promise.resolve(queryResponse))
             };
 
             queryResponse = {
@@ -39,19 +41,19 @@ describe('CreateNewContent utils', () => {
         });
 
         it('should make a query', async () => {
-            await getActions(context);
+            await getActions(client);
 
-            expect(context.client.query).toHaveBeenCalled();
+            expect(client.query).toHaveBeenCalled();
         });
 
         it('should return empty array when nodetype is not allowed', async () => {
             queryResponse.data.jcr.nodeByPath.isNodeType = false;
-            expect(await getActions(context)).toEqual([]);
+            expect(await getActions(client, ['jnt:content'])).toEqual([]);
         });
 
         it('should return empty array when no contentTypesAsTree is returned', async () => {
             queryResponse.data.forms.contentTypesAsTree = [];
-            expect(await getActions(context)).toEqual([]);
+            expect(await getActions(client)).toEqual([]);
         });
 
         it('should return null when there is more than 5 nodeTypes', async () => {
@@ -64,11 +66,11 @@ describe('CreateNewContent utils', () => {
             queryResponse.data.forms.contentTypesAsTree.push({
                 name: 'yole'
             });
-            expect(await getActions(context)).toEqual(undefined);
+            expect(await getActions(client)).toEqual(undefined);
         });
 
         it('should return actions', async () => {
-            const actions = await getActions(context);
+            const actions = await getActions(client);
             expect(actions[0].key).toEqual('toto');
             expect(actions[1].key).toEqual('tete');
             expect(actions[2].key).toEqual('tata');
@@ -80,7 +82,7 @@ describe('CreateNewContent utils', () => {
                 name: 'jnt:resource'
             });
 
-            const actions = await getActions(context);
+            const actions = await getActions(client);
             expect(actions[0].key).toEqual('toto');
             expect(actions[1].key).toEqual('tete');
             expect(actions[2].key).toEqual('tata');
