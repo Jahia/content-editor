@@ -17,6 +17,14 @@
         },
         "action": {
           "copyLanguage": {
+            "bottomText": "Beim Klicken auf \"Anwenden\" werden alle Felder der aktuellen Sprache mit den Werten der ausgewählten Sprache überschrieben.",
+            "btnApply": "Anwenden",
+            "btnCancel": "Abbrechen",
+            "currentLanguage": "Aktuellen Sprache:",
+            "defaultValue": "Nicht ausgewählt",
+            "dialogSubTitle": "\"Kopieren von\" ermöglicht das Kopieren ALLER befüllten Werte der Eingabefelder aus einer anderen Sprache in die aktuelle Sprache.",
+            "dialogTitle": "Kopieren von",
+            "listLabel": "Kopieren von",
             "name": "Kopieren von anderen Sprachen"
           },
           "save": {

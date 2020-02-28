@@ -1,0 +1,37 @@
+.dialogTitle {
+    margin: 0 10px;
+
+    text-transform: uppercase;
+}
+
+.dialogSubTitle {
+    margin: 10px;
+}
+
+.dialogContent {
+    padding: 40px 0;
+
+    border-top: 1px solid #e0e6ea;
+    border-bottom: 1px solid #e0e6ea;
+}
+
+.warningIcon {
+    color: #f6d62f;
+}
+
+.label {
+    padding: 0 10px;
+
+    font-weight: bold;
+}
+
+.container {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.language {
+    margin-right: 30%;
+}
