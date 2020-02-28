@@ -39,16 +39,23 @@ registry.add('callback', 'content-editor', {
         registry.add('route', 'create-route', {
             targets: ['jcontent:0.1'],
             path: `/jcontent/:siteKey/:lang/${Constants.routes.baseCreateRoute}`,
-            render: () => <ContentEditorRedux mode="create"/>
+            render: () => <ContentEditorRedux mode={Constants.routes.baseCreateRoute}/>
         });
     }
 });
 
 // Register GWT Hooks
 window.top.jahiaGwtHook = {
+    // Hook on edit engine opening
     edit: ({path, lang, siteKey, uilang}) => {
         window.CE_API.edit(path, siteKey, lang, uilang);
+    },
+    // Hook on create engine opening
+    create: ({path, lang, siteKey, uilang, contentType}) => {
+        window.CE_API.create(path, siteKey, lang, uilang, contentType);
     }
+    // Hook on create content type selection
+    // todo
 };
 
 console.debug('%c Content Editor is activated', 'color: #3c8cba');

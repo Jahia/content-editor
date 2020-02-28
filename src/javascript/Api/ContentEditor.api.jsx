@@ -50,14 +50,31 @@ const ContentEditorApiCmp = ({classes}) => {
      * @param site the current site
      * @param lang the current lang from url
      * @param uilang the preferred user lang for ui
+     * @param contentType (optional) required in case you want to open CE directly for this content type,
+     *                    if not specified: will try to resolve the content types available for creation
+     *                    - in case of one content type resolved: open directly CE for this content type
+     *                    - in case of multiple content types resolved: open content type selector
      */
-    window.CE_API.create = (path, site, lang, uilang) => {
-        isCreate({
-            path,
-            site,
-            lang,
-            uilang
-        });
+    window.CE_API.create = (path, site, lang, uilang, contentType) => {
+        if (contentType) {
+            // Direct create with a known content type
+            isEdit({
+                path,
+                site,
+                lang,
+                uilang,
+                contentType,
+                mode: Constants.routes.baseCreateRoute
+            });
+        } else {
+            // Create from content type selector
+            isCreate({
+                path,
+                site,
+                lang,
+                uilang
+            });
+        }
     };
 
     // Standalone env props
