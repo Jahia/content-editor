@@ -127,7 +127,14 @@ const ContentEditorApiCmp = ({classes, client}) => {
     return (
         <>
             {editorConfig &&
-            <Dialog fullScreen open TransitionComponent={Transition} aria-labelledby="dialog-content-editor" classes={{root: classes.ceDialogRoot}} onClose={envProps.closeCallback}>
+            <Dialog fullScreen
+                    open
+                    TransitionComponent={Transition}
+                    TransitionProps={{tabIndex: ''}} // Hack for CKEditor pickers fields to be editable
+                    aria-labelledby="dialog-content-editor"
+                    classes={{root: classes.ceDialogRoot}}
+                    onClose={envProps.closeCallback}
+            >
                 <div className={classes.mainBackground}>
                     <ContentEditor env={Constants.env.standalone}
                                    mode={editorConfig.mode}
