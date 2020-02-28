@@ -10,7 +10,7 @@ export const saveNode = ({
     t,
     notificationContext,
     actions,
-
+    editCallback,
     data: {
         path,
         nodeData,
@@ -53,13 +53,11 @@ export const saveNode = ({
             }
         ]
     }).then(() => {
-        notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.success'), ['closeButton']);
-
-        // Refresh GWT content
-        if (window.top.authoringApi.refreshContent) {
-            window.top.authoringApi.refreshContent();
+        if (editCallback) {
+            editCallback();
         }
 
+        notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.success'), ['closeButton']);
         actions.setSubmitting(false);
         refetchPreview(getPreviewPath(nodeData), language);
     }, error => {

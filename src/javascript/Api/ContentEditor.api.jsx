@@ -87,6 +87,11 @@ const ContentEditorApiCmp = ({classes, client}) => {
             setContentTypeSelectorConfig(false);
         },
         createCallback: createdNodePath => {
+            // Refresh GWT content
+            if (window.top.authoringApi.refreshContent) {
+                window.top.authoringApi.refreshContent();
+            }
+
             // Redirect to CE edit mode, for the created node
             if (editorConfig) {
                 setEditorConfig({
@@ -96,6 +101,12 @@ const ContentEditorApiCmp = ({classes, client}) => {
                     lang: editorConfig.lang,
                     mode: Constants.routes.baseEditRoute
                 });
+            }
+        },
+        editCallback: () => {
+            // Refresh GWT content
+            if (window.top.authoringApi.refreshContent) {
+                window.top.authoringApi.refreshContent();
             }
         },
         setLanguage: lang => {
