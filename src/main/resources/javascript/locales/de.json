@@ -16,6 +16,9 @@
           "required": "erforderlich"
         },
         "action": {
+          "copyLanguage": {
+            "name": "Kopieren von anderen Sprachen"
+          },
           "save": {
             "name": "Speichern",
             "success": "Inhalt wurde erfolgreich gespeichert",

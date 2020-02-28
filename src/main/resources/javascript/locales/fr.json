@@ -16,6 +16,9 @@
           "required": "Requis"
         },
         "action": {
+          "copyLanguage": {
+            "name": "Copier depuis une langue"
+          },
           "save": {
             "name": "Sauvegarder",
             "success": "Contenu enregistré avec succès",
