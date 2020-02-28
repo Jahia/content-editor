@@ -7,7 +7,7 @@ import {cmGoto} from '~/JContent.redux-actions';
 import {withApolloAction} from './withApolloAction';
 import {from} from 'rxjs';
 import {share} from 'rxjs/operators';
-import {getActions} from './createNewContent.utits';
+import {transformNodeTypesToActions, getCreatableNodetypes} from './createNewContent.utits';
 
 // Should continue to use redux here, because this action is used to replace JContent create action, so it's only displayed in JContent
 const mapDispatchToProps = dispatch => ({
@@ -28,15 +28,17 @@ export default composeActions(
     reduxAction(mapStateToProps, mapDispatchToProps),
     {
         init: context => {
-            const variables = {
-                uilang: context.uilang,
-                path: context.path,
-                excludedNodeTypes: ['jmix:studioOnly', 'jmix:hiddenType'],
-                showOnNodeTypes: context.showOnNodeTypes
-            };
-            const sharedObservable = from(getActions(context, variables)).pipe(share());
-            context.actions = sharedObservable;
-            context.enabled = sharedObservable;
+            const creatableNodeTypesActions = from(
+                getCreatableNodetypes(
+                    context.client,
+                    context.path,
+                    context.uilang,
+                    ['jmix:studioOnly', 'jmix:hiddenType'],
+                    context.showOnNodeTypes,
+                    transformNodeTypesToActions)
+            ).pipe(share());
+            context.actions = creatableNodeTypesActions;
+            context.enabled = creatableNodeTypesActions;
         },
         onClick: context => {
             if (context.openEditor) {

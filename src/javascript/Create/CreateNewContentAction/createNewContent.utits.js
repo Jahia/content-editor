@@ -2,14 +2,14 @@ import {getTreeOfContentWithRequirements} from './CreateNewContent.gql-queries';
 
 const NB_OF_DISPLAYED_RESCRICTED_SUB_NODES = 5;
 
-export async function getActions(context, variables) {
-    const {data} = await context.client.query({
+export async function getCreatableNodetypes(client, path, uilang, excludedNodeTypes, showOnNodeTypes, transformResultCallback) {
+    const {data} = await client.query({
         query: getTreeOfContentWithRequirements,
-        variables
+        variables: {uilang, path, excludedNodeTypes, showOnNodeTypes}
     });
 
-    const showOnNodeTypes = data.jcr.nodeByPath.isNodeType;
-    if (!showOnNodeTypes) {
+    const nodeTypeNotDsplayed = (showOnNodeTypes && showOnNodeTypes.length > 0 && !data.jcr.nodeByPath.isNodeType);
+    if (nodeTypeNotDsplayed) {
         return [];
     }
 
@@ -26,6 +26,10 @@ export async function getActions(context, variables) {
             return sum;
         }, []);
 
+    return transformResultCallback ? transformResultCallback(nodeTypes) : nodeTypes;
+}
+
+export function transformNodeTypesToActions(nodeTypes) {
     if (nodeTypes.length <= NB_OF_DISPLAYED_RESCRICTED_SUB_NODES) {
         return nodeTypes
             .filter(f => f.name !== 'jnt:resource')
