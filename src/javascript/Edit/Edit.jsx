@@ -13,12 +13,15 @@ import {useTranslation} from 'react-i18next';
 import {FormQuery} from './EditForm.gql-queries';
 import {withApollo} from 'react-apollo';
 import {compose} from '~/utils';
+import {useContentEditorConfigContext} from '~/ContentEditor.context';
+import envEditCallbacks from './Edit.env';
 
 export const EditCmp = ({
     client,
     notificationContext
 }) => {
     const {t} = useTranslation();
+    const contentEditorConfigContext = useContentEditorConfigContext();
     const {path, lang, nodeData, sections, formQueryParams, initialValues, title, site} = useContentEditorContext();
 
     // Engines tabs need the node Data to be registered
@@ -35,6 +38,12 @@ export const EditCmp = ({
                 nodeData,
                 sections,
                 values
+            },
+            editCallback: () => {
+                const envEditCallback = envEditCallbacks[contentEditorConfigContext.env];
+                if (envEditCallback) {
+                    envEditCallback(contentEditorConfigContext);
+                }
             }
         });
     };

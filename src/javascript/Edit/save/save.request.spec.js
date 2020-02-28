@@ -26,6 +26,7 @@ describe('saveNode', () => {
             notificationContext: {notify: jest.fn()},
             actions: {setSubmitting: jest.fn()},
             t: jest.fn(),
+            editCallback: jest.fn(),
             data: {
                 nodeData: {},
                 sections: [],
@@ -39,6 +40,12 @@ describe('saveNode', () => {
 
         expect(params.client.mutate).toHaveBeenCalled();
         expect(params.client.mutate.mock.calls[0][0].mutation).toBe('SavePropertiesMutation');
+    });
+
+    it('should call editCallback function', async () => {
+        await saveNode(params);
+
+        expect(params.editCallback).toHaveBeenCalled();
     });
 
     it('should display a notification when request is a success', async () => {
