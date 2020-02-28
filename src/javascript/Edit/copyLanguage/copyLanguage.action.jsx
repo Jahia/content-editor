@@ -1,5 +1,8 @@
+import React from 'react';
 import {composeActions, componentRendererAction} from '@jahia/react-material';
 import {editRestrictedAction} from '~/actions/editRestricted.action';
+import {CopyLanguageDialog} from '~/EditPanel/CopyLanguageDialog';
+import {getFullLanguageName} from './copyLanguage.utils';
 
 export default composeActions(
     editRestrictedAction,
@@ -8,7 +11,15 @@ export default composeActions(
         init: context => {
             context.enabled = context.siteInfo.languages.length > 1;
         },
-        onClick: () => {
-            // TODO BACKLOG-12537 open the modal
+        onClick: context => {
+            const handler = context.renderComponent(
+                <CopyLanguageDialog
+                    isOpen
+                    language={getFullLanguageName(context.siteInfo.languages, context.language)}
+                    availableLanguages={context.siteInfo.languages}
+                    formik={context.formik}
+                    onCloseDialog={() => handler.setProps({isOpen: false})}
+                />);
         }
-    });
+    }
+);
