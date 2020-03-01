@@ -47,20 +47,22 @@ const ContentEditorApiCmp = ({classes, client}) => {
      * @param site the current site
      * @param lang the current lang from url
      * @param uilang the preferred user lang for ui
-     * @param contentType (optional) required in case you want to open CE directly for this content type,
+     * @param nodeTypes (optional) required in case you want to open CE directly for this content type,
      *                    if not specified: will try to resolve the content types available for creation
-     *                    - in case of one content type resolved: open directly CE for this content type
+     *                    - in case of one content type resolved and includeSubTypes to false: open directly CE for this content type
      *                    - in case of multiple content types resolved: open content type selector
      * @param excludedNodeTypes (optional) The node types excluded for creation, by default: ['jmix:studioOnly', 'jmix:hiddenType']
+     * @param includeSubTypes (optional) if true, subtypes of nodeTypes provided will be resolved.
      */
-    window.CE_API.create = (path, site, lang, uilang, contentType, excludedNodeTypes) => {
-        if (contentType) {
+    window.CE_API.create = (path, site, lang, uilang, nodeTypes, excludedNodeTypes, includeSubTypes) => {
+        if (nodeTypes && nodeTypes.length === 1 && !includeSubTypes) {
             // Direct create with a known content type
-            setEditorConfig({path, site, lang, uilang, contentType, mode: Constants.routes.baseCreateRoute});
+            setEditorConfig({path, site, lang, uilang, contentType: nodeTypes[0], mode: Constants.routes.baseCreateRoute});
         } else {
-            // Resolve creatable node types
             getCreatableNodetypes(
                 client,
+                nodeTypes,
+                includeSubTypes,
                 path,
                 uilang,
                 (excludedNodeTypes && excludedNodeTypes.length) > 0 ? excludedNodeTypes : ['jmix:studioOnly', 'jmix:hiddenType'],
@@ -68,12 +70,26 @@ const ContentEditorApiCmp = ({classes, client}) => {
                 creatableNodeTypes => {
                     // Only one type allowed, open directly CE
                     if (creatableNodeTypes.length === 1) {
-                        setEditorConfig({path, site, lang, uilang, contentType: creatableNodeTypes[0].name, mode: Constants.routes.baseCreateRoute});
+                        setEditorConfig({
+                            path,
+                            site,
+                            lang,
+                            uilang,
+                            contentType: creatableNodeTypes[0].name,
+                            mode: Constants.routes.baseCreateRoute
+                        });
                     }
 
                     // Multiple nodetypes allowed, open content type selector
                     if (creatableNodeTypes.length > 1) {
-                        setContentTypeSelectorConfig({path, site, lang, uilang});
+                        setContentTypeSelectorConfig({
+                            creatableNodeTypes: creatableNodeTypes.map(nodeType => nodeType.name),
+                            includeSubTypes,
+                            path,
+                            site,
+                            lang,
+                            uilang
+                        });
                     }
                 }
             );
@@ -151,6 +167,8 @@ const ContentEditorApiCmp = ({classes, client}) => {
             {contentTypeSelectorConfig &&
             <CreateNewContentDialog
                 open
+                nodeTypes={contentTypeSelectorConfig.creatableNodeTypes}
+                includeSubTypes={contentTypeSelectorConfig.includeSubTypes}
                 parentPath={contentTypeSelectorConfig.path}
                 uilang={contentTypeSelectorConfig.uilang}
                 onClose={() => {

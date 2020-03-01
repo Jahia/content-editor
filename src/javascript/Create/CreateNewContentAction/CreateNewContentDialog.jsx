@@ -33,9 +33,11 @@ const styles = theme => ({
     }
 });
 
-const CreateNewContentDialogCmp = ({open, parentPath, onExited, onClose, onCreateContent, uilang, client, classes}) => {
+const CreateNewContentDialogCmp = ({nodeTypes, includeSubTypes, open, parentPath, onExited, onClose, onCreateContent, uilang, client, classes}) => {
     const {t} = useTranslation();
     const variables = {
+        nodeTypes,
+        includeSubTypes,
         uilang: uilang,
         path: parentPath,
         excludedNodeTypes: ['jmix:studioOnly', 'jmix:hiddenType']
@@ -110,10 +112,14 @@ const CreateNewContentDialogCmp = ({open, parentPath, onExited, onClose, onCreat
 };
 
 CreateNewContentDialogCmp.defaultProps = {
+    nodeTypes: [],
+    includeSubTypes: false,
     uilang: 'en'
 };
 
 CreateNewContentDialogCmp.propTypes = {
+    nodeTypes: PropTypes.array,
+    includeSubTypes: PropTypes.bool,
     uilang: PropTypes.string,
     parentPath: PropTypes.string,
     classes: PropTypes.object.isRequired,

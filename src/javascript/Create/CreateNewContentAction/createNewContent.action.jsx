@@ -31,6 +31,8 @@ export default composeActions(
             const creatableNodeTypesActions = from(
                 getCreatableNodetypes(
                     context.client,
+                    undefined,
+                    false,
                     context.path,
                     context.uilang,
                     ['jmix:studioOnly', 'jmix:hiddenType'],
