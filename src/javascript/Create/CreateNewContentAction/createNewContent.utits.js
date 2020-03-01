@@ -2,10 +2,10 @@ import {getTreeOfContentWithRequirements} from './CreateNewContent.gql-queries';
 
 const NB_OF_DISPLAYED_RESCRICTED_SUB_NODES = 5;
 
-export async function getCreatableNodetypes(client, path, uilang, excludedNodeTypes, showOnNodeTypes, transformResultCallback) {
+export async function getCreatableNodetypes(client, nodeTypes, includeSubTypes, path, uilang, excludedNodeTypes, showOnNodeTypes, transformResultCallback) {
     const {data} = await client.query({
         query: getTreeOfContentWithRequirements,
-        variables: {uilang, path, excludedNodeTypes, showOnNodeTypes}
+        variables: {nodeTypes, includeSubTypes, uilang, path, excludedNodeTypes, showOnNodeTypes}
     });
 
     const nodeTypeNotDsplayed = (showOnNodeTypes && showOnNodeTypes.length > 0 && !data.jcr.nodeByPath.isNodeType);
@@ -13,7 +13,7 @@ export async function getCreatableNodetypes(client, path, uilang, excludedNodeTy
         return [];
     }
 
-    const nodeTypes = data.forms.contentTypesAsTree
+    const resolvedTypes = data.forms.contentTypesAsTree
         .map(category => {
             if (category.children && category.children.length > 0) {
                 return category.children;
@@ -26,7 +26,7 @@ export async function getCreatableNodetypes(client, path, uilang, excludedNodeTy
             return sum;
         }, []);
 
-    return transformResultCallback ? transformResultCallback(nodeTypes) : nodeTypes;
+    return transformResultCallback ? transformResultCallback(resolvedTypes) : resolvedTypes;
 }
 
 export function transformNodeTypesToActions(nodeTypes) {

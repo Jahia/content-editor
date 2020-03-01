@@ -51,8 +51,8 @@ window.top.jahiaGwtHook = {
         window.CE_API.edit(path, siteKey, lang, uilang);
     },
     // Hook on create engine opening, also hook on create content type selector
-    create: ({path, lang, siteKey, uilang, contentType, excludedNodeTypes}) => {
-        window.CE_API.create(path, siteKey, lang, uilang, contentType, excludedNodeTypes);
+    create: ({path, lang, siteKey, uilang, contentTypes, excludedNodeTypes, includeSubTypes}) => {
+        window.CE_API.create(path, siteKey, lang, uilang, contentTypes, excludedNodeTypes, includeSubTypes);
     }
 };
 
