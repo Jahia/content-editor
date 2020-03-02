@@ -6,9 +6,6 @@ import {useI18nCENamespace} from '~/useI18n';
 import ContentEditorApi from '~/Api/ContentEditor.api';
 import ContentEditorRedux from './ContentEditor.redux';
 
-/* eslint-disable-next-line no-undef, camelcase */
-__webpack_public_path__ = `${window.contextJsParameters.contextPath}/modules/content-editor/javascript/apps/`;
-
 // Register i18n loadNamespaces through a empty react component until extender solve the injection issue
 const DependenciesInjector = () => {
     useI18nCENamespace();
@@ -25,23 +22,18 @@ registry.add('app', 'content-editor-api', {
     render: next => <><ContentEditorApi/>{next}</>
 });
 
-registry.add('callback', 'content-editor', {
-    targets: ['jahiaApp-init:2'],
-    callback: () => {
-        registerCEActions(registry);
+registerCEActions(registry);
 
-        registry.add('route', 'edit-route', {
-            targets: ['jcontent:0.1'],
-            path: `/jcontent/:siteKey/:lang/${Constants.routes.baseEditRoute}`,
-            render: () => <ContentEditorRedux mode={Constants.routes.baseEditRoute}/>
-        });
+registry.add('route', 'edit-route', {
+    targets: ['jcontent:0.1'],
+    path: `/jcontent/:siteKey/:lang/${Constants.routes.baseEditRoute}`,
+    render: () => <ContentEditorRedux mode={Constants.routes.baseEditRoute}/>
+});
 
-        registry.add('route', 'create-route', {
-            targets: ['jcontent:0.1'],
-            path: `/jcontent/:siteKey/:lang/${Constants.routes.baseCreateRoute}`,
-            render: () => <ContentEditorRedux mode={Constants.routes.baseCreateRoute}/>
-        });
-    }
+registry.add('route', 'create-route', {
+    targets: ['jcontent:0.1'],
+    path: `/jcontent/:siteKey/:lang/${Constants.routes.baseCreateRoute}`,
+    render: () => <ContentEditorRedux mode="create"/>
 });
 
 // Register GWT Hooks

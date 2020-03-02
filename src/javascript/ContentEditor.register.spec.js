@@ -45,7 +45,7 @@ describe('register', () => {
         global.__webpack_public_path__ = '';
 
         console.debug = jest.fn();
-        require('./register.jsx');
+        require('./ContentEditor.register.jsx');
     });
 
     it('should register content editor', () => {
@@ -54,7 +54,7 @@ describe('register', () => {
                 .add
                 .mock
                 .calls
-                .find(call => call[1] === 'content-editor')
+                .find(call => call[1] === 'content-editor-api')
         )
             .toBeTruthy();
     });
