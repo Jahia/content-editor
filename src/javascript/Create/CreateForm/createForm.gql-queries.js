@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import {NodeDataFragment} from '~/NodeData/NodeData.gql-queries';
+import {PredefinedFragments} from '@jahia/data-helper';
 
 export const FormQuery = gql`
     query createForm($uilang:String!, $language:String!, $parentPath:String!, $path:String!, $primaryNodeType:String!) {
@@ -53,11 +53,39 @@ export const FormQuery = gql`
             }
         }
         jcr {
-            ...NodeData
+            result:nodeByPath(path: $path) {
+                ...NodeCacheRequiredFields
+                lockedAndCannotBeEdited
+                displayableNode {
+                    path
+                    isFolder:isNodeType(type: {multi: ANY, types: ["jnt:contentFolder", "jnt:folder"]})
+                }
+                displayName(language: $language)
+                mixinTypes {
+                    name
+                }
+                parent {
+                    displayName(language: $language)
+                    path
+                }
+                primaryNodeType {
+                    name
+                    displayName(language: $uilang)
+                    properties {
+                        name
+                        requiredType
+                    }
+                    supertypes {
+                        name
+                    }
+                    hasOrderableChildNodes
+                }
+            }
             nodeTypeByName(name: $primaryNodeType) {
                 displayName(language: $uilang)
             }
         }
+       
     }
-    ${NodeDataFragment.nodeData.gql}
+    ${PredefinedFragments.nodeCacheRequiredFields.gql}
 `;

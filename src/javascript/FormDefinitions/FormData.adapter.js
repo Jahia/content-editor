@@ -73,11 +73,16 @@ const getDetailsValue = (sections = [], nodeData = {}, lang = 'en') => {
 
 const getTechnicalInfo = (nodeData, t) => {
     return [
-        {label: t('content-editor:label.contentEditor.details.contentType'), value: nodeData.primaryNodeType.displayName},
-        {label: t('content-editor:label.contentEditor.details.mixinTypes'), value: [
-            nodeData.primaryNodeType.name,
-            ...nodeData.mixinTypes.map(m => m.name)
-        ].filter(v => v).join('; ')},
+        {
+            label: t('content-editor:label.contentEditor.details.contentType'),
+            value: nodeData.primaryNodeType.displayName
+        },
+        {
+            label: t('content-editor:label.contentEditor.details.mixinTypes'), value: [
+                nodeData.primaryNodeType.name,
+                ...nodeData.mixinTypes.map(m => m.name)
+            ].filter(v => v).join('; ')
+        },
         {label: t('content-editor:label.contentEditor.details.path'), value: nodeData.path},
         {label: t('content-editor:label.contentEditor.details.uuid'), value: nodeData.uuid}
     ];
@@ -115,15 +120,16 @@ const getChildrenOrderingFields = nodeData => {
 };
 
 export const adaptFormData = (data, lang, t) => {
+    const isEdit = Boolean(data.forms.editForm);
     const nodeData = data.jcr.result;
-    const sections = data.forms.editForm ? data.forms.editForm.sections : data.forms.createForm.sections;
+    const sections = isEdit ? data.forms.editForm.sections : data.forms.createForm.sections;
 
     return {
         sections: adaptSections(sections),
-        initialValues: getInitialValues(nodeData, sections),
+        initialValues: isEdit ? getInitialValues(nodeData, sections) : {},
         nodeData,
-        details: getDetailsValue(sections, nodeData, lang),
-        technicalInfo: getTechnicalInfo(nodeData, t),
+        details: isEdit ? getDetailsValue(sections, nodeData, lang) : {},
+        technicalInfo: isEdit ? getTechnicalInfo(nodeData, t) : {},
         title: data.jcr.nodeTypeByName ?
             t('content-editor:label.contentEditor.create.title', {type: data.jcr.nodeTypeByName.displayName}) :
             nodeData.displayName

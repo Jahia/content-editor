@@ -85,9 +85,26 @@ describe('adaptFormData', () => {
                     },
                     children: {
                         nodes: []
-                    }}
+                    }
+                }
             }
         };
+    });
+
+    it('should return map adapt create', () => {
+        graphqlResponse = {
+            forms: {
+                createForm: graphqlResponse.forms.editForm
+            },
+            jcr: graphqlResponse.jcr
+        };
+        // Delete properties
+        delete graphqlResponse.jcr.result.properties;
+        const adaptedData = adaptFormData(graphqlResponse, 'fr', t);
+        expect(adaptedData.sections).toEqual(graphqlResponse.forms.createForm.sections);
+        expect(adaptedData.initialValues).toEqual({});
+        expect(adaptedData.details).toEqual({});
+        expect(adaptedData.technicalInfo).toEqual({});
     });
 
     it('should return initialValues', () => {
