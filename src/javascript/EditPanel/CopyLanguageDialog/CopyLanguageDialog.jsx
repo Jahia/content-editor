@@ -12,14 +12,31 @@ import {useTranslation} from 'react-i18next';
 import {Typography} from '@jahia/design-system-kit';
 import {Dropdown} from '@jahia/moonstone';
 import classes from './CopyLanguageDialog.scss';
-
+import {useApolloClient} from '@apollo/react-hooks';
+import {FormQuery} from '~/Edit/EditForm.gql-queries';
+import {getI18nFieldAndValues} from '~/Edit/copyLanguage/copyLanguage.utils';
 export const CopyLanguageDialog = ({
     language,
     availableLanguages,
     isOpen,
     onCloseDialog,
-    formik
+    formik,
+    nodePath
 }) => {
+    const client = useApolloClient();
+
+    const getDataFromSelectedLanguage = async language => {
+        let variables = {
+            uilang: language,
+            language: language,
+            path: nodePath
+        };
+
+        let formAndData = await client.query({query: FormQuery, variables: variables});
+
+        return getI18nFieldAndValues(formAndData);
+    };
+
     const {t} = useTranslation();
     const handleCancel = () => {
         onCloseDialog();
@@ -33,15 +50,17 @@ export const CopyLanguageDialog = ({
 
     const handleOnChange = (e, item) => {
         setCurrentOption(item);
-
         return true;
     };
 
     const handleApply = () => {
+        getDataFromSelectedLanguage(currentOption.value).then(data => {
+            data.forEach(value => {
+                formik.setFieldValue(value.name, value.multiple ? value.values : value.value);
+            });
+        });
+
         onCloseDialog();
-        // TODO BACKLOG-12538 copy the values from a language to another one
-        // eslint-disable-next-line no-unused-vars
-        const {submitForm} = formik;
     };
 
     let isApplyDisabled = defaultOption.value === currentOption.value;
@@ -85,7 +104,7 @@ export const CopyLanguageDialog = ({
                             size="medium"
                             isDisabled={false}
                             maxWidth="120px"
-                            data={[defaultOption].concat(availableLanguages.map(element => {
+                            data={[defaultOption].concat(availableLanguages.filter(element => element.displayName !== language).map(element => {
                                 return {value: element.language,
                                     label: element.displayName};
                             }))}
@@ -114,6 +133,7 @@ CopyLanguageDialog.propTypes = {
     availableLanguages: PropTypes.array.isRequired,
     isOpen: PropTypes.bool.isRequired,
     formik: PropTypes.object.isRequired,
+    nodePath: PropTypes.string.isRequired,
     onCloseDialog: PropTypes.func.isRequired
 };
 
