@@ -5,7 +5,7 @@ const NB_OF_DISPLAYED_RESCRICTED_SUB_NODES = 5;
 export async function getCreatableNodetypes(client, nodeTypes, includeSubTypes, path, uilang, excludedNodeTypes, showOnNodeTypes, transformResultCallback) {
     const {data} = await client.query({
         query: getTreeOfContentWithRequirements,
-        variables: {nodeTypes, includeSubTypes, uilang, path, excludedNodeTypes, showOnNodeTypes}
+        variables: {nodeTypes: nodeTypes.length > 0 ? nodeTypes : undefined, includeSubTypes, uilang, path, excludedNodeTypes, showOnNodeTypes}
     });
 
     const nodeTypeNotDsplayed = (showOnNodeTypes && showOnNodeTypes.length > 0 && !data.jcr.nodeByPath.isNodeType);

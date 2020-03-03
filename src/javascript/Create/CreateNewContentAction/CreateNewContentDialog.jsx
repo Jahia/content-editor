@@ -36,7 +36,7 @@ const styles = theme => ({
 const CreateNewContentDialogCmp = ({nodeTypes, includeSubTypes, open, parentPath, onExited, onClose, onCreateContent, uilang, client, classes}) => {
     const {t} = useTranslation();
     const variables = {
-        nodeTypes,
+        nodeTypes: nodeTypes.length > 0 ? nodeTypes : undefined,
         includeSubTypes,
         uilang: uilang,
         path: parentPath,
