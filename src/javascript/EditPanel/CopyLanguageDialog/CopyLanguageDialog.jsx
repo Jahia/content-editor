@@ -9,8 +9,7 @@ import {Button} from '@jahia/design-system-kit';
 import {Warning} from '@material-ui/icons';
 import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
-import {Typography} from '@jahia/design-system-kit';
-import {Dropdown} from '@jahia/moonstone';
+import {Dropdown, Typography} from '@jahia/moonstone';
 import classes from './CopyLanguageDialog.scss';
 import {useApolloClient} from '@apollo/react-hooks';
 import {FormQuery} from '~/Edit/EditForm.gql-queries';
@@ -73,10 +72,10 @@ export const CopyLanguageDialog = ({
                 onClose={onCloseDialog}
         >
             <DialogTitle id="dialog-language-title">
-                <Typography className={classes.dialogTitle}>
+                <Typography isUpperCase variant="heading" weight="bold" className={classes.dialogTitle}>
                     {t('content-editor:label.contentEditor.edit.action.copyLanguage.dialogTitle')}
                 </Typography>
-                <Typography className={classes.dialogSubTitle}>
+                <Typography variant="subheading" className={classes.dialogSubTitle}>
                     {t('content-editor:label.contentEditor.edit.action.copyLanguage.dialogSubTitle')}
                 </Typography>
             </DialogTitle>
@@ -114,7 +113,7 @@ export const CopyLanguageDialog = ({
                 </div>
             </DialogContent>
             <DialogActions>
-                <Typography className={classes.dialogSubTitle}>
+                <Typography className={classes.warningText}>
                     <Warning className={classes.warningIcon}/> {t('content-editor:label.contentEditor.edit.action.copyLanguage.bottomText')}
                 </Typography>
                 <Button variant="secondary" onClick={handleCancel}>
