@@ -22,7 +22,8 @@ module.exports = (env, argv) => {
         output: {
             path: path.resolve(__dirname, 'src/main/resources/javascript/apps/'),
             filename: 'content-editor-ext.bundle.js',
-            chunkFilename: '[name].content-editor.[chunkhash:6].js'
+            chunkFilename: '[name].content-editor.[chunkhash:6].js',
+            jsonpFunction: 'contentEditorJsonp'
         },
         resolve: {
             mainFields: ['module', 'main'],
