@@ -1,18 +1,26 @@
 .dialogTitle {
     margin: 0 10px;
 
-    text-transform: uppercase;
+    color: #373c42;
 }
 
 .dialogSubTitle {
     margin: 10px;
+
+    color: #525c65;
 }
 
 .dialogContent {
-    padding: 40px 0;
+    padding: 40px 0 !important;
 
     border-top: 1px solid #e0e6ea;
     border-bottom: 1px solid #e0e6ea;
+}
+
+.warningText {
+    flex-grow: 1;
+
+    color: #525c65;
 }
 
 .warningIcon {

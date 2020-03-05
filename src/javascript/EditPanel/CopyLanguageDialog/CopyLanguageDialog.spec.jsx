@@ -3,12 +3,26 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {CopyLanguageDialog} from './';
 
+jest.mock('@apollo/react-hooks', () => {
+    let queryresponsemock = {
+        client: {
+            query: () => {
+                return [];
+            }
+        }
+    };
+    return {
+        useApolloClient: () => queryresponsemock
+    };
+});
+
 describe('CopyLanguageDialog', () => {
     let defaultProps;
 
     beforeEach(() => {
         defaultProps = {
             isOpen: false,
+            nodePath: '/',
             language: 'en',
             availableLanguages: [{
                 displayName: 'Deutsch',
