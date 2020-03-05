@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Badge} from '@jahia/design-system-kit';
 import {buttonRenderer, withNotifications, iconButtonRenderer} from '@jahia/react-material';
 import {DisplayActions, DisplayAction} from '@jahia/ui-extender';
@@ -9,7 +9,7 @@ import {useTranslation} from 'react-i18next';
 import EditPanelContent from './EditPanelContent/EditPanelContent';
 import {connect} from 'formik';
 import {EditPanelLanguageSwitcher} from './EditPanelLanguageSwitcher';
-import {Error, Edit, Settings} from '@material-ui/icons';
+import {Error} from '@material-ui/icons';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {withStyles} from '@material-ui/core';
 import PublicationInfoBadge from '~/PublicationInfo/PublicationInfo.badge';
@@ -19,7 +19,7 @@ import {Constants} from '~/ContentEditor.constants';
 
 import MainLayout from '~/DesignSystem/ContentLayout/MainLayout';
 import ContentHeader from '~/DesignSystem/ContentLayout/ContentHeader';
-import {Separator, Button} from '@jahia/moonstone';
+import {Separator} from '@jahia/moonstone';
 
 // TODO: BACKLOG-12100 update header style
 const styles = theme => ({
@@ -86,6 +86,14 @@ const EditPanelCmp = ({formik, title, classes, notificationContext, client}) => 
         formik,
         siteInfo
     };
+
+    const [activeTab, setActiveTab] = useState('edit');
+    const SelectedTabComponents = {
+        edit: EditPanelContent,
+        advanced: () => (<h1>Advanced</h1>) // TODO: BACKLOG-12102
+    };
+    const SelectedTabComponent = SelectedTabComponents[activeTab];
+
     return (
         <MainLayout
             header={
@@ -164,30 +172,31 @@ const EditPanelCmp = ({formik, title, classes, notificationContext, client}) => 
                         </>
                     }
                     toolbar={
-                        // TODO: BACKLOG-12631 BACKLOG-12632 display tabs
-                        <div className={classes.toolbar}>
-                            <Button variant="ghost"
-                                    size="small"
-                                    label="Edit"
-                                    icon={<Edit/>}
-                                    onClick={() => {
-                                    }}
-                            />
+                        <DisplayActions
+                            context={{
+                                ...actionContext,
+                                setActiveTab: setActiveTab,
+                                activeTab: activeTab
+                            }}
+                            target="editHeaderTabsActions"
+                            render={({context}) => {
+                                const Button = buttonRenderer({
+                                    variant: 'primary',
+                                    disabled: context.disabled
+                                }, true, null, true);
 
-                            <Button variant="ghost"
-                                    size="small"
-                                    label="Advanced"
-                                    icon={<Settings/>}
-                                    onClick={() => {
-                                    }}
-                            />
-                        </div>
+                                return (
+                                    <>
+                                        <Button disabled context={context}/>
+                                    </>
+                                );
+                            }}
+                        />
                     }
-
                 />
             }
         >
-            <EditPanelContent isDirty={formik.dirty}/>
+            <SelectedTabComponent isDirty={formik.dirty}/>
         </MainLayout>
     );
 };
