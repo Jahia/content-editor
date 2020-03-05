@@ -129,6 +129,10 @@
           "invalidDate": "La date est mal formatée",
           "invalidPattern": "La valeur ne correspond pas aux contraintes définies dans le fichier de définition des types de contenu.",
           "required": ""
+        },
+        "tab": {
+          "edit": "Éditer",
+          "advanced": "Options avancées"
         }
       },
       "switchLanguage": {

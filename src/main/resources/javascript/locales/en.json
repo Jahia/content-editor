@@ -129,6 +129,10 @@
           "invalidDate": "Please provide a valid date value",
           "invalidPattern": "The value does not match the constraints defined in the content type definitions file.",
           "required": ""
+        },
+        "tab": {
+          "edit": "Edit",
+          "advanced": "Advanced options"
         }
       },
       "switchLanguage": {

@@ -129,6 +129,10 @@
           "invalidDate": "Bitte geben Sie ein gültiges Datum ein",
           "invalidPattern": "Die Eingabe entspricht nicht den Vorgaben der Content-Typ-Definition.",
           "required": ""
+        },
+        "tab": {
+          "edit": "Bearbeiten",
+          "advanced": "Erweiterte Optionen"
         }
       },
       "switchLanguage": {

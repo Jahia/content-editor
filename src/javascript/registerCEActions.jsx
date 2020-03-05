@@ -3,11 +3,13 @@ import {ArrowBack} from '@material-ui/icons';
 import {SelectorTypes} from '~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes';
 import {registerEditActions} from '~/Edit/Edit.actions';
 import {registerCreateActions} from '~/Create/Create.actions';
+import {registerEditPanelActions} from '~/EditPanel/EditPanel.actions';
 import goBackAction from './actions/goBack.action';
 
 export const registerCEActions = registry => {
     registerEditActions(registry);
     registerCreateActions(registry);
+    registerEditPanelActions(registry);
 
     registry.add('action', 'backButton', goBackAction, {
         buttonIcon: <ArrowBack/>,
