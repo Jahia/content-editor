@@ -11,10 +11,6 @@ import {getCreatableNodetypes} from '~/Create/CreateNewContentAction/createNewCo
 
 let styles = () => {
     return {
-        mainBackground: {
-            // Color from DX core anthracite, not in the theme
-            backgroundColor: '#363636'
-        },
         ceDialogRoot: {
             // Reduce zIndex to be able to display the old edit engine tabs
             zIndex: 1000,
@@ -151,17 +147,15 @@ const ContentEditorApiCmp = ({classes, client}) => {
                     classes={{root: classes.ceDialogRoot}}
                     onClose={envProps.closeCallback}
             >
-                <div className={classes.mainBackground}>
-                    <ContentEditor env={Constants.env.standalone}
-                                   mode={editorConfig.mode}
-                                   path={editorConfig.path}
-                                   lang={editorConfig.lang}
-                                   uilang={editorConfig.uilang}
-                                   site={editorConfig.site}
-                                   contentType={editorConfig.contentType}
-                                   envProps={envProps}
-                    />
-                </div>
+                <ContentEditor env={Constants.env.standalone}
+                               mode={editorConfig.mode}
+                               path={editorConfig.path}
+                               lang={editorConfig.lang}
+                               uilang={editorConfig.uilang}
+                               site={editorConfig.site}
+                               contentType={editorConfig.contentType}
+                               envProps={envProps}
+                />
             </Dialog>}
 
             {contentTypeSelectorConfig &&
