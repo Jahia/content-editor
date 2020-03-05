@@ -4,7 +4,8 @@ import publishAction from './publish/publish.action';
 import startWorkflow from './startWorkflow/startWorkflow.action';
 import unpublishAction from './unpublish/unpublish.action';
 import copyLanguageAction from './copyLanguage/copyLanguage.action';
-import {Edit, Save, CloudUpload, CloudOff} from '@material-ui/icons';
+import {Save, CloudUpload, CloudOff} from '@material-ui/icons';
+import {Edit} from '@jahia/moonstone/dist/icons';
 import {DotsVertical} from 'mdi-material-ui';
 import openEngineTabs from './engineTabs/openEngineTabs.action';
 

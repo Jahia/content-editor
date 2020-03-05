@@ -11,7 +11,7 @@
       },
       "edit": {
         "title": "Edit content",
-        "contentEdit": "Edit Content",
+        "contentEdit": "Edit",
         "validation": {
           "required": "Required"
         },
