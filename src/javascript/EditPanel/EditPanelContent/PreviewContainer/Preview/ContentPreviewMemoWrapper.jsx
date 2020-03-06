@@ -28,19 +28,18 @@ const ContentPreviewMemoWrapperCmp = React.memo(({classes}) => {
     const previewContext = getPreviewContext(editorContext);
     const {data, loading, error, refetch} = useContentPreview({
         ...previewContext,
-        fetchPolicy: 'network-only',
-        setRefetch: refetchingData => setPreviewRefetcher(refetchingData)
+        fetchPolicy: 'network-only'
     });
 
     useEffect(() => {
         setPreviewRefetcher({
             queryParams: {
                 language: editorContext.lang,
-                path: editorContext.path
+                path: previewContext.path
             },
             refetch
         });
-    }, [editorContext.lang, editorContext.path, refetch]);
+    }, [editorContext.lang, previewContext.path, refetch]);
 
     // No preview for folders
     if (editorContext.nodeData.isFolder) {
