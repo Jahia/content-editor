@@ -7,6 +7,7 @@ import {withApollo} from 'react-apollo';
 import {compose} from '~/utils';
 import {useTranslation} from 'react-i18next';
 import EditPanelContent from './EditPanelContent/EditPanelContent';
+import AdvancedOptions from './AdvancedOptions/AdvancedOptions';
 import {connect} from 'formik';
 import {EditPanelLanguageSwitcher} from './EditPanelLanguageSwitcher';
 import {Error} from '@material-ui/icons';
@@ -91,7 +92,7 @@ const EditPanelCmp = ({formik, title, classes, notificationContext, client}) => 
     const [activeTab, setActiveTab] = useState('edit');
     const SelectedTabComponents = {
         edit: EditPanelContent,
-        advanced: () => (<h1>Advanced</h1>) // TODO: BACKLOG-12102
+        advanced: AdvancedOptions
     };
     const SelectedTabComponent = SelectedTabComponents[activeTab];
 
