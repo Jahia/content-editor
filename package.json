@@ -17,7 +17,7 @@
         "storybook": "STORYBOOK_ENV=true start-storybook -p 6006",
         "build-storybook": "STORYBOOK_ENV=true build-storybook",
         "publish-storybook": "rsync -r ./storybook-static/ jahia@design.int.jahia.com:/var/www/vhosts/contenteditor.jahia.design/html"
-    }
+    },
     "description": "Jahia Content Editor",
     "main": "index.js",
     "repository": "git@github.com:Jahia/content-editor.git",
@@ -94,7 +94,6 @@
         "eslint-plugin-react": "^7.18.3",
         "eslint-plugin-react-hooks": "^2.5.0",
         "file-loader": "^5.1.0",
-        "husky": "^4.2.3",
         "jest": "^25.1.0",
         "node-sass": "^4.13.1",
         "redux-mock-store": "^1.5.4",
