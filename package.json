@@ -71,7 +71,7 @@
         "@babel/preset-env": "^7.8.6",
         "@babel/preset-react": "^7.8.3",
         "@jahia/eslint-config": "^1.1.0",
-        "@jahia/moonstone": "^0.11.1",
+        "@jahia/moonstone": "^0.13.1",
         "@jahia/stylelint-config": "^0.0.3",
         "@jahia/test-framework": "^1.1.5",
         "@storybook/addon-actions": "^5.3.14",

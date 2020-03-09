@@ -5,7 +5,7 @@ export default composeActions(
     editRestrictedAction,
     {
         init: context => {
-            context.disabled = context.value === context.activeTab;
+            context.selected = context.value === context.activeTab;
         },
         onClick: context => {
             context.setActiveTab(context.value);

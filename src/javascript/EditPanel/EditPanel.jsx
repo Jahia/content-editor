@@ -19,7 +19,7 @@ import {Constants} from '~/ContentEditor.constants';
 
 import MainLayout from '~/DesignSystem/ContentLayout/MainLayout';
 import ContentHeader from '~/DesignSystem/ContentLayout/ContentHeader';
-import {Separator} from '@jahia/moonstone';
+import {Separator, Tab, TabItem} from '@jahia/moonstone';
 import {truncate} from '~/utils/helper';
 
 // TODO: BACKLOG-12100 update header style
@@ -173,26 +173,27 @@ const EditPanelCmp = ({formik, title, classes, notificationContext, client}) => 
                         </>
                     }
                     toolbar={
-                        <DisplayActions
-                            context={{
-                                ...actionContext,
-                                setActiveTab: setActiveTab,
-                                activeTab: activeTab
-                            }}
-                            target="editHeaderTabsActions"
-                            render={({context}) => {
-                                const Button = buttonRenderer({
-                                    variant: 'primary',
-                                    disabled: context.disabled
-                                }, true, null, true);
-
-                                return (
-                                    <>
-                                        <Button disabled context={context}/>
-                                    </>
-                                );
-                            }}
-                        />
+                        <Tab>
+                            <DisplayActions
+                                context={{
+                                    ...actionContext,
+                                    setActiveTab: setActiveTab,
+                                    activeTab: activeTab
+                                }}
+                                target="editHeaderTabsActions"
+                                render={({context}) => (
+                                    <TabItem
+                                        icon={context.buttonIcon}
+                                        label={t(context.buttonLabel)}
+                                        isSelected={context.selected}
+                                        onClick={e => {
+                                            e.stopPropagation();
+                                            context.onClick(context, e);
+                                        }}
+                                    />
+                                )}
+                            />
+                        </Tab>
                     }
                 />
             }
