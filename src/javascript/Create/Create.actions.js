@@ -9,7 +9,7 @@ export const registerCreateActions = registry => {
         buttonIcon: <Queue/>,
         buttonLabel:
             'content-editor:label.contentEditor.CMMActions.createNewContent.menu',
-        targets: ['createMenuActions:3', 'contentActions:3'],
+        targets: ['createMenuActions:3', 'contentActions:3', 'headerPrimaryActions:1'],
         showOnNodeTypes: ['jnt:contentFolder', 'jnt:content']
     });
 
