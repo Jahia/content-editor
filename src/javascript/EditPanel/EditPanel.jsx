@@ -20,6 +20,7 @@ import {Constants} from '~/ContentEditor.constants';
 import MainLayout from '~/DesignSystem/ContentLayout/MainLayout';
 import ContentHeader from '~/DesignSystem/ContentLayout/ContentHeader';
 import {Separator} from '@jahia/moonstone';
+import {truncate} from '~/utils/helper';
 
 // TODO: BACKLOG-12100 update header style
 const styles = theme => ({
@@ -113,7 +114,7 @@ const EditPanelCmp = ({formik, title, classes, notificationContext, client}) => 
                                     return <Button context={context}/>;
                                 }}
                             />
-                            {title}
+                            {truncate(title)}
                         </>
                     }
                     mainAction={
