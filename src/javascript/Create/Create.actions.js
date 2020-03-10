@@ -1,12 +1,13 @@
 import React from 'react';
-import {Save, Queue} from '@material-ui/icons';
+import {Save} from '@material-ui/icons';
+import {AddCircle} from '@jahia/moonstone/dist/icons';
 
 import createNewContentAction from './CreateNewContentAction/createNewContent.action';
 import createButtonAction from './CreateForm/create.action';
 
 export const registerCreateActions = registry => {
     registry.addOrReplace('action', 'createContent', createNewContentAction, {
-        buttonIcon: <Queue/>,
+        buttonIcon: <AddCircle/>,
         buttonLabel:
             'content-editor:label.contentEditor.CMMActions.createNewContent.menu',
         targets: ['createMenuActions:3', 'contentActions:3', 'headerPrimaryActions:1'],
