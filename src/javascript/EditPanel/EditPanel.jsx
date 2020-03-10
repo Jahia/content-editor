@@ -7,6 +7,7 @@ import {withApollo} from 'react-apollo';
 import {compose} from '~/utils';
 import {useTranslation} from 'react-i18next';
 import EditPanelContent from './EditPanelContent/EditPanelContent';
+import AdvancedOptions from './AdvancedOptions/AdvancedOptions';
 import {connect} from 'formik';
 import {EditPanelLanguageSwitcher} from './EditPanelLanguageSwitcher';
 import {Error} from '@material-ui/icons';
@@ -19,7 +20,7 @@ import {Constants} from '~/ContentEditor.constants';
 
 import MainLayout from '~/DesignSystem/ContentLayout/MainLayout';
 import ContentHeader from '~/DesignSystem/ContentLayout/ContentHeader';
-import {Separator} from '@jahia/moonstone';
+import {Separator, Tab, TabItem} from '@jahia/moonstone';
 import {truncate} from '~/utils/helper';
 
 // TODO: BACKLOG-12100 update header style
@@ -91,7 +92,7 @@ const EditPanelCmp = ({formik, title, classes, notificationContext, client}) => 
     const [activeTab, setActiveTab] = useState('edit');
     const SelectedTabComponents = {
         edit: EditPanelContent,
-        advanced: () => (<h1>Advanced</h1>) // TODO: BACKLOG-12102
+        advanced: AdvancedOptions
     };
     const SelectedTabComponent = SelectedTabComponents[activeTab];
 
@@ -173,26 +174,27 @@ const EditPanelCmp = ({formik, title, classes, notificationContext, client}) => 
                         </>
                     }
                     toolbar={
-                        <DisplayActions
-                            context={{
-                                ...actionContext,
-                                setActiveTab: setActiveTab,
-                                activeTab: activeTab
-                            }}
-                            target="editHeaderTabsActions"
-                            render={({context}) => {
-                                const Button = buttonRenderer({
-                                    variant: 'primary',
-                                    disabled: context.disabled
-                                }, true, null, true);
-
-                                return (
-                                    <>
-                                        <Button disabled context={context}/>
-                                    </>
-                                );
-                            }}
-                        />
+                        <Tab>
+                            <DisplayActions
+                                context={{
+                                    ...actionContext,
+                                    setActiveTab: setActiveTab,
+                                    activeTab: activeTab
+                                }}
+                                target="editHeaderTabsActions"
+                                render={({context}) => (
+                                    <TabItem
+                                        icon={context.buttonIcon}
+                                        label={t(context.buttonLabel)}
+                                        isSelected={context.selected}
+                                        onClick={e => {
+                                            e.stopPropagation();
+                                            context.onClick(context, e);
+                                        }}
+                                    />
+                                )}
+                            />
+                        </Tab>
                     }
                 />
             }

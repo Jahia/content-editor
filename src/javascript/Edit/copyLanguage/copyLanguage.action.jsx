@@ -12,15 +12,17 @@ export default composeActions(
             context.enabled = context.siteInfo.languages.length > 1;
         },
         onClick: context => {
-            const handler = context.renderComponent(
-                <CopyLanguageDialog
-                    isOpen
-                    nodePath={context.nodeData.path}
-                    language={getFullLanguageName(context.siteInfo.languages, context.language)}
-                    availableLanguages={context.siteInfo.languages}
-                    formik={context.formik}
-                    onCloseDialog={() => handler.setProps({isOpen: false})}
-                />);
+            if (context.enabled) {
+                const handler = context.renderComponent(
+                    <CopyLanguageDialog
+                        isOpen
+                        nodePath={context.nodeData.path}
+                        language={getFullLanguageName(context.siteInfo.languages, context.language)}
+                        availableLanguages={context.siteInfo.languages}
+                        formik={context.formik}
+                        onCloseDialog={() => handler.setProps({isOpen: false})}
+                    />);
+            }
         }
     }
 );
