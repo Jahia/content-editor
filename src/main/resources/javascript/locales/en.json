@@ -75,6 +75,9 @@
           "historyTab": "History",
           "usagesTab": "Usages"
         },
+        "advancedOption": {
+          "technicalInformation": "Technical information"
+        },
         "sharedLanguages": "Shared by all languages",
         "fields": {
           "actions": {

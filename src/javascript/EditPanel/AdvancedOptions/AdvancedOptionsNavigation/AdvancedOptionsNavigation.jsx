@@ -3,15 +3,15 @@ import classes from './AdvancedOptionsNavigation.scss';
 import {DisplayActions} from '@jahia/ui-extender';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {ListItem} from '@jahia/moonstone';
+import PropTypes from 'prop-types';
 
-export const AdvancedOptionsNavigation = () => {
+export const AdvancedOptionsNavigation = ({setActiveOption}) => {
     const {mode, nodeData, siteInfo, formik} = useContentEditorContext();
     return (
         <div className={classes.container}>
-            <DisplayActions context={{nodeData, siteInfo, formik, mode}}
+            <DisplayActions context={{nodeData, siteInfo, formik, mode, setActiveOption}}
                             target="AdvancedOptionsActions"
                             render={({context}) => {
-                                // TODO BACKLOG-12653 handle edit actions, add an action for the technical information tab
                                 return <ListItem label={context.buttonLabel} onClick={e => context.onClick(context, e)}/>;
                             }}
             />
@@ -19,4 +19,7 @@ export const AdvancedOptionsNavigation = () => {
     );
 };
 
+AdvancedOptionsNavigation.propTypes = {
+    setActiveOption: PropTypes.func.isRequired
+};
 export default AdvancedOptionsNavigation;
