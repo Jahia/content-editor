@@ -49,6 +49,6 @@ export const ContentPickerSelectorType = {
         searchPlaceholder: isPickerTypeFiles => isPickerTypeFiles ?
             'content-editor:label.contentEditor.edit.fields.contentPicker.searchFilePlaceholder' :
             'content-editor:label.contentEditor.edit.fields.contentPicker.searchPlaceholder',
-        itemSelectionAdapter: content => content[0] ? content[0].id : null
+        itemSelectionAdapter: content => content ? content.id : null
     }
 };
