@@ -72,20 +72,6 @@ describe('PreviewContainer', () => {
         expect(cmp.find('ContentPreviewMemoWrapper').exists()).toBe(true);
     });
 
-    it('should render detailsPreview and selcted good tab when clicking on details button', () => {
-        const cmp = shallowWithTheme(<PreviewContainer {...defaultProps}/>, {}, dsGenericTheme)
-            .dive();
-
-        cmp
-            .find('WithStyles(ToggleButtonGroup)')
-            .props()
-            .onChange(null, 'details');
-
-        expect(cmp.find('WithStyles(ToggleButtonGroup)').props().value)
-            .toBe('details');
-        expect(cmp.find('Details').exists()).toBe(true);
-    });
-
     it('should display the badge preview update on save when content is updated', () => {
         defaultProps.isDirty = true;
 

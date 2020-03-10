@@ -4,7 +4,6 @@ import * as PropTypes from 'prop-types';
 import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Constants} from '~/ContentEditor.constants';
-import {Details} from './Details';
 import {ContentPreviewMemoWrapper} from './Preview';
 import {ToggleButton, ToggleButtonGroup} from '@material-ui/lab';
 
@@ -44,8 +43,7 @@ const styles = theme => ({
 });
 
 const SelectedTabComponents = {
-    preview: ContentPreviewMemoWrapper,
-    details: Details
+    preview: ContentPreviewMemoWrapper
 };
 
 const PreviewContainerCmp = ({classes, isDirty, mode}) => {
@@ -82,11 +80,6 @@ const PreviewContainerCmp = ({classes, isDirty, mode}) => {
                         <ToggleButton value="preview" classes={toggleButtonClasses}>
                             <Typography id="preview-tab">
                                 {t('content-editor:label.contentEditor.preview.toggleButtons.preview')}
-                            </Typography>
-                        </ToggleButton>
-                        <ToggleButton value="details" classes={toggleButtonClasses}>
-                            <Typography>
-                                {t('content-editor:label.contentEditor.preview.toggleButtons.details')}
                             </Typography>
                         </ToggleButton>
                     </ToggleButtonGroup>
