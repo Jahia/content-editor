@@ -15,6 +15,7 @@ import {compose} from '~/utils';
 import {useContentEditorConfigContext} from '~/ContentEditor.context';
 import {useRegisterEngineTabActions} from '~/Edit/engineTabs/useRegisterEngineTabActions';
 import envEditCallbacks from './Edit.env';
+import {adaptEditFormData} from './Edit.adapter';
 
 export const EditCmp = ({
     client,
@@ -88,7 +89,7 @@ EditCmp.propTypes = {
 export const Edit = compose(
     withApollo,
     withNotifications(),
-    withContentEditorDataContextProvider(FormQuery)
+    withContentEditorDataContextProvider(FormQuery, adaptEditFormData)
 )(EditCmp);
 Edit.displayName = 'Edit';
 export default Edit;
