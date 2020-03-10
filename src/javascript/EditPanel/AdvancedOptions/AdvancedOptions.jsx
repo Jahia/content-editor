@@ -5,7 +5,7 @@ import AdvancedOptionsNavigation from './AdvancedOptionsNavigation/AdvancedOptio
 import {useContentEditorConfigContext} from '~/ContentEditor.context';
 import classes from './AdvancedOptions.scss';
 import {registerAdvancedOptionsActions} from './AdvancedOptions.actions';
-import {Details} from '~/EditPanel/EditPanelContent/PreviewContainer/Details';
+import {TechnicalInformation} from './TechnicalInformation/TechnicalInformation';
 import {useTranslation} from 'react-i18next';
 
 export const AdvancedOptions = () => {
@@ -15,7 +15,7 @@ export const AdvancedOptions = () => {
 
     const [activeOption, setActiveOption] = useState('technicalInformation');
     const SelectedTabComponents = {
-        technicalInformation: Details
+        technicalInformation: TechnicalInformation
     };
     const SelectedTabComponent = SelectedTabComponents[activeOption];
     return (

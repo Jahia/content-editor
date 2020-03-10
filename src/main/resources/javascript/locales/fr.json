@@ -76,7 +76,14 @@
           "usagesTab": "Utilisations"
         },
         "advancedOption": {
-          "technicalInformation": "Informations techniques"
+          "technicalInformation": {
+            "contentType": "Type de contenu principal",
+            "details": "Détails",
+            "label": "Informations techniques",
+            "mixinTypes": "Type de contenu complet",
+            "path": "Chemin",
+            "uuid": "UUID"
+          }
         },
         "sharedLanguages": "Partagé par toutes les langues",
         "fields": {
@@ -155,14 +162,6 @@
           "off": "Désactivé"
         },
         "updateOnSave": "L'aperçu sera mis à jour lors de l'enregistrement"
-      },
-      "details": {
-        "details": "Détails",
-        "technicalInfo": "Informations techniques",
-        "contentType": "Type de contenu principal",
-        "mixinTypes": "Type de contenu complet",
-        "path": "Chemin",
-        "uuid": "UUID"
       },
       "CMMActions": {
         "createNewContent": {
