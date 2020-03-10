@@ -198,4 +198,25 @@ describe('adaptEditFormData', () => {
 
         expect(adaptEditFormData(graphqlResponse, 'fr', t).initialValues['Children::Order']).not.toEqual([]);
     });
+
+    it('should use default value for not enabled mixin', () => {
+        graphqlResponse.forms.editForm.sections[0].fieldSets.push({
+            dynamic: true,
+            activated: false,
+            fields: [
+                {
+                    name: 'field2',
+                    displayName: 'labelled',
+                    selectorType: 'ContentPicker',
+                    defaultValues: [
+                        {
+                            string: '2019-05-07T11:33:31.056'
+                        }
+                    ]
+                }
+            ]
+        });
+
+        expect(adaptEditFormData(graphqlResponse, 'fr', t).initialValues.field2).toEqual('2019-05-07T11:33:31.056');
+    });
 });
