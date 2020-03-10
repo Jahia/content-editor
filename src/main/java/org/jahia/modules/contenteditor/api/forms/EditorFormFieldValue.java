@@ -47,6 +47,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
+import org.jahia.modules.graphql.provider.dxm.node.GqlJcrMutationSupport;
 
 import javax.jcr.PropertyType;
 import javax.jcr.RepositoryException;
@@ -110,7 +111,7 @@ public class EditorFormFieldValue {
                 break;
             case PropertyType.DATE:
                 // Handle date for the content editor
-                SimpleDateFormat defaultDataFormat = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
+                SimpleDateFormat defaultDataFormat = new SimpleDateFormat(GqlJcrMutationSupport.DEFAULT_DATE_FORMAT);
                 this.value = defaultDataFormat.format(value.getDate().getTime());
                 break;
             case PropertyType.BOOLEAN:

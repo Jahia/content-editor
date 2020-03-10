@@ -11,6 +11,7 @@ import {FormQuery} from './CreateForm/createForm.gql-queries';
 import {withApollo} from 'react-apollo';
 import {compose} from '~/utils';
 import envCreateCallbacks from './Create.env';
+import {adaptCreateFormData} from './Create.adapter';
 
 const CreateCmp = ({
     client,
@@ -59,7 +60,7 @@ CreateCmp.propTypes = {
 export const Create = compose(
     withApollo,
     withNotifications(),
-    withContentEditorDataContextProvider(FormQuery)
+    withContentEditorDataContextProvider(FormQuery, adaptCreateFormData)
 )(CreateCmp);
 Create.displayName = 'Create';
 export default Create;

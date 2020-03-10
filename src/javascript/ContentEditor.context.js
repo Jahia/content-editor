@@ -15,7 +15,7 @@ export const ContentEditorConfigContext = React.createContext({});
 
 export const useContentEditorConfigContext = () => useContext(ContentEditorConfigContext);
 
-export const withContentEditorDataContextProvider = formQuery => Children => {
+export const withContentEditorDataContextProvider = (formQuery, formDataAdapter) => Children => {
     const ContentEditorDataContextProvider = props => {
         const {notificationContext} = props;
         const {t} = useTranslation();
@@ -29,7 +29,7 @@ export const withContentEditorDataContextProvider = formQuery => Children => {
             uilang: Constants.supportedLocales.includes(uilang) ? uilang : Constants.defaultLocale,
             primaryNodeType: contentType
         };
-        const {loading, error, errorMessage, nodeData, initialValues, details, technicalInfo, sections, title} = useFormDefinition(formQuery, formQueryParams, t);
+        const {loading, error, errorMessage, nodeData, initialValues, details, technicalInfo, sections, title} = useFormDefinition(formQuery, formQueryParams, formDataAdapter, t);
         const siteInfoResult = useSiteInfo({
             siteKey: site,
             displayLanguage: lang
