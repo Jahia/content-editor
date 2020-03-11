@@ -24,27 +24,29 @@ registry.add('app', 'content-editor-api', {
 
 registerCEActions(registry);
 
-registry.add('route', 'edit-route', {
-    targets: ['jcontent:0.1'],
-    path: `/jcontent/:siteKey/:lang/${Constants.routes.baseEditRoute}`,
-    render: () => <ContentEditorRedux mode={Constants.routes.baseEditRoute}/>
+registry.add('route', 'content-editor-edit-route', {
+    targets: ['nav-root-top:2.1'],
+    path: '/content-editor/:lang/edit/:uuid',
+    // eslint-disable-next-line react/prop-types
+    render: ({match}) => <ContentEditorRedux uuid={match.params.uuid} mode={Constants.routes.baseEditRoute} lang={match.params.lang}/>
 });
 
-registry.add('route', 'create-route', {
-    targets: ['jcontent:0.1'],
-    path: `/jcontent/:siteKey/:lang/${Constants.routes.baseCreateRoute}`,
-    render: () => <ContentEditorRedux mode="create"/>
+registry.add('route', 'content-editor-create-route', {
+    targets: ['nav-root-top:2.1'],
+    path: '/content-editor/:lang/create/:parentUuid/:contentType',
+    // eslint-disable-next-line react/prop-types
+    render: ({match}) => <ContentEditorRedux uuid={match.params.parentUuid} mode={Constants.routes.baseCreateRoute} lang={match.params.lang} contentType={decodeURI(match.params.contentType)}/>
 });
 
 // Register GWT Hooks
 window.top.jahiaGwtHook = {
     // Hook on edit engine opening
-    edit: ({path, lang, siteKey, uilang}) => {
-        window.CE_API.edit(path, siteKey, lang, uilang);
+    edit: ({uuid, lang, siteKey, uilang}) => {
+        window.CE_API.edit(uuid, siteKey, lang, uilang);
     },
     // Hook on create engine opening, also hook on create content type selector
-    create: ({path, lang, siteKey, uilang, contentTypes, excludedNodeTypes, includeSubTypes}) => {
-        window.CE_API.create(path, siteKey, lang, uilang, contentTypes, excludedNodeTypes, includeSubTypes);
+    create: ({uuid, path, lang, siteKey, uilang, contentTypes, excludedNodeTypes, includeSubTypes}) => {
+        window.CE_API.create(uuid, path, siteKey, lang, uilang, contentTypes, excludedNodeTypes, includeSubTypes);
     }
 };
 

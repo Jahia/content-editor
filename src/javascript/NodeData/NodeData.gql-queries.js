@@ -6,11 +6,11 @@ const NodeDataFragment = {
         variables: {
             uilang: 'String!',
             language: 'String!',
-            path: 'String!'
+            uuid: 'String!'
         },
         applyFor: 'node',
         gql: gql`fragment NodeData on JCRQuery {
-            result:nodeByPath(path: $path) {
+            result:nodeById(uuid: $uuid) {
                 ...NodeCacheRequiredFields
                 lockedAndCannotBeEdited
                 isPage: isNodeType(type: {multi: ANY, types: ["jnt:page"]})
@@ -70,7 +70,7 @@ const NodeDataFragment = {
 };
 
 const NodeQuery = gql`
-    query getNodeProperties($path:String!, $language:String!, $uilang:String!) {
+    query getNodeProperties($uuid:String!, $language:String!, $uilang:String!) {
         jcr {
             ...NodeData
         }

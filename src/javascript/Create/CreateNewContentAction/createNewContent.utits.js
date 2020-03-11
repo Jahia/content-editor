@@ -1,13 +1,43 @@
 import {getTreeOfContentWithRequirements} from './CreateNewContent.gql-queries';
+import {useQuery} from '@apollo/react-hooks';
 
 const NB_OF_DISPLAYED_RESCRICTED_SUB_NODES = 5;
+
+export const useCreatableNodetypes = (nodeTypes, includeSubTypes, path, uilang, excludedNodeTypes, showOnNodeTypes, transformResultCallback) => {
+    const {data, error, loadingTypes} = useQuery(getTreeOfContentWithRequirements, {
+        variables: {
+            nodeTypes: (nodeTypes && nodeTypes.length) > 0 ? nodeTypes : undefined,
+            includeSubTypes,
+            uilang,
+            path,
+            excludedNodeTypes,
+            showOnNodeTypes
+        }
+    });
+    return {
+        error,
+        loadingTypes,
+        nodetypes: (data && data.jcr) ? getNodeTypes(showOnNodeTypes, data, transformResultCallback) : []
+    };
+};
 
 export async function getCreatableNodetypes(client, nodeTypes, includeSubTypes, path, uilang, excludedNodeTypes, showOnNodeTypes, transformResultCallback) {
     const {data} = await client.query({
         query: getTreeOfContentWithRequirements,
-        variables: {nodeTypes: (nodeTypes && nodeTypes.length) > 0 ? nodeTypes : undefined, includeSubTypes, uilang, path, excludedNodeTypes, showOnNodeTypes}
+        variables: {
+            nodeTypes: (nodeTypes && nodeTypes.length) > 0 ? nodeTypes : undefined,
+            includeSubTypes,
+            uilang,
+            path,
+            excludedNodeTypes,
+            showOnNodeTypes
+        }
     });
 
+    return getNodeTypes(showOnNodeTypes, data, transformResultCallback);
+}
+
+function getNodeTypes(showOnNodeTypes, data, transformResultCallback) {
     const nodeTypeNotDsplayed = (showOnNodeTypes && showOnNodeTypes.length > 0 && !data.jcr.nodeByPath.isNodeType);
     if (nodeTypeNotDsplayed) {
         return [];
@@ -26,7 +56,7 @@ export async function getCreatableNodetypes(client, nodeTypes, includeSubTypes, 
             return sum;
         }, []);
 
-    return transformResultCallback ? transformResultCallback(resolvedTypes) : resolvedTypes;
+    return transformResultCallback ? transformResultCallback(resolvedTypes) : resolvedTypes || [];
 }
 
 export function transformNodeTypesToActions(nodeTypes) {

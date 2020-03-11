@@ -1,17 +1,12 @@
 import {Constants} from '../ContentEditor.constants';
 
 const envCreateCallbacks = {};
-envCreateCallbacks[Constants.env.redux] = (createdNodePath, lang, contentEditorConfigContext) => {
-    contentEditorConfigContext.envProps.setUrl({
-        language: lang,
-        mode: Constants.routes.baseEditRoute,
-        path: createdNodePath,
-        params: {}
-    });
+envCreateCallbacks[Constants.env.redux] = (createdNodeUuid, lang, contentEditorConfigContext) => {
+    contentEditorConfigContext.envProps.setUrl(Constants.routes.baseEditRoute, lang, createdNodeUuid, '');
 };
 
-envCreateCallbacks[Constants.env.standalone] = (createdNodePath, lang, contentEditorConfigContext) => {
-    contentEditorConfigContext.envProps.createCallback(createdNodePath);
+envCreateCallbacks[Constants.env.standalone] = (createdNodeUuid, lang, contentEditorConfigContext) => {
+    contentEditorConfigContext.envProps.createCallback(createdNodeUuid);
 };
 
 export default envCreateCallbacks;

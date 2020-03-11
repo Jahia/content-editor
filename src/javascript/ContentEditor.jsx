@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {ApolloProvider as ApolloHooksProvider} from '@apollo/react-hooks';
 import Create from '~/Create/Create';
 import Edit from '~/Edit/Edit';
 import {EditorIdContextProvider} from './ContentEditorId.context';
-import {withApollo} from 'react-apollo';
 import {ContentEditorConfigContext} from './ContentEditor.context';
 import {Constants} from '~/ContentEditor.constants';
 import {DndProvider} from 'react-dnd';
@@ -15,9 +13,9 @@ const Modes = {
     create: Create
 };
 
-const ContentEditorCmp = ({mode, path, lang, uilang, site, contentType, client, env, envProps}) => {
+export const ContentEditor = ({mode, uuid, lang, uilang, site, contentType, env, envProps}) => {
     const contentEditorConfig = {
-        path,
+        uuid,
         lang,
         uilang,
         site,
@@ -30,29 +28,22 @@ const ContentEditorCmp = ({mode, path, lang, uilang, site, contentType, client, 
     const ContentEditorModeCmp = Modes[mode];
     return (
         <EditorIdContextProvider>
-            <ApolloHooksProvider client={client}>
-                <ContentEditorConfigContext.Provider value={contentEditorConfig}>
-                    <DndProvider backend={Backend}>
-                        <ContentEditorModeCmp/>
-                    </DndProvider>
-                </ContentEditorConfigContext.Provider>
-            </ApolloHooksProvider>
+            <ContentEditorConfigContext.Provider value={contentEditorConfig}>
+                <DndProvider backend={Backend}>
+                    <ContentEditorModeCmp/>
+                </DndProvider>
+            </ContentEditorConfigContext.Provider>
         </EditorIdContextProvider>
     );
 };
 
-ContentEditorCmp.propTypes = {
-    client: PropTypes.object.isRequired,
+ContentEditor.propTypes = {
     mode: PropTypes.oneOf([Constants.routes.baseCreateRoute, Constants.routes.baseEditRoute]).isRequired,
     env: PropTypes.oneOf([Constants.env.redux, Constants.env.standalone]).isRequired,
     envProps: PropTypes.object.isRequired,
-    path: PropTypes.string.isRequired,
+    uuid: PropTypes.string.isRequired,
     lang: PropTypes.string.isRequired,
     uilang: PropTypes.string.isRequired,
     site: PropTypes.string.isRequired,
     contentType: PropTypes.string
 };
-
-export const ContentEditor = withApollo(ContentEditorCmp);
-ContentEditor.displayName = 'ContentEditor';
-export default ContentEditor;

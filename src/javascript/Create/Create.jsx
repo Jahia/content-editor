@@ -33,10 +33,10 @@ const CreateCmp = ({
                 sections,
                 values
             },
-            createCallback: createdNodePath => {
+            createCallback: createdNodeUuid => {
                 const envCreateCallback = envCreateCallbacks[contentEditorConfigContext.env];
                 if (envCreateCallback) {
-                    envCreateCallback(createdNodePath, formQueryParams.language, contentEditorConfigContext);
+                    envCreateCallback(createdNodeUuid, formQueryParams.language, contentEditorConfigContext);
                 }
             }
         });
