@@ -11,7 +11,7 @@ import AdvancedOptions from './AdvancedOptions/AdvancedOptions';
 import {connect} from 'formik';
 import {EditPanelLanguageSwitcher} from './EditPanelLanguageSwitcher';
 import {Error} from '@material-ui/icons';
-import {useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorContext, useContentEditorConfigContext} from '~/ContentEditor.context';
 import {withStyles} from '@material-ui/core';
 import PublicationInfoBadge from '~/PublicationInfo/PublicationInfo.badge';
 import LockInfoBadge from '~/Lock/LockInfo.badge';
@@ -55,8 +55,13 @@ const styles = theme => ({
 const EditPanelCmp = ({formik, title, classes, notificationContext, client}) => {
     const {t} = useTranslation();
     const {nodeData, siteInfo, lang, uilang, mode} = useContentEditorContext();
+    const {envProps} = useContentEditorConfigContext();
 
     useEffect(() => {
+        if (envProps.initCallback) {
+            envProps.initCallback(formik);
+        }
+
         const handleBeforeUnloadEvent = ev => {
             if (formik.dirty) {
                 ev.preventDefault();
