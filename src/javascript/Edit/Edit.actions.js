@@ -5,8 +5,7 @@ import startWorkflow from './startWorkflow/startWorkflow.action';
 import unpublishAction from './unpublish/unpublish.action';
 import copyLanguageAction from './copyLanguage/copyLanguage.action';
 import {Save, CloudUpload, CloudOff} from '@material-ui/icons';
-import {Edit} from '@jahia/moonstone/dist/icons';
-import {DotsVertical} from 'mdi-material-ui';
+import {Edit, ChevronDown} from '@jahia/moonstone/dist/icons';
 import openEngineTabs from './engineTabs/openEngineTabs.action';
 
 export const registerEditActions = actionsRegistry => {
@@ -21,30 +20,29 @@ export const registerEditActions = actionsRegistry => {
     // In app actions
 
     actionsRegistry.add('action', 'submitSave', saveAction, {
-        buttonLabel:
-            'content-editor:label.contentEditor.edit.action.save.name',
+        buttonLabel: 'content-editor:label.contentEditor.edit.action.save.name',
         buttonIcon: <Save/>,
+        color: 'default',
         targets: ['editHeaderActions:1']
     });
 
     actionsRegistry.add('action', 'publishAction', publishAction, {
         buttonIcon: <CloudUpload/>,
+        color: 'accent',
         targets: ['editHeaderActions:1']
     });
 
     actionsRegistry.add('action', 'startWorkflowMainButton', startWorkflow, {
-        buttonLabel:
-            'content-editor:label.contentEditor.edit.action.startWorkflow.name',
+        buttonLabel: 'content-editor:label.contentEditor.edit.action.startWorkflow.name',
         buttonIcon: <CloudUpload/>,
         targets: ['editHeaderActions:1']
     });
 
     /* 3 dots menu */
     actionsRegistry.add('action', 'ContentEditorHeaderMenu', actionsRegistry.get('action', 'menuAction'), {
-        buttonIcon: <DotsVertical/>,
+        buttonIcon: <ChevronDown/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.action.moreOptions',
-        menuTarget: 'ContentEditorHeaderActions',
-        showIcons: true
+        menuTarget: 'ContentEditorHeaderActions'
     });
 
     actionsRegistry.add('action', 'startWorkflow3dots', startWorkflow, {
