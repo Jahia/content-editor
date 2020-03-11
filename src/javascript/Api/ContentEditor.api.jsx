@@ -8,6 +8,7 @@ import {CreateNewContentDialog} from '../Create/CreateNewContentAction/CreateNew
 import {withApollo} from 'react-apollo';
 import {compose} from '~/utils';
 import {getCreatableNodetypes} from '~/Create/CreateNewContentAction/createNewContent.utits';
+import EditPanelDialogConfirmation from '~/EditPanel/EditPanelDialogConfirmation/EditPanelDialogConfirmation';
 
 let styles = () => {
     return {
@@ -24,6 +25,8 @@ let styles = () => {
 const ContentEditorApiCmp = ({classes, client}) => {
     const [editorConfig, setEditorConfig] = useState(false);
     const [contentTypeSelectorConfig, setContentTypeSelectorConfig] = useState(false);
+    const [confirmationConfig, setConfirmationConfig] = useState(false);
+    const [formikRef, setFormikRef] = useState(false);
 
     window.CE_API = window.CE_API || {};
     /**
@@ -94,6 +97,9 @@ const ContentEditorApiCmp = ({classes, client}) => {
 
     // Standalone env props
     const envProps = {
+        initCallback: formik => {
+            setFormikRef(formik);
+        },
         closeCallback: () => {
             setEditorConfig(false);
             setContentTypeSelectorConfig(false);
@@ -145,8 +151,16 @@ const ContentEditorApiCmp = ({classes, client}) => {
                     TransitionProps={{tabIndex: ''}} // Hack for CKEditor pickers fields to be editable
                     aria-labelledby="dialog-content-editor"
                     classes={{root: classes.ceDialogRoot}}
-                    onClose={envProps.closeCallback}
+                    onClose={() => (formikRef && formikRef.dirty) ? setConfirmationConfig(true) : envProps.closeCallback()}
             >
+                {confirmationConfig && <EditPanelDialogConfirmation
+                    open
+                    titleKey="content-editor:label.contentEditor.edit.action.goBack.title"
+                    formik={formikRef}
+                    actionCallback={envProps.closeCallback}
+                    onCloseDialog={() => setConfirmationConfig(false)}
+                />}
+
                 <ContentEditor env={Constants.env.standalone}
                                mode={editorConfig.mode}
                                path={editorConfig.path}
