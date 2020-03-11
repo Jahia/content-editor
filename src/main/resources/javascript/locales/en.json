@@ -76,7 +76,14 @@
           "usagesTab": "Usages"
         },
         "advancedOption": {
-          "technicalInformation": "Technical information"
+          "technicalInformation": {
+            "contentType": "Main content type",
+            "details": "Details",
+            "label": "Technical information",
+            "mixinTypes": "Full content type",
+            "path": "Path",
+            "uuid": "UUID"
+          }
         },
         "sharedLanguages": "Shared by all languages",
         "fields": {
@@ -155,14 +162,6 @@
           "off": "Off"
         },
         "updateOnSave": "Preview will update on save"
-      },
-      "details": {
-        "details": "Details",
-        "technicalInfo": "Technical information",
-        "contentType": "Main content type",
-        "mixinTypes": "Full content type",
-        "path": "Path",
-        "uuid": "UUID"
       },
       "CMMActions": {
         "createNewContent": {

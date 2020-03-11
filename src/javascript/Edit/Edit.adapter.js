@@ -60,12 +60,19 @@ const getDetailsValue = (sections = [], nodeData = {}, lang = 'en') => {
     // Retrieve only fields inside the metadata section
     const fields = getFields(sections, 'metadata');
 
+    const fieldNamesToGet = ['j:lastPublished',
+        'j:lastPublishedBy',
+        'jcr:created',
+        'jcr:createdBy',
+        'jcr:lastModified',
+        'jcr:lastModifiedBy'];
+
     if (!fields) {
         return [];
     }
 
     return fields
-        .filter(field => field.readOnly)
+        .filter(field => fieldNamesToGet.indexOf(field.name) > -1)
         .map(field => {
             const jcrDefinition = nodeData.properties.find(
                 prop => prop.name === field.name
@@ -90,17 +97,17 @@ const getDetailsValue = (sections = [], nodeData = {}, lang = 'en') => {
 const getTechnicalInfo = (nodeData, t) => {
     return [
         {
-            label: t('content-editor:label.contentEditor.details.contentType'),
+            label: t('content-editor:label.contentEditor.edit.advancedOption.technicalInformation.contentType'),
             value: nodeData.primaryNodeType.displayName
         },
         {
-            label: t('content-editor:label.contentEditor.details.mixinTypes'), value: [
+            label: t('content-editor:label.contentEditor.edit.advancedOption.technicalInformation.mixinTypes'), value: [
                 nodeData.primaryNodeType.name,
                 ...nodeData.mixinTypes.map(m => m.name)
             ].filter(v => v).join('; ')
         },
-        {label: t('content-editor:label.contentEditor.details.path'), value: nodeData.path},
-        {label: t('content-editor:label.contentEditor.details.uuid'), value: nodeData.uuid}
+        {label: t('content-editor:label.contentEditor.edit.advancedOption.technicalInformation.path'), value: nodeData.path},
+        {label: t('content-editor:label.contentEditor.edit.advancedOption.technicalInformation.uuid'), value: nodeData.uuid}
     ];
 };
 

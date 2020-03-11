@@ -125,7 +125,8 @@ describe('adaptEditFormData', () => {
 
     it('should add details object with data needed', () => {
         graphqlResponse.forms.editForm.sections[0].name = 'metadata';
-        graphqlResponse.forms.editForm.sections[0].fieldSets[0].fields[0].readOnly = true;
+        graphqlResponse.forms.editForm.sections[0].fieldSets[0].fields[0].name = 'jcr:created';
+        graphqlResponse.jcr.result.properties[0].name = 'jcr:created';
         expect(adaptEditFormData(graphqlResponse, 'fr', t).details).toEqual([
             {
                 label: 'labelled',
@@ -137,7 +138,8 @@ describe('adaptEditFormData', () => {
     it('should display the date according to user preference', () => {
         graphqlResponse.forms.editForm.sections[0].name = 'metadata';
         graphqlResponse.forms.editForm.sections[0].fieldSets[0].fields[0].selectorType = 'DatePicker';
-        graphqlResponse.forms.editForm.sections[0].fieldSets[0].fields[0].readOnly = true;
+        graphqlResponse.forms.editForm.sections[0].fieldSets[0].fields[0].name = 'jcr:lastModified';
+        graphqlResponse.jcr.result.properties[0].name = 'jcr:lastModified';
         expect(adaptEditFormData(graphqlResponse, 'fr', t).details).toEqual([
             {
                 label: 'labelled',
@@ -149,19 +151,19 @@ describe('adaptEditFormData', () => {
     it('should add technicalInfo object', () => {
         expect(adaptEditFormData(graphqlResponse, 'fr', t).technicalInfo).toEqual([
             {
-                label: 'content-editor:label.contentEditor.details.contentType',
+                label: 'content-editor:label.contentEditor.edit.advancedOption.technicalInformation.contentType',
                 value: 'ContentType'
             },
             {
-                label: 'content-editor:label.contentEditor.details.mixinTypes',
+                label: 'content-editor:label.contentEditor.edit.advancedOption.technicalInformation.mixinTypes',
                 value: 'jcr:contentType; Mixin1; Mixin2'
             },
             {
-                label: 'content-editor:label.contentEditor.details.path',
+                label: 'content-editor:label.contentEditor.edit.advancedOption.technicalInformation.path',
                 value: '/site/digitall/home'
             },
             {
-                label: 'content-editor:label.contentEditor.details.uuid',
+                label: 'content-editor:label.contentEditor.edit.advancedOption.technicalInformation.uuid',
                 value: 'uuid1'
             }
         ]);
