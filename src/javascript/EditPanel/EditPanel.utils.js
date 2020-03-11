@@ -45,7 +45,8 @@ export function getFields(sections, sectionName, fieldSetFilter) {
 
         if (!sectionName || sectionName === section.name) {
             fields = section
-                .fieldSets.filter(fieldset => fieldSetFilter ? fieldSetFilter(fieldset) : true)
+                .fieldSets
+                .filter(fieldset => fieldSetFilter ? fieldSetFilter(fieldset) : true)
                 .reduce((result, fieldset) => ([...result, ...fieldset.fields]), []);
         }
 
