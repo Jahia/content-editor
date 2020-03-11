@@ -1,20 +1,24 @@
 import dayjs from '~/date.config';
 import {getDynamicFieldSets, getFields} from '~/EditPanel/EditPanel.utils';
 import {resolveSelectorType} from '~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes.utils';
-import {adaptSections} from '~/FormDefinitions/FormData.adapter';
+import {adaptSections, getFieldValuesFromDefaultValues} from '~/FormDefinitions/FormData.adapter';
 
 const getInitialValues = (nodeData, sections) => {
     // Retrieve dynamic fieldSets
     const dynamicFieldSets = getDynamicFieldSets(sections);
 
     // Retrieve fields and the return object contains the field name as the key and the field value as the value
-    const fields = getFields(sections)
+    const nodeValues = getFields(sections)
         .reduce((result, field) => ({...result, ...getFieldValues(field, nodeData)}), {});
+
+    // Get default values for not enabled mixins
+    const extendsMixinFieldsDefaultValues = getFields(sections, undefined, fieldset => fieldset.dynamic && !fieldset.activated)
+        .reduce((result, field) => ({...result, ...getFieldValuesFromDefaultValues(field)}), {});
 
     const childrenOrderingFields = getChildrenOrderingFields(nodeData);
 
     // Return object contains fields and dynamic fieldSets
-    return {...fields, ...dynamicFieldSets, ...childrenOrderingFields};
+    return {...nodeValues, ...extendsMixinFieldsDefaultValues, ...dynamicFieldSets, ...childrenOrderingFields};
 };
 
 const getChildrenOrderingFields = nodeData => {

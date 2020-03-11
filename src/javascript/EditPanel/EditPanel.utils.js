@@ -36,15 +36,17 @@ export function getDynamicFieldSets(sections) {
  *
  * @param {array} sections    array object contains sections
  * @param {string} sectionName string value refer to the section name
+ * @param {string} fieldSetFilter optional fieldset filter
  * @returns {array} fields    array object contains fields
  */
-export function getFields(sections, sectionName) {
+export function getFields(sections, sectionName, fieldSetFilter) {
     return sections.reduce((result, section) => {
         let fields = [];
 
         if (!sectionName || sectionName === section.name) {
             fields = section
                 .fieldSets
+                .filter(fieldset => fieldSetFilter ? fieldSetFilter(fieldset) : true)
                 .reduce((result, fieldset) => ([...result, ...fieldset.fields]), []);
         }
 
