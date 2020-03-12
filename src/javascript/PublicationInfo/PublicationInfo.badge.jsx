@@ -1,6 +1,7 @@
 import React from 'react';
+import {Chip} from '@jahia/moonstone';
+import {FileContent} from '@jahia/moonstone/dist/icons';
 import {usePublicationInfoContext} from './PublicationInfo.context';
-import {Badge} from '@jahia/design-system-kit';
 import {useTranslation} from 'react-i18next';
 
 export const PublicationInfoBadge = () => {
@@ -8,10 +9,12 @@ export const PublicationInfoBadge = () => {
     const {publicationInfoPolling} = usePublicationInfoContext();
     return (
         <>
-            {publicationInfoPolling && <Badge data-sel-role="publication-info-polling-badge"
-                                              badgeContent={t('content-editor:label.contentEditor.edit.action.publish.badge')}
-                                              variant="normal"
-                                              color="info"
+            {publicationInfoPolling &&
+            <Chip
+                data-sel-role="publication-info-polling-badge"
+                label={t('content-editor:label.contentEditor.edit.action.publish.badge')}
+                icon={<FileContent/>}
+                color="default"
             />}
         </>
     );

@@ -25,11 +25,11 @@ jest.mock('~/ContentEditor.context', () => {
 describe('LockInfoBadge.badge', () => {
     it('Should display badge when lockedAndCannotBeEdited is true', () => {
         let wrapper = shallow(<LockInfoBadge/>);
-        expect(wrapper.debug()).toContain('Badge');
+        expect(wrapper.debug()).toContain('Chip');
     });
 
     it('Should not display badge when lockedAndCannotBeEdited is false', () => {
         let wrapper = shallow(<LockInfoBadge/>);
-        expect(wrapper.debug()).not.toContain('Badge');
+        expect(wrapper.debug()).not.toContain('Chip');
     });
 });

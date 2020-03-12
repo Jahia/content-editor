@@ -1,5 +1,5 @@
 import React from 'react';
-import {ArrowBack} from '@material-ui/icons';
+import {ArrowLeft} from '@jahia/moonstone/dist/icons';
 import {SelectorTypes} from '~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes';
 import {registerEditActions} from '~/Edit/Edit.actions';
 import {registerCreateActions} from '~/Create/Create.actions';
@@ -12,7 +12,7 @@ export const registerCEActions = registry => {
     registerEditPanelActions(registry);
 
     registry.add('action', 'backButton', goBackAction, {
-        buttonIcon: <ArrowBack/>,
+        buttonIcon: <ArrowLeft/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.action.goBack.name',
         targets: ['editHeaderPathActions:1'],
         showIcons: true

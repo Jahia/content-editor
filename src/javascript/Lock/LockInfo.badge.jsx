@@ -1,6 +1,6 @@
 import React from 'react';
-import DeleteIcon from '@material-ui/icons/Delete';
-import {Badge} from '@jahia/design-system-kit';
+import {Chip} from '@jahia/moonstone';
+import {Lock} from '@jahia/moonstone/dist/icons';
 import {useTranslation} from 'react-i18next';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {getBadgeContent} from './Lock.utils';
@@ -10,12 +10,12 @@ export const LockInfoBadge = () => {
     const {nodeData} = useContentEditorContext();
     return (
         <>
-            {nodeData.lockedAndCannotBeEdited && <Badge data-sel-role="lock-info-badge"
-                                                        badgeContent={getBadgeContent(nodeData, t)}
-                                                        variant="normal"
-                                                        color="error"
-                                                        icon={<DeleteIcon/>}
-
+            {nodeData.lockedAndCannotBeEdited &&
+            <Chip
+                data-sel-role="lock-info-badge"
+                label={getBadgeContent(nodeData, t)}
+                icon={<Lock/>}
+                color="warning"
             />}
         </>
     );
