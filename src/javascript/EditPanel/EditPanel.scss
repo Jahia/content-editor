@@ -29,11 +29,13 @@
 
     .warningBadge {
         position: absolute;
-        top: 0.6em;
-        right: 170px;
+        top: 0.7em;
+        right: 248px;
 
         color: #e8b606;
 
         border-radius: 50%;
+
+        background-color: var(--color-white);
     }
 }

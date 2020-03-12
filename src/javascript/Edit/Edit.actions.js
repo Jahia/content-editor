@@ -23,19 +23,22 @@ export const registerEditActions = actionsRegistry => {
         buttonLabel: 'content-editor:label.contentEditor.edit.action.save.name',
         buttonIcon: <Save/>,
         color: 'default',
-        targets: ['editHeaderActions:1']
+        targets: ['editHeaderActions:1'],
+        dataSelRole: 'submitSave'
     });
 
     actionsRegistry.add('action', 'publishAction', publishAction, {
         buttonIcon: <CloudUpload/>,
         color: 'accent',
-        targets: ['editHeaderActions:1']
+        targets: ['editHeaderActions:1'],
+        dataSelRole: 'publishAction'
     });
 
     actionsRegistry.add('action', 'startWorkflowMainButton', startWorkflow, {
         buttonLabel: 'content-editor:label.contentEditor.edit.action.startWorkflow.name',
         buttonIcon: <CloudUpload/>,
-        targets: ['editHeaderActions:1']
+        targets: ['editHeaderActions:1'],
+        dataSelRole: 'startWorkflowMainButton'
     });
 
     /* 3 dots menu */
