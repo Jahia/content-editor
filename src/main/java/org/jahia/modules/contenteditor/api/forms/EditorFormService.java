@@ -56,22 +56,22 @@ public interface EditorFormService {
      * @param primaryNodeTypeName the name of the primary node type for which we want to generate the form structure
      * @param uiLocale The locale used to display the labels
      * @param locale The locale used to get nodes data
-     * @param parentPath the parent node path under with the new node will be created.
+     * @param uuidOrPath uuid or path of the parent node path under with the new node will be created.
      * @return the generated form structure with all the proper default values (as well as choicelists) as well as meta-
      * data such as readonly, etc...
      * @throws EditorFormException if there was an error during the generation of the form.
      */
-    EditorForm getCreateForm(String primaryNodeTypeName, Locale uiLocale, Locale locale, String parentPath) throws EditorFormException;
+    EditorForm getCreateForm(String primaryNodeTypeName, Locale uiLocale, Locale locale, String uuidOrPath) throws EditorFormException;
 
     /**
      * Retrieves a form editor structure for a given node, by combining automatically generated structures from
      * existing node type definitions and also merging with overrides defined in other modules.
      * @param uiLocale The locale used to display the labels
      * @param locale The locale used to get nodes data
-     * @param nodePath the node path of the node to be edited.
+     * @param uuidOrPath UUID or path of the node path of the node to be edited.
      * @return the generated form structure with all the proper default values (as well as choicelists) as well as meta-
      * data such as readonly, etc...
      * @throws EditorFormException if there was an error during the generation of the form.
      */
-    EditorForm getEditForm(Locale uiLocale, Locale locale, String nodePath) throws EditorFormException;
+    EditorForm getEditForm(Locale uiLocale, Locale locale, String uuidOrPath) throws EditorFormException;
 }

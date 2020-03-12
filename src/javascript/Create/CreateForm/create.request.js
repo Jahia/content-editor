@@ -29,7 +29,7 @@ export const createNode = ({
         mutation: CreateNode
     }).then(data => {
         if (createCallback) {
-            createCallback(data.data.jcr.modifiedNodes[0].path);
+            createCallback(data.data.jcr.modifiedNodes[0].uuid);
         }
 
         notificationContext.notify(t('content-editor:label.contentEditor.create.createButton.success'), ['closeButton']);

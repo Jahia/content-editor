@@ -1,83 +1,98 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {CreateNewContentDialog} from './CreateNewContentDialog';
-import {componentRendererAction, composeActions} from '@jahia/react-material';
-import {reduxAction} from '../../actions/redux.action';
 import {Constants} from '~/ContentEditor.constants';
-import {cmGoto} from '~/JContent.redux-actions';
-import {withApolloAction} from './withApolloAction';
-import {from} from 'rxjs';
-import {share} from 'rxjs/operators';
-import {transformNodeTypesToActions, getCreatableNodetypes} from './createNewContent.utits';
+import {transformNodeTypesToActions, useCreatableNodetypes} from './createNewContent.utits';
+import {useSelector} from 'react-redux';
+import {useNodeInfo} from '@jahia/data-helper';
+import {ComponentRendererContext} from '@jahia/ui-extender';
+import * as PropTypes from 'prop-types';
+import {useContentEditorHistory} from '~/ContentEditorHistory';
+import {useTranslation} from 'react-i18next';
 
-// Should continue to use redux here, because this action is used to replace JContent create action, so it's only displayed in JContent
-const mapDispatchToProps = dispatch => ({
-    gotToCE: gotoParams => dispatch(cmGoto(gotoParams))
-});
+// eslint-disable-next-line
+const onClick = (uuid, language, context, redirect, componentRenderer) => {
+    if (context.openEditor) {
+        redirect({mode: Constants.routes.baseCreateRoute, language, uuid, rest: encodeURI(context.nodeTypes[0])});
+    } else {
+        const closeDialog = () => {
+            componentRenderer.destroy('CreateNewContentDialog');
+        };
 
-const mapStateToProps = state => {
-    return {
-        uilang: state.uilang,
-        language: state.language,
-        siteKey: state.site
-    };
+        componentRenderer.render(
+            'CreateNewContentDialog',
+            CreateNewContentDialog,
+            {
+                open,
+                parentPath: context.path,
+                uilang: context.uilang,
+                onClose: closeDialog,
+                onExited: closeDialog,
+                onCreateContent: contentType => {
+                    redirect({
+                        mode: Constants.routes.baseCreateRoute,
+                        language,
+                        uuid,
+                        rest: encodeURI(contentType.name)
+                    });
+                    closeDialog();
+                }
+            });
+    }
 };
 
-export default composeActions(
-    componentRendererAction,
-    withApolloAction,
-    reduxAction(mapStateToProps, mapDispatchToProps),
-    {
-        init: context => {
-            const creatableNodeTypesActions = from(
-                getCreatableNodetypes(
-                    context.client,
-                    undefined,
-                    false,
-                    context.path,
-                    context.uilang,
-                    ['jmix:studioOnly', 'jmix:hiddenType'],
-                    context.showOnNodeTypes,
-                    transformNodeTypesToActions)
-            ).pipe(share());
-            context.actions = creatableNodeTypesActions;
-            context.enabled = creatableNodeTypesActions;
-        },
-        onClick: context => {
-            if (context.openEditor) {
-                context.gotToCE({
-                    site: context.siteKey,
-                    language: context.language,
-                    mode: Constants.routes.baseCreateRoute,
-                    path: context.path,
-                    params: {
-                        contentType: context.nodeTypes[0]
-                    }
-                });
-            } else {
-                let handler = context.renderComponent(
-                    <CreateNewContentDialog
-                        open
-                        parentPath={context.path}
-                        uilang={context.uilang}
-                        onClose={() => {
-                            handler.setProps({open: false});
-                        }}
-                        onExited={() => {
-                            handler.destroy();
-                        }}
-                        onCreateContent={contentType => {
-                            context.gotToCE({
-                                site: context.siteKey,
-                                language: context.language,
-                                mode: Constants.routes.baseCreateRoute,
-                                path: context.path,
-                                params: {
-                                    contentType: contentType.name
-                                }
-                            });
-                            handler.setProps({open: false});
-                        }}
-                    />);
-            }
-        }
-    });
+const CreateNewContent = ({context, render: Render, loading: Loading}) => {
+    const {redirect} = useContentEditorHistory();
+    const {t} = useTranslation();
+    const componentRenderer = useContext(ComponentRendererContext);
+    const {language, uilang} = useSelector(state => ({language: state.language, uilang: state.uilang}));
+    const res = useNodeInfo({path: context.path, language}, {getDisplayName: true});
+    const {loadingTypes, error, nodetypes} = useCreatableNodetypes(
+        undefined,
+        false,
+        context.path,
+        uilang,
+        ['jmix:studioOnly', 'jmix:hiddenType'],
+        context.showOnNodeTypes,
+        transformNodeTypesToActions);
+
+    if (Loading && (loadingTypes || res.loading)) {
+        return <Loading context={context}/>;
+    }
+
+    if (error) {
+        const message = t(
+            'content-media-manager:label.contentManager.error.queryingContent',
+            {details: error.message ? error.message : ''}
+        );
+        return <>{message}</>;
+    }
+
+    if (!res || !res.node) {
+        return <></>;
+    }
+
+    return (nodetypes || [{id: 'allTypes'}]).map(result => (
+        <Render key={result.id}
+                context={{
+                    ...context,
+                    ...result,
+                    onClick: ctx => onClick(res.node.uuid, language, ctx, redirect, componentRenderer)
+                }}/>
+    ));
+};
+
+CreateNewContent.defaultProps = {
+    loading: undefined
+};
+
+CreateNewContent.propTypes = {
+    context: PropTypes.object.isRequired,
+    render: PropTypes.func.isRequired,
+    loading: PropTypes.func
+};
+
+const createNewContentAction = {
+    component: CreateNewContent
+};
+
+export default createNewContentAction;

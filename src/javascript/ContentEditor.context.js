@@ -19,12 +19,11 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
     const ContentEditorDataContextProvider = props => {
         const {notificationContext} = props;
         const {t} = useTranslation();
-        const {lang, uilang, site, path, contentType, mode} = useContentEditorConfigContext();
+        const {lang, uilang, site, uuid, contentType, mode} = useContentEditorConfigContext();
 
         // Get Data
         const formQueryParams = {
-            path: path,
-            parentPath: path,
+            uuid,
             language: lang,
             uilang: Constants.supportedLocales.includes(uilang) ? uilang : Constants.defaultLocale,
             primaryNodeType: contentType
@@ -53,7 +52,7 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
 
         // Build editor context
         const editorContext = {
-            path,
+            path: nodeData.path,
             lang,
             uilang,
             site,

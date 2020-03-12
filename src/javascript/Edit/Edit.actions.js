@@ -7,14 +7,14 @@ import copyLanguageAction from './copyLanguage/copyLanguage.action';
 import {Save, CloudUpload, CloudOff} from '@material-ui/icons';
 import {Edit, ChevronDown} from '@jahia/moonstone/dist/icons';
 import openEngineTabs from './engineTabs/openEngineTabs.action';
+import editContentAction from './EditContent.action';
 
 export const registerEditActions = actionsRegistry => {
-    actionsRegistry.addOrReplace('action', 'edit', actionsRegistry.get('action', 'router'), {
+    actionsRegistry.add('action', 'edit', editContentAction, {
         buttonIcon: <Edit/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.contentEdit',
         targets: ['contentActions:2'],
-        hideOnNodeTypes: ['jnt:virtualsite'],
-        mode: 'edit'
+        hideOnNodeTypes: ['jnt:virtualsite']
     });
 
     // In app actions
