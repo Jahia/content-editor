@@ -2,7 +2,7 @@ import {getTreeOfContentWithRequirements} from './CreateNewContent.gql-queries';
 import {useQuery} from '@apollo/react-hooks';
 
 const NB_OF_DISPLAYED_RESCRICTED_SUB_NODES = 5;
-
+// eslint-disable-next-line
 export const useCreatableNodetypes = (nodeTypes, includeSubTypes, path, uilang, excludedNodeTypes, showOnNodeTypes, transformResultCallback) => {
     const {data, error, loadingTypes} = useQuery(getTreeOfContentWithRequirements, {
         variables: {
@@ -20,7 +20,7 @@ export const useCreatableNodetypes = (nodeTypes, includeSubTypes, path, uilang, 
         nodetypes: (data && data.jcr) ? getNodeTypes(showOnNodeTypes, data, transformResultCallback) : []
     };
 };
-
+// eslint-disable-next-line
 export async function getCreatableNodetypes(client, nodeTypes, includeSubTypes, path, uilang, excludedNodeTypes, showOnNodeTypes, transformResultCallback) {
     const {data} = await client.query({
         query: getTreeOfContentWithRequirements,

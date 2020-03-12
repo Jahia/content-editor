@@ -19,7 +19,7 @@ export const useContentEditorHistory = () => {
 
     return {redirect};
 };
-
+// eslint-disable-next-line
 const buildContentEditorURL = (appName, mode, language, uuid, rest) => {
     return `/${appName}/${language}/${mode}/${uuid}${rest}`;
 };

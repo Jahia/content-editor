@@ -9,6 +9,7 @@ import * as PropTypes from 'prop-types';
 import {useContentEditorHistory} from '~/ContentEditorHistory';
 import {useTranslation} from 'react-i18next';
 
+// eslint-disable-next-line
 const onClick = (uuid, language, context, redirect, componentRenderer) => {
     if (context.openEditor) {
         redirect({mode: Constants.routes.baseCreateRoute, language, uuid, rest: encodeURI(context.nodeTypes[0])});
@@ -27,7 +28,12 @@ const onClick = (uuid, language, context, redirect, componentRenderer) => {
                 onClose: closeDialog,
                 onExited: closeDialog,
                 onCreateContent: contentType => {
-                    redirect({mode: Constants.routes.baseCreateRoute, language, uuid, rest: encodeURI(contentType.name)});
+                    redirect({
+                        mode: Constants.routes.baseCreateRoute,
+                        language,
+                        uuid,
+                        rest: encodeURI(contentType.name)
+                    });
                     closeDialog();
                 }
             });
@@ -65,7 +71,7 @@ const CreateNewContent = ({context, render: Render, loading: Loading}) => {
         return <></>;
     }
 
-    return (nodetypes || [{id: 'toto'}]).map(result => (
+    return (nodetypes || [{id: 'allTypes'}]).map(result => (
         <Render key={result.id}
                 context={{
                     ...context,

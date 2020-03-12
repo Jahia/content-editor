@@ -54,6 +54,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
      * @param excludedNodeTypes (optional) The node types excluded for creation, by default: ['jmix:studioOnly', 'jmix:hiddenType']
      * @param includeSubTypes (optional) if true, subtypes of nodeTypes provided will be resolved.
      */
+    // eslint-disable-next-line
     window.CE_API.create = (uuid, path, site, lang, uilang, nodeTypes, excludedNodeTypes, includeSubTypes) => {
         if (nodeTypes && nodeTypes.length === 1 && !includeSubTypes) {
             // Direct create with a known content type
