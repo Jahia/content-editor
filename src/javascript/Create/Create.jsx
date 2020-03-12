@@ -12,6 +12,7 @@ import {withApollo} from 'react-apollo';
 import {compose} from '~/utils';
 import envCreateCallbacks from './Create.env';
 import {adaptCreateFormData} from './Create.adapter';
+import {Constants} from '~/ContentEditor.constants';
 
 const CreateCmp = ({
     client,
@@ -34,9 +35,13 @@ const CreateCmp = ({
                 values
             },
             createCallback: createdNodePath => {
-                const envCreateCallback = envCreateCallbacks[contentEditorConfigContext.env];
-                if (envCreateCallback) {
-                    envCreateCallback(createdNodePath, formQueryParams.language, contentEditorConfigContext);
+                if (values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK]) {
+                    values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK]();
+                } else {
+                    const envCreateCallback = envCreateCallbacks[contentEditorConfigContext.env];
+                    if (envCreateCallback) {
+                        envCreateCallback(createdNodePath, formQueryParams.language, contentEditorConfigContext);
+                    }
                 }
             }
         });

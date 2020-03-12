@@ -95,14 +95,23 @@ const ContentEditorApiCmp = ({classes, client}) => {
         }
     };
 
+    const closeAll = () => {
+        setEditorConfig(false);
+        setContentTypeSelectorConfig(false);
+    };
+
     // Standalone env props
     const envProps = {
         initCallback: formik => {
             setFormikRef(formik);
         },
-        closeCallback: () => {
-            setEditorConfig(false);
-            setContentTypeSelectorConfig(false);
+        goBackSaveCallback: () => {
+            // Refresh GWT content
+            if (window.top.authoringApi.refreshContent) {
+                window.top.authoringApi.refreshContent();
+            }
+
+            closeAll();
         },
         createCallback: createdNodePath => {
             // Refresh GWT content
@@ -151,13 +160,13 @@ const ContentEditorApiCmp = ({classes, client}) => {
                     TransitionProps={{tabIndex: ''}} // Hack for CKEditor pickers fields to be editable
                     aria-labelledby="dialog-content-editor"
                     classes={{root: classes.ceDialogRoot}}
-                    onClose={() => (formikRef && formikRef.dirty) ? setConfirmationConfig(true) : envProps.closeCallback()}
+                    onClose={() => (formikRef && formikRef.dirty) ? setConfirmationConfig(true) : closeAll()}
             >
                 {confirmationConfig && <EditPanelDialogConfirmation
                     open
                     titleKey="content-editor:label.contentEditor.edit.action.goBack.title"
                     formik={formikRef}
-                    actionCallback={envProps.closeCallback}
+                    actionCallback={envProps.goBackSaveCallback}
                     onCloseDialog={() => setConfirmationConfig(false)}
                 />}
 
