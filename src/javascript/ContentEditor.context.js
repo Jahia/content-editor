@@ -58,7 +58,9 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
             uilang,
             site,
             mode,
-            siteInfo: siteInfoResult.siteInfo,
+            siteInfo: {...siteInfoResult.siteInfo,
+                languages: siteInfoResult.siteInfo.languages.filter(language => language.activeInEdit)
+            },
             sections,
             nodeData,
             details,
