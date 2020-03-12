@@ -16,9 +16,9 @@ export const registerCreateActions = registry => {
 
     // In app actions
     registry.add('action', 'createButton', createButtonAction, {
-        buttonLabel:
-            'content-editor:label.contentEditor.create.createButton.name',
+        buttonLabel: 'content-editor:label.contentEditor.create.createButton.name',
         buttonIcon: <Save/>,
-        targets: ['editHeaderActions:1']
+        targets: ['editHeaderActions:1'],
+        dataSelRole: 'createButton'
     });
 };
