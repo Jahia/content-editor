@@ -90,7 +90,7 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
                                     target="editHeaderPathActions"
                                     render={({context}) => (
                                         <Button
-                                            data-sel-action="goBackAction"
+                                            data-sel-role="backButton"
                                             icon={context.buttonIcon}
                                             onClick={e => {
                                                 e.stopPropagation();
@@ -121,6 +121,7 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
                                                     label={t(context.buttonLabel).toUpperCase()}
                                                     color={context.color}
                                                     disabled={context.disabled}
+                                                    data-sel-role={context.dataSelRole}
                                                     onClick={e => {
                                                         e.stopPropagation();
                                                         context.onClick(context, e);
@@ -146,7 +147,7 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
                                         context={actionContext}
                                         render={({context}) => (
                                             <Button
-                                                data-sel-action="moreActions"
+                                                data-sel-role="ContentEditorHeaderMenu"
                                                 color="accent"
                                                 icon={context.buttonIcon}
                                                 onClick={e => {
@@ -193,6 +194,7 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
                                     target="editHeaderTabsActions"
                                     render={({context}) => (
                                         <TabItem
+                                            data-sel-role={context.dataSelRole}
                                             icon={context.buttonIcon}
                                             label={t(context.buttonLabel)}
                                             isSelected={context.selected}

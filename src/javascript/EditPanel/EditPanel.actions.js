@@ -8,13 +8,15 @@ export const registerEditPanelActions = actionsRegistry => {
         buttonLabel: 'content-editor:label.contentEditor.edit.tab.edit',
         buttonIcon: <Edit/>,
         targets: ['editHeaderTabsActions:1'],
-        value: 'edit'
+        value: 'edit',
+        dataSelRole: 'tab-edit'
     });
 
     actionsRegistry.add('action', 'ceAdvancedTab', tabBarAction, {
         buttonLabel: 'content-editor:label.contentEditor.edit.tab.advanced',
         buttonIcon: <Settings/>,
         targets: ['editHeaderTabsActions:1'],
-        value: 'advanced'
+        value: 'advanced',
+        dataSelRole: 'tab-advanced-options'
     });
 };
