@@ -2,9 +2,9 @@ import gql from 'graphql-tag';
 import {PredefinedFragments} from '@jahia/data-helper';
 
 export const FormQuery = gql`
-    query createForm($uilang:String!, $language:String!, $parentPath:String!, $path:String!, $primaryNodeType:String!) {
+    query createForm($uilang:String!, $language:String!, $uuid:String!, $primaryNodeType:String!) {
         forms {
-            createForm(primaryNodeType: $primaryNodeType, uiLocale: $uilang, locale: $language, parentPath: $parentPath) {
+            createForm(primaryNodeType: $primaryNodeType, uiLocale: $uilang, locale: $language, uuidOrPath: $uuid) {
                 name
                 displayName
                 description
@@ -53,7 +53,7 @@ export const FormQuery = gql`
             }
         }
         jcr {
-            result:nodeByPath(path: $path) {
+            result:nodeById(uuid: $uuid) {
                 ...NodeCacheRequiredFields
                 lockedAndCannotBeEdited
                 displayableNode {

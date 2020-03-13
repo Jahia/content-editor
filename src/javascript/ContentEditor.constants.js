@@ -1,4 +1,5 @@
 export const Constants = {
+    appName: 'content-editor',
     editPanel: {
         publicationStatus: {
             NOT_PUBLISHED: 'NOT_PUBLISHED',

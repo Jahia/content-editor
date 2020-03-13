@@ -34,13 +34,13 @@ const CreateCmp = ({
                 sections,
                 values
             },
-            createCallback: createdNodePath => {
+            createCallback: createdNodeUuid => {
                 if (values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK]) {
                     values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK]();
                 } else {
                     const envCreateCallback = envCreateCallbacks[contentEditorConfigContext.env];
                     if (envCreateCallback) {
-                        envCreateCallback(createdNodePath, formQueryParams.language, contentEditorConfigContext);
+                        envCreateCallback(createdNodeUuid, formQueryParams.language, contentEditorConfigContext);
                     }
                 }
             }

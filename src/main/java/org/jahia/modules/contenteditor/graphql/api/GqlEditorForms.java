@@ -97,12 +97,12 @@ public class GqlEditorForms {
         @GraphQLNonNull
         @GraphQLDescription("A string representation of a locale, in IETF BCP 47 language tag format, ie en_US, en, fr, fr_CH, ...")
             String locale,
-        @GraphQLName("parentPath")
+        @GraphQLName("uuidOrPath")
         @GraphQLNonNull
-        @GraphQLDescription("Path of an existing node under with the new content will be created.")
-            String parentPath) {
+        @GraphQLDescription("uuid or path of an existing node under with the new content will be created.")
+            String uuidOrPath) {
         try {
-            return editorFormService.getCreateForm(nodeType, LocaleUtils.toLocale(uiLocale), LocaleUtils.toLocale(locale), parentPath);
+            return editorFormService.getCreateForm(nodeType, LocaleUtils.toLocale(uiLocale), LocaleUtils.toLocale(locale), uuidOrPath);
         } catch (EditorFormException e) {
             throw new DataFetchingException(e);
         }
@@ -120,12 +120,12 @@ public class GqlEditorForms {
         @GraphQLNonNull
         @GraphQLDescription("A string representation of a locale, in IETF BCP 47 language tag format, ie en_US, en, fr, fr_CH, ...")
             String locale,
-        @GraphQLName("nodePath")
+        @GraphQLName("uuidOrPath")
         @GraphQLNonNull
-        @GraphQLDescription("Path of an existing node under with the new content will be created.")
-            String nodePath) {
+        @GraphQLDescription("UUID or path of an existing node under with the new content will be created.")
+            String uuidOrPath) {
         try {
-            return editorFormService.getEditForm(LocaleUtils.toLocale(uiLocale), LocaleUtils.toLocale(locale), nodePath);
+            return editorFormService.getEditForm(LocaleUtils.toLocale(uiLocale), LocaleUtils.toLocale(locale), uuidOrPath);
         } catch (EditorFormException e) {
             throw new DataFetchingException(e);
         }

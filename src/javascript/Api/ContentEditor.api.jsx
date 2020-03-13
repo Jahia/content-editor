@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Dialog, withStyles} from '@material-ui/core';
-import ContentEditor from '~/ContentEditor';
+import {ContentEditor} from '~/ContentEditor';
 import {Constants} from '~/ContentEditor.constants';
 import * as PropTypes from 'prop-types';
 import Slide from '@material-ui/core/Slide';
@@ -31,18 +31,19 @@ const ContentEditorApiCmp = ({classes, client}) => {
     window.CE_API = window.CE_API || {};
     /**
      * Open content editor as a modal to edit the given node
-     * @param path the path of the node to edit
+     * @param uuid the uuid of the node to edit
      * @param site the current site
      * @param lang the current lang from url
      * @param uilang the preferred user lang for ui
      */
-    window.CE_API.edit = (path, site, lang, uilang) => {
-        setEditorConfig({path, site, lang, uilang, mode: Constants.routes.baseEditRoute});
+    window.CE_API.edit = (uuid, site, lang, uilang) => {
+        setEditorConfig({uuid, site, lang, uilang, mode: Constants.routes.baseEditRoute});
     };
 
     /**
      * Open content type selection then content editor as a modal to create a new content
-     * @param path the parent node path where the content will be created
+     * @param uuid of the parent node path where the content will be created
+     * @param path of the parent node path where the content will be created
      * @param site the current site
      * @param lang the current lang from url
      * @param uilang the preferred user lang for ui
@@ -53,10 +54,11 @@ const ContentEditorApiCmp = ({classes, client}) => {
      * @param excludedNodeTypes (optional) The node types excluded for creation, by default: ['jmix:studioOnly', 'jmix:hiddenType']
      * @param includeSubTypes (optional) if true, subtypes of nodeTypes provided will be resolved.
      */
-    window.CE_API.create = (path, site, lang, uilang, nodeTypes, excludedNodeTypes, includeSubTypes) => {
+    // eslint-disable-next-line
+    window.CE_API.create = (uuid, path, site, lang, uilang, nodeTypes, excludedNodeTypes, includeSubTypes) => {
         if (nodeTypes && nodeTypes.length === 1 && !includeSubTypes) {
             // Direct create with a known content type
-            setEditorConfig({path, site, lang, uilang, contentType: nodeTypes[0], mode: Constants.routes.baseCreateRoute});
+            setEditorConfig({uuid, site, lang, uilang, contentType: nodeTypes[0], mode: Constants.routes.baseCreateRoute});
         } else {
             getCreatableNodetypes(
                 client,
@@ -70,7 +72,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
                     // Only one type allowed, open directly CE
                     if (creatableNodeTypes.length === 1) {
                         setEditorConfig({
-                            path,
+                            uuid,
                             site,
                             lang,
                             uilang,
@@ -84,6 +86,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
                         setContentTypeSelectorConfig({
                             creatableNodeTypes: creatableNodeTypes.map(nodeType => nodeType.name),
                             includeSubTypes,
+                            uuid,
                             path,
                             site,
                             lang,
@@ -113,7 +116,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
 
             closeAll();
         },
-        createCallback: createdNodePath => {
+        createCallback: createdNodeUuid => {
             // Refresh GWT content
             if (window.top.authoringApi.refreshContent) {
                 window.top.authoringApi.refreshContent();
@@ -122,7 +125,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
             // Redirect to CE edit mode, for the created node
             if (editorConfig) {
                 setEditorConfig({
-                    path: createdNodePath,
+                    uuid: createdNodeUuid,
                     site: editorConfig.site,
                     uilang: editorConfig.uilang,
                     lang: editorConfig.lang,
@@ -140,7 +143,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
             // Update the lang of current opened CE
             if (editorConfig) {
                 setEditorConfig({
-                    path: editorConfig.path,
+                    uuid: editorConfig.uuid,
                     site: editorConfig.site,
                     uilang: editorConfig.uilang,
                     lang: lang,
@@ -172,7 +175,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
 
                 <ContentEditor env={Constants.env.standalone}
                                mode={editorConfig.mode}
-                               path={editorConfig.path}
+                               uuid={editorConfig.uuid}
                                lang={editorConfig.lang}
                                uilang={editorConfig.uilang}
                                site={editorConfig.site}
@@ -197,7 +200,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
                 onCreateContent={contentType => {
                     setContentTypeSelectorConfig(false);
                     setEditorConfig({
-                        path: contentTypeSelectorConfig.path,
+                        uuid: contentTypeSelectorConfig.uuid,
                         site: contentTypeSelectorConfig.site,
                         uilang: contentTypeSelectorConfig.uilang,
                         lang: contentTypeSelectorConfig.lang,

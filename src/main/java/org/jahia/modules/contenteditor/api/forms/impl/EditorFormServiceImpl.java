@@ -113,34 +113,39 @@ public class EditorFormServiceImpl implements EditorFormService {
     }
 
     @Override
-    public EditorForm getCreateForm(String primaryNodeTypeName, Locale uiLocale, Locale locale, String parentPath) throws EditorFormException {
-        return getEditorForm(primaryNodeTypeName, uiLocale, locale, null, parentPath);
+    public EditorForm getCreateForm(String primaryNodeTypeName, Locale uiLocale, Locale locale, String uuidOrPath) throws EditorFormException {
+
+        try {
+            return getEditorForm(nodeTypeRegistry.getNodeType(primaryNodeTypeName), uiLocale, locale, null, resolveNodeFromPathorUUID(uuidOrPath));
+
+        } catch (RepositoryException e) {
+            throw new EditorFormException("Error while building create form definition for node: " + uuidOrPath + " and nodeType: " + primaryNodeTypeName, e);
+        }
     }
 
     @Override
-    public EditorForm getEditForm(Locale uiLocale, Locale locale, String nodePath) throws EditorFormException {
-        return getEditorForm(null, uiLocale, locale, nodePath, null);
+    public EditorForm getEditForm(Locale uiLocale, Locale locale, String uuidOrPath) throws EditorFormException {
+        try {
+            JCRNodeWrapper node = resolveNodeFromPathorUUID(uuidOrPath);
+            return getEditorForm(node.getPrimaryNodeType(), uiLocale, locale, node, node.getParent());
+
+        } catch (RepositoryException e) {
+            throw new EditorFormException("Error while building edit form definition for node: " + uuidOrPath, e);
+        }
     }
 
-    private EditorForm getEditorForm(String primaryNodeTypeName, Locale uiLocale, Locale locale, String nodePath, String parentNodePath) throws EditorFormException {
+    private JCRNodeWrapper resolveNodeFromPathorUUID(String uuidOrPath) throws RepositoryException {
+        if (StringUtils.startsWith(uuidOrPath, "/")) {
+            return getSession().getNode(uuidOrPath);
+        } else {
+            return getSession().getNodeByIdentifier(uuidOrPath);
+        }
+    }
+
+    private EditorForm getEditorForm(ExtendedNodeType primaryNodeType, Locale uiLocale, Locale locale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode) throws EditorFormException {
         try {
-
-            if (nodePath == null && (parentNodePath == null || primaryNodeTypeName == null)) {
-                throw new EditorFormException("nodePath, or parentNodePath and nodetypeName, must be set.");
-            }
-            // Todo better handling of existingNode / parentNode
-            JCRSessionWrapper session = getSession(locale);
-            JCRNodeWrapper existingNode = null;
-            if (nodePath != null) {
-                existingNode = session.getNode(nodePath);
-                if (existingNode != null) {
-                    primaryNodeTypeName = existingNode.getPrimaryNodeTypeName();
-                }
-            }
-            JCRNodeWrapper parentNode = getParentNode(existingNode, parentNodePath, session);
-            ExtendedNodeType primaryNodeType = nodeTypeRegistry.getNodeType(primaryNodeTypeName);
-
-            SortedSet<EditorFormDefinition> editorFormDefinitions = staticDefinitionsRegistry.getFormDefinitions(primaryNodeTypeName);
+            String primaryNodeTypeName = primaryNodeType.getName();
+            SortedSet<EditorFormDefinition> editorFormDefinitions = staticDefinitionsRegistry.getFormDefinitions(primaryNodeType.getName());
             if (editorFormDefinitions == null) {
                 editorFormDefinitions = staticDefinitionsRegistry.getFormDefinitions(DEFAULT_FORM_DEFINITION_NAME);
             }
@@ -159,13 +164,13 @@ public class EditorFormServiceImpl implements EditorFormService {
             Set<String> processedNodeTypes = new HashSet<>();
             Set<String> processedProperties = new HashSet<>();
 
-            generateAndMergeFieldSetForType(primaryNodeTypeName, uiLocale, locale, existingNode, parentNode, primaryNodeType, formSectionsByName, false,false, true, processedProperties);
+            generateAndMergeFieldSetForType(primaryNodeTypeName, uiLocale, locale, existingNode, parentNode, primaryNodeType, formSectionsByName, false, false, true, processedProperties);
             processedNodeTypes.add(primaryNodeTypeName);
 
             Set<ExtendedNodeType> nodeTypesToProcess = Arrays.stream(primaryNodeType.getSupertypes()).collect(Collectors.toSet());
 
             for (ExtendedNodeType superType : nodeTypesToProcess) {
-                generateAndMergeFieldSetForType(superType.getName(), uiLocale, locale, existingNode, parentNode, superType, formSectionsByName, false,false, true, processedProperties);
+                generateAndMergeFieldSetForType(superType.getName(), uiLocale, locale, existingNode, parentNode, superType, formSectionsByName, false, false, true, processedProperties);
                 processedNodeTypes.add(superType.getName());
             }
 
@@ -200,7 +205,7 @@ public class EditorFormServiceImpl implements EditorFormService {
 
             return editorForm;
         } catch (RepositoryException e) {
-            throw new EditorFormException("Error while building edit form definition for node: " + nodePath + " and nodeType: " + primaryNodeTypeName, e);
+            throw new EditorFormException("Error while building edit form definition for node: " + existingNode.getPath() + " and nodeType: " + primaryNodeType.getName(), e);
         }
     }
 
@@ -302,13 +307,6 @@ public class EditorFormServiceImpl implements EditorFormService {
             targetSectionName = "content";
         }
         return targetSectionName;
-    }
-
-    private JCRNodeWrapper getParentNode(JCRNodeWrapper existingNode, String parentPath, JCRSessionWrapper session) throws RepositoryException {
-        if (parentPath == null) {
-            return  existingNode.getParent();
-        }
-        return session.getNode(parentPath);
     }
 
     private EditorFormFieldSet processValueConstraints(EditorFormFieldSet editorFormFieldSet, Locale uiLocale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode) throws RepositoryException {

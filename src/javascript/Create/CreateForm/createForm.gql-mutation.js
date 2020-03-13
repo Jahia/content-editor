@@ -27,6 +27,7 @@ export const CreateNode = gql`
             }
             modifiedNodes {
                 path
+                uuid
             }
         }
     }
