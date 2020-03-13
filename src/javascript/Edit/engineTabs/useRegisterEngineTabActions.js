@@ -1,8 +1,7 @@
 import {useEffect} from 'react';
-import {Constants} from '~/ContentEditor.constants';
 import {engineTabsPermissionCheckQuery} from '~/Edit/engineTabs/engineTabs.permission.gql-query';
 import {registry} from '@jahia/ui-extender';
-import openEngineTabs from '~/Edit/engineTabs/openEngineTabs.action';
+import openEngineTabsAction from '~/Edit/engineTabs/openEngineTabs.action';
 import {getNodeTypes} from './engineTabs.utils';
 import {useQuery} from '@apollo/react-hooks';
 import {useContentEditorContext} from '~/ContentEditor.context';
@@ -39,10 +38,9 @@ export const useRegisterEngineTabActions = () => {
                 const actionStartPriority = 3;
 
                 tabs
-                    .filter(tab => !Constants.notSupportedEngineTabs.includes(tab.id))
                     .forEach((tab, index) => {
                         if (!registry.get(actionPrefix + tab.id) && (!tab.requiredPermission || data.jcr.nodeByPath[tab.id])) {
-                            registry.addOrReplace('action', actionPrefix + tab.id, openEngineTabs, {
+                            registry.addOrReplace('action', actionPrefix + tab.id, openEngineTabsAction, {
                                 buttonLabel: tab.title,
                                 targets: ['AdvancedOptionsActions:' + (index + actionStartPriority)],
                                 tabs: [tab.id]
