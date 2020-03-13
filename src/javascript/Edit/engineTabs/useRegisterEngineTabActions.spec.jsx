@@ -2,7 +2,7 @@ import {useRegisterEngineTabActions} from './useRegisterEngineTabActions';
 import React from 'react';
 import {useQuery} from '@apollo/react-hooks';
 import {registry} from '@jahia/ui-extender';
-import openEngineTabs from '~/Edit/engineTabs/openEngineTabs.action';
+import openEngineTabsAction from '~/Edit/engineTabs/openEngineTabs.action';
 
 jest.mock('./engineTabs.utils', () => {
     return {
@@ -101,10 +101,10 @@ describe('useRegisterEngineTabActions', () => {
     it('should add to registry action for each tab when you have permission', () => {
         useRegisterEngineTabActions();
 
-        expect(registry.addOrReplace).toHaveBeenCalledWith('action', 'contentEditorGWTTabAction_metadata', openEngineTabs, {
-            buttonLabel: 'Metadata',
+        expect(registry.addOrReplace).toHaveBeenCalledWith('action', 'contentEditorGWTTabAction_content', openEngineTabsAction, {
+            buttonLabel: 'Content',
             targets: ['AdvancedOptionsActions:3'],
-            tabs: ['metadata']
+            tabs: ['content']
         });
     });
 });

@@ -5,4 +5,8 @@
     border: 1px solid #e0e6ea;
 
     background: #fff;
+
+    & li {
+        text-transform: uppercase;
+    }
 }
