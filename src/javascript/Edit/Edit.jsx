@@ -16,6 +16,7 @@ import {useContentEditorConfigContext} from '~/ContentEditor.context';
 import {useRegisterEngineTabActions} from '~/Edit/engineTabs/useRegisterEngineTabActions';
 import envEditCallbacks from './Edit.env';
 import {adaptEditFormData} from './Edit.adapter';
+import {Constants} from '~/ContentEditor.constants';
 
 export const EditCmp = ({
     client,
@@ -53,9 +54,13 @@ export const EditCmp = ({
                 values
             },
             editCallback: () => {
-                const envEditCallback = envEditCallbacks[contentEditorConfigContext.env];
-                if (envEditCallback) {
-                    envEditCallback(contentEditorConfigContext);
+                if (values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK]) {
+                    values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK]();
+                } else {
+                    const envEditCallback = envEditCallbacks[contentEditorConfigContext.env];
+                    if (envEditCallback) {
+                        envEditCallback(contentEditorConfigContext);
+                    }
                 }
             }
         });

@@ -11,7 +11,7 @@ envBackActions[Constants.env.redux] = context => {
 };
 
 envBackActions[Constants.env.standalone] = context => {
-    context.contentEditorConfigContext.envProps.closeCallback();
+    context.contentEditorConfigContext.envProps.goBackSaveCallback();
 };
 
 export default envBackActions;

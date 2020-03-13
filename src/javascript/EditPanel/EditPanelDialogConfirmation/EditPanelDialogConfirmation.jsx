@@ -7,6 +7,7 @@ import {
 import {Button} from '@jahia/design-system-kit';
 import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
+import {Constants} from '~/ContentEditor.constants';
 
 export const EditPanelDialogConfirmation = ({titleKey, open, onCloseDialog, actionCallback, formik}) => {
     const {t} = useTranslation();
@@ -19,9 +20,9 @@ export const EditPanelDialogConfirmation = ({titleKey, open, onCloseDialog, acti
     const handleSave = () => {
         onCloseDialog();
 
-        const {submitForm} = formik;
-
-        submitForm().then(() => actionCallback());
+        // Override default submit callback to execute the confirmation callback instead
+        formik.setFieldValue(Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK, actionCallback, false);
+        formik.submitForm();
     };
 
     let disabled = false;

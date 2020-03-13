@@ -30,5 +30,8 @@ export const Constants = {
         redux: 'redux',
         standalone: 'standalone'
     },
-    notSupportedEngineTabs: ['content', 'categories']
+    notSupportedEngineTabs: ['content', 'categories'],
+    systemFields: {
+        OVERRIDE_SUBMIT_CALLBACK: 'OVERRIDE_SUBMIT_CALLBACK'
+    }
 };
