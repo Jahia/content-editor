@@ -22,20 +22,44 @@
         justify-content: center;
         align-items: center;
 
-        & > * {
+        & > button:first-of-type {
             margin-right: var(--spacing-small);
         }
+
+        & > button:nth-of-type(2) {
+            border-radius: 4px 0 0 4px;
+        }
+
+        // Button more actions
+        & > div > :first-child {
+            height: 30px;
+            margin-left: 1px;
+
+            border-radius: 0 4px 4px 0;
+        }
+
+        & .warningBadge {
+            position: absolute;
+            top: 0.7em;
+            right: 242px;
+
+            color: #e8b606;
+
+            border-radius: 50%;
+
+            background-color: var(--color-white);
+        }
+
+        & > .warningBadge:last-child {
+            right: 92px;
+        }
     }
+}
 
-    .warningBadge {
-        position: absolute;
-        top: 0.7em;
-        right: 248px;
+.headerToolBar {
+    display: flex;
 
-        color: #e8b606;
-
-        border-radius: 50%;
-
-        background-color: var(--color-white);
+    & div {
+        padding: 0;
     }
 }
