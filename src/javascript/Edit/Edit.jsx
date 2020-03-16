@@ -1,5 +1,5 @@
 import React from 'react';
-import {ProgressOverlay, withNotifications} from '@jahia/react-material';
+import {withNotifications} from '@jahia/react-material';
 import {Formik} from 'formik';
 import EditPanel from '~/EditPanel';
 import * as PropTypes from 'prop-types';
@@ -13,7 +13,6 @@ import {FormQuery} from './EditForm.gql-queries';
 import {withApollo} from 'react-apollo';
 import {compose} from '~/utils';
 import {useContentEditorConfigContext} from '~/ContentEditor.context';
-import {useRegisterEngineTabActions} from '~/Edit/engineTabs/useRegisterEngineTabActions';
 import envEditCallbacks from './Edit.env';
 import {adaptEditFormData} from './Edit.adapter';
 import {Constants} from '~/ContentEditor.constants';
@@ -24,22 +23,7 @@ export const EditCmp = ({
 }) => {
     const {t} = useTranslation();
     const contentEditorConfigContext = useContentEditorConfigContext();
-    const {path, lang, nodeData, sections, formQueryParams, initialValues, title, site} = useContentEditorContext();
-
-    // Engines tabs need the node Data to be registered
-    const {loading, error} = useRegisterEngineTabActions(nodeData, site);
-
-    if (error) {
-        const message = t(
-            'content-media-manager:label.contentManager.error.queryingContent',
-            {details: error.message ? error.message : ''}
-        );
-        return <>{message}</>;
-    }
-
-    if (loading) {
-        return <ProgressOverlay/>;
-    }
+    const {path, lang, nodeData, sections, formQueryParams, initialValues, title} = useContentEditorContext();
 
     const handleSubmit = (values, actions) => {
         saveNode({
