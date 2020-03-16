@@ -22,7 +22,7 @@ describe('CopyLanguageDialog', () => {
     beforeEach(() => {
         defaultProps = {
             isOpen: false,
-            nodePath: '/',
+            uuid: '1234-4567-890',
             language: 'en',
             availableLanguages: [{
                 displayName: 'Deutsch',
