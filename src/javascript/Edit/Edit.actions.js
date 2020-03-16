@@ -22,7 +22,8 @@ export const registerEditActions = actionsRegistry => {
     actionsRegistry.add('action', 'submitSave', saveAction, {
         buttonLabel: 'content-editor:label.contentEditor.edit.action.save.name',
         buttonIcon: <Save/>,
-        color: 'default',
+        color: 'accent',
+        variant: 'outlined',
         targets: ['editHeaderActions:1'],
         dataSelRole: 'submitSave'
     });
