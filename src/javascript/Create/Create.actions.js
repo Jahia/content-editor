@@ -18,6 +18,8 @@ export const registerCreateActions = registry => {
     registry.add('action', 'createButton', createButtonAction, {
         buttonLabel: 'content-editor:label.contentEditor.create.createButton.name',
         buttonIcon: <Save/>,
+        color: 'accent',
+        variant: 'outlined',
         targets: ['editHeaderActions:1'],
         dataSelRole: 'createButton'
     });
