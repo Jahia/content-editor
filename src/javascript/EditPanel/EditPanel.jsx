@@ -120,6 +120,7 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
                                                     icon={context.buttonIcon}
                                                     label={t(context.buttonLabel).toUpperCase()}
                                                     color={context.color}
+                                                    variant={context.variant || 'default'}
                                                     disabled={context.disabled}
                                                     data-sel-role={context.dataSelRole}
                                                     onClick={e => {
@@ -177,7 +178,7 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
 
                         <Separator/>
 
-                        <div className={styles.header}>
+                        <div className={styles.headerToolBar}>
                             <EditPanelLanguageSwitcher lang={lang}
                                                        siteInfo={siteInfo}
                             />
