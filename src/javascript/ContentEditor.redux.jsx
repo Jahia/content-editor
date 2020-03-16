@@ -14,10 +14,11 @@ const mapStateToProps = state => {
 };
 
 const ContentEditorReduxCmp = ({mode, uuid, lang, uilang, site, contentType}) => {
-    const history = useContentEditorHistory();
+    const {redirect, exit} = useContentEditorHistory();
     const envProps = {
-        setUrl: (mode, language, uuid, contentType) => history.redirect({mode, language, uuid, rest: contentType}),
-        setLanguage: language => history.redirect({language})
+        setUrl: (mode, language, uuid, contentType) => redirect({mode, language, uuid, rest: contentType}),
+        back: exit,
+        setLanguage: language => redirect({language})
     };
     return (
         <ContentEditor env={Constants.env.redux}

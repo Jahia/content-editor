@@ -3,23 +3,23 @@ import {splitPath} from './ContentEditorHistory.utils';
 const tests = [
     {
         input: '/app/lang/mode/uuid',
-        result: {currentLanguage: 'lang', currentMode: 'mode', currentUuid: 'uuid', currentRest: ''}
+        result: {appName: 'app', currentLanguage: 'lang', currentMode: 'mode', currentUuid: 'uuid', currentRest: ''}
     },
     {
         input: '/app/lang/mode/uuid/xx/yy/',
-        result: {currentLanguage: 'lang', currentMode: 'mode', currentUuid: 'uuid', currentRest: '/xx/yy/'}
+        result: {appName: 'app', currentLanguage: 'lang', currentMode: 'mode', currentUuid: 'uuid', currentRest: '/xx/yy/'}
     },
     {
         input: '/app/lang/mode/uuid/xx/yy',
-        result: {currentLanguage: 'lang', currentMode: 'mode', currentUuid: 'uuid', currentRest: '/xx/yy'}
+        result: {appName: 'app', currentLanguage: 'lang', currentMode: 'mode', currentUuid: 'uuid', currentRest: '/xx/yy'}
     },
     {
         input: '/app/lang/mode/uuid/xx',
-        result: {currentLanguage: 'lang', currentMode: 'mode', currentUuid: 'uuid', currentRest: '/xx'}
+        result: {appName: 'app', currentLanguage: 'lang', currentMode: 'mode', currentUuid: 'uuid', currentRest: '/xx'}
     },
     {
         input: '/app/lang/mode/uuid/',
-        result: {currentLanguage: 'lang', currentMode: 'mode', currentUuid: 'uuid', currentRest: '/'}
+        result: {appName: 'app', currentLanguage: 'lang', currentMode: 'mode', currentUuid: 'uuid', currentRest: '/'}
     }
 ];
 

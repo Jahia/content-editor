@@ -15,6 +15,7 @@ import PublicationInfoBadge from '~/PublicationInfo/PublicationInfo.badge';
 import LockInfoBadge from '~/Lock/LockInfo.badge';
 import {PublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
 import {Constants} from '~/ContentEditor.constants';
+import {useContentEditorHistory} from '~/ContentEditorHistory';
 
 import MainLayout from '~/DesignSystem/ContentLayout/MainLayout';
 import ContentHeader from '~/DesignSystem/ContentLayout/ContentHeader';
@@ -28,13 +29,22 @@ import {
     Typography
 } from '@jahia/moonstone';
 import styles from './EditPanel.scss';
+import {EditPanelDialogConfirmation} from '~/EditPanel/EditPanelDialogConfirmation';
 
 const EditPanelCmp = ({formik, title, notificationContext, client}) => {
     const {t} = useTranslation();
     const {nodeData, siteInfo, lang, uilang, mode} = useContentEditorContext();
     const {envProps} = useContentEditorConfigContext();
+    const {registerBlockListener, unRegisterBlockListener} = useContentEditorHistory();
+    const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
 
     useEffect(() => {
+        if (formik.dirty) {
+            registerBlockListener(t('content-editor:label.contentEditor.edit.action.goBack.title'));
+        } else {
+            unRegisterBlockListener();
+        }
+
         if (envProps.initCallback) {
             envProps.initCallback(formik);
         }
@@ -54,7 +64,7 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
                 handleBeforeUnloadEvent
             );
         };
-    }, [formik.dirty]);
+    }, [formik.dirty, openConfirmDialog]);
 
     const publicationInfoContext = useContext(PublicationInfoContext);
 
@@ -77,12 +87,18 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
         advanced: AdvancedOptions
     };
     const SelectedTabComponent = SelectedTabComponents[activeTab];
-
     return (
         <MainLayout
             header={
                 <ContentHeader>
                     <>
+                        <EditPanelDialogConfirmation
+                            formik
+                            titleKey="content-editor:label.contentEditor.edit.action.goBack.title"
+                            open={formik.dirty && openConfirmDialog}
+                            actionCallback={() => envProps.back()}
+                            onCloseDialog={() => setOpenConfirmDialog(false)}
+                        />
                         <div className={styles.header}>
                             <div className={styles.headerLeft}>
                                 <DisplayActions
@@ -92,6 +108,7 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
                                         <Button
                                             data-sel-role="backButton"
                                             icon={context.buttonIcon}
+                                            disabled={context.disabled}
                                             onClick={e => {
                                                 e.stopPropagation();
                                                 context.onClick(context, e);
