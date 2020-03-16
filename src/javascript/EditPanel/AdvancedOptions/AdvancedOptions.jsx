@@ -20,6 +20,7 @@ export const AdvancedOptions = ({formik}) => {
                                                            activeOption={activeOption}
                                                            setActiveOption={setActiveOption}/>}
                     content={<SelectedTabComponent/>}
+                    component="div"
                 />
             </div>
         </>

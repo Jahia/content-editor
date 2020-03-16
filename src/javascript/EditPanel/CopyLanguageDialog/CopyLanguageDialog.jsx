@@ -20,7 +20,7 @@ export const CopyLanguageDialog = ({
     isOpen,
     onCloseDialog,
     formik,
-    nodePath
+    uuid
 }) => {
     const client = useApolloClient();
 
@@ -28,7 +28,7 @@ export const CopyLanguageDialog = ({
         let variables = {
             uilang: language,
             language: language,
-            path: nodePath
+            uuid: uuid
         };
 
         let formAndData = await client.query({query: FormQuery, variables: variables});
@@ -132,7 +132,7 @@ CopyLanguageDialog.propTypes = {
     availableLanguages: PropTypes.array.isRequired,
     isOpen: PropTypes.bool.isRequired,
     formik: PropTypes.object.isRequired,
-    nodePath: PropTypes.string.isRequired,
+    uuid: PropTypes.string.isRequired,
     onCloseDialog: PropTypes.func.isRequired
 };
 

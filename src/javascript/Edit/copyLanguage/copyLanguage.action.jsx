@@ -16,7 +16,7 @@ export default composeActions(
                 const handler = context.renderComponent(
                     <CopyLanguageDialog
                         isOpen
-                        nodePath={context.nodeData.path}
+                        uuid={context.nodeData.uuid}
                         language={getFullLanguageName(context.siteInfo.languages, context.language)}
                         availableLanguages={context.siteInfo.languages}
                         formik={context.formik}
