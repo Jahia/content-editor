@@ -1,7 +1,11 @@
 jest.mock('react-router-dom', () => {
     return {useHistory: jest.fn()};
 });
+jest.mock('./ContentEditorHistory.context', () => {
+    return {useContentEditorHistoryContext: jest.fn()};
+});
 import {useContentEditorHistory} from '~/ContentEditorHistory';
+import {useContentEditorHistoryContext} from './ContentEditorHistory.context';
 import {useHistory} from 'react-router-dom';
 
 describe('redirect test', () => {
@@ -10,7 +14,10 @@ describe('redirect test', () => {
     beforeEach(() => {
         pushHistory = jest.fn();
         useHistory.mockImplementation(() => {
-            return {push: pushHistory, location: {pathname: pathmame}};
+            return {push: pushHistory, location: {pathname: pathmame}, listen: () => jest.fn()};
+        });
+        useContentEditorHistoryContext.mockImplementation(() => {
+            return {storedLocation: '/content-editor/en/create/this-is-my-uuid/withoutPath', setStoredLocation: () => {}};
         });
     });
     const tests = [

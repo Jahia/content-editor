@@ -108,7 +108,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
         initCallback: formik => {
             setFormikRef(formik);
         },
-        goBackSaveCallback: () => {
+        back: () => {
             // Refresh GWT content
             if (window.top.authoringApi.refreshContent) {
                 window.top.authoringApi.refreshContent();
