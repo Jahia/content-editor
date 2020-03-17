@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import {compose} from '~/utils';
 import {Constants} from '~/ContentEditor.constants';
 import {useContentEditorHistory} from '~/ContentEditorHistory';
+import {useTranslation} from 'react-i18next';
 
 const mapStateToProps = state => {
     return {
@@ -14,11 +15,19 @@ const mapStateToProps = state => {
 };
 
 const ContentEditorReduxCmp = ({mode, uuid, lang, uilang, site, contentType}) => {
-    const {redirect, exit} = useContentEditorHistory();
+    const {redirect, exit, registerBlockListener, unRegisterBlockListener} = useContentEditorHistory();
+    const {t} = useTranslation();
     const envProps = {
         setUrl: (mode, language, uuid, contentType) => redirect({mode, language, uuid, rest: contentType}),
         back: exit,
-        setLanguage: language => redirect({language})
+        setLanguage: language => redirect({language}),
+        initCallback: formik => {
+            if (formik.dirty) {
+                registerBlockListener(t('content-editor:label.contentEditor.edit.action.goBack.alert'));
+            } else {
+                unRegisterBlockListener();
+            }
+        }
     };
     return (
         <ContentEditor env={Constants.env.redux}

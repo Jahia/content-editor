@@ -169,7 +169,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
                     open
                     titleKey="content-editor:label.contentEditor.edit.action.goBack.title"
                     formik={formikRef}
-                    actionCallback={envProps.goBackSaveCallback}
+                    actionCallback={envProps.back}
                     onCloseDialog={() => setConfirmationConfig(false)}
                 />}
 

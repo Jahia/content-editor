@@ -41,6 +41,7 @@
           "goBack": {
             "name": "Zurück zu {{parentNodeDisplayName}}",
             "title": "Änderungen vor dem Schließen speichern?",
+            "alert": "Von Ihnen vorgenommene Änderungen werden nicht gespeichert.",
             "btnContinue": "Weiter bearbeiten",
             "btnDiscard": "Änderungen verwerfen",
             "btnSave": "Änderungen speichern"
