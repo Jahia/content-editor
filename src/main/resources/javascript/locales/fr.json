@@ -41,6 +41,7 @@
           "goBack": {
             "name": "Retour à {{parentNodeDisplayName}}",
             "title": "Enregistrer les modifications avant de fermer ?",
+            "alert": "Les modifications que vous avez apportées ne seront pas enregistrées.",
             "btnContinue": "Poursuivre la modification",
             "btnDiscard": "Abandonner les modifications",
             "btnSave": "Enregistrer les modifications"
