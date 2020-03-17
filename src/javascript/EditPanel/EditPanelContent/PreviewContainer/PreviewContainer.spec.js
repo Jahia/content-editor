@@ -21,7 +21,6 @@ describe('PreviewContainer', () => {
                 language: 'en',
                 lang: 'fr'
             },
-            classes: {},
             isDirty: false,
             mode: 'edit'
         };
@@ -40,35 +39,9 @@ describe('PreviewContainer', () => {
         cmp.find('ContentPreview').exists();
     });
 
-    it('should not selecte any tab in create mode', () => {
-        defaultProps.mode = 'create';
+    it('should render preview when the component is used', () => {
         const cmp = shallowWithTheme(<PreviewContainer {...defaultProps}/>, {}, dsGenericTheme)
             .dive();
-
-        expect(cmp.find('WithStyles(ToggleButtonGroup)').props().value).toBe(null);
-    });
-
-    it('should select preview tab by default', () => {
-        const cmp = shallowWithTheme(<PreviewContainer {...defaultProps}/>, {}, dsGenericTheme)
-            .dive();
-        expect(cmp.find('WithStyles(ToggleButtonGroup)').props().value).toBe(
-            'preview'
-        );
-    });
-
-    it('should render preview by default', () => {
-        const cmp = shallowWithTheme(<PreviewContainer {...defaultProps}/>, {}, dsGenericTheme)
-            .dive();
-        expect(cmp.find('ContentPreviewMemoWrapper').exists()).toBe(true);
-    });
-
-    it('should still display preview when clicking on preview button', () => {
-        const cmp = shallowWithTheme(<PreviewContainer {...defaultProps}/>, {}, dsGenericTheme)
-            .dive();
-        cmp
-            .find('WithStyles(ToggleButtonGroup)')
-            .props()
-            .onChange(null, null);
         expect(cmp.find('ContentPreviewMemoWrapper').exists()).toBe(true);
     });
 
