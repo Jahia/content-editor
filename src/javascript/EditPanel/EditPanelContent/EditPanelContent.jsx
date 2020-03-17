@@ -50,7 +50,7 @@ export const EditPanelContent = ({classes, isDirty}) => {
                         <PublicationInfoProgress/>
                         <TwoColumnsContent
                             classes={{root: classes.twoColumnsRoot, left: classes.left, right: classes.right}}
-                            rightCol={<PreviewContainer isDirty={isDirty} mode={mode}/>}
+                            rightCol={<PreviewContainer isDirty={isDirty}/>}
                             data-sel-mode={mode}
                         >
                             <FormBuilder mode={mode}/>

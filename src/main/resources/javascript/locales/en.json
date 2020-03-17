@@ -41,6 +41,7 @@
           "goBack": {
             "name": "Back to {{parentNodeDisplayName}}",
             "title": "Save changes before closing?",
+            "alert": "Changes that you made will not be saved.",
             "btnContinue": "Continue editing",
             "btnDiscard": "Discard changes",
             "btnSave": "Save changes"
