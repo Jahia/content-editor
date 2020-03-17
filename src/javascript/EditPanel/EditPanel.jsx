@@ -15,8 +15,6 @@ import PublicationInfoBadge from '~/PublicationInfo/PublicationInfo.badge';
 import LockInfoBadge from '~/Lock/LockInfo.badge';
 import {PublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
 import {Constants} from '~/ContentEditor.constants';
-import {useContentEditorHistory} from '~/ContentEditorHistory';
-
 import MainLayout from '~/DesignSystem/ContentLayout/MainLayout';
 import ContentHeader from '~/DesignSystem/ContentLayout/ContentHeader';
 import {
@@ -29,22 +27,13 @@ import {
     Typography
 } from '@jahia/moonstone';
 import styles from './EditPanel.scss';
-import {EditPanelDialogConfirmation} from '~/EditPanel/EditPanelDialogConfirmation';
 
 const EditPanelCmp = ({formik, title, notificationContext, client}) => {
     const {t} = useTranslation();
     const {nodeData, siteInfo, lang, uilang, mode} = useContentEditorContext();
     const {envProps} = useContentEditorConfigContext();
-    const {registerBlockListener, unRegisterBlockListener} = useContentEditorHistory();
-    const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
 
     useEffect(() => {
-        if (formik.dirty) {
-            registerBlockListener(t('content-editor:label.contentEditor.edit.action.goBack.title'));
-        } else {
-            unRegisterBlockListener();
-        }
-
         if (envProps.initCallback) {
             envProps.initCallback(formik);
         }
@@ -64,7 +53,7 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
                 handleBeforeUnloadEvent
             );
         };
-    }, [formik.dirty, openConfirmDialog]);
+    }, [formik.dirty]);
 
     const publicationInfoContext = useContext(PublicationInfoContext);
 
@@ -91,131 +80,75 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
         <MainLayout
             header={
                 <ContentHeader>
-                    <>
-                        <EditPanelDialogConfirmation
-                            formik
-                            titleKey="content-editor:label.contentEditor.edit.action.goBack.title"
-                            open={formik.dirty && openConfirmDialog}
-                            actionCallback={() => envProps.back()}
-                            onCloseDialog={() => setOpenConfirmDialog(false)}
-                        />
-                        <div className={styles.header}>
-                            <div className={styles.headerLeft}>
-                                <DisplayActions
-                                    context={{nodeData, siteInfo, formik}}
-                                    target="editHeaderPathActions"
-                                    render={({context}) => (
-                                        <Button
-                                            data-sel-role="backButton"
-                                            icon={context.buttonIcon}
-                                            disabled={context.disabled}
-                                            onClick={e => {
-                                                e.stopPropagation();
-                                                context.onClick(context, e);
-                                            }}
-                                        />
-                                    )}
-                                />
+                    <div className={styles.header}>
+                        <div className={styles.headerLeft}>
+                            <DisplayActions
+                                context={{nodeData, siteInfo, formik}}
+                                target="editHeaderPathActions"
+                                render={({context}) => (
+                                    <Button
+                                        data-sel-role="backButton"
+                                        icon={context.buttonIcon}
+                                        disabled={context.disabled}
+                                        onClick={e => {
+                                            e.stopPropagation();
+                                            context.onClick(context, e);
+                                        }}
+                                    />
+                                )}
+                            />
 
-                                <Typography isNowrap className={styles.headerTypography} variant="heading">
-                                    {title}
-                                </Typography>
-                            </div>
+                            <Typography isNowrap className={styles.headerTypography} variant="heading">
+                                {title}
+                            </Typography>
+                        </div>
 
-                            <div className={styles.headerRight}>
-                                <DisplayActions
-                                    context={{
-                                        ...actionContext,
-                                        isMainButton: true
-                                    }}
-                                    target="editHeaderActions"
-                                    render={({context}) => (
+                        <div className={styles.headerRight}>
+                            <DisplayActions
+                                context={{
+                                    ...actionContext,
+                                    isMainButton: true
+                                }}
+                                target="editHeaderActions"
+                                render={({context}) => (
+                                    <>
+                                        {context.enabled &&
                                         <>
-                                            {context.enabled &&
-                                            <>
-                                                <Button
-                                                    icon={context.buttonIcon}
-                                                    label={t(context.buttonLabel).toUpperCase()}
-                                                    color={context.color}
-                                                    variant={context.variant || 'default'}
-                                                    disabled={context.disabled}
-                                                    data-sel-role={context.dataSelRole}
-                                                    onClick={e => {
-                                                        e.stopPropagation();
-                                                        context.onClick(context, e);
-                                                    }}
-                                                />
-
-                                                {context.addWarningBadge && (
-                                                    <Error data-sel-role={`${context.actionKey}_pastille`}
-                                                           className={styles.warningBadge}/>
-                                                )}
-                                            </>}
-                                        </>
-                                    )}
-                                />
-
-                                {mode === Constants.routes.baseEditRoute &&
-                                <ButtonGroup
-                                    color="accent"
-                                    size="big"
-                                >
-                                    <DisplayAction
-                                        actionKey="ContentEditorHeaderMenu"
-                                        context={actionContext}
-                                        render={({context}) => (
                                             <Button
-                                                data-sel-role="ContentEditorHeaderMenu"
-                                                color="accent"
                                                 icon={context.buttonIcon}
+                                                label={t(context.buttonLabel).toUpperCase()}
+                                                color={context.color}
+                                                variant={context.variant || 'default'}
+                                                disabled={context.disabled}
+                                                data-sel-role={context.dataSelRole}
                                                 onClick={e => {
                                                     e.stopPropagation();
                                                     context.onClick(context, e);
                                                 }}
                                             />
-                                        )}
-                                    />
-                                </ButtonGroup>}
-                            </div>
-                        </div>
 
-                        <div className={styles.header}>
-                            <div className={styles.headerLeft}>
-                                <Chip
-                                    label={nodeData.primaryNodeType.displayName}
-                                    color="accent"
-                                />
-                            </div>
-
-                            <div className={styles.headerRight}>
-                                <PublicationInfoBadge/>
-                                <LockInfoBadge/>
-                            </div>
-                        </div>
-
-                        <Separator/>
-
-                        <div className={styles.headerToolBar}>
-                            <EditPanelLanguageSwitcher lang={lang}
-                                                       siteInfo={siteInfo}
+                                            {context.addWarningBadge && (
+                                                <Error data-sel-role={`${context.actionKey}_pastille`}
+                                                       className={styles.warningBadge}/>
+                                            )}
+                                        </>}
+                                    </>
+                                )}
                             />
 
-                            <Separator variant="vertical"/>
-
-                            <Tab>
-                                <DisplayActions
-                                    context={{
-                                        ...actionContext,
-                                        setActiveTab: setActiveTab,
-                                        activeTab: activeTab
-                                    }}
-                                    target="editHeaderTabsActions"
+                            {mode === Constants.routes.baseEditRoute &&
+                            <ButtonGroup
+                                color="accent"
+                                size="big"
+                            >
+                                <DisplayAction
+                                    actionKey="ContentEditorHeaderMenu"
+                                    context={actionContext}
                                     render={({context}) => (
-                                        <TabItem
-                                            data-sel-role={context.dataSelRole}
+                                        <Button
+                                            data-sel-role="ContentEditorHeaderMenu"
+                                            color="accent"
                                             icon={context.buttonIcon}
-                                            label={t(context.buttonLabel)}
-                                            isSelected={context.selected}
                                             onClick={e => {
                                                 e.stopPropagation();
                                                 context.onClick(context, e);
@@ -223,9 +156,56 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
                                         />
                                     )}
                                 />
-                            </Tab>
+                            </ButtonGroup>}
                         </div>
-                    </>
+                    </div>
+
+                    <div className={styles.header}>
+                        <div className={styles.headerLeft}>
+                            <Chip
+                                label={nodeData.primaryNodeType.displayName}
+                                color="accent"
+                            />
+                        </div>
+
+                        <div className={styles.headerRight}>
+                            <PublicationInfoBadge/>
+                            <LockInfoBadge/>
+                        </div>
+                    </div>
+
+                    <Separator/>
+
+                    <div className={styles.headerToolBar}>
+                        <EditPanelLanguageSwitcher lang={lang}
+                                                   siteInfo={siteInfo}
+                        />
+
+                        <Separator variant="vertical"/>
+
+                        <Tab>
+                            <DisplayActions
+                                context={{
+                                    ...actionContext,
+                                    setActiveTab: setActiveTab,
+                                    activeTab: activeTab
+                                }}
+                                target="editHeaderTabsActions"
+                                render={({context}) => (
+                                    <TabItem
+                                        data-sel-role={context.dataSelRole}
+                                        icon={context.buttonIcon}
+                                        label={t(context.buttonLabel)}
+                                        isSelected={context.selected}
+                                        onClick={e => {
+                                            e.stopPropagation();
+                                            context.onClick(context, e);
+                                        }}
+                                    />
+                                )}
+                            />
+                        </Tab>
+                    </div>
                 </ContentHeader>
             }
         >
