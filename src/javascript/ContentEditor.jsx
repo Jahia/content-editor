@@ -7,6 +7,7 @@ import {ContentEditorConfigContext} from './ContentEditor.context';
 import {Constants} from '~/ContentEditor.constants';
 import {DndProvider} from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
+import ApolloCacheFlushOnGWTSave from '~/Edit/engineTabs/ApolloCacheFlushOnGWTSave';
 
 const Modes = {
     edit: Edit,
@@ -28,6 +29,8 @@ export const ContentEditor = ({mode, uuid, lang, uilang, site, contentType, env,
     const ContentEditorModeCmp = Modes[mode];
     return (
         <EditorIdContextProvider>
+            <ApolloCacheFlushOnGWTSave/>
+
             <ContentEditorConfigContext.Provider value={contentEditorConfig}>
                 <DndProvider backend={Backend}>
                     <ContentEditorModeCmp/>
