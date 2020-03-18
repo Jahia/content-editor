@@ -7,7 +7,7 @@ jest.mock('react-redux', () => {
     return {useSelector: jest.fn()};
 });
 jest.mock('@jahia/data-helper', () => {
-    return {useNodeInfo: jest.fn()};
+    return {useNodeChecks: jest.fn()};
 });
 jest.mock('./CreateNewContentDialog', () => jest.fn());
 jest.mock('./createNewContent.utits', () => {
@@ -15,7 +15,7 @@ jest.mock('./createNewContent.utits', () => {
 });
 import {useContentEditorHistory} from '~/ContentEditorHistory';
 import {useSelector} from 'react-redux';
-import {useNodeInfo} from '@jahia/data-helper';
+import {useNodeChecks} from '@jahia/data-helper';
 import {shallow} from '@jahia/test-framework';
 import {transformNodeTypesToActions, useCreatableNodetypes} from './createNewContent.utits';
 
@@ -38,7 +38,7 @@ describe('CreateNewContent', () => {
         useSelector.mockImplementation(() => {
             return {language: 'en', uilang: 'en'};
         });
-        useNodeInfo.mockImplementation(() => {
+        useNodeChecks.mockImplementation(() => {
             return {node: {uuid: 'xxx'}, loading: loading};
         });
         useCreatableNodetypes.mockImplementation(() => {

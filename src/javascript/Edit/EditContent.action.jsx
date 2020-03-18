@@ -1,14 +1,17 @@
 import React from 'react';
 import {useContentEditorHistory} from '~/ContentEditorHistory';
-import {useNodeInfo} from '@jahia/data-helper';
+import {useNodeChecks} from '@jahia/data-helper';
 import * as PropTypes from 'prop-types';
 import {useSelector} from 'react-redux';
 import {Constants} from '~/ContentEditor.constants';
 
 export const EditContent = ({context, render: Render, loading: Loading}) => {
     const {redirect} = useContentEditorHistory();
-    const language = useSelector(state => state.language);
-    const res = useNodeInfo({path: context.path, language}, {getDisplayName: true});
+    const {language} = useSelector(state => ({language: state.language}));
+    const res = useNodeChecks(
+        {path: context.path, language: language},
+        {...context}
+    );
 
     if (Loading && res.loading) {
         return <Loading context={context}/>;
@@ -17,6 +20,7 @@ export const EditContent = ({context, render: Render, loading: Loading}) => {
     return (
         <Render context={{
             ...context,
+            isVisible: res.checksResult,
             onClick: () => redirect({language, mode: Constants.routes.baseEditRoute, uuid: res.node.uuid})
         }}/>
     );
