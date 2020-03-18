@@ -3,7 +3,7 @@ import {CreateNewContentDialog} from './CreateNewContentDialog';
 import {Constants} from '~/ContentEditor.constants';
 import {transformNodeTypesToActions, useCreatableNodetypes} from './createNewContent.utits';
 import {useSelector} from 'react-redux';
-import {useNodeInfo} from '@jahia/data-helper';
+import {useNodeChecks} from '@jahia/data-helper';
 import {ComponentRendererContext} from '@jahia/ui-extender';
 import * as PropTypes from 'prop-types';
 import {useContentEditorHistory} from '~/ContentEditorHistory';
@@ -44,8 +44,12 @@ const CreateNewContent = ({context, render: Render, loading: Loading}) => {
     const {redirect} = useContentEditorHistory();
     const {t} = useTranslation();
     const componentRenderer = useContext(ComponentRendererContext);
-    const {language, uilang} = useSelector(state => ({language: state.language, uilang: state.uilang}));
-    const res = useNodeInfo({path: context.path, language}, {getDisplayName: true});
+    const {uilang} = useSelector(state => ({language: state.language, uilang: state.uilang}));
+    const {language} = useSelector(state => ({language: state.language}));
+    const res = useNodeChecks(
+        {path: context.path, language: language},
+        {...context}
+    );
     const {loadingTypes, error, nodetypes} = useCreatableNodetypes(
         undefined,
         false,
@@ -76,6 +80,7 @@ const CreateNewContent = ({context, render: Render, loading: Loading}) => {
                 context={{
                     ...context,
                     ...result,
+                    isVisible: res.checksResult,
                     onClick: ctx => onClick(res.node.uuid, language, ctx, redirect, componentRenderer)
                 }}/>
     ));
