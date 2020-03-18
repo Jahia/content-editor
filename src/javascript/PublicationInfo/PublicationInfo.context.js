@@ -7,12 +7,12 @@ export const PublicationInfoContext = React.createContext({});
 
 export const usePublicationInfoContext = () => useContext(PublicationInfoContext);
 
-export const PublicationInfoContextProvider = ({path, lang, children}) => {
+export const PublicationInfoContextProvider = ({uuid, lang, children}) => {
     const {t} = useTranslation();
     const {
         publicationInfoError, publicationInfoErrorMessage, publicationStatus, publicationInfoPolling, startPublicationInfoPolling, stopPublicationInfoPolling
     } = usePublicationInfo({
-        path: path,
+        uuid: uuid,
         language: lang
     }, t);
 
@@ -31,7 +31,7 @@ export const PublicationInfoContextProvider = ({path, lang, children}) => {
 };
 
 PublicationInfoContextProvider.propTypes = {
-    path: PropTypes.string.isRequired,
+    uuid: PropTypes.string.isRequired,
     lang: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired
 };

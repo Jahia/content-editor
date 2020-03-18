@@ -12,7 +12,6 @@ export const saveNode = ({
     actions,
     editCallback,
     data: {
-        path,
         nodeData,
         sections,
         values,
@@ -39,7 +38,7 @@ export const saveNode = ({
             {
                 query: NodeQuery,
                 variables: {
-                    path,
+                    uuid: nodeData.uuid,
                     language,
                     uilang: uilang
                 }
@@ -47,7 +46,7 @@ export const saveNode = ({
             {
                 query: PublicationInfoQuery,
                 variables: {
-                    path,
+                    uuid: nodeData.uuid,
                     language
                 }
             }

@@ -23,7 +23,7 @@ export const unpublishNode = ({
             {
                 query: NodeQuery,
                 variables: {
-                    path: nodeData.path,
+                    uuid: nodeData.uuid,
                     language: language,
                     uilang: uilang
                 }
@@ -31,7 +31,7 @@ export const unpublishNode = ({
             {
                 query: PublicationInfoQuery,
                 variables: {
-                    path: nodeData.path,
+                    uuid: nodeData.uuid,
                     language: language
                 }
             }

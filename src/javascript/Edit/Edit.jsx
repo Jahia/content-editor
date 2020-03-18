@@ -51,7 +51,7 @@ export const EditCmp = ({
     };
 
     const editWithFormik = (
-        <PublicationInfoContextProvider path={path} lang={lang}>
+        <PublicationInfoContextProvider uuid={nodeData.uuid} lang={lang}>
             <Formik
                 initialValues={initialValues}
                 render={props => <EditPanel {...props} title={title}/>}
