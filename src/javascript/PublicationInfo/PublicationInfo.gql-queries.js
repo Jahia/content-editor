@@ -2,9 +2,9 @@ import gql from 'graphql-tag';
 import {PredefinedFragments} from '@jahia/data-helper';
 
 export const PublicationInfoQuery = gql`
-    query getNodeProperties($path:String!, $language:String!) {
+    query getNodeProperties($uuid:String!, $language:String!) {
         jcr {
-            nodeByPath(path: $path) {
+            nodeById(uuid: $uuid) {
                 ...NodeCacheRequiredFields
                 aggregatedPublicationInfo(language: $language, subNodes: false, references: false) {
                     publicationStatus
