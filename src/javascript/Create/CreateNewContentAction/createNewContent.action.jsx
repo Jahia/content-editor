@@ -44,8 +44,7 @@ const CreateNewContent = ({context, render: Render, loading: Loading}) => {
     const {redirect} = useContentEditorHistory();
     const {t} = useTranslation();
     const componentRenderer = useContext(ComponentRendererContext);
-    const {uilang} = useSelector(state => ({language: state.language, uilang: state.uilang}));
-    const {language} = useSelector(state => ({language: state.language}));
+    const {uilang, language} = useSelector(state => ({language: state.language, uilang: state.uilang}));
     const res = useNodeChecks(
         {path: context.path, language: language},
         {...context}
@@ -68,11 +67,12 @@ const CreateNewContent = ({context, render: Render, loading: Loading}) => {
             'content-media-manager:label.contentManager.error.queryingContent',
             {details: error.message ? error.message : ''}
         );
-        return <>{message}</>;
+        console.error(message);
+        return <Render context={{...context, isVisible: false}}/>;
     }
 
-    if (!res || !res.node) {
-        return <></>;
+    if (!res || !res.node || (nodetypes && nodetypes.length === 0)) {
+        return <Render context={{...context, isVisible: false}}/>;
     }
 
     return (nodetypes || [{id: 'allTypes'}]).map(result => (
