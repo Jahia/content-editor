@@ -144,11 +144,12 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
                                 <DisplayAction
                                     actionKey="ContentEditorHeaderMenu"
                                     context={actionContext}
-                                    render={({context}) => (
+                                    render={({context, ...props}) => (
                                         <Button
+                                            icon={context.buttonIcon}
                                             data-sel-role="ContentEditorHeaderMenu"
                                             color="accent"
-                                            icon={context.buttonIcon}
+                                            {...props}
                                             onClick={e => {
                                                 e.stopPropagation();
                                                 context.onClick(context, e);
