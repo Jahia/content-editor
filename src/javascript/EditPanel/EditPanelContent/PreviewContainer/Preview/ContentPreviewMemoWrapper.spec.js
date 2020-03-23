@@ -43,7 +43,8 @@ jest.mock('./Preview.utils', () => {
             contextConfiguration: 'conf',
             requestAttributes: []
         }),
-        removeSiblings: jest.fn()
+        removeSiblings: jest.fn(),
+        forceDisplay: jest.fn()
     };
 });
 
