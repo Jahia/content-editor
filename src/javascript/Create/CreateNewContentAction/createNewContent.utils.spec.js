@@ -97,16 +97,17 @@ describe('CreateNewContent utils', () => {
         beforeEach(() => {
             tree = [
                 {
-                    id: 'id1',
+                    id: 'nt:base',
+                    name: 'nt:base',
                     nodeType: {
-                        mixin: true
+                        mixin: false
                     },
                     children: [
                         {
                             name: 'hello',
                             label: 'world',
                             parent: {
-                                id: 'id1'
+                                id: 'nt:base'
                             }
                         }
                     ]
@@ -156,7 +157,7 @@ describe('CreateNewContent utils', () => {
 
         it('should select first value when filter with world', () => {
             const result = filterTree(tree, selectedType, 'world');
-            expect(result[0].id).toBe('id1');
+            expect(result[0].id).toBe('nt:base');
             expect(result.length).toBe(1);
         });
 
@@ -172,14 +173,14 @@ describe('CreateNewContent utils', () => {
 
         it('should also filter when filtering with name', () => {
             const result = filterTree(tree, selectedType, 'hello');
-            expect(result[0].id).toBe('id1');
+            expect(result[0].id).toBe('nt:base');
             expect(result.length).toBe(1);
         });
 
         it('should find both node when filtering with LO', () => {
             const result = filterTree(tree, selectedType, 'lo');
             expect(result.length).toBe(2);
-            expect(result[0].id).toBe('id1');
+            expect(result[0].id).toBe('nt:base');
             expect(result[1].id).toBe('id2');
         });
 

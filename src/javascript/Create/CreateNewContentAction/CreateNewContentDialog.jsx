@@ -11,7 +11,7 @@ import {ProgressOverlay} from '@jahia/react-material';
 import {TreeView} from '~/DesignSystem/TreeView';
 import {useQuery} from '@apollo/react-hooks';
 import {getTreeOfContent} from '~/Create/CreateNewContentAction/CreateNewContent.gql-queries';
-import {filterTree} from './createNewContent.utits';
+import {filterTree, isOpenableEntry} from './createNewContent.utits';
 
 const styles = theme => ({
     treeContainer: {
@@ -81,12 +81,12 @@ const CreateNewContentDialogCmp = ({nodeTypes, includeSubTypes, open, parentPath
                 <TreeView
                     tree={filteredTree}
                     onNodeClick={node => {
-                        if (!node.nodeType.mixin) {
+                        if (!isOpenableEntry(node)) {
                             setSelectedType(node);
                         }
                     }}
                     onNodeDoubleClick={node => {
-                        if (!node.nodeType.mixin) {
+                        if (!isOpenableEntry(node)) {
                             onCreateContent(node);
                         }
                     }}
