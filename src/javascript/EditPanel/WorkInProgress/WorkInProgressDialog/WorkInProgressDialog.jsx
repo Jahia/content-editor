@@ -34,8 +34,6 @@ export const WorkInProgressDialog = ({
         return isWipContent === isWip;
     };
 
-    // TODO BACKLOG-12882 add the link to the sub title
-
     return (
         <Dialog
                 aria-labelledby="alert-dialog-slide-title"
@@ -48,7 +46,7 @@ export const WorkInProgressDialog = ({
                     {t('content-editor:label.contentEditor.edit.action.workInProgress.dialogTitle')}
                 </Typography>
                 <Typography className={classes.dialogSubTitle}>
-                    {t('content-editor:label.contentEditor.edit.action.workInProgress.dialogSubTitle')}
+                    {t('content-editor:label.contentEditor.edit.action.workInProgress.dialogSubTitle')} <a className={classes.link} target="_blank" rel="noopener noreferrer" href="https://academy.jahia.com/documentation/digital-experience-manager/7.3/functional/how-to-contribute-content#Work_in_Progress">{t('content-editor:label.contentEditor.edit.action.workInProgress.clickHere')}</a>
                 </Typography>
             </DialogTitle>
             <DialogContent className={classes.dialogContent}>
