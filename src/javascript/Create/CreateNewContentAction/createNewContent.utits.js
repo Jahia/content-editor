@@ -80,12 +80,12 @@ export const filterTree = (tree, selectedType, filter) => tree
         }) : category.children;
 
         // Never close selected content category
-        const isCategorySelected = selectedType && category.nodeType.mixin ? category.id === selectedType.parent.id : null;
+        const isCategorySelected = selectedType && isOpenableEntry(category) ? category.id === selectedType.parent.id : null;
 
         return {
             ...category,
             opened: filter ? true : (category.opened || isCategorySelected),
-            selected: Boolean(!category.nodeType.mixin && selectedType && selectedType.id === category.id),
+            selected: Boolean(!isOpenableEntry(category) && selectedType && selectedType.id === category.id),
             children: filteredNodes.map(node => {
                 return {
                     ...node,
@@ -95,8 +95,7 @@ export const filterTree = (tree, selectedType, filter) => tree
         };
     })
     .filter(category => {
-        const isNodeType = !category.nodeType.mixin;
-        if (isNodeType) {
+        if (!isOpenableEntry(category)) {
             return filter ?
                 category.name.toLowerCase().includes(filter) || category.label.toLowerCase().includes(filter) :
                 true;
@@ -104,3 +103,7 @@ export const filterTree = (tree, selectedType, filter) => tree
 
         return category.children.length !== 0;
     });
+
+export const isOpenableEntry = entry => {
+    return (entry.nodeType && entry.nodeType.mixin) || entry.name === 'nt:base';
+};
