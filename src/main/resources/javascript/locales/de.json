@@ -80,8 +80,9 @@
             "btnApply": "Anwenden",
             "checkboxLabel": "In Arbeit.",
             "checkboxSubLabel": "Der Content kann in allen Sprachen veröffentlicht werden.",
+            "clickHere": "klicken Sie hier.",
             "dialogTitle": "In Arbeit (WIP)",
-            "dialogSubTitle": "Sie können alle oder nur mehrsprachige Felder dieses Contents markieren. Um mehr über das Work in Progress Feature zu erfahren, klicken Sie hier.",
+            "dialogSubTitle": "Sie können alle oder nur mehrsprachige Felder dieses Contents markieren. Um mehr über das Work in Progress Feature zu erfahren, ",
             "label": "Als \"In Arbeit\" markieren"
           }
         },

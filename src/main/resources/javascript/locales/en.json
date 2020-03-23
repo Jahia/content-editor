@@ -80,8 +80,9 @@
             "btnApply": "Apply",
             "checkboxLabel": "Work in progress.",
             "checkboxSubLabel": "The content can be published in all languages.",
+            "clickHere": "click here.",
             "dialogTitle": "Work in progress (WIP)",
-            "dialogSubTitle": "You can mark one or all multi language fields with in this content. If you wish to find out more about Work in progress click here.",
+            "dialogSubTitle": "You can mark one or all multi language fields with in this content. If you wish to find out more about Work in progress ",
             "label": "Mark as Work in progress"
           }
         },
