@@ -82,7 +82,7 @@
             "checkboxSubLabel": "Le contenu peut être publié dans toutes les langues.",
             "clickHere": "cliquez ici.",
             "dialogTitle": "Travail en cours (WIP)",
-            "dialogSubTitle": "Vous pouvez marquer comme travail en cours tous les champs ou seuls ceux internationalisé de ce contenu. Si vous souhaitez en savoir plus sur l'option Marquer comme travail en cours, ",
+            "dialogSubTitle": "Vous pouvez marquer comme travail en cours pour en empêcher sa publication. Si vous souhaitez en savoir plus sur l'option Marquer comme travail en cours, ",
             "label": "Marquer comme travail en cours"
           }
         },

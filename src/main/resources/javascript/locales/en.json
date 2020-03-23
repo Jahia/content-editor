@@ -82,7 +82,7 @@
             "checkboxSubLabel": "The content can be published in all languages.",
             "clickHere": "click here.",
             "dialogTitle": "Work in progress (WIP)",
-            "dialogSubTitle": "You can mark one or all multi language fields with in this content. If you wish to find out more about Work in progress ",
+            "dialogSubTitle": "Mark your content as work in progress if you want to prevent the publication of your content. If you wish to find out more about Work in progress ",
             "label": "Mark as Work in progress"
           }
         },
