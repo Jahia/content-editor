@@ -65,3 +65,19 @@ export const removeSiblings = element => {
         removeSiblings(element.parentNode);
     }
 };
+
+/**
+ * Force the display of the HTML El, by checking if it's using display: node style
+ * Recursive fct will check parents nodes aswell
+ * @param element to force the display
+ */
+export const forceDisplay = element => {
+    if (element.style.display === 'none') {
+        element.style.display = '';
+    }
+
+    // Stop recursion if no parent, or body is parent
+    if (element.parentNode && element.parentNode.tagName !== 'BODY') {
+        forceDisplay(element.parentNode);
+    }
+};

@@ -4,7 +4,7 @@ import {useContentEditorContext} from '~/ContentEditor.context';
 import {setPreviewRefetcher} from '~/EditPanel/EditPanel.refetches';
 import {PreviewComponent} from '@jahia/react-material';
 import {Badge} from '@jahia/design-system-kit';
-import {getPreviewContext, removeSiblings} from './Preview.utils';
+import {forceDisplay, getPreviewContext, removeSiblings} from './Preview.utils';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core';
 import {useTranslation} from 'react-i18next';
@@ -63,6 +63,7 @@ const ContentPreviewMemoWrapperCmp = React.memo(({classes}) => {
         const contentPreview = frameDoc.getElementById('ce_preview_content');
         if (contentPreview) {
             removeSiblings(contentPreview);
+            forceDisplay(contentPreview);
         } else {
             setContentNotFound(true);
         }
