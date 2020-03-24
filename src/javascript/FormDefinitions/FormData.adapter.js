@@ -1,5 +1,24 @@
 import {resolveSelectorType} from '~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes.utils';
 
+export const adaptSystemNameField = (rawData, formData, lang, t, customAdapter) => {
+    // Add i18ns to field and fieldset
+    const optionsSection = formData.sections.find(section => section.name === 'options');
+    if (optionsSection) {
+        const ntBaseFieldSet = optionsSection.fieldSets.find(fieldSet => fieldSet.name === 'nt:base');
+        if (ntBaseFieldSet) {
+            ntBaseFieldSet.displayName = t('content-editor:label.contentEditor.section.fieldSet.system.displayName');
+            const systemNameField = ntBaseFieldSet.fields.find(field => field.name === 'ce:systemName');
+            if (systemNameField) {
+                systemNameField.displayName = t('content-editor:label.contentEditor.section.fieldSet.system.fields.systemName');
+            }
+        }
+    }
+
+    if (customAdapter) {
+        customAdapter(rawData, formData, lang, t);
+    }
+};
+
 export const adaptSections = sections => {
     const cloneSections = JSON.parse(JSON.stringify(sections));
 

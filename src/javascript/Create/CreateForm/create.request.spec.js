@@ -38,7 +38,10 @@ describe('createNode', () => {
             data: {
                 primaryNodeType: 'jnt:text',
                 nodeData: {},
-                sections: []
+                sections: [],
+                values: {
+                    'ce:systemName': 'dummmySystemName'
+                }
             }
         };
     });

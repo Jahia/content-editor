@@ -82,6 +82,7 @@ export const FormQuery = gql`
                 }
             }
             nodeTypeByName(name: $primaryNodeType) {
+                name
                 displayName(language: $uilang)
             }
         }

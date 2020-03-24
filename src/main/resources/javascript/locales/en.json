@@ -185,6 +185,14 @@
         }
       },
       "section":{
+        "fieldSet": {
+          "system": {
+            "displayName": "System",
+            "fields": {
+              "systemName": "System name"
+            }
+          }
+        },
         "listAndOrdering": {
           "title": "Content list & ordering",
           "ordering": "Ordering"
