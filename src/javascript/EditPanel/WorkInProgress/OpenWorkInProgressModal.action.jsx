@@ -26,6 +26,7 @@ export const OpenWorkInProgressModal = ({context, render: Render, ...props}) => 
                             {
                                 isOpen: true,
                                 isWipContent: false, // TODO handle in BACKLOG-12845
+                                languages: siteInfo.languages,
                                 onCloseDialog: closeDialog,
                                 onApply: () => { // TODO handle in BACKLOG-12845
                                     closeDialog();

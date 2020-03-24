@@ -18,7 +18,7 @@
         "action": {
           "copyLanguage": {
             "bottomText": "Beim Klicken auf \"Anwenden\" werden alle Felder der aktuellen Sprache mit den Werten der ausgewählten Sprache überschrieben.",
-            "btnApply": "Anwenden",
+            "btnDone": "Erledigt",
             "btnCancel": "Abbrechen",
             "currentLanguage": "Aktuellen Sprache:",
             "defaultValue": "Nicht ausgewählt",
@@ -77,13 +77,18 @@
           "usagesTab": "Verwendung",
           "workInProgress": {
             "btnCancel": "Abbrechen",
-            "btnApply": "Anwenden",
+            "btnDone": "Anwenden",
             "checkboxLabel": "In Arbeit.",
             "checkboxSubLabel": "Der Content kann in allen Sprachen veröffentlicht werden.",
+            "checkboxSubLabelCannotBePublished": "Der Content kann nicht veröffentlicht werden.",
             "clickHere": "klicken Sie hier.",
             "dialogTitle": "In Arbeit (WIP)",
             "dialogSubTitle": "Markieren Sie Ihren Content als Work in Progress wenn Sie die Veröffentlichung des Contents verhindern wollen. Um mehr über das Work in Progress Feature zu erfahren, ",
-            "label": "Als \"In Arbeit\" markieren"
+            "label": "Als \"In Arbeit\" markieren",
+            "localizedPropertiesOnly": "Nur sprachabhängige Eigenschaften in:",
+            "localizedPropertiesOnlySubText": "Der Inhalt der selektierten Sprache wird nicht veröffentlicht. Gemeinsame Eigenschaften hingegen können als Teil einer nicht selektierten Sprache veröffentlicht werden.",
+            "allContent": "Gesamter Inhalt (gemeinsame und sprachabhängige Eigenschaften)",
+            "allContentSubText": "Die Option \"Gesamter Inhalt\" verhindert die Veröffentlichung in allen Sprachen. "
           }
         },
         "advancedOption": {
