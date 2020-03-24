@@ -16,13 +16,23 @@ jest.mock('@apollo/react-hooks', () => {
     };
 });
 
-describe('CopyLanguageDialog', () => {
+describe('WorkInProgressDialog', () => {
     let defaultProps;
 
     beforeEach(() => {
         defaultProps = {
             isOpen: false,
             isWipContent: false,
+            languages: [{
+                displayName: 'Deutsch',
+                language: 'de',
+                activeInEdit: true
+            },
+            {
+                displayName: 'English',
+                language: 'en',
+                activeInEdit: true
+            }],
             onCloseDialog: () => {},
             onApply: () => {}
         };
@@ -58,5 +68,27 @@ describe('CopyLanguageDialog', () => {
 
         expect(cmp.find({checked: defaultProps.isWipContent}).exists()).toBe(true);
         expect(cmp.find({checked: !defaultProps.isWipContent}).exists()).toBe(false);
+    });
+
+    it('should radio button be displayed when have multiple languages', () => {
+        const cmp = shallowWithTheme(
+            <WorkInProgressDialog {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        expect(cmp.find({value: 'localizedProperties'}).exists()).toBe(true);
+        expect(cmp.find({value: 'allContent'}).exists()).toBe(true);
+    });
+    it('should radio button not be displayed when there is only one language', () => {
+        defaultProps.languages.splice(0, 1);
+        const cmp = shallowWithTheme(
+            <WorkInProgressDialog {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        expect(cmp.find({value: 'localizedProperties'}).exists()).toBe(false);
+        expect(cmp.find({value: 'allContent'}).exists()).toBe(false);
     });
 });

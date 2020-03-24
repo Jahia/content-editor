@@ -2,6 +2,10 @@
     color: #0072b1 !important;
 }
 
+.radioButton {
+    color: #0072b1 !important;
+}
+
 .dialogTitle {
     margin: 0 10px;
 
@@ -27,8 +31,6 @@
 }
 
 .label {
-    padding: 0 10px;
-
     font-weight: lighter;
 }
 
@@ -41,10 +43,37 @@
     padding-left: var(--spacing-medium);
 }
 
-.language {
-    margin-right: 30%;
+.languageSelectionContainer {
+    display: flex;
+    flex-direction: column;
+
+    padding-left: var(--spacing-big);
+
+    & div {
+        display: flex;
+        align-items: center;
+    }
+}
+
+.radioButtonContainer {
+    display: flex;
+    flex-direction: column;
+
+    padding: 0 var(--spacing-huge) !important;
+}
+
+.radioButtonEntry {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+}
+
+.subTextAllContent {
+    padding-left: var(--spacing-big);
+
+    font-weight: lighter;
 }
 
 .actions {
-    justify-content: space-between;
+    justify-content: space-between !important;
 }
