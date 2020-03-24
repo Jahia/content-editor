@@ -74,7 +74,16 @@
           "seoTab": "SEO",
           "visibilityTab": "Sichtbarkeit",
           "historyTab": "Historie",
-          "usagesTab": "Verwendung"
+          "usagesTab": "Verwendung",
+          "workInProgress": {
+            "btnCancel": "Abbrechen",
+            "btnApply": "Anwenden",
+            "checkboxLabel": "In Arbeit.",
+            "checkboxSubLabel": "Der Content kann in allen Sprachen veröffentlicht werden.",
+            "dialogTitle": "In Arbeit (WIP)",
+            "dialogSubTitle": "Sie können alle oder nur mehrsprachige Felder dieses Contents markieren. Um mehr über das Work in Progress Feature zu erfahren, klicken Sie hier.",
+            "label": "Als \"In Arbeit\" markieren"
+          }
         },
         "advancedOption": {
           "technicalInformation": {

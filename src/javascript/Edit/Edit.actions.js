@@ -8,6 +8,7 @@ import {Save, CloudUpload, CloudOff} from '@material-ui/icons';
 import {Edit, ChevronDown} from '@jahia/moonstone/dist/icons';
 import openEngineTabs from './engineTabs/openEngineTabs.action';
 import editContentAction from './EditContent.action';
+import OpenWorkInProgressModalAction from '~/EditPanel/WorkInProgress/OpenWorkInProgressModal.action';
 
 export const registerEditActions = actionsRegistry => {
     actionsRegistry.add('action', 'edit', editContentAction, {
@@ -35,6 +36,12 @@ export const registerEditActions = actionsRegistry => {
         color: 'accent',
         targets: ['editHeaderActions:1'],
         dataSelRole: 'publishAction'
+    });
+
+    actionsRegistry.add('action', 'goToWorkInProgress', OpenWorkInProgressModalAction, {
+        buttonLabel: 'content-editor:label.contentEditor.edit.action.workInProgress.label',
+        targets: ['ContentEditorHeaderActions:1'],
+        dataSelRole: 'workInProgressAction'
     });
 
     actionsRegistry.add('action', 'startWorkflowMainButton', startWorkflow, {

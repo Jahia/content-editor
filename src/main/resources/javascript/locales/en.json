@@ -74,7 +74,16 @@
           "seoTab": "SEO",
           "visibilityTab": "Visibility",
           "historyTab": "History",
-          "usagesTab": "Usages"
+          "usagesTab": "Usages",
+          "workInProgress": {
+            "btnCancel": "Cancel",
+            "btnApply": "Apply",
+            "checkboxLabel": "Work in progress.",
+            "checkboxSubLabel": "The content can be published in all languages.",
+            "dialogTitle": "Work in progress (WIP)",
+            "dialogSubTitle": "You can mark one or all multi language fields with in this content. If you wish to find out more about Work in progress click here.",
+            "label": "Mark as Work in progress"
+          }
         },
         "advancedOption": {
           "technicalInformation": {
