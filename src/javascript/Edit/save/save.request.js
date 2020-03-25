@@ -24,7 +24,7 @@ export const saveNode = ({
     const {childrenOrder, shouldModifyChildren} = getChildrenOrder(values, nodeData);
 
     client.mutate({
-        variables: adaptSaveRequest({
+        variables: adaptSaveRequest(nodeData, {
             uuid: nodeData.uuid,
             propertiesToSave: dataToMutate.propsToSave,
             propertiesToDelete: dataToMutate.propsToDelete,
