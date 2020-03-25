@@ -1,6 +1,6 @@
 import {CreateNode} from './createForm.gql-mutation';
 import {getDataToMutate} from '~/EditPanel/EditPanel.utils';
-import {nodeTypeFormatter} from './create.utils';
+import {adaptCreateRequest} from '../Create.adapter';
 
 export const createNode = ({
     client,
@@ -17,15 +17,13 @@ export const createNode = ({
     }
 }) => {
     const {propsToSave, mixinsToAdd} = getDataToMutate({formValues: values, sections, lang: language});
-    const nodeName = nodeTypeFormatter(primaryNodeType);
     client.mutate({
-        variables: {
+        variables: adaptCreateRequest({
             uuid: nodeData.uuid,
-            name: nodeName,
             primaryNodeType,
             mixins: mixinsToAdd,
             properties: propsToSave
-        },
+        }),
         mutation: CreateNode
     }).then(data => {
         if (createCallback) {

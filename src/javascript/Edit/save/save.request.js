@@ -4,6 +4,7 @@ import {NodeQuery} from '~/NodeData/NodeData.gql-queries';
 import {refetchPreview} from '~/EditPanel/EditPanel.refetches';
 import {getPreviewPath} from '~/EditPanel/EditPanelContent/PreviewContainer/Preview/Preview.utils';
 import {PublicationInfoQuery} from '~/PublicationInfo/PublicationInfo.gql-queries';
+import {adaptSaveRequest} from '../Edit.adapter';
 
 export const saveNode = ({
     client,
@@ -23,7 +24,7 @@ export const saveNode = ({
     const {childrenOrder, shouldModifyChildren} = getChildrenOrder(values, nodeData);
 
     client.mutate({
-        variables: {
+        variables: adaptSaveRequest({
             uuid: nodeData.uuid,
             propertiesToSave: dataToMutate.propsToSave,
             propertiesToDelete: dataToMutate.propsToDelete,
@@ -32,7 +33,7 @@ export const saveNode = ({
             language,
             shouldModifyChildren,
             childrenOrder
-        },
+        }),
         mutation: SavePropertiesMutation,
         refetchQueries: [
             {
