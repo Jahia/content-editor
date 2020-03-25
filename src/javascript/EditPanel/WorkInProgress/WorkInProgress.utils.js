@@ -10,10 +10,14 @@ export const getChipContent = (nodeData, currentLanguage, t) => {
 };
 
 export const showChipHeader = (nodeData, currentLanguage) => {
-    let shouldShowForCurrentLanguage = nodeData.wipInfo.status === WIP_STATUS_LANGUAGES && nodeData.wipInfo.languages.indexOf(currentLanguage) > -1;
-    return nodeData.wipInfo.status === WIP_STATUS_ALL_CONTENT || shouldShowForCurrentLanguage;
+    if (nodeData.wipInfo) {
+        const shouldShowForCurrentLanguage = nodeData.wipInfo.status === WIP_STATUS_LANGUAGES && nodeData.wipInfo.languages.indexOf(currentLanguage) > -1;
+        return nodeData.wipInfo.status === WIP_STATUS_ALL_CONTENT || shouldShowForCurrentLanguage;
+    }
+
+    return false;
 };
 
 export const showChipField = (is18nField, nodeData, currentLanguage) => {
-    return is18nField && nodeData.wipInfo.status === WIP_STATUS_LANGUAGES && nodeData.wipInfo.languages.indexOf(currentLanguage) > -1;
+    return is18nField && nodeData.wipInfo && nodeData.wipInfo.status === WIP_STATUS_LANGUAGES && nodeData.wipInfo.languages.indexOf(currentLanguage) > -1;
 };
