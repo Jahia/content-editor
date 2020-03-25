@@ -206,6 +206,23 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
                                 )}
                             />
                         </Tab>
+
+                        <Separator variant="vertical"/>
+
+                        <DisplayAction
+                            actionKey="content-editor/header/3dots"
+                            context={actionContext}
+                            render={({context, ...props}) => (
+                                <Button
+                                    icon={context.buttonIcon}
+                                    variant="ghost"
+                                    {...props}
+                                    onClick={e => {
+                                        e.stopPropagation();
+                                        context.onClick(context, e);
+                                    }}
+                                />
+                            )}/>
                     </div>
                 </ContentHeader>
             }

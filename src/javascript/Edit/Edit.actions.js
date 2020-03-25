@@ -5,7 +5,7 @@ import startWorkflow from './startWorkflow/startWorkflow.action';
 import unpublishAction from './unpublish/unpublish.action';
 import copyLanguageAction from './copyLanguage/copyLanguage.action';
 import {Save, CloudUpload, CloudOff} from '@material-ui/icons';
-import {Edit, ChevronDown} from '@jahia/moonstone/dist/icons';
+import {Edit, ChevronDown, MoreVert} from '@jahia/moonstone/dist/icons';
 import openEngineTabs from './engineTabs/openEngineTabs.action';
 import editContentAction from './EditContent.action';
 import OpenWorkInProgressModalAction from '~/EditPanel/WorkInProgress/OpenWorkInProgressModal.action';
@@ -38,12 +38,6 @@ export const registerEditActions = actionsRegistry => {
         dataSelRole: 'publishAction'
     });
 
-    actionsRegistry.add('action', 'goToWorkInProgress', OpenWorkInProgressModalAction, {
-        buttonLabel: 'content-editor:label.contentEditor.edit.action.workInProgress.label',
-        targets: ['ContentEditorHeaderActions:1'],
-        dataSelRole: 'workInProgressAction'
-    });
-
     actionsRegistry.add('action', 'startWorkflowMainButton', startWorkflow, {
         buttonLabel: 'content-editor:label.contentEditor.edit.action.startWorkflow.name',
         buttonIcon: <CloudUpload/>,
@@ -51,7 +45,7 @@ export const registerEditActions = actionsRegistry => {
         dataSelRole: 'startWorkflowMainButton'
     });
 
-    /* 3 dots menu */
+    /* Publish actions */
     actionsRegistry.add('action', 'ContentEditorHeaderMenu', actionsRegistry.get('action', 'menuAction'), {
         buttonIcon: <ChevronDown/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.action.moreOptions',
@@ -59,8 +53,7 @@ export const registerEditActions = actionsRegistry => {
     });
 
     actionsRegistry.add('action', 'startWorkflow3dots', startWorkflow, {
-        buttonLabel:
-            'content-editor:label.contentEditor.edit.action.startWorkflow.name',
+        buttonLabel: 'content-editor:label.contentEditor.edit.action.startWorkflow.name',
         buttonIcon: <CloudUpload/>,
         targets: ['ContentEditorHeaderActions:1']
     });
@@ -104,9 +97,21 @@ export const registerEditActions = actionsRegistry => {
         });
     }
 
+    /* 3 dots menu actions (close to tabs) */
+    actionsRegistry.add('action', 'content-editor/header/3dots', actionsRegistry.get('action', 'menuAction'), {
+        buttonIcon: <MoreVert/>,
+        buttonLabel: 'content-editor:label.contentEditor.edit.action.moreOptions',
+        menuTarget: 'content-editor/header/3dots'
+    });
+
+    actionsRegistry.add('action', 'goToWorkInProgress', OpenWorkInProgressModalAction, {
+        buttonLabel: 'content-editor:label.contentEditor.edit.action.workInProgress.label',
+        targets: ['content-editor/header/3dots:1'],
+        dataSelRole: 'workInProgressAction'
+    });
+
     actionsRegistry.add('action', 'copyLanguageAction', copyLanguageAction, {
-        buttonLabel:
-            'content-editor:label.contentEditor.edit.action.copyLanguage.name',
-        targets: ['ContentEditorHeaderActions:8']
+        buttonLabel: 'content-editor:label.contentEditor.edit.action.copyLanguage.name',
+        targets: ['content-editor/header/3dots:2']
     });
 };
