@@ -13,6 +13,7 @@ import {Error} from '@material-ui/icons';
 import {useContentEditorContext, useContentEditorConfigContext} from '~/ContentEditor.context';
 import PublicationInfoBadge from '~/PublicationInfo/PublicationInfo.badge';
 import LockInfoBadge from '~/Lock/LockInfo.badge';
+import WipInfoChip from '~/EditPanel/WorkInProgress/Chip/WipInfo.Chip';
 import {PublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
 import {Constants} from '~/ContentEditor.constants';
 import MainLayout from '~/DesignSystem/ContentLayout/MainLayout';
@@ -169,9 +170,10 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
                             />
                         </div>
 
-                        <div className={styles.headerRight}>
+                        <div className={styles.headerChips}>
                             <PublicationInfoBadge/>
                             <LockInfoBadge/>
+                            <WipInfoChip/>
                         </div>
                     </div>
 
