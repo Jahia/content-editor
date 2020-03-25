@@ -76,6 +76,9 @@
           "historyTab": "Historique",
           "usagesTab": "Utilisations",
           "workInProgress": {
+            "chipLabelAllContent": "Travail en cours",
+            "chipLabelLanguages": "WIP - ",
+            "chipLabelField": "Travail en cours",
             "btnCancel": "Annuler",
             "btnDone": "Valider",
             "checkboxLabel": "Travail en cours.",

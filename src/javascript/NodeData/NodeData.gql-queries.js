@@ -64,6 +64,10 @@ const NodeDataFragment = {
                         type
                     }
                 }
+                wipInfo{
+                    status
+                    languages
+                }
             }
         }
         ${PredefinedFragments.nodeCacheRequiredFields.gql}`
