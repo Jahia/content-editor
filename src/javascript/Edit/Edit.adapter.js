@@ -139,17 +139,28 @@ export const adaptEditFormData = (data, lang, t) => {
 
 /**
  * This fct allow to adapt/modify the save request data, before sending them to the server
+ * @param nodeData Current node data
  * @param saveRequestVariables Current request variables
  * @returns {*}
  */
-export const adaptSaveRequest = saveRequestVariables => {
-    if (saveRequestVariables.propertiesToSave) {
-        // Use system name to fill the create request variables.
-        const systemNameIndex = saveRequestVariables.propertiesToSave.findIndex(property => property.name === 'ce:systemName');
-        // TODO: BACKLOG-12898 handle edit mutation
+export const adaptSaveRequest = (nodeData, saveRequestVariables) => {
+    saveRequestVariables.shouldRename = false;
+    saveRequestVariables.newName = '';
 
-        // Remove ce:systemName prop
-        saveRequestVariables.propertiesToSave.splice(systemNameIndex, 1);
+    if (saveRequestVariables.propertiesToSave) {
+        // Use system name to fill the save request variables.
+        const systemNameIndex = saveRequestVariables.propertiesToSave.findIndex(property => property.name === 'ce:systemName');
+        if (systemNameIndex > -1) {
+            const newSystemName = saveRequestVariables.propertiesToSave[systemNameIndex].value;
+
+            if (newSystemName !== nodeData.name) {
+                saveRequestVariables.shouldRename = true;
+                saveRequestVariables.newName = newSystemName;
+            }
+
+            // Remove ce:systemName prop
+            saveRequestVariables.propertiesToSave.splice(systemNameIndex, 1);
+        }
     }
 
     return saveRequestVariables;
