@@ -157,7 +157,8 @@
         "errors": {
           "invalidDate": "Bitte geben Sie ein gültiges Datum ein",
           "invalidPattern": "Die Eingabe entspricht nicht den Vorgaben der Content-Typ-Definition.",
-          "required": ""
+          "required": "",
+          "alreadyExist": "Ein Element mit demselben Systemnamen ist bereits vorhanden. Bitte wählen Sie ein anderes aus."
         },
         "tab": {
           "edit": "Bearbeiten",
@@ -170,7 +171,8 @@
         }
       },
       "error": {
-        "queryingContent": "Fehler während Content-Abfrage: {{details}}"
+        "queryingContent": "Fehler während Content-Abfrage: {{details}}",
+        "changeSystemName": "Bitte wählen Sie einen anderen Systemnamen"
       },
       "preview": {
         "contentNotFound": "Inhalte können auf der Seite nicht in der Vorschau angezeigt werden",

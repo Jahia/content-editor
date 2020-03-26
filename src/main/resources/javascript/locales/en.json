@@ -157,7 +157,8 @@
         "errors": {
           "invalidDate": "Please provide a valid date value",
           "invalidPattern": "The value does not match the constraints defined in the content type definitions file.",
-          "required": ""
+          "required": "",
+          "alreadyExist": "An item with the same system name already exists, please choose another one."
         },
         "tab": {
           "edit": "Edit",
@@ -170,7 +171,8 @@
         }
       },
       "error": {
-        "queryingContent": "Error querying content: {{details}}"
+        "queryingContent": "Error querying content: {{details}}",
+        "changeSystemName": "Please choose another system name"
       },
       "preview": {
         "contentNotFound": "Content cannot be previewed in the page",

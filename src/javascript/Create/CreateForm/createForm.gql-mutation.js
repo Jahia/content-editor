@@ -17,8 +17,7 @@ export const CreateNode = gql`
                 primaryNodeType: $primaryNodeType,
                 mixins: $mixins,
                 properties: $properties,
-                children: $children,
-                useAvailableNodeName: true
+                children: $children
             ) {
                 uuid
                 node {

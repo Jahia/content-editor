@@ -9,7 +9,6 @@
     {
       "name": "ce:systemName",
       "description": "",
-      "errorMessage": "",
       "requiredType": "STRING",
       "selectorType": "Text",
       "i18n": false,
