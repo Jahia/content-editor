@@ -52,7 +52,7 @@ export const registerEditActions = actionsRegistry => {
         menuTarget: 'ContentEditorHeaderActions'
     });
 
-    actionsRegistry.add('action', 'startWorkflow3dots', startWorkflow, {
+    actionsRegistry.add('action', 'startWorkflowHeader', startWorkflow, {
         buttonLabel: 'content-editor:label.contentEditor.edit.action.startWorkflow.name',
         buttonIcon: <CloudUpload/>,
         targets: ['ContentEditorHeaderActions:1']
@@ -101,7 +101,8 @@ export const registerEditActions = actionsRegistry => {
     actionsRegistry.add('action', 'content-editor/header/3dots', actionsRegistry.get('action', 'menuAction'), {
         buttonIcon: <MoreVert/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.action.moreOptions',
-        menuTarget: 'content-editor/header/3dots'
+        menuTarget: 'content-editor/header/3dots',
+        dataSelRole: '3dotsMenuAction'
     });
 
     actionsRegistry.add('action', 'goToWorkInProgress', OpenWorkInProgressModalAction, {

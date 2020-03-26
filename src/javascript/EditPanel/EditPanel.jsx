@@ -216,6 +216,7 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
                             context={actionContext}
                             render={({context, ...props}) => (
                                 <Button
+                                    data-sel-role={context.dataSelRole}
                                     icon={context.buttonIcon}
                                     variant="ghost"
                                     {...props}
