@@ -63,11 +63,6 @@
           "startWorkflow": {
             "name": "Demander une publication"
           },
-          "unpublish": {
-            "name": "Dépublier",
-            "success": "Contenu dépublié",
-            "error": "Erreur pendant la dépublication"
-          },
           "moreOptions": "Plus d'options",
           "fieldMoreOptions": "Plus d'options",
           "versioningTab": "Versions",

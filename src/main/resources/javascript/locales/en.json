@@ -63,11 +63,6 @@
           "startWorkflow": {
             "name": "Request publication"
           },
-          "unpublish": {
-            "name": "Unpublish",
-            "success": "Content unpublished",
-            "error": "Error during unpublication"
-          },
           "moreOptions": "More Options",
           "fieldMoreOptions": "More Options",
           "versioningTab": "Versioning",
