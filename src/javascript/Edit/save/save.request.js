@@ -5,6 +5,7 @@ import {refetchPreview} from '~/EditPanel/EditPanel.refetches';
 import {getPreviewPath} from '~/EditPanel/EditPanelContent/PreviewContainer/Preview/Preview.utils';
 import {PublicationInfoQuery} from '~/PublicationInfo/PublicationInfo.gql-queries';
 import {adaptSaveRequest} from '../Edit.adapter';
+import {onServerError} from '~/Validation/validation.utils';
 
 export const saveNode = ({
     client,
@@ -61,8 +62,6 @@ export const saveNode = ({
         actions.setSubmitting(false);
         refetchPreview(getPreviewPath(nodeData), language);
     }, error => {
-        console.error(error);
-        notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.error'), ['closeButton']);
-        actions.setSubmitting(false);
+        onServerError(error, actions, notificationContext, t, 'content-editor:label.contentEditor.edit.action.save.error');
     });
 };

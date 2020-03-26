@@ -157,7 +157,8 @@
         "errors": {
           "invalidDate": "La date est mal formatée",
           "invalidPattern": "La valeur ne correspond pas aux contraintes définies dans le fichier de définition des types de contenu.",
-          "required": ""
+          "required": "",
+          "alreadyExist": "Il y a déjà un objet avec ce nom système, veuillez en choisir un autre"
         },
         "tab": {
           "edit": "Éditer",
@@ -170,7 +171,8 @@
         }
       },
       "error": {
-        "queryingContent": "Erreur lors de l'interrogation du contenu: {{details}}"
+        "queryingContent": "Erreur lors de l'interrogation du contenu: {{details}}",
+        "changeSystemName": "Veuillez choisir un autre nom système"
       },
       "preview": {
         "contentNotFound": "Le contenu ne peut pas être prévisualisé dans la page",

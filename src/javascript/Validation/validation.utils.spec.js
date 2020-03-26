@@ -1,4 +1,6 @@
-import {validateForm} from './validation.utils';
+import {validateForm, onServerError} from './validation.utils';
+
+const t = val => val;
 
 describe('validation utils', () => {
     describe('validateForm', () => {
@@ -44,6 +46,58 @@ describe('validation utils', () => {
             errors = {};
             await validateForm(formik, renderComponent);
             expect(renderComponent).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('validate on server error', () => {
+        const consoleErrorOriginal = console.error;
+
+        let formikActions;
+        let notificationContext;
+        beforeEach(() => {
+            formikActions = {
+                setSubmitting: jest.fn(),
+                setFieldError: jest.fn(),
+                setFieldTouched: jest.fn()
+            };
+            notificationContext = {
+                notify: jest.fn()
+            };
+            console.error = jest.fn();
+        });
+
+        afterEach(() => {
+            console.error = consoleErrorOriginal;
+        });
+
+        it('should return system name validation error for ItemAlreadyExist server error', () => {
+            const error = {
+                graphQLErrors: [{
+                    message: 'javax.jcr.ItemExistsException: This node already exists: /sites/digitall/contents/test'
+                }]
+            };
+
+            onServerError(error, formikActions, notificationContext, t, 'default_message');
+
+            expect(formikActions.setFieldTouched).toHaveBeenCalledWith('ce:systemName', true, false);
+            expect(formikActions.setFieldError).toHaveBeenCalledWith('ce:systemName', 'alreadyExist');
+            expect(formikActions.setSubmitting).toHaveBeenCalledWith(false);
+        });
+
+        it('should notify in case of server error', () => {
+            const error = {
+                graphQLErrors: [{
+                    message: 'javax.jcr.JCRRepositoryException: Item not found'
+                }]
+            };
+
+            onServerError(error, formikActions, notificationContext, t, 'default_message');
+
+            expect(formikActions.setFieldTouched).not.toHaveBeenCalled();
+            expect(formikActions.setFieldError).not.toHaveBeenCalled();
+            expect(formikActions.setSubmitting).toHaveBeenCalledWith(false);
+            expect(notificationContext.notify).toHaveBeenCalledWith('default_message', ['closeButton']);
+            expect(console.error).toHaveBeenCalled();
         });
     });
 });

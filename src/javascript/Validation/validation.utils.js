@@ -34,3 +34,26 @@ export const validateForm = async ({setTouched, validateForm}, renderComponent) 
 
     return true;
 };
+
+export const onServerError = (error, formikActions, notificationContext, t, defaultErrorMessage) => {
+    // Set submitting false
+    formikActions.setSubmitting(false);
+
+    const graphQLErrors = error.graphQLErrors;
+    if (graphQLErrors && graphQLErrors.length > 0) {
+        for (const graphQLError of graphQLErrors) {
+            if (graphQLError.message && graphQLError.message.startsWith('javax.jcr.ItemExistsException')) {
+                // Custom handling for this error, system name is not valid
+
+                notificationContext.notify(t('content-editor:label.contentEditor.error.changeSystemName'), ['closeButton']);
+                formikActions.setFieldError('ce:systemName', 'alreadyExist');
+                formikActions.setFieldTouched('ce:systemName', true, false);
+                return;
+            }
+        }
+    }
+
+    // No error handling, print error in console and use default error message
+    console.error(error);
+    notificationContext.notify(t(defaultErrorMessage), ['closeButton']);
+};
