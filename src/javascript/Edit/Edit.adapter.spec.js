@@ -180,14 +180,6 @@ describe('adaptEditFormData', () => {
         expect(adaptEditFormData(graphqlResponse, 'fr', t).title).toEqual('nameOfNode');
     });
 
-    it('should return the content type name when Creating', () => {
-        graphqlResponse.jcr.nodeTypeByName = {
-            displayName: 'nodeType'
-        };
-
-        expect(adaptEditFormData(graphqlResponse, 'fr', t).title).toEqual('content-editor:label.contentEditor.create.title');
-    });
-
     it('should add ChildrenOrder field when we are not on a page and hasOrderableChildNodes', () => {
         graphqlResponse.jcr.result.isPage = false;
         graphqlResponse.jcr.result.primaryNodeType.hasOrderableChildNodes = true;

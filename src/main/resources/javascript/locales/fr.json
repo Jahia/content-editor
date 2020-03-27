@@ -196,6 +196,9 @@
       },
       "section":{
         "fieldSet": {
+          "content": {
+            "displayName": "Contenu"
+          },
           "system": {
             "displayName": "Système",
             "fields": {
