@@ -37,13 +37,13 @@ export const EditCmp = ({
                 sections,
                 values
             },
-            editCallback: () => {
+            editCallback: nodeUuid => {
                 if (values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK]) {
                     values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK]();
                 } else {
                     const envEditCallback = envEditCallbacks[contentEditorConfigContext.env];
                     if (envEditCallback) {
-                        envEditCallback(contentEditorConfigContext);
+                        envEditCallback(nodeUuid, contentEditorConfigContext);
                     }
                 }
             }

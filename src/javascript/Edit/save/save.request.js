@@ -53,7 +53,7 @@ export const saveNode = ({
         ]
     }).then(() => {
         if (editCallback) {
-            editCallback();
+            editCallback(nodeData.uuid);
         }
 
         notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.success'), ['closeButton']);
