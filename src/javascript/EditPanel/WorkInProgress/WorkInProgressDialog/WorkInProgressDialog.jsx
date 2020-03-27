@@ -80,9 +80,11 @@ export const WorkInProgressDialog = ({
             <DialogContent className={classes.dialogContent}>
                 <div className={classes.container}>
                     <div>
-                        <Checkbox className={classes.checkbox}
-                                  checked={wipStatus}
-                                  onChange={onChangeWip}
+                        <Checkbox
+                            data-sel-role="WIP"
+                            className={classes.checkbox}
+                            checked={wipStatus}
+                            onChange={onChangeWip}
                         />
                     </div>
                     <div>
