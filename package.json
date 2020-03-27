@@ -28,7 +28,7 @@
     },
     "jahia": {
         "apps": {
-            "jahia": "javascript/apps/content-editor-ext.bundle.js"
+            "jahia": ["javascript/apps/content-editor-ext.bundle.js", "/cms/render/default/en/settings.contentEditor.js"]
         }
     },
     "dependencies": {

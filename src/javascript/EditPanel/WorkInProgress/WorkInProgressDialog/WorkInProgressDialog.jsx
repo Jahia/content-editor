@@ -49,14 +49,14 @@ export const WorkInProgressDialog = ({
     };
 
     const isApplyDisabled = () => {
-        return wipInfo.status === wipStatus && languages === wipInfo.languages;
+        return wipInfo.status === statusSelected && selectedLanguages.length === wipInfo.languages.length && selectedLanguages.every((value, index) => value === wipInfo.languages[index]);
     };
 
     const onChangeWip = event => {
         setWipStatus(event.target.checked);
         if (!event.target.checked) {
             setSelectedLanguages([]);
-            setStatusSelected(null);
+            setStatusSelected(Constants.wip.status.DISABLED);
         }
     };
 

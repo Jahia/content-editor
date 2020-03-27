@@ -29,7 +29,7 @@ export const adaptCreateFormData = (data, lang, t) => {
         initialValues: {
             ...getInitialValues(sections),
             // Work in progress
-            [Constants.wip.fieldName]: {status: Constants.wip.status.DISABLED, languages: []}
+            [Constants.wip.fieldName]: {status: contextJsParameters.config.wipOnCreate ? Constants.wip.status.ALL_CONTENT : Constants.wip.status.DISABLED, languages: []}
         },
         nodeData,
         details: {},
