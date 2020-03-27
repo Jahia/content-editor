@@ -5,8 +5,7 @@ import styles from './MainLayout.scss';
 
 export const MainLayout = ({header, children}) => (
     <main className={classnames(styles.root, 'flexCol')}>
-        { header &&
-        header}
+        { header && header}
         <div className={classnames(styles.content, 'flexCol')}>
             {children}
         </div>
