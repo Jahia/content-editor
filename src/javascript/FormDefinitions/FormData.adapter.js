@@ -1,5 +1,5 @@
 import {resolveSelectorType} from '~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes.utils';
-import {Constants} from "~/ContentEditor.constants";
+import {Constants} from '~/ContentEditor.constants';
 
 export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType, customAdapter) => {
     const optionsSection = formData.sections.find(section => section.name === 'options');
@@ -31,7 +31,7 @@ export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType
                         formData.sections.unshift(contentSection);
                     }
 
-                    let toBeMovedToFieldSet = contentSection.fieldSets.find(fieldSet => moveSystemNameForNodeTypes.includes(fieldSet.name));
+                    let toBeMovedToFieldSet = contentSection.fieldSets.find(fieldSet => Constants.systemName.MOVED_TO_CONTENT_FIELDSET_FOR_NODE_TYPES.includes(fieldSet.name));
                     if (!toBeMovedToFieldSet) {
                         // FieldSet doesnt exist, create it
                         toBeMovedToFieldSet = {
