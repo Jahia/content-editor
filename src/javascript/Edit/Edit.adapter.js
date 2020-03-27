@@ -127,12 +127,10 @@ export const adaptEditFormData = (data, lang, t) => {
         nodeData,
         details: getDetailsValue(sections, nodeData, lang),
         technicalInfo: getTechnicalInfo(nodeData, t),
-        title: data.jcr.nodeTypeByName ?
-            t('content-editor:label.contentEditor.create.title', {type: data.jcr.nodeTypeByName.displayName}) :
-            nodeData.displayName
+        title: nodeData.displayName
     };
 
-    adaptSystemNameField(data, formData, lang, t, editAdaptSystemNameField);
+    adaptSystemNameField(data, formData, lang, t, nodeData.primaryNodeType, editAdaptSystemNameField);
 
     return formData;
 };

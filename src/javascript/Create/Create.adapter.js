@@ -29,12 +29,10 @@ export const adaptCreateFormData = (data, lang, t) => {
         nodeData,
         details: {},
         technicalInfo: {},
-        title: data.jcr.nodeTypeByName ?
-            t('content-editor:label.contentEditor.create.title', {type: data.jcr.nodeTypeByName.displayName}) :
-            nodeData.displayName
+        title: t('content-editor:label.contentEditor.create.title', {type: data.jcr.nodeTypeByName.displayName})
     };
 
-    adaptSystemNameField(data, formData, lang, t, adaptSystemName);
+    adaptSystemNameField(data, formData, lang, t, data.jcr.nodeTypeByName, adaptSystemName);
 
     return formData;
 };

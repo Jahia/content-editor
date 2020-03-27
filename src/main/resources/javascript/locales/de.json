@@ -191,6 +191,9 @@
       },
       "section":{
         "fieldSet": {
+          "content": {
+            "displayName": "Content"
+          },
           "system": {
             "displayName": "System",
             "fields": {
