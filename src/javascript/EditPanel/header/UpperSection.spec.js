@@ -14,6 +14,9 @@ describe('Header UpperSection', () => {
                         displayName: 'WIP-WOP'
                     }
                 },
+                formik: {
+                    values: {}
+                },
                 mode: 'EDIT'
             },
             title: 'yolo'

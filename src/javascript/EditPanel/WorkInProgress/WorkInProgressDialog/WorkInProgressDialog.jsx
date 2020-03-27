@@ -1,32 +1,26 @@
 import React, {useState} from 'react';
-import {
-    Dialog,
-    DialogActions,
-    DialogTitle,
-    DialogContent,
-    Radio
-} from '@material-ui/core';
+import {Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Radio} from '@material-ui/core';
 import {Button, Typography} from '@jahia/moonstone';
 import {Check} from '@jahia/moonstone/dist/icons';
-import {Checkbox} from '@material-ui/core';
 import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import classes from './WorkInProgressDialog.scss';
+import {Constants} from '~/ContentEditor.constants';
 
 export const WorkInProgressDialog = ({
     isOpen,
     onCloseDialog,
-    isWipContent,
+    wipInfo,
     onApply,
     languages
 }) => {
     const {t} = useTranslation();
 
-    const [isWip, setIsWip] = useState(isWipContent);
+    const [wipStatus, setWipStatus] = useState(wipInfo.status !== Constants.wip.status.DISABLED);
 
-    const [contentSelected, setContentSelected] = useState(null);
+    const [statusSelected, setStatusSelected] = useState(wipInfo.status);
 
-    const [selectedLanguages, setSelectedLanguages] = useState([]);
+    const [selectedLanguages, setSelectedLanguages] = useState(wipInfo.languages);
 
     const updateSelectedLanguage = (language, isToAdd) => {
         if (isToAdd) {
@@ -40,8 +34,8 @@ export const WorkInProgressDialog = ({
     };
 
     const handleLocalisedOrAllContent = event => {
-        setContentSelected(event.target.value);
-        if (event.target.value === 'allContent') {
+        setStatusSelected(event.target.value);
+        if (event.target.value === Constants.wip.status.ALL_CONTENT) {
             setSelectedLanguages([]);
         }
     };
@@ -51,19 +45,18 @@ export const WorkInProgressDialog = ({
     };
 
     const handleApply = () => {
-        onApply();
-        // TODO BACKLOG-12845 Do it
+        onApply({status: statusSelected, languages: selectedLanguages});
     };
 
     const isApplyDisabled = () => {
-        return isWipContent === isWip;
+        return wipInfo.status === wipStatus && languages === wipInfo.languages;
     };
 
     const onChangeWip = event => {
-        setIsWip(event.target.checked);
+        setWipStatus(event.target.checked);
         if (!event.target.checked) {
             setSelectedLanguages([]);
-            setContentSelected(null);
+            setStatusSelected(null);
         }
     };
 
@@ -88,7 +81,7 @@ export const WorkInProgressDialog = ({
                 <div className={classes.container}>
                     <div>
                         <Checkbox className={classes.checkbox}
-                                  checked={isWip}
+                                  checked={wipStatus}
                                   onChange={onChangeWip}
                         />
                     </div>
@@ -97,24 +90,24 @@ export const WorkInProgressDialog = ({
                             {t('content-editor:label.contentEditor.edit.action.workInProgress.checkboxLabel')}
                         </Typography>
 
-                        {!isWip &&
+                        {!wipStatus &&
                             <Typography className={classes.label}>
                                 {t('content-editor:label.contentEditor.edit.action.workInProgress.checkboxSubLabel')}
                             </Typography>}
-                        {isWip &&
+                        {wipStatus &&
                             <Typography className={classes.label}>
                                 {t('content-editor:label.contentEditor.edit.action.workInProgress.checkboxSubLabelCannotBePublished')}
                             </Typography>}
                     </div>
                 </div>
                 {hasMultipleLanguages &&
-                    <div className={classes.radioButtonContainer} disabled={!isWip}>
+                    <div className={classes.radioButtonContainer} disabled={!wipStatus}>
                         <div className={classes.radioButtonEntry}>
                             <Radio
-                                    disabled={!isWip}
-                                    checked={contentSelected === 'localizedProperties'}
+                                    disabled={!wipStatus}
+                                    checked={statusSelected === Constants.wip.status.LANGUAGES}
                                     className={classes.radioButton}
-                                    value="localizedProperties"
+                                    value={Constants.wip.status.LANGUAGES}
                                     onChange={handleLocalisedOrAllContent}
                                 />
                             <Typography className={classes.label}>
@@ -129,7 +122,7 @@ export const WorkInProgressDialog = ({
                                     return (
                                         <div key={language.language}>
                                             <Checkbox
-                                                disabled={!isWip || contentSelected !== 'localizedProperties'}
+                                                disabled={!wipStatus || statusSelected !== Constants.wip.status.LANGUAGES}
                                                 className={classes.checkbox}
                                                 value={language.language}
                                                 checked={selectedLanguages.indexOf(language.language) > -1}
@@ -147,10 +140,10 @@ export const WorkInProgressDialog = ({
                         </div>
                         <div className={classes.radioButtonEntry}>
                             <Radio
-                                disabled={!isWip}
-                                checked={contentSelected === 'allContent'}
+                                disabled={!wipStatus}
+                                checked={statusSelected === Constants.wip.status.ALL_CONTENT}
                                 className={classes.radioButton}
-                                value="allContent"
+                                value={Constants.wip.status.ALL_CONTENT}
                                 onChange={handleLocalisedOrAllContent}
                                 />
                             <Typography className={classes.label}>
@@ -181,7 +174,10 @@ WorkInProgressDialog.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     onCloseDialog: PropTypes.func.isRequired,
     onApply: PropTypes.func.isRequired,
-    isWipContent: PropTypes.bool.isRequired,
+    wipInfo: PropTypes.shape({
+        status: PropTypes.oneOf(['DISABLED', 'ALL_CONTENT', 'LANGUAGES']),
+        languages: PropTypes.array
+    }).isRequired,
     languages: PropTypes.array.isRequired
 };
 

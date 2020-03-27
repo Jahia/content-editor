@@ -63,6 +63,7 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
         advanced: AdvancedOptions
     };
     const SelectedTabComponent = SelectedTabComponents[activeTab];
+
     return (
         <MainLayout
             header={

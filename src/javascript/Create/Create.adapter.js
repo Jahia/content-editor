@@ -2,6 +2,7 @@ import {adaptSections, getFieldValuesFromDefaultValues} from '~/FormDefinitions/
 import {getFields} from '~/EditPanel/EditPanel.utils';
 import {adaptSystemNameField} from '../FormDefinitions/FormData.adapter';
 import {nodeTypeFormatter} from './Create.utils';
+import {Constants} from '~/ContentEditor.constants';
 
 const getInitialValues = sections => {
     // Retrieve fields and the return object contains the field name as the key and the field value as the value
@@ -25,7 +26,11 @@ export const adaptCreateFormData = (data, lang, t) => {
 
     const formData = {
         sections: adaptSections(sections),
-        initialValues: getInitialValues(sections),
+        initialValues: {
+            ...getInitialValues(sections),
+            // Work in progress
+            [Constants.wip.fieldName]: {status: Constants.wip.status.DISABLED, languages: []}
+        },
         nodeData,
         details: {},
         technicalInfo: {},

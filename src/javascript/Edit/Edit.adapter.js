@@ -3,6 +3,7 @@ import {getDynamicFieldSets, getFields} from '~/EditPanel/EditPanel.utils';
 import {resolveSelectorType} from '~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes.utils';
 import {adaptSections, getFieldValuesFromDefaultValues} from '~/FormDefinitions/FormData.adapter';
 import {adaptSystemNameField} from '../FormDefinitions/FormData.adapter';
+import {Constants} from '~/ContentEditor.constants';
 
 const getInitialValues = (nodeData, sections) => {
     // Retrieve dynamic fieldSets
@@ -18,8 +19,11 @@ const getInitialValues = (nodeData, sections) => {
 
     const childrenOrderingFields = getChildrenOrderingFields(nodeData);
 
+    // Work in progress
+    const wipInfo = {[Constants.wip.fieldName]: nodeData.wipInfo};
+
     // Return object contains fields and dynamic fieldSets
-    return {...nodeValues, ...extendsMixinFieldsDefaultValues, ...dynamicFieldSets, ...childrenOrderingFields};
+    return {...nodeValues, ...extendsMixinFieldsDefaultValues, ...dynamicFieldSets, ...childrenOrderingFields, ...wipInfo};
 };
 
 const getChildrenOrderingFields = nodeData => {

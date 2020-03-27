@@ -1,6 +1,7 @@
 import {CreateNode} from './createForm.gql-mutation';
 import {getDataToMutate} from '~/EditPanel/EditPanel.utils';
 import {adaptCreateRequest} from '../Create.adapter';
+import {Constants} from '~/ContentEditor.constants';
 import {onServerError} from '~/Validation/validation.utils';
 
 export const createNode = ({
@@ -18,12 +19,14 @@ export const createNode = ({
     }
 }) => {
     const {propsToSave, mixinsToAdd} = getDataToMutate({formValues: values, sections, lang: language});
+    const wipInfo = values[Constants.wip.fieldName];
     client.mutate({
         variables: adaptCreateRequest({
             uuid: nodeData.uuid,
             primaryNodeType,
             mixins: mixinsToAdd,
-            properties: propsToSave
+            properties: propsToSave,
+            wipInfo
         }),
         mutation: CreateNode
     }).then(data => {
