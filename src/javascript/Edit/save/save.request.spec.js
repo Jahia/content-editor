@@ -53,19 +53,4 @@ describe('saveNode', () => {
 
         expect(params.notificationContext.notify).toHaveBeenCalled();
     });
-
-    it('should display a notification when request is a failure', async () => {
-        params.client.mutate = () => Promise.reject();
-        await saveNode(params);
-
-        expect(params.notificationContext.notify).toHaveBeenCalled();
-    });
-
-    it('should log error when request is a failure', async () => {
-        const err = new Error('yo');
-        params.client.mutate = () => Promise.reject(err);
-        await saveNode(params);
-
-        expect(console.error).toHaveBeenCalledWith(err);
-    });
 });

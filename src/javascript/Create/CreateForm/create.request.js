@@ -1,6 +1,8 @@
 import {CreateNode} from './createForm.gql-mutation';
 import {getDataToMutate} from '~/EditPanel/EditPanel.utils';
-import {nodeTypeFormatter} from './create.utils';
+import {adaptCreateRequest} from '../Create.adapter';
+import {Constants} from '~/ContentEditor.constants';
+import {onServerError} from '~/Validation/validation.utils';
 
 export const createNode = ({
     client,
@@ -17,15 +19,15 @@ export const createNode = ({
     }
 }) => {
     const {propsToSave, mixinsToAdd} = getDataToMutate({formValues: values, sections, lang: language});
-    const nodeName = nodeTypeFormatter(primaryNodeType);
+    const wipInfo = values[Constants.wip.fieldName];
     client.mutate({
-        variables: {
+        variables: adaptCreateRequest({
             uuid: nodeData.uuid,
-            name: nodeName,
             primaryNodeType,
             mixins: mixinsToAdd,
-            properties: propsToSave
-        },
+            properties: propsToSave,
+            wipInfo
+        }),
         mutation: CreateNode
     }).then(data => {
         if (createCallback) {
@@ -36,8 +38,6 @@ export const createNode = ({
         client.cache.flushNodeEntryById(nodeData.uuid);
         actions.setSubmitting(false);
     }, error => {
-        console.error(error);
-        notificationContext.notify(t('content-editor:label.contentEditor.create.createButton.error'), ['closeButton']);
-        actions.setSubmitting(false);
+        onServerError(error, actions, notificationContext, t, 'content-editor:label.contentEditor.create.createButton.error');
     });
 };

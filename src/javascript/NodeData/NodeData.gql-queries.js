@@ -19,6 +19,7 @@ const NodeDataFragment = {
                     path
                     isFolder:isNodeType(type: {multi: ANY, types: ["jnt:contentFolder", "jnt:folder"]})
                 }
+                name
                 displayName(language: $language)
                 mixinTypes {
                     name
@@ -62,6 +63,10 @@ const NodeDataFragment = {
                         owner
                         type
                     }
+                }
+                wipInfo{
+                    status
+                    languages
                 }
             }
         }

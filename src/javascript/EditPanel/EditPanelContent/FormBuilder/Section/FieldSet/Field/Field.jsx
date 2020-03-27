@@ -9,6 +9,7 @@ import {ContextualMenu} from '@jahia/ui-extender';
 import {FieldPropTypes} from '~/FormDefinitions';
 import {MultipleField} from './MultipleField';
 import {SingleField} from './SingleField';
+import {showChipField} from '~/EditPanel/WorkInProgress/WorkInProgress.utils';
 
 let styles = theme => {
     const common = {
@@ -95,6 +96,14 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
                                        badgeContent={t('content-editor:label.contentEditor.edit.validation.required')}
                                        variant="normal"
                                        color={hasMandatoryError ? 'warning' : 'primary'}
+                                />
+                            )}
+                            {showChipField(field.i18n, inputContext.editorContext.nodeData, inputContext.editorContext.lang) && (
+                                <Badge className={classes.badge}
+                                       data-sel-role="wip-info-chip-field"
+                                       badgeContent={t('content-editor:label.contentEditor.edit.action.workInProgress.chipLabelField')}
+                                       variant="normal"
+                                       color="info"
                                 />
                             )}
                             {(!field.i18n && siteInfo.languages.length > 1) &&

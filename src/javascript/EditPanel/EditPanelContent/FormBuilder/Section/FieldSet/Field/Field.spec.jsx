@@ -5,6 +5,11 @@ import {Field} from './Field';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import Text from './SelectorTypes/Text/Text';
 
+jest.mock('~/EditPanel/WorkInProgress/WorkInProgress.utils', () => {
+    return {
+        showChipField: jest.fn()
+    };
+});
 describe('Field component', () => {
     let defaultProps;
 
@@ -43,7 +48,12 @@ describe('Field component', () => {
             dxContext: {},
             actionContext: {},
             input: <></>,
-            inputContext: {},
+            inputContext: {
+                editorContext: {
+                    lang: 'en',
+                    nodeData: {}
+                }
+            },
             idInput: 'FieldID'
         };
     });

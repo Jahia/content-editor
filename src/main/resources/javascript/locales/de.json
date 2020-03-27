@@ -18,7 +18,7 @@
         "action": {
           "copyLanguage": {
             "bottomText": "Beim Klicken auf \"Anwenden\" werden alle Felder der aktuellen Sprache mit den Werten der ausgewählten Sprache überschrieben.",
-            "btnApply": "Anwenden",
+            "btnDone": "Erledigt",
             "btnCancel": "Abbrechen",
             "currentLanguage": "Aktuellen Sprache:",
             "defaultValue": "Nicht ausgewählt",
@@ -63,18 +63,31 @@
           "startWorkflow": {
             "name": "Veröffentlichung anfordern"
           },
-          "unpublish": {
-            "name": "Veröffentlichung rückgängig machen",
-            "success": "Veröffentlichung für Content wurde rückgängig gemacht",
-            "error": "Während dem rückgängig machen der Veröffentlichung ist ein Fehler aufgetreten"
-          },
           "moreOptions": "Mehr Optionen",
           "fieldMoreOptions": "Mehr Optionen",
           "versioningTab": "Versionierung",
           "seoTab": "SEO",
           "visibilityTab": "Sichtbarkeit",
           "historyTab": "Historie",
-          "usagesTab": "Verwendung"
+          "usagesTab": "Verwendung",
+          "workInProgress": {
+            "chipLabelAllContent": "In Arbeit",
+            "chipLabelLanguages": "WIP - ",
+            "chipLabelField": "In Arbeit",
+            "btnCancel": "Abbrechen",
+            "btnDone": "Anwenden",
+            "checkboxLabel": "In Arbeit.",
+            "checkboxSubLabel": "Der Content kann in allen Sprachen veröffentlicht werden.",
+            "checkboxSubLabelCannotBePublished": "Der Content kann nicht veröffentlicht werden.",
+            "clickHere": "klicken Sie hier.",
+            "dialogTitle": "In Arbeit (WIP)",
+            "dialogSubTitle": "Markieren Sie Ihren Content als Work in Progress wenn Sie die Veröffentlichung des Contents verhindern wollen. Um mehr über das Work in Progress Feature zu erfahren, ",
+            "label": "Als \"In Arbeit\" markieren",
+            "localizedPropertiesOnly": "Nur sprachabhängige Eigenschaften in:",
+            "localizedPropertiesOnlySubText": "Der Inhalt der selektierten Sprache wird nicht veröffentlicht. Gemeinsame Eigenschaften hingegen können als Teil einer nicht selektierten Sprache veröffentlicht werden.",
+            "allContent": "Gesamter Inhalt (gemeinsame und sprachabhängige Eigenschaften)",
+            "allContentSubText": "Die Option \"Gesamter Inhalt\" verhindert die Veröffentlichung in allen Sprachen. "
+          }
         },
         "advancedOption": {
           "technicalInformation": {
@@ -139,7 +152,8 @@
         "errors": {
           "invalidDate": "Bitte geben Sie ein gültiges Datum ein",
           "invalidPattern": "Die Eingabe entspricht nicht den Vorgaben der Content-Typ-Definition.",
-          "required": ""
+          "required": "",
+          "alreadyExist": "Ein Element mit demselben Systemnamen ist bereits vorhanden. Bitte wählen Sie ein anderes aus."
         },
         "tab": {
           "edit": "Bearbeiten",
@@ -152,7 +166,8 @@
         }
       },
       "error": {
-        "queryingContent": "Fehler während Content-Abfrage: {{details}}"
+        "queryingContent": "Fehler während Content-Abfrage: {{details}}",
+        "changeSystemName": "Bitte wählen Sie einen anderen Systemnamen"
       },
       "preview": {
         "contentNotFound": "Inhalte können auf der Seite nicht in der Vorschau angezeigt werden",
@@ -175,6 +190,17 @@
         }
       },
       "section":{
+        "fieldSet": {
+          "content": {
+            "displayName": "Content"
+          },
+          "system": {
+            "displayName": "System",
+            "fields": {
+              "systemName": "Systemname"
+            }
+          }
+        },
         "listAndOrdering": {
           "title": "Listensortierung",
           "ordering": "Anordnung"

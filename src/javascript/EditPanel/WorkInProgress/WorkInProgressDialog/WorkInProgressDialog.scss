@@ -1,0 +1,79 @@
+.checkbox {
+    color: #0072b1 !important;
+}
+
+.radioButton {
+    color: #0072b1 !important;
+}
+
+.dialogTitle {
+    margin: 0 10px;
+
+    color: #373c42;
+}
+
+.dialogSubTitle {
+    margin: 10px;
+
+    color: #525c65;
+}
+
+.link {
+    font-style: italic;
+    color: #0072b1;
+}
+
+.dialogContent {
+    padding: 40px 0 !important;
+
+    border-top: 1px solid #e0e6ea;
+    border-bottom: 1px solid #e0e6ea;
+}
+
+.label {
+    font-weight: lighter;
+}
+
+.container {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: start;
+    align-items: center;
+
+    padding-left: var(--spacing-medium);
+}
+
+.languageSelectionContainer {
+    display: flex;
+    flex-direction: column;
+
+    padding-left: var(--spacing-big);
+
+    & div {
+        display: flex;
+        align-items: center;
+    }
+}
+
+.radioButtonContainer {
+    display: flex;
+    flex-direction: column;
+
+    padding: 0 var(--spacing-huge) !important;
+}
+
+.radioButtonEntry {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+}
+
+.subTextAllContent {
+    padding-left: var(--spacing-big);
+
+    font-weight: lighter;
+}
+
+.actions {
+    justify-content: space-between !important;
+}

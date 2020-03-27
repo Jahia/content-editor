@@ -1,9 +1,12 @@
 import {SavePropertiesMutation} from './save.gql-mutation';
-import {getDataToMutate, getChildrenOrder} from '~/EditPanel/EditPanel.utils';
+import {getChildrenOrder, getDataToMutate} from '~/EditPanel/EditPanel.utils';
 import {NodeQuery} from '~/NodeData/NodeData.gql-queries';
 import {refetchPreview} from '~/EditPanel/EditPanel.refetches';
 import {getPreviewPath} from '~/EditPanel/EditPanelContent/PreviewContainer/Preview/Preview.utils';
 import {PublicationInfoQuery} from '~/PublicationInfo/PublicationInfo.gql-queries';
+import {adaptSaveRequest} from '../Edit.adapter';
+import {Constants} from '~/ContentEditor.constants';
+import {onServerError} from '~/Validation/validation.utils';
 
 export const saveNode = ({
     client,
@@ -21,9 +24,10 @@ export const saveNode = ({
 }) => {
     const dataToMutate = getDataToMutate({nodeData, formValues: values, sections, lang: language});
     const {childrenOrder, shouldModifyChildren} = getChildrenOrder(values, nodeData);
+    const wipInfo = values[Constants.wip.fieldName];
 
     client.mutate({
-        variables: {
+        variables: adaptSaveRequest(nodeData, {
             uuid: nodeData.uuid,
             propertiesToSave: dataToMutate.propsToSave,
             propertiesToDelete: dataToMutate.propsToDelete,
@@ -31,8 +35,9 @@ export const saveNode = ({
             mixinsToDelete: dataToMutate.mixinsToDelete,
             language,
             shouldModifyChildren,
-            childrenOrder
-        },
+            childrenOrder,
+            wipInfo
+        }),
         mutation: SavePropertiesMutation,
         refetchQueries: [
             {
@@ -60,8 +65,6 @@ export const saveNode = ({
         actions.setSubmitting(false);
         refetchPreview(getPreviewPath(nodeData), language);
     }, error => {
-        console.error(error);
-        notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.error'), ['closeButton']);
-        actions.setSubmitting(false);
+        onServerError(error, actions, notificationContext, t, 'content-editor:label.contentEditor.edit.action.save.error');
     });
 };

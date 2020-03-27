@@ -1,0 +1,24 @@
+{
+  "name": "nt:base",
+  "rank": 1.0,
+  "priority": 1.0,
+  "dynamic": false,
+  "removed": false,
+  "activated": true,
+  "fields": [
+    {
+      "name": "ce:systemName",
+      "description": "",
+      "requiredType": "STRING",
+      "selectorType": "Text",
+      "i18n": false,
+      "readOnly": false,
+      "multiple": false,
+      "mandatory": true,
+      "target": {
+        "sectionName": "options",
+        "rank": 0.0
+      }
+    }
+  ]
+}

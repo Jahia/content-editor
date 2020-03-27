@@ -63,18 +63,31 @@
           "startWorkflow": {
             "name": "Demander une publication"
           },
-          "unpublish": {
-            "name": "Dépublier",
-            "success": "Contenu dépublié",
-            "error": "Erreur pendant la dépublication"
-          },
           "moreOptions": "Plus d'options",
           "fieldMoreOptions": "Plus d'options",
           "versioningTab": "Versions",
           "seoTab": "SEO",
           "visibilityTab": "Visibilité",
           "historyTab": "Historique",
-          "usagesTab": "Utilisations"
+          "usagesTab": "Utilisations",
+          "workInProgress": {
+            "chipLabelAllContent": "Travail en cours",
+            "chipLabelLanguages": "WIP - ",
+            "chipLabelField": "Travail en cours",
+            "btnCancel": "Annuler",
+            "btnDone": "Valider",
+            "checkboxLabel": "Travail en cours.",
+            "checkboxSubLabel": "Le contenu peut être publié dans toutes les langues.",
+            "checkboxSubLabelCannotBePublished": "Le contenu ne peut pas être publié.",
+            "clickHere": "cliquez ici.",
+            "dialogTitle": "Travail en cours (WIP)",
+            "dialogSubTitle": "Vous pouvez marquer comme travail en cours pour en empêcher sa publication. Si vous souhaitez en savoir plus sur l'option Marquer comme travail en cours, ",
+            "label": "Marquer comme travail en cours",
+            "localizedPropertiesOnly": "Propriétés internationalisées seulement:",
+            "localizedPropertiesOnlySubText": "Le contenu ne sera pas publiable dans les langues sélectionnées. Les propriétés communes à toutes les langues peuvent cependant faire partie d'une publication dans une autre langue.",
+            "allContent": "Tout le contenu (propriétés communes et internationalisées)",
+            "allContentSubText": "L'option \"Tout le contenu\" empêche toute publication dans n'importe quelle langue."
+          }
         },
         "advancedOption": {
           "technicalInformation": {
@@ -139,7 +152,8 @@
         "errors": {
           "invalidDate": "La date est mal formatée",
           "invalidPattern": "La valeur ne correspond pas aux contraintes définies dans le fichier de définition des types de contenu.",
-          "required": ""
+          "required": "",
+          "alreadyExist": "Il y a déjà un objet avec ce nom système, veuillez en choisir un autre"
         },
         "tab": {
           "edit": "Éditer",
@@ -152,7 +166,8 @@
         }
       },
       "error": {
-        "queryingContent": "Erreur lors de l'interrogation du contenu: {{details}}"
+        "queryingContent": "Erreur lors de l'interrogation du contenu: {{details}}",
+        "changeSystemName": "Veuillez choisir un autre nom système"
       },
       "preview": {
         "contentNotFound": "Le contenu ne peut pas être prévisualisé dans la page",
@@ -175,6 +190,17 @@
         }
       },
       "section":{
+        "fieldSet": {
+          "content": {
+            "displayName": "Contenu"
+          },
+          "system": {
+            "displayName": "Système",
+            "fields": {
+              "systemName": "Nom système"
+            }
+          }
+        },
         "listAndOrdering": {
           "title": "Liste de contenu & ordre",
           "ordering": "Ordre"

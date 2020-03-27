@@ -1,4 +1,4 @@
-import {adaptEditFormData} from './Edit.adapter';
+import {adaptEditFormData, adaptSaveRequest} from './Edit.adapter';
 
 jest.mock('~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes.utils', () => {
     return {
@@ -180,14 +180,6 @@ describe('adaptEditFormData', () => {
         expect(adaptEditFormData(graphqlResponse, 'fr', t).title).toEqual('nameOfNode');
     });
 
-    it('should return the content type name when Creating', () => {
-        graphqlResponse.jcr.nodeTypeByName = {
-            displayName: 'nodeType'
-        };
-
-        expect(adaptEditFormData(graphqlResponse, 'fr', t).title).toEqual('content-editor:label.contentEditor.create.title');
-    });
-
     it('should add ChildrenOrder field when we are not on a page and hasOrderableChildNodes', () => {
         graphqlResponse.jcr.result.isPage = false;
         graphqlResponse.jcr.result.primaryNodeType.hasOrderableChildNodes = true;
@@ -220,5 +212,42 @@ describe('adaptEditFormData', () => {
         });
 
         expect(adaptEditFormData(graphqlResponse, 'fr', t).initialValues.field2).toEqual('2019-05-07T11:33:31.056');
+    });
+
+    it('should not rename node if system name not changed', () => {
+        const nodeData = {
+            name: 'dummy'
+        };
+
+        let saveRequestVariables = {
+            propertiesToSave: [{
+                name: 'ce:systemName',
+                value: 'dummy'
+            }]
+        };
+
+        saveRequestVariables = adaptSaveRequest(nodeData, saveRequestVariables);
+
+        expect(saveRequestVariables.propertiesToSave.length).toEqual(0);
+        expect(saveRequestVariables.shouldRename).toEqual(false);
+    });
+
+    it('should rename node if system name changed', () => {
+        const nodeData = {
+            name: 'dummy'
+        };
+
+        let saveRequestVariables = {
+            propertiesToSave: [{
+                name: 'ce:systemName',
+                value: 'dummy_updated'
+            }]
+        };
+
+        saveRequestVariables = adaptSaveRequest(nodeData, saveRequestVariables);
+
+        expect(saveRequestVariables.propertiesToSave.length).toEqual(0);
+        expect(saveRequestVariables.shouldRename).toEqual(true);
+        expect(saveRequestVariables.newName).toEqual('dummy_updated');
     });
 });

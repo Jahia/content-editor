@@ -2,6 +2,8 @@ import dayjs from '~/date.config';
 import {getDynamicFieldSets, getFields} from '~/EditPanel/EditPanel.utils';
 import {resolveSelectorType} from '~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes.utils';
 import {adaptSections, getFieldValuesFromDefaultValues} from '~/FormDefinitions/FormData.adapter';
+import {adaptSystemNameField} from '../FormDefinitions/FormData.adapter';
+import {Constants} from '~/ContentEditor.constants';
 
 const getInitialValues = (nodeData, sections) => {
     // Retrieve dynamic fieldSets
@@ -17,8 +19,11 @@ const getInitialValues = (nodeData, sections) => {
 
     const childrenOrderingFields = getChildrenOrderingFields(nodeData);
 
+    // Work in progress
+    const wipInfo = {[Constants.wip.fieldName]: nodeData.wipInfo};
+
     // Return object contains fields and dynamic fieldSets
-    return {...nodeValues, ...extendsMixinFieldsDefaultValues, ...dynamicFieldSets, ...childrenOrderingFields};
+    return {...nodeValues, ...extendsMixinFieldsDefaultValues, ...dynamicFieldSets, ...childrenOrderingFields, ...wipInfo};
 };
 
 const getChildrenOrderingFields = nodeData => {
@@ -111,18 +116,54 @@ const getTechnicalInfo = (nodeData, t) => {
     ];
 };
 
+const editAdaptSystemNameField = (rawData, formData) => {
+    // Set initial value for system name
+    formData.initialValues['ce:systemName'] = rawData.jcr.result.name;
+};
+
 export const adaptEditFormData = (data, lang, t) => {
     const nodeData = data.jcr.result;
     const sections = data.forms.editForm.sections;
 
-    return {
+    const formData = {
         sections: adaptSections(sections),
         initialValues: getInitialValues(nodeData, sections),
         nodeData,
         details: getDetailsValue(sections, nodeData, lang),
         technicalInfo: getTechnicalInfo(nodeData, t),
-        title: data.jcr.nodeTypeByName ?
-            t('content-editor:label.contentEditor.create.title', {type: data.jcr.nodeTypeByName.displayName}) :
-            nodeData.displayName
+        title: nodeData.displayName
     };
+
+    adaptSystemNameField(data, formData, lang, t, nodeData.primaryNodeType, editAdaptSystemNameField);
+
+    return formData;
+};
+
+/**
+ * This fct allow to adapt/modify the save request data, before sending them to the server
+ * @param nodeData Current node data
+ * @param saveRequestVariables Current request variables
+ * @returns {*}
+ */
+export const adaptSaveRequest = (nodeData, saveRequestVariables) => {
+    saveRequestVariables.shouldRename = false;
+    saveRequestVariables.newName = '';
+
+    if (saveRequestVariables.propertiesToSave) {
+        // Use system name to fill the save request variables.
+        const systemNameIndex = saveRequestVariables.propertiesToSave.findIndex(property => property.name === 'ce:systemName');
+        if (systemNameIndex > -1) {
+            const newSystemName = saveRequestVariables.propertiesToSave[systemNameIndex].value;
+
+            if (newSystemName !== nodeData.name) {
+                saveRequestVariables.shouldRename = true;
+                saveRequestVariables.newName = newSystemName;
+            }
+
+            // Remove ce:systemName prop
+            saveRequestVariables.propertiesToSave.splice(systemNameIndex, 1);
+        }
+    }
+
+    return saveRequestVariables;
 };

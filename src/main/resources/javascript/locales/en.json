@@ -63,18 +63,31 @@
           "startWorkflow": {
             "name": "Request publication"
           },
-          "unpublish": {
-            "name": "Unpublish",
-            "success": "Content unpublished",
-            "error": "Error during unpublication"
-          },
           "moreOptions": "More Options",
           "fieldMoreOptions": "More Options",
           "versioningTab": "Versioning",
           "seoTab": "SEO",
           "visibilityTab": "Visibility",
           "historyTab": "History",
-          "usagesTab": "Usages"
+          "usagesTab": "Usages",
+          "workInProgress": {
+            "chipLabelAllContent": "Work in progress",
+            "chipLabelLanguages": "WIP - ",
+            "chipLabelField": "Work in progress",
+            "btnCancel": "Cancel",
+            "btnDone": "Done",
+            "checkboxLabel": "Work in progress.",
+            "checkboxSubLabel": "The content can be published in all languages.",
+            "checkboxSubLabelCannotBePublished": "The content cannot be published.",
+            "clickHere": "click here.",
+            "dialogTitle": "Work in progress (WIP)",
+            "dialogSubTitle": "Mark your content as work in progress if you want to prevent the publication of your content. If you wish to find out more about Work in progress ",
+            "label": "Mark as Work in progress",
+            "localizedPropertiesOnly": "Localised properties only in:",
+            "localizedPropertiesOnlySubText": "The content won’t be publishable in the selected languages. Common properties can however be part of a publication in a non-selected language.",
+            "allContent": "All content (localised & properties)",
+            "allContentSubText": "The \"All Content\" option prevents any publication in any language."
+          }
         },
         "advancedOption": {
           "technicalInformation": {
@@ -139,7 +152,8 @@
         "errors": {
           "invalidDate": "Please provide a valid date value",
           "invalidPattern": "The value does not match the constraints defined in the content type definitions file.",
-          "required": ""
+          "required": "",
+          "alreadyExist": "An item with the same system name already exists, please choose another one."
         },
         "tab": {
           "edit": "Edit",
@@ -152,7 +166,8 @@
         }
       },
       "error": {
-        "queryingContent": "Error querying content: {{details}}"
+        "queryingContent": "Error querying content: {{details}}",
+        "changeSystemName": "Please choose another system name"
       },
       "preview": {
         "contentNotFound": "Content cannot be previewed in the page",
@@ -175,6 +190,17 @@
         }
       },
       "section":{
+        "fieldSet": {
+          "content": {
+            "displayName": "Content"
+          },
+          "system": {
+            "displayName": "System",
+            "fields": {
+              "systemName": "System name"
+            }
+          }
+        },
         "listAndOrdering": {
           "title": "Content list & ordering",
           "ordering": "Ordering"

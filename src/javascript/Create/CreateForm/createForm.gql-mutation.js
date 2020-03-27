@@ -7,6 +7,7 @@ export const CreateNode = gql`
         $name: String!,
         $primaryNodeType: String!,
         $mixins: [String],
+        $wipInfo: InputwipInfo!,
         $properties: [InputJCRProperty],
         $children: [InputJCRNode]
     ) {
@@ -17,13 +18,13 @@ export const CreateNode = gql`
                 primaryNodeType: $primaryNodeType,
                 mixins: $mixins,
                 properties: $properties,
-                children: $children,
-                useAvailableNodeName: true
+                children: $children
             ) {
                 uuid
                 node {
                     ...NodeCacheRequiredFields
                 }
+                mutateWipInfo(wipInfo:$wipInfo)
             }
             modifiedNodes {
                 path

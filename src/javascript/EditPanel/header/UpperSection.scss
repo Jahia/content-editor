@@ -22,22 +22,6 @@
         justify-content: center;
         align-items: center;
 
-        & > button:first-of-type {
-            margin-right: var(--spacing-small);
-        }
-
-        & > button:nth-of-type(2) {
-            border-radius: 4px 0 0 4px;
-        }
-
-        // Button more actions
-        & > div > :first-child {
-            height: 30px;
-            margin-left: 1px;
-
-            border-radius: 0 4px 4px 0;
-        }
-
         & .warningBadge {
             position: absolute;
             top: 0.7em;
@@ -56,10 +40,10 @@
     }
 }
 
-.headerToolBar {
-    display: flex;
+.mainActions {
+    margin-left: var(--spacing-small);
+}
 
-    & div {
-        padding: 0;
-    }
+.menu {
+    height: 38px;
 }

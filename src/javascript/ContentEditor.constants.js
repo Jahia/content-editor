@@ -33,5 +33,34 @@ export const Constants = {
     notSupportedEngineTabs: ['content', 'categories'],
     systemFields: {
         OVERRIDE_SUBMIT_CALLBACK: 'OVERRIDE_SUBMIT_CALLBACK'
+    },
+    systemName: {
+        READONLY_FOR_NODE_TYPES: [
+            'jnt:group',
+            'jnt:groupsFolder',
+            'jnt:mounts',
+            'jnt:remotePublications',
+            'jnt:modules',
+            'jnt:module',
+            'jnt:moduleVersion',
+            'jnt:templateSets',
+            'jnt:user',
+            'jnt:usersFolder',
+            'jnt:virtualsite',
+            'jnt:virtualsitesFolder'
+        ],
+        MOVED_TO_CONTENT_FIELDSET_FOR_NODE_TYPES: [
+            'jnt:page',
+            'jnt:contentFolder',
+            'jnt:folder'
+        ]
+    },
+    wip: {
+        fieldName: 'WIP::Info',
+        status: {
+            DISABLED: 'DISABLED',
+            ALL_CONTENT: 'ALL_CONTENT',
+            LANGUAGES: 'LANGUAGES'
+        }
     }
 };

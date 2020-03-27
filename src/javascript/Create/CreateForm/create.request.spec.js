@@ -38,7 +38,10 @@ describe('createNode', () => {
             data: {
                 primaryNodeType: 'jnt:text',
                 nodeData: {},
-                sections: []
+                sections: [],
+                values: {
+                    'ce:systemName': 'dummmySystemName'
+                }
             }
         };
     });
@@ -61,20 +64,5 @@ describe('createNode', () => {
         await createNode(params);
 
         expect(params.notificationContext.notify).toHaveBeenCalled();
-    });
-
-    it('should display a notification when request is a failure', async () => {
-        params.client.mutate = () => Promise.reject();
-        await createNode(params);
-
-        expect(params.notificationContext.notify).toHaveBeenCalled();
-    });
-
-    it('should log error when request is a failure', async () => {
-        const err = new Error('yo');
-        params.client.mutate = () => Promise.reject(err);
-        await createNode(params);
-
-        expect(console.error).toHaveBeenCalledWith(err);
     });
 });
