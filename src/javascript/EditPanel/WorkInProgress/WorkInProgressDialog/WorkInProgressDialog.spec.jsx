@@ -22,7 +22,7 @@ describe('WorkInProgressDialog', () => {
     beforeEach(() => {
         defaultProps = {
             isOpen: false,
-            wipInfo: {wipStatus: 'DISABLED', languages: []},
+            wipInfo: {status: 'DISABLED', languages: []},
             languages: [{
                 displayName: 'Deutsch',
                 language: 'de',
@@ -59,29 +59,40 @@ describe('WorkInProgressDialog', () => {
         expect(cmp.props().open).toBe(true);
     });
 
-    it('should checkbox not be checked when isWipContent is false', () => {
+    it('should checked WIP checkbox when wipInfo.status is not disabled', () => {
+        defaultProps.wipInfo.status = 'ALL_CONTENT';
+        const cmp = shallowWithTheme(
+            <WorkInProgressDialog {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
 
-        // TODO rewrite test BACKLOG-13001
-        // const cmp = shallowWithTheme(
-        //     <WorkInProgressDialog {...defaultProps}/>,
-        //     {},
-        //     dsGenericTheme
-        // ).dive();
-        //
-        // expect(cmp.find({checked: false}).exists()).toBe(true);
-        // expect(cmp.find({checked: true}).exists()).toBe(false);
+        const checkbox = cmp.find({'data-sel-role': 'WIP'});
+
+        expect(checkbox.props().checked).toBe(true);
+    });
+
+    it('should not checked WIP checkbox when wipInfo.status is disabled', () => {
+        const cmp = shallowWithTheme(
+            <WorkInProgressDialog {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        const checkbox = cmp.find({'data-sel-role': 'WIP'});
+
+        expect(checkbox.props().checked).toBe(false);
     });
 
     it('should radio button be displayed when have multiple languages', () => {
-        // TODO rewrite test BACKLOG-13001
-        // const cmp = shallowWithTheme(
-        //     <WorkInProgressDialog {...defaultProps}/>,
-        //     {},
-        //     dsGenericTheme
-        // ).dive();
-        //
-        // expect(cmp.find({value: 'LANGUAGES'}).exists()).toBe(true);
-        // expect(cmp.find({value: 'ALL_CONTENT'}).exists()).toBe(true);
+        const cmp = shallowWithTheme(
+            <WorkInProgressDialog {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        expect(cmp.find({value: 'LANGUAGES'}).exists()).toBe(true);
+        expect(cmp.find({value: 'ALL_CONTENT'}).exists()).toBe(true);
     });
     it('should radio button not be displayed when there is only one language', () => {
         defaultProps.languages.splice(0, 1);
