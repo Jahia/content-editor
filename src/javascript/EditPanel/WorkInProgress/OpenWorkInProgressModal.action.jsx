@@ -2,6 +2,7 @@ import React, {useContext} from 'react';
 import PropTypes from 'prop-types';
 import WorkInProgressDialog from './WorkInProgressDialog/WorkInProgressDialog';
 import {ComponentRendererContext} from '@jahia/ui-extender';
+import {Constants} from '~/ContentEditor.constants';
 
 export const OpenWorkInProgressModal = ({context, render: Render, ...props}) => {
     const componentRenderer = useContext(ComponentRendererContext);
@@ -25,15 +26,16 @@ export const OpenWorkInProgressModal = ({context, render: Render, ...props}) => 
                             WorkInProgressDialog,
                             {
                                 isOpen: true,
-                                isWipContent: false, // TODO handle in BACKLOG-12845
                                 languages: siteInfo.languages,
                                 onCloseDialog: closeDialog,
-                                onApply: () => { // TODO handle in BACKLOG-12845
+                                wipInfo: context.formik.values[Constants.wip.fieldName],
+                                onApply: newWipInfo => {
+                                    context.formik.setFieldValue(Constants.wip.fieldName, newWipInfo);
                                     closeDialog();
                                 }
                             });
                     } else {
-                        // TODO BACKLOG-12845 set the content as WIP
+                        context.formik.setFieldValue({status: Constants.wip.status.ALL_CONTENT});
                     }
                 }
             }}/>

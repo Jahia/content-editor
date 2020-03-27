@@ -1,4 +1,4 @@
-import {showChipHeader, showChipField, getChipContent} from './WorkInProgress.utils';
+import {getChipContent, showChipField, showChipHeader} from './WorkInProgress.utils';
 import {useTranslation} from 'react-i18next';
 
 describe('Work in progress Utils', () => {
@@ -9,7 +9,7 @@ describe('Work in progress Utils', () => {
                 languages: []
             }
         };
-        expect(showChipHeader(nodeData)).toBe(true);
+        expect(showChipHeader(nodeData.wipInfo)).toBe(true);
     });
 
     it('should showChipHeader returns false when status is disabled', () => {
@@ -19,7 +19,7 @@ describe('Work in progress Utils', () => {
                 languages: []
             }
         };
-        expect(showChipHeader(nodeData)).toBe(false);
+        expect(showChipHeader(nodeData.wipInfo)).toBe(false);
     });
 
     it('should showChipHeader returns true when status is languages and has wip for current language', () => {
@@ -29,7 +29,7 @@ describe('Work in progress Utils', () => {
                 languages: ['en', 'fr']
             }
         };
-        expect(showChipHeader(nodeData, 'en')).toBe(true);
+        expect(showChipHeader(nodeData.wipInfo, 'en')).toBe(true);
     });
 
     it('should showChipHeader returns false when status is languages and don\'t have wip for current language', () => {
@@ -39,7 +39,7 @@ describe('Work in progress Utils', () => {
                 languages: ['en', 'fr']
             }
         };
-        expect(showChipHeader(nodeData, 'de')).toBe(false);
+        expect(showChipHeader(nodeData.wipInfo, 'de')).toBe(false);
     });
 
     it('should getChipContent returns label all content when status is all content', () => {
@@ -51,7 +51,7 @@ describe('Work in progress Utils', () => {
             }
         };
 
-        expect(getChipContent(nodeData, 'en', t)).toBe('translated_content-editor:label.contentEditor.edit.action.workInProgress.chipLabelAllContent');
+        expect(getChipContent(nodeData.wipInfo, 'en', t)).toBe('translated_content-editor:label.contentEditor.edit.action.workInProgress.chipLabelAllContent');
     });
 
     it('should getChipContent returns label for languages when status is languages', () => {
@@ -63,7 +63,7 @@ describe('Work in progress Utils', () => {
             }
         };
 
-        expect(getChipContent(nodeData, 'en', t)).toBe('translated_content-editor:label.contentEditor.edit.action.workInProgress.chipLabelLanguagesEN');
+        expect(getChipContent(nodeData.wipInfo, 'en', t)).toBe('translated_content-editor:label.contentEditor.edit.action.workInProgress.chipLabelLanguagesEN');
     });
 
     it('should showChipField returns true when is i18n field and current language is wip', () => {
@@ -74,7 +74,7 @@ describe('Work in progress Utils', () => {
             }
         };
 
-        expect(showChipField(true, nodeData, 'en')).toBe(true);
+        expect(showChipField(true, nodeData.wipInfo, 'en')).toBe(true);
     });
 
     it('should showChipField returns false when is i18n field and current language is not wip', () => {
@@ -96,7 +96,7 @@ describe('Work in progress Utils', () => {
             }
         };
 
-        expect(showChipField(true, nodeData, 'en')).toBe(false);
+        expect(showChipField(true, nodeData.wipInfo, 'en')).toBe(false);
     });
 
     it('should showChipField returns false when is not i18n field ', () => {
@@ -107,6 +107,6 @@ describe('Work in progress Utils', () => {
             }
         };
 
-        expect(showChipField(false, nodeData, 'en')).toBe(false);
+        expect(showChipField(false, nodeData.wipInfo, 'en')).toBe(false);
     });
 });

@@ -54,5 +54,13 @@ export const Constants = {
             'jnt:contentFolder',
             'jnt:folder'
         ]
+    },
+    wip: {
+        fieldName: 'WIP::Info',
+        status: {
+            DISABLED: 'DISABLED',
+            ALL_CONTENT: 'ALL_CONTENT',
+            LANGUAGES: 'LANGUAGES'
+        }
     }
 };

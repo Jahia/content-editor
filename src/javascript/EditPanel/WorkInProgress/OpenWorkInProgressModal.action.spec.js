@@ -18,6 +18,12 @@ describe('CopyLanguageDialog', () => {
             context: {
                 siteInfo: {
                     languages: ['fr', 'en']
+                },
+                formik: {
+                    setFieldValue: () => jest.fn(),
+                    values: {
+                        'WIP::Info': {}
+                    }
                 }
             },
             otherProps: true,

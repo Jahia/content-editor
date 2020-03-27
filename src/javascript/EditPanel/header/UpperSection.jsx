@@ -33,9 +33,11 @@ ButtonRenderer.propTypes = {
 
 export const HeaderUpperSection = ({title, actionContext}) => {
     const {t} = useTranslation();
-    const {mode, nodeData} = actionContext;
+    const {mode, nodeData, formik} = actionContext;
 
-    let EditActions = mode === Constants.routes.baseEditRoute ? (
+    const wipInfo = formik.values[Constants.wip.fieldName];
+
+    const EditActions = mode === Constants.routes.baseEditRoute ? (
         <DisplayAction
             actionKey="publishMenu"
             context={{
@@ -127,7 +129,7 @@ export const HeaderUpperSection = ({title, actionContext}) => {
                 <div className={styles.headerChips}>
                     <PublicationInfoBadge/>
                     <LockInfoBadge/>
-                    <WipInfoChip/>
+                    <WipInfoChip wipInfo={wipInfo}/>
                 </div>
             </div>
 
@@ -139,6 +141,7 @@ HeaderUpperSection.propTypes = {
     title: PropTypes.string.isRequired,
     actionContext: PropTypes.shape({
         mode: PropTypes.string.isRequired,
-        nodeData: PropTypes.object.isRequired
+        nodeData: PropTypes.object.isRequired,
+        formik: PropTypes.object.isRequired
     }).isRequired
 };
