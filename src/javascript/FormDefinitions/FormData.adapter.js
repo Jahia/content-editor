@@ -1,4 +1,5 @@
 import {resolveSelectorType} from '~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes.utils';
+import {Constants} from "~/ContentEditor.constants";
 
 export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType, customAdapter) => {
     const optionsSection = formData.sections.find(section => section.name === 'options');
@@ -12,32 +13,13 @@ export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType
                 // Add i18ns label to field
                 systemNameField.displayName = t('content-editor:label.contentEditor.section.fieldSet.system.fields.systemName');
 
-                // System name should be readonly for this specific nodetypes: “jnt:group, jnt:groupsFolder, jnt:mounts, jnt:remotePublications, jnt:modules, jnt:module, jnt:moduleVersion, jnt:templateSets, jnt:user, jnt:usersFolder, jnt:virtualsite, jnt:virtualsitesFolder”
-                const readOnlySystemNameForNodeTypes = [
-                    'jnt:group',
-                    'jnt:groupsFolder',
-                    'jnt:mounts',
-                    'jnt:remotePublications',
-                    'jnt:modules',
-                    'jnt:module',
-                    'jnt:moduleVersion',
-                    'jnt:templateSets',
-                    'jnt:user',
-                    'jnt:usersFolder',
-                    'jnt:virtualsite',
-                    'jnt:virtualsitesFolder'
-                ];
-                if (readOnlySystemNameForNodeTypes.includes(primaryNodeType.name)) {
+                // System name should be readonly for this specific nodetypes
+                if (Constants.systemName.READONLY_FOR_NODE_TYPES.includes(primaryNodeType.name)) {
                     systemNameField.readOnly = true;
                 }
 
-                // Move the systemName field to the top first section, fieldset, only for jnt:page, jnt:folder and jnt:contentFolder
-                const moveSystemNameForNodeTypes = [
-                    'jnt:page',
-                    'jnt:contentFolder',
-                    'jnt:folder'
-                ];
-                if (moveSystemNameForNodeTypes.includes(primaryNodeType.name)) {
+                // Move the systemName field to the top first section, fieldset, for specifics nodetypes
+                if (Constants.systemName.MOVED_TO_CONTENT_FIELDSET_FOR_NODE_TYPES.includes(primaryNodeType.name)) {
                     let contentSection = formData.sections.find(section => section.name === 'content');
                     if (!contentSection) {
                         // Section doesnt exist, create it
