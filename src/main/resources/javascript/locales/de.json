@@ -63,11 +63,6 @@
           "startWorkflow": {
             "name": "Veröffentlichung anfordern"
           },
-          "unpublish": {
-            "name": "Veröffentlichung rückgängig machen",
-            "success": "Veröffentlichung für Content wurde rückgängig gemacht",
-            "error": "Während dem rückgängig machen der Veröffentlichung ist ein Fehler aufgetreten"
-          },
           "moreOptions": "Mehr Optionen",
           "fieldMoreOptions": "Mehr Optionen",
           "versioningTab": "Versionierung",
