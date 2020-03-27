@@ -33,14 +33,14 @@ export const registerEditActions = actionsRegistry => {
     actionsRegistry.add('action', 'publishAction', publishAction, {
         buttonIcon: <CloudUpload/>,
         color: 'accent',
-        targets: ['content-editor/header/main-actions'],
+        targets: ['content-editor/header/main-actions:1'],
         dataSelRole: 'publishAction'
     });
 
     actionsRegistry.add('action', 'startWorkflowMainButton', startWorkflow, {
         buttonLabel: 'content-editor:label.contentEditor.edit.action.startWorkflow.name',
         buttonIcon: <CloudUpload/>,
-        targets: ['content-editor/header/main-actions'],
+        targets: ['content-editor/header/main-actions:1'],
         dataSelRole: 'startWorkflowMainButton'
     });
 

@@ -9,5 +9,7 @@
 .content {
     flex: 1 1 0;
     min-height: 0;
-    margin: var(--spacing-medium);
+    padding-top: var(--spacing-small);
+
+    background-color: var(--color-light);
 }
