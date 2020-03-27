@@ -12,7 +12,6 @@ export const useRegisterEngineTabActions = () => {
     const {nodeData, site} = useContentEditorContext();
     const {path, displayName, uuid, mixinTypes, primaryNodeType} = nodeData;
 
-    // SINCE DX 7.5 this fct is introduce, not usable by previous DX version
     if (!window.authoringApi.getEditTabs) {
         console.warn('DX version is not able to load GWT engine tabs in content editor');
     }
