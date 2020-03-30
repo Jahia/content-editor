@@ -81,7 +81,10 @@
             "clickHere": "cliquez ici.",
             "dialogTitle": "Travail en cours (WIP)",
             "dialogSubTitle": "Vous pouvez marquer comme travail en cours pour en empêcher sa publication. Pour en savoir plus sur l'option Marquer comme travail en cours, ",
-            "label": "Marquer comme travail en cours",
+            "label" : {
+              "mark": "Marquer comme travail en cours",
+              "unmark": "Ne pas marquer comme travail en cours"
+            },
             "localizedPropertiesOnly": "Propriétés internationalisées seulement:",
             "localizedPropertiesOnlySubText": "Le contenu ne sera pas publiable dans les langues sélectionnées. Cependant, Les propriétés communes à toutes les langues peuvent cependant faire partie d'une publication dans une autre langue.",
             "allContent": "Tout le contenu (propriétés communes et internationalisées)",

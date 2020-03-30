@@ -81,7 +81,10 @@
             "clickHere": "klicken Sie hier.",
             "dialogTitle": "In Arbeit (WIP)",
             "dialogSubTitle": "Markieren Sie Ihren Content als Work in Progress wenn Sie die Veröffentlichung des Contents verhindern wollen. Um mehr über das Work in Progress Feature zu erfahren, ",
-            "label": "Als \"In Arbeit\" markieren",
+            "label" : {
+              "mark": "Als \"In Arbeit\" markieren",
+              "unmark": "Nicht als \"In Arbeit\" markieren"
+            },
             "localizedPropertiesOnly": "Nur sprachabhängige Eigenschaften in:",
             "localizedPropertiesOnlySubText": "Der Inhalt der selektierten Sprache wird nicht veröffentlicht. Trotzdem können Properties, die von allen Sprachen verwendet werden, Teil eines Veröffentlichungs-Prozesses einer nicht ausgewählten Sprache sein.",
             "allContent": "Gesamter Inhalt (gemeinsame und sprachabhängige Eigenschaften)",
