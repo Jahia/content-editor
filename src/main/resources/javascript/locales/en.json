@@ -78,13 +78,12 @@
             "btnDone": "Done",
             "checkboxLabel": "Work in progress.",
             "checkboxSubLabel": "The content can be published in all languages.",
-            "checkboxSubLabelCannotBePublished": "The content cannot be published.",
             "clickHere": "click here.",
             "dialogTitle": "Work in progress (WIP)",
-            "dialogSubTitle": "Mark your content as work in progress if you want to prevent the publication of your content. If you wish to find out more about Work in progress ",
+            "dialogSubTitle": "Mark your content as work in progress if you want to prevent the publication of your content. To find out more about Work in progress ",
             "label": "Mark as Work in progress",
             "localizedPropertiesOnly": "Localised properties only in:",
-            "localizedPropertiesOnlySubText": "The content won’t be publishable in the selected languages. Common properties can however be part of a publication in a non-selected language.",
+            "localizedPropertiesOnlySubText": "The content won't be publishable in the selected languages. However, properties that are shared by all languages can be part of a publication in a non-selected language.",
             "allContent": "All content (localised & properties)",
             "allContentSubText": "The \"All Content\" option prevents any publication in any language."
           }
