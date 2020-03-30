@@ -123,8 +123,11 @@ const ContentEditorApiCmp = ({classes, client}) => {
             }
 
             // Refresh contentEditorEventHandler
-            if (window.top.contentEditorEventHandler) {
-                window.top.contentEditorEventHandler(createdNodeUuid, 'create');
+            if (window.top.contentEditorEventHandlers && Object.keys(window.top.contentEditorEventHandlers).length > 0) {
+                Object.values(window.top.contentEditorEventHandlers)
+                    .forEach(handler =>
+                        handler({nodeUuid: createdNodeUuid, operator: 'create'})
+                    );
             }
 
             // Redirect to CE edit mode, for the created node
@@ -145,8 +148,11 @@ const ContentEditorApiCmp = ({classes, client}) => {
             }
 
             // Refresh contentEditorEventHandler
-            if (window.top.contentEditorEventHandler) {
-                window.top.contentEditorEventHandler(nodeUuid, 'update');
+            if (window.top.contentEditorEventHandlers && Object.keys(window.top.contentEditorEventHandlers).length > 0) {
+                Object.values(window.top.contentEditorEventHandlers)
+                    .forEach(handler =>
+                        handler({nodeUuid: nodeUuid, operator: 'update'})
+                    );
             }
         },
         setLanguage: lang => {
