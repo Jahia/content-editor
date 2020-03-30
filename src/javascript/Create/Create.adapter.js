@@ -6,7 +6,7 @@ import {Constants} from '~/ContentEditor.constants';
 
 const getInitialValues = (sections, nodeData) => {
     // Work in progress default value
-    const wipInfo = {[Constants.wip.fieldName]: nodeData.defaultWipInfo};
+    const wipInfo = {[Constants.wip.fieldName]: {status: nodeData.defaultWipInfo.status, languages: nodeData.defaultWipInfo.languages}};
     // Retrieve fields and the return object contains the field name as the key and the field value as the value
     return {...getFields(sections).reduce((result, field) => ({...result, ...getFieldValuesFromDefaultValues(field)}), {}), ...wipInfo};
 };
