@@ -85,6 +85,10 @@ describe('adaptEditFormData', () => {
                     },
                     children: {
                         nodes: []
+                    },
+                    wipInfo: {
+                        status: 'DISABLED',
+                        languages: []
                     }
                 }
             }
@@ -93,20 +97,33 @@ describe('adaptEditFormData', () => {
 
     it('should return initialValues', () => {
         graphqlResponse.forms.editForm.sections = [];
-        expect(adaptEditFormData(graphqlResponse, 'fr', t).initialValues).toEqual({});
+        const initialValues = adaptEditFormData(graphqlResponse, 'fr', t).initialValues;
+        expect(initialValues).toEqual({
+            'WIP::Info': {
+                status: 'DISABLED',
+                languages: []
+            }});
     });
 
     it('should extract initialValues from fields', () => {
         const adaptedForm = adaptEditFormData(graphqlResponse, 'fr', t);
 
-        expect(adaptedForm.initialValues).toEqual({field1: '2019-05-07T11:33:31.056'});
+        expect(adaptedForm.initialValues).toEqual({field1: '2019-05-07T11:33:31.056',
+            'WIP::Info': {
+                status: 'DISABLED',
+                languages: []
+            }});
     });
 
     it('should extract initialValues with selectorType own logic', () => {
         graphqlResponse.forms.editForm.sections[0].fieldSets[0].fields[0].selectorType = 'Checkbox';
         const initialValues = adaptEditFormData(graphqlResponse, 'fr', t).initialValues;
 
-        expect(initialValues).toEqual({field1: false});
+        expect(initialValues).toEqual({field1: false,
+            'WIP::Info': {
+                status: 'DISABLED',
+                languages: []
+            }});
     });
 
     it('should set values and no value as initialValue when multiple is at true', () => {
@@ -119,7 +136,11 @@ describe('adaptEditFormData', () => {
         const initialValues = adaptEditFormData(graphqlResponse, 'fr', t).initialValues;
 
         expect(initialValues).toEqual({
-            field1: ['value1', 'value2']
+            field1: ['value1', 'value2'],
+            'WIP::Info': {
+                status: 'DISABLED',
+                languages: []
+            }
         });
     });
 

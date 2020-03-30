@@ -24,7 +24,7 @@ export const OpenWorkInProgressModal = ({context, render: Render, ...props}) => 
             WorkInProgressDialog,
             {
                 wipInfo,
-                language: context.language,
+                currentLanguage: context.language,
                 isOpen: true,
                 languages: siteInfo.languages,
                 onCloseDialog: closeDialog,

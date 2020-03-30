@@ -20,7 +20,7 @@ const getInitialValues = (nodeData, sections) => {
     const childrenOrderingFields = getChildrenOrderingFields(nodeData);
 
     // Work in progress
-    const wipInfo = {[Constants.wip.fieldName]: nodeData.wipInfo};
+    const wipInfo = {[Constants.wip.fieldName]: {status: nodeData.wipInfo.status, languages: nodeData.wipInfo.languages}};
 
     // Return object contains fields and dynamic fieldSets
     return {...nodeValues, ...extendsMixinFieldsDefaultValues, ...dynamicFieldSets, ...childrenOrderingFields, ...wipInfo};
