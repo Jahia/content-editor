@@ -98,7 +98,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
                                        color={hasMandatoryError ? 'warning' : 'primary'}
                                 />
                             )}
-                            {showChipField(field.i18n, inputContext.editorContext.nodeData, inputContext.editorContext.lang) && (
+                            {showChipField(field.i18n, inputContext.editorContext.nodeData.wipInfo, inputContext.editorContext.lang) && (
                                 <Badge className={classes.badge}
                                        data-sel-role="wip-info-chip-field"
                                        badgeContent={t('content-editor:label.contentEditor.edit.action.workInProgress.chipLabelField')}
