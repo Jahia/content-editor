@@ -8,6 +8,7 @@ import classes from './WorkInProgressDialog.scss';
 import {Constants} from '~/ContentEditor.constants';
 
 export const WorkInProgressDialog = ({
+    language,
     isOpen,
     onCloseDialog,
     wipInfo,
@@ -56,25 +57,33 @@ export const WorkInProgressDialog = ({
         setWipStatus(event.target.checked);
         if (!event.target.checked) {
             setSelectedLanguages([]);
-            setStatusSelected(null);
+            setStatusSelected(Constants.wip.status.DISABLED);
+        } else {
+            setSelectedLanguages([language]);
+            setStatusSelected(Constants.wip.status.LANGUAGES);
         }
     };
 
-    const hasMultipleLanguages = languages.length > 1;
-
     return (
         <Dialog
-                aria-labelledby="alert-dialog-slide-title"
-                open={isOpen}
-                maxWidth="sm"
-                onClose={onCloseDialog}
+            aria-labelledby="alert-dialog-slide-title"
+            open={isOpen}
+            maxWidth="sm"
+            onClose={onCloseDialog}
         >
             <DialogTitle id="dialog-language-title">
                 <Typography isUpperCase variant="heading" weight="bold" className={classes.dialogTitle}>
                     {t('content-editor:label.contentEditor.edit.action.workInProgress.dialogTitle')}
                 </Typography>
                 <Typography className={classes.dialogSubTitle}>
-                    {t('content-editor:label.contentEditor.edit.action.workInProgress.dialogSubTitle')} <a className={classes.link} target="_blank" rel="noopener noreferrer" href="https://academy.jahia.com/documentation/digital-experience-manager/7.3/functional/how-to-contribute-content#Work_in_Progress">{t('content-editor:label.contentEditor.edit.action.workInProgress.clickHere')}</a>
+                    {t('content-editor:label.contentEditor.edit.action.workInProgress.dialogSubTitle')}
+                    <a
+                        className={classes.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href="https://academy.jahia.com/documentation/digital-experience-manager/7.3/functional/how-to-contribute-content#Work_in_Progress"
+                    >{t('content-editor:label.contentEditor.edit.action.workInProgress.clickHere')}
+                    </a>
                 </Typography>
             </DialogTitle>
             <DialogContent className={classes.dialogContent}>
@@ -93,69 +102,69 @@ export const WorkInProgressDialog = ({
                         </Typography>
 
                         {!wipStatus &&
-                            <Typography className={classes.label}>
-                                {t('content-editor:label.contentEditor.edit.action.workInProgress.checkboxSubLabel')}
-                            </Typography>}
+                        <Typography className={classes.label}>
+                            {t('content-editor:label.contentEditor.edit.action.workInProgress.checkboxSubLabel')}
+                        </Typography>}
                         {wipStatus &&
-                            <Typography className={classes.label}>
-                                {t('content-editor:label.contentEditor.edit.action.workInProgress.checkboxSubLabelCannotBePublished')}
-                            </Typography>}
+                        <Typography className={classes.label}>
+                            {t('content-editor:label.contentEditor.edit.action.workInProgress.checkboxSubLabelCannotBePublished')}
+                        </Typography>}
                     </div>
                 </div>
-                {hasMultipleLanguages &&
-                    <div className={classes.radioButtonContainer} disabled={!wipStatus}>
-                        <div className={classes.radioButtonEntry}>
-                            <Radio
-                                    disabled={!wipStatus}
-                                    checked={statusSelected === Constants.wip.status.LANGUAGES}
-                                    className={classes.radioButton}
-                                    value={Constants.wip.status.LANGUAGES}
-                                    onChange={handleLocalisedOrAllContent}
-                                />
-                            <Typography className={classes.label}>
-                                {t('content-editor:label.contentEditor.edit.action.workInProgress.localizedPropertiesOnly')}
-                            </Typography>
-                        </div>
-                        <div className={classes.languageSelectionContainer}>
-                            <Typography className={classes.label}>
-                                {t('content-editor:label.contentEditor.edit.action.workInProgress.localizedPropertiesOnlySubText')}
-                            </Typography>
-                            {languages.map(language => {
-                                    return (
-                                        <div key={language.language}>
-                                            <Checkbox
-                                                disabled={!wipStatus || statusSelected !== Constants.wip.status.LANGUAGES}
-                                                className={classes.checkbox}
-                                                value={language.language}
-                                                checked={selectedLanguages.indexOf(language.language) > -1}
-                                                onChange={event => {
-                                                    updateSelectedLanguage(language.language, event.target.checked);
-                                                }}
-                                            />
-                                            <Typography className={classes.label}>
-                                                {language.displayName}
-                                            </Typography>
-                                        </div>
+                {wipStatus &&
+                <div className={classes.radioButtonContainer}>
+                    <div className={classes.radioButtonEntry}>
+                        <Radio
+                            disabled={!wipStatus}
+                            checked={statusSelected === Constants.wip.status.LANGUAGES}
+                            className={classes.radioButton}
+                            value={Constants.wip.status.LANGUAGES}
+                            onChange={handleLocalisedOrAllContent}
+                        />
+                        <Typography className={classes.label}>
+                            {t('content-editor:label.contentEditor.edit.action.workInProgress.localizedPropertiesOnly')}
+                        </Typography>
+                    </div>
+                    <div className={classes.languageSelectionContainer}>
+                        <Typography className={classes.label}>
+                            {t('content-editor:label.contentEditor.edit.action.workInProgress.localizedPropertiesOnlySubText')}
+                        </Typography>
+                        {languages.map(language => {
+                            return (
+                                <div key={language.language}>
+                                    <Checkbox
+                                        disabled={!wipStatus || statusSelected !== Constants.wip.status.LANGUAGES}
+                                        className={classes.checkbox}
+                                        value={language.language}
+                                        checked={selectedLanguages.indexOf(language.language) > -1}
+                                        onChange={event => {
+                                            updateSelectedLanguage(language.language, event.target.checked);
+                                        }}
+                                    />
+                                    <Typography className={classes.label}>
+                                        {language.displayName}
+                                    </Typography>
+                                </div>
 
-                                    );
-                                })}
-                        </div>
-                        <div className={classes.radioButtonEntry}>
-                            <Radio
-                                disabled={!wipStatus}
-                                checked={statusSelected === Constants.wip.status.ALL_CONTENT}
-                                className={classes.radioButton}
-                                value={Constants.wip.status.ALL_CONTENT}
-                                onChange={handleLocalisedOrAllContent}
-                                />
-                            <Typography className={classes.label}>
-                                {t('content-editor:label.contentEditor.edit.action.workInProgress.allContent')}
-                            </Typography>
-                            <Typography className={classes.subTextAllContent}>
-                                {t('content-editor:label.contentEditor.edit.action.workInProgress.allContentSubText')}
-                            </Typography>
-                        </div>
-                    </div>}
+                            );
+                        })}
+                    </div>
+                    <div className={classes.radioButtonEntry}>
+                        <Radio
+                            disabled={!wipStatus}
+                            checked={statusSelected === Constants.wip.status.ALL_CONTENT}
+                            className={classes.radioButton}
+                            value={Constants.wip.status.ALL_CONTENT}
+                            onChange={handleLocalisedOrAllContent}
+                        />
+                        <Typography className={classes.label}>
+                            {t('content-editor:label.contentEditor.edit.action.workInProgress.allContent')}
+                        </Typography>
+                        <Typography className={classes.subTextAllContent}>
+                            {t('content-editor:label.contentEditor.edit.action.workInProgress.allContentSubText')}
+                        </Typography>
+                    </div>
+                </div>}
             </DialogContent>
             <DialogActions className={classes.actions}>
                 <Button
@@ -173,6 +182,7 @@ export const WorkInProgressDialog = ({
 };
 
 WorkInProgressDialog.propTypes = {
+    language: PropTypes.string.isRequired,
     isOpen: PropTypes.bool.isRequired,
     onCloseDialog: PropTypes.func.isRequired,
     onApply: PropTypes.func.isRequired,
