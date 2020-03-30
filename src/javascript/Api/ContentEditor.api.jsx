@@ -122,6 +122,14 @@ const ContentEditorApiCmp = ({classes, client}) => {
                 window.top.authoringApi.refreshContent();
             }
 
+            // Refresh contentEditorEventHandlers
+            if (window.top.contentEditorEventHandlers && Object.keys(window.top.contentEditorEventHandlers).length > 0) {
+                Object.values(window.top.contentEditorEventHandlers)
+                    .forEach(handler =>
+                        handler({nodeUuid: createdNodeUuid, operator: 'create'})
+                    );
+            }
+
             // Redirect to CE edit mode, for the created node
             if (editorConfig) {
                 setEditorConfig({
@@ -133,10 +141,18 @@ const ContentEditorApiCmp = ({classes, client}) => {
                 });
             }
         },
-        editCallback: () => {
+        editCallback: nodeUuid => {
             // Refresh GWT content
             if (window.top.authoringApi.refreshContent) {
                 window.top.authoringApi.refreshContent();
+            }
+
+            // Refresh contentEditorEventHandlers
+            if (window.top.contentEditorEventHandlers && Object.keys(window.top.contentEditorEventHandlers).length > 0) {
+                Object.values(window.top.contentEditorEventHandlers)
+                    .forEach(handler =>
+                        handler({nodeUuid: nodeUuid, operator: 'update'})
+                    );
             }
         },
         setLanguage: lang => {
