@@ -8,7 +8,7 @@ import classes from './WorkInProgressDialog.scss';
 import {Constants} from '~/ContentEditor.constants';
 
 export const WorkInProgressDialog = ({
-    language,
+    currentLanguage,
     isOpen,
     onCloseDialog,
     wipInfo,
@@ -50,7 +50,7 @@ export const WorkInProgressDialog = ({
     };
 
     const isApplyDisabled = () => {
-        return wipInfo.status === wipStatus && languages === wipInfo.languages;
+        return statusSelected === Constants.wip.status.LANGUAGES && selectedLanguages.length === 0;
     };
 
     const onChangeWip = event => {
@@ -59,7 +59,7 @@ export const WorkInProgressDialog = ({
             setSelectedLanguages([]);
             setStatusSelected(Constants.wip.status.DISABLED);
         } else {
-            setSelectedLanguages([language]);
+            setSelectedLanguages([currentLanguage]);
             setStatusSelected(Constants.wip.status.LANGUAGES);
         }
     };
@@ -179,7 +179,7 @@ export const WorkInProgressDialog = ({
 };
 
 WorkInProgressDialog.propTypes = {
-    language: PropTypes.string.isRequired,
+    currentLanguage: PropTypes.string.isRequired,
     isOpen: PropTypes.bool.isRequired,
     onCloseDialog: PropTypes.func.isRequired,
     onApply: PropTypes.func.isRequired,
