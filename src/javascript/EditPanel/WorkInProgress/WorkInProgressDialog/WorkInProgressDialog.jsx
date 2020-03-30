@@ -81,7 +81,7 @@ export const WorkInProgressDialog = ({
                         className={classes.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        href="https://academy.jahia.com/documentation/digital-experience-manager/7.3/functional/how-to-contribute-content#Work_in_Progress"
+                        href={window.contextJsParameters.config.academyLink}
                     >{t('content-editor:label.contentEditor.edit.action.workInProgress.clickHere')}
                     </a>
                 </Typography>
