@@ -122,7 +122,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
                 window.top.authoringApi.refreshContent();
             }
 
-            // Refresh contentEditorEventHandler
+            // Refresh contentEditorEventHandlers
             if (window.top.contentEditorEventHandlers && Object.keys(window.top.contentEditorEventHandlers).length > 0) {
                 Object.values(window.top.contentEditorEventHandlers)
                     .forEach(handler =>
@@ -147,7 +147,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
                 window.top.authoringApi.refreshContent();
             }
 
-            // Refresh contentEditorEventHandler
+            // Refresh contentEditorEventHandlers
             if (window.top.contentEditorEventHandlers && Object.keys(window.top.contentEditorEventHandlers).length > 0) {
                 Object.values(window.top.contentEditorEventHandlers)
                     .forEach(handler =>
