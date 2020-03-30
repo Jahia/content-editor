@@ -37,6 +37,11 @@ describe('WorkInProgressDialog', () => {
             onCloseDialog: () => {},
             onApply: () => {}
         };
+        window.contextJsParameters = {
+            config: {
+                academyLink: 'https://academy.jahia.com/documentation/digital-experience-manager/8.0/functional/how-to-contribute-content#Work_in_Progress'
+            }
+        };
     });
 
     it('should hide dialog when open is false', () => {
