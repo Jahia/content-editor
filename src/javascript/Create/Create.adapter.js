@@ -3,6 +3,7 @@ import {getFields} from '~/EditPanel/EditPanel.utils';
 import {adaptSystemNameField} from '../FormDefinitions/FormData.adapter';
 import {nodeTypeFormatter} from './Create.utils';
 import {Constants} from '~/ContentEditor.constants';
+import {encodeSystemName} from '~/utils';
 
 const getInitialValues = (sections, nodeData) => {
     // Work in progress default value
@@ -51,7 +52,7 @@ export const adaptCreateRequest = createRequestVariables => {
     // Use system name to fill the create request variables.
     const systemNameIndex = createRequestVariables.properties.findIndex(property => property.name === 'ce:systemName');
     if (systemNameIndex > -1) {
-        createRequestVariables.name = createRequestVariables.properties[systemNameIndex].value;
+        createRequestVariables.name = encodeSystemName(createRequestVariables.properties[systemNameIndex].value);
 
         // Remove ce:systemName prop
         createRequestVariables.properties.splice(systemNameIndex, 1);
