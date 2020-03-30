@@ -1,4 +1,4 @@
-.checkbox {
+.checkboxChecked {
     color: #0072b1 !important;
 }
 
@@ -7,7 +7,7 @@
 }
 
 .dialogTitle {
-    margin: 0 10px;
+    margin: var(--spacing-medium) 10px;
 
     color: #373c42;
 }
@@ -69,8 +69,6 @@
 }
 
 .subTextAllContent {
-    padding-left: var(--spacing-big);
-
     font-weight: lighter;
 }
 
