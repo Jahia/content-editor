@@ -21,6 +21,7 @@ describe('WorkInProgressDialog', () => {
 
     beforeEach(() => {
         defaultProps = {
+            language: 'en',
             isOpen: false,
             wipInfo: {status: 'DISABLED', languages: []},
             languages: [{
@@ -84,7 +85,8 @@ describe('WorkInProgressDialog', () => {
         expect(checkbox.props().checked).toBe(false);
     });
 
-    it('should radio button be displayed when have multiple languages', () => {
+    it('should languages and current displayed when WIP enabled', () => {
+        defaultProps.wipInfo.status = 'ALL_CONTENT';
         const cmp = shallowWithTheme(
             <WorkInProgressDialog {...defaultProps}/>,
             {},
@@ -94,7 +96,7 @@ describe('WorkInProgressDialog', () => {
         expect(cmp.find({value: 'LANGUAGES'}).exists()).toBe(true);
         expect(cmp.find({value: 'ALL_CONTENT'}).exists()).toBe(true);
     });
-    it('should radio button not be displayed when there is only one language', () => {
+    it('should languages and current displayed when WIP disabled', () => {
         defaultProps.languages.splice(0, 1);
         const cmp = shallowWithTheme(
             <WorkInProgressDialog {...defaultProps}/>,
@@ -102,7 +104,7 @@ describe('WorkInProgressDialog', () => {
             dsGenericTheme
         ).dive();
 
-        expect(cmp.find({value: 'localizedProperties'}).exists()).toBe(false);
-        expect(cmp.find({value: 'allContent'}).exists()).toBe(false);
+        expect(cmp.find({value: 'LANGUAGES'}).exists()).toBe(false);
+        expect(cmp.find({value: 'ALL_CONTENT'}).exists()).toBe(false);
     });
 });

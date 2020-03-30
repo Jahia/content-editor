@@ -18,27 +18,28 @@ export const OpenWorkInProgressModal = ({context, render: Render, ...props}) => 
                 {...props}
                 {...(context.displayActionProps || {})}
                 context={{
-                ...context,
-                onClick: () => {
-                    if (siteInfo.languages.length > 1) {
-                        componentRenderer.render(
-                            'WorkInProgressDialog',
-                            WorkInProgressDialog,
-                            {
-                                isOpen: true,
-                                languages: siteInfo.languages,
-                                onCloseDialog: closeDialog,
-                                wipInfo: context.formik.values[Constants.wip.fieldName],
-                                onApply: newWipInfo => {
-                                    context.formik.setFieldValue(Constants.wip.fieldName, newWipInfo);
-                                    closeDialog();
-                                }
-                            });
-                    } else {
-                        context.formik.setFieldValue({status: Constants.wip.status.ALL_CONTENT});
+                    ...context,
+                    onClick: () => {
+                        if (siteInfo.languages.length > 1) {
+                            componentRenderer.render(
+                                'WorkInProgressDialog',
+                                WorkInProgressDialog,
+                                {
+                                    language: context.language,
+                                    isOpen: true,
+                                    languages: siteInfo.languages,
+                                    onCloseDialog: closeDialog,
+                                    wipInfo: context.formik.values[Constants.wip.fieldName],
+                                    onApply: newWipInfo => {
+                                        context.formik.setFieldValue(Constants.wip.fieldName, newWipInfo);
+                                        closeDialog();
+                                    }
+                                });
+                        } else {
+                            context.formik.setFieldValue({status: Constants.wip.status.ALL_CONTENT});
+                        }
                     }
-                }
-            }}/>
+                }}/>
         </>
     );
 };
