@@ -24,7 +24,7 @@ export const CreateNode = gql`
                 node {
                     ...NodeCacheRequiredFields
                 }
-                mutateWipInfo(wipInfo:$wipInfo)
+                createWipInfo(wipInfo:$wipInfo)
             }
             modifiedNodes {
                 path

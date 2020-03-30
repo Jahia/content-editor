@@ -80,6 +80,10 @@ export const FormQuery = gql`
                     }
                     hasOrderableChildNodes
                 }
+                defaultWipInfo{
+                    status
+                    languages
+                }
             }
             nodeTypeByName(name: $primaryNodeType) {
                 name
