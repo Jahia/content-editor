@@ -52,7 +52,8 @@ export const Constants = {
         MOVED_TO_CONTENT_FIELDSET_FOR_NODE_TYPES: [
             'jnt:page',
             'jnt:contentFolder',
-            'jnt:folder'
+            'jnt:folder',
+            'jnt:file'
         ]
     },
     wip: {

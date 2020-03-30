@@ -4,6 +4,7 @@ import {resolveSelectorType} from '~/EditPanel/EditPanelContent/FormBuilder/Sect
 import {adaptSections, getFieldValuesFromDefaultValues} from '~/FormDefinitions/FormData.adapter';
 import {adaptSystemNameField} from '../FormDefinitions/FormData.adapter';
 import {Constants} from '~/ContentEditor.constants';
+import {encodeSystemName, decodeSystemName} from '~/utils';
 
 const getInitialValues = (nodeData, sections) => {
     // Retrieve dynamic fieldSets
@@ -118,7 +119,7 @@ const getTechnicalInfo = (nodeData, t) => {
 
 const editAdaptSystemNameField = (rawData, formData) => {
     // Set initial value for system name
-    formData.initialValues['ce:systemName'] = rawData.jcr.result.name;
+    formData.initialValues['ce:systemName'] = decodeSystemName(rawData.jcr.result.name);
 };
 
 export const adaptEditFormData = (data, lang, t) => {
@@ -153,9 +154,9 @@ export const adaptSaveRequest = (nodeData, saveRequestVariables) => {
         // Use system name to fill the save request variables.
         const systemNameIndex = saveRequestVariables.propertiesToSave.findIndex(property => property.name === 'ce:systemName');
         if (systemNameIndex > -1) {
-            const newSystemName = saveRequestVariables.propertiesToSave[systemNameIndex].value;
+            const newSystemName = encodeSystemName(saveRequestVariables.propertiesToSave[systemNameIndex].value);
 
-            if (newSystemName !== nodeData.name) {
+            if (newSystemName !== encodeSystemName(nodeData.name)) {
                 saveRequestVariables.shouldRename = true;
                 saveRequestVariables.newName = newSystemName;
             }
