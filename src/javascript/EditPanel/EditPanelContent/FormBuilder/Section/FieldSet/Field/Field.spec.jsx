@@ -42,7 +42,8 @@ describe('Field component', () => {
             },
             formik: {
                 error: {},
-                touched: {}
+                touched: {},
+                values: []
             },
             t: i18nKey => i18nKey,
             actionContext: {},
