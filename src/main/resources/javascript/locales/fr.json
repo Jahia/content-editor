@@ -162,6 +162,11 @@
           "advanced": "Options avancées"
         }
       },
+      "header":  {
+        "chips": {
+          "unsavedLabel": "Modifications non sauvegardées"
+        }
+      },
       "switchLanguage": {
         "dialog": {
           "title": "Enregistrer les modifications avant de changer de langue ?"

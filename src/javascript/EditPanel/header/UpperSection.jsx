@@ -131,6 +131,11 @@ export const HeaderUpperSection = ({title, actionContext}) => {
                     <PublicationInfoBadge/>
                     <LockInfoBadge/>
                     <WipInfoChip wipInfo={wipInfo}/>
+                    {(formik.dirty || mode === Constants.routes.baseCreateRoute) &&
+                        <Chip
+                            data-sel-role="unsaved-info-chip"
+                            label={t('content-editor:label.contentEditor.header.chips.unsavedLabel')}
+                        />}
                 </div>
             </div>
 
