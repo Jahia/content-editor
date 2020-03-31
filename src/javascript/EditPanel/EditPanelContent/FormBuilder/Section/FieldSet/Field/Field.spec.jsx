@@ -46,7 +46,6 @@ describe('Field component', () => {
                 values: []
             },
             t: i18nKey => i18nKey,
-            dxContext: {},
             actionContext: {},
             input: <></>,
             inputContext: {

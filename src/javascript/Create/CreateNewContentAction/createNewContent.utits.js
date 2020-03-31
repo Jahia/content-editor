@@ -1,7 +1,7 @@
 import {getTreeOfContentWithRequirements} from './CreateNewContent.gql-queries';
 import {useQuery} from '@apollo/react-hooks';
 
-const NB_OF_DISPLAYED_RESCRICTED_SUB_NODES = 5;
+const NB_OF_DISPLAYED_RESTRICTED_SUB_NODES = 3;
 // eslint-disable-next-line
 export const useCreatableNodetypes = (nodeTypes, includeSubTypes, path, uilang, excludedNodeTypes, showOnNodeTypes, transformResultCallback) => {
     const {data, error, loadingTypes} = useQuery(getTreeOfContentWithRequirements, {
@@ -60,7 +60,7 @@ function getNodeTypes(showOnNodeTypes, data, transformResultCallback) {
 }
 
 export function transformNodeTypesToActions(nodeTypes) {
-    if (nodeTypes.length <= NB_OF_DISPLAYED_RESCRICTED_SUB_NODES) {
+    if (nodeTypes.length <= NB_OF_DISPLAYED_RESTRICTED_SUB_NODES) {
         return nodeTypes
             .filter(f => f.name !== 'jnt:resource')
             .map(nodeType => ({
