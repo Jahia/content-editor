@@ -9,24 +9,12 @@ import arrow from './arrow.svg';
 import DropdownTreeSelectLib from 'react-dropdown-tree-select';
 import {withStyles} from '@material-ui/core/styles';
 
-let icons = {};
-if (process.env.STORYBOOK_ENV || process.env.NODE_ENV === 'test') {
-    icons = {
-        close,
-        checked,
-        unchecked,
-        arrow
-    };
-} else {
-    const path = `${window.contextJsParameters.contextPath}/modules/content-editor/javascript/apps/`;
-
-    icons = {
-        close: path + close,
-        checked: path + checked,
-        unchecked: path + unchecked,
-        arrow: path + arrow
-    };
-}
+const icons = {
+    close,
+    checked,
+    unchecked,
+    arrow
+};
 
 const styles = theme => ({
     container: {
@@ -194,6 +182,7 @@ const styles = theme => ({
         '& .toggle': {
             whiteSpace: 'pre',
             marginRight: '4px',
+            marginLeft: '4px',
             cursor: 'pointer',
             width: '16px',
 
