@@ -44,6 +44,7 @@ export const HeaderUpperSection = ({title, actionContext}) => {
                 path: nodeData.path,
                 menuUseElementAnchor: true,
                 componentProps: {
+                    'data-sel-role': 'ContentEditorHeaderMenu',
                     color: 'accent',
                     size: 'big',
                     className: styles.menu
