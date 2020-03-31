@@ -10,7 +10,7 @@ jest.mock('react', () => {
     };
 });
 
-describe('CopyLanguageDialog', () => {
+describe('WorkInProgressDialog', () => {
     let defaultProps;
     let componentRenderer;
     beforeEach(() => {

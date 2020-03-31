@@ -8,7 +8,7 @@ import classes from './WorkInProgressDialog.scss';
 import {Constants} from '~/ContentEditor.constants';
 
 export const WorkInProgressDialog = ({
-    language,
+    currentLanguage,
     isOpen,
     onCloseDialog,
     wipInfo,
@@ -50,7 +50,7 @@ export const WorkInProgressDialog = ({
     };
 
     const isApplyDisabled = () => {
-        return wipInfo.status === wipStatus && languages === wipInfo.languages;
+        return statusSelected === Constants.wip.status.LANGUAGES && selectedLanguages.length === 0;
     };
 
     const onChangeWip = event => {
@@ -59,7 +59,7 @@ export const WorkInProgressDialog = ({
             setSelectedLanguages([]);
             setStatusSelected(Constants.wip.status.DISABLED);
         } else {
-            setSelectedLanguages([language]);
+            setSelectedLanguages([currentLanguage]);
             setStatusSelected(Constants.wip.status.LANGUAGES);
         }
     };
@@ -72,7 +72,7 @@ export const WorkInProgressDialog = ({
             onClose={onCloseDialog}
         >
             <DialogTitle id="dialog-language-title">
-                <Typography isUpperCase variant="heading" weight="bold" className={classes.dialogTitle}>
+                <Typography variant="heading" weight="bold" className={classes.dialogTitle}>
                     {t('content-editor:label.contentEditor.edit.action.workInProgress.dialogTitle')}
                 </Typography>
                 <Typography className={classes.dialogSubTitle}>
@@ -81,7 +81,7 @@ export const WorkInProgressDialog = ({
                         className={classes.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        href={window.contextJsParameters.config.academyLink}
+                        href={window.contextJsParameters.config.wip}
                     >{t('content-editor:label.contentEditor.edit.action.workInProgress.clickHere')}
                     </a>
                 </Typography>
@@ -91,7 +91,7 @@ export const WorkInProgressDialog = ({
                     <div>
                         <Checkbox
                             data-sel-role="WIP"
-                            className={classes.checkbox}
+                            className={wipStatus ? classes.checkboxChecked : ''}
                             checked={wipStatus}
                             onChange={onChangeWip}
                         />
@@ -102,12 +102,8 @@ export const WorkInProgressDialog = ({
                         </Typography>
 
                         {!wipStatus &&
-                        <Typography className={classes.label}>
+                        <Typography className={classes.label} variant="caption">
                             {t('content-editor:label.contentEditor.edit.action.workInProgress.checkboxSubLabel')}
-                        </Typography>}
-                        {wipStatus &&
-                        <Typography className={classes.label}>
-                            {t('content-editor:label.contentEditor.edit.action.workInProgress.checkboxSubLabelCannotBePublished')}
                         </Typography>}
                     </div>
                 </div>
@@ -126,15 +122,12 @@ export const WorkInProgressDialog = ({
                         </Typography>
                     </div>
                     <div className={classes.languageSelectionContainer}>
-                        <Typography className={classes.label}>
-                            {t('content-editor:label.contentEditor.edit.action.workInProgress.localizedPropertiesOnlySubText')}
-                        </Typography>
                         {languages.map(language => {
                             return (
                                 <div key={language.language}>
                                     <Checkbox
                                         disabled={!wipStatus || statusSelected !== Constants.wip.status.LANGUAGES}
-                                        className={classes.checkbox}
+                                        className={selectedLanguages.indexOf(language.language) > -1 ? classes.checkboxChecked : ''}
                                         value={language.language}
                                         checked={selectedLanguages.indexOf(language.language) > -1}
                                         onChange={event => {
@@ -145,9 +138,11 @@ export const WorkInProgressDialog = ({
                                         {language.displayName}
                                     </Typography>
                                 </div>
-
                             );
                         })}
+                        <Typography className={classes.label} variant="caption">
+                            {t('content-editor:label.contentEditor.edit.action.workInProgress.localizedPropertiesOnlySubText')}
+                        </Typography>
                     </div>
                     <div className={classes.radioButtonEntry}>
                         <Radio
@@ -157,12 +152,14 @@ export const WorkInProgressDialog = ({
                             value={Constants.wip.status.ALL_CONTENT}
                             onChange={handleLocalisedOrAllContent}
                         />
-                        <Typography className={classes.label}>
-                            {t('content-editor:label.contentEditor.edit.action.workInProgress.allContent')}
-                        </Typography>
-                        <Typography className={classes.subTextAllContent}>
-                            {t('content-editor:label.contentEditor.edit.action.workInProgress.allContentSubText')}
-                        </Typography>
+                        <div>
+                            <Typography className={classes.label}>
+                                {t('content-editor:label.contentEditor.edit.action.workInProgress.allContent')}
+                            </Typography>
+                            <Typography className={classes.subTextAllContent} variant="caption">
+                                {t('content-editor:label.contentEditor.edit.action.workInProgress.allContentSubText')}
+                            </Typography>
+                        </div>
                     </div>
                 </div>}
             </DialogContent>
@@ -182,7 +179,7 @@ export const WorkInProgressDialog = ({
 };
 
 WorkInProgressDialog.propTypes = {
-    language: PropTypes.string.isRequired,
+    currentLanguage: PropTypes.string.isRequired,
     isOpen: PropTypes.bool.isRequired,
     onCloseDialog: PropTypes.func.isRequired,
     onApply: PropTypes.func.isRequired,

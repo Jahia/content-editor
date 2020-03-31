@@ -2,21 +2,10 @@ import React from 'react';
 import {registry} from '@jahia/ui-extender';
 import {registerCEActions} from './registerCEActions';
 import {Constants} from '~/ContentEditor.constants';
-import {useI18nCENamespace} from '~/useI18n';
 import ContentEditorApi from '~/Api/ContentEditor.api';
 import ContentEditorRedux from './ContentEditor.redux';
 import {ContentEditorHistoryContextProvider} from '~/ContentEditorHistory/ContentEditorHistory.context';
 
-// Register i18n loadNamespaces through a empty react component until extender solve the injection issue
-const DependenciesInjector = () => {
-    useI18nCENamespace();
-    return '';
-};
-
-registry.add('app', 'content-editor-dependencies-injector', {
-    targets: ['root:0.5'],
-    render: next => <><DependenciesInjector/>{next}</>
-});
 registry.add('app', 'content-editor-history-context', {
     targets: ['root:0.1'],
     render: next => <ContentEditorHistoryContextProvider>{next}</ContentEditorHistoryContextProvider>

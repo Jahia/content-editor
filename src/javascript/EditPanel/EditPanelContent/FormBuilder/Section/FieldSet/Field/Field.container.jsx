@@ -1,6 +1,5 @@
 import React, {useContext, useState} from 'react';
 import * as PropTypes from 'prop-types';
-import {DxContext} from '@jahia/react-material';
 import {connect} from 'formik';
 
 import {FieldPropTypes} from '~/FormDefinitions';
@@ -10,7 +9,6 @@ import {Field} from './Field';
 
 const FieldContainerCmp = ({field, formik}) => {
     const selectorType = resolveSelectorType(field);
-    const dxContext = useContext(DxContext);
     const [actionContext, _setActionContext] = useState({noAction: true});
     const editorContext = useContext(ContentEditorContext);
 
@@ -27,7 +25,7 @@ const FieldContainerCmp = ({field, formik}) => {
     const setActionContext = getNewActionContext => {
         const newActionContext = getNewActionContext(actionContext);
         if (newActionContext.contextHasChange) {
-            _setActionContext({field, formik, dxContext, ...newActionContext});
+            _setActionContext({field, formik, ...newActionContext});
         }
     };
 

@@ -12,6 +12,34 @@ export const OpenWorkInProgressModal = ({context, render: Render, ...props}) => 
         componentRenderer.destroy('WorkInProgressDialog');
     };
 
+    const wipInfo = context.formik.values[Constants.wip.fieldName];
+    const singleLanguage = siteInfo.languages.length === 1;
+    const isMarkAsWIP = singleLanguage && wipInfo.status === Constants.wip.status.ALL_CONTENT;
+    const buttonLabelKind = isMarkAsWIP ? 'unmark' : 'mark';
+    context.buttonLabel = `content-editor:label.contentEditor.edit.action.workInProgress.label.${buttonLabelKind}`;
+
+    const openModal = () => {
+        componentRenderer.render(
+            'WorkInProgressDialog',
+            WorkInProgressDialog,
+            {
+                wipInfo,
+                currentLanguage: context.language,
+                isOpen: true,
+                languages: siteInfo.languages,
+                onCloseDialog: closeDialog,
+                onApply: newWipInfo => {
+                    context.formik.setFieldValue(Constants.wip.fieldName, newWipInfo);
+                    closeDialog();
+                }
+            });
+    };
+
+    const switchButton = () => {
+        const status = isMarkAsWIP ? Constants.wip.status.DISABLED : Constants.wip.status.ALL_CONTENT;
+        context.formik.setFieldValue(Constants.wip.fieldName, {status, languages: []});
+    };
+
     return (
         <>
             <Render
@@ -19,26 +47,7 @@ export const OpenWorkInProgressModal = ({context, render: Render, ...props}) => 
                 {...(context.displayActionProps || {})}
                 context={{
                     ...context,
-                    onClick: () => {
-                        if (siteInfo.languages.length > 1) {
-                            componentRenderer.render(
-                                'WorkInProgressDialog',
-                                WorkInProgressDialog,
-                                {
-                                    language: context.language,
-                                    isOpen: true,
-                                    languages: siteInfo.languages,
-                                    onCloseDialog: closeDialog,
-                                    wipInfo: context.formik.values[Constants.wip.fieldName],
-                                    onApply: newWipInfo => {
-                                        context.formik.setFieldValue(Constants.wip.fieldName, newWipInfo);
-                                        closeDialog();
-                                    }
-                                });
-                        } else {
-                            context.formik.setFieldValue({status: Constants.wip.status.ALL_CONTENT});
-                        }
-                    }
+                    onClick: singleLanguage ? switchButton : openModal
                 }}/>
         </>
     );

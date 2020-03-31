@@ -3,7 +3,7 @@ import saveAction from './save/save.action';
 import publishAction from './publish/publish.action';
 import startWorkflow from './startWorkflow/startWorkflow.action';
 import copyLanguageAction from './copyLanguage/copyLanguage.action';
-import {Save, CloudUpload} from '@material-ui/icons';
+import {CloudUpload, Save} from '@material-ui/icons';
 import {Edit, MoreVert} from '@jahia/moonstone/dist/icons';
 import editContentAction from './EditContent.action';
 import OpenWorkInProgressModalAction from '~/EditPanel/WorkInProgress/OpenWorkInProgressModal.action';
@@ -53,7 +53,6 @@ export const registerEditActions = actionsRegistry => {
     });
 
     actionsRegistry.add('action', 'goToWorkInProgress', OpenWorkInProgressModalAction, {
-        buttonLabel: 'content-editor:label.contentEditor.edit.action.workInProgress.label',
         targets: ['content-editor/header/3dots:1'],
         dataSelRole: 'workInProgressAction'
     });
