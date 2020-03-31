@@ -5,5 +5,8 @@ __webpack_public_path__ = `${window.contextJsParameters.contextPath}/modules/con
 
 registry.add('callback', 'content-editor', {
     targets: ['jahiaApp-init:2'],
-    callback: () => import('./ContentEditor.register')
+    callback: () => Promise.all([
+        import('./ContentEditor.register'),
+        window.jahia.i18n.loadNamespaces('content-editor')
+    ])
 });
