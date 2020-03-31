@@ -10,6 +10,7 @@ import {FieldPropTypes} from '~/FormDefinitions';
 import {MultipleField} from './MultipleField';
 import {SingleField} from './SingleField';
 import {showChipField} from '~/EditPanel/WorkInProgress/WorkInProgress.utils';
+import {Constants} from '~/ContentEditor.constants';
 
 let styles = theme => {
     const common = {
@@ -55,7 +56,7 @@ let styles = theme => {
     };
 };
 
-export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, siteInfo, actionContext, formik: {errors, touched}}) => {
+export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, siteInfo, actionContext, formik: {errors, touched, values}}) => {
     const {t} = useTranslation();
     const contextualMenu = useRef(null);
     const isMultipleField = field.multiple && !selectorType.supportMultiple;
@@ -63,6 +64,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
 
     const shouldDisplayErrors = touched[field.name] && errors[field.name];
     const hasMandatoryError = shouldDisplayErrors && errors[field.name] === 'required';
+    const wipInfo = values[Constants.wip.fieldName];
     return (
         <div className={`${classes.formControl} ${shouldDisplayErrors ? classes.formControlError : ''}`}
              data-sel-content-editor-field={field.name}
@@ -98,7 +100,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
                                        color={hasMandatoryError ? 'warning' : 'primary'}
                                 />
                             )}
-                            {showChipField(field.i18n, inputContext.editorContext.nodeData.wipInfo, inputContext.editorContext.lang) && (
+                            {showChipField(field.i18n, wipInfo, inputContext.editorContext.lang) && (
                                 <Badge className={classes.badge}
                                        data-sel-role="wip-info-chip-field"
                                        badgeContent={t('content-editor:label.contentEditor.edit.action.workInProgress.chipLabelField')}
@@ -186,7 +188,8 @@ FieldCmp.propTypes = {
     field: FieldPropTypes.isRequired,
     formik: PropTypes.shape({
         errors: PropTypes.object,
-        touched: PropTypes.object
+        touched: PropTypes.object,
+        values: PropTypes.array
     }).isRequired,
     actionContext: PropTypes.shape({
         noAction: PropTypes.bool
