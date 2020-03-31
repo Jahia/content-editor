@@ -21,8 +21,7 @@ describe('CreateNewContent utils', () => {
                             {
                                 name: 'parent',
                                 children: [
-                                    {name: 'toto'},
-                                    {name: 'tete'}
+                                    {name: 'toto'}
                                 ]
                             },
                             {
@@ -56,24 +55,24 @@ describe('CreateNewContent utils', () => {
             expect(await getActions(client)).toEqual([]);
         });
 
-        it('should return null when there is more than 5 nodeTypes', async () => {
+        it('should return null when there is more than 3 nodeTypes', async () => {
             queryResponse.data.forms.contentTypesAsTree.push({
                 name: 'yolo'
             });
             queryResponse.data.forms.contentTypesAsTree.push({
                 name: 'yola'
             });
-            queryResponse.data.forms.contentTypesAsTree.push({
-                name: 'yole'
-            });
             expect(await getActions(client)).toEqual(undefined);
         });
 
         it('should return actions', async () => {
+            queryResponse.data.forms.contentTypesAsTree.push({
+                name: 'tete'
+            });
             const actions = await getActions(client);
             expect(actions[0].key).toEqual('toto');
-            expect(actions[1].key).toEqual('tete');
-            expect(actions[2].key).toEqual('tata');
+            expect(actions[1].key).toEqual('tata');
+            expect(actions[2].key).toEqual('tete');
             expect(actions.length).toBe(3);
         });
 
@@ -84,9 +83,8 @@ describe('CreateNewContent utils', () => {
 
             const actions = await getActions(client);
             expect(actions[0].key).toEqual('toto');
-            expect(actions[1].key).toEqual('tete');
-            expect(actions[2].key).toEqual('tata');
-            expect(actions.length).toBe(3);
+            expect(actions[1].key).toEqual('tata');
+            expect(actions.length).toBe(2);
         });
     });
 
