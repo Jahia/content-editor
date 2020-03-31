@@ -58,7 +58,7 @@ describe('MediaPicker config', () => {
                     info: 'image/jpeg - 1080x1920px',
                     name: 'a cake',
                     path: 'placeholder.jpg',
-                    url: 'localContextPath/files/defaultplaceholder.jpg?lastModified=tomorow'
+                    url: 'localContextPath/files/defaultplaceholder.jpg?lastModified=tomorow&t=thumbnail2'
                 }
             });
         });

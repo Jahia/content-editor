@@ -23,7 +23,7 @@ const usePickerInputData = uuid => {
     const fieldData = {
         url: `${
             window.contextJsParameters.contextPath
-        }/files/default${encodeJCRPath(imageData.path)}?lastModified=${imageData.lastModified.value}`,
+        }/files/default${encodeJCRPath(imageData.path)}?lastModified=${imageData.lastModified.value}&t=thumbnail2`,
         name: imageData.name,
         path: imageData.path,
         info: `${imageData.children.nodes[0].mimeType.value}${sizeInfo}`
