@@ -24,7 +24,7 @@ export const useContentEditorHistory = () => {
     };
 
     const hasHistory = () => {
-        return Boolean(history.length > 1 || storedLocation);
+        return Boolean(storedLocation);
     };
 
     const exit = () => {
