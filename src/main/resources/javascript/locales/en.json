@@ -162,6 +162,11 @@
           "advanced": "Advanced options"
         }
       },
+      "header":  {
+        "chips": {
+          "unsavedLabel": "Unsaved changes"
+        }
+      },
       "switchLanguage": {
         "dialog": {
           "title": "Save changes before switching language?"

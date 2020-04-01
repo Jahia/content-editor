@@ -162,6 +162,11 @@
           "advanced": "Erweiterte Optionen"
         }
       },
+      "header":  {
+        "chips": {
+          "unsavedLabel": "Nicht gespeicherte Änderungen"
+        }
+      },
       "switchLanguage": {
         "dialog": {
           "title": "Wollen Sie die Änderungen speichern, bevor Sie die Sprache wechseln?"
