@@ -116,7 +116,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
 
             closeAll();
         },
-        createCallback: createdNodeUuid => {
+        createCallback: (createdNodeUuid, lang) => {
             // Refresh GWT content
             if (window.top.authoringApi.refreshContent) {
                 window.top.authoringApi.refreshContent();
@@ -136,7 +136,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
                     uuid: createdNodeUuid,
                     site: editorConfig.site,
                     uilang: editorConfig.uilang,
-                    lang: editorConfig.lang,
+                    lang: lang ? lang : editorConfig.lang,
                     mode: Constants.routes.baseEditRoute
                 });
             }

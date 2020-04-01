@@ -1,12 +1,20 @@
 import {Constants} from '../../ContentEditor.constants';
 
-const doSwitchLanguage = (language, contentEditorConfigContext) => {
-    contentEditorConfigContext.envProps.setLanguage(language);
+const envSwitchLanguages = {};
+envSwitchLanguages[Constants.env.redux] = (language, contentEditorConfigContext, createdNodeUuid) => {
+    if (contentEditorConfigContext.mode === Constants.routes.baseCreateRoute && createdNodeUuid) {
+        contentEditorConfigContext.envProps.setUrl(Constants.routes.baseEditRoute, language, createdNodeUuid, '');
+    } else {
+        contentEditorConfigContext.envProps.setLanguage(language);
+    }
 };
 
-// Redux and standalone use the same syntax
-const envSwitchLanguages = {};
-envSwitchLanguages[Constants.env.redux] = doSwitchLanguage;
-envSwitchLanguages[Constants.env.standalone] = doSwitchLanguage;
+envSwitchLanguages[Constants.env.standalone] = (language, contentEditorConfigContext, createdNodeUuid) => {
+    if (contentEditorConfigContext.mode === Constants.routes.baseCreateRoute && createdNodeUuid) {
+        contentEditorConfigContext.envProps.createCallback(createdNodeUuid, language);
+    } else {
+        contentEditorConfigContext.envProps.setLanguage(language);
+    }
+};
 
 export default envSwitchLanguages;
