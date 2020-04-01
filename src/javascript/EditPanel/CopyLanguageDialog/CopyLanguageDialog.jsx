@@ -5,11 +5,10 @@ import {
     DialogTitle,
     DialogContent
 } from '@material-ui/core';
-import {Button} from '@jahia/design-system-kit';
 import {Warning} from '@material-ui/icons';
 import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
-import {Dropdown, Typography} from '@jahia/moonstone';
+import {Dropdown, Typography, Button} from '@jahia/moonstone';
 import classes from './CopyLanguageDialog.scss';
 import {useApolloClient} from '@apollo/react-hooks';
 import {FormQuery} from '~/Edit/EditForm.gql-queries';
@@ -68,7 +67,7 @@ export const CopyLanguageDialog = ({
         <Dialog fullWidth
                 aria-labelledby="alert-dialog-slide-title"
                 open={isOpen}
-                maxWidth="lg"
+                maxWidth="sm"
                 onClose={onCloseDialog}
         >
             <DialogTitle id="dialog-language-title">
@@ -80,48 +79,46 @@ export const CopyLanguageDialog = ({
                 </Typography>
             </DialogTitle>
             <DialogContent className={classes.dialogContent}>
-                <div className={classes.container}>
-                    <div>
-                        <Typography className={classes.label}>
-                            {t('content-editor:label.contentEditor.edit.action.copyLanguage.currentLanguage')}
-                        </Typography>
-                    </div>
-                    <div className={classes.language}>
-                        <Typography>
-                            {language}
-                        </Typography>
-                    </div>
-                    <div>
-                        <Typography className={classes.label}>
-                            {t('content-editor:label.contentEditor.edit.action.copyLanguage.listLabel')}
-                        </Typography>
-                    </div>
-                    <div>
-                        <Dropdown
-                            label={currentOption.label}
-                            value={currentOption.value}
-                            size="medium"
-                            isDisabled={false}
-                            maxWidth="120px"
-                            data={[defaultOption].concat(availableLanguages.filter(element => element.displayName !== language).map(element => {
-                                return {value: element.language,
-                                    label: element.displayName};
-                            }))}
-                            onChange={handleOnChange}
-                        />
-                    </div>
-                </div>
+                <Typography className={classes.copyFromLabel}>
+                    {t('content-editor:label.contentEditor.edit.action.copyLanguage.listLabel')}
+                </Typography>
+                <Dropdown
+                    className={classes.language}
+                    label={currentOption.label}
+                    value={currentOption.value}
+                    size="medium"
+                    isDisabled={false}
+                    maxWidth="120px"
+                    data={[defaultOption].concat(availableLanguages.filter(element => element.displayName !== language).map(element => {
+                        return {
+                            value: element.language,
+                            label: element.displayName
+                        };
+                    }))}
+                    onChange={handleOnChange}
+                />
+                <Typography className={classes.label}>
+                    {t('content-editor:label.contentEditor.edit.action.copyLanguage.currentLanguage')}
+                </Typography>
+                <Typography>{language}</Typography>
             </DialogContent>
             <DialogActions>
                 <Typography className={classes.warningText}>
                     <Warning className={classes.warningIcon}/> {t('content-editor:label.contentEditor.edit.action.copyLanguage.bottomText')}
                 </Typography>
-                <Button variant="secondary" onClick={handleCancel}>
-                    {t('content-editor:label.contentEditor.edit.action.copyLanguage.btnCancel')}
-                </Button>
-                <Button variant="primary" disabled={isApplyDisabled} onClick={handleApply}>
-                    {t('content-editor:label.contentEditor.edit.action.copyLanguage.btnApply')}
-                </Button>
+                <Button
+                    size="big"
+                    color="default"
+                    label={t('content-editor:label.contentEditor.edit.action.copyLanguage.btnCancel')}
+                    onClick={handleCancel}
+                />
+                <Button
+                    size="big"
+                    color="accent"
+                    label={t('content-editor:label.contentEditor.edit.action.copyLanguage.btnApply')}
+                    disabled={isApplyDisabled}
+                    onClick={handleApply}
+                />
             </DialogActions>
         </Dialog>
     );
