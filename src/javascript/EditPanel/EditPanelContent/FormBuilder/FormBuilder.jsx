@@ -9,17 +9,27 @@ import {ChildrenSection} from './ChildrenSection';
 import {useTranslation} from 'react-i18next';
 
 const FormBuilder = ({mode}) => {
-    const context = useContentEditorContext();
+    const {sections, nodeData} = useContentEditorContext();
     const {t} = useTranslation();
+
+    const isOrderingSection = !nodeData.isPage && nodeData.primaryNodeType.hasOrderableChildNodes;
+    const cloneSections = isOrderingSection ? [...sections] : sections;
+    if (isOrderingSection) {
+        const orderingSection = {
+            isOrderingSection: true,
+            displayName: t('content-editor:label.contentEditor.section.listAndOrdering.title')
+        };
+        cloneSections.splice(1, 0, orderingSection);
+    }
 
     return (
         <Form>
             <section data-sel-mode={mode}>
-                {context.sections.map(section => {
-                    return <Section key={section.displayName} section={section}/>;
-                })}
-                {!context.nodeData.isPage && context.nodeData.primaryNodeType.hasOrderableChildNodes &&
-                    <ChildrenSection key={t('content-editor:label.contentEditor.section.listAndOrdering.title')} section={{displayName: t('content-editor:label.contentEditor.section.listAndOrdering.title')}}/>}
+                {cloneSections.map(section => (
+                    section.isOrderingSection ?
+                        <ChildrenSection key={section.displayName} section={section}/> :
+                        <Section key={section.displayName} section={section}/>
+                ))}
             </section>
         </Form>
     );
@@ -27,7 +37,8 @@ const FormBuilder = ({mode}) => {
 
 FormBuilder.contextTypes = {
     context: PropTypes.shape({
-        sections: SectionsPropTypes.isRequired
+        sections: SectionsPropTypes.isRequired,
+        nodeData: PropTypes.object.isRequired
     })
 };
 

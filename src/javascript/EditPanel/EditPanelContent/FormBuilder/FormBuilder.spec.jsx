@@ -44,4 +44,27 @@ describe('FormBuilder component', () => {
             }
         });
     });
+
+    it('should not display ordering section', () => {
+        setContext(context);
+
+        const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).find('section');
+        expect(cmp.find('ChildrenSection').exists()).toBeFalsy();
+    });
+
+    it('should display ordering section', () => {
+        context.nodeData.isPage = false;
+        setContext(context);
+
+        const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).find('section');
+        expect(cmp.find('ChildrenSection').exists()).toBeTruthy();
+    });
+
+    it('should display ordering section just after content section', () => {
+        context.nodeData.isPage = false;
+        setContext(context);
+
+        const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).find('section');
+        expect(cmp.childAt(1).find('ChildrenSection').exists()).toBeTruthy();
+    });
 });
