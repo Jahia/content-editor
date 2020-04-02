@@ -12,10 +12,10 @@ const EditPanelLanguageSwitcher = ({siteInfo, formik}) => {
     const {lang} = contentEditorConfigContext;
     const [dialogConfirmation, setDialogConfirmation] = useState({open: false, lang: lang});
 
-    const switchLanguage = language => {
+    const switchLanguage = (language, createdNodeUuid) => {
         const envSwitchLanguage = envSwitchLanguages[contentEditorConfigContext.env];
         if (envSwitchLanguage) {
-            envSwitchLanguage(language, contentEditorConfigContext);
+            envSwitchLanguage(language, contentEditorConfigContext, createdNodeUuid);
         }
 
         // Switch edit mode linker language
@@ -42,7 +42,7 @@ const EditPanelLanguageSwitcher = ({siteInfo, formik}) => {
                 open={dialogConfirmation.open}
                 titleKey="content-editor:label.contentEditor.switchLanguage.dialog.title"
                 formik={formik}
-                actionCallback={() => switchLanguage(dialogConfirmation.lang)}
+                actionCallback={createdNodeUuid => switchLanguage(dialogConfirmation.lang, createdNodeUuid)}
                 onCloseDialog={() => setDialogConfirmation({open: false})}
             />
         </>
