@@ -10,6 +10,7 @@ import PublicationInfoBadge from '~/PublicationInfo/PublicationInfo.badge';
 import LockInfoBadge from '~/Lock/LockInfo.badge';
 import WipInfoChip from '~/EditPanel/WorkInProgress/Chip/WipInfo.Chip';
 import {Constants} from '~/ContentEditor.constants';
+import {Edit} from '@jahia/moonstone/dist/icons';
 
 import styles from './UpperSection.scss';
 
@@ -133,8 +134,10 @@ export const HeaderUpperSection = ({title, actionContext}) => {
                     <WipInfoChip wipInfo={wipInfo}/>
                     {(formik.dirty || mode === Constants.routes.baseCreateRoute) &&
                         <Chip
+                            icon={<Edit/>}
                             data-sel-role="unsaved-info-chip"
                             label={t('content-editor:label.contentEditor.header.chips.unsavedLabel')}
+                            color="warning"
                         />}
                 </div>
             </div>
