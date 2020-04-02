@@ -34,7 +34,8 @@ const GoBack = ({context, render: Render}) => {
                 context={{
                     ...context,
                     componentProps: {
-                     disabled: !hasHistory()
+                        ...context.componentProps,
+                        disabled: !hasHistory()
                     },
                     onClick: () => {
                         if (context.formik) {
