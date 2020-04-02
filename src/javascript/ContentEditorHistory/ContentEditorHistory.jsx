@@ -6,6 +6,7 @@ import {useContentEditorHistoryContext} from './ContentEditorHistory.context';
 export const useContentEditorHistory = () => {
     const {storedLocation, setStoredLocation} = useContentEditorHistoryContext();
     const history = useHistory();
+    let unblock;
     const redirect = ({mode, language, uuid, rest}) => {
         const currentPath = history.location.pathname;
         const {appName, currentLanguage, currentMode, currentUuid, currentRest} = splitPath(currentPath);
@@ -42,7 +43,7 @@ export const useContentEditorHistory = () => {
     };
 
     const registerBlockListener = message => {
-        history.block(location => {
+        unblock = history.block(location => {
             const {appName} = splitPath(location.pathname);
             if (appName !== Constants.appName) {
                 return message;
@@ -50,16 +51,10 @@ export const useContentEditorHistory = () => {
         });
     };
 
-    history.listen(location => {
-        const {appName} = splitPath(location.pathname);
-        if (appName !== Constants.appName) {
-            unRegisterBlockListener();
-        }
-    });
-
     const unRegisterBlockListener = () => {
-        history.block(() => {
-        });
+        if (unblock) {
+            unblock();
+        }
     };
 
     return {redirect, exit, registerBlockListener, unRegisterBlockListener, hasHistory};

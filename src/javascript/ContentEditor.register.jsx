@@ -7,7 +7,7 @@ import ContentEditorRedux from './ContentEditor.redux';
 import {ContentEditorHistoryContextProvider} from '~/ContentEditorHistory/ContentEditorHistory.context';
 
 registry.add('app', 'content-editor-history-context', {
-    targets: ['root:0.1'],
+    targets: ['root:2.05'],
     render: next => <ContentEditorHistoryContextProvider>{next}</ContentEditorHistoryContextProvider>
 });
 
