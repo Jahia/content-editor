@@ -15,18 +15,20 @@ const mapStateToProps = state => {
 };
 
 const ContentEditorReduxCmp = ({mode, uuid, lang, uilang, site, contentType}) => {
-    const {redirect, exit, registerBlockListener, unRegisterBlockListener} = useContentEditorHistory();
+    const {redirect, hasHistory, exit, registerBlockListener, unRegisterBlockListener} = useContentEditorHistory();
     const {t} = useTranslation();
     const envProps = {
         setUrl: (mode, language, uuid, contentType) => redirect({mode, language, uuid, rest: contentType}),
         back: exit,
+        disabledBack: () => !hasHistory(),
         setLanguage: language => redirect({language}),
         initCallback: formik => {
             if (formik.dirty) {
                 registerBlockListener(t('content-editor:label.contentEditor.edit.action.goBack.alert'));
-            } else {
-                unRegisterBlockListener();
             }
+        },
+        closeCallback: () => {
+            unRegisterBlockListener();
         }
     };
     return (
