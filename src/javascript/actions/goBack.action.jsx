@@ -2,22 +2,23 @@ import React, {useState} from 'react';
 import {EditPanelDialogConfirmation} from '~/EditPanel/EditPanelDialogConfirmation';
 import {useContentEditorConfigContext} from '~/ContentEditor.context';
 import {useLockedEditorContext} from '~/Lock/LockedEditor.context';
-import {useContentEditorHistory} from '~/ContentEditorHistory';
 import * as PropTypes from 'prop-types';
 
 const GoBack = ({context, render: Render}) => {
-    const contentEditorConfigContext = useContentEditorConfigContext();
-    const {hasHistory, unRegisterBlockListener} = useContentEditorHistory();
+    const {envProps} = useContentEditorConfigContext();
     const lockedEditorContext = useLockedEditorContext();
     const [open, setOpen] = useState(false);
     const executeGoBackAction = () => {
-        unRegisterBlockListener();
+        if (envProps.closeCallback) {
+            envProps.closeCallback();
+        }
+
         if (lockedEditorContext.unlockEditor) {
             lockedEditorContext.unlockEditor(() => {
-                contentEditorConfigContext.envProps.back();
+                envProps.back();
             });
         } else {
-            contentEditorConfigContext.envProps.back();
+            envProps.back();
         }
     };
 
@@ -35,7 +36,7 @@ const GoBack = ({context, render: Render}) => {
                     ...context,
                     componentProps: {
                         ...context.componentProps,
-                        disabled: !hasHistory()
+                        disabled: envProps.disabledBack()
                     },
                     onClick: () => {
                         if (context.formik) {

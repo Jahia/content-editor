@@ -35,6 +35,10 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
         // Prevent close browser's tab when there is unsaved content
         window.addEventListener('beforeunload', handleBeforeUnloadEvent);
         return () => {
+            if (envProps.closeCallback) {
+                envProps.closeCallback();
+            }
+
             window.removeEventListener(
                 'beforeunload',
                 handleBeforeUnloadEvent
@@ -70,7 +74,9 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
                 <ContentHeader>
                     <HeaderUpperSection actionContext={actionContext} title={title}/>
                     <Separator/>
-                    <HeaderLowerSection activeTab={activeTab} setActiveTab={setActiveTab} actionContext={actionContext}/>
+                    <HeaderLowerSection activeTab={activeTab}
+                                        setActiveTab={setActiveTab}
+                                        actionContext={actionContext}/>
                 </ContentHeader>
             }
         >

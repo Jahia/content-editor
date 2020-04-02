@@ -116,6 +116,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
 
             closeAll();
         },
+        disabledBack: () => false,
         createCallback: (createdNodeUuid, lang) => {
             // Refresh GWT content
             if (window.top.authoringApi.refreshContent) {
