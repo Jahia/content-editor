@@ -57,8 +57,7 @@
             "name": "Publier maintenant",
             "namePolling": "Publication",
             "success": "La publication a été ajoutée à la file d’attente",
-            "error": "Erreur durant la publication",
-            "badge": "Publication en cours"
+            "error": "Erreur durant la publication"
           },
           "startWorkflow": {
             "name": "Demander une publication"
@@ -215,6 +214,21 @@
       },
       "siteSwitcher": {
         "allSites": "Tous les Sites"
+      },
+      "publicationStatusBadge": {
+        "publishing": "Publication en cours",
+        "modified": "Modifié",
+        "notPublished": "Non publié",
+        "published": "Live",
+        "warning": "Attention",
+      },
+      "publicationStatusTooltip": {
+        "modified": "Modifié par {{userName}} le {{timestamp}}",
+        "published": "Publié par {{userName}} le {{timestamp}}",
+        "mandatoryLanguageUnpublishable": "Le contenu ne peut pas être publié dans la langue courante car une propriété obligatoire n'est pas renseignée.",
+        "mandatoryLanguageValid": "Le contenu ne sera visible en ligne qu'après publication dans toutes les langues obligatoires.",
+        "conflict": "Un contenu avec le même nom existe déjà en mode live et ne fera pas partie de cette publication",
+        "unknown": "Statut de publication indisponible"
       }
     }
   }

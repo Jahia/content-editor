@@ -21,6 +21,10 @@ export const usePublicationInfo = (queryParams, t) => {
 
     return {
         publicationStatus: data.jcr.nodeById.aggregatedPublicationInfo.publicationStatus,
+        lastModified: data.jcr.nodeById.lastModified?.value,
+        lastModifiedBy: data.jcr.nodeById.lastModifiedBy?.value,
+        lastPublished: data.jcr.nodeById.lastPublished?.value,
+        lastPublishedBy: data.jcr.nodeById.lastPublishedBy?.value,
         publicationInfoPolling: polling,
         startPublicationInfoPolling: () => {
             setPolling(true);
