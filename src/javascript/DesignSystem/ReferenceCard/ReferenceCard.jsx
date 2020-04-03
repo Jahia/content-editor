@@ -1,10 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'clsx';
 import {Typography} from '@jahia/design-system-kit';
-
 import {withStyles} from '@material-ui/core';
+import {HandleDrag} from '@jahia/moonstone/dist/icons';
 
 const styles = theme => ({
+    container: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
     add: {
         width: '100%',
         height: theme.spacing.unit * 9,
@@ -88,6 +94,9 @@ const styles = theme => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center'
+    },
+    draggableIcon: {
+        cursor: 'grab'
     }
 });
 
@@ -98,52 +107,60 @@ const ReferenceCardCmp = ({
     emptyIcon,
     fieldData,
     labelledBy,
-    onClick
+    onClick,
+    isDraggable
 }) => {
     // If card have already data
     if (fieldData) {
         const nameId = `${labelledBy}-name`;
         return (
-            <article
-                className={
-                    classes.fieldContainer +
-                    ' ' +
-                    (readOnly ? classes.fieldContainerReadOnly : '')
-                }
-                data-sel-field-picker="filled"
-                data-sel-field-picker-action="openPicker"
-                role="button"
-                tabIndex="0"
-                aria-labelledby={labelledBy}
-                onClick={() => {
-                    if (readOnly) {
-                        return;
-                    }
+            <div className={classes.container}>
+                {isDraggable &&
+                <div className={classes.draggableIcon}>
+                    <HandleDrag size="big"/>
+                </div>}
 
-                    onClick(true);
-                }}
-            >
-                <div className={classes.fieldFigureContainer}>
-                    <img src={fieldData.url} className={classes.fieldImage} aria-labelledby={nameId} alt=""/>
-                </div>
-                <div className={classes.fieldSelectedMetadata}>
-                    <Typography
-                        data-sel-field-picker-name
-                        variant="zeta"
-                        color="alpha"
-                        id={nameId}
-                    >
-                        {fieldData.name}
-                    </Typography>
-                    <Typography
-                        data-sel-field-picker-info
-                        variant="omega"
-                        color="gamma"
-                    >
-                        {fieldData.info}
-                    </Typography>
-                </div>
-            </article>
+                <article
+                    className={classnames(
+                        classes.fieldContainer,
+                        (readOnly ? classes.fieldContainerReadOnly : ''),
+                        (isDraggable ? classes.draggableIcon : '')
+                    )}
+                    data-sel-field-picker="filled"
+                    data-sel-field-picker-action="openPicker"
+                    role="button"
+                    tabIndex="0"
+                    aria-labelledby={labelledBy}
+                    onClick={() => {
+                        if (readOnly) {
+                            return;
+                        }
+
+                        onClick(true);
+                    }}
+                >
+                    <div className={classes.fieldFigureContainer}>
+                        <img src={fieldData.url} className={classes.fieldImage} aria-labelledby={nameId} alt=""/>
+                    </div>
+                    <div className={classes.fieldSelectedMetadata}>
+                        <Typography
+                            data-sel-field-picker-name
+                            variant="zeta"
+                            color="alpha"
+                            id={nameId}
+                        >
+                            {fieldData.name}
+                        </Typography>
+                        <Typography
+                            data-sel-field-picker-info
+                            variant="omega"
+                            color="gamma"
+                        >
+                            {fieldData.info}
+                        </Typography>
+                    </div>
+                </article>
+            </div>
         );
     }
 
@@ -175,6 +192,7 @@ const ReferenceCardCmp = ({
 };
 
 ReferenceCardCmp.defaultProps = {
+    isDraggable: false,
     readOnly: false,
     fieldData: null,
     emptyLabel: '',
@@ -191,6 +209,7 @@ ReferenceCardCmp.propTypes = {
         name: PropTypes.string.isRequired,
         info: PropTypes.string.isRequired
     }),
+    isDraggable: PropTypes.bool,
     emptyLabel: PropTypes.string,
     emptyIcon: PropTypes.element,
     labelledBy: PropTypes.string
