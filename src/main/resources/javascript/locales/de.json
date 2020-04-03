@@ -57,8 +57,7 @@
             "name": "Jetzt veröffentlichen",
             "namePolling": "Veröffentlichung",
             "success": "Veröffentlichung der Warteschlange hinzugefügt",
-            "error": "Fehler während Veröffentlichung",
-            "badge": "Veröffentlichung in Bearbeitung"
+            "error": "Fehler während Veröffentlichung"
           },
           "startWorkflow": {
             "name": "Veröffentlichung anfordern"
@@ -215,6 +214,21 @@
       },
       "siteSwitcher": {
         "allSites": "Alle Sites"
+      },
+      "publicationStatusBadge": {
+        "publishing": "Veröffentlichung in Bearbeitung",
+        "modified": "Geändert",
+        "notPublished": "Nicht veröffentlicht",
+        "published": "Live",
+        "warning": "Achtung",
+      },
+      "publicationStatusTooltip": {
+        "modified": "Geändert von {{userName}} am {{timestamp}}",
+        "published": "Veröffentlicht von {{userName}} am {{timestamp}}",
+        "mandatoryLanguageUnpublishable": "Der Inhalt kann nicht in der aktuellen Sprache veröffentlicht werden, da verpflichtende Eigenschaften fehlen.",
+        "mandatoryLanguageValid": "Der Inhalt wird live sichtbar, wenn eine Veröffentlichung in allen verpflichtenden Sprachen durchgeführt wurde.",
+        "conflict": "Content existiert im Live-Modus mit dem gleichem Namen und wird in der Veröffentlichung deshalb nicht berücksichtigt.",
+        "unknown": "Veröffentlichungsstatus nicht verfügbar"
       }
     }
   }
