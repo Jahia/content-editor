@@ -64,7 +64,8 @@ describe('reference card filled', () => {
                 name: 'name part',
                 info: 'info part'
             },
-            id: 'yoloID'
+            id: 'yoloID',
+            isDraggable: false
         };
 
         window.contextJsParameters = {
@@ -110,7 +111,7 @@ describe('reference card filled', () => {
             {},
             dsGenericTheme
         ).dive();
-        expect(cmp.props().className).toContain('fieldContainerReadOnly');
+        expect(cmp.find('article').props().className).toContain('fieldContainerReadOnly');
     });
 
     it('should NOT be in read only', () => {
@@ -119,7 +120,7 @@ describe('reference card filled', () => {
             {},
             dsGenericTheme
         ).dive();
-        expect(cmp.props().className).not.toContain('fieldContainerReadOnly');
+        expect(cmp.find('article').props().className).not.toContain('fieldContainerReadOnly');
     });
 
     it('should send onClick event when clicking on the component', () => {
@@ -130,7 +131,7 @@ describe('reference card filled', () => {
             dsGenericTheme
         ).dive();
 
-        cmp.simulate('click');
+        cmp.find('article').simulate('click');
 
         expect(defaultProps.onClick).toHaveBeenCalled();
     });
@@ -144,8 +145,29 @@ describe('reference card filled', () => {
             dsGenericTheme
         ).dive();
 
-        cmp.simulate('click');
+        cmp.find('article').simulate('click');
 
         expect(defaultProps.onClick).not.toHaveBeenCalled();
+    });
+
+    it('should not contain draggable icon', () => {
+        const cmp = shallowWithTheme(
+            <ReferenceCard {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        expect(cmp.find('SvgHandleDrag').exists()).toBeFalsy();
+    });
+
+    it('should contain draggable icon', () => {
+        defaultProps.isDraggable = true;
+        const cmp = shallowWithTheme(
+            <ReferenceCard {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        expect(cmp.find('SvgHandleDrag').exists()).toBeTruthy();
     });
 });

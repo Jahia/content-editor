@@ -18,11 +18,17 @@ export const DraggableReference = ({child}) => {
 
     return (
         <div ref={drag}>
-            {!isDragging && <ReferenceCard
+            {!isDragging &&
+            <ReferenceCard
+                isDraggable
                 emptyLabel={t('content-editor:label.contentEditor.edit.fields.imagePicker.addImage')}
                 emptyIcon={<InsertDriveFile/>}
                 labelledBy={`${child.name}-label`}
-                fieldData={{name: child.name, info: child.primaryNodeType.displayName, url: encodeJCRPath(`${child.primaryNodeType.icon}.png`)}}
+                fieldData={{
+                    name: child.name,
+                    info: child.primaryNodeType.displayName,
+                    url: encodeJCRPath(`${child.primaryNodeType.icon}.png`)
+                }}
             />}
         </div>
     );
