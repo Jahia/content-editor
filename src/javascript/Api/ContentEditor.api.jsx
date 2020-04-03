@@ -14,7 +14,7 @@ let styles = () => {
     return {
         ceDialogRoot: {
             // Reduce zIndex to be able to display the old edit engine tabs
-            zIndex: 1050,
+            zIndex: 1031,
             width: 'calc(100vw - 56px)',
             left: 'unset',
             right: 0
