@@ -11,7 +11,7 @@ import LockInfoBadge from '~/Lock/LockInfo.badge';
 import WipInfoChip from '~/EditPanel/WorkInProgress/Chip/WipInfo.Chip';
 import {Constants} from '~/ContentEditor.constants';
 import {Edit} from '@jahia/moonstone/dist/icons';
-
+import {truncate} from '~/utils/helper';
 import styles from './UpperSection.scss';
 
 const ButtonRenderer = ({context, ...props}) => {
@@ -70,8 +70,8 @@ export const HeaderUpperSection = ({title, actionContext}) => {
                                 render={ButtonRenderer}
                             />
 
-                    <Typography isNowrap className={styles.headerTypography} variant="heading">
-                        {title}
+                    <Typography isNowrap className={styles.headerTypography} variant="title">
+                        {truncate(title, 60)}
                     </Typography>
                 </div>
 
