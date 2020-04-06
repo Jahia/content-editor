@@ -1,6 +1,14 @@
 import {resolveSelectorType} from '~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes.utils';
 import {Constants} from '~/ContentEditor.constants';
 
+const isContentOrFileNode = formData => {
+    const pattern = '/sites/[^/]*/(contents|files)';
+    const regex = RegExp(pattern);
+    return formData.technicalInfo.filter(info => {
+        return regex.test(info.value);
+    }).length !== 0;
+};
+
 export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType, customAdapter) => {
     const optionsSection = formData.sections.find(section => section.name === 'options');
     if (optionsSection) {
@@ -14,7 +22,7 @@ export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType
                 systemNameField.displayName = t('content-editor:label.contentEditor.section.fieldSet.system.fields.systemName');
 
                 // System name should be readonly for this specific nodetypes
-                if (Constants.systemName.READONLY_FOR_NODE_TYPES.includes(primaryNodeType.name)) {
+                if (Constants.systemName.READONLY_FOR_NODE_TYPES.includes(primaryNodeType.name) || isContentOrFileNode(formData)) {
                     systemNameField.readOnly = true;
                 }
 

@@ -30,6 +30,12 @@ describe('adaptFormData', () => {
                         }
                     ]
                 }
+            ],
+            technicalInfo: [
+                {label: 'Main content type', value: 'Folder'},
+                {label: 'Full content type', value: 'jnt:folder'},
+                {label: 'Path', value: '/sites/digitall/toto'},
+                {label: 'UUID', value: '1c5ec63b-efa8-4e28-abb7-e60026cb8e3e'}
             ]
         };
     });
@@ -43,6 +49,18 @@ describe('adaptFormData', () => {
         expect(formData.sections[1].fieldSets[0].displayName).toEqual('content-editor:label.contentEditor.section.fieldSet.system.displayName');
         expect(formData.sections[1].fieldSets[0].fields[0].displayName).toEqual('content-editor:label.contentEditor.section.fieldSet.system.fields.systemName');
         expect(formData.sections[1].fieldSets[0].fields[0].readOnly).toEqual(false);
+    });
+
+    it('should set system name to readOnly when Path is for the contents node', () => {
+        const nodeType = {
+            name: 'jnt:news',
+            displayName: 'News'
+        };
+        formData.technicalInfo[2] = {label: 'Path', value: '/sites/digitall/contents'};
+        adaptSystemNameField(null, formData, null, t, nodeType);
+        expect(formData.sections[1].fieldSets[0].displayName).toEqual('content-editor:label.contentEditor.section.fieldSet.system.displayName');
+        expect(formData.sections[1].fieldSets[0].fields[0].displayName).toEqual('content-editor:label.contentEditor.section.fieldSet.system.fields.systemName');
+        expect(formData.sections[1].fieldSets[0].fields[0].readOnly).toEqual(true);
     });
 
     it('should move system name to content section for some specific nodetypes', () => {
