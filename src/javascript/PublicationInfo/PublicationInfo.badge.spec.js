@@ -103,31 +103,27 @@ describe('PublicationInfo.badge', () => {
         let wrapper = shallow(<PublicationInfoBadge classes={{}}/>);
 
         expect(wrapper.containsMatchingElement(<PublicationStatus type="warning" tooltip="translated_label.contentEditor.publicationStatusTooltip.conflict"/>)).toBeTruthy();
-        expect(wrapper.containsMatchingElement(<PublicationStatus type="notPublished"/>)).toBeTruthy();
-        expect(wrapper.find('PublicationStatus')).toHaveLength(2);
+        expect(wrapper.find('PublicationStatus')).toHaveLength(1);
     });
 
     it('Should display "warning" badge when MANDATORY_LANGUAGE_VALID publication info', () => {
         let wrapper = shallow(<PublicationInfoBadge classes={{}}/>);
 
         expect(wrapper.containsMatchingElement(<PublicationStatus type="warning" tooltip="translated_label.contentEditor.publicationStatusTooltip.mandatoryLanguageValid"/>)).toBeTruthy();
-        expect(wrapper.containsMatchingElement(<PublicationStatus type="notPublished"/>)).toBeTruthy();
-        expect(wrapper.find('PublicationStatus')).toHaveLength(2);
+        expect(wrapper.find('PublicationStatus')).toHaveLength(1);
     });
 
     it('Should display "warning" badge when MANDATORY_LANGUAGE_UNPUBLISHABLE publication info', () => {
         let wrapper = shallow(<PublicationInfoBadge classes={{}}/>);
 
         expect(wrapper.containsMatchingElement(<PublicationStatus type="warning" tooltip="translated_label.contentEditor.publicationStatusTooltip.mandatoryLanguageUnpublishable"/>)).toBeTruthy();
-        expect(wrapper.containsMatchingElement(<PublicationStatus type="notPublished"/>)).toBeTruthy();
-        expect(wrapper.find('PublicationStatus')).toHaveLength(2);
+        expect(wrapper.find('PublicationStatus')).toHaveLength(1);
     });
 
     it('Should display "warning" badge when unknown publication info', () => {
         let wrapper = shallow(<PublicationInfoBadge classes={{}}/>);
 
         expect(wrapper.containsMatchingElement(<PublicationStatus type="warning" tooltip="translated_label.contentEditor.publicationStatusTooltip.unknown"/>)).toBeTruthy();
-        expect(wrapper.containsMatchingElement(<PublicationStatus type="notPublished"/>)).toBeTruthy();
-        expect(wrapper.find('PublicationStatus')).toHaveLength(2);
+        expect(wrapper.find('PublicationStatus')).toHaveLength(1);
     });
 });

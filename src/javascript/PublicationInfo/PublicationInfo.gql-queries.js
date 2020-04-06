@@ -9,16 +9,16 @@ export const PublicationInfoQuery = gql`
                 aggregatedPublicationInfo(language: $language, subNodes: false, references: false) {
                     publicationStatus
                 }
-                lastModifiedBy:property(name:"jcr:lastModifiedBy"){
+                lastModifiedBy:property(name:"jcr:lastModifiedBy", language: $language){
                     value
                 }
-                lastModified:property(name:"jcr:lastModified"){
+                lastModified:property(name:"jcr:lastModified", language: $language){
                     value
                 }
-                lastPublishedBy:property(name:"j:lastPublishedBy"){
+                lastPublishedBy:property(name:"j:lastPublishedBy", language: $language){
                     value
                 }
-                lastPublished:property(name:"j:lastPublished"){
+                lastPublished:property(name:"j:lastPublished", language: $language){
                     value
                 }
             }
