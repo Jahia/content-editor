@@ -1,29 +1,49 @@
-import {composeActions, componentRendererAction} from '@jahia/react-material';
+import {Constants} from '~/ContentEditor.constants';
 import {validateForm} from '~/Validation/validation.utils';
-import {editRestrictedAction} from '~/actions/editRestricted.action';
+import React, {useContext} from 'react';
+import {ComponentRendererContext} from '@jahia/ui-extender';
+import * as PropTypes from 'prop-types';
+import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
 
-export default composeActions(
-    editRestrictedAction,
-    componentRendererAction,
-    {
-        init: context => {
-            if (context.enabled) {
-                context.disabled = !context.formik.dirty || context.publicationInfoContext.publicationInfoPolling;
-            }
+const Save = ({context, render: Render, loading: Loading}) => {
+    const componentRenderer = useContext(ComponentRendererContext);
+    const {publicationInfoPolling} = usePublicationInfoContext();
 
-            context.addWarningBadge = Object.keys(context.formik.errors).length > 0;
-        },
-        onClick: async ({formik, renderComponent}) => {
-            if (!formik || !formik.dirty) {
-                return;
-            }
+    if (Loading) {
+        return <Loading context={context}/>;
+    }
 
-            const formIsValid = await validateForm(formik, renderComponent);
+    return (
+        <Render
+            context={{
+                ...context,
+                addWarningBadge: Object.keys(context.formik.errors).length > 0,
+                enabled: context.mode === Constants.routes.baseEditRoute,
+                disabled: !context.formik.dirty || publicationInfoPolling,
+                onClick: async ({formik}) => {
+                    const formIsValid = await validateForm(formik, componentRenderer);
 
-            if (formIsValid) {
-                return formik
-                    .submitForm()
-                    .then(() => formik.resetForm(formik.values));
-            }
-        }
-    });
+                    if (formIsValid) {
+                        return formik
+                            .submitForm()
+                            .then(() => {
+                                formik.resetForm(formik.values);
+                            });
+                    }
+                }
+            }}/>
+    );
+};
+
+Save.propTypes = {
+    context: PropTypes.object.isRequired,
+    render: PropTypes.func.isRequired,
+    loading: PropTypes.func
+};
+
+const saveButtonAction = {
+    component: Save
+};
+
+export default saveButtonAction;
+
