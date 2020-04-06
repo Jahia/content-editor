@@ -1,4 +1,5 @@
 import startWorkflowAction from './startWorkflow.action';
+import {Constants} from '~/ContentEditor.constants';
 
 jest.mock('~/actions/redux.action', () => {
     let statemock;
@@ -88,7 +89,12 @@ describe('startWorkflow action', () => {
                     lockedAndCannotBeEdited: false
                 },
                 formik: {
-                    dirty: false
+                    dirty: false,
+                    values: {
+                        'WIP::Info': {
+                            status: 'DISABLED'
+                        }
+                    }
                 },
                 disabled: false
             };
@@ -136,6 +142,15 @@ describe('startWorkflow action', () => {
 
         it('should disable request publication action form is dirty', () => {
             context.formik.dirty = true;
+            startWorkflowAction.init(context);
+
+            expect(context.disabled).toBe(true);
+        });
+
+        it('should disable request publication action form is WIP', () => {
+            context.formik.values[Constants.wip.fieldName].status = Constants.wip.status.LANGUAGES;
+            context.formik.values[Constants.wip.fieldName].languages = ['en', 'fr'];
+            context.language = 'en';
             startWorkflowAction.init(context);
 
             expect(context.disabled).toBe(true);
