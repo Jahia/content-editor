@@ -21,7 +21,7 @@ export const validateForm = async ({setTouched, validateForm}, componentRenderer
 
     if (nbOfErrors > 0) {
         const onClose = () => {
-            componentRenderer.destroy('CopyLanguageDialog');
+            componentRenderer.destroy('SaveErrorModal');
         };
 
         componentRenderer.render('SaveErrorModal', SaveErrorModal, {open: true, nbOfErrors, onClose});
