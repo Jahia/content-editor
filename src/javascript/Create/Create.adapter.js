@@ -1,7 +1,6 @@
 import {adaptSections, getFieldValuesFromDefaultValues} from '~/FormDefinitions/FormData.adapter';
 import {getFields} from '~/EditPanel/EditPanel.utils';
 import {adaptSystemNameField} from '../FormDefinitions/FormData.adapter';
-import {nodeTypeFormatter} from './Create.utils';
 import {Constants} from '~/ContentEditor.constants';
 import {encodeSystemName} from '~/utils';
 
@@ -14,7 +13,7 @@ const getInitialValues = (sections, nodeData) => {
 
 const adaptSystemName = (rawData, formData) => {
     // Set initial value for system name
-    formData.initialValues['ce:systemName'] = nodeTypeFormatter(rawData.jcr.nodeTypeByName.name);
+    formData.initialValues['ce:systemName'] = rawData.jcr.result.newName;
 };
 
 /**
