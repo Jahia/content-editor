@@ -2,11 +2,11 @@ import React from 'react';
 import saveAction from './save/save.action';
 import publishAction from './publish/publish.action';
 import startWorkflow from './startWorkflow/startWorkflow.action';
-import copyLanguageAction from './copyLanguage/copyLanguage.action';
 import {CloudUpload, Save} from '@material-ui/icons';
 import {Edit, MoreVert} from '@jahia/moonstone/dist/icons';
 import editContentAction from './EditContent.action';
 import OpenWorkInProgressModalAction from '~/EditPanel/WorkInProgress/OpenWorkInProgressModal.action';
+import {CopyLanguageActionComponent} from '~/Edit/copyLanguage/copyLanguage.action';
 
 export const registerEditActions = actionsRegistry => {
     // Edit action button in JContent
@@ -57,8 +57,9 @@ export const registerEditActions = actionsRegistry => {
         dataSelRole: 'workInProgressAction'
     });
 
-    actionsRegistry.add('action', 'copyLanguageAction', copyLanguageAction, {
+    actionsRegistry.add('action', 'copyLanguageAction', {
         buttonLabel: 'content-editor:label.contentEditor.edit.action.copyLanguage.name',
-        targets: ['content-editor/header/3dots:2']
+        targets: ['content-editor/header/3dots:2'],
+        component: CopyLanguageActionComponent
     });
 };
