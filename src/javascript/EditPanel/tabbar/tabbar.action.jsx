@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {hasToRenderAction} from '~/EditPanel/tabbar/TabBar.utils';
 
 export const TabBar = ({context, render: Render, ...props}) => {
     return (
         <>
-            {hasToRenderAction(context.value, context.mode) &&
+            {context.isDisplayable(context) &&
                 <Render
                     {...props}
                     {...(context.displayActionProps || {})}
