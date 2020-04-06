@@ -2,20 +2,13 @@ import React from 'react';
 import {shallow} from '@jahia/test-framework';
 import {TabBar} from '~/EditPanel/tabbar/tabbar.action';
 
-jest.mock('./TabBar.utils', () => {
-    return {
-        hasToRenderAction: () => {
-            return true;
-        }
-    };
-});
-
 describe('TabBar', () => {
     let defaultProps;
     beforeEach(() => {
         defaultProps = {
             context: {
-                setActiveTab: jest.fn()
+                setActiveTab: jest.fn(),
+                isDisplayable: () => true
             },
             otherProps: true,
             render: () => ''

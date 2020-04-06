@@ -1,6 +1,7 @@
 import React from 'react';
 import TabBarAction from './tabbar/tabbar.action';
 import {Edit, Settings} from '@material-ui/icons';
+import {Constants} from '~/ContentEditor.constants';
 
 export const registerEditPanelActions = actionsRegistry => {
     // Tab bar actions
@@ -9,7 +10,8 @@ export const registerEditPanelActions = actionsRegistry => {
         buttonIcon: <Edit/>,
         targets: ['editHeaderTabsActions:1'],
         value: 'edit',
-        dataSelRole: 'tab-edit'
+        dataSelRole: 'tab-edit',
+        isDisplayable: () => true
     });
 
     actionsRegistry.add('action', 'ceAdvancedTab', TabBarAction, {
@@ -17,6 +19,7 @@ export const registerEditPanelActions = actionsRegistry => {
         buttonIcon: <Settings/>,
         targets: ['editHeaderTabsActions:1'],
         value: 'advanced',
-        dataSelRole: 'tab-advanced-options'
+        dataSelRole: 'tab-advanced-options',
+        isDisplayable: context => context.mode === Constants.routes.baseEditRoute
     });
 };
