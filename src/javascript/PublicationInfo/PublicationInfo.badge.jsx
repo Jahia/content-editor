@@ -42,7 +42,7 @@ export const PublicationInfoBadge = () => {
             {!publicationInfoContext.publicationInfoPolling &&
             <>
                 {statuses.modified && renderStatus('modified')}
-                {renderStatus(statuses.published ? 'published' : 'notPublished')}
+                {!statuses.warning && renderStatus(statuses.published ? 'published' : 'notPublished')}
                 {statuses.warning && renderStatus('warning')}
             </>}
             {publicationInfoContext.publicationInfoPolling && renderStatus('publishing')}
