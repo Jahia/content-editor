@@ -55,6 +55,7 @@ export const FormQuery = gql`
         jcr {
             result:nodeById(uuid: $uuid) {
                 ...NodeCacheRequiredFields
+                newName: findAvailableNodeName(nodeType: $primaryNodeType, language: $language)
                 lockedAndCannotBeEdited
                 displayableNode {
                     path

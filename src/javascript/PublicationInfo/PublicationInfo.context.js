@@ -10,7 +10,7 @@ export const usePublicationInfoContext = () => useContext(PublicationInfoContext
 export const PublicationInfoContextProvider = ({uuid, lang, children}) => {
     const {t} = useTranslation();
     const {
-        publicationInfoError, publicationInfoErrorMessage, publicationStatus, publicationInfoPolling, startPublicationInfoPolling, stopPublicationInfoPolling
+        publicationInfoError, publicationInfoErrorMessage, ...publicationInfoContext
     } = usePublicationInfo({
         uuid: uuid,
         language: lang
@@ -20,8 +20,6 @@ export const PublicationInfoContextProvider = ({uuid, lang, children}) => {
         console.error(publicationInfoError);
         return <>{publicationInfoErrorMessage}</>;
     }
-
-    const publicationInfoContext = {publicationStatus, publicationInfoPolling, startPublicationInfoPolling, stopPublicationInfoPolling};
 
     return (
         <PublicationInfoContext.Provider value={publicationInfoContext}>

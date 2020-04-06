@@ -26,6 +26,7 @@ jest.mock('./publish.request', () => {
 });
 
 import {publishNode} from './publish.request';
+import {Constants} from '~/ContentEditor.constants';
 
 describe('publish action', () => {
     describe('onClick', () => {
@@ -53,7 +54,12 @@ describe('publish action', () => {
                     lockedAndCannotBeEdited: false
                 },
                 formik: {
-                    dirty: false
+                    dirty: false,
+                    values: {
+                        'WIP::Info': {
+                            status: 'DISABLED'
+                        }
+                    }
                 },
                 publicationInfoContext: {
                     publicationStatus: 'MODIFIED',
@@ -66,6 +72,20 @@ describe('publish action', () => {
 
         it('should disabled submit action when form is dirty', () => {
             context.formik.dirty = true;
+            publishAction.init(context);
+            expect(context.disabled).toBe(true);
+        });
+
+        it('should disabled submit action when node is in WIP for all content', () => {
+            context.formik.values[Constants.wip.fieldName].status = Constants.wip.status.ALL_CONTENT;
+            publishAction.init(context);
+            expect(context.disabled).toBe(true);
+        });
+
+        it('should disabled submit action when node is in WIP for current language', () => {
+            context.formik.values[Constants.wip.fieldName].status = Constants.wip.status.LANGUAGES;
+            context.formik.values[Constants.wip.fieldName].languages = ['en', 'fr'];
+            context.language = 'en';
             publishAction.init(context);
             expect(context.disabled).toBe(true);
         });

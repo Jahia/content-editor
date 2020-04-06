@@ -57,8 +57,7 @@
             "name": "Publish now",
             "namePolling": "Publishing",
             "success": "Publication has been queued",
-            "error": "Error while publishing",
-            "badge": "Publication in progress"
+            "error": "Error while publishing"
           },
           "startWorkflow": {
             "name": "Request publication"
@@ -215,6 +214,21 @@
       },
       "siteSwitcher": {
         "allSites": "All Sites"
+      },
+      "publicationStatusBadge": {
+        "publishing": "Publication in progress",
+        "published": "Live",
+        "notPublished": "Not published",
+        "modified": "Modified",
+        "warning": "Warning"
+      },
+      "publicationStatusTooltip": {
+        "modified": "Modified by {{userName}} on {{timestamp}}",
+        "published": "Published by {{userName}} on {{timestamp}}",
+        "mandatoryLanguageUnpublishable": "Content cannot be published in the current language because of a missing mandatory property",
+        "mandatoryLanguageValid": "Content will be visible in live once published in all the mandatory languages.",
+        "conflict": "Content with the same name already exists in live and won't be part of this publication",
+        "unknown": "Publication status unavailable"
       }
     }
   }

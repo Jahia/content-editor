@@ -38,6 +38,12 @@
             right: 92px;
         }
     }
+
+    .headerChips {
+        & > * {
+            margin-left: var(--spacing-small);
+        }
+    }
 }
 
 .mainActions {

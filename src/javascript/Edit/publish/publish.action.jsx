@@ -14,10 +14,13 @@ export default composeActions(
                     context.publicationInfoContext.stopPublicationInfoPolling();
                 }
 
+                const wipInfo = context.formik.values[Constants.wip.fieldName];
                 context.disabled = context.publicationInfoContext.publicationStatus === undefined ||
                     context.publicationInfoContext.publicationInfoPolling ||
                     context.nodeData.lockedAndCannotBeEdited ||
                     context.formik.dirty ||
+                    wipInfo.status === Constants.wip.status.ALL_CONTENT ||
+                    (wipInfo.status === Constants.wip.status.LANGUAGES && wipInfo.languages.includes(context.language)) ||
                     [
                         Constants.editPanel.publicationStatus.PUBLISHED,
                         Constants.editPanel.publicationStatus.MANDATORY_LANGUAGE_UNPUBLISHABLE
