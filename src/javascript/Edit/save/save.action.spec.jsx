@@ -1,165 +1,93 @@
-jest.mock('~/actions/redux.action', () => {
-    let statemock;
+import React, {useContext} from 'react';
+import {shallow} from '@jahia/test-framework';
+import saveAction from './save.action';
+import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
+
+jest.mock('react', () => {
     return {
-        reduxAction: mapStateToContext => {
-            return {
-                init: context => {
-                    const contextToAdd = mapStateToContext(statemock);
-                    Object.keys(contextToAdd).forEach(key => {
-                        context[key] = contextToAdd[key];
-                    });
-                }
-            };
-        },
-        setReduxState: s => {
-            statemock = s;
-        }
+        ...jest.requireActual('react'),
+        useContext: jest.fn(() => ({}))
     };
 });
 
-import saveAction from './save.action';
+jest.mock('~/PublicationInfo/PublicationInfo.context', () => ({usePublicationInfoContext: jest.fn()}));
 
 describe('save action', () => {
-    describe('init', () => {
-        const props = {};
-        let context;
-        beforeEach(() => {
-            context = {
-                mode: 'edit',
-                formik: {}
-            };
-        });
+    let context;
+    let SaveAction;
+    let defaultProps;
+    let render = jest.fn();
 
-        it('should add warn chip on button when all required fields were filled', () => {
-            context.formik = {
-                errors: {}
-            };
-            saveAction.init(context, props);
-
-            // As action expect impure function, testing params
-            expect(context.addWarningBadge).toBe(false);
-        });
-
-        it('should add warning badge on save button when required fields were not filled', () => {
-            context.formik = {
-                errors: {
-                    myFiled1: 'required',
-                    myFiled2: 'required'
-                }
-            };
-
-            saveAction.init(context, props);
-
-            // As action expect impure function, testing params
-            expect(context.addWarningBadge).toBe(true);
-        });
-
-        it('should not display save action when it isn\'t the edit mode', () => {
-            context.mode = 'create';
-
-            context.formik = {
+    beforeEach(() => {
+        SaveAction = saveAction.component;
+        useContext.mockImplementation(() => ({render}));
+        usePublicationInfoContext.mockImplementation(() => ({publicationInfoPolling: jest.fn()}));
+        context = {
+            formik: {
+                submitForm: jest.fn(() => Promise.resolve()),
+                resetForm: jest.fn(() => Promise.resolve()),
+                setFieldValue: jest.fn(),
+                setTouched: jest.fn(() => Promise.resolve()),
+                validateForm: jest.fn(() => Promise.resolve(context.formik.errors)),
                 dirty: true,
                 errors: {}
-            };
-
-            saveAction.init(context, props);
-            expect(context.enabled).toBe(false);
-        });
-
-        it('should enable save action when it is the edit mode', () => {
-            context.formik = {
-                dirty: true,
-                errors: {}
-            };
-
-            context.publicationInfoContext = {
-                publicationInfoPolling: false
-            };
-            saveAction.init(context, props);
-            expect(context.enabled).toBe(true);
-            expect(context.disabled).toBe(false);
-        });
-
-        it('should disable save action when publication info is polling', () => {
-            context.formik = {
-                dirty: true,
-                errors: {}
-            };
-            context.publicationInfoContext = {
-                publicationInfoPolling: true
-            };
-            saveAction.init(context, props);
-            expect(context.enabled).toBe(true);
-            expect(context.disabled).toBe(true);
-        });
-
-        it('should disable save action when form is dirty', () => {
-            context.formik = {
-                dirty: false,
-                errors: {}
-            };
-            context.publicationInfoContext = {
-                publicationInfoPolling: false
-            };
-            saveAction.init(context, props);
-            expect(context.enabled).toBe(true);
-            expect(context.disabled).toBe(true);
-        });
+            },
+            renderComponent: jest.fn()
+        };
+        defaultProps = {context, render, loading: undefined};
     });
 
-    describe('onClick', () => {
-        let context;
-        beforeEach(() => {
-            context = {
-                formik: {
-                    submitForm: jest.fn(() => Promise.resolve()),
-                    resetForm: jest.fn(() => Promise.resolve()),
-                    setFieldValue: jest.fn(),
-                    setTouched: jest.fn(() => Promise.resolve()),
-                    validateForm: jest.fn(() => Promise.resolve(context.formik.errors)),
-                    dirty: true,
-                    errors: {}
-                },
-                renderComponent: jest.fn()
-            };
-        });
+    it('should load when loading', async () => {
+        defaultProps.loading = () => 'Loading';
+        const cmp = shallow(<SaveAction {...defaultProps}/>);
+        expect(cmp.dive().debug()).toContain('Loading');
+    });
 
-        it('shouldn\'t do anything when form is not dirty', async () => {
-            context.formik.dirty = false;
-            await saveAction.onClick(context);
-            expect(context.formik.submitForm).not.toHaveBeenCalled();
-        });
+    it('should submit form when form is valid', async () => {
+        const cmp = shallow(<SaveAction {...defaultProps}/>);
+        await cmp.props().context.onClick(context);
+        expect(context.formik.submitForm).toHaveBeenCalled();
+    });
 
-        it('should submitForm', async () => {
-            await saveAction.onClick(context);
+    it('shouldn\'t do anything when form is not dirty', async () => {
+        context.formik.dirty = false;
+        const cmp = shallow(<SaveAction {...defaultProps}/>);
+        expect(cmp.props().context.disabled).toBeTruthy();
+    });
 
-            expect(context.formik.submitForm).toHaveBeenCalled();
-        });
+    it('should submitForm', async () => {
+        const cmp = shallow(<SaveAction {...defaultProps}/>);
+        await cmp.props().context.onClick(context);
 
-        it('should resetForm when submitting', async () => {
-            await saveAction.onClick(context);
+        expect(context.formik.submitForm).toHaveBeenCalled();
+    });
 
-            expect(context.formik.resetForm).toHaveBeenCalled();
-        });
+    it('should resetForm when submitting', async () => {
+        const cmp = shallow(<SaveAction {...defaultProps}/>);
+        await cmp.props().context.onClick(context);
 
-        it('shouldn\'t call resetForm when submitForm ', async () => {
-            context.formik.submitForm = jest.fn(() => Promise.reject());
-            try {
-                await saveAction.onClick(context);
-            } catch (_) {
-            }
+        expect(context.formik.resetForm).toHaveBeenCalled();
+    });
 
-            expect(context.formik.resetForm).not.toHaveBeenCalled();
-        });
+    it('shouldn\'t call resetForm when submitForm ', async () => {
+        context.formik.submitForm = jest.fn(() => Promise.reject());
+        try {
+            const cmp = shallow(<SaveAction {...defaultProps}/>);
+            await cmp.props().context.onClick(context);
+        } catch (_) {
+        }
 
-        it('should show a modal when form have errors', async () => {
-            context.formik.errors = {
-                field1: 'required'
-            };
+        expect(context.formik.resetForm).not.toHaveBeenCalled();
+    });
 
-            await saveAction.onClick(context);
+    it('should show a modal when form have errors', async () => {
+        context.formik.errors = {
+            field1: 'required'
+        };
 
-            expect(context.renderComponent).toHaveBeenCalled();
-        });
+        const cmp = shallow(<SaveAction {...defaultProps}/>);
+        await cmp.props().context.onClick(context);
+
+        expect(render).toHaveBeenCalled();
     });
 });
