@@ -22,7 +22,9 @@ jobs:
         with:
           node-version: '11.x'
       - name: install
-        run: yarn
+        run: npm install
+      - name: build
+        run: yarn webpack
       - name: linter
         run: yarn lint
       - name: test
