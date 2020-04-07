@@ -203,6 +203,7 @@
           "system": {
             "displayName": "Système",
             "fields": {
+              "systemNameDescription": "Identifie le contenu, 32 caractères maximum. Pour les pages, il est utilisé pour générer l’URL par défaut.",
               "systemName": "Nom système"
             }
           }

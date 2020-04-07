@@ -76,6 +76,19 @@ const patternFieldValidation = (values, field) => {
     }
 };
 
+const maxLengthFieldValidation = (values, field) => {
+    const error = 'maxLength';
+
+    if (field.requiredType !== 'STRING' || !field.maxLength) {
+        return;
+    }
+
+    const fieldValues = field.multiple ? (values[field.name] || []) : [values[field.name]];
+    if (fieldValues.find(value => (value || '').length > field.maxLength)) {
+        return error;
+    }
+};
+
 const requiredFieldValidation = (values, field, dynamicFieldSet) => {
     const error = 'required';
 
@@ -104,7 +117,8 @@ export const validate = sections => {
                     const fieldError = (
                         requiredFieldValidation(values, field, dynamicFieldSet) ||
                         dateFieldValidation(values, field) ||
-                        patternFieldValidation(values, field)
+                        patternFieldValidation(values, field) ||
+                        maxLengthFieldValidation(values, field)
                     );
 
                     if (fieldError) {
