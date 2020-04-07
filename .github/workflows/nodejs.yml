@@ -51,7 +51,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: generate target folder
-        run: mvn makeTarget
+        run: mvn clean install -DskipTests -Pdev
 
       - name: build
         run: yarn webpack
