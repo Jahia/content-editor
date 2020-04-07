@@ -34,7 +34,7 @@ ButtonRenderer.propTypes = {
 
 export const HeaderUpperSection = ({title, actionContext}) => {
     const {t} = useTranslation();
-    const {mode, nodeData, formik} = actionContext;
+    const {mode, nodeData, formik, nodeTypeName} = actionContext;
 
     const wipInfo = formik.values[Constants.wip.fieldName];
 
@@ -125,7 +125,7 @@ export const HeaderUpperSection = ({title, actionContext}) => {
 
             <div className={styles.header}>
                 <div className={styles.headerLeft}>
-                    <Chip label={nodeData.primaryNodeType.displayName} color="accent"/>
+                    <Chip label={nodeTypeName} color="accent"/>
                 </div>
 
                 <div className={styles.headerChips}>
@@ -151,6 +151,7 @@ HeaderUpperSection.propTypes = {
     actionContext: PropTypes.shape({
         mode: PropTypes.string.isRequired,
         nodeData: PropTypes.object.isRequired,
-        formik: PropTypes.object.isRequired
+        formik: PropTypes.object.isRequired,
+        nodeTypeName: PropTypes.string.isRequired
     }).isRequired
 };
