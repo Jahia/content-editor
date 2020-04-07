@@ -28,18 +28,20 @@ export const HeaderLowerSection = ({actionContext, setActiveTab, activeTab}) => 
                         activeTab: activeTab
                     }}
                     target="editHeaderTabsActions"
-                    render={({context}) => (
-                        <TabItem
+                    render={({context}) => {
+                        return (
+                            <TabItem
                             data-sel-role={context.dataSelRole}
                             icon={context.buttonIcon}
                             label={t(context.buttonLabel)}
-                            isSelected={context.selected}
+                            isSelected={context.value === context.activeTab}
                             onClick={e => {
                                 e.stopPropagation();
                                 context.onClick(context, e);
                             }}
                         />
-                    )}
+                    );
+                }}
                 />
             </Tab>
 
