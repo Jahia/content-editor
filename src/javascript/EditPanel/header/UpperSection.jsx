@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {Button, Typography, ButtonGroup, Chip} from '@jahia/moonstone';
+import {Typography, ButtonGroup, Chip} from '@jahia/moonstone';
 import {DisplayActions, DisplayAction} from '@jahia/ui-extender';
-import {Error} from '@material-ui/icons';
+
 import {useTranslation} from 'react-i18next';
 
 import PublicationInfoBadge from '~/PublicationInfo/PublicationInfo.badge';
@@ -13,24 +13,7 @@ import {Constants} from '~/ContentEditor.constants';
 import {Edit} from '@jahia/moonstone/dist/icons';
 import {truncate} from '~/utils/helper';
 import styles from './UpperSection.scss';
-
-const ButtonRenderer = ({context, ...props}) => {
-    return (
-        <Button
-            {...context.componentProps}
-            {...props}
-            icon={context.buttonIcon}
-            onClick={e => {
-                e.stopPropagation();
-                context.onClick(context, e);
-            }}
-    />
-    );
-};
-
-ButtonRenderer.propTypes = {
-    context: PropTypes.object.isRequired
-};
+import {ButtonWithPastilleRenderer, ButtonRenderer} from './ActionsButtons';
 
 export const HeaderUpperSection = ({title, actionContext}) => {
     const {t} = useTranslation();
@@ -76,9 +59,25 @@ export const HeaderUpperSection = ({title, actionContext}) => {
                 </div>
 
                 <div className={styles.headerRight}>
+                    <div className={styles.saveActions}>
+                        <DisplayActions context={{
+                                        ...actionContext,
+                                        componentProps: {
+                                            color: 'accent',
+                                            size: 'big',
+                                            className: styles.mainActions
+                                        }
+
+                                    }}
+                                        target="content-editor/header/main-save-actions"
+                                        render={ButtonWithPastilleRenderer}
+                        />
+                    </div>
+
                     <ButtonGroup
                             color="accent"
                             size="big"
+                            className={styles.publishActions}
                     >
                         <DisplayActions
                                 context={{
@@ -90,33 +89,8 @@ export const HeaderUpperSection = ({title, actionContext}) => {
                                         className: styles.mainActions
                                     }
                                 }}
-                                target="content-editor/header/main-actions"
-                                render={({context}) => {
-                                    if (!context.enabled) {
-                                        return '';
-                                    }
-
-                                    return (
-                                        <>
-                                            <Button
-                                                {...context.componentProps}
-                                                icon={context.buttonIcon}
-                                                label={t(context.buttonLabel).toUpperCase()}
-                                                disabled={context.disabled}
-                                                data-sel-role={context.dataSelRole}
-                                                onClick={e => {
-                                                    e.stopPropagation();
-                                                    context.onClick(context, e);
-                                                }}
-                                            />
-
-                                            {context.addWarningBadge && (
-                                                <Error data-sel-role={`${context.actionKey}_pastille`}
-                                                       className={styles.warningBadge}/>
-                                            )}
-                                        </>
-                                    );
-                                }}
+                                target="content-editor/header/main-publish-actions"
+                                render={ButtonWithPastilleRenderer}
                             />
                         {EditActions}
                     </ButtonGroup>
