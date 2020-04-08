@@ -1,25 +1,17 @@
 import React, {useState} from 'react';
 import {EditPanelDialogConfirmation} from '~/EditPanel/EditPanelDialogConfirmation';
 import {useContentEditorConfigContext} from '~/ContentEditor.context';
-import {useLockedEditorContext} from '~/Lock/LockedEditor.context';
 import * as PropTypes from 'prop-types';
 
 const GoBack = ({context, render: Render}) => {
     const {envProps} = useContentEditorConfigContext();
-    const lockedEditorContext = useLockedEditorContext();
     const [open, setOpen] = useState(false);
     const executeGoBackAction = () => {
         if (envProps.closeCallback) {
             envProps.closeCallback();
         }
 
-        if (lockedEditorContext.unlockEditor) {
-            lockedEditorContext.unlockEditor(() => {
-                envProps.back();
-            });
-        } else {
-            envProps.back();
-        }
+        envProps.back();
     };
 
     return (
