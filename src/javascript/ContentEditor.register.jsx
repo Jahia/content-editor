@@ -19,14 +19,14 @@ registry.add('app', 'content-editor-api', {
 registerCEActions(registry);
 
 registry.add('route', 'content-editor-edit-route', {
-    targets: ['nav-root-top:2.1'],
+    targets: ['main:2.1'],
     path: '/content-editor/:lang/edit/:uuid',
     // eslint-disable-next-line react/prop-types
     render: ({match}) => <ContentEditorRedux uuid={match.params.uuid} mode={Constants.routes.baseEditRoute} lang={match.params.lang}/>
 });
 
 registry.add('route', 'content-editor-create-route', {
-    targets: ['nav-root-top:2.1'],
+    targets: ['main:2.1'],
     path: '/content-editor/:lang/create/:parentUuid/:contentType',
     // eslint-disable-next-line react/prop-types
     render: ({match}) => <ContentEditorRedux uuid={match.params.parentUuid} mode={Constants.routes.baseCreateRoute} lang={match.params.lang} contentType={decodeURI(match.params.contentType)}/>
