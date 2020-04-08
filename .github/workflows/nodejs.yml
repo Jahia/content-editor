@@ -60,5 +60,8 @@ jobs:
       - name: linter
         run: yarn lint
 
-      - name: test
+      - name: test java
+        run: mvn test
+
+      - name: test JavaScript
         run: yarn test
