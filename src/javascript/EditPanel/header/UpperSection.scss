@@ -21,22 +21,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-
-        & .warningBadge {
-            position: absolute;
-            top: 0.7em;
-            right: 242px;
-
-            color: #e8b606;
-
-            border-radius: 50%;
-
-            background-color: var(--color-white);
-        }
-
-        & > .warningBadge:last-child {
-            right: 92px;
-        }
     }
 
     .headerChips {
@@ -52,4 +36,14 @@
 
 .menu {
     height: 38px;
+}
+
+.saveActions {
+    position: relative;
+
+    margin-right: var(--spacing-small);
+}
+
+.publishActions {
+    position: relative;
 }

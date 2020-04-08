@@ -21,7 +21,7 @@ export const registerCreateActions = registry => {
         buttonIcon: <Save/>,
         color: 'accent',
         variant: 'outlined',
-        targets: ['content-editor/header/main-actions'],
+        targets: ['content-editor/header/main-save-actions'],
         dataSelRole: 'createButton'
     });
 };
