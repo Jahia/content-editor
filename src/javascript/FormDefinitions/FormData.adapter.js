@@ -2,7 +2,7 @@ import {resolveSelectorType} from '~/EditPanel/EditPanelContent/FormBuilder/Sect
 import {Constants} from '~/ContentEditor.constants';
 
 const isContentOrFileNode = formData => {
-    const pattern = '/sites/[^/]*/(contents|files)';
+    const pattern = '^/sites/[^/]*/(contents|files)$';
     const regex = RegExp(pattern);
     return formData.technicalInfo.filter(info => {
         return regex.test(info.value);
