@@ -78,13 +78,14 @@ const patternFieldValidation = (values, field) => {
 
 const maxLengthFieldValidation = (values, field) => {
     const error = 'maxLength';
-
-    if (field.requiredType !== 'STRING' || !field.maxLength) {
+    let maxLength = field.selectorOptions;
+    maxLength = maxLength && field.selectorOptions.find(entry => entry.name === 'maxLength');
+    if (field.requiredType !== 'STRING' || !maxLength || !maxLength.value) {
         return;
     }
 
     const fieldValues = field.multiple ? (values[field.name] || []) : [values[field.name]];
-    if (fieldValues.find(value => (value || '').length > field.maxLength)) {
+    if (fieldValues.find(value => (value || '').length > maxLength.value)) {
         return error;
     }
 };

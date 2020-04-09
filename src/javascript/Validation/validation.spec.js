@@ -48,6 +48,8 @@ describe('validation', () => {
         return {sections, values};
     };
 
+    const maxLength = maxLength => ({selectorOptions: [{name: 'maxLength', value: maxLength}]});
+
     describe('required', () => {
         it('should return object with all field with no errors when fields are NOT mandatory', () => {
             const {sections, values} = buildSections({mandatory: false, multiple: false});
@@ -565,7 +567,7 @@ describe('validation', () => {
 
     describe('max-length', () => {
         it('should not trigger any error when fields is not a string', () => {
-            const {sections} = buildSections({requiredType: 'DATE', maxLength: 42});
+            const {sections} = buildSections({requiredType: 'DATE', ...maxLength(42)});
             const values = {
                 field1: '2019-06-04T00:00:00.000',
                 field2: '2019-06-04T00:00:00.000',
@@ -575,8 +577,19 @@ describe('validation', () => {
             expect(validate(sections)(values)).toEqual({});
         });
 
+        it('should not trigger any error when no maxLength limit', () => {
+            const {sections} = buildSections();
+            const values = {
+                field1: '1',
+                field2: '0',
+                field3: null,
+                field4: undefined
+            };
+            expect(validate(sections)(values)).toEqual({});
+        });
+
         it('should not trigger any error when value is below the maxLength limit', () => {
-            const {sections} = buildSections({requiredType: 'STRING', maxLength: 5});
+            const {sections} = buildSections({requiredType: 'STRING', ...maxLength(5)});
             const values = {
                 field1: '1',
                 field2: '0',
@@ -587,23 +600,23 @@ describe('validation', () => {
         });
 
         it('should trigger an error when values is upper the maxLength limit', () => {
-            const {sections} = buildSections({requiredType: 'STRING', maxLength: 5});
+            const {sections} = buildSections({requiredType: 'STRING', ...maxLength(5)});
             const values = {
                 field1: '123456678',
                 field2: '0999999999',
-                field3: '123456',
+                field3: 'good',
                 field4: 'ispeaktoomuch'
             };
-            expect(validate(sections)(values)).toEqual({
+            const validationResult = validate(sections)(values);
+            expect(validationResult).toEqual({
                 field1: 'maxLength',
                 field2: 'maxLength',
-                field3: 'maxLength',
                 field4: 'maxLength'
             });
         });
 
         it('should not trigger any error when value is below the maxLength limit in multiple fields', () => {
-            const {sections} = buildSections({requiredType: 'STRING', maxLength: 5, multiple: true});
+            const {sections} = buildSections({requiredType: 'STRING', ...maxLength(5), multiple: true});
             const values = {
                 field1: ['1', '2', '1', '2', '1', '2'],
                 field2: ['0'],
@@ -614,17 +627,16 @@ describe('validation', () => {
         });
 
         it('should trigger errors when one of the values are upper the maxLength limit in multiple fields', () => {
-            const {sections} = buildSections({requiredType: 'STRING', maxLength: 5, multiple: true});
+            const {sections} = buildSections({requiredType: 'STRING', ...maxLength(5), multiple: true});
             const values = {
                 field1: ['1', 'toolooong'],
                 field2: ['1', '42424242242424'],
-                field3: ['toolooong'],
+                field3: ['good', 'good'],
                 field4: [null, undefined, 'toolooong']
             };
             expect(validate(sections)(values)).toEqual({
                 field1: 'maxLength',
                 field2: 'maxLength',
-                field3: 'maxLength',
                 field4: 'maxLength'
             });
         });
@@ -655,7 +667,7 @@ describe('validation', () => {
         });
 
         it('should validate mandatory with better priority than maxLength', () => {
-            const {sections} = buildSections({requiredType: 'STRING', maxLength: 5, mandatory: true});
+            const {sections} = buildSections({requiredType: 'STRING', ...maxLength(5), mandatory: true});
             sections[0].fieldSets[1].fields[0].mandatory = false;
 
             const values = {

@@ -139,20 +139,6 @@ describe('Field component', () => {
         expect(cmp.dive().debug()).toContain('This is a description for this text field.');
     });
 
-    it('should display the descriptionI18NKey when field has a descriptionI18NKey and no description', () => {
-        defaultProps.input = props => <Text {...props}/>;
-        defaultProps.field.multiple = false;
-        defaultProps.field.descriptionI18NKey = defaultProps.field.description;
-        delete defaultProps.field.description;
-        const cmp = shallowWithTheme(
-            <Field {...defaultProps}/>,
-            {},
-            dsGenericTheme
-        );
-
-        expect(cmp.dive().debug()).toContain('This is a description for this text field.');
-    });
-
     it('should not display the description label when field has not a description', () => {
         defaultProps.input = props => <Text {...props}/>;
         defaultProps.field.multiple = false;

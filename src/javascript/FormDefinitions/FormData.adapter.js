@@ -21,6 +21,9 @@ export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType
                 // Add i18ns label to field
                 systemNameField.displayName = t('content-editor:label.contentEditor.section.fieldSet.system.fields.systemName');
 
+                // Add description to the field
+                systemNameField.description = t('content-editor:label.contentEditor.section.fieldSet.system.fields.systemNameDescription');
+
                 // System name should be readonly for this specific nodetypes
                 if (Constants.systemName.READONLY_FOR_NODE_TYPES.includes(primaryNodeType.name) || isContentOrFileNode(formData)) {
                     systemNameField.readOnly = true;

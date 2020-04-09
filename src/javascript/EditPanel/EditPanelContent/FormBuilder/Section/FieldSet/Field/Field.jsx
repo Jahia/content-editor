@@ -56,7 +56,6 @@ let styles = theme => {
     };
 };
 
-/* eslint complexity:[1,21] */
 export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, siteInfo, actionContext, formik: {errors, touched, values}}) => {
     const {t} = useTranslation();
     const contextualMenu = useRef(null);
@@ -66,8 +65,6 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
     const shouldDisplayErrors = touched[field.name] && errors[field.name];
     const hasMandatoryError = shouldDisplayErrors && errors[field.name] === 'required';
     const wipInfo = values[Constants.wip.fieldName];
-
-    const description = field.description || (field.descriptionI18NKey ? t(field.descriptionI18NKey) : '');
     return (
         <div className={`${classes.formControl} ${shouldDisplayErrors ? classes.formControlError : ''}`}
              data-sel-content-editor-field={field.name}
@@ -120,7 +117,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
                             />}
                         </Grid>
                     </Grid>
-                    {description &&
+                    {field.description &&
                     <Grid
                         container
                         direction="row"
@@ -129,7 +126,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
                     >
                         <Grid item>
                             <Typography color="beta" variant="omega">
-                                {description}
+                                {field.description}
                             </Typography>
                         </Grid>
                     </Grid>}

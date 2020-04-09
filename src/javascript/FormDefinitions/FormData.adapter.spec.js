@@ -24,7 +24,11 @@ describe('adaptFormData', () => {
                             fields: [
                                 {
                                     name: 'ce:systemName',
-                                    readOnly: false
+                                    readOnly: false,
+                                    selectorOptions: [{
+                                        name: 'description-i18n-key',
+                                        value: 'content-editor:label.section.fieldSet.fields.systemNameDescription'
+                                    }]
                                 }
                             ]
                         }
@@ -48,6 +52,7 @@ describe('adaptFormData', () => {
         adaptSystemNameField(null, formData, null, t, nodeType);
         expect(formData.sections[1].fieldSets[0].displayName).toEqual('content-editor:label.contentEditor.section.fieldSet.system.displayName');
         expect(formData.sections[1].fieldSets[0].fields[0].displayName).toEqual('content-editor:label.contentEditor.section.fieldSet.system.fields.systemName');
+        expect(formData.sections[1].fieldSets[0].fields[0].description).toEqual('content-editor:label.contentEditor.section.fieldSet.system.fields.systemNameDescription');
         expect(formData.sections[1].fieldSets[0].fields[0].readOnly).toEqual(false);
     });
 
