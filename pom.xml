@@ -193,7 +193,7 @@
         <profile>
             <id>dev</id>
             <properties>
-                <yarn.arguments>build</yarn.arguments>
+                <yarn.arguments>webpack</yarn.arguments>
             </properties>
         </profile>
         <profile>
