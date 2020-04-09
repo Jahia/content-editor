@@ -14,29 +14,38 @@ import {PublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context'
 import MainLayout from '~/DesignSystem/ContentLayout/MainLayout';
 import ContentHeader from '~/DesignSystem/ContentLayout/ContentHeader';
 import {Separator} from '@jahia/moonstone';
+import {useLockedEditorContext} from '~/Lock/LockedEditor.context';
 
 const EditPanelCmp = ({formik, title, notificationContext, client}) => {
     const {t} = useTranslation();
     const {nodeData, siteInfo, lang, uilang, mode, nodeTypeName} = useContentEditorContext();
     const {envProps} = useContentEditorConfigContext();
+    const lockedEditorContext = useLockedEditorContext();
+
+    const handleBeforeUnloadEvent = ev => {
+        if (formik.dirty) {
+            ev.preventDefault();
+            ev.returnValue = '';
+        }
+    };
 
     useEffect(() => {
         if (envProps.initCallback) {
             envProps.initCallback(formik);
         }
 
-        const handleBeforeUnloadEvent = ev => {
-            if (formik.dirty) {
-                ev.preventDefault();
-                ev.returnValue = '';
-            }
-        };
-
         // Prevent close browser's tab when there is unsaved content
         window.addEventListener('beforeunload', handleBeforeUnloadEvent);
+    }, [formik.dirty]);
+
+    useEffect(() => {
         return () => {
             if (envProps.closeCallback) {
                 envProps.closeCallback();
+            }
+
+            if (lockedEditorContext.unlockEditor) {
+                lockedEditorContext.unlockEditor();
             }
 
             window.removeEventListener(
@@ -44,8 +53,7 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
                 handleBeforeUnloadEvent
             );
         };
-    }, [formik.dirty]);
-
+    }, []);
     const publicationInfoContext = useContext(PublicationInfoContext);
 
     const actionContext = {

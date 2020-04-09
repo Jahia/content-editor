@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useMemo} from 'react';
 import * as PropTypes from 'prop-types';
 
 export const EditorIdContext = React.createContext({});
@@ -6,9 +6,11 @@ export const EditorIdContext = React.createContext({});
 export const useEditorIdContext = () => useContext(EditorIdContext);
 
 export const EditorIdContextProvider = ({children}) => {
-    const editorIdContext = {
-        editorId: '_' + Math.random().toString(36).substr(2, 9)
-    };
+    const editorIdContext = useMemo(() => {
+        return {
+            editorId: '_' + Math.random().toString(36).substr(2, 9)
+        };
+    }, []);
 
     return (
         <EditorIdContext.Provider value={editorIdContext}>
