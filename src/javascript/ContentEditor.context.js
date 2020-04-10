@@ -29,7 +29,8 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
             uilang: Constants.supportedLocales.includes(uilang) ? uilang : Constants.defaultLocale,
             primaryNodeType: contentType
         };
-        const {loading, error, errorMessage, nodeData, initialValues, details, technicalInfo, sections, title, nodeTypeName} = useFormDefinition(formQuery, formQueryParams, formDataAdapter, t);
+        const {loading, error, errorMessage, data: formDefinition, refetch: refetchFormData} = useFormDefinition(formQuery, formQueryParams, formDataAdapter, t);
+        const {nodeData, initialValues, details, technicalInfo, sections, title, nodeTypeName} = formDefinition || {};
         const siteInfoResult = useSiteInfo({
             siteKey: site,
             displayLanguage: lang
@@ -70,7 +71,8 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
             formQueryParams,
             previousLocation,
             setPreviousLocation,
-            nodeTypeName
+            nodeTypeName,
+            refetchFormData
         };
 
         return (

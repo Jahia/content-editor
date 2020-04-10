@@ -18,7 +18,7 @@ import {useLockedEditorContext} from '~/Lock/LockedEditor.context';
 
 const EditPanelCmp = ({formik, title, notificationContext, client}) => {
     const {t} = useTranslation();
-    const {nodeData, siteInfo, lang, uilang, mode, nodeTypeName} = useContentEditorContext();
+    const {nodeData, siteInfo, lang, uilang, mode, nodeTypeName, refetchFormData} = useContentEditorContext();
     const {envProps} = useContentEditorConfigContext();
     const lockedEditorContext = useLockedEditorContext();
 
@@ -47,6 +47,8 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
     }, [formik.dirty]);
 
     useEffect(() => {
+        window.authoringApi.pushEventHandlers[window.authoringApi.pushEventHandlers.length] = refetchFormData;
+
         return () => {
             if (envProps.closeCallback) {
                 envProps.closeCallback();
@@ -55,6 +57,8 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
             if (lockedEditorContext.unlockEditor) {
                 lockedEditorContext.unlockEditor();
             }
+
+            window.authoringApi.pushEventHandlers.splice(window.authoringApi.pushEventHandlers.findIndex(eh => eh === refetchFormData, 1));
         };
     }, []);
     const publicationInfoContext = useContext(PublicationInfoContext);
