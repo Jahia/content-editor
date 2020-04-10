@@ -22,20 +22,28 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
     const {envProps} = useContentEditorConfigContext();
     const lockedEditorContext = useLockedEditorContext();
 
-    const handleBeforeUnloadEvent = ev => {
-        if (formik.dirty) {
-            ev.preventDefault();
-            ev.returnValue = '';
-        }
-    };
-
     useEffect(() => {
         if (envProps.initCallback) {
             envProps.initCallback(formik);
         }
 
-        // Prevent close browser's tab when there is unsaved content
-        window.addEventListener('beforeunload', handleBeforeUnloadEvent);
+        const handleBeforeUnloadEvent = ev => {
+            if (formik.dirty) {
+                ev.preventDefault();
+                ev.returnValue = '';
+            }
+        };
+
+        if (formik.dirty) {
+            // Prevent close browser's tab when there is unsaved content
+            window.addEventListener('beforeunload', handleBeforeUnloadEvent);
+        } else {
+            window.removeEventListener('beforeunload', handleBeforeUnloadEvent);
+        }
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnloadEvent);
+        };
     }, [formik.dirty]);
 
     useEffect(() => {
@@ -47,11 +55,6 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
             if (lockedEditorContext.unlockEditor) {
                 lockedEditorContext.unlockEditor();
             }
-
-            window.removeEventListener(
-                'beforeunload',
-                handleBeforeUnloadEvent
-            );
         };
     }, []);
     const publicationInfoContext = useContext(PublicationInfoContext);
