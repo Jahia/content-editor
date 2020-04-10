@@ -174,7 +174,14 @@ public class EditorFormServiceImpl implements EditorFormService {
                 processedNodeTypes.add(superType.getName());
             }
 
-            List<ExtendedNodeType> extendMixins = getExtendMixins(primaryNodeTypeName, parentNode.getResolveSite());
+            JCRSiteNode resolvedSite;
+            if(existingNode != null && existingNode.isNodeType("jnt:virtualsite")){
+                resolvedSite = (JCRSiteNode) existingNode;
+            }else {
+                resolvedSite = parentNode.getResolveSite();
+            }
+
+            List<ExtendedNodeType> extendMixins = getExtendMixins(primaryNodeTypeName, resolvedSite);
             for (ExtendedNodeType extendMixinNodeType : extendMixins) {
                 if (processedNodeTypes.contains(extendMixinNodeType.getName())) {
                     // ignore already process node types
