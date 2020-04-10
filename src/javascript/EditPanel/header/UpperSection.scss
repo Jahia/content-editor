@@ -46,4 +46,8 @@
 
 .publishActions {
     position: relative;
+
+    & button:not(:first-child) {
+        margin-left: 1px;
+    }
 }
