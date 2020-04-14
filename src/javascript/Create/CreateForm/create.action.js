@@ -1,12 +1,13 @@
 import {Constants} from '~/ContentEditor.constants';
 import {validateForm} from '~/Validation/validation.utils';
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {ComponentRendererContext} from '@jahia/ui-extender';
 import * as PropTypes from 'prop-types';
 
 const Create = ({context, render: Render, loading: Loading}) => {
     const componentRenderer = useContext(ComponentRendererContext);
 
+    const [clicked, setClicked] = useState(false);
     if (Loading) {
         return <Loading context={context}/>;
     }
@@ -17,10 +18,12 @@ const Create = ({context, render: Render, loading: Loading}) => {
                 ...context,
                 addWarningBadge: Object.keys(context.formik.errors).length > 0,
                 enabled: context.mode === Constants.routes.baseCreateRoute,
+                disabled: clicked,
                 onClick: async ({formik}) => {
                     const formIsValid = await validateForm(formik, componentRenderer);
 
                     if (formIsValid) {
+                        setClicked(true);
                         return formik
                             .submitForm()
                             .then(() => {
