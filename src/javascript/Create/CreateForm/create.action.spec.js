@@ -58,4 +58,17 @@ describe('create action', () => {
         await cmp.props().context.onClick(defaultProps.context);
         expect(defaultProps.context.formik.submitForm).not.toHaveBeenCalled();
     });
+
+    it('should not be a disabled action when is not clicked', async () => {
+        const cmp = shallow(<CreateAction {...defaultProps}/>);
+
+        expect(cmp.props().context.disabled).toBe(false);
+    });
+
+    it('should disable action when is clicked', async () => {
+        const cmp = shallow(<CreateAction {...defaultProps}/>);
+        await cmp.props().context.onClick(defaultProps.context);
+
+        expect(cmp.props().context.disabled).toBe(true);
+    });
 });
