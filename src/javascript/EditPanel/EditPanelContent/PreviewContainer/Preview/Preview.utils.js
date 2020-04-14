@@ -23,7 +23,7 @@ export const getPreviewContext = editorContext => {
 
     return {
         path: path,
-        workspace: 'EDIT',
+        workspace: 'edit',
         view: view,
         contextConfiguration: config,
         templateType: 'html',

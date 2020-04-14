@@ -36,7 +36,7 @@ jest.mock('./Preview.utils', () => {
     return {
         getPreviewContext: () => ({
             path: '/site/digitall',
-            workspace: 'EDIT',
+            workspace: 'edit',
             language: 'fr',
             templateType: 'normal',
             view: 'aLaTV',
@@ -59,7 +59,7 @@ describe('ContentPreviewMemoWrapper', () => {
         const hookArgs = useContentPreview.mock.calls[0][0];
         expect(hookArgs.language).toBe('fr');
         expect(hookArgs.path).toBe('/site/digitall');
-        expect(hookArgs.workspace).toBe('EDIT');
+        expect(hookArgs.workspace).toBe('edit');
     });
 
     it('should not display the badge when content is visible', () => {
@@ -71,7 +71,7 @@ describe('ContentPreviewMemoWrapper', () => {
         )
             .dive();
 
-        const PreviewComponent = cmp.find({workspace: 'EDIT'});
+        const PreviewComponent = cmp.find({workspace: 'edit'});
 
         PreviewComponent.props().domLoadedCallback(document);
         expect(cmp.find('DsBadge').exists()).toBe(false);
@@ -86,7 +86,7 @@ describe('ContentPreviewMemoWrapper', () => {
         )
             .dive();
 
-        const PreviewComponent = cmp.find({workspace: 'EDIT'});
+        const PreviewComponent = cmp.find({workspace: 'edit'});
 
         PreviewComponent.props().domLoadedCallback(document);
         expect(cmp.find('DsBadge').exists()).toBe(true);
