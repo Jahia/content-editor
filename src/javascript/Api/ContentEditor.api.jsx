@@ -22,6 +22,16 @@ let styles = () => {
     };
 };
 
+function triggerEvents(nodeUuid, operator) {
+// Refresh contentEditorEventHandlers
+    if (window.top.contentEditorEventHandlers && Object.keys(window.top.contentEditorEventHandlers).length > 0) {
+        Object.values(window.top.contentEditorEventHandlers)
+            .forEach(handler =>
+                handler({nodeUuid: nodeUuid, operator: operator})
+            );
+    }
+}
+
 const ContentEditorApiCmp = ({classes, client}) => {
     const [editorConfig, setEditorConfig] = useState(false);
     const [contentTypeSelectorConfig, setContentTypeSelectorConfig] = useState(false);
@@ -108,11 +118,13 @@ const ContentEditorApiCmp = ({classes, client}) => {
         initCallback: formik => {
             setFormikRef(formik);
         },
-        back: () => {
+        back: (nodeUuid, operation) => {
             // Refresh GWT content
             if (window.top.authoringApi.refreshContent) {
                 window.top.authoringApi.refreshContent();
             }
+
+            triggerEvents(nodeUuid, operation);
 
             closeAll();
         },
@@ -123,13 +135,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
                 window.top.authoringApi.refreshContent();
             }
 
-            // Refresh contentEditorEventHandlers
-            if (window.top.contentEditorEventHandlers && Object.keys(window.top.contentEditorEventHandlers).length > 0) {
-                Object.values(window.top.contentEditorEventHandlers)
-                    .forEach(handler =>
-                        handler({nodeUuid: createdNodeUuid, operator: 'create'})
-                    );
-            }
+            triggerEvents(createdNodeUuid, Constants.operators.create);
 
             // Redirect to CE edit mode, for the created node
             if (editorConfig) {
@@ -149,12 +155,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
             }
 
             // Refresh contentEditorEventHandlers
-            if (window.top.contentEditorEventHandlers && Object.keys(window.top.contentEditorEventHandlers).length > 0) {
-                Object.values(window.top.contentEditorEventHandlers)
-                    .forEach(handler =>
-                        handler({nodeUuid: nodeUuid, operator: 'update'})
-                    );
-            }
+            triggerEvents(nodeUuid, Constants.operators.update);
         },
         setLanguage: lang => {
             // Update the lang of current opened CE

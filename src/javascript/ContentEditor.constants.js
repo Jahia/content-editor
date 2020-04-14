@@ -19,12 +19,11 @@ export const Constants = {
     defaultLocale: 'en',
     routes: {
         baseEditRoute: 'edit',
-        baseCreateRoute: 'create',
-        browseMap: {
-            contents: 'content-folders',
-            files: 'media',
-            pages: 'pages'
-        }
+        baseCreateRoute: 'create'
+    },
+    operators: {
+        update: 'update',
+        create: 'create'
     },
     env: {
         redux: 'redux',

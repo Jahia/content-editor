@@ -6,12 +6,12 @@ import * as PropTypes from 'prop-types';
 const GoBack = ({context, render: Render}) => {
     const {envProps} = useContentEditorConfigContext();
     const [open, setOpen] = useState(false);
-    const executeGoBackAction = () => {
+    const executeGoBackAction = (uuid, operator) => {
         if (envProps.closeCallback) {
             envProps.closeCallback();
         }
 
-        envProps.back();
+        envProps.back(uuid, operator);
     };
 
     return (
@@ -20,7 +20,7 @@ const GoBack = ({context, render: Render}) => {
                 open={open}
                 titleKey="content-editor:label.contentEditor.edit.action.goBack.title"
                 formik={context.formik}
-                actionCallback={() => executeGoBackAction()}
+                actionCallback={(uuid, operator) => executeGoBackAction(uuid, operator)}
                 onCloseDialog={() => setOpen(false)}
             />
             <Render
@@ -34,8 +34,11 @@ const GoBack = ({context, render: Render}) => {
                         if (context.formik) {
                             if (context.formik.dirty) {
                                 setOpen(true);
-                            } else {
-                                executeGoBackAction();
+                                return;
+                            }
+
+                            if (envProps.closeCallback) {
+                                envProps.closeCallback();
                             }
                         }
                     }
