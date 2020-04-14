@@ -23,7 +23,7 @@ describe('Preview.utils', () => {
         expect(previewContext.view).toBe('cm');
         expect(previewContext.contextConfiguration).toBe('module');
         expect(previewContext.templateType).toBe('html');
-        expect(previewContext.workspace).toBe('EDIT');
+        expect(previewContext.workspace).toBe('edit');
         expect(previewContext.requestAttributes[0].name).toBe('ce_preview');
         expect(previewContext.requestAttributes[0].value).toBe('dummy_uuid');
     });
@@ -50,7 +50,7 @@ describe('Preview.utils', () => {
         expect(previewContext.view).toBe('cm');
         expect(previewContext.contextConfiguration).toBe('module');
         expect(previewContext.templateType).toBe('html');
-        expect(previewContext.workspace).toBe('EDIT');
+        expect(previewContext.workspace).toBe('edit');
         expect(previewContext.requestAttributes[0].name).toBe('ce_preview');
         expect(previewContext.requestAttributes[0].value).toBe('dummy_uuid');
     });
@@ -77,7 +77,7 @@ describe('Preview.utils', () => {
         expect(previewContext.view).toBe('default');
         expect(previewContext.contextConfiguration).toBe('page');
         expect(previewContext.templateType).toBe('html');
-        expect(previewContext.workspace).toBe('EDIT');
+        expect(previewContext.workspace).toBe('edit');
         expect(previewContext.requestAttributes[0].name).toBe('ce_preview');
         expect(previewContext.requestAttributes[0].value).toBe('dummy_uuid');
     });
@@ -104,7 +104,7 @@ describe('Preview.utils', () => {
         expect(previewContext.view).toBe('default');
         expect(previewContext.contextConfiguration).toBe('page');
         expect(previewContext.templateType).toBe('html');
-        expect(previewContext.workspace).toBe('EDIT');
+        expect(previewContext.workspace).toBe('edit');
         expect(previewContext.requestAttributes[0].name).toBe('ce_preview');
         expect(previewContext.requestAttributes[0].value).toBe('dummy_uuid');
         expect(previewContext.requestAttributes[1].name).toBe('ce_preview_wrapper');
