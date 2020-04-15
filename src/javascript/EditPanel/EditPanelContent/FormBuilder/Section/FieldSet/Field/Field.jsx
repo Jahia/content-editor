@@ -11,6 +11,7 @@ import {MultipleField} from './MultipleField';
 import {SingleField} from './SingleField';
 import {showChipField} from '~/EditPanel/WorkInProgress/WorkInProgress.utils';
 import {Constants} from '~/ContentEditor.constants';
+import {buildFlatFieldObject} from './field.utils';
 
 let styles = theme => {
     const common = {
@@ -163,11 +164,11 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
                             )}
                         </Grid>
                     </Grid>
-                    <Typography className={classes.errorMessage}>
+                    <Typography className={classes.errorMessage} data-sel-error={shouldDisplayErrors && errors[field.name]}>
                         {shouldDisplayErrors ?
                             field.errorMessage ?
                                 field.errorMessage :
-                                t(`content-editor:label.contentEditor.edit.errors.${errors[field.name]}`) :
+                                t(`content-editor:label.contentEditor.edit.errors.${errors[field.name]}`, buildFlatFieldObject(field)) :
                             ''}&nbsp;
                     </Typography>
                 </Grid>
