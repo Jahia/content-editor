@@ -42,14 +42,16 @@ export const HeaderUpperSection = ({title, actionContext}) => {
         <>
             <div className={styles.header}>
                 <div className={styles.headerLeft}>
-                    <DisplayActions
+                    <DisplayAction
                                 context={{
+                                    uuid: nodeData.uuid,
+                                    operator: mode === Constants.routes.baseEditRoute ? Constants.operators.update : Constants.operators.create,
                                     ...actionContext,
                                     componentProps: {
                                         'data-sel-role': 'backButton'
                                     }
                                 }}
-                                target="editHeaderPathActions"
+                                actionKey="backButton"
                                 render={ButtonRenderer}
                             />
 

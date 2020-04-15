@@ -4,12 +4,11 @@ import PropTypes from 'prop-types';
 import {withApollo} from 'react-apollo';
 import {compose} from '~/utils';
 import {useTranslation} from 'react-i18next';
-import EditPanelContent from './EditPanelContent/EditPanelContent';
-import AdvancedOptions from './AdvancedOptions/AdvancedOptions';
 import {connect} from 'formik';
 import {HeaderLowerSection, HeaderUpperSection} from './header';
 import {useContentEditorContext, useContentEditorConfigContext} from '~/ContentEditor.context';
 import {PublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
+import {registry} from '@jahia/ui-extender';
 
 import MainLayout from '~/DesignSystem/ContentLayout/MainLayout';
 import ContentHeader from '~/DesignSystem/ContentLayout/ContentHeader';
@@ -77,11 +76,14 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
         nodeTypeName
     };
 
+    const tabActions = registry.find({target: 'editHeaderTabsActions'});
+    const SelectedTabComponents = {};
+    tabActions.forEach(action => {
+        SelectedTabComponents[action.value] = action.displayableComponent;
+    });
+
     const [activeTab, setActiveTab] = useState('edit');
-    const SelectedTabComponents = {
-        edit: EditPanelContent,
-        advanced: AdvancedOptions
-    };
+
     const SelectedTabComponent = SelectedTabComponents[activeTab];
 
     return (
