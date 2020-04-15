@@ -64,7 +64,8 @@ const ContentPreviewMemoWrapperCmp = React.memo(({classes}) => {
         if (contentPreview) {
             removeSiblings(contentPreview);
             forceDisplay(contentPreview);
-        } else {
+        // Ce_preview-content id doesn't exist on page
+        } else if (!editorContext.nodeData.isPage) {
             setContentNotFound(true);
         }
     };
