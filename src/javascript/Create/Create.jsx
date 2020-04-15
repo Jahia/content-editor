@@ -36,7 +36,7 @@ const CreateCmp = ({
             },
             createCallback: createdNodeUuid => {
                 if (values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK]) {
-                    values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK](createdNodeUuid, Constants.operators.create);
+                    values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK]();
                 } else {
                     const envCreateCallback = envCreateCallbacks[contentEditorConfigContext.env];
                     if (envCreateCallback) {
