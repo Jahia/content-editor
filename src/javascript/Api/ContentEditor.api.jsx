@@ -178,9 +178,10 @@ const ContentEditorApiCmp = ({classes, client}) => {
             <Dialog fullScreen
                     open
                     TransitionComponent={Transition}
-                    TransitionProps={{tabIndex: ''}} // Hack for CKEditor pickers fields to be editable
                     aria-labelledby="dialog-content-editor"
                     classes={{root: classes.ceDialogRoot}}
+                    disableAutoFocus="true"
+                    disableEnforceFocus="true"
                     onClose={() => (formikRef && formikRef.dirty) ? setConfirmationConfig(true) : closeAll()}
             >
                 {confirmationConfig && <EditPanelDialogConfirmation
