@@ -98,7 +98,7 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
                 </ContentHeader>
             }
         >
-            <SelectedTabComponent isDirty={formik.dirty} formik={formik}/>
+            <SelectedTabComponent isDirty={formik.dirty} formik={formik} nodePath={nodeData.path} lang={lang}/>
         </MainLayout>
     );
 };
