@@ -298,6 +298,8 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
         }
         if (otherEditorFormFieldSet.isRemoved()) {
             newEditorFormFieldSet.setRemoved(true);
+        } else {
+            newEditorFormFieldSet.setRemoved(false);
         }
         if (dynamic) {
             newEditorFormFieldSet.setDynamic(true);
