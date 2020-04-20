@@ -81,3 +81,26 @@ export const forceDisplay = element => {
         forceDisplay(element.parentNode);
     }
 };
+
+export const isBrowserImage = function (filename) {
+    switch (filename.split('.').pop().toLowerCase()) {
+        case 'png':
+        case 'jpeg':
+        case 'jpg':
+        case 'gif':
+        case 'img':
+        case 'svg':
+        case 'bmp':
+            return true;
+        default:
+            return false;
+    }
+};
+
+export const isPDF = function (filename) {
+    return filename.split('.').pop().toLowerCase() === 'pdf';
+};
+
+export const getFileType = function (filename) {
+    return filename.split('.').pop().toLowerCase();
+};

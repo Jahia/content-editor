@@ -1,0 +1,39 @@
+.previewContainer {
+    display: flex;
+    flex: 1 1 0%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 0;
+
+    background-color: #eff2f4;
+}
+
+.noPreviewContainer {
+    display: flex;
+    flex: 1 1 0%;
+
+    background-color: #eff2f4;
+}
+
+.center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+
+    color: #91a3ae;
+    text-align: center;
+}
+
+.centerIcon {
+    margin: 8px auto;
+}
+
+.mediaContainer {
+    background-color: #1f262a;
+}
+
+.contentContainer {
+    padding: 24px;
+}
