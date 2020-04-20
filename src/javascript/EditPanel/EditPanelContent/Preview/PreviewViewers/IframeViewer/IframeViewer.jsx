@@ -23,13 +23,8 @@ function loadAsset(asset, iframeHeadEl) {
         const linkEl = document.createElement('link');
         linkEl.rel = 'stylesheet';
         linkEl.type = 'text/css';
-
-        // Hack to know when css is loaded http://www.backalleycoder.com/2011/03/20/link-tag-css-stylesheet-load-event/
-        const img = document.createElement('img');
-        img.onerror = resolve;
-
         linkEl.href = asset.key;
-        img.src = asset.key;
+        linkEl.onload = resolve;
 
         iframeHeadEl.appendChild(linkEl);
     });

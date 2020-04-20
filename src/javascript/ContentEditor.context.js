@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext} from 'react';
 import {ProgressOverlay, withNotifications} from '@jahia/react-material';
 import {useFormDefinition} from '~/FormDefinitions';
 import {useSiteInfo} from '@jahia/data-helper';
@@ -20,7 +20,6 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
         const {notificationContext} = props;
         const {t} = useTranslation();
         const {lang, uilang, site, uuid, contentType, mode} = useContentEditorConfigContext();
-        const [previousLocation, setPreviousLocation] = useState(undefined);
 
         // Get Data
         const formQueryParams = {
@@ -59,7 +58,8 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
             uilang,
             site,
             mode,
-            siteInfo: {...siteInfoResult.siteInfo,
+            siteInfo: {
+                ...siteInfoResult.siteInfo,
                 languages: siteInfoResult.siteInfo.languages.filter(language => language.activeInEdit)
             },
             sections,
@@ -69,8 +69,6 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
             initialValues,
             title,
             formQueryParams,
-            previousLocation,
-            setPreviousLocation,
             nodeTypeName,
             refetchFormData
         };
