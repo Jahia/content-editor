@@ -17,6 +17,11 @@ const mapStateToProps = state => {
 const ContentEditorReduxCmp = ({mode, uuid, lang, uilang, site, contentType}) => {
     const {redirect, hasHistory, exit, registerBlockListener, unRegisterBlockListener} = useContentEditorHistory();
     const {t} = useTranslation();
+    // Sync GWT language
+    if (window.top.authoringApi.switchLanguage) {
+        window.top.authoringApi.switchLanguage(lang);
+    }
+
     const envProps = {
         setUrl: (mode, language, uuid, contentType) => redirect({mode, language, uuid, rest: contentType}),
         back: exit,
