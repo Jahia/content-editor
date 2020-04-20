@@ -47,7 +47,12 @@ const ContentEditorApiCmp = ({classes, client}) => {
      * @param uilang the preferred user lang for ui
      */
     window.CE_API.edit = (uuid, site, lang, uilang) => {
-        setEditorConfig({uuid, site, lang, uilang, mode: Constants.routes.baseEditRoute});
+        // Sync GWT language
+        if (window.top.authoringApi.switchLanguage) {
+            window.top.authoringApi.switchLanguage(lang);
+        }
+
+        setEditorConfig({uuid, site, lang, uilang, initLang: lang, mode: Constants.routes.baseEditRoute});
     };
 
     /**
@@ -66,9 +71,22 @@ const ContentEditorApiCmp = ({classes, client}) => {
      */
     // eslint-disable-next-line
     window.CE_API.create = (uuid, path, site, lang, uilang, nodeTypes, excludedNodeTypes, includeSubTypes) => {
+        // Sync GWT language
+        if (window.top.authoringApi.switchLanguage) {
+            window.top.authoringApi.switchLanguage(lang);
+        }
+
         if (nodeTypes && nodeTypes.length === 1 && !includeSubTypes) {
             // Direct create with a known content type
-            setEditorConfig({uuid, site, lang, uilang, contentType: nodeTypes[0], mode: Constants.routes.baseCreateRoute});
+            setEditorConfig({
+                uuid,
+                site,
+                lang,
+                uilang,
+                initLang: lang,
+                contentType: nodeTypes[0],
+                mode: Constants.routes.baseCreateRoute
+            });
         } else {
             getCreatableNodetypes(
                 client,
@@ -86,6 +104,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
                             site,
                             lang,
                             uilang,
+                            initLang: lang,
                             contentType: creatableNodeTypes[0].name,
                             mode: Constants.routes.baseCreateRoute
                         });
@@ -109,6 +128,11 @@ const ContentEditorApiCmp = ({classes, client}) => {
     };
 
     const closeAll = () => {
+        // Restore GWT language
+        if (window.top.authoringApi.switchLanguage) {
+            window.top.authoringApi.switchLanguage(editorConfig.initLang);
+        }
+
         setEditorConfig(false);
         setContentTypeSelectorConfig(false);
     };
@@ -140,9 +164,8 @@ const ContentEditorApiCmp = ({classes, client}) => {
             // Redirect to CE edit mode, for the created node
             if (editorConfig) {
                 setEditorConfig({
+                    ...editorConfig,
                     uuid: createdNodeUuid,
-                    site: editorConfig.site,
-                    uilang: editorConfig.uilang,
                     lang: lang ? lang : editorConfig.lang,
                     mode: Constants.routes.baseEditRoute
                 });
@@ -161,12 +184,8 @@ const ContentEditorApiCmp = ({classes, client}) => {
             // Update the lang of current opened CE
             if (editorConfig) {
                 setEditorConfig({
-                    uuid: editorConfig.uuid,
-                    site: editorConfig.site,
-                    uilang: editorConfig.uilang,
-                    lang: lang,
-                    mode: editorConfig.mode,
-                    contentType: editorConfig.contentType
+                    ...editorConfig,
+                    lang: lang
                 });
             }
         }
@@ -222,6 +241,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
                         uuid: contentTypeSelectorConfig.uuid,
                         site: contentTypeSelectorConfig.site,
                         uilang: contentTypeSelectorConfig.uilang,
+                        initLang: contentTypeSelectorConfig.lang,
                         lang: contentTypeSelectorConfig.lang,
                         contentType: contentType.name,
                         mode: Constants.routes.baseCreateRoute

@@ -11,7 +11,7 @@ export const useContentEditorHistory = () => {
         const currentPath = history.location.pathname;
         const {appName, currentLanguage, currentMode, currentUuid, currentRest} = splitPath(currentPath);
         if (appName !== Constants.appName) {
-            setStoredLocation(history.location);
+            setStoredLocation({location: history.location, language: language || currentLanguage});
         }
 
         // Compute rest (end of the path)
@@ -29,12 +29,17 @@ export const useContentEditorHistory = () => {
     };
 
     const exit = () => {
+        // Restore GWT language
+        if (window.top.authoringApi.switchLanguage) {
+            window.top.authoringApi.switchLanguage(storedLocation.language);
+        }
+
         // In order use:
         // - Stored location
         // - Referer
         // - Back button
-        if (storedLocation) {
-            history.push(storedLocation.pathname + storedLocation.search);
+        if (storedLocation.location) {
+            history.push(storedLocation.location.pathname + storedLocation.location.search);
         } else if (document.referer) {
             window.history.push(document.referer);
         } else {

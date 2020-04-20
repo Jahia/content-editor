@@ -19,7 +19,9 @@ const EditPanelLanguageSwitcher = ({siteInfo, formik}) => {
         }
 
         // Switch edit mode linker language
-        window.parent.authoringApi.switchLanguage(language);
+        if (window.top.authoringApi.switchLanguage) {
+            window.top.authoringApi.switchLanguage(language);
+        }
     };
 
     return (
