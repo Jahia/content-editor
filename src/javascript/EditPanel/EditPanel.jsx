@@ -13,13 +13,11 @@ import {registry} from '@jahia/ui-extender';
 import MainLayout from '~/DesignSystem/ContentLayout/MainLayout';
 import ContentHeader from '~/DesignSystem/ContentLayout/ContentHeader';
 import {Separator} from '@jahia/moonstone';
-import {useLockedEditorContext} from '~/Lock/LockedEditor.context';
 
 const EditPanelCmp = ({formik, title, notificationContext, client}) => {
     const {t} = useTranslation();
     const {nodeData, siteInfo, lang, uilang, mode, nodeTypeName, refetchFormData} = useContentEditorContext();
     const {envProps} = useContentEditorConfigContext();
-    const lockedEditorContext = useLockedEditorContext();
 
     useEffect(() => {
         if (envProps.initCallback) {
@@ -51,10 +49,6 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
         return () => {
             if (envProps.closeCallback) {
                 envProps.closeCallback();
-            }
-
-            if (lockedEditorContext.unlockEditor) {
-                lockedEditorContext.unlockEditor();
             }
 
             window.authoringApi.pushEventHandlers.splice(window.authoringApi.pushEventHandlers.findIndex(eh => eh === refetchFormData, 1));
