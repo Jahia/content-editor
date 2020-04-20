@@ -4,7 +4,7 @@ import * as PropTypes from 'prop-types';
 import FormBuilder from './FormBuilder';
 import {compose} from '~/utils';
 import {withStyles} from '@material-ui/core';
-import {PreviewContainer} from './PreviewContainer';
+import {PreviewContainer} from './Preview';
 import PublicationInfoProgress from '~/PublicationInfo/PublicationInfo.progress';
 import {useContentEditorConfigContext} from '~/ContentEditor.context';
 
