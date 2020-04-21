@@ -13,7 +13,7 @@ const NodeDataFragment = {
             result:nodeById(uuid: $uuid) {
                 ...NodeCacheRequiredFields
                 lockedAndCannotBeEdited
-                isPage: isNodeType(type: {multi: ANY, types: ["jnt:page", "wemnt:pageVariant"]})
+                isPage: isNodeType(type: {multi: ANY, types: ["jnt:page"]})
                 isFolder:isNodeType(type: {multi: ANY, types: ["jnt:contentFolder", "jnt:folder"]})
                 displayableNode {
                     path
