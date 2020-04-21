@@ -39,7 +39,7 @@ const FieldSetCmp = ({fieldset, classes, formik: {values, handleChange}}) => {
                 <Toggle data-sel-role-dynamic-fieldset={fieldset.name}
                         id={fieldset.name}
                         checked={activatedFieldSet}
-                        readOnly={context.nodeData.lockedAndCannotBeEdited}
+                        readOnly={context.nodeData.lockedAndCannotBeEdited || !context.nodeData.hasWritePermission}
                         onChange={handleChange}
                 />}
 
