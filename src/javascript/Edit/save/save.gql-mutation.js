@@ -16,6 +16,9 @@ export const SavePropertiesMutation = gql`
     ) {
         jcr {
             mutateNode(pathOrId: $uuid) {
+                mutateWipInfo(wipInfo:$wipInfo)
+            }
+            mutateNode(pathOrId: $uuid) {
                 addMixins(mixins: $mixinsToAdd)
                 setPropertiesBatch(properties: $propertiesToSave) {
                     path
@@ -24,7 +27,6 @@ export const SavePropertiesMutation = gql`
                     delete(language: $language)
                 }
                 removeMixins(mixins: $mixinsToDelete)
-                mutateWipInfo(wipInfo:$wipInfo)
                 reorderChildren(names: $childrenOrder) @include(if: $shouldModifyChildren)
                 rename(name: $newName) @include(if: $shouldRename)
             }
