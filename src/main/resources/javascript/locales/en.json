@@ -155,7 +155,7 @@
           "invalidPattern": "The value does not match the constraints defined in the content type definitions file.",
           "required": "",
           "alreadyExist": "An item with the same system name already exists, please choose another one.",
-          "maxLength": "{{selectorOptions0.value}} characters maximum"
+          "maxLength": "{{selectorOptions.maxLength}} characters maximum"
         },
         "tab": {
           "edit": "Edit",

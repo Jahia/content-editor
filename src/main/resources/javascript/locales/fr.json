@@ -155,7 +155,7 @@
           "invalidPattern": "La valeur ne correspond pas aux contraintes définies dans le fichier de définition des types de contenu.",
           "required": "",
           "alreadyExist": "Il y a déjà un objet avec ce nom système, veuillez en choisir un autre",
-          "maxLength": "{{selectorOptions0.value}} caractères maximum"
+          "maxLength": "{{selectorOptions.maxLength}} caractères maximum"
         },
         "tab": {
           "edit": "Éditer",
