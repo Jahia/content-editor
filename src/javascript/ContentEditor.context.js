@@ -26,7 +26,8 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
             uuid,
             language: lang,
             uilang: Constants.supportedLocales.includes(uilang) ? uilang : Constants.defaultLocale,
-            primaryNodeType: contentType
+            primaryNodeType: contentType,
+            writePermission: `jcr:modifyProperties_default_${lang}`
         };
         const {loading, error, errorMessage, data: formDefinition, refetch: refetchFormData} = useFormDefinition(formQuery, formQueryParams, formDataAdapter, t);
         const {nodeData, initialValues, details, technicalInfo, sections, title, nodeTypeName} = formDefinition || {};

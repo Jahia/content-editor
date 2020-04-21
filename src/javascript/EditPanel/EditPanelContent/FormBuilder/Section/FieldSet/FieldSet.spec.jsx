@@ -36,7 +36,8 @@ describe('FieldSet component', () => {
             }
         ],
         nodeData: {
-            lockedAndCannotBeEdited: false
+            lockedAndCannotBeEdited: false,
+            hasWritePermission: true
         }
     };
 
@@ -105,6 +106,26 @@ describe('FieldSet component', () => {
     it('should display readOnly toggle for dynamic FieldSet when editor is locked', () => {
         let overridedContext = context;
         overridedContext.nodeData.lockedAndCannotBeEdited = true;
+        setContext(overridedContext);
+        props.fieldset.dynamic = true;
+
+        const cmp = shallowWithTheme(
+            <FieldSet {...props}/>,
+            {},
+            dsGenericTheme
+        )
+            .dive()
+            .dive()
+            .dive();
+
+        const toggleCmp = cmp.find('WithStyles(ToggleCmp)');
+        expect(toggleCmp.exists()).toBe(true);
+        expect(toggleCmp.props().readOnly).toBe(true);
+    });
+
+    it('should display readOnly toggle for dynamic FieldSet when editor has no write permission', () => {
+        let overridedContext = context;
+        overridedContext.nodeData.hasWritePermission = false;
         setContext(overridedContext);
         props.fieldset.dynamic = true;
 

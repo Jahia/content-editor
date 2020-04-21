@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import {NodeDataFragment} from '~/NodeData/NodeData.gql-queries';
 
 export const FormQuery = gql`
-    query editForm($uilang:String!, $language:String!, $uuid: String!) {
+    query editForm($uilang:String!, $language:String!, $uuid: String!, $writePermission: String!) {
         forms {
             editForm(uiLocale: $uilang, locale: $language, uuidOrPath: $uuid) {
                 name

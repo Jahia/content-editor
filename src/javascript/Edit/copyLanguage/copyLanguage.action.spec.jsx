@@ -18,7 +18,8 @@ describe('copy language action', () => {
             context: {
                 mode: 'edit',
                 nodeData: {
-                    uuid: '12345-321456-1234565789'
+                    uuid: '12345-321456-1234565789',
+                    hasWritePermission: true
                 },
                 language: 'fr',
                 siteInfo: {
@@ -30,6 +31,17 @@ describe('copy language action', () => {
             },
             render: () => ''
         };
+    });
+
+    it('should render not be enabled when the user has no write access', () => {
+        defaultProps.context.nodeData.hasWritePermission = false;
+        const cmp = shallowWithTheme(
+            <CopyLanguageActionComponent {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        );
+
+        expect(cmp.props().context.enabled).toBeFalsy();
     });
 
     it('should render be enabled when there is more than one language', () => {

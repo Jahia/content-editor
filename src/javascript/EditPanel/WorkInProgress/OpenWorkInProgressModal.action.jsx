@@ -47,6 +47,7 @@ export const OpenWorkInProgressModal = ({context, render: Render, ...props}) => 
                 {...(context.displayActionProps || {})}
                 context={{
                     ...context,
+                    enabled: context.nodeData.hasWritePermission,
                     onClick: singleLanguage ? switchButton : openModal
                 }}/>
         </>
