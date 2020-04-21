@@ -237,7 +237,11 @@ describe('adaptEditFormData', () => {
 
     it('should not rename node if system name not changed', () => {
         const nodeData = {
-            name: 'dummy'
+            name: 'dummy',
+            primaryNodeType: {
+                displayName: 'ContentType',
+                name: 'jcr:contentType'
+            }
         };
 
         let saveRequestVariables = {
@@ -255,7 +259,11 @@ describe('adaptEditFormData', () => {
 
     it('should rename node if system name changed', () => {
         const nodeData = {
-            name: 'dummy'
+            name: 'dummy',
+            primaryNodeType: {
+                displayName: 'ContentType',
+                name: 'jcr:contentType'
+            }
         };
 
         let saveRequestVariables = {

@@ -6,6 +6,7 @@ import * as PropTypes from 'prop-types';
 import {Constants} from './ContentEditor.constants';
 import {useTranslation} from 'react-i18next';
 import {compose} from '~/utils';
+import ApolloCacheFlushOnGWTSave from '~/Edit/engineTabs/ApolloCacheFlushOnGWTSave';
 
 export const ContentEditorContext = React.createContext({});
 
@@ -26,7 +27,8 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
             uuid,
             language: lang,
             uilang: Constants.supportedLocales.includes(uilang) ? uilang : Constants.defaultLocale,
-            primaryNodeType: contentType
+            primaryNodeType: contentType,
+            writePermission: `jcr:modifyProperties_default_${lang}`
         };
         const {loading, error, errorMessage, data: formDefinition, refetch: refetchFormData} = useFormDefinition(formQuery, formQueryParams, formDataAdapter, t);
         const {nodeData, initialValues, details, technicalInfo, sections, title, nodeTypeName} = formDefinition || {};
@@ -75,6 +77,7 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
 
         return (
             <ContentEditorContext.Provider value={editorContext}>
+                <ApolloCacheFlushOnGWTSave/>
                 <Children {...props}/>
             </ContentEditorContext.Provider>
         );

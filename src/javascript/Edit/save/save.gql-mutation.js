@@ -12,11 +12,12 @@ export const SavePropertiesMutation = gql`
         $childrenOrder: [String]!,
         $shouldRename: Boolean!,
         $newName: String!,
-        $wipInfo: InputwipInfo!
+        $wipInfo: InputwipInfo!,
+        $shouldSetWip: Boolean!
     ) {
         jcr {
             mutateNode(pathOrId: $uuid) {
-                mutateWipInfo(wipInfo:$wipInfo)
+                mutateWipInfo(wipInfo:$wipInfo) @include(if: $shouldSetWip)
             }
             mutateNode(pathOrId: $uuid) {
                 addMixins(mixins: $mixinsToAdd)

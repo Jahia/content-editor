@@ -24,6 +24,13 @@ describe('WorkInProgressDialog', () => {
                     values: {
                         'WIP::Info': {}
                     }
+                },
+                nodeData: {
+                    hasWritePermission: true,
+                    primaryNodeType:
+                        {
+                            name: 'jnt:content'
+                        }
                 }
             },
             otherProps: true,
@@ -34,6 +41,17 @@ describe('WorkInProgressDialog', () => {
             render: jest.fn()
         };
         React.useContext.mockImplementation(() => componentRenderer);
+    });
+
+    it('should be disbabled if no write permission', () => {
+        defaultProps.context.nodeData.hasWritePermission = false;
+        const cmp = shallowWithTheme(
+            <OpenWorkInProgressModal {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        );
+
+        expect(cmp.find('render').props().context.enabled).toBe(false);
     });
 
     it('should pass otherProps to the render component', () => {
@@ -69,5 +87,26 @@ describe('WorkInProgressDialog', () => {
         cmp.props().context.onClick();
 
         expect(componentRenderer.render).not.toHaveBeenCalled();
+    });
+
+    it('should not enabled WIP when is not virtual site node', () => {
+        const cmp = shallowWithTheme(
+            <OpenWorkInProgressModal {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).find('render');
+
+        expect(cmp.props().context.enabled).toBe(true);
+    });
+
+    it('should not enabled WIP when is virtual site node type', () => {
+        defaultProps.context.nodeData.primaryNodeType.name = 'jnt:virtualsite';
+        const cmp = shallowWithTheme(
+            <OpenWorkInProgressModal {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).find('render');
+
+        expect(cmp.props().context.enabled).toBe(false);
     });
 });

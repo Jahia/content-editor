@@ -28,7 +28,7 @@ describe('saveNode', () => {
             t: jest.fn(),
             editCallback: jest.fn(),
             data: {
-                nodeData: {},
+                nodeData: {primaryNodeType: {}},
                 sections: [],
                 values: {}
             }

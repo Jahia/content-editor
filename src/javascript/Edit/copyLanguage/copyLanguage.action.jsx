@@ -10,7 +10,7 @@ export const CopyLanguageActionComponent = ({context, render: Render}) => {
     return (
         <Render context={{
             ...context,
-            enabled: context.siteInfo.languages.length > 1,
+            enabled: context.siteInfo.languages.length > 1 && context.nodeData.hasWritePermission,
             onClick: () => {
                 render('CopyLanguageDialog', CopyLanguageDialog, {
                     isOpen: true,
