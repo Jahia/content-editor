@@ -6,6 +6,7 @@ import * as PropTypes from 'prop-types';
 import {Constants} from './ContentEditor.constants';
 import {useTranslation} from 'react-i18next';
 import {compose} from '~/utils';
+import ApolloCacheFlushOnGWTSave from '~/Edit/engineTabs/ApolloCacheFlushOnGWTSave';
 
 export const ContentEditorContext = React.createContext({});
 
@@ -76,6 +77,7 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
 
         return (
             <ContentEditorContext.Provider value={editorContext}>
+                <ApolloCacheFlushOnGWTSave/>
                 <Children {...props}/>
             </ContentEditorContext.Provider>
         );
