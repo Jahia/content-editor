@@ -55,7 +55,7 @@ export const HeaderUpperSection = ({title, actionContext}) => {
                                 render={ButtonRenderer}
                             />
 
-                    <Typography isNowrap className={styles.headerTypography} variant="title">
+                    <Typography isNowrap className={styles.headerTypography} variant="title" data-sel-role="title">
                         {truncate(title, 60)}
                     </Typography>
                 </div>
