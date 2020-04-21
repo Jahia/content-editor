@@ -24,6 +24,9 @@ describe('WorkInProgressDialog', () => {
                     values: {
                         'WIP::Info': {}
                     }
+                },
+                nodeData: {
+                    hasWritePermission: true
                 }
             },
             otherProps: true,
@@ -34,6 +37,17 @@ describe('WorkInProgressDialog', () => {
             render: jest.fn()
         };
         React.useContext.mockImplementation(() => componentRenderer);
+    });
+
+    it('should be disbabled if no write permission', () => {
+        defaultProps.context.nodeData.hasWritePermission = false;
+        const cmp = shallowWithTheme(
+            <OpenWorkInProgressModal {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        );
+
+        expect(cmp.find('render').props().context.enabled).toBe(false);
     });
 
     it('should pass otherProps to the render component', () => {

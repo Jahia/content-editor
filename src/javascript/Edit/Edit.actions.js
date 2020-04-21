@@ -15,7 +15,6 @@ export const registerEditActions = actionsRegistry => {
         buttonLabel: 'content-editor:label.contentEditor.edit.contentEdit',
         targets: ['contentActions:2'],
         hideOnNodeTypes: ['jnt:virtualsite'],
-        requiredPermission: ['jcr:modifyProperties'],
         getDisplayName: true
     });
 
