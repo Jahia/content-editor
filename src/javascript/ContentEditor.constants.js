@@ -61,6 +61,7 @@ export const Constants = {
             DISABLED: 'DISABLED',
             ALL_CONTENT: 'ALL_CONTENT',
             LANGUAGES: 'LANGUAGES'
-        }
+        },
+        notAvailableFor: ['jnt:virtualsite']
     }
 };

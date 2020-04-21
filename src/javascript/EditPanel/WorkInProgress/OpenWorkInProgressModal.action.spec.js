@@ -26,7 +26,11 @@ describe('WorkInProgressDialog', () => {
                     }
                 },
                 nodeData: {
-                    hasWritePermission: true
+                    hasWritePermission: true,
+                    primaryNodeType:
+                        {
+                            name: 'jnt:content'
+                        }
                 }
             },
             otherProps: true,
@@ -83,5 +87,26 @@ describe('WorkInProgressDialog', () => {
         cmp.props().context.onClick();
 
         expect(componentRenderer.render).not.toHaveBeenCalled();
+    });
+
+    it('should not enabled WIP when is not virtual site node', () => {
+        const cmp = shallowWithTheme(
+            <OpenWorkInProgressModal {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).find('render');
+
+        expect(cmp.props().context.enabled).toBe(true);
+    });
+
+    it('should not enabled WIP when is virtual site node type', () => {
+        defaultProps.context.nodeData.primaryNodeType.name = 'jnt:virtualsite';
+        const cmp = shallowWithTheme(
+            <OpenWorkInProgressModal {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).find('render');
+
+        expect(cmp.props().context.enabled).toBe(false);
     });
 });

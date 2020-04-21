@@ -12,7 +12,8 @@ export const SavePropertiesMutation = gql`
         $childrenOrder: [String]!,
         $shouldRename: Boolean!,
         $newName: String!,
-        $wipInfo: InputwipInfo!
+        $wipInfo: InputwipInfo!,
+        $shouldSetWip: Boolean!
     ) {
         jcr {
             mutateNode(pathOrId: $uuid) {
@@ -24,7 +25,7 @@ export const SavePropertiesMutation = gql`
                     delete(language: $language)
                 }
                 removeMixins(mixins: $mixinsToDelete)
-                mutateWipInfo(wipInfo:$wipInfo)
+                mutateWipInfo(wipInfo:$wipInfo) @include(if: $shouldSetWip)
                 reorderChildren(names: $childrenOrder) @include(if: $shouldModifyChildren)
                 rename(name: $newName) @include(if: $shouldRename)
             }

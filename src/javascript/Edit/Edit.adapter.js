@@ -150,6 +150,7 @@ export const adaptEditFormData = (data, lang, t) => {
 export const adaptSaveRequest = (nodeData, saveRequestVariables) => {
     saveRequestVariables.shouldRename = false;
     saveRequestVariables.newName = '';
+    saveRequestVariables.shouldSetWip = Constants.wip.notAvailableFor.indexOf(nodeData.primaryNodeType.name) === -1;
 
     if (saveRequestVariables.propertiesToSave) {
         // Use system name to fill the save request variables.
