@@ -79,7 +79,7 @@ export const List = ({
             'content-editor:label.contentEditor.error.queryingContent',
             {details: error.message ? error.message : ''}
         );
-        return <>{message}</>;
+        console.warn(message);
     }
 
     if (loading) {
@@ -87,32 +87,34 @@ export const List = ({
     }
 
     let showSubContentsCount = false;
-    const tableData = nodes.map(content => {
-        const haveSubContents = content.primaryNodeType.name !== 'jnt:page' && content.children &&
-            content.children.pageInfo && content.children.pageInfo.totalCount > 0;
-        showSubContentsCount = showSubContentsCount || haveSubContents;
+    const tableData = error ?
+        [] :
+        nodes.map(content => {
+            const haveSubContents = content.primaryNodeType.name !== 'jnt:page' && content.children &&
+                content.children.pageInfo && content.children.pageInfo.totalCount > 0;
+            showSubContentsCount = showSubContentsCount || haveSubContents;
 
-        return {
-            id: content.uuid,
-            path: content.path,
-            name: content.displayName,
-            subContentsCount: haveSubContents ? content.children.pageInfo.totalCount : undefined,
-            type: content.primaryNodeType.typeName,
-            createdBy: content.createdBy ? content.createdBy.value : undefined,
-            lastModified: content.lastModified ? dayjs(content.lastModified.value)
-                .locale(uilang)
-                .format('LLL') : undefined,
-            navigateInto: haveSubContents,
-            props: {
-                navigateInto: {
-                    onClick: e => {
-                        e.preventDefault();
-                        setSelectedPath(content.path);
+            return {
+                id: content.uuid,
+                path: content.path,
+                name: content.displayName,
+                subContentsCount: haveSubContents ? content.children.pageInfo.totalCount : undefined,
+                type: content.primaryNodeType.typeName,
+                createdBy: content.createdBy ? content.createdBy.value : undefined,
+                lastModified: content.lastModified ? dayjs(content.lastModified.value)
+                    .locale(uilang)
+                    .format('LLL') : undefined,
+                navigateInto: haveSubContents,
+                props: {
+                    navigateInto: {
+                        onClick: e => {
+                            e.preventDefault();
+                            setSelectedPath(content.path);
+                        }
                     }
                 }
-            }
-        };
-    });
+            };
+        });
 
     return (
         <>
