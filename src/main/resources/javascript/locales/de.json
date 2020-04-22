@@ -155,7 +155,7 @@
           "invalidPattern": "Die Eingabe entspricht nicht den Vorgaben der Content-Typ-Definition.",
           "required": "",
           "alreadyExist": "Ein Element mit demselben Systemnamen ist bereits vorhanden. Bitte wählen Sie ein anderes aus.",
-          "maxLength": "Maximal {{selectorOptions0.value}} Zeichen."
+          "maxLength": "Maximal {{selectorOptions.maxLength}} Zeichen."
         },
         "tab": {
           "edit": "Bearbeiten",
