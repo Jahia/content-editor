@@ -26,7 +26,16 @@ export const Thumbnail = ({
         loading,
         refetch,
         loadMore
-    } = useDialogPickerContent(lang, pickerConfig, selectedPath, searchTerms);
+    } = useDialogPickerContent({
+        lang,
+        pickerConfig,
+        selectedPath,
+        searchTerms,
+        fieldSorter: {
+            fieldName: 'lastModified.value',
+            sortType: 'DESC'
+        }
+    });
 
     useEffect(() => {
         registry.addOrReplace('refetch-upload', 'refetch-image-list', {

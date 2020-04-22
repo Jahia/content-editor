@@ -66,7 +66,7 @@ export const List = ({
         loading,
         refetch,
         loadMore
-    } = useDialogPickerContent(lang, pickerConfig, selectedPath, searchTerms);
+    } = useDialogPickerContent({lang, pickerConfig, selectedPath, searchTerms});
 
     useEffect(() => {
         registry.addOrReplace('refetch-upload', 'refetch-content-list', {
