@@ -68,6 +68,7 @@
         <jahia-deploy-on-site>all</jahia-deploy-on-site>
         <jahia-module-type>system</jahia-module-type>
         <yarn.arguments>build -p</yarn.arguments>
+        <require-capability>osgi.extender;filter:="(osgi.extender=org.jahia.bundles.blueprint.extender.config)"</require-capability>
         <jahia-module-signature>MCwCFEio3YP5NPMQlDYk9IWeGlJT1KPlAhQM1rnq0IOqVjTmBhAfCgKhtfYLjg==</jahia-module-signature>
     </properties>
 
