@@ -6,7 +6,8 @@ const NodeDataFragment = {
         variables: {
             uilang: 'String!',
             language: 'String!',
-            uuid: 'String!'
+            uuid: 'String!',
+            writePermission: 'String!'
         },
         applyFor: 'node',
         gql: gql`fragment NodeData on JCRQuery {
@@ -56,6 +57,7 @@ const NodeDataFragment = {
                     values
                     notZonedDateValues
                 }
+                hasWritePermission: hasPermission(permissionName: $writePermission)
                 hasPublishPermission: hasPermission(permissionName: "publish")
                 hasStartPublicationWorkflowPermission: hasPermission(permissionName: "publication-start")
                 lockInfo {

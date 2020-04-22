@@ -56,6 +56,7 @@ final class EditorFormFieldSetBuilder {
     private Double priority = 1.0;
     private Boolean dynamic = false;
     private Boolean activated = true;
+    private Boolean removed = false;
 
     private List<EditorFormField> fields;
 
@@ -68,6 +69,21 @@ final class EditorFormFieldSetBuilder {
         return this;
     }
 
+    EditorFormFieldSetBuilder withRemoved(Boolean removed) {
+        this.removed = removed;
+        return this;
+    }
+
+    EditorFormFieldSetBuilder withDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    EditorFormFieldSetBuilder withDisplayName(String displayName) {
+        this.displayName = displayName;
+        return this;
+    }
+
     EditorFormFieldSetBuilder withFields(EditorFormField... fields) {
         this.fields = (fields.length == 0) ? null : Arrays.asList(fields);
         return this;
@@ -76,6 +92,7 @@ final class EditorFormFieldSetBuilder {
     EditorFormFieldSet build() {
         EditorFormFieldSet form = new EditorFormFieldSet();
         form.setName(name);
+        form.setRemoved(removed);
         form.setDisplayName(displayName);
         form.setDescription(description);
         form.setRank(rank);

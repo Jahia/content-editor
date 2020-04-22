@@ -7,7 +7,7 @@ import {useContentEditorContext, withContentEditorDataContextProvider} from '~/C
 import {validate} from '~/Validation/validation';
 import {saveNode} from './save/save.request';
 import {PublicationInfoContextProvider} from '~/PublicationInfo/PublicationInfo.context';
-import {LockedEditorContextProvider} from '~/Lock/LockedEditor.context';
+import {LockManager} from '~/Lock/LockManager';
 import {useTranslation} from 'react-i18next';
 import {FormQuery} from './EditForm.gql-queries';
 import {withApollo} from 'react-apollo';
@@ -50,7 +50,7 @@ export const EditCmp = ({
         });
     };
 
-    const editWithFormik = (
+    return (
         <PublicationInfoContextProvider uuid={nodeData.uuid} lang={lang}>
             <Formik
                 initialValues={initialValues}
@@ -58,15 +58,8 @@ export const EditCmp = ({
                 validate={validate(sections)}
                 onSubmit={handleSubmit}
             />
+            {!nodeData.lockedAndCannotBeEdited && <LockManager path={path}/>}
         </PublicationInfoContextProvider>
-    );
-    return (
-        <>
-            {nodeData.lockedAndCannotBeEdited ? <>{editWithFormik}</> :
-            <LockedEditorContextProvider path={path}>
-                {editWithFormik}
-            </LockedEditorContextProvider>}
-        </>
     );
 };
 

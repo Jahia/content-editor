@@ -1,6 +1,6 @@
 import React from 'react';
 import TabBarAction from './tabbar/tabbar.action';
-import {Edit, Settings} from '@material-ui/icons';
+import {Edit, Setting} from '@jahia/moonstone/dist/icons';
 import {Constants} from '~/ContentEditor.constants';
 import EditPanelContent from '~/EditPanel/EditPanelContent/EditPanelContent';
 import AdvancedOptions from '~/EditPanel/AdvancedOptions/AdvancedOptions';
@@ -19,7 +19,7 @@ export const registerEditPanelActions = actionsRegistry => {
 
     actionsRegistry.add('action', 'ceAdvancedTab', TabBarAction, {
         buttonLabel: 'content-editor:label.contentEditor.edit.tab.advanced',
-        buttonIcon: <Settings/>,
+        buttonIcon: <Setting/>,
         targets: ['editHeaderTabsActions:2'],
         value: 'advanced',
         dataSelRole: 'tab-advanced-options',

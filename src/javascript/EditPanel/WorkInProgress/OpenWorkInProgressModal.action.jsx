@@ -7,7 +7,8 @@ import {Constants} from '~/ContentEditor.constants';
 export const OpenWorkInProgressModal = ({context, render: Render, ...props}) => {
     const componentRenderer = useContext(ComponentRendererContext);
 
-    const {siteInfo} = context;
+    const {siteInfo, nodeData} = context;
+
     const closeDialog = () => {
         componentRenderer.destroy('WorkInProgressDialog');
     };
@@ -47,6 +48,7 @@ export const OpenWorkInProgressModal = ({context, render: Render, ...props}) => 
                 {...(context.displayActionProps || {})}
                 context={{
                     ...context,
+                    enabled: context.nodeData.hasWritePermission && !Constants.wip.notAvailableFor.includes(nodeData.primaryNodeType.name),
                     onClick: singleLanguage ? switchButton : openModal
                 }}/>
         </>

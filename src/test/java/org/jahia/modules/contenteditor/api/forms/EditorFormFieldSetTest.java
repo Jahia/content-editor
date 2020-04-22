@@ -141,8 +141,18 @@ public final class EditorFormFieldSetTest {
         EditorFormFieldSet result = form1.mergeWith(form2);
 
         assertThat(result.getEditorFormFields(), containsInAnyOrder(
-                new EditorFormFieldBuilder("x").build()
+            new EditorFormFieldBuilder("x").build()
         ));
+    }
+
+    @Test
+    public void mergeRemoveFieldSet() {
+        final EditorFormFieldSet form1 = new EditorFormFieldSetBuilder("jmix:description").withRemoved(true).build();
+        final EditorFormFieldSet form2 = new EditorFormFieldSetBuilder("jmix:description").withRemoved(false).build();
+
+        assertTrue("Removed should be false", !form1.mergeWith(form2).getRemoved());
+        assertTrue("Removed should be true", form2.mergeWith(form1).getRemoved());
+
     }
 
 }

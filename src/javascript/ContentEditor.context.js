@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext} from 'react';
 import {ProgressOverlay, withNotifications} from '@jahia/react-material';
 import {useFormDefinition} from '~/FormDefinitions';
 import {useSiteInfo} from '@jahia/data-helper';
@@ -6,6 +6,7 @@ import * as PropTypes from 'prop-types';
 import {Constants} from './ContentEditor.constants';
 import {useTranslation} from 'react-i18next';
 import {compose} from '~/utils';
+import ApolloCacheFlushOnGWTSave from '~/Edit/engineTabs/ApolloCacheFlushOnGWTSave';
 
 export const ContentEditorContext = React.createContext({});
 
@@ -20,14 +21,14 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
         const {notificationContext} = props;
         const {t} = useTranslation();
         const {lang, uilang, site, uuid, contentType, mode} = useContentEditorConfigContext();
-        const [previousLocation, setPreviousLocation] = useState(undefined);
 
         // Get Data
         const formQueryParams = {
             uuid,
             language: lang,
             uilang: Constants.supportedLocales.includes(uilang) ? uilang : Constants.defaultLocale,
-            primaryNodeType: contentType
+            primaryNodeType: contentType,
+            writePermission: `jcr:modifyProperties_default_${lang}`
         };
         const {loading, error, errorMessage, data: formDefinition, refetch: refetchFormData} = useFormDefinition(formQuery, formQueryParams, formDataAdapter, t);
         const {nodeData, initialValues, details, technicalInfo, sections, title, nodeTypeName} = formDefinition || {};
@@ -59,7 +60,8 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
             uilang,
             site,
             mode,
-            siteInfo: {...siteInfoResult.siteInfo,
+            siteInfo: {
+                ...siteInfoResult.siteInfo,
                 languages: siteInfoResult.siteInfo.languages.filter(language => language.activeInEdit)
             },
             sections,
@@ -69,14 +71,13 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
             initialValues,
             title,
             formQueryParams,
-            previousLocation,
-            setPreviousLocation,
             nodeTypeName,
             refetchFormData
         };
 
         return (
             <ContentEditorContext.Provider value={editorContext}>
+                <ApolloCacheFlushOnGWTSave/>
                 <Children {...props}/>
             </ContentEditorContext.Provider>
         );
