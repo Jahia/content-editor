@@ -204,7 +204,7 @@
           "system": {
             "displayName": "System",
             "fields": {
-              "systemNameDescription": "Wird von Jahia als Content-Bezeichnung verwendet und generiert die Default-URL für Seiten. Maximal 32 Zeichen.",
+              "systemNameDescription": "Wird von Jahia verwendet, um den Inhalt zu identifizieren, maximal {{maxNameSize}} Zeichen.",
               "systemName": "Systemname"
             }
           }
