@@ -77,7 +77,7 @@ const NodeDataFragment = {
 };
 
 const NodeQuery = gql`
-    query getNodeProperties($uuid:String!, $language:String!, $uilang:String!) {
+    query getNodeProperties($uuid:String!, $language:String!, $uilang:String!, $writePermission: String!) {
         jcr {
             ...NodeData
         }
