@@ -14,16 +14,17 @@ export const truncate = (string, num) => {
  * @returns {*} the encoded system name
  */
 export const encodeSystemName = systemName => {
+    systemName = systemName.replace('/', '');
     if (systemName && systemName.length > 0) {
-        // First Step: Encode characters using encodeURI js API
         let encodedSystemName = '';
+        // First Step: Encode characters using encodeURI js API
         for (let i = 0; i < systemName.length; i++) {
             const charToEncode = systemName.charAt(i);
             encodedSystemName += ['%', '/', ':', '[', ']', '|'].includes(charToEncode) ? encodeURIComponent(charToEncode) : charToEncode;
         }
 
         // Second step: Special handling of '*' characters that need to be encoded, but it's not encoded by encodeURI js API
-        return encodedSystemName.split('*').join('%9A');
+        return encodedSystemName.split('*').join('%2A');
     }
 
     return systemName;
@@ -39,7 +40,7 @@ export const encodeSystemName = systemName => {
 export const decodeSystemName = systemName => {
     if (systemName && systemName.length > 0) {
         // First step: Special decoding for '*' character
-        const decodedSystemName = systemName.split('%9A').join('*');
+        const decodedSystemName = systemName.split('%2A').join('*');
 
         // Second step: Decode using js API
         return decodeURIComponent(decodedSystemName);
