@@ -34,7 +34,7 @@ public class GqlEditorSubscriptions extends GqlJcrMutationSupport {
 
     private static final Logger logger = LoggerFactory.getLogger(GqlEditorSubscriptions.class);
 
-    private static final int HEART_BEAT_INTERVAL_IN_SECONDS = 15;
+    private static final int HEART_BEAT_INTERVAL_IN_SECONDS = 3;
 
     @GraphQLField
     @GraphQLDescription("Lock the node for edition and subscribe to hold the lock. " +
