@@ -27,7 +27,8 @@ export const CopyLanguageDialog = ({
         let variables = {
             uilang: language,
             language: language,
-            uuid: uuid
+            uuid: uuid,
+            writePermission: `jcr:modifyProperties_default_${language}`
         };
 
         let formAndData = await client.query({query: FormQuery, variables: variables});
