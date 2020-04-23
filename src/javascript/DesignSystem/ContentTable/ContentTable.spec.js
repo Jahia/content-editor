@@ -1,7 +1,7 @@
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {shallowWithTheme} from '@jahia/test-framework';
 import React from 'react';
-import ContentTable from './ContentTable';
+import {ContentTable} from './';
 
 describe('ContentTable', () => {
     let defaultProps;

@@ -53,7 +53,7 @@ const styles = theme => ({
     }
 });
 
-const ContentTable = ({
+const ContentTableCmp = ({
     data,
     order,
     orderBy,
@@ -64,7 +64,8 @@ const ContentTable = ({
     onSelect,
     initialSelection,
     hasMore,
-    loadMore
+    loadMore,
+    onSort
 }) => {
     const [selection, setSelection] = useState(
         initialSelection
@@ -99,10 +100,11 @@ const ContentTable = ({
                 >
                     <Table className={classes.table} aria-labelledby="tableTitle">
                         <ContentTableHeader
-                    columns={columns}
-                    order={order}
-                    orderBy={orderBy}
-                />
+                            columns={columns}
+                            order={order}
+                            orderBy={orderBy}
+                            onSort={onSort}
+                        />
                         {data && data.length === 0 ?
                             <EmptyTable labelEmpty={labelEmpty}/> :
                             <TableBody>
@@ -146,15 +148,16 @@ const ContentTable = ({
     );
 };
 
-ContentTable.defaultProps = {
+ContentTableCmp.defaultProps = {
     isMultipleSelectable: false,
     onSelect: () => {},
     initialSelection: [],
     hasMore: false,
-    loadMore: () => {}
+    loadMore: () => {},
+    onSort: null
 };
 
-ContentTable.propTypes = {
+ContentTableCmp.propTypes = {
     data: PropTypes.PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
@@ -172,7 +175,9 @@ ContentTable.propTypes = {
     onSelect: PropTypes.func,
     initialSelection: PropTypes.array,
     hasMore: PropTypes.bool,
-    loadMore: PropTypes.func
+    loadMore: PropTypes.func,
+    onSort: PropTypes.func
 };
 
-export default withStyles(styles)(ContentTable);
+export const ContentTable = withStyles(styles)(ContentTableCmp);
+ContentTable.displayName = 'ContentTable';
