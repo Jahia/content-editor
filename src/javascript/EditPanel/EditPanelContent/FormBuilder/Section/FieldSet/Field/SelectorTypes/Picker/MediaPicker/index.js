@@ -21,6 +21,7 @@ const usePickerInputData = uuid => {
     const imageData = data.jcr.result;
     const sizeInfo = (imageData.height && imageData.width) ? ` - ${parseInt(imageData.height.value, 10)}x${parseInt(imageData.width.value, 10)}px` : '';
     const fieldData = {
+        uuid,
         url: `${
             window.contextJsParameters.contextPath
         }/files/default${encodeJCRPath(imageData.path)}?lastModified=${imageData.lastModified.value}&t=thumbnail2`,
