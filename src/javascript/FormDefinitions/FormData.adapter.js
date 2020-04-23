@@ -22,7 +22,16 @@ export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType
                 systemNameField.displayName = t('content-editor:label.contentEditor.section.fieldSet.system.fields.systemName');
 
                 // Add description to the field
-                systemNameField.description = t('content-editor:label.contentEditor.section.fieldSet.system.fields.systemNameDescription');
+                systemNameField.description = t('content-editor:label.contentEditor.section.fieldSet.system.fields.systemNameDescription',
+                    {maxNameSize: window.contextJsParameters.config.maxNameSize});
+
+                // Add max name size validation
+                systemNameField.selectorOptions = [
+                    {
+                        name: 'maxLength',
+                        value: window.contextJsParameters.config.maxNameSize
+                    }
+                ];
 
                 // System name should be readonly for this specific nodetypes
                 if (Constants.systemName.READONLY_FOR_NODE_TYPES.includes(primaryNodeType.name) || isContentOrFileNode(formData)) {

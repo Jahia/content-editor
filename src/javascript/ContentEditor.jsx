@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Create from '~/Create/Create';
 import Edit from '~/Edit/Edit';
-import {EditorIdContextProvider} from './ContentEditorId.context';
 import {ContentEditorConfigContext} from './ContentEditor.context';
 import {Constants} from '~/ContentEditor.constants';
 import {DndProvider} from 'react-dnd';
@@ -27,13 +26,11 @@ export const ContentEditor = ({mode, uuid, lang, uilang, site, contentType, env,
 
     const ContentEditorModeCmp = Modes[mode];
     return (
-        <EditorIdContextProvider>
-            <ContentEditorConfigContext.Provider value={contentEditorConfig}>
-                <DndProvider backend={Backend}>
-                    <ContentEditorModeCmp/>
-                </DndProvider>
-            </ContentEditorConfigContext.Provider>
-        </EditorIdContextProvider>
+        <ContentEditorConfigContext.Provider value={contentEditorConfig}>
+            <DndProvider backend={Backend}>
+                <ContentEditorModeCmp/>
+            </DndProvider>
+        </ContentEditorConfigContext.Provider>
     );
 };
 

@@ -155,7 +155,7 @@
           "invalidPattern": "La valeur ne correspond pas aux contraintes définies dans le fichier de définition des types de contenu.",
           "required": "",
           "alreadyExist": "Il y a déjà un objet avec ce nom système, veuillez en choisir un autre",
-          "maxLength": "{{selectorOptions0.value}} caractères maximum"
+          "maxLength": "{{selectorOptions.maxLength}} caractères maximum"
         },
         "tab": {
           "edit": "Éditer",
@@ -204,7 +204,7 @@
           "system": {
             "displayName": "Système",
             "fields": {
-              "systemNameDescription": "Identifie le contenu, 32 caractères maximum. Pour les pages, il est utilisé pour générer l’URL par défaut.",
+              "systemNameDescription": "Utilisé par Jahia pour identifier le contenu, {{maxNameSize}} caractères maximum.",
               "systemName": "Nom système"
             }
           }

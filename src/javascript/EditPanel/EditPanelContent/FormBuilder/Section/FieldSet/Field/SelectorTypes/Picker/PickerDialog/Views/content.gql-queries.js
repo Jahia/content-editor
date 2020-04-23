@@ -10,6 +10,7 @@ export const ContentDialogPickerQuery = gql`
         $offset: Int!,
         $limit: Int!,
         $fieldFilter: InputFieldFiltersInput
+        $fieldSorter: InputFieldSorterInput
     ) {
         jcr {
             result: nodeByPath(path: $path) {
@@ -18,7 +19,8 @@ export const ContentDialogPickerQuery = gql`
                     limit: $limit,
                     typesFilter: {types: $typeFilter, multi: ANY},
                     recursionTypesFilter: {multi: NONE, types: $recursionTypesFilter},
-                    fieldFilter: $fieldFilter
+                    fieldFilter: $fieldFilter,
+                    fieldSorter: $fieldSorter
                 ) {
                     pageInfo {
                         totalCount

@@ -5,6 +5,12 @@ const t = val => val;
 describe('adaptFormData', () => {
     let formData;
     beforeEach(() => {
+        window.contextJsParameters = {
+            config: {
+                maxNameSize: 50
+            }
+        };
+
         formData = {
             sections: [
                 {
@@ -102,5 +108,15 @@ describe('adaptFormData', () => {
         adaptSystemNameField(null, formData, null, t, nodeType);
         expect(formData.sections[1].fieldSets[0].fields[0].name).toEqual('ce:systemName');
         expect(formData.sections[1].fieldSets[0].fields[0].readOnly).toEqual(true);
+    });
+
+    it('should set maximum name size validation according to DX prop: maxNameSize', () => {
+        const nodeType = {
+            name: 'jnt:news',
+            displayName: 'News'
+        };
+        adaptSystemNameField(null, formData, null, t, nodeType);
+        expect(formData.sections[1].fieldSets[0].fields[0].selectorOptions[0].name).toEqual('maxLength');
+        expect(formData.sections[1].fieldSets[0].fields[0].selectorOptions[0].value).toEqual(50);
     });
 });

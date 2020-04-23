@@ -3,7 +3,7 @@ import {ContentDialogPickerQuery, SearchContentDialogPickerQuery} from './conten
 
 const NB_OF_ELEMENT_PER_PAGE = 20;
 
-export const useDialogPickerContent = (lang, pickerConfig, selectedPath, searchTerms) => {
+export const useDialogPickerContent = ({lang, pickerConfig, selectedPath, searchTerms, fieldSorter}) => {
     // Build table config from picker config
     const tableConfig = {
         typeFilter: pickerConfig.selectableTypesTable,
@@ -31,7 +31,8 @@ export const useDialogPickerContent = (lang, pickerConfig, selectedPath, searchT
                         evaluation: 'EQUAL',
                         value: 'true'
                     }]
-                } : null
+                } : null,
+                fieldSorter
             }
         });
 
