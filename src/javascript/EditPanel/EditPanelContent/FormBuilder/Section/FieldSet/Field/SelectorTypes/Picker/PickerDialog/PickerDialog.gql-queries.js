@@ -7,7 +7,6 @@ const SiteNodesQuery = gql`
             result:nodesByQuery(query: $query) {
                 siteNodes:nodes {
                     name
-                    hasPermission(permissionName: "jContentAccess")
                     displayName(language: $displayLanguage)
                     site {
                         defaultLanguage
