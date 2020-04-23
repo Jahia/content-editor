@@ -15,7 +15,7 @@ jest.mock('@apollo/react-hooks', () => {
     };
 });
 
-import {setQueryResult} from '@apollo/react-hooks';
+import {setQueryResult, useQuery} from '@apollo/react-hooks';
 import {List} from './List';
 
 const queryResult = {
@@ -116,6 +116,7 @@ describe('PickerDialog - List view', () => {
         window.contextJsParameters = {
             contextPath: ''
         };
+        useQuery.mockClear();
     });
 
     it('should display the ContentTable', () => {
@@ -131,7 +132,7 @@ describe('PickerDialog - List view', () => {
             dsGenericTheme
         );
 
-        cmp.find('WithStyles(ContentTable)').exists();
+        cmp.find('ContentTable').exists();
     });
 
     it('should display the name of content', () => {
@@ -146,7 +147,7 @@ describe('PickerDialog - List view', () => {
             {},
             dsGenericTheme
         )
-            .find('WithStyles(ContentTable)');
+            .find('ContentTable');
 
         expect(cmp.props().data[0].name).toContain('Home');
     });
@@ -163,7 +164,7 @@ describe('PickerDialog - List view', () => {
             {},
             dsGenericTheme
         )
-            .find('WithStyles(ContentTable)');
+            .find('ContentTable');
 
         expect(cmp.props().data[0].type).toContain('Page');
     });
@@ -180,7 +181,7 @@ describe('PickerDialog - List view', () => {
             {},
             dsGenericTheme
         )
-            .find('WithStyles(ContentTable)');
+            .find('ContentTable');
 
         expect(cmp.props().columns[1].property).toContain('type');
         expect(cmp.props().data[0].subContentsCount).toBeUndefined();
@@ -198,7 +199,7 @@ describe('PickerDialog - List view', () => {
             {},
             dsGenericTheme
         )
-            .find('WithStyles(ContentTable)');
+            .find('ContentTable');
 
         expect(cmp.props().columns[1].property).toContain('subContentsCount');
         expect(cmp.props().data[0].subContentsCount).toBe(5);
@@ -216,7 +217,7 @@ describe('PickerDialog - List view', () => {
             {},
             dsGenericTheme
         )
-            .find('WithStyles(ContentTable)');
+            .find('ContentTable');
 
         expect(cmp.props().columns[5].property).toBe('navigateInto');
         expect(cmp.props().data[0].navigateInto).toBe(true);
@@ -234,7 +235,7 @@ describe('PickerDialog - List view', () => {
             {},
             dsGenericTheme
         )
-            .find('WithStyles(ContentTable)');
+            .find('ContentTable');
 
         expect(cmp.props().data[1].navigateInto).toBe(false);
     });
@@ -251,7 +252,7 @@ describe('PickerDialog - List view', () => {
             {},
             dsGenericTheme
         )
-            .find('WithStyles(ContentTable)');
+            .find('ContentTable');
 
         cmp.props().data[0].props.navigateInto.onClick({preventDefault: () => {}});
         expect(defaultProps.setSelectedPath).toHaveBeenCalledWith('/sites/mySite/home');
@@ -276,5 +277,55 @@ describe('PickerDialog - List view', () => {
             .dive();
 
         expect(cmp.debug()).toContain('10 items found');
+    });
+
+    it('should sort List with lastModified by default', () => {
+        shallowWithTheme(
+            <List {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        );
+
+        expect(useQuery).toHaveBeenCalled();
+        expect(useQuery.mock.calls[0][1].variables.fieldSorter).toEqual({
+            fieldName: 'lastModified.value',
+            sortType: 'DESC'
+        });
+    });
+
+    it('should sort List with displayName when sort the name column', () => {
+        const cmp = shallowWithTheme(
+            <List {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        );
+
+        cmp.find('ContentTable').simulate('sort', {
+            property: 'name'
+        });
+
+        expect(useQuery).toHaveBeenCalled();
+        expect(useQuery.mock.calls[1][1].variables.fieldSorter).toEqual({
+            fieldName: 'displayName',
+            sortType: 'DESC'
+        });
+    });
+
+    it('should sort List with lastModified asc when reclicking on the column', () => {
+        const cmp = shallowWithTheme(
+            <List {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        );
+
+        cmp.find('ContentTable').simulate('sort', {
+            property: 'lastModified'
+        });
+
+        expect(useQuery).toHaveBeenCalled();
+        expect(useQuery.mock.calls[1][1].variables.fieldSorter).toEqual({
+            fieldName: 'lastModified.value',
+            sortType: 'ASC'
+        });
     });
 });
