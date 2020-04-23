@@ -13,12 +13,6 @@
       "selectorType": "Text",
       "i18n": false,
       "readOnly": false,
-      "selectorOptions": [
-        {
-          "name": "maxLength",
-          "value": 32
-        }
-      ],
       "multiple": false,
       "mandatory": true,
       "target": {
