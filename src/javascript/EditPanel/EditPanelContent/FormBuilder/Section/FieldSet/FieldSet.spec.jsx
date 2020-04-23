@@ -125,6 +125,8 @@ describe('FieldSet component', () => {
 
     it('should display readOnly toggle for dynamic FieldSet when editor has no write permission', () => {
         let overridedContext = context;
+        overridedContext.nodeData.lockedAndCannotBeEdited = false;
+        overridedContext.mode = 'edit';
         overridedContext.nodeData.hasWritePermission = false;
         setContext(overridedContext);
         props.fieldset.dynamic = true;
@@ -141,6 +143,28 @@ describe('FieldSet component', () => {
         const toggleCmp = cmp.find('WithStyles(ToggleCmp)');
         expect(toggleCmp.exists()).toBe(true);
         expect(toggleCmp.props().readOnly).toBe(true);
+    });
+
+    it('should not display readOnly toggle for dynamic FieldSet when editor in create mode has no write permission', () => {
+        let overridedContext = context;
+        overridedContext.nodeData.lockedAndCannotBeEdited = false;
+        overridedContext.mode = 'create';
+        overridedContext.nodeData.hasWritePermission = false;
+        setContext(overridedContext);
+        props.fieldset.dynamic = true;
+
+        const cmp = shallowWithTheme(
+            <FieldSet {...props}/>,
+            {},
+            dsGenericTheme
+        )
+            .dive()
+            .dive()
+            .dive();
+
+        const toggleCmp = cmp.find('WithStyles(ToggleCmp)');
+        expect(toggleCmp.exists()).toBe(true);
+        expect(toggleCmp.props().readOnly).toBe(false);
     });
 
     it('should not display toggle for non dynamic FieldSet', () => {
