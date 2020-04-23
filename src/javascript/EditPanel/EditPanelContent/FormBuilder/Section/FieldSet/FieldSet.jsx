@@ -10,6 +10,7 @@ import {FieldSetPropTypes} from '~/FormDefinitions/FormData.proptypes';
 
 import {FieldContainer} from './Field';
 import {useContentEditorContext} from '~/ContentEditor.context';
+import {Constants} from '~/ContentEditor.constants';
 
 let styles = theme => ({
     fieldsetContainer: {},
@@ -39,7 +40,7 @@ const FieldSetCmp = ({fieldset, classes, formik: {values, handleChange}}) => {
                 <Toggle data-sel-role-dynamic-fieldset={fieldset.name}
                         id={fieldset.name}
                         checked={activatedFieldSet}
-                        readOnly={context.nodeData.lockedAndCannotBeEdited || !context.nodeData.hasWritePermission}
+                        readOnly={context.nodeData.lockedAndCannotBeEdited || (context.mode === Constants.routes.baseEditRoute && !context.nodeData.hasWritePermission)}
                         onChange={handleChange}
                 />}
 
