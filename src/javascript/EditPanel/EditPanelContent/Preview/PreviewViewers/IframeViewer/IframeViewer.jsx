@@ -8,7 +8,7 @@ import {useTranslation} from 'react-i18next';
 import {ProgressOverlay} from '@jahia/react-material';
 
 function zoom(frameDoc, onContentNotFound, editorContext) {
-    if (!frameDoc.documentElement.innerHTML.includes('ce_preview_skip_zoom')) {
+    if (frameDoc.documentElement && frameDoc.documentElement.innerHTML && !frameDoc.documentElement.innerHTML.includes('ce_preview_skip_zoom')) {
         const contentPreview = frameDoc.getElementById('ce_preview_content');
         if (contentPreview) {
             removeSiblings(contentPreview);
