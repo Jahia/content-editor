@@ -8,13 +8,15 @@ import {useTranslation} from 'react-i18next';
 import {ProgressOverlay} from '@jahia/react-material';
 
 function zoom(frameDoc, onContentNotFound, editorContext) {
-    const contentPreview = frameDoc.getElementById('ce_preview_content');
-    if (contentPreview) {
-        removeSiblings(contentPreview);
-        forceDisplay(contentPreview);
-        // Ce_preview-content id doesn't exist on page
-    } else if (!editorContext.nodeData.isPage) {
-        onContentNotFound();
+    if (!frameDoc.documentElement.innerHTML.includes('ce_preview_skip_zoom')) {
+        const contentPreview = frameDoc.getElementById('ce_preview_content');
+        if (contentPreview) {
+            removeSiblings(contentPreview);
+            forceDisplay(contentPreview);
+            // Ce_preview-content id doesn't exist on page
+        } else if (!editorContext.nodeData.isPage) {
+            onContentNotFound();
+        }
     }
 }
 
