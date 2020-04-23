@@ -1,1 +1,1 @@
-export {default as ContentTable} from './ContentTable';
+export * from './ContentTable';

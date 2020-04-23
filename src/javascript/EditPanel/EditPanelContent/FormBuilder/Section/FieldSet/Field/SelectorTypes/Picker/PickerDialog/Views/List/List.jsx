@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import DSContentTable from '~/DesignSystem/ContentTable/ContentTable';
+import React, {useEffect, useState} from 'react';
+import {ContentTable} from '~/DesignSystem/ContentTable/ContentTable';
 import {useTranslation} from 'react-i18next';
 import {ProgressOverlay} from '@jahia/react-material';
 import PropTypes from 'prop-types';
@@ -47,6 +47,14 @@ const columnConfig = (t, showSubContentsCount) => {
     return columns;
 };
 
+const columnIdFieldNameMapper = {
+    name: 'displayName',
+    subContentsCount: 'children.pageInfo.totalCount',
+    type: 'primaryNodeType.typeName',
+    createdBy: 'createdBy.value',
+    lastModified: 'lastModified.value'
+};
+
 export const List = ({
     pickerConfig,
     setSelectedItem,
@@ -58,6 +66,19 @@ export const List = ({
     searchTerms
 }) => {
     const {t} = useTranslation();
+    const [sort, setSort] = useState({
+        order: 'DESC',
+        fieldName: columnIdFieldNameMapper.lastModified,
+        columnId: 'lastModified'
+    });
+    const handleSort = column => {
+        setSort({
+            order: sort.columnId === column.property && sort.order === 'DESC' ? 'ASC' : 'DESC',
+            columnId: column.property,
+            fieldName: columnIdFieldNameMapper[column.property]
+        });
+    };
+
     const {
         nodes,
         totalCount,
@@ -66,7 +87,16 @@ export const List = ({
         loading,
         refetch,
         loadMore
-    } = useDialogPickerContent({lang, pickerConfig, selectedPath, searchTerms});
+    } = useDialogPickerContent({
+        lang,
+        pickerConfig,
+        selectedPath,
+        searchTerms,
+        fieldSorter: {
+            fieldName: sort.fieldName,
+            sortType: sort.order
+        }
+    });
 
     useEffect(() => {
         registry.addOrReplace('refetch-upload', 'refetch-content-list', {
@@ -120,7 +150,7 @@ export const List = ({
         <>
             <CountDisplayer totalCount={totalCount}/>
 
-            <DSContentTable
+            <ContentTable
                 columns={columnConfig(t, showSubContentsCount)}
                 labelEmpty={
                     searchTerms ?
@@ -129,12 +159,13 @@ export const List = ({
                 }
                 initialSelection={initialSelection}
                 data={tableData}
-                order="asc"
-                orderBy="name"
+                order={sort.order}
+                orderBy={sort.columnId}
                 hasMore={hasMore}
                 loadMore={loadMore}
                 error={error}
                 onSelect={setSelectedItem}
+                onSort={handleSort}
             />
         </>
     );

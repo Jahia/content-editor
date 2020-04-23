@@ -5,7 +5,7 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const ContentTableHeader = ({columns, order, orderBy}) => {
+const ContentTableHeader = ({columns, order, orderBy, onSort}) => {
     return (
         <TableHead>
             <TableRow>
@@ -17,10 +17,8 @@ const ContentTableHeader = ({columns, order, orderBy}) => {
                                sortDirection={orderBy === column.property ? order : false}
                     >
                         <TableSortLabel active={orderBy === column.property}
-                                        direction={order}
-                                        onClick={() => {
-                                            // TODO: handle sort
-                                        }}
+                                        direction={order.toLowerCase()}
+                                        onClick={() => onSort(column)}
                         >
                             {column.label}
                         </TableSortLabel>
@@ -31,13 +29,18 @@ const ContentTableHeader = ({columns, order, orderBy}) => {
     );
 };
 
+ContentTableHeader.defaultProps = {
+    onSort: () => {}
+};
+
 ContentTableHeader.propTypes = {
     columns: PropTypes.PropTypes.arrayOf(PropTypes.shape({
         property: PropTypes.string.isRequired,
         label: PropTypes.string.isRequired
     })).isRequired,
     order: PropTypes.string.isRequired,
-    orderBy: PropTypes.string.isRequired
+    orderBy: PropTypes.string.isRequired,
+    onSort: PropTypes.func
 };
 
 export {ContentTableHeader};
