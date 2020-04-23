@@ -25,30 +25,40 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
         }
 
         const handleBeforeUnloadEvent = ev => {
-            if (formik.dirty) {
-                ev.preventDefault();
-                ev.returnValue = '';
+            ev.preventDefault();
+            ev.returnValue = '';
+        };
+
+        const registerListeners = () => {
+            // Prevent close browser's tab when there is unsaved content
+            window.addEventListener('beforeunload', handleBeforeUnloadEvent);
+            if (envProps.registerListeners) {
+                envProps.registerListeners();
+            }
+        };
+
+        const unregisterListeners = () => {
+            window.removeEventListener('beforeunload', handleBeforeUnloadEvent);
+            if (envProps.unregisterListeners) {
+                envProps.unregisterListeners();
             }
         };
 
         if (formik.dirty) {
-            // Prevent close browser's tab when there is unsaved content
-            window.addEventListener('beforeunload', handleBeforeUnloadEvent);
+            registerListeners();
         } else {
-            window.removeEventListener('beforeunload', handleBeforeUnloadEvent);
+            unregisterListeners();
         }
 
-        return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnloadEvent);
-        };
+        return unregisterListeners;
     }, [formik.dirty]);
 
     useEffect(() => {
         window.authoringApi.pushEventHandlers[window.authoringApi.pushEventHandlers.length] = refetchFormData;
 
         return () => {
-            if (envProps.closeCallback) {
-                envProps.closeCallback();
+            if (envProps.unregisterListeners) {
+                envProps.unregisterListeners();
             }
 
             window.authoringApi.pushEventHandlers.splice(window.authoringApi.pushEventHandlers.findIndex(eh => eh === refetchFormData, 1));
