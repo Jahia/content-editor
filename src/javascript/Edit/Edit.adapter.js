@@ -158,7 +158,7 @@ export const adaptSaveRequest = (nodeData, saveRequestVariables) => {
         if (systemNameIndex > -1) {
             const newSystemName = encodeSystemName(saveRequestVariables.propertiesToSave[systemNameIndex].value);
 
-            if (newSystemName !== encodeSystemName(nodeData.name)) {
+            if (newSystemName !== nodeData.name) {
                 saveRequestVariables.shouldRename = true;
                 saveRequestVariables.newName = newSystemName;
             }
