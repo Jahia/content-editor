@@ -27,12 +27,10 @@ const ContentEditorReduxCmp = ({mode, uuid, lang, uilang, site, contentType}) =>
         back: exit,
         disabledBack: () => !hasHistory(),
         setLanguage: language => redirect({language}),
-        initCallback: formik => {
-            if (formik.dirty) {
-                registerBlockListener(t('content-editor:label.contentEditor.edit.action.goBack.alert'));
-            }
+        registerListeners: () => {
+            registerBlockListener(t('content-editor:label.contentEditor.edit.action.goBack.alert'));
         },
-        closeCallback: () => {
+        unregisterListeners: () => {
             unRegisterBlockListener();
         }
     };
