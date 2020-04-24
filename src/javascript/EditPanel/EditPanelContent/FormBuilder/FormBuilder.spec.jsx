@@ -56,7 +56,7 @@ describe('FormBuilder component', () => {
         context.nodeData.isPage = false;
         setContext(context);
 
-        const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).find('section');
+        const cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).find('section');
         expect(cmp.find('ChildrenSection').exists()).toBeTruthy();
     });
 
@@ -64,7 +64,15 @@ describe('FormBuilder component', () => {
         context.nodeData.isPage = false;
         setContext(context);
 
-        const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).find('section');
+        const cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).find('section');
         expect(cmp.childAt(1).find('ChildrenSection').exists()).toBeTruthy();
+    });
+
+    it('should not display ordering section in create mode', () => {
+        context.nodeData.isPage = false;
+        setContext(context);
+
+        const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).find('section');
+        expect(cmp.find('ChildrenSection').exists()).toBe(false);
     });
 });

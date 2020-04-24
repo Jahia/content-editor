@@ -7,6 +7,7 @@ import {useContentEditorContext} from '~/ContentEditor.context';
 import {SectionsPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {ChildrenSection} from './ChildrenSection';
 import {useTranslation} from 'react-i18next';
+import {Constants} from '~/ContentEditor.constants';
 
 const FormBuilder = ({mode}) => {
     const {sections, nodeData} = useContentEditorContext();
@@ -14,7 +15,7 @@ const FormBuilder = ({mode}) => {
 
     const isOrderingSection = !nodeData.isPage && nodeData.primaryNodeType.hasOrderableChildNodes;
     const cloneSections = isOrderingSection ? [...sections] : sections;
-    if (isOrderingSection) {
+    if (isOrderingSection && mode === Constants.routes.baseEditRoute) {
         const orderingSection = {
             isOrderingSection: true,
             displayName: t('content-editor:label.contentEditor.section.listAndOrdering.title')
