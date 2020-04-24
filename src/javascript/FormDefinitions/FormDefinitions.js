@@ -3,7 +3,7 @@ import {useQuery} from '@apollo/react-hooks';
 export const useFormDefinition = (query, queryParams, adapter, t) => {
     const {loading, error, data, refetch} = useQuery(query, {
         variables: queryParams,
-        fetchPolicy: 'cache-and-network'
+        fetchPolicy: 'cache-first'
     });
 
     if (error || loading || !data.jcr) {
