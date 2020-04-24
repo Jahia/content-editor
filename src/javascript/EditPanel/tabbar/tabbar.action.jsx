@@ -1,19 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {useNodeChecks} from '@jahia/data-helper';
+import {useContentEditorContext} from '~/ContentEditor.context';
 
-export const TabBar = ({context, render: Render, ...props}) => {
+export const TabBar = ({context, render: Render, loading: Loading, ...props}) => {
+    const {site} = useContentEditorContext();
+    const res = useNodeChecks(
+        {path: `/sites/${site}`},
+        {...context}
+    );
+
+    if (Loading && res.loading) {
+        return <Loading context={context}/>;
+    }
+
     return (
         <>
-            {context.isDisplayable(context) &&
-                <Render
-                    {...props}
-                    {...(context.displayActionProps || {})}
-                    context={{
-                        ...context,
-                        onClick: () => {
-                                    context.setActiveTab(context.value);
-                                }
-                    }}/>}
+            {context.isDisplayable(context) && res.checksResult &&
+            <Render
+                {...props}
+                {...(context.displayActionProps || {})}
+                context={{
+                    ...context,
+                    onClick: () => {
+                        context.setActiveTab(context.value);
+                    }
+                }}
+            />}
         </>
     );
 };
