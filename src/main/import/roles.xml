@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<roles jcr:primaryType="jnt:roles"
+       xmlns:jcr="http://www.jcp.org/jcr/1.0"
+       xmlns:j="http://www.jahia.org/jahia/1.0"
+       xmlns:jnt="http://www.jahia.org/jahia/nt/1.0">
+    <editor jcr:primaryType="jnt:role">
+        <editor-in-chief j:permissionNames="canSeeAdvancedOptionsTab"
+                         j:privilegedAccess="true"
+                         jcr:primaryType="jnt:role">
+            <currentSite-access j:path="currentSite"
+                                j:permissionNames="contentEditor"
+                                jcr:primaryType="jnt:externalPermissions"
+            />
+        </editor-in-chief>
+    </editor>
+
+    <server-administrator j:hidden="false"
+                          j:nodeTypes="rep:root"
+                          j:permissionNames="canSeeAdvancedOptionsTab"
+                          j:privilegedAccess="true"
+                          j:roleGroup="server-role"
+                          jcr:primaryType="jnt:role">
+    </server-administrator>
+
+    <site-administrator j:hidden="false"
+                        j:permissionNames="canSeeAdvancedOptionsTab"
+                        j:privilegedAccess="true"
+                        j:roleGroup="site-role"
+                        jcr:primaryType="jnt:role">
+    </site-administrator>
+</roles>

@@ -63,5 +63,8 @@ export const Constants = {
             LANGUAGES: 'LANGUAGES'
         },
         notAvailableFor: ['jnt:virtualsite']
+    },
+    permissions: {
+        canSeeAdvancedOptionsTab: 'canSeeAdvancedOptionsTab'
     }
 };
