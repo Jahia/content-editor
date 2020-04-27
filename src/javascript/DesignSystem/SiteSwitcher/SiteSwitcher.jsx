@@ -7,6 +7,9 @@ import {ChevronDown} from 'mdi-material-ui';
 const styles = theme => ({
     siteSwitcher: {
         margin: theme.spacing.unit * 2
+    },
+    menuDialog: {
+        zIndex: 10012 // IMPORTANT: DO NOT REMOVE: CKEditor image picker is using 10010, CE picker is using 10011, and we need to be on top of this interfaces
     }
 });
 
@@ -39,7 +42,7 @@ const SiteSwitcherCmp = ({id, siteKey, siteNodes, onSelectSite, classes}) => {
                 &nbsp;
                 <ChevronDown fontSize="small" color="inherit"/>
             </Button>
-            <Menu id={id} anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
+            <Menu id={id} anchorEl={anchorEl} open={Boolean(anchorEl)} ModalClasses={{root: classes.menuDialog}} onClose={handleClose}>
                 {siteNodes.map(siteNode => {
                     return (
                         <MenuItem
