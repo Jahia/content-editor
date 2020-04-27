@@ -9,7 +9,6 @@ export const ContentDialogPickerQuery = gql`
         $language: String!,
         $offset: Int!,
         $limit: Int!,
-        $fieldFilter: InputFieldFiltersInput
         $fieldSorter: InputFieldSorterInput
     ) {
         jcr {
@@ -18,8 +17,7 @@ export const ContentDialogPickerQuery = gql`
                     offset: $offset,
                     limit: $limit,
                     typesFilter: {types: $typeFilter, multi: ANY},
-                    recursionTypesFilter: {multi: NONE, types: $recursionTypesFilter},
-                    fieldFilter: $fieldFilter,
+                    recursionTypesFilter: {multi: NONE, types: $recursionTypesFilter},  
                     fieldSorter: $fieldSorter
                 ) {
                     pageInfo {

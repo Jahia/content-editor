@@ -9,8 +9,8 @@ describe('ContentTable', () => {
     beforeEach(() => {
         defaultProps = {
             data: [
-                {id: '1', name: 'name 1', path: 'path1', type: 'type 1', createdBy: 'createdBy 1', lastModified: 'lastModified 1', props: {type: {onClick: jest.fn()}}},
-                {id: '2', name: 'name 2', path: 'path2', type: 'type 2', createdBy: 'createdBy 2', lastModified: 'lastModified 2'}
+                {id: '1', selectable: true, name: 'name 1', path: 'path1', type: 'type 1', createdBy: 'createdBy 1', lastModified: 'lastModified 1', props: {type: {onClick: jest.fn()}}},
+                {id: '2', selectable: true, name: 'name 2', path: 'path2', type: 'type 2', createdBy: 'createdBy 2', lastModified: 'lastModified 2'}
             ],
             columns: [
                 {property: 'name', label: 'Column 1'},
@@ -99,6 +99,20 @@ describe('ContentTable', () => {
         ).dive();
 
         expect(cmp.find('WithStyles(TableRow)').at(0).props().selected).toBe(true);
+    });
+
+    it('should allow to select one row', () => {
+        defaultProps.data[0] = {
+            ...defaultProps.data[0],
+            selectable: false
+        };
+        const cmp = shallowWithTheme(
+            <ContentTable {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        expect(cmp.find('WithStyles(TableRow)').find('WithStyles(Checkbox)').length).toEqual(1);
     });
 
     it('should use renderer of the column when defined initially one row', () => {

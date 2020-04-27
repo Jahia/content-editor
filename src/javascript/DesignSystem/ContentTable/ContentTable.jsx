@@ -117,12 +117,10 @@ const ContentTableCmp = ({
                                           role="checkbox"
                                           selected={selected}
                                           tabIndex={-1}
-                                          onClick={() => {
-                                              onClickHandler(row);
-                                          }}
+                                          onClick={() => row.selectable && onClickHandler(row)}
                                 >
                                     <TableCell padding="checkbox">
-                                        <Checkbox className={selected ? classes.selectedCheckbox : ''} checked={selected}/>
+                                        {row.selectable && <Checkbox className={selected ? classes.selectedCheckbox : ''} checked={selected}/>}
                                     </TableCell>
 
                                     {columns.map(column => {
