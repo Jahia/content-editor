@@ -7,8 +7,8 @@ const GoBack = ({context, render: Render}) => {
     const {envProps} = useContentEditorConfigContext();
     const [open, setOpen] = useState(false);
     const executeGoBackAction = () => {
-        if (envProps.closeCallback) {
-            envProps.closeCallback();
+        if (envProps.unregisterListeners) {
+            envProps.unregisterListeners();
         }
 
         envProps.back(context.uuid, context.operator);

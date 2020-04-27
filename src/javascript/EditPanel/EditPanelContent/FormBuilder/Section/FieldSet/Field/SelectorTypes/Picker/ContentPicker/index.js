@@ -22,6 +22,7 @@ const usePickerInputData = (uuid, editorContext) => {
 
     const contentData = data.jcr.result;
     const fieldData = {
+        uuid,
         path: contentData.path,
         url: encodeJCRPath(`${contentData.primaryNodeType.icon}.png`),
         name: contentData.displayName,

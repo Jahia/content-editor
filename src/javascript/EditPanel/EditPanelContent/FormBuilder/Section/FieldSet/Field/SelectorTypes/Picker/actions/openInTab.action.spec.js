@@ -7,12 +7,12 @@ describe('openInTab action', () => {
 
         global.contextJsParameters = {
             contextPath: '',
-            urlbase: '/modules/moonstone'
+            urlbase: '/jahia/jahia'
         };
 
         const context = {
             fieldData: {
-                path: '/sites/digitall/contents'
+                uuid: 'this-is-an-id'
             },
             editorContext: {
                 lang: 'fr'
@@ -20,6 +20,6 @@ describe('openInTab action', () => {
         };
         openInTabAction.onClick(context);
 
-        expect(window.open).toHaveBeenCalledWith(`/modules/moonstone/jcontent/digitall/fr/${Constants.routes.baseEditRoute}/contents`, '_blank');
+        expect(window.open).toHaveBeenCalledWith(`/jahia/jahia/${Constants.appName}/fr/${Constants.routes.baseEditRoute}/this-is-an-id`, '_blank');
     });
 });

@@ -7,14 +7,16 @@ import {useContentEditorContext} from '~/ContentEditor.context';
 import {useTranslation} from 'react-i18next';
 import {ProgressOverlay} from '@jahia/react-material';
 
-function zoom(frameDoc, onContentNotFound, editorContext) {
-    const contentPreview = frameDoc.getElementById('ce_preview_content');
-    if (contentPreview) {
-        removeSiblings(contentPreview);
-        forceDisplay(contentPreview);
-        // Ce_preview-content id doesn't exist on page
-    } else if (!editorContext.nodeData.isPage) {
-        onContentNotFound();
+function zoom(iframeDocument, onContentNotFound, editorContext) {
+    if (iframeDocument.documentElement && iframeDocument.documentElement.innerHTML && !iframeDocument.documentElement.innerHTML.includes('ce_preview_skip_zoom')) {
+        const contentPreview = iframeDocument.getElementById('ce_preview_content');
+        if (contentPreview) {
+            removeSiblings(contentPreview);
+            forceDisplay(contentPreview);
+            // Ce_preview-content id doesn't exist on page
+        } else if (!editorContext.nodeData.isPage) {
+            onContentNotFound();
+        }
     }
 }
 
@@ -30,18 +32,28 @@ function loadAsset(asset, iframeHeadEl) {
     });
 }
 
-function loadAssets(assets, frameDoc) {
+function loadAssets(assets, iframeDocument) {
     if (!assets || assets.length === 0) {
         return Promise.resolve();
     }
 
-    let iframeHeadEl = frameDoc.getElementsByTagName('head')[0];
+    let iframeHeadEl = iframeDocument.getElementsByTagName('head')[0];
     if (!iframeHeadEl) {
-        frameDoc.getElementsByTagName('html')[0].insertBefore(frameDoc.createElement('head'), frameDoc.body);
-        iframeHeadEl = frameDoc.getElementsByTagName('head')[0];
+        iframeDocument.getElementsByTagName('html')[0].insertBefore(iframeDocument.createElement('head'), iframeDocument.body);
+        iframeHeadEl = iframeDocument.getElementsByTagName('head')[0];
     }
 
     return Promise.all(assets.map(asset => loadAsset(asset, iframeHeadEl)));
+}
+
+function writeInIframe(html, iframeWindow) {
+    return new Promise((resolve, reject) => {
+        iframeWindow.document.open();
+        iframeWindow.onload = resolve;
+        iframeWindow.onerror = reject;
+        iframeWindow.document.write(html);
+        iframeWindow.document.close();
+    });
 }
 
 export const IframeViewer = ({previewContext, data, onContentNotFound}) => {
@@ -62,22 +74,24 @@ export const IframeViewer = ({previewContext, data, onContentNotFound}) => {
             displayValue = t('label.contentManager.contentPreview.noViewAvailable');
         }
 
-        const frameDoc = element.contentWindow ? element.contentWindow.document : element.document;
-
-        frameDoc.body.innerHTML = displayValue;
-        frameDoc.body.setAttribute('style', 'pointer-events: none');
-
-        const assets = data && data.nodeByPath && data.nodeByPath.renderedContent ?
-            data.nodeByPath.renderedContent.staticAssets :
-            [];
-
-        loadAssets(assets, frameDoc)
+        const iframeWindow = element.contentWindow || element;
+        writeInIframe(displayValue, iframeWindow)
+            .then(() => {
+                iframeWindow.document.body.setAttribute('style', 'pointer-events: none');
+            })
+            .then(() => {
+                const assets = data && data.nodeByPath && data.nodeByPath.renderedContent ?
+                    data.nodeByPath.renderedContent.staticAssets :
+                    [];
+                return loadAssets(assets, iframeWindow.document);
+            })
             .then(() => {
                 // No zoom on full if no content wrapped in the page
                 if (previewContext.requestAttributes) {
-                    zoom(frameDoc, onContentNotFound, editorContext);
+                    zoom(iframeWindow.document, onContentNotFound, editorContext);
                 }
             })
+            .catch(err => console.error('Error in the preview', err))
             .then(() => {
                 setLoading(false);
             });
