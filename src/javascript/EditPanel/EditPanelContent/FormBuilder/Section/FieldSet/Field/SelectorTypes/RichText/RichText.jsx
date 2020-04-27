@@ -98,10 +98,10 @@ export const RichTextCmp = ({field, id, value}) => {
             <FastField
                 name={field.name}
                 render={({form: {setFieldValue, setFieldTouched}}) => {
-                    const onEditorChange = evt => {
+                    const onEditorChange = value => {
                         setFieldValue(
                             id,
-                            evt.editor.getData(),
+                            value,
                             true
                         );
                         setFieldTouched(field.name, field.multiple ? [true] : true);
@@ -114,7 +114,13 @@ export const RichTextCmp = ({field, id, value}) => {
                             aria-labelledby={`${field.name}-label`}
                             config={config}
                             readOnly={field.readOnly}
-                            onChange={onEditorChange}
+                            onMode={evt => {
+                                if (evt.editor.mode === 'source') {
+                                    let editable = evt.editor.editable();
+                                    editable.attachListener(editable, 'input', inputEvt => onEditorChange(inputEvt.sender.getValue()));
+                                }
+                            }}
+                            onChange={evt => onEditorChange(evt.editor.getData())}
                         />
                     );
                 }}
