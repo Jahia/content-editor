@@ -279,4 +279,26 @@ describe('adaptEditFormData', () => {
         expect(saveRequestVariables.shouldRename).toEqual(true);
         expect(saveRequestVariables.newName).toEqual('dummy_updated');
     });
+
+    it('should not rename node if system name not changed and system name contains specials characters', () => {
+        const nodeData = {
+            name: 'dummy%2A',
+            primaryNodeType: {
+                displayName: 'ContentType',
+                name: 'jcr:contentType'
+            }
+        };
+
+        let saveRequestVariables = {
+            propertiesToSave: [{
+                name: 'ce:systemName',
+                value: 'dummy*'
+            }]
+        };
+
+        saveRequestVariables = adaptSaveRequest(nodeData, saveRequestVariables);
+
+        expect(saveRequestVariables.propertiesToSave.length).toEqual(0);
+        expect(saveRequestVariables.shouldRename).toEqual(false);
+    });
 });
