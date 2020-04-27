@@ -2,26 +2,12 @@ import {allSitesEntry, getSiteNodes, extractConfigs, getSite, getDetailedPathArr
 
 describe('Picker utils', () => {
     describe('getSiteNodes', () => {
-        const withPermission = {
-            hasPermission: true,
-            displayName: 'withPermission',
-            name: 'withPermission'
-        };
-
-        const withoutPermission = {
-            hasPermission: false,
-            displayName: 'withoutPermission',
-            name: 'withoutPermission'
-        };
-
         const siteA = {
-            hasPermission: true,
             displayName: 'A',
             name: 'Z'
         };
 
         const siteB = {
-            hasPermission: true,
             displayName: 'B',
             name: 'W'
         };
@@ -37,11 +23,6 @@ describe('Picker utils', () => {
         };
 
         const allSitesLabel = 'allSites';
-
-        it('should return only sites with permission', () => {
-            const result = getSiteNodes(data([withoutPermission, withPermission]), allSitesLabel);
-            expect(result).toStrictEqual([withPermission]);
-        });
 
         it('should order sites by alphabetical order', () => {
             expect(getSiteNodes(data([siteB, siteA]), allSitesLabel)).toStrictEqual([allSitesEntry(allSitesLabel), siteA, siteB]);
