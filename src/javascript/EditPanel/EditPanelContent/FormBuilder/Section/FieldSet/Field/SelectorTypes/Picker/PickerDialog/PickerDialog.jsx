@@ -16,7 +16,8 @@ import {useDebounce} from './useDebounce';
 
 const styles = theme => ({
     rootDialog: {
-        margin: theme.spacing.unit * 8
+        margin: theme.spacing.unit * 8,
+        zIndex: 10011 // IMPORTANT: DO NOT REMOVE: CKEditor image picker is using 10010, and we need to display this on top of CKEditor interfaces
     },
     modalContent: {
         display: 'flex',
