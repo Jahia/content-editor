@@ -170,8 +170,8 @@ describe('PickerDialog - List view', () => {
         )
             .find('ContentTable');
 
-        expect(cmp.props().data[0].selectable).toBeFalsy();
-        expect(cmp.props().data[1].selectable).toBeTruthy();
+        expect(cmp.props().data[0].selectable).toBe(false);
+        expect(cmp.props().data[1].selectable).toBe(true);
     });
 
     it('should display the type of the content', () => {
