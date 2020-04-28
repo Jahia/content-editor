@@ -39,6 +39,14 @@ export const LockManager = ({path}) => {
                 .then(() => {
                     // Clear subscription client side. (this will not stop the server side subscription, the server side subscription will end by timeout)
                     subscription.unsubscribe();
+
+                    // Manual refetch to avoid node displayed as locked in other apps like (Jcontent)
+                    client.reFetchObservableQueries();
+
+                    // Manual refresh GWT content to avoid page composer left tree node displayed as locked
+                    if (window.top.authoringApi.refreshContent) {
+                        window.top.authoringApi.refreshContent();
+                    }
                 })
                 .catch(err => console.error(err));
         };
