@@ -64,6 +64,7 @@ export const saveNode = ({
 
         notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.success'), ['closeButton']);
         actions.setSubmitting(false);
+        client.cache.flushNodeEntryById(nodeData.uuid);
         refetchPreview(getPreviewPath(nodeData), language);
     }, error => {
         onServerError(error, actions, notificationContext, t, 'content-editor:label.contentEditor.edit.action.save.error');
