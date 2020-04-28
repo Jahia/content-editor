@@ -2,6 +2,7 @@ import React, {useContext} from 'react';
 import {shallow} from '@jahia/test-framework';
 import saveAction from './save.action';
 import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
+import {useContentEditorContext} from '~/ContentEditor.context';
 
 jest.mock('react', () => {
     return {
@@ -12,6 +13,8 @@ jest.mock('react', () => {
 
 jest.mock('~/PublicationInfo/PublicationInfo.context', () => ({usePublicationInfoContext: jest.fn()}));
 
+jest.mock('~/ContentEditor.context', () => ({useContentEditorContext: jest.fn()}));
+
 describe('save action', () => {
     let context;
     let SaveAction;
@@ -21,6 +24,7 @@ describe('save action', () => {
     beforeEach(() => {
         SaveAction = saveAction.component;
         useContext.mockImplementation(() => ({render}));
+        useContentEditorContext.mockImplementation(() => ({refetchFormData: jest.fn()}));
         usePublicationInfoContext.mockImplementation(() => ({publicationInfoPolling: jest.fn()}));
         context = {
             formik: {
