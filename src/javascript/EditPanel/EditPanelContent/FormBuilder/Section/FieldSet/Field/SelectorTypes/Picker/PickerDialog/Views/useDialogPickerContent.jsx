@@ -25,13 +25,6 @@ export const useDialogPickerContent = ({lang, pickerConfig, selectedPath, search
                 searchSelectorType: tableConfig.searchSelectorType,
                 typeFilter: tableConfig.typeFilter,
                 recursionTypesFilter: tableConfig.recursionTypesFilter,
-                fieldFilter: tableConfig.showOnlyNodesWithTemplates ? {
-                    filters: [{
-                        fieldName: 'isDisplayableNode',
-                        evaluation: 'EQUAL',
-                        value: 'true'
-                    }]
-                } : null,
                 fieldSorter
             }
         });

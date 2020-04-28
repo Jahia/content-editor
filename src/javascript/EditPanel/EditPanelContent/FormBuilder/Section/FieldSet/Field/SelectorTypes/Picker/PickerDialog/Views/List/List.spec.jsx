@@ -26,6 +26,7 @@ const queryResult = {
         },
         nodes: [{
             displayName: 'Home',
+            isDisplayableNode: true,
             primaryNodeType: {
                 typeName: 'Page',
                 icon: '/jahia/modules/assets/icons/jnt_page',
@@ -55,6 +56,7 @@ const queryResultWithChildren = {
         },
         nodes: [{
             displayName: 'Home',
+            isDisplayableNode: false,
             primaryNodeType: {
                 typeName: 'Page',
                 icon: '/jahia/modules/assets/icons/jnt_page',
@@ -73,6 +75,7 @@ const queryResultWithChildren = {
             __typename: 'GenericJCRNode'
         }, {
             displayName: 'Home',
+            isDisplayableNode: true,
             primaryNodeType: {
                 typeName: 'Page',
                 icon: '/jahia/modules/assets/icons/jnt_page',
@@ -106,7 +109,7 @@ describe('PickerDialog - List view', () => {
             setSelectedItem: jest.fn(),
             uilang: 'en',
             pickerConfig: {
-                showOnlyNodesWithTemplates: true,
+                showOnlyNodesWithTemplates: false,
                 searchSelectorType: '   ',
                 selectableTypesTable: 'type'
             },
@@ -150,6 +153,25 @@ describe('PickerDialog - List view', () => {
             .find('ContentTable');
 
         expect(cmp.props().data[0].name).toContain('Home');
+    });
+
+    it('should have non selectable content', () => {
+        setQueryResult({
+            jcr: {
+                result: queryResultWithChildren
+            }
+        });
+        defaultProps.pickerConfig.showOnlyNodesWithTemplates = true;
+
+        const cmp = shallowWithTheme(
+            <List {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        )
+            .find('ContentTable');
+
+        expect(cmp.props().data[0].selectable).toBe(false);
+        expect(cmp.props().data[1].selectable).toBe(true);
     });
 
     it('should display the type of the content', () => {

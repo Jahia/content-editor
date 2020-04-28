@@ -127,6 +127,7 @@ export const List = ({
             return {
                 id: content.uuid,
                 path: content.path,
+                selectable: !pickerConfig.showOnlyNodesWithTemplates || (pickerConfig.showOnlyNodesWithTemplates && content.isDisplayableNode),
                 name: content.displayName,
                 subContentsCount: haveSubContents ? content.children.pageInfo.totalCount : undefined,
                 type: content.primaryNodeType.typeName,
