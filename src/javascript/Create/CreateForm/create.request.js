@@ -23,6 +23,7 @@ export const createNode = ({
     client.mutate({
         variables: adaptCreateRequest({
             uuid: nodeData.uuid,
+            name: nodeData.newName,
             primaryNodeType,
             mixins: mixinsToAdd,
             properties: propsToSave,
