@@ -54,7 +54,7 @@ const CreateNewContent = ({context, render: Render, loading: Loading}) => {
         false,
         context.path,
         uilang,
-        ['jmix:studioOnly', 'jmix:hiddenType'],
+        ['jmix:studioOnly', 'jmix:hiddenType', 'jnt:navMenuText'],
         context.showOnNodeTypes,
         transformNodeTypesToActions);
 
