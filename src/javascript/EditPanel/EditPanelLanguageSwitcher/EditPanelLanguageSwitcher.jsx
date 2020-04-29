@@ -28,7 +28,7 @@ const EditPanelLanguageSwitcher = ({siteInfo, formik}) => {
         <>
             <LanguageSwitcher lang={lang}
                               languages={siteInfo.languages}
-                              color="primary"
+                              color="default"
                               onSelectLanguage={language => {
                                   if (language !== lang) {
                                       if (formik.dirty) {
