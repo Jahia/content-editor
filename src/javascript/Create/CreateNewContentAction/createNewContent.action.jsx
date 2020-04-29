@@ -47,7 +47,9 @@ const CreateNewContent = ({context, render: Render, loading: Loading}) => {
     const {uilang, language} = useSelector(state => ({language: state.language, uilang: state.uilang}));
     const res = useNodeChecks(
         {path: context.path, language: language},
-        {...context}
+        {
+            hideOnNodeTypes: ['jnt:navMenuText']
+        }
     );
     const {loadingTypes, error, nodetypes} = useCreatableNodetypes(
         undefined,
