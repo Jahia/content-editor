@@ -14,7 +14,7 @@ function zoom(iframeDocument, onContentNotFound, editorContext) {
             removeSiblings(contentPreview);
             forceDisplay(contentPreview);
             // Ce_preview-content id doesn't exist on page
-        } else if (!editorContext.nodeData.isPage) {
+        } else if (!editorContext.nodeData.isPage && editorContext.nodeData.displayableNode.path !== editorContext.nodeData.path) {
             onContentNotFound();
         }
     }
