@@ -5,7 +5,7 @@ import {useTranslation} from 'react-i18next';
 import {Error} from '@material-ui/icons';
 import styles from './ActionsButtons.scss';
 
-export const ButtonWithPastilleRenderer = ({context, ...props}) => {
+export const ButtonWithPastilleRenderer = ({context}) => {
     const {t} = useTranslation();
 
     if (!context.enabled) {
@@ -16,7 +16,6 @@ export const ButtonWithPastilleRenderer = ({context, ...props}) => {
         <>
             <Button
                 {...context.componentProps}
-                {...props}
                 icon={context.buttonIcon}
                 label={t(context.buttonLabel).toUpperCase()}
                 disabled={context.disabled}

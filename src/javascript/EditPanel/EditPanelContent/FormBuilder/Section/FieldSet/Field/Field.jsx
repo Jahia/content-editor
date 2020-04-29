@@ -190,7 +190,7 @@ FieldCmp.propTypes = {
     formik: PropTypes.shape({
         errors: PropTypes.object,
         touched: PropTypes.object,
-        values: PropTypes.array
+        values: PropTypes.object
     }).isRequired,
     actionContext: PropTypes.shape({
         noAction: PropTypes.bool

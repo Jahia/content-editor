@@ -33,7 +33,7 @@ const styles = theme => ({
     }
 });
 
-export const ControlCmp = ({classes, innerRef, children, innerProps, isDisabled, isFocused, menuIsOpen, selectProps}) => {
+export const ControlCmp = React.forwardRef(({classes, children, innerProps, isDisabled, isFocused, menuIsOpen, selectProps}, innerRef) => {
     const isReadOnly = selectProps.isReadOnly;
     return (
         <div
@@ -50,7 +50,7 @@ export const ControlCmp = ({classes, innerRef, children, innerProps, isDisabled,
             {children}
         </div>
     );
-};
+});
 
 ControlCmp.default = {
     isReadOnly: false
@@ -68,7 +68,7 @@ ControlCmp.propTypes = {
     menuIsOpen: PropTypes.bool.isRequired,
     innerRef: PropTypes.oneOfType([
         PropTypes.func,
-        PropTypes.shape({current: PropTypes.any})
+        PropTypes.shape({current: PropTypes.object})
     ])
 };
 
