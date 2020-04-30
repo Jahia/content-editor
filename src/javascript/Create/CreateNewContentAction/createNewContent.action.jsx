@@ -48,7 +48,7 @@ const CreateNewContent = ({context, render: Render, loading: Loading}) => {
     const res = useNodeChecks(
         {path: context.path, language: language},
         {
-            hideOnNodeTypes: ['jnt:navMenuText']
+            ...context
         }
     );
     const {loadingTypes, error, nodetypes} = useCreatableNodetypes(
@@ -57,7 +57,7 @@ const CreateNewContent = ({context, render: Render, loading: Loading}) => {
         context.path,
         uilang,
         ['jmix:studioOnly', 'jmix:hiddenType'],
-        context.showOnNodeTypes,
+        [],
         transformNodeTypesToActions);
 
     if (Loading && (loadingTypes || res.loading)) {

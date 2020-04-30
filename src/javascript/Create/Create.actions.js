@@ -11,7 +11,8 @@ export const registerCreateActions = registry => {
         buttonLabel:
             'content-editor:label.contentEditor.CMMActions.createNewContent.menu',
         targets: ['createMenuActions:3', 'contentActions:3', 'headerPrimaryActions:1'],
-        showOnNodeTypes: ['jnt:contentFolder', 'jnt:content'],
+        getIsNodeTypes: ['jnt:contentFolder', 'jnt:content'],
+        hideOnNodeTypes: ['jnt:navMenuText'],
         requiredPermission: ['jcr:addChildNodes']
     });
 
