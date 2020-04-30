@@ -1,14 +1,30 @@
 import {useQuery} from '@apollo/react-hooks';
 import {PublicationInfoQuery} from './PublicationInfo.gql-queries';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 
 export const usePublicationInfo = (queryParams, t) => {
     const [polling, setPolling] = useState(false);
-    const {loading, error, data} = useQuery(PublicationInfoQuery, {
+    const {loading, error, data, refetch} = useQuery(PublicationInfoQuery, {
         variables: queryParams,
-        fetchPolicy: 'cache-and-network',
+        fetchPolicy: 'network-only',
         pollInterval: polling ? 5000 : 0
     });
+
+    // Refresh publication info when GWT do publication
+    useEffect(() => {
+        const index = window.authoringApi.pushEventHandlers.length;
+
+        window.authoringApi.pushEventHandlers[index] = jobsData => {
+            // Only refresh in case there is ended jobs
+            if (jobsData && jobsData.endedJobs && jobsData.endedJobs.length > 0) {
+                refetch();
+            }
+        };
+
+        return () => {
+            window.authoringApi.pushEventHandlers.splice(index, 1);
+        };
+    }, [refetch]);
 
     if (error || loading || !data.jcr) {
         return {
