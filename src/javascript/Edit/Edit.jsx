@@ -51,16 +51,18 @@ export const EditCmp = ({
     };
 
     return (
-        <PublicationInfoContextProvider uuid={nodeData.uuid} lang={lang}>
-            <Formik
-                enableReinitialize
-                initialValues={initialValues}
-                render={props => <EditPanel {...props} title={title}/>}
-                validate={validate(sections)}
-                onSubmit={handleSubmit}
-            />
+        <>
+            <PublicationInfoContextProvider uuid={nodeData.uuid} lang={lang}>
+                <Formik
+                    enableReinitialize
+                    initialValues={initialValues}
+                    render={props => <EditPanel {...props} title={title}/>}
+                    validate={validate(sections)}
+                    onSubmit={handleSubmit}
+                />
+            </PublicationInfoContextProvider>
             {!nodeData.lockedAndCannotBeEdited && <LockManager path={path}/>}
-        </PublicationInfoContextProvider>
+        </>
     );
 };
 
