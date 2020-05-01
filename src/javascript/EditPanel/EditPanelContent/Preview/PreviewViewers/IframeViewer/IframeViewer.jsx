@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Paper} from '@material-ui/core';
 import classes from './IframeViewer.scss';
@@ -62,13 +62,14 @@ export const IframeViewer = ({previewContext, data, onContentNotFound}) => {
     const {t} = useTranslation();
     const iframeRef = useRef(null);
 
-    useEffect(() => {
+    const renderIFrame = useCallback(() => {
         const element = iframeRef.current;
 
         if (!element) {
             return;
         }
 
+        setLoading(true);
         let displayValue = data && data.nodeByPath && data.nodeByPath.renderedContent ? data.nodeByPath.renderedContent.output : '';
         if (displayValue === '') {
             displayValue = t('label.contentManager.contentPreview.noViewAvailable');
@@ -85,17 +86,21 @@ export const IframeViewer = ({previewContext, data, onContentNotFound}) => {
                     [];
                 return loadAssets(assets, iframeWindow.document);
             })
+            .catch(err => console.error('Error in the preview', err))
             .then(() => {
                 // No zoom on full if no content wrapped in the page
                 if (previewContext.requestAttributes) {
                     zoom(iframeWindow.document, onContentNotFound, editorContext);
                 }
             })
-            .catch(err => console.error('Error in the preview', err))
             .then(() => {
                 setLoading(false);
             });
-    }, [data, onContentNotFound, editorContext, previewContext, t]);
+    }, [data]);
+
+    useEffect(() => {
+        renderIFrame();
+    }, [renderIFrame]);
 
     return (
         <Paper elevation={1} classes={{root: classes.contentPaper}}>
@@ -104,7 +109,7 @@ export const IframeViewer = ({previewContext, data, onContentNotFound}) => {
                     aria-labelledby="preview-tab"
                     data-sel-role={previewContext.workspace + '-preview-frame'}
                     className={`${classes.iframe} ${loading ? classes.iframeLoading : ''}`}
-                />
+            />
         </Paper>
     );
 };
