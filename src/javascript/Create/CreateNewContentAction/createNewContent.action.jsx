@@ -55,6 +55,7 @@ const CreateNewContent = ({context, render: Render, loading: Loading}) => {
         context.path,
         uilang,
         ['jmix:studioOnly', 'jmix:hiddenType'],
+        context.showOnNodeTypes,
         transformNodeTypesToActions);
 
     if (Loading && (loadingTypes || res.loading)) {
