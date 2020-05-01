@@ -47,9 +47,7 @@ const CreateNewContent = ({context, render: Render, loading: Loading}) => {
     const {uilang, language} = useSelector(state => ({language: state.language, uilang: state.uilang}));
     const res = useNodeChecks(
         {path: context.path, language: language},
-        {
-            ...context
-        }
+        {...context}
     );
     const {loadingTypes, error, nodetypes} = useCreatableNodetypes(
         undefined,
@@ -57,7 +55,6 @@ const CreateNewContent = ({context, render: Render, loading: Loading}) => {
         context.path,
         uilang,
         ['jmix:studioOnly', 'jmix:hiddenType'],
-        [],
         transformNodeTypesToActions);
 
     if (Loading && (loadingTypes || res.loading)) {
