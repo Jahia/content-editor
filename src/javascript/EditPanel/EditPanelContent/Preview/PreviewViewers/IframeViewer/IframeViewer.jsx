@@ -7,14 +7,17 @@ import {useContentEditorContext} from '~/ContentEditor.context';
 import {useTranslation} from 'react-i18next';
 import {ProgressOverlay} from '@jahia/react-material';
 
-function zoom(iframeDocument, onContentNotFound, editorContext) {
+export function zoom(iframeDocument, onContentNotFound, editorContext) {
+    const isPage = editorContext.nodeData.isPage;
+    const isContentTemplate = editorContext.nodeData.displayableNode && editorContext.nodeData.displayableNode.path === editorContext.nodeData.path;
+
     if (iframeDocument.documentElement && iframeDocument.documentElement.innerHTML && !iframeDocument.documentElement.innerHTML.includes('ce_preview_skip_zoom')) {
         const contentPreview = iframeDocument.getElementById('ce_preview_content');
         if (contentPreview) {
             removeSiblings(contentPreview);
             forceDisplay(contentPreview);
             // Ce_preview-content id doesn't exist on page
-        } else if (!editorContext.nodeData.isPage && editorContext.nodeData.displayableNode.path !== editorContext.nodeData.path) {
+        } else if (!isPage && !isContentTemplate) {
             onContentNotFound();
         }
     }
