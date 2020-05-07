@@ -46,11 +46,24 @@ export const RichTextCmp = ({field, id, value}) => {
     const toolbar = loadOption(field.selectorOptions, 'ckeditor.toolbar');
     const customConfig = loadOption(field.selectorOptions, 'ckeditor.customConfig');
 
+    // Delete the config set by GWTInitializer, as it may be wrong (Wrong site detection into DX, we will set it manually after)
+    if (window.contextJsParameters && window.contextJsParameters.ckeCfg) {
+        delete window.contextJsParameters.ckeCfg;
+    }
+
     let ckeditorCustomConfig = '';
-    if (customConfig) {
-        ckeditorCustomConfig = customConfig.value;
-    } else {
-        ckeditorCustomConfig = data.forms.ckeditorConfigPath;
+    if (customConfig && customConfig.value) {
+        // Custom config from CND
+        ckeditorCustomConfig = customConfig.value.replace('$context', window.contextJsParameters.contextPath);
+    } else if (data.forms.ckeditorConfigPath) {
+        ckeditorCustomConfig = data.forms.ckeditorConfigPath.replace('$context', window.contextJsParameters.contextPath);
+
+        // Custom config coming from the template set, let's populate the contextJsParameters for retro compatibility
+        if (ckeditorCustomConfig) {
+            if (window.contextJsParameters) {
+                window.contextJsParameters.ckeCfg = ckeditorCustomConfig;
+            }
+        }
     }
 
     const handlePickerDialog = (setUrl, type, params, dialog) => {
@@ -64,7 +77,7 @@ export const RichTextCmp = ({field, id, value}) => {
     };
 
     const config = {
-        customConfig: ckeditorCustomConfig.replace('$context', window.contextJsParameters.contextPath),
+        customConfig: ckeditorCustomConfig,
         toolbar: toolbar ? toolbar.value : data.forms.ckeditorToolbar,
         width: '100%',
         contentEditorFieldName: id, // Used by selenium to get CKEditor instance
