@@ -34,7 +34,7 @@ export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType
                 ];
 
                 // System name should be readonly for this specific nodetypes
-                if (Constants.systemName.READONLY_FOR_NODE_TYPES.includes(primaryNodeType.name) || isContentOrFileNode(formData)) {
+                if (Constants.systemName.READONLY_FOR_NODE_TYPES.includes(primaryNodeType.name) || isContentOrFileNode(formData) || !formData.nodeData.hasWritePermission) {
                     systemNameField.readOnly = true;
                 }
 
