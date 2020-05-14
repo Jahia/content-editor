@@ -39,23 +39,23 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
-      - name: Use maven cache
-        uses: actions/cache@v1
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
+#      - name: Use maven cache
+#        uses: actions/cache@v1
+#        with:
+#          path: ~/.m2/repository
+#          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+#          restore-keys: |
+#            ${{ runner.os }}-maven-
 
 
       - name: yarn install
         run: yarn install --frozen-lockfile
 
-      - name: generate target folder
-        run: mvn initialize
+#      - name: generate target folder
+#        run: mvn initialize
 
-      - name: build
-        run: yarn webpack
+#      - name: build
+#        run: yarn webpack
 
       - name: linter
         run: yarn lint
