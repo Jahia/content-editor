@@ -4,9 +4,9 @@ import {useNodeChecks} from '@jahia/data-helper';
 import {useContentEditorContext} from '~/ContentEditor.context';
 
 export const TabBar = ({context, render: Render, loading: Loading, ...props}) => {
-    const {site} = useContentEditorContext();
+    const {path} = useContentEditorContext();
     const res = useNodeChecks(
-        {path: `/sites/${site}`},
+        {path: path},
         {...context}
     );
 
