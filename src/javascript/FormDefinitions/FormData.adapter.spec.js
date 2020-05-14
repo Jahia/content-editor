@@ -41,6 +41,9 @@ describe('adaptFormData', () => {
                     ]
                 }
             ],
+            nodeData: {
+                hasWritePermission: true
+            },
             technicalInfo: [
                 {label: 'Main content type', value: 'Folder'},
                 {label: 'Full content type', value: 'jnt:folder'},
@@ -68,6 +71,18 @@ describe('adaptFormData', () => {
             displayName: 'News'
         };
         formData.technicalInfo[2] = {label: 'Path', value: '/sites/digitall/contents'};
+        adaptSystemNameField(null, formData, null, t, nodeType);
+        expect(formData.sections[1].fieldSets[0].displayName).toEqual('content-editor:label.contentEditor.section.fieldSet.system.displayName');
+        expect(formData.sections[1].fieldSets[0].fields[0].displayName).toEqual('content-editor:label.contentEditor.section.fieldSet.system.fields.systemName');
+        expect(formData.sections[1].fieldSets[0].fields[0].readOnly).toEqual(true);
+    });
+
+    it('should set system name to readOnly when the user have not the write permission', () => {
+        const nodeType = {
+            name: 'jnt:news',
+            displayName: 'News'
+        };
+        formData.nodeData.hasWritePermission = false;
         adaptSystemNameField(null, formData, null, t, nodeType);
         expect(formData.sections[1].fieldSets[0].displayName).toEqual('content-editor:label.contentEditor.section.fieldSet.system.displayName');
         expect(formData.sections[1].fieldSets[0].fields[0].displayName).toEqual('content-editor:label.contentEditor.section.fieldSet.system.fields.systemName');
