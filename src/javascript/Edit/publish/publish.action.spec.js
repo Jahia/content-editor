@@ -48,6 +48,9 @@ describe('publish action', () => {
 
         beforeEach(() => {
             context = {
+                client: {
+                    reFetchObservableQueries: () => {}
+                },
                 mode: 'edit',
                 nodeData: {
                     hasPublishPermission: true,

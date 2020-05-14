@@ -12,6 +12,7 @@ export default composeActions(
             if (context.enabled) {
                 if (context.publicationInfoContext.publicationInfoPolling && context.publicationInfoContext.publicationStatus === Constants.editPanel.publicationStatus.PUBLISHED) {
                     context.publicationInfoContext.stopPublicationInfoPolling();
+                    context.client.reFetchObservableQueries();
                 }
 
                 const wipInfo = context.formik.values[Constants.wip.fieldName];

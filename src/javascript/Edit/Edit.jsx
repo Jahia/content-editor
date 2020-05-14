@@ -38,6 +38,7 @@ export const EditCmp = ({
                 values
             },
             editCallback: nodeUuid => {
+                client.reFetchObservableQueries();
                 if (values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK]) {
                     values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK]();
                 } else {
