@@ -54,8 +54,8 @@ jobs:
 #      - name: generate target folder
 #        run: mvn initialize
 
-      - name: build
-        run: yarn webpack
+#      - name: build
+#        run: yarn webpack
 
       - name: linter
         run: yarn lint
