@@ -38,7 +38,6 @@ export const EditCmp = ({
                 values
             },
             editCallback: nodeUuid => {
-                client.reFetchObservableQueries();
                 if (values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK]) {
                     values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK]();
                 } else {
@@ -47,6 +46,9 @@ export const EditCmp = ({
                         envEditCallback(nodeUuid, contentEditorConfigContext);
                     }
                 }
+
+                // Hard reFetch to be able to enable publication menu from jContent menu displayed in header
+                client.reFetchObservableQueries();
             }
         });
     };

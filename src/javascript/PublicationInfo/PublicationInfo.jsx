@@ -19,6 +19,11 @@ export const usePublicationInfo = (queryParams, t) => {
             if (jobsData && jobsData.endedJobs && jobsData.endedJobs.length > 0) {
                 refetch();
             }
+
+            // Refetch publication info in case of unpublication
+            if (jobsData.type === 'contentUnpublished') {
+                refetch();
+            }
         };
 
         return () => {
