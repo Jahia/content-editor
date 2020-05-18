@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 import {useNodeChecks} from '@jahia/data-helper';
 import {useContentEditorContext} from '~/ContentEditor.context';
 
-export const TabBar = ({context, render: Render, loading: Loading, ...props}) => {
+export const TabBar = ({context, render: Render, ...props}) => {
     const {path} = useContentEditorContext();
     const res = useNodeChecks(
         {path: path},
         {...context}
     );
 
-    if (Loading && res.loading) {
-        return <Loading context={context}/>;
+    if (res.loading) {
+        return <></>;
     }
 
     return (
@@ -33,8 +33,7 @@ export const TabBar = ({context, render: Render, loading: Loading, ...props}) =>
 
 TabBar.propTypes = {
     context: PropTypes.object.isRequired,
-    render: PropTypes.func.isRequired,
-    loading: PropTypes.func
+    render: PropTypes.func.isRequired
 };
 
 const TabBarAction = {

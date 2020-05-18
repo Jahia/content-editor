@@ -40,15 +40,6 @@ describe('TabBar', () => {
         expect(defaultProps.context.setActiveTab).toHaveBeenCalled();
     });
 
-    it('should not render Tabbar when loading', () => {
-        loading = true;
-        defaultProps.loading = () => (<>Loading...</>);
-
-        const cmp = shallow(<TabBar {...defaultProps}/>);
-
-        expect(cmp.dive().debug()).toContain('Loading...');
-    });
-
     it('should not render Tabbar when checksResult is false', () => {
         checksResult = false;
 

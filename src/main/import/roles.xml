@@ -7,10 +7,6 @@
         <editor-in-chief j:permissionNames="canSeeAdvancedOptionsTab"
                          j:privilegedAccess="true"
                          jcr:primaryType="jnt:role">
-            <currentSite-access j:path="currentSite"
-                                j:permissionNames="contentEditor"
-                                jcr:primaryType="jnt:externalPermissions"
-            />
         </editor-in-chief>
     </editor>
 
