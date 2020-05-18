@@ -46,6 +46,9 @@ export const EditCmp = ({
                         envEditCallback(nodeUuid, contentEditorConfigContext);
                     }
                 }
+
+                // Hard reFetch to be able to enable publication menu from jContent menu displayed in header
+                client.reFetchObservableQueries();
             }
         });
     };
