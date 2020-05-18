@@ -15,13 +15,8 @@ export const usePublicationInfo = (queryParams, t) => {
         const index = window.authoringApi.pushEventHandlers.length;
 
         window.authoringApi.pushEventHandlers[index] = jobsData => {
-            // Only refresh in case there is ended jobs
-            if (jobsData && jobsData.endedJobs && jobsData.endedJobs.length > 0) {
-                refetch();
-            }
-
-            // Refetch publication info in case of unpublication
-            if (jobsData.type === 'contentUnpublished') {
+            // Only refresh in case there is content unpublished or ended jobs
+            if (jobsData && (jobsData.type === 'contentUnpublished' || (jobsData.endedJobs && jobsData.endedJobs.length > 0))) {
                 refetch();
             }
         };
