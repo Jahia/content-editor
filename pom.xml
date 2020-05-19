@@ -184,6 +184,9 @@
                     <instructions>
                         <Import-Package>org.jahia.modules.graphql.provider.dxm;version="1.1.0",${jahia.plugin.projectPackageImport},*</Import-Package>
                         <_dsannotations>*</_dsannotations>
+                        <Bundle-Activator>
+                            org.jahia.modules.contenteditor.osgi.ContentEditorActivator
+                        </Bundle-Activator>
                     </instructions>
                 </configuration>
             </plugin>
