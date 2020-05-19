@@ -137,6 +137,11 @@ public class EditorFormFieldValue {
         return type;
     }
 
+    public String getValue() {
+        // Allows ObjectMapper to correctly fill the field when customizing constraint value with json file
+        return value;
+    }
+
     @Override
     public String toString() {
         return "EditorFormFieldValue{type='" + type + '\''+ ", value='" + value + '\'' + '}';
