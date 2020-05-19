@@ -361,6 +361,50 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         Assert.isTrue(!hasFieldSet(newForm, "metadata", "jmix:tagged"), "cannot find jmix:tagged in metadata section");
     }
 
+    /**
+     * Given I define a JSON override a field to add a value constraints
+     * <p>
+     * When the API for a content type is called
+     * <p>
+     * Then the API will take the override into account and return the JSON with the fieldset in the right itemType
+     * <p>
+     * Fields can also support value constraint : "valueConstraints": [
+     *         {
+     *           "value": {
+     *             "type": "String",
+     *             "value": "myConstraint"
+     *           },
+     *           "displayValue": "myConstraint"
+     *         }
+     *       ]
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testAddFieldWithValueConstraintOverride() throws Exception {
+        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
+        staticDefinitionsRegistry.readEditorFormFieldSet(getResource("META-INF/jahia-content-editor-forms/overrides/fieldSets/jmix_description_value_constraint.json"));
+        // test that description is in jmix:description
+        Assert.isTrue(hasField(form, "metadata", "jmix:description", "jcr:description"), "cannot find jcr:description field "
+            + "jmix:description fieldset in metadata section");
+
+        EditorForm newForm = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
+        // Field contains a value constraint
+        List<EditorFormFieldValueConstraint> valueConstraints = getValueConstraints(newForm, "metadata", "jmix:description", "jcr:description");
+
+        Assert.isTrue(valueConstraints
+            .stream()
+            .anyMatch(valueConstraint -> valueConstraint.getDisplayValue().equals("myConstraint"))
+        , "The value" + valueConstraints.get(0).getDisplayValue());
+    }
+
+    private List<EditorFormFieldValueConstraint> getValueConstraints(final EditorForm form, final String searchedSection,
+        final String searchedFieldSet,
+        final String searchedField){
+        EditorFormField field = getField(form, searchedSection, searchedFieldSet, searchedField);
+        return field.getValueConstraints();
+    }
+
     @Test
     public void testUnstructuredFieldSetOverride() throws Exception {
         staticDefinitionsRegistry.readEditorFormFieldSet(getResource("META-INF/jahia-content-editor-forms/overrides/fieldSets/jnt_unstructuredNews.json"));

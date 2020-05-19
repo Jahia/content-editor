@@ -1,0 +1,20 @@
+{
+  "name": "jmix:description",
+  "displayName": "Description",
+  "description": "",
+  "dynamic": true,
+  "fields": [
+    {
+      "name": "jcr:description",
+      "valueConstraints": [
+        {
+          "value": {
+            "type": "String",
+            "value": "myConstraint"
+          },
+          "displayValue": "myConstraint"
+        }
+      ]
+    }
+  ]
+}
