@@ -4,6 +4,7 @@ const t = val => val;
 
 describe('adaptFormData', () => {
     let formData;
+    let rawData;
     beforeEach(() => {
         window.contextJsParameters = {
             config: {
@@ -12,6 +13,7 @@ describe('adaptFormData', () => {
         };
 
         formData = {
+            initialValues: [],
             sections: [
                 {
                     name: 'content',
@@ -51,6 +53,15 @@ describe('adaptFormData', () => {
                 {label: 'UUID', value: '1c5ec63b-efa8-4e28-abb7-e60026cb8e3e'}
             ]
         };
+
+        rawData = {
+            jcr: {
+                result: {
+                    newName: 'newName',
+                    name: 'name'
+                }
+            }
+        };
     });
 
     it('should adapt form system name i18n', () => {
@@ -58,7 +69,7 @@ describe('adaptFormData', () => {
             name: 'jnt:news',
             displayName: 'News'
         };
-        adaptSystemNameField(null, formData, null, t, nodeType);
+        adaptSystemNameField(rawData, formData, null, t, nodeType, false);
         expect(formData.sections[1].fieldSets[0].displayName).toEqual('content-editor:label.contentEditor.section.fieldSet.system.displayName');
         expect(formData.sections[1].fieldSets[0].fields[0].displayName).toEqual('content-editor:label.contentEditor.section.fieldSet.system.fields.systemName');
         expect(formData.sections[1].fieldSets[0].fields[0].description).toEqual('content-editor:label.contentEditor.section.fieldSet.system.fields.systemNameDescription');
@@ -71,7 +82,7 @@ describe('adaptFormData', () => {
             displayName: 'News'
         };
         formData.technicalInfo[2] = {label: 'Path', value: '/sites/digitall/contents'};
-        adaptSystemNameField(null, formData, null, t, nodeType);
+        adaptSystemNameField(rawData, formData, null, t, nodeType, false);
         expect(formData.sections[1].fieldSets[0].displayName).toEqual('content-editor:label.contentEditor.section.fieldSet.system.displayName');
         expect(formData.sections[1].fieldSets[0].fields[0].displayName).toEqual('content-editor:label.contentEditor.section.fieldSet.system.fields.systemName');
         expect(formData.sections[1].fieldSets[0].fields[0].readOnly).toEqual(true);
@@ -83,7 +94,7 @@ describe('adaptFormData', () => {
             displayName: 'News'
         };
         formData.nodeData.hasWritePermission = false;
-        adaptSystemNameField(null, formData, null, t, nodeType);
+        adaptSystemNameField(rawData, formData, null, t, nodeType, false);
         expect(formData.sections[1].fieldSets[0].displayName).toEqual('content-editor:label.contentEditor.section.fieldSet.system.displayName');
         expect(formData.sections[1].fieldSets[0].fields[0].displayName).toEqual('content-editor:label.contentEditor.section.fieldSet.system.fields.systemName');
         expect(formData.sections[1].fieldSets[0].fields[0].readOnly).toEqual(true);
@@ -94,7 +105,7 @@ describe('adaptFormData', () => {
             name: 'jnt:page',
             displayName: 'Page'
         };
-        adaptSystemNameField(null, formData, null, t, nodeType);
+        adaptSystemNameField(rawData, formData, null, t, nodeType, false);
         expect(formData.sections[0].fieldSets[0].name).toEqual('jnt:page');
         expect(formData.sections[0].fieldSets[0].displayName).toEqual('Page');
         expect(formData.sections[0].fieldSets[0].fields[0].name).toEqual('ce:systemName');
@@ -107,7 +118,7 @@ describe('adaptFormData', () => {
             name: 'jnt:page',
             displayName: 'Page'
         };
-        adaptSystemNameField(null, formData, null, t, nodeType);
+        adaptSystemNameField(rawData, formData, null, t, nodeType, false);
         expect(formData.sections[0].name).toEqual('content');
         expect(formData.sections[0].fieldSets[0].name).toEqual('jnt:page');
         expect(formData.sections[0].fieldSets[0].displayName).toEqual('Page');
@@ -120,7 +131,7 @@ describe('adaptFormData', () => {
             name: 'jnt:virtualsite',
             displayName: 'Site'
         };
-        adaptSystemNameField(null, formData, null, t, nodeType);
+        adaptSystemNameField(rawData, formData, null, t, nodeType, false);
         expect(formData.sections[1].fieldSets[0].fields[0].name).toEqual('ce:systemName');
         expect(formData.sections[1].fieldSets[0].fields[0].readOnly).toEqual(true);
     });
@@ -130,7 +141,7 @@ describe('adaptFormData', () => {
             name: 'jnt:news',
             displayName: 'News'
         };
-        adaptSystemNameField(null, formData, null, t, nodeType);
+        adaptSystemNameField(rawData, formData, null, t, nodeType, false);
         expect(formData.sections[1].fieldSets[0].fields[0].selectorOptions[0].name).toEqual('maxLength');
         expect(formData.sections[1].fieldSets[0].fields[0].selectorOptions[0].value).toEqual(50);
     });
