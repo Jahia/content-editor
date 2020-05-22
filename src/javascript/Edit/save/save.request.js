@@ -1,6 +1,6 @@
 import {SavePropertiesMutation} from './save.gql-mutation';
 import {getChildrenOrder, getDataToMutate} from '~/EditPanel/EditPanel.utils';
-import {NodeQuery} from '~/NodeData/NodeData.gql-queries';
+import {NodeQuery} from '~/Edit/EditForm.gql-queries';
 import {refetchPreview} from '~/EditPanel/EditPanel.refetches';
 import {getPreviewPath} from '~/EditPanel/EditPanelContent/Preview/Preview.utils';
 import {PublicationInfoQuery} from '~/PublicationInfo/PublicationInfo.gql-queries';
