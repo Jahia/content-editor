@@ -8,6 +8,7 @@ import DateTimePicker from './DateTimePicker';
 import pickerConfigs from './Picker';
 import Checkbox from './Checkbox';
 import Category from './Category';
+import {registry} from '@jahia/ui-extender';
 
 let SelectorTypes = {};
 
@@ -23,7 +24,29 @@ if (pickerConfigs) {
         Text: {cmp: Text, key: 'Text', supportMultiple: false},
         TextArea: {cmp: TextArea, key: 'TextArea', supportMultiple: false},
         RichText: {cmp: RichText, key: 'RichText', supportMultiple: false},
-        Choicelist: {cmp: ChoiceList, key: 'Choicelist', actions: choiceListActions, supportMultiple: true},
+        Choicelist: {
+            cmp: ChoiceList,
+            key: 'Choicelist',
+            actions: choiceListActions,
+            supportMultiple: true,
+            onChange: (previousValue, currentValue, field, context) => {
+                previousValue.properties.forEach(property => {
+                    registry.find({type: 'selectorType', target: property.name}).forEach(
+                        action => {
+                            action.undo(previousValue, {field, ...context});
+                        }
+                    );
+                });
+                currentValue.properties.forEach(property => {
+                    registry.find({type: 'selectorType', target: property.name}).forEach(
+                        action => {
+                            action.do(currentValue, {field, ...context});
+                        }
+                    );
+                });
+            }
+
+        },
         DateTimePicker: {
             cmp: DateTimePicker,
             key: 'DateTimePicker',
@@ -34,7 +57,8 @@ if (pickerConfigs) {
             cmp: DateTimePicker,
             key: 'DatePicker',
             supportMultiple: false,
-            adaptValue: adaptDateProperty},
+            adaptValue: adaptDateProperty
+        },
         Checkbox: {
             cmp: Checkbox,
             key: 'Checkbox',

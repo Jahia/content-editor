@@ -65,6 +65,7 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
     private Boolean removed = false;
     private Boolean dynamic = false;
     private Boolean activated = true; // this is only used when dynamic is true
+    private Boolean displayed = true;
     private Set<EditorFormField> editorFormFields = new HashSet<>();
     private Map<String, EditorFormField> editorFormFieldsByName = new LinkedHashMap<>();
 
@@ -79,6 +80,7 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
                               Boolean removed,
                               Boolean dynamic,
                               Boolean activated,
+                              Boolean displayed,
                               Set<EditorFormField> editorFormFields) {
         this.name = name;
         this.displayName = displayName;
@@ -88,6 +90,7 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
         this.removed = removed;
         this.dynamic = dynamic;
         this.activated = activated;
+        this.displayed = displayed;
         setEditorFormFields(editorFormFields);
     }
 
@@ -143,6 +146,16 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
 
     public void setActivated(Boolean activated) {
         this.activated = activated;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("Defines if the field has to be displayed or not")
+    public Boolean getDisplayed() {
+        return displayed;
+    }
+
+    public void setDisplayed(Boolean displayed) {
+        this.displayed = displayed;
     }
 
     public Bundle getOriginBundle() {
@@ -290,6 +303,7 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
             removed,
             dynamic,
             activated,
+            displayed,
             mergedEditorFormFields);
         if (otherEditorFormFieldSet.priority == null) {
             newEditorFormFieldSet.setPriority(priority);

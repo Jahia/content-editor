@@ -59,6 +59,7 @@ export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType
                             displayName: primaryNodeType.displayName,
                             description: '',
                             dynamic: false,
+                            displayed: true,
                             activated: true,
                             fields: []
                         };
@@ -94,6 +95,13 @@ export const adaptSections = sections => {
                     return [...fieldSetsField, fieldSet];
                 }, []);
             }
+
+            section.fieldSets = section.fieldSets.reduce(
+                (fieldSetsField, fieldSet) => [...fieldSetsField, {...fieldSet, fields: fieldSet.fields.reduce(
+                    (fields, field) => {
+                        return [...fields, {nodeType: fieldSet.name, ...field}];
+                    }, [])}]
+                , []);
 
             return [...result, section];
         }, [])

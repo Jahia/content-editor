@@ -22,14 +22,113 @@ registry.add('route', 'content-editor-edit-route', {
     targets: ['main:2.1'],
     path: '/content-editor/:lang/edit/:uuid',
     // eslint-disable-next-line react/prop-types
-    render: ({match}) => <ContentEditorRedux uuid={match.params.uuid} mode={Constants.routes.baseEditRoute} lang={match.params.lang}/>
+    render: ({match}) => (
+        <ContentEditorRedux uuid={match.params.uuid}
+                            mode={Constants.routes.baseEditRoute}
+                            lang={match.params.lang}/>
+    )
 });
 
 registry.add('route', 'content-editor-create-route', {
     targets: ['main:2.1'],
     path: '/content-editor/:lang/create/:parentUuid/:contentType',
     // eslint-disable-next-line react/prop-types
-    render: ({match}) => <ContentEditorRedux uuid={match.params.parentUuid} mode={Constants.routes.baseCreateRoute} lang={match.params.lang} contentType={decodeURI(match.params.contentType)}/>
+    render: ({match}) => (
+        <ContentEditorRedux uuid={match.params.parentUuid}
+                            mode={Constants.routes.baseCreateRoute}
+                            lang={match.params.lang}
+                            contentType={decodeURI(match.params.contentType)}/>
+    )
+});
+
+registry.add('selectorType', 'callBacks', {
+    targets: ['addMixin'],
+    undo: (value, context) => {
+        // Remove mixin and hide fields from previous values
+        const previousMixin = value.properties.find(entry => entry.name === 'addMixin').value;
+        let removedFields = [];
+        let editorSection = context.editorContext.sections.reduce(
+            (sections, section) =>
+                [...sections, {
+                    ...section, fieldSets: section.fieldSets.reduce((fieldSets, fieldSet) =>
+                            [...fieldSets, {
+                                ...fieldSet, fields: fieldSet.fields.reduce((fields, field) => {
+                                    if (field.nodeType === previousMixin) {
+                                        removedFields.push(field);
+                                        return [...fields];
+                                    }
+
+                                    return [...fields, field];
+                                }, [])
+                            }]
+                        , [])
+                }]
+            , []);
+        editorSection = editorSection.reduce(
+            (sections, section) =>
+                [...sections, {
+                    ...section, fieldSets: section.fieldSets.reduce((fieldSets, fieldSet) => {
+                            if (fieldSet.name === previousMixin) {
+                                fieldSet.fields = removedFields;
+                                fieldSet.activated = false;
+                            }
+
+                            return [...fieldSets, fieldSet];
+                        }
+                        , [])
+                }]
+            , []);
+        context.editorContext.setSections(editorSection);
+    },
+    do: (value, context) => {
+        // Add mixin and display fields from new value
+        const addedMixin = value.properties.find(entry => entry.name === 'addMixin').value;
+        let addedFields = [];
+        let editorSection = context.editorContext.sections.reduce(
+            (sections, section) =>
+                [...sections, {
+                    ...section, fieldSets: section.fieldSets.reduce((fieldSets, fieldSet) =>
+                            [...fieldSets, {
+                                ...fieldSet, fields: fieldSet.fields.reduce((fields, field) => {
+                                    if (field.nodeType === addedMixin) {
+                                        addedFields.push(field);
+                                        return [...fields];
+                                    }
+
+                                    return [...fields, field];
+                                }, [])
+                            }]
+                        , [])
+                }]
+            , []);
+
+        editorSection = editorSection.reduce(
+            (sections, section) =>
+                [...sections, {
+                    ...section, fieldSets: section.fieldSets.reduce((fieldSets, fieldSet) => {
+                            let updatedFields = fieldSet.fields;
+                            if (fieldSet.name === context.field.nodeType) {
+                                updatedFields = fieldSet.fields.reduce((fields, field) => {
+                                    if (field.name === context.field.name) {
+                                        return [...fields, field, ...addedFields];
+                                    }
+
+                                    return [...fields, field];
+                                }, []);
+                            }
+
+                            if (fieldSet.name === addedMixin) {
+                                fieldSet.dynamic = true;
+                                fieldSet.activated = true;
+                            }
+
+                            return [...fieldSets, {...fieldSet, fields: updatedFields}];
+                        }
+                        , [])
+                }]
+            , []);
+        context.editorContext.setSections(editorSection);
+    }
 });
 
 // Register GWT Hooks

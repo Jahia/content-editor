@@ -2,7 +2,7 @@
     "name": "@jahia/content-editor",
     "version": "1.0.0",
     "scripts": {
-        "build": "yarn lint && yarn test && yarn webpack",
+        "build": "yarn webpack",
         "webpack": "node --max_old_space_size=2048 ./node_modules/webpack/bin/webpack.js",
         "build:analyze": "yarn build --analyze",
         "build:production": "yarn build -p",

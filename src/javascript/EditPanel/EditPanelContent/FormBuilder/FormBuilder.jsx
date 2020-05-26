@@ -23,6 +23,7 @@ const FormBuilder = ({mode}) => {
         cloneSections.splice(1, 0, orderingSection);
     }
 
+    console.log('displayed sections', sections);
     return (
         <Form>
             <section data-sel-mode={mode}>

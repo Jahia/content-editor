@@ -139,8 +139,8 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
                     >
                         <Grid item className={classes.input}>
                             {isMultipleField ?
-                                <MultipleField inputContext={inputContext} field={field}/> :
-                                <SingleField inputContext={inputContext} field={field}/>}
+                                <MultipleField inputContext={inputContext} field={field} onChange={selectorType.onChange}/> :
+                                <SingleField inputContext={inputContext} field={field} onChange={selectorType.onChange}/>}
                         </Grid>
                         <Grid item>
                             {actionContext.noAction ? (
@@ -183,7 +183,8 @@ FieldCmp.propTypes = {
     idInput: PropTypes.string.isRequired,
     selectorType: PropTypes.shape({
         key: PropTypes.string,
-        supportMultiple: PropTypes.bool
+        supportMultiple: PropTypes.bool,
+        onChange: PropTypes.object.isRequired
     }).isRequired,
     siteInfo: PropTypes.object.isRequired,
     field: FieldPropTypes.isRequired,
