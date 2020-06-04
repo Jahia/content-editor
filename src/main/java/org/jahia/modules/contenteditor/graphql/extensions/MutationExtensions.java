@@ -4,6 +4,7 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLTypeExtension;
+import org.jahia.modules.contenteditor.collab.GqlEditorCollabMutations;
 import org.jahia.modules.contenteditor.graphql.api.GqlEditorFormMutations;
 import org.jahia.modules.graphql.provider.dxm.DXGraphQLProvider;
 
@@ -15,5 +16,12 @@ public class MutationExtensions {
     @GraphQLDescription("Main access field to the DX GraphQL Form mutation API")
     public static GqlEditorFormMutations getForms() {
         return new GqlEditorFormMutations();
+    }
+
+    @GraphQLField
+    @GraphQLName("collaboration")
+    @GraphQLDescription("Main access field to the DX GraphQL Collaboration mutation API")
+    public static GqlEditorCollabMutations getCollaboration() {
+        return new GqlEditorCollabMutations();
     }
 }

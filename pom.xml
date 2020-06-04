@@ -49,7 +49,7 @@
     <parent>
         <artifactId>jahia-modules</artifactId>
         <groupId>org.jahia.modules</groupId>
-        <version>8.0.0.0</version>
+        <version>8.0.0.0-SNAPSHOT</version>
         <relativePath />
     </parent>
     <artifactId>content-editor</artifactId>
@@ -91,14 +91,15 @@
         <dependency>
             <groupId>org.jahia.modules</groupId>
             <artifactId>app-shell</artifactId>
-            <version>2.0.0</version>
+            <version>2.0.0-SNAPSHOT</version>
             <type>json</type>
             <classifier>manifest</classifier>
         </dependency>
+
         <dependency>
             <groupId>org.jahia.modules</groupId>
             <artifactId>graphql-dxm-provider</artifactId>
-            <version>2.0.0</version>
+            <version>2.0.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
@@ -168,10 +169,9 @@
         <dependency>
             <groupId>org.jahia.test</groupId>
             <artifactId>module-test-framework</artifactId>
-            <version>8.0.0.0</version>
+            <version>8.0.0.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>

@@ -7,7 +7,6 @@ import {useContentEditorContext, withContentEditorDataContextProvider} from '~/C
 import {validate} from '~/Validation/validation';
 import {saveNode} from './save/save.request';
 import {PublicationInfoContextProvider} from '~/PublicationInfo/PublicationInfo.context';
-import {LockManager} from '~/Lock/LockManager';
 import {useTranslation} from 'react-i18next';
 import {FormQuery} from './EditForm.gql-queries';
 import {withApollo} from 'react-apollo';
@@ -16,6 +15,7 @@ import {useContentEditorConfigContext} from '~/ContentEditor.context';
 import envEditCallbacks from './Edit.env';
 import {adaptEditFormData} from './Edit.adapter';
 import {Constants} from '~/ContentEditor.constants';
+import {CollabManager} from '~/Collab/CollabManager';
 
 export const EditCmp = ({
     client,
@@ -64,7 +64,7 @@ export const EditCmp = ({
                     onSubmit={handleSubmit}
                 />
             </PublicationInfoContextProvider>
-            {!nodeData.lockedAndCannotBeEdited && <LockManager path={path}/>}
+            <CollabManager path={path}/>
         </>
     );
 };
