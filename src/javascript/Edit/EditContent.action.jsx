@@ -9,7 +9,7 @@ import {useTranslation} from 'react-i18next';
 export const EditContent = ({path, render: Render, loading: Loading, ...otherProps}) => {
     const {redirect} = useContentEditorHistory();
     useTranslation('content-editor');
-    const {language} = useSelector(state => ({language: state.language}));
+    const {language, uilang, site} = useSelector(state => ({language: state.language, site: state.site, uilang: state.uilang}));
     const res = useNodeChecks(
         {path: path, language: language},
         {...otherProps}
@@ -22,7 +22,7 @@ export const EditContent = ({path, render: Render, loading: Loading, ...otherPro
     return (
         <Render {...otherProps}
                 isVisible={res.checksResult}
-                onClick={() => redirect({language, mode: Constants.routes.baseEditRoute, uuid: res.node.uuid})}
+                onClick={() => context.drawer ? window.CE_API.edit(res.node.uuid, site, language, uilang, true, context.onSaved) : redirect({language, mode: Constants.routes.baseEditRoute, uuid: res.node.uuid})}
         />
     );
 };

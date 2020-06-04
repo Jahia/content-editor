@@ -213,6 +213,9 @@ public class GqlEditorForms {
         try {
             JCRNodeWrapper parentNode = getSession().getNode(nodePath);
 
+            if (parentNode.isNodeType("jnt:page") && (nodeTypes == null || nodeTypes.isEmpty())) {
+                return Collections.emptyList();
+            }
             // Only jmix:editorialContent on jnt:contentFolder
             if (parentNode.isNodeType("jnt:contentFolder") && (nodeTypes == null || nodeTypes.isEmpty())) {
                 nodeTypes = Collections.singletonList("jmix:editorialContent");

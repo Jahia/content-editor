@@ -34,13 +34,13 @@ const styles = theme => ({
 });
 
 export const EditPanelContent = ({classes, isDirty}) => {
-    const {mode} = useContentEditorConfigContext();
+    const {mode, envProps} = useContentEditorConfigContext();
     const {hasPreview} = useContentEditorContext();
 
     return (
         <>
             {mode === Constants.routes.baseEditRoute && <PublicationInfoProgress/>}
-            {hasPreview ?
+            {hasPreview && !envProps.drawer ?
                 (
                     <TwoColumnsContent
                         classes={{root: classes.twoColumnsRoot, left: classes.left, right: classes.right}}

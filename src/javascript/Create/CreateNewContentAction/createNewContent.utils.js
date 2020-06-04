@@ -4,6 +4,7 @@ import {useQuery} from '@apollo/react-hooks';
 const NB_OF_DISPLAYED_RESTRICTED_SUB_NODES = 3;
 // eslint-disable-next-line
 export const useCreatableNodetypes = (nodeTypes, childNodeName, includeSubTypes, path, uilang, excludedNodeTypes, showOnNodeTypes, transformResultCallback) => {
+    let skip = false;
     const {data, error, loadingTypes} = useQuery(getTreeOfContentWithRequirements, {
         variables: {
             nodeTypes: (nodeTypes && nodeTypes.length) > 0 ? nodeTypes : undefined,
@@ -13,8 +14,16 @@ export const useCreatableNodetypes = (nodeTypes, childNodeName, includeSubTypes,
             path,
             excludedNodeTypes,
             showOnNodeTypes
-        }
+        },
+        skip: skip
     });
+
+    if (skip) {
+        return {
+            nodetypes: transformResultCallback ? transformResultCallback(nodeTypes) : nodeTypes
+        };
+    }
+
     return {
         error,
         loadingTypes,

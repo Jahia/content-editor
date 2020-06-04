@@ -26,6 +26,9 @@ const Save = ({values, errors, dirty, mode, render: Render, loading: Loading, ..
                         .submitForm()
                         .then(() => {
                             formik.resetForm({values});
+                            if (context.onSaved) {
+                                context.onSaved();
+                            }
                         });
                 }
             }}

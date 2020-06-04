@@ -54,8 +54,9 @@ const CreateNewContent = ({contextNodePath, path, showOnNodeTypes, render: Rende
     const nodeInfo = useNodeInfo({path: path, language}, {getPrimaryNodeType: true});
 
     const {loadingTypes, error, nodetypes} = useCreatableNodetypes(
-        undefined,
-        undefined,
+        context.nodeTypes || undefined,
+                undefined,
+        context.includeSubTypes || false,
         false,
         contextNodePath || path,
         uilang,
