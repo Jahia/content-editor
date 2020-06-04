@@ -33,10 +33,11 @@ const styles = theme => ({
 });
 
 export const EditPanelContent = ({classes, isDirty}) => {
-    const {mode} = useContentEditorConfigContext();
+    const {mode, envProps} = useContentEditorConfigContext();
+
     return (
         <>
-            {mode === 'create' ?
+            {(envProps.drawer || mode === 'create') ?
                 (
                     <FullWidthContent
                         classes={{root: classes.fullWidthRoot}}

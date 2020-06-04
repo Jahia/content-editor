@@ -32,6 +32,9 @@ const Save = ({context, render: Render, loading: Loading}) => {
                                 // TODO BACKLOG-13406 avoid refretch if possible
                                 refetchFormData();
                                 formik.resetForm(formik.values);
+                                if (context.onSaved) {
+                                    context.onSaved();
+                                }
                             });
                     }
                 }

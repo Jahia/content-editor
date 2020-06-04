@@ -50,8 +50,8 @@ const CreateNewContent = ({context, render: Render, loading: Loading}) => {
         {...context}
     );
     const {loadingTypes, error, nodetypes} = useCreatableNodetypes(
-        undefined,
-        false,
+        context.nodeTypes || undefined,
+        context.includeSubTypes || false,
         context.path,
         uilang,
         ['jmix:studioOnly', 'jmix:hiddenType'],

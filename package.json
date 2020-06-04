@@ -28,7 +28,10 @@
     },
     "jahia": {
         "apps": {
-            "jahia": ["javascript/apps/content-editor-ext.bundle.js", "/cms/render/default/en/settings.contentEditor.js"]
+            "jahia": [
+                "javascript/apps/content-editor-ext.bundle.js",
+                "/cms/render/default/en/settings.contentEditor.js"
+            ]
         }
     },
     "dependencies": {
@@ -53,6 +56,7 @@
         "react-dnd": "^10.0.2",
         "react-dnd-html5-backend": "^10.0.2",
         "react-dom": "^16.13.1",
+        "react-draggable": "^4.4.2",
         "react-dropdown-tree-select": "^2.3.2",
         "react-file-viewer": "^1.1.0",
         "react-i18next": "^11.3.4",

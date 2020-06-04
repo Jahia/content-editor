@@ -9,6 +9,7 @@ import {withApollo} from 'react-apollo';
 import {compose} from '~/utils';
 import {getCreatableNodetypes} from '~/Create/CreateNewContentAction/createNewContent.utits';
 import EditPanelDialogConfirmation from '~/EditPanel/EditPanelDialogConfirmation/EditPanelDialogConfirmation';
+import Draggable from 'react-draggable';
 
 let styles = () => {
     return {
@@ -18,6 +19,19 @@ let styles = () => {
             width: 'calc(100vw - 56px)',
             left: 'unset',
             right: 0
+        },
+        ceDrawerRoot: {
+            zIndex: 1500,
+            opacity: 1,
+            width: '40vw',
+            minWidth: '620px',
+            height: 'calc(100vh - 124px)',
+            display: 'flex',
+            flexDirection: 'column',
+            position: 'absolute',
+            boxShadow: '0 4px 8px var(--color-dark40)',
+            right: 0,
+            bottom: 0
         }
     };
 };
@@ -46,13 +60,13 @@ const ContentEditorApiCmp = ({classes, client}) => {
      * @param lang the current lang from url
      * @param uilang the preferred user lang for ui
      */
-    window.CE_API.edit = (uuid, site, lang, uilang) => {
+    window.CE_API.edit = (uuid, site, lang, uilang, drawer, onSaved) => {
         // Sync GWT language
         if (window.top.authoringApi.switchLanguage) {
             window.top.authoringApi.switchLanguage(lang);
         }
 
-        setEditorConfig({uuid, site, lang, uilang, initLang: lang, mode: Constants.routes.baseEditRoute});
+        setEditorConfig({uuid, site, lang, uilang, initLang: lang, mode: Constants.routes.baseEditRoute, drawer, onSaved});
     };
 
     /**
@@ -183,12 +197,15 @@ const ContentEditorApiCmp = ({classes, client}) => {
                     lang: lang
                 });
             }
-        }
+        },
+        drawer: editorConfig?.drawer,
+        onSaved: editorConfig?.onSaved,
+        onCloseDrawer: () => setEditorConfig(null)
     };
 
     return (
         <>
-            {editorConfig &&
+            {editorConfig && !editorConfig.drawer &&
             <Dialog fullScreen
                     open
                     TransitionComponent={Transition}
@@ -216,6 +233,21 @@ const ContentEditorApiCmp = ({classes, client}) => {
                                envProps={envProps}
                 />
             </Dialog>}
+
+            {editorConfig && editorConfig.drawer &&
+                <Draggable defaultPosition={{x: 0, y: 0}} handle="header">
+                    <div className={classes.ceDrawerRoot}>
+                        <ContentEditor env={Constants.env.standalone}
+                                       mode={editorConfig.mode}
+                                       uuid={editorConfig.uuid}
+                                       lang={editorConfig.lang}
+                                       uilang={editorConfig.uilang}
+                                       site={editorConfig.site}
+                                       contentType={editorConfig.contentType}
+                                       envProps={envProps}
+                    />
+                    </div>
+                </Draggable>}
 
             {contentTypeSelectorConfig &&
             <CreateNewContentDialog

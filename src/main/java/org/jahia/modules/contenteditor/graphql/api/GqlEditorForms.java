@@ -163,7 +163,7 @@ public class GqlEditorForms {
             // Special Content Editor Filters to match CMM behavior
             // No action on jnt:page
             JCRNodeWrapper parentNode = getSession().getNode(nodePath);
-            if (parentNode.isNodeType("jnt:page")) {
+            if (parentNode.isNodeType("jnt:page") && (nodeTypes == null || nodeTypes.isEmpty())) {
                 return Collections.emptyList();
             }
             // Only jmix:editorialContent on jnt:contentFolder

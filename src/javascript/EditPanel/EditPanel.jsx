@@ -8,11 +8,14 @@ import {connect} from 'formik';
 import {HeaderLowerSection, HeaderUpperSection} from './header';
 import {useContentEditorContext, useContentEditorConfigContext} from '~/ContentEditor.context';
 import {PublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
-import {registry} from '@jahia/ui-extender';
+import {DisplayActions, registry} from '@jahia/ui-extender';
 
 import MainLayout from '~/DesignSystem/ContentLayout/MainLayout';
 import ContentHeader from '~/DesignSystem/ContentLayout/ContentHeader';
-import {Separator} from '@jahia/moonstone';
+import {Separator, Button, Typography} from '@jahia/moonstone';
+import {AppBar, Toolbar} from '@material-ui/core';
+import {ButtonWithPastilleRenderer} from '~/EditPanel/header/ActionsButtons';
+import {Close} from '@jahia/moonstone/dist/icons';
 
 const EditPanelCmp = ({formik, title, notificationContext, client}) => {
     const [activeTab, setActiveTab] = useState('edit');
@@ -85,9 +88,30 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
 
     const SelectedTabComponent = SelectedTabComponents[activeTab];
 
+    const header = (
+        <AppBar position="relative" color="default">
+            <Toolbar variant="dense">
+                <Button icon={<Close fontSize="small"/>} variant="ghost" onClick={envProps.onCloseDrawer}/>
+                <Typography isNowrap className="flexFluid" variant="subheading">{nodeData.displayName}</Typography>
+                <DisplayActions context={{
+                    ...actionContext,
+                    onSaved: envProps.onSaved,
+                    componentProps: {
+                        color: 'accent',
+                        size: 'big'
+                    }
+                }}
+                                target="content-editor/header/main-save-actions"
+                                render={ButtonWithPastilleRenderer}
+                />
+            </Toolbar>
+        </AppBar>
+    );
+
     return (
         <MainLayout
             header={
+                envProps.drawer ? header :
                 <ContentHeader>
                     <HeaderUpperSection actionContext={actionContext} title={title}/>
                     <Separator/>

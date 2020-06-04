@@ -7,7 +7,7 @@ import {Constants} from '~/ContentEditor.constants';
 
 export const EditContent = ({context, render: Render, loading: Loading}) => {
     const {redirect} = useContentEditorHistory();
-    const {language} = useSelector(state => ({language: state.language}));
+    const {language, uilang, site} = useSelector(state => ({language: state.language, site: state.site, uilang: state.uilang}));
     const res = useNodeChecks(
         {path: context.path, language: language},
         {...context}
@@ -21,7 +21,7 @@ export const EditContent = ({context, render: Render, loading: Loading}) => {
         <Render context={{
             ...context,
             isVisible: res.checksResult,
-            onClick: () => redirect({language, mode: Constants.routes.baseEditRoute, uuid: res.node.uuid})
+            onClick: () => context.drawer ? window.CE_API.edit(res.node.uuid, site, language, uilang, true, context.onSaved) : redirect({language, mode: Constants.routes.baseEditRoute, uuid: res.node.uuid})
         }}/>
     );
 };
