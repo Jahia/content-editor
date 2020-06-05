@@ -1,0 +1,8 @@
+section .sec-html ol,
+section .sec-html ul {
+    list-style: initial;
+}
+
+section .sec-html {
+    border-left: 1px solid #e0e0e0;
+}

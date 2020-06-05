@@ -1,3 +1,7 @@
 import RichText from './RichText';
+import RichTextMarkdown from './RichTextMarkdown';
 
-export default RichText;
+export {
+    RichText,
+    RichTextMarkdown
+};

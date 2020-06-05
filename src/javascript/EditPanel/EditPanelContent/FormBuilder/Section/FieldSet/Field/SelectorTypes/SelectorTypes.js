@@ -1,7 +1,7 @@
 import Tag from './Tag';
 import Text from './Text';
 import TextArea from './TextArea';
-import RichText from './RichText';
+import {RichText, RichTextMarkdown} from './RichText';
 import ChoiceList from './ChoiceList';
 import choiceListActions from './ChoiceList/ChoiceList.actions';
 import DateTimePicker from './DateTimePicker';
@@ -22,7 +22,10 @@ if (pickerConfigs) {
         Tag: {cmp: Tag, key: 'Tag', supportMultiple: true},
         Text: {cmp: Text, key: 'Text', supportMultiple: false},
         TextArea: {cmp: TextArea, key: 'TextArea', supportMultiple: false},
-        RichText: {cmp: RichText, key: 'RichText', supportMultiple: false},
+        RichText: {
+            default: {cmp: RichText, key: 'RichText', supportMultiple: false},
+            markdown: {cmp: RichTextMarkdown, key: 'RichText', supportMultiple: false}
+        },
         Choicelist: {cmp: ChoiceList, key: 'Choicelist', actions: choiceListActions, supportMultiple: true},
         DateTimePicker: {
             cmp: DateTimePicker,

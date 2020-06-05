@@ -28,7 +28,10 @@
     },
     "jahia": {
         "apps": {
-            "jahia": ["javascript/apps/content-editor-ext.bundle.js", "/cms/render/default/en/settings.contentEditor.js"]
+            "jahia": [
+                "javascript/apps/content-editor-ext.bundle.js",
+                "/cms/render/default/en/settings.contentEditor.js"
+            ]
         }
     },
     "dependencies": {
@@ -46,6 +49,7 @@
         "formik": "1.5.8",
         "graphql-tag": "^2.10.3",
         "i18next": "^19.4.0",
+        "markdown-it": "^11.0.0",
         "prop-types": "^15.6.2",
         "react": "^16.13.1",
         "react-apollo": "^3.1.4",
@@ -57,11 +61,14 @@
         "react-file-viewer": "^1.1.0",
         "react-i18next": "^11.3.4",
         "react-infinite-scroller": "^1.2.4",
+        "react-markdown-editor-lite": "^1.1.3",
         "react-pdf-js": "^5.1.0",
         "react-redux": "^7.2.0",
         "react-router-dom": "^5.1.2",
         "react-select": "^3.1.0",
-        "redux": "^4.0.5"
+        "redux": "^4.0.5",
+        "turndown": "^6.0.0",
+        "turndown-plugin-gfm": "^1.0.2"
     },
     "devDependencies": {
         "@babel/core": "^7.9.0",
