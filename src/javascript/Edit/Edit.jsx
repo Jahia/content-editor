@@ -15,7 +15,7 @@ import {useContentEditorConfigContext} from '~/ContentEditor.context';
 import envEditCallbacks from './Edit.env';
 import {adaptEditFormData} from './Edit.adapter';
 import {Constants} from '~/ContentEditor.constants';
-import {CollabManager} from '~/Collab/CollabManager';
+import {CollaborationContextProvider} from '~/Collab/Collaboration.context';
 
 export const EditCmp = ({
     client,
@@ -55,16 +55,17 @@ export const EditCmp = ({
 
     return (
         <>
-            <PublicationInfoContextProvider uuid={nodeData.uuid} lang={lang}>
-                <Formik
-                    enableReinitialize
-                    initialValues={initialValues}
-                    render={props => <EditPanel {...props} title={title}/>}
-                    validate={validate(sections)}
-                    onSubmit={handleSubmit}
-                />
-            </PublicationInfoContextProvider>
-            <CollabManager path={path}/>
+            <CollaborationContextProvider path={path}>
+                <PublicationInfoContextProvider uuid={nodeData.uuid} lang={lang}>
+                    <Formik
+                        enableReinitialize
+                        initialValues={initialValues}
+                        render={props => <EditPanel {...props} title={title}/>}
+                        validate={validate(sections)}
+                        onSubmit={handleSubmit}
+                    />
+                </PublicationInfoContextProvider>
+            </CollaborationContextProvider>
         </>
     );
 };

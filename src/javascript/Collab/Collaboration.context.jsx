@@ -1,10 +1,15 @@
+import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {useEffect} from 'react';
-import {useApolloClient} from '@apollo/react-hooks';
 import {SubscribeToCollaboration} from '~/Collab/collab.gql-subscription';
 import {DisconnectUserMutation} from '~/Collab/collab.gql-mutations';
+import {useApolloClient} from '@apollo/react-hooks';
 
-export const CollabManager = ({path}) => {
+export const CollaborationContext = React.createContext({});
+
+export const useCollaborationContext = () => useContext(CollaborationContext);
+
+export const CollaborationContextProvider = ({path, children}) => {
+    const [collaborationData, setCollaborationData] = useState({});
     const client = useApolloClient();
 
     useEffect(() => {
@@ -18,10 +23,10 @@ export const CollabManager = ({path}) => {
 
         const subscription = subscriptionObserver.subscribe(data => {
             console.log(data);
+            setCollaborationData(data);
         });
 
-        // Manually unlock when this component is unload.
-        // Even if the subscription is still running it will be killed automatically after the server timed out on heartbeat message sending
+        // Manually disconnect the user
         return () => {
             client
                 .mutate({
@@ -31,16 +36,20 @@ export const CollabManager = ({path}) => {
                     }
                 })
                 .then(() => {
-                    // Clear subscription client side. (this will not stop the server side subscription, the server side subscription will end by timeout)
                     subscription.unsubscribe();
                 })
                 .catch(err => console.error(err));
         };
-    }, [client, path]);
+    }, [client, path, setCollaborationData]);
 
-    return '';
+    return (
+        <CollaborationContext.Provider value={collaborationData}>
+            {children}
+        </CollaborationContext.Provider>
+    );
 };
 
-CollabManager.propTypes = {
-    path: PropTypes.string.isRequired
+CollaborationContextProvider.propTypes = {
+    path: PropTypes.string.isRequired,
+    children: PropTypes.node.isRequired
 };

@@ -5,7 +5,9 @@ import graphql.schema.DataFetchingEnvironment;
 import graphql.servlet.GraphQLContext;
 import org.jahia.modules.graphql.provider.dxm.DXGraphQLProvider;
 import org.jahia.services.content.JCRSessionFactory;
+import org.jahia.services.content.decorator.JCRUserNode;
 
+import javax.jcr.RepositoryException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
@@ -17,7 +19,7 @@ public class GqlEditorCollabMutations {
     @GraphQLDescription("Main access field to the DX GraphQL Form mutation API")
     public boolean disconnectUser(
         DataFetchingEnvironment environment,
-        @GraphQLName("nodePath") @GraphQLNonNull @GraphQLDescription("Path of the node") String nodePath) {
+        @GraphQLName("nodePath") @GraphQLNonNull @GraphQLDescription("Path of the node") String nodePath) throws RepositoryException {
 
         Optional<HttpServletRequest> httpServletRequest = ((GraphQLContext) environment.getContext()).getRequest();
         if(!httpServletRequest.isPresent()) {
@@ -25,9 +27,10 @@ public class GqlEditorCollabMutations {
         }
 
         JCRSessionFactory jcrSessionFactory = JCRSessionFactory.getInstance();
-        String currentUser = jcrSessionFactory.getCurrentUser().getUserKey();
+        JCRUserNode userNode = jcrSessionFactory.getCurrentUserSession().getUserNode();
+        String userKey = userNode.getUserKey();
 
-        CollaborationService.disconnectUser(nodePath, currentUser);
+        CollaborationService.disconnectUser(nodePath, userKey);
         return true;
     }
 }

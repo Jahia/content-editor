@@ -3,7 +3,10 @@ package org.jahia.modules.contenteditor.collab;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.PublishSubject;
+import org.jahia.services.content.decorator.JCRFileNode;
+import org.jahia.services.content.decorator.JCRUserNode;
 
+import javax.jcr.RepositoryException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,10 +18,16 @@ class CollaborationService {
         return collaboration.getSubject().subscribe(consumer);
     }
 
-    static CollaborationData connectUser(String path, String user) {
+    static CollaborationData connectUser(String path, JCRUserNode user) throws RepositoryException {
         CollaborationIntance collaboration = getCollaboration(path);
 
-        collaboration.getCollaborationData().addUsers(user);
+        CollaborationUser collaborationUser = new CollaborationUser(user.getUserKey());
+        collaborationUser.setUserName(user.getDisplayableName());
+        if (user.hasProperty("j:picture")) {
+            collaborationUser.setUserPicture(((JCRFileNode) user.getProperty("j:picture").getNode()).getUrl());
+        }
+
+        collaboration.getCollaborationData().addUsers(collaborationUser);
         collaboration.getSubject().onNext(collaboration.getCollaborationData());
 
         return collaboration.getCollaborationData();

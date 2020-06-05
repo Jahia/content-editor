@@ -14,6 +14,7 @@ import {Edit} from '@jahia/moonstone/dist/icons';
 import {truncate} from '~/utils/helper';
 import styles from './UpperSection.scss';
 import {ButtonWithPastilleRenderer, ButtonRenderer} from './ActionsButtons';
+import CollaborationProfiles from '~/Collab/Collaboration.profiles';
 
 export const HeaderUpperSection = ({title, actionContext}) => {
     const {t} = useTranslation();
@@ -102,6 +103,7 @@ export const HeaderUpperSection = ({title, actionContext}) => {
             <div className={styles.header}>
                 <div className={styles.headerLeft}>
                     <Chip label={nodeTypeName} color="accent"/>
+                    <CollaborationProfiles/>
                 </div>
 
                 <div className={styles.headerChips}>

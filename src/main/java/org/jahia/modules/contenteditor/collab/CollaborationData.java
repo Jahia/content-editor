@@ -3,25 +3,26 @@ package org.jahia.modules.contenteditor.collab;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class CollaborationData {
-    private Set<String> users = new HashSet<>();
+    private Map<String, CollaborationUser> users = new HashMap<>();
 
     @GraphQLField
     @GraphQLName("users")
-    public Set<String> getUsers() {
-        return users;
+    public Collection<CollaborationUser> getUsers() {
+        return users.values();
     }
 
-    void addUsers(String user) {
-        users.add(user);
+    boolean isUserConnected(String userKey) {
+        return users.containsKey(userKey);
     }
 
-    void removeUsers(String user) {
-        users.remove(user);
+    void addUsers(CollaborationUser user) {
+        users.put(user.getUserKey(), user);
+    }
+
+    void removeUsers(String userKey) {
+        users.remove(userKey);
     }
 }

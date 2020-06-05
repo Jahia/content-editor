@@ -18,6 +18,7 @@ import org.jahia.modules.contenteditor.graphql.api.GqlEditorLockHeartBeat;
 import org.jahia.modules.graphql.provider.dxm.DXGraphQLProvider;
 import org.jahia.modules.graphql.provider.dxm.node.GqlJcrMutationSupport;
 import org.jahia.services.content.JCRSessionFactory;
+import org.jahia.services.content.decorator.JCRUserNode;
 import org.jahia.services.usermanager.JahiaUser;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
@@ -41,7 +42,7 @@ public class GqlEditorCollabSubscriptions extends GqlJcrMutationSupport {
     @GraphQLDescription("TODO")
     public static Publisher<CollaborationData> subscribeToCollaboration(
             DataFetchingEnvironment environment,
-            @GraphQLName("nodePath") @GraphQLNonNull @GraphQLDescription("Path of the node") String nodePath) throws EditorFormException {
+            @GraphQLName("nodePath") @GraphQLNonNull @GraphQLDescription("Path of the node") String nodePath) throws RepositoryException {
 
 
         Optional<HttpServletRequest> httpServletRequest = ((GraphQLContext) environment.getContext()).getRequest();
@@ -50,9 +51,10 @@ public class GqlEditorCollabSubscriptions extends GqlJcrMutationSupport {
         }
 
         JCRSessionFactory jcrSessionFactory = JCRSessionFactory.getInstance();
-        String currentUser = jcrSessionFactory.getCurrentUser().getUserKey();
+        JCRUserNode userNode = jcrSessionFactory.getCurrentUserSession().getUserNode();
+        String userKey = userNode.getUserKey();
 
-        CollaborationData initialCollaborationData = CollaborationService.connectUser(nodePath, currentUser);
+        CollaborationData initialCollaborationData = CollaborationService.connectUser(nodePath, userNode);
 
         return Flowable.create(obs-> {
 
@@ -61,7 +63,7 @@ public class GqlEditorCollabSubscriptions extends GqlJcrMutationSupport {
 
             // listen on collaboration data changes
             Disposable disposable = CollaborationService.subscribeToCollaboration(nodePath, collaborationData -> {
-                if (collaborationData.getUsers().contains(currentUser)) {
+                if (collaborationData.isUserConnected(userKey)) {
                     // user still connected, send changes
                     obs.onNext(collaborationData);
                 } else {
