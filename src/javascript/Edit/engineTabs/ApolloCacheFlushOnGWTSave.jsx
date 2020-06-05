@@ -8,14 +8,15 @@ const ApolloCacheFlushOnGWTSaveCmp = ({client}) => {
     useEffect(() => {
         // Register flush on GWT save
         window.contentModificationEventHandlers = window.contentModificationEventHandlers || [];
-        var length = window.contentModificationEventHandlers.push(nodeUuid => {
+        let handler = nodeUuid => {
             client.cache.flushNodeEntryById(nodeUuid);
             refetchFormData();
-        });
+        };
+        window.contentModificationEventHandlers.push(handler);
 
         // Unregister flush on GWT save at unload
         return () => {
-            window.contentModificationEventHandlers.splice(length - 1, 1);
+            window.contentModificationEventHandlers.splice(window.contentModificationEventHandlers.indexOf(handler), 1);
         };
     });
 
