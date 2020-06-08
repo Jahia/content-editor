@@ -15,6 +15,7 @@ import {truncate} from '~/utils/helper';
 import styles from './UpperSection.scss';
 import {ButtonWithPastilleRenderer, ButtonRenderer} from './ActionsButtons';
 import CollaborationProfiles from '~/Collab/Collaboration.profiles';
+import {CollaborationChat} from '~/Collab/Collaboration.chat';
 
 export const HeaderUpperSection = ({title, actionContext}) => {
     const {t} = useTranslation();
@@ -104,6 +105,7 @@ export const HeaderUpperSection = ({title, actionContext}) => {
                 <div className={styles.headerLeft}>
                     <Chip label={nodeTypeName} color="accent"/>
                     <CollaborationProfiles/>
+                    <CollaborationChat path={nodeData.path}/>
                 </div>
 
                 <div className={styles.headerChips}>

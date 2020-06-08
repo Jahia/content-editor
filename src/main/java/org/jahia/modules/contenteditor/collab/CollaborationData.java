@@ -7,7 +7,10 @@ import java.util.*;
 
 public class CollaborationData {
     private Map<String, CollaborationUser> users = new HashMap<>();
+    private List<CollaborationMessage> messages = new ArrayList<>();
+    private CollaborationUser currentUser;
 
+    // Users
     @GraphQLField
     @GraphQLName("users")
     public Collection<CollaborationUser> getUsers() {
@@ -24,5 +27,27 @@ public class CollaborationData {
 
     void removeUsers(String userKey) {
         users.remove(userKey);
+    }
+
+    // Messages
+    @GraphQLField
+    @GraphQLName("messages")
+    public List<CollaborationMessage> getMessages() {
+        return messages;
+    }
+
+    void addMessage(CollaborationMessage message) {
+        messages.add(message);
+    }
+
+    // Current user
+    @GraphQLField
+    @GraphQLName("currentUser")
+    public CollaborationUser getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(CollaborationUser currentUser) {
+        this.currentUser = currentUser;
     }
 }

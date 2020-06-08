@@ -8,6 +8,15 @@ export const SubscribeToCollaboration = gql`
                 userName,
                 userPicture
             }
+            messages {
+                author,
+                message
+            }
+            currentUser {
+                userKey,
+                userName,
+                userPicture
+            }
         }
     }
 `;

@@ -28,7 +28,10 @@
     },
     "jahia": {
         "apps": {
-            "jahia": ["javascript/apps/content-editor-ext.bundle.js", "/cms/render/default/en/settings.contentEditor.js"]
+            "jahia": [
+                "javascript/apps/content-editor-ext.bundle.js",
+                "/cms/render/default/en/settings.contentEditor.js"
+            ]
         }
     },
     "dependencies": {
@@ -49,6 +52,7 @@
         "prop-types": "^15.6.2",
         "react": "^16.13.1",
         "react-apollo": "^3.1.4",
+        "react-chat-ui": "^0.3.2",
         "react-day-picker": "^7.4.0",
         "react-dnd": "^10.0.2",
         "react-dnd-html5-backend": "^10.0.2",

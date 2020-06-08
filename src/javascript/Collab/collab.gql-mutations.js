@@ -7,3 +7,11 @@ export const DisconnectUserMutation = gql`
         }
     }
 `;
+
+export const PostMessage = gql`
+    mutation postMessage($nodePath:String!, $message:String!) {
+        collaboration {
+            postMessage(nodePath: $nodePath, message: $message)
+        }
+    }
+`;

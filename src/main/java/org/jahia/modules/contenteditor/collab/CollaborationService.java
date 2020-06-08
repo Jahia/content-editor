@@ -21,13 +21,7 @@ class CollaborationService {
     static CollaborationData connectUser(String path, JCRUserNode user) throws RepositoryException {
         CollaborationIntance collaboration = getCollaboration(path);
 
-        CollaborationUser collaborationUser = new CollaborationUser(user.getUserKey());
-        collaborationUser.setUserName(user.getDisplayableName());
-        if (user.hasProperty("j:picture")) {
-            collaborationUser.setUserPicture(((JCRFileNode) user.getProperty("j:picture").getNode()).getUrl());
-        }
-
-        collaboration.getCollaborationData().addUsers(collaborationUser);
+        collaboration.getCollaborationData().addUsers(getCollaborationUser(user));
         collaboration.getSubject().onNext(collaboration.getCollaborationData());
 
         return collaboration.getCollaborationData();
@@ -42,6 +36,21 @@ class CollaborationService {
         if (collaboration.getCollaborationData().getUsers().size() == 0) {
             collaborationInstances.remove(path);
         }
+    }
+
+    static void postMessage(String path, JCRUserNode user, String message) {
+        CollaborationIntance collaboration = getCollaboration(path);
+        collaboration.getCollaborationData().addMessage(new CollaborationMessage(message, user.getDisplayableName()));
+        collaboration.getSubject().onNext(collaboration.getCollaborationData());
+    }
+
+    static CollaborationUser getCollaborationUser(JCRUserNode user) throws RepositoryException {
+        CollaborationUser collaborationUser = new CollaborationUser(user.getUserKey());
+        collaborationUser.setUserName(user.getDisplayableName());
+        if (user.hasProperty("j:picture")) {
+            collaborationUser.setUserPicture(((JCRFileNode) user.getProperty("j:picture").getNode()).getUrl());
+        }
+        return collaborationUser;
     }
 
     private static CollaborationIntance getCollaboration(String path) {

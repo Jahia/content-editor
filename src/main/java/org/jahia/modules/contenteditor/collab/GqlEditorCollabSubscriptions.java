@@ -54,7 +54,9 @@ public class GqlEditorCollabSubscriptions extends GqlJcrMutationSupport {
         JCRUserNode userNode = jcrSessionFactory.getCurrentUserSession().getUserNode();
         String userKey = userNode.getUserKey();
 
+        CollaborationUser currentUser = CollaborationService.getCollaborationUser(userNode);
         CollaborationData initialCollaborationData = CollaborationService.connectUser(nodePath, userNode);
+        initialCollaborationData.setCurrentUser(currentUser);
 
         return Flowable.create(obs-> {
 
@@ -65,6 +67,7 @@ public class GqlEditorCollabSubscriptions extends GqlJcrMutationSupport {
             Disposable disposable = CollaborationService.subscribeToCollaboration(nodePath, collaborationData -> {
                 if (collaborationData.isUserConnected(userKey)) {
                     // user still connected, send changes
+                    collaborationData.setCurrentUser(currentUser);
                     obs.onNext(collaborationData);
                 } else {
                     // user not connected anymore, disconnect

@@ -16,7 +16,7 @@ public class GqlEditorCollabMutations {
 
     @GraphQLField
     @GraphQLName("disconnectUser")
-    @GraphQLDescription("Main access field to the DX GraphQL Form mutation API")
+    @GraphQLDescription("TODO")
     public boolean disconnectUser(
         DataFetchingEnvironment environment,
         @GraphQLName("nodePath") @GraphQLNonNull @GraphQLDescription("Path of the node") String nodePath) throws RepositoryException {
@@ -31,6 +31,24 @@ public class GqlEditorCollabMutations {
         String userKey = userNode.getUserKey();
 
         CollaborationService.disconnectUser(nodePath, userKey);
+        return true;
+    }
+
+    @GraphQLField
+    @GraphQLName("postMessage")
+    @GraphQLDescription("TODO")
+    public boolean postMessage(
+        DataFetchingEnvironment environment,
+        @GraphQLName("nodePath") @GraphQLNonNull @GraphQLDescription("Path of the node") String nodePath,
+        @GraphQLName("message") @GraphQLNonNull @GraphQLDescription("The message") String message) throws RepositoryException {
+
+        Optional<HttpServletRequest> httpServletRequest = ((GraphQLContext) environment.getContext()).getRequest();
+        if(!httpServletRequest.isPresent()) {
+            return false;
+        }
+
+        JCRSessionFactory jcrSessionFactory = JCRSessionFactory.getInstance();
+        CollaborationService.postMessage(nodePath, jcrSessionFactory.getCurrentUserSession().getUserNode(), message);
         return true;
     }
 }
