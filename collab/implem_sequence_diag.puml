@@ -1,0 +1,68 @@
+@startuml
+actor Bob
+actor Bill
+box "GraphQL"
+control Subscription_Bill
+control Subscription_Bob
+entity Mutation
+end box
+database Collaborations
+
+
+== Bill connection to Content editor ==
+Bill -> Subscription_Bill: Bill connect
+Subscription_Bill -> Collaborations: new Collab
+Subscription_Bill -> Collaborations: subscribe to Collab
+Collaborations -> Subscription_Bill: Notify collab update
+Subscription_Bill -> Bill: return collab
+note left
+  Bill connected
+end note
+
+== Bob connection to Content editor ==
+Bob -> Subscription_Bob: Bob connect
+Subscription_Bob -> Collaborations: update Collab
+Subscription_Bob -> Collaborations: subscribe to Collab
+Collaborations -> Subscription_Bill: Notify collab update
+Collaborations -> Subscription_Bob: Notify collab update
+Subscription_Bill -> Bill: return collab
+note left
+  Bill connected
+  Bob connected
+end note
+Subscription_Bob -> Bob: return collab
+note left
+  Bill connected
+  Bob connected
+end note
+
+== Bob send a chat message ==
+Bob -> Mutation: Post chat message
+Mutation -> Collaborations: update Collab
+Collaborations -> Subscription_Bill: Notify collab update
+Collaborations -> Subscription_Bob: Notify collab update
+Subscription_Bill -> Bill: return collab
+note left
+  Bill connected
+  Bob connected
+  Bob message: Hello
+end note
+Subscription_Bob -> Bob: return collab
+note left
+  Bill connected
+  Bob connected
+  Bob message: Hello
+end note
+
+== Bob close content editor ==
+Bob -> Mutation: Disconnect
+Mutation -> Collaborations: update Collab
+Collaborations -> Subscription_Bill: Notify collab update
+Collaborations -> Subscription_Bob: Notify collab update
+Subscription_Bill -> Bill: return collab
+note left
+  Bill connected
+  Bob message: Hello
+end note
+
+@enduml
