@@ -59,6 +59,8 @@ Bob -> Mutation: Disconnect
 Mutation -> Collaborations: update Collab
 Collaborations -> Subscription_Bill: Notify collab update
 Collaborations -> Subscription_Bob: Notify collab update
+Subscription_Bob -> Subscription_Bob: Close Bob subscription
+destroy Subscription_Bob
 Subscription_Bill -> Bill: return collab
 note left
   Bill connected
