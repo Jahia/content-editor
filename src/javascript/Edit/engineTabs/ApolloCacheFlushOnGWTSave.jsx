@@ -12,6 +12,7 @@ const ApolloCacheFlushOnGWTSaveCmp = ({client}) => {
             client.cache.flushNodeEntryById(nodeUuid);
             refetchFormData();
         };
+
         window.contentModificationEventHandlers.push(handler);
 
         // Unregister flush on GWT save at unload
