@@ -15,6 +15,7 @@ import {useDrag} from 'react-dnd';
 describe('DraggableReference component', () => {
     const child = {
         name: 'subNode1',
+        displayName: 'This sub node',
         primaryNodeType: {
             displayName: 'subNode1',
             icon: '/icon'
@@ -43,5 +44,17 @@ describe('DraggableReference component', () => {
         );
 
         expect(cmp.debug()).not.toContain('ReferenceCard');
+    });
+
+    it('should contains display name when component displayed', () => {
+        useDrag.mockImplementation(() => ([{isDragging: false}]));
+
+        const cmp = shallowWithTheme(
+            <DraggableReference child={child}/>,
+            {},
+            dsGenericTheme
+        );
+
+        expect(cmp.find('ReferenceCard').props().fieldData.name).toBe(child.displayName);
     });
 });

@@ -25,7 +25,7 @@ export const DraggableReference = ({child}) => {
                 emptyIcon={<InsertDriveFile/>}
                 labelledBy={`${child.name}-label`}
                 fieldData={{
-                    name: child.name,
+                    name: child.displayName,
                     info: child.primaryNodeType.displayName,
                     url: encodeJCRPath(`${child.primaryNodeType.icon}.png`)
                 }}
