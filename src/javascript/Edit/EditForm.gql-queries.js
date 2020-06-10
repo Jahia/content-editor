@@ -94,6 +94,7 @@ const FormQuery = gql`
                         description
                         dynamic
                         activated
+                        displayed
                         fields {
                             name
                             displayName

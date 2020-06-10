@@ -15,6 +15,7 @@ describe('Section component', () => {
                 fieldSets: [
                     {
                         displayName: 'yo1',
+                        displayed: true,
                         fields: [
                             {name: 'field1', displayName: 'field 1'},
                             {name: 'field2', displayName: 'field 2'}
@@ -22,6 +23,7 @@ describe('Section component', () => {
                     },
                     {
                         displayName: 'yo2',
+                        displayed: true,
                         fields: [
                             {name: 'field21', displayName: 'field 21'},
                             {name: 'field22', displayName: 'field 22'}
@@ -53,11 +55,13 @@ describe('Section component', () => {
             fieldSets: [
                 {
                     displayName: 'yo1',
+                    displayed: true,
                     dynamic: true,
                     fields: []
                 },
                 {
                     displayName: 'yo2',
+                    displayed: true,
                     dynamic: true,
                     fields: [
                         {name: 'field21', displayName: 'field 21', readOnly: true},
@@ -81,6 +85,7 @@ describe('Section component', () => {
                 {
                     displayName: 'yo1',
                     dynamic: false,
+                    displayed: true,
                     fields: [
                         {name: 'field1', displayName: 'field 1', readOnly: false},
                         {name: 'field2', displayName: 'field 2', readOnly: false}
@@ -89,6 +94,7 @@ describe('Section component', () => {
                 {
                     displayName: 'yo2',
                     dynamic: false,
+                    displayed: true,
                     fields: [
                         {name: 'field21', displayName: 'field 21', readOnly: false},
                         {name: 'field22', displayName: 'field 22', readOnly: false}
@@ -110,11 +116,13 @@ describe('Section component', () => {
             fieldSets: [
                 {
                     displayName: 'yo1',
+                    displayed: true,
                     dynamic: false,
                     fields: []
                 },
                 {
                     displayName: 'yo2',
+                    displayed: true,
                     dynamic: false,
                     fields: []
                 }
@@ -124,6 +132,36 @@ describe('Section component', () => {
 
         props.section.fieldSets.forEach(fieldset => {
             expect(cmp.find({fieldset}).exists()).toBe(false);
+        });
+    });
+
+    it('should hide not fieldSets set as not displayed', () => {
+        props.section = {
+            name: 'content',
+            displayName: 'content',
+            fieldSets: [
+                {
+                    displayName: 'yo1',
+                    displayed: true,
+                    fields: [
+                        {name: 'field1', displayName: 'field 1'},
+                        {name: 'field2', displayName: 'field 2'}
+                    ]
+                },
+                {
+                    displayName: 'yo2',
+                    displayed: false,
+                    fields: [
+                        {name: 'field21', displayName: 'field 21'},
+                        {name: 'field22', displayName: 'field 22'}
+                    ]
+                }
+            ]
+        };
+        const cmp = shallowWithTheme(<Section {...props}/>, {}, dsGenericTheme).dive();
+
+        props.section.fieldSets.forEach(fieldset => {
+            expect(cmp.find({fieldset}).exists()).toBe(fieldset.displayed);
         });
     });
 });

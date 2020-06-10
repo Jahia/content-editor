@@ -88,5 +88,11 @@ extends=jnt:simpleWithExtends
 + * (jnt:AllowedNodeTypesChildContribute)
 + * (jnt:AllowedNodeTypesWithMixin)
 
+[jmix:hiddenFieldSet] > jmix:templateMixin mixin
+- hiddenFieldSetText (string)
+
+[jmix:hiddenFieldSetExtends] > jmix:templateMixin mixin
+extends=jnt:text
+- hiddenFieldSetExtendsText (string)
 
 [jnt:AllowedNodeTypesNone] > nt:base
