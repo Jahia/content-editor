@@ -15,6 +15,14 @@ const RichTextMarkdown = ({field, id, value}) => {
     const converter = new TurndownService({headingStyle: 'atx'}).use(gfm);
     const mdParser = new MarkdownIt(/* Markdown-it options */);
 
+    const config = {
+        view: {
+            menu: true,
+            md: true,
+            html: false
+        }
+    };
+
     return (
         <FastField
             name={field.name}
@@ -30,8 +38,9 @@ const RichTextMarkdown = ({field, id, value}) => {
 
                 return (
                     <MdEditor
-                        value={valueText || converter.turndown(value)}
+                        value={valueText || (value && converter.turndown(value))}
                         style={{height: '500px', width: '100%'}}
+                        config={config}
                         renderHTML={text => {
                             setValueText(text);
 
