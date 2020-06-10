@@ -55,6 +55,7 @@ final class EditorFormFieldSetBuilder {
     private Double rank = 1.0;
     private Double priority = 1.0;
     private Boolean dynamic = false;
+    private Boolean displayed = true;
     private Boolean activated = true;
     private Boolean removed = false;
 
@@ -99,6 +100,7 @@ final class EditorFormFieldSetBuilder {
         form.setPriority(priority);
         form.setDynamic(dynamic);
         form.setActivated(activated);
+        form.setDisplayed(displayed);
         form.setEditorFormFields(fields == null ? null : fields.stream()
                 .map(EditorFormField::new)
                 .collect(Collectors.toSet())

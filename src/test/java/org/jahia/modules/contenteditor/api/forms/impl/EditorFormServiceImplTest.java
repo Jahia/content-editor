@@ -437,6 +437,28 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         Assert.isTrue(!hasField(form, "metadata", "jmix:keywords", "j:keywords"), "could find jmix:tags in options section");
     }
 
+    @Test
+    public void hiddenFieldSet() throws Exception {
+        textNode.addMixin("jmix:hiddenFieldSet");
+        session.save();
+        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
+        EditorFormFieldSet fs = getFieldSet(form, "content", "jmix:hiddenFieldSet");
+
+        Assert.isTrue(!fs.getDisplayed(), "FieldSet should not be displayed");
+        Assert.isTrue(fs.getActivated(), "FieldSet should be activated");
+        Assert.isTrue(!fs.getDynamic(), "FieldSet should not be dynamic");
+
+        fs = getFieldSet(form, "content", "jmix:hiddenFieldSetExtends");
+
+        Assert.isTrue(!fs.getDisplayed(), "FieldSet should not be displayed");
+        Assert.isTrue(!fs.getActivated(), "FieldSet should not be activated");
+        Assert.isTrue(fs.getDynamic(), "FieldSet should be dynamic");
+        // clean up
+
+        textNode.removeMixin("jmix:hiddenFieldSet");
+        session.save();
+    }
+
     private URL getResource(String s) {
         return getClass().getClassLoader().getResource(s);
     }

@@ -175,9 +175,9 @@ public class EditorFormServiceImpl implements EditorFormService {
             }
 
             JCRSiteNode resolvedSite;
-            if(existingNode != null && existingNode.isNodeType("jnt:virtualsite")){
+            if (existingNode != null && existingNode.isNodeType("jnt:virtualsite")) {
                 resolvedSite = (JCRSiteNode) existingNode;
-            }else {
+            } else {
                 resolvedSite = parentNode.getResolveSite();
             }
 
@@ -217,15 +217,12 @@ public class EditorFormServiceImpl implements EditorFormService {
     }
 
     private void generateAndMergeFieldSetForType(String nodeTypeName, Locale uiLocale, Locale locale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, ExtendedNodeType primaryNodeType, Map<String, EditorFormSection> formSectionsByName, boolean removed, boolean dynamic, boolean activated, Set<String> processedProperties) throws RepositoryException {
-        // We should hide fieldSets that have "jmix:templateMixin" as mixin to be coherent with the edit engine.
-        // TODO: BACKLOG-10857 support fieldSet has "jmix:templateMixin" mixin
-        if (!primaryNodeType.isNodeType("jmix:templateMixin")) {
-            EditorFormFieldSet nodeTypeFieldSet = generateEditorFormFieldSet(processedProperties, primaryNodeType, existingNode, parentNode, locale, uiLocale, removed, dynamic, activated);
-            nodeTypeFieldSet = mergeWithStaticFormFieldSets(nodeTypeName, nodeTypeFieldSet);
-            nodeTypeFieldSet = processValueConstraints(nodeTypeFieldSet, locale, existingNode, parentNode);
-            if (!nodeTypeFieldSet.isRemoved()) {
-                addFieldSetToSections(formSectionsByName, nodeTypeFieldSet);
-            }
+        final boolean displayFieldSet = !primaryNodeType.isNodeType("jmix:templateMixin");
+        EditorFormFieldSet nodeTypeFieldSet = generateEditorFormFieldSet(processedProperties, primaryNodeType, existingNode, parentNode, locale, uiLocale, removed, dynamic, activated, displayFieldSet);
+        nodeTypeFieldSet = mergeWithStaticFormFieldSets(nodeTypeName, nodeTypeFieldSet);
+        nodeTypeFieldSet = processValueConstraints(nodeTypeFieldSet, locale, existingNode, parentNode);
+        if (!nodeTypeFieldSet.isRemoved()) {
+            addFieldSetToSections(formSectionsByName, nodeTypeFieldSet);
         }
     }
 
@@ -357,6 +354,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             editorFormFieldSet.getRemoved(),
             editorFormFieldSet.getDynamic(),
             editorFormFieldSet.getActivated(),
+            editorFormFieldSet.getDisplayed(),
             newEditorFormFields);
     }
 
@@ -383,9 +381,9 @@ public class EditorFormServiceImpl implements EditorFormService {
         return mergedEditorFormFieldSet;
     }
 
-    private EditorFormFieldSet generateEditorFormFieldSet(Set<String> processedProperties, ExtendedNodeType nodeType, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale locale, Locale uiLocale, Boolean removed, Boolean dynamic, Boolean activated) throws RepositoryException {
+    private EditorFormFieldSet generateEditorFormFieldSet(Set<String> processedProperties, ExtendedNodeType nodeType, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale locale, Locale uiLocale, Boolean removed, Boolean dynamic, Boolean activated, Boolean displayed) throws RepositoryException {
         JCRSessionWrapper session = existingNode != null ? existingNode.getSession() : getSession(locale);
-        Map<String,Double> maxTargetRank = new HashMap<>();
+        Map<String, Double> maxTargetRank = new HashMap<>();
         SortedSet<EditorFormField> editorFormFields = new TreeSet<>();
 
         boolean isLockedAndCannotBeEdited = JCRContentUtils.isLockedAndCannotBeEdited(existingNode);
@@ -456,7 +454,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             String propertyLabel = item.getLabel(uiLocale, extendedNodeType);
             String propertyDescription = item.getTooltip(uiLocale, extendedNodeType);
 
-            String key =  item.getResourceBundleKey() + ".constraint.error.message";
+            String key = item.getResourceBundleKey() + ".constraint.error.message";
             if (item.getDeclaringNodeType().getTemplatePackage() != null) {
                 key += "@" + item.getDeclaringNodeType().getTemplatePackage().getResourceBundleName();
             }
@@ -504,6 +502,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             removed,
             dynamic,
             activated,
+            displayed,
             editorFormFields);
     }
 
