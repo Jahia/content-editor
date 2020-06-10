@@ -19,16 +19,25 @@ const styles = theme => ({
     }
 });
 
-export const SingleSelectCmp = ({classes, field, id, setActionContext}) => {
+export const SingleSelectCmp = ({classes, field, id, setActionContext, onChange}) => {
     return (
         <FastField
             name={field.name}
             render={props => {
-                const {onChange, ...formikField} = props.field;
+                const {onChange: onFormikChange, ...formikField} = props.field;
                 // eslint-disable-next-line react/prop-types
                 const {setFieldTouched} = props.form;
                 const handleChange = evt => {
-                    onChange(evt);
+                    onFormikChange(evt);
+
+                    let previousValue;
+                    let currentValue;
+                    field.valueConstraints.forEach(item => {
+                        currentValue = currentValue || (item && item.value.string === evt.target.value);
+                        previousValue = previousValue || (item && item.value.string === formikField.value);
+                    });
+
+                    onChange(previousValue, currentValue);
                     setFieldTouched(field.name, field.multiple ? [true] : true);
                 };
 
@@ -76,7 +85,8 @@ SingleSelectCmp.propTypes = {
     id: PropTypes.string.isRequired,
     field: FieldPropTypes.isRequired,
     classes: PropTypes.object.isRequired,
-    setActionContext: PropTypes.func.isRequired
+    setActionContext: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired
 };
 
 const SingleSelect = withStyles(styles)(SingleSelectCmp);

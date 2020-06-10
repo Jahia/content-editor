@@ -25,7 +25,8 @@ describe('SingleSelect component', () => {
                 selectorType: 'ChoiceList',
                 readOnly: false
             },
-            setActionContext: jest.fn()
+            setActionContext: jest.fn(),
+            onChange: jest.fn()
         };
     });
 
@@ -58,8 +59,13 @@ describe('SingleSelect component', () => {
 
     it('should select formik value', () => {
         const cmp = buildComp(props);
-        cmp.simulate('change', 'Yolooo');
-        expect(handleChange).toHaveBeenCalledWith('Yolooo');
+        const onChangeData = {
+            target: {
+                value: 'Yolooo'
+            }
+        };
+        cmp.simulate('change', onChangeData);
+        expect(handleChange).toHaveBeenCalledWith(onChangeData);
         expect(handleFieldTouched).toHaveBeenCalledWith('myOption', true);
     });
 

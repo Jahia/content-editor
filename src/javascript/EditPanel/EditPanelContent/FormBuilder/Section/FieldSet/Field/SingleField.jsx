@@ -4,7 +4,7 @@ import {compose} from '~/utils';
 import {connect} from 'formik';
 import {FieldPropTypes} from '~/FormDefinitions';
 
-export const SingleFieldCmp = ({inputContext, field, formik}) => {
+export const SingleFieldCmp = ({inputContext, field, onChange, formik}) => {
     const FieldComponent = inputContext.fieldComponent;
 
     return (
@@ -12,14 +12,17 @@ export const SingleFieldCmp = ({inputContext, field, formik}) => {
                         id={field.name}
                         value={formik.values[field.name]}
                         editorContext={inputContext.editorContext}
-                        setActionContext={inputContext.setActionContext}/>
+                        setActionContext={inputContext.setActionContext}
+                        onChange={onChange}
+        />
     );
 };
 
 SingleFieldCmp.propTypes = {
     inputContext: PropTypes.object.isRequired,
     field: FieldPropTypes.isRequired,
-    formik: PropTypes.object.isRequired
+    formik: PropTypes.object.isRequired,
+    onChange: PropTypes.func.isRequired
 };
 
 export const SingleField = compose(
