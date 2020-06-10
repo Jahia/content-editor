@@ -33,8 +33,8 @@ export const SingleSelectCmp = ({classes, field, id, setActionContext, onChange}
                     let previousValue;
                     let currentValue;
                     field.valueConstraints.forEach(item => {
-                        currentValue = currentValue || (item && item.value.string === evt.target.value);
-                        previousValue = previousValue || (item && item.value.string === formikField.value);
+                        currentValue = currentValue || (item.value.string === evt.target.value && item);
+                        previousValue = previousValue || (item.value.string === formikField.value && item);
                     });
 
                     onChange(previousValue, currentValue);
