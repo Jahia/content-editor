@@ -4,16 +4,17 @@ import {Input} from '@jahia/design-system-kit';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {FastField} from 'formik';
 
-export const TextCmp = ({field, value, id, editorContext}) => {
+export const TextCmp = ({field, value, id, editorContext, onChange}) => {
     const fieldType = field.requiredType;
     const isNumber = fieldType === 'DOUBLE' || fieldType === 'LONG' || fieldType === 'DECIMAL';
     const decimalSeparator = editorContext.uilang === 'en' ? '.' : ',';
-    const controlledValue = value === undefined ? '' : value;
+    const controlledValue = value === undefined ? '' : (isNumber ? value && value.replace('.', decimalSeparator) : value);
     return (
         <FastField render={({form: {handleChange, setFieldTouched}}) => {
-            const onChange = evt => {
+            const onFieldChangeChange = evt => {
                 handleChange(evt);
                 setFieldTouched(field.name, field.multiple ? [true] : true);
+                onChange(controlledValue, evt?.target.value);
             };
 
             return (
@@ -25,12 +26,12 @@ export const TextCmp = ({field, value, id, editorContext}) => {
                         'aria-labelledby': `${field.name}-label`,
                         'aria-required': field.mandatory
                     }}
-                    value={isNumber ? controlledValue && controlledValue.replace('.', decimalSeparator) : controlledValue}
+                    value={controlledValue}
                     readOnly={field.readOnly}
                     type={isNumber ? 'number' : 'text'}
                     decimalScale={fieldType === 'LONG' ? 0 : undefined}
                     decimalSeparator={decimalSeparator}
-                    onChange={onChange}
+                    onChange={onFieldChangeChange}
                 />
             );
         }}
@@ -42,7 +43,8 @@ TextCmp.propTypes = {
     id: PropTypes.string.isRequired,
     value: PropTypes.string,
     editorContext: PropTypes.object.isRequired,
-    field: FieldPropTypes.isRequired
+    field: FieldPropTypes.isRequired,
+    onChange: PropTypes.func.isRequired
 };
 
 const Text = TextCmp;

@@ -14,6 +14,7 @@ describe('Text component', () => {
             editorContext: {
                 uilang: 'en'
             },
+            onChange: () => {},
             field: {
                 name: 'toto',
                 displayName: 'toto',
