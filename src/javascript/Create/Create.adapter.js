@@ -11,11 +11,6 @@ const getInitialValues = (sections, nodeData) => {
     return {...getFields(sections).reduce((result, field) => ({...result, ...getFieldValuesFromDefaultValues(field)}), {}), ...wipInfo};
 };
 
-const adaptSystemName = (rawData, formData) => {
-    // Set initial value for system name
-    formData.initialValues['ce:systemName'] = rawData.jcr.result.newName;
-};
-
 /**
  * This fct allow to adapt/modify the form data in create form
  * @param data Data from BackEnd
@@ -38,7 +33,7 @@ export const adaptCreateFormData = (data, lang, t) => {
         nodeTypeName: data.jcr.nodeTypeByName.displayName
     };
 
-    adaptSystemNameField(data, formData, lang, t, data.jcr.nodeTypeByName, adaptSystemName);
+    adaptSystemNameField(data, formData, lang, t, data.jcr.nodeTypeByName, true);
 
     return formData;
 };

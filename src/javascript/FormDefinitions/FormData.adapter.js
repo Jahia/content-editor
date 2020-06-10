@@ -1,5 +1,6 @@
 import {resolveSelectorType} from '~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes.utils';
 import {Constants} from '~/ContentEditor.constants';
+import {decodeSystemName} from '~/utils';
 
 const isContentOrFileNode = formData => {
     const pattern = '^/sites/[^/]*/(contents|files)$';
@@ -9,7 +10,7 @@ const isContentOrFileNode = formData => {
     }).length !== 0;
 };
 
-export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType, customAdapter) => {
+export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType, isCreate) => {
     const optionsSection = formData.sections.find(section => section.name === 'options');
     if (optionsSection) {
         const ntBaseFieldSet = optionsSection.fieldSets.find(fieldSet => fieldSet.name === 'nt:base');
@@ -34,7 +35,9 @@ export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType
                 ];
 
                 // System name should be readonly for this specific nodetypes
-                if (Constants.systemName.READONLY_FOR_NODE_TYPES.includes(primaryNodeType.name) || isContentOrFileNode(formData) || !formData.nodeData.hasWritePermission) {
+                if (Constants.systemName.READONLY_FOR_NODE_TYPES.includes(primaryNodeType.name) ||
+                    isContentOrFileNode(formData) ||
+                    (!isCreate && !formData.nodeData.hasWritePermission)) {
                     systemNameField.readOnly = true;
                 }
 
@@ -75,8 +78,11 @@ export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType
         }
     }
 
-    if (customAdapter) {
-        customAdapter(rawData, formData, lang, t);
+    // Set initial value for system name
+    if (isCreate) {
+        formData.initialValues['ce:systemName'] = rawData.jcr.result.newName;
+    } else {
+        formData.initialValues['ce:systemName'] = decodeSystemName(rawData.jcr.result.name);
     }
 };
 

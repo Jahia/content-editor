@@ -4,7 +4,7 @@ import {resolveSelectorType} from '~/EditPanel/EditPanelContent/FormBuilder/Sect
 import {adaptSections, getFieldValuesFromDefaultValues} from '~/FormDefinitions/FormData.adapter';
 import {adaptSystemNameField} from '../FormDefinitions/FormData.adapter';
 import {Constants} from '~/ContentEditor.constants';
-import {encodeSystemName, decodeSystemName} from '~/utils';
+import {encodeSystemName} from '~/utils';
 
 const getInitialValues = (nodeData, sections) => {
     // Retrieve dynamic fieldSets
@@ -117,11 +117,6 @@ const getTechnicalInfo = (nodeData, t) => {
     ];
 };
 
-const editAdaptSystemNameField = (rawData, formData) => {
-    // Set initial value for system name
-    formData.initialValues['ce:systemName'] = decodeSystemName(rawData.jcr.result.name);
-};
-
 export const adaptEditFormData = (data, lang, t) => {
     const nodeData = data.jcr.result;
     const sections = data.forms.editForm.sections;
@@ -136,7 +131,7 @@ export const adaptEditFormData = (data, lang, t) => {
         nodeTypeName: nodeData.primaryNodeType.displayName
     };
 
-    adaptSystemNameField(data, formData, lang, t, nodeData.primaryNodeType, editAdaptSystemNameField);
+    adaptSystemNameField(data, formData, lang, t, nodeData.primaryNodeType, false);
 
     return formData;
 };
