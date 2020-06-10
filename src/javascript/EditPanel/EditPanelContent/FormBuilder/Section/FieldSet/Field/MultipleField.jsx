@@ -22,7 +22,7 @@ const styles = theme => {
     };
 };
 
-export const MultipleFieldCmp = ({classes, inputContext, field, formik: {values}}) => {
+export const MultipleFieldCmp = ({classes, inputContext, field, onChange, formik: {values}}) => {
     const {t} = useTranslation();
     return (
         <FieldArray
@@ -46,6 +46,7 @@ export const MultipleFieldCmp = ({classes, inputContext, field, formik: {values}
                                                     id={name}
                                                     editorContext={inputContext.editorContext}
                                                     setActionContext={inputContext.setActionContext}
+                                                    onChange={onChange}
                                     />
                                     {!field.readOnly &&
                                     <IconButton variant="ghost"
@@ -77,7 +78,8 @@ MultipleFieldCmp.propTypes = {
     inputContext: PropTypes.object.isRequired,
     field: FieldPropTypes.isRequired,
     formik: PropTypes.object.isRequired,
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
+    onChange: PropTypes.func.isRequired
 };
 
 export const MultipleField = compose(

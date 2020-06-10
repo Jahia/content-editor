@@ -4,6 +4,7 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {Field} from './Field';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import Text from './SelectorTypes/Text/Text';
+import {registry} from '@jahia/ui-extender';
 
 jest.mock('~/EditPanel/WorkInProgress/WorkInProgress.utils', () => {
     return {
@@ -43,7 +44,7 @@ describe('Field component', () => {
             formik: {
                 error: {},
                 touched: {},
-                values: []
+                values: {}
             },
             t: i18nKey => i18nKey,
             actionContext: {},
@@ -56,6 +57,38 @@ describe('Field component', () => {
             },
             idInput: 'FieldID'
         };
+    });
+
+    it('should call onChange from registry', () => {
+        let result = false;
+        const onChangePreviousValue = 'previousValue';
+        const onChangeCurrentValue = 'currentValue';
+
+        // Register onChange for DatePicker
+        const datePickerOnChange = {
+            targets: ['DatePicker'],
+            onChange: (previousValue, currentValue, field, context) => {
+                result = previousValue === onChangePreviousValue &&
+                    currentValue === onChangeCurrentValue &&
+                    field.name === defaultProps.field.name &&
+                    context.lang === defaultProps.inputContext.editorContext.lang;
+            }
+        };
+        registry.add('selectorType.onChange', 'callBacks', datePickerOnChange);
+
+        // Build component
+        defaultProps.input = props => <Text {...props}/>;
+        defaultProps.field.multiple = false;
+        const cmp = shallowWithTheme(
+            <Field {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        // Call onChange from the field
+        cmp.find('SingleField').props().onChange(onChangePreviousValue, onChangeCurrentValue);
+
+        expect(result).toBe(true);
     });
 
     it('should render a "Shared in all languages" when field is not i18n and site have multiple languages', () => {

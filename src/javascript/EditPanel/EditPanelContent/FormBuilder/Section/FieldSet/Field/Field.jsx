@@ -12,6 +12,7 @@ import {SingleField} from './SingleField';
 import {showChipField} from '~/EditPanel/WorkInProgress/WorkInProgress.utils';
 import {Constants} from '~/ContentEditor.constants';
 import {buildFlatFieldObject} from './field.utils';
+import {registry} from '@jahia/ui-extender';
 
 let styles = theme => {
     const common = {
@@ -66,6 +67,19 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
     const shouldDisplayErrors = touched[field.name] && errors[field.name];
     const hasMandatoryError = shouldDisplayErrors && errors[field.name] === 'required';
     const wipInfo = values[Constants.wip.fieldName];
+
+    // Lookup for registerd on changes for given field selectory type
+    const registeredOnChanges = registry.find({type: 'selectorType.onChange', target: field.selectorType});
+    const onChange = (previousValue, currentValue) => {
+        if (registeredOnChanges && registeredOnChanges.length > 0) {
+            registeredOnChanges.forEach(registeredOnChange => {
+                if (registeredOnChange.onChange) {
+                    registeredOnChange.onChange(previousValue, currentValue, field, inputContext.editorContext);
+                }
+            });
+        }
+    };
+
     return (
         <div className={`${classes.formControl} ${shouldDisplayErrors ? classes.formControlError : ''}`}
              data-sel-content-editor-field={field.name}
@@ -139,8 +153,8 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
                     >
                         <Grid item className={classes.input}>
                             {isMultipleField ?
-                                <MultipleField inputContext={inputContext} field={field}/> :
-                                <SingleField inputContext={inputContext} field={field}/>}
+                                <MultipleField inputContext={inputContext} field={field} onChange={onChange}/> :
+                                <SingleField inputContext={inputContext} field={field} onChange={onChange}/>}
                         </Grid>
                         <Grid item>
                             {actionContext.noAction ? (
