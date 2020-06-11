@@ -17,7 +17,7 @@ function loadOption(selectorOptions, name) {
     return selectorOptions && selectorOptions.find(option => option.name === name);
 }
 
-export const RichTextCmp = ({field, id, value}) => {
+export const RichTextCmp = ({field, id, value, onChange}) => {
     const {t} = useTranslation();
     const [picker, setPicker] = useState(false);
     useEffect(() => {
@@ -87,7 +87,7 @@ export const RichTextCmp = ({field, id, value}) => {
         filebrowserLinkBrowseUrl: (dialog, params, setUrl) => handlePickerDialog(setUrl, 'editoriallink', params, dialog)
     };
 
-    const {pickerConfig, nodeTreeConfigs, currentValue} = picker && buildPickerContext(picker, editorContext, t);
+    const {pickerConfig, nodeTreeConfigs, pickerValue} = picker && buildPickerContext(picker, editorContext, t);
     const handleItemSelection = pickerResult => {
         setPicker(false);
         fillCKEditorPicker(picker, pickerResult);
@@ -101,7 +101,7 @@ export const RichTextCmp = ({field, id, value}) => {
                 uilang={editorContext.uilang}
                 lang={editorContext.lang}
                 siteKey={editorContext.site}
-                initialSelectedItem={currentValue}
+                initialSelectedItem={pickerValue}
                 nodeTreeConfigs={nodeTreeConfigs}
                 field={field}
                 pickerConfig={pickerConfig}
@@ -111,13 +111,15 @@ export const RichTextCmp = ({field, id, value}) => {
             <FastField
                 name={field.name}
                 render={({form: {setFieldValue, setFieldTouched}}) => {
-                    const onEditorChange = value => {
+                    const onEditorChange = currentValue => {
                         setFieldValue(
                             id,
-                            value,
+                            currentValue,
                             true
                         );
                         setFieldTouched(field.name, field.multiple ? [true] : true);
+
+                        onChange(value, currentValue);
                     };
 
                     return (
@@ -145,7 +147,8 @@ export const RichTextCmp = ({field, id, value}) => {
 RichTextCmp.propTypes = {
     id: PropTypes.string.isRequired,
     value: PropTypes.string,
-    field: FieldPropTypes.isRequired
+    field: FieldPropTypes.isRequired,
+    onChange: PropTypes.func.isRequired
 };
 
 const RichText = RichTextCmp;

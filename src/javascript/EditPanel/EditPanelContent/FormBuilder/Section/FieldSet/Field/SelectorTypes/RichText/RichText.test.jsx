@@ -26,6 +26,7 @@ describe('RichText component', () => {
     beforeEach(() => {
         props = {
             id: 'richID',
+            value: 'initial value',
             field: {
                 name: 'x',
                 displayName: 'x',
@@ -33,6 +34,7 @@ describe('RichText component', () => {
                 selectorType: 'RichText',
                 selectorOptions: []
             },
+            onChange: jest.fn(),
             formik: {
                 setFieldValue: () => {},
                 values: []
@@ -87,6 +89,7 @@ describe('RichText component', () => {
             props.id, dummyEditor.getData(), true
         ]]);
         expect(handleFieldTouched).toHaveBeenCalledWith('x', true);
+        expect(props.onChange).toHaveBeenCalledWith(props.value, dummyEditor.getData());
     });
 
     it('should be readOnly when formDefinition say so', () => {
