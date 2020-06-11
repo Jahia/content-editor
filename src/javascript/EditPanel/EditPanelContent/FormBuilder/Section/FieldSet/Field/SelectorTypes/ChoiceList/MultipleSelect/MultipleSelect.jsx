@@ -22,7 +22,7 @@ const MultipleSelect = ({field, id, setActionContext, onChange}) => {
                     let previousValue = [];
                     let currentValue = [];
                     field.valueConstraints.forEach(item => {
-                        if (value && value.includes(item.value.string)) {
+                        if (value?.includes(item.value.string)) {
                             previousValue.push(item);
                         }
 
