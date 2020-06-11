@@ -27,25 +27,30 @@ export const SingleSelectCmp = ({classes, field, id, setActionContext, onChange}
                 const {onChange: onFormikChange, ...formikField} = props.field;
                 // eslint-disable-next-line react/prop-types
                 const {setFieldTouched} = props.form;
-                const handleChange = evt => {
-                    onFormikChange(evt);
 
+                const singleSelectOnChange = newValue => {
                     let previousValue;
                     let currentValue;
+
                     field.valueConstraints.forEach(item => {
-                        currentValue = currentValue || (item.value.string === evt.target.value && item);
-                        previousValue = previousValue || (item.value.string === formikField.value && item);
+                        if (newValue && item.value.string === newValue) {
+                            currentValue = item;
+                        }
+
+                        if (formikField.value && item.value.string === formikField.value) {
+                            previousValue = item;
+                        }
                     });
 
                     onChange(previousValue, currentValue);
-                    setFieldTouched(field.name, field.multiple ? [true] : true);
                 };
 
                 setActionContext(prevActionContext => ({
                     initialized: true,
                     contextHasChange: !prevActionContext.initialized ||
                         // As action system make deep copy of formik each time value change we must update the context !
-                        prevActionContext.formik.values[field.name] !== formikField.value
+                        prevActionContext.formik.values[field.name] !== formikField.value,
+                    onChange: singleSelectOnChange
                 }));
 
                 const readOnly = field.readOnly;
@@ -54,7 +59,11 @@ export const SingleSelectCmp = ({classes, field, id, setActionContext, onChange}
                     <Select
                         className={`${classes.selectField}
                                     ${readOnly ? classes.readOnly : ''}`}
-                        onChange={handleChange}
+                        onChange={evt => {
+                            onFormikChange(evt);
+                            setFieldTouched(field.name, true);
+                            singleSelectOnChange(evt.target.value);
+                        }}
                         {...formikField}
                         // eslint-disable-next-line react/prop-types
                         value={formikField.value || ''}

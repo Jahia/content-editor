@@ -13,6 +13,9 @@ export const unsetFieldAction = {
                 true
             );
             context.formik.setFieldTouched(context.field.name);
+            if (context.onChange) {
+                context.onChange(null);
+            }
         }
     }
 };
