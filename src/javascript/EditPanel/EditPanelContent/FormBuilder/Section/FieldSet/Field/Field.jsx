@@ -69,12 +69,12 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
     const wipInfo = values[Constants.wip.fieldName];
 
     // Lookup for registerd on changes for given field selectory type
-    const registeredOnChanges = registry.find({type: 'selectorType.onChange', target: field.selectorType});
+    const registeredOnChanges = registry.find({type: 'selectorType.onChange', target: selectorType.key});
     const onChange = (previousValue, currentValue) => {
         if (registeredOnChanges && registeredOnChanges.length > 0) {
             registeredOnChanges.forEach(registeredOnChange => {
                 if (registeredOnChange.onChange) {
-                    registeredOnChange.onChange(previousValue, currentValue, field, inputContext.editorContext);
+                    registeredOnChange.onChange(previousValue, currentValue, field, inputContext.editorContext, selectorType);
                 }
             });
         }
