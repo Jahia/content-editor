@@ -12,7 +12,7 @@ const variantMapper = {
     DateTimePicker: 'datetime'
 };
 
-export const DateTimePicker = ({id, field, editorContext}) => {
+export const DateTimePicker = ({id, field, editorContext, onChange}) => {
     const variant = variantMapper[field.selectorType];
     const isDateTime = variant === 'datetime';
     const disabledDays = fillDisabledDaysFromJCRConstraints(field, isDateTime);
@@ -25,7 +25,7 @@ export const DateTimePicker = ({id, field, editorContext}) => {
     return (
         <FastField
             name={id}
-            component={({field: {value, onChange, ...formikField}, form: {setFieldValue, setFieldTouched}}) => {
+            component={({field: {value, onChange: onChangeFormik, ...formikField}, form: {setFieldValue, setFieldTouched}}) => {
                 // Remove onChange from props pass to the input component as it is set in it.
                 return (
                     <DatePickerInput
@@ -37,6 +37,7 @@ export const DateTimePicker = ({id, field, editorContext}) => {
                             const newDate = date && dayjs(date).format('YYYY-MM-DDTHH:mm:ss.SSS');
                             setFieldValue(id, newDate, true);
                             setFieldTouched(field.name, field.multiple ? [true] : true);
+                            onChange(value, newDate);
                         }}
                         {...formikField}
                         displayDateFormat={displayDateFormat}
@@ -63,5 +64,6 @@ DateTimePicker.propTypes = {
         lng: PropTypes.string,
         uilang: PropTypes.string.isRequired
     }).isRequired,
-    field: FieldPropTypes.isRequired
+    field: FieldPropTypes.isRequired,
+    onChange: PropTypes.func.isRequired
 };

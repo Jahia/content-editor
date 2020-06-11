@@ -6,7 +6,7 @@ import {dsGenericTheme} from '@jahia/design-system-kit';
 
 describe('DateTimePicker component', () => {
     let props;
-
+    let initialValue;
     let testDateFormat = (uilang, format) => {
         props.editorContext.uilang = uilang;
         const RenderProps = shallow(<DateTimePicker {...props}/>)
@@ -29,8 +29,10 @@ describe('DateTimePicker component', () => {
             editorContext: {
                 lang: 'fr',
                 uilang: 'fr'
-            }
+            },
+            onChange: jest.fn()
         };
+        initialValue = new Date().toISOString();
     });
 
     const handleChange = jest.fn();
@@ -39,7 +41,7 @@ describe('DateTimePicker component', () => {
     const buildComp = componentProps => {
         const mainComponent = shallowWithTheme(<DateTimePicker {...componentProps}/>, {}, dsGenericTheme);
         const RenderProps = mainComponent.props().component;
-        return shallowWithTheme(<RenderProps field={{value: new Date().toISOString(), onChange: jest.fn()}} form={{setFieldTouched: handleFieldTouched, setFieldValue: handleChange}}/>, {}, dsGenericTheme);
+        return shallowWithTheme(<RenderProps field={{value: initialValue, onChange: jest.fn()}} form={{setFieldTouched: handleFieldTouched, setFieldValue: handleChange}}/>, {}, dsGenericTheme);
     };
 
     it('should bind id correctly', () => {
@@ -54,6 +56,7 @@ describe('DateTimePicker component', () => {
 
         expect(handleChange).toHaveBeenCalledWith('myOption[0]', '2019-07-14T21:07:12.000', true);
         expect(handleFieldTouched).toHaveBeenCalledWith('myOption', true);
+        expect(props.onChange).toHaveBeenCalledWith(initialValue, '2019-07-14T21:07:12.000');
     });
 
     it('should give readOnly', () => {
