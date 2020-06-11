@@ -16,7 +16,8 @@ describe('Checkbox component', () => {
                 readOnly: false,
                 selectorType: 'ContentPicker'
             },
-            classes: {}
+            classes: {},
+            onChange: jest.fn()
         };
     });
 
@@ -26,7 +27,7 @@ describe('Checkbox component', () => {
     const buildComp = props => {
         const mainComponent = shallowWithTheme(<Checkbox {...props}/>, {}, dsGenericTheme);
         const RenderProps = mainComponent.props().render;
-        return shallowWithTheme(<RenderProps form={{setFieldTouched: fieldTouched, setFieldValue: handleChange}}/>, {}, dsGenericTheme);
+        return shallowWithTheme(<RenderProps form={{setFieldTouched: fieldTouched, setFieldValue: handleChange}} field={{value: props.initialValue}}/>, {}, dsGenericTheme);
     };
 
     it('should display unchecked', () => {
@@ -46,6 +47,15 @@ describe('Checkbox component', () => {
         innerCmp.simulate('change', null, true);
         expect(handleChange).toHaveBeenCalledWith('checkbox1', true);
         expect(fieldTouched).toHaveBeenCalledWith('checkbox1', true);
+        expect(props.onChange).toHaveBeenCalledWith(undefined, true);
+    });
+
+    it('should change from false to true', () => {
+        props.initialValue = false;
+        const checkboxCmp = buildComp(props);
+        const innerCmp = checkboxCmp.dive().dive();
+        innerCmp.simulate('change', null, true);
+        expect(props.onChange).toHaveBeenCalledWith(false, true);
     });
 
     it('should be readonly', () => {
