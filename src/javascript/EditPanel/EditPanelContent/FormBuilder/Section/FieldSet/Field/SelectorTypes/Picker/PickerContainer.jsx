@@ -8,7 +8,7 @@ import {ReferenceCard} from '~/DesignSystem/ReferenceCard';
 import {extractConfigs} from './Picker.utils';
 import {PickerDialog} from './PickerDialog';
 
-const PickerCmp = ({field, value, id, editorContext, setActionContext}) => {
+const PickerCmp = ({field, value, id, editorContext, setActionContext, onChange}) => {
     const {t} = useTranslation();
     const {pickerConfig, nodeTreeConfigs} = extractConfigs(field, editorContext, t);
     const [isDialogOpen, setDialogOpen] = useState(false);
@@ -26,6 +26,20 @@ const PickerCmp = ({field, value, id, editorContext, setActionContext}) => {
         return <ProgressOverlay/>;
     }
 
+    const pickerOnChange = newData => {
+        const buildOnChangeData = data => {
+            if (data) {
+                return {
+                    path: data.path,
+                    uuid: data.id ? data.id : data.uuid,
+                    name: data.name
+                };
+            }
+        };
+
+        onChange(buildOnChangeData(fieldData), buildOnChangeData(newData));
+    };
+
     if (!field.multiple) {
         setActionContext(prevActionContext => ({
             open: setDialogOpen,
@@ -33,7 +47,8 @@ const PickerCmp = ({field, value, id, editorContext, setActionContext}) => {
             fieldData,
             editorContext,
             contextHasChange:
-                (prevActionContext.fieldData && prevActionContext.fieldData.path) !== (fieldData && fieldData.path)
+                (prevActionContext.fieldData && prevActionContext.fieldData.path) !== (fieldData && fieldData.path),
+            onChange: pickerOnChange
         }));
     }
 
@@ -57,6 +72,7 @@ const PickerCmp = ({field, value, id, editorContext, setActionContext}) => {
                                );
                                setDialogOpen(false);
                                setFieldTouched(field.name, field.multiple ? [true] : true);
+                               pickerOnChange(data);
                            };
 
                            return (
@@ -86,7 +102,8 @@ PickerCmp.propTypes = {
     value: PropTypes.string,
     field: FieldPropTypes.isRequired,
     id: PropTypes.string.isRequired,
-    setActionContext: PropTypes.func.isRequired
+    setActionContext: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired
 };
 
 export const Picker = connect(PickerCmp);

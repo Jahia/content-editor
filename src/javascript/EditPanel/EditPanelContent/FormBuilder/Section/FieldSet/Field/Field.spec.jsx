@@ -39,7 +39,7 @@ describe('Field component', () => {
             labelHtmlFor: 'yoloHtmlFor',
             selectorType: {
                 cmp: () => <div>test</div>,
-                key: 'test'
+                key: 'DatePicker'
             },
             formik: {
                 error: {},
