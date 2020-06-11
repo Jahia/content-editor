@@ -4,7 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 
-const MultipleSelect = ({field, id, setActionContext}) => {
+const MultipleSelect = ({field, id, setActionContext, onChange}) => {
     return (
         <FastField
             name={field.name}
@@ -34,7 +34,21 @@ const MultipleSelect = ({field, id, setActionContext}) => {
                         onChange={selection => {
                             const newSelection = selection && selection.map(data => data.value);
                             setFieldValue(field.name, newSelection, true);
-                            setFieldTouched(field.name, field.multiple ? [true] : true);
+                            setFieldTouched(field.name, [true]);
+
+                            // Process onChange
+                            let previousValue = [];
+                            let currentValue = [];
+                            field.valueConstraints.forEach(item => {
+                                if (value && value.includes(item.value.string)) {
+                                    previousValue.push(item);
+                                }
+
+                                if (newSelection && newSelection.includes(item.value.string)) {
+                                    currentValue.push(item);
+                                }
+                            });
+                            onChange(previousValue, currentValue);
                         }}
                     />
                 );
@@ -46,7 +60,8 @@ const MultipleSelect = ({field, id, setActionContext}) => {
 MultipleSelect.propTypes = {
     id: PropTypes.string.isRequired,
     field: FieldPropTypes.isRequired,
-    setActionContext: PropTypes.func.isRequired
+    setActionContext: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired
 };
 
 export default MultipleSelect;
