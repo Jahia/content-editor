@@ -34,7 +34,8 @@ describe('Tag component', () => {
                 },
                 jcrDefinition: {},
                 targets: []
-            }
+            },
+            onChange: jest.fn()
         };
     });
 
