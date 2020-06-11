@@ -26,7 +26,7 @@ const MultipleSelect = ({field, id, setActionContext, onChange}) => {
                             previousValue.push(item);
                         }
 
-                        if (newValues && newValues.includes(item.value.string)) {
+                        if (newValues?.includes(item.value.string)) {
                             currentValue.push(item);
                         }
                     });
