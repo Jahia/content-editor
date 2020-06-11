@@ -9,7 +9,7 @@ import {useApolloClient} from '@apollo/react-hooks';
 import {getSuggestionsTagsQuery} from './Tag.gql-queries';
 import {useContentEditorContext} from '~/ContentEditor.context';
 
-const Tag = ({field, id}) => {
+const Tag = ({field, id, onChange}) => {
     const {t} = useTranslation();
 
     const client = useApolloClient();
@@ -49,12 +49,14 @@ const Tag = ({field, id}) => {
             name={field.name}
             render={({field: formikField, form: {setFieldValue, setFieldTouched}}) => {
                 const options = field.data && field.data.values && adaptOptions(field.data.values);
-                const setValue = selection => {
+                const handleOnChange = selection => {
                     const newSelection = selection && selection.map(data => data.value);
                     const adaptedSelection = adaptSelection(newSelection, separator);
 
                     setFieldValue(field.name, adaptedSelection, true);
                     setFieldTouched(field.name, field.multiple ? [true] : true);
+
+                    onChange(formikField.value, adaptedSelection);
                 };
 
                 return (
@@ -72,7 +74,7 @@ const Tag = ({field, id}) => {
                         onBlur={() => {
                             /* Do Nothing on blur BACKLOG-10095 */
                         }}
-                        onChange={setValue}
+                        onChange={handleOnChange}
                     />
                 );
             }}
@@ -82,7 +84,8 @@ const Tag = ({field, id}) => {
 
 Tag.propTypes = {
     id: PropTypes.string.isRequired,
-    field: FieldPropTypes.isRequired
+    field: FieldPropTypes.isRequired,
+    onChange: PropTypes.func.isRequired
 };
 
 export default Tag;
