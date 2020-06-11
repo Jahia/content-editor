@@ -24,6 +24,9 @@ export const selectAllAction = {
             possibleValues,
             true
         );
-        context.formik.setFieldTouched(context.field.name, context.field.multiple ? [true] : true);
+        context.formik.setFieldTouched(context.field.name, [true]);
+        if (context.onChange) {
+            context.onChange(possibleValues);
+        }
     }
 };

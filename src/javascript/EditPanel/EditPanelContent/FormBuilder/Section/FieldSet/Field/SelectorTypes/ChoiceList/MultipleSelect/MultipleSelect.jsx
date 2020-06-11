@@ -18,11 +18,27 @@ const MultipleSelect = ({field, id, setActionContext, onChange}) => {
                     value: constraint.value.string
                 }));
 
+                const multipleSelectOnChange = newValues => {
+                    let previousValue = [];
+                    let currentValue = [];
+                    field.valueConstraints.forEach(item => {
+                        if (value && value.includes(item.value.string)) {
+                            previousValue.push(item);
+                        }
+
+                        if (newValues && newValues.includes(item.value.string)) {
+                            currentValue.push(item);
+                        }
+                    });
+                    onChange(previousValue, currentValue);
+                };
+
                 setActionContext(prevActionContext => ({
                     initialized: true,
                     contextHasChange: !prevActionContext.initialized ||
                         // As action system make deep copy of formik each time value change we must update the context !
-                        prevActionContext.formik.values[field.name] !== value
+                        prevActionContext.formik.values[field.name] !== value,
+                    onChange: multipleSelectOnChange
                 }));
 
                 return (
@@ -35,20 +51,7 @@ const MultipleSelect = ({field, id, setActionContext, onChange}) => {
                             const newSelection = selection && selection.map(data => data.value);
                             setFieldValue(field.name, newSelection, true);
                             setFieldTouched(field.name, [true]);
-
-                            // Process onChange
-                            let previousValue = [];
-                            let currentValue = [];
-                            field.valueConstraints.forEach(item => {
-                                if (value && value.includes(item.value.string)) {
-                                    previousValue.push(item);
-                                }
-
-                                if (newSelection && newSelection.includes(item.value.string)) {
-                                    currentValue.push(item);
-                                }
-                            });
-                            onChange(previousValue, currentValue);
+                            multipleSelectOnChange(newSelection);
                         }}
                     />
                 );
