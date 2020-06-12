@@ -10,17 +10,27 @@ import ApolloCacheFlushOnGWTSave from '~/Edit/engineTabs/ApolloCacheFlushOnGWTSa
 
 export const ContentEditorContext = React.createContext({});
 
-export const useContentEditorContext = () => useContext(ContentEditorContext);
+export const useContentEditorContext = () => {
+    const context = useContext(ContentEditorContext);
+    context.sections = sections;
+    return context;
+};
 
 export const ContentEditorConfigContext = React.createContext({});
 
 export const useContentEditorConfigContext = () => useContext(ContentEditorConfigContext);
+
+let sections = [];
 
 export const withContentEditorDataContextProvider = (formQuery, formDataAdapter) => Children => {
     const ContentEditorDataContextProvider = props => {
         const {notificationContext} = props;
         const {t} = useTranslation();
         const {lang, uilang, site, uuid, contentType, mode} = useContentEditorConfigContext();
+
+        const setSections = newSections => {
+            sections = newSections;
+        };
 
         // Get Data
         const formQueryParams = {
@@ -30,8 +40,8 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
             primaryNodeType: contentType,
             writePermission: `jcr:modifyProperties_default_${lang}`
         };
-        const {loading, error, errorMessage, data: formDefinition, refetch: refetchFormData} = useFormDefinition(formQuery, formQueryParams, formDataAdapter, t);
-        const {nodeData, initialValues, details, technicalInfo, sections, title, nodeTypeName} = formDefinition || {};
+        const {loading, error, errorMessage, data: formDefinition, refetch: refetchFormData} = useFormDefinition(setSections, formQuery, formQueryParams, formDataAdapter, t);
+        const {nodeData, initialValues, details, technicalInfo, sections: formSections, title, nodeTypeName} = formDefinition || {};
         const siteInfoResult = useSiteInfo({
             siteKey: site,
             displayLanguage: lang
@@ -53,6 +63,7 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
             return <ProgressOverlay/>;
         }
 
+        sections = sections.length === 0 ? formSections : sections;
         // Build editor context
         const editorContext = {
             path: nodeData.path,
@@ -72,7 +83,8 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
             title,
             formQueryParams,
             nodeTypeName,
-            refetchFormData
+            refetchFormData,
+            setSections
         };
 
         return (

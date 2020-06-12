@@ -86,6 +86,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
              data-sel-content-editor-field-type={seleniumFieldType}
              data-sel-content-editor-field-readonly={field.readOnly}
         >
+
             <Grid
                 container
                 wrap="nowrap"

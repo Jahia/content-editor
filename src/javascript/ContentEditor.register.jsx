@@ -5,6 +5,7 @@ import {Constants} from '~/ContentEditor.constants';
 import ContentEditorApi from '~/Api/ContentEditor.api';
 import ContentEditorRedux from './ContentEditor.redux';
 import {ContentEditorHistoryContextProvider} from '~/ContentEditorHistory/ContentEditorHistory.context';
+import {removeMixinFromSection, addMixinToSection} from '~/ContentEditor.register.Utils';
 
 registry.add('app', 'content-editor-history-context', {
     targets: ['root:2.05'],
@@ -32,6 +33,20 @@ registry.add('route', 'content-editor-create-route', {
     render: ({match}) => <ContentEditorRedux uuid={match.params.parentUuid} mode={Constants.routes.baseCreateRoute} lang={match.params.lang} contentType={decodeURI(match.params.contentType)}/>
 });
 
+registry.add('selectorType.onChange', 'addMixinChoicelist', {
+    targets: ['Choicelist'],
+    onChange: (previousValue, currentValue, field, editorContext) => {
+        const property = previousValue.properties.find(entry => entry.name === 'addMixin');
+        const previousMixin = property ? property.value : null;
+        let editorSection = removeMixinFromSection(previousMixin, editorContext.sections);
+
+        const currentValuepProperty = currentValue.properties.find(entry => entry.name === 'addMixin');
+        const addedMixin = currentValuepProperty ? currentValuepProperty.value : null;
+        editorSection = addMixinToSection(addedMixin, editorSection, field);
+
+        editorContext.setSections(editorSection);
+    }
+});
 // Register GWT Hooks
 window.top.jahiaGwtHook = {
     // Hook on edit engine opening

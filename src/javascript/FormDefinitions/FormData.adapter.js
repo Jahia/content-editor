@@ -101,6 +101,12 @@ export const adaptSections = sections => {
                 }, []);
             }
 
+            section.fieldSets = section.fieldSets.map(fieldSet => {
+                return {...fieldSet, fields: fieldSet.fields.map(field => {
+                    return {nodeType: fieldSet.name, ...field};
+                })};
+            });
+
             return [...result, section];
         }, [])
         .filter(section => (section.fieldSets && section.fieldSets.length > 0));
