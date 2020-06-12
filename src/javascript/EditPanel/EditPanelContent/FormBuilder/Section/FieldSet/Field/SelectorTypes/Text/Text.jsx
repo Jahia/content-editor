@@ -8,10 +8,10 @@ export const TextCmp = ({field, value, id, editorContext, onChange}) => {
     const fieldType = field.requiredType;
     const isNumber = fieldType === 'DOUBLE' || fieldType === 'LONG' || fieldType === 'DECIMAL';
     const decimalSeparator = editorContext.uilang === 'en' ? '.' : ',';
-    const controlledValue = value === undefined ? '' : (isNumber ? value && value.replace('.', decimalSeparator) : value);
+    const controlledValue = value === undefined ? '' : (isNumber ? value?.replace('.', decimalSeparator) : value);
     return (
         <FastField render={({form: {handleChange, setFieldTouched}}) => {
-            const onFieldChangeChange = evt => {
+            const onFieldChange = evt => {
                 handleChange(evt);
                 setFieldTouched(field.name, field.multiple ? [true] : true);
                 onChange(controlledValue, evt?.target.value);
@@ -31,7 +31,7 @@ export const TextCmp = ({field, value, id, editorContext, onChange}) => {
                     type={isNumber ? 'number' : 'text'}
                     decimalScale={fieldType === 'LONG' ? 0 : undefined}
                     decimalSeparator={decimalSeparator}
-                    onChange={onFieldChangeChange}
+                    onChange={onFieldChange}
                 />
             );
         }}
