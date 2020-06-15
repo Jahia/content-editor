@@ -5,9 +5,11 @@ import TextArea from './index';
 
 describe('TextArea component', () => {
     let props;
-
+    let onChange;
     beforeEach(() => {
+        onChange = jest.fn();
         props = {
+            onChange,
             id: 'textArea1',
             field: {
                 name: 'myOption',
@@ -45,6 +47,16 @@ describe('TextArea component', () => {
 
         expect(handleChange.mock.calls.length).toBe(1);
         expect(handleFieldTouched).toHaveBeenCalledWith('myOption', true);
+    });
+
+    it('should call onChange on change', () => {
+        const RenderProps = shallow(<TextArea {...props}/>).props().render;
+        const cmp = shallow(<RenderProps field={{value: 'Yolooo', onChange: handleChange}} form={{setFieldTouched: handleFieldTouched}}/>);
+
+        cmp.find('WithStyles(TextAreaCmp)').simulate('change', 'text');
+
+        expect(onChange.mock.calls.length).toBe(1);
+        expect(onChange).toHaveBeenCalledWith('Yolooo', undefined);
     });
 
     it('should field not be readOnly', () => {

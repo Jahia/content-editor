@@ -1,75 +1,176 @@
 import {adaptToCategoryTree} from './category.adapter';
 
 describe('category adapter', () => {
+    let nodes;
+    beforeEach(() => {
+        nodes = [
+            {uuid: 'A', label: 'aa', parent: {uuid: 'category'}},
+            {uuid: 'B', label: 'bb', parent: {uuid: 'A'}},
+            {uuid: 'orphan', label: 'orphan', parent: {uuid: 'Unkown'}},
+            {uuid: 'C', label: 'cc', parent: {uuid: 'B'}},
+            {uuid: 'D', label: 'dd', parent: {uuid: 'C'}},
+            {uuid: 'E', label: 'ee', parent: {uuid: 'C'}},
+            {uuid: 'C2', label: 'cc1', parent: {uuid: 'B'}},
+            {uuid: 'leaf', label: 'leaf', parent: {uuid: 'category'}}
+        ];
+    });
+
     it('should return empty array when there is no nodes', () => {
         expect(adaptToCategoryTree({nodes: [], parent: {uuid: 'category'}})).toEqual([]);
     });
 
     it('should build a tree', () => {
         const parent = {uuid: 'category'};
-        const nodes = [
-            {uuid: 'A', parent: {uuid: 'category'}},
-            {uuid: 'B', parent: {uuid: 'A'}},
-            {uuid: 'orphan', parent: {uuid: 'Unkown'}},
-            {uuid: 'C', parent: {uuid: 'B'}},
-            {uuid: 'D', parent: {uuid: 'C'}},
-            {uuid: 'E', parent: {uuid: 'C'}},
-            {uuid: 'C2', parent: {uuid: 'B'}},
-            {uuid: 'leaf', parent: {uuid: 'category'}}
-        ];
+        const tree = adaptToCategoryTree({nodes, parent});
 
-        expect(adaptToCategoryTree({nodes, parent})).toEqual([
+        expect(tree).toEqual([
             {
-                value: 'A',
-                label: undefined,
+                uuid: 'A',
+                label: 'aa',
+                parent: {
+                    uuid: 'category'
+                },
+                expanded: false,
                 children: [
                     {
-                        value: 'B',
-                        label: undefined,
+                        uuid: 'B',
+                        label: 'bb',
+                        parent: {
+                            uuid: 'A'
+                        },
+                        expanded: false,
                         children: [
                             {
-                                value: 'C',
-                                label: undefined,
+                                uuid: 'C',
+                                label: 'cc',
+                                parent: {
+                                    uuid: 'B'
+                                },
+                                expanded: false,
                                 children: [
-                                    {value: 'D', label: undefined, children: []},
-                                    {value: 'E', label: undefined, children: []}
+                                    {
+                                        uuid: 'D',
+                                        label: 'dd',
+                                        parent: {
+                                            uuid: 'C'
+                                        },
+                                        expanded: false,
+                                        children: []
+                                    },
+                                    {
+                                        uuid: 'E',
+                                        label: 'ee',
+                                        parent: {
+                                            uuid: 'C'
+                                        },
+                                        expanded: false,
+                                        children: []
+                                    }
                                 ]
                             },
-                            {value: 'C2', label: undefined, children: []}
+                            {
+                                uuid: 'C2',
+                                label: 'cc1',
+                                parent: {
+                                    uuid: 'B'
+                                },
+                                expanded: false,
+                                children: []
+                            }
                         ]
                     }
                 ]
             },
-            {value: 'leaf', label: undefined, children: []}
-        ]);
-    });
-
-    it('should build a tree with a label', () => {
-        const parent = {uuid: 'category'};
-        const nodes = [
-            {uuid: 'A', displayName: 'hello', parent: {uuid: 'category'}},
-            {uuid: 'B', displayName: 'world', parent: {uuid: 'A'}}
-        ];
-
-        expect(adaptToCategoryTree({nodes, parent})).toEqual([
-            {value: 'A', label: 'hello', children: [{value: 'B', label: 'world', children: []}]}
+            {
+                uuid: 'leaf',
+                label: 'leaf',
+                parent: {
+                    uuid: 'category'
+                },
+                expanded: false,
+                children: []
+            }
         ]);
     });
 
     it('should set value checked when uuid correspond to the selectedValues', () => {
         const parent = {uuid: 'category'};
-        const nodes = [
-            {uuid: 'A', displayName: 'hello', parent: {uuid: 'category'}},
-            {uuid: 'B', displayName: 'world', parent: {uuid: 'A'}},
-            {uuid: 'C', displayName: 'C', parent: {uuid: 'category'}},
-            {uuid: 'D', displayName: 'D', parent: {uuid: 'category'}}
-        ];
         const selectedValues = ['B', 'C'];
 
         expect(adaptToCategoryTree({nodes, parent, selectedValues})).toEqual([
-            {value: 'A', label: 'hello', checked: false, children: [{value: 'B', label: 'world', checked: true, children: []}]},
-            {value: 'C', label: 'C', checked: true, children: []},
-            {value: 'D', label: 'D', checked: false, children: []}
+            {
+                uuid: 'A',
+                label: 'aa',
+                checked: false,
+                parent: {
+                    uuid: 'category'
+                },
+                expanded: true,
+                children: [
+                    {
+                        uuid: 'B',
+                        label: 'bb',
+                        checked: true,
+                        parent: {
+                            uuid: 'A'
+                        },
+                        expanded: true,
+                        children: [
+                            {
+                                uuid: 'C',
+                                label: 'cc',
+                                checked: true,
+                                parent: {
+                                    uuid: 'B'
+                                },
+                                expanded: false,
+                                children: [
+                                    {
+                                        uuid: 'D',
+                                        label: 'dd',
+                                        checked: false,
+                                        parent: {
+                                            uuid: 'C'
+                                        },
+                                        expanded: false,
+                                        children: []
+                                    },
+                                    {
+                                        uuid: 'E',
+                                        label: 'ee',
+                                        checked: false,
+                                        parent: {
+                                            uuid: 'C'
+                                        },
+                                        expanded: false,
+                                        children: []
+                                    }
+                                ]
+                            },
+                            {
+                                uuid: 'C2',
+                                label: 'cc1',
+                                checked: false,
+                                parent: {
+                                    uuid: 'B'
+                                },
+                                expanded: false,
+                                children: []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                uuid: 'leaf',
+                label: 'leaf',
+                checked: false,
+                parent: {
+                    uuid: 'category'
+                },
+                expanded: false,
+                children: []
+            }
         ]);
     });
 });

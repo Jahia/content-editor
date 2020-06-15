@@ -4,14 +4,15 @@ import {FastField} from 'formik';
 import {TextArea} from '~/DesignSystem/TextArea';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 
-export const TextAreaField = ({id, field}) => {
+export const TextAreaField = ({id, field, onChange}) => {
     return (
         <FastField
             name={id}
-            render={({field: {name, value, onChange}, form: {setFieldTouched}}) => {
+            render={({field: {name, value, onChange: onFormikChange}, form: {setFieldTouched}}) => {
                 const handleChange = evt => {
-                    onChange(evt);
+                    onFormikChange(evt);
                     setFieldTouched(field.name, field.multiple ? [true] : true);
+                    onChange(value, evt?.target?.value);
                 };
 
                 return (
@@ -30,5 +31,6 @@ export const TextAreaField = ({id, field}) => {
 
 TextAreaField.propTypes = {
     id: PropTypes.string.isRequired,
-    field: FieldPropTypes.isRequired
+    field: FieldPropTypes.isRequired,
+    onChange: PropTypes.func.isRequired
 };
