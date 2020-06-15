@@ -19,9 +19,11 @@ jest.mock('@apollo/react-hooks', () => {
 
 describe('Category component', () => {
     let props;
+    const onChange = jest.fn();
 
     beforeEach(() => {
         props = {
+            onChange,
             id: 'Category',
             field: {
                 displayName: 'Categories',
@@ -39,7 +41,26 @@ describe('Category component', () => {
             jcr: {
                 result: {
                     descendants: {
-                        nodes: []
+                        nodes: [
+                            {
+                                uuid: 'A',
+                                parent: {
+                                    uuid: 'root'
+                                }
+                            },
+                            {
+                                uuid: 'BG',
+                                parent: {
+                                    uuid: 'root'
+                                }
+                            },
+                            {
+                                uuid: 'Gauche',
+                                parent: {
+                                    uuid: 'root'
+                                }
+                            }
+                        ]
                     }
                 }
             }
@@ -51,8 +72,8 @@ describe('Category component', () => {
 
     const buildComp = props => {
         const mainComponent = shallowWithTheme(<Category {...props}/>, {}, dsGenericTheme);
-        const RenderProps = mainComponent.props().component;
-        return shallowWithTheme(<RenderProps {...mainComponent.props()} form={{setFieldTouched, setFieldValue}}/>, {}, dsGenericTheme);
+        const RenderProps = mainComponent.props().render;
+        return shallowWithTheme(<RenderProps form={{setFieldTouched, setFieldValue, values: {}}}/>, {}, dsGenericTheme);
     };
 
     it('should bind the id properly', () => {
@@ -70,5 +91,24 @@ describe('Category component', () => {
         const cmp = buildComp(props);
         cmp.simulate('change', null, [{value: 'A'}, {value: 'Gauche'}]);
         expect(setFieldValue).toHaveBeenCalledWith(props.id, ['A', 'Gauche']);
+    });
+
+    it('should onChange called when modify an element', () => {
+        const cmp = buildComp(props);
+        cmp.simulate('change', null, [{value: 'A'}, {value: 'Gauche'}]);
+        expect(onChange).toHaveBeenCalledWith([], [
+            {
+                uuid: 'A',
+                parent: {
+                    uuid: 'root'
+                }
+            },
+            {
+                uuid: 'Gauche',
+                parent: {
+                    uuid: 'root'
+                }
+            }
+        ]);
     });
 });

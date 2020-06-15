@@ -6,11 +6,13 @@ export const GetCategories = gql`
         jcr {
             result: nodeByPath(path: $path) {
                 ...NodeCacheRequiredFields
-                displayName(language: $language)
+                value: uuid
+                label: displayName(language: $language)
                 descendants(typesFilter: {types: ["jnt:category"]}) {
                     nodes {
                       ...NodeCacheRequiredFields
-                      displayName(language: $language)
+                      value: uuid
+                      label: displayName(language: $language)
                       parent {
                         uuid
                       }
