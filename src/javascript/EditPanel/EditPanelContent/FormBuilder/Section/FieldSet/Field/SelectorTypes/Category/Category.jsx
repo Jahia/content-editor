@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
-import {FastField} from 'formik';
 import {DropdownTreeSelect} from '~/DesignSystem/DropdownTreeSelect';
 import {useQuery} from '@apollo/react-hooks';
 import {GetCategories} from './category.gql-queries';
@@ -9,7 +8,7 @@ import {ProgressOverlay} from '@jahia/react-material';
 import {useTranslation} from 'react-i18next';
 import {adaptToCategoryTree} from './category.adapter';
 
-const Category = ({field, value, id, editorContext, onChange}) => {
+const Category = ({field, value, id, editorContext, onChange, onInit}) => {
     const {t} = useTranslation();
     const {data, error, loading} = useQuery(GetCategories, {
         variables: {
@@ -38,31 +37,30 @@ const Category = ({field, value, id, editorContext, onChange}) => {
         locale: editorContext.lang
     });
 
-    return (
-        <FastField data={data}
-                   render={({form: {setFieldValue, setFieldTouched, values}}) => {
-                       const handleChange = (_, selectedValues) => {
-                           const newValues = selectedValues.map(v => v.value);
-                           const oldValues = values[id];
-                           const getCategory = (uuid, nodes) => nodes.find(category => category.uuid === uuid);
-                           onChange(oldValues ? oldValues.map(uuid => getCategory(uuid, nodes)) : [], newValues.map(uuid => getCategory(uuid, nodes)));
-                           setFieldValue(id, newValues);
-                           setFieldTouched(id, newValues);
-                       };
+    const _getCategory = (uuid, nodes) => nodes.find(category => category.uuid === uuid);
 
-                       return (
-                           <DropdownTreeSelect
-                               clearSearchOnChange
-                               keepTreeOnSearch
-                               id={id}
-                               noMatchesLabel={t('content-editor:label.contentEditor.edit.fields.category.noMatches')}
-                               aria-labelledby={`${field.name}-label`}
-                               data={tree}
-                               readOnly={field.readOnly}
-                               onChange={handleChange}
-                           />
-                       );
-                   }}/>
+    const generateValuesFromUuid = categories => {
+        return categories ? categories.map(uuid => _getCategory(uuid, nodes)) : undefined;
+    };
+
+    const handleChange = (_, selectedValues) => {
+        const newValues = selectedValues.map(v => v.value);
+        onChange(newValues, generateValuesFromUuid, generateValuesFromUuid);
+    };
+
+    onInit(generateValuesFromUuid(value));
+
+    return (
+        <DropdownTreeSelect
+            clearSearchOnChange
+            keepTreeOnSearch
+            id={id}
+            noMatchesLabel={t('content-editor:label.contentEditor.edit.fields.category.noMatches')}
+            aria-labelledby={`${field.name}-label`}
+            data={tree}
+            readOnly={field.readOnly}
+            onChange={handleChange}
+        />
     );
 };
 
@@ -73,7 +71,8 @@ Category.propTypes = {
     editorContext: PropTypes.shape({
         lang: PropTypes.string.isRequired
     }).isRequired,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    onInit: PropTypes.func.isRequired
 };
 
 export default Category;
