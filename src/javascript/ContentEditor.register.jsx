@@ -5,7 +5,6 @@ import {Constants} from '~/ContentEditor.constants';
 import ContentEditorApi from '~/Api/ContentEditor.api';
 import ContentEditorRedux from './ContentEditor.redux';
 import {ContentEditorHistoryContextProvider} from '~/ContentEditorHistory/ContentEditorHistory.context';
-import {removeMixinFromSection, addMixinToSection} from '~/ContentEditor.register.Utils';
 
 registry.add('app', 'content-editor-history-context', {
     targets: ['root:2.05'],
@@ -35,14 +34,19 @@ registry.add('route', 'content-editor-create-route', {
 
 registry.add('selectorType.onChange', 'addMixinChoicelist', {
     targets: ['Choicelist'],
-    onChange: (previousValue, currentValue, field, editorContext) => {
+    onChange: (previousValue, currentValue, field, editorContext, selectorType, helper) => {
         const property = previousValue.properties.find(entry => entry.name === 'addMixin');
         const previousMixin = property ? property.value : null;
-        let editorSection = removeMixinFromSection(previousMixin, editorContext.sections);
+        let editorSection = editorContext.sections;
+        if (previousMixin) {
+            editorSection = helper.moveMixinToInitialSection(previousMixin, editorContext.sections);
+        }
 
-        const currentValuepProperty = currentValue.properties.find(entry => entry.name === 'addMixin');
-        const addedMixin = currentValuepProperty ? currentValuepProperty.value : null;
-        editorSection = addMixinToSection(addedMixin, editorSection, field);
+        const currentValueProperty = currentValue.properties.find(entry => entry.name === 'addMixin');
+        const addedMixin = currentValueProperty ? currentValueProperty.value : null;
+        if (addedMixin) {
+            editorSection = helper.moveMixinToTargetSection(addedMixin, field.nodeType, editorSection, field);
+        }
 
         editorContext.setSections(editorSection);
     }

@@ -13,6 +13,7 @@ import {showChipField} from '~/EditPanel/WorkInProgress/WorkInProgress.utils';
 import {Constants} from '~/ContentEditor.constants';
 import {buildFlatFieldObject} from './field.utils';
 import {registry} from '@jahia/ui-extender';
+import contentEditorHelper from '~/ContentEditor.helper';
 
 let styles = theme => {
     const common = {
@@ -74,7 +75,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
         if (registeredOnChanges && registeredOnChanges.length > 0) {
             registeredOnChanges.forEach(registeredOnChange => {
                 if (registeredOnChange.onChange) {
-                    registeredOnChange.onChange(previousValue, currentValue, field, inputContext.editorContext, selectorType);
+                    registeredOnChange.onChange(previousValue, currentValue, field, inputContext.editorContext, selectorType, contentEditorHelper);
                 }
             });
         }

@@ -1,6 +1,6 @@
-import {addMixinToSection, removeMixinFromSection} from './ContentEditor.register.Utils';
+import contentEditorHelper from './ContentEditor.helper';
 
-describe('ContentEditor.register.Utils', () => {
+describe('ContentEditor.helper', () => {
     let context;
     let field;
     beforeEach(() => {
@@ -4719,14 +4719,12 @@ describe('ContentEditor.register.Utils', () => {
                                                         value: '/dxmdev/css/blank.gif',
                                                         __typename: 'EditorFormProperty'
                                                     }
-                                                ],
-                                                __typename: 'EditorFormFieldValueConstraint'
+                                                ]
                                             },
                                             {
                                                 value: {
                                                     type: 'String',
-                                                    string: 'UG',
-                                                    __typename: 'EditorFormFieldValue'
+                                                    string: 'UG'
                                                 },
                                                 displayValue: 'Uganda',
                                                 properties: [
@@ -4735,8 +4733,7 @@ describe('ContentEditor.register.Utils', () => {
                                                         value: '/dxmdev/css/images/flags/shadow/flag_uganda.png',
                                                         __typename: 'EditorFormProperty'
                                                     }
-                                                ],
-                                                __typename: 'EditorFormFieldValueConstraint'
+                                                ]
                                             },
                                             {
                                                 value: {
@@ -5096,7 +5093,7 @@ describe('ContentEditor.register.Utils', () => {
     });
 
     it('should add mixin to the right section', () => {
-        const sections = addMixinToSection('jmix:internalLink', context.sections, field);
+        const sections = contentEditorHelper.moveMixinToTargetSection('jmix:internalLink', field.nodeType, context.sections, field);
         let updatedFieldset = sections
             .find(({name}) => name === 'content')
             .fieldSets
@@ -5111,8 +5108,8 @@ describe('ContentEditor.register.Utils', () => {
     });
 
     it('should remove mixin to the section and put it to the initial one', () => {
-        let sections = addMixinToSection('jmix:internalLink', context.sections, field);
-        sections = removeMixinFromSection('jmix:internalLink', sections);
+        let sections = contentEditorHelper.moveMixinToTargetSection('jmix:internalLink', field.nodeType, context.sections, field);
+        sections = contentEditorHelper.moveMixinToInitialSection('jmix:internalLink', sections);
 
         let initialFieldset = sections
             .find(({name}) => name === 'content')
