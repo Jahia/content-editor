@@ -7,9 +7,11 @@ import {TextCmp} from './Text';
 describe('Text component', () => {
     let props;
     let mainComponent;
-
+    let onChange;
     beforeEach(() => {
+        onChange = jest.fn();
         props = {
+            onChange,
             id: 'toto[1]',
             editorContext: {
                 uilang: 'en'
@@ -66,6 +68,16 @@ describe('Text component', () => {
 
         expect(handleChange.mock.calls.length).toBe(1);
         expect(handleFieldTouched).toHaveBeenCalledWith('toto', true);
+    });
+
+    it('should call onChange on change', () => {
+        props.value = 'toto';
+        const wrapper = buildComp(props);
+
+        wrapper.find('Input').simulate('change');
+
+        expect(onChange.mock.calls.length).toBe(1);
+        expect(onChange).toHaveBeenCalledWith('toto', undefined);
     });
 
     it('should be readOnly when formDefinition say so', () => {
