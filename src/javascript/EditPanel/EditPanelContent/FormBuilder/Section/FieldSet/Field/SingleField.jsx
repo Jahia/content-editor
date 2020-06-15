@@ -27,7 +27,11 @@ export const SingleFieldCmp = ({inputContext, field, onChange, formik}) => {
 
                        const singleFieldOnInit = data => {
                            if (!isInit) {
-                               onChange(undefined, data);
+                               // Be careful with 'false' and '0' and '' that are considered as value
+                               if (data !== null && data !== undefined) {
+                                   onChange(undefined, data);
+                               }
+
                                setInit(true);
                            }
                        };
