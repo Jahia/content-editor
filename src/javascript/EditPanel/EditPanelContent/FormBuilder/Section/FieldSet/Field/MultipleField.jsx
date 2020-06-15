@@ -1,11 +1,11 @@
 import {Button, IconButton} from '@jahia/design-system-kit';
 import {withStyles} from '@material-ui/core';
 import {Close} from '@material-ui/icons';
-import React from 'react';
+import React, {useState} from 'react';
 import * as PropTypes from 'prop-types';
 import {compose} from '~/utils';
 import {useTranslation} from 'react-i18next';
-import {connect, FieldArray} from 'formik';
+import {connect, FastField, FieldArray} from 'formik';
 import {FieldPropTypes} from '~/FormDefinitions';
 
 const styles = theme => {
@@ -24,52 +24,148 @@ const styles = theme => {
 
 export const MultipleFieldCmp = ({classes, inputContext, field, onChange, formik: {values}}) => {
     const {t} = useTranslation();
+    const [isInit, setInit] = useState(false);
+    const [data, setData] = useState(values[field.name] ? new Array(values[field.name].length) : []);
+
+    const _mapDataForOnChange = dataToMap => {
+        return dataToMap.filter(item => item.data !== undefined).map(item => item.data);
+    };
+
+    const _replaceData = (index, dataToReplace) => {
+        data[index] = {
+            data: dataToReplace
+        };
+        setData(data);
+    };
+
+    const _addData = dataToAdd => {
+        data.push({
+            data: dataToAdd
+        });
+        setData(data);
+    };
+
+    const _removeData = index => {
+        data.splice(index, 1);
+        setData(data);
+    };
+
+    const multipleFieldOnInit = (initData, index) => {
+        if (!isInit) {
+            if (data[index] === undefined) {
+                _replaceData(index, initData);
+                if (!data.includes(undefined)) {
+                    setInit(true);
+                    onChange(undefined, _mapDataForOnChange(data));
+                }
+            }
+        }
+    };
+
+    const multipleFieldOnChange = (index, name, newData, transformOnChangeNewValue, transformOnChangePreviousValue, transformBeforeSave, setFieldValue, setFieldTouched) => {
+        // Save value to formik
+        const valueToSave = transformBeforeSave ? transformBeforeSave(newData) : newData;
+        setFieldValue(name, valueToSave, true);
+        setFieldTouched(field.name, [true]);
+
+        // Handle onChange
+        const previousValue = data.slice();
+        _replaceData(index, transformOnChangeNewValue ? transformOnChangeNewValue(newData) : newData);
+        onChange(_mapDataForOnChange(previousValue), _mapDataForOnChange(data));
+    };
+
+    const onFieldRemove = (index, arrayHelpers) => {
+        // Remove from formik
+        arrayHelpers.remove(index);
+
+        // Handle onChange
+        const previousValue = data.slice();
+        _removeData(index);
+        if (previousValue[index].data !== undefined) {
+            onChange(_mapDataForOnChange(previousValue), data.length ? _mapDataForOnChange(data) : undefined);
+        }
+    };
+
+    const onFieldAdd = arrayHelpers => {
+        // Add in formik
+        const valueToAdd = field.requiredType === 'BOOLEAN' ? false : undefined;
+        arrayHelpers.push(valueToAdd);
+
+        // Handle onChange
+        const previousValue = data.slice();
+        _addData(valueToAdd);
+        if (valueToAdd !== undefined) {
+            onChange(_mapDataForOnChange(previousValue), _mapDataForOnChange(data));
+        }
+    };
+
     return (
         <FieldArray
             name={field.name}
-            render={arrayHelpers => (
-                <>
-                    {values[field.name] && values[field.name].length > 0 && (
-                        values[field.name].map((value, index) => {
-                            const FieldComponent = inputContext.fieldComponent;
-                            const name = `${field.name}[${index}]`;
+            render={arrayHelpers => {
+                return (
+                    <>
+                        {values[field.name] && values[field.name].length > 0 && (
+                            values[field.name].map((value, index) => {
+                                const FieldComponent = inputContext.fieldComponent;
+                                const name = `${field.name}[${index}]`;
 
-                            return (
-                                <div key={name}
-                                     className={classes.fieldComponentContainer}
-                                     data-sel-content-editor-multiple-generic-field={name}
-                                     data-sel-content-editor-field-readonly={field.readOnly}
-                                >
+                                return (
+                                    <div key={name}
+                                         className={classes.fieldComponentContainer}
+                                         data-sel-content-editor-multiple-generic-field={name}
+                                         data-sel-content-editor-field-readonly={field.readOnly}
+                                    >
+                                        <FastField shouldUpdate={() => true}
+                                                   render={({form: {setFieldValue, setFieldTouched}}) => {
+                                                       return (
+                                                           <FieldComponent field={field}
+                                                                           value={value}
+                                                                           id={name}
+                                                                           editorContext={inputContext.editorContext}
+                                                                           setActionContext={inputContext.setActionContext}
+                                                                           onChange={(newData, transformOnChangeNewValue, transformOnChangePreviousValue, transformBeforeSave) => {
+                                                                               multipleFieldOnChange(
+                                                                                   index,
+                                                                                   name,
+                                                                                   newData,
+                                                                                   transformOnChangeNewValue,
+                                                                                   transformOnChangePreviousValue,
+                                                                                   transformBeforeSave,
+                                                                                   setFieldValue,
+                                                                                   setFieldTouched);
+                                                                           }}
+                                                                           onInit={initData => {
+                                                                               multipleFieldOnInit(initData, index);
+                                                                           }}
+                                                           />
+                                                       );
+                                                   }}
+                                        />
 
-                                    <FieldComponent field={field}
-                                                    value={value}
-                                                    id={name}
-                                                    editorContext={inputContext.editorContext}
-                                                    setActionContext={inputContext.setActionContext}
-                                                    onChange={onChange}
-                                    />
-                                    {!field.readOnly &&
-                                    <IconButton variant="ghost"
-                                                data-sel-action={`removeField_${index}`}
-                                                aria-label={t('content-editor:label.contentEditor.edit.fields.actions.clear')}
-                                                icon={<Close/>}
-                                                onClick={() => arrayHelpers.remove(index)}
-                                    />}
-                                </div>
-                            );
-                        })
-                    )}
+                                        {!field.readOnly &&
+                                        <IconButton variant="ghost"
+                                                    data-sel-action={`removeField_${index}`}
+                                                    aria-label={t('content-editor:label.contentEditor.edit.fields.actions.clear')}
+                                                    icon={<Close/>}
+                                                    onClick={() => onFieldRemove(index, arrayHelpers)}
+                                        />}
+                                    </div>
+                                );
+                            })
+                        )}
 
-                    {!field.readOnly &&
-                    <Button className={classes.addButton}
-                            data-sel-action="addField"
-                            variant="secondary"
-                            onClick={() => arrayHelpers.push(field.requiredType === 'BOOLEAN' ? false : undefined)}
-                    >
-                        {t('content-editor:label.contentEditor.edit.fields.actions.add')}
-                    </Button>}
-                </>
-            )}
+                        {!field.readOnly &&
+                        <Button className={classes.addButton}
+                                data-sel-action="addField"
+                                variant="secondary"
+                                onClick={() => onFieldAdd(arrayHelpers)}
+                        >
+                            {t('content-editor:label.contentEditor.edit.fields.actions.add')}
+                        </Button>}
+                    </>
+                );
+            }}
         />
     );
 };

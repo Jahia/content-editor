@@ -1,19 +1,48 @@
-import React from 'react';
+import React, {useState} from 'react';
 import * as PropTypes from 'prop-types';
 import {compose} from '~/utils';
-import {connect} from 'formik';
+import {connect, FastField} from 'formik';
 import {FieldPropTypes} from '~/FormDefinitions';
 
 export const SingleFieldCmp = ({inputContext, field, onChange, formik}) => {
     const FieldComponent = inputContext.fieldComponent;
+    const [isInit, setInit] = useState(false);
 
     return (
-        <FieldComponent field={field}
-                        id={field.name}
-                        value={formik.values[field.name]}
-                        editorContext={inputContext.editorContext}
-                        setActionContext={inputContext.setActionContext}
-                        onChange={onChange}
+        <FastField shouldUpdate={() => true}
+                   render={({form: {setFieldValue, setFieldTouched}}) => {
+                       const value = formik.values[field.name];
+
+                       const singleFieldOnChange = (newData, transformOnChangeNewValue, transformOnChangePreviousValue, transformBeforeSave) => {
+                           // Save value to formik
+                           const valueToSave = transformBeforeSave ? transformBeforeSave(newData) : newData;
+                           setFieldValue(field.name, valueToSave, true);
+                           setFieldTouched(field.name, field.isMultiple ? [true] : true);
+
+                           // Handle onChange
+                           const previousValue = transformOnChangePreviousValue ? transformOnChangePreviousValue(value) : value;
+                           const newValue = transformOnChangeNewValue ? transformOnChangeNewValue(newData) : newData;
+                           onChange(previousValue, newValue);
+                       };
+
+                       const singleFieldOnInit = data => {
+                           if (!isInit) {
+                               onChange(undefined, data);
+                               setInit(true);
+                           }
+                       };
+
+                       return (
+                           <FieldComponent field={field}
+                                           id={field.name}
+                                           value={value}
+                                           editorContext={inputContext.editorContext}
+                                           setActionContext={inputContext.setActionContext}
+                                           onChange={singleFieldOnChange}
+                                           onInit={singleFieldOnInit}
+                           />
+                       );
+                   }}
         />
     );
 };
