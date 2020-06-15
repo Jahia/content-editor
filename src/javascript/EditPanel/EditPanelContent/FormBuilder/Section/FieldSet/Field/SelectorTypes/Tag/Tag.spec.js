@@ -35,24 +35,19 @@ describe('Tag component', () => {
                 jcrDefinition: {},
                 targets: []
             },
-            onChange: jest.fn()
+            onChange: jest.fn(),
+            onInit: jest.fn()
         };
     });
 
     it('should bind id correctly', () => {
-        const RenderProps = shallow(<Tag {...props}/>)
-            .props()
-            .render;
-        const cmp = shallow(<RenderProps field={{}} form={{setFieldTouched: () => {}, setFieldValue: () => {}}}/>);
+        const cmp = shallow(<Tag {...props}/>);
 
         expect(cmp.props().id).toBe(props.id);
     });
 
     it('should display each option given', () => {
-        const RenderProps = shallow(<Tag {...props}/>)
-            .props()
-            .render;
-        const cmp = shallow(<RenderProps field={{}} form={{setFieldTouched: () => {}, setFieldValue: () => {}}}/>);
+        const cmp = shallow(<Tag {...props}/>);
 
         const labels = cmp.props().options.map(o => o.label);
         const values = cmp.props().options.map(o => o.value);
@@ -62,13 +57,22 @@ describe('Tag component', () => {
         });
     });
 
-    it('should select formik value', () => {
-        const RenderProps = shallow(<Tag {...props}/>)
-            .props()
-            .render;
-        const cmp = shallow(<RenderProps field={{value: ['healthy']}} form={{setFieldTouched: () => {}, setFieldValue: () => {}}}/>);
+    it('should use initial value, and call onInit', () => {
+        props.value = ['healthy'];
+        const cmp = shallow(<Tag {...props}/>);
 
         expect(cmp.props().value).toEqual([{label: 'healthy', value: 'healthy'}]);
+        expect(props.onInit.mock.calls.length).toBe(1);
+        expect(props.onInit).toHaveBeenCalledWith(props.value);
+    });
+
+    it('should call onInit', () => {
+        const cmp = shallow(<Tag {...props}/>);
+        const selection = [{value: 'tag1', label: 'tag1'}, {value: 'tag2', label: 'tag2'}];
+        cmp.simulate('change', selection);
+
+        expect(props.onChange.mock.calls.length).toBe(1);
+        expect(props.onChange).toHaveBeenCalledWith(['tag1', 'tag2']);
     });
 
     it('should set readOnly to true when fromdefinition is readOnly', () => {
@@ -81,10 +85,7 @@ describe('Tag component', () => {
 
     const testReadOnly = function (readOnly) {
         props.field.readOnly = readOnly;
-        const RenderProps = shallow(<Tag {...props}/>)
-            .props()
-            .render;
-        const cmp = shallow(<RenderProps field={{}} form={{setFieldTouched: () => {}, setFieldValue: () => {}}}/>);
+        const cmp = shallow(<Tag {...props}/>);
 
         expect(cmp.props().readOnly).toEqual(readOnly);
     };
