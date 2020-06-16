@@ -4,7 +4,6 @@ import CKEditor from 'ckeditor4-react';
 CKEditor.displayName = 'CKEditor';
 import * as PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
-import {FastField} from 'formik';
 import {useQuery} from '@apollo/react-hooks';
 import {ProgressOverlay} from '@jahia/react-material';
 import {getCKEditorConfigurationPath} from './CKEditorConfiguration.gql-queries';
@@ -17,7 +16,7 @@ function loadOption(selectorOptions, name) {
     return selectorOptions && selectorOptions.find(option => option.name === name);
 }
 
-export const RichTextCmp = ({field, id, value, onChange}) => {
+export const RichTextCmp = ({field, id, value, onChange, onInit}) => {
     const {t} = useTranslation();
     const [picker, setPicker] = useState(false);
     useEffect(() => {
@@ -93,6 +92,8 @@ export const RichTextCmp = ({field, id, value, onChange}) => {
         fillCKEditorPicker(picker, pickerResult);
     };
 
+    onInit(value);
+
     return (
         <>
             {picker && <PickerDialog
@@ -108,37 +109,19 @@ export const RichTextCmp = ({field, id, value, onChange}) => {
                 t={t}
                 onItemSelection={handleItemSelection}
             />}
-            <FastField
-                name={field.name}
-                render={({form: {setFieldValue, setFieldTouched}}) => {
-                    const onEditorChange = currentValue => {
-                        setFieldValue(
-                            id,
-                            currentValue,
-                            true
-                        );
-                        setFieldTouched(field.name, field.multiple ? [true] : true);
-
-                        onChange(value, currentValue);
-                    };
-
-                    return (
-                        <CKEditor
-                            id={id}
-                            data={value}
-                            aria-labelledby={`${field.name}-label`}
-                            config={config}
-                            readOnly={field.readOnly}
-                            onMode={evt => {
-                                if (evt.editor.mode === 'source') {
-                                    let editable = evt.editor.editable();
-                                    editable.attachListener(editable, 'input', inputEvt => onEditorChange(inputEvt.sender.getValue()));
-                                }
-                            }}
-                            onChange={evt => onEditorChange(evt.editor.getData())}
-                        />
-                    );
+            <CKEditor
+                id={id}
+                data={value}
+                aria-labelledby={`${field.name}-label`}
+                config={config}
+                readOnly={field.readOnly}
+                onMode={evt => {
+                    if (evt.editor.mode === 'source') {
+                        let editable = evt.editor.editable();
+                        editable.attachListener(editable, 'input', inputEvt => onChange(inputEvt.sender.getValue()));
+                    }
                 }}
+                onChange={evt => onChange(evt.editor.getData())}
             />
         </>
     );
@@ -148,7 +131,8 @@ RichTextCmp.propTypes = {
     id: PropTypes.string.isRequired,
     value: PropTypes.string,
     field: FieldPropTypes.isRequired,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    onInit: PropTypes.func.isRequired
 };
 
 const RichText = RichTextCmp;

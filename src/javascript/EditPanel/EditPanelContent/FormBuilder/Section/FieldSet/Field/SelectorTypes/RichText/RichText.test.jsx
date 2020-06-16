@@ -1,8 +1,7 @@
 import React from 'react';
-import {shallowWithTheme} from '@jahia/test-framework';
+import {shallow} from '@jahia/test-framework';
 
 import {RichTextCmp} from './RichText';
-import {dsGenericTheme} from '@jahia/design-system-kit';
 
 jest.mock('@apollo/react-hooks', () => {
     let queryResultmock;
@@ -35,10 +34,7 @@ describe('RichText component', () => {
                 selectorOptions: []
             },
             onChange: jest.fn(),
-            formik: {
-                setFieldValue: () => {},
-                values: []
-            }
+            onInit: jest.fn()
         };
 
         setQueryResult({
@@ -52,44 +48,35 @@ describe('RichText component', () => {
             contextPath: ''
         };
     });
-
-    const handleChange = jest.fn();
-    const handleFieldTouched = jest.fn();
-
-    const buildComp = componentProps => {
-        const mainComponent = shallowWithTheme(<RichTextCmp {...componentProps}/>, {}, dsGenericTheme);
-        const RenderProps = mainComponent.find('FormikConnect(FastFieldInner)').props().render;
-        return shallowWithTheme(<RenderProps form={{setFieldTouched: handleFieldTouched, setFieldValue: handleChange}}/>, {}, dsGenericTheme);
-    };
-
     it('should contain one RichText component', () => {
-        const wrapper = buildComp(props);
-        expect(wrapper.find(RICH_TEXT_COMPONENT_TAG).length).toBe(1);
+        const cmp = shallow(<RichTextCmp {...props}/>);
+        expect(cmp.find(RICH_TEXT_COMPONENT_TAG).length).toBe(1);
     });
 
-    it('should obtain its initial value from value prop', () => {
+    it('should obtain its initial value from value prop, and call onInit', () => {
         props.value = 'some dummy value';
-        const wrapper = buildComp(props);
-        expect(wrapper.find(RICH_TEXT_COMPONENT_TAG)
+        const cmp = shallow(<RichTextCmp {...props}/>);
+
+        expect(cmp.find(RICH_TEXT_COMPONENT_TAG)
             .prop('data')
         ).toEqual('some dummy value');
+        expect(props.onInit.mock.calls.length).toBe(1);
+        expect(props.onInit).toHaveBeenCalledWith(props.value);
     });
 
     it('should call formik.setFieldValue on change', () => {
         const dummyEditor = {
-            getData: () => 'some dummy value'
+            editor: {
+                getData: () => 'some dummy value'
+            }
         };
 
-        const wrapper = buildComp(props);
-        wrapper.find(RICH_TEXT_COMPONENT_TAG)
-            .simulate('change', {editor: dummyEditor});
+        const cmp = shallow(<RichTextCmp {...props}/>);
+        cmp.find(RICH_TEXT_COMPONENT_TAG)
+            .simulate('change', dummyEditor);
 
-        expect(handleChange.mock.calls.length).toBe(1);
-        expect(handleChange.mock.calls).toEqual([[
-            props.id, dummyEditor.getData(), true
-        ]]);
-        expect(handleFieldTouched).toHaveBeenCalledWith('x', true);
-        expect(props.onChange).toHaveBeenCalledWith(props.value, dummyEditor.getData());
+        expect(props.onChange.mock.calls.length).toBe(1);
+        expect(props.onChange.mock.calls).toEqual([[dummyEditor.editor.getData()]]);
     });
 
     it('should be readOnly when formDefinition say so', () => {
@@ -99,16 +86,16 @@ describe('RichText component', () => {
 
     let testReadOnly = function (readOnly) {
         props.field.readOnly = readOnly;
-        const wrapper = buildComp(props);
+        const cmp = shallow(<RichTextCmp {...props}/>);
 
-        expect(wrapper.find(RICH_TEXT_COMPONENT_TAG)
+        expect(cmp.find(RICH_TEXT_COMPONENT_TAG)
             .prop('readOnly')
         ).toEqual(readOnly);
     };
 
     it('should load default configuration if selector options are not available in the definition', () => {
-        const wrapper = buildComp(props);
-        expect(wrapper.find(RICH_TEXT_COMPONENT_TAG).prop('config'))
+        const cmp = shallow(<RichTextCmp {...props}/>);
+        expect(cmp.find(RICH_TEXT_COMPONENT_TAG).prop('config'))
             .toMatchObject({
                 contentEditorFieldName: 'richID',
                 customConfig: '',
@@ -122,8 +109,8 @@ describe('RichText component', () => {
             {name: 'ckeditor.toolbar', value: 'dictionary'},
             {name: 'ckeditor.customConfig', value: '/path/to/my/custom/config.js'}
         ];
-        const wrapper = buildComp(props);
-        expect(wrapper.find(RICH_TEXT_COMPONENT_TAG).prop('config'))
+        const cmp = shallow(<RichTextCmp {...props}/>);
+        expect(cmp.find(RICH_TEXT_COMPONENT_TAG).prop('config'))
             .toMatchObject({
                 contentEditorFieldName: 'richID',
                 customConfig: '/path/to/my/custom/config.js',
