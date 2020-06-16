@@ -37,7 +37,7 @@ export const EditPanelContent = ({classes, isDirty}) => {
 
     return (
         <>
-            {(envProps.drawer || mode === 'create') ?
+            {((envProps && envProps.drawer) || mode === 'create') ?
                 (
                     <FullWidthContent
                         classes={{root: classes.fullWidthRoot}}
