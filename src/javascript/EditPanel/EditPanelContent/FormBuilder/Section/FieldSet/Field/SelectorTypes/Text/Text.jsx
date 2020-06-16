@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {Input} from '@jahia/design-system-kit';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
@@ -9,7 +9,9 @@ export const TextCmp = ({field, value, id, editorContext, onChange, onInit}) => 
     const decimalSeparator = editorContext.uilang === 'en' ? '.' : ',';
     const controlledValue = value === undefined ? '' : (isNumber ? value?.replace('.', decimalSeparator) : value);
 
-    onInit(controlledValue);
+    useEffect(() => {
+        onInit(controlledValue);
+    }, [controlledValue]);
 
     return (
         <Input

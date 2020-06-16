@@ -17,6 +17,13 @@ jest.mock('@apollo/react-hooks', () => {
     };
 });
 
+jest.mock('react', () => {
+    return {
+        ...jest.requireActual('react'),
+        useEffect: cb => cb()
+    };
+});
+
 describe('Category component', () => {
     let props;
     const onChange = jest.fn();

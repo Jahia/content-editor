@@ -1,6 +1,6 @@
 import {useTranslation} from 'react-i18next';
 import {MultipleInput} from '~/DesignSystem/MultipleInput';
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {adaptSelection} from './Tag.utils';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
@@ -41,7 +41,9 @@ const Tag = ({field, value, id, onChange, onInit}) => {
         return [];
     };
 
-    onInit(value);
+    useEffect(() => {
+        onInit(value);
+    }, [value]);
 
     return (
         <MultipleInput

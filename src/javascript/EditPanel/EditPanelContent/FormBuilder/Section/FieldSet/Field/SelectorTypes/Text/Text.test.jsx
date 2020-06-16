@@ -3,6 +3,13 @@ import {shallow} from '@jahia/test-framework';
 
 import {TextCmp} from './Text';
 
+jest.mock('react', () => {
+    return {
+        ...jest.requireActual('react'),
+        useEffect: cb => cb()
+    };
+});
+
 describe('Text component', () => {
     let props;
     beforeEach(() => {

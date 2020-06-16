@@ -3,6 +3,13 @@ import {shallow} from '@jahia/test-framework';
 
 import {DateTimePicker} from './DateTimePicker';
 
+jest.mock('react', () => {
+    return {
+        ...jest.requireActual('react'),
+        useEffect: cb => cb()
+    };
+});
+
 describe('DateTimePicker component', () => {
     let props;
     let testDateFormat = (uilang, format) => {

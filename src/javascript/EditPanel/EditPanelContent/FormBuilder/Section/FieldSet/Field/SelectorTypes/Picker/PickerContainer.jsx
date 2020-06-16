@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'formik';
 import {useTranslation} from 'react-i18next';
@@ -13,6 +13,13 @@ const PickerCmp = ({field, value, editorContext, setActionContext, onChange, onI
     const {pickerConfig, nodeTreeConfigs} = extractConfigs(field, editorContext, t);
     const [isDialogOpen, setDialogOpen] = useState(false);
     const {fieldData, error, loading} = pickerConfig.picker.pickerInput.usePickerInputData(value, editorContext);
+
+    // Init data
+    useEffect(() => {
+        if (fieldData) {
+            onInit(_buildOnChangeData(fieldData));
+        }
+    }, [fieldData]);
 
     if (error) {
         const message = t(
@@ -64,9 +71,6 @@ const PickerCmp = ({field, value, editorContext, setActionContext, onChange, onI
         setDialogOpen(false);
         onChange(data, transformOnChangeCurrentValue, transformOnChangePreviousValue, transformBeforeSave);
     };
-
-    // Init data
-    onInit(_buildOnChangeData(fieldData));
 
     return (
         <>

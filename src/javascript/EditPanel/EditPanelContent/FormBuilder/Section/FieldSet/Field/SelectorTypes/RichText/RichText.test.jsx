@@ -15,6 +15,13 @@ jest.mock('@apollo/react-hooks', () => {
     };
 });
 
+jest.mock('react', () => {
+    return {
+        ...jest.requireActual('react'),
+        useEffect: cb => cb()
+    };
+});
+
 import {setQueryResult} from '@apollo/react-hooks';
 
 const RICH_TEXT_COMPONENT_TAG = 'CKEditor';

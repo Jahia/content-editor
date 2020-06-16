@@ -16,6 +16,13 @@ jest.mock('@apollo/react-hooks', () => {
     };
 });
 
+jest.mock('react', () => {
+    return {
+        ...jest.requireActual('react'),
+        useEffect: cb => cb()
+    };
+});
+
 describe('Tag component', () => {
     let props;
 

@@ -1,10 +1,12 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {TextArea} from '~/DesignSystem/TextArea';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 
 export const TextAreaField = ({id, value, field, onChange, onInit}) => {
-    onInit(value);
+    useEffect(() => {
+        onInit(value);
+    }, [value]);
 
     return (
         <TextArea id={id}

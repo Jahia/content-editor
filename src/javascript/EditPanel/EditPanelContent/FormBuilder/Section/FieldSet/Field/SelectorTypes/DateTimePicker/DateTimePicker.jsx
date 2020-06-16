@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 
 import {DatePickerInput} from '~/DesignSystem/DatePickerInput';
@@ -21,7 +21,9 @@ export const DateTimePicker = ({id, field, value, editorContext, onChange, onIni
     displayDateFormat = isDateTime ? (displayDateFormat + ' HH:mm') : displayDateFormat;
     const displayDateMask = isDateTime ? '__/__/____ __:__' : '__/__/____';
 
-    onInit(value);
+    useEffect(() => {
+        onInit(value);
+    }, [value]);
 
     return (
         <DatePickerInput

@@ -22,6 +22,9 @@ export const RichTextCmp = ({field, id, value, onChange, onInit}) => {
     useEffect(() => {
         CKEditor.editorUrl = window.CKEDITOR_BASEPATH + 'ckeditor.js';
     });
+    useEffect(() => {
+        onInit(value);
+    }, [value]);
 
     const editorContext = useContext(ContentEditorContext);
     const {data, error, loading} = useQuery(
@@ -91,8 +94,6 @@ export const RichTextCmp = ({field, id, value, onChange, onInit}) => {
         setPicker(false);
         fillCKEditorPicker(picker, pickerResult);
     };
-
-    onInit(value);
 
     return (
         <>

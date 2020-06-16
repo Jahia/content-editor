@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {DropdownTreeSelect} from '~/DesignSystem/DropdownTreeSelect';
@@ -17,6 +17,23 @@ const Category = ({field, value, id, editorContext, onChange, onInit}) => {
         }
     });
 
+    const _getCategory = uuid => data.jcr.result.descendants.nodes.find(category => category.uuid === uuid);
+
+    const generateValuesFromUuid = categories => {
+        return categories ? categories.map(uuid => _getCategory(uuid)) : undefined;
+    };
+
+    const handleChange = (_, selectedValues) => {
+        const newValues = selectedValues.map(v => v.value);
+        onChange(newValues, generateValuesFromUuid, generateValuesFromUuid);
+    };
+
+    useEffect(() => {
+        if (data) {
+            onInit(generateValuesFromUuid(value));
+        }
+    }, [value, data]);
+
     if (error) {
         const message = t(
             'content-media-manager:label.contentManager.error.queryingContent',
@@ -29,26 +46,12 @@ const Category = ({field, value, id, editorContext, onChange, onInit}) => {
         return <ProgressOverlay/>;
     }
 
-    const nodes = data.jcr.result.descendants.nodes;
     const tree = adaptToCategoryTree({
-        nodes,
+        nodes: data.jcr.result.descendants.nodes,
         parent: data.jcr.result,
         selectedValues: value,
         locale: editorContext.lang
     });
-
-    const _getCategory = (uuid, nodes) => nodes.find(category => category.uuid === uuid);
-
-    const generateValuesFromUuid = categories => {
-        return categories ? categories.map(uuid => _getCategory(uuid, nodes)) : undefined;
-    };
-
-    const handleChange = (_, selectedValues) => {
-        const newValues = selectedValues.map(v => v.value);
-        onChange(newValues, generateValuesFromUuid, generateValuesFromUuid);
-    };
-
-    onInit(generateValuesFromUuid(value));
 
     return (
         <DropdownTreeSelect

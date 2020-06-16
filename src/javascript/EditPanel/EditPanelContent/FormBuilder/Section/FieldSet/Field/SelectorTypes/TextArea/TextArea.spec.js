@@ -3,6 +3,13 @@ import {shallow} from '@jahia/test-framework';
 
 import {TextAreaField} from './TextArea';
 
+jest.mock('react', () => {
+    return {
+        ...jest.requireActual('react'),
+        useEffect: cb => cb()
+    };
+});
+
 describe('TextArea component', () => {
     let props;
     beforeEach(() => {
