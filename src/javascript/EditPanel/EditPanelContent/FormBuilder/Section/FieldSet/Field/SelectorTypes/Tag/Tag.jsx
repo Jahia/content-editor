@@ -57,9 +57,6 @@ const Tag = ({field, value, id, onChange, onInit}) => {
             placeholder={t('content-editor:label.contentEditor.edit.tagPlaceholder')}
             formatCreateLabel={value => t('content-editor:label.contentEditor.edit.createTagPlaceholder', {tagName: value})}
             loadOptions={suggestTags}
-            onBlur={() => {
-                /* Do Nothing on blur BACKLOG-10095 */
-            }}
             onChange={selection => {
                 const newSelection = selection && selection.map(data => data.value);
                 const adaptedSelection = adaptSelection(newSelection, separator);

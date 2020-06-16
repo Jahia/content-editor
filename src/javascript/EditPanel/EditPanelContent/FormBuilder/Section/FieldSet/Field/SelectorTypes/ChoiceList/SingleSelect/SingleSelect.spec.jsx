@@ -6,9 +6,12 @@ import {SingleSelectCmp} from './SingleSelect';
 
 describe('SingleSelect component', () => {
     let props;
-
+    let onChange = jest.fn();
+    let onInit = jest.fn();
     beforeEach(() => {
         props = {
+            onChange,
+            onInit,
             classes: {
                 selectField: ''
             },
@@ -25,19 +28,13 @@ describe('SingleSelect component', () => {
                 selectorType: 'ChoiceList',
                 readOnly: false
             },
-            setActionContext: jest.fn(),
-            onChange: jest.fn()
+            setActionContext: jest.fn()
         };
     });
 
-    const handleChange = jest.fn();
-    const handleFieldTouched = jest.fn();
-
     const buildComp = (componentProps, value) => {
-        const mainComponent = shallowWithTheme(<SingleSelectCmp {...componentProps}/>, {}, dsGenericTheme);
-        const RenderProps = mainComponent.props().render;
-        const val = value ? {value: value} : {};
-        return shallowWithTheme(<RenderProps field={{val, onChange: handleChange}} form={{setFieldTouched: handleFieldTouched}}/>, {}, dsGenericTheme);
+        componentProps.value = value;
+        return shallowWithTheme(<SingleSelectCmp {...componentProps}/>, {}, dsGenericTheme);
     };
 
     it('should bind id correctly', () => {
@@ -65,8 +62,9 @@ describe('SingleSelect component', () => {
             }
         };
         cmp.simulate('change', onChangeData);
-        expect(handleChange).toHaveBeenCalledWith(onChangeData);
-        expect(handleFieldTouched).toHaveBeenCalledWith('myOption', true);
+
+        expect(onChange).toHaveBeenCalled();
+        expect(onChange.mock.calls[0][0]).toStrictEqual('Yolooo');
     });
 
     it('should set readOnly to true when fromdefinition is readOnly', () => {

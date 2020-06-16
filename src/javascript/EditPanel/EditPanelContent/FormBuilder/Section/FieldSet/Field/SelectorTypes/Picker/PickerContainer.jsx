@@ -19,7 +19,18 @@ const PickerCmp = ({field, value, editorContext, setActionContext, onChange, onI
         if (fieldData) {
             onInit(_buildOnChangeData(fieldData));
         }
-    }, [fieldData]);
+        if (!field.multiple) {
+            setActionContext(prevActionContext => ({
+                open: setDialogOpen,
+                noAction: !value,
+                fieldData,
+                editorContext,
+                contextHasChange:
+                    (prevActionContext.fieldData && prevActionContext.fieldData.path) !== (fieldData && fieldData.path),
+                onChange: newValue => onChange(newValue)
+            }));
+        }
+    }, [fieldData, setDialogOpen]);
 
     if (error) {
         const message = t(
@@ -54,18 +65,6 @@ const PickerCmp = ({field, value, editorContext, setActionContext, onChange, onI
     const transformBeforeSave = data => {
         return pickerConfig.picker.PickerDialog.itemSelectionAdapter(data);
     };
-
-    if (!field.multiple) {
-        setActionContext(prevActionContext => ({
-            open: setDialogOpen,
-            noAction: !value,
-            fieldData,
-            editorContext,
-            contextHasChange:
-                (prevActionContext.fieldData && prevActionContext.fieldData.path) !== (fieldData && fieldData.path),
-            onChange: newValue => onChange(newValue)
-        }));
-    }
 
     const onItemSelection = data => {
         setDialogOpen(false);
