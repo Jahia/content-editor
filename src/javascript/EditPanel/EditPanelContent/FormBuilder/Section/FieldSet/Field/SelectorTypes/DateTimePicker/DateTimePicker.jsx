@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {FastField} from 'formik';
 
 import {DatePickerInput} from '~/DesignSystem/DatePickerInput';
 import dayjs from 'dayjs';
@@ -12,7 +11,7 @@ const variantMapper = {
     DateTimePicker: 'datetime'
 };
 
-export const DateTimePicker = ({id, field, editorContext, onChange}) => {
+export const DateTimePicker = ({id, field, value, editorContext, onChange, onInit}) => {
     const variant = variantMapper[field.selectorType];
     const isDateTime = variant === 'datetime';
     const disabledDays = fillDisabledDaysFromJCRConstraints(field, isDateTime);
@@ -22,40 +21,30 @@ export const DateTimePicker = ({id, field, editorContext, onChange}) => {
     displayDateFormat = isDateTime ? (displayDateFormat + ' HH:mm') : displayDateFormat;
     const displayDateMask = isDateTime ? '__/__/____ __:__' : '__/__/____';
 
+    onInit(value);
+
     return (
-        <FastField
-            name={id}
-            component={({field: {value, onChange: onChangeFormik, ...formikField}, form: {setFieldValue, setFieldTouched}}) => {
-                // Remove onChange from props pass to the input component as it is set in it.
-                return (
-                    <DatePickerInput
-                        dayPickerProps={{disabledDays}}
-                        lang={editorContext.uilang}
-                        initialValue={value ? dayjs(value).toDate() : value}
-                        onChange={date => {
-                            // Null is received when the date is reset
-                            const newDate = date && dayjs(date).format('YYYY-MM-DDTHH:mm:ss.SSS');
-                            setFieldValue(id, newDate, true);
-                            setFieldTouched(field.name, field.multiple ? [true] : true);
-                            onChange(value, newDate);
-                        }}
-                        {...formikField}
-                        displayDateFormat={displayDateFormat}
-                        displayDateMask={displayDateMask}
-                        readOnly={field.readOnly}
-                        variant={variant}
-                        id={id}
-                        inputProps={{
-                            'aria-labelledby': `${field.name}-label`
-                        }}
-                        onBlur={() => {
-                            /* Do Nothing on blur BACKLOG-10095 */
-                        }}
-                    />
-                );
+        <DatePickerInput
+            dayPickerProps={{disabledDays}}
+            lang={editorContext.uilang}
+            initialValue={value ? dayjs(value).toDate() : value}
+            displayDateFormat={displayDateFormat}
+            displayDateMask={displayDateMask}
+            readOnly={field.readOnly}
+            variant={variant}
+            id={id}
+            inputProps={{
+                'aria-labelledby': `${field.name}-label`
+            }}
+            onChange={date => {
+                onChange(date && dayjs(date).format('YYYY-MM-DDTHH:mm:ss.SSS'));
             }}
         />
     );
+};
+
+DateTimePicker.defaultProps = {
+    value: ''
 };
 
 DateTimePicker.propTypes = {
@@ -65,5 +54,7 @@ DateTimePicker.propTypes = {
         uilang: PropTypes.string.isRequired
     }).isRequired,
     field: FieldPropTypes.isRequired,
-    onChange: PropTypes.func.isRequired
+    value: PropTypes.string,
+    onChange: PropTypes.func.isRequired,
+    onInit: PropTypes.func.isRequired
 };

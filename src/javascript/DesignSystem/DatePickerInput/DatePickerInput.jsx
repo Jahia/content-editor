@@ -59,7 +59,6 @@ const DatePickerInputCmp = ({
     lang,
     classes,
     dayPickerProps,
-    onBlur,
     onChange,
     initialValue,
     readOnly,
@@ -174,7 +173,6 @@ CustomInput.defaultProps = {
 DatePickerInputCmp.defaultProps = {
     dayPickerProps: {},
     variant: 'date',
-    onBlur: () => {},
     onChange: () => {},
     initialValue: null,
     readOnly: false,
@@ -188,7 +186,6 @@ DatePickerInputCmp.propTypes = {
     lang: PropTypes.oneOf(['fr', 'en', 'de']).isRequired,
     variant: PropTypes.oneOf(['date', 'datetime']),
     initialValue: PropTypes.object,
-    onBlur: PropTypes.func,
     onChange: PropTypes.func,
     readOnly: PropTypes.bool,
     displayDateFormat: PropTypes.string,
