@@ -40,7 +40,7 @@ export const EditPanelContent = ({classes, isDirty}) => {
     return (
         <>
             {mode === Constants.routes.baseEditRoute && <PublicationInfoProgress/>}
-            {hasPreview && !envProps.drawer ?
+            {hasPreview && !(envProps && envProps.drawer) ?
                 (
                     <TwoColumnsContent
                         classes={{root: classes.twoColumnsRoot, left: classes.left, right: classes.right}}
