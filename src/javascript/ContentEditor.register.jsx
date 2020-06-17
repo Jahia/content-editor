@@ -39,13 +39,13 @@ registry.add('selectorType.onChange', 'addMixinChoicelist', {
         const previousMixin = property ? property.value : null;
         let editorSection = editorContext.sections;
         if (previousMixin) {
-            editorSection = helper.moveMixinToInitialSection(previousMixin, editorContext.sections);
+            editorSection = helper.moveMixinToInitialFieldset(previousMixin, editorContext.sections);
         }
 
         const currentValueProperty = currentValue.properties.find(entry => entry.name === 'addMixin');
         const addedMixin = currentValueProperty ? currentValueProperty.value : null;
         if (addedMixin) {
-            editorSection = helper.moveMixinToTargetSection(addedMixin, field.nodeType, editorSection, field);
+            editorSection = helper.moveMixinToTargetFieldset(addedMixin, field.nodeType, editorSection, field);
         }
 
         editorContext.setSections(editorSection);

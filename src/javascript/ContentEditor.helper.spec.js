@@ -5093,7 +5093,7 @@ describe('ContentEditor.helper', () => {
     });
 
     it('should add mixin to the right section', () => {
-        const sections = contentEditorHelper.moveMixinToTargetSection('jmix:internalLink', field.nodeType, context.sections, field);
+        const sections = contentEditorHelper.moveMixinToTargetFieldset('jmix:internalLink', field.nodeType, context.sections, field);
         let updatedFieldset = sections
             .find(({name}) => name === 'content')
             .fieldSets
@@ -5108,8 +5108,8 @@ describe('ContentEditor.helper', () => {
     });
 
     it('should remove mixin to the section and put it to the initial one', () => {
-        let sections = contentEditorHelper.moveMixinToTargetSection('jmix:internalLink', field.nodeType, context.sections, field);
-        sections = contentEditorHelper.moveMixinToInitialSection('jmix:internalLink', sections);
+        let sections = contentEditorHelper.moveMixinToTargetFieldset('jmix:internalLink', field.nodeType, context.sections, field);
+        sections = contentEditorHelper.moveMixinToInitialFieldset('jmix:internalLink', sections);
 
         let initialFieldset = sections
             .find(({name}) => name === 'content')
