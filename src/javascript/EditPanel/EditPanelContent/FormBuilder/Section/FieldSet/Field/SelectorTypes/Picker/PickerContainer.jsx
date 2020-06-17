@@ -19,6 +19,7 @@ const PickerCmp = ({field, value, editorContext, setActionContext, onChange, onI
         if (fieldData) {
             onInit(_buildOnChangeData(fieldData));
         }
+
         if (!field.multiple) {
             setActionContext(prevActionContext => ({
                 open: setDialogOpen,

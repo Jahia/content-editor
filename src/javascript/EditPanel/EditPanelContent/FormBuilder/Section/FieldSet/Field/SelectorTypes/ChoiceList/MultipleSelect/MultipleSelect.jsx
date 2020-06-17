@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 
 const MultipleSelect = ({field, id, value, setActionContext, onChange, onInit}) => {
-
     const findValues = value => field.valueConstraints.filter(item => value?.includes(item.value.string));
 
     const multipleSelectOnChange = newValues => {
