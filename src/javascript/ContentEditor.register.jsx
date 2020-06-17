@@ -35,22 +35,23 @@ registry.add('route', 'content-editor-create-route', {
 registry.add('selectorType.onChange', 'addMixinChoicelist', {
     targets: ['Choicelist'],
     onChange: (previousValue, currentValue, field, editorContext, selectorType, helper) => {
-        const property = previousValue.properties.find(entry => entry.name === 'addMixin');
+        const property = previousValue?.properties.find(entry => entry.name === 'addMixin');
         const previousMixin = property ? property.value : null;
         let editorSection = editorContext.sections;
         if (previousMixin) {
-            editorSection = helper.moveMixinToInitialFieldset(previousMixin, editorContext.sections);
+            editorSection = helper.moveMixinToInitialFieldset(previousMixin, editorContext.sections, editorContext.formik);
         }
 
         const currentValueProperty = currentValue.properties.find(entry => entry.name === 'addMixin');
         const addedMixin = currentValueProperty ? currentValueProperty.value : null;
         if (addedMixin) {
-            editorSection = helper.moveMixinToTargetFieldset(addedMixin, field.nodeType, editorSection, field);
+            editorSection = helper.moveMixinToTargetFieldset(addedMixin, field.nodeType, editorSection, field, editorContext.formik);
         }
 
         editorContext.setSections(editorSection);
     }
 });
+
 // Register GWT Hooks
 window.top.jahiaGwtHook = {
     // Hook on edit engine opening

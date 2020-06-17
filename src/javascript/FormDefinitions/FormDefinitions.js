@@ -1,12 +1,11 @@
 import {useQuery} from '@apollo/react-hooks';
 
-export const useFormDefinition = (setSections, query, queryParams, adapter, t) => {
+export const useFormDefinition = (query, queryParams, adapter, t) => {
     const {loading, error, data, refetch} = useQuery(query, {
         variables: queryParams,
         fetchPolicy: 'network-only'
     });
 
-    setSections([]);
     if (error || loading || !data.jcr) {
         return {
             loading,

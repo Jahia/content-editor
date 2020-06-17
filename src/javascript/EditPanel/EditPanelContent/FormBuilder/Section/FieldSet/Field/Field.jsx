@@ -59,8 +59,9 @@ let styles = theme => {
     };
 };
 
-export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, siteInfo, actionContext, formik: {errors, touched, values}}) => {
+export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, siteInfo, actionContext, formik}) => {
     const {t} = useTranslation();
+    const {errors, touched, values} = formik;
     const contextualMenu = useRef(null);
     const isMultipleField = field.multiple && !selectorType.supportMultiple;
     const seleniumFieldType = isMultipleField ? `GenericMultipleField${selectorType.key}` : (field.multiple ? `Multiple${selectorType.key}` : selectorType.key);
@@ -75,7 +76,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
         if (registeredOnChanges && registeredOnChanges.length > 0) {
             registeredOnChanges.forEach(registeredOnChange => {
                 if (registeredOnChange.onChange) {
-                    registeredOnChange.onChange(previousValue, currentValue, field, inputContext.editorContext, selectorType, contentEditorHelper);
+                    registeredOnChange.onChange(previousValue, currentValue, field, {...inputContext.editorContext, formik}, selectorType, contentEditorHelper);
                 }
             });
         }

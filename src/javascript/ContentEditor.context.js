@@ -40,7 +40,7 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
             primaryNodeType: contentType,
             writePermission: `jcr:modifyProperties_default_${lang}`
         };
-        const {loading, error, errorMessage, data: formDefinition, refetch: refetchFormData} = useFormDefinition(setSections, formQuery, formQueryParams, formDataAdapter, t);
+        const {loading, error, errorMessage, data: formDefinition, refetch: refetchFormData} = useFormDefinition(formQuery, formQueryParams, formDataAdapter, t);
         const {nodeData, initialValues, details, technicalInfo, sections: formSections, title, nodeTypeName} = formDefinition || {};
         const siteInfoResult = useSiteInfo({
             siteKey: site,
@@ -63,7 +63,7 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
             return <ProgressOverlay/>;
         }
 
-        sections = sections.length === 0 ? formSections : sections;
+        sections = sections && sections.length !== 0 ? sections : formSections;
         // Build editor context
         const editorContext = {
             path: nodeData.path,

@@ -2,37 +2,17 @@
  * Move the fields defined by a mixin to their initial location
  * @param mixin the name of the mixin of the fields to move
  * @param sections list of sections containing the fieldset and fields
+ * @param formik formik
  * @returns list of the updated sections
  */
-export const moveMixinToInitialFieldset = (mixin, sections) => {
+export const moveMixinToInitialFieldset = (mixin, sections, formik) => {
     let updatedSections = sections;
     if (mixin) {
+        formik.setFieldValue(mixin, false, true);
         updatedSections = moveFieldsToAnotherFieldset(mixin, mixin, updatedSections, null);
-        updatedSections = activateOrDeactivateFieldSet(updatedSections, mixin, false);
     }
 
     return updatedSections;
-};
-
-/**
- * Activate or deactivate a fieldset
- * @param sections list of sections where the fieldset is
- * @param fieldsetName The name of the fieldset to activate or deactivate
- * @param activate (boolean) if true it activate the fieldset else the fieldset would be deactivated
- * @returns list of sections with the modified section
- */
-export const activateOrDeactivateFieldSet = (sections, fieldsetName, activate) => {
-    return sections.map(section => {
-        return {
-            ...section,
-            fieldSets: section.fieldSets.map(fieldset => {
-                if (fieldsetName === fieldset.name) {
-                    return {...fieldset, activated: activate, dynamic: activate};
-                }
-
-                return fieldset;
-            })};
-    });
 };
 
 /**
@@ -99,21 +79,18 @@ export const addFieldsToFieldset = (fieldsToAdd, fieldset, afterField) => {
  * @param targetFieldset The new location of the fields
  * @param sections list of sections containing the fieldsets and fields
  * @param updatedField the field preceding the new location of the moved fields
+ * @param formik formik
  * @returns list of updated sections
  */
-export const moveMixinToTargetFieldset = (mixin, targetFieldset, sections, updatedField) => {
+export const moveMixinToTargetFieldset = (mixin, targetFieldset, sections, updatedField, formik) => {
     // Add mixin and display fields from new value
-    let updatedSections = activateOrDeactivateFieldSet(sections, mixin, true);
-
-    updatedSections = moveFieldsToAnotherFieldset(mixin, targetFieldset, updatedSections, updatedField);
-
-    return updatedSections;
+    formik.setFieldValue(mixin, true, true);
+    return moveFieldsToAnotherFieldset(mixin, targetFieldset, sections, updatedField);
 };
 
 export default {
     moveMixinToInitialFieldset,
     moveMixinToTargetFieldset,
     addFieldsToFieldset,
-    activateOrDeactivateFieldSet,
     moveFieldsToAnotherFieldset
 };
