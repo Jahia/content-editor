@@ -28,7 +28,7 @@ const PickerCmp = ({field, value, editorContext, setActionContext, onChange, onI
                 editorContext,
                 contextHasChange:
                     (prevActionContext.fieldData && prevActionContext.fieldData.path) !== (fieldData && fieldData.path),
-                onChange: newValue => onChange(newValue)
+                onChange: newValue => onChange(newValue, undefined, transformOnChangePreviousValue)
             }));
         }
     }, [fieldData, setDialogOpen]);
