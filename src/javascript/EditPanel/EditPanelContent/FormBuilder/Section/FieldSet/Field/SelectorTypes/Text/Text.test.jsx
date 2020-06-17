@@ -1,17 +1,21 @@
 import React from 'react';
-import {shallowWithTheme} from '@jahia/test-framework';
-import {dsGenericTheme} from '@jahia/design-system-kit';
+import {shallow} from '@jahia/test-framework';
 
 import {TextCmp} from './Text';
 
+jest.mock('react', () => {
+    return {
+        ...jest.requireActual('react'),
+        useEffect: cb => cb()
+    };
+});
+
 describe('Text component', () => {
     let props;
-    let mainComponent;
-    let onChange;
     beforeEach(() => {
-        onChange = jest.fn();
         props = {
-            onChange,
+            onChange: jest.fn(),
+            onInit: jest.fn(),
             id: 'toto[1]',
             editorContext: {
                 uilang: 'en'
@@ -27,57 +31,42 @@ describe('Text component', () => {
         };
     });
 
-    const handleChange = jest.fn();
-    const handleFieldTouched = jest.fn();
-
-    const buildComp = componentProps => {
-        mainComponent = shallowWithTheme(<TextCmp {...componentProps}/>, {}, dsGenericTheme);
-        const RenderProps = mainComponent.props().render;
-        return shallowWithTheme(<RenderProps form={{setFieldTouched: handleFieldTouched, handleChange: handleChange}}/>, {}, dsGenericTheme);
-    };
-
     it('should contain aria-labelledby attribute', () => {
-        const wrapper = buildComp(props);
-        expect(wrapper.props().inputProps['aria-labelledby']).toBe('toto-label');
+        const cmp = shallow(<TextCmp {...props}/>);
+        expect(cmp.props().inputProps['aria-labelledby']).toBe('toto-label');
     });
 
     it('should contain one Input component', () => {
-        const wrapper = buildComp(props);
-        expect(wrapper.find('Input').length).toBe(1);
+        const cmp = shallow(<TextCmp {...props}/>);
+        expect(cmp.find('Input').length).toBe(1);
     });
 
     it('should contain a matching Input props values', () => {
-        const wrapper = buildComp(props);
-        expect(wrapper.props().id).toBe(props.id);
-        expect(wrapper.props().name).toBe(props.id);
+        const cmp = shallow(<TextCmp {...props}/>);
+        expect(cmp.props().id).toBe(props.id);
+        expect(cmp.props().name).toBe(props.id);
     });
 
-    it('should obtain its initial value from value param', () => {
-        const fieldValue = 'some dummy value';
+    it('should obtain its initial value and call onInit', () => {
+        props.value = 'some dummy value';
+        const cmp = shallow(<TextCmp {...props}/>);
 
-        props.value = fieldValue;
-        const wrapper = buildComp(props);
-
-        expect(wrapper.props().value).toBe(fieldValue);
-    });
-
-    it('should call formik.handleChange on change', () => {
-        const wrapper = buildComp(props);
-
-        wrapper.find('Input').simulate('change');
-
-        expect(handleChange.mock.calls.length).toBe(1);
-        expect(handleFieldTouched).toHaveBeenCalledWith('toto', true);
+        expect(cmp.props().value).toBe(props.value);
+        expect(props.onInit.mock.calls.length).toBe(1);
+        expect(props.onInit).toHaveBeenCalledWith(props.value);
     });
 
     it('should call onChange on change', () => {
         props.value = 'toto';
-        const wrapper = buildComp(props);
+        const cmp = shallow(<TextCmp {...props}/>);
+        cmp.find('Input').simulate('change', {
+            target: {
+                value: 'text'
+            }
+        });
 
-        wrapper.find('Input').simulate('change');
-
-        expect(onChange.mock.calls.length).toBe(1);
-        expect(onChange).toHaveBeenCalledWith('toto', undefined);
+        expect(props.onChange.mock.calls.length).toBe(1);
+        expect(props.onChange).toHaveBeenCalledWith('text');
     });
 
     it('should be readOnly when formDefinition say so', () => {
@@ -87,47 +76,48 @@ describe('Text component', () => {
 
     let testReadOnly = function (readOnly) {
         props.field.readOnly = readOnly;
-        const wrapper = buildComp(props);
-        expect(wrapper.props().readOnly).toBe(readOnly);
+        const cmp = shallow(<TextCmp {...props}/>);
+        expect(cmp.props().readOnly).toBe(readOnly);
     };
 
     it('should be the input of type number in case of long, decimal or double', () => {
         props.field.requiredType = 'DOUBLE';
-        const wrapper = buildComp(props);
+        const cmp = shallow(<TextCmp {...props}/>);
 
-        expect(wrapper.props().type).toBe('number');
+        expect(cmp.props().type).toBe('number');
     });
 
     it('should be the input of type text', () => {
-        const wrapper = buildComp(props);
-        expect(wrapper.props().type).toBe('text');
+        const cmp = shallow(<TextCmp {...props}/>);
+
+        expect(cmp.props().type).toBe('text');
     });
 
     it('should input of type number have decimal scale equals 0 if it is long', () => {
         props.field.requiredType = 'LONG';
-        const wrapper = buildComp(props);
+        const cmp = shallow(<TextCmp {...props}/>);
 
-        expect(wrapper.props().decimalScale).toBe(0);
+        expect(cmp.props().decimalScale).toBe(0);
     });
 
     it('should input of type number have decimal scale undefined if it is double', () => {
         props.field.requiredType = 'DOUBLE';
-        const wrapper = buildComp(props);
+        const cmp = shallow(<TextCmp {...props}/>);
 
-        expect(wrapper.props().decimalScale).toBe(undefined);
+        expect(cmp.props().decimalScale).toBe(undefined);
     });
 
     it('should input of type number use point as decimal separator when language is "en"', () => {
         props.editorContext.uilang = 'en';
-        const wrapper = buildComp(props);
+        const cmp = shallow(<TextCmp {...props}/>);
 
-        expect(wrapper.props().decimalSeparator).toBe('.');
+        expect(cmp.props().decimalSeparator).toBe('.');
     });
 
     it('should input of type number use comma as decimal separator when language is "fr"', () => {
         props.editorContext.uilang = 'fr';
-        const wrapper = buildComp(props);
+        const cmp = shallow(<TextCmp {...props}/>);
 
-        expect(wrapper.props().decimalSeparator).toBe(',');
+        expect(cmp.props().decimalSeparator).toBe(',');
     });
 });

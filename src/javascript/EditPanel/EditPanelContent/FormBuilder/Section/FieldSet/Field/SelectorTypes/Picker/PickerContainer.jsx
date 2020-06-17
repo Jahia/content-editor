@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {connect, FastField} from 'formik';
+import {connect} from 'formik';
 import {useTranslation} from 'react-i18next';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {ProgressOverlay} from '@jahia/react-material';
@@ -8,11 +8,30 @@ import {ReferenceCard} from '~/DesignSystem/ReferenceCard';
 import {extractConfigs} from './Picker.utils';
 import {PickerDialog} from './PickerDialog';
 
-const PickerCmp = ({field, value, id, editorContext, setActionContext, onChange}) => {
+const PickerCmp = ({field, value, editorContext, setActionContext, onChange, onInit}) => {
     const {t} = useTranslation();
     const {pickerConfig, nodeTreeConfigs} = extractConfigs(field, editorContext, t);
     const [isDialogOpen, setDialogOpen] = useState(false);
     const {fieldData, error, loading} = pickerConfig.picker.pickerInput.usePickerInputData(value, editorContext);
+
+    // Init data
+    useEffect(() => {
+        if (fieldData) {
+            onInit(_buildOnChangeData(fieldData));
+        }
+
+        if (!field.multiple) {
+            setActionContext(prevActionContext => ({
+                open: setDialogOpen,
+                noAction: !value,
+                fieldData,
+                editorContext,
+                contextHasChange:
+                    (prevActionContext.fieldData && prevActionContext.fieldData.path) !== (fieldData && fieldData.path),
+                onChange: newValue => onChange(newValue, undefined, transformOnChangePreviousValue)
+            }));
+        }
+    }, [fieldData, setDialogOpen]);
 
     if (error) {
         const message = t(
@@ -26,31 +45,32 @@ const PickerCmp = ({field, value, id, editorContext, setActionContext, onChange}
         return <ProgressOverlay/>;
     }
 
-    const pickerOnChange = newData => {
-        const buildOnChangeData = data => {
-            if (data) {
-                return {
-                    path: data.path,
-                    uuid: data.id ? data.id : data.uuid,
-                    name: data.name
-                };
-            }
-        };
-
-        onChange(buildOnChangeData(fieldData), buildOnChangeData(newData));
+    const _buildOnChangeData = data => {
+        if (data) {
+            return {
+                path: data.path,
+                uuid: data.id ? data.id : data.uuid,
+                name: data.name
+            };
+        }
     };
 
-    if (!field.multiple) {
-        setActionContext(prevActionContext => ({
-            open: setDialogOpen,
-            noAction: !value,
-            fieldData,
-            editorContext,
-            contextHasChange:
-                (prevActionContext.fieldData && prevActionContext.fieldData.path) !== (fieldData && fieldData.path),
-            onChange: pickerOnChange
-        }));
-    }
+    const transformOnChangePreviousValue = () => {
+        return _buildOnChangeData(fieldData);
+    };
+
+    const transformOnChangeCurrentValue = data => {
+        return _buildOnChangeData(data);
+    };
+
+    const transformBeforeSave = data => {
+        return pickerConfig.picker.PickerDialog.itemSelectionAdapter(data);
+    };
+
+    const onItemSelection = data => {
+        setDialogOpen(false);
+        onChange(data, transformOnChangeCurrentValue, transformOnChangePreviousValue, transformBeforeSave);
+    };
 
     return (
         <>
@@ -62,36 +82,19 @@ const PickerCmp = ({field, value, id, editorContext, setActionContext, onChange}
                 fieldData={fieldData}
                 onClick={() => setDialogOpen(!isDialogOpen)}
             />
-            <FastField shouldUpdate={() => true}
-                       render={({form: {setFieldValue, setFieldTouched}}) => {
-                           const onItemSelection = data => {
-                               setFieldValue(
-                                   id,
-                                   pickerConfig.picker.PickerDialog.itemSelectionAdapter(data),
-                                   true
-                               );
-                               setDialogOpen(false);
-                               setFieldTouched(field.name, field.multiple ? [true] : true);
-                               pickerOnChange(data);
-                           };
-
-                           return (
-                               <PickerDialog
-                                   isOpen={isDialogOpen}
-                                   setIsOpen={setDialogOpen}
-                                   editorContext={editorContext}
-                                   initialSelectedItem={fieldData && fieldData.path}
-                                   nodeTreeConfigs={nodeTreeConfigs}
-                                   lang={editorContext.lang}
-                                   uilang={editorContext.uilang}
-                                   siteKey={editorContext.site}
-                                   t={t}
-                                   field={field}
-                                   pickerConfig={pickerConfig}
-                                   onItemSelection={onItemSelection}
-                               />
-                           );
-                       }}
+            <PickerDialog
+                isOpen={isDialogOpen}
+                setIsOpen={setDialogOpen}
+                editorContext={editorContext}
+                initialSelectedItem={fieldData && fieldData.path}
+                nodeTreeConfigs={nodeTreeConfigs}
+                lang={editorContext.lang}
+                uilang={editorContext.uilang}
+                siteKey={editorContext.site}
+                t={t}
+                field={field}
+                pickerConfig={pickerConfig}
+                onItemSelection={onItemSelection}
             />
         </>
     );
@@ -101,9 +104,9 @@ PickerCmp.propTypes = {
     editorContext: PropTypes.object.isRequired,
     value: PropTypes.string,
     field: FieldPropTypes.isRequired,
-    id: PropTypes.string.isRequired,
     setActionContext: PropTypes.func.isRequired,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    onInit: PropTypes.func.isRequired
 };
 
 export const Picker = connect(PickerCmp);

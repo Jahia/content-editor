@@ -6,9 +6,13 @@ import {dsGenericTheme} from '@jahia/design-system-kit';
 
 describe('MultipleSelect component', () => {
     let props;
+    let onChange = jest.fn();
+    let onInit = jest.fn();
 
     beforeEach(() => {
         props = {
+            onChange,
+            onInit,
             id: 'MultipleSelect1',
             field: {
                 name: 'myOption',
@@ -28,18 +32,13 @@ describe('MultipleSelect component', () => {
                 readOnly: false,
                 multiple: true
             },
-            setActionContext: jest.fn(),
-            onChange: jest.fn()
+            setActionContext: jest.fn()
         };
     });
 
-    const handleChange = jest.fn();
-    const handleFieldTouched = jest.fn();
-
     const buildComp = (componentProps, value) => {
-        const mainComponent = shallowWithTheme(<MultipleSelect {...componentProps}/>, {}, dsGenericTheme);
-        const RenderProps = mainComponent.props().render;
-        return shallowWithTheme(<RenderProps field={{value: value}} form={{setFieldTouched: handleFieldTouched, setFieldValue: handleChange}}/>, {}, dsGenericTheme);
+        props.value = value;
+        return shallowWithTheme(<MultipleSelect {...componentProps}/>, {}, dsGenericTheme);
     };
 
     it('should bind id correctly', () => {
@@ -63,8 +62,9 @@ describe('MultipleSelect component', () => {
         const cmp = buildComp(props, ['yoloooFR']);
         const selection = [{value: 'yoloooFR2'}];
         cmp.simulate('change', selection);
-        expect(handleChange).toHaveBeenCalledWith('myOption', ['yoloooFR2'], true);
-        expect(handleFieldTouched).toHaveBeenCalledWith('myOption', [true]);
+
+        expect(onChange).toHaveBeenCalled();
+        expect(onChange.mock.calls[0][0]).toStrictEqual(['yoloooFR2']);
     });
 
     it('should select value', () => {

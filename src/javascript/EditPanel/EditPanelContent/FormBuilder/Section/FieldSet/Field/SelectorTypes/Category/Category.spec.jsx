@@ -17,13 +17,22 @@ jest.mock('@apollo/react-hooks', () => {
     };
 });
 
+jest.mock('react', () => {
+    return {
+        ...jest.requireActual('react'),
+        useEffect: cb => cb()
+    };
+});
+
 describe('Category component', () => {
     let props;
     const onChange = jest.fn();
+    const onInit = jest.fn();
 
     beforeEach(() => {
         props = {
             onChange,
+            onInit,
             id: 'Category',
             field: {
                 displayName: 'Categories',
@@ -67,13 +76,8 @@ describe('Category component', () => {
         });
     });
 
-    const setFieldValue = jest.fn();
-    const setFieldTouched = jest.fn();
-
     const buildComp = props => {
-        const mainComponent = shallowWithTheme(<Category {...props}/>, {}, dsGenericTheme);
-        const RenderProps = mainComponent.props().render;
-        return shallowWithTheme(<RenderProps form={{setFieldTouched, setFieldValue, values: {}}}/>, {}, dsGenericTheme);
+        return shallowWithTheme(<Category {...props}/>, {}, dsGenericTheme);
     };
 
     it('should bind the id properly', () => {
@@ -81,22 +85,31 @@ describe('Category component', () => {
         expect(cmp.props().id).toBe(props.id);
     });
 
-    it('should setFieldTouched when modify an element', () => {
-        const cmp = buildComp(props);
-        cmp.simulate('change', null, [{value: 'A'}, {value: 'BG'}]);
-        expect(setFieldTouched).toHaveBeenCalled();
-    });
-
-    it('should setFieldValue when modify an element', () => {
-        const cmp = buildComp(props);
-        cmp.simulate('change', null, [{value: 'A'}, {value: 'Gauche'}]);
-        expect(setFieldValue).toHaveBeenCalledWith(props.id, ['A', 'Gauche']);
+    it('should onInit called when render the element', () => {
+        buildComp(props);
+        expect(onInit).toHaveBeenCalled();
     });
 
     it('should onChange called when modify an element', () => {
         const cmp = buildComp(props);
         cmp.simulate('change', null, [{value: 'A'}, {value: 'Gauche'}]);
-        expect(onChange).toHaveBeenCalledWith([], [
+        expect(onChange).toHaveBeenCalled();
+        expect(onChange.mock.calls[0][0]).toStrictEqual(['A', 'Gauche']);
+        expect(onChange.mock.calls[0][1](onChange.mock.calls[0][0])).toStrictEqual([
+            {
+                uuid: 'A',
+                parent: {
+                    uuid: 'root'
+                }
+            },
+            {
+                uuid: 'Gauche',
+                parent: {
+                    uuid: 'root'
+                }
+            }
+        ]);
+        expect(onChange.mock.calls[0][2](onChange.mock.calls[0][0])).toStrictEqual([
             {
                 uuid: 'A',
                 parent: {
