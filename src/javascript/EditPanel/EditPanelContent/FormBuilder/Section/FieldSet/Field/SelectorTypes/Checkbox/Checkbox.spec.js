@@ -21,13 +21,8 @@ describe('Checkbox component', () => {
         };
     });
 
-    const handleChange = jest.fn();
-    const fieldTouched = jest.fn();
-
     const buildComp = props => {
-        const mainComponent = shallowWithTheme(<Checkbox {...props}/>, {}, dsGenericTheme);
-        const RenderProps = mainComponent.props().render;
-        return shallowWithTheme(<RenderProps form={{setFieldTouched: fieldTouched, setFieldValue: handleChange}} field={{value: props.initialValue}}/>, {}, dsGenericTheme);
+        return shallowWithTheme(<Checkbox {...props}/>, {}, dsGenericTheme);
     };
 
     it('should display unchecked', () => {
@@ -45,9 +40,7 @@ describe('Checkbox component', () => {
         const checkboxCmp = buildComp(props);
         const innerCmp = checkboxCmp.dive().dive();
         innerCmp.simulate('change', null, true);
-        expect(handleChange).toHaveBeenCalledWith('checkbox1', true);
-        expect(fieldTouched).toHaveBeenCalledWith('checkbox1', true);
-        expect(props.onChange).toHaveBeenCalledWith(undefined, true);
+        expect(props.onChange).toHaveBeenCalledWith(true);
     });
 
     it('should change from false to true', () => {
@@ -55,7 +48,7 @@ describe('Checkbox component', () => {
         const checkboxCmp = buildComp(props);
         const innerCmp = checkboxCmp.dive().dive();
         innerCmp.simulate('change', null, true);
-        expect(props.onChange).toHaveBeenCalledWith(false, true);
+        expect(props.onChange).toHaveBeenCalledWith(true);
     });
 
     it('should be readonly', () => {

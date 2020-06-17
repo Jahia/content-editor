@@ -1,15 +1,22 @@
 import React from 'react';
 import {shallow} from '@jahia/test-framework';
 
-import TextArea from './index';
+import {TextAreaField} from './TextArea';
+
+jest.mock('react', () => {
+    return {
+        ...jest.requireActual('react'),
+        useEffect: cb => cb()
+    };
+});
 
 describe('TextArea component', () => {
     let props;
-    let onChange;
     beforeEach(() => {
-        onChange = jest.fn();
         props = {
-            onChange,
+            onChange: jest.fn(),
+            onInit: jest.fn(),
+            value: 'Yolooo',
             id: 'textArea1',
             field: {
                 name: 'myOption',
@@ -21,48 +28,35 @@ describe('TextArea component', () => {
         };
     });
 
-    const handleChange = jest.fn();
-    const handleFieldTouched = jest.fn();
-
-    it('should bind id correctly', () => {
-        const RenderProps = shallow(<TextArea {...props}/>).props().render;
-        const cmp = shallow(<RenderProps field={{value: 'Yolooo'}} form={{setFieldTouched: handleFieldTouched, setFieldValue: handleChange}}/>);
-
-        expect(cmp.props().id).toBe(props.id);
-    });
-
     it('should field be readOnly', () => {
         props.field.readOnly = true;
-        const RenderProps = shallow(<TextArea {...props}/>).props().render;
-        const cmp = shallow(<RenderProps field={{value: 'Yolooo'}} form={{setFieldTouched: handleFieldTouched, setFieldValue: handleChange}}/>);
+        const cmp = shallow(<TextAreaField {...props}/>);
 
         expect(cmp.props().readOnly).toBe(true);
     });
 
-    it('should call formik.handleChange on change', () => {
-        const RenderProps = shallow(<TextArea {...props}/>).props().render;
-        const cmp = shallow(<RenderProps field={{value: 'Yolooo', onChange: handleChange}} form={{setFieldTouched: handleFieldTouched}}/>);
+    it('should field not be readOnly', () => {
+        const cmp = shallow(<TextAreaField {...props}/>);
 
-        cmp.find('WithStyles(TextAreaCmp)').simulate('change', 'text');
+        expect(cmp.props().readOnly).toBe(false);
+    });
 
-        expect(handleChange.mock.calls.length).toBe(1);
-        expect(handleFieldTouched).toHaveBeenCalledWith('myOption', true);
+    it('should call onInit on display', () => {
+        shallow(<TextAreaField {...props}/>);
+
+        expect(props.onInit.mock.calls.length).toBe(1);
+        expect(props.onInit).toHaveBeenCalledWith(props.value);
     });
 
     it('should call onChange on change', () => {
-        const RenderProps = shallow(<TextArea {...props}/>).props().render;
-        const cmp = shallow(<RenderProps field={{value: 'Yolooo', onChange: handleChange}} form={{setFieldTouched: handleFieldTouched}}/>);
+        const cmp = shallow(<TextAreaField {...props}/>);
+        cmp.find('WithStyles(TextAreaCmp)').simulate('change', {
+            target: {
+                value: 'text'
+            }
+        });
 
-        cmp.find('WithStyles(TextAreaCmp)').simulate('change', 'text');
-
-        expect(onChange.mock.calls.length).toBe(1);
-        expect(onChange).toHaveBeenCalledWith('Yolooo', undefined);
-    });
-
-    it('should field not be readOnly', () => {
-        const RenderProps = shallow(<TextArea {...props}/>).props().render;
-        const cmp = shallow(<RenderProps field={{value: 'Yolooo'}} form={{setFieldTouched: handleFieldTouched, setFieldValue: handleChange}}/>);
-
-        expect(cmp.props().readOnly).toBe(false);
+        expect(props.onChange.mock.calls.length).toBe(1);
+        expect(props.onChange).toHaveBeenCalledWith('text');
     });
 });
