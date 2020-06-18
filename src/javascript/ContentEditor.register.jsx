@@ -1,6 +1,7 @@
 import React from 'react';
 import {registry} from '@jahia/ui-extender';
 import {registerCEActions} from './registerCEActions';
+import {registerAddMixin} from './AddMixin.register';
 import {Constants} from '~/ContentEditor.constants';
 import ContentEditorApi from '~/Api/ContentEditor.api';
 import ContentEditorRedux from './ContentEditor.redux';
@@ -32,25 +33,7 @@ registry.add('route', 'content-editor-create-route', {
     render: ({match}) => <ContentEditorRedux uuid={match.params.parentUuid} mode={Constants.routes.baseCreateRoute} lang={match.params.lang} contentType={decodeURI(match.params.contentType)}/>
 });
 
-registry.add('selectorType.onChange', 'addMixinChoicelist', {
-    targets: ['Choicelist'],
-    onChange: (previousValue, currentValue, field, editorContext, selectorType, helper) => {
-        const property = previousValue?.properties.find(entry => entry.name === 'addMixin');
-        const previousMixin = property ? property.value : null;
-        let editorSection = editorContext.sections;
-        if (previousMixin) {
-            editorSection = helper.moveMixinToInitialFieldset(previousMixin, editorContext.sections, editorContext.formik);
-        }
-
-        const currentValueProperty = currentValue.properties.find(entry => entry.name === 'addMixin');
-        const addedMixin = currentValueProperty ? currentValueProperty.value : null;
-        if (addedMixin) {
-            editorSection = helper.moveMixinToTargetFieldset(addedMixin, field.nodeType, editorSection, field, editorContext.formik);
-        }
-
-        editorContext.setSections(editorSection);
-    }
-});
+registerAddMixin(registry);
 
 // Register GWT Hooks
 window.top.jahiaGwtHook = {

@@ -17,7 +17,7 @@ import {Separator} from '@jahia/moonstone';
 const EditPanelCmp = ({formik, title, notificationContext, client}) => {
     const [activeTab, setActiveTab] = useState('edit');
     const {t} = useTranslation();
-    const {nodeData, siteInfo, lang, uilang, mode, nodeTypeName, setSections} = useContentEditorContext();
+    const {nodeData, siteInfo, lang, uilang, mode, nodeTypeName} = useContentEditorContext();
     const {envProps} = useContentEditorConfigContext();
     const publicationInfoContext = useContext(PublicationInfoContext);
 
@@ -60,8 +60,6 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
             if (envProps.unregisterListeners) {
                 envProps.unregisterListeners();
             }
-
-            setSections([]);
         };
     }, []);
 

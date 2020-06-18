@@ -4,6 +4,18 @@ import {dsGenericTheme} from '@jahia/design-system-kit';
 
 import FormBuilder from './FormBuilder';
 
+jest.mock('~/ContentEditorSection/ContentEditorSection.context', () => {
+    let sectionContextmock;
+    return {
+        useContentEditorSectionContext: () => {
+            return sectionContextmock;
+        },
+        setSectionContext: c => {
+            sectionContextmock = c;
+        }
+    };
+});
+
 jest.mock('~/ContentEditor.context', () => {
     let contextmock;
     return {
@@ -16,28 +28,32 @@ jest.mock('~/ContentEditor.context', () => {
     };
 });
 import {setContext} from '~/ContentEditor.context';
+import {setSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 
 describe('FormBuilder component', () => {
     let context;
-
+    let sectionContext;
     beforeEach(() => {
         context = {
-            sections: [
-                {displayName: 'content'},
-                {displayName: 'Layout'}
-            ],
             nodeData: {
                 isPage: true,
                 primaryNodeType: {hasOrderableChildNodes: true}
             }
         };
+        sectionContext = {
+            sections: [
+                {displayName: 'content'},
+                {displayName: 'Layout'}
+            ]
+        };
     });
 
     it('should display each section', () => {
         setContext(context);
+        setSectionContext(sectionContext);
         const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).find('section');
 
-        context.sections.forEach(section => {
+        sectionContext.sections.forEach(section => {
             expect(cmp.find({section}).exists()).toBe(true);
             if (section.displayName === 'content') {
                 expect(cmp.props()['data-sel-mode']).toBe('create');
@@ -47,6 +63,7 @@ describe('FormBuilder component', () => {
 
     it('should not display ordering section', () => {
         setContext(context);
+        setSectionContext(sectionContext);
 
         const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).find('section');
         expect(cmp.find('ChildrenSection').exists()).toBeFalsy();
@@ -55,6 +72,7 @@ describe('FormBuilder component', () => {
     it('should display ordering section', () => {
         context.nodeData.isPage = false;
         setContext(context);
+        setSectionContext(sectionContext);
 
         const cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).find('section');
         expect(cmp.find('ChildrenSection').exists()).toBeTruthy();
@@ -63,6 +81,7 @@ describe('FormBuilder component', () => {
     it('should display ordering section just after content section', () => {
         context.nodeData.isPage = false;
         setContext(context);
+        setSectionContext(sectionContext);
 
         const cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).find('section');
         expect(cmp.childAt(1).find('ChildrenSection').exists()).toBeTruthy();
@@ -71,6 +90,7 @@ describe('FormBuilder component', () => {
     it('should not display ordering section in create mode', () => {
         context.nodeData.isPage = false;
         setContext(context);
+        setSectionContext(sectionContext);
 
         const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).find('section');
         expect(cmp.find('ChildrenSection').exists()).toBe(false);
