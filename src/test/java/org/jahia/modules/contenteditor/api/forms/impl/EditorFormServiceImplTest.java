@@ -279,20 +279,6 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         simpleWithMixinPropertiesOverrideResults(createForm);
     }
 
-    private void simpleWithMixinPropertiesOverrideResults(EditorForm form) {
-        String sectionName = "content";
-        List<EditorFormFieldSet> fieldSets = getSection(form, sectionName).getFieldSets();
-        Assert.isTrue(fieldSets.size() == 2, "Expected 2 fieldsets but got " + fieldSets.size());
-
-        EditorFormFieldSet fieldSet = getFieldSet(form, sectionName, "jnt:simpleWithMixProperties");
-        ArrayList<EditorFormField> fields = new ArrayList<>(fieldSet.getEditorFormFields());
-        Assert.isTrue(fields.size() == 3, "Expected 3 fields but receive " + fields.size());
-        Assert.isTrue(fields.get(0).getName().equals("propMix1"), "Override of field does not contain propMix1");
-        Assert.isTrue(fields.get(0).getMandatory(), "Override of field is not mandatory");
-        Assert.isTrue(fields.get(1).getName().equals("prop1"), "Override of field does not contain prop1");
-        Assert.isTrue(fields.get(2).getName().equals("prop2"), "Override of field does not contain prop2");
-    }
-
     @Test
     public void testSectionOverride() throws Exception {
         // inject custom section
@@ -396,13 +382,6 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
             .stream()
             .anyMatch(valueConstraint -> valueConstraint.getDisplayValue().equals("myConstraint"))
         , "The value" + valueConstraints.get(0).getDisplayValue());
-    }
-
-    private List<EditorFormFieldValueConstraint> getValueConstraints(final EditorForm form, final String searchedSection,
-        final String searchedFieldSet,
-        final String searchedField){
-        EditorFormField field = getField(form, searchedSection, searchedFieldSet, searchedField);
-        return field.getValueConstraints();
     }
 
     @Test
@@ -551,5 +530,26 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
 
             }
         }
+    }
+
+    private void simpleWithMixinPropertiesOverrideResults(EditorForm form) {
+        String sectionName = "content";
+        List<EditorFormFieldSet> fieldSets = getSection(form, sectionName).getFieldSets();
+        Assert.isTrue(fieldSets.size() == 2, "Expected 2 fieldsets but got " + fieldSets.size());
+
+        EditorFormFieldSet fieldSet = getFieldSet(form, sectionName, "jnt:simpleWithMixProperties");
+        ArrayList<EditorFormField> fields = new ArrayList<>(fieldSet.getEditorFormFields());
+        Assert.isTrue(fields.size() == 3, "Expected 3 fields but receive " + fields.size());
+        Assert.isTrue(fields.get(0).getName().equals("propMix1"), "Override of field does not contain propMix1");
+        Assert.isTrue(fields.get(0).getMandatory(), "Override of field is not mandatory");
+        Assert.isTrue(fields.get(1).getName().equals("prop1"), "Override of field does not contain prop1");
+        Assert.isTrue(fields.get(2).getName().equals("prop2"), "Override of field does not contain prop2");
+    }
+
+    private List<EditorFormFieldValueConstraint> getValueConstraints(final EditorForm form, final String searchedSection,
+                                                                     final String searchedFieldSet,
+                                                                     final String searchedField){
+        EditorFormField field = getField(form, searchedSection, searchedFieldSet, searchedField);
+        return field.getValueConstraints();
     }
 }
