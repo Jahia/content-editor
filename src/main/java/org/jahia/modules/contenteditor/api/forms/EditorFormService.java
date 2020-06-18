@@ -43,7 +43,6 @@
  */
 package org.jahia.modules.contenteditor.api.forms;
 
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -75,15 +74,4 @@ public interface EditorFormService {
      * @throws EditorFormException if there was an error during the generation of the form.
      */
     EditorForm getEditForm(Locale uiLocale, Locale locale, String uuidOrPath) throws EditorFormException;
-
-    /**
-     * Retrieve field constraints for given node
-     * @param uuidOrPath UUID or path of the node path of the node to be edited.
-     * @param fieldName The field name
-     * @param uiLocale The locale used to display the labels
-     * @param locale The locale used to get nodes data
-     * @return field constraints
-     * @throws EditorFormException if there was an error when processing the node data
-     */
-    List<EditorFormFieldValueConstraint> getFieldConstraints(String uuidOrPath, String fieldName, Locale uiLocale, Locale locale) throws EditorFormException;
 }
