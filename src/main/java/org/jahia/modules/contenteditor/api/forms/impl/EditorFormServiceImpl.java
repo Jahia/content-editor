@@ -135,6 +135,25 @@ public class EditorFormServiceImpl implements EditorFormService {
         }
     }
 
+    @Override
+    public List<EditorFormFieldValueConstraint> getFieldConstraints(String uuidOrPath, String nodeType, String fieldName, Locale uiLocale, Locale locale) throws EditorFormException {
+        try {
+            JCRNodeWrapper node = resolveNodeFromPathorUUID(uuidOrPath);
+            ExtendedPropertyDefinition itemDefinition = NodeTypeRegistry.getInstance().getNodeType(nodeType).getPropertyDefinition(fieldName);
+
+            if (itemDefinition != null) {
+                EditorFormField editorFormField = generateEditorFormField(itemDefinition, node, node.getParent(), uiLocale, locale, 0.0);
+                editorFormField = mergeWithStaticFormField(nodeType, editorFormField);
+
+                return getValueConstraints(nodeType, editorFormField, node, node.getParent(), uiLocale);
+            }
+
+            return Collections.emptyList();
+        } catch (RepositoryException e) {
+            throw new EditorFormException("Error while building field constraints for node: " + uuidOrPath + " and node type : " + nodeType + " and field name: " + fieldName, e);
+        }
+    }
+
     private JCRNodeWrapper resolveNodeFromPathorUUID(String uuidOrPath) throws RepositoryException {
         if (StringUtils.startsWith(uuidOrPath, "/")) {
             return getSession().getNode(uuidOrPath);
@@ -358,6 +377,21 @@ public class EditorFormServiceImpl implements EditorFormService {
             mergedEditorFormFieldSet = mergedEditorFormFieldSet.mergeWith(staticEditorFormFieldSet);
         }
         return mergedEditorFormFieldSet;
+    }
+
+    private EditorFormField mergeWithStaticFormField(String nodeType, EditorFormField editorFormField) {
+        SortedSet<EditorFormFieldSet> staticEditorFormFieldSets = staticDefinitionsRegistry.getFormFieldSets(nodeType);
+
+        for (EditorFormFieldSet fieldSet : (staticEditorFormFieldSets == null ? Collections.<EditorFormFieldSet>emptyList() : staticEditorFormFieldSets)) {
+            for (EditorFormField field : fieldSet.getEditorFormFields()) {
+                if (field.getName().equals(editorFormField.getName())) {
+                    editorFormField = editorFormField.mergeWith(field);
+                    break;
+                }
+            }
+        }
+
+        return editorFormField;
     }
 
     private EditorFormFieldSet generateEditorFormFieldSet(Set<String> processedProperties, ExtendedNodeType nodeType, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale locale, Locale uiLocale, Boolean removed, Boolean dynamic, Boolean activated, Boolean displayed) throws RepositoryException {

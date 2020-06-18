@@ -1,0 +1,28 @@
+{
+  "name": "jnt:simpleRank",
+  "priority": 1.0,
+  "fields": [
+    {
+      "name": "prop3",
+      "target": {
+        "rank": 0
+      },
+      "valueConstraints": [
+        {
+          "displayValue": "First constraint",
+          "value": {
+            "type": "String",
+            "value": "firstConstraint"
+          }
+        },
+        {
+          "displayValue": "Second constraint",
+          "value": {
+            "type": "String",
+            "value": "secondConstraint"
+          }
+        }
+      ]
+    }
+  ]
+}

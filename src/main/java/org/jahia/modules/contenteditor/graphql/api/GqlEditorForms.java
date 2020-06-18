@@ -49,6 +49,7 @@ import org.jahia.api.Constants;
 import org.jahia.data.templates.JahiaTemplatesPackage;
 import org.jahia.modules.contenteditor.api.forms.EditorForm;
 import org.jahia.modules.contenteditor.api.forms.EditorFormException;
+import org.jahia.modules.contenteditor.api.forms.EditorFormFieldValueConstraint;
 import org.jahia.modules.contenteditor.api.forms.EditorFormService;
 import org.jahia.modules.contenteditor.graphql.api.definitions.GqlNodeTypeTreeEntry;
 import org.jahia.modules.contenteditor.utils.ContentEditorUtils;
@@ -127,6 +128,37 @@ public class GqlEditorForms {
         try {
             return editorFormService.getEditForm(LocaleUtils.toLocale(uiLocale), LocaleUtils.toLocale(locale), uuidOrPath);
         } catch (EditorFormException e) {
+            throw new DataFetchingException(e);
+        }
+    }
+
+    @GraphQLField
+    @GraphQLName("fieldConstraints")
+    @GraphQLDescription("Get field constraints")
+    public List<EditorFormFieldValueConstraint> getFieldConstraints(
+        @GraphQLName("uuidOrPath")
+        @GraphQLNonNull
+        @GraphQLDescription("UUID or path of an existing node under with the new content will be created.")
+            String uuidOrPath,
+        @GraphQLName("nodeType")
+        @GraphQLNonNull
+        @GraphQLDescription("A string representation of node type")
+            String nodeType,
+        @GraphQLName("fieldName")
+        @GraphQLNonNull
+        @GraphQLDescription("A string representation of field name")
+            String fieldName,
+        @GraphQLName("uiLocale")
+        @GraphQLNonNull
+        @GraphQLDescription("A string representation of a locale, in IETF BCP 47 language tag format, ie en_US, en, fr, fr_CH, ...")
+            String uiLocale,
+        @GraphQLName("locale")
+        @GraphQLNonNull
+        @GraphQLDescription("A string representation of a locale, in IETF BCP 47 language tag format, ie en_US, en, fr, fr_CH, ...")
+            String locale) {
+        try {
+            return editorFormService.getFieldConstraints(uuidOrPath, nodeType, fieldName, LocaleUtils.toLocale(uiLocale), LocaleUtils.toLocale(locale));
+        } catch (Exception e) {
             throw new DataFetchingException(e);
         }
     }

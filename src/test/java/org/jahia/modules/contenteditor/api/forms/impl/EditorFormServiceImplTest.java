@@ -90,7 +90,6 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         ((EditorFormServiceImpl) editorFormService).setStaticDefinitionsRegistry(staticDefinitionsRegistry);
 
 
-
         // init sessions
         session = JCRSessionFactory.getInstance().getCurrentSystemSession(Constants.EDIT_WORKSPACE, Locale.ENGLISH, Locale.ENGLISH);
 
@@ -438,6 +437,20 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         session.save();
     }
 
+    @Test
+    public void testAddFieldWithValueConstraintOverride1() throws Exception {
+        List<EditorFormFieldValueConstraint> fieldValueConstraints = editorFormService.getFieldConstraints(textNode.getPath(), "jnt:simpleRank", "prop3", Locale.ENGLISH, Locale.ENGLISH);
+
+        Assert.isTrue(fieldValueConstraints.isEmpty(), "The field value constraints must be empty");
+
+        staticDefinitionsRegistry.readEditorFormFieldSet(getResource("META-INF/jahia-content-editor-forms/overrides/fieldSets/jnt_simple_rank_override_field_value_constraints.json"));
+        fieldValueConstraints = editorFormService.getFieldConstraints(textNode.getPath(), "jnt:simpleRank", "prop3", Locale.ENGLISH, Locale.ENGLISH);
+
+        Assert.isTrue(fieldValueConstraints.size() == 2, "The field value constraints must contains two values");
+        Assert.isTrue(fieldValueConstraints.get(0).getDisplayValue().equals("First constraint"), "according to the definition override in jnt_simple_rank_override_field_value_constraints.json");
+        Assert.isTrue(fieldValueConstraints.get(1).getDisplayValue().equals("Second constraint"), "according to the definition override in jnt_simple_rank_override_field_value_constraints.json");
+    }
+
     private URL getResource(String s) {
         return getClass().getClassLoader().getResource(s);
     }
@@ -548,7 +561,7 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
 
     private List<EditorFormFieldValueConstraint> getValueConstraints(final EditorForm form, final String searchedSection,
                                                                      final String searchedFieldSet,
-                                                                     final String searchedField){
+                                                                     final String searchedField) {
         EditorFormField field = getField(form, searchedSection, searchedFieldSet, searchedField);
         return field.getValueConstraints();
     }
