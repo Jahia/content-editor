@@ -7,7 +7,7 @@ import {Constants} from './ContentEditor.constants';
 import {useTranslation} from 'react-i18next';
 import {compose} from '~/utils';
 import ApolloCacheFlushOnGWTSave from '~/Edit/engineTabs/ApolloCacheFlushOnGWTSave';
-
+import {ContentEditorSectionContextProvider} from '~/ContentEditorSection/ContentEditorSection.context';
 export const ContentEditorContext = React.createContext({});
 
 export const useContentEditorContext = () => useContext(ContentEditorContext);
@@ -64,7 +64,6 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
                 ...siteInfoResult.siteInfo,
                 languages: siteInfoResult.siteInfo.languages.filter(language => language.activeInEdit)
             },
-            sections,
             nodeData,
             details,
             technicalInfo,
@@ -77,8 +76,10 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
 
         return (
             <ContentEditorContext.Provider value={editorContext}>
-                <ApolloCacheFlushOnGWTSave/>
-                <Children {...props}/>
+                <ContentEditorSectionContextProvider formSections={sections}>
+                    <ApolloCacheFlushOnGWTSave/>
+                    <Children {...props}/>
+                </ContentEditorSectionContextProvider>
             </ContentEditorContext.Provider>
         );
     };

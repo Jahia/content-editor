@@ -4,13 +4,15 @@ import {Section} from './Section';
 import {Form} from 'formik';
 
 import {useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import {SectionsPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {ChildrenSection} from './ChildrenSection';
 import {useTranslation} from 'react-i18next';
 import {Constants} from '~/ContentEditor.constants';
 
 const FormBuilder = ({mode}) => {
-    const {sections, nodeData} = useContentEditorContext();
+    const {nodeData} = useContentEditorContext();
+    const {sections} = useContentEditorSectionContext();
     const {t} = useTranslation();
 
     const isOrderingSection = !nodeData.isPage && nodeData.primaryNodeType.hasOrderableChildNodes;

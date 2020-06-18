@@ -5,6 +5,8 @@ import EditPanel from '~/EditPanel';
 import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import {useContentEditorConfigContext, useContentEditorContext, withContentEditorDataContextProvider} from '~/ContentEditor.context';
+import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
+
 import {validate} from '~/Validation/validation';
 import {createNode} from './CreateForm/create.request';
 import {FormQuery} from './CreateForm/createForm.gql-queries';
@@ -20,7 +22,8 @@ const CreateCmp = ({
 }) => {
     const {t} = useTranslation();
     const contentEditorConfigContext = useContentEditorConfigContext();
-    const {nodeData, sections, formQueryParams, initialValues, title} = useContentEditorContext();
+    const {nodeData, formQueryParams, initialValues, title} = useContentEditorContext();
+    const {sections} = useContentEditorSectionContext();
 
     const handleSubmit = (values, actions) => {
         createNode({

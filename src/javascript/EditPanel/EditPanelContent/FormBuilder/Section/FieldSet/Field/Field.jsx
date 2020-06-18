@@ -13,6 +13,7 @@ import {showChipField} from '~/EditPanel/WorkInProgress/WorkInProgress.utils';
 import {Constants} from '~/ContentEditor.constants';
 import {buildFlatFieldObject} from './field.utils';
 import {registry} from '@jahia/ui-extender';
+import contentEditorHelper from '~/ContentEditor.helper';
 
 let styles = theme => {
     const common = {
@@ -58,8 +59,9 @@ let styles = theme => {
     };
 };
 
-export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, siteInfo, actionContext, formik: {errors, touched, values}}) => {
+export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, siteInfo, actionContext, formik}) => {
     const {t} = useTranslation();
+    const {errors, touched, values} = formik;
     const contextualMenu = useRef(null);
     const isMultipleField = field.multiple && !selectorType.supportMultiple;
     const seleniumFieldType = isMultipleField ? `GenericMultipleField${selectorType.key}` : (field.multiple ? `Multiple${selectorType.key}` : selectorType.key);
@@ -74,7 +76,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
         if (registeredOnChanges && registeredOnChanges.length > 0) {
             registeredOnChanges.forEach(registeredOnChange => {
                 if (registeredOnChange.onChange) {
-                    registeredOnChange.onChange(previousValue, currentValue, field, inputContext.editorContext, selectorType);
+                    registeredOnChange.onChange(previousValue, currentValue, field, {...inputContext.editorContext, formik}, selectorType, contentEditorHelper);
                 }
             });
         }
@@ -86,6 +88,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
              data-sel-content-editor-field-type={seleniumFieldType}
              data-sel-content-editor-field-readonly={field.readOnly}
         >
+
             <Grid
                 container
                 wrap="nowrap"
