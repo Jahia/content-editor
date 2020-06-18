@@ -43,6 +43,7 @@
  */
 package org.jahia.modules.contenteditor.api.forms.impl;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jahia.api.Constants;
 import org.jahia.modules.contenteditor.api.forms.*;
@@ -451,8 +452,8 @@ public class EditorFormServiceImpl implements EditorFormService {
             // Use item definition to resolve labels. (same way as ContentDefinitionHelper.getGWTJahiaNodeType())
             Optional<ExtendedItemDefinition> optionalItem = extendedNodeType.getItems().stream().filter(item -> StringUtils.equals(item.getName(), propertyDefinition.getName())).findAny();
             ExtendedItemDefinition item = optionalItem.isPresent() ? optionalItem.get() : propertyDefinition;
-            String propertyLabel = item.getLabel(uiLocale, extendedNodeType);
-            String propertyDescription = item.getTooltip(uiLocale, extendedNodeType);
+            String propertyLabel = StringEscapeUtils.unescapeHtml(item.getLabel(uiLocale, extendedNodeType));
+            String propertyDescription = StringEscapeUtils.unescapeHtml(item.getTooltip(uiLocale, extendedNodeType));
 
             String key = item.getResourceBundleKey() + ".constraint.error.message";
             if (item.getDeclaringNodeType().getTemplatePackage() != null) {
