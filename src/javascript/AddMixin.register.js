@@ -1,20 +1,38 @@
 
+function getMixinList(field, fieldValue) {
+    let mixins = [];
+    if (field.multiple) {
+        fieldValue.forEach(value => {
+            const property = value?.properties.find(entry => entry.name === 'addMixin');
+            const mixin = property ? property.value : null;
+            mixins.push(mixin);
+        });
+    } else {
+        const property = fieldValue?.properties.find(entry => entry.name === 'addMixin');
+        const mixin = property ? property.value : null;
+        mixins.push(mixin);
+    }
+
+    return mixins;
+}
+
 export const registerAddMixin = registry => {
     registry.add('selectorType.onChange', 'addMixinChoicelist', {
         targets: ['Choicelist'],
         onChange: (previousValue, currentValue, field, editorContext, selectorType, helper) => {
-            const property = previousValue?.properties.find(entry => entry.name === 'addMixin');
-            const previousMixin = property ? property.value : null;
             let editorSection = editorContext.sections;
-            if (previousMixin) {
-                editorSection = helper.moveMixinToInitialFieldset(previousMixin, editorContext.sections, editorContext.formik);
-            }
 
-            const currentValueProperty = currentValue?.properties.find(entry => entry.name === 'addMixin');
-            const addedMixin = currentValueProperty?.value;
-            if (addedMixin) {
-                editorSection = helper.moveMixinToTargetFieldset(addedMixin, field.nodeType, editorSection, field, editorContext.formik);
-            }
+            let oldMixins = previousValue ? getMixinList(field, previousValue) : [];
+
+            oldMixins.forEach(mixin => {
+                editorSection = helper.moveMixinToInitialFieldset(mixin, editorSection, editorContext.formik);
+            });
+
+            let newMixins = currentValue ? getMixinList(field, currentValue) : [];
+
+            newMixins.forEach(mixin => {
+                editorSection = helper.moveMixinToTargetFieldset(mixin, field.nodeType, editorSection, field, editorContext.formik);
+            });
 
             editorContext.setSections(editorSection);
         }
