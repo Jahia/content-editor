@@ -1,6 +1,5 @@
 import React from 'react';
 import {Picker} from '../PickerContainer';
-import {pickerActions} from '../actions';
 import {InsertDriveFile} from '@material-ui/icons';
 import {encodeJCRPath} from '~/EditPanel/EditPanel.utils';
 import {useQuery} from '@apollo/react-hooks';
@@ -35,7 +34,6 @@ const usePickerInputData = (uuid, editorContext) => {
 export const ContentPickerSelectorType = {
     cmp: Picker,
     key: 'ContentPicker',
-    actions: pickerActions,
     supportMultiple: false,
     pickerInput: {
         emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.addContent',

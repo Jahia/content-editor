@@ -1,31 +1,32 @@
-import {SelectorTypes} from './SelectorTypes';
+import {registerSelectorTypes} from './SelectorTypes';
 import {resolveSelectorType} from './SelectorTypes.utils';
-import Text from './Text';
-import TextAreaField from './TextArea';
+import {registry} from '@jahia/ui-extender';
+import Category from './Category';
+import {Picker} from './Picker/PickerContainer';
 
 describe('Selector Types', () => {
     describe('resolveSelectorType', () => {
-        // Inject dummy selector
-        SelectorTypes.dummy = {cmp: Text, key: 'Dummy', supportMultiple: false};
-        SelectorTypes.multipleDummy = {cmp: TextAreaField, key: 'MultipleDummy', supportMultiple: true};
+        registerSelectorTypes(registry);
+
         it('should return the proper selector types', () => {
-            const selector = resolveSelectorType({selectorType: 'dummy'});
-            expect(selector.cmp).toEqual(Text);
+            const selector = resolveSelectorType({selectorType: 'Category'});
+            expect(selector.cmp).toEqual(Category);
+            expect(selector.supportMultiple).toEqual(true);
+            expect(selector.key).toEqual('Category');
         });
 
-        it('should return the unset multiple selector types', () => {
-            const selector = resolveSelectorType({selectorType: 'dummy', multiple: true});
-            expect(selector.cmp).toEqual(Text);
-        });
+        it('should return the proper selector types, when selector type is using resolver', () => {
+            let selector = resolveSelectorType({selectorType: 'Picker', selectorOptions: [{name: 'type', value: 'file'}]});
+            expect(selector.cmp).toEqual(Picker);
+            expect(selector.key).toEqual('ContentPicker');
 
-        it('should return the proper multiple selector types', () => {
-            const selector = resolveSelectorType({selectorType: 'multipleDummy'});
-            expect(selector.cmp).toEqual(TextAreaField);
-        });
+            selector = resolveSelectorType({selectorType: 'Picker', selectorOptions: [{name: 'type', value: 'editorial'}]});
+            expect(selector.cmp).toEqual(Picker);
+            expect(selector.key).toEqual('ContentPicker');
 
-        it('should return the proper multiple selector types', () => {
-            const selector = resolveSelectorType({selectorType: 'multipleDummy', multiple: true});
-            expect(selector.cmp).toEqual(TextAreaField);
+            selector = resolveSelectorType({selectorType: 'Picker', selectorOptions: [{name: 'type', value: 'image'}]});
+            expect(selector.cmp).toEqual(Picker);
+            expect(selector.key).toEqual('MediaPicker');
         });
     });
 });
