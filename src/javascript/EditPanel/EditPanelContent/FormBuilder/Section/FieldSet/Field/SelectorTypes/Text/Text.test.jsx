@@ -3,17 +3,23 @@ import {shallow} from '@jahia/test-framework';
 
 import {TextCmp} from './Text';
 
+let useEffect;
+
 jest.mock('react', () => {
     return {
         ...jest.requireActual('react'),
-        useEffect: cb => cb()
+        useEffect: cb => {
+            useEffect = cb();
+        }
     };
 });
 
 describe('Text component', () => {
     let props;
+    const onDestroy = jest.fn();
     beforeEach(() => {
         props = {
+            onDestroy,
             onChange: jest.fn(),
             onInit: jest.fn(),
             id: 'toto[1]',
@@ -36,6 +42,12 @@ describe('Text component', () => {
         expect(cmp.props().inputProps['aria-labelledby']).toBe('toto-label');
     });
 
+    it('should onDestroy called when element detached the element', () => {
+        const cmp = shallow(<TextCmp {...props}/>);
+        cmp.unmount();
+        useEffect();
+        expect(onDestroy).toHaveBeenCalled();
+    });
     it('should contain one Input component', () => {
         const cmp = shallow(<TextCmp {...props}/>);
         expect(cmp.find('Input').length).toBe(1);

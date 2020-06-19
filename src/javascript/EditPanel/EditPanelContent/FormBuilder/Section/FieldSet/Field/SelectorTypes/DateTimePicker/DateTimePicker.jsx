@@ -11,7 +11,7 @@ const variantMapper = {
     DateTimePicker: 'datetime'
 };
 
-export const DateTimePicker = ({id, field, value, editorContext, onChange, onInit}) => {
+export const DateTimePicker = ({id, field, value, editorContext, onChange, onInit, onDestroy}) => {
     const variant = variantMapper[field.selectorType];
     const isDateTime = variant === 'datetime';
     const disabledDays = fillDisabledDaysFromJCRConstraints(field, isDateTime);
@@ -23,7 +23,8 @@ export const DateTimePicker = ({id, field, value, editorContext, onChange, onIni
 
     useEffect(() => {
         onInit(value);
-    }, [value]);
+        return () => onDestroy();
+    }, []);
 
     return (
         <DatePickerInput
@@ -58,5 +59,6 @@ DateTimePicker.propTypes = {
     field: FieldPropTypes.isRequired,
     value: PropTypes.string,
     onChange: PropTypes.func.isRequired,
-    onInit: PropTypes.func.isRequired
+    onInit: PropTypes.func.isRequired,
+    onDestroy: PropTypes.func.isRequired
 };

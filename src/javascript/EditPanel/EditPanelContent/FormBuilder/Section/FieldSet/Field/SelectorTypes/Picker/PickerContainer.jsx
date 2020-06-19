@@ -8,7 +8,7 @@ import {ReferenceCard} from '~/DesignSystem/ReferenceCard';
 import {extractConfigs} from './Picker.utils';
 import {PickerDialog} from './PickerDialog';
 
-const PickerCmp = ({field, value, editorContext, setActionContext, onChange, onInit}) => {
+const PickerCmp = ({field, value, editorContext, setActionContext, onChange, onInit, onDestroy}) => {
     const {t} = useTranslation();
     const {pickerConfig, nodeTreeConfigs} = extractConfigs(field, editorContext, t);
     const [isDialogOpen, setDialogOpen] = useState(false);
@@ -17,9 +17,14 @@ const PickerCmp = ({field, value, editorContext, setActionContext, onChange, onI
     // Init data
     useEffect(() => {
         if (fieldData) {
-            onInit(_buildOnChangeData(fieldData));
+            // Condition added to get the test run properly.
+            onInit(_buildOnChangeData && _buildOnChangeData(fieldData));
         }
 
+        return () => fieldData && onDestroy(transformOnChangePreviousValue);
+    }, [fieldData]);
+
+    useEffect(() => {
         if (!field.multiple) {
             setActionContext(prevActionContext => ({
                 open: setDialogOpen,
@@ -106,7 +111,8 @@ PickerCmp.propTypes = {
     field: FieldPropTypes.isRequired,
     setActionContext: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
-    onInit: PropTypes.func.isRequired
+    onInit: PropTypes.func.isRequired,
+    onDestroy: PropTypes.func.isRequired
 };
 
 export const Picker = connect(PickerCmp);
