@@ -12,7 +12,7 @@ const MultipleSelect = ({field, id, value, setActionContext, onChange, onInit, o
 
     useEffect(() => {
         onInit(findValues(value));
-        return () => onDestroy();
+        return () => onDestroy(findValues);
     }, []);
 
     useEffect(() => {
