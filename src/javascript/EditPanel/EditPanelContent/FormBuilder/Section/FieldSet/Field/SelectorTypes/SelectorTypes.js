@@ -3,41 +3,29 @@ import Text from './Text';
 import TextArea from './TextArea';
 import RichText from './RichText';
 import ChoiceList from './ChoiceList';
-import choiceListActions from './ChoiceList/ChoiceList.actions';
+import registerChoiceListActions from './ChoiceList/ChoiceList.actions';
 import DateTimePicker from './DateTimePicker';
 import pickerConfigs from './Picker';
 import Checkbox from './Checkbox';
 import Category from './Category';
-
-let SelectorTypes = {};
+import {registerPickerActions} from './Picker/actions';
 
 const adaptDateProperty = (field, property) => {
     return field.multiple ? property.notZonedDateValues : property.notZonedDateValue;
 };
 
-// Workaround for unit tests to avoid: "Couldn't call getPickerSelectorTypes() of undefined."
-if (pickerConfigs) {
-    SelectorTypes = {
-        Category: {cmp: Category, key: 'Category', supportMultiple: true},
-        Tag: {cmp: Tag, key: 'Tag', supportMultiple: true},
-        Text: {cmp: Text, key: 'Text', supportMultiple: false},
-        TextArea: {cmp: TextArea, key: 'TextArea', supportMultiple: false},
-        RichText: {cmp: RichText, key: 'RichText', supportMultiple: false},
-        Choicelist: {cmp: ChoiceList, key: 'Choicelist', actions: choiceListActions, supportMultiple: true},
-        DateTimePicker: {
-            cmp: DateTimePicker,
-            key: 'DateTimePicker',
-            supportMultiple: false,
-            adaptValue: adaptDateProperty
-        },
-        DatePicker: {
-            cmp: DateTimePicker,
-            key: 'DatePicker',
-            supportMultiple: false,
-            adaptValue: adaptDateProperty},
-        Checkbox: {
+export const registerSelectorTypes = registry => {
+    registry.add('selectorType', 'Category', {cmp: Category, supportMultiple: true});
+    registry.add('selectorType', 'Tag', {cmp: Tag, supportMultiple: true});
+    registry.add('selectorType', 'Text', {cmp: Text, supportMultiple: false});
+    registry.add('selectorType', 'TextArea', {cmp: TextArea, supportMultiple: false});
+    registry.add('selectorType', 'RichText', {cmp: RichText, supportMultiple: false});
+    registry.add('selectorType', 'DateTimePicker', {cmp: DateTimePicker, supportMultiple: false, adaptValue: adaptDateProperty});
+    registry.add('selectorType', 'DatePicker', {cmp: DateTimePicker, supportMultiple: false, adaptValue: adaptDateProperty});
+
+    registry.add('selectorType', 'Checkbox', {
+        selector: {
             cmp: Checkbox,
-            key: 'Checkbox',
             initValue: field => {
                 return field.mandatory && !field.multiple ? false : undefined;
             },
@@ -45,13 +33,12 @@ if (pickerConfigs) {
                 return field.multiple ? property.values.map(value => value === 'true') : property.value === 'true';
             },
             supportMultiple: false
-        },
-        ...pickerConfigs.getPickerSelectorTypes()
-    };
-}
+        }
+    });
 
-export {SelectorTypes};
+    registry.add('selectorType', 'Picker', {resolver: options => pickerConfigs.getPickerSelectorType(options)});
+    registerPickerActions(registry);
 
-export const SelectorTypeResolvers = {
-    Picker: options => pickerConfigs.getPickerSelectorType(options)
+    registry.add('selectorType', 'Choicelist', {cmp: ChoiceList, supportMultiple: true});
+    registerChoiceListActions(registry);
 };

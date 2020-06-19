@@ -74,38 +74,33 @@ const treeConfigs = {
     }
 };
 
-const pickerSelectorTypes = {
-    ContentPicker: ContentPickerSelectorType,
-    MediaPicker: MediaPickerSelectorType
-};
-
 const pickerConfigs = {
     image: {
-        picker: pickerSelectorTypes.MediaPicker,
+        picker: MediaPickerSelectorType,
         treeConfigs: [treeConfigs.files],
         searchSelectorType: 'jmix:image',
         selectableTypesTable: ['jmix:image']
     },
     folder: {
-        picker: pickerSelectorTypes.ContentPicker,
+        picker: ContentPickerSelectorType,
         treeConfigs: [treeConfigs.files],
         searchSelectorType: 'jnt:folder',
         selectableTypesTable: ['jnt:folder']
     },
     contentfolder: {
-        picker: pickerSelectorTypes.ContentPicker,
+        picker: ContentPickerSelectorType,
         treeConfigs: [treeConfigs.content],
         searchSelectorType: 'jnt:contentFolder',
         selectableTypesTable: ['jnt:contentFolder']
     },
     page: {
-        picker: pickerSelectorTypes.ContentPicker,
+        picker: ContentPickerSelectorType,
         treeConfigs: [treeConfigs.pages],
         searchSelectorType: 'jnt:page',
         selectableTypesTable: ['jnt:page']
     },
     editorial: {
-        picker: pickerSelectorTypes.ContentPicker,
+        picker: ContentPickerSelectorType,
         treeConfigs: [treeConfigs.allContents],
         searchSelectorType: 'jmix:searchable',
         selectableTypesTable: ['jmix:editorialContent', 'jnt:page', 'jnt:contentList', 'jnt:contentFolder', 'nt:folder', 'jmix:siteContent']
@@ -117,38 +112,35 @@ const pickerConfigs = {
         };
     },
     file: {
-        picker: pickerSelectorTypes.ContentPicker,
+        picker: ContentPickerSelectorType,
         treeConfigs: [treeConfigs.files],
         searchSelectorType: 'jnt:file',
         selectableTypesTable: ['jnt:file']
     },
     user: {
-        picker: pickerSelectorTypes.ContentPicker,
+        picker: ContentPickerSelectorType,
         treeConfigs: [treeConfigs.users, treeConfigs.siteUsers],
         searchSelectorType: 'jnt:user',
         selectableTypesTable: ['jnt:user'],
         displayTree: false
     },
     usergroup: {
-        picker: pickerSelectorTypes.ContentPicker,
+        picker: ContentPickerSelectorType,
         treeConfigs: [treeConfigs.users, treeConfigs.siteUsers, treeConfigs.groups, treeConfigs.siteGroups],
         searchSelectorType: 'jnt:user',
         selectableTypesTable: ['jnt:user', 'jnt:group']
     },
     category: {
-        picker: pickerSelectorTypes.ContentPicker,
+        picker: ContentPickerSelectorType,
         treeConfigs: [treeConfigs.categories],
         searchSelectorType: 'jnt:category',
         selectableTypesTable: ['jnt:category']
     },
     site: {
-        picker: pickerSelectorTypes.ContentPicker,
+        picker: ContentPickerSelectorType,
         treeConfigs: [treeConfigs.sites],
         searchSelectorType: 'jnt:virtualsite',
         selectableTypesTable: ['jnt:virtualsite']
-    },
-    getPickerSelectorTypes() {
-        return pickerSelectorTypes;
     },
     getPickerSelectorType(options) {
         return this[this._getPickerType(options)].picker;

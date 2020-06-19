@@ -5,44 +5,44 @@ import {unsetFieldAction} from '../../../FieldsActions/unsetField.action';
 import {openInTabAction} from './openInTab.action';
 import {replaceAction} from './replace.action';
 
-export const pickerActions = actionsRegistry => {
-    actionsRegistry.add('action', 'ContentPickerMenu', actionsRegistry.get('action', 'menuAction'), {
+export const registerPickerActions = registry => {
+    registry.add('action', 'ContentPickerMenu', registry.get('action', 'menuAction'), {
         buttonIcon: <DotsVertical/>,
         buttonLabel: 'label.contentEditor.edit.action.fieldMoreOptions',
         menuTarget: 'ContentPickerActions',
         showIcons: true
     });
 
-    actionsRegistry.add('action', 'MediaPickerMenu', actionsRegistry.get('action', 'menuAction'), {
+    registry.add('action', 'MediaPickerMenu', registry.get('action', 'menuAction'), {
         buttonIcon: <DotsVertical/>,
         buttonLabel: 'label.contentEditor.edit.action.fieldMoreOptions',
         menuTarget: 'MediaPickerActions',
         showIcons: true
     });
 
-    actionsRegistry.add('action', 'replaceContent', replaceAction, {
+    registry.add('action', 'replaceContent', replaceAction, {
         buttonIcon: <Edit/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.fields.actions.replace',
         targets: ['ContentPickerActions:1', 'MediaPickerActions:1']
     });
 
-    actionsRegistry.add('action', 'onpenInNewTab', openInTabAction, {
+    registry.add('action', 'onpenInNewTab', openInTabAction, {
         buttonIcon: <Launch/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.fields.actions.newTab',
         targets: ['ContentPickerActions:2', 'MediaPickerActions:2']
     });
 
-    actionsRegistry.add('action', 'unsetFieldActionPicker', unsetFieldAction, {
+    registry.add('action', 'unsetFieldActionPicker', unsetFieldAction, {
         buttonIcon: <Cancel/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.fields.actions.clear',
         targets: ['ContentPickerActions:3', 'MediaPickerActions:3']
     });
 
     const fileUploadJContentAction = {
-        ...actionsRegistry.get('action', 'fileUpload'),
+        ...registry.get('action', 'fileUpload'),
         targets: null // Remove target to avoid entry duplication
     };
-    actionsRegistry.add('action', 'upload', fileUploadJContentAction, {
+    registry.add('action', 'upload', fileUploadJContentAction, {
         buttonIcon: <FileUpload/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.fileUploadBtn',
         targets: ['pickerDialogAction:0'],

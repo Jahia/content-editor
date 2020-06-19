@@ -1,14 +1,13 @@
-import {SelectorTypes, SelectorTypeResolvers} from './SelectorTypes';
+import {registry} from '@jahia/ui-extender';
 
 export const resolveSelectorType = ({selectorType, selectorOptions}) => {
-    let selector;
-    if (SelectorTypes[selectorType]) {
-        selector = SelectorTypes[selectorType];
-    }
+    let selector = registry.get('selectorType', selectorType);
+    if (selector) {
+        if (selector.resolver) {
+            return selector.resolver(selectorOptions);
+        }
 
-    if (!selector && SelectorTypeResolvers[selectorType]) {
-        selector = SelectorTypeResolvers[selectorType](selectorOptions);
+        selector.key = selectorType;
+        return selector;
     }
-
-    return selector;
 };
