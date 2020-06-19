@@ -24,16 +24,14 @@ export const registerSelectorTypes = registry => {
     registry.add('selectorType', 'DatePicker', {cmp: DateTimePicker, supportMultiple: false, adaptValue: adaptDateProperty});
 
     registry.add('selectorType', 'Checkbox', {
-        selector: {
-            cmp: Checkbox,
-            initValue: field => {
-                return field.mandatory && !field.multiple ? false : undefined;
-            },
-            adaptValue: (field, property) => {
-                return field.multiple ? property.values.map(value => value === 'true') : property.value === 'true';
-            },
-            supportMultiple: false
-        }
+        cmp: Checkbox,
+        initValue: field => {
+            return field.mandatory && !field.multiple ? false : undefined;
+        },
+        adaptValue: (field, property) => {
+            return field.multiple ? property.values.map(value => value === 'true') : property.value === 'true';
+        },
+        supportMultiple: false
     });
 
     registry.add('selectorType', 'Picker', {resolver: options => pickerConfigs.getPickerSelectorType(options)});
