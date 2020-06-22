@@ -5,10 +5,11 @@ import {encodeJCRPath} from '~/EditPanel/EditPanel.utils';
 import {useQuery} from '@apollo/react-hooks';
 import {MediaPickerFilledQuery} from './MediaPicker.gql-queries';
 
-const usePickerInputData = uuid => {
+const usePickerInputData = (uuid, editorContext) => {
     const {data, error, loading} = useQuery(MediaPickerFilledQuery, {
         variables: {
             uuid: uuid || '',
+            language: editorContext.lang,
             // TODO: BACKLOG-12022 use useLazyQuery here in order to avoid this kind of needToFecth variable
             needToFetch: Boolean(uuid)
         }
@@ -25,7 +26,7 @@ const usePickerInputData = uuid => {
         url: `${
             window.contextJsParameters.contextPath
         }/files/default${encodeJCRPath(imageData.path)}?lastModified=${imageData.lastModified.value}&t=thumbnail2`,
-        name: imageData.name,
+        name: imageData.displayName,
         path: imageData.path,
         info: `${imageData.children.nodes[0].mimeType.value}${sizeInfo}`
     };
