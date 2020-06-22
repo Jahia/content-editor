@@ -16,7 +16,7 @@ function getMixinList(field, fieldValue) {
     return mixins;
 }
 
-export const registerAddMixin = registry => {
+const registerChoiceListOnChange = registry => {
     registry.add('selectorType.onChange', 'addMixinChoicelist', {
         targets: ['Choicelist'],
         onChange: (previousValue, currentValue, field, editorContext, selectorType, helper) => {
@@ -38,3 +38,5 @@ export const registerAddMixin = registry => {
         }
     });
 };
+
+export default registerChoiceListOnChange;

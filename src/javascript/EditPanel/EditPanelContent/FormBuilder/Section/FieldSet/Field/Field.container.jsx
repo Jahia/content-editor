@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import {connect} from 'formik';
 
 import {FieldPropTypes} from '~/FormDefinitions';
-import {resolveSelectorType} from './SelectorTypes/SelectorTypes.utils';
+import {resolveSelectorType} from '~/SelectorTypes';
 import {ContentEditorContext} from '~/ContentEditor.context';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import {Field} from './Field';

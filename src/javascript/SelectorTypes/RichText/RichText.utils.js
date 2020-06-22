@@ -1,5 +1,5 @@
-import pickerConfigs from '~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/Picker';
-import {getNodeTreeConfigs} from '~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/Picker/Picker.utils';
+import pickerConfigs from '~/SelectorTypes/Picker';
+import {getNodeTreeConfigs} from '~/SelectorTypes/Picker/Picker.utils';
 
 const contextPath = (window.contextJsParameters && window.contextJsParameters.contextPath) || '';
 

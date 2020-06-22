@@ -2,9 +2,9 @@ import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 
 import {dsGenericTheme} from '@jahia/design-system-kit';
-import Text from './SelectorTypes/Text/Text';
+import Text from '~/SelectorTypes/Text/Text';
 import {MultipleFieldCmp} from './MultipleField';
-import {TextAreaField} from './SelectorTypes/TextArea/TextArea';
+import {TextAreaField} from '~/SelectorTypes/TextArea/TextArea';
 
 jest.mock('react', () => {
     return {

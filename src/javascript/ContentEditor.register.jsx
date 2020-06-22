@@ -1,12 +1,11 @@
 import React from 'react';
 import {registry} from '@jahia/ui-extender';
 import {registerCEActions} from './registerCEActions';
-import {registerAddMixin} from './AddMixin.register';
 import {Constants} from '~/ContentEditor.constants';
 import ContentEditorApi from '~/Api/ContentEditor.api';
 import ContentEditorRedux from './ContentEditor.redux';
 import {ContentEditorHistoryContextProvider} from '~/ContentEditorHistory/ContentEditorHistory.context';
-import {registerSelectorTypes} from '~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes';
+import {registerSelectorTypes} from '~/SelectorTypes';
 
 registry.add('app', 'content-editor-history-context', {
     targets: ['root:2.05'],
@@ -35,8 +34,6 @@ registry.add('route', 'content-editor-create-route', {
     // eslint-disable-next-line react/prop-types
     render: ({match}) => <ContentEditorRedux uuid={match.params.parentUuid} mode={Constants.routes.baseCreateRoute} lang={match.params.lang} contentType={decodeURI(match.params.contentType)}/>
 });
-
-registerAddMixin(registry);
 
 // Register GWT Hooks
 window.top.jahiaGwtHook = {
