@@ -3,7 +3,7 @@ import {shallowWithTheme} from '@jahia/test-framework';
 
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {SingleFieldCmp} from './SingleField';
-import {TextAreaField} from './SelectorTypes/TextArea/TextArea';
+import {TextAreaField} from '~/SelectorTypes/TextArea/TextArea';
 
 jest.mock('react', () => {
     return {

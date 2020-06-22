@@ -1,4 +1,4 @@
-import {resolveSelectorType} from '~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/SelectorTypes.utils';
+import {resolveSelectorType} from '~/SelectorTypes';
 import {Constants} from '~/ContentEditor.constants';
 import {decodeSystemName} from '~/utils';
 

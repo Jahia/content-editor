@@ -1,6 +1,6 @@
 import {buildPickerContext, fillCKEditorPicker} from './RichText.utils';
 
-jest.mock('~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/Picker/Picker.utils', () => {
+jest.mock('~/SelectorTypes/Picker/Picker.utils', () => {
     return {
         getNodeTreeConfigs: () => ({thisIsANode: 'treeConfig'})
     };

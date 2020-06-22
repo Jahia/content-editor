@@ -1,7 +1,7 @@
 import {Edit, Cancel, Launch} from '@material-ui/icons';
 import {DotsVertical, FileUpload} from 'mdi-material-ui';
 import React from 'react';
-import {unsetFieldAction} from '../../../FieldsActions/unsetField.action';
+import {unsetFieldAction} from '../../actions/unsetField.action';
 import {openInTabAction} from './openInTab.action';
 import {replaceAction} from './replace.action';
 

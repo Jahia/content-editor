@@ -1,5 +1,4 @@
-import {registerSelectorTypes} from './SelectorTypes';
-import {resolveSelectorType} from './SelectorTypes.utils';
+import {registerSelectorTypes, resolveSelectorType} from './SelectorTypes';
 import {registry} from '@jahia/ui-extender';
 import Category from './Category';
 import {Picker} from './Picker/PickerContainer';

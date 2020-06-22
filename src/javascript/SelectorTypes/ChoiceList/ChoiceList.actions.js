@@ -3,7 +3,7 @@ import React from 'react';
 import {Cancel, Add} from '@material-ui/icons';
 import {DotsVertical} from 'mdi-material-ui';
 
-import {unsetFieldAction} from '../../FieldsActions/unsetField.action';
+import {unsetFieldAction} from '../actions/unsetField.action';
 import {selectAllAction} from './MultipleSelect/actions/selectAll.action';
 
 const registerChoiceListActions = registry => {

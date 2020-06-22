@@ -3,7 +3,7 @@ import {shallowWithTheme} from '@jahia/test-framework';
 
 import {Field} from './Field';
 import {dsGenericTheme} from '@jahia/design-system-kit';
-import Text from './SelectorTypes/Text/Text';
+import Text from '~/SelectorTypes/Text/Text';
 import {registry} from '@jahia/ui-extender';
 
 jest.mock('~/EditPanel/WorkInProgress/WorkInProgress.utils', () => {

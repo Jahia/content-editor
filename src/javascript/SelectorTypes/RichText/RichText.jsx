@@ -8,7 +8,7 @@ import {useQuery} from '@apollo/react-hooks';
 import {ProgressOverlay} from '@jahia/react-material';
 import {getCKEditorConfigurationPath} from './CKEditorConfiguration.gql-queries';
 import {ContentEditorContext} from '~/ContentEditor.context';
-import {PickerDialog} from '~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/SelectorTypes/Picker/PickerDialog';
+import {PickerDialog} from '~/SelectorTypes/Picker/PickerDialog';
 import {useTranslation} from 'react-i18next';
 import {buildPickerContext, fillCKEditorPicker} from './RichText.utils';
 
