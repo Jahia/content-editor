@@ -1,7 +1,7 @@
 import {Button, IconButton} from '@jahia/design-system-kit';
 import {withStyles} from '@material-ui/core';
 import {Close} from '@material-ui/icons';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import * as PropTypes from 'prop-types';
 import {compose} from '~/utils';
 import {useTranslation} from 'react-i18next';
@@ -26,6 +26,10 @@ export const MultipleFieldCmp = ({classes, inputContext, field, onChange, formik
     const {t} = useTranslation();
     const [isInit, setInit] = useState(false);
     const [data, setData] = useState(values[field.name] ? new Array(values[field.name].length) : []);
+
+    useEffect(() => {
+        return () => onChange(_mapDataForOnChange(data), undefined);
+    }, []);
 
     const _mapDataForOnChange = dataToMap => {
         return dataToMap.filter(item => item.data !== undefined).map(item => item.data);
@@ -137,6 +141,8 @@ export const MultipleFieldCmp = ({classes, inputContext, field, onChange, formik
                                                                            }}
                                                                            onInit={initData => {
                                                                                multipleFieldOnInit(initData, index);
+                                                                           }}
+                                                                           onDestroy={() => {
                                                                            }}
                                                            />
                                                        );

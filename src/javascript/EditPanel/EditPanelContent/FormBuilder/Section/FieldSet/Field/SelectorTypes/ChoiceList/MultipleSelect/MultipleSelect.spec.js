@@ -4,15 +4,28 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import MultipleSelect from './MultipleSelect';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 
+let mockUseEffect = [];
+
+jest.mock('react', () => {
+    return {
+        ...jest.requireActual('react'),
+        useEffect: cb => {
+            mockUseEffect.push(cb());
+        }
+    };
+});
+
 describe('MultipleSelect component', () => {
     let props;
     let onChange = jest.fn();
     let onInit = jest.fn();
+    const onDestroy = jest.fn();
 
     beforeEach(() => {
         props = {
             onChange,
             onInit,
+            onDestroy,
             id: 'MultipleSelect1',
             field: {
                 name: 'myOption',
@@ -45,6 +58,14 @@ describe('MultipleSelect component', () => {
         const cmp = buildComp(props);
 
         expect(cmp.props().id).toBe(props.id);
+    });
+
+    it('should onDestroy called when element detached the element', () => {
+        const cmp = buildComp(props, ['yoloooFR']);
+        cmp.unmount();
+        // Check only first useEffect called
+        mockUseEffect[0]();
+        expect(onDestroy).toHaveBeenCalled();
     });
 
     it('should display each option given', () => {

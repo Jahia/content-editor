@@ -10,8 +10,8 @@ export const registerAddMixin = registry => {
                 editorSection = helper.moveMixinToInitialFieldset(previousMixin, editorContext.sections, editorContext.formik);
             }
 
-            const currentValueProperty = currentValue.properties.find(entry => entry.name === 'addMixin');
-            const addedMixin = currentValueProperty ? currentValueProperty.value : null;
+            const currentValueProperty = currentValue?.properties.find(entry => entry.name === 'addMixin');
+            const addedMixin = currentValueProperty?.value;
             if (addedMixin) {
                 editorSection = helper.moveMixinToTargetFieldset(addedMixin, field.nodeType, editorSection, field, editorContext.formik);
             }

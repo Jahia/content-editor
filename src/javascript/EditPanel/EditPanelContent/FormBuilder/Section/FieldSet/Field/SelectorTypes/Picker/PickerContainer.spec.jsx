@@ -28,18 +28,29 @@ jest.mock('./Picker.utils', () => {
                     }
                 }
             },
-            nodeTreeConfigs: {
-
-            }
+            nodeTreeConfigs: {}
         })
+    };
+});
+
+let mockUseEffect = [];
+
+jest.mock('react', () => {
+    return {
+        ...jest.requireActual('react'),
+        useEffect: cb => {
+            mockUseEffect.push(cb());
+        }
     };
 });
 
 describe('picker', () => {
     let defaultProps;
+    const onDestroy = jest.fn();
 
     beforeEach(() => {
         defaultProps = {
+            onDestroy,
             field: {
                 displayName: 'imageid',
                 name: 'imageid',
@@ -61,6 +72,17 @@ describe('picker', () => {
             dsGenericTheme
         ).dive();
         expect(cmp.find('ReferenceCard').props().readOnly).toBe(false);
+    });
+
+    it('should onDestroy called when element detached the element', () => {
+        const cmp = shallowWithTheme(
+            <Picker {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+        cmp.unmount();
+        mockUseEffect[0]();
+        expect(onDestroy).toHaveBeenCalled();
     });
 
     it('should close the dialog by default', () => {

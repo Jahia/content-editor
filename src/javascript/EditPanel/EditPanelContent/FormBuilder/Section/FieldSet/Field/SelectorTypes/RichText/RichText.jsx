@@ -16,15 +16,15 @@ function loadOption(selectorOptions, name) {
     return selectorOptions && selectorOptions.find(option => option.name === name);
 }
 
-export const RichTextCmp = ({field, id, value, onChange, onInit}) => {
+export const RichTextCmp = ({field, id, value, onChange, onInit, onDestroy}) => {
     const {t} = useTranslation();
     const [picker, setPicker] = useState(false);
+
     useEffect(() => {
         CKEditor.editorUrl = window.CKEDITOR_BASEPATH + 'ckeditor.js';
-    });
-    useEffect(() => {
         onInit(value);
-    }, [value]);
+        return () => onDestroy();
+    }, []);
 
     const editorContext = useContext(ContentEditorContext);
     const {data, error, loading} = useQuery(
@@ -133,7 +133,8 @@ RichTextCmp.propTypes = {
     value: PropTypes.string,
     field: FieldPropTypes.isRequired,
     onChange: PropTypes.func.isRequired,
-    onInit: PropTypes.func.isRequired
+    onInit: PropTypes.func.isRequired,
+    onDestroy: PropTypes.func.isRequired
 };
 
 const RichText = RichTextCmp;

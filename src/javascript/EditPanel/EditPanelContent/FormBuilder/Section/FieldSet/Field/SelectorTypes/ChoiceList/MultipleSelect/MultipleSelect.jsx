@@ -3,7 +3,7 @@ import {MultipleInput} from '~/DesignSystem/MultipleInput';
 import PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 
-const MultipleSelect = ({field, id, value, setActionContext, onChange, onInit}) => {
+const MultipleSelect = ({field, id, value, setActionContext, onChange, onInit, onDestroy}) => {
     const findValues = value => field.valueConstraints.filter(item => value?.includes(item.value.string));
 
     const multipleSelectOnChange = newValues => {
@@ -12,6 +12,10 @@ const MultipleSelect = ({field, id, value, setActionContext, onChange, onInit}) 
 
     useEffect(() => {
         onInit(findValues(value));
+        return () => onDestroy();
+    }, []);
+
+    useEffect(() => {
         setActionContext(prevActionContext => ({
             initialized: true,
             contextHasChange: !prevActionContext.initialized ||
@@ -46,7 +50,8 @@ MultipleSelect.propTypes = {
     value: PropTypes.arrayOf(PropTypes.string),
     setActionContext: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
-    onInit: PropTypes.func.isRequired
+    onInit: PropTypes.func.isRequired,
+    onDestroy: PropTypes.func.isRequired
 };
 
 export default MultipleSelect;

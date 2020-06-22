@@ -4,14 +4,27 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {SingleSelectCmp} from './SingleSelect';
 
+let mockUseEffect = [];
+
+jest.mock('react', () => {
+    return {
+        ...jest.requireActual('react'),
+        useEffect: cb => {
+            mockUseEffect.push(cb());
+        }
+    };
+});
+
 describe('SingleSelect component', () => {
     let props;
     let onChange = jest.fn();
     let onInit = jest.fn();
+    const onDestroy = jest.fn();
     beforeEach(() => {
         props = {
             onChange,
             onInit,
+            onDestroy,
             classes: {
                 selectField: ''
             },
@@ -40,6 +53,13 @@ describe('SingleSelect component', () => {
     it('should bind id correctly', () => {
         const cmp = buildComp(props, 'Yolooo');
         expect(cmp.props().inputProps.id).toBe(props.id);
+    });
+
+    it('should onDestroy called when element detached the element', () => {
+        const cmp = buildComp(props, 'Yolooo');
+        cmp.unmount();
+        mockUseEffect[0]();
+        expect(onDestroy).toHaveBeenCalled();
     });
 
     it('should display each option given', () => {

@@ -18,11 +18,15 @@ const styles = theme => ({
     }
 });
 
-export const SingleSelectCmp = ({classes, field, value, id, setActionContext, onChange, onInit}) => {
+export const SingleSelectCmp = ({classes, field, value, id, setActionContext, onChange, onInit, onDestroy}) => {
     const singleSelectOnChange = newValue => field.valueConstraints.find(item => item.value.string === newValue);
 
     useEffect(() => {
         onInit(singleSelectOnChange(value));
+        return () => onDestroy(singleSelectOnChange);
+    }, []);
+
+    useEffect(() => {
         setActionContext(prevActionContext => ({
             initialized: true,
             contextHasChange: !prevActionContext.initialized ||
@@ -66,7 +70,8 @@ SingleSelectCmp.propTypes = {
     classes: PropTypes.object.isRequired,
     setActionContext: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
-    onInit: PropTypes.func.isRequired
+    onInit: PropTypes.func.isRequired,
+    onDestroy: PropTypes.func.isRequired
 };
 
 const SingleSelect = withStyles(styles)(SingleSelectCmp);

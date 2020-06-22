@@ -17,10 +17,14 @@ jest.mock('@apollo/react-hooks', () => {
     };
 });
 
+let useEffect;
+
 jest.mock('react', () => {
     return {
         ...jest.requireActual('react'),
-        useEffect: cb => cb()
+        useEffect: cb => {
+            useEffect = cb();
+        }
     };
 });
 
@@ -28,11 +32,13 @@ describe('Category component', () => {
     let props;
     const onChange = jest.fn();
     const onInit = jest.fn();
+    const onDestroy = jest.fn();
 
     beforeEach(() => {
         props = {
             onChange,
             onInit,
+            onDestroy,
             id: 'Category',
             field: {
                 displayName: 'Categories',
@@ -88,6 +94,12 @@ describe('Category component', () => {
     it('should onInit called when render the element', () => {
         buildComp(props);
         expect(onInit).toHaveBeenCalled();
+    });
+
+    it('should onDestroy called when element detached the element', () => {
+        buildComp(props).unmount();
+        useEffect();
+        expect(onDestroy).toHaveBeenCalled();
     });
 
     it('should onChange called when modify an element', () => {

@@ -8,7 +8,7 @@ import {useApolloClient} from '@apollo/react-hooks';
 import {getSuggestionsTagsQuery} from './Tag.gql-queries';
 import {useContentEditorContext} from '~/ContentEditor.context';
 
-const Tag = ({field, value, id, onChange, onInit}) => {
+const Tag = ({field, value, id, onChange, onInit, onDestroy}) => {
     const {t} = useTranslation();
     const client = useApolloClient();
     const {site} = useContentEditorContext();
@@ -43,7 +43,8 @@ const Tag = ({field, value, id, onChange, onInit}) => {
 
     useEffect(() => {
         onInit(value);
-    }, [value]);
+        return () => onDestroy();
+    }, []);
 
     return (
         <MultipleInput
@@ -71,7 +72,8 @@ Tag.propTypes = {
     value: PropTypes.arrayOf(PropTypes.string),
     field: FieldPropTypes.isRequired,
     onChange: PropTypes.func.isRequired,
-    onInit: PropTypes.func.isRequired
+    onInit: PropTypes.func.isRequired,
+    onDestroy: PropTypes.func.isRequired
 };
 
 export default Tag;
