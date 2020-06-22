@@ -110,17 +110,6 @@ const FormQuery = gql`
                                 name
                                 value
                             }
-                            valueConstraints {
-                                value {
-                                    type
-                                    string
-                                }
-                                displayValue
-                                properties {
-                                    name
-                                    value
-                                }
-                            }
                             defaultValues {
                                 string
                             }

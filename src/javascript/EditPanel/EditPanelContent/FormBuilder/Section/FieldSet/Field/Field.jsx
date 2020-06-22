@@ -14,6 +14,8 @@ import {Constants} from '~/ContentEditor.constants';
 import {buildFlatFieldObject} from './field.utils';
 import {registry} from '@jahia/ui-extender';
 import contentEditorHelper from '~/ContentEditor.helper';
+import {useQuery} from '@apollo/react-hooks';
+import {FieldConstraints} from './Field.gql-queries';
 
 let styles = theme => {
     const common = {
@@ -61,6 +63,15 @@ let styles = theme => {
 
 export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, siteInfo, actionContext, formik}) => {
     const {t} = useTranslation();
+    const {data, error, loading} = useQuery(FieldConstraints, {
+        variables: {
+            uuid: inputContext.editorContext.nodeData.uuid,
+            nodeType: field.nodeType,
+            fieldName: field.name,
+            uilang: inputContext.editorContext.lang,
+            language: inputContext.editorContext.lang
+        }
+    });
     const {errors, touched, values} = formik;
     const contextualMenu = useRef(null);
     const isMultipleField = field.multiple && !selectorType.supportMultiple;
@@ -81,6 +92,17 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
             });
         }
     };
+
+    if (error) {
+        console.error(error);
+    }
+
+    if (loading) {
+        return <></>;
+    }
+
+    // Inject field values constraints
+    field.valueConstraints = data.forms.fieldConstraints;
 
     return (
         <div className={`${classes.formControl} ${shouldDisplayErrors ? classes.formControlError : ''}`}
