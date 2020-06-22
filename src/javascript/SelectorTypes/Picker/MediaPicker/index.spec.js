@@ -20,17 +20,17 @@ describe('MediaPicker config', () => {
 
         it('should return no data, no error when loading', () => {
             setQueryResponseMock({loading: true});
-            expect(usePickerInputData('uuid')).toEqual({loading: true});
+            expect(usePickerInputData('uuid', {lang: 'fr'})).toEqual({loading: true});
         });
 
         it('should return no data when there is no uuid given', () => {
             setQueryResponseMock({loading: false, data: {}});
-            expect(usePickerInputData('')).toEqual({loading: false});
+            expect(usePickerInputData('', {lang: 'fr'})).toEqual({loading: false});
         });
 
         it('should return error when there is error', () => {
             setQueryResponseMock({loading: false, error: 'oops'});
-            expect(usePickerInputData('uuid')).toEqual({loading: false, error: 'oops'});
+            expect(usePickerInputData('uuid', {lang: 'fr'})).toEqual({loading: false, error: 'oops'});
         });
 
         it('should adapt data when graphql return some data', () => {
@@ -40,7 +40,7 @@ describe('MediaPicker config', () => {
                         height: {value: '1080'},
                         width: {value: '1920'},
                         lastModified: {value: 'tomorow'},
-                        name: 'a cake',
+                        displayName: 'a cake',
                         path: 'placeholder.jpg',
                         children: {
                             nodes: [{
@@ -51,7 +51,7 @@ describe('MediaPicker config', () => {
                 }
             }});
 
-            expect(usePickerInputData('this-is-uuid')).toEqual({
+            expect(usePickerInputData('this-is-uuid', {lang: 'fr'})).toEqual({
                 loading: false,
                 error: undefined,
                 fieldData: {
