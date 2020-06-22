@@ -3,23 +3,17 @@ import {shallow} from '@jahia/test-framework';
 
 import {TextAreaField} from './TextArea';
 
-let useEffect;
-
 jest.mock('react', () => {
     return {
         ...jest.requireActual('react'),
-        useEffect: cb => {
-            useEffect = cb();
-        }
+        useEffect: cb => cb()
     };
 });
 
 describe('TextArea component', () => {
     let props;
-    const onDestroy = jest.fn();
     beforeEach(() => {
         props = {
-            onDestroy,
             onChange: jest.fn(),
             onInit: jest.fn(),
             value: 'Yolooo',
@@ -39,13 +33,6 @@ describe('TextArea component', () => {
         const cmp = shallow(<TextAreaField {...props}/>);
 
         expect(cmp.props().readOnly).toBe(true);
-    });
-
-    it('should onDestroy called when element detached the element', () => {
-        const cmp = shallow(<TextAreaField {...props}/>);
-        cmp.unmount();
-        useEffect();
-        expect(onDestroy).toHaveBeenCalled();
     });
 
     it('should field not be readOnly', () => {

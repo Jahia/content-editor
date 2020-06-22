@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Input} from '@jahia/design-system-kit';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 
-export const TextCmp = ({field, value, id, editorContext, onChange, onInit, onDestroy}) => {
+export const TextCmp = ({field, value, id, editorContext, onChange, onInit}) => {
     const fieldType = field.requiredType;
     const isNumber = fieldType === 'DOUBLE' || fieldType === 'LONG' || fieldType === 'DECIMAL';
     const decimalSeparator = editorContext.uilang === 'en' ? '.' : ',';
@@ -11,7 +11,6 @@ export const TextCmp = ({field, value, id, editorContext, onChange, onInit, onDe
 
     useEffect(() => {
         onInit(controlledValue);
-        return () => onDestroy();
     }, []);
 
     return (
@@ -39,8 +38,7 @@ TextCmp.propTypes = {
     editorContext: PropTypes.object.isRequired,
     field: FieldPropTypes.isRequired,
     onChange: PropTypes.func.isRequired,
-    onInit: PropTypes.func.isRequired,
-    onDestroy: PropTypes.func.isRequired
+    onInit: PropTypes.func.isRequired
 };
 
 const Text = TextCmp;

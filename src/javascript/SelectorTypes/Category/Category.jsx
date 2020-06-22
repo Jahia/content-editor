@@ -8,7 +8,7 @@ import {ProgressOverlay} from '@jahia/react-material';
 import {useTranslation} from 'react-i18next';
 import {adaptToCategoryTree} from './category.adapter';
 
-const Category = ({field, value, id, editorContext, onChange, onInit, onDestroy}) => {
+const Category = ({field, value, id, editorContext, onChange, onInit}) => {
     const {t} = useTranslation();
     const {data, error, loading} = useQuery(GetCategories, {
         variables: {
@@ -25,15 +25,13 @@ const Category = ({field, value, id, editorContext, onChange, onInit, onDestroy}
 
     const handleChange = (_, selectedValues) => {
         const newValues = selectedValues.map(v => v.value);
-        onChange(newValues, generateValuesFromUuid, generateValuesFromUuid);
+        onChange(newValues, generateValuesFromUuid);
     };
 
     useEffect(() => {
         if (data) {
             onInit(generateValuesFromUuid(value));
         }
-
-        return () => data && onDestroy(generateValuesFromUuid);
     }, [data]);
 
     if (error) {
@@ -77,8 +75,7 @@ Category.propTypes = {
         lang: PropTypes.string.isRequired
     }).isRequired,
     onChange: PropTypes.func.isRequired,
-    onInit: PropTypes.func.isRequired,
-    onDestroy: PropTypes.func.isRequired
+    onInit: PropTypes.func.isRequired
 };
 
 export default Category;

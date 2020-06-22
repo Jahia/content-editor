@@ -16,24 +16,18 @@ jest.mock('@apollo/react-hooks', () => {
     };
 });
 
-let useEffect;
-
 jest.mock('react', () => {
     return {
         ...jest.requireActual('react'),
-        useEffect: cb => {
-            useEffect = cb();
-        }
+        useEffect: cb => cb()
     };
 });
 
 describe('Tag component', () => {
     let props;
-    const onDestroy = jest.fn();
 
     beforeEach(() => {
         props = {
-            onDestroy,
             id: 'Tag1',
             field: {
                 name: 'myOption',
@@ -57,12 +51,6 @@ describe('Tag component', () => {
         const cmp = shallow(<Tag {...props}/>);
 
         expect(cmp.props().id).toBe(props.id);
-    });
-    it('should onDestroy called when element detached the element', () => {
-        const cmp = shallow(<Tag {...props}/>);
-        cmp.unmount();
-        useEffect();
-        expect(onDestroy).toHaveBeenCalled();
     });
 
     it('should display each option given', () => {
