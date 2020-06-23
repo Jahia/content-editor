@@ -1,0 +1,107 @@
+import React from 'react';
+import {Picker} from './PickerContainer';
+import {shallowWithTheme} from '@jahia/test-framework';
+import {dsGenericTheme} from '@jahia/design-system-kit';
+
+jest.mock('formik', () => {
+    let formikvaluesmock;
+
+    return {
+        connect: Cmp => props => (
+            <Cmp {...props} formik={{values: formikvaluesmock}}/>
+        )
+    };
+});
+
+jest.mock('./Picker.utils', () => {
+    return {
+        extractConfigs: () => ({
+            pickerConfig: {
+                picker: {
+                    pickerInput: {
+                        usePickerInputData: () => {
+                            return {
+                                fieldData: {},
+                                loading: false
+                            };
+                        }
+                    }
+                }
+            },
+            nodeTreeConfigs: {}
+        })
+    };
+});
+
+let mockUseEffect = [];
+
+jest.mock('react', () => {
+    return {
+        ...jest.requireActual('react'),
+        useEffect: cb => {
+            mockUseEffect.push(cb());
+        }
+    };
+});
+
+describe('picker', () => {
+    let defaultProps;
+    const onDestroy = jest.fn();
+
+    beforeEach(() => {
+        defaultProps = {
+            onDestroy,
+            field: {
+                displayName: 'imageid',
+                name: 'imageid',
+                selectorType: 'MediaPicker',
+                readOnly: false
+            },
+            id: 'imageid',
+            editorContext: {site: 'digitall'},
+            setActionContext: jest.fn(),
+            onChange: jest.fn(),
+            onInit: jest.fn()
+        };
+    });
+
+    it('should give to picker input readOnly', () => {
+        const cmp = shallowWithTheme(
+            <Picker {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+        expect(cmp.find('ReferenceCard').props().readOnly).toBe(false);
+    });
+
+    it('should onDestroy called when element detached the element', () => {
+        const cmp = shallowWithTheme(
+            <Picker {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+        cmp.unmount();
+        mockUseEffect[0]();
+        expect(onDestroy).toHaveBeenCalled();
+    });
+
+    it('should close the dialog by default', () => {
+        const cmp = shallowWithTheme(
+            <Picker {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+        expect(cmp.find('PickerDialog').props().isOpen).toBe(false);
+    });
+
+    it('should open the dialog when clicking on the picker input', () => {
+        const cmp = shallowWithTheme(
+            <Picker {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        ).dive();
+
+        cmp.find('ReferenceCard').simulate('click');
+        expect(cmp.find('PickerDialog').props().isOpen).toBe(true);
+    });
+});

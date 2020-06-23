@@ -13,6 +13,8 @@ import {FormQuery} from './EditForm.gql-queries';
 import {withApollo} from 'react-apollo';
 import {compose} from '~/utils';
 import {useContentEditorConfigContext} from '~/ContentEditor.context';
+import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
+
 import envEditCallbacks from './Edit.env';
 import {adaptEditFormData} from './Edit.adapter';
 import {Constants} from '~/ContentEditor.constants';
@@ -23,8 +25,8 @@ export const EditCmp = ({
 }) => {
     const {t} = useTranslation();
     const contentEditorConfigContext = useContentEditorConfigContext();
-    const {path, lang, nodeData, sections, formQueryParams, initialValues, title} = useContentEditorContext();
-
+    const {path, lang, nodeData, formQueryParams, initialValues, title} = useContentEditorContext();
+    const {sections} = useContentEditorSectionContext();
     const handleSubmit = (values, actions) => {
         saveNode({
             client,

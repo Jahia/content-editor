@@ -36,6 +36,11 @@ export const SingleFieldCmp = ({inputContext, field, onChange, formik}) => {
                            }
                        };
 
+                       const singleFieldOnDestroy = transformOnChangePreviousValue => {
+                           const previousValue = transformOnChangePreviousValue ? transformOnChangePreviousValue(value) : value;
+                           onChange(previousValue, undefined);
+                       };
+
                        return (
                            <FieldComponent field={field}
                                            id={field.name}
@@ -44,6 +49,7 @@ export const SingleFieldCmp = ({inputContext, field, onChange, formik}) => {
                                            setActionContext={inputContext.setActionContext}
                                            onChange={singleFieldOnChange}
                                            onInit={singleFieldOnInit}
+                                           onDestroy={singleFieldOnDestroy}
                            />
                        );
                    }}

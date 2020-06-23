@@ -3,14 +3,16 @@ import * as PropTypes from 'prop-types';
 import {connect} from 'formik';
 
 import {FieldPropTypes} from '~/FormDefinitions';
-import {resolveSelectorType} from './SelectorTypes/SelectorTypes.utils';
+import {resolveSelectorType} from '~/SelectorTypes';
 import {ContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import {Field} from './Field';
 
 const FieldContainerCmp = ({field, formik}) => {
     const selectorType = resolveSelectorType(field);
     const [actionContext, _setActionContext] = useState({noAction: true});
     const editorContext = useContext(ContentEditorContext);
+    const contentEditorSectionContext = useContentEditorSectionContext();
 
     if (!selectorType) {
         if (field.selectorType) {
@@ -34,7 +36,7 @@ const FieldContainerCmp = ({field, formik}) => {
             idInput={field.name}
             inputContext={{
                 fieldComponent: selectorType.cmp,
-                editorContext: editorContext,
+                editorContext: {...editorContext, ...contentEditorSectionContext},
                 setActionContext: setActionContext
             }}
             selectorType={selectorType}

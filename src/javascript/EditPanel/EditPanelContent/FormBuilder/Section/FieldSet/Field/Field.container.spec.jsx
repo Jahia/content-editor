@@ -2,8 +2,12 @@ import React from 'react';
 import {shallow} from '@jahia/test-framework';
 
 import {FieldContainer} from './Field.container';
+import {registerSelectorTypes} from '~/SelectorTypes';
+import {registry} from '@jahia/ui-extender';
 
 describe('Field container component', () => {
+    registerSelectorTypes(registry);
+
     let defaultProps;
     beforeEach(() => {
         defaultProps = {

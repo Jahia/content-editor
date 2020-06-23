@@ -1,0 +1,110 @@
+import React from 'react';
+import {shallowWithTheme} from '@jahia/test-framework';
+
+import MultipleSelect from './MultipleSelect';
+import {dsGenericTheme} from '@jahia/design-system-kit';
+
+let mockUseEffect = [];
+
+jest.mock('react', () => {
+    return {
+        ...jest.requireActual('react'),
+        useEffect: cb => {
+            mockUseEffect.push(cb());
+        }
+    };
+});
+
+describe('MultipleSelect component', () => {
+    let props;
+    let onChange = jest.fn();
+    let onInit = jest.fn();
+    const onDestroy = jest.fn();
+
+    beforeEach(() => {
+        props = {
+            onChange,
+            onInit,
+            onDestroy,
+            id: 'MultipleSelect1',
+            field: {
+                name: 'myOption',
+                displayName: 'myOption',
+                valueConstraints: [{
+                    displayValue: 'yoloooFR',
+                    value: {
+                        string: 'Yolooo'
+                    }
+                }, {
+                    displayValue: 'yoloooFR2',
+                    value: {
+                        string: 'Yolooooooooo'
+                    }
+                }],
+                selectorType: 'MultipleSelect',
+                readOnly: false,
+                multiple: true
+            },
+            setActionContext: jest.fn()
+        };
+    });
+
+    const buildComp = (componentProps, value) => {
+        props.value = value;
+        return shallowWithTheme(<MultipleSelect {...componentProps}/>, {}, dsGenericTheme);
+    };
+
+    it('should bind id correctly', () => {
+        const cmp = buildComp(props);
+
+        expect(cmp.props().id).toBe(props.id);
+    });
+
+    it('should onDestroy called when element detached the element', () => {
+        const cmp = buildComp(props, ['yoloooFR']);
+        cmp.unmount();
+        // Check only first useEffect called
+        mockUseEffect[0]();
+        expect(onDestroy).toHaveBeenCalled();
+    });
+
+    it('should display each option given', () => {
+        const cmp = buildComp(props);
+
+        const labels = cmp.props().options.map(o => o.label);
+        const values = cmp.props().options.map(o => o.value);
+        props.field.valueConstraints.forEach(constraint => {
+            expect(values).toContain(constraint.value.string);
+            expect(labels).toContain(constraint.displayValue);
+        });
+    });
+
+    it('should select formik value', () => {
+        const cmp = buildComp(props, ['yoloooFR']);
+        const selection = [{value: 'yoloooFR2'}];
+        cmp.simulate('change', selection);
+
+        expect(onChange).toHaveBeenCalled();
+        expect(onChange.mock.calls[0][0]).toStrictEqual(['yoloooFR2']);
+    });
+
+    it('should select value', () => {
+        const cmp = buildComp(props, ['Yolooo']);
+        expect(cmp.props().value).toEqual([{label: 'yoloooFR', value: 'Yolooo'}]);
+    });
+
+    it('should set readOnly to true when fromdefinition is readOnly', () => {
+        testReadOnly(true);
+    });
+
+    it('should set readOnly to false when fromdefinition is not readOnly', () => {
+        testReadOnly(false);
+    });
+
+    const testReadOnly = function (readOnly) {
+        props.field.readOnly = readOnly;
+        const cmp = buildComp(props);
+
+        expect(cmp.props().readOnly).toEqual(readOnly);
+    };
+});

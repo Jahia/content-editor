@@ -5,6 +5,7 @@ import {Constants} from '~/ContentEditor.constants';
 import ContentEditorApi from '~/Api/ContentEditor.api';
 import ContentEditorRedux from './ContentEditor.redux';
 import {ContentEditorHistoryContextProvider} from '~/ContentEditorHistory/ContentEditorHistory.context';
+import {registerSelectorTypes} from '~/SelectorTypes';
 
 registry.add('app', 'content-editor-history-context', {
     targets: ['root:2.05'],
@@ -17,6 +18,8 @@ registry.add('app', 'content-editor-api', {
 });
 
 registerCEActions(registry);
+
+registerSelectorTypes(registry);
 
 registry.add('route', 'content-editor-edit-route', {
     targets: ['main:2.1'],
