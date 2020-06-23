@@ -17,14 +17,10 @@ jest.mock('@apollo/react-hooks', () => {
     };
 });
 
-let useEffect;
-
 jest.mock('react', () => {
     return {
         ...jest.requireActual('react'),
-        useEffect: cb => {
-            useEffect = cb();
-        }
+        useEffect: cb => cb()
     };
 });
 
@@ -32,13 +28,11 @@ describe('Category component', () => {
     let props;
     const onChange = jest.fn();
     const onInit = jest.fn();
-    const onDestroy = jest.fn();
 
     beforeEach(() => {
         props = {
             onChange,
             onInit,
-            onDestroy,
             id: 'Category',
             field: {
                 displayName: 'Categories',
@@ -96,32 +90,12 @@ describe('Category component', () => {
         expect(onInit).toHaveBeenCalled();
     });
 
-    it('should onDestroy called when element detached the element', () => {
-        buildComp(props).unmount();
-        useEffect();
-        expect(onDestroy).toHaveBeenCalled();
-    });
-
     it('should onChange called when modify an element', () => {
         const cmp = buildComp(props);
         cmp.simulate('change', null, [{value: 'A'}, {value: 'Gauche'}]);
         expect(onChange).toHaveBeenCalled();
         expect(onChange.mock.calls[0][0]).toStrictEqual(['A', 'Gauche']);
         expect(onChange.mock.calls[0][1](onChange.mock.calls[0][0])).toStrictEqual([
-            {
-                uuid: 'A',
-                parent: {
-                    uuid: 'root'
-                }
-            },
-            {
-                uuid: 'Gauche',
-                parent: {
-                    uuid: 'root'
-                }
-            }
-        ]);
-        expect(onChange.mock.calls[0][2](onChange.mock.calls[0][0])).toStrictEqual([
             {
                 uuid: 'A',
                 parent: {

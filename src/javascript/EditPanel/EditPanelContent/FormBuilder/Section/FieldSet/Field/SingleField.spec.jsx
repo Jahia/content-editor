@@ -5,10 +5,17 @@ import {dsGenericTheme} from '@jahia/design-system-kit';
 import {SingleFieldCmp} from './SingleField';
 import {TextAreaField} from '~/SelectorTypes/TextArea/TextArea';
 
+let mockCurrentValue;
 jest.mock('react', () => {
     return {
         ...jest.requireActual('react'),
-        useEffect: cb => cb()
+        useEffect: cb => cb(),
+        useReducer: () => [
+            mockCurrentValue,
+            value => {
+                mockCurrentValue = value.data;
+            }
+        ]
     };
 });
 
@@ -67,7 +74,7 @@ describe('Field component', () => {
         // Init should call onChange with initial values
         expect(defaultProps.onChange.mock.calls.length).toBe(1);
         expect(defaultProps.onChange).toHaveBeenCalledWith(undefined, 'Dummy');
-
+        expect(mockCurrentValue).toBe('Dummy');
         // Update field
         defaultProps.onChange.mockReset();
         cmp.simulate('change', {
@@ -78,7 +85,8 @@ describe('Field component', () => {
         expect(defaultPropsFastField.form.setFieldValue).toHaveBeenCalledWith('text', 'Updated', true);
         expect(defaultPropsFastField.form.setFieldTouched).toHaveBeenCalledWith('text', true);
         expect(defaultProps.onChange.mock.calls.length).toBe(1);
-        expect(defaultProps.onChange).toHaveBeenCalledWith('Dummy', 'Updated');
+        // Cannot check previous value as it has been define by a reducer.
+        expect(defaultProps.onChange).toHaveBeenCalledWith(undefined, 'Updated');
     });
 
     let buildFieldCmp = () => {

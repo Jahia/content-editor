@@ -3,20 +3,15 @@ import {shallow} from '@jahia/test-framework';
 
 import {DateTimePicker} from './DateTimePicker';
 
-let useEffect;
-
 jest.mock('react', () => {
     return {
         ...jest.requireActual('react'),
-        useEffect: cb => {
-            useEffect = cb();
-        }
+        useEffect: cb => cb()
     };
 });
 
 describe('DateTimePicker component', () => {
     let props;
-    const onDestroy = jest.fn();
     let testDateFormat = (uilang, format) => {
         props.editorContext.uilang = uilang;
         const cmp = shallow(<DateTimePicker {...props}/>);
@@ -26,7 +21,6 @@ describe('DateTimePicker component', () => {
 
     beforeEach(() => {
         props = {
-            onDestroy,
             onInit: jest.fn(),
             onChange: jest.fn(),
             id: 'myOption[0]',
@@ -48,13 +42,6 @@ describe('DateTimePicker component', () => {
     it('should bind id correctly', () => {
         const cmp = shallow(<DateTimePicker {...props}/>);
         expect(cmp.props().id).toBe(props.id);
-    });
-
-    it('should onDestroy called when element detached the element', () => {
-        const cmp = shallow(<DateTimePicker {...props}/>);
-        cmp.unmount();
-        useEffect();
-        expect(onDestroy).toHaveBeenCalled();
     });
 
     it('should call onInit', () => {

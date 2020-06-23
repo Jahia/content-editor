@@ -8,7 +8,7 @@ import {ReferenceCard} from '~/DesignSystem/ReferenceCard';
 import {extractConfigs} from './Picker.utils';
 import {PickerDialog} from './PickerDialog';
 
-const PickerCmp = ({field, value, editorContext, setActionContext, onChange, onInit, onDestroy}) => {
+const PickerCmp = ({field, value, editorContext, setActionContext, onChange, onInit}) => {
     const {t} = useTranslation();
     const {pickerConfig, nodeTreeConfigs} = extractConfigs(field, editorContext, t);
     const [isDialogOpen, setDialogOpen] = useState(false);
@@ -16,13 +16,11 @@ const PickerCmp = ({field, value, editorContext, setActionContext, onChange, onI
 
     // Init data
     useEffect(() => {
-        if (fieldData) {
+        if (!loading) {
             // Condition added to get the test run properly.
             onInit(_buildOnChangeData && _buildOnChangeData(fieldData));
         }
-
-        return () => fieldData && onDestroy(transformOnChangePreviousValue);
-    }, [fieldData]);
+    }, [loading]);
 
     useEffect(() => {
         if (!field.multiple) {
@@ -33,7 +31,7 @@ const PickerCmp = ({field, value, editorContext, setActionContext, onChange, onI
                 editorContext,
                 contextHasChange:
                     (prevActionContext.fieldData && prevActionContext.fieldData.path) !== (fieldData && fieldData.path),
-                onChange: newValue => onChange(newValue, undefined, transformOnChangePreviousValue)
+                onChange: newValue => onChange(newValue, transformOnChangeCurrentValue)
             }));
         }
     }, [fieldData, setDialogOpen]);
@@ -60,10 +58,6 @@ const PickerCmp = ({field, value, editorContext, setActionContext, onChange, onI
         }
     };
 
-    const transformOnChangePreviousValue = () => {
-        return _buildOnChangeData(fieldData);
-    };
-
     const transformOnChangeCurrentValue = data => {
         return _buildOnChangeData(data);
     };
@@ -74,7 +68,7 @@ const PickerCmp = ({field, value, editorContext, setActionContext, onChange, onI
 
     const onItemSelection = data => {
         setDialogOpen(false);
-        onChange(data, transformOnChangeCurrentValue, transformOnChangePreviousValue, transformBeforeSave);
+        onChange(data, transformOnChangeCurrentValue, transformBeforeSave);
     };
 
     return (
@@ -111,8 +105,7 @@ PickerCmp.propTypes = {
     field: FieldPropTypes.isRequired,
     setActionContext: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
-    onInit: PropTypes.func.isRequired,
-    onDestroy: PropTypes.func.isRequired
+    onInit: PropTypes.func.isRequired
 };
 
 export const Picker = connect(PickerCmp);

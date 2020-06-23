@@ -18,12 +18,11 @@ const styles = theme => ({
     }
 });
 
-export const SingleSelectCmp = ({classes, field, value, id, setActionContext, onChange, onInit, onDestroy}) => {
+export const SingleSelectCmp = ({classes, field, value, id, setActionContext, onChange, onInit}) => {
     const singleSelectOnChange = newValue => field.valueConstraints.find(item => item.value.string === newValue);
 
     useEffect(() => {
         onInit(singleSelectOnChange(value));
-        return () => onDestroy(singleSelectOnChange);
     }, []);
 
     useEffect(() => {
@@ -49,7 +48,7 @@ export const SingleSelectCmp = ({classes, field, value, id, setActionContext, on
             }}
             input={<Input id={id} name={field.name} readOnly={readOnly}/>}
             onChange={evt => {
-                onChange(evt.target.value, singleSelectOnChange, singleSelectOnChange);
+                onChange(evt.target.value, singleSelectOnChange);
             }}
         >
             {
@@ -70,8 +69,7 @@ SingleSelectCmp.propTypes = {
     classes: PropTypes.object.isRequired,
     setActionContext: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
-    onInit: PropTypes.func.isRequired,
-    onDestroy: PropTypes.func.isRequired
+    onInit: PropTypes.func.isRequired
 };
 
 const SingleSelect = withStyles(styles)(SingleSelectCmp);
