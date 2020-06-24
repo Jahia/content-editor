@@ -810,7 +810,8 @@ describe('ContentEditor.helper', () => {
             displayName: 'Link type'
         };
         formik = {
-            setFieldValue: jest.fn()
+            setFieldValue: jest.fn(),
+            setFieldTouched: jest.fn()
         };
     });
 
