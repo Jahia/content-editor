@@ -1,33 +1,33 @@
-export const getPreviewContext = editorContext => {
+export const getPreviewContext = ({path, nodeData, lang}) => {
     let view = 'cm';
     let config = 'module';
-    let path = editorContext.path;
     let requestAttributes = [{
         name: 'ce_preview',
-        value: editorContext.nodeData.uuid
+        value: nodeData.uuid
     }];
+    let displayPath = path;
 
-    if (editorContext.nodeData.displayableNode && !editorContext.nodeData.displayableNode.isFolder) {
-        path = editorContext.nodeData.displayableNode.path;
+    if (nodeData.displayableNode && !nodeData.displayableNode.isFolder) {
+        const displayPath = nodeData.displayableNode.path;
         config = 'page';
         view = 'default';
 
-        if (path !== editorContext.path) {
+        if (displayPath !== path) {
             // Displayable node is a parent, let's use the wrapper parameter to be able zoom on the content
             requestAttributes.push({
                 name: 'ce_preview_wrapper',
-                value: editorContext.path
+                value: displayPath
             });
         }
     }
 
     return {
-        path: path,
+        path: displayPath,
         workspace: 'edit',
         view: view,
         contextConfiguration: config,
         templateType: 'html',
-        language: editorContext.lang,
+        language: lang,
         requestAttributes
     };
 };

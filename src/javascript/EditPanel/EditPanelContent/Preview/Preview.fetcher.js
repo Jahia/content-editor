@@ -1,48 +1,43 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {useContentPreview} from '@jahia/data-helper';
-import {useContentEditorContext} from '~/ContentEditor.context';
-import {setPreviewRefetcher} from '~/EditPanel/EditPanel.refetches';
 import {PreviewViewer} from './PreviewViewers';
-import {getPreviewContext} from './Preview.utils';
-import {useTranslation} from 'react-i18next';
-import {ProgressOverlay} from '@jahia/react-material';
+import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
+import {adaptSaveRequest} from '~/Edit/Edit.adapter';
+import {getChildrenOrder, getDataToMutate} from '~/EditPanel/EditPanel.utils';
+import {Constants} from '~/ContentEditor.constants';
+import {useMutation} from '@apollo/react-hooks';
+import {AUTO_UPDATE_CONTENT_PREVIEW_MUTATION} from '~/EditPanel/EditPanelContent/Preview/useAutoUpdateContentPreview.gql-queries';
 
-export const PreviewFetcher = React.memo(({onContentNotFound}) => {
-    const {t} = useTranslation();
-    const editorContext = useContentEditorContext();
-
-    const previewContext = getPreviewContext(editorContext);
-    const {data, loading, error, refetch} = useContentPreview({
-        ...previewContext,
-        fetchPolicy: 'network-only'
-    });
-
+export const PreviewFetcher = React.memo(({onContentNotFound, values, lang, nodeData, previewContext}) => {
+    const [data, setData] = useState({});
+    const {sections} = useContentEditorSectionContext();
+    const [refreshPreview] = useMutation(AUTO_UPDATE_CONTENT_PREVIEW_MUTATION);
     useEffect(() => {
-        setPreviewRefetcher({
-            queryParams: {
-                language: editorContext.lang,
-                path: previewContext.path
-            },
-            refetch
-        });
-    }, [editorContext.lang, previewContext.path, refetch]);
-
-    if (error) {
-        const message = t(
-            'content-media-manager:label.contentManager.error.queryingContent',
-            {details: error.message ? error.message : ''}
-        );
-        return <>{message}</>;
-    }
-
-    if (loading) {
-        return <ProgressOverlay/>;
-    }
+        const dataToMutate = getDataToMutate({nodeData, formValues: values, sections, lang});
+        const {childrenOrder, shouldModifyChildren} = getChildrenOrder(values, nodeData);
+        const wipInfo = values[Constants.wip.fieldName];
+        refreshPreview({
+            variables: adaptSaveRequest(nodeData, {
+                uuid: nodeData.uuid,
+                propertiesToSave: dataToMutate.propsToSave,
+                propertiesToDelete: dataToMutate.propsToDelete,
+                mixinsToAdd: dataToMutate.mixinsToAdd,
+                mixinsToDelete: dataToMutate.mixinsToDelete,
+                templateType: previewContext.templateType,
+                view: previewContext.view,
+                contextConfiguration: previewContext.contextConfiguration,
+                requestAttributes: previewContext.requestAttributes,
+                language: lang,
+                shouldModifyChildren,
+                childrenOrder,
+                wipInfo
+            })
+        }).then(data => setData(data));
+    }, [values]);
 
     return (
         <PreviewViewer
-            data={data.jcr ? data.jcr : {}}
+            data={data?.data?.jcr?.node?.node}
             previewContext={previewContext}
             onContentNotFound={onContentNotFound}
         />
@@ -50,5 +45,9 @@ export const PreviewFetcher = React.memo(({onContentNotFound}) => {
 });
 
 PreviewFetcher.propTypes = {
-    onContentNotFound: PropTypes.func.isRequired
+    onContentNotFound: PropTypes.func.isRequired,
+    values: PropTypes.object.isRequired,
+    lang: PropTypes.object.isRequired,
+    previewContext: PropTypes.object.isRequired,
+    nodeData: PropTypes.object.isRequired
 };

@@ -11,6 +11,10 @@ import {IframeViewer} from './IframeViewer';
 
 export const PreviewViewer = ({data, previewContext, onContentNotFound}) => {
     // If node type is "jnt:file" use specific viewer
+    if (!data) {
+        return <></>;
+    }
+
     const isFile = data && data.nodeByPath && data.nodeByPath.lastModified && data.nodeByPath.isFile;
     if (isFile) {
         const file = window.contextJsParameters.contextPath + '/files/' + (previewContext.workspace === 'edit' ? 'default' : 'live') + data.nodeByPath.path.replace(/[^/]/g, encodeURIComponent) + (data.nodeByPath.lastModified ? ('?lastModified=' + data.nodeByPath.lastModified.value) : '');
@@ -51,7 +55,7 @@ export const PreviewViewer = ({data, previewContext, onContentNotFound}) => {
                 data={data}
                 previewContext={previewContext}
                 onContentNotFound={onContentNotFound}
-                />
+            />
         </div>
     );
 };

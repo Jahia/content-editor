@@ -73,7 +73,7 @@ export const IframeViewer = ({previewContext, data, onContentNotFound}) => {
         }
 
         setLoading(true);
-        let displayValue = data && data.nodeByPath && data.nodeByPath.renderedContent ? data.nodeByPath.renderedContent.output : '';
+        let displayValue = data && data.renderedContent ? data.renderedContent.output : '';
         if (displayValue === '') {
             displayValue = t('label.contentManager.contentPreview.noViewAvailable');
         }
@@ -84,8 +84,8 @@ export const IframeViewer = ({previewContext, data, onContentNotFound}) => {
                 iframeWindow.document.body.setAttribute('style', 'pointer-events: none');
             })
             .then(() => {
-                const assets = data && data.nodeByPath && data.nodeByPath.renderedContent ?
-                    data.nodeByPath.renderedContent.staticAssets :
+                const assets = data && data.renderedContent ?
+                    data.renderedContent.staticAssets :
                     [];
                 return loadAssets(assets, iframeWindow.document);
             })

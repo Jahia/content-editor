@@ -71,7 +71,8 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
             title,
             formQueryParams,
             nodeTypeName,
-            refetchFormData
+            refetchFormData,
+            loading
         };
 
         return (

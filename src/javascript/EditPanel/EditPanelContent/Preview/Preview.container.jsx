@@ -1,28 +1,20 @@
 import {Badge, Paper} from '@jahia/design-system-kit';
 import * as PropTypes from 'prop-types';
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useState, useCallback} from 'react';
 import {useTranslation} from 'react-i18next';
 import classes from './Preview.container.scss';
 import {ProgressOverlay} from '@jahia/react-material';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {PreviewFetcher} from './Preview.fetcher';
+import {getPreviewContext} from '~/EditPanel/EditPanelContent/Preview/Preview.utils';
 
-export const PreviewContainer = ({isDirty}) => {
+export const PreviewContainer = ({isDirty, values}) => {
     const {t} = useTranslation();
     const editorContext = useContentEditorContext();
     const [contentNotFound, setContentNotFound] = useState(false);
     const handleContentNotFound = useCallback(() => setContentNotFound(true), []);
-    const [shouldDisplayPreview, setShouldDisplayIframe] = useState(false);
 
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            setShouldDisplayIframe(true);
-        }, 1500);
-        return () => {
-            clearTimeout(timeout);
-        };
-    }, []);
-
+    const previewContext = getPreviewContext({path: editorContext.path, lang: editorContext.lang, nodeData: editorContext.nodeData});
     return (
         <Paper className={classes.content}>
             <div className={classes.container}>
@@ -53,9 +45,8 @@ export const PreviewContainer = ({isDirty}) => {
             </div>
             {!editorContext.nodeData.isFolder &&
                 <>
-                    {shouldDisplayPreview ?
-                        <PreviewFetcher onContentNotFound={handleContentNotFound}/> :
-                        <ProgressOverlay/>}
+                    <PreviewFetcher values={values} lang={editorContext.lang} nodeData={editorContext.nodeData} previewContext={previewContext} onContentNotFound={handleContentNotFound}/> :
+                    <ProgressOverlay/>
                 </>}
         </Paper>
     );
@@ -66,5 +57,6 @@ PreviewContainer.defaultProps = {
 };
 
 PreviewContainer.propTypes = {
-    isDirty: PropTypes.bool
+    isDirty: PropTypes.bool,
+    values: PropTypes.object.isRequired
 };

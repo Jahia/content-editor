@@ -6,7 +6,8 @@ import {compose} from '~/utils';
 import {withStyles} from '@material-ui/core';
 import {PreviewContainer} from './Preview';
 import PublicationInfoProgress from '~/PublicationInfo/PublicationInfo.progress';
-import {useContentEditorConfigContext} from '~/ContentEditor.context';
+import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
+import {connect} from 'formik';
 
 const styles = theme => ({
     twoColumnsRoot: {
@@ -32,7 +33,7 @@ const styles = theme => ({
     }
 });
 
-export const EditPanelContent = ({classes, isDirty}) => {
+export const EditPanelContent = ({classes, isDirty, formik}) => {
     const {mode} = useContentEditorConfigContext();
     return (
         <>
@@ -50,7 +51,7 @@ export const EditPanelContent = ({classes, isDirty}) => {
                         <PublicationInfoProgress/>
                         <TwoColumnsContent
                             classes={{root: classes.twoColumnsRoot, left: classes.left, right: classes.right}}
-                            rightCol={<PreviewContainer isDirty={isDirty}/>}
+                            rightCol={<PreviewContainer isDirty={isDirty} values={formik.values}/>}
                             data-sel-mode={mode}
                         >
                             <FormBuilder mode={mode}/>
@@ -67,9 +68,11 @@ EditPanelContent.defaultProps = {
 
 EditPanelContent.propTypes = {
     classes: PropTypes.object.isRequired,
+    formik: PropTypes.object.isRequired,
     isDirty: PropTypes.bool
 };
 
 export default compose(
+    connect,
     withStyles(styles)
 )(EditPanelContent);
