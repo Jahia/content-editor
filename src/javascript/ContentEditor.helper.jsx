@@ -9,6 +9,7 @@ export const moveMixinToInitialFieldset = (mixin, sections, formik) => {
     let updatedSections = sections;
     if (mixin) {
         formik.setFieldValue(mixin, false, true);
+        formik.setFieldTouched(mixin, false);
         updatedSections = moveFieldsToAnotherFieldset(mixin, mixin, updatedSections, null);
     }
 
@@ -84,8 +85,14 @@ export const addFieldsToFieldset = (fieldsToAdd, fieldset, afterField) => {
  */
 export const moveMixinToTargetFieldset = (mixin, targetFieldset, sections, updatedField, formik) => {
     // Add mixin and display fields from new value
-    formik.setFieldValue(mixin, true, true);
-    return moveFieldsToAnotherFieldset(mixin, targetFieldset, sections, updatedField);
+    let updatedSections = sections;
+    if (mixin) {
+        formik.setFieldValue(mixin, true, true);
+        formik.setFieldTouched(mixin, false);
+        updatedSections = moveFieldsToAnotherFieldset(mixin, targetFieldset, updatedSections, updatedField);
+    }
+
+    return updatedSections;
 };
 
 export default {
