@@ -28,7 +28,7 @@ const FormBuilder = ({mode}) => {
     return (
         <Form>
             <section data-sel-mode={mode}>
-                {cloneSections.map(section => (
+                {cloneSections.filter(section => !section.hide).map(section => (
                     section.isOrderingSection ?
                         <ChildrenSection key={section.displayName} section={section}/> :
                         <Section key={section.displayName} section={section}/>

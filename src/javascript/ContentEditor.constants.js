@@ -64,6 +64,9 @@ export const Constants = {
         },
         notAvailableFor: ['jnt:virtualsite']
     },
+    automaticOrdering: {
+        mixin: 'jmix:orderedList'
+    },
     permissions: {
         canSeeAdvancedOptionsTab: 'canSeeAdvancedOptionsTab'
     }

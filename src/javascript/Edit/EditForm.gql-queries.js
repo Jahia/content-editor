@@ -88,6 +88,7 @@ const FormQuery = gql`
                     name
                     displayName
                     description
+                    hide
                     fieldSets {
                         name
                         displayName
