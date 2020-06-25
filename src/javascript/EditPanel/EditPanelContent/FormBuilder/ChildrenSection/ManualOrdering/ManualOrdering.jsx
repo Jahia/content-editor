@@ -1,13 +1,11 @@
-import {FastField} from "formik";
-import React, {Fragment} from "react";
+import {FastField} from 'formik';
+import React, {Fragment} from 'react';
 import {DropableSpace, DraggableReference} from './DragDrop';
 
 export const ManualOrdering = () => {
-
     return (
         <FastField name="Children::Order"
                    render={({field, form: {setFieldValue, setFieldTouched}}) => {
-
                        const handleReorder = (droppedName, index) => {
                            const droppedChild = field.value.find(child => child.name === droppedName);
                            const childrenWithoutDropped = field.value.filter(child => child.name !== droppedName);
