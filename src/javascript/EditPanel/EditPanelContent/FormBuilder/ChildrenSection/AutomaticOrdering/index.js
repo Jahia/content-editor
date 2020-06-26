@@ -1,1 +1,1 @@
-export * from './AutomaticOrdering';
+export {AutomaticOrdering} from './AutomaticOrdering';
