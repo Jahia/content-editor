@@ -566,6 +566,28 @@ describe('EditPanel utils', () => {
             expect(getValuePropName({multiple: false, requiredType: 'DATE'})).toEqual('notZonedDateValue');
             expect(getValuePropName({multiple: true, requiredType: 'type'})).toEqual('values');
             expect(getValuePropName({multiple: false, requiredType: 'type'})).toEqual('value');
+
+            expect(getValuePropName({
+                multiple: false,
+                requiredType: 'type',
+                selectorOptions: [{
+                    name: 'password'
+                }]
+            })).toEqual('encryptedValue');
+            expect(getValuePropName({
+                multiple: false,
+                requiredType: 'type',
+                selectorOptions: [{
+                    name: 'optionName'
+                }]
+            })).toEqual('value');
+            expect(getValuePropName({
+                multiple: true,
+                requiredType: 'type',
+                selectorOptions: [{
+                    name: 'password'
+                }]
+            })).toEqual('values');
         });
     });
 

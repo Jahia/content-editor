@@ -134,6 +134,10 @@ export function getDataToMutate({nodeData, formValues, sections, lang}) {
  * @returns {string} the name of the value property to use
  */
 export function getValuePropName(field) {
+    if (!field.multiple && field.selectorOptions?.find(option => option.name === 'password')) {
+        return 'encryptedValue';
+    }
+
     return field.multiple ?
         (field.requiredType === 'DATE' ? 'notZonedDateValues' : 'values') :
         (field.requiredType === 'DATE' ? 'notZonedDateValue' : 'value');

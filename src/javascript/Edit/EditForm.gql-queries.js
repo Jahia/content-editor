@@ -55,6 +55,7 @@ const NodeDataFragment = {
                     name
                     value
                     notZonedDateValue
+                    encryptedValue
                     values
                     notZonedDateValues
                 }
