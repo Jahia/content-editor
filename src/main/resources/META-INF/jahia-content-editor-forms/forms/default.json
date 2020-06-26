@@ -31,6 +31,10 @@
       "name": "seo",
       "labelKey": "label.engineTab.seo",
       "requiredPermission": "viewSeoTab"
+    },
+    {
+      "name": "listOrdering",
+      "hide": true
     }
   ]
 }

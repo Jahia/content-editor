@@ -266,6 +266,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                 if (description != null) {
                     formSection.setDescription(description);
                 }
+                formSection.setHide(sectionDefinition.isHide());
                 Collections.sort(formSection.getFieldSets());
                 sortedFormSections.add(formSection);
             }

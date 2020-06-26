@@ -211,7 +211,9 @@
         },
         "listAndOrdering": {
           "title": "Listensortierung",
-          "ordering": "Anordnung"
+          "ordering": "Anordnung",
+          "automatic": "automatische Listenreihenfolge",
+          "description": "Aktivieren Sie die automatische Listenreihenfolge, um Ihre Unterinhalte anhand von maximal drei Kriterien zu ordnen, oder ordnen Sie Ihre Unterinhalte manuell per Drag & Drop neu."
         }
       },
       "siteSwitcher": {

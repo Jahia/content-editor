@@ -211,7 +211,9 @@
         },
         "listAndOrdering": {
           "title": "Liste de contenu & ordre",
-          "ordering": "Ordre"
+          "ordering": "Ordre",
+          "automatic": "classement automatique",
+          "description": "Activez le classement automatique pour organiser vos sous-contenus en utilisant au maximum trois critères, ou réorganisez vos sous-contenus manuellement, par glisser-déposer."
         }
       },
       "siteSwitcher": {
