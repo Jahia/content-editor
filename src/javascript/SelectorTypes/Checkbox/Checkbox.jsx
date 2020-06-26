@@ -3,10 +3,9 @@ import * as PropTypes from 'prop-types';
 import {Toggle} from '@jahia/design-system-kit';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 
-const Checkbox = ({field, value, id, onChange, onInit, onDestroy}) => {
+const Checkbox = ({field, value, id, onChange, onInit}) => {
     useEffect(() => {
         onInit(value);
-        return () => onDestroy();
     }, []);
 
     return (
@@ -26,8 +25,7 @@ Checkbox.propTypes = {
     id: PropTypes.string.isRequired,
     value: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
-    onInit: PropTypes.func.isRequired,
-    onDestroy: PropTypes.func.isRequired
+    onInit: PropTypes.func.isRequired
 };
 
 export default Checkbox;

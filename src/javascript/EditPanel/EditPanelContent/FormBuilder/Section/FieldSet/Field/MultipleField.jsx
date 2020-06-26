@@ -1,7 +1,7 @@
 import {Button, IconButton} from '@jahia/design-system-kit';
 import {withStyles} from '@material-ui/core';
 import {Close} from '@material-ui/icons';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useReducer} from 'react';
 import * as PropTypes from 'prop-types';
 import {compose} from '~/utils';
 import {useTranslation} from 'react-i18next';
@@ -22,18 +22,30 @@ const styles = theme => {
     };
 };
 
+const _mapDataForOnChange = dataToMap => {
+    return dataToMap.filter(item => item.data !== undefined).map(item => item.data);
+};
+
+const reducer = (state, action) => {
+    switch (action.type) {
+        case 'set':
+            return action.data;
+        case 'unMount':
+            return action.onChange(_mapDataForOnChange(state), undefined);
+        default:
+            throw new Error();
+    }
+};
+
 export const MultipleFieldCmp = ({classes, inputContext, field, onChange, formik: {values}}) => {
     const {t} = useTranslation();
     const [isInit, setInit] = useState(false);
-    const [data, setData] = useState(values[field.name] ? new Array(values[field.name].length) : []);
 
+    const [data, dispatch] = useReducer(reducer, values[field.name] ? new Array(values[field.name].length) : []);
+    const setData = value => dispatch({type: 'set', data: value});
     useEffect(() => {
-        return () => onChange(_mapDataForOnChange(data), undefined);
+        return () => dispatch({type: 'unMount', onChange});
     }, []);
-
-    const _mapDataForOnChange = dataToMap => {
-        return dataToMap.filter(item => item.data !== undefined).map(item => item.data);
-    };
 
     const _replaceData = (index, dataToReplace) => {
         data[index] = {
@@ -66,7 +78,7 @@ export const MultipleFieldCmp = ({classes, inputContext, field, onChange, formik
         }
     };
 
-    const multipleFieldOnChange = (index, name, newData, transformOnChangeNewValue, transformOnChangePreviousValue, transformBeforeSave, setFieldValue, setFieldTouched) => {
+    const multipleFieldOnChange = (index, name, newData, transformOnChangeNewValue, transformBeforeSave, setFieldValue, setFieldTouched) => {
         // Save value to formik
         const valueToSave = transformBeforeSave ? transformBeforeSave(newData) : newData;
         setFieldValue(name, valueToSave, true);
@@ -128,13 +140,12 @@ export const MultipleFieldCmp = ({classes, inputContext, field, onChange, formik
                                                                            id={name}
                                                                            editorContext={inputContext.editorContext}
                                                                            setActionContext={inputContext.setActionContext}
-                                                                           onChange={(newData, transformOnChangeNewValue, transformOnChangePreviousValue, transformBeforeSave) => {
+                                                                           onChange={(newData, transformOnChangeNewValue, transformBeforeSave) => {
                                                                                multipleFieldOnChange(
                                                                                    index,
                                                                                    name,
                                                                                    newData,
                                                                                    transformOnChangeNewValue,
-                                                                                   transformOnChangePreviousValue,
                                                                                    transformBeforeSave,
                                                                                    setFieldValue,
                                                                                    setFieldTouched);

@@ -15,14 +15,10 @@ jest.mock('@apollo/react-hooks', () => {
     };
 });
 
-let useEffect;
-
 jest.mock('react', () => {
     return {
         ...jest.requireActual('react'),
-        useEffect: cb => {
-            useEffect = cb();
-        }
+        useEffect: cb => cb()
     };
 });
 
@@ -32,11 +28,9 @@ const RICH_TEXT_COMPONENT_TAG = 'CKEditor';
 
 describe('RichText component', () => {
     let props;
-    const onDestroy = jest.fn();
 
     beforeEach(() => {
         props = {
-            onDestroy,
             id: 'richID',
             value: 'initial value',
             field: {
@@ -75,13 +69,6 @@ describe('RichText component', () => {
         ).toEqual('some dummy value');
         expect(props.onInit.mock.calls.length).toBe(1);
         expect(props.onInit).toHaveBeenCalledWith(props.value);
-    });
-
-    it('should onDestroy called when element detached the element', () => {
-        const cmp = shallow(<RichTextCmp {...props}/>);
-        cmp.unmount();
-        useEffect();
-        expect(onDestroy).toHaveBeenCalled();
     });
 
     it('should call formik.setFieldValue on change', () => {
