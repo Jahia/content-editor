@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core';
-import {Typography, Toggle} from '@jahia/design-system-kit';
+import {Typography, Toggle, Badge} from '@jahia/design-system-kit';
 import {ChildrenSectionPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {ManualOrdering} from './ManualOrdering';
 import {useTranslation} from 'react-i18next';
@@ -9,6 +9,7 @@ import {AutomaticOrdering} from './AutomaticOrdering';
 import {Constants} from '~/ContentEditor.constants';
 import {compose} from '~/utils';
 import {connect} from 'formik';
+import {Public} from '@material-ui/icons';
 
 const styles = theme => ({
     section: {
@@ -24,12 +25,12 @@ const styles = theme => ({
     fieldSetTitleContainer: {
         display: 'flex',
         flexDirection: 'row',
-        margin: '0 24px 0 16px',
+        margin: `0 ${theme.spacing.unit * 6}px 0 ${theme.spacing.unit * 4}px`,
+        padding: `${theme.spacing.unit * 2}px 0`,
         borderTop: '1px solid #e0e6ea' /* TODO use moonstone color */
     },
     fieldSetTitle: {
         width: 'auto',
-        padding: '8px 0',
         textTransform: 'uppercase'
     },
     automaticSwitchContainer: {
@@ -60,6 +61,12 @@ export const ChildrenSectionCmp = ({section, classes, formik: {values, handleCha
                     <Typography component="label" htmlFor={t('content-editor:label.contentEditor.section.listAndOrdering.ordering')} className={classes.fieldSetTitle} color="alpha" variant="zeta">
                         {t('content-editor:label.contentEditor.section.listAndOrdering.ordering')}
                     </Typography>
+                    <Badge
+                           badgeContent={t('content-editor:label.contentEditor.edit.sharedLanguages')}
+                           icon={<Public/>}
+                           variant="normal"
+                           color="info"
+                    />
                 </div>
 
                 <div className={classes.formControl}>
