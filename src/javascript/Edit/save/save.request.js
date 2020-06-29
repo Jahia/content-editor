@@ -46,7 +46,8 @@ export const saveNode = ({
                     uuid: nodeData.uuid,
                     language,
                     uilang: uilang,
-                    writePermission: `jcr:modifyProperties_default_${language}`
+                    writePermission: `jcr:modifyProperties_default_${language}`,
+                    childrenFilterTypes: Constants.childrenFilterTypes
                 }
             },
             {

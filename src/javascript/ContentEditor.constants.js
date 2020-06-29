@@ -70,5 +70,6 @@ export const Constants = {
     },
     permissions: {
         canSeeAdvancedOptionsTab: 'canSeeAdvancedOptionsTab'
-    }
+    },
+    childrenFilterTypes: ['jnt:content', 'jmix:manuallyOrderable']
 };
