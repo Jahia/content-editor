@@ -24,7 +24,7 @@ export const registerSelectorTypes = ceRegistry => {
         supportMultiple: false,
         adaptValue: (field, property) => {
             if (field.selectorOptions?.find(option => option.name === 'password')) {
-                return property.encryptedValue;
+                return field.multiple ? property.decryptedValues : property.decryptedValue;
             }
         }
     });

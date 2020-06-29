@@ -55,9 +55,10 @@ const NodeDataFragment = {
                     name
                     value
                     notZonedDateValue
-                    encryptedValue
+                    decryptedValue
                     values
                     notZonedDateValues
+                    decryptedValues
                 }
                 hasWritePermission: hasPermission(permissionName: $writePermission)
                 hasPublishPermission: hasPermission(permissionName: "publish")

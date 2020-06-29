@@ -37,9 +37,20 @@ describe('Selector Types', () => {
 
             const adaptedValue = selector.adaptValue(
                 {selectorOptions: [{name: 'password'}]},
-                {encryptedValue: 'thisIs@MyValue'}
+                {decryptedValue: 'thisIs@MyValue'}
             );
             expect(adaptedValue).toEqual('thisIs@MyValue');
+        });
+
+        it('should adapt value in case of multiple if the selector option is password', () => {
+            const selector = resolveSelectorType({selectorType: 'Text'});
+            expect(selector.key).toEqual('Text');
+
+            const adaptedValue = selector.adaptValue(
+                {multiple: true, selectorOptions: [{name: 'password'}]},
+                {decryptedValues: ['thisIs@MyValue', 'thisIs@MySecond>Value']}
+            );
+            expect(adaptedValue).toEqual(['thisIs@MyValue', 'thisIs@MySecond>Value']);
         });
 
         it('should not adapt value if the selector option is not password', () => {
