@@ -1237,9 +1237,9 @@
     recompose "^0.30.0"
 
 "@jahia/moonstone@^0.15.8":
-  version "0.15.11"
-  resolved "https://npm.jahia.com/@jahia%2fmoonstone/-/moonstone-0.15.11.tgz#e9a9c003ae1fa3d40217bbd8945a66989a8c883c"
-  integrity sha512-NAyFjYZdeU3M/GMts9W+GuBpANMu9MqEqghwiYKrf/y3Oh1KVLVhNGFtcc67hyDv5t391xzgaB1K+KO4vXfDgw==
+  version "0.15.8"
+  resolved "https://npm.jahia.com/@jahia%2fmoonstone/-/moonstone-0.15.8.tgz#4dfe83e22961d067ba6084ccf1111c8fd397c040"
+  integrity sha512-0sDWY5MxrcW1ThAVPG9Ch5If2GVPa5j1dROk69xR3n3uzBkMl6vSwb5EZWQtvoucZpx8zDff5h3vMYm06NSiLQ==
   dependencies:
     "@svgr/webpack" "^4.3.3"
     clsx "^1.0.4"
@@ -2097,7 +2097,7 @@
     merge-deep "^3.0.2"
     svgo "^1.2.2"
 
-"@svgr/webpack@^4.0.3", "@svgr/webpack@^4.3.3":
+"@svgr/webpack@^4.0.3":
   version "4.3.3"
   resolved "https://registry.yarnpkg.com/@svgr/webpack/-/webpack-4.3.3.tgz#13cc2423bf3dff2d494f16b17eb7eacb86895017"
   integrity sha512-bjnWolZ6KVsHhgyCoYRFmbd26p8XVbulCzSG53BDQqAr+JOAderYK7CuYrB3bDjHJuF6LJ7Wrr42+goLRV9qIg==
