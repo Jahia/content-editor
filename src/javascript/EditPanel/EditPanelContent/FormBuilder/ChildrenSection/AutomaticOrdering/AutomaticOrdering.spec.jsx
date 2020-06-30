@@ -79,12 +79,22 @@ describe('Automatic ordering component', () => {
         );
         expect(cmp.find('Button').props().disabled).toBe(false);
         expect(cmp.find('FieldContainer').length).toBe(2);
+
         cmp.find('Button').simulate('click');
         expect(cmp.find('FieldContainer').length).toBe(4);
         expect(cmp.find('Button').props().disabled).toBe(false);
+        expect(props.formik.setFieldValue.mock.calls[0]).toEqual(['secondField', 'jcr:lastModified', true]);
+        expect(props.formik.setFieldValue.mock.calls[1]).toEqual(['secondDirection', 'desc', true]);
+        expect(props.formik.setFieldTouched.mock.calls[0]).toEqual(['secondField', true]);
+        expect(props.formik.setFieldTouched.mock.calls[1]).toEqual(['secondDirection', true]);
+
         cmp.find('Button').simulate('click');
         expect(cmp.find('FieldContainer').length).toBe(6);
         expect(cmp.find('Button').props().disabled).toBe(true);
+        expect(props.formik.setFieldValue.mock.calls[2]).toEqual(['thirdField', 'jcr:lastModified', true]);
+        expect(props.formik.setFieldValue.mock.calls[3]).toEqual(['thirdDirection', 'desc', true]);
+        expect(props.formik.setFieldTouched.mock.calls[2]).toEqual(['thirdField', true]);
+        expect(props.formik.setFieldTouched.mock.calls[3]).toEqual(['thirdDirection', true]);
     });
 
     it('should remove rows when click on "Remove" button', () => {
