@@ -26,6 +26,8 @@ export const registerSelectorTypes = ceRegistry => {
             if (field.selectorOptions?.find(option => option.name === 'password')) {
                 return field.multiple ? property.decryptedValues : property.decryptedValue;
             }
+
+            return field.multiple ? property.values : property.value;
         }
     });
     ceRegistry.add('selectorType', 'TextArea', {cmp: TextArea, supportMultiple: false});
