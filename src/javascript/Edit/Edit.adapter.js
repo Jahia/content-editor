@@ -18,7 +18,7 @@ const getInitialValues = (nodeData, sections) => {
     const extendsMixinFieldsDefaultValues = getFields(sections, undefined, fieldset => fieldset.dynamic && !fieldset.activated)
         .reduce((result, field) => ({...result, ...getFieldValuesFromDefaultValues(field)}), {});
 
-    const childrenOrderingFields = getChildrenOrderingFields(nodeData);
+    const childrenOrderingFields = getChildrenOrderingFields(nodeData, dynamicFieldSets);
 
     // Work in progress
     const wipInfo = {[Constants.wip.fieldName]: {status: nodeData.wipInfo.status, languages: nodeData.wipInfo.languages}};
@@ -27,15 +27,25 @@ const getInitialValues = (nodeData, sections) => {
     return {...nodeValues, ...extendsMixinFieldsDefaultValues, ...dynamicFieldSets, ...childrenOrderingFields, ...wipInfo};
 };
 
-const getChildrenOrderingFields = nodeData => {
+const getChildrenOrderingFields = (nodeData, dynamicFieldSets) => {
+    const orderingInitialValues = {};
+
     if (!nodeData.isPage && nodeData.primaryNodeType.hasOrderableChildNodes) {
-        return {
-            // The name of this field contain :: because it's forbiden in JCR. With this we avoid collision :)
-            'Children::Order': nodeData.children.nodes
-        };
+        orderingInitialValues['Children::Order'] = nodeData.children.nodes;
     }
 
-    return {};
+    // Using === false, because if it's undefined it's mean that the dynamic fieldset doest exist, so we do not need to init the values
+    // But in case it's false, it's mean the dynamic fieldset exists but is not activated, so we need to init the values
+    if (dynamicFieldSets[Constants.automaticOrdering.mixin] === false) {
+        orderingInitialValues.firstDirection = 'desc';
+        orderingInitialValues.firstField = 'jcr:lastModified';
+        orderingInitialValues.secondDirection = undefined;
+        orderingInitialValues.secondField = undefined;
+        orderingInitialValues.thirdDirection = undefined;
+        orderingInitialValues.thirdField = undefined;
+    }
+
+    return orderingInitialValues;
 };
 
 const getFieldValues = (field, nodeData) => {
