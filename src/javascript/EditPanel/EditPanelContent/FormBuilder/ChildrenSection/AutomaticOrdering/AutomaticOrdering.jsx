@@ -36,7 +36,13 @@ export const AutomaticOrderingCmp = ({classes, formik: {values, setFieldValue, s
     const add = () => {
         for (let i = 0; i < rows.length; i++) {
             if (!displayedRows.includes(i)) {
+                const rowToDisplay = rows[i];
                 setDisplayedRows([...displayedRows, i]);
+
+                setFieldValue(rowToDisplay.propField.name, 'jcr:lastModified', true);
+                setFieldTouched(rowToDisplay.propField.name, true);
+                setFieldValue(rowToDisplay.directionField.name, 'desc', true);
+                setFieldTouched(rowToDisplay.directionField.name, true);
                 return;
             }
         }

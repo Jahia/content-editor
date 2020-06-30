@@ -214,6 +214,61 @@ describe('adaptEditFormData', () => {
         expect(adaptEditFormData(graphqlResponse, 'fr', t).initialValues['Children::Order']).not.toEqual([]);
     });
 
+    it('Should initialize automatic ordering values if fieldSet is not enabled', () => {
+        graphqlResponse.forms.editForm.sections[0].fieldSets.push({
+            name: 'jmix:orderedList',
+            dynamic: true,
+            activated: false,
+            displayed: true,
+            fields: []
+        });
+
+        const adaptedData = adaptEditFormData(graphqlResponse, 'fr', t);
+        expect(adaptedData.initialValues.firstField).toEqual('jcr:lastModified');
+        expect(adaptedData.initialValues.firstDirection).toEqual('desc');
+        expect(adaptedData.initialValues.secondField).toEqual(undefined);
+        expect(adaptedData.initialValues.secondDirection).toEqual(undefined);
+        expect(adaptedData.initialValues.thirdField).toEqual(undefined);
+        expect(adaptedData.initialValues.thirdDirection).toEqual(undefined);
+    });
+
+    it('Should not initialize automatic ordering values if fieldSet is enabled', () => {
+        graphqlResponse.forms.editForm.sections[0].fieldSets.push({
+            name: 'jmix:orderedList',
+            dynamic: true,
+            activated: true,
+            displayed: true,
+            fields: [{name: 'firstField'},
+                {name: 'firstDirection'},
+                {name: 'secondField'},
+                {name: 'secondDirection'},
+                {name: 'thirdField'},
+                {name: 'thirdDirection'}]
+        });
+        graphqlResponse.jcr.result.properties.push({name: 'firstField', value: 'toto', properties: true});
+        graphqlResponse.jcr.result.properties.push({name: 'firstDirection', value: 'asc', properties: true});
+        graphqlResponse.jcr.result.properties.push({name: 'thirdField', value: 'titi', properties: true});
+        graphqlResponse.jcr.result.properties.push({name: 'thirdDirection', value: 'desc', properties: true});
+
+        const adaptedData = adaptEditFormData(graphqlResponse, 'fr', t);
+        expect(adaptedData.initialValues.firstField).toEqual('toto');
+        expect(adaptedData.initialValues.firstDirection).toEqual('asc');
+        expect(adaptedData.initialValues.secondField).toEqual(undefined);
+        expect(adaptedData.initialValues.secondDirection).toEqual(undefined);
+        expect(adaptedData.initialValues.thirdField).toEqual('titi');
+        expect(adaptedData.initialValues.thirdDirection).toEqual('desc');
+    });
+
+    it('Should not initialize automatic ordering values if fieldSet doest exist in form definition', () => {
+        const adaptedData = adaptEditFormData(graphqlResponse, 'fr', t);
+        expect(adaptedData.initialValues.firstField).toEqual(undefined);
+        expect(adaptedData.initialValues.firstDirection).toEqual(undefined);
+        expect(adaptedData.initialValues.secondField).toEqual(undefined);
+        expect(adaptedData.initialValues.secondDirection).toEqual(undefined);
+        expect(adaptedData.initialValues.thirdField).toEqual(undefined);
+        expect(adaptedData.initialValues.thirdDirection).toEqual(undefined);
+    });
+
     it('should use default value for not enabled mixin', () => {
         graphqlResponse.forms.editForm.sections[0].fieldSets.push({
             dynamic: true,
