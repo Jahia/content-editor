@@ -28,13 +28,16 @@
     },
     "jahia": {
         "apps": {
-            "jahia": ["javascript/apps/content-editor-ext.bundle.js", "/cms/render/default/en/settings.contentEditor.js"]
+            "jahia": [
+                "javascript/apps/content-editor-ext.bundle.js",
+                "/cms/render/default/en/settings.contentEditor.js"
+            ]
         }
     },
     "dependencies": {
         "@apollo/react-hooks": "^3.1.4",
         "@jahia/data-helper": "^0.0.19",
-        "@jahia/design-system-kit": "^1.1.4",
+        "@jahia/design-system-kit": "^1.1.5",
         "@jahia/icons": "^1.1.1",
         "@jahia/react-material": "^2.1.2",
         "@jahia/ui-extender": "^0.4.13",
