@@ -53,7 +53,7 @@ describe('Selector Types', () => {
             expect(adaptedValue).toEqual(['thisIs@MyValue', 'thisIs@MySecond>Value']);
         });
 
-        it('should not adapt value if the selector option is not password', () => {
+        it('should get fallback value if the selector option is not password', () => {
             const selector = resolveSelectorType({selectorType: 'Text'});
             expect(selector.cmp).toEqual(Text);
             expect(selector.supportMultiple).toEqual(false);
@@ -63,7 +63,7 @@ describe('Selector Types', () => {
                 {selectorOptions: [{name: 'optionName'}]},
                 {value: 'MyValue'}
             );
-            expect(adaptedValue).toEqual(undefined);
+            expect(adaptedValue).toEqual('MyValue');
         });
     });
 });
