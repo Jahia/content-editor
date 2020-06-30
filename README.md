@@ -6,7 +6,7 @@ content-editor
 ==============
 [![DX version][dx-image]][dx-url]
 
-Content Editor React extension for DX modules.
+Content Editor React extension for Jahia modules.
 
 ### Requirements
 
