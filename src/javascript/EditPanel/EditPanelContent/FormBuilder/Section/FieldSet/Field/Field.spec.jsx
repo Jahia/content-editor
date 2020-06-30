@@ -50,6 +50,8 @@ describe('Field component', () => {
             actionContext: {},
             input: <></>,
             inputContext: {
+                displayBadges: true,
+                displayLabels: true,
                 editorContext: {
                     lang: 'en',
                     nodeData: {}

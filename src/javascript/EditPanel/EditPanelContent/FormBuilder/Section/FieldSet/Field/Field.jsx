@@ -82,6 +82,31 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
         }
     };
 
+    let actionCmp;
+    if (inputContext.actionRender) {
+        actionCmp = inputContext.actionRender;
+    } else if (actionContext.noAction) {
+        actionCmp = <span className={classes.emptySpace}/>;
+    } else {
+        actionCmp = (
+            <>
+                <ContextualMenu ref={contextualMenu}
+                                actionKey={selectorType.key + 'Menu'}
+                                context={actionContext}
+                />
+                <IconButton variant="ghost"
+                            data-sel-action="moreOptions"
+                            aria-label={t('content-editor:label.contentEditor.edit.action.fieldMoreOptions')}
+                            icon={<MoreVert/>}
+                            onClick={event => {
+                                event.stopPropagation();
+                                contextualMenu.current.open(event);
+                            }}
+                />
+            </>
+        );
+    }
+
     return (
         <div className={`${classes.formControl} ${shouldDisplayErrors ? classes.formControlError : ''}`}
              data-sel-content-editor-field={field.name}
@@ -96,6 +121,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
                 alignItems="center"
             >
                 <Grid item className={classes.input}>
+                    {inputContext.displayLabels &&
                     <Grid
                         container
                         direction="row"
@@ -110,31 +136,35 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
                             >
                                 {field.displayName}
                             </InputLabel>
-                            {field.mandatory && (
-                                <Badge className={classes.badge}
-                                       data-sel-content-editor-field-mandatory={Boolean(hasMandatoryError)}
-                                       badgeContent={t('content-editor:label.contentEditor.edit.validation.required')}
-                                       variant="normal"
-                                       color={hasMandatoryError ? 'warning' : 'primary'}
-                                />
+                            {inputContext.displayBadges && (
+                                <>
+                                    {field.mandatory && (
+                                        <Badge className={classes.badge}
+                                               data-sel-content-editor-field-mandatory={Boolean(hasMandatoryError)}
+                                               badgeContent={t('content-editor:label.contentEditor.edit.validation.required')}
+                                               variant="normal"
+                                               color={hasMandatoryError ? 'warning' : 'primary'}
+                                        />
+                                    )}
+                                    {showChipField(field.i18n, wipInfo, inputContext.editorContext.lang) && (
+                                        <Badge className={classes.badge}
+                                               data-sel-role="wip-info-chip-field"
+                                               badgeContent={t('content-editor:label.contentEditor.edit.action.workInProgress.chipLabelField')}
+                                               variant="normal"
+                                               color="info"
+                                        />
+                                    )}
+                                    {(!field.i18n && siteInfo.languages.length > 1) &&
+                                    <Badge className={classes.badge}
+                                           badgeContent={t('content-editor:label.contentEditor.edit.sharedLanguages')}
+                                           icon={<Public/>}
+                                           variant="normal"
+                                           color="info"
+                                    />}
+                                </>
                             )}
-                            {showChipField(field.i18n, wipInfo, inputContext.editorContext.lang) && (
-                                <Badge className={classes.badge}
-                                       data-sel-role="wip-info-chip-field"
-                                       badgeContent={t('content-editor:label.contentEditor.edit.action.workInProgress.chipLabelField')}
-                                       variant="normal"
-                                       color="info"
-                                />
-                            )}
-                            {(!field.i18n && siteInfo.languages.length > 1) &&
-                            <Badge className={classes.badge}
-                                   badgeContent={t('content-editor:label.contentEditor.edit.sharedLanguages')}
-                                   icon={<Public/>}
-                                   variant="normal"
-                                   color="info"
-                            />}
                         </Grid>
-                    </Grid>
+                    </Grid>}
                     {field.description &&
                     <Grid
                         container
@@ -160,25 +190,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
                                 <SingleField inputContext={inputContext} field={field} onChange={onChange}/>}
                         </Grid>
                         <Grid item>
-                            {actionContext.noAction ? (
-                                <span className={classes.emptySpace}/>
-                            ) : (
-                                <>
-                                    <ContextualMenu ref={contextualMenu}
-                                                    actionKey={selectorType.key + 'Menu'}
-                                                    context={actionContext}
-                                    />
-                                    <IconButton variant="ghost"
-                                                data-sel-action="moreOptions"
-                                                aria-label={t('content-editor:label.contentEditor.edit.action.fieldMoreOptions')}
-                                                icon={<MoreVert/>}
-                                                onClick={event => {
-                                                    event.stopPropagation();
-                                                    contextualMenu.current.open(event);
-                                                }}
-                                    />
-                                </>
-                            )}
+                            {actionCmp}
                         </Grid>
                     </Grid>
                     <Typography className={classes.errorMessage} data-sel-error={shouldDisplayErrors && errors[field.name]}>

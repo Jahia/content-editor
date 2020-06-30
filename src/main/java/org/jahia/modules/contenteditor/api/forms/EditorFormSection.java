@@ -61,6 +61,7 @@ public class EditorFormSection {
     private Double rank;
     private Double priority;
     private String description;
+    private boolean hide = false;
 
     public EditorFormSection() {
     }
@@ -118,6 +119,17 @@ public class EditorFormSection {
 
     public void setPriority(Double priority) {
         this.priority = priority;
+    }
+
+    @GraphQLField
+    @GraphQLName("hide")
+    @GraphQLDescription("Check if this section should be hide")
+    public boolean isHide() {
+        return hide;
+    }
+
+    public void setHide(boolean hide) {
+        this.hide = hide;
     }
 
     @GraphQLField

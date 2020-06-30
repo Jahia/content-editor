@@ -15,9 +15,13 @@ const FormBuilder = ({mode}) => {
     const {sections} = useContentEditorSectionContext();
     const {t} = useTranslation();
 
-    const isOrderingSection = !nodeData.isPage && nodeData.primaryNodeType.hasOrderableChildNodes;
+    if (!sections || sections.length === 0) {
+        return <></>;
+    }
+
+    const isOrderingSection = !nodeData.isPage && nodeData.primaryNodeType.hasOrderableChildNodes && mode === Constants.routes.baseEditRoute;
     const cloneSections = isOrderingSection ? [...sections] : sections;
-    if (isOrderingSection && mode === Constants.routes.baseEditRoute) {
+    if (isOrderingSection) {
         const orderingSection = {
             isOrderingSection: true,
             displayName: t('content-editor:label.contentEditor.section.listAndOrdering.title')
@@ -28,7 +32,7 @@ const FormBuilder = ({mode}) => {
     return (
         <Form>
             <section data-sel-mode={mode}>
-                {cloneSections.map(section => (
+                {cloneSections.filter(section => !section.hide).map(section => (
                     section.isOrderingSection ?
                         <ChildrenSection key={section.displayName} section={section}/> :
                         <Section key={section.displayName} section={section}/>

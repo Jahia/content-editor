@@ -7,7 +7,8 @@ const NodeDataFragment = {
             uilang: 'String!',
             language: 'String!',
             uuid: 'String!',
-            writePermission: 'String!'
+            writePermission: 'String!',
+            childrenFilterTypes: '[String]!'
         },
         applyFor: 'node',
         gql: gql`fragment NodeData on JCRQuery {
@@ -29,7 +30,7 @@ const NodeDataFragment = {
                     displayName(language: $language)
                     path
                 }
-                children {
+                children(typesFilter:{types: $childrenFilterTypes}) {
                     nodes {
                         name
                         displayName(language: $language)
@@ -80,7 +81,7 @@ const NodeDataFragment = {
 };
 
 const FormQuery = gql`
-    query editForm($uilang:String!, $language:String!, $uuid: String!, $writePermission: String!) {
+    query editForm($uilang:String!, $language:String!, $uuid: String!, $writePermission: String!, $childrenFilterTypes: [String]!) {
         forms {
             editForm(uiLocale: $uilang, locale: $language, uuidOrPath: $uuid) {
                 name
@@ -90,6 +91,7 @@ const FormQuery = gql`
                     name
                     displayName
                     description
+                    hide
                     fieldSets {
                         name
                         displayName
@@ -139,7 +141,7 @@ const FormQuery = gql`
 `;
 
 const NodeQuery = gql`
-    query getNodeProperties($uuid:String!, $language:String!, $uilang:String!, $writePermission: String!) {
+    query getNodeProperties($uuid:String!, $language:String!, $uilang:String!, $writePermission: String!, $childrenFilterTypes: [String]!) {
         jcr {
             ...NodeData
         }

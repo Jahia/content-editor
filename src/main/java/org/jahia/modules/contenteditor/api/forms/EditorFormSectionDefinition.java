@@ -52,6 +52,7 @@ public class EditorFormSectionDefinition {
     private String labelKey;
     private String descriptionKey;
     private String requiredPermission;
+    private boolean hide = false;
 
     public EditorFormSectionDefinition() {
     }
@@ -90,5 +91,13 @@ public class EditorFormSectionDefinition {
 
     public void setRequiredPermission(String requiredPermission) {
         this.requiredPermission = requiredPermission;
+    }
+
+    public boolean isHide() {
+        return hide;
+    }
+
+    public void setHide(boolean hide) {
+        this.hide = hide;
     }
 }

@@ -8,7 +8,7 @@ import {ContentEditorContext} from '~/ContentEditor.context';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import {Field} from './Field';
 
-const FieldContainerCmp = ({field, formik}) => {
+const FieldContainerCmp = ({field, formik, inputContext}) => {
     const selectorType = resolveSelectorType(field);
     const [actionContext, _setActionContext] = useState({noAction: true});
     const editorContext = useContext(ContentEditorContext);
@@ -35,9 +35,12 @@ const FieldContainerCmp = ({field, formik}) => {
         <Field
             idInput={field.name}
             inputContext={{
+                displayLabels: true,
+                displayBadges: true,
                 fieldComponent: selectorType.cmp,
                 editorContext: {...editorContext, ...contentEditorSectionContext},
-                setActionContext: setActionContext
+                setActionContext: setActionContext,
+                ...inputContext
             }}
             selectorType={selectorType}
             siteInfo={editorContext.siteInfo}
@@ -47,9 +50,14 @@ const FieldContainerCmp = ({field, formik}) => {
     );
 };
 
+FieldContainerCmp.defaultProps = {
+    inputContext: {}
+};
+
 FieldContainerCmp.propTypes = {
     field: FieldPropTypes.isRequired,
-    formik: PropTypes.object.isRequired
+    formik: PropTypes.object.isRequired,
+    inputContext: PropTypes.object
 };
 
 export const FieldContainer = connect(FieldContainerCmp);

@@ -13,6 +13,7 @@ import classes from './CopyLanguageDialog.scss';
 import {useApolloClient} from '@apollo/react-hooks';
 import {FormQuery} from '~/Edit/EditForm.gql-queries';
 import {getI18nFieldAndValues} from '~/Edit/copyLanguage/copyLanguage.utils';
+import {Constants} from '~/ContentEditor.constants';
 export const CopyLanguageDialog = ({
     language,
     availableLanguages,
@@ -28,7 +29,8 @@ export const CopyLanguageDialog = ({
             uilang: language,
             language: language,
             uuid: uuid,
-            writePermission: `jcr:modifyProperties_default_${language}`
+            writePermission: `jcr:modifyProperties_default_${language}`,
+            childrenFilterTypes: Constants.childrenFilterTypes
         };
 
         let formAndData = await client.query({query: FormQuery, variables: variables});
