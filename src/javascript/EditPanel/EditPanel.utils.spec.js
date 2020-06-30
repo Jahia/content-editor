@@ -331,7 +331,7 @@ describe('EditPanel utils', () => {
             nodeData: {
                 properties: [{
                     name: 'date',
-                    notZonedDateValue: 'oldDate'
+                    value: 'oldDate'
                 }]
             },
             formValues: {
@@ -341,7 +341,8 @@ describe('EditPanel utils', () => {
                 language: 'fr',
                 name: 'date',
                 type: 'DATE',
-                notZonedDateValue: 'newDate'
+                option: 'NOT_ZONED_DATE',
+                value: 'newDate'
             }]
         },
         {
@@ -349,7 +350,7 @@ describe('EditPanel utils', () => {
             nodeData: {
                 properties: [{
                     name: 'multipleDate',
-                    notZonedDateValues: ['oldDate']
+                    values: ['oldDate']
                 }]
             },
             formValues: {
@@ -359,7 +360,8 @@ describe('EditPanel utils', () => {
                 language: 'fr',
                 name: 'multipleDate',
                 type: 'DATE',
-                notZonedDateValues: ['newDate']
+                option: 'NOT_ZONED_DATE',
+                values: ['newDate']
             }]
         },
         {
@@ -462,10 +464,10 @@ describe('EditPanel utils', () => {
             nodeData: {
                 properties: [{
                     name: 'multipleDate',
-                    notZonedDateValues: ['date1', 'date2']
+                    values: ['date1', 'date2']
                 }, {
                     name: 'date',
-                    notZonedDateValue: 'single-date'
+                    value: 'single-date'
                 }]
             },
             skipCreate: true,
@@ -480,7 +482,7 @@ describe('EditPanel utils', () => {
             nodeData: {
                 properties: [{
                     name: 'multipleDate',
-                    notZonedDateValues: ['date1', 'date2']
+                    values: ['date1', 'date2']
                 }]
             },
             skipCreate: true,
@@ -491,7 +493,8 @@ describe('EditPanel utils', () => {
                 language: 'fr',
                 name: 'multipleDate',
                 type: 'DATE',
-                notZonedDateValues: ['date1', 'date2', 'date3']
+                option: 'NOT_ZONED_DATE',
+                values: ['date1', 'date2', 'date3']
             }]
         },
         {
@@ -507,7 +510,8 @@ describe('EditPanel utils', () => {
                 language: 'fr',
                 name: 'multipleDate',
                 type: 'DATE',
-                notZonedDateValues: ['date1', 'date2', 'date3']
+                option: 'NOT_ZONED_DATE',
+                values: ['date1', 'date2', 'date3']
             }]
         },
         {
@@ -515,7 +519,7 @@ describe('EditPanel utils', () => {
             nodeData: {
                 properties: [{
                     name: 'multipleDate',
-                    notZonedDateValues: ['old value']
+                    values: ['old value']
                 }, {
                     name: 'multipleDecimal',
                     values: ['1.3', '1.1']
@@ -531,7 +535,8 @@ describe('EditPanel utils', () => {
                 language: 'fr',
                 name: 'multipleDate',
                 type: 'DATE',
-                notZonedDateValues: ['new value']
+                option: 'NOT_ZONED_DATE',
+                values: ['new value']
             }, {
                 language: 'fr',
                 name: 'multiple',
@@ -562,10 +567,37 @@ describe('EditPanel utils', () => {
 
     describe('getValuePropName', () => {
         it('should return the good value prop name based on the field', () => {
-            expect(getValuePropName({multiple: true, requiredType: 'DATE'})).toEqual('notZonedDateValues');
-            expect(getValuePropName({multiple: false, requiredType: 'DATE'})).toEqual('notZonedDateValue');
-            expect(getValuePropName({multiple: true, requiredType: 'type'})).toEqual('values');
-            expect(getValuePropName({multiple: false, requiredType: 'type'})).toEqual('value');
+            expect(getValuePropName({multiple: true, requiredType: 'DATE'})).toEqual({name: 'values', option: 'NOT_ZONED_DATE'});
+
+            expect(getValuePropName({multiple: false, requiredType: 'DATE'})).toEqual({name: 'value', option: 'NOT_ZONED_DATE'});
+
+            expect(getValuePropName({multiple: true, requiredType: 'type'})).toEqual({name: 'values'});
+
+            expect(getValuePropName({multiple: false, requiredType: 'type'})).toEqual({name: 'value'});
+
+            expect(getValuePropName({
+                multiple: true,
+                requiredType: 'type',
+                selectorOptions: [{
+                    name: 'password'
+                }]
+            })).toEqual({name: 'values', option: 'ENCRYPTED'});
+
+            expect(getValuePropName({
+                multiple: false,
+                requiredType: 'type',
+                selectorOptions: [{
+                    name: 'password'
+                }]
+            })).toEqual({name: 'value', option: 'ENCRYPTED'});
+
+            expect(getValuePropName({
+                multiple: false,
+                requiredType: 'type',
+                selectorOptions: [{
+                    name: 'optionName'
+                }]
+            })).toEqual({name: 'value'});
         });
     });
 
@@ -653,7 +685,10 @@ describe('EditPanel utils', () => {
                     nodes: [{name: 'ac'}, {name: 'dc'}]
                 }
             };
-            expect(getChildrenOrder(formValue, nodeData)).toEqual({shouldModifyChildren: true, childrenOrder: ['dc', 'ac']});
+            expect(getChildrenOrder(formValue, nodeData)).toEqual({
+                shouldModifyChildren: true,
+                childrenOrder: ['dc', 'ac']
+            });
         });
     });
 });

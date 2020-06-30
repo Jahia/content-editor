@@ -19,7 +19,15 @@ const adaptDateProperty = (field, property) => {
 export const registerSelectorTypes = ceRegistry => {
     ceRegistry.add('selectorType', 'Category', {cmp: Category, supportMultiple: true});
     ceRegistry.add('selectorType', 'Tag', {cmp: Tag, supportMultiple: true});
-    ceRegistry.add('selectorType', 'Text', {cmp: Text, supportMultiple: false});
+    ceRegistry.add('selectorType', 'Text', {
+        cmp: Text,
+        supportMultiple: false,
+        adaptValue: (field, property) => {
+            if (field.selectorOptions?.find(option => option.name === 'password')) {
+                return field.multiple ? property.decryptedValues : property.decryptedValue;
+            }
+        }
+    });
     ceRegistry.add('selectorType', 'TextArea', {cmp: TextArea, supportMultiple: false});
     ceRegistry.add('selectorType', 'RichText', {cmp: RichText, supportMultiple: false});
     ceRegistry.add('selectorType', 'DateTimePicker', {cmp: DateTimePicker, supportMultiple: false, adaptValue: adaptDateProperty});

@@ -120,4 +120,24 @@ describe('Text component', () => {
 
         expect(cmp.props().decimalSeparator).toBe(',');
     });
+
+    it('should be the input of type password', () => {
+        props.field.selectorOptions = [{name: 'password'}];
+        const cmp = shallow(<TextCmp {...props}/>);
+
+        expect(cmp.props().type).toBe('password');
+    });
+
+    it('should the interactive button manage right type for the input of type password', () => {
+        props.field.selectorOptions = [{name: 'password'}];
+        const cmp = shallow(<TextCmp {...props}/>);
+
+        expect(cmp.props().type).toBe('password');
+
+        cmp.props().variant.interactive.props.onClick();
+        expect(cmp.props().type).toBe('text');
+
+        cmp.props().variant.interactive.props.onClick();
+        expect(cmp.props().type).toBe('password');
+    });
 });

@@ -102,10 +102,12 @@ export function getDataToMutate({nodeData, formValues, sections, lang}) {
                             )
                         )
                     ) {
+                        const {name, option} = getValuePropName(field);
                         propsToSave.push({
                             name: key,
                             type: fieldType,
-                            [getValuePropName(field)]: valueToSave,
+                            option: option,
+                            [name]: valueToSave,
                             language: lang
                         });
                     }
@@ -113,7 +115,7 @@ export function getDataToMutate({nodeData, formValues, sections, lang}) {
             } else if (nodeData) {
                 // Check if props existed before, to remove it
                 const nodeProperty = nodeData.properties.find(prop => prop.name === key);
-                if (nodeProperty && nodeProperty[getValuePropName(field)]) {
+                if (nodeProperty && nodeProperty[getValuePropName(field).name]) {
                     propsToDelete.push(key);
                 }
             }
@@ -131,12 +133,18 @@ export function getDataToMutate({nodeData, formValues, sections, lang}) {
 /**
  * Get the value property name used to read the value(s) of a given property field
  * @param {object} field the property field
- * @returns {string} the name of the value property to use
+ * @returns {object} the name and option of the value property to use
  */
 export function getValuePropName(field) {
-    return field.multiple ?
-        (field.requiredType === 'DATE' ? 'notZonedDateValues' : 'values') :
-        (field.requiredType === 'DATE' ? 'notZonedDateValue' : 'value');
+    const result = field.multiple ? {name: 'values'} : {name: 'value'};
+
+    if (field.selectorOptions?.find(selector => selector.name === 'password')) {
+        result.option = 'ENCRYPTED';
+    } else if (field.requiredType === 'DATE') {
+        result.option = 'NOT_ZONED_DATE';
+    }
+
+    return result;
 }
 
 /**
@@ -149,7 +157,7 @@ export function getValuePropName(field) {
 export function propertyHasChanged(currentValue, field, nodeData) {
     // Retrieve previous value
     const propertyData = nodeData && nodeData.properties && nodeData.properties.find(prop => prop.name === field.name);
-    const previousValue = propertyData && propertyData[getValuePropName(field)];
+    const previousValue = propertyData && propertyData[getValuePropName(field).name];
 
     // Compare previous value
     if (field.multiple) {
