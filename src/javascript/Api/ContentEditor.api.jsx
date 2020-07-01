@@ -57,7 +57,6 @@ const ContentEditorApiCmp = ({classes, client}) => {
 
     /**
      * Open content type selection then content editor as a modal to create a new content
-     * @param name the name of the child node (only specified in case of named child node, null otherwise)
      * @param uuid of the parent node path where the content will be created
      * @param path of the parent node path where the content will be created
      * @param site the current site
@@ -69,9 +68,10 @@ const ContentEditorApiCmp = ({classes, client}) => {
      *                    - in case of multiple content types resolved: open content type selector
      * @param excludedNodeTypes (optional) The node types excluded for creation, by default: ['jmix:studioOnly', 'jmix:hiddenType']
      * @param includeSubTypes (optional) if true, subtypes of nodeTypes provided will be resolved.
+     * @param name the name of the child node (only specified in case of named child node, null/undefined otherwise)
      */
     // eslint-disable-next-line
-    window.CE_API.create = (name, uuid, path, site, lang, uilang, nodeTypes, excludedNodeTypes, includeSubTypes) => {
+    window.CE_API.create = (uuid, path, site, lang, uilang, nodeTypes, excludedNodeTypes, includeSubTypes, name) => {
         // Sync GWT language
         if (window.top.authoringApi.switchLanguage) {
             window.top.authoringApi.switchLanguage(lang);
