@@ -3,10 +3,11 @@ import {useQuery} from '@apollo/react-hooks';
 
 const NB_OF_DISPLAYED_RESTRICTED_SUB_NODES = 3;
 // eslint-disable-next-line
-export const useCreatableNodetypes = (nodeTypes, includeSubTypes, path, uilang, excludedNodeTypes, showOnNodeTypes, transformResultCallback) => {
+export const useCreatableNodetypes = (nodeTypes, childNodeName, includeSubTypes, path, uilang, excludedNodeTypes, showOnNodeTypes, transformResultCallback) => {
     const {data, error, loadingTypes} = useQuery(getTreeOfContentWithRequirements, {
         variables: {
             nodeTypes: (nodeTypes && nodeTypes.length) > 0 ? nodeTypes : undefined,
+            childNodeName,
             includeSubTypes,
             uilang,
             path,
@@ -21,11 +22,12 @@ export const useCreatableNodetypes = (nodeTypes, includeSubTypes, path, uilang, 
     };
 };
 // eslint-disable-next-line
-export async function getCreatableNodetypes(client, nodeTypes, includeSubTypes, path, uilang, excludedNodeTypes, showOnNodeTypes, transformResultCallback) {
+export async function getCreatableNodetypes(client, nodeTypes, childNodeName, includeSubTypes, path, uilang, excludedNodeTypes, showOnNodeTypes, transformResultCallback) {
     const {data} = await client.query({
         query: getTreeOfContentWithRequirements,
         variables: {
             nodeTypes: (nodeTypes && nodeTypes.length) > 0 ? nodeTypes : undefined,
+            childNodeName,
             includeSubTypes,
             uilang,
             path,

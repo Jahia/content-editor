@@ -1,6 +1,6 @@
 import {useQuery} from '@apollo/react-hooks';
 
-export const useFormDefinition = (query, queryParams, adapter, t) => {
+export const useFormDefinition = (query, queryParams, adapter, t, contentEditorConfigContext) => {
     const {loading, error, data, refetch} = useQuery(query, {
         variables: queryParams,
         fetchPolicy: 'network-only'
@@ -14,5 +14,5 @@ export const useFormDefinition = (query, queryParams, adapter, t) => {
         };
     }
 
-    return {data: adapter(data, queryParams.uilang, t), refetch};
+    return {data: adapter(data, queryParams.uilang, t, contentEditorConfigContext), refetch};
 };

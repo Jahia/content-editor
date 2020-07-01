@@ -16,8 +16,9 @@ const getInitialValues = (sections, nodeData) => {
  * @param data Data from BackEnd
  * @param lang current lang
  * @param t translation fct
+ * @param contentEditorConfigContext the editor config context
  */
-export const adaptCreateFormData = (data, lang, t) => {
+export const adaptCreateFormData = (data, lang, t, contentEditorConfigContext) => {
     const nodeData = data.jcr.result;
     const sections = data.forms.createForm.sections;
 
@@ -34,6 +35,10 @@ export const adaptCreateFormData = (data, lang, t) => {
     };
 
     adaptSystemNameField(data, formData, lang, t, data.jcr.nodeTypeByName, true);
+
+    if (contentEditorConfigContext.name) {
+        formData.initialValues['ce:systemName'] = contentEditorConfigContext.name;
+    }
 
     return formData;
 };

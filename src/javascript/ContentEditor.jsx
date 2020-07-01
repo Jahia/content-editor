@@ -12,8 +12,9 @@ const Modes = {
     create: Create
 };
 
-export const ContentEditor = ({mode, uuid, lang, uilang, site, contentType, env, envProps}) => {
+export const ContentEditor = ({name, mode, uuid, lang, uilang, site, contentType, env, envProps}) => {
     const contentEditorConfig = {
+        name,
         uuid,
         lang,
         uilang,
@@ -42,5 +43,6 @@ ContentEditor.propTypes = {
     lang: PropTypes.string.isRequired,
     uilang: PropTypes.string.isRequired,
     site: PropTypes.string.isRequired,
-    contentType: PropTypes.string
+    contentType: PropTypes.string,
+    name: PropTypes.string
 };
