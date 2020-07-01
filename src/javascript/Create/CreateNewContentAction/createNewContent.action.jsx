@@ -51,6 +51,7 @@ const CreateNewContent = ({context, render: Render, loading: Loading}) => {
     );
     const {loadingTypes, error, nodetypes} = useCreatableNodetypes(
         undefined,
+        undefined,
         false,
         context.path,
         uilang,

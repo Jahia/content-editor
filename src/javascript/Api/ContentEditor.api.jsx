@@ -57,6 +57,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
 
     /**
      * Open content type selection then content editor as a modal to create a new content
+     * @param name the name of the child node (only specified in case of named child node, null otherwise)
      * @param uuid of the parent node path where the content will be created
      * @param path of the parent node path where the content will be created
      * @param site the current site
@@ -70,7 +71,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
      * @param includeSubTypes (optional) if true, subtypes of nodeTypes provided will be resolved.
      */
     // eslint-disable-next-line
-    window.CE_API.create = (uuid, path, site, lang, uilang, nodeTypes, excludedNodeTypes, includeSubTypes) => {
+    window.CE_API.create = (name, uuid, path, site, lang, uilang, nodeTypes, excludedNodeTypes, includeSubTypes) => {
         // Sync GWT language
         if (window.top.authoringApi.switchLanguage) {
             window.top.authoringApi.switchLanguage(lang);
@@ -79,6 +80,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
         if (nodeTypes && nodeTypes.length === 1 && !includeSubTypes) {
             // Direct create with a known content type
             setEditorConfig({
+                name,
                 uuid,
                 site,
                 lang,
@@ -91,6 +93,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
             getCreatableNodetypes(
                 client,
                 nodeTypes,
+                name,
                 includeSubTypes,
                 path,
                 uilang,
@@ -100,6 +103,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
                     // Only one type allowed, open directly CE
                     if (creatableNodeTypes.length === 1) {
                         setEditorConfig({
+                            name,
                             uuid,
                             site,
                             lang,
@@ -115,6 +119,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
                         setContentTypeSelectorConfig({
                             creatableNodeTypes: creatableNodeTypes.map(nodeType => nodeType.name),
                             includeSubTypes,
+                            name,
                             uuid,
                             path,
                             site,
@@ -213,6 +218,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
                                uilang={editorConfig.uilang}
                                site={editorConfig.site}
                                contentType={editorConfig.contentType}
+                               name={editorConfig.name}
                                envProps={envProps}
                 />
             </Dialog>}
@@ -220,6 +226,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
             {contentTypeSelectorConfig &&
             <CreateNewContentDialog
                 open
+                childNodeName={contentTypeSelectorConfig.name}
                 nodeTypes={contentTypeSelectorConfig.creatableNodeTypes}
                 includeSubTypes={contentTypeSelectorConfig.includeSubTypes}
                 parentPath={contentTypeSelectorConfig.path}
@@ -233,6 +240,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
                 onCreateContent={contentType => {
                     setContentTypeSelectorConfig(false);
                     setEditorConfig({
+                        name: contentTypeSelectorConfig.name,
                         uuid: contentTypeSelectorConfig.uuid,
                         site: contentTypeSelectorConfig.site,
                         uilang: contentTypeSelectorConfig.uilang,
