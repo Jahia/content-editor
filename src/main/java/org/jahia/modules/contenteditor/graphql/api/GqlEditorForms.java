@@ -170,6 +170,9 @@ public class GqlEditorForms {
         @GraphQLName("nodeTypes")
         @GraphQLDescription("List of types we want to retrieve, null for all")
             List<String> nodeTypes,
+        @GraphQLName("childNodeName")
+        @GraphQLDescription("the child node name, used to check the type allowed for this named child node, do not specify if you want to check for unnamed children")
+            String childNodeName,
         @GraphQLName("excludedNodeTypes")
         @GraphQLDescription("List of types we want to exclude, null for all")
             List<String> excludedNodeTypes,
@@ -208,7 +211,7 @@ public class GqlEditorForms {
             }
             final String nodeIdentifier = parentNode.getIdentifier();
             Locale locale = LocaleUtils.toLocale(uiLocale);
-            List<String> allowedNodeTypes = new ArrayList<>(ContentEditorUtils.getAllowedNodeTypesAsChildNode(parentNode, useContribute, nodeTypes));
+            List<String> allowedNodeTypes = new ArrayList<>(ContentEditorUtils.getAllowedNodeTypesAsChildNode(parentNode, childNodeName, useContribute, nodeTypes));
             Set<NodeTypeTreeEntry> entries = NodeTypesUtils.getContentTypesAsTree(allowedNodeTypes, excludedNodeTypes, includeSubTypes, nodePath, getSession(locale), locale);
             return entries.stream().map(entry -> new GqlNodeTypeTreeEntry(entry, nodeIdentifier)).collect(Collectors.toList());
         } catch (RepositoryException e) {

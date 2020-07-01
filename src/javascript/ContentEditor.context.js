@@ -20,7 +20,8 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
     const ContentEditorDataContextProvider = props => {
         const {notificationContext} = props;
         const {t} = useTranslation();
-        const {lang, uilang, site, uuid, contentType, mode} = useContentEditorConfigContext();
+        const contentEditorConfigContext = useContentEditorConfigContext();
+        const {lang, uilang, site, uuid, contentType, mode} = contentEditorConfigContext;
 
         // Get Data
         const formQueryParams = {
@@ -31,7 +32,7 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
             writePermission: `jcr:modifyProperties_default_${lang}`,
             childrenFilterTypes: Constants.childrenFilterTypes
         };
-        const {loading, error, errorMessage, data: formDefinition, refetch: refetchFormData} = useFormDefinition(formQuery, formQueryParams, formDataAdapter, t);
+        const {loading, error, errorMessage, data: formDefinition, refetch: refetchFormData} = useFormDefinition(formQuery, formQueryParams, formDataAdapter, t, contentEditorConfigContext);
         const {nodeData, initialValues, details, technicalInfo, sections, title, nodeTypeName} = formDefinition || {};
         const siteInfoResult = useSiteInfo({
             siteKey: site,

@@ -6,7 +6,7 @@ describe('CreateNewContent utils', () => {
         let queryResponse;
 
         const getActions = (client, showOnNodeTypes) => {
-            return getCreatableNodetypes(client, 'jnt:page', false, '/dummy/path', 'en', ['jmix:studioOnly', 'jmix:hiddenType'], showOnNodeTypes, transformNodeTypesToActions);
+            return getCreatableNodetypes(client, 'jnt:page', null, false, '/dummy/path', 'en', ['jmix:studioOnly', 'jmix:hiddenType'], showOnNodeTypes, transformNodeTypesToActions);
         };
 
         beforeEach(() => {
