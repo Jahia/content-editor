@@ -4,10 +4,23 @@ import React from 'react';
 import {listOrderingSection} from './AutomaticOrdering.spec.data';
 import {AutomaticOrderingCmp} from './AutomaticOrdering';
 import {setSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
+import {setContext} from '~/ContentEditor.context';
 import {
     adaptSectionToDisplayableRows,
     getDisplayedRows
 } from './AutomaticOrdering.utils';
+
+jest.mock('~/ContentEditor.context', () => {
+    let contextmock;
+    return {
+        useContentEditorContext: () => {
+            return contextmock;
+        },
+        setContext: c => {
+            contextmock = c;
+        }
+    };
+});
 
 jest.mock('~/ContentEditorSection/ContentEditorSection.context', () => {
     let sectionContextmock;
@@ -24,10 +37,19 @@ jest.mock('~/ContentEditorSection/ContentEditorSection.context', () => {
 describe('Automatic ordering component', () => {
     let props;
     let sectionContext;
+    let context;
     beforeEach(() => {
+        context = {
+            nodeData: {
+                lockedAndCannotBeEdited: false,
+                hasWritePermission: true
+            }
+        };
+
         sectionContext = {
             sections: [listOrderingSection]
         };
+
         props = {
             formik: {
                 values: {
@@ -47,6 +69,7 @@ describe('Automatic ordering component', () => {
 
     it('should display one row only when no props set', () => {
         setSectionContext(sectionContext);
+        setContext(context);
 
         const cmp = shallowWithTheme(
             <AutomaticOrderingCmp {...props}/>,
@@ -58,6 +81,7 @@ describe('Automatic ordering component', () => {
 
     it('should display rows when properties exists', () => {
         setSectionContext(sectionContext);
+        setContext(context);
         props.formik.values.secondField = 'jcr:created';
         props.formik.values.thirdField = 'jcr:createdBy';
 
@@ -69,8 +93,67 @@ describe('Automatic ordering component', () => {
         expect(cmp.find('FieldContainer').length).toBe(4);
     });
 
+    it('should disable add when node is locked', () => {
+        setSectionContext(sectionContext);
+        context.nodeData.lockedAndCannotBeEdited = true;
+        setContext(context);
+
+        const cmp = shallowWithTheme(
+            <AutomaticOrderingCmp {...props}/>,
+            {},
+            dsGenericTheme
+        );
+        expect(cmp.find('Button').props().disabled).toBe(true);
+    });
+
+    it('should disable add when node is locked', () => {
+        setSectionContext(sectionContext);
+        context.nodeData.hasWritePermission = false;
+        setContext(context);
+
+        const cmp = shallowWithTheme(
+            <AutomaticOrderingCmp {...props}/>,
+            {},
+            dsGenericTheme
+        );
+        expect(cmp.find('Button').props().disabled).toBe(true);
+    });
+
+    it('should disable remove when node is locked', () => {
+        setSectionContext(sectionContext);
+        context.nodeData.lockedAndCannotBeEdited = true;
+        setContext(context);
+        props.formik.values.secondField = 'jcr:created';
+        props.formik.values.thirdField = 'jcr:createdBy';
+
+        const cmp = shallowWithTheme(
+            <AutomaticOrderingCmp {...props}/>,
+            {},
+            dsGenericTheme
+        );
+        expect(cmp.find('FieldContainer').at(1).props().inputContext.actionRender.props.disabled).toBe(true);
+        expect(cmp.find('FieldContainer').at(3).props().inputContext.actionRender.props.disabled).toBe(true);
+    });
+
+    it('should disable remove when node is locked', () => {
+        setSectionContext(sectionContext);
+        context.nodeData.hasWritePermission = false;
+        setContext(context);
+        props.formik.values.secondField = 'jcr:created';
+        props.formik.values.thirdField = 'jcr:createdBy';
+
+        const cmp = shallowWithTheme(
+            <AutomaticOrderingCmp {...props}/>,
+            {},
+            dsGenericTheme
+        );
+        expect(cmp.find('FieldContainer').at(1).props().inputContext.actionRender.props.disabled).toBe(true);
+        expect(cmp.find('FieldContainer').at(3).props().inputContext.actionRender.props.disabled).toBe(true);
+    });
+
     it('should add rows when click on "Add" button, to a maximum of 3 rows, then the button should be disabled', () => {
         setSectionContext(sectionContext);
+        setContext(context);
 
         const cmp = shallowWithTheme(
             <AutomaticOrderingCmp {...props}/>,
@@ -99,6 +182,7 @@ describe('Automatic ordering component', () => {
 
     it('should remove rows when click on "Remove" button', () => {
         setSectionContext(sectionContext);
+        setContext(context);
         props.formik.values.secondField = 'jcr:created';
         props.formik.values.thirdField = 'jcr:createdBy';
 
