@@ -11,6 +11,7 @@ import {getDisplayedRows} from './AutomaticOrdering.utils';
 import {withStyles} from '@material-ui/core';
 import {Clear} from '@material-ui/icons';
 import {IconButton} from '@jahia/design-system-kit';
+import {useContentEditorContext} from '~/ContentEditor.context';
 
 const styles = theme => ({
     row: {
@@ -28,6 +29,7 @@ const styles = theme => ({
 });
 
 export const AutomaticOrderingCmp = ({classes, formik: {values, setFieldValue, setFieldTouched}}) => {
+    const context = useContentEditorContext();
     const {t} = useTranslation();
     const {sections} = useContentEditorSectionContext();
     const rows = adaptSectionToDisplayableRows(sections, t);
@@ -77,6 +79,7 @@ export const AutomaticOrderingCmp = ({classes, formik: {values, setFieldValue, s
                             data-sel-role={`delete-automatic-ordering-field-${index}`}
                             aria-label={t('content-editor:label.contentEditor.edit.fields.actions.clear')}
                             icon={<Clear/>}
+                            disabled={context.nodeData.lockedAndCannotBeEdited || !context.nodeData.hasWritePermission}
                             onClick={() => {
                                 remove(index);
                             }}
@@ -110,7 +113,7 @@ export const AutomaticOrderingCmp = ({classes, formik: {values, setFieldValue, s
                 size="big"
                 variant="outlined"
                 label={t('content-editor:label.contentEditor.edit.fields.actions.add')}
-                disabled={displayedRows.length === rows.length}
+                disabled={displayedRows.length === rows.length || context.nodeData.lockedAndCannotBeEdited || !context.nodeData.hasWritePermission}
                 onClick={add}
             />
         </>

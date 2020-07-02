@@ -10,6 +10,7 @@ import {Constants} from '~/ContentEditor.constants';
 import {compose} from '~/utils';
 import {connect} from 'formik';
 import {Public} from '@material-ui/icons';
+import {useContentEditorContext} from '~/ContentEditor.context';
 
 const styles = theme => ({
     section: {
@@ -49,6 +50,7 @@ const styles = theme => ({
 
 export const ChildrenSectionCmp = ({section, classes, formik: {values, handleChange}}) => {
     const {t} = useTranslation();
+    const context = useContentEditorContext();
     const canAutomaticOrder = values && values[Constants.automaticOrdering.mixin] !== undefined;
     const isAutomaticOrder = canAutomaticOrder && values[Constants.automaticOrdering.mixin];
 
@@ -80,6 +82,7 @@ export const ChildrenSectionCmp = ({section, classes, formik: {values, handleCha
                             <Toggle data-sel-role-automatic-ordering={Constants.automaticOrdering.mixin}
                                     id={Constants.automaticOrdering.mixin}
                                     checked={isAutomaticOrder}
+                                    readOnly={context.nodeData.lockedAndCannotBeEdited || !context.nodeData.hasWritePermission}
                                     onChange={handleChange}
                             />
                             <Typography component="label" htmlFor={Constants.automaticOrdering.mixin} className={classes.automaticSwitch} color="alpha" variant="zeta">
