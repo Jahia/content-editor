@@ -63,7 +63,7 @@ describe('Children section component', () => {
         expect(cmp.find('WithStyles(ToggleCmp)').props().readOnly).toBe(true);
     });
 
-    it('should not be able to switch automatic ordering, if node is locked', () => {
+    it('should not be able to switch automatic ordering, if doesnt have write permission', () => {
         context.nodeData.hasWritePermission = false;
         setContext(context);
         const cmp = shallowWithTheme(<ChildrenSectionCmp {...props}/>, {}, dsGenericTheme);

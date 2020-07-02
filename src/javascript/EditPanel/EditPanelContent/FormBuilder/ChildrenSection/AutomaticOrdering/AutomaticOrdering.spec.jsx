@@ -135,7 +135,7 @@ describe('Automatic ordering component', () => {
         expect(cmp.find('FieldContainer').at(3).props().inputContext.actionRender.props.disabled).toBe(true);
     });
 
-    it('should disable remove when node is locked', () => {
+    it('should disable remove if doesnt have write permission', () => {
         setSectionContext(sectionContext);
         context.nodeData.hasWritePermission = false;
         setContext(context);
