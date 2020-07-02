@@ -36,7 +36,8 @@ const styles = theme => ({
     },
     automaticSwitchContainer: {
         display: 'flex',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        marginBottom: `-${theme.spacing.unit}px`
     },
     automaticSwitch: {
         width: 'auto',

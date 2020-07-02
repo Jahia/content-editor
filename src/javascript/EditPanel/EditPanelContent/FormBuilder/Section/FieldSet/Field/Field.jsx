@@ -193,13 +193,15 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
                             {actionCmp}
                         </Grid>
                     </Grid>
-                    <Typography className={classes.errorMessage} data-sel-error={shouldDisplayErrors && errors[field.name]}>
-                        {shouldDisplayErrors ?
-                            field.errorMessage ?
-                                field.errorMessage :
-                                t(`content-editor:label.contentEditor.edit.errors.${errors[field.name]}`, buildFlatFieldObject(field)) :
-                            ''}&nbsp;
-                    </Typography>
+                    {inputContext.displayErrors && (
+                        <Typography className={classes.errorMessage} data-sel-error={shouldDisplayErrors && errors[field.name]}>
+                            {shouldDisplayErrors ?
+                                field.errorMessage ?
+                                    field.errorMessage :
+                                    t(`content-editor:label.contentEditor.edit.errors.${errors[field.name]}`, buildFlatFieldObject(field)) :
+                                ''}&nbsp;
+                        </Typography>
+                    )}
                 </Grid>
             </Grid>
         </div>
