@@ -106,7 +106,7 @@ describe('Automatic ordering component', () => {
         expect(cmp.find('Button').props().disabled).toBe(true);
     });
 
-    it('should disable add when node is locked', () => {
+    it('should disable add when no write permission', () => {
         setSectionContext(sectionContext);
         context.nodeData.hasWritePermission = false;
         setContext(context);
