@@ -37,6 +37,7 @@ const FieldContainerCmp = ({field, formik, inputContext}) => {
             inputContext={{
                 displayLabels: true,
                 displayBadges: true,
+                displayErrors: true,
                 fieldComponent: selectorType.cmp,
                 editorContext: {...editorContext, ...contentEditorSectionContext},
                 setActionContext: setActionContext,

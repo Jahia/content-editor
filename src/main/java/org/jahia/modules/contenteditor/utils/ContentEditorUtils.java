@@ -73,14 +73,17 @@ public class ContentEditorUtils {
      * For the given node, return the allowed node types as child node
      *
      * @param currentNode            given node
+     * @param childNodeName          the child node name:
+     *                               if not null: will check named constraints for this child name
+     *                               if null: will check for not named constraints
      * @param useContributeNodeTypes if true, check the contribute property on the node
      * @param filterNodeType         returns nodetypes that match this value
      * @return a Set of nodeTypes name allowed to be set as child node of the given node
      */
-    public static Set<String> getAllowedNodeTypesAsChildNode(JCRNodeWrapper currentNode, boolean useContributeNodeTypes, List<String> filterNodeType) {
+    public static Set<String> getAllowedNodeTypesAsChildNode(JCRNodeWrapper currentNode, String childNodeName, boolean useContributeNodeTypes, List<String> filterNodeType) {
         try {
             // look for definition
-            Set<String> definitionAllowedTypes = getChildNodeTypes(currentNode, filterNodeType);
+            Set<String> definitionAllowedTypes = getChildNodeTypes(currentNode, filterNodeType, childNodeName);
 
             // Filter contribute types
             if (useContributeNodeTypes) {
@@ -124,9 +127,9 @@ public class ContentEditorUtils {
         }
     }
 
-    private static Set<String> getChildNodeTypes(JCRNodeWrapper node, List<String> filterNodeType) throws RepositoryException {
+    private static Set<String> getChildNodeTypes(JCRNodeWrapper node, List<String> filterNodeType, String childNodeName) throws RepositoryException {
         Set<String> allowedTypes = new HashSet<>();
-        Arrays.stream(StringUtils.split(ConstraintsHelper.getConstraints(node), " "))
+        Arrays.stream(StringUtils.split(ConstraintsHelper.getConstraints(node, childNodeName), " "))
             .forEach(type -> {
                 try {
                     ExtendedNodeType nodeType = NodeTypeRegistry.getInstance().getNodeType(type);

@@ -81,6 +81,10 @@ extends=jnt:simpleWithExtends
 [jnt:AllowedNodeTypes] > nt:base
 + * (jmix:AllowedNodeTypesParentChild)
 
+[jnt:AllowedNamedNodeTypes] > nt:base
++ namedChild (jnt:AllowedNodeTypesChild)
++ namedChildEditorial (jnt:AllowedNodeTypesChildEditorial)
++ * (jnt:AllowedNodeTypesChildEditorial)
 
 [jnt:AllowedNodeTypesWithMixin] > nt:base, jmix:AllowedNodeTypesMixinOnDef
 + * (jnt:AllowedNodeTypesChild)
