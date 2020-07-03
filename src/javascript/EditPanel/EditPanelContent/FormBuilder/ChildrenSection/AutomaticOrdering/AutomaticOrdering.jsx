@@ -10,7 +10,6 @@ import {getDisplayedRows} from './AutomaticOrdering.utils';
 import {withStyles} from '@material-ui/core';
 import {Clear} from '@material-ui/icons';
 import {Button, IconButton} from '@jahia/design-system-kit';
-import {useContentEditorContext} from '~/ContentEditor.context';
 
 const styles = theme => ({
     row: {
@@ -34,25 +33,26 @@ const styles = theme => ({
 });
 
 export const AutomaticOrderingCmp = ({classes, formik: {values, setFieldValue, setFieldTouched}}) => {
-    const context = useContentEditorContext();
     const {t} = useTranslation();
     const {sections} = useContentEditorSectionContext();
     const rows = adaptSectionToDisplayableRows(sections, t);
     const [displayedRows, setDisplayedRows] = useState(getDisplayedRows(rows, values));
 
-    const add = () => {
+    const _getNextRowIndexToAdd = () => {
         for (let i = 0; i < rows.length; i++) {
             if (!displayedRows.includes(i)) {
-                const rowToDisplay = rows[i];
-                setDisplayedRows([...displayedRows, i]);
-
-                setFieldValue(rowToDisplay.propField.name, 'jcr:lastModified', true);
-                setFieldTouched(rowToDisplay.propField.name, true);
-                setFieldValue(rowToDisplay.directionField.name, 'desc', true);
-                setFieldTouched(rowToDisplay.directionField.name, true);
-                return;
+                return i;
             }
         }
+    };
+
+    const add = (nextRow, nextRowIndex) => {
+        setDisplayedRows([...displayedRows, nextRowIndex]);
+
+        setFieldValue(nextRow.propField.name, 'jcr:lastModified', true);
+        setFieldTouched(nextRow.propField.name, true);
+        setFieldValue(nextRow.directionField.name, 'desc', true);
+        setFieldTouched(nextRow.directionField.name, true);
     };
 
     const remove = index => {
@@ -69,7 +69,7 @@ export const AutomaticOrderingCmp = ({classes, formik: {values, setFieldValue, s
         setFieldTouched(displayedRowToRemove.directionField.name, true);
     };
 
-    const getInputContext = (index, isDirection) => {
+    const getInputContext = (index, field) => {
         const inputContext = {
             displayBadges: false,
             displayLabels: index === 0,
@@ -77,7 +77,7 @@ export const AutomaticOrderingCmp = ({classes, formik: {values, setFieldValue, s
             setActionContext: () => {}
         };
 
-        if (!isDirection) {
+        if (!field.name.endsWith('Direction')) {
             inputContext.actionRender = <></>;
         } else if (displayedRows.length > 1) {
             inputContext.actionRender = (
@@ -85,7 +85,7 @@ export const AutomaticOrderingCmp = ({classes, formik: {values, setFieldValue, s
                             data-sel-role={`delete-automatic-ordering-field-${index}`}
                             aria-label={t('content-editor:label.contentEditor.edit.fields.actions.clear')}
                             icon={<Clear/>}
-                            disabled={context.nodeData.lockedAndCannotBeEdited || !context.nodeData.hasWritePermission}
+                            disabled={field.readOnly}
                             onClick={() => {
                                 remove(index);
                             }}
@@ -96,6 +96,8 @@ export const AutomaticOrderingCmp = ({classes, formik: {values, setFieldValue, s
         return inputContext;
     };
 
+    const nextRowIndex = _getNextRowIndexToAdd();
+    const nextRow = nextRowIndex !== undefined && rows[nextRowIndex];
     return (
         <>
             {displayedRows
@@ -104,10 +106,10 @@ export const AutomaticOrderingCmp = ({classes, formik: {values, setFieldValue, s
                     return (
                         <div key={row.propField.name} className={classes.row}>
                             <div className={classes.orderBy}>
-                                <FieldContainer field={row.propField} inputContext={getInputContext(index, false)}/>
+                                <FieldContainer field={row.propField} inputContext={getInputContext(index, row.propField)}/>
                             </div>
                             <div className={classes.orderDirection}>
-                                <FieldContainer field={row.directionField} inputContext={getInputContext(index, true)}/>
+                                <FieldContainer field={row.directionField} inputContext={getInputContext(index, row.directionField)}/>
                             </div>
                         </div>
                     );
@@ -116,8 +118,8 @@ export const AutomaticOrderingCmp = ({classes, formik: {values, setFieldValue, s
             <Button className={classes.addButton}
                     data-sel-role="add-automatic-ordering-field"
                     variant="secondary"
-                    disabled={displayedRows.length === rows.length || context.nodeData.lockedAndCannotBeEdited || !context.nodeData.hasWritePermission}
-                    onClick={add}
+                    disabled={!nextRow || nextRow.propField.readOnly}
+                    onClick={() => add(nextRow, nextRowIndex)}
             >
                 {t('content-editor:label.contentEditor.edit.fields.actions.add')}
             </Button>

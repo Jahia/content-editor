@@ -9,27 +9,31 @@ const orderingFieldsMapping = {
     thirdDirection: {type: 'directionField', index: 2}
 };
 
-export const adaptSectionToDisplayableRows = (sections, t) => {
-    const rows = [];
+export const getAutomaticOrderingFieldSet = sections => {
     const listOrderingSection = sections.find(section => section.name === Constants.automaticOrdering.section);
     if (listOrderingSection) {
-        const orderedListFieldSet = listOrderingSection.fieldSets.find(fieldSet => fieldSet.name === Constants.automaticOrdering.mixin);
-        if (orderedListFieldSet) {
-            orderedListFieldSet.fields.forEach(field => {
-                const fieldMapped = orderingFieldsMapping[field.name];
-                if (fieldMapped) {
-                    if (!rows[fieldMapped.index]) {
-                        rows.splice(fieldMapped.index, 0, {});
-                    }
+        return listOrderingSection.fieldSets.find(fieldSet => fieldSet.name === Constants.automaticOrdering.mixin);
+    }
+};
 
-                    if (fieldMapped.displayNameKey) {
-                        field.displayName = t(fieldMapped.displayNameKey);
-                    }
-
-                    rows[fieldMapped.index][fieldMapped.type] = field;
+export const adaptSectionToDisplayableRows = (sections, t) => {
+    const rows = [];
+    const orderedListFieldSet = getAutomaticOrderingFieldSet(sections);
+    if (orderedListFieldSet) {
+        orderedListFieldSet.fields.forEach(field => {
+            const fieldMapped = orderingFieldsMapping[field.name];
+            if (fieldMapped) {
+                if (!rows[fieldMapped.index]) {
+                    rows.splice(fieldMapped.index, 0, {});
                 }
-            });
-        }
+
+                if (fieldMapped.displayNameKey) {
+                    field.displayName = t(fieldMapped.displayNameKey);
+                }
+
+                rows[fieldMapped.index][fieldMapped.type] = field;
+            }
+        });
     }
 
     return rows;

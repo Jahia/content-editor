@@ -57,6 +57,7 @@ final class EditorFormFieldSetBuilder {
     private Boolean dynamic = false;
     private Boolean displayed = true;
     private Boolean activated = true;
+    private Boolean readOnly = false;
     private Boolean removed = false;
 
     private List<EditorFormField> fields;
@@ -101,6 +102,7 @@ final class EditorFormFieldSetBuilder {
         form.setDynamic(dynamic);
         form.setActivated(activated);
         form.setDisplayed(displayed);
+        form.setReadOnly(readOnly);
         form.setEditorFormFields(fields == null ? null : fields.stream()
                 .map(EditorFormField::new)
                 .collect(Collectors.toSet())

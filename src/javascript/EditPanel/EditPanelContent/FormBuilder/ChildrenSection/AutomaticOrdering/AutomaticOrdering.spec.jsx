@@ -28,15 +28,16 @@ jest.mock('~/ContentEditorSection/ContentEditorSection.context', () => {
         useContentEditorSectionContext: () => {
             return sectionContextmock;
         },
-        setSectionContext: c => {
-            sectionContextmock = c;
+        setSectionContext: listOrderingSection => {
+            sectionContextmock = {
+                sections: [listOrderingSection]
+            };
         }
     };
 });
 
 describe('Automatic ordering component', () => {
     let props;
-    let sectionContext;
     let context;
     beforeEach(() => {
         context = {
@@ -44,10 +45,6 @@ describe('Automatic ordering component', () => {
                 lockedAndCannotBeEdited: false,
                 hasWritePermission: true
             }
-        };
-
-        sectionContext = {
-            sections: [listOrderingSection]
         };
 
         props = {
@@ -68,7 +65,7 @@ describe('Automatic ordering component', () => {
     });
 
     it('should display one row only when no props set', () => {
-        setSectionContext(sectionContext);
+        setSectionContext(listOrderingSection(false, false));
         setContext(context);
 
         const cmp = shallowWithTheme(
@@ -80,7 +77,7 @@ describe('Automatic ordering component', () => {
     });
 
     it('should display rows when properties exists', () => {
-        setSectionContext(sectionContext);
+        setSectionContext(listOrderingSection(false, false));
         setContext(context);
         props.formik.values.secondField = 'jcr:created';
         props.formik.values.thirdField = 'jcr:createdBy';
@@ -93,9 +90,8 @@ describe('Automatic ordering component', () => {
         expect(cmp.find('FieldContainer').length).toBe(4);
     });
 
-    it('should disable add when node is locked', () => {
-        setSectionContext(sectionContext);
-        context.nodeData.lockedAndCannotBeEdited = true;
+    it('should disable add when props are readOnly', () => {
+        setSectionContext(listOrderingSection(true, true));
         setContext(context);
 
         const cmp = shallowWithTheme(
@@ -106,38 +102,8 @@ describe('Automatic ordering component', () => {
         expect(cmp.find('DsButton').props().disabled).toBe(true);
     });
 
-    it('should disable add when no write permission', () => {
-        setSectionContext(sectionContext);
-        context.nodeData.hasWritePermission = false;
-        setContext(context);
-
-        const cmp = shallowWithTheme(
-            <AutomaticOrderingCmp {...props}/>,
-            {},
-            dsGenericTheme
-        );
-        expect(cmp.find('DsButton').props().disabled).toBe(true);
-    });
-
-    it('should disable remove when node is locked', () => {
-        setSectionContext(sectionContext);
-        context.nodeData.lockedAndCannotBeEdited = true;
-        setContext(context);
-        props.formik.values.secondField = 'jcr:created';
-        props.formik.values.thirdField = 'jcr:createdBy';
-
-        const cmp = shallowWithTheme(
-            <AutomaticOrderingCmp {...props}/>,
-            {},
-            dsGenericTheme
-        );
-        expect(cmp.find('FieldContainer').at(1).props().inputContext.actionRender.props.disabled).toBe(true);
-        expect(cmp.find('FieldContainer').at(3).props().inputContext.actionRender.props.disabled).toBe(true);
-    });
-
-    it('should disable remove if doesnt have write permission', () => {
-        setSectionContext(sectionContext);
-        context.nodeData.hasWritePermission = false;
+    it('should disable remove when props are readOnly', () => {
+        setSectionContext(listOrderingSection(true, true));
         setContext(context);
         props.formik.values.secondField = 'jcr:created';
         props.formik.values.thirdField = 'jcr:createdBy';
@@ -152,7 +118,7 @@ describe('Automatic ordering component', () => {
     });
 
     it('should add rows when click on "Add" button, to a maximum of 3 rows, then the button should be disabled', () => {
-        setSectionContext(sectionContext);
+        setSectionContext(listOrderingSection(false, false));
         setContext(context);
 
         const cmp = shallowWithTheme(
@@ -181,7 +147,7 @@ describe('Automatic ordering component', () => {
     });
 
     it('should remove rows when click on "Remove" button', () => {
-        setSectionContext(sectionContext);
+        setSectionContext(listOrderingSection(false, false));
         setContext(context);
         props.formik.values.secondField = 'jcr:created';
         props.formik.values.thirdField = 'jcr:createdBy';
@@ -211,7 +177,7 @@ describe('Automatic ordering component', () => {
     });
 
     it('should getRows, and displayed rows', () => {
-        const rows = adaptSectionToDisplayableRows([listOrderingSection], s => s);
+        const rows = adaptSectionToDisplayableRows([listOrderingSection(false, false)], s => s);
 
         // Should transform section in displayable rows
         expect(rows.length).toBe(3);

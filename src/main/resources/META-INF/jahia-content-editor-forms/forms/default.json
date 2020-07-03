@@ -34,7 +34,8 @@
     },
     {
       "name": "listOrdering",
-      "hide": true
+      "hide": true,
+      "requiredPermission": "viewContentTab"
     }
   ]
 }

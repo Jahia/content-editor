@@ -99,6 +99,7 @@ const FormQuery = gql`
                         dynamic
                         activated
                         displayed
+                        readOnly
                         fields {
                             name
                             displayName

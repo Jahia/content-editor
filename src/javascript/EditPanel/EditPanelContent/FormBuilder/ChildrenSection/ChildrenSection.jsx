@@ -10,7 +10,8 @@ import {Constants} from '~/ContentEditor.constants';
 import {compose} from '~/utils';
 import {connect} from 'formik';
 import {Public} from '@material-ui/icons';
-import {useContentEditorContext} from '~/ContentEditor.context';
+import {getAutomaticOrderingFieldSet} from './AutomaticOrdering/AutomaticOrdering.utils';
+import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 
 const styles = theme => ({
     section: {
@@ -51,9 +52,10 @@ const styles = theme => ({
 
 export const ChildrenSectionCmp = ({section, classes, formik: {values, handleChange}}) => {
     const {t} = useTranslation();
-    const context = useContentEditorContext();
+    const {sections} = useContentEditorSectionContext();
     const canAutomaticOrder = values && values[Constants.automaticOrdering.mixin] !== undefined;
     const isAutomaticOrder = canAutomaticOrder && values[Constants.automaticOrdering.mixin];
+    const automaticOrderingFieldSet = canAutomaticOrder && getAutomaticOrderingFieldSet(sections);
 
     return (
         <section className={classes.section} data-sel-content-editor-fields-group={section.displayName}>
@@ -73,7 +75,7 @@ export const ChildrenSectionCmp = ({section, classes, formik: {values, handleCha
                 </div>
 
                 <div className={classes.formControl}>
-                    {canAutomaticOrder &&
+                    {(canAutomaticOrder && automaticOrderingFieldSet) &&
                     <>
                         <Typography color="beta" variant="zeta" htmlFor={t('content-editor:label.contentEditor.section.listAndOrdering.description')}>
                             {t('content-editor:label.contentEditor.section.listAndOrdering.description')}
@@ -83,7 +85,7 @@ export const ChildrenSectionCmp = ({section, classes, formik: {values, handleCha
                             <Toggle data-sel-role-automatic-ordering={Constants.automaticOrdering.mixin}
                                     id={Constants.automaticOrdering.mixin}
                                     checked={isAutomaticOrder}
-                                    readOnly={context.nodeData.lockedAndCannotBeEdited || !context.nodeData.hasWritePermission}
+                                    readOnly={automaticOrderingFieldSet.readOnly}
                                     onChange={handleChange}
                             />
                             <Typography component="label" htmlFor={Constants.automaticOrdering.mixin} className={classes.automaticSwitch} color="alpha" variant="zeta">

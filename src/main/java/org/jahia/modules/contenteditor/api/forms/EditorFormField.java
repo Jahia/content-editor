@@ -396,7 +396,7 @@ public class EditorFormField implements Comparable<EditorFormField> {
             '}';
     }
 
-    private Boolean mergeBooleanKeepTrue(Boolean value1, Boolean value2) {
+    private static Boolean mergeBooleanKeepTrue(Boolean value1, Boolean value2) {
         if (value1 == null) {
             if (value2 == null) {
                 return null;

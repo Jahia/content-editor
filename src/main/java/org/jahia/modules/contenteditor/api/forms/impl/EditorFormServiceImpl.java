@@ -353,6 +353,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             editorFormFieldSet.getDynamic(),
             editorFormFieldSet.getActivated(),
             editorFormFieldSet.getDisplayed(),
+            editorFormFieldSet.getReadOnly(),
             newEditorFormFields
         );
     }
@@ -396,6 +397,9 @@ public class EditorFormServiceImpl implements EditorFormService {
     }
 
     private EditorFormFieldSet generateEditorFormFieldSet(Set<String> processedProperties, ExtendedNodeType nodeType, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale locale, Locale uiLocale, Boolean removed, Boolean dynamic, Boolean activated, Boolean displayed) throws RepositoryException {
+        boolean isLockedAndCannotBeEdited = JCRContentUtils.isLockedAndCannotBeEdited(existingNode);
+        boolean fieldSetEditable = existingNode == null || (!isLockedAndCannotBeEdited && existingNode.hasPermission("jcr:nodeTypeManagement"));
+
         SortedSet<EditorFormField> editorFormFields = new TreeSet<>();
         Map<String, Double> maxTargetRank = new HashMap<>();
 
@@ -434,6 +438,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             dynamic,
             activated,
             displayed,
+            !fieldSetEditable,
             editorFormFields
         );
     }

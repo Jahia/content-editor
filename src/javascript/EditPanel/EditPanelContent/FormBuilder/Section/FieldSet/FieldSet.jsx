@@ -5,12 +5,8 @@ import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core';
 import {Typography, Toggle} from '@jahia/design-system-kit';
 import {compose} from '~/utils';
-
 import {FieldSetPropTypes} from '~/FormDefinitions/FormData.proptypes';
-
 import {FieldContainer} from './Field';
-import {useContentEditorContext} from '~/ContentEditor.context';
-import {Constants} from '~/ContentEditor.constants';
 
 let styles = theme => ({
     fieldsetContainer: {},
@@ -28,8 +24,6 @@ let styles = theme => ({
 });
 
 const FieldSetCmp = ({fieldset, classes, formik: {values, handleChange}}) => {
-    const context = useContentEditorContext();
-
     const isDynamicFieldSet = fieldset.dynamic;
     const activatedFieldSet = (values && values[fieldset.name]) || !isDynamicFieldSet;
 
@@ -40,7 +34,7 @@ const FieldSetCmp = ({fieldset, classes, formik: {values, handleChange}}) => {
                 <Toggle data-sel-role-dynamic-fieldset={fieldset.name}
                         id={fieldset.name}
                         checked={activatedFieldSet}
-                        readOnly={context.nodeData.lockedAndCannotBeEdited || (context.mode === Constants.routes.baseEditRoute && !context.nodeData.hasWritePermission)}
+                        readOnly={fieldset.readOnly}
                         onChange={handleChange}
                 />}
 

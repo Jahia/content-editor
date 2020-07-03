@@ -66,6 +66,7 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
     private Boolean dynamic = false;
     private Boolean activated = true; // this is only used when dynamic is true
     private Boolean displayed = true;
+    private Boolean readOnly;
     private Set<EditorFormField> editorFormFields = new HashSet<>();
     private Map<String, EditorFormField> editorFormFieldsByName = new LinkedHashMap<>();
 
@@ -81,6 +82,7 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
                               Boolean dynamic,
                               Boolean activated,
                               Boolean displayed,
+                              Boolean readOnly,
                               Set<EditorFormField> editorFormFields) {
         this.name = name;
         this.displayName = displayName;
@@ -91,6 +93,7 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
         this.dynamic = dynamic;
         this.activated = activated;
         this.displayed = displayed;
+        this.readOnly = readOnly;
         setEditorFormFields(editorFormFields);
     }
 
@@ -152,6 +155,16 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
     @GraphQLDescription("Defines if the field has to be displayed or not")
     public Boolean getDisplayed() {
         return displayed;
+    }
+
+    public void setReadOnly(Boolean readOnly) {
+        this.readOnly = readOnly;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("This value is true if the fieldset is readonly. This could be due to locks or permissions")
+    public Boolean getReadOnly() {
+        return readOnly;
     }
 
     public void setDisplayed(Boolean displayed) {
@@ -304,6 +317,7 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
             dynamic,
             activated,
             displayed,
+            readOnly,
             mergedEditorFormFields);
         if (otherEditorFormFieldSet.priority == null) {
             newEditorFormFieldSet.setPriority(priority);
