@@ -1,4 +1,4 @@
-export const listOrderingSection = {
+export const listOrderingSection = (fieldSetReadOnly, propsReadOnly) => ({
     name: 'listOrdering',
     displayName: 'listOrdering',
     description: null,
@@ -11,6 +11,7 @@ export const listOrderingSection = {
             dynamic: true,
             activated: false,
             displayed: true,
+            readOnly: fieldSetReadOnly,
             fields: [
                 {
                     nodeType: 'jmix:orderedList',
@@ -21,7 +22,7 @@ export const listOrderingSection = {
                     mandatory: false,
                     i18n: false,
                     multiple: false,
-                    readOnly: false,
+                    readOnly: propsReadOnly,
                     requiredType: 'BOOLEAN',
                     selectorType: 'Checkbox',
                     selectorOptions: [],
@@ -43,7 +44,7 @@ export const listOrderingSection = {
                     mandatory: false,
                     i18n: false,
                     multiple: false,
-                    readOnly: false,
+                    readOnly: propsReadOnly,
                     requiredType: 'STRING',
                     selectorType: 'Choicelist',
                     selectorOptions: [
@@ -147,7 +148,7 @@ export const listOrderingSection = {
                     mandatory: false,
                     i18n: false,
                     multiple: false,
-                    readOnly: false,
+                    readOnly: propsReadOnly,
                     requiredType: 'STRING',
                     selectorType: 'Choicelist',
                     selectorOptions: [
@@ -196,7 +197,7 @@ export const listOrderingSection = {
                     mandatory: false,
                     i18n: false,
                     multiple: false,
-                    readOnly: false,
+                    readOnly: propsReadOnly,
                     requiredType: 'STRING',
                     selectorType: 'Choicelist',
                     selectorOptions: [
@@ -300,7 +301,7 @@ export const listOrderingSection = {
                     mandatory: false,
                     i18n: false,
                     multiple: false,
-                    readOnly: false,
+                    readOnly: propsReadOnly,
                     requiredType: 'STRING',
                     selectorType: 'Choicelist',
                     selectorOptions: [
@@ -349,7 +350,7 @@ export const listOrderingSection = {
                     mandatory: false,
                     i18n: false,
                     multiple: false,
-                    readOnly: false,
+                    readOnly: propsReadOnly,
                     requiredType: 'STRING',
                     selectorType: 'Choicelist',
                     selectorOptions: [
@@ -453,7 +454,7 @@ export const listOrderingSection = {
                     mandatory: false,
                     i18n: false,
                     multiple: false,
-                    readOnly: false,
+                    readOnly: propsReadOnly,
                     requiredType: 'STRING',
                     selectorType: 'Choicelist',
                     selectorOptions: [
@@ -498,4 +499,4 @@ export const listOrderingSection = {
         }
     ],
     __typename: 'EditorFormSection'
-};
+});

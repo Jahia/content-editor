@@ -2,31 +2,26 @@ import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {ChildrenSectionCmp} from './ChildrenSection';
-import {setContext} from '~/ContentEditor.context';
+import {setSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
+import {listOrderingSection} from './AutomaticOrdering/AutomaticOrdering.spec.data';
 
-jest.mock('~/ContentEditor.context', () => {
-    let contextmock;
+jest.mock('~/ContentEditorSection/ContentEditorSection.context', () => {
+    let sectionContextmock;
     return {
-        useContentEditorContext: () => {
-            return contextmock;
+        useContentEditorSectionContext: () => {
+            return sectionContextmock;
         },
-        setContext: c => {
-            contextmock = c;
+        setSectionContext: listOrderingSection => {
+            sectionContextmock = {
+                sections: listOrderingSection ? [listOrderingSection] : []
+            };
         }
     };
 });
 
 describe('Children section component', () => {
     let props;
-    let context;
     beforeEach(() => {
-        context = {
-            nodeData: {
-                lockedAndCannotBeEdited: false,
-                hasWritePermission: true
-            }
-        };
-
         props = {
             section: {
                 displayName: 'children'
@@ -42,13 +37,13 @@ describe('Children section component', () => {
     });
 
     it('should display section name', () => {
-        setContext(context);
+        setSectionContext(listOrderingSection(false, false));
         const cmp = shallowWithTheme(<ChildrenSectionCmp {...props}/>, {}, dsGenericTheme);
         expect(cmp.debug()).toContain(props.section.displayName);
     });
 
     it('should be able to switch automatic ordering', () => {
-        setContext(context);
+        setSectionContext(listOrderingSection(false, false));
         const cmp = shallowWithTheme(<ChildrenSectionCmp {...props}/>, {}, dsGenericTheme);
         const toggleCmp = cmp.find('WithStyles(ToggleCmp)');
         toggleCmp.simulate('change');
@@ -56,22 +51,14 @@ describe('Children section component', () => {
         expect(props.formik.handleChange).toHaveBeenCalled();
     });
 
-    it('should not be able to switch automatic ordering, if node is locked', () => {
-        context.nodeData.lockedAndCannotBeEdited = true;
-        setContext(context);
-        const cmp = shallowWithTheme(<ChildrenSectionCmp {...props}/>, {}, dsGenericTheme);
-        expect(cmp.find('WithStyles(ToggleCmp)').props().readOnly).toBe(true);
-    });
-
-    it('should not be able to switch automatic ordering, if doesnt have write permission', () => {
-        context.nodeData.hasWritePermission = false;
-        setContext(context);
+    it('should not be able to switch automatic ordering, if fieldSet is readOnly', () => {
+        setSectionContext(listOrderingSection(true, false));
         const cmp = shallowWithTheme(<ChildrenSectionCmp {...props}/>, {}, dsGenericTheme);
         expect(cmp.find('WithStyles(ToggleCmp)').props().readOnly).toBe(true);
     });
 
     it('should not be able to switch automatic ordering', () => {
-        setContext(context);
+        setSectionContext(listOrderingSection(false, false));
         delete props.formik.values['jmix:orderedList'];
         const cmp = shallowWithTheme(<ChildrenSectionCmp {...props}/>, {}, dsGenericTheme);
         expect(cmp.find('WithStyles(ToggleCmp)').length).toBe(0);
@@ -80,14 +67,14 @@ describe('Children section component', () => {
     });
 
     it('should display manual ordering', () => {
-        setContext(context);
+        setSectionContext(listOrderingSection(false, false));
         const cmp = shallowWithTheme(<ChildrenSectionCmp {...props}/>, {}, dsGenericTheme);
         expect(cmp.find('ManualOrdering').length).toBe(1);
         expect(cmp.find('AutomaticOrdering').length).toBe(0);
     });
 
     it('should display automatic ordering', () => {
-        setContext(context);
+        setSectionContext(listOrderingSection(false, false));
         props.formik.values['jmix:orderedList'] = true;
         const cmp = shallowWithTheme(<ChildrenSectionCmp {...props}/>, {}, dsGenericTheme);
         expect(cmp.find('ManualOrdering').length).toBe(0);
