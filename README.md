@@ -1,8 +1,12 @@
+<a href="https://www.jahia.com/">
+    <img src="https://www.jahia.com/modules/jahiacom-templates/images/jahia-3x.png" alt="Jahia logo" title="Jahia" align="right" height="60" />
+</a>
+
 content-editor
 ==============
 [![DX version][dx-image]][dx-url]
 
-Content Editor React extension for DX modules.
+Content Editor React extension for Jahia modules.
 
 ### Requirements
 
@@ -357,3 +361,7 @@ static and not dynamic.
 #### Removing a field
 
 The `removed` property is a special one, which will actually remove a property from the resulting form definition.
+
+## Open-Source
+
+Channels is an Open-Source module, you can find more details about Open-Source @ Jahia [in this repository](https://github.com/Jahia/open-source).
