@@ -74,6 +74,7 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
 
     private JahiaSite testSite;
     private JCRNodeWrapper textNode;
+    private JCRNodeWrapper contentListNode;
     private JCRNodeWrapper unstructuredNews;
     private JCRNodeWrapper defaultOverrideContent;
     private JahiaTemplatesPackage defaultModule, templatesWeb;
@@ -121,6 +122,9 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
 
         // create text content
         textNode = session.getNode(testSite.getJCRLocalPath()).addNode("test", "jnt:text");
+
+        // create content list
+        contentListNode = session.getNode(testSite.getJCRLocalPath()).addNode("testList", "jnt:contentList");
         session.save();
 
         // Add permission
@@ -439,16 +443,32 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
 
     @Test
     public void testAddFieldWithValueConstraintOverride1() throws Exception {
-        List<EditorFormFieldValueConstraint> fieldValueConstraints = editorFormService.getFieldConstraints(textNode.getPath(), "jnt:simpleRank", "prop3", Locale.ENGLISH, Locale.ENGLISH);
+        List<EditorFormFieldValueConstraint> fieldValueConstraints = editorFormService.getFieldConstraints(textNode.getPath(), textNode.getParent().getPath(), "jnt:text", "jnt:simpleRank", "prop3", Locale.ENGLISH, Locale.ENGLISH);
 
         Assert.isTrue(fieldValueConstraints.isEmpty(), "The field value constraints must be empty");
 
         staticDefinitionsRegistry.readEditorFormFieldSet(getResource("META-INF/jahia-content-editor-forms/overrides/fieldSets/jnt_simple_rank_override_field_value_constraints.json"));
-        fieldValueConstraints = editorFormService.getFieldConstraints(textNode.getPath(), "jnt:simpleRank", "prop3", Locale.ENGLISH, Locale.ENGLISH);
+        fieldValueConstraints = editorFormService.getFieldConstraints(textNode.getPath(), textNode.getParent().getPath(), "jnt:text", "jnt:simpleRank", "prop3", Locale.ENGLISH, Locale.ENGLISH);
 
         Assert.isTrue(fieldValueConstraints.size() == 2, "The field value constraints must contains two values");
         Assert.isTrue(fieldValueConstraints.get(0).getDisplayValue().equals("First constraint"), "according to the definition override in jnt_simple_rank_override_field_value_constraints.json");
         Assert.isTrue(fieldValueConstraints.get(1).getDisplayValue().equals("Second constraint"), "according to the definition override in jnt_simple_rank_override_field_value_constraints.json");
+    }
+
+    @Test
+    public void testValueConstraintRetrieval() throws Exception {
+        // When creating a node, we do not have the node, but we have the parent and the node type:
+        List<EditorFormFieldValueConstraint> fieldValueConstraints = editorFormService.getFieldConstraints(null, contentListNode.getParent().getPath(),
+            "jnt:contentList", "jmix:orderedList", "firstField", Locale.ENGLISH, Locale.ENGLISH);
+        int constraintsSize = fieldValueConstraints.size();
+
+        Assert.isTrue(constraintsSize > 0, "The list of constraint for jmix:orderedList.firstField should not be empty");
+
+        // When editing a node, we have the node, the parent and the node type:
+        fieldValueConstraints = editorFormService.getFieldConstraints(contentListNode.getPath(), contentListNode.getParent().getPath(),
+            "jnt:contentList", "jmix:orderedList", "firstField", Locale.ENGLISH, Locale.ENGLISH);
+
+        Assert.isTrue(constraintsSize == fieldValueConstraints.size(), "We should have the same number of constraints, either if the node exists or not");
     }
 
     private URL getResource(String s) {

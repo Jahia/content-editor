@@ -136,21 +136,34 @@ public class EditorFormServiceImpl implements EditorFormService {
     }
 
     @Override
-    public List<EditorFormFieldValueConstraint> getFieldConstraints(String uuidOrPath, String nodeType, String fieldName, Locale uiLocale, Locale locale) throws EditorFormException {
+    public List<EditorFormFieldValueConstraint> getFieldConstraints(String nodeUuidOrPath,
+                                                                    String parentNodeUuidOrPath,
+                                                                    String primaryNodeType,
+                                                                    String fieldNodeType,
+                                                                    String fieldName,
+                                                                    Locale uiLocale,
+                                                                    Locale locale) throws EditorFormException {
         try {
-            JCRNodeWrapper node = resolveNodeFromPathorUUID(uuidOrPath);
-            ExtendedPropertyDefinition itemDefinition = NodeTypeRegistry.getInstance().getNodeType(nodeType).getPropertyDefinition(fieldName);
+            NodeTypeRegistry nodeTypeRegistry = NodeTypeRegistry.getInstance();
+            JCRNodeWrapper node = nodeUuidOrPath != null ? resolveNodeFromPathorUUID(nodeUuidOrPath) : null;
+            JCRNodeWrapper parentNode = resolveNodeFromPathorUUID(parentNodeUuidOrPath);
+            ExtendedPropertyDefinition fieldPropertyDefinition = nodeTypeRegistry.getNodeType(fieldNodeType).getPropertyDefinition(fieldName);
 
-            if (itemDefinition != null) {
-                EditorFormField editorFormField = generateEditorFormField(itemDefinition, node, node.getParent(), uiLocale, locale, 0.0);
-                editorFormField = mergeWithStaticFormField(nodeType, editorFormField);
+            if (fieldPropertyDefinition != null) {
+                EditorFormField editorFormField = generateEditorFormField(fieldPropertyDefinition, node, parentNode, uiLocale, locale, 0.0);
+                editorFormField = mergeWithStaticFormField(fieldNodeType, editorFormField);
 
-                return getValueConstraints(nodeType, editorFormField, node, node.getParent(), uiLocale);
+                return getValueConstraints(nodeTypeRegistry.getNodeType(primaryNodeType), editorFormField, node, parentNode, uiLocale);
             }
 
             return Collections.emptyList();
         } catch (RepositoryException e) {
-            throw new EditorFormException("Error while building field constraints for node: " + uuidOrPath + " and node type : " + nodeType + " and field name: " + fieldName, e);
+            throw new EditorFormException("Error while building field constraints for" +
+                " node: " + nodeUuidOrPath  +
+                ", node type: " + primaryNodeType +
+                ", parent node: " + parentNodeUuidOrPath +
+                ", field node type: " + fieldNodeType +
+                ", field name: " + fieldName, e);
         }
     }
 
@@ -183,13 +196,13 @@ public class EditorFormServiceImpl implements EditorFormService {
             Set<String> processedProperties = new HashSet<>();
             Set<String> processedNodeTypes = new HashSet<>();
 
-            generateAndMergeFieldSetForType(primaryNodeTypeName, uiLocale, locale, existingNode, parentNode, primaryNodeType, formSectionsByName, false, false, true, processedProperties);
+            generateAndMergeFieldSetForType(primaryNodeType, uiLocale, locale, existingNode, parentNode, primaryNodeType, formSectionsByName, false, false, true, processedProperties);
             processedNodeTypes.add(primaryNodeTypeName);
 
             Set<ExtendedNodeType> nodeTypesToProcess = Arrays.stream(primaryNodeType.getSupertypes()).collect(Collectors.toSet());
 
             for (ExtendedNodeType superType : nodeTypesToProcess) {
-                generateAndMergeFieldSetForType(superType.getName(), uiLocale, locale, existingNode, parentNode, superType, formSectionsByName, false, false, true, processedProperties);
+                generateAndMergeFieldSetForType(superType, uiLocale, locale, existingNode, parentNode, primaryNodeType, formSectionsByName, false, false, true, processedProperties);
                 processedNodeTypes.add(superType.getName());
             }
 
@@ -210,14 +223,14 @@ public class EditorFormServiceImpl implements EditorFormService {
                 if (existingNode != null && existingNode.isNodeType(extendMixinNodeType.getName())) {
                     activated = true;
                 }
-                generateAndMergeFieldSetForType(extendMixinNodeType.getName(), uiLocale, locale, existingNode, parentNode, extendMixinNodeType, formSectionsByName, false, true, activated, processedProperties);
+                generateAndMergeFieldSetForType(extendMixinNodeType, uiLocale, locale, existingNode, parentNode, primaryNodeType, formSectionsByName, false, true, activated, processedProperties);
                 processedNodeTypes.add(extendMixinNodeType.getName());
             }
 
             if (existingNode != null) {
                 Set<ExtendedNodeType> addMixins = Arrays.stream(existingNode.getMixinNodeTypes()).filter(nodetype -> !processedNodeTypes.contains(nodetype.getName())).collect(Collectors.toSet());
                 for (ExtendedNodeType addMixin : addMixins) {
-                    generateAndMergeFieldSetForType(addMixin.getName(), uiLocale, locale, existingNode, parentNode, addMixin, formSectionsByName, false, false, true, processedProperties);
+                    generateAndMergeFieldSetForType(addMixin, uiLocale, locale, existingNode, parentNode, primaryNodeType, formSectionsByName, false, false, true, processedProperties);
                 }
             }
 
@@ -231,11 +244,11 @@ public class EditorFormServiceImpl implements EditorFormService {
         }
     }
 
-    private void generateAndMergeFieldSetForType(String nodeTypeName, Locale uiLocale, Locale locale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, ExtendedNodeType primaryNodeType, Map<String, EditorFormSection> formSectionsByName, boolean removed, boolean dynamic, boolean activated, Set<String> processedProperties) throws RepositoryException {
-        final boolean displayFieldSet = !primaryNodeType.isNodeType("jmix:templateMixin");
-        EditorFormFieldSet nodeTypeFieldSet = generateEditorFormFieldSet(processedProperties, primaryNodeType, existingNode, parentNode, locale, uiLocale, removed, dynamic, activated, displayFieldSet);
-        nodeTypeFieldSet = mergeWithStaticFormFieldSets(nodeTypeName, nodeTypeFieldSet);
-        nodeTypeFieldSet = processValueConstraints(nodeTypeFieldSet, locale, existingNode, parentNode);
+    private void generateAndMergeFieldSetForType(ExtendedNodeType fieldSetNodeType, Locale uiLocale, Locale locale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, ExtendedNodeType primaryNodeType, Map<String, EditorFormSection> formSectionsByName, boolean removed, boolean dynamic, boolean activated, Set<String> processedProperties) throws RepositoryException {
+        final boolean displayFieldSet = !fieldSetNodeType.isNodeType("jmix:templateMixin");
+        EditorFormFieldSet nodeTypeFieldSet = generateEditorFormFieldSet(processedProperties, fieldSetNodeType, existingNode, parentNode, locale, uiLocale, removed, dynamic, activated, displayFieldSet);
+        nodeTypeFieldSet = mergeWithStaticFormFieldSets(fieldSetNodeType.getName(), nodeTypeFieldSet);
+        nodeTypeFieldSet = processValueConstraints(nodeTypeFieldSet, locale, existingNode, parentNode, primaryNodeType);
         if (!nodeTypeFieldSet.isRemoved()) {
             addFieldSetToSections(formSectionsByName, nodeTypeFieldSet);
         }
@@ -329,7 +342,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         return targetSectionName;
     }
 
-    private EditorFormFieldSet processValueConstraints(EditorFormFieldSet editorFormFieldSet, Locale uiLocale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode) throws RepositoryException {
+    private EditorFormFieldSet processValueConstraints(EditorFormFieldSet editorFormFieldSet, Locale uiLocale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, ExtendedNodeType primaryNodeType) throws RepositoryException {
         SortedSet<EditorFormField> newEditorFormFields = new TreeSet<>();
         for (EditorFormField editorFormField : editorFormFieldSet.getEditorFormFields()) {
             if (editorFormField.getValueConstraints() == null || editorFormField.getExtendedPropertyDefinition() == null) {
@@ -337,7 +350,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                 continue;
             }
 
-            List<EditorFormFieldValueConstraint> valueConstraints = getValueConstraints(editorFormFieldSet.getName(), editorFormField, existingNode, parentNode, uiLocale);
+            List<EditorFormFieldValueConstraint> valueConstraints = getValueConstraints(primaryNodeType, editorFormField, existingNode, parentNode, uiLocale);
             editorFormField.setValueConstraints(valueConstraints);
 
             newEditorFormFields.add(editorFormField);
@@ -538,7 +551,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         );
     }
 
-    private List<EditorFormFieldValueConstraint> getValueConstraints(String nodeTypeName, EditorFormField editorFormField, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale uiLocale) throws RepositoryException {
+    private List<EditorFormFieldValueConstraint> getValueConstraints(ExtendedNodeType primaryNodeType, EditorFormField editorFormField, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale uiLocale) throws RepositoryException {
         ExtendedPropertyDefinition propertyDefinition = editorFormField.getExtendedPropertyDefinition();
         if (propertyDefinition == null) {
             logger.error("Missing property definition to resolve choice list values, cannot process");
@@ -552,11 +565,10 @@ public class EditorFormServiceImpl implements EditorFormService {
         }
 
         if (selectorOptions != null) {
-            ExtendedNodeType nodeType = nodeTypeRegistry.getNodeType(nodeTypeName);
             Map<String, ChoiceListInitializer> initializers = choiceListInitializerService.getInitializers();
 
             Map<String, Object> context = new HashMap<>();
-            context.put("contextType", nodeType);
+            context.put("contextType", primaryNodeType);
             context.put("contextNode", existingNode);
             context.put("contextParent", parentNode);
             for (EditorFormProperty selectorProperty : selectorOptions) {

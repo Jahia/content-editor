@@ -136,14 +136,21 @@ public class GqlEditorForms {
     @GraphQLName("fieldConstraints")
     @GraphQLDescription("Get field constraints")
     public List<EditorFormFieldValueConstraint> getFieldConstraints(
-        @GraphQLName("uuidOrPath")
+        @GraphQLName("nodeUuidOrPath")
+        @GraphQLDescription("UUID or path of the node (optional in case you are creating it, and it doesnt exist yet)")
+            String nodeUuidOrPath,
+        @GraphQLName("parentNodeUuidOrPath")
         @GraphQLNonNull
-        @GraphQLDescription("UUID or path of an existing node under with the new content will be created.")
-            String uuidOrPath,
-        @GraphQLName("nodeType")
+        @GraphQLDescription("UUID or path of the parent node")
+            String parentNodeUuidOrPath,
+        @GraphQLName("primaryNodeType")
         @GraphQLNonNull
-        @GraphQLDescription("A string representation of node type")
-            String nodeType,
+        @GraphQLDescription("A string representation of the primary node type of the node")
+            String primaryNodeType,
+        @GraphQLName("fieldNodeType")
+        @GraphQLNonNull
+        @GraphQLDescription("A string representation of the field node type (the node type that contains the field, can be the node type of the node, a mixin or a super type)")
+            String fieldNodeType,
         @GraphQLName("fieldName")
         @GraphQLNonNull
         @GraphQLDescription("A string representation of field name")
@@ -157,7 +164,7 @@ public class GqlEditorForms {
         @GraphQLDescription("A string representation of a locale, in IETF BCP 47 language tag format, ie en_US, en, fr, fr_CH, ...")
             String locale) {
         try {
-            return editorFormService.getFieldConstraints(uuidOrPath, nodeType, fieldName, LocaleUtils.toLocale(uiLocale), LocaleUtils.toLocale(locale));
+            return editorFormService.getFieldConstraints(nodeUuidOrPath, parentNodeUuidOrPath, primaryNodeType, fieldNodeType, fieldName, LocaleUtils.toLocale(uiLocale), LocaleUtils.toLocale(locale));
         } catch (Exception e) {
             throw new DataFetchingException(e);
         }
