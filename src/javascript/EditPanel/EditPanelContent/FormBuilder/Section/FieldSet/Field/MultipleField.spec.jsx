@@ -98,7 +98,7 @@ describe('Multiple component', () => {
 
         // Init should call onChange with initial values
         expect(defaultProps.onChange.mock.calls.length).toBe(1);
-        expect(defaultProps.onChange).toHaveBeenCalledWith(undefined, ['Dummy1', 'Dummy2', 'Dummy3'], {sections: undefined});
+        expect(defaultProps.onChange).toHaveBeenCalledWith(undefined, ['Dummy1', 'Dummy2', 'Dummy3']);
 
         // Change field2
         defaultProps.onChange.mockReset();
@@ -110,13 +110,13 @@ describe('Multiple component', () => {
         expect(defaultPropsFastField.form.setFieldValue).toHaveBeenCalledWith('text[1]', 'Updated2', true);
         expect(defaultPropsFastField.form.setFieldTouched).toHaveBeenCalledWith('text', [true]);
         expect(defaultProps.onChange.mock.calls.length).toBe(1);
-        expect(defaultProps.onChange).toHaveBeenCalledWith(['Dummy1', 'Dummy2', 'Dummy3'], ['Dummy1', 'Updated2', 'Dummy3'], {sections: undefined});
+        expect(defaultProps.onChange).toHaveBeenCalledWith(['Dummy1', 'Dummy2', 'Dummy3'], ['Dummy1', 'Updated2', 'Dummy3']);
 
         // Remove Dummy1
         defaultProps.onChange.mockReset();
         arraycmp.find('DsIconButton').at(0).simulate('click');
         expect(defaultProps.onChange.mock.calls.length).toBe(1);
-        expect(defaultProps.onChange).toHaveBeenCalledWith(['Dummy1', 'Updated2', 'Dummy3'], ['Updated2', 'Dummy3'], {sections: undefined});
+        expect(defaultProps.onChange).toHaveBeenCalledWith(['Dummy1', 'Updated2', 'Dummy3'], ['Updated2', 'Dummy3']);
 
         // Add value should not trigger onChange
         defaultProps.onChange.mockReset();

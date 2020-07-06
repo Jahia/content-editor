@@ -12,11 +12,10 @@ import {Constants} from '~/ContentEditor.constants';
 
 const FormBuilder = ({mode}) => {
     const {nodeData} = useContentEditorContext();
-    const {sections, setSections, getSections} = useContentEditorSectionContext();
-    const editorContext = useContentEditorContext();
+    const {sections} = useContentEditorSectionContext();
     const {t} = useTranslation();
 
-    if (!editorContext || !editorContext.nodeData || !sections || sections.length === 0) {
+    if (!nodeData || !sections || sections.length === 0) {
         return <></>;
     }
 
@@ -36,7 +35,7 @@ const FormBuilder = ({mode}) => {
                 {cloneSections.filter(section => !section.hide).map(section => (
                     section.isOrderingSection ?
                         <ChildrenSection key={section.displayName} section={section}/> :
-                        <Section key={section.displayName} section={section} editorContext={{...editorContext, sections, setSections, getSections}}/>
+                        <Section key={section.displayName} section={section}/>
                 ))}
             </section>
         </Form>

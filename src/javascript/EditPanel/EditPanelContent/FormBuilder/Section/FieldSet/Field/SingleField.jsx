@@ -10,7 +10,7 @@ export const SingleFieldCmp = ({inputContext, editorContext, field, formik, onCh
     const currentValue = useRef(undefined);
 
     const unMount = () => {
-        onChange(currentValue.current, undefined, editorContext);
+        onChange(currentValue.current, undefined);
     };
 
     useEffect(() => {
@@ -30,7 +30,7 @@ export const SingleFieldCmp = ({inputContext, editorContext, field, formik, onCh
 
                            // Handle onChange
                            const newValue = transformOnChangeNewValue ? transformOnChangeNewValue(newData) : newData;
-                           onChange(currentValue.current, newValue, editorContext);
+                           onChange(currentValue.current, newValue);
                            currentValue.current = newValue;
                        };
 
@@ -38,7 +38,7 @@ export const SingleFieldCmp = ({inputContext, editorContext, field, formik, onCh
                            if (!isInit) {
                                // Be careful with 'false' and '0' and '' that are considered as value
                                if (data !== null && data !== undefined) {
-                                   onChange(undefined, data, editorContext);
+                                   onChange(undefined, data);
                                    currentValue.current = data;
                                }
 

@@ -14,6 +14,8 @@ import {Constants} from '~/ContentEditor.constants';
 import {buildFlatFieldObject} from './field.utils';
 import {registry} from '@jahia/ui-extender';
 import contentEditorHelper from '~/ContentEditor.helper';
+import {useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 
 let styles = theme => {
     const common = {
@@ -59,8 +61,10 @@ let styles = theme => {
     };
 };
 
-export const FieldCmp = ({classes, inputContext, editorContext, idInput, selectorType, field, siteInfo, actionContext, formik}) => {
+export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, actionContext, formik}) => {
     const {t} = useTranslation();
+    const editorContext = useContentEditorContext();
+    const sectionsContext = useContentEditorSectionContext();
 
     const {errors, touched, values} = formik;
     const contextualMenu = useRef(null);
@@ -73,11 +77,11 @@ export const FieldCmp = ({classes, inputContext, editorContext, idInput, selecto
 
     // Lookup for registerd on changes for given field selectory type
     const registeredOnChanges = registry.find({type: 'selectorType.onChange', target: selectorType.key});
-    const onChange = (previousValue, currentValue, editorContext) => {
+    const onChange = (previousValue, currentValue) => {
         if (registeredOnChanges && registeredOnChanges.length > 0) {
             registeredOnChanges.forEach(registeredOnChange => {
                 if (registeredOnChange.onChange) {
-                    registeredOnChange.onChange(previousValue, currentValue, field, {...editorContext, formik}, selectorType, contentEditorHelper);
+                    registeredOnChange.onChange(previousValue, currentValue, field, {...editorContext, ...sectionsContext, formik}, selectorType, contentEditorHelper);
                 }
             });
         }
@@ -155,7 +159,7 @@ export const FieldCmp = ({classes, inputContext, editorContext, idInput, selecto
                                                color="info"
                                         />
                                     )}
-                                    {(!field.i18n && siteInfo.languages.length > 1) &&
+                                    {(!field.i18n && editorContext.siteInfo.languages.length > 1) &&
                                     <Badge className={classes.badge}
                                            badgeContent={t('content-editor:label.contentEditor.edit.sharedLanguages')}
                                            icon={<Public/>}
@@ -212,13 +216,11 @@ export const FieldCmp = ({classes, inputContext, editorContext, idInput, selecto
 FieldCmp.propTypes = {
     classes: PropTypes.object.isRequired,
     inputContext: PropTypes.object.isRequired,
-    editorContext: PropTypes.object.isRequired,
     idInput: PropTypes.string.isRequired,
     selectorType: PropTypes.shape({
         key: PropTypes.string,
         supportMultiple: PropTypes.bool
     }).isRequired,
-    siteInfo: PropTypes.object.isRequired,
     field: FieldPropTypes.isRequired,
     formik: PropTypes.shape({
         errors: PropTypes.object,

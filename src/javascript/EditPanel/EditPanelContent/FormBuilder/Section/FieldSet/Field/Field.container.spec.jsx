@@ -19,7 +19,6 @@ describe('Field container component', () => {
                 selectorOptions: []
             },
             targets: [{name: 'test'}],
-            siteInfo: {},
             editorContext: {}
         };
     });

@@ -67,7 +67,7 @@ describe('Field component', () => {
 
         // Init should call onChange with initial values
         expect(defaultProps.onChange.mock.calls.length).toBe(1);
-        expect(defaultProps.onChange).toHaveBeenCalledWith(undefined, 'Dummy', {sections: undefined});
+        expect(defaultProps.onChange).toHaveBeenCalledWith(undefined, 'Dummy');
 
         // Update field
         defaultProps.onChange.mockReset();
@@ -79,7 +79,7 @@ describe('Field component', () => {
         expect(defaultPropsFastField.form.setFieldValue).toHaveBeenCalledWith('text', 'Updated', true);
         expect(defaultPropsFastField.form.setFieldTouched).toHaveBeenCalledWith('text', true);
         expect(defaultProps.onChange.mock.calls.length).toBe(1);
-        expect(defaultProps.onChange).toHaveBeenCalledWith('Dummy', 'Updated', {});
+        expect(defaultProps.onChange).toHaveBeenCalledWith('Dummy', 'Updated');
     });
 
     let buildFieldCmp = () => {

@@ -20,7 +20,7 @@ const styles = theme => ({
     }
 });
 
-const SectionCmp = ({section, classes, editorContext}) => {
+const SectionCmp = ({section, classes}) => {
     const hideFieldSets = fieldSet => {
         if (!fieldSet) {
             return false;
@@ -49,7 +49,7 @@ const SectionCmp = ({section, classes, editorContext}) => {
                     return null;
                 }
 
-                return <FieldSet key={fieldset.displayName} fieldset={fieldset} editorContext={editorContext}/>;
+                return <FieldSet key={fieldset.displayName} fieldset={fieldset}/>;
             })}
         </section>
     );
@@ -57,8 +57,7 @@ const SectionCmp = ({section, classes, editorContext}) => {
 
 SectionCmp.propTypes = {
     section: SectionPropTypes.isRequired,
-    classes: PropTypes.object.isRequired,
-    editorContext: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired
 };
 
 export const Section = withStyles(styles)(SectionCmp);

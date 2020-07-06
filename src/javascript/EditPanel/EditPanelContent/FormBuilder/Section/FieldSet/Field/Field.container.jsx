@@ -6,7 +6,7 @@ import {FieldPropTypes} from '~/FormDefinitions';
 import {resolveSelectorType} from '~/SelectorTypes';
 import {Field} from './Field';
 
-const FieldContainerCmp = ({field, formik, inputContext, editorContext}) => {
+const FieldContainerCmp = ({field, formik, inputContext}) => {
     const selectorType = resolveSelectorType(field);
     const [actionContext, _setActionContext] = useState({noAction: true});
     if (!selectorType) {
@@ -29,7 +29,6 @@ const FieldContainerCmp = ({field, formik, inputContext, editorContext}) => {
     return (
         <Field
             idInput={field.name}
-            editorContext={editorContext}
             inputContext={{
                 displayLabels: true,
                 displayBadges: true,
@@ -39,7 +38,6 @@ const FieldContainerCmp = ({field, formik, inputContext, editorContext}) => {
                 ...inputContext
             }}
             selectorType={selectorType}
-            siteInfo={editorContext.siteInfo}
             field={field}
             formik={formik}
             actionContext={actionContext}/>
@@ -53,8 +51,7 @@ FieldContainerCmp.defaultProps = {
 FieldContainerCmp.propTypes = {
     field: FieldPropTypes.isRequired,
     formik: PropTypes.object.isRequired,
-    inputContext: PropTypes.object,
-    editorContext: PropTypes.object
+    inputContext: PropTypes.object
 };
 
 export const FieldContainer = connect(FieldContainerCmp);

@@ -25,15 +25,15 @@ const styles = theme => {
 export const MultipleFieldCmp = ({classes, editorContext, inputContext, field, onChange, formik: {values}}) => {
     const {t} = useTranslation();
     const [isInit, setInit] = useState(false);
-    const currentValue = useRef(undefined);
-    const [data, setData] = useState(values[field.name] ? new Array(values[field.name].length) : []);
+    const currentValue = useRef(values[field.name] ? new Array(values[field.name].length) : []);
+    const [data, setData] = useState(currentValue.current);
     const setCurrentValue = data => {
         currentValue.current = data;
         setData(currentValue.current);
     };
 
     useEffect(() => {
-        return () => onChange(_mapDataForOnChange(currentValue.current), undefined, editorContext);
+        return () => onChange(_mapDataForOnChange(currentValue.current), undefined);
     }, []);
 
     const _mapDataForOnChange = dataToMap => {
@@ -65,7 +65,7 @@ export const MultipleFieldCmp = ({classes, editorContext, inputContext, field, o
                 _replaceData(index, initData);
                 if (!data.includes(undefined)) {
                     setInit(true);
-                    onChange(undefined, _mapDataForOnChange(data), editorContext);
+                    onChange(undefined, _mapDataForOnChange(data));
                 }
             }
         }
@@ -80,7 +80,7 @@ export const MultipleFieldCmp = ({classes, editorContext, inputContext, field, o
         // Handle onChange
         const previousValue = data.slice();
         _replaceData(index, transformOnChangeNewValue ? transformOnChangeNewValue(newData) : newData);
-        onChange(_mapDataForOnChange(previousValue), _mapDataForOnChange(data), editorContext);
+        onChange(_mapDataForOnChange(previousValue), _mapDataForOnChange(data));
     };
 
     const onFieldRemove = (index, arrayHelpers) => {
@@ -91,7 +91,7 @@ export const MultipleFieldCmp = ({classes, editorContext, inputContext, field, o
         const previousValue = data.slice();
         _removeData(index);
         if (previousValue[index].data !== undefined) {
-            onChange(_mapDataForOnChange(previousValue), data.length ? _mapDataForOnChange(data) : undefined, editorContext);
+            onChange(_mapDataForOnChange(previousValue), data.length ? _mapDataForOnChange(data) : undefined);
         }
     };
 
@@ -104,7 +104,7 @@ export const MultipleFieldCmp = ({classes, editorContext, inputContext, field, o
         const previousValue = data.slice();
         _addData(valueToAdd);
         if (valueToAdd !== undefined) {
-            onChange(_mapDataForOnChange(previousValue), _mapDataForOnChange(data), editorContext);
+            onChange(_mapDataForOnChange(previousValue), _mapDataForOnChange(data));
         }
     };
 
