@@ -100,3 +100,18 @@ extends=jnt:text
 - hiddenFieldSetExtendsText (string)
 
 [jnt:AllowedNodeTypesNone] > nt:base
+
+[jmix:linkCommons] mixin
+ - titleLink (string) mandatory internationalized
+ - internalLink (weakreference, picker[type='editoriallink']) internationalized < 'jnt:page', 'jmix:editorialContent'
+ - externalLink (string) internationalized
+
+[jmix:linkCommonsSecond] > jmix:linkCommons mixin
+ - secondTitle (string) mandatory internationalized
+
+[jnt:mapServiceSimple] > jnt:content, jmix:droppableContent
+ - thematicColor (string) = '#000000' mandatory autocreated nofulltext
+
+[jmix:mapLink] > jmix:linkCommonsSecond mixin
+ extends = jnt:mapServiceSimple
+- subTitle (string) mandatory internationalized

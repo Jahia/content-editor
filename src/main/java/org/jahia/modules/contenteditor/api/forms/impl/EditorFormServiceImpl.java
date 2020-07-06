@@ -202,13 +202,15 @@ public class EditorFormServiceImpl implements EditorFormService {
             Set<String> processedProperties = new HashSet<>();
             Set<String> processedNodeTypes = new HashSet<>();
 
-            generateAndMergeFieldSetForType(primaryNodeType, uiLocale, locale, existingNode, parentNode, primaryNodeType, formSectionsByName, false, false, true, processedProperties);
+            generateAndMergeFieldSetForType(primaryNodeType, uiLocale, locale, existingNode, parentNode, primaryNodeType,
+                formSectionsByName, false, false, true, processedProperties, false);
             processedNodeTypes.add(primaryNodeTypeName);
 
             Set<ExtendedNodeType> nodeTypesToProcess = Arrays.stream(primaryNodeType.getSupertypes()).collect(Collectors.toSet());
 
             for (ExtendedNodeType superType : nodeTypesToProcess) {
-                generateAndMergeFieldSetForType(superType, uiLocale, locale, existingNode, parentNode, primaryNodeType, formSectionsByName, false, false, true, processedProperties);
+                generateAndMergeFieldSetForType(superType, uiLocale, locale, existingNode, parentNode, primaryNodeType,
+                    formSectionsByName, false, false, true, processedProperties, false);
                 processedNodeTypes.add(superType.getName());
             }
 
@@ -229,14 +231,16 @@ public class EditorFormServiceImpl implements EditorFormService {
                 if (existingNode != null && existingNode.isNodeType(extendMixinNodeType.getName())) {
                     activated = true;
                 }
-                generateAndMergeFieldSetForType(extendMixinNodeType, uiLocale, locale, existingNode, parentNode, primaryNodeType, formSectionsByName, false, true, activated, processedProperties);
+                generateAndMergeFieldSetForType(extendMixinNodeType, uiLocale, locale, existingNode, parentNode, primaryNodeType,
+                    formSectionsByName, false, true, activated, processedProperties, true);
                 processedNodeTypes.add(extendMixinNodeType.getName());
             }
 
             if (existingNode != null) {
                 Set<ExtendedNodeType> addMixins = Arrays.stream(existingNode.getMixinNodeTypes()).filter(nodetype -> !processedNodeTypes.contains(nodetype.getName())).collect(Collectors.toSet());
                 for (ExtendedNodeType addMixin : addMixins) {
-                    generateAndMergeFieldSetForType(addMixin, uiLocale, locale, existingNode, parentNode, primaryNodeType, formSectionsByName, false, false, true, processedProperties);
+                    generateAndMergeFieldSetForType(addMixin, uiLocale, locale, existingNode, parentNode, primaryNodeType,
+                        formSectionsByName, false, false, true, processedProperties, false);
                 }
             }
 
@@ -250,9 +254,13 @@ public class EditorFormServiceImpl implements EditorFormService {
         }
     }
 
-    private void generateAndMergeFieldSetForType(ExtendedNodeType fieldSetNodeType, Locale uiLocale, Locale locale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, ExtendedNodeType primaryNodeType, Map<String, EditorFormSection> formSectionsByName, boolean removed, boolean dynamic, boolean activated, Set<String> processedProperties) throws RepositoryException {
+    private void generateAndMergeFieldSetForType(ExtendedNodeType fieldSetNodeType, Locale uiLocale, Locale locale,
+        JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, ExtendedNodeType primaryNodeType,
+        Map<String, EditorFormSection> formSectionsByName, boolean removed, boolean dynamic, boolean activated,
+        Set<String> processedProperties, boolean isForExtendMixin) throws RepositoryException {
         final boolean displayFieldSet = !fieldSetNodeType.isNodeType("jmix:templateMixin");
-        EditorFormFieldSet nodeTypeFieldSet = generateEditorFormFieldSet(processedProperties, fieldSetNodeType, existingNode, parentNode, locale, uiLocale, removed, dynamic, activated, displayFieldSet);
+        EditorFormFieldSet nodeTypeFieldSet = generateEditorFormFieldSet(processedProperties, fieldSetNodeType, existingNode, parentNode,
+            locale, uiLocale, removed, dynamic, activated, displayFieldSet, isForExtendMixin);
         nodeTypeFieldSet = mergeWithStaticFormFieldSets(fieldSetNodeType.getName(), nodeTypeFieldSet);
         nodeTypeFieldSet = processValueConstraints(nodeTypeFieldSet, locale, existingNode, parentNode, primaryNodeType);
         if (!nodeTypeFieldSet.isRemoved()) {
@@ -415,14 +423,18 @@ public class EditorFormServiceImpl implements EditorFormService {
         return editorFormField;
     }
 
-    private EditorFormFieldSet generateEditorFormFieldSet(Set<String> processedProperties, ExtendedNodeType nodeType, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale locale, Locale uiLocale, Boolean removed, Boolean dynamic, Boolean activated, Boolean displayed) throws RepositoryException {
+    private EditorFormFieldSet generateEditorFormFieldSet(Set<String> processedProperties, ExtendedNodeType nodeType,
+        JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale locale, Locale uiLocale, Boolean removed, Boolean dynamic,
+        Boolean activated, Boolean displayed, Boolean isForExtendMixin) throws RepositoryException {
         boolean isLockedAndCannotBeEdited = JCRContentUtils.isLockedAndCannotBeEdited(existingNode);
         boolean fieldSetEditable = existingNode == null || (!isLockedAndCannotBeEdited && existingNode.hasPermission("jcr:nodeTypeManagement"));
+
 
         SortedSet<EditorFormField> editorFormFields = new TreeSet<>();
         Map<String, Double> maxTargetRank = new HashMap<>();
 
-        for (ExtendedItemDefinition itemDefinition : nodeType.getDeclaredItems(true)) {
+        List<ExtendedItemDefinition> itemDefinitions = isForExtendMixin ? nodeType.getItems() : nodeType.getDeclaredItems(true);
+        for (ExtendedItemDefinition itemDefinition : itemDefinitions) {
             // do not return hidden props
             if (itemDefinition.isNode() || itemDefinition.isHidden() || itemDefinition.isUnstructured() || processedProperties.contains(itemDefinition.getName())) {
                 continue;
