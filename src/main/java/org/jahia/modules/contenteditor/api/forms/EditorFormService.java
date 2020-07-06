@@ -43,6 +43,8 @@
  */
 package org.jahia.modules.contenteditor.api.forms;
 
+import org.jahia.modules.contenteditor.graphql.api.types.ContextEntryInput;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -83,6 +85,7 @@ public interface EditorFormService {
      * @param primaryNodeType A string representation of the primary node type of the node
      * @param fieldNodeType A string representation of the field node type (the node type that contains the field, can be the node type of the node, a mixin or a super type)
      * @param fieldName A string representation of field name
+     * @param context Object contains additional information of the node
      * @param uiLocale The locale used to display the labels
      * @param locale The locale used to get nodes data
      * @return field constraints
@@ -93,6 +96,7 @@ public interface EditorFormService {
                                                              String primaryNodeType,
                                                              String fieldNodeType,
                                                              String fieldName,
+                                                             List<ContextEntryInput> context,
                                                              Locale uiLocale,
                                                              Locale locale) throws EditorFormException;
 }
