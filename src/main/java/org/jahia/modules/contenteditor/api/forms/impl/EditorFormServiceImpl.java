@@ -257,7 +257,7 @@ public class EditorFormServiceImpl implements EditorFormService {
     private void generateAndMergeFieldSetForType(ExtendedNodeType fieldSetNodeType, Locale uiLocale, Locale locale,
         JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, ExtendedNodeType primaryNodeType,
         Map<String, EditorFormSection> formSectionsByName, boolean removed, boolean dynamic, boolean activated,
-        Set<String> processedProperties, Boolean isForExtendMixin) throws RepositoryException {
+        Set<String> processedProperties, boolean isForExtendMixin) throws RepositoryException {
         final boolean displayFieldSet = !fieldSetNodeType.isNodeType("jmix:templateMixin");
         EditorFormFieldSet nodeTypeFieldSet = generateEditorFormFieldSet(processedProperties, fieldSetNodeType, existingNode, parentNode,
             locale, uiLocale, removed, dynamic, activated, displayFieldSet, isForExtendMixin);
@@ -425,7 +425,7 @@ public class EditorFormServiceImpl implements EditorFormService {
 
     private EditorFormFieldSet generateEditorFormFieldSet(Set<String> processedProperties, ExtendedNodeType nodeType,
         JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale locale, Locale uiLocale, Boolean removed, Boolean dynamic,
-        Boolean activated, Boolean displayed, boolean isForExtendMixin) throws RepositoryException {
+        Boolean activated, Boolean displayed, Boolean isForExtendMixin) throws RepositoryException {
         boolean isLockedAndCannotBeEdited = JCRContentUtils.isLockedAndCannotBeEdited(existingNode);
         boolean fieldSetEditable = existingNode == null || (!isLockedAndCannotBeEdited && existingNode.hasPermission("jcr:nodeTypeManagement"));
 

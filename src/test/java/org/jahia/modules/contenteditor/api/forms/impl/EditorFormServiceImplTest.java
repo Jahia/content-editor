@@ -471,6 +471,30 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         Assert.isTrue(constraintsSize == fieldValueConstraints.size(), "We should have the same number of constraints, either if the node exists or not");
     }
 
+    @Test
+    public void testExtendsMixins() throws Exception {
+        JCRNodeWrapper simpleContent = session.getNode(testSite.getJCRLocalPath()).addNode("testNode", "jnt:mapServiceSimple");
+        simpleContent.addMixin("jmix:mapLink");
+        simpleContent.setProperty("subTitle", "sub title");
+        simpleContent.setProperty("secondTitle", "second title");
+        simpleContent.setProperty("titleLink", "title");
+        session.save();
+        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
+
+        Assert.isTrue(hasField(form, "content", "jnt:mapServiceSimple", "thematicColor"), "could not find thematicColor in content "
+            + "section");
+        Assert.isTrue(hasField(form, "content", "jmix:mapLink", "subTitle"), "could not find subTitle in jmix:mapLink "
+            + "section");
+        Assert.isTrue(hasField(form, "content", "jmix:mapLink", "secondTitle"), "could not find secondTitle in jmix:mapLink "
+            + "section");
+        Assert.isTrue(hasField(form, "content", "jmix:mapLink", "titleLink"), "could not find titleLink in jmix:mapLink "
+            + "section");
+        Assert.isTrue(hasField(form, "content", "jmix:mapLink", "internalLink"), "could not find internalLink in jmix:mapLink "
+            + "section");
+        Assert.isTrue(hasField(form, "content", "jmix:mapLink", "externalLink"), "could not find externalLink in jmix:mapLink "
+            + "section");
+    }
+
     private URL getResource(String s) {
         return getClass().getClassLoader().getResource(s);
     }
