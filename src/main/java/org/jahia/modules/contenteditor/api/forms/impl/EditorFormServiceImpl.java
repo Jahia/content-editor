@@ -47,6 +47,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jahia.api.Constants;
 import org.jahia.modules.contenteditor.api.forms.*;
+import org.jahia.modules.contenteditor.graphql.api.types.ContextEntryInput;
 import org.jahia.modules.graphql.provider.dxm.node.GqlJcrPropertyType;
 import org.jahia.services.content.*;
 import org.jahia.services.content.decorator.JCRSiteNode;
@@ -141,10 +142,10 @@ public class EditorFormServiceImpl implements EditorFormService {
                                                                     String primaryNodeType,
                                                                     String fieldNodeType,
                                                                     String fieldName,
+                                                                    List<ContextEntryInput> context,
                                                                     Locale uiLocale,
                                                                     Locale locale) throws EditorFormException {
         try {
-            NodeTypeRegistry nodeTypeRegistry = NodeTypeRegistry.getInstance();
             JCRNodeWrapper node = nodeUuidOrPath != null ? resolveNodeFromPathorUUID(nodeUuidOrPath) : null;
             JCRNodeWrapper parentNode = resolveNodeFromPathorUUID(parentNodeUuidOrPath);
             ExtendedPropertyDefinition fieldPropertyDefinition = nodeTypeRegistry.getNodeType(fieldNodeType).getPropertyDefinition(fieldName);
@@ -153,13 +154,18 @@ public class EditorFormServiceImpl implements EditorFormService {
                 EditorFormField editorFormField = generateEditorFormField(fieldPropertyDefinition, node, parentNode, uiLocale, locale, 0.0);
                 editorFormField = mergeWithStaticFormField(fieldNodeType, editorFormField);
 
-                return getValueConstraints(nodeTypeRegistry.getNodeType(primaryNodeType), editorFormField, node, parentNode, uiLocale);
+                Map<String, Object> extendContext = new HashMap<>();
+                for (ContextEntryInput contextEntry : context) {
+                    extendContext.put(contextEntry.getKey(), contextEntry.getValue());
+                }
+
+                return getValueConstraints(nodeTypeRegistry.getNodeType(primaryNodeType), editorFormField, node, parentNode, uiLocale, extendContext);
             }
 
             return Collections.emptyList();
         } catch (RepositoryException e) {
             throw new EditorFormException("Error while building field constraints for" +
-                " node: " + nodeUuidOrPath  +
+                " node: " + nodeUuidOrPath +
                 ", node type: " + primaryNodeType +
                 ", parent node: " + parentNodeUuidOrPath +
                 ", field node type: " + fieldNodeType +
@@ -350,7 +356,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                 continue;
             }
 
-            List<EditorFormFieldValueConstraint> valueConstraints = getValueConstraints(primaryNodeType, editorFormField, existingNode, parentNode, uiLocale);
+            List<EditorFormFieldValueConstraint> valueConstraints = getValueConstraints(primaryNodeType, editorFormField, existingNode, parentNode, uiLocale, new HashMap<>());
             editorFormField.setValueConstraints(valueConstraints);
 
             newEditorFormFields.add(editorFormField);
@@ -551,7 +557,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         );
     }
 
-    private List<EditorFormFieldValueConstraint> getValueConstraints(ExtendedNodeType primaryNodeType, EditorFormField editorFormField, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale uiLocale) throws RepositoryException {
+    private List<EditorFormFieldValueConstraint> getValueConstraints(ExtendedNodeType primaryNodeType, EditorFormField editorFormField, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale uiLocale, Map<String, Object> extendContext) throws RepositoryException {
         ExtendedPropertyDefinition propertyDefinition = editorFormField.getExtendedPropertyDefinition();
         if (propertyDefinition == null) {
             logger.error("Missing property definition to resolve choice list values, cannot process");
@@ -571,6 +577,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             context.put("contextType", primaryNodeType);
             context.put("contextNode", existingNode);
             context.put("contextParent", parentNode);
+            context.putAll(extendContext);
             for (EditorFormProperty selectorProperty : selectorOptions) {
                 if (initializers.containsKey(selectorProperty.getName())) {
                     initialChoiceListValues = initializers.get(selectorProperty.getName()).getChoiceListValues(propertyDefinition, selectorProperty.getValue(), initialChoiceListValues, uiLocale, context);

@@ -52,6 +52,7 @@ import org.jahia.modules.contenteditor.api.forms.EditorFormException;
 import org.jahia.modules.contenteditor.api.forms.EditorFormFieldValueConstraint;
 import org.jahia.modules.contenteditor.api.forms.EditorFormService;
 import org.jahia.modules.contenteditor.graphql.api.definitions.GqlNodeTypeTreeEntry;
+import org.jahia.modules.contenteditor.graphql.api.types.ContextEntryInput;
 import org.jahia.modules.contenteditor.utils.ContentEditorUtils;
 import org.jahia.modules.graphql.provider.dxm.DataFetchingException;
 import org.jahia.osgi.BundleUtils;
@@ -155,6 +156,9 @@ public class GqlEditorForms {
         @GraphQLNonNull
         @GraphQLDescription("A string representation of field name")
             String fieldName,
+        @GraphQLName("context")
+        @GraphQLDescription("Object contains additional information of the node")
+            List<ContextEntryInput> context,
         @GraphQLName("uiLocale")
         @GraphQLNonNull
         @GraphQLDescription("A string representation of a locale, in IETF BCP 47 language tag format, ie en_US, en, fr, fr_CH, ...")
@@ -164,7 +168,7 @@ public class GqlEditorForms {
         @GraphQLDescription("A string representation of a locale, in IETF BCP 47 language tag format, ie en_US, en, fr, fr_CH, ...")
             String locale) {
         try {
-            return editorFormService.getFieldConstraints(nodeUuidOrPath, parentNodeUuidOrPath, primaryNodeType, fieldNodeType, fieldName, LocaleUtils.toLocale(uiLocale), LocaleUtils.toLocale(locale));
+            return editorFormService.getFieldConstraints(nodeUuidOrPath, parentNodeUuidOrPath, primaryNodeType, fieldNodeType, fieldName, context, LocaleUtils.toLocale(uiLocale), LocaleUtils.toLocale(locale));
         } catch (Exception e) {
             throw new DataFetchingException(e);
         }
