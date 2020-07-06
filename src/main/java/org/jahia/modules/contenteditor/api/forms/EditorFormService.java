@@ -78,13 +78,21 @@ public interface EditorFormService {
 
     /**
      * Retrieve field constraints for given node
-     * @param uuidOrPath UUID or path of the node path of the node to be edited.
-     * @param fieldName The field name
-     * @param nodeType The node type
+     * @param nodeUuidOrPath UUID or path of the node (optional in case you are creating it, and it doesnt exist yet)
+     * @param parentNodeUuidOrPath UUID or path of the parent node
+     * @param primaryNodeType A string representation of the primary node type of the node
+     * @param fieldNodeType A string representation of the field node type (the node type that contains the field, can be the node type of the node, a mixin or a super type)
+     * @param fieldName A string representation of field name
      * @param uiLocale The locale used to display the labels
      * @param locale The locale used to get nodes data
      * @return field constraints
      * @throws EditorFormException if there was an error when processing the node data
      */
-    List<EditorFormFieldValueConstraint> getFieldConstraints(String uuidOrPath, String nodeType, String fieldName, Locale uiLocale, Locale locale) throws EditorFormException;
+    List<EditorFormFieldValueConstraint> getFieldConstraints(String nodeUuidOrPath,
+                                                             String parentNodeUuidOrPath,
+                                                             String primaryNodeType,
+                                                             String fieldNodeType,
+                                                             String fieldName,
+                                                             Locale uiLocale,
+                                                             Locale locale) throws EditorFormException;
 }
