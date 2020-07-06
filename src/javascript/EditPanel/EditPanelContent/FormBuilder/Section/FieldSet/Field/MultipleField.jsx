@@ -1,7 +1,7 @@
 import {Button, IconButton} from '@jahia/design-system-kit';
 import {withStyles} from '@material-ui/core';
 import {Close} from '@material-ui/icons';
-import React, {useState, useEffect, useReducer} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import * as PropTypes from 'prop-types';
 import {compose} from '~/utils';
 import {useTranslation} from 'react-i18next';
@@ -22,48 +22,41 @@ const styles = theme => {
     };
 };
 
-const _mapDataForOnChange = dataToMap => {
-    return dataToMap.filter(item => item.data !== undefined).map(item => item.data);
-};
-
-const reducer = (state, action) => {
-    switch (action.type) {
-        case 'set':
-            return action.data;
-        case 'unMount':
-            return action.onChange(_mapDataForOnChange(state), undefined);
-        default:
-            throw new Error();
-    }
-};
-
-export const MultipleFieldCmp = ({classes, inputContext, field, onChange, formik: {values}}) => {
+export const MultipleFieldCmp = ({classes, editorContext, inputContext, field, onChange, formik: {values}}) => {
     const {t} = useTranslation();
     const [isInit, setInit] = useState(false);
+    const currentValue = useRef(undefined);
+    const [data, setData] = useState(values[field.name] ? new Array(values[field.name].length) : []);
+    const setCurrentValue = data => {
+        currentValue.current = data;
+        setData(currentValue.current);
+    };
 
-    const [data, dispatch] = useReducer(reducer, values[field.name] ? new Array(values[field.name].length) : []);
-    const setData = value => dispatch({type: 'set', data: value});
     useEffect(() => {
-        return () => dispatch({type: 'unMount', onChange});
+        return () => onChange(_mapDataForOnChange(currentValue.current), undefined, editorContext);
     }, []);
+
+    const _mapDataForOnChange = dataToMap => {
+        return dataToMap.filter(item => item.data !== undefined).map(item => item.data);
+    };
 
     const _replaceData = (index, dataToReplace) => {
         data[index] = {
             data: dataToReplace
         };
-        setData(data);
+        setCurrentValue(data);
     };
 
     const _addData = dataToAdd => {
         data.push({
             data: dataToAdd
         });
-        setData(data);
+        setCurrentValue(data);
     };
 
     const _removeData = index => {
         data.splice(index, 1);
-        setData(data);
+        setCurrentValue(data);
     };
 
     const multipleFieldOnInit = (initData, index) => {
@@ -72,13 +65,13 @@ export const MultipleFieldCmp = ({classes, inputContext, field, onChange, formik
                 _replaceData(index, initData);
                 if (!data.includes(undefined)) {
                     setInit(true);
-                    onChange(undefined, _mapDataForOnChange(data));
+                    onChange(undefined, _mapDataForOnChange(data), editorContext);
                 }
             }
         }
     };
 
-    const multipleFieldOnChange = (index, name, newData, transformOnChangeNewValue, transformBeforeSave, setFieldValue, setFieldTouched) => {
+    const multipleFieldOnChange = (index, name, newData, transformOnChangeNewValue, transformOnChangePreviousValue, transformBeforeSave, setFieldValue, setFieldTouched) => {
         // Save value to formik
         const valueToSave = transformBeforeSave ? transformBeforeSave(newData) : newData;
         setFieldValue(name, valueToSave, true);
@@ -87,7 +80,7 @@ export const MultipleFieldCmp = ({classes, inputContext, field, onChange, formik
         // Handle onChange
         const previousValue = data.slice();
         _replaceData(index, transformOnChangeNewValue ? transformOnChangeNewValue(newData) : newData);
-        onChange(_mapDataForOnChange(previousValue), _mapDataForOnChange(data));
+        onChange(_mapDataForOnChange(previousValue), _mapDataForOnChange(data), editorContext);
     };
 
     const onFieldRemove = (index, arrayHelpers) => {
@@ -98,7 +91,7 @@ export const MultipleFieldCmp = ({classes, inputContext, field, onChange, formik
         const previousValue = data.slice();
         _removeData(index);
         if (previousValue[index].data !== undefined) {
-            onChange(_mapDataForOnChange(previousValue), data.length ? _mapDataForOnChange(data) : undefined);
+            onChange(_mapDataForOnChange(previousValue), data.length ? _mapDataForOnChange(data) : undefined, editorContext);
         }
     };
 
@@ -111,7 +104,7 @@ export const MultipleFieldCmp = ({classes, inputContext, field, onChange, formik
         const previousValue = data.slice();
         _addData(valueToAdd);
         if (valueToAdd !== undefined) {
-            onChange(_mapDataForOnChange(previousValue), _mapDataForOnChange(data));
+            onChange(_mapDataForOnChange(previousValue), _mapDataForOnChange(data), editorContext);
         }
     };
 
@@ -138,14 +131,15 @@ export const MultipleFieldCmp = ({classes, inputContext, field, onChange, formik
                                                            <FieldComponent field={field}
                                                                            value={value}
                                                                            id={name}
-                                                                           editorContext={inputContext.editorContext}
+                                                                           editorContext={editorContext}
                                                                            setActionContext={inputContext.setActionContext}
-                                                                           onChange={(newData, transformOnChangeNewValue, transformBeforeSave) => {
+                                                                           onChange={(newData, transformOnChangeNewValue, transformOnChangePreviousValue, transformBeforeSave) => {
                                                                                multipleFieldOnChange(
                                                                                    index,
                                                                                    name,
                                                                                    newData,
                                                                                    transformOnChangeNewValue,
+                                                                                   transformOnChangePreviousValue,
                                                                                    transformBeforeSave,
                                                                                    setFieldValue,
                                                                                    setFieldTouched);
@@ -189,6 +183,7 @@ export const MultipleFieldCmp = ({classes, inputContext, field, onChange, formik
 
 MultipleFieldCmp.propTypes = {
     inputContext: PropTypes.object.isRequired,
+    editorContext: PropTypes.object.isRequired,
     field: FieldPropTypes.isRequired,
     formik: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,

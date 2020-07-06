@@ -1,28 +1,20 @@
-import React, {useState, useEffect, useReducer} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import * as PropTypes from 'prop-types';
 import {compose} from '~/utils';
 import {connect, FastField} from 'formik';
 import {FieldPropTypes} from '~/FormDefinitions';
 
-const reducer = (state, action) => {
-    switch (action.type) {
-        case 'set':
-            return action.data;
-        case 'unMount':
-            return action.onChange(state, undefined);
-        default:
-            throw new Error();
-    }
-};
-
-export const SingleFieldCmp = ({inputContext, field, onChange, formik}) => {
+export const SingleFieldCmp = ({inputContext, editorContext, field, formik, onChange}) => {
     const FieldComponent = inputContext.fieldComponent;
     const [isInit, setInit] = useState(false);
+    const currentValue = useRef(undefined);
 
-    const [previousValue, dispatch] = useReducer(reducer, undefined);
+    const unMount = () => {
+        onChange(currentValue.current, undefined, editorContext);
+    };
 
     useEffect(() => {
-        return () => dispatch({type: 'unMount', onChange});
+        return unMount;
     }, []);
 
     return (
@@ -38,16 +30,16 @@ export const SingleFieldCmp = ({inputContext, field, onChange, formik}) => {
 
                            // Handle onChange
                            const newValue = transformOnChangeNewValue ? transformOnChangeNewValue(newData) : newData;
-                           dispatch({type: 'set', data: newValue});
-                           onChange(previousValue, newValue);
+                           onChange(currentValue.current, newValue, editorContext);
+                           currentValue.current = newValue;
                        };
 
                        const singleFieldOnInit = data => {
                            if (!isInit) {
                                // Be careful with 'false' and '0' and '' that are considered as value
                                if (data !== null && data !== undefined) {
-                                   dispatch({type: 'set', data});
-                                   onChange(undefined, data);
+                                   onChange(undefined, data, editorContext);
+                                   currentValue.current = data;
                                }
 
                                setInit(true);
@@ -58,7 +50,7 @@ export const SingleFieldCmp = ({inputContext, field, onChange, formik}) => {
                            <FieldComponent field={field}
                                            id={field.name}
                                            value={value}
-                                           editorContext={inputContext.editorContext}
+                                           editorContext={editorContext}
                                            setActionContext={inputContext.setActionContext}
                                            onChange={singleFieldOnChange}
                                            onInit={singleFieldOnInit}
@@ -71,6 +63,7 @@ export const SingleFieldCmp = ({inputContext, field, onChange, formik}) => {
 
 SingleFieldCmp.propTypes = {
     inputContext: PropTypes.object.isRequired,
+    editorContext: PropTypes.object.isRequired,
     field: FieldPropTypes.isRequired,
     formik: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired

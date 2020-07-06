@@ -28,18 +28,36 @@ export const moveMixinToInitialFieldset = (mixin, sections, formik) => {
 export const moveFieldsToAnotherFieldset = (originFieldsetName, targetFieldsetName, sections, field) => {
     let fields = [];
     let updatedSections = sections.map(section => {
-        return {...section,
+        return {
+            ...section,
             fieldSets: section.fieldSets.map(fieldSet => {
                 fields = fields.concat(fieldSet.fields.filter(({nodeType}) => nodeType === originFieldsetName));
-                return {...fieldSet,
-                    fields: fieldSet.fields.filter(({nodeType}) => nodeType !== originFieldsetName)};
-            })};
+                return {
+                    ...fieldSet,
+                    fields: fieldSet.fields.filter(({nodeType}) => nodeType !== originFieldsetName)
+                };
+            })
+        };
     });
 
+    // Find fieldSet that contains the field
+    let fieldSetName = targetFieldsetName;
+    if (field) {
+        let targetFieldSet = {};
+        sections.forEach(s => {
+            const foundFieldSet = s.fieldSets.find(fs => fs.fields.find(f => f.name === field.name && f.nodeType === field.nodeType));
+            if (foundFieldSet) {
+                targetFieldSet = foundFieldSet;
+            }
+        });
+        fieldSetName = targetFieldSet.name || targetFieldsetName;
+    }
+
     updatedSections = updatedSections.map(section => {
-        return {...section,
+        return {
+            ...section,
             fieldSets: section.fieldSets.map(fieldset => {
-                if (fieldset.name === targetFieldsetName) {
+                if (fieldset.name === fieldSetName) {
                     addFieldsToFieldset(fields, fieldset, field);
                 }
 

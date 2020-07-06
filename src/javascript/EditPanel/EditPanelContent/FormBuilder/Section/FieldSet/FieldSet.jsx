@@ -23,7 +23,7 @@ let styles = theme => ({
     }
 });
 
-const FieldSetCmp = ({fieldset, classes, formik: {values, handleChange}}) => {
+const FieldSetCmp = ({fieldset, classes, formik: {values, handleChange}, editorContext}) => {
     const isDynamicFieldSet = fieldset.dynamic;
     const activatedFieldSet = (values && values[fieldset.name]) || !isDynamicFieldSet;
 
@@ -44,7 +44,7 @@ const FieldSetCmp = ({fieldset, classes, formik: {values, handleChange}}) => {
             </div>
 
             {activatedFieldSet && fieldset.fields.map(field => {
-                return <FieldContainer key={field.name} field={field}/>;
+                return <FieldContainer key={field.name} field={field} editorContext={editorContext}/>;
             })}
         </article>
     );
@@ -53,7 +53,8 @@ const FieldSetCmp = ({fieldset, classes, formik: {values, handleChange}}) => {
 FieldSetCmp.propTypes = {
     fieldset: FieldSetPropTypes.isRequired,
     classes: PropTypes.object.isRequired,
-    formik: PropTypes.object.isRequired
+    formik: PropTypes.object.isRequired,
+    editorContext: PropTypes.object.isRequired
 };
 
 export const FieldSet = compose(

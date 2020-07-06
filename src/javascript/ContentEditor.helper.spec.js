@@ -1,4 +1,5 @@
 import contentEditorHelper from './ContentEditor.helper';
+import {moveFieldsToAnotherFieldset} from '~/ContentEditor.helper';
 
 describe('ContentEditor.helper', () => {
     let context;
@@ -845,5 +846,77 @@ describe('ContentEditor.helper', () => {
         });
         expect(initialFieldset.fields.length).toBe(1);
         expect(movedField).toBeDefined();
+    });
+
+    it('should move moveFieldsToAnotherFieldset', () => {
+        let sections = [{
+            fieldSets: [{
+                name: 'field1NT',
+                fields: [
+                    {
+                        nodeType: 'field1NT',
+                        name: 'field1'
+                    },
+                    {
+                        nodeType: 'field1NT',
+                        name: 'field2'
+                    }
+                ]
+            },
+            {
+                name: 'field2NT',
+                fields: [
+                    {
+                        nodeType: 'field2NT',
+                        name: 'field1'
+                    },
+                    {
+                        nodeType: 'field2NT',
+                        name: 'field2'
+                    }
+                ]
+            }]
+        }];
+        let updatedSections = moveFieldsToAnotherFieldset('field1NT', 'field2NT', sections, sections[0].fieldSets[1].fields[0]);
+        expect(updatedSections[0].fieldSets[1].fields).toStrictEqual([
+            {
+                nodeType: 'field2NT',
+                name: 'field1'
+            },
+            {
+                nodeType: 'field1NT',
+                name: 'field1'
+            },
+            {
+                nodeType: 'field1NT',
+                name: 'field2'
+            },
+            {
+                nodeType: 'field2NT',
+                name: 'field2'
+            }
+        ]);
+        expect(updatedSections[0].fieldSets[0].fields).toStrictEqual([]);
+        updatedSections = moveFieldsToAnotherFieldset('field1NT', 'field1NT', updatedSections);
+        expect(updatedSections[0].fieldSets[0].fields).toStrictEqual([
+            {
+                nodeType: 'field1NT',
+                name: 'field1'
+            },
+            {
+                nodeType: 'field1NT',
+                name: 'field2'
+            }
+        ]);
+        expect(updatedSections[0].fieldSets[1].fields).toStrictEqual([
+            {
+                nodeType: 'field2NT',
+                name: 'field1'
+            },
+            {
+                nodeType: 'field2NT',
+                name: 'field2'
+            }
+        ]);
     });
 });

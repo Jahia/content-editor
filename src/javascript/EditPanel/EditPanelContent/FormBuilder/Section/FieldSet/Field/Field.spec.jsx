@@ -89,7 +89,7 @@ describe('Field component', () => {
         ).dive();
 
         // Call onChange from the field
-        cmp.find('SingleField').props().onChange(onChangePreviousValue, onChangeCurrentValue);
+        cmp.find('SingleField').props().onChange(onChangePreviousValue, onChangeCurrentValue, {lang: 'en'});
 
         expect(result).toBe(true);
     });

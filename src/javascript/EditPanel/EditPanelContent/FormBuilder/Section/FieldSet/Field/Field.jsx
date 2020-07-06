@@ -59,8 +59,9 @@ let styles = theme => {
     };
 };
 
-export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, siteInfo, actionContext, formik}) => {
+export const FieldCmp = ({classes, inputContext, editorContext, idInput, selectorType, field, siteInfo, actionContext, formik}) => {
     const {t} = useTranslation();
+
     const {errors, touched, values} = formik;
     const contextualMenu = useRef(null);
     const isMultipleField = field.multiple && !selectorType.supportMultiple;
@@ -72,11 +73,11 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
 
     // Lookup for registerd on changes for given field selectory type
     const registeredOnChanges = registry.find({type: 'selectorType.onChange', target: selectorType.key});
-    const onChange = (previousValue, currentValue) => {
+    const onChange = (previousValue, currentValue, editorContext) => {
         if (registeredOnChanges && registeredOnChanges.length > 0) {
             registeredOnChanges.forEach(registeredOnChange => {
                 if (registeredOnChange.onChange) {
-                    registeredOnChange.onChange(previousValue, currentValue, field, {...inputContext.editorContext, formik}, selectorType, contentEditorHelper);
+                    registeredOnChange.onChange(previousValue, currentValue, field, {...editorContext, formik}, selectorType, contentEditorHelper);
                 }
             });
         }
@@ -146,7 +147,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
                                                color={hasMandatoryError ? 'warning' : 'primary'}
                                         />
                                     )}
-                                    {showChipField(field.i18n, wipInfo, inputContext.editorContext.lang) && (
+                                    {showChipField(field.i18n, wipInfo, editorContext.lang) && (
                                         <Badge className={classes.badge}
                                                data-sel-role="wip-info-chip-field"
                                                badgeContent={t('content-editor:label.contentEditor.edit.action.workInProgress.chipLabelField')}
@@ -186,8 +187,8 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
                     >
                         <Grid item className={classes.input}>
                             {isMultipleField ?
-                                <MultipleField inputContext={inputContext} field={field} onChange={onChange}/> :
-                                <SingleField inputContext={inputContext} field={field} onChange={onChange}/>}
+                                <MultipleField inputContext={inputContext} editorContext={editorContext} field={field} onChange={onChange}/> :
+                                <SingleField inputContext={inputContext} editorContext={editorContext} field={field} onChange={onChange}/>}
                         </Grid>
                         <Grid item>
                             {actionCmp}
@@ -211,6 +212,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
 FieldCmp.propTypes = {
     classes: PropTypes.object.isRequired,
     inputContext: PropTypes.object.isRequired,
+    editorContext: PropTypes.object.isRequired,
     idInput: PropTypes.string.isRequired,
     selectorType: PropTypes.shape({
         key: PropTypes.string,

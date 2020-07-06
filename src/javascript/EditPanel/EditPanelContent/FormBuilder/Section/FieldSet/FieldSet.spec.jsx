@@ -8,6 +8,26 @@ describe('FieldSet component', () => {
 
     beforeEach(() => {
         props = {
+            editorContext: {
+                sections: [
+                    {
+                        name: 'metadata',
+                        displayName: 'metadata',
+                        fieldSets: [{
+                            displayName: 'FieldSet1',
+                            dynamic: false,
+                            fields: [
+                                {displayName: 'field1'},
+                                {displayName: 'field2'}
+                            ]
+                        }]
+                    }
+                ],
+                nodeData: {
+                    lockedAndCannotBeEdited: false,
+                    hasWritePermission: true
+                }
+            },
             fieldset: {
                 displayName: 'FieldSet1',
                 dynamic: false,
