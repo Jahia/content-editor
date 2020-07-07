@@ -1,19 +1,14 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import * as PropTypes from 'prop-types';
 import {connect} from 'formik';
 
 import {FieldPropTypes} from '~/FormDefinitions';
 import {resolveSelectorType} from '~/SelectorTypes';
-import {ContentEditorContext} from '~/ContentEditor.context';
-import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import {Field} from './Field';
 
 const FieldContainerCmp = ({field, formik, inputContext}) => {
     const selectorType = resolveSelectorType(field);
     const [actionContext, _setActionContext] = useState({noAction: true});
-    const editorContext = useContext(ContentEditorContext);
-    const contentEditorSectionContext = useContentEditorSectionContext();
-
     if (!selectorType) {
         if (field.selectorType) {
             console.warn(`No renderer component for ${field.selectorType} selectorType`);
@@ -39,12 +34,10 @@ const FieldContainerCmp = ({field, formik, inputContext}) => {
                 displayBadges: true,
                 displayErrors: true,
                 fieldComponent: selectorType.cmp,
-                editorContext: {...editorContext, ...contentEditorSectionContext},
                 setActionContext: setActionContext,
                 ...inputContext
             }}
             selectorType={selectorType}
-            siteInfo={editorContext.siteInfo}
             field={field}
             formik={formik}
             actionContext={actionContext}/>

@@ -20,6 +20,7 @@ describe('Multiple component', () => {
 
     beforeEach(() => {
         defaultProps = {
+            editorContext: {},
             field: {
                 multiple: true,
                 name: 'text',

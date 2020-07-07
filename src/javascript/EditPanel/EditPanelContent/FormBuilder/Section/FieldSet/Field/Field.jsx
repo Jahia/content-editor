@@ -14,6 +14,8 @@ import {Constants} from '~/ContentEditor.constants';
 import {buildFlatFieldObject} from './field.utils';
 import {registry} from '@jahia/ui-extender';
 import contentEditorHelper from '~/ContentEditor.helper';
+import {useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 
 let styles = theme => {
     const common = {
@@ -59,8 +61,11 @@ let styles = theme => {
     };
 };
 
-export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, siteInfo, actionContext, formik}) => {
+export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, actionContext, formik}) => {
     const {t} = useTranslation();
+    const editorContext = useContentEditorContext();
+    const sectionsContext = useContentEditorSectionContext();
+
     const {errors, touched, values} = formik;
     const contextualMenu = useRef(null);
     const isMultipleField = field.multiple && !selectorType.supportMultiple;
@@ -76,7 +81,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
         if (registeredOnChanges && registeredOnChanges.length > 0) {
             registeredOnChanges.forEach(registeredOnChange => {
                 if (registeredOnChange.onChange) {
-                    registeredOnChange.onChange(previousValue, currentValue, field, {...inputContext.editorContext, formik}, selectorType, contentEditorHelper);
+                    registeredOnChange.onChange(previousValue, currentValue, field, {...editorContext, ...sectionsContext, formik}, selectorType, contentEditorHelper);
                 }
             });
         }
@@ -146,7 +151,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
                                                color={hasMandatoryError ? 'warning' : 'primary'}
                                         />
                                     )}
-                                    {showChipField(field.i18n, wipInfo, inputContext.editorContext.lang) && (
+                                    {showChipField(field.i18n, wipInfo, editorContext.lang) && (
                                         <Badge className={classes.badge}
                                                data-sel-role="wip-info-chip-field"
                                                badgeContent={t('content-editor:label.contentEditor.edit.action.workInProgress.chipLabelField')}
@@ -154,7 +159,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
                                                color="info"
                                         />
                                     )}
-                                    {(!field.i18n && siteInfo.languages.length > 1) &&
+                                    {(!field.i18n && editorContext.siteInfo.languages.length > 1) &&
                                     <Badge className={classes.badge}
                                            badgeContent={t('content-editor:label.contentEditor.edit.sharedLanguages')}
                                            icon={<Public/>}
@@ -186,8 +191,8 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, s
                     >
                         <Grid item className={classes.input}>
                             {isMultipleField ?
-                                <MultipleField inputContext={inputContext} field={field} onChange={onChange}/> :
-                                <SingleField inputContext={inputContext} field={field} onChange={onChange}/>}
+                                <MultipleField inputContext={inputContext} editorContext={editorContext} field={field} onChange={onChange}/> :
+                                <SingleField inputContext={inputContext} editorContext={editorContext} field={field} onChange={onChange}/>}
                         </Grid>
                         <Grid item>
                             {actionCmp}
@@ -216,7 +221,6 @@ FieldCmp.propTypes = {
         key: PropTypes.string,
         supportMultiple: PropTypes.bool
     }).isRequired,
-    siteInfo: PropTypes.object.isRequired,
     field: FieldPropTypes.isRequired,
     formik: PropTypes.shape({
         errors: PropTypes.object,

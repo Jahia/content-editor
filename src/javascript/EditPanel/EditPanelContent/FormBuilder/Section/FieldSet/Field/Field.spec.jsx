@@ -11,13 +11,26 @@ jest.mock('~/EditPanel/WorkInProgress/WorkInProgress.utils', () => {
         showChipField: jest.fn()
     };
 });
+
+let mockEditorContext;
+jest.mock('~/ContentEditor.context', () => {
+    return {
+        useContentEditorContext: () => (mockEditorContext)
+    };
+});
+
 describe('Field component', () => {
     let defaultProps;
 
     beforeEach(() => {
+        mockEditorContext = {
+            lang: 'en',
+            siteInfo: {
+                languages: ['en']
+            }
+        };
         defaultProps = {
             classes: {},
-            siteInfo: {languages: []},
             field: {
                 name: 'text',
                 description: 'This is a description for this text field.',
@@ -34,7 +47,6 @@ describe('Field component', () => {
                 selectorType: 'DatePicker',
                 selectorOptions: []
             },
-            editorContext: {},
             fieldComponentKey: 'fieldComponentKeyForSelenium',
             labelHtmlFor: 'yoloHtmlFor',
             selectorType: {
@@ -52,11 +64,7 @@ describe('Field component', () => {
             inputContext: {
                 displayBadges: true,
                 displayLabels: true,
-                displayErrors: true,
-                editorContext: {
-                    lang: 'en',
-                    nodeData: {}
-                }
+                displayErrors: true
             },
             idInput: 'FieldID'
         };
@@ -74,7 +82,7 @@ describe('Field component', () => {
                 result = previousValue === onChangePreviousValue &&
                     currentValue === onChangeCurrentValue &&
                     field.name === defaultProps.field.name &&
-                    context.lang === defaultProps.inputContext.editorContext.lang;
+                    context.lang === mockEditorContext.lang;
             }
         };
         registry.add('selectorType.onChange', 'callBacks', datePickerOnChange);
@@ -127,7 +135,7 @@ describe('Field component', () => {
                 selectorType: 'Text',
                 i18n: i18n
             };
-            defaultProps.siteInfo = {
+            mockEditorContext.siteInfo = {
                 languages: siteLanguages
             };
 

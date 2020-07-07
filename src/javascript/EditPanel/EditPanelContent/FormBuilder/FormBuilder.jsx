@@ -15,7 +15,7 @@ const FormBuilder = ({mode}) => {
     const {sections} = useContentEditorSectionContext();
     const {t} = useTranslation();
 
-    if (!sections || sections.length === 0) {
+    if (!nodeData || !sections || sections.length === 0) {
         return <></>;
     }
 
