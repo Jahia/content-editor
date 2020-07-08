@@ -258,12 +258,14 @@ public class EditorFormServiceImpl implements EditorFormService {
         JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, ExtendedNodeType primaryNodeType,
         Map<String, EditorFormSection> formSectionsByName, boolean removed, boolean dynamic, boolean activated,
         Set<String> processedProperties, boolean isForExtendMixin) throws RepositoryException {
+
         final boolean displayFieldSet = !fieldSetNodeType.isNodeType("jmix:templateMixin");
         EditorFormFieldSet nodeTypeFieldSet = generateEditorFormFieldSet(processedProperties, fieldSetNodeType, existingNode, parentNode,
             locale, uiLocale, removed, dynamic, activated, displayFieldSet, isForExtendMixin);
         nodeTypeFieldSet = mergeWithStaticFormFieldSets(fieldSetNodeType.getName(), nodeTypeFieldSet);
-        nodeTypeFieldSet = processValueConstraints(nodeTypeFieldSet, locale, existingNode, parentNode, primaryNodeType);
+
         if (!nodeTypeFieldSet.isRemoved()) {
+            processValueConstraints(nodeTypeFieldSet, locale, existingNode, parentNode, primaryNodeType);
             addFieldSetToSections(formSectionsByName, nodeTypeFieldSet);
         }
     }
@@ -323,6 +325,11 @@ public class EditorFormServiceImpl implements EditorFormService {
     }
 
     private void addFieldSetToSections(Map<String, EditorFormSection> formSectionsByName, EditorFormFieldSet formFieldSet) {
+        if (Boolean.FALSE.equals(formFieldSet.getDynamic()) && formFieldSet.getEditorFormFields().isEmpty()) {
+            // in the case of an empty static mixin or parent type we don't add it to the form
+            return;
+        }
+
         String targetSectionName = resolveMainSectionName(formFieldSet);
         EditorFormSection targetSection = formSectionsByName.get(targetSectionName);
         if (targetSection == null) {
@@ -330,11 +337,11 @@ public class EditorFormServiceImpl implements EditorFormService {
             Double targetSectionPriority = 1.0;
             targetSection = new EditorFormSection(targetSectionName, targetSectionName, null, targetSectionRank, targetSectionPriority, new ArrayList<>());
         }
-        formFieldSet.setRank((double) targetSection.getFieldSets().size() + 1);
-        if (Boolean.FALSE.equals(formFieldSet.getDynamic()) && formFieldSet.getEditorFormFields().isEmpty()) {
-            // in the case of an empty static mixin or parent type we don't add it to the form
-            return;
+
+        if (formFieldSet.getRank() == 0.0) {
+            formFieldSet.setRank((double) targetSection.getFieldSets().size() + 1);
         }
+
         targetSection.getFieldSets().add(formFieldSet);
         formSectionsByName.put(targetSection.getName(), targetSection);
     }
@@ -356,33 +363,15 @@ public class EditorFormServiceImpl implements EditorFormService {
         return targetSectionName;
     }
 
-    private EditorFormFieldSet processValueConstraints(EditorFormFieldSet editorFormFieldSet, Locale uiLocale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, ExtendedNodeType primaryNodeType) throws RepositoryException {
-        SortedSet<EditorFormField> newEditorFormFields = new TreeSet<>();
+    private void processValueConstraints(EditorFormFieldSet editorFormFieldSet, Locale uiLocale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, ExtendedNodeType primaryNodeType) throws RepositoryException {
         for (EditorFormField editorFormField : editorFormFieldSet.getEditorFormFields()) {
             if (editorFormField.getValueConstraints() == null || editorFormField.getExtendedPropertyDefinition() == null) {
-                newEditorFormFields.add(editorFormField);
                 continue;
             }
 
             List<EditorFormFieldValueConstraint> valueConstraints = getValueConstraints(primaryNodeType, editorFormField, existingNode, parentNode, uiLocale, new HashMap<>());
             editorFormField.setValueConstraints(valueConstraints);
-
-            newEditorFormFields.add(editorFormField);
         }
-
-        return new EditorFormFieldSet(
-            editorFormFieldSet.getName(),
-            editorFormFieldSet.getDisplayName(),
-            editorFormFieldSet.getDescription(),
-            editorFormFieldSet.getRank(),
-            editorFormFieldSet.getPriority(),
-            editorFormFieldSet.getRemoved(),
-            editorFormFieldSet.getDynamic(),
-            editorFormFieldSet.getActivated(),
-            editorFormFieldSet.getDisplayed(),
-            editorFormFieldSet.getReadOnly(),
-            newEditorFormFields
-        );
     }
 
     private JCRNodeWrapper getNode(String nodeIdOrPath, JCRSessionWrapper session) throws RepositoryException {
@@ -456,15 +445,11 @@ public class EditorFormServiceImpl implements EditorFormService {
 
         String displayName = nodeType.getLabel(uiLocale);
         String description = nodeType.getDescription(uiLocale);
-        Double defaultRank = 1.0; // todo implement this properly
-        Double defaultPriority = 1.0; // todo implement this properly
 
         return new EditorFormFieldSet(
             nodeType.getName(),
             displayName,
             description,
-            defaultRank,
-            defaultPriority,
             removed,
             dynamic,
             activated,
