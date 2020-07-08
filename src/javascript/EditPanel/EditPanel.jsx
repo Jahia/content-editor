@@ -9,6 +9,7 @@ import {HeaderLowerSection, HeaderUpperSection} from './header';
 import {useContentEditorContext, useContentEditorConfigContext} from '~/ContentEditor.context';
 import {PublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
 import classes from './EditPanel.scss';
+import classnames from 'clsx';
 import {registry} from '@jahia/ui-extender';
 
 import MainLayout from '~/DesignSystem/ContentLayout/MainLayout';
@@ -96,11 +97,11 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
                 </ContentHeader>
             }
         >
-            <div className={activeTab === Constants.editPanel.editTab ? classes.tab : classes.hideTab}>
+            <div className={classnames(activeTab === Constants.editPanel.editTab ? classes.tab : classes.hideTab, 'flexCol')}>
                 <EditTabComponent isDirty={formik.dirty} formik={formik} nodePath={nodeData.path} lang={lang}/>
             </div>
             {OtherTabComponent && (
-                <div className={Constants.editPanel.editTab === activeTab ? classes.hideTab : classes.tab}>
+                <div className={classnames(Constants.editPanel.editTab === activeTab ? classes.hideTab : classes.tab, 'flexCol')}>
                     <OtherTabComponent isDirty={formik.dirty} formik={formik} nodePath={nodeData.path} lang={lang}/>
                 </div>
             )}
