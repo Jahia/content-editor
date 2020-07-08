@@ -13,7 +13,8 @@ export const Constants = {
             MANDATORY_LANGUAGE_VALID: 'MANDATORY_LANGUAGE_VALID',
             DELETED: 'DELETED',
             MARKED_FOR_DELETION: 'MARKED_FOR_DELETION'
-        }
+        },
+        editTab: 'EDIT'
     },
     supportedLocales: ['en', 'fr', 'de'],
     defaultLocale: 'en',

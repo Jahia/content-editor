@@ -8,14 +8,16 @@ import {connect} from 'formik';
 import {HeaderLowerSection, HeaderUpperSection} from './header';
 import {useContentEditorContext, useContentEditorConfigContext} from '~/ContentEditor.context';
 import {PublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
+import classes from './EditPanel.scss';
 import {registry} from '@jahia/ui-extender';
 
 import MainLayout from '~/DesignSystem/ContentLayout/MainLayout';
 import ContentHeader from '~/DesignSystem/ContentLayout/ContentHeader';
 import {Separator} from '@jahia/moonstone';
+import {Constants} from '~/ContentEditor.constants';
 
 const EditPanelCmp = ({formik, title, notificationContext, client}) => {
-    const [activeTab, setActiveTab] = useState('edit');
+    const [activeTab, setActiveTab] = useState(Constants.editPanel.editTab);
     const {t} = useTranslation();
     const {nodeData, siteInfo, lang, uilang, mode, nodeTypeName} = useContentEditorContext();
     const {envProps} = useContentEditorConfigContext();
@@ -77,13 +79,10 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
         nodeTypeName
     };
 
-    const tabActions = registry.find({target: 'editHeaderTabsActions'});
-    const SelectedTabComponents = {};
-    tabActions.forEach(action => {
-        SelectedTabComponents[action.value] = action.displayableComponent;
-    });
-
-    const SelectedTabComponent = SelectedTabComponents[activeTab];
+    // Without edit tab, no content editor
+    const tabs = registry.find({target: 'editHeaderTabsActions'});
+    const EditTabComponent = tabs.find(tab => tab.value === Constants.editPanel.editTab).displayableComponent;
+    const OtherTabComponent = tabs.find(tab => tab.value === activeTab && tab.value !== Constants.editPanel.editTab)?.displayableComponent;
 
     return (
         <MainLayout
@@ -97,7 +96,14 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
                 </ContentHeader>
             }
         >
-            <SelectedTabComponent isDirty={formik.dirty} formik={formik} nodePath={nodeData.path} lang={lang}/>
+            <div className={activeTab === Constants.editPanel.editTab ? classes.tab : classes.hideTab}>
+                <EditTabComponent isDirty={formik.dirty} formik={formik} nodePath={nodeData.path} lang={lang}/>
+            </div>
+            {OtherTabComponent && (
+                <div className={Constants.editPanel.editTab === activeTab ? classes.hideTab : classes.tab}>
+                    <OtherTabComponent isDirty={formik.dirty} formik={formik} nodePath={nodeData.path} lang={lang}/>
+                </div>
+            )}
         </MainLayout>
     );
 };

@@ -11,7 +11,7 @@ export const registerEditPanelActions = actionsRegistry => {
         buttonLabel: 'content-editor:label.contentEditor.edit.tab.edit',
         buttonIcon: <Edit/>,
         targets: ['editHeaderTabsActions:1'],
-        value: 'edit',
+        value: Constants.editPanel.editTab,
         dataSelRole: 'tab-edit',
         displayableComponent: EditPanelContent,
         isDisplayable: () => true
