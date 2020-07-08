@@ -60,7 +60,7 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
     private String displayName;
     private String description;
     private Bundle originBundle;
-    private Double rank = null;
+    private Double rank = 0.0;
     private Double priority = 1.0;
     private Boolean removed = false;
     private Boolean dynamic = false;
@@ -76,8 +76,6 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
     public EditorFormFieldSet(String name,
                               String displayName,
                               String description,
-                              Double rank,
-                              Double priority,
                               Boolean removed,
                               Boolean dynamic,
                               Boolean activated,
@@ -87,8 +85,6 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
         this.name = name;
         this.displayName = displayName;
         this.description = description;
-        this.rank = rank;
-        this.priority = priority;
         this.removed = removed;
         this.dynamic = dynamic;
         this.activated = activated;
@@ -311,30 +307,23 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
         EditorFormFieldSet newEditorFormFieldSet = new EditorFormFieldSet(name,
             displayName,
             description,
-            otherEditorFormFieldSet.rank != null ? otherEditorFormFieldSet.rank : rank,
-            priority,
             removed,
             dynamic,
             activated,
             displayed,
             readOnly,
             mergedEditorFormFields);
-        if (otherEditorFormFieldSet.priority == null) {
-            newEditorFormFieldSet.setPriority(priority);
-        } else {
+
+        if (otherEditorFormFieldSet.priority != null) {
             newEditorFormFieldSet.setPriority(otherEditorFormFieldSet.priority);
         }
-        if (otherEditorFormFieldSet.isRemoved()) {
-            newEditorFormFieldSet.setRemoved(true);
-        } else {
-            newEditorFormFieldSet.setRemoved(false);
+
+        if (otherEditorFormFieldSet.rank != null) {
+            newEditorFormFieldSet.setRank(otherEditorFormFieldSet.rank);
         }
-        if (dynamic) {
-            newEditorFormFieldSet.setDynamic(true);
-        }
-        if (activated) {
-            newEditorFormFieldSet.setActivated(true);
-        }
+
+        newEditorFormFieldSet.setRemoved(otherEditorFormFieldSet.isRemoved());
+
         return newEditorFormFieldSet;
     }
 

@@ -36,7 +36,8 @@
 extends=jnt:simpleWithExtends
     - extension (string)
 
-[jnt:defaultOverrideContent] > jnt:content, jmix:cache, jmix:categorized, jmix:keywords, jmix:tagged
+[jnt:defaultOverrideContent] > jnt:content, jmix:cache, jmix:categorized, jmix:keywords, jmix:tagged, mix:title
+- prop (string)
 
 [jmix:cat1] > jmix:droppableContent mixin
 [jmix:cat2] > jmix:droppableContent mixin

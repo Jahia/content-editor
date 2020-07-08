@@ -66,7 +66,7 @@ public final class EditorFormFieldSetTest {
         EditorFormFieldSet result = form1.mergeWith(form2);
 
         assertSame(form1, result);
-        assertEquals(new EditorFormFieldSet("form1", "form1DisplayName", "form1Description", 1.0, 1.0, false, false, true, true, false,Collections.emptySet()), result);
+        assertEquals(new EditorFormFieldSet("form1", "form1DisplayName", "form1Description", false, false, true, true, false,Collections.emptySet()), result);
     }
 
     @Test
@@ -113,11 +113,11 @@ public final class EditorFormFieldSetTest {
 
     @Test
     public void mergeWithDoesNotRetainRemovedFields() {
-        final EditorFormFieldSet form1 = new EditorFormFieldSet("form", "displayName", "description", 1.0, 1.0, false, false, true, true, false, new HashSet<>(Arrays.asList(
+        final EditorFormFieldSet form1 = new EditorFormFieldSet("form", "displayName", "description", false, false, true, true, false, new HashSet<>(Arrays.asList(
                 new EditorFormFieldBuilder("x").removed(true).build(),
                 new EditorFormFieldBuilder("y").build()
         )));
-        final EditorFormFieldSet form2 = new EditorFormFieldSet("form", "displayName", "description", 1.0, 1.0, false, false, true, true, false, new HashSet<>(Arrays.asList(
+        final EditorFormFieldSet form2 = new EditorFormFieldSet("form", "displayName", "description", false, false, true, true, false, new HashSet<>(Arrays.asList(
                 new EditorFormFieldBuilder("y").removed(true).build(),
                 new EditorFormFieldBuilder("z").build()
         )));
@@ -131,10 +131,10 @@ public final class EditorFormFieldSetTest {
 
     @Test
     public void mergeWithDoesNotAddRemovedFields() {
-        final EditorFormFieldSet form1 = new EditorFormFieldSet("form", "displayName", "description", 1.0, 1.0, false, false, true, true, false, Collections.singleton(
+        final EditorFormFieldSet form1 = new EditorFormFieldSet("form", "displayName", "description", false, false, true, true, false, Collections.singleton(
             new EditorFormFieldBuilder("x").build()
         ));
-        final EditorFormFieldSet form2 = new EditorFormFieldSet("form", "displayName", "description", 1.0, 1.0, false, false, true, true, false, Collections.singleton(
+        final EditorFormFieldSet form2 = new EditorFormFieldSet("form", "displayName", "description", false, false, true, true, false, Collections.singleton(
             new EditorFormFieldBuilder("y").removed(true).build()
         ));
 
