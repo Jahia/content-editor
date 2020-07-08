@@ -19,7 +19,7 @@ const FormBuilder = ({mode}) => {
         return <></>;
     }
 
-    const isOrderingSection = !nodeData.isPage && nodeData.primaryNodeType.hasOrderableChildNodes && mode === Constants.routes.baseEditRoute;
+    const isOrderingSection = !nodeData.isSite && !nodeData.isPage && nodeData.primaryNodeType.hasOrderableChildNodes && mode === Constants.routes.baseEditRoute;
     const cloneSections = isOrderingSection ? [...sections] : sections;
     if (isOrderingSection) {
         const orderingSection = {
