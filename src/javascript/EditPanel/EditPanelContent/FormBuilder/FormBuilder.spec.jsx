@@ -36,7 +36,8 @@ describe('FormBuilder component', () => {
     beforeEach(() => {
         context = {
             nodeData: {
-                isPage: true,
+                isSite: false,
+                isPage: false,
                 primaryNodeType: {hasOrderableChildNodes: true}
             }
         };
@@ -61,7 +62,17 @@ describe('FormBuilder component', () => {
         });
     });
 
-    it('should not display ordering section', () => {
+    it('should not display ordering section for page', () => {
+        context.nodeData.isPage = true;
+        setContext(context);
+        setSectionContext(sectionContext);
+
+        const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).find('section');
+        expect(cmp.find('ChildrenSection').exists()).toBeFalsy();
+    });
+
+    it('should not display ordering section for site', () => {
+        context.nodeData.isSite = true;
         setContext(context);
         setSectionContext(sectionContext);
 
@@ -70,7 +81,6 @@ describe('FormBuilder component', () => {
     });
 
     it('should display ordering section', () => {
-        context.nodeData.isPage = false;
         setContext(context);
         setSectionContext(sectionContext);
 
@@ -79,7 +89,6 @@ describe('FormBuilder component', () => {
     });
 
     it('should display ordering section just after content section', () => {
-        context.nodeData.isPage = false;
         setContext(context);
         setSectionContext(sectionContext);
 
@@ -88,7 +97,6 @@ describe('FormBuilder component', () => {
     });
 
     it('should not display ordering section in create mode', () => {
-        context.nodeData.isPage = false;
         setContext(context);
         setSectionContext(sectionContext);
 
