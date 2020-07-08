@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Grid, InputLabel, withStyles} from '@material-ui/core';
 import {Typography} from '@jahia/design-system-kit';
 import {MoreVert, Public} from '@material-ui/icons';
@@ -16,6 +16,8 @@ import {registry} from '@jahia/ui-extender';
 import contentEditorHelper from '~/ContentEditor.helper';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
+import {useQuery} from '@apollo/react-hooks';
+import {FieldConstraints} from '~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/Field.gql-queries';
 
 let styles = theme => {
     const common = {
@@ -66,6 +68,24 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, a
     const editorContext = useContentEditorContext();
     const sectionsContext = useContentEditorSectionContext();
 
+    // Retrieve field constraints
+    const {data, error, loading, refetch} = useQuery(FieldConstraints, {
+        variables: {
+            uuid: editorContext.nodeData.uuid,
+            parentUuid: editorContext.nodeData.parent.path,
+            primaryNodeType: editorContext.nodeData.primaryNodeType.name,
+            nodeType: field.nodeType,
+            fieldName: field.name,
+            fieldDPContext: field.fieldDPContext || [],
+            uilang: editorContext.lang,
+            language: editorContext.lang
+        }
+    });
+
+    useEffect(() => {
+        refetch();
+    });
+
     const {errors, touched, values} = formik;
     const contextualMenu = useRef(null);
     const isMultipleField = field.multiple && !selectorType.supportMultiple;
@@ -86,6 +106,18 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, a
             });
         }
     };
+
+    if (error) {
+        console.error(error);
+    }
+
+    if (loading) {
+        return <></>;
+    }
+
+    if (data?.forms?.fieldConstraints) {
+        field.valueConstraints = data.forms.fieldConstraints;
+    }
 
     let actionCmp;
     if (inputContext.actionRender) {

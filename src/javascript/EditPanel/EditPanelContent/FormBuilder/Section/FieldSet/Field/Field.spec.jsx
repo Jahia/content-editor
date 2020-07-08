@@ -19,14 +19,36 @@ jest.mock('~/ContentEditor.context', () => {
     };
 });
 
+jest.mock('@apollo/react-hooks', () => {
+    let responsemock;
+    return {
+        useQuery: () => responsemock,
+        setResponseMock: m => {
+            responsemock = m;
+        }
+    };
+});
+
+import {setResponseMock} from '@apollo/react-hooks';
+
 describe('Field component', () => {
     let defaultProps;
+    let result;
 
     beforeEach(() => {
         mockEditorContext = {
             lang: 'en',
             siteInfo: {
                 languages: ['en']
+            },
+            nodeData: {
+                uuid: '1234-1234-1234-1234',
+                parent: {
+                    path: '/parent-path'
+                },
+                primaryNodeType: {
+                    name: 'thePrimaryNodeType'
+                }
             }
         };
         defaultProps = {
@@ -68,6 +90,9 @@ describe('Field component', () => {
             },
             idInput: 'FieldID'
         };
+
+        result = {data: {forms: {fieldConstraints: []}}};
+        setResponseMock(result);
     });
 
     it('should call onChange from registry', () => {
