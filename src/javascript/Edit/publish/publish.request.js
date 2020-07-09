@@ -18,7 +18,7 @@ export const publishNode = ({
         mutation: PublishNodeMutation
     })
         .then(() => {
-            notificationContext.notify(t('content-editor:label.contentEditor.edit.action.publish.success'), ['closeButton']);
+            notificationContext.notify(t('content-editor:label.contentEditor.edit.action.publish.success'), ['closeButton'], {autoHideDuration: 3000});
             if (successCallback) {
                 successCallback();
             }
