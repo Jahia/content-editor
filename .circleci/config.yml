@@ -39,12 +39,22 @@ jobs:
             - v2-dependencies-{{ checksum "pom.xml" }}
             # fallback to using the latest cache if no exact match is found
             - v2-dependencies-
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
       - when:
           condition: <<parameters.is_pull_request>>
           steps:
             - run:
-                name: mvn clean install
-                command: mvn -s .circleci/.circleci.settings.xml clean install
+                name: mvn clean initialize
+                command: mvn -s .circleci/.circleci.settings.xml clean initialize
+            - run:
+                name: npm install node and npm
+                command: mvn -s .circleci/.circleci.settings.xml clean frontend:install-node-and-yarn -DnodeVersion=v11.15.0 -DyarnVersion=v1.12.3
+            - run:
+                name: yarn
+                command: mvn -s .circleci/.circleci.settings.xml clean frontend:yarn
       - unless:
           condition: <<parameters.is_pull_request>>
           steps:
@@ -55,6 +65,11 @@ jobs:
           paths:
             - ~/.m2
           key: v2-dependencies-{{ checksum "pom.xml" }}
+       - save_cache:
+         name: Save Yarn Package Cache
+         key: yarn-packages-{{ checksum "yarn.lock" }}
+         paths:
+           - ~/.cache/yarn
       - run:
           name: Copy artifacts
           command: |
@@ -78,7 +93,7 @@ jobs:
       - restore_cache:
           keys:
             - v2-dependencies-{{ checksum "pom.xml" }}
-            # fallback to using the latest cache if no exact match is found
+            # fallback to using the latest cache if no exact match is found mvn
             - v2-dependencies-
       - when:
           condition: <<parameters.is_pull_request>>
