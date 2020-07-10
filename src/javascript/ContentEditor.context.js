@@ -8,6 +8,7 @@ import {useTranslation} from 'react-i18next';
 import {compose} from '~/utils';
 import ApolloCacheFlushOnGWTSave from '~/Edit/engineTabs/ApolloCacheFlushOnGWTSave';
 import {ContentEditorSectionContextProvider} from '~/ContentEditorSection/ContentEditorSection.context';
+
 export const ContentEditorContext = React.createContext({});
 
 export const useContentEditorContext = () => useContext(ContentEditorContext);
@@ -22,6 +23,7 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
         const {t} = useTranslation();
         const contentEditorConfigContext = useContentEditorConfigContext();
         const {lang, uilang, site, uuid, contentType, mode} = contentEditorConfigContext;
+        const fieldRefreshes = {};
 
         // Get Data
         const formQueryParams = {
@@ -38,6 +40,10 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
             siteKey: site,
             displayLanguage: lang
         });
+
+        const registerRefreshField = (fieldName, refresh) => {
+            fieldRefreshes[fieldName] = refresh;
+        };
 
         if (error) {
             console.error(error);
@@ -73,7 +79,9 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
             title,
             formQueryParams,
             nodeTypeName,
-            refetchFormData
+            refetchFormData,
+            registerRefreshField,
+            fieldRefreshes
         };
 
         return (
