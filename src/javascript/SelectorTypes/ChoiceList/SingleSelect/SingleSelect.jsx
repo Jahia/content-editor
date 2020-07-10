@@ -33,7 +33,7 @@ export const SingleSelectCmp = ({classes, field, value, id, setActionContext, on
                 prevActionContext.formik.values[field.name] !== value,
             onChange: singleSelectOnChange
         }));
-    }, [value]);
+    }, [setActionContext, field, value]);
 
     const readOnly = field.readOnly;
 

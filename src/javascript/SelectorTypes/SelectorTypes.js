@@ -5,6 +5,7 @@ import RichText from './RichText';
 import ChoiceList from './ChoiceList';
 import registerChoiceListActions from './ChoiceList/ChoiceList.actions';
 import registerChoiceListOnChange from './ChoiceList/ChoiceList.onChange';
+import registerSelectorTypesOnChange from './SelectorTypes.onChange';
 import DateTimePicker from './DateTimePicker';
 import pickerConfigs from './Picker';
 import Checkbox from './Checkbox';
@@ -52,6 +53,7 @@ export const registerSelectorTypes = ceRegistry => {
     ceRegistry.add('selectorType', 'Choicelist', {cmp: ChoiceList, supportMultiple: true});
     registerChoiceListActions(ceRegistry);
     registerChoiceListOnChange(ceRegistry);
+    registerSelectorTypesOnChange(ceRegistry);
 };
 
 export const resolveSelectorType = ({selectorType, selectorOptions}) => {

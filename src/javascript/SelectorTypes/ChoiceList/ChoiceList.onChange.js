@@ -1,4 +1,3 @@
-import {getFields} from '~/EditPanel/EditPanel.utils';
 
 function getMixinList(field, fieldValue) {
     let mixins = [];
@@ -43,38 +42,6 @@ const registerChoiceListOnChange = registry => {
             });
 
             editorContext.setSections(editorSection);
-        }
-    });
-
-    registry.add('selectorType.onChange', 'dependentProperties', {
-        targets: ['Choicelist', 'Picker', 'Checkbox', 'DatePicker', 'DateTimePicker', 'RichText', 'TextArea', 'Text', 'Tag', 'Category'],
-        onChange: (previousValue, currentValue, field, editorContext) => {
-            const dependentPropertiesField = getFields(editorContext.sections)
-                .find(f => f.selectorOptions
-                    .find(s => s.name === 'dependentProperties' && s.value.includes(field.name))
-                );
-
-            if (dependentPropertiesField) {
-                const dependentProperties = dependentPropertiesField.selectorOptions.find(f => f.name === 'dependentProperties');
-                const values = dependentProperties.value.split(',');
-                const value = currentValue.value.string;
-
-                // Build context
-                if (dependentPropertiesField.fieldDPContext) {
-                    const contextEntry = dependentPropertiesField.fieldDPContext?.find(elem => elem.key === field.name);
-
-                    if (contextEntry) {
-                        contextEntry.value = [value];
-                    } else {
-                        dependentPropertiesField.fieldDPContext.push({key: field.name, value: [value]});
-                    }
-                } else {
-                    dependentPropertiesField.fieldDPContext = [
-                        {key: 'dependentProperties', value: values},
-                        {key: field.name, value: [value]}
-                    ];
-                }
-            }
         }
     });
 };

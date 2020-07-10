@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {Grid, InputLabel, withStyles} from '@material-ui/core';
 import {Typography} from '@jahia/design-system-kit';
 import {MoreVert, Public} from '@material-ui/icons';
@@ -16,7 +16,7 @@ import {registry} from '@jahia/ui-extender';
 import contentEditorHelper from '~/ContentEditor.helper';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
-import {useQuery} from '@apollo/react-hooks';
+import {useApolloClient} from '@apollo/react-hooks';
 import {FieldConstraints} from '~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/Field.gql-queries';
 
 let styles = theme => {
@@ -67,24 +67,8 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, a
     const {t} = useTranslation();
     const editorContext = useContentEditorContext();
     const sectionsContext = useContentEditorSectionContext();
-
-    // Retrieve field constraints
-    const {data, error, loading, refetch} = useQuery(FieldConstraints, {
-        variables: {
-            uuid: editorContext.nodeData.uuid,
-            parentUuid: editorContext.nodeData.parent.path,
-            primaryNodeType: editorContext.nodeData.primaryNodeType.name,
-            nodeType: field.nodeType,
-            fieldName: field.name,
-            fieldDPContext: field.fieldDPContext || [],
-            uilang: editorContext.lang,
-            language: editorContext.lang
-        }
-    });
-
-    useEffect(() => {
-        refetch();
-    });
+    const client = useApolloClient();
+    const [valueConstraints, setValueConstraints] = useState(field.valueConstraints);
 
     const {errors, touched, values} = formik;
     const contextualMenu = useRef(null);
@@ -94,6 +78,32 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, a
     const shouldDisplayErrors = touched[field.name] && errors[field.name];
     const hasMandatoryError = shouldDisplayErrors && errors[field.name] === 'required';
     const wipInfo = values[Constants.wip.fieldName];
+
+    const refreshValueConstraints = (context, callback) => {
+        // Retrieve field constraints
+        client.query(
+            {
+                query: FieldConstraints,
+                variables: {
+                    uuid: editorContext.nodeData.uuid,
+                    parentUuid: editorContext.nodeData.parent.path,
+                    primaryNodeType: editorContext.nodeData.primaryNodeType.name,
+                    nodeType: field.nodeType,
+                    fieldName: field.name,
+                    context: context,
+                    uilang: editorContext.lang,
+                    language: editorContext.lang
+                }
+            }).then(data => {
+            if (data?.data?.forms?.fieldConstraints) {
+                setValueConstraints(data.data.forms.fieldConstraints);
+                callback(data.data.forms.fieldConstraints);
+            }
+        });
+    };
+
+    editorContext.registerRefreshField(field.name, refreshValueConstraints);
+    field.valueConstraints = valueConstraints;
 
     // Lookup for registerd on changes for given field selectory type
     const registeredOnChanges = registry.find({type: 'selectorType.onChange', target: selectorType.key});
@@ -106,18 +116,6 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, a
             });
         }
     };
-
-    if (error) {
-        console.error(error);
-    }
-
-    if (loading) {
-        return <></>;
-    }
-
-    if (data?.forms?.fieldConstraints) {
-        field.valueConstraints = data.forms.fieldConstraints;
-    }
 
     let actionCmp;
     if (inputContext.actionRender) {
@@ -223,15 +221,23 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, a
                     >
                         <Grid item className={classes.input}>
                             {isMultipleField ?
-                                <MultipleField inputContext={inputContext} editorContext={editorContext} field={field} onChange={onChange}/> :
-                                <SingleField inputContext={inputContext} editorContext={editorContext} field={field} onChange={onChange}/>}
+                                <MultipleField inputContext={inputContext}
+                                               editorContext={editorContext}
+                                               field={field}
+                                               onChange={onChange}/> :
+                                <SingleField inputContext={inputContext}
+                                             editorContext={editorContext}
+                                             field={field}
+                                             onChange={onChange}/>}
                         </Grid>
                         <Grid item>
                             {actionCmp}
                         </Grid>
                     </Grid>
                     {inputContext.displayErrors && (
-                        <Typography className={classes.errorMessage} data-sel-error={shouldDisplayErrors && errors[field.name]}>
+                        <Typography className={classes.errorMessage}
+                                    data-sel-error={shouldDisplayErrors && errors[field.name]}
+                        >
                             {shouldDisplayErrors ?
                                 field.errorMessage ?
                                     field.errorMessage :

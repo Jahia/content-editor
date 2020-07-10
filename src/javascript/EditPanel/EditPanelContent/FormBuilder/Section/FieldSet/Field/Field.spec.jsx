@@ -22,7 +22,7 @@ jest.mock('~/ContentEditor.context', () => {
 jest.mock('@apollo/react-hooks', () => {
     let responsemock;
     return {
-        useQuery: () => responsemock,
+        useApolloClient: () => responsemock,
         setResponseMock: m => {
             responsemock = m;
         }
@@ -37,6 +37,7 @@ describe('Field component', () => {
 
     beforeEach(() => {
         mockEditorContext = {
+            registerRefreshField: () => {},
             lang: 'en',
             siteInfo: {
                 languages: ['en']
