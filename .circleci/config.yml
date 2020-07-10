@@ -78,7 +78,7 @@ jobs:
       - restore_cache:
           keys:
             - v2-dependencies-{{ checksum "pom.xml" }}
-            # fallback to using the latest cache if no exact match is found
+            # fallback to using the latest cache if no exact match is found mvn
             - v2-dependencies-
       - when:
           condition: <<parameters.is_pull_request>>
