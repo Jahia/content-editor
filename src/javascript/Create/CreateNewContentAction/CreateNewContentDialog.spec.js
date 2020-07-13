@@ -97,7 +97,7 @@ describe('CreateNewContentDialog', () => {
             dsGenericTheme
         ).dive().dive();
 
-        cmp.find('DsButton').at(0).simulate('click');
+        cmp.find('Button').at(0).simulate('click');
 
         expect(open).toBe(false);
     });
@@ -111,7 +111,7 @@ describe('CreateNewContentDialog', () => {
             dsGenericTheme
         ).dive().dive();
 
-        cmp.find('DsButton').at(1).simulate('click');
+        cmp.find('Button').at(1).simulate('click');
 
         expect(props.onCreateContent).toHaveBeenCalledWith(null);
     });
