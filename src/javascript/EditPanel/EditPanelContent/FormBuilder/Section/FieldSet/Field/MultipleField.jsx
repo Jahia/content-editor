@@ -71,7 +71,7 @@ export const MultipleFieldCmp = ({classes, editorContext, inputContext, field, o
         }
     };
 
-    const multipleFieldOnChange = (index, name, newData, transformOnChangeNewValue, transformOnChangePreviousValue, transformBeforeSave, setFieldValue, setFieldTouched) => {
+    const multipleFieldOnChange = (index, name, newData, transformOnChangeNewValue, transformBeforeSave, setFieldValue, setFieldTouched) => {
         // Save value to formik
         const valueToSave = transformBeforeSave ? transformBeforeSave(newData) : newData;
         setFieldValue(name, valueToSave, true);
@@ -133,13 +133,12 @@ export const MultipleFieldCmp = ({classes, editorContext, inputContext, field, o
                                                                            id={name}
                                                                            editorContext={editorContext}
                                                                            setActionContext={inputContext.setActionContext}
-                                                                           onChange={(newData, transformOnChangeNewValue, transformOnChangePreviousValue, transformBeforeSave) => {
+                                                                           onChange={(newData, transformOnChangeNewValue, transformBeforeSave) => {
                                                                                multipleFieldOnChange(
                                                                                    index,
                                                                                    name,
                                                                                    newData,
                                                                                    transformOnChangeNewValue,
-                                                                                   transformOnChangePreviousValue,
                                                                                    transformBeforeSave,
                                                                                    setFieldValue,
                                                                                    setFieldTouched);
