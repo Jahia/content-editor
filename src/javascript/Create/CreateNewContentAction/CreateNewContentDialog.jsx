@@ -2,7 +2,8 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {Dialog, DialogActions, DialogTitle, withStyles} from '@material-ui/core';
 import {Search} from '@material-ui/icons';
-import {Button, Input, Typography} from '@jahia/design-system-kit';
+import {Input, Typography} from '@jahia/design-system-kit';
+import {Button} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
 import {withApollo} from 'react-apollo';
 import {compose} from '~/utils';
@@ -94,19 +95,23 @@ const CreateNewContentDialogCmp = ({childNodeName, nodeTypes, includeSubTypes, o
                 />
             </div>
             <DialogActions>
-                <Button variant="secondary" data-sel-role="content-type-dialog-cancel" onClick={onClose}>
-                    {t('content-editor:label.contentEditor.CMMActions.createNewContent.btnDiscard')}
-                </Button>
+                <Button
+                    data-sel-role="content-type-dialog-cancel"
+                    variant="outlined"
+                    size="big"
+                    label={t('content-editor:label.contentEditor.CMMActions.createNewContent.btnDiscard')}
+                    onClick={onClose}
+                />
                 <Button
                     data-sel-role="content-type-dialog-create"
                     disabled={!selectedType}
-                    variant="primary"
+                    color="accent"
+                    size="big"
+                    label={t('content-editor:label.contentEditor.CMMActions.createNewContent.btnCreate')}
                     onClick={() => {
                         onCreateContent(selectedType);
                     }}
-                >
-                    {t('content-editor:label.contentEditor.CMMActions.createNewContent.btnCreate')}
-                </Button>
+                />
             </DialogActions>
         </Dialog>
     );
