@@ -31,14 +31,14 @@ jobs:
     <<: *workdir
     docker: # run the steps with Docker
       - image: circleci/openjdk:8-jdk-stretch
-    resource_class: large
+    resource_class: xlarge
     steps:
       - *attach-workspace
       - restore_cache:
           keys:
-            - v2-dependencies-{{ checksum "pom.xml" }}
+            - v3-dependencies-{{ checksum "pom.xml" }}
             # fallback to using the latest cache if no exact match is found
-            - v2-dependencies-
+            - v3-dependencies-
       - when:
           condition: <<parameters.is_pull_request>>
           steps:
