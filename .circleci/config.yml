@@ -54,7 +54,7 @@ jobs:
       - save_cache:
           paths:
             - ~/.m2
-          key: v2-dependencies-{{ checksum "pom.xml" }}
+          key: v3-dependencies-{{ checksum "pom.xml" }}
       - run:
           name: Copy artifacts
           command: |
@@ -77,9 +77,9 @@ jobs:
       - *attach-workspace
       - restore_cache:
           keys:
-            - v2-dependencies-{{ checksum "pom.xml" }}
+            - v3-dependencies-{{ checksum "pom.xml" }}
             # fallback to using the latest cache if no exact match is found
-            - v2-dependencies-
+            - v3-dependencies-
       - when:
           condition: <<parameters.is_pull_request>>
           steps:
@@ -105,7 +105,7 @@ jobs:
       - save_cache:
           paths:
             - ~/.m2
-          key: v2-dependencies-{{ checksum "pom.xml" }}
+          key: v3-dependencies-{{ checksum "pom.xml" }}
 
 # Pipeline parameter must be declared
 parameters:
