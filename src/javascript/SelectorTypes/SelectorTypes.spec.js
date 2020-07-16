@@ -3,6 +3,7 @@ import {registry} from '@jahia/ui-extender';
 import Category from './Category';
 import Text from './Text';
 import {Picker} from './Picker/PickerContainer';
+import ChoiceList from './ChoiceList';
 
 describe('Selector Types', () => {
     describe('resolveSelectorType', () => {
@@ -16,11 +17,17 @@ describe('Selector Types', () => {
         });
 
         it('should return the proper selector types, when selector type is using resolver', () => {
-            let selector = resolveSelectorType({selectorType: 'Picker', selectorOptions: [{name: 'type', value: 'file'}]});
+            let selector = resolveSelectorType({
+                selectorType: 'Picker',
+                selectorOptions: [{name: 'type', value: 'file'}]
+            });
             expect(selector.cmp).toEqual(Picker);
             expect(selector.key).toEqual('ContentPicker');
 
-            selector = resolveSelectorType({selectorType: 'Picker', selectorOptions: [{name: 'type', value: 'editorial'}]});
+            selector = resolveSelectorType({
+                selectorType: 'Picker',
+                selectorOptions: [{name: 'type', value: 'editorial'}]
+            });
             expect(selector.cmp).toEqual(Picker);
             expect(selector.key).toEqual('ContentPicker');
 
@@ -64,6 +71,34 @@ describe('Selector Types', () => {
                 {value: 'MyValue'}
             );
             expect(adaptedValue).toEqual('MyValue');
+        });
+
+        it('should init value of choicelist if the constraint values have defaultProperty', () => {
+            const selector = resolveSelectorType({selectorType: 'Choicelist'});
+            expect(selector.cmp).toEqual(ChoiceList);
+            expect(selector.supportMultiple).toEqual(true);
+            expect(selector.key).toEqual('Choicelist');
+
+            const initValue = selector.initValue({
+                valueConstraints: [
+                    {
+                        value: {string: 'The Value'},
+                        properties: [
+                            {name: 'prop1', value: 'prop value 1'},
+                            {name: 'prop2', value: 'prop value 2'}
+                        ]
+                    },
+                    {
+                        value: {string: 'My Expected Value'},
+                        properties: [
+                            {name: 'prop1', value: 'prop value 1'},
+                            {name: 'defaultProperty', value: 'true'},
+                            {name: 'prop2', value: 'prop value 2'}
+                        ]
+                    }
+                ]
+            });
+            expect(initValue).toEqual('My Expected Value');
         });
     });
 });
