@@ -33,8 +33,16 @@ export const registerSelectorTypes = ceRegistry => {
     });
     ceRegistry.add('selectorType', 'TextArea', {cmp: TextArea, supportMultiple: false});
     ceRegistry.add('selectorType', 'RichText', {cmp: RichText, supportMultiple: false});
-    ceRegistry.add('selectorType', 'DateTimePicker', {cmp: DateTimePicker, supportMultiple: false, adaptValue: adaptDateProperty});
-    ceRegistry.add('selectorType', 'DatePicker', {cmp: DateTimePicker, supportMultiple: false, adaptValue: adaptDateProperty});
+    ceRegistry.add('selectorType', 'DateTimePicker', {
+        cmp: DateTimePicker,
+        supportMultiple: false,
+        adaptValue: adaptDateProperty
+    });
+    ceRegistry.add('selectorType', 'DatePicker', {
+        cmp: DateTimePicker,
+        supportMultiple: false,
+        adaptValue: adaptDateProperty
+    });
 
     ceRegistry.add('selectorType', 'Checkbox', {
         cmp: Checkbox,
@@ -50,7 +58,17 @@ export const registerSelectorTypes = ceRegistry => {
     ceRegistry.add('selectorType', 'Picker', {resolver: options => pickerConfigs.getPickerSelectorType(options)});
     registerPickerActions(ceRegistry);
 
-    ceRegistry.add('selectorType', 'Choicelist', {cmp: ChoiceList, supportMultiple: true});
+    ceRegistry.add('selectorType', 'Choicelist', {
+        cmp: ChoiceList,
+        supportMultiple: true,
+        initValue: field => {
+            const defaultValueConstraints = field.valueConstraints.filter(v => v?.properties.find(p => p.name === 'defaultProperty' && p.value === 'true'));
+
+            if (defaultValueConstraints.length > 0) {
+                return field.multiple ? defaultValueConstraints.map(v => v.value.string) : defaultValueConstraints[0].value.string;
+            }
+        }
+    });
     registerChoiceListActions(ceRegistry);
     registerChoiceListOnChange(ceRegistry);
     registerSelectorTypesOnChange(ceRegistry);
