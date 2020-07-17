@@ -67,7 +67,7 @@ describe('Multiple component', () => {
     });
 
     it('should call onChange when add a new value', () => {
-        generateFieldArrayCmp().find('DsButton').simulate('click');
+        generateFieldArrayCmp().find('Button').simulate('click');
         expect(defaultProps.onChange).toHaveBeenCalledWith(['Dummy1', 'Dummy2', 'Dummy3', undefined]);
     });
 
@@ -91,7 +91,7 @@ describe('Multiple component', () => {
     });
 
     it('should display add button when field is not readOnly', () => {
-        const removeButton = generateFieldArrayCmp().find('DsButton');
+        const removeButton = generateFieldArrayCmp().find('Button');
         expect(removeButton.exists()).toBe(true);
     });
 
@@ -105,7 +105,7 @@ describe('Multiple component', () => {
     it('should hide add button when field is readOnly', () => {
         defaultProps.field.readOnly = true;
 
-        const removeButton = generateFieldArrayCmp().find('DsButton');
+        const removeButton = generateFieldArrayCmp().find('Button');
         expect(removeButton.exists()).toBe(false);
     });
 

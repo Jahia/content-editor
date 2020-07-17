@@ -56,7 +56,7 @@ describe('EditPanelDialogConfirmation', () => {
             dsGenericTheme
         ).dive();
 
-        expect(cmp.find('DsButton').at(2).props().disabled).toBe(false);
+        expect(cmp.find('Button').at(2).props().isDisabled).toBe(false);
     });
 
     it('should disable the save changes button when there are validation errors', () => {
@@ -71,6 +71,6 @@ describe('EditPanelDialogConfirmation', () => {
             dsGenericTheme
         ).dive();
 
-        expect(cmp.find('DsButton').at(2).props().disabled).toBe(true);
+        expect(cmp.find('Button').at(2).props().isDisabled).toBe(true);
     });
 });

@@ -1,4 +1,5 @@
-import {Button, IconButton} from '@jahia/design-system-kit';
+import {IconButton} from '@jahia/design-system-kit';
+import {Button} from '@jahia/moonstone';
 import {withStyles} from '@material-ui/core';
 import {Close} from '@material-ui/icons';
 import React from 'react';
@@ -86,13 +87,13 @@ export const MultipleFieldCmp = ({classes, editorContext, inputContext, field, o
             )}
 
             {!field.readOnly &&
-            <Button className={classes.addButton}
-                    data-sel-action="addField"
-                    variant="secondary"
-                    onClick={() => onFieldAdd()}
-            >
-                {t('content-editor:label.contentEditor.edit.fields.actions.add')}
-            </Button>}
+                <Button className={classes.addButton}
+                        data-sel-action="addField"
+                        variant="outlined"
+                        size="big"
+                        label={t('content-editor:label.contentEditor.edit.fields.actions.add')}
+                        onClick={() => onFieldAdd()}
+                />}
         </>
     );
 };
