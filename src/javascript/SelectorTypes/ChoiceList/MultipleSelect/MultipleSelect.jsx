@@ -3,24 +3,14 @@ import {MultipleInput} from '~/DesignSystem/MultipleInput';
 import PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 
-const MultipleSelect = ({field, id, value, setActionContext, onChange, onInit}) => {
-    const findValues = value => field.valueConstraints.filter(item => value?.includes(item.value.string));
-
-    const multipleSelectOnChange = newValues => {
-        onChange(newValues, findValues);
-    };
-
-    useEffect(() => {
-        onInit(findValues(value));
-    }, []);
-
+const MultipleSelect = ({field, id, value, setActionContext, onChange}) => {
     useEffect(() => {
         setActionContext(prevActionContext => ({
             initialized: true,
             contextHasChange: !prevActionContext.initialized ||
                 // As action system make deep copy of formik each time value change we must update the context !
                 prevActionContext.formik.values[field.name] !== value,
-            onChange: multipleSelectOnChange
+            onChange: onChange
         }));
     }, [value]);
 
@@ -37,7 +27,7 @@ const MultipleSelect = ({field, id, value, setActionContext, onChange, onInit}) 
             readOnly={field.readOnly}
             onChange={selection => {
                 const newSelection = selection && selection.map(data => data.value);
-                multipleSelectOnChange(newSelection);
+                onChange(newSelection);
             }}
         />
     );

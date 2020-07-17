@@ -16,13 +16,12 @@ function loadOption(selectorOptions, name) {
     return selectorOptions && selectorOptions.find(option => option.name === name);
 }
 
-export const RichTextCmp = ({field, id, value, onChange, onInit}) => {
+export const RichTextCmp = ({field, id, value, onChange}) => {
     const {t} = useTranslation();
     const [picker, setPicker] = useState(false);
 
     useEffect(() => {
         CKEditor.editorUrl = window.CKEDITOR_BASEPATH + 'ckeditor.js';
-        onInit(value);
     }, []);
 
     const editorContext = useContext(ContentEditorContext);

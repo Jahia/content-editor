@@ -4,7 +4,7 @@ import {Input} from '@jahia/design-system-kit';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {Visibility, Hidden} from '@jahia/moonstone/dist/icons';
 
-export const TextCmp = ({field, value, id, editorContext, onChange, onInit}) => {
+export const TextCmp = ({field, value, id, editorContext, onChange}) => {
     const [hidePassword, setHidePassword] = useState(true);
 
     const fieldType = field.requiredType;
@@ -19,10 +19,6 @@ export const TextCmp = ({field, value, id, editorContext, onChange, onInit}) => 
             setHidePassword(!hidePassword);
         }}/>
     };
-
-    useEffect(() => {
-        onInit(controlledValue);
-    }, []);
 
     return (
         <Input

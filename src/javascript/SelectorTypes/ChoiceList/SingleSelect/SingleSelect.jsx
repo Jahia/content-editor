@@ -19,23 +19,21 @@ const styles = theme => ({
 });
 
 export const SingleSelectCmp = ({classes, field, value, id, setActionContext, onChange, onInit}) => {
-    const singleSelectOnChange = newValue => field.valueConstraints.find(item => item.value.string === newValue);
-
-    useEffect(() => {
-        onInit(singleSelectOnChange(value));
-    }, []);
-
     useEffect(() => {
         setActionContext(prevActionContext => ({
             initialized: true,
             contextHasChange: !prevActionContext.initialized ||
                 // As action system make deep copy of formik each time value change we must update the context !
                 prevActionContext.formik.values[field.name] !== value,
-            onChange: singleSelectOnChange
+            onChange: onChange
         }));
     }, [setActionContext, field, value]);
 
     const readOnly = field.readOnly;
+
+    if (value && field.valueConstraints.find(v => v.value.string === value) === undefined) {
+        onChange(undefined);
+    }
 
     return (
         <Select
@@ -48,7 +46,7 @@ export const SingleSelectCmp = ({classes, field, value, id, setActionContext, on
             }}
             input={<Input id={id} name={field.name} readOnly={readOnly}/>}
             onChange={evt => {
-                onChange(evt.target.value, singleSelectOnChange);
+                onChange(evt.target.value);
             }}
         >
             {

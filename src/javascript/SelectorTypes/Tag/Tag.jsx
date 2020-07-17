@@ -41,10 +41,6 @@ const Tag = ({field, value, id, onChange, onInit}) => {
         return [];
     };
 
-    useEffect(() => {
-        onInit(value);
-    }, []);
-
     return (
         <MultipleInput
             creatable

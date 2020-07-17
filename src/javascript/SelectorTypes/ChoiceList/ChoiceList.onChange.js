@@ -23,25 +23,7 @@ const registerChoiceListOnChange = registry => {
     registry.add('selectorType.onChange', 'addMixinChoicelist', {
         targets: ['Choicelist'],
         onChange: (previousValue, currentValue, field, editorContext, selectorType, helper) => {
-            let editorSection = editorContext.getSections();
 
-            let oldMixins = previousValue ? getMixinList(field, previousValue) : [];
-
-            if (oldMixins.length === 0 && currentValue === undefined) {
-                // If no mixin and no new value, do nothing
-                return;
-            }
-
-            oldMixins.forEach(mixin => {
-                editorSection = helper.moveMixinToInitialFieldset(mixin, editorSection, editorContext.formik);
-            });
-
-            let newMixins = currentValue ? getMixinList(field, currentValue) : [];
-            newMixins.forEach(mixin => {
-                editorSection = helper.moveMixinToTargetFieldset(mixin, field.nodeType, editorSection, field, editorContext.formik);
-            });
-
-            editorContext.setSections(editorSection);
         }
     });
 };

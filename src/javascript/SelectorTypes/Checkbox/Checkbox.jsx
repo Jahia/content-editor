@@ -1,13 +1,9 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import * as PropTypes from 'prop-types';
 import {Toggle} from '@jahia/design-system-kit';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 
-const Checkbox = ({field, value, id, onChange, onInit}) => {
-    useEffect(() => {
-        onInit(value);
-    }, []);
-
+const Checkbox = ({field, value, id, onChange}) => {
     return (
         <Toggle id={id}
                 inputProps={{

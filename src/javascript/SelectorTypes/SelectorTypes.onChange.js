@@ -1,4 +1,5 @@
 import {getFields} from '~/EditPanel/EditPanel.utils';
+import {FieldConstraints} from "~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/Field.gql-queries";
 
 const registerSelectorTypesOnChange = registry => {
     // Todo: change target to '*' BACKLOG-14124
@@ -24,16 +25,28 @@ const registerSelectorTypesOnChange = registry => {
                     }));
                     context.push({
                         key: field.name,
-                        value: currentValue?.value?.string // Todo: We read the value only for choiceList, make it more generic BACKLOG-14124
+                        value: currentValue
                     });
 
-                    const callback = valueConstraints => {
-                        dependentPropertiesField.valueConstraints = valueConstraints;
-                        // Sync editor context with updated sections.
-                        editorContext.setSections(editorContext.sections);
-                    };
-
-                    editorContext.fieldRefreshes[dependentPropertiesField.name](context, callback);
+                    editorContext.client.query(
+                        {
+                            query: FieldConstraints,
+                            variables: {
+                                uuid: editorContext.nodeData.uuid,
+                                parentUuid: editorContext.nodeData.parent.path,
+                                primaryNodeType: editorContext.nodeData.primaryNodeType.name,
+                                nodeType: dependentPropertiesField.nodeType,
+                                fieldName: dependentPropertiesField.name,
+                                context: context,
+                                uilang: editorContext.lang,
+                                language: editorContext.lang
+                            }
+                        }).then(data => {
+                            if (data?.data?.forms?.fieldConstraints) {
+                                dependentPropertiesField.valueConstraints = data.data.forms.fieldConstraints;
+                                editorContext.setSections([...editorContext.sections]);
+                            }
+                    });
                 }
             });
         }

@@ -4,10 +4,6 @@ import {TextArea} from '~/DesignSystem/TextArea';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 
 export const TextAreaField = ({id, value, field, onChange, onInit}) => {
-    useEffect(() => {
-        onInit(value);
-    }, []);
-
     return (
         <TextArea id={id}
                   name={id}

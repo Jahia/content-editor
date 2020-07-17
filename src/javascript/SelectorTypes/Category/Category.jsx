@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {DropdownTreeSelect} from '~/DesignSystem/DropdownTreeSelect';
@@ -8,7 +8,7 @@ import {ProgressOverlay} from '@jahia/react-material';
 import {useTranslation} from 'react-i18next';
 import {adaptToCategoryTree} from './category.adapter';
 
-const Category = ({field, value, id, editorContext, onChange, onInit}) => {
+const Category = ({field, value, id, editorContext, onChange}) => {
     const {t} = useTranslation();
     const {data, error, loading} = useQuery(GetCategories, {
         variables: {
@@ -17,22 +17,10 @@ const Category = ({field, value, id, editorContext, onChange, onInit}) => {
         }
     });
 
-    const _getCategory = uuid => data.jcr.result.descendants.nodes.find(category => category.uuid === uuid);
-
-    const generateValuesFromUuid = categories => {
-        return categories ? categories.map(uuid => _getCategory(uuid)) : undefined;
-    };
-
     const handleChange = (_, selectedValues) => {
         const newValues = selectedValues.map(v => v.value);
-        onChange(newValues, generateValuesFromUuid);
+        onChange(newValues);
     };
-
-    useEffect(() => {
-        if (data) {
-            onInit(generateValuesFromUuid(value));
-        }
-    }, [data]);
 
     if (error) {
         const message = t(
