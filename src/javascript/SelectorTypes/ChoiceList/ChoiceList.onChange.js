@@ -1,5 +1,5 @@
-import {getFields} from "~/EditPanel/EditPanel.utils";
-import {FieldConstraints} from "./ChoiceList.gql-queries";
+import {getFields} from '~/EditPanel/EditPanel.utils';
+import {FieldConstraints} from './ChoiceList.gql-queries';
 
 function getMixinList(field, fieldValue) {
     let mixins = [];

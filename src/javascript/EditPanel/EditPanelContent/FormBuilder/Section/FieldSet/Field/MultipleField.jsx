@@ -65,7 +65,7 @@ export const MultipleFieldCmp = ({classes, editorContext, inputContext, field, o
                                                                id={name}
                                                                editorContext={editorContext}
                                                                setActionContext={inputContext.setActionContext}
-                                                               onChange={(newData) => {
+                                                               onChange={newData => {
                                                                    multipleFieldOnChange(index, newData);
                                                                }}
                                                />

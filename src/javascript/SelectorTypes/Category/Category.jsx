@@ -62,8 +62,7 @@ Category.propTypes = {
     editorContext: PropTypes.shape({
         lang: PropTypes.string.isRequired
     }).isRequired,
-    onChange: PropTypes.func.isRequired,
-    onInit: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired
 };
 
 export default Category;

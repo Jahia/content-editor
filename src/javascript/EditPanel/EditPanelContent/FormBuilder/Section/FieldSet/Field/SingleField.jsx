@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React from 'react';
 import * as PropTypes from 'prop-types';
 import {compose} from '~/utils';
 import {connect, FastField} from 'formik';

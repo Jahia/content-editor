@@ -18,7 +18,7 @@ const styles = theme => ({
     }
 });
 
-export const SingleSelectCmp = ({classes, field, value, id, setActionContext, onChange, onInit}) => {
+export const SingleSelectCmp = ({classes, field, value, id, setActionContext, onChange}) => {
     useEffect(() => {
         setActionContext(prevActionContext => ({
             initialized: true,
@@ -31,7 +31,7 @@ export const SingleSelectCmp = ({classes, field, value, id, setActionContext, on
 
     const readOnly = field.readOnly;
 
-    // reset value if constraints doesnt contains the actual value.
+    // Reset value if constraints doesnt contains the actual value.
     if (value && field.valueConstraints.find(v => v.value.string === value) === undefined) {
         onChange(undefined);
     }
@@ -67,8 +67,7 @@ SingleSelectCmp.propTypes = {
     field: FieldPropTypes.isRequired,
     classes: PropTypes.object.isRequired,
     setActionContext: PropTypes.func.isRequired,
-    onChange: PropTypes.func.isRequired,
-    onInit: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired
 };
 
 const SingleSelect = withStyles(styles)(SingleSelectCmp);

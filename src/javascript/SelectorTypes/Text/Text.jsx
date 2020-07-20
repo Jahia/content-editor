@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {Input} from '@jahia/design-system-kit';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
@@ -45,8 +45,7 @@ TextCmp.propTypes = {
     value: PropTypes.string,
     editorContext: PropTypes.object.isRequired,
     field: FieldPropTypes.isRequired,
-    onChange: PropTypes.func.isRequired,
-    onInit: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired
 };
 
 const Text = TextCmp;

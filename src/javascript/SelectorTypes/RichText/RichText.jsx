@@ -130,8 +130,7 @@ RichTextCmp.propTypes = {
     id: PropTypes.string.isRequired,
     value: PropTypes.string,
     field: FieldPropTypes.isRequired,
-    onChange: PropTypes.func.isRequired,
-    onInit: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired
 };
 
 const RichText = RichTextCmp;

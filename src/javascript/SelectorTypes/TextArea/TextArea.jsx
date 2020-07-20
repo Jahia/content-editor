@@ -1,9 +1,9 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {TextArea} from '~/DesignSystem/TextArea';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 
-export const TextAreaField = ({id, value, field, onChange, onInit}) => {
+export const TextAreaField = ({id, value, field, onChange}) => {
     return (
         <TextArea id={id}
                   name={id}
@@ -19,6 +19,5 @@ TextAreaField.propTypes = {
     id: PropTypes.string.isRequired,
     value: PropTypes.string,
     field: FieldPropTypes.isRequired,
-    onChange: PropTypes.func.isRequired,
-    onInit: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired
 };

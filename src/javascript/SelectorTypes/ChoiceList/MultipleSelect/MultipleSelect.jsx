@@ -19,7 +19,7 @@ const MultipleSelect = ({field, id, value, setActionContext, onChange}) => {
         value: constraint.value.string
     }));
 
-    // reset value if constraints doesnt contains the actual value.
+    // Reset value if constraints doesnt contains the actual value.
     if (value && value.length > 0) {
         const availableValues = field.valueConstraints.map(valueConstraint => valueConstraint.value.string);
         const actualValues = value.filter(v => availableValues.includes(v));
@@ -47,8 +47,7 @@ MultipleSelect.propTypes = {
     field: FieldPropTypes.isRequired,
     value: PropTypes.arrayOf(PropTypes.string),
     setActionContext: PropTypes.func.isRequired,
-    onChange: PropTypes.func.isRequired,
-    onInit: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired
 };
 
 export default MultipleSelect;

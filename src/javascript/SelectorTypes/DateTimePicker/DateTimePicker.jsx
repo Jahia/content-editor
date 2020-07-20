@@ -53,6 +53,5 @@ DateTimePicker.propTypes = {
     }).isRequired,
     field: FieldPropTypes.isRequired,
     value: PropTypes.string,
-    onChange: PropTypes.func.isRequired,
-    onInit: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired
 };

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Grid, InputLabel, withStyles} from '@material-ui/core';
 import {Typography} from '@jahia/design-system-kit';
 import {MoreVert, Public} from '@material-ui/icons';
@@ -93,24 +93,26 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, a
                 }
             });
         }
+
         onChangeValue.current = currentValue;
     };
 
     const onChange = currentValue => {
-        // update formik
+        // Update formik
         setFieldValue(field.name, currentValue, true);
         setFieldTouched(field.name, field.isMultiple ? [true] : true);
 
-        // trigger on changes
+        // Trigger on changes
         registeredOnChange(currentValue);
     };
 
     useEffect(() => {
         if (values[field.name] !== null && values[field.name] !== undefined) {
-            // init
+            // Init
             registeredOnChange(values[field.name]);
         }
-        //unmount
+        // Unmount
+
         return () => registeredOnChange(undefined);
     }, []);
 
@@ -260,7 +262,9 @@ FieldCmp.propTypes = {
     formik: PropTypes.shape({
         errors: PropTypes.object,
         touched: PropTypes.object,
-        values: PropTypes.object
+        values: PropTypes.object,
+        setFieldValue: PropTypes.func,
+        setFieldTouched: PropTypes.func
     }).isRequired,
     actionContext: PropTypes.shape({
         noAction: PropTypes.bool

@@ -20,8 +20,7 @@ Checkbox.propTypes = {
     field: FieldPropTypes.isRequired,
     id: PropTypes.string.isRequired,
     value: PropTypes.bool,
-    onChange: PropTypes.func.isRequired,
-    onInit: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired
 };
 
 export default Checkbox;

@@ -78,8 +78,7 @@ PickerCmp.propTypes = {
     value: PropTypes.string,
     field: FieldPropTypes.isRequired,
     setActionContext: PropTypes.func.isRequired,
-    onChange: PropTypes.func.isRequired,
-    onInit: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired
 };
 
 export const Picker = connect(PickerCmp);
