@@ -29,6 +29,13 @@ jest.mock('@apollo/react-hooks', () => {
     };
 });
 
+jest.mock('react', () => {
+    return {
+        ...jest.requireActual('react'),
+        useEffect: cb => cb()
+    };
+});
+
 import {setResponseMock} from '@apollo/react-hooks';
 
 describe('Field component', () => {
@@ -79,7 +86,9 @@ describe('Field component', () => {
             formik: {
                 error: {},
                 touched: {},
-                values: {}
+                values: {},
+                setFieldValue: jest.fn(),
+                setFieldTouched: jest.fn()
             },
             t: i18nKey => i18nKey,
             actionContext: {},
@@ -97,18 +106,15 @@ describe('Field component', () => {
     });
 
     it('should call onChange from registry', () => {
-        let result = false;
+        let result = [];
         const onChangePreviousValue = 'previousValue';
         const onChangeCurrentValue = 'currentValue';
 
         // Register onChange for DatePicker
         const datePickerOnChange = {
             targets: ['DatePicker'],
-            onChange: (previousValue, currentValue, field, context) => {
-                result = previousValue === onChangePreviousValue &&
-                    currentValue === onChangeCurrentValue &&
-                    field.name === defaultProps.field.name &&
-                    context.lang === mockEditorContext.lang;
+            onChange: (previousValue, currentValue) => {
+                result = [previousValue, currentValue];
             }
         };
         registry.add('selectorType.onChange', 'callBacks', datePickerOnChange);
@@ -116,16 +122,26 @@ describe('Field component', () => {
         // Build component
         defaultProps.input = props => <Text {...props}/>;
         defaultProps.field.multiple = false;
+        defaultProps.formik.values.text = onChangePreviousValue;
         const cmp = shallowWithTheme(
             <Field {...defaultProps}/>,
             {},
             dsGenericTheme
         ).dive();
 
-        // Call onChange from the field
-        cmp.find('SingleField').props().onChange(onChangePreviousValue, onChangeCurrentValue);
+        // Should init call the onChange
+        cmp.debug();
+        expect(result[0]).toBe(undefined);
+        expect(result[1]).toBe(onChangePreviousValue);
+        expect(defaultProps.formik.setFieldValue).not.toHaveBeenCalled();
+        expect(defaultProps.formik.setFieldTouched).not.toHaveBeenCalled();
 
-        expect(result).toBe(true);
+        // Trigger field update
+        cmp.find('SingleField').props().onChange(onChangeCurrentValue);
+        expect(result[0]).toBe(onChangePreviousValue);
+        expect(result[1]).toBe(onChangeCurrentValue);
+        expect(defaultProps.formik.setFieldValue).toHaveBeenCalledWith('text', onChangeCurrentValue, true);
+        expect(defaultProps.formik.setFieldTouched).toHaveBeenCalledWith('text', true);
     });
 
     it('should render a "Shared in all languages" when field is not i18n and site have multiple languages', () => {
