@@ -18,24 +18,23 @@ const styles = theme => ({
     }
 });
 
-export const SingleSelectCmp = ({classes, field, value, id, setActionContext, onChange, onInit}) => {
-    const singleSelectOnChange = newValue => field.valueConstraints.find(item => item.value.string === newValue);
-
-    useEffect(() => {
-        onInit(singleSelectOnChange(value));
-    }, []);
-
+export const SingleSelectCmp = ({classes, field, value, id, setActionContext, onChange}) => {
     useEffect(() => {
         setActionContext(prevActionContext => ({
+            onChange,
             initialized: true,
             contextHasChange: !prevActionContext.initialized ||
                 // As action system make deep copy of formik each time value change we must update the context !
-                prevActionContext.formik.values[field.name] !== value,
-            onChange: singleSelectOnChange
+                prevActionContext.formik.values[field.name] !== value
         }));
-    }, [setActionContext, field, value]);
+    }, [onChange, setActionContext, field, value]);
 
     const readOnly = field.readOnly;
+
+    // Reset value if constraints doesnt contains the actual value.
+    if (value && field.valueConstraints.find(v => v.value.string === value) === undefined) {
+        onChange(undefined);
+    }
 
     return (
         <Select
@@ -48,7 +47,7 @@ export const SingleSelectCmp = ({classes, field, value, id, setActionContext, on
             }}
             input={<Input id={id} name={field.name} readOnly={readOnly}/>}
             onChange={evt => {
-                onChange(evt.target.value, singleSelectOnChange);
+                onChange(evt.target.value);
             }}
         >
             {
@@ -68,8 +67,7 @@ SingleSelectCmp.propTypes = {
     field: FieldPropTypes.isRequired,
     classes: PropTypes.object.isRequired,
     setActionContext: PropTypes.func.isRequired,
-    onChange: PropTypes.func.isRequired,
-    onInit: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired
 };
 
 const SingleSelect = withStyles(styles)(SingleSelectCmp);

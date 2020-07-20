@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Grid, InputLabel, withStyles} from '@material-ui/core';
 import {Typography} from '@jahia/design-system-kit';
 import {MoreVert, Public} from '@material-ui/icons';
@@ -17,7 +17,6 @@ import contentEditorHelper from '~/ContentEditor.helper';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import {useApolloClient} from '@apollo/react-hooks';
-import {FieldConstraints} from '~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/Field.gql-queries';
 
 let styles = theme => {
     const common = {
@@ -68,54 +67,54 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, a
     const editorContext = useContentEditorContext();
     const sectionsContext = useContentEditorSectionContext();
     const client = useApolloClient();
-    const [valueConstraints, setValueConstraints] = useState(field.valueConstraints);
 
-    const {errors, touched, values} = formik;
+    const {errors, touched, values, setFieldValue, setFieldTouched} = formik;
     const contextualMenu = useRef(null);
+    const onChangeValue = useRef(undefined);
+
     const isMultipleField = field.multiple && !selectorType.supportMultiple;
     const seleniumFieldType = isMultipleField ? `GenericMultipleField${selectorType.key}` : (field.multiple ? `Multiple${selectorType.key}` : selectorType.key);
-
     const shouldDisplayErrors = touched[field.name] && errors[field.name];
     const hasMandatoryError = shouldDisplayErrors && errors[field.name] === 'required';
     const wipInfo = values[Constants.wip.fieldName];
 
-    const refreshValueConstraints = (context, callback) => {
-        // Retrieve field constraints
-        client.query(
-            {
-                query: FieldConstraints,
-                variables: {
-                    uuid: editorContext.nodeData.uuid,
-                    parentUuid: editorContext.nodeData.parent.path,
-                    primaryNodeType: editorContext.nodeData.primaryNodeType.name,
-                    nodeType: field.nodeType,
-                    fieldName: field.name,
-                    context: context,
-                    uilang: editorContext.lang,
-                    language: editorContext.lang
-                }
-            }).then(data => {
-            if (data?.data?.forms?.fieldConstraints) {
-                setValueConstraints(data.data.forms.fieldConstraints);
-                callback(data.data.forms.fieldConstraints);
-            }
-        });
-    };
-
-    editorContext.registerRefreshField(field.name, refreshValueConstraints);
-    field.valueConstraints = valueConstraints;
-
-    // Lookup for registerd on changes for given field selectory type
+    // Lookup for registered on changes for given field selector type
     const registeredOnChanges = registry.find({type: 'selectorType.onChange', target: selectorType.key});
-    const onChange = (previousValue, currentValue) => {
+    const registeredOnChange = currentValue => {
         if (registeredOnChanges && registeredOnChanges.length > 0) {
             registeredOnChanges.forEach(registeredOnChange => {
                 if (registeredOnChange.onChange) {
-                    registeredOnChange.onChange(previousValue, currentValue, field, {...editorContext, ...sectionsContext, formik}, selectorType, contentEditorHelper);
+                    const onChangeContext = {...editorContext, ...sectionsContext, formik, client};
+                    try {
+                        registeredOnChange.onChange(onChangeValue.current, currentValue, field, onChangeContext, selectorType, contentEditorHelper);
+                    } catch (error) {
+                        console.error(error);
+                    }
                 }
             });
         }
+
+        onChangeValue.current = currentValue;
     };
+
+    const onChange = currentValue => {
+        // Update formik
+        setFieldValue(field.name, currentValue, true);
+        setFieldTouched(field.name, field.isMultiple ? [true] : true);
+
+        // Trigger on changes
+        registeredOnChange(currentValue);
+    };
+
+    useEffect(() => {
+        if (values[field.name] !== null && values[field.name] !== undefined) {
+            // Init
+            registeredOnChange(values[field.name]);
+        }
+        // Unmount
+
+        return () => registeredOnChange(undefined);
+    }, []);
 
     let actionCmp;
     if (inputContext.actionRender) {
@@ -263,7 +262,9 @@ FieldCmp.propTypes = {
     formik: PropTypes.shape({
         errors: PropTypes.object,
         touched: PropTypes.object,
-        values: PropTypes.object
+        values: PropTypes.object,
+        setFieldValue: PropTypes.func,
+        setFieldTouched: PropTypes.func
     }).isRequired,
     actionContext: PropTypes.shape({
         noAction: PropTypes.bool

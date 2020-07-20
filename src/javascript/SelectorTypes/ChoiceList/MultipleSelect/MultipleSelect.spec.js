@@ -18,12 +18,10 @@ jest.mock('react', () => {
 describe('MultipleSelect component', () => {
     let props;
     let onChange = jest.fn();
-    let onInit = jest.fn();
 
     beforeEach(() => {
         props = {
             onChange,
-            onInit,
             id: 'MultipleSelect1',
             field: {
                 name: 'myOption',
@@ -72,10 +70,11 @@ describe('MultipleSelect component', () => {
     it('should select formik value', () => {
         const cmp = buildComp(props, ['yoloooFR']);
         const selection = [{value: 'yoloooFR2'}];
+        onChange.mockReset();
         cmp.simulate('change', selection);
 
         expect(onChange).toHaveBeenCalled();
-        expect(onChange.mock.calls[0][0]).toStrictEqual(['yoloooFR2']);
+        expect(onChange).toHaveBeenCalledWith(['yoloooFR2']);
     });
 
     it('should select value', () => {

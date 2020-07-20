@@ -17,22 +17,13 @@ jest.mock('@apollo/react-hooks', () => {
     };
 });
 
-jest.mock('react', () => {
-    return {
-        ...jest.requireActual('react'),
-        useEffect: cb => cb()
-    };
-});
-
 describe('Category component', () => {
     let props;
     const onChange = jest.fn();
-    const onInit = jest.fn();
 
     beforeEach(() => {
         props = {
             onChange,
-            onInit,
             id: 'Category',
             field: {
                 displayName: 'Categories',
@@ -85,29 +76,14 @@ describe('Category component', () => {
         expect(cmp.props().id).toBe(props.id);
     });
 
-    it('should onInit called when render the element', () => {
-        buildComp(props);
-        expect(onInit).toHaveBeenCalled();
+    it('should set initial value', () => {
+        const cmp = buildComp(props);
+        expect(cmp.props().value).toBe(props.value);
     });
 
     it('should onChange called when modify an element', () => {
         const cmp = buildComp(props);
         cmp.simulate('change', null, [{value: 'A'}, {value: 'Gauche'}]);
-        expect(onChange).toHaveBeenCalled();
-        expect(onChange.mock.calls[0][0]).toStrictEqual(['A', 'Gauche']);
-        expect(onChange.mock.calls[0][1](onChange.mock.calls[0][0])).toStrictEqual([
-            {
-                uuid: 'A',
-                parent: {
-                    uuid: 'root'
-                }
-            },
-            {
-                uuid: 'Gauche',
-                parent: {
-                    uuid: 'root'
-                }
-            }
-        ]);
+        expect(onChange).toHaveBeenCalledWith(['A', 'Gauche']);
     });
 });
