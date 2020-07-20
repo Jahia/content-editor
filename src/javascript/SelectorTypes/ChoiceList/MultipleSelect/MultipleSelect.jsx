@@ -19,6 +19,15 @@ const MultipleSelect = ({field, id, value, setActionContext, onChange}) => {
         value: constraint.value.string
     }));
 
+    // reset value if constraints doesnt contains the actual value.
+    if (value && value.length > 0) {
+        const availableValues = field.valueConstraints.map(valueConstraint => valueConstraint.value.string);
+        const actualValues = value.filter(v => availableValues.includes(v));
+        if (actualValues.length !== value.length) {
+            onChange(actualValues);
+        }
+    }
+
     return (
         <MultipleInput
             id={id}

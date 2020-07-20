@@ -5,7 +5,7 @@ import React from 'react';
 import * as PropTypes from 'prop-types';
 import {compose} from '~/utils';
 import {useTranslation} from 'react-i18next';
-import {connect, FastField, FieldArray} from 'formik';
+import {connect, FastField} from 'formik';
 import {FieldPropTypes} from '~/FormDefinitions';
 
 const styles = theme => {

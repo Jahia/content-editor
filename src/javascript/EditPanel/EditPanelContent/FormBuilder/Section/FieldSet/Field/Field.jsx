@@ -17,7 +17,6 @@ import contentEditorHelper from '~/ContentEditor.helper';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import {useApolloClient} from '@apollo/react-hooks';
-import {FieldConstraints} from '~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field/Field.gql-queries';
 
 let styles = theme => {
     const common = {
@@ -79,7 +78,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, a
     const hasMandatoryError = shouldDisplayErrors && errors[field.name] === 'required';
     const wipInfo = values[Constants.wip.fieldName];
 
-    // Lookup for registerd on changes for given field selectory type
+    // Lookup for registered on changes for given field selector type
     const registeredOnChanges = registry.find({type: 'selectorType.onChange', target: selectorType.key});
     const registeredOnChange = currentValue => {
         if (registeredOnChanges && registeredOnChanges.length > 0) {
@@ -88,13 +87,13 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, a
                     const onChangeContext = {...editorContext, ...sectionsContext, formik, client};
                     try {
                         registeredOnChange.onChange(onChangeValue.current, currentValue, field, onChangeContext, selectorType, contentEditorHelper);
-                        onChangeValue.current = currentValue;
                     } catch (error) {
                         console.error(error);
                     }
                 }
             });
         }
+        onChangeValue.current = currentValue;
     };
 
     const onChange = currentValue => {
