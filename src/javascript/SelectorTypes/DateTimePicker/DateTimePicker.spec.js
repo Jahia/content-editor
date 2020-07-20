@@ -43,12 +43,6 @@ describe('DateTimePicker component', () => {
         expect(cmp.props().id).toBe(props.id);
     });
 
-    it('should set initial value', () => {
-        props.value = '2020-06-16T01:30:40.519';
-        const cmp = shallow(<DateTimePicker {...props}/>);
-        expect(cmp.props().initialValue).toStrictEqual(new Date('2020-06-15T23:30:40.519Z'));
-    });
-
     it('should call onChange with good arguments when calling DatePickerInput onChange', () => {
         const cmp = shallow(<DateTimePicker {...props}/>);
         cmp.simulate('change', '2019-07-14T21:07:12.000');
