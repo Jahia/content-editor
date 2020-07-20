@@ -70,10 +70,11 @@ describe('MultipleSelect component', () => {
     it('should select formik value', () => {
         const cmp = buildComp(props, ['yoloooFR']);
         const selection = [{value: 'yoloooFR2'}];
+        onChange.mockReset();
         cmp.simulate('change', selection);
 
         expect(onChange).toHaveBeenCalled();
-        expect(onChange.mock.calls[0][0]).toStrictEqual(['yoloooFR2']);
+        expect(onChange).toHaveBeenCalledWith(['yoloooFR2']);
     });
 
     it('should select value', () => {
