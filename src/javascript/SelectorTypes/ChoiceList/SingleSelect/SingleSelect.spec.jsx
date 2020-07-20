@@ -18,11 +18,9 @@ jest.mock('react', () => {
 describe('SingleSelect component', () => {
     let props;
     let onChange = jest.fn();
-    let onInit = jest.fn();
     beforeEach(() => {
         props = {
             onChange,
-            onInit,
             classes: {
                 selectField: ''
             },

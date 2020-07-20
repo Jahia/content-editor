@@ -3,19 +3,11 @@ import {shallow} from '@jahia/test-framework';
 
 import {TextCmp} from './Text';
 
-jest.mock('react', () => {
-    return {
-        ...jest.requireActual('react'),
-        useEffect: cb => cb()
-    };
-});
-
 describe('Text component', () => {
     let props;
     beforeEach(() => {
         props = {
             onChange: jest.fn(),
-            onInit: jest.fn(),
             id: 'toto[1]',
             editorContext: {
                 uilang: 'en'
@@ -47,13 +39,11 @@ describe('Text component', () => {
         expect(cmp.props().name).toBe(props.id);
     });
 
-    it('should obtain its initial value and call onInit', () => {
+    it('should obtain its initial value', () => {
         props.value = 'some dummy value';
         const cmp = shallow(<TextCmp {...props}/>);
 
         expect(cmp.props().value).toBe(props.value);
-        expect(props.onInit.mock.calls.length).toBe(1);
-        expect(props.onInit).toHaveBeenCalledWith(props.value);
     });
 
     it('should call onChange on change', () => {

@@ -40,8 +40,7 @@ describe('RichText component', () => {
                 selectorType: 'RichText',
                 selectorOptions: []
             },
-            onChange: jest.fn(),
-            onInit: jest.fn()
+            onChange: jest.fn()
         };
 
         setQueryResult({
@@ -60,15 +59,13 @@ describe('RichText component', () => {
         expect(cmp.find(RICH_TEXT_COMPONENT_TAG).length).toBe(1);
     });
 
-    it('should obtain its initial value from value prop, and call onInit', () => {
+    it('should obtain its initial value from value prop', () => {
         props.value = 'some dummy value';
         const cmp = shallow(<RichTextCmp {...props}/>);
 
         expect(cmp.find(RICH_TEXT_COMPONENT_TAG)
             .prop('data')
         ).toEqual('some dummy value');
-        expect(props.onInit.mock.calls.length).toBe(1);
-        expect(props.onInit).toHaveBeenCalledWith(props.value);
     });
 
     it('should call formik.setFieldValue on change', () => {

@@ -18,12 +18,10 @@ jest.mock('react', () => {
 describe('MultipleSelect component', () => {
     let props;
     let onChange = jest.fn();
-    let onInit = jest.fn();
 
     beforeEach(() => {
         props = {
             onChange,
-            onInit,
             id: 'MultipleSelect1',
             field: {
                 name: 'myOption',
