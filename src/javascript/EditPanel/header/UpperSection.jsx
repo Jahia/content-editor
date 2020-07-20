@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {Typography, ButtonGroup, Chip} from '@jahia/moonstone';
-import {DisplayActions, DisplayAction, registry} from '@jahia/ui-extender';
+import {DisplayActions, DisplayAction} from '@jahia/ui-extender';
 
 import {useTranslation} from 'react-i18next';
 
@@ -14,6 +14,7 @@ import {Edit} from '@jahia/moonstone/dist/icons';
 import {truncate} from '~/utils/helper';
 import styles from './UpperSection.scss';
 import {ButtonWithPastilleRenderer, ButtonRenderer} from './ActionsButtons';
+import ContentBreadcrumb from '~/EditPanel/header/ContentBreadcrumb';
 
 export const HeaderUpperSection = ({title, actionContext}) => {
     const {t} = useTranslation();
@@ -37,8 +38,6 @@ export const HeaderUpperSection = ({title, actionContext}) => {
             render={ButtonRenderer}
             />
     ) : '';
-
-    const breadCrumb = registry.find({type: 'app', target: 'jcontent-bread-crumb'});
 
     return (
         <>
@@ -103,8 +102,8 @@ export const HeaderUpperSection = ({title, actionContext}) => {
 
             <div className={styles.header}>
                 <div className={styles.headerLeft}>
-                    {breadCrumb.length > 0 && nodeData.path.startsWith('/sites') ?
-                        breadCrumb[0].render(nodeData.path) :
+                    {nodeData?.path?.startsWith('/sites') ?
+                        <ContentBreadcrumb path={nodeData.path}/> :
                         <Chip label={nodeTypeName} color="accent"/>}
                 </div>
 
