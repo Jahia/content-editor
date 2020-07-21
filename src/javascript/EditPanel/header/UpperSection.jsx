@@ -14,6 +14,7 @@ import {Edit} from '@jahia/moonstone/dist/icons';
 import {truncate} from '~/utils/helper';
 import styles from './UpperSection.scss';
 import {ButtonWithPastilleRenderer, ButtonRenderer} from './ActionsButtons';
+import ContentBreadcrumb from '~/EditPanel/header/ContentBreadcrumb';
 
 export const HeaderUpperSection = ({title, actionContext}) => {
     const {t} = useTranslation();
@@ -101,7 +102,9 @@ export const HeaderUpperSection = ({title, actionContext}) => {
 
             <div className={styles.header}>
                 <div className={styles.headerLeft}>
-                    <Chip label={nodeTypeName} color="accent"/>
+                    {nodeData?.path?.startsWith('/sites') ?
+                        <ContentBreadcrumb path={nodeData.path}/> :
+                        <Chip label={nodeTypeName} color="accent"/>}
                 </div>
 
                 <div className={styles.headerChips}>
