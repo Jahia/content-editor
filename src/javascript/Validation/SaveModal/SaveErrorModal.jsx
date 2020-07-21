@@ -8,7 +8,8 @@ import {
     DialogContentText
 } from '@material-ui/core';
 import {Error} from '@material-ui/icons';
-import {Button, Typography} from '@jahia/design-system-kit';
+import {Typography} from '@jahia/design-system-kit';
+import {Button} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
 import {withStyles} from '@material-ui/core';
 
@@ -45,9 +46,15 @@ const SaveErrorModalCmp = ({nbOfErrors, classes, open, onClose}) => {
             </DialogContent>
 
             <DialogActions>
-                <Button variant="secondary" data-sel-role="content-type-dialog-cancel" onClick={onClose}>
+                {/* <Button variant="secondary" data-sel-role="content-type-dialog-cancel" onClick={onClose}>
                     {t('content-editor:label.contentEditor.edit.action.save.validation.modalButton')}
-                </Button>
+                </Button> */}
+                <Button
+                    size="big"
+                    data-sel-role="content-type-dialog-cancel"
+                    label={t('content-editor:label.contentEditor.edit.action.save.validation.modalButton')}
+                    onClick={onClose}
+                />
             </DialogActions>
         </Dialog>
     );

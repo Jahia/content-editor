@@ -38,7 +38,7 @@ describe('SaveErrorModal', () => {
             dsGenericTheme
         ).dive();
 
-        cmp.find('DsButton').at(0).simulate('click');
+        cmp.find('Button').at(0).simulate('click');
 
         expect(open).toBe(false);
     });

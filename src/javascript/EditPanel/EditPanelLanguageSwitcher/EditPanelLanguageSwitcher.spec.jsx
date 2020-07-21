@@ -37,7 +37,7 @@ describe('EditPanelLanguageSwitcher', () => {
             .dive()
             .dive();
 
-        expect(cmp.find('LanguageSwitcher').exists()).toBe(true);
+        expect(cmp.find('Dropdown').exists()).toBe(true);
     });
 
     it('should contains dialog confirmation', () => {
