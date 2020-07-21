@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import {DatePickerInput} from '~/DesignSystem/DatePickerInput';
@@ -11,7 +11,7 @@ const variantMapper = {
     DateTimePicker: 'datetime'
 };
 
-export const DateTimePicker = ({id, field, value, editorContext, onChange, onInit}) => {
+export const DateTimePicker = ({id, field, value, editorContext, onChange}) => {
     const variant = variantMapper[field.selectorType];
     const isDateTime = variant === 'datetime';
     const disabledDays = fillDisabledDaysFromJCRConstraints(field, isDateTime);
@@ -20,10 +20,6 @@ export const DateTimePicker = ({id, field, value, editorContext, onChange, onIni
     let displayDateFormat = editorContext.uilang === 'en' ? 'MM/DD/YYYY' : 'DD/MM/YYYY';
     displayDateFormat = isDateTime ? (displayDateFormat + ' HH:mm') : displayDateFormat;
     const displayDateMask = isDateTime ? '__/__/____ __:__' : '__/__/____';
-
-    useEffect(() => {
-        onInit(value);
-    }, []);
 
     return (
         <DatePickerInput
@@ -57,6 +53,5 @@ DateTimePicker.propTypes = {
     }).isRequired,
     field: FieldPropTypes.isRequired,
     value: PropTypes.string,
-    onChange: PropTypes.func.isRequired,
-    onInit: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired
 };

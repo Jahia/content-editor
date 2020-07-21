@@ -21,7 +21,6 @@ describe('DateTimePicker component', () => {
 
     beforeEach(() => {
         props = {
-            onInit: jest.fn(),
             onChange: jest.fn(),
             id: 'myOption[0]',
             field: {
@@ -42,13 +41,6 @@ describe('DateTimePicker component', () => {
     it('should bind id correctly', () => {
         const cmp = shallow(<DateTimePicker {...props}/>);
         expect(cmp.props().id).toBe(props.id);
-    });
-
-    it('should call onInit', () => {
-        props.value = '2020-06-16T01:30:40.519';
-        shallow(<DateTimePicker {...props}/>);
-
-        expect(props.onInit).toHaveBeenCalledWith('2020-06-16T01:30:40.519');
     });
 
     it('should call onChange with good arguments when calling DatePickerInput onChange', () => {

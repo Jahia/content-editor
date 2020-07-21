@@ -16,13 +16,6 @@ jest.mock('@apollo/react-hooks', () => {
     };
 });
 
-jest.mock('react', () => {
-    return {
-        ...jest.requireActual('react'),
-        useEffect: cb => cb()
-    };
-});
-
 describe('Tag component', () => {
     let props;
 
@@ -42,8 +35,7 @@ describe('Tag component', () => {
                 jcrDefinition: {},
                 targets: []
             },
-            onChange: jest.fn(),
-            onInit: jest.fn()
+            onChange: jest.fn()
         };
     });
 
@@ -64,16 +56,14 @@ describe('Tag component', () => {
         });
     });
 
-    it('should use initial value, and call onInit', () => {
+    it('should use initial value', () => {
         props.value = ['healthy'];
         const cmp = shallow(<Tag {...props}/>);
 
         expect(cmp.props().value).toEqual([{label: 'healthy', value: 'healthy'}]);
-        expect(props.onInit.mock.calls.length).toBe(1);
-        expect(props.onInit).toHaveBeenCalledWith(props.value);
     });
 
-    it('should call onInit', () => {
+    it('should call onChange', () => {
         const cmp = shallow(<Tag {...props}/>);
         const selection = [{value: 'tag1', label: 'tag1'}, {value: 'tag2', label: 'tag2'}];
         cmp.simulate('change', selection);

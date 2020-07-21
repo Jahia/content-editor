@@ -3,31 +3,30 @@ import {MultipleInput} from '~/DesignSystem/MultipleInput';
 import PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 
-const MultipleSelect = ({field, id, value, setActionContext, onChange, onInit}) => {
-    const findValues = value => field.valueConstraints.filter(item => value?.includes(item.value.string));
-
-    const multipleSelectOnChange = newValues => {
-        onChange(newValues, findValues);
-    };
-
-    useEffect(() => {
-        onInit(findValues(value));
-    }, []);
-
+const MultipleSelect = ({field, id, value, setActionContext, onChange}) => {
     useEffect(() => {
         setActionContext(prevActionContext => ({
+            onChange,
             initialized: true,
             contextHasChange: !prevActionContext.initialized ||
                 // As action system make deep copy of formik each time value change we must update the context !
-                prevActionContext.formik.values[field.name] !== value,
-            onChange: multipleSelectOnChange
+                prevActionContext.formik.values[field.name] !== value
         }));
-    }, [value]);
+    }, [value, onChange]);
 
     const options = field.valueConstraints.map(constraint => ({
         label: constraint.displayValue,
         value: constraint.value.string
     }));
+
+    // Reset value if constraints doesnt contains the actual value.
+    if (value && value.length > 0) {
+        const availableValues = field.valueConstraints.map(valueConstraint => valueConstraint.value.string);
+        const actualValues = value.filter(v => availableValues.includes(v));
+        if (actualValues.length !== value.length) {
+            onChange(actualValues);
+        }
+    }
 
     return (
         <MultipleInput
@@ -37,7 +36,7 @@ const MultipleSelect = ({field, id, value, setActionContext, onChange, onInit}) 
             readOnly={field.readOnly}
             onChange={selection => {
                 const newSelection = selection && selection.map(data => data.value);
-                multipleSelectOnChange(newSelection);
+                onChange(newSelection);
             }}
         />
     );
@@ -48,8 +47,7 @@ MultipleSelect.propTypes = {
     field: FieldPropTypes.isRequired,
     value: PropTypes.arrayOf(PropTypes.string),
     setActionContext: PropTypes.func.isRequired,
-    onChange: PropTypes.func.isRequired,
-    onInit: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired
 };
 
 export default MultipleSelect;

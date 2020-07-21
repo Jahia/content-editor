@@ -23,7 +23,6 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
         const {t} = useTranslation();
         const contentEditorConfigContext = useContentEditorConfigContext();
         const {lang, uilang, site, uuid, contentType, mode} = contentEditorConfigContext;
-        const fieldRefreshes = {};
 
         // Get Data
         const formQueryParams = {
@@ -40,10 +39,6 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
             siteKey: site,
             displayLanguage: lang
         });
-
-        const registerRefreshField = (fieldName, refresh) => {
-            fieldRefreshes[fieldName] = refresh;
-        };
 
         if (error) {
             console.error(error);
@@ -79,9 +74,7 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
             title,
             formQueryParams,
             nodeTypeName,
-            refetchFormData,
-            registerRefreshField,
-            fieldRefreshes
+            refetchFormData
         };
 
         return (

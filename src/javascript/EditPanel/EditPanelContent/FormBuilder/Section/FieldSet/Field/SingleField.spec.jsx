@@ -45,13 +45,6 @@ describe('Field component', () => {
             },
             onChange: jest.fn()
         };
-
-        defaultPropsFastField = {
-            form: {
-                setFieldValue: jest.fn(),
-                setFieldTouched: jest.fn()
-            }
-        };
     });
 
     it('the field should have a defined id attribute', () => {
@@ -65,21 +58,14 @@ describe('Field component', () => {
         defaultProps.inputContext.fieldComponent = props => <TextAreaField {...props}/>;
         const cmp = buildFieldCmp().dive().dive();
 
-        // Init should call onChange with initial values
-        expect(defaultProps.onChange.mock.calls.length).toBe(1);
-        expect(defaultProps.onChange).toHaveBeenCalledWith(undefined, 'Dummy');
-
         // Update field
-        defaultProps.onChange.mockReset();
         cmp.simulate('change', {
             target: {
                 value: 'Updated'
             }
         });
-        expect(defaultPropsFastField.form.setFieldValue).toHaveBeenCalledWith('text', 'Updated', true);
-        expect(defaultPropsFastField.form.setFieldTouched).toHaveBeenCalledWith('text', true);
         expect(defaultProps.onChange.mock.calls.length).toBe(1);
-        expect(defaultProps.onChange).toHaveBeenCalledWith('Dummy', 'Updated');
+        expect(defaultProps.onChange).toHaveBeenCalledWith('Updated');
     });
 
     let buildFieldCmp = () => {
