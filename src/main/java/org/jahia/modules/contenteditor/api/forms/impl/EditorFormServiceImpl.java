@@ -155,6 +155,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                 editorFormField = mergeWithStaticFormField(fieldNodeType, editorFormField);
 
                 Map<String, Object> extendContext = new HashMap<>();
+                editorFormField.getSelectorOptions().forEach(option -> extendContext.put(option.getName(), option.getValue()));
                 for (ContextEntryInput contextEntry : context) {
                     extendContext.put(contextEntry.getKey(), contextEntry.getValue());
                 }
@@ -368,7 +369,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             if (editorFormField.getValueConstraints() == null || editorFormField.getExtendedPropertyDefinition() == null) {
                 continue;
             }
-
+            // Process dependent properties
             List<EditorFormFieldValueConstraint> valueConstraints = getValueConstraints(primaryNodeType, editorFormField, existingNode, parentNode, uiLocale, new HashMap<>());
             editorFormField.setValueConstraints(valueConstraints);
         }
