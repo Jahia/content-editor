@@ -42,7 +42,7 @@ const style = theme => ({
         },
         '&:focus': {
             outline: 'none',
-            backgroundColor: theme.palette.brand.alpha,
+            backgroundColor: theme.palette.brand.beta,
             '& span': {
                 color: theme.palette.background.paper
             }
