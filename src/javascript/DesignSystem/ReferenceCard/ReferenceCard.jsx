@@ -27,7 +27,7 @@ const styles = theme => ({
         },
         '&:focus': {
             outline: 'none',
-            border: `1px solid ${theme.palette.brand.alpha}`
+            border: `1px solid ${theme.palette.brand.beta}`
         },
         '& svg': {
             margin: theme.spacing.unit,
