@@ -100,7 +100,7 @@ export const style = theme => ({
             marginBottom: '0.5em',
             padding: '0 0.5em',
             textAlign: 'center',
-            color: theme.palette.brand.alpha,
+            color: theme.palette.brand.beta,
             ...theme.typography.delta
         },
 
@@ -213,7 +213,7 @@ export const style = theme => ({
         '.DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside)': {
             position: 'relative',
             borderRadius: theme.spacing.unit / 2,
-            backgroundColor: theme.palette.brand.alpha,
+            backgroundColor: theme.palette.brand.beta,
             color: theme.palette.invert.beta
         },
         '.DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):focus': {

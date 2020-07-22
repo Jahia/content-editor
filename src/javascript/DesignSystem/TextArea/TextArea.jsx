@@ -24,7 +24,7 @@ const styles = theme => ({
         resize: 'vertical',
         '&:focus:not(:read-only)': {
             outline: 'none',
-            border: `1px solid ${theme.palette.brand.alpha}`
+            border: `1px solid ${theme.palette.brand.beta}`
         },
         '&:hover:not(:focus):not($disabled):not($error):not($readOnly)': {
             border: `1px solid ${theme.palette.ui.zeta}`

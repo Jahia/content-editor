@@ -20,7 +20,7 @@ const styles = theme => ({
         minHeight: '44px'
     },
     focused: {
-        border: `1px solid ${theme.palette.brand.alpha}`
+        border: `1px solid ${theme.palette.brand.beta}`
     },
     disabled: {
         background: theme.palette.ui.epsilon,
