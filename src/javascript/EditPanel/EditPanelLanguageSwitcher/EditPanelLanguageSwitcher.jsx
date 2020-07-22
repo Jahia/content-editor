@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-// Import {LanguageSwitcher} from '@jahia/design-system-kit';
 import {Dropdown} from '@jahia/moonstone';
 import * as PropTypes from 'prop-types';
 import {compose} from '~/utils';
@@ -38,22 +37,6 @@ const EditPanelLanguageSwitcher = ({siteInfo, formik}) => {
 
     return (
         <>
-            {/* <LanguageSwitcher
-                lang={lang}
-                languages={siteInfo.languages}
-                color="default"
-                onSelectLanguage={language => {
-                    console.log('language in LanguageSwitcher', language);
-                    if (language !== lang) {
-                        if (formik.dirty) {
-                            setDialogConfirmation({open: true, lang: language});
-                        } else {
-                            switchLanguage(language);
-                        }
-                    }
-                }}
-            /> */}
-
             <Dropdown
                 data={languages}
                 value={lang}

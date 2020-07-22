@@ -8,7 +8,6 @@ import {Button} from '@jahia/moonstone';
 import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import {Constants} from '~/ContentEditor.constants';
-import styles from './EditPanelDialogConfirmation.scss';
 
 export const EditPanelDialogConfirmation = ({titleKey, open, onCloseDialog, actionCallback, formik}) => {
     const {t} = useTranslation();
@@ -38,7 +37,7 @@ export const EditPanelDialogConfirmation = ({titleKey, open, onCloseDialog, acti
                 open={open}
                 onClose={onCloseDialog}
         >
-            <DialogTitle id="alert-dialog-slide-title" classes={styles}>
+            <DialogTitle id="alert-dialog-slide-title">
                 {t(titleKey)}
             </DialogTitle>
             <DialogActions>

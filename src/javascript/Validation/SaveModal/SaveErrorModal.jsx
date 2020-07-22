@@ -46,9 +46,6 @@ const SaveErrorModalCmp = ({nbOfErrors, classes, open, onClose}) => {
             </DialogContent>
 
             <DialogActions>
-                {/* <Button variant="secondary" data-sel-role="content-type-dialog-cancel" onClick={onClose}>
-                    {t('content-editor:label.contentEditor.edit.action.save.validation.modalButton')}
-                </Button> */}
                 <Button
                     size="big"
                     color="accent"
