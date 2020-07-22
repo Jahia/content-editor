@@ -190,7 +190,7 @@
         "createNewContent": {
           "menu": "Neuer Content",
           "contentOfType": "Hinzufügen: {{typeName}}",
-          "labelModal": "CONTENT-TYP AUSWÄHLEN",
+          "labelModal": "Content-Typ Auswählen",
           "btnDiscard": "ABBRECHEN",
           "btnCreate": "ERSTELLEN",
           "filterLabel": "Nach Content-Typen suchen"
