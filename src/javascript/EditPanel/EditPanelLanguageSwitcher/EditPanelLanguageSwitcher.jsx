@@ -42,8 +42,6 @@ const EditPanelLanguageSwitcher = ({siteInfo, formik}) => {
                 value={lang}
                 label={langLabel}
                 onChange={(e, language) => {
-                    console.log('language in Dropdown', language);
-                    console.log('event', e.target);
                     if (language.value !== lang) {
                         if (formik.dirty) {
                             setDialogConfirmation({open: true, lang: language.value});
