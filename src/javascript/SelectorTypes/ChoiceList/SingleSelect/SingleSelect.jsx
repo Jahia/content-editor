@@ -33,7 +33,7 @@ export const SingleSelectCmp = ({classes, field, value, id, setActionContext, on
 
     // Reset value if constraints doesnt contains the actual value.
     if (value && field.valueConstraints.find(v => v.value.string === value) === undefined) {
-        onChange(undefined);
+        onChange(null);
     }
 
     return (
