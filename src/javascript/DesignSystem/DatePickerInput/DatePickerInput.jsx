@@ -84,18 +84,18 @@ const DatePickerInputCmp = ({
 
     const handleInputChange = e => {
         if (e && e.target) {
-            setDatetimeString(e.target.value);
             if (maskOptions.empty === e.target.value) {
+                setDatetimeString(e.target.value);
                 setDatetime(null);
                 onChange(null);
-            }
-
-            if (!e.target.value.includes('_')) {
+            } else if (!e.target.value.includes('_')) {
                 const newDate = dayjs(e.target.value, displayDateFormat || datetimeFormat[variant], lang);
                 if (newDate.isValid()) {
+                    setDatetimeString(newDate.locale(lang).format(displayDateFormat || datetimeFormat[variant]));
                     setDatetime(newDate.toDate());
                     onChange(newDate.toDate());
                 } else {
+                    setDatetimeString(e.target.value);
                     onChange(e.target.value);
                 }
             }
