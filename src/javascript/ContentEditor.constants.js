@@ -53,7 +53,8 @@ export const Constants = {
             'jnt:page',
             'jnt:contentFolder',
             'jnt:folder',
-            'jnt:file'
+            'jnt:file',
+            'jnt:category'
         ]
     },
     wip: {

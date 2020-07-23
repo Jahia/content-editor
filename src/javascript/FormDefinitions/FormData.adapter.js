@@ -63,6 +63,7 @@ export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType
                             description: '',
                             dynamic: false,
                             activated: true,
+                            displayed: true,
                             fields: []
                         };
                         contentSection.fieldSets.unshift(toBeMovedToFieldSet);
