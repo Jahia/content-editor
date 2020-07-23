@@ -38,6 +38,7 @@ const EditPanelLanguageSwitcher = ({siteInfo, formik}) => {
     return (
         <>
             <Dropdown
+                data-cm-role="language-switcher"
                 data={languages}
                 value={lang}
                 label={langLabel}
