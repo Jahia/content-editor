@@ -27,9 +27,9 @@ const ContentPathContainer = ({path}) => {
     const handleNavigation = path => {
         let newMode = 'pages';
 
-        if (path.startsWith(`/sites/${site}/files/`)) {
+        if (path.startsWith(`/sites/${site}/files`) || path === `/sites/${site}/files`) {
             newMode = 'media';
-        } else if (path.startsWith(`/sites/${site}/contents/`)) {
+        } else if (path.startsWith(`/sites/${site}/contents/`) || path === `/sites/${site}/contents`) {
             newMode = 'content-folders';
         }
 
