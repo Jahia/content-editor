@@ -16,7 +16,7 @@ describe('useDialogPickerContent', () => {
         option = {
             lang: 'fr',
             pickerConfig: {
-
+                selectableTypesTable: []
             },
             selectedPath: '/content',
             searchTerms: ''
