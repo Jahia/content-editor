@@ -205,13 +205,8 @@ public class GqlEditorForms {
             String uiLocale
     ) {
         try {
-            // Todo: BACKLOG-11556
-            // Special Content Editor Filters to match CMM behavior
-            // No action on jnt:page
             JCRNodeWrapper parentNode = getSession().getNode(nodePath);
-            if (parentNode.isNodeType("jnt:page")) {
-                return Collections.emptyList();
-            }
+
             // Only jmix:editorialContent on jnt:contentFolder
             if (parentNode.isNodeType("jnt:contentFolder") && (nodeTypes == null || nodeTypes.isEmpty())) {
                 nodeTypes = Collections.singletonList("jmix:editorialContent");
