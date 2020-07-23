@@ -84,8 +84,9 @@ const DatePickerInputCmp = ({
 
     const handleInputChange = e => {
         if (e && e.target) {
+            setDatetimeString(e.target.value);
+
             if (maskOptions.empty === e.target.value) {
-                setDatetimeString(e.target.value);
                 setDatetime(null);
                 onChange(null);
             } else if (!e.target.value.includes('_')) {
@@ -95,7 +96,6 @@ const DatePickerInputCmp = ({
                     setDatetime(newDate.toDate());
                     onChange(newDate.toDate());
                 } else {
-                    setDatetimeString(e.target.value);
                     onChange(e.target.value);
                 }
             }
