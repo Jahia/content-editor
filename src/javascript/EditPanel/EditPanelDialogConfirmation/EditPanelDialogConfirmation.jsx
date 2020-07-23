@@ -4,7 +4,7 @@ import {
     DialogActions,
     DialogTitle
 } from '@material-ui/core';
-import {Button} from '@jahia/design-system-kit';
+import {Button} from '@jahia/moonstone';
 import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import {Constants} from '~/ContentEditor.constants';
@@ -41,15 +41,23 @@ export const EditPanelDialogConfirmation = ({titleKey, open, onCloseDialog, acti
                 {t(titleKey)}
             </DialogTitle>
             <DialogActions>
-                <Button variant="secondary" onClick={onCloseDialog}>
-                    {t('content-editor:label.contentEditor.edit.action.goBack.btnContinue')}
-                </Button>
-                <Button variant="secondary" onClick={handleDiscard}>
-                    {t('content-editor:label.contentEditor.edit.action.goBack.btnDiscard')}
-                </Button>
-                <Button variant="primary" disabled={disabled} onClick={handleSave}>
-                    {t('content-editor:label.contentEditor.edit.action.goBack.btnSave')}
-                </Button>
+                <Button
+                    size="big"
+                    label={t('content-editor:label.contentEditor.edit.action.goBack.btnContinue')}
+                    onClick={onCloseDialog}
+                />
+                <Button
+                    size="big"
+                    label={t('content-editor:label.contentEditor.edit.action.goBack.btnDiscard')}
+                    onClick={handleDiscard}
+                />
+                <Button
+                    color="accent"
+                    size="big"
+                    isDisabled={disabled}
+                    label={t('content-editor:label.contentEditor.edit.action.goBack.btnSave')}
+                    onClick={handleSave}
+                />
             </DialogActions>
         </Dialog>
     );

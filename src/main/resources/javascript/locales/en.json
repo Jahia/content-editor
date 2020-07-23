@@ -190,7 +190,7 @@
         "createNewContent": {
           "menu": "New content",
           "contentOfType": "New {{typeName}}",
-          "labelModal": "SELECT CONTENT TYPE",
+          "labelModal": "Select Content Type",
           "btnDiscard": "CANCEL",
           "btnCreate": "CREATE",
           "filterLabel": "Search for types of content"

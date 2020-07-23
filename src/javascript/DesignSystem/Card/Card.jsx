@@ -22,7 +22,7 @@ const styles = theme => ({
             border: `1px solid ${theme.palette.ui.zeta}`
         },
         '&.selected': {
-            border: `1px solid ${theme.palette.brand.alpha}`
+            border: `1px solid ${theme.palette.brand.beta}`
         }
     },
     imgContainer: {

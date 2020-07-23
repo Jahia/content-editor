@@ -71,9 +71,10 @@ const registerChoiceListOnChange = registry => {
                         key: dependentProperty,
                         value: editorContext.formik.values[dependentProperty]
                     }));
+                    // Set value to empty array in case of null to be consistent with old implementation.
                     context.push({
                         key: field.name,
-                        value: currentValue
+                        value: currentValue === null ? [] : currentValue
                     });
 
                     editorContext.client.query(
