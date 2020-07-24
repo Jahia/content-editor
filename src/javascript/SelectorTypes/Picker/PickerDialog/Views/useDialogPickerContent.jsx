@@ -6,7 +6,8 @@ const NB_OF_ELEMENT_PER_PAGE = 20;
 export const useDialogPickerContent = ({lang, pickerConfig, selectedPath, searchTerms, fieldSorter}) => {
     // Build table config from picker config
     const tableConfig = {
-        typeFilter: pickerConfig.selectableTypesTable,
+        typeFilter: pickerConfig.listTypesTable,
+        selectableTypeFilter: pickerConfig.selectableTypesTable,
         recursionTypesFilter: ['nt:base'],
         showOnlyNodesWithTemplates: pickerConfig.showOnlyNodesWithTemplates,
         searchSelectorType: pickerConfig.searchSelectorType
@@ -24,6 +25,7 @@ export const useDialogPickerContent = ({lang, pickerConfig, selectedPath, search
                 searchName: '%' + searchTerms + '%',
                 searchSelectorType: tableConfig.searchSelectorType,
                 typeFilter: tableConfig.typeFilter,
+                selectableTypeFilter: tableConfig.selectableTypeFilter,
                 recursionTypesFilter: tableConfig.recursionTypesFilter,
                 fieldSorter
             }

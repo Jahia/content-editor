@@ -27,6 +27,7 @@ const queryResult = {
         nodes: [{
             displayName: 'Home',
             isDisplayableNode: true,
+            isNodeType: true,
             primaryNodeType: {
                 typeName: 'Page',
                 icon: '/jahia/modules/assets/icons/jnt_page',
@@ -57,10 +58,16 @@ const queryResultWithChildren = {
         nodes: [{
             displayName: 'Home',
             isDisplayableNode: false,
+            isNodeType: true,
             primaryNodeType: {
                 typeName: 'Page',
                 icon: '/jahia/modules/assets/icons/jnt_page',
                 __typename: 'JCRNodeType'
+            },
+            descendants: {
+                pageInfo: {
+                    totalCount: 8
+                }
             },
             children: {
                 pageInfo: {
@@ -71,15 +78,20 @@ const queryResultWithChildren = {
             lastModified: {value: '2019-05-23T14:05:22.674+02:00', __typename: 'JCRProperty'},
             uuid: 'bfb3bf41-8204-471f-bba7-98e93dcb8bb1',
             workspace: 'EDIT',
-            path: '/sites/mySite/home',
-            __typename: 'GenericJCRNode'
+            path: '/sites/mySite/home'
         }, {
             displayName: 'Home',
             isDisplayableNode: true,
+            isNodeType: true,
             primaryNodeType: {
                 typeName: 'Page',
                 icon: '/jahia/modules/assets/icons/jnt_page',
                 __typename: 'JCRNodeType'
+            },
+            descendants: {
+                pageInfo: {
+                    totalCount: 0
+                }
             },
             children: {
                 pageInfo: {
@@ -224,7 +236,7 @@ describe('PickerDialog - List view', () => {
             .find('ContentTable');
 
         expect(cmp.props().columns[1].property).toContain('subContentsCount');
-        expect(cmp.props().data[0].subContentsCount).toBe(5);
+        expect(cmp.props().data[0].subContentsCount).toBe(8);
     });
 
     it('should add button navigateInto when there is subContent', () => {

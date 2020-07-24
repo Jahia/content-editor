@@ -120,16 +120,17 @@ export const List = ({
     const tableData = error ?
         [] :
         nodes.map(content => {
-            const haveSubContents = content.primaryNodeType.name !== 'jnt:page' && content.children &&
-                content.children.pageInfo && content.children.pageInfo.totalCount > 0;
+            const haveSubContents = content.primaryNodeType.name !== 'jnt:page' && content.descendants &&
+                content.descendants.pageInfo && content.descendants.pageInfo.totalCount > 0;
             showSubContentsCount = showSubContentsCount || haveSubContents;
 
+            const isSelectable = content.isNodeType && (!pickerConfig.showOnlyNodesWithTemplates || (pickerConfig.showOnlyNodesWithTemplates && content.isDisplayableNode));
             return {
                 id: content.uuid,
                 path: content.path,
-                selectable: !pickerConfig.showOnlyNodesWithTemplates || (pickerConfig.showOnlyNodesWithTemplates && content.isDisplayableNode),
+                selectable: isSelectable,
                 name: content.displayName,
-                subContentsCount: haveSubContents ? content.children.pageInfo.totalCount : undefined,
+                subContentsCount: haveSubContents ? content.descendants.pageInfo.totalCount : undefined,
                 type: content.primaryNodeType.typeName,
                 createdBy: content.createdBy ? content.createdBy.value : undefined,
                 lastModified: content.lastModified ? dayjs(content.lastModified.value)
