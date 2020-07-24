@@ -4,21 +4,23 @@ import styles from './ContentBreadcrumb.scss';
 import ContentPath from './ContentPath';
 import ContentType from './ContentType';
 
-const ContentBreadcrumb = ({path}) => {
+const ContentBreadcrumb = ({path, ...context}) => {
     return (
         <div className={styles.contentBreadcrumb} data-sel-role="breadcrumb">
-            <ContentPath path={path}/>
+            <ContentPath path={path} {...context}/>
             <ContentType path={path}/>
         </div>
     );
 };
 
 ContentBreadcrumb.defaultProps = {
-    path: ''
+    path: '',
+    context: null
 };
 
 ContentBreadcrumb.propTypes = {
-    path: PropTypes.string
+    path: PropTypes.string,
+    context: PropTypes.object
 };
 
 export default ContentBreadcrumb;
