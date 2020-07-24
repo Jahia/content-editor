@@ -564,11 +564,8 @@ public class EditorFormServiceImpl implements EditorFormService {
 
         List<EditorFormProperty> selectorOptions = editorFormField.getSelectorOptions();
         List<ChoiceListValue> initialChoiceListValues = new ArrayList<>();
-        for (EditorFormFieldValueConstraint editorFormFieldValueConstraint : editorFormField.getValueConstraints()) {
-            initialChoiceListValues.add(new ChoiceListValue(editorFormFieldValueConstraint.getDisplayValue(), editorFormFieldValueConstraint.getValue().getStringValue()));
-        }
 
-        if (selectorOptions != null) {
+        if (selectorOptions != null && !selectorOptions.isEmpty()) {
             Map<String, ChoiceListInitializer> initializers = choiceListInitializerService.getInitializers();
 
             Map<String, Object> context = new HashMap<>();
@@ -580,6 +577,10 @@ public class EditorFormServiceImpl implements EditorFormService {
                 if (initializers.containsKey(selectorProperty.getName())) {
                     initialChoiceListValues = initializers.get(selectorProperty.getName()).getChoiceListValues(propertyDefinition, selectorProperty.getValue(), initialChoiceListValues, uiLocale, context);
                 }
+            }
+        } else {
+            for (EditorFormFieldValueConstraint editorFormFieldValueConstraint : editorFormField.getValueConstraints()) {
+                initialChoiceListValues.add(new ChoiceListValue(editorFormFieldValueConstraint.getDisplayValue(), editorFormFieldValueConstraint.getValue().getStringValue()));
             }
         }
 
