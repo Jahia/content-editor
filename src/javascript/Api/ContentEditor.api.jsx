@@ -193,7 +193,8 @@ const ContentEditorApiCmp = ({classes, client}) => {
                     lang: lang
                 });
             }
-        }
+        },
+        shouldRedirectBeadCrumb: () => true
     };
 
     return (

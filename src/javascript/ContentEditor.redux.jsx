@@ -37,7 +37,8 @@ const ContentEditorReduxCmp = ({client, mode, uuid, lang, uilang, site, contentT
         },
         unregisterListeners: () => {
             unRegisterBlockListener();
-        }
+        },
+        shouldRedirectBeadCrumb: () => false
     };
     return (
         <ContentEditor env={Constants.env.redux}

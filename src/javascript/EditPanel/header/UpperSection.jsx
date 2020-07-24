@@ -103,7 +103,7 @@ export const HeaderUpperSection = ({title, actionContext}) => {
             <div className={styles.header}>
                 <div className={styles.headerLeft}>
                     {nodeData?.path?.startsWith('/sites') ?
-                        <ContentBreadcrumb path={nodeData.path}/> :
+                        <ContentBreadcrumb path={nodeData.path} {...actionContext}/> :
                         <Chip label={nodeTypeName} color="accent"/>}
                 </div>
 
