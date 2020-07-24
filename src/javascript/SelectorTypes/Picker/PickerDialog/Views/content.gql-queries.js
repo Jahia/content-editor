@@ -6,6 +6,7 @@ export const ContentDialogPickerQuery = gql`
         $path: String!,
         $recursionTypesFilter: [String]!,
         $typeFilter: [String]!,
+        $selectableTypeFilter: [String]!,
         $language: String!,
         $offset: Int!,
         $limit: Int!,
@@ -37,12 +38,12 @@ export const ContentDialogPickerQuery = gql`
                             value
                         }
                         isDisplayableNode
-                        children(typesFilter: {types: $typeFilter, multi: ANY}) {
+                        isNodeType(type:{types: $selectableTypeFilter, multi: ANY})
+                        descendants(typesFilter: {types: $selectableTypeFilter, multi: ANY}) {
                             pageInfo {
                                 totalCount
                             }
                         }
-
                         # Specific section for images
                         width: property(name: "j:width") {
                             value
@@ -74,6 +75,7 @@ export const SearchContentDialogPickerQuery = gql`
         $searchTerms: String!,
         $searchName: String!,
         $searchSelectorType: String!,
+        $selectableTypeFilter: [String]!,
         $offset: Int!,
         $limit: Int!
     ) {
@@ -111,6 +113,7 @@ export const SearchContentDialogPickerQuery = gql`
                         value
                     }
                     isDisplayableNode
+                    isNodeType(type:{types: $selectableTypeFilter, multi: ANY})
                     lastModified: property(name: "jcr:lastModified") {
                         value
                     }
