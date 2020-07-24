@@ -118,7 +118,7 @@ public class EditorFormServiceImpl implements EditorFormService {
     public EditorForm getCreateForm(String primaryNodeTypeName, Locale uiLocale, Locale locale, String uuidOrPath) throws EditorFormException {
 
         try {
-            return getEditorForm(nodeTypeRegistry.getNodeType(primaryNodeTypeName), uiLocale, locale, null, resolveNodeFromPathorUUID(uuidOrPath));
+            return getEditorForm(nodeTypeRegistry.getNodeType(primaryNodeTypeName), uiLocale, locale, null, resolveNodeFromPathorUUID(uuidOrPath, locale));
 
         } catch (RepositoryException e) {
             throw new EditorFormException("Error while building create form definition for node: " + uuidOrPath + " and nodeType: " + primaryNodeTypeName, e);
@@ -128,7 +128,7 @@ public class EditorFormServiceImpl implements EditorFormService {
     @Override
     public EditorForm getEditForm(Locale uiLocale, Locale locale, String uuidOrPath) throws EditorFormException {
         try {
-            JCRNodeWrapper node = resolveNodeFromPathorUUID(uuidOrPath);
+            JCRNodeWrapper node = resolveNodeFromPathorUUID(uuidOrPath, locale);
             return getEditorForm(node.getPrimaryNodeType(), uiLocale, locale, node, node.getParent());
 
         } catch (RepositoryException e) {
@@ -146,8 +146,8 @@ public class EditorFormServiceImpl implements EditorFormService {
                                                                     Locale uiLocale,
                                                                     Locale locale) throws EditorFormException {
         try {
-            JCRNodeWrapper node = nodeUuidOrPath != null ? resolveNodeFromPathorUUID(nodeUuidOrPath) : null;
-            JCRNodeWrapper parentNode = resolveNodeFromPathorUUID(parentNodeUuidOrPath);
+            JCRNodeWrapper node = nodeUuidOrPath != null ? resolveNodeFromPathorUUID(nodeUuidOrPath, locale) : null;
+            JCRNodeWrapper parentNode = resolveNodeFromPathorUUID(parentNodeUuidOrPath, locale);
             ExtendedPropertyDefinition fieldPropertyDefinition = nodeTypeRegistry.getNodeType(fieldNodeType).getPropertyDefinition(fieldName);
 
             if (fieldPropertyDefinition != null) {
@@ -174,11 +174,11 @@ public class EditorFormServiceImpl implements EditorFormService {
         }
     }
 
-    private JCRNodeWrapper resolveNodeFromPathorUUID(String uuidOrPath) throws RepositoryException {
+    private JCRNodeWrapper resolveNodeFromPathorUUID(String uuidOrPath, Locale locale) throws RepositoryException {
         if (StringUtils.startsWith(uuidOrPath, "/")) {
-            return getSession().getNode(uuidOrPath);
+            return getSession(locale).getNode(uuidOrPath);
         } else {
-            return getSession().getNodeByIdentifier(uuidOrPath);
+            return getSession(locale).getNodeByIdentifier(uuidOrPath);
         }
     }
 
