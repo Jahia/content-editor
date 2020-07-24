@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import {useDispatch, useSelector} from 'react-redux';
 import {useQuery} from '@apollo/react-hooks';
 
+import {useContentEditorConfigContext} from '~/ContentEditor.context';
 import {cmGoto} from '~/JContent.redux-actions';
 import {GetContentPath} from './ContentPath.gql-queries';
 import ContentPath from './ContentPath';
 
 const ContentPathContainer = ({path}) => {
+    const {envProps, site} = useContentEditorConfigContext();
     const dispatch = useDispatch();
 
     const {mode, language} = useSelector(state => ({
@@ -23,10 +25,20 @@ const ContentPathContainer = ({path}) => {
     });
 
     const handleNavigation = path => {
+        let newMode = 'pages';
+
+        if (path.startsWith(`/sites/${site}/files/`) || path === `/sites/${site}/files`) {
+            newMode = 'media';
+        } else if (path.startsWith(`/sites/${site}/contents/`) || path === `/sites/${site}/contents`) {
+            newMode = 'content-folders';
+        }
+
         dispatch(cmGoto({
-            mode: mode || 'content-folders',
+            mode: mode || newMode,
             path
         }));
+
+        envProps.back();
     };
 
     if (error) {
