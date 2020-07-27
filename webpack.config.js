@@ -14,6 +14,13 @@ require("fs").readdirSync(normalizedPath).forEach(function(file) {
 });
 
 module.exports = (env, argv) => {
+    const buildTimeStamp = new Date().toISOString()
+        .replace(/\.[\w\W]+?$/, '')
+        .replace(/\:|\s|T/g, '-');
+
+    const bundleName = 'content-editor-ext.bundle';
+    const fileName = `${bundleName}.${buildTimeStamp}.js`;
+
     let _argv = argv || {};
     let config = {
         entry: {
@@ -21,7 +28,7 @@ module.exports = (env, argv) => {
         },
         output: {
             path: path.resolve(__dirname, 'src/main/resources/javascript/apps/'),
-            filename: 'content-editor-ext.bundle.js',
+            filename: fileName,
             chunkFilename: '[name].content-editor.[chunkhash:6].js',
             jsonpFunction: 'contentEditorJsonp'
         },
@@ -85,7 +92,13 @@ module.exports = (env, argv) => {
               cleanOnceBeforeBuildPatterns: [`${path.resolve(__dirname, 'src/main/resources/javascript/apps/')}/**/*`],
               verbose: false
             }),
-            new CopyWebpackPlugin([{ from: './package.json', to: '' }]),
+            new CopyWebpackPlugin([{
+                from: './package.json',
+                to: '',
+                transform: content => content
+                    .toString()
+                    .replace('${buildTimeStamp}', buildTimeStamp)
+            }]),
             new CaseSensitivePathsPlugin()
         ],
         mode: 'development'
