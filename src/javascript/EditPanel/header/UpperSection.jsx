@@ -18,7 +18,7 @@ import ContentBreadcrumb from '~/EditPanel/header/ContentBreadcrumb';
 
 export const HeaderUpperSection = ({title, actionContext}) => {
     const {t} = useTranslation();
-    const {mode, nodeData, formik, nodeTypeName} = actionContext;
+    const {mode, nodeData, formik, nodeTypeName, language} = actionContext;
 
     const wipInfo = formik.values[Constants.wip.fieldName];
 
@@ -26,6 +26,7 @@ export const HeaderUpperSection = ({title, actionContext}) => {
         <DisplayAction
             actionKey="publishMenu"
             context={{
+                language,
                 path: nodeData.path,
                 menuUseElementAnchor: true,
                 componentProps: {
