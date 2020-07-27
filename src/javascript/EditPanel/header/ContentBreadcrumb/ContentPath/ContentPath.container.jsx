@@ -29,21 +29,23 @@ const ContentPathContainer = ({path, ...context}) => {
     const handleNavigation = path => {
         if (context.formik.dirty) {
             setOpen(true);
-        } else if (path.startsWith('/sites/systemsite/categories/') || path === '/sites/systemsite/categories') {
-            dispatch(push('/category-manager'));
         } else {
-            let mode = 'pages';
+            if (path.startsWith('/sites/systemsite/categories/') || path === '/sites/systemsite/categories') {
+                dispatch(push('/category-manager'));
+            } else {
+                let mode = 'pages';
 
-            if (path.startsWith(`/sites/${site}/files/`) || path === `/sites/${site}/files`) {
-                mode = 'media';
-            } else if (path.startsWith(`/sites/${site}/contents/`) || path === `/sites/${site}/contents`) {
-                mode = 'content-folders';
+                if (path.startsWith(`/sites/${site}/files/`) || path === `/sites/${site}/files`) {
+                    mode = 'media';
+                } else if (path.startsWith(`/sites/${site}/contents/`) || path === `/sites/${site}/contents`) {
+                    mode = 'content-folders';
+                }
+
+                dispatch(cmGoto({
+                    mode: mode,
+                    path
+                }));
             }
-
-            dispatch(cmGoto({
-                mode: mode,
-                path
-            }));
 
             if (envProps.shouldRedirectBeadCrumb()) {
                 envProps.back();
