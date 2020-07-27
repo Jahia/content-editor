@@ -130,6 +130,7 @@ HeaderUpperSection.propTypes = {
     title: PropTypes.string.isRequired,
     actionContext: PropTypes.shape({
         mode: PropTypes.string.isRequired,
+        language: PropTypes.string.isRequired,
         nodeData: PropTypes.object.isRequired,
         formik: PropTypes.object.isRequired,
         nodeTypeName: PropTypes.string.isRequired
