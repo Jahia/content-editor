@@ -16,13 +16,14 @@ require("fs").readdirSync(normalizedPath).forEach(function(file) {
 module.exports = (env, argv) => {
     let _argv = argv || {};
 
-    const buildTimeStamp = _argv.bts ||
+    const buildTimeStamp = _argv.mode === 'production' ?
         new Date().toISOString()
             .replace(/\.[\w\W]+?$/, '')
-            .replace(/\:|\s|T/g, '-');
+            .replace(/\:|\s|T/g, '-') :
+        '';
 
     const bundleName = 'content-editor-ext.bundle';
-    const fileName = `${bundleName}.${buildTimeStamp}.js`;
+    const fileName = `${bundleName}${buildTimeStamp}.js`;
 
     let config = {
         entry: {
