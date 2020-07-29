@@ -14,14 +14,17 @@ require("fs").readdirSync(normalizedPath).forEach(function(file) {
 });
 
 module.exports = (env, argv) => {
-    const buildTimeStamp = new Date().toISOString()
-        .replace(/\.[\w\W]+?$/, '')
-        .replace(/\:|\s|T/g, '-');
+    let _argv = argv || {};
+
+    const buildTimeStamp = _argv.mode === 'production' ?
+        new Date().toISOString()
+            .replace(/\.[\w\W]+?$/, '')
+            .replace(/\:|\s|T/g, '-') :
+        '';
 
     const bundleName = 'content-editor-ext.bundle';
-    const fileName = `${bundleName}.${buildTimeStamp}.js`;
+    const fileName = `${bundleName}${buildTimeStamp}.js`;
 
-    let _argv = argv || {};
     let config = {
         entry: {
             main: [path.resolve(__dirname, 'src/javascript/index')]
