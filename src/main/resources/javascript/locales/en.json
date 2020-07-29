@@ -155,7 +155,8 @@
           "invalidPattern": "The value does not match the constraints defined in the content type definitions file.",
           "required": "",
           "alreadyExist": "An item with the same system name already exists, please choose another one.",
-          "maxLength": "{{selectorOptions.maxLength}} characters maximum"
+          "maxLength": "{{selectorOptions.maxLength}} characters maximum",
+          "invalidLink": "The link {{0}} is broken"
         },
         "tab": {
           "edit": "Edit",
@@ -174,7 +175,8 @@
       },
       "error": {
         "queryingContent": "Error querying content: {{details}}",
-        "changeSystemName": "Please choose another system name"
+        "changeSystemName": "Please choose another system name",
+        "invalidLinks": "Please update the broken links"
       },
       "preview": {
         "contentNotFound": "Content cannot be previewed in the page",
