@@ -46,6 +46,23 @@ export const onServerError = (error, formikActions, notificationContext, t, defa
                 formikActions.setFieldTouched('ce:systemName', true, false);
                 return;
             }
+
+            if (graphQLError.message &&
+                graphQLError.message.startsWith('org.jahia.services.content.PropertyConstraintViolationException') &&
+                graphQLError.message.includes('Invalid link')) {
+                // Custom handling for invalid link error
+
+                const extractedErrorData = graphQLError.message.match(/^org.jahia.services.content.PropertyConstraintViolationException: (?<prop>(.*?)): Invalid link(?<link>(.*?))$/);
+                if (extractedErrorData && extractedErrorData.groups && extractedErrorData.groups.prop && extractedErrorData.groups.link) {
+                    const propNameIndex = extractedErrorData.groups.prop.lastIndexOf(' ');
+                    const propName = extractedErrorData.groups.prop.substring(propNameIndex + 1);
+
+                    notificationContext.notify(t('content-editor:label.contentEditor.error.invalidLinks'), ['closeButton']);
+                    formikActions.setFieldError(propName, 'invalidLink_' + extractedErrorData.groups.link);
+                    formikActions.setFieldTouched(propName, true, false);
+                    return;
+                }
+            }
         }
     }
 

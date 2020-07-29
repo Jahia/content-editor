@@ -155,7 +155,8 @@
           "invalidPattern": "Die Eingabe entspricht nicht den Vorgaben der Content-Typ-Definition.",
           "required": "",
           "alreadyExist": "Ein Element mit demselben Systemnamen ist bereits vorhanden. Bitte wählen Sie ein anderes aus.",
-          "maxLength": "Maximal {{selectorOptions.maxLength}} Zeichen."
+          "maxLength": "Maximal {{selectorOptions.maxLength}} Zeichen.",
+          "invalidLink": "Der Link {{0}} ist defekt"
         },
         "tab": {
           "edit": "Bearbeiten",
@@ -174,7 +175,8 @@
       },
       "error": {
         "queryingContent": "Fehler während Content-Abfrage: {{details}}",
-        "changeSystemName": "Bitte wählen Sie einen anderen Systemnamen"
+        "changeSystemName": "Bitte wählen Sie einen anderen Systemnamen",
+        "invalidLinks": "Bitte aktualisieren Sie die defekten Links"
       },
       "preview": {
         "contentNotFound": "Inhalte können auf der Seite nicht in der Vorschau angezeigt werden",
@@ -225,7 +227,7 @@
         "modified": "Geändert",
         "notPublished": "Nicht veröffentlicht",
         "published": "Live",
-        "warning": "Achtung",
+        "warning": "Achtung"
       },
       "publicationStatusTooltip": {
         "modified": "Geändert von {{userName}} am {{timestamp}}",

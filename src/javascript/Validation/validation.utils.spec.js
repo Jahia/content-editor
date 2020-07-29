@@ -87,6 +87,20 @@ describe('validation utils', () => {
             expect(formikActions.setSubmitting).toHaveBeenCalledWith(false);
         });
 
+        it('should return invalid link validation error', () => {
+            const error = {
+                graphQLErrors: [{
+                    message: 'org.jahia.services.content.PropertyConstraintViolationException: /sites/digitall/contents/rich text-1 text: Invalid link/sites/tutorials/files/Images/personalization/any content.PNG'
+                }]
+            };
+
+            onServerError(error, formikActions, notificationContext, t, 'default_message');
+
+            expect(formikActions.setFieldTouched).toHaveBeenCalledWith('text', true, false);
+            expect(formikActions.setFieldError).toHaveBeenCalledWith('text', 'invalidLink_/sites/tutorials/files/Images/personalization/any content.PNG');
+            expect(formikActions.setSubmitting).toHaveBeenCalledWith(false);
+        });
+
         it('should notify in case of server error', () => {
             const error = {
                 graphQLErrors: [{

@@ -75,6 +75,9 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, a
     const isMultipleField = field.multiple && !selectorType.supportMultiple;
     const seleniumFieldType = isMultipleField ? `GenericMultipleField${selectorType.key}` : (field.multiple ? `Multiple${selectorType.key}` : selectorType.key);
     const shouldDisplayErrors = touched[field.name] && errors[field.name];
+    const splitError = shouldDisplayErrors && errors[field.name].split('_');
+    const errorName = splitError && splitError.length > 0 && splitError[0];
+    const errorArgs = splitError && splitError.length > 1 ? splitError.splice(1) : [];
     const hasMandatoryError = shouldDisplayErrors && errors[field.name] === 'required';
     const wipInfo = values[Constants.wip.fieldName];
 
@@ -235,12 +238,12 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, a
                     </Grid>
                     {inputContext.displayErrors && (
                         <Typography className={classes.errorMessage}
-                                    data-sel-error={shouldDisplayErrors && errors[field.name]}
+                                    data-sel-error={shouldDisplayErrors && errorName}
                         >
                             {shouldDisplayErrors ?
                                 field.errorMessage ?
                                     field.errorMessage :
-                                    t(`content-editor:label.contentEditor.edit.errors.${errors[field.name]}`, buildFlatFieldObject(field)) :
+                                    t(`content-editor:label.contentEditor.edit.errors.${errorName}`, {...buildFlatFieldObject(field), ...errorArgs}) :
                                 ''}&nbsp;
                         </Typography>
                     )}
