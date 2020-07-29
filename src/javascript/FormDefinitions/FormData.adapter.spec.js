@@ -136,6 +136,18 @@ describe('adaptFormData', () => {
         expect(formData.sections[1].fieldSets[0].fields[0].readOnly).toEqual(true);
     });
 
+    it('should set system name readonly when node is locked and cannot be edited', () => {
+        const nodeType = {
+            name: 'jnt:text',
+            displayName: 'Text'
+        };
+        formData.nodeData.lockedAndCannotBeEdited = true;
+
+        adaptSystemNameField(rawData, formData, null, t, nodeType, false);
+        expect(formData.sections[1].fieldSets[0].fields[0].name).toEqual('ce:systemName');
+        expect(formData.sections[1].fieldSets[0].fields[0].readOnly).toEqual(true);
+    });
+
     it('should set maximum name size validation according to DX prop: maxNameSize', () => {
         const nodeType = {
             name: 'jnt:news',
