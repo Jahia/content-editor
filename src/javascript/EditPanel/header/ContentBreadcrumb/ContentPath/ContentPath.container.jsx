@@ -10,6 +10,37 @@ import EditPanelDialogConfirmation from '~/EditPanel/EditPanelDialogConfirmation
 import {GetContentPath} from './ContentPath.gql-queries';
 import ContentPath from './ContentPath';
 
+const findLastIndex = (array, callback) => {
+    let lastIndex = -1;
+    array.forEach((e, i) => {
+        if (callback(e)) {
+            lastIndex = i;
+        }
+    });
+    return lastIndex;
+};
+
+const getItems = (node = {}) => {
+    const ancestors = node.ancestors || [];
+
+    if ((ancestors.length === 0) || node.isVisibleInContentTree) {
+        return ancestors;
+    }
+
+    const indexOfLastAncestorInContentTree = findLastIndex(ancestors, a => a.isVisibleInContentTree);
+    if (indexOfLastAncestorInContentTree > 0) {
+        const lastAncestorInContentTree = ancestors[indexOfLastAncestorInContentTree];
+        if (indexOfLastAncestorInContentTree + 1 === ancestors.length) {
+            return [lastAncestorInContentTree];
+        }
+
+        const remainingAncestors = ancestors.slice(indexOfLastAncestorInContentTree + 1);
+        return [lastAncestorInContentTree].concat(remainingAncestors);
+    }
+
+    return ancestors;
+};
+
 const ContentPathContainer = ({path, ...context}) => {
     const [open, setOpen] = useState(false);
     const {envProps, site} = useContentEditorConfigContext();
@@ -58,7 +89,7 @@ const ContentPathContainer = ({path, ...context}) => {
     }
 
     const node = data?.jcr?.node || {};
-    const items = useMemo(() => node.ancestors || [], [node]);
+    const items = useMemo(() => getItems(node), [node]);
 
     return (
         <>
