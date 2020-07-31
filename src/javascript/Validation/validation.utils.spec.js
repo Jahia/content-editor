@@ -90,7 +90,13 @@ describe('validation utils', () => {
         it('should return invalid link validation error', () => {
             const error = {
                 graphQLErrors: [{
-                    message: 'org.jahia.services.content.PropertyConstraintViolationException: /sites/digitall/contents/rich text-1 text: Invalid link/sites/tutorials/files/Images/personalization/any content.PNG'
+                    errorType: 'GqlConstraintViolationException',
+                    extensions: {
+                        constraintViolations: [{
+                            constraintMessage: 'Invalid link/sites/tutorials/files/Images/personalization/any content.PNG',
+                            propertyName: 'text'
+                        }]
+                    }
                 }]
             };
 
@@ -98,6 +104,26 @@ describe('validation utils', () => {
 
             expect(formikActions.setFieldTouched).toHaveBeenCalledWith('text', true, false);
             expect(formikActions.setFieldError).toHaveBeenCalledWith('text', 'invalidLink_/sites/tutorials/files/Images/personalization/any content.PNG');
+            expect(formikActions.setSubmitting).toHaveBeenCalledWith(false);
+        });
+
+        it('should return validation error in case of constraint violation error', () => {
+            const error = {
+                graphQLErrors: [{
+                    errorType: 'GqlConstraintViolationException',
+                    extensions: {
+                        constraintViolations: [{
+                            constraintMessage: 'Error message from backend',
+                            propertyName: 'text'
+                        }]
+                    }
+                }]
+            };
+
+            onServerError(error, formikActions, notificationContext, t, 'default_message');
+
+            expect(formikActions.setFieldTouched).toHaveBeenCalledWith('text', true, false);
+            expect(formikActions.setFieldError).toHaveBeenCalledWith('text', 'constraintViolation_Error message from backend');
             expect(formikActions.setSubmitting).toHaveBeenCalledWith(false);
         });
 
@@ -114,7 +140,6 @@ describe('validation utils', () => {
             expect(formikActions.setFieldError).not.toHaveBeenCalled();
             expect(formikActions.setSubmitting).toHaveBeenCalledWith(false);
             expect(notificationContext.notify).toHaveBeenCalledWith('default_message', ['closeButton']);
-            expect(console.error).toHaveBeenCalled();
         });
     });
 });
