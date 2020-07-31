@@ -92,7 +92,7 @@ describe('validation utils', () => {
                 graphQLErrors: [{
                     errorType: 'GqlConstraintViolationException',
                     extensions: {
-                        constraintViolations:[{
+                        constraintViolations: [{
                             constraintMessage: 'Invalid link/sites/tutorials/files/Images/personalization/any content.PNG',
                             propertyName: 'text'
                         }]
@@ -112,7 +112,7 @@ describe('validation utils', () => {
                 graphQLErrors: [{
                     errorType: 'GqlConstraintViolationException',
                     extensions: {
-                        constraintViolations:[{
+                        constraintViolations: [{
                             constraintMessage: 'Error message from backend',
                             propertyName: 'text'
                         }]
@@ -140,7 +140,6 @@ describe('validation utils', () => {
             expect(formikActions.setFieldError).not.toHaveBeenCalled();
             expect(formikActions.setSubmitting).toHaveBeenCalledWith(false);
             expect(notificationContext.notify).toHaveBeenCalledWith('default_message', ['closeButton']);
-            expect(console.error).toHaveBeenCalled();
         });
     });
 });

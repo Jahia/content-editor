@@ -38,7 +38,6 @@ export const onServerError = (error, formikActions, notificationContext, t, defa
     let notificationErrorMessage = t(defaultErrorMessage);
     const graphQLErrors = error.graphQLErrors;
     if (graphQLErrors && graphQLErrors.length > 0) {
-        let notify = false;
         for (const graphQLError of graphQLErrors) {
             if (graphQLError.message && graphQLError.message.startsWith('javax.jcr.ItemExistsException')) {
                 // Custom handling for this error, system name is not valid
@@ -54,17 +53,17 @@ export const onServerError = (error, formikActions, notificationContext, t, defa
                 graphQLError.extensions.constraintViolations.length > 0) {
                 // Constraint violation errors
 
-                notify = true;
                 for (const constraintViolation of graphQLError.extensions.constraintViolations) {
-                    console.log('Constraint violation error: ', constraintViolation)
+                    console.log('Constraint violation error: ', constraintViolation);
                     if (constraintViolation.propertyName) {
                         if (constraintViolation.constraintMessage.startsWith('Invalid link')) {
                             // Custom handling for invalid link error
-                            formikActions.setFieldError(constraintViolation.propertyName, 'invalidLink_' + constraintViolation.constraintMessage.substring("Invalid link".length));
+                            formikActions.setFieldError(constraintViolation.propertyName, 'invalidLink_' + constraintViolation.constraintMessage.substring('Invalid link'.length));
                         } else {
                             // Default constraint violation handling
                             formikActions.setFieldError(constraintViolation.propertyName, 'constraintViolation_' + constraintViolation.constraintMessage);
                         }
+
                         formikActions.setFieldTouched(constraintViolation.propertyName, true, false);
                         notificationErrorMessage = t('content-editor:label.contentEditor.error.constraintViolations');
                     }
