@@ -81,7 +81,7 @@ const styles = theme => ({
 
         // TAGS https://github.com/dowjones/react-dropdown-tree-select/blob/96ff9c91d7b3d96f414af1b28f621905ecfb6cca/src/tag/index.css
         '& .tag': {
-            backgroundColor: theme.palette.brand.alpha,
+            backgroundColor: theme.palette.brand.beta,
             color: theme.palette.invert.beta,
             height: '32px',
             display: 'inline-flex',
