@@ -55,6 +55,7 @@ import org.jahia.services.content.nodetypes.*;
 import org.jahia.services.content.nodetypes.initializers.ChoiceListInitializer;
 import org.jahia.services.content.nodetypes.initializers.ChoiceListInitializerService;
 import org.jahia.services.content.nodetypes.initializers.ChoiceListValue;
+import org.jahia.utils.LanguageCodeConverters;
 import org.jahia.utils.i18n.Messages;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -160,7 +161,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                     extendContext.put(contextEntry.getKey(), contextEntry.getValue());
                 }
 
-                return getValueConstraints(nodeTypeRegistry.getNodeType(primaryNodeType), editorFormField, node, parentNode, uiLocale, extendContext);
+                return getValueConstraints(nodeTypeRegistry.getNodeType(primaryNodeType), editorFormField, node, parentNode, locale, extendContext);
             }
 
             return Collections.emptyList();
@@ -176,9 +177,9 @@ public class EditorFormServiceImpl implements EditorFormService {
 
     private JCRNodeWrapper resolveNodeFromPathorUUID(String uuidOrPath, Locale locale) throws RepositoryException {
         if (StringUtils.startsWith(uuidOrPath, "/")) {
-            return getSession(locale).getNode(uuidOrPath);
+            return getSession(locale, uuidOrPath).getNode(uuidOrPath);
         } else {
-            return getSession(locale).getNodeByIdentifier(uuidOrPath);
+            return getSession(locale, uuidOrPath).getNodeByIdentifier(uuidOrPath);
         }
     }
 
@@ -364,13 +365,13 @@ public class EditorFormServiceImpl implements EditorFormService {
         return targetSectionName;
     }
 
-    private void processValueConstraints(EditorFormFieldSet editorFormFieldSet, Locale uiLocale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, ExtendedNodeType primaryNodeType) throws RepositoryException {
+    private void processValueConstraints(EditorFormFieldSet editorFormFieldSet, Locale locale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, ExtendedNodeType primaryNodeType) throws RepositoryException {
         for (EditorFormField editorFormField : editorFormFieldSet.getEditorFormFields()) {
             if (editorFormField.getValueConstraints() == null || editorFormField.getExtendedPropertyDefinition() == null) {
                 continue;
             }
             // Process dependent properties
-            List<EditorFormFieldValueConstraint> valueConstraints = getValueConstraints(primaryNodeType, editorFormField, existingNode, parentNode, uiLocale, new HashMap<>());
+            List<EditorFormFieldValueConstraint> valueConstraints = getValueConstraints(primaryNodeType, editorFormField, existingNode, parentNode, locale, new HashMap<>());
             editorFormField.setValueConstraints(valueConstraints);
         }
     }
@@ -461,7 +462,7 @@ public class EditorFormServiceImpl implements EditorFormService {
     }
 
     private EditorFormField generateEditorFormField(ExtendedItemDefinition itemDefinition, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale uiLocale, Locale locale, Double rank) throws RepositoryException {
-        JCRSessionWrapper session = existingNode != null ? existingNode.getSession() : getSession(locale);
+        JCRSessionWrapper session = existingNode != null ? existingNode.getSession() : parentNode.getSession();
 
         boolean isLockedAndCannotBeEdited = JCRContentUtils.isLockedAndCannotBeEdited(existingNode);
         boolean sharedFieldsEditable = existingNode == null || (!isLockedAndCannotBeEdited && existingNode.hasPermission("jcr:modifyProperties"));
@@ -555,7 +556,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         );
     }
 
-    private List<EditorFormFieldValueConstraint> getValueConstraints(ExtendedNodeType primaryNodeType, EditorFormField editorFormField, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale uiLocale, Map<String, Object> extendContext) throws RepositoryException {
+    private List<EditorFormFieldValueConstraint> getValueConstraints(ExtendedNodeType primaryNodeType, EditorFormField editorFormField, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale locale, Map<String, Object> extendContext) throws RepositoryException {
         ExtendedPropertyDefinition propertyDefinition = editorFormField.getExtendedPropertyDefinition();
         if (propertyDefinition == null) {
             logger.error("Missing property definition to resolve choice list values, cannot process");
@@ -575,7 +576,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             context.putAll(extendContext);
             for (EditorFormProperty selectorProperty : selectorOptions) {
                 if (initializers.containsKey(selectorProperty.getName())) {
-                    initialChoiceListValues = initializers.get(selectorProperty.getName()).getChoiceListValues(propertyDefinition, selectorProperty.getValue(), initialChoiceListValues, uiLocale, context);
+                    initialChoiceListValues = initializers.get(selectorProperty.getName()).getChoiceListValues(propertyDefinition, selectorProperty.getValue(), initialChoiceListValues, locale, context);
                 }
             }
         } else {
@@ -615,15 +616,24 @@ public class EditorFormServiceImpl implements EditorFormService {
         return propertyDefinition.isInternationalized() ? !i18nFieldsEditable : !sharedFieldsEditable;
     }
 
-    private JCRSessionWrapper getSession() throws RepositoryException {
-        return JCRSessionFactory.getInstance().getCurrentUserSession(Constants.EDIT_WORKSPACE);
-    }
+    private JCRSessionWrapper getSession(Locale locale, String uuidOrPath) throws RepositoryException {
+        Locale fallbackLocale = JCRTemplate.getInstance().doExecuteWithSystemSession(jcrSessionWrapper -> {
+            JCRNodeWrapper node;
+            if (StringUtils.startsWith(uuidOrPath, "/")) {
+                node = jcrSessionWrapper.getNode(uuidOrPath);
+            } else {
+                node = jcrSessionWrapper.getNodeByIdentifier(uuidOrPath);
+            }
 
-    private JCRSessionWrapper getSession(Locale locale) throws RepositoryException {
-        if (locale == null) {
-            return getSession();
-        }
-        return JCRSessionFactory.getInstance().getCurrentUserSession(Constants.EDIT_WORKSPACE, locale);
+            JCRSiteNode site = node.getResolveSite();
+            if (site != null && site.isMixLanguagesActive()) {
+                return LanguageCodeConverters.getLocaleFromCode(site.getDefaultLanguage());
+            }
+
+            return null;
+        });
+
+        return JCRSessionFactory.getInstance().getCurrentUserSession(Constants.EDIT_WORKSPACE, locale, fallbackLocale);
     }
 
     private List<ExtendedNodeType> getExtendMixins(String type, JCRSiteNode site) throws NoSuchNodeTypeException {
