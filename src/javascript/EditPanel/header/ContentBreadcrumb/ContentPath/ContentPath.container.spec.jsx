@@ -105,7 +105,37 @@ describe('ContentPathContainer', () => {
         expect(wrapper.find('ContentPath').prop('onItemClick')).toBeDefined();
     });
 
-    it('Something is not right', () => {
+    it('starts from the closest ancestor visible in Content tree if node is not visible Content tree', () => {
+        const ancestors = [{
+            uuid: 'x',
+            path: '/x',
+            isVisibleInContentTree: true
+        }, {
+            uuid: 'y',
+            path: '/x/y',
+            isVisibleInContentTree: true
+        }, {
+            uuid: 'z',
+            path: '/x/y/z',
+            isVisibleInContentTree: false
+        }];
+
+        useQuery.mockImplementation(() => ({
+            data: {
+                jcr: {
+                    node: {
+                        isVisibleInContentTree: false,
+                        ancestors: ancestors
+                    }
+                }
+            }
+        }));
+
+        const wrapper = shallow(<ContentPathContainer {...defaultProps}/>);
+        expect(wrapper.find('ContentPath').prop('items')).toEqual(ancestors.slice(1));
+    });
+
+    it('handle something is not right', () => {
         console.log = jest.fn();
 
         useQuery.mockImplementation(() => ({
