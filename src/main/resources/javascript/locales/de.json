@@ -156,7 +156,8 @@
           "required": "",
           "alreadyExist": "Ein Element mit demselben Systemnamen ist bereits vorhanden. Bitte wählen Sie ein anderes aus.",
           "maxLength": "Maximal {{selectorOptions.maxLength}} Zeichen.",
-          "invalidLink": "Der Link {{0}} ist defekt"
+          "invalidLink": "Der Link {{0}} ist defekt",
+          "constraintViolation": "{{0}}"
         },
         "tab": {
           "edit": "Bearbeiten",
@@ -176,7 +177,7 @@
       "error": {
         "queryingContent": "Fehler während Content-Abfrage: {{details}}",
         "changeSystemName": "Bitte wählen Sie einen anderen Systemnamen",
-        "invalidLinks": "Bitte aktualisieren Sie die defekten Links"
+        "constraintViolations": "Es gibt einige Validierungsfehler! Korrigieren Sie die Eingaben und speichern Sie erneut"
       },
       "preview": {
         "contentNotFound": "Inhalte können auf der Seite nicht in der Vorschau angezeigt werden",

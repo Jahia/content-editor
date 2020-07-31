@@ -35,38 +35,45 @@ export const onServerError = (error, formikActions, notificationContext, t, defa
     // Set submitting false
     formikActions.setSubmitting(false);
 
+    let notificationErrorMessage = t(defaultErrorMessage);
     const graphQLErrors = error.graphQLErrors;
     if (graphQLErrors && graphQLErrors.length > 0) {
+        let notify = false;
         for (const graphQLError of graphQLErrors) {
             if (graphQLError.message && graphQLError.message.startsWith('javax.jcr.ItemExistsException')) {
                 // Custom handling for this error, system name is not valid
 
                 notificationContext.notify(t('content-editor:label.contentEditor.error.changeSystemName'), ['closeButton']);
+                notificationErrorMessage = null;
                 formikActions.setFieldError('ce:systemName', 'alreadyExist');
                 formikActions.setFieldTouched('ce:systemName', true, false);
-                return;
             }
 
-            if (graphQLError.message &&
-                graphQLError.message.startsWith('org.jahia.services.content.PropertyConstraintViolationException') &&
-                graphQLError.message.includes('Invalid link')) {
-                // Custom handling for invalid link error
+            if (graphQLError.errorType === 'GqlConstraintViolationException' &&
+                graphQLError.extensions && graphQLError.extensions.constraintViolations &&
+                graphQLError.extensions.constraintViolations.length > 0) {
+                // Constraint violation errors
 
-                const extractedErrorData = graphQLError.message.match(/^org.jahia.services.content.PropertyConstraintViolationException: (?<prop>(.*?)): Invalid link(?<link>(.*?))$/);
-                if (extractedErrorData && extractedErrorData.groups && extractedErrorData.groups.prop && extractedErrorData.groups.link) {
-                    const propNameIndex = extractedErrorData.groups.prop.lastIndexOf(' ');
-                    const propName = extractedErrorData.groups.prop.substring(propNameIndex + 1);
-
-                    notificationContext.notify(t('content-editor:label.contentEditor.error.invalidLinks'), ['closeButton']);
-                    formikActions.setFieldError(propName, 'invalidLink_' + extractedErrorData.groups.link);
-                    formikActions.setFieldTouched(propName, true, false);
-                    return;
+                notify = true;
+                for (const constraintViolation of graphQLError.extensions.constraintViolations) {
+                    console.log('Constraint violation error: ', constraintViolation)
+                    if (constraintViolation.propertyName) {
+                        if (constraintViolation.constraintMessage.startsWith('Invalid link')) {
+                            // Custom handling for invalid link error
+                            formikActions.setFieldError(constraintViolation.propertyName, 'invalidLink_' + constraintViolation.constraintMessage.substring("Invalid link".length));
+                        } else {
+                            // Default constraint violation handling
+                            formikActions.setFieldError(constraintViolation.propertyName, 'constraintViolation_' + constraintViolation.constraintMessage);
+                        }
+                        formikActions.setFieldTouched(constraintViolation.propertyName, true, false);
+                        notificationErrorMessage = t('content-editor:label.contentEditor.error.constraintViolations');
+                    }
                 }
             }
         }
     }
 
-    // No error handling, print error in console and use default error message
-    console.error(error);
-    notificationContext.notify(t(defaultErrorMessage), ['closeButton']);
+    if (notificationErrorMessage) {
+        notificationContext.notify(notificationErrorMessage, ['closeButton']);
+    }
 };
