@@ -65,6 +65,14 @@ describe('create action', () => {
         expect(cmp.props().context.disabled).toBe(false);
     });
 
+    it('should not be a disabled action when is clicked, but form is dirty', async () => {
+        defaultProps.context.formik.dirty = true;
+        const cmp = shallow(<CreateAction {...defaultProps}/>);
+        await cmp.props().context.onClick(defaultProps.context);
+
+        expect(cmp.props().context.disabled).toBe(false);
+    });
+
     it('should disable action when is clicked', async () => {
         const cmp = shallow(<CreateAction {...defaultProps}/>);
         await cmp.props().context.onClick(defaultProps.context);
