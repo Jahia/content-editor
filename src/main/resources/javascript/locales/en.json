@@ -156,7 +156,8 @@
           "required": "",
           "alreadyExist": "An item with the same system name already exists, please choose another one.",
           "maxLength": "{{selectorOptions.maxLength}} characters maximum",
-          "invalidLink": "The link {{0}} is broken"
+          "invalidLink": "The link {{0}} is broken",
+          "constraintViolation": "{{0}}"
         },
         "tab": {
           "edit": "Edit",
@@ -176,7 +177,7 @@
       "error": {
         "queryingContent": "Error querying content: {{details}}",
         "changeSystemName": "Please choose another system name",
-        "invalidLinks": "Please update the broken links"
+        "constraintViolations": "There are some validation errors! Correct the inputs and save again"
       },
       "preview": {
         "contentNotFound": "Content cannot be previewed in the page",
