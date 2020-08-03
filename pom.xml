@@ -65,7 +65,7 @@
         <tag>HEAD</tag>
     </scm>
     <properties>
-        <jahia-deploy-on-site>system</jahia-deploy-on-site>
+        <jahia-deploy-on-site>all</jahia-deploy-on-site>
         <jahia-module-type>system</jahia-module-type>
         <yarn.arguments>build -p</yarn.arguments>
         <require-capability>osgi.extender;filter:="(osgi.extender=org.jahia.bundles.blueprint.extender.config)"</require-capability>
