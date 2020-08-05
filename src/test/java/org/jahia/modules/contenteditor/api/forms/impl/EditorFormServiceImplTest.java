@@ -445,6 +445,28 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
     }
 
     @Test
+    public void hiddenFieldSetUsingNewNameForTemplateMixin() throws Exception {
+        textNode.addMixin("jmix:hiddenFieldSetV2");
+        session.save();
+        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
+        EditorFormFieldSet fs = getFieldSet(form, "content", "jmix:hiddenFieldSetV2");
+
+        Assert.isTrue(!fs.getDisplayed(), "FieldSet should not be displayed");
+        Assert.isTrue(fs.getActivated(), "FieldSet should be activated");
+        Assert.isTrue(!fs.getDynamic(), "FieldSet should not be dynamic");
+
+        fs = getFieldSet(form, "content", "jmix:hiddenFieldSetExtendsV2");
+
+        Assert.isTrue(!fs.getDisplayed(), "FieldSet should not be displayed");
+        Assert.isTrue(!fs.getActivated(), "FieldSet should not be activated");
+        Assert.isTrue(fs.getDynamic(), "FieldSet should be dynamic");
+        // clean up
+
+        textNode.removeMixin("jmix:hiddenFieldSetV2");
+        session.save();
+    }
+
+    @Test
     public void testFieldWithValueConstraintOverride() throws Exception {
         List<EditorFormFieldValueConstraint> fieldValueConstraints = editorFormService.getFieldConstraints(textNode.getPath(), textNode.getParent().getPath(), "jnt:text", "jnt:simpleRank", "prop3", new ArrayList<>(), Locale.ENGLISH, Locale.ENGLISH);
 
