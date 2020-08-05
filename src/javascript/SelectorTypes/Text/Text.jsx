@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {Input} from '@jahia/design-system-kit';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
-import {Visibility, Hidden} from '@jahia/moonstone/dist/icons';
+import {Visibility, Hidden} from '@jahia/moonstone';
 
 export const TextCmp = ({field, value, id, editorContext, onChange}) => {
     const [hidePassword, setHidePassword] = useState(true);

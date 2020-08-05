@@ -119,6 +119,7 @@ describe('PickerDialog - List view', () => {
             selectedPath: '/sites/mySite',
             setSelectedPath: jest.fn(),
             setSelectedItem: jest.fn(),
+            lang: 'en',
             uilang: 'en',
             pickerConfig: {
                 showOnlyNodesWithTemplates: false,

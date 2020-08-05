@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {Typography, ButtonGroup, Chip} from '@jahia/moonstone';
+import {Typography, ButtonGroup, Chip, Edit} from '@jahia/moonstone';
 import {DisplayActions, DisplayAction} from '@jahia/ui-extender';
 
 import {useTranslation} from 'react-i18next';
@@ -10,7 +10,6 @@ import PublicationInfoBadge from '~/PublicationInfo/PublicationInfo.badge';
 import LockInfoBadge from '~/Lock/LockInfo.badge';
 import WipInfoChip from '~/EditPanel/WorkInProgress/Chip/WipInfo.Chip';
 import {Constants} from '~/ContentEditor.constants';
-import {Edit} from '@jahia/moonstone/dist/icons';
 import {truncate} from '~/utils/helper';
 import styles from './UpperSection.scss';
 import {ButtonWithPastilleRenderer, ButtonRenderer} from './ActionsButtons';

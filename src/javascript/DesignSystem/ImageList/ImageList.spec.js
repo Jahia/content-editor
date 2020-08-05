@@ -27,6 +27,7 @@ describe('imageList', () => {
                 type: 'jpeg2'
             }],
             isMultipleSelectable: true,
+            labelEmpty: '',
             onImageDoubleClick: jest.fn(),
             onImageSelection: jest.fn()
         };

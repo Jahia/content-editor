@@ -1,6 +1,5 @@
 import React from 'react';
-import {Chip} from '@jahia/moonstone';
-import {Lock} from '@jahia/moonstone/dist/icons';
+import {Chip, Lock} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {getBadgeContent} from './Lock.utils';

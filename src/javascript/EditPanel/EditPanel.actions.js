@@ -1,6 +1,6 @@
 import React from 'react';
 import TabBarAction from './tabbar/tabbar.action';
-import {Edit, Setting} from '@jahia/moonstone/dist/icons';
+import {Edit, Setting} from '@jahia/moonstone';
 import {Constants} from '~/ContentEditor.constants';
 import EditPanelContent from '~/EditPanel/EditPanelContent/EditPanelContent';
 import AdvancedOptions from '~/EditPanel/AdvancedOptions/AdvancedOptions';
