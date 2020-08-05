@@ -1,18 +1,12 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {MultipleInput} from '~/DesignSystem/MultipleInput';
 import PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 
 const MultipleSelect = ({field, id, value, setActionContext, onChange}) => {
-    useEffect(() => {
-        setActionContext(prevActionContext => ({
-            onChange,
-            initialized: true,
-            contextHasChange: !prevActionContext.initialized ||
-                // As action system make deep copy of formik each time value change we must update the context !
-                prevActionContext.formik.values[field.name] !== value
-        }));
-    }, [value, onChange]);
+    setActionContext({
+        onChange
+    });
 
     const options = field.valueConstraints.map(constraint => ({
         label: constraint.displayValue,
