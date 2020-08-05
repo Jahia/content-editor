@@ -251,30 +251,6 @@ describe('Field component', () => {
         expect(cmp.dive().debug()).not.toContain('htmlFor="FieldID"');
     });
 
-    it('should display the contextualMenu when action exists', () => {
-        defaultProps.actionContext.noAction = false;
-
-        const cmp = shallowWithTheme(
-            <Field {...defaultProps}/>,
-            {},
-            dsGenericTheme
-        );
-
-        expect(cmp.dive().debug()).toContain('ContextualMenu');
-    });
-
-    it('should not display the contextualMenu when action does not exist', () => {
-        defaultProps.actionContext.noAction = true;
-
-        const cmp = shallowWithTheme(
-            <Field {...defaultProps}/>,
-            {},
-            dsGenericTheme
-        );
-
-        expect(cmp.dive().debug()).not.toContain('ContextualMenu');
-    });
-
     it('should display an error message when field is in error', () => {
         defaultProps.formik.errors = {
             text: 'required'

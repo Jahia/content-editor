@@ -10,14 +10,20 @@ export const registerPickerActions = registry => {
         buttonIcon: <DotsVertical/>,
         buttonLabel: 'label.contentEditor.edit.action.fieldMoreOptions',
         menuTarget: 'ContentPickerActions',
-        showIcons: true
+        showIcons: true,
+        displayFieldActions: (field, value) => {
+            return !field.multiple && value;
+        }
     });
 
     registry.add('action', 'MediaPickerMenu', registry.get('action', 'menuAction'), {
         buttonIcon: <DotsVertical/>,
         buttonLabel: 'label.contentEditor.edit.action.fieldMoreOptions',
         menuTarget: 'MediaPickerActions',
-        showIcons: true
+        showIcons: true,
+        displayFieldActions: (field, value) => {
+            return !field.multiple && value;
+        }
     });
 
     registry.add('action', 'replaceContent', replaceAction, {

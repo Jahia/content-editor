@@ -1,14 +1,13 @@
-import React, {useState} from 'react';
+import React from 'react';
 import * as PropTypes from 'prop-types';
 import {connect} from 'formik';
-
 import {FieldPropTypes} from '~/FormDefinitions';
 import {resolveSelectorType} from '~/SelectorTypes';
 import {Field} from './Field';
+import {registry} from '@jahia/ui-extender';
 
 const FieldContainerCmp = ({field, formik, inputContext}) => {
     const selectorType = resolveSelectorType(field);
-    const [actionContext, _setActionContext] = useState({noAction: true});
     if (!selectorType) {
         if (field.selectorType) {
             console.warn(`No renderer component for ${field.selectorType} selectorType`);
@@ -19,11 +18,8 @@ const FieldContainerCmp = ({field, formik, inputContext}) => {
         return <></>;
     }
 
-    const setActionContext = getNewActionContext => {
-        const newActionContext = getNewActionContext(actionContext);
-        if (newActionContext.contextHasChange) {
-            _setActionContext({field, formik, ...newActionContext});
-        }
+    const setActionContext = actionContext => {
+        registry.addOrReplace('selectorType.actionContext', field.name, actionContext);
     };
 
     return (
@@ -39,8 +35,7 @@ const FieldContainerCmp = ({field, formik, inputContext}) => {
             }}
             selectorType={selectorType}
             field={field}
-            formik={formik}
-            actionContext={actionContext}/>
+            formik={formik}/>
     );
 };
 

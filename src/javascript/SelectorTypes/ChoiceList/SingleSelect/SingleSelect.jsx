@@ -1,6 +1,6 @@
 import {Select, Input} from '@jahia/design-system-kit';
 import {withStyles, MenuItem} from '@material-ui/core';
-import React, {useEffect} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 
@@ -19,15 +19,9 @@ const styles = theme => ({
 });
 
 export const SingleSelectCmp = ({classes, field, value, id, setActionContext, onChange}) => {
-    useEffect(() => {
-        setActionContext(prevActionContext => ({
-            onChange,
-            initialized: true,
-            contextHasChange: !prevActionContext.initialized ||
-                // As action system make deep copy of formik each time value change we must update the context !
-                prevActionContext.formik.values[field.name] !== value
-        }));
-    }, [onChange, setActionContext, field, value]);
+    setActionContext({
+        onChange
+    });
 
     const readOnly = field.readOnly;
 
