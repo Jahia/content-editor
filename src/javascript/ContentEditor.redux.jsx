@@ -1,5 +1,5 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import {connect, useDispatch, useSelector} from 'react-redux';
 import {ContentEditor} from './ContentEditor';
 import PropTypes from 'prop-types';
 import {compose} from '~/utils';
@@ -7,6 +7,9 @@ import {Constants} from '~/ContentEditor.constants';
 import {useContentEditorHistory} from '~/ContentEditorHistory';
 import {useTranslation} from 'react-i18next';
 import {withApollo} from 'react-apollo';
+import {replaceOpenedPath} from '~/JContent.redux-actions';
+import {useContentEditorHistoryContext} from '~/ContentEditorHistory/ContentEditorHistory.context';
+import {registry} from '@jahia/ui-extender';
 
 const mapStateToProps = state => {
     return {
@@ -17,18 +20,42 @@ const mapStateToProps = state => {
 
 const ContentEditorReduxCmp = ({client, mode, uuid, lang, uilang, site, contentType}) => {
     const {redirect, hasHistory, exit, registerBlockListener, unRegisterBlockListener} = useContentEditorHistory();
+    const {storedLocation, setStoredLocation} = useContentEditorHistoryContext();
+    const {openPaths} = useSelector(state => ({openPaths: state.jcontent.openPaths}));
+    const dispatch = useDispatch();
     const {t} = useTranslation();
     // Sync GWT language
     if (window.top.authoringApi.switchLanguage) {
         window.top.authoringApi.switchLanguage(lang);
     }
 
+    const rename = (node, mutateNode) => {
+        if (mutateNode && mutateNode.rename) {
+            if (storedLocation && storedLocation.location) {
+                if (openPaths) {
+                    dispatch(replaceOpenedPath(openPaths.map(openPath => openPath.replace(node.path, mutateNode.rename))));
+                }
+
+                const {site: currentSite, language, mode: currentMode, path} = registry.get('jcontent', 'utils').extractParamsFromUrl(storedLocation.location.pathname, storedLocation.location.search);
+                const newStoredLocation = {
+                    ...storedLocation,
+                    location: {
+                        ...storedLocation.location,
+                        pathname: registry.get('jcontent', 'utils').buildUrl(currentSite, language, currentMode, path.replace(node.path, mutateNode.rename))
+                    }
+                };
+                setStoredLocation(newStoredLocation);
+                return newStoredLocation;
+            }
+        }
+    };
+
     const envProps = {
         setUrl: (mode, language, uuid, contentType) => redirect({mode, language, uuid, rest: contentType}),
-        back: () => {
+        back: (uuid, operator, node, mutateNode) => {
             client.cache.flushNodeEntryById(uuid);
-
-            exit();
+            const overridedStoredLocation = rename(node, mutateNode);
+            exit(overridedStoredLocation);
         },
         disabledBack: () => !hasHistory(),
         setLanguage: language => redirect({language}),
@@ -38,7 +65,8 @@ const ContentEditorReduxCmp = ({client, mode, uuid, lang, uilang, site, contentT
         unregisterListeners: () => {
             unRegisterBlockListener();
         },
-        shouldRedirectBeadCrumb: () => false
+        shouldRedirectBeadCrumb: () => false,
+        renameNode: rename
     };
     return (
         <ContentEditor env={Constants.env.redux}

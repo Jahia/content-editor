@@ -18,9 +18,6 @@ import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEdit
 import envEditCallbacks from './Edit.env';
 import {adaptEditFormData} from './Edit.adapter';
 import {Constants} from '~/ContentEditor.constants';
-import {useContentEditorHistoryContext} from '~/ContentEditorHistory/ContentEditorHistory.context';
-import {useDispatch, useSelector} from 'react-redux';
-import {replaceOpenedPath} from '~/JContent.redux-actions';
 
 export const EditCmp = ({
     client,
@@ -30,9 +27,6 @@ export const EditCmp = ({
     const contentEditorConfigContext = useContentEditorConfigContext();
     const {path, lang, nodeData, formQueryParams, initialValues, title} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
-    const {storedLocation, setStoredLocation} = useContentEditorHistoryContext();
-    const {openPaths} = useSelector(state => ({openPaths: state.jcontent.openPaths}));
-    const dispatch = useDispatch();
 
     const handleSubmit = (values, actions) => {
         saveNode({
@@ -48,29 +42,11 @@ export const EditCmp = ({
             },
             editCallback: (node, mutateNode) => {
                 if (values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK]) {
-                    values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK]();
+                    values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK](node, mutateNode);
                 } else {
                     const envEditCallback = envEditCallbacks[contentEditorConfigContext.env];
                     if (envEditCallback) {
-                        envEditCallback(node.uuid, contentEditorConfigContext);
-                    }
-                }
-
-                if (mutateNode.rename) {
-                    if (storedLocation && storedLocation.location) {
-                        const newNameStartPosition = mutateNode.rename.lastIndexOf('/') + 1;
-                        const newName = mutateNode.rename.substring(newNameStartPosition, mutateNode.rename.length);
-                        if (openPaths) {
-                            dispatch(replaceOpenedPath(openPaths.map(openPath => openPath.replace(node.name, newName))));
-                        }
-
-                        setStoredLocation({
-                            ...storedLocation,
-                            location: {
-                                ...storedLocation.location,
-                                pathname: storedLocation.location.pathname.replace(node.name, newName)
-                            }
-                        });
+                        envEditCallback(node, mutateNode, contentEditorConfigContext);
                     }
                 }
 
