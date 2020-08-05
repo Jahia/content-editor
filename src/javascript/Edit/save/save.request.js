@@ -58,9 +58,9 @@ export const saveNode = ({
                 }
             }
         ]
-    }).then(() => {
+    }).then(mutation => {
         if (editCallback) {
-            editCallback(nodeData.uuid);
+            editCallback(nodeData, mutation.data.jcr.mutateNode);
         }
 
         notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.success'), ['closeButton']);
