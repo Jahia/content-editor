@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Radio} from '@material-ui/core';
-import {Button, Typography} from '@jahia/moonstone';
-import {Check} from '@jahia/moonstone/dist/icons';
+import {Button, Typography, Check} from '@jahia/moonstone';
 import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import classes from './WorkInProgressDialog.scss';

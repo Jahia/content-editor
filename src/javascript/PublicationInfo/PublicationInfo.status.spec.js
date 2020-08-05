@@ -1,7 +1,7 @@
 import PublicationInfoStatus from './PublicationInfo.status';
 import React from 'react';
 import {shallow} from '@jahia/test-framework';
-import {Cloud, FileContent, File, NoCloud, Warning} from '@jahia/moonstone/dist/icons';
+import {Cloud, FileContent, File, NoCloud, Warning} from '@jahia/moonstone';
 
 describe('PublicationInfo.status', () => {
     it('Should display not published chip', () => {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'clsx';
 import {Typography} from '@jahia/design-system-kit';
 import {withStyles} from '@material-ui/core';
-import {HandleDrag} from '@jahia/moonstone/dist/icons';
+import {HandleDrag} from '@jahia/moonstone';
 
 const styles = theme => ({
     container: {

@@ -1,5 +1,5 @@
 import React from 'react';
-import {ArrowLeft} from '@jahia/moonstone/dist/icons';
+import {ArrowLeft} from '@jahia/moonstone';
 import {registerEditActions} from '~/Edit/Edit.actions';
 import {registerCreateActions} from '~/Create/Create.actions';
 import {registerEditPanelActions} from '~/EditPanel/EditPanel.actions';

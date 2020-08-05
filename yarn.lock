@@ -1270,12 +1270,11 @@
     mdi-material-ui "^5.10.0"
     recompose "^0.30.0"
 
-"@jahia/moonstone@^0.15.8":
-  version "0.15.11"
-  resolved "https://npm.jahia.com/@jahia%2fmoonstone/-/moonstone-0.15.11.tgz#e9a9c003ae1fa3d40217bbd8945a66989a8c883c"
-  integrity sha512-NAyFjYZdeU3M/GMts9W+GuBpANMu9MqEqghwiYKrf/y3Oh1KVLVhNGFtcc67hyDv5t391xzgaB1K+KO4vXfDgw==
+"@jahia/moonstone@^0.16.0":
+  version "0.16.0"
+  resolved "https://npm.jahia.com/@jahia%2fmoonstone/-/moonstone-0.16.0.tgz#d3c32d0a2a6a1010acf2c0b6c1f52e8625677d6f"
+  integrity sha512-ufLTmiVIDxnRZNh+KJaLOpdqZDKYUC3ArsY8/QMIIv939Uw28TRI3SExbeVH1emnpCUk6gnn5h83Jv3csNGDnQ==
   dependencies:
-    "@svgr/webpack" "^4.3.3"
     clsx "^1.0.4"
     prop-types "^15.7.2"
     re-resizable "^6.2.0"
@@ -2131,7 +2130,7 @@
     merge-deep "^3.0.2"
     svgo "^1.2.2"
 
-"@svgr/webpack@^4.0.3", "@svgr/webpack@^4.3.3":
+"@svgr/webpack@^4.0.3":
   version "4.3.3"
   resolved "https://npm.jahia.com/@svgr%2fwebpack/-/webpack-4.3.3.tgz#13cc2423bf3dff2d494f16b17eb7eacb86895017"
   integrity sha512-bjnWolZ6KVsHhgyCoYRFmbd26p8XVbulCzSG53BDQqAr+JOAderYK7CuYrB3bDjHJuF6LJ7Wrr42+goLRV9qIg==

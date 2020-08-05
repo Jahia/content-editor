@@ -3,7 +3,7 @@ import saveAction from './save/save.action';
 import publishAction from './publish/publish.action';
 import startWorkflow from './startWorkflow/startWorkflow.action';
 import {CloudUpload, Save} from '@material-ui/icons';
-import {Edit, MoreVert} from '@jahia/moonstone/dist/icons';
+import {Edit, MoreVert} from '@jahia/moonstone';
 import editContentAction from './EditContent.action';
 import OpenWorkInProgressModalAction from '~/EditPanel/WorkInProgress/OpenWorkInProgressModal.action';
 import {CopyLanguageActionComponent} from '~/Edit/copyLanguage/copyLanguage.action';

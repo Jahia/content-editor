@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
-import {Chip} from '@jahia/moonstone';
-import {Cloud, File, FileContent, NoCloud, Warning} from '@jahia/moonstone/dist/icons';
+import {Chip, Cloud, File, FileContent, NoCloud, Warning} from '@jahia/moonstone';
 
 const config = {
     modified: {

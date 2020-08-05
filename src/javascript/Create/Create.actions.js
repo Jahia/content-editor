@@ -1,6 +1,6 @@
 import React from 'react';
 import {Save} from '@material-ui/icons';
-import {AddCircle} from '@jahia/moonstone/dist/icons';
+import {AddCircle} from '@jahia/moonstone';
 
 import createNewContentAction from './CreateNewContentAction/createNewContent.action';
 import createButtonAction from './CreateForm/create.action';
