@@ -1,11 +1,10 @@
 import React, {useEffect, useRef} from 'react';
 import {Grid, InputLabel, withStyles} from '@material-ui/core';
 import {Typography} from '@jahia/design-system-kit';
-import {MoreVert, Public} from '@material-ui/icons';
-import {Badge, IconButton} from '@jahia/design-system-kit';
+import {Public} from '@material-ui/icons';
+import {Badge} from '@jahia/design-system-kit';
 import {useTranslation} from 'react-i18next';
 import * as PropTypes from 'prop-types';
-import {ContextualMenu} from '@jahia/ui-extender';
 import {FieldPropTypes} from '~/FormDefinitions';
 import {MultipleField} from './MultipleField';
 import {SingleField} from './SingleField';
@@ -17,6 +16,7 @@ import contentEditorHelper from '~/ContentEditor.helper';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import {useApolloClient} from '@apollo/react-hooks';
+import {FieldActions} from './Field.actions';
 
 let styles = theme => {
     const common = {
@@ -62,14 +62,13 @@ let styles = theme => {
     };
 };
 
-export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, actionContext, formik}) => {
+export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, formik}) => {
     const {t} = useTranslation();
     const editorContext = useContentEditorContext();
     const sectionsContext = useContentEditorSectionContext();
     const client = useApolloClient();
 
     const {errors, touched, values, setFieldValue, setFieldTouched} = formik;
-    const contextualMenu = useRef(null);
     const onChangeValue = useRef(undefined);
 
     const isMultipleField = field.multiple && !selectorType.supportMultiple;
@@ -118,31 +117,6 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, a
 
         return () => registeredOnChange(undefined);
     }, []);
-
-    let actionCmp;
-    if (inputContext.actionRender) {
-        actionCmp = inputContext.actionRender;
-    } else if (actionContext.noAction) {
-        actionCmp = <span className={classes.emptySpace}/>;
-    } else {
-        actionCmp = (
-            <>
-                <ContextualMenu ref={contextualMenu}
-                                actionKey={selectorType.key + 'Menu'}
-                                context={actionContext}
-                />
-                <IconButton variant="ghost"
-                            data-sel-action="moreOptions"
-                            aria-label={t('content-editor:label.contentEditor.edit.action.fieldMoreOptions')}
-                            icon={<MoreVert/>}
-                            onClick={event => {
-                                event.stopPropagation();
-                                contextualMenu.current.open(event);
-                            }}
-                />
-            </>
-        );
-    }
 
     return (
         <div className={`${classes.formControl} ${shouldDisplayErrors ? classes.formControlError : ''}`}
@@ -233,7 +207,9 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, a
                                              onChange={onChange}/>}
                         </Grid>
                         <Grid item>
-                            {actionCmp}
+                            <FieldActions inputContext={inputContext}
+                                          selectorType={selectorType}
+                                          field={field}/>
                         </Grid>
                     </Grid>
                     {inputContext.displayErrors && (

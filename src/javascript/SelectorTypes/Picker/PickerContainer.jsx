@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'formik';
 import {useTranslation} from 'react-i18next';
@@ -14,20 +14,6 @@ const PickerCmp = ({field, value, editorContext, setActionContext, onChange}) =>
     const [isDialogOpen, setDialogOpen] = useState(false);
     const {fieldData, error, loading} = pickerConfig.picker.pickerInput.usePickerInputData(value, editorContext);
 
-    useEffect(() => {
-        if (!field.multiple) {
-            setActionContext(prevActionContext => ({
-                open: setDialogOpen,
-                noAction: !value,
-                fieldData,
-                editorContext,
-                contextHasChange:
-                    (prevActionContext.fieldData && prevActionContext.fieldData.path) !== (fieldData && fieldData.path),
-                onChange: newValue => onChange(newValue)
-            }));
-        }
-    }, [fieldData, setDialogOpen]);
-
     if (error) {
         const message = t(
             'jcontent:label.jcontent.error.queryingContent',
@@ -39,6 +25,13 @@ const PickerCmp = ({field, value, editorContext, setActionContext, onChange}) =>
     if (loading) {
         return <ProgressOverlay/>;
     }
+
+    setActionContext({
+        open: setDialogOpen,
+        fieldData,
+        editorContext,
+        onChange: newValue => onChange(newValue)
+    });
 
     const onItemSelection = data => {
         setDialogOpen(false);
