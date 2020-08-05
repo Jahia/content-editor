@@ -70,7 +70,7 @@ export const ChildrenSectionCmp = ({section, classes, formik: {values, handleCha
                            badgeContent={t('content-editor:label.contentEditor.edit.sharedLanguages')}
                            icon={<Public/>}
                            variant="normal"
-                           color="info"
+                           color="primary"
                     />
                 </div>
 
