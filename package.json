@@ -37,7 +37,7 @@
     "dependencies": {
         "@apollo/react-hooks": "^3.1.4",
         "@jahia/data-helper": "^0.0.19",
-        "@jahia/design-system-kit": "^1.1.6",
+        "@jahia/design-system-kit": "^1.1.7",
         "@jahia/icons": "^1.1.1",
         "@jahia/moonstone": "^0.16.0",
         "@jahia/react-material": "^2.1.2",
