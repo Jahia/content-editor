@@ -1,12 +1,8 @@
 import {Constants} from '../ContentEditor.constants';
 
 const envEditCallbacks = {};
-envEditCallbacks[Constants.env.standalone] = (node, mutateNode, contentEditorConfigContext) => {
-    contentEditorConfigContext.envProps.editCallback(node.uuid);
-};
-
-envEditCallbacks[Constants.env.redux] = (node, mutateNode, contentEditorConfigContext) => {
-    contentEditorConfigContext.envProps.renameNode(node, mutateNode);
+envEditCallbacks[Constants.env.standalone] = (nodeUuid, contentEditorConfigContext) => {
+    contentEditorConfigContext.envProps.editCallback(nodeUuid);
 };
 
 export default envEditCallbacks;

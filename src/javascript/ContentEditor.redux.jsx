@@ -29,7 +29,7 @@ const ContentEditorReduxCmp = ({client, mode, uuid, lang, uilang, site, contentT
         window.top.authoringApi.switchLanguage(lang);
     }
 
-    const rename = (node, mutateNode) => {
+    const handleRename = (node, mutateNode) => {
         if (mutateNode && mutateNode.rename) {
             if (storedLocation && storedLocation.location) {
                 if (openPaths) {
@@ -52,9 +52,8 @@ const ContentEditorReduxCmp = ({client, mode, uuid, lang, uilang, site, contentT
 
     const envProps = {
         setUrl: (mode, language, uuid, contentType) => redirect({mode, language, uuid, rest: contentType}),
-        back: (uuid, operator, node, mutateNode) => {
+        back: (uuid, operator, overridedStoredLocation) => {
             client.cache.flushNodeEntryById(uuid);
-            const overridedStoredLocation = rename(node, mutateNode);
             exit(overridedStoredLocation);
         },
         disabledBack: () => !hasHistory(),
@@ -66,7 +65,7 @@ const ContentEditorReduxCmp = ({client, mode, uuid, lang, uilang, site, contentT
             unRegisterBlockListener();
         },
         shouldRedirectBeadCrumb: () => false,
-        renameNode: rename
+        handleRename: handleRename
     };
     return (
         <ContentEditor env={Constants.env.redux}

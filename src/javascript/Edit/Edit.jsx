@@ -41,12 +41,13 @@ export const EditCmp = ({
                 values
             },
             editCallback: (node, mutateNode) => {
+                const overridedStoredLocation = contentEditorConfigContext.envProps.handleRename && contentEditorConfigContext.envProps.handleRename(node, mutateNode);
                 if (values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK]) {
-                    values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK](node, mutateNode);
+                    values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK](overridedStoredLocation);
                 } else {
                     const envEditCallback = envEditCallbacks[contentEditorConfigContext.env];
                     if (envEditCallback) {
-                        envEditCallback(node, mutateNode, contentEditorConfigContext);
+                        envEditCallback(node.uuid, contentEditorConfigContext);
                     }
                 }
 

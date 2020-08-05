@@ -6,12 +6,12 @@ import * as PropTypes from 'prop-types';
 const GoBack = ({context, render: Render}) => {
     const {envProps} = useContentEditorConfigContext();
     const [open, setOpen] = useState(false);
-    const executeGoBackAction = (node, mutateNode) => {
+    const executeGoBackAction = overridedStoredLocation => {
         if (envProps.unregisterListeners) {
             envProps.unregisterListeners();
         }
 
-        envProps.back(context.uuid, context.operator, node, mutateNode);
+        envProps.back(context.uuid, context.operator, overridedStoredLocation);
     };
 
     return (
@@ -20,7 +20,7 @@ const GoBack = ({context, render: Render}) => {
                 open={open}
                 titleKey="content-editor:label.contentEditor.edit.action.goBack.title"
                 formik={context.formik}
-                actionCallback={(node, mutateNode) => executeGoBackAction(node, mutateNode)}
+                actionCallback={overridedStoredLocation => executeGoBackAction(overridedStoredLocation)}
                 onCloseDialog={() => setOpen(false)}
             />
             <Render
