@@ -36,11 +36,11 @@ let styles = theme => {
             borderLeft: '4px solid transparent'
         },
         formControlError: {
-            borderLeft: `4px solid ${theme.palette.support.gamma}`
+            borderLeft: `4px solid ${theme.palette.moonstone.support.warning60}`
         },
         errorMessage: {
             marginTop: '4px',
-            color: theme.palette.support.delta
+            color: theme.palette.moonstone.support.warning
         },
         inputLabel: {
             ...theme.typography.zeta,
