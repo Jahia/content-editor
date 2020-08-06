@@ -27,6 +27,7 @@ export const EditCmp = ({
     const contentEditorConfigContext = useContentEditorConfigContext();
     const {path, lang, nodeData, formQueryParams, initialValues, title} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
+
     const handleSubmit = (values, actions) => {
         saveNode({
             client,
@@ -39,13 +40,14 @@ export const EditCmp = ({
                 sections,
                 values
             },
-            editCallback: nodeUuid => {
+            editCallback: (node, mutateNode) => {
+                const overridedStoredLocation = contentEditorConfigContext.envProps.handleRename && contentEditorConfigContext.envProps.handleRename(node, mutateNode);
                 if (values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK]) {
-                    values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK]();
+                    values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK](overridedStoredLocation);
                 } else {
                     const envEditCallback = envEditCallbacks[contentEditorConfigContext.env];
                     if (envEditCallback) {
-                        envEditCallback(nodeUuid, contentEditorConfigContext);
+                        envEditCallback(node.uuid, contentEditorConfigContext);
                     }
                 }
 

@@ -75,19 +75,19 @@
             "chipLabelField": "Work in progress",
             "btnCancel": "Cancel",
             "btnDone": "Done",
-            "checkboxLabel": "Work in progress.",
+            "checkboxLabel": "Work in progress",
             "checkboxSubLabel": "The content can be published in all languages.",
             "clickHere": "click here.",
             "dialogTitle": "Work in progress (WIP)",
-            "dialogSubTitle": "Mark your content as work in progress if you want to prevent the publication of your content. To find out more about Work in progress ",
+            "dialogSubTitle": "Mark your content as work in progress to prevent the publication of your content. To find out more about Work in progress ",
             "label" : {
               "mark": "Mark as Work in progress",
               "unmark": "Unmark as Work in progress"
             },
-            "localizedPropertiesOnly": "Localised properties only in:",
-            "localizedPropertiesOnlySubText": "The content won't be publishable in the selected languages. However, properties that are shared by all languages can be part of a publication in a non-selected language.",
-            "allContent": "All content (localised & properties)",
-            "allContentSubText": "The \"All Content\" option prevents any publication in any language."
+            "localizedPropertiesOnly": "Localised properties only in",
+            "localizedPropertiesOnlySubText": "The content won't be publishable in the selected languages. However, properties that are shared by all languages can be part of a publication.",
+            "allContent": "All properties, in all languages",
+            "allContentSubText": "This option prevents publication in any language."
           }
         },
         "advancedOption": {

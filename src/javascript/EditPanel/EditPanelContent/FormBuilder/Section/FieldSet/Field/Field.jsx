@@ -154,7 +154,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, f
                                                data-sel-content-editor-field-mandatory={Boolean(hasMandatoryError)}
                                                badgeContent={t('content-editor:label.contentEditor.edit.validation.required')}
                                                variant="normal"
-                                               color={hasMandatoryError ? 'warning' : 'primary'}
+                                               color={hasMandatoryError ? 'warning' : 'info'}
                                         />
                                     )}
                                     {showChipField(field.i18n, wipInfo, editorContext.lang) && (
@@ -170,7 +170,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, f
                                            badgeContent={t('content-editor:label.contentEditor.edit.sharedLanguages')}
                                            icon={<Public/>}
                                            variant="normal"
-                                           color="info"
+                                           color="primary"
                                     />}
                                 </>
                             )}
