@@ -23,7 +23,7 @@ export const SingleSelectCmp = ({classes, field, value, id, setActionContext, on
         onChange
     });
 
-    const readOnly = field.readOnly;
+    const readOnly = field.readOnly || field.valueConstraints.length === 0;
 
     // Reset value if constraints doesnt contains the actual value.
     if (value && field.valueConstraints.find(v => v.value.string === value) === undefined) {
