@@ -75,19 +75,19 @@
             "chipLabelField": "Travail en cours",
             "btnCancel": "Annuler",
             "btnDone": "Valider",
-            "checkboxLabel": "Travail en cours.",
+            "checkboxLabel": "Travail en cours",
             "checkboxSubLabel": "Le contenu peut être publié dans toutes les langues.",
             "clickHere": "cliquez ici.",
             "dialogTitle": "Travail en cours (WIP)",
-            "dialogSubTitle": "Vous pouvez marquer comme travail en cours pour en empêcher sa publication. Pour en savoir plus sur l'option Marquer comme travail en cours, ",
+            "dialogSubTitle": "Vous pouvez marquer le contenu comme travail en cours pour en empêcher sa publication. Pour en savoir plus sur l'option Marquer comme travail en cours, ",
             "label" : {
               "mark": "Marquer comme travail en cours",
               "unmark": "Ne pas marquer comme travail en cours"
             },
-            "localizedPropertiesOnly": "Propriétés internationalisées seulement:",
-            "localizedPropertiesOnlySubText": "Le contenu ne sera pas publiable dans les langues sélectionnées. Cependant, Les propriétés communes à toutes les langues peuvent cependant faire partie d'une publication dans une autre langue.",
-            "allContent": "Tout le contenu (propriétés communes et internationalisées)",
-            "allContentSubText": "L'option \"Tout le contenu\" empêche toute publication dans n'importe quelle langue."
+            "localizedPropertiesOnly": "Propriétés internationalisées seulement",
+            "localizedPropertiesOnlySubText": "Le contenu ne sera pas publiable dans les langues sélectionnées. Cependant, Les propriétés communes à toutes les langues peuvent cependant faire partie d'une publication.",
+            "allContent": "Toutes les propriétés, dans toutes les langues",
+            "allContentSubText": "Cette option empêche la publication dans toutes les langues."
           }
         },
         "advancedOption": {

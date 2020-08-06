@@ -75,7 +75,7 @@
             "chipLabelField": "In Arbeit",
             "btnCancel": "Abbrechen",
             "btnDone": "Anwenden",
-            "checkboxLabel": "In Arbeit.",
+            "checkboxLabel": "In Arbeit",
             "checkboxSubLabel": "Der Content kann in allen Sprachen veröffentlicht werden.",
             "clickHere": "klicken Sie hier.",
             "dialogTitle": "In Arbeit (WIP)",
@@ -84,10 +84,10 @@
               "mark": "Als \"In Arbeit\" markieren",
               "unmark": "Nicht als \"In Arbeit\" markieren"
             },
-            "localizedPropertiesOnly": "Nur sprachabhängige Eigenschaften in:",
-            "localizedPropertiesOnlySubText": "Der Inhalt der selektierten Sprache wird nicht veröffentlicht. Trotzdem können Properties, die von allen Sprachen verwendet werden, Teil eines Veröffentlichungs-Prozesses einer nicht ausgewählten Sprache sein.",
-            "allContent": "Gesamter Inhalt (gemeinsame und sprachabhängige Eigenschaften)",
-            "allContentSubText": "Die Option \"Gesamter Inhalt\" verhindert die Veröffentlichung in allen Sprachen. "
+            "localizedPropertiesOnly": "Nur sprachabhängige Eigenschaften in",
+            "localizedPropertiesOnlySubText": "Der Inhalt der selektierten Sprache wird nicht veröffentlicht. Trotzdem können einzelne Properties, die von allen Sprachen verwendet werden, Teil eines Veröffentlichungs-Prozesses sein.",
+            "allContent": "Alle Properties, in allen Sprachen",
+            "allContentSubText": "Diese Option verhindert eine Veröffentlichung in allen Sprachen."
           }
         },
         "advancedOption": {
