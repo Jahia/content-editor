@@ -93,6 +93,7 @@ const registerChoiceListOnChange = registry => {
                         }).then(data => {
                         if (data?.data?.forms?.fieldConstraints) {
                             dependentPropertiesField.valueConstraints = data.data.forms.fieldConstraints;
+                            dependentPropertiesField.readOnly = dependentPropertiesField.valueConstraints.length === 0;
                             editorContext.setSections([...editorContext.sections]);
                         }
                     });
