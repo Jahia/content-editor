@@ -100,6 +100,21 @@ describe('adaptFormData', () => {
         expect(formData.sections[1].fieldSets[0].fields[0].readOnly).toEqual(true);
     });
 
+    it('should move system name to mix:title fieldset if it exists', () => {
+        const nodeType = {
+            name: 'jnt:page',
+            displayName: 'Page'
+        };
+        formData.sections[0].fieldSets.unshift({
+            name: 'mix:title',
+            fields: []
+        });
+        adaptSystemNameField(rawData, formData, null, t, nodeType, false);
+        expect(formData.sections[0].fieldSets[0].name).toEqual('mix:title');
+        expect(formData.sections[0].fieldSets[0].fields[0].name).toEqual('ce:systemName');
+        expect(formData.sections[1].fieldSets.length).toEqual(0);
+    });
+
     it('should move system name to content section for some specific nodetypes', () => {
         const nodeType = {
             name: 'jnt:page',
