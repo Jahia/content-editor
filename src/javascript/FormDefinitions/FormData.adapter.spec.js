@@ -1,4 +1,5 @@
 import {adaptSystemNameField} from './FormData.adapter';
+import {Constants} from '~/ContentEditor.constants';
 
 const t = val => val;
 
@@ -31,7 +32,7 @@ describe('adaptFormData', () => {
                             name: 'nt:base',
                             fields: [
                                 {
-                                    name: 'ce:systemName',
+                                    name: Constants.systemName.name,
                                     readOnly: false,
                                     selectorOptions: [{
                                         name: 'description-i18n-key',
@@ -111,7 +112,7 @@ describe('adaptFormData', () => {
         });
         adaptSystemNameField(rawData, formData, null, t, nodeType, false);
         expect(formData.sections[0].fieldSets[0].name).toEqual('mix:title');
-        expect(formData.sections[0].fieldSets[0].fields[0].name).toEqual('ce:systemName');
+        expect(formData.sections[0].fieldSets[0].fields[0].name).toEqual(Constants.systemName.name);
         expect(formData.sections[1].fieldSets.length).toEqual(0);
     });
 
@@ -123,7 +124,7 @@ describe('adaptFormData', () => {
         adaptSystemNameField(rawData, formData, null, t, nodeType, false);
         expect(formData.sections[0].fieldSets[0].name).toEqual('jnt:page');
         expect(formData.sections[0].fieldSets[0].displayName).toEqual('Page');
-        expect(formData.sections[0].fieldSets[0].fields[0].name).toEqual('ce:systemName');
+        expect(formData.sections[0].fieldSets[0].fields[0].name).toEqual(Constants.systemName.name);
         expect(formData.sections[1].fieldSets.length).toEqual(0);
     });
 
@@ -137,7 +138,7 @@ describe('adaptFormData', () => {
         expect(formData.sections[0].name).toEqual('content');
         expect(formData.sections[0].fieldSets[0].name).toEqual('jnt:page');
         expect(formData.sections[0].fieldSets[0].displayName).toEqual('Page');
-        expect(formData.sections[0].fieldSets[0].fields[0].name).toEqual('ce:systemName');
+        expect(formData.sections[0].fieldSets[0].fields[0].name).toEqual(Constants.systemName.name);
         expect(formData.sections[1].fieldSets.length).toEqual(0);
     });
 
@@ -147,7 +148,7 @@ describe('adaptFormData', () => {
             displayName: 'Site'
         };
         adaptSystemNameField(rawData, formData, null, t, nodeType, false);
-        expect(formData.sections[1].fieldSets[0].fields[0].name).toEqual('ce:systemName');
+        expect(formData.sections[1].fieldSets[0].fields[0].name).toEqual(Constants.systemName.name);
         expect(formData.sections[1].fieldSets[0].fields[0].readOnly).toEqual(true);
     });
 
@@ -159,7 +160,7 @@ describe('adaptFormData', () => {
         formData.nodeData.lockedAndCannotBeEdited = true;
 
         adaptSystemNameField(rawData, formData, null, t, nodeType, false);
-        expect(formData.sections[1].fieldSets[0].fields[0].name).toEqual('ce:systemName');
+        expect(formData.sections[1].fieldSets[0].fields[0].name).toEqual(Constants.systemName.name);
         expect(formData.sections[1].fieldSets[0].fields[0].readOnly).toEqual(true);
     });
 

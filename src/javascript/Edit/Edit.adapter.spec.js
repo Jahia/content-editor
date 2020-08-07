@@ -1,4 +1,5 @@
 import {adaptEditFormData, adaptSaveRequest} from './Edit.adapter';
+import {Constants} from '~/ContentEditor.constants';
 
 jest.mock('~/SelectorTypes', () => {
     return {
@@ -301,7 +302,7 @@ describe('adaptEditFormData', () => {
 
         let saveRequestVariables = {
             propertiesToSave: [{
-                name: 'ce:systemName',
+                name: Constants.systemName.name,
                 value: 'dummy'
             }]
         };
@@ -323,7 +324,7 @@ describe('adaptEditFormData', () => {
 
         let saveRequestVariables = {
             propertiesToSave: [{
-                name: 'ce:systemName',
+                name: Constants.systemName.name,
                 value: 'dummy_updated'
             }]
         };
@@ -346,7 +347,7 @@ describe('adaptEditFormData', () => {
 
         let saveRequestVariables = {
             propertiesToSave: [{
-                name: 'ce:systemName',
+                name: Constants.systemName.name,
                 value: 'dummy*'
             }]
         };

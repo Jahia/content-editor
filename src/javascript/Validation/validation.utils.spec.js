@@ -1,4 +1,5 @@
 import {validateForm, onServerError} from './validation.utils';
+import {Constants} from '~/ContentEditor.constants';
 
 const t = val => val;
 
@@ -82,8 +83,8 @@ describe('validation utils', () => {
 
             onServerError(error, formikActions, notificationContext, t, 'default_message');
 
-            expect(formikActions.setFieldTouched).toHaveBeenCalledWith('ce:systemName', true, false);
-            expect(formikActions.setFieldError).toHaveBeenCalledWith('ce:systemName', 'alreadyExist');
+            expect(formikActions.setFieldTouched).toHaveBeenCalledWith(Constants.systemName.name, true, false);
+            expect(formikActions.setFieldError).toHaveBeenCalledWith(Constants.systemName.name, 'alreadyExist');
             expect(formikActions.setSubmitting).toHaveBeenCalledWith(false);
         });
 

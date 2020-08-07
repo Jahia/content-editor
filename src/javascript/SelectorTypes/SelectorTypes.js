@@ -11,6 +11,8 @@ import Checkbox from './Checkbox';
 import Category from './Category';
 import {registerPickerActions} from './Picker/actions';
 import {registry} from '@jahia/ui-extender';
+import SystemName from './SystemName';
+import registerSystemNameOnChange from './SystemName/SystemName.onChange';
 
 const adaptDateProperty = (field, property) => {
     return field.multiple ? property.notZonedDateValues : property.notZonedDateValue;
@@ -70,6 +72,9 @@ export const registerSelectorTypes = ceRegistry => {
     });
     registerChoiceListActions(ceRegistry);
     registerChoiceListOnChange(ceRegistry);
+
+    ceRegistry.add('selectorType', 'SystemName', {cmp: SystemName, supportMultiple: false});
+    registerSystemNameOnChange(ceRegistry);
 };
 
 export const resolveSelectorType = ({selectorType, selectorOptions}) => {
