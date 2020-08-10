@@ -79,7 +79,7 @@ export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType
         if (ntBaseFieldSet) {
             // Add i18ns label to System fieldset
             ntBaseFieldSet.displayName = t('content-editor:label.contentEditor.section.fieldSet.system.displayName');
-            const systemNameField = ntBaseFieldSet.fields.find(field => field.name === 'ce:systemName');
+            const systemNameField = ntBaseFieldSet.fields.find(field => field.name === Constants.systemName.name);
             if (systemNameField) {
                 // Add i18ns label to field
                 systemNameField.displayName = t('content-editor:label.contentEditor.section.fieldSet.system.fields.systemName');
@@ -120,9 +120,9 @@ export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType
 
     // Set initial value for system name
     if (isCreate) {
-        formData.initialValues['ce:systemName'] = rawData.jcr.result.newName;
+        formData.initialValues[Constants.systemName.name] = rawData.jcr.result.newName;
     } else {
-        formData.initialValues['ce:systemName'] = decodeSystemName(rawData.jcr.result.name);
+        formData.initialValues[Constants.systemName.name] = decodeSystemName(rawData.jcr.result.name);
     }
 };
 

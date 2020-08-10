@@ -1,4 +1,5 @@
 import {SaveErrorModal} from './SaveModal/SaveErrorModal';
+import {Constants} from '~/ContentEditor.constants';
 
 const setErrorFieldTouched = (errorsFields, setTouched) => {
     const fieldsTouched = Object.keys(errorsFields).reduce((touched, field) => {
@@ -44,8 +45,8 @@ export const onServerError = (error, formikActions, notificationContext, t, defa
 
                 notificationContext.notify(t('content-editor:label.contentEditor.error.changeSystemName'), ['closeButton']);
                 notificationErrorMessage = null;
-                formikActions.setFieldError('ce:systemName', 'alreadyExist');
-                formikActions.setFieldTouched('ce:systemName', true, false);
+                formikActions.setFieldError(Constants.systemName.name, 'alreadyExist');
+                formikActions.setFieldTouched(Constants.systemName.name, true, false);
             }
 
             if (graphQLError.errorType === 'GqlConstraintViolationException' &&

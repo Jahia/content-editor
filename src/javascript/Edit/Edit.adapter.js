@@ -159,7 +159,7 @@ export const adaptSaveRequest = (nodeData, saveRequestVariables) => {
 
     if (saveRequestVariables.propertiesToSave) {
         // Use system name to fill the save request variables.
-        const systemNameIndex = saveRequestVariables.propertiesToSave.findIndex(property => property.name === 'ce:systemName');
+        const systemNameIndex = saveRequestVariables.propertiesToSave.findIndex(property => property.name === Constants.systemName.name);
         if (systemNameIndex > -1) {
             const newSystemName = encodeSystemName(saveRequestVariables.propertiesToSave[systemNameIndex].value);
 
