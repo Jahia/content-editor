@@ -12,7 +12,6 @@ import {connect} from 'formik';
 import {Public} from '@material-ui/icons';
 import {getAutomaticOrderingFieldSet} from './AutomaticOrdering/AutomaticOrdering.utils';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
-import {useContentEditorContext} from '~/ContentEditor.context';
 
 const styles = theme => ({
     section: {
@@ -51,14 +50,12 @@ const styles = theme => ({
     }
 });
 
-export const ChildrenSectionCmp = ({section, classes, formik: {values, handleChange}}) => {
+export const ChildrenSectionCmp = ({section, classes, canManuallyOrder, canAutomaticallyOrder, formik: {values, handleChange}}) => {
     const {t} = useTranslation();
     const {sections} = useContentEditorSectionContext();
-    const {nodeData} = useContentEditorContext();
 
-    const canAutomaticOrder = values && values[Constants.automaticOrdering.mixin] !== undefined;
-    const isAutomaticOrder = canAutomaticOrder && values[Constants.automaticOrdering.mixin];
-    const automaticOrderingFieldSet = canAutomaticOrder && getAutomaticOrderingFieldSet(sections);
+    const isAutomaticOrder = canAutomaticallyOrder && values[Constants.automaticOrdering.mixin];
+    const automaticOrderingFieldSet = canAutomaticallyOrder && getAutomaticOrderingFieldSet(sections);
 
     return (
         <section className={classes.section} data-sel-content-editor-fields-group={section.displayName}>
@@ -78,7 +75,7 @@ export const ChildrenSectionCmp = ({section, classes, formik: {values, handleCha
                 </div>
 
                 <div className={classes.formControl}>
-                    {(canAutomaticOrder && automaticOrderingFieldSet) &&
+                    {(canAutomaticallyOrder && automaticOrderingFieldSet) &&
                     <>
                         <Typography color="beta" variant="zeta" htmlFor={t('content-editor:label.contentEditor.section.listAndOrdering.description')}>
                             {t('content-editor:label.contentEditor.section.listAndOrdering.description')}
@@ -96,11 +93,11 @@ export const ChildrenSectionCmp = ({section, classes, formik: {values, handleCha
                             </Typography>
                         </div>
 
-                        {!isAutomaticOrder && nodeData.primaryNodeType.hasOrderableChildNodes && <ManualOrdering/>}
+                        {!isAutomaticOrder && canManuallyOrder && <ManualOrdering/>}
                         {isAutomaticOrder && <AutomaticOrdering/>}
                     </>}
 
-                    {!canAutomaticOrder && <ManualOrdering/>}
+                    {!canAutomaticallyOrder && canManuallyOrder && <ManualOrdering/>}
                 </div>
             </article>
         </section>
@@ -110,7 +107,9 @@ export const ChildrenSectionCmp = ({section, classes, formik: {values, handleCha
 ChildrenSectionCmp.propTypes = {
     section: ChildrenSectionPropTypes.isRequired,
     classes: PropTypes.object.isRequired,
-    formik: PropTypes.object.isRequired
+    formik: PropTypes.object.isRequired,
+    canManuallyOrder: PropTypes.bool.isRequired,
+    canAutomaticallyOrder: PropTypes.bool.isRequired
 };
 
 export const ChildrenSection = compose(

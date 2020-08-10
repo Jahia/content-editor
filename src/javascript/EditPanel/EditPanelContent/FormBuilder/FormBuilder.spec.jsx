@@ -4,6 +4,20 @@ import {dsGenericTheme} from '@jahia/design-system-kit';
 
 import FormBuilder from './FormBuilder';
 
+jest.mock('formik', () => {
+    let formikvaluesmock;
+
+    return {
+        Form: jest.fn(),
+        connect: Cmp => props => (
+            <Cmp {...props} formik={{values: formikvaluesmock}}/>
+        ),
+        setFormikValues: values => {
+            formikvaluesmock = values;
+        }
+    };
+});
+
 jest.mock('~/ContentEditorSection/ContentEditorSection.context', () => {
     let sectionContextmock;
     return {
@@ -27,6 +41,7 @@ jest.mock('~/ContentEditor.context', () => {
         }
     };
 });
+import {setFormikValues} from 'formik';
 import {setContext} from '~/ContentEditor.context';
 import {setSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 
@@ -39,9 +54,7 @@ describe('FormBuilder component', () => {
                 isSite: false,
                 isPage: false,
                 primaryNodeType: {
-                    hasOrderableChildNodes: true,
-                    // TODO: BACKLOG-14370 add more unit tests
-                    supertypes: []
+                    hasOrderableChildNodes: true
                 }
             }
         };
@@ -53,10 +66,18 @@ describe('FormBuilder component', () => {
         };
     });
 
+    it('should be empty', () => {
+        setContext({});
+        setSectionContext({});
+        const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).dive();
+
+        expect(cmp.debug()).toBe('<Fragment />');
+    });
+
     it('should display each section', () => {
         setContext(context);
         setSectionContext(sectionContext);
-        const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).find('section');
+        const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).dive().find('section');
 
         sectionContext.sections.forEach(section => {
             expect(cmp.find({section}).exists()).toBe(true);
@@ -71,7 +92,7 @@ describe('FormBuilder component', () => {
         setContext(context);
         setSectionContext(sectionContext);
 
-        const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).find('section');
+        const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).dive().find('section');
         expect(cmp.find('ChildrenSection').exists()).toBeFalsy();
     });
 
@@ -80,7 +101,7 @@ describe('FormBuilder component', () => {
         setContext(context);
         setSectionContext(sectionContext);
 
-        const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).find('section');
+        const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).dive().find('section');
         expect(cmp.find('ChildrenSection').exists()).toBeFalsy();
     });
 
@@ -88,7 +109,7 @@ describe('FormBuilder component', () => {
         setContext(context);
         setSectionContext(sectionContext);
 
-        const cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).find('section');
+        const cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).dive().find('section');
         expect(cmp.find('ChildrenSection').exists()).toBeTruthy();
     });
 
@@ -96,7 +117,7 @@ describe('FormBuilder component', () => {
         setContext(context);
         setSectionContext(sectionContext);
 
-        const cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).find('section');
+        const cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).dive().find('section');
         expect(cmp.childAt(1).find('ChildrenSection').exists()).toBeTruthy();
     });
 
@@ -104,7 +125,52 @@ describe('FormBuilder component', () => {
         setContext(context);
         setSectionContext(sectionContext);
 
-        const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).find('section');
+        const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).dive().find('section');
         expect(cmp.find('ChildrenSection').exists()).toBe(false);
+    });
+
+    it('should have section with only automatically order', () => {
+        context.nodeData.primaryNodeType.hasOrderableChildNodes = false;
+        setContext(context);
+        setSectionContext(sectionContext);
+        setFormikValues({
+            'jmix:orderedList': false
+        });
+
+        let cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).dive().find('section');
+        expect(cmp.find('ChildrenSection').props().canAutomaticallyOrder).toBeTruthy();
+        expect(cmp.find('ChildrenSection').props().canManuallyOrder).toBeFalsy();
+
+        setFormikValues({
+            'jmix:orderedList': true
+        });
+
+        cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).dive().find('section');
+        expect(cmp.find('ChildrenSection').props().canAutomaticallyOrder).toBeTruthy();
+        expect(cmp.find('ChildrenSection').props().canManuallyOrder).toBeFalsy();
+    });
+
+    it('should have section with only manually order', () => {
+        setContext(context);
+        setSectionContext(sectionContext);
+        setFormikValues({
+            AnyOtherKey: 'withValue'
+        });
+
+        const cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).dive().find('section');
+        expect(cmp.find('ChildrenSection').props().canAutomaticallyOrder).toBeFalsy();
+        expect(cmp.find('ChildrenSection').props().canManuallyOrder).toBeTruthy();
+    });
+
+    it('should have section with automatically and manually order', () => {
+        setContext(context);
+        setSectionContext(sectionContext);
+        setFormikValues({
+            'jmix:orderedList': false
+        });
+
+        const cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).dive().find('section');
+        expect(cmp.find('ChildrenSection').props().canAutomaticallyOrder).toBeTruthy();
+        expect(cmp.find('ChildrenSection').props().canManuallyOrder).toBeTruthy();
     });
 });
