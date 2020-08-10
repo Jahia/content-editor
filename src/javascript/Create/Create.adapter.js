@@ -37,7 +37,7 @@ export const adaptCreateFormData = (data, lang, t, contentEditorConfigContext) =
     adaptSystemNameField(data, formData, lang, t, data.jcr.nodeTypeByName, true);
 
     if (contentEditorConfigContext.name) {
-        formData.initialValues['ce:systemName'] = contentEditorConfigContext.name;
+        formData.initialValues[Constants.systemName.name] = contentEditorConfigContext.name;
     }
 
     return formData;
@@ -50,7 +50,7 @@ export const adaptCreateFormData = (data, lang, t, contentEditorConfigContext) =
  */
 export const adaptCreateRequest = createRequestVariables => {
     // Use system name to fill the create request variables.
-    const systemNameIndex = createRequestVariables.properties.findIndex(property => property.name === 'ce:systemName');
+    const systemNameIndex = createRequestVariables.properties.findIndex(property => property.name === Constants.systemName.name);
     if (systemNameIndex > -1) {
         createRequestVariables.name = encodeSystemName(createRequestVariables.properties[systemNameIndex].value);
 

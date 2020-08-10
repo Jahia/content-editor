@@ -10,7 +10,7 @@
       "name": "ce:systemName",
       "description": "",
       "requiredType": "STRING",
-      "selectorType": "Text",
+      "selectorType": "SystemName",
       "i18n": false,
       "readOnly": false,
       "multiple": false,

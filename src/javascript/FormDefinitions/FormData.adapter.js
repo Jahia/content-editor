@@ -10,6 +10,68 @@ const isContentOrFileNode = formData => {
     }).length !== 0;
 };
 
+/**
+ * Check if system name field should be moved to mix:title fieldSet and perform the move
+ * @param sections the form sections
+ * @param systemNameField the system name field
+ * @returns {boolean} true in case the field have been moved, false otherwise
+ */
+const checkMoveSystemNameToMixTitleFieldSet = (sections, systemNameField) => {
+    for (const section of sections) {
+        const mixTitleFieldSet = section.fieldSets.find(fieldSet => fieldSet.name === 'mix:title');
+        if (mixTitleFieldSet) {
+            mixTitleFieldSet.fields.push(systemNameField);
+            return true;
+        }
+    }
+
+    return false;
+};
+
+/**
+ * Check if system name field should be moved to top section, top fieldSet of the form to be the first field displayed
+ * Only for specific node types: page, folder, categories, etc..
+ * @param primaryNodeType the primary node type
+ * @param sections the form sections
+ * @param systemNameField the system name field
+ * @returns {boolean} true in case the field have been moved, false otherwise
+ */
+const checkMoveSystemNameToTheTopOfTheForm = (primaryNodeType, sections, systemNameField, t) => {
+    if (Constants.systemName.MOVED_TO_CONTENT_FIELDSET_FOR_NODE_TYPES.includes(primaryNodeType.name)) {
+        let contentSection = sections.find(section => section.name === 'content');
+        if (!contentSection) {
+            // Section doesnt exist, create it
+            contentSection = {
+                name: 'content',
+                displayName: t('content-editor:label.contentEditor.section.fieldSet.content.displayName'),
+                fieldSets: []
+            };
+            sections.unshift(contentSection);
+        }
+
+        let toBeMovedToFieldSet = contentSection.fieldSets.find(fieldSet => Constants.systemName.MOVED_TO_CONTENT_FIELDSET_FOR_NODE_TYPES.includes(fieldSet.name));
+        if (!toBeMovedToFieldSet) {
+            // FieldSet doesnt exist, create it
+            toBeMovedToFieldSet = {
+                name: primaryNodeType.name,
+                displayName: primaryNodeType.displayName,
+                description: '',
+                dynamic: false,
+                activated: true,
+                displayed: true,
+                fields: []
+            };
+            contentSection.fieldSets.unshift(toBeMovedToFieldSet);
+        }
+
+        // Move system name field on top of this fieldset
+        toBeMovedToFieldSet.fields.unshift(systemNameField);
+        return true;
+    }
+
+    return false;
+};
+
 export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType, isCreate) => {
     const optionsSection = formData.sections.find(section => section.name === 'options');
     if (optionsSection) {
@@ -17,7 +79,7 @@ export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType
         if (ntBaseFieldSet) {
             // Add i18ns label to System fieldset
             ntBaseFieldSet.displayName = t('content-editor:label.contentEditor.section.fieldSet.system.displayName');
-            const systemNameField = ntBaseFieldSet.fields.find(field => field.name === 'ce:systemName');
+            const systemNameField = ntBaseFieldSet.fields.find(field => field.name === Constants.systemName.name);
             if (systemNameField) {
                 // Add i18ns label to field
                 systemNameField.displayName = t('content-editor:label.contentEditor.section.fieldSet.system.fields.systemName');
@@ -42,37 +104,13 @@ export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType
                     systemNameField.readOnly = true;
                 }
 
+                // Move to mix:title fieldSet if fieldSet exist
+                let moved = checkMoveSystemNameToMixTitleFieldSet(formData.sections, systemNameField);
+
                 // Move the systemName field to the top first section, fieldset, for specifics nodetypes
-                if (Constants.systemName.MOVED_TO_CONTENT_FIELDSET_FOR_NODE_TYPES.includes(primaryNodeType.name)) {
-                    let contentSection = formData.sections.find(section => section.name === 'content');
-                    if (!contentSection) {
-                        // Section doesnt exist, create it
-                        contentSection = {
-                            name: 'content',
-                            displayName: t('content-editor:label.contentEditor.section.fieldSet.content.displayName'),
-                            fieldSets: []
-                        };
-                        formData.sections.unshift(contentSection);
-                    }
+                moved = moved || checkMoveSystemNameToTheTopOfTheForm(primaryNodeType, formData.sections, systemNameField, t);
 
-                    let toBeMovedToFieldSet = contentSection.fieldSets.find(fieldSet => Constants.systemName.MOVED_TO_CONTENT_FIELDSET_FOR_NODE_TYPES.includes(fieldSet.name));
-                    if (!toBeMovedToFieldSet) {
-                        // FieldSet doesnt exist, create it
-                        toBeMovedToFieldSet = {
-                            name: primaryNodeType.name,
-                            displayName: primaryNodeType.displayName,
-                            description: '',
-                            dynamic: false,
-                            activated: true,
-                            displayed: true,
-                            fields: []
-                        };
-                        contentSection.fieldSets.unshift(toBeMovedToFieldSet);
-                    }
-
-                    // Move system name field on top of this fieldset
-                    toBeMovedToFieldSet.fields.unshift(systemNameField);
-
+                if (moved) {
                     // Remove system fieldSet, not used anymore
                     optionsSection.fieldSets = optionsSection.fieldSets.filter(fieldSet => fieldSet.name !== 'nt:base');
                 }
@@ -82,9 +120,9 @@ export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType
 
     // Set initial value for system name
     if (isCreate) {
-        formData.initialValues['ce:systemName'] = rawData.jcr.result.newName;
+        formData.initialValues[Constants.systemName.name] = rawData.jcr.result.newName;
     } else {
-        formData.initialValues['ce:systemName'] = decodeSystemName(rawData.jcr.result.name);
+        formData.initialValues[Constants.systemName.name] = decodeSystemName(rawData.jcr.result.name);
     }
 };
 

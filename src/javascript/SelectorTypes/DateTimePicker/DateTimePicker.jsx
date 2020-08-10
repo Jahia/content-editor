@@ -25,7 +25,7 @@ export const DateTimePicker = ({id, field, value, editorContext, onChange}) => {
         <DatePickerInput
             dayPickerProps={{disabledDays}}
             lang={editorContext.uilang}
-            initialValue={value ? dayjs(value).toDate() : value}
+            initialValue={value ? dayjs(value).toDate() : null}
             displayDateFormat={displayDateFormat}
             displayDateMask={displayDateMask}
             readOnly={field.readOnly}

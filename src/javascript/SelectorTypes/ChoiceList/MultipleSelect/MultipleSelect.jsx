@@ -13,6 +13,7 @@ const MultipleSelect = ({field, id, value, setActionContext, onChange}) => {
         value: constraint.value.string
     }));
 
+    const readOnly = field.readOnly || field.valueConstraints.length === 0;
     // Reset value if constraints doesnt contains the actual value.
     if (value && value.length > 0) {
         const availableValues = field.valueConstraints.map(valueConstraint => valueConstraint.value.string);
@@ -27,7 +28,10 @@ const MultipleSelect = ({field, id, value, setActionContext, onChange}) => {
             id={id}
             options={options}
             value={value && options.filter(data => value.includes(data.value))}
-            readOnly={field.readOnly}
+            readOnly={readOnly}
+            inputProps={{
+                'data-sel-content-editor-select-readonly': readOnly
+            }}
             onChange={selection => {
                 const newSelection = selection && selection.map(data => data.value);
                 onChange(newSelection);
