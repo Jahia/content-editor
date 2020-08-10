@@ -1,6 +1,7 @@
 export const unsetFieldAction = {
     init: context => {
         const value = context.formik.values[context.field.name];
+        context.key = 'unsetFieldActionChoiceList';
         context.enabled = Boolean(!context.field.readOnly && (
             Array.isArray(value) ? value && value.length !== 0 : value
         ));
