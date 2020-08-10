@@ -8,7 +8,7 @@ export const SystemNameCmp = ({field, value, id, editorContext, onChange}) => {
     // TODO: BACKLOG-14328 sync button
     return (
         <Text
-            field={{...field, readOnly: field.readOnly || !!(editorContext.name && editorContext.mode === Constants.routes.baseCreateRoute)}}
+            field={{...field, readOnly: field.readOnly || Boolean(editorContext.name && editorContext.mode === Constants.routes.baseCreateRoute)}}
             value={value}
             id={id}
             editorContext={editorContext}
