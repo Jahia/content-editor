@@ -63,6 +63,7 @@ export const MultipleFieldCmp = ({classes, editorContext, inputContext, field, o
                                            return (
                                                <FieldComponent field={field}
                                                                value={value}
+                                                               values={values}
                                                                id={name}
                                                                editorContext={editorContext}
                                                                setActionContext={inputContext.setActionContext}

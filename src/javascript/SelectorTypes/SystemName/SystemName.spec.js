@@ -19,7 +19,9 @@ describe('SystemName component', () => {
                 readOnly: false,
                 selectorType: 'SystemName',
                 requiredType: 'STRING'
-            }
+            },
+            values: {},
+            classes: {}
         };
     });
 
@@ -31,13 +33,45 @@ describe('SystemName component', () => {
     it('should be readOnly when we are in creating a named content', () => {
         props.editorContext.mode = Constants.routes.baseCreateRoute;
         props.editorContext.name = 'namedContent';
-        const cmp = shallow(<SystemNameCmp {...props}/>);
+        const cmp = shallow(<SystemNameCmp {...props}/>).find('Text');
         expect(cmp.props().field.readOnly).toBe(true);
+    });
+
+    it('should not display sync button if no jcr:title prop', () => {
+        const cmp = shallow(<SystemNameCmp {...props}/>).find('Button');
+        expect(cmp.length).toBe(0);
+    });
+
+    it('should display sync button if no jcr:title prop', () => {
+        props.values['jcr:title'] = 'toto';
+        const cmp = shallow(<SystemNameCmp {...props}/>).find('Button');
+        expect(cmp.props().isDisabled).toBe(false);
+    });
+
+    it('should disable sync button if readOnly', () => {
+        props.values['jcr:title'] = 'toto';
+        props.field.readOnly = true;
+        const cmp = shallow(<SystemNameCmp {...props}/>).find('Button');
+        expect(cmp.props().isDisabled).toBe(true);
+    });
+
+    it('should disable sync button if jcr:title is the same as system name', () => {
+        props.value = 'toto';
+        props.values['jcr:title'] = 'toto';
+        const cmp = shallow(<SystemNameCmp {...props}/>).find('Button');
+        expect(cmp.props().isDisabled).toBe(true);
+    });
+
+    it('should sync system name when clicking on sync button', () => {
+        props.values['jcr:title'] = 'toto';
+        const cmp = shallow(<SystemNameCmp {...props}/>).find('Button');
+        cmp.simulate('click');
+        expect(props.onChange).toHaveBeenCalledWith('toto');
     });
 
     let testReadOnly = function (readOnly) {
         props.field.readOnly = readOnly;
-        const cmp = shallow(<SystemNameCmp {...props}/>);
+        const cmp = shallow(<SystemNameCmp {...props}/>).find('Text');
         expect(cmp.props().field.readOnly).toBe(readOnly);
     };
 });

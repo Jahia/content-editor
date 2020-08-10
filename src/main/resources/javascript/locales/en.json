@@ -208,7 +208,8 @@
             "displayName": "System",
             "fields": {
               "systemNameDescription": "Used by Jahia to identify content, {{maxNameSize}} character maximum.",
-              "systemName": "System name"
+              "systemName": "System name",
+              "syncButton": "copy title"
             }
           }
         },
