@@ -29,6 +29,9 @@ const MultipleSelect = ({field, id, value, setActionContext, onChange}) => {
             options={options}
             value={value && options.filter(data => value.includes(data.value))}
             readOnly={readOnly}
+            inputProps={{
+                'data-sel-content-editor-select-readonly': readOnly
+            }}
             onChange={selection => {
                 const newSelection = selection && selection.map(data => data.value);
                 onChange(newSelection);
