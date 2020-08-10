@@ -37,7 +37,8 @@ export const SingleSelectCmp = ({classes, field, value, id, setActionContext, on
             value={value || ''}
             inputProps={{
                 name: field.name,
-                id: id
+                id: id,
+                'data-sel-content-editor-select-readonly': readOnly
             }}
             input={<Input id={id} name={field.name} readOnly={readOnly}/>}
             onChange={evt => {

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core';
 
-import Select from 'react-select';
+import Select, {components} from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import AsyncCreatableSelect from 'react-select/async-creatable';
 import {
@@ -21,11 +21,17 @@ const style = theme => ({
 
 const EmptyCmp = () => '';
 
+const Input = props => {
+    // eslint-disable-next-line react/prop-types
+    return <components.Input {...props} {...props.selectProps.inputProps}/>;
+};
+
 const MultipleInputComponent = ({classes, creatable, async, readOnly, ...props}) => {
     const Cmp = creatable ? async ? AsyncCreatableSelect : CreatableSelect : Select;
     const components = {
         MultiValue,
         MultiValueRemove,
+        Input: Input,
         IndicatorSeparator: EmptyCmp,
         Control,
         NoOptionsMessage,

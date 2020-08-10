@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import PropTypes from 'prop-types';
 
 import {DatePicker} from '../DatePicker';
@@ -69,8 +69,13 @@ const DatePickerInputCmp = ({
     const [anchorEl, setAnchorEl] = useState(null);
     const [datetime, setDatetime] = useState(initialValue);
     const [datetimeString, setDatetimeString] = useState(
-        formatDateTime(datetime, lang, variant, displayDateFormat)
+        formatDateTime(initialValue, lang, variant, displayDateFormat)
     );
+
+    useEffect(() => {
+        setDatetime(initialValue);
+        setDatetimeString(formatDateTime(initialValue, lang, variant, displayDateFormat));
+    }, [setDatetime, setDatetimeString, initialValue, lang, variant, displayDateFormat]);
 
     const isDateTime = variant === 'datetime';
     const htmlInput = useRef();
@@ -163,11 +168,11 @@ const DatePickerInputCmp = ({
 };
 
 CustomInput.propTypes = {
-    value: PropTypes.object
+    value: PropTypes.string
 };
 
 CustomInput.defaultProps = {
-    value: undefined
+    value: ''
 };
 
 DatePickerInputCmp.defaultProps = {
