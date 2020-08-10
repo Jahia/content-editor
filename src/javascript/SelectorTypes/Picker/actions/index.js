@@ -32,7 +32,7 @@ export const registerPickerActions = registry => {
         targets: ['ContentPickerActions:1', 'MediaPickerActions:1']
     });
 
-    registry.add('action', 'onpenInNewTab', openInTabAction, {
+    registry.add('action', 'openInNewTab', openInTabAction, {
         buttonIcon: <Launch/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.fields.actions.newTab',
         targets: ['ContentPickerActions:2', 'MediaPickerActions:2']

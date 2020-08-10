@@ -12,6 +12,7 @@ export const selectAllAction = {
         const values = context.formik.values[context.field.name] || [];
         const possibleValues = context.field.valueConstraints.map(valueConstraint => valueConstraint.value.string);
         context.enabled = !possibleValues.every(i => values.includes(i));
+        context.key = 'selectAllActionChoiceList';
     },
     onClick: context => {
         if (!context.enabled) {
