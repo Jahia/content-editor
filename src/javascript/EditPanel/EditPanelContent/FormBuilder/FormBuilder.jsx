@@ -19,7 +19,12 @@ const FormBuilder = ({mode}) => {
         return <></>;
     }
 
-    const isOrderingSection = !nodeData.isSite && !nodeData.isPage && nodeData.primaryNodeType.hasOrderableChildNodes && mode === Constants.routes.baseEditRoute;
+    const isAutomaticallyOrderable = nodeData.primaryNodeType.supertypes.find(s => s.name === Constants.automaticOrdering.mixinAutomaticallyOrderable);
+    const isOrderingSection = !nodeData.isSite &&
+        !nodeData.isPage &&
+        (nodeData.primaryNodeType.hasOrderableChildNodes || isAutomaticallyOrderable) &&
+        mode === Constants.routes.baseEditRoute;
+
     const cloneSections = isOrderingSection ? [...sections] : sections;
     if (isOrderingSection) {
         const orderingSection = {

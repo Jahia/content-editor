@@ -12,6 +12,7 @@ import {connect} from 'formik';
 import {Public} from '@material-ui/icons';
 import {getAutomaticOrderingFieldSet} from './AutomaticOrdering/AutomaticOrdering.utils';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
+import {useContentEditorContext} from '~/ContentEditor.context';
 
 const styles = theme => ({
     section: {
@@ -53,6 +54,8 @@ const styles = theme => ({
 export const ChildrenSectionCmp = ({section, classes, formik: {values, handleChange}}) => {
     const {t} = useTranslation();
     const {sections} = useContentEditorSectionContext();
+    const {nodeData} = useContentEditorContext();
+
     const canAutomaticOrder = values && values[Constants.automaticOrdering.mixin] !== undefined;
     const isAutomaticOrder = canAutomaticOrder && values[Constants.automaticOrdering.mixin];
     const automaticOrderingFieldSet = canAutomaticOrder && getAutomaticOrderingFieldSet(sections);
@@ -93,7 +96,7 @@ export const ChildrenSectionCmp = ({section, classes, formik: {values, handleCha
                             </Typography>
                         </div>
 
-                        {!isAutomaticOrder && <ManualOrdering/>}
+                        {!isAutomaticOrder && nodeData.primaryNodeType.hasOrderableChildNodes && <ManualOrdering/>}
                         {isAutomaticOrder && <AutomaticOrdering/>}
                     </>}
 

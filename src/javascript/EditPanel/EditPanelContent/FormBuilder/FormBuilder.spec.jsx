@@ -38,7 +38,11 @@ describe('FormBuilder component', () => {
             nodeData: {
                 isSite: false,
                 isPage: false,
-                primaryNodeType: {hasOrderableChildNodes: true}
+                primaryNodeType: {
+                    hasOrderableChildNodes: true,
+                    // TODO: BACKLOG-14370 add more unit tests
+                    supertypes: []
+                }
             }
         };
         sectionContext = {

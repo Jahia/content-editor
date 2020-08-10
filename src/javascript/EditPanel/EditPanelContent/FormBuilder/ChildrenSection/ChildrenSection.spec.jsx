@@ -19,6 +19,21 @@ jest.mock('~/ContentEditorSection/ContentEditorSection.context', () => {
     };
 });
 
+jest.mock('~/ContentEditor.context', () => {
+    // TODO: BACKLOG-14370 add more unit tests
+    return {
+        useContentEditorContext: () => {
+            return {
+                nodeData: {
+                    primaryNodeType: {
+                        hasOrderableChildNodes: true
+                    }
+                }
+            };
+        }
+    };
+});
+
 describe('Children section component', () => {
     let props;
     beforeEach(() => {

@@ -68,7 +68,8 @@ export const Constants = {
     },
     automaticOrdering: {
         section: 'listOrdering',
-        mixin: 'jmix:orderedList'
+        mixin: 'jmix:orderedList',
+        mixinAutomaticallyOrderable: 'jmix:automaticallyOrderable'
     },
     permissions: {
         canSeeAdvancedOptionsTab: 'canSeeAdvancedOptionsTab'
