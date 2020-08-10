@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Section} from './Section';
-import {Form} from 'formik';
+import {connect, Form} from 'formik';
 
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
@@ -9,8 +9,9 @@ import {SectionsPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {ChildrenSection} from './ChildrenSection';
 import {useTranslation} from 'react-i18next';
 import {Constants} from '~/ContentEditor.constants';
+import {compose} from '~/utils';
 
-const FormBuilder = ({mode}) => {
+const FormBuilderCmp = ({mode, formik: {values}}) => {
     const {nodeData} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
     const {t} = useTranslation();
@@ -19,7 +20,14 @@ const FormBuilder = ({mode}) => {
         return <></>;
     }
 
-    const isOrderingSection = !nodeData.isSite && !nodeData.isPage && nodeData.primaryNodeType.hasOrderableChildNodes && mode === Constants.routes.baseEditRoute;
+    const canAutomaticallyOrder = values && values[Constants.automaticOrdering.mixin] !== undefined;
+    const canManuallyOrder = nodeData.primaryNodeType.hasOrderableChildNodes;
+
+    const isOrderingSection = !nodeData.isSite &&
+        !nodeData.isPage &&
+        (canManuallyOrder || canAutomaticallyOrder) &&
+        mode === Constants.routes.baseEditRoute;
+
     const cloneSections = isOrderingSection ? [...sections] : sections;
     if (isOrderingSection) {
         const orderingSection = {
@@ -34,7 +42,12 @@ const FormBuilder = ({mode}) => {
             <section data-sel-mode={mode}>
                 {cloneSections.filter(section => !section.hide).map(section => (
                     section.isOrderingSection ?
-                        <ChildrenSection key={section.displayName} section={section}/> :
+                        <ChildrenSection
+                            key={section.displayName}
+                            section={section}
+                            canAutomaticallyOrder={canAutomaticallyOrder}
+                            canManuallyOrder={canManuallyOrder}
+                        /> :
                         <Section key={section.displayName} section={section}/>
                 ))}
             </section>
@@ -42,15 +55,20 @@ const FormBuilder = ({mode}) => {
     );
 };
 
-FormBuilder.contextTypes = {
+FormBuilderCmp.contextTypes = {
     context: PropTypes.shape({
         sections: SectionsPropTypes.isRequired,
         nodeData: PropTypes.object.isRequired
     })
 };
 
-FormBuilder.propTypes = {
-    mode: PropTypes.string.isRequired
+FormBuilderCmp.propTypes = {
+    mode: PropTypes.string.isRequired,
+    formik: PropTypes.object.isRequired
 };
+
+const FormBuilder = compose(
+    connect
+)(FormBuilderCmp);
 
 export default FormBuilder;
