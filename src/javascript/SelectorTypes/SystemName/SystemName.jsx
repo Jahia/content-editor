@@ -2,12 +2,13 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import Text from '~/SelectorTypes/Text';
+import {Constants} from '~/ContentEditor.constants';
 
 export const SystemNameCmp = ({field, value, id, editorContext, onChange}) => {
     // TODO: BACKLOG-14328 sync button
     return (
         <Text
-            field={field}
+            field={{...field, readOnly: field.readOnly || Boolean(editorContext.name && editorContext.mode === Constants.routes.baseCreateRoute)}}
             value={value}
             id={id}
             editorContext={editorContext}
