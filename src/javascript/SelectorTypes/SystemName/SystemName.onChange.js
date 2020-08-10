@@ -6,6 +6,7 @@ const registerSystemNameOnChange = registry => {
         onChange: (previousValue, currentValue, currentField, editorContext) => {
             if (currentField.name === 'jcr:title' &&
                 editorContext.mode === Constants.routes.baseCreateRoute &&
+                !editorContext.name &&
                 window.contextJsParameters.config.defaultSynchronizeNameWithTitle) {
                 // Find system name field
                 let systemNameField;
