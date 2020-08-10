@@ -55,6 +55,13 @@ describe('System name onChange', () => {
         expect(editorContext.formik.setFieldTouched).not.toHaveBeenCalled();
     });
 
+    it('should not sync the systemName in case of creation of named content', () => {
+        editorContext.name = 'toto';
+        systemNameOnChange(undefined, 'this is the jcr:title', currentField, editorContext);
+        expect(editorContext.formik.setFieldValue).not.toHaveBeenCalled();
+        expect(editorContext.formik.setFieldTouched).not.toHaveBeenCalled();
+    });
+
     it('should not sync the systemName in case the jahia.prop defaultSynchronizeNameWithTitle is set to false', () => {
         global.contextJsParameters.config.defaultSynchronizeNameWithTitle = false;
         systemNameOnChange(undefined, 'this is the jcr:title', currentField, editorContext);

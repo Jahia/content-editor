@@ -22,7 +22,7 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
         const {notificationContext} = props;
         const {t} = useTranslation();
         const contentEditorConfigContext = useContentEditorConfigContext();
-        const {lang, uilang, site, uuid, contentType, mode} = contentEditorConfigContext;
+        const {lang, uilang, site, uuid, contentType, mode, name} = contentEditorConfigContext;
 
         // Get Data
         const formQueryParams = {
@@ -63,6 +63,7 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
             uilang,
             site,
             mode,
+            name,
             siteInfo: {
                 ...siteInfoResult.siteInfo,
                 languages: siteInfoResult.siteInfo.languages.filter(language => language.activeInEdit)
