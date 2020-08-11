@@ -11,17 +11,19 @@ const isContentOrFileNode = formData => {
 };
 
 /**
- * Check if system name field should be moved to mix:title fieldSet and perform the move
+ * Check if system name field should be moved under jcr:title field and perform the move
  * @param sections the form sections
  * @param systemNameField the system name field
  * @returns {boolean} true in case the field have been moved, false otherwise
  */
-const checkMoveSystemNameToMixTitleFieldSet = (sections, systemNameField) => {
+const checkMoveSystemNameToUnderJcrTitleField = (sections, systemNameField) => {
     for (const section of sections) {
-        const mixTitleFieldSet = section.fieldSets.find(fieldSet => fieldSet.name === 'mix:title');
-        if (mixTitleFieldSet) {
-            mixTitleFieldSet.fields.push(systemNameField);
-            return true;
+        for (const fieldSet of section.fieldSets) {
+            const jcrTitleIndex = fieldSet.fields.findIndex(field => field.name === 'jcr:title');
+            if (jcrTitleIndex > -1) {
+                fieldSet.fields.splice(jcrTitleIndex + 1, 0, systemNameField);
+                return true;
+            }
         }
     }
 
@@ -105,7 +107,7 @@ export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType
                 }
 
                 // Move to mix:title fieldSet if fieldSet exist
-                let moved = checkMoveSystemNameToMixTitleFieldSet(formData.sections, systemNameField);
+                let moved = checkMoveSystemNameToUnderJcrTitleField(formData.sections, systemNameField);
 
                 // Move the systemName field to the top first section, fieldset, for specifics nodetypes
                 moved = moved || checkMoveSystemNameToTheTopOfTheForm(primaryNodeType, formData.sections, systemNameField, t);

@@ -14,6 +14,7 @@ export const SingleFieldCmp = ({inputContext, editorContext, field, formik, onCh
                            <FieldComponent field={field}
                                            id={field.name}
                                            value={formik.values[field.name]}
+                                           values={formik.values}
                                            editorContext={editorContext}
                                            setActionContext={inputContext.setActionContext}
                                            onChange={onChange}
