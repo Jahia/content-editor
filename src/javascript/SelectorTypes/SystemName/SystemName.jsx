@@ -4,16 +4,10 @@ import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import Text from '~/SelectorTypes/Text';
 import {Constants} from '~/ContentEditor.constants';
 import {Button, Copy} from '@jahia/moonstone';
-import {withStyles} from '@material-ui/core';
 import {useTranslation} from 'react-i18next';
+import classes from './SystemName.scss';
 
-const styles = theme => ({
-    syncButton: {
-        marginTop: `${theme.spacing.unit * 2}px`
-    }
-});
-
-export const SystemNameCmp = ({field, value, values, id, editorContext, onChange, classes}) => {
+export const SystemNameCmp = ({field, value, values, id, editorContext, onChange}) => {
     const {t} = useTranslation();
 
     return (
@@ -48,10 +42,9 @@ SystemNameCmp.propTypes = {
     values: PropTypes.object.isRequired,
     editorContext: PropTypes.object.isRequired,
     field: FieldPropTypes.isRequired,
-    onChange: PropTypes.func.isRequired,
-    classes: PropTypes.object.isRequired
+    onChange: PropTypes.func.isRequired
 };
 
-const SystemName = withStyles(styles)(SystemNameCmp);
+const SystemName = SystemNameCmp;
 SystemName.displayName = 'SystemName';
 export default SystemName;
