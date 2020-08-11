@@ -58,6 +58,8 @@ import org.osgi.service.component.annotations.Component;
 public class PreviewWrapperFilter extends AbstractFilter {
 
     private final String CE_PREVIEW_WRAPPER = "ce_preview_wrapper";
+    private final String CE_PREVIEW_WRAPPER_TAG_START = "<div id=\"ce_preview_content\">";
+    private final String CE_PREVIEW_WRAPPER_TAG_END = "</div>";
 
     public PreviewWrapperFilter() {
         setPriority(45);
@@ -69,8 +71,7 @@ public class PreviewWrapperFilter extends AbstractFilter {
     }
 
     @Override
-    public String prepare(RenderContext renderContext, Resource resource, RenderChain chain) throws Exception {
-        resource.pushWrapper(CE_PREVIEW_WRAPPER);
-        return super.prepare(renderContext, resource, chain);
+    public String execute(String previousOut, RenderContext renderContext, Resource resource, RenderChain chain) {
+        return CE_PREVIEW_WRAPPER_TAG_START + previousOut + CE_PREVIEW_WRAPPER_TAG_END;
     }
 }
