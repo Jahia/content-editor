@@ -30,7 +30,7 @@
         "apps": {
             "jahia": [
                 "javascript/apps/content-editor-ext.bundle${buildTimeStamp}.js",
-                "/cms/render/default/en/settings.contentEditor.js"
+                "configs/contentEditor.jsp"
             ]
         }
     },
