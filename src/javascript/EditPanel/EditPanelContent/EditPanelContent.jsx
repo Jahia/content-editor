@@ -7,6 +7,7 @@ import {withStyles} from '@material-ui/core';
 import {PreviewContainer} from './Preview';
 import PublicationInfoProgress from '~/PublicationInfo/PublicationInfo.progress';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
+import {Constants} from '~/ContentEditor.constants';
 
 const styles = theme => ({
     twoColumnsRoot: {
@@ -38,10 +39,10 @@ export const EditPanelContent = ({classes, isDirty}) => {
 
     return (
         <>
+            {mode === Constants.routes.baseEditRoute && <PublicationInfoProgress/>}
             {hasPreview ?
                 (
                     <>
-                        <PublicationInfoProgress/>
                         <TwoColumnsContent
                             classes={{root: classes.twoColumnsRoot, left: classes.left, right: classes.right}}
                             rightCol={<PreviewContainer isDirty={isDirty}/>}
