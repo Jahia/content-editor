@@ -9,6 +9,7 @@ import {useContentEditorConfigContext} from '~/ContentEditor.context';
 
 import {GetContentPath} from './ContentPath.gql-queries';
 import ContentPathContainer from './ContentPath.container';
+import {Constants} from '~/ContentEditor.constants';
 
 jest.mock('connected-react-router', () => ({
     push: jest.fn()
@@ -133,6 +134,43 @@ describe('ContentPathContainer', () => {
 
         const wrapper = shallow(<ContentPathContainer {...defaultProps}/>);
         expect(wrapper.find('ContentPath').prop('items')).toEqual(ancestors.slice(1));
+    });
+
+    it('should display direct parent when in create mode', () => {
+        const ancestors = [{
+            uuid: 'x',
+            path: '/x',
+            isVisibleInContentTree: true
+        }, {
+            uuid: 'y',
+            path: '/x/y',
+            isVisibleInContentTree: true
+        }, {
+            uuid: 'z',
+            path: '/x/y/z',
+            isVisibleInContentTree: true
+        }];
+
+        useQuery.mockImplementation(() => ({
+            data: {
+                jcr: {
+                    node: {
+                        isVisibleInContentTree: true,
+                        ancestors: ancestors
+                    }
+                }
+            }
+        }));
+
+        useContentEditorConfigContext.mockImplementation(() => ({
+            mode: Constants.routes.baseCreateRoute
+        }));
+
+        const wrapper = shallow(<ContentPathContainer {...defaultProps}/>);
+        expect(wrapper.find('ContentPath').prop('items')).toEqual([...ancestors, {
+            isVisibleInContentTree: true,
+            ancestors: ancestors
+        }]);
     });
 
     it('handle something is not right', () => {

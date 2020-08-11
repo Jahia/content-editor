@@ -24,6 +24,7 @@ export const GetContentPath = gql`
                 primaryNodeType {
                     name
                 }
+                displayName(language: $language)
                 ...VisibleInContentTree
                 ancestors(fieldFilter: {
                     filters: [
