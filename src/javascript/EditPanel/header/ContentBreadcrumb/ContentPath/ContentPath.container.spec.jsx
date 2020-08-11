@@ -73,12 +73,12 @@ describe('ContentPathContainer', () => {
         useSelector.mockClear();
     });
 
-    it('uses expected query parameters and adapt the path correctly', () => {
+    it('uses expected query parameters', () => {
         shallow(<ContentPathContainer path="/x/y/z" {...defaultProps}/>);
 
         expect(useQuery).toHaveBeenCalledWith(GetContentPath, {
             variables: {
-                path: '/x/y',
+                path: '/x/y/z',
                 language: 'fr'
             }
         });

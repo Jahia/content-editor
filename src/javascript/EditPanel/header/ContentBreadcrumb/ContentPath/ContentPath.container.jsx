@@ -41,13 +41,6 @@ const getItems = (node = {}) => {
     return ancestors;
 };
 
-const adaptPath = path => {
-    const newPath = path.split('/');
-    newPath.pop();
-
-    return newPath.join('/');
-};
-
 const ContentPathContainer = ({path, ...context}) => {
     const [open, setOpen] = useState(false);
     const {envProps, site} = useContentEditorConfigContext();
@@ -59,7 +52,7 @@ const ContentPathContainer = ({path, ...context}) => {
 
     const {data, error} = useQuery(GetContentPath, {
         variables: {
-            path: adaptPath(path),
+            path: path,
             language
         }
     });
