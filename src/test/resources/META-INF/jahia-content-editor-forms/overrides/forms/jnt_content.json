@@ -1,0 +1,13 @@
+{
+  "nodeType": "jnt:content",
+  "priority": 1.0,
+  "hasPreview": false,
+  "sections": [
+    {
+      "name": "options"
+    },
+    {
+      "name": "content"
+    }
+  ]
+}

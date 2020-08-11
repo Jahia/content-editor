@@ -6,6 +6,9 @@ jest.mock('~/ContentEditor.context', () => {
     return {
         useContentEditorConfigContext: () => ({
             mode: 'edit'
+        }),
+        useContentEditorContext: () => ({
+            hasPreview: true
         })
     };
 });

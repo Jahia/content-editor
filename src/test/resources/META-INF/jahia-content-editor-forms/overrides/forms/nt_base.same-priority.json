@@ -1,0 +1,12 @@
+{
+  "nodeType": "nt:base",
+  "priority": 2.0,
+  "sections": [
+    {
+      "name": "options"
+    },
+    {
+      "name": "content"
+    }
+  ]
+}

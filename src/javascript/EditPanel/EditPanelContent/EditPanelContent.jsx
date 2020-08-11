@@ -6,7 +6,7 @@ import {compose} from '~/utils';
 import {withStyles} from '@material-ui/core';
 import {PreviewContainer} from './Preview';
 import PublicationInfoProgress from '~/PublicationInfo/PublicationInfo.progress';
-import {useContentEditorConfigContext} from '~/ContentEditor.context';
+import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 
 const styles = theme => ({
     twoColumnsRoot: {
@@ -34,17 +34,11 @@ const styles = theme => ({
 
 export const EditPanelContent = ({classes, isDirty}) => {
     const {mode} = useContentEditorConfigContext();
+    const {hasPreview} = useContentEditorContext();
+
     return (
         <>
-            {mode === 'create' ?
-                (
-                    <FullWidthContent
-                        classes={{root: classes.fullWidthRoot}}
-                        data-sel-mode={mode}
-                    >
-                        <FormBuilder mode={mode}/>
-                    </FullWidthContent>
-                ) :
+            {hasPreview ?
                 (
                     <>
                         <PublicationInfoProgress/>
@@ -56,6 +50,14 @@ export const EditPanelContent = ({classes, isDirty}) => {
                             <FormBuilder mode={mode}/>
                         </TwoColumnsContent>
                     </>
+                ) :
+                (
+                    <FullWidthContent
+                        classes={{root: classes.fullWidthRoot}}
+                        data-sel-mode={mode}
+                    >
+                        <FormBuilder mode={mode}/>
+                    </FullWidthContent>
                 )}
         </>
     );

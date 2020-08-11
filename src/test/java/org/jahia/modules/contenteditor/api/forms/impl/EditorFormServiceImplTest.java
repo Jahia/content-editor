@@ -75,6 +75,7 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
 
     private JahiaSite testSite;
     private JCRNodeWrapper textNode;
+    private JCRNodeWrapper folderNode;
     private JCRNodeWrapper contentListNode;
     private JCRNodeWrapper unstructuredNews;
     private JCRNodeWrapper defaultOverrideContent;
@@ -119,11 +120,14 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         testSite = TestHelper.createSite("editorFormServiceSite");
 
         // init static definition registry
-        staticDefinitionsRegistry.readEditorFormDefinition(EditorFormServiceImpl.class.getClassLoader().getResource("META-INF/jahia-content-editor-forms/forms/default.json"));
+        staticDefinitionsRegistry.readEditorFormDefinition(EditorFormServiceImpl.class.getClassLoader().getResource("META-INF/jahia-content-editor-forms/forms/nt_base.json"));
 
         // create text content
         textNode = session.getNode(testSite.getJCRLocalPath()).addNode("test", "jnt:text");
 
+        // create folder
+
+        folderNode = session.getNode(testSite.getJCRLocalPath()).addNode("testFolder", "jnt:folder");
         // create content list
         contentListNode = session.getNode(testSite.getJCRLocalPath()).addNode("testList", "jnt:contentList");
         session.save();
@@ -284,9 +288,49 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
     }
 
     @Test
+    public void testHasPreviewOverride() throws Exception {
+        // ** Test on folder.
+        // Add base + override of folder
+        staticDefinitionsRegistry.readEditorFormDefinition(getResource("META-INF/jahia-content-editor-forms/overrides/forms/nt_base.json"));
+        staticDefinitionsRegistry.readEditorFormDefinition(getResource("META-INF/jahia-content-editor-forms/overrides/forms/jnt_folder.json"));
+
+        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, folderNode.getPath());
+        Assert.isTrue(!form.hasPreview(), "Override of folder should NOT have preview");
+
+        // ** Test on text
+        // Check default behaviour of text
+        form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
+        Assert.isTrue(form.hasPreview(), "text should have preview without overrides");
+
+        // Add override of a supertype that hides the preview.
+        staticDefinitionsRegistry.readEditorFormDefinition(getResource("META-INF/jahia-content-editor-forms/overrides/forms/jnt_content.json"));
+        form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
+        Assert.isTrue(!form.hasPreview(), "Override of content should make text should NOT have preview");
+
+        // Add override of text that does nothing.
+        staticDefinitionsRegistry.readEditorFormDefinition(getResource("META-INF/jahia-content-editor-forms/overrides/forms/jnt_text.json"));
+        form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
+        Assert.isTrue(!form.hasPreview(), "Override of text should make text NOT have preview");
+
+        // Add a mixin on the node.
+        textNode.addMixin("jmix:hasPreview");
+        session.save();
+        form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
+        Assert.isTrue(!form.hasPreview(), "Add mixin and override of text should make text NOT have preview");
+
+        // Add override of the mixin that displays the preview
+        staticDefinitionsRegistry.readEditorFormDefinition(getResource("META-INF/jahia-content-editor-forms/overrides/forms/jmix_hasPreview.json"));
+        form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
+        Assert.isTrue(form.hasPreview(), "Add mixin and override of mixin should make text have preview");
+
+        textNode.removeMixin("jmix:hasPreview");
+        session.save();
+    }
+
+    @Test
     public void testSectionOverride() throws Exception {
         // inject custom section
-        staticDefinitionsRegistry.readEditorFormDefinition(getResource("META-INF/jahia-content-editor-forms/overrides/forms/default.json"));
+        staticDefinitionsRegistry.readEditorFormDefinition(getResource("META-INF/jahia-content-editor-forms/overrides/forms/nt_base.json"));
 
         EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
         Assert.isTrue(form.getSections().size() == 1, "Override contains more than one section");
@@ -295,14 +339,25 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
 
     @Test
     public void testSectionPriorityOverride() throws Exception {
-        // inject custom sections
-        staticDefinitionsRegistry.readEditorFormDefinition(getResource("META-INF/jahia-content-editor-forms/overrides/forms/default.json"));
-        staticDefinitionsRegistry.readEditorFormDefinition(getResource("META-INF/jahia-content-editor-forms/overrides/forms/default.priority.json"));
-        staticDefinitionsRegistry.readEditorFormDefinition(getResource("META-INF/jahia-content-editor-forms/overrides/forms/default.json"));
-
+        // inject custom sections on base with higher priority.
+        // check the override
+        staticDefinitionsRegistry.readEditorFormDefinition(getResource("META-INF/jahia-content-editor-forms/overrides/forms/nt_base.json"));
         EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
+        Assert.isTrue(form.getSections().size() == 1, "Priority check on section does not contain 1 section");
+        Assert.isTrue(form.getSections().get(0).getName().equals("layout"), "Priority check on section does not contain options then content");
+
+        // inject same priority / nodeType => should not change anything
+        staticDefinitionsRegistry.readEditorFormDefinition(getResource("META-INF/jahia-content-editor-forms/overrides/forms/nt_base.same-priority.json"));
+        form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
+        Assert.isTrue(form.getSections().size() == 1, "Same priority should not taken in account : Priority check on section does not contain 1 section");
+        Assert.isTrue(form.getSections().get(0).getName().equals("layout"), "Same priority should not taken in account : Priority check on section does not contain options then content");
+
+        // Inject higher priority
+        staticDefinitionsRegistry.readEditorFormDefinition(getResource("META-INF/jahia-content-editor-forms/overrides/forms/nt_base.priority.json"));
+        form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
         Assert.isTrue(form.getSections().size() == 2, "Priority check on section does not contain 2 sections");
         Assert.isTrue(form.getSections().get(0).getName().equals("options") && form.getSections().get(1).getName().equals("content"), "Priority check on section does not contain options then content");
+
     }
 
     @Test
