@@ -20,17 +20,19 @@ export const SystemNameCmp = ({field, value, values, id, editorContext, onChange
                 onChange={onChange}
             />
 
-            {values['jcr:title'] !== undefined && <Button className={classes.syncButton}
-                                                          data-sel-action="syncSystemName"
-                                                          variant="outlined"
-                                                          size="big"
-                                                          color="accent"
-                                                          label={t('content-editor:label.contentEditor.section.fieldSet.system.fields.syncButton')}
-                                                          icon={<Copy/>}
-                                                          isDisabled={field.readOnly || values['jcr:title'] === value}
-                                                          onClick={() => {
-                                                              onChange(values['jcr:title']);
-                                                          }}
+            {values['jcr:title'] !== undefined &&
+            editorContext.mode === Constants.routes.baseEditRoute &&
+            <Button className={classes.syncButton}
+                    data-sel-action="syncSystemName"
+                    variant="outlined"
+                    size="big"
+                    color="accent"
+                    label={t('content-editor:label.contentEditor.section.fieldSet.system.fields.syncButton')}
+                    icon={<Copy/>}
+                    isDisabled={field.readOnly || values['jcr:title'] === value}
+                    onClick={() => {
+                        onChange(values['jcr:title']);
+                    }}
             />}
         </>
     );

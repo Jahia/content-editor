@@ -11,7 +11,8 @@ describe('SystemName component', () => {
             onChange: jest.fn(),
             id: Constants.systemName.name,
             editorContext: {
-                uilang: 'en'
+                uilang: 'en',
+                mode: Constants.routes.baseEditRoute
             },
             field: {
                 name: Constants.systemName.name,
@@ -38,6 +39,12 @@ describe('SystemName component', () => {
     });
 
     it('should not display sync button if no jcr:title prop', () => {
+        const cmp = shallow(<SystemNameCmp {...props}/>).find('Button');
+        expect(cmp.length).toBe(0);
+    });
+
+    it('should not display sync button if create mode', () => {
+        props.editorContext.mode = Constants.routes.baseCreateRoute;
         const cmp = shallow(<SystemNameCmp {...props}/>).find('Button');
         expect(cmp.length).toBe(0);
     });
