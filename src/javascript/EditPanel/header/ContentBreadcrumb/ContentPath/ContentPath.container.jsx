@@ -9,6 +9,7 @@ import {cmGoto} from '~/JContent.redux-actions';
 import EditPanelDialogConfirmation from '~/EditPanel/EditPanelDialogConfirmation/EditPanelDialogConfirmation';
 import {GetContentPath} from './ContentPath.gql-queries';
 import ContentPath from './ContentPath';
+import {Constants} from '~/ContentEditor.constants';
 
 const findLastIndex = (array, callback) => {
     let lastIndex = -1;
@@ -20,10 +21,18 @@ const findLastIndex = (array, callback) => {
     return lastIndex;
 };
 
-const getItems = (node = {}) => {
-    const ancestors = node.ancestors || [];
+const getItems = (mode, node = {}) => {
+    let ancestors = node.ancestors || [];
 
-    if ((ancestors.length === 0) || node.isVisibleInContentTree) {
+    if (ancestors.length === 0) {
+        return Constants.routes.baseCreateRoute ? [node] : ancestors;
+    }
+
+    if (mode === Constants.routes.baseCreateRoute) {
+        ancestors = [...ancestors, node];
+    }
+
+    if (node.isVisibleInContentTree) {
         return ancestors;
     }
 
@@ -43,7 +52,7 @@ const getItems = (node = {}) => {
 
 const ContentPathContainer = ({path, ...context}) => {
     const [open, setOpen] = useState(false);
-    const {envProps, site} = useContentEditorConfigContext();
+    const {envProps, site, mode} = useContentEditorConfigContext();
     const dispatch = useDispatch();
 
     const {language} = useSelector(state => ({
@@ -89,7 +98,7 @@ const ContentPathContainer = ({path, ...context}) => {
     }
 
     const node = data?.jcr?.node || {};
-    const items = useMemo(() => getItems(node), [node]);
+    const items = useMemo(() => getItems(mode, node), [node]);
 
     return (
         <>
