@@ -23,7 +23,7 @@ export const SystemNameCmp = ({field, value, values, id, editorContext, onChange
             {values['jcr:title'] !== undefined &&
             editorContext.mode === Constants.routes.baseEditRoute &&
             <Button className={classes.syncButton}
-                    data-sel-action="syncSystemName"
+                    data-sel-role="syncSystemName"
                     variant="outlined"
                     size="big"
                     color="accent"
