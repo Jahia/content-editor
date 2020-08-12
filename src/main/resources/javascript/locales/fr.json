@@ -85,7 +85,7 @@
               "unmark": "Ne pas marquer comme travail en cours"
             },
             "localizedPropertiesOnly": "Propriétés internationalisées seulement",
-            "localizedPropertiesOnlySubText": "Le contenu ne sera pas publiable dans les langues sélectionnées. Cependant, Les propriétés communes à toutes les langues peuvent cependant faire partie d'une publication.",
+            "localizedPropertiesOnlySubText": "Le contenu ne sera pas publiable dans les langues sélectionnées. Les propriétés communes à toutes les langues peuvent cependant faire partie d'une publication.",
             "allContent": "Toutes les propriétés, dans toutes les langues",
             "allContentSubText": "Cette option empêche la publication dans toutes les langues."
           }
