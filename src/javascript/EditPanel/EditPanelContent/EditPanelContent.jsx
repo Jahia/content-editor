@@ -42,15 +42,13 @@ export const EditPanelContent = ({classes, isDirty}) => {
             {mode === Constants.routes.baseEditRoute && <PublicationInfoProgress/>}
             {hasPreview ?
                 (
-                    <>
-                        <TwoColumnsContent
-                            classes={{root: classes.twoColumnsRoot, left: classes.left, right: classes.right}}
-                            rightCol={<PreviewContainer isDirty={isDirty}/>}
-                            data-sel-mode={mode}
-                        >
-                            <FormBuilder mode={mode}/>
-                        </TwoColumnsContent>
-                    </>
+                    <TwoColumnsContent
+                        classes={{root: classes.twoColumnsRoot, left: classes.left, right: classes.right}}
+                        rightCol={<PreviewContainer isDirty={isDirty}/>}
+                        data-sel-mode={mode}
+                    >
+                        <FormBuilder mode={mode}/>
+                    </TwoColumnsContent>
                 ) :
                 (
                     <FullWidthContent
