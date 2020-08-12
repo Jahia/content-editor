@@ -1,6 +1,7 @@
 {
-  "name": "default",
+  "nodeType": "nt:base",
   "priority": 1.0,
+  "hasPreview": true,
   "sections": [
     {
       "name": "content",
@@ -31,6 +32,11 @@
       "name": "seo",
       "labelKey": "label.engineTab.seo",
       "requiredPermission": "viewSeoTab"
+    },
+    {
+      "name": "listOrdering",
+      "hide": true,
+      "requiredPermission": "viewContentTab"
     }
   ]
 }

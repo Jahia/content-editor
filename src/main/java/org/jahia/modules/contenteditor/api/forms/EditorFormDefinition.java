@@ -43,8 +43,11 @@
  */
 package org.jahia.modules.contenteditor.api.forms;
 
+import org.jahia.services.content.nodetypes.ExtendedNodeType;
+import org.jahia.services.content.nodetypes.NodeTypeRegistry;
 import org.osgi.framework.Bundle;
 
+import javax.jcr.nodetype.NoSuchNodeTypeException;
 import java.util.List;
 
 /**
@@ -52,27 +55,29 @@ import java.util.List;
  */
 public class EditorFormDefinition implements Comparable<EditorFormDefinition> {
 
-    private String name; // the "default" name is reserved to provide a default configuration
+    private String nodeType;
     private Double priority;
     private List<EditorFormSectionDefinition> sections;
     private Bundle originBundle;
+    private Boolean hasPreview;
 
     public EditorFormDefinition() {
     }
 
-    public EditorFormDefinition(String name, Double priority, List<EditorFormSectionDefinition> sections, Bundle originBundle) {
-        this.name = name;
+    public EditorFormDefinition(String nodeType, Double priority, Boolean hasPreview, List<EditorFormSectionDefinition> sections, Bundle originBundle) {
+        this.nodeType = nodeType;
         this.priority = priority;
         this.sections = sections;
         this.originBundle = originBundle;
+        this.hasPreview = hasPreview;
     }
 
-    public String getName() {
-        return name;
+    public String getNodeType() {
+        return nodeType;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNodeType(String nodeType) {
+        this.nodeType = nodeType;
     }
 
     public Double getPriority() {
@@ -81,6 +86,14 @@ public class EditorFormDefinition implements Comparable<EditorFormDefinition> {
 
     public void setPriority(Double priority) {
         this.priority = priority;
+    }
+
+    public Boolean hasPreview() {
+        return hasPreview;
+    }
+
+    public void setHasPreview(Boolean hasPreview) {
+        this.hasPreview = hasPreview;
     }
 
     public List<EditorFormSectionDefinition> getSections() {
@@ -104,25 +117,38 @@ public class EditorFormDefinition implements Comparable<EditorFormDefinition> {
         if (otherEditorFormDefinition == null) {
             return -1;
         }
-        int compareName = name.compareTo(otherEditorFormDefinition.name);
-        if (compareName != 0) {
-            return compareName;
+        final String otherName = otherEditorFormDefinition.getNodeType();
+        try {
+            ExtendedNodeType nodeType = NodeTypeRegistry.getInstance().getNodeType(this.nodeType);
+            ExtendedNodeType otherNodeType = NodeTypeRegistry.getInstance().getNodeType(otherName);
+            if (!nodeType.equals(otherNodeType)) {
+                if (nodeType.isNodeType(otherNodeType.getName())) {
+                    return 1;
+                }
+                if (otherNodeType.isNodeType(nodeType.getName())) {
+                    return -1;
+                }
+                // put types that not inherit to the end (as they are set as mixin to an existing node)
+                return 1;
+            }
+        } catch (NoSuchNodeTypeException e) {
+            throw new RuntimeException(String.format("unable to resolve one of the types %s and %s", this.nodeType, otherName));
         }
         if (priority == null) {
-            if (otherEditorFormDefinition.priority != null) return -1;
-            else return 0;
+            if (otherEditorFormDefinition.priority != null) {
+                return -1;
+            }
+            return 0;
         } else {
-            if (otherEditorFormDefinition.priority == null) return 1;
+            if (otherEditorFormDefinition.priority == null) {
+                return 1;
+            }
             return priority.compareTo(otherEditorFormDefinition.priority);
         }
     }
 
     public EditorFormDefinition mergeWith(EditorFormDefinition otherEditorFormDefinition) {
-        if (!name.equals(otherEditorFormDefinition.name)) {
-            // names are not equal, we won't merge anything.
-            return this;
-        }
-        return new EditorFormDefinition(name, priority, otherEditorFormDefinition.sections != null ? otherEditorFormDefinition.sections : sections, null);
+        return new EditorFormDefinition(nodeType, priority, otherEditorFormDefinition.hasPreview() != null ? otherEditorFormDefinition.hasPreview() : hasPreview, otherEditorFormDefinition.getSections() != null ? otherEditorFormDefinition.getSections() : sections, null);
     }
 
 }

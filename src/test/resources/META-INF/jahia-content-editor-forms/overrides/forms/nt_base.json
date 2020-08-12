@@ -1,5 +1,6 @@
 {
-  "name": "default",
+  "nodeType": "nt:base",
+  "hasPreview": true,
   "priority": 2.0,
   "sections": [
     {

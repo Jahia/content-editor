@@ -47,6 +47,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang.StringUtils;
 import org.jahia.modules.contenteditor.api.forms.EditorFormDefinition;
 import org.jahia.modules.contenteditor.api.forms.EditorFormFieldSet;
+import org.jahia.services.content.nodetypes.ExtendedNodeType;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
@@ -109,6 +110,21 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
 
     SortedSet<EditorFormDefinition> getFormDefinitions(String name) {
         return staticEditorFormDefinitionsByName.get(name);
+    }
+
+    /**
+     * Retrieve all forms definition for the given type.
+     * @param type to look at
+     * @return form definitions that match the type
+     */
+    SortedSet<EditorFormDefinition> getFormDefinitionsForType(ExtendedNodeType type) {
+        SortedSet<EditorFormDefinition> editorFormDefinitions = new TreeSet<>();
+        staticEditorFormDefinitionsByName.forEach((nodeType, definitions) -> {
+            if (type.isNodeType(nodeType)) {
+                editorFormDefinitions.addAll(definitions);
+            }
+        });
+        return editorFormDefinitions;
     }
 
     private void registerStaticEditorFormFieldSets(Bundle bundle) {
@@ -195,7 +211,7 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
         EditorFormDefinition editorFormDefinition = null;
         try {
             editorFormDefinition = objectMapper.readValue(editorFormURL, EditorFormDefinition.class);
-            String name = editorFormDefinition.getName();
+            String name = editorFormDefinition.getNodeType();
 
             if (StringUtils.isNotBlank(name)) {
                 SortedSet<EditorFormDefinition> editorFormDefinitions = staticEditorFormDefinitionsByName.get(name);
@@ -220,10 +236,10 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
             return;
         }
         for (EditorFormDefinition bundleEditorFormDefinition : bundleEditorFormDefinitions) {
-            SortedSet<EditorFormDefinition> editorFormDefinitions = staticEditorFormDefinitionsByName.get(bundleEditorFormDefinition.getName());
+            SortedSet<EditorFormDefinition> editorFormDefinitions = staticEditorFormDefinitionsByName.get(bundleEditorFormDefinition.getNodeType());
             if (editorFormDefinitions != null) {
                 editorFormDefinitions.remove(bundleEditorFormDefinition);
-                staticEditorFormDefinitionsByName.put(bundleEditorFormDefinition.getName(), editorFormDefinitions);
+                staticEditorFormDefinitionsByName.put(bundleEditorFormDefinition.getNodeType(), editorFormDefinitions);
             }
         }
     }

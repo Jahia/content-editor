@@ -6,7 +6,8 @@ import {compose} from '~/utils';
 import {withStyles} from '@material-ui/core';
 import {PreviewContainer} from './Preview';
 import PublicationInfoProgress from '~/PublicationInfo/PublicationInfo.progress';
-import {useContentEditorConfigContext} from '~/ContentEditor.context';
+import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
+import {Constants} from '~/ContentEditor.constants';
 
 const styles = theme => ({
     twoColumnsRoot: {
@@ -34,9 +35,21 @@ const styles = theme => ({
 
 export const EditPanelContent = ({classes, isDirty}) => {
     const {mode} = useContentEditorConfigContext();
+    const {hasPreview} = useContentEditorContext();
+
     return (
         <>
-            {mode === 'create' ?
+            {mode === Constants.routes.baseEditRoute && <PublicationInfoProgress/>}
+            {hasPreview ?
+                (
+                    <TwoColumnsContent
+                        classes={{root: classes.twoColumnsRoot, left: classes.left, right: classes.right}}
+                        rightCol={<PreviewContainer isDirty={isDirty}/>}
+                        data-sel-mode={mode}
+                    >
+                        <FormBuilder mode={mode}/>
+                    </TwoColumnsContent>
+                ) :
                 (
                     <FullWidthContent
                         classes={{root: classes.fullWidthRoot}}
@@ -44,18 +57,6 @@ export const EditPanelContent = ({classes, isDirty}) => {
                     >
                         <FormBuilder mode={mode}/>
                     </FullWidthContent>
-                ) :
-                (
-                    <>
-                        <PublicationInfoProgress/>
-                        <TwoColumnsContent
-                            classes={{root: classes.twoColumnsRoot, left: classes.left, right: classes.right}}
-                            rightCol={<PreviewContainer isDirty={isDirty}/>}
-                            data-sel-mode={mode}
-                        >
-                            <FormBuilder mode={mode}/>
-                        </TwoColumnsContent>
-                    </>
                 )}
         </>
     );

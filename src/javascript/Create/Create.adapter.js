@@ -27,6 +27,7 @@ export const adaptCreateFormData = (data, lang, t, contentEditorConfigContext) =
         initialValues: {
             ...getInitialValues(sections, nodeData)
         },
+        hasPreview: false,
         nodeData,
         details: {},
         technicalInfo: [],

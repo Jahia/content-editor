@@ -55,19 +55,21 @@ import java.util.List;
  */
 public class EditorForm {
 
-    String name;
-    String displayName;
-    String description;
+    private String name;
+    private String displayName;
+    private String description;
+    private Boolean hasPreview;
 
-    List<EditorFormSection> sections = new ArrayList<>();
+    private List<EditorFormSection> sections = new ArrayList<>();
 
     public EditorForm() {
     }
 
-    public EditorForm(String name, String displayName, String description, List<EditorFormSection> sections) {
+    public EditorForm(String name, String displayName, String description, Boolean hasPreview, List<EditorFormSection> sections) {
         this.name = name;
         this.displayName = displayName;
         this.description = description;
+        this.hasPreview = hasPreview;
         this.sections = sections;
     }
 
@@ -109,6 +111,16 @@ public class EditorForm {
 
     public void setSections(List<EditorFormSection> sections) {
         this.sections = sections;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("Returns the preview status of the form. If true, the form can display a preview.")
+    public Boolean hasPreview() {
+        return hasPreview;
+    }
+
+    public void setHasPreview(Boolean hasPreview) {
+        this.hasPreview = hasPreview;
     }
 
 }

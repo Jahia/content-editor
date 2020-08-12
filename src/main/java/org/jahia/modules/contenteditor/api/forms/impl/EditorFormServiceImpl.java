@@ -188,17 +188,6 @@ public class EditorFormServiceImpl implements EditorFormService {
 
         try {
             String primaryNodeTypeName = primaryNodeType.getName();
-            SortedSet<EditorFormDefinition> editorFormDefinitions = staticDefinitionsRegistry.getFormDefinitions(primaryNodeType.getName());
-            if (editorFormDefinitions == null) {
-                editorFormDefinitions = staticDefinitionsRegistry.getFormDefinitions(DEFAULT_FORM_DEFINITION_NAME);
-            }
-            if (editorFormDefinitions == null) {
-                logger.error("Couldn't find any form definitions, even default is missing !");
-                return null;
-            }
-            EditorFormDefinition mergedFormDefinition = mergeFormDefinitions(editorFormDefinitions);
-            List<EditorFormSectionDefinition> filteredSections = mergedFormDefinition.getSections().stream().filter(section -> section.getRequiredPermission() == null || currentNode.hasPermission(section.getRequiredPermission())).collect(Collectors.toList());
-            mergedFormDefinition.setSections(filteredSections);
 
             Map<String, EditorFormSection> formSectionsByName = new HashMap<>();
             Set<String> processedProperties = new HashSet<>();
@@ -237,20 +226,28 @@ public class EditorFormServiceImpl implements EditorFormService {
                     formSectionsByName, false, true, activated, processedProperties, true);
                 processedNodeTypes.add(extendMixinNodeType.getName());
             }
+            // Get all form definitions to merge from the primary type.
+            final SortedSet<EditorFormDefinition> formDefinitionsToMerge = staticDefinitionsRegistry.getFormDefinitionsForType(primaryNodeType);
 
             if (existingNode != null) {
                 Set<ExtendedNodeType> addMixins = Arrays.stream(existingNode.getMixinNodeTypes()).filter(nodetype -> !processedNodeTypes.contains(nodetype.getName())).collect(Collectors.toSet());
                 for (ExtendedNodeType addMixin : addMixins) {
                     generateAndMergeFieldSetForType(addMixin, uiLocale, locale, existingNode, parentNode, primaryNodeType,
                         formSectionsByName, false, false, true, processedProperties, false);
+                    // Add mixins form definitions to merge that are set on the node.
+                    formDefinitionsToMerge.addAll(staticDefinitionsRegistry.getFormDefinitionsForType(addMixin));
                 }
             }
+
+            EditorFormDefinition mergedFormDefinition = mergeFormDefinitions(formDefinitionsToMerge);
+            List<EditorFormSectionDefinition> filteredSections = mergedFormDefinition.getSections().stream().filter(section -> section.getRequiredPermission() == null || currentNode.hasPermission(section.getRequiredPermission())).collect(Collectors.toList());
+            mergedFormDefinition.setSections(filteredSections);
 
             List<EditorFormSection> sortedSections = sortSections(formSectionsByName, mergedFormDefinition, uiLocale, parentNode.getResolveSite());
             String formDisplayName = primaryNodeType.getLabel(uiLocale);
             String formDescription = primaryNodeType.getDescription(uiLocale);
 
-            return new EditorForm(primaryNodeTypeName, formDisplayName, formDescription, sortedSections);
+            return new EditorForm(primaryNodeTypeName, formDisplayName, formDescription, mergedFormDefinition.hasPreview(), sortedSections);
         } catch (RepositoryException e) {
             throw new EditorFormException("Error while building edit form definition for node: " + currentNode.getPath() + " and nodeType: " + primaryNodeType.getName(), e);
         }
@@ -276,7 +273,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         EditorFormDefinition mergedEditorFormDefinition = null;
         for (EditorFormDefinition editorFormDefinition : editorFormDefinitions) {
             if (mergedEditorFormDefinition == null) {
-                mergedEditorFormDefinition = new EditorFormDefinition(editorFormDefinition.getName(), editorFormDefinition.getPriority(), editorFormDefinition.getSections(), editorFormDefinition.getOriginBundle());
+                mergedEditorFormDefinition = new EditorFormDefinition(editorFormDefinition.getNodeType(), editorFormDefinition.getPriority(), editorFormDefinition.hasPreview(), editorFormDefinition.getSections(), editorFormDefinition.getOriginBundle());
             } else {
                 mergedEditorFormDefinition = mergedEditorFormDefinition.mergeWith(editorFormDefinition);
             }

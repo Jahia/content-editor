@@ -34,7 +34,7 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
             childrenFilterTypes: Constants.childrenFilterTypes
         };
         const {loading, error, errorMessage, data: formDefinition, refetch: refetchFormData} = useFormDefinition(formQuery, formQueryParams, formDataAdapter, t, contentEditorConfigContext);
-        const {nodeData, initialValues, details, technicalInfo, sections, title, nodeTypeName} = formDefinition || {};
+        const {nodeData, initialValues, hasPreview, details, technicalInfo, sections, title, nodeTypeName} = formDefinition || {};
         const siteInfoResult = useSiteInfo({
             siteKey: site,
             displayLanguage: lang
@@ -72,6 +72,7 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
             details,
             technicalInfo,
             initialValues,
+            hasPreview,
             title,
             formQueryParams,
             nodeTypeName,
