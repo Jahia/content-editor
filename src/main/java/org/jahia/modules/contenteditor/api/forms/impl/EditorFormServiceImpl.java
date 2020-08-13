@@ -278,7 +278,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                 mergedEditorFormDefinition = mergedEditorFormDefinition.mergeWith(editorFormDefinition);
             }
         }
-        return mergedEditorFormDefinition;
+        return mergedEditorFormDefinition != null ? mergedEditorFormDefinition : new EditorFormDefinition();
     }
 
     private List<EditorFormSection> sortSections(Map<String, EditorFormSection> formSectionsByName, EditorFormDefinition editorFormDefinition, Locale uiLocale, JCRSiteNode site) {
@@ -337,7 +337,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             targetSection = new EditorFormSection(targetSectionName, targetSectionName, null, targetSectionRank, targetSectionPriority, new ArrayList<>());
         }
 
-        if (formFieldSet.getRank() == 0.0) {
+        if (formFieldSet.getRank().compareTo(0.0) == 0) {
             formFieldSet.setRank((double) targetSection.getFieldSets().size() + 1);
         }
 
@@ -371,18 +371,6 @@ public class EditorFormServiceImpl implements EditorFormService {
             List<EditorFormFieldValueConstraint> valueConstraints = getValueConstraints(primaryNodeType, editorFormField, existingNode, parentNode, locale, new HashMap<>());
             editorFormField.setValueConstraints(valueConstraints);
         }
-    }
-
-    private JCRNodeWrapper getNode(String nodeIdOrPath, JCRSessionWrapper session) throws RepositoryException {
-        JCRNodeWrapper node = null;
-        if (nodeIdOrPath != null) {
-            if (StringUtils.startsWith(nodeIdOrPath, "/")) {
-                node = session.getNode(nodeIdOrPath);
-            } else {
-                node = session.getNodeByIdentifier(nodeIdOrPath);
-            }
-        }
-        return node;
     }
 
     private EditorFormFieldSet mergeWithStaticFormFieldSets(String nodeTypeName, EditorFormFieldSet mergedEditorFormFieldSet) {
