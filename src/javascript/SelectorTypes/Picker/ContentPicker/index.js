@@ -36,7 +36,7 @@ export const ContentPickerSelectorType = {
     key: 'ContentPicker',
     supportMultiple: false,
     pickerInput: {
-        emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.addContent',
+        emptyLabel: isPickerTypeFiles => isPickerTypeFiles ? 'content-editor:label.contentEditor.edit.fields.contentPicker.addFile' : 'content-editor:label.contentEditor.edit.fields.contentPicker.addContent',
         emptyIcon: <InsertDriveFile/>,
         usePickerInputData
     },

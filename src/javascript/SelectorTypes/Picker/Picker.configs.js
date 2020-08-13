@@ -117,7 +117,7 @@ const pickerConfigs = {
         };
     },
     file: {
-        picker: ContentPickerSelectorType,
+        picker: {...ContentPickerSelectorType, key: 'FilePicker'},
         treeConfigs: [treeConfigs.files],
         searchSelectorType: 'jnt:file',
         listTypesTable: ['jnt:file'],

@@ -19,6 +19,7 @@ jest.mock('./Picker.utils', () => {
             pickerConfig: {
                 picker: {
                     pickerInput: {
+                        emptyLabel: jest.fn(),
                         usePickerInputData: () => {
                             return {
                                 fieldData: {},
@@ -28,7 +29,9 @@ jest.mock('./Picker.utils', () => {
                     }
                 }
             },
-            nodeTreeConfigs: {}
+            nodeTreeConfigs: [{
+                type: 'content'
+            }]
         })
     };
 });

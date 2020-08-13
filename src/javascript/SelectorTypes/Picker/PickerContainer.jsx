@@ -38,11 +38,13 @@ const PickerCmp = ({field, value, editorContext, setActionContext, onChange}) =>
         onChange(pickerConfig.picker.PickerDialog.itemSelectionAdapter(data));
     };
 
+    const isFilePicker = nodeTreeConfigs[0].type === 'files';
+
     return (
         <>
             <ReferenceCard
                 readOnly={field.readOnly}
-                emptyLabel={t(pickerConfig.picker.pickerInput.emptyLabel)}
+                emptyLabel={t(pickerConfig.picker.pickerInput.emptyLabel(isFilePicker))}
                 emptyIcon={pickerConfig.picker.pickerInput.emptyIcon}
                 labelledBy={`${field.name}-label`}
                 fieldData={fieldData}
