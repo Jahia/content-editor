@@ -127,6 +127,7 @@ const pickerConfigs = {
         picker: ContentPickerSelectorType,
         treeConfigs: [treeConfigs.users, treeConfigs.siteUsers],
         searchSelectorType: 'jnt:user',
+        searchPaths: site => ['/users', `/sites/${site}/users`],
         listTypesTable: ['jnt:user'],
         selectableTypesTable: ['jnt:user'],
         displayTree: false
