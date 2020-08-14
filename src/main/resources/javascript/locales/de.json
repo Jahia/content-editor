@@ -117,6 +117,7 @@
           },
           "contentPicker": {
             "addContent": "Inhalt hinzufügen",
+            "addFile": "Datei hinzufügen",
             "contentsRootLabel": "Contents",
             "allContentsRootLabel": "{{siteName}}",
             "pagesRootLabel": "Seiten",
