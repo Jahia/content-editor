@@ -22,7 +22,7 @@ describe('Selector Types', () => {
                 selectorOptions: [{name: 'type', value: 'file'}]
             });
             expect(selector.cmp).toEqual(Picker);
-            expect(selector.key).toEqual('ContentPicker');
+            expect(selector.key).toEqual('FilePicker');
 
             selector = resolveSelectorType({
                 selectorType: 'Picker',

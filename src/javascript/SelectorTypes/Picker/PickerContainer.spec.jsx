@@ -28,7 +28,9 @@ jest.mock('./Picker.utils', () => {
                     }
                 }
             },
-            nodeTreeConfigs: {}
+            nodeTreeConfigs: [{
+                type: 'content'
+            }]
         })
     };
 });
