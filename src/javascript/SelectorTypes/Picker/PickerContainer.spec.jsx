@@ -19,7 +19,6 @@ jest.mock('./Picker.utils', () => {
             pickerConfig: {
                 picker: {
                     pickerInput: {
-                        emptyLabel: jest.fn(),
                         usePickerInputData: () => {
                             return {
                                 fieldData: {},
