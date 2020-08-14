@@ -176,7 +176,6 @@ const PickerDialogCmp = ({
                     />
                 </div>
             </>
-            );
         </Dialog>
     );
 };
