@@ -140,10 +140,12 @@ const pickerConfigs = {
     },
     usergroup: {
         picker: ContentPickerSelectorType,
-        treeConfigs: [treeConfigs.users, treeConfigs.siteUsers, treeConfigs.groups, treeConfigs.siteGroups],
-        searchSelectorType: 'jnt:user',
-        listTypesTable: ['jnt:user', 'jnt:group'],
-        selectableTypesTable: ['jnt:user', 'jnt:group']
+        treeConfigs: [treeConfigs.groups, treeConfigs.siteGroups],
+        searchSelectorType: 'jnt:group',
+        searchPaths: site => ['/groups', `/sites/${site}/groups`],
+        listTypesTable: ['jnt:group'],
+        selectableTypesTable: ['jnt:group'],
+        displayTree: false
     },
     category: {
         picker: ContentPickerSelectorType,
