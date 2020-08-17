@@ -178,7 +178,8 @@
       "error": {
         "queryingContent": "Error querying content: {{details}}",
         "changeSystemName": "Please choose another system name",
-        "constraintViolations": "There are some validation errors! Correct the inputs and save again"
+        "constraintViolations": "There are some validation errors! Correct the inputs and save again",
+        "accessDenied": "Some content cannot be displayed because of permissions that were applied"
       },
       "preview": {
         "contentNotFound": "Content cannot be previewed in the page",

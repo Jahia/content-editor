@@ -9,6 +9,9 @@ import {registry} from '@jahia/ui-extender';
 import ContentTableCellBadgeRenderer from './ContentTableCellBadgeRenderer';
 import {NavigateInto} from './NavigateInto';
 import {CountDisplayer} from '../CountDisplayer';
+import {withNotifications} from '@jahia/react-material';
+import {compose} from '~/utils';
+import {notifyAccessDenied} from '../ErrorHandler';
 
 const columnConfig = (t, showSubContentsCount) => {
     let columns = [
@@ -55,7 +58,7 @@ const columnIdFieldNameMapper = {
     lastModified: 'lastModified.value'
 };
 
-export const List = ({
+const ListCmp = ({
     pickerConfig,
     setSelectedItem,
     selectedPath,
@@ -63,7 +66,8 @@ export const List = ({
     lang,
     uilang,
     initialSelection,
-    searchTerms
+    searchTerms,
+    notificationContext
 }) => {
     const {t} = useTranslation();
     const [sort, setSort] = useState({
@@ -110,6 +114,7 @@ export const List = ({
             {details: error.message ? error.message : ''}
         );
         console.warn(message);
+        notifyAccessDenied(error, notificationContext, t);
     }
 
     if (loading) {
@@ -173,12 +178,12 @@ export const List = ({
     );
 };
 
-List.defaultProps = {
+ListCmp.defaultProps = {
     initialSelection: [],
     searchTerms: ''
 };
 
-List.propTypes = {
+ListCmp.propTypes = {
     pickerConfig: PropTypes.object.isRequired,
     setSelectedItem: PropTypes.func.isRequired,
     selectedPath: PropTypes.string.isRequired,
@@ -186,5 +191,11 @@ List.propTypes = {
     lang: PropTypes.string.isRequired,
     uilang: PropTypes.string.isRequired,
     initialSelection: PropTypes.array,
-    searchTerms: PropTypes.string
+    searchTerms: PropTypes.string,
+    notificationContext: PropTypes.object.isRequired
 };
+
+export const List = compose(
+    withNotifications()
+)(ListCmp);
+List.displayName = 'List';
