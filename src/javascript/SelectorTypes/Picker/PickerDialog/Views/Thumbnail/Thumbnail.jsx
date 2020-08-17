@@ -7,15 +7,19 @@ import {encodeJCRPath} from '~/EditPanel/EditPanel.utils';
 import {registry} from '@jahia/ui-extender';
 import {useDialogPickerContent} from '../useDialogPickerContent';
 import {CountDisplayer} from '../CountDisplayer';
+import {withNotifications} from '@jahia/react-material';
+import {compose} from '~/utils';
+import {notifyAccessDenied} from '../ErrorHandler';
 
-export const Thumbnail = ({
+const ThumbnailCmp = ({
     setSelectedItem,
     onThumbnailDoubleClick,
     selectedPath,
     initialSelection,
     searchTerms,
     pickerConfig,
-    lang
+    lang,
+    notificationContext
 }) => {
     const {t} = useTranslation();
     const {
@@ -49,6 +53,7 @@ export const Thumbnail = ({
             {details: error.message ? error.message : ''}
         );
         console.warn(message);
+        notifyAccessDenied(error, notificationContext, t);
     }
 
     if (loading || !nodes) {
@@ -92,17 +97,23 @@ export const Thumbnail = ({
     );
 };
 
-Thumbnail.defaultProps = {
+ThumbnailCmp.defaultProps = {
     initialSelection: null,
     searchTerms: ''
 };
 
-Thumbnail.propTypes = {
+ThumbnailCmp.propTypes = {
     lang: PropTypes.string.isRequired,
     setSelectedItem: PropTypes.func.isRequired,
     onThumbnailDoubleClick: PropTypes.func.isRequired,
     selectedPath: PropTypes.string.isRequired,
     pickerConfig: PropTypes.object.isRequired,
     initialSelection: PropTypes.array,
-    searchTerms: PropTypes.string
+    searchTerms: PropTypes.string,
+    notificationContext: PropTypes.object.isRequired
 };
+
+export const Thumbnail = compose(
+    withNotifications()
+)(ThumbnailCmp);
+Thumbnail.displayName = 'Thumbnail';
