@@ -209,7 +209,7 @@
           "system": {
             "displayName": "System",
             "fields": {
-              "systemNameDescription": "Wird von Jahia verwendet, um den Inhalt zu identifizieren, maximal {{maxNameSize}} Zeichen.",
+              "systemNameDescription": "{{maxNameSize}} Zeichen maximal, Sonderzeichen werden ignoriert. Wird für die Bildung der URL verwendet, wenn keine Vanity URL in den erweiterten Optionen gesetzt wurde.",
               "systemName": "Systemname",
               "syncButton": "Titel kopieren"
             }
