@@ -33,9 +33,11 @@ export const EditPanelDialogConfirmation = ({titleKey, open, onCloseDialog, acti
     }
 
     return (
-        <Dialog aria-labelledby="alert-dialog-slide-title"
-                open={open}
-                onClose={onCloseDialog}
+        <Dialog
+            maxWidth="md"
+            aria-labelledby="alert-dialog-slide-title"
+            open={open}
+            onClose={onCloseDialog}
         >
             <DialogTitle id="alert-dialog-slide-title">
                 {t(titleKey)}
