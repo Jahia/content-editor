@@ -3,7 +3,7 @@ import React from 'react';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import Text from '~/SelectorTypes/Text';
 import {Constants} from '~/ContentEditor.constants';
-import {limitSystemNameIfNecessary} from './SystemName.utils';
+import {limitSystemNameIfNecessary, replaceSpecialCharacters} from './SystemName.utils';
 import {Button, Copy} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
 import classes from './SystemName.scss';
@@ -15,7 +15,7 @@ export const SystemNameCmp = ({field, value, values, id, editorContext, onChange
         <>
             <Text
                 field={{...field, readOnly: field.readOnly || Boolean(editorContext.name && editorContext.mode === Constants.routes.baseCreateRoute)}}
-                value={value}
+                value={value?.toLowerCase()}
                 id={id}
                 editorContext={editorContext}
                 onChange={onChange}
@@ -32,7 +32,8 @@ export const SystemNameCmp = ({field, value, values, id, editorContext, onChange
                     icon={<Copy/>}
                     isDisabled={field.readOnly || values['jcr:title'] === value}
                     onClick={() => {
-                        onChange(limitSystemNameIfNecessary(values['jcr:title'], field));
+                        const cleanedSystemName = replaceSpecialCharacters(values['jcr:title'])?.toLowerCase();
+                        onChange(limitSystemNameIfNecessary(cleanedSystemName, field));
                     }}
             />}
         </>
