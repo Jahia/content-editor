@@ -19,7 +19,8 @@ describe('System name onChange', () => {
                 fieldSets: [{
                     fields: [{
                         name: Constants.systemName.name,
-                        readOnly: false
+                        readOnly: false,
+                        selectorOptions: []
                     }]
                 }]
             }],

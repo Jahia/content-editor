@@ -1,5 +1,5 @@
 import {Constants} from '~/ContentEditor.constants';
-
+import {limitSystemNameIfNecessary} from './SystemName.utils';
 const registerSystemNameOnChange = registry => {
     registry.add('selectorType.onChange', 'systemNameSync', {
         targets: ['Text'],
@@ -30,7 +30,7 @@ const registerSystemNameOnChange = registry => {
                 }
 
                 if (systemNameField && !systemNameField.readOnly) {
-                    editorContext.formik.setFieldValue(Constants.systemName.name, currentValue, true);
+                    editorContext.formik.setFieldValue(Constants.systemName.name, limitSystemNameIfNecessary(currentValue, systemNameField), true);
                     editorContext.formik.setFieldTouched(Constants.systemName.name, true);
                 }
             }

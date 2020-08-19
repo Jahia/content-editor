@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {Input} from '@jahia/design-system-kit';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
-import {Visibility, Hidden} from '@jahia/moonstone';
+import {Hidden, Visibility} from '@jahia/moonstone';
 
 export const TextCmp = ({field, value, id, editorContext, onChange}) => {
     const [hidePassword, setHidePassword] = useState(true);
@@ -20,6 +20,7 @@ export const TextCmp = ({field, value, id, editorContext, onChange}) => {
         }}/>
     };
 
+    const maxLength = field.selectorOptions.find(option => option.name === 'maxLength');
     return (
         <Input
             fullWidth
@@ -27,7 +28,8 @@ export const TextCmp = ({field, value, id, editorContext, onChange}) => {
             name={id}
             inputProps={{
                 'aria-labelledby': `${field.name}-label`,
-                'aria-required': field.mandatory
+                'aria-required': field.mandatory,
+                maxlength: maxLength && maxLength.value
             }}
             value={controlledValue}
             readOnly={field.readOnly}
