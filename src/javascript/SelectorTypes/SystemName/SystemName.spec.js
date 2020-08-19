@@ -19,7 +19,8 @@ describe('SystemName component', () => {
                 displayName: Constants.systemName.name,
                 readOnly: false,
                 selectorType: 'SystemName',
-                requiredType: 'STRING'
+                requiredType: 'STRING',
+                selectorOptions: []
             },
             values: {},
             classes: {}

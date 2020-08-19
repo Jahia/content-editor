@@ -178,7 +178,8 @@
       "error": {
         "queryingContent": "Erreur lors de l'interrogation du contenu: {{details}}",
         "changeSystemName": "Veuillez choisir un autre nom système",
-        "constraintViolations": "Il y a des erreurs de validation! Corrigez les entrées et sauvegarder à nouveau"
+        "constraintViolations": "Il y a des erreurs de validation! Corrigez les entrées et sauvegarder à nouveau",
+        "accessDenied": "Certains contenus ne peuvent pas être affichés en raison des autorisations qui ont été appliquées"
       },
       "preview": {
         "contentNotFound": "Le contenu ne peut pas être prévisualisé dans la page",
