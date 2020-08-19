@@ -3,6 +3,7 @@ import React from 'react';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import Text from '~/SelectorTypes/Text';
 import {Constants} from '~/ContentEditor.constants';
+import {limitSystemNameIfNecessary} from './SystemName.utils';
 import {Button, Copy} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
 import classes from './SystemName.scss';
@@ -31,7 +32,7 @@ export const SystemNameCmp = ({field, value, values, id, editorContext, onChange
                     icon={<Copy/>}
                     isDisabled={field.readOnly || values['jcr:title'] === value}
                     onClick={() => {
-                        onChange(values['jcr:title']);
+                        onChange(limitSystemNameIfNecessary(values['jcr:title'], field));
                     }}
             />}
         </>

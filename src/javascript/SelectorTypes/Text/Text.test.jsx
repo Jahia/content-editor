@@ -18,7 +18,8 @@ describe('Text component', () => {
                 readOnly: false,
                 selectorType: 'Text',
                 requiredType: 'STRING',
-                targets: [{name: 'test'}]
+                targets: [{name: 'test'}],
+                selectorOptions: []
             }
         };
     });
