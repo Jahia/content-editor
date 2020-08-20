@@ -1,5 +1,5 @@
 
-import {limitSystemNameIfNecessary} from './SystemName.utils';
+import {limitSystemNameIfNecessary, replaceSpecialCharacters} from './SystemName.utils';
 import {Constants} from '~/ContentEditor.constants';
 
 describe('SystemName utils', () => {
@@ -25,5 +25,10 @@ describe('SystemName utils', () => {
         const systemNameValue = limitSystemNameIfNecessary('1234567890123456789012345678901234567890', field);
 
         expect(systemNameValue).toBe('1234567890123456789012345678901234567890');
+    });
+
+    it('should replace every special character when present', () => {
+        const newSystemName = replaceSpecialCharacters('-ffee_ek,veéèëÊË€éèëÊË€§çÇ¢ùÙÛàÅåÁª¶øôÔØÓ°£™Ÿ¥‰îïÎÍŒÆ$.+*');
+        expect(newSystemName).toBe('-ffee_ek,veeeeeeeeeeeeesscccuuuaaaaapooooodpstmyy0iiiioeae-');
     });
 });
