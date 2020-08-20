@@ -124,7 +124,7 @@ describe('adaptFormData', () => {
             name: 'jnt:page',
             displayName: 'Page'
         };
-        adaptSystemNameField(rawData, formData, null, t, nodeType, false);
+        adaptSystemNameField(rawData, formData, null, t, nodeType, false, true);
         expect(formData.sections[0].fieldSets[0].name).toEqual('jnt:page');
         expect(formData.sections[0].fieldSets[0].displayName).toEqual('Page');
         expect(formData.sections[0].fieldSets[0].fields[0].name).toEqual(Constants.systemName.name);
@@ -137,7 +137,7 @@ describe('adaptFormData', () => {
             name: 'jnt:page',
             displayName: 'Page'
         };
-        adaptSystemNameField(rawData, formData, null, t, nodeType, false);
+        adaptSystemNameField(rawData, formData, null, t, nodeType, false, true);
         expect(formData.sections[0].name).toEqual('content');
         expect(formData.sections[0].fieldSets[0].name).toEqual('jnt:page');
         expect(formData.sections[0].fieldSets[0].displayName).toEqual('Page');

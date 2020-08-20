@@ -49,13 +49,6 @@ export const Constants = {
             'jnt:usersFolder',
             'jnt:virtualsite',
             'jnt:virtualsitesFolder'
-        ],
-        MOVED_TO_CONTENT_FIELDSET_FOR_NODE_TYPES: [
-            'jnt:page',
-            'jnt:contentFolder',
-            'jnt:folder',
-            'jnt:file',
-            'jnt:category'
         ]
     },
     wip: {

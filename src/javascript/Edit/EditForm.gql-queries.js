@@ -18,6 +18,14 @@ const NodeDataFragment = {
                 isSite: isNodeType(type: {multi: ANY, types: ["jnt:virtualsite"]})
                 isPage: isNodeType(type: {multi: ANY, types: ["jnt:page"]})
                 isFolder:isNodeType(type: {multi: ANY, types: ["jnt:contentFolder", "jnt:folder"]})
+                moveSystemNameToTop: isNodeType(type: {multi: ANY, types: [
+                    "jnt:page",
+                    "jnt:contentFolder",
+                    "jnt:folder",
+                    "jnt:file",
+                    "jnt:category",
+                    "jmix:mainResource"
+                ]})
                 displayableNode {
                     path
                     isFolder:isNodeType(type: {multi: ANY, types: ["jnt:contentFolder", "jnt:folder"]})
