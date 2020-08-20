@@ -38,43 +38,38 @@ const checkMoveSystemNameToUnderJcrTitleField = (sections, systemNameField) => {
  * @param systemNameField the system name field
  * @returns {boolean} true in case the field have been moved, false otherwise
  */
-const checkMoveSystemNameToTheTopOfTheForm = (primaryNodeType, sections, systemNameField, t) => {
-    if (Constants.systemName.MOVED_TO_CONTENT_FIELDSET_FOR_NODE_TYPES.includes(primaryNodeType.name)) {
-        let contentSection = sections.find(section => section.name === 'content');
-        if (!contentSection) {
-            // Section doesnt exist, create it
-            contentSection = {
-                name: 'content',
-                displayName: t('content-editor:label.contentEditor.section.fieldSet.content.displayName'),
-                fieldSets: []
-            };
-            sections.unshift(contentSection);
-        }
-
-        let toBeMovedToFieldSet = contentSection.fieldSets.find(fieldSet => Constants.systemName.MOVED_TO_CONTENT_FIELDSET_FOR_NODE_TYPES.includes(fieldSet.name));
-        if (!toBeMovedToFieldSet) {
-            // FieldSet doesnt exist, create it
-            toBeMovedToFieldSet = {
-                name: primaryNodeType.name,
-                displayName: primaryNodeType.displayName,
-                description: '',
-                dynamic: false,
-                activated: true,
-                displayed: true,
-                fields: []
-            };
-            contentSection.fieldSets.unshift(toBeMovedToFieldSet);
-        }
-
-        // Move system name field on top of this fieldset
-        toBeMovedToFieldSet.fields.unshift(systemNameField);
-        return true;
+const moveSystemNameToTheTopOfTheForm = (primaryNodeType, sections, systemNameField, t) => {
+    let contentSection = sections.find(section => section.name === 'content');
+    if (!contentSection) {
+        // Section doesnt exist, create it
+        contentSection = {
+            name: 'content',
+            displayName: t('content-editor:label.contentEditor.section.fieldSet.content.displayName'),
+            fieldSets: []
+        };
+        sections.unshift(contentSection);
     }
 
-    return false;
+    let toBeMovedToFieldSet = contentSection.fieldSets.find(fieldSet => fieldSet.name === primaryNodeType.name);
+    if (!toBeMovedToFieldSet) {
+        // FieldSet doesnt exist, create it
+        toBeMovedToFieldSet = {
+            name: primaryNodeType.name,
+            displayName: primaryNodeType.displayName,
+            description: '',
+            dynamic: false,
+            activated: true,
+            displayed: true,
+            fields: []
+        };
+        contentSection.fieldSets.unshift(toBeMovedToFieldSet);
+    }
+
+    // Move system name field on top of this fieldset
+    toBeMovedToFieldSet.fields.unshift(systemNameField);
 };
 
-export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType, isCreate) => {
+export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType, isCreate, canBeMovedToTop) => {
     const optionsSection = formData.sections.find(section => section.name === 'options');
     if (optionsSection) {
         const ntBaseFieldSet = optionsSection.fieldSets.find(fieldSet => fieldSet.name === 'nt:base');
@@ -110,7 +105,10 @@ export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType
                 let moved = checkMoveSystemNameToUnderJcrTitleField(formData.sections, systemNameField);
 
                 // Move the systemName field to the top first section, fieldset, for specifics nodetypes
-                moved = moved || checkMoveSystemNameToTheTopOfTheForm(primaryNodeType, formData.sections, systemNameField, t);
+                if (!moved && canBeMovedToTop) {
+                    moveSystemNameToTheTopOfTheForm(primaryNodeType, formData.sections, systemNameField, t);
+                    moved = true;
+                }
 
                 if (moved) {
                     // Remove system fieldSet, not used anymore
