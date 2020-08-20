@@ -11,6 +11,10 @@ import classes from './SystemName.scss';
 export const SystemNameCmp = ({field, value, values, id, editorContext, onChange}) => {
     const {t} = useTranslation();
 
+    const handleOnChange = value => {
+        onChange(replaceSpecialCharacters(value)?.toLowerCase());
+    };
+
     return (
         <>
             <Text
@@ -18,7 +22,7 @@ export const SystemNameCmp = ({field, value, values, id, editorContext, onChange
                 value={value?.toLowerCase()}
                 id={id}
                 editorContext={editorContext}
-                onChange={onChange}
+                onChange={handleOnChange}
             />
 
             {values['jcr:title'] !== undefined &&
