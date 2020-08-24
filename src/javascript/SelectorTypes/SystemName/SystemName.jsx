@@ -11,18 +11,14 @@ import classes from './SystemName.scss';
 export const SystemNameCmp = ({field, value, values, id, editorContext, onChange}) => {
     const {t} = useTranslation();
 
-    const handleOnChange = value => {
-        onChange(replaceSpecialCharacters(value)?.toLowerCase());
-    };
-
     return (
         <>
             <Text
                 field={{...field, readOnly: field.readOnly || Boolean(editorContext.name && editorContext.mode === Constants.routes.baseCreateRoute)}}
-                value={value?.toLowerCase()}
+                value={value}
                 id={id}
                 editorContext={editorContext}
-                onChange={handleOnChange}
+                onChange={onChange}
             />
 
             {values['jcr:title'] !== undefined &&
