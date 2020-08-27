@@ -192,6 +192,13 @@ describe('EditPanel utils', () => {
                             requiredType: 'type',
                             readOnly: true,
                             multiple: false
+                        },
+                        {
+                            name: 'readOnlyToSkip',
+                            requiredType: 'type',
+                            readOnly: true,
+                            skipReadOnlyFilter: true,
+                            multiple: false
                         }
                     ]
                 }
@@ -216,6 +223,24 @@ describe('EditPanel utils', () => {
                 name: 'prop',
                 type: 'type',
                 value: 'new value'
+            }]
+        },
+        {
+            name: 'prop to save for skipped readOnly',
+            nodeData: {
+                properties: [{
+                    name: 'readOnlyToSkip',
+                    value: 'old readOnly value'
+                }]
+            },
+            formValues: {
+                readOnlyToSkip: 'new readOnly value'
+            },
+            ExpectedPropsToSave: [{
+                language: 'fr',
+                name: 'readOnlyToSkip',
+                type: 'type',
+                value: 'new readOnly value'
             }]
         },
         {

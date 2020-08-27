@@ -63,7 +63,7 @@ export function getDataToMutate({nodeData, formValues, sections, lang}) {
     }
 
     const keys = Object.keys(formValues);
-    const fields = sections && getFields(sections).filter(field => !field.readOnly);
+    const fields = sections && getFields(sections).filter(field => !field.readOnly || (field.readOnly && field.skipReadOnlyFilter));
 
     const mixinsToMutate = getMixinsToMutate(nodeData, formValues, sections);
 
