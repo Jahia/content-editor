@@ -31,7 +31,7 @@ export const FieldActionsCmp = ({classes, inputContext, selectorType, field, for
         } else {
             actionCmp = (
                 <>
-                    <ContextualMenu ref={contextualMenu}
+                    <ContextualMenu setOpenRef={contextualMenu}
                                     actionKey={selectorType.key + 'Menu'}
                                     context={{}}
                     />
@@ -42,7 +42,7 @@ export const FieldActionsCmp = ({classes, inputContext, selectorType, field, for
                                 onClick={event => {
                                     event.stopPropagation();
                                     const actionContext = registry.get('selectorType.actionContext', field.name);
-                                    contextualMenu.current.open(event, {field, formik, ...actionContext});
+                                    contextualMenu.current(event, {field, formik, ...actionContext});
                                 }}
                     />
                 </>
