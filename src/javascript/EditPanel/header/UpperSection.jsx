@@ -36,7 +36,7 @@ export const HeaderUpperSection = ({title, actionContext}) => {
                 }
             }}
             render={ButtonRenderer}
-            />
+        />
     ) : '';
 
     return (
@@ -44,17 +44,17 @@ export const HeaderUpperSection = ({title, actionContext}) => {
             <div className={styles.header}>
                 <div className={styles.headerLeft}>
                     <DisplayAction
-                                context={{
-                                    uuid: nodeData.uuid,
-                                    operator: mode === Constants.routes.baseEditRoute ? Constants.operators.update : Constants.operators.create,
-                                    ...actionContext,
-                                    componentProps: {
-                                        'data-sel-role': 'backButton'
-                                    }
-                                }}
-                                actionKey="backButton"
-                                render={ButtonRenderer}
-                            />
+                        uuid={nodeData.uuid}
+                        operator={mode === Constants.routes.baseEditRoute ? Constants.operators.update : Constants.operators.create}
+                        componentProps={{
+                            'data-sel-role': 'backButton'
+                        }}
+                        formik={formik}
+                        isDirty={formik.dirty}
+                        actionKey="backButton"
+                        render={ButtonRenderer}
+                        {...actionContext}
+                    />
 
                     <Typography isNowrap className={styles.headerTypography} variant="title" data-sel-role="title">
                         {truncate(title, 60)}
@@ -64,37 +64,37 @@ export const HeaderUpperSection = ({title, actionContext}) => {
                 <div className={styles.headerRight}>
                     <div className={styles.saveActions}>
                         <DisplayActions context={{
-                                        ...actionContext,
-                                        componentProps: {
-                                            color: 'accent',
-                                            size: 'big',
-                                            className: styles.mainActions
-                                        }
+                            ...actionContext,
+                            componentProps: {
+                                color: 'accent',
+                                size: 'big',
+                                className: styles.mainActions
+                            }
 
-                                    }}
+                        }}
                                         target="content-editor/header/main-save-actions"
                                         render={ButtonWithPastilleRenderer}
                         />
                     </div>
 
                     <ButtonGroup
-                            color="accent"
-                            size="big"
-                            className={styles.publishActions}
+                        color="accent"
+                        size="big"
+                        className={styles.publishActions}
                     >
                         <DisplayActions
-                                context={{
-                                    ...actionContext,
-                                    isMainButton: true,
-                                    componentProps: {
-                                        color: 'accent',
-                                        size: 'big',
-                                        className: styles.mainActions
-                                    }
-                                }}
-                                target="content-editor/header/main-publish-actions"
-                                render={ButtonWithPastilleRenderer}
-                            />
+                            context={{
+                                ...actionContext,
+                                isMainButton: true,
+                                componentProps: {
+                                    color: 'accent',
+                                    size: 'big',
+                                    className: styles.mainActions
+                                }
+                            }}
+                            target="content-editor/header/main-publish-actions"
+                            render={ButtonWithPastilleRenderer}
+                        />
                         {EditActions}
                     </ButtonGroup>
                 </div>
@@ -112,12 +112,12 @@ export const HeaderUpperSection = ({title, actionContext}) => {
                     <LockInfoBadge/>
                     <WipInfoChip wipInfo={wipInfo}/>
                     {(formik.dirty || mode === Constants.routes.baseCreateRoute) &&
-                        <Chip
-                            icon={<Edit/>}
-                            data-sel-role="unsaved-info-chip"
-                            label={t('content-editor:label.contentEditor.header.chips.unsavedLabel')}
-                            color="warning"
-                        />}
+                    <Chip
+                        icon={<Edit/>}
+                        data-sel-role="unsaved-info-chip"
+                        label={t('content-editor:label.contentEditor.header.chips.unsavedLabel')}
+                        color="warning"
+                    />}
                 </div>
             </div>
 
