@@ -3,7 +3,7 @@ import {EditPanelDialogConfirmation} from '~/EditPanel/EditPanelDialogConfirmati
 import {useContentEditorConfigContext} from '~/ContentEditor.context';
 import * as PropTypes from 'prop-types';
 
-const GoBack = ({context, render: Render}) => {
+const GoBack = ({render: Render, isDirty, formik, uuid, operator, componentProps, ...actionContext}) => {
     const {envProps} = useContentEditorConfigContext();
     const [open, setOpen] = useState(false);
     const executeGoBackAction = overridedStoredLocation => {
@@ -11,7 +11,7 @@ const GoBack = ({context, render: Render}) => {
             envProps.unregisterListeners();
         }
 
-        envProps.back(context.uuid, context.operator, overridedStoredLocation);
+        envProps.back(uuid, operator, overridedStoredLocation);
     };
 
     return (
@@ -19,20 +19,20 @@ const GoBack = ({context, render: Render}) => {
             <EditPanelDialogConfirmation
                 open={open}
                 titleKey="content-editor:label.contentEditor.edit.action.goBack.title"
-                formik={context.formik}
+                formik={formik}
                 actionCallback={overridedStoredLocation => executeGoBackAction(overridedStoredLocation)}
                 onCloseDialog={() => setOpen(false)}
             />
             <Render
                 context={{
-                    ...context,
+                    ...actionContext,
                     componentProps: {
-                        ...context.componentProps,
+                        ...componentProps,
                         disabled: envProps.disabledBack()
                     },
                     onClick: () => {
-                        if (context.formik) {
-                            if (context.formik.dirty) {
+                        if (formik) {
+                            if (isDirty) {
                                 setOpen(true);
                             } else {
                                 executeGoBackAction();
@@ -45,7 +45,12 @@ const GoBack = ({context, render: Render}) => {
 };
 
 GoBack.propTypes = {
-    context: PropTypes.object.isRequired,
+    actionContext: PropTypes.object.isRequired,
+    componentProps: PropTypes.object.isRequired,
+    formik: PropTypes.object.isRequired,
+    operator: PropTypes.string.isRequired,
+    uuid: PropTypes.string.isRequired,
+    isDirty: PropTypes.bool.isRequired,
     render: PropTypes.func.isRequired
 };
 
