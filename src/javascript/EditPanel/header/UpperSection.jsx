@@ -69,7 +69,10 @@ export const HeaderUpperSection = ({title, actionContext}) => {
                                 size: 'big',
                                 className: styles.mainActions
                             }}
-                            disabled={formik.dirty}
+                            errors={formik.errors}
+                            values={formik.values}
+                            dirty={formik.dirty}
+                            mode={mode}
                             target="content-editor/header/main-save-actions"
                             render={ButtonWithPastilleRenderer}
                             {...actionContext}
@@ -82,16 +85,17 @@ export const HeaderUpperSection = ({title, actionContext}) => {
                         className={styles.publishActions}
                     >
                         <DisplayActions
-                            isMainButton
-                            componentProps={{
-                                color: 'accent',
-                                size: 'big',
-                                className: styles.mainActions
+                            context={{
+                                ...actionContext,
+                                isMainButton: true,
+                                componentProps: {
+                                    color: 'accent',
+                                    size: 'big',
+                                    className: styles.mainActions
+                                }
                             }}
-                            disabled={formik.dirty}
                             target="content-editor/header/main-publish-actions"
                             render={ButtonWithPastilleRenderer}
-                            {...actionContext}
                         />
                         {EditActions}
                     </ButtonGroup>

@@ -21,14 +21,14 @@ describe('create action', () => {
             context: {
                 formik: {
                     submitForm: jest.fn(() => Promise.resolve()),
-                    validateForm: jest.fn(() => Promise.resolve(defaultProps.context.formik.errors)),
+                    validateForm: jest.fn(() => Promise.resolve(defaultProps.errors)),
                     resetForm: jest.fn(),
                     setFieldValue: jest.fn(),
-                    setTouched: jest.fn(() => Promise.resolve()),
-                    errors: {}
+                    setTouched: jest.fn(() => Promise.resolve())
                 },
                 renderComponent: jest.fn()
             },
+            errors: {},
             render: jest.fn(),
             loading: undefined
         };
@@ -47,12 +47,9 @@ describe('create action', () => {
     });
 
     it('should not submit form when form is invalid', async () => {
-        defaultProps.context.formik = {
-            ...defaultProps.context.formik,
-            errors: {
-                myFiled1: 'required',
-                myFiled2: 'required'
-            }
+        defaultProps.errors = {
+            myFiled1: 'required',
+            myFiled2: 'required'
         };
         const cmp = shallow(<CreateAction {...defaultProps}/>);
         await cmp.props().context.onClick(defaultProps.context);
@@ -66,7 +63,7 @@ describe('create action', () => {
     });
 
     it('should not be a disabled action when is clicked, but form is dirty', async () => {
-        defaultProps.context.formik.dirty = true;
+        defaultProps.dirty = true;
         const cmp = shallow(<CreateAction {...defaultProps}/>);
         await cmp.props().context.onClick(defaultProps.context);
 

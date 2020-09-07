@@ -4,7 +4,7 @@ import React, {useContext, useState} from 'react';
 import {ComponentRendererContext} from '@jahia/ui-extender';
 import * as PropTypes from 'prop-types';
 
-const Create = ({context, render: Render, loading: Loading}) => {
+const Create = ({context, values, errors, dirty, render: Render, loading: Loading}) => {
     const componentRenderer = useContext(ComponentRendererContext);
 
     const [clicked, setClicked] = useState(false);
@@ -16,9 +16,9 @@ const Create = ({context, render: Render, loading: Loading}) => {
         <Render
             context={{
                 ...context,
-                addWarningBadge: Object.keys(context.formik.errors).length > 0,
+                addWarningBadge: Object.keys(errors).length > 0,
                 enabled: context.mode === Constants.routes.baseCreateRoute,
-                disabled: clicked && !context.formik.dirty,
+                disabled: clicked && !dirty,
                 onClick: async ({formik}) => {
                     const formIsValid = await validateForm(formik, componentRenderer);
 
@@ -27,7 +27,7 @@ const Create = ({context, render: Render, loading: Loading}) => {
                         return formik
                             .submitForm()
                             .then(() => {
-                                formik.resetForm(formik.values);
+                                formik.resetForm(values);
                             });
                     }
                 }
@@ -37,6 +37,9 @@ const Create = ({context, render: Render, loading: Loading}) => {
 
 Create.propTypes = {
     context: PropTypes.object.isRequired,
+    values: PropTypes.object.isRequired,
+    errors: PropTypes.object.isRequired,
+    dirty: PropTypes.bool.isRequired,
     render: PropTypes.func.isRequired,
     loading: PropTypes.func
 };
