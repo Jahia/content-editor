@@ -63,17 +63,16 @@ export const HeaderUpperSection = ({title, actionContext}) => {
 
                 <div className={styles.headerRight}>
                     <div className={styles.saveActions}>
-                        <DisplayActions context={{
-                            ...actionContext,
-                            componentProps: {
+                        <DisplayActions
+                            componentProps={{
                                 color: 'accent',
                                 size: 'big',
                                 className: styles.mainActions
-                            }
-
-                        }}
-                                        target="content-editor/header/main-save-actions"
-                                        render={ButtonWithPastilleRenderer}
+                            }}
+                            disabled={formik.dirty}
+                            target="content-editor/header/main-save-actions"
+                            render={ButtonWithPastilleRenderer}
+                            {...actionContext}
                         />
                     </div>
 
@@ -83,17 +82,16 @@ export const HeaderUpperSection = ({title, actionContext}) => {
                         className={styles.publishActions}
                     >
                         <DisplayActions
-                            context={{
-                                ...actionContext,
-                                isMainButton: true,
-                                componentProps: {
-                                    color: 'accent',
-                                    size: 'big',
-                                    className: styles.mainActions
-                                }
+                            isMainButton
+                            componentProps={{
+                                color: 'accent',
+                                size: 'big',
+                                className: styles.mainActions
                             }}
+                            disabled={formik.dirty}
                             target="content-editor/header/main-publish-actions"
                             render={ButtonWithPastilleRenderer}
+                            {...actionContext}
                         />
                         {EditActions}
                     </ButtonGroup>
