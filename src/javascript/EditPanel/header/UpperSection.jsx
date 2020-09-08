@@ -63,17 +63,19 @@ export const HeaderUpperSection = ({title, actionContext}) => {
 
                 <div className={styles.headerRight}>
                     <div className={styles.saveActions}>
-                        <DisplayActions context={{
-                            ...actionContext,
-                            componentProps: {
+                        <DisplayActions
+                            componentProps={{
                                 color: 'accent',
                                 size: 'big',
                                 className: styles.mainActions
-                            }
-
-                        }}
-                                        target="content-editor/header/main-save-actions"
-                                        render={ButtonWithPastilleRenderer}
+                            }}
+                            errors={formik.errors}
+                            values={formik.values}
+                            dirty={formik.dirty}
+                            mode={mode}
+                            target="content-editor/header/main-save-actions"
+                            render={ButtonWithPastilleRenderer}
+                            {...actionContext}
                         />
                     </div>
 

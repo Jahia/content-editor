@@ -32,13 +32,14 @@ describe('save action', () => {
                 resetForm: jest.fn(() => Promise.resolve()),
                 setFieldValue: jest.fn(),
                 setTouched: jest.fn(() => Promise.resolve()),
-                validateForm: jest.fn(() => Promise.resolve(context.formik.errors)),
+                validateForm: jest.fn(() => Promise.resolve(defaultProps.errors)),
                 dirty: true,
                 errors: {}
             },
             renderComponent: jest.fn()
         };
-        defaultProps = {context, render, loading: undefined};
+        defaultProps = {context, render, loading: undefined, dirty: true,
+            errors: {}};
     });
 
     it('should load when loading', async () => {
@@ -54,7 +55,7 @@ describe('save action', () => {
     });
 
     it('shouldn\'t do anything when form is not dirty', async () => {
-        context.formik.dirty = false;
+        context.dirty = false;
         const cmp = shallow(<SaveAction {...defaultProps}/>);
         expect(cmp.props().context.disabled).toBeTruthy();
     });
@@ -85,7 +86,7 @@ describe('save action', () => {
     });
 
     it('should show a modal when form have errors', async () => {
-        context.formik.errors = {
+        defaultProps.errors = {
             field1: 'required'
         };
 
