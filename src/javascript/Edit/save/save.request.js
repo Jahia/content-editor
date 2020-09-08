@@ -38,7 +38,7 @@ export const saveNode = ({
         wipInfo
     });
 
-    // Hooks on content to be created
+    // Hooks on content to be edited
     const onEdits = registry.find({type: 'contentEditor.onEdit'});
     variables = onEdits?.reduce((updatedVariables, registeredOnEdit) => {
         try {
