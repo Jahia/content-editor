@@ -6,7 +6,7 @@ import * as PropTypes from 'prop-types';
 import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
 import {useContentEditorContext} from '~/ContentEditor.context';
 
-const Save = ({context, render: Render, loading: Loading}) => {
+const Save = ({context, values, errors, dirty, mode, render: Render, loading: Loading}) => {
     const componentRenderer = useContext(ComponentRendererContext);
     const {publicationInfoPolling} = usePublicationInfoContext();
     const {refetchFormData} = useContentEditorContext();
@@ -19,9 +19,9 @@ const Save = ({context, render: Render, loading: Loading}) => {
         <Render
             context={{
                 ...context,
-                addWarningBadge: Object.keys(context.formik.errors).length > 0,
-                enabled: context.mode === Constants.routes.baseEditRoute,
-                disabled: !context.formik.dirty || publicationInfoPolling,
+                addWarningBadge: Object.keys(errors).length > 0,
+                enabled: mode === Constants.routes.baseEditRoute,
+                disabled: !dirty || publicationInfoPolling,
                 onClick: async ({formik}) => {
                     const formIsValid = await validateForm(formik, componentRenderer);
 
@@ -31,7 +31,7 @@ const Save = ({context, render: Render, loading: Loading}) => {
                             .then(() => {
                                 // TODO BACKLOG-13406 avoid refretch if possible
                                 refetchFormData();
-                                formik.resetForm(formik.values);
+                                formik.resetForm(values);
                             });
                     }
                 }
@@ -40,6 +40,10 @@ const Save = ({context, render: Render, loading: Loading}) => {
 };
 
 Save.propTypes = {
+    values: PropTypes.object.isRequired,
+    errors: PropTypes.object.isRequired,
+    mode: PropTypes.string.isRequired,
+    dirty: PropTypes.bool.isRequired,
     context: PropTypes.object.isRequired,
     render: PropTypes.func.isRequired,
     loading: PropTypes.func

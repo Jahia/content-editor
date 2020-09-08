@@ -76,7 +76,7 @@ describe('PickerDialog - Thumbnail view', () => {
             <Thumbnail {...defaultProps}/>,
             {},
             dsGenericTheme
-        );
+        ).dive().dive();
 
         cmp.find('ImageList').exists();
     });
@@ -86,7 +86,7 @@ describe('PickerDialog - Thumbnail view', () => {
             <Thumbnail {...defaultProps}/>,
             {},
             dsGenericTheme
-        )
+        ).dive().dive()
             .find('ImageList');
 
         expect(cmp.props().images[0].name).toContain('Beautiful_hedgehog.jpg');
@@ -97,7 +97,7 @@ describe('PickerDialog - Thumbnail view', () => {
             <Thumbnail {...defaultProps}/>,
             {},
             dsGenericTheme
-        )
+        ).dive().dive()
             .find('ImageList');
 
         expect(cmp.props().images[0].type).toContain('jpeg');

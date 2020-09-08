@@ -3,6 +3,7 @@ import {getDataToMutate} from '~/EditPanel/EditPanel.utils';
 import {adaptCreateRequest} from '../Create.adapter';
 import {Constants} from '~/ContentEditor.constants';
 import {onServerError} from '~/Validation/validation.utils';
+import {registry} from '@jahia/ui-extender';
 
 export const createNode = ({
     client,
@@ -20,15 +21,27 @@ export const createNode = ({
 }) => {
     const {propsToSave, mixinsToAdd} = getDataToMutate({formValues: values, sections, lang: language});
     const wipInfo = values[Constants.wip.fieldName];
+    let variables = adaptCreateRequest({
+        uuid: nodeData.uuid,
+        name: nodeData.newName,
+        primaryNodeType,
+        mixins: mixinsToAdd,
+        properties: propsToSave,
+        wipInfo
+    });
+    // Hooks on content to be created
+    const onCreates = registry.find({type: 'contentEditor.onCreate'});
+    variables = onCreates?.reduce((updatedVariables, registeredOnCreate) => {
+        try {
+            return registeredOnCreate.onCreate(updatedVariables, nodeData) || updatedVariables;
+        } catch (e) {
+            console.error('An error occurred while executing onCreate', registeredOnCreate, variables, e);
+        }
+
+        return updatedVariables;
+    }, variables);
     client.mutate({
-        variables: adaptCreateRequest({
-            uuid: nodeData.uuid,
-            name: nodeData.newName,
-            primaryNodeType,
-            mixins: mixinsToAdd,
-            properties: propsToSave,
-            wipInfo
-        }),
+        variables,
         mutation: CreateNode
     }).then(data => {
         if (createCallback) {

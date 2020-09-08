@@ -117,7 +117,13 @@ const pickerConfigs = {
         };
     },
     file: {
-        picker: ContentPickerSelectorType,
+        picker: {
+            ...ContentPickerSelectorType, key: 'FilePicker',
+            pickerInput: {
+                ...ContentPickerSelectorType.pickerInput,
+                emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.addFile'
+            }
+        },
         treeConfigs: [treeConfigs.files],
         searchSelectorType: 'jnt:file',
         listTypesTable: ['jnt:file'],
@@ -127,16 +133,19 @@ const pickerConfigs = {
         picker: ContentPickerSelectorType,
         treeConfigs: [treeConfigs.users, treeConfigs.siteUsers],
         searchSelectorType: 'jnt:user',
+        searchPaths: site => ['/users', `/sites/${site}/users`],
         listTypesTable: ['jnt:user'],
         selectableTypesTable: ['jnt:user'],
         displayTree: false
     },
     usergroup: {
         picker: ContentPickerSelectorType,
-        treeConfigs: [treeConfigs.users, treeConfigs.siteUsers, treeConfigs.groups, treeConfigs.siteGroups],
-        searchSelectorType: 'jnt:user',
-        listTypesTable: ['jnt:user', 'jnt:group'],
-        selectableTypesTable: ['jnt:user', 'jnt:group']
+        treeConfigs: [treeConfigs.groups, treeConfigs.siteGroups],
+        searchSelectorType: 'jnt:group',
+        searchPaths: site => ['/groups', `/sites/${site}/groups`],
+        listTypesTable: ['jnt:group'],
+        selectableTypesTable: ['jnt:group'],
+        displayTree: false
     },
     category: {
         picker: ContentPickerSelectorType,

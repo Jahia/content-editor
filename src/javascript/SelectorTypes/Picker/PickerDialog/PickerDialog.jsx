@@ -141,42 +141,43 @@ const PickerDialogCmp = ({
                 handleSearchChange({target: {value: ''}});
             }}
         >
-            <>
-                {pickerConfig.displayTree && (
-                    <LeftPanel
-                        site={currentSite}
-                        siteNodes={siteNodes}
-                        selectedPath={selectedPath}
-                        setSelectedPath={setSelectedPath}
-                        setSelectedItem={setSelectedItem}
-                        field={field}
-                        initialSelectedItem={initialSelectedItem}
-                        lang={lang}
-                        nodeTreeConfigs={nodeTreeConfigsAdapted}
-                        onSelectSite={onSelectSite}
-                    />)}
-                <div
-                    className={classes.modalContent + (pickerConfig.displayTree ? ` ${classes.modalContentWithDrawer}` : '')}
-                >
-                    <MainPanel
-                        setSelectedPath={setSelectedPath}
-                        pickerConfig={pickerConfig}
-                        nodeTreeConfigs={nodeTreeConfigsAdapted}
-                        initialSelectedItem={initialSelectedItem}
-                        selectedItem={selectedItem}
-                        setSelectedItem={setSelectedItem}
-                        selectedPath={selectedPath}
-                        lang={lang}
-                        uilang={uilang}
-                        searchTerms={searchTerms}
-                        handleSearchChange={handleSearchChange}
-                        t={t}
-                        onItemSelection={onItemSelection}
-                        onCloseDialog={() => setIsOpen(false)}
-                    />
-                </div>
-            </>
-            );
+            {isOpen && (
+                <>
+                    {pickerConfig.displayTree && (
+                        <LeftPanel
+                            site={currentSite}
+                            siteNodes={siteNodes}
+                            selectedPath={selectedPath}
+                            setSelectedPath={setSelectedPath}
+                            setSelectedItem={setSelectedItem}
+                            field={field}
+                            initialSelectedItem={initialSelectedItem}
+                            lang={lang}
+                            nodeTreeConfigs={nodeTreeConfigsAdapted}
+                            onSelectSite={onSelectSite}
+                        />)}
+                    <div
+                        className={classes.modalContent + (pickerConfig.displayTree ? ` ${classes.modalContentWithDrawer}` : '')}
+                    >
+                        <MainPanel
+                            setSelectedPath={setSelectedPath}
+                            pickerConfig={pickerConfig}
+                            nodeTreeConfigs={nodeTreeConfigsAdapted}
+                            initialSelectedItem={initialSelectedItem}
+                            selectedItem={selectedItem}
+                            setSelectedItem={setSelectedItem}
+                            selectedPath={selectedPath}
+                            lang={lang}
+                            uilang={uilang}
+                            searchTerms={searchTerms}
+                            handleSearchChange={handleSearchChange}
+                            t={t}
+                            onItemSelection={onItemSelection}
+                            onCloseDialog={() => setIsOpen(false)}
+                        />
+                    </div>
+                </>
+            )}
         </Dialog>
     );
 };

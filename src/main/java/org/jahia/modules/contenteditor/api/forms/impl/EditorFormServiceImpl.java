@@ -566,7 +566,14 @@ public class EditorFormServiceImpl implements EditorFormService {
             }
         } else {
             for (EditorFormFieldValueConstraint editorFormFieldValueConstraint : editorFormField.getValueConstraints()) {
-                initialChoiceListValues.add(new ChoiceListValue(editorFormFieldValueConstraint.getDisplayValue(), editorFormFieldValueConstraint.getValue().getStringValue()));
+                ChoiceListValue choiceListValue = new ChoiceListValue(editorFormFieldValueConstraint.getDisplayValue(),
+                    editorFormFieldValueConstraint.getValue().getStringValue());
+                if (editorFormFieldValueConstraint.getPropertyList() != null) {
+                    editorFormFieldValueConstraint.getPropertyList().forEach(constraint -> {
+                        choiceListValue.addProperty(constraint.getName(),constraint.getValue());
+                    });
+                }
+                initialChoiceListValues.add(choiceListValue);
             }
         }
 

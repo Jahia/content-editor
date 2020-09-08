@@ -9,6 +9,13 @@ jest.mock('@apollo/react-hooks', () => {
         }
     };
 });
+
+jest.mock('../PickerContainer', () => {
+    return {
+        Picker: () => {}
+    };
+});
+
 import {setQueryResponseMock} from '@apollo/react-hooks';
 
 describe('ContentPicker config', () => {

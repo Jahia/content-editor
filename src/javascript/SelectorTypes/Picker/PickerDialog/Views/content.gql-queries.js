@@ -70,7 +70,7 @@ export const ContentDialogPickerQuery = gql`
 
 export const SearchContentDialogPickerQuery = gql`
     query searchPickerQuery(
-        $path: String!,
+        $searchPaths: [String]!,
         $language: String!,
         $searchTerms: String!,
         $searchName: String!,
@@ -84,7 +84,7 @@ export const SearchContentDialogPickerQuery = gql`
                 criteria: {
                     language: $language,
                     nodeType: $searchSelectorType,
-                    paths: [$path],
+                    paths: $searchPaths,
                     nodeConstraint: {any: [
                         {contains: $searchTerms}
                         {contains: $searchTerms, property: "jcr:content"}

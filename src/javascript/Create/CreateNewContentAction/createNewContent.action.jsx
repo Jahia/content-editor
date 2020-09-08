@@ -4,7 +4,7 @@ import {Constants} from '~/ContentEditor.constants';
 import {transformNodeTypesToActions, useCreatableNodetypes} from './createNewContent.utits';
 import {useSelector} from 'react-redux';
 import {useNodeChecks} from '@jahia/data-helper';
-import {ComponentRendererContext} from '@jahia/ui-extender';
+import {ComponentRendererContext, registry} from '@jahia/ui-extender';
 import * as PropTypes from 'prop-types';
 import {useContentEditorHistory} from '~/ContentEditorHistory';
 import {useTranslation} from 'react-i18next';
@@ -45,15 +45,25 @@ const CreateNewContent = ({context, render: Render, loading: Loading}) => {
     const {t} = useTranslation();
     const componentRenderer = useContext(ComponentRendererContext);
     const {uilang, language} = useSelector(state => ({language: state.language, uilang: state.uilang}));
-    const res = useNodeChecks(
+
+    const resTargetPath = useNodeChecks(
         {path: context.path, language: language},
+        {...context}
+    );
+
+    if (context.targetPath) {
+        registry.addOrReplace('globalLinkContext', 'contextData', {uuid: resTargetPath?.node?.uuid});
+    }
+
+    const res = useNodeChecks(
+        {path: context.targetPath || context.path, language: language},
         {...context}
     );
     const {loadingTypes, error, nodetypes} = useCreatableNodetypes(
         undefined,
         undefined,
         false,
-        context.path,
+        context.targetPath || context.path,
         uilang,
         ['jmix:studioOnly', 'jmix:hiddenType'],
         context.showOnNodeTypes,

@@ -91,6 +91,14 @@ export const FormQuery = gql`
             nodeTypeByName(name: $primaryNodeType) {
                 name
                 displayName(language: $uilang)
+                moveSystemNameToTop: isNodeType(type: {multi: ANY, types: [
+                    "jnt:page",
+                    "jnt:contentFolder",
+                    "jnt:folder",
+                    "jnt:file",
+                    "jnt:category",
+                    "jmix:mainResource"
+                ]})
             }
         }
        

@@ -1,5 +1,5 @@
 import {Constants} from '~/ContentEditor.constants';
-
+import {limitSystemNameIfNecessary, replaceSpecialCharacters} from './SystemName.utils';
 const registerSystemNameOnChange = registry => {
     registry.add('selectorType.onChange', 'systemNameSync', {
         targets: ['Text'],
@@ -30,7 +30,8 @@ const registerSystemNameOnChange = registry => {
                 }
 
                 if (systemNameField && !systemNameField.readOnly) {
-                    editorContext.formik.setFieldValue(Constants.systemName.name, currentValue, true);
+                    const cleanedSystemName = replaceSpecialCharacters(currentValue)?.toLowerCase();
+                    editorContext.formik.setFieldValue(Constants.systemName.name, limitSystemNameIfNecessary(cleanedSystemName, systemNameField), true);
                     editorContext.formik.setFieldTouched(Constants.systemName.name, true);
                 }
             }

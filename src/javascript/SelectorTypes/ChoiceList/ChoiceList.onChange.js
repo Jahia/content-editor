@@ -59,7 +59,7 @@ const registerChoiceListOnChange = registry => {
                     .find(s => s.name === 'dependentProperties' && s.value.includes(field.name))
                 );
 
-            dependentPropertiesFields.forEach(dependentPropertiesField => {
+            dependentPropertiesFields.forEach(async dependentPropertiesField => {
                 const dependentProperties = dependentPropertiesField.selectorOptions.find(f => f.name === 'dependentProperties').value.split(',');
                 if (dependentProperties.length > 0) {
                     const context = [{
@@ -77,7 +77,7 @@ const registerChoiceListOnChange = registry => {
                         value: currentValue === null ? [] : currentValue
                     });
 
-                    editorContext.client.query(
+                    const {data} = await editorContext.client.query(
                         {
                             query: FieldConstraints,
                             variables: {
@@ -90,12 +90,13 @@ const registerChoiceListOnChange = registry => {
                                 uilang: editorContext.lang,
                                 language: editorContext.lang
                             }
-                        }).then(data => {
-                        if (data?.data?.forms?.fieldConstraints) {
-                            dependentPropertiesField.valueConstraints = data.data.forms.fieldConstraints;
-                            editorContext.setSections([...editorContext.sections]);
+                        });
+                    if (data) {
+                        if (data?.forms?.fieldConstraints) {
+                            dependentPropertiesField.valueConstraints = data.forms.fieldConstraints;
+                            editorContext.setSections([...editorContext.getSections()]);
                         }
-                    });
+                    }
                 }
             });
         }

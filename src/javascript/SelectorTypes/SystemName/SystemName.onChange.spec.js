@@ -19,7 +19,8 @@ describe('System name onChange', () => {
                 fieldSets: [{
                     fields: [{
                         name: Constants.systemName.name,
-                        readOnly: false
+                        readOnly: false,
+                        selectorOptions: []
                     }]
                 }]
             }],
@@ -37,7 +38,7 @@ describe('System name onChange', () => {
 
     it('Should sync the systemName when updating the jcr:title', () => {
         systemNameOnChange(undefined, 'this is the jcr:title', currentField, editorContext);
-        expect(editorContext.formik.setFieldValue).toHaveBeenCalledWith(Constants.systemName.name, 'this is the jcr:title', true);
+        expect(editorContext.formik.setFieldValue).toHaveBeenCalledWith(Constants.systemName.name, 'this-is-the-jcr-title', true);
         expect(editorContext.formik.setFieldTouched).toHaveBeenCalledWith(Constants.systemName.name, true);
     });
 
