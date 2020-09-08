@@ -44,7 +44,7 @@ export const saveNode = ({
         try {
             return registeredOnEdit.onEdit(updatedVariables, nodeData) || updatedVariables;
         } catch (e) {
-            console.error('An error occurred while executing onCreate', registeredOnEdit, variables, e);
+            console.error('An error occurred while executing onEdit', registeredOnEdit, variables, e);
         }
 
         return updatedVariables;
