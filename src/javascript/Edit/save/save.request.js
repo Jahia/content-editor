@@ -7,6 +7,7 @@ import {PublicationInfoQuery} from '~/PublicationInfo/PublicationInfo.gql-querie
 import {adaptSaveRequest} from '../Edit.adapter';
 import {Constants} from '~/ContentEditor.constants';
 import {onServerError} from '~/Validation/validation.utils';
+import {registry} from '@jahia/ui-extender';
 
 export const saveNode = ({
     client,
@@ -25,19 +26,31 @@ export const saveNode = ({
     const dataToMutate = getDataToMutate({nodeData, formValues: values, sections, lang: language});
     const {childrenOrder, shouldModifyChildren} = getChildrenOrder(values, nodeData);
     const wipInfo = values[Constants.wip.fieldName];
+    let variables = adaptSaveRequest(nodeData, {
+        uuid: nodeData.uuid,
+        propertiesToSave: dataToMutate.propsToSave,
+        propertiesToDelete: dataToMutate.propsToDelete,
+        mixinsToAdd: dataToMutate.mixinsToAdd,
+        mixinsToDelete: dataToMutate.mixinsToDelete,
+        language,
+        shouldModifyChildren,
+        childrenOrder,
+        wipInfo
+    });
 
+    // Hooks on content to be created
+    const onEdits = registry.find({type: 'contentEditor.onEdit'});
+    variables = onEdits?.reduce((updatedVariables, registeredOnEdit) => {
+        try {
+            return registeredOnEdit.onEdit(updatedVariables, nodeData) || updatedVariables;
+        } catch (e) {
+            console.error('An error occurred while executing onCreate', registeredOnEdit, variables, e);
+        }
+
+        return updatedVariables;
+    }, variables);
     client.mutate({
-        variables: adaptSaveRequest(nodeData, {
-            uuid: nodeData.uuid,
-            propertiesToSave: dataToMutate.propsToSave,
-            propertiesToDelete: dataToMutate.propsToDelete,
-            mixinsToAdd: dataToMutate.mixinsToAdd,
-            mixinsToDelete: dataToMutate.mixinsToDelete,
-            language,
-            shouldModifyChildren,
-            childrenOrder,
-            wipInfo
-        }),
+        variables,
         mutation: SavePropertiesMutation,
         refetchQueries: [
             {
