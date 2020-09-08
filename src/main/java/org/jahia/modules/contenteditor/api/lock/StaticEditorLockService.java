@@ -1,5 +1,8 @@
 package org.jahia.modules.contenteditor.api.lock;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.jahia.api.Constants;
 import org.jahia.services.content.JCRNodeWrapper;
@@ -14,6 +17,7 @@ import javax.jcr.lock.LockException;
 import javax.jcr.security.Privilege;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -50,13 +54,16 @@ public class StaticEditorLockService {
                 // session locks data
                 Map<String, String> locks = getSessionLocks(request.getSession());
                 locks.put(lockId, node.getIdentifier());
-                request.getSession().setAttribute(LOCKS_SESSION_ATTR, locks);
+                ObjectMapper mapper = new ObjectMapper();
+                String jsonResult = mapper.writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(locks);
+                request.getSession().setAttribute(LOCKS_SESSION_ATTR, jsonResult);
 
                 // jcr lock
                 node.lockAndStoreToken(LOCK_TYPE);
 
                 return true;
-            } catch (UnsupportedRepositoryOperationException e) {
+            } catch (UnsupportedRepositoryOperationException | JsonProcessingException e) {
                 // do nothing if lock is not supported
             }
         }
@@ -102,7 +109,15 @@ public class StaticEditorLockService {
     }
 
     private static Map<String, String> getSessionLocks(HttpSession session) {
-        @SuppressWarnings("unchecked") Map<String, String> locks = (Map<String, String>) session.getAttribute(LOCKS_SESSION_ATTR);
+        ObjectMapper mapper = new ObjectMapper();
+        TypeReference<HashMap<String, String>> typeRef
+            = new TypeReference<HashMap<String, String>>() {};
+        Map<String, String> locks = null;
+        try {
+            locks = mapper.readValue((String) session.getAttribute(LOCKS_SESSION_ATTR), typeRef);
+        } catch (IOException e) {
+            logger.error("Error while getting locks", e);
+        }
         if (locks == null) {
             locks = new HashMap<>();
         }
