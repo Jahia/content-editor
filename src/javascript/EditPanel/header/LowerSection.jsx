@@ -18,7 +18,7 @@ export const HeaderLowerSection = ({actionContext, setActiveTab, activeTab}) => 
         <div className={styles.headerToolBar}>
             <EditPanelLanguageSwitcher lang={actionContext.language} siteInfo={actionContext.siteInfo}/>
 
-            <Separator variant="vertical"/>
+            <Separator variant="vertical" size="medium"/>
 
             <Tab>
                 <DisplayActions
@@ -29,23 +29,24 @@ export const HeaderLowerSection = ({actionContext, setActiveTab, activeTab}) => 
                     }}
                     target="editHeaderTabsActions"
                     render={({context}) => {
+                        console.log('context', context);
                         return (
                             <TabItem
-                            data-sel-role={context.dataSelRole}
-                            icon={context.buttonIcon}
-                            label={t(context.buttonLabel)}
-                            isSelected={context.value === context.activeTab}
-                            onClick={e => {
-                                e.stopPropagation();
-                                context.onClick(context, e);
-                            }}
-                        />
+                                data-sel-role={context.dataSelRole}
+                                icon={context.buttonIcon}
+                                label={t(context.buttonLabel)}
+                                isSelected={context.value === context.activeTab}
+                                onClick={e => {
+                                    e.stopPropagation();
+                                    context.onClick(context, e);
+                                }}
+                            />
                     );
                 }}
                 />
             </Tab>
 
-            <Separator variant="vertical"/>
+            <Separator variant="vertical" size="medium"/>
 
             <DisplayAction
                 actionKey="content-editor/header/3dots"
