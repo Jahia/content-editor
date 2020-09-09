@@ -46,14 +46,14 @@ const CreateNewContent = ({context, render: Render, loading: Loading}) => {
     const componentRenderer = useContext(ComponentRendererContext);
     const {uilang, language} = useSelector(state => ({language: state.language, uilang: state.uilang}));
     const res = useNodeChecks(
-        {path: context.path, language: language},
+        {path: context.contextNodePath || context.path, language: language},
         {...context}
     );
     const {loadingTypes, error, nodetypes} = useCreatableNodetypes(
         undefined,
         undefined,
         false,
-        context.path,
+        context.contextNodePath || context.path,
         uilang,
         ['jmix:studioOnly', 'jmix:hiddenType'],
         context.showOnNodeTypes,
