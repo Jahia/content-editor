@@ -48,6 +48,7 @@ import org.jahia.services.content.nodetypes.NodeTypeRegistry;
 import org.osgi.framework.Bundle;
 
 import javax.jcr.nodetype.NoSuchNodeTypeException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -62,6 +63,7 @@ public class EditorFormDefinition implements Comparable<EditorFormDefinition> {
     private Boolean hasPreview;
 
     public EditorFormDefinition() {
+        sections = new ArrayList<>();
     }
 
     public EditorFormDefinition(String nodeType, Double priority, Boolean hasPreview, List<EditorFormSectionDefinition> sections, Bundle originBundle) {
@@ -119,20 +121,20 @@ public class EditorFormDefinition implements Comparable<EditorFormDefinition> {
         }
         final String otherName = otherEditorFormDefinition.getNodeType();
         try {
-            ExtendedNodeType nodeType = NodeTypeRegistry.getInstance().getNodeType(this.nodeType);
+            ExtendedNodeType extendedNodeType = NodeTypeRegistry.getInstance().getNodeType(this.nodeType);
             ExtendedNodeType otherNodeType = NodeTypeRegistry.getInstance().getNodeType(otherName);
-            if (!nodeType.equals(otherNodeType)) {
-                if (nodeType.isNodeType(otherNodeType.getName())) {
+            if (!extendedNodeType.equals(otherNodeType)) {
+                if (extendedNodeType.isNodeType(otherNodeType.getName())) {
                     return 1;
                 }
-                if (otherNodeType.isNodeType(nodeType.getName())) {
+                if (otherNodeType.isNodeType(extendedNodeType.getName())) {
                     return -1;
                 }
                 // put types that not inherit to the end (as they are set as mixin to an existing node)
                 return 1;
             }
         } catch (NoSuchNodeTypeException e) {
-            throw new RuntimeException(String.format("unable to resolve one of the types %s and %s", this.nodeType, otherName));
+            throw new EditorFormRuntimeException(String.format("unable to resolve one of the types %s and %s", this.nodeType, otherName), e);
         }
         if (priority == null) {
             if (otherEditorFormDefinition.priority != null) {
