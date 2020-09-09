@@ -29,7 +29,6 @@ export const HeaderLowerSection = ({actionContext, setActiveTab, activeTab}) => 
                     }}
                     target="editHeaderTabsActions"
                     render={({context}) => {
-                        console.log('context', context);
                         return (
                             <TabItem
                                 data-sel-role={context.dataSelRole}
