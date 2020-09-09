@@ -1,8 +1,5 @@
 package org.jahia.modules.contenteditor.api.lock;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.jahia.api.Constants;
 import org.jahia.services.content.JCRNodeWrapper;
@@ -17,7 +14,6 @@ import javax.jcr.lock.LockException;
 import javax.jcr.security.Privilege;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -52,18 +48,15 @@ public class StaticEditorLockService {
             try {
 
                 // session locks data
-                Map<String, String> locks = getSessionLocks(request.getSession());
+                HashMap<String, String> locks = getSessionLocks(request.getSession());
                 locks.put(lockId, node.getIdentifier());
-                ObjectMapper mapper = new ObjectMapper();
-                String jsonResult = mapper.writerWithDefaultPrettyPrinter()
-                    .writeValueAsString(locks);
-                request.getSession().setAttribute(LOCKS_SESSION_ATTR, jsonResult);
+                request.getSession().setAttribute(LOCKS_SESSION_ATTR, locks);
 
                 // jcr lock
                 node.lockAndStoreToken(LOCK_TYPE);
 
                 return true;
-            } catch (UnsupportedRepositoryOperationException | JsonProcessingException e) {
+            } catch (UnsupportedRepositoryOperationException e) {
                 // do nothing if lock is not supported
             }
         }
@@ -78,7 +71,7 @@ public class StaticEditorLockService {
      */
     public static void unlock(HttpServletRequest request, String lockId) throws RepositoryException {
         JCRSessionWrapper sessionWrapper = JCRSessionFactory.getInstance().getCurrentUserSession(Constants.EDIT_WORKSPACE);
-        Map<String, String> locks = getSessionLocks(request.getSession());
+        HashMap<String, String> locks = getSessionLocks(request.getSession());
         String lockedIdentifier = locks.get(lockId);
 
         if (lockedIdentifier != null) {
@@ -108,16 +101,8 @@ public class StaticEditorLockService {
         closeAllLocks(getSessionLocks(httpSession).values());
     }
 
-    private static Map<String, String> getSessionLocks(HttpSession session) {
-        ObjectMapper mapper = new ObjectMapper();
-        TypeReference<HashMap<String, String>> typeRef
-            = new TypeReference<HashMap<String, String>>() {};
-        Map<String, String> locks = null;
-        try {
-            locks = mapper.readValue((String) session.getAttribute(LOCKS_SESSION_ATTR), typeRef);
-        } catch (IOException e) {
-            logger.error("Error while getting locks", e);
-        }
+    private static HashMap<String, String> getSessionLocks(HttpSession session) {
+        @SuppressWarnings("unchecked") HashMap<String, String> locks = (HashMap<String, String>) session.getAttribute(LOCKS_SESSION_ATTR);
         if (locks == null) {
             locks = new HashMap<>();
         }
