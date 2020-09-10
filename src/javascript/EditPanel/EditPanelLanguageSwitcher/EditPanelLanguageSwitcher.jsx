@@ -42,6 +42,7 @@ const EditPanelLanguageSwitcher = ({siteInfo, formik}) => {
                 data={languages}
                 value={lang}
                 label={langLabel}
+                size="small"
                 onChange={(e, language) => {
                     if (language.value !== lang) {
                         if (formik.dirty) {

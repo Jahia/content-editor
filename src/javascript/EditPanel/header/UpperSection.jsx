@@ -85,17 +85,20 @@ export const HeaderUpperSection = ({title, actionContext}) => {
                         className={styles.publishActions}
                     >
                         <DisplayActions
-                            context={{
-                                ...actionContext,
-                                isMainButton: true,
-                                componentProps: {
-                                    color: 'accent',
-                                    size: 'big',
-                                    className: styles.mainActions
-                                }
+                            isMainButton
+                            componentProps={{
+                                color: 'accent',
+                                size: 'big',
+                                className: styles.mainActions
                             }}
+                            values={formik.values}
+                            dirty={formik.dirty}
+                            hasPublishPermission={nodeData.hasPublishPermission}
+                            hasStartPublicationWorkflowPermission={nodeData.hasStartPublicationWorkflowPermission}
+                            lockedAndCannotBeEdited={nodeData.lockedAndCannotBeEdited}
                             target="content-editor/header/main-publish-actions"
                             render={ButtonWithPastilleRenderer}
+                            {...actionContext}
                         />
                         {EditActions}
                     </ButtonGroup>

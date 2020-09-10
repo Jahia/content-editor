@@ -90,7 +90,7 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
             header={
                 <ContentHeader>
                     <HeaderUpperSection actionContext={actionContext} title={title}/>
-                    <Separator/>
+                    <Separator spacing="none"/>
                     <HeaderLowerSection activeTab={activeTab}
                                         setActiveTab={setActiveTab}
                                         actionContext={actionContext}/>
