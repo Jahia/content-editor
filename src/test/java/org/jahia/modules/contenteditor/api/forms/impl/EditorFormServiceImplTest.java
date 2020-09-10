@@ -296,6 +296,7 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
 
         EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, folderNode.getPath());
         Assert.isTrue(!form.hasPreview(), "Override of folder should NOT have preview");
+        Assert.isTrue(form.getSections() != null && form.getSections().size() == 1, "Override should NOT have change sections");
 
         // ** Test on text
         // Check default behaviour of text

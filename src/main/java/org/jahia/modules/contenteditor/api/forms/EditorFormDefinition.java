@@ -63,7 +63,7 @@ public class EditorFormDefinition implements Comparable<EditorFormDefinition> {
     private Boolean hasPreview;
 
     public EditorFormDefinition() {
-        sections = new ArrayList<>();
+        sections = null;
     }
 
     public EditorFormDefinition(String nodeType, Double priority, Boolean hasPreview, List<EditorFormSectionDefinition> sections, Bundle originBundle) {
