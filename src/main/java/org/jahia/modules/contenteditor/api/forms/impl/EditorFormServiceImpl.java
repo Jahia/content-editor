@@ -240,8 +240,10 @@ public class EditorFormServiceImpl implements EditorFormService {
             }
 
             EditorFormDefinition mergedFormDefinition = mergeFormDefinitions(formDefinitionsToMerge);
-            List<EditorFormSectionDefinition> filteredSections = mergedFormDefinition.getSections().stream().filter(section -> section.getRequiredPermission() == null || currentNode.hasPermission(section.getRequiredPermission())).collect(Collectors.toList());
-            mergedFormDefinition.setSections(filteredSections);
+            if (mergedFormDefinition.getSections() != null) {
+                List<EditorFormSectionDefinition> filteredSections = mergedFormDefinition.getSections().stream().filter(section -> section.getRequiredPermission() == null || currentNode.hasPermission(section.getRequiredPermission())).collect(Collectors.toList());
+                mergedFormDefinition.setSections(filteredSections);
+            }
 
             List<EditorFormSection> sortedSections = sortSections(formSectionsByName, mergedFormDefinition, uiLocale, parentNode.getResolveSite());
             String formDisplayName = primaryNodeType.getLabel(uiLocale);
@@ -283,6 +285,9 @@ public class EditorFormServiceImpl implements EditorFormService {
 
     private List<EditorFormSection> sortSections(Map<String, EditorFormSection> formSectionsByName, EditorFormDefinition editorFormDefinition, Locale uiLocale, JCRSiteNode site) {
         List<EditorFormSection> sortedFormSections = new ArrayList<>();
+        if (editorFormDefinition.getSections() == null) {
+            return sortedFormSections;
+        }
         for (EditorFormSectionDefinition sectionDefinition : editorFormDefinition.getSections()) {
             EditorFormSection formSection = formSectionsByName.get(sectionDefinition.getName());
             if (formSection != null) {
