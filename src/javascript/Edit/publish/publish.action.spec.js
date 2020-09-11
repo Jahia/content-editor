@@ -40,12 +40,14 @@ describe('publish action', () => {
     let publicationStatus = 'MODIFIED';
     let publicationInfoPolling = false;
     let stopPublicationInfoPolling = jest.fn();
+    let startPublicationInfoPolling = jest.fn();
 
     afterEach(() => {
         usePublicationInfoContext.mockClear();
         publicationStatus = 'MODIFIED';
         publicationInfoPolling = false;
         stopPublicationInfoPolling = jest.fn();
+        startPublicationInfoPolling = jest.fn();
     });
 
     beforeEach(() => {
@@ -53,7 +55,8 @@ describe('publish action', () => {
         usePublicationInfoContext.mockImplementation(() => ({
             publicationStatus: publicationStatus,
             publicationInfoPolling: publicationInfoPolling,
-            stopPublicationInfoPolling: stopPublicationInfoPolling
+            stopPublicationInfoPolling: stopPublicationInfoPolling,
+            startPublicationInfoPolling: startPublicationInfoPolling
         }));
 
         context = {
@@ -198,16 +201,10 @@ describe('publish action', () => {
     });
 
     it('should call publishNode request', () => {
-        const context = {
-            publicationInfoContext: {
-                startPublicationInfoPolling: jest.fn()
-            }
-        };
-
         const cmp = shallow(<PublishAction {...defaultProps}/>);
         cmp.props().context.onClick(context);
 
         expect(publishNode).toHaveBeenCalled();
-        expect(context.publicationInfoContext.startPublicationInfoPolling).toHaveBeenCalled();
+        expect(startPublicationInfoPolling).toHaveBeenCalled();
     });
 });
