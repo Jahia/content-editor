@@ -5,7 +5,7 @@ import {Constants} from '~/ContentEditor.constants';
 import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
 
 const Publish = ({context, values, dirty, hasPublishPermission, lockedAndCannotBeEdited, render: Render, loading: Loading}) => {
-    const {publicationInfoPolling, publicationStatus, stopPublicationInfoPolling} = usePublicationInfoContext();
+    const {publicationInfoPolling, publicationStatus, stopPublicationInfoPolling, startPublicationInfoPolling} = usePublicationInfoContext();
 
     let disabled = true;
     const enabled = hasPublishPermission;
@@ -50,7 +50,7 @@ const Publish = ({context, values, dirty, hasPublishPermission, lockedAndCannotB
                             nodeData: context.nodeData,
                             language: context.language
                         },
-                        successCallback: context.publicationInfoContext.startPublicationInfoPolling()
+                        successCallback: startPublicationInfoPolling()
                     });
                 }
             }}
