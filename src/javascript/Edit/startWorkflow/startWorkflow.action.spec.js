@@ -68,6 +68,7 @@ describe('startWorkflow action', () => {
         const cmp = shallow(<StartWorkflowAction {...defaultProps}/>);
         expect(cmp.props().context.enabled).toBe(false);
         expect(cmp.props().context.isVisible).toBe(true);
+        expect(cmp.props().context.disabled).toBe(true);
     });
 
     it('should disable startWorkflowAction when node locked', () => {

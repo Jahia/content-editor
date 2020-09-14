@@ -13,7 +13,8 @@ const StartWorkFlow = ({context, isMainButton, hasPublishPermission, hasStartPub
 
         // Is WIP
         const wipInfo = values[Constants.wip.fieldName];
-        disabled = wipInfo.status === Constants.wip.status.ALL_CONTENT ||
+        disabled = dirty ||
+            wipInfo.status === Constants.wip.status.ALL_CONTENT ||
             (wipInfo.status === Constants.wip.status.LANGUAGES && wipInfo.languages.includes(context.language));
     } else {
         // Is Visible
