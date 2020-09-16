@@ -33,7 +33,8 @@ export const FieldActionsCmp = ({classes, inputContext, selectorType, field, for
                 <>
                     <ContextualMenu setOpenRef={contextualMenu}
                                     actionKey={selectorType.key + 'Menu'}
-                                    context={{}}
+                                    field={field}
+                                    formik={formik}
                     />
                     <IconButton variant="ghost"
                                 data-sel-action="moreOptions"
