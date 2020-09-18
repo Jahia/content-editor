@@ -8,7 +8,7 @@ const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 // get manifest
 var normalizedPath = require("path").join(__dirname, "./target/dependency");
 var manifest = "";
-require("fs").readdirSync(normalizedPath).forEach(function(file) {
+require("fs").readdirSync(normalizedPath).forEach(function (file) {
     manifest = "./target/dependency/" + file
     console.log("use manifest " + manifest);
 });
@@ -92,16 +92,18 @@ module.exports = (env, argv) => {
                 manifest: require(manifest)
             }),
             new CleanWebpackPlugin({
-              cleanOnceBeforeBuildPatterns: [`${path.resolve(__dirname, 'src/main/resources/javascript/apps/')}/**/*`],
-              verbose: false
+                cleanOnceBeforeBuildPatterns: [`${path.resolve(__dirname, 'src/main/resources/javascript/apps/')}/**/*`],
+                verbose: false
             }),
-            new CopyWebpackPlugin([{
-                from: './package.json',
-                to: '',
-                transform: content => content
-                    .toString()
-                    .replace('${buildTimeStamp}', buildTimeStamp)
-            }]),
+            new CopyWebpackPlugin({
+                patterns: [{
+                    from: './package.json',
+                    to: '',
+                    transform: content => content
+                        .toString()
+                        .replace('${buildTimeStamp}', buildTimeStamp)
+                }]
+            }),
             new CaseSensitivePathsPlugin()
         ],
         mode: 'development'
