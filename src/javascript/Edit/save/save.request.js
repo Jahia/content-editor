@@ -72,14 +72,15 @@ export const saveNode = ({
             }
         ]
     }).then(mutation => {
+        const mutateNode = mutation.data.jcr.mutateNode;
         if (editCallback) {
-            editCallback(nodeData, mutation.data.jcr.mutateNode);
+            editCallback(nodeData, mutateNode);
         }
 
         notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.success'), ['closeButton']);
         actions.setSubmitting(false);
         client.cache.flushNodeEntryById(nodeData.uuid);
-        refetchPreview(getPreviewPath(nodeData), language);
+        refetchPreview(getPreviewPath(mutateNode.node), language);
     }, error => {
         onServerError(error, actions, notificationContext, t, 'content-editor:label.contentEditor.edit.action.save.error');
     });

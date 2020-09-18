@@ -30,6 +30,13 @@ export const SavePropertiesMutation = gql`
                 removeMixins(mixins: $mixinsToDelete)
                 reorderChildren(names: $childrenOrder) @include(if: $shouldModifyChildren)
                 rename(name: $newName) @include(if: $shouldRename)
+                node {
+                    path
+                    displayableNode {
+                        path
+                        isFolder:isNodeType(type: {multi: ANY, types: ["jnt:contentFolder", "jnt:folder"]})
+                    }
+                }
             }
         }
     }
