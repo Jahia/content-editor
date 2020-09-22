@@ -2,26 +2,6 @@
 # yarn lockfile v1
 
 
-"@apollo/client@latest":
-  version "3.2.0"
-  resolved "https://npm.jahia.com/@apollo%2fclient/-/client-3.2.0.tgz#d16ea4384a2126bf60e7d87b0a6c6df00382220b"
-  integrity sha512-6ISMYW9QpEykJAkN6ZZteTkXXwtYSPGbh+4iBZ478p/Eox1JOMGYlqosGgMGv2oduug9SnsR65y0iCAxKOFGiQ==
-  dependencies:
-    "@graphql-typed-document-node/core" "^3.0.0"
-    "@types/zen-observable" "^0.8.0"
-    "@wry/context" "^0.5.2"
-    "@wry/equality" "^0.2.0"
-    fast-json-stable-stringify "^2.0.0"
-    graphql-tag "^2.11.0"
-    hoist-non-react-statics "^3.3.2"
-    optimism "^0.12.1"
-    prop-types "^15.7.2"
-    symbol-observable "^2.0.0"
-    terser "^5.2.0"
-    ts-invariant "^0.4.4"
-    tslib "^1.10.0"
-    zen-observable "^0.8.14"
-
 "@apollo/react-common@^3.1.4":
   version "3.1.4"
   resolved "https://npm.jahia.com/@apollo%2freact-common/-/react-common-3.1.4.tgz#ec13c985be23ea8e799c9ea18e696eccc97be345"
@@ -52,7 +32,7 @@
     ts-invariant "^0.4.4"
     tslib "^1.10.0"
 
-"@apollo/react-hooks@^3.1.5":
+"@apollo/react-hooks@^3.1.4", "@apollo/react-hooks@^3.1.5":
   version "3.1.5"
   resolved "https://npm.jahia.com/@apollo%2freact-hooks/-/react-hooks-3.1.5.tgz#7e710be52461255ae7fc0b3b9c2ece64299c10e6"
   integrity sha512-y0CJ393DLxIIkksRup4nt+vSjxalbZBXnnXxYbviq/woj+zKa431zy0yT4LqyRKpFy9ahMIwxBnBwfwIoupqLQ==
@@ -61,13 +41,6 @@
     "@wry/equality" "^0.1.9"
     ts-invariant "^0.4.4"
     tslib "^1.10.0"
-
-"@apollo/react-hooks@^4.0.0":
-  version "4.0.0"
-  resolved "https://npm.jahia.com/@apollo%2freact-hooks/-/react-hooks-4.0.0.tgz#7bf7b320c90d276f637d9a84b503e17b840dd4e6"
-  integrity sha512-fCu0cbne3gbUl0QbA8X4L33iuuFVQbC5Jo2MIKRK8CyawR6PoxDpFdFA1kc6033ODZuZZ9Eo4RdeJFlFIIYcLA==
-  dependencies:
-    "@apollo/client" latest
 
 "@apollo/react-ssr@^3.1.5":
   version "3.1.5"
@@ -1378,11 +1351,6 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@graphql-typed-document-node/core@^3.0.0":
-  version "3.1.0"
-  resolved "https://npm.jahia.com/@graphql-typed-document-node%2fcore/-/core-3.1.0.tgz#0eee6373e11418bfe0b5638f654df7a4ca6a3950"
-  integrity sha512-wYn6r8zVZyQJ6rQaALBEln5B1pzxb9shV5Ef97kTvn6yVGrqyXVnDqnU24MXnFubR+rZjBY9NWuxX3FB2sTsjg==
-
 "@icons/material@^0.2.4":
   version "0.2.4"
   resolved "https://npm.jahia.com/@icons%2fmaterial/-/material-0.2.4.tgz#e90c9f71768b3736e76d7dd6783fc6c2afa88bc8"
@@ -1418,7 +1386,7 @@
     lodash "^4.17.13"
     react-apollo "^3.1.3"
 
-"@jahia/design-system-kit@^1.1.2":
+"@jahia/design-system-kit@^1.1.8":
   version "1.1.8"
   resolved "https://npm.jahia.com/@jahia%2fdesign-system-kit/-/design-system-kit-1.1.8.tgz#20cab157c1ea962b266ca3dd4cdcf386c00d9fd9"
   integrity sha512-i74hY/REA0ggDA956+N6d4d+BAuFvE3Gqg8pN0w14bdhHLHEfoPNIb0XOSuT6X5rPTaeOlpWndgyKUbEsNacJQ==
@@ -3055,24 +3023,10 @@
     text-table "^0.2.0"
     webpack-log "^1.1.2"
 
-"@wry/context@^0.5.2":
-  version "0.5.2"
-  resolved "https://npm.jahia.com/@wry%2fcontext/-/context-0.5.2.tgz#f2a5d5ab9227343aa74c81e06533c1ef84598ec7"
-  integrity sha512-B/JLuRZ/vbEKHRUiGj6xiMojST1kHhu4WcreLfNN7q9DqQFrb97cWgf/kiYsPSUCAMVN0HzfFc8XjJdzgZzfjw==
-  dependencies:
-    tslib "^1.9.3"
-
 "@wry/equality@^0.1.2", "@wry/equality@^0.1.9":
   version "0.1.11"
   resolved "https://npm.jahia.com/@wry%2fequality/-/equality-0.1.11.tgz#35cb156e4a96695aa81a9ecc4d03787bc17f1790"
   integrity sha512-mwEVBDUVODlsQQ5dfuLUS5/Tf7jqUKyhKYHmVi4fPB6bDMOfWvUPJmKgS1Z7Za/sOI3vzWt4+O7yCiL/70MogA==
-  dependencies:
-    tslib "^1.9.3"
-
-"@wry/equality@^0.2.0":
-  version "0.2.0"
-  resolved "https://npm.jahia.com/@wry%2fequality/-/equality-0.2.0.tgz#a312d1b6a682d0909904c2bcd355b02303104fb7"
-  integrity sha512-Y4d+WH6hs+KZJUC8YKLYGarjGekBrhslDbf/R20oV+AakHPINSitHfDRQz3EGcEWc1luXYNUvMhawWtZVWNGvQ==
   dependencies:
     tslib "^1.9.3"
 
@@ -7317,7 +7271,7 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.6
   resolved "https://npm.jahia.com/graceful-fs/-/graceful-fs-4.2.4.tgz#2256bde14d3632958c465ebc96dc467ca07a29fb"
   integrity sha512-WjKPNJF79dtJAVniUlGGWHYGz2jWxT6VhN/4m1NdkbZ2nOsEF+cI1Edgql5zCRhs/VsQYRvrXctxktVXZUkixw==
 
-graphql-tag@^2.10.3, graphql-tag@^2.11.0:
+graphql-tag@^2.10.3:
   version "2.11.0"
   resolved "https://npm.jahia.com/graphql-tag/-/graphql-tag-2.11.0.tgz#1deb53a01c46a7eb401d6cb59dec86fa1cccbffd"
   integrity sha512-VmsD5pJqWJnQZMUeRwrDhfgoyqcfwEkvtpANqcoUG8/tOLkwNgU9mzub/Mc78OJMhHjx7gfAMTxzdG43VGg3bA==
@@ -7508,7 +7462,7 @@ hoist-non-react-statics@^2.3.1:
   resolved "https://npm.jahia.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
   integrity sha512-rqcy4pJo55FTTLWt+bU8ukscqHeE/e9KWvsOW2b/a3afxQZhwkQdT1rPPCJ0rYXdj4vNcasY8zHTH+jF/qStxw==
 
-hoist-non-react-statics@^3.1.0, hoist-non-react-statics@^3.2.1, hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.2:
+hoist-non-react-statics@^3.1.0, hoist-non-react-statics@^3.2.1, hoist-non-react-statics@^3.3.0:
   version "3.3.2"
   resolved "https://npm.jahia.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz#ece0acaf71d62c2969c2ec59feff42a4b1a85b45"
   integrity sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
@@ -10208,13 +10162,6 @@ opener@^1.5.1:
   version "1.5.1"
   resolved "https://npm.jahia.com/opener/-/opener-1.5.1.tgz#6d2f0e77f1a0af0032aca716c2c1fbb8e7e8abed"
   integrity sha512-goYSy5c2UXE4Ra1xixabeVh1guIX/ZV/YokJksb6q2lubWu6UbvPQ20p542/sFIll1nl8JnCyK9oBaOcCWXwvA==
-
-optimism@^0.12.1:
-  version "0.12.1"
-  resolved "https://npm.jahia.com/optimism/-/optimism-0.12.1.tgz#933f9467b9aef0e601655adb9638f893e486ad02"
-  integrity sha512-t8I7HM1dw0SECitBYAqFOVHoBAHEQBTeKjIL9y9ImHzAVkdyPK4ifTgM4VJRDtTUY4r/u5Eqxs4XcGPHaoPkeQ==
-  dependencies:
-    "@wry/context" "^0.5.2"
 
 option@~0.2.1:
   version "0.2.4"
@@ -13136,11 +13083,6 @@ symbol-observable@1.2.0, symbol-observable@^1.0.2, symbol-observable@^1.0.4, sym
   resolved "https://npm.jahia.com/symbol-observable/-/symbol-observable-1.2.0.tgz#c22688aed4eab3cdc2dfeacbb561660560a00804"
   integrity sha512-e900nM8RRtGhlV36KGEU9k65K3mPb1WV70OdjfxlG2EAuM1noi/E/BaW/uMhL7bPEssK8QV57vN3esixjUvcXQ==
 
-symbol-observable@^2.0.0:
-  version "2.0.1"
-  resolved "https://npm.jahia.com/symbol-observable/-/symbol-observable-2.0.1.tgz#ce66c36a04ed0f3056e7293184749a6fdd7063ea"
-  integrity sha512-QrfHrrEUMadQCgMijc3YpfA4ncwgqGv58Xgvdu3JZVQB7iY7cAkiqobZEZbaA863jof8AdpR01CPnZ5UWeqZBQ==
-
 symbol-tree@^3.2.4:
   version "3.2.4"
   resolved "https://npm.jahia.com/symbol-tree/-/symbol-tree-3.2.4.tgz#430637d248ba77e078883951fb9aa0eed7c63fa2"
@@ -13275,15 +13217,6 @@ terser@^4.1.2, terser@^4.6.3, terser@^4.8.0:
   version "4.8.0"
   resolved "https://npm.jahia.com/terser/-/terser-4.8.0.tgz#63056343d7c70bb29f3af665865a46fe03a0df17"
   integrity sha512-EAPipTNeWsb/3wLPeup1tVPaXfIaU68xMnVdPafIL1TV05OhASArYyIfFvnvJCNrR2NIOvDVNNTFRa+Re2MWyw==
-  dependencies:
-    commander "^2.20.0"
-    source-map "~0.6.1"
-    source-map-support "~0.5.12"
-
-terser@^5.2.0:
-  version "5.3.2"
-  resolved "https://npm.jahia.com/terser/-/terser-5.3.2.tgz#f4bea90eb92945b2a028ceef79181b9bb586e7af"
-  integrity sha512-H67sydwBz5jCUA32ZRL319ULu+Su1cAoZnnc+lXnenGRYWyLE3Scgkt8mNoAsMx0h5kdo758zdoS0LG9rYZXDQ==
   dependencies:
     commander "^2.20.0"
     source-map "~0.6.1"
@@ -14461,7 +14394,7 @@ zen-observable-ts@^0.8.21:
     tslib "^1.9.3"
     zen-observable "^0.8.0"
 
-zen-observable@^0.8.0, zen-observable@^0.8.14:
+zen-observable@^0.8.0:
   version "0.8.15"
   resolved "https://npm.jahia.com/zen-observable/-/zen-observable-0.8.15.tgz#96415c512d8e3ffd920afd3889604e30b9eaac15"
   integrity sha512-PQ2PC7R9rslx84ndNBZB/Dkv8V8fZEpk83RLgXtYd0fwUgEjseMn1Dgajh2x6S8QbZAFa9p2qVCEuYZNgve0dQ==
