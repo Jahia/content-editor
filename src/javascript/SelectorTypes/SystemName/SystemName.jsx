@@ -11,6 +11,7 @@ import classes from './SystemName.scss';
 export const SystemNameCmp = ({field, value, values, id, editorContext, onChange}) => {
     const {t} = useTranslation();
 
+    const cleanedTitle = limitSystemNameIfNecessary(replaceSpecialCharacters(values['jcr:title'])?.toLowerCase(), field);
     return (
         <>
             <Text
@@ -30,10 +31,9 @@ export const SystemNameCmp = ({field, value, values, id, editorContext, onChange
                     color="accent"
                     label={t('content-editor:label.contentEditor.section.fieldSet.system.fields.syncButton')}
                     icon={<Copy/>}
-                    isDisabled={field.readOnly || values['jcr:title'] === value}
+                    isDisabled={field.readOnly || cleanedTitle === value}
                     onClick={() => {
-                        const cleanedSystemName = replaceSpecialCharacters(values['jcr:title'])?.toLowerCase();
-                        onChange(limitSystemNameIfNecessary(cleanedSystemName, field));
+                        onChange(cleanedTitle);
                     }}
             />}
         </>
