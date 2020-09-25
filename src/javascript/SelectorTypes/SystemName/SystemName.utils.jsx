@@ -51,3 +51,7 @@ export const replaceSpecialCharacters = systemName => {
         return '-';
     });
 };
+
+export const isEqualToSystemName = (title, systemName, field) => {
+    return limitSystemNameIfNecessary(replaceSpecialCharacters(title?.toLowerCase()), field) === systemName;
+};

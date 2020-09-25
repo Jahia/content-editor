@@ -1,5 +1,5 @@
 
-import {limitSystemNameIfNecessary, replaceSpecialCharacters} from './SystemName.utils';
+import {limitSystemNameIfNecessary, replaceSpecialCharacters, isEqualToSystemName} from './SystemName.utils';
 import {Constants} from '~/ContentEditor.constants';
 
 describe('SystemName utils', () => {
@@ -30,5 +30,15 @@ describe('SystemName utils', () => {
     it('should replace every special character when present', () => {
         const newSystemName = replaceSpecialCharacters('-ffee_ek,veéèëÊË€éèëÊË€§çÇ¢ùÙÛàÅåÁª¶øôÔØÓ°£™Ÿ¥‰îïÎÍŒÆ$.+*');
         expect(newSystemName).toBe('-ffee_ek,veeeeeeeeeeeeesscccuuuaaaaapooooodpstmyy0iiiioeae-');
+    });
+
+    it('should be equal to system name', () => {
+        const isEqual = isEqualToSystemName('My title-Here', 'my-title-here', field);
+        expect(isEqual).toBe(true);
+    });
+
+    it('should not be equal to system name', () => {
+        const isEqual = isEqualToSystemName('Not equals', 'my-title-here', field);
+        expect(isEqual).toBe(false);
     });
 });
