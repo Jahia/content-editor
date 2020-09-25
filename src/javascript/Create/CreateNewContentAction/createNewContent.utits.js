@@ -67,6 +67,7 @@ export function transformNodeTypesToActions(nodeTypes) {
             .filter(f => f.name !== 'jnt:resource')
             .map(nodeType => ({
                 key: nodeType.name,
+                actionKey: nodeType.name,
                 openEditor: true,
                 nodeTypes: [nodeType.name],
                 buttonLabel: 'content-editor:label.contentEditor.CMMActions.createNewContent.contentOfType',
