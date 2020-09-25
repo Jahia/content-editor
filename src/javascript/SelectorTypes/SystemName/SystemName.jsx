@@ -3,7 +3,7 @@ import React from 'react';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import Text from '~/SelectorTypes/Text';
 import {Constants} from '~/ContentEditor.constants';
-import {limitSystemNameIfNecessary, replaceSpecialCharacters} from './SystemName.utils';
+import {limitSystemNameIfNecessary, replaceSpecialCharacters, isEqualToSystemName} from './SystemName.utils';
 import {Button, Copy} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
 import classes from './SystemName.scss';
@@ -30,7 +30,7 @@ export const SystemNameCmp = ({field, value, values, id, editorContext, onChange
                     color="accent"
                     label={t('content-editor:label.contentEditor.section.fieldSet.system.fields.syncButton')}
                     icon={<Copy/>}
-                    isDisabled={field.readOnly || values['jcr:title'] === value}
+                    isDisabled={field.readOnly || isEqualToSystemName(values['jcr:title'], value, field)}
                     onClick={() => {
                         const cleanedSystemName = replaceSpecialCharacters(values['jcr:title'])?.toLowerCase();
                         onChange(limitSystemNameIfNecessary(cleanedSystemName, field));
