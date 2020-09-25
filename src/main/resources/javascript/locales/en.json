@@ -209,7 +209,7 @@
           "system": {
             "displayName": "System",
             "fields": {
-              "systemNameDescription": "{{maxNameSize}} characters maximum, special characters will be ignored. Used to build the URL for pages if no vanity URL is set in advanced options.",
+              "systemNameDescription": "{{maxNameSize}} characters maximum. Used to build the URL for pages if no vanity URL is set in advanced options.",
               "systemName": "System name",
               "syncButton": "copy title"
             }
