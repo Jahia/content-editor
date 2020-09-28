@@ -26,7 +26,7 @@ export const HeaderUpperSection = ({title, actionContext}) => {
             actionKey="publishMenu"
             language={language}
             path={nodeData.path}
-            menuUseElementAnchor={true}
+            menuUseElementAnchor
             componentProps={{
                 'data-sel-role': 'ContentEditorHeaderMenu',
                 color: 'accent',
