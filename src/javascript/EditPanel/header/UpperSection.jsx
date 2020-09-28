@@ -20,20 +20,22 @@ export const HeaderUpperSection = ({title, actionContext}) => {
     const {mode, nodeData, formik, nodeTypeName, language} = actionContext;
 
     const wipInfo = formik.values[Constants.wip.fieldName];
+    const isWip = wipInfo.status === Constants.wip.status.ALL_CONTENT ||
+    (wipInfo.status === Constants.wip.status.LANGUAGES && wipInfo.languages.includes(language));
 
     const EditActions = mode === Constants.routes.baseEditRoute ? (
         <DisplayAction
+            menuUseElementAnchor
             actionKey="publishMenu"
             language={language}
             path={nodeData.path}
-            menuUseElementAnchor
             componentProps={{
                 'data-sel-role': 'ContentEditorHeaderMenu',
                 color: 'accent',
                 size: 'big',
                 className: styles.menu
             }}
-            enabled={!formik.dirty}
+            enabled={!formik.dirty && !nodeData.lockedAndCannotBeEdited && !isWip}
             render={ButtonRenderer}
         />
     ) : '';
