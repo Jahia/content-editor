@@ -2,6 +2,7 @@ import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {HeaderUpperSection} from './';
+import {Constants} from '~/ContentEditor.constants';
 
 describe('Header UpperSection', () => {
     let defaultProps;
@@ -15,7 +16,11 @@ describe('Header UpperSection', () => {
                     }
                 },
                 formik: {
-                    values: {}
+                    values: {
+                        'WIP::Info': {
+                            status: Constants.wip.status.DISABLED
+                        }
+                    }
                 },
                 mode: 'create'
             },
