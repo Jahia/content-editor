@@ -24,17 +24,16 @@ export const HeaderUpperSection = ({title, actionContext}) => {
     const EditActions = mode === Constants.routes.baseEditRoute ? (
         <DisplayAction
             actionKey="publishMenu"
-            context={{
-                language,
-                path: nodeData.path,
-                menuUseElementAnchor: true,
-                componentProps: {
-                    'data-sel-role': 'ContentEditorHeaderMenu',
-                    color: 'accent',
-                    size: 'big',
-                    className: styles.menu
-                }
+            language={language}
+            path={nodeData.path}
+            menuUseElementAnchor={true}
+            componentProps={{
+                'data-sel-role': 'ContentEditorHeaderMenu',
+                color: 'accent',
+                size: 'big',
+                className: styles.menu
             }}
+            enabled={!formik.dirty}
             render={ButtonRenderer}
         />
     ) : '';
