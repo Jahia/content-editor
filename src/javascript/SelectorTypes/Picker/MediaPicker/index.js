@@ -40,6 +40,7 @@ export const MediaPickerSelectorType = {
     supportMultiple: false,
     pickerInput: {
         emptyLabel: 'content-editor:label.contentEditor.edit.fields.imagePicker.addImage',
+        notFoundLabel: 'content-editor:label.contentEditor.edit.fields.imagePicker.notFoundImage',
         emptyIcon: <Image/>,
         usePickerInputData
     },
