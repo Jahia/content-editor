@@ -19,7 +19,8 @@ const PickerCmp = ({field, value, editorContext, setActionContext, onChange}) =>
             'jcontent:label.jcontent.error.queryingContent',
             {details: error.message ? error.message : ''}
         );
-        return <>{message}</>;
+
+        console.warn(message);
     }
 
     if (loading) {
@@ -42,7 +43,7 @@ const PickerCmp = ({field, value, editorContext, setActionContext, onChange}) =>
         <>
             <ReferenceCard
                 readOnly={field.readOnly}
-                emptyLabel={t(pickerConfig.picker.pickerInput.emptyLabel)}
+                emptyLabel={t(error ? pickerConfig.picker.pickerInput.notFoundLabel : pickerConfig.picker.pickerInput.emptyLabel)}
                 emptyIcon={pickerConfig.picker.pickerInput.emptyIcon}
                 labelledBy={`${field.name}-label`}
                 fieldData={fieldData}
