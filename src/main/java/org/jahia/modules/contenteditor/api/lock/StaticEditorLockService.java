@@ -71,7 +71,7 @@ public class StaticEditorLockService {
      */
     public static void unlock(HttpServletRequest request, String lockId) throws RepositoryException {
         JCRSessionWrapper sessionWrapper = JCRSessionFactory.getInstance().getCurrentUserSession(Constants.EDIT_WORKSPACE);
-        HashMap<String, String> locks = getSessionLocks(request.getSession());
+        HashMap<String, String> locks = getSessionLocks(request.getSession(false));
         String lockedIdentifier = locks.get(lockId);
 
         if (lockedIdentifier != null) {
@@ -102,11 +102,13 @@ public class StaticEditorLockService {
     }
 
     private static HashMap<String, String> getSessionLocks(HttpSession session) {
-        @SuppressWarnings("unchecked") HashMap<String, String> locks = (HashMap<String, String>) session.getAttribute(LOCKS_SESSION_ATTR);
-        if (locks == null) {
-            locks = new HashMap<>();
+        if (session != null) {
+            @SuppressWarnings("unchecked") HashMap<String, String> locks = (HashMap<String, String>) session.getAttribute(LOCKS_SESSION_ATTR);
+            if (locks != null) {
+                return locks;
+            }
         }
-        return locks;
+        return new HashMap<>();
     }
 
     /**
