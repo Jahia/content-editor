@@ -129,8 +129,11 @@ public class ContentEditorUtils {
 
     private static Set<String> getChildNodeTypes(JCRNodeWrapper node, List<String> filterNodeType, String childNodeName) throws RepositoryException {
         Set<String> allowedTypes = new HashSet<>();
-        Arrays.stream(StringUtils.split(ConstraintsHelper.getConstraints(node, childNodeName), " "))
-            .forEach(type -> {
+        Set<String> availableTypes = new HashSet<>(ConstraintsHelper.getConstraintSet(node, childNodeName));
+        if (availableTypes.isEmpty()) {
+            availableTypes.addAll(ConstraintsHelper.getConstraintSet(node));
+        }
+        availableTypes.forEach(type -> {
                 try {
                     ExtendedNodeType nodeType = NodeTypeRegistry.getInstance().getNodeType(type);
                     Stream<ExtendedNodeType> typesToCheck = Stream.concat(nodeType.getSubtypesAsList().stream(), Stream.of(nodeType));
