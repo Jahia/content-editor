@@ -15,8 +15,8 @@ const usePickerInputData = (uuid, editorContext) => {
         }
     });
 
-    if (loading || error || !uuid) {
-        return {error, loading};
+    if (loading || error || !data || !uuid) {
+        return {error, loading, notFound: Boolean(uuid)};
     }
 
     const imageData = data.jcr.result;

@@ -111,12 +111,14 @@
           },
           "imagePicker": {
             "addImage": "Ajouter une image",
+            "notFoundImage": "L’image n’a pas été trouvée",
             "rootLabel": "Fichiers",
             "modalTitle": "Sélectionner une image",
             "searchPlaceholder": "Chercher une image"
           },
           "contentPicker": {
             "addContent": "Ajouter un contenu",
+            "notFoundContent": "Le contenu n’a pas été trouvé",
             "addFile": "Ajouter un fichier",
             "contentsRootLabel": "Contenus",
             "allContentsRootLabel": "{{siteName}}",
