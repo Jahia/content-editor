@@ -20,17 +20,22 @@ describe('MediaPicker config', () => {
 
         it('should return no data, no error when loading', () => {
             setQueryResponseMock({loading: true});
-            expect(usePickerInputData('uuid', {lang: 'fr'})).toEqual({loading: true});
+            expect(usePickerInputData('uuid', {lang: 'fr'})).toEqual({loading: true, notFound: true});
         });
 
         it('should return no data when there is no uuid given', () => {
             setQueryResponseMock({loading: false, data: {}});
-            expect(usePickerInputData('', {lang: 'fr'})).toEqual({loading: false});
+            expect(usePickerInputData('', {lang: 'fr'})).toEqual({loading: false, notFound: false});
         });
 
         it('should return error when there is error', () => {
             setQueryResponseMock({loading: false, error: 'oops'});
-            expect(usePickerInputData('uuid', {lang: 'fr'})).toEqual({loading: false, error: 'oops'});
+            expect(usePickerInputData('uuid', {lang: 'fr'})).toEqual({loading: false, error: 'oops', notFound: true});
+        });
+
+        it('should return not found when the resource has been removed', () => {
+            setQueryResponseMock({loading: false, data: undefined, error: undefined});
+            expect(usePickerInputData('uuid', {lang: 'fr'})).toEqual({loading: false, notFound: true});
         });
 
         it('should adapt data when graphql return some data', () => {
