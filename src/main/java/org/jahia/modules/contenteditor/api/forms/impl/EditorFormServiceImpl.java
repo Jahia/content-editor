@@ -266,7 +266,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         nodeTypeFieldSet = mergeWithStaticFormFieldSets(fieldSetNodeType.getName(), nodeTypeFieldSet);
 
         if (!nodeTypeFieldSet.isRemoved()) {
-            processValueConstraints(nodeTypeFieldSet, locale, existingNode, parentNode, primaryNodeType);
+            processValueConstraints(nodeTypeFieldSet, uiLocale, existingNode, parentNode, primaryNodeType);
             addFieldSetToSections(formSectionsByName, nodeTypeFieldSet);
         }
     }

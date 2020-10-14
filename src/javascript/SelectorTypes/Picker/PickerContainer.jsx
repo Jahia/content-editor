@@ -12,14 +12,15 @@ const PickerCmp = ({field, value, editorContext, setActionContext, onChange}) =>
     const {t} = useTranslation();
     const {pickerConfig, nodeTreeConfigs} = extractConfigs(field, editorContext, t);
     const [isDialogOpen, setDialogOpen] = useState(false);
-    const {fieldData, error, loading} = pickerConfig.picker.pickerInput.usePickerInputData(value, editorContext);
+    const {fieldData, error, loading, notFound} = pickerConfig.picker.pickerInput.usePickerInputData(value, editorContext);
 
     if (error) {
         const message = t(
             'jcontent:label.jcontent.error.queryingContent',
             {details: error.message ? error.message : ''}
         );
-        return <>{message}</>;
+
+        console.warn(message);
     }
 
     if (loading) {
@@ -42,7 +43,7 @@ const PickerCmp = ({field, value, editorContext, setActionContext, onChange}) =>
         <>
             <ReferenceCard
                 readOnly={field.readOnly}
-                emptyLabel={t(pickerConfig.picker.pickerInput.emptyLabel)}
+                emptyLabel={t((error || notFound) ? pickerConfig.picker.pickerInput.notFoundLabel : pickerConfig.picker.pickerInput.emptyLabel)}
                 emptyIcon={pickerConfig.picker.pickerInput.emptyIcon}
                 labelledBy={`${field.name}-label`}
                 fieldData={fieldData}
