@@ -14,10 +14,10 @@ describe('TabBar', () => {
 
     beforeEach(() => {
         defaultProps = {
-            context: {
-                setActiveTab: jest.fn(),
-                isDisplayable: () => true
-            },
+            setActiveTab: jest.fn(),
+            activeTab: 'EDIT',
+            value: 'advancedOptions',
+            isDisplayable: () => true,
             otherProps: true,
             render: () => ''
         };
@@ -35,9 +35,9 @@ describe('TabBar', () => {
     it('should call setActiveBar function when onClick is called', () => {
         const cmp = shallow(<TabBar {...defaultProps}/>).find('render');
 
-        cmp.props().context.onClick();
+        cmp.props().onClick();
 
-        expect(defaultProps.context.setActiveTab).toHaveBeenCalled();
+        expect(defaultProps.setActiveTab).toHaveBeenCalled();
     });
 
     it('should not render Tabbar when checksResult is false', () => {

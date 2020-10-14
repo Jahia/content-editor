@@ -117,9 +117,9 @@ const MainPanelCmp = ({
                     {t('content-editor:label.contentEditor.edit.fields.modalCancel').toUpperCase()}
                 </Button>
                 <div className={classes.actionsJahiaAction}>
-                    <DisplayActions context={{path: selectedPath}}
+                    <DisplayActions path={selectedPath}
                                     target="pickerDialogAction"
-                                    render={({context}) => {
+                                    render={context => {
                                         const Button = buttonRenderer({variant: 'ghost'}, true);
                                         return <Button context={context}/>;
                                     }}

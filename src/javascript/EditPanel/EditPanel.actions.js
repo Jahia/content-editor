@@ -24,7 +24,7 @@ export const registerEditPanelActions = actionsRegistry => {
         value: 'advanced',
         dataSelRole: 'tab-advanced-options',
         displayableComponent: AdvancedOptions,
-        isDisplayable: context => context.mode === Constants.routes.baseEditRoute,
+        isDisplayable: props => props.mode === Constants.routes.baseEditRoute,
         requiredPermission: [Constants.permissions.canSeeAdvancedOptionsTab]
     });
 };

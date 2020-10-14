@@ -3,8 +3,8 @@ import {openEngineTab} from './engineTabs.utils';
 import {EditPanelDialogConfirmation} from '~/EditPanel/EditPanelDialogConfirmation';
 import PropTypes from 'prop-types';
 
-export const OpenEngineTabs = ({context, render: Render}) => {
-    const {nodeData, formik, tabs} = context;
+export const OpenEngineTabs = props => {
+    const {nodeData, formik, tabs, render: Render} = props;
 
     const [open, setOpen] = useState(false);
 
@@ -22,7 +22,7 @@ export const OpenEngineTabs = ({context, render: Render}) => {
                 onCloseDialog={() => setOpen(false)}
             />
             <Render context={{
-                ...context,
+                ...props,
                 onClick: () => {
                     if (formik.dirty) {
                         setOpen(true);
@@ -36,8 +36,10 @@ export const OpenEngineTabs = ({context, render: Render}) => {
 };
 
 OpenEngineTabs.propTypes = {
-    context: PropTypes.object.isRequired,
-    render: PropTypes.func.isRequired
+    render: PropTypes.func.isRequired,
+    nodeData: PropTypes.object.isRequired,
+    formik: PropTypes.object.isRequired,
+    tabs: PropTypes.object.isRequired
 };
 
 const OpenEngineTabsAction = {
