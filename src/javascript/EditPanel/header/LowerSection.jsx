@@ -3,14 +3,9 @@ import React from 'react';
 import styles from './LowerSection.scss';
 import PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
-import {DisplayActions, DisplayAction} from '@jahia/ui-extender';
+import {DisplayAction, DisplayActions} from '@jahia/ui-extender';
 import {EditPanelLanguageSwitcher} from '../EditPanelLanguageSwitcher';
-import {
-    Button,
-    Separator,
-    Tab,
-    TabItem
-} from '@jahia/moonstone';
+import {Button, Separator, Tab, TabItem} from '@jahia/moonstone';
 
 export const HeaderLowerSection = ({actionContext, setActiveTab, activeTab}) => {
     const {t} = useTranslation();
@@ -22,26 +17,24 @@ export const HeaderLowerSection = ({actionContext, setActiveTab, activeTab}) => 
 
             <Tab>
                 <DisplayActions
-                    context={{
-                        ...actionContext,
-                        setActiveTab: setActiveTab,
-                        activeTab: activeTab
-                    }}
+                    {...actionContext}
+                    setActiveTab={setActiveTab}
+                    activeTab={activeTab}
                     target="editHeaderTabsActions"
-                    render={({context}) => {
+                    render={renderProps => {
                         return (
                             <TabItem
-                                data-sel-role={context.dataSelRole}
-                                icon={context.buttonIcon}
-                                label={t(context.buttonLabel)}
-                                isSelected={context.value === context.activeTab}
+                                data-sel-role={renderProps.dataSelRole}
+                                icon={renderProps.buttonIcon}
+                                label={t(renderProps.buttonLabel)}
+                                isSelected={renderProps.value === renderProps.activeTab}
                                 onClick={e => {
                                     e.stopPropagation();
-                                    context.onClick(context, e);
+                                    renderProps.onClick(renderProps, e);
                                 }}
                             />
-                    );
-                }}
+                        );
+                    }}
                 />
             </Tab>
 
@@ -49,16 +42,16 @@ export const HeaderLowerSection = ({actionContext, setActiveTab, activeTab}) => 
 
             <DisplayAction
                 actionKey="content-editor/header/3dots"
-                context={actionContext}
-                render={({context, ...props}) => (
+                {...actionContext}
+                render={({dataSelRole, buttonIcon, onClick, ...props}) => (
                     <Button
-                        data-sel-role={context.dataSelRole}
-                        icon={context.buttonIcon}
+                        data-sel-role={dataSelRole}
+                        icon={buttonIcon}
                         variant="ghost"
                         {...props}
                         onClick={e => {
                             e.stopPropagation();
-                            context.onClick(context, e);
+                            onClick(props, e);
                         }}
                     />
                 )}/>

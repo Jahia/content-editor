@@ -3,28 +3,25 @@ import PropTypes from 'prop-types';
 import {useNodeChecks} from '@jahia/data-helper';
 import {useContentEditorContext} from '~/ContentEditor.context';
 
-export const TabBar = ({context, render: Render, ...props}) => {
+export const TabBar = props => {
+    const {setActiveTab, isDisplayable, value, render: Render, loading: Loading} = props;
     const {path} = useContentEditorContext();
     const res = useNodeChecks(
         {path: path},
-        {...context}
+        {...props}
     );
 
     if (res.loading) {
-        return <></>;
+        return (Loading && <Loading {...props}/>) || <></>;
     }
 
     return (
         <>
-            {context.isDisplayable(context) && res.checksResult &&
+            {isDisplayable(props) && res.checksResult &&
             <Render
                 {...props}
-                {...(context.displayActionProps || {})}
-                context={{
-                    ...context,
-                    onClick: () => {
-                        context.setActiveTab(context.value);
-                    }
+                onClick={() => {
+                    setActiveTab(value);
                 }}
             />}
         </>
@@ -32,8 +29,12 @@ export const TabBar = ({context, render: Render, ...props}) => {
 };
 
 TabBar.propTypes = {
-    context: PropTypes.object.isRequired,
-    render: PropTypes.func.isRequired
+    render: PropTypes.func.isRequired,
+    activeTab: PropTypes.string.isRequired,
+    value: PropTypes.string.isRequired,
+    setActiveTab: PropTypes.func.isRequired,
+    isDisplayable: PropTypes.func.isRequired,
+    loading: PropTypes.func
 };
 
 const TabBarAction = {
