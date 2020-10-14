@@ -55,6 +55,7 @@ import org.jahia.modules.contenteditor.graphql.api.definitions.GqlNodeTypeTreeEn
 import org.jahia.modules.contenteditor.graphql.api.types.ContextEntryInput;
 import org.jahia.modules.contenteditor.utils.ContentEditorUtils;
 import org.jahia.modules.graphql.provider.dxm.DataFetchingException;
+import org.jahia.modules.graphql.provider.dxm.osgi.annotations.GraphQLOsgiService;
 import org.jahia.registries.ServicesRegistry;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRSessionFactory;
@@ -80,6 +81,7 @@ public class GqlEditorForms {
     private EditorFormService editorFormService;
 
     @Inject
+    @GraphQLOsgiService
     public void setEditorFormService(EditorFormService editorFormService) {
         this.editorFormService = editorFormService;
     }
