@@ -32,15 +32,20 @@ export const AdvancedOptionsNavigation = ({formik, activeOption, setActiveOption
     return (
         <div className={classes.container}>
             <ul>
-                <DisplayActions context={{nodeData, siteInfo, mode, formik, activeOption, setActiveOption}}
+                <DisplayActions nodeData={nodeData}
+                                siteInfo={siteInfo}
+                                mode={mode}
+                                formik={formik}
+                                activeOption={activeOption}
+                                setActiveOption={setActiveOption}
                                 target="AdvancedOptionsActions"
-                                render={({context}) => {
+                                render={({value, buttonLabel, onClick}) => {
                                     return (
                                         <MenuItem
                                             isUpperCase
-                                            isSelected={activeOption === context.value}
-                                            label={context.buttonLabel}
-                                            onClick={e => context.onClick(context, e)}
+                                            isSelected={activeOption === value}
+                                            label={buttonLabel}
+                                            onClick={e => onClick(e)}
                                         />
 );
                                 }}

@@ -1,12 +1,31 @@
-import {composeActions} from '@jahia/react-material';
-import {editRestrictedAction} from '~/actions/editRestricted.action';
+import React from 'react';
+import PropTypes from 'prop-types';
+import {Constants} from '~/ContentEditor.constants';
 
-export default composeActions(
-    editRestrictedAction,
-    {
-        init: () => {},
-        onClick: context => {
-            context.setActiveOption(context.value);
-        }
-    }
-);
+export const GoToOption = props => {
+    const {setActiveOption, value, mode, render: Render} = props;
+    return (
+        <>
+            {mode === Constants.routes.baseEditRoute &&
+            <Render
+                {...props}
+                onClick={() => {
+                    setActiveOption(value);
+                }}
+            />}
+        </>
+    );
+};
+
+GoToOption.propTypes = {
+    render: PropTypes.func.isRequired,
+    value: PropTypes.string.isRequired,
+    mode: PropTypes.string.isRequired,
+    setActiveOption: PropTypes.func.isRequired
+};
+
+const GoToOptionAction = {
+    component: GoToOption
+};
+
+export default GoToOptionAction;
