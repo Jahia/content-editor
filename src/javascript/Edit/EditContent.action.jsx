@@ -5,24 +5,24 @@ import * as PropTypes from 'prop-types';
 import {useSelector} from 'react-redux';
 import {Constants} from '~/ContentEditor.constants';
 
-export const EditContent = ({context, render: Render, loading: Loading}) => {
+export const EditContent = props => {
+    const {path, render: Render, loading: Loading} = props;
     const {redirect} = useContentEditorHistory();
     const {language} = useSelector(state => ({language: state.language}));
     const res = useNodeChecks(
-        {path: context.path, language: language},
-        {...context}
+        {path: path, language: language},
+        {...props}
     );
 
     if (Loading && res.loading) {
-        return <Loading context={context}/>;
+        return <Loading {...props}/>;
     }
 
     return (
-        <Render context={{
-            ...context,
-            isVisible: res.checksResult,
-            onClick: () => redirect({language, mode: Constants.routes.baseEditRoute, uuid: res.node.uuid})
-        }}/>
+        <Render {...props}
+                isVisible={res.checksResult}
+                onClick={() => redirect({language, mode: Constants.routes.baseEditRoute, uuid: res.node.uuid})}
+        />
     );
 };
 
@@ -31,7 +31,7 @@ EditContent.defaultProps = {
 };
 
 EditContent.propTypes = {
-    context: PropTypes.object.isRequired,
+    path: PropTypes.string.isRequired,
     render: PropTypes.func.isRequired,
     loading: PropTypes.func
 };

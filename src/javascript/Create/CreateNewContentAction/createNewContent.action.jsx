@@ -40,31 +40,32 @@ const onClick = (uuid, language, context, redirect, componentRenderer) => {
     }
 };
 
-const CreateNewContent = ({context, render: Render, loading: Loading}) => {
+const CreateNewContent = props => {
+    const {contextNodePath, path, showOnNodeTypes, render: Render, loading: Loading} = props;
     const {redirect} = useContentEditorHistory();
     const {t} = useTranslation();
     const componentRenderer = useContext(ComponentRendererContext);
     const {uilang, language} = useSelector(state => ({language: state.language, uilang: state.uilang}));
 
     const res = useNodeChecks(
-        {path: context.contextNodePath || context.path, language: language},
-        {...context}
+        {path: contextNodePath || path, language: language},
+        {...props}
     );
 
-    const nodeInfo = useNodeInfo({path: context.path, language}, {getPrimaryNodeType: true});
+    const nodeInfo = useNodeInfo({path: path, language}, {getPrimaryNodeType: true});
 
     const {loadingTypes, error, nodetypes} = useCreatableNodetypes(
         undefined,
         undefined,
         false,
-        context.contextNodePath || context.path,
+        contextNodePath || path,
         uilang,
         ['jmix:studioOnly', 'jmix:hiddenType'],
-        context.showOnNodeTypes,
+        showOnNodeTypes,
         transformNodeTypesToActions);
 
     if (Loading && (loadingTypes || res.loading || nodeInfo.loading)) {
-        return <Loading context={context}/>;
+        return <Loading {...props}/>;
     }
 
     if (error) {
@@ -73,21 +74,19 @@ const CreateNewContent = ({context, render: Render, loading: Loading}) => {
             {details: error.message ? error.message : ''}
         );
         console.error(message);
-        return <Render context={{...context, isVisible: false}}/>;
+        return <Render {...props} isVisible={false}/>;
     }
 
     if (!res || !res.node || (nodetypes && nodetypes.length === 0)) {
-        return <Render context={{...context, isVisible: false}}/>;
+        return <Render {...props} isVisible={false}/>;
     }
 
     return (nodetypes || [{id: 'allTypes'}]).map(result => (
         <Render key={result.id}
-                context={{
-                    ...context,
-                    ...result,
-                    isVisible: res.checksResult,
-                    onClick: ctx => onClick(nodeInfo.node.uuid, language, ctx, redirect, componentRenderer)
-                }}/>
+                {...props}
+                {...result}
+                isVisible={res.checksResult}
+                onClick={ctx => onClick(nodeInfo.node.uuid, language, ctx, redirect, componentRenderer)}/>
     ));
 };
 
@@ -96,7 +95,9 @@ CreateNewContent.defaultProps = {
 };
 
 CreateNewContent.propTypes = {
-    context: PropTypes.object.isRequired,
+    contextNodePath: PropTypes.string.isRequired,
+    path: PropTypes.object.isRequired,
+    showOnNodeTypes: PropTypes.array,
     render: PropTypes.func.isRequired,
     loading: PropTypes.func
 };

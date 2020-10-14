@@ -5,29 +5,30 @@ import {useTranslation} from 'react-i18next';
 import {Error} from '@material-ui/icons';
 import styles from './ActionsButtons.scss';
 
-export const ButtonWithPastilleRenderer = ({context}) => {
+export const ButtonWithPastilleRenderer = props => {
+    const {enabled, componentProps, addWarningBadge, actionKey, buttonIcon, buttonLabel, disabled, dataSelRole, onClick} = props;
     const {t} = useTranslation();
 
-    if (!context.enabled) {
+    if (!enabled) {
         return '';
     }
 
     return (
         <>
             <Button
-                {...context.componentProps}
-                icon={context.buttonIcon}
-                label={t(context.buttonLabel).toUpperCase()}
-                disabled={context.disabled}
-                data-sel-role={context.dataSelRole}
+                {...componentProps}
+                icon={buttonIcon}
+                label={t(buttonLabel).toUpperCase()}
+                disabled={disabled}
+                data-sel-role={dataSelRole}
                 onClick={e => {
                     e.stopPropagation();
-                    context.onClick(context, e);
+                    onClick(props, e);
                 }}
             />
 
-            {context.addWarningBadge && (
-                <Error data-sel-role={`${context.actionKey}_pastille`}
+            {addWarningBadge && (
+                <Error data-sel-role={`${actionKey}_pastille`}
                        className={styles.warningBadge}/>
             )}
         </>
@@ -35,23 +36,35 @@ export const ButtonWithPastilleRenderer = ({context}) => {
 };
 
 ButtonWithPastilleRenderer.propTypes = {
-    context: PropTypes.object.isRequired
+    context: PropTypes.object.isRequired,
+    enabled: PropTypes.bool.isRequired,
+    disabled: PropTypes.bool.isRequired,
+    addWarningBadge: PropTypes.bool.isRequired,
+    buttonLabel: PropTypes.string.isRequired,
+    dataSelRole: PropTypes.string.isRequired,
+    actionKey: PropTypes.string.isRequired,
+    componentProps: PropTypes.object.isRequired,
+    buttonIcon: PropTypes.object.isRequired,
+    onClick: PropTypes.func.isRequired
 };
 
-export const ButtonRenderer = ({context, ...props}) => {
+export const ButtonRenderer = props => {
+    const {componentProps, buttonIcon, onClick} = props;
     return (
         <Button
-            {...context.componentProps}
+            {...componentProps}
             {...props}
-            icon={context.buttonIcon}
+            icon={buttonIcon}
             onClick={e => {
                 e.stopPropagation();
-                context.onClick(context, e);
+                onClick(props, e);
             }}
     />
     );
 };
 
 ButtonRenderer.propTypes = {
-    context: PropTypes.object.isRequired
+    componentProps: PropTypes.object.isRequired,
+    buttonIcon: PropTypes.object.isRequired,
+    onClick: PropTypes.func.isRequired
 };

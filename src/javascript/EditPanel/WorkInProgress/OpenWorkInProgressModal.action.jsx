@@ -4,20 +4,19 @@ import WorkInProgressDialog from './WorkInProgressDialog/WorkInProgressDialog';
 import {ComponentRendererContext} from '@jahia/ui-extender';
 import {Constants} from '~/ContentEditor.constants';
 
-export const OpenWorkInProgressModal = ({context, render: Render, ...props}) => {
+export const OpenWorkInProgressModal = props => {
+    const {siteInfo, nodeData, formik, language, render: Render} = props;
     const componentRenderer = useContext(ComponentRendererContext);
-
-    const {siteInfo, nodeData} = context;
 
     const closeDialog = () => {
         componentRenderer.destroy('WorkInProgressDialog');
     };
 
-    const wipInfo = context.formik.values[Constants.wip.fieldName];
+    const wipInfo = formik.values[Constants.wip.fieldName];
     const singleLanguage = siteInfo.languages.length === 1;
     const isMarkAsWIP = singleLanguage && wipInfo.status === Constants.wip.status.ALL_CONTENT;
     const buttonLabelKind = isMarkAsWIP ? 'unmark' : 'mark';
-    context.buttonLabel = `content-editor:label.contentEditor.edit.action.workInProgress.label.${buttonLabelKind}`;
+    const buttonLabel = `content-editor:label.contentEditor.edit.action.workInProgress.label.${buttonLabelKind}`;
 
     const openModal = () => {
         componentRenderer.render(
@@ -25,12 +24,12 @@ export const OpenWorkInProgressModal = ({context, render: Render, ...props}) => 
             WorkInProgressDialog,
             {
                 wipInfo,
-                currentLanguage: context.language,
+                currentLanguage: language,
                 isOpen: true,
                 languages: siteInfo.languages,
                 onCloseDialog: closeDialog,
                 onApply: newWipInfo => {
-                    context.formik.setFieldValue(Constants.wip.fieldName, newWipInfo);
+                    formik.setFieldValue(Constants.wip.fieldName, newWipInfo);
                     closeDialog();
                 }
             });
@@ -38,25 +37,25 @@ export const OpenWorkInProgressModal = ({context, render: Render, ...props}) => 
 
     const switchButton = () => {
         const status = isMarkAsWIP ? Constants.wip.status.DISABLED : Constants.wip.status.ALL_CONTENT;
-        context.formik.setFieldValue(Constants.wip.fieldName, {status, languages: []});
+        formik.setFieldValue(Constants.wip.fieldName, {status, languages: []});
     };
 
     return (
         <>
             <Render
                 {...props}
-                {...(context.displayActionProps || {})}
-                context={{
-                    ...context,
-                    enabled: context.nodeData.hasWritePermission && !Constants.wip.notAvailableFor.includes(nodeData.primaryNodeType.name),
-                    onClick: singleLanguage ? switchButton : openModal
-                }}/>
+                buttonLabel={buttonLabel}
+                enabled={nodeData.hasWritePermission && !Constants.wip.notAvailableFor.includes(nodeData.primaryNodeType.name)}
+                onClick={singleLanguage ? switchButton : openModal}/>
         </>
     );
 };
 
 OpenWorkInProgressModal.propTypes = {
-    context: PropTypes.object.isRequired,
+    siteInfo: PropTypes.object.isRequired,
+    nodeData: PropTypes.object.isRequired,
+    language: PropTypes.string.isRequired,
+    formik: PropTypes.object.isRequired,
     render: PropTypes.func.isRequired
 };
 

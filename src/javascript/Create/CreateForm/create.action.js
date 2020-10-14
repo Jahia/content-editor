@@ -4,22 +4,21 @@ import React, {useContext, useState} from 'react';
 import {ComponentRendererContext} from '@jahia/ui-extender';
 import * as PropTypes from 'prop-types';
 
-const Create = ({context, values, errors, dirty, render: Render, loading: Loading}) => {
+const Create = props => {
+    const {mode, values, errors, dirty, render: Render, loading: Loading} = props;
     const componentRenderer = useContext(ComponentRendererContext);
 
     const [clicked, setClicked] = useState(false);
     if (Loading) {
-        return <Loading context={context}/>;
+        return <Loading {...props}/>;
     }
 
     return (
-        <Render
-            context={{
-                ...context,
-                addWarningBadge: Object.keys(errors).length > 0,
-                enabled: context.mode === Constants.routes.baseCreateRoute,
-                disabled: clicked && !dirty,
-                onClick: async ({formik}) => {
+        <Render {...props}
+                addWarningBadge={Object.keys(errors).length > 0}
+                enabled={mode === Constants.routes.baseCreateRoute}
+                disabled={clicked && !dirty}
+                onClick={async ({formik}) => {
                     const formIsValid = await validateForm(formik, componentRenderer);
 
                     if (formIsValid) {
@@ -30,13 +29,12 @@ const Create = ({context, values, errors, dirty, render: Render, loading: Loadin
                                 formik.resetForm(values);
                             });
                     }
-                }
-            }}/>
+                }}/>
     );
 };
 
 Create.propTypes = {
-    context: PropTypes.object.isRequired,
+    mode: PropTypes.string.isRequired,
     values: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
     dirty: PropTypes.bool.isRequired,

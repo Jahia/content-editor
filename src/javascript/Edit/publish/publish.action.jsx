@@ -4,7 +4,8 @@ import {publishNode} from './publish.request';
 import {Constants} from '~/ContentEditor.constants';
 import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
 
-const Publish = ({context, values, dirty, hasPublishPermission, lockedAndCannotBeEdited, render: Render, loading: Loading}) => {
+const Publish = props => {
+    const {language, values, dirty, hasPublishPermission, lockedAndCannotBeEdited, render: Render, loading: Loading} = props;
     const {publicationInfoPolling, publicationStatus, stopPublicationInfoPolling, startPublicationInfoPolling} = usePublicationInfoContext();
 
     let disabled = true;
@@ -21,7 +22,7 @@ const Publish = ({context, values, dirty, hasPublishPermission, lockedAndCannotB
             lockedAndCannotBeEdited ||
             dirty ||
             wipInfo.status === Constants.wip.status.ALL_CONTENT ||
-            (wipInfo.status === Constants.wip.status.LANGUAGES && wipInfo.languages.includes(context.language)) ||
+            (wipInfo.status === Constants.wip.status.LANGUAGES && wipInfo.languages.includes(language)) ||
             [
                 Constants.editPanel.publicationStatus.PUBLISHED,
                 Constants.editPanel.publicationStatus.MANDATORY_LANGUAGE_UNPUBLISHABLE
@@ -31,35 +32,33 @@ const Publish = ({context, values, dirty, hasPublishPermission, lockedAndCannotB
     const buttonLabel = publicationInfoPolling ? 'content-editor:label.contentEditor.edit.action.publish.namePolling' : 'content-editor:label.contentEditor.edit.action.publish.name';
 
     if (Loading) {
-        return <Loading context={context}/>;
+        return <Loading {...props}/>;
     }
 
     return (
         <Render
-            context={{
-                ...context,
-                enabled: enabled,
-                disabled: disabled,
-                buttonLabel: buttonLabel,
-                onClick: context => {
-                    publishNode({
-                        client: context.client,
-                        t: context.t,
-                        notificationContext: context.notificationContext,
-                        data: {
-                            nodeData: context.nodeData,
-                            language: context.language
-                        },
-                        successCallback: startPublicationInfoPolling()
-                    });
-                }
+            {...props}
+            enabled={enabled}
+            disabled={disabled}
+            buttonLabel={buttonLabel}
+            onClick={renderContext => {
+                publishNode({
+                    client: renderContext.client,
+                    t: renderContext.t,
+                    notificationContext: renderContext.notificationContext,
+                    data: {
+                        nodeData: renderContext.nodeData,
+                        language: renderContext.language
+                    },
+                    successCallback: startPublicationInfoPolling()
+                });
             }}
         />
     );
 };
 
 Publish.propTypes = {
-    context: PropTypes.object.isRequired,
+    language: PropTypes.string.isRequired,
     values: PropTypes.object.isRequired,
     dirty: PropTypes.bool.isRequired,
     hasPublishPermission: PropTypes.bool.isRequired,

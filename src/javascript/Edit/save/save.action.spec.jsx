@@ -16,7 +16,6 @@ jest.mock('~/PublicationInfo/PublicationInfo.context', () => ({usePublicationInf
 jest.mock('~/ContentEditor.context', () => ({useContentEditorContext: jest.fn()}));
 
 describe('save action', () => {
-    let context;
     let SaveAction;
     let defaultProps;
     let render = jest.fn();
@@ -26,7 +25,7 @@ describe('save action', () => {
         useContext.mockImplementation(() => ({render}));
         useContentEditorContext.mockImplementation(() => ({refetchFormData: jest.fn()}));
         usePublicationInfoContext.mockImplementation(() => ({publicationInfoPolling: jest.fn()}));
-        context = {
+        defaultProps = {
             formik: {
                 submitForm: jest.fn(() => Promise.resolve()),
                 resetForm: jest.fn(() => Promise.resolve()),
@@ -36,10 +35,9 @@ describe('save action', () => {
                 dirty: true,
                 errors: {}
             },
-            renderComponent: jest.fn()
+            renderComponent: jest.fn(), render, loading: undefined, dirty: true,
+            errors: {}
         };
-        defaultProps = {context, render, loading: undefined, dirty: true,
-            errors: {}};
     });
 
     it('should load when loading', async () => {
@@ -50,39 +48,39 @@ describe('save action', () => {
 
     it('should submit form when form is valid', async () => {
         const cmp = shallow(<SaveAction {...defaultProps}/>);
-        await cmp.props().context.onClick(context);
-        expect(context.formik.submitForm).toHaveBeenCalled();
+        await cmp.props().onClick(defaultProps);
+        expect(defaultProps.formik.submitForm).toHaveBeenCalled();
     });
 
     it('shouldn\'t do anything when form is not dirty', async () => {
-        context.dirty = false;
+        defaultProps.dirty = false;
         const cmp = shallow(<SaveAction {...defaultProps}/>);
-        expect(cmp.props().context.disabled).toBeTruthy();
+        expect(cmp.props().disabled).toBeTruthy();
     });
 
     it('should submitForm', async () => {
         const cmp = shallow(<SaveAction {...defaultProps}/>);
-        await cmp.props().context.onClick(context);
+        await cmp.props().onClick(defaultProps);
 
-        expect(context.formik.submitForm).toHaveBeenCalled();
+        expect(defaultProps.formik.submitForm).toHaveBeenCalled();
     });
 
     it('should resetForm when submitting', async () => {
         const cmp = shallow(<SaveAction {...defaultProps}/>);
-        await cmp.props().context.onClick(context);
+        await cmp.props().onClick(defaultProps);
 
-        expect(context.formik.resetForm).toHaveBeenCalled();
+        expect(defaultProps.formik.resetForm).toHaveBeenCalled();
     });
 
     it('shouldn\'t call resetForm when submitForm ', async () => {
-        context.formik.submitForm = jest.fn(() => Promise.reject());
+        defaultProps.formik.submitForm = jest.fn(() => Promise.reject());
         try {
             const cmp = shallow(<SaveAction {...defaultProps}/>);
-            await cmp.props().context.onClick(context);
+            await cmp.props().onClick(defaultProps);
         } catch (_) {
         }
 
-        expect(context.formik.resetForm).not.toHaveBeenCalled();
+        expect(defaultProps.formik.resetForm).not.toHaveBeenCalled();
     });
 
     it('should show a modal when form have errors', async () => {
@@ -91,7 +89,7 @@ describe('save action', () => {
         };
 
         const cmp = shallow(<SaveAction {...defaultProps}/>);
-        await cmp.props().context.onClick(context);
+        await cmp.props().onClick(defaultProps);
 
         expect(render).toHaveBeenCalled();
     });

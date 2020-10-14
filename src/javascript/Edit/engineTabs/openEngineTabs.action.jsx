@@ -21,16 +21,14 @@ export const OpenEngineTabs = props => {
                 }}
                 onCloseDialog={() => setOpen(false)}
             />
-            <Render context={{
-                ...props,
-                onClick: () => {
-                    if (formik.dirty) {
-                        setOpen(true);
-                    } else {
-                        openEngineTab(nodeData, tabs);
-                    }
-                }
-            }}/>
+            <Render {...props}
+                    onClick={() => {
+                        if (formik.dirty) {
+                            setOpen(true);
+                        } else {
+                            openEngineTab(nodeData, tabs);
+                        }
+                    }}/>
         </>
     );
 };

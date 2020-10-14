@@ -24,19 +24,17 @@ const GoBack = ({render: Render, isDirty, formik, uuid, operator, componentProps
                 onCloseDialog={() => setOpen(false)}
             />
             <Render
-                context={{
-                    ...actionContext,
-                    componentProps: {
-                        ...componentProps,
-                        disabled: envProps.disabledBack()
-                    },
-                    onClick: () => {
-                        if (formik) {
-                            if (isDirty) {
-                                setOpen(true);
-                            } else {
-                                executeGoBackAction();
-                            }
+                {...actionContext}
+                componentProps={{
+                    ...componentProps,
+                    disabled: envProps.disabledBack()
+                }}
+                onClick={() => {
+                    if (formik) {
+                        if (isDirty) {
+                            setOpen(true);
+                        } else {
+                            executeGoBackAction();
                         }
                     }
                 }}/>
