@@ -3,23 +3,22 @@ import PropTypes from 'prop-types';
 import {useNodeChecks} from '@jahia/data-helper';
 import {useContentEditorContext} from '~/ContentEditor.context';
 
-export const TabBar = props => {
-    const {setActiveTab, isDisplayable, value, render: Render, loading: Loading} = props;
+export const TabBar = ({setActiveTab, isDisplayable, value, render: Render, loading: Loading, ...otherProps}) => {
     const {path} = useContentEditorContext();
     const res = useNodeChecks(
         {path: path},
-        {...props}
+        {...otherProps}
     );
 
     if (res.loading) {
-        return (Loading && <Loading {...props}/>) || <></>;
+        return (Loading && <Loading {...otherProps}/>) || <></>;
     }
 
     return (
         <>
-            {isDisplayable(props) && res.checksResult &&
+            {isDisplayable(otherProps) && res.checksResult &&
             <Render
-                {...props}
+                {...otherProps}
                 onClick={() => {
                     setActiveTab(value);
                 }}

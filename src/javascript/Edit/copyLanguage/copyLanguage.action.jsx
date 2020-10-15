@@ -4,12 +4,11 @@ import {CopyLanguageDialog} from '~/EditPanel/CopyLanguageDialog';
 import {getFullLanguageName} from './copyLanguage.utils';
 import {ComponentRendererContext} from '@jahia/ui-extender';
 
-export const CopyLanguageActionComponent = props => {
-    const {siteInfo, nodeData, formik, language, render: Render} = props;
+export const CopyLanguageActionComponent = ({siteInfo, nodeData, formik, language, render: Render, ...otherProps}) => {
     const {render, destroy} = useContext(ComponentRendererContext);
 
     return (
-        <Render {...props}
+        <Render {...otherProps}
                 enabled={siteInfo.languages.length > 1 && nodeData.hasWritePermission}
                 onClick={() => {
                     render('CopyLanguageDialog', CopyLanguageDialog, {

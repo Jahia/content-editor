@@ -36,7 +36,6 @@ export const ButtonWithPastilleRenderer = props => {
 };
 
 ButtonWithPastilleRenderer.propTypes = {
-    context: PropTypes.object.isRequired,
     enabled: PropTypes.bool.isRequired,
     disabled: PropTypes.bool.isRequired,
     addWarningBadge: PropTypes.bool.isRequired,

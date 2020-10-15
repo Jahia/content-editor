@@ -40,8 +40,7 @@ const onClick = (uuid, language, context, redirect, componentRenderer) => {
     }
 };
 
-const CreateNewContent = props => {
-    const {contextNodePath, path, showOnNodeTypes, render: Render, loading: Loading} = props;
+const CreateNewContent = ({contextNodePath, path, showOnNodeTypes, render: Render, loading: Loading, ...otherProps}) => {
     const {redirect} = useContentEditorHistory();
     const {t} = useTranslation();
     const componentRenderer = useContext(ComponentRendererContext);
@@ -49,7 +48,7 @@ const CreateNewContent = props => {
 
     const res = useNodeChecks(
         {path: contextNodePath || path, language: language},
-        {...props}
+        {...otherProps}
     );
 
     const nodeInfo = useNodeInfo({path: path, language}, {getPrimaryNodeType: true});
@@ -65,7 +64,7 @@ const CreateNewContent = props => {
         transformNodeTypesToActions);
 
     if (Loading && (loadingTypes || res.loading || nodeInfo.loading)) {
-        return <Loading {...props}/>;
+        return <Loading {...otherProps}/>;
     }
 
     if (error) {
@@ -74,17 +73,17 @@ const CreateNewContent = props => {
             {details: error.message ? error.message : ''}
         );
         console.error(message);
-        return <Render {...props} isVisible={false}/>;
+        return <Render {...otherProps} isVisible={false}/>;
     }
 
     if (!res || !res.node || (nodetypes && nodetypes.length === 0)) {
-        return <Render {...props} isVisible={false}/>;
+        return <Render {...otherProps} isVisible={false}/>;
     }
 
     return (nodetypes || [{id: 'allTypes'}]).map(result => (
-        <Render key={result.id}
-                {...props}
+        <Render {...otherProps}
                 {...result}
+                key={result.id}
                 isVisible={res.checksResult}
                 onClick={ctx => onClick(nodeInfo.node.uuid, language, ctx, redirect, componentRenderer)}/>
     ));

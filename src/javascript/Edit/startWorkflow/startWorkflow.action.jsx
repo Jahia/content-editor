@@ -2,8 +2,7 @@ import React from 'react';
 import * as PropTypes from 'prop-types';
 import {Constants} from '~/ContentEditor.constants';
 
-const StartWorkFlow = props => {
-    const {language, isMainButton, hasPublishPermission, hasStartPublicationWorkflowPermission, lockedAndCannotBeEdited, values, dirty, render: Render, loading: Loading} = props;
+const StartWorkFlow = ({language, isMainButton, hasPublishPermission, hasStartPublicationWorkflowPermission, lockedAndCannotBeEdited, values, dirty, render: Render, loading: Loading, ...otherProps}) => {
     let disabled = false;
     let enabled = true;
     let isVisible = true;
@@ -28,11 +27,11 @@ const StartWorkFlow = props => {
     }
 
     if (Loading) {
-        return <Loading {...props}/>;
+        return <Loading {...otherProps}/>;
     }
 
     return (
-        <Render {...props}
+        <Render {...otherProps}
                 initStartWorkflow
                 enabled={enabled}
                 disabled={disabled}

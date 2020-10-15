@@ -4,8 +4,7 @@ import WorkInProgressDialog from './WorkInProgressDialog/WorkInProgressDialog';
 import {ComponentRendererContext} from '@jahia/ui-extender';
 import {Constants} from '~/ContentEditor.constants';
 
-export const OpenWorkInProgressModal = props => {
-    const {siteInfo, nodeData, formik, language, render: Render} = props;
+export const OpenWorkInProgressModal = ({siteInfo, nodeData, formik, language, render: Render, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
 
     const closeDialog = () => {
@@ -43,7 +42,7 @@ export const OpenWorkInProgressModal = props => {
     return (
         <>
             <Render
-                {...props}
+                {...otherProps}
                 buttonLabel={buttonLabel}
                 enabled={nodeData.hasWritePermission && !Constants.wip.notAvailableFor.includes(nodeData.primaryNodeType.name)}
                 onClick={singleLanguage ? switchButton : openModal}/>

@@ -6,19 +6,18 @@ import * as PropTypes from 'prop-types';
 import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
 import {useContentEditorContext} from '~/ContentEditor.context';
 
-const Save = props => {
-    const {values, errors, dirty, mode, render: Render, loading: Loading} = props;
+const Save = ({values, errors, dirty, mode, render: Render, loading: Loading, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
     const {publicationInfoPolling} = usePublicationInfoContext();
     const {refetchFormData} = useContentEditorContext();
 
     if (Loading) {
-        return <Loading {...props}/>;
+        return <Loading {...otherProps}/>;
     }
 
     return (
         <Render
-            {...props}
+            {...otherProps}
             addWarningBadge={Object.keys(errors).length > 0}
             enabled={mode === Constants.routes.baseEditRoute}
             disabled={!dirty || publicationInfoPolling}

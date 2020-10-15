@@ -4,8 +4,7 @@ import {publishNode} from './publish.request';
 import {Constants} from '~/ContentEditor.constants';
 import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
 
-const Publish = props => {
-    const {language, values, dirty, hasPublishPermission, lockedAndCannotBeEdited, render: Render, loading: Loading} = props;
+const Publish = ({language, values, dirty, hasPublishPermission, lockedAndCannotBeEdited, render: Render, loading: Loading, ...otherProps}) => {
     const {publicationInfoPolling, publicationStatus, stopPublicationInfoPolling, startPublicationInfoPolling} = usePublicationInfoContext();
 
     let disabled = true;
@@ -32,12 +31,12 @@ const Publish = props => {
     const buttonLabel = publicationInfoPolling ? 'content-editor:label.contentEditor.edit.action.publish.namePolling' : 'content-editor:label.contentEditor.edit.action.publish.name';
 
     if (Loading) {
-        return <Loading {...props}/>;
+        return <Loading {...otherProps}/>;
     }
 
     return (
         <Render
-            {...props}
+            {...otherProps}
             enabled={enabled}
             disabled={disabled}
             buttonLabel={buttonLabel}

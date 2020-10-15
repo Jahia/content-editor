@@ -5,21 +5,20 @@ import * as PropTypes from 'prop-types';
 import {useSelector} from 'react-redux';
 import {Constants} from '~/ContentEditor.constants';
 
-export const EditContent = props => {
-    const {path, render: Render, loading: Loading} = props;
+export const EditContent = ({path, render: Render, loading: Loading, ...otherProps}) => {
     const {redirect} = useContentEditorHistory();
     const {language} = useSelector(state => ({language: state.language}));
     const res = useNodeChecks(
         {path: path, language: language},
-        {...props}
+        {...otherProps}
     );
 
     if (Loading && res.loading) {
-        return <Loading {...props}/>;
+        return <Loading {...otherProps}/>;
     }
 
     return (
-        <Render {...props}
+        <Render {...otherProps}
                 isVisible={res.checksResult}
                 onClick={() => redirect({language, mode: Constants.routes.baseEditRoute, uuid: res.node.uuid})}
         />

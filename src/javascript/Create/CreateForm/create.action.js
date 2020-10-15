@@ -4,17 +4,16 @@ import React, {useContext, useState} from 'react';
 import {ComponentRendererContext} from '@jahia/ui-extender';
 import * as PropTypes from 'prop-types';
 
-const Create = props => {
-    const {mode, values, errors, dirty, render: Render, loading: Loading} = props;
+const Create = ({mode, values, errors, dirty, render: Render, loading: Loading, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
 
     const [clicked, setClicked] = useState(false);
     if (Loading) {
-        return <Loading {...props}/>;
+        return <Loading {...otherProps}/>;
     }
 
     return (
-        <Render {...props}
+        <Render {...otherProps}
                 addWarningBadge={Object.keys(errors).length > 0}
                 enabled={mode === Constants.routes.baseCreateRoute}
                 disabled={clicked && !dirty}
