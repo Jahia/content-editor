@@ -2,7 +2,7 @@ import React from 'react';
 import * as PropTypes from 'prop-types';
 import {Constants} from '~/ContentEditor.constants';
 
-const StartWorkFlow = ({context, isMainButton, hasPublishPermission, hasStartPublicationWorkflowPermission, lockedAndCannotBeEdited, values, dirty, render: Render, loading: Loading}) => {
+const StartWorkFlow = ({language, isMainButton, hasPublishPermission, hasStartPublicationWorkflowPermission, lockedAndCannotBeEdited, values, dirty, render: Render, loading: Loading, ...otherProps}) => {
     let disabled = false;
     let enabled = true;
     let isVisible = true;
@@ -15,7 +15,7 @@ const StartWorkFlow = ({context, isMainButton, hasPublishPermission, hasStartPub
         const wipInfo = values[Constants.wip.fieldName];
         disabled = dirty ||
             wipInfo.status === Constants.wip.status.ALL_CONTENT ||
-            (wipInfo.status === Constants.wip.status.LANGUAGES && wipInfo.languages.includes(context.language));
+            (wipInfo.status === Constants.wip.status.LANGUAGES && wipInfo.languages.includes(language));
     } else {
         // Is Visible
         isVisible = enabled && hasPublishPermission;
@@ -27,18 +27,16 @@ const StartWorkFlow = ({context, isMainButton, hasPublishPermission, hasStartPub
     }
 
     if (Loading) {
-        return <Loading context={context}/>;
+        return <Loading {...otherProps}/>;
     }
 
     return (
-        <Render
-            context={{
-                ...context,
-                initStartWorkflow: true,
-                enabled: enabled,
-                disabled: disabled,
-                isVisible: isVisible,
-                onClick: context => {
+        <Render {...otherProps}
+                initStartWorkflow
+                enabled={enabled}
+                disabled={disabled}
+                isVisible={isVisible}
+                onClick={context => {
                     if (context.enabled) {
                         window.authoringApi.openPublicationWorkflow(
                             [context.nodeData.uuid],
@@ -47,13 +45,13 @@ const StartWorkFlow = ({context, isMainButton, hasPublishPermission, hasStartPub
                             false // Not unpublish action
                         );
                     }
-                }
-            }}
+                }}
         />
     );
 };
 
 StartWorkFlow.propTypes = {
+    language: PropTypes.string.isRequired,
     context: PropTypes.object.isRequired,
     values: PropTypes.object.isRequired,
     dirty: PropTypes.bool.isRequired,

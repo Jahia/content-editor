@@ -2,13 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Constants} from '~/ContentEditor.constants';
 
-export const GoToOption = props => {
-    const {setActiveOption, value, mode, render: Render} = props;
+export const GoToOption = ({setActiveOption, value, mode, render: Render, ...otherProps}) => {
     return (
         <>
             {mode === Constants.routes.baseEditRoute &&
             <Render
-                {...props}
+                {...otherProps}
                 onClick={() => {
                     setActiveOption(value);
                 }}

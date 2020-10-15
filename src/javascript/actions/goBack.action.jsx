@@ -3,7 +3,7 @@ import {EditPanelDialogConfirmation} from '~/EditPanel/EditPanelDialogConfirmati
 import {useContentEditorConfigContext} from '~/ContentEditor.context';
 import * as PropTypes from 'prop-types';
 
-const GoBack = ({render: Render, isDirty, formik, uuid, operator, componentProps, ...actionContext}) => {
+const GoBack = ({render: Render, isDirty, formik, uuid, operator, componentProps, ...otherProps}) => {
     const {envProps} = useContentEditorConfigContext();
     const [open, setOpen] = useState(false);
     const executeGoBackAction = overridedStoredLocation => {
@@ -24,19 +24,17 @@ const GoBack = ({render: Render, isDirty, formik, uuid, operator, componentProps
                 onCloseDialog={() => setOpen(false)}
             />
             <Render
-                context={{
-                    ...actionContext,
-                    componentProps: {
-                        ...componentProps,
-                        disabled: envProps.disabledBack()
-                    },
-                    onClick: () => {
-                        if (formik) {
-                            if (isDirty) {
-                                setOpen(true);
-                            } else {
-                                executeGoBackAction();
-                            }
+                {...otherProps}
+                componentProps={{
+                    ...componentProps,
+                    disabled: envProps.disabledBack()
+                }}
+                onClick={() => {
+                    if (formik) {
+                        if (isDirty) {
+                            setOpen(true);
+                        } else {
+                            executeGoBackAction();
                         }
                     }
                 }}/>
