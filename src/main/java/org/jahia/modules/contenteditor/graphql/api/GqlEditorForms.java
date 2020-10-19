@@ -55,7 +55,7 @@ import org.jahia.modules.contenteditor.graphql.api.definitions.GqlNodeTypeTreeEn
 import org.jahia.modules.contenteditor.graphql.api.types.ContextEntryInput;
 import org.jahia.modules.contenteditor.utils.ContentEditorUtils;
 import org.jahia.modules.graphql.provider.dxm.DataFetchingException;
-import org.jahia.osgi.BundleUtils;
+import org.jahia.modules.graphql.provider.dxm.osgi.annotations.GraphQLOsgiService;
 import org.jahia.registries.ServicesRegistry;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRSessionFactory;
@@ -66,6 +66,7 @@ import org.osgi.framework.Bundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import javax.jcr.RepositoryException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -77,10 +78,12 @@ public class GqlEditorForms {
 
     private static Logger logger = LoggerFactory.getLogger(GqlEditorForms.class);
 
-    private EditorFormService editorFormService = null;
+    private EditorFormService editorFormService;
 
-    public GqlEditorForms() {
-        this.editorFormService = BundleUtils.getOsgiService(EditorFormService.class, null);
+    @Inject
+    @GraphQLOsgiService
+    public void setEditorFormService(EditorFormService editorFormService) {
+        this.editorFormService = editorFormService;
     }
 
     @GraphQLField
