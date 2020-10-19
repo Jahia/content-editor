@@ -15,23 +15,22 @@ describe('WorkInProgressDialog', () => {
     let componentRenderer;
     beforeEach(() => {
         defaultProps = {
-            context: {
-                siteInfo: {
-                    languages: ['fr', 'en']
-                },
-                formik: {
-                    setFieldValue: () => jest.fn(),
-                    values: {
-                        'WIP::Info': {}
-                    }
-                },
-                nodeData: {
-                    hasWritePermission: true,
-                    primaryNodeType:
-                        {
-                            name: 'jnt:content'
-                        }
+            siteInfo: {
+                languages: ['fr', 'en']
+            },
+            language: 'fr',
+            formik: {
+                setFieldValue: () => jest.fn(),
+                values: {
+                    'WIP::Info': {}
                 }
+            },
+            nodeData: {
+                hasWritePermission: true,
+                primaryNodeType:
+                    {
+                        name: 'jnt:content'
+                    }
             },
             otherProps: true,
             render: () => ''
@@ -44,14 +43,14 @@ describe('WorkInProgressDialog', () => {
     });
 
     it('should be disbabled if no write permission', () => {
-        defaultProps.context.nodeData.hasWritePermission = false;
+        defaultProps.nodeData.hasWritePermission = false;
         const cmp = shallowWithTheme(
             <OpenWorkInProgressModal {...defaultProps}/>,
             {},
             dsGenericTheme
         );
 
-        expect(cmp.find('render').props().context.enabled).toBe(false);
+        expect(cmp.find('render').props().enabled).toBe(false);
     });
 
     it('should pass otherProps to the render component', () => {
@@ -71,20 +70,20 @@ describe('WorkInProgressDialog', () => {
             dsGenericTheme
         ).find('render');
 
-        cmp.props().context.onClick();
+        cmp.props().onClick();
 
         expect(componentRenderer.render).toHaveBeenCalled();
     });
 
     it('should not display WIP modal when there is only one language', () => {
-        defaultProps.context.siteInfo.languages = ['fr'];
+        defaultProps.siteInfo.languages = ['fr'];
         const cmp = shallowWithTheme(
             <OpenWorkInProgressModal {...defaultProps}/>,
             {},
             dsGenericTheme
         ).find('render');
 
-        cmp.props().context.onClick();
+        cmp.props().onClick();
 
         expect(componentRenderer.render).not.toHaveBeenCalled();
     });
@@ -96,17 +95,17 @@ describe('WorkInProgressDialog', () => {
             dsGenericTheme
         ).find('render');
 
-        expect(cmp.props().context.enabled).toBe(true);
+        expect(cmp.props().enabled).toBe(true);
     });
 
     it('should not enabled WIP when is virtual site node type', () => {
-        defaultProps.context.nodeData.primaryNodeType.name = 'jnt:virtualsite';
+        defaultProps.nodeData.primaryNodeType.name = 'jnt:virtualsite';
         const cmp = shallowWithTheme(
             <OpenWorkInProgressModal {...defaultProps}/>,
             {},
             dsGenericTheme
         ).find('render');
 
-        expect(cmp.props().context.enabled).toBe(false);
+        expect(cmp.props().enabled).toBe(false);
     });
 });

@@ -35,7 +35,6 @@ import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.conte
 
 describe('publish action', () => {
     let defaultProps;
-    let context;
     let PublishAction;
     let publicationStatus = 'MODIFIED';
     let publicationInfoPolling = false;
@@ -59,7 +58,7 @@ describe('publish action', () => {
             startPublicationInfoPolling: startPublicationInfoPolling
         }));
 
-        context = {
+        defaultProps = {
             nodeData: {
                 hasPublishPermission: true,
                 lockedAndCannotBeEdited: false
@@ -77,11 +76,7 @@ describe('publish action', () => {
                 publicationInfoPolling: false,
                 startPublicationInfoPolling: jest.fn(),
                 stopPublicationInfoPolling: jest.fn()
-            }
-        };
-
-        defaultProps = {
-            context,
+            },
             render: jest.fn(),
             loading: undefined,
             values: {
@@ -100,37 +95,37 @@ describe('publish action', () => {
         defaultProps.dirty = true;
 
         const cmp = shallow(<PublishAction {...defaultProps}/>);
-        expect(cmp.props().context.disabled).toBe(true);
+        expect(cmp.props().disabled).toBe(true);
     });
 
     it('should disabled submit action when node is in WIP for all content', () => {
         defaultProps.values[Constants.wip.fieldName].status = Constants.wip.status.ALL_CONTENT;
 
         const cmp = shallow(<PublishAction {...defaultProps}/>);
-        expect(cmp.props().context.disabled).toBe(true);
+        expect(cmp.props().disabled).toBe(true);
     });
 
     it('should disabled submit action when node is in WIP for current language', () => {
         defaultProps.values[Constants.wip.fieldName].status = Constants.wip.status.LANGUAGES;
         defaultProps.values[Constants.wip.fieldName].languages = ['en', 'fr'];
-        context.language = 'en';
+        defaultProps.language = 'en';
 
         const cmp = shallow(<PublishAction {...defaultProps}/>);
-        expect(cmp.props().context.disabled).toBe(true);
+        expect(cmp.props().disabled).toBe(true);
     });
 
     it('should disabled submit action when publication info are not loaded', () => {
         publicationStatus = undefined;
 
         const cmp = shallow(<PublishAction {...defaultProps}/>);
-        expect(cmp.props().context.disabled).toBe(true);
+        expect(cmp.props().disabled).toBe(true);
     });
 
     it('should disabled submit action when we are polling publication info', () => {
         publicationInfoPolling = true;
 
         const cmp = shallow(<PublishAction {...defaultProps}/>);
-        expect(cmp.props().context.disabled).toBe(true);
+        expect(cmp.props().disabled).toBe(true);
     });
 
     it('should stop polling if we are polling and node is published', () => {
@@ -152,57 +147,57 @@ describe('publish action', () => {
         publicationStatus = 'NOT_PUBLISHED';
 
         const cmp = shallow(<PublishAction {...defaultProps}/>);
-        expect(cmp.props().context.disabled).toBe(false);
+        expect(cmp.props().disabled).toBe(false);
     });
 
     it('should disabled submit action when node is already published', () => {
         publicationStatus = 'PUBLISHED';
 
         const cmp = shallow(<PublishAction {...defaultProps}/>);
-        expect(cmp.props().context.disabled).toBe(true);
+        expect(cmp.props().disabled).toBe(true);
     });
 
     it('should disabled submit action when node is UNPUBLISHABLE', () => {
         publicationStatus = 'MANDATORY_LANGUAGE_UNPUBLISHABLE';
 
         const cmp = shallow(<PublishAction {...defaultProps}/>);
-        expect(cmp.props().context.disabled).toBe(true);
+        expect(cmp.props().disabled).toBe(true);
     });
 
     it('should display publish action when you have the proper permission and it is edit mode', () => {
         const cmp = shallow(<PublishAction {...defaultProps}/>);
-        expect(cmp.props().context.enabled).toBe(true);
+        expect(cmp.props().enabled).toBe(true);
     });
 
     it('should use label when polling is OFF', () => {
         const cmp = shallow(<PublishAction {...defaultProps}/>);
-        expect(cmp.props().context.buttonLabel).toBe('content-editor:label.contentEditor.edit.action.publish.name');
+        expect(cmp.props().buttonLabel).toBe('content-editor:label.contentEditor.edit.action.publish.name');
     });
 
     it('should use polling label when polling is ON', () => {
         publicationInfoPolling = true;
 
         const cmp = shallow(<PublishAction {...defaultProps}/>);
-        expect(cmp.props().context.buttonLabel).toBe('content-editor:label.contentEditor.edit.action.publish.namePolling');
+        expect(cmp.props().buttonLabel).toBe('content-editor:label.contentEditor.edit.action.publish.namePolling');
     });
 
     it('should undisplay publish action when you haven\'t the proper permission', () => {
         defaultProps.hasPublishPermission = false;
 
         const cmp = shallow(<PublishAction {...defaultProps}/>);
-        expect(cmp.props().context.enabled).toBe(false);
+        expect(cmp.props().enabled).toBe(false);
     });
 
     it('should disable publish action when node is locked', () => {
         defaultProps.lockedAndCannotBeEdited = true;
 
         const cmp = shallow(<PublishAction {...defaultProps}/>);
-        expect(cmp.props().context.disabled).toBe(true);
+        expect(cmp.props().disabled).toBe(true);
     });
 
     it('should call publishNode request', () => {
         const cmp = shallow(<PublishAction {...defaultProps}/>);
-        cmp.props().context.onClick(context);
+        cmp.props().onClick(defaultProps);
 
         expect(publishNode).toHaveBeenCalled();
         expect(startPublicationInfoPolling).toHaveBeenCalled();

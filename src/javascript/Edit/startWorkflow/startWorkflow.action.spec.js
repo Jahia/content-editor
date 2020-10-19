@@ -4,7 +4,6 @@ import {Constants} from '~/ContentEditor.constants';
 import startWorkflowAction from './startWorkflow.action';
 
 describe('startWorkflow action', () => {
-    let context;
     let defaultProps;
     let StartWorkflowAction;
 
@@ -15,7 +14,7 @@ describe('startWorkflow action', () => {
             openPublicationWorkflow: jest.fn()
         };
 
-        context = {
+        defaultProps = {
             mode: 'edit',
             parent: {
                 formik: {
@@ -26,11 +25,7 @@ describe('startWorkflow action', () => {
                 hasPublishPermission: true,
                 lockedAndCannotBeEdited: false
             },
-            formik: {}
-        };
-
-        defaultProps = {
-            context,
+            formik: {},
             render: jest.fn(),
             loading: undefined,
             values: {
@@ -51,7 +46,7 @@ describe('startWorkflow action', () => {
         defaultProps.isMainButton = false;
 
         const cmp = shallow(<StartWorkflowAction {...defaultProps}/>);
-        expect(cmp.props().context.enabled).toBe(true);
+        expect(cmp.props().enabled).toBe(true);
     });
 
     it('should not display startWorkflowAction when user haven\'t publication rights', () => {
@@ -59,29 +54,29 @@ describe('startWorkflow action', () => {
         defaultProps.hasPublishPermission = false;
 
         const cmp = shallow(<StartWorkflowAction {...defaultProps}/>);
-        expect(cmp.props().context.isVisible).toBe(false);
+        expect(cmp.props().isVisible).toBe(false);
     });
 
     it('should disable startWorkflowAction when form dirty', () => {
         defaultProps.dirty = true;
 
         const cmp = shallow(<StartWorkflowAction {...defaultProps}/>);
-        expect(cmp.props().context.enabled).toBe(false);
-        expect(cmp.props().context.isVisible).toBe(true);
-        expect(cmp.props().context.disabled).toBe(true);
+        expect(cmp.props().enabled).toBe(false);
+        expect(cmp.props().isVisible).toBe(true);
+        expect(cmp.props().disabled).toBe(true);
     });
 
     it('should disable startWorkflowAction when node locked', () => {
         defaultProps.lockedAndCannotBeEdited = true;
 
         const cmp = shallow(<StartWorkflowAction {...defaultProps}/>);
-        expect(cmp.props().context.enabled).toBe(false);
-        expect(cmp.props().context.isVisible).toBe(true);
+        expect(cmp.props().enabled).toBe(false);
+        expect(cmp.props().isVisible).toBe(true);
     });
 
     it('should call GWT command', () => {
         const cmp = shallow(<StartWorkflowAction {...defaultProps}/>);
-        cmp.props().context.onClick({
+        cmp.props().onClick({
             nodeData: {uuid: 'hello'},
             enabled: true
         });
@@ -93,34 +88,34 @@ describe('startWorkflow action', () => {
         defaultProps.hasStartPublicationWorkflowPermission = false;
 
         const cmp = shallow(<StartWorkflowAction {...defaultProps}/>);
-        expect(cmp.props().context.enabled).toBe(false);
+        expect(cmp.props().enabled).toBe(false);
     });
 
     it('should not display startWorkflowAction when user have publication rights', () => {
         defaultProps.hasPublishPermission = true;
 
         const cmp = shallow(<StartWorkflowAction {...defaultProps}/>);
-        expect(cmp.props().context.enabled).toBe(false);
+        expect(cmp.props().enabled).toBe(false);
     });
 
     it('should not disable request publication action when node is not locked', () => {
         const cmp = shallow(<StartWorkflowAction {...defaultProps}/>);
-        expect(cmp.props().context.disabled).toBe(false);
+        expect(cmp.props().disabled).toBe(false);
     });
 
     it('should disable request publication action when node is locked', () => {
         defaultProps.lockedAndCannotBeEdited = true;
 
         const cmp = shallow(<StartWorkflowAction {...defaultProps}/>);
-        expect(cmp.props().context.disabled).toBe(false);
+        expect(cmp.props().disabled).toBe(false);
     });
 
     it('should disable request publication action form is WIP', () => {
         defaultProps.values[Constants.wip.fieldName].status = Constants.wip.status.LANGUAGES;
         defaultProps.values[Constants.wip.fieldName].languages = ['en', 'fr'];
-        context.language = 'en';
+        defaultProps.language = 'en';
 
         const cmp = shallow(<StartWorkflowAction {...defaultProps}/>);
-        expect(cmp.props().context.disabled).toBe(true);
+        expect(cmp.props().disabled).toBe(true);
     });
 });

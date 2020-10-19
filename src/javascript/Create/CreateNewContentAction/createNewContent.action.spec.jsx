@@ -30,7 +30,6 @@ describe('CreateNewContent', () => {
     beforeEach(() => {
         CreateNewContent = createNewContentAction.component;
         defaultProps = {
-            context: {},
             render: jest.fn()
         };
         useContentEditorHistory.mockImplementation(() => {
@@ -79,6 +78,6 @@ describe('CreateNewContent', () => {
         const cmp = shallow(<CreateNewContent {...defaultProps}/>);
         // 2 is the number of types returned.
         expect(cmp.length).toEqual(1);
-        expect(cmp.props().context.id).toEqual('allTypes');
+        expect(cmp.props().id).toEqual('allTypes');
     });
 });

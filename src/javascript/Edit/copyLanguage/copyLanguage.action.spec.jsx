@@ -15,33 +15,32 @@ describe('copy language action', () => {
 
     beforeEach(() => {
         defaultProps = {
-            context: {
-                mode: 'edit',
-                nodeData: {
-                    uuid: '12345-321456-1234565789',
-                    hasWritePermission: true
-                },
-                language: 'fr',
-                siteInfo: {
-                    languages: [
-                        {displayName: 'Deutsch', language: 'de', activeInEdit: true},
-                        {displayName: 'Français', language: 'fr', activeInEdit: true}
-                    ]
-                }
+            formik: {},
+            mode: 'edit',
+            nodeData: {
+                uuid: '12345-321456-1234565789',
+                hasWritePermission: true
+            },
+            language: 'fr',
+            siteInfo: {
+                languages: [
+                    {displayName: 'Deutsch', language: 'de', activeInEdit: true},
+                    {displayName: 'Français', language: 'fr', activeInEdit: true}
+                ]
             },
             render: () => ''
         };
     });
 
     it('should render not be enabled when the user has no write access', () => {
-        defaultProps.context.nodeData.hasWritePermission = false;
+        defaultProps.nodeData.hasWritePermission = false;
         const cmp = shallowWithTheme(
             <CopyLanguageActionComponent {...defaultProps}/>,
             {},
             dsGenericTheme
         );
 
-        expect(cmp.props().context.enabled).toBeFalsy();
+        expect(cmp.props().enabled).toBeFalsy();
     });
 
     it('should render be enabled when there is more than one language', () => {
@@ -51,12 +50,12 @@ describe('copy language action', () => {
             dsGenericTheme
         );
 
-        expect(cmp.props().context.enabled).toBeTruthy();
+        expect(cmp.props().enabled).toBeTruthy();
     });
 
     it('should render not be enabled when there is only one language', () => {
-        defaultProps.context.language = 'en';
-        defaultProps.context.siteInfo.languages = [
+        defaultProps.language = 'en';
+        defaultProps.siteInfo.languages = [
             {displayName: 'English', language: 'en', activeInEdit: true}
         ];
         const cmp = shallowWithTheme(<CopyLanguageActionComponent {...defaultProps}/>,
@@ -64,7 +63,7 @@ describe('copy language action', () => {
             dsGenericTheme
         );
 
-        expect(cmp.props().context.enabled).toBeFalsy();
+        expect(cmp.props().enabled).toBeFalsy();
     });
 
     it('should destroy copy language dialog when onCloseDialog has been called', () => {
@@ -79,7 +78,7 @@ describe('copy language action', () => {
             dsGenericTheme
         );
 
-        cmp.props().context.onClick();
+        cmp.props().onClick();
         const onCloseDialog = render.mock.calls[0][2].onCloseDialog;
         onCloseDialog();
 

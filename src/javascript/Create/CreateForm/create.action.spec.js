@@ -18,16 +18,14 @@ describe('create action', () => {
         useContext.mockImplementation(() => ({render}));
 
         defaultProps = {
-            context: {
-                formik: {
-                    submitForm: jest.fn(() => Promise.resolve()),
-                    validateForm: jest.fn(() => Promise.resolve(defaultProps.errors)),
-                    resetForm: jest.fn(),
-                    setFieldValue: jest.fn(),
-                    setTouched: jest.fn(() => Promise.resolve())
-                },
-                renderComponent: jest.fn()
+            formik: {
+                submitForm: jest.fn(() => Promise.resolve()),
+                validateForm: jest.fn(() => Promise.resolve(defaultProps.errors)),
+                resetForm: jest.fn(),
+                setFieldValue: jest.fn(),
+                setTouched: jest.fn(() => Promise.resolve())
             },
+            renderComponent: jest.fn(),
             errors: {},
             render: jest.fn(),
             loading: undefined
@@ -42,8 +40,8 @@ describe('create action', () => {
 
     it('should submit form when form is valid', async () => {
         const cmp = shallow(<CreateAction {...defaultProps}/>);
-        await cmp.props().context.onClick(defaultProps.context);
-        expect(defaultProps.context.formik.submitForm).toHaveBeenCalled();
+        await cmp.props().onClick(defaultProps);
+        expect(defaultProps.formik.submitForm).toHaveBeenCalled();
     });
 
     it('should not submit form when form is invalid', async () => {
@@ -52,28 +50,28 @@ describe('create action', () => {
             myFiled2: 'required'
         };
         const cmp = shallow(<CreateAction {...defaultProps}/>);
-        await cmp.props().context.onClick(defaultProps.context);
-        expect(defaultProps.context.formik.submitForm).not.toHaveBeenCalled();
+        await cmp.props().onClick(defaultProps);
+        expect(defaultProps.formik.submitForm).not.toHaveBeenCalled();
     });
 
     it('should not be a disabled action when is not clicked', async () => {
         const cmp = shallow(<CreateAction {...defaultProps}/>);
 
-        expect(cmp.props().context.disabled).toBe(false);
+        expect(cmp.props().disabled).toBe(false);
     });
 
     it('should not be a disabled action when is clicked, but form is dirty', async () => {
         defaultProps.dirty = true;
         const cmp = shallow(<CreateAction {...defaultProps}/>);
-        await cmp.props().context.onClick(defaultProps.context);
+        await cmp.props().onClick(defaultProps);
 
-        expect(cmp.props().context.disabled).toBe(false);
+        expect(cmp.props().disabled).toBe(false);
     });
 
     it('should disable action when is clicked', async () => {
         const cmp = shallow(<CreateAction {...defaultProps}/>);
-        await cmp.props().context.onClick(defaultProps.context);
+        await cmp.props().onClick(defaultProps);
 
-        expect(cmp.props().context.disabled).toBe(true);
+        expect(cmp.props().disabled).toBe(true);
     });
 });
