@@ -130,7 +130,6 @@ workflows:
     jobs:
       - checkout:
           name: PR Checkout
-          type: approval # requires that an in-app button be clicked by an appropriate member of the project to continue.
       - build:
           name: PR Build
           is_pull_request: true
