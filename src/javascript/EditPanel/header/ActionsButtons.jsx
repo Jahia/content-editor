@@ -52,7 +52,6 @@ export const ButtonRenderer = props => {
     return (
         <Button
             {...componentProps}
-            {...props}
             icon={buttonIcon}
             onClick={e => {
                 e.stopPropagation();

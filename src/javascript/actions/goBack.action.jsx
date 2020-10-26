@@ -43,7 +43,6 @@ const GoBack = ({render: Render, isDirty, formik, uuid, operator, componentProps
 };
 
 GoBack.propTypes = {
-    actionContext: PropTypes.object.isRequired,
     componentProps: PropTypes.object.isRequired,
     formik: PropTypes.object.isRequired,
     operator: PropTypes.string.isRequired,

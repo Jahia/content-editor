@@ -29,7 +29,7 @@ export const TextCmp = ({field, value, id, editorContext, onChange}) => {
             inputProps={{
                 'aria-labelledby': `${field.name}-label`,
                 'aria-required': field.mandatory,
-                maxlength: maxLength && maxLength.value
+                maxLength: maxLength && maxLength.value
             }}
             value={controlledValue}
             readOnly={field.readOnly}

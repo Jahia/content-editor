@@ -244,9 +244,6 @@ FieldCmp.propTypes = {
         values: PropTypes.object,
         setFieldValue: PropTypes.func,
         setFieldTouched: PropTypes.func
-    }).isRequired,
-    actionContext: PropTypes.shape({
-        noAction: PropTypes.bool
     }).isRequired
 };
 
