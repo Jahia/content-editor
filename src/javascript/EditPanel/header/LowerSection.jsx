@@ -48,7 +48,6 @@ export const HeaderLowerSection = ({actionContext, setActiveTab, activeTab}) => 
                         data-sel-role={dataSelRole}
                         icon={buttonIcon}
                         variant="ghost"
-                        {...props}
                         onClick={e => {
                             e.stopPropagation();
                             onClick(props, e);

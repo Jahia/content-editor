@@ -21,7 +21,11 @@ const findLastIndex = (array, callback) => {
     return lastIndex;
 };
 
-const getItems = (mode, node = {}) => {
+const getItems = (mode, node) => {
+    if (node === undefined) {
+        return [];
+    }
+
     let ancestors = node.ancestors || [];
 
     if (ancestors.length === 0) {
@@ -97,7 +101,7 @@ const ContentPathContainer = ({path, ...context}) => {
         console.log(error);
     }
 
-    const node = data?.jcr?.node || {};
+    const node = data?.jcr?.node;
     const items = useMemo(() => getItems(mode, node), [node]);
 
     return (
