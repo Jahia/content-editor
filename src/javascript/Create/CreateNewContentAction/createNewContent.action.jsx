@@ -90,12 +90,13 @@ const CreateNewContent = ({contextNodePath, path, showOnNodeTypes, render: Rende
 };
 
 CreateNewContent.defaultProps = {
+    contextNodePath: undefined,
     loading: undefined
 };
 
 CreateNewContent.propTypes = {
-    contextNodePath: PropTypes.string.isRequired,
-    path: PropTypes.object.isRequired,
+    contextNodePath: PropTypes.string,
+    path: PropTypes.string.isRequired,
     showOnNodeTypes: PropTypes.array,
     render: PropTypes.func.isRequired,
     loading: PropTypes.func
