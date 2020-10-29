@@ -22,7 +22,7 @@ const findLastIndex = (array, callback) => {
 };
 
 const getItems = (mode, node) => {
-    if (node === undefined) {
+    if (!node) {
         return [];
     }
 

@@ -33,8 +33,7 @@ export const GetContentPath = gql`
                         {evaluation: DIFFERENT, fieldName: "primaryNodeType.name", value: "jnt:virtualsite"}
                     ]
                 }) {
-                    uuid
-                    path
+                    ...NodeCacheRequiredFields
                     displayName(language: $language)
                     primaryNodeType {
                         name
