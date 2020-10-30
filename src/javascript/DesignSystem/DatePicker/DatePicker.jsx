@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import DayPicker from 'react-day-picker';
 import {TimeSelector} from './TimeSelector/TimeSelector';
+import {YearMonthSelector} from './YearMonthSelector/YearMonthSelector';
 import {style} from './DatePicker.style';
 import {withStyles} from '@material-ui/core/styles';
 
@@ -32,30 +33,38 @@ const DatePickerCmp = ({
     disabledDays,
     ...props
 }) => {
-    const [selectedDays, setSelectedDays] = useState([]);
-    const [selectedHour, setSelectedHour] = useState('00:00');
+    const [month, setMonth] = useState(selectedDateTime ? new Date(selectedDateTime) : new Date());
+
     const isDateTime = variant === 'datetime';
     const locale = locales[lang] || {};
 
-    const selectedDate = selectedDateTime ? [selectedDateTime] : selectedDays;
+    const selectedDays = selectedDateTime ? [selectedDateTime] : [];
+    const selectedHour = selectedDateTime ? dayjs(selectedDateTime).format('HH:mm') : '00:00';
 
     return (
         <div className={classes.container + ' ' + (isDateTime ? classes.containerDateTime : '')}>
             <DayPicker
                 locale={lang}
                 disabledDays={disabledDays}
-                selectedDays={selectedDate}
-                month={(selectedDate && selectedDate.length > 0) ? new Date(selectedDate[0]) : new Date()}
+                selectedDays={selectedDays}
+                month={month}
                 months={locale.months}
                 weekdaysLong={locale.weekdays}
                 weekdaysShort={locale.weekdaysShort}
                 firstDayOfWeek={locale.weekStart || 0}
+                captionElement={() => (
+                    <YearMonthSelector
+                        date={month}
+                        months={locale.months}
+                        onChange={setMonth}
+                    />
+                )}
                 onDayClick={(day, modifiers) => {
                     if (modifiers && modifiers.disabled) {
                         return;
                     }
 
-                    setSelectedDays([day]);
+                    setMonth(day);
                     onSelectDateTime(getDateTime(day, selectedHour));
                 }}
                 {...props}
@@ -63,17 +72,14 @@ const DatePickerCmp = ({
             {isDateTime && (
                 <TimeSelector
                     disabledHours={{
-                        before: getHourFromDisabledDays(selectedDate[0], disabledDays, 'before'),
-                        after: getHourFromDisabledDays(selectedDate[0], disabledDays, 'after')
+                        before: getHourFromDisabledDays(selectedDays[0], disabledDays, 'before'),
+                        after: getHourFromDisabledDays(selectedDays[0], disabledDays, 'after')
                     }}
-                    selectedHour={
-                        selectedDateTime ?
-                            dayjs(selectedDateTime).format('HH:mm') :
-                            selectedHour
-                    }
+                    selectedHour={selectedHour}
                     onHourSelected={hour => {
-                        onSelectDateTime(getDateTime(selectedDate[0], hour));
-                        setSelectedHour(hour);
+                        const newDate = getDateTime(selectedDays[0], hour);
+                        setMonth(newDate);
+                        onSelectDateTime(newDate);
                     }}
                 />
             )}

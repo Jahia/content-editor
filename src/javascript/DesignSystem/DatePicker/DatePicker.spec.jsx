@@ -8,7 +8,8 @@ describe('DatePicker', () => {
 
     beforeEach(() => {
         defaultProps = {
-            lang: 'fr'
+            lang: 'fr',
+            onSelectDateTime: jest.fn()
         };
     });
 
@@ -63,7 +64,9 @@ describe('DatePicker', () => {
         const date = new Date();
         cmp.find('DayPicker').simulate('dayClick', date);
 
-        expect(cmp.find('DayPicker').props().selectedDays).toEqual([date]);
+        date.setHours(0);
+        date.setMinutes(0);
+        expect(defaultProps.onSelectDateTime).toHaveBeenCalledWith(date);
     });
 
     it('should still support disabledDays', () => {
