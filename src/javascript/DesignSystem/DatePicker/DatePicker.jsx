@@ -52,9 +52,9 @@ const DatePickerCmp = ({
                 weekdaysLong={locale.weekdays}
                 weekdaysShort={locale.weekdaysShort}
                 firstDayOfWeek={locale.weekStart || 0}
-                captionElement={() => (
+                captionElement={({date}) => (
                     <YearMonthSelector
-                        date={month}
+                        date={date}
                         months={locale.months}
                         onChange={setMonth}
                     />
