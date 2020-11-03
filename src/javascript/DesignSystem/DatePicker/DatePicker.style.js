@@ -81,12 +81,13 @@ export const style = theme => ({
         },
 
         '.DayPicker-NavButton--prev': {
-            marginLeft: '1.5em',
+            marginLeft: '20px',
             right: 'auto',
             backgroundImage:
                 'url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSIjMDA3OUI4IiBkPSJNMTEuNjcgMy44N0w5LjkgMi4xIDAgMTJsOS45IDkuOSAxLjc3LTEuNzdMMy41NCAxMnoiLz48cGF0aCBmaWxsPSJub25lIiBkPSJNMCAwaDI0djI0SDB6Ii8+PC9zdmc+)'
         },
         '.DayPicker-NavButton--next': {
+            left: '232px',
             backgroundImage:
                 'url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSIjMDA3OUI4IiBkPSJNNS44OCA0LjEyTDEzLjc2IDEybC03Ljg4IDcuODhMOCAyMmwxMC0xMEw4IDJ6Ii8+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGgyNHYyNEgweiIvPjwvc3ZnPg==)'
         },

@@ -21,8 +21,8 @@ describe('YearAndMonthSelector', () => {
             dsGenericTheme
         ).dive();
 
-        expect(cmp.find('select').at(0).props().value).toBe(defaultProps.date.getMonth());
-        expect(cmp.find('select').at(1).props().value).toBe(defaultProps.date.getFullYear());
+        expect(cmp.find('DsSelect').at(0).props().value).toBe(defaultProps.date.getMonth());
+        expect(cmp.find('DsSelect').at(1).props().value).toBe(defaultProps.date.getFullYear());
     });
 
     it('should update month/year in date when selecting a month/year', () => {
@@ -31,23 +31,29 @@ describe('YearAndMonthSelector', () => {
             {},
             dsGenericTheme
         ).dive();
-        const monthSelector = cmp.find('select').at(0);
+        const monthSelector = cmp.find('DsSelect').at(0);
+        const yearSelector = cmp.find('DsSelect').at(1);
 
-        // Simulate change year/month
+        // Simulate change month
         monthSelector.simulate('change', {
             target: {
-                form: {
-                    month: {
-                        value: 5
-                    },
-                    year: {
-                        value: 2050
-                    }
-                }
+                name: 'month',
+                value: '5'
             }
         });
 
         // Check onChange called
-        expect(defaultProps.onChange).toHaveBeenCalledWith(new Date(2050, 5));
+        expect(defaultProps.onChange).toHaveBeenCalledWith(new Date(defaultProps.date.getFullYear(), 5));
+
+        // Simulate change year
+        yearSelector.simulate('change', {
+            target: {
+                name: 'year',
+                value: '2050'
+            }
+        });
+
+        // Check onChange called
+        expect(defaultProps.onChange).toHaveBeenCalledWith(new Date(2050, defaultProps.date.getMonth()));
     });
 });
