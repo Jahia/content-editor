@@ -56,6 +56,7 @@ const DatePickerCmp = ({
                     <YearMonthSelector
                         date={date}
                         months={locale.months}
+                        disabledDays={disabledDays}
                         onChange={setMonth}
                     />
                 )}
