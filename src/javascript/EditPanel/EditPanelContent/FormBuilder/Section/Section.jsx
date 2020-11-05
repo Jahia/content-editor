@@ -49,7 +49,7 @@ const SectionCmp = ({section, classes}) => {
                     return null;
                 }
 
-                return <FieldSet key={fieldset.displayName} fieldset={fieldset}/>;
+                return <FieldSet key={fieldset.name} fieldset={fieldset}/>;
             })}
         </section>
     );

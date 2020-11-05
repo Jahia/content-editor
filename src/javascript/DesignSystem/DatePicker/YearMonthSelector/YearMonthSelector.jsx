@@ -32,7 +32,7 @@ const calculateBeforeAfter = disabledDays => {
      * The structure of disabledDays can be as follows:
      * - [{before: new Date()}]
      * - [{after: new Date()}]
-     * - [{before: new Date()}, {before: new Date()}]
+     * - [{before: new Date()}, {after: new Date()}]
      */
     for (const day of disabledDays) {
         if (day.before) {
