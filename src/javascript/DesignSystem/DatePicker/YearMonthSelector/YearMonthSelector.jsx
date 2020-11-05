@@ -24,12 +24,36 @@ const style = () => {
     });
 };
 
-const YearMonthSelectorCmp = ({date, months, onChange, classes}) => {
+const calculateBeforeAfter = disabledDays => {
+    let before;
+    let after;
+
+    /*
+     * The structure of disabledDays can be as follows:
+     * - [{before: new Date()}]
+     * - [{after: new Date()}]
+     * - [{before: new Date()}, {after: new Date()}]
+     */
+    for (const day of disabledDays) {
+        if (day.before) {
+            before = day.before;
+        }
+
+        if (day.after) {
+            after = day.after;
+        }
+    }
+
+    return {before, after};
+};
+
+const YearMonthSelectorCmp = ({date, months, onChange, classes, disabledDays}) => {
+    const {before, after} = calculateBeforeAfter(disabledDays);
     const selectedMonth = date.getMonth();
     const selectedYear = date.getFullYear();
 
-    const fromMonth = new Date(selectedYear - 50, 0);
-    const toMonth = new Date(selectedYear + 50, 11);
+    const fromMonth = new Date(before ? before.getFullYear() : selectedYear - 50, 0);
+    const toMonth = new Date(after ? after.getFullYear() : selectedYear + 50, 11);
 
     const years = [];
     for (let i = fromMonth.getFullYear(); i <= toMonth.getFullYear(); i += 1) {
@@ -76,11 +100,16 @@ const YearMonthSelectorCmp = ({date, months, onChange, classes}) => {
     );
 };
 
+YearMonthSelectorCmp.defaultProps = {
+    disabledDays: []
+};
+
 YearMonthSelectorCmp.propTypes = {
     classes: PropTypes.object.isRequired,
     date: PropTypes.instanceOf(Date).isRequired,
     months: PropTypes.arrayOf(PropTypes.string).isRequired,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    disabledDays: PropTypes.array
 };
 
 export const YearMonthSelector = withStyles(style)(YearMonthSelectorCmp);
