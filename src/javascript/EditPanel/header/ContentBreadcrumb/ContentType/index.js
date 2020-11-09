@@ -1,3 +1,3 @@
-import ContentType from './ContentType.container';
+import ContentType from './ContentType';
 
 export default ContentType;

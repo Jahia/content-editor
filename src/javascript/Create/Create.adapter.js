@@ -32,7 +32,8 @@ export const adaptCreateFormData = (data, lang, t, contentEditorConfigContext) =
         details: {},
         technicalInfo: [],
         title: t('content-editor:label.contentEditor.create.title', {type: data.jcr.nodeTypeByName.displayName}),
-        nodeTypeName: data.jcr.nodeTypeByName.displayName
+        nodeTypeDisplayName: data.jcr.nodeTypeByName.displayName,
+        nodeTypeName: data.jcr.nodeTypeByName.name
     };
 
     adaptSystemNameField(data, formData, lang, t, data.jcr.nodeTypeByName, true, data.jcr.nodeTypeByName.moveSystemNameToTop);

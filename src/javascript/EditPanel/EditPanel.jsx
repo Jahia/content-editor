@@ -20,7 +20,7 @@ import {Constants} from '~/ContentEditor.constants';
 const EditPanelCmp = ({formik, title, notificationContext, client}) => {
     const [activeTab, setActiveTab] = useState(Constants.editPanel.editTab);
     const {t} = useTranslation();
-    const {nodeData, siteInfo, lang, uilang, mode, nodeTypeName} = useContentEditorContext();
+    const {nodeData, siteInfo, lang, uilang, mode, nodeTypeDisplayName, nodeTypeName} = useContentEditorContext();
     const {envProps} = useContentEditorConfigContext();
     const publicationInfoContext = useContext(PublicationInfoContext);
 
@@ -77,6 +77,7 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
         publicationInfoContext,
         formik,
         siteInfo,
+        nodeTypeDisplayName,
         nodeTypeName
     };
 

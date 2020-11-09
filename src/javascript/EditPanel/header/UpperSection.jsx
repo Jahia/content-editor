@@ -17,7 +17,7 @@ import ContentBreadcrumb from '~/EditPanel/header/ContentBreadcrumb';
 
 export const HeaderUpperSection = ({title, actionContext}) => {
     const {t} = useTranslation();
-    const {mode, nodeData, formik, nodeTypeName, language} = actionContext;
+    const {mode, nodeData, formik, nodeTypeDisplayName, language} = actionContext;
 
     const wipInfo = formik.values[Constants.wip.fieldName];
     const isWip = wipInfo.status === Constants.wip.status.ALL_CONTENT ||
@@ -110,7 +110,7 @@ export const HeaderUpperSection = ({title, actionContext}) => {
                 <div className={styles.headerLeft}>
                     {nodeData?.path?.startsWith('/sites') ?
                         <ContentBreadcrumb path={nodeData.path} {...actionContext}/> :
-                        <Chip label={nodeTypeName} color="accent"/>}
+                        <Chip label={nodeTypeDisplayName} color="accent"/>}
                 </div>
 
                 <div className={styles.headerChips}>
@@ -138,6 +138,6 @@ HeaderUpperSection.propTypes = {
         language: PropTypes.string.isRequired,
         nodeData: PropTypes.object.isRequired,
         formik: PropTypes.object.isRequired,
-        nodeTypeName: PropTypes.string.isRequired
+        nodeTypeDisplayName: PropTypes.string.isRequired
     }).isRequired
 };

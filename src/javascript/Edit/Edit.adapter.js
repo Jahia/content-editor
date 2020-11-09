@@ -139,7 +139,8 @@ export const adaptEditFormData = (data, lang, t) => {
         details: getDetailsValue(sections, nodeData, lang),
         technicalInfo: getTechnicalInfo(nodeData, t),
         title: nodeData.displayName,
-        nodeTypeName: nodeData.primaryNodeType.displayName
+        nodeTypeDisplayName: nodeData.primaryNodeType.displayName,
+        nodeTypeName: nodeData.primaryNodeType.name
     };
 
     adaptSystemNameField(data, formData, lang, t, nodeData.primaryNodeType, false, nodeData.moveSystemNameToTop);
