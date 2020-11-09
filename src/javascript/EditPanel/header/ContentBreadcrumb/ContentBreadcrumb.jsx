@@ -14,7 +14,7 @@ const ContentBreadcrumb = ({path, ...context}) => {
 };
 
 ContentBreadcrumb.defaultProps = {
-    path: '',
+    path: ''
 };
 
 ContentBreadcrumb.propTypes = {
