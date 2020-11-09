@@ -8,19 +8,21 @@ const ContentBreadcrumb = ({path, ...context}) => {
     return (
         <div className={styles.contentBreadcrumb} data-sel-role="breadcrumb">
             <ContentPath path={path} {...context}/>
-            <ContentType path={path}/>
+            <ContentType name={context.nodeTypeName} displayName={context.nodeTypeDisplayName}/>
         </div>
     );
 };
 
 ContentBreadcrumb.defaultProps = {
     path: '',
-    context: null
 };
 
 ContentBreadcrumb.propTypes = {
     path: PropTypes.string,
-    context: PropTypes.object
+    actionContext: PropTypes.shape({
+        nodeTypeDisplayName: PropTypes.string.isRequired,
+        nodeTypeName: PropTypes.string.isRequired
+    }).isRequired
 };
 
 export default ContentBreadcrumb;

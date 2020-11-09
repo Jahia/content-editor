@@ -96,6 +96,13 @@ describe('adaptEditFormData', () => {
         };
     });
 
+    it('should extract node type info', () => {
+        const adaptedForm = adaptEditFormData(graphqlResponse, 'fr', t);
+
+        expect(adaptedForm.nodeTypeName).toEqual('jcr:contentType');
+        expect(adaptedForm.nodeTypeDisplayName).toEqual('ContentType');
+    });
+
     it('should return initialValues', () => {
         graphqlResponse.forms.editForm.sections = [];
         const initialValues = adaptEditFormData(graphqlResponse, 'fr', t).initialValues;
