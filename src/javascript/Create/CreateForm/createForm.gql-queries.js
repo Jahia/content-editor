@@ -99,6 +99,7 @@ export const FormQuery = gql`
                     "jnt:category",
                     "jmix:mainResource"
                 ]})
+                isSystemNameReadOnlyMixin: isNodeType(type: {multi: ANY, types: ["jmix:systemNameReadonly"]})
             }
         }
        
