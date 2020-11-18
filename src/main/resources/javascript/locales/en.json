@@ -212,6 +212,7 @@
             "displayName": "System",
             "fields": {
               "systemNameDescription": "{{maxNameSize}} characters maximum. Used to build the URL for pages if no vanity URL is set in advanced options.",
+              "systemNameDescriptionReadOnly": "The system name cannot be changed.",
               "systemName": "System name",
               "syncButton": "copy title"
             }

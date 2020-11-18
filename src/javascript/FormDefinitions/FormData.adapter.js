@@ -69,7 +69,7 @@ const moveSystemNameToTheTopOfTheForm = (primaryNodeType, sections, systemNameFi
     toBeMovedToFieldSet.fields.unshift(systemNameField);
 };
 
-export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType, isCreate, canBeMovedToTop) => {
+export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType, isCreate, canBeMovedToTop, readOnlyByMixin) => {
     const optionsSection = formData.sections.find(section => section.name === 'options');
     if (optionsSection) {
         const ntBaseFieldSet = optionsSection.fieldSets.find(fieldSet => fieldSet.name === 'nt:base');
@@ -82,8 +82,9 @@ export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType
                 systemNameField.displayName = t('content-editor:label.contentEditor.section.fieldSet.system.fields.systemName');
 
                 // Add description to the field
-                systemNameField.description = t('content-editor:label.contentEditor.section.fieldSet.system.fields.systemNameDescription',
-                    {maxNameSize: window.contextJsParameters.config.maxNameSize});
+                systemNameField.description = readOnlyByMixin ?
+                    t('content-editor:label.contentEditor.section.fieldSet.system.fields.systemNameDescriptionReadOnly') :
+                    t('content-editor:label.contentEditor.section.fieldSet.system.fields.systemNameDescription', {maxNameSize: window.contextJsParameters.config.maxNameSize});
 
                 // Add max name size validation
                 systemNameField.selectorOptions = [
@@ -94,7 +95,8 @@ export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType
                 ];
 
                 // System name should be readonly for this specific nodetypes
-                if (Constants.systemName.READONLY_FOR_NODE_TYPES.includes(primaryNodeType.name) ||
+                if (readOnlyByMixin ||
+                    Constants.systemName.READONLY_FOR_NODE_TYPES.includes(primaryNodeType.name) ||
                     isContentOrFileNode(formData) ||
                     (!isCreate && !formData.nodeData.hasWritePermission) ||
                     formData.nodeData.lockedAndCannotBeEdited) {
