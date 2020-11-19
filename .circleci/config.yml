@@ -107,6 +107,90 @@ jobs:
             - ~/.m2
           key: v3-dependencies-{{ checksum "pom.xml" }}
 
+  release-prepare:
+    <<: *workdir
+    docker: # run the steps with Docker
+      - image: circleci/openjdk:8-jdk-stretch
+    resource_class: xlarge
+    steps:
+      - *attach-workspace
+      - restore_cache:
+          keys:
+            - v3-dependencies-{{ checksum "pom.xml" }}
+            # fallback to using the latest cache if no exact match is found
+            - v3-dependencies-
+      - add_ssh_keys:
+          fingerprints:
+            - "c8:ce:25:8e:38:6d:56:41:5b:a8:da:16:32:0b:14:47"
+      - run:
+          name: Add github.com to known hosts
+          command: |
+            mkdir -p ~/.ssh
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
+      - run:
+          name: Release prepare version for <<pipeline.parameters.release_version>>
+          command: |
+            git config user.email "jahia-ci@jahia.com"
+            git config user.name "Jahia CI"
+            FINAL_RELEASE_VERSION=$(echo <<pipeline.parameters.release_version>> | cut -d'-' -f 1)
+            MAJOR_VERSION=`echo $FINAL_RELEASE_VERSION | cut -d. -f1`
+            MINOR_VERSION=`echo $FINAL_RELEASE_VERSION | cut -d. -f2`
+            REVISION=`echo $FINAL_RELEASE_VERSION | cut -d. -f3`
+            NEXT_REVISION=`expr $REVISION + 1`
+            NEXT_DEVELOPMENT_VERSION="$MAJOR_VERSION.$MINOR_VERSION.$NEXT_REVISION"-SNAPSHOT
+            mvn -B -Dtag=$FINAL_RELEASE_VERSION release:prepare -DreleaseVersion=$FINAL_RELEASE_VERSION -DdevelopmentVersion="$MAJOR_VERSION.$MINOR_VERSION.$NEXT_REVISION"-SNAPSHOT -DignoreSnapshots=true
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: v3-dependencies-{{ checksum "pom.xml" }}
+      - store_artifacts:
+          path: /tmp/artifacts/
+      - *persist-workspace
+
+  update-github-release:
+    <<: *workdir
+    docker: # run the steps with Docker
+      - image: circleci/openjdk:8-jdk-stretch
+    resource_class: xlarge
+    steps:
+      - *attach-workspace
+      - add_ssh_keys:
+          fingerprints:
+            - "c8:ce:25:8e:38:6d:56:41:5b:a8:da:16:32:0b:14:47"
+      - run:
+          name: Add github.com to known hosts
+          command: |
+            mkdir -p ~/.ssh
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
+      - run:
+          name: Update github release for id << pipeline.parameters.release_id >>
+          command: |
+            FINAL_RELEASE_VERSION=$(echo <<pipeline.parameters.release_version>> | cut -d'-' -f 1)
+            curl -X PATCH \
+            -H "Accept:application/vnd.github.v3+json" \
+            -d "{\"tag_name\":\"${FINAL_RELEASE_VERSION}\", \"prerelease\": false}" -u \
+            jahia-ci:$GITHUB_API_TOKEN https://api.github.com/repos/jahia/content-editor/releases/<< pipeline.parameters.release_id >>
+
+            git push --delete origin <<pipeline.parameters.release_version>>
+      - *persist-workspace
+
+  release-perform:
+    <<: *workdir
+    docker: # run the steps with Docker
+      - image: circleci/openjdk:8-jdk-stretch
+    resource_class: xlarge
+    steps:
+      - *attach-workspace
+      - restore_cache:
+          keys:
+            - v3-dependencies-{{ checksum "pom.xml" }}
+            # fallback to using the latest cache if no exact match is found
+            - v3-dependencies-
+      - run:
+          name: Perform release
+          command: |
+            echo "release here"
+      - *persist-workspace
 # Pipeline parameter must be declared
 parameters:
   run_pull_request:
@@ -121,6 +205,15 @@ parameters:
   github_repository:
     type: string
     default: ""
+  release_id:
+    type: string
+    default: ""
+  release_version:
+    type: string
+    default: ""
+  is_release:
+    type: boolean
+    default: false
 
 workflows:
   version: 2
@@ -143,6 +236,7 @@ workflows:
           requires:
             - PR Build
   on-code-change:
+    unless: << pipeline.parameters.is_release >>
     jobs:
       - checkout:
           filters:
@@ -162,3 +256,21 @@ workflows:
           context: QA_ENVIRONMENT
           requires:
             - build
+
+  on-release:
+    when: << pipeline.parameters.is_release >>
+    jobs:
+      - checkout
+      - release-prepare:
+         context: QA_ENVIRONMENT
+         requires:
+           - checkout
+      - update-github-release:
+          context: QA_ENVIRONMENT
+          requires:
+            - release-prepare
+      - release-perform:
+          type: approval
+          context: QA_ENVIRONMENT
+          requires:
+            - update-github-release
