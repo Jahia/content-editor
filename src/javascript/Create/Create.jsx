@@ -4,7 +4,11 @@ import {Formik} from 'formik';
 import EditPanel from '~/EditPanel';
 import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
-import {useContentEditorConfigContext, useContentEditorContext, withContentEditorDataContextProvider} from '~/ContentEditor.context';
+import {
+    useContentEditorConfigContext,
+    useContentEditorContext,
+    withContentEditorDataContextProvider
+} from '~/ContentEditor.context';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 
 import {validate} from '~/Validation/validation';
@@ -53,10 +57,11 @@ const CreateCmp = ({
     return (
         <Formik
             initialValues={initialValues}
-            render={props => <EditPanel {...props} title={title}/>}
             validate={validate(sections)}
             onSubmit={handleSubmit}
-        />
+        >
+            {props => <EditPanel {...props} title={title}/>}
+        </Formik>
     );
 };
 

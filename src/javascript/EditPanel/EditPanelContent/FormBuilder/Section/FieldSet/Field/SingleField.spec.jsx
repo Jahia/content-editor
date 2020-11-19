@@ -14,7 +14,6 @@ jest.mock('react', () => {
 
 describe('Field component', () => {
     let defaultProps;
-    let defaultPropsFastField;
 
     beforeEach(() => {
         defaultProps = {
@@ -75,11 +74,6 @@ describe('Field component', () => {
             dsGenericTheme
         );
 
-        const FastFieldRender = cmp.dive().dive().props().render;
-        return shallowWithTheme(
-            <FastFieldRender {...defaultPropsFastField}/>,
-            {},
-            dsGenericTheme
-        );
+        return cmp.dive().dive().find('FastFieldInner').renderProp('children')();
     };
 });
