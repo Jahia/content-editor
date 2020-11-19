@@ -22,7 +22,7 @@ const onClick = (uuid, language, context, redirect, componentRenderer) => {
             'CreateNewContentDialog',
             CreateNewContentDialog,
             {
-                open,
+                open: true,
                 parentPath: context.path,
                 uilang: context.uilang,
                 onClose: closeDialog,
@@ -84,6 +84,8 @@ const CreateNewContent = ({contextNodePath, path, showOnNodeTypes, render: Rende
         <Render {...otherProps}
                 {...result}
                 key={result.id}
+                path={path}
+                uilang={uilang}
                 isVisible={res.checksResult}
                 onClick={ctx => onClick(nodeInfo.node.uuid, language, ctx, redirect, componentRenderer)}/>
     ));
