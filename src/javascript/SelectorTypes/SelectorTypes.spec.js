@@ -9,6 +9,31 @@ describe('Selector Types', () => {
     describe('resolveSelectorType', () => {
         registerSelectorTypes(registry);
 
+        let consoleOutput = [];
+        const mockedOutput = output => consoleOutput.push(output);
+
+        beforeEach(() => {
+            consoleOutput = [];
+            console.warn = mockedOutput;
+            console.error = mockedOutput;
+        });
+
+        it('should return Text as fallback selector type when the selector type is not provided', () => {
+            const selector = resolveSelectorType({name: 'unknownField', displayName: 'The unknown field'});
+            expect(selector.cmp).toEqual(Text);
+            expect(selector.key).toEqual('Text');
+
+            expect(consoleOutput).toEqual(['Field The unknown field has no selectorType !']);
+        });
+
+        it('should return Text as fallback selector type when the selector type is unknown', () => {
+            const selector = resolveSelectorType({selectorType: 'UnknownSelectorType'});
+            expect(selector.cmp).toEqual(Text);
+            expect(selector.key).toEqual('Text');
+
+            expect(consoleOutput).toEqual(['No renderer component for UnknownSelectorType selectorType']);
+        });
+
         it('should return the proper selector types', () => {
             const selector = resolveSelectorType({selectorType: 'Category'});
             expect(selector.cmp).toEqual(Category);
