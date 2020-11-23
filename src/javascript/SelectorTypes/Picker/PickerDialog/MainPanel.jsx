@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {withStyles, Button} from '@material-ui/core';
-import {buttonRenderer} from '@jahia/react-material';
+import {withStyles} from '@material-ui/core';
+import {Button} from '@jahia/moonstone';
+import {ButtonRenderer} from '~/actions/ActionsButtons';
 import {DisplayActions} from '@jahia/ui-extender';
+import {FileUpload} from 'mdi-material-ui';
 
 import {Typography} from '@jahia/design-system-kit';
 
@@ -28,15 +30,12 @@ const styles = theme => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: `0 ${theme.spacing.unit * 4}`,
+        padding: `0 ${theme.spacing.unit * 4} ${theme.spacing.unit * 4} ${theme.spacing.unit * 4}`,
         backgroundColor: theme.palette.ui.epsilon
     },
     actionsJahiaAction: {
         '& svg': {
             color: theme.palette.font.gamma
-        },
-        '& button span[data-jahia-link]:hover': {
-            textDecoration: 'underline'
         }
     }
 });
@@ -110,31 +109,36 @@ const MainPanelCmp = ({
             <div className={classes.actions}>
                 <Button
                     data-sel-picker-dialog-action="cancel"
-                    type="button"
-                    variant="secondary"
+                    size="big"
+                    label={t('content-editor:label.contentEditor.edit.fields.modalCancel').toUpperCase()}
                     onClick={onCloseDialog}
-                >
-                    {t('content-editor:label.contentEditor.edit.fields.modalCancel').toUpperCase()}
-                </Button>
+                />
                 <div className={classes.actionsJahiaAction}>
                     <DisplayActions path={selectedPath}
                                     target="pickerDialogAction"
                                     render={context => {
-                                        const Button = buttonRenderer({variant: 'ghost'}, true);
-                                        return <Button context={context}/>;
+                                        return (
+                                            <ButtonRenderer path={selectedPath}
+                                                            buttonIcon={<FileUpload/>}
+                                                            componentProps={{
+                                                            variant: 'ghost',
+                                                            size: 'big',
+                                                            label: t('content-editor:label.contentEditor.edit.fields.contentPicker.fileUploadBtn')
+                                                        }}
+                                                            onClick={context.onClick}
+                                                        />
+);
                                     }}
                     />
                 </div>
                 <Button
                     data-sel-picker-dialog-action="done"
                     disabled={!(!isElementSelected || initialItemHasChanged)}
-                    variant="contained"
-                    color="primary"
-                    type="button"
+                    color="accent"
+                    size="big"
+                    label={t('content-editor:label.contentEditor.edit.fields.modalDone').toUpperCase()}
                     onClick={selectElement}
-                >
-                    {t('content-editor:label.contentEditor.edit.fields.modalDone').toUpperCase()}
-                </Button>
+                />
             </div>
         </>
     );
