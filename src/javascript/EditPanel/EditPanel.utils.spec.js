@@ -126,71 +126,99 @@ describe('EditPanel utils', () => {
         {
             fieldSets: [
                 {
+                    name: 'fs1',
                     dynamic: true,
                     activated: false,
                     fields: []
                 },
                 {
+                    name: 'fs2',
                     dynamic: true,
                     activated: true,
                     fields: []
                 },
                 {
+                    name: 'fs3',
+                    activated: true,
                     fields: [
                         {
+                            nodeType: 'fs3',
                             name: 'prop',
                             requiredType: 'type',
                             multiple: false
                         },
                         {
+
+                            nodeType: 'fs3',
                             name: 'multiple',
                             requiredType: 'type',
                             multiple: true
                         },
                         {
+                            nodeType: 'fs3',
                             name: 'boolean',
                             requiredType: 'type',
                             multiple: false
                         },
                         {
+                            nodeType: 'fs3',
                             name: 'multipleBoolean',
                             requiredType: 'type',
                             multiple: true
                         },
                         {
+                            nodeType: 'fs3',
                             name: 'date',
                             requiredType: 'DATE',
                             multiple: false
                         },
                         {
+                            nodeType: 'fs3',
                             name: 'multipleDate',
                             requiredType: 'DATE',
                             multiple: true
                         },
                         {
+                            nodeType: 'fs3',
                             name: 'decimal',
                             requiredType: 'DECIMAL',
                             multiple: false
                         },
                         {
+                            nodeType: 'fs3',
                             name: 'multipleDecimal',
                             requiredType: 'DECIMAL',
                             multiple: true
                         },
                         {
+                            nodeType: 'fs3',
                             name: 'double',
                             requiredType: 'DOUBLE',
                             multiple: false
                         },
                         {
+                            nodeType: 'fs3',
                             name: 'multipleDouble',
                             requiredType: 'DOUBLE',
                             multiple: true
                         },
                         {
+                            nodeType: 'fs3',
                             name: 'readOnly',
                             requiredType: 'type',
                             readOnly: true,
+                            multiple: false
+                        }
+                    ]
+                },
+                {
+                    name: 'fs4',
+                    activated: true,
+                    fields: [
+                        {
+                            nodeType: 'fs4',
+                            name: 'prop',
+                            requiredType: 'type',
                             multiple: false
                         }
                     ]
@@ -199,13 +227,22 @@ describe('EditPanel utils', () => {
         }
     ];
 
+    const baseFieldSet = {
+        definition: {
+            declaringNodeType: {
+                name: 'fs3'
+            }
+        }
+    };
+
     const testCases = [
         {
             name: 'prop to save',
             nodeData: {
                 properties: [{
                     name: 'prop',
-                    value: 'old value'
+                    value: 'old value',
+                    ...baseFieldSet
                 }]
             },
             formValues: {
@@ -224,7 +261,8 @@ describe('EditPanel utils', () => {
             nodeData: {
                 properties: [{
                     name: 'prop',
-                    value: 'old value'
+                    value: 'old value',
+                    ...baseFieldSet
                 }]
             },
             formValues: {
@@ -238,7 +276,8 @@ describe('EditPanel utils', () => {
             nodeData: {
                 properties: [{
                     name: 'prop',
-                    value: 'old value'
+                    value: 'old value',
+                    ...baseFieldSet
                 }]
             },
             formValues: {
@@ -252,7 +291,8 @@ describe('EditPanel utils', () => {
             nodeData: {
                 properties: [{
                     name: 'prop',
-                    value: 'old value'
+                    value: 'old value',
+                    ...baseFieldSet
                 }]
             },
             formValues: {
@@ -265,7 +305,8 @@ describe('EditPanel utils', () => {
             nodeData: {
                 properties: [{
                     name: 'readOnly',
-                    value: 'old value'
+                    value: 'old value',
+                    ...baseFieldSet
                 }]
             },
             formValues: {
@@ -277,7 +318,8 @@ describe('EditPanel utils', () => {
             nodeData: {
                 properties: [{
                     name: 'multiple',
-                    values: ['old value']
+                    values: ['old value'],
+                    ...baseFieldSet
                 }]
             },
             formValues: {
@@ -295,7 +337,8 @@ describe('EditPanel utils', () => {
             nodeData: {
                 properties: [{
                     name: 'boolean',
-                    value: true
+                    value: true,
+                    ...baseFieldSet
                 }]
             },
             formValues: {
@@ -313,7 +356,8 @@ describe('EditPanel utils', () => {
             nodeData: {
                 properties: [{
                     name: 'multipleBoolean',
-                    values: [true]
+                    values: [true],
+                    ...baseFieldSet
                 }]
             },
             formValues: {
@@ -331,7 +375,8 @@ describe('EditPanel utils', () => {
             nodeData: {
                 properties: [{
                     name: 'date',
-                    value: 'oldDate'
+                    value: 'oldDate',
+                    ...baseFieldSet
                 }]
             },
             formValues: {
@@ -350,7 +395,8 @@ describe('EditPanel utils', () => {
             nodeData: {
                 properties: [{
                     name: 'multipleDate',
-                    values: ['oldDate']
+                    values: ['oldDate'],
+                    ...baseFieldSet
                 }]
             },
             formValues: {
@@ -369,7 +415,8 @@ describe('EditPanel utils', () => {
             nodeData: {
                 properties: [{
                     name: 'decimal',
-                    value: '1.2'
+                    value: '1.2',
+                    ...baseFieldSet
                 }]
             },
             formValues: {
@@ -387,7 +434,8 @@ describe('EditPanel utils', () => {
             nodeData: {
                 properties: [{
                     name: 'multipleDecimal',
-                    values: ['1.2']
+                    values: ['1.2'],
+                    ...baseFieldSet
                 }]
             },
             formValues: {
@@ -405,7 +453,8 @@ describe('EditPanel utils', () => {
             nodeData: {
                 properties: [{
                     name: 'double',
-                    value: '1.2'
+                    value: '1.2',
+                    ...baseFieldSet
                 }]
             },
             formValues: {
@@ -423,7 +472,8 @@ describe('EditPanel utils', () => {
             nodeData: {
                 properties: [{
                     name: 'multipleDouble',
-                    values: ['1.2']
+                    values: ['1.2'],
+                    ...baseFieldSet
                 }]
             },
             formValues: {
@@ -441,10 +491,12 @@ describe('EditPanel utils', () => {
             nodeData: {
                 properties: [{
                     name: 'prop',
-                    value: 'old value'
+                    value: 'old value',
+                    ...baseFieldSet
                 }, {
                     name: 'boolean',
-                    value: false
+                    value: false,
+                    ...baseFieldSet
                 }]
             },
             skipCreate: true,
@@ -464,10 +516,12 @@ describe('EditPanel utils', () => {
             nodeData: {
                 properties: [{
                     name: 'multipleDate',
-                    values: ['date1', 'date2']
+                    values: ['date1', 'date2'],
+                    ...baseFieldSet
                 }, {
                     name: 'date',
-                    value: 'single-date'
+                    value: 'single-date',
+                    ...baseFieldSet
                 }]
             },
             skipCreate: true,
@@ -482,7 +536,8 @@ describe('EditPanel utils', () => {
             nodeData: {
                 properties: [{
                     name: 'multipleDate',
-                    values: ['date1', 'date2']
+                    values: ['date1', 'date2'],
+                    ...baseFieldSet
                 }]
             },
             skipCreate: true,
@@ -500,7 +555,8 @@ describe('EditPanel utils', () => {
         {
             name: 'should return date props when date props doesnt exist originally',
             nodeData: {
-                properties: []
+                properties: [],
+                ...baseFieldSet
             },
             skipCreate: true,
             formValues: {
@@ -519,10 +575,12 @@ describe('EditPanel utils', () => {
             nodeData: {
                 properties: [{
                     name: 'multipleDate',
-                    values: ['old value']
+                    values: ['old value'],
+                    ...baseFieldSet
                 }, {
                     name: 'multipleDecimal',
-                    values: ['1.3', '1.1']
+                    values: ['1.3', '1.1'],
+                    ...baseFieldSet
                 }]
             },
             skipCreate: true,
@@ -567,9 +625,15 @@ describe('EditPanel utils', () => {
 
     describe('getValuePropName', () => {
         it('should return the good value prop name based on the field', () => {
-            expect(getValuePropName({multiple: true, requiredType: 'DATE'})).toEqual({name: 'values', option: 'NOT_ZONED_DATE'});
+            expect(getValuePropName({multiple: true, requiredType: 'DATE'})).toEqual({
+                name: 'values',
+                option: 'NOT_ZONED_DATE'
+            });
 
-            expect(getValuePropName({multiple: false, requiredType: 'DATE'})).toEqual({name: 'value', option: 'NOT_ZONED_DATE'});
+            expect(getValuePropName({multiple: false, requiredType: 'DATE'})).toEqual({
+                name: 'value',
+                option: 'NOT_ZONED_DATE'
+            });
 
             expect(getValuePropName({multiple: true, requiredType: 'type'})).toEqual({name: 'values'});
 
