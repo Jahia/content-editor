@@ -138,7 +138,7 @@
               "lastModified": "Date de modification",
               "subContents":"Sous contenus"
             },
-            "fileUploadBtn": "<span data-jahia-link>Uploader un fichier</span>",
+            "fileUploadBtn": "Uploader un fichier",
             "modalTitle": "Sélectionner un contenu",
             "modalFileTitle": "Sélectionner un fichier",
             "searchPlaceholder": "Chercher un contenu",
