@@ -138,7 +138,7 @@
               "lastModified": "Date de modification",
               "subContents":"Sous contenus"
             },
-            "fileUploadBtn": "<span data-jahia-link>Uploader un fichier</span>",
+            "fileUploadBtn": "Uploader un fichier",
             "modalTitle": "Sélectionner un contenu",
             "modalFileTitle": "Sélectionner un fichier",
             "searchPlaceholder": "Chercher un contenu",
@@ -212,6 +212,7 @@
             "displayName": "Système",
             "fields": {
               "systemNameDescription": "{{maxNameSize}} caractères maximum. Utilisé pour construire l'url des pages si aucune vanity URL n'a été définie dans les options avancées",
+              "systemNameDescriptionReadOnly": "Le nom système ne peut pas être modifié.",
               "systemName": "Nom système",
               "syncButton": "copier le titre"
             }

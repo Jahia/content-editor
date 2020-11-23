@@ -8,15 +8,6 @@ import {registry} from '@jahia/ui-extender';
 
 const FieldContainerCmp = ({field, formik, inputContext}) => {
     const selectorType = resolveSelectorType(field);
-    if (!selectorType) {
-        if (field.selectorType) {
-            console.warn(`No renderer component for ${field.selectorType} selectorType`);
-        } else {
-            console.error(`Field ${field.displayName} has no selectorType !`, field);
-        }
-
-        return <></>;
-    }
 
     const setActionContext = actionContext => {
         registry.addOrReplace('selectorType.actionContext', field.name, actionContext);

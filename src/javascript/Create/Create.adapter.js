@@ -36,7 +36,7 @@ export const adaptCreateFormData = (data, lang, t, contentEditorConfigContext) =
         nodeTypeName: data.jcr.nodeTypeByName.name
     };
 
-    adaptSystemNameField(data, formData, lang, t, data.jcr.nodeTypeByName, true, data.jcr.nodeTypeByName.moveSystemNameToTop);
+    adaptSystemNameField(data, formData, lang, t, data.jcr.nodeTypeByName, true, data.jcr.nodeTypeByName.moveSystemNameToTop, data.jcr.nodeTypeByName.isSystemNameReadOnlyMixin);
 
     if (contentEditorConfigContext.name) {
         formData.initialValues[Constants.systemName.name] = contentEditorConfigContext.name;

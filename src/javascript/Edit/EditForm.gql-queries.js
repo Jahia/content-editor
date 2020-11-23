@@ -18,6 +18,7 @@ const NodeDataFragment = {
                 isSite: isNodeType(type: {multi: ANY, types: ["jnt:virtualsite"]})
                 isPage: isNodeType(type: {multi: ANY, types: ["jnt:page"]})
                 isFolder:isNodeType(type: {multi: ANY, types: ["jnt:contentFolder", "jnt:folder"]})
+                isSystemNameReadOnlyMixin: isNodeType(type: {multi: ANY, types: ["jmix:systemNameReadonly"]})
                 moveSystemNameToTop: isNodeType(type: {multi: ANY, types: [
                     "jnt:page",
                     "jnt:contentFolder",

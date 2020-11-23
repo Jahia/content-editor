@@ -12,7 +12,7 @@ import WipInfoChip from '~/EditPanel/WorkInProgress/Chip/WipInfo.Chip';
 import {Constants} from '~/ContentEditor.constants';
 import {truncate} from '~/utils/helper';
 import styles from './UpperSection.scss';
-import {ButtonWithPastilleRenderer, ButtonRenderer} from './ActionsButtons';
+import {ButtonWithPastilleRenderer, ButtonRenderer} from '~/actions/ActionsButtons';
 import ContentBreadcrumb from '~/EditPanel/header/ContentBreadcrumb';
 
 export const HeaderUpperSection = ({title, actionContext}) => {

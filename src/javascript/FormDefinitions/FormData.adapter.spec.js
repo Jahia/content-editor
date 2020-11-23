@@ -77,6 +77,16 @@ describe('adaptFormData', () => {
         expect(formData.sections[1].fieldSets[0].fields[0].readOnly).toEqual(false);
     });
 
+    it('should set system name to readOnly when node is using mixin: jmix:systemNameReadonly and a custom message should be display as helper', () => {
+        const nodeType = {
+            name: 'jnt:news',
+            displayName: 'News'
+        };
+        adaptSystemNameField(rawData, formData, null, t, nodeType, false, false, true);
+        expect(formData.sections[1].fieldSets[0].fields[0].description).toEqual('content-editor:label.contentEditor.section.fieldSet.system.fields.systemNameDescriptionReadOnly');
+        expect(formData.sections[1].fieldSets[0].fields[0].readOnly).toEqual(true);
+    });
+
     it('should set system name to readOnly when Path is for the contents node', () => {
         const nodeType = {
             name: 'jnt:news',
