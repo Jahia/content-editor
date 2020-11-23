@@ -47,7 +47,7 @@ const Publish = ({language, values, dirty, hasPublishPermission, lockedAndCannot
                     notificationContext: renderContext.notificationContext,
                     data: {
                         nodeData: renderContext.nodeData,
-                        language: renderContext.language
+                        language: language
                     },
                     successCallback: startPublicationInfoPolling()
                 });
