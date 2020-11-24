@@ -113,7 +113,7 @@ export const validate = sections => {
         return sections.reduce((errors, section) => {
             const fieldSetErrors = section.fieldSets.reduce((fieldSetErrors, fieldset) => {
                 const fieldErrors = fieldset.fields.reduce((fieldErrors, field) => {
-                    const dynamicFieldSet = getDynamicFieldSetOfField(sections, field.name);
+                    const dynamicFieldSet = getDynamicFieldSetOfField(sections, field);
 
                     const fieldError = (
                         requiredFieldValidation(values, field, dynamicFieldSet) ||
