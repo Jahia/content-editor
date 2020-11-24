@@ -5,7 +5,6 @@ import {withStyles} from '@material-ui/core';
 import {Button} from '@jahia/moonstone';
 import {ButtonRenderer} from '~/actions/ActionsButtons';
 import {DisplayActions} from '@jahia/ui-extender';
-import {FileUpload} from 'mdi-material-ui';
 
 import {Typography} from '@jahia/design-system-kit';
 
@@ -119,11 +118,12 @@ const MainPanelCmp = ({
                                     render={context => {
                                         return (
                                             <ButtonRenderer path={selectedPath}
-                                                            buttonIcon={<FileUpload/>}
+                                                            buttonIcon={context.buttonIcon}
                                                             componentProps={{
                                                             variant: 'ghost',
                                                             size: 'big',
-                                                            label: t('content-editor:label.contentEditor.edit.fields.contentPicker.fileUploadBtn')
+                                                            label: t(context.buttonLabel),
+                                                            'data-sel-role': context.dataSelRole
                                                         }}
                                                             onClick={context.onClick}
                                                         />
