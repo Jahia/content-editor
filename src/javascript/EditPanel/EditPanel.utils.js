@@ -66,7 +66,8 @@ export function getDataToMutate({nodeData, formValues, sections, lang}) {
 
     const keys = Object.keys(formValues);
     const fieldSetFilter = fieldset => {
-        if (fieldset.activated) {
+        // We look for fieldset activated by API and fieldSets activated by the UI
+        if (fieldset.activated || mixinsToMutate.mixinsToAdd.includes(fieldset.name)) {
             if (mixinsToMutate.mixinsToDelete.includes(fieldset.name)) {
                 return false;
             }
