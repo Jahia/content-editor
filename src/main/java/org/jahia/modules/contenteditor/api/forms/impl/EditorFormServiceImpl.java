@@ -432,7 +432,9 @@ public class EditorFormServiceImpl implements EditorFormService {
             EditorFormField editorFormField = generateEditorFormField(itemDefinition, existingNode, parentNode, uiLocale, locale, rank);
 
             editorFormFields.add(editorFormField);
-            processedProperties.add(itemDefinition.getName());
+            if (!dynamic) {
+                processedProperties.add(itemDefinition.getName());
+            }
         }
 
         String displayName = nodeType.getLabel(uiLocale);
@@ -476,7 +478,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         List<EditorFormFieldValue> defaultValues = null;
         if (propertyDefinition.getDefaultValues() != null) {
             defaultValues = new ArrayList<>();
-            for (Value defaultValue : propertyDefinition.getDefaultValues()) {
+            for (Value defaultValue : propertyDefinition.getDefaultValues(locale)) {
                 try {
                     defaultValues.add(new EditorFormFieldValue(defaultValue));
                 } catch (RepositoryException e) {

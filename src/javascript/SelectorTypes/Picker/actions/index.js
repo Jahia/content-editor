@@ -52,6 +52,7 @@ export const registerPickerActions = registry => {
         buttonIcon: <FileUpload/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.fileUploadBtn',
         targets: ['pickerDialogAction:0'],
-        contentType: 'jnt:file'
+        contentType: 'jnt:file',
+        dataSelRole: 'upload'
     });
 };

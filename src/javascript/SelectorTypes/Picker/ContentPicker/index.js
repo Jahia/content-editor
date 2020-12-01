@@ -15,7 +15,7 @@ const usePickerInputData = (uuid, editorContext) => {
         }
     });
 
-    if (loading || error || !data || !uuid) {
+    if (loading || error || !data || !data.jcr || !uuid) {
         return {error, loading, notFound: Boolean(uuid)};
     }
 

@@ -62,10 +62,23 @@ export function getDataToMutate({nodeData, formValues, sections, lang}) {
         return {propsToSave, propsToDelete};
     }
 
-    const keys = Object.keys(formValues);
-    const fields = sections && getFields(sections).filter(field => !field.readOnly);
-
     const mixinsToMutate = getMixinsToMutate(nodeData, formValues, sections);
+
+    const keys = Object.keys(formValues);
+    const fieldSetFilter = fieldset => {
+        // We look for fieldset activated by API and fieldSets activated by the UI
+        if (fieldset.activated || mixinsToMutate.mixinsToAdd.includes(fieldset.name)) {
+            if (mixinsToMutate.mixinsToDelete.includes(fieldset.name)) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+
+        return true;
+    };
+
+    const fields = sections && getFields(sections, undefined, fieldSetFilter).filter(field => !field.readOnly);
 
     const _adaptDecimalValues = (fieldType, value) => {
         return fieldType === 'DECIMAL' || fieldType === 'DOUBLE' ? value && value.replace(',', '.') : value;
@@ -73,7 +86,6 @@ export function getDataToMutate({nodeData, formValues, sections, lang}) {
 
     keys.forEach(key => {
         const field = fields.find(field => field.name === key);
-
         if (field) {
             const value = formValues[key];
             if (value !== undefined && value !== null && value !== '') {
@@ -91,7 +103,7 @@ export function getDataToMutate({nodeData, formValues, sections, lang}) {
 
                 // Check if property has changed
                 if (propertyHasChanged(valueToSave, field, nodeData)) {
-                    const fieldSet = getDynamicFieldSetOfField(sections, key);
+                    const fieldSet = getDynamicFieldSetOfField(sections, field);
 
                     if (!fieldSet.name ||
                         (
@@ -156,7 +168,7 @@ export function getValuePropName(field) {
  */
 export function propertyHasChanged(currentValue, field, nodeData) {
     // Retrieve previous value
-    const propertyData = nodeData && nodeData.properties && nodeData.properties.find(prop => prop.name === field.name);
+    const propertyData = nodeData && nodeData.properties && nodeData.properties.find(prop => prop.name === field.name && prop.definition.declaringNodeType.name === field.nodeType);
     const previousValue = propertyData && propertyData[getValuePropName(field).name];
 
     // Compare previous value
@@ -214,12 +226,12 @@ export function extractRangeConstraints(constraint) {
  * @param {string} fieldName field name to search fieldSet
  * @returns {object} name of fieldSet
  */
-export function getDynamicFieldSetOfField(sections, fieldName) {
+export function getDynamicFieldSetOfField(sections, sourceField) {
     return sections.reduce((result, section) => {
         const value = section.fieldSets
             .filter(filedSet => filedSet.dynamic)
             .reduce((result, fieldSet) => {
-                if (fieldSet.fields.find(field => field.name === fieldName)) {
+                if (fieldSet.fields.find(field => field.name === sourceField.name && field.nodeType === sourceField.nodeType)) {
                     const name = fieldSet.name;
                     return {...result, name};
                 }
