@@ -143,68 +143,79 @@ describe('EditPanel utils', () => {
                     fields: [
                         {
                             nodeType: 'fs3',
-                            name: 'prop',
+                            name: 'fs3_prop',
+                            propertyName: 'prop',
                             requiredType: 'type',
                             multiple: false
                         },
                         {
 
                             nodeType: 'fs3',
-                            name: 'multiple',
+                            name: 'fs3_multiple',
+                            propertyName: 'multiple',
                             requiredType: 'type',
                             multiple: true
                         },
                         {
                             nodeType: 'fs3',
-                            name: 'boolean',
+                            name: 'fs3_boolean',
+                            propertyName: 'boolean',
                             requiredType: 'type',
                             multiple: false
                         },
                         {
                             nodeType: 'fs3',
-                            name: 'multipleBoolean',
+                            name: 'fs3_multipleBoolean',
+                            propertyName: 'multipleBoolean',
                             requiredType: 'type',
                             multiple: true
                         },
                         {
                             nodeType: 'fs3',
-                            name: 'date',
+                            name: 'fs3_date',
+                            propertyName: 'date',
                             requiredType: 'DATE',
                             multiple: false
                         },
                         {
                             nodeType: 'fs3',
-                            name: 'multipleDate',
+                            name: 'fs3_multipleDate',
+                            propertyName: 'multipleDate',
                             requiredType: 'DATE',
                             multiple: true
                         },
                         {
                             nodeType: 'fs3',
-                            name: 'decimal',
+                            name: 'fs3_decimal',
+                            propertyName: 'decimal',
                             requiredType: 'DECIMAL',
                             multiple: false
                         },
                         {
                             nodeType: 'fs3',
-                            name: 'multipleDecimal',
+                            name: 'fs3_multipleDecimal',
+                            propertyName: 'multipleDecimal',
                             requiredType: 'DECIMAL',
                             multiple: true
                         },
                         {
                             nodeType: 'fs3',
-                            name: 'double',
+                            name: 'fs3_double',
+                            propertyName: 'double',
                             requiredType: 'DOUBLE',
                             multiple: false
                         },
                         {
                             nodeType: 'fs3',
-                            name: 'multipleDouble',
+                            name: 'fs3_multipleDouble',
+                            propertyName: 'multipleDouble',
                             requiredType: 'DOUBLE',
                             multiple: true
                         },
                         {
                             nodeType: 'fs3',
-                            name: 'readOnly',
+                            name: 'fs3_readOnly',
+                            propertyName: 'readOnly',
                             requiredType: 'type',
                             readOnly: true,
                             multiple: false
@@ -217,7 +228,8 @@ describe('EditPanel utils', () => {
                     fields: [
                         {
                             nodeType: 'fs4',
-                            name: 'prop',
+                            name: 'fs4_prop',
+                            propertyName: 'prop',
                             requiredType: 'type',
                             multiple: false
                         }
@@ -246,7 +258,7 @@ describe('EditPanel utils', () => {
                 }]
             },
             formValues: {
-                prop: 'new value'
+                [sections[0].fieldSets[2].name + '_prop']: 'new value'
             },
             ExpectedPropsToSave: [{
                 language: 'fr',
@@ -266,7 +278,7 @@ describe('EditPanel utils', () => {
                 }]
             },
             formValues: {
-                prop: ''
+                [sections[0].fieldSets[2].name + '_prop']: ''
             },
             ExpectedPropsToDelete: ['prop']
         },
@@ -281,7 +293,7 @@ describe('EditPanel utils', () => {
                 }]
             },
             formValues: {
-                prop: null
+                [sections[0].fieldSets[2].name + '_prop']: null
             },
             ExpectedPropsToDelete: ['prop']
         },
@@ -296,7 +308,7 @@ describe('EditPanel utils', () => {
                 }]
             },
             formValues: {
-                prop: undefined
+                [sections[0].fieldSets[2].name + '_prop']: undefined
             },
             ExpectedPropsToDelete: ['prop']
         },
@@ -310,7 +322,7 @@ describe('EditPanel utils', () => {
                 }]
             },
             formValues: {
-                readOnly: 'new value'
+                [sections[0].fieldSets[2].name + '_readOnly']: 'new value'
             }
         },
         {
@@ -323,7 +335,7 @@ describe('EditPanel utils', () => {
                 }]
             },
             formValues: {
-                multiple: ['new value', undefined]
+                [sections[0].fieldSets[2].name + '_multiple']: ['new value', undefined]
             },
             ExpectedPropsToSave: [{
                 language: 'fr',
@@ -342,7 +354,7 @@ describe('EditPanel utils', () => {
                 }]
             },
             formValues: {
-                boolean: false
+                [sections[0].fieldSets[2].name + '_boolean']: false
             },
             ExpectedPropsToSave: [{
                 language: 'fr',
@@ -361,7 +373,7 @@ describe('EditPanel utils', () => {
                 }]
             },
             formValues: {
-                multipleBoolean: [false, undefined]
+                [sections[0].fieldSets[2].name + '_multipleBoolean']: [false, undefined]
             },
             ExpectedPropsToSave: [{
                 language: 'fr',
@@ -380,7 +392,7 @@ describe('EditPanel utils', () => {
                 }]
             },
             formValues: {
-                date: 'newDate'
+                [sections[0].fieldSets[2].name + '_date']: 'newDate'
             },
             ExpectedPropsToSave: [{
                 language: 'fr',
@@ -400,7 +412,7 @@ describe('EditPanel utils', () => {
                 }]
             },
             formValues: {
-                multipleDate: ['newDate', undefined]
+                [sections[0].fieldSets[2].name + '_multipleDate']: ['newDate', undefined]
             },
             ExpectedPropsToSave: [{
                 language: 'fr',
@@ -420,7 +432,7 @@ describe('EditPanel utils', () => {
                 }]
             },
             formValues: {
-                decimal: '1,3'
+                [sections[0].fieldSets[2].name + '_decimal']: '1,3'
             },
             ExpectedPropsToSave: [{
                 language: 'fr',
@@ -439,7 +451,7 @@ describe('EditPanel utils', () => {
                 }]
             },
             formValues: {
-                multipleDecimal: ['1,3', undefined]
+                [sections[0].fieldSets[2].name + '_multipleDecimal']: ['1,3', undefined]
             },
             ExpectedPropsToSave: [{
                 language: 'fr',
@@ -458,7 +470,7 @@ describe('EditPanel utils', () => {
                 }]
             },
             formValues: {
-                double: '1,3'
+                [sections[0].fieldSets[2].name + '_double']: '1,3'
             },
             ExpectedPropsToSave: [{
                 language: 'fr',
@@ -477,7 +489,7 @@ describe('EditPanel utils', () => {
                 }]
             },
             formValues: {
-                multipleDouble: ['1,3', undefined]
+                [sections[0].fieldSets[2].name + '_multipleDouble']: ['1,3', undefined]
             },
             ExpectedPropsToSave: [{
                 language: 'fr',
@@ -501,8 +513,8 @@ describe('EditPanel utils', () => {
             },
             skipCreate: true,
             formValues: {
-                prop: 'new value',
-                boolean: false
+                [sections[0].fieldSets[2].name + '_prop']: 'new value',
+                [sections[0].fieldSets[2].name + '_boolean']: false
             },
             ExpectedPropsToSave: [{
                 language: 'fr',
@@ -526,8 +538,8 @@ describe('EditPanel utils', () => {
             },
             skipCreate: true,
             formValues: {
-                multipleDate: ['date1', 'date2'],
-                date: 'single-date'
+                [sections[0].fieldSets[2].name + '_multipleDate']: ['date1', 'date2'],
+                [sections[0].fieldSets[2].name + '_date']: 'single-date'
             },
             ExpectedPropsToSave: []
         },
@@ -542,7 +554,7 @@ describe('EditPanel utils', () => {
             },
             skipCreate: true,
             formValues: {
-                multipleDate: ['date1', 'date2', 'date3']
+                [sections[0].fieldSets[2].name + '_multipleDate']: ['date1', 'date2', 'date3']
             },
             ExpectedPropsToSave: [{
                 language: 'fr',
@@ -560,7 +572,7 @@ describe('EditPanel utils', () => {
             },
             skipCreate: true,
             formValues: {
-                multipleDate: ['date1', 'date2', 'date3']
+                [sections[0].fieldSets[2].name + '_multipleDate']: ['date1', 'date2', 'date3']
             },
             ExpectedPropsToSave: [{
                 language: 'fr',
@@ -585,9 +597,9 @@ describe('EditPanel utils', () => {
             },
             skipCreate: true,
             formValues: {
-                multipleDate: ['new value'],
-                multipleDecimal: ['1.3', '1.1'],
-                multiple: ['new prop']
+                [sections[0].fieldSets[2].name + '_multipleDate']: ['new value'],
+                [sections[0].fieldSets[2].name + '_multipleDecimal']: ['1.3', '1.1'],
+                [sections[0].fieldSets[2].name + '_multiple']: ['new prop']
             },
             ExpectedPropsToSave: [{
                 language: 'fr',

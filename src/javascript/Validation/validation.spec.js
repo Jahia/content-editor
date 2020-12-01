@@ -2,8 +2,8 @@ import {validate} from './validation';
 
 describe('validation', () => {
     const buildSections = (fieldOptions = {}) => {
-        const buildField = name => {
-            return {name, ...fieldOptions};
+        const buildField = (name, nodeType) => {
+            return {name, nodeType, ...fieldOptions};
         };
 
         const sections = [
@@ -13,15 +13,15 @@ describe('validation', () => {
                         name: 'fieldSet1',
                         dynamic: false,
                         fields: [
-                            buildField('field1'),
-                            buildField('field2')
+                            buildField('field1', 'fieldSet1'),
+                            buildField('field2', 'fieldSet1')
                         ]
                     },
                     {
                         name: 'fieldSet2',
                         dynamic: false,
                         fields: [
-                            buildField('field3')
+                            buildField('field3', 'fieldSet2')
                         ]
                     }
                 ]
@@ -32,7 +32,7 @@ describe('validation', () => {
                         name: 'fieldSet3',
                         dynamic: false,
                         fields: [
-                            buildField('field4')
+                            buildField('field4', 'fieldSet3')
                         ]
                     }
                 ]

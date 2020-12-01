@@ -35,7 +35,8 @@ export const Constants = {
         OVERRIDE_SUBMIT_CALLBACK: 'OVERRIDE_SUBMIT_CALLBACK'
     },
     systemName: {
-        name: 'ce:systemName',
+        name: 'nt:base_ce:systemName',
+        propertyName: 'ce:systemName',
         READONLY_FOR_NODE_TYPES: [
             'jnt:group',
             'jnt:groupsFolder',

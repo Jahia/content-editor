@@ -1,4 +1,4 @@
-import {getDynamicFieldSetOfField, extractRangeConstraints} from '~/EditPanel/EditPanel.utils';
+import {getDynamicFieldSetNameOfField, extractRangeConstraints} from '~/EditPanel/EditPanel.utils';
 import dayjs from '~/date.config';
 
 const dateFieldValidation = (values, field) => {
@@ -90,10 +90,10 @@ const maxLengthFieldValidation = (values, field) => {
     }
 };
 
-const requiredFieldValidation = (values, field, dynamicFieldSet) => {
+const requiredFieldValidation = (values, field) => {
     const error = 'required';
 
-    if (!field.mandatory || (dynamicFieldSet.name && !values[dynamicFieldSet.name])) {
+    if (!field.mandatory) {
         return;
     }
 
@@ -113,10 +113,15 @@ export const validate = sections => {
         return sections.reduce((errors, section) => {
             const fieldSetErrors = section.fieldSets.reduce((fieldSetErrors, fieldset) => {
                 const fieldErrors = fieldset.fields.reduce((fieldErrors, field) => {
-                    const dynamicFieldSet = getDynamicFieldSetOfField(sections, field);
+                    // Do not validate field if it's dynamic and not enabled
+                    const dynamicFieldSetName = getDynamicFieldSetNameOfField(sections, field);
+                    if (dynamicFieldSetName && !values[dynamicFieldSetName]) {
+                        return fieldErrors;
+                    }
 
+                    // Do the validation
                     const fieldError = (
-                        requiredFieldValidation(values, field, dynamicFieldSet) ||
+                        requiredFieldValidation(values, field) ||
                         dateFieldValidation(values, field) ||
                         patternFieldValidation(values, field) ||
                         maxLengthFieldValidation(values, field)

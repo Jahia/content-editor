@@ -145,7 +145,12 @@ export const adaptSections = sections => {
 
             section.fieldSets = section.fieldSets.map(fieldSet => {
                 return {...fieldSet, fields: fieldSet.fields.map(field => {
-                    return {nodeType: fieldSet.name, ...field};
+                    return {
+                        ...field,
+                        nodeType: fieldSet.name, // Store fieldSet original inside the field, useful for testing the nodeType declaring this prop
+                        name: fieldSet.name + '_' + field.name, // Generate input name
+                        propertyName: field.name // JCR property name, used for saving
+                    };
                 })};
             });
 

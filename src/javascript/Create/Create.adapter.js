@@ -4,6 +4,8 @@ import {adaptSystemNameField} from '../FormDefinitions/FormData.adapter';
 import {Constants} from '~/ContentEditor.constants';
 import {encodeSystemName} from '~/utils';
 
+// TODO https://jira.jahia.org/browse/TECH-300
+
 const getInitialValues = (sections, nodeData) => {
     // Work in progress default value
     const wipInfo = {[Constants.wip.fieldName]: {status: nodeData.defaultWipInfo.status, languages: nodeData.defaultWipInfo.languages}};
@@ -20,10 +22,10 @@ const getInitialValues = (sections, nodeData) => {
  */
 export const adaptCreateFormData = (data, lang, t, contentEditorConfigContext) => {
     const nodeData = data.jcr.result;
-    const sections = data.forms.createForm.sections;
+    const sections = adaptSections(data.forms.createForm.sections);
 
     const formData = {
-        sections: adaptSections(sections),
+        sections: sections,
         initialValues: {
             ...getInitialValues(sections, nodeData)
         },
