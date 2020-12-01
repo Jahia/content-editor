@@ -124,12 +124,7 @@ describe('Multiple component', () => {
         );
     };
 
-    let generateFieldCmp = (arrayCmp, index) => {
-        const FieldRender = arrayCmp.find('FormikConnect(FastFieldInner)').at(index).props().render;
-        return shallowWithTheme(
-            <FieldRender/>,
-            {},
-            dsGenericTheme
-        );
+    const generateFieldCmp = (arrayCmp, index) => {
+        return arrayCmp.find('FormikConnect(FastFieldInner)').at(index).renderProp('children')();
     };
 });

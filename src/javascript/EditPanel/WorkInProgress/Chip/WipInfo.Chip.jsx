@@ -11,15 +11,15 @@ export const WipInfoChip = () => {
     const {lang} = useContentEditorContext();
 
     return (
-        <Field name={Constants.wip.fieldName}
-               render={({field}) => {
-                   return showChipHeader(field.value, lang) &&
-                       <Chip
-                           data-sel-role="wip-info-chip"
-                           label={getChipContent(field.value, lang, t)}
-                       />;
-               }}
-        />
+        <Field name={Constants.wip.fieldName}>
+            {({field}) => (
+                showChipHeader(field.value, lang) &&
+                <Chip
+                    data-sel-role="wip-info-chip"
+                    label={getChipContent(field.value, lang, t)}
+                />
+            )}
+        </Field>
     );
 };
 

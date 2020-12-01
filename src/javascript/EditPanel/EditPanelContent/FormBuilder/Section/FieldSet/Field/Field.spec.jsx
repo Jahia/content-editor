@@ -84,7 +84,7 @@ describe('Field component', () => {
                 key: 'DatePicker'
             },
             formik: {
-                error: {},
+                errors: {},
                 touched: {},
                 values: {},
                 setFieldValue: jest.fn(),
@@ -267,23 +267,5 @@ describe('Field component', () => {
         );
 
         expect(cmp.dive().debug()).toContain('errors.required');
-    });
-
-    it('should not display an error message when field not touched', () => {
-        defaultProps.formik.errors = {
-            text: 'required'
-        };
-
-        defaultProps.formik.touched = {
-            text: false
-        };
-
-        const cmp = shallowWithTheme(
-            <Field {...defaultProps}/>,
-            {},
-            dsGenericTheme
-        );
-
-        expect(cmp.dive().debug()).not.toContain('errors.required');
     });
 });

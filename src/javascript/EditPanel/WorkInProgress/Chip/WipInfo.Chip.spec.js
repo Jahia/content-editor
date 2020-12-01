@@ -36,15 +36,20 @@ describe('WipInfoChip', () => {
     });
 
     it('Should display chip when showChipHeader is true', () => {
-        const RenderWrapper = shallow(<WipInfoChip/>).props().render;
-        const wrapper = shallow(<RenderWrapper field={field}/>);
-        expect(wrapper.debug()).toContain('Chip');
+        const RenderWrapper = shallow(<WipInfoChip/>)
+            .find('Field')
+            .renderProp('children')({field});
+
+        expect(RenderWrapper.debug()).toContain('Chip');
     });
 
     it('Should display chip when showChipHeader is false', () => {
         showChip = false;
-        const RenderWrapper = shallow(<WipInfoChip/>).props().render;
-        const wrapper = shallow(<RenderWrapper field={field}/>);
-        expect(wrapper.debug()).not.toContain('Chip');
+
+        const RenderWrapper = shallow(<WipInfoChip/>)
+            .find('Field')
+            .renderProp('children')({field});
+
+        expect(RenderWrapper.debug()).not.toContain('Chip');
     });
 });
