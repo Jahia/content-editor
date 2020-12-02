@@ -265,7 +265,10 @@ describe('EditPanel utils', () => {
                 name: 'prop',
                 type: 'type',
                 value: 'new value'
-            }]
+            }],
+            expectedPropsFieldMapping: {
+                prop: sections[0].fieldSets[2].name + '_prop'
+            }
         },
         {
             name: 'empty prop',
@@ -342,7 +345,10 @@ describe('EditPanel utils', () => {
                 name: 'multiple',
                 type: 'type',
                 values: ['new value']
-            }]
+            }],
+            expectedPropsFieldMapping: {
+                multiple: sections[0].fieldSets[2].name + '_multiple'
+            }
         },
         {
             name: 'boolean prop to save',
@@ -361,7 +367,10 @@ describe('EditPanel utils', () => {
                 name: 'boolean',
                 type: 'type',
                 value: false
-            }]
+            }],
+            expectedPropsFieldMapping: {
+                boolean: sections[0].fieldSets[2].name + '_boolean'
+            }
         },
         {
             name: 'multiple boolean prop to save',
@@ -380,7 +389,10 @@ describe('EditPanel utils', () => {
                 name: 'multipleBoolean',
                 type: 'type',
                 values: [false]
-            }]
+            }],
+            expectedPropsFieldMapping: {
+                multipleBoolean: sections[0].fieldSets[2].name + '_multipleBoolean'
+            }
         },
         {
             name: 'date prop to save',
@@ -400,7 +412,10 @@ describe('EditPanel utils', () => {
                 type: 'DATE',
                 option: 'NOT_ZONED_DATE',
                 value: 'newDate'
-            }]
+            }],
+            expectedPropsFieldMapping: {
+                date: sections[0].fieldSets[2].name + '_date'
+            }
         },
         {
             name: 'multiple date prop to save',
@@ -420,7 +435,10 @@ describe('EditPanel utils', () => {
                 type: 'DATE',
                 option: 'NOT_ZONED_DATE',
                 values: ['newDate']
-            }]
+            }],
+            expectedPropsFieldMapping: {
+                multipleDate: sections[0].fieldSets[2].name + '_multipleDate'
+            }
         },
         {
             name: 'decimal prop to save',
@@ -439,7 +457,10 @@ describe('EditPanel utils', () => {
                 name: 'decimal',
                 type: 'DECIMAL',
                 value: '1.3'
-            }]
+            }],
+            expectedPropsFieldMapping: {
+                decimal: sections[0].fieldSets[2].name + '_decimal'
+            }
         },
         {
             name: 'multiple decimal prop to save',
@@ -458,7 +479,10 @@ describe('EditPanel utils', () => {
                 name: 'multipleDecimal',
                 type: 'DECIMAL',
                 values: ['1.3']
-            }]
+            }],
+            expectedPropsFieldMapping: {
+                multipleDecimal: sections[0].fieldSets[2].name + '_multipleDecimal'
+            }
         },
         {
             name: 'double prop to save',
@@ -477,7 +501,10 @@ describe('EditPanel utils', () => {
                 name: 'double',
                 type: 'DOUBLE',
                 value: '1.3'
-            }]
+            }],
+            expectedPropsFieldMapping: {
+                double: sections[0].fieldSets[2].name + '_double'
+            }
         },
         {
             name: 'multiple double prop to save',
@@ -496,7 +523,10 @@ describe('EditPanel utils', () => {
                 name: 'multipleDouble',
                 type: 'DOUBLE',
                 values: ['1.3']
-            }]
+            }],
+            expectedPropsFieldMapping: {
+                multipleDouble: sections[0].fieldSets[2].name + '_multipleDouble'
+            }
         },
         {
             name: 'filter values according to modified props only (boolean)',
@@ -521,7 +551,10 @@ describe('EditPanel utils', () => {
                 name: 'prop',
                 type: 'type',
                 value: 'new value'
-            }]
+            }],
+            expectedPropsFieldMapping: {
+                prop: sections[0].fieldSets[2].name + '_prop'
+            }
         },
         {
             name: 'should not return date props when not modified',
@@ -541,7 +574,8 @@ describe('EditPanel utils', () => {
                 [sections[0].fieldSets[2].name + '_multipleDate']: ['date1', 'date2'],
                 [sections[0].fieldSets[2].name + '_date']: 'single-date'
             },
-            ExpectedPropsToSave: []
+            ExpectedPropsToSave: [],
+            expectedPropsFieldMapping: {}
         },
         {
             name: 'should return date props when date added',
@@ -562,7 +596,10 @@ describe('EditPanel utils', () => {
                 type: 'DATE',
                 option: 'NOT_ZONED_DATE',
                 values: ['date1', 'date2', 'date3']
-            }]
+            }],
+            expectedPropsFieldMapping: {
+                multipleDate: sections[0].fieldSets[2].name + '_multipleDate'
+            }
         },
         {
             name: 'should return date props when date props doesnt exist originally',
@@ -580,7 +617,10 @@ describe('EditPanel utils', () => {
                 type: 'DATE',
                 option: 'NOT_ZONED_DATE',
                 values: ['date1', 'date2', 'date3']
-            }]
+            }],
+            expectedPropsFieldMapping: {
+                multipleDate: sections[0].fieldSets[2].name + '_multipleDate'
+            }
         },
         {
             name: 'filter values according to modified props only (array)',
@@ -612,24 +652,30 @@ describe('EditPanel utils', () => {
                 name: 'multiple',
                 type: 'type',
                 values: ['new prop']
-            }]
+            }],
+            expectedPropsFieldMapping: {
+                multipleDate: sections[0].fieldSets[2].name + '_multipleDate',
+                multiple: sections[0].fieldSets[2].name + '_multiple'
+            }
         }
     ];
 
     const lang = 'fr';
 
     describe('getDataToMutate', () => {
-        testCases.forEach(({name, nodeData, formValues, ExpectedPropsToSave, ExpectedPropsToDelete, skipCreate}) => {
+        testCases.forEach(({name, nodeData, formValues, ExpectedPropsToSave, ExpectedPropsToDelete, skipCreate, expectedPropsFieldMapping}) => {
             it(`Existing ${name}`, () => {
-                const {propsToSave, propsToDelete} = getDataToMutate({nodeData, formValues, sections, lang});
+                const {propsToSave, propsToDelete, propFieldNameMapping} = getDataToMutate({nodeData, formValues, sections, lang});
                 expect(propsToSave).toEqual(ExpectedPropsToSave || []);
                 expect(propsToDelete).toEqual(ExpectedPropsToDelete || []);
+                expect(propFieldNameMapping).toEqual(expectedPropsFieldMapping || {});
             });
             if (!skipCreate) {
                 it(`New ${name}`, () => {
-                    const {propsToSave, propsToDelete} = getDataToMutate({formValues, sections, lang});
+                    const {propsToSave, propsToDelete, propFieldNameMapping} = getDataToMutate({formValues, sections, lang});
                     expect(propsToSave).toEqual(ExpectedPropsToSave || []);
                     expect(propsToDelete).toEqual(ExpectedPropsToDelete || []);
+                    expect(propFieldNameMapping).toEqual(expectedPropsFieldMapping || {});
                 });
             }
         });

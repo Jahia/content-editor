@@ -57,6 +57,7 @@ export function getFields(sections, sectionName, fieldSetFilter) {
 export function getDataToMutate({nodeData, formValues, sections, lang}) {
     let propsToSave = [];
     let propsToDelete = [];
+    let propFieldNameMapping = {};
 
     if (!formValues) {
         return {propsToSave, propsToDelete};
@@ -104,6 +105,7 @@ export function getDataToMutate({nodeData, formValues, sections, lang}) {
                             [name]: valueToSave,
                             language: lang
                         });
+                        propFieldNameMapping[field.propertyName] = field.name;
                     }
                 }
             } else if (nodeData) {
@@ -120,7 +122,8 @@ export function getDataToMutate({nodeData, formValues, sections, lang}) {
         propsToSave,
         propsToDelete,
         mixinsToAdd: mixinsToMutate.mixinsToAdd,
-        mixinsToDelete: mixinsToMutate.mixinsToDelete
+        mixinsToDelete: mixinsToMutate.mixinsToDelete,
+        propFieldNameMapping
     };
 }
 

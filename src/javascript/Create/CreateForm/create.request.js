@@ -19,7 +19,7 @@ export const createNode = ({
         language
     }
 }) => {
-    const {propsToSave, mixinsToAdd} = getDataToMutate({formValues: values, sections, lang: language});
+    const {propsToSave, mixinsToAdd, propFieldNameMapping} = getDataToMutate({formValues: values, sections, lang: language});
     const wipInfo = values[Constants.wip.fieldName];
     let variables = adaptCreateRequest({
         uuid: nodeData.uuid,
@@ -52,6 +52,6 @@ export const createNode = ({
         client.cache.flushNodeEntryById(nodeData.uuid);
         actions.setSubmitting(false);
     }, error => {
-        onServerError(error, actions, notificationContext, t, 'content-editor:label.contentEditor.create.createButton.error');
+        onServerError(error, actions, notificationContext, t, propFieldNameMapping, 'content-editor:label.contentEditor.create.createButton.error');
     });
 };
