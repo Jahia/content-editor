@@ -17,6 +17,7 @@ export function getFullLanguageName(languages, id) {
  * @param formAndData form and values of a node
  * @returns The internationalized field and their values
  */
+// TODO: https://jira.jahia.org/browse/TECH-301 we should use the Edit.adapter.js getFieldValues, because some field require adaptation before injected in the form
 export function getI18nFieldAndValues(formAndData) {
     const {forms, jcr} = formAndData.data;
     let i18nFields = forms.editForm.sections

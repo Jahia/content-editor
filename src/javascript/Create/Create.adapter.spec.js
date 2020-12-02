@@ -5,7 +5,7 @@ describe('adaptCreate', () => {
     it('should adapt create query with system name data', () => {
         let createRequestVariables = {
             properties: [{
-                name: Constants.systemName.name,
+                name: Constants.systemName.propertyName,
                 value: 'system-name-test'
             }]
         };

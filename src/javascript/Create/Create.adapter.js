@@ -54,7 +54,7 @@ export const adaptCreateFormData = (data, lang, t, contentEditorConfigContext) =
  */
 export const adaptCreateRequest = createRequestVariables => {
     // Use system name to fill the create request variables.
-    const systemNameIndex = createRequestVariables.properties.findIndex(property => property.name === Constants.systemName.name);
+    const systemNameIndex = createRequestVariables.properties.findIndex(property => property.name === Constants.systemName.propertyName);
     if (systemNameIndex > -1) {
         createRequestVariables.name = encodeSystemName(createRequestVariables.properties[systemNameIndex].value);
 
