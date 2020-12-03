@@ -56,7 +56,7 @@ const registerChoiceListOnChange = registry => {
         onChange: (previousValue, currentValue, field, editorContext) => {
             const dependentPropertiesFields = getFields(editorContext.sections)
                 .filter(f => f.selectorOptions
-                    .find(s => s.name === 'dependentProperties' && s.value.includes(field.name))
+                    .find(s => s.name === 'dependentProperties' && s.value.includes(field.propertyName))
                 );
 
             dependentPropertiesFields.forEach(async dependentPropertiesField => {
@@ -67,13 +67,13 @@ const registerChoiceListOnChange = registry => {
                     }];
 
                     // Build Context
-                    dependentProperties.filter(dependentProperty => dependentProperty !== field.name).forEach(dependentProperty => context.push({
+                    dependentProperties.filter(dependentProperty => dependentProperty !== field.propertyName).forEach(dependentProperty => context.push({
                         key: dependentProperty,
                         value: editorContext.formik.values[dependentProperty]
                     }));
                     // Set value to empty array in case of null to be consistent with old implementation.
                     context.push({
-                        key: field.name,
+                        key: field.propertyName,
                         value: currentValue === null ? [] : currentValue
                     });
 
@@ -85,7 +85,7 @@ const registerChoiceListOnChange = registry => {
                                 parentUuid: editorContext.nodeData.parent.path,
                                 primaryNodeType: editorContext.nodeData.primaryNodeType.name,
                                 nodeType: dependentPropertiesField.nodeType,
-                                fieldName: dependentPropertiesField.name,
+                                fieldName: dependentPropertiesField.propertyName,
                                 context: context,
                                 uilang: editorContext.lang,
                                 language: editorContext.lang
