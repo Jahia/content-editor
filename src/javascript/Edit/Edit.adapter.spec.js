@@ -34,6 +34,8 @@ jest.mock('~/date.config', () => {
 const t = val => val;
 
 describe('adaptEditFormData', () => {
+    const fieldSetName = 'jcr:contentType';
+
     let graphqlResponse;
     beforeEach(() => {
         graphqlResponse = {
@@ -43,6 +45,7 @@ describe('adaptEditFormData', () => {
                         {
                             fieldSets: [
                                 {
+                                    name: fieldSetName,
                                     fields: [
                                         {
                                             name: 'field1',
@@ -68,14 +71,23 @@ describe('adaptEditFormData', () => {
                     displayName: 'nameOfNode',
                     primaryNodeType: {
                         displayName: 'ContentType',
-                        name: 'jcr:contentType',
+                        name: fieldSetName,
                         hasOrderableChildNodes: false,
                         properties: [
                             {name: 'field1', primaryNodeType: true}
                         ]
                     },
                     properties: [
-                        {name: 'field1', properties: true, value: '2019-05-07T11:33:31.056'}
+                        {
+                            name: 'field1',
+                            properties: true,
+                            value: '2019-05-07T11:33:31.056',
+                            definition: {
+                                declaringNodeType: {
+                                    name: fieldSetName
+                                }
+                            }
+                        }
                     ],
                     mixinTypes: [
                         {name: 'Mixin1'},
@@ -99,7 +111,7 @@ describe('adaptEditFormData', () => {
     it('should extract node type info', () => {
         const adaptedForm = adaptEditFormData(graphqlResponse, 'fr', t);
 
-        expect(adaptedForm.nodeTypeName).toEqual('jcr:contentType');
+        expect(adaptedForm.nodeTypeName).toEqual(fieldSetName);
         expect(adaptedForm.nodeTypeDisplayName).toEqual('ContentType');
     });
 
@@ -116,35 +128,44 @@ describe('adaptEditFormData', () => {
     it('should extract initialValues from fields', () => {
         const adaptedForm = adaptEditFormData(graphqlResponse, 'fr', t);
 
-        expect(adaptedForm.initialValues).toEqual({field1: '2019-05-07T11:33:31.056',
+        expect(adaptedForm.initialValues).toEqual({
+            [fieldSetName + '_field1']: '2019-05-07T11:33:31.056',
             'WIP::Info': {
                 status: 'DISABLED',
                 languages: []
-            }});
+            }
+        });
     });
 
     it('should extract initialValues with selectorType own logic', () => {
         graphqlResponse.forms.editForm.sections[0].fieldSets[0].fields[0].selectorType = 'Checkbox';
         const initialValues = adaptEditFormData(graphqlResponse, 'fr', t).initialValues;
 
-        expect(initialValues).toEqual({field1: false,
+        expect(initialValues).toEqual({
+            [fieldSetName + '_field1']: false,
             'WIP::Info': {
                 status: 'DISABLED',
                 languages: []
-            }});
+            }
+        });
     });
 
     it('should set values and no value as initialValue when multiple is at true', () => {
         graphqlResponse.forms.editForm.sections[0].fieldSets[0].fields[0].multiple = true;
         graphqlResponse.jcr.result.properties = [{
             name: 'field1',
+            definition: {
+                declaringNodeType: {
+                    name: fieldSetName
+                }
+            },
             values: ['value1', 'value2']
         }];
 
         const initialValues = adaptEditFormData(graphqlResponse, 'fr', t).initialValues;
 
         expect(initialValues).toEqual({
-            field1: ['value1', 'value2'],
+            [fieldSetName + '_field1']: ['value1', 'value2'],
             'WIP::Info': {
                 status: 'DISABLED',
                 languages: []
@@ -198,11 +219,18 @@ describe('adaptEditFormData', () => {
         ]);
     });
 
-    it('should adapt sections ', () => {
+    it('should hide metadata section', () => {
         graphqlResponse.forms.editForm.sections[0].name = 'metadata';
         graphqlResponse.forms.editForm.sections[0].fieldSets[0].fields[0].readOnly = true;
 
         expect(adaptEditFormData(graphqlResponse, 'fr', t).sections).toEqual([]);
+    });
+
+    it('should adapt field data', () => {
+        const adaptedSections = adaptEditFormData(graphqlResponse, 'fr', t).sections;
+        expect(adaptedSections[0].fieldSets[0].fields[0].name).toEqual('jcr:contentType_field1');
+        expect(adaptedSections[0].fieldSets[0].fields[0].propertyName).toEqual('field1');
+        expect(adaptedSections[0].fieldSets[0].fields[0].nodeType).toEqual('jcr:contentType');
     });
 
     it('should return the nodeData name when editing', () => {
@@ -232,53 +260,61 @@ describe('adaptEditFormData', () => {
         });
 
         const adaptedData = adaptEditFormData(graphqlResponse, 'fr', t);
-        expect(adaptedData.initialValues.firstField).toEqual('jcr:lastModified');
-        expect(adaptedData.initialValues.firstDirection).toEqual('desc');
-        expect(adaptedData.initialValues.secondField).toEqual(undefined);
-        expect(adaptedData.initialValues.secondDirection).toEqual(undefined);
-        expect(adaptedData.initialValues.thirdField).toEqual(undefined);
-        expect(adaptedData.initialValues.thirdDirection).toEqual(undefined);
+        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_firstField']).toEqual('jcr:lastModified');
+        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_firstDirection']).toEqual('desc');
+        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_secondField']).toEqual(undefined);
+        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_secondDirection']).toEqual(undefined);
+        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_thirdField']).toEqual(undefined);
+        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_thirdDirection']).toEqual(undefined);
     });
 
     it('Should not initialize automatic ordering values if fieldSet is enabled', () => {
+        const definition = {
+            declaringNodeType: {
+                name: Constants.automaticOrdering.mixin
+            }
+        };
         graphqlResponse.forms.editForm.sections[0].fieldSets.push({
-            name: 'jmix:orderedList',
+            name: Constants.automaticOrdering.mixin,
             dynamic: true,
             activated: true,
             displayed: true,
-            fields: [{name: 'firstField'},
+            fields: [
+                {name: 'firstField'},
                 {name: 'firstDirection'},
                 {name: 'secondField'},
                 {name: 'secondDirection'},
                 {name: 'thirdField'},
-                {name: 'thirdDirection'}]
+                {name: 'thirdDirection'}
+            ]
         });
-        graphqlResponse.jcr.result.properties.push({name: 'firstField', value: 'toto', properties: true});
-        graphqlResponse.jcr.result.properties.push({name: 'firstDirection', value: 'asc', properties: true});
-        graphqlResponse.jcr.result.properties.push({name: 'thirdField', value: 'titi', properties: true});
-        graphqlResponse.jcr.result.properties.push({name: 'thirdDirection', value: 'desc', properties: true});
+        graphqlResponse.jcr.result.properties.push({name: 'firstField', value: 'toto', properties: true, definition});
+        graphqlResponse.jcr.result.properties.push({name: 'firstDirection', value: 'asc', properties: true, definition});
+        graphqlResponse.jcr.result.properties.push({name: 'thirdField', value: 'titi', properties: true, definition});
+        graphqlResponse.jcr.result.properties.push({name: 'thirdDirection', value: 'desc', properties: true, definition});
 
         const adaptedData = adaptEditFormData(graphqlResponse, 'fr', t);
-        expect(adaptedData.initialValues.firstField).toEqual('toto');
-        expect(adaptedData.initialValues.firstDirection).toEqual('asc');
-        expect(adaptedData.initialValues.secondField).toEqual(undefined);
-        expect(adaptedData.initialValues.secondDirection).toEqual(undefined);
-        expect(adaptedData.initialValues.thirdField).toEqual('titi');
-        expect(adaptedData.initialValues.thirdDirection).toEqual('desc');
+        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_firstField']).toEqual('toto');
+        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_firstDirection']).toEqual('asc');
+        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_secondField']).toEqual(undefined);
+        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_secondDirection']).toEqual(undefined);
+        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_thirdField']).toEqual('titi');
+        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_thirdDirection']).toEqual('desc');
     });
 
     it('Should not initialize automatic ordering values if fieldSet doest exist in form definition', () => {
         const adaptedData = adaptEditFormData(graphqlResponse, 'fr', t);
-        expect(adaptedData.initialValues.firstField).toEqual(undefined);
-        expect(adaptedData.initialValues.firstDirection).toEqual(undefined);
-        expect(adaptedData.initialValues.secondField).toEqual(undefined);
-        expect(adaptedData.initialValues.secondDirection).toEqual(undefined);
-        expect(adaptedData.initialValues.thirdField).toEqual(undefined);
-        expect(adaptedData.initialValues.thirdDirection).toEqual(undefined);
+        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_firstField']).toEqual(undefined);
+        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_firstDirection']).toEqual(undefined);
+        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_secondField']).toEqual(undefined);
+        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_secondDirection']).toEqual(undefined);
+        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_thirdField']).toEqual(undefined);
+        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_thirdDirection']).toEqual(undefined);
     });
 
     it('should use default value for not enabled mixin', () => {
         graphqlResponse.forms.editForm.sections[0].fieldSets.push({
+            name: 'notEnabledFS',
             dynamic: true,
             activated: false,
             fields: [
@@ -286,6 +322,11 @@ describe('adaptEditFormData', () => {
                     name: 'field2',
                     displayName: 'labelled',
                     selectorType: 'ContentPicker',
+                    definition: {
+                        declaringNodeType: {
+                            name: 'notEnabledFS'
+                        }
+                    },
                     defaultValues: [
                         {
                             string: '2019-05-07T11:33:31.056'
@@ -295,7 +336,7 @@ describe('adaptEditFormData', () => {
             ]
         });
 
-        expect(adaptEditFormData(graphqlResponse, 'fr', t).initialValues.field2).toEqual('2019-05-07T11:33:31.056');
+        expect(adaptEditFormData(graphqlResponse, 'fr', t).initialValues.notEnabledFS_field2).toEqual('2019-05-07T11:33:31.056');
     });
 
     it('should not rename node if system name not changed', () => {
@@ -309,7 +350,7 @@ describe('adaptEditFormData', () => {
 
         let saveRequestVariables = {
             propertiesToSave: [{
-                name: Constants.systemName.name,
+                name: Constants.systemName.propertyName,
                 value: 'dummy'
             }]
         };
@@ -331,7 +372,7 @@ describe('adaptEditFormData', () => {
 
         let saveRequestVariables = {
             propertiesToSave: [{
-                name: Constants.systemName.name,
+                name: Constants.systemName.propertyName,
                 value: 'dummy_updated'
             }]
         };
@@ -354,7 +395,7 @@ describe('adaptEditFormData', () => {
 
         let saveRequestVariables = {
             propertiesToSave: [{
-                name: Constants.systemName.name,
+                name: Constants.systemName.propertyName,
                 value: 'dummy*'
             }]
         };

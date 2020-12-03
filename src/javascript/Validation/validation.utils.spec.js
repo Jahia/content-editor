@@ -83,8 +83,8 @@ describe('validation utils', () => {
 
             onServerError(error, formikActions, notificationContext, t, 'default_message');
 
-            expect(formikActions.setFieldTouched).toHaveBeenCalledWith(Constants.systemName.name, true, false);
-            expect(formikActions.setFieldError).toHaveBeenCalledWith(Constants.systemName.name, 'alreadyExist');
+            expect(formikActions.setFieldTouched).toHaveBeenCalledWith(Constants.systemName.propertyName, true, false);
+            expect(formikActions.setFieldError).toHaveBeenCalledWith(Constants.systemName.propertyName, 'alreadyExist');
             expect(formikActions.setSubmitting).toHaveBeenCalledWith(false);
         });
 
@@ -101,10 +101,10 @@ describe('validation utils', () => {
                 }]
             };
 
-            onServerError(error, formikActions, notificationContext, t, 'default_message');
+            onServerError(error, formikActions, notificationContext, t, {text: 'fuu_text'}, 'default_message');
 
-            expect(formikActions.setFieldTouched).toHaveBeenCalledWith('text', true, false);
-            expect(formikActions.setFieldError).toHaveBeenCalledWith('text', 'invalidLink_/sites/tutorials/files/Images/personalization/any content.PNG');
+            expect(formikActions.setFieldTouched).toHaveBeenCalledWith('fuu_text', true, false);
+            expect(formikActions.setFieldError).toHaveBeenCalledWith('fuu_text', 'invalidLink_/sites/tutorials/files/Images/personalization/any content.PNG');
             expect(formikActions.setSubmitting).toHaveBeenCalledWith(false);
         });
 
@@ -121,10 +121,10 @@ describe('validation utils', () => {
                 }]
             };
 
-            onServerError(error, formikActions, notificationContext, t, 'default_message');
+            onServerError(error, formikActions, notificationContext, t, {text: 'fuu_text'}, 'default_message');
 
-            expect(formikActions.setFieldTouched).toHaveBeenCalledWith('text', true, false);
-            expect(formikActions.setFieldError).toHaveBeenCalledWith('text', 'constraintViolation_Error message from backend');
+            expect(formikActions.setFieldTouched).toHaveBeenCalledWith('fuu_text', true, false);
+            expect(formikActions.setFieldError).toHaveBeenCalledWith('fuu_text', 'constraintViolation_Error message from backend');
             expect(formikActions.setSubmitting).toHaveBeenCalledWith(false);
         });
 
@@ -135,7 +135,7 @@ describe('validation utils', () => {
                 }]
             };
 
-            onServerError(error, formikActions, notificationContext, t, 'default_message');
+            onServerError(error, formikActions, notificationContext, t, {}, 'default_message');
 
             expect(formikActions.setFieldTouched).not.toHaveBeenCalled();
             expect(formikActions.setFieldError).not.toHaveBeenCalled();

@@ -15,7 +15,8 @@ export const listOrderingSection = (fieldSetReadOnly, propsReadOnly) => ({
             fields: [
                 {
                     nodeType: 'jmix:orderedList',
-                    name: 'ignoreCase',
+                    name: 'jmix:orderedList_ignoreCase',
+                    propertyName: 'ignoreCase',
                     displayName: 'Case insensitive',
                     description: '',
                     errorMessage: '',
@@ -37,7 +38,8 @@ export const listOrderingSection = (fieldSetReadOnly, propsReadOnly) => ({
                 },
                 {
                     nodeType: 'jmix:orderedList',
-                    name: 'firstField',
+                    name: 'jmix:orderedList_firstField',
+                    propertyName: 'firstField',
                     displayName: 'First field to order by',
                     description: '',
                     errorMessage: '',
@@ -141,7 +143,8 @@ export const listOrderingSection = (fieldSetReadOnly, propsReadOnly) => ({
                 },
                 {
                     nodeType: 'jmix:orderedList',
-                    name: 'firstDirection',
+                    name: 'jmix:orderedList_firstDirection',
+                    propertyName: 'firstDirection',
                     displayName: 'Order direction',
                     description: '',
                     errorMessage: '',
@@ -190,7 +193,8 @@ export const listOrderingSection = (fieldSetReadOnly, propsReadOnly) => ({
                 },
                 {
                     nodeType: 'jmix:orderedList',
-                    name: 'secondField',
+                    name: 'jmix:orderedList_secondField',
+                    propertyName: 'secondField',
                     displayName: 'Second field to order by',
                     description: '',
                     errorMessage: '',
@@ -294,7 +298,8 @@ export const listOrderingSection = (fieldSetReadOnly, propsReadOnly) => ({
                 },
                 {
                     nodeType: 'jmix:orderedList',
-                    name: 'secondDirection',
+                    name: 'jmix:orderedList_secondDirection',
+                    propertyName: 'secondDirection',
                     displayName: 'Order direction',
                     description: '',
                     errorMessage: '',
@@ -343,7 +348,8 @@ export const listOrderingSection = (fieldSetReadOnly, propsReadOnly) => ({
                 },
                 {
                     nodeType: 'jmix:orderedList',
-                    name: 'thirdField',
+                    name: 'jmix:orderedList_thirdField',
+                    propertyName: 'thirdField',
                     displayName: 'Third field to order by',
                     description: '',
                     errorMessage: '',
@@ -447,7 +453,8 @@ export const listOrderingSection = (fieldSetReadOnly, propsReadOnly) => ({
                 },
                 {
                     nodeType: 'jmix:orderedList',
-                    name: 'thirdDirection',
+                    name: 'jmix:orderedList_thirdDirection',
+                    propertyName: 'thirdDirection',
                     displayName: 'Order direction',
                     description: '',
                     errorMessage: '',

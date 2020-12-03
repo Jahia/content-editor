@@ -36,7 +36,7 @@ export function getDynamicFieldSets(sections) {
  *
  * @param {array} sections    array object contains sections
  * @param {string} sectionName string value refer to the section name
- * @param {string} fieldSetFilter optional fieldset filter
+ * @param {function} fieldSetFilter optional fieldset filter
  * @returns {array} fields    array object contains fields
  */
 export function getFields(sections, sectionName, fieldSetFilter) {
@@ -57,28 +57,15 @@ export function getFields(sections, sectionName, fieldSetFilter) {
 export function getDataToMutate({nodeData, formValues, sections, lang}) {
     let propsToSave = [];
     let propsToDelete = [];
+    let propFieldNameMapping = {};
 
     if (!formValues) {
         return {propsToSave, propsToDelete};
     }
 
-    const mixinsToMutate = getMixinsToMutate(nodeData, formValues, sections);
-
     const keys = Object.keys(formValues);
-    const fieldSetFilter = fieldset => {
-        // We look for fieldset activated by API and fieldSets activated by the UI
-        if (fieldset.activated || mixinsToMutate.mixinsToAdd.includes(fieldset.name)) {
-            if (mixinsToMutate.mixinsToDelete.includes(fieldset.name)) {
-                return false;
-            }
-        } else {
-            return false;
-        }
-
-        return true;
-    };
-
-    const fields = sections && getFields(sections, undefined, fieldSetFilter).filter(field => !field.readOnly);
+    const fields = sections && getFields(sections).filter(field => !field.readOnly);
+    const mixinsToMutate = getMixinsToMutate(nodeData, formValues, sections);
 
     const _adaptDecimalValues = (fieldType, value) => {
         return fieldType === 'DECIMAL' || fieldType === 'DOUBLE' ? value && value.replace(',', '.') : value;
@@ -103,32 +90,29 @@ export function getDataToMutate({nodeData, formValues, sections, lang}) {
 
                 // Check if property has changed
                 if (propertyHasChanged(valueToSave, field, nodeData)) {
-                    const fieldSet = getDynamicFieldSetOfField(sections, field);
+                    const fieldSetName = getDynamicFieldSetNameOfField(sections, field);
 
-                    if (!fieldSet.name ||
-                        (
-                            fieldSet.name &&
-                            (
-                                hasNodeMixin(nodeData, fieldSet.name) ||
-                                mixinsToMutate.mixinsToAdd.includes(fieldSet.name)
-                            )
-                        )
-                    ) {
+                    // Is not dynamic OR is dynamic and node have the mixin
+                    if (!fieldSetName ||
+                        (fieldSetName &&
+                            !mixinsToMutate.mixinsToDelete.includes(fieldSetName) &&
+                            (hasNodeMixin(nodeData, fieldSetName) || mixinsToMutate.mixinsToAdd.includes(fieldSetName)))) {
                         const {name, option} = getValuePropName(field);
                         propsToSave.push({
-                            name: key,
+                            name: field.propertyName,
                             type: fieldType,
                             option: option,
                             [name]: valueToSave,
                             language: lang
                         });
+                        propFieldNameMapping[field.propertyName] = field.name;
                     }
                 }
             } else if (nodeData) {
                 // Check if props existed before, to remove it
-                const nodeProperty = nodeData.properties.find(prop => prop.name === key);
+                const nodeProperty = nodeData.properties.find(prop => prop.name === field.propertyName);
                 if (nodeProperty && nodeProperty[getValuePropName(field).name]) {
-                    propsToDelete.push(key);
+                    propsToDelete.push(field.propertyName);
                 }
             }
         }
@@ -138,7 +122,8 @@ export function getDataToMutate({nodeData, formValues, sections, lang}) {
         propsToSave,
         propsToDelete,
         mixinsToAdd: mixinsToMutate.mixinsToAdd,
-        mixinsToDelete: mixinsToMutate.mixinsToDelete
+        mixinsToDelete: mixinsToMutate.mixinsToDelete,
+        propFieldNameMapping
     };
 }
 
@@ -168,7 +153,8 @@ export function getValuePropName(field) {
  */
 export function propertyHasChanged(currentValue, field, nodeData) {
     // Retrieve previous value
-    const propertyData = nodeData && nodeData.properties && nodeData.properties.find(prop => prop.name === field.name && prop.definition.declaringNodeType.name === field.nodeType);
+    // TODO https://jira.jahia.org/browse/TECH-299 we could store initialValues in CE Context so we could compare them with currentValue instead of reading nodeData here
+    const propertyData = nodeData && nodeData.properties && nodeData.properties.find(prop => prop.name === field.propertyName && prop.definition.declaringNodeType.name === field.nodeType);
     const previousValue = propertyData && propertyData[getValuePropName(field).name];
 
     // Compare previous value
@@ -220,26 +206,21 @@ export function extractRangeConstraints(constraint) {
 }
 
 /**
- * This function allow to get the fieldSet name of given field name
+ * This function allow to get the fieldSet name of given field name, only in case the fieldSet is dynamic
+ * return undefined if the fieldSet of the field is not dynamic
  *
  * @param {array} sections sections datas
- * @param {string} fieldName field name to search fieldSet
- * @returns {object} name of fieldSet
+ * @param {object} sourceField field to search fieldSet
+ * @returns {string} name of fieldSet
  */
-export function getDynamicFieldSetOfField(sections, sourceField) {
-    return sections.reduce((result, section) => {
-        const value = section.fieldSets
-            .filter(filedSet => filedSet.dynamic)
-            .reduce((result, fieldSet) => {
-                if (fieldSet.fields.find(field => field.name === sourceField.name && field.nodeType === sourceField.nodeType)) {
-                    const name = fieldSet.name;
-                    return {...result, name};
-                }
-
-                return {...result};
-            }, {});
-        return {...result, ...value};
-    }, {});
+export function getDynamicFieldSetNameOfField(sections, sourceField) {
+    for (const section of sections) {
+        for (const fieldSet of section.fieldSets) {
+            if (fieldSet.dynamic && fieldSet.name === sourceField.nodeType) {
+                return fieldSet.name;
+            }
+        }
+    }
 }
 
 /**
