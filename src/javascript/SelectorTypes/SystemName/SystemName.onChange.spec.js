@@ -11,7 +11,8 @@ describe('System name onChange', () => {
 
     beforeEach(() => {
         currentField = {
-            name: 'jcr:title'
+            name: 'toto_jcr:title',
+            propertyName: 'jcr:title'
         };
         editorContext = {
             mode: Constants.routes.baseCreateRoute,
@@ -19,6 +20,7 @@ describe('System name onChange', () => {
                 fieldSets: [{
                     fields: [{
                         name: Constants.systemName.name,
+                        propertyName: Constants.systemName.propertyName,
                         readOnly: false,
                         selectorOptions: []
                     }]
@@ -71,7 +73,8 @@ describe('System name onChange', () => {
     });
 
     it('should not sync the systemName in case the prop changed is not jcr:title', () => {
-        currentField.name = 'jcr:toto';
+        currentField.propertyName = 'jcr:toto';
+        currentField.name = 'titi_jcr:toto';
         systemNameOnChange(undefined, 'this is the jcr:title', currentField, editorContext);
         expect(editorContext.formik.setFieldValue).not.toHaveBeenCalled();
         expect(editorContext.formik.setFieldTouched).not.toHaveBeenCalled();

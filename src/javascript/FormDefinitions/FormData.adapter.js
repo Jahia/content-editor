@@ -19,7 +19,7 @@ const isContentOrFileNode = formData => {
 const checkMoveSystemNameToUnderJcrTitleField = (sections, systemNameField) => {
     for (const section of sections) {
         for (const fieldSet of section.fieldSets) {
-            const jcrTitleIndex = fieldSet.fields.findIndex(field => field.name === 'jcr:title');
+            const jcrTitleIndex = fieldSet.fields.findIndex(field => field.propertyName === 'jcr:title');
             if (jcrTitleIndex > -1) {
                 fieldSet.fields.splice(jcrTitleIndex + 1, 0, systemNameField);
                 return true;

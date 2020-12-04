@@ -4,7 +4,7 @@ const registerSystemNameOnChange = registry => {
     registry.add('selectorType.onChange', 'systemNameSync', {
         targets: ['Text'],
         onChange: (previousValue, currentValue, currentField, editorContext) => {
-            if (currentField.name === 'jcr:title' &&
+            if (currentField.propertyName === 'jcr:title' &&
                 editorContext.mode === Constants.routes.baseCreateRoute &&
                 !editorContext.name &&
                 window.contextJsParameters.config.defaultSynchronizeNameWithTitle) {
