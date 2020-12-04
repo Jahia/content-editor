@@ -42,7 +42,9 @@ export const SingleSelectCmp = ({classes, field, value, id, setActionContext, on
             }}
             input={<Input id={id} name={field.name} readOnly={readOnly}/>}
             onChange={evt => {
-                onChange(evt.target.value);
+                if (evt.target.value !== value) {
+                    onChange(evt.target.value);
+                }
             }}
         >
             {
