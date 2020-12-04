@@ -54,7 +54,8 @@ const registerChoiceListOnChange = registry => {
     registry.add('selectorType.onChange', 'dependentProperties', {
         targets: ['Choicelist'],
         onChange: (previousValue, currentValue, field, editorContext) => {
-            const dependentPropertiesFields = getFields(editorContext.sections)
+            const sections = [...editorContext.getSections()];
+            const dependentPropertiesFields = getFields(sections)
                 .filter(f => f.selectorOptions
                     .find(s => s.name === 'dependentProperties' && s.value.includes(field.propertyName))
                 );
@@ -93,8 +94,13 @@ const registerChoiceListOnChange = registry => {
                         });
                     if (data) {
                         if (data?.forms?.fieldConstraints) {
-                            dependentPropertiesField.valueConstraints = data.forms.fieldConstraints;
-                            editorContext.setSections([...editorContext.getSections()]);
+                            // As fields might have changed in the time of the await, get them back from contextSection
+                            const newSections = [...editorContext.getSections()];
+                            const newField = getFields(newSections).find(field => field.name === dependentPropertiesField.name);
+                            if (newField) {
+                                newField.valueConstraints = data.forms.fieldConstraints;
+                                editorContext.setSections(sections);
+                            }
                         }
                     }
                 }
