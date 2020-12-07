@@ -45,8 +45,8 @@ export const onServerError = (error, formikActions, notificationContext, t, prop
 
                 notificationContext.notify(t('content-editor:label.contentEditor.error.changeSystemName'), ['closeButton']);
                 notificationErrorMessage = null;
-                formikActions.setFieldError(Constants.systemName.propertyName, 'alreadyExist');
-                formikActions.setFieldTouched(Constants.systemName.propertyName, true, false);
+                formikActions.setFieldError(Constants.systemName.name, 'alreadyExist');
+                formikActions.setFieldTouched(Constants.systemName.name, true, false);
             }
 
             if (graphQLError.errorType === 'GqlConstraintViolationException' &&
