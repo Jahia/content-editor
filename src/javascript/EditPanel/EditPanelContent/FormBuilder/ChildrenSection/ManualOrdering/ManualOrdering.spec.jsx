@@ -15,7 +15,8 @@ describe('Manual ordering component', () => {
                     primaryNodeType: {
                         displayName: 'subNode1',
                         icon: '/icon'
-                    }}, {
+                    }
+                }, {
                     name: 'subNode2',
                     primaryNodeType: {
                         displayName: 'subNode2',
@@ -42,11 +43,6 @@ describe('Manual ordering component', () => {
             dsGenericTheme
         );
 
-        const FastFieldRender = cmp.props().render;
-        return shallowWithTheme(
-            <FastFieldRender {...props}/>,
-            {},
-            dsGenericTheme
-        );
+        return cmp.find('FormikConnect(FastFieldInner)').renderProp('children')(props);
     };
 });

@@ -6,6 +6,8 @@ import {adaptSystemNameField} from '../FormDefinitions/FormData.adapter';
 import {Constants} from '~/ContentEditor.constants';
 import {encodeSystemName} from '~/utils';
 
+// TODO https://jira.jahia.org/browse/TECH-300
+
 const getInitialValues = (nodeData, sections) => {
     // Retrieve dynamic fieldSets
     const dynamicFieldSets = getDynamicFieldSets(sections);
@@ -37,19 +39,19 @@ const getChildrenOrderingFields = (nodeData, dynamicFieldSets) => {
     // Using === false, because if it's undefined it's mean that the dynamic fieldset doest exist, so we do not need to init the values
     // But in case it's false, it's mean the dynamic fieldset exists but is not activated, so we need to init the values
     if (dynamicFieldSets[Constants.automaticOrdering.mixin] === false) {
-        orderingInitialValues.firstDirection = 'desc';
-        orderingInitialValues.firstField = 'jcr:lastModified';
-        orderingInitialValues.secondDirection = undefined;
-        orderingInitialValues.secondField = undefined;
-        orderingInitialValues.thirdDirection = undefined;
-        orderingInitialValues.thirdField = undefined;
+        orderingInitialValues[Constants.automaticOrdering.mixin + '_firstDirection'] = 'desc';
+        orderingInitialValues[Constants.automaticOrdering.mixin + '_firstField'] = 'jcr:lastModified';
+        orderingInitialValues[Constants.automaticOrdering.mixin + '_secondDirection'] = undefined;
+        orderingInitialValues[Constants.automaticOrdering.mixin + '_secondField'] = undefined;
+        orderingInitialValues[Constants.automaticOrdering.mixin + '_thirdDirection'] = undefined;
+        orderingInitialValues[Constants.automaticOrdering.mixin + '_thirdField'] = undefined;
     }
 
     return orderingInitialValues;
 };
 
 const getFieldValues = (field, nodeData) => {
-    const property = nodeData.properties && nodeData.properties.find(prop => prop.name === field.name);
+    const property = nodeData.properties && nodeData.properties.find(prop => prop.name === field.propertyName && prop.definition.declaringNodeType.name === field.nodeType);
     const selectorType = resolveSelectorType(field);
     const formFields = {};
 
@@ -129,14 +131,14 @@ const getTechnicalInfo = (nodeData, t) => {
 
 export const adaptEditFormData = (data, lang, t) => {
     const nodeData = data.jcr.result;
-    const sections = data.forms.editForm.sections;
+    const sections = adaptSections(data.forms.editForm.sections);
 
     const formData = {
-        sections: adaptSections(sections),
+        sections: sections,
         initialValues: getInitialValues(nodeData, sections),
         hasPreview: data.forms.editForm.hasPreview,
         nodeData,
-        details: getDetailsValue(sections, nodeData, lang),
+        details: getDetailsValue(data.forms.editForm.sections, nodeData, lang),
         technicalInfo: getTechnicalInfo(nodeData, t),
         title: nodeData.displayName,
         nodeTypeDisplayName: nodeData.primaryNodeType.displayName,
@@ -161,7 +163,7 @@ export const adaptSaveRequest = (nodeData, saveRequestVariables) => {
 
     if (saveRequestVariables.propertiesToSave) {
         // Use system name to fill the save request variables.
-        const systemNameIndex = saveRequestVariables.propertiesToSave.findIndex(property => property.name === Constants.systemName.name);
+        const systemNameIndex = saveRequestVariables.propertiesToSave.findIndex(property => property.name === Constants.systemName.propertyName);
         if (systemNameIndex > -1) {
             const newSystemName = encodeSystemName(saveRequestVariables.propertiesToSave[systemNameIndex].value);
 

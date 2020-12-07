@@ -68,12 +68,12 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, f
     const sectionsContext = useContentEditorSectionContext();
     const client = useApolloClient();
 
-    const {errors, touched, values, setFieldValue, setFieldTouched} = formik;
+    const {errors, values, setFieldValue, setFieldTouched} = formik;
     const onChangeValue = useRef(undefined);
 
     const isMultipleField = field.multiple && !selectorType.supportMultiple;
     const seleniumFieldType = isMultipleField ? `GenericMultipleField${selectorType.key}` : (field.multiple ? `Multiple${selectorType.key}` : selectorType.key);
-    const shouldDisplayErrors = touched[field.name] && errors[field.name];
+    const shouldDisplayErrors = errors[field.name];
     const splitError = shouldDisplayErrors && errors[field.name].split('_');
     const errorName = splitError && splitError.length > 0 && splitError[0];
     const errorArgs = splitError && splitError.length > 1 ? splitError.splice(1) : [];
@@ -102,7 +102,8 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, f
     const onChange = currentValue => {
         // Update formik
         setFieldValue(field.name, currentValue, true);
-        setFieldTouched(field.name, field.isMultiple ? [true] : true);
+        // Validation has been done on the setValue, no need to redo it on touch.
+        setFieldTouched(field.name, field.isMultiple ? [true] : true, false);
 
         // Trigger on changes
         registeredOnChange(currentValue);

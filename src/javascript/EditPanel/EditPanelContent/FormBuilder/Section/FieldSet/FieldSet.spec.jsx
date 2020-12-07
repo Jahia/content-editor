@@ -3,6 +3,20 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {FieldSet} from './FieldSet';
 
+jest.mock('formik', () => {
+    let formikvaluesmock;
+
+    return {
+        Form: jest.fn(),
+        connect: Cmp => props => (
+            <Cmp {...props} formik={{values: formikvaluesmock}}/>
+        ),
+        setFormikValues: values => {
+            formikvaluesmock = values;
+        }
+    };
+});
+
 describe('FieldSet component', () => {
     let props;
 
@@ -17,7 +31,9 @@ describe('FieldSet component', () => {
                     {displayName: 'field2', name: 'field2'}
                 ]
             },
-            formik: {}
+            formik: {
+                values: {}
+            }
         };
     });
 
@@ -27,7 +43,6 @@ describe('FieldSet component', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive()
             .dive();
 
@@ -40,7 +55,6 @@ describe('FieldSet component', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive()
             .dive();
 
@@ -57,7 +71,6 @@ describe('FieldSet component', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive()
             .dive();
 
@@ -76,7 +89,6 @@ describe('FieldSet component', () => {
             dsGenericTheme
         )
             .dive()
-            .dive()
             .dive();
 
         const toggleCmp = cmp.find('WithStyles(ToggleCmp)');
@@ -92,7 +104,6 @@ describe('FieldSet component', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive()
             .dive();
 

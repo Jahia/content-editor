@@ -33,6 +33,7 @@ describe('adaptFormData', () => {
                             fields: [
                                 {
                                     name: Constants.systemName.name,
+                                    propertyName: Constants.systemName.propertyName,
                                     readOnly: false,
                                     selectorOptions: [{
                                         name: 'description-i18n-key',
@@ -119,13 +120,15 @@ describe('adaptFormData', () => {
         formData.sections[0].fieldSets.unshift({
             name: 'mix:title',
             fields: [{
-                name: 'jcr:title'
+                name: 'toto_jcr:title',
+                propertyName: 'jcr:title'
             }]
         });
         adaptSystemNameField(rawData, formData, null, t, nodeType, false);
         expect(formData.sections[0].fieldSets[0].name).toEqual('mix:title');
-        expect(formData.sections[0].fieldSets[0].fields[0].name).toEqual('jcr:title');
+        expect(formData.sections[0].fieldSets[0].fields[0].propertyName).toEqual('jcr:title');
         expect(formData.sections[0].fieldSets[0].fields[1].name).toEqual(Constants.systemName.name);
+        expect(formData.sections[0].fieldSets[0].fields[1].propertyName).toEqual(Constants.systemName.propertyName);
         expect(formData.sections[1].fieldSets.length).toEqual(0);
     });
 

@@ -54,9 +54,10 @@ const registerChoiceListOnChange = registry => {
     registry.add('selectorType.onChange', 'dependentProperties', {
         targets: ['Choicelist'],
         onChange: (previousValue, currentValue, field, editorContext) => {
-            const dependentPropertiesFields = getFields(editorContext.sections)
+            const sections = [...editorContext.getSections()];
+            const dependentPropertiesFields = getFields(sections)
                 .filter(f => f.selectorOptions
-                    .find(s => s.name === 'dependentProperties' && s.value.includes(field.name))
+                    .find(s => s.name === 'dependentProperties' && s.value.includes(field.propertyName))
                 );
 
             dependentPropertiesFields.forEach(async dependentPropertiesField => {
@@ -67,13 +68,13 @@ const registerChoiceListOnChange = registry => {
                     }];
 
                     // Build Context
-                    dependentProperties.filter(dependentProperty => dependentProperty !== field.name).forEach(dependentProperty => context.push({
+                    dependentProperties.filter(dependentProperty => dependentProperty !== field.propertyName).forEach(dependentProperty => context.push({
                         key: dependentProperty,
                         value: editorContext.formik.values[dependentProperty]
                     }));
                     // Set value to empty array in case of null to be consistent with old implementation.
                     context.push({
-                        key: field.name,
+                        key: field.propertyName,
                         value: currentValue === null ? [] : currentValue
                     });
 
@@ -85,7 +86,7 @@ const registerChoiceListOnChange = registry => {
                                 parentUuid: editorContext.nodeData.parent.path,
                                 primaryNodeType: editorContext.nodeData.primaryNodeType.name,
                                 nodeType: dependentPropertiesField.nodeType,
-                                fieldName: dependentPropertiesField.name,
+                                fieldName: dependentPropertiesField.propertyName,
                                 context: context,
                                 uilang: editorContext.lang,
                                 language: editorContext.lang
@@ -93,8 +94,13 @@ const registerChoiceListOnChange = registry => {
                         });
                     if (data) {
                         if (data?.forms?.fieldConstraints) {
-                            dependentPropertiesField.valueConstraints = data.forms.fieldConstraints;
-                            editorContext.setSections([...editorContext.getSections()]);
+                            // As fields might have changed in the time of the await, get them back from contextSection
+                            const newSections = [...editorContext.getSections()];
+                            const newField = getFields(newSections).find(field => field.name === dependentPropertiesField.name);
+                            if (newField) {
+                                newField.valueConstraints = data.forms.fieldConstraints;
+                                editorContext.setSections(sections);
+                            }
                         }
                     }
                 }

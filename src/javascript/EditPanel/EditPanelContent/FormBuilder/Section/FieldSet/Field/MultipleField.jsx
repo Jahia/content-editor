@@ -58,22 +58,22 @@ export const MultipleFieldCmp = ({classes, editorContext, inputContext, field, o
                              data-sel-content-editor-multiple-generic-field={name}
                              data-sel-content-editor-field-readonly={field.readOnly}
                         >
-                            <FastField shouldUpdate={() => true}
-                                       render={() => {
-                                           return (
-                                               <FieldComponent field={field}
-                                                               value={value}
-                                                               values={values}
-                                                               id={name}
-                                                               editorContext={editorContext}
-                                                               setActionContext={inputContext.setActionContext}
-                                                               onChange={newData => {
-                                                                   multipleFieldOnChange(index, newData);
-                                                               }}
-                                               />
-                                           );
-                                       }}
-                            />
+                            <FastField shouldUpdate={() => true}>
+                                {() => {
+                                    return (
+                                        <FieldComponent field={field}
+                                                        value={value}
+                                                        values={values}
+                                                        id={name}
+                                                        editorContext={editorContext}
+                                                        setActionContext={inputContext.setActionContext}
+                                                        onChange={newData => {
+                                                            multipleFieldOnChange(index, newData);
+                                                        }}
+                                        />
+                                    );
+                                }}
+                            </FastField>
 
                             {!field.readOnly &&
                             <IconButton variant="ghost"
@@ -88,13 +88,13 @@ export const MultipleFieldCmp = ({classes, editorContext, inputContext, field, o
             )}
 
             {!field.readOnly &&
-                <Button className={classes.addButton}
-                        data-sel-action="addField"
-                        variant="outlined"
-                        size="big"
-                        label={t('content-editor:label.contentEditor.edit.fields.actions.add')}
-                        onClick={() => onFieldAdd()}
-                />}
+            <Button className={classes.addButton}
+                    data-sel-action="addField"
+                    variant="outlined"
+                    size="big"
+                    label={t('content-editor:label.contentEditor.edit.fields.actions.add')}
+                    onClick={() => onFieldAdd()}
+            />}
         </>
     );
 };

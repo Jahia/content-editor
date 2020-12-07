@@ -82,6 +82,6 @@ export const saveNode = ({
         client.cache.flushNodeEntryById(nodeData.uuid);
         refetchPreview(getPreviewPath(mutateNode.node), language);
     }, error => {
-        onServerError(error, actions, notificationContext, t, 'content-editor:label.contentEditor.edit.action.save.error');
+        onServerError(error, actions, notificationContext, t, dataToMutate.propFieldNameMapping, 'content-editor:label.contentEditor.edit.action.save.error');
     });
 };

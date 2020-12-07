@@ -84,7 +84,7 @@ describe('Field component', () => {
                 key: 'DatePicker'
             },
             formik: {
-                error: {},
+                errors: {},
                 touched: {},
                 values: {},
                 setFieldValue: jest.fn(),
@@ -141,7 +141,7 @@ describe('Field component', () => {
         expect(result[0]).toBe(onChangePreviousValue);
         expect(result[1]).toBe(onChangeCurrentValue);
         expect(defaultProps.formik.setFieldValue).toHaveBeenCalledWith('text', onChangeCurrentValue, true);
-        expect(defaultProps.formik.setFieldTouched).toHaveBeenCalledWith('text', true);
+        expect(defaultProps.formik.setFieldTouched).toHaveBeenCalledWith('text', true, false);
     });
 
     it('should render a "Shared in all languages" when field is not i18n and site have multiple languages', () => {
@@ -267,23 +267,5 @@ describe('Field component', () => {
         );
 
         expect(cmp.dive().debug()).toContain('errors.required');
-    });
-
-    it('should not display an error message when field not touched', () => {
-        defaultProps.formik.errors = {
-            text: 'required'
-        };
-
-        defaultProps.formik.touched = {
-            text: false
-        };
-
-        const cmp = shallowWithTheme(
-            <Field {...defaultProps}/>,
-            {},
-            dsGenericTheme
-        );
-
-        expect(cmp.dive().debug()).not.toContain('errors.required');
     });
 });

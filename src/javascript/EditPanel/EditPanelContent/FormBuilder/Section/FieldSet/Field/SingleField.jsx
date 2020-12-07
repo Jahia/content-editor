@@ -8,20 +8,20 @@ export const SingleFieldCmp = ({inputContext, editorContext, field, formik, onCh
     const FieldComponent = inputContext.fieldComponent;
 
     return (
-        <FastField shouldUpdate={() => true}
-                   render={() => {
-                       return (
-                           <FieldComponent field={field}
-                                           id={field.name}
-                                           value={formik.values[field.name]}
-                                           values={formik.values}
-                                           editorContext={editorContext}
-                                           setActionContext={inputContext.setActionContext}
-                                           onChange={onChange}
-                           />
-                       );
-                   }}
-        />
+        <FastField shouldUpdate={() => true}>
+            {() => {
+                return (
+                    <FieldComponent field={field}
+                                    id={field.name}
+                                    value={formik.values[field.name]}
+                                    values={formik.values}
+                                    editorContext={editorContext}
+                                    setActionContext={inputContext.setActionContext}
+                                    onChange={onChange}
+                    />
+                );
+            }}
+        </FastField>
     );
 };
 

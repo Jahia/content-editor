@@ -32,7 +32,7 @@ export const validateForm = async ({setTouched, validateForm}, componentRenderer
     return true;
 };
 
-export const onServerError = (error, formikActions, notificationContext, t, defaultErrorMessage) => {
+export const onServerError = (error, formikActions, notificationContext, t, propFieldNameMapping, defaultErrorMessage) => {
     // Set submitting false
     formikActions.setSubmitting(false);
 
@@ -45,8 +45,8 @@ export const onServerError = (error, formikActions, notificationContext, t, defa
 
                 notificationContext.notify(t('content-editor:label.contentEditor.error.changeSystemName'), ['closeButton']);
                 notificationErrorMessage = null;
-                formikActions.setFieldError(Constants.systemName.name, 'alreadyExist');
-                formikActions.setFieldTouched(Constants.systemName.name, true, false);
+                formikActions.setFieldError(Constants.systemName.propertyName, 'alreadyExist');
+                formikActions.setFieldTouched(Constants.systemName.propertyName, true, false);
             }
 
             if (graphQLError.errorType === 'GqlConstraintViolationException' &&
@@ -57,16 +57,19 @@ export const onServerError = (error, formikActions, notificationContext, t, defa
                 for (const constraintViolation of graphQLError.extensions.constraintViolations) {
                     console.log('Constraint violation error: ', constraintViolation);
                     if (constraintViolation.propertyName) {
-                        if (constraintViolation.constraintMessage.startsWith('Invalid link')) {
-                            // Custom handling for invalid link error
-                            formikActions.setFieldError(constraintViolation.propertyName, 'invalidLink_' + constraintViolation.constraintMessage.substring('Invalid link'.length));
-                        } else {
-                            // Default constraint violation handling
-                            formikActions.setFieldError(constraintViolation.propertyName, 'constraintViolation_' + constraintViolation.constraintMessage);
-                        }
+                        const fieldName = propFieldNameMapping[constraintViolation.propertyName];
+                        if (fieldName) {
+                            if (constraintViolation.constraintMessage.startsWith('Invalid link')) {
+                                // Custom handling for invalid link error
+                                formikActions.setFieldError(fieldName, 'invalidLink_' + constraintViolation.constraintMessage.substring('Invalid link'.length));
+                            } else {
+                                // Default constraint violation handling
+                                formikActions.setFieldError(fieldName, 'constraintViolation_' + constraintViolation.constraintMessage);
+                            }
 
-                        formikActions.setFieldTouched(constraintViolation.propertyName, true, false);
-                        notificationErrorMessage = t('content-editor:label.contentEditor.error.constraintViolations');
+                            formikActions.setFieldTouched(fieldName, true, false);
+                            notificationErrorMessage = t('content-editor:label.contentEditor.error.constraintViolations');
+                        }
                     }
                 }
             }

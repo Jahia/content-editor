@@ -9,6 +9,7 @@ import {
     adaptSectionToDisplayableRows,
     getDisplayedRows
 } from './AutomaticOrdering.utils';
+import {Constants} from '~/ContentEditor.constants';
 
 jest.mock('~/ContentEditor.context', () => {
     let contextmock;
@@ -50,12 +51,12 @@ describe('Automatic ordering component', () => {
         props = {
             formik: {
                 values: {
-                    firstField: undefined,
-                    secondField: undefined,
-                    thirdField: undefined,
-                    firstDirection: 'asc',
-                    secondDirection: 'asc',
-                    thirdDirection: 'asc'
+                    [Constants.automaticOrdering.mixin + '_firstField']: undefined,
+                    [Constants.automaticOrdering.mixin + '_secondField']: undefined,
+                    [Constants.automaticOrdering.mixin + '_thirdField']: undefined,
+                    [Constants.automaticOrdering.mixin + '_firstDirection']: 'asc',
+                    [Constants.automaticOrdering.mixin + '_secondDirection']: 'asc',
+                    [Constants.automaticOrdering.mixin + '_thirdDirection']: 'asc'
                 },
                 setFieldValue: jest.fn(),
                 setFieldTouched: jest.fn()
@@ -79,8 +80,8 @@ describe('Automatic ordering component', () => {
     it('should display rows when properties exists', () => {
         setSectionContext(listOrderingSection(false, false));
         setContext(context);
-        props.formik.values.secondField = 'jcr:created';
-        props.formik.values.thirdField = 'jcr:createdBy';
+        props.formik.values[Constants.automaticOrdering.mixin + '_secondField'] = 'jcr:created';
+        props.formik.values[Constants.automaticOrdering.mixin + '_thirdField'] = 'jcr:createdBy';
 
         const cmp = shallowWithTheme(
             <AutomaticOrderingCmp {...props}/>,
@@ -105,8 +106,8 @@ describe('Automatic ordering component', () => {
     it('should disable remove when props are readOnly', () => {
         setSectionContext(listOrderingSection(true, true));
         setContext(context);
-        props.formik.values.secondField = 'jcr:created';
-        props.formik.values.thirdField = 'jcr:createdBy';
+        props.formik.values[Constants.automaticOrdering.mixin + '_secondField'] = 'jcr:created';
+        props.formik.values[Constants.automaticOrdering.mixin + '_thirdField'] = 'jcr:createdBy';
 
         const cmp = shallowWithTheme(
             <AutomaticOrderingCmp {...props}/>,
@@ -132,25 +133,25 @@ describe('Automatic ordering component', () => {
         cmp.find('DsButton').simulate('click');
         expect(cmp.find('FieldContainer').length).toBe(4);
         expect(cmp.find('DsButton').props().disabled).toBe(false);
-        expect(props.formik.setFieldValue.mock.calls[0]).toEqual(['secondField', 'jcr:lastModified', true]);
-        expect(props.formik.setFieldValue.mock.calls[1]).toEqual(['secondDirection', 'desc', true]);
-        expect(props.formik.setFieldTouched.mock.calls[0]).toEqual(['secondField', true]);
-        expect(props.formik.setFieldTouched.mock.calls[1]).toEqual(['secondDirection', true]);
+        expect(props.formik.setFieldValue.mock.calls[0]).toEqual([Constants.automaticOrdering.mixin + '_secondField', 'jcr:lastModified', true]);
+        expect(props.formik.setFieldValue.mock.calls[1]).toEqual([Constants.automaticOrdering.mixin + '_secondDirection', 'desc', true]);
+        expect(props.formik.setFieldTouched.mock.calls[0]).toEqual([Constants.automaticOrdering.mixin + '_secondField', true]);
+        expect(props.formik.setFieldTouched.mock.calls[1]).toEqual([Constants.automaticOrdering.mixin + '_secondDirection', true]);
 
         cmp.find('DsButton').simulate('click');
         expect(cmp.find('FieldContainer').length).toBe(6);
         expect(cmp.find('DsButton').props().disabled).toBe(true);
-        expect(props.formik.setFieldValue.mock.calls[2]).toEqual(['thirdField', 'jcr:lastModified', true]);
-        expect(props.formik.setFieldValue.mock.calls[3]).toEqual(['thirdDirection', 'desc', true]);
-        expect(props.formik.setFieldTouched.mock.calls[2]).toEqual(['thirdField', true]);
-        expect(props.formik.setFieldTouched.mock.calls[3]).toEqual(['thirdDirection', true]);
+        expect(props.formik.setFieldValue.mock.calls[2]).toEqual([Constants.automaticOrdering.mixin + '_thirdField', 'jcr:lastModified', true]);
+        expect(props.formik.setFieldValue.mock.calls[3]).toEqual([Constants.automaticOrdering.mixin + '_thirdDirection', 'desc', true]);
+        expect(props.formik.setFieldTouched.mock.calls[2]).toEqual([Constants.automaticOrdering.mixin + '_thirdField', true]);
+        expect(props.formik.setFieldTouched.mock.calls[3]).toEqual([Constants.automaticOrdering.mixin + '_thirdDirection', true]);
     });
 
     it('should remove rows when click on "Remove" button', () => {
         setSectionContext(listOrderingSection(false, false));
         setContext(context);
-        props.formik.values.secondField = 'jcr:created';
-        props.formik.values.thirdField = 'jcr:createdBy';
+        props.formik.values[Constants.automaticOrdering.mixin + '_secondField'] = 'jcr:created';
+        props.formik.values[Constants.automaticOrdering.mixin + '_thirdField'] = 'jcr:createdBy';
 
         const cmp = shallowWithTheme(
             <AutomaticOrderingCmp {...props}/>,
@@ -164,10 +165,10 @@ describe('Automatic ordering component', () => {
         cmp.find('FieldContainer').at(1).props().inputContext.actionRender.props.onClick();
 
         // Verify formik is updated correctly by removed of secondField
-        expect(props.formik.setFieldValue.mock.calls[0]).toEqual(['secondField', undefined, true]);
-        expect(props.formik.setFieldValue.mock.calls[1]).toEqual(['secondDirection', undefined, true]);
-        expect(props.formik.setFieldTouched.mock.calls[0]).toEqual(['secondField', true]);
-        expect(props.formik.setFieldTouched.mock.calls[1]).toEqual(['secondDirection', true]);
+        expect(props.formik.setFieldValue.mock.calls[0]).toEqual([Constants.automaticOrdering.mixin + '_secondField', undefined, true]);
+        expect(props.formik.setFieldValue.mock.calls[1]).toEqual([Constants.automaticOrdering.mixin + '_secondDirection', undefined, true]);
+        expect(props.formik.setFieldTouched.mock.calls[0]).toEqual([Constants.automaticOrdering.mixin + '_secondField', true]);
+        expect(props.formik.setFieldTouched.mock.calls[1]).toEqual([Constants.automaticOrdering.mixin + '_secondDirection', true]);
 
         // Insure only one row display left
         expect(cmp.find('FieldContainer').length).toBe(2);
@@ -181,58 +182,58 @@ describe('Automatic ordering component', () => {
 
         // Should transform section in displayable rows
         expect(rows.length).toBe(3);
-        expect(rows[0].propField.name).toBe('firstField');
+        expect(rows[0].propField.name).toBe(Constants.automaticOrdering.mixin + '_firstField');
         expect(rows[0].propField.displayName).toBe('content-editor:label.contentEditor.section.listAndOrdering.orderBy');
-        expect(rows[0].directionField.name).toBe('firstDirection');
+        expect(rows[0].directionField.name).toBe(Constants.automaticOrdering.mixin + '_firstDirection');
         expect(rows[0].directionField.displayName).toBe('Order direction');
 
-        expect(rows[1].propField.name).toBe('secondField');
+        expect(rows[1].propField.name).toBe(Constants.automaticOrdering.mixin + '_secondField');
         expect(rows[1].propField.displayName).toBe('content-editor:label.contentEditor.section.listAndOrdering.orderBy');
-        expect(rows[1].directionField.name).toBe('secondDirection');
+        expect(rows[1].directionField.name).toBe(Constants.automaticOrdering.mixin + '_secondDirection');
         expect(rows[1].directionField.displayName).toBe('Order direction');
 
-        expect(rows[2].propField.name).toBe('thirdField');
+        expect(rows[2].propField.name).toBe(Constants.automaticOrdering.mixin + '_thirdField');
         expect(rows[2].propField.displayName).toBe('content-editor:label.contentEditor.section.listAndOrdering.orderBy');
-        expect(rows[2].directionField.name).toBe('thirdDirection');
+        expect(rows[2].directionField.name).toBe(Constants.automaticOrdering.mixin + '_thirdDirection');
         expect(rows[2].directionField.displayName).toBe('Order direction');
 
         // Should always return one row to be displayed in case no props
         expect(getDisplayedRows(rows, {
-            firstField: undefined,
-            secondField: undefined,
-            thirdField: undefined,
-            firstDirection: 'asc',
-            secondDirection: 'asc',
-            thirdDirection: 'asc'
+            [Constants.automaticOrdering.mixin + '_firstField']: undefined,
+            [Constants.automaticOrdering.mixin + '_secondField']: undefined,
+            [Constants.automaticOrdering.mixin + '_thirdField']: undefined,
+            [Constants.automaticOrdering.mixin + '_firstDirection']: 'asc',
+            [Constants.automaticOrdering.mixin + '_secondDirection']: 'asc',
+            [Constants.automaticOrdering.mixin + '_thirdDirection']: 'asc'
         })).toStrictEqual([0]);
 
         // Should always return displayed rows in case props are set
         expect(getDisplayedRows(rows, {
-            firstField: undefined,
-            secondField: 'jcr:created',
-            thirdField: 'jcr:createdBy',
-            firstDirection: 'asc',
-            secondDirection: 'asc',
-            thirdDirection: 'asc'
+            [Constants.automaticOrdering.mixin + '_firstField']: undefined,
+            [Constants.automaticOrdering.mixin + '_secondField']: 'jcr:created',
+            [Constants.automaticOrdering.mixin + '_thirdField']: 'jcr:createdBy',
+            [Constants.automaticOrdering.mixin + '_firstDirection']: 'asc',
+            [Constants.automaticOrdering.mixin + '_secondDirection']: 'asc',
+            [Constants.automaticOrdering.mixin + '_thirdDirection']: 'asc'
         })).toStrictEqual([1, 2]);
 
         expect(getDisplayedRows(rows, {
-            firstField: 'jcr:created',
-            secondField: undefined,
-            thirdField: 'jcr:createdBy',
-            firstDirection: 'asc',
-            secondDirection: 'asc',
-            thirdDirection: 'asc'
+            [Constants.automaticOrdering.mixin + '_firstField']: 'jcr:created',
+            [Constants.automaticOrdering.mixin + '_secondField']: undefined,
+            [Constants.automaticOrdering.mixin + '_thirdField']: 'jcr:createdBy',
+            [Constants.automaticOrdering.mixin + '_firstDirection']: 'asc',
+            [Constants.automaticOrdering.mixin + '_secondDirection']: 'asc',
+            [Constants.automaticOrdering.mixin + '_thirdDirection']: 'asc'
         })).toStrictEqual([0, 2]);
 
         // In case no rows provided, no rows can be displayed
         expect(getDisplayedRows([], {
-            firstField: 'jcr:created',
-            secondField: undefined,
-            thirdField: 'jcr:createdBy',
-            firstDirection: 'asc',
-            secondDirection: 'asc',
-            thirdDirection: 'asc'
+            [Constants.automaticOrdering.mixin + '_firstField']: 'jcr:created',
+            [Constants.automaticOrdering.mixin + '_secondField']: undefined,
+            [Constants.automaticOrdering.mixin + '_thirdField']: 'jcr:createdBy',
+            [Constants.automaticOrdering.mixin + '_firstDirection']: 'asc',
+            [Constants.automaticOrdering.mixin + '_secondDirection']: 'asc',
+            [Constants.automaticOrdering.mixin + '_thirdDirection']: 'asc'
         })).toStrictEqual([]);
     });
 });
