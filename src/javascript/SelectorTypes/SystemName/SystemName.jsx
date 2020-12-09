@@ -11,6 +11,7 @@ import classes from './SystemName.scss';
 export const SystemNameCmp = ({field, value, values, id, editorContext, onChange}) => {
     const {t} = useTranslation();
 
+    const titleField = Object.keys(values).find(key => key.endsWith('_jcr:title'));
     return (
         <>
             <Text
@@ -21,7 +22,7 @@ export const SystemNameCmp = ({field, value, values, id, editorContext, onChange
                 onChange={onChange}
             />
 
-            {values['jcr:title'] !== undefined &&
+            {values[titleField] !== undefined &&
             editorContext.mode === Constants.routes.baseEditRoute &&
             <Button className={classes.syncButton}
                     data-sel-role="syncSystemName"
@@ -30,9 +31,9 @@ export const SystemNameCmp = ({field, value, values, id, editorContext, onChange
                     color="accent"
                     label={t('content-editor:label.contentEditor.section.fieldSet.system.fields.syncButton')}
                     icon={<Copy/>}
-                    isDisabled={field.readOnly || isEqualToSystemName(values['jcr:title'], value, field)}
+                    isDisabled={field.readOnly || isEqualToSystemName(values[titleField], value, field)}
                     onClick={() => {
-                        const cleanedSystemName = replaceSpecialCharacters(values['jcr:title'])?.toLowerCase();
+                        const cleanedSystemName = replaceSpecialCharacters(values[titleField])?.toLowerCase();
                         onChange(limitSystemNameIfNecessary(cleanedSystemName, field));
                     }}
             />}

@@ -51,13 +51,13 @@ describe('SystemName component', () => {
     });
 
     it('should display sync button if no jcr:title prop', () => {
-        props.values['jcr:title'] = 'toto';
+        props.values['toto_jcr:title'] = 'toto';
         const cmp = shallow(<SystemNameCmp {...props}/>).find('Button');
         expect(cmp.props().isDisabled).toBe(false);
     });
 
     it('should disable sync button if readOnly', () => {
-        props.values['jcr:title'] = 'toto';
+        props.values['toto_jcr:title'] = 'toto';
         props.field.readOnly = true;
         const cmp = shallow(<SystemNameCmp {...props}/>).find('Button');
         expect(cmp.props().isDisabled).toBe(true);
@@ -65,13 +65,13 @@ describe('SystemName component', () => {
 
     it('should disable sync button if jcr:title is the same as system name', () => {
         props.value = 'toto';
-        props.values['jcr:title'] = 'toto';
+        props.values['toto_jcr:title'] = 'toto';
         const cmp = shallow(<SystemNameCmp {...props}/>).find('Button');
         expect(cmp.props().isDisabled).toBe(true);
     });
 
     it('should sync system name when clicking on sync button', () => {
-        props.values['jcr:title'] = 'toto';
+        props.values['toto_jcr:title'] = 'toto';
         const cmp = shallow(<SystemNameCmp {...props}/>).find('Button');
         cmp.simulate('click');
         expect(props.onChange).toHaveBeenCalledWith('toto');
