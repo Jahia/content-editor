@@ -69,7 +69,7 @@ const CreateNewContent = ({contextNodePath, path, showOnNodeTypes, render: Rende
 
     if (error) {
         const message = t(
-            'content-media-manager:label.contentManager.error.queryingContent',
+            'content-editor:label.contentEditor.error.queryingContent',
             {details: error.message ? error.message : ''}
         );
         console.error(message);

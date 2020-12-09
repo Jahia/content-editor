@@ -83,8 +83,8 @@ describe('validation utils', () => {
 
             onServerError(error, formikActions, notificationContext, t, 'default_message');
 
-            expect(formikActions.setFieldTouched).toHaveBeenCalledWith(Constants.systemName.propertyName, true, false);
-            expect(formikActions.setFieldError).toHaveBeenCalledWith(Constants.systemName.propertyName, 'alreadyExist');
+            expect(formikActions.setFieldTouched).toHaveBeenCalledWith(Constants.systemName.name, true, false);
+            expect(formikActions.setFieldError).toHaveBeenCalledWith(Constants.systemName.name, 'alreadyExist');
             expect(formikActions.setSubmitting).toHaveBeenCalledWith(false);
         });
 
