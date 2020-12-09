@@ -55,7 +55,8 @@ const registerChoiceListOnChange = registry => {
         targets: ['Choicelist'],
         onChange: (previousValue, currentValue, field, editorContext) => {
             const sections = [...editorContext.getSections()];
-            const dependentPropertiesFields = getFields(sections)
+            const fields = getFields(sections);
+            const dependentPropertiesFields = fields
                 .filter(f => f.selectorOptions
                     .find(s => s.name === 'dependentProperties' && s.value.includes(field.propertyName))
                 );
@@ -68,10 +69,15 @@ const registerChoiceListOnChange = registry => {
                     }];
 
                     // Build Context
-                    dependentProperties.filter(dependentProperty => dependentProperty !== field.propertyName).forEach(dependentProperty => context.push({
-                        key: dependentProperty,
-                        value: editorContext.formik.values[dependentProperty]
-                    }));
+                    dependentProperties.filter(dependentProperty => dependentProperty !== field.propertyName).forEach(dependentProperty => {
+                        const dependentField = fields.find(field => field.propertyName === dependentProperty);
+                        if (dependentField) {
+                            context.push({
+                                key: dependentProperty,
+                                value: editorContext.formik.values[dependentField.name]
+                            });
+                        }
+                    });
                     // Set value to empty array in case of null to be consistent with old implementation.
                     context.push({
                         key: field.propertyName,
