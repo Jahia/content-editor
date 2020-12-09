@@ -66,7 +66,7 @@ describe('SingleSelect component', () => {
         const cmp = buildComp(props);
         const onChangeData = {
             value: 'Yolooo'
-        }
+        };
         cmp.simulate('change', null, onChangeData);
 
         expect(onChange).toHaveBeenCalled();
