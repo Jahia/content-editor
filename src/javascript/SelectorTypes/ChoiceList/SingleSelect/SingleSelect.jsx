@@ -9,11 +9,13 @@ const SingleSelect = ({field, value, id, setActionContext, onChange}) => {
     });
 
     const readOnly = field.readOnly || field.valueConstraints.length === 0;
-    const label = value ? field.valueConstraints.find(item => item.value.string === value).displayValue : '';
-    const dropdownData = field.valueConstraints.map(item => ({
-        label: item.displayValue,
-        value: item.value.string
-    }));
+    const label = value ? field.valueConstraints.find(item => item.value.string === value)?.displayValue : '';
+    const dropdownData = field.valueConstraints.length > 0 ?
+        field.valueConstraints.map(item => ({
+            label: item.displayValue,
+            value: item.value.string
+        })) :
+        [{label: '', value: ''}];
 
     // Reset value if constraints doesnt contains the actual value.
     if (value && field.valueConstraints.find(v => v.value.string === value) === undefined) {
@@ -30,7 +32,7 @@ const SingleSelect = ({field, value, id, setActionContext, onChange}) => {
             variant="outlined"
             size="medium"
             data={dropdownData}
-            label={label}
+            label={label || ''}
             value={value || ''}
             onChange={(evt, item) => {
                 if (item.value !== value) {
