@@ -47,7 +47,7 @@ describe('SingleSelect component', () => {
 
     it('should bind id correctly', () => {
         const cmp = buildComp(props, 'Yolooo');
-        expect(cmp.props().id).toBe(props.id);
+        expect(cmp.props().id).toBe('select-' + props.id);
     });
 
     it('should display each option given', () => {

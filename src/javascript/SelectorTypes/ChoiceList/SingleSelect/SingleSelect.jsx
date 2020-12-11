@@ -9,31 +9,34 @@ const SingleSelect = ({field, value, id, setActionContext, onChange}) => {
     });
 
     const readOnly = field.readOnly || field.valueConstraints.length === 0;
-    const label = value ? field.valueConstraints.find(item => item.value.string === value)?.displayValue : '';
+    const label = field.valueConstraints.find(item => item.value.string === value)?.displayValue || '';
     const dropdownData = field.valueConstraints.length > 0 ?
         field.valueConstraints.map(item => ({
             label: item.displayValue,
-            value: item.value.string
+            value: item.value.string,
+            attributes: {
+                'data-value': item.value.string
+            }
         })) :
         [{label: '', value: ''}];
 
     // Reset value if constraints doesnt contains the actual value.
-    if (value && field.valueConstraints.find(v => v.value.string === value) === undefined) {
+    if (field.valueConstraints.find(v => v.value.string === value) === undefined) {
         onChange(null);
     }
 
     return (
         <Dropdown
             name={field.name}
-            id={id}
+            id={'select-' + id}
             data-sel-content-editor-select-readonly={readOnly}
             isDisabled={readOnly}
             maxWidth="100%"
             variant="outlined"
             size="medium"
             data={dropdownData}
-            label={label || ''}
-            value={value || ''}
+            label={label}
+            value={value}
             onChange={(evt, item) => {
                 if (item.value !== value) {
                     onChange(item.value);
@@ -43,9 +46,13 @@ const SingleSelect = ({field, value, id, setActionContext, onChange}) => {
     );
 };
 
+SingleSelect.defaultProps = {
+    value: ''
+};
+
 SingleSelect.propTypes = {
     id: PropTypes.string.isRequired,
-    value: PropTypes.string.isRequired,
+    value: PropTypes.string,
     field: FieldPropTypes.isRequired,
     setActionContext: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired
