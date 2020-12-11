@@ -1,8 +1,7 @@
 import React from 'react';
-import {shallowWithTheme} from '@jahia/test-framework';
+import {shallow} from '@jahia/test-framework';
 
-import {dsGenericTheme} from '@jahia/design-system-kit';
-import {SingleSelectCmp} from './SingleSelect';
+import SingleSelect from './SingleSelect';
 
 let mockUseEffect = [];
 
@@ -17,8 +16,9 @@ jest.mock('react', () => {
 
 describe('SingleSelect component', () => {
     let props;
-    let onChange = jest.fn();
+    let onChange;
     beforeEach(() => {
+        onChange = jest.fn();
         props = {
             onChange,
             classes: {
@@ -43,12 +43,12 @@ describe('SingleSelect component', () => {
 
     const buildComp = (componentProps, value) => {
         componentProps.value = value;
-        return shallowWithTheme(<SingleSelectCmp {...componentProps}/>, {}, dsGenericTheme);
+        return shallow(<SingleSelect {...componentProps}/>);
     };
 
     it('should bind id correctly', () => {
         const cmp = buildComp(props, 'Yolooo');
-        expect(cmp.props().inputProps.id).toBe(props.id);
+        expect(cmp.props().id).toBe('select-' + props.id);
     });
 
     it('should display each option given', () => {
@@ -66,14 +66,14 @@ describe('SingleSelect component', () => {
     it('should select formik value', () => {
         const cmp = buildComp(props);
         const onChangeData = {
-            target: {
-                value: 'Yolooo'
-            }
+            value: 'Yolooo'
         };
-        cmp.simulate('change', onChangeData);
+        cmp.simulate('change', null, onChangeData);
 
         expect(onChange).toHaveBeenCalled();
-        expect(onChange.mock.calls[0][0]).toStrictEqual('Yolooo');
+        // OnChange has been called twice, one time at init, 2nd time when updated the value.
+        expect(onChange.mock.calls[0][0]).toStrictEqual(null);
+        expect(onChange.mock.calls[1][0]).toStrictEqual('Yolooo');
     });
 
     it('should set readOnly to true when fromdefinition is readOnly', () => {
@@ -87,8 +87,6 @@ describe('SingleSelect component', () => {
     const testReadOnly = function (readOnly) {
         props.field.readOnly = readOnly;
         const cmp = buildComp(props, 'Yolooo');
-        const inputCmp = shallowWithTheme(cmp.props().input, {}, dsGenericTheme);
-
-        expect(inputCmp.props().readOnly).toEqual(readOnly);
+        expect(cmp.props().isDisabled).toEqual(readOnly);
     };
 });
