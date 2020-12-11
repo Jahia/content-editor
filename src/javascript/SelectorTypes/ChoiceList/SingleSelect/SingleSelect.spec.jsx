@@ -16,8 +16,9 @@ jest.mock('react', () => {
 
 describe('SingleSelect component', () => {
     let props;
-    let onChange = jest.fn();
+    let onChange;
     beforeEach(() => {
+        onChange = jest.fn();
         props = {
             onChange,
             classes: {
@@ -70,7 +71,9 @@ describe('SingleSelect component', () => {
         cmp.simulate('change', null, onChangeData);
 
         expect(onChange).toHaveBeenCalled();
-        expect(onChange.mock.calls[0][0]).toStrictEqual('Yolooo');
+        // OnChange has been called twice, one time at init, 2nd time when updated the value.
+        expect(onChange.mock.calls[0][0]).toStrictEqual(null);
+        expect(onChange.mock.calls[1][0]).toStrictEqual('Yolooo');
     });
 
     it('should set readOnly to true when fromdefinition is readOnly', () => {
