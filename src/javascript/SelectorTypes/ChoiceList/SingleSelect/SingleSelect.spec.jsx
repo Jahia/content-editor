@@ -60,7 +60,7 @@ describe('SingleSelect component', () => {
 
     it('should replace null value as empty string', () => {
         const cmp = buildComp(props);
-        expect(cmp.props().value).toBe('');
+        expect(cmp.props().value).toBe(null);
     });
 
     it('should select formik value', () => {
@@ -72,8 +72,7 @@ describe('SingleSelect component', () => {
 
         expect(onChange).toHaveBeenCalled();
         // OnChange has been called twice, one time at init, 2nd time when updated the value.
-        expect(onChange.mock.calls[0][0]).toStrictEqual(null);
-        expect(onChange.mock.calls[1][0]).toStrictEqual('Yolooo');
+        expect(onChange.mock.calls[0][0]).toStrictEqual('Yolooo');
     });
 
     it('should set readOnly to true when fromdefinition is readOnly', () => {

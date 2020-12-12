@@ -21,7 +21,7 @@ const SingleSelect = ({field, value, id, setActionContext, onChange}) => {
         [{label: '', value: ''}];
 
     // Reset value if constraints doesnt contains the actual value.
-    if (field.valueConstraints.find(v => v.value.string === value) === undefined) {
+    if (value && field.valueConstraints.find(v => v.value.string === value) === undefined) {
         onChange(null);
     }
 
@@ -47,7 +47,7 @@ const SingleSelect = ({field, value, id, setActionContext, onChange}) => {
 };
 
 SingleSelect.defaultProps = {
-    value: ''
+    value: null
 };
 
 SingleSelect.propTypes = {
