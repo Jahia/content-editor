@@ -42,7 +42,7 @@ const onClick = (uuid, language, context, redirect, componentRenderer) => {
 
 const CreateNewContent = ({contextNodePath, path, showOnNodeTypes, render: Render, loading: Loading, ...otherProps}) => {
     const {redirect} = useContentEditorHistory();
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
     const componentRenderer = useContext(ComponentRendererContext);
     const {uilang, language} = useSelector(state => ({language: state.language, uilang: state.uilang}));
 
