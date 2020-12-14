@@ -11,14 +11,17 @@ const SingleSelect = ({field, value, id, setActionContext, onChange}) => {
     const readOnly = field.readOnly || field.valueConstraints.length === 0;
     const label = field.valueConstraints.find(item => item.value.string === value)?.displayValue || '';
     const dropdownData = field.valueConstraints.length > 0 ?
-        field.valueConstraints.map(item => ({
-            label: item.displayValue,
-            value: item.value.string,
-            attributes: {
-                'data-value': item.value.string
-            }
-        })) :
-        [{label: '', value: ''}];
+        field.valueConstraints.map(item => {
+            const image = item.properties?.find(property => property.name === 'image')?.value;
+            return {
+                label: item.displayValue,
+                value: item.value.string,
+                image: image && <img src={image} alt={item.displayValue}/>,
+                attributes: {
+                    'data-value': item.value.string
+                }
+            };
+        }) : [{label: '', value: ''}];
 
     // Reset value if constraints doesnt contains the actual value.
     if (value && field.valueConstraints.find(v => v.value.string === value) === undefined) {
@@ -29,6 +32,7 @@ const SingleSelect = ({field, value, id, setActionContext, onChange}) => {
         <Dropdown
             name={field.name}
             id={'select-' + id}
+            imageSize="small"
             data-sel-content-editor-select-readonly={readOnly}
             isDisabled={readOnly}
             maxWidth="100%"

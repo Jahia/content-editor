@@ -58,6 +58,16 @@ describe('SingleSelect component', () => {
         });
     });
 
+    it('should display image', () => {
+        const propsWithImage = {...props};
+        propsWithImage.field.valueConstraints[0].properties = [{
+            name: 'image',
+            value: 'url-to-image'
+        }];
+        const cmp = buildComp(props, 'Yolooo');
+        expect(cmp.props().data[0].image.props.src).toBe('url-to-image');
+    });
+
     it('should replace null value as empty string', () => {
         const cmp = buildComp(props);
         expect(cmp.props().value).toBe(null);
