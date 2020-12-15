@@ -4,7 +4,7 @@ import {useNodeChecks} from '@jahia/data-helper';
 import * as PropTypes from 'prop-types';
 import {useSelector} from 'react-redux';
 import {Constants} from '~/ContentEditor.constants';
-import {useTranslation} from "react-i18next";
+import {useTranslation} from 'react-i18next';
 
 export const EditContent = ({path, render: Render, loading: Loading, ...otherProps}) => {
     const {redirect} = useContentEditorHistory();
