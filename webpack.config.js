@@ -1,62 +1,55 @@
 const path = require('path');
-const webpack = require('webpack');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
-
-// get manifest
-var normalizedPath = require("path").join(__dirname, "./target/dependency");
-var manifest = "";
-require("fs").readdirSync(normalizedPath).forEach(function (file) {
-    manifest = "./target/dependency/" + file
-    console.log("use manifest " + manifest);
-});
+const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
+const shared = require("./webpack.shared")
 
 module.exports = (env, argv) => {
     let _argv = argv || {};
 
-    const buildTimeStamp = _argv.mode === 'production' ?
-        new Date().toISOString()
-            .replace(/\.[\w\W]+?$/, '')
-            .replace(/\:|\s|T/g, '-') :
-        '';
-
-    const bundleName = 'content-editor-ext.bundle';
-    const fileName = `${bundleName}${buildTimeStamp}.js`;
-
     let config = {
         entry: {
-            main: [path.resolve(__dirname, 'src/javascript/index')]
+            main: path.resolve(__dirname, 'src/javascript/index')
         },
         output: {
             path: path.resolve(__dirname, 'src/main/resources/javascript/apps/'),
-            filename: fileName,
-            chunkFilename: '[name].content-editor.[chunkhash:6].js',
-            jsonpFunction: 'contentEditorJsonp'
+            filename: 'content-editor.bundle.js',
+            chunkFilename: '[name].content-editor.[chunkhash:6].js'
         },
         resolve: {
             mainFields: ['module', 'main'],
-            extensions: ['.mjs', '.js', '.jsx', 'json'],
+            extensions: ['.mjs', '.js', '.jsx', 'json', '.scss'],
             alias: {
                 '~': path.resolve(__dirname, './src/javascript'),
-            }
+            },
+            fallback: { "url": false }
         },
         module: {
             rules: [
                 {
+                    test: /\.m?js$/,
+                    type: 'javascript/auto'
+                },
+                {
                     test: /\.jsx?$/,
                     include: [path.join(__dirname, 'src')],
-                    loader: 'babel-loader',
-                    query: {
-                        presets: [
-                            ['@babel/preset-env', {modules: false, targets: {safari: '7', ie: '10'}}],
-                            '@babel/preset-react'
-                        ],
-                        plugins: [
-                            'lodash',
-                            '@babel/plugin-syntax-dynamic-import'
-                        ]
+                    use: {
+                        loader: 'babel-loader',
+                        options: {
+                            presets: [
+                                ['@babel/preset-env', {
+                                    modules: false,
+                                    targets: {chrome: '60', edge: '44', firefox: '54', safari: '12'}
+                                }],
+                                '@babel/preset-react'
+                            ],
+                            plugins: [
+                                'lodash',
+                                '@babel/plugin-syntax-dynamic-import'
+                            ]
+                        }
                     }
                 },
                 {
@@ -83,13 +76,32 @@ module.exports = (env, argv) => {
                 },
                 {
                     test: /\.(png|svg)$/,
-                    loaders: ['file-loader']
+                    use: ['file-loader']
+                },
+                {
+                    test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+                    use: [{
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[ext]',
+                            outputPath: 'fonts/'
+                        }
+                    }]
                 }
             ]
         },
         plugins: [
-            new webpack.DllReferencePlugin({
-                manifest: require(manifest)
+            new ModuleFederationPlugin({
+                name: "contentEditor",
+                library: { type: "assign", name: "appShell.remotes.contentEditor" },
+                filename: "remoteEntry.js",
+                exposes: {
+                    './init': './src/javascript/init'
+                },
+                remotes: {
+                    '@jahia/app-shell': 'appShellRemote'
+                },
+                shared
             }),
             new CleanWebpackPlugin({
                 cleanOnceBeforeBuildPatterns: [`${path.resolve(__dirname, 'src/main/resources/javascript/apps/')}/**/*`],
@@ -98,10 +110,7 @@ module.exports = (env, argv) => {
             new CopyWebpackPlugin({
                 patterns: [{
                     from: './package.json',
-                    to: '',
-                    transform: content => content
-                        .toString()
-                        .replace('${buildTimeStamp}', buildTimeStamp)
+                    to: ''
                 }]
             }),
             new CaseSensitivePathsPlugin()

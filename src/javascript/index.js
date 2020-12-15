@@ -1,12 +1,7 @@
-import {registry} from '@jahia/ui-extender';
+// Used only if jahia-ui-root is the host, experimental
 
-/* eslint-disable-next-line no-undef, camelcase */
-__webpack_public_path__ = `${window.contextJsParameters.contextPath}/modules/content-editor/javascript/apps/`;
-
-registry.add('callback', 'content-editor', {
-    targets: ['jahiaApp-init:2'],
-    callback: () => Promise.all([
-        import('./ContentEditor.register'),
-        window.jahia.i18n.loadNamespaces('content-editor')
-    ])
+import('@jahia/app-shell/bootstrap').then(res => {
+    console.log(res);
+    window.jahia = res;
+    res.startAppShell(window.appShell.remotes, window.appShell.targetId);
 });
