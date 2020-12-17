@@ -5,8 +5,7 @@ This component displays button to allow switching to another site.
 ### Props
 
 -   _id_:           string value for component id
--   _classes_:      object for styling the component
--   _siteKey_:      string of node site key
+-   _site_:      string of node site key
 -   _siteNodes_:    array of objects contains site nodes
 -   _onSelectSite_: function to select site node
 

@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 
 import Drawer from '@material-ui/core/Drawer';
 import {NodeTrees, PickerTreeViewMaterial} from '@jahia/react-material';
-import SiteSwitcher from '~/DesignSystem/SiteSwitcher/SiteSwitcher';
 import {Picker} from '@jahia/data-helper';
 
 import {withStyles} from '@material-ui/core';
 
 import {getDetailedPathArray, getSite} from '../Picker.utils';
+import SiteSwitcher from '~/DesignSystem/SiteSwitcher';
 
 const styles = theme => ({
     drawerPaper: {
@@ -61,13 +61,13 @@ const LeftPanelCmp = ({
                 id="site-switcher"
                 siteKey={site}
                 siteNodes={siteNodes}
-                onSelectSite={siteNode => {
+                onSelectSite={(e, siteName) => {
+                    const siteNode = siteNodes.find(siteItem => siteItem.name === siteName.value);
                     const path = onSelectSite(siteNode);
                     setOpenPaths([path]);
                     setSelectedPath(path);
                 }}
             />}
-
             <NodeTrees path={selectedPath}
                        rootPath="/"
                        siteKey={site}
