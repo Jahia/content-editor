@@ -25,7 +25,7 @@ describe('PickerDialog - LeftPanel', () => {
         };
     });
 
-    it('should display siteSwitcher when the picker is not of type "site picker"', () => {
+    it('should display the site switcher dropdown when the picker is not of type "site picker"', () => {
         props.field.selectorOptions = [];
         const cmp = shallowWithTheme(
             <LeftPanel {...props}/>,
@@ -33,16 +33,16 @@ describe('PickerDialog - LeftPanel', () => {
             dsGenericTheme
         ).dive();
 
-        expect(cmp.find('SiteSwitcher').exists()).toBe(true);
+        expect(cmp.find('#site-switcher').exists()).toBe(true);
     });
 
-    it('should hide siteSwitcher when the picker is of type "site picker"', () => {
+    it('should hide the site switcher dropdown when the picker is of type "site picker"', () => {
         const cmp = shallowWithTheme(
             <LeftPanel {...props}/>,
             {},
             dsGenericTheme
         ).dive();
 
-        expect(cmp.find('SiteSwitcher').exists()).toBe(false);
+        expect(cmp.find('#site-switcher').exists()).toBe(false);
     });
 });

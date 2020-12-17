@@ -5,7 +5,6 @@ import SiteSwitcher from './SiteSwitcher';
 
 describe('SiteSwitcher', () => {
     let defaultProps;
-
     beforeEach(() => {
         defaultProps = {
             id: 'site-switcher',
@@ -33,7 +32,7 @@ describe('SiteSwitcher', () => {
             dsGenericTheme
         );
 
-        expect(cmp.props().siteKey).toBe(defaultProps.siteKey);
+        expect(cmp.props().value).toBe(defaultProps.siteKey);
     });
 
     it('should give the siteNodes props to SiteSwitcher component', () => {
@@ -43,6 +42,14 @@ describe('SiteSwitcher', () => {
             dsGenericTheme
         );
 
-        expect(cmp.props().siteNodes).toBe(defaultProps.siteNodes);
+        expect(cmp.props().data).toEqual([{
+            label: 'Digitall',
+            value: 'digitall'
+        },
+        {
+            label: 'System site',
+            value: 'systemsite'
+        }]
+        );
     });
 });
