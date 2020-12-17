@@ -4,12 +4,11 @@ import PropTypes from 'prop-types';
 import Drawer from '@material-ui/core/Drawer';
 import {NodeTrees, PickerTreeViewMaterial} from '@jahia/react-material';
 import {Picker} from '@jahia/data-helper';
-import {Dropdown} from '@jahia/moonstone';
-import style from './LeftPanel.scss';
 
 import {withStyles} from '@material-ui/core';
 
 import {getDetailedPathArray, getSite} from '../Picker.utils';
+import SiteSwitcher from '~/DesignSystem/SiteSwitcher';
 
 const styles = theme => ({
     drawerPaper: {
@@ -58,22 +57,17 @@ const LeftPanelCmp = ({
             }}
         >
             {showSiteSwitcher &&
-                <Dropdown
-                    id="site-switcher"
-                    size="medium"
-                    value={site}
-                    className={style.dropdown}
-                    label={siteNodes.find(siteNode => siteNode.name === site)?.displayName}
-                    data={siteNodes.map(siteNode => ({label: siteNode.displayName, value: siteNode.name}))}
-                    onChange={(e, siteName) => {
-                        const siteNode = siteNodes.find(siteItem => siteItem.name === siteName.value);
-                        const path = onSelectSite(siteNode);
-                        setOpenPaths([path]);
-                        setSelectedPath(path);
-                    }}
-                />
-            }
-
+            <SiteSwitcher
+                id="site-switcher"
+                siteKey={site}
+                siteNodes={siteNodes}
+                onSelectSite={(e, siteName) => {
+                    const siteNode = siteNodes.find(siteItem => siteItem.name === siteName.value);
+                    const path = onSelectSite(siteNode);
+                    setOpenPaths([path]);
+                    setSelectedPath(path);
+                }}
+            />}
             <NodeTrees path={selectedPath}
                        rootPath="/"
                        siteKey={site}
