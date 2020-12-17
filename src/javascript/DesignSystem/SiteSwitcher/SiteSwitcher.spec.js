@@ -44,11 +44,17 @@ describe('SiteSwitcher', () => {
 
         expect(cmp.props().data).toEqual([{
             label: 'Digitall',
-            value: 'digitall'
+            value: 'digitall',
+            attributes: {
+                role: 'menuitem'
+            }
         },
         {
             label: 'System site',
-            value: 'systemsite'
+            value: 'systemsite',
+            attributes: {
+                role: 'menuitem'
+            }
         }]
         );
     });
