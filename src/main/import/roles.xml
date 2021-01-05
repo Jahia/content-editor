@@ -10,6 +10,8 @@
         </editor-in-chief>
     </editor>
 
+    <owner jcr:primaryType="jnt:role" j:permissionNames="contentEditor"/>
+
     <server-administrator j:hidden="false"
                           j:nodeTypes="rep:root"
                           j:permissionNames="canSeeAdvancedOptionsTab"
