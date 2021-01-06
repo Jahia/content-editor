@@ -73,11 +73,11 @@ const CreateNewContent = ({contextNodePath, path, showOnNodeTypes, render: Rende
             {details: error.message ? error.message : ''}
         );
         console.error(message);
-        return <Render {...otherProps} isVisible={false}/>;
+        return <Render {...otherProps} isVisible={false} onClick={() => {}}/>;
     }
 
     if (!res || !res.node || (nodetypes && nodetypes.length === 0)) {
-        return <Render {...otherProps} isVisible={false}/>;
+        return <Render {...otherProps} isVisible={false} onClick={() => {}}/>;
     }
 
     return (nodetypes || [{id: 'allTypes'}]).map(result => (
