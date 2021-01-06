@@ -4,23 +4,12 @@ import PropTypes from 'prop-types';
 import Drawer from '@material-ui/core/Drawer';
 import {NodeTrees, PickerTreeViewMaterial} from '@jahia/react-material';
 import {Picker} from '@jahia/data-helper';
-
-import {withStyles} from '@material-ui/core';
+import {Dropdown} from '@jahia/moonstone';
+import style from './LeftPanel.scss';
 
 import {getDetailedPathArray, getSite} from '../Picker.utils';
-import SiteSwitcher from '~/DesignSystem/SiteSwitcher';
 
-const styles = theme => ({
-    drawerPaper: {
-        width: '15vw',
-        backgroundColor: theme.palette.ui.beta
-    },
-    listItem: {
-        color: theme.palette.primary.contrastText
-    }
-});
-
-const LeftPanelCmp = ({
+export const LeftPanel = ({
     site,
     siteNodes,
     field,
@@ -30,8 +19,7 @@ const LeftPanelCmp = ({
     onSelectSite,
     selectedPath,
     setSelectedPath,
-    setSelectedItem,
-    classes
+    setSelectedItem
 }) => {
     const selectedItemSite = getSite(initialSelectedItem);
     const initialPathOpenPath = getDetailedPathArray(initialSelectedItem, selectedItemSite);
@@ -53,15 +41,19 @@ const LeftPanelCmp = ({
             variant="permanent"
             anchor="left"
             classes={{
-                paper: classes.drawerPaper
+                paper: style.drawerPaper
             }}
         >
             {showSiteSwitcher &&
-            <SiteSwitcher
+            <Dropdown
                 id="site-switcher"
-                siteKey={site}
-                siteNodes={siteNodes}
-                onSelectSite={(e, siteName) => {
+                data-cm-role="site-switcher"
+                size="medium"
+                value={site}
+                className={style.dropdown}
+                label={siteNodes.find(siteNode => siteNode.name === site)?.displayName}
+                data={siteNodes.map(siteNode => ({label: siteNode.displayName, value: siteNode.name, attributes: {role: 'menuitem'}}))}
+                onChange={(e, siteName) => {
                     const siteNode = siteNodes.find(siteItem => siteItem.name === siteName.value);
                     const path = onSelectSite(siteNode);
                     setOpenPaths([path]);
@@ -92,7 +84,7 @@ const LeftPanelCmp = ({
                             <PickerTreeViewMaterial {...others}
                                                     dataCmRole={dataCmRole}
                                                     rootLabel={rootLabel}
-                                                    classes={{listItem: classes.listItem}}
+                                                    classes={{listItem: style.listItem}}
                         />
                     )}
                     </Picker>
@@ -102,7 +94,7 @@ const LeftPanelCmp = ({
     );
 };
 
-LeftPanelCmp.propTypes = {
+LeftPanel.propTypes = {
     site: PropTypes.string.isRequired,
     siteNodes: PropTypes.array.isRequired,
     field: PropTypes.object.isRequired,
@@ -112,9 +104,6 @@ LeftPanelCmp.propTypes = {
     selectedPath: PropTypes.string,
     setSelectedPath: PropTypes.func.isRequired,
     setSelectedItem: PropTypes.func.isRequired,
-    onSelectSite: PropTypes.func.isRequired,
-    classes: PropTypes.object.isRequired
+    onSelectSite: PropTypes.func.isRequired
 };
-
-export const LeftPanel = withStyles(styles)(LeftPanelCmp);
 LeftPanel.displayName = 'LeftPanel';
