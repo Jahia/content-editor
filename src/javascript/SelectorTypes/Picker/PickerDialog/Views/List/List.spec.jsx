@@ -204,10 +204,11 @@ describe('PickerDialog - List view', () => {
         expect(cmp.props().data[0].type).toContain('Page');
     });
 
-    it('should not display the sub contents columns if there is no content with sub contents', () => {
+    it('should not display the sub contents columns if we are in search', () => {
+        defaultProps.searchTerms = 'search term test';
         setQueryResult({
             jcr: {
-                result: queryResult
+                result: queryResult.descendants
             }
         });
 
@@ -219,10 +220,9 @@ describe('PickerDialog - List view', () => {
             .find('ContentTable');
 
         expect(cmp.props().columns[1].property).toContain('type');
-        expect(cmp.props().data[0].subContentsCount).toBeUndefined();
     });
 
-    it('should display the sub contents columns if there is content with sub contents', () => {
+    it('should display the sub contents columns if no search', () => {
         setQueryResult({
             jcr: {
                 result: queryResultWithChildren
@@ -237,42 +237,7 @@ describe('PickerDialog - List view', () => {
             .find('ContentTable');
 
         expect(cmp.props().columns[1].property).toContain('subContentsCount');
-        expect(cmp.props().data[0].subContentsCount).toBe(8);
-    });
-
-    it('should add button navigateInto when there is subContent', () => {
-        setQueryResult({
-            jcr: {
-                result: queryResultWithChildren
-            }
-        });
-
-        const cmp = shallowWithTheme(
-            <List {...defaultProps}/>,
-            {},
-            dsGenericTheme
-        ).dive().dive()
-            .find('ContentTable');
-
         expect(cmp.props().columns[5].property).toBe('navigateInto');
-        expect(cmp.props().data[0].navigateInto).toBe(true);
-    });
-
-    it('should not add button navigateInto when there is subContent', () => {
-        setQueryResult({
-            jcr: {
-                result: queryResultWithChildren
-            }
-        });
-
-        const cmp = shallowWithTheme(
-            <List {...defaultProps}/>,
-            {},
-            dsGenericTheme
-        ).dive().dive()
-            .find('ContentTable');
-
-        expect(cmp.props().data[1].navigateInto).toBe(false);
     });
 
     it('should call setSelectedPath when clicking on navigateInto', () => {

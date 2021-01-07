@@ -1,6 +1,22 @@
 import gql from 'graphql-tag';
 import {PredefinedFragments} from '@jahia/data-helper';
 
+export const SubContentsCountQuery = gql`
+    query subContentsCountQuery($path: String!, $typeFilter: [String]!) {
+        jcr {
+            nodeByPath(path: $path) {
+                descendants(typesFilter: {types: $typeFilter, multi: ANY}) {
+                    pageInfo {
+                        totalCount
+                    }
+                }
+                ...NodeCacheRequiredFields
+            }
+        }
+    }
+    ${PredefinedFragments.nodeCacheRequiredFields.gql}
+`;
+
 export const ContentDialogPickerQuery = gql`
     query pickerDialogQuery(
         $path: String!,
@@ -39,11 +55,6 @@ export const ContentDialogPickerQuery = gql`
                         }
                         isDisplayableNode
                         isNodeType(type:{types: $selectableTypeFilter, multi: ANY})
-                        descendants(typesFilter: {types: $selectableTypeFilter, multi: ANY}) {
-                            pageInfo {
-                                totalCount
-                            }
-                        }
                         # Specific section for images
                         width: property(name: "j:width") {
                             value

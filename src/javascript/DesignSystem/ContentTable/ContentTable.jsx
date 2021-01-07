@@ -3,12 +3,10 @@ import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import Checkbox from '@material-ui/core/Checkbox';
 import {ContentTableHeader} from './ContentTableHeader';
 import {EmptyTable} from './EmptyTable';
 import InfiniteScroll from 'react-infinite-scroller';
+import {ContentRow} from './ContentRow';
 
 const styles = theme => ({
     tableWrapper: {
@@ -109,35 +107,16 @@ const ContentTableCmp = ({
                             <EmptyTable labelEmpty={labelEmpty}/> :
                             <TableBody>
                                 {data.map(row => {
-                            let selected = Boolean(selection.find(i => i.id === row.id));
-                            return (
-                                <TableRow key={row.id}
-                                          hover
-                                          className={classes.row + ' ' + (selected ? classes.selectedRow : '')}
-                                          role="checkbox"
-                                          selected={selected}
-                                          tabIndex={-1}
-                                          onClick={() => row.selectable && onClickHandler(row)}
-                                >
-                                    <TableCell padding="checkbox">
-                                        {row.selectable && <Checkbox className={selected ? classes.selectedCheckbox : ''} checked={selected}/>}
-                                    </TableCell>
-
-                                    {columns.map(column => {
-                                        const CellRenderer = column.renderer;
-                                        return (
-                                            <TableCell key={row.id + ' ' + column.property}
-                                                       className={classes.tableCell + ' ' + classes[column.property + 'Column']}
-                                            >
-                                                {CellRenderer ?
-                                                    <CellRenderer tableCellData={row[column.property]} {...(row.props && row.props[column.property] ? row.props[column.property] : {})}/> :
-                                                    row[column.property]}
-                                            </TableCell>
-                                        );
-                                    })}
-                                </TableRow>
-                            );
-                        })}
+                                    let selected = Boolean(selection.find(i => i.id === row.id));
+                                    return (
+                                        <ContentRow key={row.id}
+                                                    row={row}
+                                                    selected={selected}
+                                                    columns={columns}
+                                                    onClick={onClickHandler}
+                                        />
+                                    );
+                                })}
                             </TableBody>}
                     </Table>
                 </InfiniteScroll>
