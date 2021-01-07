@@ -1,15 +1,20 @@
-.dropdown {
+.dropdown.dropdown {
     margin-bottom: var(--spacing-nano);
 
     color: var(--color-light);
 }
 
-.drawerPaper {
+.drawerPaper.drawerPaper {
     width: 15vw;
 
-    background-color: var(--color-gray_dark) !important;
+    background-color: var(--color-gray_dark);
 }
 
-.listItem {
-    color: var(--color-light) !important;
+.listItem.listItem {
+    height: 32px;
+    color: var(--color-gray_light);
+}
+
+.listItemSelected.listItemSelected {
+    color: var(--color-light);
 }
