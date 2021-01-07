@@ -33,7 +33,7 @@ const styles = theme => ({
 });
 
 export const AutomaticOrderingCmp = ({classes, formik: {values, setFieldValue, setFieldTouched}}) => {
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
     const {sections} = useContentEditorSectionContext();
     const rows = adaptSectionToDisplayableRows(sections, t);
     const [displayedRows, setDisplayedRows] = useState(getDisplayedRows(rows, values));

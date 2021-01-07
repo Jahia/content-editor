@@ -3,7 +3,7 @@ import {useTranslation} from 'react-i18next';
 
 describe('Lock Utils', () => {
     it('test getBadgeContent', () => {
-        const {t} = useTranslation();
+        const {t} = useTranslation('content-editor');
         const nodeDataLockUser = {
             input: {
                 lockedAndCannotBeEdited: true,

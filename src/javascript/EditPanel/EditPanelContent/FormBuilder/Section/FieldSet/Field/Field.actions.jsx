@@ -17,7 +17,7 @@ let styles = () => ({
 });
 
 export const FieldActionsCmp = ({classes, inputContext, selectorType, field, formik}) => {
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
     const contextualMenu = useRef(null);
 
     let actionCmp;

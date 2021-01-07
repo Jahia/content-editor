@@ -10,7 +10,7 @@ import {useTranslation} from 'react-i18next';
 import {Constants} from '~/ContentEditor.constants';
 
 export const EditPanelDialogConfirmation = ({titleKey, open, onCloseDialog, actionCallback, formik}) => {
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
     const handleDiscard = () => {
         onCloseDialog();
 

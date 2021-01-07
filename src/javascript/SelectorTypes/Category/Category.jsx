@@ -9,7 +9,7 @@ import {useTranslation} from 'react-i18next';
 import {adaptToCategoryTree} from './category.adapter';
 
 const Category = ({field, value, id, editorContext, onChange}) => {
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
     const {data, error, loading} = useQuery(GetCategories, {
         variables: {
             path: '/sites/systemsite/categories',

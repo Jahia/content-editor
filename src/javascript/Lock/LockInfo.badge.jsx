@@ -5,7 +5,7 @@ import {useContentEditorContext} from '~/ContentEditor.context';
 import {getBadgeContent} from './Lock.utils';
 
 export const LockInfoBadge = () => {
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
     const {nodeData} = useContentEditorContext();
     return (
         <>

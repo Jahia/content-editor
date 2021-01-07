@@ -23,7 +23,7 @@ const ContentEditorReduxCmp = ({client, mode, uuid, lang, uilang, site, contentT
     const {storedLocation, setStoredLocation} = useContentEditorHistoryContext();
     const {openPaths} = useSelector(state => ({openPaths: state.jcontent.openPaths}));
     const dispatch = useDispatch();
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
     // Sync GWT language
     if (window.top.authoringApi.switchLanguage) {
         window.top.authoringApi.switchLanguage(lang);

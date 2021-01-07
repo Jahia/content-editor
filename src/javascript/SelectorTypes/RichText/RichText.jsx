@@ -17,7 +17,7 @@ function loadOption(selectorOptions, name) {
 }
 
 export const RichTextCmp = ({field, id, value, onChange}) => {
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
     const [picker, setPicker] = useState(false);
 
     useEffect(() => {

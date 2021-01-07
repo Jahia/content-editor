@@ -9,7 +9,7 @@ import {useTranslation} from 'react-i18next';
 import {ProgressOverlay} from '@jahia/react-material';
 
 export const PreviewFetcher = React.memo(({onContentNotFound}) => {
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
     const editorContext = useContentEditorContext();
 
     const previewContext = getPreviewContext(editorContext);

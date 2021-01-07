@@ -19,7 +19,7 @@ import {Constants} from '~/ContentEditor.constants';
 
 const EditPanelCmp = ({formik, title, notificationContext, client}) => {
     const [activeTab, setActiveTab] = useState(Constants.editPanel.editTab);
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
     const {nodeData, siteInfo, lang, uilang, mode, nodeTypeDisplayName, nodeTypeName} = useContentEditorContext();
     const {envProps} = useContentEditorConfigContext();
     const publicationInfoContext = useContext(PublicationInfoContext);

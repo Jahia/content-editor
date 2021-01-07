@@ -24,7 +24,7 @@ const CreateCmp = ({
     client,
     notificationContext
 }) => {
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
     const contentEditorConfigContext = useContentEditorConfigContext();
     const {nodeData, formQueryParams, initialValues, title} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();

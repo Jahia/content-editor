@@ -8,7 +8,7 @@ import {EditPanelLanguageSwitcher} from '../EditPanelLanguageSwitcher';
 import {Button, Separator, Tab, TabItem} from '@jahia/moonstone';
 
 export const HeaderLowerSection = ({actionContext, setActiveTab, activeTab}) => {
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
     return (
         <div className={styles.headerToolBar}>
             <EditPanelLanguageSwitcher lang={actionContext.language} siteInfo={actionContext.siteInfo}/>

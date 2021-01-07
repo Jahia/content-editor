@@ -14,7 +14,7 @@ export const WorkInProgressDialog = ({
     onApply,
     languages
 }) => {
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
 
     const [wipStatus, setWipStatus] = useState(wipInfo.status !== Constants.wip.status.DISABLED);
 

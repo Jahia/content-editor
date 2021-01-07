@@ -16,7 +16,7 @@ import {ButtonWithPastilleRenderer, ButtonRenderer} from '~/actions/ActionsButto
 import ContentBreadcrumb from '~/EditPanel/header/ContentBreadcrumb';
 
 export const HeaderUpperSection = ({title, actionContext}) => {
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
     const {mode, nodeData, formik, nodeTypeDisplayName, language} = actionContext;
 
     const wipInfo = formik.values[Constants.wip.fieldName];

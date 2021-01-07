@@ -63,7 +63,7 @@ let styles = theme => {
 };
 
 export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, formik}) => {
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
     const editorContext = useContentEditorContext();
     const sectionsContext = useContentEditorSectionContext();
     const client = useApolloClient();

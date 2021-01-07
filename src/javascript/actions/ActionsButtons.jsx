@@ -7,7 +7,7 @@ import styles from './ActionsButtons.scss';
 
 export const ButtonWithPastilleRenderer = props => {
     const {enabled, componentProps, addWarningBadge, actionKey, buttonIcon, buttonLabel, disabled, dataSelRole, onClick} = props;
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
 
     if (!enabled) {
         return '';

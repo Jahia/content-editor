@@ -9,7 +9,7 @@ import {extractConfigs} from './Picker.utils';
 import {PickerDialog} from './PickerDialog';
 
 const PickerCmp = ({field, value, editorContext, setActionContext, onChange}) => {
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
     const {pickerConfig, nodeTreeConfigs} = extractConfigs(field, editorContext, t);
     const [isDialogOpen, setDialogOpen] = useState(false);
     const {fieldData, error, loading, notFound} = pickerConfig.picker.pickerInput.usePickerInputData(value, editorContext);

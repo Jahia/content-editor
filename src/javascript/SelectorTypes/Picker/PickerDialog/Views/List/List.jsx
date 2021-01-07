@@ -69,7 +69,7 @@ const ListCmp = ({
     searchTerms,
     notificationContext
 }) => {
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
     const [sort, setSort] = useState({
         order: 'DESC',
         fieldName: columnIdFieldNameMapper.lastModified,

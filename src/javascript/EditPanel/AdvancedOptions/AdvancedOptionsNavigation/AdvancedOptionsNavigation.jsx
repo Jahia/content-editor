@@ -10,7 +10,7 @@ import {registerAdvancedOptionsActions} from '~/EditPanel/AdvancedOptions/Advanc
 import {useTranslation} from 'react-i18next';
 
 export const AdvancedOptionsNavigation = ({formik, activeOption, setActiveOption}) => {
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
     const {mode, nodeData, siteInfo} = useContentEditorContext();
 
     // Engines tabs need the node Data to be registered

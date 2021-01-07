@@ -5,7 +5,7 @@ import classes from './TechnicalInformation.scss';
 import {InfoPanel} from '~/DesignSystem/InfoPanel';
 
 export const TechnicalInformation = () => {
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
 
     const {details, technicalInfo} = useContentEditorContext();
 
