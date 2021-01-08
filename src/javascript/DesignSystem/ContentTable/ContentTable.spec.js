@@ -63,21 +63,8 @@ describe('ContentTable', () => {
             dsGenericTheme
         ).dive();
 
-        expect(cmp.find('WithStyles(TableRow)').debug()).toContain('name 1');
-        expect(cmp.find('WithStyles(TableRow)').debug()).toContain('name 2');
-    });
-
-    it('should display table row', () => {
-        const cmp = shallowWithTheme(
-            <ContentTable {...defaultProps}/>,
-            {},
-            dsGenericTheme
-        ).dive();
-
-        expect(cmp.find('WithStyles(TableRow)').debug()).toContain('name 1');
-        expect(cmp.find('WithStyles(TableRow)').debug()).toContain('type 1');
-        expect(cmp.find('WithStyles(TableRow)').debug()).toContain('createdBy 1');
-        expect(cmp.find('WithStyles(TableRow)').debug()).toContain('lastModified 1');
+        expect(cmp.find('ContentRow').get(0).props.row.name).toContain('name 1');
+        expect(cmp.find('ContentRow').get(1).props.row.name).toContain('name 2');
     });
 
     it('should not select initially one row', () => {
@@ -87,7 +74,7 @@ describe('ContentTable', () => {
             dsGenericTheme
         ).dive();
 
-        expect(cmp.find('WithStyles(TableRow)').at(0).props().selected).toBe(false);
+        expect(cmp.find('ContentRow').at(0).props().selected).toBe(false);
     });
 
     it('should select initially one row', () => {
@@ -98,42 +85,6 @@ describe('ContentTable', () => {
             dsGenericTheme
         ).dive();
 
-        expect(cmp.find('WithStyles(TableRow)').at(0).props().selected).toBe(true);
-    });
-
-    it('should allow to select one row', () => {
-        defaultProps.data[0] = {
-            ...defaultProps.data[0],
-            selectable: false
-        };
-        const cmp = shallowWithTheme(
-            <ContentTable {...defaultProps}/>,
-            {},
-            dsGenericTheme
-        ).dive();
-
-        expect(cmp.find('WithStyles(TableRow)').find('WithStyles(Checkbox)').length).toEqual(1);
-    });
-
-    it('should use renderer of the column when defined initially one row', () => {
-        defaultProps.columns[1].renderer = () => 'this is a test';
-        const cmp = shallowWithTheme(
-            <ContentTable {...defaultProps}/>,
-            {},
-            dsGenericTheme
-        ).dive();
-
-        expect(cmp.find('[tableCellData="type 1"]').dive().debug()).toContain('this is a test');
-    });
-
-    it('should add props to renderer component', () => {
-        defaultProps.columns[1].renderer = () => 'this is a test';
-        const cmp = shallowWithTheme(
-            <ContentTable {...defaultProps}/>,
-            {},
-            dsGenericTheme
-        ).dive();
-
-        expect(cmp.find('[tableCellData="type 1"]').props().onClick).toBe(defaultProps.data[0].props.type.onClick);
+        expect(cmp.find('ContentRow').at(0).props().selected).toBe(true);
     });
 });
