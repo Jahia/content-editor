@@ -2,19 +2,11 @@ import gql from 'graphql-tag';
 import {PredefinedFragments} from '@jahia/data-helper';
 
 export const SubContentsCountQuery = gql`
-    query subContentsCountQuery($path: String!, $typeFilter: [String]!) {
-        jcr {
-            nodeByPath(path: $path) {
-                descendants(typesFilter: {types: $typeFilter, multi: ANY}) {
-                    pageInfo {
-                        totalCount
-                    }
-                }
-                ...NodeCacheRequiredFields
-            }
+    query subContentsCountQuery($path: String!, $typeFilter: [String]!, $limit: Int!) {
+        forms {
+            subContentsCount(nodePath: $path, includeTypes: $typeFilter, limit: $limit)
         }
     }
-    ${PredefinedFragments.nodeCacheRequiredFields.gql}
 `;
 
 export const ContentDialogPickerQuery = gql`

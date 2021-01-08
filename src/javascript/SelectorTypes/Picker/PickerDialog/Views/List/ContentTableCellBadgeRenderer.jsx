@@ -34,9 +34,13 @@ export const ContentTableCellBadgeRendererCmp = ({tableCellData, classes}) => {
     );
 };
 
+ContentTableCellBadgeRendererCmp.defaultProps = {
+    tableCellData: undefined
+};
+
 ContentTableCellBadgeRendererCmp.propTypes = {
     classes: PropTypes.object.isRequired,
-    tableCellData: PropTypes.object.isRequired
+    tableCellData: PropTypes.number
 };
 
 const ContentTableCellBadgeRenderer = withStyles(styles)(ContentTableCellBadgeRendererCmp);

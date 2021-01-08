@@ -19,9 +19,12 @@ const NavigateIntoCmp = ({tableCellData, ...props}) => {
     );
 };
 
+NavigateIntoCmp.defaultProps = {
+    tableCellData: false
+};
+
 NavigateIntoCmp.propTypes = {
-    // Classes: PropTypes.object.isRequired,
-    tableCellData: PropTypes.object.isRequired
+    tableCellData: PropTypes.bool
 };
 
 export const NavigateInto = withStyles(styles)(NavigateIntoCmp);

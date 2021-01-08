@@ -57,6 +57,7 @@ import org.jahia.modules.contenteditor.utils.ContentEditorUtils;
 import org.jahia.modules.graphql.provider.dxm.DataFetchingException;
 import org.jahia.modules.graphql.provider.dxm.osgi.annotations.GraphQLOsgiService;
 import org.jahia.registries.ServicesRegistry;
+import org.jahia.services.content.JCRContentUtils;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRSessionFactory;
 import org.jahia.services.content.JCRSessionWrapper;
@@ -68,6 +69,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.jcr.RepositoryException;
+import javax.jcr.query.Query;
+import javax.jcr.query.QueryManager;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -258,6 +261,42 @@ public class GqlEditorForms {
         }
 
         return toolbar;
+    }
+
+    @GraphQLField
+    @GraphQLName("subContentsCount")
+    @GraphQLDescription("Retrieve the number of sub contents under the node for given types")
+    public Integer subContentsCounts(
+        @GraphQLName("nodePath") @GraphQLDescription("node path") String nodePath,
+        @GraphQLName("includeTypes") @GraphQLDescription("List of node types to check for") List<String> nodeTypes,
+        @GraphQLName("limit") @GraphQLDescription("Limit of sub contents count") Integer limit
+    ) throws RepositoryException {
+        int count = 0;
+
+        JCRSessionWrapper session = getSession();
+        JCRNodeWrapper node = session.getNode(nodePath);
+
+        // no need for queries if node doesnt have children
+        if (!node.hasNodes()) {
+            return count;
+        }
+
+        QueryManager queryManager = session.getWorkspace().getQueryManager();
+        for (String type : nodeTypes) {
+            count += queryManager
+                .createQuery(
+                    "SELECT count " +
+                        "AS [rep:count()] " +
+                        "FROM [" + type + "] " +
+                        "WHERE isdescendantnode(['" + JCRContentUtils.sqlEncode(node.getPath()) + "'])",
+                    Query.JCR_SQL2)
+                .execute().getRows().nextRow().getValue("count").getLong();
+            if (limit != null && limit > 0 && count >= limit) {
+                return limit;
+            }
+        }
+
+        return count;
     }
 
     private String getConfigPath(String moduleId, String resource) {
