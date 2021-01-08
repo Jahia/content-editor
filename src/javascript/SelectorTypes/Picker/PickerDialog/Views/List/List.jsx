@@ -12,6 +12,7 @@ import {CountDisplayer} from '../CountDisplayer';
 import {withNotifications} from '@jahia/react-material';
 import {compose} from '~/utils';
 import {notifyAccessDenied} from '../ErrorHandler';
+import SubContentCountLazyLoader from './SubContentCountLazyLoader';
 
 const columnConfig = (t, showSubContentsCount) => {
     let columns = [
@@ -121,34 +122,33 @@ const ListCmp = ({
         return <ProgressOverlay/>;
     }
 
-    let showSubContentsCount = false;
+    const isSearch = Boolean(searchTerms);
     const tableData = error ?
         [] :
         nodes.map(content => {
-            const haveSubContents = content.primaryNodeType.name !== 'jnt:page' && content.descendants &&
-                content.descendants.pageInfo && content.descendants.pageInfo.totalCount > 0;
-            showSubContentsCount = showSubContentsCount || haveSubContents;
-
             const isSelectable = content.isNodeType && (!pickerConfig.showOnlyNodesWithTemplates || (pickerConfig.showOnlyNodesWithTemplates && content.isDisplayableNode));
             return {
                 id: content.uuid,
                 path: content.path,
                 selectable: isSelectable,
                 name: content.displayName,
-                subContentsCount: haveSubContents ? content.descendants.pageInfo.totalCount : undefined,
+                subContentsCount: !isSearch && content.primaryNodeType.name === 'jnt:page' ? 0 : undefined,
+                lazyRowLoader: !isSearch && content.primaryNodeType.name !== 'jnt:page' ?
+                    SubContentCountLazyLoader :
+                    undefined,
                 type: content.primaryNodeType.typeName,
                 createdBy: content.createdBy ? content.createdBy.value : undefined,
                 lastModified: content.lastModified ? dayjs(content.lastModified.value)
                     .locale(uilang)
                     .format('LLL') : undefined,
-                navigateInto: haveSubContents,
                 props: {
                     navigateInto: {
                         onClick: e => {
                             e.preventDefault();
                             setSelectedPath(content.path);
                         }
-                    }
+                    },
+                    selectableTypesTable: pickerConfig.selectableTypesTable
                 }
             };
         });
@@ -158,7 +158,7 @@ const ListCmp = ({
             <CountDisplayer totalCount={totalCount}/>
 
             <ContentTable
-                columns={columnConfig(t, showSubContentsCount)}
+                columns={columnConfig(t, !isSearch)}
                 labelEmpty={
                     searchTerms ?
                         t('content-editor:label.contentEditor.edit.fields.contentPicker.noSearchResults') :
