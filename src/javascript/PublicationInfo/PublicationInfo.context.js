@@ -8,7 +8,7 @@ export const PublicationInfoContext = React.createContext({});
 export const usePublicationInfoContext = () => useContext(PublicationInfoContext);
 
 export const PublicationInfoContextProvider = ({uuid, lang, children}) => {
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
     const {
         publicationInfoError, publicationInfoErrorMessage, ...publicationInfoContext
     } = usePublicationInfo({

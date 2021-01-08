@@ -62,7 +62,7 @@ function writeInIframe(html, iframeWindow) {
 export const IframeViewer = ({previewContext, data, onContentNotFound}) => {
     const [loading, setLoading] = useState(true);
     const editorContext = useContentEditorContext();
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
     const iframeRef = useRef(null);
 
     const renderIFrame = useCallback(() => {

@@ -38,7 +38,7 @@ export const CopyLanguageDialog = ({
         return getI18nFieldAndValues(formAndData);
     };
 
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
     const handleCancel = () => {
         onCloseDialog();
     };

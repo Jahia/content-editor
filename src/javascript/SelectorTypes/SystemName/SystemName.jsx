@@ -9,7 +9,7 @@ import {useTranslation} from 'react-i18next';
 import classes from './SystemName.scss';
 
 export const SystemNameCmp = ({field, value, values, id, editorContext, onChange}) => {
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
 
     const titleField = Object.keys(values).find(key => key.endsWith('_jcr:title'));
     return (

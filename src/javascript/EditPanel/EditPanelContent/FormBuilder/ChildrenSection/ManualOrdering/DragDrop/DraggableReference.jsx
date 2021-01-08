@@ -7,7 +7,7 @@ import {InsertDriveFile} from '@material-ui/icons';
 import {encodeJCRPath} from '~/EditPanel/EditPanel.utils';
 
 export const DraggableReference = ({child}) => {
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
 
     const [{isDragging}, drag] = useDrag({
         item: {type: 'REFERENCE_CARD', name: child.name},

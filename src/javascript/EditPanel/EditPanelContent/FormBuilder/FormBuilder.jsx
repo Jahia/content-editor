@@ -14,7 +14,7 @@ import {compose} from '~/utils';
 const FormBuilderCmp = ({mode, formik: {values}}) => {
     const {nodeData} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
 
     if (!nodeData || !sections || sections.length === 0) {
         return <></>;

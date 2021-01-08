@@ -51,7 +51,7 @@ const styles = theme => ({
 });
 
 export const ChildrenSectionCmp = ({section, classes, canManuallyOrder, canAutomaticallyOrder, formik: {values, handleChange}}) => {
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
     const {sections} = useContentEditorSectionContext();
 
     const isAutomaticOrder = canAutomaticallyOrder && values[Constants.automaticOrdering.mixin];

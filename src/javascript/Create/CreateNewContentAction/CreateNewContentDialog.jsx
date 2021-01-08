@@ -35,7 +35,7 @@ const styles = theme => ({
 });
 
 const CreateNewContentDialogCmp = ({childNodeName, nodeTypes, includeSubTypes, open, parentPath, onExited, onClose, onCreateContent, uilang, client, classes}) => {
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
     const variables = {
         childNodeName: childNodeName,
         nodeTypes: nodeTypes.length > 0 ? nodeTypes : undefined,

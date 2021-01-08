@@ -21,7 +21,7 @@ const ThumbnailCmp = ({
     lang,
     notificationContext
 }) => {
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
     const {
         nodes,
         totalCount,

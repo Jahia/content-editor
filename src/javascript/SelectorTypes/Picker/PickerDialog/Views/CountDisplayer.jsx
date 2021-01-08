@@ -12,7 +12,7 @@ const styles = () => ({
 });
 
 const CountDisplayerCmp = ({totalCount, classes}) => {
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
 
     return (
         <div className={classes.itemsFoundLabel} data-sel-total-count={totalCount}>

@@ -20,7 +20,7 @@ export const useContentEditorConfigContext = () => useContext(ContentEditorConfi
 export const withContentEditorDataContextProvider = (formQuery, formDataAdapter) => Children => {
     const ContentEditorDataContextProvider = props => {
         const {notificationContext} = props;
-        const {t} = useTranslation();
+        const {t} = useTranslation('content-editor');
         const contentEditorConfigContext = useContentEditorConfigContext();
         const {lang, uilang, site, uuid, contentType, mode, name} = contentEditorConfigContext;
 

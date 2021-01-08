@@ -7,7 +7,7 @@ import {Field} from 'formik';
 import {Constants} from '~/ContentEditor.constants';
 
 export const WipInfoChip = () => {
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
     const {lang} = useContentEditorContext();
 
     return (

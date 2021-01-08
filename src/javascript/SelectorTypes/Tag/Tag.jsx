@@ -9,7 +9,7 @@ import {getSuggestionsTagsQuery} from './Tag.gql-queries';
 import {useContentEditorContext} from '~/ContentEditor.context';
 
 const Tag = ({field, value, id, onChange}) => {
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
     const client = useApolloClient();
     const {site} = useContentEditorContext();
 

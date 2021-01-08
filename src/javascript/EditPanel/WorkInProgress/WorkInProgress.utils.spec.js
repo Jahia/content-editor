@@ -43,7 +43,7 @@ describe('Work in progress Utils', () => {
     });
 
     it('should getChipContent returns label all content when status is all content', () => {
-        const {t} = useTranslation();
+        const {t} = useTranslation('content-editor');
         const nodeData = {
             wipInfo: {
                 status: 'ALL_CONTENT',
@@ -55,7 +55,7 @@ describe('Work in progress Utils', () => {
     });
 
     it('should getChipContent returns label for languages when status is languages', () => {
-        const {t} = useTranslation();
+        const {t} = useTranslation('content-editor');
         const nodeData = {
             wipInfo: {
                 status: 'LANGUAGES',

@@ -24,7 +24,7 @@ const styles = theme => {
 };
 
 export const MultipleFieldCmp = ({classes, editorContext, inputContext, field, onChange, formik: {values}}) => {
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
 
     const multipleFieldOnChange = (index, newData) => {
         let updatedValues = [...values[field.name]];

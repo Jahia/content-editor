@@ -29,7 +29,7 @@ const styles = theme => ({
 });
 
 const SaveErrorModalCmp = ({nbOfErrors, classes, open, onClose}) => {
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
     return (
         <Dialog open={open} aria-labelledby="dialog-errorBeforeSave" onClose={onClose}>
             <DialogTitle id="dialog-errorBeforeSave" className={classes.dialogTitle}>

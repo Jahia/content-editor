@@ -8,7 +8,7 @@ import {useContentEditorContext} from '~/ContentEditor.context';
 import {PreviewFetcher} from './Preview.fetcher';
 
 export const PreviewContainer = ({isDirty}) => {
-    const {t} = useTranslation();
+    const {t} = useTranslation('content-editor');
     const editorContext = useContentEditorContext();
     const [contentNotFound, setContentNotFound] = useState(false);
     const handleContentNotFound = useCallback(() => setContentNotFound(true), []);
