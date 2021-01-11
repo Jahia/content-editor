@@ -4,17 +4,18 @@ import {useQuery} from '@apollo/react-hooks';
 import {SubContentsCountQuery} from '../content.gql-queries';
 
 export const SubContentCountLazyLoader = ({updateRow, row}) => {
-    // TODO implement queries to get the subContents count
+    // Badge display 99+ in case of more than 99
     const {data} = useQuery(SubContentsCountQuery, {
         variables: {
             path: row.path,
-            typeFilter: row.props.selectableTypesTable
+            typeFilter: row.props.selectableTypesTable,
+            limit: 100
         }
     });
 
     useEffect(() => {
         if (data) {
-            const count = data.jcr.nodeByPath.descendants.pageInfo.totalCount;
+            const count = data.forms.subContentsCount;
             updateRow({
                 subContentsCount: count,
                 navigateInto: count > 0
@@ -26,8 +27,7 @@ export const SubContentCountLazyLoader = ({updateRow, row}) => {
 };
 
 SubContentCountLazyLoader.propTypes = {
-    updateRow: PropTypes.func.isRequired,
-    updateColumns: PropTypes.func.isRequired
+    updateRow: PropTypes.func.isRequired
 };
 
 SubContentCountLazyLoader.displayName = 'SubContentCountLazyLoader';
