@@ -1,4 +1,4 @@
-import pickerConfigs from './Picker.configs';
+import {resolveConfig} from './Picker.configs';
 
 export const getSiteNodes = (data, allSitesLabel) => {
     const siteNodes = data && data.jcr && data.jcr.result ? data.jcr.result.siteNodes
@@ -44,7 +44,7 @@ export function getNodeTreeConfigs(pickerConfig, site, siteName, t) {
 
 export const extractConfigs = (field, editorContext, t) => {
     // Resolve picker configuration
-    const pickerConfig = pickerConfigs.resolveConfig(
+    const pickerConfig = resolveConfig(
         field.selectorOptions,
         field
     );
