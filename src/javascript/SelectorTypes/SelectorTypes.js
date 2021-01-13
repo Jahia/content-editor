@@ -6,12 +6,15 @@ import ChoiceList from './ChoiceList';
 import registerChoiceListActions from './ChoiceList/ChoiceList.actions';
 import registerChoiceListOnChange from './ChoiceList/ChoiceList.onChange';
 import DateTimePicker from './DateTimePicker';
-import pickerConfigs from './Picker';
+import {registerPickerConfig} from './Picker/Picker.configs';
+import {getPickerSelectorType} from './Picker/Picker.utils';
 import Checkbox from './Checkbox';
 import Category from './Category';
 import {registerPickerActions} from './Picker/actions';
 import {registry} from '@jahia/ui-extender';
 import SystemName from './SystemName';
+import {ContentPickerSelectorType} from './Picker/ContentPicker';
+import {MediaPickerSelectorType} from './Picker/MediaPicker';
 import registerSystemNameOnChange from './SystemName/SystemName.onChange';
 
 const adaptDateProperty = (field, property) => {
@@ -56,7 +59,10 @@ export const registerSelectorTypes = ceRegistry => {
         supportMultiple: false
     });
 
-    ceRegistry.add('selectorType', 'Picker', {resolver: options => pickerConfigs.getPickerSelectorType(options)});
+    ceRegistry.add('selectorType', 'ContentPickerSelectorType', {...ContentPickerSelectorType});
+    ceRegistry.add('selectorType', 'MediaPickerSelectorType', {...MediaPickerSelectorType});
+    registerPickerConfig(ceRegistry);
+    ceRegistry.add('selectorType', 'Picker', {resolver: options => getPickerSelectorType(options)});
     registerPickerActions(ceRegistry);
 
     ceRegistry.add('selectorType', 'Choicelist', {

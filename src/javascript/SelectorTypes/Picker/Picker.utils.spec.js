@@ -1,5 +1,27 @@
-import {allSitesEntry, getSiteNodes, extractConfigs, getSite, getDetailedPathArray, getPathWithoutFile} from './Picker.utils';
+import {allSitesEntry, extractConfigs, getDetailedPathArray, getPathWithoutFile, getSite, getSiteNodes} from './Picker.utils';
 
+jest.mock('@jahia/ui-extender', () => {
+    return {
+        registry: {
+            get: (type, key) => {
+                return {
+                    cmp: {
+                        picker: {key: key === 'image' ? 'MediaPicker' : 'ContentPicker'},
+                        treeConfigs: [{
+                            rootPath: () => {
+                                return '/sites/digitall/files';
+                            },
+                            selectableTypes: ['nt:folder'],
+                            openableTypes: ['nt:folder'],
+                            rootLabelKey: 'content-editor:label.contentEditor.edit.fields.imagePicker.rootLabel',
+                            type: 'files'
+                        }]
+                    }
+                };
+            }
+        }
+    };
+});
 describe('Picker utils', () => {
     describe('getSiteNodes', () => {
         const siteA = {

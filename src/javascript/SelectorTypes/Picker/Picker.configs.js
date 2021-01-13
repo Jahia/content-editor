@@ -1,4 +1,3 @@
-import {MediaPickerSelectorType} from './MediaPicker';
 import {ContentPickerSelectorType} from './ContentPicker';
 
 const treeConfigs = {
@@ -74,111 +73,126 @@ const treeConfigs = {
     }
 };
 const defaultEditorialListType = ['jmix:editorialContent', 'jnt:page', 'jnt:contentList', 'jnt:contentFolder', 'nt:folder', 'jmix:siteContent'];
-const pickerConfigs = {
-    image: {
-        picker: MediaPickerSelectorType,
-        treeConfigs: [treeConfigs.files],
-        searchSelectorType: 'jmix:image',
-        listTypesTable: ['jmix:image'],
-        selectableTypesTable: ['jmix:image']
-    },
-    folder: {
-        picker: ContentPickerSelectorType,
-        treeConfigs: [treeConfigs.files],
-        searchSelectorType: 'jnt:folder',
-        listTypesTable: ['jnt:folder'],
-        selectableTypesTable: ['jnt:folder']
-    },
-    contentfolder: {
-        picker: ContentPickerSelectorType,
-        treeConfigs: [treeConfigs.content],
-        searchSelectorType: 'jnt:contentFolder',
-        listTypesTable: ['jnt:contentFolder'],
-        selectableTypesTable: ['jnt:contentFolder']
-    },
-    page: {
-        picker: ContentPickerSelectorType,
-        treeConfigs: [treeConfigs.pages],
-        searchSelectorType: 'jnt:page',
-        listTypesTable: ['jnt:page'],
-        selectableTypesTable: ['jnt:page']
-    },
-    editorial: {
-        picker: ContentPickerSelectorType,
-        treeConfigs: [treeConfigs.allContents],
-        searchSelectorType: 'jmix:searchable',
-        listTypesTable: defaultEditorialListType,
-        selectableTypesTable: defaultEditorialListType
-    },
-    get editoriallink() {
-        return {
-            ...this.editorial,
+
+export const registerPickerConfig = ceRegistry => {
+    ceRegistry.add('pickerConfiguration', 'editoriallink', {
+        cmp: {
+            picker: ceRegistry.get('selectorType', 'ContentPickerSelectorType'),
+            treeConfigs: [treeConfigs.allContents],
+            searchSelectorType: 'jmix:searchable',
+            listTypesTable: defaultEditorialListType,
+            selectableTypesTable: defaultEditorialListType,
             showOnlyNodesWithTemplates: true
-        };
-    },
-    file: {
-        picker: {
-            ...ContentPickerSelectorType, key: 'FilePicker',
-            pickerInput: {
-                ...ContentPickerSelectorType.pickerInput,
-                emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.addFile'
-            }
-        },
-        treeConfigs: [treeConfigs.files],
-        searchSelectorType: 'jnt:file',
-        listTypesTable: ['jnt:file'],
-        selectableTypesTable: ['jnt:file']
-    },
-    user: {
-        picker: ContentPickerSelectorType,
-        treeConfigs: [treeConfigs.users, treeConfigs.siteUsers],
-        searchSelectorType: 'jnt:user',
-        searchPaths: site => ['/users', `/sites/${site}/users`],
-        listTypesTable: ['jnt:user'],
-        selectableTypesTable: ['jnt:user'],
-        displayTree: false
-    },
-    usergroup: {
-        picker: ContentPickerSelectorType,
-        treeConfigs: [treeConfigs.groups, treeConfigs.siteGroups],
-        searchSelectorType: 'jnt:group',
-        searchPaths: site => ['/groups', `/sites/${site}/groups`],
-        listTypesTable: ['jnt:group'],
-        selectableTypesTable: ['jnt:group'],
-        displayTree: false
-    },
-    category: {
-        picker: ContentPickerSelectorType,
-        treeConfigs: [treeConfigs.categories],
-        searchSelectorType: 'jnt:category',
-        listTypesTable: ['jnt:category'],
-        selectableTypesTable: ['jnt:category']
-    },
-    site: {
-        picker: ContentPickerSelectorType,
-        treeConfigs: [treeConfigs.sites],
-        searchSelectorType: 'jnt:virtualsite',
-        listTypesTable: ['jnt:virtualsite'],
-        selectableTypesTable: ['jnt:virtualsite']
-    },
-    getPickerSelectorType(options) {
-        return this[this._getPickerType(options)].picker;
-    },
-    resolveConfig(options, field) {
-        const config = Object.assign({}, this[this._getPickerType(options)]);
-        if (field && field.valueConstraints) {
-            const constraints = field.valueConstraints.map(constraint => constraint.value.string);
-            if (constraints && constraints.length > 0) {
-                config.selectableTypesTable = constraints;
-            }
         }
+    });
 
-        return config;
-    },
-    _getPickerType(options) {
-        const option = options && options.find(option => option.name === 'type' && this[option.value]);
-        return (option && option.value) || 'editorial';
-    }
+    ceRegistry.add('pickerConfiguration', 'editorial', {
+        cmp: {
+            picker: ceRegistry.get('selectorType', 'ContentPickerSelectorType'),
+            treeConfigs: [treeConfigs.allContents],
+            searchSelectorType: 'jmix:searchable',
+            listTypesTable: defaultEditorialListType,
+            selectableTypesTable: defaultEditorialListType
+        }
+    });
+
+    ceRegistry.add('pickerConfiguration', 'image', {
+        cmp: {
+            picker: ceRegistry.get('selectorType', 'MediaPickerSelectorType'),
+            treeConfigs: [treeConfigs.files],
+            searchSelectorType: 'jmix:image',
+            listTypesTable: ['jmix:image'],
+            selectableTypesTable: ['jmix:image']
+        }
+    });
+
+    ceRegistry.add('pickerConfiguration', 'folder', {
+        cmp: {
+            picker: ceRegistry.get('selectorType', 'ContentPickerSelectorType'),
+            treeConfigs: [treeConfigs.files],
+            searchSelectorType: 'jnt:folder',
+            listTypesTable: ['jnt:folder'],
+            selectableTypesTable: ['jnt:folder']
+        }
+    });
+
+    ceRegistry.add('pickerConfiguration', 'contentfolder', {
+        cmp: {
+            picker: ceRegistry.get('selectorType', 'ContentPickerSelectorType'),
+            treeConfigs: [treeConfigs.content],
+            searchSelectorType: 'jnt:contentFolder',
+            listTypesTable: ['jnt:contentFolder'],
+            selectableTypesTable: ['jnt:contentFolder']
+        }
+    });
+
+    ceRegistry.add('pickerConfiguration', 'page', {
+        cmp: {
+            picker: ceRegistry.get('selectorType', 'ContentPickerSelectorType'),
+            treeConfigs: [treeConfigs.pages],
+            searchSelectorType: 'jnt:page',
+            listTypesTable: ['jnt:page'],
+            selectableTypesTable: ['jnt:page']
+        }
+    });
+
+    ceRegistry.add('pickerConfiguration', 'file', {
+        cmp: {
+            picker: {
+                ...ContentPickerSelectorType, key: 'FilePicker',
+                pickerInput: {
+                    ...ContentPickerSelectorType.pickerInput,
+                    emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.addFile'
+                }
+            },
+            treeConfigs: [treeConfigs.files],
+            searchSelectorType: 'jnt:file',
+            listTypesTable: ['jnt:file'],
+            selectableTypesTable: ['jnt:file']
+        }
+    });
+
+    ceRegistry.add('pickerConfiguration', 'user', {
+        cmp: {
+            picker: ContentPickerSelectorType,
+            treeConfigs: [treeConfigs.users, treeConfigs.siteUsers],
+            searchSelectorType: 'jnt:user',
+            searchPaths: site => ['/users', `/sites/${site}/users`],
+            listTypesTable: ['jnt:user'],
+            selectableTypesTable: ['jnt:user'],
+            displayTree: false
+        }
+    });
+
+    ceRegistry.add('pickerConfiguration', 'usergroup', {
+        cmp: {
+            picker: ContentPickerSelectorType,
+            treeConfigs: [treeConfigs.groups, treeConfigs.siteGroups],
+            searchSelectorType: 'jnt:group',
+            searchPaths: site => ['/groups', `/sites/${site}/groups`],
+            listTypesTable: ['jnt:group'],
+            selectableTypesTable: ['jnt:group'],
+            displayTree: false
+        }
+    });
+
+    ceRegistry.add('pickerConfiguration', 'category', {
+        cmp: {
+            picker: ContentPickerSelectorType,
+            treeConfigs: [treeConfigs.categories],
+            searchSelectorType: 'jnt:category',
+            listTypesTable: ['jnt:category'],
+            selectableTypesTable: ['jnt:category']
+        }
+    });
+
+    ceRegistry.add('pickerConfiguration', 'site', {
+        cmp: {
+            picker: ContentPickerSelectorType,
+            treeConfigs: [treeConfigs.sites],
+            searchSelectorType: 'jnt:virtualsite',
+            listTypesTable: ['jnt:virtualsite'],
+            selectableTypesTable: ['jnt:virtualsite']
+        }
+    });
 };
-
-export default pickerConfigs;

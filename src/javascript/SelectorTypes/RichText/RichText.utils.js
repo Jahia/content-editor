@@ -1,4 +1,4 @@
-import pickerConfigs from '~/SelectorTypes/Picker';
+import {registry} from '@jahia/ui-extender';
 import {getNodeTreeConfigs} from '~/SelectorTypes/Picker/Picker.utils';
 
 const contextPath = (window.contextJsParameters && window.contextJsParameters.contextPath) || '';
@@ -32,7 +32,7 @@ export function fillCKEditorPicker(picker, pickerResult) {
 
 export function buildPickerContext(picker, editorContext, t) {
     const pickerConfig = {
-        ...(pickerConfigs[picker.type] || pickerConfigs.editorial),
+        ...(registry.get('pickerConfiguration', picker.type) || registry.get('pickerConfiguration', 'editorial')),
         displayTree: true
     };
 
