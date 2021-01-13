@@ -107,6 +107,11 @@ const ListCmp = ({
         registry.addOrReplace('refetch-upload', 'refetch-content-list', {
             refetch: refetch
         });
+        return () => {
+            // Todo: use the registry.remove() instead once available
+            // See https://jira.jahia.org/browse/TECH-331
+            delete registry.registry['refetch-upload-refetch-content-list'];
+        };
     });
 
     if (error) {
