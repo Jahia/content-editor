@@ -1,4 +1,4 @@
-import {resolveConfig} from './Picker.configs';
+import {registry} from '@jahia/ui-extender';
 
 export const getSiteNodes = (data, allSitesLabel) => {
     const siteNodes = data && data.jcr && data.jcr.result ? data.jcr.result.siteNodes
@@ -44,7 +44,7 @@ export function getNodeTreeConfigs(pickerConfig, site, siteName, t) {
 
 export const extractConfigs = (field, editorContext, t) => {
     // Resolve picker configuration
-    const pickerConfig = resolveConfig(
+    const pickerConfig = _resolveConfig(
         field.selectorOptions,
         field
     );
@@ -85,3 +85,25 @@ export const getDetailedPathArray = (fullPath, site) => {
             }, [site]) :
         [];
 };
+
+const _getPickerType = options => {
+    const pickerOption = options && options.find(option => option.name === 'type' && registry.get('pickerConfiguration', option.value));
+    return (pickerOption && pickerOption.value) || 'editorial';
+};
+
+export const _resolveConfig = (options, field) => {
+    const config = Object.assign({}, registry.get('pickerConfiguration', _getPickerType(options)).cmp);
+    if (field && field.valueConstraints) {
+        const constraints = field.valueConstraints.map(constraint => constraint.value.string);
+        if (constraints && constraints.length > 0) {
+            config.selectableTypesTable = constraints;
+        }
+    }
+
+    return config;
+};
+
+export const getPickerSelectorType = options => {
+    return registry.get('pickerConfiguration', _getPickerType(options)).cmp.picker;
+};
+

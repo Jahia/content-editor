@@ -1,5 +1,4 @@
 import {ContentPickerSelectorType} from './ContentPicker';
-import {registry} from '@jahia/ui-extender';
 
 const treeConfigs = {
     content: {
@@ -74,27 +73,6 @@ const treeConfigs = {
     }
 };
 const defaultEditorialListType = ['jmix:editorialContent', 'jnt:page', 'jnt:contentList', 'jnt:contentFolder', 'nt:folder', 'jmix:siteContent'];
-
-const _getPickerType = options => {
-    const pickerOption = options && options.find(option => option.name === 'type' && registry.get('pickerConfiguration', option.value));
-    return (pickerOption && pickerOption.value) || 'editorial';
-};
-
-export const resolveConfig = (options, field) => {
-    const config = Object.assign({}, registry.get('pickerConfiguration', _getPickerType(options)).cmp);
-    if (field && field.valueConstraints) {
-        const constraints = field.valueConstraints.map(constraint => constraint.value.string);
-        if (constraints && constraints.length > 0) {
-            config.selectableTypesTable = constraints;
-        }
-    }
-
-    return config;
-};
-
-export const getPickerSelectorType = options => {
-    return registry.get('pickerConfiguration', _getPickerType(options)).cmp.picker;
-};
 
 export const registerPickerConfig = ceRegistry => {
     ceRegistry.add('pickerConfiguration', 'editoriallink', {

@@ -1,4 +1,5 @@
-import {getPickerSelectorType, registerPickerConfig, resolveConfig} from './Picker.configs';
+import {registerPickerConfig} from './Picker.configs';
+import {getPickerSelectorType} from './Picker.utils';
 
 jest.mock('@jahia/ui-extender', () => {
     return {
@@ -14,7 +15,7 @@ jest.mock('@jahia/ui-extender', () => {
                 };
             }),
             add: jest.fn()
-        },
+        }
     };
 });
 describe('Pickers Configs', () => {
@@ -30,17 +31,6 @@ describe('Pickers Configs', () => {
             const cmpDefinition = getPickerSelectorType();
             expect(cmpDefinition.cmp).toBeDefined();
             expect(cmpDefinition.key).toBeDefined();
-        });
-    });
-    describe('resolveConfig', () => {
-        it('should always return a config', () => {
-            const config = resolveConfig();
-            expect(config).toBeDefined();
-        });
-        it('should override correctly', () => {
-            const field = {valueConstraints: [{value: {string: 'jmix:droppableContent'}}]};
-            const config = resolveConfig([{name: 'type', value: 'editorial'}], field);
-            expect(config.selectableTypesTable).toEqual(['jmix:droppableContent']);
         });
     });
 });
