@@ -224,6 +224,10 @@
           "automatic": "classement automatique",
           "orderBy": "Trier par",
           "description": "Activez le classement automatique pour organiser vos sous-contenus en utilisant au maximum trois critères, ou réorganisez vos sous-contenus manuellement, par glisser-déposer."
+        },
+        "listSizeLimit": {
+          "name": "Nombre d'éléments",
+          "description": "Définissez un nombre limite d'éléments qui peuvent être affichés/créés dans cette zone. Désactivez pour enlever la limite. Si la liste contient plus d'éléments que la limite, alors ces éléments ne seront simplement pas affichés, ils ne seront pas supprimés."
         }
       },
       "siteSwitcher": {

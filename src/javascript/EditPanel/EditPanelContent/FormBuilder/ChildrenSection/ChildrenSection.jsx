@@ -12,6 +12,8 @@ import {connect} from 'formik';
 import {Public} from '@material-ui/icons';
 import {getAutomaticOrderingFieldSet} from './AutomaticOrdering/AutomaticOrdering.utils';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
+import FieldSetsDisplay from '~/EditPanel/EditPanelContent/FormBuilder/FieldSet/FieldSetsDisplay/FieldSetsDisplay';
+import FieldSetsMapFcn from './ChildrenSection.fieldSetMapFcn';
 
 const styles = theme => ({
     section: {
@@ -100,6 +102,7 @@ export const ChildrenSectionCmp = ({section, classes, canManuallyOrder, canAutom
                     {!canAutomaticallyOrder && canManuallyOrder && <ManualOrdering/>}
                 </div>
             </article>
+            <FieldSetsDisplay fieldSets={section.fieldSets} fieldSetMapFcn={FieldSetsMapFcn}/>
         </section>
     );
 };

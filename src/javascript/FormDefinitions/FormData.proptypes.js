@@ -15,6 +15,14 @@ export const FieldSetPropTypes = PropTypes.shape({
     displayName: PropTypes.string.isRequired,
     fields: PropTypes.arrayOf(FieldPropTypes)
 });
+export const FieldSetWithNodeCheckPropTypes = PropTypes.shape({
+    name: PropTypes.string,
+    displayName: PropTypes.string.isRequired,
+    fields: PropTypes.arrayOf(FieldPropTypes),
+    nodeCheck: PropTypes.object.isRequired,
+    visibilityFunction: PropTypes.func.isRequired,
+    comp: PropTypes.element
+});
 export const SectionPropTypes = PropTypes.shape({
     name: PropTypes.string,
     displayName: PropTypes.string.isRequired,
