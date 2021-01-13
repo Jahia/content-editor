@@ -45,6 +45,9 @@ const ThumbnailCmp = ({
         registry.addOrReplace('refetch-upload', 'refetch-image-list', {
             refetch: refetch
         });
+        return () => {
+            delete registry.registry['refetch-upload-refetch-image-list'];
+        };
     });
 
     if (error) {

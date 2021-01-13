@@ -107,6 +107,9 @@ const ListCmp = ({
         registry.addOrReplace('refetch-upload', 'refetch-content-list', {
             refetch: refetch
         });
+        return () => {
+            delete registry.registry['refetch-upload-refetch-content-list'];
+        };
     });
 
     if (error) {
