@@ -4,7 +4,7 @@ import {FieldSetWithNodeCheckPropTypes} from '~/FormDefinitions/FormData.proptyp
 import {useNodeChecks} from '@jahia/data-helper';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {CircularProgress} from '@material-ui/core';
-import {FieldSet} from "~/EditPanel/EditPanelContent/FormBuilder/FieldSet";
+import {FieldSet} from '~/EditPanel/EditPanelContent/FormBuilder/FieldSet';
 
 const FieldSetWithNodeChecks = ({fieldset}) => {
     const {path, lang, uilang} = useContentEditorContext();

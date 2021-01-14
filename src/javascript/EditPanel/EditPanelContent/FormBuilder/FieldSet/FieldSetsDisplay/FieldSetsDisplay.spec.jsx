@@ -10,10 +10,9 @@ describe('FieldSetsDisplay component', () => {
     });
 
     it('should render field set', () => {
-        const cmp = shallowWithTheme(<FieldSetsDisplay fieldSets={[{name:"myset", displayName:"myname"}]}/>, {}, dsGenericTheme);
+        const cmp = shallowWithTheme(<FieldSetsDisplay fieldSets={[{name: 'myset', displayName: 'myname'}]}/>, {}, dsGenericTheme);
         expect(cmp.find('FieldSet').exists()).toBeTruthy();
     });
-
 
     it('should render field set with node check', () => {
         const mapFunction = fs => {
@@ -22,7 +21,7 @@ describe('FieldSetsDisplay component', () => {
             return fs;
         };
 
-        const cmp = shallowWithTheme(<FieldSetsDisplay fieldSets={[{name:"myset", displayName:"myname"}]} fieldSetMapFcn={mapFunction}/>, {}, dsGenericTheme);
+        const cmp = shallowWithTheme(<FieldSetsDisplay fieldSets={[{name: 'myset', displayName: 'myname'}]} fieldSetMapFcn={mapFunction}/>, {}, dsGenericTheme);
         expect(cmp.find('FieldSetWithNodeChecks').exists()).toBeTruthy();
     });
 });

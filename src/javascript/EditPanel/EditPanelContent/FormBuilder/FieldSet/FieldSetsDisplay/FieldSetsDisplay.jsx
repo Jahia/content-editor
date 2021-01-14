@@ -16,9 +16,9 @@ const FieldSetsDisplay = ({fieldSets, fieldSetMapFcn = x => x}) => {
 
             if (fs.nodeCheck) {
                 return <FieldSetWithNodeChecks fieldset={fs}/>;
-            } else {
-                return <FieldSet key={fs.name} fieldset={fs}/>;
             }
+
+            return <FieldSet key={fs.name} fieldset={fs}/>;
         })
     );
 };
