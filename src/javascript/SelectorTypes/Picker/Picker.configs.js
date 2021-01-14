@@ -72,7 +72,7 @@ const treeConfigs = {
         rootLabelKey: 'content-editor:label.contentEditor.edit.fields.contentPicker.siteGroupsRootLabel'
     }
 };
-const defaultEditorialListType = ['jmix:editorialContent', 'jnt:page', 'jnt:contentList', 'jnt:contentFolder', 'nt:folder', 'jmix:siteContent'];
+const defaultEditorialListType = ['jmix:editorialContent', 'jnt:page', 'jmix:navMenuItem', 'jnt:contentList', 'jnt:contentFolder', 'nt:folder', 'jmix:siteContent'];
 
 export const registerPickerConfig = ceRegistry => {
     ceRegistry.add('pickerConfiguration', 'editoriallink', {
