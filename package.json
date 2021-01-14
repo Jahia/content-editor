@@ -45,6 +45,7 @@
         "@material-ui/core": "^3.9.3",
         "@material-ui/icons": "^3.0.1",
         "@material-ui/lab": "^3.0.0-alpha.30",
+        "@svgr/webpack": "^5.5.0",
         "ckeditor4-react": "^1.2.0",
         "connected-react-router": "^6.8.0",
         "dayjs": "1.8.21",
