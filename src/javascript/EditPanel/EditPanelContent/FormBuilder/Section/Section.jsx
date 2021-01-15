@@ -5,7 +5,7 @@ import {withStyles} from '@material-ui/core';
 import {Typography} from '@jahia/design-system-kit';
 
 import {SectionPropTypes} from '~/FormDefinitions/FormData.proptypes';
-import {FieldSet} from './FieldSet';
+import {FieldSet} from '../FieldSet';
 
 const styles = theme => ({
     section: {

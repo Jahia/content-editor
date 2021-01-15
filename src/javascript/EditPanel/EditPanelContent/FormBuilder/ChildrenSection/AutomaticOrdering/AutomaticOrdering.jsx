@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
-import {FieldContainer} from '~/EditPanel/EditPanelContent/FormBuilder/Section/FieldSet/Field';
+import {FieldContainer} from '~/EditPanel/EditPanelContent/FormBuilder/FieldSet/Field';
 import PropTypes from 'prop-types';
 import {compose} from '~/utils';
 import {connect} from 'formik';

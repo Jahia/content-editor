@@ -224,6 +224,10 @@
           "automatic": "automatic ordering",
           "orderBy": "Order by",
           "description": "Activate automatic list ordering to order your sub-content items using a maximum of three criteria, or reorder your sub-contents items manually, using drag and drop."
+        },
+        "listSizeLimit": {
+          "name": "Number of items",
+          "description": "Set a maximum number of items to be displayed/created in this area. Deactivate to remove any limit. If the list already contains more items than the limit, these items are simply not displayed, they are not deleted."
         }
       },
       "siteSwitcher": {

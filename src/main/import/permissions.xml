@@ -2,5 +2,6 @@
 <permissions xmlns:jcr="http://www.jcp.org/jcr/1.0">
     <contentEditor jcr:primaryType="jnt:permission">
         <canSeeAdvancedOptionsTab jcr:primaryType="jnt:permission"/>
+        <setContentLimitsOnAreas jcr:primaryType="jnt:permission"/>
     </contentEditor>
 </permissions>

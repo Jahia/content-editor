@@ -66,7 +66,8 @@ export const Constants = {
         mixin: 'jmix:orderedList'
     },
     permissions: {
-        canSeeAdvancedOptionsTab: 'canSeeAdvancedOptionsTab'
+        canSeeAdvancedOptionsTab: 'canSeeAdvancedOptionsTab',
+        setContentLimitsOnAreas: 'setContentLimitsOnAreas'
     },
     childrenFilterTypes: ['jnt:content', 'jmix:manuallyOrderable']
 };

@@ -32,7 +32,9 @@ const FormBuilderCmp = ({mode, formik: {values}}) => {
     if (isOrderingSection) {
         const orderingSection = {
             isOrderingSection: true,
-            displayName: t('content-editor:label.contentEditor.section.listAndOrdering.title')
+            displayName: t('content-editor:label.contentEditor.section.listAndOrdering.title'),
+            fieldSets: sections.filter(section => section.name === 'listOrdering')
+                .reduce((acc, value) => [...acc, ...value.fieldSets.filter(f => f.name !== 'jmix:orderedList')], [])
         };
         cloneSections.splice(1, 0, orderingSection);
     }
