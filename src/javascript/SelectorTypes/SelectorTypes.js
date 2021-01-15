@@ -59,8 +59,8 @@ export const registerSelectorTypes = ceRegistry => {
         supportMultiple: false
     });
 
-    ceRegistry.add('selectorType', 'ContentPickerSelectorType', {...ContentPickerSelectorType});
-    ceRegistry.add('selectorType', 'MediaPickerSelectorType', {...MediaPickerSelectorType});
+    ceRegistry.add('selectorType', 'ContentPicker', {...ContentPickerSelectorType});
+    ceRegistry.add('selectorType', 'MediaPicker', {...MediaPickerSelectorType});
     registerPickerConfig(ceRegistry);
     ceRegistry.add('selectorType', 'Picker', {resolver: options => getPickerSelectorType(options)});
     registerPickerActions(ceRegistry);

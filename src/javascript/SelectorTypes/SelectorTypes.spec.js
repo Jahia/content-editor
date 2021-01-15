@@ -54,11 +54,11 @@ describe('Selector Types', () => {
                 selectorOptions: [{name: 'type', value: 'editorial'}]
             });
             expect(selector.cmp).toEqual(Picker);
-            expect(selector.key).toEqual('ContentPickerSelectorType');
+            expect(selector.key).toEqual('ContentPicker');
 
             selector = resolveSelectorType({selectorType: 'Picker', selectorOptions: [{name: 'type', value: 'image'}]});
             expect(selector.cmp).toEqual(Picker);
-            expect(selector.key).toEqual('MediaPickerSelectorType');
+            expect(selector.key).toEqual('MediaPicker');
         });
 
         it('should adapt value if the selector option is password', () => {
