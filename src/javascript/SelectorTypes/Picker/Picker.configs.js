@@ -1,4 +1,3 @@
-import {ContentPickerSelectorType} from './ContentPicker';
 
 const treeConfigs = {
     content: {
@@ -75,9 +74,10 @@ const treeConfigs = {
 const defaultEditorialListType = ['jmix:editorialContent', 'jnt:page', 'jmix:navMenuItem', 'jnt:contentList', 'jnt:contentFolder', 'nt:folder', 'jmix:siteContent'];
 
 export const registerPickerConfig = ceRegistry => {
+    const contentPicker = ceRegistry.get('selectorType', 'ContentPicker');
     ceRegistry.add('pickerConfiguration', 'editoriallink', {
         cmp: {
-            picker: ceRegistry.get('selectorType', 'ContentPickerSelectorType'),
+            picker: contentPicker,
             treeConfigs: [treeConfigs.allContents],
             searchSelectorType: 'jmix:searchable',
             listTypesTable: defaultEditorialListType,
@@ -88,7 +88,7 @@ export const registerPickerConfig = ceRegistry => {
 
     ceRegistry.add('pickerConfiguration', 'editorial', {
         cmp: {
-            picker: ceRegistry.get('selectorType', 'ContentPickerSelectorType'),
+            picker: contentPicker,
             treeConfigs: [treeConfigs.allContents],
             searchSelectorType: 'jmix:searchable',
             listTypesTable: defaultEditorialListType,
@@ -98,7 +98,7 @@ export const registerPickerConfig = ceRegistry => {
 
     ceRegistry.add('pickerConfiguration', 'image', {
         cmp: {
-            picker: ceRegistry.get('selectorType', 'MediaPickerSelectorType'),
+            picker: ceRegistry.get('selectorType', 'MediaPicker'),
             treeConfigs: [treeConfigs.files],
             searchSelectorType: 'jmix:image',
             listTypesTable: ['jmix:image'],
@@ -108,7 +108,7 @@ export const registerPickerConfig = ceRegistry => {
 
     ceRegistry.add('pickerConfiguration', 'folder', {
         cmp: {
-            picker: ceRegistry.get('selectorType', 'ContentPickerSelectorType'),
+            picker: contentPicker,
             treeConfigs: [treeConfigs.files],
             searchSelectorType: 'jnt:folder',
             listTypesTable: ['jnt:folder'],
@@ -118,7 +118,7 @@ export const registerPickerConfig = ceRegistry => {
 
     ceRegistry.add('pickerConfiguration', 'contentfolder', {
         cmp: {
-            picker: ceRegistry.get('selectorType', 'ContentPickerSelectorType'),
+            picker: contentPicker,
             treeConfigs: [treeConfigs.content],
             searchSelectorType: 'jnt:contentFolder',
             listTypesTable: ['jnt:contentFolder'],
@@ -128,7 +128,7 @@ export const registerPickerConfig = ceRegistry => {
 
     ceRegistry.add('pickerConfiguration', 'page', {
         cmp: {
-            picker: ceRegistry.get('selectorType', 'ContentPickerSelectorType'),
+            picker: contentPicker,
             treeConfigs: [treeConfigs.pages],
             searchSelectorType: 'jnt:page',
             listTypesTable: ['jnt:page'],
@@ -139,9 +139,9 @@ export const registerPickerConfig = ceRegistry => {
     ceRegistry.add('pickerConfiguration', 'file', {
         cmp: {
             picker: {
-                ...ContentPickerSelectorType, key: 'FilePicker',
+                ...contentPicker, key: 'FilePicker',
                 pickerInput: {
-                    ...ContentPickerSelectorType.pickerInput,
+                    ...contentPicker.pickerInput,
                     emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.addFile'
                 }
             },
@@ -154,7 +154,7 @@ export const registerPickerConfig = ceRegistry => {
 
     ceRegistry.add('pickerConfiguration', 'user', {
         cmp: {
-            picker: ContentPickerSelectorType,
+            picker: contentPicker,
             treeConfigs: [treeConfigs.users, treeConfigs.siteUsers],
             searchSelectorType: 'jnt:user',
             searchPaths: site => ['/users', `/sites/${site}/users`],
@@ -166,7 +166,7 @@ export const registerPickerConfig = ceRegistry => {
 
     ceRegistry.add('pickerConfiguration', 'usergroup', {
         cmp: {
-            picker: ContentPickerSelectorType,
+            picker: contentPicker,
             treeConfigs: [treeConfigs.groups, treeConfigs.siteGroups],
             searchSelectorType: 'jnt:group',
             searchPaths: site => ['/groups', `/sites/${site}/groups`],
@@ -178,7 +178,7 @@ export const registerPickerConfig = ceRegistry => {
 
     ceRegistry.add('pickerConfiguration', 'category', {
         cmp: {
-            picker: ContentPickerSelectorType,
+            picker: contentPicker,
             treeConfigs: [treeConfigs.categories],
             searchSelectorType: 'jnt:category',
             listTypesTable: ['jnt:category'],
@@ -188,7 +188,7 @@ export const registerPickerConfig = ceRegistry => {
 
     ceRegistry.add('pickerConfiguration', 'site', {
         cmp: {
-            picker: ContentPickerSelectorType,
+            picker: contentPicker,
             treeConfigs: [treeConfigs.sites],
             searchSelectorType: 'jnt:virtualsite',
             listTypesTable: ['jnt:virtualsite'],
