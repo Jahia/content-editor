@@ -17,7 +17,7 @@ export const getPreviewContext = editorContext => {
     }
 
     // Request Parameters are not use for now
-    // TODO:
+    // TODO: BACKLOG-15360
     if (editorContext.currentPage.queryString) {
         let queryString = editorContext.currentPage.queryString;
         if (queryString.startsWith('?')) {
