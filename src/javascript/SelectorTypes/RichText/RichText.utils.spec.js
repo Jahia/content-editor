@@ -6,6 +6,24 @@ jest.mock('~/SelectorTypes/Picker/Picker.utils', () => {
     };
 });
 
+jest.mock('@jahia/ui-extender', () => {
+    return {
+        registry: {
+            get: jest.fn(() => {
+                return {
+                    cmp: {
+                        picker: {
+                            cmp: {},
+                            key: 'ContentPicker'
+                        }
+                    }
+                };
+            }),
+            add: jest.fn()
+        }
+    };
+});
+
 describe('RichText utils', () => {
     describe('buildPickerContext', () => {
         let t;
