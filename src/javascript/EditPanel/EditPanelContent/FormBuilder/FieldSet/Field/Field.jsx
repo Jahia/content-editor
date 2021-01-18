@@ -81,7 +81,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, f
     const wipInfo = values[Constants.wip.fieldName];
 
     // Lookup for registered on changes for given field selector type
-    const registeredOnChanges = registry.find({type: 'selectorType.onChange', target: selectorType.key});
+    const registeredOnChanges = [...registry.find({type: 'selectorType.onChange', target: selectorType.key}), ...registry.find({type: 'selectorType.onChange', target: '*'})];
     const registeredOnChange = currentValue => {
         if (registeredOnChanges && registeredOnChanges.length > 0) {
             registeredOnChanges.forEach(registeredOnChange => {
