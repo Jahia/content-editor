@@ -1,34 +1,47 @@
 export const getPreviewContext = editorContext => {
-    let view = 'cm';
-    let config = 'module';
-    let path = editorContext.path;
-    let requestAttributes = [{
+    let path = editorContext.currentPage.path;
+    const requestAttributes = [{
         name: 'ce_preview',
         value: editorContext.nodeData.uuid
     }];
 
-    if (editorContext.nodeData.displayableNode && !editorContext.nodeData.displayableNode.isFolder) {
-        path = editorContext.nodeData.displayableNode.path;
-        config = 'page';
-        view = 'default';
+    const requestParameters = [];
 
-        if (path !== editorContext.path) {
-            // Displayable node is a parent, let's use the wrapper parameter to be able zoom on the content
-            requestAttributes.push({
-                name: 'ce_preview_wrapper',
-                value: editorContext.path
-            });
+    if (path !== editorContext.path) {
+        // If the path to preview is not the path of the content,
+        // let's use the wrapper parameter to be able zoom on the content
+        requestAttributes.push({
+            name: 'ce_preview_wrapper',
+            value: editorContext.path
+        });
+    }
+
+    // Request Parameters are not use for now
+    // TODO: BACKLOG-15360
+    if (editorContext.currentPage.queryString) {
+        let queryString = editorContext.currentPage.queryString;
+        if (queryString.startsWith('?')) {
+            queryString = queryString.substring(1);
         }
+
+        queryString.split('&').forEach(entry => {
+            const param = entry.split('=');
+            requestParameters.push({
+                name: param[0],
+                value: decodeURIComponent(param[1] || '')
+            });
+        });
     }
 
     return {
         path: path,
         workspace: 'edit',
-        view: view,
-        contextConfiguration: config,
+        view: editorContext.currentPage.template,
+        contextConfiguration: editorContext.currentPage.config,
         templateType: 'html',
         language: editorContext.lang,
-        requestAttributes
+        requestAttributes,
+        requestParameters
     };
 };
 

@@ -12,6 +12,12 @@ describe('Preview.utils', () => {
                 uuid: 'dummy_uuid',
                 path: '/sites/digitall/contents/rich_text',
                 displayableNode: null
+            },
+            currentPage: {
+                config: 'module',
+                template: 'cm',
+                path: '/sites/digitall/contents/rich_text',
+                templateType: '.html'
             }
         };
 
@@ -39,6 +45,12 @@ describe('Preview.utils', () => {
                     path: '/sites/digitall/contents',
                     isFolder: true
                 }
+            },
+            currentPage: {
+                config: 'module',
+                template: 'cm',
+                path: '/sites/digitall/contents/rich_text',
+                templateType: '.html'
             }
         };
 
@@ -66,6 +78,12 @@ describe('Preview.utils', () => {
                     path: '/sites/digitall/contents/rich_text',
                     isFolder: false
                 }
+            },
+            currentPage: {
+                config: 'page',
+                template: 'default',
+                path: '/sites/digitall/contents/rich_text',
+                templateType: '.html'
             }
         };
 
@@ -93,6 +111,12 @@ describe('Preview.utils', () => {
                     path: '/sites/digitall/home',
                     isFolder: false
                 }
+            },
+            currentPage: {
+                config: 'page',
+                template: 'default',
+                path: '/sites/digitall/home',
+                templateType: '.html'
             }
         };
 
