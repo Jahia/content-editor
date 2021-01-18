@@ -8,6 +8,7 @@ import {useTranslation} from 'react-i18next';
 import {compose} from '~/utils';
 import ApolloCacheFlushOnGWTSave from '~/Edit/engineTabs/ApolloCacheFlushOnGWTSave';
 import {ContentEditorSectionContextProvider} from '~/ContentEditorSection/ContentEditorSection.context';
+import {useSelector} from 'react-redux';
 
 export const ContentEditorContext = React.createContext({});
 
@@ -22,6 +23,11 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
         const {notificationContext} = props;
         const {t} = useTranslation('content-editor');
         const contentEditorConfigContext = useContentEditorConfigContext();
+        // Get informations from page composer to display the preview.
+        const {pageComposerCurrentPage, pageComposerActive} = useSelector(state => ({
+            pageComposerCurrentPage: state.pagecomposer.currentPage,
+            pageComposerActive: state.pagecomposer.active
+        }));
         const {lang, uilang, site, uuid, contentType, mode, name} = contentEditorConfigContext;
 
         // Get Data
@@ -56,9 +62,25 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
             return <ProgressOverlay/>;
         }
 
+        // Don't use full page rendering for folders.
+        const isFullPage = nodeData.displayableNode && !nodeData.displayableNode.isFolder;
+        // Set main resource path, currently used by preview:
+        //  - path: path to display
+        //  - template: view or template to use
+        //  - templatetype: extension to use
+        //  - config: page if content can be displayed as full page or module
+        const currentPage = pageComposerActive ? pageComposerCurrentPage :
+            {
+                path: (isFullPage && nodeData.displayableNode.path) || nodeData.path,
+                template: nodeData.displayableNode ? 'default' : 'cm',
+                templateType: '.html'
+            };
+        currentPage.config = isFullPage ? 'page' : 'module';
+
         // Build editor context
         const editorContext = {
             path: nodeData.path,
+            currentPage,
             lang,
             uilang,
             site,
