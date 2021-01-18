@@ -32,7 +32,7 @@ export function fillCKEditorPicker(picker, pickerResult) {
 
 export function buildPickerContext(picker, editorContext, t) {
     const pickerConfig = {
-        ...(registry.get('pickerConfiguration', picker.type) || registry.get('pickerConfiguration', 'editorial')),
+        ...(registry.get('pickerConfiguration', picker.type).cmp || registry.get('pickerConfiguration', 'editorial').cmp),
         displayTree: true
     };
 
