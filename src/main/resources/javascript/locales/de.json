@@ -227,6 +227,10 @@
           "automatic": "automatische Listenreihenfolge",
           "orderBy": "Sortierfeld",
           "description": "Aktivieren Sie die automatische Listenreihenfolge, um Ihre Unterinhalte anhand von maximal drei Kriterien zu ordnen, oder ordnen Sie Ihre Unterinhalte manuell per Drag & Drop neu."
+        },
+        "listSizeLimit": {
+          "name": "Anzahl der Elemente",
+          "description": "Setzen Sie die maximale Anzahl an Elementen, die in dieser Area angezeigt / erstellt werden dürfen."
         }
       },
       "siteSwitcher": {
