@@ -111,6 +111,7 @@
           },
           "imagePicker": {
             "addImage": "Bild hinzufügen",
+            "emptyInputLabel": "Bild auswählen",
             "notFoundImage": "Bild nicht gefunden",
             "rootLabel": "Dateien",
             "modalTitle": "Bild auswählen",
@@ -141,6 +142,8 @@
             "fileUploadBtn": "Datei hochladen",
             "modalTitle": "Content auswählen",
             "modalFileTitle": "Datei auswählen",
+            "modalFolderTitle": "Ordner auswählen",
+            "emptyFolderInput": "Ordner auswählen",
             "searchPlaceholder": "Content suchen",
             "searchFilePlaceholder": "Datei suchen",
             "itemsFound": "{{totalCount}} Einträge gefunden"

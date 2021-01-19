@@ -1,4 +1,3 @@
-
 const treeConfigs = {
     content: {
         rootPath: site => `/sites/${site}/contents`,
@@ -108,7 +107,17 @@ export const registerPickerConfig = ceRegistry => {
 
     ceRegistry.add('pickerConfiguration', 'folder', {
         cmp: {
-            picker: contentPicker,
+            picker: {
+                ...contentPicker,
+                pickerInput: {
+                    ...contentPicker.pickerInput,
+                    emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.emptyFolderInput'
+                },
+                PickerDialog: {
+                    ...contentPicker.PickerDialog,
+                    dialogTitle: () => 'content-editor:label.contentEditor.edit.fields.contentPicker.modalFolderTitle'
+                }
+            },
             treeConfigs: [treeConfigs.files],
             searchSelectorType: 'jnt:folder',
             listTypesTable: ['jnt:folder'],
@@ -118,7 +127,13 @@ export const registerPickerConfig = ceRegistry => {
 
     ceRegistry.add('pickerConfiguration', 'contentfolder', {
         cmp: {
-            picker: contentPicker,
+            picker: {
+                ...contentPicker,
+                PickerDialog: {
+                    ...contentPicker.PickerDialog,
+                    dialogTitle: () => 'content-editor:label.contentEditor.edit.fields.contentPicker.modalFolderTitle'
+                }
+            },
             treeConfigs: [treeConfigs.content],
             searchSelectorType: 'jnt:contentFolder',
             listTypesTable: ['jnt:contentFolder'],
