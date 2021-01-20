@@ -15,12 +15,15 @@
     flex-wrap: nowrap;
     justify-content: flex-start;
     align-items: center;
-    overflow: hidden;
 
     padding: 40px 0 !important;
 
     border-top: 1px solid #e0e6ea;
     border-bottom: 1px solid #e0e6ea;
+
+    &.overflowYVisible {
+        overflow-y: visible;
+    }
 }
 
 .warningText {

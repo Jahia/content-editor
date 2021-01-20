@@ -81,7 +81,7 @@ export const CopyLanguageDialog = ({
                     {t('content-editor:label.contentEditor.edit.action.copyLanguage.dialogSubTitle')}
                 </Typography>
             </DialogTitle>
-            <DialogContent className={classes.dialogContent}>
+            <DialogContent className={classes.dialogContent} classes={{root: classes.overflowYVisible}}>
                 <Typography className={classes.copyFromLabel}>
                     {t('content-editor:label.contentEditor.edit.action.copyLanguage.listLabel')}
                 </Typography>
