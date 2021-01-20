@@ -230,7 +230,7 @@
         },
         "listSizeLimit": {
           "name": "Anzahl der Elemente",
-          "description": "Setzen Sie die maximale Anzahl an Elementen, die in dieser Area angezeigt / erstellt werden dürfen."
+          "description": "Setzen Sie die maximale Anzahl an Elementen, die in dieser Area angezeigt / erstellt werden dürfen. Deaktivieren, um das Limit zu entfernen. Wenn die Liste bereits mehr Elemente als das vorgeschriebene Limit enthält, werden diese Elemente ausgeblendet, aber nicht gelöscht."
         }
       },
       "siteSwitcher": {
