@@ -71,6 +71,7 @@ export const CopyLanguageDialog = ({
                 aria-labelledby="alert-dialog-slide-title"
                 open={isOpen}
                 maxWidth="sm"
+                classes={{paper: classes.dialog_overflowYVisible}}
                 onClose={onCloseDialog}
         >
             <DialogTitle id="dialog-language-title">
@@ -81,7 +82,7 @@ export const CopyLanguageDialog = ({
                     {t('content-editor:label.contentEditor.edit.action.copyLanguage.dialogSubTitle')}
                 </Typography>
             </DialogTitle>
-            <DialogContent className={classes.dialogContent} classes={{root: classes.overflowYVisible}}>
+            <DialogContent className={classes.dialogContent} classes={{root: classes.dialogContent_overflowYVisible}}>
                 <Typography className={classes.copyFromLabel}>
                     {t('content-editor:label.contentEditor.edit.action.copyLanguage.listLabel')}
                 </Typography>

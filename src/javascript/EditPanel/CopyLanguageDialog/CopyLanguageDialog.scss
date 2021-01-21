@@ -21,7 +21,7 @@
     border-top: 1px solid #e0e6ea;
     border-bottom: 1px solid #e0e6ea;
 
-    &.overflowYVisible {
+    &.dialogContent_overflowYVisible {
         overflow-y: visible;
     }
 }
@@ -51,4 +51,8 @@
 
 .language {
     margin-right: 16px;
+}
+
+div.dialog_overflowYVisible {
+    overflow-y: visible;
 }
