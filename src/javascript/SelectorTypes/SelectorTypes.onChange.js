@@ -56,7 +56,7 @@ const registerSelectorTypesOnChange = registry => {
                             const newField = getFields(newSections).find(field => field.name === dependentPropertiesField.name);
                             if (newField) {
                                 newField.valueConstraints = data.forms.fieldConstraints;
-                                editorContext.setSections(sections);
+                                editorContext.setSections(newSections);
                             }
                         }
                     }
