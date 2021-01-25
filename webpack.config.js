@@ -100,7 +100,8 @@ module.exports = (env, argv) => {
                 library: { type: "assign", name: "appShell.remotes.contentEditor" },
                 filename: "remoteEntry.js",
                 exposes: {
-                    './init': './src/javascript/init'
+                    './init': './src/javascript/init',
+                    './Tag': './src/javascript/SelectorTypes/Tag/Tag.jsx'
                 },
                 remotes: {
                     '@jahia/app-shell': 'appShellRemote'
