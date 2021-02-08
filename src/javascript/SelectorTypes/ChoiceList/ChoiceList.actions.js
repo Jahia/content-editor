@@ -11,7 +11,9 @@ const registerChoiceListActions = registry => {
         buttonIcon: <DotsVertical/>,
         buttonLabel: 'label.contentEditor.edit.action.fieldMoreOptions',
         menuTarget: 'ChoicelistActions',
-        isShowIcons: true
+        menuItemProps: {
+            isShowIcons: true
+        }
     });
 
     registry.add('action', 'unsetFieldActionChoiceList', unsetFieldAction, {

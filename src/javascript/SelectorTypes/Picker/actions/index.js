@@ -20,7 +20,9 @@ export const registerPickerActions = registry => {
         buttonIcon: <DotsVertical/>,
         buttonLabel: 'label.contentEditor.edit.action.fieldMoreOptions',
         menuTarget: 'MediaPickerActions',
-        isShowIcons: true,
+        menuItemProps: {
+            isShowIcons: true
+        },
         displayFieldActions: (field, value) => {
             return !field.multiple && value;
         }
