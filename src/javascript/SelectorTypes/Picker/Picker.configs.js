@@ -154,10 +154,15 @@ export const registerPickerConfig = ceRegistry => {
     ceRegistry.add('pickerConfiguration', 'file', {
         cmp: {
             picker: {
-                ...contentPicker, key: 'FilePicker',
+                ...contentPicker,
+                key: 'FilePicker',
                 pickerInput: {
                     ...contentPicker.pickerInput,
                     emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.addFile'
+                },
+                PickerDialog: {
+                    ...contentPicker.PickerDialog,
+                    dialogTitle: () => 'content-editor:label.contentEditor.edit.fields.contentPicker.modalFileTitle'
                 }
             },
             treeConfigs: [treeConfigs.files],

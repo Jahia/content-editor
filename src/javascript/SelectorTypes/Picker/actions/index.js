@@ -30,23 +30,37 @@ export const registerPickerActions = registry => {
         }
     });
 
+    registry.add('action', 'FilePickerMenu', registry.get('action', 'menuAction'), {
+        buttonIcon: <DotsVertical/>,
+        buttonLabel: 'label.contentEditor.edit.action.fieldMoreOptions',
+        menuTarget: 'FilePickerActions',
+        menuItemProps: {
+            isShowIcons: true
+        },
+        displayFieldActions: (field, value) => {
+            return !field.multiple && value;
+        }
+    });
+
     registry.add('action', 'replaceContent', replaceAction, {
         buttonIcon: <Edit/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.fields.actions.replace',
-        targets: ['ContentPickerActions:1', 'MediaPickerActions:1']
+        targets: ['ContentPickerActions:1', 'MediaPickerActions:1', 'FilePickerActions:1']
     });
 
     registry.add('action', 'openInNewTab', openInTabAction, {
         buttonIcon: <Launch/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.fields.actions.newTab',
-        targets: ['ContentPickerActions:2', 'MediaPickerActions:2']
+        targets: ['ContentPickerActions:2', 'MediaPickerActions:2', 'FilePickerActions:2']
     });
 
     registry.add('action', 'unsetFieldActionPicker', unsetFieldAction, {
         buttonIcon: <Cancel/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.fields.actions.clear',
-        targets: ['ContentPickerActions:3', 'MediaPickerActions:3']
+        targets: ['ContentPickerActions:3', 'MediaPickerActions:3', 'FilePickerActions:3']
     });
+
+    console.log('registry', registry);
 
     const fileUploadJContentAction = {
         ...registry.get('action', 'fileUpload'),
