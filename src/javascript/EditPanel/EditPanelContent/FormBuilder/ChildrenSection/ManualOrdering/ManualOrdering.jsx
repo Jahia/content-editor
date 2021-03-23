@@ -9,11 +9,14 @@ export const ManualOrdering = () => {
                 const handleReorder = (droppedName, index) => {
                     const droppedChild = field.value.find(child => child.name === droppedName);
                     const childrenWithoutDropped = field.value.filter(child => child.name !== droppedName);
+                    // Need to add a check here as child might be before the index
+                    const droppedItemIndex = field.value.findIndex(item => item.name === droppedName);
+                    const sliceIndex = ((droppedItemIndex+1) < index) ? index - 1 : index; // +1 here as index is +1
 
                     setFieldValue(field.name, [
-                        ...childrenWithoutDropped.slice(0, index),
+                        ...childrenWithoutDropped.slice(0, sliceIndex),
                         droppedChild,
-                        ...childrenWithoutDropped.slice(index, childrenWithoutDropped.length)
+                        ...childrenWithoutDropped.slice(sliceIndex, childrenWithoutDropped.length)
                     ]);
                     setFieldTouched(field.name, true);
                 };
