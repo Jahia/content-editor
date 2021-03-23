@@ -7,18 +7,25 @@ export const ManualOrdering = () => {
         <FastField name="Children::Order">
             {({field, form: {setFieldValue, setFieldTouched}}) => {
                 const handleReorder = (droppedName, index) => {
-                    const droppedChild = field.value.find(child => child.name === droppedName);
-                    const childrenWithoutDropped = field.value.filter(child => child.name !== droppedName);
-                    // Need to add a check here as child might be before the index
-                    const droppedItemIndex = field.value.findIndex(item => item.name === droppedName);
-                    const sliceIndex = ((droppedItemIndex + 1) < index) ? index - 1 : index; // +1 here as index is +1
+                    let childrenWithoutDropped = [], droppedChild = null, droppedItemIndex = -1;
+                    field.value.forEach((item, index) => {
+                        if (droppedItemIndex === -1 && item.name === droppedName) { // find first match
+                            droppedChild = item;
+                            droppedItemIndex = index + 1;
+                        } else {
+                            childrenWithoutDropped.push(item);
+                        }
+                    })
 
-                    setFieldValue(field.name, [
-                        ...childrenWithoutDropped.slice(0, sliceIndex),
-                        droppedChild,
-                        ...childrenWithoutDropped.slice(sliceIndex, childrenWithoutDropped.length)
-                    ]);
-                    setFieldTouched(field.name, true);
+                    if (droppedChild !== null && droppedItemIndex >= 0) { // There is a match
+                        // +1 here as index is +1
+                        const spliceIndex = ((droppedItemIndex + 1) < index) ? index - 1 : index;
+
+                        setFieldValue(field.name, [
+                            ...childrenWithoutDropped.splice(spliceIndex, 0, droppedChild)
+                        ]);
+                        setFieldTouched(field.name, true);
+                    }
                 };
 
                 return (
