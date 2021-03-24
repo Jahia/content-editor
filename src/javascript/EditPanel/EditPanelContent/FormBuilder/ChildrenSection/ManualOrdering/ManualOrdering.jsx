@@ -7,15 +7,27 @@ export const ManualOrdering = () => {
         <FastField name="Children::Order">
             {({field, form: {setFieldValue, setFieldTouched}}) => {
                 const handleReorder = (droppedName, index) => {
-                    const droppedChild = field.value.find(child => child.name === droppedName);
-                    const childrenWithoutDropped = field.value.filter(child => child.name !== droppedName);
+                    let childrenWithoutDropped = [];
+                    let droppedChild = null;
+                    let droppedItemIndex = -1;
+                    field.value.forEach((item, index) => {
+                        if (droppedItemIndex === -1 && item.name === droppedName) {
+                            droppedChild = item;
+                            droppedItemIndex = index + 1;
+                        } else {
+                            childrenWithoutDropped.push(item);
+                        }
+                    });
 
-                    setFieldValue(field.name, [
-                        ...childrenWithoutDropped.slice(0, index),
-                        droppedChild,
-                        ...childrenWithoutDropped.slice(index, childrenWithoutDropped.length)
-                    ]);
-                    setFieldTouched(field.name, true);
+                    if (droppedChild !== null && droppedItemIndex >= 0) {
+                        // +1 here as index is +1
+                        const spliceIndex = ((droppedItemIndex + 1) < index) ? index - 1 : index;
+
+                        setFieldValue(field.name, [
+                            ...childrenWithoutDropped.splice(spliceIndex, 0, droppedChild)
+                        ]);
+                        setFieldTouched(field.name, true);
+                    }
                 };
 
                 return (
