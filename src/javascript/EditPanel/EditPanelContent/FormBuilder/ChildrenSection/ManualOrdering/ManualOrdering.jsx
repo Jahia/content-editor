@@ -13,18 +13,19 @@ export const ManualOrdering = () => {
                     field.value.forEach((item, index) => {
                         if (droppedItemIndex === -1 && item.name === droppedName) {
                             droppedChild = item;
-                            droppedItemIndex = index + 1;
+                            droppedItemIndex = index;
                         } else {
                             childrenWithoutDropped.push(item);
                         }
                     });
 
                     if (droppedChild !== null && droppedItemIndex >= 0) {
-                        // +1 here as index is +1
+                        // +1 for droppedItemIndex here as index parameter from handleReOrder is starting from 1 instead of 0
                         const spliceIndex = ((droppedItemIndex + 1) < index) ? index - 1 : index;
-
                         setFieldValue(field.name, [
-                            ...childrenWithoutDropped.splice(spliceIndex, 0, droppedChild)
+                            ...childrenWithoutDropped.slice(0, spliceIndex),
+                            droppedChild,
+                            ...childrenWithoutDropped.slice(spliceIndex, childrenWithoutDropped.length)
                         ]);
                         setFieldTouched(field.name, true);
                     }
