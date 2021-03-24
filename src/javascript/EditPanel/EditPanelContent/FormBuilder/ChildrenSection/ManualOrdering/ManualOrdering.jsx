@@ -7,17 +7,19 @@ export const ManualOrdering = () => {
         <FastField name="Children::Order">
             {({field, form: {setFieldValue, setFieldTouched}}) => {
                 const handleReorder = (droppedName, index) => {
-                    let childrenWithoutDropped = [], droppedChild = null, droppedItemIndex = -1;
+                    let childrenWithoutDropped = [];
+                    let droppedChild = null;
+                    let droppedItemIndex = -1;
                     field.value.forEach((item, index) => {
-                        if (droppedItemIndex === -1 && item.name === droppedName) { // find first match
+                        if (droppedItemIndex === -1 && item.name === droppedName) {
                             droppedChild = item;
                             droppedItemIndex = index + 1;
                         } else {
                             childrenWithoutDropped.push(item);
                         }
-                    })
+                    });
 
-                    if (droppedChild !== null && droppedItemIndex >= 0) { // There is a match
+                    if (droppedChild !== null && droppedItemIndex >= 0) {
                         // +1 here as index is +1
                         const spliceIndex = ((droppedItemIndex + 1) < index) ? index - 1 : index;
 
