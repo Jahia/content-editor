@@ -18,8 +18,15 @@ let styles = theme => ({
     fieldsetTitleContainer: {
         borderTop: `1px solid ${theme.palette.ui.omega}`,
         display: 'flex',
-        flexDirection: 'row',
+        flexFlow: 'row wrap',
+        alignItems: 'center',
+        minHeight: '74px',
         margin: `0 ${theme.spacing.unit * 6}px 0 ${theme.spacing.unit * 4}px`
+    },
+    fieldSetDescription: {
+        padding: `0 0 ${theme.spacing.unit * 2}px 53px`,
+        marginTop: '-7px',
+        flexBasis: '100%'
     }
 });
 
@@ -41,6 +48,10 @@ const FieldSetCmp = ({fieldset, classes, formik: {values, handleChange}}) => {
                 <Typography component="label" htmlFor={fieldset.name} className={classes.fieldSetTitle} color="alpha" variant="zeta">
                     {fieldset.displayName}
                 </Typography>
+                {fieldset.description &&
+                <Typography component="label" className={classes.fieldSetDescription} color="beta" variant="omega">
+                    {fieldset.description}
+                </Typography>}
             </div>
 
             {activatedFieldSet && fieldset.fields.map(field => {
