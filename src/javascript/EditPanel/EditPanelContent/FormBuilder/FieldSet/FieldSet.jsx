@@ -10,11 +10,6 @@ import {FieldContainer} from './Field';
 
 let styles = theme => ({
     fieldsetContainer: {},
-    fieldSetTitle: {
-        width: 'auto',
-        textTransform: 'uppercase',
-        padding: `${theme.spacing.unit * 2}px 0`
-    },
     fieldsetTitleContainer: {
         borderTop: `1px solid ${theme.palette.ui.omega}`,
         display: 'flex',
@@ -23,9 +18,18 @@ let styles = theme => ({
         minHeight: '74px',
         margin: `0 ${theme.spacing.unit * 6}px 0 ${theme.spacing.unit * 4}px`
     },
+    labelContainer: {
+        display: 'flex',
+        flexFlow: 'row wrap'
+    },
+    fieldSetTitle: {
+        width: 'auto',
+        textTransform: 'uppercase',
+        padding: `${theme.spacing.unit * 2}px 0`
+    },
     fieldSetDescription: {
-        padding: `0 0 ${theme.spacing.unit * 2}px 53px`,
-        marginTop: '-7px',
+        paddingBottom: `${theme.spacing.unit * 2}px`,
+        marginTop: `${-theme.spacing.unit}px`,
         flexBasis: '100%'
     }
 });
@@ -45,13 +49,15 @@ const FieldSetCmp = ({fieldset, classes, formik: {values, handleChange}}) => {
                         onChange={handleChange}
                 />}
 
-                <Typography component="label" htmlFor={fieldset.name} className={classes.fieldSetTitle} color="alpha" variant="zeta">
-                    {fieldset.displayName}
-                </Typography>
-                {fieldset.description &&
-                <Typography component="label" className={classes.fieldSetDescription} color="beta" variant="omega">
-                    {fieldset.description}
-                </Typography>}
+                <div className={classes.labelContainer}>
+                    <Typography component="label" htmlFor={fieldset.name} className={classes.fieldSetTitle} color="alpha" variant="zeta">
+                        {fieldset.displayName}
+                    </Typography>
+                    {fieldset.description &&
+                    <Typography component="label" className={classes.fieldSetDescription} color="beta" variant="omega">
+                        {fieldset.description}
+                    </Typography>}
+                </div>
             </div>
 
             {activatedFieldSet && fieldset.fields.map(field => {
