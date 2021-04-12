@@ -1,0 +1,238 @@
+{
+  "name": "jmix:exif",
+  "priority": 1.0,
+  "fields": [
+    {
+      "name": "j:colorSpace",
+      "target": {
+        "sectionName": "metadata",
+        "fieldSetName": "jmix:exif",
+        "rank": 1
+      }
+    },
+    {
+      "name": "j:componentsConfiguration",
+      "target": {
+        "sectionName": "metadata",
+        "fieldSetName": "jmix:exif",
+        "rank": 1
+      }
+    },
+    {
+      "name": "j:compression",
+      "target": {
+        "sectionName": "metadata",
+        "fieldSetName": "jmix:exif",
+        "rank": 1
+      }
+    },
+    {
+      "name": "j:compressedBitsPerPixel",
+      "target": {
+        "sectionName": "metadata",
+        "fieldSetName": "jmix:exif",
+        "rank": 1
+      }
+    },
+    {
+      "name": "j:dateTime",
+      "target": {
+        "sectionName": "metadata",
+        "fieldSetName": "jmix:exif",
+        "rank": 1
+      }
+    },
+    {
+      "name": "j:dateTimeDigitized",
+      "target": {
+        "sectionName": "metadata",
+        "fieldSetName": "jmix:exif",
+        "rank": 1
+      }
+    },
+    {
+      "name": "j:dateTimeOriginal",
+      "target": {
+        "sectionName": "metadata",
+        "fieldSetName": "jmix:exif",
+        "rank": 1
+      }
+    },
+    {
+      "name": "j:exifVersion",
+      "target": {
+        "sectionName": "metadata",
+        "fieldSetName": "jmix:exif",
+        "rank": 1
+      }
+    },
+    {
+      "name": "j:exposureBiasValue",
+      "target": {
+        "sectionName": "metadata",
+        "fieldSetName": "jmix:exif",
+        "rank": 1
+      }
+    },
+    {
+      "name": "j:exposureProgram",
+      "target": {
+        "sectionName": "metadata",
+        "fieldSetName": "jmix:exif",
+        "rank": 1
+      }
+    },
+    {
+      "name": "j:exposureTime",
+      "target": {
+        "sectionName": "metadata",
+        "fieldSetName": "jmix:exif",
+        "rank": 1
+      }
+    },
+    {
+      "name": "j:fileSource",
+      "target": {
+        "sectionName": "metadata",
+        "fieldSetName": "jmix:exif",
+        "rank": 1
+      }
+    },
+    {
+      "name": "j:flash",
+      "target": {
+        "sectionName": "metadata",
+        "fieldSetName": "jmix:exif",
+        "rank": 1
+      }
+    },
+    {
+      "name": "j:flashPixVersion",
+      "target": {
+        "sectionName": "metadata",
+        "fieldSetName": "jmix:exif",
+        "rank": 1
+      }
+    },
+    {
+      "name": "j:fNumber",
+      "target": {
+        "sectionName": "metadata",
+        "fieldSetName": "jmix:exif",
+        "rank": 1
+      }
+    },
+    {
+      "name": "j:focalLength",
+      "target": {
+        "sectionName": "metadata",
+        "fieldSetName": "jmix:exif",
+        "rank": 1
+      }
+    },
+    {
+      "name": "j:interoperabilityIndex",
+      "target": {
+        "sectionName": "metadata",
+        "fieldSetName": "jmix:exif",
+        "rank": 1
+      }
+    },
+    {
+      "name": "j:interoperabilityVersion",
+      "target": {
+        "sectionName": "metadata",
+        "fieldSetName": "jmix:exif",
+        "rank": 1
+      }
+    },
+    {
+      "name": "j:make",
+      "target": {
+        "sectionName": "metadata",
+        "fieldSetName": "jmix:exif",
+        "rank": 1
+      }
+    },
+    {
+      "name": "j:maxApertureValue",
+      "target": {
+        "sectionName": "metadata",
+        "fieldSetName": "jmix:exif",
+        "rank": 1
+      }
+    },
+    {
+      "name": "j:meteringMode",
+      "target": {
+        "sectionName": "metadata",
+        "fieldSetName": "jmix:exif",
+        "rank": 1
+      }
+    },
+    {
+      "name": "j:model",
+      "target": {
+        "sectionName": "metadata",
+        "fieldSetName": "jmix:exif",
+        "rank": 1
+      }
+    },
+    {
+      "name": "j:orientation",
+      "target": {
+        "sectionName": "metadata",
+        "fieldSetName": "jmix:exif",
+        "rank": 1
+      }
+    },
+    {
+      "name": "j:resolutionUnit",
+      "target": {
+        "sectionName": "metadata",
+        "fieldSetName": "jmix:exif",
+        "rank": 1
+      }
+    },
+    {
+      "name": "j:sceneType",
+      "target": {
+        "sectionName": "metadata",
+        "fieldSetName": "jmix:exif",
+        "rank": 1
+      }
+    },
+    {
+      "name": "j:software",
+      "target": {
+        "sectionName": "metadata",
+        "fieldSetName": "jmix:exif",
+        "rank": 1
+      }
+    },
+    {
+      "name": "j:xresolution",
+      "target": {
+        "sectionName": "metadata",
+        "fieldSetName": "jmix:exif",
+        "rank": 1
+      }
+    },
+    {
+      "name": "j:ycbcrPositioning",
+      "target": {
+        "sectionName": "metadata",
+        "fieldSetName": "jmix:exif",
+        "rank": 1
+      }
+    },
+    {
+      "name": "j:yresolution",
+      "target": {
+        "sectionName": "metadata",
+        "fieldSetName": "jmix:exif",
+        "rank": 1
+      }
+    }
+  ]
+}
