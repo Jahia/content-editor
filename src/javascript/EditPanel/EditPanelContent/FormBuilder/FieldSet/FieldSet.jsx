@@ -13,14 +13,14 @@ let styles = theme => ({
     fieldsetTitleContainer: {
         borderTop: `1px solid ${theme.palette.ui.omega}`,
         display: 'flex',
-        flexFlow: 'row wrap',
+        flexDirection: 'row',
         alignItems: 'center',
         minHeight: '74px',
         margin: `0 ${theme.spacing.unit * 6}px 0 ${theme.spacing.unit * 4}px`
     },
     labelContainer: {
         display: 'flex',
-        flexFlow: 'row wrap'
+        flexFlow: 'column wrap'
     },
     fieldSetTitle: {
         width: 'auto',
@@ -29,8 +29,7 @@ let styles = theme => ({
     },
     fieldSetDescription: {
         paddingBottom: `${theme.spacing.unit * 2}px`,
-        marginTop: `${-theme.spacing.unit}px`,
-        flexBasis: '100%'
+        marginTop: `${-theme.spacing.unit}px`
     }
 });
 
