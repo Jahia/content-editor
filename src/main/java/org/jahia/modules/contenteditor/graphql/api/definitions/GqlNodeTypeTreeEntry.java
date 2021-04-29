@@ -55,6 +55,7 @@ import org.jahia.utils.NodeTypeTreeEntry;
 
 import javax.jcr.RepositoryException;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -138,6 +139,6 @@ public class GqlNodeTypeTreeEntry {
         if (nodeTreeEntry.getChildren() == null) {
             return Collections.emptyList();
         }
-        return nodeTreeEntry.getChildren().stream().map(entry -> new GqlNodeTypeTreeEntry(entry, this)).collect(Collectors.toList());
+       return nodeTreeEntry.getChildren().stream().sorted(Comparator.comparing(NodeTypeTreeEntry::getLabel)).map(entry -> new GqlNodeTypeTreeEntry(entry, this)).collect(Collectors.toList());
     }
 }
