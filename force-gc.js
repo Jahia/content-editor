@@ -1,5 +1,5 @@
 // https://github.com/facebook/jest/issues/7311
-afterAll(() => {
+afterEach(() => {
     if (global.gc) {
         global.gc();
     }
