@@ -15,6 +15,7 @@ export const registerEditActions = actionsRegistry => {
         buttonLabel: 'content-editor:label.contentEditor.edit.contentEdit',
         targets: ['contentActions:2'],
         hideOnNodeTypes: ['jnt:virtualsite', 'jnt:page'], // For edit content
+        requiredSitePermission: ['editAction'],
         getDisplayName: true
     });
 
