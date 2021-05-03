@@ -354,7 +354,10 @@ public class EditorFormServiceImpl implements EditorFormService {
     private String resolveMainSectionName(EditorFormFieldSet fieldSet) {
         String targetSectionName = fieldSet.getTarget().getSectionName() != null ? fieldSet.getTarget().getSectionName() : DEFAULT_SECTION;
         for (EditorFormField field : fieldSet.getEditorFormFields()) {
-            targetSectionName = field.getTarget().getSectionName();
+            String sectionName = field.getTarget().getSectionName();
+            if (sectionName != null) {
+                targetSectionName = field.getTarget().getSectionName();
+            }
         }
         return targetSectionName;
     }
