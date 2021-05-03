@@ -30,7 +30,8 @@ const styles = theme => ({
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: `0 ${theme.spacing.unit * 4} ${theme.spacing.unit * 4} ${theme.spacing.unit * 4}`,
-        backgroundColor: theme.palette.ui.epsilon
+        backgroundColor: theme.palette.ui.epsilon,
+        marginTop: `${theme.spacing.unit * 4}`
     },
     actionsJahiaAction: {
         '& svg': {
