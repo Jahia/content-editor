@@ -356,7 +356,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         for (EditorFormField field : fieldSet.getEditorFormFields()) {
             String sectionName = field.getTarget().getSectionName();
             if (sectionName != null) {
-                targetSectionName = field.getTarget().getSectionName();
+                targetSectionName = sectionName;
             }
         }
         return targetSectionName;
