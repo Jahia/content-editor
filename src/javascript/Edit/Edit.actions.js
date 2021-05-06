@@ -9,12 +9,23 @@ import OpenWorkInProgressModalAction from '~/EditPanel/WorkInProgress/OpenWorkIn
 import {CopyLanguageActionComponent} from '~/Edit/copyLanguage/copyLanguage.action';
 
 export const registerEditActions = actionsRegistry => {
-    // Edit action button in JContent
+    // Edit action button in JContent; need separate actions for content and pages
     actionsRegistry.add('action', 'edit', editContentAction, {
         buttonIcon: <Edit/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.contentEdit',
         targets: ['contentActions:2'],
-        hideOnNodeTypes: ['jnt:virtualsite'],
+        hideOnNodeTypes: ['jnt:virtualsite', 'jnt:page'], // For edit content
+        requiredSitePermission: ['editAction'],
+        getDisplayName: true
+    });
+
+    // Edit action button in JContent; need separate actions for content and pages
+    actionsRegistry.add('action', 'editPage', editContentAction, {
+        buttonIcon: <Edit/>,
+        buttonLabel: 'content-editor:label.contentEditor.edit.contentEdit',
+        targets: ['contentActions:2'],
+        showOnNodeTypes: ['jnt:page'], // For edit pages
+        requiredSitePermission: ['editPageAction'],
         getDisplayName: true
     });
 
