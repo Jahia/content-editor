@@ -78,6 +78,7 @@ public class EditorFormServiceImpl implements EditorFormService {
 
     private static final Logger logger = LoggerFactory.getLogger(EditorFormServiceImpl.class);
     public static final String DEFAULT_FORM_DEFINITION_NAME = "default";
+    public static final String DEFAULT_SECTION = "content";
     private NodeTypeRegistry nodeTypeRegistry;
     private ChoiceListInitializerService choiceListInitializerService;
     private StaticDefinitionsRegistry staticDefinitionsRegistry;
@@ -351,18 +352,16 @@ public class EditorFormServiceImpl implements EditorFormService {
     }
 
     private String resolveMainSectionName(EditorFormFieldSet fieldSet) {
-        String targetSectionName = null;
+        String targetSectionName = fieldSet.getTarget().getSectionName() != null ? fieldSet.getTarget().getSectionName() : DEFAULT_SECTION;
         for (EditorFormField field : fieldSet.getEditorFormFields()) {
-            // let's check what target they have in case we have to move them.
-            if (targetSectionName == null) {
-                targetSectionName = field.getTarget().getSectionName();
-            } else if (!targetSectionName.equals(field.getTarget().getSectionName())) {
-                // field should be moved to another section, but in which field set ?
-                // todo should we do this ?
+            String sectionName = field.getTarget().getSectionName();
+            // Keep in mind that it could be the case that targetSectionName name will not be the same as section name for all fields (based on previous code).
+            // It is not clear where to put that field at that point. The concept itself is quite strange since intuition would suggest that a fieldset cannot be
+            // in more than one section at a time. I preserved original behaviour here to not get into a lot of refactoring.
+            if (sectionName != null) {
+                targetSectionName = sectionName;
+                break;
             }
-        }
-        if (targetSectionName == null) {
-            targetSectionName = "content";
         }
         return targetSectionName;
     }
@@ -410,7 +409,6 @@ public class EditorFormServiceImpl implements EditorFormService {
         boolean isLockedAndCannotBeEdited = JCRContentUtils.isLockedAndCannotBeEdited(existingNode);
         boolean fieldSetEditable = existingNode == null || (!isLockedAndCannotBeEdited && existingNode.hasPermission("jcr:nodeTypeManagement"));
 
-
         SortedSet<EditorFormField> editorFormFields = new TreeSet<>();
         Map<String, Double> maxTargetRank = new HashMap<>();
 
@@ -440,7 +438,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         String displayName = nodeType.getLabel(uiLocale);
         String description = nodeType.getDescription(uiLocale);
 
-        return new EditorFormFieldSet(
+        EditorFormFieldSet fieldset = new EditorFormFieldSet(
             nodeType.getName(),
             displayName,
             description,
@@ -451,6 +449,11 @@ public class EditorFormServiceImpl implements EditorFormService {
             !fieldSetEditable,
             editorFormFields
         );
+
+        // Set correct target for fieldset itself which will be used in case the fieldset doesn't have fields i. e. mixin definition without properties
+        fieldset.setTarget(new EditorFormFieldTarget(nodeType.getItemsType(), nodeType.getName(), -0.1));
+
+        return fieldset;
     }
 
     private EditorFormField generateEditorFormField(ExtendedItemDefinition itemDefinition, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale uiLocale, Locale locale, Double rank) throws RepositoryException {
