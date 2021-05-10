@@ -69,6 +69,7 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
     private Boolean readOnly;
     private Set<EditorFormField> editorFormFields = new HashSet<>();
     private Map<String, EditorFormField> editorFormFieldsByName = new LinkedHashMap<>();
+    private EditorFormFieldTarget target = new EditorFormFieldTarget();
 
     public EditorFormFieldSet() {
     }
@@ -327,4 +328,11 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
         return newEditorFormFieldSet;
     }
 
+    public EditorFormFieldTarget getTarget() {
+        return target;
+    }
+
+    public void setTarget(EditorFormFieldTarget target) {
+        this.target = target;
+    }
 }
