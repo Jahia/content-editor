@@ -567,7 +567,6 @@ public class EditorFormServiceImpl implements EditorFormService {
             Map<String, Object> context = new HashMap<>();
             context.put("contextType", primaryNodeType);
             context.put("contextNode", existingNode);
-            context.put("contextParent", parentNode);
             context.putAll(extendContext);
             for (EditorFormProperty selectorProperty : selectorOptions) {
                 if (initializers.containsKey(selectorProperty.getName())) {
