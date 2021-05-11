@@ -162,7 +162,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                     extendContext.put(contextEntry.getKey(), contextEntry.getValue());
                 }
 
-                return getValueConstraints(nodeTypeRegistry.getNodeType(primaryNodeType), editorFormField, node, parentNode, locale, extendContext);
+                return getValueConstraints(nodeTypeRegistry.getNodeType(primaryNodeType), editorFormField, node, locale, extendContext);
             }
 
             return Collections.emptyList();
@@ -267,7 +267,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         nodeTypeFieldSet = mergeWithStaticFormFieldSets(fieldSetNodeType.getName(), nodeTypeFieldSet);
 
         if (!nodeTypeFieldSet.isRemoved()) {
-            processValueConstraints(nodeTypeFieldSet, locale, existingNode, parentNode, primaryNodeType);
+            processValueConstraints(nodeTypeFieldSet, locale, existingNode, primaryNodeType);
             addFieldSetToSections(formSectionsByName, nodeTypeFieldSet);
         }
     }
@@ -366,13 +366,13 @@ public class EditorFormServiceImpl implements EditorFormService {
         return targetSectionName;
     }
 
-    private void processValueConstraints(EditorFormFieldSet editorFormFieldSet, Locale locale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, ExtendedNodeType primaryNodeType) throws RepositoryException {
+    private void processValueConstraints(EditorFormFieldSet editorFormFieldSet, Locale locale, JCRNodeWrapper existingNode, ExtendedNodeType primaryNodeType) throws RepositoryException {
         for (EditorFormField editorFormField : editorFormFieldSet.getEditorFormFields()) {
             if (editorFormField.getValueConstraints() == null || editorFormField.getExtendedPropertyDefinition() == null) {
                 continue;
             }
             // Process dependent properties
-            List<EditorFormFieldValueConstraint> valueConstraints = getValueConstraints(primaryNodeType, editorFormField, existingNode, parentNode, locale, new HashMap<>());
+            List<EditorFormFieldValueConstraint> valueConstraints = getValueConstraints(primaryNodeType, editorFormField, existingNode, locale, new HashMap<>());
             editorFormField.setValueConstraints(valueConstraints);
         }
     }
@@ -551,7 +551,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         );
     }
 
-    private List<EditorFormFieldValueConstraint> getValueConstraints(ExtendedNodeType primaryNodeType, EditorFormField editorFormField, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale locale, Map<String, Object> extendContext) throws RepositoryException {
+    private List<EditorFormFieldValueConstraint> getValueConstraints(ExtendedNodeType primaryNodeType, EditorFormField editorFormField, JCRNodeWrapper existingNode, Locale locale, Map<String, Object> extendContext) throws RepositoryException {
         ExtendedPropertyDefinition propertyDefinition = editorFormField.getExtendedPropertyDefinition();
         if (propertyDefinition == null) {
             logger.error("Missing property definition to resolve choice list values, cannot process");
