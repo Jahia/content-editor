@@ -162,7 +162,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                     extendContext.put(contextEntry.getKey(), contextEntry.getValue());
                 }
 
-                return getValueConstraints(nodeTypeRegistry.getNodeType(primaryNodeType), editorFormField, node, parentNode, locale, extendContext);
+                return getValueConstraints(nodeTypeRegistry.getNodeType(primaryNodeType), editorFormField, node, locale, extendContext);
             }
 
             return Collections.emptyList();
@@ -267,7 +267,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         nodeTypeFieldSet = mergeWithStaticFormFieldSets(fieldSetNodeType.getName(), nodeTypeFieldSet);
 
         if (!nodeTypeFieldSet.isRemoved()) {
-            processValueConstraints(nodeTypeFieldSet, locale, existingNode, parentNode, primaryNodeType);
+            processValueConstraints(nodeTypeFieldSet, locale, existingNode, primaryNodeType);
             addFieldSetToSections(formSectionsByName, nodeTypeFieldSet);
         }
     }
@@ -366,13 +366,13 @@ public class EditorFormServiceImpl implements EditorFormService {
         return targetSectionName;
     }
 
-    private void processValueConstraints(EditorFormFieldSet editorFormFieldSet, Locale locale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, ExtendedNodeType primaryNodeType) throws RepositoryException {
+    private void processValueConstraints(EditorFormFieldSet editorFormFieldSet, Locale locale, JCRNodeWrapper existingNode, ExtendedNodeType primaryNodeType) throws RepositoryException {
         for (EditorFormField editorFormField : editorFormFieldSet.getEditorFormFields()) {
             if (editorFormField.getValueConstraints() == null || editorFormField.getExtendedPropertyDefinition() == null) {
                 continue;
             }
             // Process dependent properties
-            List<EditorFormFieldValueConstraint> valueConstraints = getValueConstraints(primaryNodeType, editorFormField, existingNode, parentNode, locale, new HashMap<>());
+            List<EditorFormFieldValueConstraint> valueConstraints = getValueConstraints(primaryNodeType, editorFormField, existingNode, locale, new HashMap<>());
             editorFormField.setValueConstraints(valueConstraints);
         }
     }
@@ -551,7 +551,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         );
     }
 
-    private List<EditorFormFieldValueConstraint> getValueConstraints(ExtendedNodeType primaryNodeType, EditorFormField editorFormField, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale locale, Map<String, Object> extendContext) throws RepositoryException {
+    private List<EditorFormFieldValueConstraint> getValueConstraints(ExtendedNodeType primaryNodeType, EditorFormField editorFormField, JCRNodeWrapper existingNode, Locale locale, Map<String, Object> extendContext) throws RepositoryException {
         ExtendedPropertyDefinition propertyDefinition = editorFormField.getExtendedPropertyDefinition();
         if (propertyDefinition == null) {
             logger.error("Missing property definition to resolve choice list values, cannot process");
@@ -564,19 +564,13 @@ public class EditorFormServiceImpl implements EditorFormService {
         if (selectorOptions != null && !selectorOptions.isEmpty()) {
             Map<String, ChoiceListInitializer> initializers = choiceListInitializerService.getInitializers();
 
-            Map<String, String> replacements = new HashMap<>();
-            if (existingNode != null) {
-                replacements.put("$currentSite", existingNode.getResolveSite().getPath());
-            }
-
             Map<String, Object> context = new HashMap<>();
             context.put("contextType", primaryNodeType);
             context.put("contextNode", existingNode);
-            context.put("contextParent", parentNode);
             context.putAll(extendContext);
             for (EditorFormProperty selectorProperty : selectorOptions) {
                 if (initializers.containsKey(selectorProperty.getName())) {
-                    initialChoiceListValues = initializers.get(selectorProperty.getName()).getChoiceListValues(propertyDefinition, replaceSelectorPropertyValuePlaceHolders(selectorProperty.getValue(), replacements), initialChoiceListValues, locale, context);
+                    initialChoiceListValues = initializers.get(selectorProperty.getName()).getChoiceListValues(propertyDefinition, selectorProperty.getValue(), initialChoiceListValues, locale, context);
                 }
             }
         } else {
@@ -613,16 +607,6 @@ public class EditorFormServiceImpl implements EditorFormService {
             }
         }
         return valueConstraints;
-    }
-
-    private String replaceSelectorPropertyValuePlaceHolders(String selectorPropertyValue, Map<String, String> replacements) {
-        for (Map.Entry<String, String> entry : replacements.entrySet()) {
-            String key = entry.getKey();
-            String value = entry.getValue();
-            selectorPropertyValue = selectorPropertyValue.replace(key, value);
-        }
-
-        return selectorPropertyValue;
     }
 
     private boolean isFieldReadOnly(ExtendedPropertyDefinition propertyDefinition, boolean sharedFieldsEditable, boolean i18nFieldsEditable) {
