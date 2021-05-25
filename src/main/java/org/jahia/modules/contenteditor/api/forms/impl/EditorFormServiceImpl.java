@@ -564,11 +564,6 @@ public class EditorFormServiceImpl implements EditorFormService {
         if (selectorOptions != null && !selectorOptions.isEmpty()) {
             Map<String, ChoiceListInitializer> initializers = choiceListInitializerService.getInitializers();
 
-            Map<String, String> replacements = new HashMap<>();
-            if (existingNode != null) {
-                replacements.put("$currentSite", existingNode.getResolveSite().getPath());
-            }
-
             Map<String, Object> context = new HashMap<>();
             context.put("contextType", primaryNodeType);
             context.put("contextNode", existingNode);
@@ -576,7 +571,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             context.putAll(extendContext);
             for (EditorFormProperty selectorProperty : selectorOptions) {
                 if (initializers.containsKey(selectorProperty.getName())) {
-                    initialChoiceListValues = initializers.get(selectorProperty.getName()).getChoiceListValues(propertyDefinition, replaceSelectorPropertyValuePlaceHolders(selectorProperty.getValue(), replacements), initialChoiceListValues, locale, context);
+                    initialChoiceListValues = initializers.get(selectorProperty.getName()).getChoiceListValues(propertyDefinition, selectorProperty.getValue(), initialChoiceListValues, locale, context);
                 }
             }
         } else {
@@ -613,16 +608,6 @@ public class EditorFormServiceImpl implements EditorFormService {
             }
         }
         return valueConstraints;
-    }
-
-    private String replaceSelectorPropertyValuePlaceHolders(String selectorPropertyValue, Map<String, String> replacements) {
-        for (Map.Entry<String, String> entry : replacements.entrySet()) {
-            String key = entry.getKey();
-            String value = entry.getValue();
-            selectorPropertyValue = selectorPropertyValue.replace(key, value);
-        }
-
-        return selectorPropertyValue;
     }
 
     private boolean isFieldReadOnly(ExtendedPropertyDefinition propertyDefinition, boolean sharedFieldsEditable, boolean i18nFieldsEditable) {
