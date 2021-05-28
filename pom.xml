@@ -233,7 +233,7 @@
                                 </goals>
                                 <configuration>
                                     <nodeVersion>v12.16.2</nodeVersion>
-                                    <yarnVersion>v1.19.1</yarnVersion>
+                                    <yarnVersion>v1.22.10</yarnVersion>
                                 </configuration>
                             </execution>
                             <execution>
