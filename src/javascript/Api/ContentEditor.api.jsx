@@ -147,13 +147,15 @@ const ContentEditorApiCmp = ({classes, client}) => {
         initCallback: formik => {
             setFormikRef(formik);
         },
-        back: (nodeUuid, operation) => {
+        back: (nodeUuid, operation, overridedStoredLocation, byPassEventTriggers) => {
             // Refresh GWT content
             if (window.top.authoringApi.refreshContent) {
                 window.top.authoringApi.refreshContent();
             }
 
-            triggerEvents(nodeUuid, operation);
+            if (!byPassEventTriggers) {
+                triggerEvents(nodeUuid, operation);
+            }
 
             closeAll();
         },
