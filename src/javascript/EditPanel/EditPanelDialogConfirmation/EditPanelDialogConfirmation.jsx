@@ -14,7 +14,9 @@ export const EditPanelDialogConfirmation = ({titleKey, open, onCloseDialog, acti
     const handleDiscard = () => {
         onCloseDialog();
 
-        actionCallback();
+        // Undefined: overridedStoredLocation
+        // True: byPassEventTriggers (we dont want to perform event triggers in case of nothing have been saved/created)
+        actionCallback(undefined, true);
     };
 
     const handleSave = () => {

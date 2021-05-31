@@ -6,12 +6,12 @@ import * as PropTypes from 'prop-types';
 const GoBack = ({render: Render, isDirty, formik, uuid, operator, componentProps, ...otherProps}) => {
     const {envProps} = useContentEditorConfigContext();
     const [open, setOpen] = useState(false);
-    const executeGoBackAction = overridedStoredLocation => {
+    const executeGoBackAction = (overridedStoredLocation, byPassEventTriggers) => {
         if (envProps.unregisterListeners) {
             envProps.unregisterListeners();
         }
 
-        envProps.back(uuid, operator, overridedStoredLocation);
+        envProps.back(uuid, operator, overridedStoredLocation, byPassEventTriggers);
     };
 
     return (
@@ -20,7 +20,7 @@ const GoBack = ({render: Render, isDirty, formik, uuid, operator, componentProps
                 open={open}
                 titleKey="content-editor:label.contentEditor.edit.action.goBack.title"
                 formik={formik}
-                actionCallback={overridedStoredLocation => executeGoBackAction(overridedStoredLocation)}
+                actionCallback={(overridedStoredLocation, byPassEventTriggers) => executeGoBackAction(overridedStoredLocation, byPassEventTriggers)}
                 onCloseDialog={() => setOpen(false)}
             />
             <Render
@@ -34,7 +34,7 @@ const GoBack = ({render: Render, isDirty, formik, uuid, operator, componentProps
                         if (isDirty) {
                             setOpen(true);
                         } else {
-                            executeGoBackAction();
+                            executeGoBackAction(undefined, true);
                         }
                     }
                 }}/>
