@@ -4,4 +4,12 @@
         <canSeeAdvancedOptionsTab jcr:primaryType="jnt:permission"/>
         <setContentLimitsOnAreas jcr:primaryType="jnt:permission"/>
     </contentEditor>
+    <jContent jcr:primaryType="jnt:permission">
+        <jContentActions jcr:primaryType="jnt:permission">
+            <pageTreeActions jcr:primaryType="jnt:permission">
+                <editPageAction jcr:primaryType="jnt:permission"/>
+            </pageTreeActions>
+            <editAction jcr:primaryType="jnt:permission"/>
+        </jContentActions>
+    </jContent>
 </permissions>
