@@ -73,11 +73,6 @@ const NodeDataFragment = {
                     definition {
                         declaringNodeType {
                             name
-                            subTypes {
-                                nodes {
-                                    name
-                                }
-                            }
                         }
                     }
                 }
@@ -132,6 +127,7 @@ const FormQuery = gql`
                             readOnly
                             requiredType
                             selectorType
+                            declaringNodeType
                             selectorOptions {
                                 name
                                 value
