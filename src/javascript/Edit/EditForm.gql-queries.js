@@ -73,6 +73,11 @@ const NodeDataFragment = {
                     definition {
                         declaringNodeType {
                             name
+                            subTypes {
+                                nodes {
+                                    name
+                                }
+                            }
                         }
                     }
                 }

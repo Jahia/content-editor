@@ -51,7 +51,8 @@ const getChildrenOrderingFields = (nodeData, dynamicFieldSets) => {
 };
 
 const getFieldValues = (field, nodeData) => {
-    const property = nodeData.properties && nodeData.properties.find(prop => prop.name === field.propertyName && prop.definition.declaringNodeType.name === field.nodeType);
+    const property = nodeData.properties && nodeData.properties.find(prop => prop.name === field.propertyName &&
+        (prop.definition.declaringNodeType.name === field.nodeType || prop.definition.declaringNodeType.subTypes?.nodes?.find(s => s.name === field.nodeType) !== undefined));
     const selectorType = resolveSelectorType(field);
     const formFields = {};
 
