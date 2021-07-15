@@ -530,25 +530,26 @@ public class EditorFormServiceImpl implements EditorFormService {
         }
         GqlJcrPropertyType requiredType = GqlJcrPropertyType.fromValue(propertyDefinition.getRequiredType());
 
-        return new EditorFormField(
-            propertyDefinition.getName(),
-            propertyLabel,
-            propertyDescription,
-            propertyErrorMessage,
-            requiredType,
-            selectorType,
-            selectorOptions,
-            propertyDefinition.isInternationalized(),
-            isFieldReadOnly(propertyDefinition, sharedFieldsEditable, i18nFieldsEditable),
-            propertyDefinition.isMultiple(),
-            propertyDefinition.isMandatory(),
-            valueConstraints,
-            defaultValues,
-            currentValues,
-            null,
-            fieldTarget,
-            propertyDefinition
-        );
+        EditorFormField field = new EditorFormField();
+        field.setName(propertyDefinition.getName());
+        field.setDisplayName(propertyLabel);
+        field.setDescription(propertyDescription);
+        field.setErrorMessage(propertyErrorMessage);
+        field.setRequiredType(requiredType);
+        field.setSelectorType(selectorType);
+        field.setSelectorOptions(selectorOptions);
+        field.setI18n(propertyDefinition.isInternationalized());
+        field.setReadOnly(isFieldReadOnly(propertyDefinition, sharedFieldsEditable, i18nFieldsEditable));
+        field.setMultiple(propertyDefinition.isMultiple());
+        field.setMandatory(propertyDefinition.isMandatory());
+        field.setValueConstraints(valueConstraints);
+        field.setDefaultValues(defaultValues);
+        field.setCurrentValues(currentValues);
+        field.setRemoved(null);
+        field.setTarget(fieldTarget);
+        field.setExtendedPropertyDefinition(propertyDefinition);
+        field.setDeclaringNodeType(propertyDefinition.getDeclaringNodeType().getName());
+        return field;
     }
 
     private List<EditorFormFieldValueConstraint> getValueConstraints(ExtendedNodeType primaryNodeType, EditorFormField editorFormField, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale locale, Map<String, Object> extendContext) throws RepositoryException {

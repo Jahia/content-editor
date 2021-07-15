@@ -51,6 +51,7 @@ describe('adaptEditFormData', () => {
                                             name: 'field1',
                                             displayName: 'labelled',
                                             selectorType: 'ContentPicker',
+                                            declaringNodeType: fieldSetName,
                                             currentValues: [
                                                 {
                                                     string: '2019-05-07T11:33:31.056'
@@ -280,12 +281,12 @@ describe('adaptEditFormData', () => {
             activated: true,
             displayed: true,
             fields: [
-                {name: 'firstField'},
-                {name: 'firstDirection'},
-                {name: 'secondField'},
-                {name: 'secondDirection'},
-                {name: 'thirdField'},
-                {name: 'thirdDirection'}
+                {name: 'firstField', declaringNodeType: Constants.automaticOrdering.mixin},
+                {name: 'firstDirection', declaringNodeType: Constants.automaticOrdering.mixin},
+                {name: 'secondField', declaringNodeType: Constants.automaticOrdering.mixin},
+                {name: 'secondDirection', declaringNodeType: Constants.automaticOrdering.mixin},
+                {name: 'thirdField', declaringNodeType: Constants.automaticOrdering.mixin},
+                {name: 'thirdDirection', declaringNodeType: Constants.automaticOrdering.mixin}
             ]
         });
         graphqlResponse.jcr.result.properties.push({name: 'firstField', value: 'toto', properties: true, definition});

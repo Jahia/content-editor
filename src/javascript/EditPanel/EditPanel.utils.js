@@ -14,7 +14,7 @@
  * fieldSet will be active on the form or not.
  *
  * @param {array} sections the sections of the form
- * @returns {array} dynamic fieldSets with key value object
+ * @returns {object} dynamic fieldSets with key value object
  */
 export function getDynamicFieldSets(sections) {
     return sections.reduce((result, section) => {
@@ -24,7 +24,7 @@ export function getDynamicFieldSets(sections) {
             .reduce((result, fieldSet) => ({...result, [fieldSet.name]: fieldSet.activated}), {});
 
         return {...result, ...fieldSets};
-    }, []);
+    }, {});
 }
 
 /**

@@ -64,6 +64,7 @@ public class EditorFormField implements Comparable<EditorFormField> {
     private String displayName;
     private String description;
     private String errorMessage;
+    private String declaringNodeType;
     private GqlJcrPropertyType requiredType;
     private String selectorType;
     private List<EditorFormProperty> selectorOptions;
@@ -85,67 +86,29 @@ public class EditorFormField implements Comparable<EditorFormField> {
     public EditorFormField() {
     }
 
-    public EditorFormField(String name,
-                           String displayName,
-                           String description,
-                           String errorMessage,
-                           GqlJcrPropertyType requiredType,
-                           String selectorType,
-                           List<EditorFormProperty> selectorOptions,
-                           Boolean i18n,
-                           Boolean readOnly,
-                           Boolean multiple,
-                           Boolean mandatory,
-                           List<EditorFormFieldValueConstraint> valueConstraints,
-                           List<EditorFormFieldValue> defaultValues,
-                           List<EditorFormFieldValue> currentValues,
-                           Boolean removed,
-                           EditorFormFieldTarget target,
-                           ExtendedPropertyDefinition extendedPropertyDefinition) {
-        this.name = name;
-        this.displayName = displayName;
-        this.description = description;
-        this.errorMessage = errorMessage;
-        this.requiredType = requiredType;
-        this.selectorType = selectorType;
-        this.selectorOptions = selectorOptions;
-        this.i18n = i18n;
-        this.readOnly = readOnly;
-        this.multiple = multiple;
-        this.mandatory = mandatory;
-        this.valueConstraints = valueConstraints;
-        this.defaultValues = defaultValues;
-        this.currentValues = currentValues;
-        this.removed = removed;
-        this.target = target;
-        this.extendedPropertyDefinition = extendedPropertyDefinition;
-    }
-
     public EditorFormField(EditorFormField field) {
-        this(
-            field.name,
-            field.displayName,
-            field.description,
-            field.errorMessage,
-            field.requiredType,
-            field.selectorType,
-            field.selectorOptions == null ? null : field.selectorOptions.stream()
-                .map(option -> new EditorFormProperty(option))
-                .collect(Collectors.toList()),
-            field.i18n,
-            field.readOnly,
-            field.multiple,
-            field.mandatory,
-            field.valueConstraints == null ? null : field.valueConstraints.stream()
-                .map(constraint -> new EditorFormFieldValueConstraint(constraint))
-                .collect(Collectors.toList()),
-            field.defaultValues == null ? null : new ArrayList<>(field.defaultValues),
-            field.currentValues == null ? null : new ArrayList<>(field.currentValues),
-            field.removed,
-            field.target,
-            // No deep copy is needed as this object is just read and only references are used
-            field.extendedPropertyDefinition
-        );
+        this.setName(field.name);
+        this.setDisplayName(field.displayName);
+        this.setDescription(field.description);
+        this.setErrorMessage(field.errorMessage);
+        this.setRequiredType(field.requiredType);
+        this.setSelectorType(field.selectorType);
+        this.setSelectorOptions(field.selectorOptions == null ? null : field.selectorOptions.stream()
+            .map(EditorFormProperty::new)
+            .collect(Collectors.toList()));
+        this.setI18n(field.i18n);
+        this.setReadOnly(field.readOnly);
+        this.setMultiple(field.multiple);
+        this.setMandatory(field.mandatory);
+        this.setValueConstraints(field.valueConstraints == null ? null : field.valueConstraints.stream()
+            .map(EditorFormFieldValueConstraint::new)
+            .collect(Collectors.toList()));
+        this.setDefaultValues(field.defaultValues == null ? null : new ArrayList<>(field.defaultValues));
+        this.setCurrentValues(field.currentValues == null ? null : new ArrayList<>(field.currentValues));
+        this.setRemoved(field.removed);
+        this.setTarget(field.target);
+        this.setExtendedPropertyDefinition(field.extendedPropertyDefinition);
+        this.setDeclaringNodeType(field.declaringNodeType);
     }
 
     public void setName(String name) {
@@ -224,6 +187,16 @@ public class EditorFormField implements Comparable<EditorFormField> {
     @GraphQLDescription("The error message of the field")
     public String getErrorMessage() {
         return errorMessage;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("The declaring node type for the field")
+    public String getDeclaringNodeType() {
+        return declaringNodeType;
+    }
+
+    public void setDeclaringNodeType(String declaringNodeType) {
+        this.declaringNodeType = declaringNodeType;
     }
 
     public void setRequiredType(GqlJcrPropertyType requiredType) {
@@ -320,24 +293,27 @@ public class EditorFormField implements Comparable<EditorFormField> {
         if (!name.equals(otherEditorFormField.name)) {
             return this;
         }
-        return new EditorFormField(name,
-            otherEditorFormField.displayName != null ? otherEditorFormField.displayName : displayName,
-            otherEditorFormField.description != null ? otherEditorFormField.description : description,
-            otherEditorFormField.errorMessage != null ? otherEditorFormField.errorMessage : errorMessage,
-            otherEditorFormField.requiredType != null ? otherEditorFormField.requiredType : requiredType,
-            otherEditorFormField.selectorType != null ? otherEditorFormField.selectorType : selectorType,
-            otherEditorFormField.selectorOptions != null ? otherEditorFormField.selectorOptions : selectorOptions,
-            i18n != null ? i18n : otherEditorFormField.i18n,
-            mergeBooleanKeepTrue(readOnly, otherEditorFormField.readOnly),
-            multiple != null ? multiple : otherEditorFormField.multiple,
-            mergeBooleanKeepTrue(mandatory, otherEditorFormField.mandatory),
-            otherEditorFormField.valueConstraints != null ? otherEditorFormField.valueConstraints : valueConstraints,
-            otherEditorFormField.defaultValues != null ? otherEditorFormField.defaultValues : defaultValues,
-            otherEditorFormField.currentValues != null ? otherEditorFormField.currentValues : currentValues,
-            otherEditorFormField.removed != null ? otherEditorFormField.removed : removed,
-            mergeTargets(otherEditorFormField),
-            extendedPropertyDefinition != null ? extendedPropertyDefinition : otherEditorFormField.extendedPropertyDefinition
-        );
+
+        EditorFormField newField = new EditorFormField();
+        newField.setName(name);
+        newField.setDisplayName(otherEditorFormField.displayName != null ? otherEditorFormField.displayName : displayName);
+        newField.setDescription(otherEditorFormField.description != null ? otherEditorFormField.description : description);
+        newField.setErrorMessage(otherEditorFormField.errorMessage != null ? otherEditorFormField.errorMessage : errorMessage);
+        newField.setRequiredType(otherEditorFormField.requiredType != null ? otherEditorFormField.requiredType : requiredType);
+        newField.setSelectorType(otherEditorFormField.selectorType != null ? otherEditorFormField.selectorType : selectorType);
+        newField.setSelectorOptions(otherEditorFormField.selectorOptions != null ? otherEditorFormField.selectorOptions : selectorOptions);
+        newField.setI18n(i18n != null ? i18n : otherEditorFormField.i18n);
+        newField.setReadOnly(mergeBooleanKeepTrue(readOnly, otherEditorFormField.readOnly));
+        newField.setMultiple(multiple != null ? multiple : otherEditorFormField.multiple);
+        newField.setMandatory(mergeBooleanKeepTrue(mandatory, otherEditorFormField.mandatory));
+        newField.setValueConstraints(otherEditorFormField.valueConstraints != null ? otherEditorFormField.valueConstraints : valueConstraints);
+        newField.setDefaultValues(otherEditorFormField.defaultValues != null ? otherEditorFormField.defaultValues : defaultValues);
+        newField.setCurrentValues(otherEditorFormField.currentValues != null ? otherEditorFormField.currentValues : currentValues);
+        newField.setRemoved(otherEditorFormField.removed != null ? otherEditorFormField.removed : removed);
+        newField.setTarget(mergeTargets(otherEditorFormField));
+        newField.setExtendedPropertyDefinition(extendedPropertyDefinition != null ? extendedPropertyDefinition : otherEditorFormField.extendedPropertyDefinition);
+        newField.setDeclaringNodeType(otherEditorFormField.declaringNodeType != null ? otherEditorFormField.declaringNodeType : declaringNodeType);
+        return newField;
     }
 
     @Override
@@ -363,14 +339,15 @@ public class EditorFormField implements Comparable<EditorFormField> {
             && Objects.equals(currentValues, that.currentValues)
             && Objects.equals(removed, that.removed)
             && Objects.equals(target, that.target)
-            && Objects.equals(extendedPropertyDefinition, that.extendedPropertyDefinition);
+            && Objects.equals(extendedPropertyDefinition, that.extendedPropertyDefinition)
+            && Objects.equals(declaringNodeType, that.declaringNodeType);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(name, displayName, description, errorMessage, requiredType, selectorType, selectorOptions,
             i18n, readOnly, multiple, mandatory, valueConstraints, defaultValues, currentValues, removed,
-            target, extendedPropertyDefinition);
+            target, extendedPropertyDefinition, declaringNodeType);
     }
 
     @Override
@@ -393,6 +370,7 @@ public class EditorFormField implements Comparable<EditorFormField> {
             ", removed=" + removed +
             ", target=" + target +
             ", extendedPropertyDefinition=" + extendedPropertyDefinition +
+            ", declaringNodeType=" + declaringNodeType +
             '}';
     }
 

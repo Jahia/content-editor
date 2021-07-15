@@ -127,6 +127,7 @@ const FormQuery = gql`
                             readOnly
                             requiredType
                             selectorType
+                            declaringNodeType
                             selectorOptions {
                                 name
                                 value
