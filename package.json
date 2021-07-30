@@ -61,7 +61,7 @@
         "react-dnd-html5-backend": "^10.0.2",
         "react-dom": "^16.13.1",
         "react-dropdown-tree-select": "^2.3.2",
-        "react-file-viewer-updated": "^1.2.2",
+        "react-file-viewer": "^1.2.1",
         "react-i18next": "^11.7.2",
         "react-infinite-scroller": "^1.2.4",
         "react-pdf-js": "^5.1.0",
@@ -73,7 +73,9 @@
     "resolutions": {
         "graphql": "15.4.0",
         "@jahia/data-helper/graphql": "^15.4.0",
+        "three": "^0.125.0",
         "xlsx": "^0.17.0",
+        "mammoth": "^1.4.13",
         "node-fetch": "^2.6.1"
     },
     "devDependencies": {
