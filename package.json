@@ -72,7 +72,8 @@
     },
     "resolutions": {
         "graphql": "15.4.0",
-        "@jahia/data-helper/graphql": "^15.4.0"
+        "@jahia/data-helper/graphql": "^15.4.0",
+        "xlsx": "^0.17.0"
     },
     "devDependencies": {
         "@babel/compat-data": "^7.9.0",
