@@ -1,14 +1,13 @@
 package org.jahia.modules.contenteditor.graphql.api;
 
 import graphql.annotations.annotationTypes.*;
+import graphql.kickstart.servlet.context.GraphQLServletContext;
 import graphql.schema.DataFetchingEnvironment;
-import graphql.servlet.GraphQLContext;
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableEmitter;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import org.apache.commons.lang.LocaleUtils;
 import org.jahia.bin.filters.jcr.JcrSessionFilter;
 import org.jahia.modules.contenteditor.api.forms.EditorFormException;
 import org.jahia.modules.contenteditor.api.lock.StaticEditorLockService;
@@ -22,7 +21,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.jcr.RepositoryException;
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 
@@ -45,8 +43,8 @@ public class GqlEditorSubscriptions extends GqlJcrMutationSupport {
             @GraphQLName("editorID") @GraphQLNonNull @GraphQLDescription("An ID generated client side used to identify the lock") String editorID) throws EditorFormException {
 
 
-        Optional<HttpServletRequest> httpServletRequest = ((GraphQLContext) environment.getContext()).getRequest();
-        if(!httpServletRequest.isPresent()) {
+        HttpServletRequest httpRequest = ((GraphQLServletContext) environment.getContext()).getHttpServletRequest();
+        if (httpRequest == null) {
             return null;
         }
 
@@ -55,7 +53,7 @@ public class GqlEditorSubscriptions extends GqlJcrMutationSupport {
 
         // lock the node
         try {
-            if (!StaticEditorLockService.tryLock(httpServletRequest.get(), nodePath, editorID)){
+            if (!StaticEditorLockService.tryLock(httpRequest, nodePath, editorID)){
                 // lock not supported by the node
                 return null;
             }
@@ -73,7 +71,7 @@ public class GqlEditorSubscriptions extends GqlJcrMutationSupport {
                 logger.debug("Connection lost or closed, unlock the node");
                 try {
                     JCRSessionFactory.getInstance().setCurrentUser(currentUser);
-                    StaticEditorLockService.unlock(httpServletRequest.get(), editorID);
+                    StaticEditorLockService.unlock(httpRequest, editorID);
                 } finally {
                     JcrSessionFilter.endRequest();
                 }
