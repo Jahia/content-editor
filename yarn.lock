@@ -2187,11 +2187,11 @@
     stylelint-scss "^3.14.2"
 
 "@jahia/test-framework@^1.1.5":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@jahia/test-framework/-/test-framework-1.2.0.tgz#886961f5fd24c40b0ff322d458d6e3e073a2a514"
-  integrity sha512-HfvzCoxaSQypuJ9pKvbzT7MwzIHGSdzH3E0dEOaYc8NASpeanPDrs6Ni6+1LsheuONrrtINNcHTkMEeQmRF4aQ==
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@jahia/test-framework/-/test-framework-1.2.1.tgz#926fc84e8315c6902577b3dad2f9dbc58df0bcc4"
+  integrity sha512-lnZbNO+p6Z9QWZ1FU/BzcAUKpc0Z5ZpeDc0implcaOQ1b3Ik743w4ilIwi8Z7YzAn27ghBglVshT3Clc1bQsrA==
   dependencies:
-    enzyme "^3.9.0"
+    enzyme "^3.11.0"
     enzyme-adapter-react-16 "^1.12.1"
     identity-obj-proxy "^3.0.0"
 
@@ -6796,7 +6796,7 @@ enzyme-shallow-equal@^1.0.1:
     has "^1.0.3"
     object-is "^1.0.2"
 
-enzyme@^3.9.0:
+enzyme@^3.11.0:
   version "3.11.0"
   resolved "https://registry.yarnpkg.com/enzyme/-/enzyme-3.11.0.tgz#71d680c580fe9349f6f5ac6c775bc3e6b7a79c28"
   integrity sha512-Dw8/Gs4vRjxY6/6i9wU0V+utmQO9kvh9XLnz3LIudviOnVYDEe2ec+0k+NQoMamn1VrjKgCUOWj5jG/5M5M0Qw==
