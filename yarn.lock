@@ -2133,8 +2133,8 @@
 
 "@jahia/eslint-config@^1.1.0":
   version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@jahia/eslint-config/-/eslint-config-1.1.0.tgz#1b5d8835b516f2ad572e66484b410fab23c29373"
-  integrity sha512-Be8Jgx9B/b4HS1KidUm2txWwqVvBFL/3sFuOAVy5MtDUpnVEQ/GSsRc3rXdNElMM5SoAvazCzLTTk4FAc9Ggqw==
+  resolved "https://registry.yarnpkg.com/@jahia/eslint-config/-/eslint-config-1.1.0.tgz#d3ecf515b8cdc4e5e782ae5423e2f1ad6345300e"
+  integrity sha512-4OX2bSxGabjqYAj9Z2qfgLU6c4b2nFI4YfftOf4PYbHJj6mekureuZkS66tN5uHGZ0HWR1nSTpQEbdCwFtdsGQ==
   dependencies:
     babel-eslint "^10.0.1"
     eslint "^6.6.0"
@@ -2178,8 +2178,8 @@
 
 "@jahia/stylelint-config@^0.0.3":
   version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@jahia/stylelint-config/-/stylelint-config-0.0.3.tgz#27f8af3805c50362de486c9ade5c0aabdb1edfa7"
-  integrity sha512-fzGJQ++2Lk5KnV3ieWNyOWYw5+yl4ydjx06kzhojtuvxXIt2iEYgPo1EymW9nSOmShp6ERVCJX1zpFJtfDT7Dw==
+  resolved "https://registry.yarnpkg.com/@jahia/stylelint-config/-/stylelint-config-0.0.3.tgz#cd18a4bd4214fbea0b6b3be68f0503fbf2c9462e"
+  integrity sha512-RMTttYku16AJdXs+vqlNs4rGhxeeB+msEGoZLP3vcaM/J68Mj+PCKvnpkbJpGRL+wSA2SDY7SIOZdPAhrmBWvA==
   dependencies:
     stylelint-config-css-modules "^2.2.0"
     stylelint-config-standard "^20.0.0"
