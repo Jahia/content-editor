@@ -2146,8 +2146,8 @@
 
 "@jahia/icons@^1.1.1":
   version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@jahia/icons/-/icons-1.1.1.tgz#751fa6af79108fe9813987ebd9887e711b2687cd"
-  integrity sha512-uZQ29+CvnuyXwRPoJHoDuuEwU0Y/hEtzAnO+x3m2TvuZwkBqFmJEbEiVHF9ZtZUN0hQs6j2EoTl7bMIK6Ef+ow==
+  resolved "https://registry.yarnpkg.com/@jahia/icons/-/icons-1.1.1.tgz#f12393ba051020ebdb561e6a16e84148d1284c94"
+  integrity sha512-GnSG5hMUtJKTPBiGfDG/7GHoF0+kP8TBJ8fusGZXaesF0jmcjcyG40FJNr7kTgEh9Uhc0ZcpaKwxpGBwweeaHQ==
   dependencies:
     "@material-ui/icons" "^3.0.2"
     mdi-material-ui "^5.10.0"
