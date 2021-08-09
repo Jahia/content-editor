@@ -49,7 +49,7 @@
     <parent>
         <artifactId>jahia-modules</artifactId>
         <groupId>org.jahia.modules</groupId>
-        <version>8.0.2.0</version>
+        <version>8.1.0.0-SNAPSHOT</version>
         <relativePath />
     </parent>
     <artifactId>content-editor</artifactId>
@@ -90,7 +90,7 @@
         <dependency>
             <groupId>org.jahia.modules</groupId>
             <artifactId>graphql-dxm-provider</artifactId>
-            <version>2.2.1</version>
+            <version>2.7.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
@@ -137,7 +137,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.graphql-java</groupId>
+            <groupId>com.graphql-java-kickstart</groupId>
             <artifactId>graphql-java-servlet</artifactId>
             <version>${graphql-java-servlet.version}</version>
             <scope>provided</scope>
@@ -174,7 +174,6 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Import-Package>org.jahia.modules.graphql.provider.dxm;version="1.1.0",${jahia.plugin.projectPackageImport},*</Import-Package>
                         <_dsannotations>*</_dsannotations>
                         <Bundle-Activator>
                             org.jahia.modules.contenteditor.osgi.ContentEditorActivator
