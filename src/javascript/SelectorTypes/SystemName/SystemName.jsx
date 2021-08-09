@@ -15,7 +15,10 @@ export const SystemNameCmp = ({field, value, values, id, editorContext, onChange
     return (
         <>
             <Text
-                field={{...field, readOnly: field.readOnly || Boolean(editorContext.name && editorContext.mode === Constants.routes.baseCreateRoute)}}
+                field={{...field, readOnly: field.readOnly ||
+                        Boolean(editorContext.name && editorContext.mode === Constants.routes.baseCreateRoute ||
+                        // Fixes 404 when user edits systemname in page composer, applies only to page composer and can be safely removed once editor is not used with page composer
+                        Boolean(editorContext.mode !== Constants.routes.baseCreateRoute && window.location.pathname.match(/\/page-composer\//g) !== null))}}
                 value={value}
                 id={id}
                 editorContext={editorContext}
