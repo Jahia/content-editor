@@ -1,7 +1,6 @@
 package org.jahia.modules.contenteditor.graphql.api;
 
 import graphql.annotations.annotationTypes.*;
-import graphql.kickstart.servlet.context.GraphQLServletContext;
 import graphql.schema.DataFetchingEnvironment;
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
@@ -13,6 +12,7 @@ import org.jahia.modules.contenteditor.api.forms.EditorFormException;
 import org.jahia.modules.contenteditor.api.lock.StaticEditorLockService;
 import org.jahia.modules.graphql.provider.dxm.DXGraphQLProvider;
 import org.jahia.modules.graphql.provider.dxm.node.GqlJcrMutationSupport;
+import org.jahia.modules.graphql.provider.dxm.util.ContextUtil;
 import org.jahia.services.content.JCRSessionFactory;
 import org.jahia.services.usermanager.JahiaUser;
 import org.reactivestreams.Publisher;
@@ -42,8 +42,7 @@ public class GqlEditorSubscriptions extends GqlJcrMutationSupport {
             @GraphQLName("nodePath") @GraphQLNonNull @GraphQLDescription("Path of the node to be locked.") String nodePath,
             @GraphQLName("editorID") @GraphQLNonNull @GraphQLDescription("An ID generated client side used to identify the lock") String editorID) throws EditorFormException {
 
-
-        HttpServletRequest httpRequest = ((GraphQLServletContext) environment.getContext()).getHttpServletRequest();
+        HttpServletRequest httpRequest = ContextUtil.getHttpServletRequest(environment.getContext());
         if (httpRequest == null) {
             return null;
         }
