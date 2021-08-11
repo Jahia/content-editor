@@ -4,10 +4,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
-import graphql.kickstart.servlet.context.GraphQLServletContext;
 import graphql.schema.DataFetchingEnvironment;
 import org.jahia.modules.contenteditor.api.forms.EditorFormException;
 import org.jahia.modules.contenteditor.api.lock.StaticEditorLockService;
+import org.jahia.modules.graphql.provider.dxm.util.ContextUtil;
 
 import javax.jcr.RepositoryException;
 import javax.servlet.http.HttpServletRequest;
@@ -30,8 +30,7 @@ public class GqlEditorFormMutations {
         DataFetchingEnvironment environment,
         @GraphQLName("editorID") @GraphQLNonNull @GraphQLDescription("An ID generated client side used to identify the lock") String editorID
     ) throws EditorFormException {
-
-        HttpServletRequest httpRequest = ((GraphQLServletContext) environment.getContext()).getHttpServletRequest();
+        HttpServletRequest httpRequest = ContextUtil.getHttpServletRequest(environment.getContext());
         if (httpRequest == null) {
             return false;
         }
