@@ -49,8 +49,7 @@ const CreateNewContentDialogCmp = ({childNodeName, nodeTypes, includeSubTypes, o
     const [filter, setFilter] = useState();
 
     if (error) {
-        console.error(error);
-        return <>{error}</>;
+        throw error;
     }
 
     if (loading || !data || !data.forms) {

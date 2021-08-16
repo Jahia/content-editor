@@ -35,8 +35,7 @@ export const RichTextCmp = ({field, id, value, onChange}) => {
     );
 
     if (error) {
-        console.error(error);
-        return <>{error}</>;
+        throw error;
     }
 
     if (loading || !data || !data.forms) {

@@ -47,8 +47,7 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
         });
 
         if (error) {
-            console.error(error);
-            return <>{errorMessage}</>;
+            throw error;
         }
 
         if (siteInfoResult.error) {
