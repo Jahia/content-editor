@@ -39,7 +39,7 @@ const FullScreenError = props => {
             { React.cloneElement(ErrorBoundary.defaultProps.fallback, props) }
         </div>
     );
-}
+};
 
 const ContentEditorApiCmp = ({classes, client}) => {
     const [editorConfig, setEditorConfig] = useState(false);
