@@ -73,13 +73,15 @@ export const saveNode = ({
         ]
     }).then(mutation => {
         const mutateNode = mutation.data.jcr.mutateNode;
+        // This needs to happen before potential editCallback as it refetches observables
+        client.cache.flushNodeEntryById(nodeData.uuid);
+
         if (editCallback) {
             editCallback(nodeData, mutateNode);
         }
 
         notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.success'), ['closeButton']);
         actions.setSubmitting(false);
-        client.cache.flushNodeEntryById(nodeData.uuid);
         refetchPreview(getPreviewPath(mutateNode.node), language);
     }, error => {
         onServerError(error, actions, notificationContext, t, dataToMutate.propFieldNameMapping, 'content-editor:label.contentEditor.edit.action.save.error');

@@ -14,10 +14,13 @@ import {withApollo} from 'react-apollo';
 import {compose} from '~/utils';
 import {useContentEditorConfigContext} from '~/ContentEditor.context';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
+import {useDispatch} from 'react-redux';
+import {invalidateRefetch} from '~/EditPanel/EditPanel.refetches';
 
 import envEditCallbacks from './Edit.env';
 import {adaptEditFormData} from './Edit.adapter';
 import {Constants} from '~/ContentEditor.constants';
+import {getPreviewPath} from '~/EditPanel/EditPanelContent/Preview/Preview.utils';
 
 export const EditCmp = ({
     client,
@@ -27,6 +30,7 @@ export const EditCmp = ({
     const contentEditorConfigContext = useContentEditorConfigContext();
     const {path, lang, nodeData, formQueryParams, initialValues, title} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
+    const dispatch = useDispatch();
 
     const handleSubmit = (values, actions) => {
         saveNode({
@@ -42,6 +46,12 @@ export const EditCmp = ({
             },
             editCallback: (node, mutateNode) => {
                 const overridedStoredLocation = contentEditorConfigContext.envProps.handleRename && contentEditorConfigContext.envProps.handleRename(node, mutateNode);
+                // Trigger Page Composer to reload iframe if system name was renamed
+                if (mutateNode.rename && mutateNode.rename !== '') {
+                    dispatch({type: 'PC_SET_PATH', payload: `/${mutateNode.rename.split('/').splice(3, 2).join('/')}.html`});
+                    invalidateRefetch(`${getPreviewPath(nodeData)}_${lang}`);
+                }
+
                 if (values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK]) {
                     values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK](overridedStoredLocation);
                 } else {
@@ -52,6 +62,8 @@ export const EditCmp = ({
                 }
 
                 // Hard reFetch to be able to enable publication menu from jContent menu displayed in header
+                // Note that node cache is flushed in save.request.js, we should probably replace this operation with
+                // Something less invasive as this one reloads ALL queries.
                 client.reFetchObservableQueries();
             }
         });
