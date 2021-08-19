@@ -21,6 +21,7 @@ import envEditCallbacks from './Edit.env';
 import {adaptEditFormData} from './Edit.adapter';
 import {Constants} from '~/ContentEditor.constants';
 import {getPreviewPath} from '~/EditPanel/EditPanelContent/Preview/Preview.utils';
+import {pcNavigateTo} from '~/pagecomposer.redux-actions';
 
 export const EditCmp = ({
     client,
@@ -48,7 +49,7 @@ export const EditCmp = ({
                 const overridedStoredLocation = contentEditorConfigContext.envProps.handleRename && contentEditorConfigContext.envProps.handleRename(node, mutateNode);
                 // Trigger Page Composer to reload iframe if system name was renamed
                 if (mutateNode.rename && mutateNode.rename !== '') {
-                    dispatch({type: 'PC_SET_NAVIGATE_TO', payload: `/${mutateNode.rename.split('/').splice(3, 2).join('/')}.html`});
+                    dispatch(pcNavigateTo(`/${mutateNode.rename.split('/').splice(3, 2).join('/')}.html`));
                     invalidateRefetch(`${getPreviewPath(nodeData)}_${lang}`);
                 }
 
