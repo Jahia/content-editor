@@ -39,7 +39,7 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
             writePermission: `jcr:modifyProperties_default_${lang}`,
             childrenFilterTypes: Constants.childrenFilterTypes
         };
-        const {loading, error, errorMessage, data: formDefinition, refetch: refetchFormData} = useFormDefinition(formQuery, formQueryParams, formDataAdapter, t, contentEditorConfigContext);
+        const {loading, error, data: formDefinition, refetch: refetchFormData} = useFormDefinition(formQuery, formQueryParams, formDataAdapter, t, contentEditorConfigContext);
         const {nodeData, initialValues, hasPreview, details, technicalInfo, sections, title, nodeTypeName, nodeTypeDisplayName} = formDefinition || {};
         const siteInfoResult = useSiteInfo({
             siteKey: site,
@@ -47,8 +47,7 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
         });
 
         if (error) {
-            console.error(error);
-            return <>{errorMessage}</>;
+            throw error;
         }
 
         if (siteInfoResult.error) {

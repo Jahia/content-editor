@@ -9,6 +9,7 @@ import {withApollo} from 'react-apollo';
 import {compose} from '~/utils';
 import {getCreatableNodetypes} from '~/Create/CreateNewContentAction/createNewContent.utits';
 import EditPanelDialogConfirmation from '~/EditPanel/EditPanelDialogConfirmation/EditPanelDialogConfirmation';
+import {ErrorBoundary} from '@jahia/jahia-ui-root';
 
 let styles = () => {
     return {
@@ -31,6 +32,14 @@ function triggerEvents(nodeUuid, operator) {
             );
     }
 }
+
+const FullScreenError = props => {
+    return (
+        <div style={{height: '100vh', display: 'flex'}}>
+            { React.cloneElement(ErrorBoundary.defaultProps.fallback, props) }
+        </div>
+    );
+};
 
 const ContentEditorApiCmp = ({classes, client}) => {
     const [editorConfig, setEditorConfig] = useState(false);
@@ -200,7 +209,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
     };
 
     return (
-        <>
+        <ErrorBoundary fallback={<FullScreenError/>}>
             {editorConfig &&
             <Dialog fullScreen
                     open
@@ -259,7 +268,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
                     });
                 }}
             />}
-        </>
+        </ErrorBoundary>
     );
 };
 
