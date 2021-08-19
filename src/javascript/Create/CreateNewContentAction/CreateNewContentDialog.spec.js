@@ -119,13 +119,11 @@ describe('CreateNewContentDialog', () => {
     it('should show error when crashing', () => {
         setResponseMock({error: new Error('oops')});
 
-        const cmp = shallowWithTheme(
+        expect(() => shallowWithTheme(
             <CreateNewContentDialog open {...props}/>,
             {},
             dsGenericTheme
-        ).dive().dive();
-
-        expect(cmp.debug()).toContain('oops');
+        ).dive().dive()).toThrowError('oops');
     });
 
     it('should filter properly with id hichem', () => {
