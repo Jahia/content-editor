@@ -6,7 +6,11 @@ let triggerRefetch = key => {
         return;
     }
 
-    refetch.refetch();
+    try {
+        refetch.refetch();
+    } catch {
+        console.error('Unexpected error during refetch', refetch);
+    }
 };
 
 let setPreviewRefetcher = refetcherData => {
@@ -14,6 +18,8 @@ let setPreviewRefetcher = refetcherData => {
     // ideally the key of a refetcher should be all it's queryParams.
     editPanelRefetches[buildPreviewRefetcherKey(refetcherData.queryParams.path, refetcherData.queryParams.language)] = refetcherData;
 };
+
+let invalidateRefetch = key => delete editPanelRefetches[key];
 
 let refetchPreview = (path, language) => {
     triggerRefetch(buildPreviewRefetcherKey(path, language));
@@ -25,5 +31,6 @@ let buildPreviewRefetcherKey = (path, language) => {
 
 export {
     setPreviewRefetcher,
-    refetchPreview
+    refetchPreview,
+    invalidateRefetch
 };

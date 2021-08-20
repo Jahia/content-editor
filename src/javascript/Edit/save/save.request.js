@@ -79,6 +79,7 @@ export const saveNode = ({
 
         notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.success'), ['closeButton']);
         actions.setSubmitting(false);
+        // This needs to happen before potential editCallback as it refetches observables?
         client.cache.flushNodeEntryById(nodeData.uuid);
         refetchPreview(getPreviewPath(mutateNode.node), language);
     }, error => {
