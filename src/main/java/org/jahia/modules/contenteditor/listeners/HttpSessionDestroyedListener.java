@@ -22,12 +22,14 @@ public class HttpSessionDestroyedListener implements ApplicationListener<Applica
         if (applicationEvent instanceof JahiaContextLoaderListener.HttpSessionDestroyedEvent) {
             HttpSession httpSession = ((JahiaContextLoaderListener.HttpSessionDestroyedEvent) applicationEvent).getSession();
             if (httpSession.getAttribute(Constants.SESSION_USER) != null) {
-                if (JCRSessionFactory.getInstance().getCurrentUser() != null) {
-                    StaticEditorLockService.closeAllRemainingLocks(httpSession);
+                JCRSessionFactory jcrSessionFactory = JCRSessionFactory.getInstance();
+                JahiaUser currentUser = jcrSessionFactory.getCurrentUser();
+                if (currentUser != null) {
+                    StaticEditorLockService.closeAllRemainingLocks();
                 } else {
                     try {
-                        JCRSessionFactory.getInstance().setCurrentUser((JahiaUser) httpSession.getAttribute(Constants.SESSION_USER));
-                        StaticEditorLockService.closeAllRemainingLocks(httpSession);
+                        jcrSessionFactory.setCurrentUser((JahiaUser) httpSession.getAttribute(Constants.SESSION_USER));
+                        StaticEditorLockService.closeAllRemainingLocks();
                     } finally {
                         JcrSessionFilter.endRequest();
                     }
