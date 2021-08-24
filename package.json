@@ -10,7 +10,7 @@
         "watch": "yarn webpack --watch",
         "clean": "rimraf *.log src/main/resources/javascript/apps",
         "clean:all": "yarn clean && rimraf node_modules node",
-        "test": "node --max-old-space-size=4096 ./node_modules/.bin/jest --coverage --logHeapUsage --ci --maxWorkers=50% --silent",
+        "test": "node --max-old-space-size=4096 ./node_modules/jest/bin/jest.js --coverage --logHeapUsage --ci --maxWorkers=50% --silent",
         "tdd": "jest --watch",
         "lint": "eslint --ext js,jsx,json . && stylelint \"./src/**/*.scss\"",
         "lint:fix": "eslint --ext js,jsx,json --fix . && stylelint --fix \"./src/**/*.scss\"",
