@@ -5,6 +5,7 @@ import org.jahia.api.Constants;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRSessionFactory;
 import org.jahia.services.content.JCRSessionWrapper;
+import org.jahia.services.usermanager.JahiaUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,9 +13,8 @@ import javax.jcr.RepositoryException;
 import javax.jcr.UnsupportedRepositoryOperationException;
 import javax.jcr.lock.LockException;
 import javax.jcr.security.Privilege;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Main class for locking operation of editors
@@ -29,28 +29,30 @@ public class StaticEditorLockService {
     private static final Logger logger = LoggerFactory.getLogger(StaticEditorLockService.class);
 
     private static final String LOCK_TYPE = "engine";
-    private static final String LOCKS_SESSION_ATTR = "contentEditorLocks";
+
+    private static final Map<JahiaUser, Map<String, String>> holdLocks = new ConcurrentHashMap<>();
 
     /**
      * Lock the node for edition and store the lock info in session for cleanup
      *
-     * @param request the current request
      * @param nodePath the node to lock
      * @param lockId the lockID to store the lock info in session
      * @return true if the node is successfully locked, false if the node doesnt support locks
      * @throws RepositoryException
      */
-    public static boolean tryLock(HttpServletRequest request, String nodePath, String lockId) throws RepositoryException {
-        JCRSessionWrapper sessionWrapper = JCRSessionFactory.getInstance().getCurrentUserSession(Constants.EDIT_WORKSPACE);
+    public static boolean tryLock(String nodePath, String lockId) throws RepositoryException {
+        JCRSessionFactory jcrSessionFactory = JCRSessionFactory.getInstance();
+        JahiaUser currentUser = jcrSessionFactory.getCurrentUser();
+        JCRSessionWrapper sessionWrapper = jcrSessionFactory.getCurrentUserSession(Constants.EDIT_WORKSPACE);
         JCRNodeWrapper node = sessionWrapper.getNode(nodePath);
 
         if (node.getProvider().isLockingAvailable() && node.hasPermission(Privilege.JCR_LOCK_MANAGEMENT)) {
             try {
 
                 // session locks data
-                HashMap<String, String> locks = getSessionLocks(request.getSession());
+                Map<String, String> locks = holdLocks.containsKey(currentUser) ? holdLocks.get(currentUser) : new HashMap<>();
                 locks.put(lockId, node.getIdentifier());
-                request.getSession().setAttribute(LOCKS_SESSION_ATTR, locks);
+                holdLocks.put(currentUser, locks);
 
                 // jcr lock
                 node.lockAndStoreToken(LOCK_TYPE);
@@ -65,18 +67,25 @@ public class StaticEditorLockService {
 
     /**
      * unlock the node for edition if it's locked, clean the session info about locks
-     * @param request the current request
      * @param lockId the lockID to store the lock info in session
      * @throws RepositoryException
      */
-    public static void unlock(HttpServletRequest request, String lockId) throws RepositoryException {
-        JCRSessionWrapper sessionWrapper = JCRSessionFactory.getInstance().getCurrentUserSession(Constants.EDIT_WORKSPACE);
-        HashMap<String, String> locks = getSessionLocks(request.getSession(false));
+    public static void unlock(String lockId) throws RepositoryException {
+        JCRSessionFactory jcrSessionFactory = JCRSessionFactory.getInstance();
+        JahiaUser currentUser = jcrSessionFactory.getCurrentUser();
+        if (!holdLocks.containsKey(currentUser)) {
+            // no locks found for current user
+            return;
+        }
+
+        JCRSessionWrapper sessionWrapper = jcrSessionFactory.getCurrentUserSession(Constants.EDIT_WORKSPACE);
+        Map<String, String> locks = holdLocks.get(currentUser);
         String lockedIdentifier = locks.get(lockId);
 
         if (lockedIdentifier != null) {
             // always remove session locks data
             locks.remove(lockId);
+            holdLocks.put(currentUser, locks);
 
             JCRNodeWrapper node = sessionWrapper.getNodeByIdentifier(lockedIdentifier);
             if (!locks.containsValue(lockedIdentifier) && // unlock JCR only if there is no other lock on this UUID already in session
@@ -85,7 +94,7 @@ public class StaticEditorLockService {
 
                 String lockOwners = node.getLockOwner();
                 if (StringUtils.isNotEmpty(lockOwners) &&
-                    Arrays.asList(StringUtils.split(lockOwners, " ")).contains(JCRSessionFactory.getInstance().getCurrentUser().getUsername())) {
+                    Arrays.asList(StringUtils.split(lockOwners, " ")).contains(currentUser.getUsername())) {
 
                     node.unlock(LOCK_TYPE);
                 }
@@ -95,30 +104,19 @@ public class StaticEditorLockService {
 
     /**
      * In case session is destroyed this function can be used to clean all remaining editor locks for this session
-     * @param httpSession the http session
      */
-    public static void closeAllRemainingLocks(HttpSession httpSession) {
-        closeAllLocks(getSessionLocks(httpSession).values());
-    }
+    public static void closeAllRemainingLocks() {
+        JCRSessionFactory jcrSessionFactory = JCRSessionFactory.getInstance();
+        JahiaUser currentUser = jcrSessionFactory.getCurrentUser();
 
-    private static HashMap<String, String> getSessionLocks(HttpSession session) {
-        if (session != null) {
-            @SuppressWarnings("unchecked") HashMap<String, String> locks = (HashMap<String, String>) session.getAttribute(LOCKS_SESSION_ATTR);
-            if (locks != null) {
-                return locks;
-            }
+        if (!holdLocks.containsKey(currentUser)) {
+            // no lock for current user
+            return;
         }
-        return new HashMap<>();
-    }
 
-    /**
-     * Copy of GWT: org.jahia.ajax.gwt.helper.LocksHelper.closeAllLocks
-     * @param locks
-     */
-    private static void closeAllLocks(Collection<String> locks) {
         try {
-            for (String lock : locks) {
-                JCRSessionWrapper jcrsession = JCRSessionFactory.getInstance().getCurrentUserSession(Constants.EDIT_WORKSPACE);
+            for (String lock : holdLocks.get(currentUser).values()) {
+                JCRSessionWrapper jcrsession = jcrSessionFactory.getCurrentUserSession(Constants.EDIT_WORKSPACE);
                 try {
                     JCRNodeWrapper node = jcrsession.getNodeByUUID(lock);
                     node.unlock(LOCK_TYPE);
@@ -130,7 +128,7 @@ public class StaticEditorLockService {
                     logger.error("Unexpected problem while trying to unlock node - node may remain locked: " + lock, e);
                 }
             }
-            locks.clear();
+            holdLocks.remove(currentUser);
         } catch (RepositoryException e) {
             logger.error("Cannot release locks", e);
         }
