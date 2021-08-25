@@ -543,6 +543,24 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
             + "section");
     }
 
+    @Test
+    public void testPrimaryNodeTypeExtendsTemplateMixin() throws Exception {
+        JCRNodeWrapper simpleContent = session.getNode(testSite.getJCRLocalPath()).addNode("externalLinkIssueExample", "jnt:externalLinkIssueExample");
+        session.save();
+        // edit
+        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
+        EditorFormFieldSet fs = getFieldSet(form, "content", "jmix:externalLink");
+        Assert.isTrue(fs.getDisplayed(), "FieldSet should be displayed");
+        Assert.isTrue(fs.getActivated(), "FieldSet should be activated");
+        Assert.isTrue(!fs.getDynamic(), "FieldSet should not be dynamic");
+        Assert.isTrue(hasField(form, "content", "jnt:externalLinkIssueExample", "text"), "could not find text in content "
+            + "section");
+        Assert.isTrue(hasField(form, "content", "jmix:externalLink", "j:linkTitle"), "could not find text in content "
+            + "section");
+        Assert.isTrue(hasField(form, "content", "jmix:externalLink", "j:url"), "could not find text in content "
+            + "section");
+    }
+
     private URL getResource(String s) {
         return getClass().getClassLoader().getResource(s);
     }

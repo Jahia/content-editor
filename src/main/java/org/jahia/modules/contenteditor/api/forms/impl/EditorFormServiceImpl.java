@@ -261,7 +261,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         Map<String, EditorFormSection> formSectionsByName, boolean removed, boolean dynamic, boolean activated,
         Set<String> processedProperties, boolean isForExtendMixin) throws RepositoryException {
 
-        final boolean displayFieldSet = !fieldSetNodeType.isNodeType("jmix:templateMixin");
+        final boolean displayFieldSet = !fieldSetNodeType.isNodeType("jmix:templateMixin") || primaryNodeType.isNodeType("jmix:templateMixin");
         EditorFormFieldSet nodeTypeFieldSet = generateEditorFormFieldSet(processedProperties, fieldSetNodeType, existingNode, parentNode,
             locale, uiLocale, removed, dynamic, activated, displayFieldSet, isForExtendMixin);
         nodeTypeFieldSet = mergeWithStaticFormFieldSets(fieldSetNodeType.getName(), nodeTypeFieldSet);
