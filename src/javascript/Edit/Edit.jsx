@@ -48,8 +48,8 @@ export const EditCmp = ({
             editCallback: (node, mutateNode) => {
                 const overridedStoredLocation = contentEditorConfigContext.envProps.handleRename && contentEditorConfigContext.envProps.handleRename(node, mutateNode);
                 // Trigger Page Composer to reload iframe if system name was renamed
-                if (mutateNode.rename && mutateNode.rename !== '') {
-                    dispatch(pcNavigateTo(`/${mutateNode.rename.split('/').splice(3, 2).join('/')}.html`));
+                if (mutateNode.rename) {
+                    dispatch(pcNavigateTo({oldPath: node.path, newPath: mutateNode.rename}));
                     invalidateRefetch(`${getPreviewPath(nodeData)}_${lang}`);
                 }
 
