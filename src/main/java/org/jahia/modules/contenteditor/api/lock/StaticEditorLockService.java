@@ -29,6 +29,7 @@ public class StaticEditorLockService {
     private static final Logger logger = LoggerFactory.getLogger(StaticEditorLockService.class);
 
     private static final String LOCK_TYPE = "engine";
+    private static final String LOCK_SYNC_PREFIX = "content-editor-";
 
     private static final Map<JahiaUser, Map<String, String>> holdLocks = new ConcurrentHashMap<>();
 
@@ -41,28 +42,34 @@ public class StaticEditorLockService {
      * @throws RepositoryException
      */
     public static boolean tryLock(String nodePath, String lockId) throws RepositoryException {
-        JCRSessionFactory jcrSessionFactory = JCRSessionFactory.getInstance();
-        JahiaUser currentUser = jcrSessionFactory.getCurrentUser();
-        JCRSessionWrapper sessionWrapper = jcrSessionFactory.getCurrentUserSession(Constants.EDIT_WORKSPACE);
-        JCRNodeWrapper node = sessionWrapper.getNode(nodePath);
+        synchronized ((LOCK_SYNC_PREFIX + lockId).intern()) {
+            JCRSessionFactory jcrSessionFactory = JCRSessionFactory.getInstance();
+            JahiaUser currentUser = jcrSessionFactory.getCurrentUser();
+            JCRSessionWrapper sessionWrapper = jcrSessionFactory.getCurrentUserSession(Constants.EDIT_WORKSPACE);
+            JCRNodeWrapper node = sessionWrapper.getNode(nodePath);
 
-        if (node.getProvider().isLockingAvailable() && node.hasPermission(Privilege.JCR_LOCK_MANAGEMENT)) {
-            try {
+            if (node.getProvider().isLockingAvailable() && node.hasPermission(Privilege.JCR_LOCK_MANAGEMENT)) {
+                try {
 
-                // session locks data
-                Map<String, String> locks = holdLocks.containsKey(currentUser) ? holdLocks.get(currentUser) : new HashMap<>();
-                locks.put(lockId, node.getIdentifier());
-                holdLocks.put(currentUser, locks);
+                    // session locks data
+                    Map<String, String> locks = holdLocks.containsKey(currentUser) ? holdLocks.get(currentUser) : new HashMap<>();
+                    locks.put(lockId, node.getIdentifier());
+                    holdLocks.put(currentUser, locks);
 
-                // jcr lock
-                node.lockAndStoreToken(LOCK_TYPE);
+                    // jcr lock
+                    node.lockAndStoreToken(LOCK_TYPE);
+                    // release the session lock token to avoid concurrency issues between session doing lock/unlock at the same time
+                    for (String lockToken : sessionWrapper.getLockTokens()) {
+                        sessionWrapper.removeLockToken(lockToken);
+                    }
 
-                return true;
-            } catch (UnsupportedRepositoryOperationException e) {
-                // do nothing if lock is not supported
+                    return true;
+                } catch (UnsupportedRepositoryOperationException e) {
+                    // do nothing if lock is not supported
+                }
             }
+            return false;
         }
-        return false;
     }
 
     /**
@@ -71,32 +78,33 @@ public class StaticEditorLockService {
      * @throws RepositoryException
      */
     public static void unlock(String lockId) throws RepositoryException {
-        JCRSessionFactory jcrSessionFactory = JCRSessionFactory.getInstance();
-        JahiaUser currentUser = jcrSessionFactory.getCurrentUser();
-        if (!holdLocks.containsKey(currentUser)) {
-            // no locks found for current user
-            return;
-        }
+        synchronized ((LOCK_SYNC_PREFIX + lockId).intern()) {
+            JCRSessionFactory jcrSessionFactory = JCRSessionFactory.getInstance();
+            JahiaUser currentUser = jcrSessionFactory.getCurrentUser();
+            if (!holdLocks.containsKey(currentUser)) {
+                // no locks found for current user
+                return;
+            }
 
-        JCRSessionWrapper sessionWrapper = jcrSessionFactory.getCurrentUserSession(Constants.EDIT_WORKSPACE);
-        Map<String, String> locks = holdLocks.get(currentUser);
-        String lockedIdentifier = locks.get(lockId);
+            JCRSessionWrapper sessionWrapper = jcrSessionFactory.getCurrentUserSession(Constants.EDIT_WORKSPACE);
+            Map<String, String> locks = holdLocks.get(currentUser);
+            String lockedIdentifier = locks.get(lockId);
 
-        if (lockedIdentifier != null) {
-            // always remove session locks data
-            locks.remove(lockId);
-            holdLocks.put(currentUser, locks);
+            if (lockedIdentifier != null) {
+                // always remove session locks data
+                locks.remove(lockId);
+                holdLocks.put(currentUser, locks);
 
-            JCRNodeWrapper node = sessionWrapper.getNodeByIdentifier(lockedIdentifier);
-            if (!locks.containsValue(lockedIdentifier) && // unlock JCR only if there is no other lock on this UUID already in session
-                node.getProvider().isLockingAvailable() &&
-                node.isLocked()) {
+                JCRNodeWrapper node = sessionWrapper.getNodeByIdentifier(lockedIdentifier);
+                if (!locks.containsValue(lockedIdentifier) && // unlock JCR only if there is no other lock on this UUID already in session
+                    node.getProvider().isLockingAvailable() &&
+                    node.isLocked()) {
 
-                String lockOwners = node.getLockOwner();
-                if (StringUtils.isNotEmpty(lockOwners) &&
-                    Arrays.asList(StringUtils.split(lockOwners, " ")).contains(currentUser.getUsername())) {
-
-                    node.unlock(LOCK_TYPE);
+                    String lockOwners = node.getLockOwner();
+                    if (StringUtils.isNotEmpty(lockOwners) &&
+                        Arrays.asList(StringUtils.split(lockOwners, " ")).contains(currentUser.getUsername())) {
+                        node.unlock(LOCK_TYPE);
+                    }
                 }
             }
         }
