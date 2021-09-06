@@ -29,7 +29,7 @@ export const EditCmp = ({
 }) => {
     const {t} = useTranslation('content-editor');
     const contentEditorConfigContext = useContentEditorConfigContext();
-    const {path, lang, nodeData, formQueryParams, initialValues, title} = useContentEditorContext();
+    const {lang, nodeData, formQueryParams, initialValues, title} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
     const dispatch = useDispatch();
 
