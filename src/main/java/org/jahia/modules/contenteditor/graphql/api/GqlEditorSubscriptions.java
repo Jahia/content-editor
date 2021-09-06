@@ -29,7 +29,7 @@ public class GqlEditorSubscriptions extends GqlJcrMutationSupport {
     @GraphQLDescription("Lock the node for edition and subscribe to hold the lock. " +
         "The node is automatically unlocked when the client disconnect or close the connection")
     public static Publisher<String> subscribeToEditorLock(
-            @GraphQLName("nodePath") @GraphQLNonNull @GraphQLDescription("Path of the node to be locked.") String nodePath,
+            @GraphQLName("nodeId") @GraphQLNonNull @GraphQLDescription("Uuid of the node to be locked.") String uuid,
             @GraphQLName("editorID") @GraphQLNonNull @GraphQLDescription("An ID generated client side used to identify the lock") String editorID) throws EditorFormException {
 
         JCRSessionFactory jcrSessionFactory = JCRSessionFactory.getInstance();
@@ -37,12 +37,12 @@ public class GqlEditorSubscriptions extends GqlJcrMutationSupport {
 
         // lock the node
         try {
-            if (!StaticEditorLockService.tryLock(nodePath, editorID)){
+            if (!StaticEditorLockService.tryLock(uuid, editorID)){
                 // lock not supported by the node
                 return null;
             }
         } catch (RepositoryException e) {
-            throw new EditorFormException("Unable to lock node: " + nodePath, e);
+            throw new EditorFormException("Unable to lock node: " + uuid, e);
         }
 
         return Flowable.create(obs-> {

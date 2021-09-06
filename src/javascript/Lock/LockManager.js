@@ -4,7 +4,7 @@ import {useApolloClient} from '@apollo/react-hooks';
 import {SubscribeToEditorLock} from './lock.gql-subscription';
 import {UnlockEditorMutation} from './lock.gql-mutation';
 
-export const LockManager = ({path}) => {
+export const LockManager = ({uuid}) => {
     const client = useApolloClient();
 
     useEffect(() => {
@@ -18,7 +18,7 @@ export const LockManager = ({path}) => {
         const subscriptionObserver = client.subscribe({
             query: SubscribeToEditorLock,
             variables: {
-                nodePath: path,
+                nodeId: uuid,
                 editorID: editorId
             },
             shouldResubscribe: true
@@ -50,11 +50,11 @@ export const LockManager = ({path}) => {
                 })
                 .catch(err => console.error(err));
         };
-    }, [client, path]);
+    }, [client, uuid]);
 
     return '';
 };
 
 LockManager.propTypes = {
-    path: PropTypes.string.isRequired
+    uuid: PropTypes.string.isRequired
 };
