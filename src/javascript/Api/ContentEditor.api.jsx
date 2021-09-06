@@ -7,7 +7,7 @@ import Slide from '@material-ui/core/Slide';
 import {CreateNewContentDialog} from '../Create/CreateNewContentAction/CreateNewContentDialog';
 import {withApollo} from 'react-apollo';
 import {compose} from '~/utils';
-import {getCreatableNodetypes} from '~/Create/CreateNewContentAction/createNewContent.utits';
+import {getCreatableNodetypes} from '~/Create/CreateNewContentAction/createNewContent.utils';
 import EditPanelDialogConfirmation from '~/EditPanel/EditPanelDialogConfirmation/EditPanelDialogConfirmation';
 import {ErrorBoundary} from '@jahia/jahia-ui-root';
 
