@@ -1,4 +1,4 @@
-import {getCreatableNodetypes, filterTree, transformNodeTypesToActions} from './createNewContent.utits';
+import {getCreatableNodetypes, filterTree, transformNodeTypesToActions} from './createNewContent.utils';
 
 describe('CreateNewContent utils', () => {
     describe('getActions', () => {

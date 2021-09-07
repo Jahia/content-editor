@@ -36,17 +36,17 @@ public class StaticEditorLockService {
     /**
      * Lock the node for edition and store the lock info in session for cleanup
      *
-     * @param nodePath the node to lock
+     * @param uuid the node to lock
      * @param lockId the lockID to store the lock info in session
      * @return true if the node is successfully locked, false if the node doesnt support locks
      * @throws RepositoryException
      */
-    public static boolean tryLock(String nodePath, String lockId) throws RepositoryException {
+    public static boolean tryLock(String uuid, String lockId) throws RepositoryException {
         synchronized ((LOCK_SYNC_PREFIX + lockId).intern()) {
             JCRSessionFactory jcrSessionFactory = JCRSessionFactory.getInstance();
             JahiaUser currentUser = jcrSessionFactory.getCurrentUser();
             JCRSessionWrapper sessionWrapper = jcrSessionFactory.getCurrentUserSession(Constants.EDIT_WORKSPACE);
-            JCRNodeWrapper node = sessionWrapper.getNode(nodePath);
+            JCRNodeWrapper node = sessionWrapper.getNodeByIdentifier(uuid);
 
             if (node.getProvider().isLockingAvailable() && node.hasPermission(Privilege.JCR_LOCK_MANAGEMENT)) {
                 try {

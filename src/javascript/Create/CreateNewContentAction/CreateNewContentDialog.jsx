@@ -12,7 +12,7 @@ import {ProgressOverlay} from '@jahia/react-material';
 import {TreeView} from '~/DesignSystem/TreeView';
 import {useQuery} from '@apollo/react-hooks';
 import {getTreeOfContent} from '~/Create/CreateNewContentAction/CreateNewContent.gql-queries';
-import {filterTree, isOpenableEntry} from './createNewContent.utits';
+import {filterTree, isOpenableEntry} from './createNewContent.utils';
 
 const styles = theme => ({
     treeContainer: {

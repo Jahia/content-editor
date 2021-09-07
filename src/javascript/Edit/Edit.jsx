@@ -29,7 +29,7 @@ export const EditCmp = ({
 }) => {
     const {t} = useTranslation('content-editor');
     const contentEditorConfigContext = useContentEditorConfigContext();
-    const {path, lang, nodeData, formQueryParams, initialValues, title} = useContentEditorContext();
+    const {lang, nodeData, formQueryParams, initialValues, title} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
     const dispatch = useDispatch();
 
@@ -83,7 +83,7 @@ export const EditCmp = ({
                     {props => <EditPanel {...props} title={title}/>}
                 </Formik>
             </PublicationInfoContextProvider>
-            {!nodeData.lockedAndCannotBeEdited && <LockManager path={path}/>}
+            {!nodeData.lockedAndCannotBeEdited && <LockManager uuid={nodeData.uuid}/>}
         </>
     );
 };

@@ -11,14 +11,14 @@ jest.mock('@jahia/data-helper', () => {
         useNodeInfo: jest.fn()};
 });
 jest.mock('./CreateNewContentDialog', () => jest.fn());
-jest.mock('./createNewContent.utits', () => {
+jest.mock('./createNewContent.utils', () => {
     return {useCreatableNodetypes: jest.fn(), transformNodeTypesToActions: jest.fn()};
 });
 import {useContentEditorHistory} from '~/ContentEditorHistory';
 import {useSelector} from 'react-redux';
 import {useNodeChecks, useNodeInfo} from '@jahia/data-helper';
 import {shallow} from '@jahia/test-framework';
-import {transformNodeTypesToActions, useCreatableNodetypes} from './createNewContent.utits';
+import {transformNodeTypesToActions, useCreatableNodetypes} from './createNewContent.utils';
 
 import createNewContentAction from './createNewContent.action';
 

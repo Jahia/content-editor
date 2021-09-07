@@ -40,8 +40,8 @@ export async function getCreatableNodetypes(client, nodeTypes, childNodeName, in
 }
 
 function getNodeTypes(showOnNodeTypes, data, transformResultCallback) {
-    const nodeTypeNotDsplayed = (showOnNodeTypes && showOnNodeTypes.length > 0 && !data.jcr.nodeByPath.isNodeType);
-    if (nodeTypeNotDsplayed) {
+    const nodeTypeNotDisplayed = (showOnNodeTypes && showOnNodeTypes.length > 0 && data.jcr.nodeByPath && !data.jcr.nodeByPath.isNodeType);
+    if (nodeTypeNotDisplayed) {
         return [];
     }
 
