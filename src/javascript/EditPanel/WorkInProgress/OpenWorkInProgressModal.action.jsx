@@ -13,7 +13,9 @@ export const OpenWorkInProgressModal = ({siteInfo, nodeData, formik, language, r
 
     const wipInfo = formik.values[Constants.wip.fieldName];
     const singleLanguage = siteInfo.languages.length === 1;
-    const isMarkAsWIP = singleLanguage && wipInfo.status === Constants.wip.status.ALL_CONTENT;
+    const isMarkAsWIP = singleLanguage &&
+        (wipInfo.status === Constants.wip.status.ALL_CONTENT ||
+            wipInfo.status === Constants.wip.status.LANGUAGES);
     const buttonLabelKind = isMarkAsWIP ? 'unmark' : 'mark';
     const buttonLabel = `content-editor:label.contentEditor.edit.action.workInProgress.label.${buttonLabelKind}`;
 
