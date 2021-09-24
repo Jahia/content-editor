@@ -26,7 +26,7 @@ export const usePublicationInfo = (queryParams, t) => {
         };
     }, [refetch]);
 
-    if (error || loading || !data.jcr) {
+    if (error || loading || !data?.jcr) {
         return {
             publicationInfoPolling: polling,
             publicationInfoLoading: loading,
