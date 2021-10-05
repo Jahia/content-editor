@@ -203,7 +203,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         String path;
         JCRSessionWrapper session;
         try {
-            JCRNodeWrapper nodeToPublish = EditorFormServiceImpl.resolveNodeFromPathorUUID(uuidOrPath, locale);
+            JCRNodeWrapper nodeToPublish = resolveNodeFromPathorUUID(uuidOrPath, locale);
             uuid = nodeToPublish.getIdentifier();
             path = nodeToPublish.getPath();
             session = JCRSessionFactory.getInstance().getCurrentUserSession();
@@ -266,7 +266,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         return true;
     }
 
-    public static JCRNodeWrapper resolveNodeFromPathorUUID(String uuidOrPath, Locale locale) throws RepositoryException {
+    private JCRNodeWrapper resolveNodeFromPathorUUID(String uuidOrPath, Locale locale) throws RepositoryException {
         if (StringUtils.startsWith(uuidOrPath, "/")) {
             return getSession(locale, uuidOrPath).getNode(uuidOrPath);
         } else {
@@ -709,7 +709,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         return propertyDefinition.isInternationalized() ? !i18nFieldsEditable : !sharedFieldsEditable;
     }
 
-    private static JCRSessionWrapper getSession(Locale locale, String uuidOrPath) throws RepositoryException {
+    private JCRSessionWrapper getSession(Locale locale, String uuidOrPath) throws RepositoryException {
         Locale fallbackLocale = JCRTemplate.getInstance().doExecuteWithSystemSession(jcrSessionWrapper -> {
             JCRNodeWrapper node;
             if (StringUtils.startsWith(uuidOrPath, "/")) {
