@@ -46,19 +46,26 @@ package org.jahia.modules.contenteditor.api.forms.impl;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jahia.api.Constants;
+import org.jahia.exceptions.JahiaRuntimeException;
 import org.jahia.modules.contenteditor.api.forms.*;
 import org.jahia.modules.contenteditor.graphql.api.types.ContextEntryInput;
 import org.jahia.modules.graphql.provider.dxm.node.GqlJcrPropertyType;
+import org.jahia.osgi.BundleUtils;
 import org.jahia.services.content.*;
 import org.jahia.services.content.decorator.JCRSiteNode;
 import org.jahia.services.content.nodetypes.*;
 import org.jahia.services.content.nodetypes.initializers.ChoiceListInitializer;
 import org.jahia.services.content.nodetypes.initializers.ChoiceListInitializerService;
 import org.jahia.services.content.nodetypes.initializers.ChoiceListValue;
+import org.jahia.services.scheduler.BackgroundJob;
+import org.jahia.services.scheduler.SchedulerService;
 import org.jahia.utils.LanguageCodeConverters;
 import org.jahia.utils.i18n.Messages;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.quartz.JobDataMap;
+import org.quartz.JobDetail;
+import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -82,6 +89,8 @@ public class EditorFormServiceImpl implements EditorFormService {
     private NodeTypeRegistry nodeTypeRegistry;
     private ChoiceListInitializerService choiceListInitializerService;
     private StaticDefinitionsRegistry staticDefinitionsRegistry;
+    private ComplexPublicationService publicationService;
+    private SchedulerService schedulerService;
 
     // we extend the map from SelectorType.defaultSelectors to add more.
     private static Map<Integer, Integer> defaultSelectors = new HashMap<>();
@@ -101,6 +110,8 @@ public class EditorFormServiceImpl implements EditorFormService {
         defaultSelectors.put(PropertyType.BINARY, SelectorType.SMALLTEXT);
     }
 
+    private static final List<String> PUBLISHED_TECHNICAL_NODES = Arrays.asList("vanityUrlMapping", "j:conditionalVisibility");
+
     @Reference
     public void setChoiceListInitializerService(ChoiceListInitializerService choiceListInitializerService) {
         this.choiceListInitializerService = choiceListInitializerService;
@@ -114,6 +125,16 @@ public class EditorFormServiceImpl implements EditorFormService {
     @Reference
     public void setStaticDefinitionsRegistry(StaticDefinitionsRegistry staticDefinitionsRegistry) {
         this.staticDefinitionsRegistry = staticDefinitionsRegistry;
+    }
+
+    @Reference
+    public void setPublicationService(ComplexPublicationService publicationService) {
+        this.publicationService = publicationService;
+    }
+
+    @Reference
+    public void setSchedulerService(SchedulerService schedulerService) {
+        this.schedulerService = schedulerService;
     }
 
     @Override
@@ -176,7 +197,76 @@ public class EditorFormServiceImpl implements EditorFormService {
         }
     }
 
-    private JCRNodeWrapper resolveNodeFromPathorUUID(String uuidOrPath, Locale locale) throws RepositoryException {
+    @Override
+    public boolean publishForm(Locale locale, String uuidOrPath) throws EditorFormException {
+        String uuid;
+        String path;
+        JCRSessionWrapper session;
+        try {
+            JCRNodeWrapper nodeToPublish = EditorFormServiceImpl.resolveNodeFromPathorUUID(uuidOrPath, locale);
+            uuid = nodeToPublish.getIdentifier();
+            path = nodeToPublish.getPath();
+            session = JCRSessionFactory.getInstance().getCurrentUserSession();
+        } catch (RepositoryException e) {
+            throw new EditorFormException("Cannot found node: " + uuidOrPath, e);
+        }
+
+        // Filter the publication infos to only keep current node and sub technical nodes associated to the current node
+        Collection<ComplexPublicationService.FullPublicationInfo> filteredInfos = publicationService.getFullPublicationInfos(Collections.singleton(uuid),
+            Collections.singletonList(locale.toLanguageTag()), false, session)
+            .stream()
+            .filter(info -> info.getPublicationStatus() != PublicationInfo.DELETED) // keep only not deleted nodes
+            .filter(ComplexPublicationService.FullPublicationInfo::isAllowedToPublishWithoutWorkflow) // keep only nodes allowed to bypass workflow
+            .filter(info -> path.equals(info.getNodePath()) || PUBLISHED_TECHNICAL_NODES
+                .stream()
+                .anyMatch(technicalNodeName -> {
+                    String technicalNodePath = path + "/" + technicalNodeName;
+                    String technicalNodeChildPath = technicalNodePath + "/";
+                    return technicalNodePath.equals(info.getNodePath()) || info.getNodePath().startsWith(technicalNodeChildPath);
+                })) // keep the node itself and associated technical subnodes
+            .collect(Collectors.toList());
+
+        // Build the list of uuids to publish
+        LinkedList<String> uuids = new LinkedList<>();
+        for (ComplexPublicationService.FullPublicationInfo info : filteredInfos) {
+            if (info.getNodeIdentifier() != null) {
+                uuids.add(info.getNodeIdentifier());
+            }
+            if (info.getTranslationNodeIdentifier() != null) {
+                uuids.add(info.getTranslationNodeIdentifier());
+            }
+            uuids.addAll(info.getDeletedTranslationNodeIdentifiers());
+        }
+
+        // Build the list of paths to publish
+        String workspaceName = session.getWorkspace().getName();
+        List<String> paths = new ArrayList<>();
+        for (String uuidToPublish : uuids) {
+            try {
+                paths.add(session.getNodeByIdentifier(uuidToPublish).getPath());
+            } catch (RepositoryException e) {
+                throw new EditorFormException(e);
+            }
+        }
+
+        // Schedule publication workflow
+        JobDetail jobDetail = BackgroundJob.createJahiaJob("Publication", PublicationJob.class);
+        JobDataMap jobDataMap = jobDetail.getJobDataMap();
+        jobDataMap.put(PublicationJob.PUBLICATION_UUIDS, uuids);
+        jobDataMap.put(PublicationJob.PUBLICATION_PATHS, paths);
+        jobDataMap.put(PublicationJob.SOURCE, workspaceName);
+        jobDataMap.put(PublicationJob.DESTINATION, Constants.LIVE_WORKSPACE);
+        jobDataMap.put(PublicationJob.CHECK_PERMISSIONS, true);
+        try {
+            schedulerService.scheduleJobNow(jobDetail);
+        } catch (SchedulerException e) {
+            throw new EditorFormException(e);
+        }
+
+        return true;
+    }
+
+    public static JCRNodeWrapper resolveNodeFromPathorUUID(String uuidOrPath, Locale locale) throws RepositoryException {
         if (StringUtils.startsWith(uuidOrPath, "/")) {
             return getSession(locale, uuidOrPath).getNode(uuidOrPath);
         } else {
@@ -619,7 +709,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         return propertyDefinition.isInternationalized() ? !i18nFieldsEditable : !sharedFieldsEditable;
     }
 
-    private JCRSessionWrapper getSession(Locale locale, String uuidOrPath) throws RepositoryException {
+    private static JCRSessionWrapper getSession(Locale locale, String uuidOrPath) throws RepositoryException {
         Locale fallbackLocale = JCRTemplate.getInstance().doExecuteWithSystemSession(jcrSessionWrapper -> {
             JCRNodeWrapper node;
             if (StringUtils.startsWith(uuidOrPath, "/")) {
