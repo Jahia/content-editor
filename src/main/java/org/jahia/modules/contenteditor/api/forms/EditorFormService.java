@@ -79,6 +79,16 @@ public interface EditorFormService {
     EditorForm getEditForm(Locale uiLocale, Locale locale, String uuidOrPath) throws EditorFormException;
 
     /**
+     * Publish the edited node, it will publish the node only with the associated technical nodes
+     * (vanity, visibilities, acls, etc ...)
+     * @param locale The locale of the form when editing the node
+     * @param uuidOrPath UUID or path of the node path of the node to be edited.
+     * @return True in case publication have been scheduled successfully
+     * @throws EditorFormException in case of any errors happening during this process
+     */
+    boolean publishForm(Locale locale, String uuidOrPath) throws EditorFormException;
+
+    /**
      * Retrieve field constraints for given node
      * @param nodeUuidOrPath UUID or path of the node (optional in case you are creating it, and it doesnt exist yet)
      * @param parentNodeUuidOrPath UUID or path of the parent node

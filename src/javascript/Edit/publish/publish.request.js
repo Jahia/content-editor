@@ -13,7 +13,7 @@ export const publishNode = ({
     return client.mutate({
         variables: {
             uuid: nodeData.uuid,
-            languages: [language]
+            language: language
         },
         mutation: PublishNodeMutation
     })
