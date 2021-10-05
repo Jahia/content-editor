@@ -60,7 +60,7 @@ public class GqlEditorFormMutations {
     }
 
     @GraphQLField
-    @GraphQLDescription("Publish the edited node with the ")
+    @GraphQLDescription("Publish the edited node with the associated technical sub nodes (visibility conditions, vanity urls, ACLs)")
     public boolean publishForm(
         @GraphQLName("uuidOrPath") @GraphQLNonNull @GraphQLDescription("UUID or path of the edited node.") String uuidOrPath,
         @GraphQLName("locale") @GraphQLNonNull @GraphQLDescription("A string representation of a locale, in IETF BCP 47 language tag format, ie en_US, en, fr, fr_CH, ...") String locale
