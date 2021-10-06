@@ -4,12 +4,10 @@ import React, {useContext} from 'react';
 import {ComponentRendererContext} from '@jahia/ui-extender';
 import * as PropTypes from 'prop-types';
 import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
-import {useContentEditorContext} from '~/ContentEditor.context';
 
 const Save = ({values, errors, dirty, mode, render: Render, loading: Loading, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
     const {publicationInfoPolling} = usePublicationInfoContext();
-    const {refetchFormData} = useContentEditorContext();
 
     if (Loading) {
         return <Loading {...otherProps}/>;
@@ -27,9 +25,7 @@ const Save = ({values, errors, dirty, mode, render: Render, loading: Loading, ..
                     return formik
                         .submitForm()
                         .then(() => {
-                            // TODO BACKLOG-13406 avoid refretch if possible
-                            refetchFormData();
-                            formik.resetForm(values);
+                            formik.resetForm({values});
                         });
                 }
             }}

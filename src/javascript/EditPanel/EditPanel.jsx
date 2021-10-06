@@ -28,7 +28,9 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
         if (envProps.initCallback) {
             envProps.initCallback(formik);
         }
+    }, []);
 
+    useEffect(() => {
         const handleBeforeUnloadEvent = ev => {
             ev.preventDefault();
             ev.returnValue = '';

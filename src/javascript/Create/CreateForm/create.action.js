@@ -25,7 +25,7 @@ const Create = ({mode, values, errors, dirty, render: Render, loading: Loading, 
                         return formik
                             .submitForm()
                             .then(() => {
-                                formik.resetForm(values);
+                                formik.resetForm({values});
                             });
                     }
                 }}/>
