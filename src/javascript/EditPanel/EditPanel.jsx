@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {withNotifications} from '@jahia/react-material';
 import PropTypes from 'prop-types';
 import {withApollo} from 'react-apollo';
@@ -44,27 +44,18 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
     const {envProps} = useContentEditorConfigContext();
     const publicationInfoContext = useContext(PublicationInfoContext);
 
-    const formikContainer = useRef({}).current;
-
     useEffect(() => {
-        // Reassign all formik data into container on every render
-        Object.assign(formikContainer, formik);
-    });
-
-    useEffect(() => {
-        if (envProps.initCallback) {
-            envProps.initCallback(formikContainer);
+        if (envProps.setFormikRef) {
+            envProps.setFormikRef(formik);
         }
-
-        return () => unregisterListeners(envProps);
-    }, [envProps, formikContainer]);
+    }, [envProps, formik]);
 
     useEffect(() => {
         if (formik.dirty) {
             registerListeners(envProps);
-        } else {
-            unregisterListeners(envProps);
         }
+
+        return () => unregisterListeners(envProps);
     }, [envProps, formik.dirty]);
 
     const actionContext = {

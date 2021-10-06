@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {Dialog, withStyles} from '@material-ui/core';
 import {ContentEditor} from '~/ContentEditor';
 import {Constants} from '~/ContentEditor.constants';
@@ -45,7 +45,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
     const [editorConfig, setEditorConfig] = useState(false);
     const [contentTypeSelectorConfig, setContentTypeSelectorConfig] = useState(false);
     const [confirmationConfig, setConfirmationConfig] = useState(false);
-    const [formikRef, setFormikRef] = useState(false);
+    const formikRef = useRef();
 
     window.CE_API = window.CE_API || {};
     /**
@@ -153,8 +153,8 @@ const ContentEditorApiCmp = ({classes, client}) => {
 
     // Standalone env props
     const envProps = {
-        initCallback: formik => {
-            setFormikRef(formik);
+        setFormikRef: formik => {
+            formikRef.current = formik;
         },
         back: (nodeUuid, operation, newContentUuid, byPassEventTriggers) => {
             // Refresh GWT content
@@ -218,12 +218,12 @@ const ContentEditorApiCmp = ({classes, client}) => {
                     classes={{root: classes.ceDialogRoot}}
                     disableAutoFocus="true"
                     disableEnforceFocus="true"
-                    onClose={() => (formikRef && formikRef.dirty) ? setConfirmationConfig(true) : closeAll()}
+                    onClose={() => (formikRef.current && formikRef.current.dirty) ? setConfirmationConfig(true) : closeAll()}
             >
                 {confirmationConfig && <EditPanelDialogConfirmation
                     open
                     titleKey="content-editor:label.contentEditor.edit.action.goBack.title"
-                    formik={formikRef}
+                    formik={formikRef.current}
                     actionCallback={envProps.back}
                     onCloseDialog={() => setConfirmationConfig(false)}
                 />}
