@@ -6,7 +6,7 @@ import {compose} from '~/utils';
 import {useTranslation} from 'react-i18next';
 import {connect} from 'formik';
 import {HeaderLowerSection, HeaderUpperSection} from './header';
-import {useContentEditorContext, useContentEditorConfigContext} from '~/ContentEditor.context';
+import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import {PublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
 import classes from './EditPanel.scss';
 import classnames from 'clsx';
@@ -17,6 +17,26 @@ import ContentHeader from '~/DesignSystem/ContentLayout/ContentHeader';
 import {Separator} from '@jahia/moonstone';
 import {Constants} from '~/ContentEditor.constants';
 
+const handleBeforeUnloadEvent = ev => {
+    ev.preventDefault();
+    ev.returnValue = '';
+};
+
+const registerListeners = envProps => {
+    // Prevent close browser's tab when there is unsaved content
+    window.addEventListener('beforeunload', handleBeforeUnloadEvent);
+    if (envProps.registerListeners) {
+        envProps.registerListeners();
+    }
+};
+
+const unregisterListeners = envProps => {
+    window.removeEventListener('beforeunload', handleBeforeUnloadEvent);
+    if (envProps.unregisterListeners) {
+        envProps.unregisterListeners();
+    }
+};
+
 const EditPanelCmp = ({formik, title, notificationContext, client}) => {
     const [activeTab, setActiveTab] = useState(Constants.editPanel.editTab);
     const {t} = useTranslation('content-editor');
@@ -25,46 +45,18 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
     const publicationInfoContext = useContext(PublicationInfoContext);
 
     useEffect(() => {
-        if (envProps.initCallback) {
-            envProps.initCallback(formik);
+        if (envProps.setFormikRef) {
+            envProps.setFormikRef(formik);
         }
-
-        const handleBeforeUnloadEvent = ev => {
-            ev.preventDefault();
-            ev.returnValue = '';
-        };
-
-        const registerListeners = () => {
-            // Prevent close browser's tab when there is unsaved content
-            window.addEventListener('beforeunload', handleBeforeUnloadEvent);
-            if (envProps.registerListeners) {
-                envProps.registerListeners();
-            }
-        };
-
-        const unregisterListeners = () => {
-            window.removeEventListener('beforeunload', handleBeforeUnloadEvent);
-            if (envProps.unregisterListeners) {
-                envProps.unregisterListeners();
-            }
-        };
-
-        if (formik.dirty) {
-            registerListeners();
-        } else {
-            unregisterListeners();
-        }
-
-        return unregisterListeners;
-    }, [formik.dirty]);
+    }, [envProps, formik]);
 
     useEffect(() => {
-        return () => {
-            if (envProps.unregisterListeners) {
-                envProps.unregisterListeners();
-            }
-        };
-    }, []);
+        if (formik.dirty) {
+            registerListeners(envProps);
+        }
+
+        return () => unregisterListeners(envProps);
+    }, [envProps, formik.dirty]);
 
     const actionContext = {
         nodeData,
