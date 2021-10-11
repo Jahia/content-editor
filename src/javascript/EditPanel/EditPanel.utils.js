@@ -112,7 +112,13 @@ export function getDataToMutate({nodeData, formValues, sections, lang}) {
                 // Check if props existed before, to remove it
                 const nodeProperty = nodeData.properties.find(prop => prop.name === field.propertyName);
                 if (nodeProperty && nodeProperty[getValuePropName(field).name]) {
-                    propsToDelete.push(field.propertyName);
+                    const fieldSetName = getDynamicFieldSetNameOfField(sections, field);
+                    if (!fieldSetName ||
+                        (fieldSetName &&
+                            !mixinsToMutate.mixinsToDelete.includes(fieldSetName) &&
+                            (hasNodeMixin(nodeData, fieldSetName) || mixinsToMutate.mixinsToAdd.includes(fieldSetName)))) {
+                        propsToDelete.push(field.propertyName);
+                    }
                 }
             }
         }
