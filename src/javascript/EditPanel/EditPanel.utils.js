@@ -80,7 +80,7 @@ export function getDataToMutate({nodeData, formValues, sections, lang}) {
 
                 let valueToSave;
                 if (field.multiple) {
-                    const filteredUndefinedValues = value.filter(v => v !== undefined);
+                    const filteredUndefinedValues = value.filter(v => v !== undefined && v !== '');
                     valueToSave = filteredUndefinedValues.map(value => _adaptDecimalValues(fieldType, value));
                 } else {
                     // In case we have field of type decimal or double, we should store number
