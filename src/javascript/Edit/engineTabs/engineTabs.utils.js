@@ -18,7 +18,7 @@ export const getNodeTypes = primaryNodeType => {
  */
 export function openEngineTab(nodeData, engineTabs) {
     const {path, displayName, uuid, mixinTypes, primaryNodeType} = nodeData;
-
+    console.log('CE will open gwt tabs : ',engineTabs);
     window.authoringApi.editContent(
         path,
         displayName,
