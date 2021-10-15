@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {withNotifications} from '@jahia/react-material';
 import PropTypes from 'prop-types';
 import {withApollo} from 'react-apollo';
@@ -44,6 +44,8 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
     const {envProps} = useContentEditorConfigContext();
     const publicationInfoContext = useContext(PublicationInfoContext);
 
+    const previousDirty = useRef();
+
     useEffect(() => {
         if (envProps.setFormikRef) {
             envProps.setFormikRef(formik);
@@ -51,12 +53,13 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
     }, [envProps, formik]);
 
     useEffect(() => {
-        if (formik.dirty) {
+        if (!previousDirty.current && formik.dirty) {
             registerListeners(envProps);
         }
 
+        previousDirty.current = formik.dirty;
         return () => unregisterListeners(envProps);
-    }, [envProps, formik.dirty]);
+    }, [previousDirty, envProps, formik.dirty]);
 
     const actionContext = {
         nodeData,
