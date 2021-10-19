@@ -304,7 +304,7 @@ public class EditorFormField implements Comparable<EditorFormField> {
         newField.setSelectorOptions(otherEditorFormField.selectorOptions != null ? otherEditorFormField.selectorOptions : selectorOptions);
         newField.setI18n(i18n != null ? i18n : otherEditorFormField.i18n);
         newField.setReadOnly(mergeBooleanKeepTrue(readOnly, otherEditorFormField.readOnly));
-        newField.setMultiple(multiple != null ? multiple : otherEditorFormField.multiple);
+        newField.setMultiple(otherEditorFormField.multiple != null ? otherEditorFormField.multiple : multiple);
         newField.setMandatory(mergeBooleanKeepTrue(mandatory, otherEditorFormField.mandatory));
         newField.setValueConstraints(otherEditorFormField.valueConstraints != null ? otherEditorFormField.valueConstraints : valueConstraints);
         newField.setDefaultValues(otherEditorFormField.defaultValues != null ? otherEditorFormField.defaultValues : defaultValues);

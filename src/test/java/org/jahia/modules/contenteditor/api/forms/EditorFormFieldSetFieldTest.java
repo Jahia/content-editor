@@ -236,7 +236,7 @@ public final class EditorFormFieldSetFieldTest {
     }
 
     @Test
-    public void mergeWithCannotOverrideMultiple() {
+    public void mergeWithOverridesMultiple() {
         final EditorFormField multiple = new EditorFormFieldBuilder("a")
                 .multiple(true)
                 .build();
@@ -244,8 +244,8 @@ public final class EditorFormFieldSetFieldTest {
                 .multiple(false)
                 .build();
 
-        assertEquals(true, multiple.mergeWith(single).getMultiple());
-        assertEquals(false, single.mergeWith(multiple).getMultiple());
+        assertEquals(false, multiple.mergeWith(single).getMultiple());
+        assertEquals(true, single.mergeWith(multiple).getMultiple());
     }
 
     @Test
