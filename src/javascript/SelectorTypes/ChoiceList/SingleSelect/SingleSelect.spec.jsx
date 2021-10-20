@@ -46,6 +46,15 @@ describe('SingleSelect component', () => {
         return shallow(<SingleSelect {...componentProps}/>);
     };
 
+    const addValueConstraint = (displayValue, value) => {
+        props.field.valueConstraints.push({
+            displayValue: displayValue,
+            value: {
+                string: value
+            }
+        });
+    };
+
     it('should bind id correctly', () => {
         const cmp = buildComp(props, 'Yolooo');
         expect(cmp.props().id).toBe('select-' + props.id);
@@ -56,6 +65,20 @@ describe('SingleSelect component', () => {
         props.field.valueConstraints.forEach(constraint => {
             expect(cmp.debug()).toContain(constraint.displayValue);
         });
+    });
+
+    it('should be searchable if 5+ options', () => {
+        addValueConstraint('Display 1', 'value1');
+        addValueConstraint('Display 2', 'value2');
+        addValueConstraint('Display 3', 'value3');
+        addValueConstraint('Display 4', 'value4');
+        const cmp = buildComp(props, 'Yolooo');
+        expect(cmp.props().hasSearch).toBe(true);
+    });
+
+    it('should not be searchable if less than 5 options', () => {
+        const cmp = buildComp(props, 'Yolooo');
+        expect(cmp.props().hasSearch).toBe(false);
     });
 
     it('should display image', () => {

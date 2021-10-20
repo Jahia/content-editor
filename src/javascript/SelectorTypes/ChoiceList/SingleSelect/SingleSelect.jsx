@@ -2,8 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {Dropdown} from '@jahia/moonstone';
+import {useTranslation} from 'react-i18next';
 
 const SingleSelect = ({field, value, id, setActionContext, onChange}) => {
+    const {t} = useTranslation('content-editor');
     setActionContext({
         onChange
     });
@@ -41,6 +43,8 @@ const SingleSelect = ({field, value, id, setActionContext, onChange}) => {
             data={dropdownData}
             label={label}
             value={value}
+            hasSearch={dropdownData && dropdownData.length >= 5}
+            searchEmptyText={t('label.contentEditor.global.noResult')}
             onChange={(evt, item) => {
                 if (item.value !== value) {
                     onChange(item.value);

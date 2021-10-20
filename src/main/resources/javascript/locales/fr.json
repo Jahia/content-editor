@@ -250,6 +250,9 @@
         "mandatoryLanguageValid": "Le contenu ne sera visible en ligne qu'après publication dans toutes les langues obligatoires.",
         "conflict": "Un contenu avec le même nom existe déjà en mode live et ne fera pas partie de cette publication",
         "unknown": "Statut de publication indisponible"
+      },
+      "global": {
+        "noResult": "Aucun résultat trouvé."
       }
     }
   }
