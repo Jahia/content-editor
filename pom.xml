@@ -126,21 +126,6 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
-
-
-
-        <repository>
-            <id>jahia-internal</id>
-            <name>Jahia i Repository</name>
-            <url>https://devtools.jahia.com/nexus/content/groups/internal</url>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
     </repositories>
 
     <dependencies>
