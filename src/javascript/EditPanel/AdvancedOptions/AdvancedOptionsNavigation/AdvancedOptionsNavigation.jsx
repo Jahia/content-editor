@@ -9,10 +9,18 @@ import {ProgressOverlay} from '@jahia/react-material';
 import {registerAdvancedOptionsActions} from '~/EditPanel/AdvancedOptions/AdvancedOptions.actions';
 import {useTranslation} from 'react-i18next';
 
+const cleanAdvancedOptionsActions = () => {
+    const actions = registry.find({target: 'AdvancedOptionsActions'});
+    actions.forEach(action => {
+        registry.remove(action.type, action.key);
+    });
+};
+
 export const AdvancedOptionsNavigation = ({formik, activeOption, setActiveOption}) => {
     const {t} = useTranslation('content-editor');
     const {mode, nodeData, siteInfo} = useContentEditorContext();
 
+    cleanAdvancedOptionsActions();
     // Engines tabs need the node Data to be registered
     const {loading, error} = useRegisterEngineTabActions();
     registerAdvancedOptionsActions(registry, t);
@@ -47,7 +55,7 @@ export const AdvancedOptionsNavigation = ({formik, activeOption, setActiveOption
                                             label={buttonLabel}
                                             onClick={e => onClick(e)}
                                         />
-);
+                                    );
                                 }}
                 />
             </ul>
