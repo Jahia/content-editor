@@ -57,7 +57,6 @@ const CreateNewContent = ({contextNodePath, path, showOnNodeTypes, nodeTypes, in
         nodeTypes || undefined,
         undefined,
         includeSubTypes || false,
-        false,
         contextNodePath || path,
         uilang,
         ['jmix:studioOnly', 'jmix:hiddenType'],
