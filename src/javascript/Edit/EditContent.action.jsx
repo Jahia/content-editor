@@ -6,7 +6,7 @@ import {useSelector} from 'react-redux';
 import {Constants} from '~/ContentEditor.constants';
 import {useTranslation} from 'react-i18next';
 
-export const EditContent = ({path, isDrawer, onSaved, render: Render, loading: Loading, ...otherProps}) => {
+export const EditContent = ({path, isWindow, onSaved, render: Render, loading: Loading, ...otherProps}) => {
     const {redirect} = useContentEditorHistory();
     useTranslation('content-editor');
     const {language, uilang, site} = useSelector(state => ({language: state.language, site: state.site, uilang: state.uilang}));
@@ -22,20 +22,20 @@ export const EditContent = ({path, isDrawer, onSaved, render: Render, loading: L
     return (
         <Render {...otherProps}
                 isVisible={res.checksResult}
-                onClick={() => isDrawer ? window.CE_API.edit(res.node.uuid, site, language, uilang, true, onSaved) : redirect({language, mode: Constants.routes.baseEditRoute, uuid: res.node.uuid})}
+                onClick={() => isWindow ? window.CE_API.edit(res.node.uuid, site, language, uilang, true, onSaved) : redirect({language, mode: Constants.routes.baseEditRoute, uuid: res.node.uuid})}
         />
     );
 };
 
 EditContent.defaultProps = {
     loading: undefined,
-    isDrawer: false,
+    isWindow: false,
     onSaved: undefined
 };
 
 EditContent.propTypes = {
     path: PropTypes.string.isRequired,
-    isDrawer: PropTypes.bool,
+    isWindow: PropTypes.bool,
     onSaved: PropTypes.func,
     render: PropTypes.func.isRequired,
     loading: PropTypes.func
