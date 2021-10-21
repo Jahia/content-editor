@@ -1,4 +1,4 @@
-import {useRegisterEngineTabActions} from './useRegisterEngineTabActions';
+import {useRegisterEngineTabActions, tabShouldBeDisplayed} from './useRegisterEngineTabActions';
 import React from 'react';
 import {useQuery} from '@apollo/react-hooks';
 import {registry} from '@jahia/ui-extender';
@@ -104,7 +104,8 @@ describe('useRegisterEngineTabActions', () => {
         expect(registry.addOrReplace).toHaveBeenCalledWith('action', 'contentEditorGWTTabAction_content', openEngineTabsAction, {
             buttonLabel: 'Content',
             targets: ['AdvancedOptionsActions:3'],
-            tabs: ['content']
+            tabs: ['content'],
+            shouldBeDisplayed: tabShouldBeDisplayed
         });
     });
 });
