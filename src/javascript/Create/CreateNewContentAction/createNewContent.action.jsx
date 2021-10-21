@@ -40,7 +40,7 @@ const onClick = (uuid, language, context, redirect, componentRenderer) => {
     }
 };
 
-const CreateNewContent = ({contextNodePath, path, showOnNodeTypes, render: Render, loading: Loading, ...otherProps}) => {
+const CreateNewContent = ({contextNodePath, path, showOnNodeTypes, nodeTypes, includeSubTypes, render: Render, loading: Loading, ...otherProps}) => {
     const {redirect} = useContentEditorHistory();
     const {t} = useTranslation('content-editor');
     const componentRenderer = useContext(ComponentRendererContext);
@@ -54,9 +54,9 @@ const CreateNewContent = ({contextNodePath, path, showOnNodeTypes, render: Rende
     const nodeInfo = useNodeInfo({path: path, language}, {getPrimaryNodeType: true});
 
     const {loadingTypes, error, nodetypes} = useCreatableNodetypes(
-        context.nodeTypes || undefined,
-                undefined,
-        context.includeSubTypes || false,
+        nodeTypes || undefined,
+        undefined,
+        includeSubTypes || false,
         false,
         contextNodePath || path,
         uilang,
@@ -101,6 +101,8 @@ CreateNewContent.propTypes = {
     contextNodePath: PropTypes.string,
     path: PropTypes.string.isRequired,
     showOnNodeTypes: PropTypes.array,
+    nodeTypes: PropTypes.array,
+    includeSubTypes: PropTypes.array,
     render: PropTypes.func.isRequired,
     loading: PropTypes.func
 };

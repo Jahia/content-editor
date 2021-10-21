@@ -6,7 +6,7 @@ import {useSelector} from 'react-redux';
 import {Constants} from '~/ContentEditor.constants';
 import {useTranslation} from 'react-i18next';
 
-export const EditContent = ({path, render: Render, loading: Loading, ...otherProps}) => {
+export const EditContent = ({path, isDrawer, onSaved, render: Render, loading: Loading, ...otherProps}) => {
     const {redirect} = useContentEditorHistory();
     useTranslation('content-editor');
     const {language, uilang, site} = useSelector(state => ({language: state.language, site: state.site, uilang: state.uilang}));
@@ -22,17 +22,21 @@ export const EditContent = ({path, render: Render, loading: Loading, ...otherPro
     return (
         <Render {...otherProps}
                 isVisible={res.checksResult}
-                onClick={() => context.drawer ? window.CE_API.edit(res.node.uuid, site, language, uilang, true, context.onSaved) : redirect({language, mode: Constants.routes.baseEditRoute, uuid: res.node.uuid})}
+                onClick={() => isDrawer ? window.CE_API.edit(res.node.uuid, site, language, uilang, true, onSaved) : redirect({language, mode: Constants.routes.baseEditRoute, uuid: res.node.uuid})}
         />
     );
 };
 
 EditContent.defaultProps = {
-    loading: undefined
+    loading: undefined,
+    isDrawer: false,
+    onSaved: undefined
 };
 
 EditContent.propTypes = {
     path: PropTypes.string.isRequired,
+    isDrawer: PropTypes.bool,
+    onSaved: PropTypes.func,
     render: PropTypes.func.isRequired,
     loading: PropTypes.func
 };

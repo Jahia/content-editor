@@ -17,7 +17,7 @@ import ContentHeader from '~/DesignSystem/ContentLayout/ContentHeader';
 import {Constants} from '~/ContentEditor.constants';
 import {Button, Separator, Typography} from '@jahia/moonstone';
 import {AppBar, Toolbar} from '@material-ui/core';
-import {ButtonWithPastilleRenderer} from '~/EditPanel/header/ActionsButtons';
+import {ButtonWithPastilleRenderer} from '~/actions/ActionsButtons';
 import {Close} from '@jahia/moonstone/dist/icons';
 
 const handleBeforeUnloadEvent = ev => {
@@ -89,16 +89,18 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
             <Toolbar variant="dense">
                 <Button icon={<Close fontSize="small"/>} variant="ghost" onClick={envProps.onCloseDrawer}/>
                 <Typography isNowrap className="flexFluid" variant="subheading">{nodeData.displayName}</Typography>
-                <DisplayActions context={{
-                    ...actionContext,
-                    onSaved: envProps.onSaved,
-                    componentProps: {
+                <DisplayActions
+                    componentProps={{
                         color: 'accent',
                         size: 'big'
-                    }
-                }}
-                                target="content-editor/header/main-save-actions"
-                                render={ButtonWithPastilleRenderer}
+                    }}
+                    errors={formik.errors}
+                    values={formik.values}
+                    dirty={formik.dirty}
+                    target="content-editor/header/main-save-actions"
+                    onSaved={envProps.onSaved}
+                    render={ButtonWithPastilleRenderer}
+                    {...actionContext}
                 />
             </Toolbar>
         </AppBar>

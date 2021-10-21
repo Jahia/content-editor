@@ -35,7 +35,7 @@ export const registerEditActions = actionsRegistry => {
         buttonLabel: 'content-editor:label.contentEditor.edit.contentEdit',
         hideOnNodeTypes: ['jnt:virtualsite'],
         getDisplayName: true,
-        drawer: true
+        isDrawer: true
     });
 
     // Content-EditorAction

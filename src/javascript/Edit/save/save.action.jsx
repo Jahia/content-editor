@@ -5,7 +5,7 @@ import {ComponentRendererContext} from '@jahia/ui-extender';
 import * as PropTypes from 'prop-types';
 import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
 
-const Save = ({values, errors, dirty, mode, render: Render, loading: Loading, ...otherProps}) => {
+const Save = ({values, errors, dirty, mode, onSaved, render: Render, loading: Loading, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
     const {publicationInfoPolling} = usePublicationInfoContext();
 
@@ -26,8 +26,8 @@ const Save = ({values, errors, dirty, mode, render: Render, loading: Loading, ..
                         .submitForm()
                         .then(() => {
                             formik.resetForm({values});
-                            if (context.onSaved) {
-                                context.onSaved();
+                            if (onSaved) {
+                                onSaved();
                             }
                         });
                 }
@@ -42,6 +42,7 @@ Save.propTypes = {
     mode: PropTypes.string.isRequired,
     dirty: PropTypes.bool.isRequired,
     context: PropTypes.object.isRequired,
+    onSaved: PropTypes.func.isRequired,
     render: PropTypes.func.isRequired,
     loading: PropTypes.func
 };
