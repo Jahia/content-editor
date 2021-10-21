@@ -109,7 +109,7 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
     return (
         <MainLayout
             header={
-                envProps.drawer ? header :
+                envProps.isWindow ? header :
                 <ContentHeader>
                     <HeaderUpperSection actionContext={actionContext} title={title}/>
                     <Separator spacing="none"/>

@@ -69,13 +69,13 @@ const ContentEditorApiCmp = ({classes, client}) => {
      * @param lang the current lang from url
      * @param uilang the preferred user lang for ui
      */
-    window.CE_API.edit = (uuid, site, lang, uilang, drawer, onSaved) => {
+    window.CE_API.edit = (uuid, site, lang, uilang, isWindow, onSaved) => {
         // Sync GWT language
         if (window.top.authoringApi.switchLanguage) {
             window.top.authoringApi.switchLanguage(lang);
         }
 
-        setEditorConfig({uuid, site, lang, uilang, initLang: lang, mode: Constants.routes.baseEditRoute, drawer, onSaved});
+        setEditorConfig({uuid, site, lang, uilang, initLang: lang, mode: Constants.routes.baseEditRoute, isWindow, onSaved});
     };
 
     /**
@@ -220,14 +220,14 @@ const ContentEditorApiCmp = ({classes, client}) => {
             }
         },
         shouldRedirectBeadCrumb: () => true,
-        drawer: editorConfig?.drawer,
+        isWindow: editorConfig?.isWindow,
         onSaved: editorConfig?.onSaved,
         onCloseDrawer: () => setEditorConfig(null)
     };
 
     return (
         <ErrorBoundary fallback={<FullScreenError/>}>
-            {editorConfig && !editorConfig.drawer &&
+            {editorConfig && !editorConfig.isWindow &&
             <Dialog fullScreen
                     open
                     TransitionComponent={Transition}
@@ -257,7 +257,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
                 />
             </Dialog>}
 
-            {editorConfig && editorConfig.drawer &&
+            {editorConfig && editorConfig.isWindow &&
                 <Draggable defaultPosition={{x: 0, y: 0}} handle="header">
                     <div className={classes.ceDrawerRoot}>
                         <ContentEditor env={Constants.env.standalone}
