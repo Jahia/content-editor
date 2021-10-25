@@ -197,7 +197,7 @@ describe('ContentPathContainer', () => {
         expect(dispatch).toHaveBeenCalled();
         expect(cmGoto).toHaveBeenCalledWith({mode: 'pages', path: '/x/y/z'});
         expect(envProps.back).not.toHaveBeenCalled();
-        expect(wrapper.find('EditPanelDialogConfirmation').props.open).toBeFalsy();
+        expect(wrapper.find('EditPanelDialogConfirmation').props.isOpen).toBeFalsy();
     });
 
     it('handle redirects on item click with dirty form', () => {
@@ -209,13 +209,13 @@ describe('ContentPathContainer', () => {
         expect(dispatch).not.toHaveBeenCalled();
         expect(envProps.back).not.toHaveBeenCalled();
 
-        expect(wrapper.find('EditPanelDialogConfirmation').props().open).toBeTruthy();
+        expect(wrapper.find('EditPanelDialogConfirmation').props().isOpen).toBeTruthy();
 
         wrapper.find('EditPanelDialogConfirmation').simulate('closeDialog');
-        expect(wrapper.find('EditPanelDialogConfirmation').props().open).toBeFalsy();
+        expect(wrapper.find('EditPanelDialogConfirmation').props().isOpen).toBeFalsy();
 
         wrapper.find('ContentPath').simulate('itemClick', '/x/y/z');
-        expect(wrapper.find('EditPanelDialogConfirmation').props().open).toBeTruthy();
+        expect(wrapper.find('EditPanelDialogConfirmation').props().isOpen).toBeTruthy();
         wrapper.find('EditPanelDialogConfirmation').props().actionCallback();
         expect(envProps.back).toHaveBeenCalledWith('123', 'op');
     });
@@ -227,7 +227,7 @@ describe('ContentPathContainer', () => {
         expect(dispatch).toHaveBeenCalled();
         expect(cmGoto).toHaveBeenCalledWith({mode: 'media', path: '/sites/mySiteXD/files/chocolate'});
         expect(envProps.back).not.toHaveBeenCalled();
-        expect(wrapper.find('EditPanelDialogConfirmation').props.open).toBeFalsy();
+        expect(wrapper.find('EditPanelDialogConfirmation').props.isOpen).toBeFalsy();
     });
 
     it('handle redirects on item click when path start with contents', () => {
@@ -237,7 +237,7 @@ describe('ContentPathContainer', () => {
         expect(dispatch).toHaveBeenCalled();
         expect(cmGoto).toHaveBeenCalledWith({mode: 'content-folders', path: '/sites/mySiteXD/contents/fruits'});
         expect(envProps.back).not.toHaveBeenCalled();
-        expect(wrapper.find('EditPanelDialogConfirmation').props.open).toBeFalsy();
+        expect(wrapper.find('EditPanelDialogConfirmation').props.isOpen).toBeFalsy();
     });
 
     it('handle redirects on item click with option to go back', () => {
@@ -249,7 +249,7 @@ describe('ContentPathContainer', () => {
         expect(dispatch).toHaveBeenCalled();
         expect(cmGoto).toHaveBeenCalledWith({mode: 'pages', path: '/sites/mySiteXD/lord/rings'});
         expect(envProps.back).toHaveBeenCalled();
-        expect(wrapper.find('EditPanelDialogConfirmation').props.open).toBeFalsy();
+        expect(wrapper.find('EditPanelDialogConfirmation').props.isOpen).toBeFalsy();
     });
 
     it('handle redirects on item click when path start with categories', () => {
@@ -259,6 +259,6 @@ describe('ContentPathContainer', () => {
         expect(dispatch).toHaveBeenCalled();
         expect(push).toHaveBeenCalledWith('/category-manager');
         expect(envProps.back).not.toHaveBeenCalled();
-        expect(wrapper.find('EditPanelDialogConfirmation').props.open).toBeFalsy();
+        expect(wrapper.find('EditPanelDialogConfirmation').props.isOpen).toBeFalsy();
     });
 });

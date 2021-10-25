@@ -17,7 +17,7 @@ const GoBack = ({render: Render, isDirty, formik, uuid, operator, componentProps
     return (
         <>
             <EditPanelDialogConfirmation
-                open={open}
+                isOpen={open}
                 titleKey="content-editor:label.contentEditor.edit.action.goBack.title"
                 formik={formik}
                 actionCallback={(overridedStoredLocation, byPassEventTriggers) => executeGoBackAction(overridedStoredLocation, byPassEventTriggers)}
