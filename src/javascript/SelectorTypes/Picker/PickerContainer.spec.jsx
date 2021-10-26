@@ -60,13 +60,13 @@ describe('picker', () => {
         };
     });
 
-    it('should give to picker input readOnly', () => {
+    it('should give to picker input isReadOnly', () => {
         const cmp = shallowWithTheme(
             <Picker {...defaultProps}/>,
             {},
             dsGenericTheme
         ).dive();
-        expect(cmp.find('ReferenceCard').props().readOnly).toBe(false);
+        expect(cmp.find('ReferenceCard').props().isReadOnly).toBe(false);
     });
 
     it('should close the dialog by default', () => {

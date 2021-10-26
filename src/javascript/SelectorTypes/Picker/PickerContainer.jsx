@@ -42,7 +42,7 @@ const PickerCmp = ({field, value, editorContext, setActionContext, onChange}) =>
     return (
         <>
             <ReferenceCard
-                readOnly={field.readOnly}
+                isReadOnly={field.readOnly}
                 emptyLabel={t((error || notFound) ? pickerConfig.picker.pickerInput.notFoundLabel : pickerConfig.picker.pickerInput.emptyLabel)}
                 emptyIcon={pickerConfig.picker.pickerInput.emptyIcon}
                 labelledBy={`${field.name}-label`}

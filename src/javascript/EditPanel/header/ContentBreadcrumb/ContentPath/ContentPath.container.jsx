@@ -107,7 +107,7 @@ const ContentPathContainer = ({path, ...context}) => {
     return (
         <>
             <EditPanelDialogConfirmation
-                open={open}
+                isOpen={open}
                 titleKey="content-editor:label.contentEditor.edit.action.goBack.title"
                 formik={context.formik}
                 actionCallback={() => envProps.back(context.uuid, context.operator)}

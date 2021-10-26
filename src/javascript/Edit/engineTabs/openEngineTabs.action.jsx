@@ -9,7 +9,7 @@ export const OpenEngineTabs = ({nodeData, formik, tabs, render: Render, ...other
     return (
         <>
             <EditPanelDialogConfirmation
-                open={open}
+                isOpen={open}
                 titleKey="content-editor:label.contentEditor.edit.action.goBack.title"
                 formik={formik}
                 actionCallback={() => {

@@ -15,7 +15,7 @@ storiesOf('ReferenceCard', module)
         () => (
             <DSProvider>
                 <ReferenceCard
-                    readOnly={boolean('readOnly', false)}
+                    isReadOnly={boolean('readOnly', false)}
                     emptyLabel={text('referenceCardLabel', 'add image')}
                     emptyIcon={<InsertDriveFile/>}
                 />
@@ -30,7 +30,7 @@ storiesOf('ReferenceCard', module)
         () => (
             <DSProvider>
                 <ReferenceCard
-                    readOnly={boolean('readOnly', false)}
+                    isReadOnly={boolean('readOnly', false)}
                     fieldData={{
                         url:
                             'http://www.open-source-guide.com/var/site_smile/storage/images/guide-os/solutions/applications/cms/jahia-digital-factory/362440-239-fre-FR/Jahia-Digital-Factory_logo_solution_categorie.png',
