@@ -9,7 +9,7 @@ import {FieldSet} from '../FieldSet';
 
 const styles = theme => ({
     section: {
-        borderBottom: `1px solid ${theme.palette.ui.omega}`,
+        borderBottom: '1px solid var(--color-gray_light40)',
         paddingBottom: theme.spacing.unit * 2,
         marginBottom: theme.spacing.unit * 2,
         backgroundColor: theme.palette.ui.epsilon
