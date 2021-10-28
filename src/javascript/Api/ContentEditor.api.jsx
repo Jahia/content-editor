@@ -237,7 +237,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
                        contentType={editorConfig.contentType}
                        name={editorConfig.name}
                        envProps={envProps}
-    />
+        />
     );
     return (
         <ErrorBoundary fallback={<FullScreenError/>}>
