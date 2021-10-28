@@ -2,11 +2,12 @@ import React from 'react';
 import saveAction from './save/save.action';
 import publishAction from './publish/publish.action';
 import startWorkflow from './startWorkflow/startWorkflow.action';
-import {CloudUpload, Save} from '@material-ui/icons';
+import {Cancel, CloudUpload, Save} from '@material-ui/icons';
 import {Edit, MoreVert} from '@jahia/moonstone';
 import editContentAction from './EditContent.action';
 import OpenWorkInProgressModalAction from '~/EditPanel/WorkInProgress/OpenWorkInProgressModal.action';
 import {CopyLanguageActionComponent} from '~/Edit/copyLanguage/copyLanguage.action';
+import CopyToAllLangs from '~/EditPanel/CopyToAllLangs';
 
 export const registerEditActions = actionsRegistry => {
     // Edit action button in JContent; need separate actions for content and pages
@@ -81,4 +82,22 @@ export const registerEditActions = actionsRegistry => {
         targets: ['content-editor/header/3dots:2'],
         component: CopyLanguageActionComponent
     });
+
+    addField3dots(actionsRegistry);
 };
+
+function addField3dots(registry) {
+    registry.add('action', 'content-editor/field/3dots', registry.get('action', 'menuAction'), {
+        buttonIcon: <MoreVert/>,
+        buttonLabel: 'content-editor:label.contentEditor.edit.action.moreOptions',
+        menuTarget: 'content-editor/field/3dots',
+        dataSelRole: '3dotsFieldMenuAction'
+    });
+
+    registry.add('action', 'copyToAllLanguages', {
+        buttonIcon: <Cancel/>,
+        buttonLabel: 'Copy to all Languages option',
+        targets: ['content-editor/field/3dots:1'],
+        component: CopyToAllLangs
+    });
+}

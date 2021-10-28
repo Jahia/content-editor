@@ -17,6 +17,7 @@ import {useContentEditorContext} from '~/ContentEditor.context';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import {useApolloClient} from '@apollo/react-hooks';
 import {FieldActions} from './Field.actions';
+import Field3dots from '~/EditPanel/EditPanelContent/FormBuilder/FieldSet/Field/Field3dots';
 
 let styles = theme => {
     const common = {
@@ -141,6 +142,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, f
                         alignItems="center"
                     >
                         <Grid item>
+                            <Field3dots field={field} formik={formik}/>
                             <InputLabel shrink
                                         id={`${field.name}-label`}
                                         className={classes.inputLabel}
