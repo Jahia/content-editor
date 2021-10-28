@@ -238,7 +238,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
                     onClose={() => (formikRef.current && formikRef.current.dirty) ? setConfirmationConfig(true) : closeAll()}
             >
                 {confirmationConfig && <EditPanelDialogConfirmation
-                    open
+                    isOpen={open}
                     titleKey="content-editor:label.contentEditor.edit.action.goBack.title"
                     formik={formikRef.current}
                     actionCallback={envProps.back}

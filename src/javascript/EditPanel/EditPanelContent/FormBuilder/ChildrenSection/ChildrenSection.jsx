@@ -31,7 +31,7 @@ const styles = theme => ({
         flexDirection: 'row',
         margin: `0 ${theme.spacing.unit * 6}px 0 ${theme.spacing.unit * 4}px`,
         padding: `${theme.spacing.unit * 2}px 0`,
-        borderTop: '1px solid #e0e6ea' /* TODO use moonstone color */
+        borderTop: '1px solid var(--color-gray_light40)'
     },
     fieldSetTitle: {
         width: 'auto',

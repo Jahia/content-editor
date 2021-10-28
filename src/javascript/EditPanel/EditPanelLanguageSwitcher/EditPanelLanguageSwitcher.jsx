@@ -55,7 +55,7 @@ const EditPanelLanguageSwitcher = ({siteInfo, formik}) => {
             />
 
             <EditPanelDialogConfirmation
-                open={dialogConfirmation.open}
+                isOpen={dialogConfirmation.open}
                 titleKey="content-editor:label.contentEditor.switchLanguage.dialog.title"
                 formik={formik}
                 actionCallback={createdNodeUuid => switchLanguage(dialogConfirmation.lang, createdNodeUuid)}

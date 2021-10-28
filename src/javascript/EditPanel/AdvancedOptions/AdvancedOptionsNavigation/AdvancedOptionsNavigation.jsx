@@ -14,7 +14,7 @@ export const AdvancedOptionsNavigation = ({formik, activeOption, setActiveOption
     const {mode, nodeData, siteInfo} = useContentEditorContext();
 
     // Engines tabs need the node Data to be registered
-    const {loading, error} = useRegisterEngineTabActions();
+    const {tabs, loading, error} = useRegisterEngineTabActions();
     registerAdvancedOptionsActions(registry, t);
 
     if (error) {
@@ -39,6 +39,9 @@ export const AdvancedOptionsNavigation = ({formik, activeOption, setActiveOption
                                 activeOption={activeOption}
                                 setActiveOption={setActiveOption}
                                 target="AdvancedOptionsActions"
+                                filter={action => {
+                                    return action.shouldBeDisplayed(tabs, action.key);
+                                }}
                                 render={({value, buttonLabel, onClick}) => {
                                     return (
                                         <MenuItem
@@ -47,7 +50,7 @@ export const AdvancedOptionsNavigation = ({formik, activeOption, setActiveOption
                                             label={buttonLabel}
                                             onClick={e => onClick(e)}
                                         />
-);
+                                    );
                                 }}
                 />
             </ul>

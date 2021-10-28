@@ -40,9 +40,9 @@ describe('reference card empty', () => {
         expect(defaultProps.onClick).toHaveBeenCalled();
     });
 
-    it('should not set trigger onClick when clicking on the button when readOnly', () => {
+    it('should not set trigger onClick when clicking on the button when isReadOnly', () => {
         const cmp = shallowWithTheme(
-            <ReferenceCard {...defaultProps} readOnly/>,
+            <ReferenceCard {...defaultProps} isReadOnly/>,
             {},
             dsGenericTheme
         ).dive();
@@ -105,7 +105,7 @@ describe('reference card filled', () => {
     });
 
     it('should be in read only', () => {
-        defaultProps.readOnly = true;
+        defaultProps.isReadOnly = true;
         const cmp = shallowWithTheme(
             <ReferenceCard {...defaultProps}/>,
             {},
@@ -136,9 +136,9 @@ describe('reference card filled', () => {
         expect(defaultProps.onClick).toHaveBeenCalled();
     });
 
-    it('should not send onClick event when clicking on readOnly component', () => {
+    it('should not send onClick event when clicking on isReadOnly component', () => {
         defaultProps.onClick = jest.fn();
-        defaultProps.readOnly = true;
+        defaultProps.isReadOnly = true;
         const cmp = shallowWithTheme(
             <ReferenceCard {...defaultProps}/>,
             {},

@@ -9,7 +9,7 @@ import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import {Constants} from '~/ContentEditor.constants';
 
-export const EditPanelDialogConfirmation = ({titleKey, open, onCloseDialog, actionCallback, formik}) => {
+export const EditPanelDialogConfirmation = ({titleKey, isOpen, onCloseDialog, actionCallback, formik}) => {
     const {t} = useTranslation('content-editor');
     const handleDiscard = () => {
         onCloseDialog();
@@ -38,7 +38,7 @@ export const EditPanelDialogConfirmation = ({titleKey, open, onCloseDialog, acti
         <Dialog
             maxWidth="md"
             aria-labelledby="alert-dialog-slide-title"
-            open={open}
+            open={isOpen}
             onClose={onCloseDialog}
         >
             <DialogTitle id="alert-dialog-slide-title">
@@ -69,7 +69,7 @@ export const EditPanelDialogConfirmation = ({titleKey, open, onCloseDialog, acti
 
 EditPanelDialogConfirmation.propTypes = {
     titleKey: PropTypes.string.isRequired,
-    open: PropTypes.bool.isRequired,
+    isOpen: PropTypes.bool.isRequired,
     formik: PropTypes.object.isRequired,
     actionCallback: PropTypes.func.isRequired,
     onCloseDialog: PropTypes.func.isRequired

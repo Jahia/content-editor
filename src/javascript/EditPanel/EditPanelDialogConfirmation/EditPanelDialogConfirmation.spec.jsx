@@ -8,7 +8,7 @@ describe('EditPanelDialogConfirmation', () => {
 
     beforeEach(() => {
         defaultProps = {
-            open: false,
+            isOpen: false,
             titleKey: 'titleKey',
             t: jest.fn(key => 'translated_' + key),
             onCloseDialog: jest.fn(),
@@ -38,7 +38,7 @@ describe('EditPanelDialogConfirmation', () => {
     });
 
     it('should show dialog confirmation when open is true', () => {
-        defaultProps.open = true;
+        defaultProps.isOpen = true;
 
         const cmp = shallowWithTheme(
             <EditPanelDialogConfirmation {...defaultProps}/>,
