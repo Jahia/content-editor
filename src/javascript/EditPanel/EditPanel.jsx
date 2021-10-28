@@ -10,15 +10,12 @@ import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentE
 import {PublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
 import classes from './EditPanel.scss';
 import classnames from 'clsx';
-import {DisplayActions, registry} from '@jahia/ui-extender';
+import {registry} from '@jahia/ui-extender';
 
 import MainLayout from '~/DesignSystem/ContentLayout/MainLayout';
 import ContentHeader from '~/DesignSystem/ContentLayout/ContentHeader';
 import {Constants} from '~/ContentEditor.constants';
-import {Button, Separator, Typography} from '@jahia/moonstone';
-import {AppBar, Toolbar} from '@material-ui/core';
-import {ButtonWithPastilleRenderer} from '~/actions/ActionsButtons';
-import {Close} from '@jahia/moonstone/dist/icons';
+import {Separator} from '@jahia/moonstone';
 
 const handleBeforeUnloadEvent = ev => {
     ev.preventDefault();
@@ -84,40 +81,23 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
     const EditTabComponent = tabs.find(tab => tab.value === Constants.editPanel.editTab).displayableComponent;
     const OtherTabComponent = tabs.find(tab => tab.value === activeTab && tab.value !== Constants.editPanel.editTab)?.displayableComponent;
 
-    const header = (
-        <AppBar position="relative" color="default">
-            <Toolbar variant="dense">
-                <Button icon={<Close fontSize="small"/>} variant="ghost" onClick={envProps.onCloseDrawer}/>
-                <Typography isNowrap className="flexFluid" variant="subheading">{nodeData.displayName}</Typography>
-                <DisplayActions
-                    componentProps={{
-                        color: 'accent',
-                        size: 'big'
-                    }}
-                    errors={formik.errors}
-                    values={formik.values}
-                    dirty={formik.dirty}
-                    target="content-editor/header/main-save-actions"
-                    onSaved={envProps.onSaved}
-                    render={ButtonWithPastilleRenderer}
-                    {...actionContext}
-                />
-            </Toolbar>
-        </AppBar>
-    );
-
     return (
-        <MainLayout
-            header={
-                envProps.isWindow ? header :
-                <ContentHeader>
-                    <HeaderUpperSection actionContext={actionContext} title={title}/>
-                    <Separator spacing="none"/>
-                    <HeaderLowerSection activeTab={activeTab}
-                                        setActiveTab={setActiveTab}
-                                        actionContext={actionContext}/>
-                </ContentHeader>
-            }
+        <MainLayout header={
+            <ContentHeader>
+                <HeaderUpperSection actionContext={actionContext}
+                                    title={title}
+                                    isCompact={envProps.isWindow}
+                                    isShowPublish={!envProps.isWindow && mode === Constants.routes.baseEditRoute}/>
+                {!envProps.isWindow && (
+                    <>
+                        <Separator spacing="none"/>
+                        <HeaderLowerSection activeTab={activeTab}
+                                            setActiveTab={setActiveTab}
+                                            actionContext={actionContext}/>
+                    </>
+                )}
+            </ContentHeader>
+        }
         >
             <div className={classnames(activeTab === Constants.editPanel.editTab ? classes.tab : classes.hideTab, 'flexCol')}>
                 <EditTabComponent isDirty={formik.dirty} formik={formik} nodePath={nodeData.path} lang={lang}/>

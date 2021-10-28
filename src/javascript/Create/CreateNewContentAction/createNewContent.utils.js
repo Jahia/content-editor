@@ -4,6 +4,7 @@ import {useQuery} from '@apollo/react-hooks';
 const NB_OF_DISPLAYED_RESTRICTED_SUB_NODES = 3;
 // eslint-disable-next-line
 export const useCreatableNodetypes = (nodeTypes, childNodeName, includeSubTypes, path, uilang, excludedNodeTypes, showOnNodeTypes, transformResultCallback) => {
+    const skip = (nodeTypes && nodeTypes.length === 1 && !includeSubTypes);
     const {data, error, loadingTypes} = useQuery(getTreeOfContentWithRequirements, {
         variables: {
             nodeTypes: (nodeTypes && nodeTypes.length) > 0 ? nodeTypes : undefined,
@@ -14,7 +15,15 @@ export const useCreatableNodetypes = (nodeTypes, childNodeName, includeSubTypes,
             excludedNodeTypes,
             showOnNodeTypes
         },
+        skip: skip
     });
+
+    if (skip) {
+        let result = nodeTypes.map(n => ({name: n}));
+        return {
+            nodetypes: transformResultCallback ? transformResultCallback(result) : result
+        };
+    }
 
     return {
         error,
@@ -24,6 +33,13 @@ export const useCreatableNodetypes = (nodeTypes, childNodeName, includeSubTypes,
 };
 // eslint-disable-next-line
 export async function getCreatableNodetypes(client, nodeTypes, childNodeName, includeSubTypes, path, uilang, excludedNodeTypes, showOnNodeTypes, transformResultCallback) {
+    if (nodeTypes && nodeTypes.length === 1 && !includeSubTypes) {
+        let result = nodeTypes.map(n => ({name: n}));
+        return {
+            nodetypes: transformResultCallback ? transformResultCallback(result) : result
+        };
+    }
+
     const {data} = await client.query({
         query: getTreeOfContentWithRequirements,
         variables: {
