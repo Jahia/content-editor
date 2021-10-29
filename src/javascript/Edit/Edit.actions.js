@@ -29,6 +29,15 @@ export const registerEditActions = actionsRegistry => {
         getDisplayName: true
     });
 
+    // Edit action button in JContent
+    actionsRegistry.add('action', 'quickEdit', editContentAction, {
+        buttonIcon: <Edit/>,
+        buttonLabel: 'content-editor:label.contentEditor.edit.contentEdit',
+        hideOnNodeTypes: ['jnt:virtualsite'],
+        getDisplayName: true,
+        isWindow: true
+    });
+
     // Content-EditorAction
     // Main actions (publish, save and startWorkflow)
     actionsRegistry.add('action', 'submitSave', saveAction, {

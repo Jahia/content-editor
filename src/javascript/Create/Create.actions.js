@@ -16,6 +16,17 @@ export const registerCreateActions = registry => {
         requiredPermission: ['jcr:addChildNodes']
     });
 
+    registry.addOrReplace('action', 'createPage', createNewContentAction, {
+        buttonIcon: <AddCircle/>,
+        buttonLabel:
+            'content-editor:label.contentEditor.CMMActions.createNewPage.menu',
+        targets: ['createMenuActions:3', 'contentActions:3', 'headerPrimaryActions:1'],
+        showOnNodeTypes: ['jnt:page', 'jnt:navMenuText'],
+        requiredPermission: ['jcr:addChildNodes'],
+        nodeTypes: ['jnt:page'],
+        includeSubTypes: false
+    });
+
     // In app actions
     registry.add('action', 'createButton', createButtonAction, {
         buttonLabel: 'content-editor:label.contentEditor.create.createButton.name',

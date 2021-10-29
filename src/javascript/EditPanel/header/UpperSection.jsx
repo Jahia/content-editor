@@ -15,7 +15,7 @@ import styles from './UpperSection.scss';
 import {ButtonWithPastilleRenderer, ButtonRenderer} from '~/actions/ActionsButtons';
 import ContentBreadcrumb from '~/EditPanel/header/ContentBreadcrumb';
 
-export const HeaderUpperSection = ({title, actionContext}) => {
+export const HeaderUpperSection = ({title, actionContext, isCompact, isShowPublish}) => {
     const {t} = useTranslation('content-editor');
     const {mode, nodeData, formik, nodeTypeDisplayName, language} = actionContext;
 
@@ -23,25 +23,9 @@ export const HeaderUpperSection = ({title, actionContext}) => {
     const isWip = wipInfo.status === Constants.wip.status.ALL_CONTENT ||
     (wipInfo.status === Constants.wip.status.LANGUAGES && wipInfo.languages.includes(language));
 
-    const EditActions = mode === Constants.routes.baseEditRoute ? (
-        <DisplayAction
-            menuUseElementAnchor
-            actionKey="publishMenu"
-            language={language}
-            path={nodeData.path}
-            componentProps={{
-                'data-sel-role': 'ContentEditorHeaderMenu',
-                color: 'accent',
-                size: 'big',
-                className: styles.menu
-            }}
-            enabled={!formik.dirty && !nodeData.lockedAndCannotBeEdited && !isWip}
-            render={ButtonRenderer}
-        />
-    ) : '';
-
     return (
         <>
+            {!isCompact && <div className={styles.padder}/>}
             <div className={styles.header}>
                 <div className={styles.headerLeft}>
                     <DisplayAction
@@ -80,59 +64,76 @@ export const HeaderUpperSection = ({title, actionContext}) => {
                         />
                     </div>
 
-                    <ButtonGroup
-                        color="accent"
-                        size="big"
-                        className={styles.publishActions}
-                    >
-                        <DisplayActions
-                            isMainButton
-                            componentProps={{
-                                color: 'accent',
-                                size: 'big',
-                                className: styles.mainActions
-                            }}
-                            values={formik.values}
-                            dirty={formik.dirty}
-                            hasPublishPermission={nodeData.hasPublishPermission}
-                            hasStartPublicationWorkflowPermission={nodeData.hasStartPublicationWorkflowPermission}
-                            lockedAndCannotBeEdited={nodeData.lockedAndCannotBeEdited}
-                            target="content-editor/header/main-publish-actions"
-                            render={ButtonWithPastilleRenderer}
-                            {...actionContext}
-                        />
-                        {EditActions}
-                    </ButtonGroup>
+                    {isShowPublish && (
+                        <ButtonGroup
+                            color="accent"
+                            size="big"
+                            className={styles.publishActions}
+                        >
+                            <DisplayActions
+                                isMainButton
+                                componentProps={{
+                                    color: 'accent',
+                                    size: 'big',
+                                    className: styles.mainActions
+                                }}
+                                values={formik.values}
+                                dirty={formik.dirty}
+                                hasPublishPermission={nodeData.hasPublishPermission}
+                                hasStartPublicationWorkflowPermission={nodeData.hasStartPublicationWorkflowPermission}
+                                lockedAndCannotBeEdited={nodeData.lockedAndCannotBeEdited}
+                                target="content-editor/header/main-publish-actions"
+                                render={ButtonWithPastilleRenderer}
+                                {...actionContext}
+                            />
+                            <DisplayAction
+                                menuUseElementAnchor
+                                actionKey="publishMenu"
+                                language={language}
+                                path={nodeData.path}
+                                componentProps={{
+                                    'data-sel-role': 'ContentEditorHeaderMenu',
+                                    color: 'accent',
+                                    size: 'big',
+                                    className: styles.menu
+                                }}
+                                enabled={!formik.dirty && !nodeData.lockedAndCannotBeEdited && !isWip}
+                                render={ButtonRenderer}
+                            />
+                        </ButtonGroup>
+                    )}
                 </div>
             </div>
+            {!isCompact && (
+                <div className={styles.header}>
+                    <div className={styles.headerLeft}>
+                        {nodeData?.path?.startsWith('/sites') ?
+                            <ContentBreadcrumb path={nodeData.path} {...actionContext}/> :
+                            <Chip label={nodeTypeDisplayName} color="accent"/>}
+                    </div>
 
-            <div className={styles.header}>
-                <div className={styles.headerLeft}>
-                    {nodeData?.path?.startsWith('/sites') ?
-                        <ContentBreadcrumb path={nodeData.path} {...actionContext}/> :
-                        <Chip label={nodeTypeDisplayName} color="accent"/>}
+                    <div className={styles.headerChips}>
+                        <PublicationInfoBadge/>
+                        <LockInfoBadge/>
+                        <WipInfoChip wipInfo={wipInfo}/>
+                        {(formik.dirty || mode === Constants.routes.baseCreateRoute) &&
+                        <Chip
+                            icon={<Edit/>}
+                            data-sel-role="unsaved-info-chip"
+                            label={t('content-editor:label.contentEditor.header.chips.unsavedLabel')}
+                            color="warning"
+                        />}
+                    </div>
                 </div>
-
-                <div className={styles.headerChips}>
-                    <PublicationInfoBadge/>
-                    <LockInfoBadge/>
-                    <WipInfoChip wipInfo={wipInfo}/>
-                    {(formik.dirty || mode === Constants.routes.baseCreateRoute) &&
-                    <Chip
-                        icon={<Edit/>}
-                        data-sel-role="unsaved-info-chip"
-                        label={t('content-editor:label.contentEditor.header.chips.unsavedLabel')}
-                        color="warning"
-                    />}
-                </div>
-            </div>
-
+            )}
         </>
     );
 };
 
 HeaderUpperSection.propTypes = {
     title: PropTypes.string.isRequired,
+    isCompact: PropTypes.bool,
+    isShowPublish: PropTypes.bool,
     actionContext: PropTypes.shape({
         mode: PropTypes.string.isRequired,
         language: PropTypes.string.isRequired,

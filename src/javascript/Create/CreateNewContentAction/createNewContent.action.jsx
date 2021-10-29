@@ -40,7 +40,7 @@ const onClick = (uuid, language, context, redirect, componentRenderer) => {
     }
 };
 
-const CreateNewContent = ({contextNodePath, path, showOnNodeTypes, render: Render, loading: Loading, ...otherProps}) => {
+const CreateNewContent = ({contextNodePath, path, showOnNodeTypes, nodeTypes, name, includeSubTypes, render: Render, loading: Loading, ...otherProps}) => {
     const {redirect} = useContentEditorHistory();
     const {t} = useTranslation('content-editor');
     const componentRenderer = useContext(ComponentRendererContext);
@@ -53,10 +53,10 @@ const CreateNewContent = ({contextNodePath, path, showOnNodeTypes, render: Rende
 
     const nodeInfo = useNodeInfo({path: path, language}, {getPrimaryNodeType: true});
 
-    const {loadingTypes, error, nodetypes} = useCreatableNodetypes(
-        undefined,
-        undefined,
-        false,
+    const {loadingTypes, error, nodetypes: creatableNodeTypes} = useCreatableNodetypes(
+        nodeTypes,
+        name,
+        includeSubTypes || false,
         contextNodePath || path,
         uilang,
         ['jmix:studioOnly', 'jmix:hiddenType'],
@@ -76,11 +76,11 @@ const CreateNewContent = ({contextNodePath, path, showOnNodeTypes, render: Rende
         return <Render {...otherProps} isVisible={false} onClick={() => {}}/>;
     }
 
-    if (!res || !res.node || (nodetypes && nodetypes.length === 0)) {
+    if (!res || !res.node || (creatableNodeTypes && creatableNodeTypes.length === 0)) {
         return <Render {...otherProps} isVisible={false} onClick={() => {}}/>;
     }
 
-    return (nodetypes || [{id: 'allTypes'}]).map(result => (
+    return (creatableNodeTypes || [{id: 'allTypes'}]).map(result => (
         <Render {...otherProps}
                 {...result}
                 key={result.id}
@@ -100,6 +100,9 @@ CreateNewContent.propTypes = {
     contextNodePath: PropTypes.string,
     path: PropTypes.string.isRequired,
     showOnNodeTypes: PropTypes.array,
+    nodeTypes: PropTypes.array,
+    name: PropTypes.string,
+    includeSubTypes: PropTypes.array,
     render: PropTypes.func.isRequired,
     loading: PropTypes.func
 };
