@@ -250,6 +250,9 @@
         "mandatoryLanguageValid": "Der Inhalt wird live sichtbar, wenn eine Veröffentlichung in allen verpflichtenden Sprachen durchgeführt wurde.",
         "conflict": "Content existiert im Live-Modus mit dem gleichem Namen und wird in der Veröffentlichung deshalb nicht berücksichtigt.",
         "unknown": "Veröffentlichungsstatus nicht verfügbar"
+      },
+      "global": {
+        "noResult": "Keine ergebnisse gefunden."
       }
     }
   }
