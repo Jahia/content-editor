@@ -10,6 +10,7 @@ import {compose} from '~/utils';
 import {getCreatableNodetypes} from '~/Create/CreateNewContentAction/createNewContent.utils';
 import EditPanelDialogConfirmation from '~/EditPanel/EditPanelDialogConfirmation/EditPanelDialogConfirmation';
 import {ErrorBoundary} from '@jahia/jahia-ui-root';
+import Draggable from 'react-draggable';
 
 let styles = () => {
     return {
@@ -19,6 +20,19 @@ let styles = () => {
             width: 'calc(100vw - 56px)',
             left: 'unset',
             right: 0
+        },
+        ceWindowRoot: {
+            zIndex: 1500,
+            opacity: 1,
+            width: '40vw',
+            minWidth: '620px',
+            height: 'calc(100vh - 124px)',
+            display: 'flex',
+            flexDirection: 'column',
+            position: 'absolute',
+            boxShadow: '0 4px 8px var(--color-dark40)',
+            right: 0,
+            bottom: 0
         }
     };
 };
@@ -36,7 +50,7 @@ function triggerEvents(nodeUuid, operator) {
 const FullScreenError = props => {
     return (
         <div style={{height: '100vh', display: 'flex'}}>
-            { React.cloneElement(ErrorBoundary.defaultProps.fallback, props) }
+            {React.cloneElement(ErrorBoundary.defaultProps.fallback, props)}
         </div>
     );
 };
@@ -55,13 +69,22 @@ const ContentEditorApiCmp = ({classes, client}) => {
      * @param lang the current lang from url
      * @param uilang the preferred user lang for ui
      */
-    window.CE_API.edit = (uuid, site, lang, uilang) => {
+    window.CE_API.edit = (uuid, site, lang, uilang, isWindow, editCallback) => {
         // Sync GWT language
         if (window.top.authoringApi.switchLanguage) {
             window.top.authoringApi.switchLanguage(lang);
         }
 
-        setEditorConfig({uuid, site, lang, uilang, initLang: lang, mode: Constants.routes.baseEditRoute});
+        setEditorConfig({
+            uuid,
+            site,
+            lang,
+            uilang,
+            initLang: lang,
+            mode: Constants.routes.baseEditRoute,
+            isWindow,
+            editCallback
+        });
     };
 
     /**
@@ -86,59 +109,45 @@ const ContentEditorApiCmp = ({classes, client}) => {
             window.top.authoringApi.switchLanguage(lang);
         }
 
-        if (nodeTypes && nodeTypes.length === 1 && !includeSubTypes) {
-            // Direct create with a known content type
-            setEditorConfig({
-                name,
-                uuid,
-                site,
-                lang,
-                uilang,
-                initLang: lang,
-                contentType: nodeTypes[0],
-                mode: Constants.routes.baseCreateRoute
-            });
-        } else {
-            getCreatableNodetypes(
-                client,
-                nodeTypes,
-                name,
-                includeSubTypes,
-                path,
-                uilang,
-                (excludedNodeTypes && excludedNodeTypes.length) > 0 ? excludedNodeTypes : ['jmix:studioOnly', 'jmix:hiddenType'],
-                [],
-                creatableNodeTypes => {
-                    // Only one type allowed, open directly CE
-                    if (creatableNodeTypes.length === 1) {
-                        setEditorConfig({
-                            name,
-                            uuid,
-                            site,
-                            lang,
-                            uilang,
-                            initLang: lang,
-                            contentType: creatableNodeTypes[0].name,
-                            mode: Constants.routes.baseCreateRoute
-                        });
-                    }
-
-                    // Multiple nodetypes allowed, open content type selector
-                    if (creatableNodeTypes.length > 1) {
-                        setContentTypeSelectorConfig({
-                            creatableNodeTypes: creatableNodeTypes.map(nodeType => nodeType.name),
-                            includeSubTypes,
-                            name,
-                            uuid,
-                            path,
-                            site,
-                            lang,
-                            uilang
-                        });
-                    }
+        getCreatableNodetypes(
+            client,
+            nodeTypes,
+            name,
+            includeSubTypes,
+            path,
+            uilang,
+            (excludedNodeTypes && excludedNodeTypes.length) > 0 ? excludedNodeTypes : ['jmix:studioOnly', 'jmix:hiddenType'],
+            [],
+            creatableNodeTypes => {
+                // Only one type allowed, open directly CE
+                if (creatableNodeTypes.length === 1) {
+                    setEditorConfig({
+                        name,
+                        uuid,
+                        site,
+                        lang,
+                        uilang,
+                        initLang: lang,
+                        contentType: creatableNodeTypes[0].name,
+                        mode: Constants.routes.baseCreateRoute
+                    });
                 }
-            );
-        }
+
+                // Multiple nodetypes allowed, open content type selector
+                if (creatableNodeTypes.length > 1) {
+                    setContentTypeSelectorConfig({
+                        creatableNodeTypes: creatableNodeTypes.map(nodeType => nodeType.name),
+                        includeSubTypes,
+                        name,
+                        uuid,
+                        path,
+                        site,
+                        lang,
+                        uilang
+                    });
+                }
+            }
+        );
     };
 
     const closeAll = () => {
@@ -166,6 +175,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
                 triggerEvents(newContentUuid || nodeUuid, operation);
             }
 
+            setEditorConfig(false);
             closeAll();
         },
         disabledBack: () => false,
@@ -176,6 +186,10 @@ const ContentEditorApiCmp = ({classes, client}) => {
             }
 
             triggerEvents(createdNodeUuid, Constants.operators.create);
+
+            if (editorConfig && editorConfig.createCallback) {
+                editorConfig.createCallback(createdNodeUuid, lang);
+            }
 
             // Redirect to CE edit mode, for the created node
             if (editorConfig) {
@@ -193,6 +207,10 @@ const ContentEditorApiCmp = ({classes, client}) => {
                 window.top.authoringApi.refreshContent();
             }
 
+            if (editorConfig && editorConfig.editCallback) {
+                editorConfig.editCallback(nodeUuid);
+            }
+
             // Refresh contentEditorEventHandlers
             triggerEvents(nodeUuid, Constants.operators.update);
         },
@@ -205,69 +223,82 @@ const ContentEditorApiCmp = ({classes, client}) => {
                 });
             }
         },
-        shouldRedirectBeadCrumb: () => true
+        shouldRedirectBeadCrumb: () => true,
+        isWindow: editorConfig?.isWindow
     };
 
+    let contentEditor = (
+        <ContentEditor env={Constants.env.standalone}
+                       mode={editorConfig.mode}
+                       uuid={editorConfig.uuid}
+                       lang={editorConfig.lang}
+                       uilang={editorConfig.uilang}
+                       site={editorConfig.site}
+                       contentType={editorConfig.contentType}
+                       name={editorConfig.name}
+                       envProps={envProps}
+        />
+    );
     return (
         <ErrorBoundary fallback={<FullScreenError/>}>
-            {editorConfig &&
-            <Dialog fullScreen
-                    open
-                    TransitionComponent={Transition}
-                    aria-labelledby="dialog-content-editor"
-                    classes={{root: classes.ceDialogRoot}}
-                    disableAutoFocus="true"
-                    disableEnforceFocus="true"
-                    onClose={() => (formikRef.current && formikRef.current.dirty) ? setConfirmationConfig(true) : closeAll()}
-            >
-                {confirmationConfig && <EditPanelDialogConfirmation
-                    open
-                    titleKey="content-editor:label.contentEditor.edit.action.goBack.title"
-                    formik={formikRef.current}
-                    actionCallback={envProps.back}
-                    onCloseDialog={() => setConfirmationConfig(false)}
-                />}
+            {editorConfig && !editorConfig.isWindow && (
+                <Dialog fullScreen
+                        open
+                        TransitionComponent={Transition}
+                        aria-labelledby="dialog-content-editor"
+                        classes={{root: classes.ceDialogRoot}}
+                        disableAutoFocus="true"
+                        disableEnforceFocus="true"
+                        onClose={() => (formikRef.current && formikRef.current.dirty) ? setConfirmationConfig(true) : closeAll()}
+                >
+                    {confirmationConfig && <EditPanelDialogConfirmation
+                        isOpen={open}
+                        titleKey="content-editor:label.contentEditor.edit.action.goBack.title"
+                        formik={formikRef.current}
+                        actionCallback={envProps.back}
+                        onCloseDialog={() => setConfirmationConfig(false)}
+                    />}
+                    {contentEditor}
+                </Dialog>
+            )}
 
-                <ContentEditor env={Constants.env.standalone}
-                               mode={editorConfig.mode}
-                               uuid={editorConfig.uuid}
-                               lang={editorConfig.lang}
-                               uilang={editorConfig.uilang}
-                               site={editorConfig.site}
-                               contentType={editorConfig.contentType}
-                               name={editorConfig.name}
-                               envProps={envProps}
+            {editorConfig && editorConfig.isWindow && (
+                <Draggable defaultPosition={{x: 0, y: 0}} handle="header">
+                    <div className={classes.ceWindowRoot}>
+                        {contentEditor}
+                    </div>
+                </Draggable>
+            )}
+
+            {contentTypeSelectorConfig && (
+                <CreateNewContentDialog
+                    open
+                    childNodeName={contentTypeSelectorConfig.name}
+                    nodeTypes={contentTypeSelectorConfig.creatableNodeTypes}
+                    includeSubTypes={contentTypeSelectorConfig.includeSubTypes}
+                    parentPath={contentTypeSelectorConfig.path}
+                    uilang={contentTypeSelectorConfig.uilang}
+                    onClose={() => {
+                        setContentTypeSelectorConfig(false);
+                    }}
+                    onExited={() => {
+                        setContentTypeSelectorConfig(false);
+                    }}
+                    onCreateContent={contentType => {
+                        setContentTypeSelectorConfig(false);
+                        setEditorConfig({
+                            name: contentTypeSelectorConfig.name,
+                            uuid: contentTypeSelectorConfig.uuid,
+                            site: contentTypeSelectorConfig.site,
+                            uilang: contentTypeSelectorConfig.uilang,
+                            initLang: contentTypeSelectorConfig.lang,
+                            lang: contentTypeSelectorConfig.lang,
+                            contentType: contentType.name,
+                            mode: Constants.routes.baseCreateRoute
+                        });
+                    }}
                 />
-            </Dialog>}
-
-            {contentTypeSelectorConfig &&
-            <CreateNewContentDialog
-                open
-                childNodeName={contentTypeSelectorConfig.name}
-                nodeTypes={contentTypeSelectorConfig.creatableNodeTypes}
-                includeSubTypes={contentTypeSelectorConfig.includeSubTypes}
-                parentPath={contentTypeSelectorConfig.path}
-                uilang={contentTypeSelectorConfig.uilang}
-                onClose={() => {
-                    setContentTypeSelectorConfig(false);
-                }}
-                onExited={() => {
-                    setContentTypeSelectorConfig(false);
-                }}
-                onCreateContent={contentType => {
-                    setContentTypeSelectorConfig(false);
-                    setEditorConfig({
-                        name: contentTypeSelectorConfig.name,
-                        uuid: contentTypeSelectorConfig.uuid,
-                        site: contentTypeSelectorConfig.site,
-                        uilang: contentTypeSelectorConfig.uilang,
-                        initLang: contentTypeSelectorConfig.lang,
-                        lang: contentTypeSelectorConfig.lang,
-                        contentType: contentType.name,
-                        mode: Constants.routes.baseCreateRoute
-                    });
-                }}
-            />}
+            )}
         </ErrorBoundary>
     );
 };

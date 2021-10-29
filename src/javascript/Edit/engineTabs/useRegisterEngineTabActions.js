@@ -5,6 +5,12 @@ import {getNodeTypes} from './engineTabs.utils';
 import {useQuery} from '@apollo/react-hooks';
 import {useContentEditorContext} from '~/ContentEditor.context';
 
+export const tabShouldBeDisplayed = (advancedOptionsTabs, actionKey) => {
+    return advancedOptionsTabs.filter(advancedOptionsTab => {
+        return advancedOptionsTab.id === actionKey.replace('contentEditorGWTTabAction_', '');
+    }).length > 0;
+};
+
 /**
  * This function register the actions related to the GWT engine tabs
  */
@@ -39,11 +45,12 @@ export const useRegisterEngineTabActions = () => {
                     registry.addOrReplace('action', actionPrefix + tab.id, openEngineTabsAction, {
                         buttonLabel: tab.title,
                         targets: ['AdvancedOptionsActions:' + (index + actionStartPriority)],
-                        tabs: [tab.id]
+                        tabs: [tab.id],
+                        shouldBeDisplayed: tabShouldBeDisplayed
                     });
                 }
             });
     }
 
-    return {loading, error};
+    return {loading, error, tabs};
 };

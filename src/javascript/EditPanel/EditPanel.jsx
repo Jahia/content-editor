@@ -14,8 +14,8 @@ import {registry} from '@jahia/ui-extender';
 
 import MainLayout from '~/DesignSystem/ContentLayout/MainLayout';
 import ContentHeader from '~/DesignSystem/ContentLayout/ContentHeader';
-import {Separator} from '@jahia/moonstone';
 import {Constants} from '~/ContentEditor.constants';
+import {Separator} from '@jahia/moonstone';
 
 const handleBeforeUnloadEvent = ev => {
     ev.preventDefault();
@@ -82,16 +82,22 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
     const OtherTabComponent = tabs.find(tab => tab.value === activeTab && tab.value !== Constants.editPanel.editTab)?.displayableComponent;
 
     return (
-        <MainLayout
-            header={
-                <ContentHeader>
-                    <HeaderUpperSection actionContext={actionContext} title={title}/>
-                    <Separator spacing="none"/>
-                    <HeaderLowerSection activeTab={activeTab}
-                                        setActiveTab={setActiveTab}
-                                        actionContext={actionContext}/>
-                </ContentHeader>
-            }
+        <MainLayout header={
+            <ContentHeader>
+                <HeaderUpperSection actionContext={actionContext}
+                                    title={title}
+                                    isCompact={envProps.isWindow}
+                                    isShowPublish={!envProps.isWindow && mode === Constants.routes.baseEditRoute}/>
+                {!envProps.isWindow && (
+                    <>
+                        <Separator spacing="none"/>
+                        <HeaderLowerSection activeTab={activeTab}
+                                            setActiveTab={setActiveTab}
+                                            actionContext={actionContext}/>
+                    </>
+                )}
+            </ContentHeader>
+        }
         >
             <div className={classnames(activeTab === Constants.editPanel.editTab ? classes.tab : classes.hideTab, 'flexCol')}>
                 <EditTabComponent isDirty={formik.dirty} formik={formik} nodePath={nodeData.path} lang={lang}/>

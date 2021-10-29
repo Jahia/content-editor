@@ -30,6 +30,10 @@
     }
 }
 
+.padder {
+    height: var(--spacing-medium);
+}
+
 .mainActions {
     margin-left: var(--spacing-small);
 }
