@@ -16,10 +16,11 @@ export const registerCreateActions = registry => {
         requiredPermission: ['jcr:addChildNodes']
     });
 
-    registry.addOrReplace('action', 'createPage', createNewContentAction, {
+    registry.addOrReplace('action', 'createPage', {
         buttonIcon: <AddCircle/>,
         buttonLabel:
             'content-editor:label.contentEditor.CMMActions.createNewPage.menu',
+        component: props => Boolean(window.jcontentEnhanced) && <createNewContentAction.component {...props}/>,
         targets: ['createMenuActions:3', 'contentActions:3', 'headerPrimaryActions:1'],
         showOnNodeTypes: ['jnt:page', 'jnt:navMenuText'],
         requiredPermission: ['jcr:addChildNodes'],
