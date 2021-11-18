@@ -41,7 +41,12 @@ const ContentEditorReduxCmp = ({client, mode, uuid, lang, uilang, site, contentT
                     ...storedLocation,
                     location: {
                         ...storedLocation.location,
-                        pathname: registry.get('jcontent', 'utils').buildUrl(currentSite, language, currentMode, path.replace(node.path, mutateNode.rename))
+                        pathname: registry.get('jcontent', 'utils').buildUrl({
+                            site: currentSite,
+                            language,
+                            mode: currentMode,
+                            path: path.replace(node.path, mutateNode.rename)
+                        })
                     }
                 };
                 setStoredLocation(newStoredLocation);
