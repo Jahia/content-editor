@@ -1,5 +1,6 @@
 import {getDynamicFieldSetNameOfField, extractRangeConstraints} from '~/EditPanel/EditPanel.utils';
 import dayjs from '~/date.config';
+import {Constants} from '~/ContentEditor.constants';
 
 const dateFieldValidation = (values, field) => {
     const error = 'invalidDate';
@@ -53,6 +54,20 @@ const dateFieldValidation = (values, field) => {
         // https://docs.adobe.com/docs/en/spec/jcr/2.0/3_Repository_Model.html#3.7.3.6%20Value%20Constraints
 
     return respectEachConstraint ? undefined : error;
+};
+
+const colorFieldValidation = (values, field) => {
+    if (field.selectorType === Constants.color.selectorType) {
+        const fieldValues = Array.isArray(values[field.name]) ? values[field.name] : [values[field.name]];
+
+        for (const fieldValue of fieldValues) {
+            if (fieldValue && !Constants.color.hexColorRegexp.test(fieldValue)) {
+                return Constants.color.errorCode;
+            }
+        }
+    }
+
+    return undefined;
 };
 
 const patternFieldValidation = (values, field) => {
@@ -123,6 +138,7 @@ export const validate = sections => {
                     const fieldError = (
                         requiredFieldValidation(values, field) ||
                         dateFieldValidation(values, field) ||
+                        colorFieldValidation(values, field) ||
                         patternFieldValidation(values, field) ||
                         maxLengthFieldValidation(values, field)
                     );

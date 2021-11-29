@@ -158,6 +158,7 @@
         "createTagPlaceholder": "Mit Enter bestätigen um \"{{tagName}}\" hinzuzufügen",
         "errors": {
           "invalidDate": "Bitte geben Sie ein gültiges Datum ein",
+          "invalidColor": "Bitte geben Sie einen gültigen Farbcode an",
           "invalidPattern": "Die Eingabe entspricht nicht den Vorgaben der Content-Typ-Definition.",
           "required": "",
           "alreadyExist": "Ein Element mit demselben Systemnamen ist bereits vorhanden. Bitte wählen Sie ein anderes aus.",

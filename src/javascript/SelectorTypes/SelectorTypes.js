@@ -17,6 +17,7 @@ import SystemName from './SystemName';
 import {ContentPickerSelectorType} from './Picker/ContentPicker';
 import {MediaPickerSelectorType} from './Picker/MediaPicker';
 import registerSystemNameOnChange from './SystemName/SystemName.onChange';
+import Color from './Color';
 
 const adaptDateProperty = (field, property) => {
     return field.multiple ? property.notZonedDateValues : property.notZonedDateValue;
@@ -38,6 +39,7 @@ export const registerSelectorTypes = ceRegistry => {
     });
     ceRegistry.add('selectorType', 'TextArea', {cmp: TextArea, supportMultiple: false});
     ceRegistry.add('selectorType', 'RichText', {cmp: RichText, supportMultiple: false});
+    ceRegistry.add('selectorType', 'Color', {cmp: Color, supportMultiple: false});
     ceRegistry.add('selectorType', 'DateTimePicker', {
         cmp: DateTimePicker,
         supportMultiple: false,
