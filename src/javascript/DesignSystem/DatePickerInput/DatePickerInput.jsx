@@ -13,10 +13,6 @@ import Popover from '@material-ui/core/Popover/Popover';
 import NumberFormat from 'react-number-format';
 
 const styles = theme => ({
-    overlay: {
-        position: 'absolute',
-        zIndex: 1
-    },
     datePickerIcon: {
         color: theme.palette.font.gamma + ' !important'
     }

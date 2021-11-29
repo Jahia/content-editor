@@ -69,5 +69,10 @@ export const Constants = {
         canSeeAdvancedOptionsTab: 'canSeeAdvancedOptionsTab',
         setContentLimitsOnAreas: 'setContentLimitsOnAreas'
     },
-    childrenFilterTypes: ['jnt:content', 'jmix:manuallyOrderable']
+    childrenFilterTypes: ['jnt:content', 'jmix:manuallyOrderable'],
+    color: {
+        hexColorRegexp: /^#([a-f0-9]{3,4}|[a-f0-9]{4}(?:[a-f0-9]{2}){1,2})\b$/i,
+        errorCode: 'invalidColor',
+        selectorType: 'Color'
+    }
 };
