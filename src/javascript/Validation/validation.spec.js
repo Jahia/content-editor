@@ -1,4 +1,5 @@
 import {validate} from './validation';
+import {Constants} from '~/ContentEditor.constants';
 
 describe('validation', () => {
     const buildSections = (fieldOptions = {}) => {
@@ -154,6 +155,28 @@ describe('validation', () => {
             sections[1].fieldSets[0].dynamic = true;
 
             expect(validate(sections)(values)).toEqual({});
+        });
+    });
+
+    describe('color', () => {
+        it('should not trigger any error when field is not a COLOR', () => {
+            const {sections, values} = buildSections({requiredType: 'STRING'});
+            expect(validate(sections)(values)).toEqual({});
+        });
+
+        it('should trigger error when filled date is not valid date', () => {
+            const {sections} = buildSections({selectorType: Constants.color.selectorType});
+            const values = {
+                field1: 'yolo',
+                field2: '#wrefcx',
+                field3: '#fff',
+                field4: '#FFFFFF'
+            };
+
+            expect(validate(sections)(values)).toEqual({
+                field1: 'invalidColor',
+                field2: 'invalidColor'
+            });
         });
     });
 

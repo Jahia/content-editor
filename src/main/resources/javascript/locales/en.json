@@ -158,6 +158,7 @@
         "createTagPlaceholder": "Press enter to add \"{{tagName}}\"",
         "errors": {
           "invalidDate": "Please provide a valid date value",
+          "invalidColor": "Please provide a valid color code",
           "invalidPattern": "The value does not match the constraints defined in the content type definitions file.",
           "required": "",
           "alreadyExist": "An item with the same system name already exists, please choose another one.",
