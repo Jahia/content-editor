@@ -43,7 +43,7 @@ const mapSpecialCharacter = {
 };
 
 export const replaceSpecialCharacters = systemName => {
-    const newSystemName = systemName?.replace(/[^A-Z0-9-_,()'!]/ig, character => {
+    const newSystemName = systemName?.replace(/[^A-Z0-9-_,()!]/ig, character => {
         return mapSpecialCharacter[character] || '-';
     });
 
