@@ -2,9 +2,9 @@ import React from 'react';
 import {MultipleInput} from '~/DesignSystem/MultipleInput';
 import PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
-import {DisplayAction} from "@jahia/ui-extender";
-import {getButtonRenderer} from "../../../utils/getButtonRenderer";
-import {connect} from "formik";
+import {DisplayAction} from '@jahia/ui-extender';
+import {getButtonRenderer} from '../../../utils/getButtonRenderer';
+import {connect} from 'formik';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 

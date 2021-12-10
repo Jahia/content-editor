@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {Dropdown} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
-import {DisplayAction} from "@jahia/ui-extender";
-import {getButtonRenderer} from "../../../utils/getButtonRenderer";
-import {connect} from "formik";
+import {DisplayAction} from '@jahia/ui-extender';
+import {getButtonRenderer} from '../../../utils/getButtonRenderer';
+import {connect} from 'formik';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
@@ -60,10 +60,10 @@ const SingleSelectCmp = ({field, value, formik, id, inputContext, onChange}) => 
             />
             {inputContext.displayActions && (
                 <DisplayAction actionKey="content-editor/field/Choicelist"
-                           formik={formik}
-                           field={field}
-                           inputContext={inputContext}
-                           render={ButtonRenderer}
+                               formik={formik}
+                               field={field}
+                               inputContext={inputContext}
+                               render={ButtonRenderer}
                 />
             )}
         </div>
