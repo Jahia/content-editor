@@ -1,14 +1,14 @@
 import React from 'react';
 
 import {Cancel, Add} from '@material-ui/icons';
-import {DotsVertical} from 'mdi-material-ui';
 
 import {unsetFieldAction} from '../actions/unsetField.action';
 import {selectAllAction} from './MultipleSelect/actions/selectAll.action';
+import {MoreVert} from "@jahia/moonstone";
 
 const registerChoiceListActions = registry => {
     registry.add('action', 'ChoicelistMenu', registry.get('action', 'menuAction'), {
-        buttonIcon: <DotsVertical/>,
+        buttonIcon: <MoreVert/>,
         buttonLabel: 'label.contentEditor.edit.action.fieldMoreOptions',
         menuTarget: 'ChoicelistActions',
         menuItemProps: {

@@ -1,13 +1,14 @@
-import {Edit, Cancel, Launch} from '@material-ui/icons';
-import {DotsVertical, FileUpload} from 'mdi-material-ui';
+import {Cancel, Edit, Launch} from '@material-ui/icons';
+import {FileUpload} from 'mdi-material-ui';
 import React from 'react';
 import {unsetFieldAction} from '../../actions/unsetField.action';
 import {openInTabAction} from './openInTab.action';
 import {replaceAction} from './replace.action';
+import {MoreVert} from "@jahia/moonstone";
 
 export const registerPickerActions = registry => {
     registry.add('action', 'ContentPickerMenu', registry.get('action', 'menuAction'), {
-        buttonIcon: <DotsVertical/>,
+        buttonIcon: <MoreVert/>,
         buttonLabel: 'label.contentEditor.edit.action.fieldMoreOptions',
         menuTarget: 'ContentPickerActions',
         menuItemProps: {
@@ -19,7 +20,7 @@ export const registerPickerActions = registry => {
     });
 
     registry.add('action', 'MediaPickerMenu', registry.get('action', 'menuAction'), {
-        buttonIcon: <DotsVertical/>,
+        buttonIcon: <MoreVert/>,
         buttonLabel: 'label.contentEditor.edit.action.fieldMoreOptions',
         menuTarget: 'MediaPickerActions',
         menuItemProps: {
@@ -31,7 +32,7 @@ export const registerPickerActions = registry => {
     });
 
     registry.add('action', 'FilePickerMenu', registry.get('action', 'menuAction'), {
-        buttonIcon: <DotsVertical/>,
+        buttonIcon: <MoreVert/>,
         buttonLabel: 'label.contentEditor.edit.action.fieldMoreOptions',
         menuTarget: 'FilePickerActions',
         menuItemProps: {

@@ -7,7 +7,6 @@ import {Edit, MoreVert} from '@jahia/moonstone';
 import editContentAction from './EditContent.action';
 import OpenWorkInProgressModalAction from '~/EditPanel/WorkInProgress/OpenWorkInProgressModal.action';
 import {CopyLanguageActionComponent} from '~/Edit/copyLanguage/copyLanguage.action';
-import CopyToAllLangs from '~/EditPanel/CopyToAllLangs';
 
 export const registerEditActions = actionsRegistry => {
     // Edit action button in JContent; need separate actions for content and pages
@@ -72,6 +71,15 @@ export const registerEditActions = actionsRegistry => {
         dataSelRole: '3dotsMenuAction'
     });
 
+    /* 3 dots menu actions (for each field) */
+    actionsRegistry.add('action', 'content-editor/field/3dots', actionsRegistry.get('action', 'menuAction'), {
+        buttonIcon: <MoreVert/>,
+        buttonLabel: 'content-editor:label.contentEditor.edit.action.moreOptions',
+        menuTarget: 'content-editor/field/3dots',
+        dataSelRole: '3dotsMenuAction',
+        isMenuPreload: true
+    });
+
     actionsRegistry.add('action', 'goToWorkInProgress', OpenWorkInProgressModalAction, {
         targets: ['content-editor/header/3dots:1'],
         dataSelRole: 'workInProgressAction'
@@ -83,21 +91,5 @@ export const registerEditActions = actionsRegistry => {
         component: CopyLanguageActionComponent
     });
 
-    addField3dots(actionsRegistry);
 };
 
-function addField3dots(registry) {
-    registry.add('action', 'content-editor/field/3dots', registry.get('action', 'menuAction'), {
-        buttonIcon: <MoreVert/>,
-        buttonLabel: 'content-editor:label.contentEditor.edit.action.moreOptions',
-        menuTarget: 'content-editor/field/3dots',
-        dataSelRole: '3dotsFieldMenuAction'
-    });
-
-    registry.add('action', 'copyToAllLanguages', {
-        buttonIcon: <Cancel/>,
-        buttonLabel: 'Copy to all Languages option',
-        targets: ['content-editor/field/3dots:1'],
-        component: CopyToAllLangs
-    });
-}

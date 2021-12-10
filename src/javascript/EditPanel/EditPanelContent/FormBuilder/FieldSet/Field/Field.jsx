@@ -1,8 +1,7 @@
 import React, {useEffect, useRef} from 'react';
-import {Grid, InputLabel, withStyles} from '@material-ui/core';
-import {Typography} from '@jahia/design-system-kit';
+import {InputLabel, withStyles} from '@material-ui/core';
+import {Badge, Typography} from '@jahia/design-system-kit';
 import {Public} from '@material-ui/icons';
-import {Badge} from '@jahia/design-system-kit';
 import {useTranslation} from 'react-i18next';
 import * as PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/FormDefinitions';
@@ -11,17 +10,16 @@ import {SingleField} from './SingleField';
 import {showChipField} from '~/EditPanel/WorkInProgress/WorkInProgress.utils';
 import {Constants} from '~/ContentEditor.constants';
 import {buildFlatFieldObject} from './field.utils';
-import {registry} from '@jahia/ui-extender';
+import {DisplayAction, registry} from '@jahia/ui-extender';
 import contentEditorHelper from '~/ContentEditor.helper';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import {useApolloClient} from '@apollo/react-hooks';
 import {FieldActions} from './Field.actions';
-import Field3dots from '~/EditPanel/EditPanelContent/FormBuilder/FieldSet/Field/Field3dots';
+import {Button} from "@jahia/moonstone";
 
 let styles = theme => {
     const common = {
-        flexGrow: 1,
         transform: 'none!important',
         position: 'relative',
         marginBottom: theme.spacing.unit
@@ -52,9 +50,6 @@ let styles = theme => {
         emptySpace: {
             display: 'block',
             width: 48
-        },
-        input: {
-            flexGrow: 5
         },
         badge: {
             marginBottom: theme.spacing.unit,
@@ -126,23 +121,9 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, f
              data-sel-content-editor-field-type={seleniumFieldType}
              data-sel-content-editor-field-readonly={field.readOnly}
         >
-
-            <Grid
-                container
-                wrap="nowrap"
-                direction="row"
-                alignItems="center"
-            >
-                <Grid item className={classes.input}>
+                <div className="flexFluid">
                     {inputContext.displayLabels &&
-                    <Grid
-                        container
-                        direction="row"
-                        justify="space-between"
-                        alignItems="center"
-                    >
-                        <Grid item>
-                            <Field3dots field={field} formik={formik}/>
+                        <div className="flexRow">
                             <InputLabel shrink
                                         id={`${field.name}-label`}
                                         className={classes.inputLabel}
@@ -177,28 +158,32 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, f
                                     />}
                                 </>
                             )}
-                        </Grid>
-                    </Grid>}
-                    {field.description &&
-                    <Grid
-                        container
-                        direction="row"
-                        justify="space-between"
-                        alignItems="center"
-                    >
-                        <Grid item>
-                            <Typography color="beta" variant="omega">
-                                {field.description}
-                            </Typography>
-                        </Grid>
-                    </Grid>}
-                    <Grid
-                        container
-                        wrap="nowrap"
-                        direction="row"
-                        alignItems="center"
-                    >
-                        <Grid item className={classes.input}>
+                            <div className="flexFluid"/>
+                            <DisplayAction
+                                actionKey="content-editor/field/3dots" formik={formik} editorContext={editorContext} field={field} selectorType={selectorType}
+                                render={({dataSelRole, isVisible, enabled, isDisabled, buttonIcon, onClick, ...props}) => {
+                                    return isVisible && (
+                                        <Button
+                                            data-sel-role={dataSelRole}
+                                            icon={buttonIcon}
+                                            variant="ghost"
+                                            onClick={e => {
+                                                e.stopPropagation();
+                                                onClick(props, e);
+                                            }}
+                                        />
+                                    )
+                                }}
+                            />
+                        </div>
+                    }
+                    {field.description && (
+                        <Typography color="beta" variant="omega">
+                            {field.description}
+                        </Typography>
+                    )}
+                    <div className="flexRow_nowrap alignCenter">
+                        <div className="flexFluid">
                             {isMultipleField ?
                                 <MultipleField inputContext={inputContext}
                                                editorContext={editorContext}
@@ -208,13 +193,13 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, f
                                              editorContext={editorContext}
                                              field={field}
                                              onChange={onChange}/>}
-                        </Grid>
-                        <Grid item>
+                        </div>
+                        <div>
                             <FieldActions inputContext={inputContext}
                                           selectorType={selectorType}
                                           field={field}/>
-                        </Grid>
-                    </Grid>
+                        </div>
+                    </div>
                     {inputContext.displayErrors && (
                         <Typography className={classes.errorMessage}
                                     data-sel-error={shouldDisplayErrors && errorName}
@@ -226,8 +211,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, f
                                 ''}&nbsp;
                         </Typography>
                     )}
-                </Grid>
-            </Grid>
+                </div>
         </div>
     );
 };
