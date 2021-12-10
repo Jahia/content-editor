@@ -97,7 +97,6 @@ public class EditorFormServiceImpl implements EditorFormService {
     // Regex for range format of a constraint value, extracted from org.apache.jackrabbit.spi.commons.nodetype.constraint.NumericConstraint
     private static final Pattern RANGE_PATTERN = Pattern.compile("([\\(\\[]) *(\\-?\\d+\\.?\\d*)? *, *(\\-?\\d+\\.?\\d*)? *([\\)\\]])");
     private static final int LOWER_LIMIT_RANGE_IDX = 2;
-    private static final int UPPER_LIMIT_RANGE_IDX = 3;
 
     static {
         defaultSelectors.put(PropertyType.STRING, SelectorType.SMALLTEXT);
