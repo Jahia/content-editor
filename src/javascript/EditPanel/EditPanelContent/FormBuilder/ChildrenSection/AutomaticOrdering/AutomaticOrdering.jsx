@@ -8,8 +8,7 @@ import {useTranslation} from 'react-i18next';
 import {adaptSectionToDisplayableRows} from './AutomaticOrdering.utils';
 import {getDisplayedRows} from './AutomaticOrdering.utils';
 import {withStyles} from '@material-ui/core';
-import {Clear} from '@material-ui/icons';
-import {Button, IconButton} from '@jahia/design-system-kit';
+import {Button, Close} from '@jahia/moonstone';
 
 const styles = theme => ({
     row: {
@@ -72,21 +71,21 @@ export const AutomaticOrderingCmp = ({classes, formik: {values, setFieldValue, s
     const getInputContext = (index, field) => {
         const inputContext = {
             displayBadges: false,
+            displayActions: false,
             displayLabels: index === 0,
-            displayErrors: false,
-            setActionContext: () => {}
+            displayErrors: false
         };
 
         if (!field.name.endsWith('Direction')) {
             inputContext.actionRender = <></>;
         } else if (displayedRows.length > 1) {
             inputContext.actionRender = (
-                <IconButton variant="ghost"
-                            data-sel-role={`delete-automatic-ordering-field-${index}`}
-                            aria-label={t('content-editor:label.contentEditor.edit.fields.actions.clear')}
-                            icon={<Clear/>}
-                            disabled={field.readOnly}
-                            onClick={() => {
+                <Button variant="ghost"
+                        data-sel-role={`delete-automatic-ordering-field-${index}`}
+                        aria-label={t('content-editor:label.contentEditor.edit.fields.actions.clear')}
+                        icon={<Close/>}
+                        disabled={field.readOnly}
+                        onClick={() => {
                                 remove(index);
                             }}
                 />
@@ -117,12 +116,9 @@ export const AutomaticOrderingCmp = ({classes, formik: {values, setFieldValue, s
 
             <Button className={classes.addButton}
                     data-sel-role="add-automatic-ordering-field"
-                    variant="secondary"
-                    disabled={!nextRow || nextRow.propField.readOnly}
-                    onClick={() => add(nextRow, nextRowIndex)}
-            >
-                {t('content-editor:label.contentEditor.edit.fields.actions.add')}
-            </Button>
+                    isDisabled={!nextRow || nextRow.propField.readOnly}
+                    label={t('content-editor:label.contentEditor.edit.fields.actions.add')}
+                    onClick={() => add(nextRow, nextRowIndex)}/>
         </>
     );
 };

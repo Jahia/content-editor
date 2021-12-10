@@ -7,6 +7,7 @@ import {HandleDrag} from '@jahia/moonstone';
 
 const styles = theme => ({
     container: {
+        flex: 1,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'

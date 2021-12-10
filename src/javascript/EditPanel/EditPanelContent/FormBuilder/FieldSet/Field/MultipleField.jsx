@@ -1,7 +1,5 @@
-import {IconButton} from '@jahia/design-system-kit';
-import {Button} from '@jahia/moonstone';
+import {Button, Close} from '@jahia/moonstone';
 import {withStyles} from '@material-ui/core';
-import {Close} from '@material-ui/icons';
 import React from 'react';
 import * as PropTypes from 'prop-types';
 import {compose} from '~/utils';
@@ -66,7 +64,7 @@ export const MultipleFieldCmp = ({classes, editorContext, inputContext, field, o
                                                         values={values}
                                                         id={name}
                                                         editorContext={editorContext}
-                                                        setActionContext={inputContext.setActionContext}
+                                                        inputContext={inputContext}
                                                         onChange={newData => {
                                                             multipleFieldOnChange(index, newData);
                                                         }}
@@ -76,11 +74,11 @@ export const MultipleFieldCmp = ({classes, editorContext, inputContext, field, o
                             </FastField>
 
                             {!field.readOnly &&
-                            <IconButton variant="ghost"
-                                        data-sel-action={`removeField_${index}`}
-                                        aria-label={t('content-editor:label.contentEditor.edit.fields.actions.clear')}
-                                        icon={<Close/>}
-                                        onClick={() => onFieldRemove(index)}
+                            <Button variant="ghost"
+                                    data-sel-action={`removeField_${index}`}
+                                    aria-label={t('content-editor:label.contentEditor.edit.fields.actions.clear')}
+                                    icon={<Close/>}
+                                    onClick={() => onFieldRemove(index)}
                             />}
                         </div>
                     );

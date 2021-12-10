@@ -37,7 +37,8 @@ describe('SingleSelect component', () => {
                 selectorType: 'ChoiceList',
                 readOnly: false
             },
-            setActionContext: jest.fn()
+            inputContext: {
+            }
         };
     });
 

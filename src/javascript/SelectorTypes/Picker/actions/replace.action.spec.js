@@ -1,12 +1,25 @@
-import {replaceAction} from './replace.action';
+import {ReplaceActionComponent} from './replace.action';
+import React from 'react';
+import {shallow} from '@jahia/test-framework';
+
+const button = () => <button type="button"/>;
 
 describe('replaceAction', () => {
     it('should open modal when clicking on it', () => {
         const open = jest.fn();
-        replaceAction.onClick({
-            open,
-            enabled: true
-        });
+        const context = {
+            field: {
+                readOnly: false
+            },
+            inputContext: {
+                actionContext: {
+                    open
+                }
+            }
+        };
+
+        const cmp = shallow(<ReplaceActionComponent {...context} render={button}/>);
+        cmp.simulate('click');
 
         expect(open).toHaveBeenCalledWith(true);
     });
@@ -17,9 +30,9 @@ describe('replaceAction', () => {
                 readOnly: false
             }
         };
-        replaceAction.init(context);
+        const cmp = shallow(<ReplaceActionComponent {...context} render={button}/>);
 
-        expect(context.enabled).toBe(true);
+        expect(cmp.props().enabled).toBe(true);
     });
 
     it('should not enabled the action if field is readonly', () => {
@@ -28,8 +41,8 @@ describe('replaceAction', () => {
                 readOnly: true
             }
         };
-        replaceAction.init(context);
+        const cmp = shallow(<ReplaceActionComponent {...context} render={button}/>);
 
-        expect(context.enabled).toBe(false);
+        expect(cmp.props().enabled).toBe(false);
     });
 });

@@ -95,6 +95,7 @@ describe('Field component', () => {
             input: <></>,
             inputContext: {
                 displayBadges: true,
+                displayActions: true,
                 displayLabels: true,
                 displayErrors: true
             },

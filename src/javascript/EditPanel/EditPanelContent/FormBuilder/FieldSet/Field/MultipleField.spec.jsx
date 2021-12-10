@@ -62,12 +62,13 @@ describe('Multiple component', () => {
     });
 
     it('should call onChange when removing a value', () => {
-        generateFieldArrayCmp().find('DsIconButton').at(1).simulate('click');
+        generateFieldArrayCmp().find('Button').at(1).simulate('click');
         expect(defaultProps.onChange).toHaveBeenCalledWith(['Dummy1', 'Dummy3']);
     });
 
     it('should call onChange when add a new value', () => {
-        generateFieldArrayCmp().find('Button').simulate('click');
+        generateFieldArrayCmp().find('Button');
+        generateFieldArrayCmp().find('Button').last().simulate('click');
         expect(defaultProps.onChange).toHaveBeenCalledWith(['Dummy1', 'Dummy2', 'Dummy3', undefined]);
     });
 
@@ -86,7 +87,7 @@ describe('Multiple component', () => {
     });
 
     it('should display remove button when field is not readOnly', () => {
-        const removeButton = generateFieldArrayCmp().find('DsIconButton').at(1);
+        const removeButton = generateFieldArrayCmp().find('Button').at(1);
         expect(removeButton.exists()).toBe(true);
     });
 
@@ -98,7 +99,7 @@ describe('Multiple component', () => {
     it('should hide remove button when field is readOnly', () => {
         defaultProps.field.readOnly = true;
 
-        const removeButton = generateFieldArrayCmp().find('DsIconButton');
+        const removeButton = generateFieldArrayCmp().find('Button');
         expect(removeButton.exists()).toBe(false);
     });
 

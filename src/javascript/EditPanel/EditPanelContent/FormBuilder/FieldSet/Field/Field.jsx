@@ -15,8 +15,9 @@ import contentEditorHelper from '~/ContentEditor.helper';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import {useApolloClient} from '@apollo/react-hooks';
-import {FieldActions} from './Field.actions';
-import {Button} from "@jahia/moonstone";
+import {getButtonRenderer} from '../../../../../utils/getButtonRenderer';
+
+const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
 let styles = theme => {
     const common = {
@@ -29,9 +30,8 @@ let styles = theme => {
         formControl: {
             ...theme.typography.zeta,
             ...common,
-            padding: '8px 0',
-            paddingLeft: '8px',
-            marginLeft: '20px ',
+            padding: '8px 0 8px 8px',
+            margin: '0 20px ',
             borderLeft: '4px solid transparent'
         },
         formControlError: {
@@ -47,7 +47,7 @@ let styles = theme => {
             color: theme.palette.font.beta,
             display: 'inline-block'
         },
-        emptySpace: {
+        actions: {
             display: 'block',
             width: 48
         },
@@ -77,7 +77,10 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, f
     const wipInfo = values[Constants.wip.fieldName];
 
     // Lookup for registered on changes for given field selector type
-    const registeredOnChanges = [...registry.find({type: 'selectorType.onChange', target: selectorType.key}), ...registry.find({type: 'selectorType.onChange', target: '*'})];
+    const registeredOnChanges = [...registry.find({
+        type: 'selectorType.onChange',
+        target: selectorType.key
+    }), ...registry.find({type: 'selectorType.onChange', target: '*'})];
     const registeredOnChange = currentValue => {
         if (registeredOnChanges && registeredOnChanges.length > 0) {
             registeredOnChanges.forEach(registeredOnChange => {
@@ -121,97 +124,99 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, f
              data-sel-content-editor-field-type={seleniumFieldType}
              data-sel-content-editor-field-readonly={field.readOnly}
         >
-                <div className="flexFluid">
-                    {inputContext.displayLabels &&
-                        <div className="flexRow">
-                            <InputLabel shrink
-                                        id={`${field.name}-label`}
-                                        className={classes.inputLabel}
-                                        htmlFor={isMultipleField ? null : idInput}
-                            >
-                                {field.displayName}
-                            </InputLabel>
-                            {inputContext.displayBadges && (
-                                <>
-                                    {field.mandatory && (
-                                        <Badge className={classes.badge}
-                                               data-sel-content-editor-field-mandatory={Boolean(hasMandatoryError)}
-                                               badgeContent={t('content-editor:label.contentEditor.edit.validation.required')}
-                                               variant="normal"
-                                               color={hasMandatoryError ? 'warning' : 'info'}
-                                        />
-                                    )}
-                                    {showChipField(field.i18n, wipInfo, editorContext.lang) && (
-                                        <Badge className={classes.badge}
-                                               data-sel-role="wip-info-chip-field"
-                                               badgeContent={t('content-editor:label.contentEditor.edit.action.workInProgress.chipLabelField')}
-                                               variant="normal"
-                                               color="info"
-                                        />
-                                    )}
-                                    {(!field.i18n && editorContext.siteInfo.languages.length > 1) &&
-                                    <Badge className={classes.badge}
-                                           badgeContent={t('content-editor:label.contentEditor.edit.sharedLanguages')}
-                                           icon={<Public/>}
-                                           variant="normal"
-                                           color="primary"
-                                    />}
-                                </>
+            <div className="flexFluid">
+                {inputContext.displayLabels &&
+                <div className="flexRow">
+                    <InputLabel shrink
+                                id={`${field.name}-label`}
+                                className={classes.inputLabel}
+                                htmlFor={isMultipleField ? null : idInput}
+                    >
+                        {field.displayName}
+                    </InputLabel>
+                    {inputContext.displayBadges && (
+                        <>
+                            {field.mandatory && (
+                                <Badge className={classes.badge}
+                                       data-sel-content-editor-field-mandatory={Boolean(hasMandatoryError)}
+                                       badgeContent={t('content-editor:label.contentEditor.edit.validation.required')}
+                                       variant="normal"
+                                       color={hasMandatoryError ? 'warning' : 'info'}
+                                />
                             )}
-                            <div className="flexFluid"/>
-                            <DisplayAction
-                                actionKey="content-editor/field/3dots" formik={formik} editorContext={editorContext} field={field} selectorType={selectorType}
-                                render={({dataSelRole, isVisible, enabled, isDisabled, buttonIcon, onClick, ...props}) => {
-                                    return isVisible && (
-                                        <Button
-                                            data-sel-role={dataSelRole}
-                                            icon={buttonIcon}
-                                            variant="ghost"
-                                            onClick={e => {
-                                                e.stopPropagation();
-                                                onClick(props, e);
-                                            }}
-                                        />
-                                    )
-                                }}
+                            {showChipField(field.i18n, wipInfo, editorContext.lang) && (
+                                <Badge className={classes.badge}
+                                       data-sel-role="wip-info-chip-field"
+                                       badgeContent={t('content-editor:label.contentEditor.edit.action.workInProgress.chipLabelField')}
+                                       variant="normal"
+                                       color="info"
+                                />
+                            )}
+                            {(!field.i18n && editorContext.siteInfo.languages.length > 1) &&
+                            <Badge className={classes.badge}
+                                   badgeContent={t('content-editor:label.contentEditor.edit.sharedLanguages')}
+                                   icon={<Public/>}
+                                   variant="normal"
+                                   color="primary"
+                            />}
+                        </>
+                    )}
+                    <div className="flexFluid"/>
+                    <DisplayAction
+                        actionKey="content-editor/field/3dots"
+                        formik={formik}
+                        editorContext={editorContext}
+                        field={field}
+                        selectorType={selectorType}
+                        render={ButtonRenderer}
+                    />
+                </div>}
+                {field.description && (
+                    <Typography color="beta" variant="omega">
+                        {field.description}
+                    </Typography>
+                )}
+                <div className="flexRow_nowrap alignCenter">
+                    <div className="flexFluid">
+                        {isMultipleField ?
+                            <MultipleField inputContext={inputContext}
+                                           editorContext={editorContext}
+                                           field={field}
+                                           onChange={onChange}/> :
+                            <SingleField inputContext={inputContext}
+                                         editorContext={editorContext}
+                                         field={field}
+                                         onChange={onChange}/>}
+                    </div>
+                    {inputContext.displayActions && (
+                        <div className={classes.actions}>
+                            <DisplayAction actionKey={selectorType.key + 'Menu'}
+                                           formik={formik}
+                                           field={field}
+                                           selectorType={selectorType}
+                                           inputContext={inputContext}
+                                           render={ButtonRenderer}
                             />
                         </div>
-                    }
-                    {field.description && (
-                        <Typography color="beta" variant="omega">
-                            {field.description}
-                        </Typography>
                     )}
-                    <div className="flexRow_nowrap alignCenter">
-                        <div className="flexFluid">
-                            {isMultipleField ?
-                                <MultipleField inputContext={inputContext}
-                                               editorContext={editorContext}
-                                               field={field}
-                                               onChange={onChange}/> :
-                                <SingleField inputContext={inputContext}
-                                             editorContext={editorContext}
-                                             field={field}
-                                             onChange={onChange}/>}
-                        </div>
+                    {inputContext.actionRender && (
                         <div>
-                            <FieldActions inputContext={inputContext}
-                                          selectorType={selectorType}
-                                          field={field}/>
+                            {inputContext.actionRender}
                         </div>
-                    </div>
-                    {inputContext.displayErrors && (
-                        <Typography className={classes.errorMessage}
-                                    data-sel-error={shouldDisplayErrors && errorName}
-                        >
-                            {shouldDisplayErrors ?
-                                field.errorMessage ?
-                                    field.errorMessage :
-                                    t(`content-editor:label.contentEditor.edit.errors.${errorName}`, {...buildFlatFieldObject(field), ...errorArgs}) :
-                                ''}&nbsp;
-                        </Typography>
                     )}
                 </div>
+                {inputContext.displayErrors && (
+                    <Typography className={classes.errorMessage}
+                                data-sel-error={shouldDisplayErrors && errorName}
+                    >
+                        {shouldDisplayErrors ?
+                            field.errorMessage ?
+                                field.errorMessage :
+                                t(`content-editor:label.contentEditor.edit.errors.${errorName}`, {...buildFlatFieldObject(field), ...errorArgs}) :
+                            ''}&nbsp;
+                    </Typography>
+                )}
+            </div>
         </div>
     );
 };

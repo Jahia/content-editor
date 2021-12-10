@@ -41,7 +41,7 @@ describe('MultipleSelect component', () => {
                 readOnly: false,
                 multiple: true
             },
-            setActionContext: jest.fn()
+            inputContext: {}
         };
     });
 

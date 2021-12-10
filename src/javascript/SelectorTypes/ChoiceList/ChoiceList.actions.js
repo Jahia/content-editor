@@ -1,31 +1,31 @@
 import React from 'react';
 
-import {Cancel, Add} from '@material-ui/icons';
-
-import {unsetFieldAction} from '../actions/unsetField.action';
-import {selectAllAction} from './MultipleSelect/actions/selectAll.action';
-import {MoreVert} from "@jahia/moonstone";
+import {UnsetFieldActionComponent} from '../actions/unsetField.action';
+import {SelectAllActionComponent} from './MultipleSelect/actions/selectAll.action';
+import {Add, Close, MoreVert} from '@jahia/moonstone';
 
 const registerChoiceListActions = registry => {
-    registry.add('action', 'ChoicelistMenu', registry.get('action', 'menuAction'), {
+    registry.add('action', 'content-editor/field/Choicelist', registry.get('action', 'menuAction'), {
         buttonIcon: <MoreVert/>,
         buttonLabel: 'label.contentEditor.edit.action.fieldMoreOptions',
-        menuTarget: 'ChoicelistActions',
+        menuTarget: 'content-editor/field/Choicelist',
         menuItemProps: {
             isShowIcons: true
         }
     });
 
-    registry.add('action', 'unsetFieldActionChoiceList', unsetFieldAction, {
-        buttonIcon: <Cancel/>,
+    registry.add('action', 'unsetFieldActionChoiceList', {
+        component: UnsetFieldActionComponent,
+        buttonIcon: <Close/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.fields.actions.clear',
-        targets: ['ChoicelistActions:1']
+        targets: ['content-editor/field/Choicelist:1']
     });
 
-    registry.add('action', 'selectAllActionChoiceList', selectAllAction, {
+    registry.add('action', 'selectAllActionChoiceList', {
+        component: SelectAllActionComponent,
         buttonIcon: <Add/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.fields.actions.selectAll',
-        targets: ['ChoicelistActions:2']
+        targets: ['content-editor/field/Choicelist:2']
     });
 };
 

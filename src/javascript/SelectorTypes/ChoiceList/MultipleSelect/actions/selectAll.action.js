@@ -1,33 +1,47 @@
-export const selectAllAction = {
-    init: context => {
-        if (!context.field.multiple ||
-            context.field.readOnly ||
-            !context.field.valueConstraints ||
-            context.field.valueConstraints.length === 0
-        ) {
-            context.isVisible = false;
-            return;
-        }
+import React from 'react';
+import PropTypes from 'prop-types';
 
-        const values = context.formik.values[context.field.name] || [];
-        const possibleValues = context.field.valueConstraints.map(valueConstraint => valueConstraint.value.string);
-        context.enabled = !possibleValues.every(i => values.includes(i));
-        context.key = 'selectAllActionChoiceList';
-    },
-    onClick: context => {
-        if (!context.enabled) {
-            return;
-        }
-
-        const possibleValues = context.field.valueConstraints.map(valueConstraint => valueConstraint.value.string);
-        context.formik.setFieldValue(
-            context.field.name,
-            possibleValues,
-            true
-        );
-        context.formik.setFieldTouched(context.field.name, [true]);
-        if (context.onChange) {
-            context.onChange(possibleValues);
-        }
+export const SelectAllActionComponent = ({field, formik, inputContext, render: Render, loading: Loading, ...others}) => {
+    if (!field.multiple || field.readOnly || !field.valueConstraints || field.valueConstraints.length === 0) {
+        return false;
     }
+
+    const values = formik.values[field.name] || [];
+    const possibleValues = field.valueConstraints.map(valueConstraint => valueConstraint.value.string);
+    const enabled = !possibleValues.every(i => values.includes(i));
+
+    return (
+        <Render
+            {...others}
+            enabled={enabled}
+            onClick={() => {
+                if (!enabled) {
+                    return;
+                }
+
+                const possibleValues = field.valueConstraints.map(valueConstraint => valueConstraint.value.string);
+                formik.setFieldValue(
+                    field.name,
+                    possibleValues,
+                    true
+                );
+                formik.setFieldTouched(field.name, [true]);
+                if (inputContext.actionContext.onChange) {
+                    inputContext.actionContext.onChange(possibleValues);
+                }
+            }}
+        />
+    );
+};
+
+SelectAllActionComponent.propTypes = {
+    field: PropTypes.object.isRequired,
+
+    formik: PropTypes.object.isRequired,
+
+    inputContext: PropTypes.object.isRequired,
+
+    render: PropTypes.func.isRequired,
+
+    loading: PropTypes.func
 };

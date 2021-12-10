@@ -100,7 +100,7 @@ describe('Automatic ordering component', () => {
             {},
             dsGenericTheme
         );
-        expect(cmp.find('DsButton').props().disabled).toBe(true);
+        expect(cmp.find('Button').props().isDisabled).toBe(true);
     });
 
     it('should disable remove when props are readOnly', () => {
@@ -127,20 +127,20 @@ describe('Automatic ordering component', () => {
             {},
             dsGenericTheme
         );
-        expect(cmp.find('DsButton').props().disabled).toBe(false);
+        expect(cmp.find('Button').props().isDisabled).toBe(false);
         expect(cmp.find('FieldContainer').length).toBe(2);
 
-        cmp.find('DsButton').simulate('click');
+        cmp.find('Button').simulate('click');
         expect(cmp.find('FieldContainer').length).toBe(4);
-        expect(cmp.find('DsButton').props().disabled).toBe(false);
+        expect(cmp.find('Button').props().isDisabled).toBe(false);
         expect(props.formik.setFieldValue.mock.calls[0]).toEqual([Constants.automaticOrdering.mixin + '_secondField', 'jcr:lastModified', true]);
         expect(props.formik.setFieldValue.mock.calls[1]).toEqual([Constants.automaticOrdering.mixin + '_secondDirection', 'desc', true]);
         expect(props.formik.setFieldTouched.mock.calls[0]).toEqual([Constants.automaticOrdering.mixin + '_secondField', true]);
         expect(props.formik.setFieldTouched.mock.calls[1]).toEqual([Constants.automaticOrdering.mixin + '_secondDirection', true]);
 
-        cmp.find('DsButton').simulate('click');
+        cmp.find('Button').simulate('click');
         expect(cmp.find('FieldContainer').length).toBe(6);
-        expect(cmp.find('DsButton').props().disabled).toBe(true);
+        expect(cmp.find('Button').props().isDisabled).toBe(true);
         expect(props.formik.setFieldValue.mock.calls[2]).toEqual([Constants.automaticOrdering.mixin + '_thirdField', 'jcr:lastModified', true]);
         expect(props.formik.setFieldValue.mock.calls[3]).toEqual([Constants.automaticOrdering.mixin + '_thirdDirection', 'desc', true]);
         expect(props.formik.setFieldTouched.mock.calls[2]).toEqual([Constants.automaticOrdering.mixin + '_thirdField', true]);

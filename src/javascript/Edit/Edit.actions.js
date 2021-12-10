@@ -2,7 +2,7 @@ import React from 'react';
 import saveAction from './save/save.action';
 import publishAction from './publish/publish.action';
 import startWorkflow from './startWorkflow/startWorkflow.action';
-import {Cancel, CloudUpload, Save} from '@material-ui/icons';
+import {CloudUpload, Save} from '@material-ui/icons';
 import {Edit, MoreVert} from '@jahia/moonstone';
 import editContentAction from './EditContent.action';
 import OpenWorkInProgressModalAction from '~/EditPanel/WorkInProgress/OpenWorkInProgressModal.action';
@@ -90,6 +90,5 @@ export const registerEditActions = actionsRegistry => {
         targets: ['content-editor/header/3dots:2'],
         component: CopyLanguageActionComponent
     });
-
 };
 

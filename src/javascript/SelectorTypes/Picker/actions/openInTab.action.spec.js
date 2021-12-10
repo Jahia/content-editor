@@ -1,5 +1,9 @@
-import {openInTabAction} from './openInTab.action';
+import {OpenInTabActionComponent} from './openInTab.action';
 import {Constants} from '~/ContentEditor.constants';
+import {shallow} from '@jahia/test-framework';
+import React from 'react';
+
+const button = () => <button type="button"/>;
 
 describe('openInTab action', () => {
     it('should open in new tab on click', () => {
@@ -11,14 +15,20 @@ describe('openInTab action', () => {
         };
 
         const context = {
-            fieldData: {
-                uuid: 'this-is-an-id'
-            },
-            editorContext: {
-                lang: 'fr'
+            inputContext: {
+                actionContext: {
+                    fieldData: {
+                        uuid: 'this-is-an-id'
+                    },
+                    editorContext: {
+                        lang: 'fr'
+                    }
+                }
             }
         };
-        openInTabAction.onClick(context);
+
+        const cmp = shallow(<OpenInTabActionComponent {...context} render={button}/>);
+        cmp.simulate('click');
 
         expect(window.open).toHaveBeenCalledWith(`/jahia/jahia/${Constants.appName}/fr/${Constants.routes.baseEditRoute}/this-is-an-id`, '_blank');
     });

@@ -1,4 +1,8 @@
-import {unsetFieldAction} from './unsetField.action';
+import React from 'react';
+import {UnsetFieldActionComponent} from './unsetField.action';
+import {shallow} from '@jahia/test-framework';
+
+const button = () => <button type="button"/>;
 
 describe('unsetFieldAction', () => {
     describe('onclick', () => {
@@ -6,8 +10,14 @@ describe('unsetFieldAction', () => {
         beforeEach(() => {
             context = {
                 formik: {
+                    values: {
+                        fieldName: ['old']
+                    },
                     setFieldValue: jest.fn(),
                     setFieldTouched: jest.fn()
+                },
+                inputContext: {
+                    actionContext: {}
                 },
                 field: {
                     name: 'fieldName'
@@ -17,7 +27,8 @@ describe('unsetFieldAction', () => {
         });
 
         it('should set field value to null', () => {
-            unsetFieldAction.onClick(context);
+            const cmp = shallow(<UnsetFieldActionComponent {...context} render={button}/>);
+            cmp.simulate('click');
 
             // As action expect impure function, testing params
             expect(context.formik.setFieldValue).toHaveBeenCalledWith(
@@ -28,7 +39,8 @@ describe('unsetFieldAction', () => {
         });
 
         it('should set field touched', () => {
-            unsetFieldAction.onClick(context);
+            const cmp = shallow(<UnsetFieldActionComponent {...context} render={button}/>);
+            cmp.simulate('click');
 
             expect(context.formik.setFieldTouched).toHaveBeenCalledWith('fieldName');
         });
@@ -42,14 +54,17 @@ describe('unsetFieldAction', () => {
                         yoolo: 'value'
                     }
                 },
+                inputContext: {
+                    actionContext: {}
+                },
                 field: {
                     readOnly: false,
                     name: 'yoolo'
                 }
             };
-            unsetFieldAction.init(context);
+            const cmp = shallow(<UnsetFieldActionComponent {...context} render={button}/>);
 
-            expect(context.enabled).toBe(true);
+            expect(cmp.props().enabled).toBe(true);
         });
 
         it('should not enabled the action if field is readonly', () => {
@@ -59,14 +74,17 @@ describe('unsetFieldAction', () => {
                         yoolo: 'value'
                     }
                 },
+                inputContext: {
+                    actionContext: {}
+                },
                 field: {
                     readOnly: true,
                     name: 'yoolo'
                 }
             };
-            unsetFieldAction.init(context);
+            const cmp = shallow(<UnsetFieldActionComponent {...context} render={button}/>);
 
-            expect(context.enabled).toBe(false);
+            expect(cmp.props().enabled).toBe(false);
         });
 
         it('should disabled the action if field value is empty', () => {
@@ -76,14 +94,17 @@ describe('unsetFieldAction', () => {
                         yoolo: ''
                     }
                 },
+                inputContext: {
+                    actionContext: {}
+                },
                 field: {
                     readOnly: false,
                     name: 'yoolo'
                 }
             };
-            unsetFieldAction.init(context);
+            const cmp = shallow(<UnsetFieldActionComponent {...context} render={button}/>);
 
-            expect(context.enabled).toBe(false);
+            expect(cmp.props().enabled).toBe(false);
         });
 
         it('should disabled the action if field values is empty', () => {
@@ -93,14 +114,17 @@ describe('unsetFieldAction', () => {
                         yoolo: []
                     }
                 },
+                inputContext: {
+                    actionContext: {}
+                },
                 field: {
                     readOnly: false,
                     name: 'yoolo'
                 }
             };
-            unsetFieldAction.init(context);
+            const cmp = shallow(<UnsetFieldActionComponent {...context} render={button}/>);
 
-            expect(context.enabled).toBe(false);
+            expect(cmp.props().enabled).toBe(false);
         });
 
         it('should disabled the action if field values is null', () => {
@@ -110,14 +134,17 @@ describe('unsetFieldAction', () => {
                         yoolo: null
                     }
                 },
+                inputContext: {
+                    actionContext: {}
+                },
                 field: {
                     readOnly: false,
                     name: 'yoolo'
                 }
             };
-            unsetFieldAction.init(context);
+            const cmp = shallow(<UnsetFieldActionComponent {...context} render={button}/>);
 
-            expect(context.enabled).toBe(false);
+            expect(cmp.props().enabled).toBe(false);
         });
 
         it('should enable the action if field values is filled', () => {
@@ -127,14 +154,17 @@ describe('unsetFieldAction', () => {
                         yoolo: ['value']
                     }
                 },
+                inputContext: {
+                    actionContext: {}
+                },
                 field: {
                     readOnly: false,
                     name: 'yoolo'
                 }
             };
-            unsetFieldAction.init(context);
+            const cmp = shallow(<UnsetFieldActionComponent {...context} render={button}/>);
 
-            expect(context.enabled).toBe(true);
+            expect(cmp.props().enabled).toBe(true);
         });
     });
 });

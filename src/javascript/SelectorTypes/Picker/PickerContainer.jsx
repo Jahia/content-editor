@@ -7,8 +7,12 @@ import {ProgressOverlay} from '@jahia/react-material';
 import {ReferenceCard} from '~/DesignSystem/ReferenceCard';
 import {extractConfigs} from './Picker.utils';
 import {PickerDialog} from './PickerDialog';
+import {DisplayAction} from '@jahia/ui-extender';
+import {getButtonRenderer} from '../../utils/getButtonRenderer';
 
-const PickerCmp = ({field, value, editorContext, setActionContext, onChange}) => {
+const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
+
+const PickerCmp = ({field, value, editorContext, inputContext, onChange, formik}) => {
     const {t} = useTranslation('content-editor');
     const {pickerConfig, nodeTreeConfigs} = extractConfigs(field, editorContext, t);
     const [isDialogOpen, setDialogOpen] = useState(false);
@@ -27,12 +31,12 @@ const PickerCmp = ({field, value, editorContext, setActionContext, onChange}) =>
         return <ProgressOverlay/>;
     }
 
-    setActionContext({
+    inputContext.actionContext = {
         open: setDialogOpen,
         fieldData,
         editorContext,
         onChange: newValue => onChange(newValue)
-    });
+    };
 
     const onItemSelection = data => {
         setDialogOpen(false);
@@ -40,7 +44,7 @@ const PickerCmp = ({field, value, editorContext, setActionContext, onChange}) =>
     };
 
     return (
-        <>
+        <div className="flexFluid flexRow alignCenter">
             <ReferenceCard
                 isReadOnly={field.readOnly}
                 emptyLabel={t((error || notFound) ? pickerConfig.picker.pickerInput.notFoundLabel : pickerConfig.picker.pickerInput.emptyLabel)}
@@ -49,6 +53,7 @@ const PickerCmp = ({field, value, editorContext, setActionContext, onChange}) =>
                 fieldData={fieldData}
                 onClick={() => setDialogOpen(!isDialogOpen)}
             />
+            {inputContext.displayActions && value && <DisplayAction actionKey={field.multiple ? 'content-editor/field/MultiplePicker' : 'content-editor/field/Picker'} value={value} field={field} formik={formik} inputContext={inputContext} render={ButtonRenderer}/>}
             <PickerDialog
                 isOpen={isDialogOpen}
                 setIsOpen={setDialogOpen}
@@ -63,15 +68,16 @@ const PickerCmp = ({field, value, editorContext, setActionContext, onChange}) =>
                 pickerConfig={pickerConfig}
                 onItemSelection={onItemSelection}
             />
-        </>
+        </div>
     );
 };
 
 PickerCmp.propTypes = {
     editorContext: PropTypes.object.isRequired,
+    formik: PropTypes.object.isRequired,
     value: PropTypes.string,
     field: FieldPropTypes.isRequired,
-    setActionContext: PropTypes.func.isRequired,
+    inputContext: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired
 };
 

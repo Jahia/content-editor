@@ -55,7 +55,7 @@ describe('picker', () => {
             },
             id: 'imageid',
             editorContext: {site: 'digitall'},
-            setActionContext: jest.fn(),
+            inputContext: {},
             onChange: jest.fn()
         };
     });
