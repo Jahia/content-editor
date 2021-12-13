@@ -188,7 +188,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, f
                                          field={field}
                                          onChange={onChange}/>}
                     </div>
-                    {inputContext.displayActions && (
+                    {inputContext.displayActions && registry.get('action', selectorType.key + 'Menu') && (
                         <div className={classes.actions}>
                             <DisplayAction actionKey={selectorType.key + 'Menu'}
                                            formik={formik}
