@@ -4,14 +4,9 @@ import {connect} from 'formik';
 import {FieldPropTypes} from '~/FormDefinitions';
 import {resolveSelectorType} from '~/SelectorTypes';
 import {Field} from './Field';
-import {registry} from '@jahia/ui-extender';
 
 const FieldContainerCmp = ({field, formik, inputContext}) => {
     const selectorType = resolveSelectorType(field);
-
-    const setActionContext = actionContext => {
-        registry.addOrReplace('selectorType.actionContext', field.name, actionContext);
-    };
 
     return (
         <Field
@@ -19,9 +14,9 @@ const FieldContainerCmp = ({field, formik, inputContext}) => {
             inputContext={{
                 displayLabels: true,
                 displayBadges: true,
+                displayActions: true,
                 displayErrors: true,
                 fieldComponent: selectorType.cmp,
-                setActionContext: setActionContext,
                 ...inputContext
             }}
             selectorType={selectorType}

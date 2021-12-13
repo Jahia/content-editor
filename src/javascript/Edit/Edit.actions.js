@@ -71,6 +71,15 @@ export const registerEditActions = actionsRegistry => {
         dataSelRole: '3dotsMenuAction'
     });
 
+    /* 3 dots menu actions (for each field) */
+    actionsRegistry.add('action', 'content-editor/field/3dots', actionsRegistry.get('action', 'menuAction'), {
+        buttonIcon: <MoreVert/>,
+        buttonLabel: 'content-editor:label.contentEditor.edit.action.moreOptions',
+        menuTarget: 'content-editor/field/3dots',
+        dataSelRole: '3dotsMenuAction',
+        isMenuPreload: true
+    });
+
     actionsRegistry.add('action', 'goToWorkInProgress', OpenWorkInProgressModalAction, {
         targets: ['content-editor/header/3dots:1'],
         dataSelRole: 'workInProgressAction'
@@ -82,3 +91,4 @@ export const registerEditActions = actionsRegistry => {
         component: CopyLanguageActionComponent
     });
 };
+

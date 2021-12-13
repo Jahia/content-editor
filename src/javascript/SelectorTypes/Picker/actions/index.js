@@ -1,63 +1,47 @@
-import {Edit, Cancel, Launch} from '@material-ui/icons';
-import {DotsVertical, FileUpload} from 'mdi-material-ui';
 import React from 'react';
-import {unsetFieldAction} from '../../actions/unsetField.action';
-import {openInTabAction} from './openInTab.action';
-import {replaceAction} from './replace.action';
+import {UnsetFieldActionComponent} from '../../actions/unsetField.action';
+import {ReplaceActionComponent} from './replace.action';
+import {Close, Edit, MoreVert, OpenInNew, Upload} from '@jahia/moonstone';
+import {OpenInTabActionComponent} from './openInTab.action';
 
 export const registerPickerActions = registry => {
-    registry.add('action', 'ContentPickerMenu', registry.get('action', 'menuAction'), {
-        buttonIcon: <DotsVertical/>,
+    registry.add('action', 'content-editor/field/Picker', registry.get('action', 'menuAction'), {
+        buttonIcon: <MoreVert/>,
         buttonLabel: 'label.contentEditor.edit.action.fieldMoreOptions',
-        menuTarget: 'ContentPickerActions',
+        menuTarget: 'content-editor/field/Picker',
         menuItemProps: {
             isShowIcons: true
-        },
-        displayFieldActions: (field, value) => {
-            return !field.multiple && value;
         }
     });
 
-    registry.add('action', 'MediaPickerMenu', registry.get('action', 'menuAction'), {
-        buttonIcon: <DotsVertical/>,
+    registry.add('action', 'content-editor/field/MultiplePicker', registry.get('action', 'menuAction'), {
+        buttonIcon: <MoreVert/>,
         buttonLabel: 'label.contentEditor.edit.action.fieldMoreOptions',
-        menuTarget: 'MediaPickerActions',
+        menuTarget: 'content-editor/field/MultiplePicker',
         menuItemProps: {
             isShowIcons: true
-        },
-        displayFieldActions: (field, value) => {
-            return !field.multiple && value;
         }
     });
 
-    registry.add('action', 'FilePickerMenu', registry.get('action', 'menuAction'), {
-        buttonIcon: <DotsVertical/>,
-        buttonLabel: 'label.contentEditor.edit.action.fieldMoreOptions',
-        menuTarget: 'FilePickerActions',
-        menuItemProps: {
-            isShowIcons: true
-        },
-        displayFieldActions: (field, value) => {
-            return !field.multiple && value;
-        }
-    });
-
-    registry.add('action', 'replaceContent', replaceAction, {
+    registry.add('action', 'replaceContent', {
+        component: ReplaceActionComponent,
         buttonIcon: <Edit/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.fields.actions.replace',
-        targets: ['ContentPickerActions:1', 'MediaPickerActions:1', 'FilePickerActions:1']
+        targets: ['content-editor/field/Picker:1', 'content-editor/field/MultiplePicker:1']
     });
 
-    registry.add('action', 'openInNewTab', openInTabAction, {
-        buttonIcon: <Launch/>,
+    registry.add('action', 'openInNewTab', {
+        component: OpenInTabActionComponent,
+        buttonIcon: <OpenInNew/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.fields.actions.newTab',
-        targets: ['ContentPickerActions:2', 'MediaPickerActions:2', 'FilePickerActions:2']
+        targets: ['content-editor/field/Picker:2', 'content-editor/field/MultiplePicker:2']
     });
 
-    registry.add('action', 'unsetFieldActionPicker', unsetFieldAction, {
-        buttonIcon: <Cancel/>,
+    registry.add('action', 'unsetFieldActionPicker', {
+        component: UnsetFieldActionComponent,
+        buttonIcon: <Close/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.fields.actions.clear',
-        targets: ['ContentPickerActions:3', 'MediaPickerActions:3', 'FilePickerActions:3']
+        targets: ['content-editor/field/Picker:3']
     });
 
     console.log('registry', registry);
@@ -67,7 +51,7 @@ export const registerPickerActions = registry => {
         targets: null // Remove target to avoid entry duplication
     };
     registry.add('action', 'upload', fileUploadJContentAction, {
-        buttonIcon: <FileUpload/>,
+        buttonIcon: <Upload/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.fileUploadBtn',
         targets: ['pickerDialogAction:0'],
         contentType: 'jnt:file',
