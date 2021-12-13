@@ -9,7 +9,7 @@ import {connect} from 'formik';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
-const SingleSelectCmp = ({field, value, formik, id, inputContext, onChange}) => {
+export const SingleSelectCmp = ({field, value, formik, id, inputContext, onChange}) => {
     const {t} = useTranslation('content-editor');
     inputContext.actionContext = {
         onChange

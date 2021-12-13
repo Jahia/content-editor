@@ -8,7 +8,7 @@ import {connect} from 'formik';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
-const MultipleSelectCmp = ({field, id, formik, value, inputContext, onChange}) => {
+export const MultipleSelectCmp = ({field, id, formik, value, inputContext, onChange}) => {
     inputContext.actionContext = {
         onChange
     };
