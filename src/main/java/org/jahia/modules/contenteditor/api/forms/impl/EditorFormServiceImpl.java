@@ -46,11 +46,9 @@ package org.jahia.modules.contenteditor.api.forms.impl;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jahia.api.Constants;
-import org.jahia.exceptions.JahiaRuntimeException;
 import org.jahia.modules.contenteditor.api.forms.*;
 import org.jahia.modules.contenteditor.graphql.api.types.ContextEntryInput;
 import org.jahia.modules.graphql.provider.dxm.node.GqlJcrPropertyType;
-import org.jahia.osgi.BundleUtils;
 import org.jahia.services.content.*;
 import org.jahia.services.content.decorator.JCRSiteNode;
 import org.jahia.services.content.nodetypes.*;
@@ -74,6 +72,8 @@ import javax.jcr.RepositoryException;
 import javax.jcr.Value;
 import javax.jcr.nodetype.NoSuchNodeTypeException;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -94,6 +94,9 @@ public class EditorFormServiceImpl implements EditorFormService {
 
     // we extend the map from SelectorType.defaultSelectors to add more.
     private static Map<Integer, Integer> defaultSelectors = new HashMap<>();
+    // Regex for range format of a constraint value, extracted from org.apache.jackrabbit.spi.commons.nodetype.constraint.NumericConstraint
+    private static final Pattern RANGE_PATTERN = Pattern.compile("([\\(\\[]) *(\\-?\\d+\\.?\\d*)? *, *(\\-?\\d+\\.?\\d*)? *([\\)\\]])");
+    private static final int LOWER_LIMIT_RANGE_IDX = 2;
 
     static {
         defaultSelectors.put(PropertyType.STRING, SelectorType.SMALLTEXT);
@@ -213,7 +216,7 @@ public class EditorFormServiceImpl implements EditorFormService {
 
         // Filter the publication infos to only keep current node and sub technical nodes associated to the current node
         Collection<ComplexPublicationService.FullPublicationInfo> filteredInfos = publicationService.getFullPublicationInfos(Collections.singleton(uuid),
-            Collections.singletonList(locale.toLanguageTag()), false, session)
+                Collections.singletonList(locale.toLanguageTag()), false, session)
             .stream()
             .filter(info -> info.getPublicationStatus() != PublicationInfo.DELETED) // keep only not deleted nodes
             .filter(ComplexPublicationService.FullPublicationInfo::isAllowedToPublishWithoutWorkflow) // keep only nodes allowed to bypass workflow
@@ -347,9 +350,9 @@ public class EditorFormServiceImpl implements EditorFormService {
     }
 
     private void generateAndMergeFieldSetForType(ExtendedNodeType fieldSetNodeType, Locale uiLocale, Locale locale,
-        JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, ExtendedNodeType primaryNodeType,
-        Map<String, EditorFormSection> formSectionsByName, boolean removed, boolean dynamic, boolean activated,
-        Set<String> processedProperties, boolean isForExtendMixin) throws RepositoryException {
+                                                 JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, ExtendedNodeType primaryNodeType,
+                                                 Map<String, EditorFormSection> formSectionsByName, boolean removed, boolean dynamic, boolean activated,
+                                                 Set<String> processedProperties, boolean isForExtendMixin) throws RepositoryException {
 
         final boolean displayFieldSet = !fieldSetNodeType.isNodeType("jmix:templateMixin") || primaryNodeType.isNodeType("jmix:templateMixin");
         EditorFormFieldSet nodeTypeFieldSet = generateEditorFormFieldSet(processedProperties, fieldSetNodeType, existingNode, parentNode,
@@ -494,8 +497,8 @@ public class EditorFormServiceImpl implements EditorFormService {
     }
 
     private EditorFormFieldSet generateEditorFormFieldSet(Set<String> processedProperties, ExtendedNodeType nodeType,
-        JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale locale, Locale uiLocale, Boolean removed, Boolean dynamic,
-        Boolean activated, Boolean displayed, Boolean isForExtendMixin) throws RepositoryException {
+                                                          JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale locale, Locale uiLocale, Boolean removed, Boolean dynamic,
+                                                          Boolean activated, Boolean displayed, Boolean isForExtendMixin) throws RepositoryException {
         boolean isLockedAndCannotBeEdited = JCRContentUtils.isLockedAndCannotBeEdited(existingNode);
         boolean fieldSetEditable = existingNode == null || (!isLockedAndCannotBeEdited && existingNode.hasPermission("jcr:nodeTypeManagement"));
 
@@ -559,6 +562,21 @@ public class EditorFormServiceImpl implements EditorFormService {
         EditorFormFieldTarget fieldTarget = new EditorFormFieldTarget(propertyDefinition.getItemType(), declaringNodeType.getName(), rank);
         List<EditorFormFieldValueConstraint> valueConstraints = new ArrayList<>();
         for (String valueConstraint : propertyDefinition.getValueConstraints()) {
+            // Check if the constraint value is a range of numeric value
+            // Always take the lower boundary
+            if (propertyDefinition.getSelector() == SelectorType.CHOICELIST && (
+                propertyDefinition.getRequiredType() == PropertyType.DOUBLE ||
+                propertyDefinition.getRequiredType() == PropertyType.LONG ||
+                propertyDefinition.getRequiredType() == PropertyType.DECIMAL)) {
+                try {
+                    Matcher rangeMatcher = RANGE_PATTERN.matcher(valueConstraint);
+                    if (rangeMatcher.matches()) {
+                        valueConstraint = rangeMatcher.group(LOWER_LIMIT_RANGE_IDX);
+                    }
+                } catch (Exception e) {
+                    // it's not, keep value as it is
+                }
+            }
             valueConstraints.add(new EditorFormFieldValueConstraint(valueConstraint, new EditorFormFieldValue("String", valueConstraint), null));
         }
         List<EditorFormProperty> selectorOptions = null;
@@ -596,12 +614,12 @@ public class EditorFormServiceImpl implements EditorFormService {
             }
         }
 
-            ExtendedNodeType extendedNodeType = NodeTypeRegistry.getInstance().getNodeType(propertyDefinition.getDeclaringNodeType().getAlias());
-            // Use item definition to resolve labels. (same way as ContentDefinitionHelper.getGWTJahiaNodeType())
-            Optional<ExtendedItemDefinition> optionalItem = extendedNodeType.getItems().stream().filter(item -> StringUtils.equals(item.getName(), propertyDefinition.getName())).findAny();
-            ExtendedItemDefinition item = optionalItem.isPresent() ? optionalItem.get() : propertyDefinition;
-            String propertyLabel = StringEscapeUtils.unescapeHtml(item.getLabel(uiLocale, extendedNodeType));
-            String propertyDescription = StringEscapeUtils.unescapeHtml(item.getTooltip(uiLocale, extendedNodeType));
+        ExtendedNodeType extendedNodeType = NodeTypeRegistry.getInstance().getNodeType(propertyDefinition.getDeclaringNodeType().getAlias());
+        // Use item definition to resolve labels. (same way as ContentDefinitionHelper.getGWTJahiaNodeType())
+        Optional<ExtendedItemDefinition> optionalItem = extendedNodeType.getItems().stream().filter(item -> StringUtils.equals(item.getName(), propertyDefinition.getName())).findAny();
+        ExtendedItemDefinition item = optionalItem.isPresent() ? optionalItem.get() : propertyDefinition;
+        String propertyLabel = StringEscapeUtils.unescapeHtml(item.getLabel(uiLocale, extendedNodeType));
+        String propertyDescription = StringEscapeUtils.unescapeHtml(item.getTooltip(uiLocale, extendedNodeType));
 
         String key = item.getResourceBundleKey() + ".constraint.error.message";
         if (item.getDeclaringNodeType().getTemplatePackage() != null) {
@@ -671,7 +689,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                     editorFormFieldValueConstraint.getValue().getStringValue());
                 if (editorFormFieldValueConstraint.getPropertyList() != null) {
                     editorFormFieldValueConstraint.getPropertyList().forEach(constraint -> {
-                        choiceListValue.addProperty(constraint.getName(),constraint.getValue());
+                        choiceListValue.addProperty(constraint.getName(), constraint.getValue());
                     });
                 }
                 initialChoiceListValues.add(choiceListValue);
