@@ -573,6 +573,10 @@ public class EditorFormServiceImpl implements EditorFormService {
                     if (rangeMatcher.matches()) {
                         valueConstraint = rangeMatcher.group(LOWER_LIMIT_RANGE_IDX);
                     }
+                    // Cast double to long to match the constraint type
+                    if (propertyDefinition.getRequiredType() == PropertyType.LONG) {
+                        valueConstraint = Long.toString(Double.valueOf(valueConstraint).longValue());
+                    }
                 } catch (Exception e) {
                     // it's not, keep value as it is
                 }
