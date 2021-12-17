@@ -227,7 +227,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
         isWindow: editorConfig?.isWindow
     };
 
-    let contentEditor = (
+    let contentEditor = editorConfig && (
         <ContentEditor env={Constants.env.standalone}
                        mode={editorConfig.mode}
                        uuid={editorConfig.uuid}
