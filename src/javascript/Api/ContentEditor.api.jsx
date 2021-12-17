@@ -39,8 +39,8 @@ let styles = () => {
 
 function triggerEvents(nodeUuid, operator) {
 // Refresh contentEditorEventHandlers
-    if (window.parent.contentEditorEventHandlers && Object.keys(window.parent.contentEditorEventHandlers).length > 0) {
-        Object.values(window.parent.contentEditorEventHandlers)
+    if (window.top.contentEditorEventHandlers && Object.keys(window.top.contentEditorEventHandlers).length > 0) {
+        Object.values(window.top.contentEditorEventHandlers)
             .forEach(handler =>
                 handler({nodeUuid: nodeUuid, operator: operator})
             );
