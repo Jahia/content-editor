@@ -39,8 +39,8 @@ let styles = () => {
 
 function triggerEvents(nodeUuid, operator) {
 // Refresh contentEditorEventHandlers
-    if (window.top.contentEditorEventHandlers && Object.keys(window.top.contentEditorEventHandlers).length > 0) {
-        Object.values(window.top.contentEditorEventHandlers)
+    if (window.parent.contentEditorEventHandlers && Object.keys(window.parent.contentEditorEventHandlers).length > 0) {
+        Object.values(window.parent.contentEditorEventHandlers)
             .forEach(handler =>
                 handler({nodeUuid: nodeUuid, operator: operator})
             );
@@ -71,8 +71,8 @@ const ContentEditorApiCmp = ({classes, client}) => {
      */
     window.CE_API.edit = (uuid, site, lang, uilang, isWindow, editCallback) => {
         // Sync GWT language
-        if (window.top.authoringApi.switchLanguage) {
-            window.top.authoringApi.switchLanguage(lang);
+        if (window.authoringApi.switchLanguage) {
+            window.authoringApi.switchLanguage(lang);
         }
 
         setEditorConfig({
@@ -105,8 +105,8 @@ const ContentEditorApiCmp = ({classes, client}) => {
     // eslint-disable-next-line
     window.CE_API.create = (uuid, path, site, lang, uilang, nodeTypes, excludedNodeTypes, includeSubTypes, name) => {
         // Sync GWT language
-        if (window.top.authoringApi.switchLanguage) {
-            window.top.authoringApi.switchLanguage(lang);
+        if (window.authoringApi.switchLanguage) {
+            window.authoringApi.switchLanguage(lang);
         }
 
         getCreatableNodetypes(
@@ -152,8 +152,8 @@ const ContentEditorApiCmp = ({classes, client}) => {
 
     const closeAll = () => {
         // Restore GWT language
-        if (window.top.authoringApi.switchLanguage) {
-            window.top.authoringApi.switchLanguage(editorConfig.initLang);
+        if (window.authoringApi.switchLanguage) {
+            window.authoringApi.switchLanguage(editorConfig.initLang);
         }
 
         setEditorConfig(false);
@@ -167,8 +167,8 @@ const ContentEditorApiCmp = ({classes, client}) => {
         },
         back: (nodeUuid, operation, newContentUuid, byPassEventTriggers) => {
             // Refresh GWT content
-            if (window.top.authoringApi.refreshContent) {
-                window.top.authoringApi.refreshContent();
+            if (window.authoringApi.refreshContent) {
+                window.authoringApi.refreshContent();
             }
 
             if (!byPassEventTriggers) {
@@ -181,8 +181,8 @@ const ContentEditorApiCmp = ({classes, client}) => {
         disabledBack: () => false,
         createCallback: (createdNodeUuid, lang) => {
             // Refresh GWT content
-            if (window.top.authoringApi.refreshContent) {
-                window.top.authoringApi.refreshContent();
+            if (window.authoringApi.refreshContent) {
+                window.authoringApi.refreshContent();
             }
 
             triggerEvents(createdNodeUuid, Constants.operators.create);
@@ -203,8 +203,8 @@ const ContentEditorApiCmp = ({classes, client}) => {
         },
         editCallback: nodeUuid => {
             // Refresh GWT content
-            if (window.top.authoringApi.refreshContent) {
-                window.top.authoringApi.refreshContent();
+            if (window.authoringApi.refreshContent) {
+                window.authoringApi.refreshContent();
             }
 
             if (editorConfig && editorConfig.editCallback) {

@@ -10,7 +10,7 @@ describe('startWorkflow action', () => {
     beforeEach(() => {
         StartWorkflowAction = startWorkflowAction.component;
 
-        window.parent.authoringApi = {
+        window.authoringApi = {
             openPublicationWorkflow: jest.fn()
         };
 
@@ -81,7 +81,7 @@ describe('startWorkflow action', () => {
             enabled: true
         });
 
-        expect(window.parent.authoringApi.openPublicationWorkflow).toHaveBeenCalled();
+        expect(window.authoringApi.openPublicationWorkflow).toHaveBeenCalled();
     });
 
     it('should not display startWorkflowAction when user doesn\'t have start workflow right', () => {

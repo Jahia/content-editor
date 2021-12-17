@@ -30,8 +30,8 @@ export const useContentEditorHistory = () => {
 
     const exit = overridedStoredLocation => {
         // Restore GWT language
-        if (window.top.authoringApi.switchLanguage) {
-            window.top.authoringApi.switchLanguage(storedLocation.language);
+        if (window.authoringApi.switchLanguage) {
+            window.authoringApi.switchLanguage(storedLocation.language);
         }
 
         // In order use:
