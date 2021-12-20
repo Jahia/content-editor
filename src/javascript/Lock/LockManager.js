@@ -44,8 +44,8 @@ export const LockManager = ({uuid}) => {
                     client.reFetchObservableQueries();
 
                     // Manual refresh GWT content to avoid page composer left tree node displayed as locked
-                    if (window.top.authoringApi.refreshContent) {
-                        window.top.authoringApi.refreshContent();
+                    if (window.authoringApi.refreshContent) {
+                        window.authoringApi.refreshContent();
                     }
                 })
                 .catch(err => console.error(err));

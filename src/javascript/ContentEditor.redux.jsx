@@ -25,8 +25,8 @@ const ContentEditorReduxCmp = ({client, mode, uuid, lang, uilang, site, contentT
     const dispatch = useDispatch();
     const {t} = useTranslation('content-editor');
     // Sync GWT language
-    if (window.top.authoringApi.switchLanguage) {
-        window.top.authoringApi.switchLanguage(lang);
+    if (window.authoringApi.switchLanguage) {
+        window.authoringApi.switchLanguage(lang);
     }
 
     const handleRename = (node, mutateNode) => {

@@ -30,8 +30,8 @@ const EditPanelLanguageSwitcher = ({siteInfo, formik}) => {
         }
 
         // Switch edit mode linker language
-        if (window.top.authoringApi.switchLanguage) {
-            window.top.authoringApi.switchLanguage(language);
+        if (window.authoringApi.switchLanguage) {
+            window.authoringApi.switchLanguage(language);
         }
     };
 
