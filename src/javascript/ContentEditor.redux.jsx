@@ -1,29 +1,43 @@
 import React from 'react';
-import {connect, useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {ContentEditor} from './ContentEditor';
 import PropTypes from 'prop-types';
-import {compose} from '~/utils';
 import {Constants} from '~/ContentEditor.constants';
 import {useContentEditorHistory} from '~/ContentEditorHistory';
 import {useTranslation} from 'react-i18next';
-import {withApollo} from 'react-apollo';
 import {replaceOpenedPath} from '~/JContent.redux-actions';
 import {useContentEditorHistoryContext} from '~/ContentEditorHistory/ContentEditorHistory.context';
 import {registry} from '@jahia/ui-extender';
+import {useApolloClient, useQuery} from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+import {PredefinedFragments} from '@jahia/data-helper';
 
-const mapStateToProps = state => {
-    return {
-        uilang: state.uilang,
-        site: state.site
-    };
-};
-
-const ContentEditorReduxCmp = ({client, mode, uuid, lang, uilang, site, contentType}) => {
+const ContentEditorRedux = ({mode, uuid, lang, contentType}) => {
+    const client = useApolloClient();
     const {redirect, hasHistory, exit, registerBlockListener, unRegisterBlockListener} = useContentEditorHistory();
     const {storedLocation, setStoredLocation} = useContentEditorHistoryContext();
-    const {openPaths} = useSelector(state => ({openPaths: state.jcontent.openPaths}));
+    const {uilang, openPaths} = useSelector(state => ({uilang: state.uilang, openPaths: state.jcontent.openPaths}));
     const dispatch = useDispatch();
     const {t} = useTranslation('content-editor');
+    const {data} = useQuery(gql`query($uuid:String!) {
+        jcr {
+            nodeById(uuid: $uuid) {
+                ...NodeCacheRequiredFields
+                site {
+                    ...NodeCacheRequiredFields
+                    name
+                }
+            }
+        }
+    }
+    ${PredefinedFragments.nodeCacheRequiredFields.gql}`, {
+        variables: {
+            uuid
+        }
+    });
+
+    const site = data && data.jcr.nodeById.site.name;
+
     // Sync GWT language
     if (window.authoringApi.switchLanguage) {
         window.authoringApi.switchLanguage(lang);
@@ -72,7 +86,7 @@ const ContentEditorReduxCmp = ({client, mode, uuid, lang, uilang, site, contentT
         shouldRedirectBeadCrumb: () => false,
         handleRename: handleRename
     };
-    return (
+    return Boolean(site) && (
         <ContentEditor env={Constants.env.redux}
                        mode={mode}
                        uuid={uuid}
@@ -84,19 +98,12 @@ const ContentEditorReduxCmp = ({client, mode, uuid, lang, uilang, site, contentT
     );
 };
 
-ContentEditorReduxCmp.propTypes = {
-    client: PropTypes.object.isRequired,
+ContentEditorRedux.propTypes = {
     mode: PropTypes.oneOf(['create', 'edit']).isRequired,
     uuid: PropTypes.string.isRequired,
     lang: PropTypes.string.isRequired,
-    uilang: PropTypes.string.isRequired,
-    site: PropTypes.string.isRequired,
     contentType: PropTypes.string
 };
 
-export const ContentEditorRedux = compose(
-    withApollo,
-    connect(mapStateToProps)
-)(ContentEditorReduxCmp);
 ContentEditorRedux.displayName = 'ContentEditorRedux';
 export default ContentEditorRedux;
