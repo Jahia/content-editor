@@ -97,10 +97,10 @@ describe('YearAndMonthSelector', () => {
             dsGenericTheme
         ).dive();
 
-        expect(cmp.find('DsSelect').at(1).debug()).not.toContain('2018');
-        expect(cmp.find('DsSelect').at(1).debug()).toContain('2019');
-        expect(cmp.find('DsSelect').at(1).debug()).toContain('2020');
-        expect(cmp.find('DsSelect').at(1).debug()).toContain('2021');
-        expect(cmp.find('DsSelect').at(1).debug()).not.toContain('2022');
+        expect(cmp.find('DsSelect').at(1).children().debug()).not.toContain('2018');
+        expect(cmp.find('DsSelect').at(1).children().debug()).toContain('2019');
+        expect(cmp.find('DsSelect').at(1).children().debug()).toContain('2020');
+        expect(cmp.find('DsSelect').at(1).children().debug()).toContain('2021');
+        expect(cmp.find('DsSelect').at(1).children().debug()).not.toContain('2022');
     });
 });
