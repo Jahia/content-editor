@@ -8,7 +8,7 @@ import {encodeSystemName} from '~/utils';
 
 // TODO https://jira.jahia.org/browse/TECH-300
 
-const getInitialValues = (nodeData, sections) => {
+export const getInitialValues = (nodeData, sections) => {
     // Retrieve dynamic fieldSets
     const dynamicFieldSets = getDynamicFieldSets(sections);
 
@@ -112,7 +112,7 @@ const getDetailsValue = (sections = [], nodeData = {}, lang = 'en') => {
         });
 };
 
-const getTechnicalInfo = (nodeData, t) => {
+export const getTechnicalInfo = (nodeData, t) => {
     return [
         {
             label: t('content-editor:label.contentEditor.edit.advancedOption.technicalInformation.contentType'),

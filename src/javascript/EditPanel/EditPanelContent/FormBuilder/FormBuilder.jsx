@@ -11,7 +11,7 @@ import {useTranslation} from 'react-i18next';
 import {Constants} from '~/ContentEditor.constants';
 import {compose} from '~/utils';
 
-const FormBuilderCmp = ({mode, formik: {values}}) => {
+const FormBuilderCmp = ({mode, formik}) => {
     const {nodeData} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
     const {t} = useTranslation('content-editor');
@@ -20,7 +20,7 @@ const FormBuilderCmp = ({mode, formik: {values}}) => {
         return <></>;
     }
 
-    const canAutomaticallyOrder = values && values[Constants.automaticOrdering.mixin] !== undefined;
+    const canAutomaticallyOrder = formik.values && formik.values[Constants.automaticOrdering.mixin] !== undefined;
     const canManuallyOrder = nodeData.primaryNodeType.hasOrderableChildNodes;
 
     const isOrderingSection = !nodeData.isSite &&
@@ -50,7 +50,7 @@ const FormBuilderCmp = ({mode, formik: {values}}) => {
                             canAutomaticallyOrder={canAutomaticallyOrder}
                             canManuallyOrder={canManuallyOrder}
                         /> :
-                        <Section key={section.displayName} section={section}/>
+                        <Section key={section.displayName} section={section} formik={formik}/>
                 ))}
             </section>
         </Form>

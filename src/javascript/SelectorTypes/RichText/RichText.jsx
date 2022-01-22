@@ -42,7 +42,7 @@ export const RichTextCmp = ({field, id, value, onChange}) => {
         return <ProgressOverlay/>;
     }
 
-    const toolbar = loadOption(field.selectorOptions, 'ckeditor.toolbar');
+    const toolbar = field.readOnly ? {value: []} : loadOption(field.selectorOptions, 'ckeditor.toolbar');
     const customConfig = loadOption(field.selectorOptions, 'ckeditor.customConfig');
 
     // Delete the config set by GWTInitializer, as it may be wrong (Wrong site detection into DX, we will set it manually after)

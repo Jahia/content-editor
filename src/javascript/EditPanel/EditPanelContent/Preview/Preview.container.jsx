@@ -6,8 +6,9 @@ import classes from './Preview.container.scss';
 import {ProgressOverlay} from '@jahia/react-material';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {PreviewFetcher} from './Preview.fetcher';
+import {Button} from '@jahia/moonstone';
 
-export const PreviewContainer = ({isDirty}) => {
+export const PreviewContainer = ({isDirty, switchDisplay}) => {
     const {t} = useTranslation('content-editor');
     const editorContext = useContentEditorContext();
     const [contentNotFound, setContentNotFound] = useState(false);
@@ -50,6 +51,12 @@ export const PreviewContainer = ({isDirty}) => {
                             color="warning"
                         />
                     </div>}
+                <di>
+                    <Button
+                    label="Show Compare"
+                    onClick={() => switchDisplay()}
+                />
+                </di>
             </div>
             {!editorContext.nodeData.isFolder &&
                 <>
@@ -66,5 +73,6 @@ PreviewContainer.defaultProps = {
 };
 
 PreviewContainer.propTypes = {
-    isDirty: PropTypes.bool
+    isDirty: PropTypes.bool,
+    switchDisplay: PropTypes.func.isRequired
 };

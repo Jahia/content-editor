@@ -1,4 +1,3 @@
-import {connect} from 'formik';
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -33,9 +32,9 @@ let styles = theme => ({
     }
 });
 
-const FieldSetCmp = ({fieldset, classes, formik: {values, handleChange}}) => {
+const FieldSetCmp = ({fieldset, classes, formik}) => {
     const isDynamicFieldSet = fieldset.dynamic;
-    const activatedFieldSet = (values && values[fieldset.name]) || !isDynamicFieldSet;
+    const activatedFieldSet = (formik.values && formik.values[fieldset.name]) || !isDynamicFieldSet;
 
     return (
         <article className={classes.fieldsetContainer}>
@@ -45,7 +44,7 @@ const FieldSetCmp = ({fieldset, classes, formik: {values, handleChange}}) => {
                         id={fieldset.name}
                         checked={activatedFieldSet}
                         readOnly={fieldset.readOnly}
-                        onChange={handleChange}
+                        onChange={formik.handleChange}
                 />}
 
                 <div className={classes.labelContainer}>
@@ -60,7 +59,7 @@ const FieldSetCmp = ({fieldset, classes, formik: {values, handleChange}}) => {
             </div>
 
             {activatedFieldSet && fieldset.fields.map(field => {
-                return <FieldContainer key={field.name} field={field}/>;
+                return <FieldContainer key={field.name} field={field} formik={formik}/>;
             })}
         </article>
     );
@@ -73,7 +72,6 @@ FieldSetCmp.propTypes = {
 };
 
 export const FieldSet = compose(
-    connect,
     withStyles(styles)
 )(FieldSetCmp);
 

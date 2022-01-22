@@ -96,7 +96,7 @@ const NodeDataFragment = {
 };
 
 const FormQuery = gql`
-    query editForm($uilang:String!, $language:String!, $uuid: String!, $writePermission: String!, $childrenFilterTypes: [String]!) {
+    query editForm($uilang:String!, $language:String!, $uuid: String!, $writePermission: String!, $childrenFilterTypes: [String]!, $workspace: Workspace!) {
         forms {
             editForm(uiLocale: $uilang, locale: $language, uuidOrPath: $uuid) {
                 name
@@ -151,7 +151,7 @@ const FormQuery = gql`
                 }
             }
         }
-        jcr {
+        jcr(workspace: $workspace) {
             ...NodeData
         }
     }

@@ -26,6 +26,7 @@ export const CopyLanguageDialog = ({
 
     const getDataFromSelectedLanguage = async language => {
         let variables = {
+            workspace: 'EDIT',
             uilang: language,
             language: language,
             uuid: uuid,

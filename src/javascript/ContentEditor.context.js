@@ -33,6 +33,7 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
         // Get Data
         const formQueryParams = {
             uuid,
+            workspace: 'EDIT',
             language: lang,
             uilang: Constants.supportedLocales.includes(uilang) ? uilang : Constants.defaultLocale,
             primaryNodeType: contentType,

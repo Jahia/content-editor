@@ -1,6 +1,5 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
-import {connect} from 'formik';
 import {FieldPropTypes} from '~/FormDefinitions';
 import {resolveSelectorType} from '~/SelectorTypes';
 import {Field} from './Field';
@@ -35,5 +34,5 @@ FieldContainerCmp.propTypes = {
     inputContext: PropTypes.object
 };
 
-export const FieldContainer = connect(FieldContainerCmp);
+export const FieldContainer = FieldContainerCmp;
 FieldContainer.displayName = 'FieldContainer';

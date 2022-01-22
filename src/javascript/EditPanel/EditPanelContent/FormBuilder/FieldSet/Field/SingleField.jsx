@@ -1,12 +1,11 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
-import {compose} from '~/utils';
-import {connect, FastField} from 'formik';
+import {FastField} from 'formik';
 import {FieldPropTypes} from '~/FormDefinitions';
 
 export const SingleFieldCmp = ({inputContext, editorContext, field, formik, onChange}) => {
     const FieldComponent = inputContext.fieldComponent;
-
+    // If value is set field is read only
     return (
         <FastField shouldUpdate={() => true}>
             {() => {
@@ -33,8 +32,6 @@ SingleFieldCmp.propTypes = {
     onChange: PropTypes.func.isRequired
 };
 
-export const SingleField = compose(
-    connect
-)(SingleFieldCmp);
+export const SingleField = SingleFieldCmp;
 
 SingleField.displayName = 'SingleField';

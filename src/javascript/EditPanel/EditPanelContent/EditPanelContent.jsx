@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {FullWidthContent, TwoColumnsContent} from '@jahia/design-system-kit';
 import * as PropTypes from 'prop-types';
 import FormBuilder from './FormBuilder';
@@ -8,6 +8,8 @@ import {PreviewContainer} from './Preview';
 import PublicationInfoProgress from '~/PublicationInfo/PublicationInfo.progress';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import {Constants} from '~/ContentEditor.constants';
+import ComparePanel from '~/EditPanel/EditPanelContent/ComparePanel/ComparePanel';
+import {connect} from 'formik';
 
 const styles = theme => ({
     twoColumnsRoot: {
@@ -33,9 +35,13 @@ const styles = theme => ({
     }
 });
 
-export const EditPanelContent = ({classes, isDirty}) => {
+export const EditPanelContent = ({classes, isDirty, formik}) => {
+    const [showCompare, setShowCompare] = useState('false');
     const {mode, envProps} = useContentEditorConfigContext();
     const {hasPreview} = useContentEditorContext();
+    const switchDisplay = () => {
+        setShowCompare(!showCompare);
+    };
 
     return (
         <>
@@ -44,7 +50,7 @@ export const EditPanelContent = ({classes, isDirty}) => {
                 (
                     <TwoColumnsContent
                         classes={{root: classes.twoColumnsRoot, left: classes.left, right: classes.right}}
-                        rightCol={<PreviewContainer isDirty={isDirty}/>}
+                        rightCol={showCompare ? <ComparePanel isDirty={isDirty} setFieldValue={formik.setFieldValue} switchDisplay={switchDisplay}/> : <PreviewContainer isDirty={isDirty} switchDisplay={switchDisplay}/>}
                         data-sel-mode={mode}
                     >
                         <FormBuilder mode={mode}/>
@@ -68,9 +74,11 @@ EditPanelContent.defaultProps = {
 
 EditPanelContent.propTypes = {
     classes: PropTypes.object.isRequired,
-    isDirty: PropTypes.bool
+    isDirty: PropTypes.bool,
+    formik: PropTypes.object.isRequired
 };
 
 export default compose(
+    connect,
     withStyles(styles)
 )(EditPanelContent);

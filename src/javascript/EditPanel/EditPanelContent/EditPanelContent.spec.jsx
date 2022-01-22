@@ -21,7 +21,8 @@ describe('EditPanelContent', () => {
         defaultProps = {
             fields: [],
             siteInfo: {},
-            classes: {}
+            classes: {},
+            formik: {}
         };
         wrapper = shallow(<EditPanelContent {...defaultProps}/>);
     });

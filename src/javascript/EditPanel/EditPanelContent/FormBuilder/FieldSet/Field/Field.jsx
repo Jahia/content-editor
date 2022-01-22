@@ -16,6 +16,7 @@ import {useContentEditorContext} from '~/ContentEditor.context';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import {useApolloClient} from '@apollo/react-hooks';
 import {getButtonRenderer} from '../../../../../utils/getButtonRenderer';
+import {Button, Chip, Edit} from '@jahia/moonstone';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
@@ -75,6 +76,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, f
     const errorArgs = splitError && splitError.length > 1 ? splitError.splice(1) : [];
     const hasMandatoryError = shouldDisplayErrors && errors[field.name] === 'required';
     const wipInfo = values[Constants.wip.fieldName];
+    const initialValue = values[field.name];
 
     // Lookup for registered on changes for given field selector type
     const registeredOnChanges = [...registry.find({
@@ -159,6 +161,22 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, f
                                    variant="normal"
                                    color="primary"
                             />}
+
+                            {formik.copyValue &&
+                            <Button className={classes.badge}
+                                    label="Copy value"
+                                    icon={<Public/>}
+                                    variant="normal"
+                                    color="primary"
+                                    onClick={() => formik.copyValue(field.name)}
+                            />}
+                            {(values[field.name] !== initialValue) &&
+                            <Chip
+                                icon={<Edit/>}
+                                data-sel-role="unsaved-info-chip"
+                                label={t('content-editor:label.contentEditor.header.chips.unsavedLabel')}
+                                color="warning"
+                            />}
                         </>
                     )}
                     <div className="flexFluid"/>
@@ -182,10 +200,12 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, f
                             <MultipleField inputContext={inputContext}
                                            editorContext={editorContext}
                                            field={field}
+                                           formik={formik}
                                            onChange={onChange}/> :
                             <SingleField inputContext={inputContext}
                                          editorContext={editorContext}
                                          field={field}
+                                         formik={formik}
                                          onChange={onChange}/>}
                     </div>
                     {inputContext.displayActions && registry.get('action', selectorType.key + 'Menu') && (
@@ -235,7 +255,8 @@ FieldCmp.propTypes = {
         touched: PropTypes.object,
         values: PropTypes.object,
         setFieldValue: PropTypes.func,
-        setFieldTouched: PropTypes.func
+        setFieldTouched: PropTypes.func,
+        copyValue: PropTypes.func
     }).isRequired
 };
 

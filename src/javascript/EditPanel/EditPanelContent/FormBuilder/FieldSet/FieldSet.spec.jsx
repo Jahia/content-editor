@@ -42,11 +42,9 @@ describe('FieldSet component', () => {
             <FieldSet {...props}/>,
             {},
             dsGenericTheme
-        )
-            .dive()
-            .dive();
+        );
 
-        expect(cmp.debug()).toContain(props.fieldset.displayName);
+        expect(cmp.dive().debug()).toContain(props.fieldset.displayName);
     });
 
     it('should display Field for each field in the FieldSet', () => {
@@ -54,12 +52,10 @@ describe('FieldSet component', () => {
             <FieldSet {...props}/>,
             {},
             dsGenericTheme
-        )
-            .dive()
-            .dive();
+        );
 
         props.fieldset.fields.forEach(field => {
-            expect(cmp.find({field}).exists()).toBe(true);
+            expect(cmp.dive().find({field}).exists()).toBe(true);
         });
     });
 
@@ -70,11 +66,9 @@ describe('FieldSet component', () => {
             <FieldSet {...props}/>,
             {},
             dsGenericTheme
-        )
-            .dive()
-            .dive();
+        );
 
-        const toggleCmp = cmp.find('WithStyles(ToggleCmp)');
+        const toggleCmp = cmp.dive().find('WithStyles(ToggleCmp)');
         expect(toggleCmp.exists()).toBe(true);
         expect(toggleCmp.props().readOnly).toBe(false);
     });
@@ -87,11 +81,9 @@ describe('FieldSet component', () => {
             <FieldSet {...props}/>,
             {},
             dsGenericTheme
-        )
-            .dive()
-            .dive();
+        );
 
-        const toggleCmp = cmp.find('WithStyles(ToggleCmp)');
+        const toggleCmp = cmp.dive().find('WithStyles(ToggleCmp)');
         expect(toggleCmp.exists()).toBe(true);
         expect(toggleCmp.props().readOnly).toBe(true);
     });
@@ -103,10 +95,8 @@ describe('FieldSet component', () => {
             <FieldSet {...props}/>,
             {},
             dsGenericTheme
-        )
-            .dive()
-            .dive();
+        );
 
-        expect(cmp.find('WithStyles(ToggleCmp)').exists()).toBe(false);
+        expect(cmp.dive().find('WithStyles(ToggleCmp)').exists()).toBe(false);
     });
 });
