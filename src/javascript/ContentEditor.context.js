@@ -31,7 +31,7 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
         const {lang, uilang, site, uuid, contentType, mode, name} = contentEditorConfigContext;
 
         // Get user navigator locale preference
-        const navigatorLocale = navigator.language;
+        const browserLang = navigator.language;
 
         // Get Data
         const formQueryParams = {
@@ -85,6 +85,7 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
             currentPage,
             lang,
             uilang,
+            browserLang,
             site,
             mode,
             name,
@@ -101,8 +102,7 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
             formQueryParams,
             nodeTypeName,
             nodeTypeDisplayName,
-            refetchFormData,
-            navigatorLocale
+            refetchFormData
         };
 
         return (
