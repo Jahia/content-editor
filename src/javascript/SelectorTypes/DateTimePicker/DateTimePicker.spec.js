@@ -13,7 +13,7 @@ jest.mock('react', () => {
 describe('DateTimePicker component', () => {
     let props;
     let testDateFormat = (navigatorLocale, format) => {
-        props.editorContext.navigatorLocale = navigatorLocale;
+        props.editorContext.browserLang = navigatorLocale;
         const cmp = shallow(<DateTimePicker {...props}/>);
 
         expect(cmp.props().displayDateFormat).toBe(format);
