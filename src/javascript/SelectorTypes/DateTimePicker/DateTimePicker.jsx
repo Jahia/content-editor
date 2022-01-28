@@ -16,13 +16,49 @@ export const DateTimePicker = ({id, field, value, editorContext, onChange}) => {
     const isDateTime = variant === 'datetime';
     const disabledDays = fillDisabledDaysFromJCRConstraints(field, isDateTime);
 
-    // Handle the date format, only "en" have a specific format.
-    let displayDateFormat = editorContext.uilang === 'en' ? 'MM/DD/YYYY' : 'DD/MM/YYYY';
-    displayDateFormat = isDateTime ? (displayDateFormat + ' HH:mm') : displayDateFormat;
-    const displayDateMask = isDateTime ? '__/__/____ __:__' : '__/__/____';
+    const userNavigatorLocale = editorContext.navigatorLocale;
+
+    // Handle the date format, some languages have a specific format that we can manage here.
+    // Please note that a single digit format is not supported by our DatePicker, e.g. 'D/M/YYYY' or 'D.M.YYYY'.
+    const specificDateFormat = {
+        'de-AT': 'DD.MM.YYYY',
+        'de-CH': 'DD.MM.YYYY',
+        'de-DE': 'DD.MM.YYYY',
+        'de-LI': 'DD.MM.YYYY',
+        'de-LU': 'DD.MM.YYYY',
+        'en-PH': 'MM/DD/YYYY',
+        'en-US': 'MM/DD/YYYY',
+        'en-ZW': 'MM/DD/YYYY',
+        'es-PA': 'MM/DD/YYYY',
+        'es-US': 'MM/DD/YYYY',
+        'zh-CN': 'YYYY/MM/DD'
+    };
+
+    let dateFormat = userNavigatorLocale in specificDateFormat ? specificDateFormat[userNavigatorLocale] : 'DD/MM/YYYY';
+    let displayDateFormat = isDateTime ? (dateFormat + ' HH:mm') : dateFormat;
+
+    // Handle most commonly used date format separators, required to generate the input date mask.
+    let separator = '';
+    switch (true) {
+        case (dateFormat.indexOf('.') > -1):
+            separator = '.';
+            break;
+        case (dateFormat.indexOf('-') > -1):
+            separator = '-';
+            break;
+        default:
+            separator = '/';
+            break;
+    }
+
+    let regex = new RegExp('[^' + separator + ']+?', 'g');
+    let maskLocale = String(dateFormat).replace(regex, '_');
+
+    const displayDateMask = isDateTime ? maskLocale + ' __:__' : maskLocale;
 
     return (
         <DatePickerInput
+            navigatorLocale={editorContext.navigatorLocale}
             dayPickerProps={{disabledDays}}
             lang={editorContext.uilang}
             initialValue={value ? dayjs(value).toDate() : null}
@@ -49,7 +85,8 @@ DateTimePicker.propTypes = {
     id: PropTypes.string.isRequired,
     editorContext: PropTypes.shape({
         lng: PropTypes.string,
-        uilang: PropTypes.string.isRequired
+        uilang: PropTypes.string.isRequired,
+        navigatorLocale: PropTypes.string.isRequired
     }).isRequired,
     field: FieldPropTypes.isRequired,
     value: PropTypes.string,
