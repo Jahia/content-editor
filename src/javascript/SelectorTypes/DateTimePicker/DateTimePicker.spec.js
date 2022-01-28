@@ -12,8 +12,8 @@ jest.mock('react', () => {
 
 describe('DateTimePicker component', () => {
     let props;
-    let testDateFormat = (uilang, format) => {
-        props.editorContext.uilang = uilang;
+    let testDateFormat = (navigatorLocale, format) => {
+        props.editorContext.navigatorLocale = navigatorLocale;
         const cmp = shallow(<DateTimePicker {...props}/>);
 
         expect(cmp.props().displayDateFormat).toBe(format);
@@ -62,13 +62,10 @@ describe('DateTimePicker component', () => {
         expect(cmp.props().readOnly).toBe(false);
     });
 
-    it('should use MM/DD/YYYY format when EN and DD/MM/YYYY otherwise', () => {
-        testDateFormat('en', 'MM/DD/YYYY');
-        testDateFormat('fr', 'DD/MM/YYYY');
-        testDateFormat('de', 'DD/MM/YYYY');
-        testDateFormat('es', 'DD/MM/YYYY');
-        testDateFormat('pt', 'DD/MM/YYYY');
-        testDateFormat('it', 'DD/MM/YYYY');
+    it('should use specific date format when it is handle in specificDateFormat and DD/MM/YYYY otherwise', () => {
+        testDateFormat('de-DE', 'DD.MM.YYYY');
+        testDateFormat('en-US', 'MM/DD/YYYY');
+        testDateFormat('zh-CN', 'YYYY/MM/DD');
         testDateFormat('random', 'DD/MM/YYYY');
     });
 
