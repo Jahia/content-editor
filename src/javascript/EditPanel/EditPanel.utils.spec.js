@@ -561,11 +561,11 @@ describe('EditPanel utils', () => {
             nodeData: {
                 properties: [{
                     name: 'multipleDate',
-                    values: ['date1', 'date2'],
+                    notZonedDateValues: ['date1', 'date2'],
                     ...baseFieldSet
                 }, {
                     name: 'date',
-                    value: 'single-date',
+                    notZonedDateValue: 'single-date',
                     ...baseFieldSet
                 }]
             },
