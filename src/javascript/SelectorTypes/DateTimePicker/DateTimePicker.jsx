@@ -5,6 +5,7 @@ import {DatePickerInput} from '~/DesignSystem/DatePickerInput';
 import dayjs from 'dayjs';
 import {fillDisabledDaysFromJCRConstraints} from './DateTimePicker.utils';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
+import {specificDateFormat} from './DateTimePicker.formats';
 
 const variantMapper = {
     DatePicker: 'date',
@@ -16,10 +17,14 @@ export const DateTimePicker = ({id, field, value, editorContext, onChange}) => {
     const isDateTime = variant === 'datetime';
     const disabledDays = fillDisabledDaysFromJCRConstraints(field, isDateTime);
 
-    // Handle the date format, only "en" have a specific format.
-    let displayDateFormat = editorContext.uilang === 'en' ? 'MM/DD/YYYY' : 'DD/MM/YYYY';
-    displayDateFormat = isDateTime ? (displayDateFormat + ' HH:mm') : displayDateFormat;
-    const displayDateMask = isDateTime ? '__/__/____ __:__' : '__/__/____';
+    const userNavigatorLocale = editorContext.browserLang;
+
+    let dateFormat = userNavigatorLocale in specificDateFormat ? specificDateFormat[userNavigatorLocale] : 'DD/MM/YYYY';
+    let displayDateFormat = isDateTime ? (dateFormat + ' HH:mm') : dateFormat;
+
+    let maskLocale = String(dateFormat).replace(/[^\W]+?/g, '_');
+
+    const displayDateMask = isDateTime ? maskLocale + ' __:__' : maskLocale;
 
     return (
         <DatePickerInput
@@ -48,8 +53,8 @@ DateTimePicker.defaultProps = {
 DateTimePicker.propTypes = {
     id: PropTypes.string.isRequired,
     editorContext: PropTypes.shape({
-        lng: PropTypes.string,
-        uilang: PropTypes.string.isRequired
+        uilang: PropTypes.string.isRequired,
+        browserLang: PropTypes.string.isRequired
     }).isRequired,
     field: FieldPropTypes.isRequired,
     value: PropTypes.string,
