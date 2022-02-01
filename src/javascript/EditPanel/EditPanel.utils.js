@@ -170,9 +170,8 @@ function _getPropertyNameToCompare(field) {
  * @param secondValue second value to compare
  * @param requiredType type of the values
  * @returns {boolean} true if the value are different
- * @private
  */
-function _checkIfValuesAreDifferent(firstValue, secondValue, requiredType) {
+export function checkIfValuesAreDifferent(firstValue, secondValue, requiredType) {
     if (requiredType === 'BOOLEAN') {
         const firstValueToString = firstValue === undefined ? undefined : firstValue.toString();
         const secondValueToString = secondValue === undefined ? undefined : secondValue.toString();
@@ -214,7 +213,7 @@ export function propertyHasChanged(currentValue, field, nodeData) {
 
         // Check values
         for (var i = 0; i < currentValue.length; ++i) {
-            if (_checkIfValuesAreDifferent(currentValue[i], previousValue[i], field.requiredType)) {
+            if (checkIfValuesAreDifferent(currentValue[i], previousValue[i], field.requiredType)) {
                 return true;
             }
         }
@@ -222,7 +221,7 @@ export function propertyHasChanged(currentValue, field, nodeData) {
         return false;
     }
 
-    return _checkIfValuesAreDifferent(currentValue, previousValue, field.requiredType);
+    return checkIfValuesAreDifferent(currentValue, previousValue, field.requiredType);
 }
 
 export function encodeJCRPath(path) {

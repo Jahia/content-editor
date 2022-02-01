@@ -5,7 +5,8 @@ import {
     getDataToMutate,
     getDynamicFieldSets,
     getValuePropName,
-    getChildrenOrder
+    getChildrenOrder,
+    checkIfValuesAreDifferent
 } from './EditPanel.utils';
 
 describe('EditPanel utils', () => {
@@ -720,6 +721,28 @@ describe('EditPanel utils', () => {
                     name: 'optionName'
                 }]
             })).toEqual({name: 'value'});
+        });
+    });
+
+    describe('checkIfValuesAreDifferent', () => {
+        it('should return true if values are different, false otherwise', () => {
+            expect(checkIfValuesAreDifferent(undefined, undefined, 'STRING')).toEqual(false);
+
+            expect(checkIfValuesAreDifferent(false, true, 'BOOLEAN')).toEqual(true);
+
+            expect(checkIfValuesAreDifferent('false', true, 'BOOLEAN')).toEqual(true);
+
+            expect(checkIfValuesAreDifferent('false', false, 'BOOLEAN')).toEqual(false);
+
+            expect(checkIfValuesAreDifferent('true', 'true', 'BOOLEAN')).toEqual(false);
+
+            expect(checkIfValuesAreDifferent(1.1, 1.1, 'DECIMAL')).toEqual(false);
+
+            expect(checkIfValuesAreDifferent(1.1, 1.2, 'DECIMAL')).toEqual(true);
+
+            expect(checkIfValuesAreDifferent('first', 'second', 'STRING')).toEqual(true);
+
+            expect(checkIfValuesAreDifferent('same', 'same', 'STRING')).toEqual(false);
         });
     });
 
