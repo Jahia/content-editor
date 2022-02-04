@@ -606,7 +606,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             if (existingNode.hasProperty(propertyDefinition.getName())) {
                 currentValues = new ArrayList<>();
                 JCRPropertyWrapper existingProperty = existingNode.getProperty(propertyDefinition.getName());
-                if (existingProperty != null) {
+                if (existingProperty != null && existingProperty.getDefinition().equals(propertyDefinition)) {
                     if (propertyDefinition.isMultiple()) {
                         for (Value value : existingProperty.getValues()) {
                             currentValues.add(new EditorFormFieldValue(value));
