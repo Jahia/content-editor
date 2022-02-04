@@ -10,7 +10,7 @@
     },
     {
       "name": "classification",
-      "labelKey": "label.engineTab.categories",
+      "labelKey": "label.engineTab.classification",
       "requiredPermission": "viewCategoriesTab"
     },
     {

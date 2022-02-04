@@ -151,6 +151,37 @@ export function getValuePropName(field) {
 }
 
 /**
+ * Get the property name where the value is stored for a property type
+ * @param field which contains the property type
+ * @returns {string} property name for comparison
+ * @private
+ */
+function _getPropertyNameToCompare(field) {
+    if (field.requiredType === 'DATE') {
+        return field.multiple ? 'notZonedDateValues' : 'notZonedDateValue';
+    }
+
+    return field.multiple ? 'values' : 'value';
+}
+
+/**
+ * Check if two value are different
+ * @param firstValue first value to compare
+ * @param secondValue second value to compare
+ * @param requiredType type of the values
+ * @returns {boolean} true if the value are different
+ */
+export function checkIfValuesAreDifferent(firstValue, secondValue, requiredType) {
+    if (requiredType === 'BOOLEAN') {
+        const firstValueToString = firstValue === undefined ? undefined : firstValue.toString();
+        const secondValueToString = secondValue === undefined ? undefined : secondValue.toString();
+        return firstValueToString !== secondValueToString;
+    }
+
+    return firstValue !== secondValue;
+}
+
+/**
  * Check if the value of a given field have changed, comparing the currentValue with the original value stored in the nodeData object
  * @param {*} currentValue the current field value
  * @param {object} field the field
@@ -161,7 +192,7 @@ export function propertyHasChanged(currentValue, field, nodeData) {
     // Retrieve previous value
     // TODO https://jira.jahia.org/browse/TECH-299 we could store initialValues in CE Context so we could compare them with currentValue instead of reading nodeData here
     const propertyData = nodeData && nodeData.properties && nodeData.properties.find(prop => prop.name === field.propertyName && prop.definition.declaringNodeType.name === field.nodeType);
-    const previousValue = propertyData && propertyData[getValuePropName(field).name];
+    const previousValue = propertyData && propertyData[_getPropertyNameToCompare(field)];
 
     // Compare previous value
     if (field.multiple) {
@@ -182,7 +213,7 @@ export function propertyHasChanged(currentValue, field, nodeData) {
 
         // Check values
         for (var i = 0; i < currentValue.length; ++i) {
-            if (currentValue[i] !== previousValue[i]) {
+            if (checkIfValuesAreDifferent(currentValue[i], previousValue[i], field.requiredType)) {
                 return true;
             }
         }
@@ -190,7 +221,7 @@ export function propertyHasChanged(currentValue, field, nodeData) {
         return false;
     }
 
-    return currentValue !== previousValue;
+    return checkIfValuesAreDifferent(currentValue, previousValue, field.requiredType);
 }
 
 export function encodeJCRPath(path) {
