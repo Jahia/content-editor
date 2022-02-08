@@ -9924,9 +9924,9 @@ mdast-util-to-string@^2.0.0:
   integrity sha512-AW4DRS3QbBayY/jJmD8437V1Gombjf8RSOUCMFBuo5iHi58AGEgVCKQ+ezHkZZDpAQS75hcBMpLqjpJTjtUL7w==
 
 mdi-material-ui@^5.10.0:
-  version "5.34.0"
-  resolved "https://registry.yarnpkg.com/mdi-material-ui/-/mdi-material-ui-5.34.0.tgz#81f05e5875b3b6f766989c7ce8cded85786dbb64"
-  integrity sha512-9Qt2areOktV2q+wxTFYP4CHviOZQ8PH2uF7jR4eFBlgWfnVX2q5BDHnQ1OAh5Q9tKM4sicoaL/EgtoFOciFmuw==
+  version "5.28.0"
+  resolved "https://registry.yarnpkg.com/mdi-material-ui/-/mdi-material-ui-5.28.0.tgz#ab8c6f02db39cc1b0e2e6efb457c9f53fcc2fae6"
+  integrity sha512-zJNREfnszdxDQBFNkofYAyn4iMExHH/pOj5JHMLtIqkcdIA/CNN+7OD4OvG8qxSI4CPA76IBRaejV8mQYwQ3BQ==
 
 mdurl@^1.0.0:
   version "1.0.1"
