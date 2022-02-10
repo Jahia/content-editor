@@ -23,7 +23,7 @@ const treeConfigs = {
     pages: {
         rootPath: site => `/sites/${site}`,
         openableTypes: ['jnt:page', 'jnt:virtualsite', 'jnt:navMenuText'],
-        selectableTypes: ['jnt:page'],
+        selectableTypes: ['jnt:page', 'jnt:navMenuText'],
         type: 'pages',
         rootLabelKey: 'content-editor:label.contentEditor.edit.fields.contentPicker.pagesRootLabel'
     },
