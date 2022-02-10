@@ -19,7 +19,7 @@ export const AdvancedOptionsNavigation = ({formik, activeOption, setActiveOption
 
     if (error) {
         const message = t(
-            'content-media-manager:label.contentManager.error.queryingContent',
+            'content-editor:label.contentEditor.error.queryingContent',
             {details: error.message ? error.message : ''}
         );
         return <>{message}</>;

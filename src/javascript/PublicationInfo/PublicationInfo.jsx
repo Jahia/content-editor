@@ -31,7 +31,7 @@ export const usePublicationInfo = (queryParams, t) => {
             publicationInfoPolling: polling,
             publicationInfoLoading: loading,
             publicationInfoError: error,
-            publicationInfoErrorMessage: error && t('content-media-manager:label.contentManager.error.queryingContent', {details: (error.message ? error.message : '')})
+            publicationInfoErrorMessage: error && t('content-editor:label.contentEditor.error.queryingContent', {details: (error.message ? error.message : '')})
         };
     }
 

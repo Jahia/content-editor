@@ -10,7 +10,7 @@ export const useFormDefinition = (query, queryParams, adapter, t, contentEditorC
         return {
             loading,
             error,
-            errorMessage: error && t('content-media-manager:label.contentManager.error.queryingContent', {details: (error.message ? error.message : '')})
+            errorMessage: error && t('content-editor:label.contentEditor.error.queryingContent', {details: (error.message ? error.message : '')})
         };
     }
 
