@@ -24,8 +24,8 @@ const Category = ({field, value, id, editorContext, onChange}) => {
 
     if (error) {
         const message = t(
-            'content-media-manager:label.contentManager.error.queryingContent',
-            {details: error.message ? error.message : ''}
+            'content-editor:label.contentEditor.error.queryingContent',
+            {details: `/sites/systemsite/categories in ${editorContext.lang}`}
         );
         return <>{message}</>;
     }

@@ -35,7 +35,11 @@ export const RichTextCmp = ({field, id, value, onChange}) => {
     );
 
     if (error) {
-        throw error;
+        const message = t(
+            'content-editor:label.contentEditor.error.queryingContent',
+            {details: editorContext.path}
+        );
+        return <>{message}</>;
     }
 
     if (loading || !data || !data.forms) {
