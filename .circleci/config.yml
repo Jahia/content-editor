@@ -119,6 +119,7 @@ workflows:
           context: QA_ENVIRONMENT
           requires:
             - jahia-modules-orb/build
+          resource_class: xlarge
           filters:
             branches:
               only:
