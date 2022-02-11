@@ -151,6 +151,7 @@ workflows:
           release_version: << pipeline.parameters.RELEASE_VERSION >>
           primary_release_branch: << pipeline.parameters.PRIMARY_RELEASE_BRANCH >>
           ssh_key_fingerprints: << pipeline.parameters.SSH_KEY_FINGERPRINT >>
+          resource_class: xlarge
       - jahia-modules-orb/update-signature:
           context: QA_ENVIRONMENT
           requires:
