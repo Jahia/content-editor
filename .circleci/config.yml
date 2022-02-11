@@ -136,15 +136,8 @@ workflows:
     when: << pipeline.parameters.IS_RELEASE >>
     jobs:
       - jahia-modules-orb/initialize
-      - jahia-modules-orb/generate-changelog:
-          context: QA_ENVIRONMENT
-          requires:
-            - jahia-modules-orb/initialize
-          ssh_key_fingerprints: << pipeline.parameters.SSH_KEY_FINGERPRINT >>
       - jahia-modules-orb/release:
           context: QA_ENVIRONMENT
-          requires:
-            - jahia-modules-orb/generate-changelog
           module_id: << pipeline.parameters.MODULE_ID >>
           github_slug: << pipeline.parameters.GITHUB_SLUG >>
           release_id: << pipeline.parameters.RELEASE_ID >>
