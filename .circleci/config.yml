@@ -38,7 +38,7 @@ parameters:
     default: "content-editor"
   PRIMARY_RELEASE_BRANCH:
     type: string
-    default: "master"
+    default: "3_3_X"
   RELEASE_ID:
     type: string
     default: ""
