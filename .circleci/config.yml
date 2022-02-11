@@ -98,6 +98,7 @@ workflows:
           requires:
             - jahia-modules-orb/initialize
             - jahia-modules-orb/update-signature
+          resource_class: xlarge
           module_id: << pipeline.parameters.MODULE_ID >>
       - jahia-modules-orb/sonar-analysis:
           context: QA_ENVIRONMENT
