@@ -18,7 +18,3 @@
 - [@jahia-carp](https://github.com/jahia-carp)
 - Cedric Mailleux ([@cedmail](https://github.com/cedmail))
 - Michael De Checchi ([@rknj](https://github.com/rknj))
-
----
-
-# V3.3.0
