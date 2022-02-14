@@ -2,6 +2,7 @@ import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {FolderDisplayer} from './FolderDisplayer';
+import {setQueryResult} from '@apollo/react-hooks';
 
 jest.mock('@apollo/react-hooks', () => {
     let queryResultmock;
@@ -14,8 +15,6 @@ jest.mock('@apollo/react-hooks', () => {
         }
     };
 });
-
-import {setQueryResult} from '@apollo/react-hooks';
 
 describe('imageListQuery', () => {
     let props;

@@ -3,12 +3,15 @@ import PropTypes from 'prop-types';
 import styles from './ContentBreadcrumb.scss';
 import ContentPath from './ContentPath';
 import ContentType from './ContentType';
+import {useContentEditorContext} from '~/ContentEditor.context';
 
-const ContentBreadcrumb = ({path, ...context}) => {
+const ContentBreadcrumb = ({path}) => {
+    const {nodeTypeName, nodeTypeDisplayName} = useContentEditorContext();
+
     return (
         <div className={styles.contentBreadcrumb} data-sel-role="breadcrumb">
-            <ContentPath path={path} {...context}/>
-            <ContentType name={context.nodeTypeName} displayName={context.nodeTypeDisplayName}/>
+            <ContentPath path={path}/>
+            <ContentType name={nodeTypeName} displayName={nodeTypeDisplayName}/>
         </div>
     );
 };
@@ -18,11 +21,7 @@ ContentBreadcrumb.defaultProps = {
 };
 
 ContentBreadcrumb.propTypes = {
-    path: PropTypes.string,
-    actionContext: PropTypes.shape({
-        nodeTypeDisplayName: PropTypes.string.isRequired,
-        nodeTypeName: PropTypes.string.isRequired
-    }).isRequired
+    path: PropTypes.string
 };
 
 export default ContentBreadcrumb;

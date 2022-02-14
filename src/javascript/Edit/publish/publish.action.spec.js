@@ -3,6 +3,7 @@ import {shallow} from '@jahia/test-framework';
 import publishAction from './publish.action';
 import {publishNode} from './publish.request';
 import {Constants} from '~/ContentEditor.constants';
+import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
 
 jest.mock('~/actions/redux.action', () => {
     let statemock;
@@ -30,8 +31,6 @@ jest.mock('./publish.request', () => {
 });
 
 jest.mock('~/PublicationInfo/PublicationInfo.context', () => ({usePublicationInfoContext: jest.fn()}));
-
-import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
 
 describe('publish action', () => {
     let defaultProps;

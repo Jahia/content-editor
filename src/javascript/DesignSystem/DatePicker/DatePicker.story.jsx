@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {storiesOf} from '@storybook/react';
-import {withKnobs, select, text} from '@storybook/addon-knobs';
+import {select, text, withKnobs} from '@storybook/addon-knobs';
 import {action} from '@storybook/addon-actions';
 
 import {DatePicker} from './DatePicker';

@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Constants} from '~/ContentEditor.constants';
+import {useContentEditorContext} from "~/ContentEditor.context";
 
-export const GoToOption = ({setActiveOption, value, mode, render: Render, ...otherProps}) => {
+export const GoToOption = ({setActiveOption, value, render: Render, ...otherProps}) => {
+    const {mode} = useContentEditorContext();
+
     return (
         <>
             {mode === Constants.routes.baseEditRoute &&

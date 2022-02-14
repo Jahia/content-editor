@@ -9,7 +9,7 @@ import {ProgressOverlay} from '@jahia/react-material';
 import {registerAdvancedOptionsActions} from '~/EditPanel/AdvancedOptions/AdvancedOptions.actions';
 import {useTranslation} from 'react-i18next';
 
-export const AdvancedOptionsNavigation = ({formik, activeOption, setActiveOption}) => {
+export const AdvancedOptionsNavigation = ({activeOption, setActiveOption}) => {
     const {t} = useTranslation('content-editor');
     const {mode, nodeData, siteInfo} = useContentEditorContext();
 
@@ -32,11 +32,7 @@ export const AdvancedOptionsNavigation = ({formik, activeOption, setActiveOption
     return (
         <div className={classes.container}>
             <ul>
-                <DisplayActions nodeData={nodeData}
-                                siteInfo={siteInfo}
-                                mode={mode}
-                                formik={formik}
-                                activeOption={activeOption}
+                <DisplayActions activeOption={activeOption}
                                 setActiveOption={setActiveOption}
                                 target="AdvancedOptionsActions"
                                 filter={action => {
@@ -59,7 +55,6 @@ export const AdvancedOptionsNavigation = ({formik, activeOption, setActiveOption
 };
 
 AdvancedOptionsNavigation.propTypes = {
-    formik: PropTypes.object.isRequired,
     activeOption: PropTypes.string.isRequired,
     setActiveOption: PropTypes.func.isRequired
 };

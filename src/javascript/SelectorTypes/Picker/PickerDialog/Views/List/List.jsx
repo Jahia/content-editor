@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {ContentTable} from '~/DesignSystem/ContentTable/ContentTable';
 import {useTranslation} from 'react-i18next';
-import {ProgressOverlay} from '@jahia/react-material';
+import {ProgressOverlay, withNotifications} from '@jahia/react-material';
 import PropTypes from 'prop-types';
 import {useDialogPickerContent} from '../useDialogPickerContent';
 import dayjs from 'dayjs';
@@ -9,7 +9,6 @@ import {registry} from '@jahia/ui-extender';
 import ContentTableCellBadgeRenderer from './ContentTableCellBadgeRenderer';
 import {NavigateInto} from './NavigateInto';
 import {CountDisplayer} from '../CountDisplayer';
-import {withNotifications} from '@jahia/react-material';
 import {compose} from '~/utils';
 import {notifyAccessDenied} from '../ErrorHandler';
 import SubContentCountLazyLoader from './SubContentCountLazyLoader';

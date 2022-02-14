@@ -1,16 +1,14 @@
 import React from 'react';
-import {
-    Dialog,
-    DialogActions,
-    DialogTitle
-} from '@material-ui/core';
+import {Dialog, DialogActions, DialogTitle} from '@material-ui/core';
 import {Button} from '@jahia/moonstone';
 import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import {Constants} from '~/ContentEditor.constants';
+import {useFormikContext} from 'formik';
 
-export const EditPanelDialogConfirmation = ({titleKey, isOpen, onCloseDialog, actionCallback, formik}) => {
+export const EditPanelDialogConfirmation = ({titleKey, isOpen, onCloseDialog, actionCallback}) => {
     const {t} = useTranslation('content-editor');
+    const formik = useFormikContext();
     const handleDiscard = () => {
         onCloseDialog();
 
@@ -70,7 +68,6 @@ export const EditPanelDialogConfirmation = ({titleKey, isOpen, onCloseDialog, ac
 EditPanelDialogConfirmation.propTypes = {
     titleKey: PropTypes.string.isRequired,
     isOpen: PropTypes.bool.isRequired,
-    formik: PropTypes.object.isRequired,
     actionCallback: PropTypes.func.isRequired,
     onCloseDialog: PropTypes.func.isRequired
 };

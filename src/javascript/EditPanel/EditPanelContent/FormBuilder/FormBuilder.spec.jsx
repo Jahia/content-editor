@@ -3,6 +3,9 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 
 import FormBuilder from './FormBuilder';
+import {setFormikValues} from 'formik';
+import {setContext} from '~/ContentEditor.context';
+import {setSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 
 jest.mock('formik', () => {
     let formikvaluesmock;
@@ -41,9 +44,6 @@ jest.mock('~/ContentEditor.context', () => {
         }
     };
 });
-import {setFormikValues} from 'formik';
-import {setContext} from '~/ContentEditor.context';
-import {setSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 
 describe('FormBuilder component', () => {
     let context;

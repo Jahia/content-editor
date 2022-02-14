@@ -1,6 +1,6 @@
 import {Badge, Paper} from '@jahia/design-system-kit';
 import * as PropTypes from 'prop-types';
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import classes from './Preview.container.scss';
 import {ProgressOverlay} from '@jahia/react-material';

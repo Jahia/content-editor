@@ -3,9 +3,19 @@ import * as PropTypes from 'prop-types';
 import {publishNode} from './publish.request';
 import {Constants} from '~/ContentEditor.constants';
 import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
+import {useApolloClient} from '@apollo/react-hooks';
+import {useTranslation} from 'react-i18next';
+import {useContentEditorContext} from '~/ContentEditor.context';
+import {withNotifications} from '@jahia/react-material';
+import {useFormikContext} from "formik";
 
-const Publish = ({language, values, dirty, hasPublishPermission, lockedAndCannotBeEdited, render: Render, loading: Loading, ...otherProps}) => {
+const Publish = ({notificationContext, render: Render, loading: Loading, ...otherProps}) => {
     const {publicationInfoPolling, publicationStatus, stopPublicationInfoPolling, startPublicationInfoPolling} = usePublicationInfoContext();
+    const client = useApolloClient();
+    const {t} = useTranslation();
+    const {nodeData, lang} = useContentEditorContext();
+    const formik = useFormikContext();
+    const {hasPublishPermission, lockedAndCannotBeEdited} = nodeData;
 
     let disabled = true;
     const enabled = hasPublishPermission;
@@ -15,13 +25,13 @@ const Publish = ({language, values, dirty, hasPublishPermission, lockedAndCannot
             stopPublicationInfoPolling();
         }
 
-        const wipInfo = values[Constants.wip.fieldName];
+        const wipInfo = formik.values[Constants.wip.fieldName];
         disabled = publicationStatus === undefined ||
             publicationInfoPolling ||
             lockedAndCannotBeEdited ||
-            dirty ||
+            formik.dirty ||
             wipInfo.status === Constants.wip.status.ALL_CONTENT ||
-            (wipInfo.status === Constants.wip.status.LANGUAGES && wipInfo.languages.includes(language)) ||
+            (wipInfo.status === Constants.wip.status.LANGUAGES && wipInfo.languages.includes(lang)) ||
             [
                 Constants.editPanel.publicationStatus.PUBLISHED,
                 Constants.editPanel.publicationStatus.MANDATORY_LANGUAGE_UNPUBLISHABLE
@@ -40,14 +50,14 @@ const Publish = ({language, values, dirty, hasPublishPermission, lockedAndCannot
             enabled={enabled}
             disabled={disabled}
             buttonLabel={buttonLabel}
-            onClick={renderContext => {
+            onClick={() => {
                 publishNode({
-                    client: renderContext.client,
-                    t: renderContext.t,
-                    notificationContext: renderContext.notificationContext,
+                    client,
+                    t,
+                    notificationContext,
                     data: {
-                        nodeData: renderContext.nodeData,
-                        language: language
+                        nodeData,
+                        language: lang
                     },
                     successCallback: startPublicationInfoPolling()
                 });
@@ -57,17 +67,13 @@ const Publish = ({language, values, dirty, hasPublishPermission, lockedAndCannot
 };
 
 Publish.propTypes = {
-    language: PropTypes.string.isRequired,
-    values: PropTypes.object.isRequired,
-    dirty: PropTypes.bool.isRequired,
-    hasPublishPermission: PropTypes.bool.isRequired,
-    lockedAndCannotBeEdited: PropTypes.bool.isRequired,
+    notificationContext: PropTypes.object.isRequired,
     render: PropTypes.func.isRequired,
     loading: PropTypes.func
 };
 
 const publishButtonAction = {
-    component: Publish
+    component: withNotifications()(Publish)
 };
 
 export default publishButtonAction;

@@ -1,13 +1,13 @@
-import {connect} from 'formik';
 import React from 'react';
 import PropTypes from 'prop-types';
 
 import {withStyles} from '@material-ui/core';
-import {Typography, Toggle} from '@jahia/design-system-kit';
+import {Toggle, Typography} from '@jahia/design-system-kit';
 import {compose} from '~/utils';
 import {FieldSetPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {FieldContainer} from '~/EditPanel/EditPanelContent/FormBuilder/FieldSet/Field';
 import {useTranslation} from 'react-i18next';
+import {useFormikContext} from 'formik';
 
 let styles = theme => ({
     fieldsetContainer: {},
@@ -29,7 +29,8 @@ let styles = theme => ({
     }
 });
 
-const ListSizeLimitFieldSet = ({fieldset, classes, formik: {values, handleChange}}) => {
+const ListSizeLimitFieldSet = ({fieldset, classes}) => {
+    const {values, handleChange} = useFormikContext();
     const {t} = useTranslation('content-editor');
     const isDynamicFieldSet = fieldset.dynamic;
     const activatedFieldSet = (values && values[fieldset.name]) || !isDynamicFieldSet;
@@ -67,12 +68,10 @@ const ListSizeLimitFieldSet = ({fieldset, classes, formik: {values, handleChange
 
 ListSizeLimitFieldSet.propTypes = {
     fieldset: FieldSetPropTypes.isRequired,
-    classes: PropTypes.object.isRequired,
-    formik: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired
 };
 
 export const FieldSet = compose(
-    connect,
     withStyles(styles)
 )(ListSizeLimitFieldSet);
 

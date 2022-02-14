@@ -4,10 +4,15 @@ import React, {useContext} from 'react';
 import {ComponentRendererContext} from '@jahia/ui-extender';
 import * as PropTypes from 'prop-types';
 import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
+import {useFormikContext} from 'formik';
+import {useContentEditorContext} from "~/ContentEditor.context";
 
-const Save = ({values, errors, dirty, mode, render: Render, loading: Loading, ...otherProps}) => {
+const Save = ({render: Render, loading: Loading, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
     const {publicationInfoPolling} = usePublicationInfoContext();
+    const {mode} = useContentEditorContext();
+
+    const formik = useFormikContext();
 
     if (Loading) {
         return <Loading {...otherProps}/>;
@@ -16,16 +21,16 @@ const Save = ({values, errors, dirty, mode, render: Render, loading: Loading, ..
     return (
         <Render
             {...otherProps}
-            addWarningBadge={Object.keys(errors).length > 0}
+            addWarningBadge={Object.keys(formik.errors).length > 0}
             enabled={mode === Constants.routes.baseEditRoute}
-            disabled={!dirty || publicationInfoPolling}
-            onClick={async ({formik}) => {
+            disabled={!formik.dirty || publicationInfoPolling}
+            onClick={async () => {
                 const formIsValid = await validateForm(formik, componentRenderer);
                 if (formIsValid) {
                     return formik
                         .submitForm()
                         .then(() => {
-                            formik.resetForm({values});
+                            formik.resetForm({values:formik.values});
                         });
                 }
             }}
@@ -34,10 +39,6 @@ const Save = ({values, errors, dirty, mode, render: Render, loading: Loading, ..
 };
 
 Save.propTypes = {
-    values: PropTypes.object.isRequired,
-    errors: PropTypes.object.isRequired,
-    mode: PropTypes.string.isRequired,
-    dirty: PropTypes.bool.isRequired,
     context: PropTypes.object.isRequired,
     render: PropTypes.func.isRequired,
     loading: PropTypes.func

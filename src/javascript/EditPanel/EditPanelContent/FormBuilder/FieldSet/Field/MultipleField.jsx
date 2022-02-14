@@ -4,7 +4,7 @@ import React from 'react';
 import * as PropTypes from 'prop-types';
 import {compose} from '~/utils';
 import {useTranslation} from 'react-i18next';
-import {connect, FastField} from 'formik';
+import {FastField, useFormikContext} from 'formik';
 import {FieldPropTypes} from '~/FormDefinitions';
 
 const styles = theme => {
@@ -21,7 +21,8 @@ const styles = theme => {
     };
 };
 
-export const MultipleFieldCmp = ({classes, editorContext, inputContext, field, onChange, formik: {values}}) => {
+export const MultipleFieldCmp = ({classes, editorContext, inputContext, field, onChange}) => {
+    const {values} = useFormikContext();
     const {t} = useTranslation('content-editor');
 
     const multipleFieldOnChange = (index, newData) => {
@@ -56,22 +57,17 @@ export const MultipleFieldCmp = ({classes, editorContext, inputContext, field, o
                              data-sel-content-editor-multiple-generic-field={name}
                              data-sel-content-editor-field-readonly={field.readOnly}
                         >
-                            <FastField shouldUpdate={() => true}>
-                                {() => {
-                                    return (
-                                        <FieldComponent field={field}
-                                                        value={value}
-                                                        values={values}
-                                                        id={name}
-                                                        editorContext={editorContext}
-                                                        inputContext={inputContext}
-                                                        onChange={newData => {
-                                                            multipleFieldOnChange(index, newData);
-                                                        }}
-                                        />
-                                    );
-                                }}
-                            </FastField>
+                            <FastField component={FieldComponent}
+                                       field={field}
+                                       value={value}
+                                       values={values}
+                                       id={name}
+                                       editorContext={editorContext}
+                                       inputContext={inputContext}
+                                       onChange={newData => {
+                                           multipleFieldOnChange(index, newData);
+                                       }}
+                            />
 
                             {!field.readOnly &&
                             <Button variant="ghost"
@@ -101,13 +97,11 @@ MultipleFieldCmp.propTypes = {
     inputContext: PropTypes.object.isRequired,
     editorContext: PropTypes.object.isRequired,
     field: FieldPropTypes.isRequired,
-    formik: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired
 };
 
 export const MultipleField = compose(
-    connect,
     withStyles(styles)
 )(MultipleFieldCmp);
 

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {storiesOf} from '@storybook/react';
-import {withKnobs, boolean, text} from '@storybook/addon-knobs';
+import {boolean, text, withKnobs} from '@storybook/addon-knobs';
 
 import {ReferenceCard} from './ReferenceCard';
 import doc from './ReferenceCard.md';

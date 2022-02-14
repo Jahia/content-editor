@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import Popover from '@material-ui/core/Popover/Popover';
@@ -107,7 +107,7 @@ ColorPickerInputCmp.defaultProps = {
 
 ColorPickerInputCmp.propTypes = {
     classes: PropTypes.object.isRequired,
-    initialValue: PropTypes.object,
+    initialValue: PropTypes.string,
     onChange: PropTypes.func,
     readOnly: PropTypes.bool,
     inputProps: PropTypes.object

@@ -1,17 +1,22 @@
 import React, {useState} from 'react';
 import {EditPanelDialogConfirmation} from '~/EditPanel/EditPanelDialogConfirmation';
-import {useContentEditorConfigContext} from '~/ContentEditor.context';
+import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import * as PropTypes from 'prop-types';
+import {Constants} from "~/ContentEditor.constants";
+import {useFormikContext} from "formik";
 
-const GoBack = ({render: Render, isDirty, formik, uuid, operator, componentProps, ...otherProps}) => {
+const GoBack = ({render: Render, componentProps, ...otherProps}) => {
+    const {nodeData, mode} = useContentEditorContext();
     const {envProps} = useContentEditorConfigContext();
+    const formik = useFormikContext();
     const [open, setOpen] = useState(false);
     const executeGoBackAction = (overridedStoredLocation, byPassEventTriggers) => {
         if (envProps.unregisterListeners) {
             envProps.unregisterListeners();
         }
+        const operator = (mode === Constants.routes.baseEditRoute ? Constants.operators.update : Constants.operators.create);
 
-        envProps.back(uuid, operator, overridedStoredLocation, byPassEventTriggers);
+        envProps.back(nodeData.uuid, operator, overridedStoredLocation, byPassEventTriggers);
     };
 
     return (
@@ -19,7 +24,6 @@ const GoBack = ({render: Render, isDirty, formik, uuid, operator, componentProps
             <EditPanelDialogConfirmation
                 isOpen={open}
                 titleKey="content-editor:label.contentEditor.edit.action.goBack.title"
-                formik={formik}
                 actionCallback={(overridedStoredLocation, byPassEventTriggers) => executeGoBackAction(overridedStoredLocation, byPassEventTriggers)}
                 onCloseDialog={() => setOpen(false)}
             />
@@ -30,12 +34,10 @@ const GoBack = ({render: Render, isDirty, formik, uuid, operator, componentProps
                     disabled: envProps.disabledBack()
                 }}
                 onClick={() => {
-                    if (formik) {
-                        if (isDirty) {
-                            setOpen(true);
-                        } else {
-                            executeGoBackAction(undefined, true);
-                        }
+                    if (formik.dirty) {
+                        setOpen(true);
+                    } else {
+                        executeGoBackAction(undefined, true);
                     }
                 }}/>
         </>
@@ -44,10 +46,6 @@ const GoBack = ({render: Render, isDirty, formik, uuid, operator, componentProps
 
 GoBack.propTypes = {
     componentProps: PropTypes.object.isRequired,
-    formik: PropTypes.object.isRequired,
-    operator: PropTypes.string.isRequired,
-    uuid: PropTypes.string.isRequired,
-    isDirty: PropTypes.bool.isRequired,
     render: PropTypes.func.isRequired
 };
 

@@ -1,13 +1,7 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
-import {withNotifications} from '@jahia/react-material';
+import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
-import {withApollo} from 'react-apollo';
-import {compose} from '~/utils';
-import {useTranslation} from 'react-i18next';
-import {connect} from 'formik';
 import {HeaderLowerSection, HeaderUpperSection} from './header';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
-import {PublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
 import classes from './EditPanel.scss';
 import classnames from 'clsx';
 import {registry} from '@jahia/ui-extender';
@@ -16,6 +10,7 @@ import MainLayout from '~/DesignSystem/ContentLayout/MainLayout';
 import ContentHeader from '~/DesignSystem/ContentLayout/ContentHeader';
 import {Constants} from '~/ContentEditor.constants';
 import {Separator} from '@jahia/moonstone';
+import {useFormikContext} from 'formik';
 
 const handleBeforeUnloadEvent = ev => {
     ev.preventDefault();
@@ -37,12 +32,11 @@ const unregisterListeners = envProps => {
     }
 };
 
-const EditPanelCmp = ({formik, title, notificationContext, client}) => {
+const EditPanel = ({title}) => {
+    const formik = useFormikContext();
     const [activeTab, setActiveTab] = useState(Constants.editPanel.editTab);
-    const {t} = useTranslation('content-editor');
-    const {nodeData, siteInfo, lang, uilang, mode, nodeTypeDisplayName, nodeTypeName} = useContentEditorContext();
+    const {nodeData, lang, mode} = useContentEditorContext();
     const {envProps} = useContentEditorConfigContext();
-    const publicationInfoContext = useContext(PublicationInfoContext);
 
     const previousDirty = useRef();
 
@@ -61,21 +55,6 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
         return () => unregisterListeners(envProps);
     }, [previousDirty, envProps, formik.dirty]);
 
-    const actionContext = {
-        nodeData,
-        language: lang,
-        uilang,
-        mode,
-        t,
-        client, // TODO BACKLOG-11290 find another way to inject apollo-client, i18n, ...}
-        notificationContext,
-        publicationInfoContext,
-        formik,
-        siteInfo,
-        nodeTypeDisplayName,
-        nodeTypeName
-    };
-
     // Without edit tab, no content editor
     const tabs = registry.find({target: 'editHeaderTabsActions'});
     const EditTabComponent = tabs.find(tab => tab.value === Constants.editPanel.editTab).displayableComponent;
@@ -84,16 +63,14 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
     return (
         <MainLayout header={
             <ContentHeader>
-                <HeaderUpperSection actionContext={actionContext}
-                                    title={title}
+                <HeaderUpperSection title={title}
                                     isCompact={envProps.isWindow}
                                     isShowPublish={!envProps.isWindow && mode === Constants.routes.baseEditRoute}/>
                 {!envProps.isWindow && (
                     <>
                         <Separator spacing="none"/>
                         <HeaderLowerSection activeTab={activeTab}
-                                            setActiveTab={setActiveTab}
-                                            actionContext={actionContext}/>
+                                            setActiveTab={setActiveTab}/>
                     </>
                 )}
             </ContentHeader>
@@ -111,17 +88,9 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
     );
 };
 
-EditPanelCmp.propTypes = {
-    formik: PropTypes.object.isRequired,
-    title: PropTypes.string.isRequired,
-    client: PropTypes.object.isRequired,
-    notificationContext: PropTypes.object.isRequired
+EditPanel.propTypes = {
+    title: PropTypes.string.isRequired
 };
 
-const EditPanel = compose(
-    connect,
-    withNotifications(),
-    withApollo
-)(EditPanelCmp);
 EditPanel.displayName = 'EditPanel';
 export default EditPanel;

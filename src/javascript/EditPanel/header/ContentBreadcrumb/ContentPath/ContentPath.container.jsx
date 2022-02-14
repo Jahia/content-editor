@@ -10,6 +10,7 @@ import EditPanelDialogConfirmation from '~/EditPanel/EditPanelDialogConfirmation
 import {GetContentPath} from './ContentPath.gql-queries';
 import ContentPath from './ContentPath';
 import {Constants} from '~/ContentEditor.constants';
+import {useFormikContext} from 'formik';
 
 const findLastIndex = (array, callback) => {
     let lastIndex = -1;
@@ -54,11 +55,11 @@ const getItems = (mode, node) => {
     return ancestors;
 };
 
-const ContentPathContainer = ({path, ...context}) => {
+const ContentPathContainer = ({path, uuid, operator}) => {
     const [open, setOpen] = useState(false);
     const {envProps, site, mode} = useContentEditorConfigContext();
     const dispatch = useDispatch();
-
+    const formik = useFormikContext();
     const {language} = useSelector(state => ({
         language: state.language
     }));
@@ -71,7 +72,7 @@ const ContentPathContainer = ({path, ...context}) => {
     });
 
     const handleNavigation = path => {
-        if (context.formik.dirty) {
+        if (formik.dirty) {
             setOpen(true);
         } else {
             if (path.startsWith('/sites/systemsite/categories/') || path === '/sites/systemsite/categories') {
@@ -109,8 +110,8 @@ const ContentPathContainer = ({path, ...context}) => {
             <EditPanelDialogConfirmation
                 isOpen={open}
                 titleKey="content-editor:label.contentEditor.edit.action.goBack.title"
-                formik={context.formik}
-                actionCallback={() => envProps.back(context.uuid, context.operator)}
+                formik={formik}
+                actionCallback={() => envProps.back(uuid, operator)}
                 onCloseDialog={() => setOpen(false)}
             />
 
@@ -121,12 +122,14 @@ const ContentPathContainer = ({path, ...context}) => {
 
 ContentPathContainer.defaultProps = {
     path: '',
-    context: null
+    uuid: null,
+    operator: null
 };
 
 ContentPathContainer.propTypes = {
     path: PropTypes.string,
-    context: PropTypes.object
+    uuid: PropTypes.object,
+    operator: PropTypes.object
 };
 
 export default ContentPathContainer;

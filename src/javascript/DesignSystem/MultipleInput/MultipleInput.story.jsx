@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {storiesOf} from '@storybook/react';
-import {withKnobs, boolean, text} from '@storybook/addon-knobs';
+import {boolean, text, withKnobs} from '@storybook/addon-knobs';
 import doc from './MultipleInput.md';
 import {DSProvider} from '@jahia/design-system-kit';
 import {action} from '@storybook/addon-actions';

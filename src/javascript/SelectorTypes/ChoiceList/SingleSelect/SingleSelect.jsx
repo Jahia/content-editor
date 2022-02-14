@@ -5,11 +5,10 @@ import {Dropdown} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
 import {DisplayAction} from '@jahia/ui-extender';
 import {getButtonRenderer} from '../../../utils/getButtonRenderer';
-import {connect} from 'formik';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
-export const SingleSelectCmp = ({field, value, formik, id, inputContext, onChange}) => {
+export const SingleSelectCmp = ({field, value, id, inputContext, onChange}) => {
     const {t} = useTranslation('content-editor');
     inputContext.actionContext = {
         onChange
@@ -60,7 +59,6 @@ export const SingleSelectCmp = ({field, value, formik, id, inputContext, onChang
             />
             {inputContext.displayActions && (
                 <DisplayAction actionKey="content-editor/field/Choicelist"
-                               formik={formik}
                                field={field}
                                inputContext={inputContext}
                                render={ButtonRenderer}
@@ -76,14 +74,13 @@ SingleSelectCmp.defaultProps = {
 
 SingleSelectCmp.propTypes = {
     id: PropTypes.string.isRequired,
-    formik: PropTypes.object.isRequired,
     value: PropTypes.string,
     field: FieldPropTypes.isRequired,
     inputContext: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired
 };
 
-export const SingleSelect = connect(SingleSelectCmp);
+export const SingleSelect = SingleSelectCmp;
 SingleSelect.displayName = 'SingleSelect';
 
 export default SingleSelect;

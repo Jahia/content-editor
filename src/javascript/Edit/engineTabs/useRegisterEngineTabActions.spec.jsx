@@ -1,4 +1,4 @@
-import {useRegisterEngineTabActions, tabShouldBeDisplayed} from './useRegisterEngineTabActions';
+import {tabShouldBeDisplayed, useRegisterEngineTabActions} from './useRegisterEngineTabActions';
 import React from 'react';
 import {useQuery} from '@apollo/react-hooks';
 import {registry} from '@jahia/ui-extender';

@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'formik';
 import {useTranslation} from 'react-i18next';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {ProgressOverlay} from '@jahia/react-material';
@@ -12,11 +11,16 @@ import {getButtonRenderer} from '../../utils/getButtonRenderer';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
-const PickerCmp = ({field, value, editorContext, inputContext, onChange, formik}) => {
+const PickerCmp = ({field, value, editorContext, inputContext, onChange}) => {
     const {t} = useTranslation('content-editor');
     const {pickerConfig, nodeTreeConfigs} = extractConfigs(field, editorContext, t);
     const [isDialogOpen, setDialogOpen] = useState(false);
-    const {fieldData, error, loading, notFound} = pickerConfig.picker.pickerInput.usePickerInputData(value, editorContext);
+    const {
+        fieldData,
+        error,
+        loading,
+        notFound
+    } = pickerConfig.picker.pickerInput.usePickerInputData(value, editorContext);
 
     if (error) {
         const message = t(
@@ -53,7 +57,15 @@ const PickerCmp = ({field, value, editorContext, inputContext, onChange, formik}
                 fieldData={fieldData}
                 onClick={() => setDialogOpen(!isDialogOpen)}
             />
-            {inputContext.displayActions && value && <DisplayAction actionKey={field.multiple ? 'content-editor/field/MultiplePicker' : 'content-editor/field/Picker'} value={value} field={field} formik={formik} inputContext={inputContext} render={ButtonRenderer}/>}
+            {inputContext.displayActions && value && (
+                <DisplayAction
+                    actionKey={field.multiple ? 'content-editor/field/MultiplePicker' : 'content-editor/field/Picker'}
+                    value={value}
+                    field={field}
+                    inputContext={inputContext}
+                    render={ButtonRenderer}
+                />
+            )}
             <PickerDialog
                 isOpen={isDialogOpen}
                 setIsOpen={setDialogOpen}
@@ -74,12 +86,11 @@ const PickerCmp = ({field, value, editorContext, inputContext, onChange, formik}
 
 PickerCmp.propTypes = {
     editorContext: PropTypes.object.isRequired,
-    formik: PropTypes.object.isRequired,
     value: PropTypes.string,
     field: FieldPropTypes.isRequired,
     inputContext: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired
 };
 
-export const Picker = connect(PickerCmp);
+export const Picker = PickerCmp;
 Picker.displayName = 'Picker';

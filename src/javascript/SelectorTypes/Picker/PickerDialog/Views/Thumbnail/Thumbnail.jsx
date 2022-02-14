@@ -1,13 +1,12 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {ProgressOverlay} from '@jahia/react-material';
+import {ProgressOverlay, withNotifications} from '@jahia/react-material';
 import {useTranslation} from 'react-i18next';
 import {ImageList} from '~/DesignSystem/ImageList';
 import {encodeJCRPath} from '~/EditPanel/EditPanel.utils';
 import {registry} from '@jahia/ui-extender';
 import {useDialogPickerContent} from '../useDialogPickerContent';
 import {CountDisplayer} from '../CountDisplayer';
-import {withNotifications} from '@jahia/react-material';
 import {compose} from '~/utils';
 import {notifyAccessDenied} from '../ErrorHandler';
 

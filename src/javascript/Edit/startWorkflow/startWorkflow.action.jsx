@@ -1,8 +1,15 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
 import {Constants} from '~/ContentEditor.constants';
+import {useContentEditorContext} from '~/ContentEditor.context';
+import {useFormikContext} from "formik";
 
-const StartWorkFlow = ({language, isMainButton, hasPublishPermission, hasStartPublicationWorkflowPermission, lockedAndCannotBeEdited, values, dirty, render: Render, loading: Loading, ...otherProps}) => {
+const StartWorkFlow = ({isMainButton, render: Render, loading: Loading, ...otherProps}) => {
+    const {nodeData, lang} = useContentEditorContext();
+    const {hasPublishPermission, hasStartPublicationWorkflowPermission, lockedAndCannotBeEdited} = nodeData;
+
+    const formik = useFormikContext();
+
     let disabled = false;
     let enabled = true;
     let isVisible = true;
@@ -12,16 +19,16 @@ const StartWorkFlow = ({language, isMainButton, hasPublishPermission, hasStartPu
         enabled = !hasPublishPermission && hasStartPublicationWorkflowPermission;
 
         // Is WIP
-        const wipInfo = values[Constants.wip.fieldName];
-        disabled = dirty ||
+        const wipInfo = formik.values[Constants.wip.fieldName];
+        disabled = formik.dirty ||
             wipInfo.status === Constants.wip.status.ALL_CONTENT ||
-            (wipInfo.status === Constants.wip.status.LANGUAGES && wipInfo.languages.includes(language));
+            (wipInfo.status === Constants.wip.status.LANGUAGES && wipInfo.languages.includes(lang));
     } else {
         // Is Visible
         isVisible = enabled && hasPublishPermission;
 
         // Is Active
-        if (isVisible && (lockedAndCannotBeEdited || dirty)) {
+        if (isVisible && (lockedAndCannotBeEdited || formik.dirty)) {
             enabled = false;
         }
     }
@@ -39,7 +46,7 @@ const StartWorkFlow = ({language, isMainButton, hasPublishPermission, hasStartPu
                 onClick={context => {
                     if (context.enabled) {
                         window.authoringApi.openPublicationWorkflow(
-                            [context.nodeData.uuid],
+                            [nodeData.uuid],
                             false, // Not publishing all subNodes (AKA sub pages)
                             false, // Not publishing all language
                             false // Not unpublish action
@@ -51,14 +58,7 @@ const StartWorkFlow = ({language, isMainButton, hasPublishPermission, hasStartPu
 };
 
 StartWorkFlow.propTypes = {
-    language: PropTypes.string.isRequired,
-    context: PropTypes.object.isRequired,
-    values: PropTypes.object.isRequired,
-    dirty: PropTypes.bool.isRequired,
     isMainButton: PropTypes.bool.isRequired,
-    hasPublishPermission: PropTypes.bool.isRequired,
-    hasStartPublicationWorkflowPermission: PropTypes.bool.isRequired,
-    lockedAndCannotBeEdited: PropTypes.bool.isRequired,
     render: PropTypes.func.isRequired,
     loading: PropTypes.func
 };

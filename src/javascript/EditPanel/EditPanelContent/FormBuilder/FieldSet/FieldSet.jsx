@@ -1,12 +1,12 @@
-import {connect} from 'formik';
 import React from 'react';
 import PropTypes from 'prop-types';
 
 import {withStyles} from '@material-ui/core';
-import {Typography, Toggle} from '@jahia/design-system-kit';
+import {Toggle, Typography} from '@jahia/design-system-kit';
 import {compose} from '~/utils';
 import {FieldSetPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {FieldContainer} from './Field';
+import {useFormikContext} from 'formik';
 
 let styles = theme => ({
     fieldsetContainer: {},
@@ -33,7 +33,8 @@ let styles = theme => ({
     }
 });
 
-const FieldSetCmp = ({fieldset, classes, formik: {values, handleChange}}) => {
+const FieldSetCmp = ({fieldset, classes}) => {
+    const {values, handleChange} = useFormikContext();
     const isDynamicFieldSet = fieldset.dynamic;
     const activatedFieldSet = (values && values[fieldset.name]) || !isDynamicFieldSet;
 
@@ -68,12 +69,10 @@ const FieldSetCmp = ({fieldset, classes, formik: {values, handleChange}}) => {
 
 FieldSetCmp.propTypes = {
     fieldset: FieldSetPropTypes.isRequired,
-    classes: PropTypes.object.isRequired,
-    formik: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired
 };
 
 export const FieldSet = compose(
-    connect,
     withStyles(styles)
 )(FieldSetCmp);
 

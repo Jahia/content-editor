@@ -1,12 +1,12 @@
 import {
+    checkIfValuesAreDifferent,
     encodeJCRPath,
     extractRangeConstraints,
-    getFields,
+    getChildrenOrder,
     getDataToMutate,
     getDynamicFieldSets,
-    getValuePropName,
-    getChildrenOrder,
-    checkIfValuesAreDifferent
+    getFields,
+    getValuePropName
 } from './EditPanel.utils';
 
 describe('EditPanel utils', () => {

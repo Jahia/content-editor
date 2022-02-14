@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
 import {Dropdown} from '@jahia/moonstone';
 import * as PropTypes from 'prop-types';
-import {compose} from '~/utils';
-import {connect} from 'formik';
 import {EditPanelDialogConfirmation} from '../EditPanelDialogConfirmation';
 import {useContentEditorConfigContext} from '~/ContentEditor.context';
 import envSwitchLanguages from './EditPanelLanguageSwitcher.env';
+import {useFormikContext} from 'formik';
 
-const EditPanelLanguageSwitcher = ({siteInfo, formik}) => {
+const EditPanelLanguageSwitcher = ({siteInfo}) => {
+    const formik = useFormikContext();
     const contentEditorConfigContext = useContentEditorConfigContext();
     const {lang} = contentEditorConfigContext;
     const [dialogConfirmation, setDialogConfirmation] = useState({open: false, lang: lang});
@@ -66,12 +66,9 @@ const EditPanelLanguageSwitcher = ({siteInfo, formik}) => {
 };
 
 EditPanelLanguageSwitcher.propTypes = {
-    siteInfo: PropTypes.object.isRequired,
-    formik: PropTypes.object.isRequired
+    siteInfo: PropTypes.object.isRequired
 };
 
 EditPanelLanguageSwitcher.displayName = 'EditPanelLanguageSwitcher';
 
-export default compose(
-    connect
-)(EditPanelLanguageSwitcher);
+export default EditPanelLanguageSwitcher;

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Section} from './Section';
-import {connect, Form} from 'formik';
+import {Form, useFormikContext} from 'formik';
 
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
@@ -9,9 +9,9 @@ import {SectionsPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {ChildrenSection} from './ChildrenSection';
 import {useTranslation} from 'react-i18next';
 import {Constants} from '~/ContentEditor.constants';
-import {compose} from '~/utils';
 
-const FormBuilderCmp = ({mode, formik: {values}}) => {
+const FormBuilderCmp = ({mode}) => {
+    const {values} = useFormikContext();
     const {nodeData} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
     const {t} = useTranslation('content-editor');
@@ -65,12 +65,9 @@ FormBuilderCmp.contextTypes = {
 };
 
 FormBuilderCmp.propTypes = {
-    mode: PropTypes.string.isRequired,
-    formik: PropTypes.object.isRequired
+    mode: PropTypes.string.isRequired
 };
 
-const FormBuilder = compose(
-    connect
-)(FormBuilderCmp);
+const FormBuilder = FormBuilderCmp;
 
 export default FormBuilder;

@@ -5,6 +5,7 @@ import {Field} from './Field';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import Text from '~/SelectorTypes/Text/Text';
 import {registry} from '@jahia/ui-extender';
+import {setResponseMock} from '@apollo/react-hooks';
 
 jest.mock('~/EditPanel/WorkInProgress/WorkInProgress.utils', () => {
     return {
@@ -35,8 +36,6 @@ jest.mock('react', () => {
         useEffect: cb => cb()
     };
 });
-
-import {setResponseMock} from '@apollo/react-hooks';
 
 describe('Field component', () => {
     let defaultProps;

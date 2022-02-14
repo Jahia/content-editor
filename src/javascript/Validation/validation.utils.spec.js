@@ -1,4 +1,4 @@
-import {validateForm, onServerError} from './validation.utils';
+import {onServerError, validateForm} from './validation.utils';
 import {Constants} from '~/ContentEditor.constants';
 
 const t = val => val;

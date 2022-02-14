@@ -5,10 +5,7 @@ import {listOrderingSection} from './AutomaticOrdering.spec.data';
 import {AutomaticOrderingCmp} from './AutomaticOrdering';
 import {setSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import {setContext} from '~/ContentEditor.context';
-import {
-    adaptSectionToDisplayableRows,
-    getDisplayedRows
-} from './AutomaticOrdering.utils';
+import {adaptSectionToDisplayableRows, getDisplayedRows} from './AutomaticOrdering.utils';
 import {Constants} from '~/ContentEditor.constants';
 
 jest.mock('~/ContentEditor.context', () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {withStyles, Button} from '@material-ui/core';
+import {Button, withStyles} from '@material-ui/core';
 import {SubdirectoryArrowRight} from '@material-ui/icons';
 
 const styles = theme => ({

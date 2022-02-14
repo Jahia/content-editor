@@ -1,4 +1,11 @@
-import {allSitesEntry, extractConfigs, getDetailedPathArray, getPathWithoutFile, getSite, getSiteNodes} from './Picker.utils';
+import {
+    allSitesEntry,
+    extractConfigs,
+    getDetailedPathArray,
+    getPathWithoutFile,
+    getSite,
+    getSiteNodes
+} from './Picker.utils';
 
 jest.mock('@jahia/ui-extender', () => {
     return {

@@ -1,7 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
 import CKEditor from 'ckeditor4-react';
-
-CKEditor.displayName = 'CKEditor';
 import * as PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {useQuery} from '@apollo/react-hooks';
@@ -11,6 +9,8 @@ import {ContentEditorContext} from '~/ContentEditor.context';
 import {PickerDialog} from '~/SelectorTypes/Picker/PickerDialog';
 import {useTranslation} from 'react-i18next';
 import {buildPickerContext, fillCKEditorPicker} from './RichText.utils';
+
+CKEditor.displayName = 'CKEditor';
 
 function loadOption(selectorOptions, name) {
     return selectorOptions && selectorOptions.find(option => option.name === name);

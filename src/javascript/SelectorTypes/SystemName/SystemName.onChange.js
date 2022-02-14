@@ -1,5 +1,6 @@
 import {Constants} from '~/ContentEditor.constants';
 import {limitSystemNameIfNecessary, replaceSpecialCharacters} from './SystemName.utils';
+
 const registerSystemNameOnChange = registry => {
     registry.add('selectorType.onChange', 'systemNameSync', {
         targets: ['Text'],

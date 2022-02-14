@@ -1,27 +1,26 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
-import {connect} from 'formik';
 import {FieldPropTypes} from '~/FormDefinitions';
 import {resolveSelectorType} from '~/SelectorTypes';
 import {Field} from './Field';
 
-const FieldContainerCmp = ({field, formik, inputContext}) => {
+const FieldContainerCmp = ({field, inputContext}) => {
     const selectorType = resolveSelectorType(field);
+    let context = React.useMemo(() => ({
+        displayLabels: true,
+        displayBadges: true,
+        displayActions: true,
+        displayErrors: true,
+        fieldComponent: selectorType.cmp,
+        ...inputContext
+    }), []);
 
     return (
         <Field
             idInput={field.name}
-            inputContext={{
-                displayLabels: true,
-                displayBadges: true,
-                displayActions: true,
-                displayErrors: true,
-                fieldComponent: selectorType.cmp,
-                ...inputContext
-            }}
+            inputContext={context}
             selectorType={selectorType}
-            field={field}
-            formik={formik}/>
+            field={field}/>
     );
 };
 
@@ -31,9 +30,8 @@ FieldContainerCmp.defaultProps = {
 
 FieldContainerCmp.propTypes = {
     field: FieldPropTypes.isRequired,
-    formik: PropTypes.object.isRequired,
     inputContext: PropTypes.object
 };
 
-export const FieldContainer = connect(FieldContainerCmp);
+export const FieldContainer = FieldContainerCmp;
 FieldContainer.displayName = 'FieldContainer';

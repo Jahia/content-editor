@@ -16,6 +16,7 @@ import {useContentEditorContext} from '~/ContentEditor.context';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import {useApolloClient} from '@apollo/react-hooks';
 import {getButtonRenderer} from '../../../../../utils/getButtonRenderer';
+import {useFormikContext} from 'formik';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
@@ -58,8 +59,9 @@ let styles = theme => {
     };
 };
 
-export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, formik}) => {
+export const FieldCmp = ({classes, inputContext, idInput, selectorType, field}) => {
     const {t} = useTranslation('content-editor');
+    const formik = useFormikContext();
     const editorContext = useContentEditorContext();
     const sectionsContext = useContentEditorSectionContext();
     const client = useApolloClient();
@@ -98,7 +100,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, f
         onChangeValue.current = currentValue;
     };
 
-    const onChange = currentValue => {
+    const onChange = React.useCallback(currentValue => {
         // Update formik
         setFieldValue(field.name, currentValue, true);
         // Validation has been done on the setValue, no need to redo it on touch.
@@ -106,7 +108,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, f
 
         // Trigger on changes
         registeredOnChange(currentValue);
-    };
+    }, []);
 
     useEffect(() => {
         if (values[field.name] !== null && values[field.name] !== undefined) {
@@ -164,7 +166,6 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, f
                     <div className="flexFluid"/>
                     <DisplayAction
                         actionKey="content-editor/field/3dots"
-                        formik={formik}
                         editorContext={editorContext}
                         field={field}
                         selectorType={selectorType}
@@ -191,7 +192,6 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, f
                     {inputContext.displayActions && registry.get('action', selectorType.key + 'Menu') && (
                         <div className={classes.actions}>
                             <DisplayAction actionKey={selectorType.key + 'Menu'}
-                                           formik={formik}
                                            field={field}
                                            selectorType={selectorType}
                                            inputContext={inputContext}
@@ -229,15 +229,12 @@ FieldCmp.propTypes = {
         key: PropTypes.string,
         supportMultiple: PropTypes.bool
     }).isRequired,
-    field: FieldPropTypes.isRequired,
-    formik: PropTypes.shape({
-        errors: PropTypes.object,
-        touched: PropTypes.object,
-        values: PropTypes.object,
-        setFieldValue: PropTypes.func,
-        setFieldTouched: PropTypes.func
-    }).isRequired
+    field: FieldPropTypes.isRequired
 };
 
-export const Field = withStyles(styles)(FieldCmp);
+const FieldStyled = withStyles(styles)(FieldCmp);
+FieldStyled.displayName = 'FieldStyled';
+
+export const Field = (FieldStyled);
+
 Field.displayName = 'Field';
