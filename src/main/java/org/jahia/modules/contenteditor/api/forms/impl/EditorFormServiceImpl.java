@@ -291,7 +291,8 @@ public class EditorFormServiceImpl implements EditorFormService {
                 formSectionsByName, false, false, true, processedProperties, false);
             processedNodeTypes.add(primaryNodeTypeName);
 
-            Set<ExtendedNodeType> nodeTypesToProcess = Arrays.stream(primaryNodeType.getSupertypes()).collect(Collectors.toSet());
+            Set<ExtendedNodeType> nodeTypesToProcess =
+                Arrays.stream(primaryNodeType.getSupertypes()).collect(Collectors.toCollection(LinkedHashSet::new));
 
             for (ExtendedNodeType superType : nodeTypesToProcess) {
                 generateAndMergeFieldSetForType(superType, uiLocale, locale, existingNode, parentNode, primaryNodeType,
