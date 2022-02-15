@@ -3,8 +3,8 @@ import {validateForm} from '~/Validation/validation.utils';
 import React, {useContext, useState} from 'react';
 import {ComponentRendererContext} from '@jahia/ui-extender';
 import * as PropTypes from 'prop-types';
-import {useFormikContext} from "formik";
-import {useContentEditorContext} from "~/ContentEditor.context";
+import {useFormikContext} from 'formik';
+import {useContentEditorContext} from '~/ContentEditor.context';
 
 const Create = ({render: Render, loading: Loading, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);

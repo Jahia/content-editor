@@ -33,7 +33,7 @@ const styles = theme => ({
     }
 });
 
-export const EditPanelContent = ({classes, isDirty}) => {
+export const EditPanelContent = ({classes}) => {
     const {mode, envProps} = useContentEditorConfigContext();
     const {hasPreview} = useContentEditorContext();
 
@@ -44,7 +44,7 @@ export const EditPanelContent = ({classes, isDirty}) => {
                 (
                     <TwoColumnsContent
                         classes={{root: classes.twoColumnsRoot, left: classes.left, right: classes.right}}
-                        rightCol={<PreviewContainer isDirty={isDirty}/>}
+                        rightCol={<PreviewContainer/>}
                         data-sel-mode={mode}
                     >
                         <FormBuilder mode={mode}/>
@@ -62,13 +62,8 @@ export const EditPanelContent = ({classes, isDirty}) => {
     );
 };
 
-EditPanelContent.defaultProps = {
-    isDirty: false
-};
-
 EditPanelContent.propTypes = {
-    classes: PropTypes.object.isRequired,
-    isDirty: PropTypes.bool
+    classes: PropTypes.object.isRequired
 };
 
 export default compose(

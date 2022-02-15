@@ -1,7 +1,6 @@
 import React from 'react';
 import classes from './AdvancedOptionsNavigation.scss';
 import {DisplayActions, registry} from '@jahia/ui-extender';
-import {useContentEditorContext} from '~/ContentEditor.context';
 import {MenuItem} from '@jahia/moonstone';
 import PropTypes from 'prop-types';
 import {useRegisterEngineTabActions} from '~/Edit/engineTabs/useRegisterEngineTabActions';
@@ -11,7 +10,6 @@ import {useTranslation} from 'react-i18next';
 
 export const AdvancedOptionsNavigation = ({activeOption, setActiveOption}) => {
     const {t} = useTranslation('content-editor');
-    const {mode, nodeData, siteInfo} = useContentEditorContext();
 
     // Engines tabs need the node Data to be registered
     const {tabs, loading, error} = useRegisterEngineTabActions();

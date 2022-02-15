@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import * as PropTypes from 'prop-types';
 
 export const ContentEditorSectionContext = React.createContext({});

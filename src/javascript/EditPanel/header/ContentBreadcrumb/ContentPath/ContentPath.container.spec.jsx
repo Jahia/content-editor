@@ -38,7 +38,7 @@ describe('ContentPathContainer', () => {
     let dispatch = jest.fn();
     let envProps = {
         back: jest.fn(),
-        shouldRedirectBeadCrumb: () => false
+        shouldRedirectBreadcrumb: () => false
     };
 
     beforeEach(() => {
@@ -66,7 +66,7 @@ describe('ContentPathContainer', () => {
         dispatch = jest.fn();
         envProps = {
             back: jest.fn(),
-            shouldRedirectBeadCrumb: () => false
+            shouldRedirectBreadcrumb: () => false
         };
 
         useQuery.mockClear();
@@ -262,7 +262,7 @@ describe('ContentPathContainer', () => {
     });
 
     it('handle redirects on item click with option to go back', () => {
-        envProps.shouldRedirectBeadCrumb = () => true;
+        envProps.shouldRedirectBreadcrumb = () => true;
 
         const wrapper = shallow(<ContentPathContainer {...defaultProps}/>);
         wrapper.find('ContentPath').simulate('itemClick', '/sites/mySiteXD/lord/rings');

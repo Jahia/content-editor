@@ -1,30 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {ButtonGroup, Chip, Edit, Typography} from '@jahia/moonstone';
+import {ButtonGroup, Chip, Typography} from '@jahia/moonstone';
 import {DisplayAction, DisplayActions} from '@jahia/ui-extender';
-
-import {useTranslation} from 'react-i18next';
 
 import PublicationInfoBadge from '~/PublicationInfo/PublicationInfo.badge';
 import LockInfoBadge from '~/Lock/LockInfo.badge';
 import WipInfoChip from '~/EditPanel/WorkInProgress/Chip/WipInfo.Chip';
-import {Constants} from '~/ContentEditor.constants';
 import {truncate} from '~/utils/helper';
 import styles from './UpperSection.scss';
 import {ButtonRenderer, ButtonWithPastilleRenderer} from '~/actions/ActionsButtons';
 import ContentBreadcrumb from '~/EditPanel/header/ContentBreadcrumb';
 import {useContentEditorContext} from '~/ContentEditor.context';
-import {useFormikContext} from 'formik';
+import {UnsavedChip} from '~/EditPanel/header/UnsavedChip';
 
-export const HeaderUpperSection = React.memo(({title, isCompact, isShowPublish}) => {
-    const {t} = useTranslation('content-editor');
-    const {nodeData, lang, mode, nodeTypeDisplayName} = useContentEditorContext();
-    const formik = useFormikContext();
-
-    const wipInfo = formik.values[Constants.wip.fieldName];
-    const isWip = wipInfo.status === Constants.wip.status.ALL_CONTENT ||
-    (wipInfo.status === Constants.wip.status.LANGUAGES && wipInfo.languages.includes(lang));
+export const HeaderUpperSection = ({title, isCompact, isShowPublish}) => {
+    const {nodeData, nodeTypeDisplayName} = useContentEditorContext();
 
     return (
         <>
@@ -73,6 +64,10 @@ export const HeaderUpperSection = React.memo(({title, isCompact, isShowPublish})
                                 target="content-editor/header/main-publish-actions"
                                 render={ButtonWithPastilleRenderer}
                             />
+
+                            {/* todo: find a way to disable menu ? following is ignored */}
+                            {/* enabled={!formik.dirty && !nodeData.lockedAndCannotBeEdited && !isWip} */}
+
                             <DisplayAction
                                 menuUseElementAnchor
                                 actionKey="publishMenu"
@@ -82,7 +77,6 @@ export const HeaderUpperSection = React.memo(({title, isCompact, isShowPublish})
                                     size: 'big',
                                     className: styles.menu
                                 }}
-                                enabled={!formik.dirty && !nodeData.lockedAndCannotBeEdited && !isWip}
                                 render={ButtonRenderer}
                             />
                         </ButtonGroup>
@@ -100,20 +94,14 @@ export const HeaderUpperSection = React.memo(({title, isCompact, isShowPublish})
                     <div className={styles.headerChips}>
                         <PublicationInfoBadge/>
                         <LockInfoBadge/>
-                        <WipInfoChip wipInfo={wipInfo}/>
-                        {(formik.dirty || mode === Constants.routes.baseCreateRoute) &&
-                        <Chip
-                            icon={<Edit/>}
-                            data-sel-role="unsaved-info-chip"
-                            label={t('content-editor:label.contentEditor.header.chips.unsavedLabel')}
-                            color="warning"
-                        />}
+                        <WipInfoChip/>
+                        <UnsavedChip/>
                     </div>
                 </div>
             )}
         </>
     );
-});
+};
 
 HeaderUpperSection.propTypes = {
     title: PropTypes.string.isRequired,

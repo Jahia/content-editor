@@ -31,8 +31,6 @@ export const UnsetFieldActionComponent = ({field, inputContext, render: Render, 
 UnsetFieldActionComponent.propTypes = {
     field: PropTypes.object.isRequired,
 
-    formik: PropTypes.object.isRequired,
-
     inputContext: PropTypes.object.isRequired,
 
     render: PropTypes.func.isRequired,

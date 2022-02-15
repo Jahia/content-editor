@@ -3,13 +3,11 @@ import PropTypes from 'prop-types';
 import {CopyLanguageDialog} from '~/EditPanel/CopyLanguageDialog';
 import {getFullLanguageName} from './copyLanguage.utils';
 import {ComponentRendererContext} from '@jahia/ui-extender';
-import {useContentEditorContext} from "~/ContentEditor.context";
-import {useFormikContext} from "formik";
+import {useContentEditorContext} from '~/ContentEditor.context';
 
 export const CopyLanguageActionComponent = ({render: Render, ...otherProps}) => {
     const {render, destroy} = useContext(ComponentRendererContext);
     const {nodeData, lang, siteInfo} = useContentEditorContext();
-    const formik = useFormikContext();
 
     return (
         <Render {...otherProps}
@@ -20,7 +18,6 @@ export const CopyLanguageActionComponent = ({render: Render, ...otherProps}) => 
                         uuid: nodeData.uuid,
                         language: getFullLanguageName(siteInfo.languages, lang),
                         availableLanguages: siteInfo.languages,
-                        formik: formik,
                         onCloseDialog: () => destroy('CopyLanguageDialog')
                     });
                 }}/>
@@ -30,7 +27,6 @@ export const CopyLanguageActionComponent = ({render: Render, ...otherProps}) => 
 CopyLanguageActionComponent.propTypes = {
     language: PropTypes.string.isRequired,
     siteInfo: PropTypes.object.isRequired,
-    formik: PropTypes.object.isRequired,
     nodeData: PropTypes.object.isRequired,
     render: PropTypes.func.isRequired
 };

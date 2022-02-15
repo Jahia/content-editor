@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import {Dialog, withStyles} from '@material-ui/core';
 import {ContentEditor} from '~/ContentEditor';
 import {Constants} from '~/ContentEditor.constants';
@@ -69,12 +69,14 @@ const ContentEditorApiCmp = ({classes, client}) => {
      * @param lang the current lang from url
      * @param uilang the preferred user lang for ui
      */
-    window.CE_API.edit = (uuid, site, lang, uilang, isWindow, editCallback) => {
+    window.CE_API.edit = useCallback((uuid, site, lang, uilang, isWindow, editCallback) => {
         // Sync GWT language
         if (window.authoringApi.switchLanguage) {
             window.authoringApi.switchLanguage(lang);
         }
 
+        setContentTypeSelectorConfig(true);
+        setConfirmationConfig(true);
         setEditorConfig({
             uuid,
             site,
@@ -85,7 +87,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
             isWindow,
             editCallback
         });
-    };
+    }, []);
 
     /**
      * Open content type selection then content editor as a modal to create a new content
@@ -162,6 +164,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
 
     // Standalone env props
     const envProps = {
+        formikRef,
         setFormikRef: formik => {
             formikRef.current = formik;
         },
@@ -223,7 +226,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
                 });
             }
         },
-        shouldRedirectBeadCrumb: () => true,
+        shouldRedirectBreadcrumb: () => true,
         isWindow: editorConfig?.isWindow
     };
 

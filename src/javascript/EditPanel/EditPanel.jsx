@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {HeaderLowerSection, HeaderUpperSection} from './header';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
@@ -10,50 +10,12 @@ import MainLayout from '~/DesignSystem/ContentLayout/MainLayout';
 import ContentHeader from '~/DesignSystem/ContentLayout/ContentHeader';
 import {Constants} from '~/ContentEditor.constants';
 import {Separator} from '@jahia/moonstone';
-import {useFormikContext} from 'formik';
+import {WindowListeners} from './WindowListeners';
 
-const handleBeforeUnloadEvent = ev => {
-    ev.preventDefault();
-    ev.returnValue = '';
-};
-
-const registerListeners = envProps => {
-    // Prevent close browser's tab when there is unsaved content
-    window.addEventListener('beforeunload', handleBeforeUnloadEvent);
-    if (envProps.registerListeners) {
-        envProps.registerListeners();
-    }
-};
-
-const unregisterListeners = envProps => {
-    window.removeEventListener('beforeunload', handleBeforeUnloadEvent);
-    if (envProps.unregisterListeners) {
-        envProps.unregisterListeners();
-    }
-};
-
-const EditPanel = ({title}) => {
-    const formik = useFormikContext();
+const EditPanel = React.memo(({title}) => {
     const [activeTab, setActiveTab] = useState(Constants.editPanel.editTab);
     const {nodeData, lang, mode} = useContentEditorContext();
     const {envProps} = useContentEditorConfigContext();
-
-    const previousDirty = useRef();
-
-    useEffect(() => {
-        if (envProps.setFormikRef) {
-            envProps.setFormikRef(formik);
-        }
-    }, [envProps, formik]);
-
-    useEffect(() => {
-        if (!previousDirty.current && formik.dirty) {
-            registerListeners(envProps);
-        }
-
-        previousDirty.current = formik.dirty;
-        return () => unregisterListeners(envProps);
-    }, [previousDirty, envProps, formik.dirty]);
 
     // Without edit tab, no content editor
     const tabs = registry.find({target: 'editHeaderTabsActions'});
@@ -76,17 +38,18 @@ const EditPanel = ({title}) => {
             </ContentHeader>
         }
         >
+            <WindowListeners/>
             <div className={classnames(activeTab === Constants.editPanel.editTab ? classes.tab : classes.hideTab, 'flexCol')}>
-                <EditTabComponent isDirty={formik.dirty} formik={formik} nodePath={nodeData.path} lang={lang}/>
+                <EditTabComponent nodePath={nodeData.path} lang={lang}/>
             </div>
             {OtherTabComponent && (
                 <div className={classnames(Constants.editPanel.editTab === activeTab ? classes.hideTab : classes.tab, 'flexCol')}>
-                    <OtherTabComponent isDirty={formik.dirty} formik={formik} nodePath={nodeData.path} lang={lang}/>
+                    <OtherTabComponent nodePath={nodeData.path} lang={lang}/>
                 </div>
             )}
         </MainLayout>
     );
-};
+});
 
 EditPanel.propTypes = {
     title: PropTypes.string.isRequired

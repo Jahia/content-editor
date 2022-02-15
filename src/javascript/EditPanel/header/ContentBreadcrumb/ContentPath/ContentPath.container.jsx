@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import {useDispatch, useSelector} from 'react-redux';
 import {useQuery} from '@apollo/react-hooks';
@@ -92,7 +92,7 @@ const ContentPathContainer = ({path, uuid, operator}) => {
                 }));
             }
 
-            if (envProps.shouldRedirectBeadCrumb()) {
+            if (envProps.shouldRedirectBreadcrumb()) {
                 envProps.back();
             }
         }
@@ -100,6 +100,9 @@ const ContentPathContainer = ({path, uuid, operator}) => {
 
     const node = data?.jcr?.node;
     const items = useMemo(() => getItems(mode, node), [node]);
+
+    let onCloseDialog = useCallback(() => setOpen(false), [setOpen]);
+    let actionCallback = useCallback(() => envProps.back(uuid, operator), [envProps, uuid, operator]);
 
     if (error) {
         return <>{error.message}</>;
@@ -110,9 +113,8 @@ const ContentPathContainer = ({path, uuid, operator}) => {
             <EditPanelDialogConfirmation
                 isOpen={open}
                 titleKey="content-editor:label.contentEditor.edit.action.goBack.title"
-                formik={formik}
-                actionCallback={() => envProps.back(uuid, operator)}
-                onCloseDialog={() => setOpen(false)}
+                actionCallback={actionCallback}
+                onCloseDialog={onCloseDialog}
             />
 
             <ContentPath items={items} onItemClick={handleNavigation}/>

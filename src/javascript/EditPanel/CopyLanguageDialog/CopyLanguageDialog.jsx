@@ -9,16 +9,17 @@ import {useApolloClient} from '@apollo/react-hooks';
 import {FormQuery} from '~/Edit/EditForm.gql-queries';
 import {getI18nFieldAndValues} from '~/Edit/copyLanguage/copyLanguage.utils';
 import {Constants} from '~/ContentEditor.constants';
+import {useFormikContext} from 'formik';
 
 export const CopyLanguageDialog = ({
     language,
     availableLanguages,
     isOpen,
     onCloseDialog,
-    formik,
     uuid
 }) => {
     const client = useApolloClient();
+    const formik = useFormikContext();
 
     const getDataFromSelectedLanguage = async language => {
         let variables = {
@@ -128,7 +129,6 @@ CopyLanguageDialog.propTypes = {
     language: PropTypes.string.isRequired,
     availableLanguages: PropTypes.array.isRequired,
     isOpen: PropTypes.bool.isRequired,
-    formik: PropTypes.object.isRequired,
     uuid: PropTypes.string.isRequired,
     onCloseDialog: PropTypes.func.isRequired
 };

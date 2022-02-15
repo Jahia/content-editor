@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 import {InputLabel, withStyles} from '@material-ui/core';
 import {Badge, Typography} from '@jahia/design-system-kit';
 import {Public} from '@material-ui/icons';
@@ -79,11 +79,11 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field}) 
     const wipInfo = values[Constants.wip.fieldName];
 
     // Lookup for registered on changes for given field selector type
-    const registeredOnChanges = [...registry.find({
+    const registeredOnChanges = useMemo(() => [...registry.find({
         type: 'selectorType.onChange',
         target: selectorType.key
-    }), ...registry.find({type: 'selectorType.onChange', target: '*'})];
-    const registeredOnChange = currentValue => {
+    }), ...registry.find({type: 'selectorType.onChange', target: '*'})], []);
+    const registeredOnChange = useCallback(currentValue => {
         if (registeredOnChanges && registeredOnChanges.length > 0) {
             registeredOnChanges.forEach(registeredOnChange => {
                 if (registeredOnChange.onChange) {
@@ -98,7 +98,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field}) 
         }
 
         onChangeValue.current = currentValue;
-    };
+    }, []);
 
     const onChange = React.useCallback(currentValue => {
         // Update formik

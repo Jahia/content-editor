@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import WorkInProgressDialog from './WorkInProgressDialog/WorkInProgressDialog';
 import {ComponentRendererContext} from '@jahia/ui-extender';
 import {Constants} from '~/ContentEditor.constants';
-import {useFormikContext} from "formik";
-import {useContentEditorContext} from "~/ContentEditor.context";
+import {useFormikContext} from 'formik';
+import {useContentEditorContext} from '~/ContentEditor.context';
 
 export const OpenWorkInProgressModal = ({render: Render, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);

@@ -5,7 +5,7 @@ import {ComponentRendererContext} from '@jahia/ui-extender';
 import * as PropTypes from 'prop-types';
 import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
 import {useFormikContext} from 'formik';
-import {useContentEditorContext} from "~/ContentEditor.context";
+import {useContentEditorContext} from '~/ContentEditor.context';
 
 const Save = ({render: Render, loading: Loading, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
@@ -30,7 +30,7 @@ const Save = ({render: Render, loading: Loading, ...otherProps}) => {
                     return formik
                         .submitForm()
                         .then(() => {
-                            formik.resetForm({values:formik.values});
+                            formik.resetForm({values: formik.values});
                         });
                 }
             }}

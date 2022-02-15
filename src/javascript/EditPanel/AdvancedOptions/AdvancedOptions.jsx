@@ -3,9 +3,8 @@ import {LayoutModule} from '@jahia/moonstone';
 import AdvancedOptionsNavigation from './AdvancedOptionsNavigation/AdvancedOptionsNavigation';
 import classes from './AdvancedOptions.scss';
 import {TechnicalInformation} from './TechnicalInformation/TechnicalInformation';
-import PropTypes from 'prop-types';
 
-export const AdvancedOptions = ({formik}) => {
+export const AdvancedOptions = () => {
     const [activeOption, setActiveOption] = useState('technicalInformation');
 
     const SelectedTabComponents = {
@@ -16,8 +15,7 @@ export const AdvancedOptions = ({formik}) => {
         <>
             <div className={classes.container}>
                 <LayoutModule
-                    navigation={<AdvancedOptionsNavigation formik={formik}
-                                                           activeOption={activeOption}
+                    navigation={<AdvancedOptionsNavigation activeOption={activeOption}
                                                            setActiveOption={setActiveOption}/>}
                     content={<SelectedTabComponent/>}
                     component="div"
@@ -27,7 +25,4 @@ export const AdvancedOptions = ({formik}) => {
     );
 };
 
-AdvancedOptions.propTypes = {
-    formik: PropTypes.object.isRequired
-};
 export default AdvancedOptions;

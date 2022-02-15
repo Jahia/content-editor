@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import * as PropTypes from 'prop-types';
 import {publishNode} from './publish.request';
 import {Constants} from '~/ContentEditor.constants';
@@ -7,7 +7,7 @@ import {useApolloClient} from '@apollo/react-hooks';
 import {useTranslation} from 'react-i18next';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {withNotifications} from '@jahia/react-material';
-import {useFormikContext} from "formik";
+import {useFormikContext} from 'formik';
 
 const Publish = ({notificationContext, render: Render, loading: Loading, ...otherProps}) => {
     const {publicationInfoPolling, publicationStatus, stopPublicationInfoPolling, startPublicationInfoPolling} = usePublicationInfoContext();
@@ -40,6 +40,19 @@ const Publish = ({notificationContext, render: Render, loading: Loading, ...othe
 
     const buttonLabel = publicationInfoPolling ? 'content-editor:label.contentEditor.edit.action.publish.namePolling' : 'content-editor:label.contentEditor.edit.action.publish.name';
 
+    let onClick = useCallback(() => {
+        publishNode({
+            client,
+            t,
+            notificationContext,
+            data: {
+                nodeData,
+                language: lang
+            },
+            successCallback: startPublicationInfoPolling
+        });
+    }, [client, t, notificationContext, nodeData, lang, startPublicationInfoPolling]);
+
     if (Loading) {
         return <Loading {...otherProps}/>;
     }
@@ -50,18 +63,7 @@ const Publish = ({notificationContext, render: Render, loading: Loading, ...othe
             enabled={enabled}
             disabled={disabled}
             buttonLabel={buttonLabel}
-            onClick={() => {
-                publishNode({
-                    client,
-                    t,
-                    notificationContext,
-                    data: {
-                        nodeData,
-                        language: lang
-                    },
-                    successCallback: startPublicationInfoPolling()
-                });
-            }}
+            onClick={onClick}
         />
     );
 };

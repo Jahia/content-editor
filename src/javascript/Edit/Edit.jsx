@@ -83,6 +83,11 @@ export const EditCmp = ({
             <PublicationInfoContextProvider uuid={nodeData.uuid} lang={lang}>
                 <Formik
                     validateOnMount
+                    innerRef={formik => {
+                        if (contentEditorConfigContext.envProps.setFormikRef) {
+                            contentEditorConfigContext.envProps.setFormikRef(formik);
+                        }
+                    }}
                     initialValues={initialValues}
                     validate={validate(sections)}
                     onSubmit={handleSubmit}

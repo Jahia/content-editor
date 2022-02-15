@@ -2,7 +2,7 @@ import React from 'react';
 import * as PropTypes from 'prop-types';
 import {Constants} from '~/ContentEditor.constants';
 import {useContentEditorContext} from '~/ContentEditor.context';
-import {useFormikContext} from "formik";
+import {useFormikContext} from 'formik';
 
 const StartWorkFlow = ({isMainButton, render: Render, loading: Loading, ...otherProps}) => {
     const {nodeData, lang} = useContentEditorContext();
