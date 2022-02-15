@@ -75,8 +75,6 @@ const ContentEditorApiCmp = ({classes, client}) => {
             window.authoringApi.switchLanguage(lang);
         }
 
-        setContentTypeSelectorConfig(true);
-        setConfirmationConfig(true);
         setEditorConfig({
             uuid,
             site,
@@ -250,8 +248,8 @@ const ContentEditorApiCmp = ({classes, client}) => {
                         TransitionComponent={Transition}
                         aria-labelledby="dialog-content-editor"
                         classes={{root: classes.ceDialogRoot}}
-                        disableAutoFocus="true"
-                        disableEnforceFocus="true"
+                        disableAutoFocus={true}
+                        disableEnforceFocus={true}
                         onClose={() => (formikRef.current && formikRef.current.dirty) ? setConfirmationConfig(true) : closeAll()}
                 >
                     {confirmationConfig && <EditPanelDialogConfirmation
