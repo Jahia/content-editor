@@ -5,6 +5,9 @@ import {dsGenericTheme} from '@jahia/design-system-kit';
 import Text from '~/SelectorTypes/Text/Text';
 import {MultipleFieldCmp} from './MultipleField';
 import {TextAreaField} from '~/SelectorTypes/TextArea/TextArea';
+import {useFormikContext} from "formik";
+
+jest.mock('formik');
 
 jest.mock('react', () => {
     return {
@@ -17,6 +20,11 @@ describe('Multiple component', () => {
     let defaultProps;
 
     beforeEach(() => {
+        useFormikContext.mockReturnValue( {
+            values: {
+                text: ['Dummy1', 'Dummy2']
+            }
+        });
         defaultProps = {
             editorContext: {},
             field: {
@@ -34,11 +42,6 @@ describe('Multiple component', () => {
                 readOnly: false,
                 selectorType: 'Text',
                 selectorOptions: []
-            },
-            formik: {
-                values: {
-                    text: ['Dummy1', 'Dummy2']
-                }
             },
             inputContext: {
                 fieldComponent: () => <></>
@@ -73,15 +76,11 @@ describe('Multiple component', () => {
     });
 
     it('should call onChange when modifying a value', () => {
-        const arraycmp = generateFieldArrayCmp();
-        const field2 = generateFieldCmp(arraycmp, 1).dive().dive();
+        const arrayCmp = generateFieldArrayCmp();
+        const field2 = generateFieldCmp(arrayCmp, 1);
 
         // Change field2
-        field2.simulate('change', {
-            target: {
-                value: 'Updated2'
-            }
-        });
+        field2.simulate('change', 'Updated2');
         expect(defaultProps.onChange.mock.calls.length).toBe(1);
         expect(defaultProps.onChange).toHaveBeenCalledWith(['Dummy1', 'Updated2', 'Dummy3']);
     });
@@ -111,11 +110,11 @@ describe('Multiple component', () => {
     });
 
     let generateFieldArrayCmp = () => {
-        defaultProps.formik = {
+        useFormikContext.mockReturnValue( {
             values: {
                 text: ['Dummy1', 'Dummy2', 'Dummy3']
             }
-        };
+        });
 
         defaultProps.inputContext.fieldComponent = props => <TextAreaField {...props}/>;
         return shallowWithTheme(
@@ -126,6 +125,6 @@ describe('Multiple component', () => {
     };
 
     const generateFieldCmp = (arrayCmp, index) => {
-        return arrayCmp.find('FormikConnect(FastFieldInner)').at(index).renderProp('children')();
+        return arrayCmp.find('FormikConnect(FastFieldInner)').at(index);
     };
 });

@@ -10,6 +10,7 @@ import {useContentEditorConfigContext} from '~/ContentEditor.context';
 import {GetContentPath} from './ContentPath.gql-queries';
 import ContentPathContainer from './ContentPath.container';
 import {Constants} from '~/ContentEditor.constants';
+import {useFormikContext} from "formik";
 
 jest.mock('connected-react-router', () => ({
     push: jest.fn()
@@ -32,6 +33,8 @@ jest.mock('@apollo/react-hooks', () => ({
     useQuery: jest.fn().mockReturnValue({})
 }));
 
+jest.mock('formik');
+
 describe('ContentPathContainer', () => {
     let defaultProps;
 
@@ -42,10 +45,9 @@ describe('ContentPathContainer', () => {
     };
 
     beforeEach(() => {
+        useFormikContext.mockReturnValue({dirty:false})
+
         defaultProps = {
-            formik: {
-                dirty: false
-            },
             uuid: '123',
             operator: 'op'
         };
@@ -222,7 +224,7 @@ describe('ContentPathContainer', () => {
     });
 
     it('handle redirects on item click with dirty form', () => {
-        defaultProps.formik.dirty = true;
+        useFormikContext.mockReturnValue({dirty:true})
 
         const wrapper = shallow(<ContentPathContainer {...defaultProps}/>);
         wrapper.find('ContentPath').simulate('itemClick', '/x/y/z');

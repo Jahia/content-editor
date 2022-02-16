@@ -42,6 +42,8 @@ export const EditPanelDialogConfirmation = React.memo(({titleKey, isOpen, onClos
     );
 });
 
+EditPanelDialogConfirmation.name = 'EditPanelDialogConfirmation';
+
 EditPanelDialogConfirmation.propTypes = {
     titleKey: PropTypes.string.isRequired,
     isOpen: PropTypes.bool.isRequired,
