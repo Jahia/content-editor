@@ -1,10 +1,17 @@
 import {useQuery} from '@apollo/react-hooks';
+import {useMemo} from 'react';
 
 export const useFormDefinition = (query, queryParams, adapter, t, contentEditorConfigContext) => {
     const {loading, error, data, refetch} = useQuery(query, {
         variables: queryParams,
         fetchPolicy: 'network-only'
     });
+
+    const dataCached = useMemo(() => {
+        if (!error && !loading && data.jcr) {
+            return adapter(data, queryParams.uilang, t, contentEditorConfigContext);
+        }
+    }, [data, queryParams.uilang, t, contentEditorConfigContext, error, loading]);
 
     if (error || loading || !data.jcr) {
         return {
@@ -14,5 +21,5 @@ export const useFormDefinition = (query, queryParams, adapter, t, contentEditorC
         };
     }
 
-    return {data: adapter(data, queryParams.uilang, t, contentEditorConfigContext), refetch};
+    return {data: dataCached, refetch};
 };

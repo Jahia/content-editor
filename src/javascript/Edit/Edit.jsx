@@ -3,7 +3,11 @@ import {withNotifications} from '@jahia/react-material';
 import {Formik} from 'formik';
 import EditPanel from '~/EditPanel';
 import * as PropTypes from 'prop-types';
-import {useContentEditorContext, withContentEditorDataContextProvider} from '~/ContentEditor.context';
+import {
+    useContentEditorContext,
+    withContentEditorDataContextProvider,
+    useContentEditorConfigContext
+} from '~/ContentEditor.context';
 import {validate} from '~/Validation/validation';
 import {saveNode} from './save/save.request';
 import {PublicationInfoContextProvider} from '~/PublicationInfo/PublicationInfo.context';
@@ -12,7 +16,6 @@ import {useTranslation} from 'react-i18next';
 import {FormQuery} from './EditForm.gql-queries';
 import {withApollo} from 'react-apollo';
 import {compose} from '~/utils';
-import {useContentEditorConfigContext} from '~/ContentEditor.context';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import {useDispatch} from 'react-redux';
 import {invalidateRefetch} from '~/EditPanel/EditPanel.refetches';
@@ -49,7 +52,10 @@ export const EditCmp = ({
                 const overridedStoredLocation = contentEditorConfigContext.envProps.handleRename && contentEditorConfigContext.envProps.handleRename(node, mutateNode);
                 // Trigger Page Composer to reload iframe if system name was renamed
                 if (node.path !== mutateNode.node.path) {
-                    dispatch(pcNavigateTo({oldPath: node.path, newPath: mutateNode.node.path}));
+                    if (contentEditorConfigContext.env === 'standalone') {
+                        dispatch(pcNavigateTo({oldPath: node.path, newPath: mutateNode.node.path}));
+                    }
+
                     invalidateRefetch(`${getPreviewPath(nodeData)}_${lang}`);
                 }
 
@@ -76,7 +82,6 @@ export const EditCmp = ({
         <>
             <PublicationInfoContextProvider uuid={nodeData.uuid} lang={lang}>
                 <Formik
-                    enableReinitialize
                     validateOnMount
                     initialValues={initialValues}
                     validate={validate(sections)}
