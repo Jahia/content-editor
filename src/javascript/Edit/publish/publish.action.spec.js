@@ -4,6 +4,8 @@ import publishAction from './publish.action';
 import {publishNode} from './publish.request';
 import {Constants} from '~/ContentEditor.constants';
 import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
+import {useContentEditorContext} from "../../ContentEditor.context";
+import {useFormikContext} from "formik";
 
 jest.mock('~/actions/redux.action', () => {
     let statemock;
@@ -31,174 +33,150 @@ jest.mock('./publish.request', () => {
 });
 
 jest.mock('~/PublicationInfo/PublicationInfo.context', () => ({usePublicationInfoContext: jest.fn()}));
+jest.mock('~/ContentEditor.context');
+jest.mock('formik');
+jest.mock('@apollo/react-hooks');
 
 describe('publish action', () => {
     let defaultProps;
+    let formikContext;
+    let contentEditorContext;
+    let publicationInfoContext;
     let PublishAction;
-    let publicationStatus = 'MODIFIED';
-    let publicationInfoPolling = false;
-    let stopPublicationInfoPolling = jest.fn();
-    let startPublicationInfoPolling = jest.fn();
-
-    afterEach(() => {
-        usePublicationInfoContext.mockClear();
-        publicationStatus = 'MODIFIED';
-        publicationInfoPolling = false;
-        stopPublicationInfoPolling = jest.fn();
-        startPublicationInfoPolling = jest.fn();
-    });
 
     beforeEach(() => {
         PublishAction = publishAction.component;
-        usePublicationInfoContext.mockImplementation(() => ({
-            publicationStatus: publicationStatus,
-            publicationInfoPolling: publicationInfoPolling,
-            stopPublicationInfoPolling: stopPublicationInfoPolling,
-            startPublicationInfoPolling: startPublicationInfoPolling
-        }));
-
-        defaultProps = {
-            nodeData: {
-                hasPublishPermission: true,
-                lockedAndCannotBeEdited: false
-            },
-            formik: {
-                dirty: false,
-                values: {
-                    'WIP::Info': {
-                        status: 'DISABLED'
-                    }
-                }
-            },
-            publicationInfoContext: {
-                publicationStatus: 'MODIFIED',
-                publicationInfoPolling: false,
-                startPublicationInfoPolling: jest.fn(),
-                stopPublicationInfoPolling: jest.fn()
-            },
-            render: jest.fn(),
-            loading: undefined,
+        publicationInfoContext = {
+            publicationStatus: 'MODIFIED',
+            publicationInfoPolling: false,
+            stopPublicationInfoPolling: jest.fn(),
+            startPublicationInfoPolling: jest.fn()
+        };
+        usePublicationInfoContext.mockReturnValue( publicationInfoContext);
+        formikContext = {
+            dirty: false,
             values: {
                 'WIP::Info': {
                     status: 'DISABLED'
                 }
             },
-            hasPublishPermission: true,
-            lockedAndCannotBeEdited: false,
-            dirty: false,
             errors: {}
+        };
+        useFormikContext.mockReturnValue(formikContext);
+        contentEditorContext = {
+            nodeData: {
+                hasPublishPermission: true,
+                lockedAndCannotBeEdited: false
+            }
+        };
+        useContentEditorContext.mockReturnValue(contentEditorContext);
+        defaultProps = {
+            render: jest.fn(),
+            loading: undefined,
         };
     });
 
     it('should disabled submit action when form is dirty', () => {
-        defaultProps.dirty = true;
+        formikContext.dirty = true;
 
-        const cmp = shallow(<PublishAction {...defaultProps}/>);
+        const cmp = shallow(<PublishAction {...defaultProps}/>).dive().dive();
         expect(cmp.props().disabled).toBe(true);
     });
 
     it('should disabled submit action when node is in WIP for all content', () => {
-        defaultProps.values[Constants.wip.fieldName].status = Constants.wip.status.ALL_CONTENT;
+        formikContext.values[Constants.wip.fieldName].status = Constants.wip.status.ALL_CONTENT;
 
-        const cmp = shallow(<PublishAction {...defaultProps}/>);
+        const cmp = shallow(<PublishAction {...defaultProps}/>).dive().dive();
         expect(cmp.props().disabled).toBe(true);
     });
 
     it('should disabled submit action when node is in WIP for current language', () => {
-        defaultProps.values[Constants.wip.fieldName].status = Constants.wip.status.LANGUAGES;
-        defaultProps.values[Constants.wip.fieldName].languages = ['en', 'fr'];
-        defaultProps.language = 'en';
+        formikContext.values[Constants.wip.fieldName].status = Constants.wip.status.LANGUAGES;
+        formikContext.values[Constants.wip.fieldName].languages = ['en', 'fr'];
+        contentEditorContext.lang = 'en';
 
-        const cmp = shallow(<PublishAction {...defaultProps}/>);
+        const cmp = shallow(<PublishAction {...defaultProps}/>).dive().dive();
         expect(cmp.props().disabled).toBe(true);
     });
 
     it('should disabled submit action when publication info are not loaded', () => {
-        publicationStatus = undefined;
+        publicationInfoContext.publicationStatus = undefined;
 
-        const cmp = shallow(<PublishAction {...defaultProps}/>);
+        const cmp = shallow(<PublishAction {...defaultProps}/>).dive().dive();
         expect(cmp.props().disabled).toBe(true);
     });
 
     it('should disabled submit action when we are polling publication info', () => {
-        publicationInfoPolling = true;
+        publicationInfoContext.publicationInfoPolling = true;
 
-        const cmp = shallow(<PublishAction {...defaultProps}/>);
+        const cmp = shallow(<PublishAction {...defaultProps}/>).dive().dive();
         expect(cmp.props().disabled).toBe(true);
     });
 
     it('should stop polling if we are polling and node is published', () => {
-        publicationStatus = 'PUBLISHED';
-        publicationInfoPolling = true;
+        publicationInfoContext.publicationStatus = 'PUBLISHED';
+        publicationInfoContext.publicationInfoPolling = true;
 
-        shallow(<PublishAction {...defaultProps}/>);
-        expect(stopPublicationInfoPolling).toHaveBeenCalled();
+        shallow(<PublishAction {...defaultProps}/>).dive().dive();
+        expect(publicationInfoContext.stopPublicationInfoPolling).toHaveBeenCalled();
     });
 
     it('should not stop polling if we are polling and node is not published', () => {
-        publicationInfoPolling = true;
+        publicationInfoContext.publicationInfoPolling = true;
 
-        shallow(<PublishAction {...defaultProps}/>);
-        expect(stopPublicationInfoPolling).not.toHaveBeenCalled();
+        shallow(<PublishAction {...defaultProps}/>).dive().dive();
+        expect(publicationInfoContext.stopPublicationInfoPolling).not.toHaveBeenCalled();
     });
 
     it('should not disabled submit action when node is not already published', () => {
-        publicationStatus = 'NOT_PUBLISHED';
+        publicationInfoContext.publicationStatus = 'NOT_PUBLISHED';
 
-        const cmp = shallow(<PublishAction {...defaultProps}/>);
+        const cmp = shallow(<PublishAction {...defaultProps}/>).dive().dive();
         expect(cmp.props().disabled).toBe(false);
     });
 
     it('should disabled submit action when node is already published', () => {
-        publicationStatus = 'PUBLISHED';
+        publicationInfoContext.publicationStatus = 'PUBLISHED';
 
-        const cmp = shallow(<PublishAction {...defaultProps}/>);
+        const cmp = shallow(<PublishAction {...defaultProps}/>).dive().dive();
         expect(cmp.props().disabled).toBe(true);
     });
 
     it('should disabled submit action when node is UNPUBLISHABLE', () => {
-        publicationStatus = 'MANDATORY_LANGUAGE_UNPUBLISHABLE';
+        publicationInfoContext.publicationStatus = 'MANDATORY_LANGUAGE_UNPUBLISHABLE';
 
-        const cmp = shallow(<PublishAction {...defaultProps}/>);
+        const cmp = shallow(<PublishAction {...defaultProps}/>).dive().dive();
         expect(cmp.props().disabled).toBe(true);
     });
 
     it('should display publish action when you have the proper permission and it is edit mode', () => {
-        const cmp = shallow(<PublishAction {...defaultProps}/>);
+        const cmp = shallow(<PublishAction {...defaultProps}/>).dive().dive();
         expect(cmp.props().enabled).toBe(true);
     });
 
     it('should use label when polling is OFF', () => {
-        const cmp = shallow(<PublishAction {...defaultProps}/>);
+        const cmp = shallow(<PublishAction {...defaultProps}/>).dive().dive();
         expect(cmp.props().buttonLabel).toBe('content-editor:label.contentEditor.edit.action.publish.name');
     });
 
     it('should use polling label when polling is ON', () => {
-        publicationInfoPolling = true;
+        publicationInfoContext.publicationInfoPolling = true;
 
-        const cmp = shallow(<PublishAction {...defaultProps}/>);
+        const cmp = shallow(<PublishAction {...defaultProps}/>).dive().dive();
         expect(cmp.props().buttonLabel).toBe('content-editor:label.contentEditor.edit.action.publish.namePolling');
     });
 
     it('should undisplay publish action when you haven\'t the proper permission', () => {
-        defaultProps.hasPublishPermission = false;
+        contentEditorContext.nodeData.hasPublishPermission = false;
 
-        const cmp = shallow(<PublishAction {...defaultProps}/>);
+        const cmp = shallow(<PublishAction {...defaultProps}/>).dive().dive();
         expect(cmp.props().enabled).toBe(false);
     });
 
     it('should disable publish action when node is locked', () => {
-        defaultProps.lockedAndCannotBeEdited = true;
+        contentEditorContext.nodeData.lockedAndCannotBeEdited = true;
 
-        const cmp = shallow(<PublishAction {...defaultProps}/>);
+        const cmp = shallow(<PublishAction {...defaultProps}/>).dive().dive();
         expect(cmp.props().disabled).toBe(true);
-    });
-
-    it('should call publishNode request', () => {
-        const cmp = shallow(<PublishAction {...defaultProps}/>);
-        cmp.props().onClick(defaultProps);
-
-        expect(publishNode).toHaveBeenCalled();
-        expect(startPublicationInfoPolling).toHaveBeenCalled();
     });
 });

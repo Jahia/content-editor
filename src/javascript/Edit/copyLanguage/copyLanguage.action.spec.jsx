@@ -2,6 +2,7 @@ import React, {useContext} from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {CopyLanguageActionComponent} from './copyLanguage.action';
+import {useContentEditorContext} from "../../ContentEditor.context";
 
 jest.mock('react', () => {
     return {
@@ -10,30 +11,33 @@ jest.mock('react', () => {
     };
 });
 
+jest.mock('../../ContentEditor.context');
+
 describe('copy language action', () => {
     let defaultProps;
-
+    let contentEditorContext;
     beforeEach(() => {
-        defaultProps = {
-            formik: {},
-            mode: 'edit',
+        contentEditorContext = {
             nodeData: {
                 uuid: '12345-321456-1234565789',
                 hasWritePermission: true
             },
-            language: 'fr',
+            lang: 'fr',
             siteInfo: {
                 languages: [
                     {displayName: 'Deutsch', language: 'de', activeInEdit: true},
                     {displayName: 'Français', language: 'fr', activeInEdit: true}
                 ]
-            },
+            }
+        }
+        useContentEditorContext.mockReturnValue(contentEditorContext)
+        defaultProps = {
             render: () => ''
         };
     });
 
     it('should render not be enabled when the user has no write access', () => {
-        defaultProps.nodeData.hasWritePermission = false;
+        contentEditorContext.nodeData.hasWritePermission = false;
         const cmp = shallowWithTheme(
             <CopyLanguageActionComponent {...defaultProps}/>,
             {},
@@ -54,8 +58,8 @@ describe('copy language action', () => {
     });
 
     it('should render not be enabled when there is only one language', () => {
-        defaultProps.language = 'en';
-        defaultProps.siteInfo.languages = [
+        contentEditorContext.language = 'en';
+        contentEditorContext.siteInfo.languages = [
             {displayName: 'English', language: 'en', activeInEdit: true}
         ];
         const cmp = shallowWithTheme(<CopyLanguageActionComponent {...defaultProps}/>,

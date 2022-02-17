@@ -34,8 +34,6 @@ describe('EditPanelLanguageSwitcher', () => {
             {},
             dsGenericTheme
         )
-            .dive()
-            .dive();
 
         expect(cmp.find('Dropdown').exists()).toBe(true);
     });
@@ -46,8 +44,6 @@ describe('EditPanelLanguageSwitcher', () => {
             {},
             dsGenericTheme
         )
-            .dive()
-            .dive();
 
         expect(cmp.find('EditPanelDialogConfirmation').exists()).toBe(true);
     });

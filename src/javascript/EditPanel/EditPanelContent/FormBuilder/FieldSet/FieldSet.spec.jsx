@@ -2,24 +2,13 @@ import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {FieldSet} from './FieldSet';
+import {useFormikContext} from "formik";
 
-jest.mock('formik', () => {
-    let formikvaluesmock;
-
-    return {
-        Form: jest.fn(),
-        connect: Cmp => props => (
-            <Cmp {...props} formik={{values: formikvaluesmock}}/>
-        ),
-        setFormikValues: values => {
-            formikvaluesmock = values;
-        }
-    };
-});
+jest.mock('formik');
 
 describe('FieldSet component', () => {
     let props;
-
+    let formikContext;
     beforeEach(() => {
         props = {
             fieldset: {
@@ -30,11 +19,12 @@ describe('FieldSet component', () => {
                     {displayName: 'field1', name: 'field1'},
                     {displayName: 'field2', name: 'field2'}
                 ]
-            },
-            formik: {
-                values: {}
             }
-        };
+        }
+        formikContext =  {
+            values: {}
+        }
+        useFormikContext.mockReturnValue(formikContext);
     });
 
     it('should display FieldSet name', () => {
@@ -43,7 +33,6 @@ describe('FieldSet component', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
 
         expect(cmp.debug()).toContain(props.fieldset.displayName);
@@ -55,7 +44,6 @@ describe('FieldSet component', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
 
         props.fieldset.fields.forEach(field => {
@@ -71,7 +59,6 @@ describe('FieldSet component', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
 
         const toggleCmp = cmp.find('WithStyles(ToggleCmp)');
@@ -88,7 +75,6 @@ describe('FieldSet component', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
 
         const toggleCmp = cmp.find('WithStyles(ToggleCmp)');
@@ -104,7 +90,6 @@ describe('FieldSet component', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
 
         expect(cmp.find('WithStyles(ToggleCmp)').exists()).toBe(false);
