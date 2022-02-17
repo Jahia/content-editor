@@ -68,6 +68,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
@@ -235,9 +236,14 @@ public class GqlEditorForms {
     @GraphQLName("ckeditorConfigPath")
     @GraphQLDescription("Retrieve the custom configuration path for CKEditor")
     public String ckeditorConfigPath(@GraphQLName("nodePath") @GraphQLDescription("node path") String nodePath) throws RepositoryException {
+        String configPath;
         // Retrieve custom configuration from template set module
-        String templatesSet = getSession().getNode(nodePath).getResolveSite().getPropertyAsString("j:templatesSet");
-        String configPath = getConfigPath(templatesSet, "/javascript/ckeditor_config.js");
+        try {
+            String templatesSet = getSession().getNode(nodePath).getResolveSite().getPropertyAsString("j:templatesSet");
+            configPath = getConfigPath(templatesSet, "/javascript/ckeditor_config.js");
+        } catch (PathNotFoundException e) {
+            configPath = "";
+        }
 
         // Otherwise, retrieve custom configuration from global configuration
         if (configPath.isEmpty()) {
@@ -252,12 +258,15 @@ public class GqlEditorForms {
     @GraphQLDescription("Retrieve the toolbar type for CKEditor")
     public String ckeditorToolbar(@GraphQLName("nodePath") @GraphQLDescription("node path") String nodePath) throws RepositoryException {
         String toolbar = "Light";
-
-        JCRNodeWrapper node = getSession().getNode(nodePath);
-        if (node.hasPermission("view-full-wysiwyg-editor")) {
-            toolbar = "Full";
-        } else if (node.hasPermission("view-basic-wysiwyg-editor")) {
-            toolbar = "Basic";
+        try {
+            JCRNodeWrapper node = getSession().getNode(nodePath);
+            if (node.hasPermission("view-full-wysiwyg-editor")) {
+                toolbar = "Full";
+            } else if (node.hasPermission("view-basic-wysiwyg-editor")) {
+                toolbar = "Basic";
+            }
+        } catch (PathNotFoundException e) {
+            logger.debug("Path does not exist {}", nodePath);
         }
 
         return toolbar;

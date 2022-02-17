@@ -97,12 +97,12 @@ const ContentPathContainer = ({path, ...context}) => {
         }
     };
 
-    if (error) {
-        console.log(error);
-    }
-
     const node = data?.jcr?.node;
     const items = useMemo(() => getItems(mode, node), [node]);
+
+    if (error) {
+        return <>{error.message}</>;
+    }
 
     return (
         <>
