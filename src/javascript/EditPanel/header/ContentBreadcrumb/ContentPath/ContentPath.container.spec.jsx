@@ -183,14 +183,35 @@ describe('ContentPathContainer', () => {
             }
         }));
 
-        shallow(<ContentPathContainer {...defaultProps}/>);
-        expect(console.log).toHaveBeenCalledWith({
-            message: 'The error is here!',
-            code: '25'
-        });
+        const wrapper = shallow(<ContentPathContainer {...defaultProps}/>);
+        expect(wrapper.text()).toContain('The error is here!');
     });
 
     it('handle redirects on item click', () => {
+        const ancestors = [{
+            uuid: 'x',
+            path: '/x',
+            isVisibleInContentTree: true
+        }, {
+            uuid: 'y',
+            path: '/x/y',
+            isVisibleInContentTree: true
+        }, {
+            uuid: 'z',
+            path: '/x/y/z',
+            isVisibleInContentTree: true
+        }];
+
+        useQuery.mockImplementation(() => ({
+            data: {
+                jcr: {
+                    node: {
+                        isVisibleInContentTree: true,
+                        ancestors: ancestors
+                    }
+                }
+            }
+        }));
         const wrapper = shallow(<ContentPathContainer {...defaultProps}/>);
         wrapper.find('ContentPath').simulate('itemClick', '/x/y/z');
 
