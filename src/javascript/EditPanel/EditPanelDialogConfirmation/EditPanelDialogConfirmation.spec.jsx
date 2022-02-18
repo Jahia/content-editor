@@ -2,9 +2,13 @@ import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {EditPanelDialogConfirmation} from './';
+import {useFormikContext} from "formik";
+
+jest.mock('formik');
 
 describe('EditPanelDialogConfirmation', () => {
     let defaultProps;
+    let formik;
 
     beforeEach(() => {
         defaultProps = {
@@ -13,8 +17,9 @@ describe('EditPanelDialogConfirmation', () => {
             t: jest.fn(key => 'translated_' + key),
             onCloseDialog: jest.fn(),
             actionCallback: jest.fn(),
-            formik: {}
         };
+        formik = {};
+        useFormikContext.mockReturnValue(formik);
     });
 
     it('should hide dialog confirmation when open is false', () => {
@@ -56,11 +61,11 @@ describe('EditPanelDialogConfirmation', () => {
             dsGenericTheme
         ).dive();
 
-        expect(cmp.find('Button').at(2).props().isDisabled).toBe(false);
+        expect(cmp.find('SaveButton').dive().props().isDisabled).toBe(false);
     });
 
     it('should disable the save changes button when there are validation errors', () => {
-        defaultProps.formik.errors = {
+        formik.errors = {
             field1: 'required',
             field2: 'required'
         };
@@ -71,6 +76,6 @@ describe('EditPanelDialogConfirmation', () => {
             dsGenericTheme
         ).dive();
 
-        expect(cmp.find('Button').at(2).props().isDisabled).toBe(true);
+        expect(cmp.find('SaveButton').dive().props().isDisabled).toBe(true);
     });
 });

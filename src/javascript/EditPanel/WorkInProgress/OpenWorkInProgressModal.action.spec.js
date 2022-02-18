@@ -2,6 +2,8 @@ import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {OpenWorkInProgressModal} from './OpenWorkInProgressModal.action';
+import {useFormikContext} from "formik";
+import {useContentEditorContext} from "~/ContentEditor.context";
 
 jest.mock('react', () => {
     return {
@@ -9,22 +11,33 @@ jest.mock('react', () => {
         useContext: jest.fn(() => ({}))
     };
 });
+jest.mock('formik');
+jest.mock('~/ContentEditor.context');
 
 describe('WorkInProgressDialog', () => {
     let defaultProps;
+    let formik;
+    let contentEditorContext;
     let componentRenderer;
     beforeEach(() => {
         defaultProps = {
+              otherProps: true,
+            render: () => ''
+        };
+
+        formik = {
+            setFieldValue: () => jest.fn(),
+            values: {
+                'WIP::Info': {}
+            }
+        };
+
+        useFormikContext.mockReturnValue(formik);
+        contentEditorContext = {
             siteInfo: {
                 languages: ['fr', 'en']
             },
-            language: 'fr',
-            formik: {
-                setFieldValue: () => jest.fn(),
-                values: {
-                    'WIP::Info': {}
-                }
-            },
+            lang: 'fr',
             nodeData: {
                 hasWritePermission: true,
                 primaryNodeType:
@@ -32,9 +45,8 @@ describe('WorkInProgressDialog', () => {
                         name: 'jnt:content'
                     }
             },
-            otherProps: true,
-            render: () => ''
         };
+        useContentEditorContext.mockReturnValue(contentEditorContext);
 
         componentRenderer = {
             render: jest.fn()
@@ -43,7 +55,7 @@ describe('WorkInProgressDialog', () => {
     });
 
     it('should be disbabled if no write permission', () => {
-        defaultProps.nodeData.hasWritePermission = false;
+        contentEditorContext.nodeData.hasWritePermission = false;
         const cmp = shallowWithTheme(
             <OpenWorkInProgressModal {...defaultProps}/>,
             {},
@@ -76,7 +88,7 @@ describe('WorkInProgressDialog', () => {
     });
 
     it('should not display WIP modal when there is only one language', () => {
-        defaultProps.siteInfo.languages = ['fr'];
+        contentEditorContext.siteInfo.languages = ['fr'];
         const cmp = shallowWithTheme(
             <OpenWorkInProgressModal {...defaultProps}/>,
             {},
@@ -99,7 +111,7 @@ describe('WorkInProgressDialog', () => {
     });
 
     it('should not enabled WIP when is virtual site node type', () => {
-        defaultProps.nodeData.primaryNodeType.name = 'jnt:virtualsite';
+        contentEditorContext.nodeData.primaryNodeType.name = 'jnt:virtualsite';
         const cmp = shallowWithTheme(
             <OpenWorkInProgressModal {...defaultProps}/>,
             {},

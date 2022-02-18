@@ -3,6 +3,7 @@ import {shallow} from '@jahia/test-framework';
 import saveAction from './save.action';
 import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
 import {useContentEditorContext} from '~/ContentEditor.context';
+import {useFormikContext} from "formik";
 
 jest.mock('react', () => {
     return {
@@ -12,12 +13,13 @@ jest.mock('react', () => {
 });
 
 jest.mock('~/PublicationInfo/PublicationInfo.context', () => ({usePublicationInfoContext: jest.fn()}));
-
+jest.mock('formik');
 jest.mock('~/ContentEditor.context', () => ({useContentEditorContext: jest.fn()}));
 
 describe('save action', () => {
     let SaveAction;
     let defaultProps;
+    let formik;
     let render = jest.fn();
 
     beforeEach(() => {
@@ -26,18 +28,18 @@ describe('save action', () => {
         useContentEditorContext.mockImplementation(() => ({refetchFormData: jest.fn()}));
         usePublicationInfoContext.mockImplementation(() => ({publicationInfoPolling: jest.fn()}));
         defaultProps = {
-            formik: {
-                submitForm: jest.fn(() => Promise.resolve()),
-                resetForm: jest.fn(() => Promise.resolve()),
-                setFieldValue: jest.fn(),
-                setTouched: jest.fn(() => Promise.resolve()),
-                validateForm: jest.fn(() => Promise.resolve(defaultProps.errors)),
-                dirty: true,
-                errors: {}
-            },
             renderComponent: jest.fn(), render, loading: undefined, dirty: true,
-            errors: {}
         };
+        formik = {
+            submitForm: jest.fn(() => Promise.resolve()),
+            resetForm: jest.fn(() => Promise.resolve()),
+            setFieldValue: jest.fn(),
+            setTouched: jest.fn(() => Promise.resolve()),
+            validateForm: jest.fn(() => Promise.resolve(formik.errors)),
+            dirty: true,
+            errors: {}
+        }
+        useFormikContext.mockReturnValue(formik);
     });
 
     it('should load when loading', async () => {
@@ -49,11 +51,11 @@ describe('save action', () => {
     it('should submit form when form is valid', async () => {
         const cmp = shallow(<SaveAction {...defaultProps}/>);
         await cmp.props().onClick(defaultProps);
-        expect(defaultProps.formik.submitForm).toHaveBeenCalled();
+        expect(formik.submitForm).toHaveBeenCalled();
     });
 
     it('shouldn\'t do anything when form is not dirty', async () => {
-        defaultProps.dirty = false;
+        formik.dirty = false;
         const cmp = shallow(<SaveAction {...defaultProps}/>);
         expect(cmp.props().disabled).toBeTruthy();
     });
@@ -62,29 +64,29 @@ describe('save action', () => {
         const cmp = shallow(<SaveAction {...defaultProps}/>);
         await cmp.props().onClick(defaultProps);
 
-        expect(defaultProps.formik.submitForm).toHaveBeenCalled();
+        expect(formik.submitForm).toHaveBeenCalled();
     });
 
     it('should resetForm when submitting', async () => {
         const cmp = shallow(<SaveAction {...defaultProps}/>);
         await cmp.props().onClick(defaultProps);
 
-        expect(defaultProps.formik.resetForm).toHaveBeenCalled();
+        expect(formik.resetForm).toHaveBeenCalled();
     });
 
     it('shouldn\'t call resetForm when submitForm ', async () => {
-        defaultProps.formik.submitForm = jest.fn(() => Promise.reject());
+        formik.submitForm = jest.fn(() => Promise.reject());
         try {
             const cmp = shallow(<SaveAction {...defaultProps}/>);
             await cmp.props().onClick(defaultProps);
         } catch (_) {
         }
 
-        expect(defaultProps.formik.resetForm).not.toHaveBeenCalled();
+        expect(formik.resetForm).not.toHaveBeenCalled();
     });
 
     it('should show a modal when form have errors', async () => {
-        defaultProps.errors = {
+        formik.errors = {
             field1: 'required'
         };
 

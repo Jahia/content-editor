@@ -65,7 +65,7 @@ describe('picker', () => {
             <Picker {...defaultProps}/>,
             {},
             dsGenericTheme
-        ).dive();
+        );
         expect(cmp.find('ReferenceCard').props().isReadOnly).toBe(false);
     });
 
@@ -74,7 +74,7 @@ describe('picker', () => {
             <Picker {...defaultProps}/>,
             {},
             dsGenericTheme
-        ).dive();
+        );
         expect(cmp.find('PickerDialog').props().isOpen).toBe(false);
     });
 
@@ -83,7 +83,7 @@ describe('picker', () => {
             <Picker {...defaultProps}/>,
             {},
             dsGenericTheme
-        ).dive();
+        );
 
         cmp.find('ReferenceCard').simulate('click');
         expect(cmp.find('PickerDialog').props().isOpen).toBe(true);

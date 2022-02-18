@@ -2,9 +2,15 @@ import React from 'react';
 import {shallow} from '@jahia/test-framework';
 import {Constants} from '~/ContentEditor.constants';
 import startWorkflowAction from './startWorkflow.action';
+import {useFormikContext} from "formik";
+import {useContentEditorContext} from "~/ContentEditor.context";
+jest.mock('formik');
+jest.mock('~/ContentEditor.context');
 
 describe('startWorkflow action', () => {
+    let formik;
     let defaultProps;
+    let contentEditorContext;
     let StartWorkflowAction;
 
     beforeEach(() => {
@@ -15,31 +21,28 @@ describe('startWorkflow action', () => {
         };
 
         defaultProps = {
-            mode: 'edit',
-            parent: {
-                formik: {
-                    dirty: false
-                }
-            },
-            nodeData: {
-                hasPublishPermission: true,
-                lockedAndCannotBeEdited: false
-            },
-            formik: {},
             render: jest.fn(),
             loading: undefined,
+            isMainButton: true,
+        };
+        formik = {
+            dirty: false,
             values: {
                 'WIP::Info': {
                     status: 'DISABLED'
                 }
             },
-            isMainButton: true,
-            hasPublishPermission: true,
-            lockedAndCannotBeEdited: false,
-            hasStartPublicationWorkflowPermission: false,
-            dirty: false,
             errors: {}
-        };
+        }
+        useFormikContext.mockReturnValue(formik)
+        contentEditorContext = {
+            nodeData: {
+                hasPublishPermission: true,
+                lockedAndCannotBeEdited: false,
+                hasStartPublicationWorkflowPermission: false,
+            }
+        }
+        useContentEditorContext.mockReturnValue(contentEditorContext)
     });
 
     it('should display startWorkflowAction when user have start workflow rights', () => {
@@ -51,14 +54,14 @@ describe('startWorkflow action', () => {
 
     it('should not display startWorkflowAction when user haven\'t publication rights', () => {
         defaultProps.isMainButton = false;
-        defaultProps.hasPublishPermission = false;
+        contentEditorContext.nodeData.hasPublishPermission = false;
 
         const cmp = shallow(<StartWorkflowAction {...defaultProps}/>);
         expect(cmp.props().isVisible).toBe(false);
     });
 
     it('should disable startWorkflowAction when form dirty', () => {
-        defaultProps.dirty = true;
+        formik.dirty = true;
 
         const cmp = shallow(<StartWorkflowAction {...defaultProps}/>);
         expect(cmp.props().enabled).toBe(false);
@@ -67,7 +70,7 @@ describe('startWorkflow action', () => {
     });
 
     it('should disable startWorkflowAction when node locked', () => {
-        defaultProps.lockedAndCannotBeEdited = true;
+        contentEditorContext.nodeData.lockedAndCannotBeEdited = true;
 
         const cmp = shallow(<StartWorkflowAction {...defaultProps}/>);
         expect(cmp.props().enabled).toBe(false);
@@ -85,14 +88,14 @@ describe('startWorkflow action', () => {
     });
 
     it('should not display startWorkflowAction when user doesn\'t have start workflow right', () => {
-        defaultProps.hasStartPublicationWorkflowPermission = false;
+        contentEditorContext.nodeData.hasStartPublicationWorkflowPermission = false;
 
         const cmp = shallow(<StartWorkflowAction {...defaultProps}/>);
         expect(cmp.props().enabled).toBe(false);
     });
 
     it('should not display startWorkflowAction when user have publication rights', () => {
-        defaultProps.hasPublishPermission = true;
+        contentEditorContext.nodeData.hasPublishPermission = true;
 
         const cmp = shallow(<StartWorkflowAction {...defaultProps}/>);
         expect(cmp.props().enabled).toBe(false);
@@ -104,16 +107,16 @@ describe('startWorkflow action', () => {
     });
 
     it('should disable request publication action when node is locked', () => {
-        defaultProps.lockedAndCannotBeEdited = true;
+        contentEditorContext.nodeData.lockedAndCannotBeEdited = true;
 
         const cmp = shallow(<StartWorkflowAction {...defaultProps}/>);
         expect(cmp.props().disabled).toBe(false);
     });
 
     it('should disable request publication action form is WIP', () => {
-        defaultProps.values[Constants.wip.fieldName].status = Constants.wip.status.LANGUAGES;
-        defaultProps.values[Constants.wip.fieldName].languages = ['en', 'fr'];
-        defaultProps.language = 'en';
+        formik.values[Constants.wip.fieldName].status = Constants.wip.status.LANGUAGES;
+        formik.values[Constants.wip.fieldName].languages = ['en', 'fr'];
+        contentEditorContext.lang = 'en';
 
         const cmp = shallow(<StartWorkflowAction {...defaultProps}/>);
         expect(cmp.props().disabled).toBe(true);

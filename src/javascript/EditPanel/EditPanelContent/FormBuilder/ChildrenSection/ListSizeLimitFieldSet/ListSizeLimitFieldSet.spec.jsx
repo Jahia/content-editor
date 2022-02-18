@@ -2,25 +2,14 @@ import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {FieldSet} from '~/EditPanel/EditPanelContent/FormBuilder/FieldSet';
+import {useFormikContext} from "formik";
 
-jest.mock('formik', () => {
-    let formikvaluesmock;
-
-    return {
-        Form: jest.fn(),
-        connect: Cmp => props => (
-            <Cmp {...props} formik={{values: formikvaluesmock}}/>
-        ),
-        setFormikValues: values => {
-            formikvaluesmock = values;
-        }
-    };
-});
+jest.mock('formik');
 
 // Note that this test set is identical to test of a field set as it should be the same functionally
 describe('ListSizeLimitFieldSet component', () => {
     let props;
-
+    let formik;
     beforeEach(() => {
         props = {
             fieldset: {
@@ -31,11 +20,12 @@ describe('ListSizeLimitFieldSet component', () => {
                     {displayName: 'field1', name: 'field1'},
                     {displayName: 'field2', name: 'field2'}
                 ]
-            },
-            formik: {
-                values: {}
             }
         };
+        formik = {
+            values: {}
+        }
+        useFormikContext.mockReturnValue(formik);
     });
 
     it('should display FieldSet name', () => {
@@ -44,7 +34,6 @@ describe('ListSizeLimitFieldSet component', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
 
         expect(cmp.debug()).toContain(props.fieldset.displayName);
@@ -56,7 +45,6 @@ describe('ListSizeLimitFieldSet component', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
 
         props.fieldset.fields.forEach(field => {
@@ -72,7 +60,6 @@ describe('ListSizeLimitFieldSet component', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
 
         const toggleCmp = cmp.find('WithStyles(ToggleCmp)');
@@ -89,7 +76,6 @@ describe('ListSizeLimitFieldSet component', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
 
         const toggleCmp = cmp.find('WithStyles(ToggleCmp)');
@@ -105,7 +91,6 @@ describe('ListSizeLimitFieldSet component', () => {
             {},
             dsGenericTheme
         )
-            .dive()
             .dive();
 
         expect(cmp.find('WithStyles(ToggleCmp)').exists()).toBe(false);

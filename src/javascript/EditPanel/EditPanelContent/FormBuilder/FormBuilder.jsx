@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Section} from './Section';
-import {Form} from 'formik';
+import {Form, useFormik, useFormikContext} from 'formik';
 
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
@@ -11,7 +11,7 @@ import {useTranslation} from 'react-i18next';
 import {Constants} from '~/ContentEditor.constants';
 
 const FormBuilderCmp = ({mode}) => {
-    // Const {values} = useFormikContext();
+    const {values} = useFormikContext();
     const {nodeData} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
     const {t} = useTranslation('content-editor');
@@ -20,7 +20,7 @@ const FormBuilderCmp = ({mode}) => {
         return <></>;
     }
 
-    const canAutomaticallyOrder = false; /// values && values[Constants.automaticOrdering.mixin] !== undefined;
+    const canAutomaticallyOrder = values && values[Constants.automaticOrdering.mixin] !== undefined;
     const canManuallyOrder = nodeData.primaryNodeType.hasOrderableChildNodes;
 
     const isOrderingSection = !nodeData.isSite &&

@@ -25,18 +25,18 @@ describe('Field container component', () => {
 
     it('should render a Text component when field type is "Text"', () => {
         defaultProps.field.selectorType = 'Text';
-        const cmp = shallow(<FieldContainer {...defaultProps}/>).dive().dive().find('Field');
+        const cmp = shallow(<FieldContainer {...defaultProps}/>).find('Field');
         expect(cmp.props().selectorType.key).toBe('Text');
     });
 
     it('should render a RichText component when field type is "RichText"', () => {
-        const cmp = shallow(<FieldContainer {...defaultProps}/>).dive().dive().find('Field');
+        const cmp = shallow(<FieldContainer {...defaultProps}/>).find('Field');
         expect(cmp.props().selectorType.key).toBe('RichText');
     });
 
     it('should render a ContentPicker component when field type is "picker"', () => {
         defaultProps.field.selectorType = 'Picker';
-        const cmp = shallow(<FieldContainer {...defaultProps}/>).dive().dive().find('Field');
+        const cmp = shallow(<FieldContainer {...defaultProps}/>).find('Field');
         expect(cmp.props().selectorType.key).toBe('ContentPicker');
     });
 
@@ -44,7 +44,7 @@ describe('Field container component', () => {
         defaultProps.field.selectorType = 'Picker';
         defaultProps.field.selectorOptions = [{name: 'type', value: 'image'}];
 
-        const cmp = shallow(<FieldContainer {...defaultProps}/>).dive().dive().find('Field');
+        const cmp = shallow(<FieldContainer {...defaultProps}/>).find('Field');
         expect(cmp.props().selectorType.key).toBe('MediaPicker');
     });
 });
