@@ -183,7 +183,9 @@ public class EditorFormServiceImpl implements EditorFormService {
                 Map<String, Object> extendContext = new HashMap<>();
                 editorFormField.getSelectorOptions().forEach(option -> extendContext.put(option.getName(), option.getValue()));
                 for (ContextEntryInput contextEntry : context) {
-                    extendContext.put(contextEntry.getKey(), contextEntry.getValue());
+                    if (contextEntry.getValue() != null) {
+                        extendContext.put(contextEntry.getKey(), contextEntry.getValue());
+                    }
                 }
 
                 return getValueConstraints(nodeTypeRegistry.getNodeType(primaryNodeType), editorFormField, node, parentNode, locale, extendContext);
