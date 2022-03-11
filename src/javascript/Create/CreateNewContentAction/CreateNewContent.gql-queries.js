@@ -32,7 +32,7 @@ export const getTreeOfContentWithRequirements = gql`
         jcr {
             nodeByPath(path: $path) {
                 isNodeType(type: {types:$showOnNodeTypes})
-                ...NodeCacheRequiredFields
+                    ...NodeCacheRequiredFields
             }
         }
     }

@@ -14,6 +14,7 @@ const MediaPickerFilledQuery = gql`
                 }
                 children(names: "jcr:content") {
                     nodes {
+                        ...NodeCacheRequiredFields
                         mimeType: property(name: "jcr:mimeType") {
                             value
                         }

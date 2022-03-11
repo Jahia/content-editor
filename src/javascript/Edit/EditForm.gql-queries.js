@@ -28,6 +28,7 @@ const NodeDataFragment = {
                     "jmix:mainResource"
                 ]})
                 displayableNode {
+                    ...NodeCacheRequiredFields
                     path
                     isFolder:isNodeType(type: {multi: ANY, types: ["jnt:contentFolder", "jnt:folder"]})
                 }
@@ -37,11 +38,13 @@ const NodeDataFragment = {
                     name
                 }
                 parent {
+                    ...NodeCacheRequiredFields
                     displayName(language: $language)
                     path
                 }
                 children(typesFilter:{types: $childrenFilterTypes}) {
                     nodes {
+                        ...NodeCacheRequiredFields
                         name
                         displayName(language: $language)
                         primaryNodeType {
