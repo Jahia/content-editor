@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {CopyLanguageActionComponent} from './copyLanguage.action';
-import {useContentEditorContext} from "../../ContentEditor.context";
+import {useContentEditorContext} from '../../ContentEditor.context';
 
 jest.mock('react', () => {
     return {
@@ -29,8 +29,8 @@ describe('copy language action', () => {
                     {displayName: 'Français', language: 'fr', activeInEdit: true}
                 ]
             }
-        }
-        useContentEditorContext.mockReturnValue(contentEditorContext)
+        };
+        useContentEditorContext.mockReturnValue(contentEditorContext);
         defaultProps = {
             render: () => ''
         };

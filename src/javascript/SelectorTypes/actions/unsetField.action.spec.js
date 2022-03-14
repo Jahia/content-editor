@@ -1,7 +1,7 @@
 import React from 'react';
 import {UnsetFieldActionComponent} from './unsetField.action';
 import {shallow} from '@jahia/test-framework';
-import {useFormikContext} from "formik";
+import {useFormikContext} from 'formik';
 
 jest.mock('formik');
 

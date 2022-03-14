@@ -6,7 +6,7 @@ import {dsGenericTheme} from '@jahia/design-system-kit';
 import Text from '~/SelectorTypes/Text/Text';
 import {registry} from '@jahia/ui-extender';
 import {setResponseMock} from '@apollo/react-hooks';
-import {useFormikContext} from "formik";
+import {useFormikContext} from 'formik';
 
 jest.mock('formik');
 
@@ -134,7 +134,7 @@ describe('Field component', () => {
                 text: onChangePreviousValue
             },
             setFieldValue: jest.fn(),
-            setFieldTouched: jest.fn(),
+            setFieldTouched: jest.fn()
         };
         useFormikContext.mockReturnValue(formik);
         const cmp = shallowWithTheme(

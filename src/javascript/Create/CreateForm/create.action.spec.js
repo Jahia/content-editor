@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {shallow} from '@jahia/test-framework';
 import createAction from './create.action';
-import {useFormikContext} from "formik";
+import {useFormikContext} from 'formik';
 
 jest.mock('formik');
 jest.mock('react', () => {
@@ -32,7 +32,7 @@ describe('create action', () => {
             setFieldValue: jest.fn(),
             setTouched: jest.fn(() => Promise.resolve()),
             errors: {}
-        }
+        };
         useFormikContext.mockReturnValue(formik);
     });
 

@@ -2,7 +2,7 @@ import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {FieldSet} from '~/EditPanel/EditPanelContent/FormBuilder/FieldSet';
-import {useFormikContext} from "formik";
+import {useFormikContext} from 'formik';
 
 jest.mock('formik');
 
@@ -24,7 +24,7 @@ describe('ListSizeLimitFieldSet component', () => {
         };
         formik = {
             values: {}
-        }
+        };
         useFormikContext.mockReturnValue(formik);
     });
 

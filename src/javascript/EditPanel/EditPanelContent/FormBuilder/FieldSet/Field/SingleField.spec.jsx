@@ -4,7 +4,7 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {SingleFieldCmp} from './SingleField';
 import {TextAreaField} from '~/SelectorTypes/TextArea/TextArea';
-import {useFormikContext} from "formik";
+import {useFormikContext} from 'formik';
 
 jest.mock('react', () => {
     return {
@@ -24,7 +24,7 @@ describe('Field component', () => {
                 text: 'Dummy'
             }
         };
-        useFormikContext.mockReturnValue(formik)
+        useFormikContext.mockReturnValue(formik);
 
         defaultProps = {
             editorContext: {},

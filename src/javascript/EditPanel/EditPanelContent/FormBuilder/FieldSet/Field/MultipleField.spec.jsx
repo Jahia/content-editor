@@ -5,7 +5,7 @@ import {dsGenericTheme} from '@jahia/design-system-kit';
 import Text from '~/SelectorTypes/Text/Text';
 import {MultipleFieldCmp} from './MultipleField';
 import {TextAreaField} from '~/SelectorTypes/TextArea/TextArea';
-import {useFormikContext} from "formik";
+import {useFormikContext} from 'formik';
 
 jest.mock('formik');
 
@@ -20,7 +20,7 @@ describe('Multiple component', () => {
     let defaultProps;
 
     beforeEach(() => {
-        useFormikContext.mockReturnValue( {
+        useFormikContext.mockReturnValue({
             values: {
                 text: ['Dummy1', 'Dummy2']
             }
@@ -110,7 +110,7 @@ describe('Multiple component', () => {
     });
 
     let generateFieldArrayCmp = () => {
-        useFormikContext.mockReturnValue( {
+        useFormikContext.mockReturnValue({
             values: {
                 text: ['Dummy1', 'Dummy2', 'Dummy3']
             }

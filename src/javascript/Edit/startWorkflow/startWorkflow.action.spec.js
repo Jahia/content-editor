@@ -2,8 +2,8 @@ import React from 'react';
 import {shallow} from '@jahia/test-framework';
 import {Constants} from '~/ContentEditor.constants';
 import startWorkflowAction from './startWorkflow.action';
-import {useFormikContext} from "formik";
-import {useContentEditorContext} from "~/ContentEditor.context";
+import {useFormikContext} from 'formik';
+import {useContentEditorContext} from '~/ContentEditor.context';
 jest.mock('formik');
 jest.mock('~/ContentEditor.context');
 
@@ -23,7 +23,7 @@ describe('startWorkflow action', () => {
         defaultProps = {
             render: jest.fn(),
             loading: undefined,
-            isMainButton: true,
+            isMainButton: true
         };
         formik = {
             dirty: false,
@@ -33,16 +33,16 @@ describe('startWorkflow action', () => {
                 }
             },
             errors: {}
-        }
-        useFormikContext.mockReturnValue(formik)
+        };
+        useFormikContext.mockReturnValue(formik);
         contentEditorContext = {
             nodeData: {
                 hasPublishPermission: true,
                 lockedAndCannotBeEdited: false,
-                hasStartPublicationWorkflowPermission: false,
+                hasStartPublicationWorkflowPermission: false
             }
-        }
-        useContentEditorContext.mockReturnValue(contentEditorContext)
+        };
+        useContentEditorContext.mockReturnValue(contentEditorContext);
     });
 
     it('should display startWorkflowAction when user have start workflow rights', () => {

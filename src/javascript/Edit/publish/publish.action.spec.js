@@ -1,11 +1,10 @@
 import React from 'react';
 import {shallow} from '@jahia/test-framework';
 import publishAction from './publish.action';
-import {publishNode} from './publish.request';
 import {Constants} from '~/ContentEditor.constants';
 import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
-import {useContentEditorContext} from "../../ContentEditor.context";
-import {useFormikContext} from "formik";
+import {useContentEditorContext} from '../../ContentEditor.context';
+import {useFormikContext} from 'formik';
 
 jest.mock('~/actions/redux.action', () => {
     let statemock;
@@ -52,7 +51,7 @@ describe('publish action', () => {
             stopPublicationInfoPolling: jest.fn(),
             startPublicationInfoPolling: jest.fn()
         };
-        usePublicationInfoContext.mockReturnValue( publicationInfoContext);
+        usePublicationInfoContext.mockReturnValue(publicationInfoContext);
         formikContext = {
             dirty: false,
             values: {
@@ -72,7 +71,7 @@ describe('publish action', () => {
         useContentEditorContext.mockReturnValue(contentEditorContext);
         defaultProps = {
             render: jest.fn(),
-            loading: undefined,
+            loading: undefined
         };
     });
 

@@ -2,7 +2,7 @@ import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {EditPanelDialogConfirmation} from './';
-import {useFormikContext} from "formik";
+import {useFormikContext} from 'formik';
 
 jest.mock('formik');
 
@@ -16,7 +16,7 @@ describe('EditPanelDialogConfirmation', () => {
             titleKey: 'titleKey',
             t: jest.fn(key => 'translated_' + key),
             onCloseDialog: jest.fn(),
-            actionCallback: jest.fn(),
+            actionCallback: jest.fn()
         };
         formik = {};
         useFormikContext.mockReturnValue(formik);

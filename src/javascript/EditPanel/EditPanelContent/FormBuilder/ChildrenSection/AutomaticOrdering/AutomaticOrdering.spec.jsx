@@ -7,7 +7,7 @@ import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEdit
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {adaptSectionToDisplayableRows, getDisplayedRows} from './AutomaticOrdering.utils';
 import {Constants} from '~/ContentEditor.constants';
-import {useFormikContext} from "formik";
+import {useFormikContext} from 'formik';
 
 jest.mock('formik');
 jest.mock('~/ContentEditor.context');
@@ -25,10 +25,10 @@ describe('Automatic ordering component', () => {
                 hasWritePermission: true
             }
         };
-        useContentEditorContext.mockReturnValue(context)
+        useContentEditorContext.mockReturnValue(context);
         sectionContext = {
-        }
-        useContentEditorSectionContext.mockReturnValue(sectionContext)
+        };
+        useContentEditorSectionContext.mockReturnValue(sectionContext);
         formik = {
             values: {
                 [Constants.automaticOrdering.mixin + '_firstField']: undefined,
@@ -48,7 +48,7 @@ describe('Automatic ordering component', () => {
     });
 
     it('should display one row only when no props set', () => {
-        sectionContext.sections=[listOrderingSection(false, false)];
+        sectionContext.sections = [listOrderingSection(false, false)];
         const cmp = shallowWithTheme(
             <AutomaticOrderingCmp {...props}/>,
             {},
@@ -58,7 +58,7 @@ describe('Automatic ordering component', () => {
     });
 
     it('should display rows when properties exists', () => {
-        sectionContext.sections=[listOrderingSection(false, false)];
+        sectionContext.sections = [listOrderingSection(false, false)];
         formik.values[Constants.automaticOrdering.mixin + '_secondField'] = 'jcr:created';
         formik.values[Constants.automaticOrdering.mixin + '_thirdField'] = 'jcr:createdBy';
 
@@ -71,7 +71,7 @@ describe('Automatic ordering component', () => {
     });
 
     it('should disable add when props are readOnly', () => {
-        sectionContext.sections=[listOrderingSection(true, true)]
+        sectionContext.sections = [listOrderingSection(true, true)];
 
         const cmp = shallowWithTheme(
             <AutomaticOrderingCmp {...props}/>,
@@ -82,7 +82,7 @@ describe('Automatic ordering component', () => {
     });
 
     it('should disable remove when props are readOnly', () => {
-        sectionContext.sections=[ listOrderingSection(true, true)];
+        sectionContext.sections = [listOrderingSection(true, true)];
         formik.values[Constants.automaticOrdering.mixin + '_secondField'] = 'jcr:created';
         formik.values[Constants.automaticOrdering.mixin + '_thirdField'] = 'jcr:createdBy';
 
@@ -96,7 +96,7 @@ describe('Automatic ordering component', () => {
     });
 
     it('should add rows when click on "Add" button, to a maximum of 3 rows, then the button should be disabled', () => {
-        sectionContext.sections=[listOrderingSection(false, false)];
+        sectionContext.sections = [listOrderingSection(false, false)];
 
         const cmp = shallowWithTheme(
             <AutomaticOrderingCmp {...props}/>,
@@ -124,7 +124,7 @@ describe('Automatic ordering component', () => {
     });
 
     it('should remove rows when click on "Remove" button', () => {
-        sectionContext.sections=[listOrderingSection(false, false)];
+        sectionContext.sections = [listOrderingSection(false, false)];
         formik.values[Constants.automaticOrdering.mixin + '_secondField'] = 'jcr:created';
         formik.values[Constants.automaticOrdering.mixin + '_thirdField'] = 'jcr:createdBy';
 

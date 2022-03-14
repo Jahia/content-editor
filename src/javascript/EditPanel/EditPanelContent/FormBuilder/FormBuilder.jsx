@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Section} from './Section';
-import {Form, useFormik, useFormikContext} from 'formik';
+import {Form, useFormikContext} from 'formik';
 
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';

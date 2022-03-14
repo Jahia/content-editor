@@ -2,8 +2,8 @@ import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {OpenWorkInProgressModal} from './OpenWorkInProgressModal.action';
-import {useFormikContext} from "formik";
-import {useContentEditorContext} from "~/ContentEditor.context";
+import {useFormikContext} from 'formik';
+import {useContentEditorContext} from '~/ContentEditor.context';
 
 jest.mock('react', () => {
     return {
@@ -21,7 +21,7 @@ describe('WorkInProgressDialog', () => {
     let componentRenderer;
     beforeEach(() => {
         defaultProps = {
-              otherProps: true,
+            otherProps: true,
             render: () => ''
         };
 
@@ -44,7 +44,7 @@ describe('WorkInProgressDialog', () => {
                     {
                         name: 'jnt:content'
                     }
-            },
+            }
         };
         useContentEditorContext.mockReturnValue(contentEditorContext);
 

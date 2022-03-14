@@ -3,11 +3,11 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {HeaderUpperSection} from './';
 import {Constants} from '~/ContentEditor.constants';
-import {useFormikContext} from "formik";
-import {useContentEditorContext} from "~/ContentEditor.context";
+import {useFormikContext} from 'formik';
+import {useContentEditorContext} from '~/ContentEditor.context';
 
-jest.mock('~/ContentEditor.context')
-jest.mock('formik')
+jest.mock('~/ContentEditor.context');
+jest.mock('formik');
 describe('Header UpperSection', () => {
     let defaultProps;
     let formik;
@@ -23,17 +23,17 @@ describe('Header UpperSection', () => {
                 primaryNodeType: {
                     displayName: 'WIP-WOP'
                 }
-            },
-        }
-        useContentEditorContext.mockReturnValue(contentEditorContext)
+            }
+        };
+        useContentEditorContext.mockReturnValue(contentEditorContext);
         formik = {
             values: {
                 'WIP::Info': {
                     status: Constants.wip.status.DISABLED
                 }
             }
-        }
-        useFormikContext.mockReturnValue(formik)
+        };
+        useFormikContext.mockReturnValue(formik);
     });
 
     it('should show the title', () => {

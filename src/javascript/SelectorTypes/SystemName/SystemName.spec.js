@@ -3,13 +3,13 @@ import {shallow} from '@jahia/test-framework';
 
 import {SystemNameCmp} from './SystemName';
 import {Constants} from '~/ContentEditor.constants';
-import {useFormikContext} from "formik";
+import {useFormikContext} from 'formik';
 
 jest.mock('formik');
 
 describe('SystemName component', () => {
     let props;
-    let formik
+    let formik;
     beforeEach(() => {
         props = {
             onChange: jest.fn(),
@@ -29,8 +29,8 @@ describe('SystemName component', () => {
             classes: {}
         };
         formik = {
-            values: {},
-        }
+            values: {}
+        };
         useFormikContext.mockReturnValue(formik);
     });
 

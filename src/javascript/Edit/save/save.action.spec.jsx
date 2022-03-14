@@ -3,7 +3,7 @@ import {shallow} from '@jahia/test-framework';
 import saveAction from './save.action';
 import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
 import {useContentEditorContext} from '~/ContentEditor.context';
-import {useFormikContext} from "formik";
+import {useFormikContext} from 'formik';
 
 jest.mock('react', () => {
     return {
@@ -28,7 +28,7 @@ describe('save action', () => {
         useContentEditorContext.mockImplementation(() => ({refetchFormData: jest.fn()}));
         usePublicationInfoContext.mockImplementation(() => ({publicationInfoPolling: jest.fn()}));
         defaultProps = {
-            renderComponent: jest.fn(), render, loading: undefined, dirty: true,
+            renderComponent: jest.fn(), render, loading: undefined, dirty: true
         };
         formik = {
             submitForm: jest.fn(() => Promise.resolve()),
@@ -38,7 +38,7 @@ describe('save action', () => {
             validateForm: jest.fn(() => Promise.resolve(formik.errors)),
             dirty: true,
             errors: {}
-        }
+        };
         useFormikContext.mockReturnValue(formik);
     });
 

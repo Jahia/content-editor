@@ -2,7 +2,7 @@ import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {FieldSet} from './FieldSet';
-import {useFormikContext} from "formik";
+import {useFormikContext} from 'formik';
 
 jest.mock('formik');
 
@@ -20,10 +20,10 @@ describe('FieldSet component', () => {
                     {displayName: 'field2', name: 'field2'}
                 ]
             }
-        }
-        formikContext =  {
+        };
+        formikContext = {
             values: {}
-        }
+        };
         useFormikContext.mockReturnValue(formikContext);
     });
 

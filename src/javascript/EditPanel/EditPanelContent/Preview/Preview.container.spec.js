@@ -4,7 +4,7 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {PreviewContainer} from './Preview.container';
 import {useContentEditorContext} from '~/ContentEditor.context';
-import {useFormikContext} from "formik";
+import {useFormikContext} from 'formik';
 
 jest.mock('formik');
 jest.mock('~/ContentEditor.context');
@@ -25,8 +25,8 @@ describe('Preview Container', () => {
 
     beforeEach(() => {
         formik = {
-            dirty: false,
-        }
+            dirty: false
+        };
         defaultProps = {
         };
         editorContext = {

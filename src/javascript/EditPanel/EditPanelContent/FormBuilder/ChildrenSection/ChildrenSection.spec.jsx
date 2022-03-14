@@ -4,7 +4,7 @@ import {dsGenericTheme} from '@jahia/design-system-kit';
 import {ChildrenSectionCmp} from './ChildrenSection';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import {listOrderingSection} from './AutomaticOrdering/AutomaticOrdering.spec.data';
-import {useFormikContext} from "formik";
+import {useFormikContext} from 'formik';
 
 jest.mock('formik');
 jest.mock('~/ContentEditorSection/ContentEditorSection.context');
@@ -27,11 +27,11 @@ describe('Children section component', () => {
                 'jmix:orderedList': false
             },
             handleChange: jest.fn()
-        }
+        };
         useFormikContext.mockReturnValue(formik);
         sectionsContext = {
             sections: []
-        }
+        };
         useContentEditorSectionContext.mockReturnValue(sectionsContext);
     });
 

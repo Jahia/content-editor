@@ -1,7 +1,7 @@
 import {SelectAllActionComponent} from './selectAll.action';
 import {shallow} from '@jahia/test-framework';
 import React from 'react';
-import {useFormikContext} from "formik";
+import {useFormikContext} from 'formik';
 
 jest.mock('formik');
 
@@ -16,7 +16,7 @@ describe('selectAllAction', () => {
                     fieldName: ['test1', 'test2']
                 }
             };
-            useFormikContext.mockReturnValue(formik)
+            useFormikContext.mockReturnValue(formik);
             const context = {
                 inputContext: {
                     actionContext: {}
@@ -63,8 +63,8 @@ describe('selectAllAction', () => {
                 values: {
                     fieldName: ['test1', 'test2', 'test3']
                 }
-            }
-            useFormikContext.mockReturnValue(formik)
+            };
+            useFormikContext.mockReturnValue(formik);
             const context = {
                 inputContext: {
                     actionContext: {}
@@ -105,8 +105,8 @@ describe('selectAllAction', () => {
             const formik = {
                 setFieldValue: jest.fn(),
                 setFieldTouched: jest.fn()
-            }
-            useFormikContext.mockReturnValue(formik)
+            };
+            useFormikContext.mockReturnValue(formik);
             const context = {
                 inputContext: {
                     actionContext: {}
@@ -127,8 +127,8 @@ describe('selectAllAction', () => {
                 values: {
                     yoolo: 'value'
                 }
-            }
-            useFormikContext.mockReturnValue(formik)
+            };
+            useFormikContext.mockReturnValue(formik);
             const context = {
                 inputContext: {
                     actionContext: {}
@@ -149,8 +149,8 @@ describe('selectAllAction', () => {
                 values: {
                     yoolo: ''
                 }
-            }
-            useFormikContext.mockReturnValue(formik)
+            };
+            useFormikContext.mockReturnValue(formik);
             const context = {
                 inputContext: {
                     actionContext: {}
@@ -172,8 +172,8 @@ describe('selectAllAction', () => {
                 values: {
                     yoolo: ''
                 }
-            }
-            useFormikContext.mockReturnValue(formik)
+            };
+            useFormikContext.mockReturnValue(formik);
             const context = {
                 inputContext: {
                     actionContext: {}
@@ -194,8 +194,8 @@ describe('selectAllAction', () => {
                 values: {
                     yoolo: ['test1', 'test2']
                 }
-            }
-            useFormikContext.mockReturnValue(formik)
+            };
+            useFormikContext.mockReturnValue(formik);
             const context = {
                 inputContext: {
                     actionContext: {}
@@ -227,8 +227,8 @@ describe('selectAllAction', () => {
                 values: {
                     yoolo: null
                 }
-            }
-            useFormikContext.mockReturnValue(formik)
+            };
+            useFormikContext.mockReturnValue(formik);
             const context = {
                 inputContext: {
                     actionContext: {}
@@ -265,8 +265,8 @@ describe('selectAllAction', () => {
                 values: {
                     yoolo: ['test1', 'test2']
                 }
-            }
-            useFormikContext.mockReturnValue(formik)
+            };
+            useFormikContext.mockReturnValue(formik);
             const context = {
                 inputContext: {
                     actionContext: {}
