@@ -26,7 +26,7 @@ const registerChoiceListOnChange = registry => {
     registry.add('selectorType.onChange', 'addMixinChoicelist', {
         targets: ['Choicelist'],
         onChange: (previousValue, currentValue, field, editorContext, selectorType, helper) => {
-            let editorSection = editorContext.getSections();
+            let editorSection = editorContext.sections;
 
             let oldMixins = previousValue ? getMixinList(field, previousValue) : [];
 

@@ -14,10 +14,10 @@ export const SingleSelectCmp = ({field, value, id, inputContext, onChange}) => {
         onChange
     };
 
-    const readOnly = field.readOnly || field.valueConstraints.length === 0;
-    const label = field.valueConstraints.find(item => item.value.string === value)?.displayValue || '';
-    const dropdownData = field.valueConstraints.length > 0 ?
-        field.valueConstraints.map(item => {
+    const {readOnly, label, dropdownData} = React.useMemo(() => ({
+        readOnly: field.readOnly || field.valueConstraints.length === 0,
+        label: field.valueConstraints.find(item => item.value.string === value)?.displayValue || '',
+        dropdownData: field.valueConstraints.length > 0 ? field.valueConstraints.map(item => {
             const image = item.properties?.find(property => property.name === 'image')?.value;
             return {
                 label: item.displayValue,
@@ -27,12 +27,15 @@ export const SingleSelectCmp = ({field, value, id, inputContext, onChange}) => {
                     'data-value': item.value.string
                 }
             };
-        }) : [{label: '', value: ''}];
+        }) : [{label: '', value: ''}]
+    }), [field, value]);
 
-    // Reset value if constraints doesnt contains the actual value.
-    if (value && field.valueConstraints.find(v => v.value.string === value) === undefined) {
-        onChange(null);
-    }
+    React.useEffect(() => {
+        // Reset value if constraints doesnt contains the actual value.
+        if (value && field.valueConstraints.find(v => v.value.string === value) === undefined) {
+            onChange(null);
+        }
+    }, [value, onChange])
 
     return (
         <div className="flexFluid flexRow alignCenter">

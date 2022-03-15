@@ -1,7 +1,7 @@
 import {registry} from '@jahia/ui-extender';
 
 export const getSiteNodes = (data, allSitesLabel) => {
-    const siteNodes = data && data.jcr && data.jcr.result ? data.jcr.result.siteNodes
+    const siteNodes = data && data.jcr && data.jcr.result ? [...data.jcr.result.siteNodes]
         .sort((elem1, elem2) => {
             if (elem1.displayName < elem2.displayName) {
                 return -1;

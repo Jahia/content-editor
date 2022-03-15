@@ -1,15 +1,17 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
-import {Field, useFormikContext} from 'formik';
+import {FastField, Field, useFormikContext} from 'formik';
 import {FieldPropTypes} from '~/FormDefinitions';
-
-// Todo Try to use FastField here -> fixed dependant fields
 
 export const SingleFieldCmp = ({inputContext, editorContext, field, onChange}) => {
     const FieldComponent = inputContext.fieldComponent;
     const formik = useFormikContext();
     return (
-        <Field component={FieldComponent}
+        <FastField
+            shouldUpdate={(nextProps, props) => {
+                return nextProps.field !== props.field;
+            }}
+            component={FieldComponent}
                id={field.name}
                name={field.name}
                value={formik.values[field.name]}

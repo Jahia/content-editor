@@ -33,24 +33,24 @@ let styles = theme => ({
     }
 });
 
-const FieldSetCmp = ({fieldset, classes}) => {
-    const {values, handleChange} = useFormikContext();
-    const isDynamicFieldSet = fieldset.dynamic;
-    const activatedFieldSet = (values && values[fieldset.name]) || !isDynamicFieldSet;
+const MemoizedFieldContainer = React.memo(FieldContainer);
 
+const DynamicFieldSet = ({fieldset, classes}) => {
+    const {values, handleChange} = useFormikContext();
+    const activatedFieldSet = (values && values[fieldset.name]);
     return (
         <article className={classes.fieldsetContainer}>
             <div className={classes.fieldsetTitleContainer}>
-                {isDynamicFieldSet &&
                 <Toggle data-sel-role-dynamic-fieldset={fieldset.name}
                         id={fieldset.name}
                         checked={activatedFieldSet}
                         readOnly={fieldset.readOnly}
                         onChange={handleChange}
-                />}
+                />
 
                 <div className={classes.labelContainer}>
-                    <Typography component="label" htmlFor={fieldset.name} className={classes.fieldSetTitle} color="alpha" variant="zeta">
+                    <Typography component="label" htmlFor={fieldset.name} className={classes.fieldSetTitle}
+                                color="alpha" variant="zeta">
                         {fieldset.displayName}
                     </Typography>
                     {fieldset.description &&
@@ -60,11 +60,38 @@ const FieldSetCmp = ({fieldset, classes}) => {
                 </div>
             </div>
 
-            {activatedFieldSet && fieldset.fields.map(field => {
-                return <FieldContainer key={field.name} field={field}/>;
-            })}
+            {activatedFieldSet && fieldset.fields.map(field => <MemoizedFieldContainer key={field.name} field={field}/>)}
         </article>
     );
+}
+
+const StaticFieldSet = ({fieldset, classes}) => {
+    return (
+        <article className={classes.fieldsetContainer}>
+            <div className={classes.fieldsetTitleContainer}>
+                <div className={classes.labelContainer}>
+                    <Typography component="label" htmlFor={fieldset.name} className={classes.fieldSetTitle}
+                                color="alpha" variant="zeta">
+                        {fieldset.displayName}
+                    </Typography>
+                    {fieldset.description &&
+                    <Typography component="label" className={classes.fieldSetDescription} color="beta" variant="omega">
+                        {fieldset.description}
+                    </Typography>}
+                </div>
+            </div>
+
+            {fieldset.fields.map(field => <FieldContainer key={field.name} field={field}/>)}
+        </article>
+    );
+}
+
+const FieldSetCmp = ({fieldset, classes}) => {
+    return fieldset.dynamic ? (
+        <DynamicFieldSet fieldset={fieldset} classes={classes}/>
+    ) : (
+        <StaticFieldSet fieldset={fieldset} classes={classes}/>
+    )
 };
 
 FieldSetCmp.propTypes = {

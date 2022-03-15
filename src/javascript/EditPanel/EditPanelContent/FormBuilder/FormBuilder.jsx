@@ -11,7 +11,7 @@ import {useTranslation} from 'react-i18next';
 import {Constants} from '~/ContentEditor.constants';
 
 const FormBuilderCmp = ({mode}) => {
-    const {values} = useFormikContext();
+    // const {values} = useFormikContext();
     const {nodeData} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
     const {t} = useTranslation('content-editor');
@@ -20,7 +20,7 @@ const FormBuilderCmp = ({mode}) => {
         return <></>;
     }
 
-    const canAutomaticallyOrder = values && values[Constants.automaticOrdering.mixin] !== undefined;
+    const canAutomaticallyOrder = false; //values && values[Constants.automaticOrdering.mixin] !== undefined;
     const canManuallyOrder = nodeData.primaryNodeType.hasOrderableChildNodes;
 
     const isOrderingSection = !nodeData.isSite &&

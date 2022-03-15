@@ -5,12 +5,10 @@ export const ContentEditorSectionContext = React.createContext({});
 
 export const useContentEditorSectionContext = () => useContext(ContentEditorSectionContext);
 export const ContentEditorSectionContextProvider = ({formSections, children}) => {
-    // We use a reference to be able to read the sections from the closures calls like init / unMount of onChange
     const [sections, setSections] = useState(formSections);
-    const getSections = () => sections;
 
     return (
-        <ContentEditorSectionContext.Provider value={{sections, setSections, getSections}}>
+        <ContentEditorSectionContext.Provider value={{sections, setSections}}>
             {children}
         </ContentEditorSectionContext.Provider>
     );
