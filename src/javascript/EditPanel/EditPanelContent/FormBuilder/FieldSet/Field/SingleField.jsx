@@ -9,7 +9,7 @@ export const SingleFieldCmp = ({inputContext, editorContext, field, onChange}) =
     return (
         <FastField
             shouldUpdate={(nextProps, props) => {
-                return nextProps.field !== props.field;
+                return nextProps.value !== props.value || nextProps.field !== props.field;
             }}
             component={FieldComponent}
             id={field.name}
