@@ -34,7 +34,7 @@ describe('ListSizeLimitFieldSet component', () => {
             {},
             dsGenericTheme
         )
-            .dive();
+            .dive().dive();
 
         expect(cmp.debug()).toContain(props.fieldset.displayName);
     });
@@ -45,7 +45,7 @@ describe('ListSizeLimitFieldSet component', () => {
             {},
             dsGenericTheme
         )
-            .dive();
+            .dive().dive();
 
         props.fieldset.fields.forEach(field => {
             expect(cmp.find({field}).exists()).toBe(true);
@@ -60,7 +60,7 @@ describe('ListSizeLimitFieldSet component', () => {
             {},
             dsGenericTheme
         )
-            .dive();
+            .dive().dive();
 
         const toggleCmp = cmp.find('WithStyles(ToggleCmp)');
         expect(toggleCmp.exists()).toBe(true);
@@ -76,7 +76,7 @@ describe('ListSizeLimitFieldSet component', () => {
             {},
             dsGenericTheme
         )
-            .dive();
+            .dive().dive();
 
         const toggleCmp = cmp.find('WithStyles(ToggleCmp)');
         expect(toggleCmp.exists()).toBe(true);
@@ -91,7 +91,7 @@ describe('ListSizeLimitFieldSet component', () => {
             {},
             dsGenericTheme
         )
-            .dive();
+            .dive().dive();
 
         expect(cmp.find('WithStyles(ToggleCmp)').exists()).toBe(false);
     });

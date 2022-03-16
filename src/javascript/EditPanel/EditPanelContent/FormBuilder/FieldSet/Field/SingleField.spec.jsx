@@ -4,7 +4,7 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {SingleFieldCmp} from './SingleField';
 import {TextAreaField} from '~/SelectorTypes/TextArea/TextArea';
-import {useFormikContext} from 'formik';
+import {FastField, useFormikContext} from 'formik';
 
 jest.mock('react', () => {
     return {
@@ -75,6 +75,6 @@ describe('Field component', () => {
             dsGenericTheme
         );
 
-        return cmp.find('Field');
+        return cmp.find(FastField);
     };
 });
