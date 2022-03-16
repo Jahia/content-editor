@@ -49,8 +49,12 @@ const DynamicFieldSet = ({fieldset, classes}) => {
                 />
 
                 <div className={classes.labelContainer}>
-                    <Typography component="label" htmlFor={fieldset.name} className={classes.fieldSetTitle}
-                                color="alpha" variant="zeta">
+                    <Typography component="label"
+                                htmlFor={fieldset.name}
+                                className={classes.fieldSetTitle}
+                                color="alpha"
+                                variant="zeta"
+                    >
                         {fieldset.displayName}
                     </Typography>
                     {fieldset.description &&
@@ -63,15 +67,24 @@ const DynamicFieldSet = ({fieldset, classes}) => {
             {activatedFieldSet && fieldset.fields.map(field => <MemoizedFieldContainer key={field.name} field={field}/>)}
         </article>
     );
-}
+};
+
+DynamicFieldSet.propTypes = {
+    fieldset: FieldSetPropTypes.isRequired,
+    classes: PropTypes.object.isRequired
+};
 
 const StaticFieldSet = ({fieldset, classes}) => {
     return (
         <article className={classes.fieldsetContainer}>
             <div className={classes.fieldsetTitleContainer}>
                 <div className={classes.labelContainer}>
-                    <Typography component="label" htmlFor={fieldset.name} className={classes.fieldSetTitle}
-                                color="alpha" variant="zeta">
+                    <Typography component="label"
+                                htmlFor={fieldset.name}
+                                className={classes.fieldSetTitle}
+                                color="alpha"
+                                variant="zeta"
+                    >
                         {fieldset.displayName}
                     </Typography>
                     {fieldset.description &&
@@ -84,14 +97,19 @@ const StaticFieldSet = ({fieldset, classes}) => {
             {fieldset.fields.map(field => <FieldContainer key={field.name} field={field}/>)}
         </article>
     );
-}
+};
+
+StaticFieldSet.propTypes = {
+    fieldset: FieldSetPropTypes.isRequired,
+    classes: PropTypes.object.isRequired
+};
 
 const FieldSetCmp = ({fieldset, classes}) => {
     return fieldset.dynamic ? (
         <DynamicFieldSet fieldset={fieldset} classes={classes}/>
     ) : (
         <StaticFieldSet fieldset={fieldset} classes={classes}/>
-    )
+    );
 };
 
 FieldSetCmp.propTypes = {

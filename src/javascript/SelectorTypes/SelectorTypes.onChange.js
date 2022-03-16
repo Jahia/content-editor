@@ -52,15 +52,17 @@ const registerSelectorTypesOnChange = registry => {
                         dependentPropertiesField
                     }));
                 }
+
+                return undefined;
             })).then(results => {
                 results.forEach(({data, dependentPropertiesField}) => {
                     if (data) {
                         if (data?.forms?.fieldConstraints) {
                             const fieldToUpdate = getFields(sections).find(f => f.name === dependentPropertiesField.name);
                             if (fieldToUpdate) {
-                                // update field in place (for those who keep an constant ref on sectionsContext)
+                                // Update field in place (for those who keep an constant ref on sectionsContext)
                                 fieldToUpdate.valueConstraints = data.forms.fieldConstraints;
-                                // and recreate the full sections object to make change detection work
+                                // And recreate the full sections object to make change detection work
                                 sections = sections.map(section => ({
                                     ...section,
                                     fieldSets: section.fieldSets.map(fieldSet => ({

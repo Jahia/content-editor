@@ -1,6 +1,6 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
-import {FastField, Field, useFormikContext} from 'formik';
+import {FastField, useFormikContext} from 'formik';
 import {FieldPropTypes} from '~/FormDefinitions';
 
 export const SingleFieldCmp = ({inputContext, editorContext, field, onChange}) => {
@@ -12,13 +12,13 @@ export const SingleFieldCmp = ({inputContext, editorContext, field, onChange}) =
                 return nextProps.field !== props.field;
             }}
             component={FieldComponent}
-               id={field.name}
-               name={field.name}
-               value={formik.values[field.name]}
-               field={field}
-               editorContext={editorContext}
-               inputContext={inputContext}
-               onChange={onChange}
+            id={field.name}
+            name={field.name}
+            value={formik.values[field.name]}
+            field={field}
+            editorContext={editorContext}
+            inputContext={inputContext}
+            onChange={onChange}
         />
     );
 };

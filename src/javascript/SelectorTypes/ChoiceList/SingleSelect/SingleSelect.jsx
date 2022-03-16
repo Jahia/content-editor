@@ -35,7 +35,7 @@ export const SingleSelectCmp = ({field, value, id, inputContext, onChange}) => {
         if (value && field.valueConstraints.find(v => v.value.string === value) === undefined) {
             onChange(null);
         }
-    }, [value, onChange])
+    }, [value, onChange]);
 
     return (
         <div className="flexFluid flexRow alignCenter">
