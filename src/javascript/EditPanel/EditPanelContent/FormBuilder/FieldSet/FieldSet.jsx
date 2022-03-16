@@ -33,8 +33,6 @@ let styles = theme => ({
     }
 });
 
-const MemoizedFieldContainer = React.memo(FieldContainer);
-
 const DynamicFieldSet = ({fieldset, classes}) => {
     const {values, handleChange} = useFormikContext();
     const activatedFieldSet = (values && values[fieldset.name]);
@@ -64,7 +62,7 @@ const DynamicFieldSet = ({fieldset, classes}) => {
                 </div>
             </div>
 
-            {activatedFieldSet && fieldset.fields.map(field => <MemoizedFieldContainer key={field.name} field={field}/>)}
+            {activatedFieldSet && fieldset.fields.map(field => <FieldContainer key={field.name} field={field}/>)}
         </article>
     );
 };

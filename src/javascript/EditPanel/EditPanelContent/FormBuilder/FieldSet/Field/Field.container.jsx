@@ -4,7 +4,7 @@ import {FieldPropTypes} from '~/FormDefinitions';
 import {resolveSelectorType} from '~/SelectorTypes';
 import {Field} from './Field';
 
-const FieldContainerCmp = ({field, inputContext}) => {
+export const FieldContainer = React.memo(({field, inputContext}) => {
     const selectorType = resolveSelectorType(field);
     let context = React.useMemo(() => ({
         displayLabels: true,
@@ -22,16 +22,15 @@ const FieldContainerCmp = ({field, inputContext}) => {
             selectorType={selectorType}
             field={field}/>
     );
-};
+});
 
-FieldContainerCmp.defaultProps = {
+FieldContainer.defaultProps = {
     inputContext: {}
 };
 
-FieldContainerCmp.propTypes = {
+FieldContainer.propTypes = {
     field: FieldPropTypes.isRequired,
     inputContext: PropTypes.object
 };
 
-export const FieldContainer = FieldContainerCmp;
 FieldContainer.displayName = 'FieldContainer';
