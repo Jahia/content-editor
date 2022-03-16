@@ -13,7 +13,7 @@ const FieldContainerCmp = ({field, inputContext}) => {
         displayErrors: true,
         fieldComponent: selectorType.cmp,
         ...inputContext
-    }), []);
+    }), [inputContext, selectorType.cmp]);
 
     return (
         <Field

@@ -42,12 +42,12 @@ const ThumbnailCmp = ({
 
     useEffect(() => {
         registry.addOrReplace('refetch-upload', 'refetch-image-list', {
-            refetch: refetch
+            refetch
         });
         return () => {
             registry.remove('refetch-upload', 'refetch-image-list');
         };
-    }, []);
+    }, [refetch]);
 
     if (error) {
         const message = t(

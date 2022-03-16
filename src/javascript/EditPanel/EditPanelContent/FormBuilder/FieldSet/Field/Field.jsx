@@ -82,14 +82,19 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field}) 
     const registeredOnChanges = useMemo(() => [...registry.find({
         type: 'selectorType.onChange',
         target: selectorType.key
-    }), ...registry.find({type: 'selectorType.onChange', target: '*'})], []);
+    }), ...registry.find({type: 'selectorType.onChange', target: '*'})], [selectorType.key]);
+
+    const onChangeContext = useRef({});
+    useEffect(() => {
+        onChangeContext.current = {...editorContext, ...sectionsContext, formik, client};
+    }, [editorContext, sectionsContext, formik, client]);
+
     const registeredOnChange = useCallback(currentValue => {
         if (registeredOnChanges && registeredOnChanges.length > 0) {
-            registeredOnChanges.forEach(registeredOnChange => {
-                if (registeredOnChange.onChange) {
-                    const onChangeContext = {...editorContext, ...sectionsContext, formik, client};
+            registeredOnChanges.forEach(currentOnChange => {
+                if (currentOnChange.onChange) {
                     try {
-                        registeredOnChange.onChange(onChangeValue.current, currentValue, field, onChangeContext, selectorType, contentEditorHelper);
+                        currentOnChange.onChange(onChangeValue.current, currentValue, field, onChangeContext.current, selectorType, contentEditorHelper);
                     } catch (error) {
                         console.error(error);
                     }
@@ -98,9 +103,9 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field}) 
         }
 
         onChangeValue.current = currentValue;
-    }, []);
+    }, [field, registeredOnChanges, selectorType]);
 
-    const onChange = React.useCallback(currentValue => {
+    const onChange = useCallback(currentValue => {
         // Update formik
         setFieldValue(field.name, currentValue, true);
         // Validation has been done on the setValue, no need to redo it on touch.
@@ -108,16 +113,25 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field}) 
 
         // Trigger on changes
         registeredOnChange(currentValue);
-    }, []);
+    }, [field.isMultiple, field.name, registeredOnChange, setFieldTouched, setFieldValue]);
+
+    const registeredOnChangeRef = useRef(registeredOnChange);
+    useEffect(() => {
+        registeredOnChangeRef.current = registeredOnChange;
+    }, [registeredOnChange]);
+
+    const initialValue = useRef(values[field.name]);
 
     useEffect(() => {
-        if (values[field.name] !== null && values[field.name] !== undefined) {
+        if (initialValue.current !== null && initialValue.current !== undefined) {
             // Init
-            registeredOnChange(values[field.name]);
+            registeredOnChangeRef.current(initialValue.current);
         }
-        // Unmount
 
-        return () => registeredOnChange(undefined);
+        // Unmount
+        return () => {
+            registeredOnChangeRef.current(undefined);
+        };
     }, []);
 
     return (

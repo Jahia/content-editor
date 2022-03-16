@@ -99,7 +99,7 @@ const ContentPathContainer = ({path, uuid, operator}) => {
     };
 
     const node = data?.jcr?.node;
-    const items = useMemo(() => getItems(mode, node), [node]);
+    const items = useMemo(() => getItems(mode, node), [mode, node]);
 
     let onCloseDialog = useCallback(() => setOpen(false), [setOpen]);
     let actionCallback = useCallback(() => envProps.back(uuid, operator), [envProps, uuid, operator]);

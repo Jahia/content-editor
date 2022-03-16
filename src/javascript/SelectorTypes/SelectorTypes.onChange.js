@@ -1,11 +1,15 @@
 import {getFields} from '~/EditPanel/EditPanel.utils';
 import {FieldConstraints} from '~/SelectorTypes/ChoiceList/ChoiceList.gql-queries';
 
+function arrayEquals(arr1, arr2) {
+    return arr1.length === arr2.length && arr1.every((value, index) => value === arr2[index]);
+}
+
 const registerSelectorTypesOnChange = registry => {
     registry.add('selectorType.onChange', 'dependentProperties', {
         targets: ['*'],
-        onChange: (previousValue, currentValue, field, editorContext) => {
-            let sections = editorContext.sections;
+        onChange: (previousValue, currentValue, field, onChangeContext) => {
+            let sections = onChangeContext.sections;
             const fields = getFields(sections);
             const dependentPropertiesFields = fields
                 .filter(f => f.selectorOptions
@@ -25,7 +29,7 @@ const registerSelectorTypesOnChange = registry => {
                         if (dependentField) {
                             context.push({
                                 key: dependentProperty,
-                                value: editorContext.formik.values[dependentField.name]
+                                value: onChangeContext.formik.values[dependentField.name]
                             });
                         }
                     });
@@ -35,17 +39,17 @@ const registerSelectorTypesOnChange = registry => {
                         value: currentValue === null ? [] : currentValue
                     });
 
-                    return editorContext.client.query({
+                    return onChangeContext.client.query({
                         query: FieldConstraints,
                         variables: {
-                            uuid: editorContext.nodeData.uuid,
-                            parentUuid: editorContext.nodeData.parent.path,
-                            primaryNodeType: editorContext.nodeData.primaryNodeType.name,
+                            uuid: onChangeContext.nodeData.uuid,
+                            parentUuid: onChangeContext.nodeData.parent.path,
+                            primaryNodeType: onChangeContext.nodeData.primaryNodeType.name,
                             nodeType: dependentPropertiesField.nodeType,
                             fieldName: dependentPropertiesField.propertyName,
                             context: context,
-                            uilang: editorContext.lang,
-                            language: editorContext.lang
+                            uilang: onChangeContext.lang,
+                            language: onChangeContext.lang
                         }
                     }).then(({data}) => ({
                         data,
@@ -55,11 +59,12 @@ const registerSelectorTypesOnChange = registry => {
 
                 return undefined;
             })).then(results => {
+                let updated = false;
                 results.forEach(({data, dependentPropertiesField}) => {
                     if (data) {
                         if (data?.forms?.fieldConstraints) {
                             const fieldToUpdate = getFields(sections).find(f => f.name === dependentPropertiesField.name);
-                            if (fieldToUpdate) {
+                            if (fieldToUpdate && !arrayEquals(fieldToUpdate.valueConstraints, data.forms.fieldConstraints)) {
                                 // Update field in place (for those who keep an constant ref on sectionsContext)
                                 fieldToUpdate.valueConstraints = data.forms.fieldConstraints;
                                 // And recreate the full sections object to make change detection work
@@ -72,11 +77,14 @@ const registerSelectorTypesOnChange = registry => {
                                         }))
                                     }))
                                 }));
+                                updated = true;
                             }
                         }
                     }
                 });
-                editorContext.setSections(sections);
+                if (updated) {
+                    onChangeContext.setSections(sections);
+                }
             });
         }
     });

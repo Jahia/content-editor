@@ -18,7 +18,7 @@ const GoBack = ({render: Render, componentProps, ...otherProps}) => {
         const operator = (mode === Constants.routes.baseEditRoute ? Constants.operators.update : Constants.operators.create);
 
         envProps.back(nodeData.uuid, operator, overridedStoredLocation, byPassEventTriggers);
-    }, [envProps, mode]);
+    }, [envProps, mode, nodeData.uuid]);
 
     const onCloseDialog = useCallback(() => setOpen(false), [setOpen]);
 

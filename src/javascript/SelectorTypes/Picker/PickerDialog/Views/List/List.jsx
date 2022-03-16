@@ -104,12 +104,12 @@ const ListCmp = ({
 
     useEffect(() => {
         registry.addOrReplace('refetch-upload', 'refetch-content-list', {
-            refetch: refetch
+            refetch
         });
         return () => {
             registry.remove('refetch-upload', 'refetch-content-list');
         };
-    }, []);
+    }, [refetch]);
 
     if (error) {
         const message = t(

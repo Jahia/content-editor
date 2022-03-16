@@ -27,6 +27,7 @@ SingleFieldCmp.propTypes = {
     inputContext: PropTypes.object.isRequired,
     editorContext: PropTypes.object.isRequired,
     field: FieldPropTypes.isRequired,
+    value: PropTypes.string,
     onChange: PropTypes.func.isRequired
 };
 

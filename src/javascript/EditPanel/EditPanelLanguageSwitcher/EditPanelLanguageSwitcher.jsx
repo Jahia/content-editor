@@ -36,7 +36,7 @@ const EditPanelLanguageSwitcher = ({siteInfo}) => {
     }, [contentEditorConfigContext]);
 
     let onCloseDialog = useCallback(() => setDialogConfirmation({open: false}), [setDialogConfirmation]);
-    let actionCallback = useCallback(createdNodeUuid => switchLanguage(dialogConfirmation.lang, createdNodeUuid), [switchLanguage]);
+    let actionCallback = useCallback(createdNodeUuid => switchLanguage(dialogConfirmation.lang, createdNodeUuid), [switchLanguage, dialogConfirmation.lang]);
 
     return (
         <>

@@ -76,7 +76,7 @@ export const EditCmp = ({
                 }
             }
         });
-    }, [contentEditorConfigContext, client, notificationContext]);
+    }, [client, t, notificationContext, dispatch, contentEditorConfigContext, formQueryParams, lang, nodeData, sections]);
 
     return (
         <>
