@@ -59,29 +59,29 @@ describe('FormBuilder component', () => {
         context.nodeData.isPage = true;
 
         const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).find('section');
-        expect(cmp.find("OrderingSection").dive().find('ChildrenSection').exists()).toBeFalsy();
+        expect(cmp.find('OrderingSection').dive().find('ChildrenSection').exists()).toBeFalsy();
     });
 
     it('should not display ordering section for site', () => {
         context.nodeData.isSite = true;
 
         const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).find('section');
-        expect(cmp.find("OrderingSection").dive().find('ChildrenSection').exists()).toBeFalsy();
+        expect(cmp.find('OrderingSection').dive().find('ChildrenSection').exists()).toBeFalsy();
     });
 
     it('should display ordering section', () => {
         const cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).find('section');
-        expect(cmp.find("OrderingSection").dive().find('ChildrenSection').exists()).toBeTruthy();
+        expect(cmp.find('OrderingSection').dive().find('ChildrenSection').exists()).toBeTruthy();
     });
 
     it('should display ordering section just after content section', () => {
         const cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).find('section');
-        expect(cmp.childAt(1).find("OrderingSection").dive().find('ChildrenSection').exists()).toBeTruthy();
+        expect(cmp.childAt(1).find('OrderingSection').dive().find('ChildrenSection').exists()).toBeTruthy();
     });
 
     it('should not display ordering section in create mode', () => {
         const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).find('section');
-        expect(cmp.find("OrderingSection").dive().find('ChildrenSection').exists()).toBe(false);
+        expect(cmp.find('OrderingSection').dive().find('ChildrenSection').exists()).toBe(false);
     });
 
     it('should have section with only automatically order', () => {
@@ -91,16 +91,16 @@ describe('FormBuilder component', () => {
         });
 
         let cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).find('section');
-        expect(cmp.find("OrderingSection").dive().find('ChildrenSection').props().canAutomaticallyOrder).toBeTruthy();
-        expect(cmp.find("OrderingSection").dive().find('ChildrenSection').props().canManuallyOrder).toBeFalsy();
+        expect(cmp.find('OrderingSection').dive().find('ChildrenSection').props().canAutomaticallyOrder).toBeTruthy();
+        expect(cmp.find('OrderingSection').dive().find('ChildrenSection').props().canManuallyOrder).toBeFalsy();
 
         formik.values = ({
             'jmix:orderedList': true
         });
 
         cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).find('section');
-        expect(cmp.find("OrderingSection").dive().find('ChildrenSection').props().canAutomaticallyOrder).toBeTruthy();
-        expect(cmp.find("OrderingSection").dive().find('ChildrenSection').props().canManuallyOrder).toBeFalsy();
+        expect(cmp.find('OrderingSection').dive().find('ChildrenSection').props().canAutomaticallyOrder).toBeTruthy();
+        expect(cmp.find('OrderingSection').dive().find('ChildrenSection').props().canManuallyOrder).toBeFalsy();
     });
 
     it('should have section with only manually order', () => {
@@ -109,8 +109,8 @@ describe('FormBuilder component', () => {
         });
 
         const cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).find('section');
-        expect(cmp.find("OrderingSection").dive().find('ChildrenSection').props().canAutomaticallyOrder).toBeFalsy();
-        expect(cmp.find("OrderingSection").dive().find('ChildrenSection').props().canManuallyOrder).toBeTruthy();
+        expect(cmp.find('OrderingSection').dive().find('ChildrenSection').props().canAutomaticallyOrder).toBeFalsy();
+        expect(cmp.find('OrderingSection').dive().find('ChildrenSection').props().canManuallyOrder).toBeTruthy();
     });
 
     it('should have section with automatically and manually order', () => {
@@ -119,7 +119,7 @@ describe('FormBuilder component', () => {
         });
 
         const cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).find('section');
-        expect(cmp.find("OrderingSection").dive().find('ChildrenSection').props().canAutomaticallyOrder).toBeTruthy();
-        expect(cmp.find("OrderingSection").dive().find('ChildrenSection').props().canManuallyOrder).toBeTruthy();
+        expect(cmp.find('OrderingSection').dive().find('ChildrenSection').props().canAutomaticallyOrder).toBeTruthy();
+        expect(cmp.find('OrderingSection').dive().find('ChildrenSection').props().canManuallyOrder).toBeTruthy();
     });
 });
