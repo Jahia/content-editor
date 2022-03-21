@@ -5,6 +5,10 @@ import {Field} from './Field';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import Text from '~/SelectorTypes/Text/Text';
 import {registry} from '@jahia/ui-extender';
+import {setResponseMock} from '@apollo/react-hooks';
+import {useFormikContext} from 'formik';
+
+jest.mock('formik');
 
 jest.mock('~/EditPanel/WorkInProgress/WorkInProgress.utils', () => {
     return {
@@ -36,12 +40,9 @@ jest.mock('react', () => {
     };
 });
 
-import {setResponseMock} from '@apollo/react-hooks';
-
 describe('Field component', () => {
     let defaultProps;
     let result;
-
     beforeEach(() => {
         mockEditorContext = {
             registerRefreshField: () => {},
@@ -59,6 +60,16 @@ describe('Field component', () => {
                 }
             }
         };
+        useFormikContext.mockReturnValue(
+            {
+                errors: {},
+                touched: {},
+                values: {},
+                setFieldValue: jest.fn(),
+                setFieldTouched: jest.fn()
+            }
+        );
+
         defaultProps = {
             classes: {},
             field: {
@@ -82,13 +93,6 @@ describe('Field component', () => {
             selectorType: {
                 cmp: () => <div>test</div>,
                 key: 'DatePicker'
-            },
-            formik: {
-                errors: {},
-                touched: {},
-                values: {},
-                setFieldValue: jest.fn(),
-                setFieldTouched: jest.fn()
             },
             t: i18nKey => i18nKey,
             actionContext: {},
@@ -123,7 +127,16 @@ describe('Field component', () => {
         // Build component
         defaultProps.input = props => <Text {...props}/>;
         defaultProps.field.multiple = false;
-        defaultProps.formik.values.text = onChangePreviousValue;
+        let formik = {
+            errors: {},
+            touched: {},
+            values: {
+                text: onChangePreviousValue
+            },
+            setFieldValue: jest.fn(),
+            setFieldTouched: jest.fn()
+        };
+        useFormikContext.mockReturnValue(formik);
         const cmp = shallowWithTheme(
             <Field {...defaultProps}/>,
             {},
@@ -134,15 +147,15 @@ describe('Field component', () => {
         cmp.debug();
         expect(result[0]).toBe(undefined);
         expect(result[1]).toBe(onChangePreviousValue);
-        expect(defaultProps.formik.setFieldValue).not.toHaveBeenCalled();
-        expect(defaultProps.formik.setFieldTouched).not.toHaveBeenCalled();
+        expect(formik.setFieldValue).not.toHaveBeenCalled();
+        expect(formik.setFieldTouched).not.toHaveBeenCalled();
 
         // Trigger field update
         cmp.find('SingleField').props().onChange(onChangeCurrentValue);
         expect(result[0]).toBe(onChangePreviousValue);
         expect(result[1]).toBe(onChangeCurrentValue);
-        expect(defaultProps.formik.setFieldValue).toHaveBeenCalledWith('text', onChangeCurrentValue, true);
-        expect(defaultProps.formik.setFieldTouched).toHaveBeenCalledWith('text', true, false);
+        expect(formik.setFieldValue).toHaveBeenCalledWith('text', onChangeCurrentValue, true);
+        expect(formik.setFieldTouched).toHaveBeenCalledWith('text', true, false);
     });
 
     it('should render a "Shared in all languages" when field is not i18n and site have multiple languages', () => {
@@ -253,13 +266,19 @@ describe('Field component', () => {
     });
 
     it('should display an error message when field is in error', () => {
-        defaultProps.formik.errors = {
-            text: 'required'
-        };
-
-        defaultProps.formik.touched = {
-            text: true
-        };
+        useFormikContext.mockReturnValue(
+            {
+                errors: {
+                    text: 'required'
+                },
+                touched: {
+                    text: true
+                },
+                values: {},
+                setFieldValue: jest.fn(),
+                setFieldTouched: jest.fn()
+            }
+        );
 
         const cmp = shallowWithTheme(
             <Field {...defaultProps}/>,

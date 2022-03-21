@@ -11,7 +11,7 @@ import {MainPanel} from './MainPanel';
 import {withStyles} from '@material-ui/core';
 import {useQuery} from '@apollo/react-hooks';
 import {SiteNodesQuery} from './PickerDialog.gql-queries';
-import {getSite, getSiteNodes, getPathWithoutFile} from '../Picker.utils';
+import {getPathWithoutFile, getSite, getSiteNodes} from '../Picker.utils';
 import {useDebounce} from './useDebounce';
 
 const styles = theme => ({

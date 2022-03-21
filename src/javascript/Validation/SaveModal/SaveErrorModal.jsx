@@ -1,17 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-    Dialog,
-    DialogTitle,
-    DialogActions,
-    DialogContent,
-    DialogContentText
-} from '@material-ui/core';
+import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, withStyles} from '@material-ui/core';
 import {Error} from '@material-ui/icons';
 import {Typography} from '@jahia/design-system-kit';
 import {Button} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
-import {withStyles} from '@material-ui/core';
 
 const styles = theme => ({
     icon: {

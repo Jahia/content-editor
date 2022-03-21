@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import {useDispatch, useSelector} from 'react-redux';
 import {useQuery} from '@apollo/react-hooks';
@@ -10,6 +10,7 @@ import EditPanelDialogConfirmation from '~/EditPanel/EditPanelDialogConfirmation
 import {GetContentPath} from './ContentPath.gql-queries';
 import ContentPath from './ContentPath';
 import {Constants} from '~/ContentEditor.constants';
+import {useFormikContext} from 'formik';
 
 const findLastIndex = (array, callback) => {
     let lastIndex = -1;
@@ -54,11 +55,11 @@ const getItems = (mode, node) => {
     return ancestors;
 };
 
-const ContentPathContainer = ({path, ...context}) => {
+const ContentPathContainer = ({path, uuid, operator}) => {
     const [open, setOpen] = useState(false);
     const {envProps, site, mode} = useContentEditorConfigContext();
     const dispatch = useDispatch();
-
+    const formik = useFormikContext();
     const {language} = useSelector(state => ({
         language: state.language
     }));
@@ -71,7 +72,7 @@ const ContentPathContainer = ({path, ...context}) => {
     });
 
     const handleNavigation = path => {
-        if (context.formik.dirty) {
+        if (formik.dirty) {
             setOpen(true);
         } else {
             if (path.startsWith('/sites/systemsite/categories/') || path === '/sites/systemsite/categories') {
@@ -91,14 +92,17 @@ const ContentPathContainer = ({path, ...context}) => {
                 }));
             }
 
-            if (envProps.shouldRedirectBeadCrumb()) {
+            if (envProps.shouldRedirectBreadcrumb()) {
                 envProps.back();
             }
         }
     };
 
     const node = data?.jcr?.node;
-    const items = useMemo(() => getItems(mode, node), [node]);
+    const items = useMemo(() => getItems(mode, node), [mode, node]);
+
+    let onCloseDialog = useCallback(() => setOpen(false), [setOpen]);
+    let actionCallback = useCallback(() => envProps.back(uuid, operator), [envProps, uuid, operator]);
 
     if (error) {
         return <>{error.message}</>;
@@ -109,9 +113,8 @@ const ContentPathContainer = ({path, ...context}) => {
             <EditPanelDialogConfirmation
                 isOpen={open}
                 titleKey="content-editor:label.contentEditor.edit.action.goBack.title"
-                formik={context.formik}
-                actionCallback={() => envProps.back(context.uuid, context.operator)}
-                onCloseDialog={() => setOpen(false)}
+                actionCallback={actionCallback}
+                onCloseDialog={onCloseDialog}
             />
 
             <ContentPath items={items} onItemClick={handleNavigation}/>
@@ -121,12 +124,14 @@ const ContentPathContainer = ({path, ...context}) => {
 
 ContentPathContainer.defaultProps = {
     path: '',
-    context: null
+    uuid: null,
+    operator: null
 };
 
 ContentPathContainer.propTypes = {
     path: PropTypes.string,
-    context: PropTypes.object
+    uuid: PropTypes.object,
+    operator: PropTypes.object
 };
 
 export default ContentPathContainer;

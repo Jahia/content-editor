@@ -4,10 +4,10 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {PreviewContainer} from './Preview.container';
 import {useContentEditorContext} from '~/ContentEditor.context';
+import {useFormikContext} from 'formik';
 
-jest.mock('~/ContentEditor.context', () => ({
-    useContentEditorContext: jest.fn()
-}));
+jest.mock('formik');
+jest.mock('~/ContentEditor.context');
 
 jest.mock('react', () => {
     return {
@@ -20,17 +20,14 @@ jest.useFakeTimers();
 
 describe('Preview Container', () => {
     let defaultProps;
+    let formik;
     let editorContext;
 
     beforeEach(() => {
+        formik = {
+            dirty: false
+        };
         defaultProps = {
-            editorContext: {
-                path: '',
-                language: 'en',
-                lang: 'fr'
-            },
-            isDirty: false,
-            mode: 'edit'
         };
         editorContext = {
             path: '/site/digitall',
@@ -40,7 +37,8 @@ describe('Preview Container', () => {
             }
         };
         useEffect.mockReset();
-        useContentEditorContext.mockImplementation(() => editorContext);
+        useContentEditorContext.mockReturnValue(editorContext);
+        useFormikContext.mockReturnValue(formik);
     });
 
     it('should not display preview on first render', () => {
@@ -69,7 +67,7 @@ describe('Preview Container', () => {
     });
 
     it('should display the badge preview update on save when content is updated', () => {
-        defaultProps.isDirty = true;
+        formik.dirty = true;
 
         const cmp = shallowWithTheme(
             <PreviewContainer {...defaultProps}/>,
@@ -77,7 +75,7 @@ describe('Preview Container', () => {
             dsGenericTheme
         );
 
-        expect(cmp.find('DsBadge').exists()).toBe(true);
+        expect(cmp.find('UpdateOnSaveBadge').dive().find('DsBadge').exists()).toBe(true);
     });
 
     it('should hide the badge preview update on save when content is not updated', () => {

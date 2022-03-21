@@ -6,18 +6,19 @@ import {useTranslation} from 'react-i18next';
 import {DisplayAction, DisplayActions} from '@jahia/ui-extender';
 import {EditPanelLanguageSwitcher} from '../EditPanelLanguageSwitcher';
 import {Button, Separator, Tab, TabItem} from '@jahia/moonstone';
+import {useContentEditorContext} from '~/ContentEditor.context';
 
-export const HeaderLowerSection = ({actionContext, setActiveTab, activeTab}) => {
+export const HeaderLowerSection = ({setActiveTab, activeTab}) => {
     const {t} = useTranslation('content-editor');
+    const {siteInfo, lang} = useContentEditorContext();
     return (
         <div className={styles.headerToolBar}>
-            <EditPanelLanguageSwitcher lang={actionContext.language} siteInfo={actionContext.siteInfo}/>
+            <EditPanelLanguageSwitcher lang={lang} siteInfo={siteInfo}/>
 
             <Separator variant="vertical" size="medium"/>
 
             <Tab>
                 <DisplayActions
-                    {...actionContext}
                     setActiveTab={setActiveTab}
                     activeTab={activeTab}
                     target="editHeaderTabsActions"
@@ -42,7 +43,6 @@ export const HeaderLowerSection = ({actionContext, setActiveTab, activeTab}) => 
 
             <DisplayAction
                 actionKey="content-editor/header/3dots"
-                {...actionContext}
                 render={({dataSelRole, buttonIcon, onClick, ...props}) => (
                     <Button
                         data-sel-role={dataSelRole}
@@ -59,10 +59,6 @@ export const HeaderLowerSection = ({actionContext, setActiveTab, activeTab}) => 
 };
 
 HeaderLowerSection.propTypes = {
-    actionContext: PropTypes.shape({
-        language: PropTypes.string.isRequired,
-        siteInfo: PropTypes.object.isRequired
-    }).isRequired,
     setActiveTab: PropTypes.func.isRequired,
     activeTab: PropTypes.string.isRequired
 };

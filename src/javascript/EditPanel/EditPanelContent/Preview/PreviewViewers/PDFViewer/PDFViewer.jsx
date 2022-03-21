@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Loadable from 'react-loadable';
 import {withTranslation} from 'react-i18next';
-import {Tooltip, withStyles, CircularProgress} from '@material-ui/core';
-import {Typography, IconButton} from '@jahia/design-system-kit';
+import {CircularProgress, Tooltip, withStyles} from '@material-ui/core';
+import {IconButton, Typography} from '@jahia/design-system-kit';
 import {
     ChevronLeft,
     ChevronRight,

@@ -25,8 +25,8 @@ function getMixinList(field, fieldValue) {
 const registerChoiceListOnChange = registry => {
     registry.add('selectorType.onChange', 'addMixinChoicelist', {
         targets: ['Choicelist'],
-        onChange: (previousValue, currentValue, field, editorContext, selectorType, helper) => {
-            let editorSection = editorContext.getSections();
+        onChange: (previousValue, currentValue, field, onChangeContext, selectorType, helper) => {
+            let editorSection = onChangeContext.sections;
 
             let oldMixins = previousValue ? getMixinList(field, previousValue) : [];
 
@@ -36,15 +36,15 @@ const registerChoiceListOnChange = registry => {
             }
 
             oldMixins.forEach(mixin => {
-                editorSection = helper.moveMixinToInitialFieldset(mixin, editorSection, editorContext.formik);
+                editorSection = helper.moveMixinToInitialFieldset(mixin, editorSection, onChangeContext.formik);
             });
 
             let newMixins = currentValue ? getMixinList(field, currentValue) : [];
             newMixins.forEach(mixin => {
-                editorSection = helper.moveMixinToTargetFieldset(mixin, field.nodeType, editorSection, field, editorContext.formik);
+                editorSection = helper.moveMixinToTargetFieldset(mixin, field.nodeType, editorSection, field, onChangeContext.formik);
             });
 
-            editorContext.setSections(editorSection);
+            onChangeContext.setSections(editorSection);
         }
     });
 };

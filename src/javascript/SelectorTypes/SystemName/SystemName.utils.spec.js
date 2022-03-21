@@ -1,5 +1,4 @@
-
-import {limitSystemNameIfNecessary, replaceSpecialCharacters, isEqualToSystemName} from './SystemName.utils';
+import {isEqualToSystemName, limitSystemNameIfNecessary, replaceSpecialCharacters} from './SystemName.utils';
 import {Constants} from '~/ContentEditor.constants';
 
 describe('SystemName utils', () => {

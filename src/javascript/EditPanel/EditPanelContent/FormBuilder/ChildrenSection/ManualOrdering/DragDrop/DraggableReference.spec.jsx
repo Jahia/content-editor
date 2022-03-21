@@ -3,14 +3,13 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 
 import {DraggableReference} from './DraggableReference';
+import {useDrag} from 'react-dnd';
 
 jest.mock('react-dnd', () => {
     return {
         useDrag: jest.fn()
     };
 });
-
-import {useDrag} from 'react-dnd';
 
 describe('DraggableReference component', () => {
     const child = {

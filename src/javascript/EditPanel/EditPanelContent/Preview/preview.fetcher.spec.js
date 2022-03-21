@@ -3,6 +3,8 @@ import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {PreviewFetcher} from './Preview.fetcher';
+import {useContentPreview} from '@jahia/data-helper';
+import {useContentEditorContext} from '~/ContentEditor.context';
 
 jest.mock('@jahia/data-helper', () => {
     return {
@@ -13,8 +15,6 @@ jest.mock('@jahia/data-helper', () => {
         }))
     };
 });
-import {useContentPreview} from '@jahia/data-helper';
-import {useContentEditorContext} from '~/ContentEditor.context';
 
 jest.mock('~/ContentEditor.context', () => ({
     useContentEditorContext: jest.fn()

@@ -1,13 +1,13 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {Dropdown} from '@jahia/moonstone';
 import * as PropTypes from 'prop-types';
-import {compose} from '~/utils';
-import {connect} from 'formik';
 import {EditPanelDialogConfirmation} from '../EditPanelDialogConfirmation';
 import {useContentEditorConfigContext} from '~/ContentEditor.context';
 import envSwitchLanguages from './EditPanelLanguageSwitcher.env';
+import {useFormikContext} from 'formik';
 
-const EditPanelLanguageSwitcher = ({siteInfo, formik}) => {
+const EditPanelLanguageSwitcher = ({siteInfo}) => {
+    const formik = useFormikContext();
     const contentEditorConfigContext = useContentEditorConfigContext();
     const {lang} = contentEditorConfigContext;
     const [dialogConfirmation, setDialogConfirmation] = useState({open: false, lang: lang});
@@ -23,7 +23,7 @@ const EditPanelLanguageSwitcher = ({siteInfo, formik}) => {
         return {label: capitalizedDisplayName, value: item.language};
     });
 
-    const switchLanguage = (language, createdNodeUuid) => {
+    const switchLanguage = useCallback((language, createdNodeUuid) => {
         const envSwitchLanguage = envSwitchLanguages[contentEditorConfigContext.env];
         if (envSwitchLanguage) {
             envSwitchLanguage(language, contentEditorConfigContext, createdNodeUuid);
@@ -33,7 +33,10 @@ const EditPanelLanguageSwitcher = ({siteInfo, formik}) => {
         if (window.authoringApi.switchLanguage) {
             window.authoringApi.switchLanguage(language);
         }
-    };
+    }, [contentEditorConfigContext]);
+
+    let onCloseDialog = useCallback(() => setDialogConfirmation({open: false}), [setDialogConfirmation]);
+    let actionCallback = useCallback(createdNodeUuid => switchLanguage(dialogConfirmation.lang, createdNodeUuid), [switchLanguage, dialogConfirmation.lang]);
 
     return (
         <>
@@ -57,21 +60,17 @@ const EditPanelLanguageSwitcher = ({siteInfo, formik}) => {
             <EditPanelDialogConfirmation
                 isOpen={dialogConfirmation.open}
                 titleKey="content-editor:label.contentEditor.switchLanguage.dialog.title"
-                formik={formik}
-                actionCallback={createdNodeUuid => switchLanguage(dialogConfirmation.lang, createdNodeUuid)}
-                onCloseDialog={() => setDialogConfirmation({open: false})}
+                actionCallback={actionCallback}
+                onCloseDialog={onCloseDialog}
             />
         </>
     );
 };
 
 EditPanelLanguageSwitcher.propTypes = {
-    siteInfo: PropTypes.object.isRequired,
-    formik: PropTypes.object.isRequired
+    siteInfo: PropTypes.object.isRequired
 };
 
 EditPanelLanguageSwitcher.displayName = 'EditPanelLanguageSwitcher';
 
-export default compose(
-    connect
-)(EditPanelLanguageSwitcher);
+export default EditPanelLanguageSwitcher;

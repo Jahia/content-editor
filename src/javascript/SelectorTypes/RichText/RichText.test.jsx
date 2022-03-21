@@ -2,6 +2,7 @@ import React from 'react';
 import {shallow} from '@jahia/test-framework';
 
 import {RichTextCmp} from './RichText';
+import {setQueryResult} from '@apollo/react-hooks';
 
 jest.mock('@apollo/react-hooks', () => {
     let queryResultmock;
@@ -21,8 +22,6 @@ jest.mock('react', () => {
         useEffect: cb => cb()
     };
 });
-
-import {setQueryResult} from '@apollo/react-hooks';
 
 const RICH_TEXT_COMPONENT_TAG = 'CKEditor';
 

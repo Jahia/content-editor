@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {useFormikContext} from 'formik';
 
-export const UnsetFieldActionComponent = ({field, formik, inputContext, render: Render, loading: Loading, ...others}) => {
+export const UnsetFieldActionComponent = ({field, inputContext, render: Render, loading: Loading, ...others}) => {
+    const formik = useFormikContext();
     const value = formik.values[field.name];
     const enabled = Boolean(!field.readOnly && (
         Array.isArray(value) ? value && value.length !== 0 : value
@@ -28,8 +30,6 @@ export const UnsetFieldActionComponent = ({field, formik, inputContext, render: 
 
 UnsetFieldActionComponent.propTypes = {
     field: PropTypes.object.isRequired,
-
-    formik: PropTypes.object.isRequired,
 
     inputContext: PropTypes.object.isRequired,
 

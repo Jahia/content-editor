@@ -1,15 +1,11 @@
 import React from 'react';
-import {
-    Dialog,
-    DialogActions,
-    DialogTitle
-} from '@material-ui/core';
+import {Dialog, DialogActions, DialogTitle} from '@material-ui/core';
 import {Button} from '@jahia/moonstone';
 import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
-import {Constants} from '~/ContentEditor.constants';
+import {SaveButton} from '~/EditPanel/EditPanelDialogConfirmation/SaveButton';
 
-export const EditPanelDialogConfirmation = ({titleKey, isOpen, onCloseDialog, actionCallback, formik}) => {
+export const EditPanelDialogConfirmation = React.memo(({titleKey, isOpen, onCloseDialog, actionCallback}) => {
     const {t} = useTranslation('content-editor');
     const handleDiscard = () => {
         onCloseDialog();
@@ -18,21 +14,6 @@ export const EditPanelDialogConfirmation = ({titleKey, isOpen, onCloseDialog, ac
         // True: byPassEventTriggers (we dont want to perform event triggers in case of nothing have been saved/created)
         actionCallback(undefined, true);
     };
-
-    const handleSave = () => {
-        onCloseDialog();
-
-        // Override default submit callback to execute the confirmation callback instead
-        formik.setFieldValue(Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK, actionCallback, false);
-        formik.submitForm();
-    };
-
-    let disabled = false;
-
-    const errors = formik.errors;
-    if (errors) {
-        disabled = Object.keys(errors).length > 0;
-    }
 
     return (
         <Dialog
@@ -55,22 +36,17 @@ export const EditPanelDialogConfirmation = ({titleKey, isOpen, onCloseDialog, ac
                     label={t('content-editor:label.contentEditor.edit.action.goBack.btnDiscard')}
                     onClick={handleDiscard}
                 />
-                <Button
-                    color="accent"
-                    size="big"
-                    isDisabled={disabled}
-                    label={t('content-editor:label.contentEditor.edit.action.goBack.btnSave')}
-                    onClick={handleSave}
-                />
+                <SaveButton actionCallback={actionCallback} onCloseDialog={onCloseDialog}/>
             </DialogActions>
         </Dialog>
     );
-};
+});
+
+EditPanelDialogConfirmation.name = 'EditPanelDialogConfirmation';
 
 EditPanelDialogConfirmation.propTypes = {
     titleKey: PropTypes.string.isRequired,
     isOpen: PropTypes.bool.isRequired,
-    formik: PropTypes.object.isRequired,
     actionCallback: PropTypes.func.isRequired,
     onCloseDialog: PropTypes.func.isRequired
 };

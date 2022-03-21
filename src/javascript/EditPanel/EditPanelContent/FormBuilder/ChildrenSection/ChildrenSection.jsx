@@ -1,19 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core';
-import {Typography, Toggle, Badge} from '@jahia/design-system-kit';
+import {Badge, Toggle, Typography} from '@jahia/design-system-kit';
 import {ChildrenSectionPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {ManualOrdering} from './ManualOrdering';
 import {useTranslation} from 'react-i18next';
 import {AutomaticOrdering} from './AutomaticOrdering';
 import {Constants} from '~/ContentEditor.constants';
 import {compose} from '~/utils';
-import {connect} from 'formik';
 import {Public} from '@material-ui/icons';
 import {getAutomaticOrderingFieldSet} from './AutomaticOrdering/AutomaticOrdering.utils';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import FieldSetsDisplay from '~/EditPanel/EditPanelContent/FormBuilder/FieldSet/FieldSetsDisplay/FieldSetsDisplay';
 import FieldSetsMapFcn from './ChildrenSection.fieldSetMapFcn';
+import {useFormikContext} from 'formik';
 
 const styles = theme => ({
     section: {
@@ -52,7 +52,8 @@ const styles = theme => ({
     }
 });
 
-export const ChildrenSectionCmp = ({section, classes, canManuallyOrder, canAutomaticallyOrder, formik: {values, handleChange}}) => {
+export const ChildrenSectionCmp = ({section, classes, canManuallyOrder, canAutomaticallyOrder}) => {
+    const {values, handleChange} = useFormikContext();
     const {t} = useTranslation('content-editor');
     const {sections} = useContentEditorSectionContext();
 
@@ -110,13 +111,11 @@ export const ChildrenSectionCmp = ({section, classes, canManuallyOrder, canAutom
 ChildrenSectionCmp.propTypes = {
     section: ChildrenSectionPropTypes.isRequired,
     classes: PropTypes.object.isRequired,
-    formik: PropTypes.object.isRequired,
     canManuallyOrder: PropTypes.bool.isRequired,
     canAutomaticallyOrder: PropTypes.bool.isRequired
 };
 
 export const ChildrenSection = compose(
-    connect,
     withStyles(styles)
 )(ChildrenSectionCmp);
 ChildrenSection.displayName = 'ChildrenSection';

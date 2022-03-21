@@ -1,7 +1,4 @@
-import {
-    generateWeekdaysShort,
-    getDateTime, getHourFromDisabledDays, hours
-} from './date.util';
+import {generateWeekdaysShort, getDateTime, getHourFromDisabledDays, hours} from './date.util';
 import frLocale from 'dayjs/locale/fr';
 
 describe('date util', () => {

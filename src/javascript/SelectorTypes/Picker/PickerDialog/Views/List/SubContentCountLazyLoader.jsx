@@ -21,7 +21,7 @@ export const SubContentCountLazyLoader = ({updateRow, row}) => {
                 navigateInto: count > 0
             });
         }
-    }, [data]);
+    }, [data, updateRow]);
 
     return null;
 };

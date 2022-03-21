@@ -1,28 +1,25 @@
 import React, {useState} from 'react';
-import {
-    Dialog,
-    DialogActions,
-    DialogTitle,
-    DialogContent
-} from '@material-ui/core';
+import {Dialog, DialogActions, DialogContent, DialogTitle} from '@material-ui/core';
 import {Warning} from '@material-ui/icons';
 import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
-import {Dropdown, Typography, Button} from '@jahia/moonstone';
+import {Button, Dropdown, Typography} from '@jahia/moonstone';
 import classes from './CopyLanguageDialog.scss';
 import {useApolloClient} from '@apollo/react-hooks';
 import {FormQuery} from '~/Edit/EditForm.gql-queries';
 import {getI18nFieldAndValues} from '~/Edit/copyLanguage/copyLanguage.utils';
 import {Constants} from '~/ContentEditor.constants';
+import {useFormikContext} from 'formik';
+
 export const CopyLanguageDialog = ({
     language,
     availableLanguages,
     isOpen,
     onCloseDialog,
-    formik,
     uuid
 }) => {
     const client = useApolloClient();
+    const formik = useFormikContext();
 
     const getDataFromSelectedLanguage = async language => {
         let variables = {
@@ -132,7 +129,6 @@ CopyLanguageDialog.propTypes = {
     language: PropTypes.string.isRequired,
     availableLanguages: PropTypes.array.isRequired,
     isOpen: PropTypes.bool.isRequired,
-    formik: PropTypes.object.isRequired,
     uuid: PropTypes.string.isRequired,
     onCloseDialog: PropTypes.func.isRequired
 };

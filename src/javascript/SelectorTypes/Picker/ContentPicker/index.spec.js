@@ -1,4 +1,5 @@
 import {ContentPickerSelectorType} from './index';
+import {setQueryResponseMock} from '@apollo/react-hooks';
 
 jest.mock('@apollo/react-hooks', () => {
     let queryresponsemock;
@@ -15,8 +16,6 @@ jest.mock('../PickerContainer', () => {
         Picker: () => {}
     };
 });
-
-import {setQueryResponseMock} from '@apollo/react-hooks';
 
 describe('ContentPicker config', () => {
     describe('usePickerInputData', () => {

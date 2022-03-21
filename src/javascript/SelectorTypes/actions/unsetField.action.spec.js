@@ -1,37 +1,42 @@
 import React from 'react';
 import {UnsetFieldActionComponent} from './unsetField.action';
 import {shallow} from '@jahia/test-framework';
+import {useFormikContext} from 'formik';
+
+jest.mock('formik');
 
 const button = () => <button type="button"/>;
 
 describe('unsetFieldAction', () => {
-    describe('onclick', () => {
-        let context;
-        beforeEach(() => {
-            context = {
-                formik: {
-                    values: {
-                        fieldName: ['old']
-                    },
-                    setFieldValue: jest.fn(),
-                    setFieldTouched: jest.fn()
-                },
-                inputContext: {
-                    actionContext: {}
-                },
-                field: {
-                    name: 'fieldName'
-                },
-                enabled: true
-            };
-        });
+    let defaultProps;
+    let formik;
+    beforeEach(() => {
+        defaultProps = {
+            inputContext: {
+                actionContext: {}
+            },
+            field: {
+                name: 'fieldName'
+            },
+            enabled: true
+        };
+        formik = {
+            values: {
+                fieldName: ['old']
+            },
+            setFieldValue: jest.fn(),
+            setFieldTouched: jest.fn()
+        };
+        useFormikContext.mockReturnValue(formik);
+    });
 
+    describe('onclick', () => {
         it('should set field value to null', () => {
-            const cmp = shallow(<UnsetFieldActionComponent {...context} render={button}/>);
+            const cmp = shallow(<UnsetFieldActionComponent {...defaultProps} render={button}/>);
             cmp.simulate('click');
 
             // As action expect impure function, testing params
-            expect(context.formik.setFieldValue).toHaveBeenCalledWith(
+            expect(formik.setFieldValue).toHaveBeenCalledWith(
                 'fieldName',
                 null,
                 true
@@ -39,21 +44,19 @@ describe('unsetFieldAction', () => {
         });
 
         it('should set field touched', () => {
-            const cmp = shallow(<UnsetFieldActionComponent {...context} render={button}/>);
+            const cmp = shallow(<UnsetFieldActionComponent {...defaultProps} render={button}/>);
             cmp.simulate('click');
 
-            expect(context.formik.setFieldTouched).toHaveBeenCalledWith('fieldName');
+            expect(formik.setFieldTouched).toHaveBeenCalledWith('fieldName');
         });
     });
 
     describe('init', () => {
         it('should enabled the action if field is not readonly', () => {
+            formik.values = {
+                yoolo: 'value'
+            };
             const context = {
-                formik: {
-                    values: {
-                        yoolo: 'value'
-                    }
-                },
                 inputContext: {
                     actionContext: {}
                 },
@@ -68,12 +71,10 @@ describe('unsetFieldAction', () => {
         });
 
         it('should not enabled the action if field is readonly', () => {
+            formik.values = {
+                yoolo: 'value'
+            };
             const context = {
-                formik: {
-                    values: {
-                        yoolo: 'value'
-                    }
-                },
                 inputContext: {
                     actionContext: {}
                 },
@@ -88,12 +89,10 @@ describe('unsetFieldAction', () => {
         });
 
         it('should disabled the action if field value is empty', () => {
+            formik.values = {
+                yoolo: ''
+            };
             const context = {
-                formik: {
-                    values: {
-                        yoolo: ''
-                    }
-                },
                 inputContext: {
                     actionContext: {}
                 },
@@ -108,12 +107,10 @@ describe('unsetFieldAction', () => {
         });
 
         it('should disabled the action if field values is empty', () => {
+            formik.values = {
+                yoolo: []
+            };
             const context = {
-                formik: {
-                    values: {
-                        yoolo: []
-                    }
-                },
                 inputContext: {
                     actionContext: {}
                 },
@@ -128,12 +125,10 @@ describe('unsetFieldAction', () => {
         });
 
         it('should disabled the action if field values is null', () => {
+            formik.values = {
+                yoolo: null
+            };
             const context = {
-                formik: {
-                    values: {
-                        yoolo: null
-                    }
-                },
                 inputContext: {
                     actionContext: {}
                 },
@@ -148,12 +143,10 @@ describe('unsetFieldAction', () => {
         });
 
         it('should enable the action if field values is filled', () => {
+            formik.values = {
+                yoolo: ['value']
+            };
             const context = {
-                formik: {
-                    values: {
-                        yoolo: ['value']
-                    }
-                },
                 inputContext: {
                     actionContext: {}
                 },

@@ -1,20 +1,23 @@
 import {SelectAllActionComponent} from './selectAll.action';
 import {shallow} from '@jahia/test-framework';
 import React from 'react';
+import {useFormikContext} from 'formik';
+
+jest.mock('formik');
 
 const button = () => <button type="button"/>;
-
 describe('selectAllAction', () => {
     describe('onclick', () => {
         it('should select all the values', () => {
+            const formik = {
+                setFieldValue: jest.fn(),
+                setFieldTouched: jest.fn(),
+                values: {
+                    fieldName: ['test1', 'test2']
+                }
+            };
+            useFormikContext.mockReturnValue(formik);
             const context = {
-                formik: {
-                    setFieldValue: jest.fn(),
-                    setFieldTouched: jest.fn(),
-                    values: {
-                        fieldName: ['test1', 'test2']
-                    }
-                },
                 inputContext: {
                     actionContext: {}
                 },
@@ -45,23 +48,24 @@ describe('selectAllAction', () => {
             cmp.simulate('click');
 
             // As action expect impure function, testing params
-            expect(context.formik.setFieldValue).toHaveBeenCalledWith(
+            expect(formik.setFieldValue).toHaveBeenCalledWith(
                 'fieldName',
                 ['test1', 'test2', 'test3'],
                 true
             );
-            expect(context.formik.setFieldTouched).toHaveBeenCalledTimes(1);
+            expect(formik.setFieldTouched).toHaveBeenCalledTimes(1);
         });
 
         it('should not select all the values when field is disabled', () => {
+            const formik = {
+                setFieldValue: jest.fn(),
+                setFieldTouched: jest.fn(),
+                values: {
+                    fieldName: ['test1', 'test2', 'test3']
+                }
+            };
+            useFormikContext.mockReturnValue(formik);
             const context = {
-                formik: {
-                    setFieldValue: jest.fn(),
-                    setFieldTouched: jest.fn(),
-                    values: {
-                        fieldName: ['test1', 'test2', 'test3']
-                    }
-                },
                 inputContext: {
                     actionContext: {}
                 },
@@ -91,18 +95,19 @@ describe('selectAllAction', () => {
             const cmp = shallow(<SelectAllActionComponent {...context} render={button}/>);
             cmp.simulate('click');
 
-            expect(context.formik.setFieldValue).not.toHaveBeenCalled();
-            expect(context.formik.setFieldTouched).not.toHaveBeenCalled();
+            expect(formik.setFieldValue).not.toHaveBeenCalled();
+            expect(formik.setFieldTouched).not.toHaveBeenCalled();
         });
     });
 
     describe('init', () => {
         it('should be hidden for single choicelist', () => {
+            const formik = {
+                setFieldValue: jest.fn(),
+                setFieldTouched: jest.fn()
+            };
+            useFormikContext.mockReturnValue(formik);
             const context = {
-                formik: {
-                    setFieldValue: jest.fn(),
-                    setFieldTouched: jest.fn()
-                },
                 inputContext: {
                     actionContext: {}
                 },
@@ -118,12 +123,13 @@ describe('selectAllAction', () => {
         });
 
         it('should be hidden if field is readonly', () => {
+            const formik = {
+                values: {
+                    yoolo: 'value'
+                }
+            };
+            useFormikContext.mockReturnValue(formik);
             const context = {
-                formik: {
-                    values: {
-                        yoolo: 'value'
-                    }
-                },
                 inputContext: {
                     actionContext: {}
                 },
@@ -139,12 +145,13 @@ describe('selectAllAction', () => {
         });
 
         it('should be hidden if field has no possible value to select', () => {
+            const formik = {
+                values: {
+                    yoolo: ''
+                }
+            };
+            useFormikContext.mockReturnValue(formik);
             const context = {
-                formik: {
-                    values: {
-                        yoolo: ''
-                    }
-                },
                 inputContext: {
                     actionContext: {}
                 },
@@ -161,12 +168,13 @@ describe('selectAllAction', () => {
         });
 
         it('should be hidden if field has no valueConstraints', () => {
+            const formik = {
+                values: {
+                    yoolo: ''
+                }
+            };
+            useFormikContext.mockReturnValue(formik);
             const context = {
-                formik: {
-                    values: {
-                        yoolo: ''
-                    }
-                },
                 inputContext: {
                     actionContext: {}
                 },
@@ -182,12 +190,13 @@ describe('selectAllAction', () => {
         });
 
         it('should disabled the action if all possible field values are already selected', () => {
+            const formik = {
+                values: {
+                    yoolo: ['test1', 'test2']
+                }
+            };
+            useFormikContext.mockReturnValue(formik);
             const context = {
-                formik: {
-                    values: {
-                        yoolo: ['test1', 'test2']
-                    }
-                },
                 inputContext: {
                     actionContext: {}
                 },
@@ -214,12 +223,13 @@ describe('selectAllAction', () => {
         });
 
         it('should not disabled the action when no values are selected', () => {
+            const formik = {
+                values: {
+                    yoolo: null
+                }
+            };
+            useFormikContext.mockReturnValue(formik);
             const context = {
-                formik: {
-                    values: {
-                        yoolo: null
-                    }
-                },
                 inputContext: {
                     actionContext: {}
                 },
@@ -251,12 +261,13 @@ describe('selectAllAction', () => {
         });
 
         it('should not disabled the action if no all possible field values are already selected', () => {
+            const formik = {
+                values: {
+                    yoolo: ['test1', 'test2']
+                }
+            };
+            useFormikContext.mockReturnValue(formik);
             const context = {
-                formik: {
-                    values: {
-                        yoolo: ['test1', 'test2']
-                    }
-                },
                 inputContext: {
                     actionContext: {}
                 },

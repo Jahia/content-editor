@@ -1,13 +1,13 @@
 import {Badge, Paper} from '@jahia/design-system-kit';
-import * as PropTypes from 'prop-types';
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import classes from './Preview.container.scss';
 import {ProgressOverlay} from '@jahia/react-material';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {PreviewFetcher} from './Preview.fetcher';
+import {UpdateOnSaveBadge} from '~/EditPanel/EditPanelContent/Preview/UpdateOnSaveBadge';
 
-export const PreviewContainer = ({isDirty}) => {
+export const PreviewContainer = () => {
     const {t} = useTranslation('content-editor');
     const editorContext = useContentEditorContext();
     const [contentNotFound, setContentNotFound] = useState(false);
@@ -26,14 +26,7 @@ export const PreviewContainer = ({isDirty}) => {
     return (
         <Paper className={classes.content}>
             <div className={classes.container}>
-                {isDirty &&
-                    <div>
-                        <Badge className={classes.badge}
-                               badgeContent={t('content-editor:label.contentEditor.preview.updateOnSave')}
-                               variant="normal"
-                               color="info"
-                        />
-                    </div>}
+                <UpdateOnSaveBadge/>
                 {contentNotFound &&
                     <div>
                         <Badge
@@ -59,12 +52,4 @@ export const PreviewContainer = ({isDirty}) => {
                 </>}
         </Paper>
     );
-};
-
-PreviewContainer.defaultProps = {
-    isDirty: false
-};
-
-PreviewContainer.propTypes = {
-    isDirty: PropTypes.bool
 };

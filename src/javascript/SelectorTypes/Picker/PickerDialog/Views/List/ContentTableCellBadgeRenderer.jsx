@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {withStyles, Badge, CircularProgress} from '@material-ui/core';
+import {Badge, CircularProgress, withStyles} from '@material-ui/core';
 
 const styles = theme => ({
     badge: {

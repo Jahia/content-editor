@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {storiesOf} from '@storybook/react';
-import {withKnobs, object, text, select} from '@storybook/addon-knobs';
+import {object, select, text, withKnobs} from '@storybook/addon-knobs';
 
 import {InfoPanel, InfoPanelVariant} from './index';
 import doc from './InfoPanel.md';

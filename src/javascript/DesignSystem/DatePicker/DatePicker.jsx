@@ -12,11 +12,7 @@ import deLocale from 'dayjs/locale/de';
 import enLocale from 'dayjs/locale/en';
 
 import dayjs from 'dayjs';
-import {
-    generateWeekdaysShort,
-    getDateTime,
-    getHourFromDisabledDays
-} from '../DatePickerInput/date.util';
+import {generateWeekdaysShort, getDateTime, getHourFromDisabledDays} from '../DatePickerInput/date.util';
 
 const locales = {
     fr: generateWeekdaysShort(frLocale),

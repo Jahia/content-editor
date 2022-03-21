@@ -4,11 +4,10 @@ import PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {DisplayAction} from '@jahia/ui-extender';
 import {getButtonRenderer} from '../../../utils/getButtonRenderer';
-import {connect} from 'formik';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
-export const MultipleSelectCmp = ({field, id, formik, value, inputContext, onChange}) => {
+export const MultipleSelectCmp = ({field, id, value, inputContext, onChange}) => {
     inputContext.actionContext = {
         onChange
     };
@@ -46,7 +45,6 @@ export const MultipleSelectCmp = ({field, id, formik, value, inputContext, onCha
             />
             {inputContext.displayActions && (
                 <DisplayAction actionKey="content-editor/field/Choicelist"
-                               formik={formik}
                                field={field}
                                inputContext={inputContext}
                                render={ButtonRenderer}
@@ -58,14 +56,13 @@ export const MultipleSelectCmp = ({field, id, formik, value, inputContext, onCha
 
 MultipleSelectCmp.propTypes = {
     id: PropTypes.string.isRequired,
-    formik: PropTypes.object.isRequired,
     field: FieldPropTypes.isRequired,
     value: PropTypes.arrayOf(PropTypes.string),
     inputContext: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired
 };
 
-export const MultipleSelect = connect(MultipleSelectCmp);
+export const MultipleSelect = MultipleSelectCmp;
 MultipleSelect.displayName = 'MultipleSelect';
 
 export default MultipleSelect;

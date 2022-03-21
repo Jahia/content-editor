@@ -99,7 +99,7 @@ export const IframeViewer = ({previewContext, data, onContentNotFound}) => {
             .then(() => {
                 setLoading(false);
             });
-    }, [data]);
+    }, [data, editorContext, onContentNotFound, previewContext.requestAttributes, t]);
 
     useEffect(() => {
         renderIFrame();

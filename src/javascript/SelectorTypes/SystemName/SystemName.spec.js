@@ -3,9 +3,13 @@ import {shallow} from '@jahia/test-framework';
 
 import {SystemNameCmp} from './SystemName';
 import {Constants} from '~/ContentEditor.constants';
+import {useFormikContext} from 'formik';
+
+jest.mock('formik');
 
 describe('SystemName component', () => {
     let props;
+    let formik;
     beforeEach(() => {
         props = {
             onChange: jest.fn(),
@@ -22,9 +26,12 @@ describe('SystemName component', () => {
                 requiredType: 'STRING',
                 selectorOptions: []
             },
-            values: {},
             classes: {}
         };
+        formik = {
+            values: {}
+        };
+        useFormikContext.mockReturnValue(formik);
     });
 
     it('should be readOnly when formDefinition say so', () => {
@@ -51,13 +58,13 @@ describe('SystemName component', () => {
     });
 
     it('should display sync button if no jcr:title prop', () => {
-        props.values['toto_jcr:title'] = 'toto';
+        formik.values['toto_jcr:title'] = 'toto';
         const cmp = shallow(<SystemNameCmp {...props}/>).find('Button');
         expect(cmp.props().isDisabled).toBe(false);
     });
 
     it('should disable sync button if readOnly', () => {
-        props.values['toto_jcr:title'] = 'toto';
+        formik.values['toto_jcr:title'] = 'toto';
         props.field.readOnly = true;
         const cmp = shallow(<SystemNameCmp {...props}/>).find('Button');
         expect(cmp.props().isDisabled).toBe(true);
@@ -65,13 +72,13 @@ describe('SystemName component', () => {
 
     it('should disable sync button if jcr:title is the same as system name', () => {
         props.value = 'toto';
-        props.values['toto_jcr:title'] = 'toto';
+        formik.values['toto_jcr:title'] = 'toto';
         const cmp = shallow(<SystemNameCmp {...props}/>).find('Button');
         expect(cmp.props().isDisabled).toBe(true);
     });
 
     it('should sync system name when clicking on sync button', () => {
-        props.values['toto_jcr:title'] = 'toto';
+        formik.values['toto_jcr:title'] = 'toto';
         const cmp = shallow(<SystemNameCmp {...props}/>).find('Button');
         cmp.simulate('click');
         expect(props.onChange).toHaveBeenCalledWith('toto');

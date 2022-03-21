@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {useFormikContext} from 'formik';
 
-export const SelectAllActionComponent = ({field, formik, inputContext, render: Render, loading: Loading, ...others}) => {
+export const SelectAllActionComponent = ({field, inputContext, render: Render, loading: Loading, ...others}) => {
+    const formik = useFormikContext();
+
     if (!field.multiple || field.readOnly || !field.valueConstraints || field.valueConstraints.length === 0) {
         return false;
     }
@@ -36,8 +39,6 @@ export const SelectAllActionComponent = ({field, formik, inputContext, render: R
 
 SelectAllActionComponent.propTypes = {
     field: PropTypes.object.isRequired,
-
-    formik: PropTypes.object.isRequired,
 
     inputContext: PropTypes.object.isRequired,
 

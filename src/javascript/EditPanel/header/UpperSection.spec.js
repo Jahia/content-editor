@@ -3,29 +3,37 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {HeaderUpperSection} from './';
 import {Constants} from '~/ContentEditor.constants';
+import {useFormikContext} from 'formik';
+import {useContentEditorContext} from '~/ContentEditor.context';
 
+jest.mock('~/ContentEditor.context');
+jest.mock('formik');
 describe('Header UpperSection', () => {
     let defaultProps;
+    let formik;
+    let contentEditorContext;
 
     beforeEach(() => {
         defaultProps = {
-            actionContext: {
-                nodeData: {
-                    primaryNodeType: {
-                        displayName: 'WIP-WOP'
-                    }
-                },
-                formik: {
-                    values: {
-                        'WIP::Info': {
-                            status: Constants.wip.status.DISABLED
-                        }
-                    }
-                },
-                mode: 'create'
-            },
             title: 'yolo'
         };
+        contentEditorContext = {
+            mode: 'create',
+            nodeData: {
+                primaryNodeType: {
+                    displayName: 'WIP-WOP'
+                }
+            }
+        };
+        useContentEditorContext.mockReturnValue(contentEditorContext);
+        formik = {
+            values: {
+                'WIP::Info': {
+                    status: Constants.wip.status.DISABLED
+                }
+            }
+        };
+        useFormikContext.mockReturnValue(formik);
     });
 
     it('should show the title', () => {
@@ -45,6 +53,6 @@ describe('Header UpperSection', () => {
             dsGenericTheme
         );
 
-        expect(cmp.find({'data-sel-role': 'unsaved-info-chip'}).exists()).toBe(true);
+        expect(cmp.find('UnsavedChip').dive().find({'data-sel-role': 'unsaved-info-chip'}).exists()).toBe(true);
     });
 });

@@ -1,12 +1,12 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {withNotifications} from '@jahia/react-material';
 import {Formik} from 'formik';
 import EditPanel from '~/EditPanel';
 import * as PropTypes from 'prop-types';
 import {
+    useContentEditorConfigContext,
     useContentEditorContext,
-    withContentEditorDataContextProvider,
-    useContentEditorConfigContext
+    withContentEditorDataContextProvider
 } from '~/ContentEditor.context';
 import {validate} from '~/Validation/validation';
 import {saveNode} from './save/save.request';
@@ -14,7 +14,6 @@ import {PublicationInfoContextProvider} from '~/PublicationInfo/PublicationInfo.
 import {LockManager} from '~/Lock/LockManager';
 import {useTranslation} from 'react-i18next';
 import {FormQuery} from './EditForm.gql-queries';
-import {withApollo} from 'react-apollo';
 import {compose} from '~/utils';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import {useDispatch} from 'react-redux';
@@ -25,18 +24,19 @@ import {adaptEditFormData} from './Edit.adapter';
 import {Constants} from '~/ContentEditor.constants';
 import {getPreviewPath} from '~/EditPanel/EditPanelContent/Preview/Preview.utils';
 import {pcNavigateTo} from '~/pagecomposer.redux-actions';
+import {useApolloClient} from '@apollo/react-hooks';
 
 export const EditCmp = ({
-    client,
     notificationContext
 }) => {
+    const client = useApolloClient();
     const {t} = useTranslation('content-editor');
     const contentEditorConfigContext = useContentEditorConfigContext();
     const {lang, nodeData, formQueryParams, initialValues, title} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
     const dispatch = useDispatch();
 
-    const handleSubmit = (values, actions) => {
+    const handleSubmit = useCallback((values, actions) => {
         saveNode({
             client,
             t,
@@ -76,18 +76,23 @@ export const EditCmp = ({
                 }
             }
         });
-    };
+    }, [client, t, notificationContext, dispatch, contentEditorConfigContext, formQueryParams, lang, nodeData, sections]);
 
     return (
         <>
             <PublicationInfoContextProvider uuid={nodeData.uuid} lang={lang}>
                 <Formik
                     validateOnMount
+                    innerRef={formik => {
+                        if (contentEditorConfigContext.envProps.setFormikRef) {
+                            contentEditorConfigContext.envProps.setFormikRef(formik);
+                        }
+                    }}
                     initialValues={initialValues}
                     validate={validate(sections)}
                     onSubmit={handleSubmit}
                 >
-                    {props => <EditPanel {...props} title={title}/>}
+                    {() => <EditPanel title={title}/>}
                 </Formik>
             </PublicationInfoContextProvider>
             {!nodeData.lockedAndCannotBeEdited && <LockManager uuid={nodeData.uuid}/>}
@@ -96,12 +101,10 @@ export const EditCmp = ({
 };
 
 EditCmp.propTypes = {
-    client: PropTypes.object.isRequired,
     notificationContext: PropTypes.object.isRequired
 };
 
 export const Edit = compose(
-    withApollo,
     withNotifications(),
     withContentEditorDataContextProvider(FormQuery, adaptEditFormData)
 )(EditCmp);

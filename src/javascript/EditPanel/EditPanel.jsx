@@ -1,13 +1,7 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
-import {withNotifications} from '@jahia/react-material';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import {withApollo} from 'react-apollo';
-import {compose} from '~/utils';
-import {useTranslation} from 'react-i18next';
-import {connect} from 'formik';
 import {HeaderLowerSection, HeaderUpperSection} from './header';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
-import {PublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
 import classes from './EditPanel.scss';
 import classnames from 'clsx';
 import {registry} from '@jahia/ui-extender';
@@ -16,65 +10,12 @@ import MainLayout from '~/DesignSystem/ContentLayout/MainLayout';
 import ContentHeader from '~/DesignSystem/ContentLayout/ContentHeader';
 import {Constants} from '~/ContentEditor.constants';
 import {Separator} from '@jahia/moonstone';
+import {WindowListeners} from './WindowListeners';
 
-const handleBeforeUnloadEvent = ev => {
-    ev.preventDefault();
-    ev.returnValue = '';
-};
-
-const registerListeners = envProps => {
-    // Prevent close browser's tab when there is unsaved content
-    window.addEventListener('beforeunload', handleBeforeUnloadEvent);
-    if (envProps.registerListeners) {
-        envProps.registerListeners();
-    }
-};
-
-const unregisterListeners = envProps => {
-    window.removeEventListener('beforeunload', handleBeforeUnloadEvent);
-    if (envProps.unregisterListeners) {
-        envProps.unregisterListeners();
-    }
-};
-
-const EditPanelCmp = ({formik, title, notificationContext, client}) => {
+const EditPanel = React.memo(({title}) => {
     const [activeTab, setActiveTab] = useState(Constants.editPanel.editTab);
-    const {t} = useTranslation('content-editor');
-    const {nodeData, siteInfo, lang, uilang, mode, nodeTypeDisplayName, nodeTypeName} = useContentEditorContext();
+    const {nodeData, lang, mode} = useContentEditorContext();
     const {envProps} = useContentEditorConfigContext();
-    const publicationInfoContext = useContext(PublicationInfoContext);
-
-    const previousDirty = useRef();
-
-    useEffect(() => {
-        if (envProps.setFormikRef) {
-            envProps.setFormikRef(formik);
-        }
-    }, [envProps, formik]);
-
-    useEffect(() => {
-        if (!previousDirty.current && formik.dirty) {
-            registerListeners(envProps);
-        }
-
-        previousDirty.current = formik.dirty;
-        return () => unregisterListeners(envProps);
-    }, [previousDirty, envProps, formik.dirty]);
-
-    const actionContext = {
-        nodeData,
-        language: lang,
-        uilang,
-        mode,
-        t,
-        client, // TODO BACKLOG-11290 find another way to inject apollo-client, i18n, ...}
-        notificationContext,
-        publicationInfoContext,
-        formik,
-        siteInfo,
-        nodeTypeDisplayName,
-        nodeTypeName
-    };
 
     // Without edit tab, no content editor
     const tabs = registry.find({target: 'editHeaderTabsActions'});
@@ -84,44 +25,35 @@ const EditPanelCmp = ({formik, title, notificationContext, client}) => {
     return (
         <MainLayout header={
             <ContentHeader>
-                <HeaderUpperSection actionContext={actionContext}
-                                    title={title}
+                <HeaderUpperSection title={title}
                                     isCompact={envProps.isWindow}
                                     isShowPublish={!envProps.isWindow && mode === Constants.routes.baseEditRoute}/>
                 {!envProps.isWindow && (
                     <>
                         <Separator spacing="none"/>
                         <HeaderLowerSection activeTab={activeTab}
-                                            setActiveTab={setActiveTab}
-                                            actionContext={actionContext}/>
+                                            setActiveTab={setActiveTab}/>
                     </>
                 )}
             </ContentHeader>
         }
         >
+            <WindowListeners/>
             <div className={classnames(activeTab === Constants.editPanel.editTab ? classes.tab : classes.hideTab, 'flexCol')}>
-                <EditTabComponent isDirty={formik.dirty} formik={formik} nodePath={nodeData.path} lang={lang}/>
+                <EditTabComponent nodePath={nodeData.path} lang={lang}/>
             </div>
             {OtherTabComponent && (
                 <div className={classnames(Constants.editPanel.editTab === activeTab ? classes.hideTab : classes.tab, 'flexCol')}>
-                    <OtherTabComponent isDirty={formik.dirty} formik={formik} nodePath={nodeData.path} lang={lang}/>
+                    <OtherTabComponent nodePath={nodeData.path} lang={lang}/>
                 </div>
             )}
         </MainLayout>
     );
+});
+
+EditPanel.propTypes = {
+    title: PropTypes.string.isRequired
 };
 
-EditPanelCmp.propTypes = {
-    formik: PropTypes.object.isRequired,
-    title: PropTypes.string.isRequired,
-    client: PropTypes.object.isRequired,
-    notificationContext: PropTypes.object.isRequired
-};
-
-const EditPanel = compose(
-    connect,
-    withNotifications(),
-    withApollo
-)(EditPanelCmp);
 EditPanel.displayName = 'EditPanel';
 export default EditPanel;
