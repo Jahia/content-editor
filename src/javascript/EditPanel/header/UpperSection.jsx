@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import {ButtonGroup, Chip, Typography} from '@jahia/moonstone';
 import {DisplayAction, DisplayActions} from '@jahia/ui-extender';
-
 import PublicationInfoBadge from '~/PublicationInfo/PublicationInfo.badge';
 import LockInfoBadge from '~/Lock/LockInfo.badge';
 import WipInfoChip from '~/EditPanel/WorkInProgress/Chip/WipInfo.Chip';
@@ -13,6 +12,7 @@ import {ButtonRenderer, ButtonWithPastilleRenderer} from '~/actions/ActionsButto
 import ContentBreadcrumb from '~/EditPanel/header/ContentBreadcrumb';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {UnsavedChip} from '~/EditPanel/header/UnsavedChip';
+import {PublishMenu} from '~/EditPanel/header/PublishMenu';
 
 export const HeaderUpperSection = ({title, isCompact, isShowPublish}) => {
     const {nodeData, nodeTypeDisplayName} = useContentEditorContext();
@@ -65,20 +65,7 @@ export const HeaderUpperSection = ({title, isCompact, isShowPublish}) => {
                                 render={ButtonWithPastilleRenderer}
                             />
 
-                            {/* todo: find a way to disable menu ? following is ignored */}
-                            {/* enabled={!formik.dirty && !nodeData.lockedAndCannotBeEdited && !isWip} */}
-
-                            <DisplayAction
-                                menuUseElementAnchor
-                                actionKey="publishMenu"
-                                componentProps={{
-                                    'data-sel-role': 'ContentEditorHeaderMenu',
-                                    color: 'accent',
-                                    size: 'big',
-                                    className: styles.menu
-                                }}
-                                render={ButtonRenderer}
-                            />
+                            <PublishMenu/>
                         </ButtonGroup>
                     )}
                 </div>
