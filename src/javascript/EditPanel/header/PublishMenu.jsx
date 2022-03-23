@@ -11,7 +11,7 @@ export const PublishMenu = () => {
     const formik = useFormikContext();
     const wipInfo = formik.values[Constants.wip.fieldName];
     const isWip = wipInfo.status === Constants.wip.status.ALL_CONTENT ||
-        (wipInfo.status === Constants.wip.status.LANGUAGES && wipInfo.languages.includes(language));
+        (wipInfo.status === Constants.wip.status.LANGUAGES && wipInfo.languages.includes(lang));
 
     let isDisabled = formik.dirty || nodeData.lockedAndCannotBeEdited || isWip;
     const componentProps = useMemo(() => ({
