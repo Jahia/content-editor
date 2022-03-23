@@ -12,10 +12,10 @@ import {ButtonRenderer, ButtonWithPastilleRenderer} from '~/actions/ActionsButto
 import ContentBreadcrumb from '~/EditPanel/header/ContentBreadcrumb';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {UnsavedChip} from '~/EditPanel/header/UnsavedChip';
-import {PublishMenu} from "~/EditPanel/header/PublishMenu";
+import {PublishMenu} from '~/EditPanel/header/PublishMenu';
 
 export const HeaderUpperSection = ({title, isCompact, isShowPublish}) => {
-    const {nodeData, nodeTypeDisplayName, language} = useContentEditorContext();
+    const {nodeData, nodeTypeDisplayName} = useContentEditorContext();
 
     return (
         <>

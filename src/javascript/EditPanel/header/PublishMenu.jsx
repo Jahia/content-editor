@@ -1,10 +1,10 @@
-import {useContentEditorContext} from "~/ContentEditor.context";
-import {useFormikContext} from "formik";
-import {Constants} from "~/ContentEditor.constants";
-import React, {useMemo} from "react";
+import {useContentEditorContext} from '~/ContentEditor.context';
+import {useFormikContext} from 'formik';
+import {Constants} from '~/ContentEditor.constants';
+import React, {useMemo} from 'react';
 import styles from './UpperSection.scss';
-import {DisplayAction} from "@jahia/ui-extender";
-import {ButtonRenderer} from "~/actions/ActionsButtons";
+import {DisplayAction} from '@jahia/ui-extender';
+import {ButtonRenderer} from '~/actions/ActionsButtons';
 
 export const PublishMenu = () => {
     const {nodeData, language} = useContentEditorContext();
@@ -20,14 +20,16 @@ export const PublishMenu = () => {
         size: 'big',
         className: styles.menu,
         isDisabled: isDisabled
-    }), [styles, isDisabled]);
+    }), [isDisabled]);
 
-    return <DisplayAction
+    return (
+        <DisplayAction
         menuUseElementAnchor
         actionKey="publishMenu"
         language={language}
         path={nodeData.path}
         componentProps={componentProps}
         render={ButtonRenderer}
-    />;
-}
+    />
+    );
+};
