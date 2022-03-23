@@ -52,7 +52,7 @@ const singletonDeps = [
     '@apollo/react-common',
     '@apollo/react-components',
     '@apollo/react-hooks',
-    'formik',
+    'formik'
 ];
 
 const notImported = [];
