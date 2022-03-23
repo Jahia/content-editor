@@ -7,7 +7,7 @@ import {DisplayAction} from '@jahia/ui-extender';
 import {ButtonRenderer} from '~/actions/ActionsButtons';
 
 export const PublishMenu = () => {
-    const {nodeData, language} = useContentEditorContext();
+    const {nodeData, lang} = useContentEditorContext();
     const formik = useFormikContext();
     const wipInfo = formik.values[Constants.wip.fieldName];
     const isWip = wipInfo.status === Constants.wip.status.ALL_CONTENT ||
@@ -24,12 +24,12 @@ export const PublishMenu = () => {
 
     return (
         <DisplayAction
-        menuUseElementAnchor
-        actionKey="publishMenu"
-        language={language}
-        path={nodeData.path}
-        componentProps={componentProps}
-        render={ButtonRenderer}
-    />
+            menuUseElementAnchor
+            actionKey="publishMenu"
+            language={lang}
+            path={nodeData.path}
+            componentProps={componentProps}
+            render={ButtonRenderer}
+        />
     );
 };
