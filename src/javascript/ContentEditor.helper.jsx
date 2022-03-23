@@ -6,14 +6,11 @@
  * @returns list of the updated sections
  */
 export const moveMixinToInitialFieldset = (mixin, sections, formik) => {
-    let updatedSections = sections;
     if (mixin) {
         formik.setFieldValue(mixin, false, true);
         formik.setFieldTouched(mixin, false);
-        updatedSections = moveFieldsToAnotherFieldset(mixin, mixin, updatedSections, null);
+        moveFieldsToAnotherFieldset(mixin, mixin, sections, null);
     }
-
-    return updatedSections;
 };
 
 /**
@@ -27,17 +24,14 @@ export const moveMixinToInitialFieldset = (mixin, sections, formik) => {
  */
 export const moveFieldsToAnotherFieldset = (originFieldsetName, targetFieldsetName, sections, field) => {
     let fields = [];
-    let updatedSections = sections.map(section => {
-        return {
-            ...section,
-            fieldSets: section.fieldSets.map(fieldSet => {
-                fields = fields.concat(fieldSet.fields.filter(({nodeType}) => nodeType === originFieldsetName));
-                return {
-                    ...fieldSet,
-                    fields: fieldSet.fields.filter(({nodeType}) => nodeType !== originFieldsetName)
-                };
-            })
-        };
+    sections.forEach(section => {
+        section.fieldSets = section.fieldSets.map(fieldSet => {
+            fields = fields.concat(fieldSet.fields.filter(({nodeType}) => nodeType === originFieldsetName));
+            return {
+                ...fieldSet,
+                fields: fieldSet.fields.filter(({nodeType}) => nodeType !== originFieldsetName)
+            };
+        });
     });
 
     // Find fieldSet that contains the field
@@ -53,19 +47,15 @@ export const moveFieldsToAnotherFieldset = (originFieldsetName, targetFieldsetNa
         fieldSetName = targetFieldSet.name || targetFieldsetName;
     }
 
-    updatedSections = updatedSections.map(section => {
-        return {
-            ...section,
-            fieldSets: section.fieldSets.map(fieldset => {
-                if (fieldset.name === fieldSetName) {
-                    addFieldsToFieldset(fields, fieldset, field);
-                }
+    sections.forEach(section => {
+        section.fieldSets = section.fieldSets.map(fieldset => {
+            if (fieldset.name === fieldSetName) {
+                addFieldsToFieldset(fields, fieldset, field);
+            }
 
-                return fieldset;
-            })
-        };
+            return fieldset;
+        });
     });
-    return updatedSections;
 };
 
 /**
@@ -103,14 +93,11 @@ export const addFieldsToFieldset = (fieldsToAdd, fieldset, afterField) => {
  */
 export const moveMixinToTargetFieldset = (mixin, targetFieldset, sections, updatedField, formik) => {
     // Add mixin and display fields from new value
-    let updatedSections = sections;
     if (mixin) {
         formik.setFieldValue(mixin, true, true);
         formik.setFieldTouched(mixin, false);
-        updatedSections = moveFieldsToAnotherFieldset(mixin, targetFieldset, updatedSections, updatedField);
+        moveFieldsToAnotherFieldset(mixin, targetFieldset, sections, updatedField);
     }
-
-    return updatedSections;
 };
 
 export default {
