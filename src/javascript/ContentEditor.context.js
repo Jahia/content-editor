@@ -42,8 +42,23 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
             writePermission: `jcr:modifyProperties_default_${lang}`,
             childrenFilterTypes: Constants.childrenFilterTypes
         };
-        const {loading, error, data: formDefinition, refetch: refetchFormData} = useFormDefinition(formQuery, formQueryParams, formDataAdapter, t, contentEditorConfigContext);
-        const {nodeData, initialValues, hasPreview, details, technicalInfo, sections, title, nodeTypeName, nodeTypeDisplayName} = formDefinition || {};
+        const {
+            loading,
+            error,
+            data: formDefinition,
+            refetch: refetchFormData
+        } = useFormDefinition(formQuery, formQueryParams, formDataAdapter, t, contentEditorConfigContext);
+        const {
+            nodeData,
+            initialValues,
+            hasPreview,
+            details,
+            technicalInfo,
+            sections,
+            title,
+            nodeTypeName,
+            nodeTypeDisplayName
+        } = formDefinition || {};
         const siteInfoResult = useSiteInfo({
             siteKey: site,
             displayLanguage: lang
@@ -107,7 +122,7 @@ export const withContentEditorDataContextProvider = (formQuery, formDataAdapter)
 
         return (
             <ContentEditorContext.Provider value={editorContext}>
-                <ContentEditorSectionContextProvider formSections={sections}>
+                <ContentEditorSectionContextProvider formSections={JSON.parse(JSON.stringify(sections))}>
                     <ApolloCacheFlushOnGWTSave/>
                     <Children {...props}/>
                 </ContentEditorSectionContextProvider>

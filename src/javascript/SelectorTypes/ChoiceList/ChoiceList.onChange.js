@@ -36,15 +36,15 @@ const registerChoiceListOnChange = registry => {
             }
 
             oldMixins.forEach(mixin => {
-                editorSection = helper.moveMixinToInitialFieldset(mixin, editorSection, onChangeContext.formik);
+                helper.moveMixinToInitialFieldset(mixin, editorSection, onChangeContext.formik);
             });
 
             let newMixins = currentValue ? getMixinList(field, currentValue) : [];
             newMixins.forEach(mixin => {
-                editorSection = helper.moveMixinToTargetFieldset(mixin, field.nodeType, editorSection, field, onChangeContext.formik);
+                helper.moveMixinToTargetFieldset(mixin, field.nodeType, editorSection, field, onChangeContext.formik);
             });
 
-            onChangeContext.setSections(editorSection);
+            onChangeContext.onSectionsUpdate();
         }
     });
 };

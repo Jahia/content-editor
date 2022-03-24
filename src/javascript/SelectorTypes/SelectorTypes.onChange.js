@@ -9,7 +9,7 @@ const registerSelectorTypesOnChange = registry => {
     registry.add('selectorType.onChange', 'dependentProperties', {
         targets: ['*'],
         onChange: (previousValue, currentValue, field, onChangeContext) => {
-            let sections = onChangeContext.sections;
+            const sections = onChangeContext.sections;
             const fields = getFields(sections);
             const dependentPropertiesFields = fields
                 .filter(f => f.selectorOptions
@@ -68,22 +68,21 @@ const registerSelectorTypesOnChange = registry => {
                                 // Update field in place (for those who keep an constant ref on sectionsContext)
                                 fieldToUpdate.valueConstraints = data.forms.fieldConstraints;
                                 // And recreate the full sections object to make change detection work
-                                sections = sections.map(section => ({
-                                    ...section,
-                                    fieldSets: section.fieldSets.map(fieldSet => ({
+                                sections.forEach(section => {
+                                    section.fieldSets = section.fieldSets.map(fieldSet => ({
                                         ...fieldSet,
                                         fields: fieldSet.fields.map(f => ({
                                             ...f
                                         }))
-                                    }))
-                                }));
+                                    }));
+                                });
                                 updated = true;
                             }
                         }
                     }
                 });
                 if (updated) {
-                    onChangeContext.setSections(sections);
+                    onChangeContext.onSectionsUpdate();
                 }
             });
         }
