@@ -48,6 +48,7 @@ const NodeDataFragment = {
                         name
                         displayName(language: $language)
                         primaryNodeType {
+                            name
                             displayName(language: $language)
                             icon
                         }
