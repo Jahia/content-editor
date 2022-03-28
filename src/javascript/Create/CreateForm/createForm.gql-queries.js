@@ -60,6 +60,7 @@ export const FormQuery = gql`
                 newName: findAvailableNodeName(nodeType: $primaryNodeType, language: $language)
                 lockedAndCannotBeEdited
                 displayableNode {
+                    ...NodeCacheRequiredFields
                     path
                     isFolder:isNodeType(type: {multi: ANY, types: ["jnt:contentFolder", "jnt:folder"]})
                 }
@@ -68,6 +69,7 @@ export const FormQuery = gql`
                     name
                 }
                 parent {
+                    ...NodeCacheRequiredFields
                     displayName(language: $language)
                     path
                 }

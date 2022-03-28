@@ -8,12 +8,14 @@ const getTreeOfContentQuery = `forms {
                 label
                 iconURL
                 nodeType {
+                    name
                     mixin
                 }
                 children {
                     id
                     name
                     nodeType {
+                        name
                         mixin
                     }
                     parent {
@@ -32,7 +34,7 @@ export const getTreeOfContentWithRequirements = gql`
         jcr {
             nodeByPath(path: $path) {
                 isNodeType(type: {types:$showOnNodeTypes})
-                ...NodeCacheRequiredFields
+                    ...NodeCacheRequiredFields
             }
         }
     }
