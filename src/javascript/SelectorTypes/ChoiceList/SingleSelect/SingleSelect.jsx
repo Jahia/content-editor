@@ -5,20 +5,19 @@ import {Dropdown} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
 import {DisplayAction} from '@jahia/ui-extender';
 import {getButtonRenderer} from '../../../utils/getButtonRenderer';
-import {connect} from 'formik';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
-export const SingleSelectCmp = ({field, value, formik, id, inputContext, onChange}) => {
+export const SingleSelectCmp = ({field, value, id, inputContext, onChange}) => {
     const {t} = useTranslation('content-editor');
     inputContext.actionContext = {
         onChange
     };
 
-    const readOnly = field.readOnly || field.valueConstraints.length === 0;
-    const label = field.valueConstraints.find(item => item.value.string === value)?.displayValue || '';
-    const dropdownData = field.valueConstraints.length > 0 ?
-        field.valueConstraints.map(item => {
+    const {readOnly, label, dropdownData} = React.useMemo(() => ({
+        readOnly: field.readOnly || field.valueConstraints.length === 0,
+        label: field.valueConstraints.find(item => item.value.string === value)?.displayValue || '',
+        dropdownData: field.valueConstraints.length > 0 ? field.valueConstraints.map(item => {
             const image = item.properties?.find(property => property.name === 'image')?.value;
             return {
                 label: item.displayValue,
@@ -28,12 +27,15 @@ export const SingleSelectCmp = ({field, value, formik, id, inputContext, onChang
                     'data-value': item.value.string
                 }
             };
-        }) : [{label: '', value: ''}];
+        }) : [{label: '', value: ''}]
+    }), [field, value]);
 
-    // Reset value if constraints doesnt contains the actual value.
-    if (value && field.valueConstraints.find(v => v.value.string === value) === undefined) {
-        onChange(null);
-    }
+    React.useEffect(() => {
+        // Reset value if constraints doesnt contains the actual value.
+        if (value && field.valueConstraints.find(v => v.value.string === value) === undefined) {
+            onChange(null);
+        }
+    }, [value, field.valueConstraints, onChange]);
 
     return (
         <div className="flexFluid flexRow alignCenter">
@@ -60,7 +62,6 @@ export const SingleSelectCmp = ({field, value, formik, id, inputContext, onChang
             />
             {inputContext.displayActions && (
                 <DisplayAction actionKey="content-editor/field/Choicelist"
-                               formik={formik}
                                field={field}
                                inputContext={inputContext}
                                render={ButtonRenderer}
@@ -76,14 +77,13 @@ SingleSelectCmp.defaultProps = {
 
 SingleSelectCmp.propTypes = {
     id: PropTypes.string.isRequired,
-    formik: PropTypes.object.isRequired,
     value: PropTypes.string,
     field: FieldPropTypes.isRequired,
     inputContext: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired
 };
 
-export const SingleSelect = connect(SingleSelectCmp);
+export const SingleSelect = SingleSelectCmp;
 SingleSelect.displayName = 'SingleSelect';
 
 export default SingleSelect;

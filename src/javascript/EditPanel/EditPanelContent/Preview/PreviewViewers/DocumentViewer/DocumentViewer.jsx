@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Loadable from 'react-loadable';
-import {withStyles, CircularProgress} from '@material-ui/core';
+import {CircularProgress, withStyles} from '@material-ui/core';
 import {FileIcon} from '@jahia/icons';
 import classNames from 'classnames';
 

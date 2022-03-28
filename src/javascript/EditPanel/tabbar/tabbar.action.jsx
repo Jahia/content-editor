@@ -5,6 +5,8 @@ import {useContentEditorContext} from '~/ContentEditor.context';
 
 export const TabBar = ({setActiveTab, isDisplayable, value, render: Render, loading: Loading, ...otherProps}) => {
     const {path} = useContentEditorContext();
+    const ceCtx = useContentEditorContext();
+
     const res = useNodeChecks(
         {path: path},
         {...otherProps}
@@ -16,7 +18,7 @@ export const TabBar = ({setActiveTab, isDisplayable, value, render: Render, load
 
     return (
         <>
-            {isDisplayable(otherProps) && res.checksResult &&
+            {isDisplayable({...otherProps, ...ceCtx}) && res.checksResult &&
             <Render
                 {...otherProps}
                 onClick={() => {

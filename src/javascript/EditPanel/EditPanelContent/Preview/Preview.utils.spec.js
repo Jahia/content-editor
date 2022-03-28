@@ -1,4 +1,5 @@
-import {getPreviewContext, removeSiblings, getPreviewPath} from './Preview.utils';
+import {getPreviewContext, getPreviewPath, removeSiblings} from './Preview.utils';
+
 const fs = require('fs');
 const path = require('path');
 const html = fs.readFileSync(path.resolve(__dirname, './Preview.utils.test.html'), 'utf8');

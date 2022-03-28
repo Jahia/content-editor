@@ -1,27 +1,25 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
-import {compose} from '~/utils';
-import {connect, FastField} from 'formik';
+import {FastField, useFormikContext} from 'formik';
 import {FieldPropTypes} from '~/FormDefinitions';
 
-export const SingleFieldCmp = ({inputContext, editorContext, field, formik, onChange}) => {
+export const SingleFieldCmp = ({inputContext, editorContext, field, onChange}) => {
     const FieldComponent = inputContext.fieldComponent;
-
+    const formik = useFormikContext();
     return (
-        <FastField shouldUpdate={() => true}>
-            {() => {
-                return (
-                    <FieldComponent field={field}
-                                    id={field.name}
-                                    value={formik.values[field.name]}
-                                    values={formik.values}
-                                    editorContext={editorContext}
-                                    inputContext={inputContext}
-                                    onChange={onChange}
-                    />
-                );
+        <FastField
+            shouldUpdate={(nextProps, props) => {
+                return nextProps.value !== props.value || nextProps.field !== props.field;
             }}
-        </FastField>
+            component={FieldComponent}
+            id={field.name}
+            name={field.name}
+            value={formik.values[field.name]}
+            field={field}
+            editorContext={editorContext}
+            inputContext={inputContext}
+            onChange={onChange}
+        />
     );
 };
 
@@ -29,12 +27,10 @@ SingleFieldCmp.propTypes = {
     inputContext: PropTypes.object.isRequired,
     editorContext: PropTypes.object.isRequired,
     field: FieldPropTypes.isRequired,
-    formik: PropTypes.object.isRequired,
+    value: PropTypes.string,
     onChange: PropTypes.func.isRequired
 };
 
-export const SingleField = compose(
-    connect
-)(SingleFieldCmp);
+export const SingleField = SingleFieldCmp;
 
 SingleField.displayName = 'SingleField';

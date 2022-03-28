@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Radio} from '@material-ui/core';
-import {Button, Typography, Check} from '@jahia/moonstone';
+import {Button, Check, Typography} from '@jahia/moonstone';
 import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import classes from './WorkInProgressDialog.scss';
@@ -165,9 +165,11 @@ export const WorkInProgressDialog = ({
             <DialogActions className={classes.actions}>
                 <Button
                     label={t('content-editor:label.contentEditor.edit.action.workInProgress.btnCancel')}
+                    size="big"
                     onClick={handleCancel}/>
                 <Button
                     icon={<Check/>}
+                    size="big"
                     color="accent"
                     label={t('content-editor:label.contentEditor.edit.action.workInProgress.btnDone')}
                     disabled={isApplyDisabled()}

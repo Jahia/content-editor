@@ -3,43 +3,21 @@ import {dsGenericTheme} from '@jahia/design-system-kit';
 import React from 'react';
 import {listOrderingSection} from './AutomaticOrdering.spec.data';
 import {AutomaticOrderingCmp} from './AutomaticOrdering';
-import {setSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
-import {setContext} from '~/ContentEditor.context';
-import {
-    adaptSectionToDisplayableRows,
-    getDisplayedRows
-} from './AutomaticOrdering.utils';
+import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
+import {useContentEditorContext} from '~/ContentEditor.context';
+import {adaptSectionToDisplayableRows, getDisplayedRows} from './AutomaticOrdering.utils';
 import {Constants} from '~/ContentEditor.constants';
+import {useFormikContext} from 'formik';
 
-jest.mock('~/ContentEditor.context', () => {
-    let contextmock;
-    return {
-        useContentEditorContext: () => {
-            return contextmock;
-        },
-        setContext: c => {
-            contextmock = c;
-        }
-    };
-});
-
-jest.mock('~/ContentEditorSection/ContentEditorSection.context', () => {
-    let sectionContextmock;
-    return {
-        useContentEditorSectionContext: () => {
-            return sectionContextmock;
-        },
-        setSectionContext: listOrderingSection => {
-            sectionContextmock = {
-                sections: [listOrderingSection]
-            };
-        }
-    };
-});
+jest.mock('formik');
+jest.mock('~/ContentEditor.context');
+jest.mock('~/ContentEditorSection/ContentEditorSection.context');
 
 describe('Automatic ordering component', () => {
     let props;
+    let formik;
     let context;
+    let sectionContext;
     beforeEach(() => {
         context = {
             nodeData: {
@@ -47,28 +25,30 @@ describe('Automatic ordering component', () => {
                 hasWritePermission: true
             }
         };
-
-        props = {
-            formik: {
-                values: {
-                    [Constants.automaticOrdering.mixin + '_firstField']: undefined,
-                    [Constants.automaticOrdering.mixin + '_secondField']: undefined,
-                    [Constants.automaticOrdering.mixin + '_thirdField']: undefined,
-                    [Constants.automaticOrdering.mixin + '_firstDirection']: 'asc',
-                    [Constants.automaticOrdering.mixin + '_secondDirection']: 'asc',
-                    [Constants.automaticOrdering.mixin + '_thirdDirection']: 'asc'
-                },
-                setFieldValue: jest.fn(),
-                setFieldTouched: jest.fn()
+        useContentEditorContext.mockReturnValue(context);
+        sectionContext = {
+        };
+        useContentEditorSectionContext.mockReturnValue(sectionContext);
+        formik = {
+            values: {
+                [Constants.automaticOrdering.mixin + '_firstField']: undefined,
+                [Constants.automaticOrdering.mixin + '_secondField']: undefined,
+                [Constants.automaticOrdering.mixin + '_thirdField']: undefined,
+                [Constants.automaticOrdering.mixin + '_firstDirection']: 'asc',
+                [Constants.automaticOrdering.mixin + '_secondDirection']: 'asc',
+                [Constants.automaticOrdering.mixin + '_thirdDirection']: 'asc'
             },
+            setFieldValue: jest.fn(),
+            setFieldTouched: jest.fn()
+        };
+        useFormikContext.mockReturnValue(formik);
+        props = {
             classes: {}
         };
     });
 
     it('should display one row only when no props set', () => {
-        setSectionContext(listOrderingSection(false, false));
-        setContext(context);
-
+        sectionContext.sections = [listOrderingSection(false, false)];
         const cmp = shallowWithTheme(
             <AutomaticOrderingCmp {...props}/>,
             {},
@@ -78,10 +58,9 @@ describe('Automatic ordering component', () => {
     });
 
     it('should display rows when properties exists', () => {
-        setSectionContext(listOrderingSection(false, false));
-        setContext(context);
-        props.formik.values[Constants.automaticOrdering.mixin + '_secondField'] = 'jcr:created';
-        props.formik.values[Constants.automaticOrdering.mixin + '_thirdField'] = 'jcr:createdBy';
+        sectionContext.sections = [listOrderingSection(false, false)];
+        formik.values[Constants.automaticOrdering.mixin + '_secondField'] = 'jcr:created';
+        formik.values[Constants.automaticOrdering.mixin + '_thirdField'] = 'jcr:createdBy';
 
         const cmp = shallowWithTheme(
             <AutomaticOrderingCmp {...props}/>,
@@ -92,8 +71,7 @@ describe('Automatic ordering component', () => {
     });
 
     it('should disable add when props are readOnly', () => {
-        setSectionContext(listOrderingSection(true, true));
-        setContext(context);
+        sectionContext.sections = [listOrderingSection(true, true)];
 
         const cmp = shallowWithTheme(
             <AutomaticOrderingCmp {...props}/>,
@@ -104,10 +82,9 @@ describe('Automatic ordering component', () => {
     });
 
     it('should disable remove when props are readOnly', () => {
-        setSectionContext(listOrderingSection(true, true));
-        setContext(context);
-        props.formik.values[Constants.automaticOrdering.mixin + '_secondField'] = 'jcr:created';
-        props.formik.values[Constants.automaticOrdering.mixin + '_thirdField'] = 'jcr:createdBy';
+        sectionContext.sections = [listOrderingSection(true, true)];
+        formik.values[Constants.automaticOrdering.mixin + '_secondField'] = 'jcr:created';
+        formik.values[Constants.automaticOrdering.mixin + '_thirdField'] = 'jcr:createdBy';
 
         const cmp = shallowWithTheme(
             <AutomaticOrderingCmp {...props}/>,
@@ -119,8 +96,7 @@ describe('Automatic ordering component', () => {
     });
 
     it('should add rows when click on "Add" button, to a maximum of 3 rows, then the button should be disabled', () => {
-        setSectionContext(listOrderingSection(false, false));
-        setContext(context);
+        sectionContext.sections = [listOrderingSection(false, false)];
 
         const cmp = shallowWithTheme(
             <AutomaticOrderingCmp {...props}/>,
@@ -133,25 +109,24 @@ describe('Automatic ordering component', () => {
         cmp.find('Button').simulate('click');
         expect(cmp.find('FieldContainer').length).toBe(4);
         expect(cmp.find('Button').props().isDisabled).toBe(false);
-        expect(props.formik.setFieldValue.mock.calls[0]).toEqual([Constants.automaticOrdering.mixin + '_secondField', 'jcr:lastModified', true]);
-        expect(props.formik.setFieldValue.mock.calls[1]).toEqual([Constants.automaticOrdering.mixin + '_secondDirection', 'desc', true]);
-        expect(props.formik.setFieldTouched.mock.calls[0]).toEqual([Constants.automaticOrdering.mixin + '_secondField', true]);
-        expect(props.formik.setFieldTouched.mock.calls[1]).toEqual([Constants.automaticOrdering.mixin + '_secondDirection', true]);
+        expect(formik.setFieldValue.mock.calls[0]).toEqual([Constants.automaticOrdering.mixin + '_secondField', 'jcr:lastModified', true]);
+        expect(formik.setFieldValue.mock.calls[1]).toEqual([Constants.automaticOrdering.mixin + '_secondDirection', 'desc', true]);
+        expect(formik.setFieldTouched.mock.calls[0]).toEqual([Constants.automaticOrdering.mixin + '_secondField', true]);
+        expect(formik.setFieldTouched.mock.calls[1]).toEqual([Constants.automaticOrdering.mixin + '_secondDirection', true]);
 
         cmp.find('Button').simulate('click');
         expect(cmp.find('FieldContainer').length).toBe(6);
         expect(cmp.find('Button').props().isDisabled).toBe(true);
-        expect(props.formik.setFieldValue.mock.calls[2]).toEqual([Constants.automaticOrdering.mixin + '_thirdField', 'jcr:lastModified', true]);
-        expect(props.formik.setFieldValue.mock.calls[3]).toEqual([Constants.automaticOrdering.mixin + '_thirdDirection', 'desc', true]);
-        expect(props.formik.setFieldTouched.mock.calls[2]).toEqual([Constants.automaticOrdering.mixin + '_thirdField', true]);
-        expect(props.formik.setFieldTouched.mock.calls[3]).toEqual([Constants.automaticOrdering.mixin + '_thirdDirection', true]);
+        expect(formik.setFieldValue.mock.calls[2]).toEqual([Constants.automaticOrdering.mixin + '_thirdField', 'jcr:lastModified', true]);
+        expect(formik.setFieldValue.mock.calls[3]).toEqual([Constants.automaticOrdering.mixin + '_thirdDirection', 'desc', true]);
+        expect(formik.setFieldTouched.mock.calls[2]).toEqual([Constants.automaticOrdering.mixin + '_thirdField', true]);
+        expect(formik.setFieldTouched.mock.calls[3]).toEqual([Constants.automaticOrdering.mixin + '_thirdDirection', true]);
     });
 
     it('should remove rows when click on "Remove" button', () => {
-        setSectionContext(listOrderingSection(false, false));
-        setContext(context);
-        props.formik.values[Constants.automaticOrdering.mixin + '_secondField'] = 'jcr:created';
-        props.formik.values[Constants.automaticOrdering.mixin + '_thirdField'] = 'jcr:createdBy';
+        sectionContext.sections = [listOrderingSection(false, false)];
+        formik.values[Constants.automaticOrdering.mixin + '_secondField'] = 'jcr:created';
+        formik.values[Constants.automaticOrdering.mixin + '_thirdField'] = 'jcr:createdBy';
 
         const cmp = shallowWithTheme(
             <AutomaticOrderingCmp {...props}/>,
@@ -165,10 +140,10 @@ describe('Automatic ordering component', () => {
         cmp.find('FieldContainer').at(1).props().inputContext.actionRender.props.onClick();
 
         // Verify formik is updated correctly by removed of secondField
-        expect(props.formik.setFieldValue.mock.calls[0]).toEqual([Constants.automaticOrdering.mixin + '_secondField', undefined, true]);
-        expect(props.formik.setFieldValue.mock.calls[1]).toEqual([Constants.automaticOrdering.mixin + '_secondDirection', undefined, true]);
-        expect(props.formik.setFieldTouched.mock.calls[0]).toEqual([Constants.automaticOrdering.mixin + '_secondField', true]);
-        expect(props.formik.setFieldTouched.mock.calls[1]).toEqual([Constants.automaticOrdering.mixin + '_secondDirection', true]);
+        expect(formik.setFieldValue.mock.calls[0]).toEqual([Constants.automaticOrdering.mixin + '_secondField', undefined, true]);
+        expect(formik.setFieldValue.mock.calls[1]).toEqual([Constants.automaticOrdering.mixin + '_secondDirection', undefined, true]);
+        expect(formik.setFieldTouched.mock.calls[0]).toEqual([Constants.automaticOrdering.mixin + '_secondField', true]);
+        expect(formik.setFieldTouched.mock.calls[1]).toEqual([Constants.automaticOrdering.mixin + '_secondDirection', true]);
 
         // Insure only one row display left
         expect(cmp.find('FieldContainer').length).toBe(2);

@@ -3,6 +3,7 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 
 import {PickerDialog} from './index';
+import {setQueryResponseMock} from '@apollo/react-hooks';
 
 jest.mock('@apollo/react-hooks', () => {
     let queryresponsemock;
@@ -13,7 +14,6 @@ jest.mock('@apollo/react-hooks', () => {
         }
     };
 });
-import {setQueryResponseMock} from '@apollo/react-hooks';
 
 describe('PickerDialog', () => {
     let props;

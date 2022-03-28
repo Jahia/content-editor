@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {ContentEditor} from './ContentEditor';
 import PropTypes from 'prop-types';
@@ -18,6 +18,7 @@ const ContentEditorRedux = ({mode, uuid, lang, contentType}) => {
     const {storedLocation, setStoredLocation} = useContentEditorHistoryContext();
     const {uilang, openPaths} = useSelector(state => ({uilang: state.uilang, openPaths: state.jcontent.openPaths}));
     const dispatch = useDispatch();
+    const formikRef = useRef();
     const {t} = useTranslation('content-editor');
     const {data} = useQuery(gql`query($uuid:String!) {
         jcr {
@@ -70,6 +71,10 @@ const ContentEditorRedux = ({mode, uuid, lang, contentType}) => {
     };
 
     const envProps = {
+        formikRef,
+        setFormikRef: formik => {
+            formikRef.current = formik;
+        },
         setUrl: (mode, language, uuid, contentType) => redirect({mode, language, uuid, rest: contentType}),
         back: (uuid, operator, overridedStoredLocation) => {
             client.cache.flushNodeEntryById(uuid);
@@ -83,7 +88,7 @@ const ContentEditorRedux = ({mode, uuid, lang, contentType}) => {
         unregisterListeners: () => {
             unRegisterBlockListener();
         },
-        shouldRedirectBeadCrumb: () => false,
+        shouldRedirectBreadcrumb: () => false,
         handleRename: handleRename
     };
     return Boolean(site) && (

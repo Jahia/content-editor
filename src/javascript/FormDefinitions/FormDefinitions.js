@@ -11,7 +11,7 @@ export const useFormDefinition = (query, queryParams, adapter, t, contentEditorC
         if (!error && !loading && data.jcr) {
             return adapter(data, queryParams.uilang, t, contentEditorConfigContext);
         }
-    }, [data, queryParams.uilang, t, contentEditorConfigContext, error, loading]);
+    }, [data, queryParams.uilang, t, contentEditorConfigContext, error, loading, adapter]);
 
     if (error || loading || !data.jcr) {
         return {

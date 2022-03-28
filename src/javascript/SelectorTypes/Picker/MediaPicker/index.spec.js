@@ -1,4 +1,5 @@
 import {MediaPickerSelectorType} from './index';
+import {setQueryResponseMock} from '@apollo/react-hooks';
 
 jest.mock('@apollo/react-hooks', () => {
     let queryresponsemock;
@@ -9,7 +10,6 @@ jest.mock('@apollo/react-hooks', () => {
         }
     };
 });
-import {setQueryResponseMock} from '@apollo/react-hooks';
 
 describe('MediaPicker config', () => {
     describe('usePickerInputData', () => {

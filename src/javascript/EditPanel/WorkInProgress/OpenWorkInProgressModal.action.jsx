@@ -3,9 +3,13 @@ import PropTypes from 'prop-types';
 import WorkInProgressDialog from './WorkInProgressDialog/WorkInProgressDialog';
 import {ComponentRendererContext} from '@jahia/ui-extender';
 import {Constants} from '~/ContentEditor.constants';
+import {useFormikContext} from 'formik';
+import {useContentEditorContext} from '~/ContentEditor.context';
 
-export const OpenWorkInProgressModal = ({siteInfo, nodeData, formik, language, render: Render, ...otherProps}) => {
+export const OpenWorkInProgressModal = ({render: Render, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
+    const {nodeData, lang, siteInfo} = useContentEditorContext();
+    const formik = useFormikContext();
 
     const closeDialog = () => {
         componentRenderer.destroy('WorkInProgressDialog');
@@ -25,7 +29,7 @@ export const OpenWorkInProgressModal = ({siteInfo, nodeData, formik, language, r
             WorkInProgressDialog,
             {
                 wipInfo,
-                currentLanguage: language,
+                currentLanguage: lang,
                 isOpen: true,
                 languages: siteInfo.languages,
                 onCloseDialog: closeDialog,
@@ -53,10 +57,6 @@ export const OpenWorkInProgressModal = ({siteInfo, nodeData, formik, language, r
 };
 
 OpenWorkInProgressModal.propTypes = {
-    siteInfo: PropTypes.object.isRequired,
-    nodeData: PropTypes.object.isRequired,
-    language: PropTypes.string.isRequired,
-    formik: PropTypes.object.isRequired,
     render: PropTypes.func.isRequired
 };
 

@@ -3,15 +3,16 @@ import React from 'react';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import Text from '~/SelectorTypes/Text';
 import {Constants} from '~/ContentEditor.constants';
-import {limitSystemNameIfNecessary, replaceSpecialCharacters, isEqualToSystemName} from './SystemName.utils';
+import {isEqualToSystemName, limitSystemNameIfNecessary, replaceSpecialCharacters} from './SystemName.utils';
 import {Button, Copy} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
 import classes from './SystemName.scss';
+import {useFormikContext} from 'formik';
 
-export const SystemNameCmp = ({field, value, values, id, editorContext, onChange}) => {
+export const SystemNameCmp = ({field, value, id, editorContext, onChange}) => {
     const {t} = useTranslation('content-editor');
-
-    const titleField = Object.keys(values).find(key => key.endsWith('_jcr:title'));
+    const formik = useFormikContext();
+    const titleField = Object.keys(formik.values).find(key => key.endsWith('_jcr:title'));
     return (
         <>
             <Text
@@ -22,7 +23,7 @@ export const SystemNameCmp = ({field, value, values, id, editorContext, onChange
                 onChange={onChange}
             />
 
-            {values[titleField] !== undefined &&
+            {formik.values[titleField] !== undefined &&
             editorContext.mode === Constants.routes.baseEditRoute &&
             <Button className={classes.syncButton}
                     data-sel-role="syncSystemName"
@@ -31,9 +32,9 @@ export const SystemNameCmp = ({field, value, values, id, editorContext, onChange
                     color="accent"
                     label={t('content-editor:label.contentEditor.section.fieldSet.system.fields.syncButton')}
                     icon={<Copy/>}
-                    isDisabled={field.readOnly || isEqualToSystemName(values[titleField], value, field)}
+                    isDisabled={field.readOnly || isEqualToSystemName(formik.values[titleField], value, field)}
                     onClick={() => {
-                        const cleanedSystemName = replaceSpecialCharacters(values[titleField])?.toLowerCase();
+                        const cleanedSystemName = replaceSpecialCharacters(formik.values[titleField])?.toLowerCase();
                         onChange(limitSystemNameIfNecessary(cleanedSystemName, field));
                     }}
             />}
@@ -44,7 +45,6 @@ export const SystemNameCmp = ({field, value, values, id, editorContext, onChange
 SystemNameCmp.propTypes = {
     id: PropTypes.string.isRequired,
     value: PropTypes.string,
-    values: PropTypes.object.isRequired,
     editorContext: PropTypes.object.isRequired,
     field: FieldPropTypes.isRequired,
     onChange: PropTypes.func.isRequired

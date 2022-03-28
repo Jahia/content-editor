@@ -56,6 +56,11 @@ const CreateCmp = ({
 
     return (
         <Formik
+            innerRef={formik => {
+                if (contentEditorConfigContext.envProps.setFormikRef) {
+                    contentEditorConfigContext.envProps.setFormikRef(formik);
+                }
+            }}
             initialValues={initialValues}
             validate={validate(sections)}
             onSubmit={handleSubmit}

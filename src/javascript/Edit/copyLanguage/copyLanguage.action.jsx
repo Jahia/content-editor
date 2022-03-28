@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import {CopyLanguageDialog} from '~/EditPanel/CopyLanguageDialog';
 import {getFullLanguageName} from './copyLanguage.utils';
 import {ComponentRendererContext} from '@jahia/ui-extender';
+import {useContentEditorContext} from '~/ContentEditor.context';
 
-export const CopyLanguageActionComponent = ({siteInfo, nodeData, formik, language, render: Render, ...otherProps}) => {
+export const CopyLanguageActionComponent = ({render: Render, ...otherProps}) => {
     const {render, destroy} = useContext(ComponentRendererContext);
+    const {nodeData, lang, siteInfo} = useContentEditorContext();
 
     return (
         <Render {...otherProps}
@@ -14,9 +16,8 @@ export const CopyLanguageActionComponent = ({siteInfo, nodeData, formik, languag
                     render('CopyLanguageDialog', CopyLanguageDialog, {
                         isOpen: true,
                         uuid: nodeData.uuid,
-                        language: getFullLanguageName(siteInfo.languages, language),
+                        language: getFullLanguageName(siteInfo.languages, lang),
                         availableLanguages: siteInfo.languages,
-                        formik: formik,
                         onCloseDialog: () => destroy('CopyLanguageDialog')
                     });
                 }}/>
@@ -26,7 +27,6 @@ export const CopyLanguageActionComponent = ({siteInfo, nodeData, formik, languag
 CopyLanguageActionComponent.propTypes = {
     language: PropTypes.string.isRequired,
     siteInfo: PropTypes.object.isRequired,
-    formik: PropTypes.object.isRequired,
     nodeData: PropTypes.object.isRequired,
     render: PropTypes.func.isRequired
 };

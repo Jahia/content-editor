@@ -97,6 +97,7 @@ module.exports = (env, argv) => {
                 library: { type: "assign", name: "appShell.remotes.contentEditor" },
                 filename: "remoteEntry.js",
                 exposes: {
+                    '.': './src/javascript/shared',
                     './init': './src/javascript/init'
                 },
                 remotes: {

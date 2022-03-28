@@ -10,6 +10,7 @@ import {useContentEditorConfigContext} from '~/ContentEditor.context';
 import {GetContentPath} from './ContentPath.gql-queries';
 import ContentPathContainer from './ContentPath.container';
 import {Constants} from '~/ContentEditor.constants';
+import {useFormikContext} from 'formik';
 
 jest.mock('connected-react-router', () => ({
     push: jest.fn()
@@ -32,20 +33,21 @@ jest.mock('@apollo/react-hooks', () => ({
     useQuery: jest.fn().mockReturnValue({})
 }));
 
+jest.mock('formik');
+
 describe('ContentPathContainer', () => {
     let defaultProps;
 
     let dispatch = jest.fn();
     let envProps = {
         back: jest.fn(),
-        shouldRedirectBeadCrumb: () => false
+        shouldRedirectBreadcrumb: () => false
     };
 
     beforeEach(() => {
+        useFormikContext.mockReturnValue({dirty: false});
+
         defaultProps = {
-            formik: {
-                dirty: false
-            },
             uuid: '123',
             operator: 'op'
         };
@@ -66,7 +68,7 @@ describe('ContentPathContainer', () => {
         dispatch = jest.fn();
         envProps = {
             back: jest.fn(),
-            shouldRedirectBeadCrumb: () => false
+            shouldRedirectBreadcrumb: () => false
         };
 
         useQuery.mockClear();
@@ -222,7 +224,7 @@ describe('ContentPathContainer', () => {
     });
 
     it('handle redirects on item click with dirty form', () => {
-        defaultProps.formik.dirty = true;
+        useFormikContext.mockReturnValue({dirty: true});
 
         const wrapper = shallow(<ContentPathContainer {...defaultProps}/>);
         wrapper.find('ContentPath').simulate('itemClick', '/x/y/z');
@@ -262,7 +264,7 @@ describe('ContentPathContainer', () => {
     });
 
     it('handle redirects on item click with option to go back', () => {
-        envProps.shouldRedirectBeadCrumb = () => true;
+        envProps.shouldRedirectBreadcrumb = () => true;
 
         const wrapper = shallow(<ContentPathContainer {...defaultProps}/>);
         wrapper.find('ContentPath').simulate('itemClick', '/sites/mySiteXD/lord/rings');

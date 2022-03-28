@@ -1147,7 +1147,7 @@
     pirates "^4.0.5"
     source-map-support "^0.5.16"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.12.0", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.13", "@babel/runtime@^7.12.5", "@babel/runtime@^7.14.5", "@babel/runtime@^7.14.8", "@babel/runtime@^7.15.4", "@babel/runtime@^7.16.7", "@babel/runtime@^7.2.0", "@babel/runtime@^7.3.1", "@babel/runtime@^7.4.4", "@babel/runtime@^7.5.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.2", "@babel/runtime@^7.7.2", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.2":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.12.0", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.13", "@babel/runtime@^7.12.5", "@babel/runtime@^7.14.5", "@babel/runtime@^7.14.8", "@babel/runtime@^7.15.4", "@babel/runtime@^7.16.7", "@babel/runtime@^7.2.0", "@babel/runtime@^7.3.1", "@babel/runtime@^7.4.4", "@babel/runtime@^7.5.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.2":
   version "7.17.0"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.17.0.tgz#b8d142fc0f7664fb3d9b5833fd40dcbab89276c0"
   integrity sha512-etcO/ohMNaNA2UBdaXBBSX/3aEzFMRrVfaPv8Ptc0k+cWpWW0QFiGZ2XnVqQZI1Cf734LbPGmqBKWESfW4x/dQ==
@@ -1464,18 +1464,16 @@
     mdi-material-ui "^5.10.0"
     recompose "^0.30.0"
 
-"@jahia/moonstone@^1.6.0":
-  version "1.6.2"
-  resolved "https://registry.yarnpkg.com/@jahia/moonstone/-/moonstone-1.6.2.tgz#601029ffd1ef4fbea9edc28227e7a6f7b477cd44"
-  integrity sha512-6JVC13z5lxjvW3cJNWsON2GlOc3LPbichrJvFMomjXpxkElXus4+EQm9Lm129LceMIAI94Torz/kdowRh1qSuw==
+"@jahia/moonstone@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@jahia/moonstone/-/moonstone-2.2.0.tgz#ccd26f1340cc0ab03ccca584b4217b8277c5ca77"
+  integrity sha512-7KVHAfC6V1nvne8BTWrFtZK+JqX2gTXdX3OtIzCpMj5dFTWjuvzxja4UArubpqVM4mC//2k3YBr9iKV8PwMabg==
   dependencies:
     "@babel/runtime" "^7.12.5"
-    "@react-aria/checkbox" "^3.2.1"
-    "@react-stately/toggle" "^3.2.1"
     clsx "^1.1.1"
     prop-types "^15.7.2"
-    re-resizable "^6.9.0"
-    react-is "^17.0.1"
+    re-resizable "^6.9.1"
+    react-is "^17.0.2"
     to-px "^1.1.0"
 
 "@jahia/react-material@^3.0.2":
@@ -1508,10 +1506,10 @@
     enzyme-adapter-react-16 "^1.12.1"
     identity-obj-proxy "^3.0.0"
 
-"@jahia/ui-extender@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@jahia/ui-extender/-/ui-extender-1.0.3.tgz#3f6f8ce25944137f5d6c716567b4238d213930bb"
-  integrity sha512-yC7OIcBGtFmaTBgR4kzsd+Up2SWnjSVTSpfmJjWH38Y5KPiwHLGKWhOHD9hjOCSef2W+CtAtw8IwEioQzQ4JuQ==
+"@jahia/ui-extender@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@jahia/ui-extender/-/ui-extender-1.0.4.tgz#13ea05accac7ae0d675e61512bf7fea497ef51cd"
+  integrity sha512-EEyKhzW9qFjruhPAyT8DtZUz9/vNVCJVlkB0AT1N6Ecsj19A3bN+szLVDN7+aGpf8aaTWy/dAFKsf4J0cM3yMA==
   dependencies:
     prop-types "^15.6.1"
     react "^16.12.0"
@@ -1895,81 +1893,6 @@
     prop-types "^15.6.1"
     react-lifecycles-compat "^3.0.4"
 
-"@react-aria/checkbox@^3.2.1":
-  version "3.2.3"
-  resolved "https://registry.yarnpkg.com/@react-aria/checkbox/-/checkbox-3.2.3.tgz#be7f1f881e6d0fb554b5b20b9243e31e222207d5"
-  integrity sha512-bLNdVefKGFA2+QT84htWHYUpxLqA5r3L4q6ilBLOzcRiKpgQM2OW2bQGLN6Zw26MKjmTzEMrR2Db+a/O5e1fUQ==
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@react-aria/label" "^3.1.3"
-    "@react-aria/toggle" "^3.1.4"
-    "@react-aria/utils" "^3.8.2"
-    "@react-stately/checkbox" "^3.0.3"
-    "@react-stately/toggle" "^3.2.3"
-    "@react-types/checkbox" "^3.2.3"
-
-"@react-aria/focus@^3.4.1":
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/@react-aria/focus/-/focus-3.5.0.tgz#02b85f97d6114af1eccc0902ce40723b626cb7f9"
-  integrity sha512-Eib75Q6QgQdn8VVVByg5Vipaaj/C//8Bs++sQY7nkomRx4sdArOnXbDppul3YHP6mRfU9VRLvAigEUlReQF/Xw==
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@react-aria/interactions" "^3.6.0"
-    "@react-aria/utils" "^3.9.0"
-    "@react-types/shared" "^3.9.0"
-    clsx "^1.1.1"
-
-"@react-aria/interactions@^3.6.0", "@react-aria/interactions@^3.7.0":
-  version "3.7.0"
-  resolved "https://registry.yarnpkg.com/@react-aria/interactions/-/interactions-3.7.0.tgz#eb19c1068b557a6b6df1e1c4abef07de719e9f25"
-  integrity sha512-Xomchjb9bqvh3ocil+QCEYFSxsTy8PHEz43mNP6z2yuu3UqTpl2FsWfyKgF/Yy0WKVkyV2dO2uz758KJTCLZhw==
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@react-aria/utils" "^3.10.0"
-    "@react-types/shared" "^3.10.0"
-
-"@react-aria/label@^3.1.3":
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/@react-aria/label/-/label-3.2.1.tgz#e6562259e6b17e3856c4c3e0060903cf705d094b"
-  integrity sha512-QZ5/dpJKRjB1JtFZfOVd5GUiCpA2yMgmNA6ky6jT5XNAo7H14QqGRFUGDTLAQYGd+Bc3s+NayOT3NKUYur/3Xw==
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@react-aria/utils" "^3.10.0"
-    "@react-types/label" "^3.5.0"
-    "@react-types/shared" "^3.10.0"
-
-"@react-aria/ssr@^3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@react-aria/ssr/-/ssr-3.1.0.tgz#b7163e6224725c30121932a8d1422ef91d1fab22"
-  integrity sha512-RxqQKmE8sO7TGdrcSlHTcVzMP450hqowtBSd2bBS9oPlcokVkaGq28c3Rwa8ty5ctw4EBCjXqjP7xdcKMGDzug==
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-
-"@react-aria/toggle@^3.1.4":
-  version "3.1.5"
-  resolved "https://registry.yarnpkg.com/@react-aria/toggle/-/toggle-3.1.5.tgz#dcb78c15fc45e241cbb4756c47fa323740ce5818"
-  integrity sha512-Oe6EpRxOJeXmKL9kD6LfoPRERLMj6Romx11KBEk7bkfO5zf8gm/NSmQCzN1h7SGRsUCkbCgVXPK63j5IlHK/Xw==
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@react-aria/focus" "^3.4.1"
-    "@react-aria/interactions" "^3.7.0"
-    "@react-aria/utils" "^3.10.0"
-    "@react-stately/toggle" "^3.2.3"
-    "@react-types/checkbox" "^3.2.3"
-    "@react-types/shared" "^3.10.0"
-    "@react-types/switch" "^3.1.2"
-
-"@react-aria/utils@^3.10.0", "@react-aria/utils@^3.8.2", "@react-aria/utils@^3.9.0":
-  version "3.11.0"
-  resolved "https://registry.yarnpkg.com/@react-aria/utils/-/utils-3.11.0.tgz#215ea23a5435672a822cd713bdb8217972c5c80b"
-  integrity sha512-4yFA8E9xqDCUlolYSsoyp/qxrkiQrnEqx1BQOrKDuicpW7MBJ39pJC23YFMpyK2a6xEptc6xJEeIEFJXp57jJw==
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@react-aria/ssr" "^3.1.0"
-    "@react-stately/utils" "^3.3.0"
-    "@react-types/shared" "^3.10.1"
-    clsx "^1.1.1"
-
 "@react-dnd/asap@^4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@react-dnd/asap/-/asap-4.0.0.tgz#b300eeed83e9801f51bd66b0337c9a6f04548651"
@@ -1984,60 +1907,6 @@
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@react-dnd/shallowequal/-/shallowequal-2.0.0.tgz#a3031eb54129f2c66b2753f8404266ec7bf67f0a"
   integrity sha512-Pc/AFTdwZwEKJxFJvlxrSmGe/di+aAOBn60sremrpLo6VI/6cmiUYNNwlI5KNYttg7uypzA3ILPMPgxB2GYZEg==
-
-"@react-stately/checkbox@^3.0.3":
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/@react-stately/checkbox/-/checkbox-3.0.3.tgz#18ee6bd3b544334b6f853bb5c5f7017ac3bb9c37"
-  integrity sha512-amT889DTLdbjAVjZ9j9TytN73PszynGIspKi1QSUCvXeA2OVyCwShxhV0Pn7yYX8cMinvGXrjhWdhn0nhYeMdg==
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@react-stately/toggle" "^3.2.3"
-    "@react-stately/utils" "^3.2.2"
-    "@react-types/checkbox" "^3.2.3"
-
-"@react-stately/toggle@^3.2.1", "@react-stately/toggle@^3.2.3":
-  version "3.2.3"
-  resolved "https://registry.yarnpkg.com/@react-stately/toggle/-/toggle-3.2.3.tgz#a4de6edc16982990492c6c557e5194f46dacc809"
-  integrity sha512-p5eVjXwNo4y4CeybxfjYmbTzNMNiI67uspbRAJnawWBVWw8X+yIvRfpjYAsqmvsJ+DsvwybSTlQDT6taGoWEsA==
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@react-stately/utils" "^3.2.2"
-    "@react-types/checkbox" "^3.2.3"
-    "@react-types/shared" "^3.8.0"
-
-"@react-stately/utils@^3.2.2", "@react-stately/utils@^3.3.0":
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/@react-stately/utils/-/utils-3.3.0.tgz#99866c5788539268a06035acd5925b25bb4cedde"
-  integrity sha512-f//Y8q0+FFcS04xvCNvbba7WWRLHzj2AegLgdgwTxsnk9Gb+AyuasdRrRY7bGQhdHuEJ7OIiQZ9EQWndDbrTcg==
-  dependencies:
-    "@babel/runtime" "^7.6.2"
-
-"@react-types/checkbox@^3.2.3":
-  version "3.2.3"
-  resolved "https://registry.yarnpkg.com/@react-types/checkbox/-/checkbox-3.2.3.tgz#2b9d529c55c9884519c7f626f0fe8be7d0f18be1"
-  integrity sha512-YqeAFyrpaxI/eW6zQ7tVkKIASgzpywRrc6C/rV6Mw0zzGGSSvmYvdOBx9yHOEvpts7dLgaGlmLK6CeG7s4yGKg==
-  dependencies:
-    "@react-types/shared" "^3.8.0"
-
-"@react-types/label@^3.5.0":
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/@react-types/label/-/label-3.5.0.tgz#c7093871f42c62e1b5523f61a0856a2f58d4cf2a"
-  integrity sha512-a9lpQUyV4XwsZv0gV1jPjPWicSSa+DRliuXLTwORirxNLF0kMk89DLYf0a9CZhiEniJYqoqR3laJDvLAFW1x/Q==
-  dependencies:
-    "@react-types/shared" "^3.9.0"
-
-"@react-types/shared@^3.10.0", "@react-types/shared@^3.10.1", "@react-types/shared@^3.8.0", "@react-types/shared@^3.9.0":
-  version "3.10.1"
-  resolved "https://registry.yarnpkg.com/@react-types/shared/-/shared-3.10.1.tgz#16cd3038361dee63f351fa4d0fd25d90480a149b"
-  integrity sha512-U3dLJtstvOiZ8XLrWdNv9WXuruoDyfIfSXguTs9N0naDdO+M0MIbt/1Hg7Toe43ueAe56GM14IFL+S0/jhv8ow==
-
-"@react-types/switch@^3.1.2":
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/@react-types/switch/-/switch-3.1.2.tgz#f7015e5e66035c9ae517966842a4f9e5d589fa26"
-  integrity sha512-EaYWoLvUCpOnt//Ov8VBxOjbs4hBpYE/rBAzzIknXaFvKOu867iZBFL7FJbcemOgC8/dwyaj6GUZ1Gw3Z1g59w==
-  dependencies:
-    "@react-types/checkbox" "^3.2.3"
-    "@react-types/shared" "^3.8.0"
 
 "@sinonjs/commons@^1.7.0":
   version "1.8.3"
@@ -11590,10 +11459,10 @@ raw-loader@^4.0.2:
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
 
-re-resizable@^6.9.0:
-  version "6.9.1"
-  resolved "https://registry.yarnpkg.com/re-resizable/-/re-resizable-6.9.1.tgz#6be082b55d02364ca4bfee139e04feebdf52441c"
-  integrity sha512-KRYAgr9/j1PJ3K+t+MBhlQ+qkkoLDJ1rs0z1heIWvYbCW/9Vq4djDU+QumJ3hQbwwtzXF6OInla6rOx6hhgRhQ==
+re-resizable@^6.9.1:
+  version "6.9.5"
+  resolved "https://registry.yarnpkg.com/re-resizable/-/re-resizable-6.9.5.tgz#9d54ad5ee6323a48b83e8a49939960cafba235bc"
+  integrity sha512-Q4+K8gOPbUBmbJCa0qfoVXBGnCwkAJrZ9KUca4GDn5FmxyV2HtLrBz7u43uUOb0y7xKbwcfuftweiOCIDEiCQA==
   dependencies:
     fast-memoize "^2.5.1"
 
@@ -12051,7 +11920,7 @@ react-visibility-sensor@^5.0.2:
   dependencies:
     prop-types "^15.7.2"
 
-react@^16.12.0, react@^16.13.1, react@^16.8.3:
+react@^16.12.0, react@^16.14.0, react@^16.8.3:
   version "16.14.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.14.0.tgz#94d776ddd0aaa37da3eda8fc5b6b18a4c9a3114d"
   integrity sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g==

@@ -2,44 +2,41 @@ import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {ChildrenSectionCmp} from './ChildrenSection';
-import {setSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
+import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import {listOrderingSection} from './AutomaticOrdering/AutomaticOrdering.spec.data';
+import {useFormikContext} from 'formik';
 
-jest.mock('~/ContentEditorSection/ContentEditorSection.context', () => {
-    let sectionContextmock;
-    return {
-        useContentEditorSectionContext: () => {
-            return sectionContextmock;
-        },
-        setSectionContext: listOrderingSection => {
-            sectionContextmock = {
-                sections: listOrderingSection ? [listOrderingSection] : []
-            };
-        }
-    };
-});
+jest.mock('formik');
+jest.mock('~/ContentEditorSection/ContentEditorSection.context');
 
 describe('Children section component', () => {
     let props;
+    let sectionsContext;
+    let formik;
     beforeEach(() => {
         props = {
             section: {
                 displayName: 'children'
             },
-            formik: {
-                values: {
-                    'jmix:orderedList': false
-                },
-                handleChange: jest.fn()
-            },
             canManuallyOrder: true,
             canAutomaticallyOrder: false,
             classes: {}
         };
+        formik = {
+            values: {
+                'jmix:orderedList': false
+            },
+            handleChange: jest.fn()
+        };
+        useFormikContext.mockReturnValue(formik);
+        sectionsContext = {
+            sections: []
+        };
+        useContentEditorSectionContext.mockReturnValue(sectionsContext);
     });
 
     it('should display section name', () => {
-        setSectionContext(listOrderingSection(false, false));
+        sectionsContext.sections = [listOrderingSection(false, false)];
 
         const cmp = shallowWithTheme(<ChildrenSectionCmp {...props}/>, {}, dsGenericTheme);
 
@@ -47,7 +44,7 @@ describe('Children section component', () => {
     });
 
     it('should be able to switch automatic ordering', () => {
-        setSectionContext(listOrderingSection(false, false));
+        sectionsContext.sections = [listOrderingSection(false, false)];
         props.canAutomaticallyOrder = true;
 
         const cmp = shallowWithTheme(<ChildrenSectionCmp {...props}/>, {}, dsGenericTheme);
@@ -55,11 +52,11 @@ describe('Children section component', () => {
         toggleCmp.simulate('change');
 
         expect(toggleCmp.props().readOnly).toBe(false);
-        expect(props.formik.handleChange).toHaveBeenCalled();
+        expect(formik.handleChange).toHaveBeenCalled();
     });
 
     it('should not be able to switch automatic ordering, if fieldSet is readOnly', () => {
-        setSectionContext(listOrderingSection(true, false));
+        sectionsContext.sections = [listOrderingSection(true, false)];
         props.canAutomaticallyOrder = true;
 
         const cmp = shallowWithTheme(<ChildrenSectionCmp {...props}/>, {}, dsGenericTheme);
@@ -68,8 +65,8 @@ describe('Children section component', () => {
     });
 
     it('should not be able to switch automatic ordering', () => {
-        setSectionContext(listOrderingSection(false, false));
-        delete props.formik.values['jmix:orderedList'];
+        sectionsContext.sections = [listOrderingSection(false, false)];
+        delete formik.values['jmix:orderedList'];
 
         const cmp = shallowWithTheme(<ChildrenSectionCmp {...props}/>, {}, dsGenericTheme);
 
@@ -79,7 +76,7 @@ describe('Children section component', () => {
     });
 
     it('should display manual ordering', () => {
-        setSectionContext(listOrderingSection(false, false));
+        sectionsContext.sections = [listOrderingSection(false, false)];
 
         const cmp = shallowWithTheme(<ChildrenSectionCmp {...props}/>, {}, dsGenericTheme);
 
@@ -88,9 +85,9 @@ describe('Children section component', () => {
     });
 
     it('should display automatic ordering', () => {
-        setSectionContext(listOrderingSection(false, false));
+        sectionsContext.sections = [listOrderingSection(false, false)];
         props.canAutomaticallyOrder = true;
-        props.formik.values['jmix:orderedList'] = true;
+        formik.values['jmix:orderedList'] = true;
 
         const cmp = shallowWithTheme(<ChildrenSectionCmp {...props}/>, {}, dsGenericTheme);
 

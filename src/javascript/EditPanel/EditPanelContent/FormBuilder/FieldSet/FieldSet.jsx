@@ -1,12 +1,12 @@
-import {connect} from 'formik';
 import React from 'react';
 import PropTypes from 'prop-types';
 
 import {withStyles} from '@material-ui/core';
-import {Typography, Toggle} from '@jahia/design-system-kit';
+import {Toggle, Typography} from '@jahia/design-system-kit';
 import {compose} from '~/utils';
 import {FieldSetPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {FieldContainer} from './Field';
+import {useFormikContext} from 'formik';
 
 let styles = theme => ({
     fieldsetContainer: {},
@@ -33,23 +33,26 @@ let styles = theme => ({
     }
 });
 
-const FieldSetCmp = ({fieldset, classes, formik: {values, handleChange}}) => {
-    const isDynamicFieldSet = fieldset.dynamic;
-    const activatedFieldSet = (values && values[fieldset.name]) || !isDynamicFieldSet;
-
+const DynamicFieldSet = ({fieldset, classes}) => {
+    const {values, handleChange} = useFormikContext();
+    const activatedFieldSet = (values && values[fieldset.name]);
     return (
         <article className={classes.fieldsetContainer}>
             <div className={classes.fieldsetTitleContainer}>
-                {isDynamicFieldSet &&
                 <Toggle data-sel-role-dynamic-fieldset={fieldset.name}
                         id={fieldset.name}
                         checked={activatedFieldSet}
                         readOnly={fieldset.readOnly}
                         onChange={handleChange}
-                />}
+                />
 
                 <div className={classes.labelContainer}>
-                    <Typography component="label" htmlFor={fieldset.name} className={classes.fieldSetTitle} color="alpha" variant="zeta">
+                    <Typography component="label"
+                                htmlFor={fieldset.name}
+                                className={classes.fieldSetTitle}
+                                color="alpha"
+                                variant="zeta"
+                    >
                         {fieldset.displayName}
                     </Typography>
                     {fieldset.description &&
@@ -59,21 +62,60 @@ const FieldSetCmp = ({fieldset, classes, formik: {values, handleChange}}) => {
                 </div>
             </div>
 
-            {activatedFieldSet && fieldset.fields.map(field => {
-                return <FieldContainer key={field.name} field={field}/>;
-            })}
+            {activatedFieldSet && fieldset.fields.map(field => <FieldContainer key={field.name} field={field}/>)}
         </article>
+    );
+};
+
+DynamicFieldSet.propTypes = {
+    fieldset: FieldSetPropTypes.isRequired,
+    classes: PropTypes.object.isRequired
+};
+
+const StaticFieldSet = ({fieldset, classes}) => {
+    return (
+        <article className={classes.fieldsetContainer}>
+            <div className={classes.fieldsetTitleContainer}>
+                <div className={classes.labelContainer}>
+                    <Typography component="label"
+                                htmlFor={fieldset.name}
+                                className={classes.fieldSetTitle}
+                                color="alpha"
+                                variant="zeta"
+                    >
+                        {fieldset.displayName}
+                    </Typography>
+                    {fieldset.description &&
+                    <Typography component="label" className={classes.fieldSetDescription} color="beta" variant="omega">
+                        {fieldset.description}
+                    </Typography>}
+                </div>
+            </div>
+
+            {fieldset.fields.map(field => <FieldContainer key={field.name} field={field}/>)}
+        </article>
+    );
+};
+
+StaticFieldSet.propTypes = {
+    fieldset: FieldSetPropTypes.isRequired,
+    classes: PropTypes.object.isRequired
+};
+
+const FieldSetCmp = ({fieldset, classes}) => {
+    return fieldset.dynamic ? (
+        <DynamicFieldSet fieldset={fieldset} classes={classes}/>
+    ) : (
+        <StaticFieldSet fieldset={fieldset} classes={classes}/>
     );
 };
 
 FieldSetCmp.propTypes = {
     fieldset: FieldSetPropTypes.isRequired,
-    classes: PropTypes.object.isRequired,
-    formik: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired
 };
 
 export const FieldSet = compose(
-    connect,
     withStyles(styles)
 )(FieldSetCmp);
 

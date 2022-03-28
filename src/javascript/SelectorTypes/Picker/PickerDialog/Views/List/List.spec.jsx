@@ -2,6 +2,8 @@ import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {t} from 'react-i18next';
+import {setQueryResult, useQuery} from '@apollo/react-hooks';
+import {List} from './List';
 
 jest.mock('@apollo/react-hooks', () => {
     let queryResultmock;
@@ -14,9 +16,6 @@ jest.mock('@apollo/react-hooks', () => {
         }
     };
 });
-
-import {setQueryResult, useQuery} from '@apollo/react-hooks';
-import {List} from './List';
 
 const queryResult = {
     descendants: {

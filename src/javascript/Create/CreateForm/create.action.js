@@ -3,9 +3,13 @@ import {validateForm} from '~/Validation/validation.utils';
 import React, {useContext, useState} from 'react';
 import {ComponentRendererContext} from '@jahia/ui-extender';
 import * as PropTypes from 'prop-types';
+import {useFormikContext} from 'formik';
+import {useContentEditorContext} from '~/ContentEditor.context';
 
-const Create = ({mode, values, errors, dirty, render: Render, loading: Loading, ...otherProps}) => {
+const Create = ({render: Render, loading: Loading, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
+    const formik = useFormikContext();
+    const {mode} = useContentEditorContext();
 
     const [clicked, setClicked] = useState(false);
     if (Loading) {
@@ -14,10 +18,10 @@ const Create = ({mode, values, errors, dirty, render: Render, loading: Loading, 
 
     return (
         <Render {...otherProps}
-                addWarningBadge={Object.keys(errors).length > 0}
+                addWarningBadge={Object.keys(formik.errors).length > 0}
                 enabled={mode === Constants.routes.baseCreateRoute}
-                disabled={clicked && !dirty}
-                onClick={async ({formik}) => {
+                disabled={clicked && !formik.dirty}
+                onClick={async () => {
                     const formIsValid = await validateForm(formik, componentRenderer);
 
                     if (formIsValid) {
@@ -25,7 +29,7 @@ const Create = ({mode, values, errors, dirty, render: Render, loading: Loading, 
                         return formik
                             .submitForm()
                             .then(() => {
-                                formik.resetForm({values});
+                                formik.resetForm({values: formik.values});
                             });
                     }
                 }}/>
@@ -33,10 +37,6 @@ const Create = ({mode, values, errors, dirty, render: Render, loading: Loading, 
 };
 
 Create.propTypes = {
-    mode: PropTypes.string.isRequired,
-    values: PropTypes.object.isRequired,
-    errors: PropTypes.object.isRequired,
-    dirty: PropTypes.bool.isRequired,
     render: PropTypes.func.isRequired,
     loading: PropTypes.func
 };

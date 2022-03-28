@@ -817,7 +817,8 @@ describe('ContentEditor.helper', () => {
     });
 
     it('should add mixin to the right section', () => {
-        const sections = contentEditorHelper.moveMixinToTargetFieldset('jmix:internalLink', field.nodeType, context.sections, field, formik);
+        const sections = context.sections;
+        contentEditorHelper.moveMixinToTargetFieldset('jmix:internalLink', field.nodeType, sections, field, formik);
         let updatedFieldset = sections
             .find(({name}) => name === 'content')
             .fieldSets
@@ -832,8 +833,9 @@ describe('ContentEditor.helper', () => {
     });
 
     it('should remove mixin to the section and put it to the initial one', () => {
-        let sections = contentEditorHelper.moveMixinToTargetFieldset('jmix:internalLink', field.nodeType, context.sections, field, formik);
-        sections = contentEditorHelper.moveMixinToInitialFieldset('jmix:internalLink', sections, formik);
+        let sections = context.sections;
+        contentEditorHelper.moveMixinToTargetFieldset('jmix:internalLink', field.nodeType, sections, field, formik);
+        contentEditorHelper.moveMixinToInitialFieldset('jmix:internalLink', sections, formik);
 
         let initialFieldset = sections
             .find(({name}) => name === 'content')
@@ -877,8 +879,8 @@ describe('ContentEditor.helper', () => {
                 ]
             }]
         }];
-        let updatedSections = moveFieldsToAnotherFieldset('field1NT', 'field2NT', sections, sections[0].fieldSets[1].fields[0]);
-        expect(updatedSections[0].fieldSets[1].fields).toStrictEqual([
+        moveFieldsToAnotherFieldset('field1NT', 'field2NT', sections, sections[0].fieldSets[1].fields[0]);
+        expect(sections[0].fieldSets[1].fields).toStrictEqual([
             {
                 nodeType: 'field2NT',
                 name: 'field1'
@@ -896,9 +898,9 @@ describe('ContentEditor.helper', () => {
                 name: 'field2'
             }
         ]);
-        expect(updatedSections[0].fieldSets[0].fields).toStrictEqual([]);
-        updatedSections = moveFieldsToAnotherFieldset('field1NT', 'field1NT', updatedSections);
-        expect(updatedSections[0].fieldSets[0].fields).toStrictEqual([
+        expect(sections[0].fieldSets[0].fields).toStrictEqual([]);
+        moveFieldsToAnotherFieldset('field1NT', 'field1NT', sections);
+        expect(sections[0].fieldSets[0].fields).toStrictEqual([
             {
                 nodeType: 'field1NT',
                 name: 'field1'
@@ -908,7 +910,7 @@ describe('ContentEditor.helper', () => {
                 name: 'field2'
             }
         ]);
-        expect(updatedSections[0].fieldSets[1].fields).toStrictEqual([
+        expect(sections[0].fieldSets[1].fields).toStrictEqual([
             {
                 nodeType: 'field2NT',
                 name: 'field1'

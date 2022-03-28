@@ -1,11 +1,11 @@
 import React from 'react';
 import {shallow} from '@jahia/test-framework';
 import {TabBar} from '~/EditPanel/tabbar/tabbar.action';
+import {useNodeChecks} from '@jahia/data-helper';
 
 jest.mock('@jahia/data-helper', () => {
     return {useNodeChecks: jest.fn()};
 });
-import {useNodeChecks} from '@jahia/data-helper';
 
 describe('TabBar', () => {
     let defaultProps;

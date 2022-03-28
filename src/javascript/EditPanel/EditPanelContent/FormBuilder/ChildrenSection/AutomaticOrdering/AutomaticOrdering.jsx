@@ -3,10 +3,9 @@ import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEdit
 import {FieldContainer} from '~/EditPanel/EditPanelContent/FormBuilder/FieldSet/Field';
 import PropTypes from 'prop-types';
 import {compose} from '~/utils';
-import {connect} from 'formik';
+import {useFormikContext} from 'formik';
 import {useTranslation} from 'react-i18next';
-import {adaptSectionToDisplayableRows} from './AutomaticOrdering.utils';
-import {getDisplayedRows} from './AutomaticOrdering.utils';
+import {adaptSectionToDisplayableRows, getDisplayedRows} from './AutomaticOrdering.utils';
 import {withStyles} from '@material-ui/core';
 import {Button, Close} from '@jahia/moonstone';
 
@@ -31,7 +30,8 @@ const styles = theme => ({
     }
 });
 
-export const AutomaticOrderingCmp = ({classes, formik: {values, setFieldValue, setFieldTouched}}) => {
+export const AutomaticOrderingCmp = ({classes}) => {
+    const {values, setFieldValue, setFieldTouched} = useFormikContext();
     const {t} = useTranslation('content-editor');
     const {sections} = useContentEditorSectionContext();
     const rows = adaptSectionToDisplayableRows(sections, t);
@@ -124,12 +124,10 @@ export const AutomaticOrderingCmp = ({classes, formik: {values, setFieldValue, s
 };
 
 AutomaticOrderingCmp.propTypes = {
-    classes: PropTypes.object.isRequired,
-    formik: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired
 };
 
 export const AutomaticOrdering = compose(
-    connect,
     withStyles(styles)
 )(AutomaticOrderingCmp);
 AutomaticOrdering.displayName = 'AutomaticOrdering';

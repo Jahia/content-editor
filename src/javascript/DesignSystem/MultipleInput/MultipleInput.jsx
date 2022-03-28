@@ -5,13 +5,7 @@ import {withStyles} from '@material-ui/core';
 import Select, {components} from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import AsyncCreatableSelect from 'react-select/async-creatable';
-import {
-    Control,
-    MultiValue,
-    MultiValueRemove,
-    NoOptionsMessage,
-    DropdownIndicator
-} from './components';
+import {Control, DropdownIndicator, MultiValue, MultiValueRemove, NoOptionsMessage} from './components';
 
 const style = theme => ({
     noOptionsMessage: {

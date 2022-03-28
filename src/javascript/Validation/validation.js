@@ -1,4 +1,4 @@
-import {getDynamicFieldSetNameOfField, extractRangeConstraints} from '~/EditPanel/EditPanel.utils';
+import {extractRangeConstraints, getDynamicFieldSetNameOfField} from '~/EditPanel/EditPanel.utils';
 import dayjs from '~/date.config';
 import {Constants} from '~/ContentEditor.constants';
 

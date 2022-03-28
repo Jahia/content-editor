@@ -1,18 +1,22 @@
 import {getFields} from '~/EditPanel/EditPanel.utils';
 import {FieldConstraints} from '~/SelectorTypes/ChoiceList/ChoiceList.gql-queries';
 
+function arrayEquals(arr1, arr2) {
+    return arr1.length === arr2.length && arr1.every((value, index) => value === arr2[index]);
+}
+
 const registerSelectorTypesOnChange = registry => {
     registry.add('selectorType.onChange', 'dependentProperties', {
         targets: ['*'],
-        onChange: (previousValue, currentValue, field, editorContext) => {
-            const sections = [...editorContext.getSections()];
+        onChange: (previousValue, currentValue, field, onChangeContext) => {
+            const sections = onChangeContext.sections;
             const fields = getFields(sections);
             const dependentPropertiesFields = fields
                 .filter(f => f.selectorOptions
                     .find(s => s.name === 'dependentProperties' && s.value.includes(field.propertyName))
                 );
 
-            dependentPropertiesFields.forEach(async dependentPropertiesField => {
+            Promise.all(dependentPropertiesFields.map(dependentPropertiesField => {
                 const dependentProperties = dependentPropertiesField.selectorOptions.find(f => f.name === 'dependentProperties').value.split(',');
                 if (dependentProperties.length > 0) {
                     const context = [{
@@ -25,7 +29,7 @@ const registerSelectorTypesOnChange = registry => {
                         if (dependentField) {
                             context.push({
                                 key: dependentProperty,
-                                value: editorContext.formik.values[dependentField.name]
+                                value: onChangeContext.formik.values[dependentField.name]
                             });
                         }
                     });
@@ -35,31 +39,50 @@ const registerSelectorTypesOnChange = registry => {
                         value: currentValue === null ? [] : currentValue
                     });
 
-                    const {data} = await editorContext.client.query(
-                        {
-                            query: FieldConstraints,
-                            variables: {
-                                uuid: editorContext.nodeData.uuid,
-                                parentUuid: editorContext.nodeData.parent.path,
-                                primaryNodeType: editorContext.nodeData.primaryNodeType.name,
-                                nodeType: dependentPropertiesField.nodeType,
-                                fieldName: dependentPropertiesField.propertyName,
-                                context: context,
-                                uilang: editorContext.lang,
-                                language: editorContext.lang
-                            }
-                        });
+                    return onChangeContext.client.query({
+                        query: FieldConstraints,
+                        variables: {
+                            uuid: onChangeContext.nodeData.uuid,
+                            parentUuid: onChangeContext.nodeData.parent.path,
+                            primaryNodeType: onChangeContext.nodeData.primaryNodeType.name,
+                            nodeType: dependentPropertiesField.nodeType,
+                            fieldName: dependentPropertiesField.propertyName,
+                            context: context,
+                            uilang: onChangeContext.lang,
+                            language: onChangeContext.lang
+                        }
+                    }).then(({data}) => ({
+                        data,
+                        dependentPropertiesField
+                    }));
+                }
+
+                return undefined;
+            })).then(results => {
+                let updated = false;
+                results.forEach(({data, dependentPropertiesField}) => {
                     if (data) {
                         if (data?.forms?.fieldConstraints) {
-                            // As fields might have changed in the time of the await, get them back from contextSection
-                            const newSections = [...editorContext.getSections()];
-                            const newField = getFields(newSections).find(field => field.name === dependentPropertiesField.name);
-                            if (newField) {
-                                newField.valueConstraints = data.forms.fieldConstraints;
-                                editorContext.setSections(newSections);
+                            const fieldToUpdate = getFields(sections).find(f => f.name === dependentPropertiesField.name);
+                            if (fieldToUpdate && !arrayEquals(fieldToUpdate.valueConstraints, data.forms.fieldConstraints)) {
+                                // Update field in place (for those who keep an constant ref on sectionsContext)
+                                fieldToUpdate.valueConstraints = data.forms.fieldConstraints;
+                                // And recreate the full sections object to make change detection work
+                                sections.forEach(section => {
+                                    section.fieldSets = section.fieldSets.map(fieldSet => ({
+                                        ...fieldSet,
+                                        fields: fieldSet.fields.map(f => ({
+                                            ...f
+                                        }))
+                                    }));
+                                });
+                                updated = true;
                             }
                         }
                     }
+                });
+                if (updated) {
+                    onChangeContext.onSectionsUpdate();
                 }
             });
         }

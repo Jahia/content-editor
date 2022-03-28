@@ -2,19 +2,21 @@ import React, {useState} from 'react';
 import {openEngineTab} from './engineTabs.utils';
 import {EditPanelDialogConfirmation} from '~/EditPanel/EditPanelDialogConfirmation';
 import PropTypes from 'prop-types';
+import {useFormikContext} from 'formik';
+import {useContentEditorContext} from '~/ContentEditor.context';
 
-export const OpenEngineTabs = ({nodeData, formik, tabs, render: Render, ...otherProps}) => {
+export const OpenEngineTabs = ({tabs, render: Render, ...otherProps}) => {
     const [open, setOpen] = useState(false);
+    const formik = useFormikContext();
+    const {nodeData} = useContentEditorContext();
 
     return (
         <>
             <EditPanelDialogConfirmation
                 isOpen={open}
                 titleKey="content-editor:label.contentEditor.edit.action.goBack.title"
-                formik={formik}
                 actionCallback={() => {
                     formik.resetForm(formik.values);
-                    formik.dirty = false;
                     openEngineTab(nodeData, tabs);
                 }}
                 onCloseDialog={() => setOpen(false)}
@@ -34,8 +36,7 @@ export const OpenEngineTabs = ({nodeData, formik, tabs, render: Render, ...other
 OpenEngineTabs.propTypes = {
     render: PropTypes.func.isRequired,
     nodeData: PropTypes.object.isRequired,
-    formik: PropTypes.object.isRequired,
-    tabs: PropTypes.object.isRequired
+    tabs: PropTypes.array.isRequired
 };
 
 const OpenEngineTabsAction = {

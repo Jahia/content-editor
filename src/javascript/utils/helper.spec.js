@@ -1,4 +1,4 @@
-import {truncate, encodeSystemName, decodeSystemName} from './index';
+import {decodeSystemName, encodeSystemName, truncate} from './index';
 
 describe('truncate', () => {
     it('should truncate string length great then threshold', () => {

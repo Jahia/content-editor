@@ -1,6 +1,6 @@
 import {FastField} from 'formik';
 import React, {Fragment} from 'react';
-import {DropableSpace, DraggableReference} from './DragDrop';
+import {DraggableReference, DropableSpace} from './DragDrop';
 
 export const ManualOrdering = () => {
     return (
