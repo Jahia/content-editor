@@ -109,6 +109,7 @@ export const SearchContentDialogPickerQuery = gql`
                     displayName(language: $language)
                     name
                     primaryNodeType {
+                        name
                         typeName: displayName(language: $language)
                         icon
                     }
