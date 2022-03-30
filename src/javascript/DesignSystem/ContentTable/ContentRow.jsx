@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
@@ -38,8 +38,9 @@ const styles = theme => ({
 const ContentRowCmp = ({row, selected, columns, onClick, classes}) => {
     const [rowData, setRowData] = useState(row);
 
-    const updateRowProperties = rowPropertiesToUpdate =>
-        setRowData({...rowData, ...rowPropertiesToUpdate});
+    const updateRowProperties = useCallback(rowPropertiesToUpdate => {
+        setRowData(previousData => ({...previousData, ...rowPropertiesToUpdate}));
+    }, [setRowData]);
 
     // Sometimes some data for the row need to be loaded after the row is displayed
     const LazyRowLoader = row.lazyRowLoader;
