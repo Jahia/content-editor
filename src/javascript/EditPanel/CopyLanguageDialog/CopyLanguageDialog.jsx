@@ -9,21 +9,21 @@ import {useApolloClient} from '@apollo/react-hooks';
 import {FormQuery} from '~/Edit/EditForm.gql-queries';
 import {getI18nFieldAndValues} from '~/Edit/copyLanguage/copyLanguage.utils';
 import {Constants} from '~/ContentEditor.constants';
-import {useFormikContext} from 'formik';
 
 export const CopyLanguageDialog = ({
     language,
     availableLanguages,
     isOpen,
     onCloseDialog,
-    uuid
+    uuid,
+    formik
 }) => {
     const client = useApolloClient();
-    const formik = useFormikContext();
 
     const getDataFromSelectedLanguage = async language => {
         let variables = {
             uilang: language,
+            formik,
             language: language,
             uuid: uuid,
             writePermission: `jcr:modifyProperties_default_${language}`,
@@ -42,7 +42,8 @@ export const CopyLanguageDialog = ({
 
     const defaultOption = {
         label: t('content-editor:label.contentEditor.edit.action.copyLanguage.defaultValue'),
-        value: 'void'};
+        value: 'void'
+    };
 
     const [currentOption, setCurrentOption] = useState(defaultOption);
 
@@ -105,7 +106,8 @@ export const CopyLanguageDialog = ({
             </DialogContent>
             <DialogActions>
                 <Typography className={classes.warningText}>
-                    <Warning className={classes.warningIcon}/> {t('content-editor:label.contentEditor.edit.action.copyLanguage.bottomText')}
+                    <Warning
+                        className={classes.warningIcon}/> {t('content-editor:label.contentEditor.edit.action.copyLanguage.bottomText')}
                 </Typography>
                 <Button
                     size="big"
@@ -126,6 +128,7 @@ export const CopyLanguageDialog = ({
 };
 
 CopyLanguageDialog.propTypes = {
+    formik: PropTypes.object.isRequired,
     language: PropTypes.string.isRequired,
     availableLanguages: PropTypes.array.isRequired,
     isOpen: PropTypes.bool.isRequired,
