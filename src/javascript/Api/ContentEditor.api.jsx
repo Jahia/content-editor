@@ -11,7 +11,7 @@ import {getCreatableNodetypes} from '~/Create/CreateNewContentAction/createNewCo
 import EditPanelDialogConfirmation from '~/EditPanel/EditPanelDialogConfirmation/EditPanelDialogConfirmation';
 import {ErrorBoundary} from '@jahia/jahia-ui-root';
 import Draggable from 'react-draggable';
-import {FormikProvider} from "formik";
+import {FormikProvider} from 'formik';
 
 let styles = () => {
     return {
@@ -253,7 +253,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
                         classes={{root: classes.ceDialogRoot}}
                         onClose={() => (formikRef.current && formikRef.current.dirty) ? setConfirmationConfig(true) : closeAll()}
                 >
-                    {confirmationConfig &&
+                    {confirmationConfig && (
                         <FormikProvider value={formikRef.current}>
                             <EditPanelDialogConfirmation
                                 isOpen={open}
@@ -262,7 +262,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
                                 onCloseDialog={() => setConfirmationConfig(false)}
                             />
                         </FormikProvider>
-                    }
+                    )}
                     {contentEditor}
                 </Dialog>
             )}
