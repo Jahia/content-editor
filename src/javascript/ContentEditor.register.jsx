@@ -31,9 +31,9 @@ export default function () {
 
     registry.add('route', 'content-editor-create-route', {
         targets: ['main:2.1'],
-        path: '/content-editor/:lang/create/:parentUuid/:contentType',
+        path: '/content-editor/:lang/create/:parentUuid/:contentType?/:name?',
         // eslint-disable-next-line react/prop-types
-        render: ({match}) => <ContentEditorRedux uuid={match.params.parentUuid} mode={Constants.routes.baseCreateRoute} lang={match.params.lang} contentType={decodeURI(match.params.contentType)}/>
+        render: ({match}) => <ContentEditorRedux uuid={match.params.parentUuid} mode={Constants.routes.baseCreateRoute} lang={match.params.lang} contentType={decodeURI(match.params.contentType)} name={match.params.name}/>
     });
 
     // Register GWT Hooks

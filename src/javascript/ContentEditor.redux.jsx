@@ -12,7 +12,7 @@ import {useApolloClient, useQuery} from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import {PredefinedFragments} from '@jahia/data-helper';
 
-const ContentEditorRedux = ({mode, uuid, lang, contentType}) => {
+const ContentEditorRedux = ({mode, uuid, lang, contentType, name}) => {
     const client = useApolloClient();
     const {redirect, hasHistory, exit, registerBlockListener, unRegisterBlockListener} = useContentEditorHistory();
     const {storedLocation, setStoredLocation} = useContentEditorHistoryContext();
@@ -93,6 +93,7 @@ const ContentEditorRedux = ({mode, uuid, lang, contentType}) => {
     };
     return Boolean(site) && (
         <ContentEditor env={Constants.env.redux}
+                       name={name}
                        mode={mode}
                        uuid={uuid}
                        lang={lang}
@@ -104,6 +105,7 @@ const ContentEditorRedux = ({mode, uuid, lang, contentType}) => {
 };
 
 ContentEditorRedux.propTypes = {
+    name: PropTypes.string,
     mode: PropTypes.oneOf(['create', 'edit']).isRequired,
     uuid: PropTypes.string.isRequired,
     lang: PropTypes.string.isRequired,
