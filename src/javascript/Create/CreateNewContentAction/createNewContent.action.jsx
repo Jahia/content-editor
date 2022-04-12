@@ -10,7 +10,7 @@ import {useContentEditorHistory} from '~/ContentEditorHistory';
 import {useTranslation} from 'react-i18next';
 
 // eslint-disable-next-line
-const onClick = (uuid, language, context, redirect, componentRenderer) => {
+const onClick = (uuid, name, language, context, redirect, componentRenderer) => {
     if (context.openEditor) {
         redirect({mode: Constants.routes.baseCreateRoute, language, uuid, rest: encodeURI(context.nodeTypes[0])});
     } else {
@@ -32,7 +32,7 @@ const onClick = (uuid, language, context, redirect, componentRenderer) => {
                         mode: Constants.routes.baseCreateRoute,
                         language,
                         uuid,
-                        rest: encodeURI(contentType.name)
+                        rest: encodeURI(contentType.name) + (name ? "/" + encodeURI(name) : "")
                     });
                     closeDialog();
                 }
@@ -87,7 +87,7 @@ const CreateNewContent = ({contextNodePath, path, showOnNodeTypes, nodeTypes, na
                 path={path}
                 uilang={uilang}
                 isVisible={res.checksResult}
-                onClick={ctx => onClick(nodeInfo.node.uuid, language, ctx, redirect, componentRenderer)}/>
+                onClick={ctx => onClick(nodeInfo.node.uuid, name, language, ctx, redirect, componentRenderer)}/>
     ));
 };
 
