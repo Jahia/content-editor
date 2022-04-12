@@ -32,7 +32,7 @@ const onClick = (uuid, name, language, context, redirect, componentRenderer) => 
                         mode: Constants.routes.baseCreateRoute,
                         language,
                         uuid,
-                        rest: encodeURI(contentType.name) + (name ? "/" + encodeURI(name) : "")
+                        rest: encodeURI(contentType.name) + (name ? '/' + encodeURI(name) : '')
                     });
                     closeDialog();
                 }
