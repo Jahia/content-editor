@@ -21,9 +21,9 @@ const Save = ({render: Render, loading: Loading, ...otherProps}) => {
     return (
         <Render
             {...otherProps}
-            addWarningBadge={Object.keys(formik.errors).length > 0}
+            addWarningBadge={formik && Object.keys(formik.errors).length > 0}
             enabled={mode === Constants.routes.baseEditRoute}
-            disabled={!formik.dirty || publicationInfoPolling}
+            disabled={formik && !formik.dirty || publicationInfoPolling}
             onClick={async () => {
                 const formIsValid = await validateForm(formik, componentRenderer);
                 if (formIsValid) {

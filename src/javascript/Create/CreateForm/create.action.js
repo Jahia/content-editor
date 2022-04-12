@@ -18,9 +18,9 @@ const Create = ({render: Render, loading: Loading, ...otherProps}) => {
 
     return (
         <Render {...otherProps}
-                addWarningBadge={Object.keys(formik.errors).length > 0}
+                addWarningBadge={formik && Object.keys(formik.errors).length > 0}
                 enabled={mode === Constants.routes.baseCreateRoute}
-                disabled={clicked && !formik.dirty}
+                disabled={clicked && formik && !formik.dirty}
                 onClick={async () => {
                     const formIsValid = await validateForm(formik, componentRenderer);
 

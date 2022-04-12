@@ -243,7 +243,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
     );
     return (
         <ErrorBoundary fallback={<FullScreenError/>}>
-            {editorConfig && !editorConfig.isWindow && (
+            {!contentTypeSelectorConfig && editorConfig && !editorConfig.isWindow && (
                 <Dialog fullScreen
                         open
                         disableAutoFocus
@@ -267,7 +267,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
                 </Dialog>
             )}
 
-            {editorConfig && editorConfig.isWindow && (
+            {!contentTypeSelectorConfig && editorConfig && editorConfig.isWindow && (
                 <Draggable defaultPosition={{x: 0, y: 0}} handle="header">
                     <div className={classes.ceWindowRoot}>
                         {contentEditor}
@@ -278,19 +278,21 @@ const ContentEditorApiCmp = ({classes, client}) => {
             {contentTypeSelectorConfig && (
                 <CreateNewContentDialog
                     open
+                    contentEditor={contentEditor}
                     childNodeName={contentTypeSelectorConfig.name}
                     nodeTypes={contentTypeSelectorConfig.creatableNodeTypes}
                     includeSubTypes={contentTypeSelectorConfig.includeSubTypes}
                     parentPath={contentTypeSelectorConfig.path}
                     uilang={contentTypeSelectorConfig.uilang}
                     onClose={() => {
+                        setEditorConfig(false);
                         setContentTypeSelectorConfig(false);
                     }}
                     onExited={() => {
+                        setEditorConfig(false);
                         setContentTypeSelectorConfig(false);
                     }}
                     onCreateContent={contentType => {
-                        setContentTypeSelectorConfig(false);
                         setEditorConfig({
                             name: contentTypeSelectorConfig.name,
                             uuid: contentTypeSelectorConfig.uuid,
@@ -299,10 +301,10 @@ const ContentEditorApiCmp = ({classes, client}) => {
                             initLang: contentTypeSelectorConfig.lang,
                             lang: contentTypeSelectorConfig.lang,
                             contentType: contentType.name,
-                            mode: Constants.routes.baseCreateRoute
+                            mode: Constants.routes.baseCreateRoute,
+                            isWindow: true
                         });
-                    }}
-                />
+                    }}/>
             )}
         </ErrorBoundary>
     );

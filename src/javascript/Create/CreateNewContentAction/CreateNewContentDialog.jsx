@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import {Dialog, DialogActions, DialogTitle, withStyles} from '@material-ui/core';
+import {Dialog, DialogActions, DialogContent, withStyles} from '@material-ui/core';
 import {Search} from '@material-ui/icons';
 import {Input, Typography} from '@jahia/design-system-kit';
 import {Button} from '@jahia/moonstone';
@@ -13,15 +13,16 @@ import {TreeView} from '~/DesignSystem/TreeView';
 import {useQuery} from '@apollo/react-hooks';
 import {getTreeOfContent} from '~/Create/CreateNewContentAction/CreateNewContent.gql-queries';
 import {filterTree, isOpenableEntry} from './createNewContent.utils';
+import {ButtonWithPastilleRenderer} from '~/actions/ActionsButtons';
+import {DisplayActions} from '@jahia/ui-extender';
 
 const styles = theme => ({
     treeContainer: {
         border: `1px solid ${theme.palette.ui.omega}`,
         backgroundColor: theme.palette.field.alpha,
         overflow: 'auto',
-        height: '100vh',
-        minHeight: '20vh',
-        minWidth: '30vw',
+        height: '80vh',
+        width: '30vw',
         margin: '0 24px',
         padding: theme.spacing.unit
     },
@@ -30,11 +31,25 @@ const styles = theme => ({
     },
     filterInput: {
         margin: '0 24px 24px 24px',
-        padding: '3px 12px'
+        padding: '3px 12px',
+        width: '30vw'
+    },
+    dialogContent: {
+        display: 'flex',
+        flexDirection: 'row',
+        overflow: 'hidden'
+    },
+    ceContainer: {
+        backgroundColor: 'yellow',
+        width: '100%'
     }
 });
 
-const CreateNewContentDialogCmp = ({childNodeName, nodeTypes, includeSubTypes, open, parentPath, onExited, onClose, onCreateContent, uilang, client, classes}) => {
+const CreateNewContentDialogCmp = ({
+    childNodeName, nodeTypes, includeSubTypes, open, parentPath,
+    onExited, onClose, onCreateContent, uilang, client, classes,
+    contentEditor
+}) => {
     const {t} = useTranslation('content-editor');
     const variables = {
         childNodeName: childNodeName,
@@ -59,40 +74,43 @@ const CreateNewContentDialogCmp = ({childNodeName, nodeTypes, includeSubTypes, o
     // Filtering the tree
     const filteredTree = filterTree(data.forms.contentTypesAsTree, selectedType, filter);
     return (
-        <Dialog open={open} aria-labelledby="dialog-createNewContent" onExited={onExited} onClose={onClose}>
-            <DialogTitle className={classes.dialogTitle} id="dialog-createNewContent">
-                <Typography color="alpha" variant="delta">
-                    {t('content-editor:label.contentEditor.CMMActions.createNewContent.labelModal')}
-                </Typography>
-            </DialogTitle>
+        <Dialog aria-labelledby="dialog-createNewContent" maxWidth="xl" fullWidth={true}
+                open={open} onExited={onExited} onClose={onClose}>
+            <DialogContent className={classes.dialogContent}>
+                    <div>
+                        <Input
+                            autoFocus
+                            data-sel-role="content-type-dialog-input"
+                            placeholder={t('content-editor:label.contentEditor.CMMActions.createNewContent.filterLabel')}
+                            className={classes.filterInput}
+                            variant={{interactive: <Search/>}}
+                            onChange={e => {
+                                setFilter(e.target.value.toLowerCase());
+                                setSelectedType(null);
+                            }}
+                        />
 
-            <Input
-                autoFocus
-                data-sel-role="content-type-dialog-input"
-                placeholder={t('content-editor:label.contentEditor.CMMActions.createNewContent.filterLabel')}
-                className={classes.filterInput}
-                variant={{interactive: <Search/>}}
-                onChange={e => {
-                    setFilter(e.target.value.toLowerCase());
-                    setSelectedType(null);
-                }}
-            />
+                        <div className={classes.treeContainer} data-sel-role="content-type-tree">
+                            <TreeView
+                                tree={filteredTree}
+                                onNodeClick={node => {
+                                    if (!isOpenableEntry(node)) {
+                                        onCreateContent(node);
+                                    }
+                                }}
+                                onNodeDoubleClick={node => {
+                                    if (!isOpenableEntry(node)) {
+                                        onCreateContent(node);
+                                    }
+                                }}
+                            />
+                        </div>
+                    </div>
+                    <div className={classes.ceContainer}>
+                        {contentEditor || 'Select content type'}
+                    </div>
+            </DialogContent>
 
-            <div className={classes.treeContainer} data-sel-role="content-type-tree">
-                <TreeView
-                    tree={filteredTree}
-                    onNodeClick={node => {
-                        if (!isOpenableEntry(node)) {
-                            setSelectedType(node);
-                        }
-                    }}
-                    onNodeDoubleClick={node => {
-                        if (!isOpenableEntry(node)) {
-                            onCreateContent(node);
-                        }
-                    }}
-                />
-            </div>
             <DialogActions>
                 <Button
                     data-sel-role="content-type-dialog-cancel"
@@ -101,15 +119,19 @@ const CreateNewContentDialogCmp = ({childNodeName, nodeTypes, includeSubTypes, o
                     label={t('content-editor:label.contentEditor.CMMActions.createNewContent.btnDiscard')}
                     onClick={onClose}
                 />
-                <Button
-                    data-sel-role="content-type-dialog-create"
-                    disabled={!selectedType}
-                    color="accent"
-                    size="big"
-                    label={t('content-editor:label.contentEditor.CMMActions.createNewContent.btnCreate')}
-                    onClick={() => {
-                        onCreateContent(selectedType);
+                {
+                  /*
+                   * Button does not render since formik and CE contexts are empty during render.
+                   * Need a way to get this context at dialog level and pass down to the action components.
+                   */
+                }
+                <DisplayActions
+                    componentProps={{
+                        color: 'accent',
+                        size: 'big'
                     }}
+                    target="content-editor/header/main-save-actions"
+                    render={ButtonWithPastilleRenderer}
                 />
             </DialogActions>
         </Dialog>
