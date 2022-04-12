@@ -92,7 +92,7 @@ const _getPickerType = options => {
 };
 
 export const _resolveConfig = (options, field) => {
-    const config = Object.assign({}, registry.get('pickerConfiguration', _getPickerType(options)).cmp);
+    const config = Object.assign({selectorOptions: options}, registry.get('pickerConfiguration', _getPickerType(options)).cmp);
     if (field && field.valueConstraints) {
         const constraints = field.valueConstraints.map(constraint => constraint.value.string);
         if (constraints && constraints.length > 0) {

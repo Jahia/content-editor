@@ -15,6 +15,7 @@ export const useDialogPickerContent = ({lang, pickerConfig, selectedPath, search
         searchSelectorType: pickerConfig.searchSelectorType
     };
 
+    console.log('conf', pickerConfig, tableConfig);
     const queryData = useQuery(
         searchTerms ? SearchContentDialogPickerQuery : ContentDialogPickerQuery,
         {
@@ -33,6 +34,37 @@ export const useDialogPickerContent = ({lang, pickerConfig, selectedPath, search
                 fieldSorter
             }
         });
+
+    // THIS IS A ROUGH IN, very rough!!! Extracts mime types from selector options and construct query
+    let sql2Query = `SELECT * FROM [jnt:file] as f INNER JOIN [jnt:resource] AS jcrcontent ON ISCHILDNODE(jcrcontent, f) WHERE ISDESCENDANTNODE(f, '${selectedPath}') AND (CONTAINS(jcrcontent.['jcr:mimeType'], 'fakeStuffBecauseImLazy')`;
+    pickerConfig.selectorOptions.find(o => o.name === 'mimetypes').value.split(',').forEach(mimeType => sql2Query += ` OR CONTAINS(jcrcontent.['jcr:mimeType'], '${mimeType}')`);
+    sql2Query += ')';
+
+    const sql2Data = useQuery(
+        pickerConfig.contentQuery,
+        {
+            variables: {
+                query: sql2Query,
+                offset: 0,
+                limit: NB_OF_ELEMENT_PER_PAGE,
+                language: lang,
+                fieldSorter
+            }
+        });
+
+    console.log('Result for mimeType restricted query', sql2Data);
+
+    if (!sql2Data.loading && !sql2Data.error) {
+        console.log("Return sql2 data");
+        return {
+            nodes: sql2Data.data.jcr.result.nodes,
+            fetchMore: sql2Data.fetchMore,
+            hasMore: sql2Data.data.jcr.result.pageInfo.hasNextPage,
+            totalCount: sql2Data.data.jcr.result.pageInfo.totalCount
+        }
+    }
+
+    // Spike modifications end here
 
     if (queryData.loading || queryData.error) {
         return queryData;

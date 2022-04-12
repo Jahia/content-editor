@@ -1,3 +1,5 @@
+import {ContentDialogPickerQuery} from './custom.gql-queries';
+
 const treeConfigs = {
     content: {
         rootPath: site => `/sites/${site}/contents`,
@@ -169,6 +171,29 @@ export const registerPickerConfig = ceRegistry => {
             searchSelectorType: 'jnt:file',
             listTypesTable: ['jnt:file'],
             selectableTypesTable: ['jnt:file']
+        }
+    });
+
+    ceRegistry.add('pickerConfiguration', 'withtypecheck', {
+        cmp: {
+            picker: {
+                ...contentPicker,
+                key: 'FilePicker',
+                pickerInput: {
+                    ...contentPicker.pickerInput,
+                    emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.addFile'
+                },
+                PickerDialog: {
+                    ...contentPicker.PickerDialog,
+                    dialogTitle: () => 'content-editor:label.contentEditor.edit.fields.contentPicker.modalFileTitle'
+                }
+            },
+            treeConfigs: [treeConfigs.files],
+            searchSelectorType: 'jmix:image',
+            listTypesTable: ['jmix:image'],
+            selectableTypesTable: ['jmix:image'],
+            contentQuery: ContentDialogPickerQuery
+
         }
     });
 
