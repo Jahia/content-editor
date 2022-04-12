@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {Dialog, DialogActions, DialogContent, withStyles} from '@material-ui/core';
 import {Search} from '@material-ui/icons';
-import {Input, Typography} from '@jahia/design-system-kit';
+import {Input} from '@jahia/design-system-kit';
 import {Button} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
 import {withApollo} from 'react-apollo';
@@ -74,41 +74,46 @@ const CreateNewContentDialogCmp = ({
     // Filtering the tree
     const filteredTree = filterTree(data.forms.contentTypesAsTree, selectedType, filter);
     return (
-        <Dialog aria-labelledby="dialog-createNewContent" maxWidth="xl" fullWidth={true}
-                open={open} onExited={onExited} onClose={onClose}>
+        <Dialog fullWidth
+                aria-labelledby="dialog-createNewContent"
+                maxWidth="xl"
+                open={open}
+                onExited={onExited}
+                onClose={onClose}
+        >
             <DialogContent className={classes.dialogContent}>
-                    <div>
-                        <Input
-                            autoFocus
-                            data-sel-role="content-type-dialog-input"
-                            placeholder={t('content-editor:label.contentEditor.CMMActions.createNewContent.filterLabel')}
-                            className={classes.filterInput}
-                            variant={{interactive: <Search/>}}
-                            onChange={e => {
-                                setFilter(e.target.value.toLowerCase());
-                                setSelectedType(null);
+                <div>
+                    <Input
+                        autoFocus
+                        data-sel-role="content-type-dialog-input"
+                        placeholder={t('content-editor:label.contentEditor.CMMActions.createNewContent.filterLabel')}
+                        className={classes.filterInput}
+                        variant={{interactive: <Search/>}}
+                        onChange={e => {
+                            setFilter(e.target.value.toLowerCase());
+                            setSelectedType(null);
+                        }}
+                    />
+
+                    <div className={classes.treeContainer} data-sel-role="content-type-tree">
+                        <TreeView
+                            tree={filteredTree}
+                            onNodeClick={node => {
+                                if (!isOpenableEntry(node)) {
+                                    onCreateContent(node);
+                                }
+                            }}
+                            onNodeDoubleClick={node => {
+                                if (!isOpenableEntry(node)) {
+                                    onCreateContent(node);
+                                }
                             }}
                         />
-
-                        <div className={classes.treeContainer} data-sel-role="content-type-tree">
-                            <TreeView
-                                tree={filteredTree}
-                                onNodeClick={node => {
-                                    if (!isOpenableEntry(node)) {
-                                        onCreateContent(node);
-                                    }
-                                }}
-                                onNodeDoubleClick={node => {
-                                    if (!isOpenableEntry(node)) {
-                                        onCreateContent(node);
-                                    }
-                                }}
-                            />
-                        </div>
                     </div>
-                    <div className={classes.ceContainer}>
-                        {contentEditor || 'Select content type'}
-                    </div>
+                </div>
+                <div className={classes.ceContainer}>
+                    {contentEditor || 'Select content type'}
+                </div>
             </DialogContent>
 
             <DialogActions>
@@ -156,7 +161,8 @@ CreateNewContentDialogCmp.propTypes = {
     onClose: PropTypes.func.isRequired,
     onExited: PropTypes.func.isRequired,
     onCreateContent: PropTypes.func.isRequired,
-    open: PropTypes.bool.isRequired
+    open: PropTypes.bool.isRequired,
+    contentEditor: PropTypes.object
 };
 
 export const CreateNewContentDialog = compose(
