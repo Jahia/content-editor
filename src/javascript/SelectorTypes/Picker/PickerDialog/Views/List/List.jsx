@@ -55,7 +55,7 @@ const augmentColumns = (pickerConfig, columns, t) => {
     pickerConfig.selectorOptions.find(o => o.name === 'columns').value.split(";").forEach(v => {
         const val = v.split('|');
         columns.push({
-            property: val[0],
+            property: val[0].replace('j:', ''),
             label: t(val[1])
         })
     })
@@ -110,7 +110,13 @@ const ListCmp = ({
         fieldSorter: {
             fieldName: sort.fieldName,
             sortType: sort.order
-        }
+        },
+        queryAddOn: `nodename : property(name: "j:nodename") {
+                            value
+                    }
+                    originWS : property(name: "j:originWS") {
+                        value
+                    }`
     });
 
     useEffect(() => {
@@ -162,14 +168,16 @@ const ListCmp = ({
                         }
                     },
                     selectableTypesTable: pickerConfig.selectableTypesTable
-                }
+                },
+                nodename: content.nodename.value,
+                originWS: content.originWS.value
             };
         });
 
     const columns = columnConfig(t, !isSearch);
     augmentColumns(pickerConfig, columns, t);
 
-    console.log(columns);
+    console.log('Columns, data', columns, tableData);
 
     return (
         <>

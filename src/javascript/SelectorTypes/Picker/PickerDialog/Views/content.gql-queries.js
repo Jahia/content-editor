@@ -71,6 +71,71 @@ export const ContentDialogPickerQuery = gql`
     ${PredefinedFragments.nodeCacheRequiredFields.gql}
 `;
 
+export const getContentDialogPickerQuery = addOn => {
+    return gql`
+    query pickerDialogQuery(
+        $path: String!,
+        $recursionTypesFilter: [String]!,
+        $typeFilter: [String]!,
+        $selectableTypeFilter: [String]!,
+        $language: String!,
+        $offset: Int!,
+        $limit: Int!,
+        $fieldSorter: InputFieldSorterInput
+    ) {
+        jcr {
+            result: nodeByPath(path: $path) {
+                descendants(
+                    offset: $offset,
+                    limit: $limit,
+                    typesFilter: {types: $typeFilter, multi: ANY},
+                    recursionTypesFilter: {multi: NONE, types: $recursionTypesFilter},  
+                    fieldSorter: $fieldSorter
+                ) {
+                    pageInfo {
+                        totalCount
+                    }
+                    nodes {
+                        displayName(language: $language)
+                        primaryNodeType {
+                            name
+                            typeName: displayName(language: $language)
+                            icon
+                        }
+                        createdBy: property(name: "jcr:createdBy") {
+                            value
+                        }
+                        lastModified: property(name: "jcr:lastModified") {
+                            value
+                        }
+                        isDisplayableNode
+                        isNodeType(type:{types: $selectableTypeFilter, multi: ANY})
+                        # Specific section for images
+                        width: property(name: "j:width") {
+                            value
+                        }
+                        height: property(name: "j:height") {
+                            value
+                        }
+                        metadata: children(names: ["jcr:content"]) {
+                            nodes {
+                                mimeType: property(name: "jcr:mimeType") {
+                                    value
+                                }
+                            }
+                        }
+                        ${addOn}
+                        ...NodeCacheRequiredFields
+                    }
+                }
+                ...NodeCacheRequiredFields
+            }
+        }
+    }
+    ${PredefinedFragments.nodeCacheRequiredFields.gql}
+`;
+}
+
 export const SearchContentDialogPickerQuery = gql`
     query searchPickerQuery(
         $searchPaths: [String]!,
