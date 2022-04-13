@@ -12,6 +12,7 @@ import {getButtonRenderer} from '../../utils/getButtonRenderer';
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
 const PickerCmp = ({field, value, editorContext, inputContext, onChange}) => {
+    console.log('Picker', field, value, editorContext, inputContext)
     const {t} = useTranslation('content-editor');
     const {pickerConfig, nodeTreeConfigs} = extractConfigs(field, editorContext, t);
     const [isDialogOpen, setDialogOpen] = useState(false);

@@ -50,6 +50,17 @@ const columnConfig = (t, showSubContentsCount) => {
     return columns;
 };
 
+const augmentColumns = (pickerConfig, columns, t) => {
+    console.log(pickerConfig);
+    pickerConfig.selectorOptions.find(o => o.name === 'columns').value.split(";").forEach(v => {
+        const val = v.split('|');
+        columns.push({
+            property: val[0],
+            label: t(val[1])
+        })
+    })
+}
+
 const columnIdFieldNameMapper = {
     name: 'displayName',
     subContentsCount: 'children.pageInfo.totalCount',
@@ -155,12 +166,17 @@ const ListCmp = ({
             };
         });
 
+    const columns = columnConfig(t, !isSearch);
+    augmentColumns(pickerConfig, columns, t);
+
+    console.log(columns);
+
     return (
         <>
             <CountDisplayer totalCount={totalCount}/>
 
             <ContentTable
-                columns={columnConfig(t, !isSearch)}
+                columns={columns}
                 labelEmpty={
                     searchTerms ?
                         t('content-editor:label.contentEditor.edit.fields.contentPicker.noSearchResults') :
