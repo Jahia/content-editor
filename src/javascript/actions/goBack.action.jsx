@@ -4,6 +4,7 @@ import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentE
 import * as PropTypes from 'prop-types';
 import {Constants} from '~/ContentEditor.constants';
 import {useFormikContext} from 'formik';
+import {useKeydownListener} from '~/utils/getKeydownListener';
 
 const GoBack = ({render: Render, componentProps, ...otherProps}) => {
     const {nodeData, mode} = useContentEditorContext();
@@ -22,6 +23,20 @@ const GoBack = ({render: Render, componentProps, ...otherProps}) => {
 
     const onCloseDialog = useCallback(() => setOpen(false), [setOpen]);
 
+    useKeydownListener(event => {
+        if (event.keyCode === 27) {
+            goBack();
+        }
+    }, formik.dirty);
+
+    const goBack = () => {
+        if (formik.dirty) {
+            setOpen(true);
+        } else {
+            executeGoBackAction(undefined, true);
+        }
+    };
+
     return (
         <>
             <EditPanelDialogConfirmation
@@ -36,13 +51,7 @@ const GoBack = ({render: Render, componentProps, ...otherProps}) => {
                     ...componentProps,
                     disabled: envProps.disabledBack()
                 }}
-                onClick={() => {
-                    if (formik.dirty) {
-                        setOpen(true);
-                    } else {
-                        executeGoBackAction(undefined, true);
-                    }
-                }}/>
+                onClick={goBack}/>
         </>
     );
 };
