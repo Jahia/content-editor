@@ -23,13 +23,13 @@ const GoBack = ({render: Render, componentProps, ...otherProps}) => {
 
     const onCloseDialog = useCallback(() => setOpen(false), [setOpen]);
 
-    useKeydownListener(event => {
+    useKeydownListener((event, formik) => {
         if (event.keyCode === Constants.keyCodes.esc) {
-            goBack();
+            goBack(formik);
         }
     });
 
-    const goBack = () => {
+    const goBack = formik => {
         if (formik.dirty) {
             setOpen(true);
         } else {
@@ -51,7 +51,7 @@ const GoBack = ({render: Render, componentProps, ...otherProps}) => {
                     ...componentProps,
                     disabled: envProps.disabledBack()
                 }}
-                onClick={goBack}/>
+                onClick={() => goBack(formik)}/>
         </>
     );
 };
