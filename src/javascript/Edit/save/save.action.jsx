@@ -12,16 +12,15 @@ const Save = ({render: Render, loading: Loading, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
     const {publicationInfoPolling} = usePublicationInfoContext();
     const {mode} = useContentEditorContext();
-
     const formik = useFormikContext();
 
-    useKeydownListener(event => {
-        if (event.ctrlKey && event.keyCode === 83) {
-            save();
+    useKeydownListener((event, formik) => {
+        if (event.ctrlKey && event.keyCode === Constants.keysCodes.s && mode === Constants.routes.baseEditRoute) {
+            save(formik);
         }
-    }, formik.dirty);
+    });
 
-    const save = async () => {
+    const save = async formik => {
         const formIsValid = await validateForm(formik, componentRenderer);
         if (formIsValid && formik.dirty) {
             return formik
@@ -42,7 +41,7 @@ const Save = ({render: Render, loading: Loading, ...otherProps}) => {
             addWarningBadge={Object.keys(formik.errors).length > 0}
             enabled={mode === Constants.routes.baseEditRoute}
             disabled={!formik.dirty || publicationInfoPolling}
-            onClick={save}
+            onClick={() => save(formik)}
         />
     );
 };

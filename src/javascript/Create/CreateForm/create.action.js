@@ -11,16 +11,15 @@ const Create = ({render: Render, loading: Loading, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
     const formik = useFormikContext();
     const {mode} = useContentEditorContext();
-
     const [clicked, setClicked] = useState(false);
 
-    useKeydownListener(event => {
-        if (event.ctrlKey && event.keyCode === 83) {
-            save();
+    useKeydownListener((event, formik) => {
+        if (event.ctrlKey && event.keyCode === Constants.keysCodes.s && mode === Constants.routes.baseCreateRoute) {
+            save(formik);
         }
-    }, formik.dirty);
+    });
 
-    const save = async () => {
+    const save = async formik => {
         const formIsValid = await validateForm(formik, componentRenderer);
 
         if (formIsValid) {
@@ -42,7 +41,7 @@ const Create = ({render: Render, loading: Loading, ...otherProps}) => {
                 addWarningBadge={Object.keys(formik.errors).length > 0}
                 enabled={mode === Constants.routes.baseCreateRoute}
                 disabled={clicked && !formik.dirty}
-                onClick={save}/>
+                onClick={() => save(formik)}/>
     );
 };
 
