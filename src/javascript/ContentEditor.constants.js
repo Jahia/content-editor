@@ -75,7 +75,7 @@ export const Constants = {
         errorCode: 'invalidColor',
         selectorType: 'Color'
     },
-    keysCodes: {
+    keyCodes: {
         s: 83
     }
 };
