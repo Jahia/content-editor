@@ -2,6 +2,7 @@ import React, {useContext} from 'react';
 import {shallow} from '@jahia/test-framework';
 import createAction from './create.action';
 import {useFormikContext} from 'formik';
+import {useContentEditorContext} from '~/ContentEditor.context';
 
 jest.mock('formik');
 jest.mock('react', () => {
@@ -11,6 +12,8 @@ jest.mock('react', () => {
     };
 });
 
+jest.mock('~/ContentEditor.context', () => ({useContentEditorContext: jest.fn(), useContentEditorConfigContext: jest.fn()}));
+
 describe('create action', () => {
     let defaultProps;
     let formik;
@@ -19,6 +22,7 @@ describe('create action', () => {
         CreateAction = createAction.component;
         let render = jest.fn();
         useContext.mockImplementation(() => ({render}));
+        useContentEditorContext.mockImplementation(() => ({mode: jest.fn()}));
 
         defaultProps = {
             renderComponent: jest.fn(),
