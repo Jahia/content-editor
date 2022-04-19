@@ -14,7 +14,7 @@ const Create = ({render: Render, loading: Loading, ...otherProps}) => {
     const [clicked, setClicked] = useState(false);
 
     useKeydownListener((event, formik) => {
-        if (event.ctrlKey && event.keyCode === Constants.keysCodes.s && mode === Constants.routes.baseCreateRoute) {
+        if (event.ctrlKey && event.keyCode === Constants.keyCodes.s && mode === Constants.routes.baseCreateRoute) {
             save(formik);
         }
     });
