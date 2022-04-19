@@ -76,6 +76,7 @@ export const Constants = {
         selectorType: 'Color'
     },
     keyCodes: {
-        s: 83
+        s: 83,
+        esc: 27
     }
 };

@@ -24,10 +24,10 @@ const GoBack = ({render: Render, componentProps, ...otherProps}) => {
     const onCloseDialog = useCallback(() => setOpen(false), [setOpen]);
 
     useKeydownListener(event => {
-        if (event.keyCode === 27) {
+        if (event.keyCode === Constants.keyCodes.esc) {
             goBack();
         }
-    }, formik.dirty);
+    });
 
     const goBack = () => {
         if (formik.dirty) {
