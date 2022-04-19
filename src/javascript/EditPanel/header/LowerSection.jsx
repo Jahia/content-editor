@@ -10,7 +10,7 @@ import {useContentEditorContext} from '~/ContentEditor.context';
 
 export const HeaderLowerSection = ({setActiveTab, activeTab}) => {
     const {t} = useTranslation('content-editor');
-    const {siteInfo, lang} = useContentEditorContext();
+    const {siteInfo, lang, nodeData} = useContentEditorContext();
     return (
         <div className={styles.headerToolBar}>
             <EditPanelLanguageSwitcher lang={lang} siteInfo={siteInfo}/>
@@ -22,6 +22,7 @@ export const HeaderLowerSection = ({setActiveTab, activeTab}) => {
                     setActiveTab={setActiveTab}
                     activeTab={activeTab}
                     target="editHeaderTabsActions"
+                    nodeData={nodeData}
                     render={renderProps => {
                         return (
                             <TabItem
