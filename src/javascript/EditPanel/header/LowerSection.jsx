@@ -7,7 +7,6 @@ import {DisplayAction, DisplayActions} from '@jahia/ui-extender';
 import {EditPanelLanguageSwitcher} from '../EditPanelLanguageSwitcher';
 import {Button, Separator, Tab, TabItem} from '@jahia/moonstone';
 import {useContentEditorContext} from '~/ContentEditor.context';
-import {useFormikContext} from "formik";
 
 export const HeaderLowerSection = ({setActiveTab, activeTab}) => {
     const {t} = useTranslation('content-editor');
