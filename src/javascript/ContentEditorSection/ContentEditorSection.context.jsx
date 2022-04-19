@@ -15,12 +15,12 @@ export const ContentEditorSectionContextProvider = ({formSections, children}) =>
 
     const getSections = () => {
         return sections.current;
-    }
+    };
 
-    const setSections = sections => {
-        console.warn('Sections update is deprecated')
+    const setSections = () => {
+        console.warn('Sections update is deprecated');
         onSectionsUpdate();
-    }
+    };
 
     return (
         <ContentEditorSectionContext.Provider value={{sections: sections.current, getSections, onSectionsUpdate, setSections}}>
