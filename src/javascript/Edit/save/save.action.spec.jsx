@@ -14,7 +14,7 @@ jest.mock('react', () => {
 
 jest.mock('~/PublicationInfo/PublicationInfo.context', () => ({usePublicationInfoContext: jest.fn()}));
 jest.mock('formik');
-jest.mock('~/ContentEditor.context', () => ({useContentEditorContext: jest.fn()}));
+jest.mock('~/ContentEditor.context', () => ({useContentEditorContext: jest.fn(), useContentEditorConfigContext: jest.fn()}));
 
 describe('save action', () => {
     let SaveAction;

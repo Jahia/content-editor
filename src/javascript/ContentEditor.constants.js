@@ -74,5 +74,9 @@ export const Constants = {
         hexColorRegexp: /^#([a-f0-9]{3,4}|[a-f0-9]{4}(?:[a-f0-9]{2}){1,2})\b$/i,
         errorCode: 'invalidColor',
         selectorType: 'Color'
+    },
+    keyCodes: {
+        s: 83,
+        esc: 27
     }
 };
