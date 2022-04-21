@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {useContentPreview} from '@jahia/data-helper';
 import {useContentEditorContext} from '~/ContentEditor.context';
-import {setPreviewRefetcher} from '~/EditPanel/EditPanel.refetches';
+import {invalidateRefetch, setPreviewRefetcher} from '~/EditPanel/EditPanel.refetches';
 import {PreviewViewer} from './PreviewViewers';
 import {getPreviewContext} from './Preview.utils';
 import {useTranslation} from 'react-i18next';
@@ -26,6 +26,12 @@ export const PreviewFetcher = React.memo(({onContentNotFound}) => {
             },
             refetch
         });
+        return () => {
+            invalidateRefetch({
+                language: editorContext.lang,
+                path: previewContext.path
+            });
+        };
     }, [editorContext.lang, previewContext.path, refetch]);
 
     if (error) {

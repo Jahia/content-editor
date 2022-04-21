@@ -8,8 +8,8 @@ let triggerRefetch = key => {
 
     try {
         refetch.refetch();
-    } catch {
-        console.error('Unexpected error during refetch', refetch);
+    } catch (e) {
+        console.error('Unexpected error during refetch', e);
     }
 };
 
@@ -19,7 +19,7 @@ let setPreviewRefetcher = refetcherData => {
     editPanelRefetches[buildPreviewRefetcherKey(refetcherData.queryParams.path, refetcherData.queryParams.language)] = refetcherData;
 };
 
-let invalidateRefetch = key => delete editPanelRefetches[key];
+let invalidateRefetch = queryParams => delete editPanelRefetches[buildPreviewRefetcherKey(queryParams.path, queryParams.language)];
 
 let refetchPreview = (path, language) => {
     triggerRefetch(buildPreviewRefetcherKey(path, language));
