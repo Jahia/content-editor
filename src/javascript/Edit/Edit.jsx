@@ -17,12 +17,10 @@ import {FormQuery} from './EditForm.gql-queries';
 import {compose} from '~/utils';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import {useDispatch} from 'react-redux';
-import {invalidateRefetch} from '~/EditPanel/EditPanel.refetches';
 
 import envEditCallbacks from './Edit.env';
 import {adaptEditFormData} from './Edit.adapter';
 import {Constants} from '~/ContentEditor.constants';
-import {getPreviewPath} from '~/EditPanel/EditPanelContent/Preview/Preview.utils';
 import {pcNavigateTo} from '~/pagecomposer.redux-actions';
 import {useApolloClient} from '@apollo/react-hooks';
 
@@ -74,7 +72,7 @@ export const EditCmp = ({
                 }
             }
         });
-    }, [client, t, notificationContext, dispatch, contentEditorConfigContext, formQueryParams, lang, nodeData, sections]);
+    }, [client, t, notificationContext, dispatch, contentEditorConfigContext, formQueryParams, nodeData, sections]);
 
     return (
         <>

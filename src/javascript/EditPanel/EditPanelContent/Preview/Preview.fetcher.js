@@ -4,7 +4,7 @@ import {useContentPreview} from '@jahia/data-helper';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {invalidateRefetch, setPreviewRefetcher} from '~/EditPanel/EditPanel.refetches';
 import {PreviewViewer} from './PreviewViewers';
-import {getPreviewContext, getPreviewPath} from './Preview.utils';
+import {getPreviewContext} from './Preview.utils';
 import {useTranslation} from 'react-i18next';
 import {ProgressOverlay} from '@jahia/react-material';
 
@@ -31,7 +31,7 @@ export const PreviewFetcher = React.memo(({onContentNotFound}) => {
                 language: editorContext.lang,
                 path: previewContext.path
             });
-        }
+        };
     }, [editorContext.lang, previewContext.path, refetch]);
 
     if (error) {

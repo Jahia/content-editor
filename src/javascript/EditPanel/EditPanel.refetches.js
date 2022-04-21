@@ -8,7 +8,7 @@ let triggerRefetch = key => {
 
     try {
         refetch.refetch();
-    } catch(e) {
+    } catch (e) {
         console.error('Unexpected error during refetch', e);
     }
 };
