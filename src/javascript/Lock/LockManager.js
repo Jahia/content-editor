@@ -4,7 +4,7 @@ import {useApolloClient} from '@apollo/react-hooks';
 import {SubscribeToEditorLock} from './lock.gql-subscription';
 import {UnlockEditorMutation} from './lock.gql-mutation';
 
-export const LockManager = ({uuid}) => {
+export const LockManager = ({uuid, onLockReleased}) => {
     const client = useApolloClient();
 
     useEffect(() => {
@@ -43,18 +43,18 @@ export const LockManager = ({uuid}) => {
                     // Manual refetch to avoid node displayed as locked in other apps like (Jcontent)
                     client.reFetchObservableQueries();
 
-                    // Manual refresh GWT content to avoid page composer left tree node displayed as locked
-                    if (window.authoringApi.refreshContent) {
-                        window.authoringApi.refreshContent();
+                    if (onLockReleased) {
+                        onLockReleased();
                     }
                 })
                 .catch(err => console.error(err));
         };
-    }, [client, uuid]);
+    }, [client, uuid, onLockReleased]);
 
     return '';
 };
 
 LockManager.propTypes = {
+    onLockReleased: PropTypes.func,
     uuid: PropTypes.string.isRequired
 };

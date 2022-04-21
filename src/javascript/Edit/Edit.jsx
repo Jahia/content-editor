@@ -91,7 +91,7 @@ export const EditCmp = ({
                     {() => <EditPanel title={title}/>}
                 </Formik>
             </PublicationInfoContextProvider>
-            {!nodeData.lockedAndCannotBeEdited && <LockManager uuid={nodeData.uuid}/>}
+            {!nodeData.lockedAndCannotBeEdited && <LockManager uuid={nodeData.uuid} onLockReleased={window.authoringApi.refreshContent}/>}
         </>
     );
 };

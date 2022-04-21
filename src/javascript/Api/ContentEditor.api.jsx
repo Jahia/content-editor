@@ -168,11 +168,6 @@ const ContentEditorApiCmp = ({classes, client}) => {
             formikRef.current = formik;
         },
         back: (nodeUuid, operation, newContentUuid, byPassEventTriggers) => {
-            // Refresh GWT content
-            if (window.authoringApi.refreshContent) {
-                window.authoringApi.refreshContent();
-            }
-
             if (!byPassEventTriggers) {
                 triggerEvents(newContentUuid || nodeUuid, operation);
             }
@@ -182,11 +177,6 @@ const ContentEditorApiCmp = ({classes, client}) => {
         },
         disabledBack: () => false,
         createCallback: (createdNodeUuid, lang) => {
-            // Refresh GWT content
-            if (window.authoringApi.refreshContent) {
-                window.authoringApi.refreshContent();
-            }
-
             triggerEvents(createdNodeUuid, Constants.operators.create);
 
             if (editorConfig && editorConfig.createCallback) {
@@ -204,11 +194,6 @@ const ContentEditorApiCmp = ({classes, client}) => {
             }
         },
         editCallback: nodeUuid => {
-            // Refresh GWT content
-            if (window.authoringApi.refreshContent) {
-                window.authoringApi.refreshContent();
-            }
-
             if (editorConfig && editorConfig.editCallback) {
                 editorConfig.editCallback(nodeUuid);
             }
