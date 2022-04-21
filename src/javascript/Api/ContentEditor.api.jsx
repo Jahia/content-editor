@@ -184,12 +184,14 @@ const ContentEditorApiCmp = ({classes, client}) => {
             }
 
             // Redirect to CE edit mode, for the created node
+            envProps.isNeedRefresh = false;
             if (editorConfig) {
                 setEditorConfig({
                     ...editorConfig,
                     uuid: createdNodeUuid,
                     lang: lang ? lang : editorConfig.lang,
-                    mode: Constants.routes.baseEditRoute
+                    mode: Constants.routes.baseEditRoute,
+                    fromCreate: true
                 });
             }
         },
@@ -200,6 +202,12 @@ const ContentEditorApiCmp = ({classes, client}) => {
 
             // Refresh contentEditorEventHandlers
             triggerEvents(nodeUuid, Constants.operators.update);
+        },
+        isNeedRefresh: Boolean(editorConfig.fromCreate),
+        onClosedCallback: () => {
+            if (window.authoringApi.refreshContent && envProps.isNeedRefresh) {
+                window.authoringApi.refreshContent();
+            }
         },
         setLanguage: lang => {
             // Update the lang of current opened CE

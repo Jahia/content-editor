@@ -31,13 +31,15 @@ const CreateCmp = ({
 
     useEffect(() => {
         return () => {
-            if (window.authoringApi.refreshContent) {
-                window.authoringApi.refreshContent();
+            if (contentEditorConfigContext.envProps.onClosedCallback) {
+                contentEditorConfigContext.envProps.onClosedCallback();
             }
         };
-    }, []);
+    }, [contentEditorConfigContext.envProps]);
 
     const handleSubmit = (values, actions) => {
+        contentEditorConfigContext.envProps.isNeedRefresh = true;
+
         createNode({
             client,
             t,

@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {withNotifications} from '@jahia/react-material';
 import {Formik} from 'formik';
 import EditPanel from '~/EditPanel';
@@ -34,7 +34,18 @@ export const EditCmp = ({
     const {sections} = useContentEditorSectionContext();
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        return () => {
+            // If nodeData.lockedAndCannotBeEdited, rely on callback after lock released
+            if (nodeData.lockedAndCannotBeEdited && contentEditorConfigContext.envProps.onClosedCallback) {
+                contentEditorConfigContext.envProps.onClosedCallback();
+            }
+        };
+    }, [contentEditorConfigContext.envProps, nodeData.lockedAndCannotBeEdited]);
+
     const handleSubmit = useCallback((values, actions) => {
+        contentEditorConfigContext.envProps.isNeedRefresh = true;
+
         saveNode({
             client,
             t,
@@ -91,7 +102,7 @@ export const EditCmp = ({
                     {() => <EditPanel title={title}/>}
                 </Formik>
             </PublicationInfoContextProvider>
-            {!nodeData.lockedAndCannotBeEdited && <LockManager uuid={nodeData.uuid} onLockReleased={window.authoringApi.refreshContent}/>}
+            {!nodeData.lockedAndCannotBeEdited && <LockManager uuid={nodeData.uuid} onLockReleased={contentEditorConfigContext.envProps.onClosedCallback}/>}
         </>
     );
 };
