@@ -55,8 +55,6 @@ export const EditCmp = ({
                     if (contentEditorConfigContext.env === 'standalone') {
                         dispatch(pcNavigateTo({oldPath: node.path, newPath: mutateNode.node.path}));
                     }
-
-                    invalidateRefetch(`${getPreviewPath(nodeData)}_${lang}`);
                 }
 
                 if (values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK]) {
