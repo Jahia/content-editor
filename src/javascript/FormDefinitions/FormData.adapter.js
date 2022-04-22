@@ -70,52 +70,60 @@ const moveSystemNameToTheTopOfTheForm = (primaryNodeType, sections, systemNameFi
 };
 
 export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType, isCreate, canBeMovedToTop, readOnlyByMixin) => {
-    const optionsSection = formData.sections.find(section => section.name === 'options');
-    if (optionsSection) {
-        const ntBaseFieldSet = optionsSection.fieldSets.find(fieldSet => fieldSet.name === 'nt:base');
+    let ntBaseFieldSet;
+    let systemNameField;
+    let sectionContainingSystemName;
+    formData.sections.every(section => {
+        ntBaseFieldSet = section.fieldSets.find(fieldSet => fieldSet.name === 'nt:base');
         if (ntBaseFieldSet) {
-            // Add i18ns label to System fieldset
-            ntBaseFieldSet.displayName = t('content-editor:label.contentEditor.section.fieldSet.system.displayName');
-            const systemNameField = ntBaseFieldSet.fields.find(field => field.name === Constants.systemName.name);
-            if (systemNameField) {
-                // Add i18ns label to field
-                systemNameField.displayName = t('content-editor:label.contentEditor.section.fieldSet.system.fields.systemName');
+            systemNameField = ntBaseFieldSet.fields.find(field => field.name === Constants.systemName.name);
+            sectionContainingSystemName = systemNameField && section;
+            return false;
+        }
 
-                // Add description to the field
-                systemNameField.description = readOnlyByMixin ?
-                    t('content-editor:label.contentEditor.section.fieldSet.system.fields.systemNameDescriptionReadOnly') :
-                    t('content-editor:label.contentEditor.section.fieldSet.system.fields.systemNameDescription', {maxNameSize: window.contextJsParameters.config.maxNameSize});
+        return true;
+    });
+    if (ntBaseFieldSet) {
+        // Add i18ns label to System fieldset
+        ntBaseFieldSet.displayName = t('content-editor:label.contentEditor.section.fieldSet.system.displayName');
+        if (systemNameField) {
+            // Add i18ns label to field
+            systemNameField.displayName = t('content-editor:label.contentEditor.section.fieldSet.system.fields.systemName');
 
-                // Add max name size validation
-                systemNameField.selectorOptions = [
-                    {
-                        name: 'maxLength',
-                        value: window.contextJsParameters.config.maxNameSize
-                    }
-                ];
+            // Add description to the field
+            systemNameField.description = readOnlyByMixin ?
+                t('content-editor:label.contentEditor.section.fieldSet.system.fields.systemNameDescriptionReadOnly') :
+                t('content-editor:label.contentEditor.section.fieldSet.system.fields.systemNameDescription', {maxNameSize: window.contextJsParameters.config.maxNameSize});
 
-                // System name should be readonly for this specific nodetypes
-                if (readOnlyByMixin ||
-                    Constants.systemName.READONLY_FOR_NODE_TYPES.includes(primaryNodeType.name) ||
-                    isContentOrFileNode(formData) ||
-                    (!isCreate && !formData.nodeData.hasWritePermission) ||
-                    formData.nodeData.lockedAndCannotBeEdited) {
-                    systemNameField.readOnly = true;
+            // Add max name size validation
+            systemNameField.selectorOptions = [
+                {
+                    name: 'maxLength',
+                    value: window.contextJsParameters.config.maxNameSize
                 }
+            ];
 
-                // Move to mix:title fieldSet if fieldSet exist
-                let moved = checkMoveSystemNameToUnderJcrTitleField(formData.sections, systemNameField);
+            // System name should be readonly for this specific nodetypes
+            if (readOnlyByMixin ||
+                Constants.systemName.READONLY_FOR_NODE_TYPES.includes(primaryNodeType.name) ||
+                isContentOrFileNode(formData) ||
+                (!isCreate && !formData.nodeData.hasWritePermission) ||
+                formData.nodeData.lockedAndCannotBeEdited) {
+                systemNameField.readOnly = true;
+            }
 
-                // Move the systemName field to the top first section, fieldset, for specifics nodetypes
-                if (!moved && canBeMovedToTop) {
-                    moveSystemNameToTheTopOfTheForm(primaryNodeType, formData.sections, systemNameField, t);
-                    moved = true;
-                }
+            // Move to mix:title fieldSet if fieldSet exist
+            let moved = checkMoveSystemNameToUnderJcrTitleField(formData.sections, systemNameField);
 
-                if (moved) {
-                    // Remove system fieldSet, not used anymore
-                    optionsSection.fieldSets = optionsSection.fieldSets.filter(fieldSet => fieldSet.name !== 'nt:base');
-                }
+            // Move the systemName field to the top first section, fieldset, for specifics nodetypes
+            if (!moved && canBeMovedToTop) {
+                moveSystemNameToTheTopOfTheForm(primaryNodeType, formData.sections, systemNameField, t);
+                moved = true;
+            }
+
+            if (moved) {
+                // Remove system fieldSet, not used anymore
+                sectionContainingSystemName.fieldSets = sectionContainingSystemName.fieldSets.filter(fieldSet => fieldSet.name !== 'nt:base');
             }
         }
     }
