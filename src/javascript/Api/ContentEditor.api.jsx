@@ -239,6 +239,8 @@ const ContentEditorApiCmp = ({classes, client}) => {
             {editorConfig && !editorConfig.isWindow && (
                 <Dialog fullScreen
                         open
+                        disableAutoFocus
+                        disableEnforceFocus
                         TransitionComponent={Transition}
                         aria-labelledby="dialog-content-editor"
                         classes={{root: classes.ceDialogRoot}}
