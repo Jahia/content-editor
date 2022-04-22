@@ -47,8 +47,8 @@
             },
             "create": {
               "title": "Unsaved content",
-              "message": "The content is not yet saved in {{currentLang}}. What do you want to do before closing?",
-              "switchLanguage": "The content is not yet saved in {{currentLang}}. What do you want to do before switching language?"
+              "message": "The content is not yet saved in {{langName}}. What do you want to do before closing?",
+              "switchLanguage": "The content is not yet saved in {{langName}}. What do you want to do before switching language?"
             },
             "alert": "Changes that you made will not be saved.",
             "btnContinue": "Cancel",

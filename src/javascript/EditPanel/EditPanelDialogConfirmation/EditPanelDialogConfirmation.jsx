@@ -5,24 +5,36 @@ import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import {SaveButton} from '~/EditPanel/EditPanelDialogConfirmation/SaveButton';
 import classes from './EditPanelDialogConfirmation.scss';
+import {useContentEditorContext} from '~/ContentEditor.context';
+import {Constants} from '~/ContentEditor.constants';
 
-const useDialogKey = switchLang => {
+/**
+ * Build title key and dialog message key depending on the mode and switchLang flag
+ * @returns {{messageKey: string, titleKey: string}}
+ */
+const useDialogText = (switchLang, mode) => {
     const rootProp = 'content-editor:label.contentEditor.edit.action.goBack';
-    const [titleKey] = useState(`${rootProp}.edit.title`);
+    const [titleKey, setTitleKey] = useState(`${rootProp}.edit.title`);
     const [messageKey, setMessageKey] = useState(`${rootProp}.edit.message`);
 
     useEffect(() => {
-        if (switchLang) {
-            setMessageKey(`${rootProp}.edit.switchLanguage`);
+        const isEditMode = mode === Constants.routes.baseEditRoute;
+        if (switchLang || !isEditMode) {
+            const messageKey = (switchLang) ? 'switchLanguage' : 'message';
+            setMessageKey(`${rootProp}.${mode}.${messageKey}`);
+            if (!isEditMode) {
+                setTitleKey(`${rootProp}.${mode}.title`);
+            }
         }
-    }, [switchLang]);
+    }, [switchLang, mode]);
 
     return {titleKey, messageKey};
 };
 
 export const EditPanelDialogConfirmation = React.memo(({isOpen, switchLang = false, onCloseDialog, actionCallback}) => {
     const {t} = useTranslation('content-editor');
-    const {titleKey, messageKey} = useDialogKey(switchLang);
+    const {mode, lang, siteInfo} = useContentEditorContext();
+    const {titleKey, messageKey} = useDialogText(switchLang, mode);
     const handleDiscard = () => {
         onCloseDialog();
 
@@ -31,6 +43,7 @@ export const EditPanelDialogConfirmation = React.memo(({isOpen, switchLang = fal
         actionCallback(undefined, true);
     };
 
+    const langName = siteInfo.languages.find(l => l.language === lang)?.displayName;
     return (
         <Dialog
             maxWidth="md"
@@ -43,7 +56,7 @@ export const EditPanelDialogConfirmation = React.memo(({isOpen, switchLang = fal
             </DialogTitle>
             <DialogContent className={classes.dialogContent}>
                 <Typography>
-                    {t(messageKey)}
+                    {t(messageKey, {langName})}
                 </Typography>
             </DialogContent>
             <DialogActions>
