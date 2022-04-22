@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Dialog, DialogActions, DialogContent, DialogTitle} from '@material-ui/core';
 import {Button, Typography} from '@jahia/moonstone';
 import * as PropTypes from 'prop-types';
@@ -6,8 +6,23 @@ import {useTranslation} from 'react-i18next';
 import {SaveButton} from '~/EditPanel/EditPanelDialogConfirmation/SaveButton';
 import classes from './EditPanelDialogConfirmation.scss';
 
-export const EditPanelDialogConfirmation = React.memo(({isOpen, onCloseDialog, actionCallback}) => {
+const useDialogKey = switchLang => {
+    const rootProp = 'content-editor:label.contentEditor.edit.action.goBack';
+    const [titleKey] = useState(`${rootProp}.edit.title`);
+    const [messageKey, setMessageKey] = useState(`${rootProp}.edit.message`);
+
+    useEffect(() => {
+        if (switchLang) {
+            setMessageKey(`${rootProp}.edit.switchLanguage`);
+        }
+    }, [switchLang]);
+
+    return {titleKey, messageKey};
+};
+
+export const EditPanelDialogConfirmation = React.memo(({isOpen, switchLang = false, onCloseDialog, actionCallback}) => {
     const {t} = useTranslation('content-editor');
+    const {titleKey, messageKey} = useDialogKey(switchLang);
     const handleDiscard = () => {
         onCloseDialog();
 
@@ -15,9 +30,6 @@ export const EditPanelDialogConfirmation = React.memo(({isOpen, onCloseDialog, a
         // True: byPassEventTriggers (we dont want to perform event triggers in case of nothing have been saved/created)
         actionCallback(undefined, true);
     };
-
-    const titleKey = 'content-editor:label.contentEditor.edit.action.goBack.edit.title';
-    const messageKey = 'content-editor:label.contentEditor.edit.action.goBack.edit.message';
 
     return (
         <Dialog
@@ -56,6 +68,7 @@ EditPanelDialogConfirmation.name = 'EditPanelDialogConfirmation';
 
 EditPanelDialogConfirmation.propTypes = {
     isOpen: PropTypes.bool.isRequired,
+    switchLang: PropTypes.bool,
     actionCallback: PropTypes.func.isRequired,
     onCloseDialog: PropTypes.func.isRequired
 };
