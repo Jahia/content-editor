@@ -245,6 +245,7 @@ const ContentEditorApiCmp = ({classes, client}) => {
                         aria-labelledby="dialog-content-editor"
                         classes={{root: classes.ceDialogRoot}}
                         onClose={() => (formikRef.current && formikRef.current.dirty) ? setConfirmationConfig(true) : closeAll()}
+                        onRendered={() => window.focus()}
                 >
                     {confirmationConfig && (
                         <FormikProvider value={formikRef.current}>
