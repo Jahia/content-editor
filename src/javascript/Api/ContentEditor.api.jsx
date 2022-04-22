@@ -168,11 +168,6 @@ const ContentEditorApiCmp = ({classes, client}) => {
             formikRef.current = formik;
         },
         back: (nodeUuid, operation, newContentUuid, byPassEventTriggers) => {
-            // Refresh GWT content
-            if (window.authoringApi.refreshContent) {
-                window.authoringApi.refreshContent();
-            }
-
             if (!byPassEventTriggers) {
                 triggerEvents(newContentUuid || nodeUuid, operation);
             }
@@ -182,11 +177,6 @@ const ContentEditorApiCmp = ({classes, client}) => {
         },
         disabledBack: () => false,
         createCallback: (createdNodeUuid, lang) => {
-            // Refresh GWT content
-            if (window.authoringApi.refreshContent) {
-                window.authoringApi.refreshContent();
-            }
-
             triggerEvents(createdNodeUuid, Constants.operators.create);
 
             if (editorConfig && editorConfig.createCallback) {
@@ -194,27 +184,30 @@ const ContentEditorApiCmp = ({classes, client}) => {
             }
 
             // Redirect to CE edit mode, for the created node
+            envProps.isNeedRefresh = false;
             if (editorConfig) {
                 setEditorConfig({
                     ...editorConfig,
                     uuid: createdNodeUuid,
                     lang: lang ? lang : editorConfig.lang,
-                    mode: Constants.routes.baseEditRoute
+                    mode: Constants.routes.baseEditRoute,
+                    fromCreate: true
                 });
             }
         },
         editCallback: nodeUuid => {
-            // Refresh GWT content
-            if (window.authoringApi.refreshContent) {
-                window.authoringApi.refreshContent();
-            }
-
             if (editorConfig && editorConfig.editCallback) {
                 editorConfig.editCallback(nodeUuid);
             }
 
             // Refresh contentEditorEventHandlers
             triggerEvents(nodeUuid, Constants.operators.update);
+        },
+        isNeedRefresh: Boolean(editorConfig.fromCreate),
+        onClosedCallback: () => {
+            if (window.authoringApi.refreshContent && envProps.isNeedRefresh) {
+                window.authoringApi.refreshContent();
+            }
         },
         setLanguage: lang => {
             // Update the lang of current opened CE

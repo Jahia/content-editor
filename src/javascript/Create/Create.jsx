@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {withNotifications} from '@jahia/react-material';
 import {Formik} from 'formik';
 import EditPanel from '~/EditPanel';
@@ -14,22 +14,32 @@ import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEdit
 import {validate} from '~/Validation/validation';
 import {createNode} from './CreateForm/create.request';
 import {FormQuery} from './CreateForm/createForm.gql-queries';
-import {withApollo} from 'react-apollo';
 import {compose} from '~/utils';
 import envCreateCallbacks from './Create.env';
 import {adaptCreateFormData} from './Create.adapter';
 import {Constants} from '~/ContentEditor.constants';
+import {useApolloClient} from '@apollo/react-hooks';
 
 const CreateCmp = ({
-    client,
     notificationContext
 }) => {
+    const client = useApolloClient();
     const {t} = useTranslation('content-editor');
     const contentEditorConfigContext = useContentEditorConfigContext();
     const {nodeData, formQueryParams, initialValues, title} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
 
+    useEffect(() => {
+        return () => {
+            if (contentEditorConfigContext.envProps.onClosedCallback) {
+                contentEditorConfigContext.envProps.onClosedCallback();
+            }
+        };
+    }, [contentEditorConfigContext.envProps]);
+
     const handleSubmit = (values, actions) => {
+        contentEditorConfigContext.envProps.isNeedRefresh = true;
+
         createNode({
             client,
             t,
@@ -71,12 +81,10 @@ const CreateCmp = ({
 };
 
 CreateCmp.propTypes = {
-    client: PropTypes.object.isRequired,
     notificationContext: PropTypes.object.isRequired
 };
 
 export const Create = compose(
-    withApollo,
     withNotifications(),
     withContentEditorDataContextProvider(FormQuery, adaptCreateFormData)
 )(CreateCmp);
