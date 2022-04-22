@@ -13,7 +13,6 @@ describe('EditPanelDialogConfirmation', () => {
     beforeEach(() => {
         defaultProps = {
             isOpen: false,
-            titleKey: 'titleKey',
             t: jest.fn(key => 'translated_' + key),
             onCloseDialog: jest.fn(),
             actionCallback: jest.fn()
@@ -39,7 +38,7 @@ describe('EditPanelDialogConfirmation', () => {
             dsGenericTheme
         ).dive();
 
-        expect(cmp.debug()).toContain('translated_' + defaultProps.titleKey);
+        expect(cmp.debug()).toContain('translated_');
     });
 
     it('should show dialog confirmation when open is true', () => {

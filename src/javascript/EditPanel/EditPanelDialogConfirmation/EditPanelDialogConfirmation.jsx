@@ -1,11 +1,12 @@
 import React from 'react';
-import {Dialog, DialogActions, DialogTitle} from '@material-ui/core';
-import {Button} from '@jahia/moonstone';
+import {Dialog, DialogActions, DialogContent, DialogTitle} from '@material-ui/core';
+import {Button, Typography} from '@jahia/moonstone';
 import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import {SaveButton} from '~/EditPanel/EditPanelDialogConfirmation/SaveButton';
+import classes from './EditPanelDialogConfirmation.scss';
 
-export const EditPanelDialogConfirmation = React.memo(({titleKey, isOpen, onCloseDialog, actionCallback}) => {
+export const EditPanelDialogConfirmation = React.memo(({isOpen, onCloseDialog, actionCallback}) => {
     const {t} = useTranslation('content-editor');
     const handleDiscard = () => {
         onCloseDialog();
@@ -14,6 +15,9 @@ export const EditPanelDialogConfirmation = React.memo(({titleKey, isOpen, onClos
         // True: byPassEventTriggers (we dont want to perform event triggers in case of nothing have been saved/created)
         actionCallback(undefined, true);
     };
+
+    const titleKey = 'content-editor:label.contentEditor.edit.action.goBack.edit.title';
+    const messageKey = 'content-editor:label.contentEditor.edit.action.goBack.edit.message';
 
     return (
         <Dialog
@@ -25,9 +29,15 @@ export const EditPanelDialogConfirmation = React.memo(({titleKey, isOpen, onClos
             <DialogTitle id="alert-dialog-slide-title">
                 {t(titleKey)}
             </DialogTitle>
+            <DialogContent className={classes.dialogContent}>
+                <Typography>
+                    {t(messageKey)}
+                </Typography>
+            </DialogContent>
             <DialogActions>
                 <Button
                     size="big"
+                    variant="ghost"
                     label={t('content-editor:label.contentEditor.edit.action.goBack.btnContinue')}
                     onClick={onCloseDialog}
                 />
@@ -45,7 +55,6 @@ export const EditPanelDialogConfirmation = React.memo(({titleKey, isOpen, onClos
 EditPanelDialogConfirmation.name = 'EditPanelDialogConfirmation';
 
 EditPanelDialogConfirmation.propTypes = {
-    titleKey: PropTypes.string.isRequired,
     isOpen: PropTypes.bool.isRequired,
     actionCallback: PropTypes.func.isRequired,
     onCloseDialog: PropTypes.func.isRequired

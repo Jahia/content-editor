@@ -14,7 +14,6 @@ export const OpenEngineTabs = ({tabs, render: Render, ...otherProps}) => {
         <>
             <EditPanelDialogConfirmation
                 isOpen={open}
-                titleKey="content-editor:label.contentEditor.edit.action.goBack.title"
                 actionCallback={() => {
                     formik.resetForm(formik.values);
                     openEngineTab(nodeData, tabs);

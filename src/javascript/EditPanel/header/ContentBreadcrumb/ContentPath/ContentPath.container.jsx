@@ -112,7 +112,6 @@ const ContentPathContainer = ({path, uuid, operator}) => {
         <>
             <EditPanelDialogConfirmation
                 isOpen={open}
-                titleKey="content-editor:label.contentEditor.edit.action.goBack.title"
                 actionCallback={actionCallback}
                 onCloseDialog={onCloseDialog}
             />
