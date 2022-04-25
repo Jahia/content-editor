@@ -14,8 +14,11 @@ export const OpenEngineTabs = ({tabs, render: Render, ...otherProps}) => {
         <>
             <EditPanelDialogConfirmation
                 isOpen={open}
-                actionCallback={() => {
-                    formik.resetForm(formik.values);
+                actionCallback={(overrideStoredLocation, discard) => {
+                    if (discard) {
+                        formik.resetForm();
+                    }
+
                     openEngineTab(nodeData, tabs);
                 }}
                 onCloseDialog={() => setOpen(false)}
