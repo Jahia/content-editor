@@ -7,6 +7,9 @@ import {Typography} from '@jahia/design-system-kit';
 import {SectionPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {FieldSet} from '../FieldSet';
 
+import classnames from 'clsx';
+import {Plus, Minus} from 'mdi-material-ui';
+
 const styles = theme => ({
     section: {
         borderBottom: '1px solid var(--color-gray_light40)',
@@ -17,10 +20,20 @@ const styles = theme => ({
     sectionTitle: {
         textTransform: 'uppercase',
         padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 4}px`
+    },
+    header: {
+        alignItems: 'center',
+        '&:hover': {
+            backgroundColor: 'var(--color-gray_light40)',
+            cursor: 'pointer'
+        }
+    },
+    expandIcon: {
+        marginLeft: `${theme.spacing.unit * 4}px`
     }
 });
 
-const SectionCmp = ({section, classes}) => {
+const SectionCmp = ({section, classes, expanded = true, toggleExpanded = () => {}}) => {
     const hideFieldSets = fieldSet => {
         if (!fieldSet) {
             return false;
@@ -37,19 +50,22 @@ const SectionCmp = ({section, classes}) => {
 
     return (
         <section className={classes.section} data-sel-content-editor-fields-group={section.displayName}>
-            <Typography component="h2"
-                        className={classes.sectionTitle}
-                        color="alpha"
-                        variant="gamma"
-            >{section.displayName}
-            </Typography>
+            <div className={classnames('flexRow', classes.header)} onClick={() => toggleExpanded(section.name, !expanded)}>
+                {expanded ? <Minus className={classes.expandIcon}/> : <Plus className={classes.expandIcon}/>}
+                <Typography component="h2"
+                            className={classes.sectionTitle}
+                            color="alpha"
+                            variant="gamma"
+                >{section.displayName}
+                </Typography>
+            </div>
 
             {section.fieldSets.map(fieldset => {
                 if (hideFieldSets(fieldset)) {
                     return null;
                 }
 
-                return <FieldSet key={fieldset.name} fieldset={fieldset}/>;
+                return expanded && <FieldSet key={fieldset.name} fieldset={fieldset}/>;
             })}
         </section>
     );
@@ -57,7 +73,9 @@ const SectionCmp = ({section, classes}) => {
 
 SectionCmp.propTypes = {
     section: SectionPropTypes.isRequired,
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
+    expanded: PropTypes.bool,
+    toggleExpanded: PropTypes.func
 };
 
 export const Section = withStyles(styles)(SectionCmp);
