@@ -15,7 +15,11 @@ const Save = ({render: Render, loading: Loading, ...otherProps}) => {
     const formik = useFormikContext();
 
     useKeydownListener((event, formik) => {
-        if (event.ctrlKey && event.keyCode === Constants.keyCodes.s && mode === Constants.routes.baseEditRoute) {
+        if (mode !== Constants.routes.baseEditRoute) {
+            return;
+        }
+
+        if ((event.ctrlKey || event.metaKey) && event.keyCode === Constants.keyCodes.s) {
             event.preventDefault();
             save(formik);
         }
