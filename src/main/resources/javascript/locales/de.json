@@ -40,9 +40,18 @@
           },
           "goBack": {
             "name": "Zurück zu {{parentNodeDisplayName}}",
-            "title": "Änderungen vor dem Schließen speichern?",
+            "edit": {
+              "title": "Nicht gespeicherte Änderungen",
+              "message": "Änderungen wurden noch nicht gespeichert. Was möchten Sie vor dem Schließen tun?",
+              "switchLanguage": "Änderungen wurden noch nicht gespeichert. Was möchten Sie vor dem Wechsel zur anderen Sprache tun?"
+            },
+            "create": {
+              "title": "Nicht gespeicherter Content",
+              "message": "Änderungen wurden noch nicht gespeichert. Was möchten Sie vor dem Schließen tun?",
+              "switchLanguage": "Der Content wurde noch nicht in {{langName}} gespeichert. Was möchten Sie vor dem Wechsel zur anderen Sprache tun?"
+            },
             "alert": "Von Ihnen vorgenommene Änderungen werden nicht gespeichert.",
-            "btnContinue": "Weiter bearbeiten",
+            "btnContinue": "Abbrechen",
             "btnDiscard": "Änderungen verwerfen",
             "btnSave": "Änderungen speichern"
           },
