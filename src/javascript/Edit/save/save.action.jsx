@@ -15,7 +15,7 @@ const Save = ({render: Render, loading: Loading, ...otherProps}) => {
     const formik = useFormikContext();
 
     useKeydownListener((event, formik) => {
-        if (mode !== Constants.routes.baseCreateRoute) {
+        if (mode !== Constants.routes.baseEditRoute) {
             return;
         }
 
