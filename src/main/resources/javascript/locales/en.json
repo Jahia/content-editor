@@ -40,11 +40,20 @@
           },
           "goBack": {
             "name": "Back to {{parentNodeDisplayName}}",
-            "title": "Save changes before closing?",
+            "edit": {
+              "title": "Unsaved changes",
+              "message": "There are unsaved changes. What do you want to do with them before closing?",
+              "switchLanguage": "There are unsaved changes. What do you want to do with them before switching language?"
+            },
+            "create": {
+              "title": "Unsaved content",
+              "message": "The content is not yet saved. What do you want to do before closing?",
+              "switchLanguage": "The content is not yet saved in {{langName}}. What do you want to do before switching language?"
+            },
             "alert": "Changes that you made will not be saved.",
-            "btnContinue": "Continue editing",
-            "btnDiscard": "Discard changes",
-            "btnSave": "Save changes"
+            "btnContinue": "Cancel",
+            "btnDiscard": "Discard",
+            "btnSave": "Save"
           },
           "lock": {
             "deletion": "Locked: marked for deletion",
@@ -174,11 +183,6 @@
       "header":  {
         "chips": {
           "unsavedLabel": "Unsaved changes"
-        }
-      },
-      "switchLanguage": {
-        "dialog": {
-          "title": "Save changes before switching language?"
         }
       },
       "error": {

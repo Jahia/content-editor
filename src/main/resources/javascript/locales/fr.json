@@ -40,11 +40,20 @@
           },
           "goBack": {
             "name": "Retour à {{parentNodeDisplayName}}",
-            "title": "Enregistrer les modifications avant de fermer ?",
+            "edit": {
+              "title": "Modifications non sauvegardées",
+              "message": "Vous avez des modifications non sauvegardées. Que souhaitez-vous faire avant de fermer?",
+              "switchLanguage": "Vous avez des modifications non sauvegardées. Que souhaitez-vous faire avant de changer de langue?"
+            },
+            "create": {
+              "title": "Contenu non sauvegardé",
+              "message": "Le contenu n'a pas été sauvegardé. Que souhaitez-vous faire avant de fermer ?",
+              "switchLanguage": "Le contenu n'a pas été sauvegardé en {{langName}}. Que souhaitez-vous faire avant de changer de langue ?"
+            },
             "alert": "Les modifications que vous avez apportées ne seront pas enregistrées.",
-            "btnContinue": "Poursuivre la modification",
-            "btnDiscard": "Abandonner les modifications",
-            "btnSave": "Enregistrer les modifications"
+            "btnContinue": "Annuler",
+            "btnDiscard": "Fermer sans sauver",
+            "btnSave": "Sauvegarder"
           },
           "lock": {
             "deletion": "Vérouillé: Contenu marqué pour suppression",

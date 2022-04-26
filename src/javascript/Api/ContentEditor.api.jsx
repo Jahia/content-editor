@@ -251,7 +251,6 @@ const ContentEditorApiCmp = ({classes, client}) => {
                         <FormikProvider value={formikRef.current}>
                             <EditPanelDialogConfirmation
                                 isOpen={open}
-                                titleKey="content-editor:label.contentEditor.edit.action.goBack.title"
                                 actionCallback={envProps.back}
                                 onCloseDialog={() => setConfirmationConfig(false)}
                             />

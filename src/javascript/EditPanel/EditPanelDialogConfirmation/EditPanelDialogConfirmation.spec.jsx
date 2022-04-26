@@ -3,8 +3,10 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {EditPanelDialogConfirmation} from './';
 import {useFormikContext} from 'formik';
+import {useContentEditorContext} from '~/ContentEditor.context';
 
 jest.mock('formik');
+jest.mock('~/ContentEditor.context', () => ({useContentEditorContext: jest.fn()}));
 
 describe('EditPanelDialogConfirmation', () => {
     let defaultProps;
@@ -13,13 +15,20 @@ describe('EditPanelDialogConfirmation', () => {
     beforeEach(() => {
         defaultProps = {
             isOpen: false,
-            titleKey: 'titleKey',
             t: jest.fn(key => 'translated_' + key),
             onCloseDialog: jest.fn(),
             actionCallback: jest.fn()
         };
         formik = {};
         useFormikContext.mockReturnValue(formik);
+        useContentEditorContext.mockImplementation(() => ({
+            lang: 'en',
+            siteInfo: {
+                languages: [{
+                    language: 'en', displayName: 'English'
+                }]
+            }
+        }));
     });
 
     it('should hide dialog confirmation when open is false', () => {
@@ -39,7 +48,7 @@ describe('EditPanelDialogConfirmation', () => {
             dsGenericTheme
         ).dive();
 
-        expect(cmp.debug()).toContain('translated_' + defaultProps.titleKey);
+        expect(cmp.debug()).toContain('translated_');
     });
 
     it('should show dialog confirmation when open is true', () => {

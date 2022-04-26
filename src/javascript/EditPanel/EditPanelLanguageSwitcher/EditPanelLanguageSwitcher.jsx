@@ -58,8 +58,8 @@ const EditPanelLanguageSwitcher = ({siteInfo}) => {
             />
 
             <EditPanelDialogConfirmation
+                switchLang
                 isOpen={dialogConfirmation.open}
-                titleKey="content-editor:label.contentEditor.switchLanguage.dialog.title"
                 actionCallback={actionCallback}
                 onCloseDialog={onCloseDialog}
             />
