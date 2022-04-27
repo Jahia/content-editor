@@ -23,15 +23,14 @@ export const replaceSpecialCharacters = systemName => {
     if (systemName) {
         return systemName
             .toLowerCase()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
             .replace(/[^A-Z0-9-_,()!]/ig, character => {
                 return mapSpecialCharacter[character] || '-';
             })
             .replace(/-+/g, '-')
             .replace(/^-/, '')
-            .replace(/-$/, '')
-
+            .replace(/-$/, '');
     }
 };
 
