@@ -21,10 +21,10 @@ const useDialogText = (switchLang, mode) => {
         const isEditMode = mode === Constants.routes.baseEditRoute;
         if (switchLang || !isEditMode) {
             const messageKey = (switchLang) ? 'switchLanguage' : 'message';
-            mode = mode || 'edit';
-            setMessageKey(`${rootProp}.${mode}.${messageKey}`);
+            const modeKey = mode || 'edit';
+            setMessageKey(`${rootProp}.${modeKey}.${messageKey}`);
             if (!isEditMode) {
-                setTitleKey(`${rootProp}.${mode}.title`);
+                setTitleKey(`${rootProp}.${modeKey}.title`);
             }
         }
     }, [switchLang, mode]);
