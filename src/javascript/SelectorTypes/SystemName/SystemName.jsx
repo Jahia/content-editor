@@ -34,7 +34,7 @@ export const SystemNameCmp = ({field, value, id, editorContext, onChange}) => {
                     icon={<Copy/>}
                     isDisabled={field.readOnly || isEqualToSystemName(formik.values[titleField], value, field)}
                     onClick={() => {
-                        const cleanedSystemName = replaceSpecialCharacters(formik.values[titleField])?.toLowerCase();
+                        const cleanedSystemName = replaceSpecialCharacters(formik.values[titleField]);
                         onChange(limitSystemNameIfNecessary(cleanedSystemName, field));
                     }}
             />}

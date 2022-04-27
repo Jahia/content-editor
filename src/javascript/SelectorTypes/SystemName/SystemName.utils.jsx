@@ -4,54 +4,36 @@ export const limitSystemNameIfNecessary = (currentValue, field) => {
 };
 
 const mapSpecialCharacter = {
-    é: 'e',
-    è: 'e',
-    ë: 'e',
-    Ê: 'e',
-    Ë: 'e',
     '€': 'e',
     '§': 'ss',
-    ç: 'c',
-    Ç: 'c',
     '¢': 'c',
-    ù: 'u',
-    Ù: 'u',
-    Û: 'u',
-    à: 'a',
-    Å: 'a',
-    å: 'a',
-    Á: 'a',
     ª: 'a',
     '¶': 'p',
     ø: 'o',
-    ô: 'o',
-    Ô: 'o',
-    Ø: 'o',
-    Ó: 'o',
     '°': 'd',
     '£': 'ps',
     '™': 'tm',
-    Ÿ: 'y',
     '¥': 'y',
     '‰': '0',
-    î: 'i',
-    ï: 'i',
-    Î: 'i',
-    Í: 'i',
-    Œ: 'oe',
-    Æ: 'ae'
+    œ: 'oe',
+    æ: 'ae'
 };
 
 export const replaceSpecialCharacters = systemName => {
-    const newSystemName = systemName?.replace(/[^A-Z0-9-_,()!]/ig, character => {
-        return mapSpecialCharacter[character] || '-';
-    });
-
-    return newSystemName?.replace(/-+/g, () => {
-        return '-';
-    });
+    if (systemName) {
+        return systemName
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^A-Z0-9-_,()!]/ig, character => {
+                return mapSpecialCharacter[character] || '-';
+            })
+            .replace(/-+/g, '-')
+            .replace(/^-/, '')
+            .replace(/-$/, '');
+    }
 };
 
 export const isEqualToSystemName = (title, systemName, field) => {
-    return limitSystemNameIfNecessary(replaceSpecialCharacters(title?.toLowerCase()), field) === systemName;
+    return limitSystemNameIfNecessary(replaceSpecialCharacters(title), field) === systemName;
 };
