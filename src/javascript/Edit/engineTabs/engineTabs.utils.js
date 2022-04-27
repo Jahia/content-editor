@@ -29,7 +29,8 @@ export function openEngineTab(nodeData, engineTabs) {
         {
             hideWip: true,
             displayedTabs: engineTabs,
-            hideHeaders: true
+            hideHeaders: true,
+            skipLock: true
         }
     );
 }
