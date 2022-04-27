@@ -21,9 +21,10 @@ const useDialogText = (switchLang, mode) => {
         const isEditMode = mode === Constants.routes.baseEditRoute;
         if (switchLang || !isEditMode) {
             const messageKey = (switchLang) ? 'switchLanguage' : 'message';
-            setMessageKey(`${rootProp}.${mode}.${messageKey}`);
+            const modeKey = mode || 'edit';
+            setMessageKey(`${rootProp}.${modeKey}.${messageKey}`);
             if (!isEditMode) {
-                setTitleKey(`${rootProp}.${mode}.title`);
+                setTitleKey(`${rootProp}.${modeKey}.title`);
             }
         }
     }, [switchLang, mode]);
@@ -43,7 +44,7 @@ export const EditPanelDialogConfirmation = React.memo(({isOpen, switchLang = fal
         actionCallback(undefined, true);
     };
 
-    const langName = siteInfo.languages.find(l => l.language === lang)?.displayName;
+    const langName = siteInfo?.languages?.find(l => l.language === lang)?.displayName || '';
     return (
         <Dialog
             maxWidth="md"

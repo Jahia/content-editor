@@ -13,7 +13,10 @@ export const SaveButton = ({onCloseDialog, actionCallback}) => {
 
         // Override default submit callback to execute the confirmation callback instead
         formik.setFieldValue(Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK, actionCallback, false);
-        formik.submitForm();
+        formik.submitForm()
+            .then(() => {
+                formik.resetForm({values: formik.values});
+            });
     };
 
     let disabled = false;
