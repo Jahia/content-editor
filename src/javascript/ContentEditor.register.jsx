@@ -2,7 +2,7 @@ import React from 'react';
 import {registry} from '@jahia/ui-extender';
 import {registerCEActions} from './registerCEActions';
 import {Constants} from '~/ContentEditor.constants';
-import ContentEditorApi from '~/Api/ContentEditor.api';
+import {ContentEditorApi} from '~/Api/ContentEditorApi';
 import ContentEditorRedux from './ContentEditor.redux';
 import {ContentEditorHistoryContextProvider} from '~/ContentEditorHistory/ContentEditorHistory.context';
 import {registerSelectorTypes} from '~/SelectorTypes';
@@ -40,11 +40,11 @@ export default function () {
     window.top.jahiaGwtHook = {
         // Hook on edit engine opening
         edit: ({uuid, lang, siteKey, uilang}) => {
-            window.CE_API.edit(uuid, siteKey, lang, uilang);
+            window.CE_API.edit(uuid, siteKey, lang, uilang, true);
         },
         // Hook on create engine opening, also hook on create content type selector
         create: ({name, uuid, path, lang, siteKey, uilang, contentTypes, excludedNodeTypes, includeSubTypes}) => {
-            window.CE_API.create(uuid, path, siteKey, lang, uilang, contentTypes, excludedNodeTypes, includeSubTypes, name);
+            window.CE_API.create(uuid, path, siteKey, lang, uilang, contentTypes, excludedNodeTypes, includeSubTypes, name, false);
         }
     };
 

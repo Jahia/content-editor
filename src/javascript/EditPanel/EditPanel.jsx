@@ -26,9 +26,9 @@ const EditPanel = React.memo(({title}) => {
         <MainLayout header={
             <ContentHeader>
                 <HeaderUpperSection title={title}
-                                    isCompact={envProps.isWindow}
-                                    isShowPublish={!envProps.isWindow && mode === Constants.routes.baseEditRoute}/>
-                {!envProps.isWindow && (
+                                    isCompact={!envProps.isFullscreen}
+                                    isShowPublish={envProps.isFullscreen && mode === Constants.routes.baseEditRoute}/>
+                {envProps.isFullscreen && (
                     <>
                         <Separator spacing="none"/>
                         <HeaderLowerSection activeTab={activeTab}

@@ -40,7 +40,7 @@ export const EditPanelContent = ({classes}) => {
     return (
         <>
             {mode === Constants.routes.baseEditRoute && <PublicationInfoProgress/>}
-            {hasPreview && !(envProps && envProps.isWindow) ?
+            {hasPreview && (!envProps || envProps.isFullscreen) ?
                 (
                     <TwoColumnsContent
                         classes={{root: classes.twoColumnsRoot, left: classes.left, right: classes.right}}
