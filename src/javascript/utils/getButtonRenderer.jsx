@@ -14,10 +14,12 @@ export const getButtonRenderer = ({labelStyle, defaultButtonProps, noIcon} = {})
         } else if (labelStyle === 'short' && buttonLabelShort) {
             label = buttonLabelShort;
         }
+
         let icon;
         if (!noIcon) {
-            icon = buttonIcon
+            icon = buttonIcon;
         }
+
         return (isVisible !== false &&
             <Button data-sel-role={actionKey}
                     label={t(label, buttonLabelParams)}

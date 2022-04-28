@@ -36,14 +36,16 @@ const EditPanelFullscreen = ({title}) => {
             <div className={clsx(
                 activeTab === Constants.editPanel.editTab ? classes.tab : classes.hideTab,
                 'flexCol'
-            )}>
+            )}
+            >
                 <EditTabComponent nodePath={nodeData.path} lang={lang}/>
             </div>
             {OtherTabComponent && (
                 <div className={clsx(
                     Constants.editPanel.editTab === activeTab ? classes.hideTab : classes.tab,
                     'flexCol'
-                )}>
+                )}
+                >
                     <OtherTabComponent nodePath={nodeData.path} lang={lang}/>
                 </div>
             )}

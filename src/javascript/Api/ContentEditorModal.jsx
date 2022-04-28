@@ -1,13 +1,12 @@
 import React, {useRef, useState} from 'react';
 import {Constants} from '~/ContentEditor.constants';
 import {ContentEditor} from '~/ContentEditor';
-import {Dialog, DialogTitle, DialogContent, DialogActions} from '@material-ui/core';
+import {Dialog} from '@material-ui/core';
 import styles from './ContentEditorApi.scss';
 import {FormikProvider} from 'formik';
 import EditPanelDialogConfirmation from '~/EditPanel/EditPanelDialogConfirmation/EditPanelDialogConfirmation';
 import Slide from '@material-ui/core/Slide';
 import PropTypes from 'prop-types';
-import {Button, Typography} from "@jahia/moonstone";
 
 function triggerEvents(nodeUuid, operator) {
     // Refresh contentEditorEventHandlers
@@ -103,7 +102,7 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
         root: styles.ceDialogRootFullscreen
     } : {
         paper: styles.ceDialogContent
-    }
+    };
 
     return (
         <Dialog open

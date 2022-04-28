@@ -6,14 +6,14 @@ import clsx from 'clsx';
 import {DisplayAction, DisplayActions, registry} from '@jahia/ui-extender';
 import {Constants} from '~/ContentEditor.constants';
 import {WindowListeners} from './WindowListeners';
-import {DialogActions, DialogTitle} from "@material-ui/core";
-import {Button, Typography} from "@jahia/moonstone";
-import {GoBack} from "~/actions/goBack.action";
-import {getButtonRenderer} from "~/utils/getButtonRenderer";
-import {EditPanelLanguageSwitcher} from "~/EditPanel/EditPanelLanguageSwitcher";
+import {DialogActions, DialogTitle} from '@material-ui/core';
+import {Button, Typography} from '@jahia/moonstone';
+import {GoBack} from '~/actions/goBack.action';
+import {getButtonRenderer} from '~/utils/getButtonRenderer';
+import {EditPanelLanguageSwitcher} from '~/EditPanel/EditPanelLanguageSwitcher';
 
 const ButtonRenderer = getButtonRenderer({
-    defaultButtonProps: {size: "big", style: {margin: "8px"}},
+    defaultButtonProps: {size: 'big', style: {margin: '8px'}},
     noIcon: true
 });
 
@@ -63,7 +63,7 @@ const EditPanelCompact = ({title}) => {
                 />
                 <DisplayActions
                     buttonProps={{
-                        color: 'accent',
+                        color: 'accent'
                     }}
                     target="content-editor/header/main-save-actions"
                     render={ButtonRenderer}
