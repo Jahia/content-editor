@@ -44,6 +44,7 @@ const Save = ({render: Render, loading: Loading, ...otherProps}) => {
         <Render
             {...otherProps}
             addWarningBadge={Object.keys(formik.errors).length > 0}
+            isVisible={mode === Constants.routes.baseEditRoute}
             enabled={mode === Constants.routes.baseEditRoute}
             disabled={!formik.dirty || publicationInfoPolling}
             onClick={() => save(formik)}

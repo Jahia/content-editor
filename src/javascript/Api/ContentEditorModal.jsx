@@ -1,12 +1,13 @@
 import React, {useRef, useState} from 'react';
 import {Constants} from '~/ContentEditor.constants';
 import {ContentEditor} from '~/ContentEditor';
-import {Dialog} from '@material-ui/core';
+import {Dialog, DialogTitle, DialogContent, DialogActions} from '@material-ui/core';
 import styles from './ContentEditorApi.scss';
 import {FormikProvider} from 'formik';
 import EditPanelDialogConfirmation from '~/EditPanel/EditPanelDialogConfirmation/EditPanelDialogConfirmation';
 import Slide from '@material-ui/core/Slide';
 import PropTypes from 'prop-types';
+import {Button, Typography} from "@jahia/moonstone";
 
 function triggerEvents(nodeUuid, operator) {
     // Refresh contentEditorEventHandlers
@@ -21,6 +22,7 @@ function triggerEvents(nodeUuid, operator) {
 const Transition = React.forwardRef((props, ref) => {
     return <Slide ref={ref} direction="up" {...props}/>;
 });
+
 export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
     const [confirmationConfig, setConfirmationConfig] = useState(false);
 
@@ -93,21 +95,15 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
             }
         },
         shouldRedirectBreadcrumb: () => true,
+        isModal: true,
         isFullscreen: editorConfig?.isFullscreen
     };
 
-    let contentEditor = editorConfig && (
-        <ContentEditor env={Constants.env.standalone}
-                       mode={editorConfig.mode}
-                       uuid={editorConfig.uuid}
-                       lang={editorConfig.lang}
-                       uilang={editorConfig.uilang}
-                       site={editorConfig.site}
-                       contentType={editorConfig.contentType}
-                       name={editorConfig.name}
-                       envProps={envProps}
-        />
-    );
+    const classes = editorConfig.isFullscreen ? {
+        root: styles.ceDialogRootFullscreen
+    } : {
+        paper: styles.ceDialogContent
+    }
 
     return (
         <Dialog open
@@ -116,7 +112,7 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
                 fullScreen={editorConfig.isFullscreen}
                 TransitionComponent={Transition}
                 aria-labelledby="dialog-content-editor"
-                classes={{root: styles.ceDialogRoot}}
+                classes={classes}
                 onClose={() => (formikRef.current && formikRef.current.dirty) ? setConfirmationConfig(true) : closeAll()}
                 onRendered={() => window.focus()}
         >
@@ -129,7 +125,16 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
                     />
                 </FormikProvider>
             )}
-            {contentEditor}
+            <ContentEditor env={Constants.env.standalone}
+                           mode={editorConfig.mode}
+                           uuid={editorConfig.uuid}
+                           lang={editorConfig.lang}
+                           uilang={editorConfig.uilang}
+                           site={editorConfig.site}
+                           contentType={editorConfig.contentType}
+                           name={editorConfig.name}
+                           envProps={envProps}
+            />
         </Dialog>
     );
 };

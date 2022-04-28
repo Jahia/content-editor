@@ -1,4 +1,4 @@
-.ceDialogRoot.ceDialogRoot {
+.ceDialogRootFullscreen.ceDialogRootFullscreen {
     right: 0;
     left: unset;
 
@@ -8,18 +8,25 @@
     width: calc(100vw - 56px);
 }
 
-.ceWindowRoot.ceWindowRoot {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    z-index: 1500;
-
-    display: flex;
-    flex-direction: column;
-    width: 40vw;
-    min-width: 620px;
-    height: calc(100vh - 124px);
-
-    box-shadow: 0 4px 8px var(--color-dark40);
-    opacity: 1;
+.ceDialogContent.ceDialogContent {
+    height: 900px;
+    width: 800px;
 }
+
+
+//
+//.ceWindowRoot.ceWindowRoot {
+//    position: absolute;
+//    right: 0;
+//    bottom: 0;
+//    z-index: 1500;
+//
+//    display: flex;
+//    flex-direction: column;
+//    width: 40vw;
+//    min-width: 620px;
+//    height: calc(100vh - 124px);
+//
+//    box-shadow: 0 4px 8px var(--color-dark40);
+//    opacity: 1;
+//}

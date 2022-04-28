@@ -3,7 +3,7 @@ import {Button} from '@jahia/moonstone';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-export const getButtonRenderer = ({labelStyle, defaultButtonProps} = {}) => {
+export const getButtonRenderer = ({labelStyle, defaultButtonProps, noIcon} = {}) => {
     const ButtonRenderer = props => {
         const {buttonLabelNamespace, buttonLabelShort, buttonLabel, isVisible, buttonLabelParams, buttonIcon, actionKey, enabled, isDisabled, onClick, buttonProps} = props;
         const {t} = useTranslation(buttonLabelNamespace);
@@ -14,11 +14,14 @@ export const getButtonRenderer = ({labelStyle, defaultButtonProps} = {}) => {
         } else if (labelStyle === 'short' && buttonLabelShort) {
             label = buttonLabelShort;
         }
-
+        let icon;
+        if (!noIcon) {
+            icon = buttonIcon
+        }
         return (isVisible !== false &&
             <Button data-sel-role={actionKey}
                     label={t(label, buttonLabelParams)}
-                    icon={buttonIcon}
+                    icon={icon}
                     disabled={enabled === false || isDisabled}
                     onClick={e => {
                         e.stopPropagation();
