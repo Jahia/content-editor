@@ -12,7 +12,7 @@ import {Public} from '@material-ui/icons';
 import {getAutomaticOrderingFieldSet} from './AutomaticOrdering/AutomaticOrdering.utils';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import FieldSetsDisplay from '~/EditPanel/EditPanelContent/FormBuilder/FieldSet/FieldSetsDisplay/FieldSetsDisplay';
-import FieldSetsMapFcn from './ChildrenSection.fieldSetMapFcn';
+import {orderingSectionFieldSetMap} from '../FormBuilder.fieldSetHelp';
 import {useFormikContext} from 'formik';
 
 const styles = theme => ({
@@ -61,9 +61,7 @@ export const ChildrenSectionCmp = ({section, classes, canManuallyOrder, canAutom
     const automaticOrderingFieldSet = canAutomaticallyOrder && getAutomaticOrderingFieldSet(sections);
 
     return (
-        <section className={classes.section} data-sel-content-editor-fields-group={section.displayName}>
-            <Typography component="h2" className={classes.sectionTitle} color="alpha" variant="gamma">{section.displayName}</Typography>
-
+        <>
             <article>
                 <div className={classes.fieldSetTitleContainer}>
                     <Typography component="label" htmlFor={t('content-editor:label.contentEditor.section.listAndOrdering.ordering')} className={classes.fieldSetTitle} color="alpha" variant="zeta">
@@ -103,8 +101,8 @@ export const ChildrenSectionCmp = ({section, classes, canManuallyOrder, canAutom
                     {!canAutomaticallyOrder && canManuallyOrder && <ManualOrdering/>}
                 </div>
             </article>
-            <FieldSetsDisplay fieldSets={section.fieldSets} fieldSetMapFcn={FieldSetsMapFcn}/>
-        </section>
+            <FieldSetsDisplay fieldSets={section.fieldSets} fieldSetMapFcn={orderingSectionFieldSetMap}/>
+        </>
     );
 };
 
