@@ -7,8 +7,10 @@ import {useContentEditorContext} from '~/ContentEditor.context';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import {SectionsPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {OrderingSection} from './OrderingSection';
+import {filterRegularFieldSets} from '~/EditPanel/EditPanelContent/FormBuilder/FormBuilder.fieldSetHelp';
+import FieldSetsDisplay from '~/EditPanel/EditPanelContent/FormBuilder/FieldSet/FieldSetsDisplay/FieldSetsDisplay';
 
-const DEFAULT_OPENED_SECTIONS = {content: true, ordering: true};
+const DEFAULT_OPENED_SECTIONS = {content: true, listOrdering: true};
 
 const FormBuilderCmp = ({mode}) => {
     const {nodeData} = useContentEditorContext();
@@ -19,15 +21,48 @@ const FormBuilderCmp = ({mode}) => {
         return <></>;
     }
 
-    const children = sections.filter(section => !section.hide).map(section => (
-        <Section key={section.displayName}
-                 section={section}
-                 expanded={toggleStates[section.name]}
-                 toggleExpanded={(name, expanded) => {
-            setToggleStates({...toggleStates, [name]: expanded});
-        }}/>
-    ));
-    children.splice(1, 0, <OrderingSection key="ordering" mode={mode}/>);
+    let listOrderingIndex = -1;
+    const children = sections.map((section, index) => {
+        if (section.name === 'listOrdering') {
+            listOrderingIndex = index;
+            return (
+                <Section key={section.displayName}
+                         section={section}
+                         expanded={toggleStates[section.name]}
+                         toggleExpanded={(name, expanded) => {
+                             setToggleStates({...toggleStates, [name]: expanded});
+                         }}
+                >
+                    <OrderingSection key="ordering"
+                                     mode={mode}
+                                     nodeData={nodeData}
+                                     section={section}
+                    />
+                </Section>
+            );
+        }
+
+        if (!section.hide) {
+            return (
+                <Section key={section.displayName}
+                         section={section}
+                         expanded={toggleStates[section.name]}
+                         toggleExpanded={(name, expanded) => {
+                             setToggleStates({...toggleStates, [name]: expanded});
+                         }}
+                >
+                    <FieldSetsDisplay fieldSets={filterRegularFieldSets(section.fieldSets)}/>
+                </Section>
+            );
+        }
+
+        return null;
+    });
+
+    if (listOrderingIndex !== -1) {
+        const lo = children.splice(listOrderingIndex, 1);
+        children.splice(1, 0, lo);
+    }
 
     return (
         <Form>

@@ -1,15 +1,12 @@
-import {useContentEditorContext} from '~/ContentEditor.context';
-import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import {useTranslation} from 'react-i18next';
 import {useFormikContext} from 'formik';
 import {Constants} from '~/ContentEditor.constants';
 import {ChildrenSection} from '~/EditPanel/EditPanelContent/FormBuilder/ChildrenSection';
 import React from 'react';
 import PropTypes from 'prop-types';
+import {SectionPropTypes} from '~/FormDefinitions';
 
-export const OrderingSection = ({mode}) => {
-    const {nodeData} = useContentEditorContext();
-    const {sections} = useContentEditorSectionContext();
+export const OrderingSection = ({mode, section, nodeData}) => {
     const {t} = useTranslation('content-editor');
 
     const {values} = useFormikContext();
@@ -22,17 +19,16 @@ export const OrderingSection = ({mode}) => {
         mode === Constants.routes.baseEditRoute;
 
     if (isOrderingSection) {
-        const section = {
+        const sec = {
             isOrderingSection: true,
             displayName: t('content-editor:label.contentEditor.section.listAndOrdering.title'),
-            fieldSets: sections.filter(section => section.name === 'listOrdering')
-                .reduce((acc, value) => [...acc, ...value.fieldSets.filter(f => f.name !== 'jmix:orderedList')], [])
+            fieldSets: section.fieldSets.filter(f => f.name !== 'jmix:orderedList')
         };
 
         return (
             <ChildrenSection
-                displayName={section.displayName}
-                section={section}
+                displayName={sec.displayName}
+                section={sec}
                 canAutomaticallyOrder={canAutomaticallyOrder}
                 canManuallyOrder={canManuallyOrder}
             />
@@ -43,5 +39,7 @@ export const OrderingSection = ({mode}) => {
 };
 
 OrderingSection.propTypes = {
-    mode: PropTypes.string.isRequired
+    mode: PropTypes.string.isRequired,
+    nodeData: PropTypes.object.isRequired,
+    section: SectionPropTypes.isRequired
 };

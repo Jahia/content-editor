@@ -5,7 +5,6 @@ import {withStyles} from '@material-ui/core';
 import {Typography} from '@jahia/design-system-kit';
 
 import {SectionPropTypes} from '~/FormDefinitions/FormData.proptypes';
-import {FieldSet} from '../FieldSet';
 
 import classnames from 'clsx';
 import {Plus, Minus} from 'mdi-material-ui';
@@ -33,21 +32,7 @@ const styles = theme => ({
     }
 });
 
-const SectionCmp = ({section, classes, expanded = true, toggleExpanded = () => {}}) => {
-    const hideFieldSets = fieldSet => {
-        if (!fieldSet) {
-            return false;
-        }
-
-        if (!fieldSet.displayed) {
-            return true;
-        }
-
-        // We must hide fieldSet in the section when the fieldSet is not dynamic and
-        // the fieldSet doesn't contain any fields (empty).
-        return !fieldSet.dynamic && fieldSet.fields.length === 0;
-    };
-
+const SectionCmp = ({section, classes, expanded = true, toggleExpanded = () => {}, children}) => {
     return (
         <section className={classes.section} data-sel-content-editor-fields-group={section.displayName}>
             <div className={classnames('flexRow', classes.header)} onClick={() => toggleExpanded(section.name, !expanded)}>
@@ -59,14 +44,7 @@ const SectionCmp = ({section, classes, expanded = true, toggleExpanded = () => {
                 >{section.displayName}
                 </Typography>
             </div>
-
-            {section.fieldSets.map(fieldset => {
-                if (hideFieldSets(fieldset)) {
-                    return null;
-                }
-
-                return expanded && <FieldSet key={fieldset.name} fieldset={fieldset}/>;
-            })}
+            {expanded && children}
         </section>
     );
 };
@@ -75,7 +53,8 @@ SectionCmp.propTypes = {
     section: SectionPropTypes.isRequired,
     classes: PropTypes.object.isRequired,
     expanded: PropTypes.bool,
-    toggleExpanded: PropTypes.func
+    toggleExpanded: PropTypes.func,
+    children: PropTypes.node.isRequired
 };
 
 export const Section = withStyles(styles)(SectionCmp);
