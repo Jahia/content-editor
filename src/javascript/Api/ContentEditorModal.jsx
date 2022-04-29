@@ -7,6 +7,8 @@ import {FormikProvider} from 'formik';
 import EditPanelDialogConfirmation from '~/EditPanel/EditPanelDialogConfirmation/EditPanelDialogConfirmation';
 import Slide from '@material-ui/core/Slide';
 import PropTypes from 'prop-types';
+import {pcNavigateTo} from '~/pagecomposer.redux-actions';
+import {useDispatch} from 'react-redux';
 
 function triggerEvents(nodeUuid, operator) {
     // Refresh contentEditorEventHandlers
@@ -26,6 +28,7 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
     const [confirmationConfig, setConfirmationConfig] = useState(false);
 
     const formikRef = useRef();
+    const dispatch = useDispatch();
 
     const closeAll = () => {
         // Restore GWT language
@@ -39,61 +42,65 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
     // Standalone env props
     const envProps = {
         formikRef,
-        setFormikRef: formik => {
-            formikRef.current = formik;
-        },
-        back: (nodeUuid, operation, newContentUuid, byPassEventTriggers) => {
-            if (!byPassEventTriggers) {
-                triggerEvents(newContentUuid || nodeUuid, operation);
-            }
-
-            setEditorConfig(false);
+        back: () => {
             closeAll();
         },
         disabledBack: () => false,
-        createCallback: (createdNodeUuid, lang) => {
-            triggerEvents(createdNodeUuid, Constants.operators.create);
+        createCallback: ({newNode}) => {
+            triggerEvents(newNode.uuid, Constants.operators.create);
+        },
+        editCallback: ({originalNode, updatedNode}) => {
+            // Refresh contentEditorEventHandlers
+            triggerEvents(updatedNode.uuid, Constants.operators.update);
 
-            if (editorConfig && editorConfig.createCallback) {
-                editorConfig.createCallback(createdNodeUuid, lang);
+            // Trigger Page Composer to reload iframe if system name was renamed
+            if (originalNode.path !== updatedNode.path) {
+                dispatch(pcNavigateTo({oldPath: originalNode.path, newPath: updatedNode.path}));
             }
-
-            // Redirect to CE edit mode, for the created node
-            envProps.isNeedRefresh = false;
-            if (editorConfig) {
+        },
+        onSavedCallback: ({newNode, language}, forceRedirect) => {
+            if (newNode && (editorConfig.isFullscreen || forceRedirect)) {
+                // Redirect to CE edit mode, for the created node
+                envProps.isNeedRefresh = false;
+                if (editorConfig) {
+                    setEditorConfig({
+                        ...editorConfig,
+                        uuid: newNode.uuid,
+                        lang: language ? language : editorConfig.lang,
+                        mode: Constants.routes.baseEditRoute,
+                        fromCreate: true
+                    });
+                }
+            } else if (!editorConfig.isFullscreen) {
+                // Otherwise refresh and close
+                envProps.isNeedRefresh = true;
+                closeAll();
+            }
+        },
+        switchLanguageCallback: ({newNode, language}) => {
+            if (newNode) {
+                envProps.onSavedCallback({newNode, language}, true);
+            } else if (editorConfig) {
+                // Update the lang of current opened CE
                 setEditorConfig({
                     ...editorConfig,
-                    uuid: createdNodeUuid,
-                    lang: lang ? lang : editorConfig.lang,
-                    mode: Constants.routes.baseEditRoute,
-                    fromCreate: true
+                    lang: language
                 });
             }
         },
-        editCallback: nodeUuid => {
-            if (editorConfig && editorConfig.editCallback) {
-                editorConfig.editCallback(nodeUuid);
+        onClosedCallback: () => {
+            if (envProps.newPath) {
+                dispatch(pcNavigateTo({oldPath: envProps.oldPath, newPath: envProps.newPath}));
             }
 
-            // Refresh contentEditorEventHandlers
-            triggerEvents(nodeUuid, Constants.operators.update);
-        },
-        isNeedRefresh: Boolean(editorConfig.fromCreate),
-        onClosedCallback: () => {
             if (window.authoringApi.refreshContent && envProps.isNeedRefresh) {
                 window.authoringApi.refreshContent();
             }
         },
-        setLanguage: lang => {
-            // Update the lang of current opened CE
-            if (editorConfig) {
-                setEditorConfig({
-                    ...editorConfig,
-                    lang: lang
-                });
-            }
+        redirectBreadcrumbCallback: () => {
+            envProps.back();
         },
-        shouldRedirectBreadcrumb: () => true,
+        isNeedRefresh: Boolean(editorConfig.fromCreate),
         isModal: true,
         isFullscreen: editorConfig?.isFullscreen
     };
@@ -124,8 +131,7 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
                     />
                 </FormikProvider>
             )}
-            <ContentEditor env={Constants.env.standalone}
-                           mode={editorConfig.mode}
+            <ContentEditor mode={editorConfig.mode}
                            uuid={editorConfig.uuid}
                            lang={editorConfig.lang}
                            uilang={editorConfig.uilang}

@@ -12,7 +12,7 @@ const Modes = {
     create: Create
 };
 
-export const ContentEditor = ({name, mode, uuid, lang, uilang, site, contentType, env, envProps}) => {
+export const ContentEditor = ({name, mode, uuid, lang, uilang, site, contentType, envProps}) => {
     const contentEditorConfig = {
         name,
         uuid,
@@ -21,7 +21,6 @@ export const ContentEditor = ({name, mode, uuid, lang, uilang, site, contentType
         site,
         contentType,
         mode,
-        env,
         envProps
     };
 
@@ -37,7 +36,6 @@ export const ContentEditor = ({name, mode, uuid, lang, uilang, site, contentType
 
 ContentEditor.propTypes = {
     mode: PropTypes.oneOf([Constants.routes.baseCreateRoute, Constants.routes.baseEditRoute]).isRequired,
-    env: PropTypes.oneOf([Constants.env.redux, Constants.env.standalone]).isRequired,
     envProps: PropTypes.object.isRequired,
     uuid: PropTypes.string.isRequired,
     lang: PropTypes.string.isRequired,

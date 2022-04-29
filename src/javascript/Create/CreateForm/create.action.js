@@ -4,12 +4,13 @@ import React, {useContext, useState} from 'react';
 import {ComponentRendererContext} from '@jahia/ui-extender';
 import * as PropTypes from 'prop-types';
 import {useFormikContext} from 'formik';
-import {useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import {useKeydownListener} from '~/utils/getKeydownListener';
 
 const Create = ({render: Render, loading: Loading, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
     const formik = useFormikContext();
+    const {envProps} = useContentEditorConfigContext();
     const {mode} = useContentEditorContext();
     const [clicked, setClicked] = useState(false);
 
@@ -31,8 +32,11 @@ const Create = ({render: Render, loading: Loading, ...otherProps}) => {
             setClicked(true);
             return formik
                 .submitForm()
-                .then(() => {
+                .then(data => {
                     formik.resetForm({values: formik.values});
+                    if (envProps.onSavedCallback) {
+                        envProps.onSavedCallback(data);
+                    }
                 });
         }
     };

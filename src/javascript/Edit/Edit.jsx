@@ -16,12 +16,8 @@ import {useTranslation} from 'react-i18next';
 import {FormQuery} from './EditForm.gql-queries';
 import {compose} from '~/utils';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
-import {useDispatch} from 'react-redux';
 
-import envEditCallbacks from './Edit.env';
 import {adaptEditFormData} from './Edit.adapter';
-import {Constants} from '~/ContentEditor.constants';
-import {pcNavigateTo} from '~/pagecomposer.redux-actions';
 import {useApolloClient} from '@apollo/react-hooks';
 
 export const EditCmp = ({
@@ -32,7 +28,6 @@ export const EditCmp = ({
     const contentEditorConfigContext = useContentEditorConfigContext();
     const {lang, nodeData, formQueryParams, initialValues, title} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
-    const dispatch = useDispatch();
 
     useEffect(() => {
         return () => {
@@ -46,7 +41,7 @@ export const EditCmp = ({
     const handleSubmit = useCallback((values, actions) => {
         contentEditorConfigContext.envProps.isNeedRefresh = true;
 
-        saveNode({
+        return saveNode({
             client,
             t,
             notificationContext,
@@ -57,33 +52,23 @@ export const EditCmp = ({
                 sections,
                 values
             },
-            editCallback: (node, mutateNode) => {
-                const overridedStoredLocation = contentEditorConfigContext.envProps.handleRename && contentEditorConfigContext.envProps.handleRename(node, mutateNode);
-                // Trigger Page Composer to reload iframe if system name was renamed
-                if (node.path !== mutateNode.node.path) {
-                    if (contentEditorConfigContext.env === 'standalone') {
-                        dispatch(pcNavigateTo({oldPath: node.path, newPath: mutateNode.node.path}));
-                    }
-                }
+            editCallback: info => {
+                const {originalNode, updatedNode} = info;
 
-                if (values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK]) {
-                    values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK](overridedStoredLocation);
-                } else {
-                    const envEditCallback = envEditCallbacks[contentEditorConfigContext.env];
-                    if (envEditCallback) {
-                        envEditCallback(node.uuid, contentEditorConfigContext);
-                    }
+                const envEditCallback = contentEditorConfigContext.envProps.editCallback;
+                if (envEditCallback) {
+                    envEditCallback(info, contentEditorConfigContext);
                 }
 
                 // Hard reFetch to be able to enable publication menu from jContent menu displayed in header
                 // Note that node cache is flushed in save.request.js, we should probably replace this operation with
                 // Something less invasive as this one reloads ALL queries.
-                if (node.path === mutateNode.node.path) {
+                if (originalNode.path === updatedNode.path) {
                     client.reFetchObservableQueries();
                 }
             }
         });
-    }, [client, t, notificationContext, dispatch, contentEditorConfigContext, formQueryParams, nodeData, sections]);
+    }, [client, t, notificationContext, contentEditorConfigContext, formQueryParams, nodeData, sections]);
 
     return (
         <>
@@ -91,8 +76,8 @@ export const EditCmp = ({
                 <Formik
                     validateOnMount
                     innerRef={formik => {
-                        if (contentEditorConfigContext.envProps.setFormikRef) {
-                            contentEditorConfigContext.envProps.setFormikRef(formik);
+                        if (contentEditorConfigContext.envProps.formikRef) {
+                            contentEditorConfigContext.envProps.formikRef.current = formik;
                         }
                     }}
                     initialValues={initialValues}

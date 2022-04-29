@@ -14,7 +14,7 @@ export const OpenEngineTabs = ({tabs, render: Render, ...otherProps}) => {
         <>
             <EditPanelDialogConfirmation
                 isOpen={open}
-                actionCallback={(overrideStoredLocation, discard) => {
+                actionCallback={({discard}) => {
                     if (discard) {
                         formik.resetForm();
                     }

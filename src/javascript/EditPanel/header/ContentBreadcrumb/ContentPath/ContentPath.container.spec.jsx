@@ -41,7 +41,7 @@ describe('ContentPathContainer', () => {
     let dispatch = jest.fn();
     let envProps = {
         back: jest.fn(),
-        shouldRedirectBreadcrumb: () => false
+        redirectBreadcrumbCallback: jest.fn()
     };
 
     beforeEach(() => {
@@ -165,6 +165,7 @@ describe('ContentPathContainer', () => {
         }));
 
         useContentEditorConfigContext.mockImplementation(() => ({
+            envProps: envProps,
             mode: Constants.routes.baseCreateRoute
         }));
 
@@ -240,7 +241,7 @@ describe('ContentPathContainer', () => {
         wrapper.find('ContentPath').simulate('itemClick', '/x/y/z');
         expect(wrapper.find('EditPanelDialogConfirmation').props().isOpen).toBeTruthy();
         wrapper.find('EditPanelDialogConfirmation').props().actionCallback();
-        expect(envProps.back).toHaveBeenCalledWith('123', 'op');
+        expect(envProps.back).toHaveBeenCalled();
     });
 
     it('handle redirects on item click when path start with files', () => {
@@ -264,7 +265,9 @@ describe('ContentPathContainer', () => {
     });
 
     it('handle redirects on item click with option to go back', () => {
-        envProps.shouldRedirectBreadcrumb = () => true;
+        envProps.redirectBreadcrumbCallback = () => {
+            envProps.back();
+        };
 
         const wrapper = shallow(<ContentPathContainer {...defaultProps}/>);
         wrapper.find('ContentPath').simulate('itemClick', '/sites/mySiteXD/lord/rings');

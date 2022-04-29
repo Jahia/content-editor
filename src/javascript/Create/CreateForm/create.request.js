@@ -40,17 +40,19 @@ export const createNode = ({
 
         return updatedVariables;
     }, variables);
-    client.mutate({
+    return client.mutate({
         variables,
         mutation: CreateNode
     }).then(data => {
+        const info = {newNode: data.data.jcr.modifiedNodes[0], language};
         if (createCallback) {
-            createCallback(data.data.jcr.modifiedNodes[0].uuid);
+            createCallback(info);
         }
 
         notificationContext.notify(t('content-editor:label.contentEditor.create.createButton.success'), ['closeButton']);
         client.cache.flushNodeEntryById(nodeData.uuid);
         actions.setSubmitting(false);
+        return info;
     }, error => {
         onServerError(error, actions, notificationContext, t, propFieldNameMapping, 'content-editor:label.contentEditor.create.createButton.error');
     });

@@ -55,7 +55,7 @@ const getItems = (mode, node) => {
     return ancestors;
 };
 
-const ContentPathContainer = ({path, uuid, operator}) => {
+const ContentPathContainer = ({path}) => {
     const [open, setOpen] = useState(false);
     const {envProps, site, mode} = useContentEditorConfigContext();
     const dispatch = useDispatch();
@@ -92,8 +92,8 @@ const ContentPathContainer = ({path, uuid, operator}) => {
                 }));
             }
 
-            if (envProps.shouldRedirectBreadcrumb()) {
-                envProps.back();
+            if (envProps.redirectBreadcrumbCallback) {
+                envProps.redirectBreadcrumbCallback();
             }
         }
     };
@@ -102,7 +102,7 @@ const ContentPathContainer = ({path, uuid, operator}) => {
     const items = useMemo(() => getItems(mode, node), [mode, node]);
 
     let onCloseDialog = useCallback(() => setOpen(false), [setOpen]);
-    let actionCallback = useCallback(() => envProps.back(uuid, operator), [envProps, uuid, operator]);
+    let actionCallback = envProps.back;
 
     if (error) {
         return <>{error.message}</>;
@@ -122,15 +122,11 @@ const ContentPathContainer = ({path, uuid, operator}) => {
 };
 
 ContentPathContainer.defaultProps = {
-    path: '',
-    uuid: null,
-    operator: null
+    path: ''
 };
 
 ContentPathContainer.propTypes = {
-    path: PropTypes.string,
-    uuid: PropTypes.object,
-    operator: PropTypes.object
+    path: PropTypes.string
 };
 
 export default ContentPathContainer;

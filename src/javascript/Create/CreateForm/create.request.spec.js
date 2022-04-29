@@ -29,7 +29,10 @@ describe('createNode', () => {
                             }]
                         }
                     }
-                }))
+                })),
+                cache: {
+                    flushNodeEntryById: jest.fn()
+                }
             },
             notificationContext: {notify: jest.fn()},
             actions: {setSubmitting: jest.fn()},

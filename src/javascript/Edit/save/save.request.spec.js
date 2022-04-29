@@ -22,14 +22,19 @@ describe('saveNode', () => {
     const mutation = {
         data: {
             jcr: {
-                mutateNode: {}
+                mutateNode: {
+                    node: {}
+                }
             }
         }
     };
     beforeEach(() => {
         params = {
             client: {
-                mutate: jest.fn(() => Promise.resolve(mutation))
+                mutate: jest.fn(() => Promise.resolve(mutation)),
+                cache: {
+                    flushNodeEntryById: jest.fn()
+                }
             },
             notificationContext: {notify: jest.fn()},
             actions: {setSubmitting: jest.fn()},

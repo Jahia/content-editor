@@ -15,9 +15,7 @@ import {validate} from '~/Validation/validation';
 import {createNode} from './CreateForm/create.request';
 import {FormQuery} from './CreateForm/createForm.gql-queries';
 import {compose} from '~/utils';
-import envCreateCallbacks from './Create.env';
 import {adaptCreateFormData} from './Create.adapter';
-import {Constants} from '~/ContentEditor.constants';
 import {useApolloClient} from '@apollo/react-hooks';
 
 const CreateCmp = ({
@@ -40,7 +38,7 @@ const CreateCmp = ({
     const handleSubmit = (values, actions) => {
         contentEditorConfigContext.envProps.isNeedRefresh = true;
 
-        createNode({
+        return createNode({
             client,
             t,
             notificationContext,
@@ -51,14 +49,10 @@ const CreateCmp = ({
                 sections,
                 values
             },
-            createCallback: createdNodeUuid => {
-                if (values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK]) {
-                    values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK](createdNodeUuid);
-                } else {
-                    const envCreateCallback = envCreateCallbacks[contentEditorConfigContext.env];
-                    if (envCreateCallback) {
-                        envCreateCallback(createdNodeUuid, formQueryParams.language, contentEditorConfigContext);
-                    }
+            createCallback: info => {
+                const envCreateCallback = contentEditorConfigContext.envProps.createCallback;
+                if (envCreateCallback) {
+                    envCreateCallback(info, contentEditorConfigContext);
                 }
             }
         });
@@ -67,8 +61,8 @@ const CreateCmp = ({
     return (
         <Formik
             innerRef={formik => {
-                if (contentEditorConfigContext.envProps.setFormikRef) {
-                    contentEditorConfigContext.envProps.setFormikRef(formik);
+                if (contentEditorConfigContext.envProps.formikRef) {
+                    contentEditorConfigContext.envProps.formikRef.current = formik;
                 }
             }}
             initialValues={initialValues}

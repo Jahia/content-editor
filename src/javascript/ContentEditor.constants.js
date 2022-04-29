@@ -26,14 +26,7 @@ export const Constants = {
         update: 'update',
         create: 'create'
     },
-    env: {
-        redux: 'redux',
-        standalone: 'standalone'
-    },
     notSupportedEngineTabs: ['content', 'categories'],
-    systemFields: {
-        OVERRIDE_SUBMIT_CALLBACK: 'OVERRIDE_SUBMIT_CALLBACK'
-    },
     systemName: {
         name: 'nt:base_ce:systemName',
         propertyName: 'ce:systemName',
