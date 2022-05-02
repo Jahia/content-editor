@@ -20,12 +20,6 @@ function triggerEvents(nodeUuid, operator) {
     }
 }
 
-function onClosedCallback() {
-    if (window.authoringApi.refreshContent) {
-        window.authoringApi.refreshContent();
-    }
-}
-
 const Transition = React.forwardRef((props, ref) => {
     return <Slide ref={ref} direction="up" {...props}/>;
 });
@@ -35,6 +29,7 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
 
     const formikRef = useRef();
     const dispatch = useDispatch();
+    const needRefresh = useRef(false);
 
     const closeAll = () => {
         // Restore GWT language
@@ -53,9 +48,11 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
         },
         disabledBack: () => false,
         createCallback: ({newNode}) => {
+            needRefresh.current = true;
             triggerEvents(newNode.uuid, Constants.operators.create);
         },
         editCallback: ({originalNode, updatedNode}) => {
+            needRefresh.current = true;
             // Refresh contentEditorEventHandlers
             triggerEvents(updatedNode.uuid, Constants.operators.update);
 
@@ -67,6 +64,7 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
         onSavedCallback: ({newNode, language}, forceRedirect) => {
             if (newNode && (editorConfig.isFullscreen || forceRedirect)) {
                 // Redirect to CE edit mode, for the created node
+                needRefresh.current = false;
                 if (editorConfig) {
                     setEditorConfig({
                         ...editorConfig,
@@ -78,7 +76,6 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
                 }
             } else if (!editorConfig.isFullscreen) {
                 // Otherwise refresh and close
-                envProps.isNeedRefresh = true;
                 closeAll();
             }
         },
@@ -93,7 +90,11 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
                 });
             }
         },
-        onClosedCallback,
+        onClosedCallback: () => {
+            if (window.authoringApi.refreshContent && needRefresh.current) {
+                window.authoringApi.refreshContent();
+            }
+        },
         redirectBreadcrumbCallback: () => {
             envProps.back();
         },
