@@ -19,7 +19,10 @@ const ContentEditorRedux = withNotifications()(({mode, uuid, lang, contentType, 
     const {storedLocation, setStoredLocation} = useContentEditorHistoryContext();
     const {uilang, openPaths} = useSelector(state => ({uilang: state.uilang, openPaths: state.jcontent.openPaths}));
     const dispatch = useDispatch();
+
+    // Todo get rid of ref in envProps
     const formikRef = useRef();
+    const dirtyRef = useRef(false);
     const {t} = useTranslation('content-editor');
     const {data} = useQuery(gql`query($uuid:String!) {
         jcr {
@@ -79,6 +82,7 @@ const ContentEditorRedux = withNotifications()(({mode, uuid, lang, contentType, 
 
     const envProps = {
         formikRef,
+        dirtyRef,
         back: () => {
             setTimeout(() => {
                 unRegisterBlockListener();
@@ -104,12 +108,8 @@ const ContentEditorRedux = withNotifications()(({mode, uuid, lang, contentType, 
             envProps.overriddenStoredLocation = handleRename(data);
             notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.success'), ['closeButton']);
         },
-        switchLanguageCallback: ({newNode, language}) => {
-            if (newNode) {
-                redirect({mode: Constants.routes.baseEditRoute, language: language, uuid: newNode.uuid, rest: ''});
-            } else {
-                redirect({language});
-            }
+        switchLanguageCallback: ({language}) => {
+            redirect({language});
         }
     };
     return Boolean(site) && (

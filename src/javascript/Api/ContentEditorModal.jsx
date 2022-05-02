@@ -31,7 +31,9 @@ const Transition = React.forwardRef((props, ref) => {
 export const ContentEditorModal = withNotifications()(({editorConfig, setEditorConfig, notificationContext}) => {
     const [confirmationConfig, setConfirmationConfig] = useState(false);
 
+    // Todo get rid of ref in envProps, move dialog in subtree
     const formikRef = useRef();
+    const dirtyRef = useRef(false);
     const needRefresh = useRef(false);
     const dispatch = useDispatch();
 
@@ -47,6 +49,7 @@ export const ContentEditorModal = withNotifications()(({editorConfig, setEditorC
     // Standalone env props
     const envProps = {
         formikRef,
+        dirtyRef,
         back: () => {
             setEditorConfig(false);
         },
@@ -115,16 +118,11 @@ export const ContentEditorModal = withNotifications()(({editorConfig, setEditorC
                 setEditorConfig(false);
             }
         },
-        switchLanguageCallback: ({newNode, language}) => {
-            if (newNode) {
-                envProps.onSavedCallback({newNode, language}, true);
-            } else if (editorConfig) {
-                // Update the lang of current opened CE
-                setEditorConfig({
-                    ...editorConfig,
-                    lang: language
-                });
-            }
+        switchLanguageCallback: ({language}) => {
+            setEditorConfig({
+                ...editorConfig,
+                lang: language
+            });
         },
         onClosedCallback: () => {
             if (editorConfig && editorConfig.onClosedCallback) {
@@ -153,7 +151,7 @@ export const ContentEditorModal = withNotifications()(({editorConfig, setEditorC
                 TransitionComponent={Transition}
                 aria-labelledby="dialog-content-editor"
                 classes={classes}
-                onClose={() => (formikRef.current && formikRef.current.dirty) ? setConfirmationConfig(true) : setEditorConfig(false)}
+                onClose={() => (envProps.dirtyRef.current) ? setConfirmationConfig(true) : setEditorConfig(false)}
                 onRendered={() => window.focus()}
         >
             {confirmationConfig && (

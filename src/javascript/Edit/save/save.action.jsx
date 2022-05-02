@@ -11,7 +11,7 @@ import {useKeydownListener} from '~/utils/getKeydownListener';
 const Save = ({render: Render, loading: Loading, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
     const {publicationInfoPolling} = usePublicationInfoContext();
-    const {mode, setErrors} = useContentEditorContext();
+    const {mode, setI18nContext, setErrors} = useContentEditorContext();
     const {envProps} = useContentEditorConfigContext();
     const formik = useFormikContext();
 
@@ -34,11 +34,13 @@ const Save = ({render: Render, loading: Loading, ...otherProps}) => {
             return;
         }
 
-        if (formik.dirty) {
+        if (envProps.dirtyRef.current) {
             return formik
                 .submitForm()
                 .then(data => {
                     if (data) {
+                        // Todo centralize form reset
+                        setI18nContext({});
                         formik.resetForm({values: formik.values});
                         if (envProps.onSavedCallback) {
                             envProps.onSavedCallback(data);
@@ -57,8 +59,7 @@ const Save = ({render: Render, loading: Loading, ...otherProps}) => {
             {...otherProps}
             addWarningBadge={Object.keys(formik.errors).length > 0}
             isVisible={mode === Constants.routes.baseEditRoute}
-            enabled={mode === Constants.routes.baseEditRoute}
-            disabled={!formik.dirty || publicationInfoPolling}
+            disabled={!envProps.dirtyRef.current || publicationInfoPolling}
             onClick={() => save(formik)}
         />
     );
