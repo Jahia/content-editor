@@ -13,6 +13,7 @@ export const createFormQuery = gql`
                     displayName
                     description
                     hide
+                    expanded
                     fieldSets {
                         name
                         displayName

@@ -15,7 +15,7 @@ const DEFAULT_OPENED_SECTIONS = {content: true, listOrdering: true};
 const FormBuilderCmp = ({mode}) => {
     const {nodeData} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
-    const [toggleStates, setToggleStates] = useState(sections ? sections.reduce((prev, curr) => ({...prev, [curr.name]: prev[curr.name] ? prev[curr.name] : false}), DEFAULT_OPENED_SECTIONS) : {});
+    const [toggleStates, setToggleStates] = useState(sections ? sections.reduce((acc, curr) => ({...acc, [curr.name]: acc[curr.name] ? acc[curr.name] : curr.expanded}), DEFAULT_OPENED_SECTIONS) : {});
 
     if (!nodeData || !sections || sections.length === 0) {
         return <></>;
