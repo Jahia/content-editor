@@ -3,21 +3,13 @@ import {withNotifications} from '@jahia/react-material';
 import {Formik} from 'formik';
 import EditPanel from '~/EditPanel';
 import * as PropTypes from 'prop-types';
-import {
-    useContentEditorConfigContext,
-    useContentEditorContext,
-    withContentEditorDataContextProvider
-} from '~/ContentEditor.context';
+import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import {validate} from '~/Validation/validation';
 import {saveNode} from './save/save.request';
 import {PublicationInfoContextProvider} from '~/PublicationInfo/PublicationInfo.context';
 import {LockManager} from '~/Lock/LockManager';
 import {useTranslation} from 'react-i18next';
-import {FormQuery} from './EditForm.gql-queries';
-import {compose} from '~/utils';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
-
-import {adaptEditFormData} from './Edit.adapter';
 import {useApolloClient} from '@apollo/react-hooks';
 
 export const EditCmp = ({
@@ -94,9 +86,6 @@ EditCmp.propTypes = {
     notificationContext: PropTypes.object.isRequired
 };
 
-export const Edit = compose(
-    withNotifications(),
-    withContentEditorDataContextProvider(FormQuery, adaptEditFormData)
-)(EditCmp);
+export const Edit = withNotifications()(EditCmp);
 Edit.displayName = 'Edit';
 export default Edit;

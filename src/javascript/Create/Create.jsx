@@ -4,18 +4,11 @@ import {Formik} from 'formik';
 import EditPanel from '~/EditPanel';
 import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
-import {
-    useContentEditorConfigContext,
-    useContentEditorContext,
-    withContentEditorDataContextProvider
-} from '~/ContentEditor.context';
+import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 
 import {validate} from '~/Validation/validation';
 import {createNode} from './CreateForm/create.request';
-import {FormQuery} from './CreateForm/createForm.gql-queries';
-import {compose} from '~/utils';
-import {adaptCreateFormData} from './Create.adapter';
 import {useApolloClient} from '@apollo/react-hooks';
 
 const CreateCmp = ({
@@ -76,9 +69,6 @@ CreateCmp.propTypes = {
     notificationContext: PropTypes.object.isRequired
 };
 
-export const Create = compose(
-    withNotifications(),
-    withContentEditorDataContextProvider(FormQuery, adaptCreateFormData)
-)(CreateCmp);
+export const Create = withNotifications()(CreateCmp);
 Create.displayName = 'Create';
 export default Create;
