@@ -35,9 +35,7 @@ export const useCreatableNodetypes = (nodeTypes, childNodeName, includeSubTypes,
 export async function getCreatableNodetypes(client, nodeTypes, childNodeName, includeSubTypes, path, uilang, excludedNodeTypes, showOnNodeTypes, transformResultCallback) {
     if (nodeTypes && nodeTypes.length === 1 && !includeSubTypes) {
         let result = nodeTypes.map(n => ({name: n}));
-        return {
-            nodetypes: transformResultCallback ? transformResultCallback(result) : result
-        };
+        return transformResultCallback ? transformResultCallback(result) : result;
     }
 
     const {data} = await client.query({
