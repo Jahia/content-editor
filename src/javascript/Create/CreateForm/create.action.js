@@ -11,7 +11,7 @@ const Create = ({render: Render, loading: Loading, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
     const formik = useFormikContext();
     const {envProps} = useContentEditorConfigContext();
-    const {mode} = useContentEditorContext();
+    const {mode, setErrors} = useContentEditorContext();
     const [clicked, setClicked] = useState(false);
 
     useKeydownListener((event, formik) => {
@@ -28,17 +28,20 @@ const Create = ({render: Render, loading: Loading, ...otherProps}) => {
     const save = async formik => {
         const formIsValid = await validateForm(formik, componentRenderer);
 
-        if (formIsValid) {
-            setClicked(true);
-            return formik
-                .submitForm()
-                .then(data => {
-                    formik.resetForm({values: formik.values});
-                    if (envProps.onSavedCallback) {
-                        envProps.onSavedCallback(data);
-                    }
-                });
+        if (!formIsValid) {
+            setErrors({...formik.errors});
+            return;
         }
+
+        setClicked(true);
+        return formik
+            .submitForm()
+            .then(data => {
+                formik.resetForm({values: formik.values});
+                if (envProps.onSavedCallback) {
+                    envProps.onSavedCallback(data);
+                }
+            });
     };
 
     if (Loading) {

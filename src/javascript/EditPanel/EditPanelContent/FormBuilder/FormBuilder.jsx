@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {Section} from './Section';
 import {Form} from 'formik';
@@ -13,13 +13,31 @@ import FieldSetsDisplay from '~/EditPanel/EditPanelContent/FormBuilder/FieldSet/
 const DEFAULT_OPENED_SECTIONS = {content: true, listOrdering: true};
 
 const FormBuilderCmp = ({mode}) => {
-    const {nodeData} = useContentEditorContext();
+    const {nodeData, errors} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
     const [toggleStates, setToggleStates] = useState(sections ? sections.reduce((acc, curr) => ({...acc, [curr.name]: acc[curr.name] ? acc[curr.name] : curr.expanded}), DEFAULT_OPENED_SECTIONS) : {});
+
+    useEffect(() => {
+        if (errors) {
+            const newToggleState = {...toggleStates}
+            sections.forEach(section => {
+                section.fieldSets.forEach(fieldSet => {
+                    fieldSet.fields.forEach(field => {
+                        if (errors[field.name]) {
+                            newToggleState[section.name] = true;
+                        }
+                    })
+                })
+            });
+            setToggleStates(newToggleState);
+        }
+    }, [errors])
 
     if (!nodeData || !sections || sections.length === 0) {
         return <></>;
     }
+
+    console.log('render FormBuilder.jsx');
 
     let listOrderingIndex = -1;
     const children = sections.map((section, index) => {
