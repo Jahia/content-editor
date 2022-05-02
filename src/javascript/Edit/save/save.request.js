@@ -49,7 +49,7 @@ export const saveNode = ({
 
         return updatedVariables;
     }, variables);
-    client.mutate({
+    return client.mutate({
         variables,
         mutation: SavePropertiesMutation,
         refetchQueries: [
@@ -72,16 +72,17 @@ export const saveNode = ({
             }
         ]
     }).then(mutation => {
-        const mutateNode = mutation.data.jcr.mutateNode;
+        const info = {originalNode: nodeData, updatedNode: mutation.data.jcr.mutateNode.node, language};
         if (editCallback) {
-            editCallback(nodeData, mutateNode);
+            editCallback(info);
         }
 
         notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.success'), ['closeButton']);
         actions.setSubmitting(false);
         // This needs to happen before potential editCallback as it refetches observables?
         client.cache.flushNodeEntryById(nodeData.uuid);
-        refetchPreview(getPreviewPath(mutateNode.node), language);
+        refetchPreview(getPreviewPath(info.updatedNode), language);
+        return info;
     }, error => {
         onServerError(error, actions, notificationContext, t, dataToMutate.propFieldNameMapping, 'content-editor:label.contentEditor.edit.action.save.error');
     });

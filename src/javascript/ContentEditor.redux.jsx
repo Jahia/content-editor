@@ -8,12 +8,11 @@ import {useTranslation} from 'react-i18next';
 import {replaceOpenedPath} from '~/JContent.redux-actions';
 import {useContentEditorHistoryContext} from '~/ContentEditorHistory/ContentEditorHistory.context';
 import {registry} from '@jahia/ui-extender';
-import {useApolloClient, useQuery} from '@apollo/react-hooks';
+import {useQuery} from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import {PredefinedFragments} from '@jahia/data-helper';
 
 const ContentEditorRedux = ({mode, uuid, lang, contentType, name}) => {
-    const client = useApolloClient();
     const {redirect, hasHistory, exit, registerBlockListener, unRegisterBlockListener} = useContentEditorHistory();
     const {storedLocation, setStoredLocation} = useContentEditorHistoryContext();
     const {uilang, openPaths} = useSelector(state => ({uilang: state.uilang, openPaths: state.jcontent.openPaths}));
@@ -44,11 +43,11 @@ const ContentEditorRedux = ({mode, uuid, lang, contentType, name}) => {
         window.authoringApi.switchLanguage(lang);
     }
 
-    const handleRename = (node, mutateNode) => {
-        if (mutateNode && mutateNode.rename) {
+    const handleRename = ({originalNode, updatedNode}) => {
+        if (originalNode.path !== updatedNode.path) {
             if (storedLocation && storedLocation.location) {
                 if (openPaths) {
-                    dispatch(replaceOpenedPath(openPaths.map(openPath => openPath.replace(node.path, mutateNode.rename))));
+                    dispatch(replaceOpenedPath(openPaths.map(openPath => openPath.replace(originalNode.path, updatedNode.path))));
                 }
 
                 const {site: currentSite, language, mode: currentMode, path} = registry.get('jcontent', 'utils').extractParamsFromUrl(storedLocation.location.pathname, storedLocation.location.search);
@@ -60,7 +59,7 @@ const ContentEditorRedux = ({mode, uuid, lang, contentType, name}) => {
                             site: currentSite,
                             language,
                             mode: currentMode,
-                            path: path.replace(node.path, mutateNode.rename)
+                            path: path.replace(originalNode.path, updatedNode.path)
                         })
                     }
                 };
@@ -72,28 +71,36 @@ const ContentEditorRedux = ({mode, uuid, lang, contentType, name}) => {
 
     const envProps = {
         formikRef,
-        setFormikRef: formik => {
-            formikRef.current = formik;
-        },
-        setUrl: (mode, language, uuid, contentType) => redirect({mode, language, uuid, rest: contentType}),
-        back: (uuid, operator, overridedStoredLocation) => {
-            client.cache.flushNodeEntryById(uuid);
-            exit(overridedStoredLocation);
+        back: () => {
+            setTimeout(() => {
+                exit(envProps.overriddenStoredLocation);
+            }, 0);
         },
         disabledBack: () => !hasHistory(),
-        setLanguage: language => redirect({language}),
         registerListeners: () => {
             registerBlockListener(t('content-editor:label.contentEditor.edit.action.goBack.alert'));
         },
         unregisterListeners: () => {
             unRegisterBlockListener();
         },
-        shouldRedirectBreadcrumb: () => false,
-        handleRename: handleRename
+        onSavedCallback: ({newNode}) => {
+            if (newNode) {
+                redirect({mode: Constants.routes.baseEditRoute, language: lang, uuid: newNode.uuid, rest: ''});
+            }
+        },
+        editCallback: data => {
+            envProps.overriddenStoredLocation = handleRename(data);
+        },
+        switchLanguageCallback: ({newNode, language}) => {
+            if (newNode) {
+                redirect({mode: Constants.routes.baseEditRoute, language: language, uuid: newNode.uuid, rest: ''});
+            } else {
+                redirect({language});
+            }
+        }
     };
     return Boolean(site) && (
-        <ContentEditor env={Constants.env.redux}
-                       name={name}
+        <ContentEditor name={name}
                        mode={mode}
                        uuid={uuid}
                        lang={lang}

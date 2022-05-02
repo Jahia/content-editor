@@ -28,7 +28,7 @@ export const useContentEditorHistory = () => {
         return Boolean(storedLocation);
     };
 
-    const exit = overridedStoredLocation => {
+    const exit = overriddenStoredLocation => {
         // Restore GWT language
         if (window.authoringApi.switchLanguage) {
             window.authoringApi.switchLanguage(storedLocation.language);
@@ -38,8 +38,8 @@ export const useContentEditorHistory = () => {
         // - Stored location
         // - Referer
         // - Back button
-        if (overridedStoredLocation && overridedStoredLocation.location) {
-            history.push(overridedStoredLocation.location.pathname + overridedStoredLocation.location.search);
+        if (overriddenStoredLocation && overriddenStoredLocation.location) {
+            history.push(overriddenStoredLocation.location.pathname + overriddenStoredLocation.location.search);
         } else if (storedLocation.location) {
             history.push(storedLocation.location.pathname + storedLocation.location.search);
         } else if (document.referer) {

@@ -14,12 +14,12 @@ import {useContentEditorContext} from '~/ContentEditor.context';
 import {UnsavedChip} from '~/EditPanel/header/UnsavedChip';
 import {PublishMenu} from '~/EditPanel/header/PublishMenu';
 
-export const HeaderUpperSection = ({title, isCompact, isShowPublish}) => {
+export const HeaderUpperSection = ({title, isShowPublish}) => {
     const {nodeData, nodeTypeDisplayName} = useContentEditorContext();
 
     return (
         <>
-            {!isCompact && <div className={styles.padder}/>}
+            <div className={styles.padder}/>
             <div className={styles.header}>
                 <div className={styles.headerLeft}>
                     <DisplayAction
@@ -70,28 +70,25 @@ export const HeaderUpperSection = ({title, isCompact, isShowPublish}) => {
                     )}
                 </div>
             </div>
-            {!isCompact && (
-                <div className={styles.header}>
-                    <div className={styles.headerLeft}>
-                        {nodeData?.path?.startsWith('/sites') ?
-                            <ContentBreadcrumb path={nodeData.path}/> :
-                            <Chip label={nodeTypeDisplayName} color="accent"/>}
-                    </div>
-
-                    <div className={styles.headerChips}>
-                        <PublicationInfoBadge/>
-                        <LockInfoBadge/>
-                        <WipInfoChip/>
-                        <UnsavedChip/>
-                    </div>
+            <div className={styles.header}>
+                <div className={styles.headerLeft}>
+                    {nodeData?.path?.startsWith('/sites') ?
+                        <ContentBreadcrumb path={nodeData.path}/> :
+                        <Chip label={nodeTypeDisplayName} color="accent"/>}
                 </div>
-            )}
+
+                <div className={styles.headerChips}>
+                    <PublicationInfoBadge/>
+                    <LockInfoBadge/>
+                    <WipInfoChip/>
+                    <UnsavedChip/>
+                </div>
+            </div>
         </>
     );
 };
 
 HeaderUpperSection.propTypes = {
     title: PropTypes.string.isRequired,
-    isCompact: PropTypes.bool,
     isShowPublish: PropTypes.bool
 };

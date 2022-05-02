@@ -35,7 +35,8 @@ export const registerEditActions = actionsRegistry => {
         buttonLabel: 'content-editor:label.contentEditor.edit.contentEdit',
         hideOnNodeTypes: ['jnt:virtualsite'],
         getDisplayName: true,
-        isWindow: true
+        isModal: true,
+        isFullscreen: false
     });
 
     // Content-EditorAction

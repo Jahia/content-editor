@@ -38,10 +38,7 @@ export const EditPanelDialogConfirmation = React.memo(({isOpen, switchLang = fal
     const {titleKey, messageKey} = useDialogText(switchLang, mode);
     const handleDiscard = () => {
         onCloseDialog();
-
-        // Undefined: overridedStoredLocation
-        // True: byPassEventTriggers (we dont want to perform event triggers in case of nothing have been saved/created)
-        actionCallback(undefined, true);
+        actionCallback({discard: true});
     };
 
     const langName = siteInfo?.languages?.find(l => l.language === lang)?.displayName || '';

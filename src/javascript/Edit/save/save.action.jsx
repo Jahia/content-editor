@@ -5,13 +5,14 @@ import {ComponentRendererContext} from '@jahia/ui-extender';
 import * as PropTypes from 'prop-types';
 import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
 import {useFormikContext} from 'formik';
-import {useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import {useKeydownListener} from '~/utils/getKeydownListener';
 
 const Save = ({render: Render, loading: Loading, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
     const {publicationInfoPolling} = usePublicationInfoContext();
     const {mode} = useContentEditorContext();
+    const {envProps} = useContentEditorConfigContext();
     const formik = useFormikContext();
 
     useKeydownListener((event, formik) => {
@@ -30,8 +31,11 @@ const Save = ({render: Render, loading: Loading, ...otherProps}) => {
         if (formIsValid && formik.dirty) {
             return formik
                 .submitForm()
-                .then(() => {
+                .then(data => {
                     formik.resetForm({values: formik.values});
+                    if (envProps.onSavedCallback) {
+                        envProps.onSavedCallback(data);
+                    }
                 });
         }
     };
@@ -44,6 +48,7 @@ const Save = ({render: Render, loading: Loading, ...otherProps}) => {
         <Render
             {...otherProps}
             addWarningBadge={Object.keys(formik.errors).length > 0}
+            isVisible={mode === Constants.routes.baseEditRoute}
             enabled={mode === Constants.routes.baseEditRoute}
             disabled={!formik.dirty || publicationInfoPolling}
             onClick={() => save(formik)}

@@ -6,7 +6,7 @@ import {useTranslation} from 'react-i18next';
 import {Button, Dropdown, Typography} from '@jahia/moonstone';
 import classes from './CopyLanguageDialog.scss';
 import {useApolloClient} from '@apollo/react-hooks';
-import {FormQuery} from '~/Edit/EditForm.gql-queries';
+import {editFormQuery} from '~/Edit/EditForm.gql-queries';
 import {getI18nFieldAndValues} from '~/Edit/copyLanguage/copyLanguage.utils';
 import {Constants} from '~/ContentEditor.constants';
 
@@ -30,7 +30,7 @@ export const CopyLanguageDialog = ({
             childrenFilterTypes: Constants.childrenFilterTypes
         };
 
-        let formAndData = await client.query({query: FormQuery, variables: variables});
+        let formAndData = await client.query({query: editFormQuery, variables: variables});
 
         return getI18nFieldAndValues(formAndData);
     };

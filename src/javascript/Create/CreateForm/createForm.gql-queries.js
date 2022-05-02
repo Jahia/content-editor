@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 import {PredefinedFragments} from '@jahia/data-helper';
 
-export const FormQuery = gql`
+export const createFormQuery = gql`
     query createForm($uilang:String!, $language:String!, $uuid:String!, $primaryNodeType:String!) {
         forms {
             createForm(primaryNodeType: $primaryNodeType, uiLocale: $uilang, locale: $language, uuidOrPath: $uuid) {

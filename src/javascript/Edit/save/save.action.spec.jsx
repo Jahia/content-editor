@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import {shallow} from '@jahia/test-framework';
 import saveAction from './save.action';
 import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
-import {useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import {useFormikContext} from 'formik';
 
 jest.mock('react', () => {
@@ -26,6 +26,7 @@ describe('save action', () => {
         SaveAction = saveAction.component;
         useContext.mockImplementation(() => ({render}));
         useContentEditorContext.mockImplementation(() => ({refetchFormData: jest.fn()}));
+        useContentEditorConfigContext.mockImplementation(() => ({envProps: {}}));
         usePublicationInfoContext.mockImplementation(() => ({publicationInfoPolling: jest.fn()}));
         defaultProps = {
             renderComponent: jest.fn(), render, loading: undefined, dirty: true

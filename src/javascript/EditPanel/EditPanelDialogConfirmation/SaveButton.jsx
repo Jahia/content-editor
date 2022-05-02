@@ -1,6 +1,5 @@
 import {useTranslation} from 'react-i18next';
 import {useFormikContext} from 'formik';
-import {Constants} from '~/ContentEditor.constants';
 import {Button} from '@jahia/moonstone';
 import React from 'react';
 import * as PropTypes from 'prop-types';
@@ -11,11 +10,10 @@ export const SaveButton = ({onCloseDialog, actionCallback}) => {
     const handleSave = () => {
         onCloseDialog();
 
-        // Override default submit callback to execute the confirmation callback instead
-        formik.setFieldValue(Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK, actionCallback, false);
         formik.submitForm()
-            .then(() => {
+            .then(data => {
                 formik.resetForm({values: formik.values});
+                actionCallback(data);
             });
     };
 

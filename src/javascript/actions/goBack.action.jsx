@@ -1,25 +1,15 @@
 import React, {useCallback, useState} from 'react';
 import {EditPanelDialogConfirmation} from '~/EditPanel/EditPanelDialogConfirmation';
-import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorConfigContext} from '~/ContentEditor.context';
 import * as PropTypes from 'prop-types';
 import {Constants} from '~/ContentEditor.constants';
 import {useFormikContext} from 'formik';
 import {useKeydownListener} from '~/utils/getKeydownListener';
 
-const GoBack = ({render: Render, componentProps, ...otherProps}) => {
-    const {nodeData, mode} = useContentEditorContext();
+export const GoBack = ({render: Render, componentProps, ...otherProps}) => {
     const {envProps} = useContentEditorConfigContext();
     const formik = useFormikContext();
     const [open, setOpen] = useState(false);
-    const executeGoBackAction = useCallback((overridedStoredLocation, byPassEventTriggers) => {
-        if (envProps.unregisterListeners) {
-            envProps.unregisterListeners();
-        }
-
-        const operator = (mode === Constants.routes.baseEditRoute ? Constants.operators.update : Constants.operators.create);
-
-        envProps.back(nodeData.uuid, operator, overridedStoredLocation, byPassEventTriggers);
-    }, [envProps, mode, nodeData.uuid]);
 
     const onCloseDialog = useCallback(() => setOpen(false), [setOpen]);
 
@@ -33,7 +23,7 @@ const GoBack = ({render: Render, componentProps, ...otherProps}) => {
         if (formik.dirty) {
             setOpen(true);
         } else {
-            executeGoBackAction(undefined, true);
+            envProps.back();
         }
     };
 
@@ -41,10 +31,11 @@ const GoBack = ({render: Render, componentProps, ...otherProps}) => {
         <>
             <EditPanelDialogConfirmation
                 isOpen={open}
-                actionCallback={executeGoBackAction}
+                actionCallback={envProps.back}
                 onCloseDialog={onCloseDialog}
             />
             <Render
+                enabled
                 {...otherProps}
                 componentProps={{
                     ...componentProps,

@@ -4,20 +4,11 @@ import {Formik} from 'formik';
 import EditPanel from '~/EditPanel';
 import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
-import {
-    useContentEditorConfigContext,
-    useContentEditorContext,
-    withContentEditorDataContextProvider
-} from '~/ContentEditor.context';
+import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 
 import {validate} from '~/Validation/validation';
 import {createNode} from './CreateForm/create.request';
-import {FormQuery} from './CreateForm/createForm.gql-queries';
-import {compose} from '~/utils';
-import envCreateCallbacks from './Create.env';
-import {adaptCreateFormData} from './Create.adapter';
-import {Constants} from '~/ContentEditor.constants';
 import {useApolloClient} from '@apollo/react-hooks';
 
 const CreateCmp = ({
@@ -38,9 +29,7 @@ const CreateCmp = ({
     }, [contentEditorConfigContext.envProps]);
 
     const handleSubmit = (values, actions) => {
-        contentEditorConfigContext.envProps.isNeedRefresh = true;
-
-        createNode({
+        return createNode({
             client,
             t,
             notificationContext,
@@ -51,14 +40,10 @@ const CreateCmp = ({
                 sections,
                 values
             },
-            createCallback: createdNodeUuid => {
-                if (values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK]) {
-                    values[Constants.systemFields.OVERRIDE_SUBMIT_CALLBACK](createdNodeUuid);
-                } else {
-                    const envCreateCallback = envCreateCallbacks[contentEditorConfigContext.env];
-                    if (envCreateCallback) {
-                        envCreateCallback(createdNodeUuid, formQueryParams.language, contentEditorConfigContext);
-                    }
+            createCallback: info => {
+                const envCreateCallback = contentEditorConfigContext.envProps.createCallback;
+                if (envCreateCallback) {
+                    envCreateCallback(info, contentEditorConfigContext);
                 }
             }
         });
@@ -67,8 +52,8 @@ const CreateCmp = ({
     return (
         <Formik
             innerRef={formik => {
-                if (contentEditorConfigContext.envProps.setFormikRef) {
-                    contentEditorConfigContext.envProps.setFormikRef(formik);
+                if (contentEditorConfigContext.envProps.formikRef) {
+                    contentEditorConfigContext.envProps.formikRef.current = formik;
                 }
             }}
             initialValues={initialValues}
@@ -84,9 +69,6 @@ CreateCmp.propTypes = {
     notificationContext: PropTypes.object.isRequired
 };
 
-export const Create = compose(
-    withNotifications(),
-    withContentEditorDataContextProvider(FormQuery, adaptCreateFormData)
-)(CreateCmp);
+export const Create = withNotifications()(CreateCmp);
 Create.displayName = 'Create';
 export default Create;
