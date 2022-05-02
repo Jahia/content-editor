@@ -17,7 +17,10 @@ const ContentEditorRedux = ({mode, uuid, lang, contentType, name}) => {
     const {storedLocation, setStoredLocation} = useContentEditorHistoryContext();
     const {uilang, openPaths} = useSelector(state => ({uilang: state.uilang, openPaths: state.jcontent.openPaths}));
     const dispatch = useDispatch();
+
+    // todo get rid of ref in envProps
     const formikRef = useRef();
+    const dirtyRef = useRef(false);
     const {t} = useTranslation('content-editor');
     const {data} = useQuery(gql`query($uuid:String!) {
         jcr {
@@ -71,6 +74,7 @@ const ContentEditorRedux = ({mode, uuid, lang, contentType, name}) => {
 
     const envProps = {
         formikRef,
+        dirtyRef,
         back: () => {
             setTimeout(() => {
                 exit(envProps.overriddenStoredLocation);
@@ -91,12 +95,8 @@ const ContentEditorRedux = ({mode, uuid, lang, contentType, name}) => {
         editCallback: data => {
             envProps.overriddenStoredLocation = handleRename(data);
         },
-        switchLanguageCallback: ({newNode, language}) => {
-            if (newNode) {
-                redirect({mode: Constants.routes.baseEditRoute, language: language, uuid: newNode.uuid, rest: ''});
-            } else {
-                redirect({language});
-            }
+        switchLanguageCallback: ({language}) => {
+            redirect({language});
         }
     };
     return Boolean(site) && (

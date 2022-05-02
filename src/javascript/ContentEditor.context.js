@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {ProgressOverlay, withNotifications} from '@jahia/react-material';
 import {useFormDefinition} from '~/FormDefinitions';
 import {useSiteInfo} from '@jahia/data-helper';
@@ -25,6 +25,7 @@ const ContentEditorDataContextProviderCmp = ({notificationContext, formQuery, fo
         pageComposerCurrentPage: state.pagecomposer.currentPage,
         pageComposerActive: state.pagecomposer.active
     }));
+    const [i18nContext, setI18nContext] = useState({});
     const {lang, uilang, site, uuid, contentType, mode, name} = contentEditorConfigContext;
 
     // Get user navigator locale preference
@@ -114,7 +115,9 @@ const ContentEditorDataContextProviderCmp = ({notificationContext, formQuery, fo
         formQueryParams,
         nodeTypeName,
         nodeTypeDisplayName,
-        refetchFormData
+        refetchFormData,
+        i18nContext,
+        setI18nContext
     };
 
     return (

@@ -16,10 +16,11 @@ export const createNode = ({
         nodeData,
         sections,
         values,
-        language
+        language,
+        i18nContext
     }
 }) => {
-    const {propsToSave, mixinsToAdd, propFieldNameMapping} = getDataToMutate({formValues: values, sections, lang: language});
+    const {propsToSave, mixinsToAdd, propFieldNameMapping} = getDataToMutate({formValues: values, i18nContext, sections, lang: language});
     const wipInfo = values[Constants.wip.fieldName];
     let variables = adaptCreateRequest({
         uuid: nodeData.uuid,

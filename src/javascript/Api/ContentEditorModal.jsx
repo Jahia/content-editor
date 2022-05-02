@@ -27,7 +27,9 @@ const Transition = React.forwardRef((props, ref) => {
 export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
     const [confirmationConfig, setConfirmationConfig] = useState(false);
 
+    // todo get rid of ref in envProps, move dialog in subtree
     const formikRef = useRef();
+    const dirtyRef = useRef(false);
     const dispatch = useDispatch();
     const needRefresh = useRef(false);
 
@@ -43,6 +45,7 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
     // Standalone env props
     const envProps = {
         formikRef,
+        dirtyRef,
         back: () => {
             closeAll();
         },
@@ -79,16 +82,11 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
                 closeAll();
             }
         },
-        switchLanguageCallback: ({newNode, language}) => {
-            if (newNode) {
-                envProps.onSavedCallback({newNode, language}, true);
-            } else if (editorConfig) {
-                // Update the lang of current opened CE
-                setEditorConfig({
-                    ...editorConfig,
-                    lang: language
-                });
-            }
+        switchLanguageCallback: ({language}) => {
+            setEditorConfig({
+                ...editorConfig,
+                lang: language
+            });
         },
         onClosedCallback: () => {
             if (window.authoringApi.refreshContent && needRefresh.current) {
@@ -116,7 +114,7 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
                 TransitionComponent={Transition}
                 aria-labelledby="dialog-content-editor"
                 classes={classes}
-                onClose={() => (formikRef.current && formikRef.current.dirty) ? setConfirmationConfig(true) : closeAll()}
+                onClose={() => (envProps.dirtyRef.current) ? setConfirmationConfig(true) : closeAll()}
                 onRendered={() => window.focus()}
         >
             {confirmationConfig && (

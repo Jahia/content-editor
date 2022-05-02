@@ -54,7 +54,59 @@ export function getFields(sections, sectionName, fieldSetFilter) {
     }, []);
 }
 
-export function getDataToMutate({nodeData, formValues, sections, lang}) {
+const _adaptDecimalValues = (fieldType, value) => {
+    return fieldType === 'DECIMAL' || fieldType === 'DOUBLE' ? value && value.replace(',', '.') : value;
+};
+
+function updateValue({field, value, lang, nodeData, sections, mixinsToMutate, propsToSave, propsToDelete}) {
+    if (value !== undefined && value !== null && value !== '') {
+        const fieldType = field.requiredType;
+
+        let valueToSave;
+        if (field.multiple) {
+            const filteredUndefinedValues = value.filter(v => v !== undefined && v !== '');
+            valueToSave = filteredUndefinedValues.map(value => _adaptDecimalValues(fieldType, value));
+        } else {
+            // In case we have field of type decimal or double, we should store number
+            // with a decimal point separator instead of decimal comma separator into JCR.
+            valueToSave = _adaptDecimalValues(fieldType, value);
+        }
+
+        // Check if property has changed
+        if (propertyHasChanged(valueToSave, field, nodeData)) {
+            const fieldSetName = getDynamicFieldSetNameOfField(sections, field);
+
+            // Is not dynamic OR is dynamic and node have the mixin
+            if (!fieldSetName ||
+                (fieldSetName &&
+                    !mixinsToMutate.mixinsToDelete.includes(fieldSetName) &&
+                    (hasNodeMixin(nodeData, fieldSetName) || mixinsToMutate.mixinsToAdd.includes(fieldSetName)))) {
+                const {name, option} = getValuePropName(field);
+                propsToSave.push({
+                    name: field.propertyName,
+                    type: fieldType,
+                    option: option,
+                    [name]: valueToSave,
+                    language: lang
+                });
+            }
+        }
+    } else if (nodeData) {
+        // Check if props existed before, to remove it
+        const nodeProperty = nodeData.properties.find(prop => prop.name === field.propertyName);
+        if (nodeProperty && nodeProperty[getValuePropName(field).name]) {
+            const fieldSetName = getDynamicFieldSetNameOfField(sections, field);
+            if (!fieldSetName ||
+                (fieldSetName &&
+                    !mixinsToMutate.mixinsToDelete.includes(fieldSetName) &&
+                    (hasNodeMixin(nodeData, fieldSetName) || mixinsToMutate.mixinsToAdd.includes(fieldSetName)))) {
+                propsToDelete.push(field.propertyName);
+            }
+        }
+    }
+}
+
+export function getDataToMutate({nodeData, formValues, i18nContext, sections, lang}) {
     let propsToSave = [];
     let propsToDelete = [];
     let propFieldNameMapping = {};
@@ -63,64 +115,25 @@ export function getDataToMutate({nodeData, formValues, sections, lang}) {
         return {propsToSave, propsToDelete};
     }
 
-    const keys = Object.keys(formValues);
+    const keys = new Set(Object.keys(formValues));
+    Object.values(i18nContext).filter(ctx => ctx).forEach(ctx => Object.keys(ctx).forEach(k => keys.add(k)));
     const fields = sections && getFields(sections).filter(field => !field.readOnly);
     const mixinsToMutate = getMixinsToMutate(nodeData, formValues, sections);
-
-    const _adaptDecimalValues = (fieldType, value) => {
-        return fieldType === 'DECIMAL' || fieldType === 'DOUBLE' ? value && value.replace(',', '.') : value;
-    };
 
     keys.forEach(key => {
         const field = fields.find(field => field.name === key);
         if (field) {
             const value = formValues[key];
-            if (value !== undefined && value !== null && value !== '') {
-                const fieldType = field.requiredType;
+            updateValue({field, value, lang, nodeData, sections, mixinsToMutate, propsToSave, propsToDelete});
 
-                let valueToSave;
-                if (field.multiple) {
-                    const filteredUndefinedValues = value.filter(v => v !== undefined && v !== '');
-                    valueToSave = filteredUndefinedValues.map(value => _adaptDecimalValues(fieldType, value));
-                } else {
-                    // In case we have field of type decimal or double, we should store number
-                    // with a decimal point separator instead of decimal comma separator into JCR.
-                    valueToSave = _adaptDecimalValues(fieldType, value);
-                }
-
-                // Check if property has changed
-                if (propertyHasChanged(valueToSave, field, nodeData)) {
-                    const fieldSetName = getDynamicFieldSetNameOfField(sections, field);
-
-                    // Is not dynamic OR is dynamic and node have the mixin
-                    if (!fieldSetName ||
-                        (fieldSetName &&
-                            !mixinsToMutate.mixinsToDelete.includes(fieldSetName) &&
-                            (hasNodeMixin(nodeData, fieldSetName) || mixinsToMutate.mixinsToAdd.includes(fieldSetName)))) {
-                        const {name, option} = getValuePropName(field);
-                        propsToSave.push({
-                            name: field.propertyName,
-                            type: fieldType,
-                            option: option,
-                            [name]: valueToSave,
-                            language: lang
-                        });
-                        propFieldNameMapping[field.propertyName] = field.name;
-                    }
-                }
-            } else if (nodeData) {
-                // Check if props existed before, to remove it
-                const nodeProperty = nodeData.properties.find(prop => prop.name === field.propertyName);
-                if (nodeProperty && nodeProperty[getValuePropName(field).name]) {
-                    const fieldSetName = getDynamicFieldSetNameOfField(sections, field);
-                    if (!fieldSetName ||
-                        (fieldSetName &&
-                            !mixinsToMutate.mixinsToDelete.includes(fieldSetName) &&
-                            (hasNodeMixin(nodeData, fieldSetName) || mixinsToMutate.mixinsToAdd.includes(fieldSetName)))) {
-                        propsToDelete.push(field.propertyName);
-                    }
-                }
+            if (field.i18n) {
+                Object.keys(i18nContext).filter(i18nLang => i18nLang !== lang && i18nLang !== 'shared').forEach(i18nLang => {
+                    const translatedValue = i18nContext[i18nLang][key];
+                    updateValue({field, value: translatedValue, lang: i18nLang, sections, mixinsToMutate, propsToSave, propsToDelete});
+                });
             }
+
+            propFieldNameMapping[field.propertyName] = field.name;
         }
     });
 

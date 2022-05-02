@@ -10,7 +10,6 @@ import EditPanelDialogConfirmation from '~/EditPanel/EditPanelDialogConfirmation
 import {GetContentPath} from './ContentPath.gql-queries';
 import ContentPath from './ContentPath';
 import {Constants} from '~/ContentEditor.constants';
-import {useFormikContext} from 'formik';
 
 const findLastIndex = (array, callback) => {
     let lastIndex = -1;
@@ -59,7 +58,6 @@ const ContentPathContainer = ({path}) => {
     const [open, setOpen] = useState(false);
     const {envProps, site, mode} = useContentEditorConfigContext();
     const dispatch = useDispatch();
-    const formik = useFormikContext();
     const {language} = useSelector(state => ({
         language: state.language
     }));
@@ -72,7 +70,7 @@ const ContentPathContainer = ({path}) => {
     });
 
     const handleNavigation = path => {
-        if (formik.dirty) {
+        if (envProps.dirtyRef.current) {
             setOpen(true);
         } else {
             if (path.startsWith('/sites/systemsite/categories/') || path === '/sites/systemsite/categories') {

@@ -3,15 +3,19 @@ import {useFormikContext} from 'formik';
 import {Button} from '@jahia/moonstone';
 import React from 'react';
 import * as PropTypes from 'prop-types';
+import {useContentEditorContext} from '~/ContentEditor.context';
 
 export const SaveButton = ({onCloseDialog, actionCallback}) => {
     const {t} = useTranslation('content-editor');
     const formik = useFormikContext();
+    const {setI18nContext} = useContentEditorContext();
     const handleSave = () => {
         onCloseDialog();
 
         formik.submitForm()
             .then(data => {
+                // todo centralize form reset
+                setI18nContext({});
                 formik.resetForm({values: formik.values});
                 actionCallback(data);
             });

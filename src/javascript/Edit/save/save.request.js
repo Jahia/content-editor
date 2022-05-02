@@ -20,10 +20,11 @@ export const saveNode = ({
         sections,
         values,
         language,
+        i18nContext,
         uilang
     }
 }) => {
-    const dataToMutate = getDataToMutate({nodeData, formValues: values, sections, lang: language});
+    const dataToMutate = getDataToMutate({nodeData, formValues: values, i18nContext, sections, lang: language});
     const {childrenOrder, shouldModifyChildren} = getChildrenOrder(values, nodeData);
     const wipInfo = values[Constants.wip.fieldName];
     let variables = adaptSaveRequest(nodeData, {

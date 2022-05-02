@@ -22,7 +22,6 @@ export const GoToOption = ({setActiveOption, value, render: Render, ...otherProp
 GoToOption.propTypes = {
     render: PropTypes.func.isRequired,
     value: PropTypes.string.isRequired,
-    mode: PropTypes.string.isRequired,
     setActiveOption: PropTypes.func.isRequired
 };
 

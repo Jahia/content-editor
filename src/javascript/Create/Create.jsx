@@ -11,13 +11,11 @@ import {validate} from '~/Validation/validation';
 import {createNode} from './CreateForm/create.request';
 import {useApolloClient} from '@apollo/react-hooks';
 
-const CreateCmp = ({
-    notificationContext
-}) => {
+const CreateCmp = ({notificationContext}) => {
     const client = useApolloClient();
     const {t} = useTranslation('content-editor');
     const contentEditorConfigContext = useContentEditorConfigContext();
-    const {nodeData, formQueryParams, initialValues, title} = useContentEditorContext();
+    const {lang, nodeData, formQueryParams, initialValues, title, i18nContext} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
 
     useEffect(() => {
@@ -38,7 +36,8 @@ const CreateCmp = ({
                 ...formQueryParams,
                 nodeData,
                 sections,
-                values
+                values,
+                i18nContext
             },
             createCallback: info => {
                 const envCreateCallback = contentEditorConfigContext.envProps.createCallback;
@@ -49,9 +48,25 @@ const CreateCmp = ({
         });
     };
 
+    // todo share and centralize code
+    useEffect(() => {
+        let formikRef = contentEditorConfigContext.envProps.formikRef;
+        console.log('update from i18nContext', formikRef.current);
+        formikRef.current.setValues({
+            ...formikRef.current.values,
+            ...i18nContext.shared,
+            ...i18nContext[lang]
+        });
+    }, [contentEditorConfigContext.envProps, i18nContext, lang]);
+
     return (
         <Formik
             innerRef={formik => {
+                // todo share and centralize code
+                if (contentEditorConfigContext.envProps.dirtyRef && formik) {
+                    contentEditorConfigContext.envProps.dirtyRef.current = formik.dirty || Object.keys(i18nContext).some(k => k !== lang && k !== 'shared' && i18nContext[k] && Object.keys(i18nContext[k]).length > 0);
+                }
+
                 if (contentEditorConfigContext.envProps.formikRef) {
                     contentEditorConfigContext.envProps.formikRef.current = formik;
                 }

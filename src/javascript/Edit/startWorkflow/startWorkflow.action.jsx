@@ -1,11 +1,12 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
 import {Constants} from '~/ContentEditor.constants';
-import {useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import {useFormikContext} from 'formik';
 
 const StartWorkFlow = ({isMainButton, render: Render, loading: Loading, ...otherProps}) => {
     const {nodeData, lang} = useContentEditorContext();
+    const {envProps} = useContentEditorConfigContext();
     const {hasPublishPermission, hasStartPublicationWorkflowPermission, lockedAndCannotBeEdited} = nodeData;
 
     const formik = useFormikContext();
@@ -20,7 +21,7 @@ const StartWorkFlow = ({isMainButton, render: Render, loading: Loading, ...other
 
         // Is WIP
         const wipInfo = formik.values[Constants.wip.fieldName];
-        disabled = formik.dirty ||
+        disabled = envProps.dirtyRef.current ||
             wipInfo.status === Constants.wip.status.ALL_CONTENT ||
             (wipInfo.status === Constants.wip.status.LANGUAGES && wipInfo.languages.includes(lang));
     } else {
@@ -28,7 +29,7 @@ const StartWorkFlow = ({isMainButton, render: Render, loading: Loading, ...other
         isVisible = enabled && hasPublishPermission;
 
         // Is Active
-        if (isVisible && (lockedAndCannotBeEdited || formik.dirty)) {
+        if (isVisible && (lockedAndCannotBeEdited || envProps.dirtyRef.current)) {
             enabled = false;
         }
     }

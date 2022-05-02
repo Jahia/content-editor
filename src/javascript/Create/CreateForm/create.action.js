@@ -11,7 +11,7 @@ const Create = ({render: Render, loading: Loading, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
     const formik = useFormikContext();
     const {envProps} = useContentEditorConfigContext();
-    const {mode} = useContentEditorContext();
+    const {mode, setI18nContext} = useContentEditorContext();
     const [clicked, setClicked] = useState(false);
 
     useKeydownListener((event, formik) => {
@@ -33,6 +33,8 @@ const Create = ({render: Render, loading: Loading, ...otherProps}) => {
             return formik
                 .submitForm()
                 .then(data => {
+                    // todo centralize form reset
+                    setI18nContext({});
                     formik.resetForm({values: formik.values});
                     if (envProps.onSavedCallback) {
                         envProps.onSavedCallback(data);
@@ -50,7 +52,7 @@ const Create = ({render: Render, loading: Loading, ...otherProps}) => {
                 addWarningBadge={Object.keys(formik.errors).length > 0}
                 isVisible={mode === Constants.routes.baseCreateRoute}
                 enabled={mode === Constants.routes.baseCreateRoute}
-                disabled={clicked && !formik.dirty}
+                disabled={clicked && !envProps.dirtyRef.current}
                 onClick={() => save(formik)}/>
     );
 };
