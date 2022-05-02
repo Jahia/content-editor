@@ -130,14 +130,16 @@ const ContentEditorDataContextProviderCmp = ({notificationContext, formQuery, fo
 ContentEditorDataContextProviderCmp.propTypes = {
     notificationContext: PropTypes.object.isRequired,
     formQuery: PropTypes.object.isRequired,
-    formDataAdapter: PropTypes.func.isRequired
+    formDataAdapter: PropTypes.func.isRequired,
+    children: PropTypes.node.isRequired
 };
 
 export const ContentEditorDataContextProvider = withNotifications()(ContentEditorDataContextProviderCmp);
 
 ContentEditorDataContextProvider.propTypes = {
     formQuery: PropTypes.object.isRequired,
-    formDataAdapter: PropTypes.func.isRequired
+    formDataAdapter: PropTypes.func.isRequired,
+    children: PropTypes.node.isRequired
 };
 
 export default ContentEditorDataContextProvider;
