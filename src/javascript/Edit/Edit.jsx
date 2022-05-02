@@ -39,8 +39,6 @@ export const EditCmp = ({
     }, [contentEditorConfigContext.envProps, nodeData.lockedAndCannotBeEdited]);
 
     const handleSubmit = useCallback((values, actions) => {
-        contentEditorConfigContext.envProps.isNeedRefresh = true;
-
         return saveNode({
             client,
             t,

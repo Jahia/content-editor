@@ -36,8 +36,6 @@ const CreateCmp = ({
     }, [contentEditorConfigContext.envProps]);
 
     const handleSubmit = (values, actions) => {
-        contentEditorConfigContext.envProps.isNeedRefresh = true;
-
         return createNode({
             client,
             t,

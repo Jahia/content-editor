@@ -20,6 +20,12 @@ function triggerEvents(nodeUuid, operator) {
     }
 }
 
+function onClosedCallback() {
+    if (window.authoringApi.refreshContent) {
+        window.authoringApi.refreshContent();
+    }
+}
+
 const Transition = React.forwardRef((props, ref) => {
     return <Slide ref={ref} direction="up" {...props}/>;
 });
@@ -61,7 +67,6 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
         onSavedCallback: ({newNode, language}, forceRedirect) => {
             if (newNode && (editorConfig.isFullscreen || forceRedirect)) {
                 // Redirect to CE edit mode, for the created node
-                envProps.isNeedRefresh = false;
                 if (editorConfig) {
                     setEditorConfig({
                         ...editorConfig,
@@ -88,19 +93,10 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
                 });
             }
         },
-        onClosedCallback: () => {
-            if (envProps.newPath) {
-                dispatch(pcNavigateTo({oldPath: envProps.oldPath, newPath: envProps.newPath}));
-            }
-
-            if (window.authoringApi.refreshContent && envProps.isNeedRefresh) {
-                window.authoringApi.refreshContent();
-            }
-        },
+        onClosedCallback,
         redirectBreadcrumbCallback: () => {
             envProps.back();
         },
-        isNeedRefresh: Boolean(editorConfig.fromCreate),
         isModal: true,
         isFullscreen: editorConfig?.isFullscreen
     };
