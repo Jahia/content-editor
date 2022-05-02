@@ -21,8 +21,6 @@ const FormBuilderCmp = ({mode}) => {
         return <></>;
     }
 
-    console.log(sections);
-
     let listOrderingIndex = -1;
     const children = sections.map((section, index) => {
         if (section.name === 'listOrdering') {
