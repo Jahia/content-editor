@@ -30,6 +30,8 @@ import org.osgi.framework.Bundle;
 import javax.jcr.nodetype.NoSuchNodeTypeException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Represents the definition of an editor form, including the ordering of sections
@@ -130,7 +132,37 @@ public class EditorFormDefinition implements Comparable<EditorFormDefinition> {
     }
 
     public EditorFormDefinition mergeWith(EditorFormDefinition otherEditorFormDefinition) {
-        return new EditorFormDefinition(nodeType, priority, otherEditorFormDefinition.hasPreview() != null ? otherEditorFormDefinition.hasPreview() : hasPreview, otherEditorFormDefinition.getSections() != null ? otherEditorFormDefinition.getSections() : sections, null);
+        return new EditorFormDefinition(
+            nodeType,
+            priority,
+            otherEditorFormDefinition.hasPreview() != null ? otherEditorFormDefinition.hasPreview() : hasPreview,
+            mergeSections(otherEditorFormDefinition.getSections()),
+            null);
+    }
+
+    private List<EditorFormSectionDefinition> mergeSections(List<EditorFormSectionDefinition> sections) {
+        List<EditorFormSectionDefinition> sectionsCopy = this.sections.stream().map(EditorFormSectionDefinition::copy).collect(Collectors.toList());
+
+        if (sections == null) {
+            return sectionsCopy;
+        }
+
+        List<EditorFormSectionDefinition> addedSections = new ArrayList<>();
+        for (EditorFormSectionDefinition newSection : sections) {
+            Optional<EditorFormSectionDefinition> existingSection = sectionsCopy.stream().filter(s -> s.getName().equals(newSection.getName())).findFirst();
+
+            if (existingSection.isPresent()) {
+                existingSection.get().mergeWith(newSection);
+            } else {
+                addedSections.add(newSection.copy());
+            }
+        }
+
+        if (!addedSections.isEmpty()) {
+            sectionsCopy.addAll(addedSections);
+        }
+
+        return sectionsCopy;
     }
 
 }
