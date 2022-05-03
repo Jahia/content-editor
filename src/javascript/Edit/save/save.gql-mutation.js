@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import {PredefinedFragments} from "@jahia/data-helper";
 
 export const SavePropertiesMutation = gql`
     mutation saveNodeProperties(
@@ -31,8 +32,10 @@ export const SavePropertiesMutation = gql`
                 }
                 reorderChildren(names: $childrenOrder) @include(if: $shouldModifyChildren)
                 node {
+                    ...NodeCacheRequiredFields
                     path
                     displayableNode {
+                        ...NodeCacheRequiredFields
                         path
                         isFolder:isNodeType(type: {multi: ANY, types: ["jnt:contentFolder", "jnt:folder"]})
                     }
@@ -40,4 +43,5 @@ export const SavePropertiesMutation = gql`
             }
         }
     }
+    ${PredefinedFragments.nodeCacheRequiredFields.gql}
 `;

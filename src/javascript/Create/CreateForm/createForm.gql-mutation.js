@@ -28,6 +28,7 @@ export const CreateNode = gql`
                 createWipInfo(wipInfo:$wipInfo)
             }
             modifiedNodes {
+                ...NodeCacheRequiredFields
                 path
                 uuid
             }
