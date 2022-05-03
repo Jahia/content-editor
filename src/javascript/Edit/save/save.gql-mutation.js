@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import {PredefinedFragments} from "@jahia/data-helper";
+import {PredefinedFragments} from '@jahia/data-helper';
 
 export const SavePropertiesMutation = gql`
     mutation saveNodeProperties(
