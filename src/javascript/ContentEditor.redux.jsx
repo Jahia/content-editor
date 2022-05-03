@@ -73,6 +73,7 @@ const ContentEditorRedux = ({mode, uuid, lang, contentType, name}) => {
         formikRef,
         back: () => {
             setTimeout(() => {
+                unRegisterBlockListener();
                 exit(envProps.overriddenStoredLocation);
             }, 0);
         },
