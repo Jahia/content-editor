@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {Section} from './Section';
 import {Form} from 'formik';
+import {Collapsible} from '@jahia/moonstone';
 
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
@@ -9,6 +9,7 @@ import {SectionsPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {OrderingSection} from './OrderingSection';
 import {filterRegularFieldSets} from '~/EditPanel/EditPanelContent/FormBuilder/FormBuilder.fieldSetHelp';
 import FieldSetsDisplay from '~/EditPanel/EditPanelContent/FormBuilder/FieldSet/FieldSetsDisplay/FieldSetsDisplay';
+import styles from './FormBuilder.scss';
 
 const DEFAULT_OPENED_SECTIONS = {content: true, listOrdering: true};
 
@@ -17,60 +18,65 @@ const FormBuilderCmp = ({mode}) => {
     const {sections} = useContentEditorSectionContext();
     const [toggleStates, setToggleStates] = useState(sections ? sections.reduce((acc, curr) => ({...acc, [curr.name]: acc[curr.name] ? acc[curr.name] : curr.expanded}), DEFAULT_OPENED_SECTIONS) : {});
 
+    // Update toggle state if there are errors
     useEffect(() => {
         if (errors) {
-            const newToggleState = {...toggleStates}
+            const newToggleState = {...toggleStates};
             sections.forEach(section => {
                 section.fieldSets.forEach(fieldSet => {
                     fieldSet.fields.forEach(field => {
                         if (errors[field.name]) {
                             newToggleState[section.name] = true;
                         }
-                    })
-                })
+                    });
+                });
             });
             setToggleStates(newToggleState);
         }
-    }, [errors])
+    }, [errors]); // eslint-disable-line react-hooks/exhaustive-deps
 
     if (!nodeData || !sections || sections.length === 0) {
         return <></>;
     }
-
-    console.log('render FormBuilder.jsx');
 
     let listOrderingIndex = -1;
     const children = sections.map((section, index) => {
         if (section.name === 'listOrdering') {
             listOrderingIndex = index;
             return (
-                <Section key={section.displayName}
-                         section={section}
-                         expanded={toggleStates[section.name]}
-                         toggleExpanded={(name, expanded) => {
-                             setToggleStates({...toggleStates, [name]: expanded});
-                         }}
+                <Collapsible key={section.name}
+                             data-sel-content-editor-fields-group={section.displayName}
+                             className={styles.title}
+                             label={section.displayName}
+                             isExpanded={toggleStates[section.name]}
+                             onClick={e => {
+                                 e.preventDefault();
+                                 setToggleStates({...toggleStates, [section.name]: !toggleStates[section.name]});
+                             }}
                 >
                     <OrderingSection key="ordering"
                                      mode={mode}
                                      nodeData={nodeData}
                                      section={section}
                     />
-                </Section>
+                </Collapsible>
             );
         }
 
         if (!section.hide) {
             return (
-                <Section key={section.displayName}
-                         section={section}
-                         expanded={toggleStates[section.name]}
-                         toggleExpanded={(name, expanded) => {
-                             setToggleStates({...toggleStates, [name]: expanded});
-                         }}
+                <Collapsible key={section.name}
+                             data-sel-content-editor-fields-group={section.displayName}
+                             className={styles.title}
+                             label={section.displayName}
+                             isExpanded={toggleStates[section.name]}
+                             onClick={e => {
+                                 e.preventDefault();
+                                 setToggleStates({...toggleStates, [section.name]: !toggleStates[section.name]});
+                             }}
                 >
                     <FieldSetsDisplay fieldSets={filterRegularFieldSets(section.fieldSets)}/>
-                </Section>
+                </Collapsible>
             );
         }
 

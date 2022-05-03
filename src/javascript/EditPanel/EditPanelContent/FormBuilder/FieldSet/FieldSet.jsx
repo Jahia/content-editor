@@ -11,7 +11,6 @@ import {useFormikContext} from 'formik';
 let styles = theme => ({
     fieldsetContainer: {},
     fieldsetTitleContainer: {
-        borderTop: `1px solid ${theme.palette.ui.omega}`,
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',

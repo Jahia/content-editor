@@ -35,14 +35,6 @@ describe('Children section component', () => {
         useContentEditorSectionContext.mockReturnValue(sectionsContext);
     });
 
-    it('should display section name', () => {
-        sectionsContext.sections = [listOrderingSection(false, false)];
-
-        const cmp = shallowWithTheme(<ChildrenSectionCmp {...props}/>, {}, dsGenericTheme);
-
-        expect(cmp.debug()).toContain(props.section.displayName);
-    });
-
     it('should be able to switch automatic ordering', () => {
         sectionsContext.sections = [listOrderingSection(false, false)];
         props.canAutomaticallyOrder = true;

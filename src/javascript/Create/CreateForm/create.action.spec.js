@@ -22,7 +22,7 @@ describe('create action', () => {
         CreateAction = createAction.component;
         let render = jest.fn();
         useContext.mockImplementation(() => ({render}));
-        useContentEditorContext.mockImplementation(() => ({mode: jest.fn()}));
+        useContentEditorContext.mockImplementation(() => ({mode: jest.fn(), setErrors: jest.fn()}));
         useContentEditorConfigContext.mockImplementation(() => ({envProps: {}}));
 
         defaultProps = {
