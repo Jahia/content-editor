@@ -13,7 +13,6 @@ const styles = theme => ({
     row: {
         display: 'flex',
         flexDirection: 'row',
-        marginLeft: `-${theme.spacing.unit * 4}px`,
         marginRight: `-${theme.spacing.unit * 6}px`,
         marginBottom: `-${theme.spacing.unit / 2}px`
     },
@@ -21,7 +20,6 @@ const styles = theme => ({
         flex: '2 0px'
     },
     orderDirection: {
-        marginLeft: `-${theme.spacing.unit / 2}px`,
         flex: '1 0 0'
     },
     addButton: {

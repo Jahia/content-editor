@@ -20,12 +20,12 @@ let styles = theme => ({
         borderTop: `1px solid ${theme.palette.ui.omega}`,
         display: 'flex',
         flexDirection: 'column',
-        margin: `0 ${theme.spacing.unit * 6}px 0 ${theme.spacing.unit * 4}px`
+        margin: `0 ${theme.spacing.unit * 6}px 0 0`
     },
     fieldsetControlContainer: {
         display: 'flex',
         flexDirection: 'row',
-        margin: `0 ${theme.spacing.unit * 6}px 0 ${theme.spacing.unit * 4}px`
+        margin: `0 ${theme.spacing.unit * 6}px 0 0`
     }
 });
 

@@ -16,20 +16,10 @@ import {orderingSectionFieldSetMap} from '../FormBuilder.fieldSetHelp';
 import {useFormikContext} from 'formik';
 
 const styles = theme => ({
-    section: {
-        borderBottom: `1px solid ${theme.palette.ui.omega}`,
-        paddingBottom: theme.spacing.unit * 2,
-        marginBottom: theme.spacing.unit * 2,
-        backgroundColor: theme.palette.ui.epsilon
-    },
-    sectionTitle: {
-        textTransform: 'uppercase',
-        padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 4}px`
-    },
     fieldSetTitleContainer: {
         display: 'flex',
         flexDirection: 'row',
-        margin: `0 ${theme.spacing.unit * 6}px 0 ${theme.spacing.unit * 4}px`,
+        margin: `0 ${theme.spacing.unit * 6}px 0 0`,
         padding: `${theme.spacing.unit * 2}px 0`,
         borderTop: '1px solid var(--color-gray_light40)'
     },
@@ -46,9 +36,6 @@ const styles = theme => ({
         width: 'auto',
         padding: `${theme.spacing.unit * 2}px 0`,
         textTransform: 'uppercase'
-    },
-    formControl: {
-        margin: '0 48px 0 32px'
     }
 });
 
@@ -75,7 +62,7 @@ export const ChildrenSectionCmp = ({section, classes, canManuallyOrder, canAutom
                     />
                 </div>
 
-                <div className={classes.formControl}>
+                <div>
                     {(canAutomaticallyOrder && automaticOrderingFieldSet) &&
                     <>
                         <Typography color="beta" variant="zeta" htmlFor={t('content-editor:label.contentEditor.section.listAndOrdering.description')}>
