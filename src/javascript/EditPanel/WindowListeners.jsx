@@ -23,19 +23,24 @@ const unregisterListeners = envProps => {
 };
 
 export const WindowListeners = () => {
-    const previousDirty = useRef();
+    const registered = useRef(false);
     const formik = useFormikContext();
     const {envProps} = useContentEditorConfigContext();
     const dirty = formik.dirty;
 
     useEffect(() => {
-        if (!previousDirty.current && dirty) {
+        if (!registered.current && dirty) {
+            registered.current = true;
             registerListeners(envProps);
         }
 
-        previousDirty.current = dirty;
-        return () => unregisterListeners(envProps);
-    }, [previousDirty, envProps, dirty]);
+        return () => {
+            if (registered.current) {
+                registered.current = false;
+                unregisterListeners(envProps);
+            }
+        };
+    }, [registered, envProps, dirty]);
 
     return false;
 };
