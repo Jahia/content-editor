@@ -7,8 +7,6 @@ import {FormikProvider} from 'formik';
 import EditPanelDialogConfirmation from '~/EditPanel/EditPanelDialogConfirmation/EditPanelDialogConfirmation';
 import Slide from '@material-ui/core/Slide';
 import PropTypes from 'prop-types';
-import {pcNavigateTo} from '~/pagecomposer.redux-actions';
-import {useDispatch} from 'react-redux';
 
 function triggerEvents(nodeUuid, operator) {
     // Refresh contentEditorEventHandlers
@@ -28,38 +26,30 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
     const [confirmationConfig, setConfirmationConfig] = useState(false);
 
     const formikRef = useRef();
-    const dispatch = useDispatch();
     const needRefresh = useRef(false);
-
-    const closeAll = () => {
-        // Restore GWT language
-        if (window.authoringApi.switchLanguage) {
-            window.authoringApi.switchLanguage(editorConfig.initLang);
-        }
-
-        setEditorConfig(false);
-    };
 
     // Standalone env props
     const envProps = {
         formikRef,
         back: () => {
-            closeAll();
+            setEditorConfig(false);
         },
         disabledBack: () => false,
         createCallback: ({newNode}) => {
             needRefresh.current = true;
+            if (editorConfig && editorConfig.createCallback) {
+                editorConfig.createCallback(newNode, envProps);
+            }
+
             triggerEvents(newNode.uuid, Constants.operators.create);
         },
         editCallback: ({originalNode, updatedNode}) => {
             needRefresh.current = true;
-            // Refresh contentEditorEventHandlers
-            triggerEvents(updatedNode.uuid, Constants.operators.update);
-
-            // Trigger Page Composer to reload iframe if system name was renamed
-            if (originalNode.path !== updatedNode.path) {
-                dispatch(pcNavigateTo({oldPath: originalNode.path, newPath: updatedNode.path}));
+            if (editorConfig && editorConfig.editCallback) {
+                editorConfig.editCallback(updatedNode, originalNode, envProps);
             }
+
+            triggerEvents(updatedNode.uuid, Constants.operators.update);
         },
         onSavedCallback: ({newNode, language}, forceRedirect) => {
             if (newNode && (editorConfig.isFullscreen || forceRedirect)) {
@@ -76,7 +66,7 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
                 }
             } else if (!editorConfig.isFullscreen) {
                 // Otherwise refresh and close
-                closeAll();
+                setEditorConfig(false);
             }
         },
         switchLanguageCallback: ({newNode, language}) => {
@@ -91,8 +81,8 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
             }
         },
         onClosedCallback: () => {
-            if (window.authoringApi.refreshContent && needRefresh.current) {
-                window.authoringApi.refreshContent();
+            if (editorConfig && editorConfig.onClosedCallback) {
+                editorConfig.onClosedCallback(envProps, needRefresh.current);
             }
         },
         redirectBreadcrumbCallback: () => {
@@ -116,7 +106,7 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
                 TransitionComponent={Transition}
                 aria-labelledby="dialog-content-editor"
                 classes={classes}
-                onClose={() => (formikRef.current && formikRef.current.dirty) ? setConfirmationConfig(true) : closeAll()}
+                onClose={() => (formikRef.current && formikRef.current.dirty) ? setConfirmationConfig(true) : setEditorConfig(false)}
                 onRendered={() => window.focus()}
         >
             {confirmationConfig && (

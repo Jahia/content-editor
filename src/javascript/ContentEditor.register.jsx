@@ -6,6 +6,7 @@ import {ContentEditorApi} from '~/Api/ContentEditorApi';
 import ContentEditorRedux from './ContentEditor.redux';
 import {ContentEditorHistoryContextProvider} from '~/ContentEditorHistory/ContentEditorHistory.context';
 import {registerSelectorTypes} from '~/SelectorTypes';
+import {pcNavigateTo} from '~/pagecomposer.redux-actions';
 
 export default function () {
     registry.add('app', 'content-editor-history-context', {
@@ -26,25 +27,66 @@ export default function () {
         targets: ['main:2.1'],
         path: '/content-editor/:lang/edit/:uuid',
         // eslint-disable-next-line react/prop-types
-        render: ({match}) => <ContentEditorRedux uuid={match.params.uuid} mode={Constants.routes.baseEditRoute} lang={match.params.lang}/>
+        render: ({match}) => (
+            <ContentEditorRedux uuid={match.params.uuid}
+                                mode={Constants.routes.baseEditRoute}
+                                lang={match.params.lang}/>
+        )
     });
 
     registry.add('route', 'content-editor-create-route', {
         targets: ['main:2.1'],
         path: '/content-editor/:lang/create/:parentUuid/:contentType?/:name?',
         // eslint-disable-next-line react/prop-types
-        render: ({match}) => <ContentEditorRedux uuid={match.params.parentUuid} mode={Constants.routes.baseCreateRoute} lang={match.params.lang} contentType={decodeURI(match.params.contentType)} name={match.params.name}/>
+        render: ({match}) => (
+            <ContentEditorRedux uuid={match.params.parentUuid}
+                                mode={Constants.routes.baseCreateRoute}
+                                lang={match.params.lang}
+                                contentType={decodeURI(match.params.contentType)}
+                                name={match.params.name}/>
+        )
     });
 
     // Register GWT Hooks
     window.top.jahiaGwtHook = {
         // Hook on edit engine opening
         edit: ({uuid, lang, siteKey, uilang}) => {
-            window.CE_API.edit(uuid, siteKey, lang, uilang, true);
+            window.CE_API.edit(uuid, siteKey, lang, uilang, true, (updatedNode, originalNode) => {
+                // Trigger Page Composer to reload iframe if system name was renamed
+                if (originalNode.path !== updatedNode.path) {
+                    const dispatch = window.jahia.reduxStore.dispatch;
+                    dispatch(pcNavigateTo({oldPath: originalNode.path, newPath: updatedNode.path}));
+                }
+            }, (envProps, needRefresh) => {
+                // Restore GWT language
+                if (window.authoringApi.switchLanguage) {
+                    window.authoringApi.switchLanguage(lang);
+                }
+
+                if (needRefresh && window.authoringApi.refreshContent) {
+                    window.authoringApi.refreshContent();
+                }
+            });
         },
         // Hook on create engine opening, also hook on create content type selector
         create: ({name, uuid, path, lang, siteKey, uilang, contentTypes, excludedNodeTypes, includeSubTypes}) => {
-            window.CE_API.create(uuid, path, siteKey, lang, uilang, contentTypes, excludedNodeTypes, includeSubTypes, name, false);
+            let newPath;
+            window.CE_API.create(uuid, path, siteKey, lang, uilang, contentTypes, excludedNodeTypes, includeSubTypes, name, false, ({path}) => {
+                newPath = path;
+            }, (envProps, needRefresh) => {
+                // Restore GWT language
+                if (window.authoringApi.switchLanguage) {
+                    window.authoringApi.switchLanguage(lang);
+                }
+
+                if (contentTypes[0] === 'jnt:page' && newPath) {
+                    const dispatch = window.jahia.reduxStore.dispatch;
+                    const currentPcPath = window.jahia.reduxStore.getState().pagecomposer.currentPage.path;
+                    dispatch(pcNavigateTo({oldPath: currentPcPath, newPath}));
+                } else if (needRefresh && window.authoringApi.refreshContent) {
+                    window.authoringApi.refreshContent();
+                }
+            });
         }
     };
 

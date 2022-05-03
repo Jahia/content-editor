@@ -21,7 +21,7 @@ export const useCreate = (setEditorConfig, setContentTypeSelectorConfig) => {
      * @param name the name of the child node (only specified in case of named child node, null/undefined otherwise)
      * @param isFullscreen open editor in fullscreen
      */
-    return useCallback(async (uuid, path, site, lang, uilang, nodeTypes, excludedNodeTypes, includeSubTypes, name, isFullscreen) => {
+    return useCallback(async (uuid, path, site, lang, uilang, nodeTypes, excludedNodeTypes, includeSubTypes, name, isFullscreen, createCallback, onClosedCallback) => {
         // Sync GWT language
         if (window.authoringApi.switchLanguage) {
             window.authoringApi.switchLanguage(lang);
@@ -49,7 +49,9 @@ export const useCreate = (setEditorConfig, setContentTypeSelectorConfig) => {
                 initLang: lang,
                 contentType: creatableNodeTypes[0].name,
                 mode: Constants.routes.baseCreateRoute,
-                isFullscreen
+                isFullscreen,
+                createCallback,
+                onClosedCallback
             });
         }
 
@@ -64,7 +66,9 @@ export const useCreate = (setEditorConfig, setContentTypeSelectorConfig) => {
                 site,
                 lang,
                 uilang,
-                isFullscreen
+                isFullscreen,
+                createCallback,
+                onClosedCallback
             });
         }
     }, [client, setEditorConfig, setContentTypeSelectorConfig]);
