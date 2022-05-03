@@ -39,7 +39,7 @@ export const WindowListeners = () => {
                 registered.current = false;
                 unregisterListeners(envProps);
             }
-        }
+        };
     }, [registered, envProps, dirty]);
 
     return false;
