@@ -112,6 +112,7 @@ const editFormQuery = gql`
                     displayName
                     description
                     hide
+                    expanded
                     fieldSets {
                         name
                         displayName

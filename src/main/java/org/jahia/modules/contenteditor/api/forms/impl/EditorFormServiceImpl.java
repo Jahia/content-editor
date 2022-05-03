@@ -377,6 +377,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                     formSection.setDescription(description);
                 }
                 formSection.setHide(sectionDefinition.isHide());
+                formSection.setExpanded(sectionDefinition.expanded());
                 Collections.sort(formSection.getFieldSets());
                 sortedFormSections.add(formSection);
             }
@@ -416,7 +417,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         if (targetSection == null) {
             Double targetSectionRank = 1.0;
             Double targetSectionPriority = 1.0;
-            targetSection = new EditorFormSection(targetSectionName, targetSectionName, null, targetSectionRank, targetSectionPriority, new ArrayList<>());
+            targetSection = new EditorFormSection(targetSectionName, targetSectionName, null, targetSectionRank, targetSectionPriority, new ArrayList<>(), false);
         }
 
         if (formFieldSet.getRank().compareTo(0.0) == 0) {

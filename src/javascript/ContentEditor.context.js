@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {ProgressOverlay, withNotifications} from '@jahia/react-material';
 import {useFormDefinition} from '~/FormDefinitions';
 import {useSiteInfo} from '@jahia/data-helper';
@@ -19,6 +19,7 @@ export const useContentEditorConfigContext = () => useContext(ContentEditorConfi
 
 const ContentEditorDataContextProviderCmp = ({notificationContext, formQuery, formDataAdapter, children}) => {
     const {t} = useTranslation('content-editor');
+    const [errors, setErrors] = useState(null);
     const contentEditorConfigContext = useContentEditorConfigContext();
     // Get informations from page composer to display the preview.
     const {pageComposerCurrentPage, pageComposerActive} = useSelector(state => ({
@@ -114,7 +115,9 @@ const ContentEditorDataContextProviderCmp = ({notificationContext, formQuery, fo
         formQueryParams,
         nodeTypeName,
         nodeTypeDisplayName,
-        refetchFormData
+        refetchFormData,
+        errors,
+        setErrors
     };
 
     return (

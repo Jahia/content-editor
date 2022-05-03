@@ -12,24 +12,14 @@ import {Public} from '@material-ui/icons';
 import {getAutomaticOrderingFieldSet} from './AutomaticOrdering/AutomaticOrdering.utils';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import FieldSetsDisplay from '~/EditPanel/EditPanelContent/FormBuilder/FieldSet/FieldSetsDisplay/FieldSetsDisplay';
-import FieldSetsMapFcn from './ChildrenSection.fieldSetMapFcn';
+import {orderingSectionFieldSetMap} from '../FormBuilder.fieldSetHelp';
 import {useFormikContext} from 'formik';
 
 const styles = theme => ({
-    section: {
-        borderBottom: `1px solid ${theme.palette.ui.omega}`,
-        paddingBottom: theme.spacing.unit * 2,
-        marginBottom: theme.spacing.unit * 2,
-        backgroundColor: theme.palette.ui.epsilon
-    },
-    sectionTitle: {
-        textTransform: 'uppercase',
-        padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 4}px`
-    },
     fieldSetTitleContainer: {
         display: 'flex',
         flexDirection: 'row',
-        margin: `0 ${theme.spacing.unit * 6}px 0 ${theme.spacing.unit * 4}px`,
+        margin: `0 ${theme.spacing.unit * 6}px 0 0`,
         padding: `${theme.spacing.unit * 2}px 0`,
         borderTop: '1px solid var(--color-gray_light40)'
     },
@@ -46,9 +36,6 @@ const styles = theme => ({
         width: 'auto',
         padding: `${theme.spacing.unit * 2}px 0`,
         textTransform: 'uppercase'
-    },
-    formControl: {
-        margin: '0 48px 0 32px'
     }
 });
 
@@ -61,9 +48,7 @@ export const ChildrenSectionCmp = ({section, classes, canManuallyOrder, canAutom
     const automaticOrderingFieldSet = canAutomaticallyOrder && getAutomaticOrderingFieldSet(sections);
 
     return (
-        <section className={classes.section} data-sel-content-editor-fields-group={section.displayName}>
-            <Typography component="h2" className={classes.sectionTitle} color="alpha" variant="gamma">{section.displayName}</Typography>
-
+        <>
             <article>
                 <div className={classes.fieldSetTitleContainer}>
                     <Typography component="label" htmlFor={t('content-editor:label.contentEditor.section.listAndOrdering.ordering')} className={classes.fieldSetTitle} color="alpha" variant="zeta">
@@ -77,7 +62,7 @@ export const ChildrenSectionCmp = ({section, classes, canManuallyOrder, canAutom
                     />
                 </div>
 
-                <div className={classes.formControl}>
+                <div>
                     {(canAutomaticallyOrder && automaticOrderingFieldSet) &&
                     <>
                         <Typography color="beta" variant="zeta" htmlFor={t('content-editor:label.contentEditor.section.listAndOrdering.description')}>
@@ -103,8 +88,8 @@ export const ChildrenSectionCmp = ({section, classes, canManuallyOrder, canAutom
                     {!canAutomaticallyOrder && canManuallyOrder && <ManualOrdering/>}
                 </div>
             </article>
-            <FieldSetsDisplay fieldSets={section.fieldSets} fieldSetMapFcn={FieldSetsMapFcn}/>
-        </section>
+            <FieldSetsDisplay fieldSets={section.fieldSets} fieldSetMapFcn={orderingSectionFieldSetMap}/>
+        </>
     );
 };
 

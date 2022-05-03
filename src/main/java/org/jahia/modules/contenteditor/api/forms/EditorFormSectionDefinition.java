@@ -33,6 +33,7 @@ public class EditorFormSectionDefinition {
     private String descriptionKey;
     private String requiredPermission;
     private boolean hide = false;
+    private boolean expanded;
 
     public EditorFormSectionDefinition() {
     }
@@ -79,5 +80,41 @@ public class EditorFormSectionDefinition {
 
     public void setHide(boolean hide) {
         this.hide = hide;
+    }
+
+    public boolean expanded() {
+        return expanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
+    }
+
+    public void mergeWith(EditorFormSectionDefinition section) {
+        if (section.getDescriptionKey() != null) {
+            this.descriptionKey = section.getDescriptionKey();
+        }
+
+        if (section.getLabelKey() != null) {
+            this.labelKey = section.getLabelKey();
+        }
+
+        if (section.getRequiredPermission() != null) {
+            this.requiredPermission = section.getRequiredPermission();
+        }
+
+        this.hide = section.isHide();
+        this.expanded = section.expanded();
+    }
+
+    public EditorFormSectionDefinition copy() {
+        EditorFormSectionDefinition newSection = new EditorFormSectionDefinition();
+        newSection.setName(this.name);
+        newSection.setLabelKey(this.labelKey);
+        newSection.setDescriptionKey(this.descriptionKey);
+        newSection.setRequiredPermission(this.requiredPermission);
+        newSection.setHide(this.hide);
+        newSection.setExpanded(this.expanded);
+        return newSection;
     }
 }

@@ -11,12 +11,11 @@ import {useFormikContext} from 'formik';
 let styles = theme => ({
     fieldsetContainer: {},
     fieldsetTitleContainer: {
-        borderTop: `1px solid ${theme.palette.ui.omega}`,
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
         minHeight: '74px',
-        margin: `0 ${theme.spacing.unit * 6}px 0 ${theme.spacing.unit * 4}px`
+        margin: `0 ${theme.spacing.unit * 6}px 0 0`
     },
     labelContainer: {
         display: 'flex',

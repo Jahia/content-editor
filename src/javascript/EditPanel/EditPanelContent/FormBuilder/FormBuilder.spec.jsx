@@ -28,8 +28,52 @@ describe('FormBuilder component', () => {
         useContentEditorContext.mockReturnValue(context);
         sectionContext = {
             sections: [
-                {displayName: 'content'},
-                {displayName: 'Layout'}
+                {
+                    name: 'content',
+                    displayName: 'Content',
+                    expanded: false,
+                    fieldSets: [
+                        {
+                            displayName: 'yo1',
+                            displayed: true,
+                            fields: [
+                                {name: 'field1', displayName: 'field 1'},
+                                {name: 'field2', displayName: 'field 2'}
+                            ]
+                        },
+                        {
+                            displayName: 'yo2',
+                            displayed: true,
+                            fields: [
+                                {name: 'field21', displayName: 'field 21'},
+                                {name: 'field22', displayName: 'field 22'}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'layout',
+                    displayName: 'Layout',
+                    expanded: false,
+                    fieldSets: [
+                        {
+                            displayName: 'yo1',
+                            displayed: true,
+                            fields: [
+                                {name: 'field1', displayName: 'field 1'},
+                                {name: 'field2', displayName: 'field 2'}
+                            ]
+                        },
+                        {
+                            displayName: 'yo2',
+                            displayed: true,
+                            fields: [
+                                {name: 'field21', displayName: 'field 21'},
+                                {name: 'field22', displayName: 'field 22'}
+                            ]
+                        }
+                    ]
+                }
             ]
         };
         useContentEditorSectionContext.mockReturnValue(sectionContext);
@@ -46,16 +90,27 @@ describe('FormBuilder component', () => {
 
     it('should display each section', () => {
         const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).find('section');
-
-        sectionContext.sections.forEach(section => {
-            expect(cmp.find({section}).exists()).toBe(true);
-            if (section.displayName === 'content') {
-                expect(cmp.props()['data-sel-mode']).toBe('create');
-            }
-        });
+        expect(cmp.props()['data-sel-mode']).toBe('create');
+        expect(cmp.children().length).toEqual(sectionContext.sections.length);
     });
 
     it('should not display ordering section for page', () => {
+        sectionContext.sections.push({
+            name: 'listOrdering',
+            displayName: 'Listordering',
+            expanded: false,
+            fieldSets: [
+                {
+                    displayName: 'yo1',
+                    displayed: true,
+                    fields: [
+                        {name: 'field1', displayName: 'field 1'},
+                        {name: 'field2', displayName: 'field 2'}
+                    ]
+                }
+            ]
+        });
+
         context.nodeData.isPage = true;
 
         const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).find('section');
@@ -63,6 +118,22 @@ describe('FormBuilder component', () => {
     });
 
     it('should not display ordering section for site', () => {
+        sectionContext.sections.push({
+            name: 'listOrdering',
+            displayName: 'Listordering',
+            expanded: false,
+            fieldSets: [
+                {
+                    displayName: 'yo1',
+                    displayed: true,
+                    fields: [
+                        {name: 'field1', displayName: 'field 1'},
+                        {name: 'field2', displayName: 'field 2'}
+                    ]
+                }
+            ]
+        });
+
         context.nodeData.isSite = true;
 
         const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).find('section');
@@ -70,21 +141,82 @@ describe('FormBuilder component', () => {
     });
 
     it('should display ordering section', () => {
+        sectionContext.sections.push({
+            name: 'listOrdering',
+            displayName: 'Listordering',
+            expanded: false,
+            fieldSets: [
+                {
+                    displayName: 'yo1',
+                    displayed: true,
+                    fields: [
+                        {name: 'field1', displayName: 'field 1'},
+                        {name: 'field2', displayName: 'field 2'}
+                    ]
+                }
+            ]
+        });
         const cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).find('section');
         expect(cmp.find('OrderingSection').dive().find('ChildrenSection').exists()).toBeTruthy();
     });
 
     it('should display ordering section just after content section', () => {
+        sectionContext.sections.push({
+            name: 'listOrdering',
+            displayName: 'Listordering',
+            expanded: false,
+            fieldSets: [
+                {
+                    displayName: 'yo1',
+                    displayed: true,
+                    fields: [
+                        {name: 'field1', displayName: 'field 1'},
+                        {name: 'field2', displayName: 'field 2'}
+                    ]
+                }
+            ]
+        });
         const cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).find('section');
         expect(cmp.childAt(1).find('OrderingSection').dive().find('ChildrenSection').exists()).toBeTruthy();
     });
 
     it('should not display ordering section in create mode', () => {
+        sectionContext.sections.push({
+            name: 'listOrdering',
+            displayName: 'Listordering',
+            expanded: false,
+            fieldSets: [
+                {
+                    displayName: 'yo1',
+                    displayed: true,
+                    fields: [
+                        {name: 'field1', displayName: 'field 1'},
+                        {name: 'field2', displayName: 'field 2'}
+                    ]
+                }
+            ]
+        });
         const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).find('section');
         expect(cmp.find('OrderingSection').dive().find('ChildrenSection').exists()).toBe(false);
     });
 
     it('should have section with only automatically order', () => {
+        sectionContext.sections.push({
+            name: 'listOrdering',
+            displayName: 'Listordering',
+            expanded: false,
+            fieldSets: [
+                {
+                    displayName: 'yo1',
+                    displayed: true,
+                    fields: [
+                        {name: 'field1', displayName: 'field 1'},
+                        {name: 'field2', displayName: 'field 2'}
+                    ]
+                }
+            ]
+        });
+
         context.nodeData.primaryNodeType.hasOrderableChildNodes = false;
         formik.values = ({
             'jmix:orderedList': false
@@ -104,6 +236,22 @@ describe('FormBuilder component', () => {
     });
 
     it('should have section with only manually order', () => {
+        sectionContext.sections.push({
+            name: 'listOrdering',
+            displayName: 'Listordering',
+            expanded: false,
+            fieldSets: [
+                {
+                    displayName: 'yo1',
+                    displayed: true,
+                    fields: [
+                        {name: 'field1', displayName: 'field 1'},
+                        {name: 'field2', displayName: 'field 2'}
+                    ]
+                }
+            ]
+        });
+
         formik.values = ({
             AnyOtherKey: 'withValue'
         });
@@ -114,6 +262,22 @@ describe('FormBuilder component', () => {
     });
 
     it('should have section with automatically and manually order', () => {
+        sectionContext.sections.push({
+            name: 'listOrdering',
+            displayName: 'Listordering',
+            expanded: false,
+            fieldSets: [
+                {
+                    displayName: 'yo1',
+                    displayed: true,
+                    fields: [
+                        {name: 'field1', displayName: 'field 1'},
+                        {name: 'field2', displayName: 'field 2'}
+                    ]
+                }
+            ]
+        });
+
         formik.values = ({
             'jmix:orderedList': false
         });
@@ -121,5 +285,73 @@ describe('FormBuilder component', () => {
         const cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).find('section');
         expect(cmp.find('OrderingSection').dive().find('ChildrenSection').props().canAutomaticallyOrder).toBeTruthy();
         expect(cmp.find('OrderingSection').dive().find('ChildrenSection').props().canManuallyOrder).toBeTruthy();
+    });
+
+    it('should expand content and listOrdering by default', () => {
+        sectionContext.sections.push({
+            name: 'listOrdering',
+            displayName: 'Listordering',
+            expanded: false,
+            fieldSets: [
+                {
+                    displayName: 'yo1',
+                    displayed: true,
+                    fields: [
+                        {name: 'field1', displayName: 'field 1'},
+                        {name: 'field2', displayName: 'field 2'}
+                    ]
+                }
+            ]
+        });
+
+        context.nodeData.isPage = true;
+
+        const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).find('section');
+        let props = cmp.childAt(0).props();
+        expect(props.label).toBe('Content');
+        expect(props.isExpanded).toBeTruthy();
+
+        props = cmp.childAt(1).props();
+        expect(props.label).toBe('Listordering');
+        expect(props.isExpanded).toBeTruthy();
+
+        props = cmp.childAt(2).props();
+        expect(props.label).toBe('Layout');
+        expect(props.isExpanded).toBeFalsy();
+    });
+
+    it('should expand given settings from server', () => {
+        sectionContext.sections[1].expanded = true;
+
+        sectionContext.sections.push({
+            name: 'listOrdering',
+            displayName: 'Listordering',
+            expanded: false,
+            fieldSets: [
+                {
+                    displayName: 'yo1',
+                    displayed: true,
+                    fields: [
+                        {name: 'field1', displayName: 'field 1'},
+                        {name: 'field2', displayName: 'field 2'}
+                    ]
+                }
+            ]
+        });
+
+        context.nodeData.isPage = true;
+
+        const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).find('section');
+        let props = cmp.childAt(0).props();
+        expect(props.label).toBe('Content');
+        expect(props.isExpanded).toBeTruthy();
+
+        props = cmp.childAt(1).props();
+        expect(props.label).toBe('Listordering');
+        expect(props.isExpanded).toBeTruthy();
+
+        props = cmp.childAt(2).props();
+        expect(props.label).toBe('Layout');
+        expect(props.isExpanded).toBeTruthy();
     });
 });

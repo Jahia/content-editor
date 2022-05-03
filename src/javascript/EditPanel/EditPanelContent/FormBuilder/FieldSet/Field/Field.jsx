@@ -31,8 +31,7 @@ let styles = theme => {
         formControl: {
             ...theme.typography.zeta,
             ...common,
-            padding: '8px 0 8px 8px',
-            margin: '0 20px ',
+            padding: '8px 0 8px 0',
             borderLeft: '4px solid transparent'
         },
         formControlError: {

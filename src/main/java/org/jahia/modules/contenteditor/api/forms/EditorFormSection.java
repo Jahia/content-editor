@@ -42,17 +42,19 @@ public class EditorFormSection {
     private Double priority;
     private String description;
     private boolean hide = false;
+    private boolean expanded;
 
     public EditorFormSection() {
     }
 
-    public EditorFormSection(String name, String displayName, String description, Double rank, Double priority, List<EditorFormFieldSet> fieldSets) {
+    public EditorFormSection(String name, String displayName, String description, Double rank, Double priority, List<EditorFormFieldSet> fieldSets, boolean expanded) {
         this.name = name;
         this.displayName = displayName;
         this.description = description;
         this.rank = rank;
         this.priority = priority;
         this.fieldSets = fieldSets;
+        this.expanded = expanded;
     }
 
     @GraphQLField
@@ -121,5 +123,16 @@ public class EditorFormSection {
 
     public void setFieldSets(List<EditorFormFieldSet> fieldSets) {
         this.fieldSets = fieldSets;
+    }
+
+    @GraphQLField
+    @GraphQLName("expanded")
+    @GraphQLDescription("Is the section expanded")
+    public boolean expanded() {
+        return expanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
     }
 }
