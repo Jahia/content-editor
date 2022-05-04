@@ -9,7 +9,7 @@ export const useEdit = setEditorConfig => {
      * @param lang the current lang from url
      * @param uilang the preferred user lang for ui
      */
-    return useCallback((uuid, site, lang, uilang, isFullscreen, editCallback) => {
+    return useCallback((uuid, site, lang, uilang, isFullscreen, editCallback, onClosedCallback) => {
         // Sync GWT language
         if (window.authoringApi.switchLanguage) {
             window.authoringApi.switchLanguage(lang);
@@ -23,7 +23,8 @@ export const useEdit = setEditorConfig => {
             initLang: lang,
             mode: Constants.routes.baseEditRoute,
             isFullscreen,
-            editCallback
+            editCallback,
+            onClosedCallback
         });
     }, [setEditorConfig]);
 };

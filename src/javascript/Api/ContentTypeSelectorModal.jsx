@@ -33,7 +33,10 @@ export const ContentTypeSelectorModal = ({
                     lang: contentTypeSelectorConfig.lang,
                     isFullscreen: contentTypeSelectorConfig.isFullscreen,
                     contentType: contentType.name,
-                    mode: Constants.routes.baseCreateRoute
+                    mode: Constants.routes.baseCreateRoute,
+                    createCallback: contentTypeSelectorConfig.createCallback,
+                    onClosedCallback: contentTypeSelectorConfig.onClosedCallback
+
                 });
             }}
         />
