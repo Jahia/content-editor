@@ -38,7 +38,7 @@ const FormBuilderCmp = ({mode}) => {
     const sectionRef = useRef();
     useEffect(() => {
         sectionRef.current.querySelector('input')?.focus();
-    }, [])
+    }, []);
 
     if (!nodeData || !sections || sections.length === 0) {
         return <></>;
