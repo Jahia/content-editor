@@ -63,11 +63,11 @@ export const useDialogPickerContent = ({lang, pickerConfig, selectedPath, search
 
                     if (searchTerms) {
                         return {
-                            ...prev,
+                            ...fetchMoreResult,
                             jcr: {
-                                ...prev.jcr,
+                                ...fetchMoreResult.jcr,
                                 result: {
-                                    ...prev.jcr.result,
+                                    ...fetchMoreResult.jcr.result,
                                     nodes: [
                                         ...prev.jcr.result.nodes,
                                         ...fetchMoreResult.jcr.result.nodes
@@ -78,13 +78,13 @@ export const useDialogPickerContent = ({lang, pickerConfig, selectedPath, search
                     }
 
                     return {
-                        ...prev,
+                        ...fetchMoreResult,
                         jcr: {
-                            ...prev.jcr,
+                            ...fetchMoreResult.jcr,
                             result: {
-                                ...prev.jcr.result,
+                                ...fetchMoreResult.jcr.result,
                                 descendants: {
-                                    ...prev.jcr.result.descendants,
+                                    ...fetchMoreResult.jcr.result.descendants,
                                     nodes: [
                                         ...prev.jcr.result.descendants.nodes,
                                         ...fetchMoreResult.jcr.result.descendants.nodes
