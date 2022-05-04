@@ -7,6 +7,7 @@ export const ContentPickerFilledQuery = gql`
             result: nodeById(uuid: $uuid) {
                 displayName(language: $language)
                 primaryNodeType {
+                    name
                     displayName(language: $language)
                     icon
                 }
