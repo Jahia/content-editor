@@ -35,6 +35,7 @@ let styles = theme => {
             borderLeft: '4px solid transparent'
         },
         formControlError: {
+            padding: '8px 0 8px 8px',
             borderLeft: `4px solid ${theme.palette.moonstone.support.warning60}`
         },
         errorMessage: {
