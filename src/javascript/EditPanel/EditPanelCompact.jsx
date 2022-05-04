@@ -27,7 +27,7 @@ const EditPanelCompact = ({title}) => {
         <>
             <WindowListeners/>
 
-            <DialogTitle id="draggable-dialog-title">
+            <DialogTitle disableTypography id="draggable-dialog-title">
                 <div className="flexRow">
                     <Typography variant="heading">{title}</Typography>
                     <div className="flexFluid"/>

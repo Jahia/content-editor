@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {Form} from 'formik';
 import {Collapsible} from '@jahia/moonstone';
@@ -34,6 +34,11 @@ const FormBuilderCmp = ({mode}) => {
             setToggleStates(newToggleState);
         }
     }, [errors]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    const sectionRef = useRef();
+    useEffect(() => {
+        sectionRef.current.querySelector('input')?.focus();
+    }, []);
 
     if (!nodeData || !sections || sections.length === 0) {
         return <></>;
@@ -90,7 +95,7 @@ const FormBuilderCmp = ({mode}) => {
 
     return (
         <Form>
-            <section data-sel-mode={mode}>
+            <section ref={sectionRef} data-sel-mode={mode}>
                 {children}
             </section>
         </Form>
