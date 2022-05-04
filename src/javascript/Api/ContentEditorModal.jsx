@@ -102,6 +102,7 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
         <Dialog open
                 disableAutoFocus
                 disableEnforceFocus
+                maxWidth="md"
                 fullScreen={editorConfig.isFullscreen}
                 TransitionComponent={Transition}
                 aria-labelledby="dialog-content-editor"

@@ -5,3 +5,26 @@
 .tab {
     height: 100vh;
 }
+
+.dialogTitle.dialogTitle {
+    margin: var(--spacing-small);
+}
+
+.dialogActions.dialogActions {
+    margin: 0;
+    padding: 8px 16px;
+
+    border-top: 1px solid var(--color-gray_light);
+}
+
+.checkbox {
+    margin: 0 var(--spacing-nano);
+}
+
+.languageSwitcher {
+    margin: var(--spacing-small) 0;
+}
+
+.languageSwitcher {
+    margin: var(--spacing-small) 0;
+}

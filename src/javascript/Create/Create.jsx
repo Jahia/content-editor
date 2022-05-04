@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {withNotifications} from '@jahia/react-material';
 import {Formik} from 'formik';
 import EditPanel from '~/EditPanel';
@@ -19,6 +19,10 @@ const CreateCmp = ({
     const contentEditorConfigContext = useContentEditorConfigContext();
     const {nodeData, formQueryParams, initialValues, title} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
+    const createAnotherState = useState(false);
+    const createAnother = {
+        value: createAnotherState[0], set: createAnotherState[1]
+    };
 
     useEffect(() => {
         return () => {
@@ -60,7 +64,7 @@ const CreateCmp = ({
             validate={validate(sections)}
             onSubmit={handleSubmit}
         >
-            {props => <EditPanel {...props} title={title}/>}
+            {props => <EditPanel {...props} createAnother={createAnother} title={title}/>}
         </Formik>
     );
 };

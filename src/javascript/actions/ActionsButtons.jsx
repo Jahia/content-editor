@@ -19,7 +19,7 @@ export const ButtonWithPastilleRenderer = props => {
                 {...componentProps}
                 icon={buttonIcon}
                 label={t(buttonLabel).toUpperCase()}
-                disabled={disabled}
+                isDisabled={disabled}
                 data-sel-role={dataSelRole}
                 onClick={e => {
                     e.stopPropagation();
