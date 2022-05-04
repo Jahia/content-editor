@@ -1,5 +1,5 @@
 import {Constants} from '~/ContentEditor.constants';
-import {FieldSet} from './ChildrenSection/ListSizeLimitFieldSet';
+import {FieldSet} from './Sections/ChildrenSection/ListSizeLimitFieldSet';
 
 const orderingSectionFieldSetMap = fieldSet => {
     if (fieldSet.name === 'jmix:listSizeLimit') {

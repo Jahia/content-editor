@@ -12,7 +12,7 @@ import {Public} from '@material-ui/icons';
 import {getAutomaticOrderingFieldSet} from './AutomaticOrdering/AutomaticOrdering.utils';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import FieldSetsDisplay from '~/EditPanel/EditPanelContent/FormBuilder/FieldSet/FieldSetsDisplay/FieldSetsDisplay';
-import {orderingSectionFieldSetMap} from '../FormBuilder.fieldSetHelp';
+import {orderingSectionFieldSetMap} from '../../FormBuilder.fieldSetHelp';
 import {useFormikContext} from 'formik';
 
 const styles = theme => ({
