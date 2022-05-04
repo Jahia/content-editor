@@ -8,21 +8,34 @@ jest.mock('formik');
 jest.mock('react', () => {
     return {
         ...jest.requireActual('react'),
-        useContext: jest.fn(() => ({}))
+        useContext: jest.fn(() => ({})),
+        useState: jest.fn()
     };
 });
 
-jest.mock('~/ContentEditor.context', () => ({useContentEditorContext: jest.fn(), useContentEditorConfigContext: jest.fn()}));
+jest.mock('~/ContentEditor.context', () => ({
+    useContentEditorContext: jest.fn(),
+    useContentEditorConfigContext: jest.fn()
+}));
 
 describe('create action', () => {
     let defaultProps;
     let formik;
     let CreateAction;
+    const setState = jest.fn();
+    const useStateMock = initState => [initState, setState];
+
+    jest.spyOn(React, 'useState').mockImplementation(useStateMock);
+
     beforeEach(() => {
         CreateAction = createAction.component;
         let render = jest.fn();
         useContext.mockImplementation(() => ({render}));
-        useContentEditorContext.mockImplementation(() => ({mode: jest.fn(), setErrors: jest.fn()}));
+        useContentEditorContext.mockImplementation(() => ({
+            mode: jest.fn(),
+            setErrors: jest.fn(),
+            refetchFormData: jest.fn(() => Promise.resolve({}))
+        }));
         useContentEditorConfigContext.mockImplementation(() => ({envProps: {}}));
 
         defaultProps = {
@@ -39,6 +52,10 @@ describe('create action', () => {
             errors: {}
         };
         useFormikContext.mockReturnValue(formik);
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
     });
 
     it('should load when loading', async () => {
@@ -74,13 +91,14 @@ describe('create action', () => {
         const cmp = shallow(<CreateAction {...defaultProps}/>);
         await cmp.props().onClick(defaultProps);
 
-        expect(cmp.props().disabled).toBe(false);
+        expect(setState).toHaveBeenNthCalledWith(1, true);
     });
 
     it('should disable action when is clicked', async () => {
+        formik.dirty = false;
         const cmp = shallow(<CreateAction {...defaultProps}/>);
         await cmp.props().onClick(defaultProps);
 
-        expect(cmp.props().disabled).toBe(true);
+        expect(setState).toHaveBeenNthCalledWith(1, true);
     });
 });
