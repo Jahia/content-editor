@@ -1,24 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {useContentEditorContext} from '~/ContentEditor.context';
-import classes from './EditPanel.scss';
+import styles from './EditPanel.scss';
 import clsx from 'clsx';
 import {DisplayAction, DisplayActions, registry} from '@jahia/ui-extender';
 import {Constants} from '~/ContentEditor.constants';
 import {WindowListeners} from './WindowListeners';
-import {DialogActions, DialogTitle} from '@material-ui/core';
-import {Button, Typography} from '@jahia/moonstone';
+import {DialogActions, DialogContent, DialogTitle} from '@material-ui/core';
+import {Button, Checkbox, Typography} from '@jahia/moonstone';
 import {GoBack} from '~/actions/goBack.action';
 import {getButtonRenderer} from '~/utils/getButtonRenderer';
 import {EditPanelLanguageSwitcher} from '~/EditPanel/EditPanelLanguageSwitcher';
+import {useTranslation} from 'react-i18next';
 
 const ButtonRenderer = getButtonRenderer({
     defaultButtonProps: {size: 'big', style: {margin: '8px'}},
     noIcon: true
 });
 
-const EditPanelCompact = ({title}) => {
+const EditPanelCompact = ({title, createAnother}) => {
     const {siteInfo, nodeData, lang} = useContentEditorContext();
+    const {t} = useTranslation('content-editor');
 
     const tabs = registry.find({target: 'editHeaderTabsActions'});
     const EditTabComponent = tabs.find(tab => tab.value === Constants.editPanel.editTab).displayableComponent;
@@ -27,7 +29,7 @@ const EditPanelCompact = ({title}) => {
         <>
             <WindowListeners/>
 
-            <DialogTitle disableTypography id="draggable-dialog-title">
+            <DialogTitle disableTypography className={styles.dialogTitle} id="draggable-dialog-title">
                 <div className="flexRow">
                     <Typography variant="heading">{title}</Typography>
                     <div className="flexFluid"/>
@@ -45,14 +47,25 @@ const EditPanelCompact = ({title}) => {
                             />
                         )}/>
                 </div>
-                <div className="flexRow">
+                <div className={clsx('flexRow', styles.languageSwitcher)}>
                     <EditPanelLanguageSwitcher lang={lang} siteInfo={siteInfo}/>
                 </div>
             </DialogTitle>
-            <div className={clsx(classes.tab, 'flexCol')}>
-                <EditTabComponent nodePath={nodeData.path} lang={lang}/>
-            </div>
-            <DialogActions>
+            <DialogContent>
+                <div className={clsx(styles.tab, 'flexCol')}>
+                    <EditTabComponent nodePath={nodeData.path} lang={lang}/>
+                </div>
+            </DialogContent>
+            <DialogActions className={styles.dialogActions}>
+                {createAnother && (
+                    <>
+                        <Checkbox className={styles.checkbox} id="createAnother" checked={createAnother.value} onChange={() => createAnother.set(!createAnother.value)}/>
+                        <Typography isUpperCase component="label" for="createAnother" variant="button" className={styles.checkbox}>
+                            {t('label.contentEditor.create.createButton.createAnother')}
+                        </Typography>
+                    </>
+                )}
+                <div className="flexFluid"/>
                 <GoBack
                     componentProps={{
                         'data-sel-role': 'backButton'
@@ -65,6 +78,7 @@ const EditPanelCompact = ({title}) => {
                     buttonProps={{
                         color: 'accent'
                     }}
+                    createAnother={createAnother.value}
                     target="content-editor/header/main-save-actions"
                     render={ButtonRenderer}
                 />
@@ -74,7 +88,8 @@ const EditPanelCompact = ({title}) => {
 };
 
 EditPanelCompact.propTypes = {
-    title: PropTypes.string.isRequired
+    title: PropTypes.string.isRequired,
+    createAnother: PropTypes.object
 };
 
 EditPanelCompact.displayName = 'EditPanelCompact';

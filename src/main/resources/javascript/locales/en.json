@@ -5,6 +5,7 @@
         "title": "Create {{type}}",
         "createButton": {
           "name": "Save",
+          "createAnother": "Create another",
           "success": "Content successfully created",
           "error": "An error occurred when creating the content"
         }
