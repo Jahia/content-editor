@@ -31,7 +31,7 @@ describe('create action', () => {
             loading: undefined
         };
         formik = {
-            submitForm: jest.fn(() => Promise.resolve()),
+            submitForm: jest.fn(() => Promise.resolve({})),
             validateForm: jest.fn(() => Promise.resolve(formik.errors)),
             resetForm: jest.fn(),
             setFieldValue: jest.fn(),
