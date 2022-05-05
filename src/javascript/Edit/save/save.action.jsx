@@ -27,10 +27,10 @@ const Save = ({render: Render, loading: Loading, ...otherProps}) => {
     });
 
     const save = async formik => {
-        const formIsValid = await validateForm(formik, componentRenderer);
+        const errors = await validateForm(formik, componentRenderer);
 
-        if (!formIsValid) {
-            setErrors({...formik.errors});
+        if (errors) {
+            setErrors({...errors});
             return;
         }
 

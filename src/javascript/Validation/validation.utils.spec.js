@@ -22,13 +22,13 @@ describe('validation utils', () => {
             };
         });
 
-        it('should return true when there is no errors', async () => {
+        it('should return null when there is no errors', async () => {
             errors = {};
-            expect(await validateForm(formik, renderComponent)).toBe(true);
+            expect(await validateForm(formik, renderComponent)).toBeNull();
         });
 
-        it('should return false when there is errors', async () => {
-            expect(await validateForm(formik, renderComponent)).toBe(false);
+        it('should return object with errors', async () => {
+            expect(await validateForm(formik, renderComponent)).toBeDefined();
         });
 
         it('should set fields in error to touched', async () => {

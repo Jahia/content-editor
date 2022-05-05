@@ -26,10 +26,10 @@ export const validateForm = async ({setTouched, validateForm}, componentRenderer
         };
 
         componentRenderer.render('SaveErrorModal', SaveErrorModal, {open: true, nbOfErrors, onClose});
-        return false;
+        return errors;
     }
 
-    return true;
+    return null;
 };
 
 export const onServerError = (error, formikActions, notificationContext, t, propFieldNameMapping, defaultErrorMessage) => {
