@@ -102,9 +102,11 @@ public class StaticEditorLockService {
      */
     public static void unlock(String lockId) throws RepositoryException {
         synchronized ((LOCK_SYNC_PREFIX + lockId).intern()) {
+            logger.info("Releasing content editor lock {}", lockId);
             JCRSessionFactory jcrSessionFactory = JCRSessionFactory.getInstance();
             JahiaUser currentUser = jcrSessionFactory.getCurrentUser();
-            if (!holdLocks.containsKey(currentUser)) {
+            if (!holdLocks.containsKey(currentUser) || holdLocks.get(currentUser).isEmpty()) {
+                logger.info("Lock already released");
                 // no locks found for current user
                 return;
             }
@@ -118,18 +120,23 @@ public class StaticEditorLockService {
                 locks.remove(lockId);
                 holdLocks.put(currentUser, locks);
 
-                JCRNodeWrapper node = sessionWrapper.getNodeByIdentifier(lockedIdentifier);
-                if (!locks.containsValue(lockedIdentifier) && // unlock JCR only if there is no other lock on this UUID already in session
-                    node.getProvider().isLockingAvailable() &&
-                    node.isLocked()) {
+                try {
+                    JCRNodeWrapper node = sessionWrapper.getNodeByIdentifier(lockedIdentifier);
+                    if (!locks.containsValue(lockedIdentifier) && // unlock JCR only if there is no other lock on this UUID already in session
+                        node.getProvider().isLockingAvailable() &&
+                        node.isLocked()) {
 
-                    String lockOwners = node.getLockOwner();
-                    if (StringUtils.isNotEmpty(lockOwners) &&
-                        Arrays.asList(StringUtils.split(lockOwners, " ")).contains(currentUser.getUsername())) {
-                        node.unlock(LOCK_TYPE);
+                        String lockOwners = node.getLockOwner();
+                        if (StringUtils.isNotEmpty(lockOwners) &&
+                            Arrays.asList(StringUtils.split(lockOwners, " ")).contains(currentUser.getUsername())) {
+                            node.unlock(LOCK_TYPE);
+                        }
                     }
+                } catch (LockException e) {
+                    logger.warn("Error when releasing lock: {}", lockId, e);
                 }
             }
+            logger.info("Lock {} released", lockId);
         }
     }
 

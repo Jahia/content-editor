@@ -74,7 +74,7 @@ public class GqlEditorSubscriptions extends GqlJcrMutationSupport {
 
             obs.setCancellable(()-> {
                 // clear and cancel current process
-                logger.debug("Connection lost or closed, unlock the node");
+                logger.info("Connection lost or closed, unlock the node");
                 try {
                     JCRSessionFactory.getInstance().setCurrentUser(currentUser);
                     StaticEditorLockService.unlock(editorID);
