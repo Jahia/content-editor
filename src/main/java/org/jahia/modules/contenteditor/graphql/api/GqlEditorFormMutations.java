@@ -43,6 +43,8 @@ import org.jahia.services.scheduler.SchedulerService;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.SchedulerException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.jcr.RepositoryException;
@@ -53,6 +55,7 @@ import java.util.stream.Collectors;
  * The root class for the GraphQL form mutations API
  */
 public class GqlEditorFormMutations {
+    private static final Logger logger = LoggerFactory.getLogger(GqlEditorFormMutations.class);
 
     private EditorFormService editorFormService;
 
@@ -75,6 +78,7 @@ public class GqlEditorFormMutations {
         @GraphQLName("editorID") @GraphQLNonNull @GraphQLDescription("An ID generated client side used to identify the lock") String editorID
     ) throws EditorFormException {
         try {
+            logger.info("Request for lock release {}", editorID);
             StaticEditorLockService.unlock(editorID);
             return true;
         } catch (RepositoryException e) {
