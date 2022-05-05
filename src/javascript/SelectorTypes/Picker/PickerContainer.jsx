@@ -48,7 +48,7 @@ const PickerCmp = ({field, value, editorContext, inputContext, onChange}) => {
     };
 
     return (
-        <div className="flexFluid flexRow alignCenter">
+        <div className="flexFluid flexRow_nowrap alignCenter">
             <ReferenceCard
                 isReadOnly={field.readOnly}
                 emptyLabel={t((error || notFound) ? pickerConfig.picker.pickerInput.notFoundLabel : pickerConfig.picker.pickerInput.emptyLabel)}
