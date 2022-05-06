@@ -30,9 +30,8 @@ const FormBuilderCmp = ({mode}) => {
         }
     }, [errors]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    const sectionRef = useRef();
     useEffect(() => {
-        sectionRef.current.querySelector('input')?.focus();
+        document.querySelector('div[data-first-field=true] input')?.focus();
     }, []);
 
     if (!nodeData || !sections || sections.length === 0) {
@@ -79,7 +78,7 @@ const FormBuilderCmp = ({mode}) => {
 
     return (
         <Form>
-            <section ref={sectionRef} data-sel-mode={mode}>
+            <section data-sel-mode={mode}>
                 {children}
             </section>
         </Form>
