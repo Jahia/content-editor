@@ -78,7 +78,7 @@ const EditPanelCompact = ({title, createAnother}) => {
                     buttonProps={{
                         color: 'accent'
                     }}
-                    createAnother={createAnother.value}
+                    createAnother={createAnother?.value}
                     target="content-editor/header/main-save-actions"
                     render={ButtonRenderer}
                 />
