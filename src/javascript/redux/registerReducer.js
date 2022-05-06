@@ -5,7 +5,7 @@ export const {ceToggleSections} = createActions('CE_TOGGLE_SECTIONS');
 
 const COMBINED_REDUCERS_NAME = 'contenteditor';
 
-const DEFAULT_OPENED_SECTIONS = {content: true, listOrdering: true};
+export const DEFAULT_OPENED_SECTIONS = {content: true, listOrdering: true};
 
 export const registerReducer = registry => {
     const toggleSections = handleActions({
@@ -23,4 +23,4 @@ export const registerReducer = registry => {
     const ceReducer = combineReducers(reducerObj);
 
     registry.add('redux-reducer', COMBINED_REDUCERS_NAME, {targets: ['root'], reducer: ceReducer});
-}
+};

@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {ContentEditor} from './ContentEditor';
 import PropTypes from 'prop-types';
@@ -11,6 +11,7 @@ import {registry} from '@jahia/ui-extender';
 import {useQuery} from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import {PredefinedFragments} from '@jahia/data-helper';
+import {ceToggleSections, DEFAULT_OPENED_SECTIONS} from '~/redux/registerReducer';
 
 const ContentEditorRedux = ({mode, uuid, lang, contentType, name}) => {
     const {redirect, hasHistory, exit, registerBlockListener, unRegisterBlockListener} = useContentEditorHistory();
@@ -35,6 +36,12 @@ const ContentEditorRedux = ({mode, uuid, lang, contentType, name}) => {
             uuid
         }
     });
+
+    useEffect(() => {
+        return () => {
+            dispatch(ceToggleSections(DEFAULT_OPENED_SECTIONS));
+        };
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const site = data && data.jcr.nodeById.site.name;
 

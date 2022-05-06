@@ -37,7 +37,7 @@ const FormBuilderCmp = ({mode}) => {
         // Update section states for this node type
         const newStates = sections ? sections.reduce((acc, curr) => ({...acc, [curr.name]: acc[curr.name] ? acc[curr.name] : curr.expanded}), toggleStates) : {};
         dispatch(ceToggleSections(newStates));
-    }, []);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     if (!nodeData || !sections || sections.length === 0) {
         return <></>;
