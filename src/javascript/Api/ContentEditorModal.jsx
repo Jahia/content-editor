@@ -1,7 +1,7 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Constants} from '~/ContentEditor.constants';
 import {ContentEditor} from '~/ContentEditor';
-import {Dialog} from '@material-ui/core';
+import {Dialog, IconButton} from '@material-ui/core';
 import styles from './ContentEditorApi.scss';
 import {FormikProvider} from 'formik';
 import EditPanelDialogConfirmation from '~/EditPanel/EditPanelDialogConfirmation/EditPanelDialogConfirmation';
@@ -9,6 +9,10 @@ import Slide from '@material-ui/core/Slide';
 import PropTypes from 'prop-types';
 import {useDispatch} from 'react-redux';
 import {ceToggleSections, DEFAULT_OPENED_SECTIONS} from '~/redux/registerReducer';
+import {Button} from '@jahia/moonstone';
+import {Close} from '@material-ui/icons';
+import {withNotifications} from '@jahia/react-material';
+import {useTranslation} from 'react-i18next';
 
 function triggerEvents(nodeUuid, operator) {
     // Refresh contentEditorEventHandlers
@@ -24,7 +28,7 @@ const Transition = React.forwardRef((props, ref) => {
     return <Slide ref={ref} direction="up" {...props}/>;
 });
 
-export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
+export const ContentEditorModal = withNotifications()(({editorConfig, setEditorConfig, notificationContext}) => {
     const [confirmationConfig, setConfirmationConfig] = useState(false);
 
     const formikRef = useRef();
@@ -37,6 +41,8 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
             dispatch(ceToggleSections(DEFAULT_OPENED_SECTIONS));
         };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+    const {t} = useTranslation();
 
     // Standalone env props
     const envProps = {
@@ -52,7 +58,35 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
             }
 
             triggerEvents(newNode.uuid, Constants.operators.create);
+
+            notificationContext.notify(t('content-editor:label.contentEditor.create.createButton.success'), {
+                action: [
+                    <Button
+                        key="edit"
+                        variant="outlined"
+                        label={t('content-editor:label.contentEditor.edit.contentEdit')}
+                        onClick={() => {
+                            setEditorConfig({
+                                ...editorConfig,
+                                isFullscreen: true,
+                                uuid: newNode.uuid,
+                                mode: Constants.routes.baseEditRoute
+                            });
+                            notificationContext.closeNotification();
+                        }}
+                    />,
+                    <IconButton
+                        key="close"
+                        aria-label="Close"
+                        color="inherit"
+                        onClick={() => notificationContext.closeNotification()}
+                    >
+                        <Close/>
+                    </IconButton>
+                ]
+            });
         },
+
         editCallback: ({originalNode, updatedNode}) => {
             needRefresh.current = true;
             if (editorConfig && editorConfig.editCallback) {
@@ -60,6 +94,8 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
             }
 
             triggerEvents(updatedNode.uuid, Constants.operators.update);
+
+            notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.success'), ['closeButton']);
         },
         onSavedCallback: ({newNode, language}, forceRedirect) => {
             if (newNode && (editorConfig.isFullscreen || forceRedirect)) {
@@ -70,8 +106,7 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
                         ...editorConfig,
                         uuid: newNode.uuid,
                         lang: language ? language : editorConfig.lang,
-                        mode: Constants.routes.baseEditRoute,
-                        fromCreate: true
+                        mode: Constants.routes.baseEditRoute
                     });
                 }
             } else if (!editorConfig.isFullscreen) {
@@ -140,9 +175,10 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
             />
         </Dialog>
     );
-};
+});
 
 ContentEditorModal.propTypes = {
     editorConfig: PropTypes.object.isRequired,
-    setEditorConfig: PropTypes.func.isRequired
+    setEditorConfig: PropTypes.func.isRequired,
+    notificationContext: PropTypes.object.isRequired
 };
