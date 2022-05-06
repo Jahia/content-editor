@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import {Constants} from '~/ContentEditor.constants';
 import {ContentEditor} from '~/ContentEditor';
 import {Dialog} from '@material-ui/core';
@@ -7,6 +7,8 @@ import {FormikProvider} from 'formik';
 import EditPanelDialogConfirmation from '~/EditPanel/EditPanelDialogConfirmation/EditPanelDialogConfirmation';
 import Slide from '@material-ui/core/Slide';
 import PropTypes from 'prop-types';
+import {useDispatch} from 'react-redux';
+import {ceToggleSections, DEFAULT_OPENED_SECTIONS} from '~/redux/registerReducer';
 
 function triggerEvents(nodeUuid, operator) {
     // Refresh contentEditorEventHandlers
@@ -27,6 +29,14 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
 
     const formikRef = useRef();
     const needRefresh = useRef(false);
+    const dispatch = useDispatch();
+
+    // This is the only sure way to tell when content editor is no longer visible
+    useEffect(() => {
+        return () => {
+            dispatch(ceToggleSections(DEFAULT_OPENED_SECTIONS));
+        };
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     // Standalone env props
     const envProps = {

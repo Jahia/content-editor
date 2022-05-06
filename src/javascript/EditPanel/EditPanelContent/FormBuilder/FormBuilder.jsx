@@ -1,17 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {Form} from 'formik';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import {SectionsPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {OrderingSection, Section} from './Sections';
-
-const DEFAULT_OPENED_SECTIONS = {content: true, listOrdering: true};
+import {useDispatch, useSelector} from 'react-redux';
+import {ceToggleSections} from '~/redux/registerReducer';
 
 const FormBuilderCmp = ({mode}) => {
     const {nodeData, errors} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
-    const [toggleStates, setToggleStates] = useState(sections ? sections.reduce((acc, curr) => ({...acc, [curr.name]: acc[curr.name] ? acc[curr.name] : curr.expanded}), DEFAULT_OPENED_SECTIONS) : {});
+    const toggleStates = useSelector(state => state.contenteditor.ceToggleSections);
+    const dispatch = useDispatch();
 
     // Update toggle state if there are errors
     useEffect(() => {
@@ -26,13 +27,17 @@ const FormBuilderCmp = ({mode}) => {
                     });
                 });
             });
-            setToggleStates(newToggleState);
+            dispatch(ceToggleSections(newToggleState));
         }
     }, [errors]); // eslint-disable-line react-hooks/exhaustive-deps
 
+    // On mount/unmount hook
     useEffect(() => {
         document.querySelector('div[data-first-field=true] input')?.focus();
-    }, []);
+        // Update section states for this node type
+        const newStates = sections ? sections.reduce((acc, curr) => ({...acc, [curr.name]: acc[curr.name] ? acc[curr.name] : curr.expanded}), toggleStates) : {};
+        dispatch(ceToggleSections(newStates));
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     if (!nodeData || !sections || sections.length === 0) {
         return <></>;
@@ -42,7 +47,7 @@ const FormBuilderCmp = ({mode}) => {
     const children = sections.map((section, index) => {
         const toggleFcn = e => {
             e.preventDefault();
-            setToggleStates({...toggleStates, [section.name]: !toggleStates[section.name]});
+            dispatch(ceToggleSections({...toggleStates, [section.name]: !toggleStates[section.name]}));
         };
 
         if (section.name === 'listOrdering') {

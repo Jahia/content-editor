@@ -7,6 +7,7 @@ import ContentEditorRedux from './ContentEditor.redux';
 import {ContentEditorHistoryContextProvider} from '~/ContentEditorHistory/ContentEditorHistory.context';
 import {registerSelectorTypes} from '~/SelectorTypes';
 import {pcNavigateTo} from '~/pagecomposer.redux-actions';
+import {registerReducer} from './redux/registerReducer';
 
 export default function () {
     registry.add('app', 'content-editor-history-context', {
@@ -22,6 +23,8 @@ export default function () {
     registerCEActions(registry);
 
     registerSelectorTypes(registry);
+
+    registerReducer(registry);
 
     registry.add('route', 'content-editor-edit-route', {
         targets: ['main:2.1'],
