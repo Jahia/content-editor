@@ -134,7 +134,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field}) 
         };
     }, []);
 
-    const firstField = sectionsContext.sections[0]?.fieldSets[0]?.fields[0] === field
+    const firstField = sectionsContext.sections[0]?.fieldSets[0]?.fields[0] === field;
 
     return (
         <div className={`${classes.formControl} ${shouldDisplayErrors ? classes.formControlError : ''}`}

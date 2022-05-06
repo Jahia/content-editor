@@ -1,10 +1,10 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Form} from 'formik';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import {SectionsPropTypes} from '~/FormDefinitions/FormData.proptypes';
-import {Section, OrderingSection} from './Sections';
+import {OrderingSection, Section} from './Sections';
 
 const DEFAULT_OPENED_SECTIONS = {content: true, listOrdering: true};
 
