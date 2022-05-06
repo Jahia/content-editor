@@ -18,7 +18,7 @@ export const Section = ({section, isExpanded, onClick}) => {
                      isExpanded={isExpanded}
                      onClick={onClick}
         >
-            <FieldSetsDisplay fieldSets={filterRegularFieldSets(section.fieldSets)}/>
+            <FieldSetsDisplay fieldSets={fieldSets}/>
         </Collapsible>
     );
 };
