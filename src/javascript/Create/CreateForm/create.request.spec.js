@@ -63,9 +63,4 @@ describe('createNode', () => {
         expect(params.client.mutate.mock.calls[0][0].mutation).toBe('CreateNode');
     });
 
-    it('should display a notification when request is a success', async () => {
-        await createNode(params);
-
-        expect(params.notificationContext.notify).toHaveBeenCalled();
-    });
 });
