@@ -8,11 +8,23 @@ import LockInfoBadge from '~/Lock/LockInfo.badge';
 import WipInfoChip from '~/EditPanel/WorkInProgress/Chip/WipInfo.Chip';
 import {truncate} from '~/utils/helper';
 import styles from './UpperSection.scss';
-import {ButtonRenderer, ButtonWithPastilleRenderer} from '~/actions/ActionsButtons';
 import ContentBreadcrumb from '~/EditPanel/header/ContentBreadcrumb';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {UnsavedChip} from '~/EditPanel/header/UnsavedChip';
 import {PublishMenu} from '~/EditPanel/header/PublishMenu';
+import {getButtonRenderer} from '~/utils/getButtonRenderer';
+
+const ButtonRenderer = getButtonRenderer({
+    defaultButtonProps: {
+        size: 'big',
+        color: 'accent',
+        className: styles.mainActions
+    }
+});
+
+const BackButtonRenderer = getButtonRenderer({
+    labelStyle: 'none'
+});
 
 export const HeaderUpperSection = ({title, isShowPublish}) => {
     const {nodeData, nodeTypeDisplayName} = useContentEditorContext();
@@ -23,11 +35,8 @@ export const HeaderUpperSection = ({title, isShowPublish}) => {
             <div className={styles.header}>
                 <div className={styles.headerLeft}>
                     <DisplayAction
-                        componentProps={{
-                            'data-sel-role': 'backButton'
-                        }}
                         actionKey="backButton"
-                        render={ButtonRenderer}
+                        render={BackButtonRenderer}
                     />
 
                     <Typography isNowrap className={styles.headerTypography} variant="title" data-sel-role="title">
@@ -38,13 +47,8 @@ export const HeaderUpperSection = ({title, isShowPublish}) => {
                 <div className={styles.headerRight}>
                     <div className={styles.saveActions}>
                         <DisplayActions
-                            componentProps={{
-                                color: 'accent',
-                                size: 'big',
-                                className: styles.mainActions
-                            }}
                             target="content-editor/header/main-save-actions"
-                            render={ButtonWithPastilleRenderer}
+                            render={ButtonRenderer}
                         />
                     </div>
 
@@ -56,13 +60,8 @@ export const HeaderUpperSection = ({title, isShowPublish}) => {
                         >
                             <DisplayActions
                                 isMainButton
-                                componentProps={{
-                                    color: 'accent',
-                                    size: 'big',
-                                    className: styles.mainActions
-                                }}
                                 target="content-editor/header/main-publish-actions"
-                                render={ButtonWithPastilleRenderer}
+                                render={ButtonRenderer}
                             />
 
                             <PublishMenu/>

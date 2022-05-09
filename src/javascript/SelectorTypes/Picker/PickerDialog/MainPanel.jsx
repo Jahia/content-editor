@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 
 import {withStyles} from '@material-ui/core';
 import {Button} from '@jahia/moonstone';
-import {ButtonRenderer} from '~/actions/ActionsButtons';
 import {DisplayActions} from '@jahia/ui-extender';
 
 import {Typography} from '@jahia/design-system-kit';
 
 import {SearchInput} from './Search/Search';
 import {List, Thumbnail} from './Views';
+import {getButtonRenderer} from '~/utils/getButtonRenderer';
 
 const styles = theme => ({
     modalHeader: {
@@ -44,6 +44,13 @@ const ViewMapper = {
     List,
     Thumbnail
 };
+
+const ButtonRenderer = getButtonRenderer({
+    defaultButtonProps: {
+        size: 'big',
+        variant: 'ghost'
+    }
+});
 
 const MainPanelCmp = ({
     classes,
@@ -116,20 +123,7 @@ const MainPanelCmp = ({
                 <div className={classes.actionsJahiaAction}>
                     <DisplayActions path={selectedPath}
                                     target="pickerDialogAction"
-                                    render={context => {
-                                        return (
-                                            <ButtonRenderer path={selectedPath}
-                                                            buttonIcon={context.buttonIcon}
-                                                            componentProps={{
-                                                            variant: 'ghost',
-                                                            size: 'big',
-                                                            label: t(context.buttonLabel),
-                                                            'data-sel-role': context.dataSelRole
-                                                        }}
-                                                            onClick={context.onClick}
-                                                        />
-);
-                                    }}
+                                    render={ButtonRenderer}
                     />
                 </div>
                 <Button

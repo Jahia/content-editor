@@ -11,12 +11,11 @@ const StartWorkFlow = ({isMainButton, render: Render, loading: Loading, ...other
     const formik = useFormikContext();
 
     let disabled = false;
-    let enabled = true;
     let isVisible = true;
 
     if (isMainButton) {
         // Is Visible
-        enabled = !hasPublishPermission && hasStartPublicationWorkflowPermission;
+        isVisible = !hasPublishPermission && hasStartPublicationWorkflowPermission;
 
         // Is WIP
         const wipInfo = formik.values[Constants.wip.fieldName];
@@ -25,11 +24,11 @@ const StartWorkFlow = ({isMainButton, render: Render, loading: Loading, ...other
             (wipInfo.status === Constants.wip.status.LANGUAGES && wipInfo.languages.includes(lang));
     } else {
         // Is Visible
-        isVisible = enabled && hasPublishPermission;
+        isVisible = hasPublishPermission;
 
         // Is Active
         if (isVisible && (lockedAndCannotBeEdited || formik.dirty)) {
-            enabled = false;
+            disabled = true;
         }
     }
 
@@ -40,7 +39,6 @@ const StartWorkFlow = ({isMainButton, render: Render, loading: Loading, ...other
     return (
         <Render {...otherProps}
                 initStartWorkflow
-                enabled={enabled}
                 disabled={disabled}
                 isVisible={isVisible}
                 onClick={context => {

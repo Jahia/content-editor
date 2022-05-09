@@ -18,9 +18,9 @@ const Publish = ({notificationContext, render: Render, loading: Loading, ...othe
     const {hasPublishPermission, lockedAndCannotBeEdited} = nodeData;
 
     let disabled = true;
-    const enabled = hasPublishPermission;
+    const isVisible = hasPublishPermission;
 
-    if (enabled) {
+    if (isVisible) {
         if (publicationInfoPolling && publicationStatus === Constants.editPanel.publicationStatus.PUBLISHED) {
             stopPublicationInfoPolling();
         }
@@ -60,9 +60,9 @@ const Publish = ({notificationContext, render: Render, loading: Loading, ...othe
     return (
         <Render
             {...otherProps}
-            enabled={enabled}
             disabled={disabled}
             buttonLabel={buttonLabel}
+            isVisible={isVisible}
             onClick={onClick}
         />
     );
