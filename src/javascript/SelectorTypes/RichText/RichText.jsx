@@ -118,10 +118,11 @@ export const RichTextCmp = ({field, id, value, onChange}) => {
                 config={config}
                 readOnly={field.readOnly}
                 onMode={evt => {
-                    document.querySelector('div[data-first-field=true] .cke_wysiwyg_frame').contentDocument.querySelector('.cke_editable').focus();
                     if (evt.editor.mode === 'source') {
                         let editable = evt.editor.editable();
                         editable.attachListener(editable, 'input', inputEvt => onChange(inputEvt.sender.getValue()));
+                    } else {
+                        document.querySelector('div[data-first-field=true] .cke_wysiwyg_frame').contentDocument.querySelector('.cke_editable').focus();
                     }
                 }}
                 onChange={evt => onChange(evt.editor.getData())}
