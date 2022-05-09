@@ -70,7 +70,7 @@ const EditPanelCompact = ({title, createAnother}) => {
                     componentProps={{
                         'data-sel-role': 'backButton'
                     }}
-                    buttonLabel="Cancel"
+                    buttonLabel={t('label.contentEditor.cancel')}
                     actionKey="backButton"
                     render={ButtonRenderer}
                 />
