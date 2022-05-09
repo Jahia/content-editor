@@ -6,7 +6,7 @@ import {Constants} from '~/ContentEditor.constants';
 import {useFormikContext} from 'formik';
 import {useKeydownListener} from '~/utils/getKeydownListener';
 
-export const GoBack = ({render: Render, componentProps, ...otherProps}) => {
+export const GoBack = ({render: Render, ...otherProps}) => {
     const {envProps} = useContentEditorConfigContext();
     const formik = useFormikContext();
     const [open, setOpen] = useState(false);
@@ -35,13 +35,10 @@ export const GoBack = ({render: Render, componentProps, ...otherProps}) => {
                 onCloseDialog={onCloseDialog}
             />
             <Render
-                enabled
+                enabled={!envProps.disabledBack()}
+                onClick={() => goBack(formik)}
                 {...otherProps}
-                componentProps={{
-                    ...componentProps,
-                    disabled: envProps.disabledBack()
-                }}
-                onClick={() => goBack(formik)}/>
+            />
         </>
     );
 };
