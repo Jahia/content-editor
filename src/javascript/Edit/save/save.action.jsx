@@ -38,9 +38,11 @@ const Save = ({render: Render, loading: Loading, ...otherProps}) => {
             return formik
                 .submitForm()
                 .then(data => {
-                    formik.resetForm({values: formik.values});
-                    if (envProps.onSavedCallback) {
-                        envProps.onSavedCallback(data);
+                    if (data) {
+                        formik.resetForm({values: formik.values});
+                        if (envProps.onSavedCallback) {
+                            envProps.onSavedCallback(data);
+                        }
                     }
                 });
         }
