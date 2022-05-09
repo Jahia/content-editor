@@ -49,7 +49,6 @@ export const createNode = ({
             createCallback(info);
         }
 
-        notificationContext.notify(t('content-editor:label.contentEditor.create.createButton.success'), ['closeButton']);
         client.cache.flushNodeEntryById(nodeData.uuid);
         actions.setSubmitting(false);
         return info;

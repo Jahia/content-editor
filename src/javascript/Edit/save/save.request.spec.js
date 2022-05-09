@@ -60,10 +60,4 @@ describe('saveNode', () => {
 
         expect(params.editCallback).toHaveBeenCalled();
     });
-
-    it('should display a notification when request is a success', async () => {
-        await saveNode(params);
-
-        expect(params.notificationContext.notify).toHaveBeenCalled();
-    });
 });

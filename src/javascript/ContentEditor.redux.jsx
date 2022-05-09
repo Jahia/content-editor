@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {ContentEditor} from './ContentEditor';
 import PropTypes from 'prop-types';
@@ -12,8 +12,9 @@ import {useQuery} from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import {PredefinedFragments} from '@jahia/data-helper';
 import {ceToggleSections, DEFAULT_OPENED_SECTIONS} from '~/redux/registerReducer';
+import {withNotifications} from '@jahia/react-material';
 
-const ContentEditorRedux = ({mode, uuid, lang, contentType, name}) => {
+const ContentEditorRedux = withNotifications()(({mode, uuid, lang, contentType, name, notificationContext}) => {
     const {redirect, hasHistory, exit, registerBlockListener, unRegisterBlockListener} = useContentEditorHistory();
     const {storedLocation, setStoredLocation} = useContentEditorHistoryContext();
     const {uilang, openPaths} = useSelector(state => ({uilang: state.uilang, openPaths: state.jcontent.openPaths}));
@@ -96,8 +97,12 @@ const ContentEditorRedux = ({mode, uuid, lang, contentType, name}) => {
                 redirect({mode: Constants.routes.baseEditRoute, language: lang, uuid: newNode.uuid, rest: ''});
             }
         },
+        createCallback: () => {
+            notificationContext.notify(t('content-editor:label.contentEditor.create.createButton.success'), ['closeButton']);
+        },
         editCallback: data => {
             envProps.overriddenStoredLocation = handleRename(data);
+            notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.success'), ['closeButton']);
         },
         switchLanguageCallback: ({newNode, language}) => {
             if (newNode) {
@@ -117,7 +122,7 @@ const ContentEditorRedux = ({mode, uuid, lang, contentType, name}) => {
                        contentType={contentType}
                        envProps={envProps}/>
     );
-};
+});
 
 ContentEditorRedux.propTypes = {
     name: PropTypes.string,
