@@ -67,9 +67,6 @@ const EditPanelCompact = ({title, createAnother}) => {
                 )}
                 <div className="flexFluid"/>
                 <GoBack
-                    componentProps={{
-                        'data-sel-role': 'backButton'
-                    }}
                     buttonLabel={t('label.contentEditor.cancel')}
                     actionKey="backButton"
                     render={ButtonRenderer}

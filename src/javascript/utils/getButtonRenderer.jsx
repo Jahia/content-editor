@@ -22,7 +22,7 @@ export const getButtonRenderer = ({labelStyle, defaultButtonProps, noIcon} = {})
             icon = buttonIcon;
         }
 
-        if (!isVisible) {
+        if (isVisible === false) {
             return false;
         }
 
