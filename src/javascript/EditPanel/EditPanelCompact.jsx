@@ -14,7 +14,7 @@ import {EditPanelLanguageSwitcher} from '~/EditPanel/EditPanelLanguageSwitcher';
 import {useTranslation} from 'react-i18next';
 
 const ButtonRenderer = getButtonRenderer({
-    defaultButtonProps: {size: 'big', style: {margin: '8px'}},
+    defaultButtonProps: {size: 'big', className: styles.saveButtons},
     noIcon: true
 });
 

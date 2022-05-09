@@ -1,10 +1,20 @@
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {useFormikContext} from 'formik';
 import {Constants} from '~/ContentEditor.constants';
-import React, {useMemo} from 'react';
+import React from 'react';
 import styles from './UpperSection.scss';
 import {DisplayAction} from '@jahia/ui-extender';
-import {ButtonRenderer} from '~/actions/ActionsButtons';
+import {getButtonRenderer} from '~/utils/getButtonRenderer';
+
+const ButtonRenderer = getButtonRenderer({
+    labelStyle: 'none',
+    defaultButtonProps: {
+        size: 'big',
+        color: 'accent',
+        className: styles.menu,
+        'data-sel-role': 'ContentEditorHeaderMenu'
+    }
+});
 
 export const PublishMenu = () => {
     const {nodeData, lang} = useContentEditorContext();
@@ -14,21 +24,14 @@ export const PublishMenu = () => {
         (wipInfo.status === Constants.wip.status.LANGUAGES && wipInfo.languages.includes(lang));
 
     let isDisabled = formik.dirty || nodeData.lockedAndCannotBeEdited || isWip;
-    const componentProps = useMemo(() => ({
-        'data-sel-role': 'ContentEditorHeaderMenu',
-        color: 'accent',
-        size: 'big',
-        className: styles.menu,
-        isDisabled: isDisabled
-    }), [isDisabled]);
 
     return (
         <DisplayAction
             menuUseElementAnchor
+            disabled={isDisabled}
             actionKey="publishMenu"
             language={lang}
             path={nodeData.path}
-            componentProps={componentProps}
             render={ButtonRenderer}
         />
     );

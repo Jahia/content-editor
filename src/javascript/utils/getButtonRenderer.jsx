@@ -2,10 +2,12 @@ import {useTranslation} from 'react-i18next';
 import {Button} from '@jahia/moonstone';
 import PropTypes from 'prop-types';
 import React from 'react';
+import {Error} from '@material-ui/icons';
+import styles from './getButtonRenderer.scss';
 
 export const getButtonRenderer = ({labelStyle, defaultButtonProps, noIcon} = {}) => {
     const ButtonRenderer = props => {
-        const {buttonLabelNamespace, buttonLabelShort, buttonLabel, isVisible, buttonLabelParams, buttonIcon, actionKey, enabled, disabled, onClick, buttonProps} = props;
+        const {addWarningBadge, buttonLabelNamespace, buttonLabelShort, buttonLabel, isVisible, buttonLabelParams, buttonIcon, actionKey, enabled, disabled, onClick, buttonProps} = props;
         const {t} = useTranslation(buttonLabelNamespace);
 
         let label = buttonLabel;
@@ -20,7 +22,11 @@ export const getButtonRenderer = ({labelStyle, defaultButtonProps, noIcon} = {})
             icon = buttonIcon;
         }
 
-        return (isVisible !== false &&
+        if (!isVisible) {
+            return false;
+        }
+
+        let button = (
             <Button data-sel-role={actionKey}
                     label={t(label, buttonLabelParams)}
                     icon={icon}
@@ -32,6 +38,14 @@ export const getButtonRenderer = ({labelStyle, defaultButtonProps, noIcon} = {})
                     {...defaultButtonProps}
                     {...buttonProps}
             />
+        );
+
+        return !addWarningBadge ? button : (
+            <div className={styles.pastilleWrapper}>
+                {button}
+                <Error data-sel-role={`${actionKey}_pastille`}
+                       className={styles.warningBadge}/>
+            </div>
         );
     };
 
@@ -46,7 +60,8 @@ export const getButtonRenderer = ({labelStyle, defaultButtonProps, noIcon} = {})
         enabled: PropTypes.bool,
         disabled: PropTypes.bool,
         onClick: PropTypes.func,
-        buttonProps: PropTypes.object
+        buttonProps: PropTypes.object,
+        addWarningBadge: PropTypes.bool
     };
 
     return ButtonRenderer;
