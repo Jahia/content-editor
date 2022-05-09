@@ -150,7 +150,8 @@ describe('publish action', () => {
 
     it('should display publish action when you have the proper permission and it is edit mode', () => {
         const cmp = shallow(<PublishAction {...defaultProps}/>).dive().dive();
-        expect(cmp.props().enabled).toBe(true);
+        expect(cmp.props().isVisible).toBe(true);
+        expect(cmp.props().disabled).toBe(false);
     });
 
     it('should use label when polling is OFF', () => {
@@ -169,7 +170,7 @@ describe('publish action', () => {
         contentEditorContext.nodeData.hasPublishPermission = false;
 
         const cmp = shallow(<PublishAction {...defaultProps}/>).dive().dive();
-        expect(cmp.props().enabled).toBe(false);
+        expect(cmp.props().isVisible).toBe(false);
     });
 
     it('should disable publish action when node is locked', () => {

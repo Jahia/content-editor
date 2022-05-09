@@ -32,7 +32,7 @@ describe('save action', () => {
             renderComponent: jest.fn(), render, loading: undefined, dirty: true
         };
         formik = {
-            submitForm: jest.fn(() => Promise.resolve()),
+            submitForm: jest.fn(() => Promise.resolve({})),
             resetForm: jest.fn(() => Promise.resolve()),
             setFieldValue: jest.fn(),
             setTouched: jest.fn(() => Promise.resolve()),

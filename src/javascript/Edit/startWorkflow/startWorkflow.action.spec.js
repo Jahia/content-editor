@@ -49,7 +49,8 @@ describe('startWorkflow action', () => {
         defaultProps.isMainButton = false;
 
         const cmp = shallow(<StartWorkflowAction {...defaultProps}/>);
-        expect(cmp.props().enabled).toBe(true);
+        expect(cmp.props().isVisible).toBe(true);
+        expect(cmp.props().disabled).toBe(false);
     });
 
     it('should not display startWorkflowAction when user haven\'t publication rights', () => {
@@ -64,17 +65,14 @@ describe('startWorkflow action', () => {
         formik.dirty = true;
 
         const cmp = shallow(<StartWorkflowAction {...defaultProps}/>);
-        expect(cmp.props().enabled).toBe(false);
-        expect(cmp.props().isVisible).toBe(true);
-        expect(cmp.props().disabled).toBe(true);
+        expect(cmp.props().isVisible).toBe(false);
     });
 
     it('should disable startWorkflowAction when node locked', () => {
         contentEditorContext.nodeData.lockedAndCannotBeEdited = true;
 
         const cmp = shallow(<StartWorkflowAction {...defaultProps}/>);
-        expect(cmp.props().enabled).toBe(false);
-        expect(cmp.props().isVisible).toBe(true);
+        expect(cmp.props().isVisible).toBe(false);
     });
 
     it('should call GWT command', () => {
@@ -91,14 +89,14 @@ describe('startWorkflow action', () => {
         contentEditorContext.nodeData.hasStartPublicationWorkflowPermission = false;
 
         const cmp = shallow(<StartWorkflowAction {...defaultProps}/>);
-        expect(cmp.props().enabled).toBe(false);
+        expect(cmp.props().isVisible).toBe(false);
     });
 
     it('should not display startWorkflowAction when user have publication rights', () => {
         contentEditorContext.nodeData.hasPublishPermission = true;
 
         const cmp = shallow(<StartWorkflowAction {...defaultProps}/>);
-        expect(cmp.props().enabled).toBe(false);
+        expect(cmp.props().isVisible).toBe(false);
     });
 
     it('should not disable request publication action when node is not locked', () => {
