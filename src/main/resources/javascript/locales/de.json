@@ -264,7 +264,8 @@
       },
       "global": {
         "noResult": "Keine ergebnisse gefunden."
-      }
+      },
+      "cancel": "Abbrechen"
     }
   }
 }
