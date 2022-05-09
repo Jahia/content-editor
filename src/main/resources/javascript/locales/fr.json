@@ -53,7 +53,7 @@
             },
             "alert": "Les modifications que vous avez apportées ne seront pas enregistrées.",
             "btnContinue": "Annuler",
-            "btnDiscard": "Fermer sans sauver",
+            "btnDiscard": "Fermer sans sauvegarder",
             "btnSave": "Sauvegarder"
           },
           "lock": {
