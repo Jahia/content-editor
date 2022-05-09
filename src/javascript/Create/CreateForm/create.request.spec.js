@@ -62,5 +62,4 @@ describe('createNode', () => {
         expect(params.createCallback).toHaveBeenCalled();
         expect(params.client.mutate.mock.calls[0][0].mutation).toBe('CreateNode');
     });
-
 });

@@ -60,5 +60,4 @@ describe('saveNode', () => {
 
         expect(params.editCallback).toHaveBeenCalled();
     });
-
 });

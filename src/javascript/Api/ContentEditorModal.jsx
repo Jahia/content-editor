@@ -63,6 +63,7 @@ export const ContentEditorModal = withNotifications()(({editorConfig, setEditorC
                 action: [
                     <Button
                         key="edit"
+                        isReversed
                         variant="outlined"
                         label={t('content-editor:label.contentEditor.edit.contentEdit')}
                         onClick={() => {
