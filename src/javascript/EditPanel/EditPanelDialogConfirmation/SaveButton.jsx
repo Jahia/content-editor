@@ -12,8 +12,10 @@ export const SaveButton = ({onCloseDialog, actionCallback}) => {
 
         formik.submitForm()
             .then(data => {
-                formik.resetForm({values: formik.values});
-                actionCallback(data);
+                if (data) {
+                    formik.resetForm({values: formik.values});
+                    actionCallback(data);
+                }
             });
     };
 
