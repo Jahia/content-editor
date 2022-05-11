@@ -101,9 +101,8 @@ public class StaticEditorLockService {
 
             return (r != null && currentUser.equals(r.user));
         } catch (WrappedException e) {
-            if (e.getCause() instanceof UnsupportedRepositoryOperationException) {
-                // do nothing if lock is not supported
-            } else {
+            // do nothing if lock is not supported, otherwise throw exception
+            if (!(e.getCause() instanceof UnsupportedRepositoryOperationException)) {
                 unwrapException(e);
             }
         }
