@@ -72,6 +72,8 @@ public class StaticEditorLockService {
         JCRSessionWrapper sessionWrapper = jcrSessionFactory.getCurrentUserSession(Constants.EDIT_WORKSPACE);
         JCRNodeWrapper node = sessionWrapper.getNodeByIdentifier(uuid);
 
+        logger.debug("Trying to add lock {} on node {}", lockId, uuid);
+
         try {
             LockDetails r = holdLocks.compute(lockId, (k, lockDetails) -> {
                 if (node.getProvider().isLockingAvailable() && node.hasPermission(Privilege.JCR_LOCK_MANAGEMENT)) {
@@ -81,6 +83,7 @@ public class StaticEditorLockService {
                         }
 
                         if (locks.isEmpty()) {
+                            logger.debug("Locking node {}", lockedIdentifier);
                             // jcr lock
                             node.lockAndStoreToken(LOCK_TYPE);
                             // release the session lock token to avoid concurrency issues between session doing lock/unlock at the same time
@@ -90,6 +93,8 @@ public class StaticEditorLockService {
                         }
 
                         locks.add(lockId);
+                        logger.debug("Locks set on node {} : {}", lockedIdentifier, locks);
+
                         return locks;
                     }));
 
@@ -124,11 +129,12 @@ public class StaticEditorLockService {
                     return lockDetails;
                 }
 
-                logger.info("Releasing content editor lock {}", lockId);
+                logger.debug("Releasing content editor lock {}", lockId);
                 locksByUuid.compute(lockDetails.uuid, ThrowingBiFunction.unchecked((lockedIdentifier, locks) -> {
                     JCRSessionWrapper sessionWrapper = jcrSessionFactory.getCurrentUserSession(Constants.EDIT_WORKSPACE);
                     if (locks != null) {
                         locks.remove(lockId);
+                        logger.debug("Remaining locks on node {} : {}", lockedIdentifier, locks);
                         if (locks.isEmpty()) {
                             locks = null;
                         }
@@ -140,6 +146,7 @@ public class StaticEditorLockService {
                             String lockOwners = node.getLockOwner();
                             if (StringUtils.isNotEmpty(lockOwners) &&
                                 Arrays.asList(StringUtils.split(lockOwners, " ")).contains(currentUser.getUsername())) {
+                                logger.debug("Calling unlock on node {}", lockedIdentifier);
                                 node.unlock(LOCK_TYPE);
                             }
                         }
@@ -150,7 +157,7 @@ public class StaticEditorLockService {
                     return locks;
                 }));
 
-                logger.info("Lock {} released", lockId);
+                logger.debug("Lock {} released", lockId);
                 return null;
             });
         } catch (WrappedException e) {
@@ -162,6 +169,7 @@ public class StaticEditorLockService {
      * In case session is destroyed this function can be used to clean all remaining editor locks for this session
      */
     public static void closeAllRemainingLocks() {
+        logger.debug("Releasing all locks for current user");
         holdLocks.keySet().forEach(ThrowingConsumer.unchecked(StaticEditorLockService::unlock));
     }
 
