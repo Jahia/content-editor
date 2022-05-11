@@ -41,8 +41,6 @@ import javax.jcr.lock.LockException;
 import javax.jcr.security.Privilege;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Main class for locking operation of editors
@@ -57,7 +55,7 @@ public class StaticEditorLockService {
 
     private static final String LOCK_TYPE = "engine";
 
-    private static final Map<String, LockedNode> holdLocks = new ConcurrentHashMap<>();
+    private static final Map<String, LockDetails> holdLocks = new ConcurrentHashMap<>();
     private static final Map<String, Set<String>> locksByUuid = new ConcurrentHashMap<>();
 
     /**
@@ -75,7 +73,7 @@ public class StaticEditorLockService {
         JCRNodeWrapper node = sessionWrapper.getNodeByIdentifier(uuid);
 
         try {
-            LockedNode r = holdLocks.compute(lockId, (k, lockedNode) -> {
+            LockDetails r = holdLocks.compute(lockId, (k, lockDetails) -> {
                 if (node.getProvider().isLockingAvailable() && node.hasPermission(Privilege.JCR_LOCK_MANAGEMENT)) {
                     locksByUuid.compute(uuid, ThrowingBiFunction.unchecked((lockedIdentifier, locks) -> {
                         if (locks == null) {
@@ -96,9 +94,9 @@ public class StaticEditorLockService {
                     }));
 
                     // session locks data
-                    return new LockedNode(currentUser, uuid);
+                    return new LockDetails(currentUser, uuid);
                 }
-                return lockedNode;
+                return lockDetails;
             });
 
             return (r != null && currentUser.equals(r.user));
@@ -120,15 +118,15 @@ public class StaticEditorLockService {
      */
     public static void unlock(String lockId) throws RepositoryException {
         try {
-            holdLocks.compute(lockId, (k, lockedNode) -> {
+            holdLocks.compute(lockId, (k, lockDetails) -> {
                 JCRSessionFactory jcrSessionFactory = JCRSessionFactory.getInstance();
                 JahiaUser currentUser = jcrSessionFactory.getCurrentUser();
-                if (lockedNode == null || !currentUser.equals(lockedNode.user)) {
-                    return lockedNode;
+                if (lockDetails == null || !currentUser.equals(lockDetails.user)) {
+                    return lockDetails;
                 }
 
                 logger.info("Releasing content editor lock {}", lockId);
-                locksByUuid.compute(lockedNode.uuid, ThrowingBiFunction.unchecked((lockedIdentifier, locks) -> {
+                locksByUuid.compute(lockDetails.uuid, ThrowingBiFunction.unchecked((lockedIdentifier, locks) -> {
                     JCRSessionWrapper sessionWrapper = jcrSessionFactory.getCurrentUserSession(Constants.EDIT_WORKSPACE);
                     if (locks != null) {
                         locks.remove(lockId);
@@ -180,15 +178,13 @@ public class StaticEditorLockService {
     }
 
 
-    private static class LockedNode {
+    private static class LockDetails {
         final JahiaUser user;
         final String uuid;
-        final Lock lock;
 
-        public LockedNode(JahiaUser user, String uuid) {
+        public LockDetails(JahiaUser user, String uuid) {
             this.user = user;
             this.uuid = uuid;
-            this.lock = new ReentrantLock();
         }
     }
 }
