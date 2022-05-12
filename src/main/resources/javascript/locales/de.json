@@ -14,7 +14,9 @@
         "title": "Content bearbeiten",
         "contentEdit": "Content bearbeiten",
         "validation": {
-          "required": "erforderlich"
+          "required": "erforderlich",
+          "fieldsInError": "Ein Feld mit Fehler",
+          "fieldsInError_plural": "{{count}} Felder mit Fehler"
         },
         "action": {
           "copyLanguage": {

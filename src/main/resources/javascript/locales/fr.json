@@ -14,7 +14,9 @@
         "title": "Éditer le contenu",
         "contentEdit": "Editer le contenu",
         "validation": {
-          "required": "Requis"
+          "required": "Requis",
+          "fieldsInError": "Un champ en erreur",
+          "fieldsInError_plural": "{{count}} champs en erreur",
         },
         "action": {
           "copyLanguage": {
