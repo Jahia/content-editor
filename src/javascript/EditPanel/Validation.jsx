@@ -8,7 +8,7 @@ import {ceToggleSections} from '~/redux/registerReducer';
 
 function scrollTo(field) {
     const fieldElement = window.document.querySelector('div[data-sel-content-editor-field="' + field + '"]');
-    window.document.querySelector('#contenteditor-dialog-content').scroll(0, fieldElement.offsetTop);
+    window.document.querySelector('form').scroll(0, fieldElement.offsetTop);
 }
 
 export const Validation = () => {

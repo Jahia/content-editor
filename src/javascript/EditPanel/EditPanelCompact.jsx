@@ -12,7 +12,6 @@ import {GoBack} from '~/actions/goBack.action';
 import {getButtonRenderer} from '~/utils/getButtonRenderer';
 import {EditPanelLanguageSwitcher} from '~/EditPanel/EditPanelLanguageSwitcher';
 import {useTranslation} from 'react-i18next';
-import {Validation} from '~/EditPanel/Validation';
 
 const ButtonRenderer = getButtonRenderer({
     defaultButtonProps: {size: 'big', className: styles.saveButtons},
@@ -52,10 +51,7 @@ const EditPanelCompact = ({title, createAnother}) => {
                     <EditPanelLanguageSwitcher lang={lang} siteInfo={siteInfo}/>
                 </div>
             </DialogTitle>
-            <DialogContent classes={{root: styles.noscroll}}>
-                <Validation/>
-            </DialogContent>
-            <DialogContent id="contenteditor-dialog-content">
+            <DialogContent className="flexCol" id="contenteditor-dialog-content" data-sel-role="form-container">
                 <div className={clsx(styles.tab, 'flexCol')}>
                     <EditTabComponent nodePath={nodeData.path} lang={lang}/>
                 </div>
