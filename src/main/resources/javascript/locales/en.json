@@ -14,7 +14,9 @@
         "title": "Edit content",
         "contentEdit": "Edit",
         "validation": {
-          "required": "Required"
+          "required": "Required",
+          "fieldsInError": "One field in error",
+          "fieldsInError_plural": "{{count}} fields in error"
         },
         "action": {
           "copyLanguage": {

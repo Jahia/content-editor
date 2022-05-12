@@ -7,6 +7,7 @@ import {SectionsPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {OrderingSection, Section} from './Sections';
 import {useDispatch, useSelector} from 'react-redux';
 import {ceToggleSections} from '~/redux/registerReducer';
+import styles from './FormBuilder.scss';
 
 const FormBuilderCmp = ({mode}) => {
     const {nodeData, errors} = useContentEditorContext();
@@ -82,7 +83,7 @@ const FormBuilderCmp = ({mode}) => {
     }
 
     return (
-        <Form>
+        <Form className={styles.form}>
             <section data-sel-mode={mode}>
                 {children}
             </section>

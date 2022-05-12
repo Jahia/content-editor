@@ -8,6 +8,7 @@ import {PreviewContainer} from './Preview';
 import PublicationInfoProgress from '~/PublicationInfo/PublicationInfo.progress';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import {Constants} from '~/ContentEditor.constants';
+import {Validation} from '~/EditPanel/Validation';
 
 const styles = theme => ({
     twoColumnsRoot: {
@@ -47,6 +48,7 @@ export const EditPanelContent = ({classes}) => {
                         rightCol={<PreviewContainer/>}
                         data-sel-mode={mode}
                     >
+                        <Validation/>
                         <FormBuilder mode={mode}/>
                     </TwoColumnsContent>
                 ) :
@@ -55,6 +57,7 @@ export const EditPanelContent = ({classes}) => {
                         classes={{root: classes.fullWidthRoot}}
                         data-sel-mode={mode}
                     >
+                        <Validation/>
                         <FormBuilder mode={mode}/>
                     </FullWidthContent>
                 )}
