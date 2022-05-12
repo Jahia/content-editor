@@ -12,6 +12,7 @@ import {GoBack} from '~/actions/goBack.action';
 import {getButtonRenderer} from '~/utils/getButtonRenderer';
 import {EditPanelLanguageSwitcher} from '~/EditPanel/EditPanelLanguageSwitcher';
 import {useTranslation} from 'react-i18next';
+import {Validation} from '~/EditPanel/Validation';
 
 const ButtonRenderer = getButtonRenderer({
     defaultButtonProps: {size: 'big', className: styles.saveButtons},
@@ -29,7 +30,7 @@ const EditPanelCompact = ({title, createAnother}) => {
         <>
             <WindowListeners/>
 
-            <DialogTitle disableTypography className={styles.dialogTitle} id="draggable-dialog-title">
+            <DialogTitle disableTypography className={styles.dialogTitle} id="contenteditor-dialog-title">
                 <div className="flexRow">
                     <Typography variant="heading">{title}</Typography>
                     <div className="flexFluid"/>
@@ -51,7 +52,10 @@ const EditPanelCompact = ({title, createAnother}) => {
                     <EditPanelLanguageSwitcher lang={lang} siteInfo={siteInfo}/>
                 </div>
             </DialogTitle>
-            <DialogContent>
+            <DialogContent classes={{root: styles.noscroll}}>
+                <Validation/>
+            </DialogContent>
+            <DialogContent id="contenteditor-dialog-content">
                 <div className={clsx(styles.tab, 'flexCol')}>
                     <EditTabComponent nodePath={nodeData.path} lang={lang}/>
                 </div>
