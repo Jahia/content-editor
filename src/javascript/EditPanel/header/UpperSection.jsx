@@ -24,7 +24,7 @@ const BackButtonRenderer = getButtonRenderer({
 });
 
 export const HeaderUpperSection = ({title, isShowPublish}) => {
-    const {nodeData, nodeTypeDisplayName} = useContentEditorContext();
+    const {nodeData, nodeTypeDisplayName, mode} = useContentEditorContext();
 
     return (
         <>
@@ -72,7 +72,7 @@ export const HeaderUpperSection = ({title, isShowPublish}) => {
                         <ContentBreadcrumb path={nodeData.path}/> :
                         <Chip label={nodeTypeDisplayName} color="accent"/>}
                 </div>
-                <HeaderBadges className={styles.headerChips}/>
+                {mode === 'edit' && <HeaderBadges className={styles.headerChips}/>}
             </div>
         </>
     );
