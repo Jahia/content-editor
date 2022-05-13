@@ -11,7 +11,7 @@ import {useKeydownListener} from '~/utils/getKeydownListener';
 const Save = ({render: Render, loading: Loading, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
     const {publicationInfoPolling} = usePublicationInfoContext();
-    const {mode, setI18nContext, setErrors} = useContentEditorContext();
+    const {mode, i18nContext, setI18nContext, setErrors} = useContentEditorContext();
     const {envProps} = useContentEditorConfigContext();
     const formik = useFormikContext();
 
@@ -27,9 +27,9 @@ const Save = ({render: Render, loading: Loading, ...otherProps}) => {
     });
 
     const save = async formik => {
-        const errors = await validateForm(formik, componentRenderer);
+        const {errors, i18nErrors} = await validateForm(formik, i18nContext, componentRenderer);
 
-        if (errors) {
+        if (errors || i18nErrors) {
             setErrors({...errors});
             return;
         }

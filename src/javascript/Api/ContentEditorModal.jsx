@@ -119,7 +119,7 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
                 setEditorConfig(false);
             }
         },
-        switchLanguageCallback: ({language}) => {
+        switchLanguageCallback: language => {
             setEditorConfig({
                 ...editorConfig,
                 lang: language

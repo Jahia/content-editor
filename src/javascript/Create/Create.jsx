@@ -54,17 +54,19 @@ export const Create = () => {
 
     // Todo share and centralize code
     useEffect(() => {
-        let formikRef = contentEditorConfigContext.envProps.formikRef;
-        console.log('update from i18nContext', formikRef.current);
-        formikRef.current.setValues({
-            ...formikRef.current.values,
-            ...i18nContext.shared,
-            ...i18nContext[lang]
-        });
+        if (i18nContext.shared || i18nContext[lang]) {
+            let formikRef = contentEditorConfigContext.envProps.formikRef;
+            formikRef.current.setValues({
+                ...formikRef.current.values,
+                ...i18nContext.shared?.values,
+                ...i18nContext[lang]?.values
+            }, i18nContext[lang]);
+        }
     }, [contentEditorConfigContext.envProps, i18nContext, lang]);
 
     return (
         <Formik
+            validateOnChange={false}
             innerRef={formik => {
                 // Todo share and centralize code
                 if (contentEditorConfigContext.envProps.dirtyRef && formik) {

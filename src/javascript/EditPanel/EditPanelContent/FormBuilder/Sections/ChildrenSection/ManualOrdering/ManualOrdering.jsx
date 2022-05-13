@@ -27,7 +27,7 @@ export const ManualOrdering = () => {
                             droppedChild,
                             ...childrenWithoutDropped.slice(spliceIndex, childrenWithoutDropped.length)
                         ]);
-                        setFieldTouched(field.name, true);
+                        setFieldTouched(field.name, true, false);
                     }
                 };
 

@@ -15,7 +15,7 @@ const Create = ({createAnother, render: Render, loading: Loading, ...otherProps}
     const formik = useFormikContext();
     const contentEditorConfigContext = useContentEditorConfigContext();
     const {envProps, lang} = contentEditorConfigContext;
-    const {mode, setI18nContext, setErrors, refetchFormData} = useContentEditorContext();
+    const {mode, setI18nContext, setErrors, refetchFormData, i18nContext} = useContentEditorContext();
     const [clicked, setClicked] = useState(false);
 
     useKeydownListener((event, formik) => {
@@ -30,9 +30,9 @@ const Create = ({createAnother, render: Render, loading: Loading, ...otherProps}
     });
 
     const save = async formik => {
-        const errors = await validateForm(formik, componentRenderer);
+        const {errors, i18nErrors} = await validateForm(formik, i18nContext, componentRenderer);
 
-        if (errors) {
+        if (errors || i18nErrors) {
             setErrors({...errors});
             return;
         }

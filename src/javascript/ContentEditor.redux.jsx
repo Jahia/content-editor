@@ -15,7 +15,7 @@ import {ceToggleSections, DEFAULT_OPENED_SECTIONS} from '~/redux/registerReducer
 import {useNotifications} from '@jahia/react-material';
 
 const ContentEditorRedux = ({mode, uuid, lang, contentType, name}) => {
-    const notificationContext = useNotifications()
+    const notificationContext = useNotifications();
     const {redirect, hasHistory, exit, registerBlockListener, unRegisterBlockListener} = useContentEditorHistory();
     const {storedLocation, setStoredLocation} = useContentEditorHistoryContext();
     const {uilang, openPaths} = useSelector(state => ({uilang: state.uilang, openPaths: state.jcontent.openPaths}));
@@ -109,7 +109,7 @@ const ContentEditorRedux = ({mode, uuid, lang, contentType, name}) => {
             envProps.overriddenStoredLocation = handleRename(data);
             notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.success'), ['closeButton']);
         },
-        switchLanguageCallback: ({language}) => {
+        switchLanguageCallback: language => {
             redirect({language});
         }
     };

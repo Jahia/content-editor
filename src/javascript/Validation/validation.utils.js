@@ -11,7 +11,7 @@ const setErrorFieldTouched = (errorsFields, setTouched) => {
     return setTouched(fieldsTouched);
 };
 
-export const validateForm = async ({setTouched, validateForm}, componentRenderer) => {
+export const validateForm = async ({setTouched, validateForm}, i18nContext, componentRenderer) => {
     const errors = await validateForm();
     // SetEach values touched to display errors if there is so.
     // If no error, form will be reset after submition
@@ -20,16 +20,25 @@ export const validateForm = async ({setTouched, validateForm}, componentRenderer
     // If form has errors
     const nbOfErrors = Object.keys(errors).length;
 
-    if (nbOfErrors > 0) {
+    const i18nErrors = Object.keys(i18nContext)
+        .filter(l => l !== 'shared')
+        .filter(l => Object.keys(i18nContext[l].validation).length > 0)
+        .reduce((r, l) => Object.assign(r, {[l]: i18nContext[l].validation}), {});
+
+    const nbOfI18nErrors = Object.keys(i18nErrors).length;
+
+    if (nbOfErrors > 0 || nbOfI18nErrors > 0) {
         const onClose = () => {
             componentRenderer.destroy('SaveErrorModal');
         };
 
-        componentRenderer.render('SaveErrorModal', SaveErrorModal, {open: true, nbOfErrors, onClose});
-        return errors;
+        componentRenderer.render('SaveErrorModal', SaveErrorModal, {open: true, nbOfErrors, errors, i18nErrors, onClose});
     }
 
-    return null;
+    return {
+        errors: nbOfErrors > 0 ? errors : null,
+        i18nErrors: nbOfI18nErrors > 0 ? i18nErrors : null
+    };
 };
 
 export const onServerError = (error, formikActions, notificationContext, t, propFieldNameMapping, defaultErrorMessage) => {

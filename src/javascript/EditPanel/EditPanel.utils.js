@@ -90,6 +90,7 @@ function updateValue({field, value, lang, nodeData, sections, mixinsToMutate, pr
                     language: lang
                 });
             }
+
             propFieldNameMapping[field.propertyName] = field.name;
         }
     } else if (nodeData) {
@@ -117,7 +118,7 @@ export function getDataToMutate({nodeData, formValues, i18nContext, sections, la
     }
 
     const keys = new Set(Object.keys(formValues));
-    Object.values(i18nContext).filter(ctx => ctx).forEach(ctx => Object.keys(ctx).forEach(k => keys.add(k)));
+    Object.values(i18nContext).filter(ctx => ctx).forEach(ctx => Object.keys(ctx.values).forEach(k => keys.add(k)));
     const fields = sections && getFields(sections).filter(field => !field.readOnly);
     const mixinsToMutate = getMixinsToMutate(nodeData, formValues, sections);
 
@@ -129,7 +130,7 @@ export function getDataToMutate({nodeData, formValues, i18nContext, sections, la
 
             if (field.i18n) {
                 Object.keys(i18nContext).filter(i18nLang => i18nLang !== lang && i18nLang !== 'shared').forEach(i18nLang => {
-                    const translatedValue = i18nContext[i18nLang][key];
+                    const translatedValue = i18nContext[i18nLang].values[key];
                     updateValue({field, value: translatedValue, lang: i18nLang, sections, mixinsToMutate, propsToSave, propsToDelete, propFieldNameMapping});
                 });
             }

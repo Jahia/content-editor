@@ -18,7 +18,7 @@ export const ContentEditorConfigContext = React.createContext({});
 export const useContentEditorConfigContext = () => useContext(ContentEditorConfigContext);
 
 export const ContentEditorDataContextProvider = ({formQuery, formDataAdapter, children}) => {
-    const notificationContext = useNotifications()
+    const notificationContext = useNotifications();
     const {t} = useTranslation('content-editor');
     const [errors, setErrors] = useState(null);
     const contentEditorConfigContext = useContentEditorConfigContext();

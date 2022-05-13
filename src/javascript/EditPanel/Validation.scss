@@ -1,6 +1,7 @@
 
 .validationWarningBox {
     margin: var(--spacing-small);
+    margin-top: 0;
     padding: var(--spacing-medium);
 
     color: var(--color-gray_dark);
@@ -8,6 +9,10 @@
     border: 1px solid var(--color-warning);
     border-radius: 2px;
     background-color: var(--color-warning40);
+}
+
+.icon {
+    margin-right: var(--spacing-medium);
 }
 
 .field {

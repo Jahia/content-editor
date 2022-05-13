@@ -19,7 +19,7 @@ export const UnsetFieldActionComponent = ({field, inputContext, render: Render, 
                     null,
                     true
                 );
-                formik.setFieldTouched(field.name);
+                formik.setFieldTouched(field.name, true, false);
                 if (inputContext.actionContext.onChange) {
                     inputContext.actionContext.onChange(null);
                 }

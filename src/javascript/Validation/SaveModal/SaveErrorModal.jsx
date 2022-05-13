@@ -21,8 +21,9 @@ const styles = theme => ({
     }
 });
 
-const SaveErrorModalCmp = ({nbOfErrors, classes, open, onClose}) => {
+const SaveErrorModalCmp = ({nbOfErrors, errors, i18nErrors, classes, open, onClose}) => {
     const {t} = useTranslation('content-editor');
+    const langs = Object.keys(i18nErrors).sort();
     return (
         <Dialog open={open} aria-labelledby="dialog-errorBeforeSave" onClose={onClose}>
             <DialogTitle id="dialog-errorBeforeSave" className={classes.dialogTitle}>
@@ -34,7 +35,11 @@ const SaveErrorModalCmp = ({nbOfErrors, classes, open, onClose}) => {
 
             <DialogContent>
                 <DialogContentText>
-                    {t('content-editor:label.contentEditor.edit.action.save.validation.modalMessage', {count: nbOfErrors})}
+                    <div>{t('content-editor:label.contentEditor.edit.action.save.validation.modalMessage', {count: nbOfErrors})}</div>
+                    <div>Current language : {Object.keys(errors).join(',')}</div>
+                    {langs.map(l => (
+                        <div key={l}>{l}: {Object.keys(i18nErrors[l]).join(',')}</div>
+                    ))}
                 </DialogContentText>
             </DialogContent>
 
@@ -53,6 +58,8 @@ const SaveErrorModalCmp = ({nbOfErrors, classes, open, onClose}) => {
 
 SaveErrorModalCmp.propTypes = {
     nbOfErrors: PropTypes.number.isRequired,
+    errors: PropTypes.object.isRequired,
+    i18nErrors: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired
