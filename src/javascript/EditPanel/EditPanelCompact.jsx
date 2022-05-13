@@ -12,6 +12,10 @@ import {GoBack} from '~/actions/goBack.action';
 import {getButtonRenderer} from '~/utils/getButtonRenderer';
 import {EditPanelLanguageSwitcher} from '~/EditPanel/EditPanelLanguageSwitcher';
 import {useTranslation} from 'react-i18next';
+import PublicationInfoBadge from '~/PublicationInfo/PublicationInfo.badge';
+import LockInfoBadge from '~/Lock/LockInfo.badge';
+import WipInfoChip from '~/EditPanel/WorkInProgress/Chip/WipInfo.Chip';
+import {UnsavedChip} from '~/EditPanel/header';
 
 const ButtonRenderer = getButtonRenderer({
     defaultButtonProps: {size: 'big', className: styles.saveButtons},
@@ -19,7 +23,7 @@ const ButtonRenderer = getButtonRenderer({
 });
 
 const EditPanelCompact = ({title, createAnother}) => {
-    const {siteInfo, nodeData, lang} = useContentEditorContext();
+    const {siteInfo, nodeData, lang, mode} = useContentEditorContext();
     const contentEditorConfigContext = useContentEditorConfigContext();
     const {t} = useTranslation('content-editor');
 
@@ -51,6 +55,16 @@ const EditPanelCompact = ({title, createAnother}) => {
                 </div>
                 <div className={clsx('flexRow', styles.languageSwitcher)}>
                     <EditPanelLanguageSwitcher lang={lang} siteInfo={siteInfo}/>
+                    { mode === 'edit' &&
+                        <>
+                            <div className="flexFluid"/>
+                            <div>
+                                <PublicationInfoBadge/>
+                                <LockInfoBadge/>
+                                <WipInfoChip/>
+                                <UnsavedChip/>
+                            </div>
+                        </>}
                 </div>
             </DialogTitle>
             <DialogContent className="flexCol" id="contenteditor-dialog-content" data-sel-role="form-container">
