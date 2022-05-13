@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {ContentTable} from '~/DesignSystem/ContentTable/ContentTable';
 import {useTranslation} from 'react-i18next';
-import {ProgressOverlay, withNotifications} from '@jahia/react-material';
+import {ProgressOverlay, useNotifications} from '@jahia/react-material';
 import PropTypes from 'prop-types';
 import {useDialogPickerContent} from '../useDialogPickerContent';
 import dayjs from 'dayjs';
@@ -9,7 +9,6 @@ import {registry} from '@jahia/ui-extender';
 import ContentTableCellBadgeRenderer from './ContentTableCellBadgeRenderer';
 import {NavigateInto} from './NavigateInto';
 import {CountDisplayer} from '../CountDisplayer';
-import {compose} from '~/utils';
 import {notifyAccessDenied} from '../ErrorHandler';
 import SubContentCountLazyLoader from './SubContentCountLazyLoader';
 
@@ -58,7 +57,7 @@ const columnIdFieldNameMapper = {
     lastModified: 'lastModified.value'
 };
 
-const ListCmp = ({
+export const List = ({
     pickerConfig,
     setSelectedItem,
     selectedPath,
@@ -66,9 +65,9 @@ const ListCmp = ({
     lang,
     uilang,
     initialSelection,
-    searchTerms,
-    notificationContext
+    searchTerms
 }) => {
+    const notificationContext = useNotifications();
     const {t} = useTranslation('content-editor');
     const [sort, setSort] = useState({
         order: 'DESC',
@@ -180,12 +179,12 @@ const ListCmp = ({
     );
 };
 
-ListCmp.defaultProps = {
+List.defaultProps = {
     initialSelection: [],
     searchTerms: ''
 };
 
-ListCmp.propTypes = {
+List.propTypes = {
     pickerConfig: PropTypes.object.isRequired,
     setSelectedItem: PropTypes.func.isRequired,
     selectedPath: PropTypes.string.isRequired,
@@ -193,11 +192,7 @@ ListCmp.propTypes = {
     lang: PropTypes.string.isRequired,
     uilang: PropTypes.string.isRequired,
     initialSelection: PropTypes.array,
-    searchTerms: PropTypes.string,
-    notificationContext: PropTypes.object.isRequired
+    searchTerms: PropTypes.string
 };
 
-export const List = compose(
-    withNotifications()
-)(ListCmp);
 List.displayName = 'List';

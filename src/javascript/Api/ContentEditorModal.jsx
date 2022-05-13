@@ -11,7 +11,7 @@ import {useDispatch} from 'react-redux';
 import {ceToggleSections, DEFAULT_OPENED_SECTIONS} from '~/redux/registerReducer';
 import {Button} from '@jahia/moonstone';
 import {Close} from '@material-ui/icons';
-import {withNotifications} from '@jahia/react-material';
+import {useNotifications} from '@jahia/react-material';
 import {useTranslation} from 'react-i18next';
 
 function triggerEvents(nodeUuid, operator) {
@@ -28,7 +28,8 @@ const Transition = React.forwardRef((props, ref) => {
     return <Slide ref={ref} direction="up" {...props}/>;
 });
 
-export const ContentEditorModal = withNotifications()(({editorConfig, setEditorConfig, notificationContext}) => {
+export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
+    const notificationContext = useNotifications();
     const [confirmationConfig, setConfirmationConfig] = useState(false);
 
     // Todo get rid of ref in envProps, move dialog in subtree
@@ -174,10 +175,9 @@ export const ContentEditorModal = withNotifications()(({editorConfig, setEditorC
             />
         </Dialog>
     );
-});
+};
 
 ContentEditorModal.propTypes = {
     editorConfig: PropTypes.object.isRequired,
-    setEditorConfig: PropTypes.func.isRequired,
-    notificationContext: PropTypes.object.isRequired
+    setEditorConfig: PropTypes.func.isRequired
 };

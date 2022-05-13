@@ -12,9 +12,10 @@ import {useQuery} from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import {PredefinedFragments} from '@jahia/data-helper';
 import {ceToggleSections, DEFAULT_OPENED_SECTIONS} from '~/redux/registerReducer';
-import {withNotifications} from '@jahia/react-material';
+import {useNotifications} from '@jahia/react-material';
 
-const ContentEditorRedux = withNotifications()(({mode, uuid, lang, contentType, name, notificationContext}) => {
+const ContentEditorRedux = ({mode, uuid, lang, contentType, name}) => {
+    const notificationContext = useNotifications()
     const {redirect, hasHistory, exit, registerBlockListener, unRegisterBlockListener} = useContentEditorHistory();
     const {storedLocation, setStoredLocation} = useContentEditorHistoryContext();
     const {uilang, openPaths} = useSelector(state => ({uilang: state.uilang, openPaths: state.jcontent.openPaths}));
@@ -122,7 +123,7 @@ const ContentEditorRedux = withNotifications()(({mode, uuid, lang, contentType, 
                        contentType={contentType}
                        envProps={envProps}/>
     );
-});
+};
 
 ContentEditorRedux.propTypes = {
     name: PropTypes.string,

@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {ProgressOverlay, withNotifications} from '@jahia/react-material';
+import {ProgressOverlay, useNotifications} from '@jahia/react-material';
 import {useFormDefinition} from '~/FormDefinitions';
 import {useSiteInfo} from '@jahia/data-helper';
 import * as PropTypes from 'prop-types';
@@ -17,7 +17,8 @@ export const ContentEditorConfigContext = React.createContext({});
 
 export const useContentEditorConfigContext = () => useContext(ContentEditorConfigContext);
 
-const ContentEditorDataContextProviderCmp = ({notificationContext, formQuery, formDataAdapter, children}) => {
+export const ContentEditorDataContextProvider = ({formQuery, formDataAdapter, children}) => {
+    const notificationContext = useNotifications()
     const {t} = useTranslation('content-editor');
     const [errors, setErrors] = useState(null);
     const contentEditorConfigContext = useContentEditorConfigContext();
@@ -132,15 +133,6 @@ const ContentEditorDataContextProviderCmp = ({notificationContext, formQuery, fo
         </ContentEditorContext.Provider>
     );
 };
-
-ContentEditorDataContextProviderCmp.propTypes = {
-    notificationContext: PropTypes.object.isRequired,
-    formQuery: PropTypes.object.isRequired,
-    formDataAdapter: PropTypes.func.isRequired,
-    children: PropTypes.node.isRequired
-};
-
-export const ContentEditorDataContextProvider = withNotifications()(ContentEditorDataContextProviderCmp);
 
 ContentEditorDataContextProvider.propTypes = {
     formQuery: PropTypes.object.isRequired,

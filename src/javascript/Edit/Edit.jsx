@@ -1,8 +1,7 @@
 import React, {useCallback, useEffect} from 'react';
-import {withNotifications} from '@jahia/react-material';
+import {useNotifications} from '@jahia/react-material';
 import {Formik} from 'formik';
 import EditPanel from '~/EditPanel';
-import * as PropTypes from 'prop-types';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import {validate} from '~/Validation/validation';
 import {saveNode} from './save/save.request';
@@ -12,7 +11,8 @@ import {useTranslation} from 'react-i18next';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import {useApolloClient} from '@apollo/react-hooks';
 
-export const EditCmp = ({notificationContext}) => {
+export const Edit = () => {
+    const notificationContext = useNotifications();
     const client = useApolloClient();
     const {t} = useTranslation('content-editor');
     const contentEditorConfigContext = useContentEditorConfigContext();
@@ -97,10 +97,5 @@ export const EditCmp = ({notificationContext}) => {
     );
 };
 
-EditCmp.propTypes = {
-    notificationContext: PropTypes.object.isRequired
-};
-
-export const Edit = withNotifications()(EditCmp);
 Edit.displayName = 'Edit';
 export default Edit;

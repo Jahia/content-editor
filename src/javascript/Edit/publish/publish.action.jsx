@@ -6,10 +6,11 @@ import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.conte
 import {useApolloClient} from '@apollo/react-hooks';
 import {useTranslation} from 'react-i18next';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
-import {withNotifications} from '@jahia/react-material';
+import {useNotifications} from '@jahia/react-material';
 import {useFormikContext} from 'formik';
 
-const Publish = ({notificationContext, render: Render, loading: Loading, ...otherProps}) => {
+const Publish = ({render: Render, loading: Loading, ...otherProps}) => {
+    const notificationContext = useNotifications();
     const {publicationInfoPolling, publicationStatus, stopPublicationInfoPolling, startPublicationInfoPolling} = usePublicationInfoContext();
     const client = useApolloClient();
     const {t} = useTranslation();
@@ -70,13 +71,12 @@ const Publish = ({notificationContext, render: Render, loading: Loading, ...othe
 };
 
 Publish.propTypes = {
-    notificationContext: PropTypes.object.isRequired,
     render: PropTypes.func.isRequired,
     loading: PropTypes.func
 };
 
 const publishButtonAction = {
-    component: withNotifications()(Publish)
+    component: Publish
 };
 
 export default publishButtonAction;
