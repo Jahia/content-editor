@@ -56,14 +56,4 @@ describe('Header UpperSection', () => {
 
         expect(cmp.debug()).toContain('yolo');
     });
-
-    it('should u and unsaved info chip displayed when ce in create mode', () => {
-        const cmp = shallowWithTheme(
-            <HeaderUpperSection {...defaultProps}/>,
-            {},
-            dsGenericTheme
-        );
-
-        expect(cmp.find('UnsavedChip').dive().find({'data-sel-role': 'unsaved-info-chip'}).exists()).toBe(true);
-    });
 });

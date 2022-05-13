@@ -12,10 +12,7 @@ import {GoBack} from '~/actions/goBack.action';
 import {getButtonRenderer} from '~/utils/getButtonRenderer';
 import {EditPanelLanguageSwitcher} from '~/EditPanel/EditPanelLanguageSwitcher';
 import {useTranslation} from 'react-i18next';
-import PublicationInfoBadge from '~/PublicationInfo/PublicationInfo.badge';
-import LockInfoBadge from '~/Lock/LockInfo.badge';
-import WipInfoChip from '~/EditPanel/WorkInProgress/Chip/WipInfo.Chip';
-import {UnsavedChip} from '~/EditPanel/header';
+import HeaderBadges from '~/EditPanel/header/HeaderBadges';
 
 const ButtonRenderer = getButtonRenderer({
     defaultButtonProps: {size: 'big', className: styles.saveButtons},
@@ -58,12 +55,7 @@ const EditPanelCompact = ({title, createAnother}) => {
                     { mode === 'edit' &&
                         <>
                             <div className="flexFluid"/>
-                            <div>
-                                <PublicationInfoBadge/>
-                                <LockInfoBadge/>
-                                <WipInfoChip/>
-                                <UnsavedChip/>
-                            </div>
+                            <HeaderBadges/>
                         </>}
                 </div>
             </DialogTitle>
