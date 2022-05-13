@@ -34,7 +34,9 @@ describe('create action', () => {
         useContentEditorContext.mockImplementation(() => ({
             mode: jest.fn(),
             setErrors: jest.fn(),
-            refetchFormData: jest.fn(() => Promise.resolve({}))
+            refetchFormData: jest.fn(() => Promise.resolve({})),
+            i18nContext: {},
+            setI18nContext: jest.fn(),
         }));
         useContentEditorConfigContext.mockImplementation(() => ({envProps: {}}));
 

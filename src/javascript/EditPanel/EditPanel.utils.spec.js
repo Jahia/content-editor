@@ -666,14 +666,14 @@ describe('EditPanel utils', () => {
     describe('getDataToMutate', () => {
         testCases.forEach(({name, nodeData, formValues, ExpectedPropsToSave, ExpectedPropsToDelete, skipCreate, expectedPropsFieldMapping}) => {
             it(`Existing ${name}`, () => {
-                const {propsToSave, propsToDelete, propFieldNameMapping} = getDataToMutate({nodeData, formValues, sections, lang});
+                const {propsToSave, propsToDelete, propFieldNameMapping} = getDataToMutate({nodeData, formValues, sections, lang, i18nContext: {}});
                 expect(propsToSave).toEqual(ExpectedPropsToSave || []);
                 expect(propsToDelete).toEqual(ExpectedPropsToDelete || []);
                 expect(propFieldNameMapping).toEqual(expectedPropsFieldMapping || {});
             });
             if (!skipCreate) {
                 it(`New ${name}`, () => {
-                    const {propsToSave, propsToDelete, propFieldNameMapping} = getDataToMutate({formValues, sections, lang});
+                    const {propsToSave, propsToDelete, propFieldNameMapping} = getDataToMutate({formValues, sections, lang, i18nContext: {}});
                     expect(propsToSave).toEqual(ExpectedPropsToSave || []);
                     expect(propsToDelete).toEqual(ExpectedPropsToDelete || []);
                     expect(propFieldNameMapping).toEqual(expectedPropsFieldMapping || {});

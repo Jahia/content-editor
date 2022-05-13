@@ -58,7 +58,7 @@ const _adaptDecimalValues = (fieldType, value) => {
     return fieldType === 'DECIMAL' || fieldType === 'DOUBLE' ? value && value.replace(',', '.') : value;
 };
 
-function updateValue({field, value, lang, nodeData, sections, mixinsToMutate, propsToSave, propsToDelete}) {
+function updateValue({field, value, lang, nodeData, sections, mixinsToMutate, propsToSave, propsToDelete, propFieldNameMapping}) {
     if (value !== undefined && value !== null && value !== '') {
         const fieldType = field.requiredType;
 
@@ -90,6 +90,7 @@ function updateValue({field, value, lang, nodeData, sections, mixinsToMutate, pr
                     language: lang
                 });
             }
+            propFieldNameMapping[field.propertyName] = field.name;
         }
     } else if (nodeData) {
         // Check if props existed before, to remove it
@@ -124,16 +125,14 @@ export function getDataToMutate({nodeData, formValues, i18nContext, sections, la
         const field = fields.find(field => field.name === key);
         if (field) {
             const value = formValues[key];
-            updateValue({field, value, lang, nodeData, sections, mixinsToMutate, propsToSave, propsToDelete});
+            updateValue({field, value, lang, nodeData, sections, mixinsToMutate, propsToSave, propsToDelete, propFieldNameMapping});
 
             if (field.i18n) {
                 Object.keys(i18nContext).filter(i18nLang => i18nLang !== lang && i18nLang !== 'shared').forEach(i18nLang => {
                     const translatedValue = i18nContext[i18nLang][key];
-                    updateValue({field, value: translatedValue, lang: i18nLang, sections, mixinsToMutate, propsToSave, propsToDelete});
+                    updateValue({field, value: translatedValue, lang: i18nLang, sections, mixinsToMutate, propsToSave, propsToDelete, propFieldNameMapping});
                 });
             }
-
-            propFieldNameMapping[field.propertyName] = field.name;
         }
     });
 

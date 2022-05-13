@@ -3,14 +3,16 @@ import {shallow} from '@jahia/test-framework';
 import {Constants} from '~/ContentEditor.constants';
 import startWorkflowAction from './startWorkflow.action';
 import {useFormikContext} from 'formik';
-import {useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorContext, useContentEditorConfigContext} from '~/ContentEditor.context';
 jest.mock('formik');
+jest.mock('~/ContentEditor.context');
 jest.mock('~/ContentEditor.context');
 
 describe('startWorkflow action', () => {
     let formik;
     let defaultProps;
     let contentEditorContext;
+    let contentEditorConfigContext;
     let StartWorkflowAction;
 
     beforeEach(() => {
@@ -43,6 +45,14 @@ describe('startWorkflow action', () => {
             }
         };
         useContentEditorContext.mockReturnValue(contentEditorContext);
+        contentEditorConfigContext = {
+            envProps: {
+                dirtyRef: {
+                    current: false
+                }
+            }
+        };
+        useContentEditorConfigContext.mockReturnValue(contentEditorConfigContext);
     });
 
     it('should display startWorkflowAction when user have start workflow rights', () => {

@@ -14,7 +14,10 @@ jest.mock('react', () => {
 
 jest.mock('~/PublicationInfo/PublicationInfo.context', () => ({usePublicationInfoContext: jest.fn()}));
 jest.mock('formik');
-jest.mock('~/ContentEditor.context', () => ({useContentEditorContext: jest.fn(), useContentEditorConfigContext: jest.fn()}));
+jest.mock('~/ContentEditor.context', () => ({
+    useContentEditorContext: jest.fn(),
+    useContentEditorConfigContext: jest.fn()
+}));
 
 describe('save action', () => {
     let SaveAction;
@@ -25,8 +28,21 @@ describe('save action', () => {
     beforeEach(() => {
         SaveAction = saveAction.component;
         useContext.mockImplementation(() => ({render}));
-        useContentEditorContext.mockImplementation(() => ({refetchFormData: jest.fn(), setErrors: jest.fn()}));
-        useContentEditorConfigContext.mockImplementation(() => ({envProps: {}}));
+        const contentEditorContext = {
+            i18nContext: {},
+            setI18nContext: jest.fn(),
+            refetchFormData: jest.fn(),
+            setErrors: jest.fn()
+        };
+        useContentEditorContext.mockReturnValue(contentEditorContext);
+        const contentEditorConfigContext = {
+            envProps: {
+                dirtyRef: {
+                    current: true
+                }
+            }
+        };
+        useContentEditorConfigContext.mockReturnValue(contentEditorConfigContext);
         usePublicationInfoContext.mockImplementation(() => ({publicationInfoPolling: jest.fn()}));
         defaultProps = {
             renderComponent: jest.fn(), render, loading: undefined, dirty: true

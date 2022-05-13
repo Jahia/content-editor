@@ -39,10 +39,7 @@ describe('ContentPathContainer', () => {
     let defaultProps;
 
     let dispatch = jest.fn();
-    let envProps = {
-        back: jest.fn(),
-        redirectBreadcrumbCallback: jest.fn()
-    };
+    let envProps;
 
     beforeEach(() => {
         useFormikContext.mockReturnValue({dirty: false});
@@ -56,6 +53,13 @@ describe('ContentPathContainer', () => {
             language: 'fr'
         }));
 
+        envProps = {
+            back: jest.fn(),
+            redirectBreadcrumbCallback: jest.fn(),
+            dirtyRef: {
+                current: false
+            }
+        };
         useContentEditorConfigContext.mockImplementation(() => ({
             envProps: envProps,
             site: 'mySiteXD'
@@ -66,11 +70,6 @@ describe('ContentPathContainer', () => {
 
     afterEach(() => {
         dispatch = jest.fn();
-        envProps = {
-            back: jest.fn(),
-            shouldRedirectBreadcrumb: () => false
-        };
-
         useQuery.mockClear();
         useDispatch.mockClear();
         useSelector.mockClear();
@@ -225,7 +224,7 @@ describe('ContentPathContainer', () => {
     });
 
     it('handle redirects on item click with dirty form', () => {
-        useFormikContext.mockReturnValue({dirty: true});
+        envProps.dirtyRef.current = true;
 
         const wrapper = shallow(<ContentPathContainer {...defaultProps}/>);
         wrapper.find('ContentPath').simulate('itemClick', '/x/y/z');
