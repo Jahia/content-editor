@@ -9,7 +9,7 @@
           "success": "Inhalt wurde erfolgreich gespeichert",
           "error": "Beim Speichern des Inhalts ist ein Fehler aufgetreten"
         },
-        "advanced": "Advanced Mode"
+        "advanced": "Fortgeschrittener Modus"
       },
       "edit": {
         "title": "Content bearbeiten",
