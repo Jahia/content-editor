@@ -11,7 +11,13 @@ describe('SaveErrorModal', () => {
         props = {
             onClose: jest.fn(),
             onCreateContent: jest.fn(),
-            nbOfErrors: 3
+            i18nErrors: {
+                'shared': {
+                    'field1': "required",
+                    'field2': "required",
+                    'field3': "required",
+                }
+            }
         };
     });
 

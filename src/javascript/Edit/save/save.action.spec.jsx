@@ -4,6 +4,7 @@ import saveAction from './save.action';
 import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import {useFormikContext} from 'formik';
+import {useContentEditorSectionContext} from "~/ContentEditorSection/ContentEditorSection.context";
 
 jest.mock('react', () => {
     return {
@@ -13,6 +14,7 @@ jest.mock('react', () => {
 });
 
 jest.mock('~/PublicationInfo/PublicationInfo.context', () => ({usePublicationInfoContext: jest.fn()}));
+jest.mock('~/ContentEditorSection/ContentEditorSection.context');
 jest.mock('formik');
 jest.mock('~/ContentEditor.context', () => ({
     useContentEditorContext: jest.fn(),
@@ -24,6 +26,14 @@ describe('save action', () => {
     let defaultProps;
     let formik;
     let render = jest.fn();
+    let sections = [{
+        fieldSets:[{
+            fields: [
+                {name: 'field1'},
+                {name: 'field2'},
+            ]
+        }]
+    }];
 
     beforeEach(() => {
         SaveAction = saveAction.component;
@@ -42,6 +52,7 @@ describe('save action', () => {
                 }
             }
         };
+        useContentEditorSectionContext.mockReturnValue({sections});
         useContentEditorConfigContext.mockReturnValue(contentEditorConfigContext);
         usePublicationInfoContext.mockImplementation(() => ({publicationInfoPolling: jest.fn()}));
         defaultProps = {

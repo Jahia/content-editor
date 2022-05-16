@@ -11,7 +11,7 @@ const setErrorFieldTouched = (errorsFields, setTouched) => {
     return setTouched(fieldsTouched);
 };
 
-export const validateForm = async ({setTouched, validateForm}, i18nContext, componentRenderer, sections, language, siteInfo) => {
+export const validateForm = async ({setTouched, validateForm}, i18nContext, sections, language, siteInfo, componentRenderer) => {
     const errors = await validateForm();
     // SetEach values touched to display errors if there is so.
     // If no error, form will be reset after submition

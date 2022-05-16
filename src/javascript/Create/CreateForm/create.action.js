@@ -32,7 +32,7 @@ const Create = ({createAnother, render: Render, loading: Loading, ...otherProps}
     });
 
     const save = async formik => {
-        const {errors, i18nErrors} = await validateForm(formik, i18nContext, componentRenderer, sections, lang, siteInfo);
+        const {errors, i18nErrors} = await validateForm(formik, i18nContext, sections, lang, siteInfo, componentRenderer);
 
         if (errors || i18nErrors) {
             setErrors({...errors});
