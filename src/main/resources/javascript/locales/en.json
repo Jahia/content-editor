@@ -8,7 +8,8 @@
           "createAnother": "Create another",
           "success": "Content successfully created",
           "error": "An error occurred when creating the content"
-        }
+        },
+        "advanced": "Advanced Mode"
       },
       "edit": {
         "title": "Edit content",

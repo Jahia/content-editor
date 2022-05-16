@@ -134,6 +134,12 @@ export const ContentEditorModal = withNotifications()(({editorConfig, setEditorC
         redirectBreadcrumbCallback: () => {
             envProps.back();
         },
+        setFullscreen: () => {
+            setEditorConfig({
+                ...editorConfig,
+                isFullscreen: true
+            });
+        },
         isModal: true,
         isFullscreen: editorConfig?.isFullscreen
     };
