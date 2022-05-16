@@ -20,6 +20,7 @@ describe('Header UpperSection', () => {
         };
         contentEditorContext = {
             mode: 'create',
+            i18nContext: {},
             nodeData: {
                 primaryNodeType: {
                     displayName: 'WIP-WOP'

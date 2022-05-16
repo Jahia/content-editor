@@ -32,7 +32,7 @@ describe('validation utils', () => {
 
         it('should return null when there is no errors', async () => {
             errors = {};
-            expect((await validateForm(formik, {}, sections, "en", {}, renderComponent)).errors).toBeUndefined();
+            expect((await validateForm(formik, {}, sections, "en", {}, renderComponent)).errors).toBeNull();
         });
 
         it('should return object with errors', async () => {
