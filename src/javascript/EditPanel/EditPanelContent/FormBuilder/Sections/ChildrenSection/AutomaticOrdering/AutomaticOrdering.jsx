@@ -60,9 +60,9 @@ export const AutomaticOrderingCmp = ({classes}) => {
         setDisplayedRows(currentDisplayedRows);
 
         // Unset values
-        setFieldValue(displayedRowToRemove.propField.name, undefined, true);
+        setFieldValue(displayedRowToRemove.propField.name, undefined);
         setFieldTouched(displayedRowToRemove.propField.name, true, false);
-        setFieldValue(displayedRowToRemove.directionField.name, undefined, true);
+        setFieldValue(displayedRowToRemove.directionField.name, undefined);
         setFieldTouched(displayedRowToRemove.directionField.name, true, false);
     };
 

@@ -28,7 +28,7 @@ export const SelectAllActionComponent = ({field, inputContext, render: Render, l
                     possibleValues,
                     true
                 );
-                formik.setFieldTouched(field.name, [true], false);
+                formik.setFieldTouched(field.name, true, false);
                 if (inputContext.actionContext.onChange) {
                     inputContext.actionContext.onChange(possibleValues);
                 }

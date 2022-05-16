@@ -108,11 +108,14 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field}) 
     const onChange = useCallback(currentValue => {
         // Update formik
         setFieldValue(field.name, currentValue);
-        setFieldTouched(field.name);
 
         // Trigger on changes
         registeredOnChange(currentValue);
-    }, [field.name, registeredOnChange, setFieldTouched, setFieldValue]);
+    }, [field.name, registeredOnChange, setFieldValue]);
+
+    const onBlur = useCallback(() => {
+        setFieldTouched(field.name);
+    }, [field.name, setFieldTouched]);
 
     const registeredOnChangeRef = useRef(registeredOnChange);
     useEffect(() => {
@@ -199,11 +202,15 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field}) 
                             <MultipleField inputContext={inputContext}
                                            editorContext={editorContext}
                                            field={field}
-                                           onChange={onChange}/> :
+                                           onChange={onChange}
+                                           onBlur={onBlur}
+                            /> :
                             <SingleField inputContext={inputContext}
                                          editorContext={editorContext}
                                          field={field}
-                                         onChange={onChange}/>}
+                                         onChange={onChange}
+                                         onBlur={onBlur}
+                            />}
                     </div>
                     {inputContext.displayActions && registry.get('action', selectorType.key + 'Menu') && (
                         <div className={classes.actions}>

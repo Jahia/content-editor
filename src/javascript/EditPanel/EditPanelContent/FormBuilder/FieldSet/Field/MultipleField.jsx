@@ -21,7 +21,7 @@ const styles = theme => {
     };
 };
 
-export const MultipleFieldCmp = ({classes, editorContext, inputContext, field, onChange}) => {
+export const MultipleFieldCmp = ({classes, editorContext, inputContext, field, onChange, onBlur}) => {
     const {values} = useFormikContext();
     const {t} = useTranslation('content-editor');
 
@@ -67,6 +67,7 @@ export const MultipleFieldCmp = ({classes, editorContext, inputContext, field, o
                                        onChange={newData => {
                                            multipleFieldOnChange(index, newData);
                                        }}
+                                       onBlur={onBlur}
                             />
 
                             {!field.readOnly &&
@@ -98,7 +99,8 @@ MultipleFieldCmp.propTypes = {
     editorContext: PropTypes.object.isRequired,
     field: FieldPropTypes.isRequired,
     classes: PropTypes.object.isRequired,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    onBlur: PropTypes.func.isRequired
 };
 
 export const MultipleField = compose(
