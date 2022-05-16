@@ -11,7 +11,7 @@ const setErrorFieldTouched = (errorsFields, setTouched) => {
     return setTouched(fieldsTouched);
 };
 
-export const validateForm = async ({setTouched, validateForm}, i18nContext, componentRenderer) => {
+export const validateForm = async ({setTouched, validateForm}, i18nContext, componentRenderer, sections, language, siteInfo) => {
     const errors = await validateForm();
     // SetEach values touched to display errors if there is so.
     // If no error, form will be reset after submition
@@ -25,14 +25,32 @@ export const validateForm = async ({setTouched, validateForm}, i18nContext, comp
         .filter(l => Object.keys(i18nContext[l].validation).length > 0)
         .reduce((r, l) => Object.assign(r, {[l]: i18nContext[l].validation}), {});
 
+    const fields = [];
+    sections.forEach(section => {
+        section.fieldSets.forEach(fieldSet => {
+            fieldSet.fields.forEach(field => {
+                fields.push(field);
+            });
+        });
+    });
+
+    delete i18nErrors[language];
+    Object.keys(errors)
+        .map(k => fields.find(f => f.name === k))
+        .forEach(f => {
+            const langKey = f.i18n ? language : 'shared';
+            i18nErrors[langKey] = i18nErrors[langKey] || {};
+            i18nErrors[langKey][f.name] = errors[f.name];
+        });
+
     const nbOfI18nErrors = Object.keys(i18nErrors).length;
 
-    if (nbOfErrors > 0 || nbOfI18nErrors > 0) {
+    if (nbOfI18nErrors > 0) {
         const onClose = () => {
             componentRenderer.destroy('SaveErrorModal');
         };
 
-        componentRenderer.render('SaveErrorModal', SaveErrorModal, {open: true, nbOfErrors, errors, i18nErrors, onClose});
+        componentRenderer.render('SaveErrorModal', SaveErrorModal, {open: true, fields, siteInfo, i18nErrors, onClose});
     }
 
     return {

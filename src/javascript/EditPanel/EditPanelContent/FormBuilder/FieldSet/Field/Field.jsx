@@ -108,12 +108,11 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field}) 
     const onChange = useCallback(currentValue => {
         // Update formik
         setFieldValue(field.name, currentValue);
-        // Validation has been done on the setValue, no need to redo it on touch.
-        setFieldTouched(field.name, field.isMultiple ? [true] : true, false);
+        setFieldTouched(field.name);
 
         // Trigger on changes
         registeredOnChange(currentValue);
-    }, [field.isMultiple, field.name, registeredOnChange, setFieldTouched, setFieldValue]);
+    }, [field.name, registeredOnChange, setFieldTouched, setFieldValue]);
 
     const registeredOnChangeRef = useRef(registeredOnChange);
     useEffect(() => {

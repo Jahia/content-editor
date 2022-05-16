@@ -7,12 +7,14 @@ import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.conte
 import {useFormikContext} from 'formik';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import {useKeydownListener} from '~/utils/getKeydownListener';
+import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 
 const Save = ({render: Render, loading: Loading, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
     const {publicationInfoPolling} = usePublicationInfoContext();
-    const {mode, i18nContext, setI18nContext, setErrors} = useContentEditorContext();
+    const {mode, i18nContext, siteInfo, lang, setI18nContext, setErrors} = useContentEditorContext();
     const {envProps} = useContentEditorConfigContext();
+    const {sections} = useContentEditorSectionContext();
     const formik = useFormikContext();
 
     useKeydownListener((event, formik) => {
@@ -27,7 +29,7 @@ const Save = ({render: Render, loading: Loading, ...otherProps}) => {
     });
 
     const save = async formik => {
-        const {errors, i18nErrors} = await validateForm(formik, i18nContext, componentRenderer);
+        const {errors, i18nErrors} = await validateForm(formik, i18nContext, componentRenderer, sections, lang, siteInfo);
 
         if (errors || i18nErrors) {
             setErrors({...errors});

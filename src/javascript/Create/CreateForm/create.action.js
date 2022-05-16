@@ -8,15 +8,17 @@ import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentE
 import {useKeydownListener} from '~/utils/getKeydownListener';
 import {adaptCreateFormData} from '~/Create/Create.adapter';
 import {useTranslation} from 'react-i18next';
+import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 
 const Create = ({createAnother, render: Render, loading: Loading, ...otherProps}) => {
     const {t} = useTranslation('content-editor');
     const componentRenderer = useContext(ComponentRendererContext);
     const formik = useFormikContext();
     const contentEditorConfigContext = useContentEditorConfigContext();
-    const {envProps, lang} = contentEditorConfigContext;
-    const {mode, setI18nContext, setErrors, refetchFormData, i18nContext} = useContentEditorContext();
+    const {envProps} = contentEditorConfigContext;
+    const {mode, setI18nContext, setErrors, siteInfo, lang, refetchFormData, i18nContext} = useContentEditorContext();
     const [clicked, setClicked] = useState(false);
+    const {sections} = useContentEditorSectionContext();
 
     useKeydownListener((event, formik) => {
         if (mode !== Constants.routes.baseCreateRoute) {
@@ -30,7 +32,7 @@ const Create = ({createAnother, render: Render, loading: Loading, ...otherProps}
     });
 
     const save = async formik => {
-        const {errors, i18nErrors} = await validateForm(formik, i18nContext, componentRenderer);
+        const {errors, i18nErrors} = await validateForm(formik, i18nContext, componentRenderer, sections, lang, siteInfo);
 
         if (errors || i18nErrors) {
             setErrors({...errors});
