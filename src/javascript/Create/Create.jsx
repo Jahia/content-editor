@@ -15,7 +15,7 @@ export const Create = () => {
     const client = useApolloClient();
     const {t} = useTranslation('content-editor');
     const contentEditorConfigContext = useContentEditorConfigContext();
-    const {lang, nodeData, formQueryParams, initialValues, title, i18nContext} = useContentEditorContext();
+    const {nodeData, formQueryParams, initialValues, title, i18nContext} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
     const createAnotherState = useState(false);
     const createAnother = {
@@ -52,31 +52,9 @@ export const Create = () => {
         });
     };
 
-    // Todo share and centralize code
-    useEffect(() => {
-        if (i18nContext.shared || i18nContext[lang]) {
-            let formikRef = contentEditorConfigContext.envProps.formikRef;
-            formikRef.current.setValues({
-                ...formikRef.current.values,
-                ...i18nContext.shared?.values,
-                ...i18nContext[lang]?.values
-            }, i18nContext[lang]);
-        }
-    }, [contentEditorConfigContext.envProps, i18nContext, lang]);
-
     return (
         <Formik
             validateOnChange={false}
-            innerRef={formik => {
-                // Todo share and centralize code
-                if (contentEditorConfigContext.envProps.dirtyRef && formik) {
-                    contentEditorConfigContext.envProps.dirtyRef.current = formik.dirty || Object.keys(i18nContext).some(k => k !== lang && k !== 'shared' && i18nContext[k] && Object.keys(i18nContext[k]).length > 0);
-                }
-
-                if (contentEditorConfigContext.envProps.formikRef) {
-                    contentEditorConfigContext.envProps.formikRef.current = formik;
-                }
-            }}
             initialValues={initialValues}
             validate={validate(sections)}
             onSubmit={handleSubmit}

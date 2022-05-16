@@ -3,7 +3,7 @@ import {EditPanelDialogConfirmation} from '~/EditPanel/EditPanelDialogConfirmati
 import {useContentEditorConfigContext} from '~/ContentEditor.context';
 import * as PropTypes from 'prop-types';
 import {Constants} from '~/ContentEditor.constants';
-import {useKeydownListener} from '~/utils/getKeydownListener';
+import {useKeydownListener} from '~/utils/useKeydownListener';
 
 export const GoBack = ({render: Render, ...otherProps}) => {
     const {envProps} = useContentEditorConfigContext();

@@ -21,8 +21,6 @@ const ContentEditorRedux = ({mode, uuid, lang, contentType, name}) => {
     const {uilang, openPaths} = useSelector(state => ({uilang: state.uilang, openPaths: state.jcontent.openPaths}));
     const dispatch = useDispatch();
 
-    // Todo get rid of ref in envProps
-    const formikRef = useRef();
     const dirtyRef = useRef(false);
     const {t} = useTranslation('content-editor');
     const {data} = useQuery(gql`query($uuid:String!) {
@@ -82,7 +80,6 @@ const ContentEditorRedux = ({mode, uuid, lang, contentType, name}) => {
     };
 
     const envProps = {
-        formikRef,
         dirtyRef,
         back: () => {
             setTimeout(() => {

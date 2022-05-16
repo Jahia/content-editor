@@ -59,34 +59,12 @@ export const Edit = () => {
         });
     }, [client, t, notificationContext, contentEditorConfigContext, formQueryParams, nodeData, sections, i18nContext]);
 
-    // Todo share and centralize code
-    useEffect(() => {
-        if (i18nContext.shared || i18nContext[lang]) {
-            let formikRef = contentEditorConfigContext.envProps.formikRef;
-            formikRef.current.setValues({
-                ...formikRef.current.values,
-                ...i18nContext.shared?.values,
-                ...i18nContext[lang]?.values
-            }, i18nContext[lang]);
-        }
-    }, [contentEditorConfigContext.envProps, i18nContext, lang]);
-
     return (
         <>
             <PublicationInfoContextProvider uuid={nodeData.uuid} lang={lang}>
                 <Formik
                     validateOnMount
                     validateOnChange={false}
-                    innerRef={formik => {
-                        // Todo share and centralize code
-                        if (contentEditorConfigContext.envProps.dirtyRef && formik) {
-                            contentEditorConfigContext.envProps.dirtyRef.current = formik.dirty || Object.keys(i18nContext).some(k => k !== lang && k !== 'shared' && i18nContext[k] && Object.keys(i18nContext[k]).length > 0);
-                        }
-
-                        if (contentEditorConfigContext.envProps.formikRef) {
-                            contentEditorConfigContext.envProps.formikRef.current = formik;
-                        }
-                    }}
                     initialValues={initialValues}
                     validate={validate(sections)}
                     onSubmit={handleSubmit}

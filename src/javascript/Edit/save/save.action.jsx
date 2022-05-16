@@ -6,7 +6,7 @@ import * as PropTypes from 'prop-types';
 import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
 import {useFormikContext} from 'formik';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
-import {useKeydownListener} from '~/utils/getKeydownListener';
+import {useKeydownListener} from '~/utils/useKeydownListener';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 
 const Save = ({render: Render, loading: Loading, ...otherProps}) => {
@@ -17,7 +17,7 @@ const Save = ({render: Render, loading: Loading, ...otherProps}) => {
     const {sections} = useContentEditorSectionContext();
     const formik = useFormikContext();
 
-    useKeydownListener((event, formik) => {
+    useKeydownListener(event => {
         if (mode !== Constants.routes.baseEditRoute) {
             return;
         }
