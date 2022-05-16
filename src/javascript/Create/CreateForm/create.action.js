@@ -47,14 +47,12 @@ const Create = ({createAnother, render: Render, loading: Loading, ...otherProps}
                     if (createAnother) {
                         // Refetch only to generate a new valid system name
                         refetchFormData().then(res => {
-                            // Todo centralize form reset
                             setI18nContext({});
                             const formData = adaptCreateFormData(res.data, lang, t, contentEditorConfigContext);
                             formik.resetForm({values: formData.initialValues});
                             setClicked(false);
                         });
                     } else {
-                        // Todo centralize form reset
                         setI18nContext({});
                         formik.resetForm({values: formik.values});
                         if (envProps.onSavedCallback) {

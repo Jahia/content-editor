@@ -17,7 +17,6 @@ export const OpenEngineTabs = ({tabs, render: Render, ...otherProps}) => {
                 isOpen={open}
                 actionCallback={({discard}) => {
                     if (discard) {
-                        // Todo centralize form reset
                         setI18nContext({});
                         formik.resetForm();
                     }

@@ -41,7 +41,6 @@ const Save = ({render: Render, loading: Loading, ...otherProps}) => {
                 .submitForm()
                 .then(data => {
                     if (data) {
-                        // Todo centralize form reset
                         setI18nContext({});
                         formik.resetForm({values: formik.values});
                         if (envProps.onSavedCallback) {

@@ -15,7 +15,6 @@ export const SaveButton = ({onCloseDialog, actionCallback}) => {
         formik.submitForm()
             .then(data => {
                 if (data) {
-                    // Todo centralize form reset
                     setI18nContext({});
                     formik.resetForm({values: formik.values});
                     actionCallback(data);
