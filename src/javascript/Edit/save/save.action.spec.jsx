@@ -4,7 +4,7 @@ import saveAction from './save.action';
 import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import {useFormikContext} from 'formik';
-import {useContentEditorSectionContext} from "~/ContentEditorSection/ContentEditorSection.context";
+import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 
 jest.mock('react', () => {
     return {
@@ -27,10 +27,10 @@ describe('save action', () => {
     let formik;
     let render = jest.fn();
     let sections = [{
-        fieldSets:[{
+        fieldSets: [{
             fields: [
                 {name: 'field1'},
-                {name: 'field2'},
+                {name: 'field2'}
             ]
         }]
     }];

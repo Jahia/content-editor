@@ -12,16 +12,16 @@ describe('SaveErrorModal', () => {
             onClose: jest.fn(),
             onCreateContent: jest.fn(),
             i18nErrors: {
-                'shared': {
-                    'field1': "required",
-                    'field2': "required",
-                    'field3': "required",
+                shared: {
+                    field1: 'required',
+                    field2: 'required',
+                    field3: 'required'
                 }
             },
             fields: [
                 {name: 'field1'},
                 {name: 'field2'},
-                {name: 'field3'},
+                {name: 'field3'}
             ]
         };
     });

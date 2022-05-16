@@ -3,7 +3,7 @@ import {shallow} from '@jahia/test-framework';
 import createAction from './create.action';
 import {useFormikContext} from 'formik';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
-import {useContentEditorSectionContext} from "~/ContentEditorSection/ContentEditorSection.context";
+import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 
 jest.mock('formik');
 jest.mock('react', () => {
@@ -27,10 +27,10 @@ describe('create action', () => {
     const setState = jest.fn();
     const useStateMock = initState => [initState, setState];
     let sections = [{
-        fieldSets:[{
+        fieldSets: [{
             fields: [
                 {name: 'field1'},
-                {name: 'field2'},
+                {name: 'field2'}
             ]
         }]
     }];
