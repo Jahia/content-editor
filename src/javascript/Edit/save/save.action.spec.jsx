@@ -39,18 +39,19 @@ describe('save action', () => {
         SaveAction = saveAction.component;
         useContext.mockImplementation(() => ({render}));
         const contentEditorContext = {
-            i18nContext: {},
+            i18nContext: {
+                en: {
+                    validation: {},
+                    values: {}
+                }
+            },
             setI18nContext: jest.fn(),
             refetchFormData: jest.fn(),
             setErrors: jest.fn()
         };
         useContentEditorContext.mockReturnValue(contentEditorContext);
         const contentEditorConfigContext = {
-            envProps: {
-                dirtyRef: {
-                    current: true
-                }
-            }
+            envProps: {}
         };
         useContentEditorSectionContext.mockReturnValue({sections});
         useContentEditorConfigContext.mockReturnValue(contentEditorConfigContext);

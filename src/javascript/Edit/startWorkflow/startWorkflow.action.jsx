@@ -1,18 +1,18 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
 import {Constants} from '~/ContentEditor.constants';
-import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorContext} from '~/ContentEditor.context';
 import {useFormikContext} from 'formik';
 
 const StartWorkFlow = ({isMainButton, render: Render, loading: Loading, ...otherProps}) => {
     const {nodeData, lang, i18nContext} = useContentEditorContext();
-    const {envProps} = useContentEditorConfigContext();
     const {hasPublishPermission, hasStartPublicationWorkflowPermission, lockedAndCannotBeEdited} = nodeData;
 
     const formik = useFormikContext();
 
     let disabled = false;
-    let isVisible = true;
+    let isVisible;
+    const dirty = formik.dirty || Object.keys(i18nContext).length > 0;
 
     if (isMainButton) {
         // Is Visible
@@ -20,7 +20,6 @@ const StartWorkFlow = ({isMainButton, render: Render, loading: Loading, ...other
 
         // Is WIP
         const wipInfo = formik.values[Constants.wip.fieldName];
-        const dirty = formik.dirty || Object.keys(i18nContext).length > 0;
 
         disabled = dirty ||
             wipInfo.status === Constants.wip.status.ALL_CONTENT ||
@@ -30,7 +29,7 @@ const StartWorkFlow = ({isMainButton, render: Render, loading: Loading, ...other
         isVisible = hasPublishPermission;
 
         // Is Active
-        if (isVisible && (lockedAndCannotBeEdited || envProps.dirtyRef.current)) {
+        if (isVisible && (lockedAndCannotBeEdited || dirty)) {
             disabled = true;
         }
     }

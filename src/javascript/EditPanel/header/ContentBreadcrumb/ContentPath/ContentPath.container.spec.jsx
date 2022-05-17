@@ -5,7 +5,7 @@ import {shallow} from '@jahia/test-framework';
 
 import {push} from 'connected-react-router';
 import {cmGoto} from '~/JContent.redux-actions';
-import {useContentEditorConfigContext} from '~/ContentEditor.context';
+import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 
 import {GetContentPath} from './ContentPath.gql-queries';
 import ContentPathContainer from './ContentPath.container';
@@ -20,9 +20,7 @@ jest.mock('~/JContent.redux-actions', () => ({
     cmGoto: jest.fn()
 }));
 
-jest.mock('~/ContentEditor.context', () => ({
-    useContentEditorConfigContext: jest.fn()
-}));
+jest.mock('~/ContentEditor.context');
 
 jest.mock('react-redux', () => ({
     useDispatch: jest.fn(),
@@ -39,6 +37,7 @@ describe('ContentPathContainer', () => {
     let defaultProps;
 
     let dispatch = jest.fn();
+    let contentEditorContext;
     let envProps;
 
     beforeEach(() => {
@@ -55,15 +54,16 @@ describe('ContentPathContainer', () => {
 
         envProps = {
             back: jest.fn(),
-            redirectBreadcrumbCallback: jest.fn(),
-            dirtyRef: {
-                current: false
-            }
+            redirectBreadcrumbCallback: jest.fn()
         };
         useContentEditorConfigContext.mockImplementation(() => ({
             envProps: envProps,
             site: 'mySiteXD'
         }));
+        contentEditorContext = {
+            i18nContext: {}
+        };
+        useContentEditorContext.mockImplementation(() => contentEditorContext);
 
         useDispatch.mockImplementation(() => dispatch);
     });
@@ -224,7 +224,10 @@ describe('ContentPathContainer', () => {
     });
 
     it('handle redirects on item click with dirty form', () => {
-        envProps.dirtyRef.current = true;
+        contentEditorContext.i18nContext.en = {
+            validation: {},
+            values: {}
+        };
 
         const wrapper = shallow(<ContentPathContainer {...defaultProps}/>);
         wrapper.find('ContentPath').simulate('itemClick', '/x/y/z');

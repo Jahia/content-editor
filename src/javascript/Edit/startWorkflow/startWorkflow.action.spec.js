@@ -6,7 +6,6 @@ import {useFormikContext} from 'formik';
 import {useContentEditorContext, useContentEditorConfigContext} from '~/ContentEditor.context';
 jest.mock('formik');
 jest.mock('~/ContentEditor.context');
-jest.mock('~/ContentEditor.context');
 
 describe('startWorkflow action', () => {
     let formik;
@@ -38,6 +37,7 @@ describe('startWorkflow action', () => {
         };
         useFormikContext.mockReturnValue(formik);
         contentEditorContext = {
+            i18nContext: {},
             nodeData: {
                 hasPublishPermission: true,
                 lockedAndCannotBeEdited: false,
@@ -46,11 +46,7 @@ describe('startWorkflow action', () => {
         };
         useContentEditorContext.mockReturnValue(contentEditorContext);
         contentEditorConfigContext = {
-            envProps: {
-                dirtyRef: {
-                    current: false
-                }
-            }
+            envProps: {}
         };
         useContentEditorConfigContext.mockReturnValue(contentEditorConfigContext);
     });
