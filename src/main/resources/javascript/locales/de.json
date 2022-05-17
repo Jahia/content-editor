@@ -16,8 +16,10 @@
         "contentEdit": "Content bearbeiten",
         "validation": {
           "required": "erforderlich",
+          "invalidForm": "Fehler im Formular",
           "fieldsInError": "Ein Feld mit Fehler",
-          "fieldsInError_plural": "{{count}} Felder mit Fehler"
+          "fieldsInError_plural": "{{count}} Felder mit Fehler",
+          "otherLanguages": "Weitere Sprachen mit Fehler"
         },
         "action": {
           "copyLanguage": {
