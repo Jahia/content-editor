@@ -54,7 +54,7 @@ export default function () {
     window.top.jahiaGwtHook = {
         // Hook on edit engine opening
         edit: ({uuid, lang, siteKey, uilang}) => {
-            window.CE_API.edit(uuid, siteKey, lang, uilang, true, (updatedNode, originalNode) => {
+            window.CE_API.edit(uuid, siteKey, lang, uilang, false, (updatedNode, originalNode) => {
                 // Trigger Page Composer to reload iframe if system name was renamed
                 if (originalNode.path !== updatedNode.path) {
                     const dispatch = window.jahia.reduxStore.dispatch;

@@ -3,16 +3,13 @@ import PropTypes from 'prop-types';
 
 import {ButtonGroup, Chip, Typography} from '@jahia/moonstone';
 import {DisplayAction, DisplayActions} from '@jahia/ui-extender';
-import PublicationInfoBadge from '~/PublicationInfo/PublicationInfo.badge';
-import LockInfoBadge from '~/Lock/LockInfo.badge';
-import WipInfoChip from '~/EditPanel/WorkInProgress/Chip/WipInfo.Chip';
 import {truncate} from '~/utils/helper';
 import styles from './UpperSection.scss';
 import ContentBreadcrumb from '~/EditPanel/header/ContentBreadcrumb';
 import {useContentEditorContext} from '~/ContentEditor.context';
-import {UnsavedChip} from '~/EditPanel/header/UnsavedChip';
 import {PublishMenu} from '~/EditPanel/header/PublishMenu';
 import {getButtonRenderer} from '~/utils/getButtonRenderer';
+import HeaderBadges from '~/EditPanel/header/HeaderBadges/HeaderBadges';
 
 const ButtonRenderer = getButtonRenderer({
     defaultButtonProps: {
@@ -27,7 +24,7 @@ const BackButtonRenderer = getButtonRenderer({
 });
 
 export const HeaderUpperSection = ({title, isShowPublish}) => {
-    const {nodeData, nodeTypeDisplayName} = useContentEditorContext();
+    const {nodeData, nodeTypeDisplayName, mode} = useContentEditorContext();
 
     return (
         <>
@@ -75,13 +72,7 @@ export const HeaderUpperSection = ({title, isShowPublish}) => {
                         <ContentBreadcrumb path={nodeData.path}/> :
                         <Chip label={nodeTypeDisplayName} color="accent"/>}
                 </div>
-
-                <div className={styles.headerChips}>
-                    <PublicationInfoBadge/>
-                    <LockInfoBadge/>
-                    <WipInfoChip/>
-                    <UnsavedChip/>
-                </div>
+                {mode === 'edit' && <HeaderBadges className={styles.headerChips}/>}
             </div>
         </>
     );
