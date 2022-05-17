@@ -41,8 +41,7 @@ export const useSwitchLanguage = () => {
 
         const i18nValues = {
             values: {},
-            validation: {},
-            dirty: formik.dirty
+            validation: {}
         };
         const nonI18nValues = {
             values: {},
