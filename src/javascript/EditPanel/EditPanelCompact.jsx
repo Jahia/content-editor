@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import styles from './EditPanel.scss';
 import clsx from 'clsx';
 import {DisplayAction, DisplayActions, registry} from '@jahia/ui-extender';
 import {Constants} from '~/ContentEditor.constants';
 import {WindowListeners} from './WindowListeners';
 import {DialogActions, DialogContent, DialogTitle} from '@material-ui/core';
-import {Button, Checkbox, Typography} from '@jahia/moonstone';
+import {Button, Checkbox, Typography, Edit} from '@jahia/moonstone';
 import {GoBack} from '~/actions/goBack.action';
 import {getButtonRenderer} from '~/utils/getButtonRenderer';
 import {EditPanelLanguageSwitcher} from '~/EditPanel/EditPanelLanguageSwitcher';
@@ -20,6 +20,7 @@ const ButtonRenderer = getButtonRenderer({
 
 const EditPanelCompact = ({title, createAnother}) => {
     const {siteInfo, nodeData, lang} = useContentEditorContext();
+    const contentEditorConfigContext = useContentEditorConfigContext();
     const {t} = useTranslation('content-editor');
 
     const tabs = registry.find({target: 'editHeaderTabsActions'});
@@ -33,6 +34,7 @@ const EditPanelCompact = ({title, createAnother}) => {
                 <div className="flexRow">
                     <Typography variant="heading">{title}</Typography>
                     <div className="flexFluid"/>
+                    <Button className={styles.uppercase} label={t('label.contentEditor.create.advanced')} icon={<Edit/>} onClick={contentEditorConfigContext.envProps.setFullscreen}/>
                     <DisplayAction
                         actionKey="content-editor/header/3dots"
                         render={({dataSelRole, buttonIcon, onClick, ...props}) => (
