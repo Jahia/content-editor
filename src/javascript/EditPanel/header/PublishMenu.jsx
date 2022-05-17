@@ -2,7 +2,7 @@ import {useContentEditorContext} from '~/ContentEditor.context';
 import {useFormikContext} from 'formik';
 import {Constants} from '~/ContentEditor.constants';
 import React from 'react';
-import styles from './UpperSection.scss';
+import styles from './HeaderUpperSection.scss';
 import {DisplayAction} from '@jahia/ui-extender';
 import {getButtonRenderer} from '~/utils/getButtonRenderer';
 
