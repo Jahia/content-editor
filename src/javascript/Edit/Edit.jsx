@@ -1,8 +1,7 @@
 import React, {useCallback, useEffect} from 'react';
-import {withNotifications} from '@jahia/react-material';
+import {useNotifications} from '@jahia/react-material';
 import {Formik} from 'formik';
 import EditPanel from '~/EditPanel';
-import * as PropTypes from 'prop-types';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import {validate} from '~/Validation/validation';
 import {saveNode} from './save/save.request';
@@ -12,13 +11,12 @@ import {useTranslation} from 'react-i18next';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import {useApolloClient} from '@apollo/react-hooks';
 
-export const EditCmp = ({
-    notificationContext
-}) => {
+export const Edit = () => {
+    const notificationContext = useNotifications();
     const client = useApolloClient();
     const {t} = useTranslation('content-editor');
     const contentEditorConfigContext = useContentEditorConfigContext();
-    const {lang, nodeData, formQueryParams, initialValues, title} = useContentEditorContext();
+    const {lang, nodeData, formQueryParams, initialValues, title, i18nContext} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
 
     useEffect(() => {
@@ -40,7 +38,8 @@ export const EditCmp = ({
                 ...formQueryParams,
                 nodeData,
                 sections,
-                values
+                values,
+                i18nContext
             },
             editCallback: info => {
                 const {originalNode, updatedNode} = info;
@@ -58,18 +57,14 @@ export const EditCmp = ({
                 }
             }
         });
-    }, [client, t, notificationContext, contentEditorConfigContext, formQueryParams, nodeData, sections]);
+    }, [client, t, notificationContext, contentEditorConfigContext, formQueryParams, nodeData, sections, i18nContext]);
 
     return (
         <>
             <PublicationInfoContextProvider uuid={nodeData.uuid} lang={lang}>
                 <Formik
                     validateOnMount
-                    innerRef={formik => {
-                        if (contentEditorConfigContext.envProps.formikRef) {
-                            contentEditorConfigContext.envProps.formikRef.current = formik;
-                        }
-                    }}
+                    validateOnChange={false}
                     initialValues={initialValues}
                     validate={validate(sections)}
                     onSubmit={handleSubmit}
@@ -82,10 +77,5 @@ export const EditCmp = ({
     );
 };
 
-EditCmp.propTypes = {
-    notificationContext: PropTypes.object.isRequired
-};
-
-export const Edit = withNotifications()(EditCmp);
 Edit.displayName = 'Edit';
 export default Edit;

@@ -1,0 +1,16 @@
+.icon {
+    width: 1.7rem;
+    height: 1.7rem;
+    margin-right: 0.2rem;
+}
+
+.dialog {
+    width: 600px;
+}
+
+.dialogTitle {
+    & h6 {
+        display: flex;
+        align-items: center;
+    }
+}

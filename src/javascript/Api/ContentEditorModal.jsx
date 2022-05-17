@@ -3,7 +3,6 @@ import {Constants} from '~/ContentEditor.constants';
 import {ContentEditor} from '~/ContentEditor';
 import {Dialog, IconButton} from '@material-ui/core';
 import styles from './ContentEditorApi.scss';
-import {FormikProvider} from 'formik';
 import EditPanelDialogConfirmation from '~/EditPanel/EditPanelDialogConfirmation/EditPanelDialogConfirmation';
 import Slide from '@material-ui/core/Slide';
 import PropTypes from 'prop-types';
@@ -11,7 +10,7 @@ import {useDispatch} from 'react-redux';
 import {ceToggleSections, DEFAULT_OPENED_SECTIONS} from '~/redux/registerReducer';
 import {Button} from '@jahia/moonstone';
 import {Close} from '@material-ui/icons';
-import {withNotifications} from '@jahia/react-material';
+import {useNotifications} from '@jahia/react-material';
 import {useTranslation} from 'react-i18next';
 
 function triggerEvents(nodeUuid, operator) {
@@ -28,10 +27,11 @@ const Transition = React.forwardRef((props, ref) => {
     return <Slide ref={ref} direction="up" {...props}/>;
 });
 
-export const ContentEditorModal = withNotifications()(({editorConfig, setEditorConfig, notificationContext}) => {
+export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
+    const notificationContext = useNotifications();
     const [confirmationConfig, setConfirmationConfig] = useState(false);
 
-    const formikRef = useRef();
+    const dirtyRef = useRef(false);
     const needRefresh = useRef(false);
     const dispatch = useDispatch();
 
@@ -46,7 +46,7 @@ export const ContentEditorModal = withNotifications()(({editorConfig, setEditorC
 
     // Standalone env props
     const envProps = {
-        formikRef,
+        dirtyRef,
         back: () => {
             setEditorConfig(false);
         },
@@ -115,16 +115,11 @@ export const ContentEditorModal = withNotifications()(({editorConfig, setEditorC
                 setEditorConfig(false);
             }
         },
-        switchLanguageCallback: ({newNode, language}) => {
-            if (newNode) {
-                envProps.onSavedCallback({newNode, language}, true);
-            } else if (editorConfig) {
-                // Update the lang of current opened CE
-                setEditorConfig({
-                    ...editorConfig,
-                    lang: language
-                });
-            }
+        switchLanguageCallback: language => {
+            setEditorConfig({
+                ...editorConfig,
+                lang: language
+            });
         },
         onClosedCallback: () => {
             if (editorConfig && editorConfig.onClosedCallback) {
@@ -135,7 +130,14 @@ export const ContentEditorModal = withNotifications()(({editorConfig, setEditorC
             envProps.back();
         },
         isModal: true,
-        isFullscreen: editorConfig?.isFullscreen
+        isFullscreen: editorConfig?.isFullscreen,
+        confirmationDialog: confirmationConfig && (
+            <EditPanelDialogConfirmation
+                isOpen
+                actionCallback={() => setEditorConfig(false)}
+                onCloseDialog={() => setConfirmationConfig(false)}
+            />
+        )
     };
 
     const classes = editorConfig.isFullscreen ? {
@@ -153,18 +155,9 @@ export const ContentEditorModal = withNotifications()(({editorConfig, setEditorC
                 TransitionComponent={Transition}
                 aria-labelledby="dialog-content-editor"
                 classes={classes}
-                onClose={() => (formikRef.current && formikRef.current.dirty) ? setConfirmationConfig(true) : setEditorConfig(false)}
+                onClose={() => (envProps.dirtyRef.current) ? setConfirmationConfig(true) : setEditorConfig(false)}
                 onRendered={() => window.focus()}
         >
-            {confirmationConfig && (
-                <FormikProvider value={formikRef.current}>
-                    <EditPanelDialogConfirmation
-                        isOpen={open}
-                        actionCallback={envProps.back}
-                        onCloseDialog={() => setConfirmationConfig(false)}
-                    />
-                </FormikProvider>
-            )}
             <ContentEditor mode={editorConfig.mode}
                            uuid={editorConfig.uuid}
                            lang={editorConfig.lang}
@@ -176,10 +169,9 @@ export const ContentEditorModal = withNotifications()(({editorConfig, setEditorC
             />
         </Dialog>
     );
-});
+};
 
 ContentEditorModal.propTypes = {
     editorConfig: PropTypes.object.isRequired,
-    setEditorConfig: PropTypes.func.isRequired,
-    notificationContext: PropTypes.object.isRequired
+    setEditorConfig: PropTypes.func.isRequired
 };

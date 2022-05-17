@@ -32,8 +32,8 @@ const registerSystemNameOnChange = registry => {
 
                 if (systemNameField && !systemNameField.readOnly) {
                     const cleanedSystemName = replaceSpecialCharacters(currentValue);
-                    editorContext.formik.setFieldValue(Constants.systemName.name, limitSystemNameIfNecessary(cleanedSystemName, systemNameField), true);
-                    editorContext.formik.setFieldTouched(Constants.systemName.name, true);
+                    editorContext.formik.setFieldValue(Constants.systemName.name, limitSystemNameIfNecessary(cleanedSystemName, systemNameField));
+                    editorContext.formik.setFieldTouched(Constants.systemName.name, true, false);
                 }
             }
         }

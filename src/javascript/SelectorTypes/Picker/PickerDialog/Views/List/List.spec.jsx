@@ -147,7 +147,7 @@ describe('PickerDialog - List view', () => {
             dsGenericTheme
         );
 
-        cmp.dive().dive().find('ContentTable').exists();
+        cmp.find('ContentTable').exists();
     });
 
     it('should display the name of content', () => {
@@ -161,8 +161,7 @@ describe('PickerDialog - List view', () => {
             <List {...defaultProps}/>,
             {},
             dsGenericTheme
-        ).dive().dive()
-            .find('ContentTable');
+        ).find('ContentTable');
 
         expect(cmp.props().data[0].name).toContain('Home');
     });
@@ -179,8 +178,7 @@ describe('PickerDialog - List view', () => {
             <List {...defaultProps}/>,
             {},
             dsGenericTheme
-        ).dive().dive()
-            .find('ContentTable');
+        ).find('ContentTable');
 
         expect(cmp.props().data[0].selectable).toBe(false);
         expect(cmp.props().data[1].selectable).toBe(true);
@@ -197,8 +195,7 @@ describe('PickerDialog - List view', () => {
             <List {...defaultProps}/>,
             {},
             dsGenericTheme
-        ).dive().dive()
-            .find('ContentTable');
+        ).find('ContentTable');
 
         expect(cmp.props().data[0].type).toContain('Page');
     });
@@ -215,7 +212,7 @@ describe('PickerDialog - List view', () => {
             <List {...defaultProps}/>,
             {},
             dsGenericTheme
-        ).dive().dive()
+        )
             .find('ContentTable');
 
         expect(cmp.props().columns[1].property).toContain('type');
@@ -232,7 +229,7 @@ describe('PickerDialog - List view', () => {
             <List {...defaultProps}/>,
             {},
             dsGenericTheme
-        ).dive().dive()
+        )
             .find('ContentTable');
 
         expect(cmp.props().columns[1].property).toContain('subContentsCount');
@@ -250,7 +247,7 @@ describe('PickerDialog - List view', () => {
             <List {...defaultProps}/>,
             {},
             dsGenericTheme
-        ).dive().dive()
+        )
             .find('ContentTable');
 
         cmp.props().data[0].props.navigateInto.onClick({preventDefault: () => {}});
@@ -270,7 +267,7 @@ describe('PickerDialog - List view', () => {
             <List {...defaultProps}/>,
             {},
             dsGenericTheme
-        ).dive().dive()
+        )
             .find('CountDisplayer')
             .dive()
             .dive();
@@ -283,7 +280,7 @@ describe('PickerDialog - List view', () => {
             <List {...defaultProps}/>,
             {},
             dsGenericTheme
-        ).dive().dive();
+        );
 
         expect(useQuery).toHaveBeenCalled();
         expect(useQuery.mock.calls[0][1].variables.fieldSorter).toEqual({
@@ -297,7 +294,7 @@ describe('PickerDialog - List view', () => {
             <List {...defaultProps}/>,
             {},
             dsGenericTheme
-        ).dive().dive();
+        );
 
         cmp.find('ContentTable').simulate('sort', {
             property: 'name'
@@ -315,7 +312,7 @@ describe('PickerDialog - List view', () => {
             <List {...defaultProps}/>,
             {},
             dsGenericTheme
-        ).dive().dive();
+        );
 
         cmp.find('ContentTable').simulate('sort', {
             property: 'lastModified'

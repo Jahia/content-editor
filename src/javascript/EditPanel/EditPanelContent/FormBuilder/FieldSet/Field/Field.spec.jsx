@@ -154,8 +154,7 @@ describe('Field component', () => {
         cmp.find('SingleField').props().onChange(onChangeCurrentValue);
         expect(result[0]).toBe(onChangePreviousValue);
         expect(result[1]).toBe(onChangeCurrentValue);
-        expect(formik.setFieldValue).toHaveBeenCalledWith('text', onChangeCurrentValue, true);
-        expect(formik.setFieldTouched).toHaveBeenCalledWith('text', true, false);
+        expect(formik.setFieldValue).toHaveBeenCalledWith('text', onChangeCurrentValue);
     });
 
     it('should render a "Shared in all languages" when field is not i18n and site have multiple languages', () => {

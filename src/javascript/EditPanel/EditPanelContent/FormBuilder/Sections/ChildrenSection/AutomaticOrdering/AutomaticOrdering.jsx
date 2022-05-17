@@ -46,10 +46,10 @@ export const AutomaticOrderingCmp = ({classes}) => {
     const add = (nextRow, nextRowIndex) => {
         setDisplayedRows([...displayedRows, nextRowIndex]);
 
-        setFieldValue(nextRow.propField.name, 'jcr:lastModified', true);
-        setFieldTouched(nextRow.propField.name, true);
-        setFieldValue(nextRow.directionField.name, 'desc', true);
-        setFieldTouched(nextRow.directionField.name, true);
+        setFieldValue(nextRow.propField.name, 'jcr:lastModified');
+        setFieldTouched(nextRow.propField.name, true, false);
+        setFieldValue(nextRow.directionField.name, 'desc');
+        setFieldTouched(nextRow.directionField.name, true, false);
     };
 
     const remove = index => {
@@ -60,10 +60,10 @@ export const AutomaticOrderingCmp = ({classes}) => {
         setDisplayedRows(currentDisplayedRows);
 
         // Unset values
-        setFieldValue(displayedRowToRemove.propField.name, undefined, true);
-        setFieldTouched(displayedRowToRemove.propField.name, true);
-        setFieldValue(displayedRowToRemove.directionField.name, undefined, true);
-        setFieldTouched(displayedRowToRemove.directionField.name, true);
+        setFieldValue(displayedRowToRemove.propField.name, undefined);
+        setFieldTouched(displayedRowToRemove.propField.name, true, false);
+        setFieldValue(displayedRowToRemove.directionField.name, undefined);
+        setFieldTouched(displayedRowToRemove.directionField.name, true, false);
     };
 
     const getInputContext = (index, field) => {

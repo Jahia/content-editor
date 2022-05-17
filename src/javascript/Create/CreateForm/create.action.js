@@ -5,20 +5,22 @@ import {ComponentRendererContext} from '@jahia/ui-extender';
 import * as PropTypes from 'prop-types';
 import {useFormikContext} from 'formik';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
-import {useKeydownListener} from '~/utils/getKeydownListener';
+import {useKeydownListener} from '~/utils/useKeydownListener';
 import {adaptCreateFormData} from '~/Create/Create.adapter';
 import {useTranslation} from 'react-i18next';
+import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 
 const Create = ({createAnother, render: Render, loading: Loading, ...otherProps}) => {
     const {t} = useTranslation('content-editor');
     const componentRenderer = useContext(ComponentRendererContext);
     const formik = useFormikContext();
     const contentEditorConfigContext = useContentEditorConfigContext();
-    const {envProps, lang} = contentEditorConfigContext;
-    const {mode, setErrors, refetchFormData} = useContentEditorContext();
+    const {envProps} = contentEditorConfigContext;
+    const {mode, setI18nContext, setErrors, siteInfo, lang, refetchFormData, i18nContext} = useContentEditorContext();
     const [clicked, setClicked] = useState(false);
+    const {sections} = useContentEditorSectionContext();
 
-    useKeydownListener((event, formik) => {
+    useKeydownListener(event => {
         if (mode !== Constants.routes.baseCreateRoute) {
             return;
         }
@@ -30,9 +32,9 @@ const Create = ({createAnother, render: Render, loading: Loading, ...otherProps}
     });
 
     const save = async formik => {
-        const errors = await validateForm(formik, componentRenderer);
+        const {errors, i18nErrors} = await validateForm(formik, i18nContext, sections, lang, siteInfo, componentRenderer);
 
-        if (errors) {
+        if (errors || i18nErrors) {
             setErrors({...errors});
             return;
         }
@@ -45,11 +47,13 @@ const Create = ({createAnother, render: Render, loading: Loading, ...otherProps}
                     if (createAnother) {
                         // Refetch only to generate a new valid system name
                         refetchFormData().then(res => {
+                            setI18nContext({});
                             const formData = adaptCreateFormData(res.data, lang, t, contentEditorConfigContext);
                             formik.resetForm({values: formData.initialValues});
                             setClicked(false);
                         });
                     } else {
+                        setI18nContext({});
                         formik.resetForm({values: formik.values});
                         if (envProps.onSavedCallback) {
                             envProps.onSavedCallback(data);
@@ -69,7 +73,6 @@ const Create = ({createAnother, render: Render, loading: Loading, ...otherProps}
         <Render {...otherProps}
                 addWarningBadge={Object.keys(formik.errors).length > 0}
                 isVisible={mode === Constants.routes.baseCreateRoute}
-                enabled={mode === Constants.routes.baseCreateRoute}
                 disabled={clicked}
                 onClick={() => save(formik)}/>
     );

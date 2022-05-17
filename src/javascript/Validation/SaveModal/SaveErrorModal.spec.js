@@ -11,7 +11,18 @@ describe('SaveErrorModal', () => {
         props = {
             onClose: jest.fn(),
             onCreateContent: jest.fn(),
-            nbOfErrors: 3
+            i18nErrors: {
+                shared: {
+                    field1: 'required',
+                    field2: 'required',
+                    field3: 'required'
+                }
+            },
+            fields: [
+                {name: 'field1'},
+                {name: 'field2'},
+                {name: 'field3'}
+            ]
         };
     });
 
@@ -20,7 +31,7 @@ describe('SaveErrorModal', () => {
             <SaveErrorModal {...props} open/>,
             {},
             dsGenericTheme
-        ).dive();
+        );
 
         expect(cmp.find('WithStyles(Dialog)').props().open).toBe(true);
     });
@@ -36,7 +47,7 @@ describe('SaveErrorModal', () => {
             />,
             {},
             dsGenericTheme
-        ).dive();
+        );
 
         cmp.find('Button').at(0).simulate('click');
 

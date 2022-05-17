@@ -30,6 +30,10 @@ export const encodeSystemName = systemName => {
     return systemName;
 };
 
+export const getCapitalized = name => {
+    return name.charAt(0).toUpperCase() + name.slice(1);
+};
+
 /**
  * JCR system name is stored encoded to avoid invalid characters,
  * we need to decode it before display, see @encodeSystemName for encoding specs

@@ -26,7 +26,8 @@ export const WindowListeners = () => {
     const registered = useRef(false);
     const formik = useFormikContext();
     const {envProps} = useContentEditorConfigContext();
-    const dirty = formik.dirty;
+    // Todo "formik.dirty || envProps.dirtyRef.current" is not very clear but required to get rerendered on formik state change
+    const dirty = formik.dirty || envProps.dirtyRef.current;
 
     useEffect(() => {
         if (!registered.current && dirty) {

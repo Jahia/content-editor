@@ -12,14 +12,16 @@ import {useQuery} from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import {PredefinedFragments} from '@jahia/data-helper';
 import {ceToggleSections, DEFAULT_OPENED_SECTIONS} from '~/redux/registerReducer';
-import {withNotifications} from '@jahia/react-material';
+import {useNotifications} from '@jahia/react-material';
 
-const ContentEditorRedux = withNotifications()(({mode, uuid, lang, contentType, name, notificationContext}) => {
+const ContentEditorRedux = ({mode, uuid, lang, contentType, name}) => {
+    const notificationContext = useNotifications();
     const {redirect, hasHistory, exit, registerBlockListener, unRegisterBlockListener} = useContentEditorHistory();
     const {storedLocation, setStoredLocation} = useContentEditorHistoryContext();
     const {uilang, openPaths} = useSelector(state => ({uilang: state.uilang, openPaths: state.jcontent.openPaths}));
     const dispatch = useDispatch();
-    const formikRef = useRef();
+
+    const dirtyRef = useRef(false);
     const {t} = useTranslation('content-editor');
     const {data} = useQuery(gql`query($uuid:String!) {
         jcr {
@@ -78,7 +80,7 @@ const ContentEditorRedux = withNotifications()(({mode, uuid, lang, contentType, 
     };
 
     const envProps = {
-        formikRef,
+        dirtyRef,
         back: () => {
             setTimeout(() => {
                 unRegisterBlockListener();
@@ -104,12 +106,8 @@ const ContentEditorRedux = withNotifications()(({mode, uuid, lang, contentType, 
             envProps.overriddenStoredLocation = handleRename(data);
             notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.success'), ['closeButton']);
         },
-        switchLanguageCallback: ({newNode, language}) => {
-            if (newNode) {
-                redirect({mode: Constants.routes.baseEditRoute, language: language, uuid: newNode.uuid, rest: ''});
-            } else {
-                redirect({language});
-            }
+        switchLanguageCallback: language => {
+            redirect({language});
         }
     };
     return Boolean(site) && (
@@ -122,7 +120,7 @@ const ContentEditorRedux = withNotifications()(({mode, uuid, lang, contentType, 
                        contentType={contentType}
                        envProps={envProps}/>
     );
-});
+};
 
 ContentEditorRedux.propTypes = {
     name: PropTypes.string,

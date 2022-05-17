@@ -6,16 +6,18 @@ import * as PropTypes from 'prop-types';
 import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
 import {useFormikContext} from 'formik';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
-import {useKeydownListener} from '~/utils/getKeydownListener';
+import {useKeydownListener} from '~/utils/useKeydownListener';
+import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 
 const Save = ({render: Render, loading: Loading, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
     const {publicationInfoPolling} = usePublicationInfoContext();
-    const {mode, setErrors} = useContentEditorContext();
+    const {mode, i18nContext, siteInfo, lang, setI18nContext, setErrors} = useContentEditorContext();
     const {envProps} = useContentEditorConfigContext();
+    const {sections} = useContentEditorSectionContext();
     const formik = useFormikContext();
 
-    useKeydownListener((event, formik) => {
+    useKeydownListener(event => {
         if (mode !== Constants.routes.baseEditRoute) {
             return;
         }
@@ -27,18 +29,19 @@ const Save = ({render: Render, loading: Loading, ...otherProps}) => {
     });
 
     const save = async formik => {
-        const errors = await validateForm(formik, componentRenderer);
+        const {errors, i18nErrors} = await validateForm(formik, i18nContext, sections, lang, siteInfo, componentRenderer);
 
-        if (errors) {
+        if (errors || i18nErrors) {
             setErrors({...errors});
             return;
         }
 
-        if (formik.dirty) {
+        if (envProps.dirtyRef.current) {
             return formik
                 .submitForm()
                 .then(data => {
                     if (data) {
+                        setI18nContext({});
                         formik.resetForm({values: formik.values});
                         if (envProps.onSavedCallback) {
                             envProps.onSavedCallback(data);
@@ -57,8 +60,7 @@ const Save = ({render: Render, loading: Loading, ...otherProps}) => {
             {...otherProps}
             addWarningBadge={Object.keys(formik.errors).length > 0}
             isVisible={mode === Constants.routes.baseEditRoute}
-            enabled={mode === Constants.routes.baseEditRoute}
-            disabled={!formik.dirty || publicationInfoPolling}
+            disabled={!envProps.dirtyRef.current || publicationInfoPolling}
             onClick={() => save(formik)}
         />
     );

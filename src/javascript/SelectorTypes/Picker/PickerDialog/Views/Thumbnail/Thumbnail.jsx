@@ -1,25 +1,24 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {ProgressOverlay, withNotifications} from '@jahia/react-material';
+import {ProgressOverlay, useNotifications} from '@jahia/react-material';
 import {useTranslation} from 'react-i18next';
 import {ImageList} from '~/DesignSystem/ImageList';
 import {encodeJCRPath} from '~/EditPanel/EditPanel.utils';
 import {registry} from '@jahia/ui-extender';
 import {useDialogPickerContent} from '../useDialogPickerContent';
 import {CountDisplayer} from '../CountDisplayer';
-import {compose} from '~/utils';
 import {notifyAccessDenied} from '../ErrorHandler';
 
-const ThumbnailCmp = ({
+export const Thumbnail = ({
     setSelectedItem,
     onThumbnailDoubleClick,
     selectedPath,
     initialSelection,
     searchTerms,
     pickerConfig,
-    lang,
-    notificationContext
+    lang
 }) => {
+    const notificationContext = useNotifications();
     const {t} = useTranslation('content-editor');
     const {
         nodes,
@@ -99,23 +98,19 @@ const ThumbnailCmp = ({
     );
 };
 
-ThumbnailCmp.defaultProps = {
+Thumbnail.defaultProps = {
     initialSelection: null,
     searchTerms: ''
 };
 
-ThumbnailCmp.propTypes = {
+Thumbnail.propTypes = {
     lang: PropTypes.string.isRequired,
     setSelectedItem: PropTypes.func.isRequired,
     onThumbnailDoubleClick: PropTypes.func.isRequired,
     selectedPath: PropTypes.string.isRequired,
     pickerConfig: PropTypes.object.isRequired,
     initialSelection: PropTypes.array,
-    searchTerms: PropTypes.string,
-    notificationContext: PropTypes.object.isRequired
+    searchTerms: PropTypes.string
 };
 
-export const Thumbnail = compose(
-    withNotifications()
-)(ThumbnailCmp);
 Thumbnail.displayName = 'Thumbnail';

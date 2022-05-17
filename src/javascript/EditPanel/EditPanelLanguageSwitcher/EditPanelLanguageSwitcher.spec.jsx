@@ -7,6 +7,10 @@ jest.mock('~/ContentEditor.context', () => {
     return {
         useContentEditorConfigContext: () => ({
             lang: 'fr'
+        }),
+        useContentEditorContext: () => ({
+            i18nContext: {},
+            setI18nContext: jest.fn()
         })
     };
 });
@@ -36,15 +40,5 @@ describe('EditPanelLanguageSwitcher', () => {
         );
 
         expect(cmp.find('Dropdown').exists()).toBe(true);
-    });
-
-    it('should contains dialog confirmation', () => {
-        const cmp = shallowWithTheme(
-            <EditPanelLanguageSwitcher {...defaultProps}/>,
-            {},
-            dsGenericTheme
-        );
-
-        expect(cmp.find('EditPanelDialogConfirmation').exists()).toBe(true);
     });
 });

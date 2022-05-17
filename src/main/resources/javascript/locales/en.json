@@ -15,8 +15,10 @@
         "contentEdit": "Edit",
         "validation": {
           "required": "Required",
-          "fieldsInError": "One field in error",
-          "fieldsInError_plural": "{{count}} fields in error"
+          "invalidForm": "Invalid form",
+          "fieldsInError": "There is one validation error",
+          "fieldsInError_plural": "There are {{count}} validation errors",
+          "otherLanguages": "Other languages in error"
         },
         "action": {
           "copyLanguage": {

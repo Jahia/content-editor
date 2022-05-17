@@ -39,7 +39,6 @@ export const AdvancedOptionsNavigation = ({activeOption, setActiveOption}) => {
                                 render={({value, buttonLabel, onClick}) => {
                                     return (
                                         <MenuItem
-                                            isUpperCase
                                             isSelected={activeOption === value}
                                             label={buttonLabel}
                                             onClick={e => onClick(e)}

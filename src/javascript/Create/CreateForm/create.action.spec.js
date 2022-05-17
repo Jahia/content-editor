@@ -3,6 +3,7 @@ import {shallow} from '@jahia/test-framework';
 import createAction from './create.action';
 import {useFormikContext} from 'formik';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 
 jest.mock('formik');
 jest.mock('react', () => {
@@ -17,6 +18,7 @@ jest.mock('~/ContentEditor.context', () => ({
     useContentEditorContext: jest.fn(),
     useContentEditorConfigContext: jest.fn()
 }));
+jest.mock('~/ContentEditorSection/ContentEditorSection.context');
 
 describe('create action', () => {
     let defaultProps;
@@ -24,6 +26,14 @@ describe('create action', () => {
     let CreateAction;
     const setState = jest.fn();
     const useStateMock = initState => [initState, setState];
+    let sections = [{
+        fieldSets: [{
+            fields: [
+                {name: 'field1'},
+                {name: 'field2'}
+            ]
+        }]
+    }];
 
     jest.spyOn(React, 'useState').mockImplementation(useStateMock);
 
@@ -34,9 +44,12 @@ describe('create action', () => {
         useContentEditorContext.mockImplementation(() => ({
             mode: jest.fn(),
             setErrors: jest.fn(),
-            refetchFormData: jest.fn(() => Promise.resolve({}))
+            refetchFormData: jest.fn(() => Promise.resolve({})),
+            i18nContext: {},
+            setI18nContext: jest.fn()
         }));
         useContentEditorConfigContext.mockImplementation(() => ({envProps: {}}));
+        useContentEditorSectionContext.mockReturnValue({sections});
 
         defaultProps = {
             renderComponent: jest.fn(),
@@ -72,8 +85,8 @@ describe('create action', () => {
 
     it('should not submit form when form is invalid', async () => {
         formik.errors = {
-            myFiled1: 'required',
-            myFiled2: 'required'
+            field1: 'required',
+            field2: 'required'
         };
         const cmp = shallow(<CreateAction {...defaultProps}/>);
         await cmp.props().onClick(defaultProps);

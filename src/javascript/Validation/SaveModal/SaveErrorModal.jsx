@@ -1,40 +1,53 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, withStyles} from '@material-ui/core';
-import {Error} from '@material-ui/icons';
-import {Typography} from '@jahia/design-system-kit';
-import {Button} from '@jahia/moonstone';
+import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core';
+import {Button, Typography, Warning} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
+import {getCapitalized} from '~/utils';
+import styles from './SaveErrorModal.scss';
 
-const styles = theme => ({
-    icon: {
-        color: theme.palette.support.gamma,
-        marginRight: '0.2rem',
-        width: '1.7rem',
-        height: '1.7rem'
-    },
-    dialogTitle: {
-        '& h6': {
-            display: 'flex',
-            alignItems: 'center'
-        }
-    }
-});
-
-const SaveErrorModalCmp = ({nbOfErrors, classes, open, onClose}) => {
+export const SaveErrorModal = ({i18nErrors, fields, open, siteInfo, onClose}) => {
     const {t} = useTranslation('content-editor');
+    const langs = Object.keys(i18nErrors).sort();
+
+    const nbOfErrors = Object.keys(i18nErrors).reduce((c, lang) => c + Object.keys(i18nErrors[lang]).length, 0);
+
     return (
-        <Dialog open={open} aria-labelledby="dialog-errorBeforeSave" onClose={onClose}>
-            <DialogTitle id="dialog-errorBeforeSave" className={classes.dialogTitle}>
-                <Error className={classes.icon}/>
-                <Typography color="alpha" variant="delta">
+        <Dialog maxWidth="md" classes={{paper: styles.dialog}} open={open} aria-labelledby="dialog-errorBeforeSave" onClose={onClose}>
+            <DialogTitle id="dialog-errorBeforeSave" className={styles.dialogTitle}>
+                <Warning size="big" color="yellow" className={styles.icon}/>
+                <Typography variant="heading">
                     {t('content-editor:label.contentEditor.edit.action.save.validation.modalTitle')}
                 </Typography>
             </DialogTitle>
 
             <DialogContent>
                 <DialogContentText>
-                    {t('content-editor:label.contentEditor.edit.action.save.validation.modalMessage', {count: nbOfErrors})}
+                    <Typography weight="semiBold">
+                        {t('content-editor:label.contentEditor.edit.action.save.validation.modalMessage', {count: nbOfErrors})}
+                    </Typography>
+                    <ul>
+                        {i18nErrors.shared && (
+                            <Typography component="li">
+                                {t('content-editor:label.contentEditor.edit.sharedLanguages')} :&nbsp;
+                                {
+                                    Object.keys(i18nErrors.shared)
+                                        .map(k => fields.find(f => f.name === k).displayName)
+                                        .join(',')
+                                }
+                            </Typography>
+                        )}
+                        {langs.filter(lang => lang !== 'shared').map(lang => (
+                            <Typography key={lang} component="li">
+                                {getCapitalized(siteInfo.languages.find(l => l.language === lang).displayName)} :&nbsp;
+                                {
+                                    Object.keys(i18nErrors[lang])
+                                        .map(k => fields.find(f => f.name === k).displayName)
+                                        .join(',')
+                                }
+                            </Typography>
+                        ))}
+                    </ul>
                 </DialogContentText>
             </DialogContent>
 
@@ -51,12 +64,12 @@ const SaveErrorModalCmp = ({nbOfErrors, classes, open, onClose}) => {
     );
 };
 
-SaveErrorModalCmp.propTypes = {
-    nbOfErrors: PropTypes.number.isRequired,
-    classes: PropTypes.object.isRequired,
+SaveErrorModal.propTypes = {
+    i18nErrors: PropTypes.object.isRequired,
+    fields: PropTypes.array.isRequired,
+    siteInfo: PropTypes.object.isRequired,
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired
 };
 
-export const SaveErrorModal = withStyles(styles)(SaveErrorModalCmp);
 SaveErrorModal.displayName = 'SaveErrorModal';

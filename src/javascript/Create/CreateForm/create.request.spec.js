@@ -44,7 +44,8 @@ describe('createNode', () => {
                 sections: [],
                 values: {
                     'ce:systemName': 'dummmySystemName'
-                }
+                },
+                i18nContext: {}
             }
         };
     });

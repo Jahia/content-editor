@@ -5,15 +5,17 @@ import {Constants} from '~/ContentEditor.constants';
 import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
 import {useApolloClient} from '@apollo/react-hooks';
 import {useTranslation} from 'react-i18next';
-import {useContentEditorContext} from '~/ContentEditor.context';
-import {withNotifications} from '@jahia/react-material';
+import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
+import {useNotifications} from '@jahia/react-material';
 import {useFormikContext} from 'formik';
 
-const Publish = ({notificationContext, render: Render, loading: Loading, ...otherProps}) => {
+const Publish = ({render: Render, loading: Loading, ...otherProps}) => {
+    const notificationContext = useNotifications();
     const {publicationInfoPolling, publicationStatus, stopPublicationInfoPolling, startPublicationInfoPolling} = usePublicationInfoContext();
     const client = useApolloClient();
     const {t} = useTranslation();
     const {nodeData, lang} = useContentEditorContext();
+    const {envProps} = useContentEditorConfigContext();
     const formik = useFormikContext();
     const {hasPublishPermission, lockedAndCannotBeEdited} = nodeData;
 
@@ -29,7 +31,7 @@ const Publish = ({notificationContext, render: Render, loading: Loading, ...othe
         disabled = publicationStatus === undefined ||
             publicationInfoPolling ||
             lockedAndCannotBeEdited ||
-            formik.dirty ||
+            envProps.dirtyRef.current ||
             wipInfo.status === Constants.wip.status.ALL_CONTENT ||
             (wipInfo.status === Constants.wip.status.LANGUAGES && wipInfo.languages.includes(lang)) ||
             [
@@ -69,13 +71,12 @@ const Publish = ({notificationContext, render: Render, loading: Loading, ...othe
 };
 
 Publish.propTypes = {
-    notificationContext: PropTypes.object.isRequired,
     render: PropTypes.func.isRequired,
     loading: PropTypes.func
 };
 
 const publishButtonAction = {
-    component: withNotifications()(Publish)
+    component: Publish
 };
 
 export default publishButtonAction;

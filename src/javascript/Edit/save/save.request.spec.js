@@ -43,7 +43,8 @@ describe('saveNode', () => {
             data: {
                 nodeData: {primaryNodeType: {}},
                 sections: [],
-                values: {}
+                values: {},
+                i18nContext: {}
             }
         };
     });
