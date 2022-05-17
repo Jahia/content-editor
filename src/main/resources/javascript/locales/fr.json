@@ -16,8 +16,10 @@
         "contentEdit": "Editer le contenu",
         "validation": {
           "required": "Requis",
+          "invalidForm": "Formulaire non valide",
           "fieldsInError": "Un champ en erreur",
           "fieldsInError_plural": "{{count}} champs en erreur",
+          "otherLanguages": "Autres langues en erreur"
         },
         "action": {
           "copyLanguage": {
