@@ -1,14 +1,16 @@
 import React, {useCallback, useState} from 'react';
 import {EditPanelDialogConfirmation} from '~/EditPanel/EditPanelDialogConfirmation';
-import {useContentEditorConfigContext} from '~/ContentEditor.context';
+import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import * as PropTypes from 'prop-types';
 import {Constants} from '~/ContentEditor.constants';
 import {useKeydownListener} from '~/utils/useKeydownListener';
+import {useFormikContext} from 'formik';
 
 export const GoBack = ({render: Render, ...otherProps}) => {
     const {envProps} = useContentEditorConfigContext();
     const [open, setOpen] = useState(false);
-
+    const formik = useFormikContext();
+    const {i18nContext} = useContentEditorContext();
     const onCloseDialog = useCallback(() => setOpen(false), [setOpen]);
 
     useKeydownListener(event => {
@@ -17,8 +19,10 @@ export const GoBack = ({render: Render, ...otherProps}) => {
         }
     });
 
+    const dirty = formik.dirty || Object.keys(i18nContext).length > 0;
+
     const goBack = () => {
-        if (envProps.dirtyRef.current) {
+        if (dirty) {
             setOpen(true);
         } else {
             envProps.back();

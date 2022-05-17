@@ -5,7 +5,7 @@ import {Constants} from '~/ContentEditor.constants';
 import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
 import {useApolloClient} from '@apollo/react-hooks';
 import {useTranslation} from 'react-i18next';
-import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorContext} from '~/ContentEditor.context';
 import {useNotifications} from '@jahia/react-material';
 import {useFormikContext} from 'formik';
 
@@ -14,8 +14,7 @@ const Publish = ({render: Render, loading: Loading, ...otherProps}) => {
     const {publicationInfoPolling, publicationStatus, stopPublicationInfoPolling, startPublicationInfoPolling} = usePublicationInfoContext();
     const client = useApolloClient();
     const {t} = useTranslation();
-    const {nodeData, lang} = useContentEditorContext();
-    const {envProps} = useContentEditorConfigContext();
+    const {nodeData, lang, i18nContext} = useContentEditorContext();
     const formik = useFormikContext();
     const {hasPublishPermission, lockedAndCannotBeEdited} = nodeData;
 
@@ -27,11 +26,13 @@ const Publish = ({render: Render, loading: Loading, ...otherProps}) => {
             stopPublicationInfoPolling();
         }
 
+        const dirty = formik.dirty || Object.keys(i18nContext).length > 0;
+
         const wipInfo = formik.values[Constants.wip.fieldName];
         disabled = publicationStatus === undefined ||
             publicationInfoPolling ||
             lockedAndCannotBeEdited ||
-            envProps.dirtyRef.current ||
+            dirty ||
             wipInfo.status === Constants.wip.status.ALL_CONTENT ||
             (wipInfo.status === Constants.wip.status.LANGUAGES && wipInfo.languages.includes(lang)) ||
             [

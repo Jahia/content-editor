@@ -5,7 +5,7 @@ import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentE
 import {useFormikContext} from 'formik';
 
 const StartWorkFlow = ({isMainButton, render: Render, loading: Loading, ...otherProps}) => {
-    const {nodeData, lang} = useContentEditorContext();
+    const {nodeData, lang, i18nContext} = useContentEditorContext();
     const {envProps} = useContentEditorConfigContext();
     const {hasPublishPermission, hasStartPublicationWorkflowPermission, lockedAndCannotBeEdited} = nodeData;
 
@@ -20,7 +20,9 @@ const StartWorkFlow = ({isMainButton, render: Render, loading: Loading, ...other
 
         // Is WIP
         const wipInfo = formik.values[Constants.wip.fieldName];
-        disabled = envProps.dirtyRef.current ||
+        const dirty = formik.dirty || Object.keys(i18nContext).length > 0;
+
+        disabled = dirty ||
             wipInfo.status === Constants.wip.status.ALL_CONTENT ||
             (wipInfo.status === Constants.wip.status.LANGUAGES && wipInfo.languages.includes(lang));
     } else {

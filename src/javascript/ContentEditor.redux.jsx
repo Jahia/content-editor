@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {ContentEditor} from './ContentEditor';
 import PropTypes from 'prop-types';
@@ -21,7 +21,6 @@ const ContentEditorRedux = ({mode, uuid, lang, contentType, name}) => {
     const {uilang, openPaths} = useSelector(state => ({uilang: state.uilang, openPaths: state.jcontent.openPaths}));
     const dispatch = useDispatch();
 
-    const dirtyRef = useRef(false);
     const {t} = useTranslation('content-editor');
     const {data} = useQuery(gql`query($uuid:String!) {
         jcr {
@@ -80,7 +79,6 @@ const ContentEditorRedux = ({mode, uuid, lang, contentType, name}) => {
     };
 
     const envProps = {
-        dirtyRef,
         back: () => {
             setTimeout(() => {
                 unRegisterBlockListener();

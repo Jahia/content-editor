@@ -4,12 +4,13 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useQuery} from '@apollo/react-hooks';
 import {push} from 'connected-react-router';
 
-import {useContentEditorConfigContext} from '~/ContentEditor.context';
+import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import {cmGoto} from '~/JContent.redux-actions';
 import EditPanelDialogConfirmation from '~/EditPanel/EditPanelDialogConfirmation/EditPanelDialogConfirmation';
 import {GetContentPath} from './ContentPath.gql-queries';
 import ContentPath from './ContentPath';
 import {Constants} from '~/ContentEditor.constants';
+import {useFormikContext} from 'formik';
 
 const findLastIndex = (array, callback) => {
     let lastIndex = -1;
@@ -57,6 +58,9 @@ const getItems = (mode, node) => {
 const ContentPathContainer = ({path}) => {
     const [open, setOpen] = useState(false);
     const {envProps, site, mode} = useContentEditorConfigContext();
+    const formik = useFormikContext();
+    const {i18nContext} = useContentEditorContext();
+
     const dispatch = useDispatch();
     const {language} = useSelector(state => ({
         language: state.language
@@ -69,8 +73,10 @@ const ContentPathContainer = ({path}) => {
         }
     });
 
+    const dirty = formik.dirty || Object.keys(i18nContext).length > 0;
+
     const handleNavigation = path => {
-        if (envProps.dirtyRef.current) {
+        if (dirty) {
             setOpen(true);
         } else {
             if (path.startsWith('/sites/systemsite/categories/') || path === '/sites/systemsite/categories') {

@@ -30,7 +30,6 @@ const Transition = React.forwardRef((props, ref) => {
 export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
     const notificationContext = useNotifications();
 
-    const dirtyRef = useRef(false);
     const needRefresh = useRef(false);
     const openDialog = useRef();
     const dispatch = useDispatch();
@@ -46,7 +45,6 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
 
     // Standalone env props
     const envProps = {
-        dirtyRef,
         back: () => {
             setEditorConfig(false);
         },
@@ -137,7 +135,7 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
         },
         isModal: true,
         isFullscreen: editorConfig?.isFullscreen,
-        confirmationDialog: <OnCloseConfirmationDialog setEditorConfig={setEditorConfig} openDialog={openDialog} dirtyRef={dirtyRef}/>
+        confirmationDialog: <OnCloseConfirmationDialog setEditorConfig={setEditorConfig} openDialog={openDialog}/>
     };
 
     const classes = editorConfig.isFullscreen ? {

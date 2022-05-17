@@ -1,5 +1,5 @@
 import {useEffect, useRef} from 'react';
-import {useContentEditorConfigContext} from '~/ContentEditor.context';
+import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import {useFormikContext} from 'formik';
 
 const handleBeforeUnloadEvent = ev => {
@@ -25,9 +25,10 @@ const unregisterListeners = envProps => {
 export const WindowListeners = () => {
     const registered = useRef(false);
     const formik = useFormikContext();
+    const {i18nContext} = useContentEditorContext();
     const {envProps} = useContentEditorConfigContext();
-    // Todo "formik.dirty || envProps.dirtyRef.current" is not very clear but required to get rerendered on formik state change
-    const dirty = formik.dirty || envProps.dirtyRef.current;
+
+    const dirty = formik.dirty || Object.keys(i18nContext).length > 0;
 
     useEffect(() => {
         if (!registered.current && dirty) {

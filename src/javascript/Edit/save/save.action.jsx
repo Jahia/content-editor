@@ -28,6 +28,8 @@ const Save = ({render: Render, loading: Loading, ...otherProps}) => {
         }
     });
 
+    const dirty = formik.dirty || Object.keys(i18nContext).length > 0;
+
     const save = async formik => {
         const {errors, i18nErrors} = await validateForm(formik, i18nContext, sections, lang, siteInfo, componentRenderer);
 
@@ -36,7 +38,7 @@ const Save = ({render: Render, loading: Loading, ...otherProps}) => {
             return;
         }
 
-        if (envProps.dirtyRef.current) {
+        if (dirty) {
             return formik
                 .submitForm()
                 .then(data => {
@@ -60,7 +62,7 @@ const Save = ({render: Render, loading: Loading, ...otherProps}) => {
             {...otherProps}
             addWarningBadge={Object.keys(formik.errors).length > 0}
             isVisible={mode === Constants.routes.baseEditRoute}
-            disabled={!envProps.dirtyRef.current || publicationInfoPolling}
+            disabled={!dirty || publicationInfoPolling}
             onClick={() => save(formik)}
         />
     );
