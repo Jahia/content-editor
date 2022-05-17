@@ -1,9 +1,8 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Constants} from '~/ContentEditor.constants';
 import {ContentEditor} from '~/ContentEditor';
 import {Dialog, IconButton} from '@material-ui/core';
 import styles from './ContentEditorApi.scss';
-import EditPanelDialogConfirmation from '~/EditPanel/EditPanelDialogConfirmation/EditPanelDialogConfirmation';
 import Slide from '@material-ui/core/Slide';
 import PropTypes from 'prop-types';
 import {useDispatch} from 'react-redux';
@@ -12,6 +11,7 @@ import {Button} from '@jahia/moonstone';
 import {Close} from '@material-ui/icons';
 import {useNotifications} from '@jahia/react-material';
 import {useTranslation} from 'react-i18next';
+import {OnCloseConfirmationDialog} from '~/Api/OnCloseConfirmationDialog';
 
 function triggerEvents(nodeUuid, operator) {
     // Refresh contentEditorEventHandlers
@@ -29,10 +29,10 @@ const Transition = React.forwardRef((props, ref) => {
 
 export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
     const notificationContext = useNotifications();
-    const [confirmationConfig, setConfirmationConfig] = useState(false);
 
     const dirtyRef = useRef(false);
     const needRefresh = useRef(false);
+    const openDialog = useRef();
     const dispatch = useDispatch();
 
     // This is the only sure way to tell when content editor is no longer visible
@@ -137,13 +137,7 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
         },
         isModal: true,
         isFullscreen: editorConfig?.isFullscreen,
-        confirmationDialog: confirmationConfig && (
-            <EditPanelDialogConfirmation
-                isOpen
-                actionCallback={() => setEditorConfig(false)}
-                onCloseDialog={() => setConfirmationConfig(false)}
-            />
-        )
+        confirmationDialog: <OnCloseConfirmationDialog setEditorConfig={setEditorConfig} openDialog={openDialog} dirtyRef={dirtyRef}/>
     };
 
     const classes = editorConfig.isFullscreen ? {
@@ -161,7 +155,7 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
                 TransitionComponent={Transition}
                 aria-labelledby="dialog-content-editor"
                 classes={classes}
-                onClose={() => (envProps.dirtyRef.current) ? setConfirmationConfig(true) : setEditorConfig(false)}
+                onClose={() => openDialog.current && openDialog.current()}
                 onRendered={() => window.focus()}
         >
             <ContentEditor mode={editorConfig.mode}

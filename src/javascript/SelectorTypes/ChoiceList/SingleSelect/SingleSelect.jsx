@@ -8,10 +8,11 @@ import {getButtonRenderer} from '../../../utils/getButtonRenderer';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
-export const SingleSelectCmp = ({field, value, id, inputContext, onChange}) => {
+export const SingleSelectCmp = ({field, value, id, inputContext, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
     inputContext.actionContext = {
-        onChange
+        onChange,
+        onBlur
     };
 
     const {readOnly, label, dropdownData} = React.useMemo(() => ({
@@ -59,6 +60,7 @@ export const SingleSelectCmp = ({field, value, id, inputContext, onChange}) => {
                         onChange(item.value);
                     }
                 }}
+                onBlur={onBlur}
             />
             {inputContext.displayActions && (
                 <DisplayAction actionKey="content-editor/field/Choicelist"
@@ -80,7 +82,8 @@ SingleSelectCmp.propTypes = {
     value: PropTypes.string,
     field: FieldPropTypes.isRequired,
     inputContext: PropTypes.object.isRequired,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    onBlur: PropTypes.func.isRequired
 };
 
 export const SingleSelect = SingleSelectCmp;

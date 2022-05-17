@@ -42,7 +42,6 @@ export const GoBack = ({render: Render, ...otherProps}) => {
 };
 
 GoBack.propTypes = {
-    componentProps: PropTypes.object.isRequired,
     render: PropTypes.func.isRequired
 };
 

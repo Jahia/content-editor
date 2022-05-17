@@ -23,6 +23,10 @@ export const UnsetFieldActionComponent = ({field, inputContext, render: Render, 
                 if (inputContext.actionContext.onChange) {
                     inputContext.actionContext.onChange(null);
                 }
+
+                if (inputContext.actionContext.onBlur) {
+                    inputContext.actionContext.onBlur();
+                }
             }}
         />
     );

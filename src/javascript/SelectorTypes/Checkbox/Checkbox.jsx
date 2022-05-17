@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import {Toggle} from '@jahia/design-system-kit';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 
-const Checkbox = ({field, value, id, onChange}) => {
+const Checkbox = ({field, value, id, onChange, onBlur}) => {
     return (
         <Toggle id={id}
                 inputProps={{
@@ -12,6 +12,7 @@ const Checkbox = ({field, value, id, onChange}) => {
                 checked={value === true}
                 readOnly={field.readOnly}
                 onChange={(evt, checked) => onChange(checked)}
+                onBlur={onBlur}
         />
     );
 };
@@ -20,7 +21,8 @@ Checkbox.propTypes = {
     field: FieldPropTypes.isRequired,
     id: PropTypes.string.isRequired,
     value: PropTypes.bool,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    onBlur: PropTypes.func.isRequired
 };
 
 export default Checkbox;

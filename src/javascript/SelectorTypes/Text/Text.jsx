@@ -4,7 +4,7 @@ import {Input} from '@jahia/design-system-kit';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {Hidden, Visibility} from '@jahia/moonstone';
 
-export const TextCmp = ({field, value, id, editorContext, onChange}) => {
+export const TextCmp = ({field, value, id, editorContext, onChange, onBlur}) => {
     const [hidePassword, setHidePassword] = useState(true);
 
     const fieldType = field.requiredType;
@@ -38,6 +38,7 @@ export const TextCmp = ({field, value, id, editorContext, onChange}) => {
             decimalScale={fieldType === 'LONG' ? 0 : undefined}
             decimalSeparator={decimalSeparator}
             onChange={evt => onChange(evt?.target?.value)}
+            onBlur={onBlur}
         />
     );
 };
@@ -47,7 +48,8 @@ TextCmp.propTypes = {
     value: PropTypes.string,
     editorContext: PropTypes.object.isRequired,
     field: FieldPropTypes.isRequired,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    onBlur: PropTypes.func
 };
 
 const Text = TextCmp;

@@ -1,15 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Button, withStyles} from '@material-ui/core';
+import {Button} from '@material-ui/core';
 import {SubdirectoryArrowRight} from '@material-ui/icons';
 
-const styles = theme => ({
-    button: {
-        color: theme.palette.ui.delta
-    }
-});
-
-const NavigateIntoCmp = ({tableCellData, ...props}) => {
+export const NavigateInto = ({tableCellData, ...props}) => {
     if (!tableCellData) {
         return '';
     }
@@ -19,13 +13,12 @@ const NavigateIntoCmp = ({tableCellData, ...props}) => {
     );
 };
 
-NavigateIntoCmp.defaultProps = {
+NavigateInto.defaultProps = {
     tableCellData: false
 };
 
-NavigateIntoCmp.propTypes = {
+NavigateInto.propTypes = {
     tableCellData: PropTypes.bool
 };
 
-export const NavigateInto = withStyles(styles)(NavigateIntoCmp);
-NavigateIntoCmp.displayName = 'NavigateInto';
+NavigateInto.displayName = 'NavigateInto';

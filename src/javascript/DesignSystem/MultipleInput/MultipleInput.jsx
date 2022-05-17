@@ -59,7 +59,8 @@ MultipleInputComponent.defaut = {
     creatable: false,
     async: false,
     readOnly: false,
-    onChange: () => {}
+    onChange: () => {},
+    onBlur: () => {}
 };
 
 MultipleInputComponent.propTypes = {
@@ -67,7 +68,8 @@ MultipleInputComponent.propTypes = {
     readOnly: PropTypes.bool,
     creatable: PropTypes.bool,
     async: PropTypes.bool,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    onBlur: PropTypes.func
 };
 
 export const MultipleInput = withStyles(style)(MultipleInputComponent);

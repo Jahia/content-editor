@@ -12,7 +12,7 @@ const variantMapper = {
     DateTimePicker: 'datetime'
 };
 
-export const DateTimePicker = ({id, field, value, editorContext, onChange}) => {
+export const DateTimePicker = ({id, field, value, editorContext, onChange, onBlur}) => {
     const variant = variantMapper[field.selectorType];
     const isDateTime = variant === 'datetime';
     const disabledDays = fillDisabledDaysFromJCRConstraints(field, isDateTime);
@@ -42,6 +42,7 @@ export const DateTimePicker = ({id, field, value, editorContext, onChange}) => {
             onChange={date => {
                 onChange(date && dayjs(date).format('YYYY-MM-DDTHH:mm:ss.SSS'));
             }}
+            onBlur={onBlur}
         />
     );
 };
@@ -58,5 +59,6 @@ DateTimePicker.propTypes = {
     }).isRequired,
     field: FieldPropTypes.isRequired,
     value: PropTypes.string,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    onBlur: PropTypes.func.isRequired
 };

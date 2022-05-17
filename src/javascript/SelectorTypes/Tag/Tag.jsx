@@ -8,7 +8,7 @@ import {useApolloClient} from '@apollo/react-hooks';
 import {getSuggestionsTagsQuery} from './Tag.gql-queries';
 import {useContentEditorContext} from '~/ContentEditor.context';
 
-const Tag = ({field, value, id, onChange}) => {
+const Tag = ({field, value, id, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
     const client = useApolloClient();
     const {site} = useContentEditorContext();
@@ -58,6 +58,7 @@ const Tag = ({field, value, id, onChange}) => {
                 const adaptedSelection = adaptSelection(newSelection, separator);
                 onChange(adaptedSelection.length ? adaptedSelection : undefined);
             }}
+            onBlur={onBlur}
         />
     );
 };
@@ -66,7 +67,8 @@ Tag.propTypes = {
     id: PropTypes.string.isRequired,
     value: PropTypes.arrayOf(PropTypes.string),
     field: FieldPropTypes.isRequired,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    onBlur: PropTypes.func.isRequired
 };
 
 export default Tag;

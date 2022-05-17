@@ -68,7 +68,7 @@ const EditPanelCompact = ({title, createAnother}) => {
                 {createAnother && (
                     <>
                         <Checkbox className={styles.checkbox} id="createAnother" checked={createAnother.value} onChange={() => createAnother.set(!createAnother.value)}/>
-                        <Typography isUpperCase component="label" for="createAnother" variant="button" className={styles.checkbox}>
+                        <Typography isUpperCase component="label" htmlFor="createAnother" variant="button" className={styles.checkbox}>
                             {t('label.contentEditor.create.createButton.createAnother')}
                         </Typography>
                     </>
