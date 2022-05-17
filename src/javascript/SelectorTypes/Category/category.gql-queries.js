@@ -14,6 +14,7 @@ export const GetCategories = gql`
                       value: uuid
                       label: displayName(language: $language)
                       parent {
+                        ...NodeCacheRequiredFields
                         uuid
                       }
                     }

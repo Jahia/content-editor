@@ -35,6 +35,7 @@ export const MultipleFieldCmp = ({classes, editorContext, inputContext, field, o
         let updatedValues = [...values[field.name]];
         updatedValues.splice(index, 1);
         onChange(updatedValues);
+        onBlur();
     };
 
     const onFieldAdd = () => {
@@ -42,6 +43,7 @@ export const MultipleFieldCmp = ({classes, editorContext, inputContext, field, o
         const valueToAdd = field.requiredType === 'BOOLEAN' ? false : undefined;
         updatedValues.push(valueToAdd);
         onChange(updatedValues);
+        onBlur();
     };
 
     return (

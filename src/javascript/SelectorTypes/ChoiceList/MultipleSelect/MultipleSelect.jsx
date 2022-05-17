@@ -7,9 +7,10 @@ import {getButtonRenderer} from '../../../utils/getButtonRenderer';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
-export const MultipleSelectCmp = ({field, id, value, inputContext, onChange}) => {
+export const MultipleSelectCmp = ({field, id, value, inputContext, onChange, onBlur}) => {
     inputContext.actionContext = {
-        onChange
+        onChange,
+        onBlur
     };
 
     const options = field.valueConstraints.map(constraint => ({
@@ -42,6 +43,7 @@ export const MultipleSelectCmp = ({field, id, value, inputContext, onChange}) =>
                     const newSelection = selection && selection.map(data => data.value);
                     onChange(newSelection);
                 }}
+                onBlur={onBlur}
             />
             {inputContext.displayActions && (
                 <DisplayAction actionKey="content-editor/field/Choicelist"
@@ -59,7 +61,8 @@ MultipleSelectCmp.propTypes = {
     field: FieldPropTypes.isRequired,
     value: PropTypes.arrayOf(PropTypes.string),
     inputContext: PropTypes.object.isRequired,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    onBlur: PropTypes.func.isRequired
 };
 
 export const MultipleSelect = MultipleSelectCmp;

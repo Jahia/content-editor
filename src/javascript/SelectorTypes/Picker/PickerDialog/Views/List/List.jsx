@@ -167,7 +167,7 @@ export const List = ({
                 }
                 initialSelection={initialSelection}
                 data={tableData}
-                order={sort.order}
+                order={sort.order.toLowerCase()}
                 orderBy={sort.columnId}
                 hasMore={hasMore}
                 loadMore={loadMore}

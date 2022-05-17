@@ -1,2 +1,2 @@
-export {useFormDefinition} from './FormDefinitions';
+export {useFormDefinition} from './useFormDefinitions';
 export * from './FormData.proptypes';

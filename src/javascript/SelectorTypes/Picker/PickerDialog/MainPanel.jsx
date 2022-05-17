@@ -161,7 +161,7 @@ MainPanelCmp.propTypes = {
     initialSelectedItem: PropTypes.string,
     selectedPath: PropTypes.string,
     setSelectedPath: PropTypes.func.isRequired,
-    selectedItem: PropTypes.string,
+    selectedItem: PropTypes.arrayOf(PropTypes.object),
     setSelectedItem: PropTypes.func.isRequired,
     searchTerms: PropTypes.string,
     handleSearchChange: PropTypes.func.isRequired,

@@ -9,7 +9,7 @@ import {useTranslation} from 'react-i18next';
 import classes from './SystemName.scss';
 import {useFormikContext} from 'formik';
 
-export const SystemNameCmp = ({field, value, id, editorContext, onChange}) => {
+export const SystemName = ({field, value, id, editorContext, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
     const formik = useFormikContext();
     const titleField = Object.keys(formik.values).find(key => key.endsWith('_jcr:title'));
@@ -21,6 +21,7 @@ export const SystemNameCmp = ({field, value, id, editorContext, onChange}) => {
                 id={id}
                 editorContext={editorContext}
                 onChange={onChange}
+                onBlur={onBlur}
             />
 
             {formik.values[titleField] !== undefined &&
@@ -42,14 +43,14 @@ export const SystemNameCmp = ({field, value, id, editorContext, onChange}) => {
     );
 };
 
-SystemNameCmp.propTypes = {
+SystemName.propTypes = {
     id: PropTypes.string.isRequired,
     value: PropTypes.string,
     editorContext: PropTypes.object.isRequired,
     field: FieldPropTypes.isRequired,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    onBlur: PropTypes.func.isRequired
 };
 
-const SystemName = SystemNameCmp;
 SystemName.displayName = 'SystemName';
 export default SystemName;

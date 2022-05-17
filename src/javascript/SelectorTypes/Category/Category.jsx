@@ -8,7 +8,7 @@ import {ProgressOverlay} from '@jahia/react-material';
 import {useTranslation} from 'react-i18next';
 import {adaptToCategoryTree} from './category.adapter';
 
-const Category = ({field, value, id, editorContext, onChange}) => {
+const Category = ({field, value, id, editorContext, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
     const {data, error, loading} = useQuery(GetCategories, {
         variables: {
@@ -51,6 +51,7 @@ const Category = ({field, value, id, editorContext, onChange}) => {
             data={tree}
             readOnly={field.readOnly}
             onChange={handleChange}
+            onBlur={onBlur}
         />
     );
 };
@@ -62,7 +63,8 @@ Category.propTypes = {
     editorContext: PropTypes.shape({
         lang: PropTypes.string.isRequired
     }).isRequired,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    onBlur: PropTypes.func.isRequired
 };
 
 export default Category;

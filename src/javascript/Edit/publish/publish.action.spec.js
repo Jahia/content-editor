@@ -64,6 +64,7 @@ describe('publish action', () => {
         };
         useFormikContext.mockReturnValue(formikContext);
         contentEditorContext = {
+            i18nContext: {},
             nodeData: {
                 hasPublishPermission: true,
                 lockedAndCannotBeEdited: false
@@ -71,11 +72,7 @@ describe('publish action', () => {
         };
         useContentEditorContext.mockReturnValue(contentEditorContext);
         contentEditorConfigContext = {
-            envProps: {
-                dirtyRef: {
-                    current: false
-                }
-            }
+            envProps: {}
         };
         useContentEditorConfigContext.mockReturnValue(contentEditorConfigContext);
 
@@ -86,7 +83,10 @@ describe('publish action', () => {
     });
 
     it('should disabled submit action when form is dirty', () => {
-        contentEditorConfigContext.envProps.dirtyRef.current = true;
+        contentEditorContext.i18nContext.en = {
+            validation: {},
+            values: {}
+        };
 
         const cmp = shallow(<PublishAction {...defaultProps}/>);
         expect(cmp.props().disabled).toBe(true);

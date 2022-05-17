@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './LowerSection.scss';
+import styles from './HeaderLowerSection.scss';
 import PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import {DisplayAction, DisplayActions} from '@jahia/ui-extender';

@@ -10,11 +10,7 @@ export const I18nContextHandler = () => {
 
     useEffect(() => {
         formikRef.current = formik;
-
-        if (contentEditorConfigContext.envProps.dirtyRef && formik) {
-            contentEditorConfigContext.envProps.dirtyRef.current = formik.dirty || Object.keys(i18nContext).some(k => k !== lang && k !== 'shared' && i18nContext[k] && Object.keys(i18nContext[k]).length > 0);
-        }
-    }, [formik, contentEditorConfigContext.envProps.dirtyRef, i18nContext, lang]);
+    }, [formik]);
 
     useEffect(() => {
         if (i18nContext.shared || i18nContext[lang]) {

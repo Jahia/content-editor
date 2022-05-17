@@ -16,7 +16,7 @@ function loadOption(selectorOptions, name) {
     return selectorOptions && selectorOptions.find(option => option.name === name);
 }
 
-export const RichTextCmp = ({field, id, value, onChange}) => {
+export const RichTextCmp = ({field, id, value, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
     const [picker, setPicker] = useState(false);
 
@@ -122,10 +122,14 @@ export const RichTextCmp = ({field, id, value, onChange}) => {
                         let editable = evt.editor.editable();
                         editable.attachListener(editable, 'input', inputEvt => onChange(inputEvt.sender.getValue()));
                     } else {
-                        document.querySelector('div[data-first-field=true] .cke_wysiwyg_frame').contentDocument.querySelector('.cke_editable').focus();
+                        let element = document.querySelector('div[data-first-field=true] .cke_wysiwyg_frame');
+                        if (element) {
+                            element.contentDocument.querySelector('.cke_editable').focus();
+                        }
                     }
                 }}
                 onChange={evt => onChange(evt.editor.getData())}
+                onBlur={onBlur}
             />
         </>
     );
@@ -135,7 +139,8 @@ RichTextCmp.propTypes = {
     id: PropTypes.string.isRequired,
     value: PropTypes.string,
     field: FieldPropTypes.isRequired,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    onBlur: PropTypes.func.isRequired
 };
 
 const RichText = RichTextCmp;

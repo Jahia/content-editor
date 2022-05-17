@@ -56,6 +56,7 @@ const DatePickerInputCmp = ({
     classes,
     dayPickerProps,
     onChange,
+    onBlur,
     initialValue,
     readOnly,
     displayDateFormat,
@@ -129,6 +130,7 @@ const DatePickerInputCmp = ({
                 readOnly={readOnly}
                 value={datetimeString}
                 onChange={handleInputChange}
+                onBlur={onBlur}
                 {...props}
             />
             <Popover open={Boolean(anchorEl)}
@@ -143,6 +145,7 @@ const DatePickerInputCmp = ({
                      }}
                      onClose={() => {
                          onChange(datetime);
+                         onBlur();
                          setAnchorEl(null);
                     }}
             >
@@ -175,6 +178,7 @@ DatePickerInputCmp.defaultProps = {
     dayPickerProps: {},
     variant: 'date',
     onChange: () => {},
+    onBlur: () => {},
     initialValue: null,
     readOnly: false,
     displayDateFormat: null,
@@ -188,6 +192,7 @@ DatePickerInputCmp.propTypes = {
     variant: PropTypes.oneOf(['date', 'datetime']),
     initialValue: PropTypes.object,
     onChange: PropTypes.func,
+    onBlur: PropTypes.func,
     readOnly: PropTypes.bool,
     displayDateFormat: PropTypes.string,
     displayDateMask: PropTypes.string

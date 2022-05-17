@@ -49,7 +49,8 @@ describe('Multiple component', () => {
             classes: {},
             t: jest.fn(),
             remove: jest.fn(),
-            onChange: jest.fn()
+            onChange: jest.fn(),
+            onBlur: jest.fn()
         };
     });
 

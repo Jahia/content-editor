@@ -32,6 +32,10 @@ export const SelectAllActionComponent = ({field, inputContext, render: Render, l
                 if (inputContext.actionContext.onChange) {
                     inputContext.actionContext.onChange(possibleValues);
                 }
+
+                if (inputContext.actionContext.onBlur) {
+                    inputContext.actionContext.onBlur();
+                }
             }}
         />
     );

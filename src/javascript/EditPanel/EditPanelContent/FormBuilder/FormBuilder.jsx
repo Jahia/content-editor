@@ -8,8 +8,9 @@ import {OrderingSection, Section} from './Sections';
 import {useDispatch, useSelector} from 'react-redux';
 import {ceToggleSections} from '~/redux/registerReducer';
 import styles from './FormBuilder.scss';
+import {Validation} from '~/EditPanel/Validation';
 
-const FormBuilderCmp = ({mode}) => {
+const FormBuilder = ({mode}) => {
     const {nodeData, errors} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
     const toggleStates = useSelector(state => state.contenteditor.ceToggleSections);
@@ -68,7 +69,7 @@ const FormBuilderCmp = ({mode}) => {
             return (
                 <Section key={section.name}
                          section={section}
-                         isExpanded={toggleStates[section.name]}
+                         isExpanded={toggleStates[section.name] || false}
                          onClick={toggleFcn}
                 />
             );
@@ -83,25 +84,26 @@ const FormBuilderCmp = ({mode}) => {
     }
 
     return (
-        <Form className={styles.form}>
-            <section data-sel-mode={mode}>
-                {children}
-            </section>
-        </Form>
+        <>
+            <Validation/>
+            <Form className={styles.form}>
+                <section data-sel-mode={mode}>
+                    {children}
+                </section>
+            </Form>
+        </>
     );
 };
 
-FormBuilderCmp.contextTypes = {
+FormBuilder.contextTypes = {
     context: PropTypes.shape({
         sections: SectionsPropTypes.isRequired,
         nodeData: PropTypes.object.isRequired
     })
 };
 
-FormBuilderCmp.propTypes = {
+FormBuilder.propTypes = {
     mode: PropTypes.string.isRequired
 };
-
-const FormBuilder = FormBuilderCmp;
 
 export default FormBuilder;

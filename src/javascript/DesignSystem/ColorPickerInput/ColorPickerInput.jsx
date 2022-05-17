@@ -26,7 +26,7 @@ const getVisualValue = value => {
     return value && Constants.color.hexColorRegexp.test(value) ? value : defaultVisualColor;
 };
 
-const ColorPickerInputCmp = ({classes, onChange, initialValue, readOnly, inputProps}) => {
+const ColorPickerInputCmp = ({classes, onChange, onBlur, initialValue, readOnly, inputProps}) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [internalValue, setInternalValue] = useState(initialValue);
     const htmlInput = useRef();
@@ -67,6 +67,7 @@ const ColorPickerInputCmp = ({classes, onChange, initialValue, readOnly, inputPr
                         onChange(e.target.value);
                     }
                 }}
+                onBlur={onBlur}
                 {...inputProps}
             />
             <Popover open={Boolean(anchorEl)}
@@ -85,6 +86,7 @@ const ColorPickerInputCmp = ({classes, onChange, initialValue, readOnly, inputPr
                      onClose={() => {
                          setAnchorEl(null);
                          onChange(internalValue);
+                         onBlur();
                      }}
             >
                 <HexColorPicker
@@ -109,6 +111,7 @@ ColorPickerInputCmp.propTypes = {
     classes: PropTypes.object.isRequired,
     initialValue: PropTypes.string,
     onChange: PropTypes.func,
+    onBlur: PropTypes.func,
     readOnly: PropTypes.bool,
     inputProps: PropTypes.object
 };

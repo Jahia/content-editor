@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {ColorPickerInput} from '~/DesignSystem/ColorPickerInput';
 
-export const Color = ({id, field, value, onChange}) => {
+export const Color = ({id, field, value, onChange, onBlur}) => {
     return (
         <ColorPickerInput
             initialValue={value}
@@ -15,6 +15,7 @@ export const Color = ({id, field, value, onChange}) => {
                 'aria-required': field.mandatory
             }}
             onChange={onChange}
+            onBlur={onBlur}
         />
     );
 };
@@ -27,5 +28,6 @@ Color.propTypes = {
     id: PropTypes.string.isRequired,
     field: FieldPropTypes.isRequired,
     value: PropTypes.string,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    onBlur: PropTypes.func.isRequired
 };

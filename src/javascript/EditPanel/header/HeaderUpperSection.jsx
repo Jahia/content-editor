@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {ButtonGroup, Chip, Typography} from '@jahia/moonstone';
 import {DisplayAction, DisplayActions} from '@jahia/ui-extender';
 import {truncate} from '~/utils/helper';
-import styles from './UpperSection.scss';
+import styles from './HeaderUpperSection.scss';
 import ContentBreadcrumb from '~/EditPanel/header/ContentBreadcrumb';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {PublishMenu} from '~/EditPanel/header/PublishMenu';

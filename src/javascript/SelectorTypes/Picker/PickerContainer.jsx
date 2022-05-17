@@ -11,7 +11,7 @@ import {getButtonRenderer} from '../../utils/getButtonRenderer';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
-const PickerCmp = ({field, value, editorContext, inputContext, onChange}) => {
+export const Picker = ({field, value, editorContext, inputContext, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
     const {pickerConfig, nodeTreeConfigs} = extractConfigs(field, editorContext, t);
     const [isDialogOpen, setDialogOpen] = useState(false);
@@ -39,12 +39,14 @@ const PickerCmp = ({field, value, editorContext, inputContext, onChange}) => {
         open: setDialogOpen,
         fieldData,
         editorContext,
-        onChange: newValue => onChange(newValue)
+        onChange: newValue => onChange(newValue),
+        onBlur: onBlur
     };
 
     const onItemSelection = data => {
         setDialogOpen(false);
         onChange(pickerConfig.picker.PickerDialog.itemSelectionAdapter(data));
+        onBlur();
     };
 
     return (
@@ -84,13 +86,13 @@ const PickerCmp = ({field, value, editorContext, inputContext, onChange}) => {
     );
 };
 
-PickerCmp.propTypes = {
+Picker.propTypes = {
     editorContext: PropTypes.object.isRequired,
     value: PropTypes.string,
     field: FieldPropTypes.isRequired,
     inputContext: PropTypes.object.isRequired,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    onBlur: PropTypes.func.isRequired
 };
 
-export const Picker = PickerCmp;
 Picker.displayName = 'Picker';
