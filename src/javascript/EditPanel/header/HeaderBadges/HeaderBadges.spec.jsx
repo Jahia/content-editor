@@ -19,6 +19,9 @@ describe('Header UpperSection', () => {
                 primaryNodeType: {
                     displayName: 'WIP-WOP'
                 }
+            },
+            siteInfo: {
+                languages: [{name: 'en', displayName: 'english'}]
             }
         };
         useContentEditorContext.mockReturnValue(contentEditorContext);

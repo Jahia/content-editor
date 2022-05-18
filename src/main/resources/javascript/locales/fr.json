@@ -188,7 +188,9 @@
       },
       "header":  {
         "chips": {
-          "unsavedLabel": "Modifications non sauvegardées"
+          "unsavedLabel": "Modifications non sauvegardées",
+          "inCountLanguages": "dans {{count}} langues",
+          "inAllLanguages": "dans toutes les langues"
         }
       },
       "switchLanguage": {
