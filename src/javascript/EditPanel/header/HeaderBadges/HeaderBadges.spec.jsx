@@ -21,7 +21,7 @@ describe('Header UpperSection', () => {
                 }
             },
             siteInfo: {
-                languages: [{name: 'en', displayName: "english"}]
+                languages: [{name: 'en', displayName: 'english'}]
             }
         };
         useContentEditorContext.mockReturnValue(contentEditorContext);
