@@ -69,13 +69,15 @@
             "unknown": "Locked for unknown reason"
           },
           "publish": {
-            "name": "Publish now",
+            "name": "Publish now - {{language}}",
+            "shortName": "Publish now",
             "namePolling": "Publishing",
             "success": "Publication has been queued",
             "error": "Error while publishing"
           },
           "startWorkflow": {
-            "name": "Request publication"
+            "name": "Request publication - {{language}}",
+            "shortName": "Request publication"
           },
           "moreOptions": "More Options",
           "fieldMoreOptions": "More Options",
