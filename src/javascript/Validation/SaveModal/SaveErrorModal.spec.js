@@ -18,6 +18,11 @@ describe('SaveErrorModal', () => {
                     field3: 'required'
                 }
             },
+            siteInfo: {
+                languages: [
+                    {name: 'en', displayName: 'English'}
+                ]
+            },
             fields: [
                 {name: 'field1'},
                 {name: 'field2'},
@@ -42,8 +47,8 @@ describe('SaveErrorModal', () => {
             <SaveErrorModal {...props}
                             open={open}
                             onClose={() => {
-                                        open = false;
-                                    }}
+                                open = false;
+                            }}
             />,
             {},
             dsGenericTheme
