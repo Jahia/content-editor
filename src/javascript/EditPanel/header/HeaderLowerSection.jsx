@@ -10,37 +10,40 @@ import {useContentEditorContext} from '~/ContentEditor.context';
 
 export const HeaderLowerSection = ({setActiveTab, activeTab}) => {
     const {t} = useTranslation('content-editor');
-    const {siteInfo, lang, nodeData} = useContentEditorContext();
+    const {siteInfo, lang, nodeData, mode} = useContentEditorContext();
     return (
         <div className={styles.headerToolBar}>
             <EditPanelLanguageSwitcher lang={lang} siteInfo={siteInfo}/>
 
             <Separator variant="vertical" size="medium"/>
 
-            <Tab>
-                <DisplayActions
-                    setActiveTab={setActiveTab}
-                    activeTab={activeTab}
-                    target="editHeaderTabsActions"
-                    nodeData={nodeData}
-                    render={renderProps => {
-                        return (
-                            <TabItem
-                                data-sel-role={renderProps.dataSelRole}
-                                icon={renderProps.buttonIcon}
-                                label={t(renderProps.buttonLabel)}
-                                isSelected={renderProps.value === renderProps.activeTab}
-                                onClick={e => {
-                                    e.stopPropagation();
-                                    renderProps.onClick(renderProps, e);
-                                }}
-                            />
-                        );
-                    }}
-                />
-            </Tab>
-
-            <Separator variant="vertical" size="medium"/>
+            {(mode === 'edit') && (
+                <>
+                    <Tab>
+                        <DisplayActions
+                            setActiveTab={setActiveTab}
+                            activeTab={activeTab}
+                            target="editHeaderTabsActions"
+                            nodeData={nodeData}
+                            render={renderProps => {
+                                return (
+                                    <TabItem
+                                        data-sel-role={renderProps.dataSelRole}
+                                        icon={renderProps.buttonIcon}
+                                        label={t(renderProps.buttonLabel)}
+                                        isSelected={renderProps.value === renderProps.activeTab}
+                                        onClick={e => {
+                                            e.stopPropagation();
+                                            renderProps.onClick(renderProps, e);
+                                        }}
+                                    />
+                                );
+                            }}
+                        />
+                    </Tab>
+                    <Separator variant="vertical" size="medium"/>
+                </>
+            )}
 
             <DisplayAction
                 actionKey="content-editor/header/3dots"
