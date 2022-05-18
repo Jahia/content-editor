@@ -57,7 +57,7 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
 
             triggerEvents(newNode.uuid, Constants.operators.create);
 
-            notificationContext.notify(t('content-editor:label.contentEditor.create.createButton.success'), {
+            const opts = editorConfig && editorConfig.isFullscreen ? ['closeButton'] : {
                 action: [
                     <Button
                         key="edit"
@@ -83,7 +83,9 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
                         <Close/>
                     </IconButton>
                 ]
-            });
+            };
+
+            notificationContext.notify(t('content-editor:label.contentEditor.create.createButton.success'), opts);
         },
 
         editCallback: ({originalNode, updatedNode}) => {
