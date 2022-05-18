@@ -79,14 +79,16 @@ const EditPanelCompact = ({title, createAnother}) => {
                     actionKey="backButton"
                     render={ButtonRenderer}
                 />
-                <DisplayActions
-                    buttonProps={{
-                        color: 'accent'
-                    }}
-                    createAnother={createAnother?.value}
-                    target="content-editor/header/main-save-actions"
-                    render={ButtonRenderer}
-                />
+                <div className={styles.saveActions}>
+                    <DisplayActions
+                        buttonProps={{
+                            color: 'accent'
+                        }}
+                        createAnother={createAnother?.value}
+                        target="content-editor/header/main-save-actions"
+                        render={ButtonRenderer}
+                    />
+                </div>
             </DialogActions>
         </>
     );
