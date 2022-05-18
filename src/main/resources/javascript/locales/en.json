@@ -188,7 +188,9 @@
       },
       "header":  {
         "chips": {
-          "unsavedLabel": "Unsaved changes"
+          "unsavedLabel": "Unsaved changes",
+          "inCountLanguages": "in {{count}} languages",
+          "inAllLanguages": "in all languages"
         }
       },
       "error": {

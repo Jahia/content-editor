@@ -50,21 +50,18 @@ export const useSwitchLanguage = () => {
         const fieldsObj = fields.reduce((r, f) => Object.assign(r, {[f.name]: f}), {});
 
         fillValues(formik, fieldsObj, i18nValues, nonI18nValues, dynamicFieldSets);
+        const newValues = Object.keys(nonI18nValues.values).length > 0 ? {shared: nonI18nValues} : {};
+
         if (Object.keys(i18nValues.values).length > 0) {
             const validation = validate(sections)(formik.values);
             fillErrors(validation, fieldsObj, i18nValues);
-
-            setI18nContext(prev => ({
-                ...prev,
-                shared: nonI18nValues,
-                [currentLanguage]: i18nValues
-            }));
-        } else {
-            setI18nContext(prev => ({
-                ...prev,
-                shared: nonI18nValues
-            }));
+            newValues[currentLanguage] = i18nValues;
         }
+
+        setI18nContext(prev => ({
+            ...prev,
+            ...newValues
+        }));
 
         if (envProps.switchLanguageCallback) {
             envProps.switchLanguageCallback(language, currentLanguage);
