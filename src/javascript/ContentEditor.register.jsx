@@ -86,6 +86,11 @@ export default function () {
                     const dispatch = window.jahia.reduxStore.dispatch;
                     const currentPcPath = window.jahia.reduxStore.getState().pagecomposer.currentPage.path;
                     dispatch(pcNavigateTo({oldPath: currentPcPath, newPath}));
+
+                    // Refresh content in repository explorer to see added page
+                    if (window.authoringApi.refreshContent && window.location.pathname.endsWith('/jahia/repository-explorer')) {
+                        window.authoringApi.refreshContent();
+                    }
                 } else if (needRefresh && window.authoringApi.refreshContent) {
                     window.authoringApi.refreshContent();
                 }
