@@ -12,8 +12,42 @@ export const SaveErrorModal = ({i18nErrors, fields, open, siteInfo, onClose}) =>
 
     const nbOfErrors = Object.keys(i18nErrors).reduce((c, lang) => c + Object.keys(i18nErrors[lang]).length, 0);
 
+    const message = (siteInfo.languages.length === 1) ? (
+        <Typography>
+            {Object.keys(i18nErrors).reduce((p, k) => [...p, ...Object.keys(i18nErrors[k])], []).map(k => fields.find(f => f.name === k).displayName).join(',')}
+        </Typography>
+    ) : (
+        <ul>
+            {i18nErrors.shared && (
+                <Typography component="li">
+                    {t('content-editor:label.contentEditor.edit.sharedLanguages')} :&nbsp;
+                    {
+                        Object.keys(i18nErrors.shared)
+                            .map(k => fields.find(f => f.name === k).displayName)
+                            .join(',')
+                    }
+                </Typography>
+            )}
+            {langs.filter(lang => lang !== 'shared').map(lang => (
+                <Typography key={lang} component="li">
+                    {getCapitalized(siteInfo.languages.find(l => l.language === lang).displayName)} :&nbsp;
+                    {
+                        Object.keys(i18nErrors[lang])
+                            .map(k => fields.find(f => f.name === k).displayName)
+                            .join(',')
+                    }
+                </Typography>
+            ))}
+        </ul>
+    );
+
     return (
-        <Dialog maxWidth="md" classes={{paper: styles.dialog}} open={open} aria-labelledby="dialog-errorBeforeSave" onClose={onClose}>
+        <Dialog maxWidth="md"
+                classes={{paper: styles.dialog}}
+                open={open}
+                aria-labelledby="dialog-errorBeforeSave"
+                onClose={onClose}
+        >
             <DialogTitle id="dialog-errorBeforeSave" className={styles.dialogTitle}>
                 <Warning size="big" color="yellow" className={styles.icon}/>
                 <Typography variant="heading">
@@ -26,28 +60,7 @@ export const SaveErrorModal = ({i18nErrors, fields, open, siteInfo, onClose}) =>
                     <Typography weight="semiBold">
                         {t('content-editor:label.contentEditor.edit.action.save.validation.modalMessage', {count: nbOfErrors})}
                     </Typography>
-                    <ul>
-                        {i18nErrors.shared && (
-                            <Typography component="li">
-                                {t('content-editor:label.contentEditor.edit.sharedLanguages')} :&nbsp;
-                                {
-                                    Object.keys(i18nErrors.shared)
-                                        .map(k => fields.find(f => f.name === k).displayName)
-                                        .join(',')
-                                }
-                            </Typography>
-                        )}
-                        {langs.filter(lang => lang !== 'shared').map(lang => (
-                            <Typography key={lang} component="li">
-                                {getCapitalized(siteInfo.languages.find(l => l.language === lang).displayName)} :&nbsp;
-                                {
-                                    Object.keys(i18nErrors[lang])
-                                        .map(k => fields.find(f => f.name === k).displayName)
-                                        .join(',')
-                                }
-                            </Typography>
-                        ))}
-                    </ul>
+                    {message}
                 </DialogContentText>
             </DialogContent>
 
