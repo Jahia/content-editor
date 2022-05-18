@@ -40,12 +40,13 @@ export const getButtonRenderer = ({labelStyle, defaultButtonProps, noIcon} = {})
             />
         );
 
-        return !addWarningBadge ? button : (
-            <div className={styles.pastilleWrapper}>
+        return (
+            <>
                 {button}
-                <Error data-sel-role={`${actionKey}_pastille`}
-                       className={styles.warningBadge}/>
-            </div>
+                {addWarningBadge && (
+                    <Error data-sel-role={`${actionKey}_pastille`} className={styles.warningBadge}/>
+                )}
+            </>
         );
     };
 
