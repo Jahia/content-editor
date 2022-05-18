@@ -55,6 +55,7 @@ export const Create = () => {
     return (
         <Formik
             validateOnChange={false}
+            validateOnBlur={false}
             initialValues={initialValues}
             validate={validate(sections)}
             onSubmit={handleSubmit}
