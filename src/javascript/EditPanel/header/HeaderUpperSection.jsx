@@ -8,7 +8,7 @@ import styles from './HeaderUpperSection.scss';
 import ContentBreadcrumb from '~/EditPanel/header/ContentBreadcrumb';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {PublishMenu} from '~/EditPanel/header/PublishMenu';
-import {getButtonRenderer} from '~/utils/getButtonRenderer';
+import {ButtonRendererNoLabel, ButtonRendererShortLabel, getButtonRenderer} from '~/utils/getButtonRenderer';
 import HeaderBadges from '~/EditPanel/header/HeaderBadges/HeaderBadges';
 
 const ButtonRenderer = getButtonRenderer({
@@ -17,10 +17,6 @@ const ButtonRenderer = getButtonRenderer({
         color: 'accent',
         className: styles.mainActions
     }
-});
-
-const BackButtonRenderer = getButtonRenderer({
-    labelStyle: 'none'
 });
 
 export const HeaderUpperSection = ({title, isShowPublish}) => {
@@ -33,7 +29,7 @@ export const HeaderUpperSection = ({title, isShowPublish}) => {
                 <div className={styles.headerLeft}>
                     <DisplayAction
                         actionKey="backButton"
-                        render={BackButtonRenderer}
+                        render={ButtonRendererNoLabel}
                     />
 
                     <Typography isNowrap className={styles.headerTypography} variant="title" data-sel-role="title">
@@ -58,7 +54,8 @@ export const HeaderUpperSection = ({title, isShowPublish}) => {
                             <DisplayActions
                                 isMainButton
                                 target="content-editor/header/main-publish-actions"
-                                render={ButtonRenderer}
+                                buttonProps={{className: styles.mainActions, size: 'big', color: 'accent'}}
+                                render={ButtonRendererShortLabel}
                             />
 
                             <PublishMenu/>

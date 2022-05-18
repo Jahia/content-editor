@@ -5,7 +5,7 @@ import {useContentEditorContext} from '~/ContentEditor.context';
 import {useFormikContext} from 'formik';
 
 const StartWorkFlow = ({isMainButton, render: Render, loading: Loading, ...otherProps}) => {
-    const {nodeData, lang, i18nContext} = useContentEditorContext();
+    const {nodeData, lang, i18nContext, siteInfo} = useContentEditorContext();
     const {hasPublishPermission, hasStartPublicationWorkflowPermission, lockedAndCannotBeEdited} = nodeData;
 
     const formik = useFormikContext();
@@ -43,6 +43,10 @@ const StartWorkFlow = ({isMainButton, render: Render, loading: Loading, ...other
                 initStartWorkflow
                 disabled={disabled}
                 isVisible={isVisible}
+                buttonLabelParams={{language: lang}}
+                // Do not display language in request publication button if there is only one language
+                buttonLabelShort={(siteInfo?.languages.length > 1) ?
+                    '' : 'content-editor:label.contentEditor.edit.action.startWorkflow.shortName'}
                 onClick={context => {
                     if (context.enabled) {
                         window.authoringApi.openPublicationWorkflow(

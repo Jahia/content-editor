@@ -14,7 +14,7 @@ const Publish = ({render: Render, loading: Loading, ...otherProps}) => {
     const {publicationInfoPolling, publicationStatus, stopPublicationInfoPolling, startPublicationInfoPolling} = usePublicationInfoContext();
     const client = useApolloClient();
     const {t} = useTranslation();
-    const {nodeData, lang, i18nContext} = useContentEditorContext();
+    const {nodeData, lang, i18nContext, siteInfo} = useContentEditorContext();
     const formik = useFormikContext();
     const {hasPublishPermission, lockedAndCannotBeEdited} = nodeData;
 
@@ -41,7 +41,9 @@ const Publish = ({render: Render, loading: Loading, ...otherProps}) => {
             ].includes(publicationStatus);
     }
 
-    const buttonLabel = publicationInfoPolling ? 'content-editor:label.contentEditor.edit.action.publish.namePolling' : 'content-editor:label.contentEditor.edit.action.publish.name';
+    const buttonLabel = publicationInfoPolling ?
+        'content-editor:label.contentEditor.edit.action.publish.namePolling' :
+        'content-editor:label.contentEditor.edit.action.publish.name';
 
     let onClick = useCallback(() => {
         publishNode({
@@ -65,6 +67,9 @@ const Publish = ({render: Render, loading: Loading, ...otherProps}) => {
             {...otherProps}
             disabled={disabled}
             buttonLabel={buttonLabel}
+            buttonLabelShort={(siteInfo?.languages?.length === 1) && !publicationInfoPolling ?
+                'content-editor:label.contentEditor.edit.action.publish.shortName' : ''}
+            buttonLabelParams={{language: lang}}
             isVisible={isVisible}
             onClick={onClick}
         />
