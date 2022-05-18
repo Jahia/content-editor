@@ -10,6 +10,7 @@ import {DialogActions, DialogContent, DialogTitle} from '@material-ui/core';
 import {Button, Checkbox, Typography, Edit} from '@jahia/moonstone';
 import {GoBack} from '~/actions/goBack.action';
 import {getButtonRenderer} from '~/utils/getButtonRenderer';
+import {truncate} from '~/utils/helper';
 import {EditPanelLanguageSwitcher} from '~/EditPanel/EditPanelLanguageSwitcher';
 import {useTranslation} from 'react-i18next';
 import HeaderBadges from '~/EditPanel/header/HeaderBadges';
@@ -33,7 +34,7 @@ const EditPanelCompact = ({title, createAnother}) => {
 
             <DialogTitle disableTypography className={styles.dialogTitle} id="contenteditor-dialog-title">
                 <div className="flexRow">
-                    <Typography variant="heading">{title}</Typography>
+                    <Typography variant="heading">{truncate(title, 40)}</Typography>
                     <div className="flexFluid"/>
                     <Button className={styles.uppercase} label={t('label.contentEditor.create.advanced')} icon={<Edit/>} onClick={contentEditorConfigContext.envProps.setFullscreen}/>
                     <DisplayAction
