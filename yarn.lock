@@ -1475,10 +1475,10 @@
     react-is "^17.0.2"
     to-px "^1.1.0"
 
-"@jahia/react-material@^3.0.4":
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/@jahia/react-material/-/react-material-3.0.4.tgz#6fbdcccb02ea18f5e2a0fd68becbec2049bef43f"
-  integrity sha512-CGSOJmdGwXt2ZSy4OksMi+4Voqf8M1aPw0DnqXbYr0pLzdtzwqYz/DN4vBpTkNfGYwVkUk17E7qEiNTd9x0asw==
+"@jahia/react-material@^3.0.5":
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/@jahia/react-material/-/react-material-3.0.5.tgz#6a888a6d699524a0af069a0644db755e07bbf181"
+  integrity sha512-E5+Ba9wknBZC+mGtlJmkclYeGzyiYpev8aIFFV77dKZR/2QOQUHqLMnR6bK5WbdtkgHVqv2IQyhn5HgvPgZ4BQ==
   dependencies:
     lodash "^4.17.13"
     prop-types "^15.6.1"
