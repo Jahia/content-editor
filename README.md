@@ -75,7 +75,7 @@ And we are targeting to have:
 2. Download, build and install [content-media-manager](https://github.com/Jahia/content-media-manager/tree)
 3. Build and install this module
 
-[dx-image]: https://img.shields.io/badge/DX-7.3.0.0-blue.svg
+[dx-image]: https://img.shields.io/badge/DX-8.1.0.0-blue.svg
 [dx-url]: https://www.jahia.com
 
 ### Form generation
