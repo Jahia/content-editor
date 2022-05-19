@@ -1,13 +1,14 @@
 import React from 'react';
-import {Dropdown, Language} from '@jahia/moonstone';
+import {Dropdown, Language, Edit} from '@jahia/moonstone';
 import * as PropTypes from 'prop-types';
-import {useContentEditorConfigContext} from '~/ContentEditor.context';
+import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import styles from './EditPanelLanguageSwitcher.scss';
 import {useSwitchLanguage} from '~/utils/useSwitchLanguage';
 import {getCapitalized} from '~/utils';
 
 const EditPanelLanguageSwitcher = ({siteInfo}) => {
     const {lang: currentLanguage} = useContentEditorConfigContext();
+    const {i18nContext} = useContentEditorContext();
     let langLabel;
 
     const languages = siteInfo.languages.map(item => {
@@ -17,7 +18,7 @@ const EditPanelLanguageSwitcher = ({siteInfo}) => {
             langLabel = capitalizedDisplayName;
         }
 
-        return {label: capitalizedDisplayName, value: item.language};
+        return {label: capitalizedDisplayName, value: item.language, iconEnd: i18nContext[item.language] ? <Edit/> : null};
     });
 
     const switchLanguage = useSwitchLanguage();
