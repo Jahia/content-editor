@@ -24,8 +24,8 @@ export const OrderingSection = ({mode, section, nodeData, isExpanded, onClick}) 
         };
 
         return (
-            <Collapsible data-sel-content-editor-fields-group={section.displayName}
-                         label={section.displayName}
+            <Collapsible data-sel-content-editor-fields-group={sec.displayName}
+                         label={sec.displayName}
                          isExpanded={isExpanded}
                          onClick={onClick}
             >
