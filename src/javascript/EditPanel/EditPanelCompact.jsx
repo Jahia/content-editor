@@ -20,6 +20,10 @@ const ButtonRenderer = getButtonRenderer({
     noIcon: true
 });
 
+const accentColorButtonProps = {
+    color: 'accent'
+};
+
 const EditPanelCompact = ({title, createAnother}) => {
     const {siteInfo, nodeData, lang, mode} = useContentEditorContext();
     const contentEditorConfigContext = useContentEditorConfigContext();
@@ -82,9 +86,7 @@ const EditPanelCompact = ({title, createAnother}) => {
                 />
                 <div className={styles.saveActions}>
                     <DisplayActions
-                        buttonProps={{
-                            color: 'accent'
-                        }}
+                        buttonProps={accentColorButtonProps}
                         createAnother={createAnother?.value}
                         target="content-editor/header/main-save-actions"
                         render={ButtonRenderer}
