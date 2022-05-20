@@ -326,9 +326,26 @@ public class EditorFormServiceImpl implements EditorFormService {
             String formDisplayName = primaryNodeType.getLabel(uiLocale);
             String formDescription = primaryNodeType.getDescription(uiLocale);
 
+            // This inserts listOrdering section for types which require it but don't come with one
+            checkIfListOrderingSectionIsRequired(primaryNodeType, currentNode, sortedSections);
+
             return new EditorForm(primaryNodeTypeName, formDisplayName, formDescription, mergedFormDefinition.hasPreview(), sortedSections);
         } catch (RepositoryException e) {
             throw new EditorFormException("Error while building edit form definition for node: " + currentNode.getPath() + " and nodeType: " + primaryNodeType.getName(), e);
+        }
+    }
+
+    private void checkIfListOrderingSectionIsRequired(ExtendedNodeType primaryNodeType, JCRNodeWrapper existingNode, List<EditorFormSection> sortedSections) throws RepositoryException {
+        if (sortedSections.stream().anyMatch(s -> s.getName().equals("listOrdering"))) {
+            return;
+        }
+
+        if ((primaryNodeType.hasOrderableChildNodes() || existingNode.isNodeType("jmix:orderedList"))
+            && !existingNode.isNodeType("jnt:page") && !existingNode.isNodeType("jnt:virtualSite") && existingNode.hasPermission("viewContentTab")) {
+            EditorFormSection editorFormSection = new EditorFormSection();
+            editorFormSection.setName("listOrdering");
+            editorFormSection.setHide(true);
+            sortedSections.add(1, editorFormSection);
         }
     }
 

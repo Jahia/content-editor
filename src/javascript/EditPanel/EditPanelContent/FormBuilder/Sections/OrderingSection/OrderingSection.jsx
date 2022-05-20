@@ -9,23 +9,21 @@ import {Collapsible} from '@jahia/moonstone';
 
 export const OrderingSection = ({mode, section, nodeData, isExpanded, onClick}) => {
     const {t} = useTranslation('content-editor');
-
     const {values} = useFormikContext();
+
     const canAutomaticallyOrder = values && values[Constants.automaticOrdering.mixin] !== undefined;
     const canManuallyOrder = nodeData.primaryNodeType.hasOrderableChildNodes;
 
-    const isOrderingSection = !nodeData.isSite && !nodeData.isPage && (canManuallyOrder || canAutomaticallyOrder) && mode === Constants.routes.baseEditRoute;
-
-    if (isOrderingSection) {
+    if (mode === Constants.routes.baseEditRoute && !nodeData.isSite && !nodeData.isPage) {
         const sec = {
             isOrderingSection: true,
-            displayName: t('content-editor:label.contentEditor.section.listAndOrdering.title'),
+            displayName: section.displayName ? section.displayName : t('content-editor:label.contentEditor.section.listAndOrdering.title'),
             fieldSets: section.fieldSets.filter(f => f.name !== 'jmix:orderedList')
         };
 
         return (
-            <Collapsible data-sel-content-editor-fields-group={section.displayName}
-                         label={section.displayName}
+            <Collapsible data-sel-content-editor-fields-group={sec.displayName}
+                         label={sec.displayName}
                          isExpanded={isExpanded}
                          onClick={onClick}
             >
