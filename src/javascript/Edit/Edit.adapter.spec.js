@@ -261,32 +261,32 @@ describe('adaptEditFormData', () => {
         });
 
         const adaptedData = adaptEditFormData(graphqlResponse, 'fr', t);
-        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_firstField']).toEqual('jcr:lastModified');
-        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_firstDirection']).toEqual('desc');
-        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_secondField']).toEqual(undefined);
-        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_secondDirection']).toEqual(undefined);
-        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_thirdField']).toEqual(undefined);
-        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_thirdDirection']).toEqual(undefined);
+        expect(adaptedData.initialValues[Constants.ordering.automaticOrdering.mixin + '_firstField']).toEqual('jcr:lastModified');
+        expect(adaptedData.initialValues[Constants.ordering.automaticOrdering.mixin + '_firstDirection']).toEqual('desc');
+        expect(adaptedData.initialValues[Constants.ordering.automaticOrdering.mixin + '_secondField']).toEqual(undefined);
+        expect(adaptedData.initialValues[Constants.ordering.automaticOrdering.mixin + '_secondDirection']).toEqual(undefined);
+        expect(adaptedData.initialValues[Constants.ordering.automaticOrdering.mixin + '_thirdField']).toEqual(undefined);
+        expect(adaptedData.initialValues[Constants.ordering.automaticOrdering.mixin + '_thirdDirection']).toEqual(undefined);
     });
 
     it('Should not initialize automatic ordering values if fieldSet is enabled', () => {
         const definition = {
             declaringNodeType: {
-                name: Constants.automaticOrdering.mixin
+                name: Constants.ordering.automaticOrdering.mixin
             }
         };
         graphqlResponse.forms.editForm.sections[0].fieldSets.push({
-            name: Constants.automaticOrdering.mixin,
+            name: Constants.ordering.automaticOrdering.mixin,
             dynamic: true,
             activated: true,
             displayed: true,
             fields: [
-                {name: 'firstField', declaringNodeType: Constants.automaticOrdering.mixin},
-                {name: 'firstDirection', declaringNodeType: Constants.automaticOrdering.mixin},
-                {name: 'secondField', declaringNodeType: Constants.automaticOrdering.mixin},
-                {name: 'secondDirection', declaringNodeType: Constants.automaticOrdering.mixin},
-                {name: 'thirdField', declaringNodeType: Constants.automaticOrdering.mixin},
-                {name: 'thirdDirection', declaringNodeType: Constants.automaticOrdering.mixin}
+                {name: 'firstField', declaringNodeType: Constants.ordering.automaticOrdering.mixin},
+                {name: 'firstDirection', declaringNodeType: Constants.ordering.automaticOrdering.mixin},
+                {name: 'secondField', declaringNodeType: Constants.ordering.automaticOrdering.mixin},
+                {name: 'secondDirection', declaringNodeType: Constants.ordering.automaticOrdering.mixin},
+                {name: 'thirdField', declaringNodeType: Constants.ordering.automaticOrdering.mixin},
+                {name: 'thirdDirection', declaringNodeType: Constants.ordering.automaticOrdering.mixin}
             ]
         });
         graphqlResponse.jcr.result.properties.push({name: 'firstField', value: 'toto', properties: true, definition});
@@ -295,22 +295,22 @@ describe('adaptEditFormData', () => {
         graphqlResponse.jcr.result.properties.push({name: 'thirdDirection', value: 'desc', properties: true, definition});
 
         const adaptedData = adaptEditFormData(graphqlResponse, 'fr', t);
-        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_firstField']).toEqual('toto');
-        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_firstDirection']).toEqual('asc');
-        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_secondField']).toEqual(undefined);
-        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_secondDirection']).toEqual(undefined);
-        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_thirdField']).toEqual('titi');
-        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_thirdDirection']).toEqual('desc');
+        expect(adaptedData.initialValues[Constants.ordering.automaticOrdering.mixin + '_firstField']).toEqual('toto');
+        expect(adaptedData.initialValues[Constants.ordering.automaticOrdering.mixin + '_firstDirection']).toEqual('asc');
+        expect(adaptedData.initialValues[Constants.ordering.automaticOrdering.mixin + '_secondField']).toEqual(undefined);
+        expect(adaptedData.initialValues[Constants.ordering.automaticOrdering.mixin + '_secondDirection']).toEqual(undefined);
+        expect(adaptedData.initialValues[Constants.ordering.automaticOrdering.mixin + '_thirdField']).toEqual('titi');
+        expect(adaptedData.initialValues[Constants.ordering.automaticOrdering.mixin + '_thirdDirection']).toEqual('desc');
     });
 
     it('Should not initialize automatic ordering values if fieldSet doest exist in form definition', () => {
         const adaptedData = adaptEditFormData(graphqlResponse, 'fr', t);
-        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_firstField']).toEqual(undefined);
-        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_firstDirection']).toEqual(undefined);
-        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_secondField']).toEqual(undefined);
-        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_secondDirection']).toEqual(undefined);
-        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_thirdField']).toEqual(undefined);
-        expect(adaptedData.initialValues[Constants.automaticOrdering.mixin + '_thirdDirection']).toEqual(undefined);
+        expect(adaptedData.initialValues[Constants.ordering.automaticOrdering.mixin + '_firstField']).toEqual(undefined);
+        expect(adaptedData.initialValues[Constants.ordering.automaticOrdering.mixin + '_firstDirection']).toEqual(undefined);
+        expect(adaptedData.initialValues[Constants.ordering.automaticOrdering.mixin + '_secondField']).toEqual(undefined);
+        expect(adaptedData.initialValues[Constants.ordering.automaticOrdering.mixin + '_secondDirection']).toEqual(undefined);
+        expect(adaptedData.initialValues[Constants.ordering.automaticOrdering.mixin + '_thirdField']).toEqual(undefined);
+        expect(adaptedData.initialValues[Constants.ordering.automaticOrdering.mixin + '_thirdDirection']).toEqual(undefined);
     });
 
     it('should use default value for not enabled mixin', () => {

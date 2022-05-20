@@ -11,10 +11,11 @@ export const OrderingSection = ({mode, section, nodeData, isExpanded, onClick}) 
     const {t} = useTranslation('content-editor');
     const {values} = useFormikContext();
 
-    const canAutomaticallyOrder = values && values[Constants.automaticOrdering.mixin] !== undefined;
+    const hasChildrenToOrder = values && values[Constants.ordering.childrenKey].length > 0;
+    const canAutomaticallyOrder = values && values[Constants.ordering.automaticOrdering.mixin] !== undefined;
     const canManuallyOrder = nodeData.primaryNodeType.hasOrderableChildNodes;
 
-    if (mode === Constants.routes.baseEditRoute && !nodeData.isSite && !nodeData.isPage) {
+    if (mode === Constants.routes.baseEditRoute && !nodeData.isSite && !nodeData.isPage && hasChildrenToOrder) {
         const sec = {
             isOrderingSection: true,
             displayName: section.displayName ? section.displayName : t('content-editor:label.contentEditor.section.listAndOrdering.title'),

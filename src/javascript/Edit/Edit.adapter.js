@@ -38,13 +38,13 @@ const getChildrenOrderingFields = (nodeData, dynamicFieldSets) => {
 
     // Using === false, because if it's undefined it's mean that the dynamic fieldset doest exist, so we do not need to init the values
     // But in case it's false, it's mean the dynamic fieldset exists but is not activated, so we need to init the values
-    if (dynamicFieldSets[Constants.automaticOrdering.mixin] === false) {
-        orderingInitialValues[Constants.automaticOrdering.mixin + '_firstDirection'] = 'desc';
-        orderingInitialValues[Constants.automaticOrdering.mixin + '_firstField'] = 'jcr:lastModified';
-        orderingInitialValues[Constants.automaticOrdering.mixin + '_secondDirection'] = undefined;
-        orderingInitialValues[Constants.automaticOrdering.mixin + '_secondField'] = undefined;
-        orderingInitialValues[Constants.automaticOrdering.mixin + '_thirdDirection'] = undefined;
-        orderingInitialValues[Constants.automaticOrdering.mixin + '_thirdField'] = undefined;
+    if (dynamicFieldSets[Constants.ordering.automaticOrdering.mixin] === false) {
+        orderingInitialValues[Constants.ordering.automaticOrdering.mixin + '_firstDirection'] = 'desc';
+        orderingInitialValues[Constants.ordering.automaticOrdering.mixin + '_firstField'] = 'jcr:lastModified';
+        orderingInitialValues[Constants.ordering.automaticOrdering.mixin + '_secondDirection'] = undefined;
+        orderingInitialValues[Constants.ordering.automaticOrdering.mixin + '_secondField'] = undefined;
+        orderingInitialValues[Constants.ordering.automaticOrdering.mixin + '_thirdDirection'] = undefined;
+        orderingInitialValues[Constants.ordering.automaticOrdering.mixin + '_thirdField'] = undefined;
     }
 
     return orderingInitialValues;

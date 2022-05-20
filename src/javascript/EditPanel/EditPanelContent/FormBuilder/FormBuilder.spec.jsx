@@ -6,6 +6,7 @@ import FormBuilder from './FormBuilder';
 import {useFormikContext} from 'formik';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
+import {Constants} from '~/ContentEditor.constants';
 
 jest.mock('formik');
 jest.mock('~/ContentEditorSection/ContentEditorSection.context');
@@ -81,7 +82,11 @@ describe('FormBuilder component', () => {
             ]
         };
         useContentEditorSectionContext.mockReturnValue(sectionContext);
-        formik = {};
+        formik = {
+            values: {
+                [Constants.ordering.childrenKey]: [{}]
+            }
+        };
         useFormikContext.mockReturnValue(formik);
     });
 
@@ -223,6 +228,7 @@ describe('FormBuilder component', () => {
 
         context.nodeData.primaryNodeType.hasOrderableChildNodes = false;
         formik.values = ({
+            ...formik.values,
             'jmix:orderedList': false
         });
 
@@ -231,6 +237,7 @@ describe('FormBuilder component', () => {
         expect(cmp.find('OrderingSection').dive().find('ChildrenSection').props().canManuallyOrder).toBeFalsy();
 
         formik.values = ({
+            ...formik.values,
             'jmix:orderedList': true
         });
 
@@ -257,6 +264,7 @@ describe('FormBuilder component', () => {
         });
 
         formik.values = ({
+            ...formik.values,
             AnyOtherKey: 'withValue'
         });
 
@@ -283,6 +291,7 @@ describe('FormBuilder component', () => {
         });
 
         formik.values = ({
+            ...formik.values,
             'jmix:orderedList': false
         });
 
