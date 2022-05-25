@@ -18,7 +18,7 @@ export const OrderingSection = ({mode, section, nodeData, isExpanded, onClick}) 
     if (mode === Constants.routes.baseEditRoute && !nodeData.isSite && !nodeData.isPage && hasChildrenToOrder) {
         const sec = {
             isOrderingSection: true,
-            displayName: section.displayName ? section.displayName : t('content-editor:label.contentEditor.section.listAndOrdering.title'),
+            displayName: t('content-editor:label.contentEditor.section.listAndOrdering.title'),
             fieldSets: section.fieldSets.filter(f => f.name !== 'jmix:orderedList')
         };
 
