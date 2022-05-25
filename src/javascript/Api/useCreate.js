@@ -22,11 +22,6 @@ export const useCreate = (setEditorConfig, setContentTypeSelectorConfig) => {
      * @param isFullscreen open editor in fullscreen
      */
     return useCallback(async (uuid, path, site, lang, uilang, nodeTypes, excludedNodeTypes, includeSubTypes, name, isFullscreen, createCallback, onClosedCallback) => {
-        // Sync GWT language
-        if (window.authoringApi.switchLanguage) {
-            window.authoringApi.switchLanguage(lang);
-        }
-
         const creatableNodeTypes = await getCreatableNodetypes(
             client,
             nodeTypes,

@@ -61,11 +61,6 @@ export default function () {
                     dispatch(pcNavigateTo({oldPath: originalNode.path, newPath: updatedNode.path}));
                 }
             }, (envProps, needRefresh) => {
-                // Restore GWT language
-                if (window.authoringApi.switchLanguage) {
-                    window.authoringApi.switchLanguage(lang);
-                }
-
                 if (needRefresh && window.authoringApi.refreshContent) {
                     window.authoringApi.refreshContent();
                 }
@@ -77,11 +72,6 @@ export default function () {
             window.CE_API.create(uuid, path, siteKey, lang, uilang, contentTypes, excludedNodeTypes, includeSubTypes, name, false, ({path}) => {
                 newPath = path;
             }, (envProps, needRefresh) => {
-                // Restore GWT language
-                if (window.authoringApi.switchLanguage) {
-                    window.authoringApi.switchLanguage(lang);
-                }
-
                 if (contentTypes[0] === 'jnt:page' && newPath) {
                     const dispatch = window.jahia.reduxStore.dispatch;
                     const currentPcPath = window.jahia.reduxStore.getState().pagecomposer.currentPage.path;

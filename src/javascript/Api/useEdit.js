@@ -10,11 +10,6 @@ export const useEdit = setEditorConfig => {
      * @param uilang the preferred user lang for ui
      */
     return useCallback((uuid, site, lang, uilang, isFullscreen, editCallback, onClosedCallback) => {
-        // Sync GWT language
-        if (window.authoringApi.switchLanguage) {
-            window.authoringApi.switchLanguage(lang);
-        }
-
         setEditorConfig({
             uuid,
             site,
