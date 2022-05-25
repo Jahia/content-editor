@@ -66,10 +66,5 @@ export const useSwitchLanguage = () => {
         if (envProps.switchLanguageCallback) {
             envProps.switchLanguageCallback(language, currentLanguage);
         }
-
-        // Switch edit mode linker language
-        if (window.authoringApi.switchLanguage) {
-            window.authoringApi.switchLanguage(language);
-        }
     }, [envProps, formik, sections, setI18nContext, currentLanguage]);
 };

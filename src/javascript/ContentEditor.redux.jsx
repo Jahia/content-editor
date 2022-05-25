@@ -48,9 +48,20 @@ const ContentEditorRedux = ({mode, uuid, lang, contentType, name}) => {
     const site = data && data.jcr.nodeById.site.name;
 
     // Sync GWT language
-    if (window.authoringApi.switchLanguage) {
-        window.authoringApi.switchLanguage(lang);
-    }
+    useEffect(() => {
+        window.overrideLang = lang;
+        window.previousLang = window.jahiaGWTParameters.lang;
+        if (window.authoringApi.switchLanguage) {
+            window.authoringApi.switchLanguage(lang);
+        }
+
+        return () => {
+            delete window.overrideLang;
+            if (window.authoringApi.switchLanguage) {
+                window.authoringApi.switchLanguage(window.previousLang);
+            }
+        };
+    }, [lang]);
 
     const handleRename = ({originalNode, updatedNode}) => {
         if (originalNode.path !== updatedNode.path) {
