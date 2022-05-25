@@ -44,7 +44,7 @@ export const ChildrenSectionCmp = ({section, classes, canManuallyOrder, canAutom
     const {t} = useTranslation('content-editor');
     const {sections} = useContentEditorSectionContext();
 
-    const isAutomaticOrder = canAutomaticallyOrder && values[Constants.automaticOrdering.mixin];
+    const isAutomaticOrder = canAutomaticallyOrder && values[Constants.ordering.automaticOrdering.mixin];
     const automaticOrderingFieldSet = canAutomaticallyOrder && getAutomaticOrderingFieldSet(sections);
 
     return (
@@ -70,13 +70,13 @@ export const ChildrenSectionCmp = ({section, classes, canManuallyOrder, canAutom
                         </Typography>
 
                         <div className={classes.automaticSwitchContainer}>
-                            <Toggle data-sel-role-automatic-ordering={Constants.automaticOrdering.mixin}
-                                    id={Constants.automaticOrdering.mixin}
+                            <Toggle data-sel-role-automatic-ordering={Constants.ordering.automaticOrdering.mixin}
+                                    id={Constants.ordering.automaticOrdering.mixin}
                                     checked={isAutomaticOrder}
                                     readOnly={automaticOrderingFieldSet.readOnly}
                                     onChange={handleChange}
                             />
-                            <Typography component="label" htmlFor={Constants.automaticOrdering.mixin} className={classes.automaticSwitch} color="alpha" variant="zeta">
+                            <Typography component="label" htmlFor={Constants.ordering.automaticOrdering.mixin} className={classes.automaticSwitch} color="alpha" variant="zeta">
                                 {t('content-editor:label.contentEditor.section.listAndOrdering.automatic')}
                             </Typography>
                         </div>

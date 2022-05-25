@@ -164,7 +164,7 @@ export const adaptSections = sections => {
 
             return [...result, section];
         }, [])
-        .filter(section => (section.fieldSets && section.fieldSets.length > 0));
+        .filter(section => (section.name === 'listOrdering' || (section.fieldSets && section.fieldSets.length > 0)));
 };
 
 export const getFieldValuesFromDefaultValues = field => {
