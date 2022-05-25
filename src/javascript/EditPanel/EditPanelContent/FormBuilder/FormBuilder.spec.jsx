@@ -323,7 +323,7 @@ describe('FormBuilder component', () => {
         expect(props.isExpanded).toBeTruthy();
 
         props = cmp.childAt(1).dive().find('Collapsible').props();
-        expect(props.label).toBe('translated_content-editor:label.contentEditor.section.listAndOrdering.title');
+        expect(props.label).toBe('Listordering');
         expect(props.isExpanded).toBeTruthy();
 
         props = cmp.childAt(2).dive().find('Collapsible').props();
