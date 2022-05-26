@@ -40,7 +40,7 @@ const EditPanelCompact = ({title, createAnother}) => {
                 <div className="flexRow">
                     <Typography variant="heading">{truncate(title, 40)}</Typography>
                     <div className="flexFluid"/>
-                    <Button className={styles.uppercase} label={t('label.contentEditor.create.advanced')} icon={<Edit/>} onClick={contentEditorConfigContext.envProps.setFullscreen}/>
+                    {mode !== Constants.routes.baseCreateRoute && <Button className={styles.uppercase} label={t('label.contentEditor.create.advanced')} icon={<Edit/>} onClick={contentEditorConfigContext.envProps.setFullscreen}/>}
                     <DisplayAction
                         actionKey="content-editor/header/3dots"
                         render={({dataSelRole, buttonIcon, onClick, ...props}) => (
