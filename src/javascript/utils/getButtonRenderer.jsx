@@ -7,7 +7,7 @@ import styles from './getButtonRenderer.scss';
 
 export const getButtonRenderer = ({labelStyle, defaultButtonProps, noIcon} = {}) => {
     const ButtonRenderer = props => {
-        const {addWarningBadge, buttonLabelNamespace, buttonLabelShort, buttonLabel, isVisible, buttonLabelParams, buttonIcon, actionKey, enabled, disabled, onClick, buttonProps} = props;
+        const {addWarningBadge, buttonLabelNamespace, buttonLabelShort, buttonLabel, isVisible, buttonLabelParams, buttonIcon, actionKey, enabled, disabled, onClick, buttonProps, dataSelRole} = props;
         const {t} = useTranslation(buttonLabelNamespace);
 
         let label = buttonLabel;
@@ -27,7 +27,7 @@ export const getButtonRenderer = ({labelStyle, defaultButtonProps, noIcon} = {})
         }
 
         let button = (
-            <Button data-sel-role={actionKey}
+            <Button data-sel-role={dataSelRole || actionKey}
                     label={t(label, buttonLabelParams)}
                     icon={icon}
                     isDisabled={enabled === false || disabled}
@@ -62,7 +62,8 @@ export const getButtonRenderer = ({labelStyle, defaultButtonProps, noIcon} = {})
         disabled: PropTypes.bool,
         onClick: PropTypes.func,
         buttonProps: PropTypes.object,
-        addWarningBadge: PropTypes.bool
+        addWarningBadge: PropTypes.bool,
+        dataSelRole: PropTypes.string
     };
 
     return ButtonRenderer;
