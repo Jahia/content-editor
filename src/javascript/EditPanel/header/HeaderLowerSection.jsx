@@ -5,12 +5,36 @@ import PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import {DisplayAction, DisplayActions} from '@jahia/ui-extender';
 import {EditPanelLanguageSwitcher} from '../EditPanelLanguageSwitcher';
-import {Button, Separator, Tab, TabItem} from '@jahia/moonstone';
+import {Separator, Tab, TabItem} from '@jahia/moonstone';
 import {useContentEditorContext} from '~/ContentEditor.context';
+import {getButtonRenderer} from '~/utils/getButtonRenderer';
+
+const DotsButtonRenderer = getButtonRenderer({
+    labelStyle: 'none',
+    defaultButtonProps: {
+        variant: 'ghost'
+    }
+});
+
+const TabItemRenderer = renderProps => {
+    const {t} = useTranslation('content-editor');
+    return (
+        <TabItem
+            data-sel-role={renderProps.dataSelRole}
+            icon={renderProps.buttonIcon}
+            label={t(renderProps.buttonLabel)}
+            isSelected={renderProps.value === renderProps.activeTab}
+            onClick={e => {
+                e.stopPropagation();
+                renderProps.onClick(renderProps, e);
+            }}
+        />
+    );
+};
 
 export const HeaderLowerSection = ({setActiveTab, activeTab}) => {
-    const {t} = useTranslation('content-editor');
     const {siteInfo, lang, nodeData} = useContentEditorContext();
+
     return (
         <div className={styles.headerToolBar}>
             <EditPanelLanguageSwitcher lang={lang} siteInfo={siteInfo}/>
@@ -23,20 +47,7 @@ export const HeaderLowerSection = ({setActiveTab, activeTab}) => {
                     activeTab={activeTab}
                     target="editHeaderTabsActions"
                     nodeData={nodeData}
-                    render={renderProps => {
-                        return (
-                            <TabItem
-                                data-sel-role={renderProps.dataSelRole}
-                                icon={renderProps.buttonIcon}
-                                label={t(renderProps.buttonLabel)}
-                                isSelected={renderProps.value === renderProps.activeTab}
-                                onClick={e => {
-                                    e.stopPropagation();
-                                    renderProps.onClick(renderProps, e);
-                                }}
-                            />
-                        );
-                    }}
+                    render={TabItemRenderer}
                 />
             </Tab>
 
@@ -44,17 +55,7 @@ export const HeaderLowerSection = ({setActiveTab, activeTab}) => {
 
             <DisplayAction
                 actionKey="content-editor/header/3dots"
-                render={({dataSelRole, buttonIcon, onClick, ...props}) => (
-                    <Button
-                        data-sel-role={dataSelRole}
-                        icon={buttonIcon}
-                        variant="ghost"
-                        onClick={e => {
-                            e.stopPropagation();
-                            onClick(props, e);
-                        }}
-                    />
-                )}/>
+                render={DotsButtonRenderer}/>
         </div>
     );
 };

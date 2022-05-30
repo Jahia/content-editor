@@ -20,6 +20,13 @@ const ButtonRenderer = getButtonRenderer({
     noIcon: true
 });
 
+const DotsButtonRenderer = getButtonRenderer({
+    labelStyle: 'none',
+    defaultButtonProps: {
+        variant: 'ghost'
+    }
+});
+
 const accentColorButtonProps = {
     color: 'accent'
 };
@@ -41,19 +48,7 @@ const EditPanelCompact = ({title, createAnother}) => {
                     <Typography variant="heading">{truncate(title, 40)}</Typography>
                     <div className="flexFluid"/>
                     {mode !== Constants.routes.baseCreateRoute && <Button className={styles.uppercase} label={t('label.contentEditor.create.advanced')} icon={<Edit/>} onClick={contentEditorConfigContext.envProps.setFullscreen}/>}
-                    <DisplayAction
-                        actionKey="content-editor/header/3dots"
-                        render={({dataSelRole, buttonIcon, onClick, ...props}) => (
-                            <Button
-                                data-sel-role={dataSelRole}
-                                icon={buttonIcon}
-                                variant="ghost"
-                                onClick={e => {
-                                    e.stopPropagation();
-                                    onClick(props, e);
-                                }}
-                            />
-                        )}/>
+                    <DisplayAction actionKey="content-editor/header/3dots" render={DotsButtonRenderer}/>
                 </div>
                 <div className={clsx('flexRow', styles.languageSwitcher)}>
                     <EditPanelLanguageSwitcher lang={lang} siteInfo={siteInfo}/>

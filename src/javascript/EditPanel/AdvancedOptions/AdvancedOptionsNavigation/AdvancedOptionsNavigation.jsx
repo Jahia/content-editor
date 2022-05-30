@@ -8,6 +8,23 @@ import {ProgressOverlay} from '@jahia/react-material';
 import {registerAdvancedOptionsActions} from '~/EditPanel/AdvancedOptions/AdvancedOptions.actions';
 import {useTranslation} from 'react-i18next';
 
+const Renderer = ({activeOption, value, buttonLabel, onClick}) => {
+    return (
+        <MenuItem
+            isSelected={activeOption === value}
+            label={buttonLabel}
+            onClick={e => onClick(e)}
+        />
+    );
+};
+
+Renderer.propTypes = {
+    activeOption: PropTypes.string,
+    value: PropTypes.string,
+    buttonLabel: PropTypes.string,
+    onClick: PropTypes.func
+};
+
 export const AdvancedOptionsNavigation = ({activeOption, setActiveOption}) => {
     const {t} = useTranslation('content-editor');
 
@@ -36,15 +53,7 @@ export const AdvancedOptionsNavigation = ({activeOption, setActiveOption}) => {
                                 filter={action => {
                                     return action.shouldBeDisplayed(tabs, action.key);
                                 }}
-                                render={({value, buttonLabel, onClick}) => {
-                                    return (
-                                        <MenuItem
-                                            isSelected={activeOption === value}
-                                            label={buttonLabel}
-                                            onClick={e => onClick(e)}
-                                        />
-                                    );
-                                }}
+                                render={Renderer}
                 />
             </ul>
         </div>
