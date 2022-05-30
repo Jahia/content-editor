@@ -11,7 +11,14 @@ export const OnCloseConfirmationDialog = ({setEditorConfig, openDialog}) => {
     const dirty = formik.dirty || Object.keys(i18nContext).length > 0;
 
     useEffect(() => {
-        openDialog.current = () => dirty ? setConfirmationConfig(true) : setEditorConfig(false);
+        openDialog.current = () => {
+            if (dirty) {
+                formik.validateForm();
+                setConfirmationConfig(true);
+            } else {
+                setEditorConfig(false);
+            }
+        };
     });
 
     return confirmationConfig && (
