@@ -23,6 +23,7 @@ export const GoBack = ({render: Render, ...otherProps}) => {
 
     const goBack = () => {
         if (dirty) {
+            formik.validateForm();
             setOpen(true);
         } else {
             envProps.back();
