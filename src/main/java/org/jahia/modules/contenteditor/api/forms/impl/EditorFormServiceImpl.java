@@ -198,7 +198,7 @@ public class EditorFormServiceImpl implements EditorFormService {
 
         // Filter the publication infos to only keep current node and sub technical nodes associated to the current node
         Collection<ComplexPublicationService.FullPublicationInfo> filteredInfos = publicationService.getFullPublicationInfos(Collections.singleton(uuid),
-                Collections.singletonList(locale.toLanguageTag()), false, session)
+                Collections.singletonList(locale.toString()), false, session)
             .stream()
             .filter(info -> info.getPublicationStatus() != PublicationInfo.DELETED) // keep only not deleted nodes
             .filter(ComplexPublicationService.FullPublicationInfo::isAllowedToPublishWithoutWorkflow) // keep only nodes allowed to bypass workflow
