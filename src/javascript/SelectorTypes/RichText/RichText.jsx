@@ -10,6 +10,8 @@ import {PickerDialog} from '~/SelectorTypes/Picker/PickerDialog';
 import {useTranslation} from 'react-i18next';
 import {buildPickerContext, fillCKEditorPicker} from './RichText.utils';
 
+window.CKEDITOR.focusManager._.blurDelay = 0;
+
 CKEditor.displayName = 'CKEditor';
 
 function loadOption(selectorOptions, name) {

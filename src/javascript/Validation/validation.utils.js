@@ -8,7 +8,7 @@ const setErrorFieldTouched = (errorsFields, setTouched) => {
             [field]: true
         };
     }, {});
-    return setTouched(fieldsTouched);
+    return setTouched(fieldsTouched, false);
 };
 
 export const validateForm = async ({setTouched, validateForm}, i18nContext, sections, language, siteInfo, componentRenderer) => {
