@@ -23,7 +23,7 @@ export const VanityUrls = ({tab, actionKey}) => {
             </Typography>
             <div className={classes.item}>
                 <DisplayAction actionKey={actionKey}
-                               render={props => <ButtonRenderer {...props} buttonLabel={t('content-editor:label.contentEditor.gwtTabsDeprecation.openLegacy')}/>}
+                               render={props => <ButtonRenderer buttonProps={{className: classes.marginRight, label: t('content-editor:label.contentEditor.gwtTabsDeprecation.openLegacy')}} {...props}/>}
                 />
                 <DisplayAction actionKey="vanityUrls"
                                render={ButtonRendererAccent}
