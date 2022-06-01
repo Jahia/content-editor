@@ -1,0 +1,35 @@
+.formControl.formControl {
+  transform: none!important;
+  position: relative;
+  margin-bottom: var(--spacing-small);
+  padding: 8px 0 8px 0;
+  border-left: 4px solid transparent;
+  margin-left: -4px;
+}
+
+.formControlError.formControlError {
+  padding: 8px 0 8px 8px;
+  border-left: 4px solid var(--color-warning60);
+}
+
+.errorMessage.errorMessage {
+  margin-top: 4px;
+  color: var(--color-warning);
+}
+
+.inputLabel.inputLabel {
+  transform: none!important;
+  position: relative;
+  margin-bottom: var(--spacing-small);
+  color: var(--color-dark60);
+  display: inline-block;
+}
+
+.actions.actions {
+  display: block;
+  width: 48px
+}
+
+.badge.badge {
+  margin-left: var(--spacing-small);
+}

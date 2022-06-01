@@ -5,9 +5,10 @@ import LockInfoBadge from '~/Lock/LockInfo.badge';
 import WipInfoChip from '~/EditPanel/WorkInProgress/Chip/WipInfo.Chip';
 import {UnsavedChip} from '~/EditPanel/header';
 import {Constants} from '~/ContentEditor.constants';
+import styles from './HeaderBadges.scss';
 
 const HeaderBadges = ({mode}) => (
-    <div>
+    <div className={styles.badges}>
         {mode === Constants.routes.baseEditRoute && <PublicationInfoBadge/>}
         {mode === Constants.routes.baseEditRoute && <LockInfoBadge/>}
         <WipInfoChip/>

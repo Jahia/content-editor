@@ -1,8 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useRef} from 'react';
-import {InputLabel, withStyles} from '@material-ui/core';
-import {Typography} from '@jahia/moonstone'
-import {Badge} from '@jahia/design-system-kit';
-import {Public} from '@material-ui/icons';
+import {InputLabel} from '@material-ui/core';
+import {Chip, Typography, Language} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
 import * as PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/FormDefinitions';
@@ -18,48 +16,11 @@ import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEdit
 import {useApolloClient} from '@apollo/react-hooks';
 import {getButtonRenderer} from '../../../../../utils/getButtonRenderer';
 import {useFormikContext} from 'formik';
+import styles from './Field.scss';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
-let styles = theme => {
-    const common = {
-        transform: 'none!important',
-        position: 'relative',
-        marginBottom: 'var(--spacing-small)'
-    };
-
-    return {
-        formControl: {
-            ...common,
-            padding: '8px 0 8px 0',
-            borderLeft: '4px solid transparent',
-            marginLeft: '-4px'
-        },
-        formControlError: {
-            padding: '8px 0 8px 8px',
-            borderLeft: `4px solid ${theme.palette.moonstone.support.warning60}`
-        },
-        errorMessage: {
-            marginTop: '4px',
-            color: theme.palette.moonstone.support.warning
-        },
-        inputLabel: {
-            ...common,
-            color: 'var(--color-dark60)',
-            display: 'inline-block'
-        },
-        actions: {
-            display: 'block',
-            width: 48
-        },
-        badge: {
-            marginBottom: 'var(--spacing-nano)',
-            position: 'sticky'
-        }
-    };
-};
-
-export const FieldCmp = ({classes, inputContext, idInput, selectorType, field}) => {
+export const Field = ({inputContext, idInput, selectorType, field}) => {
     const {t} = useTranslation('content-editor');
     const formik = useFormikContext();
     const editorContext = useContentEditorContext();
@@ -139,7 +100,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field}) 
     const firstField = sectionsContext.sections ? sectionsContext.sections[0]?.fieldSets[0]?.fields[0] === field : false;
 
     return (
-        <div className={`${classes.formControl} ${shouldDisplayErrors ? classes.formControlError : ''}`}
+        <div className={`${styles.formControl} ${shouldDisplayErrors ? styles.formControlError : ''}`}
              data-first-field={firstField}
              data-sel-content-editor-field={field.name}
              data-sel-content-editor-field-type={seleniumFieldType}
@@ -150,7 +111,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field}) 
                 <div className="flexRow">
                     <InputLabel shrink
                                 id={`${field.name}-label`}
-                                className={classes.inputLabel}
+                                className={styles.inputLabel}
                                 htmlFor={isMultipleField ? null : idInput}
                     >
                         <Typography>{field.displayName}</Typography>
@@ -158,28 +119,30 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field}) 
                     {inputContext.displayBadges && (
                         <>
                             {field.mandatory && (
-                                <Badge className={classes.badge}
-                                       data-sel-content-editor-field-mandatory={Boolean(hasMandatoryError)}
-                                       badgeContent={t('content-editor:label.contentEditor.edit.validation.required')}
-                                       variant="normal"
-                                       color={hasMandatoryError ? 'warning' : 'info'}
+                                <Chip
+                                    className={styles.badge}
+                                    data-sel-content-editor-field-mandatory={Boolean(hasMandatoryError)}
+                                    label={t('content-editor:label.contentEditor.edit.validation.required')}
+                                    color={hasMandatoryError ? 'warning' : 'accent'}
                                 />
                             )}
                             {showChipField(field.i18n, wipInfo, editorContext.lang) && (
-                                <Badge className={classes.badge}
-                                       data-sel-role="wip-info-chip-field"
-                                       badgeContent={t('content-editor:label.contentEditor.edit.action.workInProgress.chipLabelField')}
-                                       variant="normal"
-                                       color="info"
+                                <Chip
+                                    className={styles.badge}
+                                    data-sel-role="wip-info-chip-field"
+                                    label={t('content-editor:label.contentEditor.edit.action.workInProgress.chipLabelField')}
+                                    color="accent"
                                 />
                             )}
                             {(!field.i18n && editorContext.siteInfo.languages.length > 1) &&
-                            <Badge className={classes.badge}
-                                   badgeContent={t('content-editor:label.contentEditor.edit.sharedLanguages')}
-                                   icon={<Public/>}
-                                   variant="normal"
-                                   color="primary"
-                            />}
+                                <Chip
+                                    className={styles.badge}
+                                    data-sel-role="wip-info-chip-field"
+                                    icon={<Language/>}
+                                    label={t('content-editor:label.contentEditor.edit.sharedLanguages')}
+                                    color="default"
+                                />
+                            }
                         </>
                     )}
                     <div className="flexFluid"/>
@@ -192,7 +155,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field}) 
                     />
                 </div>}
                 {field.description && (
-                    <Typography className={classes.inputLabel} variant="caption">
+                    <Typography className={styles.inputLabel} variant="caption">
                         {field.description}
                     </Typography>
                 )}
@@ -213,7 +176,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field}) 
                             />}
                     </div>
                     {inputContext.displayActions && registry.get('action', selectorType.key + 'Menu') && (
-                        <div className={classes.actions}>
+                        <div className={styles.actions}>
                             <DisplayAction actionKey={selectorType.key + 'Menu'}
                                            field={field}
                                            selectorType={selectorType}
@@ -229,7 +192,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field}) 
                     )}
                 </div>
                 {inputContext.displayErrors && (
-                    <Typography className={classes.errorMessage}
+                    <Typography className={styles.errorMessage}
                                 data-sel-error={shouldDisplayErrors && errorName}
                     >
                         {shouldDisplayErrors ?
@@ -244,8 +207,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field}) 
     );
 };
 
-FieldCmp.propTypes = {
-    classes: PropTypes.object.isRequired,
+Field.propTypes = {
     inputContext: PropTypes.object.isRequired,
     idInput: PropTypes.string.isRequired,
     selectorType: PropTypes.shape({
@@ -254,10 +216,5 @@ FieldCmp.propTypes = {
     }).isRequired,
     field: FieldPropTypes.isRequired
 };
-
-const FieldStyled = withStyles(styles)(FieldCmp);
-FieldStyled.displayName = 'FieldStyled';
-
-export const Field = (FieldStyled);
 
 Field.displayName = 'Field';

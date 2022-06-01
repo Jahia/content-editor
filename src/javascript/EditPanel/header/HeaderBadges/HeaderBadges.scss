@@ -1,0 +1,6 @@
+.badges {
+  color: red;
+  & :global(.moonstone-chip) {
+    margin-left: var(--spacing-small);
+  }
+}

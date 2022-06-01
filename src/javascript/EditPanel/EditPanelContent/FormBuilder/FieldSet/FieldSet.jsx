@@ -6,6 +6,7 @@ import {FieldSetPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {FieldContainer} from './Field';
 import {useFormikContext} from 'formik';
 import styles from './FieldSet.scss';
+import clsx from 'clsx';
 
 const DynamicFieldSet = ({fieldset}) => {
     const {values, handleChange} = useFormikContext();
@@ -51,7 +52,7 @@ const StaticFieldSet = ({fieldset}) => {
                 <div className={styles.labelContainer}>
                     <Typography component="label"
                                 htmlFor={fieldset.name}
-                                className={styles.fieldSetTitle}
+                                className={clsx(styles.fieldSetTitle, styles.staticFieldSetTitle)}
                                 variant="subheading"
                     >
                         {fieldset.displayName}
