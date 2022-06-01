@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {Toggle} from '@jahia/design-system-kit';
 import {Typography} from '@jahia/moonstone';
 import {FieldSetPropTypes} from '~/FormDefinitions/FormData.proptypes';
@@ -14,11 +13,18 @@ const DynamicFieldSet = ({fieldset}) => {
     return (
         <article className={styles.fieldsetContainer}>
             <div className={styles.fieldsetTitleContainer}>
-                <Toggle data-sel-role-dynamic-fieldset={fieldset.name}
-                        id={fieldset.name}
-                        checked={activatedFieldSet}
-                        readOnly={fieldset.readOnly}
-                        onChange={handleChange}
+                <Toggle
+                    classes={{
+                        switchBase: styles.toggle,
+                        disabledSwitchBase: styles.toggle,
+                        readOnlySwitchBase: styles.toggle,
+                        focusedSwitchBase: styles.toggle
+                    }}
+                    data-sel-role-dynamic-fieldset={fieldset.name}
+                    id={fieldset.name}
+                    checked={activatedFieldSet}
+                    readOnly={fieldset.readOnly}
+                    onChange={handleChange}
                 />
 
                 <div className={styles.labelContainer}>
@@ -58,7 +64,7 @@ const StaticFieldSet = ({fieldset}) => {
                         {fieldset.displayName}
                     </Typography>
                     {fieldset.description &&
-                    <Typography component="label" className={styles.fieldSetDescription} variant="caption">
+                    <Typography component="label" className={clsx(styles.fieldSetDescription, styles.staticFieldSetDescription)} variant="caption">
                         {fieldset.description}
                     </Typography>}
                 </div>

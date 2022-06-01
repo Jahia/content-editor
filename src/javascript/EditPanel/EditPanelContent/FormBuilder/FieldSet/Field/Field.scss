@@ -1,14 +1,12 @@
 .formControl.formControl {
-  transform: none!important;
   position: relative;
   margin-bottom: var(--spacing-small);
-  padding: 8px 0 8px 0;
+  padding: 8px 0 8px 8px;
   border-left: 4px solid transparent;
-  margin-left: -4px;
+  margin-left: -12px;
 }
 
 .formControlError.formControlError {
-  padding: 8px 0 8px 8px;
   border-left: 4px solid var(--color-warning60);
 }
 
@@ -17,12 +15,19 @@
   color: var(--color-warning);
 }
 
-.inputLabel.inputLabel {
-  transform: none!important;
-  position: relative;
+.inputLabelContainer.inputLabelContainer {
   margin-bottom: var(--spacing-small);
+}
+
+.inputLabel.inputLabel {
+  position: relative;
   color: var(--color-dark60);
   display: inline-block;
+}
+
+.inputDescription.inputDescription {
+  margin-bottom: var(--spacing-small);
+  color: var(--color-dark60);
 }
 
 .actions.actions {

@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 import {InputLabel} from '@material-ui/core';
-import {Chip, Typography, Language} from '@jahia/moonstone';
+import {Chip, Language, Typography} from '@jahia/moonstone';
+import clsx from 'clsx';
 import {useTranslation} from 'react-i18next';
 import * as PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/FormDefinitions';
@@ -100,7 +101,7 @@ export const Field = ({inputContext, idInput, selectorType, field}) => {
     const firstField = sectionsContext.sections ? sectionsContext.sections[0]?.fieldSets[0]?.fields[0] === field : false;
 
     return (
-        <div className={`${styles.formControl} ${shouldDisplayErrors ? styles.formControlError : ''}`}
+        <div className={clsx(styles.formControl, {[styles.formControlError]: Boolean(shouldDisplayErrors)})}
              data-first-field={firstField}
              data-sel-content-editor-field={field.name}
              data-sel-content-editor-field-type={seleniumFieldType}
@@ -108,9 +109,8 @@ export const Field = ({inputContext, idInput, selectorType, field}) => {
         >
             <div className="flexFluid">
                 {inputContext.displayLabels &&
-                <div className="flexRow">
-                    <InputLabel shrink
-                                id={`${field.name}-label`}
+                <div className={clsx(styles.inputLabelContainer, 'flexRow', 'alignCenter')}>
+                    <InputLabel id={`${field.name}-label`}
                                 className={styles.inputLabel}
                                 htmlFor={isMultipleField ? null : idInput}
                     >
@@ -155,7 +155,7 @@ export const Field = ({inputContext, idInput, selectorType, field}) => {
                     />
                 </div>}
                 {field.description && (
-                    <Typography className={styles.inputLabel} variant="caption">
+                    <Typography className={styles.inputDescription} variant="caption">
                         {field.description}
                     </Typography>
                 )}
