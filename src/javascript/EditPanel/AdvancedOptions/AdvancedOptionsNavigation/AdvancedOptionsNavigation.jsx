@@ -8,21 +8,33 @@ import {ProgressOverlay} from '@jahia/react-material';
 import {registerAdvancedOptionsActions} from '~/EditPanel/AdvancedOptions/AdvancedOptions.actions';
 import {useTranslation} from 'react-i18next';
 
-const Renderer = ({activeOption, value, buttonLabel, onClick}) => {
+const DEPRECATED_GWT_ACTIONS = ['content', 'layout', 'metadata', 'categories', 'options', 'seo'];
+
+const Renderer = ({activeOption, setActiveOption, buttonLabel, onClick, tabs}) => {
+    const tab = tabs ? tabs[0] : 'technicalInformation';
+
     return (
         <MenuItem
-            isSelected={activeOption === value}
+            isSelected={activeOption === tab}
             label={buttonLabel}
-            onClick={e => onClick(e)}
+            onClick={e => {
+                if (DEPRECATED_GWT_ACTIONS.includes(tab)) {
+                    setActiveOption(tab);
+                    return;
+                }
+
+                onClick(e);
+            }}
         />
     );
 };
 
 Renderer.propTypes = {
     activeOption: PropTypes.string,
-    value: PropTypes.string,
     buttonLabel: PropTypes.string,
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
+    setActiveOption: PropTypes.func,
+    tabs: PropTypes.array
 };
 
 export const AdvancedOptionsNavigation = ({activeOption, setActiveOption}) => {

@@ -3,12 +3,20 @@ import {LayoutModule} from '@jahia/moonstone';
 import AdvancedOptionsNavigation from './AdvancedOptionsNavigation/AdvancedOptionsNavigation';
 import classes from './AdvancedOptions.scss';
 import {TechnicalInformation} from './TechnicalInformation/TechnicalInformation';
+import {DeprecatedOption} from './DeprecatedOption';
+import {VanityUrls} from './VanityUrls';
 
 export const AdvancedOptions = () => {
     const [activeOption, setActiveOption] = useState('technicalInformation');
 
     const SelectedTabComponents = {
-        technicalInformation: TechnicalInformation
+        technicalInformation: TechnicalInformation,
+        content: DeprecatedOption,
+        metadata: DeprecatedOption,
+        layout: DeprecatedOption,
+        options: DeprecatedOption,
+        categories: DeprecatedOption,
+        seo: VanityUrls
     };
     const SelectedTabComponent = SelectedTabComponents[activeOption];
     return (
@@ -17,7 +25,7 @@ export const AdvancedOptions = () => {
                 <LayoutModule
                     navigation={<AdvancedOptionsNavigation activeOption={activeOption}
                                                            setActiveOption={setActiveOption}/>}
-                    content={<SelectedTabComponent/>}
+                    content={<SelectedTabComponent tab={activeOption} actionKey={`contentEditorGWTTabAction_${activeOption}`}/>}
                     component="div"
                 />
             </div>
