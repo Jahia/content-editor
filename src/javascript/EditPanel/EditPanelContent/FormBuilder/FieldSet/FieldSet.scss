@@ -1,0 +1,25 @@
+.fieldsetContainer {
+
+}
+
+.fieldsetTitleContainer {
+  color: var(--color-gray_dark);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0 var(--spacing-large) 0 0;
+  padding: 0 0 var(--spacing-medium);
+}
+
+.labelContainer {
+  display: flex;
+  flex-flow: column wrap
+}
+
+.fieldSetTitle {
+  width: auto;
+  text-transform: uppercase;
+}
+
+.fieldSetDescription {
+}

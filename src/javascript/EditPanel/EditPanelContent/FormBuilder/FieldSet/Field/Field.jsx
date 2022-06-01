@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 import {InputLabel, withStyles} from '@material-ui/core';
-import {Badge, Typography} from '@jahia/design-system-kit';
+import {Typography} from '@jahia/moonstone'
+import {Badge} from '@jahia/design-system-kit';
 import {Public} from '@material-ui/icons';
 import {useTranslation} from 'react-i18next';
 import * as PropTypes from 'prop-types';
@@ -24,15 +25,15 @@ let styles = theme => {
     const common = {
         transform: 'none!important',
         position: 'relative',
-        marginBottom: theme.spacing.unit
+        marginBottom: 'var(--spacing-small)'
     };
 
     return {
         formControl: {
-            ...theme.typography.zeta,
             ...common,
             padding: '8px 0 8px 0',
-            borderLeft: '4px solid transparent'
+            borderLeft: '4px solid transparent',
+            marginLeft: '-4px'
         },
         formControlError: {
             padding: '8px 0 8px 8px',
@@ -43,9 +44,8 @@ let styles = theme => {
             color: theme.palette.moonstone.support.warning
         },
         inputLabel: {
-            ...theme.typography.zeta,
             ...common,
-            color: theme.palette.font.beta,
+            color: 'var(--color-dark60)',
             display: 'inline-block'
         },
         actions: {
@@ -53,7 +53,7 @@ let styles = theme => {
             width: 48
         },
         badge: {
-            marginBottom: theme.spacing.unit,
+            marginBottom: 'var(--spacing-nano)',
             position: 'sticky'
         }
     };
@@ -153,7 +153,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field}) 
                                 className={classes.inputLabel}
                                 htmlFor={isMultipleField ? null : idInput}
                     >
-                        {field.displayName}
+                        <Typography>{field.displayName}</Typography>
                     </InputLabel>
                     {inputContext.displayBadges && (
                         <>
@@ -192,7 +192,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field}) 
                     />
                 </div>}
                 {field.description && (
-                    <Typography color="beta" variant="omega">
+                    <Typography className={classes.inputLabel} variant="caption">
                         {field.description}
                     </Typography>
                 )}
