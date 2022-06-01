@@ -45,7 +45,7 @@ describe('validation utils', () => {
             expect(formik.setTouched).toHaveBeenCalledWith({
                 field1: true,
                 field2: true
-            });
+            }, false);
         });
 
         it('should display a modal when field have errors', async () => {
