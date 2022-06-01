@@ -269,7 +269,20 @@
       "global": {
         "noResult": "No results found."
       },
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "gwtTabsDeprecation": {
+        "title": "Legacy interface",
+        "openLegacy": "Open legacy interface",
+        "cancel": "Cancel",
+        "warnings": {
+          "content": "The content shall be edited from the directly Edit tab. However, if you really need to, you can use the legacy interface to edit it. But be aware that this interface will be removed in a future update.",
+          "options": "The additional options can be edited directly from the Edit tab. However, if you really need to, you can use the legacy interface to edit them. But be aware that this interface will be removed in a future update.",
+          "categories": "The categories associated to the content can be edited directly from the Edit tab. However, if you really need to, you can use the legacy interface to edit them. But be aware that this interface will be removed in a future update.",
+          "metadata": "The description, keywords and tag can be edited directly from the Edit tab. However, if you really need to, you can use the legacy interface to edit them. But be aware that this interface will be removed in a future update.",
+          "seo": "Vanity URLs can be managed through a dedicated feature, available in the \"3 dots icon\" button in the toolbar, or using the Manage vanity URLs button below. You can also use the legacy interface if you need to, but this interface will be removed in a future update.",
+          "layout": "The layout options can be edited directly from the Edit tab. However, if you really need to, you can use the legacy interface to edit them. But be aware that this interface will be removed in a future update."
+        }
+      }
     }
   }
 }
