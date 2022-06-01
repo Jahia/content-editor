@@ -6,6 +6,7 @@ describe('Create content tests', () => {
     before(function () {
         cy.executeGroovy('createSite.groovy', { SITEKEY: 'contentEditorSite' })
         cy.login() // edit in chief
+        ContentEditor.visit('contentEditorSite', 'en', 'home.html')
     })
 
     after(function () {
@@ -19,6 +20,10 @@ describe('Create content tests', () => {
     })
 
     it('Can create content', function () {
-        ContentEditor.visit('contentEditorSite', 'en', 'home.html')
+        contentEditor.openContentModal()
+        cy.get('[data-sel-role="content-type-dialog-input"]').type('Rich text')
+        cy.get('[data-sel-role="content-type-tree"]').contains('Rich text').click()
+        cy.get('[data-sel-role="content-type-dialog-create"]').click()
+        cy.get('#contenteditor-dialog-title').should('be.visible').and('contain', 'Create Rich text')
     })
 })
