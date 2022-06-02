@@ -19,11 +19,20 @@ describe('Create content tests', () => {
         contentEditor = new ContentEditor()
     })
 
-    it('Can create content', { retries: 10 }, function () {
-        contentEditor.openContentModal()
-        cy.get('[data-sel-role="content-type-dialog-input"]').type('Rich text')
-        cy.get('[data-sel-role="content-type-tree"]').contains('Rich text').click()
-        cy.get('[data-sel-role="content-type-dialog-create"]').click()
+    it('Can create content', { retries: 0 }, function () {
+        const pageComposer = contentEditor.getPageComposer()
+        pageComposer
+            .openCreateContent()
+            .getContentTypeSelector()
+            .searchForContentType('Rich Text')
+            .selectContentType('Rich text')
+            .create()
         cy.get('#contenteditor-dialog-title').should('be.visible').and('contain', 'Create Rich text')
+        const contentSection = contentEditor.closeSection('Content')
+        contentEditor.openSection('Options').get().find('input[type="text"]').clear().type('cypress-test')
+        contentSection.expand().get().find('.cke_button__source').click()
+        contentSection.get().find('textarea').type('Cypress Test')
+        contentEditor.save()
+        pageComposer.refresh().shouldContain('Cypress Test')
     })
 })
