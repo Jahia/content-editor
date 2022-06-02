@@ -50,7 +50,7 @@ describe('Automatic ordering component', () => {
     it('should display one row only when no props set', () => {
         sectionContext.sections = [listOrderingSection(false, false)];
         const cmp = shallowWithTheme(
-            <AutomaticOrderingCmp {...props}/>,
+            <AutomaticOrdering {...props}/>,
             {},
             dsGenericTheme
         );
@@ -63,7 +63,7 @@ describe('Automatic ordering component', () => {
         formik.values[Constants.ordering.automaticOrdering.mixin + '_thirdField'] = 'jcr:createdBy';
 
         const cmp = shallowWithTheme(
-            <AutomaticOrderingCmp {...props}/>,
+            <AutomaticOrdering {...props}/>,
             {},
             dsGenericTheme
         );
