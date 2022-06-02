@@ -19,7 +19,7 @@ describe('Create content tests', () => {
         contentEditor = new ContentEditor()
     })
 
-    it('Can create content', function () {
+    it('Can create content', { retries: 10 }, function () {
         contentEditor.openContentModal()
         cy.get('[data-sel-role="content-type-dialog-input"]').type('Rich text')
         cy.get('[data-sel-role="content-type-tree"]').contains('Rich text').click()
