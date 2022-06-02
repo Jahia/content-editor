@@ -1,10 +1,11 @@
 .fieldComponentContainer {
-  display: flex;
-  margin-bottom: var(--spacing-nano);
-  align-items: center;
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--spacing-nano);
 }
 
 .addButton {
-  margin: var(--spacing-small) 0;
-  text-transform: uppercase;
+    margin: var(--spacing-small) 0;
+
+    text-transform: uppercase;
 }

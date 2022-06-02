@@ -1,18 +1,19 @@
 .treeContainer.treeContainer {
-  border: 1px solid var(--color-gray_light40);
-  background-color: var(--color-light60);
-  overflow: auto;
-  height: 100vh;
-  min-height: 20vh;
-  min-width: 30vw;
-  margin: 0 var(--spacing-large);
-  padding: var(--spacing-nano)
+    min-width: 30vw;
+    height: 100vh;
+    min-height: 20vh;
+    margin: 0 var(--spacing-large);
+    padding: var(--spacing-nano);
+
+    border: 1px solid var(--color-gray_light40);
+    background-color: var(--color-light60);
+    overflow: auto;
 }
 
 .dialogTitle.dialogTitle {
-  padding: var(--spacing-medium)
+    padding: var(--spacing-medium);
 }
 
 .filterInput.filterInput {
-  margin: 0 var(--spacing-large) var(--spacing-large);
+    margin: 0 var(--spacing-large) var(--spacing-large);
 }
