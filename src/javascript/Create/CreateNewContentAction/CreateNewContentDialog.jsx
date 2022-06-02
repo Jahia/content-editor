@@ -10,7 +10,7 @@ import {ProgressOverlay} from '@jahia/react-material';
 import {TreeView} from '~/DesignSystem/TreeView';
 import {useApolloClient, useQuery} from '@apollo/react-hooks';
 import {getTreeOfContent} from '~/Create/CreateNewContentAction/CreateNewContent.gql-queries';
-import {filterTree, isOpenableEntry} from './createNewContent.utils';
+import {filterTree, isOpenableEntry} from './CreateNewContent.utils';
 import styles from './CreateNewContentDialog.scss';
 
 export const CreateNewContentDialog = ({childNodeName, nodeTypes, includeSubTypes, open, parentPath, onExited, onClose, onCreateContent, uilang}) => {

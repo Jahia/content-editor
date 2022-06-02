@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {CreateNewContentDialog} from './CreateNewContentDialog';
 import {Constants} from '~/ContentEditor.constants';
-import {transformNodeTypesToActions, useCreatableNodetypes} from './createNewContent.utils';
+import {transformNodeTypesToActions, useCreatableNodetypes} from './CreateNewContent.utils';
 import {useSelector} from 'react-redux';
 import {useNodeChecks, useNodeInfo} from '@jahia/data-helper';
 import {ComponentRendererContext} from '@jahia/ui-extender';
