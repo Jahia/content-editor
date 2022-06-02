@@ -141,7 +141,7 @@ describe('Field component', () => {
             <Field {...defaultProps}/>,
             {},
             dsGenericTheme
-        ).dive();
+        );
 
         // Should init call the onChange
         cmp.debug();
@@ -198,8 +198,7 @@ describe('Field component', () => {
                 <Field {...defaultProps}><div>test</div></Field>,
                 {},
                 dsGenericTheme
-            )
-                .dive();
+            );
 
             const badgeComponent = cmp.find({
                 badgeContent:
@@ -223,7 +222,7 @@ describe('Field component', () => {
             dsGenericTheme
         );
 
-        expect(cmp.dive().debug()).toContain('htmlFor="FieldID"');
+        expect(cmp.debug()).toContain('htmlFor="FieldID"');
     });
 
     it('should display the description label when field has a description', () => {
@@ -235,7 +234,7 @@ describe('Field component', () => {
             dsGenericTheme
         );
 
-        expect(cmp.dive().debug()).toContain('This is a description for this text field.');
+        expect(cmp.debug()).toContain('This is a description for this text field.');
     });
 
     it('should not display the description label when field has not a description', () => {
@@ -249,7 +248,7 @@ describe('Field component', () => {
             dsGenericTheme
         );
 
-        expect(cmp.dive().debug()).not.toContain('This is a description for this text field.');
+        expect(cmp.debug()).not.toContain('This is a description for this text field.');
     });
 
     it('should not add htmlFor to the label when field is multiple', () => {
@@ -261,7 +260,7 @@ describe('Field component', () => {
             dsGenericTheme
         );
 
-        expect(cmp.dive().debug()).not.toContain('htmlFor="FieldID"');
+        expect(cmp.debug()).not.toContain('htmlFor="FieldID"');
     });
 
     it('should display an error message when field is in error', () => {
@@ -285,6 +284,6 @@ describe('Field component', () => {
             dsGenericTheme
         );
 
-        expect(cmp.dive().debug()).toContain('errors.required');
+        expect(cmp.debug()).toContain('errors.required');
     });
 });
