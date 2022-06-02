@@ -2,7 +2,7 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import React from 'react';
 import {listOrderingSection} from './AutomaticOrdering.spec.data';
-import {AutomaticOrderingCmp} from './AutomaticOrdering';
+import {AutomaticOrdering} from './AutomaticOrdering';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {adaptSectionToDisplayableRows, getDisplayedRows} from './AutomaticOrdering.utils';
@@ -74,7 +74,7 @@ describe('Automatic ordering component', () => {
         sectionContext.sections = [listOrderingSection(true, true)];
 
         const cmp = shallowWithTheme(
-            <AutomaticOrderingCmp {...props}/>,
+            <AutomaticOrdering {...props}/>,
             {},
             dsGenericTheme
         );
@@ -87,7 +87,7 @@ describe('Automatic ordering component', () => {
         formik.values[Constants.ordering.automaticOrdering.mixin + '_thirdField'] = 'jcr:createdBy';
 
         const cmp = shallowWithTheme(
-            <AutomaticOrderingCmp {...props}/>,
+            <AutomaticOrdering {...props}/>,
             {},
             dsGenericTheme
         );
@@ -99,7 +99,7 @@ describe('Automatic ordering component', () => {
         sectionContext.sections = [listOrderingSection(false, false)];
 
         const cmp = shallowWithTheme(
-            <AutomaticOrderingCmp {...props}/>,
+            <AutomaticOrdering {...props}/>,
             {},
             dsGenericTheme
         );
@@ -129,7 +129,7 @@ describe('Automatic ordering component', () => {
         formik.values[Constants.ordering.automaticOrdering.mixin + '_thirdField'] = 'jcr:createdBy';
 
         const cmp = shallowWithTheme(
-            <AutomaticOrderingCmp {...props}/>,
+            <AutomaticOrdering {...props}/>,
             {},
             dsGenericTheme
         );

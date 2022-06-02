@@ -1,9 +1,9 @@
 import {Constants} from '~/ContentEditor.constants';
-import {FieldSet} from './Sections/ChildrenSection/ListSizeLimitFieldSet';
+import {ListSizeLimitFieldSet} from './Sections/ChildrenSection/ListSizeLimitFieldSet';
 
 const orderingSectionFieldSetMap = fieldSet => {
     if (fieldSet.name === 'jmix:listSizeLimit') {
-        fieldSet.comp = FieldSet;
+        fieldSet.comp = ListSizeLimitFieldSet;
         fieldSet.description = 'content-editor:label.contentEditor.section.listSizeLimit.description';
         fieldSet.nodeCheck = {
             options: {

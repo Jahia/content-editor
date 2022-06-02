@@ -1,34 +1,13 @@
 import React, {useState} from 'react';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import {FieldContainer} from '~/EditPanel/EditPanelContent/FormBuilder/FieldSet/Field';
-import PropTypes from 'prop-types';
-import {compose} from '~/utils';
 import {useFormikContext} from 'formik';
 import {useTranslation} from 'react-i18next';
 import {adaptSectionToDisplayableRows, getDisplayedRows} from './AutomaticOrdering.utils';
-import {withStyles} from '@material-ui/core';
 import {Button, Close} from '@jahia/moonstone';
+import styles from './AutomaticOrdering.scss';
 
-const styles = theme => ({
-    row: {
-        display: 'flex',
-        flexDirection: 'row',
-        marginRight: `-${theme.spacing.unit * 6}px`,
-        marginBottom: `-${theme.spacing.unit / 2}px`
-    },
-    orderBy: {
-        flex: '2 0px'
-    },
-    orderDirection: {
-        flex: '1 0 0'
-    },
-    addButton: {
-        margin: `${theme.spacing.unit * 2}px 0`,
-        textTransform: 'uppercase'
-    }
-});
-
-export const AutomaticOrderingCmp = ({classes}) => {
+export const AutomaticOrdering = () => {
     const {values, setFieldValue, setFieldTouched} = useFormikContext();
     const {t} = useTranslation('content-editor');
     const {sections} = useContentEditorSectionContext();
@@ -101,18 +80,18 @@ export const AutomaticOrderingCmp = ({classes}) => {
                 .map((displayableRow, index) => {
                     const row = rows[displayableRow];
                     return (
-                        <div key={row.propField.name} className={classes.row}>
-                            <div className={classes.orderBy}>
+                        <div key={row.propField.name} className="flexRow">
+                            <div className={styles.orderBy}>
                                 <FieldContainer field={row.propField} inputContext={getInputContext(index, row.propField)}/>
                             </div>
-                            <div className={classes.orderDirection}>
+                            <div className="flexFluid">
                                 <FieldContainer field={row.directionField} inputContext={getInputContext(index, row.directionField)}/>
                             </div>
                         </div>
                     );
                 })}
 
-            <Button className={classes.addButton}
+            <Button className={styles.addButton}
                     data-sel-role="add-automatic-ordering-field"
                     isDisabled={!nextRow || nextRow.propField.readOnly}
                     label={t('content-editor:label.contentEditor.edit.fields.actions.add')}
@@ -121,11 +100,4 @@ export const AutomaticOrderingCmp = ({classes}) => {
     );
 };
 
-AutomaticOrderingCmp.propTypes = {
-    classes: PropTypes.object.isRequired
-};
-
-export const AutomaticOrdering = compose(
-    withStyles(styles)
-)(AutomaticOrderingCmp);
 AutomaticOrdering.displayName = 'AutomaticOrdering';

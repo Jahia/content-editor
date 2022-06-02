@@ -1,39 +1,13 @@
 import React from 'react';
 import {FullWidthContent, TwoColumnsContent} from '@jahia/design-system-kit';
-import * as PropTypes from 'prop-types';
 import FormBuilder from './FormBuilder';
-import {compose} from '~/utils';
-import {withStyles} from '@material-ui/core';
 import {PreviewContainer} from './Preview';
-import PublicationInfoProgress from '~/PublicationInfo/PublicationInfo.progress';
+import PublicationInfoProgress from '~/PublicationInfo/PublicationInfoProgress';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import {Constants} from '~/ContentEditor.constants';
+import styles from './EditPanelContent.scss';
 
-const styles = theme => ({
-    twoColumnsRoot: {
-        minHeight: 0,
-        padding: 0
-    },
-    fullWidthRoot: {
-        backgroundColor: theme.palette.ui.alpha,
-        overflow: 'auto'
-    },
-    right: {
-        padding: 0,
-        overflow: 'auto'
-    },
-    left: {
-        overflow: 'auto',
-        padding: 0
-    },
-    toggleButtons: {
-        display: 'flex',
-        justifyContent: 'flex-end',
-        paddingRight: '1rem'
-    }
-});
-
-export const EditPanelContent = ({classes}) => {
+export const EditPanelContent = () => {
     const {mode, envProps} = useContentEditorConfigContext();
     const {hasPreview} = useContentEditorContext();
 
@@ -43,7 +17,7 @@ export const EditPanelContent = ({classes}) => {
             {hasPreview && (!envProps || !envProps.isModal || envProps.isFullscreen) ?
                 (
                     <TwoColumnsContent
-                        classes={{root: classes.twoColumnsRoot, left: classes.left, right: classes.right}}
+                        classes={{root: styles.twoColumnsRoot, left: styles.col, right: styles.col}}
                         rightCol={<PreviewContainer/>}
                         data-sel-mode={mode}
                     >
@@ -52,7 +26,7 @@ export const EditPanelContent = ({classes}) => {
                 ) :
                 (
                     <FullWidthContent
-                        classes={{root: classes.fullWidthRoot}}
+                        classes={{root: styles.fullWidthRoot}}
                         data-sel-mode={mode}
                     >
                         <FormBuilder mode={mode}/>
@@ -62,10 +36,4 @@ export const EditPanelContent = ({classes}) => {
     );
 };
 
-EditPanelContent.propTypes = {
-    classes: PropTypes.object.isRequired
-};
-
-export default compose(
-    withStyles(styles)
-)(EditPanelContent);
+export default EditPanelContent;

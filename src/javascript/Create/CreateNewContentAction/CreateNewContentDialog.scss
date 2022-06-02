@@ -1,0 +1,18 @@
+.treeContainer.treeContainer {
+  border: 1px solid var(--color-gray_light40);
+  background-color: var(--color-light60);
+  overflow: auto;
+  height: 100vh;
+  min-height: 20vh;
+  min-width: 30vw;
+  margin: 0 var(--spacing-large);
+  padding: var(--spacing-nano)
+}
+
+.dialogTitle.dialogTitle {
+  padding: var(--spacing-medium)
+}
+
+.filterInput.filterInput {
+  margin: 0 var(--spacing-large) var(--spacing-large);
+}

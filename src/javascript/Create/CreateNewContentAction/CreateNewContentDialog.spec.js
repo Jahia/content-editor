@@ -6,15 +6,11 @@ import {dsGenericTheme} from '@jahia/design-system-kit';
 import {CreateNewContentDialog} from './CreateNewContentDialog';
 import {setResponseMock} from '@apollo/react-hooks';
 
-jest.mock('react-apollo', () => ({
-    withApollo: Cmp => props => (<Cmp {...props} client={{}}/>),
-    compose: jest.requireActual('react-apollo').compose
-}));
-
 jest.mock('@apollo/react-hooks', () => {
     let responsemock;
     return {
         useQuery: () => responsemock,
+        useApolloClient: () => {},
         setResponseMock: m => {
             responsemock = m;
         }
@@ -75,7 +71,7 @@ describe('CreateNewContentDialog', () => {
             <CreateNewContentDialog {...props} open/>,
             {},
             dsGenericTheme
-        ).dive().dive();
+        );
 
         expect(cmp.find('WithStyles(Dialog)').props().open).toBe(true);
     });
@@ -95,7 +91,7 @@ describe('CreateNewContentDialog', () => {
                                     }}/>,
             {},
             dsGenericTheme
-        ).dive().dive();
+        );
 
         cmp.find('Button').at(0).simulate('click');
 
@@ -109,7 +105,7 @@ describe('CreateNewContentDialog', () => {
             <CreateNewContentDialog open {...props}/>,
             {},
             dsGenericTheme
-        ).dive().dive();
+        );
 
         cmp.find('Button').at(1).simulate('click');
 
@@ -123,7 +119,7 @@ describe('CreateNewContentDialog', () => {
             <CreateNewContentDialog open {...props}/>,
             {},
             dsGenericTheme
-        ).dive().dive()).toThrowError('oops');
+        )).toThrowError('oops');
     });
 
     it('should filter properly with id hichem', () => {
@@ -132,7 +128,7 @@ describe('CreateNewContentDialog', () => {
             <CreateNewContentDialog open {...props}/>,
             {},
             dsGenericTheme
-        ).dive().dive();
+        );
 
         cmp.find('Input').simulate('change', {target: {value: 'Rom3'}});
 
@@ -146,7 +142,7 @@ describe('CreateNewContentDialog', () => {
             <CreateNewContentDialog open {...props}/>,
             {},
             dsGenericTheme
-        ).dive().dive();
+        );
 
         cmp.find('Input').simulate('change', {target: {value: 'rom3'}});
 
@@ -160,7 +156,7 @@ describe('CreateNewContentDialog', () => {
             <CreateNewContentDialog open {...props}/>,
             {},
             dsGenericTheme
-        ).dive().dive();
+        );
 
         cmp.find('Input').simulate('change', {target: {value: 'n'}});
 

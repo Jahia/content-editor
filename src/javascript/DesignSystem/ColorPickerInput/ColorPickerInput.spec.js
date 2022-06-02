@@ -33,6 +33,6 @@ describe('ColorPickerInput', () => {
             dsGenericTheme
         );
 
-        expect(cmp.dive().find('Input').props().readOnly).toBe(true);
+        expect(cmp.find('Input').props().readOnly).toBe(true);
     });
 });
