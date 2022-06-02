@@ -7,10 +7,9 @@ import {Input} from '@jahia/design-system-kit';
 
 import dayjs from '../../date.config';
 
-import {IconButton} from '@material-ui/core';
-import {DateRange} from '@material-ui/icons';
 import Popover from '@material-ui/core/Popover/Popover';
 import NumberFormat from 'react-number-format';
+import {Button, Calendar} from '@jahia/moonstone';
 
 const styles = theme => ({
     datePickerIcon: {
@@ -105,14 +104,14 @@ const DatePickerInputCmp = ({
     };
 
     const InteractiveVariant = (
-        <IconButton aria-label="Open date picker"
-                    classes={{
-                        root: classes.datePickerIcon
-                    }}
-                    onClick={handleOpenPicker}
-        >
-            <DateRange/>
-        </IconButton>
+        <Button aria-label="Open date picker"
+                classes={{
+                    root: classes.datePickerIcon
+                }}
+                variant="ghost"
+                icon={<Calendar/>}
+                onClick={handleOpenPicker}
+        />
     );
 
     return (

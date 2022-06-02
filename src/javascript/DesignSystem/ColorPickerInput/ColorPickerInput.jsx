@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import Popover from '@material-ui/core/Popover/Popover';
 import {Input} from '@jahia/design-system-kit';
-import {IconButton} from '@material-ui/core';
-import {Palette} from '@material-ui/icons';
 import {Constants} from '~/ContentEditor.constants';
 import {HexColorPicker} from 'react-colorful';
+import {Button, Palette} from '@jahia/moonstone';
 
 const styles = theme => ({
     root: {
@@ -42,14 +41,14 @@ const ColorPickerInputCmp = ({classes, onChange, onBlur, initialValue, readOnly,
     };
 
     const InteractiveVariant = (
-        <IconButton aria-label="Open color picker"
-                    classes={{
-                        root: classes.colorPickerIcon
-                    }}
-                    onClick={handleOpenPicker}
-        >
-            <Palette/>
-        </IconButton>
+        <Button aria-label="Open color picker"
+                classes={{
+                    root: classes.colorPickerIcon
+                }}
+                variant="ghost"
+                icon={<Palette/>}
+                onClick={handleOpenPicker}
+        />
     );
 
     return (
