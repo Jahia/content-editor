@@ -35,8 +35,9 @@ describe('Header UpperSection', () => {
         useFormikContext.mockReturnValue(formik);
     });
 
-    it('should u and unsaved info chip displayed when ce in create mode', () => {
-        const cmp = shallow(<HeaderBadges/>);
-        expect(cmp.find('UnsavedChip').dive().find({'data-sel-role': 'unsaved-info-chip'}).exists()).toBe(true);
+    it('Shows only WIP chip in create mode', () => {
+        const cmp = shallow(<HeaderBadges mode={Constants.routes.baseCreateRoute}/>);
+        expect(cmp.children().length).toBe(1);
+        expect(cmp.find('WipInfoChip').exists()).toBe(true);
     });
 });
