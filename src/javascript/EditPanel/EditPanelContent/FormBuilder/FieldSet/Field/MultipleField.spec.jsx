@@ -3,7 +3,7 @@ import {shallowWithTheme} from '@jahia/test-framework';
 
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import Text from '~/SelectorTypes/Text/Text';
-import {MultipleFieldCmp} from './MultipleField';
+import {MultipleField} from './MultipleField';
 import {TextAreaField} from '~/SelectorTypes/TextArea/TextArea';
 import {useFormikContext} from 'formik';
 
@@ -57,7 +57,7 @@ describe('Multiple component', () => {
     it('should contains multiple fields', () => {
         defaultProps.inputContext.fieldComponent = props => <Text {...props}/>;
         const cmp = shallowWithTheme(
-            <MultipleFieldCmp {...defaultProps}/>,
+            <MultipleField {...defaultProps}/>,
             {},
             dsGenericTheme
         );
@@ -119,7 +119,7 @@ describe('Multiple component', () => {
 
         defaultProps.inputContext.fieldComponent = props => <TextAreaField {...props}/>;
         return shallowWithTheme(
-            <MultipleFieldCmp {...defaultProps}/>,
+            <MultipleField {...defaultProps}/>,
             {},
             dsGenericTheme
         );
