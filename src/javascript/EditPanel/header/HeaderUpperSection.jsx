@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import {ButtonGroup, Chip, Typography} from '@jahia/moonstone';
 import {DisplayAction, DisplayActions} from '@jahia/ui-extender';
 import {truncate} from '~/utils/helper';
@@ -69,7 +68,7 @@ export const HeaderUpperSection = ({title, isShowPublish}) => {
                         <ContentBreadcrumb path={nodeData.path}/> :
                         <Chip label={nodeTypeDisplayName} color="accent"/>}
                 </div>
-                {mode === 'edit' && <HeaderBadges className={styles.headerChips}/>}
+                <HeaderBadges className={styles.headerChips} mode={mode}/>
             </div>
         </>
     );

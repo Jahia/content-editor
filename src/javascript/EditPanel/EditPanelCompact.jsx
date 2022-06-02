@@ -52,11 +52,8 @@ const EditPanelCompact = ({title, createAnother}) => {
                 </div>
                 <div className={clsx('flexRow', styles.languageSwitcher)}>
                     <EditPanelLanguageSwitcher lang={lang} siteInfo={siteInfo}/>
-                    { mode === 'edit' &&
-                        <>
-                            <div className="flexFluid"/>
-                            <HeaderBadges/>
-                        </>}
+                    <div className="flexFluid"/>
+                    <HeaderBadges mode={mode}/>
                 </div>
             </DialogTitle>
             <DialogContent className="flexCol" id="contenteditor-dialog-content" data-sel-role="form-container">
