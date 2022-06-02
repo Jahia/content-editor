@@ -11,23 +11,22 @@ const DynamicFieldSet = ({fieldset}) => {
     const {values, handleChange} = useFormikContext();
     const activatedFieldSet = (values && values[fieldset.name]);
     return (
-        <article className={styles.fieldsetContainer}>
+        <article>
             <div className={styles.fieldsetTitleContainer}>
-                <Toggle
-                    classes={{
-                        switchBase: styles.toggle,
-                        disabledSwitchBase: styles.toggle,
-                        readOnlySwitchBase: styles.toggle,
-                        focusedSwitchBase: styles.toggle
-                    }}
-                    data-sel-role-dynamic-fieldset={fieldset.name}
-                    id={fieldset.name}
-                    checked={activatedFieldSet}
-                    readOnly={fieldset.readOnly}
-                    onChange={handleChange}
-                />
-
-                <div className={styles.labelContainer}>
+                <div className="flexRow alignCenter">
+                    <Toggle
+                        classes={{
+                            switchBase: styles.toggle,
+                            disabledSwitchBase: styles.toggle,
+                            readOnlySwitchBase: styles.toggle,
+                            focusedSwitchBase: styles.toggle
+                        }}
+                        data-sel-role-dynamic-fieldset={fieldset.name}
+                        id={fieldset.name}
+                        checked={activatedFieldSet}
+                        readOnly={fieldset.readOnly}
+                        onChange={handleChange}
+                    />
                     <Typography component="label"
                                 htmlFor={fieldset.name}
                                 className={styles.fieldSetTitle}
@@ -35,11 +34,12 @@ const DynamicFieldSet = ({fieldset}) => {
                     >
                         {fieldset.displayName}
                     </Typography>
-                    {fieldset.description &&
+                </div>
+                {fieldset.description && (
                     <Typography component="label" className={styles.fieldSetDescription} variant="caption">
                         {fieldset.description}
-                    </Typography>}
-                </div>
+                    </Typography>
+                )}
             </div>
 
             {activatedFieldSet && fieldset.fields.map(field => <FieldContainer key={field.name} field={field}/>)}
@@ -53,21 +53,22 @@ DynamicFieldSet.propTypes = {
 
 const StaticFieldSet = ({fieldset}) => {
     return (
-        <article className={styles.fieldsetContainer}>
+        <article>
             <div className={styles.fieldsetTitleContainer}>
-                <div className={styles.labelContainer}>
+                <div className="flexRow alignCenter">
                     <Typography component="label"
                                 htmlFor={fieldset.name}
-                                className={clsx(styles.fieldSetTitle, styles.staticFieldSetTitle)}
+                                className={styles.fieldSetTitle}
                                 variant="subheading"
                     >
                         {fieldset.displayName}
                     </Typography>
-                    {fieldset.description &&
+                </div>
+                {fieldset.description && (
                     <Typography component="label" className={clsx(styles.fieldSetDescription, styles.staticFieldSetDescription)} variant="caption">
                         {fieldset.description}
-                    </Typography>}
-                </div>
+                    </Typography>
+                )}
             </div>
 
             {fieldset.fields.map(field => <FieldContainer key={field.name} field={field}/>)}

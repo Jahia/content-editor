@@ -1,8 +1,8 @@
 .badges {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 
-  & :global(.moonstone-chip) {
-    margin-left: var(--spacing-small);
-  }
+    & :global(.moonstone-chip) {
+        margin-left: var(--spacing-small);
+    }
 }

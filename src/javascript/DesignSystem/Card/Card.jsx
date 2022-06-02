@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {withStyles} from '@material-ui/core';
-import {Typography} from '@jahia/design-system-kit';
+import {Typography} from '@jahia/moonstone';
 import {CheckBox} from '../CheckBox/';
 
 const styles = theme => ({
@@ -53,6 +53,12 @@ const styles = theme => ({
             textOverflow: 'ellipsis'
         }
     },
+    title: {
+        color: 'var(--color-dark)'
+    },
+    desc: {
+        color: 'var(--color-dark40)'
+    },
     checkBox: {
         height: '24px',
         width: '24px'
@@ -83,15 +89,10 @@ const CardCmp = ({
             </div>
             <div className={classes.infoContainer}>
                 <div className={classes.textContainer}>
-                    <Typography
-                        component="h3"
-                        variant="zeta"
-                        color="alpha"
-                        title={headerText}
-                    >
+                    <Typography component="h3" variant="body" title={headerText} className={classes.title}>
                         {headerText}
                     </Typography>
-                    <Typography variant="omega" color="gamma" title={subhead}>
+                    <Typography variant="caption" title={subhead} className={classes.desc}>
                         {subhead}
                     </Typography>
                 </div>

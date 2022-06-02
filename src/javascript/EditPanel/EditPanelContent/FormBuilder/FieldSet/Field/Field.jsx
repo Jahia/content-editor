@@ -141,8 +141,7 @@ export const Field = ({inputContext, idInput, selectorType, field}) => {
                                     icon={<Language/>}
                                     label={t('content-editor:label.contentEditor.edit.sharedLanguages')}
                                     color="default"
-                                />
-                            }
+                                />}
                         </>
                     )}
                     <div className="flexFluid"/>
@@ -191,7 +190,7 @@ export const Field = ({inputContext, idInput, selectorType, field}) => {
                         </div>
                     )}
                 </div>
-                {inputContext.displayErrors && (
+                {inputContext.displayErrors && shouldDisplayErrors && (
                     <Typography className={styles.errorMessage}
                                 data-sel-error={shouldDisplayErrors && errorName}
                     >

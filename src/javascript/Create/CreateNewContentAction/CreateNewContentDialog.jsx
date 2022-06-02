@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {Dialog, DialogActions, DialogTitle, withStyles} from '@material-ui/core';
 import {Search} from '@material-ui/icons';
-import {Input, Typography} from '@jahia/design-system-kit';
-import {Button} from '@jahia/moonstone';
+import {Input} from '@jahia/design-system-kit';
+import {Button, Typography} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
 import {withApollo} from 'react-apollo';
 import {compose} from '~/utils';
@@ -61,7 +61,7 @@ const CreateNewContentDialogCmp = ({childNodeName, nodeTypes, includeSubTypes, o
     return (
         <Dialog open={open} aria-labelledby="dialog-createNewContent" onExited={onExited} onClose={onClose}>
             <DialogTitle className={classes.dialogTitle} id="dialog-createNewContent">
-                <Typography color="alpha" variant="delta">
+                <Typography variant="heading">
                     {t('content-editor:label.contentEditor.CMMActions.createNewContent.labelModal')}
                 </Typography>
             </DialogTitle>

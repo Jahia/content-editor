@@ -1,45 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core';
-import {Badge, Toggle, Typography} from '@jahia/design-system-kit';
+import {Toggle} from '@jahia/design-system-kit';
 import {ChildrenSectionPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {ManualOrdering} from './ManualOrdering';
 import {useTranslation} from 'react-i18next';
 import {AutomaticOrdering} from './AutomaticOrdering';
 import {Constants} from '~/ContentEditor.constants';
-import {compose} from '~/utils';
-import {Public} from '@material-ui/icons';
+import {Chip, Language, Typography} from '@jahia/moonstone';
 import {getAutomaticOrderingFieldSet} from './AutomaticOrdering/AutomaticOrdering.utils';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import FieldSetsDisplay from '~/EditPanel/EditPanelContent/FormBuilder/FieldSet/FieldSetsDisplay/FieldSetsDisplay';
 import {orderingSectionFieldSetMap} from '../../FormBuilder.fieldSetHelp';
 import {useFormikContext} from 'formik';
+import fieldSetStyles from '../../FieldSet/FieldSet.scss';
+import styles from './ChildrenSection.scss';
+import clsx from 'clsx';
 
-const styles = theme => ({
-    fieldSetTitleContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        margin: `0 ${theme.spacing.unit * 6}px 0 0`,
-        padding: `${theme.spacing.unit * 2}px 0`,
-        borderTop: '1px solid var(--color-gray_light40)'
-    },
-    fieldSetTitle: {
-        width: 'auto',
-        textTransform: 'uppercase'
-    },
-    automaticSwitchContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        marginBottom: `-${theme.spacing.unit}px`
-    },
-    automaticSwitch: {
-        width: 'auto',
-        padding: `${theme.spacing.unit * 2}px 0`,
-        textTransform: 'uppercase'
-    }
-});
-
-export const ChildrenSectionCmp = ({section, classes, canManuallyOrder, canAutomaticallyOrder}) => {
+export const ChildrenSection = ({section, canManuallyOrder, canAutomaticallyOrder}) => {
     const {values, handleChange} = useFormikContext();
     const {t} = useTranslation('content-editor');
     const {sections} = useContentEditorSectionContext();
@@ -50,57 +27,65 @@ export const ChildrenSectionCmp = ({section, classes, canManuallyOrder, canAutom
     return (
         <>
             <article>
-                <div className={classes.fieldSetTitleContainer}>
-                    <Typography component="label" htmlFor={t('content-editor:label.contentEditor.section.listAndOrdering.ordering')} className={classes.fieldSetTitle} color="alpha" variant="zeta">
-                        {t('content-editor:label.contentEditor.section.listAndOrdering.ordering')}
-                    </Typography>
-                    <Badge
-                           badgeContent={t('content-editor:label.contentEditor.edit.sharedLanguages')}
-                           icon={<Public/>}
-                           variant="normal"
-                           color="primary"
-                    />
+                <div className={fieldSetStyles.fieldsetTitleContainer}>
+                    <div className="flexRow alignCenter">
+                        <Typography component="label"
+                                    className={fieldSetStyles.fieldSetTitle}
+                                    variant="subheading"
+                        >
+                            {t('content-editor:label.contentEditor.section.listAndOrdering.ordering')}
+                        </Typography>
+                        <Chip label={t('content-editor:label.contentEditor.edit.sharedLanguages')}
+                              className={styles.badge}
+                              icon={<Language/>}
+                              color="default"
+                        />
+                    </div>
                 </div>
 
-                <div>
-                    {(canAutomaticallyOrder && automaticOrderingFieldSet) &&
+                {(canAutomaticallyOrder && automaticOrderingFieldSet) && (
                     <>
-                        <Typography color="beta" variant="zeta" htmlFor={t('content-editor:label.contentEditor.section.listAndOrdering.description')}>
-                            {t('content-editor:label.contentEditor.section.listAndOrdering.description')}
-                        </Typography>
-
-                        <div className={classes.automaticSwitchContainer}>
-                            <Toggle data-sel-role-automatic-ordering={Constants.ordering.automaticOrdering.mixin}
-                                    id={Constants.ordering.automaticOrdering.mixin}
-                                    checked={isAutomaticOrder}
-                                    readOnly={automaticOrderingFieldSet.readOnly}
-                                    onChange={handleChange}
+                        <div className="flexRow alignCenter">
+                            <Toggle
+                                classes={{
+                                    switchBase: fieldSetStyles.toggle,
+                                    disabledSwitchBase: fieldSetStyles.toggle,
+                                    readOnlySwitchBase: fieldSetStyles.toggle,
+                                    focusedSwitchBase: fieldSetStyles.toggle
+                                }}
+                                data-sel-role-automatic-ordering={Constants.ordering.automaticOrdering.mixin}
+                                id={Constants.ordering.automaticOrdering.mixin}
+                                checked={isAutomaticOrder}
+                                readOnly={automaticOrderingFieldSet.readOnly}
+                                onChange={handleChange}
                             />
-                            <Typography component="label" htmlFor={Constants.ordering.automaticOrdering.mixin} className={classes.automaticSwitch} color="alpha" variant="zeta">
+                            <Typography component="label"
+                                        htmlFor={Constants.ordering.automaticOrdering.mixin}
+                                        className={fieldSetStyles.fieldSetTitle}
+                            >
                                 {t('content-editor:label.contentEditor.section.listAndOrdering.automatic')}
                             </Typography>
                         </div>
-
-                        {!isAutomaticOrder && canManuallyOrder && <ManualOrdering/>}
-                        {isAutomaticOrder && <AutomaticOrdering/>}
-                    </>}
-
-                    {!canAutomaticallyOrder && canManuallyOrder && <ManualOrdering/>}
-                </div>
+                        <Typography component="label"
+                                    variant="caption"
+                                    className={clsx(fieldSetStyles.fieldSetDescription, fieldSetStyles.staticFieldSetDescription)}
+                        >
+                            {t('content-editor:label.contentEditor.section.listAndOrdering.description')}
+                        </Typography>
+                    </>
+                )}
+                {!isAutomaticOrder && canManuallyOrder && <ManualOrdering/>}
+                {isAutomaticOrder && <AutomaticOrdering/>}
             </article>
             <FieldSetsDisplay fieldSets={section.fieldSets} fieldSetMapFcn={orderingSectionFieldSetMap}/>
         </>
     );
 };
 
-ChildrenSectionCmp.propTypes = {
+ChildrenSection.propTypes = {
     section: ChildrenSectionPropTypes.isRequired,
-    classes: PropTypes.object.isRequired,
     canManuallyOrder: PropTypes.bool.isRequired,
     canAutomaticallyOrder: PropTypes.bool.isRequired
 };
 
-export const ChildrenSection = compose(
-    withStyles(styles)
-)(ChildrenSectionCmp);
 ChildrenSection.displayName = 'ChildrenSection';
