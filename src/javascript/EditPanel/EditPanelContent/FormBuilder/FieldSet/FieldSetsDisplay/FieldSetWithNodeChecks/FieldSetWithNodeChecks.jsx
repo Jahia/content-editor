@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {FieldSetWithNodeCheckPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {useNodeChecks} from '@jahia/data-helper';
 import {useContentEditorContext} from '~/ContentEditor.context';
-import {CircularProgress} from '@material-ui/core';
 import {FieldSet} from '~/EditPanel/EditPanelContent/FormBuilder/FieldSet';
 import {Loader} from '@jahia/moonstone';
 
