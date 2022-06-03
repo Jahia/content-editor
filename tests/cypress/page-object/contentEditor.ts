@@ -23,4 +23,12 @@ export class ContentEditor extends BasePage {
         getComponentByRole(Button, 'createButton').click()
         cy.get('[role="alertdialog"]').should('be.visible').should('contain', 'Content successfully created')
     }
+
+    cancel() {
+        getComponentByRole(Button, 'backButton').click()
+    }
+
+    addAnotherContent() {
+        cy.contains('Create another').click()
+    }
 }
