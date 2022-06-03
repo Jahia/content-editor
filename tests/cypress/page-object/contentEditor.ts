@@ -1,5 +1,5 @@
-import {BasePage, Button, Collapsible, getComponentByRole, getComponentBySelector} from '@jahia/cypress'
-import { PageComposer } from './pageComposer'
+import {BasePage, Button, Collapsible, getComponentByRole, getComponentBySelector, Menu} from '@jahia/cypress'
+import {PageComposer} from './pageComposer'
 
 export class ContentEditor extends BasePage {
     static visit(site: string, language: string, path: string): ContentEditor {
@@ -30,5 +30,13 @@ export class ContentEditor extends BasePage {
 
     addAnotherContent() {
         cy.contains('Create another').click()
+    }
+
+    activateWorkInProgressMode(language?: string) {
+        if (language === undefined) {
+            //Activate all properties
+            getComponentByRole(Button, '3dotsMenuAction').click()
+            getComponentBySelector(Menu, '#menuHolder').selectByRole('goToWorkInProgress')
+        }
     }
 }

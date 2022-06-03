@@ -36,6 +36,14 @@ export class PageComposer extends BasePage {
     getContentTypeSelector(): ContentTypeSelector {
         return getComponent(ContentTypeSelector)
     }
+
+    shouldContainWIPOverlay() {
+        cy.iframe('#page-composer-frame').within(() => {
+            cy.iframe('.gwt-Frame').within(() => {
+                cy.get('.workinprogress-overlay').should('contain', 'Work in progress')
+            })
+        })
+    }
 }
 
 export class ContentTypeSelector extends BaseComponent {

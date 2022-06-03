@@ -67,4 +67,24 @@ describe('Create content tests', () => {
         pageComposer.refresh().shouldContain('Cypress Multiple Content Test 1')
         pageComposer.shouldContain('Cypress Multiple Content Test 2')
     })
+
+    it('Can create work in progress content', { retries: 0 }, function () {
+        const pageComposer = contentEditor.getPageComposer()
+        pageComposer
+            .openCreateContent()
+            .getContentTypeSelector()
+            .searchForContentType('Rich Text')
+            .selectContentType('Rich text')
+            .create()
+        cy.get('#contenteditor-dialog-title').should('be.visible').and('contain', 'Create Rich text')
+        // Activate Work in progress
+        contentEditor.activateWorkInProgressMode()
+        const contentSection = contentEditor.openSection('Content')
+        contentEditor.openSection('Options').get().find('input[type="text"]').clear().type('cypress-wip-test')
+        contentSection.expand().get().find('.cke_button__source').click()
+        contentSection.get().find('textarea').type('Cypress Work In Progress Test')
+        contentEditor.save()
+        pageComposer.refresh().shouldContain('Cypress Work In Progress Test')
+        pageComposer.shouldContainWIPOverlay()
+    })
 })
