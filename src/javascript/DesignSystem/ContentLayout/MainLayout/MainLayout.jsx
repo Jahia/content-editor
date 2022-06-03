@@ -1,12 +1,12 @@
 import React from 'react';
-import classnames from 'clsx';
+import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import styles from './MainLayout.scss';
 
 export const MainLayout = ({header, children}) => (
-    <main className={classnames(styles.root, 'flexCol')}>
+    <main className={clsx(styles.root, 'flexCol')}>
         { header && header}
-        <div className={classnames(styles.content, 'flexCol')}>
+        <div className={clsx(styles.content, 'flexCol')}>
             {children}
         </div>
     </main>

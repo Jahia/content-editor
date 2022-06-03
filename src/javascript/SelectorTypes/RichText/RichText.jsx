@@ -3,12 +3,12 @@ import CKEditor from 'ckeditor4-react';
 import * as PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {useQuery} from '@apollo/react-hooks';
-import {ProgressOverlay} from '@jahia/react-material';
 import {getCKEditorConfigurationPath} from './CKEditorConfiguration.gql-queries';
 import {ContentEditorContext} from '~/ContentEditor.context';
 import {PickerDialog} from '~/SelectorTypes/Picker/PickerDialog';
 import {useTranslation} from 'react-i18next';
 import {buildPickerContext, fillCKEditorPicker} from './RichText.utils';
+import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 
 if (window.CKEDITOR) {
     window.CKEDITOR.focusManager._.blurDelay = 0;
@@ -47,7 +47,7 @@ export const RichTextCmp = ({field, id, value, onChange, onBlur}) => {
     }
 
     if (loading || !data || !data.forms) {
-        return <ProgressOverlay/>;
+        return <LoaderOverlay/>;
     }
 
     const toolbar = loadOption(field.selectorOptions, 'ckeditor.toolbar');

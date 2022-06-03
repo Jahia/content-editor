@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {ProgressOverlay, useNotifications} from '@jahia/react-material';
+import {useNotifications} from '@jahia/react-material';
 import {useFormDefinition} from '~/FormDefinitions';
 import {useSiteInfo} from '@jahia/data-helper';
 import * as PropTypes from 'prop-types';
@@ -8,6 +8,7 @@ import {useTranslation} from 'react-i18next';
 import ApolloCacheFlushOnGWTSave from '~/Edit/engineTabs/ApolloCacheFlushOnGWTSave';
 import {ContentEditorSectionContextProvider} from '~/ContentEditorSection/ContentEditorSection.context';
 import {useSelector} from 'react-redux';
+import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 
 export const ContentEditorContext = React.createContext({});
 
@@ -76,7 +77,7 @@ export const ContentEditorDataContextProvider = ({formQuery, formDataAdapter, ch
     }
 
     if (loading || siteInfoResult.loading) {
-        return <ProgressOverlay/>;
+        return <LoaderOverlay/>;
     }
 
     // Don't use full page rendering for folders.

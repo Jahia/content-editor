@@ -1463,10 +1463,10 @@
     mdi-material-ui "^5.10.0"
     recompose "^0.30.0"
 
-"@jahia/moonstone@^2.3.0":
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/@jahia/moonstone/-/moonstone-2.3.1.tgz#745b1924d047ed967a069db8c79746dfeec5bf8b"
-  integrity sha512-2TfuBY0xfezd40LBG7miASiT8DdxGUEGN/3I24wR+b9xWVcsj5xUKs2hfiCyGhYoVe1L6C9J8PYlTK2Tyl1BaA==
+"@jahia/moonstone@^2.3.2":
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/@jahia/moonstone/-/moonstone-2.3.2.tgz#61c44842f23cc123b70b9160b59a528969238d7a"
+  integrity sha512-nlOg4W8gNYzinj/l47aElA74FHtPFusoIlp6KNIvNBAEaMdo2Hlqz1nE9bRMtDpP7cs5tAJNxHEUyfPhUylRWw==
   dependencies:
     "@babel/runtime" "^7.12.5"
     clsx "^1.1.1"

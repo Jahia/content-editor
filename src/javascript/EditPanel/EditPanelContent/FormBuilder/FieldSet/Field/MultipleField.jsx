@@ -1,27 +1,12 @@
 import {Button, Close} from '@jahia/moonstone';
-import {withStyles} from '@material-ui/core';
 import React from 'react';
 import * as PropTypes from 'prop-types';
-import {compose} from '~/utils';
 import {useTranslation} from 'react-i18next';
 import {FastField, useFormikContext} from 'formik';
 import {FieldPropTypes} from '~/FormDefinitions';
+import styles from './MultipleField.scss';
 
-const styles = theme => {
-    return {
-        fieldComponentContainer: {
-            display: 'flex',
-            marginBottom: theme.spacing.unit,
-            alignItems: 'center'
-        },
-        addButton: {
-            margin: `${theme.spacing.unit * 2}px 0`,
-            textTransform: 'uppercase'
-        }
-    };
-};
-
-export const MultipleFieldCmp = ({classes, editorContext, inputContext, field, onChange, onBlur}) => {
+export const MultipleField = ({editorContext, inputContext, field, onChange, onBlur}) => {
     const {values} = useFormikContext();
     const {t} = useTranslation('content-editor');
 
@@ -55,7 +40,7 @@ export const MultipleFieldCmp = ({classes, editorContext, inputContext, field, o
 
                     return (
                         <div key={name}
-                             className={classes.fieldComponentContainer}
+                             className={styles.fieldComponentContainer}
                              data-sel-content-editor-multiple-generic-field={name}
                              data-sel-content-editor-field-readonly={field.readOnly}
                         >
@@ -85,7 +70,7 @@ export const MultipleFieldCmp = ({classes, editorContext, inputContext, field, o
             )}
 
             {!field.readOnly &&
-            <Button className={classes.addButton}
+            <Button className={styles.addButton}
                     data-sel-action="addField"
                     variant="outlined"
                     size="big"
@@ -96,17 +81,12 @@ export const MultipleFieldCmp = ({classes, editorContext, inputContext, field, o
     );
 };
 
-MultipleFieldCmp.propTypes = {
+MultipleField.propTypes = {
     inputContext: PropTypes.object.isRequired,
     editorContext: PropTypes.object.isRequired,
     field: FieldPropTypes.isRequired,
-    classes: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
     onBlur: PropTypes.func.isRequired
 };
-
-export const MultipleField = compose(
-    withStyles(styles)
-)(MultipleFieldCmp);
 
 MultipleField.displayName = 'MultipleField';

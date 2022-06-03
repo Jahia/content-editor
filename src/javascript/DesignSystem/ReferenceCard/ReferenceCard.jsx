@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'clsx';
+import clsx from 'clsx';
 import {Typography} from '@jahia/design-system-kit';
 import {withStyles} from '@material-ui/core';
 import {HandleDrag} from '@jahia/moonstone';
@@ -122,7 +122,7 @@ const ReferenceCardCmp = ({
                 </div>}
 
                 <article
-                    className={classnames(
+                    className={clsx(
                         classes.fieldContainer,
                         (isReadOnly ? classes.fieldContainerReadOnly : ''),
                         (isDraggable ? classes.draggableIcon : '')

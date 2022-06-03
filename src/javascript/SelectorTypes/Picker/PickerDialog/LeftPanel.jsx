@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
-import Drawer from '@material-ui/core/Drawer';
+import {Drawer} from '@material-ui/core';
 import {NodeTrees, PickerTreeViewMaterial} from '@jahia/react-material';
 import {Picker} from '@jahia/data-helper';
 import {Dropdown} from '@jahia/moonstone';
@@ -84,7 +84,7 @@ export const LeftPanel = ({
                             <PickerTreeViewMaterial {...others}
                                                     dataCmRole={dataCmRole}
                                                     rootLabel={rootLabel}
-                                                    classes={{listItem: style.listItem, listItemSelected: style.listItemSelected}}
+                                                    classes={{listItem: style.listItem, listItemSelected: style.listItemSelected, loading: style.loading}}
                         />
                     )}
                     </Picker>

@@ -2,21 +2,13 @@ import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 
 import {DatePicker} from '../DatePicker';
-import {withStyles} from '@material-ui/core/styles';
 import {Input} from '@jahia/design-system-kit';
 
 import dayjs from '../../date.config';
 
-import {IconButton} from '@material-ui/core';
-import {DateRange} from '@material-ui/icons';
-import Popover from '@material-ui/core/Popover/Popover';
+import {Popover} from '@material-ui/core';
 import NumberFormat from 'react-number-format';
-
-const styles = theme => ({
-    datePickerIcon: {
-        color: theme.palette.font.gamma + ' !important'
-    }
-});
+import {Button, Calendar} from '@jahia/moonstone';
 
 const datetimeFormat = {
     date: 'L',
@@ -50,10 +42,9 @@ const CustomInput = ({value, ...others}) => {
     );
 };
 
-const DatePickerInputCmp = ({
+export const DatePickerInput = ({
     variant,
     lang,
-    classes,
     dayPickerProps,
     onChange,
     onBlur,
@@ -105,14 +96,11 @@ const DatePickerInputCmp = ({
     };
 
     const InteractiveVariant = (
-        <IconButton aria-label="Open date picker"
-                    classes={{
-                        root: classes.datePickerIcon
-                    }}
-                    onClick={handleOpenPicker}
-        >
-            <DateRange/>
-        </IconButton>
+        <Button aria-label="Open date picker"
+                variant="ghost"
+                icon={<Calendar/>}
+                onClick={handleOpenPicker}
+        />
     );
 
     return (
@@ -174,7 +162,7 @@ CustomInput.defaultProps = {
     value: ''
 };
 
-DatePickerInputCmp.defaultProps = {
+DatePickerInput.defaultProps = {
     dayPickerProps: {},
     variant: 'date',
     onChange: () => {},
@@ -185,8 +173,7 @@ DatePickerInputCmp.defaultProps = {
     displayDateMask: null
 };
 
-DatePickerInputCmp.propTypes = {
-    classes: PropTypes.object.isRequired,
+DatePickerInput.propTypes = {
     dayPickerProps: PropTypes.object,
     lang: PropTypes.oneOf(['fr', 'en', 'de']).isRequired,
     variant: PropTypes.oneOf(['date', 'datetime']),
@@ -197,7 +184,5 @@ DatePickerInputCmp.propTypes = {
     displayDateFormat: PropTypes.string,
     displayDateMask: PropTypes.string
 };
-
-export const DatePickerInput = withStyles(styles)(DatePickerInputCmp);
 
 DatePickerInput.displayName = 'DatePickerInput';

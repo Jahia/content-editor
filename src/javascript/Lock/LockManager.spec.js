@@ -8,7 +8,7 @@ jest.mock('@apollo/react-hooks', () => {
     };
 });
 
-describe('PublicationInfo.progress', () => {
+describe('LockManager', () => {
     it('Should render nothing', () => {
         const cmp = shallow(<LockManager path="/digitall"/>);
         expect(cmp.debug()).toBe('');

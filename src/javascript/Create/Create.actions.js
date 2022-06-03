@@ -1,8 +1,7 @@
 import React from 'react';
-import {Save} from '@material-ui/icons';
-import {AddCircle} from '@jahia/moonstone';
+import {AddCircle, Save} from '@jahia/moonstone';
 
-import createNewContentAction from './CreateNewContentAction/createNewContent.action';
+import createNewContentAction from './CreateNewContentAction/CreateNewContent.action';
 import createButtonAction from './CreateForm/create.action';
 
 export const registerCreateActions = registry => {

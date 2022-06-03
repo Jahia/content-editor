@@ -1,0 +1,28 @@
+.pdfContainer {
+    flex: 1 1 0;
+    width: 100%;
+    overflow: auto;
+
+    & canvas {
+        display: block;
+        margin: 0 auto;
+        padding-top: var(--spacing-medium);
+        padding-bottom: var(--spacing-big);
+    }
+
+    &.fullScreen {
+        max-width: 90%;
+    }
+}
+
+.controlsContainer.controlsContainer {
+    width: 100%;
+    height: var(--spacing-big);
+    padding: var(--spacing-small);
+
+    background: var(--color-light);
+}
+
+.scale {
+    top: 38px !important;
+}

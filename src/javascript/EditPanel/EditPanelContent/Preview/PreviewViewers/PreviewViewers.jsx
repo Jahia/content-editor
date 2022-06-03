@@ -17,7 +17,7 @@ export const PreviewViewer = ({data, previewContext, onContentNotFound}) => {
         if (isPDF(data.nodeByPath.path)) {
             return (
                 <div className={classes.previewContainer} data-sel-role="preview-type-pdf">
-                    <PDFViewer file={file} fullScreen={false}/>
+                    <PDFViewer file={file} isFullScreen={false}/>
                 </div>
             );
         }

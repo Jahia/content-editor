@@ -1,61 +1,47 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-
-import {withStyles} from '@material-ui/core';
-import {Toggle, Typography} from '@jahia/design-system-kit';
-import {compose} from '~/utils';
+import {Toggle} from '@jahia/design-system-kit';
+import {Typography} from '@jahia/moonstone';
 import {FieldSetPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {FieldContainer} from '~/EditPanel/EditPanelContent/FormBuilder/FieldSet/Field';
 import {useTranslation} from 'react-i18next';
 import {useFormikContext} from 'formik';
+import styles from '../../../FieldSet/FieldSet.scss';
 
-let styles = theme => ({
-    fieldsetContainer: {},
-    fieldSetTitle: {
-        width: 'auto',
-        textTransform: 'uppercase',
-        padding: `${theme.spacing.unit * 2}px 0`
-    },
-    fieldsetTitleContainer: {
-        borderTop: `1px solid ${theme.palette.ui.omega}`,
-        display: 'flex',
-        flexDirection: 'column',
-        margin: `0 ${theme.spacing.unit * 6}px 0 0`
-    },
-    fieldsetControlContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        margin: `0 ${theme.spacing.unit * 6}px 0 0`
-    }
-});
-
-const ListSizeLimitFieldSet = ({fieldset, classes}) => {
+export const ListSizeLimitFieldSet = ({fieldset}) => {
     const {values, handleChange} = useFormikContext();
     const {t} = useTranslation('content-editor');
     const isDynamicFieldSet = fieldset.dynamic;
     const activatedFieldSet = (values && values[fieldset.name]) || !isDynamicFieldSet;
 
     return (
-        <article className={classes.fieldsetContainer}>
-            <div className={classes.fieldsetTitleContainer}>
-                <Typography component="label" htmlFor={t('content-editor:label.contentEditor.section.listSizeLimit.name')} className={classes.fieldSetTitle} color="alpha" variant="zeta">
-                    {t('content-editor:label.contentEditor.section.listSizeLimit.name')}
-                </Typography>
-                <Typography color="beta" variant="zeta" htmlFor={t('content-editor:label.contentEditor.section.listSizeLimit.description')}>
+        <article>
+            <div className={styles.fieldsetTitleContainer}>
+                <div className="flexRow alignCenter">
+                    {isDynamicFieldSet && (
+                        <Toggle
+                            classes={{
+                                switchBase: styles.toggle,
+                                disabledSwitchBase: styles.toggle,
+                                readOnlySwitchBase: styles.toggle,
+                                focusedSwitchBase: styles.toggle
+                            }}
+                            data-sel-role-dynamic-fieldset={fieldset.name}
+                            id={fieldset.name}
+                            checked={activatedFieldSet}
+                            readOnly={fieldset.readOnly}
+                            onChange={handleChange}
+                        />
+                    )}
+                    <Typography component="label"
+                                htmlFor={fieldset.name}
+                                className={styles.fieldSetTitle}
+                                variant="subheading"
+                    >
+                        {t('content-editor:label.contentEditor.section.listSizeLimit.name')}
+                    </Typography>
+                </div>
+                <Typography component="label" className={styles.fieldSetDescription} variant="caption">
                     {t('content-editor:label.contentEditor.section.listSizeLimit.description')}
-                </Typography>
-            </div>
-            <div className={classes.fieldsetControlContainer}>
-                {isDynamicFieldSet &&
-                <Toggle data-sel-role-dynamic-fieldset={fieldset.name}
-                        id={fieldset.name}
-                        checked={activatedFieldSet}
-                        readOnly={fieldset.readOnly}
-                        onChange={handleChange}
-                />}
-
-                <Typography component="label" htmlFor={fieldset.name} className={classes.fieldSetTitle} color="alpha" variant="zeta">
-                    {fieldset.displayName}
                 </Typography>
             </div>
 
@@ -67,12 +53,7 @@ const ListSizeLimitFieldSet = ({fieldset, classes}) => {
 };
 
 ListSizeLimitFieldSet.propTypes = {
-    fieldset: FieldSetPropTypes.isRequired,
-    classes: PropTypes.object.isRequired
+    fieldset: FieldSetPropTypes.isRequired
 };
 
-export const FieldSet = compose(
-    withStyles(styles)
-)(ListSizeLimitFieldSet);
-
-FieldSet.displayName = 'ListSizeLimitFieldSet';
+ListSizeLimitFieldSet.displayName = 'ListSizeLimitFieldSet';

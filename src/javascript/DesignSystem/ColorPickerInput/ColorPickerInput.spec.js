@@ -18,10 +18,10 @@ describe('ColorPickerInput', () => {
             dsGenericTheme
         );
 
-        expect(cmp.dive().find('WithStyles(Popover)').props().open).toBe(false);
-        expect(cmp.dive().find('Input').props().value).toBe('#fff');
-        expect(cmp.dive().find('Input').props().readOnly).toBe(false);
-        cmp.simulate('change', '#000');
+        expect(cmp.find('WithStyles(Popover)').props().open).toBe(false);
+        expect(cmp.find('Input').props().value).toBe('#fff');
+        expect(cmp.find('Input').props().readOnly).toBe(false);
+        cmp.find('Input').simulate('change', {target: {name: 'width', value: '#000'}});
         expect(props.onChange.mock.calls.length).toBe(1);
         expect(props.onChange).toHaveBeenCalledWith('#000');
     });
@@ -33,6 +33,6 @@ describe('ColorPickerInput', () => {
             dsGenericTheme
         );
 
-        expect(cmp.dive().find('Input').props().readOnly).toBe(true);
+        expect(cmp.find('Input').props().readOnly).toBe(true);
     });
 });

@@ -19,7 +19,7 @@ describe('DatePickerInput', () => {
             dsGenericTheme
         );
 
-        expect(cmp.dive().find('WithStyles(Popover)').props().open).toBe(false);
+        expect(cmp.find('WithStyles(Popover)').props().open).toBe(false);
 
         // Simulate click on date picker icon
         // expect(cmp.dive().find('WithStyles(Popover)').props().open).toBe(true);

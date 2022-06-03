@@ -1,6 +1,6 @@
 import Tag from './Tag';
 import Text from './Text';
-import TextArea from './TextArea';
+import TextArea from './TextAreaField';
 import RichText from './RichText';
 import ChoiceList from './ChoiceList';
 import registerChoiceListActions from './ChoiceList/ChoiceList.actions';

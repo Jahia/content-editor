@@ -1,9 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import Checkbox from '@material-ui/core/Checkbox';
+import {Checkbox, TableCell, TableRow, withStyles} from '@material-ui/core';
 
 const styles = theme => ({
     nameColumn: {

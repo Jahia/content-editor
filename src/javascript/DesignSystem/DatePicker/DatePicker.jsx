@@ -5,7 +5,7 @@ import DayPicker from 'react-day-picker';
 import {TimeSelector} from './TimeSelector/TimeSelector';
 import {YearMonthSelector} from './YearMonthSelector/YearMonthSelector';
 import {style} from './DatePicker.style';
-import {withStyles} from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core';
 
 import frLocale from 'dayjs/locale/fr';
 import deLocale from 'dayjs/locale/de';

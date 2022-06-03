@@ -4,9 +4,9 @@ import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {DropdownTreeSelect} from '~/DesignSystem/DropdownTreeSelect';
 import {useQuery} from '@apollo/react-hooks';
 import {GetCategories} from './category.gql-queries';
-import {ProgressOverlay} from '@jahia/react-material';
 import {useTranslation} from 'react-i18next';
 import {adaptToCategoryTree} from './category.adapter';
+import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 
 const Category = ({field, value, id, editorContext, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
@@ -31,7 +31,7 @@ const Category = ({field, value, id, editorContext, onChange, onBlur}) => {
     }
 
     if (loading) {
-        return <ProgressOverlay/>;
+        return <LoaderOverlay/>;
     }
 
     const tree = adaptToCategoryTree({

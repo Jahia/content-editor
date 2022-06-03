@@ -19,24 +19,12 @@ describe('Card', () => {
         };
     });
 
-    it('should display the image name', () => {
-        const cmp = shallowWithTheme(
-            <Card {...defaultProps}/>,
-            {},
-            dsGenericTheme
-        )
-            .dive();
-
-        expect(cmp.debug()).toContain(defaultProps.image.name);
-    });
-
     it('should display the image src', () => {
         const cmp = shallowWithTheme(
             <Card {...defaultProps}/>,
             {},
             dsGenericTheme
-        )
-            .dive();
+        ).dive();
 
         expect(cmp.debug()).toContain(defaultProps.image.src);
     });
@@ -46,8 +34,7 @@ describe('Card', () => {
             <Card {...defaultProps}/>,
             {},
             dsGenericTheme
-        )
-            .dive();
+        ).dive();
 
         expect(cmp.debug()).toContain(defaultProps.image.alt);
     });
@@ -57,8 +44,7 @@ describe('Card', () => {
             <Card {...defaultProps}/>,
             {},
             dsGenericTheme
-        )
-            .dive();
+        ).dive();
 
         expect(cmp.debug()).toContain(defaultProps.headerText);
     });
@@ -68,8 +54,7 @@ describe('Card', () => {
             <Card {...defaultProps}/>,
             {},
             dsGenericTheme
-        )
-            .dive();
+        ).dive();
 
         expect(cmp.debug()).toContain(defaultProps.subhead);
     });
@@ -79,8 +64,7 @@ describe('Card', () => {
             <Card {...defaultProps}/>,
             {},
             dsGenericTheme
-        )
-            .dive();
+        ).dive();
 
         cmp.simulate('doubleClick');
 
@@ -92,8 +76,7 @@ describe('Card', () => {
             <Card {...defaultProps}/>,
             {},
             dsGenericTheme
-        )
-            .dive();
+        ).dive();
 
         cmp.simulate('click');
 

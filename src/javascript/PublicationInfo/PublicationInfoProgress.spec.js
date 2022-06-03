@@ -1,4 +1,4 @@
-import {PublicationInfoProgress} from './PublicationInfo.progress';
+import {PublicationInfoProgress} from './PublicationInfoProgress';
 import React from 'react';
 import {shallow} from '@jahia/test-framework';
 
@@ -14,14 +14,14 @@ jest.mock('./PublicationInfo.context', () => {
     };
 });
 
-describe('PublicationInfo.progress', () => {
+describe('PublicationInfoProgress', () => {
     it('Should display progress when publication info is polling', () => {
-        let wrapper = shallow(<PublicationInfoProgress classes={{}}/>);
+        let wrapper = shallow(<PublicationInfoProgress/>);
         expect(wrapper.debug()).toContain('LinearProgress');
     });
 
     it('Should not display progress when publication info is not polling', () => {
-        let wrapper = shallow(<PublicationInfoProgress classes={{}}/>);
+        let wrapper = shallow(<PublicationInfoProgress/>);
         expect(wrapper.debug()).not.toContain('LinearProgress');
     });
 });

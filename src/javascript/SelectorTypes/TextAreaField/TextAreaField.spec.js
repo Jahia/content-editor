@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from '@jahia/test-framework';
 
-import {TextAreaField} from './TextArea';
+import {TextAreaField} from './TextAreaField';
 
 describe('TextArea component', () => {
     let props;

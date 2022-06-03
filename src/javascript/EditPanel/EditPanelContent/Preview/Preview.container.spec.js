@@ -3,7 +3,7 @@ import React, {useEffect} from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {PreviewContainer} from './Preview.container';
-import {useContentEditorContext, useContentEditorConfigContext} from '~/ContentEditor.context';
+import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import {useFormikContext} from 'formik';
 
 jest.mock('formik');
@@ -48,7 +48,7 @@ describe('Preview Container', () => {
     it('should not display preview on first render', () => {
         const cmp = shallowWithTheme(<PreviewContainer {...defaultProps}/>, {}, dsGenericTheme);
         expect(cmp.find('Memo()').exists()).toBe(false);
-        expect(cmp.find('WithStyles(ProgressOverlayCmp)').exists()).toBe(true);
+        expect(cmp.find('LoaderOverlay').exists()).toBe(true);
     });
 
     it('should not display preview on folder', () => {
@@ -58,7 +58,7 @@ describe('Preview Container', () => {
         jest.runAllTimers();
         cmp.setProps();
         expect(cmp.find('Memo()').exists()).toBe(false);
-        expect(cmp.find('WithStyles(ProgressOverlayCmp)').exists()).toBe(false);
+        expect(cmp.find('LoaderOverlay').exists()).toBe(false);
     });
 
     it('should display preview after a timeout', () => {
@@ -67,7 +67,7 @@ describe('Preview Container', () => {
         jest.runAllTimers();
         cmp.setProps();
         expect(cmp.find('Memo()').exists()).toBe(true);
-        expect(cmp.find('WithStyles(ProgressOverlayCmp)').exists()).toBe(false);
+        expect(cmp.find('LoaderOverlay').exists()).toBe(false);
     });
 
     it('should display the badge preview update on save when content is updated', () => {

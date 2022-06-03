@@ -3,7 +3,7 @@ import {shallow} from '@jahia/test-framework';
 import publishAction from './publish.action';
 import {Constants} from '~/ContentEditor.constants';
 import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
-import {useContentEditorContext, useContentEditorConfigContext} from '../../ContentEditor.context';
+import {useContentEditorConfigContext, useContentEditorContext} from '../../ContentEditor.context';
 import {useFormikContext} from 'formik';
 
 jest.mock('~/actions/redux.action', () => {

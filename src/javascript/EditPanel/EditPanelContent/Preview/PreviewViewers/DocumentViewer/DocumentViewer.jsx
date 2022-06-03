@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Loadable from 'react-loadable';
-import {CircularProgress, withStyles} from '@material-ui/core';
+import {withStyles} from '@material-ui/core';
 import {FileIcon} from '@jahia/icons';
 import classNames from 'classnames';
+import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 
 const styles = theme => ({
     container: {
@@ -43,11 +43,7 @@ const styles = theme => ({
     }
 });
 
-// eslint-disable-next-line
-const FileViewer = Loadable({
-    loader: () => import(/* webpackChunkName: "reactFileViewer" */ 'react-file-viewer'),
-    loading: () => <CircularProgress/>
-});
+const FileViewer = React.lazy(() => import(/* webpackChunkName: "reactFileViewer" */ 'react-file-viewer'));
 
 export class DocumentViewer extends React.Component {
     constructor(props) {
@@ -60,7 +56,6 @@ export class DocumentViewer extends React.Component {
         switch (type) {
             case 'docx':
             case 'doc':
-                return <FileViewer fileType={type} filePath={file}/>;
             case 'avi':
             case 'mp4':
             case 'video':
@@ -75,9 +70,11 @@ export class DocumentViewer extends React.Component {
     render() {
         let {classes, fullScreen} = this.props;
         return (
-            <div className={classNames(classes.container, fullScreen && classes.fullScreen)}>
-                {this.renderViewer()}
-            </div>
+            <React.Suspense fallback={<LoaderOverlay/>}>
+                <div className={classNames(classes.container, fullScreen && classes.fullScreen)}>
+                    {this.renderViewer()}
+                </div>
+            </React.Suspense>
         );
     }
 }

@@ -6,7 +6,7 @@ import {boolean, text, withKnobs} from '@storybook/addon-knobs';
 import {ReferenceCard} from './ReferenceCard';
 import doc from './ReferenceCard.md';
 import {DSProvider} from '@jahia/design-system-kit';
-import {InsertDriveFile} from '@material-ui/icons';
+import {File} from '@jahia/moonstone';
 
 storiesOf('ReferenceCard', module)
     .addDecorator(withKnobs)
@@ -17,7 +17,7 @@ storiesOf('ReferenceCard', module)
                 <ReferenceCard
                     isReadOnly={boolean('readOnly', false)}
                     emptyLabel={text('referenceCardLabel', 'add image')}
-                    emptyIcon={<InsertDriveFile/>}
+                    emptyIcon={<File/>}
                 />
             </DSProvider>
         ),

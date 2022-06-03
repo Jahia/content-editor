@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {ProgressOverlay, useNotifications} from '@jahia/react-material';
+import {useNotifications} from '@jahia/react-material';
 import {useTranslation} from 'react-i18next';
 import {ImageList} from '~/DesignSystem/ImageList';
 import {encodeJCRPath} from '~/EditPanel/EditPanel.utils';
@@ -8,6 +8,7 @@ import {registry} from '@jahia/ui-extender';
 import {useDialogPickerContent} from '../useDialogPickerContent';
 import {CountDisplayer} from '../CountDisplayer';
 import {notifyAccessDenied} from '../ErrorHandler';
+import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 
 export const Thumbnail = ({
     setSelectedItem,
@@ -58,7 +59,7 @@ export const Thumbnail = ({
     }
 
     if (loading || !nodes) {
-        return <ProgressOverlay/>;
+        return <LoaderOverlay/>;
     }
 
     const images = error ?

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Picker} from '../PickerContainer';
-import {InsertDriveFile} from '@material-ui/icons';
+import {File} from '@jahia/moonstone';
 import {encodeJCRPath} from '~/EditPanel/EditPanel.utils';
 import {useQuery} from '@apollo/react-hooks';
 import {ContentPickerFilledQuery} from './ContentPicker.gql-queries';
@@ -38,7 +38,7 @@ export const ContentPickerSelectorType = {
     pickerInput: {
         emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.addContent',
         notFoundLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.notFoundContent',
-        emptyIcon: <InsertDriveFile/>,
+        emptyIcon: <File/>,
         usePickerInputData
     },
     PickerDialog: {

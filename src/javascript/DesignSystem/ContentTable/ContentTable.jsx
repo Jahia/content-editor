@@ -1,8 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
+import {Table, TableBody, withStyles} from '@material-ui/core';
 import {ContentTableHeader} from './ContentTableHeader';
 import {EmptyTable} from './EmptyTable';
 import InfiniteScroll from 'react-infinite-scroller';

@@ -1,4 +1,4 @@
-import {PublicationInfoBadge} from './PublicationInfo.badge';
+import {PublicationInfoBadge} from './PublicationInfoBadge';
 import React from 'react';
 import {shallow} from '@jahia/test-framework';
 import PublicationStatus from './PublicationInfo.status';
@@ -55,7 +55,7 @@ jest.mock('./PublicationInfo.context', () => {
     };
 });
 
-describe('PublicationInfo.badge', () => {
+describe('PublicationInfoBadge', () => {
     it('Should display "publishing" badge when publication info is polling', () => {
         let wrapper = shallow(<PublicationInfoBadge classes={{}}/>);
 

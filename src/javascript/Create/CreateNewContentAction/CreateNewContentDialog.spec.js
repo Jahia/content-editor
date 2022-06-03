@@ -6,15 +6,13 @@ import {dsGenericTheme} from '@jahia/design-system-kit';
 import {CreateNewContentDialog} from './CreateNewContentDialog';
 import {setResponseMock} from '@apollo/react-hooks';
 
-jest.mock('react-apollo', () => ({
-    withApollo: Cmp => props => (<Cmp {...props} client={{}}/>),
-    compose: jest.requireActual('react-apollo').compose
-}));
+jest.mock('@jahia/moonstone');
 
 jest.mock('@apollo/react-hooks', () => {
     let responsemock;
     return {
         useQuery: () => responsemock,
+        useApolloClient: () => {},
         setResponseMock: m => {
             responsemock = m;
         }
@@ -75,7 +73,7 @@ describe('CreateNewContentDialog', () => {
             <CreateNewContentDialog {...props} open/>,
             {},
             dsGenericTheme
-        ).dive().dive();
+        );
 
         expect(cmp.find('WithStyles(Dialog)').props().open).toBe(true);
     });
@@ -95,7 +93,7 @@ describe('CreateNewContentDialog', () => {
                                     }}/>,
             {},
             dsGenericTheme
-        ).dive().dive();
+        );
 
         cmp.find('Button').at(0).simulate('click');
 
@@ -109,7 +107,7 @@ describe('CreateNewContentDialog', () => {
             <CreateNewContentDialog open {...props}/>,
             {},
             dsGenericTheme
-        ).dive().dive();
+        );
 
         cmp.find('Button').at(1).simulate('click');
 
@@ -123,7 +121,7 @@ describe('CreateNewContentDialog', () => {
             <CreateNewContentDialog open {...props}/>,
             {},
             dsGenericTheme
-        ).dive().dive()).toThrowError('oops');
+        )).toThrowError('oops');
     });
 
     it('should filter properly with id hichem', () => {
@@ -132,12 +130,12 @@ describe('CreateNewContentDialog', () => {
             <CreateNewContentDialog open {...props}/>,
             {},
             dsGenericTheme
-        ).dive().dive();
+        );
 
         cmp.find('Input').simulate('change', {target: {value: 'Rom3'}});
 
-        expect(cmp.find('TreeView').props().tree[0].id).toBe('catB');
-        expect(cmp.find('TreeView').props().tree.length).toBe(1);
+        expect(cmp.find('TreeView').props().data[0].id).toBe('catB');
+        expect(cmp.find('TreeView').props().data.length).toBe(1);
     });
 
     it('should filter properly with id rom3 with no case sensitive', () => {
@@ -146,12 +144,12 @@ describe('CreateNewContentDialog', () => {
             <CreateNewContentDialog open {...props}/>,
             {},
             dsGenericTheme
-        ).dive().dive();
+        );
 
         cmp.find('Input').simulate('change', {target: {value: 'rom3'}});
 
-        expect(cmp.find('TreeView').props().tree[0].id).toBe('catB');
-        expect(cmp.find('TreeView').props().tree.length).toBe(1);
+        expect(cmp.find('TreeView').props().data[0].id).toBe('catB');
+        expect(cmp.find('TreeView').props().data.length).toBe(1);
     });
 
     it('should filter properly with n with no case sensitive', () => {
@@ -160,19 +158,19 @@ describe('CreateNewContentDialog', () => {
             <CreateNewContentDialog open {...props}/>,
             {},
             dsGenericTheme
-        ).dive().dive();
+        );
 
         cmp.find('Input').simulate('change', {target: {value: 'n'}});
 
-        expect(cmp.find('TreeView').props().tree.length).toBe(2);
+        expect(cmp.find('TreeView').props().data.length).toBe(2);
 
-        expect(cmp.find('TreeView').props().tree[0].children.length).toBe(3);
-        expect(cmp.find('TreeView').props().tree[0].children[0].id).toBe('dan1');
-        expect(cmp.find('TreeView').props().tree[0].children[1].id).toBe('dan2');
-        expect(cmp.find('TreeView').props().tree[0].children[2].id).toBe('dan3');
+        expect(cmp.find('TreeView').props().data[0].children.length).toBe(3);
+        expect(cmp.find('TreeView').props().data[0].children[0].id).toBe('dan1');
+        expect(cmp.find('TreeView').props().data[0].children[1].id).toBe('dan2');
+        expect(cmp.find('TreeView').props().data[0].children[2].id).toBe('dan3');
 
-        expect(cmp.find('TreeView').props().tree[1].children.length).toBe(2);
-        expect(cmp.find('TreeView').props().tree[1].children[0].id).toBe('rom1');
-        expect(cmp.find('TreeView').props().tree[1].children[1].id).toBe('rom2');
+        expect(cmp.find('TreeView').props().data[1].children.length).toBe(2);
+        expect(cmp.find('TreeView').props().data[1].children[0].id).toBe('rom1');
+        expect(cmp.find('TreeView').props().data[1].children[1].id).toBe('rom2');
     });
 });

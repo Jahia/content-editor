@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
 import {Dialog, DialogActions, DialogContent, DialogTitle} from '@material-ui/core';
-import {Warning} from '@material-ui/icons';
+import {Button, Dropdown, Typography, Warning} from '@jahia/moonstone';
 import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
-import {Button, Dropdown, Typography} from '@jahia/moonstone';
 import classes from './CopyLanguageDialog.scss';
 import {useApolloClient} from '@apollo/react-hooks';
 import {editFormQuery} from '~/Edit/EditForm.gql-queries';

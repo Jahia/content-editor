@@ -1,64 +1,45 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-
-import {withStyles} from '@material-ui/core';
-import {Toggle, Typography} from '@jahia/design-system-kit';
-import {compose} from '~/utils';
+import {Toggle} from '@jahia/design-system-kit';
+import {Typography} from '@jahia/moonstone';
 import {FieldSetPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {FieldContainer} from './Field';
 import {useFormikContext} from 'formik';
+import styles from './FieldSet.scss';
+import clsx from 'clsx';
 
-let styles = theme => ({
-    fieldsetContainer: {},
-    fieldsetTitleContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        minHeight: '74px',
-        margin: `0 ${theme.spacing.unit * 6}px 0 0`
-    },
-    labelContainer: {
-        display: 'flex',
-        flexFlow: 'column wrap'
-    },
-    fieldSetTitle: {
-        width: 'auto',
-        textTransform: 'uppercase',
-        padding: `${theme.spacing.unit * 2}px 0`
-    },
-    fieldSetDescription: {
-        paddingBottom: `${theme.spacing.unit * 2}px`,
-        marginTop: `${-theme.spacing.unit}px`
-    }
-});
-
-const DynamicFieldSet = ({fieldset, classes}) => {
+const DynamicFieldSet = ({fieldset}) => {
     const {values, handleChange} = useFormikContext();
     const activatedFieldSet = (values && values[fieldset.name]);
     return (
-        <article className={classes.fieldsetContainer}>
-            <div className={classes.fieldsetTitleContainer}>
-                <Toggle data-sel-role-dynamic-fieldset={fieldset.name}
+        <article>
+            <div className={styles.fieldsetTitleContainer}>
+                <div className="flexRow alignCenter">
+                    <Toggle
+                        classes={{
+                            switchBase: styles.toggle,
+                            disabledSwitchBase: styles.toggle,
+                            readOnlySwitchBase: styles.toggle,
+                            focusedSwitchBase: styles.toggle
+                        }}
+                        data-sel-role-dynamic-fieldset={fieldset.name}
                         id={fieldset.name}
                         checked={activatedFieldSet}
                         readOnly={fieldset.readOnly}
                         onChange={handleChange}
-                />
-
-                <div className={classes.labelContainer}>
+                    />
                     <Typography component="label"
                                 htmlFor={fieldset.name}
-                                className={classes.fieldSetTitle}
-                                color="alpha"
-                                variant="zeta"
+                                className={styles.fieldSetTitle}
+                                variant="subheading"
                     >
                         {fieldset.displayName}
                     </Typography>
-                    {fieldset.description &&
-                    <Typography component="label" className={classes.fieldSetDescription} color="beta" variant="omega">
-                        {fieldset.description}
-                    </Typography>}
                 </div>
+                {fieldset.description && (
+                    <Typography component="label" className={styles.fieldSetDescription} variant="caption">
+                        {fieldset.description}
+                    </Typography>
+                )}
             </div>
 
             {activatedFieldSet && fieldset.fields.map(field => <FieldContainer key={field.name} field={field}/>)}
@@ -67,28 +48,27 @@ const DynamicFieldSet = ({fieldset, classes}) => {
 };
 
 DynamicFieldSet.propTypes = {
-    fieldset: FieldSetPropTypes.isRequired,
-    classes: PropTypes.object.isRequired
+    fieldset: FieldSetPropTypes.isRequired
 };
 
-const StaticFieldSet = ({fieldset, classes}) => {
+const StaticFieldSet = ({fieldset}) => {
     return (
-        <article className={classes.fieldsetContainer}>
-            <div className={classes.fieldsetTitleContainer}>
-                <div className={classes.labelContainer}>
+        <article>
+            <div className={styles.fieldsetTitleContainer}>
+                <div className="flexRow alignCenter">
                     <Typography component="label"
                                 htmlFor={fieldset.name}
-                                className={classes.fieldSetTitle}
-                                color="alpha"
-                                variant="zeta"
+                                className={styles.fieldSetTitle}
+                                variant="subheading"
                     >
                         {fieldset.displayName}
                     </Typography>
-                    {fieldset.description &&
-                    <Typography component="label" className={classes.fieldSetDescription} color="beta" variant="omega">
-                        {fieldset.description}
-                    </Typography>}
                 </div>
+                {fieldset.description && (
+                    <Typography component="label" className={clsx(styles.fieldSetDescription, styles.staticFieldSetDescription)} variant="caption">
+                        {fieldset.description}
+                    </Typography>
+                )}
             </div>
 
             {fieldset.fields.map(field => <FieldContainer key={field.name} field={field}/>)}
@@ -97,25 +77,19 @@ const StaticFieldSet = ({fieldset, classes}) => {
 };
 
 StaticFieldSet.propTypes = {
-    fieldset: FieldSetPropTypes.isRequired,
-    classes: PropTypes.object.isRequired
+    fieldset: FieldSetPropTypes.isRequired
 };
 
-const FieldSetCmp = ({fieldset, classes}) => {
+export const FieldSet = ({fieldset}) => {
     return fieldset.dynamic ? (
-        <DynamicFieldSet fieldset={fieldset} classes={classes}/>
+        <DynamicFieldSet fieldset={fieldset}/>
     ) : (
-        <StaticFieldSet fieldset={fieldset} classes={classes}/>
+        <StaticFieldSet fieldset={fieldset}/>
     );
 };
 
-FieldSetCmp.propTypes = {
-    fieldset: FieldSetPropTypes.isRequired,
-    classes: PropTypes.object.isRequired
+FieldSet.propTypes = {
+    fieldset: FieldSetPropTypes.isRequired
 };
-
-export const FieldSet = compose(
-    withStyles(styles)
-)(FieldSetCmp);
 
 FieldSet.displayName = 'FieldSet';

@@ -4,9 +4,9 @@ import {DisplayActions, registry} from '@jahia/ui-extender';
 import {MenuItem} from '@jahia/moonstone';
 import PropTypes from 'prop-types';
 import {useRegisterEngineTabActions} from '~/Edit/engineTabs/useRegisterEngineTabActions';
-import {ProgressOverlay} from '@jahia/react-material';
 import {registerAdvancedOptionsActions} from '~/EditPanel/AdvancedOptions/AdvancedOptions.actions';
 import {useTranslation} from 'react-i18next';
+import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 
 const DEPRECATED_GWT_ACTIONS = ['content', 'layout', 'metadata', 'categories', 'options', 'seo'];
 
@@ -53,7 +53,7 @@ export const AdvancedOptionsNavigation = ({activeOption, setActiveOption}) => {
     }
 
     if (loading) {
-        return <ProgressOverlay/>;
+        return <LoaderOverlay/>;
     }
 
     return (
