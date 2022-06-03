@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Button} from '@material-ui/core';
-import {SubdirectoryArrowRight} from '@material-ui/icons';
+import {Subdirectory} from '@jahia/moonstone';
 
 export const NavigateInto = ({tableCellData, ...props}) => {
     if (!tableCellData) {
@@ -9,7 +9,7 @@ export const NavigateInto = ({tableCellData, ...props}) => {
     }
 
     return (
-        <Button {...props}><SubdirectoryArrowRight/></Button>
+        <Button {...props}><Subdirectory/></Button>
     );
 };
 

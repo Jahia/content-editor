@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
-import Drawer from '@material-ui/core/Drawer';
+import {Drawer} from '@material-ui/core';
 import {NodeTrees, PickerTreeViewMaterial} from '@jahia/react-material';
 import {Picker} from '@jahia/data-helper';
 import {Dropdown} from '@jahia/moonstone';

@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {Dialog, DialogActions, DialogTitle} from '@material-ui/core';
-import {Search} from '@material-ui/icons';
 import {Input} from '@jahia/design-system-kit';
-import {Button, Typography} from '@jahia/moonstone';
+import {Button, Search, Typography} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
 import {ProgressOverlay} from '@jahia/react-material';
 

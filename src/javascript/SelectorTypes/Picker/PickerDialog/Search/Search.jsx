@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {Input} from '@jahia/design-system-kit';
-import {Search} from '@material-ui/icons';
+import {Search} from '@jahia/moonstone';
 import {FolderDisplayer} from './FolderDisplayer';
 
 export const SearchInput = ({selectedPath, placeholder, language, ...props}) => {

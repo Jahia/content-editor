@@ -7,7 +7,7 @@ import {DisplayAction, DisplayActions, registry} from '@jahia/ui-extender';
 import {Constants} from '~/ContentEditor.constants';
 import {WindowListeners} from './WindowListeners';
 import {DialogActions, DialogContent, DialogTitle} from '@material-ui/core';
-import {Button, Checkbox, Typography, Edit} from '@jahia/moonstone';
+import {Button, Checkbox, Edit, Typography} from '@jahia/moonstone';
 import {GoBack} from '~/actions/goBack.action';
 import {getButtonRenderer} from '~/utils/getButtonRenderer';
 import {truncate} from '~/utils/helper';

@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
-import Popover from '@material-ui/core/Popover/Popover';
+import {Popover} from '@material-ui/core';
 import {Input} from '@jahia/design-system-kit';
 import {Constants} from '~/ContentEditor.constants';
 import {HexColorPicker} from 'react-colorful';

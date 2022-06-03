@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ImageIcon from '@material-ui/icons/Image';
+import {Image} from '@jahia/moonstone';
 
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
@@ -12,7 +12,7 @@ describe('reference card empty', () => {
     beforeEach(() => {
         defaultProps = {
             emptyLabel: 'totoprops',
-            emptyIcon: <ImageIcon/>,
+            emptyIcon: <Image/>,
             onClick: jest.fn(),
             classes: {}
         };

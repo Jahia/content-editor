@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core';
 
 import {IconLabel} from './IconLabel/IconLabel';
-import {ArrowDropDown, ArrowRight} from '@material-ui/icons';
+import {ChevronDown, ChevronRight} from '@jahia/moonstone';
 
 const style = theme => ({
     container: {
@@ -83,7 +83,7 @@ const TreeViewCmp = ({tree, onNodeClick, onNodeDoubleClick, classes}) => {
             };
 
             if (node.children && node.children.length !== 0) {
-                const Arrow = nodeIsOpen || node.opened ? ArrowDropDown : ArrowRight;
+                const Arrow = nodeIsOpen || node.opened ? ChevronDown : ChevronRight;
                 const Childs = nodeIsOpen || node.opened ? generateLevelJSX(node.children, deep + 1) : <></>;
 
                 return (

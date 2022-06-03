@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {Typography} from '@jahia/design-system-kit';
-import {withStyles} from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core';
 import {hours} from '../../DatePickerInput/date.util';
 
 const style = theme => ({

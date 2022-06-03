@@ -2,7 +2,7 @@ import React from 'react';
 import saveAction from './save/save.action';
 import publishAction from './publish/publish.action';
 import startWorkflow from './startWorkflow/startWorkflow.action';
-import {Edit, MoreVert, CloudUpload, Save} from '@jahia/moonstone';
+import {CloudUpload, Edit, MoreVert, Save} from '@jahia/moonstone';
 import editContentAction from './EditContent.action';
 import OpenWorkInProgressModalAction from '~/EditPanel/WorkInProgress/OpenWorkInProgressModal.action';
 import {CopyLanguageActionComponent} from '~/Edit/copyLanguage/copyLanguage.action';

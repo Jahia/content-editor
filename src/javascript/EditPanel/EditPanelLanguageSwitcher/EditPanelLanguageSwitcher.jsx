@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dropdown, Language, Edit} from '@jahia/moonstone';
+import {Dropdown, Edit, Language} from '@jahia/moonstone';
 import * as PropTypes from 'prop-types';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import styles from './EditPanelLanguageSwitcher.scss';

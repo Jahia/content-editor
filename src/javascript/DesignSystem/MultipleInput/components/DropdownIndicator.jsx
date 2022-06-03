@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {KeyboardArrowDown} from '@material-ui/icons';
+import {ChevronDown} from '@jahia/moonstone';
 import {withStyles} from '@material-ui/core';
 
 const styles = theme => ({
@@ -12,7 +12,7 @@ const styles = theme => ({
 export const DropdownIndicatorCmp = props => {
     return (
         <div className={props.classes.container} {...props.innerProps}>
-            <KeyboardArrowDown/>
+            <ChevronDown/>
         </div>
     );
 };

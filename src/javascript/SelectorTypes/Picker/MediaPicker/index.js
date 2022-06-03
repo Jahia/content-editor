@@ -1,6 +1,6 @@
 import React from 'react';
 import {Picker} from '../PickerContainer';
-import {Image} from '@material-ui/icons';
+import {Image} from '@jahia/moonstone';
 import {encodeJCRPath} from '~/EditPanel/EditPanel.utils';
 import {useQuery} from '@apollo/react-hooks';
 import {MediaPickerFilledQuery} from './MediaPicker.gql-queries';

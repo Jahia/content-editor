@@ -1,8 +1,7 @@
 import * as React from 'react';
-import {withStyles} from '@material-ui/core/styles';
+import {MenuItem, withStyles} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import {Input, Select} from '@jahia/design-system-kit';
-import {MenuItem} from '@material-ui/core';
 import dayjs from 'dayjs';
 
 const style = () => {

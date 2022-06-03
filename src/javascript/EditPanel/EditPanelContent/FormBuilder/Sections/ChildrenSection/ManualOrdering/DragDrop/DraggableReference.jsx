@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import {useDrag} from 'react-dnd';
 import {ReferenceCard} from '~/DesignSystem/ReferenceCard';
-import {InsertDriveFile} from '@material-ui/icons';
+import {File} from '@jahia/moonstone';
 import {encodeJCRPath} from '~/EditPanel/EditPanel.utils';
 
 export const DraggableReference = ({child}) => {
@@ -22,7 +22,7 @@ export const DraggableReference = ({child}) => {
             <ReferenceCard
                 isDraggable
                 emptyLabel={t('content-editor:label.contentEditor.edit.fields.imagePicker.addImage')}
-                emptyIcon={<InsertDriveFile/>}
+                emptyIcon={<File/>}
                 labelledBy={`${child.name}-label`}
                 fieldData={{
                     name: child.displayName,

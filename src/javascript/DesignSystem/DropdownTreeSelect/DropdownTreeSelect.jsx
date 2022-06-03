@@ -7,7 +7,7 @@ import unchecked from './unchecked.svg';
 import arrow from './arrow.svg';
 
 import DropdownTreeSelectLib from 'react-dropdown-tree-select';
-import {withStyles} from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core';
 
 const icons = {
     close,

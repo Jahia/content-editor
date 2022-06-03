@@ -6,7 +6,7 @@ import {Input} from '@jahia/design-system-kit';
 
 import dayjs from '../../date.config';
 
-import Popover from '@material-ui/core/Popover/Popover';
+import {Popover} from '@material-ui/core';
 import NumberFormat from 'react-number-format';
 import {Button, Calendar} from '@jahia/moonstone';
 

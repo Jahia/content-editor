@@ -1,8 +1,7 @@
 import {useTranslation} from 'react-i18next';
-import {Button} from '@jahia/moonstone';
+import {Button, Error} from '@jahia/moonstone';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Error} from '@material-ui/icons';
 import styles from './getButtonRenderer.scss';
 
 export const getButtonRenderer = ({labelStyle, defaultButtonProps, noIcon} = {}) => {

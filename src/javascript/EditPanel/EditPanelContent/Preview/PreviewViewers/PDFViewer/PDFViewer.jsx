@@ -1,7 +1,16 @@
 import React, {useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Tooltip} from '@material-ui/core';
-import {Button, ChevronRight, ChevronLeft, ChevronFirstPage, ChevronLastPage, Typography, ZoomIn, ZoomOut} from '@jahia/moonstone';
+import {
+    Button,
+    ChevronFirstPage,
+    ChevronLastPage,
+    ChevronLeft,
+    ChevronRight,
+    Typography,
+    ZoomIn,
+    ZoomOut
+} from '@jahia/moonstone';
 import clsx from 'clsx';
 import styles from './PDFViewer.scss';
 

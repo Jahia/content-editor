@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {withStyles} from '@material-ui/core';
-import ErrrorOutline from '@material-ui/icons/ErrorOutline';
 
 const styles = theme => ({
     textareaContainer: {
@@ -40,20 +39,12 @@ const styles = theme => ({
         opacity: 0.54,
         color: theme.palette.font.gamma
     },
-    error: {
-        border: `1px solid ${theme.palette.support.alpha}`
-    },
-    errorIcon: {
-        color: theme.palette.support.alpha,
-        margin: '0 3px'
-    }
 });
 
 const TextAreaCmp = ({
     classes,
     classNames,
     rows,
-    error,
     disabled,
     readOnly,
     ...otherProps
@@ -64,15 +55,12 @@ const TextAreaCmp = ({
                 className={`${classes.textarea} 
                             ${disabled ? classes.disabled : ''}
                             ${readOnly ? classes.readOnly : ''}
-                            ${error ? classes.error : ''}
                             ${classNames.textarea}`}
                 rows={rows}
-                aria-invalid={error}
                 disabled={disabled}
                 readOnly={readOnly}
                 {...otherProps}
             />
-            {error ? <ErrrorOutline className={classes.errorIcon}/> : null}
         </div>
     );
 };
@@ -86,7 +74,6 @@ TextAreaCmp.defaultProps = {
     rows: 5,
     readOnly: false,
     disabled: false,
-    error: false
 };
 
 TextAreaCmp.propTypes = {
@@ -98,7 +85,6 @@ TextAreaCmp.propTypes = {
         container: PropTypes.string,
         textarea: PropTypes.string
     }),
-    error: PropTypes.bool,
     classes: PropTypes.object.isRequired
 };
 
