@@ -1,17 +1,19 @@
 import { BaseComponent, BasePage, Button, getComponent, getComponentByRole, getElement, MUIInput } from '@jahia/cypress'
 import { ContentEditor } from './contentEditor'
+import IframeOptions = Cypress.IframeOptions
 
 export class PageComposer extends BasePage {
     jcontent: ContentEditor
-
+    iFrameOptions: IframeOptions
     constructor(jcontent: ContentEditor) {
         super()
         this.jcontent = jcontent
+        this.iFrameOptions = { timeout: 90000, log: true }
     }
 
     openCreateContent(): PageComposer {
-        cy.iframe('#page-composer-frame').within(() => {
-            cy.iframe('.gwt-Frame').within(() => {
+        cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
+            cy.iframe('.gwt-Frame', this.iFrameOptions).within(() => {
                 cy.get('.container').contains('Any content').click()
             })
         })
@@ -19,15 +21,15 @@ export class PageComposer extends BasePage {
     }
 
     refresh() {
-        cy.iframe('#page-composer-frame').within(() => {
+        cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
             cy.get('.window-actions-refresh').click()
         })
         return this
     }
 
     shouldContain(text: string) {
-        cy.iframe('#page-composer-frame').within(() => {
-            cy.iframe('.gwt-Frame').within(() => {
+        cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
+            cy.iframe('.gwt-Frame', this.iFrameOptions).within(() => {
                 cy.get('.container').should('contain', text)
             })
         })
@@ -38,8 +40,8 @@ export class PageComposer extends BasePage {
     }
 
     shouldContainWIPOverlay() {
-        cy.iframe('#page-composer-frame').within(() => {
-            cy.iframe('.gwt-Frame').within(() => {
+        cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
+            cy.iframe('.gwt-Frame', this.iFrameOptions).within(() => {
                 cy.get('.workinprogress-overlay').should('contain', 'Work in progress')
             })
         })

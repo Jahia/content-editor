@@ -1,6 +1,6 @@
 import { ContentEditor } from '../page-object'
 
-describe('Create content tests', () => {
+describe('Create content tests', { retries: 10 }, () => {
     let contentEditor: ContentEditor
 
     before(function () {
@@ -19,7 +19,7 @@ describe('Create content tests', () => {
         contentEditor = new ContentEditor()
     })
 
-    it('Can create content', { retries: 0 }, function () {
+    it('Can create content', function () {
         const pageComposer = contentEditor.getPageComposer()
         pageComposer
             .openCreateContent()
