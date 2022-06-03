@@ -38,7 +38,7 @@ const styles = theme => ({
         backgroundColor: theme.palette.ui.alpha,
         opacity: 0.54,
         color: theme.palette.font.gamma
-    },
+    }
 });
 
 const TextAreaCmp = ({
@@ -73,7 +73,7 @@ TextAreaCmp.defaultProps = {
     },
     rows: 5,
     readOnly: false,
-    disabled: false,
+    disabled: false
 };
 
 TextAreaCmp.propTypes = {

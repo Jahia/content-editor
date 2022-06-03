@@ -1,5 +1,5 @@
 import {useTranslation} from 'react-i18next';
-import {Button, Error} from '@jahia/moonstone';
+import {Button, Report} from '@jahia/moonstone';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styles from './getButtonRenderer.scss';
@@ -43,7 +43,7 @@ export const getButtonRenderer = ({labelStyle, defaultButtonProps, noIcon} = {})
             <>
                 {button}
                 {addWarningBadge && (
-                    <Error data-sel-role={`${actionKey}_pastille`} className={styles.warningBadge}/>
+                    <Report size="big" data-sel-role={`${actionKey}_pastille`} className={styles.warningBadge}/>
                 )}
             </>
         );
