@@ -10,6 +10,7 @@ import {Typography} from '@jahia/design-system-kit';
 import {SearchInput} from './Search/Search';
 import {List, Thumbnail} from './Views';
 import {getButtonRenderer} from '~/utils/getButtonRenderer';
+import clsx from 'clsx';
 
 const styles = theme => ({
     modalHeader: {
@@ -19,8 +20,7 @@ const styles = theme => ({
         margin: '10px'
     },
     modalMain: {
-        height: 0,
-        flexGrow: 1
+        flex: '1 0 0'
     },
     searchInput: {
         flexGrow: 0.6
@@ -99,7 +99,7 @@ const MainPanelCmp = ({
                     onChange={handleSearchChange}
                 />
             </header>
-            <main className={classes.modalMain}>
+            <main className={clsx(classes.modalMain, 'flexCol_nowrap')}>
                 <PickerDialogContent
                     pickerConfig={pickerConfig}
                     setSelectedItem={setSelectedItem}

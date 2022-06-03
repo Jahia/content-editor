@@ -84,7 +84,7 @@ export const LeftPanel = ({
                             <PickerTreeViewMaterial {...others}
                                                     dataCmRole={dataCmRole}
                                                     rootLabel={rootLabel}
-                                                    classes={{listItem: style.listItem, listItemSelected: style.listItemSelected}}
+                                                    classes={{listItem: style.listItem, listItemSelected: style.listItemSelected, loading: style.loading}}
                         />
                     )}
                     </Picker>

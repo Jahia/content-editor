@@ -4,13 +4,13 @@ import {Dialog, DialogActions, DialogTitle} from '@material-ui/core';
 import {Input} from '@jahia/design-system-kit';
 import {Button, Search, Typography} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
-import {ProgressOverlay} from '@jahia/react-material';
 
 import {TreeView} from '~/DesignSystem/TreeView';
 import {useApolloClient, useQuery} from '@apollo/react-hooks';
 import {getTreeOfContent} from '~/Create/CreateNewContentAction/CreateNewContent.gql-queries';
 import {filterTree, isOpenableEntry} from './CreateNewContent.utils';
 import styles from './CreateNewContentDialog.scss';
+import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 
 export const CreateNewContentDialog = ({childNodeName, nodeTypes, includeSubTypes, open, parentPath, onExited, onClose, onCreateContent, uilang}) => {
     const {t} = useTranslation('content-editor');
@@ -32,7 +32,7 @@ export const CreateNewContentDialog = ({childNodeName, nodeTypes, includeSubType
     }
 
     if (loading || !data || !data.forms) {
-        return <ProgressOverlay/>;
+        return <LoaderOverlay/>;
     }
 
     // Filtering the tree

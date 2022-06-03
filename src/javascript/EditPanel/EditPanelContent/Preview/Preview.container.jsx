@@ -2,10 +2,10 @@ import {Badge, Paper} from '@jahia/design-system-kit';
 import React, {useCallback, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import classes from './Preview.container.scss';
-import {ProgressOverlay} from '@jahia/react-material';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {PreviewFetcher} from './Preview.fetcher';
 import {UpdateOnSaveBadge} from '~/EditPanel/EditPanelContent/Preview/UpdateOnSaveBadge';
+import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 
 export const PreviewContainer = () => {
     const {t} = useTranslation('content-editor');
@@ -48,7 +48,7 @@ export const PreviewContainer = () => {
                 <>
                     {shouldDisplayPreview ?
                         <PreviewFetcher onContentNotFound={handleContentNotFound}/> :
-                        <ProgressOverlay/>}
+                        <LoaderOverlay/>}
                 </>}
         </Paper>
     );

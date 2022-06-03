@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import Slide from '@material-ui/core/Slide';
-import {ProgressOverlay} from '@jahia/react-material';
 
 import {LeftPanel} from './LeftPanel';
 import {MainPanel} from './MainPanel';
@@ -13,6 +12,7 @@ import {useQuery} from '@apollo/react-hooks';
 import {SiteNodesQuery} from './PickerDialog.gql-queries';
 import {getPathWithoutFile, getSite, getSiteNodes} from '../Picker.utils';
 import {useDebounce} from './useDebounce';
+import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 
 const styles = theme => ({
     rootDialog: {
@@ -114,7 +114,7 @@ const PickerDialogCmp = ({
     }
 
     if (loading) {
-        return <ProgressOverlay/>;
+        return <LoaderOverlay/>;
     }
 
     const nodeTreeConfigsAdapted = nodeTreeConfigs

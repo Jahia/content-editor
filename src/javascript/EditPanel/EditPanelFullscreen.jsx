@@ -9,7 +9,7 @@ import {registry} from '@jahia/ui-extender';
 import MainLayout from '~/DesignSystem/ContentLayout/MainLayout';
 import ContentHeader from '~/DesignSystem/ContentLayout/ContentHeader';
 import {Constants} from '~/ContentEditor.constants';
-import {Separator} from '@jahia/moonstone';
+import {Separator, LayoutModule} from '@jahia/moonstone';
 import {WindowListeners} from './WindowListeners';
 
 const EditPanelFullscreen = ({title}) => {

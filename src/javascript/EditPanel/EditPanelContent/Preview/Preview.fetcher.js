@@ -6,7 +6,7 @@ import {invalidateRefetch, setPreviewRefetcher} from '~/EditPanel/EditPanel.refe
 import {PreviewViewer} from './PreviewViewers';
 import {getPreviewContext} from './Preview.utils';
 import {useTranslation} from 'react-i18next';
-import {ProgressOverlay} from '@jahia/react-material';
+import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 
 export const PreviewFetcher = React.memo(({onContentNotFound}) => {
     const {t} = useTranslation('content-editor');
@@ -43,7 +43,7 @@ export const PreviewFetcher = React.memo(({onContentNotFound}) => {
     }
 
     if (loading) {
-        return <ProgressOverlay/>;
+        return <LoaderOverlay/>;
     }
 
     return (

@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {withStyles} from '@material-ui/core';
-import {Typography} from '@jahia/moonstone';
-import {CheckBox} from '../CheckBox/';
+import {Typography, Checkbox} from '@jahia/moonstone';
 
 const styles = theme => ({
     container: {
@@ -97,7 +96,7 @@ const CardCmp = ({
                     </Typography>
                 </div>
 
-                <CheckBox className={classes.checkBox} checked={selected}/>
+                <Checkbox checked={selected}/>
             </div>
         </article>
     );

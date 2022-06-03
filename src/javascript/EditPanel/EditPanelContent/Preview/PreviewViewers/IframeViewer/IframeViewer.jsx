@@ -5,7 +5,7 @@ import classes from './IframeViewer.scss';
 import {forceDisplay, removeSiblings} from '../../Preview.utils';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {useTranslation} from 'react-i18next';
-import {ProgressOverlay} from '@jahia/react-material';
+import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 
 export function zoom(iframeDocument, onContentNotFound, editorContext) {
     const isPage = editorContext.nodeData.isPage;
@@ -107,7 +107,7 @@ export const IframeViewer = ({previewContext, data, onContentNotFound}) => {
 
     return (
         <Paper elevation={1} classes={{root: classes.contentPaper}}>
-            {loading && <ProgressOverlay/>}
+            {loading && <LoaderOverlay/>}
             <iframe ref={iframeRef}
                     aria-labelledby="preview-tab"
                     data-sel-role={previewContext.workspace + '-preview-frame'}

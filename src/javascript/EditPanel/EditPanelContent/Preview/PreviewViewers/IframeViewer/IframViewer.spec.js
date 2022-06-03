@@ -26,7 +26,7 @@ describe('IframeViewer', () => {
 
     it('should display a loader while content is not fully initialized', () => {
         const cmp = shallow(<IframeViewer {...props}/>);
-        expect(cmp.find('WithStyles(ProgressOverlayCmp)').exists()).toBe(true);
+        expect(cmp.find('LoaderOverlay').exists()).toBe(true);
     });
 });
 
