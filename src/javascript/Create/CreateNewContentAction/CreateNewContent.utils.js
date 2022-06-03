@@ -1,5 +1,6 @@
 import {getTreeOfContentWithRequirements} from './CreateNewContent.gql-queries';
 import {useQuery} from '@apollo/react-hooks';
+import {toIconComponent} from '@jahia/moonstone';
 
 const NB_OF_DISPLAYED_RESTRICTED_SUB_NODES = 3;
 // eslint-disable-next-line
@@ -97,17 +98,13 @@ export const filterTree = (tree, selectedType, filter) => tree
             return node.name.toLowerCase().includes(filter) || node.label.toLowerCase().includes(filter);
         }) : category.children;
 
-        // Never close selected content category
-        const isCategorySelected = selectedType && isOpenableEntry(category) ? category.id === selectedType.parent.id : null;
-
         return {
             ...category,
-            opened: filter ? true : (category.opened || isCategorySelected),
-            selected: Boolean(!isOpenableEntry(category) && selectedType && selectedType.id === category.id),
+            iconStart: toIconComponent(category.iconURL),
             children: filteredNodes.map(node => {
                 return {
                     ...node,
-                    selected: isCategorySelected && selectedType.id === node.id
+                    iconStart: toIconComponent(node.iconURL)
                 };
             })
         };

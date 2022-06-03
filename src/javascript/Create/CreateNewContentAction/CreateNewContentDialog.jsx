@@ -2,10 +2,9 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {Dialog, DialogActions, DialogTitle} from '@material-ui/core';
 import {Input} from '@jahia/design-system-kit';
-import {Button, Search, Typography} from '@jahia/moonstone';
+import {Button, Search, Typography, TreeView} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
 
-import {TreeView} from '~/DesignSystem/TreeView';
 import {useApolloClient, useQuery} from '@apollo/react-hooks';
 import {getTreeOfContent} from '~/Create/CreateNewContentAction/CreateNewContent.gql-queries';
 import {filterTree, isOpenableEntry} from './CreateNewContent.utils';
@@ -59,15 +58,19 @@ export const CreateNewContentDialog = ({childNodeName, nodeTypes, includeSubType
 
             <div className={styles.treeContainer} data-sel-role="content-type-tree">
                 <TreeView
-                    tree={filteredTree}
-                    onNodeClick={node => {
-                        if (!isOpenableEntry(node)) {
-                            setSelectedType(node);
+                    data={filteredTree}
+                    selectedItems={selectedType ? [selectedType.id] : []}
+                    openedItems={filter ? filteredTree.map(n => n.id) : undefined}
+                    onClickItem={(item, ev, toggle) => {
+                        if (!isOpenableEntry(item)) {
+                            setSelectedType(item);
+                        } else {
+                            toggle();
                         }
                     }}
-                    onNodeDoubleClick={node => {
-                        if (!isOpenableEntry(node)) {
-                            onCreateContent(node);
+                    onDoubleClickItem={item => {
+                        if (!isOpenableEntry(item)) {
+                            onCreateContent(item);
                         }
                     }}
                 />
