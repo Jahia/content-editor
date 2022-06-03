@@ -28,7 +28,7 @@ describe('Create content tests', () => {
             .selectContentType('Rich text')
             .create()
         cy.get('#contenteditor-dialog-title').should('be.visible').and('contain', 'Create Rich text')
-        const contentSection = contentEditor.closeSection('Content')
+        const contentSection = contentEditor.openSection('Content')
         contentEditor.openSection('Options').get().find('input[type="text"]').clear().type('cypress-test')
         contentSection.expand().get().find('.cke_button__source').click()
         contentSection.get().find('textarea').type('Cypress Test')

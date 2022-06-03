@@ -91,10 +91,10 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@jahia/cypress@^1.1.2":
-  version "1.1.2"
-  resolved "https://npm.jahia.com/@jahia%2fcypress/-/cypress-1.1.2.tgz#edde3d5e3bdd03e92081d5e6b7971cedf4a7a807"
-  integrity sha512-M8/lIXMDy655xgjeWNV8IEvPD3MHWsAteTeQR8zDtyaiPFDnkAsoM+Iybh6u193xZJcFpbyH6/Te8snb6iJdUQ==
+"@jahia/cypress@^1.1.3":
+  version "1.1.3"
+  resolved "https://npm.jahia.com/@jahia%2fcypress/-/cypress-1.1.3.tgz#24654f060486d3093439806d7be769f1379d33ff"
+  integrity sha512-kx+D+X7Sg7UxxORBaH1rsDYeKy+kehl5Kig9+14itHNrAnOATqmaWptMZaq0ENtgvlIywohKouQy98SvyuXnRw==
   dependencies:
     "@apollo/client" "^3.4.9"
     cypress-terminal-report "^3.4.2"
