@@ -39,7 +39,11 @@ export class ContentEditor extends BasePage {
     }
 
     addAnotherContent() {
-        cy.contains('Create another').click()
+        cy.get('#createAnother').check()
+    }
+
+    removeAnotherContent() {
+        cy.get('#createAnother').uncheck()
     }
 
     activateWorkInProgressMode(language?: string) {

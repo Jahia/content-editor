@@ -1,5 +1,5 @@
 import { ContentEditor } from '../page-object'
-import {getComponentBySelector} from "@jahia/cypress";
+import { getComponentBySelector } from '@jahia/cypress'
 
 describe('Create content tests', () => {
     let contentEditor: ContentEditor
@@ -63,8 +63,8 @@ describe('Create content tests', () => {
         contentSection = contentEditor.openSection('Content')
         //CKEditor will stay in source mode so no need to click on source again
         contentSection.get().find('textarea').type('Cypress Multiple Content Test 2')
+        contentEditor.removeAnotherContent()
         contentEditor.save()
-        contentEditor.cancel()
         pageComposer.refresh().shouldContain('Cypress Multiple Content Test 1')
         pageComposer.shouldContain('Cypress Multiple Content Test 2')
     })
@@ -106,7 +106,7 @@ describe('Create content tests', () => {
         contentSection.get().find('textarea').type('Cypress Work In Progress EN/FR Test')
         // Switch to French
         contentEditor.getLanguageSwitcher().select('Français')
-        cy.get('[data-sel-role="wip-info-chip"]').should('contain', 'WIP - FR')
+        cy.get('[data-sel-role="wip-info-chip"]', { timeout: 1000 }).should('contain', 'WIP - FR')
         contentSection.expand().get().find('.cke_button__source').click()
         contentSection.get().find('textarea').type('Cypress Work In Progress FR/EN Test')
         contentEditor.save()

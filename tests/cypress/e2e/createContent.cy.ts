@@ -62,8 +62,8 @@ describe('Create content tests', { retries: 10 }, () => {
         contentSection = contentEditor.openSection('Content')
         //CKEditor will stay in source mode so no need to click on source again
         contentSection.get().find('textarea').type('Cypress Multiple Content Test 2')
+        contentEditor.removeAnotherContent()
         contentEditor.save()
-        contentEditor.cancel()
         pageComposer.refresh().shouldContain('Cypress Multiple Content Test 1')
         pageComposer.shouldContain('Cypress Multiple Content Test 2')
     })
