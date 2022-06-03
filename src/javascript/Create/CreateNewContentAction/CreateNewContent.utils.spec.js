@@ -1,5 +1,7 @@
 import {filterTree, getCreatableNodetypes, transformNodeTypesToActions} from './CreateNewContent.utils';
 
+jest.mock('@jahia/moonstone');
+
 describe('CreateNewContent utils', () => {
     describe('getActions', () => {
         let client;
@@ -159,16 +161,6 @@ describe('CreateNewContent utils', () => {
             expect(result.length).toBe(1);
         });
 
-        it('should open parent category when filter', () => {
-            const result = filterTree(tree, selectedType, 'world');
-            expect(result[0].opened).toEqual(true);
-        });
-
-        it('should select children when selectedType say so', () => {
-            const result = filterTree(tree, selectedType, 'world');
-            expect(result[0].children[0].selected).toEqual(true);
-        });
-
         it('should also filter when filtering with name', () => {
             const result = filterTree(tree, selectedType, 'hello');
             expect(result[0].id).toBe('nt:base');
@@ -187,11 +179,6 @@ describe('CreateNewContent utils', () => {
             expect(result.length).toBe(2);
             expect(result[0].id).toBe('id1');
             expect(result[1].id).toBe('id2');
-        });
-
-        it('should select flattend nodeType when selectedType say so', () => {
-            const result = filterTree(flatTree, flatTree[0]);
-            expect(result[0].selected).toEqual(true);
         });
 
         it('should filter flattend nodeType when filter', () => {

@@ -92,17 +92,4 @@ describe('TextArea', () => {
 
         expect(cmp.props().disabled).toBe(true);
     });
-
-    it('it should set aria-invalid to the textarea when field is in error', () => {
-        defaultProps.error = true;
-        const cmp = shallowWithTheme(
-            <TextArea {...defaultProps}/>,
-            {},
-            dsGenericTheme
-        )
-            .dive()
-            .find('textarea');
-
-        expect(cmp.props()['aria-invalid']).toBe(true);
-    });
 });

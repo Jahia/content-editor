@@ -6,6 +6,8 @@ import {dsGenericTheme} from '@jahia/design-system-kit';
 import {CreateNewContentDialog} from './CreateNewContentDialog';
 import {setResponseMock} from '@apollo/react-hooks';
 
+jest.mock('@jahia/moonstone');
+
 jest.mock('@apollo/react-hooks', () => {
     let responsemock;
     return {
