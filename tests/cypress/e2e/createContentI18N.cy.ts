@@ -1,18 +1,19 @@
 import { ContentEditor } from '../page-object'
 import { getComponentBySelector } from '@jahia/cypress'
 
+const sitekey = 'contentEditorSiteI18N';
 describe('Create content tests', () => {
     let contentEditor: ContentEditor
 
     before(function () {
-        cy.executeGroovy('createSiteI18N.groovy', { SITEKEY: 'contentEditorSite' })
+        cy.executeGroovy('createSiteI18N.groovy', { SITEKEY: sitekey })
         cy.login() // edit in chief
-        ContentEditor.visit('contentEditorSite', 'en', 'home.html')
+        ContentEditor.visit(sitekey, 'en', 'home.html')
     })
 
     after(function () {
         cy.logout()
-        cy.executeGroovy('deleteSite.groovy', { SITEKEY: 'contentEditorSite' })
+        cy.executeGroovy('deleteSite.groovy', { SITEKEY: sitekey })
     })
 
     beforeEach(() => {
@@ -107,12 +108,13 @@ describe('Create content tests', () => {
         // Switch to French
         contentEditor.getLanguageSwitcher().select('Français')
         cy.get('[data-sel-role="wip-info-chip"]', { timeout: 1000 }).should('contain', 'WIP - FR')
+        cy.focused().frameLoaded('iframe.cke_wysiwyg_frame')
         contentSection.expand().get().find('.cke_button__source').click()
         contentSection.get().find('textarea').type('Cypress Work In Progress FR/EN Test')
         contentEditor.save()
         pageComposer.refresh().shouldContain('Cypress Work In Progress EN/FR Test')
         pageComposer.shouldContainWIPOverlay()
-        ContentEditor.visit('contentEditorSite', 'fr', 'home.html')
+        ContentEditor.visit(sitekey, 'fr', 'home.html')
         pageComposer.refresh().shouldContain('Cypress Work In Progress FR/EN Test')
         pageComposer.shouldContainWIPOverlay()
     })
