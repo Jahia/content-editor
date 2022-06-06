@@ -4,6 +4,7 @@ import {getDynamicFieldSets, getFields} from '~/EditPanel/EditPanel.utils';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import {useFormikContext} from 'formik';
+import {Constants} from '~/ContentEditor.constants';
 
 function fillValues(formik, fieldsObj, i18nValues, nonI18nValues, dynamicFieldSets) {
     Object.keys(formik.values).filter(key => formik.values[key] !== formik.initialValues[key]).forEach(key => {
@@ -48,6 +49,8 @@ export const useSwitchLanguage = () => {
             validation: {}
         };
         const fieldsObj = fields.reduce((r, f) => Object.assign(r, {[f.name]: f}), {});
+        // Add WIP to filtered names as it is not part of any section
+        fieldsObj[Constants.wip.fieldName] = {i18n: false};
 
         fillValues(formik, fieldsObj, i18nValues, nonI18nValues, dynamicFieldSets);
         const newValues = Object.keys(nonI18nValues.values).length > 0 ? {shared: nonI18nValues} : {};
