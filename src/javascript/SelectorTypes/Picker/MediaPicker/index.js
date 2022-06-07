@@ -1,6 +1,6 @@
 import React from 'react';
 import {Picker} from '../PickerContainer';
-import {Image} from '@jahia/moonstone';
+import {FileImage} from '@jahia/moonstone';
 import {encodeJCRPath} from '~/EditPanel/EditPanel.utils';
 import {useQuery} from '@apollo/react-hooks';
 import {MediaPickerFilledQuery} from './MediaPicker.gql-queries';
@@ -41,7 +41,7 @@ export const MediaPickerSelectorType = {
     pickerInput: {
         emptyLabel: 'content-editor:label.contentEditor.edit.fields.imagePicker.emptyInputLabel',
         notFoundLabel: 'content-editor:label.contentEditor.edit.fields.imagePicker.notFoundImage',
-        emptyIcon: <Image/>,
+        emptyIcon: <FileImage/>,
         usePickerInputData
     },
     PickerDialog: {

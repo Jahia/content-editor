@@ -9,6 +9,7 @@ import ApolloCacheFlushOnGWTSave from '~/Edit/engineTabs/ApolloCacheFlushOnGWTSa
 import {ContentEditorSectionContextProvider} from '~/ContentEditorSection/ContentEditorSection.context';
 import {useSelector} from 'react-redux';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
+import {Loader} from '@jahia/moonstone';
 
 export const ContentEditorContext = React.createContext({});
 

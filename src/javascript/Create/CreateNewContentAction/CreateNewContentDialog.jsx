@@ -30,70 +30,74 @@ export const CreateNewContentDialog = ({childNodeName, nodeTypes, includeSubType
         throw error;
     }
 
-    if (loading || !data || !data.forms) {
-        return <LoaderOverlay/>;
-    }
-
     // Filtering the tree
-    const filteredTree = filterTree(data.forms.contentTypesAsTree, selectedType, filter);
+    const filteredTree = data?.forms && filterTree(data.forms.contentTypesAsTree, selectedType, filter);
     return (
-        <Dialog open={open} aria-labelledby="dialog-createNewContent" onExited={onExited} onClose={onClose}>
-            <DialogTitle className={styles.dialogTitle} id="dialog-createNewContent">
-                <Typography variant="heading">
-                    {t('content-editor:label.contentEditor.CMMActions.createNewContent.labelModal')}
-                </Typography>
-            </DialogTitle>
+        <Dialog classes={{paper: styles.modalRoot}} open={open} aria-labelledby="dialog-createNewContent" onExited={onExited} onClose={onClose}>
+            { loading ? <LoaderOverlay/> : (
+                <>
+                    <DialogTitle className={styles.dialogTitle} id="dialog-createNewContent">
+                        <Typography variant="heading">
+                            {t('content-editor:label.contentEditor.CMMActions.createNewContent.labelModal')}
+                        </Typography>
+                    </DialogTitle>
 
-            <Input
-                autoFocus
-                data-sel-role="content-type-dialog-input"
-                placeholder={t('content-editor:label.contentEditor.CMMActions.createNewContent.filterLabel')}
-                className={styles.filterInput}
-                variant={{interactive: <Search/>}}
-                onChange={e => {
-                    setFilter(e.target.value.toLowerCase());
-                    setSelectedType(null);
-                }}
-            />
+                    <Input
+                        autoFocus
+                        data-sel-role="content-type-dialog-input"
+                        placeholder={t('content-editor:label.contentEditor.CMMActions.createNewContent.filterLabel')}
+                        className={styles.filterInput}
+                        variant={{interactive: <Search/>}}
+                        onChange={e => {
+                            setFilter(e.target.value.toLowerCase());
+                            setSelectedType(null);
+                        }}
+                    />
 
-            <div className={styles.treeContainer} data-sel-role="content-type-tree">
-                <TreeView
-                    data={filteredTree}
-                    selectedItems={selectedType ? [selectedType.id] : []}
-                    openedItems={filter ? filteredTree.map(n => n.id) : undefined}
-                    onClickItem={(item, ev, toggle) => {
-                        if (!isOpenableEntry(item)) {
-                            setSelectedType(item);
-                        } else {
-                            toggle();
-                        }
-                    }}
-                    onDoubleClickItem={item => {
-                        if (!isOpenableEntry(item)) {
-                            onCreateContent(item);
-                        }
-                    }}
-                />
-            </div>
-            <DialogActions>
-                <Button
-                    data-sel-role="content-type-dialog-cancel"
-                    variant="outlined"
-                    size="big"
-                    label={t('content-editor:label.contentEditor.CMMActions.createNewContent.btnDiscard')}
-                    onClick={onClose}
-                />
-                <Button
-                    data-sel-role="content-type-dialog-create"
-                    disabled={!selectedType}
-                    color="accent"
-                    size="big"
-                    label={t('content-editor:label.contentEditor.CMMActions.createNewContent.btnCreate')}
-                    onClick={() => {
-                        onCreateContent(selectedType);
-                    }}
-                />
-            </DialogActions>
+                    <div className={styles.treeContainer} data-sel-role="content-type-tree">
+                        <TreeView
+                            data={filteredTree}
+                            selectedItems={selectedType ? [selectedType.id] : []}
+                            openedItems={filter ? filteredTree.map(n => n.id) : undefined}
+                            onClickItem={(item, ev, toggle) => {
+                                if (!isOpenableEntry(item)) {
+                                    setSelectedType(item);
+                                } else if (!filter) {
+                                    if (selectedType && selectedType.parent.id === item.id) {
+                                        setSelectedType(null);
+                                    }
+
+                                    toggle();
+                                }
+                            }}
+                            onDoubleClickItem={item => {
+                                if (!isOpenableEntry(item)) {
+                                    onCreateContent(item);
+                                }
+                            }}
+                        />
+                    </div>
+                    <DialogActions>
+                        <Button
+                            data-sel-role="content-type-dialog-cancel"
+                            variant="outlined"
+                            size="big"
+                            label={t('content-editor:label.contentEditor.CMMActions.createNewContent.btnDiscard')}
+                            onClick={onClose}
+                        />
+                        <Button
+                            data-sel-role="content-type-dialog-create"
+                            disabled={!selectedType}
+                            color="accent"
+                            size="big"
+                            label={t('content-editor:label.contentEditor.CMMActions.createNewContent.btnCreate')}
+                            onClick={() => {
+                                onCreateContent(selectedType);
+                            }}
+                        />
+                    </DialogActions>
+                </>
+            )}
         </Dialog>
     );
 };
