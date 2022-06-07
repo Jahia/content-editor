@@ -92,6 +92,7 @@ export const AutomaticOrdering = () => {
                 })}
 
             <Button className={styles.addButton}
+                    size="big"
                     data-sel-role="add-automatic-ordering-field"
                     isDisabled={!nextRow || nextRow.propField.readOnly}
                     label={t('content-editor:label.contentEditor.edit.fields.actions.add')}

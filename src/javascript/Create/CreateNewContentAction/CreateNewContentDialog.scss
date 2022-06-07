@@ -1,6 +1,5 @@
 .treeContainer.treeContainer {
-    min-width: 30vw;
-    height: 100vh;
+    flex: 1;
     min-height: 20vh;
     margin: 0 var(--spacing-large);
     padding: var(--spacing-nano);
@@ -8,6 +7,11 @@
     border: 1px solid var(--color-gray_light40);
     background-color: var(--color-light60);
     overflow: auto;
+}
+
+.modalRoot.modalRoot {
+    width: 600px;
+    height: calc(100% - 96px);
 }
 
 .dialogTitle.dialogTitle {
