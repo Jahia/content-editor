@@ -34,6 +34,10 @@ export class ContentEditor extends BasePage {
         cy.get('[role="alertdialog"]').should('be.visible').should('contain', 'Content successfully created')
     }
 
+    editSavedContent() {
+        cy.get('[role="alertdialog"]').should('be.visible').find('.moonstone-button').click()
+    }
+
     cancel() {
         getComponentByRole(Button, 'backButton').click()
     }

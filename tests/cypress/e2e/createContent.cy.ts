@@ -1,4 +1,5 @@
 import { ContentEditor } from '../page-object'
+import {Button, getComponentByRole} from "@jahia/cypress";
 
 describe('Create content tests', { retries: 10 }, () => {
     let contentEditor: ContentEditor
@@ -86,5 +87,31 @@ describe('Create content tests', { retries: 10 }, () => {
         contentEditor.save()
         pageComposer.refresh().shouldContain('Cypress Work In Progress Test')
         pageComposer.shouldContainWIPOverlay()
+    })
+
+    it('Can create a news and edit it from the successful alert', { retries: 0 }, function () {
+        const pageComposer = contentEditor.getPageComposer()
+        pageComposer
+            .openCreateContent()
+            .getContentTypeSelector()
+            .searchForContentType('News entry')
+            .selectContentType('News entry')
+            .create()
+        cy.get('#contenteditor-dialog-title').should('be.visible').and('contain', 'Create News entry')
+        const contentSection = contentEditor.openSection('Content')
+        contentSection.get().find('#jnt\\:news_jcr\\:title').clear().type('Cypress news titlez')
+        contentSection.expand().get().find('.cke_button__source').click()
+        contentSection.get().find('textarea').type('Cypress news content')
+        contentEditor.save()
+        contentEditor.editSavedContent()
+        contentSection
+            .get()
+            .find('#jnt\\:news_jcr\\:title')
+            .should('have.value', 'Cypress news titlez')
+            .clear()
+            .type('Cypress news title')
+        getComponentByRole(Button, 'submitSave').click()
+        getComponentByRole(Button, 'backButton').click()
+        pageComposer.refresh().shouldContain('Cypress news title')
     })
 })
