@@ -65,7 +65,7 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
                         onClick={() => {
                             setEditorConfig({
                                 ...editorConfig,
-                                isFullscreen: true,
+                                isFullscreen: false,
                                 uuid: newNode.uuid,
                                 mode: Constants.routes.baseEditRoute
                             });
