@@ -1,3 +1,7 @@
+import React from 'react';
+import {getIcon} from '@jahia/icons';
+import {Layers} from '@jahia/moonstone';
+
 /**
  * This function perform creation of object contains only dynamic fieldSets
  * The dynamic fieldSet retrieved from sections will be added to object with
@@ -335,4 +339,9 @@ export function getChildrenOrder(formValues, nodeData) {
         childrenOrder: formValues['Children::Order'].map(child => child.name),
         shouldModifyChildren: true
     };
+}
+
+export function getNodeTypeIcon(typeName) {
+    const Icon = getIcon(typeName) || Layers;
+    return <Icon/>;
 }

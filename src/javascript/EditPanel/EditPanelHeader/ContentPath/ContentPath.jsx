@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Breadcrumb, Separator} from '@jahia/moonstone';
+import {Breadcrumb} from '@jahia/moonstone';
 
 import CompositePathEntry from './CompositePathEntry';
 import SimplePathEntry from './SimplePathEntry';
@@ -24,7 +24,6 @@ const ContentPath = ({items, onItemClick}) => {
             <Breadcrumb>
                 {renderItems(items, onItemClick)}
             </Breadcrumb>
-            <Separator variant="vertical"/>
         </>;
 };
 

@@ -11,9 +11,9 @@ import {Button, Checkbox, Edit, Typography} from '@jahia/moonstone';
 import {GoBack} from '~/actions/goBack.action';
 import {getButtonRenderer} from '~/utils/getButtonRenderer';
 import {truncate} from '~/utils/helper';
-import {EditPanelLanguageSwitcher} from '~/EditPanel/EditPanelLanguageSwitcher';
+import {EditPanelLanguageSwitcher} from './EditPanelLanguageSwitcher';
 import {useTranslation} from 'react-i18next';
-import HeaderBadges from '~/EditPanel/header/HeaderBadges';
+import HeaderBadges from './EditPanelHeader/HeaderBadges';
 
 const ButtonRenderer = getButtonRenderer({
     defaultButtonProps: {size: 'big', className: styles.saveButtons},
