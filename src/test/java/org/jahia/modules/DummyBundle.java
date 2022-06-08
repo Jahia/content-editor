@@ -23,16 +23,34 @@
  */
 package org.jahia.modules;
 
-import org.osgi.framework.*;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleException;
+import org.osgi.framework.ServiceReference;
+import org.osgi.framework.Version;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.security.cert.X509Certificate;
-import java.util.*;
+import java.util.Collections;
+import java.util.Dictionary;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Map;
 
 public class DummyBundle implements Bundle {
+
+    private long bundleId = 0;
+
+    public DummyBundle() {
+    }
+
+    public DummyBundle(long bundleId) {
+        this.bundleId = bundleId;
+    }
+
     @Override
     public int getState() {
         return 0;
@@ -80,7 +98,7 @@ public class DummyBundle implements Bundle {
 
     @Override
     public long getBundleId() {
-        return 0;
+        return bundleId;
     }
 
     @Override
@@ -175,6 +193,6 @@ public class DummyBundle implements Bundle {
 
     @Override
     public int compareTo(Bundle o) {
-        return 0;
+        return Long.compare(bundleId, o.getBundleId());
     }
 }
