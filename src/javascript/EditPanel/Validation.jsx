@@ -45,7 +45,7 @@ export const Validation = () => {
 
     const fieldsInError = getFieldsInError(fields, formik.errors);
     const i18nErrors = Object.keys(i18nContext)
-        .filter(language => language !== 'shared' && language !== lang)
+        .filter(language => language !== 'shared' && language !== 'memo' && language !== lang)
         .filter(language => getFieldsInError(fields, i18nContext[language].validation).length > 0);
 
     const onClick = field => {

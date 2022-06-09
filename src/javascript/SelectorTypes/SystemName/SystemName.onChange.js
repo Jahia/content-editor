@@ -30,7 +30,9 @@ const registerSystemNameOnChange = registry => {
                     }
                 }
 
-                if (systemNameField && !systemNameField.readOnly) {
+                // I18nContext will be available only after language switch, see useSwitchLanguage for details
+                const canSync = editorContext.i18nContext?.memo?.systemNameLang === undefined || editorContext.i18nContext.memo.systemNameLang === editorContext.lang;
+                if (systemNameField && !systemNameField.readOnly && canSync) {
                     const cleanedSystemName = replaceSpecialCharacters(currentValue);
                     editorContext.formik.setFieldValue(Constants.systemName.name, limitSystemNameIfNecessary(cleanedSystemName, systemNameField));
                     editorContext.formik.setFieldTouched(Constants.systemName.name, true, false);
