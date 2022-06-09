@@ -6,9 +6,9 @@ import {ContentEditorConfigContext, ContentEditorDataContextProvider} from './Co
 import {Constants} from '~/ContentEditor.constants';
 import {DndProvider} from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
-import {editFormQuery} from './Edit/EditForm.gql-queries';
+import {editFormQuery} from './Edit/editForm.gql-queries';
 import {adaptEditFormData} from './Edit/Edit.adapter';
-import {createFormQuery} from './Create/CreateForm/createForm.gql-queries';
+import {createFormQuery} from './Create/createForm.gql-queries';
 import {adaptCreateFormData} from './Create/Create.adapter';
 
 export const ContentEditor = ({name, mode, uuid, lang, uilang, site, contentType, envProps}) => {

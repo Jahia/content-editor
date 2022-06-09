@@ -1,4 +1,4 @@
-import {getCreatableNodetypes} from '~/Create/CreateNewContentAction/CreateNewContent.utils';
+import {getCreatableNodetypes} from '~/actions/jcontent/createContent/createContent.utils';
 import {Constants} from '~/ContentEditor.constants';
 import {useCallback} from 'react';
 import {useApolloClient} from '@apollo/react-hooks';

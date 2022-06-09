@@ -4,7 +4,7 @@ import {Formik} from 'formik';
 import EditPanel from '~/EditPanel';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import {validate} from '~/Validation/validation';
-import {saveNode} from './save/save.request';
+import {saveNode} from './save.request';
 import {PublicationInfoContextProvider} from '~/PublicationInfo/PublicationInfo.context';
 import {LockManager} from '~/Lock/LockManager';
 import {useTranslation} from 'react-i18next';

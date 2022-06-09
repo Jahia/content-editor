@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import PublicationInfoBadge from '~/PublicationInfo/PublicationInfoBadge';
 import LockInfoBadge from '~/Lock/LockInfo.badge';
-import WipInfoChip from '~/EditPanel/WorkInProgress/Chip/WipInfo.Chip';
+import WipInfoChip from '~/EditPanel/WorkInProgress/WipInfoChip';
 import {UnsavedChip} from '~/EditPanel/EditPanelHeader';
 import {Constants} from '~/ContentEditor.constants';
 import styles from './HeaderBadges.scss';
