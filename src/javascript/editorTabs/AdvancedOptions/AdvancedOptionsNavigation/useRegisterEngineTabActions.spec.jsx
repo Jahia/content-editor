@@ -2,7 +2,7 @@ import {tabShouldBeDisplayed, useRegisterEngineTabActions} from './useRegisterEn
 import React from 'react';
 import {useQuery} from '@apollo/react-hooks';
 import {registry} from '@jahia/ui-extender';
-import openEngineTabsAction from '~/Edit/engineTabs/openEngineTabs.action';
+import openEngineTabsAction from './openEngineTabsAction';
 
 jest.mock('./engineTabs.utils', () => {
     return {
@@ -18,7 +18,7 @@ jest.mock('@apollo/react-hooks', () => {
 
 jest.spyOn(React, 'useEffect').mockImplementation(f => f());
 
-jest.mock('~/Edit/engineTabs/engineTabs.permission.gql-query', () => {
+jest.mock('./engineTabs.permission.gql-query', () => {
     return {
         engineTabsPermissionCheckQuery: jest.fn()
     };

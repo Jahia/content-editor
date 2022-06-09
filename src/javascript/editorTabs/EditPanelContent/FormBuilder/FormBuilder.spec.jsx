@@ -2,7 +2,7 @@ import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 
-import FormBuilder from './FormBuilder';
+import {FormBuilder} from './FormBuilder';
 import {useFormikContext} from 'formik';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';

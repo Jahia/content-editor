@@ -10,12 +10,6 @@ import {useFormikContext} from 'formik';
 
 jest.mock('formik');
 
-jest.mock('~/EditPanel/WorkInProgress/WorkInProgress.utils', () => {
-    return {
-        showChipField: jest.fn()
-    };
-});
-
 let mockEditorContext;
 jest.mock('~/ContentEditor.context', () => {
     return {

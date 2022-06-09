@@ -1,4 +1,4 @@
-import {filterTree, getCreatableNodetypes, transformNodeTypesToActions} from './CreateNewContent.utils';
+import {filterTree, getCreatableNodetypes, transformNodeTypesToActions} from './createContent.utils';
 
 jest.mock('@jahia/moonstone');
 

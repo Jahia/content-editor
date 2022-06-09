@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import {shallow} from '@jahia/test-framework';
-import createAction from './create.action';
+import createAction from './createAction';
 import {useFormikContext} from 'formik';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';

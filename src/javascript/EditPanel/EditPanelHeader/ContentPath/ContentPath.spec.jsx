@@ -103,8 +103,8 @@ describe('ContentPathContainer', () => {
         }));
 
         const wrapper = shallow(<ContentPath {...defaultProps}/>);
-        expect(wrapper.find('ContentPath').prop('items')).toEqual(ancestors);
-        expect(wrapper.find('ContentPath').prop('onItemClick')).toBeDefined();
+        expect(wrapper.find('ContentPathView').prop('items')).toEqual(ancestors);
+        expect(wrapper.find('ContentPathView').prop('onItemClick')).toBeDefined();
     });
 
     it('starts from the closest ancestor visible in Content tree if node is not visible Content tree', () => {
@@ -134,7 +134,7 @@ describe('ContentPathContainer', () => {
         }));
 
         const wrapper = shallow(<ContentPath {...defaultProps}/>);
-        expect(wrapper.find('ContentPath').prop('items')).toEqual(ancestors.slice(1));
+        expect(wrapper.find('ContentPathView').prop('items')).toEqual(ancestors.slice(1));
     });
 
     it('should display direct parent when in create mode', () => {
@@ -169,7 +169,7 @@ describe('ContentPathContainer', () => {
         }));
 
         const wrapper = shallow(<ContentPath {...defaultProps}/>);
-        expect(wrapper.find('ContentPath').prop('items')).toEqual([...ancestors, {
+        expect(wrapper.find('ContentPathView').prop('items')).toEqual([...ancestors, {
             isVisibleInContentTree: true,
             ancestors: ancestors
         }]);
@@ -215,7 +215,7 @@ describe('ContentPathContainer', () => {
             }
         }));
         const wrapper = shallow(<ContentPath {...defaultProps}/>);
-        wrapper.find('ContentPath').simulate('itemClick', '/x/y/z');
+        wrapper.find('ContentPathView').simulate('itemClick', '/x/y/z');
 
         expect(dispatch).toHaveBeenCalled();
         expect(cmGoto).toHaveBeenCalledWith({mode: 'pages', path: '/x/y/z'});
@@ -230,7 +230,7 @@ describe('ContentPathContainer', () => {
         };
 
         const wrapper = shallow(<ContentPath {...defaultProps}/>);
-        wrapper.find('ContentPath').simulate('itemClick', '/x/y/z');
+        wrapper.find('ContentPathView').simulate('itemClick', '/x/y/z');
 
         expect(dispatch).not.toHaveBeenCalled();
         expect(envProps.back).not.toHaveBeenCalled();
@@ -240,7 +240,7 @@ describe('ContentPathContainer', () => {
         wrapper.find('EditPanelDialogConfirmation').simulate('closeDialog');
         expect(wrapper.find('EditPanelDialogConfirmation').props().isOpen).toBeFalsy();
 
-        wrapper.find('ContentPath').simulate('itemClick', '/x/y/z');
+        wrapper.find('ContentPathView').simulate('itemClick', '/x/y/z');
         expect(wrapper.find('EditPanelDialogConfirmation').props().isOpen).toBeTruthy();
         wrapper.find('EditPanelDialogConfirmation').props().actionCallback();
         expect(envProps.back).toHaveBeenCalled();
@@ -248,7 +248,7 @@ describe('ContentPathContainer', () => {
 
     it('handle redirects on item click when path start with files', () => {
         const wrapper = shallow(<ContentPath {...defaultProps}/>);
-        wrapper.find('ContentPath').simulate('itemClick', '/sites/mySiteXD/files/chocolate');
+        wrapper.find('ContentPathView').simulate('itemClick', '/sites/mySiteXD/files/chocolate');
 
         expect(dispatch).toHaveBeenCalled();
         expect(cmGoto).toHaveBeenCalledWith({mode: 'media', path: '/sites/mySiteXD/files/chocolate'});
@@ -258,7 +258,7 @@ describe('ContentPathContainer', () => {
 
     it('handle redirects on item click when path start with contents', () => {
         const wrapper = shallow(<ContentPath {...defaultProps}/>);
-        wrapper.find('ContentPath').simulate('itemClick', '/sites/mySiteXD/contents/fruits');
+        wrapper.find('ContentPathView').simulate('itemClick', '/sites/mySiteXD/contents/fruits');
 
         expect(dispatch).toHaveBeenCalled();
         expect(cmGoto).toHaveBeenCalledWith({mode: 'content-folders', path: '/sites/mySiteXD/contents/fruits'});
@@ -272,7 +272,7 @@ describe('ContentPathContainer', () => {
         };
 
         const wrapper = shallow(<ContentPath {...defaultProps}/>);
-        wrapper.find('ContentPath').simulate('itemClick', '/sites/mySiteXD/lord/rings');
+        wrapper.find('ContentPathView').simulate('itemClick', '/sites/mySiteXD/lord/rings');
 
         expect(dispatch).toHaveBeenCalled();
         expect(cmGoto).toHaveBeenCalledWith({mode: 'pages', path: '/sites/mySiteXD/lord/rings'});
@@ -282,7 +282,7 @@ describe('ContentPathContainer', () => {
 
     it('handle redirects on item click when path start with categories', () => {
         const wrapper = shallow(<ContentPath {...defaultProps}/>);
-        wrapper.find('ContentPath').simulate('itemClick', '/sites/systemsite/categories/tennis');
+        wrapper.find('ContentPathView').simulate('itemClick', '/sites/systemsite/categories/tennis');
 
         expect(dispatch).toHaveBeenCalled();
         expect(push).toHaveBeenCalledWith('/category-manager');

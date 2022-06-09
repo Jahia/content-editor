@@ -190,5 +190,3 @@ WorkInProgressDialog.propTypes = {
     }).isRequired,
     languages: PropTypes.array.isRequired
 };
-
-export default WorkInProgressDialog;

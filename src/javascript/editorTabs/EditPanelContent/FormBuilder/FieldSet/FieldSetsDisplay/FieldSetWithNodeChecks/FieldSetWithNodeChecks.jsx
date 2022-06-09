@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {FieldSetWithNodeCheckPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {useNodeChecks} from '@jahia/data-helper';
 import {useContentEditorContext} from '~/ContentEditor.context';
-import {FieldSet} from '~/editorTabs/EditPanelContent/FormBuilder/FieldSet';
+import {FieldSet} from '../../FieldSet';
 import {Loader} from '@jahia/moonstone';
 
 const FieldSetWithNodeChecks = ({fieldset}) => {

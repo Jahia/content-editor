@@ -1,4 +1,4 @@
-import goToOption from './AdvancedOptionsNavigation/GoToOption.action';
+import goToOption from './goToOptionAction';
 
 export const registerAdvancedOptionsActions = (actionsRegistry, t) => {
     actionsRegistry.addOrReplace('action', 'goToTechnicalInformation', goToOption, {

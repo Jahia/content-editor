@@ -33,7 +33,7 @@ const config = {
 
 const types = Object.keys(config);
 
-const PublicationStatus = ({type, tooltip}) => {
+export const PublicationStatus = ({type, tooltip}) => {
     const {t} = useTranslation('content-editor');
     const label = t(`label.contentEditor.publicationStatusBadge.${type}`);
     return (
@@ -45,5 +45,3 @@ PublicationStatus.propTypes = {
     type: PropTypes.oneOf(types).isRequired,
     tooltip: PropTypes.string
 };
-
-export default PublicationStatus;

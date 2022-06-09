@@ -3,8 +3,8 @@ import styles from './AdvancedOptionsNavigation.scss';
 import {DisplayActions, registry} from '@jahia/ui-extender';
 import {MenuItem} from '@jahia/moonstone';
 import PropTypes from 'prop-types';
-import {useRegisterEngineTabActions} from '~/Edit/engineTabs/useRegisterEngineTabActions';
-import {registerAdvancedOptionsActions} from '~/editorTabs/AdvancedOptions/AdvancedOptions.actions';
+import {useRegisterEngineTabActions} from './useRegisterEngineTabActions';
+import {registerAdvancedOptionsActions} from './registerAdvancedOptionsActions';
 import {useTranslation} from 'react-i18next';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 
@@ -76,4 +76,3 @@ AdvancedOptionsNavigation.propTypes = {
     activeOption: PropTypes.string.isRequired,
     setActiveOption: PropTypes.func.isRequired
 };
-export default AdvancedOptionsNavigation;

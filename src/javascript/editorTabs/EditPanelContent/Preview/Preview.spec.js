@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
-import {Preview} from './Preview.container';
+import {Preview} from './Preview';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import {useFormikContext} from 'formik';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import {shallow} from '@jahia/test-framework';
 import {BreadcrumbItem} from '@jahia/moonstone';
 
-import SimplePathEntry from './SimplePathEntry';
+import {SimplePathEntry} from './SimplePathEntry';
 import {getNodeTypeIcon} from '~/EditPanel/EditPanel.utils';
 
 describe('SimplePathEntry', () => {

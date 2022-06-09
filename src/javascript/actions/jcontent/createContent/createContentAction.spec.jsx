@@ -3,9 +3,9 @@ import {useContentEditorHistory} from '~/ContentEditorHistory';
 import {useSelector} from 'react-redux';
 import {useNodeChecks, useNodeInfo} from '@jahia/data-helper';
 import {shallow} from '@jahia/test-framework';
-import {transformNodeTypesToActions, useCreatableNodetypes} from './CreateNewContent.utils';
+import {transformNodeTypesToActions, useCreatableNodetypes} from './createContent.utils';
 
-import createContentAction from './CreateNewContent.action';
+import createContentAction from './createContentAction';
 
 jest.mock('~/ContentEditorHistory', () => {
     return {useContentEditorHistory: jest.fn()};
@@ -18,7 +18,7 @@ jest.mock('@jahia/data-helper', () => {
         useNodeInfo: jest.fn()};
 });
 jest.mock('./CreateNewContentDialog', () => jest.fn());
-jest.mock('./CreateNewContent.utils', () => {
+jest.mock('./createContent.utils', () => {
     return {useCreatableNodetypes: jest.fn(), transformNodeTypesToActions: jest.fn()};
 });
 

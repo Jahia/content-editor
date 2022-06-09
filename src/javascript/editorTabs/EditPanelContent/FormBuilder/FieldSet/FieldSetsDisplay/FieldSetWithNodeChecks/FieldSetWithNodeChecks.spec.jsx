@@ -5,7 +5,7 @@ import {useContentEditorContext} from '~/ContentEditor.context';
 import {useNodeChecks} from '@jahia/data-helper';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import FieldSetWithNodeChecks from './FieldSetWithNodeChecks';
-import {FieldSet} from '~/editorTabs/EditPanelContent/FormBuilder/FieldSet';
+import {FieldSet} from '../../FieldSet';
 
 jest.mock('~/ContentEditor.context', () => ({
     useContentEditorContext: jest.fn()
@@ -15,7 +15,7 @@ jest.mock('@jahia/data-helper', () => {
     return {useNodeChecks: jest.fn()};
 });
 
-jest.mock('~/EditPanel/EditPanelContent/FormBuilder/FieldSet', () => {
+jest.mock('../../FieldSet', () => {
     return {FieldSet: jest.fn()};
 });
 

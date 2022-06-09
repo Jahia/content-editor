@@ -5,7 +5,7 @@ import {useSiteInfo} from '@jahia/data-helper';
 import * as PropTypes from 'prop-types';
 import {Constants} from './ContentEditor.constants';
 import {useTranslation} from 'react-i18next';
-import ApolloCacheFlushOnGWTSave from '~/Edit/engineTabs/ApolloCacheFlushOnGWTSave';
+import ApolloCacheFlushOnGWTSave from '~/editorTabs/AdvancedOptions/AdvancedOptionsNavigation/ApolloCacheFlushOnGWTSave';
 import {ContentEditorSectionContextProvider} from '~/ContentEditorSection/ContentEditorSection.context';
 import {useSelector} from 'react-redux';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';

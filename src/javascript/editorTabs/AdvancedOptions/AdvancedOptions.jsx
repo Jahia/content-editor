@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {LayoutModule} from '@jahia/moonstone';
-import AdvancedOptionsNavigation from './AdvancedOptionsNavigation/AdvancedOptionsNavigation';
+import {AdvancedOptionsNavigation} from './AdvancedOptionsNavigation';
 import styles from './AdvancedOptions.scss';
 import {TechnicalInformation} from './TechnicalInformation/TechnicalInformation';
 import {DeprecatedOption} from './DeprecatedOption';
@@ -32,5 +32,3 @@ export const AdvancedOptions = () => {
         </>
     );
 };
-
-export default AdvancedOptions;

@@ -43,4 +43,3 @@ const tabBarAction = {
 };
 
 export default tabBarAction;
-

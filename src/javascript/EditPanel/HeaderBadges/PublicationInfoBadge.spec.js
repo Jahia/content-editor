@@ -1,9 +1,9 @@
 import {PublicationInfoBadge} from './PublicationInfoBadge';
 import React from 'react';
 import {shallow} from '@jahia/test-framework';
-import PublicationStatus from '../../PublicationInfo/PublicationInfo.status';
+import {PublicationStatus} from '~/PublicationInfo/PublicationStatus';
 
-jest.mock('./PublicationInfo.context', () => {
+jest.mock('~/PublicationInfo/PublicationInfo.context', () => {
     let callCount = 0;
     const contexts = [
         {

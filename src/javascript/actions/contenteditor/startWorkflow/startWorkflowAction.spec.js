@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from '@jahia/test-framework';
 import {Constants} from '~/ContentEditor.constants';
-import startWorkflowAction from './startWorkflow.action';
+import startWorkflowAction from './startWorkflowAction';
 import {useFormikContext} from 'formik';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 

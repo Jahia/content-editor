@@ -2,7 +2,7 @@ import {PublicationInfoProgress} from './PublicationInfoProgress';
 import React from 'react';
 import {shallow} from '@jahia/test-framework';
 
-jest.mock('./PublicationInfo.context', () => {
+jest.mock('~/PublicationInfo/PublicationInfo.context', () => {
     let called = false;
     return {
         usePublicationInfoContext: () => {

@@ -1,13 +1,13 @@
 import React from 'react';
 import {shallow} from '@jahia/test-framework';
-import HeaderBadges from './index';
+import {HeaderBadges} from './HeaderBadges';
 import {Constants} from '~/ContentEditor.constants';
 import {useFormikContext} from 'formik';
 import {useContentEditorContext} from '~/ContentEditor.context';
 
 jest.mock('~/ContentEditor.context');
 jest.mock('formik');
-describe('Header UpperSection', () => {
+describe('HeaderBadges', () => {
     let formik;
     let contentEditorContext;
 

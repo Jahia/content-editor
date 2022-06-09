@@ -2,8 +2,8 @@ import React from 'react';
 import tabBarAction from '../actions/tabbar/tabBarAction';
 import {Edit, Setting} from '@jahia/moonstone';
 import {Constants} from '~/ContentEditor.constants';
-import EditPanelContent from '~/editorTabs/EditPanelContent/EditPanelContent';
-import AdvancedOptions from '~/editorTabs/AdvancedOptions/AdvancedOptions';
+import {EditPanelContent} from './EditPanelContent';
+import {AdvancedOptions} from './AdvancedOptions';
 
 export const registerEditPanelActions = actionsRegistry => {
     // Tab bar actions

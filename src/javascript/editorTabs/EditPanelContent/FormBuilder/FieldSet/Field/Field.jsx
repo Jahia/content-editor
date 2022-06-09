@@ -21,7 +21,7 @@ import styles from './Field.scss';
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
 export const showChipField = (is18nField, wipInfo, currentLanguage) => {
-    return is18nField && wipInfo.status === Constants.wip.status.LANGUAGES && wipInfo.languages.indexOf(currentLanguage) > -1;
+    return is18nField && wipInfo && wipInfo.status === Constants.wip.status.LANGUAGES && wipInfo.languages.indexOf(currentLanguage) > -1;
 };
 
 export const Field = ({inputContext, idInput, selectorType, field}) => {

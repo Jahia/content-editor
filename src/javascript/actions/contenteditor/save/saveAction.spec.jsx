@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import {shallow} from '@jahia/test-framework';
-import saveAction from './save.action';
+import saveAction from './saveAction';
 import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import {useFormikContext} from 'formik';

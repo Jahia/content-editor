@@ -1,11 +1,11 @@
-import PublicationInfoStatus from './PublicationInfo.status';
+import {PublicationStatus} from './PublicationStatus';
 import React from 'react';
 import {shallow} from '@jahia/test-framework';
 import {Cloud, File, FileContent, NoCloud, Warning} from '@jahia/moonstone';
 
-describe('PublicationInfo.status', () => {
+describe('PublicationStatus', () => {
     it('Should display not published chip', () => {
-        let wrapper = shallow(<PublicationInfoStatus type="notPublished"/>);
+        let wrapper = shallow(<PublicationStatus type="notPublished"/>);
 
         expect(wrapper.find('Chip').exists()).toBeTruthy();
         expect(wrapper.props().label).toBe('translated_label.contentEditor.publicationStatusBadge.notPublished');
@@ -14,7 +14,7 @@ describe('PublicationInfo.status', () => {
     });
 
     it('Should display modified chip', () => {
-        let wrapper = shallow(<PublicationInfoStatus type="modified"/>);
+        let wrapper = shallow(<PublicationStatus type="modified"/>);
 
         expect(wrapper.find('Chip').exists()).toBeTruthy();
         expect(wrapper.props().label).toBe('translated_label.contentEditor.publicationStatusBadge.modified');
@@ -23,7 +23,7 @@ describe('PublicationInfo.status', () => {
     });
 
     it('Should display published chip', () => {
-        let wrapper = shallow(<PublicationInfoStatus type="published"/>);
+        let wrapper = shallow(<PublicationStatus type="published"/>);
 
         expect(wrapper.find('Chip').exists()).toBeTruthy();
         expect(wrapper.props().label).toBe('translated_label.contentEditor.publicationStatusBadge.published');
@@ -32,7 +32,7 @@ describe('PublicationInfo.status', () => {
     });
 
     it('Should display warning chip', () => {
-        let wrapper = shallow(<PublicationInfoStatus type="warning"/>);
+        let wrapper = shallow(<PublicationStatus type="warning"/>);
 
         expect(wrapper.find('Chip').exists()).toBeTruthy();
         expect(wrapper.props().label).toBe('translated_label.contentEditor.publicationStatusBadge.warning');
@@ -41,7 +41,7 @@ describe('PublicationInfo.status', () => {
     });
 
     it('Should display publishing chip', () => {
-        let wrapper = shallow(<PublicationInfoStatus type="publishing"/>);
+        let wrapper = shallow(<PublicationStatus type="publishing"/>);
 
         expect(wrapper.find('Chip').exists()).toBeTruthy();
         expect(wrapper.props().label).toBe('translated_label.contentEditor.publicationStatusBadge.publishing');

@@ -1,29 +1,10 @@
 import React from 'react';
 import {shallow} from '@jahia/test-framework';
-import publishAction from './publish.action';
+import publishAction from './publishAction';
 import {Constants} from '~/ContentEditor.constants';
 import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
-import {useContentEditorConfigContext, useContentEditorContext} from '../../../ContentEditor.context';
+import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import {useFormikContext} from 'formik';
-
-jest.mock('~/actions/redux.action', () => {
-    let statemock;
-    return {
-        reduxAction: mapStateToContext => {
-            return {
-                init: context => {
-                    const contextToAdd = mapStateToContext(statemock);
-                    Object.keys(contextToAdd).forEach(key => {
-                        context[key] = contextToAdd[key];
-                    });
-                }
-            };
-        },
-        setReduxState: s => {
-            statemock = s;
-        }
-    };
-});
 
 jest.mock('./publishNode', () => {
     return {

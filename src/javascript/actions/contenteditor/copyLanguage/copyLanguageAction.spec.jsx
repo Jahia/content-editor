@@ -11,7 +11,7 @@ jest.mock('react', () => {
     };
 });
 
-jest.mock('../../ContentEditor.context');
+jest.mock('~/ContentEditor.context');
 
 describe('copy language action', () => {
     let defaultProps;

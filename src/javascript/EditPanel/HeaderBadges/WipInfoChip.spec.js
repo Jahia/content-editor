@@ -13,28 +13,15 @@ jest.mock('~/ContentEditor.context', () => {
     };
 });
 
-jest.mock('~/EditPanel/WorkInProgress/WorkInProgress.utils', () => {
-    return {
-        getChipContent: jest.fn(),
-        showChipHeader: jest.fn()
-    };
-});
 const field = {
     value: {
-        wipInfo: {
-            status: 'LANGUAGES',
-            languages:
-                ['fr', 'en']
-        }
+        status: 'LANGUAGES',
+        languages:
+            ['fr', 'en']
     }
 };
+
 describe('WipInfoChip', () => {
-    let showChip = true;
-
-    beforeEach(() => {
-        showChipHeader.mockImplementation(() => showChip);
-    });
-
     it('Should display chip when showChipHeader is true', () => {
         const RenderWrapper = shallow(<WipInfoChip/>)
             .find('Field')
@@ -43,9 +30,8 @@ describe('WipInfoChip', () => {
         expect(RenderWrapper.debug()).toContain('Chip');
     });
 
-    it('Should display chip when showChipHeader is false', () => {
-        showChip = false;
-
+    it('Should not display chip when showChipHeader is false', () => {
+        field.value.languages = [];
         const RenderWrapper = shallow(<WipInfoChip/>)
             .find('Field')
             .renderProp('children')({field});
