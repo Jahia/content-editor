@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Create from '~/Create/Create';
-import Edit from '~/Edit/Edit';
+import Create from './Create/Create';
+import Edit from './Edit/Edit';
 import {ContentEditorConfigContext, ContentEditorDataContextProvider} from './ContentEditor.context';
-import {Constants} from '~/ContentEditor.constants';
+import {Constants} from './ContentEditor.constants';
 import {DndProvider} from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
-import {editFormQuery} from './Edit/editForm.gql-queries';
+import {EditFormQuery} from './Edit/edit.gql-queries';
 import {adaptEditFormData} from './Edit/Edit.adapter';
-import {createFormQuery} from './Create/createForm.gql-queries';
+import {CreateFormQuery} from './Create/create.gql-queries';
 import {adaptCreateFormData} from './Create/Create.adapter';
 
 export const ContentEditor = ({name, mode, uuid, lang, uilang, site, contentType, envProps}) => {
@@ -27,12 +27,12 @@ export const ContentEditor = ({name, mode, uuid, lang, uilang, site, contentType
         <ContentEditorConfigContext.Provider value={contentEditorConfig}>
             <DndProvider backend={Backend}>
                 { mode === 'edit' && (
-                    <ContentEditorDataContextProvider formQuery={editFormQuery} formDataAdapter={adaptEditFormData}>
+                    <ContentEditorDataContextProvider formQuery={EditFormQuery} formDataAdapter={adaptEditFormData}>
                         <Edit/>
                     </ContentEditorDataContextProvider>
                 )}
                 { mode === 'create' && (
-                    <ContentEditorDataContextProvider formQuery={createFormQuery} formDataAdapter={adaptCreateFormData}>
+                    <ContentEditorDataContextProvider formQuery={CreateFormQuery} formDataAdapter={adaptCreateFormData}>
                         <Create/>
                     </ContentEditorDataContextProvider>
                 )}

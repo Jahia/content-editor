@@ -1,39 +1,134 @@
-import React from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
-import {Breadcrumb} from '@jahia/moonstone';
+import {useDispatch, useSelector} from 'react-redux';
+import {useQuery} from '@apollo/react-hooks';
+import {push} from 'connected-react-router';
 
-import CompositePathEntry from './CompositePathEntry';
-import SimplePathEntry from './SimplePathEntry';
+import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
+import {cmGoto} from '~/JContent.redux-actions';
+import EditPanelDialogConfirmation from '~/EditPanelDialogConfirmation/EditPanelDialogConfirmation';
+import {GetContentPath} from './ContentPath.gql-queries';
+import {ContentPathView} from './ContentPathView';
+import {Constants} from '~/ContentEditor.constants';
+import {useFormikContext} from 'formik';
 
-const renderItems = (items, onItemClick) => {
-    if (items.length > 3) {
-        const [first, last, others] = [items[0], items[items.length - 1], items.slice(1, items.length - 1)];
-        return [
-            <SimplePathEntry key={first.uuid} item={first} onItemClick={onItemClick}/>,
-            <CompositePathEntry key={`${first.uuid}-${last.uuid}`} items={others} onItemClick={onItemClick}/>,
-            <SimplePathEntry key={last.uuid} item={last} onItemClick={onItemClick}/>
-        ];
+const findLastIndex = (array, callback) => {
+    let lastIndex = -1;
+    array.forEach((e, i) => {
+        if (callback(e)) {
+            lastIndex = i;
+        }
+    });
+    return lastIndex;
+};
+
+const getItems = (mode, node) => {
+    if (!node) {
+        return [];
     }
 
-    return items.map(item => <SimplePathEntry key={item.uuid} item={item} onItemClick={onItemClick}/>);
+    let ancestors = node.ancestors || [];
+
+    if (ancestors.length === 0) {
+        return Constants.routes.baseCreateRoute ? [node] : ancestors;
+    }
+
+    if (mode === Constants.routes.baseCreateRoute) {
+        ancestors = [...ancestors, node];
+    }
+
+    if (node.isVisibleInContentTree) {
+        return ancestors;
+    }
+
+    const indexOfLastAncestorInContentTree = findLastIndex(ancestors, a => a.isVisibleInContentTree);
+    if (indexOfLastAncestorInContentTree > 0) {
+        const lastAncestorInContentTree = ancestors[indexOfLastAncestorInContentTree];
+        if (indexOfLastAncestorInContentTree + 1 === ancestors.length) {
+            return [lastAncestorInContentTree];
+        }
+
+        const remainingAncestors = ancestors.slice(indexOfLastAncestorInContentTree + 1);
+        return [lastAncestorInContentTree].concat(remainingAncestors);
+    }
+
+    return ancestors;
 };
 
-const ContentPath = ({items, onItemClick}) => {
-    return (items.length > 0) &&
+export const ContentPath = ({path}) => {
+    const [open, setOpen] = useState(false);
+    const {envProps, site, mode} = useContentEditorConfigContext();
+    const formik = useFormikContext();
+    const {i18nContext} = useContentEditorContext();
+
+    const dispatch = useDispatch();
+    const {language} = useSelector(state => ({
+        language: state.language
+    }));
+
+    const {data, error} = useQuery(GetContentPath, {
+        variables: {
+            path: path,
+            language
+        }
+    });
+
+    const dirty = formik.dirty || Object.keys(i18nContext).length > 0;
+
+    const handleNavigation = path => {
+        if (dirty) {
+            setOpen(true);
+        } else {
+            if (path.startsWith('/sites/systemsite/categories/') || path === '/sites/systemsite/categories') {
+                dispatch(push('/category-manager'));
+            } else {
+                let mode = 'pages';
+
+                if (path.startsWith(`/sites/${site}/files/`) || path === `/sites/${site}/files`) {
+                    mode = 'media';
+                } else if (path.startsWith(`/sites/${site}/contents/`) || path === `/sites/${site}/contents`) {
+                    mode = 'content-folders';
+                }
+
+                dispatch(cmGoto({
+                    mode: mode,
+                    path
+                }));
+            }
+
+            if (envProps.redirectBreadcrumbCallback) {
+                envProps.redirectBreadcrumbCallback();
+            }
+        }
+    };
+
+    const node = data?.jcr?.node;
+    const items = useMemo(() => getItems(mode, node), [mode, node]);
+
+    let onCloseDialog = useCallback(() => setOpen(false), [setOpen]);
+    let actionCallback = envProps.back;
+
+    if (error) {
+        return <>{error.message}</>;
+    }
+
+    return (
         <>
-            <Breadcrumb>
-                {renderItems(items, onItemClick)}
-            </Breadcrumb>
-        </>;
-};
+            <EditPanelDialogConfirmation
+                isOpen={open}
+                actionCallback={actionCallback}
+                onCloseDialog={onCloseDialog}
+            />
 
-ContentPath.propTypes = {
-    items: PropTypes.arrayOf(PropTypes.object).isRequired,
-    onItemClick: PropTypes.func
+            <ContentPathView items={items} onItemClick={handleNavigation}/>
+        </>
+    );
 };
 
 ContentPath.defaultProps = {
-    onItemClick: () => {}
+    path: ''
 };
 
-export default ContentPath;
+ContentPath.propTypes = {
+    path: PropTypes.string
+};

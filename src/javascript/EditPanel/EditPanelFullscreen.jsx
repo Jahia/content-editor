@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {useContentEditorContext} from '~/ContentEditor.context';
-import classes from './EditPanel.scss';
+import styles from './EditPanel.scss';
 import clsx from 'clsx';
 import {registry} from '@jahia/ui-extender';
 
@@ -31,7 +31,7 @@ const EditPanelFullscreen = ({title}) => {
         >
             <WindowListeners/>
             <div className={clsx(
-                activeTab === Constants.editPanel.editTab ? classes.tab : classes.hideTab,
+                activeTab === Constants.editPanel.editTab ? styles.tab : styles.hideTab,
                 'flexCol'
             )}
             >
@@ -39,7 +39,7 @@ const EditPanelFullscreen = ({title}) => {
             </div>
             {OtherTabComponent && (
                 <div className={clsx(
-                    Constants.editPanel.editTab === activeTab ? classes.hideTab : classes.tab,
+                    Constants.editPanel.editTab === activeTab ? styles.hideTab : styles.tab,
                     'flexCol'
                 )}
                 >

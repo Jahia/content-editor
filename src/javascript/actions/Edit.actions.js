@@ -87,7 +87,7 @@ export const registerEditActions = actionsRegistry => {
 
     actionsRegistry.add('action', 'copyLanguageAction', copyLanguageAction, {
         buttonLabel: 'content-editor:label.contentEditor.edit.action.copyLanguage.name',
-        targets: ['content-editor/header/3dots:2'],
+        targets: ['content-editor/header/3dots:2']
     });
 };
 

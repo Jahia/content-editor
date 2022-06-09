@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {usePublicationInfo} from './PublicationInfo';
+import {usePublicationInfo} from './usePublicationInfo';
 import PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 

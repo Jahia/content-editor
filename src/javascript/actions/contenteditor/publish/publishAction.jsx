@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react';
 import * as PropTypes from 'prop-types';
-import {publishNode} from './publish.request';
+import {publishNode} from './publishNode';
 import {Constants} from '~/ContentEditor.constants';
 import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
 import {useApolloClient} from '@apollo/react-hooks';

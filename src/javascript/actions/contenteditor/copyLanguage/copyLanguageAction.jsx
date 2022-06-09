@@ -28,9 +28,6 @@ export const CopyLanguageActionComponent = ({render: Render, ...otherProps}) => 
 };
 
 CopyLanguageActionComponent.propTypes = {
-    language: PropTypes.string.isRequired,
-    siteInfo: PropTypes.object.isRequired,
-    nodeData: PropTypes.object.isRequired,
     render: PropTypes.func.isRequired
 };
 

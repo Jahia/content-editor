@@ -9,10 +9,6 @@ describe('TextArea', () => {
     beforeEach(() => {
         defaultProps = {
             value: 'uuidValue',
-            classNames: {
-                container: 'IwantToStyleContainer',
-                textarea: 'IwantToStyleTextarea'
-            }
         };
     });
 
@@ -26,20 +22,6 @@ describe('TextArea', () => {
             .find('textarea');
 
         expect(cmp.debug()).toContain('uuidValue');
-    });
-
-    it('should bind the className to the textarea', () => {
-        const cmp = shallowWithTheme(
-            <TextArea {...defaultProps}/>,
-            {},
-            dsGenericTheme
-        )
-            .dive()
-            .find('textarea');
-
-        expect(cmp.props().className).toContain(
-            defaultProps.classNames.textarea
-        );
     });
 
     it('it should have 5 rows by default', () => {

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {openEngineTab} from './engineTabs.utils';
-import {EditPanelDialogConfirmation} from '~/EditPanel/EditPanelDialogConfirmation';
+import {EditPanelDialogConfirmation} from '~/EditPanelDialogConfirmation';
 import PropTypes from 'prop-types';
 import {useFormikContext} from 'formik';
 import {useContentEditorContext} from '~/ContentEditor.context';

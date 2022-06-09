@@ -25,7 +25,7 @@ jest.mock('~/actions/redux.action', () => {
     };
 });
 
-jest.mock('./publish.request', () => {
+jest.mock('./publishNode', () => {
     return {
         publishNode: jest.fn()
     };

@@ -1,3 +1,1 @@
-import ContentPath from './ContentPath.container';
-
-export default ContentPath;
+export {ContentPath} from './ContentPath';

@@ -7,7 +7,7 @@ import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentE
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 
 import {validate} from '~/Validation/validation';
-import {createNode} from './create.request';
+import {createNode} from './createNode';
 import {useApolloClient} from '@apollo/react-hooks';
 
 export const Create = () => {

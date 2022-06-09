@@ -6,7 +6,7 @@ import {Constants} from '~/ContentEditor.constants';
 import {isEqualToSystemName, limitSystemNameIfNecessary, replaceSpecialCharacters} from './SystemName.utils';
 import {Button, Copy} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
-import classes from './SystemName.scss';
+import styles from './SystemName.scss';
 import {useFormikContext} from 'formik';
 
 export const SystemName = ({field, value, id, editorContext, onChange, onBlur}) => {
@@ -26,7 +26,7 @@ export const SystemName = ({field, value, id, editorContext, onChange, onBlur}) 
 
             {formik.values[titleField] !== undefined &&
             editorContext.mode === Constants.routes.baseEditRoute &&
-            <Button className={classes.syncButton}
+            <Button className={styles.syncButton}
                     data-sel-role="syncSystemName"
                     variant="outlined"
                     size="big"

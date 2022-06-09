@@ -3,7 +3,7 @@ import {Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Radio} from
 import {Button, Check, Typography} from '@jahia/moonstone';
 import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
-import classes from './WorkInProgressDialog.scss';
+import styles from './WorkInProgressDialog.scss';
 import {Constants} from '~/ContentEditor.constants';
 
 export const WorkInProgressDialog = ({
@@ -71,13 +71,13 @@ export const WorkInProgressDialog = ({
             onClose={onCloseDialog}
         >
             <DialogTitle id="dialog-language-title">
-                <Typography variant="heading" weight="bold" className={classes.dialogTitle}>
+                <Typography variant="heading" weight="bold" className={styles.dialogTitle}>
                     {t('content-editor:label.contentEditor.edit.action.workInProgress.dialogTitle')}
                 </Typography>
-                <Typography className={classes.dialogSubTitle}>
+                <Typography className={styles.dialogSubTitle}>
                     {t('content-editor:label.contentEditor.edit.action.workInProgress.dialogSubTitle')}
                     <a
-                        className={classes.link}
+                        className={styles.link}
                         target="_blank"
                         rel="noopener noreferrer"
                         href={window.contextJsParameters.config.wip}
@@ -85,84 +85,84 @@ export const WorkInProgressDialog = ({
                     </a>
                 </Typography>
             </DialogTitle>
-            <DialogContent className={classes.dialogContent}>
-                <div className={classes.container}>
+            <DialogContent className={styles.dialogContent}>
+                <div className={styles.container}>
                     <div>
                         <Checkbox
                             data-sel-role="WIP"
-                            className={wipStatus ? classes.checkboxChecked : ''}
+                            className={wipStatus ? styles.checkboxChecked : ''}
                             checked={wipStatus}
                             onChange={onChangeWip}
                         />
                     </div>
                     <div>
-                        <Typography className={classes.label}>
+                        <Typography className={styles.label}>
                             {t('content-editor:label.contentEditor.edit.action.workInProgress.checkboxLabel')}
                         </Typography>
 
                         {!wipStatus &&
-                        <Typography className={classes.label} variant="caption">
+                        <Typography className={styles.label} variant="caption">
                             {t('content-editor:label.contentEditor.edit.action.workInProgress.checkboxSubLabel')}
                         </Typography>}
                     </div>
                 </div>
                 {wipStatus &&
-                <div className={classes.radioButtonContainer}>
-                    <div className={classes.radioButtonEntry}>
+                <div className={styles.radioButtonContainer}>
+                    <div className={styles.radioButtonEntry}>
                         <Radio
                             disabled={!wipStatus}
                             checked={statusSelected === Constants.wip.status.LANGUAGES}
-                            className={classes.radioButton}
+                            className={styles.radioButton}
                             value={Constants.wip.status.LANGUAGES}
                             onChange={handleLocalisedOrAllContent}
                         />
-                        <Typography className={classes.label}>
+                        <Typography className={styles.label}>
                             {t('content-editor:label.contentEditor.edit.action.workInProgress.localizedPropertiesOnly')}
                         </Typography>
                     </div>
-                    <div className={classes.languageSelectionContainer}>
+                    <div className={styles.languageSelectionContainer}>
                         {languages.map(language => {
                             return (
                                 <div key={language.language}>
                                     <Checkbox
                                         disabled={!wipStatus || statusSelected !== Constants.wip.status.LANGUAGES}
-                                        className={selectedLanguages.indexOf(language.language) > -1 ? classes.checkboxChecked : ''}
+                                        className={selectedLanguages.indexOf(language.language) > -1 ? styles.checkboxChecked : ''}
                                         value={language.language}
                                         checked={selectedLanguages.indexOf(language.language) > -1}
                                         onChange={event => {
                                             updateSelectedLanguage(language.language, event.target.checked);
                                         }}
                                     />
-                                    <Typography className={classes.label}>
+                                    <Typography className={styles.label}>
                                         {language.displayName}
                                     </Typography>
                                 </div>
                             );
                         })}
-                        <Typography className={classes.label} variant="caption">
+                        <Typography className={styles.label} variant="caption">
                             {t('content-editor:label.contentEditor.edit.action.workInProgress.localizedPropertiesOnlySubText')}
                         </Typography>
                     </div>
-                    <div className={classes.radioButtonEntry}>
+                    <div className={styles.radioButtonEntry}>
                         <Radio
                             disabled={!wipStatus}
                             checked={statusSelected === Constants.wip.status.ALL_CONTENT}
-                            className={classes.radioButton}
+                            className={styles.radioButton}
                             value={Constants.wip.status.ALL_CONTENT}
                             onChange={handleLocalisedOrAllContent}
                         />
                         <div>
-                            <Typography className={classes.label}>
+                            <Typography className={styles.label}>
                                 {t('content-editor:label.contentEditor.edit.action.workInProgress.allContent')}
                             </Typography>
-                            <Typography className={classes.subTextAllContent} variant="caption">
+                            <Typography className={styles.subTextAllContent} variant="caption">
                                 {t('content-editor:label.contentEditor.edit.action.workInProgress.allContentSubText')}
                             </Typography>
                         </div>
                     </div>
                 </div>}
             </DialogContent>
-            <DialogActions className={classes.actions}>
+            <DialogActions className={styles.actions}>
                 <Button
                     label={t('content-editor:label.contentEditor.edit.action.workInProgress.btnCancel')}
                     size="big"

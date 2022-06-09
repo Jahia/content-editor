@@ -4,7 +4,7 @@ import {BreadcrumbItem} from '@jahia/moonstone';
 
 import {getNodeTypeIcon} from '~/EditPanel/EditPanel.utils';
 
-const SimplePathEntry = ({item, onItemClick}) => {
+export const SimplePathEntry = ({item, onItemClick}) => {
     const type = item.primaryNodeType?.name;
     const icon = getNodeTypeIcon(type);
     return (
@@ -20,5 +20,3 @@ SimplePathEntry.propTypes = {
 SimplePathEntry.defaultProps = {
     onItemClick: () => {}
 };
-
-export default SimplePathEntry;

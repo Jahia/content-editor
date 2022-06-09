@@ -2,8 +2,8 @@ import React from 'react';
 import {registry} from '@jahia/ui-extender';
 import {registerCEActions} from './registerCEActions';
 import {Constants} from '~/ContentEditor.constants';
-import {ContentEditorApi} from '~/Api/ContentEditorApi';
-import ContentEditorRedux from './ContentEditor.redux';
+import {ContentEditorApi} from './ContentEditorApi/ContentEditorApi';
+import {ContentEditorRoute} from './Route/ContentEditorRoute';
 import {ContentEditorHistoryContextProvider} from '~/ContentEditorHistory/ContentEditorHistory.context';
 import {registerSelectorTypes} from '~/SelectorTypes';
 import {pcNavigateTo} from '~/pagecomposer.redux-actions';
@@ -31,7 +31,7 @@ export default function () {
         path: '/content-editor/:lang/edit/:uuid',
         // eslint-disable-next-line react/prop-types
         render: ({match}) => (
-            <ContentEditorRedux uuid={match.params.uuid}
+            <ContentEditorRoute uuid={match.params.uuid}
                                 mode={Constants.routes.baseEditRoute}
                                 lang={match.params.lang}/>
         )
@@ -42,7 +42,7 @@ export default function () {
         path: '/content-editor/:lang/create/:parentUuid/:contentType?/:name?',
         // eslint-disable-next-line react/prop-types
         render: ({match}) => (
-            <ContentEditorRedux uuid={match.params.parentUuid}
+            <ContentEditorRoute uuid={match.params.parentUuid}
                                 mode={Constants.routes.baseCreateRoute}
                                 lang={match.params.lang}
                                 contentType={decodeURI(match.params.contentType)}

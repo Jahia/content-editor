@@ -4,7 +4,7 @@ import {Formik} from 'formik';
 import EditPanel from '~/EditPanel';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import {validate} from '~/Validation/validation';
-import {saveNode} from './save.request';
+import {updateNode} from './updateNode';
 import {PublicationInfoContextProvider} from '~/PublicationInfo/PublicationInfo.context';
 import {LockManager} from '~/Lock/LockManager';
 import {useTranslation} from 'react-i18next';
@@ -29,7 +29,7 @@ export const Edit = () => {
     }, [contentEditorConfigContext.envProps, nodeData.lockedAndCannotBeEdited]);
 
     const handleSubmit = useCallback((values, actions) => {
-        return saveNode({
+        return updateNode({
             client,
             t,
             notificationContext,

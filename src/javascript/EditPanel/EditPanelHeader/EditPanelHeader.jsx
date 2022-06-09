@@ -8,10 +8,10 @@ import {PublishMenu} from './PublishMenu';
 import {useTranslation} from 'react-i18next';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {EditPanelLanguageSwitcher} from '~/EditPanel/EditPanelLanguageSwitcher';
-import HeaderBadges from './HeaderBadges';
+import {HeaderBadges} from '../HeaderBadges';
 import PropTypes from 'prop-types';
 import {getNodeTypeIcon} from '~/EditPanel/EditPanel.utils';
-import ContentPath from '~/EditPanel/EditPanelHeader/ContentPath';
+import {ContentPath} from './ContentPath';
 
 const TabItemRenderer = renderProps => {
     const {t} = useTranslation('content-editor');

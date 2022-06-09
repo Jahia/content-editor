@@ -13,7 +13,7 @@ import {getButtonRenderer} from '~/utils/getButtonRenderer';
 import {truncate} from '~/utils/helper';
 import {EditPanelLanguageSwitcher} from './EditPanelLanguageSwitcher';
 import {useTranslation} from 'react-i18next';
-import HeaderBadges from './EditPanelHeader/HeaderBadges';
+import {HeaderBadges} from './HeaderBadges';
 
 const ButtonRenderer = getButtonRenderer({
     defaultButtonProps: {size: 'big', className: styles.saveButtons},

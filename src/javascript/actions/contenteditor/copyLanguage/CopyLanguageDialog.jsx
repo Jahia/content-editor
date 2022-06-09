@@ -3,9 +3,9 @@ import {Dialog, DialogActions, DialogContent, DialogTitle} from '@material-ui/co
 import {Button, Dropdown, Typography, Warning} from '@jahia/moonstone';
 import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
-import classes from './CopyLanguageDialog.scss';
+import styles from './CopyLanguageDialog.scss';
 import {useApolloClient} from '@apollo/react-hooks';
-import {editFormQuery} from '~/Edit/editForm.gql-queries';
+import {EditFormQuery} from '~/Edit/edit.gql-queries';
 import {getI18nFieldAndValues} from './copyLanguage.utils';
 import {Constants} from '~/ContentEditor.constants';
 
@@ -29,7 +29,7 @@ export const CopyLanguageDialog = ({
             childrenFilterTypes: Constants.childrenFilterTypes
         };
 
-        let formAndData = await client.query({query: editFormQuery, variables: variables});
+        let formAndData = await client.query({query: EditFormQuery, variables: variables});
 
         return getI18nFieldAndValues(formAndData);
     };
@@ -68,23 +68,23 @@ export const CopyLanguageDialog = ({
                 aria-labelledby="alert-dialog-slide-title"
                 open={isOpen}
                 maxWidth="sm"
-                classes={{paper: classes.dialog_overflowYVisible}}
+                classes={{paper: styles.dialog_overflowYVisible}}
                 onClose={onCloseDialog}
         >
             <DialogTitle id="dialog-language-title">
-                <Typography isUpperCase variant="heading" weight="bold" className={classes.dialogTitle}>
+                <Typography isUpperCase variant="heading" weight="bold" className={styles.dialogTitle}>
                     {t('content-editor:label.contentEditor.edit.action.copyLanguage.dialogTitle')}
                 </Typography>
-                <Typography variant="subheading" className={classes.dialogSubTitle}>
+                <Typography variant="subheading" className={styles.dialogSubTitle}>
                     {t('content-editor:label.contentEditor.edit.action.copyLanguage.dialogSubTitle')}
                 </Typography>
             </DialogTitle>
-            <DialogContent className={classes.dialogContent} classes={{root: classes.dialogContent_overflowYVisible}}>
-                <Typography className={classes.copyFromLabel}>
+            <DialogContent className={styles.dialogContent} classes={{root: styles.dialogContent_overflowYVisible}}>
+                <Typography className={styles.copyFromLabel}>
                     {t('content-editor:label.contentEditor.edit.action.copyLanguage.listLabel')}
                 </Typography>
                 <Dropdown
-                    className={classes.language}
+                    className={styles.language}
                     label={currentOption.label}
                     value={currentOption.value}
                     size="medium"
@@ -98,15 +98,15 @@ export const CopyLanguageDialog = ({
                     }))}
                     onChange={handleOnChange}
                 />
-                <Typography className={classes.label}>
+                <Typography className={styles.label}>
                     {t('content-editor:label.contentEditor.edit.action.copyLanguage.currentLanguage')}
                 </Typography>
                 <Typography>{language}</Typography>
             </DialogContent>
             <DialogActions>
-                <Typography className={classes.warningText}>
+                <Typography className={styles.warningText}>
                     <Warning
-                        className={classes.warningIcon}/> {t('content-editor:label.contentEditor.edit.action.copyLanguage.bottomText')}
+                        className={styles.warningIcon}/> {t('content-editor:label.contentEditor.edit.action.copyLanguage.bottomText')}
                 </Typography>
                 <Button
                     size="big"

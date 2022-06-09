@@ -2,7 +2,7 @@ import React from 'react';
 import {ArrowLeft} from '@jahia/moonstone';
 import {registerEditActions} from '~/actions/Edit.actions';
 import {registerCreateActions} from '~/actions/Create.actions';
-import {registerEditPanelActions} from '~/EditPanel/EditPanel.actions';
+import {registerEditPanelActions} from '~/editorTabs/EditorTabs.actions';
 import goBackAction from './actions/contenteditor/goBackAction';
 
 export const registerCEActions = registry => {

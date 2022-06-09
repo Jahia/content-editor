@@ -2,7 +2,7 @@ import React, {useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import {BreadcrumbItem, Menu, MenuItem, MoreHoriz} from '@jahia/moonstone';
 
-const CompositePathEntry = ({items, onItemClick}) => {
+export const CompositePathEntry = ({items, onItemClick}) => {
     const [isMenuDisplayed, setMenuDisplayed] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const menuContainerEl = useRef(null);
@@ -38,5 +38,3 @@ CompositePathEntry.propTypes = {
 CompositePathEntry.defaultProps = {
     onItemClick: () => {}
 };
-
-export default CompositePathEntry;
