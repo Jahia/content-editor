@@ -32,7 +32,7 @@ const TabItemRenderer = renderProps => {
 const ButtonRenderer = getButtonRenderer({
     defaultButtonProps: {
         size: 'big',
-        color: 'accent',
+        color: 'accent'
     }
 });
 
