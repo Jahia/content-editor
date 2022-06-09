@@ -61,12 +61,6 @@ export const useSwitchLanguage = () => {
             newValues[currentLanguage] = i18nValues;
         }
 
-        if (newValues?.shared?.value && Object.keys(newValues.shared.values.includes(Constants.systemName.name))) {
-            newValues.memo = {
-                systemNameLang: currentLanguage
-            };
-        }
-
         setI18nContext(prev => {
             if (prev?.memo?.systemNameLang === undefined && newValues?.shared?.values && Object.keys(newValues.shared.values).includes(Constants.systemName.name)) {
                 newValues.memo = {
