@@ -176,21 +176,22 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
         List<EditorFormDefinition> bundleEditorFormDefinitions = new ArrayList<>();
         while (editorFormURLs.hasMoreElements()) {
             URL editorFormURL = editorFormURLs.nextElement();
-            EditorFormDefinition editorFormDefinition = readEditorFormDefinition(editorFormURL);
+            EditorFormDefinition editorFormDefinition = readEditorFormDefinition(editorFormURL, bundle);
 
             if (editorFormDefinition != null) {
                 bundleEditorFormDefinitions.add(editorFormDefinition);
-                editorFormDefinition.setOriginBundle(bundle);
             }
 
         }
         staticEditorFormDefinitionsByBundle.put(bundle, bundleEditorFormDefinitions);
     }
 
-    EditorFormDefinition readEditorFormDefinition(URL editorFormURL) {
+    EditorFormDefinition readEditorFormDefinition(URL editorFormURL, Bundle bundle) {
         EditorFormDefinition editorFormDefinition = null;
         try {
             editorFormDefinition = objectMapper.readValue(editorFormURL, EditorFormDefinition.class);
+            editorFormDefinition.setOriginBundle(bundle);
+
             String name = editorFormDefinition.getNodeType();
 
             if (StringUtils.isNotBlank(name)) {

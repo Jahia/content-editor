@@ -1,0 +1,11 @@
+{
+  "nodeType": "nt:base",
+  "hasPreview": true,
+  "priority": 3.0,
+  "sections": [
+    {
+      "name": "layout",
+      "hide:": "true"
+    }
+  ]
+}

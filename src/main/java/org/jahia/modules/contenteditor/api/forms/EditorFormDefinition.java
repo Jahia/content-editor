@@ -48,7 +48,8 @@ public class EditorFormDefinition implements Comparable<EditorFormDefinition> {
         sections = null;
     }
 
-    public EditorFormDefinition(String nodeType, Double priority, Boolean hasPreview, List<EditorFormSectionDefinition> sections, Bundle originBundle) {
+    public EditorFormDefinition(String nodeType, Double priority, Boolean hasPreview, List<EditorFormSectionDefinition> sections,
+        Bundle originBundle) {
         this.nodeType = nodeType;
         this.priority = priority;
         this.sections = sections;
@@ -116,32 +117,46 @@ public class EditorFormDefinition implements Comparable<EditorFormDefinition> {
                 return 1;
             }
         } catch (NoSuchNodeTypeException e) {
-            throw new EditorFormRuntimeException(String.format("unable to resolve one of the types %s and %s", this.nodeType, otherName), e);
+            throw new EditorFormRuntimeException(String.format("unable to resolve one of the types %s and %s", this.nodeType, otherName),
+                e);
         }
+
+        int result = 0;
         if (priority == null) {
             if (otherEditorFormDefinition.priority != null) {
-                return -1;
+                result = -1;
             }
-            return 0;
+        } else if (otherEditorFormDefinition.priority == null) {
+            result = 1;
         } else {
-            if (otherEditorFormDefinition.priority == null) {
-                return 1;
-            }
-            return priority.compareTo(otherEditorFormDefinition.priority);
+            result = priority.compareTo(otherEditorFormDefinition.priority);
         }
+
+        if (result != 0) {
+            return result;
+        }
+
+        if (originBundle == null) {
+            if (otherEditorFormDefinition.originBundle != null) {
+                result = -1;
+            }
+        } else if (otherEditorFormDefinition.originBundle == null) {
+            result = 1;
+        } else {
+            result = originBundle.compareTo(otherEditorFormDefinition.originBundle);
+        }
+        return result;
     }
 
     public EditorFormDefinition mergeWith(EditorFormDefinition otherEditorFormDefinition) {
-        return new EditorFormDefinition(
-            nodeType,
-            priority,
+        return new EditorFormDefinition(nodeType, priority,
             otherEditorFormDefinition.hasPreview() != null ? otherEditorFormDefinition.hasPreview() : hasPreview,
-            mergeSections(otherEditorFormDefinition.getSections()),
-            null);
+            mergeSections(otherEditorFormDefinition.getSections()), null);
     }
 
     private List<EditorFormSectionDefinition> mergeSections(List<EditorFormSectionDefinition> sections) {
-        List<EditorFormSectionDefinition> sectionsCopy = this.sections.stream().map(EditorFormSectionDefinition::copy).collect(Collectors.toList());
+        List<EditorFormSectionDefinition> sectionsCopy = this.sections.stream().map(EditorFormSectionDefinition::copy)
+            .collect(Collectors.toList());
 
         if (sections == null) {
             return sectionsCopy;
@@ -149,7 +164,8 @@ public class EditorFormDefinition implements Comparable<EditorFormDefinition> {
 
         List<EditorFormSectionDefinition> addedSections = new ArrayList<>();
         for (EditorFormSectionDefinition newSection : sections) {
-            Optional<EditorFormSectionDefinition> existingSection = sectionsCopy.stream().filter(s -> s.getName().equals(newSection.getName())).findFirst();
+            Optional<EditorFormSectionDefinition> existingSection = sectionsCopy.stream()
+                .filter(s -> s.getName().equals(newSection.getName())).findFirst();
 
             if (existingSection.isPresent()) {
                 existingSection.get().mergeWith(newSection);
