@@ -25,7 +25,7 @@ export const UnsavedChip = () => {
         });
     }
 
-    const sortedLanguages = Object.keys(updatedLanguages).filter(l => l !== 'shared').map(l => l.toUpperCase()).sort();
+    const sortedLanguages = Object.keys(updatedLanguages).filter(l => l !== 'shared' && l !== 'memo').map(l => l.toUpperCase()).sort();
 
     let message;
     if (updatedLanguages.shared || sortedLanguages.length === siteInfo.languages.length) {
