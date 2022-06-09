@@ -8,7 +8,7 @@ describe('TextArea', () => {
 
     beforeEach(() => {
         defaultProps = {
-            value: 'uuidValue',
+            value: 'uuidValue'
         };
     });
 
