@@ -33,7 +33,6 @@ const ButtonRenderer = getButtonRenderer({
     defaultButtonProps: {
         size: 'big',
         color: 'accent',
-        className: styles.mainActions
     }
 });
 
@@ -57,7 +56,7 @@ export const EditPanelHeader = ({title, isShowPublish, activeTab, setActiveTab})
                     <Chip color="accent" label={nodeTypeDisplayName || nodeTypeName} icon={getNodeTypeIcon(nodeTypeName)}/>
                 )}
                 mainActions={(
-                    <div className={styles.headerRight}>
+                    <div className="flexRow_center alignCenter">
                         <div className={styles.saveActions}>
                             <DisplayActions
                                 target="content-editor/header/main-save-actions"
@@ -74,7 +73,7 @@ export const EditPanelHeader = ({title, isShowPublish, activeTab, setActiveTab})
                                 <DisplayActions
                                     isMainButton
                                     target="content-editor/header/main-publish-actions"
-                                    buttonProps={{className: styles.mainActions, size: 'big', color: 'accent'}}
+                                    buttonProps={{size: 'big', color: 'accent'}}
                                     render={ButtonRendererShortLabel}
                                 />
 
@@ -106,7 +105,7 @@ export const EditPanelHeader = ({title, isShowPublish, activeTab, setActiveTab})
                             render={DotsButtonRenderer}/>
                     </div>
                 )}
-                status={<HeaderBadges className={styles.headerChips} mode={mode}/>}
+                status={<HeaderBadges mode={mode}/>}
         />
     );
 };
