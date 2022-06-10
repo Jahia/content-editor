@@ -1,6 +1,6 @@
 import {createNode} from './createNode';
 
-jest.mock('./create.gql-mutation', () => {
+jest.mock('./createNode.gql-mutation', () => {
     return {
         CreateNode: 'CreateNode'
     };

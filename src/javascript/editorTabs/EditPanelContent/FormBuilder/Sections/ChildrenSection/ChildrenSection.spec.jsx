@@ -7,7 +7,7 @@ import {listOrderingSection} from './AutomaticOrdering/AutomaticOrdering.spec.da
 import {useFormikContext} from 'formik';
 
 jest.mock('formik');
-jest.mock('~/ContentEditorSection');
+jest.mock('~/contexts/ContentEditorSection/ContentEditorSection.context');
 
 describe('Children section component', () => {
     let props;

@@ -1,5 +1,5 @@
-import {adaptCreateRequest} from './Create.adapter';
 import {Constants} from '~/ContentEditor.constants';
+import {adaptCreateRequest} from '~/Create/createNode/adaptCreateRequest';
 
 describe('adaptCreate', () => {
     it('should adapt create query with system name data', () => {

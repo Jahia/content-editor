@@ -20,7 +20,8 @@ jest.mock('~/JContent.redux-actions', () => ({
     cmGoto: jest.fn()
 }));
 
-jest.mock('~/ContentEditor.context');
+jest.mock('~/contexts/ContentEditor/ContentEditor.context');
+jest.mock('~/contexts/ContentEditorConfig/ContentEditorConfig.context');
 
 jest.mock('react-redux', () => ({
     useDispatch: jest.fn(),

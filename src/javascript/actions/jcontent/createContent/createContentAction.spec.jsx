@@ -7,7 +7,7 @@ import {transformNodeTypesToActions, useCreatableNodetypes} from './createConten
 
 import {createContentAction} from './createContentAction';
 
-jest.mock('~/ContentEditorHistory', () => {
+jest.mock('~/contexts/ContentEditorHistory/useContentEditorHistory', () => {
     return {useContentEditorHistory: jest.fn()};
 });
 jest.mock('react-redux', () => {

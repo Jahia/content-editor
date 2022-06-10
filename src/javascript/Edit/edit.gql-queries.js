@@ -99,7 +99,7 @@ const NodeDataFragment = {
     }
 };
 
-const EditFormQuery = gql`
+export const EditFormQuery = gql`
     query editForm($uilang:String!, $language:String!, $uuid: String!, $writePermission: String!, $childrenFilterTypes: [String]!) {
         forms {
             editForm(uiLocale: $uilang, locale: $language, uuidOrPath: $uuid) {
@@ -163,7 +163,7 @@ const EditFormQuery = gql`
     ${NodeDataFragment.nodeData.gql}
 `;
 
-const NodeQuery = gql`
+export const NodeQuery = gql`
     query getNodeProperties($uuid:String!, $language:String!, $uilang:String!, $writePermission: String!, $childrenFilterTypes: [String]!) {
         jcr {
             ...NodeData
@@ -171,8 +171,3 @@ const NodeQuery = gql`
     }
     ${NodeDataFragment.nodeData.gql}
 `;
-
-export {
-    NodeQuery,
-    EditFormQuery
-};

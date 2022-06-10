@@ -2,7 +2,6 @@ import {adaptSections, getFieldValuesFromDefaultValues} from '~/FormDefinitions'
 import {getFields} from '~/EditPanel/EditPanel.utils';
 import {adaptSystemNameField} from '../FormDefinitions';
 import {Constants} from '~/ContentEditor.constants';
-import {encodeSystemName} from '~/utils';
 
 // TODO https://jira.jahia.org/browse/TECH-300
 
@@ -47,20 +46,3 @@ export const adaptCreateFormData = (data, lang, t, contentEditorConfigContext) =
     return formData;
 };
 
-/**
- * This fct allow to adapt/modify the create request data, before sending them to the server
- * @param createRequestVariables Current request variables
- * @returns {*}
- */
-export const adaptCreateRequest = createRequestVariables => {
-    // Use system name to fill the create request variables.
-    const systemNameIndex = createRequestVariables.properties.findIndex(property => property.name === Constants.systemName.propertyName);
-    if (systemNameIndex > -1) {
-        createRequestVariables.name = encodeSystemName(createRequestVariables.properties[systemNameIndex].value);
-
-        // Remove ce:systemName prop
-        createRequestVariables.properties.splice(systemNameIndex, 1);
-    }
-
-    return createRequestVariables;
-};

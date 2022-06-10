@@ -1,15 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Create} from './Create/Create';
-import {Edit} from './Edit/Edit';
+import {Create, CreateFormQuery, adaptCreateFormData} from './Create';
+import {Edit, EditFormQuery, adaptEditFormData} from './Edit';
 import {ContentEditorConfigContextProvider, ContentEditorContextProvider} from '~/contexts';
 import {Constants} from './ContentEditor.constants';
 import {DndProvider} from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
-import {EditFormQuery} from './Edit/edit.gql-queries';
-import {adaptEditFormData} from './Edit/Edit.adapter';
-import {CreateFormQuery} from './Create/create.gql-queries';
-import {adaptCreateFormData} from './Create/Create.adapter';
 
 export const ContentEditor = ({name, mode, uuid, lang, uilang, site, contentType, envProps}) => {
     const contentEditorConfig = {

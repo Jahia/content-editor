@@ -12,7 +12,7 @@ jest.mock('react', () => {
     };
 });
 jest.mock('formik');
-jest.mock('~/ContentEditor.context');
+jest.mock('~/contexts/ContentEditor/ContentEditor.context');
 
 describe('WorkInProgressDialog', () => {
     let defaultProps;

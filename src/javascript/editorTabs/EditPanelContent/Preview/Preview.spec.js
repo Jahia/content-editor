@@ -7,7 +7,9 @@ import {useContentEditorConfigContext, useContentEditorContext} from '~/contexts
 import {useFormikContext} from 'formik';
 
 jest.mock('formik');
-jest.mock('~/ContentEditor.context');
+jest.mock('~/contexts/ContentEditor/ContentEditor.context');
+jest.mock('~/contexts/ContentEditorConfig/ContentEditorConfig.context');
+jest.mock('~/contexts/ContentEditorSection/ContentEditorSection.context');
 
 jest.mock('react', () => {
     return {

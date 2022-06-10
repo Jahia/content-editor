@@ -4,7 +4,7 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {details, technicalInfo} from '~/contexts';
 
-jest.mock('~/ContentEditor.context', () => {
+jest.mock('~/contexts/ContentEditor/ContentEditor.context', () => {
     const details = [{
         label: 'Creator',
         value: 'root'}];

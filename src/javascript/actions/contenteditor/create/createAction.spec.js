@@ -13,11 +13,13 @@ jest.mock('react', () => {
     };
 });
 
-jest.mock('~/ContentEditor.context', () => ({
-    useContentEditorContext: jest.fn(),
+jest.mock('~/contexts/ContentEditor/ContentEditor.context', () => ({
+    useContentEditorContext: jest.fn()
+}));
+jest.mock('~/contexts/ContentEditorConfig/ContentEditorConfig.context', () => ({
     useContentEditorConfigContext: jest.fn()
 }));
-jest.mock('~/ContentEditorSection');
+jest.mock('~/contexts/ContentEditorSection/ContentEditorSection.context');
 
 describe('create action', () => {
     let defaultProps;

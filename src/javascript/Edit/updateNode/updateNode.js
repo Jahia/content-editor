@@ -1,13 +1,13 @@
-import {SavePropertiesMutation} from './edit.gql-mutation';
+import {SavePropertiesMutation} from './updateNode.gql-mutation';
 import {getChildrenOrder, getDataToMutate} from '~/EditPanel/EditPanel.utils';
-import {NodeQuery} from './edit.gql-queries';
+import {NodeQuery} from '../edit.gql-queries';
 import {refetchPreview} from '~/EditPanel/EditPanel.refetches';
 import {getPreviewPath} from '~/editorTabs/EditPanelContent/Preview/Preview.utils';
 import {PublicationInfoQuery} from '~/PublicationInfo/PublicationInfo.gql-queries';
-import {adaptSaveRequest} from './Edit.adapter';
 import {Constants} from '~/ContentEditor.constants';
 import {registry} from '@jahia/ui-extender';
 import {onServerError} from '~/Validation';
+import {adaptUpdateRequest} from './adaptUpdateRequest';
 
 export const updateNode = ({
     client,
@@ -27,7 +27,7 @@ export const updateNode = ({
     const dataToMutate = getDataToMutate({nodeData, formValues: values, i18nContext, sections, lang: language});
     const {childrenOrder, shouldModifyChildren} = getChildrenOrder(values, nodeData);
     const wipInfo = values[Constants.wip.fieldName];
-    let variables = adaptSaveRequest(nodeData, {
+    let variables = adaptUpdateRequest(nodeData, {
         uuid: nodeData.uuid,
         propertiesToSave: dataToMutate.propsToSave,
         propertiesToDelete: dataToMutate.propsToDelete,

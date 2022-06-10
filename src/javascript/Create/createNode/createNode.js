@@ -1,9 +1,9 @@
-import {CreateNode} from './create.gql-mutation';
+import {CreateNode} from './createNode.gql-mutation';
 import {getDataToMutate} from '~/EditPanel/EditPanel.utils';
-import {adaptCreateRequest} from './Create.adapter';
 import {Constants} from '~/ContentEditor.constants';
 import {registry} from '@jahia/ui-extender';
 import {onServerError} from '~/Validation';
+import {adaptCreateRequest} from './adaptCreateRequest';
 
 export const createNode = ({
     client,

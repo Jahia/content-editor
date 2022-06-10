@@ -3,7 +3,7 @@ import React from 'react';
 import {shallow} from '@jahia/test-framework';
 import {useTranslation} from 'react-i18next';
 
-jest.mock('~/ContentEditor.context', () => {
+jest.mock('~/contexts/ContentEditor/ContentEditor.context', () => {
     return {
         useContentEditorContext: () => {
             return {

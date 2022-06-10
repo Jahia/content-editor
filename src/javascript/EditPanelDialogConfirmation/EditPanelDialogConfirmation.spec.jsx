@@ -6,7 +6,7 @@ import {useFormikContext} from 'formik';
 import {useContentEditorContext} from '~/contexts';
 
 jest.mock('formik');
-jest.mock('~/ContentEditor.context', () => ({useContentEditorContext: jest.fn()}));
+jest.mock('~/contexts/ContentEditor/ContentEditor.context', () => ({useContentEditorContext: jest.fn()}));
 
 describe('EditPanelDialogConfirmation', () => {
     let defaultProps;

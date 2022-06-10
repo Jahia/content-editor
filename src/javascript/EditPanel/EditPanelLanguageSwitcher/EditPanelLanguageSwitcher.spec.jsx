@@ -3,14 +3,18 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {EditPanelLanguageSwitcher} from './';
 
-jest.mock('~/ContentEditor.context', () => {
+jest.mock('~/contexts/ContentEditor/ContentEditor.context', () => {
     return {
-        useContentEditorConfigContext: () => ({
-            lang: 'fr'
-        }),
         useContentEditorContext: () => ({
             i18nContext: {},
             setI18nContext: jest.fn()
+        })
+    };
+});
+jest.mock('~/contexts/ContentEditorConfig/ContentEditorConfig.context', () => {
+    return {
+        useContentEditorConfigContext: () => ({
+            lang: 'fr'
         })
     };
 });

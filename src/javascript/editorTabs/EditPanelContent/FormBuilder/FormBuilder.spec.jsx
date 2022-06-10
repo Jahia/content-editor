@@ -8,8 +8,9 @@ import {useContentEditorContext, useContentEditorSectionContext} from '~/context
 import {Constants} from '~/ContentEditor.constants';
 
 jest.mock('formik');
-jest.mock('~/ContentEditorSection');
-jest.mock('~/ContentEditor.context');
+jest.mock('~/contexts/ContentEditorSection/ContentEditorSection.context');
+jest.mock('~/contexts/ContentEditor/ContentEditor.context');
+jest.mock('~/contexts/ContentEditorConfig/ContentEditorConfig.context');
 jest.mock('react-redux', () => ({
     useDispatch: jest.fn(),
     useSelector: jest.fn(() => ({content: true, listOrdering: true}))

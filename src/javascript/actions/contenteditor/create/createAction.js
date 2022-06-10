@@ -6,7 +6,7 @@ import * as PropTypes from 'prop-types';
 import {useFormikContext} from 'formik';
 import {useContentEditorConfigContext, useContentEditorContext, useContentEditorSectionContext} from '~/contexts';
 import {useKeydownListener} from '~/utils';
-import {adaptCreateFormData} from '~/Create/Create.adapter';
+import {adaptCreateFormData} from '~/Create/adaptCreateFormData';
 import {useTranslation} from 'react-i18next';
 
 const Create = ({createAnother, render: Render, loading: Loading, ...otherProps}) => {

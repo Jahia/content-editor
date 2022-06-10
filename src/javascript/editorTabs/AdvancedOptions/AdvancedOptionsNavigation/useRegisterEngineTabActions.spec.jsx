@@ -24,7 +24,7 @@ jest.mock('./engineTabs.permission.gql-query', () => {
     };
 });
 
-jest.mock('~/ContentEditor.context', () => {
+jest.mock('~/contexts/ContentEditor/ContentEditor.context', () => {
     return {
         useContentEditorContext: () => ({
             nodeData: {

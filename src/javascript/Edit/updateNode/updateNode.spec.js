@@ -1,6 +1,6 @@
 import {updateNode} from './updateNode';
 
-jest.mock('./edit.gql-mutation', () => {
+jest.mock('./updateNode.gql-mutation', () => {
     return {
         SavePropertiesMutation: 'SavePropertiesMutation'
     };

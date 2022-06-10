@@ -13,7 +13,7 @@ jest.mock('./publishNode', () => {
 });
 
 jest.mock('~/PublicationInfo', () => ({usePublicationInfoContext: jest.fn()}));
-jest.mock('~/ContentEditor.context');
+jest.mock('~/contexts/ContentEditor/ContentEditor.context');
 jest.mock('formik');
 jest.mock('@apollo/react-hooks');
 
