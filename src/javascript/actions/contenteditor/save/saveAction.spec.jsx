@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {shallow} from '@jahia/test-framework';
 import {saveAction} from './saveAction';
-import {usePublicationInfoContext} from '~/PublicationInfo';
+import {usePublicationInfoContext} from '~/contexts/PublicationInfo';
 import {useContentEditorConfigContext, useContentEditorContext, useContentEditorSectionContext} from '~/contexts';
 import {useFormikContext} from 'formik';
 
@@ -12,7 +12,7 @@ jest.mock('react', () => {
     };
 });
 
-jest.mock('~/PublicationInfo', () => ({usePublicationInfoContext: jest.fn()}));
+jest.mock('~/contexts/PublicationInfo', () => ({usePublicationInfoContext: jest.fn()}));
 jest.mock('~/contexts/ContentEditorSection');
 jest.mock('formik');
 jest.mock('~/contexts/ContentEditor/ContentEditor.context', () => ({

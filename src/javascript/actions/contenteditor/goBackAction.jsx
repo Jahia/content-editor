@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from 'react';
-import {EditPanelDialogConfirmation} from '~/EditPanelDialogConfirmation';
+import {CloseConfirmationDialog} from '~/CloseConfirmationDialog';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/contexts';
 import * as PropTypes from 'prop-types';
 import {Constants} from '~/ContentEditor.constants';
@@ -32,7 +32,7 @@ export const GoBack = ({render: Render, ...otherProps}) => {
 
     return (
         <>
-            <EditPanelDialogConfirmation
+            <CloseConfirmationDialog
                 isOpen={open}
                 actionCallback={envProps.back}
                 onCloseDialog={onCloseDialog}

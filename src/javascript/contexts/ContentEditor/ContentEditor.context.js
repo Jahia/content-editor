@@ -1,6 +1,6 @@
 import React, {useContext, useState} from 'react';
 import {useNotifications} from '@jahia/react-material';
-import {useFormDefinition} from '~/FormDefinitions';
+import {useFormDefinition} from './useFormDefinitions';
 import {useSiteInfo} from '@jahia/data-helper';
 import * as PropTypes from 'prop-types';
 import {Constants} from '~/ContentEditor.constants';

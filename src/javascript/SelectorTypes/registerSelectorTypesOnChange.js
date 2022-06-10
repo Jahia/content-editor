@@ -1,4 +1,4 @@
-import {getFields} from '~/EditPanel/EditPanel.utils';
+import {getFields} from '~/utils/fields.utils';
 import {FieldConstraints} from './registerSelectorTypesOnChange.gql-queries';
 
 function arrayEquals(arr1, arr2) {

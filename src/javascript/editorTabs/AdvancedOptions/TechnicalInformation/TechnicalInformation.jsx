@@ -1,6 +1,6 @@
 import React from 'react';
 import {useTranslation} from 'react-i18next';
-import {useContentEditorContext} from '~/contexts';
+import {useContentEditorContext} from '~/contexts/ContentEditor';
 import styles from './TechnicalInformation.scss';
 import {InfoPanel} from '~/DesignSystem/InfoPanel';
 

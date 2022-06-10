@@ -10,7 +10,7 @@ import {SingleField} from './SingleField';
 import {Constants} from '~/ContentEditor.constants';
 import {buildFlatFieldObject} from './field.utils';
 import {DisplayAction, registry} from '@jahia/ui-extender';
-import contentEditorHelper from '~/ContentEditor.helper';
+import {contentEditorHelper} from './contentEditorHelper';
 import {useContentEditorContext, useContentEditorSectionContext} from '~/contexts';
 import {useApolloClient} from '@apollo/react-hooks';
 import {getButtonRenderer} from '~/utils';

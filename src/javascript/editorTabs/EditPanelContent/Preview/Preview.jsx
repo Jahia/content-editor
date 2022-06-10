@@ -2,7 +2,7 @@ import {Badge, Paper} from '@jahia/design-system-kit';
 import React, {useCallback, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import styles from './Preview.scss';
-import {useContentEditorContext} from '~/contexts';
+import {useContentEditorContext} from '~/contexts/ContentEditor';
 import {PreviewFetcher} from './Preview.fetcher';
 import {UpdateOnSaveBadge} from '~/editorTabs/EditPanelContent/Preview/UpdateOnSaveBadge';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';

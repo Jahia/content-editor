@@ -1,6 +1,6 @@
 import {useQuery} from '@apollo/react-hooks';
 import {ContentDialogPickerQuery, SearchContentDialogPickerQuery} from './content.gql-queries';
-import {useContentEditorContext} from '~/contexts';
+import {useContentEditorContext} from '~/contexts/ContentEditor';
 
 const NB_OF_ELEMENT_PER_PAGE = 20;
 

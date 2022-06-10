@@ -3,7 +3,7 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {OpenWorkInProgressModal} from './openWorkInProgressAction';
 import {useFormikContext} from 'formik';
-import {useContentEditorContext} from '~/contexts';
+import {useContentEditorContext} from '~/contexts/ContentEditor';
 
 jest.mock('react', () => {
     return {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {CopyLanguageDialog} from './CopyLanguageDialog';
 import {getFullLanguageName} from './copyLanguage.utils';
 import {ComponentRendererContext} from '@jahia/ui-extender';
-import {useContentEditorContext} from '~/contexts';
+import {useContentEditorContext} from '~/contexts/ContentEditor';
 import {useFormikContext} from 'formik';
 
 export const CopyLanguageActionComponent = ({render: Render, ...otherProps}) => {

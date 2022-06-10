@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {EditPanelDialogConfirmation} from '~/EditPanelDialogConfirmation';
+import {CloseConfirmationDialog} from '~/CloseConfirmationDialog';
 import * as PropTypes from 'prop-types';
 import {useFormikContext} from 'formik';
-import {useContentEditorContext} from '~/contexts';
+import {useContentEditorContext} from '~/contexts/ContentEditor';
 
 export const OnCloseConfirmationDialog = ({setEditorConfig, openDialog}) => {
     const [confirmationConfig, setConfirmationConfig] = useState(false);
@@ -22,7 +22,7 @@ export const OnCloseConfirmationDialog = ({setEditorConfig, openDialog}) => {
     });
 
     return confirmationConfig && (
-        <EditPanelDialogConfirmation
+        <CloseConfirmationDialog
             isOpen
             actionCallback={() => setEditorConfig(false)}
             onCloseDialog={() => setConfirmationConfig(false)}

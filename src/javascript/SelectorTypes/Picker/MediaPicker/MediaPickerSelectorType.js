@@ -1,9 +1,9 @@
 import React from 'react';
 import {Picker} from '../Picker';
 import {FileImage} from '@jahia/moonstone';
-import {encodeJCRPath} from '~/EditPanel/EditPanel.utils';
 import {useQuery} from '@apollo/react-hooks';
 import {MediaPickerFilledQuery} from './MediaPicker.gql-queries';
+import {encodeJCRPath} from '~/utils';
 
 const usePickerInputData = (uuid, editorContext) => {
     const {data, error, loading} = useQuery(MediaPickerFilledQuery, {

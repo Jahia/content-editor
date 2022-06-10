@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {openEngineTab} from './engineTabs.utils';
-import {EditPanelDialogConfirmation} from '~/EditPanelDialogConfirmation';
+import {CloseConfirmationDialog} from '~/CloseConfirmationDialog';
 import PropTypes from 'prop-types';
 import {useFormikContext} from 'formik';
-import {useContentEditorContext} from '~/contexts';
+import {useContentEditorContext} from '~/contexts/ContentEditor';
 
 export const OpenEngineTabs = ({tabs, render: Render, ...otherProps}) => {
     const [open, setOpen] = useState(false);
@@ -14,7 +14,7 @@ export const OpenEngineTabs = ({tabs, render: Render, ...otherProps}) => {
 
     return (
         <>
-            <EditPanelDialogConfirmation
+            <CloseConfirmationDialog
                 isOpen={open}
                 actionCallback={({discard}) => {
                     if (discard) {

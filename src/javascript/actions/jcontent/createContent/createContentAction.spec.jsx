@@ -1,5 +1,5 @@
 import React from 'react';
-import {useContentEditorHistory} from '~/contexts';
+import {useContentEditorHistory} from '~/contexts/ContentEditorHistory';
 import {useSelector} from 'react-redux';
 import {useNodeChecks, useNodeInfo} from '@jahia/data-helper';
 import {shallow} from '@jahia/test-framework';

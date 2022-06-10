@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {useNodeChecks} from '@jahia/data-helper';
-import {useContentEditorContext} from '~/contexts';
+import {useContentEditorContext} from '~/contexts/ContentEditor';
 
 export const TabBar = ({setActiveTab, isDisplayable, value, render: Render, loading: Loading, ...otherProps}) => {
     const {path} = useContentEditorContext();

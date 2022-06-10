@@ -1,5 +1,5 @@
 import {useDialogPickerContent} from './useDialogPickerContent';
-import {useContentEditorContext} from '~/contexts';
+import {useContentEditorContext} from '~/contexts/ContentEditor';
 import {useQuery} from '@apollo/react-hooks';
 
 jest.mock('~/contexts/ContentEditor/ContentEditor.context', () => ({

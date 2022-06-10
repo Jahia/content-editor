@@ -1,12 +1,12 @@
 import {Constants} from '~/ContentEditor.constants';
-import {validateForm} from '~/Validation';
+import {validateForm} from '~/validation';
 import React, {useContext, useState} from 'react';
 import {ComponentRendererContext} from '@jahia/ui-extender';
 import * as PropTypes from 'prop-types';
 import {useFormikContext} from 'formik';
 import {useContentEditorConfigContext, useContentEditorContext, useContentEditorSectionContext} from '~/contexts';
 import {useKeydownListener} from '~/utils';
-import {adaptCreateFormData} from '~/Create/adaptCreateFormData';
+import {adaptCreateFormData} from '~/ContentEditor/adaptCreateFormData';
 import {useTranslation} from 'react-i18next';
 
 const Create = ({createAnother, render: Render, loading: Loading, ...otherProps}) => {

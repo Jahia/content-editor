@@ -1,11 +1,15 @@
 import {Constants} from '~/ContentEditor.constants';
-import {validateForm} from '~/Validation';
+import {validateForm} from '~/validation';
 import React, {useContext} from 'react';
 import {ComponentRendererContext} from '@jahia/ui-extender';
 import * as PropTypes from 'prop-types';
-import {usePublicationInfoContext} from '~/PublicationInfo';
+import {
+    useContentEditorConfigContext,
+    useContentEditorContext,
+    useContentEditorSectionContext,
+    usePublicationInfoContext
+} from '~/contexts';
 import {useFormikContext} from 'formik';
-import {useContentEditorConfigContext, useContentEditorContext, useContentEditorSectionContext} from '~/contexts';
 import {useKeydownListener} from '~/utils';
 
 const Save = ({render: Render, loading: Loading, ...otherProps}) => {

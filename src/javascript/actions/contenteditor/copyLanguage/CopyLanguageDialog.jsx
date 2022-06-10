@@ -5,7 +5,7 @@ import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import styles from './CopyLanguageDialog.scss';
 import {useApolloClient} from '@apollo/react-hooks';
-import {EditFormQuery} from '~/Edit/edit.gql-queries';
+import {EditFormQuery} from '~/ContentEditor/edit.gql-queries';
 import {getI18nFieldAndValues} from './copyLanguage.utils';
 import {Constants} from '~/ContentEditor.constants';
 

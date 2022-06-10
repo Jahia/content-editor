@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {CopyLanguageActionComponent} from './copyLanguageAction';
-import {useContentEditorContext} from '~/contexts';
+import {useContentEditorContext} from '~/contexts/ContentEditor';
 
 jest.mock('react', () => {
     return {

@@ -3,7 +3,7 @@ import {registry} from '@jahia/ui-extender';
 import {registerCEActions} from './registerCEActions';
 import {Constants} from '~/ContentEditor.constants';
 import {ContentEditorApi} from './ContentEditorApi';
-import {ContentEditorRoute} from './Route/ContentEditorRoute';
+import {ContentEditorRoute} from './ContentEditorRoute/ContentEditorRoute';
 import {ContentEditorHistoryContextProvider} from '~/contexts';
 import {registerSelectorTypes} from '~/SelectorTypes';
 import {pcNavigateTo} from '~/pagecomposer.redux-actions';

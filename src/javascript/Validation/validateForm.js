@@ -1,4 +1,4 @@
-import {SaveErrorModal} from './SaveModal/SaveErrorModal';
+import {SaveErrorModal} from './SaveErrorModal';
 
 const setErrorFieldTouched = (errorsFields, setTouched) => {
     const fieldsTouched = Object.keys(errorsFields).reduce((touched, field) => {

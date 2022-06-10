@@ -4,7 +4,7 @@ import {useTranslation} from 'react-i18next';
 import {useDrag} from 'react-dnd';
 import {ReferenceCard} from '~/DesignSystem/ReferenceCard';
 import {File} from '@jahia/moonstone';
-import {encodeJCRPath} from '~/EditPanel/EditPanel.utils';
+import {encodeJCRPath} from '~/utils';
 
 export const DraggableReference = ({child}) => {
     const {t} = useTranslation('content-editor');

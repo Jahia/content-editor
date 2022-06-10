@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Constants} from '~/ContentEditor.constants';
-import {useContentEditorContext} from '~/contexts';
+import {useContentEditorContext} from '~/contexts/ContentEditor';
 
 export const GoToOption = ({setActiveOption, value, render: Render, ...otherProps}) => {
     const {mode} = useContentEditorContext();
