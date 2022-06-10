@@ -1,4 +1,9 @@
 export const adaptToCategoryTree = ({nodes, parent, selectedValues, locale}) => {
+    // localeCompare in JS expect a locale like en-US NOT en_US which Jahia uses.
+    if (locale.indexOf('_') !== -1) {
+        locale = locale.replace('_', '-');
+    }
+
     return nodes
         .filter(category => category.parent.uuid === parent.uuid)
         .map(category => {
