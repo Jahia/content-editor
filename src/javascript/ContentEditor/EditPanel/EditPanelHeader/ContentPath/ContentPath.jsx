@@ -5,7 +5,7 @@ import {useQuery} from '@apollo/react-hooks';
 import {push} from 'connected-react-router';
 
 import {useContentEditorConfigContext, useContentEditorContext} from '~/contexts';
-import {cmGoto} from '~/JContent.redux-actions';
+import {cmGoto} from '~/redux/JContent.redux-actions';
 import {CloseConfirmationDialog} from '~/CloseConfirmationDialog';
 import {GetContentPath} from './ContentPath.gql-queries';
 import {ContentPathView} from './ContentPathView';

@@ -1,15 +1,15 @@
 import React from 'react';
 import {registry} from '@jahia/ui-extender';
-import {registerCEActions} from './registerCEActions';
+import {registerActions} from './registerActions';
 import {Constants} from '~/ContentEditor.constants';
 import {ContentEditorApi} from './ContentEditorApi';
 import {ContentEditorRoute} from './ContentEditorRoute/ContentEditorRoute';
 import {ContentEditorHistoryContextProvider} from '~/contexts';
 import {registerSelectorTypes} from '~/SelectorTypes';
-import {pcNavigateTo} from '~/pagecomposer.redux-actions';
+import {pcNavigateTo} from '~/redux/pagecomposer.redux-actions';
 import {registerReducer} from './registerReducer';
 
-export default function () {
+export function register() {
     registry.add('app', 'content-editor-history-context', {
         targets: ['root:2.05'],
         render: next => <ContentEditorHistoryContextProvider>{next}</ContentEditorHistoryContextProvider>
@@ -20,7 +20,7 @@ export default function () {
         render: next => <><ContentEditorApi/>{next}</>
     });
 
-    registerCEActions(registry);
+    registerActions(registry);
 
     registerSelectorTypes(registry);
 

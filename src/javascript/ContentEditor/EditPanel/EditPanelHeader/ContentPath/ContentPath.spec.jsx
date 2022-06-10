@@ -4,7 +4,7 @@ import {useQuery} from '@apollo/react-hooks';
 import {shallow} from '@jahia/test-framework';
 
 import {push} from 'connected-react-router';
-import {cmGoto} from '~/JContent.redux-actions';
+import {cmGoto} from '~/redux/JContent.redux-actions';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/contexts';
 
 import {GetContentPath} from './ContentPath.gql-queries';
@@ -16,7 +16,7 @@ jest.mock('connected-react-router', () => ({
     push: jest.fn()
 }));
 
-jest.mock('~/JContent.redux-actions', () => ({
+jest.mock('~/redux/JContent.redux-actions', () => ({
     cmGoto: jest.fn()
 }));
 

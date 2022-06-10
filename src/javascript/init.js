@@ -1,5 +1,5 @@
 import {registry} from '@jahia/ui-extender';
-import register from './ContentEditor.register';
+import {register} from './register';
 
 export default function () {
     registry.add('callback', 'content-editor', {

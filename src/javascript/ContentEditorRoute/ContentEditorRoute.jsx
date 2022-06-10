@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {Constants} from '~/ContentEditor.constants';
 import {useContentEditorHistory, useContentEditorHistoryContext} from '~/contexts';
 import {useTranslation} from 'react-i18next';
-import {replaceOpenedPath} from '~/JContent.redux-actions';
+import {replaceOpenedPath} from '~/redux/JContent.redux-actions';
 import {registry} from '@jahia/ui-extender';
 import {useQuery} from '@apollo/react-hooks';
 import gql from 'graphql-tag';

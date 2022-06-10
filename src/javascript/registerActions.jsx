@@ -5,7 +5,7 @@ import {registerCreateActions} from '~/actions/registerCreateActions';
 import {registerTabBarActions} from '~/editorTabs/registerTabBarActions';
 import {goBackAction} from './actions/contenteditor/goBackAction';
 
-export const registerCEActions = registry => {
+export const registerActions = registry => {
     registerEditActions(registry);
     registerCreateActions(registry);
     registerTabBarActions(registry);
