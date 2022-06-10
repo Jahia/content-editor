@@ -1,16 +1,14 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import {HeaderLowerSection, HeaderUpperSection} from './header';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import classes from './EditPanel.scss';
 import clsx from 'clsx';
 import {registry} from '@jahia/ui-extender';
 
 import MainLayout from '~/DesignSystem/ContentLayout/MainLayout';
-import ContentHeader from '~/DesignSystem/ContentLayout/ContentHeader';
 import {Constants} from '~/ContentEditor.constants';
-import {Separator} from '@jahia/moonstone';
 import {WindowListeners} from './WindowListeners';
+import {EditPanelHeader} from './EditPanelHeader';
 
 const EditPanelFullscreen = ({title}) => {
     const [activeTab, setActiveTab] = useState(Constants.editPanel.editTab);
@@ -24,12 +22,11 @@ const EditPanelFullscreen = ({title}) => {
     return (
         <MainLayout
             header={(
-                <ContentHeader>
-                    <HeaderUpperSection title={title}
-                                        isShowPublish={mode === Constants.routes.baseEditRoute}/>
-                    <Separator spacing="none"/>
-                    <HeaderLowerSection activeTab={activeTab} setActiveTab={setActiveTab}/>
-                </ContentHeader>
+                <EditPanelHeader title={title}
+                                 isShowPublish={mode === Constants.routes.baseEditRoute}
+                                 activeTab={activeTab}
+                                 setActiveTab={setActiveTab}
+                />
             )}
         >
             <WindowListeners/>

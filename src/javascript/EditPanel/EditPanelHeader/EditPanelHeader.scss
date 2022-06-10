@@ -1,0 +1,19 @@
+.saveActions {
+    position: relative;
+
+    margin-right: var(--spacing-small);
+}
+
+.publishActions {
+    position: relative;
+
+    & button:not(:first-child) {
+        margin-left: 1px;
+    }
+}
+
+.headerToolBar {
+    display: flex;
+    align-items: center;
+    margin-top: 1px;
+}

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {BreadcrumbItem} from '@jahia/moonstone';
 
-import {getNodeTypeIcon} from '../ContentBreadcrumb.utils';
+import {getNodeTypeIcon} from '~/EditPanel/EditPanel.utils';
 
 const SimplePathEntry = ({item, onItemClick}) => {
     const type = item.primaryNodeType?.name;
