@@ -50,8 +50,6 @@ GoBack.propTypes = {
     render: PropTypes.func.isRequired
 };
 
-const goBackAction = {
+export const goBackAction = {
     component: GoBack
 };
-
-export default goBackAction;

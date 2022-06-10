@@ -7,7 +7,7 @@ import {ContentEditorRoute} from './Route/ContentEditorRoute';
 import {ContentEditorHistoryContextProvider} from '~/ContentEditorHistory/ContentEditorHistory.context';
 import {registerSelectorTypes} from '~/SelectorTypes';
 import {pcNavigateTo} from '~/pagecomposer.redux-actions';
-import {registerReducer} from './redux/registerReducer';
+import {registerReducer} from './registerReducer';
 
 export default function () {
     registry.add('app', 'content-editor-history-context', {

@@ -7,7 +7,7 @@ import {getButtonRenderer} from '../../../utils/getButtonRenderer';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
-export const MultipleSelectCmp = ({field, id, value, inputContext, onChange, onBlur}) => {
+export const MultipleSelect = ({field, id, value, inputContext, onChange, onBlur}) => {
     inputContext.actionContext = {
         onChange,
         onBlur
@@ -56,7 +56,7 @@ export const MultipleSelectCmp = ({field, id, value, inputContext, onChange, onB
     );
 };
 
-MultipleSelectCmp.propTypes = {
+MultipleSelect.propTypes = {
     id: PropTypes.string.isRequired,
     field: FieldPropTypes.isRequired,
     value: PropTypes.arrayOf(PropTypes.string),
@@ -65,7 +65,3 @@ MultipleSelectCmp.propTypes = {
     onBlur: PropTypes.func.isRequired
 };
 
-export const MultipleSelect = MultipleSelectCmp;
-MultipleSelect.displayName = 'MultipleSelect';
-
-export default MultipleSelect;

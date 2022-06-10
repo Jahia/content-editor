@@ -4,9 +4,9 @@ import {getFileType, isBrowserImage, isPDF} from '../Preview.utils';
 import clsx from 'clsx';
 import styles from './PreviewViewers.scss';
 
-import DocumentViewer from './DocumentViewer';
-import PDFViewer from './PDFViewer';
-import ImageViewer from './ImageViewer';
+import {DocumentViewer} from './DocumentViewer';
+import {PDFViewer} from './PDFViewer';
+import {ImageViewer} from './ImageViewer';
 import {IframeViewer} from './IframeViewer';
 
 export const PreviewViewer = ({data, previewContext, onContentNotFound}) => {
@@ -27,7 +27,7 @@ export const PreviewViewer = ({data, previewContext, onContentNotFound}) => {
                 <div className={clsx(styles.previewContainer, styles.mediaContainer)}
                      data-sel-role="preview-type-image"
                 >
-                    <ImageViewer file={file} fullScreen={false}/>
+                    <ImageViewer file={file} isFullScreen={false}/>
                 </div>
             );
         }
@@ -38,7 +38,7 @@ export const PreviewViewer = ({data, previewContext, onContentNotFound}) => {
             <div className={clsx(styles.previewContainer, isMedia && styles.mediaContainer)}
                  data-sel-role="preview-type-document"
             >
-                <DocumentViewer file={file} type={type} fullScreen={false}/>
+                <DocumentViewer file={file} type={type} isFullScreen={false}/>
             </div>
         );
     }

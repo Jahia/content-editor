@@ -11,7 +11,7 @@ import {registry} from '@jahia/ui-extender';
 import {useQuery} from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import {PredefinedFragments} from '@jahia/data-helper';
-import {ceToggleSections, DEFAULT_OPENED_SECTIONS} from '~/redux/registerReducer';
+import {ceToggleSections, DEFAULT_OPENED_SECTIONS} from '~/registerReducer';
 import {useNotifications} from '@jahia/react-material';
 
 export const ContentEditorRoute = ({mode, uuid, lang, contentType, name}) => {

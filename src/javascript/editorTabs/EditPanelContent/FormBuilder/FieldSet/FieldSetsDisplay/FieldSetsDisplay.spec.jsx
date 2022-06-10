@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
-import FieldSetsDisplay from './FieldSetsDisplay';
+import {FieldSetsDisplay} from './FieldSetsDisplay';
 
 describe('FieldSetsDisplay component', () => {
     it('should be empty', () => {

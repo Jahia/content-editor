@@ -4,7 +4,7 @@ import {useFormikContext} from 'formik';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
 import {useTranslation} from 'react-i18next';
 import {useDispatch, useSelector} from 'react-redux';
-import {ceToggleSections} from '~/redux/registerReducer';
+import {ceToggleSections} from '~/registerReducer';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {Typography, Warning} from '@jahia/moonstone';
 import clsx from 'clsx';

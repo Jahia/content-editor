@@ -10,7 +10,7 @@ import {Constants} from '~/ContentEditor.constants';
 import {WindowListeners} from './WindowListeners';
 import {EditPanelHeader} from './EditPanelHeader';
 
-const EditPanelFullscreen = ({title}) => {
+export const EditPanelFullscreen = ({title}) => {
     const [activeTab, setActiveTab] = useState(Constants.editPanel.editTab);
     const {nodeData, lang, mode} = useContentEditorContext();
 
@@ -55,4 +55,3 @@ EditPanelFullscreen.propTypes = {
 };
 
 EditPanelFullscreen.displayName = 'EditPanelFullscreen';
-export default EditPanelFullscreen;

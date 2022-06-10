@@ -1,9 +1,9 @@
 .warningBadge {
     position: absolute;
-    top: -0.5em;
-    left: -0.125em;
+    top: -12px;
+    left: -12px;
 
-    color: #e8b606;
+    color: var(--color-warning);
 
     border-radius: 50%;
 

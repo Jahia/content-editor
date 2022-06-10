@@ -6,11 +6,11 @@ import PropTypes from 'prop-types';
 import {useDialogPickerContent} from '../useDialogPickerContent';
 import dayjs from 'dayjs';
 import {registry} from '@jahia/ui-extender';
-import ContentTableCellBadgeRenderer from './ContentTableCellBadgeRenderer';
+import {ContentTableCellBadgeRenderer} from './ContentTableCellBadgeRenderer';
 import {NavigateInto} from './NavigateInto';
 import {CountDisplayer} from '../CountDisplayer';
 import {notifyAccessDenied} from '../ErrorHandler';
-import SubContentCountLazyLoader from './SubContentCountLazyLoader';
+import {SubContentCountLazyLoader} from './SubContentCountLazyLoader';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 
 const columnConfig = (t, showSubContentsCount) => {

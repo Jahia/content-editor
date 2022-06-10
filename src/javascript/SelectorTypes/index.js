@@ -1,1 +1,2 @@
-export * from './SelectorTypes';
+export * from './registerSelectorTypes';
+export * from './resolveSelectorType';

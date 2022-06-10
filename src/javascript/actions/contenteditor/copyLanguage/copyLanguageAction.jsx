@@ -31,8 +31,6 @@ CopyLanguageActionComponent.propTypes = {
     render: PropTypes.func.isRequired
 };
 
-const copyLanguageAction = {
+export const copyLanguageAction = {
     component: CopyLanguageActionComponent
 };
-
-export default copyLanguageAction;

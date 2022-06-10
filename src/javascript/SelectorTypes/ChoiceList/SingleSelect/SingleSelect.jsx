@@ -8,7 +8,7 @@ import {getButtonRenderer} from '../../../utils/getButtonRenderer';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
-export const SingleSelectCmp = ({field, value, id, inputContext, onChange, onBlur}) => {
+export const SingleSelect = ({field, value, id, inputContext, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
     inputContext.actionContext = {
         onChange,
@@ -73,11 +73,11 @@ export const SingleSelectCmp = ({field, value, id, inputContext, onChange, onBlu
     );
 };
 
-SingleSelectCmp.defaultProps = {
+SingleSelect.defaultProps = {
     value: null
 };
 
-SingleSelectCmp.propTypes = {
+SingleSelect.propTypes = {
     id: PropTypes.string.isRequired,
     value: PropTypes.string,
     field: FieldPropTypes.isRequired,
@@ -86,7 +86,3 @@ SingleSelectCmp.propTypes = {
     onBlur: PropTypes.func.isRequired
 };
 
-export const SingleSelect = SingleSelectCmp;
-SingleSelect.displayName = 'SingleSelect';
-
-export default SingleSelect;

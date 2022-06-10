@@ -84,9 +84,7 @@ Create.propTypes = {
     createAnother: PropTypes.bool
 };
 
-const createAction = {
+export const createAction = {
     component: Create
 };
-
-export default createAction;
 

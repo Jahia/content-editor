@@ -2,7 +2,7 @@ import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 
-import Category from './Category';
+import {Category} from './Category';
 import {setQueryResult} from '@apollo/react-hooks';
 
 jest.mock('@apollo/react-hooks', () => {

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useNotifications} from '@jahia/react-material';
 import {Formik} from 'formik';
-import EditPanel from '~/EditPanel';
+import {EditPanel} from '~/EditPanel';
 import {useTranslation} from 'react-i18next';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
@@ -66,4 +66,3 @@ export const Create = () => {
 };
 
 Create.displayName = 'Create';
-export default Create;

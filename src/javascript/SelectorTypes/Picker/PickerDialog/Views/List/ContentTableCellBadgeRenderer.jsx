@@ -27,4 +27,3 @@ ContentTableCellBadgeRenderer.propTypes = {
 };
 
 ContentTableCellBadgeRenderer.displayName = 'ContentTableCellBadgeRenderer';
-export default ContentTableCellBadgeRenderer;

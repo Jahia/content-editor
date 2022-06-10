@@ -8,7 +8,7 @@ import {useApolloClient} from '@apollo/react-hooks';
 import {getSuggestionsTagsQuery} from './Tag.gql-queries';
 import {useContentEditorContext} from '~/ContentEditor.context';
 
-const Tag = ({field, value, id, onChange, onBlur}) => {
+export const Tag = ({field, value, id, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
     const client = useApolloClient();
     const {site} = useContentEditorContext();
@@ -70,5 +70,3 @@ Tag.propTypes = {
     onChange: PropTypes.func.isRequired,
     onBlur: PropTypes.func.isRequired
 };
-
-export default Tag;

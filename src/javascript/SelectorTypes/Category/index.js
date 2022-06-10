@@ -1,3 +1,2 @@
-import Category from './Category';
-
-export default Category;
+export * from './Category';
+export * from './registerCategory';

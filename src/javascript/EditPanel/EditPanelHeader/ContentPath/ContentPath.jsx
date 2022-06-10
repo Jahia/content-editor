@@ -6,7 +6,7 @@ import {push} from 'connected-react-router';
 
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import {cmGoto} from '~/JContent.redux-actions';
-import EditPanelDialogConfirmation from '~/EditPanelDialogConfirmation/EditPanelDialogConfirmation';
+import {EditPanelDialogConfirmation} from '~/EditPanelDialogConfirmation';
 import {GetContentPath} from './ContentPath.gql-queries';
 import {ContentPathView} from './ContentPathView';
 import {Constants} from '~/ContentEditor.constants';

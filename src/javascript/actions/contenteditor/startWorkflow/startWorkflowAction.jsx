@@ -67,8 +67,6 @@ StartWorkFlow.propTypes = {
     loading: PropTypes.func
 };
 
-const startWorkflowAction = {
+export const startWorkflowAction = {
     component: StartWorkFlow
 };
-
-export default startWorkflowAction;

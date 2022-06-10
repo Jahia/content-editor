@@ -1,5 +1,5 @@
 import {registry} from '@jahia/ui-extender';
-import registerSystemNameOnChange from './SystemName.onChange';
+import {registerSystemNameOnChange} from './SystemName.onChange';
 import {Constants} from '~/ContentEditor.constants';
 
 registerSystemNameOnChange(registry);

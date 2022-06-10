@@ -1,5 +1,5 @@
 import {Collapsible} from '@jahia/moonstone';
-import FieldSetsDisplay from '~/editorTabs/EditPanelContent/FormBuilder/FieldSet/FieldSetsDisplay/FieldSetsDisplay';
+import {FieldSetsDisplay} from '~/editorTabs/EditPanelContent/FormBuilder/FieldSet/FieldSetsDisplay/FieldSetsDisplay';
 import {filterRegularFieldSets} from '~/editorTabs/EditPanelContent/FormBuilder/FormBuilder.fieldSetHelp';
 import React from 'react';
 import PropTypes from 'prop-types';

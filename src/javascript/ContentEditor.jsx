@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Create from './Create/Create';
-import Edit from './Edit/Edit';
+import {Create} from './Create/Create';
+import {Edit} from './Edit/Edit';
 import {ContentEditorConfigContext, ContentEditorDataContextProvider} from './ContentEditor.context';
 import {Constants} from './ContentEditor.constants';
 import {DndProvider} from 'react-dnd';

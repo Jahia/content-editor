@@ -107,8 +107,6 @@ CreateContent.propTypes = {
     loading: PropTypes.func
 };
 
-const createContentAction = {
+export const createContentAction = {
     component: CreateContent
 };
-
-export default createContentAction;

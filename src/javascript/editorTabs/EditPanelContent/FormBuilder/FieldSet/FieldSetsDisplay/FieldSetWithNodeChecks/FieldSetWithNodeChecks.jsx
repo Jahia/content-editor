@@ -6,7 +6,7 @@ import {useContentEditorContext} from '~/ContentEditor.context';
 import {FieldSet} from '../../FieldSet';
 import {Loader} from '@jahia/moonstone';
 
-const FieldSetWithNodeChecks = ({fieldset}) => {
+export const FieldSetWithNodeChecks = ({fieldset}) => {
     const {path, lang, uilang} = useContentEditorContext();
     const resp = useNodeChecks(
         fieldset.nodeCheck.vars ? fieldset.nodeCheck.vars : {path, language: lang, displayLanguage: uilang},
@@ -41,5 +41,3 @@ FieldSetWithNodeChecks.contextTypes = {
 FieldSetWithNodeChecks.propTypes = {
     fieldset: FieldSetWithNodeCheckPropTypes.isRequired
 };
-
-export default FieldSetWithNodeChecks;

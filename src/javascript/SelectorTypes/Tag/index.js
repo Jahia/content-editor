@@ -1,3 +1,3 @@
-import Tag from './Tag';
+export * from './Tag';
+export * from './registerTag';
 
-export default Tag;

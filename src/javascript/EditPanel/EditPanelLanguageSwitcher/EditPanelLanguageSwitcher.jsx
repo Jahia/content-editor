@@ -6,7 +6,7 @@ import styles from './EditPanelLanguageSwitcher.scss';
 import {useSwitchLanguage} from '~/utils/useSwitchLanguage';
 import {getCapitalized} from '~/utils';
 
-const EditPanelLanguageSwitcher = ({siteInfo}) => {
+export const EditPanelLanguageSwitcher = ({siteInfo}) => {
     const {lang: currentLanguage} = useContentEditorConfigContext();
     const {i18nContext} = useContentEditorContext();
     let langLabel;
@@ -49,4 +49,3 @@ EditPanelLanguageSwitcher.propTypes = {
 
 EditPanelLanguageSwitcher.displayName = 'EditPanelLanguageSwitcher';
 
-export default EditPanelLanguageSwitcher;

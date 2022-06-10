@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {FieldSetPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {FieldSet} from '~/editorTabs/EditPanelContent/FormBuilder/FieldSet';
-import FieldSetWithNodeChecks from './FieldSetWithNodeChecks/FieldSetWithNodeChecks';
+import {FieldSetWithNodeChecks} from './FieldSetWithNodeChecks/FieldSetWithNodeChecks';
 
-const FieldSetsDisplay = ({fieldSets, fieldSetMapFcn = x => x}) => {
+export const FieldSetsDisplay = ({fieldSets, fieldSetMapFcn = x => x}) => {
     if (!fieldSets || fieldSets.length === 0) {
         return null;
     }
@@ -26,5 +26,3 @@ FieldSetsDisplay.propTypes = {
     fieldSets: PropTypes.arrayOf(FieldSetPropTypes),
     fieldSetMapFcn: PropTypes.func
 };
-
-export default FieldSetsDisplay;

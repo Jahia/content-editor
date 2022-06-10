@@ -4,7 +4,7 @@ import {Constants} from '~/ContentEditor.constants';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {useNodeChecks} from '@jahia/data-helper';
 import {dsGenericTheme} from '@jahia/design-system-kit';
-import FieldSetWithNodeChecks from './FieldSetWithNodeChecks';
+import {FieldSetWithNodeChecks} from './FieldSetWithNodeChecks';
 import {FieldSet} from '../../FieldSet';
 
 jest.mock('~/ContentEditor.context', () => ({

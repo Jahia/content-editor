@@ -8,7 +8,7 @@ import {useTranslation} from 'react-i18next';
 import {adaptToCategoryTree} from './category.adapter';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 
-const Category = ({field, value, id, editorContext, onChange, onBlur}) => {
+export const Category = ({field, value, id, editorContext, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
     const {data, error, loading} = useQuery(GetCategories, {
         variables: {
@@ -66,5 +66,3 @@ Category.propTypes = {
     onChange: PropTypes.func.isRequired,
     onBlur: PropTypes.func.isRequired
 };
-
-export default Category;

@@ -74,9 +74,7 @@ Save.propTypes = {
     loading: PropTypes.func
 };
 
-const saveAction = {
+export const saveAction = {
     component: Save
 };
-
-export default saveAction;
 

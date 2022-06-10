@@ -29,6 +29,3 @@ export const SubContentCountLazyLoader = ({updateRow, row}) => {
 SubContentCountLazyLoader.propTypes = {
     updateRow: PropTypes.func.isRequired
 };
-
-SubContentCountLazyLoader.displayName = 'SubContentCountLazyLoader';
-export default SubContentCountLazyLoader;

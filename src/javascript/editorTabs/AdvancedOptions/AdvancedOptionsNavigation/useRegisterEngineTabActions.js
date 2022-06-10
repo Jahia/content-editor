@@ -1,6 +1,6 @@
 import {engineTabsPermissionCheckQuery} from './engineTabs.permission.gql-query';
 import {registry} from '@jahia/ui-extender';
-import openEngineTabsAction from './openEngineTabsAction';
+import {openEngineTabsAction} from './openEngineTabsAction';
 import {getNodeTypes} from './engineTabs.utils';
 import {useQuery} from '@apollo/react-hooks';
 import {useContentEditorContext} from '~/ContentEditor.context';

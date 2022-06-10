@@ -1,0 +1,44 @@
+.icon.icon {
+    justify-content: center;
+    align-items: center;
+
+    font-size: 160px;
+
+    background-color: var(--color-white);
+}
+
+.container {
+    margin: 0 auto;
+    padding-top: var(--spacing-medium);
+    padding-bottom: var(--spacing-medium);
+
+    &.container.container.container div { /* stylelint-disable-line */
+        height: auto;
+    }
+
+    & video {
+        max-width: 550px;
+        max-height: 100%;
+    }
+
+    & div.document-container {
+        max-width: 550px;
+    }
+
+    &.fullScreen {
+        max-width: 100%;
+
+        & video {
+            max-width: 100%;
+        }
+
+        & div.document-container {
+            max-width: 100%;
+        }
+
+        & .icon {
+            width: 90%;
+            margin: auto;
+        }
+    }
+}

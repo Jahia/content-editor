@@ -20,7 +20,7 @@ function loadOption(selectorOptions, name) {
     return selectorOptions && selectorOptions.find(option => option.name === name);
 }
 
-export const RichTextCmp = ({field, id, value, onChange, onBlur}) => {
+export const RichText = ({field, id, value, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
     const [picker, setPicker] = useState(false);
 
@@ -139,7 +139,7 @@ export const RichTextCmp = ({field, id, value, onChange, onBlur}) => {
     );
 };
 
-RichTextCmp.propTypes = {
+RichText.propTypes = {
     id: PropTypes.string.isRequired,
     value: PropTypes.string,
     field: FieldPropTypes.isRequired,
@@ -147,6 +147,4 @@ RichTextCmp.propTypes = {
     onBlur: PropTypes.func.isRequired
 };
 
-const RichText = RichTextCmp;
 RichText.displayName = 'RichText';
-export default RichText;

@@ -1,1 +1,1 @@
-export {default as EditPanelDialogConfirmation} from './EditPanelDialogConfirmation';
+export * from './EditPanelDialogConfirmation';

@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 
-import {MultipleSelectCmp} from './MultipleSelect';
+import {MultipleSelect} from './MultipleSelect';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 
 let mockUseEffect = [];
@@ -47,7 +47,7 @@ describe('MultipleSelect component', () => {
 
     const buildComp = (componentProps, value) => {
         props.value = value;
-        return shallowWithTheme(<MultipleSelectCmp {...componentProps}/>, {}, dsGenericTheme).find('MultipleInput');
+        return shallowWithTheme(<MultipleSelect {...componentProps}/>, {}, dsGenericTheme).find('MultipleInput');
     };
 
     it('should bind id correctly', () => {

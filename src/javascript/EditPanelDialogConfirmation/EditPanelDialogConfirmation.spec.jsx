@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
-import {EditPanelDialogConfirmation} from './index';
+import {EditPanelDialogConfirmation} from './EditPanelDialogConfirmation';
 import {useFormikContext} from 'formik';
 import {useContentEditorContext} from '~/ContentEditor.context';
 

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import EditPanelDialogConfirmation from '~/EditPanelDialogConfirmation/EditPanelDialogConfirmation';
+import {EditPanelDialogConfirmation} from '~/EditPanelDialogConfirmation';
 import * as PropTypes from 'prop-types';
 import {useFormikContext} from 'formik';
 import {useContentEditorContext} from '~/ContentEditor.context';

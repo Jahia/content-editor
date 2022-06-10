@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import EditPanelFullscreen from '~/EditPanel/EditPanelFullscreen';
-import EditPanelCompact from '~/EditPanel/EditPanelCompact';
+import {EditPanelFullscreen} from '~/EditPanel/EditPanelFullscreen';
+import {EditPanelCompact} from '~/EditPanel/EditPanelCompact';
 import {useContentEditorConfigContext} from '~/ContentEditor.context';
 import {I18nContextHandler} from '~/EditPanel/I18nContextHandler';
 
-const EditPanel = React.memo(props => {
+export const EditPanel = React.memo(props => {
     const {envProps} = useContentEditorConfigContext();
     return (
         <>
@@ -21,4 +21,3 @@ EditPanel.propTypes = {
 };
 
 EditPanel.displayName = 'EditPanel';
-export default EditPanel;

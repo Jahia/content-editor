@@ -1,7 +1,7 @@
 import {Constants} from '~/ContentEditor.constants';
 import {limitSystemNameIfNecessary, replaceSpecialCharacters} from './SystemName.utils';
 
-const registerSystemNameOnChange = registry => {
+export const registerSystemNameOnChange = registry => {
     registry.add('selectorType.onChange', 'systemNameSync', {
         targets: ['Text'],
         onChange: (previousValue, currentValue, currentField, editorContext) => {
@@ -39,5 +39,3 @@ const registerSystemNameOnChange = registry => {
         }
     });
 };
-
-export default registerSystemNameOnChange;

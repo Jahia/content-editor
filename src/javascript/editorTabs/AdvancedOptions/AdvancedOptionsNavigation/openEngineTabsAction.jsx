@@ -43,8 +43,6 @@ OpenEngineTabs.propTypes = {
     tabs: PropTypes.array.isRequired
 };
 
-const openEngineTabsAction = {
+export const openEngineTabsAction = {
     component: OpenEngineTabs
 };
-
-export default openEngineTabsAction;

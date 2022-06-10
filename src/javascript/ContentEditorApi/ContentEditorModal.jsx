@@ -5,7 +5,7 @@ import {Dialog, IconButton, Slide} from '@material-ui/core';
 import styles from './ContentEditorApi.scss';
 import PropTypes from 'prop-types';
 import {useDispatch} from 'react-redux';
-import {ceToggleSections, DEFAULT_OPENED_SECTIONS} from '~/redux/registerReducer';
+import {ceToggleSections, DEFAULT_OPENED_SECTIONS} from '~/registerReducer';
 import {Button, Close} from '@jahia/moonstone';
 import {useNotifications} from '@jahia/react-material';
 import {useTranslation} from 'react-i18next';

@@ -1,1 +1,1 @@
-export {default as EditPanelLanguageSwitcher} from './EditPanelLanguageSwitcher';
+export * from './EditPanelLanguageSwitcher';

@@ -83,5 +83,3 @@ EditPanelDialogConfirmation.propTypes = {
     actionCallback: PropTypes.func.isRequired,
     onCloseDialog: PropTypes.func.isRequired
 };
-
-export default EditPanelDialogConfirmation;

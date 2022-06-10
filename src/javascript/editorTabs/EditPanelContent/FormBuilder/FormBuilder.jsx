@@ -6,7 +6,7 @@ import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEdit
 import {SectionsPropTypes} from '~/FormDefinitions/FormData.proptypes';
 import {OrderingSection, Section} from './Sections';
 import {useDispatch, useSelector} from 'react-redux';
-import {ceToggleSections} from '~/redux/registerReducer';
+import {ceToggleSections} from '~/registerReducer';
 import styles from './FormBuilder.scss';
 import {Validation} from '~/EditPanel/Validation';
 

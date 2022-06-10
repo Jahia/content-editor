@@ -134,5 +134,3 @@ CopyLanguageDialog.propTypes = {
     uuid: PropTypes.string.isRequired,
     onCloseDialog: PropTypes.func.isRequired
 };
-
-export default CopyLanguageDialog;

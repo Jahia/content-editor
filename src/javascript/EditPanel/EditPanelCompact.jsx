@@ -16,7 +16,7 @@ import {useTranslation} from 'react-i18next';
 import {HeaderBadges} from './HeaderBadges';
 
 const ButtonRenderer = getButtonRenderer({
-    defaultButtonProps: {size: 'big', className: styles.saveButtons},
+    defaultButtonProps: {size: 'big'},
     noIcon: true
 });
 
@@ -31,7 +31,7 @@ const accentColorButtonProps = {
     color: 'accent'
 };
 
-const EditPanelCompact = ({title, createAnother}) => {
+export const EditPanelCompact = ({title, createAnother}) => {
     const {siteInfo, nodeData, lang, mode} = useContentEditorContext();
     const contentEditorConfigContext = useContentEditorConfigContext();
     const {t} = useTranslation('content-editor');
@@ -95,4 +95,3 @@ EditPanelCompact.propTypes = {
 };
 
 EditPanelCompact.displayName = 'EditPanelCompact';
-export default EditPanelCompact;

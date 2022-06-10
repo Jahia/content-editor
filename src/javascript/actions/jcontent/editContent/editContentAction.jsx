@@ -43,8 +43,6 @@ EditContent.propTypes = {
     loading: PropTypes.func
 };
 
-const editContentAction = {
+export const editContentAction = {
     component: EditContent
 };
-
-export default editContentAction;

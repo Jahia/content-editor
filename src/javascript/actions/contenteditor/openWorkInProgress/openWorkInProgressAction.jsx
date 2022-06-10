@@ -60,8 +60,6 @@ OpenWorkInProgressModal.propTypes = {
     render: PropTypes.func.isRequired
 };
 
-const openWorkInProgressAction = {
+export const openWorkInProgressAction = {
     component: OpenWorkInProgressModal
 };
-
-export default openWorkInProgressAction;

@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect} from 'react';
 import {useNotifications} from '@jahia/react-material';
 import {Formik} from 'formik';
-import EditPanel from '~/EditPanel';
+import {EditPanel} from '~/EditPanel';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import {validate} from '~/Validation/validation';
 import {updateNode} from './updateNode';
@@ -78,4 +78,3 @@ export const Edit = () => {
 };
 
 Edit.displayName = 'Edit';
-export default Edit;

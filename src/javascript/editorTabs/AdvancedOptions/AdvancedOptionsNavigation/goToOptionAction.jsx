@@ -25,8 +25,6 @@ GoToOption.propTypes = {
     setActiveOption: PropTypes.func.isRequired
 };
 
-const GoToOptionAction = {
+export const goToOptionAction = {
     component: GoToOption
 };
-
-export default GoToOptionAction;
