@@ -2,12 +2,12 @@ import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {ChildrenSection} from './ChildrenSection';
-import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
+import {useContentEditorSectionContext} from '~/ContentEditorSection';
 import {listOrderingSection} from './AutomaticOrdering/AutomaticOrdering.spec.data';
 import {useFormikContext} from 'formik';
 
 jest.mock('formik');
-jest.mock('~/ContentEditorSection/ContentEditorSection.context');
+jest.mock('~/ContentEditorSection');
 
 describe('Children section component', () => {
     let props;

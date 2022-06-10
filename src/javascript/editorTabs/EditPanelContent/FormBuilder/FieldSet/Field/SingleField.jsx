@@ -1,9 +1,9 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
 import {FastField, useFormikContext} from 'formik';
-import {FieldPropTypes} from '~/FormDefinitions';
+import {FieldPropTypes} from '~/ContentEditor.proptypes';
 
-export const SingleFieldCmp = ({inputContext, editorContext, field, onChange, onBlur}) => {
+export const SingleField = ({inputContext, editorContext, field, onChange, onBlur}) => {
     const FieldComponent = inputContext.fieldComponent;
     const formik = useFormikContext();
     return (
@@ -24,7 +24,7 @@ export const SingleFieldCmp = ({inputContext, editorContext, field, onChange, on
     );
 };
 
-SingleFieldCmp.propTypes = {
+SingleField.propTypes = {
     inputContext: PropTypes.object.isRequired,
     editorContext: PropTypes.object.isRequired,
     field: FieldPropTypes.isRequired,
@@ -32,6 +32,4 @@ SingleFieldCmp.propTypes = {
     onChange: PropTypes.func.isRequired,
     onBlur: PropTypes.func.isRequired
 };
-
-export const SingleField = SingleFieldCmp;
 

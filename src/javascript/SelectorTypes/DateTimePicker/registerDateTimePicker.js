@@ -1,4 +1,4 @@
-import {DateTimePicker} from '~/SelectorTypes/DateTimePicker';
+import {DateTimePicker} from './DateTimePicker';
 
 const adaptDateProperty = (field, property) => {
     return field.multiple ? property.notZonedDateValues : property.notZonedDateValue;

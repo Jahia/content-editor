@@ -185,3 +185,4 @@ DatePickerInput.propTypes = {
     displayDateMask: PropTypes.string
 };
 
+DatePickerInput.displayName = 'DatePickerInput';

@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import CKEditor from 'ckeditor4-react';
 import * as PropTypes from 'prop-types';
-import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
+import {FieldPropTypes} from '~/ContentEditor.proptypes';
 import {useQuery} from '@apollo/react-hooks';
 import {getCKEditorConfigurationPath} from './CKEditorConfiguration.gql-queries';
 import {ContentEditorContext} from '~/ContentEditor.context';

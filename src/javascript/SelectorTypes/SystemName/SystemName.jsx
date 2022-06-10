@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
+import {FieldPropTypes} from '~/ContentEditor.proptypes';
 import {Text} from '~/SelectorTypes/Text';
 import {Constants} from '~/ContentEditor.constants';
 import {isEqualToSystemName, limitSystemNameIfNecessary, replaceSpecialCharacters} from './SystemName.utils';

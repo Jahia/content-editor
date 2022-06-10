@@ -94,3 +94,4 @@ ContentRowCmp.propTypes = {
 };
 
 export const ContentRow = withStyles(styles)(ContentRowCmp);
+ContentRow.displayName = 'ContentRow';

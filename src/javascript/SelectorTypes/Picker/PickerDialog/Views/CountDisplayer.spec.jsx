@@ -14,7 +14,7 @@ describe('CountDisplayer', () => {
             <CountDisplayer totalCount={10}/>,
             {},
             dsGenericTheme
-        ).dive();
+        );
 
         expect(cmp.debug()).toContain('10 items found');
     });
@@ -24,7 +24,7 @@ describe('CountDisplayer', () => {
             <CountDisplayer totalCount={666}/>,
             {},
             dsGenericTheme
-        ).dive();
+        );
 
         expect(cmp.debug()).toContain('666 items found');
     });

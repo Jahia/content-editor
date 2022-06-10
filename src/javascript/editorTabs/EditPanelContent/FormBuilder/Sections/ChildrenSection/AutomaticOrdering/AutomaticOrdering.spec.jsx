@@ -3,7 +3,7 @@ import {dsGenericTheme} from '@jahia/design-system-kit';
 import React from 'react';
 import {listOrderingSection} from './AutomaticOrdering.spec.data';
 import {AutomaticOrdering} from './AutomaticOrdering';
-import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
+import {useContentEditorSectionContext} from '~/ContentEditorSection';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {adaptSectionToDisplayableRows, getDisplayedRows} from './AutomaticOrdering.utils';
 import {Constants} from '~/ContentEditor.constants';
@@ -11,7 +11,7 @@ import {useFormikContext} from 'formik';
 
 jest.mock('formik');
 jest.mock('~/ContentEditor.context');
-jest.mock('~/ContentEditorSection/ContentEditorSection.context');
+jest.mock('~/ContentEditorSection');
 
 describe('Automatic ordering component', () => {
     let props;

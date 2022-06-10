@@ -2,7 +2,7 @@ import React from 'react';
 import {shallow} from '@jahia/test-framework';
 import {publishAction} from './publishAction';
 import {Constants} from '~/ContentEditor.constants';
-import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
+import {usePublicationInfoContext} from '~/PublicationInfo';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import {useFormikContext} from 'formik';
 
@@ -12,7 +12,7 @@ jest.mock('./publishNode', () => {
     };
 });
 
-jest.mock('~/PublicationInfo/PublicationInfo.context', () => ({usePublicationInfoContext: jest.fn()}));
+jest.mock('~/PublicationInfo', () => ({usePublicationInfoContext: jest.fn()}));
 jest.mock('~/ContentEditor.context');
 jest.mock('formik');
 jest.mock('@apollo/react-hooks');

@@ -6,8 +6,8 @@ import {getPreviewPath} from '~/editorTabs/EditPanelContent/Preview/Preview.util
 import {PublicationInfoQuery} from '~/PublicationInfo/PublicationInfo.gql-queries';
 import {adaptSaveRequest} from './Edit.adapter';
 import {Constants} from '~/ContentEditor.constants';
-import {onServerError} from '~/Validation/validation.utils';
 import {registry} from '@jahia/ui-extender';
+import {onServerError} from '~/Validation';
 
 export const updateNode = ({
     client,

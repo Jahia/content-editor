@@ -1,6 +1,6 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
-import {FieldPropTypes} from '~/FormDefinitions';
+import {FieldPropTypes} from '~/ContentEditor.proptypes';
 import {resolveSelectorType} from '~/SelectorTypes';
 import {Field} from './Field';
 
@@ -33,3 +33,4 @@ FieldContainer.propTypes = {
     inputContext: PropTypes.object
 };
 
+FieldContainer.displayName = 'FieldContainer';

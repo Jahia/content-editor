@@ -5,11 +5,11 @@ import {dsGenericTheme} from '@jahia/design-system-kit';
 import {FormBuilder} from './FormBuilder';
 import {useFormikContext} from 'formik';
 import {useContentEditorContext} from '~/ContentEditor.context';
-import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
+import {useContentEditorSectionContext} from '~/ContentEditorSection';
 import {Constants} from '~/ContentEditor.constants';
 
 jest.mock('formik');
-jest.mock('~/ContentEditorSection/ContentEditorSection.context');
+jest.mock('~/ContentEditorSection');
 jest.mock('~/ContentEditor.context');
 jest.mock('react-redux', () => ({
     useDispatch: jest.fn(),

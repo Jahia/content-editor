@@ -1,8 +1,8 @@
 import dayjs from '~/date.config';
 import {getDynamicFieldSets, getFields} from '~/EditPanel/EditPanel.utils';
 import {resolveSelectorType} from '~/SelectorTypes';
-import {adaptSections, getFieldValuesFromDefaultValues} from '~/FormDefinitions/FormData.adapter';
-import {adaptSystemNameField} from '~/FormDefinitions/FormData.adapter';
+import {adaptSections, getFieldValuesFromDefaultValues} from '~/FormDefinitions';
+import {adaptSystemNameField} from '~/FormDefinitions';
 import {Constants} from '~/ContentEditor.constants';
 import {encodeSystemName} from '~/utils';
 

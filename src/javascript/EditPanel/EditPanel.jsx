@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {EditPanelFullscreen} from '~/EditPanel/EditPanelFullscreen';
-import {EditPanelCompact} from '~/EditPanel/EditPanelCompact';
+import {EditPanelFullscreen} from './EditPanelFullscreen';
+import {EditPanelCompact} from './EditPanelCompact';
 import {useContentEditorConfigContext} from '~/ContentEditor.context';
-import {I18nContextHandler} from '~/EditPanel/I18nContextHandler';
+import {I18nContextHandler} from './I18nContextHandler';
 
 export const EditPanel = React.memo(props => {
     const {envProps} = useContentEditorConfigContext();

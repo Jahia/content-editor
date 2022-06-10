@@ -4,9 +4,9 @@ import {Formik} from 'formik';
 import {EditPanel} from '~/EditPanel';
 import {useTranslation} from 'react-i18next';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
-import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
+import {useContentEditorSectionContext} from '~/ContentEditorSection';
 
-import {validate} from '~/Validation/validation';
+import {validate} from '~/Validation';
 import {createNode} from './createNode';
 import {useApolloClient} from '@apollo/react-hooks';
 

@@ -74,3 +74,4 @@ ControlCmp.propTypes = {
 
 export const Control = withStyles(styles)(ControlCmp);
 
+Control.displayName = 'Control';

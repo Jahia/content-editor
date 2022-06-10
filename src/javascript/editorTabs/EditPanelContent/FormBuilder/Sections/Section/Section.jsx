@@ -3,7 +3,7 @@ import {FieldSetsDisplay} from '~/editorTabs/EditPanelContent/FormBuilder/FieldS
 import {filterRegularFieldSets} from '~/editorTabs/EditPanelContent/FormBuilder/FormBuilder.fieldSetHelp';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {SectionPropTypes} from '~/FormDefinitions';
+import {SectionPropTypes} from '~/ContentEditor.proptypes';
 
 export const Section = ({section, isExpanded, onClick}) => {
     const fieldSets = filterRegularFieldSets(section.fieldSets);

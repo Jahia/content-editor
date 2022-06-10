@@ -2,14 +2,14 @@ import React, {useEffect, useRef} from 'react';
 import {Constants} from '~/ContentEditor.constants';
 import {ContentEditor} from '~/ContentEditor';
 import {Dialog, IconButton, Slide} from '@material-ui/core';
-import styles from './ContentEditorApi.scss';
+import styles from './ContentEditorModal.scss';
 import PropTypes from 'prop-types';
 import {useDispatch} from 'react-redux';
 import {ceToggleSections, DEFAULT_OPENED_SECTIONS} from '~/registerReducer';
 import {Button, Close} from '@jahia/moonstone';
 import {useNotifications} from '@jahia/react-material';
 import {useTranslation} from 'react-i18next';
-import {OnCloseConfirmationDialog} from '~/ContentEditorApi/OnCloseConfirmationDialog';
+import {OnCloseConfirmationDialog} from './OnCloseConfirmationDialog';
 
 function triggerEvents(nodeUuid, operator) {
     // Refresh contentEditorEventHandlers

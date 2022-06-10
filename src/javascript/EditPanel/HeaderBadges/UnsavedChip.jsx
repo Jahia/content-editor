@@ -4,7 +4,7 @@ import {useContentEditorContext} from '~/ContentEditor.context';
 import {Constants} from '~/ContentEditor.constants';
 import {Chip, Edit} from '@jahia/moonstone';
 import React, {useMemo} from 'react';
-import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
+import {useContentEditorSectionContext} from '~/ContentEditorSection';
 import {getFields} from '~/EditPanel/EditPanel.utils';
 import isEquals from 'react-fast-compare';
 

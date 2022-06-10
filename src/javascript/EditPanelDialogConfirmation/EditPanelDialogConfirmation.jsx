@@ -3,7 +3,7 @@ import {Dialog, DialogActions, DialogContent, DialogTitle} from '@material-ui/co
 import {Button, Typography} from '@jahia/moonstone';
 import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
-import {SaveButton} from '~/EditPanelDialogConfirmation/SaveButton';
+import {SaveButton} from './SaveButton';
 import styles from './EditPanelDialogConfirmation.scss';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {Constants} from '~/ContentEditor.constants';

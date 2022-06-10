@@ -9,7 +9,7 @@ import {Typography} from '@jahia/design-system-kit';
 
 import {SearchInput} from './Search/Search';
 import {List, Thumbnail} from './Views';
-import {getButtonRenderer} from '~/utils/getButtonRenderer';
+import {getButtonRenderer} from '~/utils';
 import clsx from 'clsx';
 
 const styles = theme => ({

@@ -3,12 +3,12 @@ import {useNotifications} from '@jahia/react-material';
 import {Formik} from 'formik';
 import {EditPanel} from '~/EditPanel';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
-import {validate} from '~/Validation/validation';
+import {validate} from '~/Validation';
 import {updateNode} from './updateNode';
-import {PublicationInfoContextProvider} from '~/PublicationInfo/PublicationInfo.context';
-import {LockManager} from '~/Lock/LockManager';
+import {PublicationInfoContextProvider} from '~/PublicationInfo';
+import {LockManager} from '~/Lock';
 import {useTranslation} from 'react-i18next';
-import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
+import {useContentEditorSectionContext} from '~/ContentEditorSection';
 import {useApolloClient} from '@apollo/react-hooks';
 
 export const Edit = () => {

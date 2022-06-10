@@ -1,7 +1,7 @@
-import {validate} from './validation';
+import {validate} from './validate';
 import {Constants} from '~/ContentEditor.constants';
 
-describe('validation', () => {
+describe('validate', () => {
     const buildSections = (fieldOptions = {}) => {
         const buildField = (name, nodeType) => {
             return {name, nodeType, ...fieldOptions};

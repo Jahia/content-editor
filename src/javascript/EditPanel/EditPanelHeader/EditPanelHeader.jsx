@@ -1,13 +1,13 @@
 import React from 'react';
 import {DisplayAction, DisplayActions} from '@jahia/ui-extender';
-import {ButtonRendererNoLabel, ButtonRendererShortLabel, getButtonRenderer} from '~/utils/getButtonRenderer';
+import {ButtonRendererNoLabel, ButtonRendererShortLabel, getButtonRenderer} from '~/utils';
 import {truncate} from '~/utils';
 import {ButtonGroup, Chip, Header, Separator, Tab, TabItem} from '@jahia/moonstone';
-import styles from '~/EditPanel/EditPanelHeader/EditPanelHeader.scss';
+import styles from './EditPanelHeader.scss';
 import {PublishMenu} from './PublishMenu';
 import {useTranslation} from 'react-i18next';
 import {useContentEditorContext} from '~/ContentEditor.context';
-import {EditPanelLanguageSwitcher} from '~/EditPanel/EditPanelLanguageSwitcher';
+import {EditPanelLanguageSwitcher} from '../EditPanelLanguageSwitcher';
 import {HeaderBadges} from '../HeaderBadges';
 import PropTypes from 'prop-types';
 import {getNodeTypeIcon} from '~/EditPanel/EditPanel.utils';

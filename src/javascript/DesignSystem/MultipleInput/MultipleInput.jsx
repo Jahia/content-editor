@@ -74,3 +74,4 @@ MultipleInputComponent.propTypes = {
 
 export const MultipleInput = withStyles(style)(MultipleInputComponent);
 
+MultipleInput.displayName = 'MultipleInput';

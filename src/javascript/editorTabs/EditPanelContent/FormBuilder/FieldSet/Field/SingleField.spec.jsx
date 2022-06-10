@@ -2,7 +2,7 @@ import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 
 import {dsGenericTheme} from '@jahia/design-system-kit';
-import {SingleFieldCmp} from './SingleField';
+import {SingleField} from './SingleField';
 import {TextAreaField} from '~/SelectorTypes/TextAreaField/TextAreaField';
 import {FastField, useFormikContext} from 'formik';
 
@@ -70,7 +70,7 @@ describe('Field component', () => {
 
     let buildFieldCmp = () => {
         const cmp = shallowWithTheme(
-            <SingleFieldCmp {...defaultProps}/>,
+            <SingleField {...defaultProps}/>,
             {},
             dsGenericTheme
         );

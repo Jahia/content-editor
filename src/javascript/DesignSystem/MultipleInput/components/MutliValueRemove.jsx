@@ -20,3 +20,4 @@ MultiValueRemoveCmp.propTypes = {
 };
 
 export const MultiValueRemove = withStyles(styles)(MultiValueRemoveCmp);
+MultiValueRemove.displayName = 'MutliValueRemove';

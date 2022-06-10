@@ -1,14 +1,14 @@
 import {Constants} from '~/ContentEditor.constants';
-import {validateForm} from '~/Validation/validation.utils';
+import {validateForm} from '~/Validation';
 import React, {useContext, useState} from 'react';
 import {ComponentRendererContext} from '@jahia/ui-extender';
 import * as PropTypes from 'prop-types';
 import {useFormikContext} from 'formik';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
-import {useKeydownListener} from '~/utils/useKeydownListener';
+import {useKeydownListener} from '~/utils';
 import {adaptCreateFormData} from '~/Create/Create.adapter';
 import {useTranslation} from 'react-i18next';
-import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
+import {useContentEditorSectionContext} from '~/ContentEditorSection';
 
 const Create = ({createAnother, render: Render, loading: Loading, ...otherProps}) => {
     const {t} = useTranslation('content-editor');

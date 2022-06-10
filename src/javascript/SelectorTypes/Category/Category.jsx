@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
+import {FieldPropTypes} from '~/ContentEditor.proptypes';
 import {DropdownTreeSelect} from '~/DesignSystem/DropdownTreeSelect';
 import {useQuery} from '@apollo/react-hooks';
 import {GetCategories} from './category.gql-queries';

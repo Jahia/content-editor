@@ -3,7 +3,7 @@ import React from 'react';
 import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import {FastField, useFormikContext} from 'formik';
-import {FieldPropTypes} from '~/FormDefinitions';
+import {FieldPropTypes} from '~/ContentEditor.proptypes';
 import styles from './MultipleField.scss';
 
 export const MultipleField = ({editorContext, inputContext, field, onChange, onBlur}) => {

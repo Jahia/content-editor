@@ -24,3 +24,4 @@ DropdownIndicatorCmp.propTypes = {
 
 export const DropdownIndicator = withStyles(styles)(DropdownIndicatorCmp);
 
+DropdownIndicator.displayName = 'DropdownIndicator';

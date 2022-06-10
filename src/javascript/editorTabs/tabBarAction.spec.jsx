@@ -4,7 +4,11 @@ import {TabBar} from './tabBarAction';
 import {useNodeChecks} from '@jahia/data-helper';
 
 jest.mock('@jahia/data-helper', () => {
-    return {useNodeChecks: jest.fn()};
+    const original = jest.requireActual('@jahia/data-helper');
+    return {
+        ...original,
+        useNodeChecks: jest.fn()
+    };
 });
 
 describe('TabBar', () => {

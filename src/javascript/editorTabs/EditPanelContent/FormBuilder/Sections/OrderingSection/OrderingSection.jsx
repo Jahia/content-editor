@@ -4,7 +4,7 @@ import {Constants} from '~/ContentEditor.constants';
 import {ChildrenSection} from '~/editorTabs/EditPanelContent/FormBuilder/Sections';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {SectionPropTypes} from '~/FormDefinitions';
+import {SectionPropTypes} from '~/ContentEditor.proptypes';
 import {Collapsible} from '@jahia/moonstone';
 
 export const OrderingSection = ({mode, section, nodeData, isExpanded, onClick}) => {

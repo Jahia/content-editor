@@ -3,7 +3,7 @@ import {EditPanelDialogConfirmation} from '~/EditPanelDialogConfirmation';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import * as PropTypes from 'prop-types';
 import {Constants} from '~/ContentEditor.constants';
-import {useKeydownListener} from '~/utils/useKeydownListener';
+import {useKeydownListener} from '~/utils';
 import {useFormikContext} from 'formik';
 
 export const GoBack = ({render: Render, ...otherProps}) => {

@@ -1,8 +1,8 @@
 import {useCallback} from 'react';
-import {validate} from '~/Validation/validation';
+import {validate} from '~/Validation';
 import {getDynamicFieldSets, getFields} from '~/EditPanel/EditPanel.utils';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
-import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
+import {useContentEditorSectionContext} from '~/ContentEditorSection';
 import {useFormikContext} from 'formik';
 import {Constants} from '~/ContentEditor.constants';
 

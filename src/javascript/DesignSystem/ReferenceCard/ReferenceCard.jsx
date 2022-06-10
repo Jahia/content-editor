@@ -218,3 +218,4 @@ ReferenceCardCmp.propTypes = {
 
 export const ReferenceCard = withStyles(styles)(ReferenceCardCmp);
 
+ReferenceCard.displayName = 'ReferenceCard';

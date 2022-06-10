@@ -2,9 +2,9 @@ import React from 'react';
 import {registry} from '@jahia/ui-extender';
 import {registerCEActions} from './registerCEActions';
 import {Constants} from '~/ContentEditor.constants';
-import {ContentEditorApi} from './ContentEditorApi/ContentEditorApi';
+import {ContentEditorApi} from './ContentEditorApi';
 import {ContentEditorRoute} from './Route/ContentEditorRoute';
-import {ContentEditorHistoryContextProvider} from '~/ContentEditorHistory/ContentEditorHistory.context';
+import {ContentEditorHistoryContextProvider} from '~/ContentEditorHistory';
 import {registerSelectorTypes} from '~/SelectorTypes';
 import {pcNavigateTo} from '~/pagecomposer.redux-actions';
 import {registerReducer} from './registerReducer';
@@ -29,7 +29,6 @@ export default function () {
     registry.add('route', 'content-editor-edit-route', {
         targets: ['main:2.1'],
         path: '/content-editor/:lang/edit/:uuid',
-        // eslint-disable-next-line react/prop-types
         render: ({match}) => (
             <ContentEditorRoute uuid={match.params.uuid}
                                 mode={Constants.routes.baseEditRoute}
@@ -40,7 +39,6 @@ export default function () {
     registry.add('route', 'content-editor-create-route', {
         targets: ['main:2.1'],
         path: '/content-editor/:lang/create/:parentUuid/:contentType?/:name?',
-        // eslint-disable-next-line react/prop-types
         render: ({match}) => (
             <ContentEditorRoute uuid={match.params.parentUuid}
                                 mode={Constants.routes.baseCreateRoute}

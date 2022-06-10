@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {PublicationInfoBadge} from '~/EditPanel/HeaderBadges/PublicationInfoBadge';
+import {PublicationInfoBadge} from './PublicationInfoBadge';
 import {LockInfoChip} from './LockInfoChip';
 import {WipInfoChip} from './WipInfoChip';
 import {UnsavedChip} from './UnsavedChip';

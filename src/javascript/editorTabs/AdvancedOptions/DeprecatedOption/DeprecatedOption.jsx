@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import styles from './DeprecatedOption.scss';
-import {getButtonRenderer} from '~/utils/getButtonRenderer';
+import {getButtonRenderer} from '~/utils';
 import {DisplayAction} from '@jahia/ui-extender';
 import {Typography} from '@jahia/moonstone';
 import clsx from 'clsx';

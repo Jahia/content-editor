@@ -1,1 +1,2 @@
-export * from './ContentEditorHistory';
+export * from './useContentEditorHistory';
+export * from './ContentEditorHistory.context';

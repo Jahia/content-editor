@@ -1,10 +1,10 @@
 import React, {useContext} from 'react';
 import {shallow} from '@jahia/test-framework';
 import {saveAction} from './saveAction';
-import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
+import {usePublicationInfoContext} from '~/PublicationInfo';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
 import {useFormikContext} from 'formik';
-import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
+import {useContentEditorSectionContext} from '~/ContentEditorSection';
 
 jest.mock('react', () => {
     return {
@@ -13,8 +13,8 @@ jest.mock('react', () => {
     };
 });
 
-jest.mock('~/PublicationInfo/PublicationInfo.context', () => ({usePublicationInfoContext: jest.fn()}));
-jest.mock('~/ContentEditorSection/ContentEditorSection.context');
+jest.mock('~/PublicationInfo', () => ({usePublicationInfoContext: jest.fn()}));
+jest.mock('~/ContentEditorSection');
 jest.mock('formik');
 jest.mock('~/ContentEditor.context', () => ({
     useContentEditorContext: jest.fn(),

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
+import {FieldPropTypes} from '~/ContentEditor.proptypes';
 import {ColorPickerInput} from '~/DesignSystem/ColorPickerInput';
 
 export const Color = ({id, field, value, onChange, onBlur}) => {

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
+import {useContentEditorSectionContext} from '~/ContentEditorSection';
 import {FieldContainer} from '~/editorTabs/EditPanelContent/FormBuilder/FieldSet/Field';
 import {useFormikContext} from 'formik';
 import {useTranslation} from 'react-i18next';

@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Toggle} from '@jahia/design-system-kit';
-import {ChildrenSectionPropTypes} from '~/FormDefinitions/FormData.proptypes';
+import {ChildrenSectionPropTypes} from '~/ContentEditor.proptypes';
 import {ManualOrdering} from './ManualOrdering';
 import {useTranslation} from 'react-i18next';
 import {AutomaticOrdering} from './AutomaticOrdering';
 import {Constants} from '~/ContentEditor.constants';
 import {Chip, Language, Typography} from '@jahia/moonstone';
 import {getAutomaticOrderingFieldSet} from './AutomaticOrdering/AutomaticOrdering.utils';
-import {useContentEditorSectionContext} from '~/ContentEditorSection/ContentEditorSection.context';
+import {useContentEditorSectionContext} from '~/ContentEditorSection';
 import {FieldSetsDisplay} from '~/editorTabs/EditPanelContent/FormBuilder/FieldSet/FieldSetsDisplay/FieldSetsDisplay';
 import {orderingSectionFieldSetMap} from '../../FormBuilder.fieldSetHelp';
 import {useFormikContext} from 'formik';

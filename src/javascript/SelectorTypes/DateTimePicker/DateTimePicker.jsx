@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {DatePickerInput} from '~/DesignSystem/DatePickerInput';
 import dayjs from 'dayjs';
 import {fillDisabledDaysFromJCRConstraints} from './DateTimePicker.utils';
-import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
+import {FieldPropTypes} from '~/ContentEditor.proptypes';
 import {specificDateFormat} from './DateTimePicker.formats';
 
 const variantMapper = {

@@ -124,3 +124,5 @@ CardCmp.propTypes = {
 };
 
 export const Card = withStyles(styles)(CardCmp);
+
+Card.displayName = 'Card';

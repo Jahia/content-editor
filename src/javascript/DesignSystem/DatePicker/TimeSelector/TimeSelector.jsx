@@ -80,3 +80,4 @@ TimeSelectorCmp.propTypes = {
 
 export const TimeSelector = withStyles(style)(TimeSelectorCmp);
 
+TimeSelector.displayName = 'TimeSelector';

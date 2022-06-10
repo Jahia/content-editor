@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {FieldSetPropTypes} from '~/FormDefinitions/FormData.proptypes';
+import {FieldSetPropTypes} from '~/ContentEditor.proptypes';
 import {FieldSet} from '~/editorTabs/EditPanelContent/FormBuilder/FieldSet';
 import {FieldSetWithNodeChecks} from './FieldSetWithNodeChecks/FieldSetWithNodeChecks';
 

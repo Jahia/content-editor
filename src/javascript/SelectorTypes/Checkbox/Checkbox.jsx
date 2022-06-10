@@ -1,7 +1,7 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
 import {Toggle} from '@jahia/design-system-kit';
-import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
+import {FieldPropTypes} from '~/ContentEditor.proptypes';
 
 export const Checkbox = ({field, value, id, onChange, onBlur}) => {
     return (

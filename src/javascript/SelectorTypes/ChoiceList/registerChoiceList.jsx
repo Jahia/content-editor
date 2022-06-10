@@ -1,4 +1,4 @@
-import {ChoiceList} from '~/SelectorTypes/ChoiceList/index';
+import {ChoiceList} from './ChoiceList';
 import {registerChoiceListActions} from './actions/registerChoiceListActions';
 import {registerChoiceListOnChange} from './registerChoiceListOnChange';
 

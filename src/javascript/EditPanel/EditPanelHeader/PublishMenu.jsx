@@ -4,7 +4,7 @@ import {Constants} from '~/ContentEditor.constants';
 import React from 'react';
 import styles from './PublishMenu.scss';
 import {DisplayAction} from '@jahia/ui-extender';
-import {getButtonRenderer} from '~/utils/getButtonRenderer';
+import {getButtonRenderer} from '~/utils';
 
 const ButtonRenderer = getButtonRenderer({
     labelStyle: 'none',

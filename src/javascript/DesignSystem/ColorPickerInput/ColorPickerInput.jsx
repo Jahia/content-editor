@@ -97,3 +97,5 @@ ColorPickerInput.propTypes = {
     readOnly: PropTypes.bool,
     inputProps: PropTypes.object
 };
+
+ColorPickerInput.displayName = 'ColorPickerInput';

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {FieldSetWithNodeCheckPropTypes} from '~/FormDefinitions/FormData.proptypes';
+import {FieldSetWithNodeCheckPropTypes} from '~/ContentEditor.proptypes';
 import {useNodeChecks} from '@jahia/data-helper';
 import {useContentEditorContext} from '~/ContentEditor.context';
 import {FieldSet} from '../../FieldSet';

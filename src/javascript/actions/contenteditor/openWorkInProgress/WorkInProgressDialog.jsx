@@ -54,12 +54,12 @@ export const WorkInProgressDialog = ({
 
     const onChangeWip = event => {
         setWipStatus(event.target.checked);
-        if (!event.target.checked) {
-            setSelectedLanguages([]);
-            setStatusSelected(Constants.wip.status.DISABLED);
-        } else {
+        if (event.target.checked) {
             setSelectedLanguages([currentLanguage]);
             setStatusSelected(Constants.wip.status.LANGUAGES);
+        } else {
+            setSelectedLanguages([]);
+            setStatusSelected(Constants.wip.status.DISABLED);
         }
     };
 

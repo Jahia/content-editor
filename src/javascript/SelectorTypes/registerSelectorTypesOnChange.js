@@ -1,5 +1,5 @@
 import {getFields} from '~/EditPanel/EditPanel.utils';
-import {FieldConstraints} from '~/SelectorTypes/ChoiceList/ChoiceList.gql-queries';
+import {FieldConstraints} from './registerSelectorTypesOnChange.gql-queries';
 
 function arrayEquals(arr1, arr2) {
     return arr1.length === arr2.length && arr1.every((value, index) => value === arr2[index]);

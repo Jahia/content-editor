@@ -10,11 +10,13 @@ export const FieldPropTypes = PropTypes.shape({
     readOnly: PropTypes.bool,
     requiredType: PropTypes.string
 });
+
 export const FieldSetPropTypes = PropTypes.shape({
     name: PropTypes.string,
     displayName: PropTypes.string.isRequired,
     fields: PropTypes.arrayOf(FieldPropTypes)
 });
+
 export const FieldSetWithNodeCheckPropTypes = PropTypes.shape({
     name: PropTypes.string,
     displayName: PropTypes.string.isRequired,
@@ -23,6 +25,7 @@ export const FieldSetWithNodeCheckPropTypes = PropTypes.shape({
     visibilityFunction: PropTypes.func.isRequired,
     comp: PropTypes.func
 });
+
 export const SectionPropTypes = PropTypes.shape({
     name: PropTypes.string,
     displayName: PropTypes.string.isRequired,

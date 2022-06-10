@@ -1,8 +1,8 @@
 import React from 'react';
-import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
+import {usePublicationInfoContext} from '~/PublicationInfo';
 import {useTranslation} from 'react-i18next';
 import {Constants} from '~/ContentEditor.constants';
-import {PublicationStatus} from '~/PublicationInfo/PublicationStatus';
+import {PublicationStatus} from './PublicationStatus';
 import {getTooltip} from './PublicationInfoBadge.tooltip';
 import {useContentEditorConfigContext} from '~/ContentEditor.context';
 

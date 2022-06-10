@@ -110,3 +110,4 @@ ImageListCmp.propTypes = {
 };
 
 export const ImageList = withStyles(styles)(ImageListCmp);
+ImageList.displayName = 'ImageList';
