@@ -202,4 +202,3 @@ PickerDialogCmp.propTypes = {
 };
 
 export const PickerDialog = withStyles(styles)(PickerDialogCmp);
-PickerDialog.displayName = 'PickerDialog';

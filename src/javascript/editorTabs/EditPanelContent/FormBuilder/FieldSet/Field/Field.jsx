@@ -219,4 +219,3 @@ Field.propTypes = {
     field: FieldPropTypes.isRequired
 };
 
-Field.displayName = 'Field';

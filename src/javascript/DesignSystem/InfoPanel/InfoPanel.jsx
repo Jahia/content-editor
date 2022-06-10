@@ -65,4 +65,3 @@ InfoPanelCmp.propTypes = {
 
 export const InfoPanel = withStyles(style)(InfoPanelCmp);
 
-InfoPanel.displayName = 'InfoPanel';

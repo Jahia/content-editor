@@ -147,4 +147,3 @@ RichText.propTypes = {
     onBlur: PropTypes.func.isRequired
 };
 
-RichText.displayName = 'RichText';

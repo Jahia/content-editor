@@ -89,4 +89,3 @@ MultipleField.propTypes = {
     onBlur: PropTypes.func.isRequired
 };
 
-MultipleField.displayName = 'MultipleField';

@@ -94,4 +94,3 @@ EditPanelCompact.propTypes = {
     createAnother: PropTypes.object
 };
 
-EditPanelCompact.displayName = 'EditPanelCompact';

@@ -35,4 +35,3 @@ SingleFieldCmp.propTypes = {
 
 export const SingleField = SingleFieldCmp;
 
-SingleField.displayName = 'SingleField';

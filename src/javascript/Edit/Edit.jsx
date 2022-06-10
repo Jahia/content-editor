@@ -77,4 +77,3 @@ export const Edit = () => {
     );
 };
 
-Edit.displayName = 'Edit';

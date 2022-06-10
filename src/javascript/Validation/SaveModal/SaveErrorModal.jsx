@@ -85,4 +85,3 @@ SaveErrorModal.propTypes = {
     onClose: PropTypes.func.isRequired
 };
 
-SaveErrorModal.displayName = 'SaveErrorModal';

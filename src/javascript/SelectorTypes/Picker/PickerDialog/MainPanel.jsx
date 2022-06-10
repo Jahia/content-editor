@@ -170,4 +170,3 @@ MainPanelCmp.propTypes = {
 };
 
 export const MainPanel = withStyles(styles)(MainPanelCmp);
-MainPanel.displayName = 'MainPanel';

@@ -29,4 +29,3 @@ Section.propTypes = {
     onClick: PropTypes.func.isRequired
 };
 
-Section.displayName = 'Section';

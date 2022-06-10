@@ -56,4 +56,3 @@ ListSizeLimitFieldSet.propTypes = {
     fieldset: FieldSetPropTypes.isRequired
 };
 
-ListSizeLimitFieldSet.displayName = 'ListSizeLimitFieldSet';

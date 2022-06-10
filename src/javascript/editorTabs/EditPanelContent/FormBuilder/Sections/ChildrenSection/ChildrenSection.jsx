@@ -88,4 +88,3 @@ ChildrenSection.propTypes = {
     canAutomaticallyOrder: PropTypes.bool.isRequired
 };
 
-ChildrenSection.displayName = 'ChildrenSection';

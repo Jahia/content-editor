@@ -31,4 +31,3 @@ LabelledInfoCmp.propTypes = {
 
 export const LabelledInfo = withStyles(style)(LabelledInfoCmp);
 
-LabelledInfo.displayName = 'LabelledInfo';

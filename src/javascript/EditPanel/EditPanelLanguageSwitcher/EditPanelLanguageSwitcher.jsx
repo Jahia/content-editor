@@ -47,5 +47,3 @@ EditPanelLanguageSwitcher.propTypes = {
     siteInfo: PropTypes.object.isRequired
 };
 
-EditPanelLanguageSwitcher.displayName = 'EditPanelLanguageSwitcher';
-

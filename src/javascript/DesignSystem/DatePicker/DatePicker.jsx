@@ -102,5 +102,3 @@ DatePickerCmp.propTypes = {
 
 export const DatePicker = withStyles(style)(DatePickerCmp);
 
-DayPicker.displayName = 'DayPicker';
-DatePicker.displayName = 'DatePicker';

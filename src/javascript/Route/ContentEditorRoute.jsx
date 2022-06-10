@@ -139,4 +139,3 @@ ContentEditorRoute.propTypes = {
     contentType: PropTypes.string
 };
 
-ContentEditorRoute.displayName = 'ContentEditorRedux';

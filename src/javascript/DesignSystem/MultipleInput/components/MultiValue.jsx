@@ -49,4 +49,3 @@ MultiValueCmp.propTypes = {
 
 export const MultiValue = withStyles(styles)(MultiValueCmp);
 
-MultiValue.displayName = 'MultiValue';

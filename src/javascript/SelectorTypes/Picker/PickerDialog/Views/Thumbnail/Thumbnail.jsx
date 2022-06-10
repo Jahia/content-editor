@@ -114,4 +114,3 @@ Thumbnail.propTypes = {
     searchTerms: PropTypes.string
 };
 
-Thumbnail.displayName = 'Thumbnail';

@@ -54,4 +54,3 @@ EditPanelFullscreen.propTypes = {
     title: PropTypes.string.isRequired
 };
 
-EditPanelFullscreen.displayName = 'EditPanelFullscreen';

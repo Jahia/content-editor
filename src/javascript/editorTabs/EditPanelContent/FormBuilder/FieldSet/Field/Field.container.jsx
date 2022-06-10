@@ -33,4 +33,3 @@ FieldContainer.propTypes = {
     inputContext: PropTypes.object
 };
 
-FieldContainer.displayName = 'FieldContainer';

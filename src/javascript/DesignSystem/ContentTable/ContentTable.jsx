@@ -155,4 +155,3 @@ ContentTableCmp.propTypes = {
 };
 
 export const ContentTable = withStyles(styles)(ContentTableCmp);
-ContentTable.displayName = 'ContentTable';

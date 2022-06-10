@@ -52,4 +52,3 @@ SystemName.propTypes = {
     onBlur: PropTypes.func.isRequired
 };
 
-SystemName.displayName = 'SystemName';

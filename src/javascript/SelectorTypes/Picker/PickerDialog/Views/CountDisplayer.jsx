@@ -29,4 +29,3 @@ CountDisplayerCmp.propTypes = {
 };
 
 export const CountDisplayer = withStyles(styles)(CountDisplayerCmp);
-CountDisplayer.displayName = 'CountDisplayer';

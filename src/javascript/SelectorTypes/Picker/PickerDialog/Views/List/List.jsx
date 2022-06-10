@@ -196,4 +196,3 @@ List.propTypes = {
     searchTerms: PropTypes.string
 };
 
-List.displayName = 'List';

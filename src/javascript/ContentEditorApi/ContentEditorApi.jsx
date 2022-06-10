@@ -53,5 +53,3 @@ export const ContentEditorApi = () => {
         </ErrorBoundary>
     );
 };
-
-ContentEditorApi.displayName = 'ContentEditorAPI';

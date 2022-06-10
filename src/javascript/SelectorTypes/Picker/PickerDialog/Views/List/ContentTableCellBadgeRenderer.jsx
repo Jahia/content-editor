@@ -26,4 +26,3 @@ ContentTableCellBadgeRenderer.propTypes = {
     tableCellData: PropTypes.number
 };
 
-ContentTableCellBadgeRenderer.displayName = 'ContentTableCellBadgeRenderer';

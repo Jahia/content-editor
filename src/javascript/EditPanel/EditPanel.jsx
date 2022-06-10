@@ -20,4 +20,3 @@ EditPanel.propTypes = {
     title: PropTypes.string.isRequired
 };
 
-EditPanel.displayName = 'EditPanel';

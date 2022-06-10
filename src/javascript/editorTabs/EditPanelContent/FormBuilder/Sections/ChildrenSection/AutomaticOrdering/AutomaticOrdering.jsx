@@ -101,4 +101,3 @@ export const AutomaticOrdering = () => {
     );
 };
 
-AutomaticOrdering.displayName = 'AutomaticOrdering';

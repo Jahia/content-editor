@@ -64,5 +64,3 @@ export const Create = () => {
         </Formik>
     );
 };
-
-Create.displayName = 'Create';

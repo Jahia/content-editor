@@ -92,4 +92,3 @@ FieldSet.propTypes = {
     fieldset: FieldSetPropTypes.isRequired
 };
 
-FieldSet.displayName = 'FieldSet';

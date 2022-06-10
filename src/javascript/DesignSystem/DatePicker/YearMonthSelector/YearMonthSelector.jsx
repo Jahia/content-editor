@@ -113,4 +113,3 @@ YearMonthSelectorCmp.propTypes = {
 
 export const YearMonthSelector = withStyles(style)(YearMonthSelectorCmp);
 
-YearMonthSelector.displayName = 'YearMonthSelector';
