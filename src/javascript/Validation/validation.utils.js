@@ -21,7 +21,7 @@ export const validateForm = async ({setTouched, validateForm}, i18nContext, sect
     const nbOfErrors = Object.keys(errors).length;
 
     const i18nErrors = Object.keys(i18nContext)
-        .filter(l => l !== 'shared')
+        .filter(l => l !== 'shared' && l !== 'memo')
         .filter(l => Object.keys(i18nContext[l].validation).length > 0)
         .reduce((r, l) => Object.assign(r, {[l]: i18nContext[l].validation}), {});
 

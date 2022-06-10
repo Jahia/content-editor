@@ -61,10 +61,18 @@ export const useSwitchLanguage = () => {
             newValues[currentLanguage] = i18nValues;
         }
 
-        setI18nContext(prev => ({
-            ...prev,
-            ...newValues
-        }));
+        setI18nContext(prev => {
+            if (prev?.memo?.systemNameLang === undefined && newValues?.shared?.values && Object.keys(newValues.shared.values).includes(Constants.systemName.name)) {
+                newValues.memo = {
+                    systemNameLang: currentLanguage
+                };
+            }
+
+            return {
+                ...prev,
+                ...newValues
+            };
+        });
 
         if (envProps.switchLanguageCallback) {
             envProps.switchLanguageCallback(language, currentLanguage);

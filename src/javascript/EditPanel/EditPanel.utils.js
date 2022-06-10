@@ -122,7 +122,7 @@ export function getDataToMutate({nodeData, formValues, i18nContext, sections, la
     }
 
     const keys = new Set(Object.keys(formValues));
-    Object.values(i18nContext).filter(ctx => ctx).forEach(ctx => Object.keys(ctx.values).forEach(k => keys.add(k)));
+    Object.values(i18nContext).filter(ctx => ctx.values !== undefined).forEach(ctx => Object.keys(ctx.values).forEach(k => keys.add(k)));
     const fields = sections && getFields(sections).filter(field => !field.readOnly);
     const mixinsToMutate = getMixinsToMutate(nodeData, formValues, sections);
 
@@ -133,7 +133,7 @@ export function getDataToMutate({nodeData, formValues, i18nContext, sections, la
             updateValue({field, value, lang, nodeData, sections, mixinsToMutate, propsToSave, propsToDelete, propFieldNameMapping});
 
             if (field.i18n) {
-                Object.keys(i18nContext).filter(i18nLang => i18nLang !== lang && i18nLang !== 'shared').forEach(i18nLang => {
+                Object.keys(i18nContext).filter(i18nLang => i18nLang !== lang && i18nLang !== 'shared' && i18nLang !== 'memo').forEach(i18nLang => {
                     const translatedValue = i18nContext[i18nLang].values[key];
                     updateValue({field, value: translatedValue, lang: i18nLang, sections, mixinsToMutate, propsToSave, propsToDelete, propFieldNameMapping});
                 });
