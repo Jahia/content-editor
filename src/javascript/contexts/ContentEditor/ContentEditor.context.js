@@ -3,10 +3,11 @@ import {useNotifications} from '@jahia/react-material';
 import {useFormDefinition} from '~/FormDefinitions';
 import {useSiteInfo} from '@jahia/data-helper';
 import * as PropTypes from 'prop-types';
-import {Constants} from './ContentEditor.constants';
+import {Constants} from '~/ContentEditor.constants';
 import {useTranslation} from 'react-i18next';
 import {ApolloCacheFlushOnGWTSave} from './ApolloCacheFlushOnGWTSave';
-import {ContentEditorSectionContextProvider} from '~/ContentEditorSection';
+import {ContentEditorSectionContextProvider} from '../ContentEditorSection';
+import {useContentEditorConfigContext} from '../ContentEditorConfig';
 import {useSelector} from 'react-redux';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 
@@ -14,11 +15,7 @@ export const ContentEditorContext = React.createContext({});
 
 export const useContentEditorContext = () => useContext(ContentEditorContext);
 
-export const ContentEditorConfigContext = React.createContext({});
-
-export const useContentEditorConfigContext = () => useContext(ContentEditorConfigContext);
-
-export const ContentEditorDataContextProvider = ({formQuery, formDataAdapter, children}) => {
+export const ContentEditorContextProvider = ({formQuery, formDataAdapter, children}) => {
     const notificationContext = useNotifications();
     const {t} = useTranslation('content-editor');
     const [errors, setErrors] = useState(null);
@@ -135,10 +132,10 @@ export const ContentEditorDataContextProvider = ({formQuery, formDataAdapter, ch
     );
 };
 
-ContentEditorDataContextProvider.propTypes = {
+ContentEditorContextProvider.propTypes = {
     formQuery: PropTypes.object.isRequired,
     formDataAdapter: PropTypes.func.isRequired,
     children: PropTypes.node.isRequired
 };
 
-export default ContentEditorDataContextProvider;
+export default ContentEditorContextProvider;

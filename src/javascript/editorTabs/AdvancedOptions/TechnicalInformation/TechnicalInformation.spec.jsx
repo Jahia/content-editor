@@ -2,7 +2,7 @@ import {TechnicalInformation} from './TechnicalInformation';
 import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
-import {details, technicalInfo} from '~/ContentEditor.context';
+import {details, technicalInfo} from '~/contexts';
 
 jest.mock('~/ContentEditor.context', () => {
     const details = [{

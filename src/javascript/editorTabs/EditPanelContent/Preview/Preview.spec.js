@@ -3,7 +3,7 @@ import React, {useEffect} from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {Preview} from './Preview';
-import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorConfigContext, useContentEditorContext} from '~/contexts';
 import {useFormikContext} from 'formik';
 
 jest.mock('formik');

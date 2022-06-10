@@ -1,8 +1,7 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {Form} from 'formik';
-import {useContentEditorContext} from '~/ContentEditor.context';
-import {useContentEditorSectionContext} from '~/ContentEditorSection';
+import {useContentEditorContext, useContentEditorSectionContext} from '~/contexts';
 import {SectionsPropTypes} from '~/ContentEditor.proptypes';
 import {OrderingSection, Section} from './Sections';
 import {useDispatch, useSelector} from 'react-redux';

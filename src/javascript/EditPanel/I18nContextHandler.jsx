@@ -1,6 +1,6 @@
 import {useEffect, useRef} from 'react';
 import {useFormikContext} from 'formik';
-import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorConfigContext, useContentEditorContext} from '~/contexts';
 
 export const I18nContextHandler = () => {
     const formik = useFormikContext();

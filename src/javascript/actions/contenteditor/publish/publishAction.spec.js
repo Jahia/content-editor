@@ -3,7 +3,7 @@ import {shallow} from '@jahia/test-framework';
 import {publishAction} from './publishAction';
 import {Constants} from '~/ContentEditor.constants';
 import {usePublicationInfoContext} from '~/PublicationInfo';
-import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorConfigContext, useContentEditorContext} from '~/contexts';
 import {useFormikContext} from 'formik';
 
 jest.mock('./publishNode', () => {

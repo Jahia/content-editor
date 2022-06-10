@@ -1,5 +1,5 @@
 import {useEffect, useRef} from 'react';
-import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorConfigContext, useContentEditorContext} from '~/contexts';
 import {useFormikContext} from 'formik';
 
 const handleBeforeUnloadEvent = ev => {

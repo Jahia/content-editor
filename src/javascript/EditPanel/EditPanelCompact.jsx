@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorConfigContext, useContentEditorContext} from '~/contexts';
 import styles from './EditPanel.scss';
 import clsx from 'clsx';
 import {DisplayAction, DisplayActions, registry} from '@jahia/ui-extender';

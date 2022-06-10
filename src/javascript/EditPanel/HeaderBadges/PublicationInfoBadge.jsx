@@ -4,7 +4,7 @@ import {useTranslation} from 'react-i18next';
 import {Constants} from '~/ContentEditor.constants';
 import {PublicationStatus} from './PublicationStatus';
 import {getTooltip} from './PublicationInfoBadge.tooltip';
-import {useContentEditorConfigContext} from '~/ContentEditor.context';
+import {useContentEditorConfigContext} from '~/contexts';
 
 export const PublicationInfoBadge = () => {
     const {t} = useTranslation('content-editor');

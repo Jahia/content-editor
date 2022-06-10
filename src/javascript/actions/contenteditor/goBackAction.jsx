@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import {EditPanelDialogConfirmation} from '~/EditPanelDialogConfirmation';
-import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorConfigContext, useContentEditorContext} from '~/contexts';
 import * as PropTypes from 'prop-types';
 import {Constants} from '~/ContentEditor.constants';
 import {useKeydownListener} from '~/utils';

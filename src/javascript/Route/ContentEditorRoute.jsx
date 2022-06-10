@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {ContentEditor} from '~/ContentEditor';
 import PropTypes from 'prop-types';
 import {Constants} from '~/ContentEditor.constants';
-import {useContentEditorHistory, useContentEditorHistoryContext} from '~/ContentEditorHistory';
+import {useContentEditorHistory, useContentEditorHistoryContext} from '~/contexts';
 import {useTranslation} from 'react-i18next';
 import {replaceOpenedPath} from '~/JContent.redux-actions';
 import {registry} from '@jahia/ui-extender';

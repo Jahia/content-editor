@@ -1,7 +1,7 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
 import {Constants} from '~/ContentEditor.constants';
-import {useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorContext} from '~/contexts';
 import {useFormikContext} from 'formik';
 
 const StartWorkFlow = ({isMainButton, render: Render, loading: Loading, ...otherProps}) => {

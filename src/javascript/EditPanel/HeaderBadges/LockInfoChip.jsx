@@ -1,7 +1,7 @@
 import React from 'react';
 import {Chip, Lock} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
-import {useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorContext} from '~/contexts';
 
 export const getBadgeContent = (nodeData, t) => {
     const LOCK_TYPE_VALIDATION = 'validation';

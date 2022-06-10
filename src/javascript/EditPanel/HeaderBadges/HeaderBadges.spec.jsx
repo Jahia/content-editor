@@ -3,7 +3,7 @@ import {shallow} from '@jahia/test-framework';
 import {HeaderBadges} from './HeaderBadges';
 import {Constants} from '~/ContentEditor.constants';
 import {useFormikContext} from 'formik';
-import {useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorContext} from '~/contexts';
 
 jest.mock('~/ContentEditor.context');
 jest.mock('formik');

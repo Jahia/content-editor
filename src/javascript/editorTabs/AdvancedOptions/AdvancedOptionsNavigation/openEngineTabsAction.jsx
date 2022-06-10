@@ -3,7 +3,7 @@ import {openEngineTab} from './engineTabs.utils';
 import {EditPanelDialogConfirmation} from '~/EditPanelDialogConfirmation';
 import PropTypes from 'prop-types';
 import {useFormikContext} from 'formik';
-import {useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorContext} from '~/contexts';
 
 export const OpenEngineTabs = ({tabs, render: Render, ...otherProps}) => {
     const [open, setOpen] = useState(false);

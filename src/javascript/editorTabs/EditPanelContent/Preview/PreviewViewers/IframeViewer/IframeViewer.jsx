@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Paper} from '@material-ui/core';
 import styles from './IframeViewer.scss';
 import {forceDisplay, removeSiblings} from '../../Preview.utils';
-import {useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorContext} from '~/contexts';
 import {useTranslation} from 'react-i18next';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 

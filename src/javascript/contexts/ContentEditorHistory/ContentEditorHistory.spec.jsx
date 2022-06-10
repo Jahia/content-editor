@@ -4,7 +4,7 @@ jest.mock('react-router-dom', () => {
 jest.mock('./ContentEditorHistory.context', () => {
     return {useContentEditorHistoryContext: jest.fn()};
 });
-import {useContentEditorHistory} from '~/ContentEditorHistory';
+import {useContentEditorHistory} from '~/contexts';
 import {useContentEditorHistoryContext} from './ContentEditorHistory.context';
 import {useHistory} from 'react-router-dom';
 

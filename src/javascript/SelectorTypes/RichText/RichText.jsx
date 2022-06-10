@@ -4,7 +4,7 @@ import * as PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/ContentEditor.proptypes';
 import {useQuery} from '@apollo/react-hooks';
 import {getCKEditorConfigurationPath} from './CKEditorConfiguration.gql-queries';
-import {ContentEditorContext} from '~/ContentEditor.context';
+import {ContentEditorContext} from '~/contexts';
 import {PickerDialog} from '~/SelectorTypes/Picker/PickerDialog';
 import {useTranslation} from 'react-i18next';
 import {buildPickerContext, fillCKEditorPicker} from './RichText.utils';

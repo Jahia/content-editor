@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorContext} from '~/contexts';
 import {useApolloClient} from '@apollo/react-hooks';
 
 export const ApolloCacheFlushOnGWTSave = () => {

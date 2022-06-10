@@ -6,7 +6,7 @@ import {adaptSelection} from './Tag.utils';
 import {FieldPropTypes} from '~/ContentEditor.proptypes';
 import {useApolloClient} from '@apollo/react-hooks';
 import {getSuggestionsTagsQuery} from './Tag.gql-queries';
-import {useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorContext} from '~/contexts';
 
 export const Tag = ({field, value, id, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');

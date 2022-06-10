@@ -1,10 +1,9 @@
 import {useFormikContext} from 'formik';
 import {useTranslation} from 'react-i18next';
-import {useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorContext, useContentEditorSectionContext} from '~/contexts';
 import {Constants} from '~/ContentEditor.constants';
 import {Chip, Edit} from '@jahia/moonstone';
 import React, {useMemo} from 'react';
-import {useContentEditorSectionContext} from '~/ContentEditorSection';
 import {getFields} from '~/EditPanel/EditPanel.utils';
 import isEquals from 'react-fast-compare';
 

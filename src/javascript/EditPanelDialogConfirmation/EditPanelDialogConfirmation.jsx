@@ -5,7 +5,7 @@ import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import {SaveButton} from './SaveButton';
 import styles from './EditPanelDialogConfirmation.scss';
-import {useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorContext} from '~/contexts';
 import {Constants} from '~/ContentEditor.constants';
 
 /**

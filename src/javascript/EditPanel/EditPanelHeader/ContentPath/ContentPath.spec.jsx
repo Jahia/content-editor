@@ -5,7 +5,7 @@ import {shallow} from '@jahia/test-framework';
 
 import {push} from 'connected-react-router';
 import {cmGoto} from '~/JContent.redux-actions';
-import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorConfigContext, useContentEditorContext} from '~/contexts';
 
 import {GetContentPath} from './ContentPath.gql-queries';
 import {ContentPath} from './ContentPath';

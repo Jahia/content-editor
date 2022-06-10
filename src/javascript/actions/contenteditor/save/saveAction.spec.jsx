@@ -2,9 +2,8 @@ import React, {useContext} from 'react';
 import {shallow} from '@jahia/test-framework';
 import {saveAction} from './saveAction';
 import {usePublicationInfoContext} from '~/PublicationInfo';
-import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorConfigContext, useContentEditorContext, useContentEditorSectionContext} from '~/contexts';
 import {useFormikContext} from 'formik';
-import {useContentEditorSectionContext} from '~/ContentEditorSection';
 
 jest.mock('react', () => {
     return {

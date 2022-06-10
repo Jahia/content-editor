@@ -1,7 +1,7 @@
 import React from 'react';
 import {Chip} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
-import {useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorContext} from '~/contexts';
 import {Field} from 'formik';
 import {Constants} from '~/ContentEditor.constants';
 

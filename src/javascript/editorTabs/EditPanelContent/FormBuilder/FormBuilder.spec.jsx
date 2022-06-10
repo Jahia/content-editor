@@ -4,8 +4,7 @@ import {dsGenericTheme} from '@jahia/design-system-kit';
 
 import {FormBuilder} from './FormBuilder';
 import {useFormikContext} from 'formik';
-import {useContentEditorContext} from '~/ContentEditor.context';
-import {useContentEditorSectionContext} from '~/ContentEditorSection';
+import {useContentEditorContext, useContentEditorSectionContext} from '~/contexts';
 import {Constants} from '~/ContentEditor.constants';
 
 jest.mock('formik');

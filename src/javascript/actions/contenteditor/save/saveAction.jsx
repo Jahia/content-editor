@@ -5,9 +5,8 @@ import {ComponentRendererContext} from '@jahia/ui-extender';
 import * as PropTypes from 'prop-types';
 import {usePublicationInfoContext} from '~/PublicationInfo';
 import {useFormikContext} from 'formik';
-import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorConfigContext, useContentEditorContext, useContentEditorSectionContext} from '~/contexts';
 import {useKeydownListener} from '~/utils';
-import {useContentEditorSectionContext} from '~/ContentEditorSection';
 
 const Save = ({render: Render, loading: Loading, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);

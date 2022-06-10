@@ -5,7 +5,7 @@ import {Constants} from '~/ContentEditor.constants';
 import {usePublicationInfoContext} from '~/PublicationInfo';
 import {useApolloClient} from '@apollo/react-hooks';
 import {useTranslation} from 'react-i18next';
-import {useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorContext} from '~/contexts';
 import {useNotifications} from '@jahia/react-material';
 import {useFormikContext} from 'formik';
 

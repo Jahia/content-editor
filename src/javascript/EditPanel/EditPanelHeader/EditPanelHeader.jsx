@@ -6,7 +6,7 @@ import {ButtonGroup, Chip, Header, Separator, Tab, TabItem} from '@jahia/moonsto
 import styles from './EditPanelHeader.scss';
 import {PublishMenu} from './PublishMenu';
 import {useTranslation} from 'react-i18next';
-import {useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorContext} from '~/contexts';
 import {EditPanelLanguageSwitcher} from '../EditPanelLanguageSwitcher';
 import {HeaderBadges} from '../HeaderBadges';
 import PropTypes from 'prop-types';

@@ -4,7 +4,7 @@ import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {PreviewFetcher} from './Preview.fetcher';
 import {useContentPreview} from '@jahia/data-helper';
-import {useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorContext} from '~/contexts';
 
 jest.mock('@jahia/data-helper', () => {
     return {

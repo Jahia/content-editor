@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {useContentPreview} from '@jahia/data-helper';
-import {useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorContext} from '~/contexts';
 import {invalidateRefetch, setPreviewRefetcher} from '~/EditPanel/EditPanel.refetches';
 import {PreviewViewer} from './PreviewViewers';
 import {getPreviewContext} from './Preview.utils';

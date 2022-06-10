@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Create} from './Create/Create';
 import {Edit} from './Edit/Edit';
-import {ContentEditorConfigContext, ContentEditorDataContextProvider} from './ContentEditor.context';
+import {ContentEditorConfigContextProvider, ContentEditorContextProvider} from '~/contexts';
 import {Constants} from './ContentEditor.constants';
 import {DndProvider} from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
@@ -24,20 +24,20 @@ export const ContentEditor = ({name, mode, uuid, lang, uilang, site, contentType
     };
 
     return (
-        <ContentEditorConfigContext.Provider value={contentEditorConfig}>
+        <ContentEditorConfigContextProvider config={contentEditorConfig}>
             <DndProvider backend={Backend}>
                 { mode === 'edit' && (
-                    <ContentEditorDataContextProvider formQuery={EditFormQuery} formDataAdapter={adaptEditFormData}>
+                    <ContentEditorContextProvider formQuery={EditFormQuery} formDataAdapter={adaptEditFormData}>
                         <Edit/>
-                    </ContentEditorDataContextProvider>
+                    </ContentEditorContextProvider>
                 )}
                 { mode === 'create' && (
-                    <ContentEditorDataContextProvider formQuery={CreateFormQuery} formDataAdapter={adaptCreateFormData}>
+                    <ContentEditorContextProvider formQuery={CreateFormQuery} formDataAdapter={adaptCreateFormData}>
                         <Create/>
-                    </ContentEditorDataContextProvider>
+                    </ContentEditorContextProvider>
                 )}
             </DndProvider>
-        </ContentEditorConfigContext.Provider>
+        </ContentEditorConfigContextProvider>
     );
 };
 

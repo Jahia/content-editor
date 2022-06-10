@@ -1,4 +1,4 @@
-import {useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorContext} from '~/contexts';
 import {useFormikContext} from 'formik';
 import {Constants} from '~/ContentEditor.constants';
 import React from 'react';

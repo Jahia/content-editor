@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {FieldSetWithNodeCheckPropTypes} from '~/ContentEditor.proptypes';
 import {useNodeChecks} from '@jahia/data-helper';
-import {useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorContext} from '~/contexts';
 import {FieldSet} from '../../FieldSet';
 import {Loader} from '@jahia/moonstone';
 

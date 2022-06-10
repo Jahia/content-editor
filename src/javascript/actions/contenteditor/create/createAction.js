@@ -4,11 +4,10 @@ import React, {useContext, useState} from 'react';
 import {ComponentRendererContext} from '@jahia/ui-extender';
 import * as PropTypes from 'prop-types';
 import {useFormikContext} from 'formik';
-import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorConfigContext, useContentEditorContext, useContentEditorSectionContext} from '~/contexts';
 import {useKeydownListener} from '~/utils';
 import {adaptCreateFormData} from '~/Create/Create.adapter';
 import {useTranslation} from 'react-i18next';
-import {useContentEditorSectionContext} from '~/ContentEditorSection';
 
 const Create = ({createAnother, render: Render, loading: Loading, ...otherProps}) => {
     const {t} = useTranslation('content-editor');
