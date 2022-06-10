@@ -2,7 +2,7 @@ import {tabShouldBeDisplayed, useRegisterEngineTabActions} from './useRegisterEn
 import React from 'react';
 import {useQuery} from '@apollo/react-hooks';
 import {registry} from '@jahia/ui-extender';
-import openEngineTabsAction from './openEngineTabsAction';
+import {openEngineTabsAction} from './openEngineTabsAction';
 
 jest.mock('./engineTabs.utils', () => {
     return {

@@ -1,4 +1,4 @@
-import {OpenInTabActionComponent} from './openInTab.action';
+import {OpenInTabActionComponent} from './openInTabAction';
 import {Constants} from '~/ContentEditor.constants';
 import {shallow} from '@jahia/test-framework';
 import React from 'react';

@@ -1,4 +1,4 @@
-import {MediaPickerSelectorType} from './index';
+import {MediaPickerSelectorType} from './MediaPickerSelectorType';
 import {setQueryResponseMock} from '@apollo/react-hooks';
 
 jest.mock('@apollo/react-hooks', () => {

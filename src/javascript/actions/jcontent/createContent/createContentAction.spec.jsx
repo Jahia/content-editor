@@ -5,7 +5,7 @@ import {useNodeChecks, useNodeInfo} from '@jahia/data-helper';
 import {shallow} from '@jahia/test-framework';
 import {transformNodeTypesToActions, useCreatableNodetypes} from './createContent.utils';
 
-import createContentAction from './createContentAction';
+import {createContentAction} from './createContentAction';
 
 jest.mock('~/ContentEditorHistory', () => {
     return {useContentEditorHistory: jest.fn()};

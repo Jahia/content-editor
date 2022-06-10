@@ -1,6 +1,6 @@
 import React from 'react';
 import {shallow} from '@jahia/test-framework';
-import publishAction from './publishAction';
+import {publishAction} from './publishAction';
 import {Constants} from '~/ContentEditor.constants';
 import {usePublicationInfoContext} from '~/PublicationInfo/PublicationInfo.context';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/ContentEditor.context';

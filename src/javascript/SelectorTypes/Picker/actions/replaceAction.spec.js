@@ -1,4 +1,4 @@
-import {ReplaceActionComponent} from './replace.action';
+import {ReplaceActionComponent} from './replaceAction';
 import React from 'react';
 import {shallow} from '@jahia/test-framework';
 
