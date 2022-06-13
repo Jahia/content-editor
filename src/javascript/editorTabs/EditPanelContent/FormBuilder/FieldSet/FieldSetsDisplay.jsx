@@ -4,15 +4,13 @@ import {FieldSetPropTypes} from '~/ContentEditor.proptypes';
 import {FieldSet} from './FieldSet';
 import {FieldSetWithNodeChecks} from './FieldSetWithNodeChecks';
 
-export const FieldSetsDisplay = ({fieldSets, fieldSetMapFcn = x => x}) => {
+export const FieldSetsDisplay = ({fieldSets}) => {
     if (!fieldSets || fieldSets.length === 0) {
         return null;
     }
 
     return (
-        fieldSets.map(f => {
-            const fs = fieldSetMapFcn(f);
-
+        fieldSets.map(fs => {
             if (fs.nodeCheck) {
                 return <FieldSetWithNodeChecks fieldset={fs}/>;
             }
@@ -23,6 +21,5 @@ export const FieldSetsDisplay = ({fieldSets, fieldSetMapFcn = x => x}) => {
 };
 
 FieldSetsDisplay.propTypes = {
-    fieldSets: PropTypes.arrayOf(FieldSetPropTypes),
-    fieldSetMapFcn: PropTypes.func
+    fieldSets: PropTypes.arrayOf(FieldSetPropTypes)
 };

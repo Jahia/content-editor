@@ -15,13 +15,12 @@ describe('FieldSetsDisplay component', () => {
     });
 
     it('should render field set with node check', () => {
-        const mapFunction = fs => {
-            fs.nodeCheck = {};
-            fs.visibilityFunction = () => true;
-            return fs;
-        };
-
-        const cmp = shallowWithTheme(<FieldSetsDisplay fieldSets={[{name: 'myset', displayName: 'myname'}]} fieldSetMapFcn={mapFunction}/>, {}, dsGenericTheme);
+        const cmp = shallowWithTheme(<FieldSetsDisplay fieldSets={[{
+            name: 'myset',
+            displayName: 'myname',
+            nodeCheck: {},
+            visibilityFunction: () => true
+        }]}/>, {}, dsGenericTheme);
         expect(cmp.find('FieldSetWithNodeChecks').exists()).toBeTruthy();
     });
 });

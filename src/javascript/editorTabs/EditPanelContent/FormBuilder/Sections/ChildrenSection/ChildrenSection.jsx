@@ -26,9 +26,8 @@ const orderingSectionFieldSetMap = fieldSet => {
             }
         };
         fieldSet.visibilityFunction = (fs, resp) => resp.node && resp.node[Constants.permissions.setContentLimitsOnAreas];
+        return fieldSet;
     }
-
-    return fieldSet;
 };
 
 export const ChildrenSection = ({mode, section, nodeData, isExpanded, onClick}) => {
@@ -105,7 +104,7 @@ export const ChildrenSection = ({mode, section, nodeData, isExpanded, onClick}) 
                     {!isAutomaticOrder && canManuallyOrder && <ManualOrdering/>}
                     {isAutomaticOrder && <AutomaticOrdering/>}
                 </article>
-                <FieldSetsDisplay fieldSets={section.fieldSets} fieldSetMapFcn={orderingSectionFieldSetMap}/>
+                <FieldSetsDisplay fieldSets={section.fieldSets.filter(fieldSet => fieldSet.name === 'jmix:listSizeLimit').map(orderingSectionFieldSetMap)}/>
             </Collapsible>
         );
     }
