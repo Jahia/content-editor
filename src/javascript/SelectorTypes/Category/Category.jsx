@@ -19,7 +19,11 @@ export const Category = ({field, value, id, editorContext, onChange, onBlur}) =>
 
     const handleChange = (_, selectedValues) => {
         const newValues = selectedValues.map(v => v.value);
-        onChange(newValues);
+        if (field.multiple) {
+            onChange(newValues);
+        } else {
+            onChange(newValues[0]);
+        }
     };
 
     if (error) {
@@ -49,6 +53,7 @@ export const Category = ({field, value, id, editorContext, onChange, onBlur}) =>
             noMatchesLabel={t('content-editor:label.contentEditor.edit.fields.category.noMatches')}
             aria-labelledby={`${field.name}-label`}
             data={tree}
+            mode={field.multiple ? 'multiSelect' : 'radioSelect'}
             readOnly={field.readOnly}
             onChange={handleChange}
             onBlur={onBlur}
