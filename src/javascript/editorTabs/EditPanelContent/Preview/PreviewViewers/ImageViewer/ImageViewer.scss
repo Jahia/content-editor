@@ -1,0 +1,14 @@
+.container {
+    flex: 1 1 0;
+    width: 100%;
+    max-width: 550px;
+    margin: 0 auto;
+    padding-top: var(--spacing-medium);
+    padding-bottom: var(--spacing-medium);
+
+    background-size: contain;
+
+    &.fullScreen {
+        max-width: 90%;
+    }
+}

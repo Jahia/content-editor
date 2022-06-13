@@ -1,3 +1,2 @@
-import pickerConfigs from './Picker.configs';
-
-export default pickerConfigs;
+export * from './Picker';
+export * from './registerPicker';

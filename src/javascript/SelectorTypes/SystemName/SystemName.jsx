@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
-import Text from '~/SelectorTypes/Text';
+import {FieldPropTypes} from '~/ContentEditor.proptypes';
+import {Text} from '~/SelectorTypes/Text';
 import {Constants} from '~/ContentEditor.constants';
 import {isEqualToSystemName, limitSystemNameIfNecessary, replaceSpecialCharacters} from './SystemName.utils';
 import {Button, Copy} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
-import classes from './SystemName.scss';
+import styles from './SystemName.scss';
 import {useFormikContext} from 'formik';
 
 export const SystemName = ({field, value, id, editorContext, onChange, onBlur}) => {
@@ -26,7 +26,7 @@ export const SystemName = ({field, value, id, editorContext, onChange, onBlur}) 
 
             {formik.values[titleField] !== undefined &&
             editorContext.mode === Constants.routes.baseEditRoute &&
-            <Button className={classes.syncButton}
+            <Button className={styles.syncButton}
                     data-sel-role="syncSystemName"
                     variant="outlined"
                     size="big"
@@ -52,5 +52,3 @@ SystemName.propTypes = {
     onBlur: PropTypes.func.isRequired
 };
 
-SystemName.displayName = 'SystemName';
-export default SystemName;

@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
+import {FieldPropTypes} from '~/ContentEditor.proptypes';
 import {Dropdown} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
 import {DisplayAction} from '@jahia/ui-extender';
-import {getButtonRenderer} from '../../../utils/getButtonRenderer';
+import {getButtonRenderer} from '~/utils';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
-export const SingleSelectCmp = ({field, value, id, inputContext, onChange, onBlur}) => {
+export const SingleSelect = ({field, value, id, inputContext, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
     inputContext.actionContext = {
         onChange,
@@ -73,11 +73,11 @@ export const SingleSelectCmp = ({field, value, id, inputContext, onChange, onBlu
     );
 };
 
-SingleSelectCmp.defaultProps = {
+SingleSelect.defaultProps = {
     value: null
 };
 
-SingleSelectCmp.propTypes = {
+SingleSelect.propTypes = {
     id: PropTypes.string.isRequired,
     value: PropTypes.string,
     field: FieldPropTypes.isRequired,
@@ -86,7 +86,3 @@ SingleSelectCmp.propTypes = {
     onBlur: PropTypes.func.isRequired
 };
 
-export const SingleSelect = SingleSelectCmp;
-SingleSelect.displayName = 'SingleSelect';
-
-export default SingleSelect;

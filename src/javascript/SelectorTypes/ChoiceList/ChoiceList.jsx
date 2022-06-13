@@ -1,8 +1,8 @@
 import React from 'react';
-import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
+import {FieldPropTypes} from '~/ContentEditor.proptypes';
 
-import SingleSelect from './SingleSelect/SingleSelect';
-import MultipleSelect from './MultipleSelect/MultipleSelect';
+import {SingleSelect} from './SingleSelect/SingleSelect';
+import {MultipleSelect} from './MultipleSelect/MultipleSelect';
 
 export const ChoiceList = ({field, ...props}) => {
     if (field.multiple) {
@@ -16,4 +16,3 @@ ChoiceList.propTypes = {
     field: FieldPropTypes.isRequired
 };
 
-export default ChoiceList;

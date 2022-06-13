@@ -1,3 +1,3 @@
-import RichText from './RichText';
+export * from './RichText';
+export * from './registerRichText';
 
-export default RichText;

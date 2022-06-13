@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {Input} from '@jahia/design-system-kit';
-import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
+import {FieldPropTypes} from '~/ContentEditor.proptypes';
 import {Hidden, Visibility} from '@jahia/moonstone';
 
-export const TextCmp = ({field, value, id, editorContext, onChange, onBlur}) => {
+export const Text = ({field, value, id, editorContext, onChange, onBlur}) => {
     const [hidePassword, setHidePassword] = useState(true);
 
     const fieldType = field.requiredType;
@@ -43,7 +43,7 @@ export const TextCmp = ({field, value, id, editorContext, onChange, onBlur}) => 
     );
 };
 
-TextCmp.propTypes = {
+Text.propTypes = {
     id: PropTypes.string.isRequired,
     value: PropTypes.string,
     editorContext: PropTypes.object.isRequired,
@@ -52,6 +52,4 @@ TextCmp.propTypes = {
     onBlur: PropTypes.func
 };
 
-const Text = TextCmp;
 Text.displayName = 'Text';
-export default Text;

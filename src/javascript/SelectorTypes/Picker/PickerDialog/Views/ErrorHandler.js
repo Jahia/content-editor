@@ -1,4 +1,4 @@
-import classes from './ErrorHandler.scss';
+import styles from './ErrorHandler.scss';
 
 /**
  * Used to notify when some contents failed to be loaded in pickers due to access denied restrictions
@@ -11,7 +11,7 @@ export const notifyAccessDenied = (error, notificationContext, t) => {
         error.graphQLErrors.some(graphQLError => graphQLError.errorType === 'GqlAccessDeniedException')) {
         notificationContext.notify(t('content-editor:label.contentEditor.error.accessDenied'), ['closeButton', 'noAutomaticClose'], {
             classes: {
-                root: classes.errorNotification
+                root: styles.errorNotification
             }
         });
     }

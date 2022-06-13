@@ -21,4 +21,3 @@ NavigateInto.propTypes = {
     tableCellData: PropTypes.bool
 };
 
-NavigateInto.displayName = 'NavigateInto';

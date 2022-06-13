@@ -269,7 +269,6 @@ describe('PickerDialog - List view', () => {
             dsGenericTheme
         )
             .find('CountDisplayer')
-            .dive()
             .dive();
 
         expect(cmp.debug()).toContain('10 items found');

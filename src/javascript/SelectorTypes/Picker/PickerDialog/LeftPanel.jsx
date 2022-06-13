@@ -106,4 +106,3 @@ LeftPanel.propTypes = {
     setSelectedItem: PropTypes.func.isRequired,
     onSelectSite: PropTypes.func.isRequired
 };
-LeftPanel.displayName = 'LeftPanel';

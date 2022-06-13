@@ -1,34 +1,17 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
-import Dialog from '@material-ui/core/Dialog/Dialog';
-import Slide from '@material-ui/core/Slide';
+import {Dialog, Slide} from '@material-ui/core';
 
 import {LeftPanel} from './LeftPanel';
 import {MainPanel} from './MainPanel';
 
-import {withStyles} from '@material-ui/core';
 import {useQuery} from '@apollo/react-hooks';
 import {SiteNodesQuery} from './PickerDialog.gql-queries';
 import {getPathWithoutFile, getSite, getSiteNodes} from '../Picker.utils';
 import {useDebounce} from './useDebounce';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
-
-const styles = theme => ({
-    rootDialog: {
-        margin: theme.spacing.unit * 8,
-        zIndex: 10011 // IMPORTANT: DO NOT REMOVE: CKEditor image picker is using 10010, and we need to display this on top of CKEditor interfaces
-    },
-    modalContent: {
-        display: 'flex',
-        flexGrow: 1,
-        flexDirection: 'column',
-        padding: theme.spacing.unit
-    },
-    modalContentWithDrawer: {
-        marginLeft: '15vw'
-    }
-});
+import styles from './PickerDialog.scss';
 
 const Transition = props => {
     return <Slide direction="up" {...props}/>;
@@ -71,8 +54,7 @@ const useSearch = () => {
     return [searchTerms, handleSearchChange];
 };
 
-const PickerDialogCmp = ({
-    classes,
+export const PickerDialog = ({
     isOpen,
     setIsOpen,
     initialSelectedItem,
@@ -129,7 +111,7 @@ const PickerDialogCmp = ({
     return (
         <Dialog
             fullScreen
-            classes={{root: classes.rootDialog}}
+            classes={{root: styles.rootDialog}}
             open={isOpen}
             TransitionComponent={Transition}
             onClose={() => {
@@ -157,7 +139,7 @@ const PickerDialogCmp = ({
                             onSelectSite={onSelectSite}
                         />)}
                     <div
-                        className={classes.modalContent + (pickerConfig.displayTree ? ` ${classes.modalContentWithDrawer}` : '')}
+                        className={styles.modalContent + (pickerConfig.displayTree ? ` ${styles.modalContentWithDrawer}` : '')}
                     >
                         <MainPanel
                             setSelectedPath={setSelectedPath}
@@ -182,12 +164,11 @@ const PickerDialogCmp = ({
     );
 };
 
-PickerDialogCmp.defaultProps = {
+PickerDialog.defaultProps = {
     initialSelectedItem: null
 };
 
-PickerDialogCmp.propTypes = {
-    classes: PropTypes.object.isRequired,
+PickerDialog.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     setIsOpen: PropTypes.func.isRequired,
     siteKey: PropTypes.string.isRequired,
@@ -200,6 +181,3 @@ PickerDialogCmp.propTypes = {
     initialSelectedItem: PropTypes.string,
     onItemSelection: PropTypes.func.isRequired
 };
-
-export const PickerDialog = withStyles(styles)(PickerDialogCmp);
-PickerDialog.displayName = 'PickerDialog';

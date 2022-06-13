@@ -1,21 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Typography} from '@jahia/design-system-kit';
-import {withStyles} from '@material-ui/core';
 import {useTranslation} from 'react-i18next';
+import styles from './CountDisplayer.scss';
 
-const styles = () => ({
-    itemsFoundLabel: {
-        display: 'flex',
-        justifyContent: 'flex-end'
-    }
-});
-
-const CountDisplayerCmp = ({totalCount, classes}) => {
+export const CountDisplayer = ({totalCount}) => {
     const {t} = useTranslation('content-editor');
 
     return (
-        <div className={classes.itemsFoundLabel} data-sel-total-count={totalCount}>
+        <div className={styles.itemsFoundLabel} data-sel-total-count={totalCount}>
             <Typography color="gamma" variant="omega">
                 {t('content-editor:label.contentEditor.edit.fields.contentPicker.itemsFound', {totalCount: totalCount})}
             </Typography>
@@ -23,10 +16,6 @@ const CountDisplayerCmp = ({totalCount, classes}) => {
     );
 };
 
-CountDisplayerCmp.propTypes = {
-    totalCount: PropTypes.number.isRequired,
-    classes: PropTypes.object.isRequired
+CountDisplayer.propTypes = {
+    totalCount: PropTypes.number.isRequired
 };
-
-export const CountDisplayer = withStyles(styles)(CountDisplayerCmp);
-CountDisplayer.displayName = 'CountDisplayer';

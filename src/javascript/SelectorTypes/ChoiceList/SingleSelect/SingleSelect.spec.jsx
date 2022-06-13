@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from '@jahia/test-framework';
 
-import {SingleSelectCmp} from './SingleSelect';
+import {SingleSelect} from './SingleSelect';
 
 let mockUseEffect = [];
 
@@ -44,7 +44,7 @@ describe('SingleSelect component', () => {
 
     const buildComp = (componentProps, value) => {
         componentProps.value = value;
-        return shallow(<SingleSelectCmp {...componentProps}/>).find('Dropdown');
+        return shallow(<SingleSelect {...componentProps}/>).find('Dropdown');
     };
 
     const addValueConstraint = (displayValue, value) => {

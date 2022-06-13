@@ -1,1 +1,1 @@
-export * from '../ContentEditor.context';
+export * from '../contexts/ContentEditor';

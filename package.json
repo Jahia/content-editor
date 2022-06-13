@@ -1,6 +1,6 @@
 {
     "name": "@jahia/content-editor",
-    "version": "3.2.0",
+    "version": "4.0.0",
     "scripts": {
         "build": "yarn webpack",
         "webpack": "node --max_old_space_size=2048 ./node_modules/webpack/bin/webpack.js",
@@ -46,6 +46,7 @@
         "@material-ui/icons": "^3.0.1",
         "@material-ui/lab": "^3.0.0-alpha.30",
         "ckeditor4-react": "1.2.0",
+        "clsx": "^1.1.1",
         "connected-react-router": "^6.8.0",
         "dayjs": "1.8.21",
         "formik": "^2.2.5",

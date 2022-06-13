@@ -1,1 +1,1 @@
-export * from './SelectorTypes';
+export * from './registerSelectorTypes';
