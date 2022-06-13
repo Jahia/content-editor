@@ -29,6 +29,7 @@ describe('Category component', () => {
                 displayName: 'Categories',
                 name: 'myCategories',
                 readOnly: false,
+                multiple: true,
                 selectorType: 'Category'
             },
             editorContext: {
