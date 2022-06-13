@@ -2,7 +2,7 @@ import React from 'react';
 import {Toggle} from '@jahia/design-system-kit';
 import {Typography} from '@jahia/moonstone';
 import {FieldSetPropTypes} from '~/ContentEditor.proptypes';
-import {FieldContainer} from '~/editorTabs/EditPanelContent/FormBuilder/FieldSet/Field';
+import {FieldContainer} from '../../../Field';
 import {useTranslation} from 'react-i18next';
 import {useFormikContext} from 'formik';
 import styles from '../../../FieldSet/FieldSet.scss';

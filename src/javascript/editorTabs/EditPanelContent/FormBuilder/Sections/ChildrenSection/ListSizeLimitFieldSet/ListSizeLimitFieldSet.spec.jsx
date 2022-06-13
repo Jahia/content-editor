@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
-import {FieldSet} from '~/editorTabs/EditPanelContent/FormBuilder/FieldSet';
+import {FieldSet} from '../../../FieldSet';
 import {useFormikContext} from 'formik';
 
 jest.mock('formik');

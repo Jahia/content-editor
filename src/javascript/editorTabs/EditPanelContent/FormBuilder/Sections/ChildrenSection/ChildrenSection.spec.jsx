@@ -5,6 +5,7 @@ import {ChildrenSection} from './ChildrenSection';
 import {useContentEditorSectionContext} from '~/contexts';
 import {listOrderingSection} from './AutomaticOrdering/AutomaticOrdering.spec.data';
 import {useFormikContext} from 'formik';
+import {Constants} from '~/ContentEditor.constants';
 
 jest.mock('formik');
 jest.mock('~/contexts/ContentEditorSection/ContentEditorSection.context');
@@ -16,11 +17,18 @@ describe('Children section component', () => {
     beforeEach(() => {
         props = {
             section: {
-                displayName: 'children'
+                displayName: 'children',
+                fieldSets: []
             },
-            canManuallyOrder: true,
-            canAutomaticallyOrder: false,
-            classes: {}
+            mode: Constants.routes.baseEditRoute,
+            values: {},
+            nodeData: {
+                primaryNodeType: {
+                    hasOrderableChildNodes: true
+                }
+            },
+            isExpanded: true,
+            onClick: () => {}
         };
         formik = {
             values: {
@@ -37,7 +45,7 @@ describe('Children section component', () => {
 
     it('should be able to switch automatic ordering', () => {
         sectionsContext.sections = [listOrderingSection(false, false)];
-        props.canAutomaticallyOrder = true;
+        props.values[Constants.ordering.automaticOrdering.mixin] = '';
 
         const cmp = shallowWithTheme(<ChildrenSection {...props}/>, {}, dsGenericTheme);
         const toggleCmp = cmp.find('WithStyles(ToggleCmp)');
@@ -49,7 +57,7 @@ describe('Children section component', () => {
 
     it('should not be able to switch automatic ordering, if fieldSet is readOnly', () => {
         sectionsContext.sections = [listOrderingSection(true, false)];
-        props.canAutomaticallyOrder = true;
+        props.values[Constants.ordering.automaticOrdering.mixin] = '';
 
         const cmp = shallowWithTheme(<ChildrenSection {...props}/>, {}, dsGenericTheme);
 

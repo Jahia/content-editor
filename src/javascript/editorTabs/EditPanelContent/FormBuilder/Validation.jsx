@@ -69,7 +69,7 @@ export const Validation = () => {
                         {t('label.contentEditor.edit.validation.fieldsInError', {count: fieldsInError.length})} : &nbsp;
                         {fieldsInError.map(field => (
                             <span key={field.name} className={styles.field}>
-                                <a href="~/editorTabs/EditPanelContent/FormBuilder/Validation#" className={styles.fieldLink} onClick={() => onClick(field.name)}>{field.displayName}</a>
+                                <a href="#" className={styles.fieldLink} onClick={() => onClick(field.name)}>{field.displayName}</a>
                             </span>
                         ))}
                     </Typography>
@@ -79,7 +79,7 @@ export const Validation = () => {
                         {t('label.contentEditor.edit.validation.otherLanguages')} : &nbsp;
                         {i18nErrors.map(lang => (
                             <span key={lang} className={styles.field}>
-                                <a href="~/editorTabs/EditPanelContent/FormBuilder/Validation#" className={styles.fieldLink} onClick={() => switchLanguage(lang)}>{getCapitalized(siteInfo.languages.find(l => l.language === lang).displayName)}</a>
+                                <a href="#" className={styles.fieldLink} onClick={() => switchLanguage(lang)}>{getCapitalized(siteInfo.languages.find(l => l.language === lang).displayName)}</a>
                             </span>
                         ))}
                     </Typography>

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Form} from 'formik';
 import {useContentEditorContext, useContentEditorSectionContext} from '~/contexts';
 import {SectionsPropTypes} from '~/ContentEditor.proptypes';
-import {OrderingSection, Section} from './Sections';
+import {ChildrenSection, Section} from './Sections';
 import {useDispatch, useSelector} from 'react-redux';
 import {ceToggleSections} from '~/registerReducer';
 import styles from './FormBuilder.scss';
@@ -54,7 +54,7 @@ export const FormBuilder = ({mode}) => {
         if (section.name === 'listOrdering') {
             listOrderingIndex = index;
             return (
-                <OrderingSection key={section.name}
+                <ChildrenSection key={section.name}
                                  mode={mode}
                                  nodeData={nodeData}
                                  section={section}

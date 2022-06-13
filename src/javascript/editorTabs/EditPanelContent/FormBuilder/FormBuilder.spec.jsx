@@ -120,7 +120,7 @@ describe('FormBuilder component', () => {
             ]
         });
         const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).find('section');
-        expect(cmp.find('OrderingSection').dive().find('Collapsible').exists()).toBeFalsy();
+        expect(cmp.find('ChildrenSection').dive().find('Collapsible').exists()).toBeFalsy();
     });
 
     it('should not display ordering section for page', () => {
@@ -143,7 +143,7 @@ describe('FormBuilder component', () => {
         context.nodeData.isPage = true;
 
         const cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).find('section');
-        expect(cmp.find('OrderingSection').dive().find('Collapsible').exists()).toBeFalsy();
+        expect(cmp.find('ChildrenSection').dive().find('Collapsible').exists()).toBeFalsy();
     });
 
     it('should not display ordering section for site', () => {
@@ -166,7 +166,7 @@ describe('FormBuilder component', () => {
         context.nodeData.isSite = true;
 
         const cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).find('section');
-        expect(cmp.find('OrderingSection').dive().find('Collapsible').exists()).toBeFalsy();
+        expect(cmp.find('ChildrenSection').dive().find('Collapsible').exists()).toBeFalsy();
     });
 
     it('should display ordering section', () => {
@@ -186,7 +186,7 @@ describe('FormBuilder component', () => {
             ]
         });
         const cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).find('section');
-        expect(cmp.find('OrderingSection').dive().find('Collapsible').exists()).toBeTruthy();
+        expect(cmp.find('ChildrenSection').dive().find('Collapsible').exists()).toBeTruthy();
     });
 
     it('should display ordering section just after content section', () => {
@@ -206,98 +206,7 @@ describe('FormBuilder component', () => {
             ]
         });
         const cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).find('section');
-        expect(cmp.childAt(1).find('OrderingSection').dive().find('ChildrenSection').exists()).toBeTruthy();
-    });
-
-    it('should have section with only automatically order', () => {
-        sectionContext.sections.push({
-            name: 'listOrdering',
-            displayName: 'Listordering',
-            expanded: false,
-            fieldSets: [
-                {
-                    displayName: 'yo1',
-                    displayed: true,
-                    fields: [
-                        {name: 'field1', displayName: 'field 1'},
-                        {name: 'field2', displayName: 'field 2'}
-                    ]
-                }
-            ]
-        });
-
-        context.nodeData.primaryNodeType.hasOrderableChildNodes = false;
-        formik.values = ({
-            ...formik.values,
-            'jmix:orderedList': false
-        });
-
-        let cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).find('section');
-        expect(cmp.find('OrderingSection').dive().find('ChildrenSection').props().canAutomaticallyOrder).toBeTruthy();
-        expect(cmp.find('OrderingSection').dive().find('ChildrenSection').props().canManuallyOrder).toBeFalsy();
-
-        formik.values = ({
-            ...formik.values,
-            'jmix:orderedList': true
-        });
-
-        cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).find('section');
-        expect(cmp.find('OrderingSection').dive().find('ChildrenSection').props().canAutomaticallyOrder).toBeTruthy();
-        expect(cmp.find('OrderingSection').dive().find('ChildrenSection').props().canManuallyOrder).toBeFalsy();
-    });
-
-    it('should have section with only manually order', () => {
-        sectionContext.sections.push({
-            name: 'listOrdering',
-            displayName: 'Listordering',
-            expanded: false,
-            fieldSets: [
-                {
-                    displayName: 'yo1',
-                    displayed: true,
-                    fields: [
-                        {name: 'field1', displayName: 'field 1'},
-                        {name: 'field2', displayName: 'field 2'}
-                    ]
-                }
-            ]
-        });
-
-        formik.values = ({
-            ...formik.values,
-            AnyOtherKey: 'withValue'
-        });
-
-        const cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).find('section');
-        expect(cmp.find('OrderingSection').dive().find('ChildrenSection').props().canAutomaticallyOrder).toBeFalsy();
-        expect(cmp.find('OrderingSection').dive().find('ChildrenSection').props().canManuallyOrder).toBeTruthy();
-    });
-
-    it('should have section with automatically and manually order', () => {
-        sectionContext.sections.push({
-            name: 'listOrdering',
-            displayName: 'Listordering',
-            expanded: false,
-            fieldSets: [
-                {
-                    displayName: 'yo1',
-                    displayed: true,
-                    fields: [
-                        {name: 'field1', displayName: 'field 1'},
-                        {name: 'field2', displayName: 'field 2'}
-                    ]
-                }
-            ]
-        });
-
-        formik.values = ({
-            ...formik.values,
-            'jmix:orderedList': false
-        });
-
-        const cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).find('section');
-        expect(cmp.find('OrderingSection').dive().find('ChildrenSection').props().canAutomaticallyOrder).toBeTruthy();
-        expect(cmp.find('OrderingSection').dive().find('ChildrenSection').props().canManuallyOrder).toBeTruthy();
+        expect(cmp.childAt(1).find('ChildrenSection').exists()).toBeTruthy();
     });
 
     it('should expand content and listOrdering by default', () => {

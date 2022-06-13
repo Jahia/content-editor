@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {FieldSetPropTypes} from '~/ContentEditor.proptypes';
-import {FieldSet} from '~/editorTabs/EditPanelContent/FormBuilder/FieldSet';
-import {FieldSetWithNodeChecks} from './FieldSetWithNodeChecks/FieldSetWithNodeChecks';
+import {FieldSet} from './FieldSet';
+import {FieldSetWithNodeChecks} from './FieldSetWithNodeChecks';
 
 export const FieldSetsDisplay = ({fieldSets, fieldSetMapFcn = x => x}) => {
     if (!fieldSets || fieldSets.length === 0) {

@@ -1,9 +1,26 @@
 import {Collapsible} from '@jahia/moonstone';
-import {FieldSetsDisplay} from '~/editorTabs/EditPanelContent/FormBuilder/FieldSet/FieldSetsDisplay/FieldSetsDisplay';
-import {filterRegularFieldSets} from '~/editorTabs/EditPanelContent/FormBuilder/FormBuilder.fieldSetHelp';
+import {FieldSetsDisplay} from '../../FieldSet';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {SectionPropTypes} from '~/ContentEditor.proptypes';
+
+const filterRegularFieldSets = fieldSets => {
+    const hideFieldSet = fieldSet => {
+        if (!fieldSet) {
+            return false;
+        }
+
+        if (!fieldSet.displayed) {
+            return true;
+        }
+
+        // We must hide fieldSet in the section when the fieldSet is not dynamic and
+        // the fieldSet doesn't contain any fields (empty).
+        return !fieldSet.dynamic && fieldSet.fields.length === 0;
+    };
+
+    return fieldSets.filter(fs => !hideFieldSet(fs));
+};
 
 export const Section = ({section, isExpanded, onClick}) => {
     const fieldSets = filterRegularFieldSets(section.fieldSets);
