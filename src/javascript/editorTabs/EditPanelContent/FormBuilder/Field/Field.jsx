@@ -75,10 +75,14 @@ export const Field = ({inputContext, idInput, selectorType, field}) => {
 
         // Trigger on changes
         registeredOnChange(currentValue);
-    }, [field.name, registeredOnChange, setFieldValue]);
+
+        setFieldTouched(field.name, true, false);
+    }, [field.name, registeredOnChange, setFieldValue, setFieldTouched]);
 
     const onBlur = useCallback(() => {
-        setFieldTouched(field.name);
+        if (onChangeValue.current !== initialValue.current) {
+            setFieldTouched(field.name);
+        }
     }, [field.name, setFieldTouched]);
 
     const registeredOnChangeRef = useRef(registeredOnChange);
@@ -217,4 +221,3 @@ Field.propTypes = {
     }).isRequired,
     field: FieldPropTypes.isRequired
 };
-
