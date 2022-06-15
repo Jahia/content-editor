@@ -1,7 +1,7 @@
 import React from 'react';
 import {DisplayAction, DisplayActions} from '@jahia/ui-extender';
 import {ButtonRendererNoLabel, ButtonRendererShortLabel, getButtonRenderer, getNodeTypeIcon, truncate} from '~/utils';
-import {ButtonGroup, Chip, Header, Separator, Tab, TabItem} from '@jahia/moonstone';
+import {ArrowLeft, ButtonGroup, Chip, Header, Separator, Tab, TabItem} from '@jahia/moonstone';
 import styles from './EditPanelHeader.scss';
 import {PublishMenu} from './PublishMenu';
 import {useTranslation} from 'react-i18next';
@@ -10,6 +10,7 @@ import {EditPanelLanguageSwitcher} from '../EditPanelLanguageSwitcher';
 import {HeaderBadges} from '../HeaderBadges';
 import PropTypes from 'prop-types';
 import {ContentPath} from './ContentPath';
+import {GoBack} from "~/actions/contenteditor/goBackAction";
 
 const TabItemRenderer = renderProps => {
     const {t} = useTranslation('content-editor');
@@ -44,8 +45,16 @@ const DotsButtonRenderer = getButtonRenderer({
 export const EditPanelHeader = ({title, isShowPublish, activeTab, setActiveTab}) => {
     const {nodeData, nodeTypeName, nodeTypeDisplayName, mode, siteInfo, lang} = useContentEditorContext();
 
+    const backButton = (
+        <GoBack showIcons
+                buttonIcon={<ArrowLeft/>}
+                buttonLabel="content-editor:label.contentEditor.edit.action.goBack.name"
+                render={ButtonRendererNoLabel}
+                buttonProps={{variant: 'outlined'}}
+        />
+    );
     return (
-        <Header backButton={<DisplayAction actionKey="backButton" render={ButtonRendererNoLabel}/>}
+        <Header backButton={backButton}
                 title={truncate(title, 60)}
                 breadcrumb={(
                     nodeData?.path?.startsWith('/sites') && <ContentPath path={nodeData.path}/>
