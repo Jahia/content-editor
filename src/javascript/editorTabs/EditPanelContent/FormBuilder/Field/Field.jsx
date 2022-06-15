@@ -75,7 +75,6 @@ export const Field = ({inputContext, idInput, selectorType, field}) => {
 
         // Trigger on changes
         registeredOnChange(currentValue);
-
     }, [field.name, registeredOnChange, setFieldValue]);
 
     const onBlur = useCallback(() => {

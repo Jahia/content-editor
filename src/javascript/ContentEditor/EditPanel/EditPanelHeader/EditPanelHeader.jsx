@@ -10,7 +10,7 @@ import {EditPanelLanguageSwitcher} from '../EditPanelLanguageSwitcher';
 import {HeaderBadges} from '../HeaderBadges';
 import PropTypes from 'prop-types';
 import {ContentPath} from './ContentPath';
-import {GoBack} from "~/actions/contenteditor/goBackAction";
+import {GoBack} from '~/actions/contenteditor/goBackAction';
 
 const TabItemRenderer = renderProps => {
     const {t} = useTranslation('content-editor');
