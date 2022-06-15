@@ -5,6 +5,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
 const shared = require("./webpack.shared")
+const moonstone = require("@jahia/moonstone/dist/rulesconfig-wp");
 
 module.exports = (env, argv) => {
     let _argv = argv || {};
@@ -28,6 +29,7 @@ module.exports = (env, argv) => {
         },
         module: {
             rules: [
+                ...moonstone,
                 {
                     test: /\.m?js$/,
                     type: 'javascript/auto'
@@ -53,12 +55,8 @@ module.exports = (env, argv) => {
                     }
                 },
                 {
-                    test: /\.css$/,
-                    sideEffects: true,
-                    use: ['style-loader', 'css-loader']
-                },
-                {
                     test: /\.scss$/i,
+                    include: [path.join(__dirname, 'src')],
                     sideEffects: true,
                     use: [
                         'style-loader',
@@ -76,18 +74,9 @@ module.exports = (env, argv) => {
                     ]
                 },
                 {
-                    test: /\.png$/,
-                    use: ['file-loader']
-                },
-                {
-                    test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-                    use: [{
-                        loader: 'file-loader',
-                        options: {
-                            name: '[name].[ext]',
-                            outputPath: 'fonts/'
-                        }
-                    }]
+                    test: /\.(woff(2)?|ttf|eot|svg|png)(\?v=\d+\.\d+\.\d+)?$/,
+                    type: 'asset/resource',
+                    dependency: { not: ['url'] }
                 }
             ]
         },
