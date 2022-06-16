@@ -41,7 +41,7 @@
         "@jahia/icons": "^1.1.2",
         "@jahia/moonstone": "^2.4.0",
         "@jahia/react-material": "^3.0.5",
-        "@jahia/ui-extender": "^1.0.4",
+        "@jahia/ui-extender": "^1.0.5",
         "@material-ui/core": "^3.9.3",
         "@material-ui/icons": "^3.0.1",
         "@material-ui/lab": "^3.0.0-alpha.30",

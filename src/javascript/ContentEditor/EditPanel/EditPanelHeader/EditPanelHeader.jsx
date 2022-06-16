@@ -46,13 +46,9 @@ export const EditPanelHeader = ({title, isShowPublish, activeTab, setActiveTab})
     const {nodeData, nodeTypeName, nodeTypeDisplayName, mode, siteInfo, lang} = useContentEditorContext();
 
     const backButton = (
-        <GoBack showIcons
-                buttonIcon={<ArrowLeft/>}
-                buttonLabel="content-editor:label.contentEditor.edit.action.goBack.name"
-                render={ButtonRendererNoLabel}
-                buttonProps={{variant: 'outlined'}}
-        />
+        <DisplayAction actionKey="backButton" render={ButtonRendererNoLabel} buttonProps={{variant: 'outlined', icon: <ArrowLeft/>}}/>
     );
+
     return (
         <Header backButton={backButton}
                 title={truncate(title, 60)}
