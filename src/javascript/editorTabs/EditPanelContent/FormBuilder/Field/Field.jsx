@@ -75,14 +75,10 @@ export const Field = ({inputContext, idInput, selectorType, field}) => {
 
         // Trigger on changes
         registeredOnChange(currentValue);
-
-        setFieldTouched(field.name, true, false);
-    }, [field.name, registeredOnChange, setFieldValue, setFieldTouched]);
+    }, [field.name, registeredOnChange, setFieldValue]);
 
     const onBlur = useCallback(() => {
-        if (onChangeValue.current !== initialValue.current) {
-            setFieldTouched(field.name);
-        }
+        setFieldTouched(field.name);
     }, [field.name, setFieldTouched]);
 
     const registeredOnChangeRef = useRef(registeredOnChange);
@@ -115,50 +111,50 @@ export const Field = ({inputContext, idInput, selectorType, field}) => {
         >
             <div className="flexFluid">
                 {inputContext.displayLabels &&
-                <div className={clsx(styles.inputLabelContainer, 'flexRow', 'alignCenter')}>
-                    <InputLabel id={`${field.name}-label`}
-                                className={styles.inputLabel}
-                                htmlFor={isMultipleField ? null : idInput}
-                    >
-                        <Typography>{field.displayName}</Typography>
-                    </InputLabel>
-                    {inputContext.displayBadges && (
-                        <>
-                            {field.mandatory && (
-                                <Chip
-                                    className={styles.badge}
-                                    data-sel-content-editor-field-mandatory={Boolean(hasMandatoryError)}
-                                    label={t('content-editor:label.contentEditor.edit.validation.required')}
-                                    color={hasMandatoryError ? 'warning' : 'accent'}
-                                />
-                            )}
-                            {showChipField(field.i18n, wipInfo, editorContext.lang) && (
-                                <Chip
-                                    className={styles.badge}
-                                    data-sel-role="wip-info-chip-field"
-                                    label={t('content-editor:label.contentEditor.edit.action.workInProgress.chipLabelField')}
-                                    color="accent"
-                                />
-                            )}
-                            {(!field.i18n && editorContext.siteInfo.languages.length > 1) &&
-                                <Chip
-                                    className={styles.badge}
-                                    data-sel-role="wip-info-chip-field"
-                                    icon={<Language/>}
-                                    label={t('content-editor:label.contentEditor.edit.sharedLanguages')}
-                                    color="default"
-                                />}
-                        </>
-                    )}
-                    <div className="flexFluid"/>
-                    <DisplayAction
-                        actionKey="content-editor/field/3dots"
-                        editorContext={editorContext}
-                        field={field}
-                        selectorType={selectorType}
-                        render={ButtonRenderer}
-                    />
-                </div>}
+                    <div className={clsx(styles.inputLabelContainer, 'flexRow', 'alignCenter')}>
+                        <InputLabel id={`${field.name}-label`}
+                                    className={styles.inputLabel}
+                                    htmlFor={isMultipleField ? null : idInput}
+                        >
+                            <Typography>{field.displayName}</Typography>
+                        </InputLabel>
+                        {inputContext.displayBadges && (
+                            <>
+                                {field.mandatory && (
+                                    <Chip
+                                        className={styles.badge}
+                                        data-sel-content-editor-field-mandatory={Boolean(hasMandatoryError)}
+                                        label={t('content-editor:label.contentEditor.edit.validation.required')}
+                                        color={hasMandatoryError ? 'warning' : 'accent'}
+                                    />
+                                )}
+                                {showChipField(field.i18n, wipInfo, editorContext.lang) && (
+                                    <Chip
+                                        className={styles.badge}
+                                        data-sel-role="wip-info-chip-field"
+                                        label={t('content-editor:label.contentEditor.edit.action.workInProgress.chipLabelField')}
+                                        color="accent"
+                                    />
+                                )}
+                                {(!field.i18n && editorContext.siteInfo.languages.length > 1) &&
+                                    <Chip
+                                        className={styles.badge}
+                                        data-sel-role="wip-info-chip-field"
+                                        icon={<Language/>}
+                                        label={t('content-editor:label.contentEditor.edit.sharedLanguages')}
+                                        color="default"
+                                    />}
+                            </>
+                        )}
+                        <div className="flexFluid"/>
+                        <DisplayAction
+                            actionKey="content-editor/field/3dots"
+                            editorContext={editorContext}
+                            field={field}
+                            selectorType={selectorType}
+                            render={ButtonRenderer}
+                        />
+                    </div>}
                 {field.description && (
                     <Typography className={styles.inputDescription} variant="caption">
                         {field.description}

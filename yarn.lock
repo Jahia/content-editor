@@ -1463,10 +1463,10 @@
     mdi-material-ui "^5.10.0"
     recompose "^0.30.0"
 
-"@jahia/moonstone@^2.3.3":
-  version "2.3.3"
-  resolved "https://registry.yarnpkg.com/@jahia/moonstone/-/moonstone-2.3.3.tgz#ba2fc86276c68e39a79830081109af8bb99f8c80"
-  integrity sha512-ooI3q/wk2TT6hNVZUMvuIRfmmX+I7AwXgOuxfJ3AOd3D+8Nho9Al/fJyjaRqFryRetd6NAZRXYklJLpxb3cyoQ==
+"@jahia/moonstone@^2.4.0":
+  version "2.4.0"
+  resolved "https://npm.jahia.com/@jahia%2fmoonstone/-/moonstone-2.4.0.tgz#955d0a5f0cfaca82019eeec2a3c39cff43a55311"
+  integrity sha512-pJ4idDK43+EVhDwe/KodlKEtrl5FtpNSzP4tQFOdo5pOBqg5yEAGlEQ/aQZidkF2K0zPuiFqX480cP5PHGVGfA==
   dependencies:
     "@babel/runtime" "^7.12.5"
     clsx "^1.1.1"
@@ -1505,10 +1505,10 @@
     enzyme-adapter-react-16 "^1.12.1"
     identity-obj-proxy "^3.0.0"
 
-"@jahia/ui-extender@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@jahia/ui-extender/-/ui-extender-1.0.4.tgz#13ea05accac7ae0d675e61512bf7fea497ef51cd"
-  integrity sha512-EEyKhzW9qFjruhPAyT8DtZUz9/vNVCJVlkB0AT1N6Ecsj19A3bN+szLVDN7+aGpf8aaTWy/dAFKsf4J0cM3yMA==
+"@jahia/ui-extender@^1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@jahia/ui-extender/-/ui-extender-1.0.5.tgz#1e91e3fd372841033f7a3d17f91f2b3a45616b9e"
+  integrity sha512-8cmwJ1THXMnWbhQH5gwqWsEee1sWG8xGh578047rq9wSih1pLhzlm3BO3ExLUjnhPdf+Ty7YX40Vu43Faopd4g==
   dependencies:
     prop-types "^15.6.1"
     react "^16.12.0"
