@@ -8,7 +8,7 @@ import {MainPanel} from './MainPanel';
 
 import {useQuery} from '@apollo/react-hooks';
 import {SiteNodesQuery} from './PickerDialog.gql-queries';
-import {getPathWithoutFile, getSite, getSiteNodes} from '../Picker.utils';
+import {getPathWithoutFile, getSite, getSiteNodes} from './Picker.utils';
 import {useDebounce} from './useDebounce';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 import styles from './PickerDialog.scss';
@@ -37,7 +37,7 @@ const useSiteSwitcher = ({initialSelectedItem, lang, siteKey, nodeTreeConfigs, t
 
     const onSelectSite = siteNode => {
         setSite(siteNode.name);
-        return siteNode.allSites ? '/sites' : nodeTreeConfigs[0].treeConfig.rootPath(siteNode.name);
+        return siteNode.allSites ? '/sites' : nodeTreeConfigs[0].getRootPath(siteNode.name);
     };
 
     return {siteNode, siteNodes, currentSite, onSelectSite, setSite, selectedSite};
@@ -102,9 +102,9 @@ export const PickerDialog = ({
     const nodeTreeConfigsAdapted = nodeTreeConfigs
         .map(nodeTreeConfig => ({
             ...nodeTreeConfig,
-            selectableTypes: siteNode && siteNode.allSites ? [...nodeTreeConfig.treeConfig.selectableTypes, 'jnt:virtualsitesFolder'] : nodeTreeConfig.treeConfig.selectableTypes,
-            openableTypes: siteNode && siteNode.allSites ? [...nodeTreeConfig.treeConfig.openableTypes, 'jnt:virtualsitesFolder', 'jnt:virtualsite'] : nodeTreeConfig.treeConfig.openableTypes,
-            rootPath: siteNode && siteNode.allSites ? '/sites' : nodeTreeConfig.treeConfig.rootPath(currentSite),
+            selectableTypes: siteNode && siteNode.allSites ? [...nodeTreeConfig.selectableTypes, 'jnt:virtualsitesFolder'] : nodeTreeConfig.selectableTypes,
+            openableTypes: siteNode && siteNode.allSites ? [...nodeTreeConfig.openableTypes, 'jnt:virtualsitesFolder', 'jnt:virtualsite'] : nodeTreeConfig.openableTypes,
+            rootPath: siteNode && siteNode.allSites ? '/sites' : nodeTreeConfig.getRootPath(currentSite),
             rootLabel: siteNode && siteNode.displayName
         }));
 
@@ -125,7 +125,7 @@ export const PickerDialog = ({
         >
             {isOpen && (
                 <>
-                    {pickerConfig.displayTree && (
+                    {pickerConfig.displayTree !== false && (
                         <LeftPanel
                             site={currentSite}
                             siteNodes={siteNodes}
@@ -139,7 +139,7 @@ export const PickerDialog = ({
                             onSelectSite={onSelectSite}
                         />)}
                     <div
-                        className={styles.modalContent + (pickerConfig.displayTree ? ` ${styles.modalContentWithDrawer}` : '')}
+                        className={styles.modalContent + (pickerConfig.displayTree !== false ? ` ${styles.modalContentWithDrawer}` : '')}
                     >
                         <MainPanel
                             setSelectedPath={setSelectedPath}

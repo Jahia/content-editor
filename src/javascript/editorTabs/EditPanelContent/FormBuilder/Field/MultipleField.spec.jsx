@@ -44,7 +44,9 @@ describe('Multiple component', () => {
                 selectorOptions: []
             },
             inputContext: {
-                fieldComponent: () => <></>
+                selectorType: {
+                    cmp: () => <></>
+                }
             },
             classes: {},
             t: jest.fn(),
@@ -55,7 +57,7 @@ describe('Multiple component', () => {
     });
 
     it('should contains multiple fields', () => {
-        defaultProps.inputContext.fieldComponent = props => <Text {...props}/>;
+        defaultProps.inputContext.selectorType.cmp = props => <Text {...props}/>;
         const cmp = shallowWithTheme(
             <MultipleField {...defaultProps}/>,
             {},
@@ -117,7 +119,7 @@ describe('Multiple component', () => {
             }
         });
 
-        defaultProps.inputContext.fieldComponent = props => <TextAreaField {...props}/>;
+        defaultProps.inputContext.selectorType.cmp = props => <TextAreaField {...props}/>;
         return shallowWithTheme(
             <MultipleField {...defaultProps}/>,
             {},

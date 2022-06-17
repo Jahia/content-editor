@@ -1,5 +1,4 @@
 import React from 'react';
-import {Picker} from '../Picker';
 import {FileImage} from '@jahia/moonstone';
 import {useQuery} from '@apollo/react-hooks';
 import {MediaPickerFilledQuery} from './MediaPicker.gql-queries';
@@ -34,10 +33,7 @@ const usePickerInputData = (uuid, editorContext) => {
     return {fieldData, error, loading};
 };
 
-export const MediaPickerSelectorType = {
-    cmp: Picker,
-    key: 'MediaPicker',
-    supportMultiple: false,
+export const MediaPickerConfig = {
     pickerInput: {
         emptyLabel: 'content-editor:label.contentEditor.edit.fields.imagePicker.emptyInputLabel',
         notFoundLabel: 'content-editor:label.contentEditor.edit.fields.imagePicker.notFoundImage',
@@ -46,8 +42,8 @@ export const MediaPickerSelectorType = {
     },
     PickerDialog: {
         view: 'Thumbnail',
-        dialogTitle: () => 'content-editor:label.contentEditor.edit.fields.imagePicker.modalTitle',
-        searchPlaceholder: () => 'content-editor:label.contentEditor.edit.fields.imagePicker.searchPlaceholder',
+        dialogTitle: 'content-editor:label.contentEditor.edit.fields.imagePicker.modalTitle',
+        searchPlaceholder: 'content-editor:label.contentEditor.edit.fields.imagePicker.searchPlaceholder',
         itemSelectionAdapter: image => image ? image.uuid : null
     }
 };

@@ -11,9 +11,9 @@ export const FieldContainer = React.memo(({field, inputContext}) => {
         displayBadges: true,
         displayActions: true,
         displayErrors: true,
-        fieldComponent: selectorType.cmp,
+        selectorType,
         ...inputContext
-    }), [inputContext, selectorType.cmp]);
+    }), [inputContext, selectorType]);
 
     return (
         <Field

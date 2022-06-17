@@ -29,11 +29,9 @@ describe('PickerDialog', () => {
             field: {},
             nodeTreeConfigs: [{
                 rootPath: '/rootPath/',
-                treeConfig: {
-                    selectableTypes: [],
-                    openableTypes: [],
-                    rootPath: jest.fn()
-                }
+                selectableTypes: [],
+                openableTypes: [],
+                getRootPath: jest.fn()
             }],
             t: jest.fn(),
             pickerConfig: {

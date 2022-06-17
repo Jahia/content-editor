@@ -1,22 +1,13 @@
 import {buildPickerContext, fillCKEditorPicker} from './RichText.utils';
 
-jest.mock('~/SelectorTypes/Picker/Picker.utils', () => {
-    return {
-        getNodeTreeConfigs: () => ({thisIsANode: 'treeConfig'})
-    };
-});
-
 jest.mock('@jahia/ui-extender', () => {
     return {
         registry: {
             get: jest.fn(() => {
                 return {
-                    cmp: {
-                        picker: {
-                            cmp: {},
-                            key: 'ContentPicker'
-                        }
-                    }
+                    key: 'editorial',
+                    treeConfigs: [{thisIsANode: 'treeConfig'}],
+                    displayTree: true
                 };
             }),
             add: jest.fn()
@@ -51,7 +42,7 @@ describe('RichText utils', () => {
 
         it('should return the nodeTreeConfigs', () => {
             const {nodeTreeConfigs} = buildPickerContext(picker, editorContext, t);
-            expect(nodeTreeConfigs).toEqual({thisIsANode: 'treeConfig'});
+            expect(nodeTreeConfigs[0].thisIsANode).toEqual('treeConfig');
         });
 
         it('should an empty currentValue when input is empty', () => {
