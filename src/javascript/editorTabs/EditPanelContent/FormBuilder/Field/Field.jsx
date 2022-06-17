@@ -88,7 +88,7 @@ export const Field = ({inputContext, idInput, selectorType, field}) => {
 
     const initialValue = useRef(values[field.name]);
 
-    const currentValue = useMemo(() => values[field.name], [values, field.name]);
+    const currentValue = values[field.name];
 
     useEffect(() => {
         if (initialValue.current !== null && initialValue.current !== undefined) {
