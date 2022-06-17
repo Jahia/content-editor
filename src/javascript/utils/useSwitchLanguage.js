@@ -6,17 +6,19 @@ import {useFormikContext} from 'formik';
 import {Constants} from '~/ContentEditor.constants';
 
 function fillValues(formik, fieldsObj, i18nValues, nonI18nValues, dynamicFieldSets) {
-    Object.keys(formik.values).forEach(key => {
-        if (fieldsObj[key]) {
-            if (fieldsObj[key].i18n) {
-                i18nValues.values[key] = formik.values[key];
-            } else {
+    Object.keys(formik.values)
+        .filter(key => (fieldsObj[key] && fieldsObj[key].i18n === undefined) || formik.values[key] !== formik.initialValues[key] || typeof dynamicFieldSets[key] === 'boolean')
+        .forEach(key => {
+            if (fieldsObj[key]) {
+                if (fieldsObj[key].i18n) {
+                    i18nValues.values[key] = formik.values[key];
+                } else {
+                    nonI18nValues.values[key] = formik.values[key];
+                }
+            } else if (typeof dynamicFieldSets[key] === 'boolean') {
                 nonI18nValues.values[key] = formik.values[key];
             }
-        } else if (typeof dynamicFieldSets[key] === 'boolean') {
-            nonI18nValues.values[key] = formik.values[key];
-        }
-    });
+        });
 }
 
 function fillErrors(validation, fieldsObj, i18nValues) {

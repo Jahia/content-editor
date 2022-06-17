@@ -48,6 +48,11 @@ export class ContentEditor extends BasePage {
         getComponentByRole(Button, 'backButton').click()
     }
 
+    cancelAndDiscard() {
+        getComponentByRole(Button, 'backButton').click()
+        getComponentByRole(Button, 'close-dialog-discard').click()
+    }
+
     addAnotherContent() {
         cy.get('#createAnother').check()
     }

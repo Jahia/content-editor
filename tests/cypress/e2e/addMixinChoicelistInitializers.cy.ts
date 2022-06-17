@@ -3,7 +3,7 @@ import { ContentEditor } from '../page-object'
 const sitekey = 'contentEditorSiteAddMixin'
 describe('Add Mixin by using choice list initializers (Image Reference)', () => {
     let contentEditor: ContentEditor
-
+    const cypressDocumentManagerImageReferenceLinkTest = 'Cypress document manager image reference link Test'
     before(function () {
         cy.executeGroovy('createSiteI18N.groovy', { SITEKEY: sitekey })
         cy.login() // edit in chief
@@ -75,6 +75,7 @@ describe('Add Mixin by using choice list initializers (Image Reference)', () => 
             .click()
         cy.get('@de_external_link_url').should('not.exist')
         contentEditor.getLanguageSwitcher().select('English')
+        cy.get('#select-jnt\\:imageReferenceLink_j\\:linkType').contains('No link')
         cy.get('#select-jnt\\:imageReferenceLink_j\\:linkType')
             .click()
             .find('li[role="option"][data-value="internal"]')
@@ -88,7 +89,7 @@ describe('Add Mixin by using choice list initializers (Image Reference)', () => 
         cy.get('[data-sel-content-editor-field="mix\\:title_jcr\\:title"]')
             .scrollIntoView()
             .should('be.visible')
-            .type('Cypress document manager image reference link Test')
+            .type(cypressDocumentManagerImageReferenceLinkTest)
         cy.get('[data-sel-content-editor-field="jnt\\:imageReferenceLink_j\\:node"]')
             .scrollIntoView()
             .should('be.visible')
@@ -101,5 +102,35 @@ describe('Add Mixin by using choice list initializers (Image Reference)', () => 
             .componentShouldBeVisible(
                 `a[href*="/sites/${sitekey}/home.html"] > img[src*="/sites/${sitekey}/files/snowbearHome.jpeg"]`,
             )
+    })
+    it('Can edit a document manager image reference link', () => {
+        const pageComposer = contentEditor.getPageComposer()
+        pageComposer.editComponent(
+            `a[href*="/sites/${sitekey}/home.html"] > img[src*="/sites/${sitekey}/files/snowbearHome.jpeg"]`,
+        )
+        cy.get('#contenteditor-dialog-title')
+            .should('be.visible')
+            .and('contain', 'Cypress document manager image reference')
+        cy.get('#select-jnt\\:imageReferenceLink_j\\:linkType')
+            .click()
+            .find('li[role="option"][data-value="none"]')
+            .click()
+        cy.get('[data-sel-content-editor-field="jmix\\:internalLink_j\\:linknode"]').should('not.exist')
+        contentEditor.getLanguageSwitcher().select('Français')
+        cy.get('#select-jnt\\:imageReferenceLink_j\\:linkType').contains('Pas de lien')
+        cy.get('#select-jnt\\:imageReferenceLink_j\\:linkType')
+            .click()
+            .find('li[role="option"][data-value="internal"]')
+            .click()
+        cy.get('[data-sel-content-editor-field="jmix\\:internalLink_j\\:linknode"]')
+            .scrollIntoView()
+            .should('be.visible')
+        contentEditor.getLanguageSwitcher().select('English')
+        cy.get('#select-jnt\\:imageReferenceLink_j\\:linkType').contains('Internal')
+        cy.get('[data-sel-content-editor-field="jmix\\:internalLink_j\\:linknode"]')
+            .should('exist')
+            .scrollIntoView()
+            .should('be.visible')
+        contentEditor.cancelAndDiscard()
     })
 })
