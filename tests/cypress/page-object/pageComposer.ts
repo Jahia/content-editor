@@ -35,6 +35,14 @@ export class PageComposer extends BasePage {
         })
     }
 
+    componentShouldBeVisible(selector: string) {
+        cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
+            cy.iframe('.gwt-Frame', this.iFrameOptions).within(() => {
+                cy.get('.container').find(selector).should('exist').scrollIntoView().should('be.visible')
+            })
+        })
+    }
+
     getContentTypeSelector(): ContentTypeSelector {
         return getComponent(ContentTypeSelector)
     }

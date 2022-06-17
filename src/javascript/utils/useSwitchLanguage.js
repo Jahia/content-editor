@@ -6,7 +6,7 @@ import {useFormikContext} from 'formik';
 import {Constants} from '~/ContentEditor.constants';
 
 function fillValues(formik, fieldsObj, i18nValues, nonI18nValues, dynamicFieldSets) {
-    Object.keys(formik.values).filter(key => formik.values[key] !== formik.initialValues[key]).forEach(key => {
+    Object.keys(formik.values).forEach(key => {
         if (fieldsObj[key]) {
             if (fieldsObj[key].i18n) {
                 i18nValues.values[key] = formik.values[key];

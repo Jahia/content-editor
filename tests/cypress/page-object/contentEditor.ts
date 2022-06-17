@@ -2,18 +2,24 @@ import {
     BasePage,
     Button,
     Collapsible,
-    Dropdown, getComponentByAttr,
+    Dropdown,
+    getComponentByAttr,
     getComponentByRole,
     getComponentBySelector,
     Menu,
 } from '@jahia/cypress'
-import {PageComposer} from './pageComposer'
+import { PageComposer } from './pageComposer'
 
 export class ContentEditor extends BasePage {
     languageSwitcher: Dropdown
 
     static visit(site: string, language: string, path: string): ContentEditor {
         cy.visit(`/jahia/page-composer/default/${language}/sites/${site}/${path}`)
+        return new ContentEditor()
+    }
+
+    static visitJContentMedia(site: string, language: string): ContentEditor {
+        cy.visit(`/jahia/jcontent/${site}/${language}/media/files`)
         return new ContentEditor()
     }
 
