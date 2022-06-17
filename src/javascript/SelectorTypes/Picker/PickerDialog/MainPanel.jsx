@@ -147,7 +147,7 @@ MainPanelCmp.propTypes = {
         }).isRequired,
         selectableTypesTable: PropTypes.arrayOf(PropTypes.string),
         showOnlyNodesWithTemplates: PropTypes.bool,
-        searchpickerConfig: PropTypes.string,
+        searchSelectorType: PropTypes.string,
         displayTree: PropTypes.bool
     }).isRequired,
     lang: PropTypes.string.isRequired,
