@@ -19,4 +19,3 @@ export const EditPanel = React.memo(props => {
 EditPanel.propTypes = {
     title: PropTypes.string.isRequired
 };
-

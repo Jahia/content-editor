@@ -65,7 +65,7 @@ export const registerSelectorTypesOnChange = registry => {
                         if (data?.forms?.fieldConstraints) {
                             const fieldToUpdate = getFields(sections).find(f => f.name === dependentPropertiesField.name);
                             if (fieldToUpdate && !arrayEquals(fieldToUpdate.valueConstraints, data.forms.fieldConstraints)) {
-                                // Update field in place (for those who keep an constant ref on sectionsContext)
+                                // Update field in place (for those who keep a constant ref on sectionsContext)
                                 fieldToUpdate.valueConstraints = data.forms.fieldConstraints;
                                 // And recreate the full sections object to make change detection work
                                 sections.forEach(section => {

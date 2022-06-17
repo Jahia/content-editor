@@ -1,5 +1,4 @@
 import { ContentEditor } from '../page-object'
-import { getComponentBySelector } from '@jahia/cypress'
 
 const sitekey = 'contentEditorSiteI18N';
 describe('Create content tests', () => {

@@ -35,6 +35,26 @@ export class PageComposer extends BasePage {
         })
     }
 
+    componentShouldBeVisible(selector: string) {
+        cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
+            cy.iframe('.gwt-Frame', this.iFrameOptions).within(() => {
+                cy.get('.container').find(selector).should('exist').scrollIntoView().should('be.visible')
+            })
+        })
+    }
+
+    editComponent(selector: string) {
+        cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
+            cy.iframe('.gwt-Frame', this.iFrameOptions).within(() => {
+                cy.wait(5000)
+                cy.get('.container').find(selector).trigger('mouseover').rightclick({ force: true })
+            })
+        })
+        cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
+            cy.get('.editModeContextMenu').scrollIntoView().contains('Edit').click()
+        })
+    }
+
     getContentTypeSelector(): ContentTypeSelector {
         return getComponent(ContentTypeSelector)
     }

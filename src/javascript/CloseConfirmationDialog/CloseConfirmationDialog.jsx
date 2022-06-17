@@ -37,14 +37,18 @@ export const CloseConfirmationDialog = React.memo(({isOpen, onCloseDialog, actio
                     size="big"
                     variant="ghost"
                     label={t('content-editor:label.contentEditor.edit.action.goBack.btnContinue')}
+                    data-sel-role="close-dialog-cancel"
                     onClick={onCloseDialog}
                 />
                 <Button
                     size="big"
                     label={t('content-editor:label.contentEditor.edit.action.goBack.btnDiscard')}
+                    data-sel-role="close-dialog-discard"
                     onClick={handleDiscard}
                 />
-                <SaveButton actionCallback={actionCallback} onCloseDialog={onCloseDialog}/>
+                <SaveButton data-sel-role="close-dialog-save"
+                            actionCallback={actionCallback}
+                            onCloseDialog={onCloseDialog}/>
             </DialogActions>
         </Dialog>
     );

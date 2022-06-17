@@ -88,6 +88,8 @@ export const Field = ({inputContext, idInput, selectorType, field}) => {
 
     const initialValue = useRef(values[field.name]);
 
+    const currentValue = values[field.name];
+
     useEffect(() => {
         if (initialValue.current !== null && initialValue.current !== undefined) {
             // Init
@@ -99,6 +101,10 @@ export const Field = ({inputContext, idInput, selectorType, field}) => {
             registeredOnChangeRef.current(undefined);
         };
     }, []);
+
+    useEffect(() => {
+        registeredOnChangeRef.current(currentValue);
+    }, [currentValue]);
 
     const firstField = sectionsContext.sections ? sectionsContext.sections[0]?.fieldSets[0]?.fields[0] === field : false;
 
