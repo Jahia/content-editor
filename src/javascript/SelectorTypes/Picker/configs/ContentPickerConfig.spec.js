@@ -1,4 +1,4 @@
-import {MediaPickerSelectorType} from './MediaPickerSelectorType';
+import {ContentPickerConfig} from './ContentPickerConfig';
 import {setQueryResponseMock} from '@apollo/react-hooks';
 
 jest.mock('@apollo/react-hooks', () => {
@@ -11,12 +11,15 @@ jest.mock('@apollo/react-hooks', () => {
     };
 });
 
-describe('MediaPicker config', () => {
+jest.mock('../Picker', () => {
+    return {
+        Picker: () => {}
+    };
+});
+
+describe('ContentPicker config', () => {
     describe('usePickerInputData', () => {
-        const usePickerInputData = MediaPickerSelectorType.pickerInput.usePickerInputData;
-        window.contextJsParameters = {
-            contextPath: 'localContextPath'
-        };
+        const usePickerInputData = ContentPickerConfig.pickerInput.usePickerInputData;
 
         it('should return no data, no error when loading', () => {
             setQueryResponseMock({loading: true});
@@ -42,15 +45,11 @@ describe('MediaPicker config', () => {
             setQueryResponseMock({loading: false, data: {
                 jcr: {
                     result: {
-                        height: {value: '1080'},
-                        width: {value: '1920'},
-                        lastModified: {value: 'tomorow'},
                         displayName: 'a cake',
-                        path: 'placeholder.jpg',
-                        children: {
-                            nodes: [{
-                                mimeType: {value: 'image/jpeg'}
-                            }]
+                        path: 'florent/bestArticles',
+                        primaryNodeType: {
+                            displayName: 'article',
+                            icon: 'anUrl'
                         }
                     }
                 }
@@ -61,10 +60,10 @@ describe('MediaPicker config', () => {
                 error: undefined,
                 fieldData: {
                     uuid: 'this-is-uuid',
-                    info: 'image/jpeg - 1080x1920px',
+                    info: 'article',
                     name: 'a cake',
-                    path: 'placeholder.jpg',
-                    url: 'localContextPath/files/defaultplaceholder.jpg?lastModified=tomorow&t=thumbnail2'
+                    path: 'florent/bestArticles',
+                    url: 'anUrl.png'
                 }
             });
         });

@@ -1,6 +1,5 @@
 import {
     allSitesEntry,
-    extractConfigs,
     getDetailedPathArray,
     getPathWithoutFile,
     getSite,
@@ -15,7 +14,7 @@ jest.mock('@jahia/ui-extender', () => {
                     cmp: {
                         picker: {key: key === 'image' ? 'MediaPicker' : 'ContentPicker'},
                         treeConfigs: [{
-                            rootPath: () => {
+                            getRootPath: () => {
                                 return '/sites/digitall/files';
                             },
                             selectableTypes: ['nt:folder'],
@@ -64,47 +63,6 @@ describe('Picker utils', () => {
         it('should add all sites entry when more than 2 sites', () => {
             expect(getSiteNodes(data([siteA, siteB]), allSitesLabel)).toStrictEqual([allSitesEntry(allSitesLabel), siteA, siteB]);
             expect(getSiteNodes(data([siteA]), allSitesLabel)).toStrictEqual([siteA]);
-        });
-    });
-
-    describe('extractConfigs', () => {
-        let t;
-        beforeEach(() => {
-            t = jest.fn();
-        });
-
-        it('should return the content picker config', () => {
-            const {pickerConfig} = extractConfigs({selectorOptions: [{name: 'type', value: 'folder'}]}, {siteInfo: {}}, t);
-            expect(pickerConfig.picker.key).toBe('ContentPicker');
-        });
-
-        it('should return the image picker config', () => {
-            const {pickerConfig} = extractConfigs({selectorOptions: [{name: 'type', value: 'image'}]}, {siteInfo: {}}, t);
-            expect(pickerConfig.picker.key).toBe('MediaPicker');
-        });
-
-        it('should return the nodeTreeConfigs adapted', () => {
-            const field = {
-                selectorOptions: [{
-                    name: 'type',
-                    value: 'image'
-                }]
-            };
-            const {nodeTreeConfigs} = extractConfigs(field, {site: 'digitall', siteInfo: {}}, t);
-
-            expect(nodeTreeConfigs).toMatchObject([{
-                key: 'browse-tree-files',
-                openableTypes: ['nt:folder'],
-                rootPath: '/sites/digitall/files',
-                selectableTypes: ['nt:folder'],
-                treeConfig: {
-                    openableTypes: ['nt:folder'],
-                    rootLabelKey: 'content-editor:label.contentEditor.edit.fields.imagePicker.rootLabel',
-                    selectableTypes: ['nt:folder'],
-                    type: 'files'
-                },
-                type: 'files'
-            }]);
         });
     });
 

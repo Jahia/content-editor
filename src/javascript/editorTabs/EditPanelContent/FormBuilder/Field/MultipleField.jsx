@@ -35,7 +35,7 @@ export const MultipleField = ({editorContext, inputContext, field, onChange, onB
         <>
             {values[field.name] && values[field.name].length > 0 && (
                 values[field.name].map((value, index) => {
-                    const FieldComponent = inputContext.fieldComponent;
+                    const FieldComponent = inputContext.selectorType.cmp;
                     const name = `${field.name}[${index}]`;
 
                     return (

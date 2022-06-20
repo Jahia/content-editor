@@ -13,28 +13,6 @@ jest.mock('formik', () => {
     };
 });
 
-jest.mock('./Picker.utils', () => {
-    return {
-        extractConfigs: () => ({
-            pickerConfig: {
-                picker: {
-                    pickerInput: {
-                        usePickerInputData: () => {
-                            return {
-                                fieldData: {},
-                                loading: false
-                            };
-                        }
-                    }
-                }
-            },
-            nodeTreeConfigs: [{
-                type: 'content'
-            }]
-        })
-    };
-});
-
 jest.mock('react', () => {
     return {
         ...jest.requireActual('react'),
@@ -54,8 +32,24 @@ describe('picker', () => {
                 readOnly: false
             },
             id: 'imageid',
-            editorContext: {site: 'digitall'},
-            inputContext: {},
+            editorContext: {site: 'digitall', siteInfo: {}},
+            inputContext: {
+                selectorType: {
+                    pickerConfig: {
+                        pickerInput: {
+                            usePickerInputData: () => {
+                                return {
+                                    fieldData: {},
+                                    loading: false
+                                };
+                            }
+                        },
+                        treeConfigs: [{
+                            type: 'content'
+                        }]
+                    }
+                }
+            },
             onChange: jest.fn()
         };
     });

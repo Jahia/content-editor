@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import {FieldPropTypes} from '~/ContentEditor.proptypes';
 import {ReferenceCard} from '~/DesignSystem/ReferenceCard';
-import {extractConfigs} from './Picker.utils';
 import {PickerDialog} from './PickerDialog';
 import {DisplayAction} from '@jahia/ui-extender';
 import {getButtonRenderer} from '~/utils';
@@ -13,14 +12,15 @@ const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps
 
 export const Picker = ({field, value, editorContext, inputContext, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
-    const {pickerConfig, nodeTreeConfigs} = extractConfigs(field, editorContext, t);
+    const pickerConfig = inputContext.selectorType.pickerConfig;
+
     const [isDialogOpen, setDialogOpen] = useState(false);
     const {
         fieldData,
         error,
         loading,
         notFound
-    } = pickerConfig.picker.pickerInput.usePickerInputData(value, editorContext);
+    } = pickerConfig.pickerInput.usePickerInputData(value, editorContext);
 
     if (error) {
         const message = t(
@@ -45,7 +45,7 @@ export const Picker = ({field, value, editorContext, inputContext, onChange, onB
 
     const onItemSelection = data => {
         setDialogOpen(false);
-        onChange(pickerConfig.picker.PickerDialog.itemSelectionAdapter(data));
+        onChange(pickerConfig.PickerDialog.itemSelectionAdapter(data));
         onBlur();
     };
 
@@ -53,8 +53,8 @@ export const Picker = ({field, value, editorContext, inputContext, onChange, onB
         <div className="flexFluid flexRow_nowrap alignCenter">
             <ReferenceCard
                 isReadOnly={field.readOnly}
-                emptyLabel={t((error || notFound) ? pickerConfig.picker.pickerInput.notFoundLabel : pickerConfig.picker.pickerInput.emptyLabel)}
-                emptyIcon={pickerConfig.picker.pickerInput.emptyIcon}
+                emptyLabel={t((error || notFound) ? pickerConfig.pickerInput.notFoundLabel : pickerConfig.pickerInput.emptyLabel)}
+                emptyIcon={pickerConfig.pickerInput.emptyIcon}
                 labelledBy={`${field.name}-label`}
                 fieldData={fieldData}
                 onClick={() => setDialogOpen(!isDialogOpen)}
@@ -70,16 +70,11 @@ export const Picker = ({field, value, editorContext, inputContext, onChange, onB
             )}
             <PickerDialog
                 isOpen={isDialogOpen}
-                setIsOpen={setDialogOpen}
-                editorContext={editorContext}
                 initialSelectedItem={fieldData && fieldData.path}
-                nodeTreeConfigs={nodeTreeConfigs}
-                lang={editorContext.lang}
-                uilang={editorContext.uilang}
-                siteKey={editorContext.site}
-                t={t}
+                editorContext={editorContext}
                 field={field}
                 pickerConfig={pickerConfig}
+                onClose={setDialogOpen}
                 onItemSelection={onItemSelection}
             />
         </div>
