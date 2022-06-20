@@ -33,6 +33,8 @@ import javax.jcr.PropertyType;
 import javax.jcr.RepositoryException;
 import javax.jcr.Value;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 import static org.jahia.utils.DateUtils.DEFAULT_DATE_FORMAT;
@@ -91,8 +93,8 @@ public class EditorFormFieldValue {
                 break;
             case PropertyType.DATE:
                 // Handle date for the content editor
-                SimpleDateFormat defaultDataFormat = new SimpleDateFormat(GqlJcrMutationSupport.DEFAULT_DATE_FORMAT);
-                this.value = defaultDataFormat.format(value.getDate().getTime());
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(GqlJcrMutationSupport.DEFAULT_DATE_FORMAT).withZone(value.getDate().getTimeZone().toZoneId());
+                this.value = formatter.format(value.getDate().toInstant());
                 break;
             case PropertyType.BOOLEAN:
                 this.value = String.valueOf(value.getBoolean());
