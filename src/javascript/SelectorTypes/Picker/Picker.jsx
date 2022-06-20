@@ -7,14 +7,12 @@ import {PickerDialog} from './PickerDialog';
 import {DisplayAction} from '@jahia/ui-extender';
 import {getButtonRenderer} from '~/utils';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
-import {getNodeTreeConfigs} from './getNodeTreeConfigs';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
 export const Picker = ({field, value, editorContext, inputContext, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
     const pickerConfig = inputContext.selectorType.pickerConfig;
-    const nodeTreeConfigs = getNodeTreeConfigs(pickerConfig, editorContext.site, editorContext.siteInfo.displayName, t);
 
     const [isDialogOpen, setDialogOpen] = useState(false);
     const {
@@ -72,16 +70,11 @@ export const Picker = ({field, value, editorContext, inputContext, onChange, onB
             )}
             <PickerDialog
                 isOpen={isDialogOpen}
-                setIsOpen={setDialogOpen}
-                editorContext={editorContext}
                 initialSelectedItem={fieldData && fieldData.path}
-                nodeTreeConfigs={nodeTreeConfigs}
-                lang={editorContext.lang}
-                uilang={editorContext.uilang}
-                siteKey={editorContext.site}
-                t={t}
+                editorContext={editorContext}
                 field={field}
                 pickerConfig={pickerConfig}
+                onClose={setDialogOpen}
                 onItemSelection={onItemSelection}
             />
         </div>

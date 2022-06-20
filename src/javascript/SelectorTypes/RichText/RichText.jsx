@@ -5,7 +5,7 @@ import {FieldPropTypes} from '~/ContentEditor.proptypes';
 import {useQuery} from '@apollo/react-hooks';
 import {getCKEditorConfigurationPath} from './CKEditorConfiguration.gql-queries';
 import {ContentEditorContext} from '~/contexts';
-import {PickerDialog} from '~/SelectorTypes/Picker/PickerDialog';
+import {PickerDialog} from '~/SelectorTypes/Picker';
 import {useTranslation} from 'react-i18next';
 import {buildPickerContext, fillCKEditorPicker} from './RichText.utils';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
@@ -94,7 +94,7 @@ export const RichText = ({field, id, value, onChange, onBlur}) => {
         filebrowserLinkBrowseUrl: (dialog, params, setUrl) => handlePickerDialog(setUrl, 'editoriallink', params, dialog)
     };
 
-    const {pickerConfig, nodeTreeConfigs, pickerValue} = picker && buildPickerContext(picker, editorContext, t);
+    const {pickerConfig, pickerValue} = picker && buildPickerContext(picker, editorContext, t);
     const handleItemSelection = pickerResult => {
         setPicker(false);
         fillCKEditorPicker(picker, pickerResult);
@@ -104,16 +104,12 @@ export const RichText = ({field, id, value, onChange, onBlur}) => {
         <>
             {picker && <PickerDialog
                 isOpen={Boolean(picker)}
-                setIsOpen={setPicker}
-                uilang={editorContext.uilang}
-                lang={editorContext.lang}
-                siteKey={editorContext.site}
                 initialSelectedItem={pickerValue}
-                nodeTreeConfigs={nodeTreeConfigs}
+                editorContext={editorContext}
                 field={field}
                 pickerConfig={pickerConfig}
-                t={t}
                 onItemSelection={handleItemSelection}
+                onClose={setPicker}
             />}
             <CKEditor
                 id={id}

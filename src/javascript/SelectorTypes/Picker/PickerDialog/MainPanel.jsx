@@ -11,6 +11,7 @@ import {SearchInput} from './Search/Search';
 import {List, Thumbnail} from './Views';
 import {getButtonRenderer} from '~/utils';
 import clsx from 'clsx';
+import {useTranslation} from 'react-i18next';
 
 const styles = theme => ({
     modalHeader: {
@@ -54,7 +55,6 @@ const ButtonRenderer = getButtonRenderer({
 
 const MainPanelCmp = ({
     classes,
-    t,
     pickerConfig,
     lang,
     uilang,
@@ -68,6 +68,7 @@ const MainPanelCmp = ({
     selectedItem,
     setSelectedItem
 }) => {
+    const {t} = useTranslation();
     const selectElement = () => {
         if (selectedItem) {
             // Todo: BACKLOG-12581 - Multiple is not supported yet in pickers. Always return a single value.
@@ -138,7 +139,6 @@ const MainPanelCmp = ({
 
 MainPanelCmp.propTypes = {
     classes: PropTypes.object.isRequired,
-    t: PropTypes.func.isRequired,
     pickerConfig: PropTypes.shape({
         PickerDialog: PropTypes.shape({
             view: PropTypes.string.isRequired,

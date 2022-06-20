@@ -17,36 +17,23 @@ jest.mock('@jahia/ui-extender', () => {
 
 describe('RichText utils', () => {
     describe('buildPickerContext', () => {
-        let t;
         let picker;
-        let editorContext;
 
         beforeEach(() => {
-            t = jest.fn();
             picker = {
                 dialog: {
                     getContentElement: jest.fn()
                 }
             };
-            editorContext = {
-                siteInfo: {
-                    displayName: 'digitall'
-                }
-            };
         });
 
         it('should always displayTree', () => {
-            const {pickerConfig} = buildPickerContext(picker, editorContext, t);
+            const {pickerConfig} = buildPickerContext(picker);
             expect(pickerConfig.displayTree).toBe(true);
         });
 
-        it('should return the nodeTreeConfigs', () => {
-            const {nodeTreeConfigs} = buildPickerContext(picker, editorContext, t);
-            expect(nodeTreeConfigs[0].thisIsANode).toEqual('treeConfig');
-        });
-
         it('should an empty currentValue when input is empty', () => {
-            const {currentValue} = buildPickerContext(picker, editorContext, t);
+            const {currentValue} = buildPickerContext(picker);
             expect(currentValue).toBe('');
         });
 
@@ -56,7 +43,7 @@ describe('RichText utils', () => {
                     getValue: () => '/cms/{mode}/{lang}/richTextEdition/toot/al/regal.html'
                 };
             });
-            const {currentValue} = buildPickerContext(picker, editorContext, t);
+            const {currentValue} = buildPickerContext(picker);
             expect(currentValue).toBe('/richTextEdition/toot/al/regal');
         });
 
@@ -66,7 +53,7 @@ describe('RichText utils', () => {
                     getValue: () => '/files/{workspace}/richTextEdition/toot/al/regal.html'
                 };
             });
-            const {currentValue} = buildPickerContext(picker, editorContext, t);
+            const {currentValue} = buildPickerContext(picker);
             expect(currentValue).toBe('/richTextEdition/toot/al/regal.html');
         });
 
@@ -80,7 +67,7 @@ describe('RichText utils', () => {
                     getValue: () => '/files/{workspace}/richTextEdition/toot/al/regal.html'
                 };
             });
-            const {currentValue} = buildPickerContext(picker, editorContext, t);
+            const {currentValue} = buildPickerContext(picker);
             expect(currentValue).toBe('/richTextEdition/toot/al/regal.html');
         });
     });
