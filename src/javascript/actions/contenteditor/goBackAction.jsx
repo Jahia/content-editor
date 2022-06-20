@@ -19,7 +19,7 @@ export const GoBack = ({render: Render, ...otherProps}) => {
         }
     });
 
-    const dirty = formik.dirty || Object.keys(i18nContext).length > 0;
+    const dirty = formik.dirty || Object.keys(i18nContext).filter(l => l !== 'shared' && l !== 'memo').length > 0;
 
     const goBack = () => {
         if (dirty) {
