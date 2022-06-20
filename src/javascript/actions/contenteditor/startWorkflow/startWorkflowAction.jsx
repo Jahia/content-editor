@@ -3,6 +3,7 @@ import * as PropTypes from 'prop-types';
 import {Constants} from '~/ContentEditor.constants';
 import {useContentEditorContext} from '~/contexts/ContentEditor';
 import {useFormikContext} from 'formik';
+import {isDirty} from '~/utils';
 
 const StartWorkFlow = ({isMainButton, render: Render, loading: Loading, ...otherProps}) => {
     const {nodeData, lang, i18nContext, siteInfo} = useContentEditorContext();
@@ -12,7 +13,7 @@ const StartWorkFlow = ({isMainButton, render: Render, loading: Loading, ...other
 
     let disabled = false;
     let isVisible;
-    const dirty = formik.dirty || Object.keys(i18nContext).length > 0;
+    const dirty = isDirty(formik, i18nContext);
 
     if (isMainButton) {
         // Is Visible

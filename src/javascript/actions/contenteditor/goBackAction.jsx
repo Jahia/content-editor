@@ -3,7 +3,7 @@ import {CloseConfirmationDialog} from '~/CloseConfirmationDialog';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/contexts';
 import * as PropTypes from 'prop-types';
 import {Constants} from '~/ContentEditor.constants';
-import {useKeydownListener} from '~/utils';
+import {isDirty, useKeydownListener} from '~/utils';
 import {useFormikContext} from 'formik';
 
 export const GoBack = ({render: Render, ...otherProps}) => {
@@ -19,7 +19,7 @@ export const GoBack = ({render: Render, ...otherProps}) => {
         }
     });
 
-    const dirty = formik.dirty || Object.keys(i18nContext).filter(l => l !== 'shared' && l !== 'memo').length > 0;
+    const dirty = isDirty(formik, i18nContext);
 
     const goBack = () => {
         if (dirty) {

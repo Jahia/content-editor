@@ -7,6 +7,7 @@ import {useApolloClient} from '@apollo/react-hooks';
 import {useTranslation} from 'react-i18next';
 import {useNotifications} from '@jahia/react-material';
 import {useFormikContext} from 'formik';
+import {isDirty} from '~/utils';
 
 const Publish = ({render: Render, loading: Loading, ...otherProps}) => {
     const notificationContext = useNotifications();
@@ -25,7 +26,7 @@ const Publish = ({render: Render, loading: Loading, ...otherProps}) => {
             stopPublicationInfoPolling();
         }
 
-        const dirty = formik.dirty || Object.keys(i18nContext).length > 0;
+        const dirty = isDirty(formik, i18nContext);
 
         const wipInfo = formik.values[Constants.wip.fieldName];
         disabled = publicationStatus === undefined ||

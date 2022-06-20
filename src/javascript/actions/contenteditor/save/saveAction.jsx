@@ -10,7 +10,7 @@ import {
     usePublicationInfoContext
 } from '~/contexts';
 import {useFormikContext} from 'formik';
-import {useKeydownListener} from '~/utils';
+import {isDirty, useKeydownListener} from '~/utils';
 
 const Save = ({render: Render, loading: Loading, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
@@ -31,7 +31,7 @@ const Save = ({render: Render, loading: Loading, ...otherProps}) => {
         }
     });
 
-    const dirty = formik.dirty || Object.keys(i18nContext).length > 0;
+    const dirty = isDirty(formik, i18nContext);
 
     const save = async formik => {
         const {errors, i18nErrors} = await validateForm(formik, i18nContext, sections, lang, siteInfo, componentRenderer);
