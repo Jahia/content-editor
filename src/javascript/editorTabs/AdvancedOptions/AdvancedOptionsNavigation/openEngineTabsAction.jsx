@@ -4,13 +4,14 @@ import {CloseConfirmationDialog} from '~/CloseConfirmationDialog';
 import PropTypes from 'prop-types';
 import {useFormikContext} from 'formik';
 import {useContentEditorContext} from '~/contexts/ContentEditor';
+import {isDirty} from '~/utils';
 
 export const OpenEngineTabs = ({tabs, render: Render, ...otherProps}) => {
     const [open, setOpen] = useState(false);
     const formik = useFormikContext();
     const {nodeData, i18nContext, setI18nContext} = useContentEditorContext();
 
-    const dirty = formik.dirty || Object.keys(i18nContext).length > 0;
+    const dirty = isDirty(formik, i18nContext);
 
     return (
         <>

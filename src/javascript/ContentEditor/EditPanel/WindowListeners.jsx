@@ -1,6 +1,7 @@
 import {useEffect, useRef} from 'react';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/contexts';
 import {useFormikContext} from 'formik';
+import {isDirty} from '~/utils';
 
 const handleBeforeUnloadEvent = ev => {
     ev.preventDefault();
@@ -28,7 +29,7 @@ export const WindowListeners = () => {
     const {i18nContext} = useContentEditorContext();
     const {envProps} = useContentEditorConfigContext();
 
-    const dirty = formik.dirty || Object.keys(i18nContext).length > 0;
+    const dirty = isDirty(formik, i18nContext);
 
     useEffect(() => {
         if (!registered.current && dirty) {

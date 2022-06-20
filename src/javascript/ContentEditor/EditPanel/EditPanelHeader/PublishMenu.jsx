@@ -4,7 +4,7 @@ import {Constants} from '~/ContentEditor.constants';
 import React from 'react';
 import styles from './PublishMenu.scss';
 import {DisplayAction} from '@jahia/ui-extender';
-import {getButtonRenderer} from '~/utils';
+import {getButtonRenderer, isDirty} from '~/utils';
 
 const ButtonRenderer = getButtonRenderer({
     labelStyle: 'none',
@@ -23,7 +23,7 @@ export const PublishMenu = () => {
     const isWip = wipInfo.status === Constants.wip.status.ALL_CONTENT ||
         (wipInfo.status === Constants.wip.status.LANGUAGES && wipInfo.languages.includes(lang));
 
-    const dirty = formik.dirty || Object.keys(i18nContext).length > 0;
+    const dirty = isDirty(formik, i18nContext);
     let isDisabled = dirty || nodeData.lockedAndCannotBeEdited || isWip;
 
     return (

@@ -11,6 +11,7 @@ import {GetContentPath} from './ContentPath.gql-queries';
 import {ContentPathView} from './ContentPathView';
 import {Constants} from '~/ContentEditor.constants';
 import {useFormikContext} from 'formik';
+import {isDirty} from '~/utils';
 
 const findLastIndex = (array, callback) => {
     let lastIndex = -1;
@@ -73,7 +74,7 @@ export const ContentPath = ({path}) => {
         }
     });
 
-    const dirty = formik.dirty || Object.keys(i18nContext).length > 0;
+    const dirty = isDirty(formik, i18nContext);
 
     const handleNavigation = path => {
         if (dirty) {

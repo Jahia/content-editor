@@ -3,12 +3,13 @@ import {CloseConfirmationDialog} from '~/CloseConfirmationDialog';
 import * as PropTypes from 'prop-types';
 import {useFormikContext} from 'formik';
 import {useContentEditorContext} from '~/contexts/ContentEditor';
+import {isDirty} from '~/utils';
 
 export const OnCloseConfirmationDialog = ({setEditorConfig, openDialog}) => {
     const [confirmationConfig, setConfirmationConfig] = useState(false);
     const formik = useFormikContext();
     const {i18nContext} = useContentEditorContext();
-    const dirty = formik.dirty || Object.keys(i18nContext).length > 0;
+    const dirty = isDirty(formik, i18nContext);
 
     useEffect(() => {
         openDialog.current = () => {

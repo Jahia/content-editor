@@ -301,3 +301,6 @@ function getMixinsToMutate(nodeData, formValues, sections) {
     };
 }
 
+export function isDirty(formik, i18nContext) {
+    return formik.dirty || Object.keys(i18nContext).filter(l => l !== 'shared' && l !== 'memo').length > 0;
+}
