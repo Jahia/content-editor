@@ -29,9 +29,11 @@ export const Section = ({section, isExpanded, onClick}) => {
         return null;
     }
 
+    const sectionName = section.displayName !== '' ? section.displayName : section.name;
+
     return (
-        <Collapsible data-sel-content-editor-fields-group={section.displayName}
-                     label={section.displayName}
+        <Collapsible data-sel-content-editor-fields-group={sectionName}
+                     label={sectionName}
                      isExpanded={isExpanded}
                      onClick={onClick}
         >
