@@ -131,6 +131,7 @@ describe('Add Mixin by using choice list initializers (Image Reference)', () => 
             .should('exist')
             .scrollIntoView()
             .should('be.visible')
-        contentEditor.cancelAndDiscard()
+        // contentEditor.cancelAndDiscard()
+        contentEditor.cancel()
     })
 })
