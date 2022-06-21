@@ -41,6 +41,7 @@ export const Field = ({inputContext, idInput, selectorType, field}) => {
     const errorArgs = splitError && splitError.length > 1 ? splitError.splice(1) : [];
     const hasMandatoryError = shouldDisplayErrors && errors[field.name] === 'required';
     const wipInfo = values[Constants.wip.fieldName];
+    const pickerType = selectorType.pickerConfig?.key;
 
     // Lookup for registered on changes for given field selector type
     const registeredOnChanges = useMemo(() => [...registry.find({
@@ -113,6 +114,7 @@ export const Field = ({inputContext, idInput, selectorType, field}) => {
              data-first-field={firstField}
              data-sel-content-editor-field={field.name}
              data-sel-content-editor-field-type={seleniumFieldType}
+             data-sel-content-editor-field-picker-type={pickerType}
              data-sel-content-editor-field-readonly={field.readOnly}
         >
             <div className="flexFluid">
@@ -219,7 +221,8 @@ Field.propTypes = {
     idInput: PropTypes.string.isRequired,
     selectorType: PropTypes.shape({
         key: PropTypes.string,
-        supportMultiple: PropTypes.bool
+        supportMultiple: PropTypes.bool,
+        pickerConfig: PropTypes.object
     }).isRequired,
     field: FieldPropTypes.isRequired
 };
