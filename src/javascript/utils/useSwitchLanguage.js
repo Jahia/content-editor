@@ -5,18 +5,18 @@ import {useContentEditorConfigContext, useContentEditorContext, useContentEditor
 import {useFormikContext} from 'formik';
 import {Constants} from '~/ContentEditor.constants';
 
-function fillValues(formik, fieldsObj, i18nValues, nonI18nValues, dynamicFieldSets) {
-    Object.keys(formik.values)
-        .filter(key => (fieldsObj[key] && fieldsObj[key].i18n === undefined) || formik.values[key] !== formik.initialValues[key] || typeof dynamicFieldSets[key] === 'boolean')
+function fillValues(newValues, previousValues, fieldsObj, i18nValues, nonI18nValues, dynamicFieldSets) {
+    Object.keys(newValues)
+        .filter(key => (newValues[key] !== previousValues[key]))
         .forEach(key => {
             if (fieldsObj[key]) {
                 if (fieldsObj[key].i18n) {
-                    i18nValues.values[key] = formik.values[key];
+                    i18nValues.values[key] = newValues[key];
                 } else {
-                    nonI18nValues.values[key] = formik.values[key];
+                    nonI18nValues.values[key] = newValues[key];
                 }
             } else if (typeof dynamicFieldSets[key] === 'boolean') {
-                nonI18nValues.values[key] = formik.values[key];
+                nonI18nValues.values[key] = newValues[key];
             }
         });
 }
@@ -53,16 +53,22 @@ export const useSwitchLanguage = () => {
         // Add WIP to filtered names as it is not part of any section
         fieldsObj[Constants.wip.fieldName] = {i18n: false};
 
-        fillValues(formik, fieldsObj, i18nValues, nonI18nValues, dynamicFieldSets);
-        const newValues = Object.keys(nonI18nValues.values).length > 0 ? {shared: nonI18nValues} : {};
-
-        if (Object.keys(i18nValues.values).length > 0) {
-            const validation = validate(sections)(formik.values);
-            fillErrors(validation, fieldsObj, i18nValues);
-            newValues[currentLanguage] = i18nValues;
-        }
-
         setI18nContext(prev => {
+            const previousValue = {
+                ...formik.initialValues,
+                ...prev.shared?.values,
+                ...prev[language]?.values
+            };
+
+            fillValues(formik.values, previousValue, fieldsObj, i18nValues, nonI18nValues, dynamicFieldSets);
+            const newValues = Object.keys(nonI18nValues.values).length > 0 ? {shared: nonI18nValues} : {};
+
+            if (Object.keys(i18nValues.values).length > 0) {
+                const validation = validate(sections)(formik.values);
+                fillErrors(validation, fieldsObj, i18nValues);
+                newValues[currentLanguage] = i18nValues;
+            }
+
             if (prev?.memo?.systemNameLang === undefined && newValues?.shared?.values && Object.keys(newValues.shared.values).includes(Constants.systemName.name)) {
                 newValues.memo = {
                     systemNameLang: currentLanguage
