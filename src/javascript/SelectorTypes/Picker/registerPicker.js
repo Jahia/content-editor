@@ -19,6 +19,7 @@ export const getPickerSelectorType = (registry, options) => {
     return ({
         cmp: Picker,
         supportsMultiple: false,
+        key: 'Picker',
         pickerConfig
     });
 };
