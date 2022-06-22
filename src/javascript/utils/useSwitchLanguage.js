@@ -35,9 +35,9 @@ export const useSwitchLanguage = () => {
     const formik = useFormikContext();
     const {setI18nContext} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
-    const {lang: currentLanguage, envProps} = useContentEditorConfigContext();
+    const {lang: previousLanguage, envProps} = useContentEditorConfigContext();
 
-    return useCallback(language => {
+    return useCallback(newLanguage => {
         const fields = sections && getFields(sections).filter(field => !field.readOnly);
         const dynamicFieldSets = getDynamicFieldSets(sections);
 
@@ -57,7 +57,7 @@ export const useSwitchLanguage = () => {
             const previousValue = {
                 ...formik.initialValues,
                 ...prev.shared?.values,
-                ...prev[language]?.values
+                ...prev[previousLanguage]?.values
             };
 
             fillValues(formik.values, previousValue, fieldsObj, i18nValues, nonI18nValues, dynamicFieldSets);
@@ -66,12 +66,12 @@ export const useSwitchLanguage = () => {
             if (Object.keys(i18nValues.values).length > 0) {
                 const validation = validate(sections)(formik.values);
                 fillErrors(validation, fieldsObj, i18nValues);
-                newValues[currentLanguage] = i18nValues;
+                newValues[previousLanguage] = i18nValues;
             }
 
             if (prev?.memo?.systemNameLang === undefined && newValues?.shared?.values && Object.keys(newValues.shared.values).includes(Constants.systemName.name)) {
                 newValues.memo = {
-                    systemNameLang: currentLanguage
+                    systemNameLang: previousLanguage
                 };
             }
 
@@ -82,7 +82,7 @@ export const useSwitchLanguage = () => {
         });
 
         if (envProps.switchLanguageCallback) {
-            envProps.switchLanguageCallback(language, currentLanguage);
+            envProps.switchLanguageCallback(newLanguage, previousLanguage);
         }
-    }, [envProps, formik, sections, setI18nContext, currentLanguage]);
+    }, [envProps, formik, sections, setI18nContext, previousLanguage]);
 };
