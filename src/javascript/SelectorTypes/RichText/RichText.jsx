@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState, useRef} from 'react';
 import CKEditor from 'ckeditor4-react';
 import * as PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/ContentEditor.proptypes';
@@ -23,10 +23,18 @@ function loadOption(selectorOptions, name) {
 export const RichText = ({field, id, value, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
     const [picker, setPicker] = useState(false);
+    const ckeditorRef = useRef();
 
     useEffect(() => {
         CKEditor.editorUrl = window.CKEDITOR_BASEPATH + 'ckeditor.js';
     }, []);
+
+    useEffect(() => {
+        // Force ckeditor to use the value and behave like a normal field
+        if (ckeditorRef.current && ckeditorRef.current.editor && ckeditorRef.current.editor.getData() !== value) {
+            ckeditorRef.current.editor.setData(value);
+        }
+    }, [value]);
 
     const editorContext = useContext(ContentEditorContext);
     const {data, error, loading} = useQuery(
@@ -112,6 +120,7 @@ export const RichText = ({field, id, value, onChange, onBlur}) => {
                 onClose={setPicker}
             />}
             <CKEditor
+                ref={ckeditorRef}
                 id={id}
                 data={value}
                 aria-labelledby={`${field.name}-label`}
