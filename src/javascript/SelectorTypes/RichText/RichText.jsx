@@ -1,10 +1,10 @@
-import React, {useContext, useEffect, useState, useRef} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import CKEditor from 'ckeditor4-react';
 import * as PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/ContentEditor.proptypes';
 import {useQuery} from '@apollo/react-hooks';
 import {getCKEditorConfigurationPath} from './CKEditorConfiguration.gql-queries';
-import {ContentEditorContext} from '~/contexts';
+import {ContentEditorContext, useContentEditorContext} from '~/contexts';
 import {PickerDialog} from '~/SelectorTypes/Picker';
 import {useTranslation} from 'react-i18next';
 import {buildPickerContext, fillCKEditorPicker} from './RichText.utils';
@@ -23,18 +23,11 @@ function loadOption(selectorOptions, name) {
 export const RichText = ({field, id, value, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
     const [picker, setPicker] = useState(false);
-    const ckeditorRef = useRef();
+    const {i18nContext} = useContentEditorContext();
 
     useEffect(() => {
         CKEditor.editorUrl = window.CKEDITOR_BASEPATH + 'ckeditor.js';
     }, []);
-
-    useEffect(() => {
-        // Force ckeditor to use the value and behave like a normal field
-        if (ckeditorRef.current && ckeditorRef.current.editor && ckeditorRef.current.editor.getData() !== value) {
-            ckeditorRef.current.editor.setData(value);
-        }
-    }, [value]);
 
     const editorContext = useContext(ContentEditorContext);
     const {data, error, loading} = useQuery(
@@ -120,7 +113,7 @@ export const RichText = ({field, id, value, onChange, onBlur}) => {
                 onClose={setPicker}
             />}
             <CKEditor
-                ref={ckeditorRef}
+                key={'v' + (i18nContext?.memo?.count || 0)}
                 id={id}
                 data={value}
                 aria-labelledby={`${field.name}-label`}
