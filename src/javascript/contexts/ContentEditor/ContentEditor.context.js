@@ -25,7 +25,7 @@ export const ContentEditorContextProvider = ({formQuery, formDataAdapter, childr
         pageComposerCurrentPage: state.pagecomposer.currentPage,
         pageComposerActive: state.pagecomposer.active
     }));
-    const [i18nContext, setI18nContext] = useState({});
+    const [i18nContext, setI18nContext] = useState({memo: {count: 0}});
     const {lang, uilang, site, uuid, contentType, mode, name} = contentEditorConfigContext;
 
     // Get user navigator locale preference

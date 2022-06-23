@@ -41,14 +41,6 @@ export const useSwitchLanguage = () => {
         const fields = sections && getFields(sections).filter(field => !field.readOnly);
         const dynamicFieldSets = getDynamicFieldSets(sections);
 
-        const i18nValues = {
-            values: {},
-            validation: {}
-        };
-        const nonI18nValues = {
-            values: {},
-            validation: {}
-        };
         const fieldsObj = fields.reduce((r, f) => Object.assign(r, {[f.name]: f}), {});
         // Add WIP to filtered names as it is not part of any section
         fieldsObj[Constants.wip.fieldName] = {i18n: false};
@@ -60,6 +52,15 @@ export const useSwitchLanguage = () => {
                 ...prev[previousLanguage]?.values
             };
 
+            const i18nValues = {
+                values: {...prev[previousLanguage]?.values},
+                validation: {}
+            };
+            const nonI18nValues = {
+                values: {...prev.shared?.values},
+                validation: {}
+            };
+
             fillValues(formik.values, previousValue, fieldsObj, i18nValues, nonI18nValues, dynamicFieldSets);
             const newValues = Object.keys(nonI18nValues.values).length > 0 ? {shared: nonI18nValues} : {};
 
@@ -69,8 +70,9 @@ export const useSwitchLanguage = () => {
                 newValues[previousLanguage] = i18nValues;
             }
 
-            if (prev?.memo?.systemNameLang === undefined && newValues?.shared?.values && Object.keys(newValues.shared.values).includes(Constants.systemName.name)) {
+            if (prev.memo.systemNameLang === undefined && newValues?.shared?.values && Object.keys(newValues.shared.values).includes(Constants.systemName.name)) {
                 newValues.memo = {
+                    ...prev.memo,
                     systemNameLang: previousLanguage
                 };
             }

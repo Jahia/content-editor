@@ -5,7 +5,7 @@ import {useContentEditorConfigContext, useContentEditorContext} from '~/contexts
 export const I18nContextHandler = () => {
     const formik = useFormikContext();
     const contentEditorConfigContext = useContentEditorConfigContext();
-    const {lang, i18nContext} = useContentEditorContext();
+    const {lang, i18nContext, setI18nContext} = useContentEditorContext();
     const formikRef = useRef();
 
     useEffect(() => {
@@ -21,6 +21,16 @@ export const I18nContextHandler = () => {
             }, i18nContext[lang]);
         }
     }, [contentEditorConfigContext.envProps, i18nContext, lang]);
+
+    useEffect(() => {
+        setI18nContext(prev => ({
+            ...prev,
+            memo: {
+                ...prev.memo,
+                count: prev.memo.count + 1
+            }
+        }));
+    }, [lang, setI18nContext]);
 
     return false;
 };
