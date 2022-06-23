@@ -113,7 +113,7 @@ export const RichText = ({field, id, value, onChange, onBlur}) => {
                 onClose={setPicker}
             />}
             <CKEditor
-                key={'v' + (i18nContext.memo?.count || 0)}
+                key={'v' + (i18nContext?.memo?.count || 0)}
                 id={id}
                 data={value}
                 aria-labelledby={`${field.name}-label`}
