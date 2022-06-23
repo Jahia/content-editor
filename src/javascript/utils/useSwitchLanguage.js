@@ -70,7 +70,7 @@ export const useSwitchLanguage = () => {
                 newValues[previousLanguage] = i18nValues;
             }
 
-            if (prev.memo.systemNameLang === undefined && newValues?.shared?.values && Object.keys(newValues.shared.values).includes(Constants.systemName.name)) {
+            if (prev.memo?.systemNameLang === undefined && newValues?.shared?.values && Object.keys(newValues.shared.values).includes(Constants.systemName.name)) {
                 newValues.memo = {
                     ...prev.memo,
                     systemNameLang: previousLanguage

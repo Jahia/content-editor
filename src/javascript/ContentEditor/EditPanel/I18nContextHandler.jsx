@@ -27,7 +27,7 @@ export const I18nContextHandler = () => {
             ...prev,
             memo: {
                 ...prev.memo,
-                count: prev.memo.count + 1
+                count: (prev.memo?.count || 0) + 1
             }
         }));
     }, [lang, setI18nContext]);
