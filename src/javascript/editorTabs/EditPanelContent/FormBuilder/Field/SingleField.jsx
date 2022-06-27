@@ -4,7 +4,7 @@ import {FastField, useFormikContext} from 'formik';
 import {FieldPropTypes} from '~/ContentEditor.proptypes';
 
 export const SingleField = ({inputContext, editorContext, field, onChange, onBlur}) => {
-    const FieldComponent = inputContext.selectorType.cmp;
+    const FieldComponent = inputContext.fieldComponent;
     const formik = useFormikContext();
     return (
         <FastField

@@ -1,4 +1,5 @@
 import React from 'react';
+import {Picker} from '../Picker';
 import {File} from '@jahia/moonstone';
 import {useQuery} from '@apollo/react-hooks';
 import {ContentPickerFilledQuery} from './ContentPicker.gql-queries';
@@ -30,19 +31,24 @@ const usePickerInputData = (uuid, editorContext) => {
     return {fieldData, error, loading};
 };
 
-export const ContentPickerConfig = {
+export const ContentPickerSelectorType = {
+    cmp: Picker,
+    key: 'ContentPicker',
+    supportMultiple: false,
     pickerInput: {
         emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.addContent',
         notFoundLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.notFoundContent',
         emptyIcon: <File/>,
-        usePickerInputData,
-        displayTree: true
+        usePickerInputData
     },
     PickerDialog: {
         view: 'List',
-        dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalTitle',
-        searchPlaceholder: 'content-editor:label.contentEditor.edit.fields.contentPicker.searchPlaceholder',
-        itemSelectionAdapter: content => content ? content.id : null,
-        displayTree: true
+        dialogTitle: isPickerTypeFiles => isPickerTypeFiles ?
+            'content-editor:label.contentEditor.edit.fields.contentPicker.modalFileTitle' :
+            'content-editor:label.contentEditor.edit.fields.contentPicker.modalTitle',
+        searchPlaceholder: isPickerTypeFiles => isPickerTypeFiles ?
+            'content-editor:label.contentEditor.edit.fields.contentPicker.searchFilePlaceholder' :
+            'content-editor:label.contentEditor.edit.fields.contentPicker.searchPlaceholder',
+        itemSelectionAdapter: content => content ? content.id : null
     }
 };

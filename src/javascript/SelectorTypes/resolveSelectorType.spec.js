@@ -48,18 +48,18 @@ describe('Selector Types', () => {
                 selectorOptions: [{name: 'type', value: 'file'}]
             });
             expect(selector.cmp).toEqual(Picker);
-            expect(selector.pickerConfig.key).toEqual('file');
+            expect(selector.key).toEqual('FilePicker');
 
             selector = resolveSelectorType({
                 selectorType: 'Picker',
                 selectorOptions: [{name: 'type', value: 'editorial'}]
             });
             expect(selector.cmp).toEqual(Picker);
-            expect(selector.pickerConfig.key).toEqual('editorial');
+            expect(selector.key).toEqual('ContentPicker');
 
             selector = resolveSelectorType({selectorType: 'Picker', selectorOptions: [{name: 'type', value: 'image'}]});
             expect(selector.cmp).toEqual(Picker);
-            expect(selector.pickerConfig.key).toEqual('image');
+            expect(selector.key).toEqual('MediaPicker');
         });
 
         it('should adapt value if the selector option is password', () => {

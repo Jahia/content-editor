@@ -20,28 +20,24 @@ describe('PickerDialog', () => {
     beforeEach(() => {
         props = {
             isOpen: true,
-            onItemSelection: jest.fn(),
-            onClose: jest.fn(),
+            setIsOpen: jest.fn(),
             initialSelectedItem: '',
-            editorContext: {
-                site: 'digitall',
-                siteInfo: {
-                    displayName: 'digitall'
-                },
-                lang: 'en',
-                uilang: 'en'
-            },
+            siteKey: 'digitall',
+            lang: 'en',
+            uilang: 'en',
             id: 'id1',
             field: {},
-            t: jest.fn(),
-            pickerConfig: {
-                displayTree: true,
-                treeConfigs: [{
-                    rootPath: '/rootPath/',
+            nodeTreeConfigs: [{
+                rootPath: '/rootPath/',
+                treeConfig: {
                     selectableTypes: [],
                     openableTypes: [],
-                    getRootPath: jest.fn()
-                }]
+                    rootPath: jest.fn()
+                }
+            }],
+            t: jest.fn(),
+            pickerConfig: {
+                displayTree: true
             }
         };
         setQueryResponseMock({
@@ -86,7 +82,7 @@ describe('PickerDialog', () => {
 
         cmp.simulate('close');
 
-        expect(props.onClose).toHaveBeenCalledWith();
+        expect(props.setIsOpen).toHaveBeenCalledWith(false);
     });
 
     it('should initialy select current system site', () => {

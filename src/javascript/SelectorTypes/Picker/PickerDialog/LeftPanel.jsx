@@ -7,7 +7,7 @@ import {Picker} from '@jahia/data-helper';
 import {Dropdown} from '@jahia/moonstone';
 import style from './LeftPanel.scss';
 
-import {getDetailedPathArray, getSite} from './Picker.utils';
+import {getDetailedPathArray, getSite} from '../Picker.utils';
 
 export const LeftPanel = ({
     site,

@@ -44,9 +44,7 @@ describe('Field component', () => {
                 selectorOptions: []
             },
             inputContext: {
-                selectorType: {
-                    cmp: () => <></>
-                },
+                fieldComponent: () => <></>,
                 editorContext: {}
             },
             onChange: jest.fn()
@@ -54,14 +52,14 @@ describe('Field component', () => {
     });
 
     it('the field should have a defined id attribute', () => {
-        defaultProps.inputContext.selectorType.cmp = props => <TextAreaField {...props}/>;
+        defaultProps.inputContext.fieldComponent = props => <TextAreaField {...props}/>;
         const cmp = buildFieldCmp();
 
         expect(cmp.debug()).toContain('id="text"');
     });
 
     it('Should call onChange', () => {
-        defaultProps.inputContext.selectorType.cmp = props => <TextAreaField {...props}/>;
+        defaultProps.inputContext.fieldComponent = props => <TextAreaField {...props}/>;
         const cmp = buildFieldCmp();
 
         // Update field

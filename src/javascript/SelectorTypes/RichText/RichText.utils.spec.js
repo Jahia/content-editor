@@ -1,13 +1,22 @@
 import {buildPickerContext, fillCKEditorPicker} from './RichText.utils';
 
+jest.mock('~/SelectorTypes/Picker/Picker.utils', () => {
+    return {
+        getNodeTreeConfigs: () => ({thisIsANode: 'treeConfig'})
+    };
+});
+
 jest.mock('@jahia/ui-extender', () => {
     return {
         registry: {
             get: jest.fn(() => {
                 return {
-                    key: 'editorial',
-                    treeConfigs: [{thisIsANode: 'treeConfig'}],
-                    displayTree: true
+                    cmp: {
+                        picker: {
+                            cmp: {},
+                            key: 'ContentPicker'
+                        }
+                    }
                 };
             }),
             add: jest.fn()
@@ -17,23 +26,36 @@ jest.mock('@jahia/ui-extender', () => {
 
 describe('RichText utils', () => {
     describe('buildPickerContext', () => {
+        let t;
         let picker;
+        let editorContext;
 
         beforeEach(() => {
+            t = jest.fn();
             picker = {
                 dialog: {
                     getContentElement: jest.fn()
                 }
             };
+            editorContext = {
+                siteInfo: {
+                    displayName: 'digitall'
+                }
+            };
         });
 
         it('should always displayTree', () => {
-            const {pickerConfig} = buildPickerContext(picker);
+            const {pickerConfig} = buildPickerContext(picker, editorContext, t);
             expect(pickerConfig.displayTree).toBe(true);
         });
 
+        it('should return the nodeTreeConfigs', () => {
+            const {nodeTreeConfigs} = buildPickerContext(picker, editorContext, t);
+            expect(nodeTreeConfigs).toEqual({thisIsANode: 'treeConfig'});
+        });
+
         it('should an empty currentValue when input is empty', () => {
-            const {currentValue} = buildPickerContext(picker);
+            const {currentValue} = buildPickerContext(picker, editorContext, t);
             expect(currentValue).toBe('');
         });
 
@@ -43,7 +65,7 @@ describe('RichText utils', () => {
                     getValue: () => '/cms/{mode}/{lang}/richTextEdition/toot/al/regal.html'
                 };
             });
-            const {currentValue} = buildPickerContext(picker);
+            const {currentValue} = buildPickerContext(picker, editorContext, t);
             expect(currentValue).toBe('/richTextEdition/toot/al/regal');
         });
 
@@ -53,7 +75,7 @@ describe('RichText utils', () => {
                     getValue: () => '/files/{workspace}/richTextEdition/toot/al/regal.html'
                 };
             });
-            const {currentValue} = buildPickerContext(picker);
+            const {currentValue} = buildPickerContext(picker, editorContext, t);
             expect(currentValue).toBe('/richTextEdition/toot/al/regal.html');
         });
 
@@ -67,7 +89,7 @@ describe('RichText utils', () => {
                     getValue: () => '/files/{workspace}/richTextEdition/toot/al/regal.html'
                 };
             });
-            const {currentValue} = buildPickerContext(picker);
+            const {currentValue} = buildPickerContext(picker, editorContext, t);
             expect(currentValue).toBe('/richTextEdition/toot/al/regal.html');
         });
     });
