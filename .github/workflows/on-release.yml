@@ -1,5 +1,5 @@
 # This workflow is triggered when someone create a new release in GitHub
-# and checks the "This is a pre-relase" box.
+# and checks the "This is a pre-release" box.
 name: Trigger Release creation
 
 on:
