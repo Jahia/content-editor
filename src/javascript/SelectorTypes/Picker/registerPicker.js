@@ -1,32 +1,13 @@
-import {registerPickerConfig} from './configs/Picker.configs';
+import {ContentPickerSelectorType} from './ContentPicker/ContentPickerSelectorType';
+import {MediaPickerSelectorType} from './MediaPicker/MediaPickerSelectorType';
+import {registerPickerConfig} from './Picker.configs';
+import {getPickerSelectorType} from './Picker.utils';
 import {registerPickerActions} from './actions/registerPickerActions';
-import {Picker} from '~/SelectorTypes/Picker/Picker';
 
-export const getPickerSelectorType = (registry, options) => {
-    const option = options && options.find(option => option.name === 'type');
-    const pickerConfigKey = option?.value || 'editorial';
-
-    let pickerConfig = registry.get('pickerConfiguration', pickerConfigKey);
-
-    if (!pickerConfig) {
-        console.warn('Picker configuration not found', pickerConfigKey);
-        pickerConfig = registry.get('pickerConfiguration', 'editorial');
-    } else if (pickerConfig.cmp) {
-        console.warn('Legacy picker configuration found', pickerConfigKey);
-        pickerConfig = registry.get('pickerConfiguration', 'editorial');
-    }
-
-    return ({
-        cmp: Picker,
-        supportsMultiple: false,
-        pickerConfig
-    });
-};
-
-export const registerPicker = registry => {
-    registerPickerConfig(registry);
-    registry.add('selectorType', 'Picker', {
-        resolver: options => getPickerSelectorType(registry, options)
-    });
-    registerPickerActions(registry);
+export const registerPicker = ceRegistry => {
+    ceRegistry.add('selectorType', 'ContentPicker', {...ContentPickerSelectorType});
+    ceRegistry.add('selectorType', 'MediaPicker', {...MediaPickerSelectorType});
+    registerPickerConfig(ceRegistry);
+    ceRegistry.add('selectorType', 'Picker', {resolver: options => getPickerSelectorType(options)});
+    registerPickerActions(ceRegistry);
 };

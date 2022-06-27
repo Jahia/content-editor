@@ -9,11 +9,13 @@ describe('PickerDialog - MainPanel', () => {
     beforeEach(() => {
         props = {
             pickerConfig: {
-                PickerDialog: {
-                    dialogTitle: 'yoloooooo',
-                    DialogContent: 'DialogContent',
-                    searchPlaceholder: 'searchPlaceholder',
-                    view: 'List'
+                picker: {
+                    PickerDialog: {
+                        dialogTitle: () => 'yoloooooo',
+                        DialogContent: 'DialogContent',
+                        searchPlaceholder: () => 'searchPlaceholder',
+                        view: 'List'
+                    }
                 }
             },
             nodeTreeConfigs: [{
