@@ -74,7 +74,7 @@ export const Picker = ({field, value, editorContext, inputContext, onChange, onB
                 editorContext={editorContext}
                 field={field}
                 pickerConfig={pickerConfig}
-                onClose={() => setDialogOpen(false)}
+                onClose={setDialogOpen}
                 onItemSelection={onItemSelection}
             />
         </div>
