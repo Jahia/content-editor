@@ -1,4 +1,4 @@
-# This workflow is triggered every time a change is pushed to any branches 
+# This workflow is triggered every time a change is pushed to any branches
 # Github actions command reference: https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions
 name: On Code Change (PR)
 
@@ -92,3 +92,7 @@ jobs:
           incident_google_client_email: ${{ secrets.INCIDENT_GOOGLE_CLIENT_EMAIL }}
           incident_google_api_key_base64: ${{ secrets.INCIDENT_GOOGLE_PRIVATE_KEY_BASE64 }}
           zencrepes_secret: ${{ secrets.ZENCREPES_WEBHOOK_SECRET }}
+      - name: Test Reporting
+        uses: phoenix-actions/test-reporting@v8
+        with:
+          reporter: 'mochawesome-json'
