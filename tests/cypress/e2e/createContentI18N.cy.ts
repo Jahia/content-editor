@@ -1,7 +1,7 @@
 import { ContentEditor } from '../page-object'
 
-const sitekey = 'contentEditorSiteI18N';
-describe('Create content tests', () => {
+const sitekey = 'contentEditorSiteI18N'
+describe('Create content tests in I18N site', () => {
     let contentEditor: ContentEditor
 
     before(function () {
@@ -32,7 +32,7 @@ describe('Create content tests', () => {
         const contentSection = contentEditor.openSection('Content')
         contentEditor.openSection('Options').get().find('input[type="text"]').clear().type('cypress-test')
         contentSection.expand().get().find('.cke_button__source').click()
-        contentSection.get().find('textarea').type('Cypress Test')
+        contentSection.get().find('textarea').should('have.value', '').type('Cypress Test')
         contentEditor.save()
         pageComposer.refresh().shouldContain('Cypress Test')
     })
@@ -62,7 +62,8 @@ describe('Create content tests', () => {
             .type('cypress-test-multiple-2')
         contentSection = contentEditor.openSection('Content')
         //CKEditor will stay in source mode so no need to click on source again
-        contentSection.get().find('textarea').type('Cypress Multiple Content Test 2')
+        contentSection.expand().get().find('.cke_button__source').click()
+        contentSection.get().find('textarea').should('have.value', '').type('Cypress Multiple Content Test 2')
         contentEditor.removeAnotherContent()
         contentEditor.save()
         pageComposer.refresh().shouldContain('Cypress Multiple Content Test 1')
@@ -83,7 +84,7 @@ describe('Create content tests', () => {
         const contentSection = contentEditor.openSection('Content')
         contentEditor.openSection('Options').get().find('input[type="text"]').clear().type('cypress-wip-all-test')
         contentSection.expand().get().find('.cke_button__source').click()
-        contentSection.get().find('textarea').type('Cypress Work In Progress ALL Test')
+        contentSection.get().find('textarea').should('have.value', '').type('Cypress Work In Progress ALL Test')
         contentEditor.save()
         pageComposer.refresh().shouldContain('Cypress Work In Progress ALL Test')
         pageComposer.shouldContainWIPOverlay()
@@ -109,7 +110,7 @@ describe('Create content tests', () => {
         cy.get('[data-sel-role="wip-info-chip"]', { timeout: 1000 }).should('contain', 'WIP - FR')
         cy.focused().frameLoaded('iframe.cke_wysiwyg_frame')
         contentSection.expand().get().find('.cke_button__source').click()
-        contentSection.get().find('textarea').type('Cypress Work In Progress FR/EN Test')
+        contentSection.get().find('textarea').should('have.value', '').type('Cypress Work In Progress FR/EN Test')
         contentEditor.save()
         pageComposer.refresh().shouldContain('Cypress Work In Progress EN/FR Test')
         pageComposer.shouldContainWIPOverlay()

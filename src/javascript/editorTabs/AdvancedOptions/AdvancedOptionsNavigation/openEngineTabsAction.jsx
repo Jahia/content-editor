@@ -9,7 +9,7 @@ import {isDirty} from '~/utils';
 export const OpenEngineTabs = ({tabs, render: Render, ...otherProps}) => {
     const [open, setOpen] = useState(false);
     const formik = useFormikContext();
-    const {nodeData, i18nContext, setI18nContext} = useContentEditorContext();
+    const {nodeData, i18nContext, resetI18nContext} = useContentEditorContext();
 
     const dirty = isDirty(formik, i18nContext);
 
@@ -19,7 +19,7 @@ export const OpenEngineTabs = ({tabs, render: Render, ...otherProps}) => {
                 isOpen={open}
                 actionCallback={({discard}) => {
                     if (discard) {
-                        setI18nContext({});
+                        resetI18nContext();
                         formik.resetForm();
                     }
 

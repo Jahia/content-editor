@@ -15,7 +15,7 @@ import {isDirty, useKeydownListener} from '~/utils';
 const Save = ({render: Render, loading: Loading, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
     const {publicationInfoPolling} = usePublicationInfoContext();
-    const {mode, i18nContext, siteInfo, lang, setI18nContext, setErrors} = useContentEditorContext();
+    const {mode, i18nContext, siteInfo, lang, resetI18nContext, setErrors} = useContentEditorContext();
     const {envProps} = useContentEditorConfigContext();
     const {sections} = useContentEditorSectionContext();
     const formik = useFormikContext();
@@ -46,7 +46,7 @@ const Save = ({render: Render, loading: Loading, ...otherProps}) => {
                 .submitForm()
                 .then(data => {
                     if (data) {
-                        setI18nContext({});
+                        resetI18nContext();
                         formik.resetForm({values: formik.values});
                         if (envProps.onSavedCallback) {
                             envProps.onSavedCallback(data);

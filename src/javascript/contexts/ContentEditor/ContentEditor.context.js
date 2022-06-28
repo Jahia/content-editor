@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useCallback, useContext, useState} from 'react';
 import {useNotifications} from '@jahia/react-material';
 import {useFormDefinition} from './useFormDefinitions';
 import {useSiteInfo} from '@jahia/data-helper';
@@ -25,7 +25,20 @@ export const ContentEditorContextProvider = ({formQuery, formDataAdapter, childr
         pageComposerCurrentPage: state.pagecomposer.currentPage,
         pageComposerActive: state.pagecomposer.active
     }));
-    const [i18nContext, setI18nContext] = useState({});
+    const [i18nContext, setI18nContext] = useState({
+        memo: {
+            count: 1
+        }
+    });
+    const resetI18nContext = useCallback(() => {
+        setI18nContext(prev => ({
+            memo: {
+                ...prev.memo,
+                count: (prev.memo?.count || 0) + 1
+            }
+        }));
+    }, [setI18nContext]);
+
     const {lang, uilang, site, uuid, contentType, mode, name} = contentEditorConfigContext;
 
     // Get user navigator locale preference
@@ -119,7 +132,8 @@ export const ContentEditorContextProvider = ({formQuery, formDataAdapter, childr
         errors,
         setErrors,
         i18nContext,
-        setI18nContext
+        setI18nContext,
+        resetI18nContext
     };
 
     return (
