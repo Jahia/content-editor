@@ -47,6 +47,7 @@ describe('save action', () => {
                 }
             },
             setI18nContext: jest.fn(),
+            resetI18nContext: jest.fn(),
             refetchFormData: jest.fn(),
             setErrors: jest.fn()
         };

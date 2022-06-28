@@ -7,7 +7,8 @@ jest.mock('~/contexts/ContentEditor/ContentEditor.context', () => {
     return {
         useContentEditorContext: () => ({
             i18nContext: {},
-            setI18nContext: jest.fn()
+            setI18nContext: jest.fn(),
+            resetI18nContext: jest.fn()
         })
     };
 });

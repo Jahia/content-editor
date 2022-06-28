@@ -15,7 +15,7 @@ const Create = ({createAnother, render: Render, loading: Loading, ...otherProps}
     const formik = useFormikContext();
     const contentEditorConfigContext = useContentEditorConfigContext();
     const {envProps} = contentEditorConfigContext;
-    const {mode, setI18nContext, setErrors, siteInfo, lang, refetchFormData, i18nContext} = useContentEditorContext();
+    const {mode, resetI18nContext, setErrors, siteInfo, lang, refetchFormData, i18nContext} = useContentEditorContext();
     const [clicked, setClicked] = useState(false);
     const {sections} = useContentEditorSectionContext();
 
@@ -46,14 +46,14 @@ const Create = ({createAnother, render: Render, loading: Loading, ...otherProps}
                     if (createAnother) {
                         // Refetch only to generate a new valid system name
                         refetchFormData().then(res => {
-                            setI18nContext({});
                             const formData = adaptCreateFormData(res.data, lang, t, contentEditorConfigContext);
                             formik.resetForm({values: formData.initialValues});
+                            resetI18nContext();
                             setClicked(false);
                         });
                     } else {
-                        setI18nContext({});
                         formik.resetForm({values: formik.values});
+                        resetI18nContext();
                         if (envProps.onSavedCallback) {
                             envProps.onSavedCallback(data);
                         }

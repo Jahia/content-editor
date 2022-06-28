@@ -8,14 +8,14 @@ import {useContentEditorContext} from '~/contexts/ContentEditor';
 export const SaveButton = ({onCloseDialog, actionCallback}) => {
     const {t} = useTranslation('content-editor');
     const formik = useFormikContext();
-    const {setI18nContext} = useContentEditorContext();
+    const {resetI18nContext} = useContentEditorContext();
     const handleSave = () => {
         onCloseDialog();
 
         formik.submitForm()
             .then(data => {
                 if (data) {
-                    setI18nContext({});
+                    resetI18nContext();
                     formik.resetForm({values: formik.values});
                     actionCallback(data);
                 }
