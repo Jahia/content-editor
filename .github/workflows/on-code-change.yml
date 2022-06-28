@@ -96,3 +96,4 @@ jobs:
         uses: phoenix-actions/test-reporting@v8
         with:
           reporter: 'mochawesome-json'
+          path: 'tests/results/reports/report.json'
