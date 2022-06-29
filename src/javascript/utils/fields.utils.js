@@ -90,8 +90,6 @@ function updateValue({field, value, lang, nodeData, sections, mixinsToMutate, pr
                     language: lang
                 });
             }
-
-            propFieldNameMapping[field.propertyName] = field.name;
         }
     } else if (nodeData) {
         // Check if props existed before, to remove it
@@ -106,6 +104,8 @@ function updateValue({field, value, lang, nodeData, sections, mixinsToMutate, pr
             }
         }
     }
+
+    propFieldNameMapping[field.propertyName] = field.name;
 }
 
 export function getDataToMutate({nodeData, formValues, i18nContext, sections, lang}) {
