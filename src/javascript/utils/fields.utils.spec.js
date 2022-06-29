@@ -281,7 +281,10 @@ describe('EditPanel utils', () => {
             formValues: {
                 [sections[0].fieldSets[2].name + '_prop']: ''
             },
-            ExpectedPropsToDelete: ['prop']
+            ExpectedPropsToDelete: ['prop'],
+            expectedPropsFieldMapping: {
+                prop: sections[0].fieldSets[2].name + '_prop'
+            }
         },
         {
             name: 'null prop',
@@ -296,7 +299,10 @@ describe('EditPanel utils', () => {
             formValues: {
                 [sections[0].fieldSets[2].name + '_prop']: null
             },
-            ExpectedPropsToDelete: ['prop']
+            ExpectedPropsToDelete: ['prop'],
+            expectedPropsFieldMapping: {
+                prop: sections[0].fieldSets[2].name + '_prop'
+            }
         },
         {
             name: 'undefined prop',
@@ -311,7 +317,10 @@ describe('EditPanel utils', () => {
             formValues: {
                 [sections[0].fieldSets[2].name + '_prop']: undefined
             },
-            ExpectedPropsToDelete: ['prop']
+            ExpectedPropsToDelete: ['prop'],
+            expectedPropsFieldMapping: {
+                prop: sections[0].fieldSets[2].name + '_prop'
+            }
         },
         {
             name: 'Read only prop to save',
@@ -551,7 +560,8 @@ describe('EditPanel utils', () => {
                 value: 'new value'
             }],
             expectedPropsFieldMapping: {
-                prop: sections[0].fieldSets[2].name + '_prop'
+                prop: sections[0].fieldSets[2].name + '_prop',
+                boolean: sections[0].fieldSets[2].name + '_boolean'
             }
         },
         {
@@ -573,7 +583,10 @@ describe('EditPanel utils', () => {
                 [sections[0].fieldSets[2].name + '_date']: 'single-date'
             },
             ExpectedPropsToSave: [],
-            expectedPropsFieldMapping: {}
+            expectedPropsFieldMapping: {
+                multipleDate: sections[0].fieldSets[2].name + '_multipleDate',
+                date: sections[0].fieldSets[2].name + '_date'
+            }
         },
         {
             name: 'should return date props when date added',
@@ -653,6 +666,7 @@ describe('EditPanel utils', () => {
             }],
             expectedPropsFieldMapping: {
                 multipleDate: sections[0].fieldSets[2].name + '_multipleDate',
+                multipleDecimal: sections[0].fieldSets[2].name + '_multipleDecimal',
                 multiple: sections[0].fieldSets[2].name + '_multiple'
             }
         }
