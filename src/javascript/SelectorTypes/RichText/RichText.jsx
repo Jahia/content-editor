@@ -1,10 +1,10 @@
 import React, {useContext, useEffect, useState} from 'react';
 import CKEditor from 'ckeditor4-react';
 import * as PropTypes from 'prop-types';
-import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
+import {FieldPropTypes} from '~/ContentEditor.proptypes';
 import {useQuery} from '@apollo/react-hooks';
 import {getCKEditorConfigurationPath} from './CKEditorConfiguration.gql-queries';
-import {ContentEditorContext} from '~/ContentEditor.context';
+import {ContentEditorContext, useContentEditorContext} from '~/contexts';
 import {PickerDialog} from '~/SelectorTypes/Picker/PickerDialog';
 import {useTranslation} from 'react-i18next';
 import {buildPickerContext, fillCKEditorPicker} from './RichText.utils';
@@ -20,9 +20,10 @@ function loadOption(selectorOptions, name) {
     return selectorOptions && selectorOptions.find(option => option.name === name);
 }
 
-export const RichTextCmp = ({field, id, value, onChange, onBlur}) => {
+export const RichText = ({field, id, value, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
     const [picker, setPicker] = useState(false);
+    const {i18nContext} = useContentEditorContext();
 
     useEffect(() => {
         CKEditor.editorUrl = window.CKEDITOR_BASEPATH + 'ckeditor.js';
@@ -116,6 +117,7 @@ export const RichTextCmp = ({field, id, value, onChange, onBlur}) => {
                 onItemSelection={handleItemSelection}
             />}
             <CKEditor
+                key={'v' + (i18nContext?.memo?.count || 0)}
                 id={id}
                 data={value}
                 aria-labelledby={`${field.name}-label`}
@@ -139,7 +141,7 @@ export const RichTextCmp = ({field, id, value, onChange, onBlur}) => {
     );
 };
 
-RichTextCmp.propTypes = {
+RichText.propTypes = {
     id: PropTypes.string.isRequired,
     value: PropTypes.string,
     field: FieldPropTypes.isRequired,
@@ -147,6 +149,3 @@ RichTextCmp.propTypes = {
     onBlur: PropTypes.func.isRequired
 };
 
-const RichText = RichTextCmp;
-RichText.displayName = 'RichText';
-export default RichText;

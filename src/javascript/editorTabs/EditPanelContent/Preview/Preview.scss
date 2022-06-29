@@ -1,0 +1,17 @@
+.content {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-width: 0;
+    padding-top: var(--spacing-big);
+
+    background-color: #f6fafc;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: - var(--spacing-large);
+    margin-bottom: var(--spacing-large);
+}

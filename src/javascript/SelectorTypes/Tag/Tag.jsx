@@ -3,12 +3,12 @@ import {MultipleInput} from '~/DesignSystem/MultipleInput';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {adaptSelection} from './Tag.utils';
-import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
+import {FieldPropTypes} from '~/ContentEditor.proptypes';
 import {useApolloClient} from '@apollo/react-hooks';
 import {getSuggestionsTagsQuery} from './Tag.gql-queries';
-import {useContentEditorContext} from '~/ContentEditor.context';
+import {useContentEditorContext} from '~/contexts/ContentEditor';
 
-const Tag = ({field, value, id, onChange, onBlur}) => {
+export const Tag = ({field, value, id, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
     const client = useApolloClient();
     const {site} = useContentEditorContext();
@@ -70,5 +70,3 @@ Tag.propTypes = {
     onChange: PropTypes.func.isRequired,
     onBlur: PropTypes.func.isRequired
 };
-
-export default Tag;

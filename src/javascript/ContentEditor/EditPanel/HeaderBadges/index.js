@@ -1,0 +1,1 @@
+export {HeaderBadges} from './HeaderBadges';

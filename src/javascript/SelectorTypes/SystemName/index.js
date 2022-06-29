@@ -1,3 +1,2 @@
-import SystemName from './SystemName';
-
-export default SystemName;
+export * from './SystemName';
+export * from './registerSystemName';

@@ -1,13 +1,13 @@
 import React from 'react';
 import {MultipleInput} from '~/DesignSystem/MultipleInput';
 import PropTypes from 'prop-types';
-import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
+import {FieldPropTypes} from '~/ContentEditor.proptypes';
 import {DisplayAction} from '@jahia/ui-extender';
-import {getButtonRenderer} from '../../../utils/getButtonRenderer';
+import {getButtonRenderer} from '~/utils';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
-export const MultipleSelectCmp = ({field, id, value, inputContext, onChange, onBlur}) => {
+export const MultipleSelect = ({field, id, value, inputContext, onChange, onBlur}) => {
     inputContext.actionContext = {
         onChange,
         onBlur
@@ -56,7 +56,7 @@ export const MultipleSelectCmp = ({field, id, value, inputContext, onChange, onB
     );
 };
 
-MultipleSelectCmp.propTypes = {
+MultipleSelect.propTypes = {
     id: PropTypes.string.isRequired,
     field: FieldPropTypes.isRequired,
     value: PropTypes.arrayOf(PropTypes.string),
@@ -65,7 +65,3 @@ MultipleSelectCmp.propTypes = {
     onBlur: PropTypes.func.isRequired
 };
 
-export const MultipleSelect = MultipleSelectCmp;
-MultipleSelect.displayName = 'MultipleSelect';
-
-export default MultipleSelect;

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {withStyles} from '@material-ui/core';
+import clsx from 'clsx';
 
 const styles = theme => ({
     textareaContainer: {
@@ -25,7 +26,7 @@ const styles = theme => ({
             outline: 'none',
             border: `1px solid ${theme.palette.brand.beta}`
         },
-        '&:hover:not(:focus):not($disabled):not($error):not($readOnly)': {
+        '&:hover:not(:focus):not($disabled):not($readOnly)': {
             border: `1px solid ${theme.palette.ui.zeta}`
         }
     },
@@ -43,19 +44,15 @@ const styles = theme => ({
 
 const TextAreaCmp = ({
     classes,
-    classNames,
     rows,
     disabled,
     readOnly,
     ...otherProps
 }) => {
     return (
-        <div className={`${classes.textareaContainer} ${classNames.container}`}>
+        <div className={clsx(classes.textareaContainer)}>
             <textarea
-                className={`${classes.textarea} 
-                            ${disabled ? classes.disabled : ''}
-                            ${readOnly ? classes.readOnly : ''}
-                            ${classNames.textarea}`}
+                className={clsx(classes.textarea, {[classes.disabled]: disabled, [classes.readOnly]: readOnly})}
                 rows={rows}
                 disabled={disabled}
                 readOnly={readOnly}
@@ -67,10 +64,6 @@ const TextAreaCmp = ({
 
 TextAreaCmp.defaultProps = {
     value: '',
-    classNames: {
-        container: '',
-        textarea: ''
-    },
     rows: 5,
     readOnly: false,
     disabled: false
@@ -81,10 +74,6 @@ TextAreaCmp.propTypes = {
     value: PropTypes.string,
     readOnly: PropTypes.bool,
     disabled: PropTypes.bool,
-    classNames: PropTypes.shape({
-        container: PropTypes.string,
-        textarea: PropTypes.string
-    }),
     classes: PropTypes.object.isRequired
 };
 

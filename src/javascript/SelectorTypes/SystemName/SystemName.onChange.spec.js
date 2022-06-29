@@ -1,5 +1,5 @@
 import {registry} from '@jahia/ui-extender';
-import registerSystemNameOnChange from './SystemName.onChange';
+import {registerSystemNameOnChange} from './SystemName.onChange';
 import {Constants} from '~/ContentEditor.constants';
 
 registerSystemNameOnChange(registry);
@@ -78,5 +78,29 @@ describe('System name onChange', () => {
         systemNameOnChange(undefined, 'this is the jcr:title', currentField, editorContext);
         expect(editorContext.formik.setFieldValue).not.toHaveBeenCalled();
         expect(editorContext.formik.setFieldTouched).not.toHaveBeenCalled();
+    });
+
+    it('should not sync the systemName in language different from original sync language', () => {
+        editorContext.i18nContext = {
+            memo: {
+                systemNameLang: 'en'
+            }
+        };
+        editorContext.lang = 'fr';
+        systemNameOnChange(undefined, 'this is the jcr:title', currentField, editorContext);
+        expect(editorContext.formik.setFieldValue).not.toHaveBeenCalled();
+        expect(editorContext.formik.setFieldTouched).not.toHaveBeenCalled();
+    });
+
+    it('should sync the systemName in language of original sync language', () => {
+        editorContext.i18nContext = {
+            memo: {
+                systemNameLang: 'en'
+            }
+        };
+        editorContext.lang = 'en';
+        systemNameOnChange(undefined, 'this is the jcr:title', currentField, editorContext);
+        expect(editorContext.formik.setFieldValue).toHaveBeenCalled();
+        expect(editorContext.formik.setFieldTouched).toHaveBeenCalled();
     });
 });

@@ -1,11 +1,12 @@
 import {Constants} from '~/ContentEditor.constants';
 import {limitSystemNameIfNecessary, replaceSpecialCharacters} from './SystemName.utils';
 
-const registerSystemNameOnChange = registry => {
+export const registerSystemNameOnChange = registry => {
     registry.add('selectorType.onChange', 'systemNameSync', {
         targets: ['Text'],
         onChange: (previousValue, currentValue, currentField, editorContext) => {
-            if (currentField.propertyName === 'jcr:title' &&
+            if (currentValue &&
+                currentField.propertyName === 'jcr:title' &&
                 editorContext.mode === Constants.routes.baseCreateRoute &&
                 !editorContext.name &&
                 window.contextJsParameters.config.defaultSynchronizeNameWithTitle) {
@@ -30,7 +31,9 @@ const registerSystemNameOnChange = registry => {
                     }
                 }
 
-                if (systemNameField && !systemNameField.readOnly) {
+                // I18nContext will be available only after language switch, see useSwitchLanguage for details
+                const canSync = editorContext.i18nContext?.memo?.systemNameLang === undefined || editorContext.i18nContext.memo.systemNameLang === editorContext.lang;
+                if (systemNameField && !systemNameField.readOnly && canSync) {
                     const cleanedSystemName = replaceSpecialCharacters(currentValue);
                     editorContext.formik.setFieldValue(Constants.systemName.name, limitSystemNameIfNecessary(cleanedSystemName, systemNameField));
                     editorContext.formik.setFieldTouched(Constants.systemName.name, true, false);
@@ -39,5 +42,3 @@ const registerSystemNameOnChange = registry => {
         }
     });
 };
-
-export default registerSystemNameOnChange;

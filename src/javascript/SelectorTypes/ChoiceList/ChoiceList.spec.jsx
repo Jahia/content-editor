@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from '@jahia/test-framework';
 
-import ChoiceList from './ChoiceList';
+import {ChoiceList} from './ChoiceList';
 
 describe('ChoiceList component', () => {
     let props;

@@ -18,6 +18,7 @@ jobs:
           nexus_username: ${{ secrets.NEXUS_USERNAME }}
           nexus_password: ${{ secrets.NEXUS_PASSWORD }}
           nexus_enterprise_releases_url: ${{ secrets.NEXUS_ENTERPRISE_RELEASES_URL }}
+
   build:
     name: Build Module
     needs: update-signature
@@ -37,6 +38,7 @@ jobs:
           nexus_password: ${{ secrets.NEXUS_PASSWORD }}
           module_id: content-editor
           mvn_settings_filepath: '.github/maven.settings.xml'
+
   sonar-analysis:
     name: Sonar Analysis
     needs: build

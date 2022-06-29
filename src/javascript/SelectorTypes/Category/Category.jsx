@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {FieldPropTypes} from '~/FormDefinitions/FormData.proptypes';
+import {FieldPropTypes} from '~/ContentEditor.proptypes';
 import {DropdownTreeSelect} from '~/DesignSystem/DropdownTreeSelect';
 import {useQuery} from '@apollo/react-hooks';
 import {GetCategories} from './category.gql-queries';
@@ -8,7 +8,7 @@ import {useTranslation} from 'react-i18next';
 import {adaptToCategoryTree} from './category.adapter';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 
-const Category = ({field, value, id, editorContext, onChange, onBlur}) => {
+export const Category = ({field, value, id, editorContext, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
     const {data, error, loading} = useQuery(GetCategories, {
         variables: {
@@ -19,7 +19,11 @@ const Category = ({field, value, id, editorContext, onChange, onBlur}) => {
 
     const handleChange = (_, selectedValues) => {
         const newValues = selectedValues.map(v => v.value);
-        onChange(newValues);
+        if (field.multiple) {
+            onChange(newValues);
+        } else {
+            onChange(newValues[0]);
+        }
     };
 
     if (error) {
@@ -49,6 +53,7 @@ const Category = ({field, value, id, editorContext, onChange, onBlur}) => {
             noMatchesLabel={t('content-editor:label.contentEditor.edit.fields.category.noMatches')}
             aria-labelledby={`${field.name}-label`}
             data={tree}
+            mode={field.multiple ? 'multiSelect' : 'radioSelect'}
             readOnly={field.readOnly}
             onChange={handleChange}
             onBlur={onBlur}
@@ -66,5 +71,3 @@ Category.propTypes = {
     onChange: PropTypes.func.isRequired,
     onBlur: PropTypes.func.isRequired
 };
-
-export default Category;
