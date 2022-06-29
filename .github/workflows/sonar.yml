@@ -1,0 +1,20 @@
+# This workflow trigger a Sonar analysis on the current branch
+# Github actions command reference: https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions
+name: Sonar Analysis
+
+on: push
+
+jobs:
+  sonar-analysis:
+    name: Sonar Analysis
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: jahia/jahia-modules-action/sonar-analysis@v2
+        with:
+          primary_release_branch: master
+          github_pr_id: ${{github.event.number}}
+          sonar_url: ${{ secrets.SONAR_URL }}
+          sonar_token: ${{ secrets.SONAR_TOKEN }}
+          mvn_settings_filepath: '.github/maven.settings.xml'
