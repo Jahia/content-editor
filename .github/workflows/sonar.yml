@@ -7,7 +7,6 @@ on: push
 jobs:
   sonar-analysis:
     name: Sonar Analysis
-    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
