@@ -32,7 +32,7 @@ describe('validation utils', () => {
                 }]
             };
 
-            onServerError(error, formikActions, notificationContext, t, 'default_message');
+            onServerError(error, formikActions, {}, 'en', notificationContext, t, 'default_message');
 
             expect(formikActions.setFieldTouched).toHaveBeenCalledWith(Constants.systemName.name, true, false);
             expect(formikActions.setFieldError).toHaveBeenCalledWith(Constants.systemName.name, 'alreadyExist');
@@ -46,13 +46,14 @@ describe('validation utils', () => {
                     extensions: {
                         constraintViolations: [{
                             constraintMessage: 'Invalid link/sites/tutorials/files/Images/personalization/any content.PNG',
-                            propertyName: 'text'
+                            propertyName: 'text',
+                            locale: 'en'
                         }]
                     }
                 }]
             };
 
-            onServerError(error, formikActions, notificationContext, t, {text: 'fuu_text'}, 'default_message');
+            onServerError(error, formikActions, {}, 'en', notificationContext, t, {text: 'fuu_text'}, 'default_message');
 
             expect(formikActions.setFieldTouched).toHaveBeenCalledWith('fuu_text', true, false);
             expect(formikActions.setFieldError).toHaveBeenCalledWith('fuu_text', 'invalidLink_/sites/tutorials/files/Images/personalization/any content.PNG');
@@ -66,13 +67,14 @@ describe('validation utils', () => {
                     extensions: {
                         constraintViolations: [{
                             constraintMessage: 'Error message from backend',
-                            propertyName: 'text'
+                            propertyName: 'text',
+                            locale: 'en'
                         }]
                     }
                 }]
             };
 
-            onServerError(error, formikActions, notificationContext, t, {text: 'fuu_text'}, 'default_message');
+            onServerError(error, formikActions, {}, 'en', notificationContext, t, {text: 'fuu_text'}, 'default_message');
 
             expect(formikActions.setFieldTouched).toHaveBeenCalledWith('fuu_text', true, false);
             expect(formikActions.setFieldError).toHaveBeenCalledWith('fuu_text', 'constraintViolation_Error message from backend');
@@ -86,7 +88,7 @@ describe('validation utils', () => {
                 }]
             };
 
-            onServerError(error, formikActions, notificationContext, t, {}, 'default_message');
+            onServerError(error, formikActions, {}, 'en', notificationContext, t, {}, 'default_message');
 
             expect(formikActions.setFieldTouched).not.toHaveBeenCalled();
             expect(formikActions.setFieldError).not.toHaveBeenCalled();

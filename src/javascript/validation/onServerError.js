@@ -1,6 +1,14 @@
 import {Constants} from '~/ContentEditor.constants';
 
-export const onServerError = (error, formikActions, notificationContext, t, propFieldNameMapping, defaultErrorMessage) => {
+const setError = (language, constraintViolation, formikActions, fieldName, i18nContext, message) => {
+    if (language === constraintViolation.locale) {
+        formikActions.setFieldError(fieldName, message);
+    } else {
+        i18nContext[constraintViolation.locale].validation[fieldName] = message;
+    }
+};
+
+export const onServerError = (error, formikActions, i18nContext, language, notificationContext, t, propFieldNameMapping, defaultErrorMessage) => {
     // Set submitting false
     formikActions.setSubmitting(false);
 
@@ -29,10 +37,10 @@ export const onServerError = (error, formikActions, notificationContext, t, prop
                         if (fieldName) {
                             if (constraintViolation.constraintMessage.startsWith('Invalid link')) {
                                 // Custom handling for invalid link error
-                                formikActions.setFieldError(fieldName, 'invalidLink_' + constraintViolation.constraintMessage.substring('Invalid link'.length));
+                                setError(language, constraintViolation, formikActions, fieldName, i18nContext, 'invalidLink_' + constraintViolation.constraintMessage.substring('Invalid link'.length));
                             } else {
                                 // Default constraint violation handling
-                                formikActions.setFieldError(fieldName, 'constraintViolation_' + constraintViolation.constraintMessage);
+                                setError(language, constraintViolation, formikActions, fieldName, i18nContext, 'constraintViolation_' + constraintViolation.constraintMessage);
                             }
 
                             formikActions.setFieldTouched(fieldName, true, false);
