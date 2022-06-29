@@ -54,6 +54,6 @@ export const createNode = ({
         actions.setSubmitting(false);
         return info;
     }, error => {
-        onServerError(error, actions, notificationContext, t, propFieldNameMapping, 'content-editor:label.contentEditor.create.createButton.error');
+        onServerError(error, actions, i18nContext, language, notificationContext, t, propFieldNameMapping, 'content-editor:label.contentEditor.create.createButton.error');
     });
 };
