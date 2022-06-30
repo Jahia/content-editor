@@ -1,4 +1,9 @@
 import React from 'react';
+<<<<<<< HEAD:src/javascript/SelectorTypes/Picker/configs/ContentPickerConfig.js
+=======
+import {Picker} from '../Picker';
+import {Picker2} from '../Picker2';
+>>>>>>> BACKLOG-17222 Initial setup for picker:src/javascript/SelectorTypes/Picker/ContentPicker/ContentPickerSelectorType.js
 import {File} from '@jahia/moonstone';
 import {useQuery} from '@apollo/react-hooks';
 import {ContentPickerFilledQuery} from './ContentPicker.gql-queries';
@@ -30,7 +35,14 @@ const usePickerInputData = (uuid, editorContext) => {
     return {fieldData, error, loading};
 };
 
+<<<<<<< HEAD:src/javascript/SelectorTypes/Picker/configs/ContentPickerConfig.js
 export const ContentPickerConfig = {
+=======
+export const ContentPickerSelectorType = {
+    cmp: Picker2,
+    key: 'ContentPicker',
+    supportMultiple: false,
+>>>>>>> BACKLOG-17222 Initial setup for picker:src/javascript/SelectorTypes/Picker/ContentPicker/ContentPickerSelectorType.js
     pickerInput: {
         emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.addContent',
         notFoundLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.notFoundContent',
