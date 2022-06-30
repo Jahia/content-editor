@@ -8,6 +8,8 @@ import {ContentEditorHistoryContextProvider} from '~/contexts';
 import {registerSelectorTypes} from '~/SelectorTypes';
 import {pcNavigateTo} from '~/redux/pagecomposer.redux-actions';
 import {registerReducer} from './registerReducer';
+import {registerPickerReducer} from '~/SelectorTypes/Picker/Picker2.redux';
+import {registerPickerAccordionItems} from '~/SelectorTypes/Picker/Picker2.accordionItems';
 
 export function register() {
     registry.add('app', 'content-editor-history-context', {
@@ -23,6 +25,10 @@ export function register() {
     registerActions(registry);
 
     registerSelectorTypes(registry);
+
+    registerPickerAccordionItems(registry);
+
+    registerPickerReducer(registry);
 
     registerReducer(registry);
 

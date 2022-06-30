@@ -1,6 +1,6 @@
 import {registerPickerConfig} from './configs/Picker.configs';
 import {registerPickerActions} from './actions/registerPickerActions';
-import {Picker} from '~/SelectorTypes/Picker/Picker';
+import {Picker2} from './Picker2';
 
 export const getPickerSelectorType = (registry, options) => {
     const option = options && options.find(option => option.name === 'type');
@@ -17,7 +17,7 @@ export const getPickerSelectorType = (registry, options) => {
     }
 
     return ({
-        cmp: Picker,
+        cmp: Picker2,
         supportsMultiple: false,
         key: 'Picker',
         pickerConfig
