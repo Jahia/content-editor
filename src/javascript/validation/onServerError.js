@@ -1,7 +1,7 @@
 import {Constants} from '~/ContentEditor.constants';
 
 const setError = (language, constraintViolation, formikActions, fieldName, i18nContext, message) => {
-    if (language === constraintViolation.locale) {
+    if (!constraintViolation.locale || language === constraintViolation.locale) {
         formikActions.setFieldError(fieldName, message);
     } else {
         i18nContext[constraintViolation.locale].validation[fieldName] = message;
