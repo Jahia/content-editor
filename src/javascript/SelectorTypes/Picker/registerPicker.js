@@ -1,6 +1,8 @@
 import {registerPickerConfig} from './configs/Picker.configs';
 import {registerPickerActions} from './actions/registerPickerActions';
 import {Picker2} from './Picker2';
+import {registerAccordionItems} from '~/SelectorTypes/Picker/accordionItems/registerAccordionItems';
+import {registerPickerReducer} from '~/SelectorTypes/Picker/Picker2.redux';
 
 export const getPickerSelectorType = (registry, options) => {
     const option = options && options.find(option => option.name === 'type');
@@ -30,4 +32,6 @@ export const registerPicker = registry => {
         resolver: options => getPickerSelectorType(registry, options)
     });
     registerPickerActions(registry);
+    registerAccordionItems(registry);
+    registerPickerReducer(registry);
 };

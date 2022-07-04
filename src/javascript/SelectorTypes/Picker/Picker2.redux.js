@@ -9,7 +9,7 @@ export const registerPickerReducer = registry => {
         mode: 'pages',
         site: 'systemsite',
         path: '/sites/systemsite'
-    }
+    };
 
     const picker = handleActions({
         [cePickerSite]: (state, action) => ({
@@ -29,7 +29,8 @@ export const registerPickerReducer = registry => {
             return {
                 ...state,
                 openPaths: Array.from(new Set(state.openPaths.filter(p => !s2.has(p))))
-        }},
+            };
+        },
         [cePickerClearOpenPaths]: state => ({
             ...state,
             openPaths: []
@@ -41,4 +42,4 @@ export const registerPickerReducer = registry => {
     }, initialState);
 
     registry.add('redux-reducer', 'picker', {targets: [COMBINED_REDUCERS_NAME], reducer: picker});
-}
+};
