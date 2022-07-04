@@ -8,16 +8,30 @@ import {MainPanel} from './MainPanel';
 
 import {useQuery} from '@apollo/react-hooks';
 import {SiteNodesQuery} from './PickerDialog.gql-queries';
-import {getPathWithoutFile, getSite, getSiteNodes} from '../Picker.utils';
+import {getPathWithoutFile, getSite, getSiteNodes} from './Picker.utils';
 import {useDebounce} from './useDebounce';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 import styles from './PickerDialog.scss';
+import {useTranslation} from 'react-i18next';
 
 const Transition = props => {
     return <Slide direction="up" {...props}/>;
 };
 
-const useSiteSwitcher = ({initialSelectedItem, lang, siteKey, nodeTreeConfigs, t}) => {
+const getNodeTreeConfigs = (pickerConfig, site, siteName, t) => {
+    return pickerConfig.treeConfigs.map(treeConfig => {
+        return {
+            ...treeConfig,
+            rootPath: treeConfig.getRootPath && treeConfig.getRootPath(site),
+            rootLabel: t(treeConfig.rootLabelKey, {
+                siteName: siteName
+            }),
+            key: `browse-tree-${treeConfig.type}`
+        };
+    });
+};
+
+const useSiteSwitcher = ({initialSelectedItem, lang, site, nodeTreeConfigs, t}) => {
     const {data, error, loading} = useQuery(SiteNodesQuery, {
         variables: {
             query: 'select * from [jnt:virtualsite] where ischildnode(\'/sites\')',
@@ -25,7 +39,7 @@ const useSiteSwitcher = ({initialSelectedItem, lang, siteKey, nodeTreeConfigs, t
         }
     });
 
-    const selectedSite = initialSelectedItem ? getSite(initialSelectedItem).slice(7) : siteKey;
+    const selectedSite = initialSelectedItem ? getSite(initialSelectedItem).slice(7) : site;
     const [currentSite, setSite] = useState(selectedSite);
 
     if (error || loading) {
@@ -37,7 +51,7 @@ const useSiteSwitcher = ({initialSelectedItem, lang, siteKey, nodeTreeConfigs, t
 
     const onSelectSite = siteNode => {
         setSite(siteNode.name);
-        return siteNode.allSites ? '/sites' : nodeTreeConfigs[0].treeConfig.rootPath(siteNode.name);
+        return siteNode.allSites ? '/sites' : nodeTreeConfigs[0].getRootPath(siteNode.name);
     };
 
     return {siteNode, siteNodes, currentSite, onSelectSite, setSite, selectedSite};
@@ -56,17 +70,18 @@ const useSearch = () => {
 
 export const PickerDialog = ({
     isOpen,
-    setIsOpen,
+    onClose,
     initialSelectedItem,
-    siteKey,
-    uilang,
-    lang,
     field,
-    nodeTreeConfigs,
-    t,
+    editorContext,
     pickerConfig,
     onItemSelection
 }) => {
+    const {lang, uilang, site, siteInfo} = editorContext;
+    const {t} = useTranslation();
+
+    const nodeTreeConfigs = getNodeTreeConfigs(pickerConfig, site, siteInfo.displayName, t);
+
     const {
         currentSite,
         selectedSite,
@@ -76,7 +91,7 @@ export const PickerDialog = ({
         error,
         loading,
         onSelectSite
-    } = useSiteSwitcher({initialSelectedItem, siteKey, lang, nodeTreeConfigs, t});
+    } = useSiteSwitcher({initialSelectedItem, site, lang, nodeTreeConfigs, t});
 
     // SelectedItem is an object when something is selected
     // undefined when never modified
@@ -102,9 +117,9 @@ export const PickerDialog = ({
     const nodeTreeConfigsAdapted = nodeTreeConfigs
         .map(nodeTreeConfig => ({
             ...nodeTreeConfig,
-            selectableTypes: siteNode && siteNode.allSites ? [...nodeTreeConfig.treeConfig.selectableTypes, 'jnt:virtualsitesFolder'] : nodeTreeConfig.treeConfig.selectableTypes,
-            openableTypes: siteNode && siteNode.allSites ? [...nodeTreeConfig.treeConfig.openableTypes, 'jnt:virtualsitesFolder', 'jnt:virtualsite'] : nodeTreeConfig.treeConfig.openableTypes,
-            rootPath: siteNode && siteNode.allSites ? '/sites' : nodeTreeConfig.treeConfig.rootPath(currentSite),
+            selectableTypes: siteNode && siteNode.allSites ? [...nodeTreeConfig.selectableTypes, 'jnt:virtualsitesFolder'] : nodeTreeConfig.selectableTypes,
+            openableTypes: siteNode && siteNode.allSites ? [...nodeTreeConfig.openableTypes, 'jnt:virtualsitesFolder', 'jnt:virtualsite'] : nodeTreeConfig.openableTypes,
+            rootPath: siteNode && siteNode.allSites ? '/sites' : nodeTreeConfig.getRootPath(currentSite),
             rootLabel: siteNode && siteNode.displayName
         }));
 
@@ -115,7 +130,7 @@ export const PickerDialog = ({
             open={isOpen}
             TransitionComponent={Transition}
             onClose={() => {
-                setIsOpen(false);
+                onClose();
                 setSite(selectedSite);
             }}
             onExited={() => {
@@ -125,7 +140,7 @@ export const PickerDialog = ({
         >
             {isOpen && (
                 <>
-                    {pickerConfig.displayTree && (
+                    {pickerConfig.displayTree !== false && (
                         <LeftPanel
                             site={currentSite}
                             siteNodes={siteNodes}
@@ -139,7 +154,7 @@ export const PickerDialog = ({
                             onSelectSite={onSelectSite}
                         />)}
                     <div
-                        className={styles.modalContent + (pickerConfig.displayTree ? ` ${styles.modalContentWithDrawer}` : '')}
+                        className={styles.modalContent + (pickerConfig.displayTree !== false ? ` ${styles.modalContentWithDrawer}` : '')}
                     >
                         <MainPanel
                             setSelectedPath={setSelectedPath}
@@ -153,9 +168,8 @@ export const PickerDialog = ({
                             uilang={uilang}
                             searchTerms={searchTerms}
                             handleSearchChange={handleSearchChange}
-                            t={t}
                             onItemSelection={onItemSelection}
-                            onCloseDialog={() => setIsOpen(false)}
+                            onCloseDialog={onClose}
                         />
                     </div>
                 </>
@@ -170,12 +184,8 @@ PickerDialog.defaultProps = {
 
 PickerDialog.propTypes = {
     isOpen: PropTypes.bool.isRequired,
-    setIsOpen: PropTypes.func.isRequired,
-    siteKey: PropTypes.string.isRequired,
-    uilang: PropTypes.string.isRequired,
-    lang: PropTypes.string.isRequired,
-    nodeTreeConfigs: PropTypes.array.isRequired,
-    t: PropTypes.func.isRequired,
+    onClose: PropTypes.func.isRequired,
+    editorContext: PropTypes.object.isRequired,
     field: PropTypes.object.isRequired,
     pickerConfig: PropTypes.object.isRequired,
     initialSelectedItem: PropTypes.string,
