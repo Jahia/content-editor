@@ -1,5 +1,4 @@
 import {registry} from '@jahia/ui-extender';
-import {getNodeTreeConfigs} from '~/SelectorTypes/Picker/Picker.utils';
 
 const contextPath = (window.contextJsParameters && window.contextJsParameters.contextPath) || '';
 
@@ -30,13 +29,8 @@ export function fillCKEditorPicker(picker, pickerResult) {
     picker.setUrl(`${picker.contentPicker ? contentPrefix : filePrefix}${pickerResult.path}${picker.contentPicker ? '.html' : ''}`, {});
 }
 
-export function buildPickerContext(picker, editorContext, t) {
-    const pickerConfig = {
-        ...(registry.get('pickerConfiguration', picker.type).cmp || registry.get('pickerConfiguration', 'editorial').cmp),
-        displayTree: true
-    };
-
-    const nodeTreeConfigs = getNodeTreeConfigs(pickerConfig, editorContext.site, editorContext.siteInfo.displayName, t);
+export function buildPickerContext(picker) {
+    const pickerConfig = registry.get('pickerConfiguration', picker.type) || registry.get('pickerConfiguration', 'editorial');
 
     const urlInput = picker.dialog.getContentElement('info', getCKEditorUrlInputId(picker));
     const valueInInput = urlInput ? urlInput.getValue() : '';
@@ -44,5 +38,5 @@ export function buildPickerContext(picker, editorContext, t) {
         valueInInput.substr(contentPrefix.length).slice(0, -('.html').length) :
         valueInInput.substr(filePrefix.length);
 
-    return {pickerConfig, nodeTreeConfigs, currentValue};
+    return {pickerConfig, currentValue};
 }

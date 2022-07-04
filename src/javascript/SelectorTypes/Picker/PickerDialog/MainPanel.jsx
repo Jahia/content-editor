@@ -11,6 +11,7 @@ import {SearchInput} from './Search/Search';
 import {List, Thumbnail} from './Views';
 import {getButtonRenderer} from '~/utils';
 import clsx from 'clsx';
+import {useTranslation} from 'react-i18next';
 
 const styles = theme => ({
     modalHeader: {
@@ -54,11 +55,9 @@ const ButtonRenderer = getButtonRenderer({
 
 const MainPanelCmp = ({
     classes,
-    t,
     pickerConfig,
     lang,
     uilang,
-    nodeTreeConfigs,
     initialSelectedItem,
     selectedPath,
     setSelectedPath,
@@ -69,6 +68,7 @@ const MainPanelCmp = ({
     selectedItem,
     setSelectedItem
 }) => {
+    const {t} = useTranslation();
     const selectElement = () => {
         if (selectedItem) {
             // Todo: BACKLOG-12581 - Multiple is not supported yet in pickers. Always return a single value.
@@ -81,19 +81,17 @@ const MainPanelCmp = ({
     const isElementSelected = !(selectedItem && selectedItem.length !== 0);
     const initialItemHasChanged = initialSelectedItem && selectedItem !== undefined;
 
-    const PickerDialogContent = ViewMapper[pickerConfig.picker.PickerDialog.view];
-
-    const isPickerTypeFiles = nodeTreeConfigs[0].type === 'files';
+    const PickerDialogContent = ViewMapper[pickerConfig.PickerDialog.view];
 
     return (
         <>
             <header className={classes.modalHeader}>
                 <Typography variant="delta" color="alpha">
-                    {t(pickerConfig.picker.PickerDialog.dialogTitle(isPickerTypeFiles))}
+                    {t(pickerConfig.PickerDialog.dialogTitle)}
                 </Typography>
                 <SearchInput
                     selectedPath={selectedPath}
-                    placeholder={t(pickerConfig.picker.PickerDialog.searchPlaceholder())}
+                    placeholder={t(pickerConfig.PickerDialog.searchPlaceholder)}
                     className={classes.searchInput}
                     language={lang}
                     onChange={handleSearchChange}
@@ -141,21 +139,17 @@ const MainPanelCmp = ({
 
 MainPanelCmp.propTypes = {
     classes: PropTypes.object.isRequired,
-    t: PropTypes.func.isRequired,
     pickerConfig: PropTypes.shape({
-        picker: PropTypes.shape({
-            PickerDialog: PropTypes.shape({
-                view: PropTypes.string.isRequired,
-                dialogTitle: PropTypes.func.isRequired,
-                searchPlaceholder: PropTypes.func.isRequired
-            }).isRequired
+        PickerDialog: PropTypes.shape({
+            view: PropTypes.string.isRequired,
+            dialogTitle: PropTypes.string.isRequired,
+            searchPlaceholder: PropTypes.string.isRequired
         }).isRequired,
         selectableTypesTable: PropTypes.arrayOf(PropTypes.string),
         showOnlyNodesWithTemplates: PropTypes.bool,
         searchSelectorType: PropTypes.string,
         displayTree: PropTypes.bool
     }).isRequired,
-    nodeTreeConfigs: PropTypes.array.isRequired,
     lang: PropTypes.string.isRequired,
     uilang: PropTypes.string.isRequired,
     initialSelectedItem: PropTypes.string,

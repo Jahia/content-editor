@@ -7,7 +7,6 @@ export const resolveSelectorType = ({selectorType, selectorOptions, displayName,
             return selector.resolver(selectorOptions);
         }
 
-        selector.key = selectorType;
         return selector;
     }
 
