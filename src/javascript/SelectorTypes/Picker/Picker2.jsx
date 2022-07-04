@@ -39,7 +39,7 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
         return <LoaderOverlay/>;
     }
 
-    const initialPath = getPathWithoutFile(fieldData.path);
+    const initialPath = getPathWithoutFile(fieldData && fieldData.path ? fieldData.path : `/sites/${editorContext.site}`);
     const detailedPath = getDetailedPathArray(initialPath, editorContext.site);
     const mode = getAccordionMode(initialPath);
 
