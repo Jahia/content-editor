@@ -3,7 +3,7 @@ import {resolveSelectorType} from './resolveSelectorType';
 import {registry} from '@jahia/ui-extender';
 import {Category} from './Category';
 import {Text} from './Text';
-import {Picker} from './Picker';
+import {Picker2 as Picker} from './Picker';
 import {ChoiceList} from './ChoiceList';
 
 describe('Selector Types', () => {

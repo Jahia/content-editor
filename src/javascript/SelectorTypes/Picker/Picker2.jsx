@@ -56,7 +56,7 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
             dispatch(batchActions([
                 cePickerSite(pickerConfig.targetSite ? pickerConfig.targetSite : editorContext.site),
                 cePickerPath(initialPath),
-                cePickerMode(`${mode}-${pickerConfig.pickerType}`),
+                cePickerMode(mode),
                 cePickerOpenPaths(detailedPath)
             ]));
         } else {

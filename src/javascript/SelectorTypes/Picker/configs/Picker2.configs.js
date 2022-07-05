@@ -1,72 +1,33 @@
 import {MediaPickerConfig} from '~/SelectorTypes/Picker/configs/MediaPickerConfig';
 import {ContentPickerConfig} from '~/SelectorTypes/Picker/configs/ContentPickerConfig';
+import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 
-const treeConfigs = {
-    content: {
-        getRootPath: site => `/sites/${site}/contents`,
-        openableTypes: ['jnt:contentFolder'],
-        selectableTypes: ['jnt:contentFolder'],
-        type: 'contents',
-        rootLabelKey: 'content-editor:label.contentEditor.edit.fields.contentPicker.contentsRootLabel'
-    },
-    default: {
-        getRootPath: site => `/sites/${site}`,
-        openableTypes: ['jnt:page', 'jnt:navMenuText', 'jnt:virtualsite', 'jnt:contentFolder', 'nt:folder', 'jmix:siteContent', 'jmix:browsableInEditorialPicker'],
-        selectableTypes: ['jnt:page', 'jnt:navMenuText', 'jnt:virtualsite', 'jnt:contentFolder', 'nt:folder', 'jmix:siteContent', 'jmix:browsableInEditorialPicker'],
-        type: 'default',
-        rootLabelKey: 'content-editor:label.contentEditor.edit.fields.contentPicker.allContentsRootLabel'
-    },
-    files: {
-        getRootPath: site => `/sites/${site}/files`,
-        openableTypes: ['nt:folder'],
-        selectableTypes: ['nt:folder'],
-        type: 'files',
-        rootLabelKey: 'content-editor:label.contentEditor.edit.fields.imagePicker.rootLabel'
-    },
-    pages: {
-        getRootPath: site => `/sites/${site}`,
-        openableTypes: ['jnt:page', 'jnt:virtualsite', 'jnt:navMenuText'],
-        selectableTypes: ['jnt:page', 'jnt:navMenuText'],
-        type: 'pages',
-        rootLabelKey: 'content-editor:label.contentEditor.edit.fields.contentPicker.pagesRootLabel'
-    },
-    categories: {
-        getRootPath: () => '/sites/systemsite/categories',
-        openableTypes: ['jnt:category'],
-        selectableTypes: ['jnt:category'],
-        type: 'categories',
-        rootLabelKey: 'content-editor:label.contentEditor.edit.fields.contentPicker.categoriesRootLabel'
-    }
-};
 const defaultEditorialListType = ['jmix:editorialContent', 'jnt:page', 'jmix:navMenuItem', 'jnt:contentList', 'jnt:contentFolder', 'nt:folder', 'jmix:siteContent'];
 
 export const registerPickerConfig = ceRegistry => {
-    ceRegistry.add('pickerConfiguration', 'editoriallink', {
+    ceRegistry.add(Constants.pickerConfig, 'editoriallink', {
         ...ContentPickerConfig,
-        treeConfig: treeConfigs.default,
         searchSelectorType: 'jmix:searchable',
         listTypesTable: defaultEditorialListType,
         selectableTypesTable: defaultEditorialListType,
         showOnlyNodesWithTemplates: true
     });
 
-    ceRegistry.add('pickerConfiguration', 'editorial', {
+    ceRegistry.add(Constants.pickerConfig, 'editorial', {
         ...ContentPickerConfig,
-        treeConfig: treeConfigs.default,
         searchSelectorType: 'jmix:searchable',
         listTypesTable: defaultEditorialListType,
         selectableTypesTable: defaultEditorialListType
     });
 
-    ceRegistry.add('pickerConfiguration', 'image', {
+    ceRegistry.add(Constants.pickerConfig, 'image', {
         ...MediaPickerConfig,
-        treeConfig: treeConfigs.files,
         searchSelectorType: 'jmix:image',
         listTypesTable: ['jmix:image'],
         selectableTypesTable: ['jmix:image']
     });
 
-    ceRegistry.add('pickerConfiguration', 'folder', {
+    ceRegistry.add(Constants.pickerConfig, 'folder', {
         ...ContentPickerConfig,
         pickerInput: {
             ...ContentPickerConfig.pickerInput,
@@ -77,33 +38,30 @@ export const registerPickerConfig = ceRegistry => {
             dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalFileTitle',
             searchPlaceholder: 'content-editor:label.contentEditor.edit.fields.contentPicker.searchFilePlaceholder'
         },
-        treeConfig: treeConfigs.files,
         searchSelectorType: 'jnt:folder',
         listTypesTable: ['jnt:folder'],
         selectableTypesTable: ['jnt:folder']
     });
 
-    ceRegistry.add('pickerConfiguration', 'contentfolder', {
+    ceRegistry.add(Constants.pickerConfig, 'contentfolder', {
         ...ContentPickerConfig,
         PickerDialog: {
             ...ContentPickerConfig.PickerDialog,
             dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalFolderTitle'
         },
-        treeConfig: treeConfigs.content,
         searchSelectorType: 'jnt:contentFolder',
         listTypesTable: ['jnt:contentFolder'],
         selectableTypesTable: ['jnt:contentFolder']
     });
 
-    ceRegistry.add('pickerConfiguration', 'page', {
+    ceRegistry.add(Constants.pickerConfig, 'page', {
         ...ContentPickerConfig,
-        treeConfig: treeConfigs.pages,
         searchSelectorType: 'jnt:page',
         listTypesTable: ['jnt:page'],
         selectableTypesTable: ['jnt:page']
     });
 
-    ceRegistry.add('pickerConfiguration', 'file', {
+    ceRegistry.add(Constants.pickerConfig, 'file', {
         ...ContentPickerConfig,
         pickerInput: {
             ...ContentPickerConfig.pickerInput,
@@ -114,15 +72,13 @@ export const registerPickerConfig = ceRegistry => {
             dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalFileTitle',
             searchPlaceholder: 'content-editor:label.contentEditor.edit.fields.contentPicker.searchFilePlaceholder'
         },
-        treeConfig: [treeConfigs.files],
         searchSelectorType: 'jnt:file',
         listTypesTable: ['jnt:file'],
         selectableTypesTable: ['jnt:file']
     });
 
-    ceRegistry.add('pickerConfiguration', 'category', {
+    ceRegistry.add(Constants.pickerConfig, 'category', {
         ...ContentPickerConfig,
-        treeConfig: treeConfigs.categories,
         searchSelectorType: 'jnt:category',
         listTypesTable: ['jnt:category'],
         selectableTypesTable: ['jnt:category']

@@ -34,6 +34,7 @@ export const getAccordionMode = fullPath => {
         case 'files': return Constants.ACCORDION_ITEM_TYPES.MEDIA;
         case 'pages': return Constants.ACCORDION_ITEM_TYPES.PAGES;
         case 'content-folders': return Constants.ACCORDION_ITEM_TYPES.CONTENT_FOLDERS;
+        case 'categories': return Constants.ACCORDION_ITEM_TYPES.CATEGORY;
         default: return Constants.ACCORDION_ITEM_TYPES.PAGES;
     }
 };

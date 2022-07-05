@@ -1,7 +1,7 @@
 import {registerPickerConfig} from './configs/Picker2.configs';
 import {registerPickerActions} from './actions/registerPickerActions';
 import {Picker2} from './Picker2';
-import {registerAccordionItems} from '~/SelectorTypes/Picker/accordionItems/registerAccordionItems';
+import {registerAccordionItems} from '~/SelectorTypes/Picker/accordionItems/accordionItems';
 import {registerPickerReducer} from '~/SelectorTypes/Picker/Picker2.redux';
 
 export const getPickerSelectorType = (registry, options) => {

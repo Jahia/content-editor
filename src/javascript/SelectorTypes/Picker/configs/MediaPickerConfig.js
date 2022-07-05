@@ -1,9 +1,4 @@
 import React from 'react';
-<<<<<<< HEAD:src/javascript/SelectorTypes/Picker/configs/MediaPickerConfig.js
-=======
-import {Picker} from '../Picker';
-import {Picker2} from '../Picker2';
->>>>>>> BACKLOG-17222 Initial setup for picker:src/javascript/SelectorTypes/Picker/MediaPicker/MediaPickerSelectorType.js
 import {FileImage} from '@jahia/moonstone';
 import {useQuery} from '@apollo/react-hooks';
 import {MediaPickerFilledQuery} from './MediaPicker.gql-queries';
@@ -38,14 +33,7 @@ const usePickerInputData = (uuid, editorContext) => {
     return {fieldData, error, loading};
 };
 
-<<<<<<< HEAD:src/javascript/SelectorTypes/Picker/configs/MediaPickerConfig.js
 export const MediaPickerConfig = {
-=======
-export const MediaPickerSelectorType = {
-    cmp: Picker2,
-    key: 'MediaPicker',
-    supportMultiple: false,
->>>>>>> BACKLOG-17222 Initial setup for picker:src/javascript/SelectorTypes/Picker/MediaPicker/MediaPickerSelectorType.js
     pickerInput: {
         emptyLabel: 'content-editor:label.contentEditor.edit.fields.imagePicker.emptyInputLabel',
         notFoundLabel: 'content-editor:label.contentEditor.edit.fields.imagePicker.notFoundImage',

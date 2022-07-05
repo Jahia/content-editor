@@ -4,7 +4,7 @@ import {Dialog, Slide} from '@material-ui/core';
 import styles from './PickerDialog.scss';
 import {LayoutModule} from '@jahia/moonstone';
 import {cePickerPath, cePickerSite, cePickerMode} from '~/SelectorTypes/Picker/Picker2.redux';
-import {Constants as AccordionItemConstants} from '~/SelectorTypes/Picker/Picker2.constants';
+import {getItemTarget, getAccordionItemsOverrideObject} from '~/SelectorTypes/Picker/accordionItems/accordionItems';
 import {batchActions} from 'redux-batched-actions';
 
 const Transition = props => {
@@ -26,6 +26,8 @@ const switcherSelector = state => ({
     currentLang: state.language
 });
 
+const accordionItemProps = getAccordionItemsOverrideObject();
+
 export const PickerDialog = ({isOpen, onClose, pickerConfig}) => {
     return (
         <Dialog
@@ -38,8 +40,8 @@ export const PickerDialog = ({isOpen, onClose, pickerConfig}) => {
             <Suspense fallback={<div>Loading picker ...</div>}>
                 <LayoutModule navigation={
                     <ContentNavigation header={<div><SiteSwitcher selector={switcherSelector} onSelectAction={siteNode => cePickerSite(siteNode.name)}/></div>}
-                                       accordionItemType={AccordionItemConstants.ACCORDION_ITEM_NAME}
-                                       accordionItemTarget={pickerConfig.key}
+                                       accordionItemProps={accordionItemProps}
+                                       accordionItemTarget={getItemTarget(pickerConfig.key)}
                                        selector={selector}
                                        handleNavigationAction={(mode, path) => (batchActions([cePickerPath(path), cePickerMode(mode)]))}
                     />
