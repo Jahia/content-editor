@@ -24,7 +24,7 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
         error,
         loading,
         notFound
-    } = pickerConfig.picker.pickerInput.usePickerInputData(value, editorContext);
+    } = pickerConfig.pickerInput.usePickerInputData(value, editorContext);
 
     if (error) {
         const message = t(
@@ -72,8 +72,8 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
         <div className="flexFluid flexRow_nowrap alignCenter">
             <ReferenceCard
                 isReadOnly={field.readOnly}
-                emptyLabel={t((error || notFound) ? pickerConfig.picker.pickerInput.notFoundLabel : pickerConfig.picker.pickerInput.emptyLabel)}
-                emptyIcon={pickerConfig.picker.pickerInput.emptyIcon}
+                emptyLabel={t((error || notFound) ? pickerConfig.pickerInput.notFoundLabel : pickerConfig.pickerInput.emptyLabel)}
+                emptyIcon={pickerConfig.pickerInput.emptyIcon}
                 labelledBy={`${field.name}-label`}
                 fieldData={fieldData}
                 onClick={() => openDialog(!isDialogOpen)}
@@ -89,8 +89,8 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
             )}
             <PickerDialog
                 isOpen={isDialogOpen}
-                setIsOpen={openDialog}
-                accordionItemTarget={pickerConfig.pickerType}
+                pickerConfig={pickerConfig}
+                onClose={() => setDialogOpen(false)}
             />
         </div>
     );

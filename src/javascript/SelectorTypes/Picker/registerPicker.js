@@ -1,4 +1,4 @@
-import {registerPickerConfig} from './configs/Picker.configs';
+import {registerPickerConfig} from './configs/Picker2.configs';
 import {registerPickerActions} from './actions/registerPickerActions';
 import {Picker2} from './Picker2';
 import {registerAccordionItems} from '~/SelectorTypes/Picker/accordionItems/registerAccordionItems';

@@ -6,7 +6,7 @@ import {Constants} from '../Picker2.constants';
 const TARGET = 'editoriallink';
 
 export const registerEditoriallinkAccordionItems = registry => {
-    const config = registry.get(Constants.pickerConfig, TARGET).cmp.treeConfig;
+    const config = registry.get(Constants.pickerConfig, TARGET).treeConfig;
 
     registry.add(Constants.ACCORDION_ITEM_NAME, `${Constants.ACCORDION_ITEM_TYPES.PAGES}-${TARGET}`, renderer, {
         targets: [`${TARGET}:50`],

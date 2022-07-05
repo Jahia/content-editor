@@ -26,22 +26,20 @@ const switcherSelector = state => ({
     currentLang: state.language
 });
 
-export const PickerDialog = ({isOpen, setIsOpen, accordionItemTarget}) => {
+export const PickerDialog = ({isOpen, onClose, pickerConfig}) => {
     return (
         <Dialog
             fullScreen
             classes={{root: styles.rootDialog}}
             open={isOpen}
             TransitionComponent={Transition}
-            onClose={() => {
-                setIsOpen(false);
-            }}
+            onClose={onClose}
         >
             <Suspense fallback={<div>Loading picker ...</div>}>
                 <LayoutModule navigation={
                     <ContentNavigation header={<div><SiteSwitcher selector={switcherSelector} onSelectAction={siteNode => cePickerSite(siteNode.name)}/></div>}
                                        accordionItemType={AccordionItemConstants.ACCORDION_ITEM_NAME}
-                                       accordionItemTarget={accordionItemTarget}
+                                       accordionItemTarget={pickerConfig.key}
                                        selector={selector}
                                        handleNavigationAction={(mode, path) => (batchActions([cePickerPath(path), cePickerMode(mode)]))}
                     />
@@ -55,6 +53,6 @@ export const PickerDialog = ({isOpen, setIsOpen, accordionItemTarget}) => {
 
 PickerDialog.propTypes = {
     isOpen: PropTypes.bool.isRequired,
-    setIsOpen: PropTypes.func.isRequired,
-    accordionItemTarget: PropTypes.string.isRequired
+    onClose: PropTypes.func.isRequired,
+    pickerConfig: PropTypes.object.isRequired
 };
