@@ -75,7 +75,8 @@
         "react-router-dom": "^5.1.2",
         "react-select": "^3.1.0",
         "redux": "^4.0.5",
-        "redux-actions": "^2.6.5"
+        "redux-actions": "^2.6.5",
+        "redux-batched-actions": "^0.5.0"
     },
     "resolutions": {
         "graphql": "^15.4.0",

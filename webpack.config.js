@@ -90,6 +90,7 @@ module.exports = (env, argv) => {
                     './init': './src/javascript/init'
                 },
                 remotes: {
+                    '@jahia/jcontent': 'appShell.remotes.jcontent',
                     '@jahia/app-shell': 'appShellRemote',
                     '@jahia/jahia-ui-root': 'appShell.remotes.jahiaUi'
                 },

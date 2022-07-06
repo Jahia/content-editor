@@ -3,7 +3,7 @@ import {combineReducers} from 'redux';
 
 export const {ceToggleSections} = createActions('CE_TOGGLE_SECTIONS');
 
-const COMBINED_REDUCERS_NAME = 'contenteditor';
+export const COMBINED_REDUCERS_NAME = 'contenteditor';
 
 export const DEFAULT_OPENED_SECTIONS = {content: true, listOrdering: true};
 
