@@ -20,7 +20,7 @@ jobs:
           nexus_username: ${{ secrets.NEXUS_USERNAME }}
           nexus_password: ${{ secrets.NEXUS_PASSWORD }}
           module_id: content-editor
-          mvn_settings_filepath: '.github/maven.settings.xml
+          mvn_settings_filepath: '.github/maven.settings.xml'
       - uses: jahia/jahia-modules-action/sonar-analysis@v2
         with:
           primary_release_branch: master
