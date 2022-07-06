@@ -4,6 +4,7 @@ import {renderer} from '~/SelectorTypes/Picker/accordionItems/renderer';
 import {Collections} from '@jahia/moonstone';
 import {registry} from '@jahia/ui-extender';
 
+// Todo: see with François if it's possible to get rid of this and have every picker always come with a key
 export const getItemTarget = pickerType => {
     return registry.get(Constants.pickerConfig, pickerType) ? pickerType : 'default';
 };
