@@ -83,4 +83,8 @@ export const mergeDeep = (target, ...sources) => {
     return mergeDeep(target, ...sources);
 };
 
+export const arrayValue = value => {
+    return (typeof value === 'string') ? value.split(',') : value;
+};
+
 export const booleanValue = v => typeof v === 'string' ? v === 'true' : Boolean(v);

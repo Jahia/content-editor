@@ -14,6 +14,7 @@ export const configPropType = PropTypes.shape({
         itemSelectionAdapter: PropTypes.func,
         displayTree: PropTypes.bool
     }).isRequired,
+    listTypesTable: PropTypes.arrayOf(PropTypes.string),
     selectableTypesTable: PropTypes.arrayOf(PropTypes.string),
     showOnlyNodesWithTemplates: PropTypes.bool,
     searchSelectorType: PropTypes.string
