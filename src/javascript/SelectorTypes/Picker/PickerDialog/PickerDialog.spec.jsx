@@ -42,7 +42,7 @@ describe('PickerDialog', () => {
                     getRootPath: jest.fn()
                 }],
                 pickerDialog: {
-                    displayTree: true,
+                    displayTree: true
                 }
             }
         };
