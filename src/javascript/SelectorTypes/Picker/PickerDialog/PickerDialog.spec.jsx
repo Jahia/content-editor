@@ -35,13 +35,15 @@ describe('PickerDialog', () => {
             field: {},
             t: jest.fn(),
             pickerConfig: {
-                displayTree: true,
                 treeConfigs: [{
                     rootPath: '/rootPath/',
                     selectableTypes: [],
                     openableTypes: [],
                     getRootPath: jest.fn()
-                }]
+                }],
+                pickerDialog: {
+                    displayTree: true,
+                }
             }
         };
         setQueryResponseMock({
@@ -100,7 +102,7 @@ describe('PickerDialog', () => {
     });
 
     it('should not display the LeftPanel when displayTree is false', () => {
-        props.pickerConfig.displayTree = false;
+        props.pickerConfig.pickerDialog.displayTree = false;
         const cmp = shallowWithTheme(
             <PickerDialog {...props}/>,
             {},
