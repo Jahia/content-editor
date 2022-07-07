@@ -40,10 +40,11 @@ export const MediaPickerConfig = {
         emptyIcon: <FileImage/>,
         usePickerInputData
     },
-    PickerDialog: {
+    pickerDialog: {
         view: 'Thumbnail',
         dialogTitle: 'content-editor:label.contentEditor.edit.fields.imagePicker.modalTitle',
         searchPlaceholder: 'content-editor:label.contentEditor.edit.fields.imagePicker.searchPlaceholder',
-        itemSelectionAdapter: image => image ? image.uuid : null
+        itemSelectionAdapter: image => image ? image.uuid : null,
+        displayTree: true
     }
 };

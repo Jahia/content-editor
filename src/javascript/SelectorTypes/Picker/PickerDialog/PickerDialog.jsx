@@ -13,6 +13,7 @@ import {useDebounce} from './useDebounce';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 import styles from './PickerDialog.scss';
 import {useTranslation} from 'react-i18next';
+import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 
 const Transition = props => {
     return <Slide direction="up" {...props}/>;
@@ -140,7 +141,7 @@ export const PickerDialog = ({
         >
             {isOpen && (
                 <>
-                    {pickerConfig.displayTree !== false && (
+                    {pickerConfig.pickerDialog.displayTree !== false && (
                         <LeftPanel
                             site={currentSite}
                             siteNodes={siteNodes}
@@ -154,7 +155,7 @@ export const PickerDialog = ({
                             onSelectSite={onSelectSite}
                         />)}
                     <div
-                        className={styles.modalContent + (pickerConfig.displayTree !== false ? ` ${styles.modalContentWithDrawer}` : '')}
+                        className={styles.modalContent + (pickerConfig.pickerDialog.displayTree !== false ? ` ${styles.modalContentWithDrawer}` : '')}
                     >
                         <MainPanel
                             setSelectedPath={setSelectedPath}
@@ -187,7 +188,7 @@ PickerDialog.propTypes = {
     onClose: PropTypes.func.isRequired,
     editorContext: PropTypes.object.isRequired,
     field: PropTypes.object.isRequired,
-    pickerConfig: PropTypes.object.isRequired,
+    pickerConfig: configPropType.isRequired,
     initialSelectedItem: PropTypes.string,
     onItemSelection: PropTypes.func.isRequired
 };

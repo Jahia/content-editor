@@ -12,6 +12,8 @@ import {CountDisplayer} from '../CountDisplayer';
 import {notifyAccessDenied} from '../ErrorHandler';
 import {SubContentCountLazyLoader} from './SubContentCountLazyLoader';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
+import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
+import {arrayValue, booleanValue} from '~/SelectorTypes/Picker/Picker2.utils';
 
 const columnConfig = (t, showSubContentsCount) => {
     let columns = [
@@ -125,10 +127,11 @@ export const List = ({
     }
 
     const isSearch = Boolean(searchTerms);
+    const showOnlyNodesWithTemplates = booleanValue(pickerConfig.showOnlyNodesWithTemplates);
     const tableData = error ?
         [] :
         nodes.map(content => {
-            const isSelectable = content.isNodeType && (!pickerConfig.showOnlyNodesWithTemplates || (pickerConfig.showOnlyNodesWithTemplates && content.isDisplayableNode));
+            const isSelectable = content.isNodeType && (!showOnlyNodesWithTemplates || (showOnlyNodesWithTemplates && content.isDisplayableNode));
             return {
                 id: content.uuid,
                 path: content.path,
@@ -150,7 +153,7 @@ export const List = ({
                             setSelectedPath(content.path);
                         }
                     },
-                    selectableTypesTable: pickerConfig.selectableTypesTable
+                    selectableTypesTable: arrayValue(pickerConfig.selectableTypesTable)
                 }
             };
         });
@@ -186,7 +189,7 @@ List.defaultProps = {
 };
 
 List.propTypes = {
-    pickerConfig: PropTypes.object.isRequired,
+    pickerConfig: configPropType.isRequired,
     setSelectedItem: PropTypes.func.isRequired,
     selectedPath: PropTypes.string.isRequired,
     setSelectedPath: PropTypes.func.isRequired,
