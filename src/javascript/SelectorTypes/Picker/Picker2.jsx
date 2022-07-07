@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import {FieldPropTypes} from '~/ContentEditor.proptypes';
 import {ReferenceCard} from '~/DesignSystem/ReferenceCard';
-import {getPathWithoutFile, getDetailedPathArray, getAccordionMode} from './Picker2.utils';
+import {getPathWithoutFile, getDetailedPathArray, getAccordionMode, set, mergeDeep} from './Picker2.utils';
 import {PickerDialog} from './PickerDialog/PickerDialog2';
 import {DisplayAction} from '@jahia/ui-extender';
 import {getButtonRenderer} from '~/utils';
@@ -17,7 +17,16 @@ const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps
 export const Picker2 = ({field, value, editorContext, inputContext, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
     const dispatch = useDispatch();
-    const pickerConfig = inputContext.selectorType.pickerConfig;
+
+    const parsedOptions = {};
+    field.selectorOptions.forEach(option => {
+        set(parsedOptions, option.name, option.value);
+    });
+
+    const pickerConfig = parsedOptions.pickerConfig ?
+        mergeDeep({}, inputContext.selectorType.pickerConfig, parsedOptions.pickerConfig) :
+        inputContext.selectorType.pickerConfig;
+
     const [isDialogOpen, setDialogOpen] = useState(false);
     const {
         fieldData,
@@ -90,6 +99,7 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
             <PickerDialog
                 isOpen={isDialogOpen}
                 pickerConfig={pickerConfig}
+                accordionItemProps={parsedOptions.accordionItem}
                 onClose={() => setDialogOpen(false)}
             />
         </div>

@@ -35,10 +35,9 @@ export const ContentPickerConfig = {
         emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.addContent',
         notFoundLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.notFoundContent',
         emptyIcon: <File/>,
-        usePickerInputData,
-        displayTree: true
+        usePickerInputData
     },
-    PickerDialog: {
+    pickerDialog: {
         view: 'List',
         dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalTitle',
         searchPlaceholder: 'content-editor:label.contentEditor.edit.fields.contentPicker.searchPlaceholder',

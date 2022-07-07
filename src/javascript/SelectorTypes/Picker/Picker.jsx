@@ -45,7 +45,7 @@ export const Picker = ({field, value, editorContext, inputContext, onChange, onB
 
     const onItemSelection = data => {
         setDialogOpen(false);
-        onChange(pickerConfig.PickerDialog.itemSelectionAdapter(data));
+        onChange(pickerConfig.pickerDialog.itemSelectionAdapter(data));
         onBlur();
     };
 

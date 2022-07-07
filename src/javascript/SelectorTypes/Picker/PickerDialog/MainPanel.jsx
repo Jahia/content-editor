@@ -12,6 +12,7 @@ import {List, Thumbnail} from './Views';
 import {getButtonRenderer} from '~/utils';
 import clsx from 'clsx';
 import {useTranslation} from 'react-i18next';
+import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 
 const styles = theme => ({
     modalHeader: {
@@ -81,17 +82,17 @@ const MainPanelCmp = ({
     const isElementSelected = !(selectedItem && selectedItem.length !== 0);
     const initialItemHasChanged = initialSelectedItem && selectedItem !== undefined;
 
-    const PickerDialogContent = ViewMapper[pickerConfig.PickerDialog.view];
+    const PickerDialogContent = ViewMapper[pickerConfig.pickerDialog.view];
 
     return (
         <>
             <header className={classes.modalHeader}>
                 <Typography variant="delta" color="alpha">
-                    {t(pickerConfig.PickerDialog.dialogTitle)}
+                    {t(pickerConfig.pickerDialog.dialogTitle)}
                 </Typography>
                 <SearchInput
                     selectedPath={selectedPath}
-                    placeholder={t(pickerConfig.PickerDialog.searchPlaceholder)}
+                    placeholder={t(pickerConfig.pickerDialog.searchPlaceholder)}
                     className={classes.searchInput}
                     language={lang}
                     onChange={handleSearchChange}
@@ -139,17 +140,7 @@ const MainPanelCmp = ({
 
 MainPanelCmp.propTypes = {
     classes: PropTypes.object.isRequired,
-    pickerConfig: PropTypes.shape({
-        PickerDialog: PropTypes.shape({
-            view: PropTypes.string.isRequired,
-            dialogTitle: PropTypes.string.isRequired,
-            searchPlaceholder: PropTypes.string.isRequired
-        }).isRequired,
-        selectableTypesTable: PropTypes.arrayOf(PropTypes.string),
-        showOnlyNodesWithTemplates: PropTypes.bool,
-        searchSelectorType: PropTypes.string,
-        displayTree: PropTypes.bool
-    }).isRequired,
+    pickerConfig: configPropType.isRequired,
     lang: PropTypes.string.isRequired,
     uilang: PropTypes.string.isRequired,
     initialSelectedItem: PropTypes.string,

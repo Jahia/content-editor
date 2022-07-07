@@ -12,6 +12,7 @@ import {CountDisplayer} from '../CountDisplayer';
 import {notifyAccessDenied} from '../ErrorHandler';
 import {SubContentCountLazyLoader} from './SubContentCountLazyLoader';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
+import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 
 const columnConfig = (t, showSubContentsCount) => {
     let columns = [
@@ -186,7 +187,7 @@ List.defaultProps = {
 };
 
 List.propTypes = {
-    pickerConfig: PropTypes.object.isRequired,
+    pickerConfig: configPropType.isRequired,
     setSelectedItem: PropTypes.func.isRequired,
     selectedPath: PropTypes.string.isRequired,
     setSelectedPath: PropTypes.func.isRequired,

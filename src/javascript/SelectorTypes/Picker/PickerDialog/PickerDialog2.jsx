@@ -6,6 +6,8 @@ import {LayoutModule} from '@jahia/moonstone';
 import {cePickerPath, cePickerSite, cePickerMode} from '~/SelectorTypes/Picker/Picker2.redux';
 import {getItemTarget} from '~/SelectorTypes/Picker/accordionItems/accordionItems';
 import {batchActions} from 'redux-batched-actions';
+import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
+import {booleanValue} from '~/SelectorTypes/Picker/Picker2.utils';
 
 const Transition = props => {
     return <Slide direction="up" {...props}/>;
@@ -26,7 +28,7 @@ const switcherSelector = state => ({
     currentLang: state.language
 });
 
-export const PickerDialog = ({isOpen, onClose, pickerConfig}) => {
+export const PickerDialog = ({isOpen, onClose, pickerConfig, accordionItemProps}) => {
     return (
         <Dialog
             fullScreen
@@ -36,13 +38,14 @@ export const PickerDialog = ({isOpen, onClose, pickerConfig}) => {
             onClose={onClose}
         >
             <Suspense fallback={<div>Loading picker ...</div>}>
-                <LayoutModule navigation={
+                <LayoutModule navigation={booleanValue(pickerConfig.pickerDialog.displayTree) && (
                     <ContentNavigation header={<div><SiteSwitcher selector={switcherSelector} onSelectAction={siteNode => cePickerSite(siteNode.name)}/></div>}
                                        accordionItemTarget={getItemTarget(pickerConfig.key)}
+                                       accordionItemProps={accordionItemProps}
                                        selector={selector}
                                        handleNavigationAction={(mode, path) => (batchActions([cePickerPath(path), cePickerMode(mode)]))}
                     />
-                }
+                )}
                               content={<h1>Add content list here</h1>}
                 />
             </Suspense>
@@ -53,5 +56,6 @@ export const PickerDialog = ({isOpen, onClose, pickerConfig}) => {
 PickerDialog.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    pickerConfig: PropTypes.object.isRequired
+    pickerConfig: configPropType.isRequired,
+    accordionItemProps: PropTypes.object
 };

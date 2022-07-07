@@ -9,6 +9,7 @@ import {CountDisplayer} from '../CountDisplayer';
 import {notifyAccessDenied} from '../ErrorHandler';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 import {encodeJCRPath} from '~/utils';
+import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 
 export const Thumbnail = ({
     setSelectedItem,
@@ -109,7 +110,7 @@ Thumbnail.propTypes = {
     setSelectedItem: PropTypes.func.isRequired,
     onThumbnailDoubleClick: PropTypes.func.isRequired,
     selectedPath: PropTypes.string.isRequired,
-    pickerConfig: PropTypes.object.isRequired,
+    pickerConfig: configPropType.isRequired,
     initialSelection: PropTypes.array,
     searchTerms: PropTypes.string
 };
