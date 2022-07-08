@@ -9,7 +9,7 @@ describe('PickerDialog - MainPanel', () => {
     beforeEach(() => {
         props = {
             pickerConfig: {
-                PickerDialog: {
+                pickerDialog: {
                     dialogTitle: 'yoloooooo',
                     DialogContent: 'DialogContent',
                     searchPlaceholder: 'searchPlaceholder',
