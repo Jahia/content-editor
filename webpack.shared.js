@@ -57,25 +57,19 @@ const singletonDeps = [
 
 const notImported = [];
 
-module.exports = {
-    ...sharedDeps.reduce((acc, item) => ({
-        ...acc,
-        [item]: {
-            requiredVersion: deps[item]
-        }
-    }), {}),
-    ...singletonDeps.reduce((acc, item) => ({
-        ...acc,
-        [item]: {
-            singleton: true,
-            requiredVersion: deps[item]
-        }
-    }), {}),
-    ...notImported.reduce((acc, item) => ({
-        ...acc,
-        [item]: {
-            import: false,
-            requiredVersion: deps[item]
-        }
-    }), {})
-};
+const shared = sharedDeps.filter(item => deps[item]).reduce((acc, item) => ({
+    ...acc,
+    [item]: {
+        requiredVersion: deps[item]
+    }
+}), {});
+
+singletonDeps.filter(item => shared[item]).forEach(item => {
+    shared[item].singleton = true;
+});
+
+notImported.filter(item => shared[item]).forEach(item => {
+    shared[item].import = false;
+});
+
+module.exports = shared;

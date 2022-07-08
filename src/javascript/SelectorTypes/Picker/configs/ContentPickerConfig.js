@@ -8,10 +8,9 @@ const usePickerInputData = (uuid, editorContext) => {
     const {data, error, loading} = useQuery(ContentPickerFilledQuery, {
         variables: {
             uuid: uuid || '',
-            language: editorContext.lang,
-            // TODO: BACKLOG-12022 use useLazyQuery here in order to avoid this kind of needToFecth variable
-            needToFetch: Boolean(uuid)
-        }
+            language: editorContext.lang
+        },
+        skip: !uuid
     });
 
     if (loading || error || !data || !data.jcr || !uuid) {

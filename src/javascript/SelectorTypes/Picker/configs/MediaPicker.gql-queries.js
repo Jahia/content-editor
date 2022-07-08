@@ -2,8 +2,8 @@ import gql from 'graphql-tag';
 import {PredefinedFragments} from '@jahia/data-helper';
 
 const MediaPickerFilledQuery = gql`
-    query mediaPickerFilledQuery($uuid: String!, $language: String!, $needToFetch: Boolean!) {
-        jcr @include(if: $needToFetch) {
+    query mediaPickerFilledQuery($uuid: String!, $language: String!) {
+        jcr {
             result: nodeById(uuid: $uuid) {
                 displayName(language: $language)
                 width: property(name: "j:width") {
