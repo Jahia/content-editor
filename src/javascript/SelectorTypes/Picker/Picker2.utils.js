@@ -27,15 +27,15 @@ export const getDetailedPathArray = fullPath => {
 };
 
 export const getAccordionMode = fullPath => {
+    // Todo : Fix getAccordionMode - try to get an accordion matching path
     const split = fullPath.split('/');
     const modeIndex = 3;
 
     switch (split[modeIndex]) {
-        case 'files': return Constants.ACCORDION_ITEM_TYPES.MEDIA;
-        case 'pages': return Constants.ACCORDION_ITEM_TYPES.PAGES;
-        case 'content-folders': return Constants.ACCORDION_ITEM_TYPES.CONTENT_FOLDERS;
-        case 'categories': return Constants.ACCORDION_ITEM_TYPES.CATEGORY;
-        default: return Constants.ACCORDION_ITEM_TYPES.PAGES;
+        case 'files': return 'picker-' + Constants.ACCORDION_ITEM_TYPES.MEDIA;
+        case 'contents': return 'picker-' + Constants.ACCORDION_ITEM_TYPES.CONTENT_FOLDERS;
+        case 'categories': return 'picker-' + Constants.ACCORDION_ITEM_TYPES.CATEGORY;
+        default: return 'picker-' + Constants.ACCORDION_ITEM_TYPES.PAGES;
     }
 };
 
