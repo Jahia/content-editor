@@ -22,6 +22,7 @@ import {
 import {registry} from '@jahia/ui-extender';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {useNodeInfo} from '@jahia/data-helper';
+import RightPanel from './RightPanel';
 
 const Transition = props => {
     return <Slide direction="up" {...props}/>;
@@ -165,7 +166,8 @@ export const PickerDialog = ({isOpen, onClose, initialSelectedItem, editorContex
             onClose={onClose}
         >
             <Suspense fallback={<div>Loading picker ...</div>}>
-                <LayoutModule navigation={booleanValue(pickerConfig.pickerDialog.displayTree) && (
+                <LayoutModule className={styles.layout}
+                              navigation={booleanValue(pickerConfig.pickerDialog.displayTree) && (
                     <ContentNavigation
                         header={(
                             <div>
@@ -192,7 +194,8 @@ export const PickerDialog = ({isOpen, onClose, initialSelectedItem, editorContex
                         handleNavigationAction={(mode, path) => (batchActions([cePickerPath(path), cePickerMode(mode)]))}
                     />
                 )}
-                              content={<h1>Add content list here</h1>}
+                              content={<RightPanel/>}
+
                 />
             </Suspense>
         </Dialog>
