@@ -11,7 +11,7 @@ import {
     cePickerMode,
     cePickerAddSelection,
     cePickerSetSort,
-    cePickerSetTableViewMode
+    cePickerSetTableViewMode, cePickerSetTableViewType
 } from '~/SelectorTypes/Picker/Picker2.redux';
 import {getDetailedPathArray} from '~/SelectorTypes/Picker/Picker2.utils';
 import css from './RightPanel.scss';
@@ -46,6 +46,17 @@ const reduxActions = {
 const ContentLayout = React.lazy(() => import('@jahia/jcontent').then(module => ({default: module.ContentLayout})));
 const ContentTable = React.lazy(() => import('@jahia/jcontent').then(module => ({default: module.ContentTable})));
 const ViewModeSelector = React.lazy(() => import('@jahia/jcontent').then(module => ({default: module.ViewModeSelector})));
+const ContentTypeSelector = React.lazy(() => import('@jahia/jcontent').then(module => ({default: module.ContentTypeSelector})));
+
+const contentTypeSelectorProps = {
+    selector: state => state.contenteditor.picker.tableView,
+    reduxActions: {
+        setPageAction: page => cePickerSetPage(page),
+        setTableViewTypeAction: view => cePickerSetTableViewType(view)
+    }
+}
+
+const ContentTypeSelectorComp = props => React.createElement(ContentTypeSelector, {...props, ...contentTypeSelectorProps});
 
 const contentTableProps = {
     doubleClickNavigation: () => console.log('double clicking'),
@@ -81,7 +92,8 @@ const contentTableProps = {
         sort: {
             setSortAction: s => cePickerSetSort(s)
         }
-    }
+    },
+    ContentTypeSelector: ContentTypeSelectorComp
 }
 
 const viewModeSelectorProps = {
