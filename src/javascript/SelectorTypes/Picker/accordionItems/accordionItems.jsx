@@ -29,7 +29,7 @@ export const registerAccordionItems = registry => {
     if (contentFoldersItem) {
         registry.add(
             Constants.ACCORDION_ITEM_NAME,
-            `picker-${Constants.ACCORDION_ITEM_TYPES.CONTENT_FOLDERS}`,
+            `picker-${Constants.ACCORDION_ITEM_TYPES.CONTENTS}`,
             {...contentFoldersItem, targets: ['default:60', 'editorial:60', 'editoriallink:60', 'contentfolder:60']},
             renderer
         );
