@@ -2,7 +2,6 @@ import React, {Suspense, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Dialog, Slide} from '@material-ui/core';
 import styles from './PickerDialog.scss';
-import {LayoutModule} from '@jahia/moonstone';
 import {
     cePickerPath,
     cePickerSite,
@@ -22,6 +21,7 @@ import {
 import {registry} from '@jahia/ui-extender';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {useNodeInfo} from '@jahia/data-helper';
+import RightPanel from './RightPanel';
 
 const Transition = props => {
     return <Slide direction="up" {...props}/>;
@@ -165,35 +165,36 @@ export const PickerDialog = ({isOpen, onClose, initialSelectedItem, editorContex
             onClose={onClose}
         >
             <Suspense fallback={<div>Loading picker ...</div>}>
-                <LayoutModule navigation={booleanValue(pickerConfig.pickerDialog.displayTree) && (
-                    <ContentNavigation
-                        header={(
-                            <div>
-                                <SiteSwitcher selector={switcherSelector}
-                                              onSelectAction={siteNode => {
-                                                  const actions = [];
-                                                  actions.push(cePickerSite(siteNode.name));
-                                                  // Const accordionItems = registry.find({type: 'accordionItem', target: getItemTarget(pickerConfig.key)})
-                                                  //     .filter(accordionItem => !accordionItem.isEnabled || accordionItem.isEnabled(siteNode.name));
-                                                  // const selectedAccordion = accordionItems.find(item => item.key === mode) || accordionItems[0];
-                                                  // const newPath = selectedAccordion.defaultPath(siteNode.name);
-                                                  // actions.push(cePickerPath(newPath));
-                                                  // actions.push(cePickerMode(selectedAccordion.key));
-                                                  // actions.push(cePickerOpenPaths([...openPaths, ...getDetailedPathArray(newPath, siteNode.name)]));
+                <div className={styles.layout}>
+                    {booleanValue(pickerConfig.pickerDialog.displayTree) && (
+                        <ContentNavigation
+                            header={(
+                                <div>
+                                    <SiteSwitcher selector={switcherSelector}
+                                                  onSelectAction={siteNode => {
+                                                      const actions = [];
+                                                      actions.push(cePickerSite(siteNode.name));
+                                                      // Const accordionItems = registry.find({type: 'accordionItem', target: getItemTarget(pickerConfig.key)})
+                                                      //     .filter(accordionItem => !accordionItem.isEnabled || accordionItem.isEnabled(siteNode.name));
+                                                      // const selectedAccordion = accordionItems.find(item => item.key === mode) || accordionItems[0];
+                                                      // const newPath = selectedAccordion.defaultPath(siteNode.name);
+                                                      // actions.push(cePickerPath(newPath));
+                                                      // actions.push(cePickerMode(selectedAccordion.key));
+                                                      // actions.push(cePickerOpenPaths([...openPaths, ...getDetailedPathArray(newPath, siteNode.name)]));
 
-                                                  return batchActions(actions);
-                                              }}
-                                />
-                            </div>
-                        )}
-                        accordionItemTarget={getItemTarget(pickerConfig.key)}
-                        accordionItemProps={accordionItemProps}
-                        selector={selector}
-                        handleNavigationAction={(mode, path) => (batchActions([cePickerPath(path), cePickerMode(mode)]))}
-                    />
-                )}
-                              content={<h1>Add content list here</h1>}
-                />
+                                                      return batchActions(actions);
+                                                  }}
+                                    />
+                                </div>
+                            )}
+                            accordionItemTarget={getItemTarget(pickerConfig.key)}
+                            accordionItemProps={accordionItemProps}
+                            selector={selector}
+                            handleNavigationAction={(mode, path) => (batchActions([cePickerPath(path), cePickerMode(mode)]))}
+                        />
+                    )}
+                    <RightPanel pickerConfig={pickerConfig}/>
+                </div>
             </Suspense>
         </Dialog>
     );

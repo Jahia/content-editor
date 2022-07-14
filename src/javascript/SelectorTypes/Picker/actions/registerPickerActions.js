@@ -41,8 +41,6 @@ export const registerPickerActions = registry => {
         targets: ['content-editor/field/Picker:3']
     });
 
-    console.log('registry', registry);
-
     const fileUploadJContentAction = {
         ...registry.get('action', 'fileUpload'),
         targets: null // Remove target to avoid entry duplication

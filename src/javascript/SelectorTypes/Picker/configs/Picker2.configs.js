@@ -6,6 +6,13 @@ import {mergeDeep} from '~/SelectorTypes/Picker/Picker2.utils';
 const defaultEditorialListType = ['jmix:editorialContent', 'jnt:page', 'jmix:navMenuItem', 'jnt:contentList', 'jnt:contentFolder', 'nt:folder', 'jmix:siteContent'];
 
 export const registerPickerConfig = ceRegistry => {
+    ceRegistry.add(Constants.pickerConfig, 'default', mergeDeep({}, ContentPickerConfig, {
+        searchSelectorType: 'jmix:searchable',
+        listTypesTable: defaultEditorialListType,
+        selectableTypesTable: defaultEditorialListType,
+        showOnlyNodesWithTemplates: true
+    }));
+
     ceRegistry.add(Constants.pickerConfig, 'editoriallink', mergeDeep({}, ContentPickerConfig, {
         searchSelectorType: 'jmix:searchable',
         listTypesTable: defaultEditorialListType,
@@ -22,7 +29,8 @@ export const registerPickerConfig = ceRegistry => {
     ceRegistry.add(Constants.pickerConfig, 'image', mergeDeep({}, MediaPickerConfig, {
         searchSelectorType: 'jmix:image',
         listTypesTable: ['jmix:image'],
-        selectableTypesTable: ['jmix:image']
+        selectableTypesTable: ['jmix:image'],
+        typeFilter: ['jmix:image', 'jnt:folder']
     }));
 
     ceRegistry.add(Constants.pickerConfig, 'folder', mergeDeep({}, ContentPickerConfig, {
@@ -35,7 +43,8 @@ export const registerPickerConfig = ceRegistry => {
         },
         searchSelectorType: 'jnt:folder',
         listTypesTable: ['jnt:folder'],
-        selectableTypesTable: ['jnt:folder']
+        selectableTypesTable: ['jnt:folder'],
+        typeFilter: ['jnt:folder']
     }));
 
     ceRegistry.add(Constants.pickerConfig, mergeDeep({}, ContentPickerConfig, {

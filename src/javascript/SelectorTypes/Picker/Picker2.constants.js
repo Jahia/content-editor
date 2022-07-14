@@ -4,6 +4,7 @@ export const Constants = {
     ACCORDION_ITEM_TYPES: {
         PAGES: 'pages',
         CONTENT_FOLDERS: 'content-folders',
+        CONTENTS: 'contents',
         MEDIA: 'media',
         CATEGORY: 'category'
     }
