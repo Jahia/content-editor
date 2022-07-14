@@ -2,7 +2,6 @@ import React, {Suspense, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Dialog, Slide} from '@material-ui/core';
 import styles from './PickerDialog.scss';
-import {LayoutModule, LayoutApp} from '@jahia/moonstone';
 import {
     cePickerPath,
     cePickerSite,
@@ -194,7 +193,7 @@ export const PickerDialog = ({isOpen, onClose, initialSelectedItem, editorContex
                             handleNavigationAction={(mode, path) => (batchActions([cePickerPath(path), cePickerMode(mode)]))}
                         />
                     )}
-                    <RightPanel/>
+                    <RightPanel pickerConfig={pickerConfig}/>
                 </div>
             </Suspense>
         </Dialog>

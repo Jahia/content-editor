@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {
     cePickerPath,
     cePickerOpenPaths,
@@ -11,12 +10,15 @@ import {
     cePickerMode,
     cePickerAddSelection,
     cePickerSetSort,
-    cePickerSetTableViewMode, cePickerSetTableViewType
+    cePickerSetTableViewMode, cePickerSetTableViewType, cePickerClearSelection
 } from '~/SelectorTypes/Picker/Picker2.redux';
 import {getDetailedPathArray} from '~/SelectorTypes/Picker/Picker2.utils';
 import css from './RightPanel.scss';
+import {batchActions} from 'redux-batched-actions';
+import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
+import {allColumnData} from '~/SelectorTypes/Picker/reactTable/columns';
 
-const selector = state => ({
+const selector = pickerConfig => state => ({
     mode: state.contenteditor.picker.mode.replace('picker-', ''),
     siteKey: state.contenteditor.picker.site,
     path: state.contenteditor.picker.path,
@@ -24,14 +26,13 @@ const selector = state => ({
     previewSelection: null,
     previewState: 0,
     uilang: state.uilang,
-    // Todo figure this out proper
-    params: state => ({type: state.contenteditor.picker.mode.replace('picker-', '')}),
     filesMode: 'grid',
     pagination: state.contenteditor.picker.pagination,
     sort: state.contenteditor.picker.sort,
     openedPaths: state.contenteditor.picker.openPaths,
     selection: state.contenteditor.picker.selection,
-    tableView: state.contenteditor.picker.tableView
+    tableView: state.contenteditor.picker.tableView,
+    params: {typeFilter: pickerConfig.typeFilter, type: state.contenteditor.picker.mode.replace('picker-', '')}
 });
 
 const reduxActions = {
@@ -54,13 +55,13 @@ const contentTypeSelectorProps = {
         setPageAction: page => cePickerSetPage(page),
         setTableViewTypeAction: view => cePickerSetTableViewType(view)
     }
-}
+};
 
 const ContentTypeSelectorComp = props => React.createElement(ContentTypeSelector, {...props, ...contentTypeSelectorProps});
 
 const contentTableProps = {
-    doubleClickNavigation: () => console.log('double clicking'),
     ctxMenuActionKey: () => null,
+    isAllowUpload: false,
     selector: state => ({
         mode: state.contenteditor.picker.mode.replace('picker-', ''),
         siteKey: state.contenteditor.picker.site,
@@ -71,6 +72,10 @@ const contentTableProps = {
         selection: state.contenteditor.picker.selection,
         tableView: state.contenteditor.picker.tableView
     }),
+    columnData: {
+        allColumnData: allColumnData,
+        reducedColumnData: allColumnData
+    },
     reduxActions: {
         onPreviewSelectAction: () => ({}),
         setPathAction: (siteKey, path) => cePickerOpenPaths(getDetailedPathArray(path)),
@@ -85,16 +90,16 @@ const contentTableProps = {
     },
     reactTableActions: {
         rowSelection: {
-            switchSelectionAction: p => cePickerSwitchSelection(p),
-            removeSelectionAction: p => cePickerRemoveSelection(p),
-            addSelectionAction: p => cePickerAddSelection(p)
+            switchSelectionAction: p => batchActions([cePickerClearSelection(), cePickerAddSelection(p)]),
+            removeSelectionAction: () => ({}),
+            addSelectionAction: () => ({})
         },
         sort: {
             setSortAction: s => cePickerSetSort(s)
         }
     },
     ContentTypeSelector: ContentTypeSelectorComp
-}
+};
 
 const viewModeSelectorProps = {
     selector: state => ({
@@ -102,21 +107,22 @@ const viewModeSelectorProps = {
         viewMode: state.contenteditor.picker.tableView.viewMode
     }),
     setTableViewModeAction: mode => cePickerSetTableViewMode(mode)
-}
+};
 
-const RightPanel = () => {
+const RightPanel = ({pickerConfig}) => (
+    <div className={css.panel}>
+        <ViewModeSelector {...viewModeSelectorProps}/>
+        <ContentLayout hasGWTHandlers={false}
+                       refetcherKey="cePickerRightPanel"
+                       selector={selector(pickerConfig)}
+                       reduxActions={reduxActions}
+                       ContentLayout={props => React.createElement(ContentTable, {...props, ...contentTableProps})}
+        />
+    </div>
+);
 
-    return (
-        <div className={css.panel}>
-            <ViewModeSelector {...viewModeSelectorProps} />
-            <ContentLayout hasGWTHandlers={false}
-                           refetcherKey="cePickerRightPanel"
-                           selector={selector}
-                           reduxActions={reduxActions}
-                           ContentLayout={props => React.createElement(ContentTable, {...props, ...contentTableProps})}
-            />
-        </div>
-    )
+RightPanel.propTypes = {
+    pickerConfig: configPropType.isRequired
 };
 
 export default RightPanel;
