@@ -26,3 +26,9 @@
 .actions {
     gap: var(--spacing-medium);
 }
+.actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
