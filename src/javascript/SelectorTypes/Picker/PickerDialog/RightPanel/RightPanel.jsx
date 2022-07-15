@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
     cePickerPath,
     cePickerOpenPaths,
@@ -17,6 +18,9 @@ import css from './RightPanel.scss';
 import {batchActions} from 'redux-batched-actions';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 import {allColumnData} from '~/SelectorTypes/Picker/reactTable/columns';
+import {Button, Typography} from '@jahia/moonstone';
+import {shallowEqual, useSelector} from 'react-redux';
+import {useTranslation} from 'react-i18next';
 
 const selector = pickerConfig => state => ({
     mode: state.contenteditor.picker.mode.replace('picker-', ''),
@@ -109,20 +113,46 @@ const viewModeSelectorProps = {
     setTableViewModeAction: mode => cePickerSetTableViewMode(mode)
 };
 
-const RightPanel = ({pickerConfig}) => (
-    <div className={css.panel}>
-        <ViewModeSelector {...viewModeSelectorProps}/>
-        <ContentLayout hasGWTHandlers={false}
-                       refetcherKey="cePickerRightPanel"
-                       selector={selector(pickerConfig)}
-                       reduxActions={reduxActions}
-                       ContentLayout={props => React.createElement(ContentTable, {...props, ...contentTableProps})}
-        />
-    </div>
-);
+const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
+    const {selection} = useSelector(state => ({selection: state.contenteditor.picker.selection}), shallowEqual);
+    const {t} = useTranslation('content-editor');
+
+    return (
+        <div className={css.panel}>
+            <ViewModeSelector {...viewModeSelectorProps}/>
+            <ContentLayout hasGWTHandlers={false}
+                           refetcherKey="cePickerRightPanel"
+                           selector={selector(pickerConfig)}
+                           reduxActions={reduxActions}
+                           ContentLayout={props => React.createElement(ContentTable, {...props, ...contentTableProps})}
+            />
+            <div className={css.actions}>
+                <div className={css.actionCaption}>
+                    <Typography variant="caption">{t('Non-selectable items are not listed in this view')}</Typography>
+                </div>
+                <Button
+                    data-sel-picker-dialog-action="cancel"
+                    size="big"
+                    label={t('content-editor:label.contentEditor.edit.fields.modalCancel').toUpperCase()}
+                    onClick={onClose}
+                />
+                <Button
+                    data-sel-picker-dialog-action="done"
+                    disabled={selection.length === 0}
+                    color="accent"
+                    size="big"
+                    label={t('content-editor:label.contentEditor.edit.fields.modalDone').toUpperCase()}
+                    onClick={() => onItemSelection(selection[0])}
+                />
+            </div>
+        </div>
+    );
+};
 
 RightPanel.propTypes = {
-    pickerConfig: configPropType.isRequired
+    pickerConfig: configPropType.isRequired,
+    onItemSelection: PropTypes.func.isRequired,
+    onClose: PropTypes.func.isRequired
 };
 
 export default RightPanel;

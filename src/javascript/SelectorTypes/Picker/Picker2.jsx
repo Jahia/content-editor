@@ -51,6 +51,12 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
         onBlur: onBlur
     };
 
+    const onItemSelection = path => {
+        setDialogOpen(false);
+        onChange(path);
+        onBlur();
+    };
+
     return (
         <div className="flexFluid flexRow_nowrap alignCenter">
             <ReferenceCard
@@ -77,6 +83,7 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
                 initialSelectedItem={fieldData && fieldData.path}
                 accordionItemProps={parsedOptions.accordionItem}
                 onClose={() => setDialogOpen(false)}
+                onItemSelection={onItemSelection}
             />
         </div>
     );

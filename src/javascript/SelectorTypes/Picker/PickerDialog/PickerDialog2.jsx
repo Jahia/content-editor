@@ -47,7 +47,7 @@ function getSite(selectedItem) {
     return (pathElements[1] === 'sites') ? pathElements[2] : 'systemsite';
 }
 
-export const PickerDialog = ({isOpen, onClose, initialSelectedItem, editorContext, pickerConfig, accordionItemProps}) => {
+export const PickerDialog = ({isOpen, onClose, initialSelectedItem, editorContext, pickerConfig, accordionItemProps, onItemSelection}) => {
     const state = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
         path: state.contenteditor.picker.path,
@@ -193,7 +193,7 @@ export const PickerDialog = ({isOpen, onClose, initialSelectedItem, editorContex
                             handleNavigationAction={(mode, path) => (batchActions([cePickerPath(path), cePickerMode(mode)]))}
                         />
                     )}
-                    <RightPanel pickerConfig={pickerConfig}/>
+                    <RightPanel pickerConfig={pickerConfig} onClose={onClose} onItemSelection={onItemSelection}/>
                 </div>
             </Suspense>
         </Dialog>
@@ -206,5 +206,6 @@ PickerDialog.propTypes = {
     editorContext: PropTypes.object.isRequired,
     pickerConfig: configPropType.isRequired,
     initialSelectedItem: PropTypes.string,
-    accordionItemProps: PropTypes.object
+    accordionItemProps: PropTypes.object,
+    onItemSelection: PropTypes.func.isRequired
 };
