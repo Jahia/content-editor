@@ -1,4 +1,21 @@
 .panel {
     display: flex;
     flex-direction: column;
+    padding-bottom: var(--spacing-small);
+}
+
+.actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--spacing-small);
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.actionCaption {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
