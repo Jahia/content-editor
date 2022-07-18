@@ -4,23 +4,23 @@ import {useQuery} from '@apollo/react-hooks';
 import {MediaPickerFilledQuery} from './MediaPicker.gql-queries';
 import {encodeJCRPath} from '~/utils';
 
-const usePickerInputData = (path, editorContext) => {
+const usePickerInputData = (uuid, editorContext) => {
     const {data, error, loading} = useQuery(MediaPickerFilledQuery, {
         variables: {
-            path: path || '',
+            uuid: uuid || '',
             language: editorContext.lang
         },
-        skip: !path
+        skip: !uuid
     });
 
-    if (loading || error || !data || !path) {
-        return {error, loading, notFound: Boolean(path)};
+    if (loading || error || !data || !uuid) {
+        return {error, loading, notFound: Boolean(uuid)};
     }
 
     const imageData = data.jcr.result;
     const sizeInfo = (imageData.height && imageData.width) ? ` - ${parseInt(imageData.height.value, 10)}x${parseInt(imageData.width.value, 10)}px` : '';
     const fieldData = {
-        uuid: imageData.uuid,
+        uuid,
         url: `${
             window.contextJsParameters.contextPath
         }/files/default${encodeJCRPath(imageData.path)}?lastModified=${imageData.lastModified.value}&t=thumbnail2`,
