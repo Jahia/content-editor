@@ -55,10 +55,11 @@ describe('ContentPicker config', () => {
                 }
             }});
 
-            expect(usePickerInputData('florent/bestArticles', {lang: 'fr'})).toEqual({
+            expect(usePickerInputData('this-is-uuid', {lang: 'fr'})).toEqual({
                 loading: false,
                 error: undefined,
                 fieldData: {
+                    uuid: 'this-is-uuid',
                     info: 'article',
                     name: 'a cake',
                     path: 'florent/bestArticles',
