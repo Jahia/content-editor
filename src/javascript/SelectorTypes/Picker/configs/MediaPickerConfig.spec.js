@@ -56,10 +56,11 @@ describe('MediaPicker config', () => {
                 }
             }});
 
-            expect(usePickerInputData('placeholder.jpg', {lang: 'fr'})).toEqual({
+            expect(usePickerInputData('this-is-uuid', {lang: 'fr'})).toEqual({
                 loading: false,
                 error: undefined,
                 fieldData: {
+                    uuid: 'this-is-uuid',
                     info: 'image/jpeg - 1080x1920px',
                     name: 'a cake',
                     path: 'placeholder.jpg',
