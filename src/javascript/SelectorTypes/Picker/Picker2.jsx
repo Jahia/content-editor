@@ -8,11 +8,14 @@ import {PickerDialog} from './PickerDialog/PickerDialog2';
 import {DisplayAction} from '@jahia/ui-extender';
 import {getButtonRenderer} from '~/utils';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
+import {cePickerClearSelection} from '~/SelectorTypes/Picker/Picker2.redux';
+import {useDispatch} from 'react-redux';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
 export const Picker2 = ({field, value, editorContext, inputContext, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
+    const dispatch = useDispatch();
     const parsedOptions = {};
     field.selectorOptions.forEach(option => {
         set(parsedOptions, option.name, option.value);
@@ -57,6 +60,14 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
         onBlur();
     };
 
+    const toggleOpen = open => {
+        if (!open) {
+            dispatch(cePickerClearSelection());
+        }
+
+        setDialogOpen(open);
+    };
+
     return (
         <div className="flexFluid flexRow_nowrap alignCenter">
             <ReferenceCard
@@ -65,7 +76,7 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
                 emptyIcon={pickerConfig.pickerInput.emptyIcon}
                 labelledBy={`${field.name}-label`}
                 fieldData={fieldData}
-                onClick={() => setDialogOpen(!isDialogOpen)}
+                onClick={() => toggleOpen(!isDialogOpen)}
             />
             {inputContext.displayActions && value && (
                 <DisplayAction
@@ -82,7 +93,7 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
                 pickerConfig={pickerConfig}
                 initialSelectedItem={fieldData && fieldData.path}
                 accordionItemProps={parsedOptions.accordionItem}
-                onClose={() => setDialogOpen(false)}
+                onClose={() => toggleOpen(false)}
                 onItemSelection={onItemSelection}
             />
         </div>
