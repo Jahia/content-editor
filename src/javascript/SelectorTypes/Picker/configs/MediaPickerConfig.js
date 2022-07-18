@@ -43,6 +43,7 @@ export const MediaPickerConfig = {
         view: 'Thumbnail',
         dialogTitle: 'content-editor:label.contentEditor.edit.fields.imagePicker.modalTitle',
         searchPlaceholder: 'content-editor:label.contentEditor.edit.fields.imagePicker.searchPlaceholder',
-        displayTree: true
+        displayTree: true,
+        displaySiteSwitcher: true
     }
 };
