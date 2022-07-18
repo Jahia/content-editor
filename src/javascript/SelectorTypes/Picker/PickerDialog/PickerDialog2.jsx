@@ -48,14 +48,14 @@ function getSite(selectedItem) {
 }
 
 export const PickerDialog = ({
-                                 isOpen,
-                                 onClose,
-                                 initialSelectedItem,
-                                 editorContext,
-                                 pickerConfig,
-                                 accordionItemProps,
-                                 onItemSelection
-                             }) => {
+    isOpen,
+    onClose,
+    initialSelectedItem,
+    editorContext,
+    pickerConfig,
+    accordionItemProps,
+    onItemSelection
+}) => {
     const state = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
         path: state.contenteditor.picker.path,
