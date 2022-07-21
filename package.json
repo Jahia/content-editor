@@ -32,6 +32,9 @@
         },
         "apps": {
             "jahia": "configs/contentEditor.jsp"
+        },
+        "urlPatterns" : {
+            "jahia" : "/content-editor/(?<language>\\S*?)/(?<operation>\\S*?)/(?<nodeUUID>\\S*?)"
         }
     },
     "dependencies": {
