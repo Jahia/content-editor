@@ -9,13 +9,15 @@ import {
     cePickerSetPage,
     cePickerSetPageSize,
     cePickerMode,
-    cePickerSetTableViewMode, cePickerSetTableViewType
+    cePickerAddSelection,
+    cePickerSetSort,
+    cePickerSetTableViewMode, cePickerSetTableViewType, cePickerClearSelection
 } from '~/SelectorTypes/Picker/Picker2.redux';
 import {getDetailedPathArray} from '~/SelectorTypes/Picker/Picker2.utils';
 import css from './RightPanel.scss';
+import {batchActions} from 'redux-batched-actions';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 import {allColumnData} from '~/SelectorTypes/Picker/reactTable/columns';
-import {useSort, useRowSelection} from '~/SelectorTypes/Picker/reactTable/plugins';
 import {Button, Typography} from '@jahia/moonstone';
 import {shallowEqual, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
@@ -86,14 +88,18 @@ const contentTableProps = {
         setPageSizeAction: pageSize => cePickerSetPageSize(pageSize),
         removeSelectionAction: path => cePickerRemoveSelection(path)
     },
-    reactTableData: {
-        columnData: {
-            allColumnData: allColumnData,
-            reducedColumnData: allColumnData
+    reactTableSelectors: {
+        rowSelector: state => ({selection: state.contenteditor.picker.selection}),
+        sortSelector: state => state.contenteditor.picker.sort
+    },
+    reactTableActions: {
+        rowSelection: {
+            switchSelectionAction: p => batchActions([cePickerClearSelection(), cePickerAddSelection(p)]),
+            removeSelectionAction: () => ({}),
+            addSelectionAction: () => ({})
         },
-        hooks: {
-            useRowSelection: useRowSelection,
-            useSort: useSort
+        sort: {
+            setSortAction: s => cePickerSetSort(s)
         }
     },
     ContentTypeSelector: ContentTypeSelectorComp
@@ -136,7 +142,7 @@ const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
                     color="accent"
                     size="big"
                     label={t('content-editor:label.contentEditor.edit.fields.modalDone').toUpperCase()}
-                    onClick={() => onItemSelection(selection[0].uuid)}
+                    onClick={() => onItemSelection(selection[0])}
                 />
             </div>
         </div>

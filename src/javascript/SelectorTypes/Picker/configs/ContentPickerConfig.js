@@ -4,22 +4,22 @@ import {useQuery} from '@apollo/react-hooks';
 import {ContentPickerFilledQuery} from './ContentPicker.gql-queries';
 import {encodeJCRPath} from '~/utils';
 
-const usePickerInputData = (uuid, editorContext) => {
+const usePickerInputData = (path, editorContext) => {
     const {data, error, loading} = useQuery(ContentPickerFilledQuery, {
         variables: {
-            uuid: uuid || '',
+            path: path || '',
             language: editorContext.lang
         },
-        skip: !uuid
+        skip: !path
     });
 
-    if (loading || error || !data || !data.jcr || !uuid) {
-        return {error, loading, notFound: Boolean(uuid)};
+    if (loading || error || !data || !data.jcr || !path) {
+        return {error, loading, notFound: Boolean(path)};
     }
 
     const contentData = data.jcr.result;
     const fieldData = {
-        uuid,
+        uuid: contentData.uuid,
         path: contentData.path,
         url: encodeJCRPath(`${contentData.primaryNodeType.icon}.png`),
         name: contentData.displayName,
