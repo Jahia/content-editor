@@ -40,7 +40,6 @@ export const ContentPickerConfig = {
         view: 'List',
         dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalTitle',
         searchPlaceholder: 'content-editor:label.contentEditor.edit.fields.contentPicker.searchPlaceholder',
-        displayTree: true,
-        displaySiteSwitcher: true
+        displayTree: true
     }
 };

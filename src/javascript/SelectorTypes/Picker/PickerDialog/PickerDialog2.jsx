@@ -47,15 +47,7 @@ function getSite(selectedItem) {
     return (pathElements[1] === 'sites') ? pathElements[2] : 'systemsite';
 }
 
-export const PickerDialog = ({
-    isOpen,
-    onClose,
-    initialSelectedItem,
-    editorContext,
-    pickerConfig,
-    accordionItemProps,
-    onItemSelection
-}) => {
+export const PickerDialog = ({isOpen, onClose, initialSelectedItem, editorContext, pickerConfig, accordionItemProps, onItemSelection}) => {
     const state = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
         path: state.contenteditor.picker.path,
@@ -176,7 +168,7 @@ export const PickerDialog = ({
                 <div className={styles.layout}>
                     {booleanValue(pickerConfig.pickerDialog.displayTree) && (
                         <ContentNavigation
-                            header={(booleanValue(pickerConfig.pickerDialog.displaySiteSwitcher) && (
+                            header={(
                                 <div>
                                     <SiteSwitcher selector={switcherSelector}
                                                   onSelectAction={siteNode => {
@@ -194,7 +186,7 @@ export const PickerDialog = ({
                                                   }}
                                     />
                                 </div>
-                            ))}
+                            )}
                             accordionItemTarget={getItemTarget(pickerConfig.key)}
                             accordionItemProps={accordionItemProps}
                             selector={selector}
