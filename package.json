@@ -33,9 +33,9 @@
         "apps": {
             "jahia": "configs/contentEditor.jsp"
         },
-        "urlPatterns" : [
-            "/(?<appName>\\S*?)/content-editor/(?<language>\\S*?)/(?<operation>\\S*?)/(?<nodeUUID>\\S*?)"
-        ]
+        "urlPatterns" : {
+            "jahia" : "/content-editor/(?<language>\\S*?)/(?<operation>\\S*?)/(?<nodeUUID>\\S*?)"
+        }
     },
     "dependencies": {
         "@apollo/react-hooks": "^3.1.5",
