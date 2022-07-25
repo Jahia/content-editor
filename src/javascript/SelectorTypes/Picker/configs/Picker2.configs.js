@@ -9,28 +9,27 @@ export const registerPickerConfig = ceRegistry => {
     ceRegistry.add(Constants.pickerConfig, 'default', mergeDeep({}, ContentPickerConfig, {
         searchSelectorType: 'jmix:searchable',
         listTypesTable: defaultEditorialListType,
-        selectableTypesTable: defaultEditorialListType,
+        selectableTypesTable: ['jnt:content', 'jnt:file', 'jnt:page', 'jmix:navMenuItem'],
         showOnlyNodesWithTemplates: true
     }));
 
     ceRegistry.add(Constants.pickerConfig, 'editoriallink', mergeDeep({}, ContentPickerConfig, {
         searchSelectorType: 'jmix:searchable',
         listTypesTable: defaultEditorialListType,
-        selectableTypesTable: defaultEditorialListType,
+        selectableTypesTable: ['jnt:page', 'jmix:mainResource'],
         showOnlyNodesWithTemplates: true
     }));
 
     ceRegistry.add(Constants.pickerConfig, 'editorial', mergeDeep({}, ContentPickerConfig, {
         searchSelectorType: 'jmix:searchable',
         listTypesTable: defaultEditorialListType,
-        selectableTypesTable: defaultEditorialListType
+        selectableTypesTable: ['jnt:page', 'jnt:contentList', 'jnt:contentFolder', 'jmix:siteContent']
     }));
 
     ceRegistry.add(Constants.pickerConfig, 'image', mergeDeep({}, MediaPickerConfig, {
         searchSelectorType: 'jmix:image',
         listTypesTable: ['jmix:image'],
-        selectableTypesTable: ['jmix:image'],
-        typeFilter: ['jmix:image', 'jnt:folder']
+        selectableTypesTable: ['jmix:image']
     }));
 
     ceRegistry.add(Constants.pickerConfig, 'folder', mergeDeep({}, ContentPickerConfig, {
@@ -43,11 +42,10 @@ export const registerPickerConfig = ceRegistry => {
         },
         searchSelectorType: 'jnt:folder',
         listTypesTable: ['jnt:folder'],
-        selectableTypesTable: ['jnt:folder'],
-        typeFilter: ['jnt:folder']
+        selectableTypesTable: ['jnt:folder']
     }));
 
-    ceRegistry.add(Constants.pickerConfig, mergeDeep({}, ContentPickerConfig, {
+    ceRegistry.add(Constants.pickerConfig, 'contentfolder', mergeDeep({}, ContentPickerConfig, {
         pickerDialog: {
             dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalFolderTitle'
         },
