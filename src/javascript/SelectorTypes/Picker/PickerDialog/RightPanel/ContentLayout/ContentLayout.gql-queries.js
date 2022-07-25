@@ -240,7 +240,7 @@ class FilesQueryHandler {
             displayLanguage: uilang,
             offset: pagination.currentPage * pagination.pageSize,
             limit: pagination.pageSize,
-            typeFilter: params.typeFilter,
+            typeFilter: params.typeFilter.media,
             fieldSorter: sort.orderBy === '' ? null : {
                 sortType: sort.order === '' ? null : (sort.order === 'DESC' ? 'ASC' : 'DESC'),
                 fieldName: sort.orderBy === '' ? null : sort.orderBy,

@@ -1,6 +1,12 @@
 import React from 'react';
 import {AccordionItem} from '@jahia/moonstone';
-import {cePickerClosePaths, cePickerOpenPaths, cePickerPath} from '~/SelectorTypes/Picker/Picker2.redux';
+import {
+    cePickerClearSelection,
+    cePickerClosePaths,
+    cePickerOpenPaths,
+    cePickerPath
+} from '~/SelectorTypes/Picker/Picker2.redux';
+import {batchActions} from 'redux-batched-actions';
 
 const ContentTree = React.lazy(() => import('@jahia/jcontent').then(module => ({default: module.ContentTree})));
 
@@ -12,7 +18,7 @@ const selector = state => ({
 });
 
 const actions = {
-    setPathAction: path => cePickerPath(path),
+    setPathAction: path => batchActions([cePickerClearSelection(), cePickerPath(path)]),
     openPathAction: path => cePickerOpenPaths([path]),
     closePathAction: path => cePickerClosePaths([path])
 };
