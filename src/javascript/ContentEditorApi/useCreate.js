@@ -3,6 +3,46 @@ import {Constants} from '~/ContentEditor.constants';
 import {useCallback} from 'react';
 import {useApolloClient} from '@apollo/react-hooks';
 
+const create = async (setEditorConfig, setContentTypeSelectorConfig, client, data) => {
+    const {
+        path, name, uilang, nodeTypes, excludedNodeTypes, includeSubTypes, ...editorConfig
+    } = data;
+
+    const creatableNodeTypes = await getCreatableNodetypes(
+        client,
+        nodeTypes,
+        name,
+        includeSubTypes,
+        path,
+        uilang,
+        (excludedNodeTypes && excludedNodeTypes.length) > 0 ? excludedNodeTypes : ['jmix:studioOnly', 'jmix:hiddenType'],
+        []
+    );
+
+    // Only one type allowed, open directly CE
+    if (creatableNodeTypes.length === 1) {
+        setEditorConfig({
+            name,
+            uilang,
+            contentType: creatableNodeTypes[0].name,
+            mode: Constants.routes.baseCreateRoute,
+            ...editorConfig
+        });
+    }
+
+    // Multiple nodetypes allowed, open content type selector
+    if (creatableNodeTypes.length > 1) {
+        setContentTypeSelectorConfig({
+            creatableNodeTypes: creatableNodeTypes.map(nodeType => nodeType.name),
+            includeSubTypes,
+            name,
+            path,
+            uilang,
+            ...editorConfig
+        });
+    }
+};
+
 export const useCreate = (setEditorConfig, setContentTypeSelectorConfig) => {
     const client = useApolloClient();
     /**
@@ -22,48 +62,12 @@ export const useCreate = (setEditorConfig, setContentTypeSelectorConfig) => {
      * @param isFullscreen open editor in fullscreen
      */
     return useCallback(async (uuid, path, site, lang, uilang, nodeTypes, excludedNodeTypes, includeSubTypes, name, isFullscreen, createCallback, onClosedCallback) => {
-        const creatableNodeTypes = await getCreatableNodetypes(
-            client,
-            nodeTypes,
-            name,
-            includeSubTypes,
-            path,
-            uilang,
-            (excludedNodeTypes && excludedNodeTypes.length) > 0 ? excludedNodeTypes : ['jmix:studioOnly', 'jmix:hiddenType'],
-            []
-        );
-
-        // Only one type allowed, open directly CE
-        if (creatableNodeTypes.length === 1) {
-            setEditorConfig({
-                name,
-                uuid,
-                site,
-                lang,
-                uilang,
-                contentType: creatableNodeTypes[0].name,
-                mode: Constants.routes.baseCreateRoute,
-                isFullscreen,
-                createCallback,
-                onClosedCallback
-            });
+        if (typeof uuid === 'object') {
+            return create(setEditorConfig, setContentTypeSelectorConfig, client, uuid);
         }
 
-        // Multiple nodetypes allowed, open content type selector
-        if (creatableNodeTypes.length > 1) {
-            setContentTypeSelectorConfig({
-                creatableNodeTypes: creatableNodeTypes.map(nodeType => nodeType.name),
-                includeSubTypes,
-                name,
-                uuid,
-                path,
-                site,
-                lang,
-                uilang,
-                isFullscreen,
-                createCallback,
-                onClosedCallback
-            });
-        }
+        return create(setEditorConfig, setContentTypeSelectorConfig, client, {
+            uuid, path, site, lang, uilang, nodeTypes, excludedNodeTypes, includeSubTypes, name, isFullscreen, createCallback, onClosedCallback
+        });
     }, [client, setEditorConfig, setContentTypeSelectorConfig]);
 };

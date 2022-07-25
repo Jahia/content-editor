@@ -8,14 +8,16 @@ export const ContentTypeSelectorModal = ({
     setContentTypeSelectorConfig,
     setEditorConfig
 }) => {
+    const {creatableNodeTypes, includeSubTypes, name, path, uilang, ...editorConfig} = contentTypeSelectorConfig;
+
     return (
         <CreateNewContentDialog
             open
-            childNodeName={contentTypeSelectorConfig.name}
-            nodeTypes={contentTypeSelectorConfig.creatableNodeTypes}
-            includeSubTypes={contentTypeSelectorConfig.includeSubTypes}
-            parentPath={contentTypeSelectorConfig.path}
-            uilang={contentTypeSelectorConfig.uilang}
+            childNodeName={name}
+            nodeTypes={creatableNodeTypes}
+            includeSubTypes={includeSubTypes}
+            parentPath={path}
+            uilang={uilang}
             onClose={() => {
                 setContentTypeSelectorConfig(false);
             }}
@@ -25,17 +27,10 @@ export const ContentTypeSelectorModal = ({
             onCreateContent={contentType => {
                 setContentTypeSelectorConfig(false);
                 setEditorConfig({
-                    name: contentTypeSelectorConfig.name,
-                    uuid: contentTypeSelectorConfig.uuid,
-                    site: contentTypeSelectorConfig.site,
-                    uilang: contentTypeSelectorConfig.uilang,
-                    lang: contentTypeSelectorConfig.lang,
-                    isFullscreen: contentTypeSelectorConfig.isFullscreen,
+                    name: name,
+                    uilang: uilang,
                     contentType: contentType.name,
-                    mode: Constants.routes.baseCreateRoute,
-                    createCallback: contentTypeSelectorConfig.createCallback,
-                    onClosedCallback: contentTypeSelectorConfig.onClosedCallback
-
+                    ...editorConfig
                 });
             }}
         />
