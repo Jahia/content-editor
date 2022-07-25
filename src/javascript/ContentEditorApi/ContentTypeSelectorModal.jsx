@@ -1,5 +1,4 @@
 import {CreateNewContentDialog} from '~/actions/jcontent/createContent/CreateNewContentDialog';
-import {Constants} from '~/ContentEditor.constants';
 import React from 'react';
 import PropTypes from 'prop-types';
 
