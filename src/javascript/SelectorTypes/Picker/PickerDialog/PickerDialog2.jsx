@@ -7,7 +7,7 @@ import {
     cePickerSite,
     cePickerMode,
     cePickerOpenPaths,
-    cePickerContextSite
+    cePickerContextSite, cePickerClearSelection
 } from '~/SelectorTypes/Picker/Picker2.redux';
 import {getItemTarget} from '~/SelectorTypes/Picker/accordionItems/accordionItems';
 import {batchActions} from 'redux-batched-actions';
@@ -198,7 +198,7 @@ export const PickerDialog = ({
                             accordionItemTarget={getItemTarget(pickerConfig.key)}
                             accordionItemProps={accordionItemProps}
                             selector={selector}
-                            handleNavigationAction={(mode, path) => (batchActions([cePickerPath(path), cePickerMode(mode)]))}
+                            handleNavigationAction={(mode, path) => (batchActions([cePickerClearSelection(), cePickerPath(path), cePickerMode(mode)]))}
                         />
                     )}
                     <RightPanel pickerConfig={pickerConfig} onClose={onClose} onItemSelection={onItemSelection}/>

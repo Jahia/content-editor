@@ -1,5 +1,6 @@
 import {createActions, handleActions} from 'redux-actions';
 import {COMBINED_REDUCERS_NAME} from '~/registerReducer';
+import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 
 export const {
     cePickerSite,
@@ -51,8 +52,8 @@ export const registerPickerReducer = registry => {
         },
         selection: [],
         tableView: {
-            viewMode: 'flatList',
-            viewType: 'content'
+            viewMode: Constants.tableView.mode.LIST,
+            viewType: Constants.tableView.type.CONTENT
         }
     };
 
