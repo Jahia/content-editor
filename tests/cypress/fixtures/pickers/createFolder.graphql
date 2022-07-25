@@ -1,0 +1,13 @@
+mutation CreateFolderMutation($parentPath: String!, $folderName: String!) {
+    jcr {
+        addNode(
+            parentPathOrId: $parentPath
+            name: $folderName
+            primaryNodeType: "jnt:folder"
+        ) {
+            node {
+                uuid
+            }
+        }
+    }
+}

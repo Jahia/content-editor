@@ -1,0 +1,7 @@
+mutation DeleteFolder($pathOrId: String!) {
+    jcr {
+        mutateNode(pathOrId:$pathOrId) {
+            delete
+        }
+    }
+}
