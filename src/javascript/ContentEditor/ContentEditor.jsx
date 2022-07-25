@@ -10,6 +10,10 @@ import {ContentEditorConfigContextProvider, ContentEditorContextProvider} from '
 import {Constants} from '~/ContentEditor.constants';
 import {DndProvider} from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
+import {useFormDefinition} from '~/contexts/ContentEditor/useFormDefinitions';
+
+const useEditFormDefinition = () => useFormDefinition(EditFormQuery, adaptEditFormData);
+const useCreateFormDefinition = () => useFormDefinition(CreateFormQuery, adaptCreateFormData);
 
 export const ContentEditor = ({name, mode, uuid, lang, uilang, site, contentType, envProps}) => {
     const contentEditorConfig = {
@@ -27,12 +31,12 @@ export const ContentEditor = ({name, mode, uuid, lang, uilang, site, contentType
         <ContentEditorConfigContextProvider config={contentEditorConfig}>
             <DndProvider backend={Backend}>
                 { mode === 'edit' && (
-                    <ContentEditorContextProvider formQuery={EditFormQuery} formDataAdapter={adaptEditFormData}>
+                    <ContentEditorContextProvider useFormDefinition={envProps.useFormDefinition || useEditFormDefinition}>
                         <Edit/>
                     </ContentEditorContextProvider>
                 )}
                 { mode === 'create' && (
-                    <ContentEditorContextProvider formQuery={CreateFormQuery} formDataAdapter={adaptCreateFormData}>
+                    <ContentEditorContextProvider useFormDefinition={envProps.useFormDefinition || useCreateFormDefinition}>
                         <Create/>
                     </ContentEditorContextProvider>
                 )}

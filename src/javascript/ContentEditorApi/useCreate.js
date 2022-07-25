@@ -41,7 +41,6 @@ export const useCreate = (setEditorConfig, setContentTypeSelectorConfig) => {
                 site,
                 lang,
                 uilang,
-                initLang: lang,
                 contentType: creatableNodeTypes[0].name,
                 mode: Constants.routes.baseCreateRoute,
                 isFullscreen,

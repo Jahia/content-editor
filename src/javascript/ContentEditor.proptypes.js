@@ -28,6 +28,7 @@ export const FieldSetWithNodeCheckPropTypes = PropTypes.shape({
 
 export const SectionPropTypes = PropTypes.shape({
     name: PropTypes.string,
+    hideHeader: PropTypes.bool,
     displayName: PropTypes.string.isRequired,
     fieldSets: PropTypes.arrayOf(FieldSetPropTypes)
 });

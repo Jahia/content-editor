@@ -1,14 +1,13 @@
 import React from 'react';
-import {useContentEditorHistory} from '~/contexts';
 import {useNodeChecks} from '@jahia/data-helper';
 import * as PropTypes from 'prop-types';
 import {useSelector} from 'react-redux';
-import {Constants} from '~/ContentEditor.constants';
 import {useTranslation} from 'react-i18next';
 import {useContentEditorApiContext} from '~/contexts/ContentEditorApi/ContentEditorApi.context';
+import {RenameLayout} from '~/actions/jcontent/renameContent/RenameLayout';
+import {useRenameFormDefinition} from '~/actions/jcontent/renameContent/useRenameFormDefinition';
 
-export const EditContent = ({path, isModal, isFullscreen, editCallback, render: Render, loading: Loading, ...otherProps}) => {
-    const {redirect} = useContentEditorHistory();
+export const RenameContent = ({path, editCallback, render: Render, loading: Loading, ...otherProps}) => {
     useTranslation('content-editor');
     const api = useContentEditorApiContext();
     const {language, uilang, site} = useSelector(state => ({language: state.language, site: state.site, uilang: state.uilang}));
@@ -24,19 +23,33 @@ export const EditContent = ({path, isModal, isFullscreen, editCallback, render: 
     return (
         <Render {...otherProps}
                 isVisible={res.checksResult}
-                onClick={() => isModal ? api.edit(res.node.uuid, site, language, uilang, isFullscreen, editCallback) : redirect({language, mode: Constants.routes.baseEditRoute, uuid: res.node.uuid})}
+                onClick={() => {
+                    api.edit({
+                        uuid: res.node.uuid,
+                        site,
+                        lang: language,
+                        uilang,
+                        isFullscreen: false,
+                        editCallback,
+                        dialogProps: {
+                            classes: {}
+                        },
+                        layout: RenameLayout,
+                        useFormDefinition: useRenameFormDefinition
+                    });
+                }}
         />
     );
 };
 
-EditContent.defaultProps = {
+RenameContent.defaultProps = {
     loading: undefined,
     isModal: false,
     isFullscreen: false,
     editCallback: undefined
 };
 
-EditContent.propTypes = {
+RenameContent.propTypes = {
     path: PropTypes.string.isRequired,
     isModal: PropTypes.bool,
     isFullscreen: PropTypes.bool,
@@ -45,6 +58,6 @@ EditContent.propTypes = {
     loading: PropTypes.func
 };
 
-export const editContentAction = {
-    component: EditContent
+export const renameContentAction = {
+    component: RenameContent
 };

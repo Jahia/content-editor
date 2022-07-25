@@ -1,9 +1,7 @@
 import React, {useCallback, useContext, useState} from 'react';
 import {useNotifications} from '@jahia/react-material';
-import {useFormDefinition} from './useFormDefinitions';
 import {useSiteInfo} from '@jahia/data-helper';
 import * as PropTypes from 'prop-types';
-import {Constants} from '~/ContentEditor.constants';
 import {useTranslation} from 'react-i18next';
 import {ApolloCacheFlushOnGWTSave} from './ApolloCacheFlushOnGWTSave';
 import {ContentEditorSectionContextProvider} from '../ContentEditorSection';
@@ -15,7 +13,7 @@ export const ContentEditorContext = React.createContext({});
 
 export const useContentEditorContext = () => useContext(ContentEditorContext);
 
-export const ContentEditorContextProvider = ({formQuery, formDataAdapter, children}) => {
+export const ContentEditorContextProvider = ({useFormDefinition, children}) => {
     const notificationContext = useNotifications();
     const {t} = useTranslation('content-editor');
     const [errors, setErrors] = useState(null);
@@ -39,26 +37,19 @@ export const ContentEditorContextProvider = ({formQuery, formDataAdapter, childr
         }));
     }, [setI18nContext]);
 
-    const {lang, uilang, site, uuid, contentType, mode, name} = contentEditorConfigContext;
+    const {lang, uilang, site, mode, name} = contentEditorConfigContext;
 
     // Get user navigator locale preference
     const browserLang = navigator.language;
 
-    // Get Data
-    const formQueryParams = {
-        uuid,
-        language: lang,
-        uilang: Constants.supportedLocales.includes(uilang) ? uilang : Constants.defaultLocale,
-        primaryNodeType: contentType,
-        writePermission: `jcr:modifyProperties_default_${lang}`,
-        childrenFilterTypes: Constants.childrenFilterTypes
-    };
     const {
         loading,
         error,
         data: formDefinition,
-        refetch: refetchFormData
-    } = useFormDefinition(formQuery, formQueryParams, formDataAdapter, t, contentEditorConfigContext);
+        refetch: refetchFormData,
+        formQueryParams
+    } = useFormDefinition();
+
     const {
         nodeData,
         initialValues,
@@ -147,8 +138,7 @@ export const ContentEditorContextProvider = ({formQuery, formDataAdapter, childr
 };
 
 ContentEditorContextProvider.propTypes = {
-    formQuery: PropTypes.object.isRequired,
-    formDataAdapter: PropTypes.func.isRequired,
+    useFormDefinition: PropTypes.func.isRequired,
     children: PropTypes.node.isRequired
 };
 

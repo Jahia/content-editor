@@ -29,7 +29,6 @@ export const ContentTypeSelectorModal = ({
                     uuid: contentTypeSelectorConfig.uuid,
                     site: contentTypeSelectorConfig.site,
                     uilang: contentTypeSelectorConfig.uilang,
-                    initLang: contentTypeSelectorConfig.lang,
                     lang: contentTypeSelectorConfig.lang,
                     isFullscreen: contentTypeSelectorConfig.isFullscreen,
                     contentType: contentType.name,

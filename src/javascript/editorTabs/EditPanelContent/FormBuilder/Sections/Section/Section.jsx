@@ -31,6 +31,12 @@ export const Section = ({section, isExpanded, onClick}) => {
 
     const sectionName = section.displayName !== '' ? section.displayName : section.name;
 
+    if (section.hideHeader) {
+        return (
+            <FieldSetsDisplay fieldSets={fieldSets}/>
+        );
+    }
+
     return (
         <Collapsible data-sel-content-editor-fields-group={sectionName}
                      label={sectionName}

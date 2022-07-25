@@ -8,6 +8,7 @@ import {ContentEditorHistoryContextProvider} from '~/contexts';
 import {registerSelectorTypes} from '~/SelectorTypes';
 import {pcNavigateTo} from '~/redux/pagecomposer.redux-actions';
 import {registerReducer} from './registerReducer';
+import {ContentEditorApiContextProvider} from '~/contexts/ContentEditorApi/ContentEditorApi.context';
 
 export function register() {
     registry.add('app', 'content-editor-history-context', {
@@ -17,7 +18,7 @@ export function register() {
 
     registry.add('app', 'content-editor-api', {
         targets: ['root:16.5'],
-        render: next => <><ContentEditorApi/>{next}</>
+        render: next => <ContentEditorApiContextProvider><ContentEditorApi/>{next}</ContentEditorApiContextProvider>
     });
 
     registerActions(registry);

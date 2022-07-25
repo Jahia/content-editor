@@ -10,6 +10,8 @@ import {Button, Close} from '@jahia/moonstone';
 import {useNotifications} from '@jahia/react-material';
 import {useTranslation} from 'react-i18next';
 import {OnCloseConfirmationDialog} from './OnCloseConfirmationDialog';
+import {EditPanelCompact} from '~/ContentEditor/EditPanel/EditPanelCompact';
+import {EditPanelFullscreen} from '~/ContentEditor/EditPanel/EditPanelFullscreen';
 
 function triggerEvents(nodeUuid, operator) {
     // Refresh contentEditorEventHandlers
@@ -134,7 +136,9 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
             });
         },
         isModal: true,
+        useFormDefinition: editorConfig?.useFormDefinition,
         isFullscreen: editorConfig?.isFullscreen,
+        layout: editorConfig?.layout || (editorConfig?.isFullscreen ? EditPanelFullscreen : EditPanelCompact),
         confirmationDialog: <OnCloseConfirmationDialog setEditorConfig={setEditorConfig} openDialog={openDialog}/>
     };
 
@@ -155,6 +159,7 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
                 classes={classes}
                 onClose={() => openDialog.current && openDialog.current()}
                 onRendered={() => window.focus()}
+                {...editorConfig.dialogProps}
         >
             <ContentEditor mode={editorConfig.mode}
                            uuid={editorConfig.uuid}
@@ -170,6 +175,21 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
 };
 
 ContentEditorModal.propTypes = {
-    editorConfig: PropTypes.object.isRequired,
+    editorConfig: PropTypes.shape({
+        mode: PropTypes.oneOf([Constants.routes.baseCreateRoute, Constants.routes.baseEditRoute]).isRequired,
+        uuid: PropTypes.string,
+        lang: PropTypes.string,
+        uilang: PropTypes.string,
+        site: PropTypes.string,
+        contentType: PropTypes.string,
+        name: PropTypes.string,
+        isFullscreen: PropTypes.bool,
+        createCallback: PropTypes.func,
+        editCallback: PropTypes.func,
+        onClosedCallback: PropTypes.func,
+        useFormDefinition: PropTypes.func,
+        dialogProps: PropTypes.object,
+        layout: PropTypes.object
+    }).isRequired,
     setEditorConfig: PropTypes.func.isRequired
 };

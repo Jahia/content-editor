@@ -5,14 +5,19 @@ import {useCreate} from './useCreate';
 import {FullScreenError} from './FullScreenError';
 import {ContentTypeSelectorModal} from './ContentTypeSelectorModal';
 import {ContentEditorModal} from './ContentEditorModal';
+import {useContentEditorApiContext} from '~/contexts/ContentEditorApi/ContentEditorApi.context';
 
 export const ContentEditorApi = () => {
     const [editorConfig, setEditorConfig] = useState(false);
     const [contentTypeSelectorConfig, setContentTypeSelectorConfig] = useState(false);
 
+    let context = useContentEditorApiContext();
+    context.edit = useEdit(setEditorConfig);
+    context.create = useCreate(setEditorConfig, setContentTypeSelectorConfig);
+
     window.CE_API = window.CE_API || {};
-    window.CE_API.edit = useEdit(setEditorConfig);
-    window.CE_API.create = useCreate(setEditorConfig, setContentTypeSelectorConfig);
+    window.CE_API.edit = context.edit;
+    window.CE_API.create = context.create;
 
     const editorConfigDefined = Boolean(editorConfig);
     const editorConfigLang = editorConfig.lang;

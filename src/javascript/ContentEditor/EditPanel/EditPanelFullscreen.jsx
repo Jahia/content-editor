@@ -12,11 +12,11 @@ import {EditPanelHeader} from './EditPanelHeader';
 
 export const EditPanelFullscreen = ({title}) => {
     const [activeTab, setActiveTab] = useState(Constants.editPanel.editTab);
-    const {nodeData, lang, mode} = useContentEditorContext();
+    const {mode} = useContentEditorContext();
 
     // Without edit tab, no content editor
     const tabs = registry.find({target: 'editHeaderTabsActions'});
-    const EditTabComponent = tabs.find(tab => tab.value === Constants.editPanel.editTab).displayableComponent;
+    const EditPanelContent = tabs.find(tab => tab.value === Constants.editPanel.editTab).displayableComponent;
     const OtherTabComponent = tabs.find(tab => tab.value === activeTab && tab.value !== Constants.editPanel.editTab)?.displayableComponent;
 
     return (
@@ -31,19 +31,19 @@ export const EditPanelFullscreen = ({title}) => {
         >
             <WindowListeners/>
             <div className={clsx(
-                activeTab === Constants.editPanel.editTab ? styles.tab : styles.hideTab,
+                activeTab === Constants.editPanel.editTab ? 'flexFluid' : styles.hideTab,
                 'flexCol'
             )}
             >
-                <EditTabComponent nodePath={nodeData.path} lang={lang}/>
+                <EditPanelContent/>
             </div>
             {OtherTabComponent && (
                 <div className={clsx(
-                    Constants.editPanel.editTab === activeTab ? styles.hideTab : styles.tab,
+                    Constants.editPanel.editTab === activeTab ? styles.hideTab : 'flexFluid',
                     'flexCol'
                 )}
                 >
-                    <OtherTabComponent nodePath={nodeData.path} lang={lang}/>
+                    <OtherTabComponent/>
                 </div>
             )}
         </MainLayout>
