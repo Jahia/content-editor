@@ -167,6 +167,7 @@ export const PickerDialog = ({
     return (
         <Dialog
             fullScreen
+            data-sel-role="picker-dialog"
             classes={{root: styles.rootDialog}}
             open={isOpen}
             TransitionComponent={Transition}

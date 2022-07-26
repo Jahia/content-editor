@@ -1,5 +1,5 @@
 import { ContentEditor } from '../page-object'
-import {Button, getComponentByRole} from "@jahia/cypress";
+import { Button, getComponentByRole } from '@jahia/cypress'
 
 describe('Create content tests', { retries: 10 }, () => {
     let contentEditor: ContentEditor

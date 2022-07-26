@@ -1,0 +1,6 @@
+mutation deleteContent {
+    jcr {
+        content: deleteNode(pathOrId: "/sites/digitall/contents/ce-picker-contents"),
+        file: deleteNode(pathOrId: "/sites/digitall/files/ce-picker-files")
+    }
+}

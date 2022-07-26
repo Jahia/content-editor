@@ -20,6 +20,14 @@ export class PageComposer extends BasePage {
         return this
     }
 
+    createContent(contentType: string) {
+        this.openCreateContent()
+            .getContentTypeSelector()
+            .searchForContentType(contentType)
+            .selectContentType(contentType)
+            .create()
+    }
+
     refresh() {
         cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
             cy.get('.window-actions-refresh').click()
