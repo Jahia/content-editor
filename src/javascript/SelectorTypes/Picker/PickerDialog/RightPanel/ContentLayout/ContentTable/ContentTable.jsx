@@ -4,8 +4,8 @@ import * as _ from 'lodash';
 import {useTranslation} from 'react-i18next';
 import {useDispatch, useSelector, shallowEqual} from 'react-redux';
 import {Table, TableBody, TablePagination, TableRow} from '@jahia/moonstone';
-import {useExpanded, useTable} from 'react-table';
-import {useRowSelection, useSort} from '~/SelectorTypes/Picker/reactTable/plugins';
+import {useTable} from 'react-table';
+import {useRowSelection, useSort, useExpanded} from '~/SelectorTypes/Picker/reactTable/plugins';
 import {allColumnData} from '~/SelectorTypes/Picker/reactTable/columns';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {
