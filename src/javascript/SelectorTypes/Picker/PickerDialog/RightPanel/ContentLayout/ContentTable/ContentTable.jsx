@@ -214,7 +214,7 @@ export const ContentTable = ({
                     </TableBody>
                 </Table>
             </UploadTransformComponent>
-            {(!isStructuredView || mode === Constants.mode.SEARCH || mode === Constants.mode.MEDIA) &&
+            {!isStructuredView &&
             <TablePagination totalNumberOfRows={totalCount}
                              currentPage={pagination.currentPage + 1}
                              rowsPerPage={pagination.pageSize}

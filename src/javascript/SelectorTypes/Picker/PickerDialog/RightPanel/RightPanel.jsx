@@ -26,7 +26,7 @@ const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
     return (
         <div className={css.panel}>
             <div className={css.topBar}>
-                {mode !== Constants.mode.MEDIA && mode !== Constants.mode.SEARCH && <ViewModeSelector {...viewModeSelectorProps}/>}
+                {mode !== Constants.mode.SEARCH && <ViewModeSelector {...viewModeSelectorProps}/>}
             </div>
             <ContentLayout pickerConfig={pickerConfig}/>
             <div className={css.actions}>
