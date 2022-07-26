@@ -1,4 +1,5 @@
 # This workflow trigger a Sonar analysis on the current branch
+# 
 # Github actions command reference: https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions
 name: Sonar Analysis
 
