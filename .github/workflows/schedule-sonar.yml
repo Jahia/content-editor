@@ -1,9 +1,10 @@
-# This workflow trigger a Sonar analysis on the current branch
-# 
+# This workflow trigger a full Sonar analysis at regular interval
 # Github actions command reference: https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions
-name: Sonar Analysis
+name: Sonar Analysis - Scheduled
 
-on: push
+on:
+  schedule:
+    - cron: '0 4 * * 1,3,5' # At 4AM, on Monday, Wednesday and Friday
 
 jobs:
   sonar-analysis:
