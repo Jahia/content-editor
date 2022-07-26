@@ -4,11 +4,12 @@ import * as _ from 'lodash';
 import {useTranslation} from 'react-i18next';
 import {useDispatch, useSelector, shallowEqual} from 'react-redux';
 import {Table, TableBody, TablePagination, TableRow} from '@jahia/moonstone';
-import {useExpanded, useTable} from 'react-table';
-import {useRowSelection, useSort} from '~/SelectorTypes/Picker/reactTable/plugins';
+import {useTable} from 'react-table';
+import {useRowSelection, useSort, useExpanded} from '~/SelectorTypes/Picker/reactTable/plugins';
 import {allColumnData} from '~/SelectorTypes/Picker/reactTable/columns';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {
+    cePickerClearSelection,
     cePickerMode,
     cePickerOpenPaths, cePickerPath,
     cePickerRemoveSelection,
@@ -61,7 +62,25 @@ const reduxActions = {
     setModeAction: mode => cePickerMode(mode),
     setCurrentPageAction: page => cePickerSetPage(page - 1),
     setPageSizeAction: pageSize => cePickerSetPageSize(pageSize),
-    removeSelectionAction: path => cePickerRemoveSelection(path)
+    removeSelectionAction: path => cePickerRemoveSelection(path),
+    clearSelectionAction: () => cePickerClearSelection()
+};
+
+const clickHandler = {
+    handleEvent(e, fcn) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.nativeEvent.detail === 1 && !this.timeout) {
+            this.timeout = setTimeout(() => {
+                this.timeout = undefined;
+                fcn();
+            }, 300);
+        } else if (e.nativeEvent.detail === 2) {
+            clearTimeout(this.timeout);
+            this.timeout = undefined;
+            fcn();
+        }
+    }
 };
 
 export const ContentTable = ({
@@ -114,9 +133,11 @@ export const ContentTable = ({
     }, [rows, isStructuredView, toggleAllRowsExpanded]);
 
     const doubleClickNavigation = node => {
-        let newMode = mode;
         const actions = [];
+        actions.push(reduxActions.clearSelectionAction());
+
         if (mode === Constants.mode.SEARCH) {
+            let newMode;
             if (node.path.indexOf('/files') > -1) {
                 newMode = Constants.mode.MEDIA;
             } else if (node.path.indexOf('/contents') > -1) {
@@ -140,7 +161,7 @@ export const ContentTable = ({
     const typeSelector = mode === Constants.mode.PAGES && dataCounts ? <ContentTypeSelectorComp contentCount={dataCounts.contents} pagesCount={dataCounts.pages}/> : null;
 
     if (_.isEmpty(rows) && !isLoading) {
-        if ((mode === 'search')) {
+        if ((mode === Constants.mode.SEARCH)) {
             return <EmptyTable columnSpan={allColumnData.length} t={t}/>;
         }
 
@@ -178,13 +199,13 @@ export const ContentTable = ({
                                           data-cm-role="table-content-list-row"
                                           isHighlighted={selectionProps.checked}
                                           onClick={e => {
-                                              console.log('Click', e);
+                                              clickHandler.handleEvent(e, selectionProps.onChange);
                                           }}
-                                          onDoubleClick={allowDoubleClickNavigation(
+                                          onDoubleClick={e => clickHandler.handleEvent(e, allowDoubleClickNavigation(
                                               node.primaryNodeType.name,
                                               node.subNodes ? node.subNodes.pageInfo.totalCount : null,
                                               () => doubleClickNavigation(node)
-                                          )}
+                                          ))}
                                 >
                                     {row.cells.map(cell => <React.Fragment key={cell.column.id}>{cell.render('Cell')}</React.Fragment>)}
                                 </TableRow>
@@ -193,7 +214,7 @@ export const ContentTable = ({
                     </TableBody>
                 </Table>
             </UploadTransformComponent>
-            {(!isStructuredView || mode === Constants.mode.SEARCH || mode === Constants.mode.MEDIA) &&
+            {!isStructuredView &&
             <TablePagination totalNumberOfRows={totalCount}
                              currentPage={pagination.currentPage + 1}
                              rowsPerPage={pagination.pageSize}

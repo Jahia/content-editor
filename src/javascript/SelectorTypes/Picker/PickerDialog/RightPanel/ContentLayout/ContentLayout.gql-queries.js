@@ -194,11 +194,11 @@ class ContentQueryHandler {
 class FilesQueryHandler {
     getQuery() {
         return gql`
-            query getFiles($path:String!, $language:String!, $offset:Int, $limit:Int, $displayLanguage:String!, $typeFilter:[String]!, $fieldSorter: InputFieldSorterInput, $fieldGrouping: InputFieldGroupingInput) {
+            query getFiles($path:String!, $language:String!, $offset:Int, $limit:Int, $displayLanguage:String!, $typeFilter:[String]!, $fieldSorter: InputFieldSorterInput, $fieldGrouping: InputFieldGroupingInput, $recursionTypesFilter: InputNodeTypesInput) {
                 jcr {
                     nodeByPath(path: $path) {
                         ...NodeFields
-                        children(offset: $offset, limit: $limit, typesFilter: {types: $typeFilter, multi: ANY}, fieldSorter: $fieldSorter, fieldGrouping: $fieldGrouping) {
+                        descendants(offset: $offset, limit: $limit, typesFilter: {types: $typeFilter, multi: ANY}, recursionTypesFilter: $recursionTypesFilter, fieldSorter: $fieldSorter, fieldGrouping: $fieldGrouping) {
                             pageInfo {
                                 totalCount
                             }
@@ -241,6 +241,7 @@ class FilesQueryHandler {
             offset: pagination.currentPage * pagination.pageSize,
             limit: pagination.pageSize,
             typeFilter: params.typeFilter.media,
+            recursionTypesFilter: {multi: 'NONE', types: ['jnt:folder']},
             fieldSorter: sort.orderBy === '' ? null : {
                 sortType: sort.order === '' ? null : (sort.order === 'DESC' ? 'ASC' : 'DESC'),
                 fieldName: sort.orderBy === '' ? null : sort.orderBy,
@@ -255,11 +256,17 @@ class FilesQueryHandler {
     }
 
     updateQueryParamsForStructuredView(params) {
-        return params;
+        return {
+            ...params,
+            fieldGrouping: null,
+            recursionTypesFilter: null,
+            offset: 0,
+            limit: 10000
+        };
     }
 
     getResultsPath(data) {
-        return data && data.jcr && data.jcr.nodeByPath && data.jcr.nodeByPath.children;
+        return data && data.jcr && data.jcr.nodeByPath && data.jcr.nodeByPath.descendants;
     }
 }
 

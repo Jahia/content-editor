@@ -29,7 +29,7 @@ const defaultGetSortProps = (props, {instance, column}) => {
 function useInstance(instance) {
     const getInstance = useGetLatest(instance);
     const {getHooks, flatHeaders} = instance;
-    const {order, orderBy} = useSelector(state => state.jcontent.sort);
+    const {order, orderBy} = useSelector(state => state.contenteditor.picker.sort);
     const dispatch = useDispatch();
 
     const toggleOrder = order => {
