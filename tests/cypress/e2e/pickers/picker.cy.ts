@@ -1,26 +1,27 @@
-import {contentTypes} from "../../fixtures/pickers/contentTypes";
-import {Picker} from "../../page-object/picker";
-import {assertUtils} from "../../utils/assertUtils";
-import {AccordionItem} from "../../page-object/accordionItem";
-import {ContentEditor} from "../../page-object";
-import gql from "graphql-tag";
+import { contentTypes } from '../../fixtures/pickers/contentTypes'
+import { Picker } from '../../page-object/picker'
+import { assertUtils } from '../../utils/assertUtils'
+import { AccordionItem } from '../../page-object/accordionItem'
+import { ContentEditor } from '../../page-object'
 
 describe('Picker tests', () => {
-
     const siteKey = 'digitall'
     let picker: Picker
 
     beforeEach(() => {
-        // cy.executeGroovy('createSite.groovy', { SITEKEY: siteKey })
+        // I have issues adding these to before()/after() so have to add to beforeEach()/afterEach()
         cy.login() // edit in chief
+        cy.apollo({ mutationFile: 'pickers/createContent.graphql' })
+
+        // beforeEach()
         const pageComposer = ContentEditor.visit(siteKey, 'en', 'home.html').getPageComposer()
         picker = new Picker(pageComposer)
         // cy.runProvisioningScript({fileName:'pickers/install-qa-module.yaml',type:'application/yaml'})
     })
 
     afterEach(() => {
+        cy.apollo({ mutationFile: 'pickers/deleteContent.graphql' })
         cy.logout()
-        // cy.executeGroovy('deleteSite.groovy', { SITEKEY: siteKey })
     })
 
     // tests
@@ -33,38 +34,95 @@ describe('Picker tests', () => {
         assertUtils.isVisible(pickerDialog.getSiteSwitcher())
         assertUtils.isVisible(pickerDialog.getAccordion())
 
-        // assert pages accordion is expanded and populated
-        const pagesAccordion:AccordionItem = pickerDialog.getAccordionItem('picker-pages');
-        assertUtils.isAriaExpanded(pagesAccordion.getHeader())
+        cy.log('assert pages accordion is expanded and populated')
+        const pagesAccordion: AccordionItem = pickerDialog.getAccordionItem('picker-pages')
+        pagesAccordion.getHeader().should('be.visible').and('have.attr', 'aria-expanded').and('equal', 'true')
         const rootTree = pagesAccordion.getTreeItems().first()
         rootTree.should('not.be.empty')
 
-        // assert content accordion is visible
-        pickerDialog.getAccordionItem('picker-contents').getHeader()
-            .should('be.visible')
-            .and('have.attr', 'aria-expanded')
-            .and('equal', 'false')
+        cy.log('assert content accordion is visible')
+        const contentAccordion: AccordionItem = pickerDialog.getAccordionItem('picker-content-folders')
+        contentAccordion.getHeader().should('be.visible').and('have.attr', 'aria-expanded').and('equal', 'false')
+
+        cy.log('check table components')
+        pickerDialog.getTable().should('exist') // I have issues checking be.visible; use exist for now
+        pickerDialog.getHeaderByName('Name').should('be.visible')
+        pickerDialog.getHeaderByName('Last modified on').should('be.visible')
+        pickerDialog.getHeaderByName('Type').should('be.visible')
+
+        cy.log('selection content folders > contents > ce-picker-files reflects in table')
+        contentAccordion.click()
+        contentAccordion.getHeader().should('be.visible').and('have.attr', 'aria-expanded').and('equal', 'true')
+        contentAccordion.getTreeItem('ce-picker-contents').click() // select contents folder
+        pickerDialog.getTable().should('exist').and('have.length', 1)
+        cy.wait(500) // need a wait to load table data
+        pickerDialog
+            .getTable()
+            .getRows()
+            .get()
+            .find('[data-cm-role="table-content-list-cell-name"]')
+            .should((elems) => {
+                expect(elems).to.have.length(4)
+                const texts = elems.get().map((e) => e.textContent)
+                expect(texts).to.deep.eq(['content-folder1', 'test 1', 'test 2', 'test 3'])
+            })
+
+        cy.log('test double-click on table')
+        pickerDialog.getTableRow('content-folder1').dblclick()
+        contentAccordion.getTreeItem('content-folder1').find('div').should('have.class', 'moonstone-selected')
+        pickerDialog
+            .getTable()
+            .getRows()
+            .get()
+            .find('[data-cm-role="table-content-list-cell-name"]')
+            .should((elems) => {
+                expect(elems).to.have.length(2)
+                const texts = elems.get().map((e) => e.textContent)
+                expect(texts).to.deep.eq(['test 4', 'test 5'])
+            })
     })
 
-
     it('should display file/image reference picker', () => {
-        const pickerDialog = picker.open(contentTypes['fileReference'])
+        const pickerDialog = picker.open(contentTypes['imageReference'])
 
-        // assert components are visible
+        cy.log('assert components are visible')
         assertUtils.isVisible(pickerDialog.get())
         assertUtils.isVisible(pickerDialog.getSiteSwitcher())
         assertUtils.isVisible(pickerDialog.getAccordion())
+        assertUtils.isVisible(pickerDialog.getTable())
 
-        // assert media accordion is expanded and populated
-        const pagesAccordion:AccordionItem = pickerDialog.getAccordionItem('picker-media');
-        assertUtils.isAriaExpanded(pagesAccordion.getHeader())
-        const rootTree = pagesAccordion.getTreeItems().first()
+        cy.log('assert media accordion is expanded and populated')
+        const mediaAccordion: AccordionItem = pickerDialog.getAccordionItem('picker-media')
+        assertUtils.isAriaExpanded(mediaAccordion.getHeader())
+        const rootTree = mediaAccordion.getTreeItems().first()
         rootTree.should('not.be.empty')
+
+        cy.log('check table components')
+        pickerDialog.getTable().should('exist')
+        pickerDialog.getHeaderByName('Name').should('be.visible')
+        pickerDialog.getHeaderByName('Last modified on').should('be.visible')
+
+        cy.log('selection media > files > ce-picker-files reflects in table and filtered by type')
+        mediaAccordion.getTreeItem('ce-picker-files').click()
+        pickerDialog.getTable().should('exist')
+        cy.wait(500) // need a wait to load table data
+        pickerDialog
+            .getTable()
+            .getRows()
+            .get()
+            .find('[data-cm-role="table-content-list-cell-name"]')
+            .should((elems) => {
+                expect(elems).to.have.length(2)
+                const texts = elems.get().map((e) => e.textContent)
+                expect(texts).to.deep.eq(['user.jpg', 'user2.jpg'])
+                expect(texts).to.not.contain('doc1.pdf')
+                expect(texts).to.not.contain('doc2.pdf')
+            })
     })
 
     it('should go to previous location', () => {
         let pickerDialog = picker.open(contentTypes['fileReference'])
-        let pagesAccordion:AccordionItem = pickerDialog.getAccordionItem('picker-media');
+        let pagesAccordion: AccordionItem = pickerDialog.getAccordionItem('picker-media')
         assertUtils.isVisible(pagesAccordion.getHeader())
 
         cy.log('select files > images > companies')
@@ -74,26 +132,25 @@ describe('Picker tests', () => {
 
         cy.log('re-open file media picker')
         pickerDialog = picker.open(contentTypes['fileReference'])
-        pagesAccordion = pickerDialog.getAccordionItem('picker-media');
+        pagesAccordion = pickerDialog.getAccordionItem('picker-media')
 
         cy.log('verify files > images > companies still selected')
-        pagesAccordion.getTreeItem('companies').find('div')
-            .should('have.class', 'moonstone-selected')
+        pagesAccordion.getTreeItem('companies').find('div').should('have.class', 'moonstone-selected')
     })
 
     it('should go to root when previous location is not available', () => {
-        const folderName = "testPrevLocation"
+        const folderName = 'testPrevLocation'
         const parentPath = `/sites/${siteKey}/files/images`
 
         cy.log(`create folder '${folderName}' in files/images`)
         cy.apollo({
             mutationFile: 'pickers/createFolder.graphql',
-            variables: { folderName, parentPath }
+            variables: { folderName, parentPath },
         })
 
         cy.log('open file picker dialog')
         let pickerDialog = picker.open(contentTypes['fileReference'])
-        let pagesAccordion: AccordionItem = pickerDialog.getAccordionItem('picker-media');
+        let pagesAccordion: AccordionItem = pickerDialog.getAccordionItem('picker-media')
         assertUtils.isVisible(pagesAccordion.getHeader())
 
         cy.log('assert created folder exists and select')
@@ -103,19 +160,17 @@ describe('Picker tests', () => {
 
         cy.log(`delete folder '${folderName}'`)
         cy.apollo({
-            mutationFile: "pickers/deleteFolder.graphql",
-            variables: { pathOrId: `${parentPath}/${folderName}`}
+            mutationFile: 'pickers/deleteFolder.graphql',
+            variables: { pathOrId: `${parentPath}/${folderName}` },
         })
 
-        // cy.reload() // fixes issue of
+        cy.reload() // reload to sync folder
         cy.log('re-open file picker')
         pickerDialog = picker.open(contentTypes['imageReference'])
-        pagesAccordion = pickerDialog.getAccordionItem('picker-media');
+        pagesAccordion = pickerDialog.getAccordionItem('picker-media')
 
         cy.log(`verify ${folderName} is not selected and root is selected`)
         pagesAccordion.getTreeItem(folderName).should('not.exist')
-        pagesAccordion.getTreeItem('files').find('div')
-            .should('have.class', 'moonstone-selected')
+        pagesAccordion.getTreeItem('files').find('div').should('have.class', 'moonstone-selected')
     })
-
 })

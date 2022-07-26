@@ -1,26 +1,28 @@
 import {
     Accordion,
     BaseComponent,
+    Button,
+    Dropdown,
+    getComponent,
     getComponentByAttr,
     getComponentByRole,
-    getComponent,
-    SecondaryNav, Dropdown, Button
-} from "@jahia/cypress";
-import {ContentEditor} from "./contentEditor";
-import {PageComposer} from "./pageComposer";
-import {ContentType} from "../fixtures/pickers/contentTypes";
-import {AccordionItem} from "./accordionItem";
+    SecondaryNav,
+    Table,
+} from '@jahia/cypress'
+import { PageComposer } from './pageComposer'
+import { ContentType } from '../fixtures/pickers/contentTypes'
+import { AccordionItem } from './accordionItem'
 
 export class Picker {
-
     pageComposer: PageComposer
     pickerDialog: BaseComponent
     siteSwitcher: Dropdown
 
     secondaryNav: SecondaryNav
     accordion: Accordion
+    table: Table
 
-    constructor(pageComposer:PageComposer) {
+    constructor(pageComposer: PageComposer) {
         this.pageComposer = pageComposer
     }
 
@@ -30,14 +32,14 @@ export class Picker {
      */
     open(contentType: ContentType) {
         this.pageComposer.createContent(contentType.typeName)
-        let parent = getComponentByAttr(BaseComponent, "data-sel-content-editor-field", contentType.fieldNodeType)
+        const parent = getComponentByAttr(BaseComponent, 'data-sel-content-editor-field', contentType.fieldNodeType)
         parent.get().find('button').click()
-        this.pickerDialog = getComponentByRole(BaseComponent, "picker-dialog")
-        return this;
+        this.pickerDialog = getComponentByRole(BaseComponent, 'picker-dialog')
+        return this
     }
 
     get() {
-        return this.pickerDialog;
+        return this.pickerDialog
     }
 
     getSiteSwitcher() {
@@ -45,7 +47,7 @@ export class Picker {
             this.siteSwitcher = getComponentByAttr(Dropdown, 'data-cm-role', 'site-switcher')
         }
         // make sure dialog is open before returning siteSwitcher
-        return this.pickerDialog && this.siteSwitcher;
+        return this.pickerDialog && this.siteSwitcher
     }
 
     getAccordion(): Accordion {
@@ -59,8 +61,8 @@ export class Picker {
     /**
      * @param itemName -
      */
-    getAccordionItem(itemName:string) {
-        return new AccordionItem(this.getAccordion(), itemName);
+    getAccordionItem(itemName: string) {
+        return new AccordionItem(this.getAccordion(), itemName)
     }
 
     cancel() {
@@ -68,4 +70,18 @@ export class Picker {
         getComponentByRole(Button, 'backButton').click() // cancel create content
     }
 
+    getTable() {
+        if (!this.table) {
+            this.table = getComponent(Table, this.pickerDialog)
+        }
+        return this.table
+    }
+
+    getTableRow(content:string) {
+        return this.getTable().get().find('.moonstone-TableRow').filter(':contains("content-folder1")')
+    }
+
+    getHeaderByName(name: string) {
+        return cy.get('.moonstone-tableHead .moonstone-TableRow').filter(`:contains("${name}")`)
+    }
 }

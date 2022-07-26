@@ -1,4 +1,3 @@
-
 export const assertUtils = {
     isAriaExpanded(elem) {
         return elem.should('have.attr', 'aria-expanded').and('equal', 'true')
@@ -10,6 +9,5 @@ export const assertUtils = {
 
     isVisible(elem) {
         return elem.should('be.visible')
-    }
-
+    },
 }

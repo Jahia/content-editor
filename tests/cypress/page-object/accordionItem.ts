@@ -1,23 +1,26 @@
-import {Accordion} from "@jahia/cypress";
+import { Accordion } from '@jahia/cypress'
 
 export class AccordionItem {
-
-    accordion:Accordion
+    accordion: Accordion
     itemName: string
 
     /**
      * @param accordion
      * @param itemName - match accordion header aria-controls attribute value
      */
-    constructor(accordion:Accordion, itemName:string) {
+    constructor(accordion: Accordion, itemName: string) {
         this.accordion = accordion
         accordion.should('exist')
         this.itemName = itemName
     }
 
     getHeader() {
-        return this.accordion.get()
-            .find(`section.moonstone-accordionItem header[aria-controls="${this.itemName}"]`)
+        return this.accordion.get().find(`section.moonstone-accordionItem header[aria-controls="${this.itemName}"]`)
+    }
+
+    click() {
+        this.accordion.click(this.itemName)
+        return this
     }
 
     getSection() {
@@ -39,11 +42,4 @@ export class AccordionItem {
     expandTreeItem(role) {
         return this.getTreeItem(role).find('.moonstone-treeView_itemToggle').click()
     }
-
-
-
-    getRootItem() {
-
-    }
-
 }

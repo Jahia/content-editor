@@ -1,0 +1,72 @@
+mutation createContent {
+    jcr {
+        content: mutateNode(pathOrId: "/sites/digitall/contents") {
+            addChild(name: "ce-picker-contents", primaryNodeType: "jnt:contentFolder") {
+                addChildrenBatch(
+                    nodes: [
+                        {
+                            name: "test-content1"
+                            primaryNodeType: "jnt:bigText"
+                            properties: [{ name: "text", language: "en", value: "test 1" }]
+                        }
+                        {
+                            name: "test-content2"
+                            primaryNodeType: "jnt:bigText"
+                            properties: [{ name: "text", language: "en", value: "test 2" }]
+                        }
+                        {
+                            name: "test-content3"
+                            primaryNodeType: "jnt:bigText"
+                            properties: [{ name: "text", language: "en", value: "test 3" }]
+                        }
+                        {
+                            name: "content-folder1"
+                            primaryNodeType: "jnt:contentFolder"
+                            children: [
+                                {
+                                    name: "test-content4"
+                                    primaryNodeType: "jnt:bigText"
+                                    properties: [{ name: "text", language: "en", value: "test 4" }]
+                                }
+                                {
+                                    name: "test-content5"
+                                    primaryNodeType: "jnt:bigText"
+                                    properties: [{ name: "text", language: "en", value: "test 5" }]
+                                }
+                            ]
+                        }
+                    ]
+                ) {
+                    uuid
+                }
+            }
+        }
+        fileFolder: addNode(name: "ce-picker-files", parentPathOrId: "/sites/digitall/files", primaryNodeType: "jnt:folder") {
+            uuid
+        }
+        files: copyNodes(nodes: [
+            {
+                pathOrId: "/sites/digitall/files/images/people/user.jpg",
+                destName: "user.jpg",
+                destParentPathOrId: "/sites/digitall/files/ce-picker-files"
+            }
+            {
+                pathOrId: "/sites/digitall/files/images/people/user.jpg",
+                destName: "user2.jpg",
+                destParentPathOrId: "/sites/digitall/files/ce-picker-files"
+            }
+            {
+                pathOrId: "/sites/digitall/files/images/pdf/Digitall Financial Report.pdf",
+                destName: "doc1.pdf",
+                destParentPathOrId: "/sites/digitall/files/ce-picker-files"
+            }
+            {
+                pathOrId: "/sites/digitall/files/images/pdf/Digitall Financial Report.pdf",
+                destName: "doc2.pdf",
+                destParentPathOrId: "/sites/digitall/files/ce-picker-files"
+            }
+        ]) {
+            uuid
+        }
+    }
+}

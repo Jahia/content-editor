@@ -1,4 +1,3 @@
-
 interface ContentTypes {
     [key: string]: ContentType
 }
@@ -8,25 +7,23 @@ interface ContentTypes {
  *  - fieldNodeType: content type field to open picker with; corresponds with 'data-sel-content-editor-field' attr
  */
 interface ContentType {
-    typeName: string,
+    typeName: string
     fieldNodeType: string
 }
 
-
 const contentTypes: ContentTypes = {
-    'contentReference': {
+    contentReference: {
         typeName: 'Content reference',
         fieldNodeType: 'jnt:contentReference_j:node',
-
     },
-    'fileReference': {
+    fileReference: {
         typeName: 'File reference',
         fieldNodeType: 'jnt:fileReference_j:node',
     },
-    'imageReference': {
+    imageReference: {
         typeName: 'Image (from the Document Manager)',
         fieldNodeType: 'jnt:imageReferenceLink_j:node',
-    }
+    },
 }
 
-export {contentTypes, ContentType};
+export { contentTypes, ContentType }

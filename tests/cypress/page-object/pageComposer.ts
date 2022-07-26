@@ -21,8 +21,7 @@ export class PageComposer extends BasePage {
     }
 
     createContent(contentType: string) {
-        this
-            .openCreateContent()
+        this.openCreateContent()
             .getContentTypeSelector()
             .searchForContentType(contentType)
             .selectContentType(contentType)
