@@ -7,6 +7,7 @@ import {Button, Typography} from '@jahia/moonstone';
 import {shallowEqual, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import ContentLayout from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout';
+import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 
 const ViewModeSelector = React.lazy(() => import('@jahia/jcontent').then(module => ({default: module.ViewModeSelector})));
 
@@ -19,12 +20,14 @@ const viewModeSelectorProps = {
 };
 
 const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
-    const {selection} = useSelector(state => ({selection: state.contenteditor.picker.selection}), shallowEqual);
+    const {selection, mode} = useSelector(state => ({selection: state.contenteditor.picker.selection, mode: state.contenteditor.picker.mode.replace('picker-', '')}), shallowEqual);
     const {t} = useTranslation('content-editor');
 
     return (
         <div className={css.panel}>
-            <ViewModeSelector {...viewModeSelectorProps}/>
+            <div className={css.topBar}>
+                {mode !== Constants.mode.MEDIA && mode !== Constants.mode.SEARCH && <ViewModeSelector {...viewModeSelectorProps}/>}
+            </div>
             <ContentLayout pickerConfig={pickerConfig}/>
             <div className={css.actions}>
                 <div className={css.actionCaption}>

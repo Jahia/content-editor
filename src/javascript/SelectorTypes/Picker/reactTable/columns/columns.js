@@ -3,7 +3,8 @@ import React, {Suspense} from 'react';
 const CellLastModified = React.lazy(() => import('@jahia/jcontent').then(module => ({default: module.reactTable.CellLastModified})));
 const CellName = React.lazy(() => import('@jahia/jcontent').then(module => ({default: module.reactTable.CellName})));
 const CellPublicationStatus = React.lazy(() => import('@jahia/jcontent').then(module => ({default: module.reactTable.CellPublicationStatus})));
-const CellSelection = React.lazy(() => import('@jahia/jcontent').then(module => ({default: module.reactTable.CellSelection})));
+// TODO: this swill be needed later
+// const CellSelection = React.lazy(() => import('@jahia/jcontent').then(module => ({default: module.reactTable.CellSelection})));
 const Header = React.lazy(() => import('@jahia/jcontent').then(module => ({default: module.reactTable.Header})));
 
 const suspended = E => props => (
@@ -19,12 +20,12 @@ export const allColumnData = [
         Header: '',
         Cell: suspended(CellPublicationStatus)
     },
-    {
-        id: 'selection',
-        sortable: false,
-        Header: '',
-        Cell: suspended(CellSelection)
-    },
+    // {
+    //     id: 'selection',
+    //     sortable: false,
+    //     Header: '',
+    //     Cell: suspended(CellSelection)
+    // },
     {
         id: 'name',
         accessor: 'displayName',

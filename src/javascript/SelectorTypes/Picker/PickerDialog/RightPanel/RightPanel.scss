@@ -20,3 +20,9 @@
     align-items: center;
     width: 100%;
 }
+
+.topBar {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
