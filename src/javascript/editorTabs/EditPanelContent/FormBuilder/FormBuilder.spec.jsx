@@ -7,6 +7,7 @@ import {useFormikContext} from 'formik';
 import {useContentEditorContext, useContentEditorSectionContext} from '~/contexts';
 import {Constants} from '~/ContentEditor.constants';
 
+jest.mock('connected-react-router', () => ({}));
 jest.mock('formik');
 jest.mock('~/contexts/ContentEditorSection/ContentEditorSection.context');
 jest.mock('~/contexts/ContentEditor/ContentEditor.context');

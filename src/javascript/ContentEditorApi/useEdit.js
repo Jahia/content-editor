@@ -10,16 +10,22 @@ export const useEdit = setEditorConfig => {
      * @param uilang the preferred user lang for ui
      */
     return useCallback((uuid, site, lang, uilang, isFullscreen, editCallback, onClosedCallback) => {
-        setEditorConfig({
-            uuid,
-            site,
-            lang,
-            uilang,
-            initLang: lang,
-            mode: Constants.routes.baseEditRoute,
-            isFullscreen,
-            editCallback,
-            onClosedCallback
-        });
+        if (typeof uuid === 'object') {
+            setEditorConfig({
+                mode: Constants.routes.baseEditRoute,
+                ...uuid
+            });
+        } else {
+            setEditorConfig({
+                uuid,
+                site,
+                lang,
+                uilang,
+                mode: Constants.routes.baseEditRoute,
+                isFullscreen,
+                editCallback,
+                onClosedCallback
+            });
+        }
     }, [setEditorConfig]);
 };

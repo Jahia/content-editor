@@ -31,12 +31,12 @@ const accentColorButtonProps = {
 };
 
 export const EditPanelCompact = ({title, createAnother}) => {
-    const {siteInfo, nodeData, lang, mode} = useContentEditorContext();
+    const {siteInfo, lang, mode} = useContentEditorContext();
     const contentEditorConfigContext = useContentEditorConfigContext();
     const {t} = useTranslation('content-editor');
 
     const tabs = registry.find({target: 'editHeaderTabsActions'});
-    const EditTabComponent = tabs.find(tab => tab.value === Constants.editPanel.editTab).displayableComponent;
+    const EditPanelContent = tabs.find(tab => tab.value === Constants.editPanel.editTab).displayableComponent;
 
     return (
         <>
@@ -56,8 +56,8 @@ export const EditPanelCompact = ({title, createAnother}) => {
                 </div>
             </DialogTitle>
             <DialogContent className="flexCol" id="contenteditor-dialog-content" data-sel-role="form-container">
-                <div className={clsx(styles.tab, 'flexCol')}>
-                    <EditTabComponent nodePath={nodeData.path} lang={lang}/>
+                <div className={clsx('flexFluid', 'flexCol')}>
+                    <EditPanelContent/>
                 </div>
             </DialogContent>
             <DialogActions className={styles.dialogActions}>
@@ -75,7 +75,7 @@ export const EditPanelCompact = ({title, createAnother}) => {
                     actionKey="backButton"
                     render={ButtonRenderer}
                 />
-                <div className={styles.saveActions}>
+                <div>
                     <DisplayActions
                         buttonProps={accentColorButtonProps}
                         createAnother={createAnother?.value}

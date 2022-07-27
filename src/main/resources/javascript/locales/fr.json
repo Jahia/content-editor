@@ -186,6 +186,7 @@
           "advanced": "Options avancées"
         }
       },
+      "rename": "Renommer",
       "header":  {
         "chips": {
           "unsavedLabel": "Modifications non sauvegardées",

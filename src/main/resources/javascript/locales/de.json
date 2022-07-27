@@ -186,6 +186,7 @@
           "advanced": "Erweiterte Optionen"
         }
       },
+      "rename": "Umbenennen",
       "header":  {
         "chips": {
           "unsavedLabel": "Nicht gespeicherte Änderungen",

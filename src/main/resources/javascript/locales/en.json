@@ -186,6 +186,7 @@
           "advanced": "Advanced options"
         }
       },
+      "rename": "Rename",
       "header":  {
         "chips": {
           "unsavedLabel": "Unsaved changes",

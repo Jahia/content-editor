@@ -6,6 +6,7 @@ import {CloudUpload, Edit, MoreVert, Save} from '@jahia/moonstone';
 import {editContentAction} from './jcontent/editContent/editContentAction';
 import {openWorkInProgressAction} from './contenteditor/openWorkInProgress/openWorkInProgressAction';
 import {copyLanguageAction} from './contenteditor/copyLanguage/copyLanguageAction';
+import {renameContentAction} from '~/actions/jcontent/renameContent/renameContentAction';
 
 export const registerEditActions = actionsRegistry => {
     // Edit action button in JContent; need separate actions for content and pages
@@ -25,6 +26,16 @@ export const registerEditActions = actionsRegistry => {
         targets: ['contentActions:2'],
         showOnNodeTypes: ['jnt:page'], // For edit pages
         requiredSitePermission: ['editPageAction'],
+        getDisplayName: true
+    });
+
+    // Rename action button in JContent
+    actionsRegistry.add('action', 'rename', renameContentAction, {
+        buttonIcon: <Edit/>,
+        buttonLabel: 'content-editor:label.contentEditor.rename',
+        targets: ['contentActions:2'],
+        requiredSitePermission: ['editAction'],
+        showOnNodeTypes: ['jnt:file', 'jnt:folder'],
         getDisplayName: true
     });
 
