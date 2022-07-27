@@ -1,28 +1,32 @@
-.panel {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    padding-bottom: var(--spacing-small);
+.header {
+    height: 120px;
+    padding: var(--spacing-large);
+}
+
+.headerActions {
+    gap: var(--spacing-medium);
+    margin-top: var(--spacing-medium);
+}
+
+.footer {
+    height: 64px;
+    padding: var(--spacing-medium);
+
+    border-top: solid 1px var(--color-gray40);
+}
+
+.searchInput {
+    width: 400px;
+}
+
+.body {
+    padding: var(--spacing-large);
+}
+
+.caption {
+    color: var(--color-gray60);
 }
 
 .actions {
-    display: flex;
-    flex-direction: row;
-    gap: var(--spacing-small);
-    justify-content: flex-end;
-    align-items: center;
-}
-
-.actionCaption {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-}
-
-.topBar {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
+    gap: var(--spacing-medium);
 }

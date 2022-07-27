@@ -1,7 +1,11 @@
 .rootDialog.rootDialog {
     z-index: 10011; // IMPORTANT: DO NOT REMOVE: CKEditor image picker is using 10010, and we need to display this on top of CKEditor interfaces
 
-    margin: var(--spacing-large);
+    //margin: var(--spacing-large);
+}
+
+.paper.paper {
+    height: 100vh;
 }
 
 .modalContent.modalContent {
@@ -13,10 +17,4 @@
 
 .modalContentWithDrawer.modalContentWithDrawer {
     margin-left: 15vw;
-}
-
-.layout {
-    display: flex;
-    flex-direction: row;
-    height: 100%;
 }
