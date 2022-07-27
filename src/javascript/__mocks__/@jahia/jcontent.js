@@ -5,4 +5,4 @@ export const reactTable = {
     Header: jest.fn(),
     CellType: jest.fn(),
     CellLastModified: jest.fn()
-}
+};
