@@ -3,13 +3,15 @@ import PropTypes from 'prop-types';
 import {cePickerSetTableViewMode} from '~/SelectorTypes/Picker/Picker2.redux';
 import css from './RightPanel.scss';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
-import {Button, Typography} from '@jahia/moonstone';
+import {Button, SearchContextInput, Typography} from '@jahia/moonstone';
 import {shallowEqual, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import ContentLayout from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
-
-const ViewModeSelector = React.lazy(() => import('@jahia/jcontent').then(module => ({default: module.ViewModeSelector})));
+import clsx from 'clsx';
+import {DisplayAction} from '@jahia/ui-extender';
+import {getButtonRenderer} from '~/utils';
+import {ViewModeSelector} from '@jahia/jcontent';
 
 const viewModeSelectorProps = {
     selector: state => ({
@@ -19,35 +21,49 @@ const viewModeSelectorProps = {
     setTableViewModeAction: mode => cePickerSetTableViewMode(mode)
 };
 
+const ButtonRenderer = getButtonRenderer({defaultButtonProps: {variant: 'ghost'}});
+
 const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
     const {selection, mode} = useSelector(state => ({selection: state.contenteditor.picker.selection, mode: state.contenteditor.picker.mode.replace('picker-', '')}), shallowEqual);
     const {t} = useTranslation('content-editor');
 
     return (
-        <div className={css.panel}>
-            <div className={css.topBar}>
-                {mode !== Constants.mode.SEARCH && <ViewModeSelector {...viewModeSelectorProps}/>}
-            </div>
-            <ContentLayout pickerConfig={pickerConfig}/>
-            <div className={css.actions}>
-                <div className={css.actionCaption}>
-                    <Typography variant="caption">{t('Non-selectable items are not listed in this view')}</Typography>
+        <div className="flexFluid flexCol_nowrap">
+            <header className={clsx('flexCol_nowrap', css.header)}>
+                <Typography variant="heading">Select content</Typography>
+                <div className={clsx('flexRow_nowrap', 'alignCenter', css.headerActions)}>
+                    <SearchContextInput
+                        size="big"
+                        className={css.searchInput}
+                    />
+                    <div className="flexFluid"/>
+                    <DisplayAction actionKey="pageComposer" render={ButtonRenderer} path="/"/>
+                    {mode !== Constants.mode.SEARCH && <ViewModeSelector {...viewModeSelectorProps}/>}
                 </div>
-                <Button
-                    data-sel-picker-dialog-action="cancel"
-                    size="big"
-                    label={t('content-editor:label.contentEditor.edit.fields.modalCancel').toUpperCase()}
-                    onClick={onClose}
-                />
-                <Button
-                    data-sel-picker-dialog-action="done"
-                    disabled={selection.length === 0}
-                    color="accent"
-                    size="big"
-                    label={t('content-editor:label.contentEditor.edit.fields.modalDone').toUpperCase()}
-                    onClick={() => onItemSelection(selection[0].uuid)}
-                />
+            </header>
+            <div className={clsx('flexFluid', 'flexCol_nowrap', css.body)}>
+                <ContentLayout pickerConfig={pickerConfig}/>
             </div>
+            <footer className={clsx('flexRow', 'alignCenter', css.footer)}>
+                <Typography variant="caption" className={css.caption}>{t('Non-selectable items are not listed in this view')}</Typography>
+                <div className="flexFluid"/>
+                <div className={clsx('flexRow', css.actions)}>
+                    <Button
+                        data-sel-picker-dialog-action="cancel"
+                        size="big"
+                        label={t('content-editor:label.contentEditor.edit.fields.modalCancel').toUpperCase()}
+                        onClick={onClose}
+                    />
+                    <Button
+                        data-sel-picker-dialog-action="done"
+                        disabled={selection.length === 0}
+                        color="accent"
+                        size="big"
+                        label={t('content-editor:label.contentEditor.edit.fields.modalDone').toUpperCase()}
+                        onClick={() => onItemSelection(selection[0].uuid)}
+                    />
+                </div>
+            </footer>
         </div>
     );
 };

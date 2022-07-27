@@ -1,13 +1,14 @@
-import React, {Suspense, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Dialog, Slide} from '@material-ui/core';
 import styles from './PickerDialog.scss';
 import {
-    cePickerPath,
-    cePickerSite,
+    cePickerClearSelection,
+    cePickerContextSite,
     cePickerMode,
     cePickerOpenPaths,
-    cePickerContextSite, cePickerClearSelection
+    cePickerPath,
+    cePickerSite
 } from '~/SelectorTypes/Picker/Picker2.redux';
 import {getItemTarget} from '~/SelectorTypes/Picker/accordionItems/accordionItems';
 import {batchActions} from 'redux-batched-actions';
@@ -22,14 +23,11 @@ import {registry} from '@jahia/ui-extender';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {useNodeInfo} from '@jahia/data-helper';
 import RightPanel from './RightPanel';
+import {ContentNavigation, SiteSwitcher} from '@jahia/jcontent';
 
 const Transition = props => {
     return <Slide direction="up" {...props}/>;
 };
-
-const ContentNavigation = React.lazy(() => import('@jahia/jcontent').then(module => ({default: module.ContentNavigation})));
-
-const SiteSwitcher = React.lazy(() => import('@jahia/jcontent').then(module => ({default: module.SiteSwitcher})));
 
 const selector = state => ({
     mode: state.contenteditor.picker.mode,
@@ -166,17 +164,19 @@ export const PickerDialog = ({
 
     return (
         <Dialog
-            fullScreen
+            fullWidth
+            maxWidth="xl"
             data-sel-role="picker-dialog"
-            classes={{root: styles.rootDialog}}
+            classes={{root: styles.rootDialog, paper: styles.paper}}
             open={isOpen}
             TransitionComponent={Transition}
             onClose={onClose}
         >
-            <Suspense fallback={<div>Loading picker ...</div>}>
-                <div className={styles.layout}>
-                    {booleanValue(pickerConfig.pickerDialog.displayTree) && (
+            <div className="flexFluid flexRow_nowrap">
+                {booleanValue(pickerConfig.pickerDialog.displayTree) && (
+                    <aside>
                         <ContentNavigation
+                            isReversed={false}
                             header={(booleanValue(pickerConfig.pickerDialog.displaySiteSwitcher) && (
                                 <div>
                                     <SiteSwitcher selector={switcherSelector}
@@ -201,10 +201,10 @@ export const PickerDialog = ({
                             selector={selector}
                             handleNavigationAction={(mode, path) => (batchActions([cePickerClearSelection(), cePickerPath(path), cePickerMode(mode)]))}
                         />
-                    )}
-                    <RightPanel pickerConfig={pickerConfig} onClose={onClose} onItemSelection={onItemSelection}/>
-                </div>
-            </Suspense>
+                    </aside>
+                )}
+                <RightPanel pickerConfig={pickerConfig} onClose={onClose} onItemSelection={onItemSelection}/>
+            </div>
         </Dialog>
     );
 };
