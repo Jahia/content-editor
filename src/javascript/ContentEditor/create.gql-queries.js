@@ -35,6 +35,7 @@ export const CreateFormQuery = gql`
                             selectorOptions {
                                 name
                                 value
+                                values
                             }
                             valueConstraints {
                                 value {

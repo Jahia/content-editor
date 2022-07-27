@@ -136,6 +136,7 @@ export const EditFormQuery = gql`
                             selectorOptions {
                                 name
                                 value
+                                values
                             }
                             valueConstraints {
                                 value {
