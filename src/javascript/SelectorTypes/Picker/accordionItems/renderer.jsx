@@ -7,8 +7,7 @@ import {
     cePickerPath
 } from '~/SelectorTypes/Picker/Picker2.redux';
 import {batchActions} from 'redux-batched-actions';
-
-const ContentTree = React.lazy(() => import('@jahia/jcontent').then(module => ({default: module.ContentTree})));
+import {ContentTree} from '@jahia/jcontent';
 
 const selector = state => ({
     siteKey: state.contenteditor.picker.site,

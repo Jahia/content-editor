@@ -1,39 +1,29 @@
-import React, {Suspense} from 'react';
-
-const CellLastModified = React.lazy(() => import('@jahia/jcontent').then(module => ({default: module.reactTable.CellLastModified})));
-const CellName = React.lazy(() => import('@jahia/jcontent').then(module => ({default: module.reactTable.CellName})));
-const CellPublicationStatus = React.lazy(() => import('@jahia/jcontent').then(module => ({default: module.reactTable.CellPublicationStatus})));
-// TODO: this swill be needed later
-// const CellSelection = React.lazy(() => import('@jahia/jcontent').then(module => ({default: module.reactTable.CellSelection})));
-const Header = React.lazy(() => import('@jahia/jcontent').then(module => ({default: module.reactTable.Header})));
-
-const suspended = E => props => (
-    <Suspense fallback="Loading ...">
-        <E {...props}/>
-    </Suspense>
-);
+import {reactTable} from '@jahia/jcontent';
 
 export const allColumnData = [
     {
         id: 'publicationStatus',
         sortable: false,
         Header: '',
-        Cell: suspended(CellPublicationStatus)
+        Cell: reactTable.CellPublicationStatus
     },
-    // {
-    //     id: 'selection',
-    //     sortable: false,
-    //     Header: '',
-    //     Cell: suspended(CellSelection)
-    // },
     {
         id: 'name',
         accessor: 'displayName',
         label: 'jcontent:label.contentManager.listColumns.name',
         sortable: true,
         property: 'displayName',
-        Cell: suspended(CellName),
-        Header: suspended(Header)
+        Cell: reactTable.CellName,
+        Header: reactTable.Header
+    },
+    {
+        id: 'type',
+        accessor: 'primaryNodeType.displayName',
+        label: 'jcontent:label.contentManager.listColumns.type',
+        sortable: true,
+        property: 'primaryNodeType.displayName',
+        Cell: reactTable.CellType,
+        Header: reactTable.Header
     },
     {
         id: 'lastModified',
@@ -41,7 +31,7 @@ export const allColumnData = [
         label: 'jcontent:label.contentManager.listColumns.lastModified',
         sortable: true,
         property: 'lastModified.value',
-        Cell: suspended(CellLastModified),
-        Header: suspended(Header)
+        Cell: reactTable.CellLastModified,
+        Header: reactTable.Header
     }
 ];
