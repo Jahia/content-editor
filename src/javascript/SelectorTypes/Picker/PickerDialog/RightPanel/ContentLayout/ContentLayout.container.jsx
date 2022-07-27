@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {useApolloClient, useQuery} from 'react-apollo';
 import {contentQueryHandlerByMode} from './ContentLayout.gql-queries';
 import {useTranslation} from 'react-i18next';
@@ -11,6 +11,7 @@ import ContentTable from '~/SelectorTypes/Picker/PickerDialog/RightPanel/Content
 import {
     resolveQueryConstraints, structureData
 } from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout/ContentLayout.utils';
+import {registry} from '@jahia/ui-extender';
 
 const selector = state => ({
     mode: state.contenteditor.picker.mode.replace('picker-', ''),
@@ -24,6 +25,14 @@ const selector = state => ({
 });
 
 let currentResult;
+
+const setRefetcher = (name, refetcherData) => {
+    registry.addOrReplace('refetcher', name, refetcherData);
+};
+
+const unsetRefetcher = name => {
+    delete registry.registry['refetcher-' + name];
+};
 
 export const ContentLayoutContainer = ({pickerConfig}) => {
     const {t} = useTranslation();
@@ -58,7 +67,7 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
         [path, uilang, lang, pagination, sort, tableView.viewType, mode, isStructuredView, queryHandler, params]
     );
 
-    const {data, error, loading} = useQuery(layoutQuery, {
+    const {data, error, loading, refetch} = useQuery(layoutQuery, {
         variables: layoutQueryParams,
         fetchPolicy: fetchPolicy
     });
@@ -80,6 +89,17 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
         pagination
     });
 
+    useEffect(() => {
+        setRefetcher('pickerData', {
+            query: layoutQuery,
+            queryParams: layoutQueryParams,
+            refetch: refetch
+        });
+
+        return () => {
+            unsetRefetcher('pickerData');
+        };
+    });
     if (error || (!loading && !queryHandler.getResultsPath(data))) {
         if (error) {
             const message = t('jcontent:label.contentManager.error.queryingContent', {details: error.message || ''});
