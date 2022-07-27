@@ -26,6 +26,7 @@ package org.jahia.modules.contenteditor.api.forms;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -34,6 +35,7 @@ import java.util.Objects;
 public class EditorFormProperty {
     private String name;
     private String value;
+    private List<String> values;
 
     public EditorFormProperty() {
     }
@@ -43,8 +45,15 @@ public class EditorFormProperty {
         this.value = value;
     }
 
+    public EditorFormProperty(String name, List<String> values) {
+        this.name = name;
+        this.values = values;
+    }
+
     public EditorFormProperty(EditorFormProperty property) {
-        this(property.name, property.value);
+        this.name = property.name;
+        this.value = property.value;
+        this.values = property.values;
     }
 
     @GraphQLField
@@ -67,9 +76,19 @@ public class EditorFormProperty {
         this.value = value;
     }
 
+    @GraphQLField
+    @GraphQLDescription("Property values")
+    public List<String> getValues() {
+        return values;
+    }
+
+    public void setValues(List<String> values) {
+        this.values = values;
+    }
+
     @Override
     public String toString() {
-        return "EditorFormProperty{name='" + name + '\'' + ", value='" + value + '\'' + '}';
+        return "EditorFormProperty{name='" + name + '\'' + ", value='" + value + '\'' + ", values='" + values + '\'' + '}';
     }
 
     @Override

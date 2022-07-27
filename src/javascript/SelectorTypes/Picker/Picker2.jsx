@@ -18,7 +18,7 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
     const dispatch = useDispatch();
     const parsedOptions = {};
     field.selectorOptions.forEach(option => {
-        set(parsedOptions, option.name, option.value);
+        set(parsedOptions, option.name, option.value || option.values);
     });
 
     const pickerConfig = parsedOptions.pickerConfig ?

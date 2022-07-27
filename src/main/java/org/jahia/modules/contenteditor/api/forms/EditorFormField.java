@@ -29,10 +29,7 @@ import graphql.annotations.annotationTypes.GraphQLField;
 import org.jahia.modules.graphql.provider.dxm.node.GqlJcrPropertyType;
 import org.jahia.services.content.nodetypes.ExtendedPropertyDefinition;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -40,12 +37,16 @@ import java.util.stream.Collectors;
  */
 public class EditorFormField implements Comparable<EditorFormField> {
 
+    private static final Comparator<EditorFormField> editorFormFieldComparator = Comparator
+        .comparing(EditorFormField::getTarget, Comparator.nullsFirst(EditorFormFieldTarget::compareTo))
+        .thenComparing(EditorFormField::getName, Comparator.nullsFirst(String::compareToIgnoreCase));
     private String name;
     private String displayName;
     private String description;
     private String errorMessage;
     private String declaringNodeType;
     private GqlJcrPropertyType requiredType;
+    private Map<String, Object> selectorOptionsMap;
     private String selectorType;
     private List<EditorFormProperty> selectorOptions;
     private Boolean i18n;
@@ -58,10 +59,6 @@ public class EditorFormField implements Comparable<EditorFormField> {
     private Boolean removed;
     private EditorFormFieldTarget target;
     private ExtendedPropertyDefinition extendedPropertyDefinition;
-
-    private static final Comparator<EditorFormField> editorFormFieldComparator = Comparator
-        .comparing(EditorFormField::getTarget, Comparator.nullsFirst(EditorFormFieldTarget::compareTo))
-        .thenComparing(EditorFormField::getName, Comparator.nullsFirst(String::compareToIgnoreCase));
 
     public EditorFormField() {
     }
@@ -91,40 +88,43 @@ public class EditorFormField implements Comparable<EditorFormField> {
         this.setDeclaringNodeType(field.declaringNodeType);
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     @GraphQLField
     @GraphQLDescription("The required type for the field")
     public GqlJcrPropertyType getRequiredType() {
         return requiredType;
     }
 
-    public void setSelectorType(String selectorType) {
-        this.selectorType = selectorType;
+    public void setRequiredType(GqlJcrPropertyType requiredType) {
+        this.requiredType = requiredType;
+    }
+
+    public Map<String, Object> getSelectorOptionsMap() {
+        return selectorOptionsMap;
+    }
+
+    public void setSelectorOptionsMap(Map<String, Object> selectorOptionsMap) {
+        this.selectorOptionsMap = selectorOptionsMap;
+        this.selectorOptions = new ArrayList<>();
+        serializeMap("", selectorOptionsMap);
+    }
+
+    private void serializeMap(String baseKey, Map<String, Object> selectorOptionsMap) {
+        for (String key : selectorOptionsMap.keySet()) {
+            Object value = selectorOptionsMap.get(key);
+            if (value instanceof Map) {
+                serializeMap(baseKey + key + ".", (Map<String, Object>) value);
+            } else if (value instanceof List) {
+                selectorOptions.add(new EditorFormProperty(baseKey + key, (List<String>) value));
+            } else {
+                selectorOptions.add(new EditorFormProperty(baseKey + key, value.toString()));
+            }
+        }
     }
 
     @GraphQLField
     @GraphQLDescription("Options for the selector type. For JCR definitions, this will usually include choicelist initializer name and properties.")
     public List<EditorFormProperty> getSelectorOptions() {
         return selectorOptions;
-    }
-
-    public void setI18n(Boolean i18n) {
-        this.i18n = i18n;
-    }
-
-    public void setReadOnly(Boolean readOnly) {
-        this.readOnly = readOnly;
-    }
-
-    public void setMultiple(Boolean multiple) {
-        this.multiple = multiple;
-    }
-
-    public void setMandatory(Boolean mandatory) {
-        this.mandatory = mandatory;
     }
 
     public void setSelectorOptions(List<EditorFormProperty> selectorOptions) {
@@ -137,10 +137,6 @@ public class EditorFormField implements Comparable<EditorFormField> {
         return valueConstraints;
     }
 
-    public void setRemoved(Boolean removed) {
-        this.removed = removed;
-    }
-
     public void setValueConstraints(List<EditorFormFieldValueConstraint> valueConstraints) {
         this.valueConstraints = valueConstraints;
     }
@@ -151,10 +147,18 @@ public class EditorFormField implements Comparable<EditorFormField> {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @GraphQLField
     @GraphQLDescription("The displayable name of the field")
     public String getDisplayName() {
         return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     @GraphQLField
@@ -163,10 +167,18 @@ public class EditorFormField implements Comparable<EditorFormField> {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @GraphQLField
     @GraphQLDescription("The error message of the field")
     public String getErrorMessage() {
         return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 
     @GraphQLField
@@ -179,14 +191,14 @@ public class EditorFormField implements Comparable<EditorFormField> {
         this.declaringNodeType = declaringNodeType;
     }
 
-    public void setRequiredType(GqlJcrPropertyType requiredType) {
-        this.requiredType = requiredType;
-    }
-
     @GraphQLField
     @GraphQLDescription("The selector type for the field. In the case of fields generated from node types, this is actually the SelectorType.")
     public String getSelectorType() {
         return selectorType;
+    }
+
+    public void setSelectorType(String selectorType) {
+        this.selectorType = selectorType;
     }
 
     @GraphQLField
@@ -195,8 +207,8 @@ public class EditorFormField implements Comparable<EditorFormField> {
         return defaultValues;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDefaultValues(List<EditorFormFieldValue> defaultValues) {
+        this.defaultValues = defaultValues;
     }
 
     @GraphQLField
@@ -205,10 +217,18 @@ public class EditorFormField implements Comparable<EditorFormField> {
         return i18n;
     }
 
+    public void setI18n(Boolean i18n) {
+        this.i18n = i18n;
+    }
+
     @GraphQLField
     @GraphQLDescription("This value is true if the field is readonly. This could be due to locks or permissions")
     public Boolean getReadOnly() {
         return readOnly;
+    }
+
+    public void setReadOnly(Boolean readOnly) {
+        this.readOnly = readOnly;
     }
 
     @GraphQLField
@@ -217,36 +237,32 @@ public class EditorFormField implements Comparable<EditorFormField> {
         return multiple;
     }
 
+    public void setMultiple(Boolean multiple) {
+        this.multiple = multiple;
+    }
+
     @GraphQLField
     @GraphQLDescription("This value is true if the field is mandatory")
     public Boolean getMandatory() {
         return mandatory;
     }
 
-    public EditorFormFieldTarget getTarget() {
-        return target;
+    public void setMandatory(Boolean mandatory) {
+        this.mandatory = mandatory;
     }
 
-    @GraphQLField
-    @GraphQLDescription("This value contains the current existing values for the field.")
-    public List<EditorFormFieldValue> getCurrentValues() {
-        return currentValues;
+    public EditorFormFieldTarget getTarget() {
+        return target;
     }
 
     public void setTarget(EditorFormFieldTarget target) {
         this.target = target;
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
-
-    public void setDefaultValues(List<EditorFormFieldValue> defaultValues) {
-        this.defaultValues = defaultValues;
+    @GraphQLField
+    @GraphQLDescription("This value contains the current existing values for the field.")
+    public List<EditorFormFieldValue> getCurrentValues() {
+        return currentValues;
     }
 
     public void setCurrentValues(List<EditorFormFieldValue> currentValues) {
@@ -267,6 +283,29 @@ public class EditorFormField implements Comparable<EditorFormField> {
             return false;
         }
         return removed;
+    }
+
+    public void setRemoved(Boolean removed) {
+        this.removed = removed;
+    }
+
+    private static Boolean mergeBooleanKeepTrue(Boolean value1, Boolean value2) {
+        if (value1 == null) {
+            if (value2 == null) {
+                return null;
+            } else {
+                return value2;
+            }
+        } else { // value 1 != null
+            if (value1) {
+                return true;
+            } else {
+                if (value2 != null)
+                    return value2;
+                else
+                    return value1;
+            }
+        }
     }
 
     public EditorFormField mergeWith(EditorFormField otherEditorFormField) {
@@ -352,25 +391,6 @@ public class EditorFormField implements Comparable<EditorFormField> {
             ", extendedPropertyDefinition=" + extendedPropertyDefinition +
             ", declaringNodeType=" + declaringNodeType +
             '}';
-    }
-
-    private static Boolean mergeBooleanKeepTrue(Boolean value1, Boolean value2) {
-        if (value1 == null) {
-            if (value2 == null) {
-                return null;
-            } else {
-                return value2;
-            }
-        } else { // value 1 != null
-            if (value1) {
-                return true;
-            } else {
-                if (value2 != null)
-                    return value2;
-                else
-                    return value1;
-            }
-        }
     }
 
     private EditorFormFieldTarget mergeTargets(EditorFormField otherEditorFormField) {
