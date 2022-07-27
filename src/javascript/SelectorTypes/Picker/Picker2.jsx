@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, Suspense} from 'react';
 import PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import {FieldPropTypes} from '~/ContentEditor.proptypes';
@@ -87,15 +87,17 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
                     render={ButtonRenderer}
                 />
             )}
-            <PickerDialog
-                isOpen={isDialogOpen}
-                editorContext={editorContext}
-                pickerConfig={pickerConfig}
-                initialSelectedItem={fieldData && fieldData.path}
-                accordionItemProps={parsedOptions.accordionItem}
-                onClose={() => toggleOpen(false)}
-                onItemSelection={onItemSelection}
-            />
+            <Suspense fallback="Loading ...">
+                <PickerDialog
+                    isOpen={isDialogOpen}
+                    editorContext={editorContext}
+                    pickerConfig={pickerConfig}
+                    initialSelectedItem={fieldData && fieldData.path}
+                    accordionItemProps={parsedOptions.accordionItem}
+                    onClose={() => toggleOpen(false)}
+                    onItemSelection={onItemSelection}
+                />
+            </Suspense>
         </div>
     );
 };

@@ -19,14 +19,7 @@ import {
 import {getDetailedPathArray} from '~/SelectorTypes/Picker/Picker2.utils';
 import {batchActions} from 'redux-batched-actions';
 import {flattenTree} from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout/ContentLayout.utils';
-
-const UploadTransformComponent = React.lazy(() => import('@jahia/jcontent').then(module => ({default: module.UploadTransformComponent})));
-const ContentNotFound = React.lazy(() => import('@jahia/jcontent').then(module => ({default: module.ContentNotFound})));
-const ContentEmptyDropZone = React.lazy(() => import('@jahia/jcontent').then(module => ({default: module.ContentEmptyDropZone})));
-const EmptyTable = React.lazy(() => import('@jahia/jcontent').then(module => ({default: module.EmptyTable})));
-const ContentListHeader = React.lazy(() => import('@jahia/jcontent').then(module => ({default: module.ContentListHeader})));
-const ContentTableWrapper = React.lazy(() => import('@jahia/jcontent').then(module => ({default: module.ContentTableWrapper})));
-const ContentTypeSelector = React.lazy(() => import('@jahia/jcontent').then(module => ({default: module.ContentTypeSelector})));
+import {UploadTransformComponent, ContentNotFound, ContentEmptyDropZone, EmptyTable, ContentListHeader, ContentTableWrapper, ContentTypeSelector} from '@jahia/jcontent';
 
 const contentTypeSelectorProps = {
     selector: state => state.contenteditor.picker.tableView,
@@ -100,6 +93,7 @@ export const ContentTable = ({
     const dispatch = useDispatch();
     const isStructuredView = Constants.tableView.mode.STRUCTURED === tableView.viewMode;
     const paths = useMemo(() => flattenTree(rows).map(n => n.path), [rows]);
+    const columns = useMemo(() => Constants.mode.MEDIA === mode ? allColumnData.filter(c => c.id !== 'type') : allColumnData, [mode]);
     const {
         getTableProps,
         getTableBodyProps,
@@ -109,7 +103,7 @@ export const ContentTable = ({
         toggleAllRowsExpanded
     } = useTable(
         {
-            columns: allColumnData,
+            columns: columns,
             data: rows
         },
         useRowSelection,
