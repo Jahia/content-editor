@@ -41,7 +41,6 @@ export const ContentPickerConfig = {
         dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalTitle',
         searchPlaceholder: 'content-editor:label.contentEditor.edit.fields.contentPicker.searchPlaceholder',
         displayTree: true,
-        displaySiteSwitcher: true,
-        itemSelectionAdapter: content => content ? content.uuid : null
+        displaySiteSwitcher: true
     }
 };
