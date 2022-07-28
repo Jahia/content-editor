@@ -27,6 +27,15 @@ const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
     const {selection, mode} = useSelector(state => ({selection: state.contenteditor.picker.selection, mode: state.contenteditor.picker.mode.replace('picker-', '')}), shallowEqual);
     const {t} = useTranslation('content-editor');
 
+    const selectElement = () => {
+        if (selection) {
+            // Todo: BACKLOG-12581 - Multiple is not supported yet in pickers. Always return a single value.
+            onItemSelection(Array.isArray(selection) ? selection[0] : selection);
+        } else {
+            onClose();
+        }
+    };
+
     return (
         <div className="flexFluid flexCol_nowrap">
             <header className={clsx('flexCol_nowrap', css.header)}>
@@ -60,7 +69,7 @@ const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
                         color="accent"
                         size="big"
                         label={t('content-editor:label.contentEditor.edit.fields.modalDone').toUpperCase()}
-                        onClick={() => onItemSelection(selection[0].uuid)}
+                        onClick={selectElement}
                     />
                 </div>
             </footer>

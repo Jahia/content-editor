@@ -54,9 +54,9 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
         onBlur: onBlur
     };
 
-    const onItemSelection = path => {
+    const onItemSelection = data => {
         setDialogOpen(false);
-        onChange(path);
+        onChange(pickerConfig.pickerInput.itemSelectionAdapter ? pickerConfig.pickerInput.itemSelectionAdapter(data) : data?.uuid);
         onBlur();
     };
 
