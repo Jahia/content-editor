@@ -286,6 +286,11 @@
           "seo": "Les URLs personnalisées peuvent être gérées depuis un écran dédié, accessible depuis le menu 3 petits points de la barre d'action, ou via le bouton Gérer les URLs personnalisées ci-dessous. Vous pouvez utiliser l'ancienne interface d'édition, mais celle-ci sera supprimée dans une future mise à jour.",
           "layout": "Les options de rendu peuvent être modifiées directement depuis l'onglet Editer. Cependant, si nécessaire, vous pouvez utiliser l'ancienne interface d'édition. Mais celle-ci sera supprimée dans une future mise à jour."
         }
+      },
+      "picker": {
+        "rightPanel": {
+          "actionsCaption": "Les éléments non-sélectionnables ne sont pas affichés dans cette vue"
+        }
       }
     }
   }

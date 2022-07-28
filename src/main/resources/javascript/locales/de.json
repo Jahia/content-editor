@@ -286,6 +286,11 @@
           "seo": "Vanity URLs sollten direkt im zugehörigen Feature, auffindbar unter dem \"3 Punkte\" - Button in der Toolbar, editiert werden. Dies kann auch mit dem \"Vanity URLs verwalten\"-Button weiter unten geöffnet werden. Wenn es weiterhin notwendig ist, kann das vormalige Interface zum editieren verwendet werden. Bitte beachten. Sie, dass das dieses Interface mit zukünftigen Updates entfernt wird.",
           "layout": "Layout Optionen sollte direkt im Bearbeiten-Tab editiert werden. Wenn es weiterhin notwendig ist, kann das vormalige Interface zum editieren verwendet werden. Bitte beachten. Sie, dass das dieses Interface mit zukünftigen Updates entfernt wird."
         }
+      },
+      "picker": {
+        "rightPanel": {
+          "actionsCaption": "Nicht auswählbare Elemente werden in dieser Ansicht nicht gelistet"
+        }
       }
     }
   }

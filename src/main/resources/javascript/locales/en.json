@@ -283,10 +283,8 @@
         }
       },
       "picker": {
-        "navigation": {
-          "pages": "Pages",
-          "contentFolders": "Content Folders",
-          "media": "Media"
+        "rightPanel": {
+          "actionsCaption": "Non-selectable items are not listed in this view"
         }
       }
     }

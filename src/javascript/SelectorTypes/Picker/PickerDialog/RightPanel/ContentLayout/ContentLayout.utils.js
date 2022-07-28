@@ -37,6 +37,7 @@ export const flattenTree = function (rows) {
 export const resolveQueryConstraints = (pickerConfig, mode) => {
     const obj = {
         type: mode,
+        selectableTypesTable: pickerConfig.selectableTypesTable,
         typeFilter: {
             pages: [],
             content: [],
@@ -49,7 +50,7 @@ export const resolveQueryConstraints = (pickerConfig, mode) => {
         obj.typeFilter.pages = ['jnt:page'];
         obj.typeFilter.content = pickerConfig.selectableTypesTable.filter(t => t !== 'jnt:page');
     } else if (mode === 'media') {
-        obj.typeFilter.media = pickerConfig.selectableTypesTable;
+        obj.typeFilter.media = [...pickerConfig.selectableTypesTable];
         obj.typeFilter.media.push('jnt:folder');
     }
 
