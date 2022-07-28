@@ -20,6 +20,7 @@ import {getDetailedPathArray} from '~/SelectorTypes/Picker/Picker2.utils';
 import {batchActions} from 'redux-batched-actions';
 import {flattenTree} from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout/ContentLayout.utils';
 import {UploadTransformComponent, ContentNotFound, ContentEmptyDropZone, EmptyTable, ContentListHeader, ContentTableWrapper, ContentTypeSelector} from '@jahia/jcontent';
+import classes from './ContentTable.scss';
 
 const contentTypeSelectorProps = {
     selector: state => state.contenteditor.picker.tableView,
@@ -113,7 +114,7 @@ export const ContentTable = ({
 
     useEffect(() => {
         if (selection.length > 0) {
-            const toRemove = selection.filter(s => paths.indexOf(s.path) === -1).map(s => s.path);
+            const toRemove = selection.filter(s => paths.indexOf(s.path) === -1);
             if (toRemove.length > 0) {
                 dispatch(reduxActions.removeSelectionAction(toRemove));
             }
@@ -186,11 +187,13 @@ export const ContentTable = ({
                             const rowProps = row.getRowProps();
                             const selectionProps = row.getToggleRowSelectedProps();
                             const node = row.original;
+                            const className = node.isSelectable ? classes.selectableRow : classes.doubleClickableRow;
 
                             return (
                                 <TableRow key={'row' + row.id}
                                           {...rowProps}
                                           data-cm-role="table-content-list-row"
+                                          className={!selectionProps.checked && className}
                                           isHighlighted={selectionProps.checked}
                                           onClick={e => {
                                               clickHandler.handleEvent(e, selectionProps.onChange);
