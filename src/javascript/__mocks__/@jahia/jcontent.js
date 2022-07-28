@@ -1,4 +1,5 @@
 export const ContentTree = jest.fn();
+export const ViewModeSelector = jest.fn();
 export const reactTable = {
     CellPublicationStatus: jest.fn(),
     CellName: jest.fn(),
@@ -6,3 +7,4 @@ export const reactTable = {
     CellType: jest.fn(),
     CellLastModified: jest.fn()
 };
+
