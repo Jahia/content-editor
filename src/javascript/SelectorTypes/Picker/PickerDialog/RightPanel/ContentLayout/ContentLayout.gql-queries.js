@@ -85,6 +85,7 @@ const nodeFields = gql`
             }
         }
         notSelectableForPreview: isNodeType(type: {types:["jnt:page", "jnt:folder", "jnt:contentFolder"]})
+        isSelectable: isNodeType(type: {types: $selectableTypesTable})
         site {
             ...NodeCacheRequiredFields
         }
@@ -100,7 +101,7 @@ const nodeFields = gql`
 class ContentQueryHandler {
     getQuery() {
         return gql`
-            query getNodeSubTree($path:String!, $language:String!, $offset:Int, $limit:Int, $displayLanguage:String!, $typeFilter:[String]!, $recursionTypesFilter: InputNodeTypesInput, $fieldSorter: InputFieldSorterInput, $fieldGrouping: InputFieldGroupingInput) {
+            query getNodeSubTree($path:String!, $language:String!, $offset:Int, $limit:Int, $displayLanguage:String!, $typeFilter:[String]!, $recursionTypesFilter: InputNodeTypesInput, $fieldSorter: InputFieldSorterInput, $fieldGrouping: InputFieldGroupingInput, $selectableTypesTable: [String]!) {
                 jcr {
                     nodeByPath(path: $path) {
                         ...NodeFields
@@ -150,6 +151,7 @@ class ContentQueryHandler {
             offset: pagination.currentPage * pagination.pageSize,
             limit: pagination.pageSize,
             typeFilter: paramsByBrowseType[type].typeFilter,
+            selectableTypesTable: params.selectableTypesTable,
             recursionTypesFilter: paramsByBrowseType[type].recursionTypesFilter,
             fieldSorter: sort.orderBy === '' ? null : {
                 sortType: sort.order === '' ? null : (sort.order === 'DESC' ? 'ASC' : 'DESC'),
@@ -194,7 +196,7 @@ class ContentQueryHandler {
 class FilesQueryHandler {
     getQuery() {
         return gql`
-            query getFiles($path:String!, $language:String!, $offset:Int, $limit:Int, $displayLanguage:String!, $typeFilter:[String]!, $fieldSorter: InputFieldSorterInput, $fieldGrouping: InputFieldGroupingInput, $recursionTypesFilter: InputNodeTypesInput) {
+            query getFiles($path:String!, $language:String!, $offset:Int, $limit:Int, $displayLanguage:String!, $typeFilter:[String]!, $fieldSorter: InputFieldSorterInput, $fieldGrouping: InputFieldGroupingInput, $recursionTypesFilter: InputNodeTypesInput, $selectableTypesTable: [String]!) {
                 jcr {
                     nodeByPath(path: $path) {
                         ...NodeFields
@@ -241,6 +243,7 @@ class FilesQueryHandler {
             offset: pagination.currentPage * pagination.pageSize,
             limit: pagination.pageSize,
             typeFilter: params.typeFilter.media,
+            selectableTypesTable: params.selectableTypesTable,
             recursionTypesFilter: {multi: 'NONE', types: ['jnt:folder']},
             fieldSorter: sort.orderBy === '' ? null : {
                 sortType: sort.order === '' ? null : (sort.order === 'DESC' ? 'ASC' : 'DESC'),

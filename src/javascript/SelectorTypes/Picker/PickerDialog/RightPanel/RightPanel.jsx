@@ -45,7 +45,7 @@ const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
                 <ContentLayout pickerConfig={pickerConfig}/>
             </div>
             <footer className={clsx('flexRow', 'alignCenter', css.footer)}>
-                <Typography variant="caption" className={css.caption}>{t('Non-selectable items are not listed in this view')}</Typography>
+                <Typography variant="caption" className={css.caption}>{t('content-editor:label.contentEditor.picker.rightPanel.actionsCaption')}</Typography>
                 <div className="flexFluid"/>
                 <div className={clsx('flexRow', css.actions)}>
                     <Button

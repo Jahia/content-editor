@@ -35,7 +35,7 @@ function useInstance(instance) {
     const anySelected = selection.length > 0;
 
     const toggleRowSelected = row => {
-        if (!['jnt:folder'].includes(row.original.primaryNodeType.name)) {
+        if (row.original.isSelectable) {
             dispatch(batchActions([cePickerClearSelection(), cePickerAddSelection({
                 uuid: row.original.uuid,
                 path: row.original.path
