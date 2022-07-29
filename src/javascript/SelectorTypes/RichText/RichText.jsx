@@ -9,12 +9,15 @@ import {PickerDialog} from '~/SelectorTypes/Picker';
 import {useTranslation} from 'react-i18next';
 import {buildPickerContext, fillCKEditorPicker} from './RichText.utils';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
+import styles from './RichText.scss';
 
 if (window.CKEDITOR) {
     window.CKEDITOR.focusManager._.blurDelay = 0;
 }
 
 CKEditor.displayName = 'CKEditor';
+
+console.log(styles.test);
 
 function loadOption(selectorOptions, name) {
     return selectorOptions && selectorOptions.find(option => option.name === name);

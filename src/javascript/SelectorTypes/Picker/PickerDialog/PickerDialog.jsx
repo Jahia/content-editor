@@ -128,7 +128,6 @@ export const PickerDialog = ({
         <Dialog
             fullScreen
             data-sel-role="picker-dialog"
-            classes={{root: styles.rootDialog}}
             open={isOpen}
             TransitionComponent={Transition}
             onClose={() => {

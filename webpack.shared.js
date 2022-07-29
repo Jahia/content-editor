@@ -2,6 +2,7 @@ const deps = require('./package.json').dependencies;
 
 const sharedDeps = [
     '@babel/polyfill',
+    '@material-ui/core',
     'react',
     'react-dom',
     'react-router',
