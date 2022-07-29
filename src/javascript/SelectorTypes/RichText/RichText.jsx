@@ -17,8 +17,6 @@ if (window.CKEDITOR) {
 
 CKEditor.displayName = 'CKEditor';
 
-console.log(styles.test);
-
 function loadOption(selectorOptions, name) {
     return selectorOptions && selectorOptions.find(option => option.name === name);
 }
