@@ -4,7 +4,6 @@ import {Dialog, Slide} from '@material-ui/core';
 import styles from './PickerDialog.scss';
 import {
     cePickerAddSelection,
-    cePickerClearSelection,
     cePickerContextSite,
     cePickerMode,
     cePickerOpenPaths,
@@ -212,7 +211,7 @@ export const PickerDialog = ({
                             accordionItemTarget={getItemTarget(pickerConfig.key)}
                             accordionItemProps={accordionItemProps}
                             selector={selector}
-                            handleNavigationAction={(mode, path) => (batchActions([cePickerClearSelection(), cePickerPath(path), cePickerMode(mode)]))}
+                            handleNavigationAction={(mode, path) => (batchActions([cePickerPath(path), cePickerMode(mode)]))}
                         />
                     </aside>
                 )}

@@ -1,7 +1,6 @@
 import React from 'react';
 import {AccordionItem} from '@jahia/moonstone';
 import {
-    cePickerClearSelection,
     cePickerClosePaths,
     cePickerOpenPaths,
     cePickerPath
@@ -17,7 +16,7 @@ const selector = state => ({
 });
 
 const actions = {
-    setPathAction: path => batchActions([cePickerClearSelection(), cePickerPath(path)]),
+    setPathAction: path => batchActions([cePickerPath(path)]),
     openPathAction: path => cePickerOpenPaths([path]),
     closePathAction: path => cePickerClosePaths([path])
 };
