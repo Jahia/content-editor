@@ -116,7 +116,8 @@ export const ContentTable = ({
         if (selection.length > 0) {
             const toRemove = selection.filter(s => paths.indexOf(s.path) === -1);
             if (toRemove.length > 0) {
-                dispatch(reduxActions.removeSelectionAction(toRemove));
+                // TODO why do we have this?
+                // dispatch(reduxActions.removeSelectionAction(toRemove));
             }
         }
     }, [rows, selection, paths, dispatch]);

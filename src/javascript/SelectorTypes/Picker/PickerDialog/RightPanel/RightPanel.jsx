@@ -12,6 +12,7 @@ import clsx from 'clsx';
 import {DisplayAction} from '@jahia/ui-extender';
 import {getButtonRenderer} from '~/utils';
 import {ViewModeSelector} from '@jahia/jcontent';
+import SelectionCaption from './SelectionCaption';
 
 const viewModeSelectorProps = {
     selector: state => ({
@@ -45,7 +46,7 @@ const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
                 <ContentLayout pickerConfig={pickerConfig}/>
             </div>
             <footer className={clsx('flexRow', 'alignCenter', css.footer)}>
-                <Typography variant="caption" className={css.caption}>{t('content-editor:label.contentEditor.picker.rightPanel.actionsCaption')}</Typography>
+                <SelectionCaption selection={selection}/>
                 <div className="flexFluid"/>
                 <div className={clsx('flexRow', css.actions)}>
                     <Button
