@@ -22,7 +22,7 @@ export const GoBack = ({render: Render, ...otherProps}) => {
     const dirty = isDirty(formik, i18nContext);
 
     const goBack = () => {
-        if (dirty) {
+        if (dirty && envProps.confirmationDialog) {
             formik.validateForm();
             setOpen(true);
         } else {
@@ -32,11 +32,13 @@ export const GoBack = ({render: Render, ...otherProps}) => {
 
     return (
         <>
-            <CloseConfirmationDialog
-                isOpen={open}
-                actionCallback={envProps.back}
-                onCloseDialog={onCloseDialog}
-            />
+            { envProps.confirmationDialog && (
+                <CloseConfirmationDialog
+                    isOpen={open}
+                    actionCallback={envProps.back}
+                    onCloseDialog={onCloseDialog}
+                />
+            )}
             <Render
                 enabled={!envProps.disabledBack()}
                 onClick={() => goBack()}

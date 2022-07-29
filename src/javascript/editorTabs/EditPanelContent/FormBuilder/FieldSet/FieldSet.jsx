@@ -12,35 +12,37 @@ const DynamicFieldSet = ({fieldset}) => {
     const activatedFieldSet = (values && values[fieldset.name]);
     return (
         <article>
-            <div className={styles.fieldsetTitleContainer}>
-                <div className="flexRow alignCenter">
-                    <Toggle
-                        classes={{
-                            switchBase: styles.toggle,
-                            disabledSwitchBase: styles.toggle,
-                            readOnlySwitchBase: styles.toggle,
-                            focusedSwitchBase: styles.toggle
-                        }}
-                        data-sel-role-dynamic-fieldset={fieldset.name}
-                        id={fieldset.name}
-                        checked={activatedFieldSet}
-                        readOnly={fieldset.readOnly}
-                        onChange={handleChange}
-                    />
-                    <Typography component="label"
-                                htmlFor={fieldset.name}
-                                className={styles.fieldSetTitle}
-                                variant="subheading"
-                    >
-                        {fieldset.displayName}
-                    </Typography>
+            {!fieldset.hideHeader && (
+                <div className={styles.fieldsetTitleContainer}>
+                    <div className="flexRow alignCenter">
+                        <Toggle
+                            classes={{
+                                switchBase: styles.toggle,
+                                disabledSwitchBase: styles.toggle,
+                                readOnlySwitchBase: styles.toggle,
+                                focusedSwitchBase: styles.toggle
+                            }}
+                            data-sel-role-dynamic-fieldset={fieldset.name}
+                            id={fieldset.name}
+                            checked={activatedFieldSet}
+                            readOnly={fieldset.readOnly}
+                            onChange={handleChange}
+                        />
+                        <Typography component="label"
+                                    htmlFor={fieldset.name}
+                                    className={styles.fieldSetTitle}
+                                    variant="subheading"
+                        >
+                            {fieldset.displayName}
+                        </Typography>
+                    </div>
+                    {fieldset.description && (
+                        <Typography component="label" className={styles.fieldSetDescription} variant="caption">
+                            {fieldset.description}
+                        </Typography>
+                    )}
                 </div>
-                {fieldset.description && (
-                    <Typography component="label" className={styles.fieldSetDescription} variant="caption">
-                        {fieldset.description}
-                    </Typography>
-                )}
-            </div>
+            )}
 
             {activatedFieldSet && fieldset.fields.map(field => <FieldContainer key={field.name} field={field}/>)}
         </article>
@@ -54,22 +56,24 @@ DynamicFieldSet.propTypes = {
 const StaticFieldSet = ({fieldset}) => {
     return (
         <article>
-            <div className={styles.fieldsetTitleContainer}>
-                <div className="flexRow alignCenter">
-                    <Typography component="label"
-                                htmlFor={fieldset.name}
-                                className={styles.fieldSetTitle}
-                                variant="subheading"
-                    >
-                        {fieldset.displayName}
-                    </Typography>
+            {!fieldset.hideHeader && (
+                <div className={styles.fieldsetTitleContainer}>
+                    <div className="flexRow alignCenter">
+                        <Typography component="label"
+                                    htmlFor={fieldset.name}
+                                    className={styles.fieldSetTitle}
+                                    variant="subheading"
+                        >
+                            {fieldset.displayName}
+                        </Typography>
+                    </div>
+                    {fieldset.description && (
+                        <Typography component="label" className={clsx(styles.fieldSetDescription, styles.staticFieldSetDescription)} variant="caption">
+                            {fieldset.description}
+                        </Typography>
+                    )}
                 </div>
-                {fieldset.description && (
-                    <Typography component="label" className={clsx(styles.fieldSetDescription, styles.staticFieldSetDescription)} variant="caption">
-                        {fieldset.description}
-                    </Typography>
-                )}
-            </div>
+            )}
 
             {fieldset.fields.map(field => <FieldContainer key={field.name} field={field}/>)}
         </article>
