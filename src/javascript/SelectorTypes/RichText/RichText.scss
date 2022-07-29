@@ -1,9 +1,10 @@
 // CKeditor nuclear bomb override
 :global(.cke_dialog_background_cover) {
-  z-index: 1300 !important;
-  background-color: rgba(0, 0, 0, 0.5) !important;
+    z-index: 1300 !important;
+
+    background-color: rgba(0, 0, 0, 0.5) !important;
 }
 
 :global(.cke_dialog_container) {
-  z-index: 1300 !important;
+    z-index: 1300 !important;
 }
