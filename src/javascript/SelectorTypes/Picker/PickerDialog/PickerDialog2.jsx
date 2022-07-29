@@ -167,7 +167,7 @@ export const PickerDialog = ({
             fullWidth
             maxWidth="xl"
             data-sel-role="picker-dialog"
-            classes={{root: styles.rootDialog, paper: styles.paper}}
+            classes={{paper: styles.paper}}
             open={isOpen}
             TransitionComponent={Transition}
             onClose={onClose}

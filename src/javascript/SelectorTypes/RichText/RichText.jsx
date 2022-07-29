@@ -9,6 +9,7 @@ import {PickerDialog} from '~/SelectorTypes/Picker';
 import {useTranslation} from 'react-i18next';
 import {buildPickerContext, fillCKEditorPicker} from './RichText.utils';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
+import './RichText.scss';
 
 if (window.CKEDITOR) {
     window.CKEDITOR.focusManager._.blurDelay = 0;
