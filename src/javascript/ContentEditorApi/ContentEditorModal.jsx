@@ -51,13 +51,13 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
         disabledBack: () => false,
         createCallback: ({newNode}) => {
             needRefresh.current = true;
-            if (editorConfig && editorConfig.createCallback) {
+            if (editorConfig.createCallback) {
                 editorConfig.createCallback(newNode, envProps);
             }
 
             triggerEvents(newNode.uuid, Constants.operators.create);
 
-            const opts = editorConfig && editorConfig.isFullscreen ? ['closeButton'] : {
+            const opts = editorConfig.isFullscreen ? ['closeButton'] : {
                 action: [
                     <Button
                         key="edit"
@@ -90,7 +90,7 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
 
         editCallback: ({originalNode, updatedNode}) => {
             needRefresh.current = true;
-            if (editorConfig && editorConfig.editCallback) {
+            if (editorConfig.editCallback) {
                 editorConfig.editCallback(updatedNode, originalNode, envProps);
             }
 
@@ -102,14 +102,12 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
             if (newNode && (editorConfig.isFullscreen || forceRedirect)) {
                 // Redirect to CE edit mode, for the created node
                 needRefresh.current = false;
-                if (editorConfig) {
-                    setEditorConfig({
-                        ...editorConfig,
-                        uuid: newNode.uuid,
-                        lang: language ? language : editorConfig.lang,
-                        mode: Constants.routes.baseEditRoute
-                    });
-                }
+                setEditorConfig({
+                    ...editorConfig,
+                    uuid: newNode.uuid,
+                    lang: language ? language : editorConfig.lang,
+                    mode: Constants.routes.baseEditRoute
+                });
             } else if (!editorConfig.isFullscreen) {
                 // Otherwise refresh and close
                 setEditorConfig(false);
@@ -122,7 +120,7 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
             });
         },
         onClosedCallback: () => {
-            if (editorConfig && editorConfig.onClosedCallback) {
+            if (editorConfig.onClosedCallback) {
                 editorConfig.onClosedCallback(envProps, needRefresh.current);
             }
         },
@@ -136,10 +134,10 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
             });
         },
         isModal: true,
-        useFormDefinition: editorConfig?.useFormDefinition,
-        isFullscreen: editorConfig?.isFullscreen,
-        layout: editorConfig?.layout || (editorConfig?.isFullscreen ? EditPanelFullscreen : EditPanelCompact),
-        confirmationDialog: <OnCloseConfirmationDialog setEditorConfig={setEditorConfig} openDialog={openDialog}/>
+        useFormDefinition: editorConfig.useFormDefinition,
+        isFullscreen: editorConfig.isFullscreen,
+        layout: editorConfig.layout || (editorConfig.isFullscreen ? EditPanelFullscreen : EditPanelCompact),
+        confirmationDialog: (editorConfig.useConfirmationDialog !== false) && <OnCloseConfirmationDialog setEditorConfig={setEditorConfig} openDialog={openDialog}/>
     };
 
     const classes = editorConfig.isFullscreen ? {
@@ -157,7 +155,7 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
                 TransitionComponent={Transition}
                 aria-labelledby="dialog-content-editor"
                 classes={classes}
-                onClose={() => openDialog.current && openDialog.current()}
+                onClose={() => openDialog.current ? openDialog.current() : setEditorConfig(false)}
                 onRendered={() => window.focus()}
                 {...editorConfig.dialogProps}
         >
@@ -189,7 +187,8 @@ ContentEditorModal.propTypes = {
         onClosedCallback: PropTypes.func,
         useFormDefinition: PropTypes.func,
         dialogProps: PropTypes.object,
-        layout: PropTypes.object
+        layout: PropTypes.object,
+        useConfirmationDialog: PropTypes.bool
     }).isRequired,
     setEditorConfig: PropTypes.func.isRequired
 };

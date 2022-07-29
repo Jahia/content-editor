@@ -41,7 +41,7 @@ export const RenameLayout = () => {
                     actionKey="backButton"
                     render={ButtonRenderer}
                 />
-                <div>
+                <div className={styles.saveActions}>
                     <DisplayActions
                         buttonProps={accentColorButtonProps}
                         target="content-editor/header/main-save-actions"

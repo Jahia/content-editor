@@ -75,7 +75,7 @@ export const EditPanelCompact = ({title, createAnother}) => {
                     actionKey="backButton"
                     render={ButtonRenderer}
                 />
-                <div>
+                <div className={styles.saveActions}>
                     <DisplayActions
                         buttonProps={accentColorButtonProps}
                         createAnother={createAnother?.value}

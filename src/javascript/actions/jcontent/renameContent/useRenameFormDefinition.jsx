@@ -8,7 +8,8 @@ const renameAdaptEditFormData = (data, lang, t) => {
     formData.sections = formData.sections.filter(s => s.name === 'content');
     formData.sections[0].hideHeader = true;
     formData.sections[0].fieldSets.forEach(fs => {
-        fs.fields = fs.fields.filter(f => f.name === 'nt:base_ce:systemName' || f.propertyName === 'jcr:title');
+        fs.hideHeader = true;
+        fs.fields = fs.fields.filter(f => f.name === 'nt:base_ce:systemName');
     });
     formData.sections[0].fieldSets = formData.sections[0].fieldSets.filter(fs => fs.fields.length > 0);
 

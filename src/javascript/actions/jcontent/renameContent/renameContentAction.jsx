@@ -35,7 +35,8 @@ export const RenameContent = ({path, editCallback, render: Render, loading: Load
                             classes: {}
                         },
                         layout: RenameLayout,
-                        useFormDefinition: useRenameFormDefinition
+                        useFormDefinition: useRenameFormDefinition,
+                        useConfirmationDialog: false
                     });
                 }}
         />
