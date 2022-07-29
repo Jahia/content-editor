@@ -112,15 +112,15 @@ export const registerPickerReducer = registry => {
         }),
         [cePickerAddSelection]: (state, action) => ({
             ...state,
-            selection: state.selection.concat(toArray(action.payload).filter(path => state.selection.indexOf(path) < 0))
+            selection: state.selection.concat(toArray(action.payload))
         }),
         [cePickerRemoveSelection]: (state, action) => ({
             ...state,
-            selection: state.selection.filter(path => toArray(action.payload).indexOf(path) === -1)
+            selection: state.selection.filter(s => toArray(action.payload).find(s1 => s1.path === s.path) === undefined)
         }),
         [cePickerSwitchSelection]: (state, action) => ({
             ...state,
-            selection: (state.selection.indexOf(action.payload) === -1) ? [...state.selection, action.payload] : state.selection.filter(path => action.payload !== path)
+            selection: (state.selection.find(s => s.path === action.payload.path) === undefined) ? [...state.selection, action.payload] : state.selection.filter(s => action.payload.path !== s.path)
         }),
         [cePickerClearSelection]: state => ({
             ...state,

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {Dialog, Slide} from '@material-ui/core';
 import styles from './PickerDialog.scss';
 import {
+    cePickerAddSelection,
     cePickerClearSelection,
     cePickerContextSite,
     cePickerMode,
@@ -50,6 +51,7 @@ export const PickerDialog = ({
     onClose,
     initialSelectedItem,
     editorContext,
+    inputContext,
     pickerConfig,
     accordionItemProps,
     onItemSelection
@@ -162,6 +164,17 @@ export const PickerDialog = ({
         }
     }, [dispatch, editorContext, isOpen, initialSelectedItem, pickerConfig, selectedItem, state, currentFolderInfo]);
 
+    useEffect(() => {
+        if (isOpen && inputContext.actionContext.fieldData) {
+            dispatch(cePickerAddSelection({
+                uuid: inputContext.actionContext.fieldData.uuid,
+                path: inputContext.actionContext.fieldData.path,
+                name: inputContext.actionContext.fieldData.name,
+                url: inputContext.actionContext.fieldData.url
+            }));
+        }
+    }, [isOpen, inputContext]); // eslint-disable-line react-hooks/exhaustive-deps
+
     return (
         <Dialog
             fullWidth
@@ -213,6 +226,7 @@ PickerDialog.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     editorContext: PropTypes.object.isRequired,
+    inputContext: PropTypes.object.isRequired,
     pickerConfig: configPropType.isRequired,
     initialSelectedItem: PropTypes.string,
     accordionItemProps: PropTypes.object,

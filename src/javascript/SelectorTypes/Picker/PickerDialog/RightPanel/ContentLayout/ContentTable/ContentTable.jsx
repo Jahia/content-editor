@@ -12,14 +12,13 @@ import {
     cePickerClearSelection,
     cePickerMode,
     cePickerOpenPaths, cePickerPath,
-    cePickerRemoveSelection,
     cePickerSetPage,
     cePickerSetPageSize, cePickerSetTableViewType
 } from '~/SelectorTypes/Picker/Picker2.redux';
 import {getDetailedPathArray} from '~/SelectorTypes/Picker/Picker2.utils';
 import {batchActions} from 'redux-batched-actions';
-import {flattenTree} from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout/ContentLayout.utils';
 import {UploadTransformComponent, ContentNotFound, ContentEmptyDropZone, EmptyTable, ContentListHeader, ContentTableWrapper, ContentTypeSelector} from '@jahia/jcontent';
+import classes from './ContentTable.scss';
 
 const contentTypeSelectorProps = {
     selector: state => state.contenteditor.picker.tableView,
@@ -55,7 +54,6 @@ const reduxActions = {
     setModeAction: mode => cePickerMode(mode),
     setCurrentPageAction: page => cePickerSetPage(page - 1),
     setPageSizeAction: pageSize => cePickerSetPageSize(pageSize),
-    removeSelectionAction: path => cePickerRemoveSelection(path),
     clearSelectionAction: () => cePickerClearSelection()
 };
 
@@ -87,12 +85,10 @@ export const ContentTable = ({
         mode,
         path,
         pagination,
-        selection,
         tableView
     } = useSelector(selector, shallowEqual);
     const dispatch = useDispatch();
     const isStructuredView = Constants.tableView.mode.STRUCTURED === tableView.viewMode;
-    const paths = useMemo(() => flattenTree(rows).map(n => n.path), [rows]);
     const columns = useMemo(() => Constants.mode.MEDIA === mode ? allColumnData.filter(c => c.id !== 'type') : allColumnData, [mode]);
     const {
         getTableProps,
@@ -110,15 +106,6 @@ export const ContentTable = ({
         useSort,
         useExpanded
     );
-
-    useEffect(() => {
-        if (selection.length > 0) {
-            const toRemove = selection.filter(s => paths.indexOf(s.path) === -1).map(s => s.path);
-            if (toRemove.length > 0) {
-                dispatch(reduxActions.removeSelectionAction(toRemove));
-            }
-        }
-    }, [rows, selection, paths, dispatch]);
 
     useEffect(() => {
         if (isStructuredView) {
@@ -186,11 +173,13 @@ export const ContentTable = ({
                             const rowProps = row.getRowProps();
                             const selectionProps = row.getToggleRowSelectedProps();
                             const node = row.original;
+                            const className = node.isSelectable ? classes.selectableRow : classes.doubleClickableRow;
 
                             return (
                                 <TableRow key={'row' + row.id}
                                           {...rowProps}
                                           data-cm-role="table-content-list-row"
+                                          className={!selectionProps.checked && className}
                                           isHighlighted={selectionProps.checked}
                                           onClick={e => {
                                               clickHandler.handleEvent(e, selectionProps.onChange);

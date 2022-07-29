@@ -175,7 +175,7 @@ class ContentQueryHandler {
         };
 
         if (mode === Constants.mode.CONTENT_FOLDERS) {
-            p.recursionTypesFilter = {multi: 'NONE', types: ['jnt:contentFolder']};
+            p.recursionTypesFilter = {types: ['jnt:contentFolder']};
             p.typeFilter = ['jnt:content'];
         } else if (viewType === Constants.tableView.type.CONTENT) {
             p.recursionTypesFilter = {types: ['jnt:content']};
