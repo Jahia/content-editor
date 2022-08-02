@@ -9,7 +9,6 @@ import {useRowSelection, useSort, useExpanded} from '~/SelectorTypes/Picker/reac
 import {allColumnData} from '~/SelectorTypes/Picker/reactTable/columns';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {
-    cePickerClearSelection,
     cePickerMode,
     cePickerOpenPaths, cePickerPath,
     cePickerSetPage,
@@ -30,8 +29,8 @@ const contentTypeSelectorProps = {
 
 const ContentTypeSelectorComp = props => React.createElement(ContentTypeSelector, {...props, ...contentTypeSelectorProps});
 
-export const allowDoubleClickNavigation = (nodeType, subNodes, fcn) => {
-    if (['jnt:page', 'jnt:folder', 'jnt:contentFolder'].indexOf(nodeType) !== -1 || (subNodes && subNodes > 0)) {
+export const allowDoubleClickNavigation = (nodeType, fcn) => {
+    if (['jnt:folder', 'jnt:contentFolder'].indexOf(nodeType) !== -1) {
         return fcn;
     }
 
@@ -53,8 +52,7 @@ const reduxActions = {
     setPathAction: path => cePickerPath(path),
     setModeAction: mode => cePickerMode(mode),
     setCurrentPageAction: page => cePickerSetPage(page - 1),
-    setPageSizeAction: pageSize => cePickerSetPageSize(pageSize),
-    clearSelectionAction: () => cePickerClearSelection()
+    setPageSizeAction: pageSize => cePickerSetPageSize(pageSize)
 };
 
 const clickHandler = {
@@ -115,7 +113,6 @@ export const ContentTable = ({
 
     const doubleClickNavigation = node => {
         const actions = [];
-        actions.push(reduxActions.clearSelectionAction());
 
         if (mode === Constants.mode.SEARCH) {
             let newMode;
@@ -186,7 +183,6 @@ export const ContentTable = ({
                                           }}
                                           onDoubleClick={e => clickHandler.handleEvent(e, allowDoubleClickNavigation(
                                               node.primaryNodeType.name,
-                                              node.subNodes ? node.subNodes.pageInfo.totalCount : null,
                                               () => doubleClickNavigation(node)
                                           ))}
                                 >

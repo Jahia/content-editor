@@ -21,6 +21,15 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
         set(parsedOptions, option.name, option.value || option.values);
     });
 
+    // Handle value constraints if they are available, note that this overrides default config of each picker.
+    field.valueConstraints.forEach((vc, index) => {
+        if (index === 0) {
+            inputContext.selectorType.pickerConfig.selectableTypesTable = [];
+        }
+
+        inputContext.selectorType.pickerConfig.selectableTypesTable.push(vc.value.string);
+    });
+
     const pickerConfig = parsedOptions.pickerConfig ?
         mergeDeep({}, inputContext.selectorType.pickerConfig, parsedOptions.pickerConfig) :
         inputContext.selectorType.pickerConfig;
@@ -68,6 +77,7 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
         setDialogOpen(open);
     };
 
+    console.log(pickerConfig, inputContext);
     return (
         <div className="flexFluid flexRow_nowrap alignCenter">
             <ReferenceCard
