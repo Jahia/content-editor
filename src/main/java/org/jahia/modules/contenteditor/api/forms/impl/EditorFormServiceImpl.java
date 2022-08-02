@@ -464,7 +464,9 @@ public class EditorFormServiceImpl implements EditorFormService {
             }
             // Process dependent properties
             List<EditorFormFieldValueConstraint> valueConstraints = getValueConstraints(primaryNodeType, editorFormField, existingNode, parentNode, locale, new HashMap<>());
-            editorFormField.setValueConstraints(valueConstraints);
+            if (valueConstraints != null && !valueConstraints.isEmpty()) {
+                editorFormField.setValueConstraints(valueConstraints);
+            }
         }
     }
 

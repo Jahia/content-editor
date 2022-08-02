@@ -29,8 +29,8 @@ const contentTypeSelectorProps = {
 
 const ContentTypeSelectorComp = props => React.createElement(ContentTypeSelector, {...props, ...contentTypeSelectorProps});
 
-export const allowDoubleClickNavigation = (nodeType, subNodes, fcn) => {
-    if (['jnt:page', 'jnt:folder', 'jnt:contentFolder'].indexOf(nodeType) !== -1 || (subNodes && subNodes > 0)) {
+export const allowDoubleClickNavigation = (nodeType, fcn) => {
+    if (['jnt:folder', 'jnt:contentFolder'].indexOf(nodeType) !== -1) {
         return fcn;
     }
 
@@ -183,7 +183,6 @@ export const ContentTable = ({
                                           }}
                                           onDoubleClick={e => clickHandler.handleEvent(e, allowDoubleClickNavigation(
                                               node.primaryNodeType.name,
-                                              node.subNodes ? node.subNodes.pageInfo.totalCount : null,
                                               () => doubleClickNavigation(node)
                                           ))}
                                 >
