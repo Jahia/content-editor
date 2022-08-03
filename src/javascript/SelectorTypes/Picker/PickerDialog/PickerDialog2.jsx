@@ -1,13 +1,13 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {Dialog, Slide} from '@material-ui/core';
 import styles from './PickerDialog.scss';
 import {
-    cePickerAddSelection,
     cePickerContextSite,
     cePickerMode,
     cePickerOpenPaths,
     cePickerPath,
+    cePickerSetSelection,
     cePickerSite
 } from '~/SelectorTypes/Picker/Picker2.redux';
 import {getItemTarget} from '~/SelectorTypes/Picker/accordionItems/accordionItems';
@@ -24,6 +24,7 @@ import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {useNodeInfo} from '@jahia/data-helper';
 import RightPanel from './RightPanel';
 import {ContentNavigation, SiteSwitcher} from '@jahia/jcontent';
+import {encodeJCRPath} from '~/utils';
 
 const Transition = props => {
     return <Slide direction="up" {...props}/>;
@@ -50,7 +51,6 @@ export const PickerDialog = ({
     onClose,
     initialSelectedItem,
     editorContext,
-    inputContext,
     pickerConfig,
     accordionItemProps,
     onItemSelection
@@ -65,15 +65,39 @@ export const PickerDialog = ({
         jcontentPath: state.jcontent.path
     }), shallowEqual);
 
-    const [selectedItem] = useState(initialSelectedItem);
-
     const dispatch = useDispatch();
 
     const currentFolderInfo = useNodeInfo({path: state.path}, {skip: !state.path});
+    const selection = useSelector(state => state.contenteditor.picker.selection);
+
+    useNodeInfo({
+        paths: isOpen ? (Array.isArray(initialSelectedItem) ? initialSelectedItem : [initialSelectedItem]) : null,
+        language: 'en',
+        displayLanguage: 'en'
+    }, {
+        getDisplayName: true,
+        getPrimaryNodeType: true
+    }, {
+        onCompleted: data => {
+            if (data) {
+                const nodes = data.jcr.nodesByPath;
+                dispatch(cePickerSetSelection(nodes.map(n => ({
+                    uuid: n.uuid,
+                    path: n.path,
+                    url: encodeJCRPath(`${n.primaryNodeType.icon}.png`),
+                    name: n.displayName,
+                    info: n.primaryNodeType.displayName
+                }))));
+            }
+        }
+    });
 
     const previous = useRef(state);
     useEffect(() => {
+        let selectedItem = selection && selection.length > 0 && selection[0];
+
         if (isOpen && !currentFolderInfo.loading) {
+            selectedItem = initialSelectedItem && Array.isArray(initialSelectedItem) ? (initialSelectedItem.length > 0 && initialSelectedItem[0]) : initialSelectedItem;
             const actions = [];
             const newState = {...state, isOpen: true};
             let somethingChanged = false;
@@ -161,18 +185,7 @@ export const PickerDialog = ({
         } else {
             previous.current = {...state, isOpen: false};
         }
-    }, [dispatch, editorContext, isOpen, initialSelectedItem, pickerConfig, selectedItem, state, currentFolderInfo]);
-
-    useEffect(() => {
-        if (isOpen && inputContext.actionContext.fieldData) {
-            dispatch(cePickerAddSelection({
-                uuid: inputContext.actionContext.fieldData.uuid,
-                path: inputContext.actionContext.fieldData.path,
-                name: inputContext.actionContext.fieldData.name,
-                url: inputContext.actionContext.fieldData.url
-            }));
-        }
-    }, [isOpen, inputContext]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [dispatch, editorContext, isOpen, initialSelectedItem, pickerConfig, selection, state, currentFolderInfo]);
 
     return (
         <Dialog
@@ -225,7 +238,6 @@ PickerDialog.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     editorContext: PropTypes.object.isRequired,
-    inputContext: PropTypes.object.isRequired,
     pickerConfig: configPropType.isRequired,
     initialSelectedItem: PropTypes.string,
     accordionItemProps: PropTypes.object,

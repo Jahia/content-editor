@@ -111,7 +111,7 @@ export const RichText = ({field, id, value, onChange, onBlur}) => {
                 field={field}
                 pickerConfig={pickerConfig}
                 onItemSelection={handleItemSelection}
-                onClose={setPicker}
+                onClose={() => setPicker(false)}
             />}
             <CKEditor
                 key={'v' + (i18nContext?.memo?.count || 0)}

@@ -100,7 +100,6 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
             <PickerDialog
                 isOpen={isDialogOpen}
                 editorContext={editorContext}
-                inputContext={inputContext}
                 pickerConfig={pickerConfig}
                 initialSelectedItem={fieldData && fieldData.path}
                 accordionItemProps={parsedOptions.accordionItem}
