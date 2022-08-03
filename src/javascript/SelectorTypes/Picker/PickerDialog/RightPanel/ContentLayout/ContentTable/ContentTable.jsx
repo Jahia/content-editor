@@ -29,12 +29,8 @@ const contentTypeSelectorProps = {
 
 const ContentTypeSelectorComp = props => React.createElement(ContentTypeSelector, {...props, ...contentTypeSelectorProps});
 
-export const allowDoubleClickNavigation = (nodeType, fcn) => {
-    if (['jnt:folder', 'jnt:contentFolder'].indexOf(nodeType) !== -1) {
-        return fcn;
-    }
-
-    return function () {};
+export const allowDoubleClickNavigation = nodeType => {
+    return (['jnt:folder', 'jnt:contentFolder'].indexOf(nodeType) !== -1);
 };
 
 const selector = state => ({
@@ -176,13 +172,8 @@ export const ContentTable = ({
                                           data-cm-role="table-content-list-row"
                                           className={!selectionProps.checked && className}
                                           isHighlighted={selectionProps.checked}
-                                          onClick={e => {
-                                              clickHandler.handleEvent(e, selectionProps.onChange);
-                                          }}
-                                          onDoubleClick={e => clickHandler.handleEvent(e, allowDoubleClickNavigation(
-                                              node.primaryNodeType.name,
-                                              () => doubleClickNavigation(node)
-                                          ))}
+                                          onClick={e => allowDoubleClickNavigation(node.primaryNodeType.name) ? clickHandler.handleEvent(e, selectionProps.onChange) : selectionProps.onChange()}
+                                          onDoubleClick={e => allowDoubleClickNavigation(node.primaryNodeType.name) && clickHandler.handleEvent(e, () => doubleClickNavigation(node))}
                                 >
                                     {row.cells.map(cell => <React.Fragment key={cell.column.id}>{cell.render('Cell')}</React.Fragment>)}
                                 </TableRow>
