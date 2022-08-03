@@ -87,9 +87,25 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
         query: layoutQuery,
         variables: (isStructuredView && tableView.viewType !== Constants.tableView.type.CONTENT) ?
             queryHandler.updateQueryParamsForStructuredView(layoutQueryParams, preloadForTableViewType, mode) :
-            queryHandler.getQueryParams({path, uilang, lang, params, pagination: {...pagination, currentPage: 0}, sort, viewType: preloadForTableViewType}),
+            queryHandler.getQueryParams({
+                path, uilang, lang, params, pagination: {...pagination, currentPage: 0}, sort, viewType: preloadForTableViewType
+            }),
         fetchPolicy: fetchPolicy
-    }), [isStructuredView, lang, layoutQuery, layoutQueryParams, mode, pagination, path, preloadForTableViewType, queryHandler, sort, uilang, params]);
+    }), [
+        isStructuredView,
+        tableView.viewType,
+        lang,
+        layoutQuery,
+        layoutQueryParams,
+        mode,
+        pagination,
+        path,
+        preloadForTableViewType,
+        queryHandler,
+        sort,
+        uilang,
+        params
+    ]);
 
     // Preload data either for pages or contents depending on current view type
     const preloadedData = usePreloadedData({
