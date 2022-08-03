@@ -89,7 +89,11 @@ export const registerPickerReducer = registry => {
         }),
         [cePickerPath]: (state, action) => ({
             ...state,
-            path: action.payload
+            path: action.payload,
+            pagination: {
+                ...state.pagination,
+                currentPage: 0
+            }
         }),
         [cePickerSetPage]: (state, action) => ({
             ...state,
