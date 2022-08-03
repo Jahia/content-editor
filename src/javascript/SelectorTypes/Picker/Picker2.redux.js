@@ -13,6 +13,7 @@ export const {
     cePickerSetPage,
     cePickerSetPageSize,
     cePickerSetSort,
+    cePickerSetSelection,
     cePickerAddSelection,
     cePickerRemoveSelection,
     cePickerSwitchSelection,
@@ -29,6 +30,7 @@ export const {
     'CE_PICKER_SET_PAGE',
     'CE_PICKER_SET_PAGE_SIZE',
     'CE_PICKER_SET_SORT',
+    'CE_PICKER_SET_SELECTION',
     'CE_PICKER_ADD_SELECTION',
     'CE_PICKER_REMOVE_SELECTION',
     'CE_PICKER_SWITCH_SELECTION',
@@ -106,6 +108,10 @@ export const registerPickerReducer = registry => {
         [cePickerSetSort]: (state, action) => ({
             ...state,
             sort: action.payload
+        }),
+        [cePickerSetSelection]: (state, action) => ({
+            ...state,
+            selection: action.payload
         }),
         [cePickerAddSelection]: (state, action) => ({
             ...state,

@@ -39,10 +39,8 @@ export const allowDoubleClickNavigation = (nodeType, fcn) => {
 
 const selector = state => ({
     mode: state.contenteditor.picker.mode.replace('picker-', ''),
-    siteKey: state.contenteditor.picker.site,
     path: state.contenteditor.picker.path,
     pagination: state.contenteditor.picker.pagination,
-    selection: state.contenteditor.picker.selection,
     tableView: state.contenteditor.picker.tableView
 });
 
