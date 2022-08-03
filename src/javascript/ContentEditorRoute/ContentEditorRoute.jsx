@@ -12,7 +12,6 @@ import gql from 'graphql-tag';
 import {PredefinedFragments} from '@jahia/data-helper';
 import {ceToggleSections, DEFAULT_OPENED_SECTIONS} from '~/registerReducer';
 import {useNotifications} from '@jahia/react-material';
-import {OnCloseConfirmationDialog} from '~/ContentEditorApi/OnCloseConfirmationDialog';
 
 export const ContentEditorRoute = ({mode, uuid, lang, contentType, name}) => {
     const notificationContext = useNotifications();
