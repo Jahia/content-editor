@@ -25,6 +25,9 @@ import {useNodeInfo} from '@jahia/data-helper';
 import RightPanel from './RightPanel';
 import {ContentNavigation, SiteSwitcher} from '@jahia/jcontent';
 import {encodeJCRPath} from '~/utils';
+import {useLazyQuery, useQuery} from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+import {useContentEditorConfigContext} from '~/contexts';
 
 const Transition = props => {
     return <Slide direction="up" {...props}/>;
@@ -69,28 +72,50 @@ export const PickerDialog = ({
 
     const currentFolderInfo = useNodeInfo({path: state.path}, {skip: !state.path});
     const selection = useSelector(state => state.contenteditor.picker.selection);
+    const {lang, uilang} = useContentEditorConfigContext();
 
-    useNodeInfo({
-        paths: isOpen ? (Array.isArray(initialSelectedItem) ? initialSelectedItem : [initialSelectedItem]) : null,
-        language: 'en',
-        displayLanguage: 'en'
-    }, {
-        getDisplayName: true,
-        getPrimaryNodeType: true
-    }, {
-        onCompleted: data => {
-            if (data) {
-                const nodes = data.jcr.nodesByPath;
-                dispatch(cePickerSetSelection(nodes.map(n => ({
-                    uuid: n.uuid,
-                    path: n.path,
-                    url: encodeJCRPath(`${n.primaryNodeType.icon}.png`),
-                    name: n.displayName,
-                    info: n.primaryNodeType.displayName
-                }))));
+    const [getNode, {data}] = useLazyQuery(gql`query($paths: [String!]!, $lang:String!,$uilang:String!) {
+        jcr { 
+            nodesByPath(paths:$paths) {
+                workspace
+                path
+                uuid
+                displayName(language:$lang)
+                primaryNodeType {
+                    name
+                    displayName(language: $uilang)
+                    icon
+                }
             }
+        } 
+    }`);
+
+    useEffect(() => {
+        if (isOpen && initialSelectedItem) {
+            getNode({
+                variables: {
+                    paths: Array.isArray(initialSelectedItem) ? initialSelectedItem : [initialSelectedItem],
+                    lang,
+                    uilang
+                }
+            });
+        } else {
+            dispatch(cePickerSetSelection([]));
         }
-    });
+    }, [isOpen, getNode, dispatch, initialSelectedItem, lang, uilang]);
+
+    useEffect(() => {
+        if (data) {
+            const nodes = data.jcr.nodesByPath;
+            dispatch(cePickerSetSelection(nodes.map(n => ({
+                uuid: n.uuid,
+                path: n.path,
+                url: encodeJCRPath(`${n.primaryNodeType.icon}.png`),
+                name: n.displayName,
+                info: n.primaryNodeType.displayName
+            }))));
+        }
+    }, [data, dispatch]);
 
     const previous = useRef(state);
     useEffect(() => {
