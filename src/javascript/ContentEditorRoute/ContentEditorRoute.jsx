@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {ContentEditor} from '~/ContentEditor';
 import PropTypes from 'prop-types';
 import {Constants} from '~/ContentEditor.constants';
@@ -17,7 +17,7 @@ export const ContentEditorRoute = ({mode, uuid, lang, contentType, name}) => {
     const notificationContext = useNotifications();
     const {redirect, hasHistory, exit, registerBlockListener, unRegisterBlockListener} = useContentEditorHistory();
     const {storedLocation, setStoredLocation} = useContentEditorHistoryContext();
-    const {uilang, openPaths} = useSelector(state => ({uilang: state.uilang, openPaths: state.jcontent.openPaths}));
+    const {uilang, openPaths} = useSelector(state => ({uilang: state.uilang, openPaths: state.jcontent.openPaths}), shallowEqual);
     const dispatch = useDispatch();
 
     const {t} = useTranslation('content-editor');
