@@ -25,7 +25,7 @@ import {useNodeInfo} from '@jahia/data-helper';
 import RightPanel from './RightPanel';
 import {ContentNavigation, SiteSwitcher} from '@jahia/jcontent';
 import {encodeJCRPath} from '~/utils';
-import {useLazyQuery, useQuery} from '@apollo/react-hooks';
+import {useLazyQuery} from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import {useContentEditorConfigContext} from '~/contexts';
 
