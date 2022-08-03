@@ -11,7 +11,7 @@ jest.mock('@apollo/react-hooks', () => {
     };
 });
 
-jest.mock('../Picker', () => {
+jest.mock('../Picker2', () => {
     return {
         Picker: () => {}
     };

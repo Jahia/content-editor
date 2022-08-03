@@ -1,14 +1,3 @@
 .paper.paper {
     height: 100vh;
 }
-
-.modalContent.modalContent {
-    display: flex;
-    flex-grow: 1;
-    flex-direction: column;
-    padding: var(--spacing-nano);
-}
-
-.modalContentWithDrawer.modalContentWithDrawer {
-    margin-left: 15vw;
-}

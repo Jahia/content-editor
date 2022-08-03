@@ -1,1 +1,0 @@
-export {ContentTableHeader} from './ContentTableHeader';

@@ -26,8 +26,8 @@ import RightPanel from './RightPanel';
 import {ContentNavigation, SiteSwitcher} from '@jahia/jcontent';
 import {encodeJCRPath} from '~/utils';
 import {useLazyQuery} from '@apollo/react-hooks';
-import gql from 'graphql-tag';
 import {useContentEditorConfigContext} from '~/contexts';
+import {GET_PICKER_NODE} from '~/SelectorTypes/Picker/PickerDialog/PickerDialog2.gql-queries';
 
 const Transition = props => {
     return <Slide direction="up" {...props}/>;
@@ -74,21 +74,7 @@ export const PickerDialog = ({
     const selection = useSelector(state => state.contenteditor.picker.selection);
     const {lang, uilang} = useContentEditorConfigContext();
 
-    const [getNode, {data}] = useLazyQuery(gql`query($paths: [String!]!, $lang:String!,$uilang:String!) {
-        jcr { 
-            nodesByPath(paths:$paths) {
-                workspace
-                path
-                uuid
-                displayName(language:$lang)
-                primaryNodeType {
-                    name
-                    displayName(language: $uilang)
-                    icon
-                }
-            }
-        } 
-    }`);
+    const [getNode, {data}] = useLazyQuery(GET_PICKER_NODE);
 
     useEffect(() => {
         if (isOpen && initialSelectedItem) {
