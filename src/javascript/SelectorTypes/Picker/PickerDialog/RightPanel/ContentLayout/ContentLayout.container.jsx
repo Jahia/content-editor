@@ -2,7 +2,7 @@ import React, {useEffect, useMemo} from 'react';
 import {useApolloClient, useQuery} from 'react-apollo';
 import {contentQueryHandlerByMode} from './ContentLayout.gql-queries';
 import {useTranslation} from 'react-i18next';
-import {shallowEqual, useSelector} from 'react-redux';
+import {shallowEqual, useSelector, useDispatch} from 'react-redux';
 import usePreloadedData from './usePreloadedData';
 import {Loader} from '@jahia/moonstone';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
@@ -12,6 +12,7 @@ import {
     resolveQueryConstraints, structureData
 } from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout/ContentLayout.utils';
 import {registry} from '@jahia/ui-extender';
+import {cePickerSetTableViewType} from '~/SelectorTypes/Picker/Picker2.redux';
 
 const selector = state => ({
     mode: state.contenteditor.picker.mode.replace('picker-', ''),
@@ -46,13 +47,23 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
         sort,
         tableView
     } = useSelector(selector, shallowEqual);
+    const dispatch = useDispatch();
     const client = useApolloClient();
     const fetchPolicy = 'network-only';
     const isStructuredView = tableView.viewMode === Constants.tableView.mode.STRUCTURED;
     const params = useMemo(() => resolveQueryConstraints(pickerConfig, mode), [mode, pickerConfig]);
     const queryHandler = useMemo(() => contentQueryHandlerByMode(mode), [mode]);
     const layoutQuery = queryHandler.getQuery();
-    const preloadForTableViewType = tableView.viewType === Constants.tableView.type.PAGES ? Constants.tableView.type.CONTENT : Constants.tableView.type.PAGES;
+    const canSelectPages = pickerConfig.selectableTypesTable.includes('jnt:page');
+    const preloadForTableViewType = tableView.viewType === Constants.tableView.type.PAGES || !canSelectPages ? Constants.tableView.type.CONTENT : Constants.tableView.type.PAGES;
+
+    // Reset table view type to content if pages cannot be picked, we do not show table view selector if pages cannot
+    // be picked
+    useEffect(() => {
+        if (!canSelectPages && tableView.viewType === Constants.tableView.type.PAGES) {
+            dispatch(cePickerSetTableViewType(Constants.tableView.type.CONTENT));
+        }
+    }, [dispatch, canSelectPages, tableView.viewType]);
 
     const layoutQueryParams = useMemo(
         () => {
@@ -147,10 +158,10 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
                           rows={rows}
                           isLoading={loading}
                           totalCount={totalCount}
-                          dataCounts={{
+                          dataCounts={canSelectPages ? ({
                               pages: preloadForTableViewType === Constants.tableView.type.PAGES ? preloadedData.totalCount : totalCount,
                               contents: preloadForTableViewType === Constants.tableView.type.CONTENT ? preloadedData.totalCount : totalCount
-                          }}
+                          }) : undefined}
             />
         </React.Fragment>
     );
