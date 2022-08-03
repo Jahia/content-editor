@@ -69,7 +69,7 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
         () => {
             let r = queryHandler.getQueryParams({path, uilang, lang, params, pagination, sort, viewType: tableView.viewType});
             // Update params for structured view to use different type and recursion filters
-            if (isStructuredView) {
+            if (isStructuredView && tableView.viewType === Constants.tableView.type.CONTENT) {
                 r = queryHandler.updateQueryParamsForStructuredView(r, tableView.viewType, mode);
             }
 
@@ -85,11 +85,27 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
 
     const options = useMemo(() => ({
         query: layoutQuery,
-        variables: isStructuredView ?
+        variables: (isStructuredView && tableView.viewType !== Constants.tableView.type.CONTENT) ?
             queryHandler.updateQueryParamsForStructuredView(layoutQueryParams, preloadForTableViewType, mode) :
-            queryHandler.getQueryParams({path, uilang, lang, params, pagination: {...pagination, currentPage: 0}, sort, viewType: preloadForTableViewType}),
+            queryHandler.getQueryParams({
+                path, uilang, lang, params, pagination: {...pagination, currentPage: 0}, sort, viewType: preloadForTableViewType
+            }),
         fetchPolicy: fetchPolicy
-    }), [isStructuredView, lang, layoutQuery, layoutQueryParams, mode, pagination, path, preloadForTableViewType, queryHandler, sort, uilang, params]);
+    }), [
+        isStructuredView,
+        tableView.viewType,
+        lang,
+        layoutQuery,
+        layoutQueryParams,
+        mode,
+        pagination,
+        path,
+        preloadForTableViewType,
+        queryHandler,
+        sort,
+        uilang,
+        params
+    ]);
 
     // Preload data either for pages or contents depending on current view type
     const preloadedData = usePreloadedData({
