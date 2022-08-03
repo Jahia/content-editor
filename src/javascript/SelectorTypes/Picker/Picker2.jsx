@@ -77,7 +77,6 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
         setDialogOpen(open);
     };
 
-    console.log(pickerConfig, inputContext);
     return (
         <div className="flexFluid flexRow_nowrap alignCenter">
             <ReferenceCard
