@@ -6,7 +6,7 @@ import {useTranslation} from 'react-i18next';
 import {ApolloCacheFlushOnGWTSave} from './ApolloCacheFlushOnGWTSave';
 import {ContentEditorSectionContextProvider} from '../ContentEditorSection';
 import {useContentEditorConfigContext} from '../ContentEditorConfig';
-import {useSelector} from 'react-redux';
+import {shallowEqual, useSelector} from 'react-redux';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 
 export const ContentEditorContext = React.createContext({});
@@ -22,7 +22,7 @@ export const ContentEditorContextProvider = ({useFormDefinition, children}) => {
     const {pageComposerCurrentPage, pageComposerActive} = useSelector(state => ({
         pageComposerCurrentPage: state.pagecomposer.currentPage,
         pageComposerActive: state.pagecomposer.active
-    }));
+    }), shallowEqual);
     const [i18nContext, setI18nContext] = useState({
         memo: {
             count: 1

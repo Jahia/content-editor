@@ -105,7 +105,7 @@ export const PickerDialog = ({
     }, [isOpen, getNode, dispatch, initialSelectedItem, lang, uilang]);
 
     useEffect(() => {
-        if (data) {
+        if (isOpen && data) {
             const nodes = data.jcr.nodesByPath;
             dispatch(cePickerSetSelection(nodes.map(n => ({
                 uuid: n.uuid,
@@ -115,7 +115,7 @@ export const PickerDialog = ({
                 info: n.primaryNodeType.displayName
             }))));
         }
-    }, [data, dispatch]);
+    }, [isOpen, data, dispatch]);
 
     const previous = useRef(state);
     useEffect(() => {
