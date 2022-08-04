@@ -12,6 +12,14 @@ export const GET_PICKER_NODE = gql`query($paths: [String!]!, $lang:String!,$uila
                 displayName(language: $uilang)
                 icon
             }
+            ancestors {
+                workspace
+                path
+                uuid
+                primaryNodeType {
+                    name
+                }
+            }
         }
     }
 }`;
