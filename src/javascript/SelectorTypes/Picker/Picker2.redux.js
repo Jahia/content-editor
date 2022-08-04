@@ -1,6 +1,7 @@
 import {createActions, handleActions} from 'redux-actions';
 import {COMBINED_REDUCERS_NAME} from '~/registerReducer';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
+import {toArray} from './Picker2.utils';
 
 export const {
     cePickerSite,
@@ -37,8 +38,6 @@ export const {
     'CE_PICKER_CLEAR_SELECTION',
     'CE_PICKER_SET_TABLE_VIEW_MODE',
     'CE_PICKER_SET_TABLE_VIEW_TYPE');
-
-const toArray = value => (Array.isArray(value) ? value : [value]);
 
 export const registerPickerReducer = registry => {
     const initialState = {
