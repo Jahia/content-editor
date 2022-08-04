@@ -1,3 +1,10 @@
 .caption {
     color: var(--color-gray60);
 }
+
+.text {
+    gap: var(--spacing-small);
+    width: 100%;
+    margin-bottom: var(--spacing-nano);
+    padding-right: var(--spacing-small);
+}

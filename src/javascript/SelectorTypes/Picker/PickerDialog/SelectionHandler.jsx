@@ -1,10 +1,9 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {useNodeInfo} from '@jahia/data-helper';
 import {useContentEditorConfigContext} from '~/contexts';
 import {useQuery} from '@apollo/react-hooks';
 import {GET_PICKER_NODE} from '~/SelectorTypes/Picker';
-import {useEffect, useRef} from 'react';
 import {
     cePickerContextSite,
     cePickerMode,
@@ -13,7 +12,6 @@ import {
     cePickerSetSelection,
     cePickerSite
 } from '~/SelectorTypes/Picker/Picker2.redux';
-import {encodeJCRPath} from '~/utils';
 import {registry} from '@jahia/ui-extender';
 import {getItemTarget} from '~/SelectorTypes/Picker/accordionItems/accordionItems';
 import {getAccordionMode, getDetailedPathArray, getPathWithoutFile} from '~/SelectorTypes/Picker/Picker2.utils';
@@ -41,7 +39,6 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
     const dispatch = useDispatch();
 
     const currentFolderInfo = useNodeInfo({path: state.path}, {skip: !state.path});
-    console.log(state.path, currentFolderInfo.loading);
     const {lang, uilang} = useContentEditorConfigContext();
 
     const paths = (Array.isArray(initialSelectedItem) ? initialSelectedItem : [initialSelectedItem]).filter(f => f);
@@ -54,13 +51,7 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
     useEffect(() => {
         if (nodesInfo.data) {
             const nodes = nodesInfo.data.jcr.nodesByPath;
-            dispatch(cePickerSetSelection(nodes.map(n => ({
-                uuid: n.uuid,
-                path: n.path,
-                url: encodeJCRPath(`${n.primaryNodeType.icon}.png`),
-                name: n.displayName,
-                info: n.primaryNodeType.displayName
-            }))));
+            dispatch(cePickerSetSelection(nodes));
         }
     }, [nodesInfo.data, dispatch]);
 
