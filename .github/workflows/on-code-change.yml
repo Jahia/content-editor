@@ -71,7 +71,7 @@ jobs:
         with:
           module_id: content-editor
           testrail_project: Content Editor
-          tests_manifest: provisioning-manifest-build.yml
+          tests_manifest: provisioning-manifest-snapshot.yml
           jahia_image: jahia/jahia-discovery-dev:8-SNAPSHOT
           should_use_build_artifacts: true
           should_skip_testrail: true
