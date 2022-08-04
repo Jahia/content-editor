@@ -62,14 +62,15 @@ describe('Picker tests', () => {
             .get()
             .find('[data-cm-role="table-content-list-cell-name"]')
             .should((elems) => {
-                expect(elems).to.have.length(4)
+                expect(elems).to.have.length(3)
                 const texts = elems.get().map((e) => e.textContent)
-                expect(texts).to.deep.eq(['content-folder1', 'test 1', 'test 2', 'test 3'])
+                expect(texts).to.deep.eq(['test 1', 'test 2', 'test 3'])
             })
 
         cy.log('test double-click on table')
-        pickerDialog.getTableRow('content-folder1').dblclick()
-        contentAccordion.getTreeItem('content-folder1').find('div').should('have.class', 'moonstone-selected')
+        contentAccordion.expandTreeItem('ce-picker-contents')
+        contentAccordion.getTreeItem('content-folder1').click()
+        cy.wait(500)
         pickerDialog
             .getTable()
             .getRows()
@@ -105,13 +106,13 @@ describe('Picker tests', () => {
         cy.log('selection media > files > ce-picker-files reflects in table and filtered by type')
         mediaAccordion.getTreeItem('ce-picker-files').click()
         pickerDialog.getTable().should('exist')
-        cy.wait(500) // need a wait to load table data
+        cy.wait(1000) // need a wait to load table data
         pickerDialog
             .getTable()
             .getRows()
             .get()
             .find('[data-cm-role="table-content-list-cell-name"]')
-            .should((elems) => {
+            .should(elems => {
                 expect(elems).to.have.length(2)
                 const texts = elems.get().map((e) => e.textContent)
                 expect(texts).to.deep.eq(['user.jpg', 'user2.jpg'])
