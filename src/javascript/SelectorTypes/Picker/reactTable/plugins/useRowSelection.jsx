@@ -2,7 +2,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import {cePickerAddSelection, cePickerClearSelection} from '~/SelectorTypes/Picker/Picker2.redux';
 import {useGetLatest} from 'react-table';
 import {batchActions} from 'redux-batched-actions';
-import {encodeJCRPath} from '~/utils';
 
 export const useRowSelection = hooks => {
     hooks.getToggleRowSelectedProps = defaultGetToggleRowSelectedProps;
@@ -37,13 +36,7 @@ function useInstance(instance) {
 
     const toggleRowSelected = row => {
         if (row.original.isSelectable) {
-            dispatch(batchActions([cePickerClearSelection(), cePickerAddSelection({
-                uuid: row.original.uuid,
-                path: row.original.path,
-                url: encodeJCRPath(`${row.original.primaryNodeType.icon}.png`),
-                name: row.original.displayName,
-                info: row.original.primaryNodeType.displayName
-            })]));
+            dispatch(batchActions([cePickerClearSelection(), cePickerAddSelection(row.original)]));
         }
     };
 

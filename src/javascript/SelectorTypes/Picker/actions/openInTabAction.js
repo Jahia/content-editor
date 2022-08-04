@@ -8,7 +8,7 @@ export const OpenInTabActionComponent = ({field, render: Render, loading: Loadin
         <Render
             {...others}
             onClick={() => {
-                window.open(`${window.contextJsParameters.urlbase}/${Constants.appName}/${editorContext.lang}/${Constants.routes.baseEditRoute}/${fieldData.uuid}`, '_blank');
+                window.open(`${window.contextJsParameters.urlbase}/${Constants.appName}/${editorContext.lang}/${Constants.routes.baseEditRoute}/${fieldData[0].uuid}`, '_blank');
             }}
         />
     );

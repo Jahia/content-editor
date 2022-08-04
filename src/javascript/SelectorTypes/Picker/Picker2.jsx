@@ -40,7 +40,7 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
         error,
         loading,
         notFound
-    } = pickerConfig.pickerInput.usePickerInputData(value, editorContext);
+    } = pickerConfig.pickerInput.usePickerInputData([value]);
 
     if (error) {
         const message = t(
@@ -84,7 +84,7 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
                 emptyLabel={t((error || notFound) ? pickerConfig.pickerInput.notFoundLabel : pickerConfig.pickerInput.emptyLabel)}
                 emptyIcon={pickerConfig.pickerInput.emptyIcon}
                 labelledBy={`${field.name}-label`}
-                fieldData={fieldData}
+                fieldData={fieldData && fieldData[0]}
                 onClick={() => toggleOpen(!isDialogOpen)}
             />
             {inputContext.displayActions && value && (
@@ -100,7 +100,7 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
                 isOpen={isDialogOpen}
                 editorContext={editorContext}
                 pickerConfig={pickerConfig}
-                initialSelectedItem={fieldData && fieldData.path}
+                initialSelectedItem={fieldData && fieldData.map(f => f.path)}
                 accordionItemProps={parsedOptions.accordionItem}
                 onClose={() => toggleOpen(false)}
                 onItemSelection={onItemSelection}

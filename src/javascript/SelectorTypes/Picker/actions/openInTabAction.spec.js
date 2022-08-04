@@ -17,9 +17,9 @@ describe('openInTab action', () => {
         const context = {
             inputContext: {
                 actionContext: {
-                    fieldData: {
+                    fieldData: [{
                         uuid: 'this-is-an-id'
-                    },
+                    }],
                     editorContext: {
                         lang: 'fr'
                     }

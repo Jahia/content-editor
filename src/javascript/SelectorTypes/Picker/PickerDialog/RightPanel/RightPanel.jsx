@@ -55,8 +55,7 @@ const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
                 <ContentLayout pickerConfig={pickerConfig}/>
             </div>
             <footer className={clsx('flexRow', 'alignCenter', css.footer)}>
-                <SelectionCaption selection={selection}/>
-                <div className="flexFluid"/>
+                <SelectionCaption selection={selection} pickerConfig={pickerConfig}/>
                 <div className={clsx('flexRow', css.actions)}>
                     <Button
                         data-sel-picker-dialog-action="cancel"

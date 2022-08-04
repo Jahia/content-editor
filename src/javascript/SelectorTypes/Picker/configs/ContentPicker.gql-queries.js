@@ -2,9 +2,9 @@ import gql from 'graphql-tag';
 import {PredefinedFragments} from '@jahia/data-helper';
 
 export const ContentPickerFilledQuery = gql`
-    query contentPickerFilledQuery($uuid: String!, $language: String!) {
+    query contentPickerFilledQuery($uuids: [String!]!, $language: String!) {
         jcr {
-            result: nodeById(uuid: $uuid) {
+            result: nodesById(uuids: $uuids) {
                 displayName(language: $language)
                 primaryNodeType {
                     name
