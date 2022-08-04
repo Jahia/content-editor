@@ -25,7 +25,7 @@ export const UnsetFieldActionComponent = ({field, inputContext, render: Render, 
                 }
 
                 if (inputContext.actionContext.onBlur) {
-                    inputContext.actionContext.onBlur();
+                    setTimeout(() => inputContext.actionContext.onBlur(), 0);
                 }
             }}
         />

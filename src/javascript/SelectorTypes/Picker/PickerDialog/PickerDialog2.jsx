@@ -71,28 +71,24 @@ export const PickerDialog = ({
     const dispatch = useDispatch();
 
     const currentFolderInfo = useNodeInfo({path: state.path}, {skip: !state.path});
-    const selection = useSelector(state => state.contenteditor.picker.selection);
     const {lang, uilang} = useContentEditorConfigContext();
 
-    const [getNode, {data}] = useLazyQuery(GET_PICKER_NODE);
+    const [getNode, nodesInfo] = useLazyQuery(GET_PICKER_NODE);
 
     useEffect(() => {
-        if (isOpen && initialSelectedItem) {
+        if (isOpen) {
+            const paths = (Array.isArray(initialSelectedItem) ? initialSelectedItem : [initialSelectedItem]).filter(f => f);
             getNode({
                 variables: {
-                    paths: Array.isArray(initialSelectedItem) ? initialSelectedItem : [initialSelectedItem],
-                    lang,
-                    uilang
+                    paths, lang, uilang
                 }
             });
-        } else {
-            dispatch(cePickerSetSelection([]));
         }
     }, [isOpen, getNode, dispatch, initialSelectedItem, lang, uilang]);
 
     useEffect(() => {
-        if (isOpen && data) {
-            const nodes = data.jcr.nodesByPath;
+        if (isOpen && nodesInfo.data) {
+            const nodes = nodesInfo.data.jcr.nodesByPath;
             dispatch(cePickerSetSelection(nodes.map(n => ({
                 uuid: n.uuid,
                 path: n.path,
@@ -101,50 +97,52 @@ export const PickerDialog = ({
                 info: n.primaryNodeType.displayName
             }))));
         }
-    }, [isOpen, data, dispatch]);
+    }, [isOpen, nodesInfo.data, dispatch]);
 
-    const previous = useRef(state);
+    const previousState = useRef(state);
     useEffect(() => {
-        let selectedItem = selection && selection.length > 0 && selection[0];
+        if (currentFolderInfo.loading || nodesInfo.loading || !nodesInfo.called) {
+            return;
+        }
 
-        if (isOpen && !currentFolderInfo.loading) {
-            selectedItem = initialSelectedItem && Array.isArray(initialSelectedItem) ? (initialSelectedItem.length > 0 && initialSelectedItem[0]) : initialSelectedItem;
-            const actions = [];
-            const newState = {...state, isOpen: true};
+        const newState = {...state, isOpen};
+        if (isOpen) {
+            const selectedNode = nodesInfo.data && nodesInfo.data.jcr.nodesByPath.length > 0 && nodesInfo.data.jcr.nodesByPath[0];
+
+            const allAccordionItems = registry.find({
+                type: 'accordionItem',
+                target: getItemTarget(pickerConfig.key)
+            });
+
             let somethingChanged = false;
-            if (!previous.current.isOpen) {
+            if (!previousState.current.isOpen) {
                 // Initialize site when opening dialog
-                if (selectedItem) {
+                newState.contextSite = editorContext.site;
+                if (selectedNode) {
                     // If an item is selected, preselect site/mode/path
-                    newState.site = getSite(selectedItem);
-                    newState.contextSite = newState.site;
-                } else if (editorContext.site !== newState.contextSite) {
+                    newState.site = getSite(selectedNode.path);
+                    newState.mode = getAccordionMode(selectedNode.path);
+                    const accordionItem = allAccordionItems.find(item => item.key === newState.mode);
+                    if (accordionItem.getPathForItem) {
+                        // Todo: Must implement something for pages accordion, where the selected path is not the direct parent
+                        newState.path = accordionItem.getPathForItem(selectedNode);
+                    } else {
+                        newState.path = getPathWithoutFile(selectedNode.path);
+                    }
+                } else if (previousState.current.contextSite !== newState.contextSite) {
                     // If context site has changed, reset to the current site (otherwise keep current site)
-                    newState.site = pickerConfig.targetSite ? pickerConfig.targetSite : editorContext.site;
-                    newState.contextSite = editorContext.site;
-                }
-
-                if (newState.site !== state.site) {
-                    actions.push(cePickerSite(newState.site));
-                }
-
-                if (newState.contextSite !== state.contextSite) {
-                    actions.push(cePickerContextSite(newState.contextSite));
+                    newState.site = pickerConfig.targetSite ? pickerConfig.targetSite : newState.contextSite;
                 }
 
                 somethingChanged = true;
             }
 
-            const allAccordionItems = registry.find({type: 'accordionItem', target: getItemTarget(pickerConfig.key)});
             const accordionItems = allAccordionItems
                 .filter(accordionItem => !accordionItem.isEnabled || accordionItem.isEnabled(newState.site));
 
-            if (somethingChanged || newState.site !== previous.current.site) {
+            if (somethingChanged || newState.site !== previousState.current.site) {
                 // Picker just opened or site has changed, select mode
-                if (selectedItem && getSite(selectedItem) === newState.site) {
-                    // 1 - Mode of the current selected item is selected
-                    newState.mode = getAccordionMode(selectedItem);
-                } else if (newState.mode && accordionItems.find(item => item.key === newState.mode)) {
+                if (newState.mode && accordionItems.find(item => item.key === newState.mode)) {
                     // 2 - Previously selected mode is valid, keep it
                 } else if (accordionItems.find(item => item.key === 'picker-' + newState.jcontentMode)) {
                     // 3 - Jcontent mode is also valid here, use it
@@ -154,19 +152,12 @@ export const PickerDialog = ({
                     newState.mode = accordionItems[0].key;
                 }
 
-                if (newState.mode !== state.mode) {
-                    actions.push(cePickerMode(newState.mode));
-                }
-
                 somethingChanged = true;
             }
 
-            if (somethingChanged || newState.mode !== previous.current.mode) {
+            if (somethingChanged || newState.mode !== previousState.current.mode) {
                 // Mode has changed, select path
-                if (selectedItem && getSite(selectedItem) === newState.site && getAccordionMode(selectedItem) === newState.mode) {
-                    // 1 - Parent path of the select item is selected
-                    newState.path = getPathWithoutFile(selectedItem);
-                } else if (getSite(newState.path) === newState.site && getAccordionMode(newState.path) === newState.mode && currentFolderInfo.node) {
+                if (getSite(newState.path) === newState.site && getAccordionMode(newState.path) === newState.mode && currentFolderInfo.node) {
                     // 2 - Previously selected path is valid
                 } else if (getSite(state.jcontentPath) === newState.site && getAccordionMode(state.jcontentPath) === newState.mode) {
                     // 3 - Jcontent path is also valid here, use it
@@ -178,25 +169,23 @@ export const PickerDialog = ({
 
                 // Extend the list of openPath with the currently selected path
                 newState.openPaths = [...new Set([...newState.openPaths, ...getDetailedPathArray(getPathWithoutFile(newState.path), newState.site)])];
-
-                if (newState.path !== state.path) {
-                    actions.push(cePickerPath(newState.path));
-                }
-
-                if (newState.openPaths.length !== state.openPaths.length || newState.openPaths.some(value => state.openPaths.indexOf(value) === -1)) {
-                    actions.push(cePickerOpenPaths(newState.openPaths));
-                }
             }
+
+            const actions = ([
+                (newState.site !== state.site) && cePickerSite(newState.site),
+                (newState.contextSite !== state.contextSite) && cePickerContextSite(newState.contextSite),
+                (newState.mode !== state.mode) && cePickerMode(newState.mode),
+                (newState.path !== state.path) && cePickerPath(newState.path),
+                (newState.openPaths.length !== state.openPaths.length || newState.openPaths.some(value => state.openPaths.indexOf(value) === -1)) && cePickerOpenPaths(newState.openPaths)
+            ]).filter(f => f);
 
             if (actions.length > 0) {
                 dispatch(batchActions(actions));
             }
-
-            previous.current = newState;
-        } else {
-            previous.current = {...state, isOpen: false};
         }
-    }, [dispatch, editorContext, isOpen, initialSelectedItem, pickerConfig, selection, state, currentFolderInfo]);
+
+        previousState.current = newState;
+    }, [dispatch, editorContext, isOpen, pickerConfig, state, nodesInfo, currentFolderInfo]);
 
     return (
         <Dialog
@@ -250,7 +239,11 @@ PickerDialog.propTypes = {
     onClose: PropTypes.func.isRequired,
     editorContext: PropTypes.object.isRequired,
     pickerConfig: configPropType.isRequired,
-    initialSelectedItem: PropTypes.string,
+    initialSelectedItem: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
     accordionItemProps: PropTypes.object,
     onItemSelection: PropTypes.func.isRequired
+};
+
+PickerDialog.defaultValues = {
+    initialSelectedItem: []
 };

@@ -66,7 +66,7 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
     const onItemSelection = data => {
         setDialogOpen(false);
         onChange(pickerConfig.pickerInput.itemSelectionAdapter ? pickerConfig.pickerInput.itemSelectionAdapter(data) : data?.uuid);
-        onBlur();
+        setTimeout(() => onBlur(), 0);
     };
 
     const toggleOpen = open => {
