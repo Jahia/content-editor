@@ -1,5 +1,6 @@
 import {MediaPickerConfig} from './MediaPickerConfig';
 import {setQueryResponseMock} from '@apollo/react-hooks';
+import {useContentEditorContext} from '~/contexts';
 
 jest.mock('@apollo/react-hooks', () => {
     let queryresponsemock;
@@ -11,8 +12,18 @@ jest.mock('@apollo/react-hooks', () => {
     };
 });
 
+jest.mock('~/contexts/ContentEditor/ContentEditor.context');
+
 describe('MediaPicker config', () => {
     describe('usePickerInputData', () => {
+        let contentEditorContext;
+        beforeEach(() => {
+            contentEditorContext = {
+                lang: 'fr'
+            };
+            useContentEditorContext.mockReturnValue(contentEditorContext);
+        });
+
         const usePickerInputData = MediaPickerConfig.pickerInput.usePickerInputData;
         window.contextJsParameters = {
             contextPath: 'localContextPath'
@@ -41,7 +52,8 @@ describe('MediaPicker config', () => {
         it('should adapt data when graphql return some data', () => {
             setQueryResponseMock({loading: false, data: {
                 jcr: {
-                    result: {
+                    result: [{
+                        uuid: 'this-is-uuid',
                         height: {value: '1080'},
                         width: {value: '1920'},
                         lastModified: {value: 'tomorow'},
@@ -52,20 +64,20 @@ describe('MediaPicker config', () => {
                                 mimeType: {value: 'image/jpeg'}
                             }]
                         }
-                    }
+                    }]
                 }
             }});
 
             expect(usePickerInputData('this-is-uuid', {lang: 'fr'})).toEqual({
                 loading: false,
                 error: undefined,
-                fieldData: {
+                fieldData: [{
                     uuid: 'this-is-uuid',
                     info: 'image/jpeg - 1080x1920px',
                     name: 'a cake',
                     path: 'placeholder.jpg',
                     url: 'localContextPath/files/defaultplaceholder.jpg?lastModified=tomorow&t=thumbnail2'
-                }
+                }]
             });
         });
     });
