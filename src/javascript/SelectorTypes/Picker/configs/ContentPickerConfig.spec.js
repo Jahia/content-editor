@@ -1,5 +1,6 @@
 import {ContentPickerConfig} from './ContentPickerConfig';
 import {setQueryResponseMock} from '@apollo/react-hooks';
+import {useContentEditorContext} from '~/contexts';
 
 jest.mock('@apollo/react-hooks', () => {
     let queryresponsemock;
@@ -17,8 +18,18 @@ jest.mock('../Picker2', () => {
     };
 });
 
+jest.mock('~/contexts/ContentEditor/ContentEditor.context');
+
 describe('ContentPicker config', () => {
     describe('usePickerInputData', () => {
+        let contentEditorContext;
+        beforeEach(() => {
+            contentEditorContext = {
+                lang: 'fr'
+            };
+            useContentEditorContext.mockReturnValue(contentEditorContext);
+        });
+
         const usePickerInputData = ContentPickerConfig.pickerInput.usePickerInputData;
 
         it('should return no data, no error when loading', () => {
@@ -44,27 +55,28 @@ describe('ContentPicker config', () => {
         it('should adapt data when graphql return some data', () => {
             setQueryResponseMock({loading: false, data: {
                 jcr: {
-                    result: {
+                    result: [{
+                        uuid: 'this-is-uuid',
                         displayName: 'a cake',
                         path: 'florent/bestArticles',
                         primaryNodeType: {
                             displayName: 'article',
                             icon: 'anUrl'
                         }
-                    }
+                    }]
                 }
             }});
 
             expect(usePickerInputData('this-is-uuid', {lang: 'fr'})).toEqual({
                 loading: false,
                 error: undefined,
-                fieldData: {
+                fieldData: [{
                     uuid: 'this-is-uuid',
                     info: 'article',
                     name: 'a cake',
                     path: 'florent/bestArticles',
                     url: 'anUrl.png'
-                }
+                }]
             });
         });
     });
