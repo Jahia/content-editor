@@ -116,7 +116,8 @@ export const ContentEditorRoute = ({mode, uuid, lang, contentType, name}) => {
         },
         switchLanguageCallback: language => {
             redirect({language});
-        }
+        },
+        confirmationDialog: true
     };
     return Boolean(site) && (
         <ContentEditor name={name}
