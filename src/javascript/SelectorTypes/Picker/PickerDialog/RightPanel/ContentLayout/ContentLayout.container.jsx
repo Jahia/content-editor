@@ -1,29 +1,18 @@
 import React, {useEffect, useMemo} from 'react';
-import {useApolloClient, useQuery} from 'react-apollo';
-import {contentQueryHandlerByMode} from './ContentLayout.gql-queries';
 import {useTranslation} from 'react-i18next';
-import {shallowEqual, useSelector, useDispatch} from 'react-redux';
-import usePreloadedData from './usePreloadedData';
+import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {Loader} from '@jahia/moonstone';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 import ContentTable from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout/ContentTable';
 import {
-    resolveQueryConstraints, structureData
+    resolveQueryConstraints,
+    structureData
 } from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout/ContentLayout.utils';
 import {registry} from '@jahia/ui-extender';
+import {useLayoutQuery} from '@jahia/jcontent';
 import {cePickerSetTableViewType} from '~/SelectorTypes/Picker/Picker2.redux';
-
-const selector = state => ({
-    mode: state.contenteditor.picker.mode.replace('picker-', ''),
-    path: state.contenteditor.picker.path,
-    lang: state.language,
-    uilang: state.uilang,
-    filesMode: 'grid',
-    pagination: state.contenteditor.picker.pagination,
-    sort: state.contenteditor.picker.sort,
-    tableView: state.contenteditor.picker.tableView
-});
+import gql from 'graphql-tag';
 
 let currentResult;
 
@@ -35,27 +24,41 @@ const unsetRefetcher = name => {
     delete registry.registry['refetcher-' + name];
 };
 
+const selectableTypeFragment = {
+    gql: gql`fragment IsSelectable on JCRNode {
+        isSelectable: isNodeType(type: {types: $selectableTypesTable})
+    }`,
+    variables: {
+        selectableTypesTable: '[String!]!'
+    },
+    applyFor: 'node'
+};
+
 export const ContentLayoutContainer = ({pickerConfig}) => {
     const {t} = useTranslation();
-    const {
-        mode,
-        path,
-        lang,
-        uilang,
-        filesMode,
-        pagination,
-        sort,
-        tableView
-    } = useSelector(selector, shallowEqual);
+    const {mode, path, filesMode, tableView} = useSelector(state => ({
+        mode: state.contenteditor.picker.mode,
+        path: state.contenteditor.picker.path,
+        filesMode: 'grid',
+        tableView: state.contenteditor.picker.tableView
+    }), shallowEqual);
     const dispatch = useDispatch();
-    const client = useApolloClient();
-    const fetchPolicy = 'network-only';
-    const isStructuredView = tableView.viewMode === Constants.tableView.mode.STRUCTURED;
-    const params = useMemo(() => resolveQueryConstraints(pickerConfig, mode), [mode, pickerConfig]);
-    const queryHandler = useMemo(() => contentQueryHandlerByMode(mode), [mode]);
-    const layoutQuery = queryHandler.getQuery();
     const canSelectPages = pickerConfig.selectableTypesTable.includes('jnt:page');
-    const preloadForTableViewType = tableView.viewType === Constants.tableView.type.PAGES || !canSelectPages ? Constants.tableView.type.CONTENT : Constants.tableView.type.PAGES;
+
+    const params = useMemo(() => resolveQueryConstraints(pickerConfig, mode), [mode, pickerConfig]);
+
+    const {queryHandler, layoutQuery, isStructuredView, layoutQueryParams, data, error, loading, refetch} = useLayoutQuery(state => ({
+        mode: state.contenteditor.picker.mode,
+        siteKey: state.site,
+        params,
+        path: state.contenteditor.picker.path,
+        lang: state.language,
+        uilang: state.uilang,
+        filesMode: 'grid',
+        pagination: state.contenteditor.picker.pagination,
+        sort: state.contenteditor.picker.sort,
+        tableView: state.contenteditor.picker.tableView
+    }), {}, [selectableTypeFragment], {selectableTypesTable: params.selectableTypesTable});
 
     // Reset table view type to content if pages cannot be picked, we do not show table view selector if pages cannot
     // be picked
@@ -64,57 +67,6 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
             dispatch(cePickerSetTableViewType(Constants.tableView.type.CONTENT));
         }
     }, [dispatch, canSelectPages, tableView.viewType]);
-
-    const layoutQueryParams = useMemo(
-        () => {
-            let r = queryHandler.getQueryParams({path, uilang, lang, params, pagination, sort, viewType: tableView.viewType});
-            // Update params for structured view to use different type and recursion filters
-            if (isStructuredView && tableView.viewType === Constants.tableView.type.CONTENT) {
-                r = queryHandler.updateQueryParamsForStructuredView(r, tableView.viewType, mode);
-            }
-
-            return r;
-        },
-        [path, uilang, lang, pagination, sort, tableView.viewType, mode, isStructuredView, queryHandler, params]
-    );
-
-    const {data, error, loading, refetch} = useQuery(layoutQuery, {
-        variables: layoutQueryParams,
-        fetchPolicy: fetchPolicy
-    });
-
-    const options = useMemo(() => ({
-        query: layoutQuery,
-        variables: (isStructuredView && tableView.viewType !== Constants.tableView.type.CONTENT) ?
-            queryHandler.updateQueryParamsForStructuredView(layoutQueryParams, preloadForTableViewType, mode) :
-            queryHandler.getQueryParams({
-                path, uilang, lang, params, pagination: {...pagination, currentPage: 0}, sort, viewType: preloadForTableViewType
-            }),
-        fetchPolicy: fetchPolicy
-    }), [
-        isStructuredView,
-        tableView.viewType,
-        lang,
-        layoutQuery,
-        layoutQueryParams,
-        mode,
-        pagination,
-        path,
-        preloadForTableViewType,
-        queryHandler,
-        sort,
-        uilang,
-        params
-    ]);
-
-    // Preload data either for pages or contents depending on current view type
-    const preloadedData = usePreloadedData({
-        client,
-        options,
-        tableView,
-        path,
-        pagination
-    });
 
     useEffect(() => {
         setRefetcher('pickerData', {
@@ -155,7 +107,7 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
 
     if (currentResult) {
         totalCount = currentResult.pageInfo.totalCount;
-        if (isStructuredView && mode !== Constants.mode.SEARCH) {
+        if (isStructuredView && mode !== 'picker-' + Constants.mode.SEARCH) {
             rows = structureData(path, currentResult.nodes);
         } else {
             rows = currentResult.nodes;
@@ -174,10 +126,6 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
                           rows={rows}
                           isLoading={loading}
                           totalCount={totalCount}
-                          dataCounts={canSelectPages ? ({
-                              pages: preloadForTableViewType === Constants.tableView.type.PAGES ? preloadedData.totalCount : totalCount,
-                              contents: preloadForTableViewType === Constants.tableView.type.CONTENT ? preloadedData.totalCount : totalCount
-                          }) : undefined}
             />
         </React.Fragment>
     );

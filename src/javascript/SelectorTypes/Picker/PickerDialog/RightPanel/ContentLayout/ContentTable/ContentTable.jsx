@@ -2,43 +2,35 @@ import React, {useEffect, useMemo} from 'react';
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
 import {useTranslation} from 'react-i18next';
-import {useDispatch, useSelector, shallowEqual} from 'react-redux';
+import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {Table, TableBody, TablePagination, TableRow} from '@jahia/moonstone';
 import {useTable} from 'react-table';
-import {useRowSelection, useSort, useExpanded} from '~/SelectorTypes/Picker/reactTable/plugins';
+import {useExpanded, useRowSelection, useSort} from '~/SelectorTypes/Picker/reactTable/plugins';
 import {allColumnData} from '~/SelectorTypes/Picker/reactTable/columns';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {
     cePickerMode,
-    cePickerOpenPaths, cePickerPath,
+    cePickerOpenPaths,
+    cePickerPath,
     cePickerSetPage,
-    cePickerSetPageSize, cePickerSetTableViewType
+    cePickerSetPageSize
 } from '~/SelectorTypes/Picker/Picker2.redux';
 import {getDetailedPathArray} from '~/SelectorTypes/Picker/Picker2.utils';
 import {batchActions} from 'redux-batched-actions';
-import {UploadTransformComponent, ContentNotFound, ContentEmptyDropZone, EmptyTable, ContentListHeader, ContentTableWrapper, ContentTypeSelector} from '@jahia/jcontent';
+import {
+    ContentEmptyDropZone,
+    ContentListHeader,
+    ContentNotFound,
+    ContentTableWrapper,
+    EmptyTable,
+    UploadTransformComponent
+} from '@jahia/jcontent';
 import classes from './ContentTable.scss';
-
-const contentTypeSelectorProps = {
-    selector: state => state.contenteditor.picker.tableView,
-    reduxActions: {
-        setPageAction: page => cePickerSetPage(page),
-        setTableViewTypeAction: view => cePickerSetTableViewType(view)
-    }
-};
-
-const ContentTypeSelectorComp = props => React.createElement(ContentTypeSelector, {...props, ...contentTypeSelectorProps});
+import {registry} from '@jahia/ui-extender';
 
 export const allowDoubleClickNavigation = nodeType => {
     return (['jnt:folder', 'jnt:contentFolder'].indexOf(nodeType) !== -1);
 };
-
-const selector = state => ({
-    mode: state.contenteditor.picker.mode.replace('picker-', ''),
-    path: state.contenteditor.picker.path,
-    pagination: state.contenteditor.picker.pagination,
-    tableView: state.contenteditor.picker.tableView
-});
 
 const reduxActions = {
     onPreviewSelectAction: () => ({}),
@@ -66,22 +58,20 @@ const clickHandler = {
     }
 };
 
-export const ContentTable = ({
-    rows,
-    isContentNotFound,
-    totalCount,
-    dataCounts,
-    isLoading}) => {
+export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading}) => {
     const {t} = useTranslation();
-    const {
-        mode,
-        path,
-        pagination,
-        tableView
-    } = useSelector(selector, shallowEqual);
     const dispatch = useDispatch();
+
+    const {mode, path, pagination, tableView} = useSelector(state => ({
+        mode: state.contenteditor.picker.mode,
+        path: state.contenteditor.picker.path,
+        pagination: state.contenteditor.picker.pagination,
+        tableView: state.contenteditor.picker.tableView
+    }), shallowEqual);
+
     const isStructuredView = Constants.tableView.mode.STRUCTURED === tableView.viewMode;
-    const columns = useMemo(() => Constants.mode.MEDIA === mode ? allColumnData.filter(c => c.id !== 'type') : allColumnData, [mode]);
+
+    const columns = useMemo(() => 'picker-' + Constants.mode.MEDIA === mode ? allColumnData.filter(c => c.id !== 'type') : allColumnData, [mode]);
     const {
         getTableProps,
         getTableBodyProps,
@@ -108,17 +98,11 @@ export const ContentTable = ({
     const doubleClickNavigation = node => {
         const actions = [];
 
-        if (mode === Constants.mode.SEARCH) {
-            let newMode;
-            if (node.path.indexOf('/files') > -1) {
-                newMode = Constants.mode.MEDIA;
-            } else if (node.path.indexOf('/contents') > -1) {
-                newMode = Constants.mode.CONTENT_FOLDERS;
-            } else {
-                newMode = Constants.mode.PAGES;
+        if (mode === 'picker-' + Constants.mode.SEARCH) {
+            const newMode = registry.find({type: 'accordionItem', target: 'jcontent'}).find(acc => acc.canDisplayItem(node))?.key;
+            if (newMode) {
+                actions.push(reduxActions.setModeAction(newMode));
             }
-
-            actions.push(reduxActions.setModeAction(newMode));
         }
 
         actions.push(reduxActions.setOpenPathAction(node.path));
@@ -130,16 +114,16 @@ export const ContentTable = ({
         return <ContentNotFound columnSpan={allColumnData.length} t={t}/>;
     }
 
-    const typeSelector = mode === Constants.mode.PAGES && dataCounts ? <ContentTypeSelectorComp contentCount={dataCounts.contents} pagesCount={dataCounts.pages}/> : null;
+    const tableHeader = registry.get('accordionItem', mode)?.tableHeader;
 
     if (_.isEmpty(rows) && !isLoading) {
-        if ((mode === Constants.mode.SEARCH)) {
+        if ((mode === 'picker-' + Constants.mode.SEARCH)) {
             return <EmptyTable columnSpan={allColumnData.length} t={t}/>;
         }
 
         return (
             <>
-                {typeSelector}
+                {tableHeader}
                 <ContentEmptyDropZone mode={mode} path={path}/>
             </>
         );
@@ -147,7 +131,7 @@ export const ContentTable = ({
 
     return (
         <>
-            {typeSelector}
+            {tableHeader}
             <UploadTransformComponent uploadTargetComponent={ContentTableWrapper}
                                       uploadPath={path}
                                       mode={mode}
@@ -202,8 +186,7 @@ ContentTable.propTypes = {
     isContentNotFound: PropTypes.bool,
     isLoading: PropTypes.bool,
     rows: PropTypes.array.isRequired,
-    totalCount: PropTypes.number.isRequired,
-    dataCounts: PropTypes.object
+    totalCount: PropTypes.number.isRequired
 };
 
 export default ContentTable;
