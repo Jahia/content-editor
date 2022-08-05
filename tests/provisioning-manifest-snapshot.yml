@@ -4,7 +4,7 @@
   password: ${env:NEXUS_PASSWORD}
 - installBundle:
   - 'mvn:org.jahia.modules/content-editor'
-  - 'mvn:org.jahia.modules/jcontent'
+  - 'mvn:org.jahia.modules/jcontent/2.8.0-SNAPSHOT'
   autoStart: true
   uninstallPreviousVersion: true
 
