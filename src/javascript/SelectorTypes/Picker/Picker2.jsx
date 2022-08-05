@@ -3,13 +3,15 @@ import PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import {FieldPropTypes} from '~/ContentEditor.proptypes';
 import {ReferenceCard} from '~/DesignSystem/ReferenceCard';
-import {mergeDeep, set} from './Picker2.utils';
+import {mergeDeep, set, toArray} from './Picker2.utils';
 import {PickerDialog} from './PickerDialog/PickerDialog2';
 import {DisplayAction} from '@jahia/ui-extender';
 import {getButtonRenderer} from '~/utils';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 import {cePickerClearSelection} from '~/SelectorTypes/Picker/Picker2.redux';
 import {useDispatch} from 'react-redux';
+import styles from './Picker2.scss';
+import {Button, Close} from '@jahia/moonstone';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
@@ -33,14 +35,13 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
     const pickerConfig = parsedOptions.pickerConfig ?
         mergeDeep({}, inputContext.selectorType.pickerConfig, parsedOptions.pickerConfig) :
         inputContext.selectorType.pickerConfig;
-
     const [isDialogOpen, setDialogOpen] = useState(false);
     const {
         fieldData,
         error,
         loading,
         notFound
-    } = pickerConfig.pickerInput.usePickerInputData([value]);
+    } = pickerConfig.pickerInput.usePickerInputData(value && toArray(value));
 
     if (error) {
         const message = t(
@@ -63,10 +64,22 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
         onBlur: onBlur
     };
 
+    const fieldMultiple = false; // WIP temp variable for now; will need to change to field.multiple
+
     const onItemSelection = data => {
         setDialogOpen(false);
-        onChange(pickerConfig.pickerInput.itemSelectionAdapter ? pickerConfig.pickerInput.itemSelectionAdapter(data) : data?.uuid);
+        const itemSelectionAdapter = pickerConfig.pickerInput.itemSelectionAdapter || (data => {
+            const uuids = (data || []).map(d => d?.uuid);
+            return fieldMultiple ? uuids : uuids[0];
+        });
+        onChange(itemSelectionAdapter(data));
         setTimeout(() => onBlur(), 0);
+    };
+
+    const onFieldRemove = index => {
+        let updatedValues = [...fieldData];
+        updatedValues.splice(index, 1);
+        onItemSelection(updatedValues);
     };
 
     const toggleOpen = open => {
@@ -79,23 +92,57 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
 
     return (
         <div className="flexFluid flexRow_nowrap alignCenter">
-            <ReferenceCard
-                isReadOnly={field.readOnly}
-                emptyLabel={t((error || notFound) ? pickerConfig.pickerInput.notFoundLabel : pickerConfig.pickerInput.emptyLabel)}
-                emptyIcon={pickerConfig.pickerInput.emptyIcon}
-                labelledBy={`${field.name}-label`}
-                fieldData={fieldData && fieldData[0]}
-                onClick={() => toggleOpen(!isDialogOpen)}
-            />
-            {inputContext.displayActions && value && (
-                <DisplayAction
-                    actionKey={field.multiple ? 'content-editor/field/MultiplePicker' : 'content-editor/field/Picker'}
-                    value={value}
-                    field={field}
-                    inputContext={inputContext}
-                    render={ButtonRenderer}
-                />
-            )}
+            {fieldMultiple ?
+                <div className="flexFluid">
+                    {
+                        fieldData && fieldData.length > 0 && fieldData.map((fieldVal, index) => {
+                            const name = `${field.name}[${index}]`;
+                            return (
+                                <div key={name}
+                                     className={styles.fieldComponentContainer}
+                                     data-sel-content-editor-multiple-generic-field={name}
+                                     data-sel-content-editor-field-readonly={field.readOnly}
+                                >
+                                    <ReferenceCard isReadOnly="true" labelledBy={`${name}-label`} fieldData={fieldVal}/>
+                                    {!field.readOnly &&
+                                        <Button variant="ghost"
+                                                data-sel-action={`removeField_${index}`}
+                                                aria-label={t('content-editor:label.contentEditor.edit.fields.actions.clear')}
+                                                icon={<Close/>}
+                                                onClick={() => onFieldRemove(index)}
+                                        />}
+                                </div>
+                            );
+                        })
+                    }
+                    {!field.readOnly &&
+                        <Button className={styles.addButton}
+                                data-sel-action="addField"
+                                variant="outlined"
+                                size="big"
+                                label={t('content-editor:label.contentEditor.edit.fields.actions.add')}
+                                onClick={() => toggleOpen(!isDialogOpen)}
+                        />}
+                </div> :
+                <>
+                    <ReferenceCard
+                        isReadOnly={field.readOnly}
+                        emptyLabel={t((error || notFound) ? pickerConfig.pickerInput.notFoundLabel : pickerConfig.pickerInput.emptyLabel)}
+                        emptyIcon={pickerConfig.pickerInput.emptyIcon}
+                        labelledBy={`${field.name}-label`}
+                        fieldData={fieldData && fieldData[0]}
+                        onClick={() => toggleOpen(!isDialogOpen)}
+                    />
+                    {inputContext.displayActions && value && (
+                        <DisplayAction
+                            actionKey="content-editor/field/Picker"
+                            value={value}
+                            field={field}
+                            inputContext={inputContext}
+                            render={ButtonRenderer}
+                        />
+                    )}
+                </>}
             <PickerDialog
                 isOpen={isDialogOpen}
                 editorContext={editorContext}

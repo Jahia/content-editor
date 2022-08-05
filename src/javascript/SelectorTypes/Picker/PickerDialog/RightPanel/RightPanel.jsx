@@ -31,7 +31,7 @@ const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
     const selectElement = () => {
         if (selection) {
             // Todo: BACKLOG-12581 - Multiple is not supported yet in pickers. Always return a single value.
-            onItemSelection(selection[0]);
+            onItemSelection(selection);
         } else {
             onClose();
         }
