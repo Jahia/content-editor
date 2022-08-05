@@ -64,13 +64,11 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
         onBlur: onBlur
     };
 
-    const fieldMultiple = false; // WIP temp variable for now; will need to change to field.multiple
-
     const onItemSelection = data => {
         setDialogOpen(false);
         const itemSelectionAdapter = pickerConfig.pickerInput.itemSelectionAdapter || (data => {
             const uuids = (data || []).map(d => d?.uuid);
-            return fieldMultiple ? uuids : uuids[0];
+            return field.multiple ? uuids : uuids[0];
         });
         onChange(itemSelectionAdapter(data));
         setTimeout(() => onBlur(), 0);
@@ -92,7 +90,7 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
 
     return (
         <div className="flexFluid flexRow_nowrap alignCenter">
-            {fieldMultiple ?
+            {field.multiple ?
                 <div className="flexFluid">
                     {
                         fieldData && fieldData.length > 0 && fieldData.map((fieldVal, index) => {
