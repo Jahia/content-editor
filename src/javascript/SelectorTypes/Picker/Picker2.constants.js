@@ -17,12 +17,6 @@ export const Constants = {
             PAGES: 'pages'
         }
     },
-    filesGrid: {
-        mode: {
-            LIST: 'list',
-            THUMBNAILS: 'thumbnails'
-        }
-    },
     mode: {
         CONTENT_FOLDERS: 'content-folders',
         PAGES: 'pages',
