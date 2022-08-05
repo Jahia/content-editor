@@ -58,7 +58,7 @@ const clickHandler = {
     }
 };
 
-export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading}) => {
+export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, canSelectPages}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
 
@@ -123,7 +123,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading}) =
 
         return (
             <>
-                {tableHeader}
+                {canSelectPages && tableHeader}
                 <ContentEmptyDropZone mode={mode} path={path}/>
             </>
         );
@@ -131,7 +131,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading}) =
 
     return (
         <>
-            {tableHeader}
+            {canSelectPages && tableHeader}
             <UploadTransformComponent uploadTargetComponent={ContentTableWrapper}
                                       uploadPath={path}
                                       mode={mode}
@@ -186,7 +186,8 @@ ContentTable.propTypes = {
     isContentNotFound: PropTypes.bool,
     isLoading: PropTypes.bool,
     rows: PropTypes.array.isRequired,
-    totalCount: PropTypes.number.isRequired
+    totalCount: PropTypes.number.isRequired,
+    canSelectPages: PropTypes.bool.isRequired
 };
 
 export default ContentTable;
