@@ -3,10 +3,50 @@ import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {renderer} from '~/SelectorTypes/Picker/accordionItems/renderer';
 import {Collections} from '@jahia/moonstone';
 import {registry} from '@jahia/ui-extender';
+import {
+    cePickerSetPage,
+    cePickerSetTableViewMode,
+    cePickerSetTableViewType
+} from '~/SelectorTypes/Picker/Picker2.redux';
+import {ContentTypeSelector, ViewModeSelector} from '@jahia/jcontent';
 
-// Todo: see with François if it's possible to get rid of this and have every picker always come with a key
+// Todo: see with Franï¿½ois if it's possible to get rid of this and have every picker always come with a key
 export const getItemTarget = pickerType => {
     return registry.get(Constants.pickerConfig, pickerType) ? pickerType : 'default';
+};
+
+const viewModeSelectorProps = {
+    selector: state => ({
+        mode: state.contenteditor.picker.mode,
+        viewMode: state.contenteditor.picker.tableView.viewMode
+    }),
+    setTableViewModeAction: mode => cePickerSetTableViewMode(mode)
+};
+
+// Todo: implement selector / action
+// const fileModeSelectorProps = {
+//     selector: () => ({
+//         mode: null
+//     }),
+//     setModeAction: () => ({})
+// };
+
+const contentTypeSelectorProps = {
+    selector: state => ({
+        mode: state.contenteditor.picker.mode,
+        siteKey: state.site,
+        path: state.contenteditor.picker.path,
+        lang: state.language,
+        uilang: state.uilang,
+        params: state.jcontent.params,
+        pagination: state.contenteditor.picker.pagination,
+        sort: state.contenteditor.picker.sort,
+        tableView: state.contenteditor.picker.tableView
+    }),
+    reduxActions: {
+        setPageAction: page => cePickerSetPage(page),
+        setTableViewTypeAction: view => cePickerSetTableViewType(view)
+    }
 };
 
 export const registerAccordionItems = registry => {
@@ -19,7 +59,12 @@ export const registerAccordionItems = registry => {
         registry.add(
             Constants.ACCORDION_ITEM_NAME,
             `picker-${Constants.ACCORDION_ITEM_TYPES.PAGES}`,
-            {...pagesItem, targets: ['default:50', 'editorial:50', 'editoriallink:50', 'pages:50']},
+            {
+                ...pagesItem,
+                viewSelector: <ViewModeSelector {...viewModeSelectorProps}/>,
+                tableHeader: <ContentTypeSelector {...contentTypeSelectorProps}/>,
+                targets: ['default:50', 'editorial:50', 'editoriallink:50', 'pages:50']
+            },
             renderer
         );
     } else {
@@ -30,7 +75,11 @@ export const registerAccordionItems = registry => {
         registry.add(
             Constants.ACCORDION_ITEM_NAME,
             `picker-${Constants.ACCORDION_ITEM_TYPES.CONTENT_FOLDERS}`,
-            {...contentFoldersItem, targets: ['default:60', 'editorial:60', 'editoriallink:60', 'contentfolder:60']},
+            {
+                ...contentFoldersItem,
+                viewSelector: <ViewModeSelector {...viewModeSelectorProps}/>,
+                targets: ['default:60', 'editorial:60', 'editoriallink:60', 'contentfolder:60']
+            },
             renderer
         );
     } else {
@@ -41,7 +90,11 @@ export const registerAccordionItems = registry => {
         registry.add(
             Constants.ACCORDION_ITEM_NAME,
             `picker-${Constants.ACCORDION_ITEM_TYPES.MEDIA}`,
-            {...mediaItem, targets: ['default:70', 'image:70', 'file:70', 'folder:70']},
+            {
+                ...mediaItem,
+                viewSelector: false, // Todo: implement thumbnail and enable selector : <FileModeSelector {...fileModeSelectorProps}/>,
+                targets: ['default:70', 'image:70', 'file:70', 'folder:70']
+            },
             renderer
         );
     } else {

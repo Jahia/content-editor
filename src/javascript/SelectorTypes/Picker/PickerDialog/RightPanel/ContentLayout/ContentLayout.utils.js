@@ -21,22 +21,9 @@ export const structureData = function (parentPath, dataForParentPath = []) {
     }
 };
 
-export const flattenTree = function (rows) {
-    const items = [];
-    collectItems(rows);
-    return items;
-
-    function collectItems(arrayData) {
-        for (let i = 0; i < arrayData.length; i++) {
-            items.push(arrayData[i]);
-            collectItems(arrayData[i].subRows || []);
-        }
-    }
-};
-
 export const resolveQueryConstraints = (pickerConfig, mode) => {
     const obj = {
-        type: mode,
+        type: mode.replace('picker-', ''),
         selectableTypesTable: pickerConfig.selectableTypesTable,
         typeFilter: {
             pages: [],
@@ -46,10 +33,10 @@ export const resolveQueryConstraints = (pickerConfig, mode) => {
     };
 
     // Note that when in 'contents' there is no pages tab at all as per design of content table in jcontent
-    if (mode === 'pages' || mode === 'content-folders') {
+    if (mode === 'picker-pages' || mode === 'picker-content-folders') {
         obj.typeFilter.pages = ['jnt:page'];
         obj.typeFilter.content = pickerConfig.selectableTypesTable.filter(t => t !== 'jnt:page');
-    } else if (mode === 'media') {
+    } else if (mode === 'picker-media') {
         obj.typeFilter.media = [...pickerConfig.selectableTypesTable];
         obj.typeFilter.media.push('jnt:folder');
     }

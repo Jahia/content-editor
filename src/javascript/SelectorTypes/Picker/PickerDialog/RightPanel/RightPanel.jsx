@@ -1,31 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {cePickerSetTableViewMode} from '~/SelectorTypes/Picker/Picker2.redux';
 import css from './RightPanel.scss';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 import {Button, SearchContextInput, Typography} from '@jahia/moonstone';
 import {shallowEqual, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import ContentLayout from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout';
-import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import clsx from 'clsx';
-import {DisplayAction} from '@jahia/ui-extender';
+import {DisplayAction, registry} from '@jahia/ui-extender';
 import {getButtonRenderer} from '~/utils';
-import {ViewModeSelector} from '@jahia/jcontent';
 import SelectionCaption from './SelectionCaption';
-
-const viewModeSelectorProps = {
-    selector: state => ({
-        mode: state.contenteditor.picker.mode.replace('picker-', ''),
-        viewMode: state.contenteditor.picker.tableView.viewMode
-    }),
-    setTableViewModeAction: mode => cePickerSetTableViewMode(mode)
-};
 
 const ButtonRenderer = getButtonRenderer({defaultButtonProps: {variant: 'ghost'}});
 
 const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
-    const {selection, mode} = useSelector(state => ({selection: state.contenteditor.picker.selection, mode: state.contenteditor.picker.mode.replace('picker-', '')}), shallowEqual);
+    const {selection, mode} = useSelector(state => ({selection: state.contenteditor.picker.selection, mode: state.contenteditor.picker.mode}), shallowEqual);
     const {t} = useTranslation('content-editor');
 
     const selectElement = () => {
@@ -36,6 +25,8 @@ const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
             onClose();
         }
     };
+
+    const viewSelector = registry.get('accordionItem', mode)?.viewSelector;
 
     return (
         <div className="flexFluid flexCol_nowrap">
@@ -48,7 +39,8 @@ const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
                     />
                     <div className="flexFluid"/>
                     <DisplayAction actionKey="pageComposer" render={ButtonRenderer} path="/"/>
-                    {mode !== Constants.mode.SEARCH && <ViewModeSelector {...viewModeSelectorProps}/>}
+
+                    {viewSelector}
                 </div>
             </header>
             <div className={clsx('flexFluid', 'flexCol_nowrap', css.body)}>

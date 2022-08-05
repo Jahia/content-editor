@@ -42,7 +42,7 @@ export const {
 export const registerPickerReducer = registry => {
     const initialState = {
         openPaths: [],
-        mode: 'pages',
+        mode: 'picker-pages',
         site: 'systemsite',
         contextSite: 'systemsite',
         path: '/sites/systemsite',
