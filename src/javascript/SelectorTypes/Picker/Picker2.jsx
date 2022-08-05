@@ -12,6 +12,7 @@ import {cePickerClearSelection} from '~/SelectorTypes/Picker/Picker2.redux';
 import {useDispatch} from 'react-redux';
 import styles from './Picker2.scss';
 import {Button, Close} from '@jahia/moonstone';
+import {FieldContextProvider} from '~/contexts/FieldContext';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
@@ -141,15 +142,19 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
                         />
                     )}
                 </>}
-            <PickerDialog
-                isOpen={isDialogOpen}
-                editorContext={editorContext}
-                pickerConfig={pickerConfig}
-                initialSelectedItem={fieldData && fieldData.map(f => f.path)}
-                accordionItemProps={parsedOptions.accordionItem}
-                onClose={() => toggleOpen(false)}
-                onItemSelection={onItemSelection}
-            />
+
+            <FieldContextProvider field={field}>
+                <PickerDialog
+                    isOpen={isDialogOpen}
+                    editorContext={editorContext}
+                    pickerConfig={pickerConfig}
+                    initialSelectedItem={fieldData && fieldData.map(f => f.path)}
+                    accordionItemProps={parsedOptions.accordionItem}
+                    onClose={() => toggleOpen(false)}
+                    onItemSelection={onItemSelection}
+                />
+            </FieldContextProvider>
+
         </div>
     );
 };

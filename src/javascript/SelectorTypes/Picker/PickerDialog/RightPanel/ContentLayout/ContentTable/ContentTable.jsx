@@ -27,6 +27,7 @@ import {
 } from '@jahia/jcontent';
 import classes from './ContentTable.scss';
 import {registry} from '@jahia/ui-extender';
+import {useFieldContext} from '~/contexts/FieldContext';
 
 export const allowDoubleClickNavigation = nodeType => {
     return (['jnt:folder', 'jnt:contentFolder'].indexOf(nodeType) !== -1);
@@ -72,6 +73,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
     const isStructuredView = Constants.tableView.mode.STRUCTURED === tableView.viewMode;
 
     const columns = useMemo(() => 'picker-' + Constants.mode.MEDIA === mode ? allColumnData.filter(c => c.id !== 'type') : allColumnData, [mode]);
+    const {isMultiple} = useFieldContext();
     const {
         getTableProps,
         getTableBodyProps,
