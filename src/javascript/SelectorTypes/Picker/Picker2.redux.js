@@ -20,7 +20,8 @@ export const {
     cePickerSwitchSelection,
     cePickerClearSelection,
     cePickerSetTableViewMode,
-    cePickerSetTableViewType} = createActions(
+    cePickerSetTableViewType,
+    cePickerSetSearchTerm} = createActions(
     'CE_PICKER_SITE',
     'CE_PICKER_CONTEXT_SITE',
     'CE_PICKER_MODE',
@@ -37,7 +38,8 @@ export const {
     'CE_PICKER_SWITCH_SELECTION',
     'CE_PICKER_CLEAR_SELECTION',
     'CE_PICKER_SET_TABLE_VIEW_MODE',
-    'CE_PICKER_SET_TABLE_VIEW_TYPE');
+    'CE_PICKER_SET_TABLE_VIEW_TYPE',
+    'CE_PICKER_SET_SEARCH_TERM');
 
 export const registerPickerReducer = registry => {
     const initialState = {
@@ -55,7 +57,8 @@ export const registerPickerReducer = registry => {
         tableView: {
             viewMode: Constants.tableView.mode.LIST,
             viewType: Constants.tableView.type.CONTENT
-        }
+        },
+        searchTerm: ''
     };
 
     const picker = handleActions({
@@ -145,6 +148,10 @@ export const registerPickerReducer = registry => {
                 ...state.tableView,
                 viewType: action.payload
             }
+        }),
+        [cePickerSetSearchTerm]: (state, action) => ({
+            ...state,
+            searchTerm: action.payload
         })
     }, initialState);
 
