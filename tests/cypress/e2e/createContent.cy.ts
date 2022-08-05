@@ -5,14 +5,18 @@ describe('Create content tests', { retries: 10 }, () => {
     let contentEditor: ContentEditor
 
     before(function () {
-        cy.executeGroovy('createSite.groovy', { SITEKEY: 'contentEditorSite' })
+        cy.executeGroovy('createSite.groovy', { SITEKEY: 'contentEditorSite' }).then(response => {
+            expect(response).to.not.eq('.failed')
+        })
         cy.login() // edit in chief
         ContentEditor.visit('contentEditorSite', 'en', 'home.html')
     })
 
     after(function () {
         cy.logout()
-        cy.executeGroovy('deleteSite.groovy', { SITEKEY: 'contentEditorSite' })
+        cy.executeGroovy('deleteSite.groovy', { SITEKEY: 'contentEditorSite' }).then(response => {
+            expect(response).to.not.eq('.failed')
+        })
     })
 
     beforeEach(() => {

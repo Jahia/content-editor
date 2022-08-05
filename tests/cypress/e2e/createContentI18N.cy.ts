@@ -5,14 +5,18 @@ describe('Create content tests in I18N site', () => {
     let contentEditor: ContentEditor
 
     before(function () {
-        cy.executeGroovy('createSiteI18N.groovy', { SITEKEY: sitekey })
+        cy.executeGroovy('createSiteI18N.groovy', { SITEKEY: sitekey }).then(response => {
+            expect(response).to.not.eq('.failed')
+        })
         cy.login() // edit in chief
         ContentEditor.visit(sitekey, 'en', 'home.html')
     })
 
     after(function () {
         cy.logout()
-        cy.executeGroovy('deleteSite.groovy', { SITEKEY: sitekey })
+        cy.executeGroovy('deleteSite.groovy', { SITEKEY: sitekey }).then(response => {
+            expect(response).to.not.eq('.failed')
+        })
     })
 
     beforeEach(() => {

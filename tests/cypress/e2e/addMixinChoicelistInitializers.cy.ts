@@ -5,7 +5,9 @@ describe('Add Mixin by using choice list initializers (Image Reference)', () => 
     let contentEditor: ContentEditor
     const cypressDocumentManagerImageReferenceLinkTest = 'Cypress document manager image reference link Test'
     before(function () {
-        cy.executeGroovy('createSiteI18N.groovy', { SITEKEY: sitekey })
+        cy.executeGroovy('createSiteI18N.groovy', { SITEKEY: sitekey }).then(response => {
+            expect(response).to.not.eq('.failed')
+        })
         cy.login() // edit in chief
         ContentEditor.visitJContentMedia(sitekey, 'en')
         cy.wait(5000)
@@ -21,7 +23,9 @@ describe('Add Mixin by using choice list initializers (Image Reference)', () => 
 
     after(function () {
         cy.logout()
-        cy.executeGroovy('deleteSite.groovy', { SITEKEY: sitekey })
+        cy.executeGroovy('deleteSite.groovy', { SITEKEY: sitekey }).then(response => {
+            expect(response).to.not.eq('.failed')
+        })
     })
 
     beforeEach(() => {

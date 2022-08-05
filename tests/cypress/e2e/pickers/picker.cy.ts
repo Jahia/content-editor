@@ -11,7 +11,9 @@ describe('Picker tests', () => {
     beforeEach(() => {
         // I have issues adding these to before()/after() so have to add to beforeEach()/afterEach()
         cy.login() // edit in chief
-        cy.apollo({ mutationFile: 'pickers/createContent.graphql' })
+        cy.apollo({ mutationFile: 'pickers/createContent.graphql' }).then(response => {
+            expect(response.data.jcr.content).to.not.be.undefined
+        })
 
         // beforeEach()
         const pageComposer = ContentEditor.visit(siteKey, 'en', 'home.html').getPageComposer()
@@ -20,7 +22,9 @@ describe('Picker tests', () => {
     })
 
     afterEach(() => {
-        cy.apollo({ mutationFile: 'pickers/deleteContent.graphql' })
+        cy.apollo({ mutationFile: 'pickers/deleteContent.graphql' }).then(response => {
+            expect(response.data.jcr.content).to.not.be.undefined
+        })
         cy.logout()
     })
 
@@ -147,6 +151,8 @@ describe('Picker tests', () => {
         cy.apollo({
             mutationFile: 'pickers/createFolder.graphql',
             variables: { folderName, parentPath },
+        }).then(response => {
+            expect(response.data.jcr.content).to.not.be.undefined
         })
 
         cy.log('open file picker dialog')
@@ -163,6 +169,8 @@ describe('Picker tests', () => {
         cy.apollo({
             mutationFile: 'pickers/deleteFolder.graphql',
             variables: { pathOrId: `${parentPath}/${folderName}` },
+        }).then(response => {
+            expect(response.data.jcr.content).to.not.be.undefined
         })
 
         cy.reload() // reload to sync folder
