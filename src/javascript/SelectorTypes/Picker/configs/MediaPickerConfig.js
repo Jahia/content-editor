@@ -1,5 +1,5 @@
 import React from 'react';
-import {FileImage} from '@jahia/moonstone';
+import {Collections, FileImage, Folder, SiteWeb} from '@jahia/moonstone';
 import {useQuery} from '@apollo/react-hooks';
 import {MediaPickerFilledQuery} from './MediaPicker.gql-queries';
 import {encodeJCRPath} from '~/utils';
@@ -36,6 +36,26 @@ const usePickerInputData = uuids => {
     return {fieldData, error, loading};
 };
 
+const getSearchContextOptions = (currentPath, currentSite) => {
+    return [
+        {
+            label: 'Folder',
+            value: currentPath,
+            iconStart: <Folder/>
+        },
+        {
+            label: 'Media',
+            value: `${currentSite}/files`,
+            iconStart: <Collections/>
+        },
+        {
+            label: currentSite.substring(0, 1).toUpperCase() + currentSite.substring(1),
+            value: `/sites/${currentSite}`,
+            iconStart: <SiteWeb/>
+        }
+    ];
+};
+
 export const MediaPickerConfig = {
     pickerInput: {
         emptyLabel: 'content-editor:label.contentEditor.edit.fields.imagePicker.emptyInputLabel',
@@ -48,6 +68,9 @@ export const MediaPickerConfig = {
         dialogTitle: 'content-editor:label.contentEditor.edit.fields.imagePicker.modalTitle',
         searchPlaceholder: 'content-editor:label.contentEditor.edit.fields.imagePicker.searchPlaceholder',
         displayTree: true,
-        displaySiteSwitcher: true
+        displaySiteSwitcher: true,
+        displaySearch: true,
+        displaySearchContext: true,
+        searchContextOptions: getSearchContextOptions
     }
 };

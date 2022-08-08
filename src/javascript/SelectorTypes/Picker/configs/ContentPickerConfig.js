@@ -1,9 +1,10 @@
 import React from 'react';
-import {File} from '@jahia/moonstone';
+import {Collections, File, Folder, SiteWeb} from '@jahia/moonstone';
 import {useQuery} from '@apollo/react-hooks';
 import {ContentPickerFilledQuery} from './ContentPicker.gql-queries';
 import {encodeJCRPath} from '~/utils';
 import {useContentEditorContext} from '~/contexts';
+import {shallowEqual, useSelector} from 'react-redux';
 
 const usePickerInputData = uuids => {
     const {lang} = useContentEditorContext();
@@ -31,6 +32,26 @@ const usePickerInputData = uuids => {
     return {fieldData, error, loading};
 };
 
+const getSearchContextOptions = (currentPath, currentSite) => {
+    return [
+        {
+            label: 'Folder',
+            value: currentPath,
+            iconStart: <Folder/>
+        },
+        {
+            label: 'Content',
+            value: `${currentSite}/contents`,
+            iconStart: <Collections/>
+        },
+        {
+            label: currentSite.substring(0, 1).toUpperCase() + currentSite.substring(1),
+            value: `/sites/${currentSite}`,
+            iconStart: <SiteWeb/>
+        }
+    ];
+};
+
 export const ContentPickerConfig = {
     pickerInput: {
         emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.addContent',
@@ -43,6 +64,9 @@ export const ContentPickerConfig = {
         dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalTitle',
         searchPlaceholder: 'content-editor:label.contentEditor.edit.fields.contentPicker.searchPlaceholder',
         displayTree: true,
-        displaySiteSwitcher: true
+        displaySiteSwitcher: true,
+        displaySearch: true,
+        displaySearchContext: true,
+        searchContextOptions: getSearchContextOptions
     }
 };

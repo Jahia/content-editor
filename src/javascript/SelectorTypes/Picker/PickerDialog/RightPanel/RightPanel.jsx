@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
     cePickerSetSearchTerm,
-    cePickerSetSearchContext, cePickerMode
+    cePickerSetSearchContext
 } from '~/SelectorTypes/Picker/Picker2.redux';
 import css from './RightPanel.scss';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
-import {Button, Collections, Dropdown, Folder, SearchContextInput, SiteWeb, Typography} from '@jahia/moonstone';
+import {Button, Dropdown, SearchContextInput, Typography} from '@jahia/moonstone';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import ContentLayout from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout';
@@ -56,23 +56,7 @@ const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
     };
 
     const getSearchContextData = () => {
-        return [
-            {
-                label: 'Folder',
-                value: currentPath,
-                iconStart: <Folder/>
-            },
-            {
-                label: 'Media',
-                value: `${currentSite}/files`,
-                iconStart: <Collections/>
-            },
-            {
-                label: currentSite.substring(0, 1).toUpperCase() + currentSite.substring(1),
-                value: `/sites/${currentSite}`,
-                iconStart: <SiteWeb/>
-            }
-        ];
+        return pickerConfig.pickerDialog.searchContextOptions(currentPath, currentSite);
     };
 
     const getCurrentSearchContext = () => {
