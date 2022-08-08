@@ -8,6 +8,12 @@ export const allColumnData = [
         Cell: reactTable.CellPublicationStatus
     },
     {
+        id: 'selection',
+        sortable: false,
+        Header: reactTable.HeaderSelection,
+        Cell: reactTable.CellSelection
+    },
+    {
         id: 'name',
         accessor: 'displayName',
         label: 'jcontent:label.contentManager.listColumns.name',
