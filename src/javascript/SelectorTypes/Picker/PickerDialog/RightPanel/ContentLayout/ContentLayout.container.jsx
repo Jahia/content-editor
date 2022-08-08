@@ -36,19 +36,21 @@ const selectableTypeFragment = {
 
 export const ContentLayoutContainer = ({pickerConfig}) => {
     const {t} = useTranslation();
-    const {mode, path, filesMode, tableView} = useSelector(state => ({
+    const {mode, path, filesMode, tableView, searchTerm, searchContext} = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
         path: state.contenteditor.picker.path,
         filesMode: 'grid',
-        tableView: state.contenteditor.picker.tableView
+        tableView: state.contenteditor.picker.tableView,
+        searchTerm: state.contenteditor.picker.searchTerm,
+        searchContext: state.contenteditor.picker.searchContext
     }), shallowEqual);
     const dispatch = useDispatch();
     const canSelectPages = pickerConfig.selectableTypesTable.includes('jnt:page');
 
-    const queryConstraints = useMemo(() => resolveQueryConstraints(pickerConfig, mode, tableView.viewType), [mode, pickerConfig, tableView.viewType]);
+    const queryConstraints = useMemo(() => resolveQueryConstraints(pickerConfig, mode, tableView.viewType, searchTerm, path, searchContext), [mode, pickerConfig, tableView.viewType, searchTerm, path, searchContext]);
 
     const {queryHandler, layoutQuery, isStructuredView, layoutQueryParams, data, error, loading, refetch} = useLayoutQuery(state => ({
-        mode: state.contenteditor.picker.mode,
+        mode: searchTerm === '' ? state.contenteditor.picker.mode : Constants.mode.SEARCH,
         siteKey: state.site,
         params: {},
         path: state.contenteditor.picker.path,

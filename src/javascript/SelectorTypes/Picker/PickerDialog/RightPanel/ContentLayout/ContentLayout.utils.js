@@ -23,10 +23,13 @@ export const structureData = function (parentPath, dataForParentPath = []) {
     }
 };
 
-export const resolveQueryConstraints = (pickerConfig, mode, tableViewType) => {
+export const resolveQueryConstraints = (pickerConfig, mode, tableViewType, searchTerm, path, searchContext) => {
     const obj = {
         selectableTypesTable: pickerConfig.selectableTypesTable,
-        typeFilter: pickerConfig.selectableTypesTable
+        typeFilter: pickerConfig.selectableTypesTable,
+        searchTerms: searchTerm,
+        searchPath: searchContext === '' ? path : searchContext,
+        searchContentType: pickerConfig.searchSelectorType
     };
 
     // Note that when in 'content-folders' there is no pages tab at all as per design of content table in jcontent
