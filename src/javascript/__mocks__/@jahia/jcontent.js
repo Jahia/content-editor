@@ -5,6 +5,8 @@ export const reactTable = {
     CellName: jest.fn(),
     Header: jest.fn(),
     CellType: jest.fn(),
-    CellLastModified: jest.fn()
+    CellLastModified: jest.fn(),
+    HeaderSelection: jest.fn(),
+    CellSelection: jest.fn()
 };
 

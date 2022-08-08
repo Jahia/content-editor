@@ -5,7 +5,7 @@ import {useTranslation} from 'react-i18next';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {Table, TableBody, TablePagination, TableRow} from '@jahia/moonstone';
 import {useTable} from 'react-table';
-import {useExpanded, useRowSelection, useSort} from '~/SelectorTypes/Picker/reactTable/plugins';
+import {useExpanded, useRowMultipleSelection, useRowSelection, useSort} from '~/SelectorTypes/Picker/reactTable/plugins';
 import {allColumnData} from '~/SelectorTypes/Picker/reactTable/columns';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {
@@ -61,6 +61,7 @@ const clickHandler = {
 
 export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, canSelectPages}) => {
     const {t} = useTranslation();
+    const field = useFieldContext();
     const dispatch = useDispatch();
 
     const {mode, path, pagination, tableView} = useSelector(state => ({
@@ -71,9 +72,11 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
     }), shallowEqual);
 
     const isStructuredView = Constants.tableView.mode.STRUCTURED === tableView.viewMode;
-
-    const columns = useMemo(() => 'picker-' + Constants.mode.MEDIA === mode ? allColumnData.filter(c => c.id !== 'type') : allColumnData, [mode]);
-    const {isMultiple} = useFieldContext();
+    const columns = useMemo(() => {
+        return allColumnData
+            .filter(c => 'picker-' + Constants.mode.MEDIA !== mode || c.id !== 'type') // Do not include type column if media mode
+            .filter(c => field.multiple || c.id !== 'selection'); // Do not include selection if multiple selection is not enabled
+    }, [mode]);
     const {
         getTableProps,
         getTableBodyProps,
@@ -86,7 +89,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
             columns: columns,
             data: rows
         },
-        useRowSelection,
+        field.multiple ? useRowMultipleSelection : useRowSelection,
         useSort,
         useExpanded
     );
@@ -131,6 +134,19 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
         );
     }
 
+    const handleOnClick = (e, row) => {
+        if (field.multiple) {
+            return; // Use selection column instead of row click for multiple selection
+        }
+
+        const selectionProps = row.getToggleRowSelectedProps();
+        if (allowDoubleClickNavigation(row.original.primaryNodeType.name)) {
+            clickHandler.handleEvent(e, selectionProps.onChange);
+        } else {
+            selectionProps.onChange();
+        }
+    };
+
     return (
         <>
             {canSelectPages && tableHeader}
@@ -158,7 +174,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
                                           data-cm-role="table-content-list-row"
                                           className={!selectionProps.checked && className}
                                           isHighlighted={selectionProps.checked}
-                                          onClick={e => allowDoubleClickNavigation(node.primaryNodeType.name) ? clickHandler.handleEvent(e, selectionProps.onChange) : selectionProps.onChange()}
+                                          onClick={e => handleOnClick(e, row)}
                                           onDoubleClick={e => allowDoubleClickNavigation(node.primaryNodeType.name) && clickHandler.handleEvent(e, () => doubleClickNavigation(node))}
                                 >
                                     {row.cells.map(cell => <React.Fragment key={cell.column.id}>{cell.render('Cell')}</React.Fragment>)}

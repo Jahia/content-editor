@@ -118,7 +118,7 @@ export const registerPickerReducer = registry => {
         }),
         [cePickerAddSelection]: (state, action) => ({
             ...state,
-            selection: state.selection.concat(toArray(action.payload))
+            selection: state.selection.concat(toArray(action.payload).filter(p => !state.selection.find(s => s.uuid === p.uuid)))
         }),
         [cePickerRemoveSelection]: (state, action) => ({
             ...state,
