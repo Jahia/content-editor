@@ -76,7 +76,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
         return allColumnData
             .filter(c => 'picker-' + Constants.mode.MEDIA !== mode || c.id !== 'type') // Do not include type column if media mode
             .filter(c => field.multiple || c.id !== 'selection'); // Do not include selection if multiple selection is not enabled
-    }, [mode]);
+    }, [mode, field.multiple]);
     const {
         getTableProps,
         getTableBodyProps,
