@@ -56,7 +56,7 @@ const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
     };
 
     const getSearchContextData = () => {
-        return pickerConfig.pickerDialog.searchContextOptions(currentPath, currentSite);
+        return pickerConfig.pickerDialog.searchContextOptions(currentPath, currentSite, t);
     };
 
     const getCurrentSearchContext = () => {

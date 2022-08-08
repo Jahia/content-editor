@@ -4,7 +4,6 @@ import {useQuery} from '@apollo/react-hooks';
 import {ContentPickerFilledQuery} from './ContentPicker.gql-queries';
 import {encodeJCRPath} from '~/utils';
 import {useContentEditorContext} from '~/contexts';
-import {shallowEqual, useSelector} from 'react-redux';
 
 const usePickerInputData = uuids => {
     const {lang} = useContentEditorContext();
@@ -32,16 +31,16 @@ const usePickerInputData = uuids => {
     return {fieldData, error, loading};
 };
 
-const getSearchContextOptions = (currentPath, currentSite) => {
+const getSearchContextOptions = (currentPath, currentSite, t) => {
     return [
         {
-            label: 'Folder',
+            label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.folder'),
             value: currentPath,
             iconStart: <Folder/>
         },
         {
-            label: 'Content',
-            value: `${currentSite}/contents`,
+            label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.contents'),
+            value: `/sites/${currentSite}/contents`,
             iconStart: <Collections/>
         },
         {

@@ -284,7 +284,12 @@
       },
       "picker": {
         "rightPanel": {
-          "actionsCaption": "Non-selectable items are not listed in this view"
+          "actionsCaption": "Non-selectable items are not listed in this view",
+          "searchContextOptions" : {
+            "contents": "Contents",
+            "medias": "Medias",
+            "folder": "Folder"
+          }
         }
       }
     }

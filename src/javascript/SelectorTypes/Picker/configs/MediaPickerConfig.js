@@ -36,16 +36,16 @@ const usePickerInputData = uuids => {
     return {fieldData, error, loading};
 };
 
-const getSearchContextOptions = (currentPath, currentSite) => {
+const getSearchContextOptions = (currentPath, currentSite, t) => {
     return [
         {
-            label: 'Folder',
+            label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.folder'),
             value: currentPath,
             iconStart: <Folder/>
         },
         {
-            label: 'Media',
-            value: `${currentSite}/files`,
+            label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.medias'),
+            value: `/sites/${currentSite}/files`,
             iconStart: <Collections/>
         },
         {
