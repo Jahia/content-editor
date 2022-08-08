@@ -1,3 +1,5 @@
+import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
+
 export const structureData = function (parentPath, dataForParentPath = []) {
     const structuredData = dataForParentPath.filter(d => d.parent.path === parentPath);
     setSubrows(structuredData, dataForParentPath);
@@ -21,24 +23,18 @@ export const structureData = function (parentPath, dataForParentPath = []) {
     }
 };
 
-export const resolveQueryConstraints = (pickerConfig, mode) => {
+export const resolveQueryConstraints = (pickerConfig, mode, tableViewType) => {
     const obj = {
-        type: mode.replace('picker-', ''),
-        selectableTypesTable: pickerConfig.selectableTypesTable,
-        typeFilter: {
-            pages: [],
-            content: [],
-            media: []
-        }
+        selectableTypesTable: pickerConfig.selectableTypesTable
     };
 
-    // Note that when in 'contents' there is no pages tab at all as per design of content table in jcontent
-    if (mode === 'picker-pages' || mode === 'picker-content-folders') {
-        obj.typeFilter.pages = ['jnt:page'];
-        obj.typeFilter.content = pickerConfig.selectableTypesTable.filter(t => t !== 'jnt:page');
+    // Note that when in 'content-folders' there is no pages tab at all as per design of content table in jcontent
+    if (mode === 'picker-pages') {
+        obj.typeFilter = tableViewType === Constants.tableView.type.PAGES ? ['jnt:page'] : pickerConfig.selectableTypesTable.filter(t => t !== 'jnt:page');
+    } else if (mode === 'picker-content-folders') {
+        obj.typeFilter = Array.from(new Set([...pickerConfig.selectableTypesTable, 'jnt:contentFolder']));
     } else if (mode === 'picker-media') {
-        obj.typeFilter.media = [...pickerConfig.selectableTypesTable];
-        obj.typeFilter.media.push('jnt:folder');
+        obj.typeFilter = Array.from(new Set([...pickerConfig.selectableTypesTable, 'jnt:folder']));
     }
 
     return obj;

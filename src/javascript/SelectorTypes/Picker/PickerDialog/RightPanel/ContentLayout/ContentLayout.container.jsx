@@ -45,12 +45,12 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
     const dispatch = useDispatch();
     const canSelectPages = pickerConfig.selectableTypesTable.includes('jnt:page');
 
-    const params = useMemo(() => resolveQueryConstraints(pickerConfig, mode), [mode, pickerConfig]);
+    const queryConstraints = useMemo(() => resolveQueryConstraints(pickerConfig, mode, tableView.viewType), [mode, pickerConfig, tableView.viewType]);
 
     const {queryHandler, layoutQuery, isStructuredView, layoutQueryParams, data, error, loading, refetch} = useLayoutQuery(state => ({
         mode: state.contenteditor.picker.mode,
         siteKey: state.site,
-        params,
+        params: {},
         path: state.contenteditor.picker.path,
         lang: state.language,
         uilang: state.uilang,
@@ -58,7 +58,7 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
         pagination: state.contenteditor.picker.pagination,
         sort: state.contenteditor.picker.sort,
         tableView: state.contenteditor.picker.tableView
-    }), {}, [selectableTypeFragment], {selectableTypesTable: params.selectableTypesTable});
+    }), {}, [selectableTypeFragment], queryConstraints);
 
     // Reset table view type to content if pages cannot be picked, we do not show table view selector if pages cannot
     // be picked
