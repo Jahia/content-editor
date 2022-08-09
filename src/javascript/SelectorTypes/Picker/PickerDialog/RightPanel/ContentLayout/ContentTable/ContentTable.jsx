@@ -28,6 +28,7 @@ import {
 import classes from './ContentTable.scss';
 import {registry} from '@jahia/ui-extender';
 import {useFieldContext} from '~/contexts/FieldContext';
+import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 
 export const allowDoubleClickNavigation = nodeType => {
     return (['jnt:folder', 'jnt:contentFolder'].indexOf(nodeType) !== -1);
@@ -59,7 +60,7 @@ const clickHandler = {
     }
 };
 
-export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, canSelectPages}) => {
+export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, canSelectPages, pickerConfig}) => {
     const {t} = useTranslation();
     const field = useFieldContext();
     const dispatch = useDispatch();
@@ -75,8 +76,9 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
     const columns = useMemo(() => {
         return allColumnData
             .filter(c => 'picker-' + Constants.mode.MEDIA !== mode || c.id !== 'type') // Do not include type column if media mode
-            .filter(c => field.multiple || c.id !== 'selection'); // Do not include selection if multiple selection is not enabled
-    }, [mode, field.multiple]);
+            .filter(c => field.multiple || c.id !== 'selection') // Do not include selection if multiple selection is not enabled
+            .filter(c => !pickerConfig?.pickerTable?.columns || pickerConfig.pickerTable.columns.includes(c.id)); // Check if picker config specifies which columns to include
+    }, [mode, field.multiple, pickerConfig]);
     const {
         getTableProps,
         getTableBodyProps,
@@ -205,7 +207,8 @@ ContentTable.propTypes = {
     isLoading: PropTypes.bool,
     rows: PropTypes.array.isRequired,
     totalCount: PropTypes.number.isRequired,
-    canSelectPages: PropTypes.bool.isRequired
+    canSelectPages: PropTypes.bool.isRequired,
+    pickerConfig: configPropType.isRequired
 };
 
 export default ContentTable;

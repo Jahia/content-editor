@@ -87,6 +87,7 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
 
         return (
             <ContentTable isContentNotFound
+                          pickerConfig={pickerConfig}
                           canSelectPages={canSelectPages}
                           path={path}
                           filesMode={filesMode}
@@ -122,7 +123,8 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
                     <Loader size="big"/>
                 </div>
             )}
-            <ContentTable canSelectPages={canSelectPages}
+            <ContentTable pickerConfig={pickerConfig}
+                          canSelectPages={canSelectPages}
                           path={path}
                           filesMode={filesMode}
                           rows={rows}
