@@ -20,7 +20,9 @@ export const {
     cePickerSwitchSelection,
     cePickerClearSelection,
     cePickerSetTableViewMode,
-    cePickerSetTableViewType} = createActions(
+    cePickerSetTableViewType,
+    cePickerSetSearchTerm,
+    cePickerSetSearchContext} = createActions(
     'CE_PICKER_SITE',
     'CE_PICKER_CONTEXT_SITE',
     'CE_PICKER_MODE',
@@ -37,7 +39,9 @@ export const {
     'CE_PICKER_SWITCH_SELECTION',
     'CE_PICKER_CLEAR_SELECTION',
     'CE_PICKER_SET_TABLE_VIEW_MODE',
-    'CE_PICKER_SET_TABLE_VIEW_TYPE');
+    'CE_PICKER_SET_TABLE_VIEW_TYPE',
+    'CE_PICKER_SET_SEARCH_TERM',
+    'CE_PICKER_SET_SEARCH_CONTEXT');
 
 export const registerPickerReducer = registry => {
     const initialState = {
@@ -55,7 +59,9 @@ export const registerPickerReducer = registry => {
         tableView: {
             viewMode: Constants.tableView.mode.LIST,
             viewType: Constants.tableView.type.CONTENT
-        }
+        },
+        searchTerm: '',
+        searchContext: ''
     };
 
     const picker = handleActions({
@@ -89,6 +95,8 @@ export const registerPickerReducer = registry => {
         [cePickerPath]: (state, action) => ({
             ...state,
             path: action.payload,
+            searchContext: (state.searchContext === '' || state.searchContext.indexOf('/') >= 0) ? action.payload : state.searchContext,
+            searchTerm: '',
             pagination: {
                 ...state.pagination,
                 currentPage: 0
@@ -145,6 +153,22 @@ export const registerPickerReducer = registry => {
                 ...state.tableView,
                 viewType: action.payload
             }
+        }),
+        [cePickerSetSearchTerm]: (state, action) => ({
+            ...state,
+            searchTerm: action.payload
+        }),
+        [cePickerSetSearchContext]: (state, action) => ({
+            ...state,
+            searchContext: action.payload,
+            openPaths: action.payload.split('/')
+                .slice(1)
+                .reduce((prev, current, currentIndex) => {
+                    return [
+                        ...prev,
+                        prev[currentIndex - 1] ? `${prev[currentIndex - 1]}/${current}` : `/${current}`
+                    ];
+                }, [])
         })
     }, initialState);
 
