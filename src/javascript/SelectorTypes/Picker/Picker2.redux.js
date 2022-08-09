@@ -1,6 +1,7 @@
 import {createActions, handleActions} from 'redux-actions';
 import {COMBINED_REDUCERS_NAME} from '~/registerReducer';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
+import {toArray} from './Picker2.utils';
 
 export const {
     cePickerSite,
