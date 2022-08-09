@@ -8,9 +8,9 @@ const defaultEditorialListType = ['jmix:editorialContent', 'jnt:page', 'jmix:nav
 export const registerPickerConfig = ceRegistry => {
     ceRegistry.add(Constants.pickerConfig, 'default', mergeDeep({}, ContentPickerConfig, {
         searchSelectorType: 'jmix:searchable',
-        listTypesTable: defaultEditorialListType,
+        listTypesTable: [...defaultEditorialListType, 'jnt:file'],
         selectableTypesTable: ['jnt:content', 'jnt:file', 'jnt:page', 'jmix:navMenuItem'],
-        showOnlyNodesWithTemplates: true
+        showOnlyNodesWithTemplates: false
     }));
 
     ceRegistry.add(Constants.pickerConfig, 'editoriallink', mergeDeep({}, ContentPickerConfig, {

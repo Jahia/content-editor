@@ -6,7 +6,7 @@ import {registerPickerReducer} from '~/SelectorTypes/Picker/Picker2.redux';
 
 export const getPickerSelectorType = (registry, options) => {
     const option = options && options.find(option => option.name === 'type');
-    const pickerConfigKey = option?.value || 'editorial';
+    const pickerConfigKey = option?.value || 'default';
 
     let pickerConfig = registry.get('pickerConfiguration', pickerConfigKey);
 
