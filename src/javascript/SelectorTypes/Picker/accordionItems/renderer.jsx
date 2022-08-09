@@ -11,7 +11,7 @@ import {ContentTree} from '@jahia/jcontent';
 const selector = state => ({
     siteKey: state.contenteditor.picker.site,
     lang: state.language,
-    path: state.contenteditor.picker.path,
+    path: state.contenteditor.picker.searchContext === '' ? state.contenteditor.picker.path : state.contenteditor.picker.searchContext,
     openPaths: state.contenteditor.picker.openPaths
 });
 
