@@ -282,6 +282,10 @@
           "layout": "The layout options can be edited directly from the Edit tab. However, if you really need to, you can use the legacy interface to edit them. But be aware that this interface will be removed in a future update."
         }
       },
+      "selection": {
+        "itemsSelected": "{{count}} item selected",
+        "itemsSelected_plural": "{{count}} items selected"
+      },
       "picker": {
         "rightPanel": {
           "actionsCaption": "Non-selectable items are not listed in this view",

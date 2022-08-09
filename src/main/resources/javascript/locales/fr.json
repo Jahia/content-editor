@@ -287,6 +287,10 @@
           "layout": "Les options de rendu peuvent être modifiées directement depuis l'onglet Editer. Cependant, si nécessaire, vous pouvez utiliser l'ancienne interface d'édition. Mais celle-ci sera supprimée dans une future mise à jour."
         }
       },
+      "selection": {
+        "itemsSelected": "{{count}} élément sélectionné",
+        "itemsSelected_plural": "{{count}} éléments sélectionnés"
+      },
       "picker": {
         "rightPanel": {
           "actionsCaption": "Les éléments non-sélectionnables ne sont pas affichés dans cette vue"

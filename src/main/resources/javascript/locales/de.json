@@ -287,6 +287,10 @@
           "layout": "Layout Optionen sollte direkt im Bearbeiten-Tab editiert werden. Wenn es weiterhin notwendig ist, kann das vormalige Interface zum editieren verwendet werden. Bitte beachten. Sie, dass das dieses Interface mit zukünftigen Updates entfernt wird."
         }
       },
+      "selection": {
+        "itemsSelected": "{{count}} element ausgewählt",
+        "itemsSelected_plural": "{{count}} elemente ausgewählt"
+      },
       "picker": {
         "rightPanel": {
           "actionsCaption": "Nicht auswählbare Elemente werden in dieser Ansicht nicht gelistet"

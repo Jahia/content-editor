@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {
     cePickerSetSearchTerm,
@@ -13,7 +13,7 @@ import ContentLayout from '~/SelectorTypes/Picker/PickerDialog/RightPanel/Conten
 import clsx from 'clsx';
 import {DisplayAction, registry} from '@jahia/ui-extender';
 import {getButtonRenderer} from '~/utils';
-import SelectionCaption from './SelectionCaption';
+import {SelectionTable, SelectionCaption} from './PickerSelection';
 
 const ButtonRenderer = getButtonRenderer({defaultButtonProps: {variant: 'ghost'}});
 
@@ -27,6 +27,7 @@ const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
         currentPath: state.contenteditor.picker.path,
         currentSite: state.contenteditor.picker.site
     }), shallowEqual);
+    const selectionExpanded = useState(false);
     const {t} = useTranslation('content-editor');
 
     const selectElement = () => {
@@ -83,15 +84,16 @@ const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
                     />
                     <div className="flexFluid"/>
                     <DisplayAction actionKey="pageComposer" render={ButtonRenderer} path="/"/>
-
                     {viewSelector}
                 </div>
             </header>
             <div className={clsx('flexFluid', 'flexCol_nowrap', css.body)}>
                 <ContentLayout pickerConfig={pickerConfig}/>
             </div>
+
+            <SelectionTable selection={selection} expanded={selectionExpanded}/>
             <footer className={clsx('flexRow', 'alignCenter', css.footer)}>
-                <SelectionCaption selection={selection} pickerConfig={pickerConfig}/>
+                <SelectionCaption selection={selection} pickerConfig={pickerConfig} expanded={selectionExpanded}/>
                 <div className={clsx('flexRow', css.actions)}>
                     <Button
                         data-sel-picker-dialog-action="cancel"
