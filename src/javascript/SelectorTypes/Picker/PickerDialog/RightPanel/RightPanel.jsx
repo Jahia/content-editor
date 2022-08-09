@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import css from './RightPanel.scss';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
@@ -9,12 +9,13 @@ import ContentLayout from '~/SelectorTypes/Picker/PickerDialog/RightPanel/Conten
 import clsx from 'clsx';
 import {DisplayAction, registry} from '@jahia/ui-extender';
 import {getButtonRenderer} from '~/utils';
-import SelectionCaption from './SelectionCaption';
+import {SelectionTable, SelectionCaption} from './PickerSelection';
 
 const ButtonRenderer = getButtonRenderer({defaultButtonProps: {variant: 'ghost'}});
 
 const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
     const {selection, mode} = useSelector(state => ({selection: state.contenteditor.picker.selection, mode: state.contenteditor.picker.mode}), shallowEqual);
+    const selectionExpanded = useState(false);
     const {t} = useTranslation('content-editor');
 
     const selectElement = () => {
@@ -33,21 +34,19 @@ const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
             <header className={clsx('flexCol_nowrap', css.header)}>
                 <Typography variant="heading">Select content</Typography>
                 <div className={clsx('flexRow_nowrap', 'alignCenter', css.headerActions)}>
-                    <SearchContextInput
-                        size="big"
-                        className={css.searchInput}
-                    />
+                    <SearchContextInput size="big" className={css.searchInput}/>
                     <div className="flexFluid"/>
                     <DisplayAction actionKey="pageComposer" render={ButtonRenderer} path="/"/>
-
                     {viewSelector}
                 </div>
             </header>
             <div className={clsx('flexFluid', 'flexCol_nowrap', css.body)}>
                 <ContentLayout pickerConfig={pickerConfig}/>
             </div>
+
+            <SelectionTable selection={selection} expanded={selectionExpanded}/>
             <footer className={clsx('flexRow', 'alignCenter', css.footer)}>
-                <SelectionCaption selection={selection} pickerConfig={pickerConfig}/>
+                <SelectionCaption selection={selection} pickerConfig={pickerConfig} expanded={selectionExpanded}/>
                 <div className={clsx('flexRow', css.actions)}>
                     <Button
                         data-sel-picker-dialog-action="cancel"
