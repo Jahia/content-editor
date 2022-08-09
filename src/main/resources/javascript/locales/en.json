@@ -293,7 +293,8 @@
             "search": "Search in",
             "contents": "Contents",
             "medias": "Medias",
-            "folder": "Folder"
+            "folder": "Folder",
+            "home": "Home"
           }
         }
       }

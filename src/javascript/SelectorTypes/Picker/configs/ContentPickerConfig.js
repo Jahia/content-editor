@@ -49,6 +49,16 @@ const getSearchContextOptions = (currentPath, currentSite, t) => {
             iconStart: <Collections/>
         },
         {
+            label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.home'),
+            value: `/sites/${currentSite}/home`,
+            iconStart: <Collections/>
+        },
+        {
+            label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.medias'),
+            value: `/sites/${currentSite}/files`,
+            iconStart: <Collections/>
+        },
+        {
             label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.folder'),
             value: currentPath,
             iconStart: <Folder/>
