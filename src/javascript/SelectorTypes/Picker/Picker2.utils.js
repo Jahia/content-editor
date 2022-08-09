@@ -26,8 +26,12 @@ export const getDetailedPathArray = fullPath => {
         [];
 };
 
-export const getAccordionMode = fullPath => {
+export const getAccordionMode = (fullPath, config) => {
     // Todo : Fix getAccordionMode - try to get an accordion matching path
+    if (config.accordionMode) {
+        return config.accordionMode;
+    }
+
     const split = fullPath.split('/');
     const modeIndex = 3;
 

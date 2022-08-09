@@ -78,4 +78,16 @@ export const registerPickerConfig = ceRegistry => {
         listTypesTable: ['jnt:category'],
         selectableTypesTable: ['jnt:category']
     }));
+
+    ceRegistry.add(Constants.pickerConfig, 'site', mergeDeep({}, ContentPickerConfig, {
+        searchSelectorType: 'jnt:virtualsite',
+        selectableTypesTable: ['jnt:virtualsite'],
+        accordionMode: 'picker-site',
+        pickerTable: {
+            columns: ['name']
+        },
+        pickerDialog: {
+            displayTree: false
+        }
+    }));
 };

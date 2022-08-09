@@ -77,7 +77,7 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
             if (selectedNode) {
                 // If an item is selected, preselect site/mode/path
                 newState.site = getSite(selectedNode.path);
-                newState.mode = getAccordionMode(selectedNode.path);
+                newState.mode = getAccordionMode(selectedNode.path, pickerConfig);
                 const accordionItem = allAccordionItems.find(item => item.key === newState.mode);
                 if (accordionItem.getPathForItem) {
                     // Todo: Must implement something for pages accordion, where the selected path is not the direct parent
@@ -113,9 +113,9 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
 
         if (somethingChanged || newState.mode !== previousState.current.mode) {
             // Mode has changed, select path
-            if (getSite(newState.path) === newState.site && getAccordionMode(newState.path) === newState.mode && currentFolderInfo.node) {
+            if (getSite(newState.path) === newState.site && getAccordionMode(newState.path, pickerConfig) === newState.mode && currentFolderInfo.node) {
                 // 2 - Previously selected path is valid
-            } else if (getSite(state.jcontentPath) === newState.site && getAccordionMode(state.jcontentPath) === newState.mode) {
+            } else if (getSite(state.jcontentPath) === newState.site && getAccordionMode(state.jcontentPath, pickerConfig) === newState.mode) {
                 // 3 - Jcontent path is also valid here, use it
                 newState.path = state.jcontentPath;
             } else {

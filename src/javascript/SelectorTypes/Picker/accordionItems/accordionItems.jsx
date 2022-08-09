@@ -82,6 +82,27 @@ export const registerAccordionItems = registry => {
             },
             renderer
         );
+
+        registry.add(
+            Constants.ACCORDION_ITEM_NAME,
+            'picker-site',
+            {
+                ...contentFoldersItem,
+                viewSelector: null,
+                targets: ['site:60'],
+                defaultPath: () => '/sites',
+                canDisplayItem: node => /^\/sites\/.*/.test(node.path),
+                config: {
+                    rootPath: '',
+                    selectableTypes: ['jnt:virtualsite'],
+                    type: 'sites',
+                    openableTypes: ['jnt:virtualsite'],
+                    rootLabel: 'Sites - This is never shown',
+                    key: 'browse-tree-sites'
+                }
+            },
+            renderer
+        );
     } else {
         console.warn('Picker will not function properly due to missing accordionItem for content-folders');
     }
