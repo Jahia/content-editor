@@ -1,0 +1,47 @@
+.caption {
+    padding: 0 var(--spacing-small);
+
+    color: var(--color-gray60);
+}
+
+.tableContainer {
+    max-height: 312px;
+
+    -webkit-box-shadow: 0 -10px 16px 0 #30323433;
+    -moz-box-shadow: 0 -10px 16px 0 #30323433;
+    box-shadow: 0 -10px 16px 0 #30323433;
+    overflow: hidden;
+}
+
+.tableContainer.expanded {
+    padding: var(--spacing-medium);
+}
+
+.header {
+    padding-bottom: var(--spacing-large);
+}
+
+.selectionTable {
+    overflow: scroll;
+
+    height: calc(100% - 16px); // header offset
+}
+
+button.selectionButton {
+    width: auto;
+
+    // reset padding from .moonstone-collapsible_button
+    padding: 0 var(--spacing-small);
+
+    color: var(--color-gray_dark);
+}
+
+.tableContainer button.selectionButton {
+    padding-bottom: var(--spacing-small);
+}
+
+.hidden {
+    visibility: hidden;
+
+    pointer-events: none;
+}
