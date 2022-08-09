@@ -60,6 +60,8 @@ const clickHandler = {
     }
 };
 
+const SELECTION_COLUMN_ID = 'selection';
+
 export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, canSelectPages, pickerConfig}) => {
     const {t} = useTranslation();
     const field = useFieldContext();
@@ -76,8 +78,8 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
     const columns = useMemo(() => {
         return allColumnData
             .filter(c => 'picker-' + Constants.mode.MEDIA !== mode || c.id !== 'type') // Do not include type column if media mode
-            .filter(c => field.multiple || c.id !== 'selection') // Do not include selection if multiple selection is not enabled
-            .filter(c => !pickerConfig?.pickerTable?.columns || pickerConfig.pickerTable.columns.includes(c.id)); // Check if picker config specifies which columns to include
+            .filter(c => field.multiple || c.id !== SELECTION_COLUMN_ID) // Do not include selection if multiple selection is not enabled
+            .filter(c => !pickerConfig?.pickerTable?.columns || [...pickerConfig.pickerTable.columns, SELECTION_COLUMN_ID].includes(c.id)); // Check if picker config specifies which columns to include
     }, [mode, field.multiple, pickerConfig]);
     const {
         getTableProps,
