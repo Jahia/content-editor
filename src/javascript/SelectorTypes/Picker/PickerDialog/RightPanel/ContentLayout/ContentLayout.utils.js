@@ -28,8 +28,7 @@ export const resolveQueryConstraints = (pickerConfig, mode, tableViewType, searc
         selectableTypesTable: pickerConfig.selectableTypesTable,
         typeFilter: pickerConfig.selectableTypesTable,
         searchTerms: searchTerm,
-        searchPath: searchContext === '' ? path : searchContext,
-        searchContentType: pickerConfig.searchSelectorType
+        searchPath: searchContext === '' ? path : searchContext
     };
 
     // Note that when in 'content-folders' there is no pages tab at all as per design of content table in jcontent
@@ -39,6 +38,10 @@ export const resolveQueryConstraints = (pickerConfig, mode, tableViewType, searc
         obj.typeFilter = Array.from(new Set([...pickerConfig.selectableTypesTable, 'jnt:contentFolder']));
     } else if (mode === 'picker-media') {
         obj.typeFilter = Array.from(new Set([...pickerConfig.selectableTypesTable, 'jnt:folder']));
+    }
+
+    if (searchTerm !== '') {
+        obj.nodeType = pickerConfig.searchSelectorType;
     }
 
     return obj;

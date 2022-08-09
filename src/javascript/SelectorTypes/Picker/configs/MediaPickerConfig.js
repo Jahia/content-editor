@@ -39,9 +39,14 @@ const usePickerInputData = uuids => {
 const getSearchContextOptions = (currentPath, currentSite, t) => {
     return [
         {
-            label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.folder'),
-            value: currentPath,
-            iconStart: <Folder/>
+            label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.search'),
+            value: '',
+            isDisabled: true
+        },
+        {
+            label: currentSite.substring(0, 1).toUpperCase() + currentSite.substring(1),
+            value: `/sites/${currentSite}`,
+            iconStart: <SiteWeb/>
         },
         {
             label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.medias'),
@@ -49,9 +54,9 @@ const getSearchContextOptions = (currentPath, currentSite, t) => {
             iconStart: <Collections/>
         },
         {
-            label: currentSite.substring(0, 1).toUpperCase() + currentSite.substring(1),
-            value: `/sites/${currentSite}`,
-            iconStart: <SiteWeb/>
+            label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.folder'),
+            value: currentPath,
+            iconStart: <Folder/>
         }
     ];
 };

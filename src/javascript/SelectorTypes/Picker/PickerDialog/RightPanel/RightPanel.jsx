@@ -48,6 +48,7 @@ const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
     const handleClearTerms = e => {
         console.log('Clearing search terms', e.target.value);
         dispatch(cePickerSetSearchTerm(''));
+        dispatch(cePickerSetSearchContext(currentPath));
     };
 
     const handleChangeContext = (e, item) => {
