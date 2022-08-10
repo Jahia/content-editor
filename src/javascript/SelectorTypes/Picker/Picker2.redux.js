@@ -7,6 +7,7 @@ export const {
     cePickerSite,
     cePickerContextSite,
     cePickerMode,
+    cePickerModes,
     cePickerOpenPaths,
     cePickerClosePaths,
     cePickerPath,
@@ -26,6 +27,7 @@ export const {
     'CE_PICKER_SITE',
     'CE_PICKER_CONTEXT_SITE',
     'CE_PICKER_MODE',
+    'CE_PICKER_MODES',
     'CE_PICKER_OPEN_PATHS',
     'CE_PICKER_CLOSE_PATHS',
     'CE_PICKER_PATH',
@@ -47,6 +49,7 @@ export const registerPickerReducer = registry => {
     const initialState = {
         openPaths: [],
         mode: 'picker-pages',
+        modes: ['picker-pages'],
         site: 'systemsite',
         contextSite: 'systemsite',
         path: '/sites/systemsite',
@@ -76,6 +79,10 @@ export const registerPickerReducer = registry => {
         [cePickerMode]: (state, action) => ({
             ...state,
             mode: action.payload
+        }),
+        [cePickerModes]: (state, action) => ({
+            ...state,
+            modes: action.payload
         }),
         [cePickerOpenPaths]: (state, action) => ({
             ...state,
