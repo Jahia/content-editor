@@ -27,8 +27,8 @@ const SelectionTableContainer = ({selection, expanded}) => {
                 label={t('content-editor:label.contentEditor.selection.itemsSelected', {count: selection.length})}
                 expanded={expanded}
             />
-            <div>
-                <SelectionTable/>
+            <div className={clsx(styles.selectionTable, {[styles.hidden]: !isExpanded})}>
+                {selection?.length && <SelectionTable selection={selection}/>}
             </div>
         </div>
     );

@@ -1,5 +1,6 @@
 export const ContentTree = jest.fn();
 export const ViewModeSelector = jest.fn();
+export const FileSize = jest.fn();
 export const reactTable = {
     CellPublicationStatus: jest.fn(),
     CellName: jest.fn(),
