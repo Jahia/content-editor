@@ -293,7 +293,14 @@
       },
       "picker": {
         "rightPanel": {
-          "actionsCaption": "Les éléments non-sélectionnables ne sont pas affichés dans cette vue"
+          "actionsCaption": "Les éléments non-sélectionnables ne sont pas affichés dans cette vue",
+          "searchContextOptions" : {
+            "search": "Chercher dans",
+            "contents": "Contenus",
+            "medias": "Médias",
+            "folder": "Dossiers",
+            "home": "Home"
+          }
         }
       }
     }
