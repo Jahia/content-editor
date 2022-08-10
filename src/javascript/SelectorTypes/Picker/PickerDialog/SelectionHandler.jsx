@@ -22,7 +22,7 @@ import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 
 function getSite(selectedItem) {
     const pathElements = selectedItem.split('/');
-    return (pathElements[1] === 'sites') ? pathElements[2] : 'systemsite';
+    return (pathElements[1] === 'sites') ? pathElements[2] : undefined;
 }
 
 export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConfig, children}) => {
