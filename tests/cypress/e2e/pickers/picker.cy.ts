@@ -58,7 +58,7 @@ describe('Picker tests', () => {
         contentAccordion.click()
         contentAccordion.getHeader().should('be.visible').and('have.attr', 'aria-expanded').and('equal', 'true')
         contentAccordion.getTreeItem('ce-picker-contents').click() // select contents folder
-        pickerDialog.getTable().should('exist').and('have.length', 1)
+        pickerDialog.getTable().should('exist').and('have.length', 2) // second table is the selection table
         cy.wait(500) // need a wait to load table data
         pickerDialog
             .getTable()
@@ -66,9 +66,9 @@ describe('Picker tests', () => {
             .get()
             .find('[data-cm-role="table-content-list-cell-name"]')
             .should((elems) => {
-                expect(elems).to.have.length(3)
+                expect(elems).to.have.length(4)
                 const texts = elems.get().map((e) => e.textContent)
-                expect(texts).to.deep.eq(['test 1', 'test 2', 'test 3'])
+                expect(texts).to.deep.eq(['test 1', 'test 2', 'test 3', 'content-folder1'])
             })
 
         cy.log('test double-click on table')
