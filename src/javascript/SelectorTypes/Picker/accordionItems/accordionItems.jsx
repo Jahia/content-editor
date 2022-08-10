@@ -85,7 +85,7 @@ export const registerAccordionItems = registry => {
 
         registry.add(
             Constants.ACCORDION_ITEM_NAME,
-            'picker-site',
+            `picker-${Constants.ACCORDION_ITEM_TYPES.SITE}`,
             {
                 ...contentFoldersItem,
                 viewSelector: null,
