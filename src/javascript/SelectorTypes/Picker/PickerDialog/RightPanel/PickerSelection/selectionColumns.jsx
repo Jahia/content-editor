@@ -12,19 +12,21 @@ const rowPropType = {
 };
 
 const FileSizeCell = ({row}) => (
-    <TableBodyCell><FileSize node={row.original}/></TableBodyCell>
+    <TableBodyCell aria-label="file-size-cell"><FileSize node={row.original}/></TableBodyCell>
 );
 FileSizeCell.propTypes = rowPropType;
 
 const RelPathCell = ({row}) => (
-    <TableBodyCell>{getRelativePath(row.original.path, row.original.site.path)}</TableBodyCell>
+    <TableBodyCell aria-label="rel-path-cell">
+        {getRelativePath(row.original.path, row.original.site.path)}
+    </TableBodyCell>
 );
 RelPathCell.propTypes = rowPropType;
 
 const ActionsCell = ({row}) => {
     const dispatch = useDispatch();
     return (
-        <TableBodyCell className={styles.cellActions}>
+        <TableBodyCell className={styles.cellActions} aria-label="actions-cell">
             <Button variant="ghost"
                     icon={<Close/>}
                     onClick={() => dispatch(cePickerRemoveSelection(row.original))}/>

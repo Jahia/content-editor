@@ -14,7 +14,12 @@ export const SelectionButton = ({label, className, expanded}) => {
     );
 
     return (
-        <button type="button" className={classNameProps} aria-expanded={isExpanded} onClick={() => setExpanded(exp => !exp)}>
+        <button type="button"
+                className={classNameProps}
+                aria-label="selection-table-collapse-button"
+                aria-expanded={isExpanded}
+                onClick={() => setExpanded(exp => !exp)}
+        >
             <ChevronRight className={clsx('moonstone-collapsible_icon', {'moonstone-collapsible_icon_expanded': isExpanded})}/>
             <Typography isNowrap component="span">{label}</Typography>
         </button>

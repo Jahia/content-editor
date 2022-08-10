@@ -9,6 +9,7 @@ import {useSelector} from 'react-redux';
 const SelectionTable = ({selection}) => {
     const modes = useSelector(state => state.contenteditor.picker.modes);
     const columns = useMemo(() => {
+        // Toggle between showing type or file size column depending on accordion modes
         const modeSet = new Set(modes);
         return (modeSet.size === 1 && modeSet.has('picker-media')) ?
             selectionColumns.filter(c => c.id !== 'type') :
@@ -28,10 +29,15 @@ const SelectionTable = ({selection}) => {
                 {rows.map(row => {
                         prepareRow(row);
                         return (
-                            <TableRow key={`row-${row.id}`} {...row.getRowProps()} className={styles.tableRow}>
+                            <TableRow
+                                key={`row-${row.id}`}
+                                data-sel-path={row.original.path}
+                                {...row.getRowProps()}
+                                className={styles.tableRow}
+                            >
                                 {
                                     row.cells.map(cell => (
-                                        <React.Fragment key={cell.column.id}>
+                                        <React.Fragment key={cell.column.id} data-sel-role={`selection-table-${cell.column.id}`}>
                                             {cell.render('Cell')}
                                         </React.Fragment>
                                     ))
