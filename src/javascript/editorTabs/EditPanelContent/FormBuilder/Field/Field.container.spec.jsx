@@ -34,10 +34,10 @@ describe('Field container component', () => {
         expect(cmp.props().selectorType.key).toBe('RichText');
     });
 
-    it('should render a ContentPicker component when field type is "picker"', () => {
+    it('should render a default ContentPicker component when field type is "picker" with no option', () => {
         defaultProps.field.selectorType = 'Picker';
         const cmp = shallow(<FieldContainer {...defaultProps}/>).find('Field');
-        expect(cmp.props().selectorType.pickerConfig.key).toBe('editorial');
+        expect(cmp.props().selectorType.pickerConfig.key).toBe('default');
     });
 
     it('should render a MediaPicker component when field type is "picker" and option type is "image"', () => {
