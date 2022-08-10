@@ -1,5 +1,5 @@
 import React from 'react';
-import {Collections, File, Folder, SiteWeb} from '@jahia/moonstone';
+import {File} from '@jahia/moonstone';
 import {useQuery} from '@apollo/react-hooks';
 import {ContentPickerFilledQuery} from './ContentPicker.gql-queries';
 import {encodeJCRPath} from '~/utils';
@@ -31,41 +31,6 @@ const usePickerInputData = uuids => {
     return {fieldData, error, loading};
 };
 
-const getSearchContextOptions = (currentPath, currentSite, t) => {
-    return [
-        {
-            label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.search'),
-            value: '',
-            isDisabled: true
-        },
-        {
-            label: currentSite.substring(0, 1).toUpperCase() + currentSite.substring(1),
-            value: `/sites/${currentSite}`,
-            iconStart: <SiteWeb/>
-        },
-        {
-            label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.contents'),
-            value: `/sites/${currentSite}/contents`,
-            iconStart: <Collections/>
-        },
-        {
-            label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.home'),
-            value: `/sites/${currentSite}/home`,
-            iconStart: <Collections/>
-        },
-        {
-            label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.medias'),
-            value: `/sites/${currentSite}/files`,
-            iconStart: <Collections/>
-        },
-        {
-            label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.folder'),
-            value: currentPath,
-            iconStart: <Folder/>
-        }
-    ];
-};
-
 export const ContentPickerConfig = {
     pickerInput: {
         emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.addContent',
@@ -80,7 +45,6 @@ export const ContentPickerConfig = {
         displayTree: true,
         displaySiteSwitcher: true,
         displaySearch: true,
-        displaySearchContext: true,
-        searchContextOptions: getSearchContextOptions
+        displaySearchContext: true
     }
 };

@@ -8,7 +8,7 @@ import {PickerDialog} from './PickerDialog/PickerDialog2';
 import {DisplayAction} from '@jahia/ui-extender';
 import {getButtonRenderer} from '~/utils';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
-import {cePickerClearSelection} from '~/SelectorTypes/Picker/Picker2.redux';
+import {cePickerClearSelection, cePickerSetSearchTerm} from '~/SelectorTypes/Picker/Picker2.redux';
 import {useDispatch} from 'react-redux';
 import styles from './Picker2.scss';
 import {Button, Close} from '@jahia/moonstone';
@@ -84,6 +84,7 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
     const toggleOpen = open => {
         if (!open) {
             dispatch(cePickerClearSelection());
+            dispatch(cePickerSetSearchTerm(''));
         }
 
         setDialogOpen(open);
