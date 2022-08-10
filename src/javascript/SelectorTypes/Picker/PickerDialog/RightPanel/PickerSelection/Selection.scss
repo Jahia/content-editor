@@ -9,6 +9,14 @@
     color: var(--color-gray60);
 }
 
+.text {
+    gap: var(--spacing-small);
+    width: 100%;
+    margin-top: calc(-1 * var(--spacing-nano));
+    margin-bottom: var(--spacing-nano);
+    padding-right: var(--spacing-small);
+}
+
 button.selectionButton {
     width: auto;
 
