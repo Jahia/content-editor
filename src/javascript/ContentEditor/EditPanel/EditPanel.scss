@@ -37,3 +37,9 @@
     width: 960px;
     height: calc(100vh - 96px);
 }
+
+.main {
+    :global(.moonstone-layoutContent) {
+        margin-top: var(--spacing-small);
+    }
+}
