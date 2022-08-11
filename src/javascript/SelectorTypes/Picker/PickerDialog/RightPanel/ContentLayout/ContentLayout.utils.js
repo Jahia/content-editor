@@ -28,7 +28,7 @@ export const resolveQueryConstraints = (pickerConfig, mode, tableViewType, searc
         selectableTypesTable: pickerConfig.selectableTypesTable,
         typeFilter: pickerConfig.selectableTypesTable,
         searchTerms: searchTerm,
-        searchPath: searchContext === '' ? path : searchContext
+        searchPath: searchTerm ? searchContext : path
     };
 
     // Note that when in 'content-folders' there is no pages tab at all as per design of content table in jcontent

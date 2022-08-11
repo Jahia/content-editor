@@ -3,12 +3,12 @@ import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {renderer} from '~/SelectorTypes/Picker/accordionItems/renderer';
 import {Collections} from '@jahia/moonstone';
 import {registry} from '@jahia/ui-extender';
+import {ContentTypeSelector, ViewModeSelector} from '@jahia/jcontent';
 import {
     cePickerSetPage,
     cePickerSetTableViewMode,
     cePickerSetTableViewType
 } from '~/SelectorTypes/Picker/Picker2.redux';
-import {ContentTypeSelector, ViewModeSelector} from '@jahia/jcontent';
 
 // Todo: see with Fran�ois if it's possible to get rid of this and have every picker always come with a key
 export const getItemTarget = pickerType => {
@@ -63,7 +63,22 @@ export const registerAccordionItems = registry => {
                 ...pagesItem,
                 viewSelector: <ViewModeSelector {...viewModeSelectorProps}/>,
                 tableHeader: <ContentTypeSelector {...contentTypeSelectorProps}/>,
-                targets: ['default:50', 'editorial:50', 'editoriallink:50', 'pages:50']
+                targets: ['default:50', 'editorial:50', 'editoriallink:50', 'pages:50'],
+                getSearchContextData: (currentSite, node, t) => {
+                    if (node) {
+                        const pages = node.ancestors.filter(n => n.primaryNodeType.name === 'jnt:page');
+                        if (pages.length > 0) {
+                            const page = pages[0];
+                            return [{
+                                label: t(pagesItem.label),
+                                value: page.path,
+                                iconStart: pagesItem.icon
+                            }];
+                        }
+                    }
+
+                    return [];
+                }
             },
             renderer
         );

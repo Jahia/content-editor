@@ -160,15 +160,7 @@ export const registerPickerReducer = registry => {
         }),
         [cePickerSetSearchContext]: (state, action) => ({
             ...state,
-            searchContext: action.payload,
-            openPaths: action.payload.split('/')
-                .slice(1)
-                .reduce((prev, current, currentIndex) => {
-                    return [
-                        ...prev,
-                        prev[currentIndex - 1] ? `${prev[currentIndex - 1]}/${current}` : `/${current}`
-                    ];
-                }, [])
+            searchContext: action.payload
         })
     }, initialState);
 
