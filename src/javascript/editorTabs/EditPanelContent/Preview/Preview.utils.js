@@ -8,8 +8,16 @@ export const getPreviewContext = editorContext => {
     const requestParameters = [];
 
     if (path !== editorContext.path) {
+        // If node type is a page we are editing a page without visiting it prior
+        // We need to update the path to the one of the edited page and not the current page
+        if (editorContext.nodeData.isPage) {
+            path = editorContext.path;
+        }
+    }
+
+    if (path !== editorContext.path && !editorContext.nodeData.isPage) {
         // If the path to preview is not the path of the content,
-        // let's use the wrapper parameter to be able zoom on the content
+        // let's use the wrapper parameter to be able to zoom on the content
         requestAttributes.push({
             name: 'ce_preview_wrapper',
             value: editorContext.path

@@ -74,6 +74,14 @@ export class PageComposer extends BasePage {
             })
         })
     }
+
+    editPage(title: string): PageComposer {
+        cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
+            cy.get('#JahiaGxtPagesTab').contains(title).rightclick({ force: true })
+            cy.get('.pagesContextMenuAnthracite').contains('Edit').click({ force: true })
+        })
+        return this
+    }
 }
 
 export class ContentTypeSelector extends BaseComponent {
