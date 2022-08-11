@@ -18,8 +18,8 @@ const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
     const {selection, mode} = useSelector(state => ({
         selection: state.contenteditor.picker.selection,
         mode: state.contenteditor.picker.mode,
-        searchTerm: state.contenteditor.picker.searchTerm,
-        searchContext: state.contenteditor.picker.searchContext,
+        searchTerm: state.contenteditor.picker.searchTerms,
+        searchPath: state.contenteditor.picker.searchPath,
         currentPath: state.contenteditor.picker.path,
         currentSite: state.contenteditor.picker.site
     }), shallowEqual);

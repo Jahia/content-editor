@@ -20,7 +20,7 @@ export const Constants = {
     },
     mode: {
         MEDIA: 'picker-media',
-        SEARCH: 'search'
+        SEARCH: 'picker-search'
     }
 };
 

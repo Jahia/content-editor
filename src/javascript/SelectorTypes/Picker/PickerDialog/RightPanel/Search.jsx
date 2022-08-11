@@ -1,7 +1,7 @@
 import React from 'react';
 import {Dropdown, SearchContextInput, SiteWeb} from '@jahia/moonstone';
 import styles from './Search.scss';
-import {cePickerSetSearchContext, cePickerSetSearchTerm} from '~/SelectorTypes/Picker/Picker2.redux';
+import {cePickerSetSearchPath, cePickerSetSearchTerm} from '~/SelectorTypes/Picker/Picker2.redux';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import {registry} from '@jahia/ui-extender';
@@ -14,10 +14,10 @@ import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 export const Search = () => {
     const {t} = useTranslation('content-editor');
     const dispatch = useDispatch();
-    const {searchTerm, searchContext, preSearchModeMemo, currentPath, currentSite, language, uilang, mode} = useSelector(state => ({
+    const {searchTerms, searchPath, preSearchModeMemo, currentPath, currentSite, language, uilang, mode} = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
-        searchTerm: state.contenteditor.picker.searchTerm,
-        searchContext: state.contenteditor.picker.searchContext,
+        searchTerms: state.contenteditor.picker.searchTerms,
+        searchPath: state.contenteditor.picker.searchPath,
         preSearchModeMemo: state.contenteditor.picker.preSearchModeMemo,
         currentPath: state.contenteditor.picker.path,
         currentSite: state.contenteditor.picker.site,
@@ -34,8 +34,7 @@ export const Search = () => {
     const node = data && data.jcr.nodesByPath[0];
 
     const handleChangeContext = (e, item) => {
-        console.log('Updating search context', item.value);
-        dispatch(cePickerSetSearchContext(item.value));
+        dispatch(cePickerSetSearchPath(item.searchPath));
     };
 
     const previousMode = mode === Constants.mode.SEARCH ? preSearchModeMemo : mode;
@@ -51,7 +50,7 @@ export const Search = () => {
     const handleClearTerms = () => {
         dispatch(batchActions([
             cePickerSetSearchTerm(''),
-            cePickerSetSearchContext(currentPath)
+            cePickerSetSearchPath(currentPath)
         ]));
     };
 
@@ -61,42 +60,40 @@ export const Search = () => {
         [
             {
                 label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.search'),
-                value: '',
+                searchPath: '',
                 isDisabled: true
             },
             {
                 label: currentSite.substring(0, 1).toUpperCase() + currentSite.substring(1),
-                value: `/sites/${currentSite}`,
+                searchPath: `/sites/${currentSite}`,
                 iconStart: <SiteWeb/>
             },
             {
                 label: t(accordion.label),
-                value: accordion.defaultPath(currentSite),
+                searchPath: accordion.defaultPath(currentSite),
                 iconStart: accordion.icon
             },
             ...(accordion && accordion.getSearchContextData ? accordion.getSearchContextData(currentSite, node, t) : []),
             {
                 label: node?.displayName,
-                value: currentPath,
+                searchPath: currentPath,
                 iconStart: <NodeIcon node={node}/>
             }
         ]
-    ).filter((currentItem, index, array) => array.findIndex(item => item.value === currentItem.value) === index)
-        .filter(value => currentPath.startsWith(value.value));
+    ).filter((currentItem, index, array) => array.findIndex(item => item.searchPath === currentItem.searchPath) === index)
+        .filter(value => currentPath.startsWith(value.searchPath));
 
-    const getCurrentSearchContext = () => {
-        return searchContextData.find(value => value.value === (searchContext === '' ? currentPath : searchContext));
-    };
+    const currentSearchContext = searchContextData.find(value => value.searchPath === (searchPath === '' ? currentPath : searchPath));
 
     return (
         <SearchContextInput
             searchContext={<Dropdown data={searchContextData}
-                                     value={getCurrentSearchContext().value}
-                                     label={getCurrentSearchContext().label}
-                                     icon={getCurrentSearchContext().iconStart}
+                                     value={currentSearchContext.searchPath}
+                                     label={currentSearchContext.label}
+                                     icon={currentSearchContext.iconStart}
                                      onChange={handleChangeContext}/>}
             size="big"
-            value={searchTerm}
+            value={searchTerms}
             className={styles.searchInput}
             onChange={e => handleChangeTerms(e)}
             onClear={e => handleClearTerms(e)}

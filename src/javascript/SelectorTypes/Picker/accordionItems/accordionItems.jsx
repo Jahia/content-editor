@@ -9,6 +9,7 @@ import {
     cePickerSetTableViewMode,
     cePickerSetTableViewType
 } from '~/SelectorTypes/Picker/Picker2.redux';
+import gql from 'graphql-tag';
 
 // Todo: see with Fran�ois if it's possible to get rid of this and have every picker always come with a key
 export const getItemTarget = pickerType => {
@@ -38,7 +39,9 @@ const contentTypeSelectorProps = {
         path: state.contenteditor.picker.path,
         lang: state.language,
         uilang: state.uilang,
-        params: state.jcontent.params,
+        params: {
+            selectableTypesTable: registry.get('pickerConfiguration', state.contenteditor.picker.pickerKey).selectableTypesTable
+        },
         pagination: state.contenteditor.picker.pagination,
         sort: state.contenteditor.picker.sort,
         tableView: state.contenteditor.picker.tableView
@@ -49,11 +52,50 @@ const contentTypeSelectorProps = {
     }
 };
 
+const selectableTypeFragment = {
+    gql: gql`fragment IsSelectable on JCRNode {
+        isSelectable: isNodeType(type: {types: $selectableTypesTable})
+    }`,
+    variables: {
+        selectableTypesTable: '[String!]!'
+    },
+    applyFor: 'node'
+};
+
+function getFragments() {
+    return [selectableTypeFragment];
+}
+
+function transformQueryHandler(queryHandler) {
+    return {
+        ...queryHandler,
+        getQueryParams: p => ({
+            ...queryHandler.getQueryParams(p),
+            selectableTypesTable: p.params.selectableTypesTable,
+            typeFilter: Array.from(new Set([...p.params.selectableTypesTable, 'jnt:contentFolder', 'jnt:folder']))
+        }),
+        getFragments
+    };
+}
+
+function transformPagesQueryHandler(queryHandler) {
+    return {
+        ...queryHandler,
+        getQueryParams: p => ({
+            ...queryHandler.getQueryParams(p),
+            selectableTypesTable: p.params.selectableTypesTable,
+            typeFilter: Constants.tableView.type.PAGES === p.viewType ? ['jnt:page'] : p.params.selectableTypesTable.filter(t => t !== 'jnt:page')
+        }),
+        getFragments
+    };
+}
+
 export const registerAccordionItems = registry => {
     // These are jcontent accordion items, additional targets are added to enhance selection
     const pagesItem = registry.get(Constants.ACCORDION_ITEM_NAME, Constants.ACCORDION_ITEM_TYPES.PAGES);
     const contentFoldersItem = registry.get(Constants.ACCORDION_ITEM_NAME, Constants.ACCORDION_ITEM_TYPES.CONTENT_FOLDERS);
     const mediaItem = registry.get(Constants.ACCORDION_ITEM_NAME, Constants.ACCORDION_ITEM_TYPES.MEDIA);
+    const searchItem = registry.get(Constants.ACCORDION_ITEM_NAME, 'search');
 
     if (pagesItem) {
         registry.add(
@@ -71,14 +113,15 @@ export const registerAccordionItems = registry => {
                             const page = pages[0];
                             return [{
                                 label: t(pagesItem.label),
-                                value: page.path,
+                                searchPath: page.path,
                                 iconStart: pagesItem.icon
                             }];
                         }
                     }
 
                     return [];
-                }
+                },
+                queryHandler: transformPagesQueryHandler(pagesItem.queryHandler)
             },
             renderer
         );
@@ -93,7 +136,8 @@ export const registerAccordionItems = registry => {
             {
                 ...contentFoldersItem,
                 viewSelector: <ViewModeSelector {...viewModeSelectorProps}/>,
-                targets: ['default:60', 'editorial:60', 'editoriallink:60', 'contentfolder:60']
+                targets: ['default:60', 'editorial:60', 'editoriallink:60', 'contentfolder:60'],
+                queryHandler: transformQueryHandler(contentFoldersItem.queryHandler)
             },
             renderer
         );
@@ -107,6 +151,7 @@ export const registerAccordionItems = registry => {
                 targets: ['site:60'],
                 defaultPath: () => '/sites',
                 canDisplayItem: node => /^\/sites\/.*/.test(node.path),
+                queryHandler: transformQueryHandler(contentFoldersItem.queryHandler),
                 config: {
                     rootPath: '',
                     selectableTypes: ['jnt:virtualsite'],
@@ -129,12 +174,38 @@ export const registerAccordionItems = registry => {
             {
                 ...mediaItem,
                 viewSelector: false, // Todo: implement thumbnail and enable selector : <FileModeSelector {...fileModeSelectorProps}/>,
-                targets: ['default:70', 'image:70', 'file:70', 'folder:70']
+                targets: ['default:70', 'image:70', 'file:70', 'folder:70'],
+                queryHandler: transformQueryHandler(mediaItem.queryHandler)
             },
             renderer
         );
     } else {
         console.warn('Picker will not function properly due to missing accordionItem for media');
+    }
+
+    if (searchItem) {
+        registry.add(
+            Constants.ACCORDION_ITEM_NAME,
+            'picker-search',
+            {
+                ...searchItem,
+                queryHandler: {
+                    ...searchItem.queryHandler,
+                    getQueryParams: p => ({
+                        ...searchItem.queryHandler.getQueryParams(p),
+                        selectableTypesTable: p.params.selectableTypesTable,
+                        typeFilter: Array.from(new Set([...p.params.selectableTypesTable, 'jnt:contentFolder', 'jnt:folder'])),
+                        fieldFilter: {
+                            filters: {
+                                fieldName: 'isSelectable',
+                                value: 'true'
+                            }
+                        }
+                    }),
+                    getFragments
+                }
+            }
+        );
     }
 
     // Custom category item
