@@ -1,12 +1,7 @@
 import React from 'react';
 import {Dropdown, SearchContextInput, SiteWeb} from '@jahia/moonstone';
 import styles from './Search.scss';
-import {
-    cePickerMode,
-    cePickerPreSearchModeMemo,
-    cePickerSetSearchContext,
-    cePickerSetSearchTerm
-} from '~/SelectorTypes/Picker/Picker2.redux';
+import {cePickerSetSearchContext, cePickerSetSearchTerm} from '~/SelectorTypes/Picker/Picker2.redux';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import {registry} from '@jahia/ui-extender';
