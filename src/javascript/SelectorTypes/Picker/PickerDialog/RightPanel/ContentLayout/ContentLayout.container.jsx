@@ -50,7 +50,7 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
     const queryConstraints = useMemo(() => resolveQueryConstraints(pickerConfig, mode, tableView.viewType, searchTerm, path, searchContext), [mode, pickerConfig, tableView.viewType, searchTerm, path, searchContext]);
 
     const {queryHandler, layoutQuery, isStructuredView, layoutQueryParams, data, error, loading, refetch} = useLayoutQuery(state => ({
-        mode: searchTerm === '' ? state.contenteditor.picker.mode : Constants.mode.SEARCH,
+        mode: state.contenteditor.picker.mode,
         siteKey: state.site,
         params: {},
         path: state.contenteditor.picker.path,
@@ -111,7 +111,7 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
 
     if (currentResult) {
         totalCount = currentResult.pageInfo.totalCount;
-        if (isStructuredView && mode !== 'picker-' + Constants.mode.SEARCH) {
+        if (isStructuredView && mode !== Constants.mode.SEARCH) {
             rows = structureData(path, currentResult.nodes);
         } else {
             rows = currentResult.nodes;
@@ -119,12 +119,7 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
     }
 
     return (
-        <React.Fragment>
-            {loading && (
-                <div className="flexFluid flexCol_center alignCenter" style={{flex: '9999', backgroundColor: 'var(--color-light)'}}>
-                    <Loader size="big"/>
-                </div>
-            )}
+        <>
             <ContentTable pickerConfig={pickerConfig}
                           canSelectPages={canSelectPages}
                           path={path}
@@ -133,7 +128,12 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
                           isLoading={loading}
                           totalCount={totalCount}
             />
-        </React.Fragment>
+            {loading && (
+                <div className="flexFluid flexCol_center alignCenter" style={{flex: '9999', backgroundColor: 'var(--color-light)'}}>
+                    <Loader size="big"/>
+                </div>
+            )}
+        </>
     );
 };
 

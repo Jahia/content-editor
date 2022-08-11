@@ -5,7 +5,8 @@ export const Constants = {
         PAGES: 'pages',
         CONTENT_FOLDERS: 'content-folders',
         MEDIA: 'media',
-        CATEGORY: 'category'
+        CATEGORY: 'category',
+        SITE: 'site'
     },
     tableView: {
         mode: {
@@ -18,11 +19,8 @@ export const Constants = {
         }
     },
     mode: {
-        CONTENT_FOLDERS: 'content-folders',
-        PAGES: 'pages',
-        MEDIA: 'media',
-        SEARCH: 'search',
-        CATEGORY: 'category'
+        MEDIA: 'picker-media',
+        SEARCH: 'search'
     }
 };
 

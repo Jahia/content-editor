@@ -293,7 +293,14 @@
       },
       "picker": {
         "rightPanel": {
-          "actionsCaption": "Nicht auswählbare Elemente werden in dieser Ansicht nicht gelistet"
+          "actionsCaption": "Nicht auswählbare Elemente werden in dieser Ansicht nicht gelistet",
+          "searchContextOptions" : {
+            "search": "Suchen in",
+            "contents": "Inhalte",
+            "medias": "Medien",
+            "folder": "Ordner",
+            "home": "Home"
+          }
         }
       }
     }

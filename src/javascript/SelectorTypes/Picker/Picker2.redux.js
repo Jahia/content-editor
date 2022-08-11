@@ -50,6 +50,7 @@ export const registerPickerReducer = registry => {
         openPaths: [],
         mode: 'picker-pages',
         modes: ['picker-pages'],
+        preSearchModeMemo: 'picker-pages',
         site: 'systemsite',
         contextSite: 'systemsite',
         path: '/sites/systemsite',
@@ -78,7 +79,8 @@ export const registerPickerReducer = registry => {
         }),
         [cePickerMode]: (state, action) => ({
             ...state,
-            mode: action.payload
+            mode: action.payload,
+            preSearchModeMemo: action.payload === Constants.mode.SEARCH ? state.preSearchModeMemo : action.payload
         }),
         [cePickerModes]: (state, action) => ({
             ...state,
@@ -163,19 +165,12 @@ export const registerPickerReducer = registry => {
         }),
         [cePickerSetSearchTerm]: (state, action) => ({
             ...state,
-            searchTerm: action.payload
+            searchTerm: action.payload,
+            mode: action.payload === '' ? state.preSearchModeMemo : Constants.mode.SEARCH
         }),
         [cePickerSetSearchContext]: (state, action) => ({
             ...state,
-            searchContext: action.payload,
-            openPaths: action.payload.split('/')
-                .slice(1)
-                .reduce((prev, current, currentIndex) => {
-                    return [
-                        ...prev,
-                        prev[currentIndex - 1] ? `${prev[currentIndex - 1]}/${current}` : `/${current}`
-                    ];
-                }, [])
+            searchContext: action.payload
         })
     }, initialState);
 

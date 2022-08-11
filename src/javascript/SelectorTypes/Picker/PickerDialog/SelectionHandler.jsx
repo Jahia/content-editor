@@ -20,10 +20,11 @@ import {batchActions} from 'redux-batched-actions';
 import PropTypes from 'prop-types';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
+import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 
 function getSite(selectedItem) {
     const pathElements = selectedItem.split('/');
-    return (pathElements[1] === 'sites') ? pathElements[2] : 'systemsite';
+    return (pathElements[1] === 'sites') ? pathElements[2] : undefined;
 }
 
 export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConfig, children}) => {
@@ -58,7 +59,7 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
 
     const previousState = useRef(state);
     useEffect(() => {
-        if (currentFolderInfo.loading || nodesInfo.loading) {
+        if (currentFolderInfo.loading || nodesInfo.loading || state.mode === Constants.mode.SEARCH) {
             return;
         }
 
