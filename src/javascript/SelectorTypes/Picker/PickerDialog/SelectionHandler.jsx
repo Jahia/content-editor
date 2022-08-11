@@ -30,6 +30,7 @@ function getSite(selectedItem) {
 export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConfig, children}) => {
     const state = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
+        modes: state.contenteditor.picker.modes,
         path: state.contenteditor.picker.path,
         openPaths: state.contenteditor.picker.openPaths,
         site: state.contenteditor.picker.site,
