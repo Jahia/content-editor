@@ -4,6 +4,7 @@ import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {toArray} from './Picker2.utils';
 
 export const {
+    cePickerKey,
     cePickerSite,
     cePickerContextSite,
     cePickerMode,
@@ -22,7 +23,8 @@ export const {
     cePickerSetTableViewMode,
     cePickerSetTableViewType,
     cePickerSetSearchTerm,
-    cePickerSetSearchContext} = createActions(
+    cePickerSetSearchPath} = createActions(
+    'CE_PICKER_KEY',
     'CE_PICKER_SITE',
     'CE_PICKER_CONTEXT_SITE',
     'CE_PICKER_MODE',
@@ -41,11 +43,12 @@ export const {
     'CE_PICKER_SET_TABLE_VIEW_MODE',
     'CE_PICKER_SET_TABLE_VIEW_TYPE',
     'CE_PICKER_SET_SEARCH_TERM',
-    'CE_PICKER_SET_SEARCH_CONTEXT');
+    'CE_PICKER_SET_SEARCH_PATH');
 
 export const registerPickerReducer = registry => {
     const initialState = {
         openPaths: [],
+        pickerKey: '',
         mode: 'picker-pages',
         preSearchModeMemo: 'picker-pages',
         site: 'systemsite',
@@ -61,11 +64,15 @@ export const registerPickerReducer = registry => {
             viewMode: Constants.tableView.mode.LIST,
             viewType: Constants.tableView.type.CONTENT
         },
-        searchTerm: '',
-        searchContext: ''
+        searchTerms: '',
+        searchPath: ''
     };
 
     const picker = handleActions({
+        [cePickerKey]: (state, action) => ({
+            ...state,
+            pickerKey: action.payload
+        }),
         [cePickerSite]: (state, action) => ({
             ...state,
             site: action.payload
@@ -97,8 +104,8 @@ export const registerPickerReducer = registry => {
         [cePickerPath]: (state, action) => ({
             ...state,
             path: action.payload,
-            searchContext: (state.searchContext === '' || state.searchContext.indexOf('/') >= 0) ? action.payload : state.searchContext,
-            searchTerm: '',
+            searchPath: (state.searchPath === '' || state.searchPath.indexOf('/') >= 0) ? action.payload : state.searchPath,
+            searchTerms: '',
             pagination: {
                 ...state.pagination,
                 currentPage: 0
@@ -158,12 +165,12 @@ export const registerPickerReducer = registry => {
         }),
         [cePickerSetSearchTerm]: (state, action) => ({
             ...state,
-            searchTerm: action.payload,
+            searchTerms: action.payload,
             mode: action.payload === '' ? state.preSearchModeMemo : Constants.mode.SEARCH
         }),
-        [cePickerSetSearchContext]: (state, action) => ({
+        [cePickerSetSearchPath]: (state, action) => ({
             ...state,
-            searchContext: action.payload
+            searchPath: action.payload
         })
     }, initialState);
 

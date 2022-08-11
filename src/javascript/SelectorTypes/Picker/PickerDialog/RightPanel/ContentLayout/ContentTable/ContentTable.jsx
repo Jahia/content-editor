@@ -55,7 +55,6 @@ const clickHandler = {
         } else if (e.nativeEvent.detail === 2) {
             clearTimeout(this.timeout);
             this.timeout = undefined;
-            fcn();
         }
     }
 };
@@ -179,7 +178,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
                                           className={!selectionProps.checked && className}
                                           isHighlighted={selectionProps.checked}
                                           onClick={e => handleOnClick(e, row)}
-                                          onDoubleClick={e => allowDoubleClickNavigation(node.primaryNodeType.name) && clickHandler.handleEvent(e, () => doubleClickNavigation(node))}
+                                          onDoubleClick={() => allowDoubleClickNavigation(node.primaryNodeType.name) && doubleClickNavigation(node)}
                                 >
                                     {row.cells.map(cell => <React.Fragment key={cell.column.id}>{cell.render('Cell')}</React.Fragment>)}
                                 </TableRow>
