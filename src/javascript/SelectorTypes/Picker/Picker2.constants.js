@@ -19,11 +19,8 @@ export const Constants = {
         }
     },
     mode: {
-        CONTENT_FOLDERS: 'content-folders',
-        PAGES: 'pages',
-        MEDIA: 'media',
-        SEARCH: 'search',
-        CATEGORY: 'category'
+        MEDIA: 'picker-media',
+        SEARCH: 'search'
     }
 };
 

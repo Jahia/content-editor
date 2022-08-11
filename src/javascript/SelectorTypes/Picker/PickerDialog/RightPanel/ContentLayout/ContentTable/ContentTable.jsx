@@ -77,7 +77,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
     const isStructuredView = Constants.tableView.mode.STRUCTURED === tableView.viewMode;
     const columns = useMemo(() => {
         return allColumnData
-            .filter(c => 'picker-' + Constants.mode.MEDIA !== mode || c.id !== 'type') // Do not include type column if media mode
+            .filter(c => Constants.mode.MEDIA !== mode || c.id !== 'type') // Do not include type column if media mode
             .filter(c => field.multiple || c.id !== SELECTION_COLUMN_ID) // Do not include selection if multiple selection is not enabled
             .filter(c => !pickerConfig?.pickerTable?.columns || [...pickerConfig.pickerTable.columns, SELECTION_COLUMN_ID].includes(c.id)); // Check if picker config specifies which columns to include
     }, [mode, field.multiple, pickerConfig]);
@@ -107,7 +107,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
     const doubleClickNavigation = node => {
         const actions = [];
 
-        if (mode === 'picker-' + Constants.mode.SEARCH) {
+        if (mode === Constants.mode.SEARCH) {
             const newMode = registry.find({type: 'accordionItem', target: 'jcontent'}).find(acc => acc.canDisplayItem(node))?.key;
             if (newMode) {
                 actions.push(reduxActions.setModeAction(newMode));
@@ -126,7 +126,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
     const tableHeader = registry.get('accordionItem', mode)?.tableHeader;
 
     if (_.isEmpty(rows) && !isLoading) {
-        if ((mode === 'picker-' + Constants.mode.SEARCH)) {
+        if ((mode === Constants.mode.SEARCH)) {
             return <EmptyTable columnSpan={allColumnData.length} t={t}/>;
         }
 
