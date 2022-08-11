@@ -4,6 +4,7 @@ import {
     Collapsible,
     Dropdown,
     getComponentByAttr,
+    getComponentByContent,
     getComponentByRole,
     getComponentBySelector,
     Menu,
@@ -92,5 +93,15 @@ export class ContentEditor extends BasePage {
             this.languageSwitcher = getComponentByAttr(Dropdown, 'data-cm-role', 'language-switcher')
         }
         return this.languageSwitcher
+    }
+
+    switchToAdvancedMode() {
+        getComponentByRole(Button, 'advancedMode').click()
+    }
+
+    validateContentIsVisibleInPreview(content: string) {
+        cy.iframe('[data-sel-role="edit-preview-frame"]', { timeout: 90000, log: true }).within(() => {
+            cy.contains(content)
+        })
     }
 }
