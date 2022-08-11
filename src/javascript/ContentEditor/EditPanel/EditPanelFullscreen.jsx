@@ -4,8 +4,7 @@ import {useContentEditorContext} from '~/contexts/ContentEditor';
 import styles from './EditPanel.scss';
 import clsx from 'clsx';
 import {registry} from '@jahia/ui-extender';
-
-import MainLayout from '~/DesignSystem/ContentLayout/MainLayout';
+import {LayoutContent} from '@jahia/moonstone';
 import {Constants} from '~/ContentEditor.constants';
 import {WindowListeners} from './WindowListeners';
 import {EditPanelHeader} from './EditPanelHeader';
@@ -20,7 +19,9 @@ export const EditPanelFullscreen = ({title}) => {
     const OtherTabComponent = tabs.find(tab => tab.value === activeTab && tab.value !== Constants.editPanel.editTab)?.displayableComponent;
 
     return (
-        <MainLayout
+        <LayoutContent
+            className={styles.main}
+            hasPadding={false}
             header={(
                 <EditPanelHeader title={title}
                                  isShowPublish={mode === Constants.routes.baseEditRoute}
@@ -28,25 +29,28 @@ export const EditPanelFullscreen = ({title}) => {
                                  setActiveTab={setActiveTab}
                 />
             )}
-        >
-            <WindowListeners/>
-            <div className={clsx(
-                activeTab === Constants.editPanel.editTab ? 'flexFluid' : styles.hideTab,
-                'flexCol'
+            content={(
+                <>
+                    <WindowListeners/>
+                    <div className={clsx(
+                        activeTab === Constants.editPanel.editTab ? 'flexFluid' : styles.hideTab,
+                        'flexCol'
+                    )}
+                    >
+                        <EditPanelContent/>
+                    </div>
+                    {OtherTabComponent && (
+                        <div className={clsx(
+                            Constants.editPanel.editTab === activeTab ? styles.hideTab : 'flexFluid',
+                            'flexCol'
+                        )}
+                        >
+                            <OtherTabComponent/>
+                        </div>
+                    )}
+                </>
             )}
-            >
-                <EditPanelContent/>
-            </div>
-            {OtherTabComponent && (
-                <div className={clsx(
-                    Constants.editPanel.editTab === activeTab ? styles.hideTab : 'flexFluid',
-                    'flexCol'
-                )}
-                >
-                    <OtherTabComponent/>
-                </div>
-            )}
-        </MainLayout>
+        />
     );
 };
 
