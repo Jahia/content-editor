@@ -1,21 +1,29 @@
 import React from 'react';
 import {Dropdown, SearchContextInput, SiteWeb} from '@jahia/moonstone';
 import styles from './Search.scss';
-import {cePickerSetSearchContext, cePickerSetSearchTerm} from '~/SelectorTypes/Picker/Picker2.redux';
+import {
+    cePickerMode,
+    cePickerPreSearchModeMemo,
+    cePickerSetSearchContext,
+    cePickerSetSearchTerm
+} from '~/SelectorTypes/Picker/Picker2.redux';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import {registry} from '@jahia/ui-extender';
 import {NodeIcon} from '@jahia/jcontent';
 import {useQuery} from '@apollo/react-hooks';
 import {GET_PICKER_NODE} from '~/SelectorTypes/Picker';
+import {batchActions} from 'redux-batched-actions';
+import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 
 export const Search = () => {
     const {t} = useTranslation('content-editor');
     const dispatch = useDispatch();
-    const {searchTerm, searchContext, currentPath, currentSite, language, uilang, mode} = useSelector(state => ({
+    const {searchTerm, searchContext, preSearchModeMemo, currentPath, currentSite, language, uilang, mode} = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
         searchTerm: state.contenteditor.picker.searchTerm,
         searchContext: state.contenteditor.picker.searchContext,
+        preSearchModeMemo: state.contenteditor.picker.preSearchModeMemo,
         currentPath: state.contenteditor.picker.path,
         currentSite: state.contenteditor.picker.site,
         language: state.language,
@@ -35,18 +43,24 @@ export const Search = () => {
         dispatch(cePickerSetSearchContext(item.value));
     };
 
+    const previousMode = mode === Constants.mode.SEARCH ? preSearchModeMemo : mode;
+
     const handleChangeTerms = e => {
-        console.log('Updating search terms', e.target.value);
-        dispatch(cePickerSetSearchTerm(e.target.value));
+        if (e.target.value === '') {
+            handleClearTerms();
+        } else {
+            dispatch(cePickerSetSearchTerm(e.target.value));
+        }
     };
 
-    const handleClearTerms = e => {
-        console.log('Clearing search terms', e.target.value);
-        dispatch(cePickerSetSearchTerm(''));
-        dispatch(cePickerSetSearchContext(currentPath));
+    const handleClearTerms = () => {
+        dispatch(batchActions([
+            cePickerSetSearchTerm(''),
+            cePickerSetSearchContext(currentPath)
+        ]));
     };
 
-    const accordion = registry.get('accordionItem', mode);
+    const accordion = registry.get('accordionItem', previousMode);
 
     const searchContextData = (
         [
@@ -65,7 +79,7 @@ export const Search = () => {
                 value: accordion.defaultPath(currentSite),
                 iconStart: accordion.icon
             },
-            ...(accordion.getSearchContextData ? accordion.getSearchContextData(currentSite, node, t) : []),
+            ...(accordion && accordion.getSearchContextData ? accordion.getSearchContextData(currentSite, node, t) : []),
             {
                 label: node?.displayName,
                 value: currentPath,
