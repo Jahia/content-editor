@@ -76,10 +76,13 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
     const isStructuredView = Constants.tableView.mode.STRUCTURED === tableView.viewMode;
     const columns = useMemo(() => {
         return allColumnData
-            .filter(c => Constants.mode.MEDIA !== mode || c.id !== 'type') // Do not include type column if media mode
-            .filter(c => field.multiple || c.id !== SELECTION_COLUMN_ID) // Do not include selection if multiple selection is not enabled
-            .filter(c => !pickerConfig?.pickerTable?.columns || [...pickerConfig.pickerTable.columns, SELECTION_COLUMN_ID].includes(c.id)); // Check if picker config specifies which columns to include
-    }, [mode, field.multiple, pickerConfig]);
+            // Do not include type column if media mode
+            .filter(c => Constants.mode.MEDIA !== mode || c.id !== 'type')
+            // Do not include selection if multiple selection is not enabled or if there are no selectable types
+            .filter(c => (field.multiple && rows.some(r => r.isSelectable)) || c.id !== SELECTION_COLUMN_ID)
+            // Check if picker config specifies which columns to include
+            .filter(c => !pickerConfig?.pickerTable?.columns || [...pickerConfig.pickerTable.columns, SELECTION_COLUMN_ID].includes(c.id));
+    }, [mode, field.multiple, pickerConfig, rows]);
     const {
         getTableProps,
         getTableBodyProps,
