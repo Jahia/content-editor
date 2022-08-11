@@ -1,7 +1,7 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {
     cePickerAddSelection,
-    cePickerClearSelection,
+    cePickerRemoveSelection,
     cePickerSwitchSelection
 } from '~/SelectorTypes/Picker/Picker2.redux';
 import {useGetLatest} from 'react-table';
@@ -57,8 +57,11 @@ function useInstance(instance) {
     const dispatch = useDispatch();
 
     const flattenRows = flattenTree(rows).map(r => r.original);
+    const selIdSet = new Set(selection.map(r => r.uuid));
     const anySelected = selection.length > 0;
-    const allSelected = anySelected && selection.length === flattenRows.length;
+    const allSelected = anySelected &&
+        selection.length >= flattenRows.length &&
+        flattenRows.every(r => selIdSet.has(r.uuid)); // Check if all rows are in selection set
 
     const toggleRowSelected = row => {
         if (row.original.isSelectable) {
@@ -68,7 +71,7 @@ function useInstance(instance) {
 
     const toggleAllRowsSelected = () => {
         if (allSelected) {
-            dispatch(cePickerClearSelection());
+            dispatch(cePickerRemoveSelection(flattenRows));
         } else {
             dispatch(cePickerAddSelection(flattenRows.filter(r => r.isSelectable)));
         }

@@ -7,6 +7,7 @@ import {GET_PICKER_NODE} from '~/SelectorTypes/Picker';
 import {
     cePickerContextSite,
     cePickerMode,
+    cePickerModes,
     cePickerOpenPaths,
     cePickerPath,
     cePickerSetSelection,
@@ -96,6 +97,7 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
 
         const accordionItems = allAccordionItems
             .filter(accordionItem => !accordionItem.isEnabled || accordionItem.isEnabled(newState.site));
+        newState.modes = accordionItems.map(item => item.key);
 
         if (somethingChanged || newState.site !== previousState.current.site) {
             // Picker just opened or site has changed, select mode
@@ -132,6 +134,7 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
             (newState.site !== state.site) && cePickerSite(newState.site),
             (newState.contextSite !== state.contextSite) && cePickerContextSite(newState.contextSite),
             (newState.mode !== state.mode) && cePickerMode(newState.mode),
+            (newState.modes.length !== state.modes?.length || newState.modes.some(mode => !state.modes.includes(mode))) && cePickerModes(newState.modes),
             (newState.path !== state.path) && cePickerPath(newState.path),
             (newState.openPaths.length !== state.openPaths.length || newState.openPaths.some(value => state.openPaths.indexOf(value) === -1)) && cePickerOpenPaths(newState.openPaths)
         ]).filter(f => f);
