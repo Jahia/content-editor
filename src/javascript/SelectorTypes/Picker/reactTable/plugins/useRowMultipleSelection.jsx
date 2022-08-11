@@ -56,12 +56,13 @@ function useInstance(instance) {
     const selection = useSelector(state => state.contenteditor.picker.selection);
     const dispatch = useDispatch();
 
-    const flattenRows = flattenTree(rows).map(r => r.original);
+    const selectableRows = flattenTree(rows).map(r => r.original).filter(r => r.isSelectable);
+    const rowsSet = new Set(selectableRows.map(r => r.uuid));
+    const anySelected = selection.length > 0 && selection.some(r => rowsSet.has(r.uuid));
     const selIdSet = new Set(selection.map(r => r.uuid));
-    const anySelected = selection.length > 0;
     const allSelected = anySelected &&
-        selection.length >= flattenRows.length &&
-        flattenRows.every(r => selIdSet.has(r.uuid)); // Check if all rows are in selection set
+        selection.length >= selectableRows.length &&
+        selectableRows.every(r => selIdSet.has(r.uuid)); // Check if all rows are in selection set
 
     const toggleRowSelected = row => {
         if (row.original.isSelectable) {
@@ -71,9 +72,9 @@ function useInstance(instance) {
 
     const toggleAllRowsSelected = () => {
         if (allSelected) {
-            dispatch(cePickerRemoveSelection(flattenRows));
+            dispatch(cePickerRemoveSelection(selectableRows));
         } else {
-            dispatch(cePickerAddSelection(flattenRows.filter(r => r.isSelectable)));
+            dispatch(cePickerAddSelection(selectableRows));
         }
     };
 

@@ -17,19 +17,13 @@ const ButtonRenderer = getButtonRenderer({defaultButtonProps: {variant: 'ghost'}
 const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
     const {selection, mode} = useSelector(state => ({
         selection: state.contenteditor.picker.selection,
-        mode: state.contenteditor.picker.mode,
-        modes: state.contenteditor.picker.modes,
-        searchTerm: state.contenteditor.picker.searchTerms,
-        searchPath: state.contenteditor.picker.searchPath,
-        currentPath: state.contenteditor.picker.path,
-        currentSite: state.contenteditor.picker.site
+        mode: state.contenteditor.picker.mode
     }), shallowEqual);
     const selectionExpanded = useState(false);
     const {t} = useTranslation('content-editor');
 
     const selectElement = () => {
         if (selection) {
-            // Todo: BACKLOG-12581 - Multiple is not supported yet in pickers. Always return a single value.
             onItemSelection(selection);
         } else {
             onClose();
