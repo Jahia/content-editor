@@ -109,6 +109,11 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
 
     return (
         <>
+            {loading && (
+                <div className="flexFluid flexCol_center alignCenter" style={{flex: '9999', backgroundColor: 'var(--color-light)'}}>
+                    <Loader size="big"/>
+                </div>
+            )}
             <ContentTable pickerConfig={pickerConfig}
                           canSelectPages={canSelectPages}
                           path={path}
@@ -117,11 +122,6 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
                           isLoading={loading}
                           totalCount={totalCount}
             />
-            {loading && (
-                <div className="flexFluid flexCol_center alignCenter" style={{flex: '9999', backgroundColor: 'var(--color-light)'}}>
-                    <Loader size="big"/>
-                </div>
-            )}
         </>
     );
 };

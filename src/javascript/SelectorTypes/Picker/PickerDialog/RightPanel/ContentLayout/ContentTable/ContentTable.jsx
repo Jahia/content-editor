@@ -66,11 +66,12 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
     const field = useFieldContext();
     const dispatch = useDispatch();
 
-    const {mode, path, pagination, tableView} = useSelector(state => ({
+    const {mode, path, pagination, tableView, searchTerm} = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
         path: state.contenteditor.picker.path,
         pagination: state.contenteditor.picker.pagination,
-        tableView: state.contenteditor.picker.tableView
+        tableView: state.contenteditor.picker.tableView,
+        searchTerm: state.contenteditor.picker.searchTerms
     }), shallowEqual);
 
     const isStructuredView = Constants.tableView.mode.STRUCTURED === tableView.viewMode;
@@ -129,7 +130,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
 
     if (_.isEmpty(rows) && !isLoading) {
         if ((mode === Constants.mode.SEARCH)) {
-            return <EmptyTable columnSpan={allColumnData.length} t={t}/>;
+            return <EmptyTable text={searchTerm}/>;
         }
 
         return (
