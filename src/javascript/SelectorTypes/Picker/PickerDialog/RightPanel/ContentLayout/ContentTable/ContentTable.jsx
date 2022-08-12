@@ -179,7 +179,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
                                           {...rowProps}
                                           data-cm-role="table-content-list-row"
                                           className={!selectionProps.checked && className}
-                                          isHighlighted={selectionProps.checked}
+                                          isHighlighted={selectionProps.checked && !field.multiple}
                                           onClick={e => handleOnClick(e, row)}
                                           onDoubleClick={() => allowDoubleClickNavigation(node.primaryNodeType.name) && doubleClickNavigation(node)}
                                 >
