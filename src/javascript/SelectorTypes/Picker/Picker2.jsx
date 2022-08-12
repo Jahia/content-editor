@@ -88,9 +88,7 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
 
     const toggleOpen = open => {
         if (!open) {
-            dispatch(batchActions([
-                cePickerClearSelection()
-            ]));
+            dispatch(cePickerClearSelection());
         } else {
             dispatch(batchActions([
                 cePickerKey(pickerConfig.key),
