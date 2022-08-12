@@ -138,14 +138,7 @@ export const registerPickerReducer = registry => {
         }),
         [cePickerSetSelection]: (state, action) => ({
             ...state,
-            selection: action.payload,
-            searchPath: '',
-            searchTerms: '',
-            mode: state.mode === Constants.mode.SEARCH ? state.preSearchModeMemo : state.mode,
-            pagination: {
-                ...state.pagination,
-                currentPage: 0
-            }
+            selection: action.payload
         }),
         [cePickerAddSelection]: (state, action) => ({
             ...state,
