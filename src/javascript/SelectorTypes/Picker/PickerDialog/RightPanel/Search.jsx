@@ -43,7 +43,10 @@ export const Search = () => {
         if (e.target.value === '') {
             handleClearTerms();
         } else {
-            dispatch(cePickerSetSearchTerm(e.target.value));
+            dispatch(batchActions([
+                cePickerSetSearchPath(searchPath === '' ? currentPath : searchPath),
+                cePickerSetSearchTerm(e.target.value)
+            ]));
         }
     };
 
@@ -100,4 +103,3 @@ export const Search = () => {
         />
     );
 };
-
