@@ -7,7 +7,7 @@ import {shallowEqual, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import ContentLayout from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout';
 import clsx from 'clsx';
-import {DisplayAction, registry} from '@jahia/ui-extender';
+import {DisplayAction, DisplayActions, registry} from '@jahia/ui-extender';
 import {getButtonRenderer} from '~/utils';
 import {SelectionCaption, SelectionTable} from './PickerSelection';
 import {Search} from './Search';
@@ -15,7 +15,8 @@ import {Search} from './Search';
 const ButtonRenderer = getButtonRenderer({defaultButtonProps: {variant: 'ghost'}});
 
 const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
-    const {selection, mode} = useSelector(state => ({
+    const {selection, mode, path} = useSelector(state => ({
+        path: state.contenteditor.picker.path,
         selection: state.contenteditor.picker.selection,
         mode: state.contenteditor.picker.mode
     }), shallowEqual);
@@ -30,7 +31,9 @@ const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
         }
     };
 
-    const viewSelector = registry.get('accordionItem', mode)?.viewSelector;
+    const accordionItem = registry.get('accordionItem', mode);
+    const viewSelector = accordionItem?.viewSelector;
+    const actionsTarget = accordionItem?.actionsTarget || 'content-editor/pickers/' + mode + '/header-actions';
 
     return (
         <div className="flexFluid flexCol_nowrap">
@@ -39,7 +42,7 @@ const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
                 <div className={clsx('flexRow_nowrap', 'alignCenter', css.headerActions)}>
                     <Search pickerConfig={pickerConfig}/>
                     <div className="flexFluid"/>
-                    <DisplayAction actionKey="pageComposer" render={ButtonRenderer} path="/"/>
+                    <DisplayActions target={actionsTarget} render={ButtonRenderer} path={path}/>
                     {viewSelector}
                 </div>
             </header>
