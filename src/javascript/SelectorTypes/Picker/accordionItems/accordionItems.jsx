@@ -9,7 +9,14 @@ import {
     cePickerSetTableViewMode,
     cePickerSetTableViewType
 } from '~/SelectorTypes/Picker/Picker2.redux';
-import gql from 'graphql-tag';
+import {
+    PickerCategoryQueryHandler,
+    PickerContentsFolderQueryHandler,
+    PickerPagesQueryHandler,
+    PickersBaseQueryHandler,
+    PickerSearchQueryHandler,
+    PickersFilesQueryHandler
+} from '~/SelectorTypes/Picker/accordionItems/queryHandlers';
 
 // Todo: see with Fran�ois if it's possible to get rid of this and have every picker always come with a key
 export const getItemTarget = pickerType => {
@@ -52,44 +59,6 @@ const contentTypeSelectorProps = {
     }
 };
 
-const selectableTypeFragment = {
-    gql: gql`fragment IsSelectable on JCRNode {
-        isSelectable: isNodeType(type: {types: $selectableTypesTable})
-    }`,
-    variables: {
-        selectableTypesTable: '[String!]!'
-    },
-    applyFor: 'node'
-};
-
-function getFragments() {
-    return [selectableTypeFragment];
-}
-
-function transformQueryHandler(queryHandler) {
-    return {
-        ...queryHandler,
-        getQueryParams: p => ({
-            ...queryHandler.getQueryParams(p),
-            selectableTypesTable: p.params.selectableTypesTable,
-            typeFilter: Array.from(new Set([...p.params.selectableTypesTable, 'jnt:contentFolder', 'jnt:folder']))
-        }),
-        getFragments
-    };
-}
-
-function transformPagesQueryHandler(queryHandler) {
-    return {
-        ...queryHandler,
-        getQueryParams: p => ({
-            ...queryHandler.getQueryParams(p),
-            selectableTypesTable: p.params.selectableTypesTable,
-            typeFilter: Constants.tableView.type.PAGES === p.viewType ? ['jnt:page'] : p.params.selectableTypesTable.filter(t => t !== 'jnt:page')
-        }),
-        getFragments
-    };
-}
-
 export const registerAccordionItems = registry => {
     // These are jcontent accordion items, additional targets are added to enhance selection
     const pagesItem = registry.get(Constants.ACCORDION_ITEM_NAME, Constants.ACCORDION_ITEM_TYPES.PAGES);
@@ -121,7 +90,7 @@ export const registerAccordionItems = registry => {
 
                     return [];
                 },
-                queryHandler: transformPagesQueryHandler(pagesItem.queryHandler)
+                queryHandler: PickerPagesQueryHandler
             },
             renderer
         );
@@ -137,31 +106,7 @@ export const registerAccordionItems = registry => {
                 ...contentFoldersItem,
                 viewSelector: <ViewModeSelector {...viewModeSelectorProps}/>,
                 targets: ['default:60', 'editorial:60', 'editoriallink:60', 'contentfolder:60'],
-                queryHandler: transformQueryHandler(contentFoldersItem.queryHandler)
-            },
-            renderer
-        );
-
-        registry.add(
-            Constants.ACCORDION_ITEM_NAME,
-            `picker-${Constants.ACCORDION_ITEM_TYPES.SITE}`,
-            {
-                ...contentFoldersItem,
-                icon: <SiteWeb/>,
-                label: 'content-editor:label.contentEditor.edit.fields.contentPicker.sitesRootLabel',
-                viewSelector: null,
-                targets: ['site:60'],
-                defaultPath: () => '/sites',
-                canDisplayItem: node => /^\/sites\/.*/.test(node.path),
-                queryHandler: transformQueryHandler(contentFoldersItem.queryHandler),
-                config: {
-                    rootPath: '',
-                    selectableTypes: ['jnt:virtualsite'],
-                    type: 'sites',
-                    openableTypes: ['jnt:virtualsite'],
-                    rootLabel: 'Sites - This is never shown',
-                    key: 'browse-tree-sites'
-                }
+                queryHandler: PickerContentsFolderQueryHandler
             },
             renderer
         );
@@ -177,7 +122,7 @@ export const registerAccordionItems = registry => {
                 ...mediaItem,
                 viewSelector: false, // Todo: implement thumbnail and enable selector : <FileModeSelector {...fileModeSelectorProps}/>,
                 targets: ['default:70', 'image:70', 'file:70', 'folder:70'],
-                queryHandler: transformQueryHandler(mediaItem.queryHandler)
+                queryHandler: PickersFilesQueryHandler
             },
             renderer
         );
@@ -191,24 +136,27 @@ export const registerAccordionItems = registry => {
             'picker-search',
             {
                 ...searchItem,
-                queryHandler: {
-                    ...searchItem.queryHandler,
-                    getQueryParams: p => ({
-                        ...searchItem.queryHandler.getQueryParams(p),
-                        selectableTypesTable: p.params.selectableTypesTable,
-                        typeFilter: Array.from(new Set([...p.params.selectableTypesTable, 'jnt:contentFolder', 'jnt:folder'])),
-                        fieldFilter: {
-                            filters: {
-                                fieldName: 'isSelectable',
-                                value: 'true'
-                            }
-                        }
-                    }),
-                    getFragments
-                }
+                queryHandler: PickerSearchQueryHandler
             }
         );
     }
+
+    registry.add(Constants.ACCORDION_ITEM_NAME, `picker-${Constants.ACCORDION_ITEM_TYPES.SITE}`, renderer, {
+        targets: ['site:60'],
+        icon: <SiteWeb/>,
+        label: 'content-editor:label.contentEditor.edit.fields.contentPicker.sitesRootLabel',
+        defaultPath: () => '/sites',
+        canDisplayItem: node => /^\/sites\/.*/.test(node.path),
+        queryHandler: PickersBaseQueryHandler,
+        config: {
+            rootPath: '',
+            selectableTypes: ['jnt:virtualsite'],
+            type: 'sites',
+            openableTypes: ['jnt:virtualsite'],
+            rootLabel: 'Sites - This is never shown',
+            key: 'browse-tree-sites'
+        }
+    });
 
     // Custom category item
     registry.add(Constants.ACCORDION_ITEM_NAME, `picker-${Constants.ACCORDION_ITEM_TYPES.CATEGORY}`, renderer, {
@@ -216,6 +164,8 @@ export const registerAccordionItems = registry => {
         icon: <Collections/>,
         label: 'content-editor:label.contentEditor.picker.navigation.categories',
         defaultPath: () => '/sites/systemsite/categories',
+        canDisplayItem: node => /^\/sites\/systemsite\/categories\/.*/.test(node.path),
+        queryHandler: PickerCategoryQueryHandler,
         config: {
             rootPath: '/categories',
             selectableTypes: ['jnt:category'],
