@@ -1,7 +1,7 @@
 import React from 'react';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {renderer} from '~/SelectorTypes/Picker/accordionItems/renderer';
-import {Collections} from '@jahia/moonstone';
+import {Collections, SiteWeb} from '@jahia/moonstone';
 import {registry} from '@jahia/ui-extender';
 import {ContentTypeSelector, ViewModeSelector} from '@jahia/jcontent';
 import {
@@ -147,6 +147,8 @@ export const registerAccordionItems = registry => {
             `picker-${Constants.ACCORDION_ITEM_TYPES.SITE}`,
             {
                 ...contentFoldersItem,
+                icon: <SiteWeb/>,
+                label: 'content-editor:label.contentEditor.edit.fields.contentPicker.sitesRootLabel',
                 viewSelector: null,
                 targets: ['site:60'],
                 defaultPath: () => '/sites',

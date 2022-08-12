@@ -7,7 +7,7 @@ import {shallowEqual, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import ContentLayout from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout';
 import clsx from 'clsx';
-import {DisplayAction, DisplayActions, registry} from '@jahia/ui-extender';
+import {DisplayActions, registry} from '@jahia/ui-extender';
 import {getButtonRenderer} from '~/utils';
 import {SelectionCaption, SelectionTable} from './PickerSelection';
 import {Search} from './Search';
