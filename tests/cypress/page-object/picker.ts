@@ -10,7 +10,7 @@ import {
     Table,
 } from '@jahia/cypress'
 import { PageComposer } from './pageComposer'
-import { ContentType } from '../fixtures/pickers/contentTypes'
+import {ContentType, contentTypes} from '../fixtures/pickers/contentTypes'
 import { AccordionItem } from './accordionItem'
 
 export class Picker {
@@ -33,7 +33,8 @@ export class Picker {
     open(contentType: ContentType) {
         this.pageComposer.createContent(contentType.typeName)
         const parent = getComponentByAttr(BaseComponent, 'data-sel-content-editor-field', contentType.fieldNodeType)
-        parent.get().find('button').click()
+        const buttonSelector = contentType.multiple ? 'button[data-sel-action="addField"] ' : 'button';
+        parent.get().find(buttonSelector).click()
         this.pickerDialog = getComponentByRole(BaseComponent, 'picker-dialog')
         return this
     }

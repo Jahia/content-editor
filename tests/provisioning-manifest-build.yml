@@ -1,1 +1,12 @@
 - karafCommand: "bundle:list"
+
+- addMavenRepository: 'https://devtools.jahia.com/nexus/content/groups/internal@id=jahia-internal@snapshots'
+  username: ${env:NEXUS_USERNAME}
+  password: ${env:NEXUS_PASSWORD}
+- installBundle:
+  - 'mvn:org.jahia.modules/qa-module/3.1.0-SNAPSHOT'
+  autoStart: true
+  uninstallPreviousVersion: true
+
+- enable: "qa-module"
+  site: "digitall"

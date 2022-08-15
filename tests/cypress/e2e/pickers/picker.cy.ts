@@ -16,7 +16,6 @@ describe('Picker tests', () => {
         // beforeEach()
         const pageComposer = ContentEditor.visit(siteKey, 'en', 'home.html').getPageComposer()
         picker = new Picker(pageComposer)
-        // cy.runProvisioningScript({fileName:'pickers/install-qa-module.yaml',type:'application/yaml'})
     })
 
     afterEach(() => {
