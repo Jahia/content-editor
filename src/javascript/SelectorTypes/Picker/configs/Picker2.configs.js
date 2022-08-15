@@ -79,6 +79,7 @@ export const registerPickerConfig = ceRegistry => {
         searchSelectorType: 'jnt:virtualsite',
         selectableTypesTable: ['jnt:virtualsite'],
         accordionMode: `picker-${Constants.ACCORDION_ITEM_TYPES.SITE}`,
+        doNotUseJcontentPath: true,
         pickerTable: {
             columns: ['name']
         },

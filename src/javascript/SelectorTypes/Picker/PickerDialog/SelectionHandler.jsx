@@ -119,7 +119,7 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
             // Mode has changed, select path
             if (getSite(newState.path) === newState.site && getAccordionMode(newState.path, pickerConfig) === newState.mode && currentFolderInfo.node) {
                 // 2 - Previously selected path is valid
-            } else if (getSite(state.jcontentPath) === newState.site && getAccordionMode(state.jcontentPath, pickerConfig) === newState.mode) {
+            } else if (getSite(state.jcontentPath) === newState.site && getAccordionMode(state.jcontentPath, pickerConfig) === newState.mode && !pickerConfig.doNotUseJcontentPath) {
                 // 3 - Jcontent path is also valid here, use it
                 newState.path = state.jcontentPath;
             } else {
