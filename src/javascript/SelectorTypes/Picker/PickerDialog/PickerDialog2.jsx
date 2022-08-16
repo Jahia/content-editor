@@ -1,14 +1,21 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {Dialog, Slide} from '@material-ui/core';
 import styles from './PickerDialog.scss';
-import {cePickerMode, cePickerOpenPaths, cePickerPath, cePickerSite} from '~/SelectorTypes/Picker/Picker2.redux';
+import {
+    cePickerClearSelection,
+    cePickerKey,
+    cePickerMode,
+    cePickerOpenPaths,
+    cePickerPath, cePickerSetSearchTerm,
+    cePickerSite
+} from '~/SelectorTypes/Picker/Picker2.redux';
 import {getItemTarget} from '~/SelectorTypes/Picker/accordionItems/accordionItems';
 import {batchActions} from 'redux-batched-actions';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 import {booleanValue, getDetailedPathArray} from '~/SelectorTypes/Picker/Picker2.utils';
 import {registry} from '@jahia/ui-extender';
-import {shallowEqual, useSelector} from 'react-redux';
+import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import RightPanel from './RightPanel';
 import {ContentNavigation, SiteSwitcher} from '@jahia/jcontent';
 import {SelectionHandler} from '~/SelectorTypes/Picker/PickerDialog/SelectionHandler';
@@ -46,6 +53,22 @@ export const PickerDialog = ({
         jcontentMode: state.jcontent.mode,
         jcontentPath: state.jcontent.path
     }), shallowEqual);
+
+    const dispatch = useDispatch();
+    useEffect(() => {
+        if (isOpen) {
+            dispatch(batchActions([
+                cePickerKey(pickerConfig.key),
+                cePickerSetSearchTerm('')
+            ]));
+        }
+
+        return () => {
+            if (isOpen) {
+                dispatch(cePickerClearSelection());
+            }
+        };
+    }, [dispatch, pickerConfig.key, isOpen]);
 
     return (
         <Dialog

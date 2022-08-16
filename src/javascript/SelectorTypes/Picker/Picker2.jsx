@@ -8,22 +8,14 @@ import {PickerDialog} from './PickerDialog/PickerDialog2';
 import {DisplayAction} from '@jahia/ui-extender';
 import {getButtonRenderer} from '~/utils';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
-import {
-    cePickerClearSelection,
-    cePickerKey,
-    cePickerSetSearchTerm
-} from '~/SelectorTypes/Picker/Picker2.redux';
-import {useDispatch} from 'react-redux';
 import styles from './Picker2.scss';
 import {Button, Close} from '@jahia/moonstone';
 import {FieldContextProvider} from '~/contexts/FieldContext';
-import {batchActions} from 'redux-batched-actions';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
 export const Picker2 = ({field, value, editorContext, inputContext, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
-    const dispatch = useDispatch();
     const parsedOptions = {};
     field.selectorOptions.forEach(option => {
         set(parsedOptions, option.name, option.value || option.values);
@@ -86,19 +78,6 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
         onItemSelection(updatedValues);
     };
 
-    const toggleOpen = open => {
-        if (!open) {
-            dispatch(cePickerClearSelection());
-        } else {
-            dispatch(batchActions([
-                cePickerKey(pickerConfig.key),
-                cePickerSetSearchTerm('')
-            ]));
-        }
-
-        setDialogOpen(open);
-    };
-
     return (
         <div className="flexFluid flexRow_nowrap alignCenter">
             {field.multiple ?
@@ -130,7 +109,7 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
                                 variant="outlined"
                                 size="big"
                                 label={t('content-editor:label.contentEditor.edit.fields.actions.add')}
-                                onClick={() => toggleOpen(!isDialogOpen)}
+                                onClick={() => setDialogOpen(!isDialogOpen)}
                         />}
                 </div> :
                 <>
@@ -140,7 +119,7 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
                         emptyIcon={pickerConfig.pickerInput.emptyIcon}
                         labelledBy={`${field.name}-label`}
                         fieldData={fieldData && fieldData[0]}
-                        onClick={() => toggleOpen(!isDialogOpen)}
+                        onClick={() => setDialogOpen(!isDialogOpen)}
                     />
                     {inputContext.displayActions && value && (
                         <DisplayAction
@@ -160,7 +139,7 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
                     pickerConfig={pickerConfig}
                     initialSelectedItem={fieldData && fieldData.map(f => f.path)}
                     accordionItemProps={parsedOptions.accordionItem}
-                    onClose={() => toggleOpen(false)}
+                    onClose={() => setDialogOpen(false)}
                     onItemSelection={onItemSelection}
                 />
             </FieldContextProvider>
