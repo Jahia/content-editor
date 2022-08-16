@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import styles from './Selection.scss';
 import {ChevronRight, Typography} from '@jahia/moonstone';
 
-export const SelectionButton = ({label, className, expanded}) => {
+export const SelectionButton = ({label, className, expanded, ...otherProps}) => {
     const [isExpanded, setExpanded] = expanded;
 
     const classNameProps = clsx(
@@ -16,9 +16,11 @@ export const SelectionButton = ({label, className, expanded}) => {
     return (
         <button type="button"
                 className={classNameProps}
-                aria-label="selection-table-collapse-button"
+                aria-label="expand selected table"
+                data-cm-role="selection-table-collapse-button"
                 aria-expanded={isExpanded}
                 onClick={() => setExpanded(exp => !exp)}
+                {...otherProps}
         >
             <ChevronRight className={clsx('moonstone-collapsible_icon', {'moonstone-collapsible_icon_expanded': isExpanded})}/>
             <Typography isNowrap component="span">{label}</Typography>

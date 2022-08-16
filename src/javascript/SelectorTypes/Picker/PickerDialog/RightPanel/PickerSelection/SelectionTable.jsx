@@ -24,7 +24,7 @@ const SelectionTable = ({selection}) => {
     } = useTable({data: selection, columns});
 
     return (
-        <Table aria-label="selection-table" {...getTableProps()}>
+        <Table data-cm-role="selection-table" {...getTableProps()}>
             <TableBody {...getTableBodyProps()}>
                 {rows.map(row => {
                         prepareRow(row);

@@ -22,8 +22,9 @@ const SelectionTableContainer = ({selection, expanded}) => {
     );
 
     return (
-        <div className={classProps}>
+        <div className={classProps} aria-expanded={isExpanded} data-cm-role="selection-table-container">
             <SelectionButton
+                data-sel-role={`${selection.length}-item-selected`}
                 label={t('content-editor:label.contentEditor.selection.itemsSelected', {count: selection.length})}
                 expanded={expanded}
             />
