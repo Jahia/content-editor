@@ -21,6 +21,9 @@ export class Picker {
     secondaryNav: SecondaryNav
     accordion: Accordion
     table: Table
+    selectionTable: Table
+
+    static ADD_FIELD_SEL: string = 'button[data-sel-action="addField"]'
 
     constructor(pageComposer: PageComposer) {
         this.pageComposer = pageComposer
@@ -32,11 +35,15 @@ export class Picker {
      */
     open(contentType: ContentType) {
         this.pageComposer.createContent(contentType.typeName)
-        const parent = getComponentByAttr(BaseComponent, 'data-sel-content-editor-field', contentType.fieldNodeType)
-        const buttonSelector = contentType.multiple ? 'button[data-sel-action="addField"] ' : 'button';
+        const parent = this.getField(contentType.fieldNodeType)
+        const buttonSelector = contentType.multiple ? Picker.ADD_FIELD_SEL : 'button';
         parent.get().find(buttonSelector).click()
         this.pickerDialog = getComponentByRole(BaseComponent, 'picker-dialog')
         return this
+    }
+
+    getField(fieldNodeType: string) {
+        return getComponentByAttr(BaseComponent, 'data-sel-content-editor-field', fieldNodeType)
     }
 
     get() {
@@ -71,11 +78,33 @@ export class Picker {
         getComponentByRole(Button, 'backButton').click() // cancel create content
     }
 
-    getTable() {
+    select() {
+        getComponentByAttr(Button, 'data-sel-picker-dialog-action', 'done').click() // select picker selection
+    }
+
+    getTable(path?: string) {
         if (!this.table) {
-            this.table = getComponent(Table, this.pickerDialog)
+            this.table = getComponentByAttr(Table,'data-cm-role', 'table-content-list', this.pickerDialog)
         }
         return this.table
+    }
+
+    getSelectionTable(path?: string) {
+        if (!this.selectionTable) {
+            this.selectionTable = getComponentByAttr(Table,'data-cm-role', 'selection-table', this.pickerDialog)
+        }
+        return this.selectionTable
+    }
+
+    wait() {
+        cy.get('.moonstone-loader').should('not.exist') // wait to load
+    }
+
+    navigateTo(accordion:AccordionItem, path: string) {
+        const [selectPath, ...expandPaths] = path.split('/').reverse()
+        expandPaths.forEach(p => accordion.expandTreeItem(p))
+        accordion.getTreeItem(selectPath).click()
+        this.wait()
     }
 
     getTableRow(content:string) {
@@ -84,5 +113,29 @@ export class Picker {
 
     getHeaderByName(name: string) {
         return cy.get('.moonstone-tableHead .moonstone-TableRow').filter(`:contains("${name}")`)
+    }
+
+    getHeaderById(id: string) {
+        return cy.get(`[data-cm-role="table-content-list-header-cell-${id}"]`)
+    }
+
+    getSelectedRows() {
+        return this.getTable().get()
+            .find('tbody [data-cm-role="table-content-list-cell-selection"] input[aria-checked="true"]')
+    }
+
+    getSelectionCaption() {
+        return cy.get('[data-cm-role="selection-caption"] [data-sel-role$="item-selected"]')
+    }
+
+    selectItems(count:number) {
+        this.getTable().getRows().get().then(elems => {
+            expect(elems.length).gte(count);
+            const selectRow = (elem) => cy.wrap(elem)
+                .find('[data-cm-role="table-content-list-cell-selection"] input').click()
+            for (let i = 0; i < count; i++) {
+                selectRow(elems.eq(i))
+            }
+        })
     }
 }
