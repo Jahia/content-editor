@@ -164,7 +164,7 @@ export const registerAccordionItems = registry => {
         icon: <Collections/>,
         label: 'content-editor:label.contentEditor.picker.navigation.categories',
         defaultPath: () => '/sites/systemsite/categories',
-        canDisplayItem: node => /^\/sites\/systemsite\/categories\/.*/.test(node.path),
+        canDisplayItem: node => /^\/sites\/systemsite\/categories((\/.*)|$)/.test(node.path),
         queryHandler: PickerCategoryQueryHandler,
         config: {
             rootPath: '/categories',
