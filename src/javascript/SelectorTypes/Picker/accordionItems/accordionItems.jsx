@@ -47,7 +47,7 @@ const contentTypeSelectorProps = {
         lang: state.language,
         uilang: state.uilang,
         params: {
-            selectableTypesTable: registry.get('pickerConfiguration', state.contenteditor.picker.pickerKey).selectableTypesTable
+            selectableTypesTable: registry.get('pickerConfiguration', state.contenteditor.picker.pickerKey)?.selectableTypesTable || []
         },
         pagination: state.contenteditor.picker.pagination,
         sort: state.contenteditor.picker.sort,

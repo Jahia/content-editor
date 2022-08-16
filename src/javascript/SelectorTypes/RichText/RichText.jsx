@@ -99,7 +99,7 @@ export const RichText = ({field, id, value, onChange, onBlur}) => {
     const {pickerConfig, pickerValue} = picker && buildPickerContext(picker, editorContext, t);
     const handleItemSelection = pickerResult => {
         setPicker(false);
-        fillCKEditorPicker(picker, pickerResult);
+        fillCKEditorPicker(picker, pickerResult.length > 0 && pickerResult[0]);
     };
 
     return (
