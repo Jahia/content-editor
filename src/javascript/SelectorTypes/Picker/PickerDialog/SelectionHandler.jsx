@@ -88,7 +88,7 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
                 } else {
                     newState.path = getPathWithoutFile(selectedNode.path);
                 }
-            } else if (previousState.current.contextSite !== newState.contextSite) {
+            } else if (previousState.current.contextSite !== newState.contextSite || newState.site !== newState.contextSite) {
                 // If context site has changed, reset to the current site (otherwise keep current site)
                 newState.site = pickerConfig.targetSite ? pickerConfig.targetSite : newState.contextSite;
             }
@@ -118,7 +118,8 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
         if (somethingChanged || newState.mode !== previousState.current.mode) {
             // Mode has changed, select path
             if (getSite(newState.path) === newState.site && getAccordionMode(newState.path, pickerConfig) === newState.mode && currentFolderInfo.node) {
-                // 2 - Previously selected path is valid
+                // 2 - Update path for new mode
+                newState.path = accordionItems.find(item => item.key === newState.mode).defaultPath(newState.site);
             } else if (getSite(state.jcontentPath) === newState.site && getAccordionMode(state.jcontentPath, pickerConfig) === newState.mode && !pickerConfig.doNotUseJcontentPath) {
                 // 3 - Jcontent path is also valid here, use it
                 newState.path = state.jcontentPath;
