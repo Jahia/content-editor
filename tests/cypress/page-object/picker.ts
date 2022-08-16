@@ -10,7 +10,7 @@ import {
     Table,
 } from '@jahia/cypress'
 import { PageComposer } from './pageComposer'
-import {ContentType, contentTypes} from '../fixtures/pickers/contentTypes'
+import {ContentType } from '../fixtures/pickers/contentTypes'
 import { AccordionItem } from './accordionItem'
 
 export class Picker {
@@ -23,7 +23,7 @@ export class Picker {
     table: Table
     selectionTable: Table
 
-    static ADD_FIELD_SEL: string = 'button[data-sel-action="addField"]'
+    static ADD_FIELD_SEL = 'button[data-sel-action="addField"]'
 
     constructor(pageComposer: PageComposer) {
         this.pageComposer = pageComposer
@@ -36,7 +36,7 @@ export class Picker {
     open(contentType: ContentType) {
         this.pageComposer.createContent(contentType.typeName)
         const parent = this.getField(contentType.fieldNodeType)
-        const buttonSelector = contentType.multiple ? Picker.ADD_FIELD_SEL : 'button';
+        const buttonSelector = contentType.multiple ? Picker.ADD_FIELD_SEL : 'button'
         parent.get().find(buttonSelector).click()
         this.pickerDialog = getComponentByRole(BaseComponent, 'picker-dialog')
         return this
@@ -82,16 +82,16 @@ export class Picker {
         getComponentByAttr(Button, 'data-sel-picker-dialog-action', 'done').click() // select picker selection
     }
 
-    getTable(path?: string) {
+    getTable() {
         if (!this.table) {
-            this.table = getComponentByAttr(Table,'data-cm-role', 'table-content-list', this.pickerDialog)
+            this.table = getComponentByAttr(Table, 'data-cm-role', 'table-content-list', this.pickerDialog)
         }
         return this.table
     }
 
-    getSelectionTable(path?: string) {
+    getSelectionTable() {
         if (!this.selectionTable) {
-            this.selectionTable = getComponentByAttr(Table,'data-cm-role', 'selection-table', this.pickerDialog)
+            this.selectionTable = getComponentByAttr(Table, 'data-cm-role', 'selection-table', this.pickerDialog)
         }
         return this.selectionTable
     }
@@ -100,14 +100,14 @@ export class Picker {
         cy.get('.moonstone-loader').should('not.exist') // wait to load
     }
 
-    navigateTo(accordion:AccordionItem, path: string) {
+    navigateTo(accordion: AccordionItem, path: string) {
         const [selectPath, ...expandPaths] = path.split('/').reverse()
-        expandPaths.forEach(p => accordion.expandTreeItem(p))
+        expandPaths.forEach((p) => accordion.expandTreeItem(p))
         accordion.getTreeItem(selectPath).click()
         this.wait()
     }
 
-    getTableRow(content:string) {
+    getTableRow() {
         return this.getTable().get().find('.moonstone-TableRow').filter(':contains("content-folder1")')
     }
 
@@ -120,7 +120,8 @@ export class Picker {
     }
 
     getSelectedRows() {
-        return this.getTable().get()
+        return this.getTable()
+            .get()
             .find('tbody [data-cm-role="table-content-list-cell-selection"] input[aria-checked="true"]')
     }
 
@@ -128,14 +129,17 @@ export class Picker {
         return cy.get('[data-cm-role="selection-caption"] [data-sel-role$="item-selected"]')
     }
 
-    selectItems(count:number) {
-        this.getTable().getRows().get().then(elems => {
-            expect(elems.length).gte(count);
-            const selectRow = (elem) => cy.wrap(elem)
-                .find('[data-cm-role="table-content-list-cell-selection"] input').click()
-            for (let i = 0; i < count; i++) {
-                selectRow(elems.eq(i))
-            }
-        })
+    selectItems(count: number) {
+        this.getTable()
+            .getRows()
+            .get()
+            .then((elems) => {
+                expect(elems.length).gte(count)
+                const selectRow = (elem) =>
+                    cy.wrap(elem).find('[data-cm-role="table-content-list-cell-selection"] input').click()
+                for (let i = 0; i < count; i++) {
+                    selectRow(elems.eq(i))
+                }
+            })
     }
 }

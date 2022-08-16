@@ -40,9 +40,10 @@ export class AccordionItem {
     }
 
     expandTreeItem(role) {
-        return this.getTreeItem(role).then(t =>{
-            const isExpanded = t.attr('aria-expanded') === 'true';
-            if (!isExpanded) { // Toggle only if not expanded already
+        return this.getTreeItem(role).then((t) => {
+            const isExpanded = t.attr('aria-expanded') === 'true'
+            if (!isExpanded) {
+                // Toggle only if not expanded already
                 return cy.wrap(t).find('.moonstone-treeView_itemToggle').click()
             }
         })
