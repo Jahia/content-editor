@@ -135,7 +135,7 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
                 newState.path = state.jcontentPath;
             } else {
                 // 4 - Use default path of the current mode
-                newState.path = accordionItems.find(item => item.key === newState.mode).defaultPath(newState.site);
+                newState.path = firstMatchingAccordion.defaultPath(newState.site);
             }
 
             // Extend the list of openPath with the currently selected path
