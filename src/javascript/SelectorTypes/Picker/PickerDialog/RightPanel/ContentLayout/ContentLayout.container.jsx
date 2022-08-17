@@ -5,7 +5,6 @@ import {Loader} from '@jahia/moonstone';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 import ContentTable from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout/ContentTable';
-import {structureData} from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout/ContentLayout.utils';
 import {registry} from '@jahia/ui-extender';
 import {useLayoutQuery} from '@jahia/jcontent';
 import {cePickerSetTableViewType} from '~/SelectorTypes/Picker/Picker2.redux';
@@ -22,7 +21,7 @@ const unsetRefetcher = name => {
 
 export const ContentLayoutContainer = ({pickerConfig}) => {
     const {t} = useTranslation();
-    const {mode, path, filesMode, tableView, searchTerms, searchPath} = useSelector(state => ({
+    const {path, filesMode, tableView, searchTerms, searchPath} = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
         path: state.contenteditor.picker.path,
         filesMode: 'grid',
@@ -33,7 +32,7 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
     const dispatch = useDispatch();
     const canSelectPages = pickerConfig.selectableTypesTable.includes('jnt:page');
 
-    const {queryHandler, layoutQuery, isStructuredView, layoutQueryParams, data, error, loading, refetch} = useLayoutQuery(state => ({
+    const {layoutQuery, layoutQueryParams, result, error, loading, refetch} = useLayoutQuery(state => ({
         mode: state.contenteditor.picker.mode,
         siteKey: state.site,
         params: {
@@ -70,7 +69,7 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
             unsetRefetcher('pickerData');
         };
     });
-    if (error || (!loading && !queryHandler.getResultsPath(data))) {
+    if (error || (!loading && !result)) {
         if (error) {
             const message = t('jcontent:label.contentManager.error.queryingContent', {details: error.message || ''});
             console.error(message);
@@ -92,7 +91,7 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
     if (loading) {
         // While loading new results, render current ones loaded during previous render invocation (if any).
     } else {
-        currentResult = queryHandler.getResultsPath(data);
+        currentResult = result;
     }
 
     let rows = [];
@@ -100,11 +99,7 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
 
     if (currentResult) {
         totalCount = currentResult.pageInfo.totalCount;
-        if (isStructuredView && mode !== Constants.mode.SEARCH) {
-            rows = structureData(path, currentResult.nodes);
-        } else {
-            rows = currentResult.nodes;
-        }
+        rows = currentResult.nodes;
     }
 
     return (
