@@ -15,6 +15,7 @@ describe('Add Mixin by using choice list initializers (Image Reference)', () => 
                 action: 'drag-drop',
                 waitForAnimations: true,
             })
+        cy.wait(5000)
         ContentEditor.visit(sitekey, 'en', 'home.html')
     })
 
@@ -84,7 +85,10 @@ describe('Add Mixin by using choice list initializers (Image Reference)', () => 
             .scrollIntoView()
             .should('be.visible')
             .click()
-        cy.get('tr[role="checkbox"]').contains('Home').click()
+        cy.wait(500)
+        cy.get('.moonstone-tab-item').contains('Sub-pages').click({ force: true })
+        cy.get('.moonstone-tab-item.moonstone-selected').contains('Sub-pages')
+        cy.get('tr[data-cm-role="table-content-list-row"]').contains('Search Results').click()
         cy.get('button[data-sel-picker-dialog-action="done"]').click()
         cy.get('[data-sel-content-editor-field="mix\\:title_jcr\\:title"]')
             .scrollIntoView()
@@ -94,19 +98,19 @@ describe('Add Mixin by using choice list initializers (Image Reference)', () => 
             .scrollIntoView()
             .should('be.visible')
             .click()
-        cy.get('[data-sel-role-card="snowbearHome.jpeg"]').should('exist').scrollIntoView().should('be.visible').click()
+        cy.get('tr[data-cm-role="table-content-list-row"]').contains('snowbearHome.jpeg').click()
         cy.get('button[data-sel-picker-dialog-action="done"]').click()
         contentEditor.save()
         pageComposer
             .refresh()
             .componentShouldBeVisible(
-                `a[href*="/sites/${sitekey}/home.html"] > img[src*="/sites/${sitekey}/files/snowbearHome.jpeg"]`,
+                `a[href*="/sites/${sitekey}/home/search-results.html"] > img[src*="/sites/${sitekey}/files/snowbearHome.jpeg"]`,
             )
     })
     it('Can edit a document manager image reference link', () => {
         const pageComposer = contentEditor.getPageComposer()
         pageComposer.editComponent(
-            `a[href*="/sites/${sitekey}/home.html"] > img[src*="/sites/${sitekey}/files/snowbearHome.jpeg"]`,
+            `a[href*="/sites/${sitekey}/home/search-results.html"] > img[src*="/sites/${sitekey}/files/snowbearHome.jpeg"]`,
         )
         cy.get('#contenteditor-dialog-title')
             .should('be.visible')

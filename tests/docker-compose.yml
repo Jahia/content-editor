@@ -4,7 +4,9 @@ services:
         image: '${JAHIA_IMAGE}'
         container_name: jahia
         environment:
-            - SUPER_USER_PASSWORD=${SUPER_USER_PASSWORD}        
+            - SUPER_USER_PASSWORD=${SUPER_USER_PASSWORD}
+            - NEXUS_USERNAME=${NEXUS_USERNAME}
+            - NEXUS_PASSWORD=${NEXUS_PASSWORD}
             - MAX_RAM_PERCENTAGE=95
         ports:
             - '8080:8080'

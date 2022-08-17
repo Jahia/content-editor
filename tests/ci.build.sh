@@ -15,4 +15,18 @@ if [[ -e ../target ]]; then
   cp ../target/*-SNAPSHOT.jar ./artifacts/
 fi
 
+basedir=$(pwd)
+
+cd ${basedir}/provisioning/content-editor-dependencies || exit
+mvn -ntp -s ../../../.github/maven.settings.xml -q -U clean install
+
+cd ${basedir}/provisioning || exit
+mvn -ntp -s ../../.github/maven.settings.xml -q -U clean process-resources
+
+cd ${basedir} || exit
+
+cp ./provisioning/target/dependency/jahia-*.yaml ./provisioning/4-additional-modules.yaml
+cp ./provisioning/target/dependency/content-editor-dependencies-*.yaml ./provisioning/5-ce-dependencies.yaml
+ls -lah ./provisioning
+
 docker build -t ${TESTS_IMAGE} .

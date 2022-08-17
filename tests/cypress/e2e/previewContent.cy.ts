@@ -20,6 +20,6 @@ describe('Preview tests', () => {
     it('It shows correctly preview of edited page even if not the one currently rendered in PageComposer', () => {
         contentEditor.getPageComposer().editPage('Our Companies')
         contentEditor.switchToAdvancedMode()
-        contentEditor.validateContentIsVisibleInPreview('Location and Serenity')
+        contentEditor.validateContentIsVisibleInPreview('Making a Difference')
     })
 })
