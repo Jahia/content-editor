@@ -32,7 +32,7 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
     const dispatch = useDispatch();
     const canSelectPages = pickerConfig.selectableTypesTable.includes('jnt:page');
 
-    const {layoutQuery, layoutQueryParams, result, error, loading, refetch} = useLayoutQuery(state => ({
+    const {layoutQuery, layoutQueryParams, result, error, loading, isStructured, refetch} = useLayoutQuery(state => ({
         mode: state.contenteditor.picker.mode,
         siteKey: state.site,
         params: {
@@ -82,6 +82,7 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
                           path={path}
                           filesMode={filesMode}
                           rows={[]}
+                          isStructured={isStructured}
                           isLoading={loading}
                           totalCount={0}
             />
@@ -114,6 +115,7 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
                           path={path}
                           filesMode={filesMode}
                           rows={rows}
+                          isStructured={isStructured}
                           isLoading={loading}
                           totalCount={totalCount}
             />

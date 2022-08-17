@@ -30,10 +30,6 @@ import {registry} from '@jahia/ui-extender';
 import {useFieldContext} from '~/contexts/FieldContext';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 
-export const allowDoubleClickNavigation = nodeType => {
-    return (['jnt:folder', 'jnt:contentFolder'].indexOf(nodeType) !== -1);
-};
-
 const reduxActions = {
     onPreviewSelectAction: () => ({}),
     setOpenPathAction: path => cePickerOpenPaths(getDetailedPathArray(path)),
@@ -61,12 +57,12 @@ const clickHandler = {
 
 const SELECTION_COLUMN_ID = 'selection';
 
-export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, canSelectPages, pickerConfig}) => {
+export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, canSelectPages, pickerConfig, isStructured}) => {
     const {t} = useTranslation();
     const field = useFieldContext();
     const dispatch = useDispatch();
 
-    const {mode, path, pagination, tableView, searchTerm} = useSelector(state => ({
+    const {mode, path, pagination, searchTerm} = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
         path: state.contenteditor.picker.path,
         pagination: state.contenteditor.picker.pagination,
@@ -74,7 +70,10 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
         searchTerm: state.contenteditor.picker.searchTerms
     }), shallowEqual);
 
-    const isStructuredView = Constants.tableView.mode.STRUCTURED === tableView.viewMode;
+    const allowDoubleClickNavigation = nodeType => {
+        return !isStructured && (['jnt:folder', 'jnt:contentFolder'].indexOf(nodeType) !== -1);
+    };
+
     const columns = useMemo(() => {
         return allColumnData
             // Do not include type column if media mode
@@ -102,10 +101,10 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
     );
 
     useEffect(() => {
-        if (isStructuredView) {
+        if (isStructured) {
             toggleAllRowsExpanded(true);
         }
-    }, [rows, isStructuredView, toggleAllRowsExpanded]);
+    }, [rows, isStructured, toggleAllRowsExpanded]);
 
     const doubleClickNavigation = node => {
         const actions = [];
@@ -191,7 +190,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
                     </TableBody>
                 </Table>
             </UploadTransformComponent>
-            {!isStructuredView &&
+            {!isStructured &&
             <TablePagination totalNumberOfRows={totalCount}
                              currentPage={pagination.currentPage + 1}
                              rowsPerPage={pagination.pageSize}
@@ -210,6 +209,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
 ContentTable.propTypes = {
     isContentNotFound: PropTypes.bool,
     isLoading: PropTypes.bool,
+    isStructured: PropTypes.bool,
     rows: PropTypes.array.isRequired,
     totalCount: PropTypes.number.isRequired,
     canSelectPages: PropTypes.bool.isRequired,

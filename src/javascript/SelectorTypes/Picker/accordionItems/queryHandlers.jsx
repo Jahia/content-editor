@@ -48,7 +48,7 @@ export const PickerTreeQueryHandler = {
         offset: 0,
         limit: 10000
     }),
-    getResults: (data, {path}) => BaseQueryHandler.structureData(path, BaseQueryHandler.getResults(data)),
+    isStructured: () => true,
     getFragments: () => [...BaseQueryHandler.getFragments(), selectableTypeFragment]
 };
 
