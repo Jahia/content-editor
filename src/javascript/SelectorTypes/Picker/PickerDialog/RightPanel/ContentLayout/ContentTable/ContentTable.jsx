@@ -5,7 +5,12 @@ import {useTranslation} from 'react-i18next';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {Table, TableBody, TablePagination, TableRow} from '@jahia/moonstone';
 import {useTable} from 'react-table';
-import {useExpanded, useRowMultipleSelection, useRowSelection, useSort} from '~/SelectorTypes/Picker/reactTable/plugins';
+import {
+    useExpanded,
+    useRowMultipleSelection,
+    useRowSelection,
+    useSort
+} from '~/SelectorTypes/Picker/reactTable/plugins';
 import {allColumnData} from '~/SelectorTypes/Picker/reactTable/columns';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {
@@ -89,7 +94,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
         headerGroups,
         rows: tableRows,
         prepareRow,
-        toggleAllRowsExpanded
+        toggleRowExpanded
     } = useTable(
         {
             columns: columns,
@@ -102,9 +107,9 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
 
     useEffect(() => {
         if (isStructured) {
-            toggleAllRowsExpanded(true);
+            toggleRowExpanded(0, true);
         }
-    }, [rows, isStructured, toggleAllRowsExpanded]);
+    }, [rows, isStructured, toggleRowExpanded]);
 
     const doubleClickNavigation = node => {
         const actions = [];

@@ -35,6 +35,9 @@ export const registerPickerConfig = ceRegistry => {
             searchPlaceholder: 'content-editor:label.contentEditor.edit.fields.contentPicker.searchFilePlaceholder',
             displayTree: false
         },
+        pickerTable: {
+            columns: ['name', 'lastModified']
+        },
         searchSelectorType: 'jnt:folder',
         selectableTypesTable: ['jnt:folder']
     }));
@@ -44,6 +47,9 @@ export const registerPickerConfig = ceRegistry => {
             dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalFolderTitle',
             displayTree: false
         },
+        pickerTable: {
+            columns: ['name', 'lastModified']
+        },
         searchSelectorType: 'jnt:contentFolder',
         selectableTypesTable: ['jnt:contentFolder']
     }));
@@ -51,6 +57,9 @@ export const registerPickerConfig = ceRegistry => {
     ceRegistry.add(Constants.pickerConfig, 'page', mergeDeep({}, ContentPickerConfig, {
         pickerDialog: {
             displayTree: false
+        },
+        pickerTable: {
+            columns: ['name', 'lastModified']
         },
         searchSelectorType: 'jnt:page',
         selectableTypesTable: ['jnt:page']
