@@ -74,7 +74,7 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
         });
 
         let firstMatchingAccordion = allAccordionItems.find(accord => {
-            return accord.canDisplayItem && accord.canDisplayItem({selectionNode: selectedNode, folderNode: currentFolderInfo.node});
+            return (!accord.isEnabled || accord.isEnabled(newState.site)) && accord.canDisplayItem && accord.canDisplayItem({selectionNode: selectedNode, folderNode: currentFolderInfo.node});
         });
 
         if (!firstMatchingAccordion) {
@@ -85,62 +85,39 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
             firstMatchingAccordion = allAccordionItems[0];
         }
 
-        let somethingChanged = false;
-        if (!previousState.current.isOpen) {
-            // Initialize site when opening dialog
-            newState.contextSite = editorContext.site;
-            if (selectedNode) {
-                // If an item is selected, preselect site/mode/path
-                newState.site = getSite(selectedNode.path);
-                newState.mode = firstMatchingAccordion.key;
-                if (firstMatchingAccordion.getPathForItem) {
-                    // Todo: Must implement something for pages accordion, where the selected path is not the direct parent
-                    newState.path = firstMatchingAccordion.getPathForItem(selectedNode);
-                } else {
-                    newState.path = getPathWithoutFile(selectedNode.path);
-                }
-            } else if (previousState.current.contextSite !== newState.contextSite || newState.site !== newState.contextSite) {
+        // If selection exists we don't care about previous state, need to update state in accordance with selection
+        // Initialize site when opening dialog
+        newState.contextSite = editorContext.site;
+        if (selectedNode) {
+            // If an item is selected, preselect site/mode/path
+            newState.site = getSite(selectedNode.path);
+            newState.mode = firstMatchingAccordion.key;
+            if (firstMatchingAccordion.getPathForItem) {
+                // Todo: Must implement something for pages accordion, where the selected path is not the direct parent
+                newState.path = firstMatchingAccordion.getPathForItem(selectedNode);
+            } else {
+                newState.path = getPathWithoutFile(selectedNode.path);
+            }
+        } else {
+            if (previousState.current.contextSite !== newState.contextSite || newState.site !== newState.contextSite) {
                 // If context site has changed, reset to the current site (otherwise keep current site)
                 newState.site = pickerConfig.targetSite ? pickerConfig.targetSite : newState.contextSite;
             }
 
-            somethingChanged = true;
+            newState.mode = firstMatchingAccordion.key;
+            const defaultPath = firstMatchingAccordion.defaultPath(newState.site);
+            // If picker default path does not target any site use it
+            newState.path = getSite(newState.path) === newState.site &&
+            defaultPath.indexOf(`/${newState.site}`) !== -1 &&
+            previousState.current.mode === newState.mode ? newState.path :
+                defaultPath;
         }
 
         const accordionItems = allAccordionItems
             .filter(accordionItem => !accordionItem.isEnabled || accordionItem.isEnabled(newState.site));
         newState.modes = accordionItems.map(item => item.key);
 
-        if (somethingChanged || newState.site !== previousState.current.site) {
-            // Picker just opened or site has changed, select mode
-            if (newState.mode && firstMatchingAccordion.key === newState.mode) {
-                // 2 - Previously selected mode is valid, keep it
-            } else if (accordionItems.find(item => item.key === 'picker-' + newState.jcontentMode)) {
-                // 3 - Jcontent mode is also valid here, use it
-                newState.mode = 'picker-' + newState.jcontentMode;
-            } else {
-                // 4 - Take the first accordion as default
-                newState.mode = accordionItems[0].key;
-            }
-
-            somethingChanged = true;
-        }
-
-        if (somethingChanged || newState.mode !== previousState.current.mode) {
-            // Mode has changed, select path
-            if (getSite(newState.path) === newState.site && firstMatchingAccordion.key === newState.mode && currentFolderInfo.node) {
-                // 2 - Update path for new mode
-            } else if (getSite(state.jcontentPath) === newState.site && firstMatchingAccordion.key === newState.mode && !pickerConfig.doNotUseJcontentPath) {
-                // 3 - Jcontent path is also valid here, use it
-                newState.path = state.jcontentPath;
-            } else {
-                // 4 - Use default path of the current mode
-                newState.path = firstMatchingAccordion.defaultPath(newState.site);
-            }
-
-            // Extend the list of openPath with the currently selected path
-            newState.openPaths = [...new Set([...newState.openPaths, ...getDetailedPathArray(getPathWithoutFile(newState.path), newState.site)])];
-        }
+        newState.openPaths = [...new Set([...newState.openPaths, ...getDetailedPathArray(getPathWithoutFile(newState.path), newState.site)])];
 
         const actions = ([
             (newState.site !== state.site) && cePickerSite(newState.site),
