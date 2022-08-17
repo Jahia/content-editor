@@ -10,12 +10,12 @@ import {
     cePickerSetTableViewType
 } from '~/SelectorTypes/Picker/Picker2.redux';
 import {
-    PickerCategoryQueryHandler,
+    PickerBaseQueryHandler,
     PickerContentsFolderQueryHandler,
+    PickerFilesQueryHandler,
     PickerPagesQueryHandler,
-    PickersBaseQueryHandler,
     PickerSearchQueryHandler,
-    PickersFilesQueryHandler
+    PickerTreeQueryHandler
 } from '~/SelectorTypes/Picker/accordionItems/queryHandlers';
 
 // Todo: see with Fran�ois if it's possible to get rid of this and have every picker always come with a key
@@ -67,87 +67,93 @@ export const registerAccordionItems = registry => {
     const searchItem = registry.get(Constants.ACCORDION_ITEM_NAME, 'search');
 
     if (pagesItem) {
-        registry.add(
-            Constants.ACCORDION_ITEM_NAME,
-            `picker-${Constants.ACCORDION_ITEM_TYPES.PAGES}`,
-            {
-                ...pagesItem,
-                viewSelector: <ViewModeSelector {...viewModeSelectorProps}/>,
-                tableHeader: <ContentTypeSelector {...contentTypeSelectorProps}/>,
-                targets: ['default:50', 'editorial:50', 'editoriallink:50', 'pages:50'],
-                getSearchContextData: (currentSite, node, t) => {
-                    if (node) {
-                        const pages = node.ancestors.filter(n => n.primaryNodeType.name === 'jnt:page');
-                        if (pages.length > 0) {
-                            const page = pages[0];
-                            return [{
-                                label: t(pagesItem.label),
-                                searchPath: page.path,
-                                iconStart: pagesItem.icon
-                            }];
-                        }
-                    }
+        const getSearchContextData = (currentSite, node, t) => {
+            if (node) {
+                const pages = node.ancestors.filter(n => n.primaryNodeType.name === 'jnt:page');
+                if (pages.length > 0) {
+                    const page = pages[0];
+                    return [{
+                        label: t(pagesItem.label),
+                        searchPath: page.path,
+                        iconStart: pagesItem.icon
+                    }];
+                }
+            }
 
-                    return [];
-                },
-                queryHandler: PickerPagesQueryHandler
-            },
-            renderer
-        );
+            return [];
+        };
+
+        // Page content
+        registry.add(Constants.ACCORDION_ITEM_NAME, `picker-${Constants.ACCORDION_ITEM_TYPES.PAGES}`, {
+            ...pagesItem,
+            viewSelector: <ViewModeSelector {...viewModeSelectorProps}/>,
+            tableHeader: <ContentTypeSelector {...contentTypeSelectorProps}/>,
+            targets: ['default:50', 'editorial:50', 'editoriallink:50'],
+            getSearchContextData,
+            queryHandler: PickerPagesQueryHandler
+        }, renderer);
+
+        // Pages tree
+        registry.add(Constants.ACCORDION_ITEM_NAME, 'picker-pages-tree', {
+            ...pagesItem,
+            viewSelector: null,
+            tableHeader: null,
+            targets: ['page:50'],
+            getSearchContextData,
+            queryHandler: PickerTreeQueryHandler
+        }, renderer);
     } else {
         console.warn('Picker will not function properly due to missing accordionItem for pages');
     }
 
     if (contentFoldersItem) {
-        registry.add(
-            Constants.ACCORDION_ITEM_NAME,
-            `picker-${Constants.ACCORDION_ITEM_TYPES.CONTENT_FOLDERS}`,
-            {
-                ...contentFoldersItem,
-                viewSelector: <ViewModeSelector {...viewModeSelectorProps}/>,
-                targets: ['default:60', 'editorial:60', 'editoriallink:60', 'contentfolder:60'],
-                queryHandler: PickerContentsFolderQueryHandler
-            },
-            renderer
-        );
+        registry.add(Constants.ACCORDION_ITEM_NAME, `picker-${Constants.ACCORDION_ITEM_TYPES.CONTENT_FOLDERS}`, {
+            ...contentFoldersItem,
+            viewSelector: <ViewModeSelector {...viewModeSelectorProps}/>,
+            targets: ['default:60', 'editorial:60', 'editoriallink:60'],
+            queryHandler: PickerContentsFolderQueryHandler
+        }, renderer);
+
+        registry.add(Constants.ACCORDION_ITEM_NAME, 'picker-content-folders-tree', {
+            ...contentFoldersItem,
+            targets: ['contentfolder:60'],
+            queryHandler: PickerTreeQueryHandler
+        }, renderer);
     } else {
         console.warn('Picker will not function properly due to missing accordionItem for content-folders');
     }
 
     if (mediaItem) {
-        registry.add(
-            Constants.ACCORDION_ITEM_NAME,
-            `picker-${Constants.ACCORDION_ITEM_TYPES.MEDIA}`,
-            {
-                ...mediaItem,
-                viewSelector: false, // Todo: implement thumbnail and enable selector : <FileModeSelector {...fileModeSelectorProps}/>,
-                targets: ['default:70', 'image:70', 'file:70', 'folder:70'],
-                queryHandler: PickersFilesQueryHandler
-            },
-            renderer
-        );
+        registry.add(Constants.ACCORDION_ITEM_NAME, `picker-${Constants.ACCORDION_ITEM_TYPES.MEDIA}`, {
+            ...mediaItem,
+            viewSelector: false, // Todo: implement thumbnail and enable selector : <FileModeSelector {...fileModeSelectorProps}/>,
+            targets: ['default:70', 'image:70', 'file:70'],
+            queryHandler: PickerFilesQueryHandler
+        }, renderer);
+
+        registry.add(Constants.ACCORDION_ITEM_NAME, 'picker-media-tree', {
+            ...mediaItem,
+            targets: ['folder:70'],
+            queryHandler: PickerTreeQueryHandler
+        }, renderer);
     } else {
         console.warn('Picker will not function properly due to missing accordionItem for media');
     }
 
     if (searchItem) {
-        registry.add(
-            Constants.ACCORDION_ITEM_NAME,
-            'picker-search',
-            {
-                ...searchItem,
-                queryHandler: PickerSearchQueryHandler
-            }
-        );
+        registry.add(Constants.ACCORDION_ITEM_NAME, 'picker-search', {
+            ...searchItem,
+            queryHandler: PickerSearchQueryHandler
+        });
     }
 
-    registry.add(Constants.ACCORDION_ITEM_NAME, `picker-${Constants.ACCORDION_ITEM_TYPES.SITE}`, renderer, {
+    registry.add(Constants.ACCORDION_ITEM_NAME, `picker-${Constants.ACCORDION_ITEM_TYPES.SITE}`, {
         targets: ['site:60'],
         icon: <SiteWeb/>,
         label: 'content-editor:label.contentEditor.edit.fields.contentPicker.sitesRootLabel',
         defaultPath: () => '/sites',
         canDisplayItem: node => /^\/sites\/.*/.test(node.path),
-        queryHandler: PickersBaseQueryHandler,
+        queryHandler: PickerBaseQueryHandler,
         config: {
             rootPath: '',
             selectableTypes: ['jnt:virtualsite'],
@@ -156,16 +162,16 @@ export const registerAccordionItems = registry => {
             rootLabel: 'Sites - This is never shown',
             key: 'browse-tree-sites'
         }
-    });
+    }, renderer);
 
     // Custom category item
-    registry.add(Constants.ACCORDION_ITEM_NAME, `picker-${Constants.ACCORDION_ITEM_TYPES.CATEGORY}`, renderer, {
+    registry.add(Constants.ACCORDION_ITEM_NAME, `picker-${Constants.ACCORDION_ITEM_TYPES.CATEGORY}`, {
         targets: ['category:50'],
         icon: <Collections/>,
         label: 'content-editor:label.contentEditor.picker.navigation.categories',
         defaultPath: () => '/sites/systemsite/categories',
         canDisplayItem: node => /^\/sites\/systemsite\/categories((\/.*)|$)/.test(node.path),
-        queryHandler: PickerCategoryQueryHandler,
+        queryHandler: PickerTreeQueryHandler,
         config: {
             rootPath: '/categories',
             selectableTypes: ['jnt:category'],
@@ -173,7 +179,7 @@ export const registerAccordionItems = registry => {
             type: 'categories',
             key: 'browse-tree-files'
         }
-    });
+    }, renderer);
 
     setTimeout(() => {
         const openInJContent = registry.get('action', 'openInJContent');

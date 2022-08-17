@@ -33,19 +33,22 @@ export function transformQueryHandler(queryHandler) {
 
 export const PickerContentsFolderQueryHandler = transformQueryHandler(ContentFoldersQueryHandler);
 
-export const PickersFilesQueryHandler = transformQueryHandler(FilesQueryHandler);
+export const PickerFilesQueryHandler = transformQueryHandler(FilesQueryHandler);
 
-export const PickersBaseQueryHandler = transformQueryHandler(BaseQueryHandler);
+export const PickerBaseQueryHandler = transformQueryHandler(BaseQueryHandler);
 
-export const PickerCategoryQueryHandler = {
+export const PickerTreeQueryHandler = {
     ...BaseQueryHandler,
     getQuery: () => BaseDescendantsQuery,
     getQueryParams: p => ({
         ...BaseQueryHandler.getQueryParams(p),
         selectableTypesTable: p.params.selectableTypesTable,
-        recursionTypesFilter: null,
-        typeFilter: Array.from(new Set([...p.params.selectableTypesTable, 'jnt:contentFolder', 'jnt:folder']))
+        typeFilter: p.params.selectableTypesTable,
+        recursionTypesFilter: {multi: 'NONE', types: []},
+        offset: 0,
+        limit: 10000
     }),
+    isStructured: () => true,
     getFragments: () => [...BaseQueryHandler.getFragments(), selectableTypeFragment]
 };
 
@@ -54,7 +57,7 @@ export const PickerPagesQueryHandler = {
     getQueryParams: p => ({
         ...PagesQueryHandler.getQueryParams(p),
         selectableTypesTable: p.params.selectableTypesTable,
-        typeFilter: Constants.tableView.type.PAGES === p.viewType ? ['jnt:page'] : p.params.selectableTypesTable.filter(t => t !== 'jnt:page')
+        typeFilter: Constants.tableView.type.PAGES === p.tableView.viewType ? ['jnt:page'] : p.params.selectableTypesTable.filter(t => t !== 'jnt:page')
     }),
     getFragments: () => [...PagesQueryHandler.getFragments(), selectableTypeFragment]
 };

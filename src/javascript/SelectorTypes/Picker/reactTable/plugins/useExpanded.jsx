@@ -64,9 +64,11 @@ const defaultGetToggleRowExpandedProps = (props, {row}) => [
     props,
     {
         onClick: e => {
-            e.preventDefault();
-            e.stopPropagation();
-            row.toggleRowExpanded();
+            if (e.target.matches('.moonstone-TableCell > svg') || e.target.matches('.moonstone-TableCell > svg *')) {
+                e.preventDefault();
+                e.stopPropagation();
+                row.toggleRowExpanded();
+            }
         },
         style: {
             cursor: 'pointer'
@@ -156,7 +158,7 @@ function useInstance(instance) {
         manualExpandedKey = 'expanded',
         paginateExpandedRows = true,
         expandSubRows = true,
-        autoResetExpanded = true,
+        autoResetExpanded = false,
         getHooks,
         plugins,
         state: {expanded},
