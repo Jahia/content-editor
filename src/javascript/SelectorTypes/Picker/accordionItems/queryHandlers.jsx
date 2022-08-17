@@ -25,7 +25,7 @@ export function transformQueryHandler(queryHandler) {
         getQueryParams: p => ({
             ...queryHandler.getQueryParams(p),
             selectableTypesTable: p.params.selectableTypesTable,
-            typeFilter: Array.from(new Set([...p.params.selectableTypesTable, 'jnt:contentFolder', 'jnt:folder']))
+            typeFilter: Array.from(new Set([...p.params.selectableTypesTable, ...p.params.openableTypes]))
         }),
         getFragments: () => [...queryHandler.getFragments(), selectableTypeFragment]
     };
@@ -43,7 +43,7 @@ export const PickerTreeQueryHandler = {
     getQueryParams: p => ({
         ...BaseQueryHandler.getQueryParams(p),
         selectableTypesTable: p.params.selectableTypesTable,
-        typeFilter: p.params.selectableTypesTable,
+        typeFilter: Array.from(new Set([...p.params.selectableTypesTable, ...p.params.openableTypes])),
         recursionTypesFilter: {multi: 'NONE', types: []},
         offset: 0,
         limit: 10000

@@ -99,6 +99,7 @@ export const registerAccordionItems = registry => {
             viewSelector: null,
             tableHeader: null,
             targets: ['page:50'],
+            openableTypes: ['jnt:page', 'jnt:virtualsite', 'jnt:navMenuText'],
             getSearchContextData,
             queryHandler: PickerTreeQueryHandler
         }, renderer);

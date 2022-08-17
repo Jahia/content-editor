@@ -6,19 +6,18 @@ import {
     cePickerClearSelection,
     cePickerKey,
     cePickerMode,
-    cePickerOpenPaths,
-    cePickerPath, cePickerSetSearchTerm,
-    cePickerSite
+    cePickerPath,
+    cePickerSetSearchTerm
 } from '~/SelectorTypes/Picker/Picker2.redux';
 import {getItemTarget} from '~/SelectorTypes/Picker/accordionItems/accordionItems';
 import {batchActions} from 'redux-batched-actions';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
-import {booleanValue, getDetailedPathArray} from '~/SelectorTypes/Picker/Picker2.utils';
-import {registry} from '@jahia/ui-extender';
-import {shallowEqual, useDispatch, useSelector} from 'react-redux';
+import {booleanValue} from '~/SelectorTypes/Picker/Picker2.utils';
+import {useDispatch} from 'react-redux';
 import RightPanel from './RightPanel';
-import {ContentNavigation, SiteSwitcher} from '@jahia/jcontent';
+import {ContentNavigation} from '@jahia/jcontent';
 import {SelectionHandler} from '~/SelectorTypes/Picker/PickerDialog/SelectionHandler';
+import {PickerSiteSwitcher} from '~/SelectorTypes/Picker/PickerDialog/PickerSiteSwitcher';
 
 const Transition = props => {
     return <Slide direction="up" {...props}/>;
@@ -30,11 +29,6 @@ const selector = state => ({
     language: state.language
 });
 
-const switcherSelector = state => ({
-    siteKey: state.contenteditor.picker.site,
-    currentLang: state.language
-});
-
 export const PickerDialog = ({
     isOpen,
     onClose,
@@ -44,16 +38,6 @@ export const PickerDialog = ({
     accordionItemProps,
     onItemSelection
 }) => {
-    const state = useSelector(state => ({
-        mode: state.contenteditor.picker.mode,
-        path: state.contenteditor.picker.path,
-        openPaths: state.contenteditor.picker.openPaths,
-        site: state.contenteditor.picker.site,
-        contextSite: state.contenteditor.picker.contextSite,
-        jcontentMode: state.jcontent.mode,
-        jcontentPath: state.jcontent.path
-    }), shallowEqual);
-
     const dispatch = useDispatch();
     useEffect(() => {
         if (isOpen) {
@@ -88,21 +72,7 @@ export const PickerDialog = ({
                                 isReversed={false}
                                 header={(booleanValue(pickerConfig.pickerDialog.displaySiteSwitcher) && (
                                     <div>
-                                        <SiteSwitcher selector={switcherSelector}
-                                                      onSelectAction={siteNode => {
-                                                          const actions = [];
-                                                          actions.push(cePickerSite(siteNode.name));
-                                                          const accordionItems = registry.find({type: 'accordionItem', target: getItemTarget(pickerConfig.key)})
-                                                              .filter(accordionItem => !accordionItem.isEnabled || accordionItem.isEnabled(siteNode.name));
-                                                          const selectedAccordion = accordionItems.find(item => item.key === state.mode) || accordionItems[0];
-                                                          const newPath = selectedAccordion.defaultPath(siteNode.name);
-                                                          actions.push(cePickerPath(newPath));
-                                                          actions.push(cePickerMode(selectedAccordion.key));
-                                                          actions.push(cePickerOpenPaths([...state.openPaths, ...getDetailedPathArray(newPath, siteNode.name)]));
-
-                                                          return batchActions(actions);
-                                                      }}
-                                        />
+                                        <PickerSiteSwitcher pickerConfig={pickerConfig}/>
                                     </div>
                                 ))}
                                 accordionItemTarget={getItemTarget(pickerConfig.key)}

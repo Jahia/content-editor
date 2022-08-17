@@ -21,7 +21,7 @@ const unsetRefetcher = name => {
 
 export const ContentLayoutContainer = ({pickerConfig}) => {
     const {t} = useTranslation();
-    const {path, filesMode, tableView, searchTerms, searchPath} = useSelector(state => ({
+    const {mode, path, filesMode, tableView, searchTerms, searchPath} = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
         path: state.contenteditor.picker.path,
         filesMode: 'grid',
@@ -31,24 +31,28 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
     }), shallowEqual);
     const dispatch = useDispatch();
     const canSelectPages = pickerConfig.selectableTypesTable.includes('jnt:page');
+    const openableTypes = registry.get('accordionItem', mode)?.config?.openableTypes;
 
-    const {layoutQuery, layoutQueryParams, result, error, loading, isStructured, refetch} = useLayoutQuery(state => ({
-        mode: state.contenteditor.picker.mode,
-        siteKey: state.site,
-        params: {
-            searchTerms,
-            searchPath,
-            searchContentType: pickerConfig.searchSelectorType,
-            selectableTypesTable: pickerConfig.selectableTypesTable
-        },
-        path: state.contenteditor.picker.path,
-        lang: state.language,
-        uilang: state.uilang,
-        filesMode: 'grid',
-        pagination: state.contenteditor.picker.pagination,
-        sort: state.contenteditor.picker.sort,
-        tableView: state.contenteditor.picker.tableView
-    }));
+    const {layoutQuery, layoutQueryParams, result, error, loading, isStructured, refetch} = useLayoutQuery(state => {
+        return ({
+            mode: state.contenteditor.picker.mode,
+            siteKey: state.site,
+            params: {
+                searchTerms,
+                searchPath,
+                searchContentType: pickerConfig.searchSelectorType,
+                selectableTypesTable: pickerConfig.selectableTypesTable,
+                openableTypes
+            },
+            path: state.contenteditor.picker.path,
+            lang: state.language,
+            uilang: state.uilang,
+            filesMode: 'grid',
+            pagination: state.contenteditor.picker.pagination,
+            sort: state.contenteditor.picker.sort,
+            tableView: state.contenteditor.picker.tableView
+        });
+    });
 
     // Reset table view type to content if pages cannot be picked, we do not show table view selector if pages cannot
     // be picked

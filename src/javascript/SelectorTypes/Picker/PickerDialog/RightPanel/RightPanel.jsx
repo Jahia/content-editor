@@ -11,6 +11,7 @@ import {DisplayActions, registry} from '@jahia/ui-extender';
 import {getButtonRenderer} from '~/utils';
 import {SelectionCaption, SelectionTable} from './PickerSelection';
 import {Search} from './Search';
+import {PickerSiteSwitcher} from '~/SelectorTypes/Picker';
 
 const ButtonRenderer = getButtonRenderer({defaultButtonProps: {variant: 'ghost'}});
 
@@ -40,6 +41,7 @@ const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
             <header className={clsx('flexCol_nowrap', css.header)}>
                 <Typography variant="heading">Select content</Typography>
                 <div className={clsx('flexRow_nowrap', 'alignCenter', css.headerActions)}>
+                    {!pickerConfig.pickerDialog.displayTree && pickerConfig.pickerDialog.displaySiteSwitcher && <PickerSiteSwitcher pickerConfig={pickerConfig}/>}
                     <Search pickerConfig={pickerConfig}/>
                     <div className="flexFluid"/>
                     <DisplayActions target={actionsTarget} render={ButtonRenderer} path={path}/>
