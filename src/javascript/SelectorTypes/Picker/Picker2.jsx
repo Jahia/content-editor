@@ -12,6 +12,10 @@ import styles from './Picker2.scss';
 import {Button, Close} from '@jahia/moonstone';
 import {FieldContextProvider} from '~/contexts/FieldContext';
 
+import {registry} from '@jahia/ui-extender';
+
+console.log(registry);
+
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
 export const Picker2 = ({field, value, editorContext, inputContext, onChange, onBlur}) => {

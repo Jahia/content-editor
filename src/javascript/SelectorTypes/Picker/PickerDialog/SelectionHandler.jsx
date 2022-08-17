@@ -15,7 +15,7 @@ import {
 } from '~/SelectorTypes/Picker/Picker2.redux';
 import {registry} from '@jahia/ui-extender';
 import {getItemTarget} from '~/SelectorTypes/Picker/accordionItems/accordionItems';
-import {getAccordionMode, getDetailedPathArray, getPathWithoutFile} from '~/SelectorTypes/Picker/Picker2.utils';
+import {getDetailedPathArray, getPathWithoutFile} from '~/SelectorTypes/Picker/Picker2.utils';
 import {batchActions} from 'redux-batched-actions';
 import PropTypes from 'prop-types';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
@@ -73,6 +73,18 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
             target: getItemTarget(pickerConfig.key)
         });
 
+        let firstMatchingAccordion = allAccordionItems.find(accord => {
+            return accord.canDisplayItem && accord.canDisplayItem({selectionNode: selectedNode, folderNode: currentFolderInfo.node});
+        });
+
+        if (!firstMatchingAccordion) {
+            // This case can happen when we have two pickers site and editorial, site picker with selection,
+            // open site picker, close it, open editorial picker: picker key is correct, selection is false and
+            // currentFolderInfo still points at /sites so there is no way it can get past those canDisplayItems checks
+            console.info(`Cannot find a matching accordion for picker with key ${pickerConfig.key}`);
+            firstMatchingAccordion = allAccordionItems[0];
+        }
+
         let somethingChanged = false;
         if (!previousState.current.isOpen) {
             // Initialize site when opening dialog
@@ -80,11 +92,10 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
             if (selectedNode) {
                 // If an item is selected, preselect site/mode/path
                 newState.site = getSite(selectedNode.path);
-                newState.mode = getAccordionMode(selectedNode.path, pickerConfig);
-                const accordionItem = allAccordionItems.find(item => item.key === newState.mode);
-                if (accordionItem.getPathForItem) {
+                newState.mode = firstMatchingAccordion.key;
+                if (firstMatchingAccordion.getPathForItem) {
                     // Todo: Must implement something for pages accordion, where the selected path is not the direct parent
-                    newState.path = accordionItem.getPathForItem(selectedNode);
+                    newState.path = firstMatchingAccordion.getPathForItem(selectedNode);
                 } else {
                     newState.path = getPathWithoutFile(selectedNode.path);
                 }
@@ -102,7 +113,7 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
 
         if (somethingChanged || newState.site !== previousState.current.site) {
             // Picker just opened or site has changed, select mode
-            if (newState.mode && accordionItems.find(item => item.key === newState.mode)) {
+            if (newState.mode && firstMatchingAccordion.key === newState.mode) {
                 // 2 - Previously selected mode is valid, keep it
             } else if (accordionItems.find(item => item.key === 'picker-' + newState.jcontentMode)) {
                 // 3 - Jcontent mode is also valid here, use it
@@ -117,10 +128,9 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
 
         if (somethingChanged || newState.mode !== previousState.current.mode) {
             // Mode has changed, select path
-            if (getSite(newState.path) === newState.site && getAccordionMode(newState.path, pickerConfig) === newState.mode && currentFolderInfo.node) {
+            if (getSite(newState.path) === newState.site && firstMatchingAccordion.key === newState.mode && currentFolderInfo.node) {
                 // 2 - Update path for new mode
-                newState.path = accordionItems.find(item => item.key === newState.mode).defaultPath(newState.site);
-            } else if (getSite(state.jcontentPath) === newState.site && getAccordionMode(state.jcontentPath, pickerConfig) === newState.mode && !pickerConfig.doNotUseJcontentPath) {
+            } else if (getSite(state.jcontentPath) === newState.site && firstMatchingAccordion.key === newState.mode && !pickerConfig.doNotUseJcontentPath) {
                 // 3 - Jcontent path is also valid here, use it
                 newState.path = state.jcontentPath;
             } else {

@@ -20,7 +20,7 @@ import {
     cePickerSetPage,
     cePickerSetPageSize
 } from '~/SelectorTypes/Picker/Picker2.redux';
-import {getDetailedPathArray} from '~/SelectorTypes/Picker/Picker2.utils';
+import {getCanDisplayItemParams, getDetailedPathArray} from '~/SelectorTypes/Picker/Picker2.utils';
 import {batchActions} from 'redux-batched-actions';
 import {
     ContentEmptyDropZone,
@@ -115,7 +115,8 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
         const actions = [];
 
         if (mode === Constants.mode.SEARCH) {
-            const newMode = registry.find({type: 'accordionItem', target: 'jcontent'}).find(acc => acc.canDisplayItem(node))?.key;
+            const params = getCanDisplayItemParams(node);
+            const newMode = registry.find({type: 'accordionItem', target: pickerConfig.key}).find(acc => acc.canDisplayItem(params))?.key;
             if (newMode) {
                 actions.push(reduxActions.setModeAction(newMode));
             }
