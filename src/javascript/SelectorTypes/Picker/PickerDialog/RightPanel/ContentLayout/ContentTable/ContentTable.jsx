@@ -76,7 +76,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
     }), shallowEqual);
 
     const allowDoubleClickNavigation = nodeType => {
-        return !isStructured && (['jnt:folder', 'jnt:contentFolder'].indexOf(nodeType) !== -1);
+        return !isStructured && Constants.mode.SEARCH !== mode && (['jnt:folder', 'jnt:contentFolder'].indexOf(nodeType) !== -1);
     };
 
     const columns = useMemo(() => {
@@ -113,13 +113,6 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
 
     const doubleClickNavigation = node => {
         const actions = [];
-
-        if (mode === Constants.mode.SEARCH) {
-            const newMode = registry.find({type: 'accordionItem', target: 'jcontent'}).find(acc => acc.canDisplayItem(node))?.key;
-            if (newMode) {
-                actions.push(reduxActions.setModeAction(newMode));
-            }
-        }
 
         actions.push(reduxActions.setOpenPathAction(node.path));
         actions.push(reduxActions.setPathAction(node.path));

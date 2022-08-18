@@ -1,5 +1,3 @@
-import {Constants} from './Picker2.constants';
-
 export const getPathWithoutFile = fullPath => {
     return fullPath && fullPath.split('/').slice(0, -1).join('/');
 };
@@ -28,23 +26,6 @@ export const getDetailedPathArray = fullPath => {
             }, [])
             .slice(2) :
         [];
-};
-
-export const getAccordionMode = (fullPath, config) => {
-    // Todo : Fix getAccordionMode - try to get an accordion matching path
-    if (config.accordionMode) {
-        return config.accordionMode;
-    }
-
-    const split = fullPath.split('/');
-    const modeIndex = 3;
-
-    switch (split[modeIndex]) {
-        case 'files': return 'picker-' + Constants.ACCORDION_ITEM_TYPES.MEDIA;
-        case 'contents': return 'picker-' + Constants.ACCORDION_ITEM_TYPES.CONTENT_FOLDERS;
-        case 'categories': return 'picker-' + Constants.ACCORDION_ITEM_TYPES.CATEGORY;
-        default: return 'picker-' + Constants.ACCORDION_ITEM_TYPES.PAGES;
-    }
 };
 
 export const set = (target, path, value) => {
@@ -98,3 +79,16 @@ export const arrayValue = value => {
 export const booleanValue = v => typeof v === 'string' ? v === 'true' : Boolean(v);
 
 export const toArray = value => (Array.isArray(value) ? value : [value]);
+
+export const getCanDisplayItemParams = node => {
+    const folders = ['jnt:contentFolder', 'jnt:folder'];
+    const params = {};
+
+    if (folders.includes(node.primaryNodeType.name)) {
+        params.folderNode = node;
+    } else {
+        params.selectionNode = node;
+    }
+
+    return params;
+};

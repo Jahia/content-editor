@@ -10,8 +10,8 @@ import {
     cePickerSetTableViewType
 } from '~/SelectorTypes/Picker/Picker2.redux';
 import {
-    PickerBaseQueryHandler,
     PickerContentsFolderQueryHandler,
+    PickerBaseQueryHandler,
     PickerFilesQueryHandler,
     PickerPagesQueryHandler,
     PickerSearchQueryHandler,
@@ -152,7 +152,7 @@ export const registerAccordionItems = registry => {
         icon: <SiteWeb/>,
         label: 'content-editor:label.contentEditor.edit.fields.contentPicker.sitesRootLabel',
         defaultPath: () => '/sites',
-        canDisplayItem: node => /^\/sites\/.*/.test(node.path),
+        canDisplayItem: ({selectionNode, folderNode}) => selectionNode ? /^\/sites\/.*/.test(selectionNode.path) : /^\/sites((\/.*)|$)/.test(folderNode.path),
         queryHandler: PickerBaseQueryHandler,
         config: {
             rootPath: '',
@@ -170,7 +170,7 @@ export const registerAccordionItems = registry => {
         icon: <Collections/>,
         label: 'content-editor:label.contentEditor.picker.navigation.categories',
         defaultPath: () => '/sites/systemsite/categories',
-        canDisplayItem: node => /^\/sites\/systemsite\/categories((\/.*)|$)/.test(node.path),
+        canDisplayItem: ({selectedNode, folderNode}) => selectedNode ? /^\/sites\/systemsite\/categories\/.*/.test(selectedNode.path) : /^\/sites\/systemsite\/categories((\/.*)|$)/.test(folderNode.path),
         queryHandler: PickerTreeQueryHandler,
         config: {
             rootPath: '/categories',
