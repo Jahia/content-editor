@@ -16,23 +16,23 @@ const contentTypes: ContentTypes = {
     contentReference: {
         typeName: 'Content reference',
         fieldNodeType: 'jnt:contentReference_j:node',
-        multiple: false
+        multiple: false,
     },
     fileReference: {
         typeName: 'File reference',
         fieldNodeType: 'jnt:fileReference_j:node',
-        multiple: false
+        multiple: false,
     },
     imageReference: {
         typeName: 'Image (from the Document Manager)',
         fieldNodeType: 'jnt:imageReferenceLink_j:node',
-        multiple: false
+        multiple: false,
     },
     // from qa-module
     fileMultipleReference: {
         typeName: 'Pickers Multiple',
         fieldNodeType: 'qant:pickersMultiple_imagepicker',
-        multiple: true
+        multiple: true,
     },
 }
 

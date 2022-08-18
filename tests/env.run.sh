@@ -34,6 +34,16 @@ else
   MANIFEST="curl-manifest"
 fi
 
+
+if [[ -d provisioning/ ]]; then
+  cd provisioning/ || exit 1
+  for f in *.yaml ; do
+    echo "$(date +'%d %B %Y - %k:%M') == Executing provisioning: ${f} =="
+    curl -u root:${SUPER_USER_PASSWORD} -X POST ${JAHIA_URL}/modules/api/provisioning --form script="@./${f};type=text/yaml"
+  done
+  cd ..
+fi
+
 echo "$(date +'%d %B %Y - %k:%M') == Executing manifest: ${MANIFEST} =="
 curl -u root:${SUPER_USER_PASSWORD} -X POST ${JAHIA_URL}/modules/api/provisioning --form script="@./run-artifacts/${MANIFEST};type=text/yaml"
 echo

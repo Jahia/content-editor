@@ -5,6 +5,7 @@
 
 source ./set-env.sh
 
+
 echo " == Printing the most important environment variables"
 echo " MANIFEST: ${MANIFEST}"
 echo " TESTS_IMAGE: ${TESTS_IMAGE}"

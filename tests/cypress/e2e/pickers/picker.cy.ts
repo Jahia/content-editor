@@ -63,7 +63,7 @@ describe('Picker tests', () => {
             .should((elems) => {
                 expect(elems).to.have.length(4)
                 const texts = elems.get().map((e) => e.textContent)
-                expect(texts).to.deep.eq(['content-folder1', 'test 1', 'test 2', 'test 3'])
+                expect(texts.sort()).to.deep.eq(['content-folder1', 'test 1', 'test 2', 'test 3'])
             })
 
         cy.log('test double-click on table')
