@@ -20,7 +20,7 @@ import {
     cePickerSetPage,
     cePickerSetPageSize
 } from '~/SelectorTypes/Picker/Picker2.redux';
-import {getCanDisplayItemParams, getDetailedPathArray} from '~/SelectorTypes/Picker/Picker2.utils';
+import {getDetailedPathArray} from '~/SelectorTypes/Picker/Picker2.utils';
 import {batchActions} from 'redux-batched-actions';
 import {
     ContentEmptyDropZone,
@@ -76,7 +76,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
     }), shallowEqual);
 
     const allowDoubleClickNavigation = nodeType => {
-        return !isStructured && (['jnt:folder', 'jnt:contentFolder'].indexOf(nodeType) !== -1);
+        return !isStructured && Constants.mode.SEARCH !== mode && (['jnt:folder', 'jnt:contentFolder'].indexOf(nodeType) !== -1);
     };
 
     const columns = useMemo(() => {
@@ -113,14 +113,6 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
 
     const doubleClickNavigation = node => {
         const actions = [];
-
-        if (mode === Constants.mode.SEARCH) {
-            const params = getCanDisplayItemParams(node);
-            const newMode = registry.find({type: 'accordionItem', target: pickerConfig.key}).find(acc => acc.canDisplayItem(params))?.key;
-            if (newMode) {
-                actions.push(reduxActions.setModeAction(newMode));
-            }
-        }
 
         actions.push(reduxActions.setOpenPathAction(node.path));
         actions.push(reduxActions.setPathAction(node.path));

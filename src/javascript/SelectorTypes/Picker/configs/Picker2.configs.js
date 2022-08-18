@@ -92,7 +92,6 @@ export const registerPickerConfig = ceRegistry => {
     ceRegistry.add(Constants.pickerConfig, 'site', mergeDeep({}, ContentPickerConfig, {
         searchSelectorType: 'jnt:virtualsite',
         selectableTypesTable: ['jnt:virtualsite'],
-        doNotUseJcontentPath: true,
         pickerTable: {
             columns: ['name']
         },

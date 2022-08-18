@@ -10,8 +10,8 @@ import {
     cePickerSetTableViewType
 } from '~/SelectorTypes/Picker/Picker2.redux';
 import {
-    PickerBaseQueryHandler,
     PickerContentsFolderQueryHandler,
+    PickerBaseQueryHandler,
     PickerFilesQueryHandler,
     PickerPagesQueryHandler,
     PickerSearchQueryHandler,
@@ -153,7 +153,7 @@ export const registerAccordionItems = registry => {
         label: 'content-editor:label.contentEditor.edit.fields.contentPicker.sitesRootLabel',
         defaultPath: () => '/sites',
         canDisplayItem: ({selectionNode, folderNode}) => selectionNode ? /^\/sites\/.*/.test(selectionNode.path) : /^\/sites((\/.*)|$)/.test(folderNode.path),
-        queryHandler: PickersBaseQueryHandler,
+        queryHandler: PickerBaseQueryHandler,
         config: {
             rootPath: '',
             selectableTypes: ['jnt:virtualsite'],
