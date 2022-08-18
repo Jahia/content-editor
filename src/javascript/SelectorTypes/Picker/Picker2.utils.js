@@ -1,3 +1,7 @@
+import React from 'react';
+import {SiteWeb} from '@jahia/moonstone';
+import {NodeIcon} from '@jahia/jcontent';
+
 export const getPathWithoutFile = fullPath => {
     return fullPath && fullPath.split('/').slice(0, -1).join('/');
 };
@@ -71,6 +75,33 @@ export const mergeDeep = (target, ...sources) => {
 
     return mergeDeep(target, ...sources);
 };
+
+export const getBaseSearchContextData = ({t, currentSite, accordion, node, currentPath}) => (
+    [
+        {
+            label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.search'),
+            searchPath: '',
+            isDisabled: true
+        },
+        {
+            label: currentSite.substring(0, 1).toUpperCase() + currentSite.substring(1),
+            searchPath: `/sites/${currentSite}`,
+            iconStart: <SiteWeb/>
+        },
+        {
+            label: t(accordion.label),
+            searchPath: accordion.defaultPath(currentSite),
+            iconStart: accordion.icon
+        },
+        {
+            label: node?.displayName,
+            searchPath: currentPath,
+            iconStart: <NodeIcon node={node}/>
+        }
+    ]
+        .filter((currentItem, index, array) => array.findIndex(item => item.searchPath === currentItem.searchPath) === index)
+        .filter(value => currentPath.startsWith(value.searchPath))
+);
 
 export const arrayValue = value => {
     return (typeof value === 'string') ? value.split(',') : value;

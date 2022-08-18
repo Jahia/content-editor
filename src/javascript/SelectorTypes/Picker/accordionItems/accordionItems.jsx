@@ -1,7 +1,7 @@
 import React from 'react';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {renderer} from '~/SelectorTypes/Picker/accordionItems/renderer';
-import {Collections, SiteWeb} from '@jahia/moonstone';
+import {Collections, FolderUser, SiteWeb} from '@jahia/moonstone';
 import {registry} from '@jahia/ui-extender';
 import {ContentTypeSelector, ViewModeSelector} from '@jahia/jcontent';
 import {
@@ -15,8 +15,10 @@ import {
     PickerFilesQueryHandler,
     PickerPagesQueryHandler,
     PickerSearchQueryHandler,
-    PickerTreeQueryHandler
+    PickerTreeQueryHandler,
+    PickerUserQueryHandler
 } from '~/SelectorTypes/Picker/accordionItems/queryHandlers';
+import {getBaseSearchContextData} from '~/SelectorTypes/Picker/Picker2.utils';
 
 // Todo: see with Fran�ois if it's possible to get rid of this and have every picker always come with a key
 export const getItemTarget = pickerType => {
@@ -67,20 +69,28 @@ export const registerAccordionItems = registry => {
     const searchItem = registry.get(Constants.ACCORDION_ITEM_NAME, 'search');
 
     if (pagesItem) {
-        const getSearchContextData = (currentSite, node, t) => {
+        const getSearchContextData = p => {
+            const res = getBaseSearchContextData(p);
+            const {node, t} = p;
             if (node) {
                 const pages = node.ancestors.filter(n => n.primaryNodeType.name === 'jnt:page');
                 if (pages.length > 0) {
                     const page = pages[0];
-                    return [{
+                    res.splice(2, 0, {
                         label: t(pagesItem.label),
                         searchPath: page.path,
                         iconStart: pagesItem.icon
-                    }];
+                    });
+                } else if (node.primaryNodeType.name === 'jnt:page') {
+                    res.splice(2, 1, {
+                        label: t(pagesItem.label),
+                        searchPath: node.path,
+                        iconStart: pagesItem.icon
+                    });
                 }
             }
 
-            return [];
+            return res;
         };
 
         // Page content
@@ -98,6 +108,7 @@ export const registerAccordionItems = registry => {
             ...pagesItem,
             viewSelector: null,
             tableHeader: null,
+            getPathForItem: null,
             targets: ['page:50'],
             getSearchContextData,
             queryHandler: PickerTreeQueryHandler
@@ -157,10 +168,8 @@ export const registerAccordionItems = registry => {
         config: {
             rootPath: '',
             selectableTypes: ['jnt:virtualsite'],
-            type: 'sites',
             openableTypes: ['jnt:virtualsite'],
-            rootLabel: 'Sites - This is never shown',
-            key: 'browse-tree-sites'
+            rootLabel: 'Sites - This is never shown'
         }
     }, renderer);
 
@@ -175,9 +184,46 @@ export const registerAccordionItems = registry => {
         config: {
             rootPath: '/categories',
             selectableTypes: ['jnt:category'],
-            openableTypes: ['jnt:category'],
-            type: 'categories',
-            key: 'browse-tree-files'
+            openableTypes: ['jnt:category']
+        }
+    }, renderer);
+
+    // Custom category item
+    registry.add(Constants.ACCORDION_ITEM_NAME, 'picker-user', {
+        targets: ['user:50'],
+        icon: <FolderUser/>,
+        label: 'content-editor:label.contentEditor.picker.navigation.users',
+        defaultPath: () => '/',
+        canDisplayItem: node => /^\/sites\/[^/]+\/users\/.*/.test(node.path),
+        getSearchContextData: ({currentSite, t}) => {
+            return [
+                {
+                    label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.search'),
+                    searchPath: '',
+                    isDisabled: true
+                },
+                {
+                    label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.allUsers'),
+                    searchPath: '/',
+                    iconStart: <FolderUser/>
+                },
+                {
+                    label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.globalUsers'),
+                    searchPath: '/users',
+                    iconStart: <FolderUser/>
+                },
+                ...(currentSite ? [{
+                    label: currentSite.substring(0, 1).toUpperCase() + currentSite.substring(1),
+                    searchPath: `/sites/${currentSite}/users`,
+                    iconStart: <FolderUser/>
+                }] : [])
+            ];
+        },
+        queryHandler: PickerUserQueryHandler,
+        config: {
+            rootPath: '',
+            selectableTypes: ['jnt:user'],
+            openableTypes: ['jnt:user']
         }
     }, renderer);
 

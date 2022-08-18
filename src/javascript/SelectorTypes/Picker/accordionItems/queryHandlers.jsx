@@ -5,7 +5,8 @@ import {
     ContentFoldersQueryHandler,
     FilesQueryHandler,
     PagesQueryHandler,
-    SearchQueryHandler
+    SearchQueryHandler,
+    Sql2SearchQueryHandler
 } from '@jahia/jcontent';
 import gql from 'graphql-tag';
 
@@ -25,7 +26,7 @@ export function transformQueryHandler(queryHandler) {
         getQueryParams: p => ({
             ...queryHandler.getQueryParams(p),
             selectableTypesTable: p.params.selectableTypesTable,
-            typeFilter: Array.from(new Set([...p.params.selectableTypesTable, ...p.params.openableTypes]))
+            typeFilter: Array.from(new Set([...p.params.selectableTypesTable, ...(p.params.openableTypes ? p.params.openableTypes : [])]))
         }),
         getFragments: () => [...queryHandler.getFragments(), selectableTypeFragment]
     };
@@ -37,20 +38,17 @@ export const PickerFilesQueryHandler = transformQueryHandler(FilesQueryHandler);
 
 export const PickerBaseQueryHandler = transformQueryHandler(BaseQueryHandler);
 
-export const PickerTreeQueryHandler = {
+export const PickerTreeQueryHandler = transformQueryHandler({
     ...BaseQueryHandler,
     getQuery: () => BaseDescendantsQuery,
     getQueryParams: p => ({
         ...BaseQueryHandler.getQueryParams(p),
-        selectableTypesTable: p.params.selectableTypesTable,
-        typeFilter: Array.from(new Set([...p.params.selectableTypesTable, ...p.params.openableTypes])),
         recursionTypesFilter: {multi: 'NONE', types: []},
         offset: 0,
         limit: 10000
     }),
-    isStructured: () => true,
-    getFragments: () => [...BaseQueryHandler.getFragments(), selectableTypeFragment]
-};
+    isStructured: () => true
+});
 
 export const PickerPagesQueryHandler = {
     ...PagesQueryHandler,
@@ -62,18 +60,26 @@ export const PickerPagesQueryHandler = {
     getFragments: () => [...PagesQueryHandler.getFragments(), selectableTypeFragment]
 };
 
-export const PickerSearchQueryHandler = {
+export const PickerSearchQueryHandler = transformQueryHandler({
     ...SearchQueryHandler,
     getQueryParams: p => ({
         ...SearchQueryHandler.getQueryParams(p),
-        selectableTypesTable: p.params.selectableTypesTable,
-        typeFilter: Array.from(new Set([...p.params.selectableTypesTable, 'jnt:contentFolder', 'jnt:folder'])),
         fieldFilter: {
             filters: {
                 fieldName: 'isSelectable',
                 value: 'true'
             }
         }
-    }),
-    getFragments: () => [...SearchQueryHandler.getFragments(), selectableTypeFragment]
-};
+    })
+});
+
+export const PickerUserQueryHandler = transformQueryHandler({
+    ...Sql2SearchQueryHandler,
+    getQueryParams: p => Sql2SearchQueryHandler.getQueryParams({
+        ...p,
+        params: {
+            sql2SearchFrom: 'jnt:user',
+            searchPath: '/users'
+        }
+    })
+});
