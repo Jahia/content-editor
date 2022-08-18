@@ -124,43 +124,17 @@
             "selectAll": "Select all values",
             "add": "Add"
           },
-          "imagePicker": {
-            "addImage": "Add Image",
-            "emptyInputLabel": "Select an image",
-            "notFoundImage": "Image not found",
-            "rootLabel": "Files",
-            "modalTitle": "Select an image",
-            "searchPlaceholder": "Search images"
-          },
           "contentPicker": {
-            "addContent": "Add Content",
             "notFoundContent": "Content not found",
-            "addFile": "Add File",
-            "allContentsRootLabel": "{{siteName}}",
-            "contentsRootLabel": "Contents",
-            "pagesRootLabel": "Pages",
-            "categoriesRootLabel": "Categories repository",
-            "sitesRootLabel": "Sites",
-            "usersRootLabel": "Users Workspaces",
-            "groupsRootLabel": "Groups Workspaces",
-            "siteUsersRootLabel": "{{siteName}} Users",
-            "siteGroupsRootLabel": "{{siteName}} Groups",
-            "noContent": "No Content",
-            "noSearchResults": "No search results",
-            "tableHeader": {
-              "name": "Name",
-              "type": "Type",
-              "createdBy": "Created By",
-              "lastModified": "Modification Date",
-              "subContents":"Sub contents"
-            },
             "fileUploadBtn": "Upload file",
             "modalTitle": "Select a content",
             "modalFileTitle": "Select a file",
             "modalFolderTitle": "Select a folder",
-            "emptyFolderInput": "Select a folder",
-            "searchPlaceholder": "Search content",
-            "searchFilePlaceholder": "Search file",
+            "modalCategoryTitle": "Select a category",
+            "modalImageTitle": "Select an image",
+            "modalPageTitle": "Select a page",
+            "modalSiteTitle": "Select a site",
+            "modalUserTitle": "Select a user",
             "itemsFound": "{{totalCount}} items found"
           },
           "category": {

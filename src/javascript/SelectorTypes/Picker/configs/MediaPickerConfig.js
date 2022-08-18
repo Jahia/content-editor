@@ -38,15 +38,14 @@ const usePickerInputData = uuids => {
 
 export const MediaPickerConfig = {
     pickerInput: {
-        emptyLabel: 'content-editor:label.contentEditor.edit.fields.imagePicker.emptyInputLabel',
-        notFoundLabel: 'content-editor:label.contentEditor.edit.fields.imagePicker.notFoundImage',
+        emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalImageTitle',
+        notFoundLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.notFoundImage',
         emptyIcon: <FileImage/>,
         usePickerInputData
     },
     pickerDialog: {
         view: 'Thumbnail',
-        dialogTitle: 'content-editor:label.contentEditor.edit.fields.imagePicker.modalTitle',
-        searchPlaceholder: 'content-editor:label.contentEditor.edit.fields.imagePicker.searchPlaceholder',
+        dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalImageTitle',
         displayTree: true,
         displaySiteSwitcher: true,
         displaySearch: true,
