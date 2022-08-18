@@ -81,7 +81,7 @@ export const registerAccordionItems = registry => {
                         searchPath: page.path,
                         iconStart: pagesItem.icon
                     });
-                } else {
+                } else if (node.primaryNodeType.name === 'jnt:page') {
                     res.splice(2, 1, {
                         label: t(pagesItem.label),
                         searchPath: node.path,
