@@ -152,7 +152,7 @@ export const registerAccordionItems = registry => {
         icon: <SiteWeb/>,
         label: 'content-editor:label.contentEditor.edit.fields.contentPicker.sitesRootLabel',
         defaultPath: () => '/sites',
-        canDisplayItem: ({selectionNode, folderNode}) => selectionNode ? /^\/sites\/.*/.test(selectionNode.path) : /^\/sites.*/.test(folderNode.path),
+        canDisplayItem: ({selectionNode, folderNode}) => selectionNode ? /^\/sites\/.*/.test(selectionNode.path) : /^\/sites((\/.*)|$)/.test(folderNode.path),
         queryHandler: PickersBaseQueryHandler,
         config: {
             rootPath: '',
@@ -170,7 +170,7 @@ export const registerAccordionItems = registry => {
         icon: <Collections/>,
         label: 'content-editor:label.contentEditor.picker.navigation.categories',
         defaultPath: () => '/sites/systemsite/categories',
-        canDisplayItem: ({selectedNode, folderNode}) => selectedNode ? /^\/sites\/systemsite\/categories\/.*/.test(selectedNode.path) : /^\/sites\/systemsite\/categories.*/.test(folderNode.path),
+        canDisplayItem: ({selectedNode, folderNode}) => selectedNode ? /^\/sites\/systemsite\/categories\/.*/.test(selectedNode.path) : /^\/sites\/systemsite\/categories((\/.*)|$)/.test(folderNode.path),
         queryHandler: PickerTreeQueryHandler,
         config: {
             rootPath: '/categories',
