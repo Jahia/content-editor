@@ -20,7 +20,7 @@ describe('Preview tests', () => {
     it('It shows correctly preview of edited page even if not the one currently rendered in PageComposer', () => {
         contentEditor.getPageComposer().editPage('Our Companies')
         contentEditor.switchToAdvancedMode()
-        cy.wait(2000)
+        cy.wait(5000)
         contentEditor.validateContentIsVisibleInPreview('Making a Difference')
     })
 })
