@@ -10,7 +10,7 @@ import {
     Table,
 } from '@jahia/cypress'
 import { PageComposer } from './pageComposer'
-import {ContentType } from '../fixtures/pickers/contentTypes'
+import { ContentType } from '../fixtures/pickers/contentTypes'
 import { AccordionItem } from './accordionItem'
 
 export class Picker {
@@ -102,14 +102,14 @@ export class Picker {
 
     navigateTo(accordion: AccordionItem, path: string) {
         const expandPaths = path.split('/')
-        const [selectPath] = expandPaths.splice(expandPaths.length-1, 1)
+        const [selectPath] = expandPaths.splice(expandPaths.length - 1, 1)
         expandPaths.forEach((p) => accordion.expandTreeItem(p))
         accordion.getTreeItem(selectPath).click()
         this.wait()
     }
 
-    getTableRow() {
-        return this.getTable().get().find('.moonstone-TableRow').filter(':contains("content-folder1")')
+    getTableRow(label: string) {
+        return this.getTable().get().find('.moonstone-TableRow').filter(`:contains("${label}")`)
     }
 
     getHeaderByName(name: string) {
