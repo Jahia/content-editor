@@ -94,7 +94,6 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
                 // Todo: Must implement something for pages accordion, where the selected path is not the direct parent
                 newState.path = firstMatchingAccordion.getPathForItem(selectedNode);
             } else {
-                // GetPathWithoutFile(selectedNode.path);
                 newState.path = firstMatchingAccordion.defaultPath(newState.site);
             }
         } else {
