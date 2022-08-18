@@ -56,7 +56,7 @@ jobs:
   integration-tests-standalone:
     name: Integration Tests (Standalone)
     needs: build
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
       - uses: jahia/jahia-modules-action/helper@v2
