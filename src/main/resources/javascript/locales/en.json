@@ -290,7 +290,9 @@
         "rightPanel": {
           "actionsCaption": "Non-selectable items are not listed in this view",
           "searchContextOptions" : {
-            "search": "Search in"
+            "search": "Search in",
+            "allUsers": "All users",
+            "globalUsers": "Global users"
           }
         }
       }

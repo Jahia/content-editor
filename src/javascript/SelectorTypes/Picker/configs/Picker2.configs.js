@@ -85,7 +85,8 @@ export const registerPickerConfig = ceRegistry => {
             columns: ['name']
         },
         pickerDialog: {
-            displayTree: false
+            displayTree: false,
+            displaySiteSwitcher: false
         }
     }));
 
@@ -97,6 +98,18 @@ export const registerPickerConfig = ceRegistry => {
         },
         pickerDialog: {
             displayTree: false
+        }
+    }));
+
+    ceRegistry.add(Constants.pickerConfig, 'user', mergeDeep({}, ContentPickerConfig, {
+        searchSelectorType: 'jnt:user',
+        selectableTypesTable: ['jnt:user'],
+        pickerTable: {
+            columns: ['name']
+        },
+        pickerDialog: {
+            displayTree: false,
+            displaySiteSwitcher: false
         }
     }));
 };

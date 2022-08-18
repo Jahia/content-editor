@@ -1,15 +1,15 @@
 import React from 'react';
-import {Dropdown, SearchContextInput, SiteWeb} from '@jahia/moonstone';
+import {Dropdown, SearchContextInput} from '@jahia/moonstone';
 import styles from './Search.scss';
 import {cePickerSetSearchPath, cePickerSetSearchTerm} from '~/SelectorTypes/Picker/Picker2.redux';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import {registry} from '@jahia/ui-extender';
-import {NodeIcon} from '@jahia/jcontent';
 import {useQuery} from '@apollo/react-hooks';
 import {GET_PICKER_NODE} from '~/SelectorTypes/Picker';
 import {batchActions} from 'redux-batched-actions';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
+import {getBaseSearchContextData} from '~/SelectorTypes/Picker/Picker2.utils';
 
 export const Search = () => {
     const {t} = useTranslation('content-editor');
@@ -58,35 +58,10 @@ export const Search = () => {
     };
 
     const accordion = registry.get('accordionItem', previousMode);
+    const getSearchContextData = accordion.getSearchContextData || getBaseSearchContextData;
+    const searchContextData = getSearchContextData({t, currentSite, accordion, node, currentPath});
 
-    const searchContextData = (
-        [
-            {
-                label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.search'),
-                searchPath: '',
-                isDisabled: true
-            },
-            {
-                label: currentSite.substring(0, 1).toUpperCase() + currentSite.substring(1),
-                searchPath: `/sites/${currentSite}`,
-                iconStart: <SiteWeb/>
-            },
-            {
-                label: t(accordion.label),
-                searchPath: accordion.defaultPath(currentSite),
-                iconStart: accordion.icon
-            },
-            ...(accordion && accordion.getSearchContextData ? accordion.getSearchContextData(currentSite, node, t) : []),
-            {
-                label: node?.displayName,
-                searchPath: currentPath,
-                iconStart: <NodeIcon node={node}/>
-            }
-        ]
-    ).filter((currentItem, index, array) => array.findIndex(item => item.searchPath === currentItem.searchPath) === index)
-        .filter(value => currentPath.startsWith(value.searchPath));
-
-    const currentSearchContext = searchContextData.find(value => value.searchPath === (searchPath === '' ? currentPath : searchPath));
+    const currentSearchContext = searchContextData.find(value => value.searchPath === (searchPath === '' ? currentPath : searchPath)) || searchContextData[0];
 
     return (
         <SearchContextInput
