@@ -34,9 +34,7 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
         path: state.contenteditor.picker.path,
         openPaths: state.contenteditor.picker.openPaths,
         site: state.contenteditor.picker.site,
-        contextSite: state.contenteditor.picker.contextSite,
-        jcontentMode: state.jcontent.mode,
-        jcontentPath: state.jcontent.path
+        contextSite: state.contenteditor.picker.contextSite
     }), shallowEqual);
 
     const dispatch = useDispatch();
