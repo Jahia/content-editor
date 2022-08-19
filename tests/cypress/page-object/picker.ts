@@ -108,12 +108,12 @@ export class Picker extends BaseComponent {
     }
 
     getTableRow(label: string) {
-        this.getTable().get().find('.moonstone-TableRow').first().should('be.visible')
+        this.getTable().get().find('.moonstone-TableRow').eq(1).should('be.visible')
         return this.getTable()
             .get()
             .find('.moonstone-TableRow')
             .filter(`:contains("${label}")`)
-            .scrollIntoView({ timeout: 1000, duration: 500 })
+            .scrollIntoView({ offset: { top: -150, left: 0 }, easing: 'linear', duration: 2000 })
     }
 
     getHeaderByName(name: string) {

@@ -108,6 +108,6 @@ describe('Picker - Search', () => {
         pagesTree.getHeader().should('have.attr', 'aria-expanded', 'true')
         pagesTree.getTreeItem('our-companies').find('.moonstone-selected').should('be.visible')
         picker.getAccordionItem('picker-content-folders').getHeader().should('have.attr', 'aria-expanded', 'false')
-        picker.getTableRow('all-Organic Foods').should('have.css', 'moonstone-TableRow-highlighted')
+        picker.getTableRow('all-Organic').should('have.css', 'moonstone-TableRow-highlighted')
     })
 })
