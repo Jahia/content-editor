@@ -36,7 +36,7 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
     const {layoutQuery, layoutQueryParams, result, error, loading, isStructured, refetch} = useLayoutQuery(state => {
         return ({
             mode: state.contenteditor.picker.mode,
-            siteKey: state.site,
+            siteKey: state.contenteditor.picker.site,
             params: {
                 searchTerms,
                 searchPath,

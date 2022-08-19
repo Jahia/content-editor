@@ -28,6 +28,12 @@ function getSite(selectedItem) {
     return (pathElements[1] === 'sites') ? pathElements[2] : undefined;
 }
 
+const canHandleSelection = (currentMode, accordionMode) => {
+    // Can handle selection only if we see it for the first time or accordion didn't change
+    return currentMode === '' || currentMode === accordionMode;
+}
+
+
 export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConfig, children}) => {
     const state = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
@@ -87,7 +93,7 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
         // If selection exists we don't care about previous state, need to update state in accordance with selection
         // Initialize site when opening dialog
         newState.contextSite = editorContext.site;
-        if (selectedNode) {
+        if (selectedNode && canHandleSelection(newState.mode, firstMatchingAccordion.key)) {
             // If an item is selected, preselect site/mode/path
             newState.site = getSite(selectedNode.path);
             newState.mode = firstMatchingAccordion.key;
@@ -98,7 +104,17 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
                 newState.path = firstMatchingAccordion.defaultPath(newState.site);
             }
         } else {
-            if (previousState.current.contextSite !== newState.contextSite || newState.site !== newState.contextSite) {
+            // Have to do this otherwise we get wrong accordion and wrong mode when we have selection and switch accordions (pages => content-folders)
+            // would be nice to consolidate the calls but we need to know mode before handling selection
+            firstMatchingAccordion = allAccordionItems.find(accord => {
+                return (!accord.isEnabled || accord.isEnabled(newState.site)) && accord.canDisplayItem && accord.canDisplayItem({folderNode: currentFolderInfo.node});
+            })
+
+            if (!firstMatchingAccordion) {
+                firstMatchingAccordion = allAccordionItems[0];
+            }
+
+            if (previousState.current.contextSite !== newState.contextSite) {
                 // If context site has changed, reset to the current site (otherwise keep current site)
                 newState.site = pickerConfig.targetSite ? pickerConfig.targetSite : newState.contextSite;
             }
@@ -112,6 +128,7 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
                 defaultPath;
         }
 
+        console.log(newState.path, newState.mode);
         const accordionItems = allAccordionItems
             .filter(accordionItem => !accordionItem.isEnabled || accordionItem.isEnabled(newState.site));
         newState.modes = accordionItems.map(item => item.key);
