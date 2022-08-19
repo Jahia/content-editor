@@ -6,6 +6,7 @@ import {
     getComponent,
     getComponentByAttr,
     getComponentByRole,
+    getComponentBySelector,
     SecondaryNav,
     Table,
 } from '@jahia/cypress'
@@ -72,7 +73,6 @@ export class Picker extends BaseComponent {
 
     cancel() {
         getComponentByAttr(Button, 'data-sel-picker-dialog-action', 'cancel').click() // cancel picker
-        getComponentByRole(Button, 'backButton').click() // cancel create content
     }
 
     select() {
@@ -139,5 +139,21 @@ export class Picker extends BaseComponent {
                     selectRow(elems.eq(i))
                 }
             })
+    }
+
+    search(query: string) {
+        cy.get('input[role="search"]').should('be.visible').click().type(query, { waitForAnimations: true, delay: 200 })
+    }
+
+    getSearchInput() {
+        return cy.get('input[role="search"]').should('be.visible')
+    }
+
+    verifyResultsLength(length: number) {
+        cy.get('.moonstone-tablePagination').should('be.visible').and('contain', `of ${length}`)
+    }
+
+    switchSearchContext(context: string) {
+        getComponentBySelector(Dropdown, '.moonstone-searchContext-element').select(context)
     }
 }

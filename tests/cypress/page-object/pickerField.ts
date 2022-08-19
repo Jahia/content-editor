@@ -1,4 +1,4 @@
-import { BaseComponent, getComponentByAttr, getComponentByRole } from '@jahia/cypress'
+import { BaseComponent, Button, getComponentByAttr, getComponentByRole } from '@jahia/cypress'
 import { PageComposer } from './pageComposer'
 import { ContentType } from '../fixtures/pickers/contentTypes'
 import { Picker } from './picker'
@@ -11,6 +11,22 @@ export class PickerField extends BaseComponent {
         const r = getComponentByAttr(PickerField, 'data-sel-content-editor-field', contentType.fieldNodeType)
         r.contentType = contentType
         return r
+    }
+
+    static openPickerDialogFromExistingContent(
+        pageComposer: PageComposer,
+        contentText: string,
+        fieldNodeName: string,
+    ): Picker {
+        pageComposer.editComponentByText(contentText)
+        cy.get('#contenteditor-dialog-title').should('be.visible').and('contain', contentText)
+        getComponentByAttr(BaseComponent, 'data-sel-content-editor-field', fieldNodeName)
+            .get()
+            .within(() => {
+                cy.get('[data-sel-field-picker-action="openPicker"]').click()
+            })
+        getComponentByAttr(Button, 'data-sel-picker-dialog-action', 'cancel').get().should('be.visible')
+        return getComponentByRole(Picker, 'picker-dialog')
     }
 
     contentType: ContentType
