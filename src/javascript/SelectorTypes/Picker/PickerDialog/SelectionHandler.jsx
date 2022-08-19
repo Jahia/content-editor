@@ -11,6 +11,7 @@ import {
     cePickerOpenPaths,
     cePickerPath,
     cePickerSetSelection,
+    cePickerSetSort,
     cePickerSite
 } from '~/SelectorTypes/Picker/Picker2.redux';
 import {registry} from '@jahia/ui-extender';
@@ -117,10 +118,15 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
 
         newState.openPaths = [...new Set([...newState.openPaths, ...getDetailedPathArray(getPathWithoutFile(newState.path), newState.site)])];
 
+        if (previousState.current.mode !== newState.mode && firstMatchingAccordion.defaultSort) {
+            newState.sort = firstMatchingAccordion.defaultSort;
+        }
+
         const actions = ([
             (newState.site !== state.site) && cePickerSite(newState.site),
             (newState.contextSite !== state.contextSite) && cePickerContextSite(newState.contextSite),
             (newState.mode !== state.mode) && cePickerMode(newState.mode),
+            (newState.sort !== state.sort) && cePickerSetSort(newState.sort),
             (newState.modes.length !== state.modes?.length || newState.modes.some(mode => !state.modes.includes(mode))) && cePickerModes(newState.modes),
             (newState.path !== state.path) && cePickerPath(newState.path),
             (newState.openPaths.length !== state.openPaths.length || newState.openPaths.some(value => state.openPaths.indexOf(value) === -1)) && cePickerOpenPaths(newState.openPaths)

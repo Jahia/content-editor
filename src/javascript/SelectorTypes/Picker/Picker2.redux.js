@@ -51,17 +51,14 @@ export const registerPickerReducer = registry => {
     const initialState = {
         openPaths: [],
         pickerKey: '',
-        mode: 'picker-pages',
-        modes: ['picker-pages'],
-        preSearchModeMemo: 'picker-pages',
+        mode: '',
+        modes: [],
+        preSearchModeMemo: '',
         site: 'systemsite',
         contextSite: 'systemsite',
         path: '/sites/systemsite',
         pagination: {currentPage: 0, pageSize: 25},
-        sort: {
-            order: 'ASC',
-            orderBy: 'lastModified.value'
-        },
+        sort: {orderBy: ''},
         selection: [],
         tableView: {
             viewMode: Constants.tableView.mode.LIST,

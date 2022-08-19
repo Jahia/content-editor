@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo} from 'react';
+import React, {useEffect, useMemo, useRef} from 'react';
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
 import {useTranslation} from 'react-i18next';
@@ -105,11 +105,15 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
         useExpanded
     );
 
+    const firstLoad = useRef(true);
     useEffect(() => {
-        if (isStructured) {
-            toggleRowExpanded(0, true);
+        if (isStructured && firstLoad.current) {
+            firstLoad.current = rows.length === 0;
+            rows.forEach((r, i) => {
+                toggleRowExpanded(i, true);
+            });
         }
-    }, [rows, isStructured, toggleRowExpanded]);
+    }, [rows, isStructured, toggleRowExpanded, firstLoad]);
 
     const doubleClickNavigation = node => {
         const actions = [];

@@ -42,14 +42,14 @@ const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
                 <Typography variant="heading">{t(pickerConfig.pickerDialog.dialogTitle)}</Typography>
                 <div className={clsx('flexRow_nowrap', 'alignCenter', css.headerActions)}>
                     {!pickerConfig.pickerDialog.displayTree && pickerConfig.pickerDialog.displaySiteSwitcher && <PickerSiteSwitcher pickerConfig={pickerConfig}/>}
-                    <Search pickerConfig={pickerConfig}/>
+                    {mode !== '' && <Search pickerConfig={pickerConfig}/>}
                     <div className="flexFluid"/>
                     <DisplayActions target={actionsTarget} render={ButtonRenderer} path={path}/>
                     {viewSelector}
                 </div>
             </header>
             <div className={clsx('flexFluid', 'flexCol_nowrap', css.body)}>
-                <ContentLayout pickerConfig={pickerConfig}/>
+                {mode !== '' && <ContentLayout pickerConfig={pickerConfig}/>}
             </div>
 
             <SelectionTable selection={selection} expanded={selectionExpanded}/>
