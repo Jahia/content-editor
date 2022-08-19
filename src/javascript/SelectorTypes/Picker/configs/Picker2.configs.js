@@ -110,7 +110,8 @@ export const registerPickerConfig = ceRegistry => {
         },
         pickerDialog: {
             dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalSiteTitle',
-            displayTree: false
+            displayTree: false,
+            displaySiteSwitcher: false
         }
     }));
 
