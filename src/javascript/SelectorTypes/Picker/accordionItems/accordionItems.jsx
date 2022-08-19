@@ -130,6 +130,7 @@ export const registerAccordionItems = registry => {
         registry.add(Constants.ACCORDION_ITEM_NAME, 'picker-content-folders-tree', {
             ...contentFoldersItem,
             targets: ['contentfolder:60'],
+            defaultPath: site => `/sites/${site}`,
             getPathForItem: null,
             queryHandler: PickerTreeQueryHandler
         }, renderer);
@@ -149,6 +150,7 @@ export const registerAccordionItems = registry => {
         registry.add(Constants.ACCORDION_ITEM_NAME, 'picker-media-tree', {
             ...mediaItem,
             targets: ['folder:70'],
+            defaultPath: site => `/sites/${site}`,
             getPathForItem: null,
             defaultSort: {orderBy: 'lastModified.value', order: 'DESC'},
             queryHandler: PickerTreeQueryHandler
