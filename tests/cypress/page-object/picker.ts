@@ -13,9 +13,8 @@ import { PageComposer } from './pageComposer'
 import { ContentType } from '../fixtures/pickers/contentTypes'
 import { AccordionItem } from './accordionItem'
 
-export class Picker {
+export class Picker extends BaseComponent {
     pageComposer: PageComposer
-    pickerDialog: BaseComponent
     siteSwitcher: Dropdown
 
     secondaryNav: SecondaryNav
@@ -23,39 +22,33 @@ export class Picker {
     table: Table
     selectionTable: Table
 
-    static ADD_FIELD_SEL = 'button[data-sel-action="addField"]'
-
-    constructor(pageComposer: PageComposer) {
-        this.pageComposer = pageComposer
-    }
-
-    /*
-     * Open picker by adding content type for a selected field
-     * @param contentTypeKey key as defined in fixtures/pickers/contentTypes definition
-     */
-    open(contentType: ContentType) {
-        this.pageComposer.createContent(contentType.typeName)
-        const parent = this.getField(contentType.fieldNodeType)
-        const buttonSelector = contentType.multiple ? Picker.ADD_FIELD_SEL : 'button'
-        parent.get().find(buttonSelector).click()
-        this.pickerDialog = getComponentByRole(BaseComponent, 'picker-dialog')
-        return this
-    }
-
-    getField(fieldNodeType: string) {
-        return getComponentByAttr(BaseComponent, 'data-sel-content-editor-field', fieldNodeType)
-    }
-
-    get() {
-        return this.pickerDialog
-    }
+    // /*
+    //  * Open picker by adding content type for a selected field
+    //  * @param contentTypeKey key as defined in fixtures/pickers/contentTypes definition
+    //  */
+    // open(contentType: ContentType) {
+    //     this.pageComposer.createContent(contentType.typeName)
+    //     const parent = this.getField(contentType.fieldNodeType)
+    //     const buttonSelector = contentType.multiple ? Picker.ADD_FIELD_SEL : 'button'
+    //     parent.get().find(buttonSelector).click()
+    //     this.pickerDialog = getComponentByRole(BaseComponent, 'picker-dialog')
+    //     return this
+    // }
+    //
+    // getField(fieldNodeType: string) {
+    //     return getComponentByAttr(BaseComponent, 'data-sel-content-editor-field', fieldNodeType)
+    // }
+    //
+    // get() {
+    //     return this.pickerDialog
+    // }
 
     getSiteSwitcher() {
         if (!this.siteSwitcher) {
             this.siteSwitcher = getComponentByAttr(Dropdown, 'data-cm-role', 'site-switcher')
         }
         // make sure dialog is open before returning siteSwitcher
-        return this.pickerDialog && this.siteSwitcher
+        return this && this.siteSwitcher
     }
 
     getAccordion(): Accordion {
@@ -64,6 +57,10 @@ export class Picker {
             this.accordion = getComponent(Accordion, secondaryNav)
         }
         return this.accordion
+    }
+
+    assertHasNoTree(): void {
+        getComponent(SecondaryNav, null, (el) => expect(el).to.not.exist)
     }
 
     /**
@@ -84,14 +81,14 @@ export class Picker {
 
     getTable() {
         if (!this.table) {
-            this.table = getComponentByAttr(Table, 'data-cm-role', 'table-content-list', this.pickerDialog)
+            this.table = getComponentByAttr(Table, 'data-cm-role', 'table-content-list', this)
         }
         return this.table
     }
 
     getSelectionTable() {
         if (!this.selectionTable) {
-            this.selectionTable = getComponentByAttr(Table, 'data-cm-role', 'selection-table', this.pickerDialog)
+            this.selectionTable = getComponentByAttr(Table, 'data-cm-role', 'selection-table', this)
         }
         return this.selectionTable
     }

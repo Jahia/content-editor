@@ -34,6 +34,116 @@ const contentTypes: ContentTypes = {
         fieldNodeType: 'qant:pickersMultiple_imagepicker',
         multiple: true,
     },
+    filepicker: {
+        typeName: 'Pickers',
+        fieldNodeType: 'qant:pickers_filepicker',
+        multiple: false,
+    },
+    imagepicker: {
+        typeName: 'Pickers',
+        fieldNodeType: 'qant:pickers_imagepicker',
+        multiple: false,
+    },
+    folderpicker: {
+        typeName: 'Pickers',
+        fieldNodeType: 'qant:pickers_folderpicker',
+        multiple: false,
+    },
+    contentfolderpicker: {
+        typeName: 'Pickers',
+        fieldNodeType: 'qant:pickers_contentfolderpicker',
+        multiple: false,
+    },
+    portletpicker: {
+        typeName: 'Pickers',
+        fieldNodeType: 'qant:pickers_portletpicker',
+        multiple: false,
+    },
+    editorialpicker: {
+        typeName: 'Pickers',
+        fieldNodeType: 'qant:pickers_editorialpicker',
+        multiple: false,
+    },
+    editoriallinkpicker: {
+        typeName: 'Pickers',
+        fieldNodeType: 'qant:pickers_editoriallinkpicker',
+        multiple: false,
+    },
+    categorypicker: {
+        typeName: 'Pickers',
+        fieldNodeType: 'qant:pickers_categorypicker',
+        multiple: false,
+    },
+    sitepicker: {
+        typeName: 'Pickers',
+        fieldNodeType: 'qant:pickers_sitepicker',
+        multiple: false,
+    },
+    userpicker: {
+        typeName: 'Pickers',
+        fieldNodeType: 'qant:pickers_userpicker',
+        multiple: false,
+    },
+    usergrouppicker: {
+        typeName: 'Pickers',
+        fieldNodeType: 'qant:pickers_usergrouppicker',
+        multiple: false,
+    },
+    filepickerMultiple: {
+        typeName: 'Pickers Multiple',
+        fieldNodeType: 'qant:pickersMultiple_filepicker',
+        multiple: false,
+    },
+    imagepickerMultiple: {
+        typeName: 'Pickers Multiple',
+        fieldNodeType: 'qant:pickersMultiple_imagepicker',
+        multiple: false,
+    },
+    folderpickerMultiple: {
+        typeName: 'Pickers Multiple',
+        fieldNodeType: 'qant:pickersMultiple_folderpicker',
+        multiple: false,
+    },
+    contentfolderpickerMultiple: {
+        typeName: 'Pickers Multiple',
+        fieldNodeType: 'qant:pickersMultiple_contentfolderpicker',
+        multiple: false,
+    },
+    portletpickerMultiple: {
+        typeName: 'Pickers Multiple',
+        fieldNodeType: 'qant:pickersMultiple_portletpicker',
+        multiple: false,
+    },
+    editorialpickerMultiple: {
+        typeName: 'Pickers Multiple',
+        fieldNodeType: 'qant:pickersMultiple_editorialpicker',
+        multiple: false,
+    },
+    editoriallinkpickerMultiple: {
+        typeName: 'Pickers Multiple',
+        fieldNodeType: 'qant:pickersMultiple_editoriallinkpicker',
+        multiple: false,
+    },
+    categorypickerMultiple: {
+        typeName: 'Pickers Multiple',
+        fieldNodeType: 'qant:pickersMultiple_categorypicker',
+        multiple: false,
+    },
+    sitepickerMultiple: {
+        typeName: 'Pickers Multiple',
+        fieldNodeType: 'qant:pickersMultiple_sitepicker',
+        multiple: false,
+    },
+    userpickerMultiple: {
+        typeName: 'Pickers Multiple',
+        fieldNodeType: 'qant:pickersMultiple_userpicker',
+        multiple: false,
+    },
+    usergrouppickerMultiple: {
+        typeName: 'Pickers Multiple',
+        fieldNodeType: 'qant:pickersMultiple_usergrouppicker',
+        multiple: false,
+    },
 }
 
 export { contentTypes, ContentType }
