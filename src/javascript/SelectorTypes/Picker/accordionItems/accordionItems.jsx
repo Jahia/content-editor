@@ -99,6 +99,7 @@ export const registerAccordionItems = registry => {
             viewSelector: <ViewModeSelector {...viewModeSelectorProps}/>,
             tableHeader: <ContentTypeSelector {...contentTypeSelectorProps}/>,
             targets: ['default:50', 'editorial:50', 'editoriallink:50'],
+            defaultSort: {orderBy: 'lastModified.value', order: 'DESC'},
             getSearchContextData,
             queryHandler: PickerPagesQueryHandler
         }, renderer);
@@ -110,6 +111,7 @@ export const registerAccordionItems = registry => {
             tableHeader: null,
             getPathForItem: null,
             targets: ['page:50'],
+            defaultSort: {orderBy: ''},
             getSearchContextData,
             queryHandler: PickerTreeQueryHandler
         }, renderer);
@@ -128,6 +130,7 @@ export const registerAccordionItems = registry => {
         registry.add(Constants.ACCORDION_ITEM_NAME, 'picker-content-folders-tree', {
             ...contentFoldersItem,
             targets: ['contentfolder:60'],
+            getPathForItem: null,
             queryHandler: PickerTreeQueryHandler
         }, renderer);
     } else {
@@ -139,12 +142,15 @@ export const registerAccordionItems = registry => {
             ...mediaItem,
             viewSelector: false, // Todo: implement thumbnail and enable selector : <FileModeSelector {...fileModeSelectorProps}/>,
             targets: ['default:70', 'image:70', 'file:70'],
+            defaultSort: {orderBy: 'lastModified.value', order: 'DESC'},
             queryHandler: PickerFilesQueryHandler
         }, renderer);
 
         registry.add(Constants.ACCORDION_ITEM_NAME, 'picker-media-tree', {
             ...mediaItem,
             targets: ['folder:70'],
+            getPathForItem: null,
+            defaultSort: {orderBy: 'lastModified.value', order: 'DESC'},
             queryHandler: PickerTreeQueryHandler
         }, renderer);
     } else {
@@ -164,6 +170,7 @@ export const registerAccordionItems = registry => {
         label: 'content-editor:label.contentEditor.edit.fields.contentPicker.sitesRootLabel',
         defaultPath: () => '/sites',
         canDisplayItem: ({selectionNode, folderNode}) => selectionNode ? /^\/sites\/.*/.test(selectionNode.path) : /^\/sites((\/.*)|$)/.test(folderNode.path),
+        defaultSort: {orderBy: 'displayName', order: 'ASC'},
         queryHandler: PickerBaseQueryHandler,
         config: {
             rootPath: '',
@@ -180,6 +187,7 @@ export const registerAccordionItems = registry => {
         label: 'content-editor:label.contentEditor.picker.navigation.categories',
         defaultPath: () => '/sites/systemsite/categories',
         canDisplayItem: ({selectedNode, folderNode}) => selectedNode ? /^\/sites\/systemsite\/categories\/.*/.test(selectedNode.path) : /^\/sites\/systemsite\/categories((\/.*)|$)/.test(folderNode.path),
+        defaultSort: {orderBy: 'displayName', order: 'ASC'},
         queryHandler: PickerTreeQueryHandler,
         config: {
             rootPath: '/categories',
@@ -219,6 +227,7 @@ export const registerAccordionItems = registry => {
                 }] : [])
             ];
         },
+        defaultSort: {orderBy: 'displayName', order: 'ASC'},
         queryHandler: PickerUserQueryHandler,
         config: {
             rootPath: '',
