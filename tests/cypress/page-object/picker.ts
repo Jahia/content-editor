@@ -82,6 +82,7 @@ export class Picker extends BaseComponent {
     getTable() {
         if (!this.table) {
             this.table = getComponentByAttr(Table, 'data-cm-role', 'table-content-list', this)
+            this.table.get().should('be.visible')
         }
         return this.table
     }
@@ -89,6 +90,7 @@ export class Picker extends BaseComponent {
     getSelectionTable() {
         if (!this.selectionTable) {
             this.selectionTable = getComponentByAttr(Table, 'data-cm-role', 'selection-table', this)
+            this.selectionTable.get().should('be.visible')
         }
         return this.selectionTable
     }

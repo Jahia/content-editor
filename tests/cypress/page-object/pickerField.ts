@@ -34,6 +34,7 @@ export class PickerField extends BaseComponent {
     open(): Picker {
         const buttonSelector = this.contentType.multiple ? PickerField.ADD_FIELD_SEL : '[data-sel-field-picker-action]'
         this.get().find(buttonSelector).click()
+        getComponentByAttr(Button, 'data-sel-picker-dialog-action', 'cancel').get().should('be.visible')
         return getComponentByRole(Picker, 'picker-dialog')
     }
 
