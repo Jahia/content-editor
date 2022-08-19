@@ -82,7 +82,7 @@ export class Picker extends BaseComponent {
     getTable() {
         if (!this.table) {
             this.table = getComponentByAttr(Table, 'data-cm-role', 'table-content-list', this)
-            this.table.get().should('be.visible')
+            this.table.get().find('.moonstone-TableRow').should('be.visible')
         }
         return this.table
     }
@@ -90,7 +90,7 @@ export class Picker extends BaseComponent {
     getSelectionTable() {
         if (!this.selectionTable) {
             this.selectionTable = getComponentByAttr(Table, 'data-cm-role', 'selection-table', this)
-            this.selectionTable.get().should('be.visible')
+            this.selectionTable.get().find('.moonstone-TableRow').should('be.visible')
         }
         return this.selectionTable
     }
@@ -108,7 +108,12 @@ export class Picker extends BaseComponent {
     }
 
     getTableRow(label: string) {
-        return this.getTable().get().find('.moonstone-TableRow').filter(`:contains("${label}")`)
+        this.getTable().get().find('.moonstone-TableRow').first().should('be.visible')
+        return this.getTable()
+            .get()
+            .find('.moonstone-TableRow')
+            .filter(`:contains("${label}")`)
+            .scrollIntoView({ timeout: 1000, duration: 500 })
     }
 
     getHeaderByName(name: string) {
@@ -143,8 +148,21 @@ export class Picker extends BaseComponent {
             })
     }
 
-    search(query: string) {
-        cy.get('input[role="search"]').should('be.visible').click().type(query, { waitForAnimations: true, delay: 200 })
+    search(query?: string) {
+        if (query === undefined) {
+            cy.get('input[role="search"]').should('be.visible').click().clear({ waitForAnimations: true })
+            this.table = undefined
+            this.selectionTable = undefined
+            cy.get('[data-cm-role="table-content-list"]').find('.moonstone-TableRow').should('be.visible')
+        } else {
+            cy.get('input[role="search"]')
+                .should('be.visible')
+                .click()
+                .type(query, { waitForAnimations: true, delay: 200 })
+            this.table = undefined
+            this.selectionTable = undefined
+            cy.get('[data-cm-role="table-content-list"]').find('.moonstone-TableRow').should('be.visible')
+        }
     }
 
     getSearchInput() {

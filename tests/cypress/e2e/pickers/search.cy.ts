@@ -80,4 +80,34 @@ describe('Picker - Search', () => {
         picker.verifyResultsLength(1)
         picker.getTableRow('Taber').should('be.visible')
     })
+
+    it('Editorial Picker- Search for tab - ensure all accordions are closed', () => {
+        const picker = PickerField.openPickerDialogFromExistingContent(
+            contentEditor.getPageComposer(),
+            'Leading by Example',
+            'jdmix:hasLink_internalLink',
+        )
+        picker.search('tab')
+        picker.verifyResultsLength(1)
+        picker.getTableRow('Taber').should('be.visible')
+        picker.getAccordionItem('picker-pages').getHeader().should('have.attr', 'aria-expanded', 'false')
+        picker.getAccordionItem('picker-content-folders').getHeader().should('have.attr', 'aria-expanded', 'false')
+    })
+
+    it('Editorial Picker- Search for tab and them empty search - ensure previous context is restored', () => {
+        const picker = PickerField.openPickerDialogFromExistingContent(
+            contentEditor.getPageComposer(),
+            'Leading by Example',
+            'jdmix:hasLink_internalLink',
+        )
+        picker.search('tab')
+        picker.verifyResultsLength(1)
+        picker.getTableRow('Taber').should('be.visible')
+        picker.search()
+        const pagesTree = picker.getAccordionItem('picker-pages')
+        pagesTree.getHeader().should('have.attr', 'aria-expanded', 'true')
+        pagesTree.getTreeItem('our-companies').find('.moonstone-selected').should('be.visible')
+        picker.getAccordionItem('picker-content-folders').getHeader().should('have.attr', 'aria-expanded', 'false')
+        picker.getTableRow('all-Organic Foods').should('have.css', 'moonstone-TableRow-highlighted')
+    })
 })
