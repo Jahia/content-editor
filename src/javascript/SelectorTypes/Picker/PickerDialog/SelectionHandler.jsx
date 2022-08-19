@@ -44,6 +44,7 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
         contextSite: state.contenteditor.picker.contextSite
     }), shallowEqual);
 
+    console.log('CE before', state.path, state.mode, state.site, state.openPaths);
     const dispatch = useDispatch();
 
     const currentFolderInfo = useNodeInfo({path: state.path}, {skip: !state.path});
@@ -128,17 +129,17 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
                 defaultPath;
         }
 
-        console.log(newState.path, newState.mode);
         const accordionItems = allAccordionItems
             .filter(accordionItem => !accordionItem.isEnabled || accordionItem.isEnabled(newState.site));
         newState.modes = accordionItems.map(item => item.key);
 
-        newState.openPaths = [...new Set([...newState.openPaths, ...getDetailedPathArray(getPathWithoutFile(newState.path), newState.site)])];
+        newState.openPaths = [...new Set([...newState.openPaths, ...getDetailedPathArray(getPathWithoutFile(newState.path), newState.site)])].filter(p => p.includes(`/${newState.site}`));
 
         if (previousState.current.mode !== newState.mode && firstMatchingAccordion.defaultSort) {
             newState.sort = firstMatchingAccordion.defaultSort;
         }
 
+        console.log('CE', newState.path, newState.mode, newState.site, newState.openPaths);
         const actions = ([
             (newState.site !== state.site) && cePickerSite(newState.site),
             (newState.contextSite !== state.contextSite) && cePickerContextSite(newState.contextSite),
