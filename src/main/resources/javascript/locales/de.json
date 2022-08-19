@@ -124,43 +124,17 @@
             "selectAll": "Alle Werte auswählen",
             "add": "Hinzufügen"
           },
-          "imagePicker": {
-            "addImage": "Bild hinzufügen",
-            "emptyInputLabel": "Bild auswählen",
-            "notFoundImage": "Bild nicht gefunden",
-            "rootLabel": "Dateien",
-            "modalTitle": "Bild auswählen",
-            "searchPlaceholder": "Bilder suchen"
-          },
           "contentPicker": {
-            "addContent": "Inhalt hinzufügen",
             "notFoundContent": "Datei nicht gefunden",
-            "addFile": "Datei hinzufügen",
-            "contentsRootLabel": "Contents",
-            "allContentsRootLabel": "{{siteName}}",
-            "pagesRootLabel": "Seiten",
-            "categoriesRootLabel": "Kategorien Repository",
-            "sitesRootLabel": "Sites",
-            "usersRootLabel": "Benutzer-Workspaces",
-            "groupsRootLabel": "Gruppen-Workspaces",
-            "siteUsersRootLabel": "Benutzer-{{siteName}}",
-            "siteGroupsRootLabel": "Gruppen-{{siteName}}",
-            "noContent": "Kein Content",
-            "noSearchResults": "Keine Suchergebnisse",
-            "tableHeader": {
-              "name": "Name",
-              "type": "Typname",
-              "createdBy": "Erstellt von",
-              "lastModified": "Datum der letzten Änderung",
-              "subContents":"Unterinhalte"
-            },
             "fileUploadBtn": "Datei hochladen",
             "modalTitle": "Content auswählen",
             "modalFileTitle": "Datei auswählen",
             "modalFolderTitle": "Ordner auswählen",
-            "emptyFolderInput": "Ordner auswählen",
-            "searchPlaceholder": "Content suchen",
-            "searchFilePlaceholder": "Datei suchen",
+            "modalCategoryTitle": "Kategorien auswählen",
+            "modalImageTitle": "Bild auswählen",
+            "modalPageTitle": "Seite auswählen",
+            "modalSiteTitle": "Site auswählen",
+            "modalUserTitle": "Benutzer auswählen",
             "itemsFound": "{{totalCount}} Einträge gefunden"
           },
           "category": {

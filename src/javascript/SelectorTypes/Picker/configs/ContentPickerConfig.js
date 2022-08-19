@@ -33,7 +33,7 @@ const usePickerInputData = uuids => {
 
 export const ContentPickerConfig = {
     pickerInput: {
-        emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.addContent',
+        emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalTitle',
         notFoundLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.notFoundContent',
         emptyIcon: <File/>,
         usePickerInputData
@@ -41,7 +41,6 @@ export const ContentPickerConfig = {
     pickerDialog: {
         view: 'List',
         dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalTitle',
-        searchPlaceholder: 'content-editor:label.contentEditor.edit.fields.contentPicker.searchPlaceholder',
         displayTree: true,
         displaySiteSwitcher: true,
         displaySearch: true,

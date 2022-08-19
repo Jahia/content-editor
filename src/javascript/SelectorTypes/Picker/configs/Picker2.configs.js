@@ -28,11 +28,10 @@ export const registerPickerConfig = ceRegistry => {
 
     ceRegistry.add(Constants.pickerConfig, 'folder', mergeDeep({}, ContentPickerConfig, {
         pickerInput: {
-            emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.emptyFolderInput'
+            emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalFolderTitle'
         },
         pickerDialog: {
-            dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalFileTitle',
-            searchPlaceholder: 'content-editor:label.contentEditor.edit.fields.contentPicker.searchFilePlaceholder',
+            dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalFolderTitle',
             displayTree: false
         },
         pickerTable: {
@@ -43,6 +42,9 @@ export const registerPickerConfig = ceRegistry => {
     }));
 
     ceRegistry.add(Constants.pickerConfig, 'contentfolder', mergeDeep({}, ContentPickerConfig, {
+        pickerInput: {
+            emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalFolderTitle'
+        },
         pickerDialog: {
             dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalFolderTitle',
             displayTree: false
@@ -55,7 +57,11 @@ export const registerPickerConfig = ceRegistry => {
     }));
 
     ceRegistry.add(Constants.pickerConfig, 'page', mergeDeep({}, ContentPickerConfig, {
+        pickerInput: {
+            emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalPageTitle'
+        },
         pickerDialog: {
+            dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalPageTitle',
             displayTree: false
         },
         pickerTable: {
@@ -67,11 +73,10 @@ export const registerPickerConfig = ceRegistry => {
 
     ceRegistry.add(Constants.pickerConfig, 'file', mergeDeep({}, ContentPickerConfig, {
         pickerInput: {
-            emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.addFile'
+            emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalFileTitle'
         },
         pickerDialog: {
-            dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalFileTitle',
-            searchPlaceholder: 'content-editor:label.contentEditor.edit.fields.contentPicker.searchFilePlaceholder'
+            dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalFileTitle'
         },
         searchSelectorType: 'jnt:file',
         selectableTypesTable: ['jnt:file']
@@ -84,7 +89,11 @@ export const registerPickerConfig = ceRegistry => {
         pickerTable: {
             columns: ['name']
         },
+        pickerInput: {
+            emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalCategoryTitle'
+        },
         pickerDialog: {
+            dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalCategoryTitle',
             displayTree: false,
             displaySiteSwitcher: false
         }
@@ -96,7 +105,11 @@ export const registerPickerConfig = ceRegistry => {
         pickerTable: {
             columns: ['name']
         },
+        pickerInput: {
+            emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalSiteTitle'
+        },
         pickerDialog: {
+            dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalSiteTitle',
             displayTree: false
         }
     }));
@@ -107,7 +120,11 @@ export const registerPickerConfig = ceRegistry => {
         pickerTable: {
             columns: ['name']
         },
+        pickerInput: {
+            emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalUserTitle'
+        },
         pickerDialog: {
+            dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalUserTitle',
             displayTree: false,
             displaySiteSwitcher: false
         }

@@ -10,7 +10,6 @@ export const configPropType = PropTypes.shape({
     pickerDialog: PropTypes.shape({
         view: PropTypes.string.isRequired,
         dialogTitle: PropTypes.string.isRequired,
-        searchPlaceholder: PropTypes.string.isRequired,
         itemSelectionAdapter: PropTypes.func,
         displayTree: PropTypes.bool
     }).isRequired,

@@ -39,7 +39,7 @@ const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
     return (
         <div className="flexFluid flexCol_nowrap">
             <header className={clsx('flexCol_nowrap', css.header)}>
-                <Typography variant="heading">Select content</Typography>
+                <Typography variant="heading">{t(pickerConfig.pickerDialog.dialogTitle)}</Typography>
                 <div className={clsx('flexRow_nowrap', 'alignCenter', css.headerActions)}>
                     {!pickerConfig.pickerDialog.displayTree && pickerConfig.pickerDialog.displaySiteSwitcher && <PickerSiteSwitcher pickerConfig={pickerConfig}/>}
                     <Search pickerConfig={pickerConfig}/>

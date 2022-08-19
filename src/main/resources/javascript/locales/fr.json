@@ -124,43 +124,17 @@
             "selectAll": "Sélectionnez toutes les valeurs",
             "add": "Ajouter"
           },
-          "imagePicker": {
-            "addImage": "Ajouter une image",
-            "emptyInputLabel": "Sélectionner une image",
-            "notFoundImage": "L’image n’a pas été trouvée",
-            "rootLabel": "Fichiers",
-            "modalTitle": "Sélectionner une image",
-            "searchPlaceholder": "Chercher une image"
-          },
           "contentPicker": {
-            "addContent": "Ajouter un contenu",
             "notFoundContent": "Le contenu n’a pas été trouvé",
-            "addFile": "Ajouter un fichier",
-            "contentsRootLabel": "Contenus",
-            "allContentsRootLabel": "{{siteName}}",
-            "pagesRootLabel": "Pages",
-            "categoriesRootLabel": "Répertoire des catégories",
-            "sitesRootLabel": "Sites",
-            "usersRootLabel": "Espace des utilisateurs",
-            "groupsRootLabel": "Espace des groupes",
-            "siteUsersRootLabel": "Utilisateurs {{siteName}}",
-            "siteGroupsRootLabel": "Groupes {{siteName}}",
-            "noContent": "Aucun contenu",
-            "noSearchResults": "Aucun résultat de recherche",
-            "tableHeader": {
-              "name": "Nom",
-              "type": "Type",
-              "createdBy": "Créé par",
-              "lastModified": "Date de modification",
-              "subContents":"Sous contenus"
-            },
             "fileUploadBtn": "Uploader un fichier",
             "modalTitle": "Sélectionner un contenu",
             "modalFileTitle": "Sélectionner un fichier",
             "modalFolderTitle": "Sélectionner un dossier",
-            "emptyFolderInput": "Sélectionner un dossier",
-            "searchPlaceholder": "Chercher un contenu",
-            "searchFilePlaceholder": "Chercher un fichier",
+            "modalCategoryTitle": "Sélectionner une catégorie",
+            "modalImageTitle": "Sélectionner an image",
+            "modalPageTitle": "Sélectionner une page",
+            "modalSiteTitle": "Sélectionner un site",
+            "modalUserTitle": "Sélectionner un utilisateur",
             "itemsFound": "{{totalCount}} éléments trouvés"
           },
           "category": {
