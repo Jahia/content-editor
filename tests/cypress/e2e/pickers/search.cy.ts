@@ -110,4 +110,18 @@ describe('Picker - Search', () => {
         picker.getAccordionItem('picker-content-folders').getHeader().should('have.attr', 'aria-expanded', 'false')
         picker.getTableRow('all-Organic').should('have.class', 'moonstone-TableRow-highlighted')
     })
+
+    it('Editorial Picker- Search for xylophone and should find nothing no matter the context', () => {
+        const picker = PickerField.openPickerDialogFromExistingContent(
+            contentEditor.getPageComposer(),
+            'Leading by Example',
+            'jdmix:imgView_image',
+        )
+        picker.search('xylophone', true)
+        picker.verifyResultsAreEmpty()
+        picker.switchSearchContext('Media')
+        picker.verifyResultsAreEmpty()
+        picker.switchSearchContext('Digitall')
+        picker.verifyResultsAreEmpty()
+    })
 })

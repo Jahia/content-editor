@@ -148,7 +148,7 @@ export class Picker extends BaseComponent {
             })
     }
 
-    search(query?: string) {
+    search(query?: string, expectNoResult = false) {
         if (query === undefined) {
             cy.get('input[role="search"]').should('be.visible').click().clear({ waitForAnimations: true })
             this.table = undefined
@@ -161,7 +161,9 @@ export class Picker extends BaseComponent {
                 .type(query, { waitForAnimations: true, delay: 200 })
             this.table = undefined
             this.selectionTable = undefined
-            cy.get('[data-cm-role="table-content-list"]').find('.moonstone-TableRow').should('be.visible')
+            if (!expectNoResult) {
+                cy.get('[data-cm-role="table-content-list"]').find('.moonstone-TableRow').should('be.visible')
+            }
         }
     }
 
@@ -175,5 +177,9 @@ export class Picker extends BaseComponent {
 
     switchSearchContext(context: string) {
         getComponentBySelector(Dropdown, '.moonstone-searchContext-element').select(context)
+    }
+
+    verifyResultsAreEmpty() {
+        this.get().should('contain.text', 'No matches found').and('contain.text', 'No results for your search')
     }
 }
