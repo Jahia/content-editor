@@ -63,6 +63,18 @@ export class PageComposer extends BasePage {
         })
     }
 
+    editComponentByText(text: string) {
+        cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
+            cy.iframe('.gwt-Frame', this.iFrameOptions).within(() => {
+                cy.wait(5000)
+                cy.get('.container').contains(text).trigger('mouseover').rightclick({ force: true })
+            })
+        })
+        cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
+            cy.get('.editModeContextMenu').scrollIntoView().contains('Edit').click()
+        })
+    }
+
     getContentTypeSelector(): ContentTypeSelector {
         return getComponent(ContentTypeSelector)
     }

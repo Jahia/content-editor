@@ -3,10 +3,12 @@ import { Picker } from '../../page-object/picker'
 import { assertUtils } from '../../utils/assertUtils'
 import { AccordionItem } from '../../page-object/accordionItem'
 import { ContentEditor } from '../../page-object'
+import { PageComposer } from '../../page-object/pageComposer'
+import { PickerField } from '../../page-object/pickerField'
 
 describe('Picker tests', () => {
     const siteKey = 'digitall'
-    let picker: Picker
+    let pageComposer: PageComposer
 
     // helper
 
@@ -14,8 +16,7 @@ describe('Picker tests', () => {
 
     beforeEach(() => {
         cy.login()
-        const pageComposer = ContentEditor.visit(siteKey, 'en', 'home.html').getPageComposer()
-        picker = new Picker(pageComposer)
+        pageComposer = ContentEditor.visit(siteKey, 'en', 'home.html').getPageComposer()
     })
 
     afterEach(() => {
@@ -24,8 +25,10 @@ describe('Picker tests', () => {
 
     it('should allow multi-select', () => {
         const contentType = contentTypes['fileMultipleReference']
-        const pickerDialog = picker.open(contentType)
-        const pagesAccordion: AccordionItem = pickerDialog.getAccordionItem('picker-media')
+
+        const pickerField = PickerField.getFromNewContent(pageComposer, contentType)
+        const picker = pickerField.open()
+        const pagesAccordion: AccordionItem = picker.getAccordionItem('picker-media')
         assertUtils.isVisible(pagesAccordion.getHeader())
 
         cy.log('navigate to files > images > companies')
@@ -39,8 +42,7 @@ describe('Picker tests', () => {
         picker.select()
 
         cy.log('verify selected is listed in CE modal/page')
-        picker
-            .getField(contentType.fieldNodeType)
+        pickerField
             .get()
             .find('[data-sel-content-editor-multiple-generic-field]')
             .then((elems) => {
@@ -52,14 +54,16 @@ describe('Picker tests', () => {
                     .click()
                     .parent()
                     .parent()
-                    .find(Picker.ADD_FIELD_SEL)
+                    .find(PickerField.ADD_FIELD_SEL)
                     .click()
                 picker.getSelectedRows().then((rows) => expect(rows.length).eq(numRows - 1))
             })
     })
 
     it('should display selection table', () => {
-        picker.open(contentTypes['fileMultipleReference'])
+        const pickerField = PickerField.getFromNewContent(pageComposer, contentTypes['fileMultipleReference'])
+        const picker = pickerField.open()
+
         const mediaAccordion: AccordionItem = picker.getAccordionItem('picker-media')
         assertUtils.isVisible(mediaAccordion.getHeader())
         picker.wait()
@@ -110,8 +114,10 @@ describe('Picker tests', () => {
     })
 
     it('should select/unselect all', () => {
-        const pickerDialog = picker.open(contentTypes['fileMultipleReference'])
-        const mediaAccordion: AccordionItem = pickerDialog.getAccordionItem('picker-media')
+        const pickerField = PickerField.getFromNewContent(pageComposer, contentTypes['fileMultipleReference'])
+        const picker = pickerField.open()
+
+        const mediaAccordion: AccordionItem = picker.getAccordionItem('picker-media')
         assertUtils.isVisible(mediaAccordion.getHeader())
 
         const path = 'files/images/backgrounds'

@@ -3,10 +3,12 @@ import { Picker } from '../../page-object/picker'
 import { assertUtils } from '../../utils/assertUtils'
 import { AccordionItem } from '../../page-object/accordionItem'
 import { ContentEditor } from '../../page-object'
+import { PickerField } from '../../page-object/pickerField'
+import { PageComposer } from '../../page-object/pageComposer'
 
 describe('Picker tests', () => {
     const siteKey = 'digitall'
-    let picker: Picker
+    let pageComposer: PageComposer
 
     beforeEach(() => {
         // I have issues adding these to before()/after() so have to add to beforeEach()/afterEach()
@@ -14,8 +16,7 @@ describe('Picker tests', () => {
         cy.apollo({ mutationFile: 'pickers/createContent.graphql' })
 
         // beforeEach()
-        const pageComposer = ContentEditor.visit(siteKey, 'en', 'home.html').getPageComposer()
-        picker = new Picker(pageComposer)
+        pageComposer = ContentEditor.visit(siteKey, 'en', 'home.html').getPageComposer()
     })
 
     afterEach(() => {
@@ -26,7 +27,7 @@ describe('Picker tests', () => {
     // tests
 
     it('should display content reference picker', () => {
-        const pickerDialog = picker.open(contentTypes['contentReference'])
+        const pickerDialog = PickerField.getFromNewContent(pageComposer, contentTypes['contentReference']).open()
 
         // assert components are visible
         assertUtils.isVisible(pickerDialog.get())
@@ -82,7 +83,7 @@ describe('Picker tests', () => {
     })
 
     it('should display file/image reference picker', () => {
-        const pickerDialog = picker.open(contentTypes['imageReference'])
+        const pickerDialog = PickerField.getFromNewContent(pageComposer, contentTypes['imageReference']).open()
 
         cy.log('assert components are visible')
         assertUtils.isVisible(pickerDialog.get())
@@ -120,7 +121,8 @@ describe('Picker tests', () => {
     })
 
     it('should go to previous location', () => {
-        let pickerDialog = picker.open(contentTypes['fileReference'])
+        let pickerDialog = PickerField.getFromNewContent(pageComposer, contentTypes['fileReference']).open()
+
         let pagesAccordion: AccordionItem = pickerDialog.getAccordionItem('picker-media')
         assertUtils.isVisible(pagesAccordion.getHeader())
 
@@ -130,7 +132,8 @@ describe('Picker tests', () => {
         pickerDialog.cancel()
 
         cy.log('re-open file media picker')
-        pickerDialog = picker.open(contentTypes['fileReference'])
+
+        pickerDialog = PickerField.getFromNewContent(pageComposer, contentTypes['fileReference']).open()
         pagesAccordion = pickerDialog.getAccordionItem('picker-media')
 
         cy.log('verify files > images > companies still selected')
@@ -148,7 +151,7 @@ describe('Picker tests', () => {
         })
 
         cy.log('open file picker dialog')
-        let pickerDialog = picker.open(contentTypes['fileReference'])
+        let pickerDialog = PickerField.getFromNewContent(pageComposer, contentTypes['fileReference']).open()
         let pagesAccordion: AccordionItem = pickerDialog.getAccordionItem('picker-media')
         assertUtils.isVisible(pagesAccordion.getHeader())
 
@@ -165,7 +168,7 @@ describe('Picker tests', () => {
 
         cy.reload() // reload to sync folder
         cy.log('re-open file picker')
-        pickerDialog = picker.open(contentTypes['imageReference'])
+        pickerDialog = PickerField.getFromNewContent(pageComposer, contentTypes['imageReference']).open()
         pagesAccordion = pickerDialog.getAccordionItem('picker-media')
 
         cy.log(`verify ${folderName} is not selected and root is selected`)
