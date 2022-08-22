@@ -1,5 +1,5 @@
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
-import {PickerBaseQueryHandler} from '~/SelectorTypes/Picker/accordionItems/queryHandlers';
+import {PickerBaseQueryHandler} from '~/SelectorTypes/Picker/accordionItems/QueryHandlers/queryHandlers';
 import {BaseDescendantsQuery} from '@jahia/jcontent';
 
 export const PickerEditorialLinkQueryHandler = {
@@ -14,12 +14,13 @@ export const PickerEditorialLinkQueryHandler = {
         };
 
         if (selection.tableView.viewType === Constants.tableView.type.PAGES) {
-            queryParams.typeFilter = ['jnt:page', 'jmix:mainResource']
+            queryParams.typeFilter = ['jnt:page', 'jmix:mainResource'];
             queryParams.recursionTypesFilter = {multi: 'NONE', types: ['jnt:contentFolder']};
         } else { // Content
-            queryParams.typeFilter = ['jnt:contentFolder', 'jmix:mainResource']
+            queryParams.typeFilter = ['jnt:contentFolder', 'jmix:mainResource'];
             queryParams.recursionTypesFilter = {multi: 'NONE', types: ['jnt:page']};
         }
+
         return queryParams;
     },
     structureData(parentPath, result) {
@@ -27,15 +28,16 @@ export const PickerEditorialLinkQueryHandler = {
         const structuredData = dataForParentPath.filter(d => d.parent.path === parentPath);
         setSubrows(structuredData, dataForParentPath);
 
-        // add orphaned nodes to closest ancestors
+        // Add orphaned nodes to closest ancestors
         dataForParentPath.forEach(r => {
             if (!r.inTree && r.tableAncestor) {
                 r.tableAncestor.subRows.push(r);
             }
-            // clean-up temp attributes
-            delete r.inTree
-            delete r.tableAncestor
-        })
+
+            // Clean-up temp attributes
+            delete r.inTree;
+            delete r.tableAncestor;
+        });
 
         return {
             ...result,
@@ -43,7 +45,7 @@ export const PickerEditorialLinkQueryHandler = {
         };
 
         // Recursively finds and puts children of data[i] in data[i].subRows
-        // modified to add child nodes under its closest ancestors instead of just direct children
+        // Modified to add child nodes under its closest ancestors instead of just direct children
         function setSubrows(dataTree, unstructuredData) {
             for (let i = 0; i < dataTree.length; i++) {
                 const data = dataTree[i];
@@ -64,6 +66,7 @@ export const PickerEditorialLinkQueryHandler = {
                         }
                     }
                 }
+
                 setSubrows(data.subRows, descendants);
             }
         }

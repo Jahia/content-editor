@@ -16,8 +16,8 @@ export const registerPickerConfig = ceRegistry => {
         showOnlyNodesWithTemplates: true,
         pickerDialog: {
             dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalEditorialTitle',
-            displayTree: false,
-        },
+            displayTree: false
+        }
     }));
 
     ceRegistry.add(Constants.pickerConfig, 'editorial', mergeDeep({}, ContentPickerConfig, {

@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {FolderSpecial, Page, Tab, TabItem} from '@jahia/moonstone';
 import {useDispatch, useSelector} from 'react-redux';
 import classes from './ContentTypeSelector.scss';
@@ -10,7 +9,7 @@ import {cePickerSetTableViewType} from '~/SelectorTypes/Picker/Picker2.redux';
 const localStorage = window.localStorage;
 
 const EditorialLinkContentTypeSelector = () => {
-    const {t} = useTranslation("content-editor");
+    const {t} = useTranslation('content-editor');
     const tableView = useSelector(state => state.contenteditor.picker.tableView);
     const dispatch = useDispatch();
 
@@ -20,7 +19,7 @@ const EditorialLinkContentTypeSelector = () => {
     const setViewType = viewType => {
         dispatch(cePickerSetTableViewType(viewType));
         localStorage.setItem(LOCAL_STORAGE_VIEW_TYPE_KEY, viewType);
-    }
+    };
 
     return (
         <Tab className={classes.tabs}>
