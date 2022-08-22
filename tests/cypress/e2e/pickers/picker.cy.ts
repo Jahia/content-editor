@@ -2,10 +2,11 @@ import { contentTypes } from '../../fixtures/pickers/contentTypes'
 import { assertUtils } from '../../utils/assertUtils'
 import { AccordionItem } from '../../page-object/accordionItem'
 import { PageComposer } from '../../page-object/pageComposer'
+import { JContent } from '../../page-object/jcontent'
 
 describe('Picker tests', () => {
     const siteKey = 'digitall'
-    let pageComposer: PageComposer
+    let jcontent: JContent
 
     beforeEach(() => {
         // I have issues adding these to before()/after() so have to add to beforeEach()/afterEach()
@@ -13,7 +14,7 @@ describe('Picker tests', () => {
         cy.apollo({ mutationFile: 'pickers/createContent.graphql' })
 
         // beforeEach()
-        pageComposer = PageComposer.visit(siteKey, 'en', 'home.html')
+        jcontent = JContent.visit(siteKey, 'en', 'content-folders/contents')
     })
 
     afterEach(() => {
@@ -24,7 +25,7 @@ describe('Picker tests', () => {
     // tests
 
     it('should display content reference picker', () => {
-        const pickerDialog = pageComposer
+        const pickerDialog = jcontent
             .createContent(contentTypes['contentReference'].typeName)
             .getPickerField(contentTypes['contentReference'].fieldNodeType, contentTypes['contentReference'].multiple)
             .open()
@@ -83,7 +84,7 @@ describe('Picker tests', () => {
     })
 
     it('should display file/image reference picker', () => {
-        const pickerDialog = pageComposer
+        const pickerDialog = jcontent
             .createContent(contentTypes['imageReference'].typeName)
             .getPickerField(contentTypes['imageReference'].fieldNodeType, contentTypes['imageReference'].multiple)
             .open()
@@ -124,8 +125,9 @@ describe('Picker tests', () => {
     })
 
     it('should go to previous location', () => {
-        let pickerDialog = pageComposer
-            .createContent(contentTypes['fileReference'].typeName)
+        const contentEditor = jcontent.createContent(contentTypes['fileReference'].typeName);
+
+        let pickerDialog = contentEditor
             .getPickerField(contentTypes['fileReference'].fieldNodeType, contentTypes['fileReference'].multiple)
             .open()
 
@@ -139,8 +141,7 @@ describe('Picker tests', () => {
 
         cy.log('re-open file media picker')
 
-        pickerDialog = pageComposer
-            .createContent(contentTypes['fileReference'].typeName)
+        pickerDialog = contentEditor
             .getPickerField(contentTypes['fileReference'].fieldNodeType, contentTypes['fileReference'].multiple)
             .open()
         pagesAccordion = pickerDialog.getAccordionItem('picker-media')
@@ -160,8 +161,8 @@ describe('Picker tests', () => {
         })
 
         cy.log('open file picker dialog')
-        let pickerDialog = pageComposer
-            .createContent(contentTypes['fileReference'].typeName)
+        const contentEditor = jcontent.createContent(contentTypes['fileReference'].typeName)
+        let pickerDialog = contentEditor
             .getPickerField(contentTypes['fileReference'].fieldNodeType, contentTypes['fileReference'].multiple)
             .open()
         let pagesAccordion: AccordionItem = pickerDialog.getAccordionItem('picker-media')
@@ -180,14 +181,49 @@ describe('Picker tests', () => {
 
         cy.reload() // reload to sync folder
         cy.log('re-open file picker')
-        pickerDialog = pageComposer
-            .createContent(contentTypes['imageReference'].typeName)
-            .getPickerField(contentTypes['imageReference'].fieldNodeType, contentTypes['imageReference'].multiple)
+
+        pickerDialog = contentEditor
+            .getPickerField(contentTypes['fileReference'].fieldNodeType, contentTypes['fileReference'].multiple)
             .open()
         pagesAccordion = pickerDialog.getAccordionItem('picker-media')
 
         cy.log(`verify ${folderName} is not selected and root is selected`)
         pagesAccordion.getTreeItem(folderName).should('not.exist')
         pagesAccordion.getTreeItem('files').find('div').should('have.class', 'moonstone-selected')
+    })
+
+    it('should be able to switch site', () => {
+        const pickerField = jcontent
+            .createContent(contentTypes['fileReference'].typeName)
+            .getPickerField(contentTypes['fileReference'].fieldNodeType, contentTypes['fileReference'].multiple)
+        const picker = pickerField.open()
+
+        picker.getTable().getRowByIndex(1).get().find('span').should('contain', 'ce-picker-files')
+        picker.getSiteSwitcher().should('contain', 'Digitall')
+        picker.getSiteSwitcher().select('System Site')
+        picker.getSiteSwitcher().should('contain', 'System Site')
+        picker.getTable().getRows().should('have.length', 1)
+        picker.getSiteSwitcher().select('Digitall')
+        picker.getTableRow('ce-picker-files')
+    })
+
+    it('should be able to browse when there is a selection', () => {
+        const pickerField = jcontent
+            .createContent(contentTypes['fileReference'].typeName)
+            .getPickerField(contentTypes['fileReference'].fieldNodeType, contentTypes['fileReference'].multiple)
+        const picker = pickerField.open()
+
+        picker.getTable().getRowByIndex(2).get().find('span').contains('images').dblclick()
+        picker.getTable().getRowByIndex(1).get().find('span').contains('banners').dblclick()
+        picker.getTable().getRowByIndex(1).get().find('span').contains('editing-digitall-site.jpg').click()
+        picker.getSiteSwitcher().select('System Site')
+        picker.getSiteSwitcher().should('contain', 'System Site')
+        picker.getTable().getRows().should('have.length', 1)
+        picker.getSiteSwitcher().select('Digitall')
+        picker.getTableRow('ce-picker-files')
+        const item = picker.getAccordionItem('picker-media')
+        item.getTreeItem('files').find('div').should('have.class', 'moonstone-selected')
+        item.getTreeItem('companies').click()
+        item.getTreeItem('companies').find('div').should('have.class', 'moonstone-selected')
     })
 })

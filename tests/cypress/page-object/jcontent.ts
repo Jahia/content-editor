@@ -6,8 +6,10 @@ import {
     getComponent,
     getComponentByAttr,
     getComponentByRole,
+    getElement,
     SecondaryNav,
     Table,
+    TableRow,
 } from '@jahia/cypress'
 import { CreateContent } from './createContent'
 import { ContentEditor } from './contentEditor'
@@ -44,6 +46,12 @@ export class JContent extends BasePage {
             .searchForContentType(contentType)
             .selectContentType(contentType)
             .create()
+    }
+
+    editComponentByText(text: string) {
+        const row = new TableRow(getElement(TableRow.defaultSelector, this.getTable()).contains(text))
+        row.contextMenu().select('Edit')
+        return new ContentEditor()
     }
 
     getSiteSwitcher(): Dropdown {

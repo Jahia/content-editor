@@ -1,12 +1,12 @@
 import { contentTypes } from '../../fixtures/pickers/contentTypes'
 import { assertUtils } from '../../utils/assertUtils'
 import { AccordionItem } from '../../page-object/accordionItem'
-import { PageComposer } from '../../page-object/pageComposer'
 import { PickerField } from '../../page-object/pickerField'
+import { JContent } from '../../page-object/jcontent'
 
 describe('Picker tests', () => {
     const siteKey = 'digitall'
-    let pageComposer: PageComposer
+    let jcontent: JContent
 
     // helper
 
@@ -14,7 +14,7 @@ describe('Picker tests', () => {
 
     beforeEach(() => {
         cy.login()
-        pageComposer = PageComposer.visit(siteKey, 'en', 'home.html')
+        jcontent = JContent.visit(siteKey, 'en', 'content-folders/contents')
     })
 
     afterEach(() => {
@@ -24,7 +24,7 @@ describe('Picker tests', () => {
     it('should allow multi-select', () => {
         const contentType = contentTypes['fileMultipleReference']
 
-        const pickerField = pageComposer
+        const pickerField = jcontent
             .createContent(contentType.typeName)
             .getPickerField(contentType.fieldNodeType, contentType.multiple)
         const picker = pickerField.open()
@@ -61,7 +61,7 @@ describe('Picker tests', () => {
     })
 
     it('should display selection table', () => {
-        const pickerField = pageComposer
+        const pickerField = jcontent
             .createContent(contentTypes['fileMultipleReference'].typeName)
             .getPickerField(
                 contentTypes['fileMultipleReference'].fieldNodeType,
@@ -119,7 +119,7 @@ describe('Picker tests', () => {
     })
 
     it('should select/unselect all', () => {
-        const pickerField = pageComposer
+        const pickerField = jcontent
             .createContent(contentTypes['fileMultipleReference'].typeName)
             .getPickerField(
                 contentTypes['fileMultipleReference'].fieldNodeType,

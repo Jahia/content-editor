@@ -1,14 +1,15 @@
 import { PageComposer } from '../../page-object/pageComposer'
+import { JContent } from '../../page-object/jcontent'
 
 describe('Picker - Search', () => {
     const siteKey = 'digitall'
-    let pageComposer: PageComposer
+    let jcontent: JContent
     beforeEach(() => {
         // I have issues adding these to before()/after() so have to add to beforeEach()/afterEach()
         cy.login() // edit in chief
 
         // beforeEach()
-        pageComposer = PageComposer.visit(siteKey, 'en', 'home.html')
+        jcontent = JContent.visit(siteKey, 'en', 'pages/home')
     })
 
     afterEach(() => {
@@ -17,7 +18,7 @@ describe('Picker - Search', () => {
 
     // tests
     it('Media Picker - Search for tab - letter by letter', () => {
-        const contentEditor = pageComposer.editComponentByText('Leading by Example')
+        const contentEditor = jcontent.editComponentByText('Leading by Example')
         const picker = contentEditor.getPickerField('jdmix:imgView_image').open()
         picker.search('t')
         picker.verifyResultsLength(24)
@@ -29,7 +30,7 @@ describe('Picker - Search', () => {
     })
 
     it('Media Picker - Search for tab - in different context', () => {
-        const contentEditor = pageComposer.editComponentByText('Leading by Example')
+        const contentEditor = jcontent.editComponentByText('Leading by Example')
         const picker = contentEditor.getPickerField('jdmix:imgView_image').open()
         picker.search('tab')
         picker.verifyResultsLength(1)
@@ -41,7 +42,7 @@ describe('Picker - Search', () => {
     })
 
     it('Media Picker - Search for tab - cancel and reopen - search should be empty', () => {
-        const contentEditor = pageComposer.editComponentByText('Leading by Example')
+        const contentEditor = jcontent.editComponentByText('Leading by Example')
         let picker = contentEditor.getPickerField('jdmix:imgView_image').open()
         picker.search('tab')
         picker.verifyResultsLength(1)
@@ -49,12 +50,12 @@ describe('Picker - Search', () => {
         picker.cancel()
         contentEditor.cancel()
 
-        picker = pageComposer.editComponentByText('Leading by Example').getPickerField('jdmix:imgView_image').open()
+        picker = jcontent.editComponentByText('Leading by Example').getPickerField('jdmix:imgView_image').open()
         picker.getSearchInput().should('be.empty')
     })
 
     it('Editorial Picker- Search for tab - letter by letter', () => {
-        const contentEditor = pageComposer.editComponentByText('Leading by Example')
+        const contentEditor = jcontent.editComponentByText('Leading by Example')
         const picker = contentEditor.getPickerField('jdmix:hasLink_internalLink').open()
         picker.search('t')
         picker.verifyResultsLength(82)
@@ -64,8 +65,18 @@ describe('Picker - Search', () => {
         picker.verifyResultsLength(7)
     })
 
+    it('Editorial Picker- Search for tab - ensure all accordions are closed', () => {
+        const contentEditor = jcontent.editComponentByText('Leading by Example')
+        const picker = contentEditor.getPickerField('jdmix:hasLink_internalLink').open()
+        picker.search('tab')
+        picker.verifyResultsLength(1)
+        picker.getTableRow('Taber').should('be.visible')
+        picker.getAccordionItem('picker-pages').getHeader().should('have.attr', 'aria-expanded', 'false')
+        picker.getAccordionItem('picker-content-folders').getHeader().should('have.attr', 'aria-expanded', 'false')
+    })
+
     it('Editorial Picker- Search for tab and them empty search - ensure previous context is restored', () => {
-        const contentEditor = pageComposer.editComponentByText('Leading by Example')
+        const contentEditor = jcontent.editComponentByText('Leading by Example')
         const picker = contentEditor.getPickerField('jdmix:hasLink_internalLink').open()
         picker.wait()
 
@@ -84,7 +95,7 @@ describe('Picker - Search', () => {
     })
 
     it('Media Picker- Search for xylophone and should find nothing no matter the context', () => {
-        const contentEditor = pageComposer.editComponentByText('Leading by Example')
+        const contentEditor = jcontent.editComponentByText('Leading by Example')
         const picker = contentEditor.getPickerField('jdmix:imgView_image').open()
         picker.search('xylophone', true)
         picker.verifyResultsAreEmpty()

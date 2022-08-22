@@ -1,10 +1,11 @@
 import { contentTypes } from '../../fixtures/pickers/contentTypes'
 import { PageComposer } from '../../page-object/pageComposer'
 import { assertUtils } from '../../utils/assertUtils'
+import { JContent } from '../../page-object/jcontent'
 
 describe('Folder picker tests', () => {
     const siteKey = 'digitall'
-    let pageComposer: PageComposer
+    let jcontent: JContent
 
     beforeEach(() => {
         // I have issues adding these to before()/after() so have to add to beforeEach()/afterEach()
@@ -12,7 +13,7 @@ describe('Folder picker tests', () => {
         cy.apollo({ mutationFile: 'pickers/createContent.graphql' })
 
         // beforeEach()
-        pageComposer = PageComposer.visit(siteKey, 'en', 'home.html')
+        jcontent = JContent.visit(siteKey, 'en', 'content-folders/contents')
     })
 
     afterEach(() => {
@@ -23,7 +24,7 @@ describe('Folder picker tests', () => {
     // tests
 
     it('should display a folder picker without tree', () => {
-        const pickerField = pageComposer
+        const pickerField = jcontent
             .createContent(contentTypes['folderpicker'].typeName)
             .getPickerField(contentTypes['folderpicker'].fieldNodeType, contentTypes['folderpicker'].multiple)
         const picker = pickerField.open()
@@ -35,7 +36,7 @@ describe('Folder picker tests', () => {
     })
 
     it('should display root folder opened', () => {
-        const pickerField = pageComposer
+        const pickerField = jcontent
             .createContent(contentTypes['folderpicker'].typeName)
             .getPickerField(contentTypes['folderpicker'].fieldNodeType, contentTypes['folderpicker'].multiple)
         const picker = pickerField.open()
@@ -46,7 +47,7 @@ describe('Folder picker tests', () => {
     })
 
     it('should be able to open and close folder', () => {
-        const pickerField = pageComposer
+        const pickerField = jcontent
             .createContent(contentTypes['folderpicker'].typeName)
             .getPickerField(contentTypes['folderpicker'].fieldNodeType, contentTypes['folderpicker'].multiple)
         const picker = pickerField.open()
@@ -61,7 +62,7 @@ describe('Folder picker tests', () => {
     })
 
     it('should be able to select a folder', () => {
-        const pickerField = pageComposer
+        const pickerField = jcontent
             .createContent(contentTypes['folderpicker'].typeName)
             .getPickerField(contentTypes['folderpicker'].fieldNodeType, contentTypes['folderpicker'].multiple)
         let picker = pickerField.open()
@@ -75,7 +76,7 @@ describe('Folder picker tests', () => {
     })
 
     it('should be able to switch site', () => {
-        const pickerField = pageComposer
+        const pickerField = jcontent
             .createContent(contentTypes['folderpicker'].typeName)
             .getPickerField(contentTypes['folderpicker'].fieldNodeType, contentTypes['folderpicker'].multiple)
         const picker = pickerField.open()

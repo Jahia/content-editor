@@ -72,22 +72,16 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
             target: getItemTarget(pickerConfig.key)
         });
 
-        let firstMatchingAccordion = allAccordionItems.find(accord => {
-            return (!accord.isEnabled || accord.isEnabled(newState.site)) && accord.canDisplayItem && accord.canDisplayItem({selectionNode: selectedNode, folderNode: currentFolderInfo.node});
-        });
-
-        if (!firstMatchingAccordion) {
-            // This case can happen when we have two pickers site and editorial, site picker with selection,
-            // open site picker, close it, open editorial picker: picker key is correct, selection is false and
-            // currentFolderInfo still points at /sites so there is no way it can get past those canDisplayItems checks
-            console.info(`Cannot find a matching accordion for picker with key ${pickerConfig.key}`);
-            firstMatchingAccordion = allAccordionItems[0];
-        }
+        let firstMatchingAccordion = allAccordionItems.find(accord =>
+            (!accord.isEnabled || accord.isEnabled(newState.site)) &&
+            accord.canDisplayItem &&
+            (selectedNode && !previousState.current.isOpen) ? accord.canDisplayItem({selectionNode: selectedNode}) : accord.canDisplayItem({folderNode: currentFolderInfo.node})
+        ) || allAccordionItems[0];
 
         // If selection exists we don't care about previous state, need to update state in accordance with selection
         // Initialize site when opening dialog
         newState.contextSite = editorContext.site;
-        if (selectedNode) {
+        if (selectedNode && !previousState.current.isOpen) {
             // If an item is selected, preselect site/mode/path
             newState.site = getSite(selectedNode.path);
             newState.mode = firstMatchingAccordion.key;
