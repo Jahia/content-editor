@@ -98,7 +98,7 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
                 newState.path = firstMatchingAccordion.defaultPath(newState.site);
             }
         } else {
-            if (previousState.current.contextSite !== newState.contextSite || newState.site !== newState.contextSite) {
+            if (previousState.current.contextSite !== newState.contextSite && newState.site !== newState.contextSite) {
                 // If context site has changed, reset to the current site (otherwise keep current site)
                 newState.site = pickerConfig.targetSite ? pickerConfig.targetSite : newState.contextSite;
             }
