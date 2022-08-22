@@ -134,7 +134,7 @@ export const registerPickerConfig = ceRegistry => {
                 },
                 {
                     id: 'provider',
-                    accessor: row => row.userFolderAncestors.map(f => f.path.match(/^.*\/providers\/([^/]+)$/)).filter(f => f).map(f => f[1]).join('') || 'default',
+                    accessor: row => row.userFolderAncestors?.map(f => f.path.match(/^.*\/providers\/([^/]+)$/)).filter(f => f).map(f => f[1]).join('') || 'default',
                     label: 'content-editor:label.contentEditor.edit.fields.contentPicker.userPicker.provider',
                     Cell: reactTable.Cell,
                     Header: reactTable.Header,
@@ -147,6 +147,42 @@ export const registerPickerConfig = ceRegistry => {
         },
         pickerDialog: {
             dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalUserTitle',
+            displayTree: false,
+            displaySiteSwitcher: false
+        }
+    }));
+
+    ceRegistry.add(Constants.pickerConfig, 'usergroup', mergeDeep({}, ContentPickerConfig, {
+        searchSelectorType: 'jnt:group',
+        selectableTypesTable: ['jnt:group'],
+        pickerTable: {
+            columns: [
+                'name',
+                {
+                    id: 'site',
+                    accessor: 'siteInfo.displayName',
+                    label: 'content-editor:label.contentEditor.edit.fields.contentPicker.userPicker.site',
+                    sortable: true,
+                    property: 'siteInfo.displayName',
+                    Cell: reactTable.Cell,
+                    Header: reactTable.Header,
+                    width: '300px'
+                },
+                {
+                    id: 'provider',
+                    accessor: row => row.userGroupFolderAncestors?.map(f => f.path.match(/^.*\/providers\/([^/]+)$/)).filter(f => f).map(f => f[1]).join('') || 'default',
+                    label: 'content-editor:label.contentEditor.edit.fields.contentPicker.userPicker.provider',
+                    Cell: reactTable.Cell,
+                    Header: reactTable.Header,
+                    width: '300px'
+                }
+            ]
+        },
+        pickerInput: {
+            emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalUserGroupTitle'
+        },
+        pickerDialog: {
+            dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalUserGroupTitle',
             displayTree: false,
             displaySiteSwitcher: false
         }
