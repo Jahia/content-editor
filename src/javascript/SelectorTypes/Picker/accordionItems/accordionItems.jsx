@@ -1,7 +1,7 @@
 import React from 'react';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {renderer} from '~/SelectorTypes/Picker/accordionItems/renderer';
-import {Collections, FolderUser, SiteWeb} from '@jahia/moonstone';
+import {Collections, FolderUser, Group, SiteWeb} from '@jahia/moonstone';
 import {registry} from '@jahia/ui-extender';
 import {ViewModeSelector} from '@jahia/jcontent';
 import {EditorialLinkContentTypeSelector, JContentTypeSelector} from './ContentTypeSelector';
@@ -17,7 +17,8 @@ import {
     PickerPagesQueryHandler,
     PickerSearchQueryHandler,
     PickerTreeQueryHandler,
-    PickerUserQueryHandler
+    PickerUserQueryHandler,
+    PickerUserGroupQueryHandler
 } from '~/SelectorTypes/Picker/accordionItems/QueryHandlers/queryHandlers';
 import {PickerEditorialLinkQueryHandler} from './QueryHandlers/PickerEditorialLinkQueryHandler';
 import {getBaseSearchContextData} from '~/SelectorTypes/Picker/Picker2.utils';
@@ -254,6 +255,46 @@ export const registerAccordionItems = registry => {
             rootPath: '',
             selectableTypes: ['jnt:user'],
             openableTypes: ['jnt:user']
+        }
+    }, renderer);
+
+    // Custom usergroup item
+    registry.add(Constants.ACCORDION_ITEM_NAME, 'picker-usergroup', {
+        targets: ['usergroup:50'],
+        icon: <Group/>,
+        label: 'content-editor:label.contentEditor.picker.navigation.usergroup',
+        defaultPath: () => '/',
+        canDisplayItem: node => /^\/sites\/[^/]+\/groups\/.*/.test(node.path),
+        getSearchContextData: ({currentSite, t}) => {
+            return [
+                {
+                    label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.search'),
+                    searchPath: '',
+                    isDisabled: true
+                },
+                {
+                    label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.allGroups'),
+                    searchPath: '/',
+                    iconStart: <Group/>
+                },
+                {
+                    label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.globalGroups'),
+                    searchPath: '/groups',
+                    iconStart: <Group/>
+                },
+                ...(currentSite ? [{
+                    label: currentSite.substring(0, 1).toUpperCase() + currentSite.substring(1),
+                    searchPath: `/sites/${currentSite}/groups`,
+                    iconStart: <Group/>
+                }] : [])
+            ];
+        },
+        defaultSort: {orderBy: 'displayName', order: 'ASC'},
+        queryHandler: PickerUserGroupQueryHandler,
+        config: {
+            rootPath: '',
+            selectableTypes: ['jnt:group'],
+            openableTypes: ['jnt:group']
         }
     }, renderer);
 

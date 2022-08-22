@@ -136,6 +136,7 @@
             "modalPageTitle": "Select a page",
             "modalSiteTitle": "Select a site",
             "modalUserTitle": "Select a user",
+            "modalUserGroupTitle": "Select a group of users",
             "itemsFound": "{{totalCount}} items found",
             "userPicker": {
               "site": "Site",
@@ -271,7 +272,9 @@
           "searchContextOptions" : {
             "search": "Search in",
             "allUsers": "All users",
-            "globalUsers": "Global users"
+            "globalUsers": "Global users",
+            "allGroups": "All groups",
+            "globalGsers": "Global groups"
           },
           "tabs": {
             "pages": "Pages",

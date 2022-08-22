@@ -136,6 +136,7 @@
             "modalPageTitle": "Seite auswählen",
             "modalSiteTitle": "Site auswählen",
             "modalUserTitle": "Benutzer auswählen",
+            "modalUserGroupTitle": "Benutzergruppen auswählen",
             "itemsFound": "{{totalCount}} Einträge gefunden"
           },
           "category": {
@@ -270,11 +271,11 @@
         "rightPanel": {
           "actionsCaption": "Nicht auswählbare Elemente werden in dieser Ansicht nicht gelistet",
           "searchContextOptions" : {
-            "search": "Suchen in",
-            "contents": "Inhalte",
-            "medias": "Medien",
-            "folder": "Ordner",
-            "home": "Home"
+            "search": "Search in",
+            "allUsers": "Alle Nutzer",
+            "globalUsers": "Globale Benutzer",
+            "allGroups": "Alle Benutzergruppen",
+            "globalGsers": "Globale Benutzergruppen"
           },
           "tabs": {
             "pages": "Seiten",
