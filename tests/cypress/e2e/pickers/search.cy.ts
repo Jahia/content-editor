@@ -68,13 +68,19 @@ describe('Picker - Search', () => {
         const contentEditor = pageComposer.editComponentByText('Leading by Example')
         const picker = contentEditor.getPickerField('jdmix:hasLink_internalLink').open()
         picker.wait()
-        cy.get('.moonstone-tab-item[data-cm-view-type="pages"]').click().should('have.class', 'moonstone-selected')
+
+        picker.getTab("pages").click().then(tabItem => {
+            picker.wait()
+            picker.getTable().should('be.visible')
+            cy.wrap(tabItem).should('have.class', 'moonstone-selected')
+        })
         picker.search('tab')
         picker.verifyResultsLength(7)
         picker.search()
+        
         // Selection is not able to expand yet in structured view
-        // Verify tabs are visible and pages tab is selected for now
-        cy.get('.moonstone-tab-item[data-cm-view-type="pages"]').should('have.class', 'moonstone-selected')
+        // Verify tabs are visible and previous tab is selected
+        picker.getTab("pages").should('have.class', 'moonstone-selected')
     })
 
     it('Media Picker- Search for xylophone and should find nothing no matter the context', () => {

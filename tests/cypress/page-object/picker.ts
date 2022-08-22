@@ -134,6 +134,10 @@ export class Picker extends BaseComponent {
         return cy.get('[data-cm-role="selection-caption"] [data-sel-role$="item-selected"]')
     }
 
+    getTab(viewType: string) {
+        return cy.get(`.moonstone-tab-item[data-cm-view-type="${viewType}"]`)
+    }
+
     selectItems(count: number) {
         this.getTable()
             .getRows()
