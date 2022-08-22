@@ -1,15 +1,14 @@
-import { ContentEditor } from '../../page-object'
-import { PickerField } from '../../page-object/pickerField'
+import { PageComposer } from '../../page-object/pageComposer'
 
 describe('Picker - Search', () => {
     const siteKey = 'digitall'
-    let contentEditor: ContentEditor
+    let pageComposer: PageComposer
     beforeEach(() => {
         // I have issues adding these to before()/after() so have to add to beforeEach()/afterEach()
         cy.login() // edit in chief
 
         // beforeEach()
-        contentEditor = ContentEditor.visit(siteKey, 'en', 'home.html')
+        pageComposer = PageComposer.visit(siteKey, 'en', 'home.html')
     })
 
     afterEach(() => {
@@ -18,11 +17,8 @@ describe('Picker - Search', () => {
 
     // tests
     it('Media Picker - Search for tab - letter by letter', () => {
-        const picker = PickerField.openPickerDialogFromExistingContent(
-            contentEditor.getPageComposer(),
-            'Leading by Example',
-            'jdmix:imgView_image',
-        )
+        const contentEditor = pageComposer.editComponentByText('Leading by Example')
+        const picker = contentEditor.getPickerField('jdmix:imgView_image').open()
         picker.search('t')
         picker.verifyResultsLength(24)
         picker.search('a')
@@ -33,11 +29,8 @@ describe('Picker - Search', () => {
     })
 
     it('Media Picker - Search for tab - in different context', () => {
-        const picker = PickerField.openPickerDialogFromExistingContent(
-            contentEditor.getPageComposer(),
-            'Leading by Example',
-            'jdmix:imgView_image',
-        )
+        const contentEditor = pageComposer.editComponentByText('Leading by Example')
+        const picker = contentEditor.getPickerField('jdmix:imgView_image').open()
         picker.search('tab')
         picker.verifyResultsLength(1)
         picker.getTableRow('person-smartphone-office-table.jpg').should('be.visible')
@@ -48,30 +41,21 @@ describe('Picker - Search', () => {
     })
 
     it('Media Picker - Search for tab - cancel and reopen - search should be empty', () => {
-        let picker = PickerField.openPickerDialogFromExistingContent(
-            contentEditor.getPageComposer(),
-            'Leading by Example',
-            'jdmix:imgView_image',
-        )
+        const contentEditor = pageComposer.editComponentByText('Leading by Example')
+        let picker = contentEditor.getPickerField('jdmix:imgView_image').open()
         picker.search('tab')
         picker.verifyResultsLength(1)
         picker.getTableRow('person-smartphone-office-table.jpg').should('be.visible')
         picker.cancel()
         contentEditor.cancel()
-        picker = PickerField.openPickerDialogFromExistingContent(
-            contentEditor.getPageComposer(),
-            'Leading by Example',
-            'jdmix:imgView_image',
-        )
+
+        picker = pageComposer.editComponentByText('Leading by Example').getPickerField('jdmix:imgView_image').open()
         picker.getSearchInput().should('be.empty')
     })
 
     it('Editorial Picker- Search for tab - letter by letter', () => {
-        const picker = PickerField.openPickerDialogFromExistingContent(
-            contentEditor.getPageComposer(),
-            'Leading by Example',
-            'jdmix:hasLink_internalLink',
-        )
+        const contentEditor = pageComposer.editComponentByText('Leading by Example')
+        const picker = contentEditor.getPickerField('jdmix:hasLink_internalLink').open()
         picker.search('t')
         picker.verifyResultsLength(8)
         picker.search('a')
@@ -82,11 +66,8 @@ describe('Picker - Search', () => {
     })
 
     it('Editorial Picker- Search for tab - ensure all accordions are closed', () => {
-        const picker = PickerField.openPickerDialogFromExistingContent(
-            contentEditor.getPageComposer(),
-            'Leading by Example',
-            'jdmix:hasLink_internalLink',
-        )
+        const contentEditor = pageComposer.editComponentByText('Leading by Example')
+        const picker = contentEditor.getPickerField('jdmix:hasLink_internalLink').open()
         picker.search('tab')
         picker.verifyResultsLength(1)
         picker.getTableRow('Taber').should('be.visible')
@@ -95,11 +76,8 @@ describe('Picker - Search', () => {
     })
 
     it('Editorial Picker- Search for tab and them empty search - ensure previous context is restored', () => {
-        const picker = PickerField.openPickerDialogFromExistingContent(
-            contentEditor.getPageComposer(),
-            'Leading by Example',
-            'jdmix:hasLink_internalLink',
-        )
+        const contentEditor = pageComposer.editComponentByText('Leading by Example')
+        const picker = contentEditor.getPickerField('jdmix:hasLink_internalLink').open()
         picker.search('tab')
         picker.verifyResultsLength(1)
         picker.getTableRow('Taber').should('be.visible')
@@ -111,12 +89,9 @@ describe('Picker - Search', () => {
         picker.getTableRow('all-Organic').should('have.class', 'moonstone-TableRow-highlighted')
     })
 
-    it('Editorial Picker- Search for xylophone and should find nothing no matter the context', () => {
-        const picker = PickerField.openPickerDialogFromExistingContent(
-            contentEditor.getPageComposer(),
-            'Leading by Example',
-            'jdmix:imgView_image',
-        )
+    it('Media Picker- Search for xylophone and should find nothing no matter the context', () => {
+        const contentEditor = pageComposer.editComponentByText('Leading by Example')
+        const picker = contentEditor.getPickerField('jdmix:imgView_image').open()
         picker.search('xylophone', true)
         picker.verifyResultsAreEmpty()
         picker.switchSearchContext('Media')

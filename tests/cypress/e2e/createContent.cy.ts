@@ -1,13 +1,13 @@
-import { ContentEditor } from '../page-object'
 import { Button, getComponentByRole } from '@jahia/cypress'
+import { PageComposer } from '../page-object/pageComposer'
 
 describe('Create content tests', { retries: 10 }, () => {
-    let contentEditor: ContentEditor
+    let pageComposer: PageComposer
 
     before(function () {
         cy.executeGroovy('createSite.groovy', { SITEKEY: 'contentEditorSite' })
         cy.login() // edit in chief
-        ContentEditor.visit('contentEditorSite', 'en', 'home.html')
+        pageComposer = PageComposer.visit('contentEditorSite', 'en', 'home.html')
     })
 
     after(function () {
@@ -17,12 +17,10 @@ describe('Create content tests', { retries: 10 }, () => {
 
     beforeEach(() => {
         Cypress.Cookies.preserveOnce('JSESSIONID')
-        contentEditor = new ContentEditor()
     })
 
     it('Can create content', function () {
-        const pageComposer = contentEditor.getPageComposer()
-        pageComposer
+        const contentEditor = pageComposer
             .openCreateContent()
             .getContentTypeSelector()
             .searchForContentType('Rich Text')
@@ -38,8 +36,7 @@ describe('Create content tests', { retries: 10 }, () => {
     })
 
     it('Can create multiple content in same modal', { retries: 0 }, function () {
-        const pageComposer = contentEditor.getPageComposer()
-        pageComposer
+        const contentEditor = pageComposer
             .openCreateContent()
             .getContentTypeSelector()
             .searchForContentType('Rich Text')
@@ -71,8 +68,7 @@ describe('Create content tests', { retries: 10 }, () => {
     })
 
     it('Can create work in progress content', { retries: 0 }, function () {
-        const pageComposer = contentEditor.getPageComposer()
-        pageComposer
+        const contentEditor = pageComposer
             .openCreateContent()
             .getContentTypeSelector()
             .searchForContentType('Rich Text')
@@ -91,8 +87,7 @@ describe('Create content tests', { retries: 10 }, () => {
     })
 
     it('Can create a news and edit it from the successful alert', { retries: 0 }, function () {
-        const pageComposer = contentEditor.getPageComposer()
-        pageComposer
+        const contentEditor = pageComposer
             .openCreateContent()
             .getContentTypeSelector()
             .searchForContentType('News entry')

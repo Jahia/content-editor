@@ -1,13 +1,13 @@
-import { ContentEditor } from '../page-object'
+import { PageComposer } from '../page-object/pageComposer'
 
 const sitekey = 'contentEditorSiteI18N'
 describe('Create content tests in I18N site', () => {
-    let contentEditor: ContentEditor
+    let pageComposer: PageComposer
 
     before(function () {
         cy.executeGroovy('createSiteI18N.groovy', { SITEKEY: sitekey })
         cy.login() // edit in chief
-        ContentEditor.visit(sitekey, 'en', 'home.html')
+        pageComposer = PageComposer.visit(sitekey, 'en', 'home.html')
     })
 
     after(function () {
@@ -17,12 +17,10 @@ describe('Create content tests in I18N site', () => {
 
     beforeEach(() => {
         Cypress.Cookies.preserveOnce('JSESSIONID')
-        contentEditor = new ContentEditor()
     })
 
     it('Can create content', { retries: 0 }, function () {
-        const pageComposer = contentEditor.getPageComposer()
-        pageComposer
+        const contentEditor = pageComposer
             .openCreateContent()
             .getContentTypeSelector()
             .searchForContentType('Rich Text')
@@ -38,8 +36,7 @@ describe('Create content tests in I18N site', () => {
     })
 
     it('Can create multiple content in same modal', { retries: 0 }, function () {
-        const pageComposer = contentEditor.getPageComposer()
-        pageComposer
+        const contentEditor = pageComposer
             .openCreateContent()
             .getContentTypeSelector()
             .searchForContentType('Rich Text')
@@ -71,8 +68,7 @@ describe('Create content tests in I18N site', () => {
     })
 
     it('Can create work in progress content for all properties', { retries: 0 }, function () {
-        const pageComposer = contentEditor.getPageComposer()
-        pageComposer
+        const contentEditor = pageComposer
             .openCreateContent()
             .getContentTypeSelector()
             .searchForContentType('Rich Text')
@@ -91,8 +87,7 @@ describe('Create content tests in I18N site', () => {
     })
 
     it('Can create work in progress content for en/fr properties', { retries: 0 }, function () {
-        const pageComposer = contentEditor.getPageComposer()
-        pageComposer
+        const contentEditor = pageComposer
             .openCreateContent()
             .getContentTypeSelector()
             .searchForContentType('Rich Text')
@@ -114,7 +109,7 @@ describe('Create content tests in I18N site', () => {
         contentEditor.save()
         pageComposer.refresh().shouldContain('Cypress Work In Progress EN/FR Test')
         pageComposer.shouldContainWIPOverlay()
-        ContentEditor.visit(sitekey, 'fr', 'home.html')
+        PageComposer.visit(sitekey, 'fr', 'home.html')
         pageComposer.refresh().shouldContain('Cypress Work In Progress FR/EN Test')
         pageComposer.shouldContainWIPOverlay()
     })
