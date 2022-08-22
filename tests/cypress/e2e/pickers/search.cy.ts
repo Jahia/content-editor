@@ -57,36 +57,24 @@ describe('Picker - Search', () => {
         const contentEditor = pageComposer.editComponentByText('Leading by Example')
         const picker = contentEditor.getPickerField('jdmix:hasLink_internalLink').open()
         picker.search('t')
-        picker.verifyResultsLength(8)
+        picker.verifyResultsLength(82)
         picker.search('a')
-        picker.verifyResultsLength(2)
+        picker.verifyResultsLength(19)
         picker.search('b')
-        picker.verifyResultsLength(1)
-        picker.getTableRow('Taber').should('be.visible')
-    })
-
-    it('Editorial Picker- Search for tab - ensure all accordions are closed', () => {
-        const contentEditor = pageComposer.editComponentByText('Leading by Example')
-        const picker = contentEditor.getPickerField('jdmix:hasLink_internalLink').open()
-        picker.search('tab')
-        picker.verifyResultsLength(1)
-        picker.getTableRow('Taber').should('be.visible')
-        picker.getAccordionItem('picker-pages').getHeader().should('have.attr', 'aria-expanded', 'false')
-        picker.getAccordionItem('picker-content-folders').getHeader().should('have.attr', 'aria-expanded', 'false')
+        picker.verifyResultsLength(7)
     })
 
     it('Editorial Picker- Search for tab and them empty search - ensure previous context is restored', () => {
         const contentEditor = pageComposer.editComponentByText('Leading by Example')
         const picker = contentEditor.getPickerField('jdmix:hasLink_internalLink').open()
+        picker.wait()
+        cy.get('.moonstone-tab-item[data-cm-view-type="pages"]').click().should('have.class', 'moonstone-selected')
         picker.search('tab')
-        picker.verifyResultsLength(1)
-        picker.getTableRow('Taber').should('be.visible')
+        picker.verifyResultsLength(7)
         picker.search()
-        const pagesTree = picker.getAccordionItem('picker-pages')
-        pagesTree.getHeader().should('have.attr', 'aria-expanded', 'true')
-        pagesTree.getTreeItem('our-companies').find('.moonstone-selected').should('be.visible')
-        picker.getAccordionItem('picker-content-folders').getHeader().should('have.attr', 'aria-expanded', 'false')
-        picker.getTableRow('all-Organic').should('have.class', 'moonstone-TableRow-highlighted')
+        // Selection is not able to expand yet in structured view
+        // Verify tabs are visible and pages tab is selected for now
+        cy.get('.moonstone-tab-item[data-cm-view-type="pages"]').should('have.class', 'moonstone-selected')
     })
 
     it('Media Picker- Search for xylophone and should find nothing no matter the context', () => {

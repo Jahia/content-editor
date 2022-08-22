@@ -24,11 +24,13 @@ const EditorialLinkContentTypeSelector = () => {
     return (
         <Tab className={classes.tabs}>
             <TabItem isSelected={PAGES === tableView.viewType}
+                     data-cm-view-type={PAGES}
                      icon={<Page/>}
                      label={t('label.contentEditor.picker.rightPanel.tabs.pages')}
                      size="big"
                      onClick={() => setViewType(PAGES)}/>
             <TabItem isSelected={CONTENT === tableView.viewType}
+                     data-cm-view-type={CONTENT}
                      icon={<FolderSpecial/>}
                      label={t('label.contentEditor.picker.rightPanel.tabs.contentFolders')}
                      size="big"
