@@ -134,7 +134,7 @@ export const registerPickerConfig = ceRegistry => {
                 },
                 {
                     id: 'provider',
-                    accessor: row => row.userFolderAncestors.map(f => f.path.match(/^.*\/providers\/([^/]+)$/)).filter(f => f).map(f => f[1]),
+                    accessor: row => row.userFolderAncestors.map(f => f.path.match(/^.*\/providers\/([^/]+)$/)).filter(f => f).map(f => f[1]).join('') || 'default',
                     label: 'content-editor:label.contentEditor.edit.fields.contentPicker.userPicker.provider',
                     Cell: reactTable.Cell,
                     Header: reactTable.Header,
