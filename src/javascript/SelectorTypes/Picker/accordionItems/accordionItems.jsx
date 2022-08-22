@@ -4,7 +4,7 @@ import {renderer} from '~/SelectorTypes/Picker/accordionItems/renderer';
 import {Collections, FolderUser, SiteWeb} from '@jahia/moonstone';
 import {registry} from '@jahia/ui-extender';
 import {ViewModeSelector} from '@jahia/jcontent';
-import  {EditorialLinkContentTypeSelector, JContentTypeSelector} from './ContentTypeSelector'
+import {EditorialLinkContentTypeSelector, JContentTypeSelector} from './ContentTypeSelector';
 import {
     cePickerSetPage,
     cePickerSetTableViewMode,
@@ -18,7 +18,7 @@ import {
     PickerSearchQueryHandler,
     PickerTreeQueryHandler,
     PickerUserQueryHandler
-} from '~/SelectorTypes/Picker/accordionItems/queryHandlers';
+} from '~/SelectorTypes/Picker/accordionItems/QueryHandlers/queryHandlers';
 import {PickerEditorialLinkQueryHandler} from './QueryHandlers/PickerEditorialLinkQueryHandler';
 import {getBaseSearchContextData} from '~/SelectorTypes/Picker/Picker2.utils';
 
@@ -131,7 +131,7 @@ export const registerAccordionItems = registry => {
             config: {
                 rootPath: '',
                 selectableTypes: ['jnt:page', 'jmix:mainResource'],
-                openableTypes: ['jnt:page', 'jnt:contentFolder'],
+                openableTypes: ['jnt:page', 'jnt:contentFolder']
             }
         }, renderer);
     } else {
