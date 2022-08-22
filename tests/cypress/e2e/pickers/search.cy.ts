@@ -89,9 +89,9 @@ describe('Picker - Search', () => {
         picker.getTableRow('all-Organic').should('have.class', 'moonstone-TableRow-highlighted')
     })
 
-    it('Editorial Picker- Search for xylophone and should find nothing no matter the context', () => {
+    it('Media Picker- Search for xylophone and should find nothing no matter the context', () => {
         const contentEditor = pageComposer.editComponentByText('Leading by Example')
-        const picker = contentEditor.getPickerField('jdmix:hasLink_internalLink').open()
+        const picker = contentEditor.getPickerField('jdmix:imgView_image').open()
         picker.search('xylophone', true)
         picker.verifyResultsAreEmpty()
         picker.switchSearchContext('Media')
