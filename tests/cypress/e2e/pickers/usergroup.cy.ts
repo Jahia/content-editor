@@ -1,4 +1,4 @@
-import { JContent } from '../../page-object/jcontent';
+import { JContent } from '../../page-object/jcontent'
 
 describe('Picker - Usergroup', () => {
     const siteKey = 'digitall'

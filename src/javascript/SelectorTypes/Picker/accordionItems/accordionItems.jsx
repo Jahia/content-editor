@@ -16,7 +16,8 @@ import {
     PickerPagesQueryHandler,
     PickerSearchQueryHandler,
     PickerTreeQueryHandler,
-    PickerUserQueryHandler, PickerUserGroupQueryHandler
+    PickerUserQueryHandler,
+    PickerUserGroupQueryHandler
 } from '~/SelectorTypes/Picker/accordionItems/queryHandlers';
 import {getBaseSearchContextData} from '~/SelectorTypes/Picker/Picker2.utils';
 
