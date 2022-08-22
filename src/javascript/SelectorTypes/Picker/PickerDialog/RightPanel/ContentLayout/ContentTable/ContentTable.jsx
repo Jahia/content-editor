@@ -80,13 +80,20 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
     };
 
     const columns = useMemo(() => {
+        if (pickerConfig?.pickerTable?.columns) {
+            const columns = pickerConfig.pickerTable.columns.map(c => (typeof c === 'string') ? allColumnData.find(col => col.id === c) : c);
+            if (field.multiple && rows.some(r => r.isSelectable) && !columns.find(c => c.id === 'selection')) {
+                columns.splice((columns[0].id === 'publicationStatus') ? 1 : 0, 0, allColumnData[1]);
+            }
+
+            return columns;
+        }
+
         return allColumnData
             // Do not include type column if media mode
             .filter(c => Constants.mode.MEDIA !== mode || c.id !== 'type')
             // Do not include selection if multiple selection is not enabled or if there are no selectable types
-            .filter(c => (field.multiple && rows.some(r => r.isSelectable)) || c.id !== SELECTION_COLUMN_ID)
-            // Check if picker config specifies which columns to include
-            .filter(c => !pickerConfig?.pickerTable?.columns || [...pickerConfig.pickerTable.columns, SELECTION_COLUMN_ID].includes(c.id));
+            .filter(c => (field.multiple && rows.some(r => r.isSelectable)) || c.id !== SELECTION_COLUMN_ID);
     }, [mode, field.multiple, pickerConfig, rows]);
     const {
         getTableProps,

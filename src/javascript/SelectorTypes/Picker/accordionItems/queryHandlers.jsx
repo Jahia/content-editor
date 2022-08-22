@@ -9,6 +9,7 @@ import {
     Sql2SearchQueryHandler
 } from '@jahia/jcontent';
 import gql from 'graphql-tag';
+import {UserPickerFragment} from '~/SelectorTypes/Picker/accordionItems/QueryHandlers/queryHandler.gql-queries';
 
 const selectableTypeFragment = {
     gql: gql`fragment IsSelectable on JCRNode {
@@ -81,5 +82,6 @@ export const PickerUserQueryHandler = transformQueryHandler({
             sql2SearchFrom: 'jnt:user',
             searchPath: '/users'
         }
-    })
+    }),
+    getFragments: () => [UserPickerFragment]
 });
