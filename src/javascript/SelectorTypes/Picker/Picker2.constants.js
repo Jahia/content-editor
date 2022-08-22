@@ -6,7 +6,8 @@ export const Constants = {
         CONTENT_FOLDERS: 'content-folders',
         MEDIA: 'media',
         CATEGORY: 'category',
-        SITE: 'site'
+        SITE: 'site',
+        EDITORIAL_LINK: 'editoriallink'
     },
     tableView: {
         mode: {

@@ -128,6 +128,7 @@
             "notFoundContent": "Le contenu n’a pas été trouvé",
             "fileUploadBtn": "Uploader un fichier",
             "modalTitle": "Sélectionner un contenu",
+            "modalEditorialTitle": "Sélectionner des pages et contenus affichables en pleine page",
             "modalFileTitle": "Sélectionner un fichier",
             "modalFolderTitle": "Sélectionner un dossier",
             "modalCategoryTitle": "Sélectionner une catégorie",
@@ -274,6 +275,10 @@
             "medias": "Médias",
             "folder": "Dossiers",
             "home": "Home"
+          },
+          "tabs": {
+            "pages": "Pages",
+            "contentFolders": "Dossier de contenu"
           }
         }
       }
