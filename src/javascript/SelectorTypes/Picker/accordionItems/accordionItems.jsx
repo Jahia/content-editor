@@ -169,7 +169,7 @@ export const registerAccordionItems = registry => {
     registry.add(Constants.ACCORDION_ITEM_NAME, `picker-${Constants.ACCORDION_ITEM_TYPES.SITE}`, {
         targets: ['site:60'],
         icon: <SiteWeb/>,
-        label: 'content-editor:label.contentEditor.edit.fields.contentPicker.sitesRootLabel',
+        label: 'content-editor:label.contentEditor.picker.navigation.sites',
         defaultPath: () => '/sites',
         canDisplayItem: ({selectionNode, folderNode}) => selectionNode ? /^\/sites\/.*/.test(selectionNode.path) : /^\/sites((\/.*)|$)/.test(folderNode.path),
         defaultSort: {orderBy: 'displayName', order: 'ASC'},

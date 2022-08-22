@@ -265,6 +265,10 @@
         "itemsSelected_plural": "{{count}} items selected"
       },
       "picker": {
+        "navigation" : {
+          "categories": "Categories",
+          "sites": "Sites"
+        },
         "rightPanel": {
           "actionsCaption": "Non-selectable items are not listed in this view",
           "searchContextOptions" : {

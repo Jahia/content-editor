@@ -266,6 +266,10 @@
         "itemsSelected_plural": "{{count}} éléments sélectionnés"
       },
       "picker": {
+        "navigation" : {
+          "categories": "Catégories",
+          "sites": "Sites"
+        },
         "rightPanel": {
           "actionsCaption": "Les éléments non-sélectionnables ne sont pas affichés dans cette vue",
           "searchContextOptions" : {

@@ -70,6 +70,14 @@ if [[ -d artifacts/ && $MANIFEST == *"build"* ]]; then
   cd ..
 fi
 
+cd ./assets || exit 1
+for file in $(ls -1 script-* | sort -n)
+do
+  echo "$(date +'%d %B %Y - %k:%M') [SCRIPT] == Submitting script: $file =="
+  curl -u root:${SUPER_USER_PASSWORD} -X POST ${JAHIA_URL}/modules/api/provisioning --form script='[{"executeScript":"'"$file"'"}]' --form file=@$file
+  echo "$(date +'%d %B %Y - %k:%M') [SCRIPT] == Script executed =="
+done
+
 echo "$(date +'%d %B %Y - %k:%M') == Fetching the list of installed modules =="
 ./node_modules/@jahia/jahia-reporter/bin/run utils:modules \
   --moduleId="${MODULE_ID}" \
