@@ -1,9 +1,6 @@
 import { contentTypes } from '../../fixtures/pickers/contentTypes'
-import { Picker } from '../../page-object/picker'
 import { assertUtils } from '../../utils/assertUtils'
 import { AccordionItem } from '../../page-object/accordionItem'
-import { ContentEditor } from '../../page-object'
-import { PickerField } from '../../page-object/pickerField'
 import { PageComposer } from '../../page-object/pageComposer'
 
 describe('Picker tests', () => {
@@ -16,7 +13,7 @@ describe('Picker tests', () => {
         cy.apollo({ mutationFile: 'pickers/createContent.graphql' })
 
         // beforeEach()
-        pageComposer = ContentEditor.visit(siteKey, 'en', 'home.html').getPageComposer()
+        pageComposer = PageComposer.visit(siteKey, 'en', 'home.html')
     })
 
     afterEach(() => {
@@ -27,7 +24,10 @@ describe('Picker tests', () => {
     // tests
 
     it('should display content reference picker', () => {
-        const pickerDialog = PickerField.getFromNewContent(pageComposer, contentTypes['contentReference']).open()
+        const pickerDialog = pageComposer
+            .createContent(contentTypes['contentReference'].typeName)
+            .getPickerField(contentTypes['contentReference'].fieldNodeType, contentTypes['contentReference'].multiple)
+            .open()
 
         // assert components are visible
         assertUtils.isVisible(pickerDialog.get())
@@ -83,7 +83,10 @@ describe('Picker tests', () => {
     })
 
     it('should display file/image reference picker', () => {
-        const pickerDialog = PickerField.getFromNewContent(pageComposer, contentTypes['imageReference']).open()
+        const pickerDialog = pageComposer
+            .createContent(contentTypes['imageReference'].typeName)
+            .getPickerField(contentTypes['imageReference'].fieldNodeType, contentTypes['imageReference'].multiple)
+            .open()
 
         cy.log('assert components are visible')
         assertUtils.isVisible(pickerDialog.get())
@@ -121,7 +124,10 @@ describe('Picker tests', () => {
     })
 
     it('should go to previous location', () => {
-        let pickerDialog = PickerField.getFromNewContent(pageComposer, contentTypes['fileReference']).open()
+        let pickerDialog = pageComposer
+            .createContent(contentTypes['fileReference'].typeName)
+            .getPickerField(contentTypes['fileReference'].fieldNodeType, contentTypes['fileReference'].multiple)
+            .open()
 
         let pagesAccordion: AccordionItem = pickerDialog.getAccordionItem('picker-media')
         assertUtils.isVisible(pagesAccordion.getHeader())
@@ -133,7 +139,10 @@ describe('Picker tests', () => {
 
         cy.log('re-open file media picker')
 
-        pickerDialog = PickerField.getFromNewContent(pageComposer, contentTypes['fileReference']).open()
+        pickerDialog = pageComposer
+            .createContent(contentTypes['fileReference'].typeName)
+            .getPickerField(contentTypes['fileReference'].fieldNodeType, contentTypes['fileReference'].multiple)
+            .open()
         pagesAccordion = pickerDialog.getAccordionItem('picker-media')
 
         cy.log('verify files > images > companies still selected')
@@ -151,7 +160,10 @@ describe('Picker tests', () => {
         })
 
         cy.log('open file picker dialog')
-        let pickerDialog = PickerField.getFromNewContent(pageComposer, contentTypes['fileReference']).open()
+        let pickerDialog = pageComposer
+            .createContent(contentTypes['fileReference'].typeName)
+            .getPickerField(contentTypes['fileReference'].fieldNodeType, contentTypes['fileReference'].multiple)
+            .open()
         let pagesAccordion: AccordionItem = pickerDialog.getAccordionItem('picker-media')
         assertUtils.isVisible(pagesAccordion.getHeader())
 
@@ -168,7 +180,10 @@ describe('Picker tests', () => {
 
         cy.reload() // reload to sync folder
         cy.log('re-open file picker')
-        pickerDialog = PickerField.getFromNewContent(pageComposer, contentTypes['imageReference']).open()
+        pickerDialog = pageComposer
+            .createContent(contentTypes['imageReference'].typeName)
+            .getPickerField(contentTypes['imageReference'].fieldNodeType, contentTypes['imageReference'].multiple)
+            .open()
         pagesAccordion = pickerDialog.getAccordionItem('picker-media')
 
         cy.log(`verify ${folderName} is not selected and root is selected`)

@@ -1,8 +1,6 @@
 import { contentTypes } from '../../fixtures/pickers/contentTypes'
-import { Picker } from '../../page-object/picker'
 import { assertUtils } from '../../utils/assertUtils'
 import { AccordionItem } from '../../page-object/accordionItem'
-import { ContentEditor } from '../../page-object'
 import { PageComposer } from '../../page-object/pageComposer'
 import { PickerField } from '../../page-object/pickerField'
 
@@ -16,7 +14,7 @@ describe('Picker tests', () => {
 
     beforeEach(() => {
         cy.login()
-        pageComposer = ContentEditor.visit(siteKey, 'en', 'home.html').getPageComposer()
+        pageComposer = PageComposer.visit(siteKey, 'en', 'home.html')
     })
 
     afterEach(() => {
@@ -26,7 +24,9 @@ describe('Picker tests', () => {
     it('should allow multi-select', () => {
         const contentType = contentTypes['fileMultipleReference']
 
-        const pickerField = PickerField.getFromNewContent(pageComposer, contentType)
+        const pickerField = pageComposer
+            .createContent(contentType.typeName)
+            .getPickerField(contentType.fieldNodeType, contentType.multiple)
         const picker = pickerField.open()
         const pagesAccordion: AccordionItem = picker.getAccordionItem('picker-media')
         assertUtils.isVisible(pagesAccordion.getHeader())
@@ -61,7 +61,12 @@ describe('Picker tests', () => {
     })
 
     it('should display selection table', () => {
-        const pickerField = PickerField.getFromNewContent(pageComposer, contentTypes['fileMultipleReference'])
+        const pickerField = pageComposer
+            .createContent(contentTypes['fileMultipleReference'].typeName)
+            .getPickerField(
+                contentTypes['fileMultipleReference'].fieldNodeType,
+                contentTypes['fileMultipleReference'].multiple,
+            )
         const picker = pickerField.open()
 
         const mediaAccordion: AccordionItem = picker.getAccordionItem('picker-media')
@@ -114,7 +119,12 @@ describe('Picker tests', () => {
     })
 
     it('should select/unselect all', () => {
-        const pickerField = PickerField.getFromNewContent(pageComposer, contentTypes['fileMultipleReference'])
+        const pickerField = pageComposer
+            .createContent(contentTypes['fileMultipleReference'].typeName)
+            .getPickerField(
+                contentTypes['fileMultipleReference'].fieldNodeType,
+                contentTypes['fileMultipleReference'].multiple,
+            )
         const picker = pickerField.open()
 
         const mediaAccordion: AccordionItem = picker.getAccordionItem('picker-media')

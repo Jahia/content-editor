@@ -1,14 +1,18 @@
 import { BaseComponent, BasePage, Button, getComponent, getComponentByRole, getElement, MUIInput } from '@jahia/cypress'
-import { ContentEditor } from './contentEditor'
 import IframeOptions = Cypress.IframeOptions
+import { ContentEditor } from './contentEditor'
 
 export class PageComposer extends BasePage {
-    jcontent: ContentEditor
     iFrameOptions: IframeOptions
-    constructor(jcontent: ContentEditor) {
+
+    constructor() {
         super()
-        this.jcontent = jcontent
         this.iFrameOptions = { timeout: 90000, log: true }
+    }
+
+    static visit(site: string, language: string, path: string): PageComposer {
+        cy.visit(`/jahia/page-composer/default/${language}/sites/${site}/${path}`)
+        return new PageComposer()
     }
 
     openCreateContent(): PageComposer {
@@ -20,12 +24,13 @@ export class PageComposer extends BasePage {
         return this
     }
 
-    createContent(contentType: string) {
+    createContent(contentType: string): ContentEditor {
         this.openCreateContent()
             .getContentTypeSelector()
             .searchForContentType(contentType)
             .selectContentType(contentType)
             .create()
+        return new ContentEditor()
     }
 
     refresh() {
@@ -61,9 +66,10 @@ export class PageComposer extends BasePage {
         cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
             cy.get('.editModeContextMenu').scrollIntoView().contains('Edit').click()
         })
+        return new ContentEditor()
     }
 
-    editComponentByText(text: string) {
+    editComponentByText(text: string): ContentEditor {
         cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
             cy.iframe('.gwt-Frame', this.iFrameOptions).within(() => {
                 cy.wait(5000)
@@ -73,6 +79,7 @@ export class PageComposer extends BasePage {
         cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
             cy.get('.editModeContextMenu').scrollIntoView().contains('Edit').click()
         })
+        return new ContentEditor()
     }
 
     getContentTypeSelector(): ContentTypeSelector {
@@ -87,12 +94,12 @@ export class PageComposer extends BasePage {
         })
     }
 
-    editPage(title: string): PageComposer {
+    editPage(title: string): ContentEditor {
         cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
             cy.get('#JahiaGxtPagesTab').contains(title).rightclick({ force: true })
             cy.get('.pagesContextMenuAnthracite').contains('Edit').click({ force: true })
         })
-        return this
+        return new ContentEditor()
     }
 }
 
@@ -115,7 +122,8 @@ export class ContentTypeSelector extends BaseComponent {
         getComponentByRole(Button, 'content-type-dialog-cancel', this).click()
     }
 
-    create(): void {
+    create(): ContentEditor {
         getComponentByRole(Button, 'content-type-dialog-create', this).click()
+        return new ContentEditor()
     }
 }

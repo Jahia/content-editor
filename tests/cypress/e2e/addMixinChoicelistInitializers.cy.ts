@@ -1,13 +1,14 @@
-import { ContentEditor } from '../page-object'
+import { JContent } from '../page-object/jcontent'
+import { PageComposer } from '../page-object/pageComposer'
 
 const sitekey = 'contentEditorSiteAddMixin'
 describe('Add Mixin by using choice list initializers (Image Reference)', () => {
-    let contentEditor: ContentEditor
+    let pageComposer: PageComposer
     const cypressDocumentManagerImageReferenceLinkTest = 'Cypress document manager image reference link Test'
     before(function () {
         cy.executeGroovy('createSiteI18N.groovy', { SITEKEY: sitekey })
         cy.login() // edit in chief
-        ContentEditor.visitJContentMedia(sitekey, 'en')
+        JContent.visit(sitekey, 'en', 'media/file')
         cy.wait(5000)
         cy.get('div[data-cm-role="grid-content-list"]')
             .children('div[mode="media"]')
@@ -16,7 +17,6 @@ describe('Add Mixin by using choice list initializers (Image Reference)', () => 
                 waitForAnimations: true,
             })
         cy.wait(5000)
-        ContentEditor.visit(sitekey, 'en', 'home.html')
     })
 
     after(function () {
@@ -26,12 +26,11 @@ describe('Add Mixin by using choice list initializers (Image Reference)', () => 
 
     beforeEach(() => {
         Cypress.Cookies.preserveOnce('JSESSIONID')
-        contentEditor = new ContentEditor()
+        pageComposer = PageComposer.visit(sitekey, 'en', 'home.html')
     })
 
     it('Can create a document manager image reference link', () => {
-        const pageComposer = contentEditor.getPageComposer()
-        pageComposer
+        const contentEditor = pageComposer
             .openCreateContent()
             .getContentTypeSelector()
             .searchForContentType('Document Manager')
@@ -112,8 +111,7 @@ describe('Add Mixin by using choice list initializers (Image Reference)', () => 
             )
     })
     it('Can edit a document manager image reference link', () => {
-        const pageComposer = contentEditor.getPageComposer()
-        pageComposer.editComponent(
+        const contentEditor = pageComposer.editComponent(
             `a[href*="/sites/${sitekey}/home/search-results.html"] > img[src*="/sites/${sitekey}/files/snowbearHome.jpeg"]`,
         )
         cy.get('#contenteditor-dialog-title')

@@ -1,11 +1,11 @@
-import { ContentEditor } from '../page-object'
+import { PageComposer } from '../page-object/pageComposer'
 
 describe('Preview tests', () => {
     const siteKey = 'digitall'
-    let contentEditor: ContentEditor
+    let pageComposer: PageComposer
     before(() => {
         cy.login() // edit in chief
-        ContentEditor.visit(siteKey, 'en', 'home.html').getPageComposer()
+        pageComposer = PageComposer.visit(siteKey, 'en', 'home.html')
     })
 
     after(() => {
@@ -14,11 +14,10 @@ describe('Preview tests', () => {
 
     beforeEach(() => {
         Cypress.Cookies.preserveOnce('JSESSIONID')
-        contentEditor = new ContentEditor()
     })
 
     it('It shows correctly preview of edited page even if not the one currently rendered in PageComposer', () => {
-        contentEditor.getPageComposer().editPage('Our Companies')
+        const contentEditor = pageComposer.editPage('Our Companies')
         contentEditor.switchToAdvancedMode()
         cy.wait(5000)
         contentEditor.validateContentIsVisibleInPreview('Making a Difference')

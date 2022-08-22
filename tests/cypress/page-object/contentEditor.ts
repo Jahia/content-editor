@@ -10,23 +10,11 @@ import {
     Menu,
 } from '@jahia/cypress'
 import { PageComposer } from './pageComposer'
+import { PickerField } from './pickerField'
+import { ContentType } from '../fixtures/pickers/contentTypes'
 
 export class ContentEditor extends BasePage {
     languageSwitcher: Dropdown
-
-    static visit(site: string, language: string, path: string): ContentEditor {
-        cy.visit(`/jahia/page-composer/default/${language}/sites/${site}/${path}`)
-        return new ContentEditor()
-    }
-
-    static visitJContentMedia(site: string, language: string): ContentEditor {
-        cy.visit(`/jahia/jcontent/${site}/${language}/media/files`)
-        return new ContentEditor()
-    }
-
-    getPageComposer(): PageComposer {
-        return new PageComposer(this)
-    }
 
     openSection(sectionName: string) {
         return getComponentBySelector(Collapsible, `[data-sel-content-editor-fields-group="${sectionName}"]`).expand()
@@ -103,5 +91,12 @@ export class ContentEditor extends BasePage {
         cy.iframe('[data-sel-role="edit-preview-frame"]', { timeout: 90000, log: true }).within(() => {
             cy.contains(content, { timeout: 90000 }).should('be.visible')
         })
+    }
+
+    getPickerField(fieldName: string, multiple?: boolean): PickerField {
+        const r = getComponentByAttr(PickerField, 'data-sel-content-editor-field', fieldName)
+        r.fieldName = fieldName
+        r.multiple = multiple
+        return r
     }
 }
