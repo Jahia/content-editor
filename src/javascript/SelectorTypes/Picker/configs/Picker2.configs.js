@@ -2,6 +2,7 @@ import {MediaPickerConfig} from '~/SelectorTypes/Picker/configs/MediaPickerConfi
 import {ContentPickerConfig} from '~/SelectorTypes/Picker/configs/ContentPickerConfig';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {mergeDeep} from '~/SelectorTypes/Picker/Picker2.utils';
+import {reactTable} from '@jahia/jcontent';
 
 export const registerPickerConfig = ceRegistry => {
     ceRegistry.add(Constants.pickerConfig, 'default', mergeDeep({}, ContentPickerConfig, {
@@ -119,7 +120,27 @@ export const registerPickerConfig = ceRegistry => {
         searchSelectorType: 'jnt:user',
         selectableTypesTable: ['jnt:user'],
         pickerTable: {
-            columns: ['name']
+            columns: [
+                'name',
+                {
+                    id: 'site',
+                    accessor: 'siteInfo.displayName',
+                    label: 'content-editor:label.contentEditor.edit.fields.contentPicker.userPicker.site',
+                    sortable: true,
+                    property: 'siteInfo.displayName',
+                    Cell: reactTable.Cell,
+                    Header: reactTable.Header,
+                    width: '300px'
+                },
+                {
+                    id: 'provider',
+                    accessor: row => row.userFolderAncestors.map(f => f.path.match(/^.*\/providers\/([^/]+)$/)).filter(f => f).map(f => f[1]).join('') || 'default',
+                    label: 'content-editor:label.contentEditor.edit.fields.contentPicker.userPicker.provider',
+                    Cell: reactTable.Cell,
+                    Header: reactTable.Header,
+                    width: '300px'
+                }
+            ]
         },
         pickerInput: {
             emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalUserTitle'
