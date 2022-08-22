@@ -136,7 +136,11 @@
             "modalPageTitle": "Select a page",
             "modalSiteTitle": "Select a site",
             "modalUserTitle": "Select a user",
-            "itemsFound": "{{totalCount}} items found"
+            "itemsFound": "{{totalCount}} items found",
+            "userPicker": {
+              "site": "Site",
+              "provider": "Provider"
+            }
           },
           "category": {
             "noMatches": "No matches found"

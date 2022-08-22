@@ -5,13 +5,15 @@ export const allColumnData = [
         id: 'publicationStatus',
         sortable: false,
         Header: '',
-        Cell: reactTable.CellPublicationStatus
+        Cell: reactTable.CellPublicationStatus,
+        width: '15px'
     },
     {
         id: 'selection',
         sortable: false,
         Header: reactTable.HeaderSelection,
-        Cell: reactTable.CellSelection
+        Cell: reactTable.CellSelection,
+        width: '50px'
     },
     {
         id: 'name',
@@ -20,7 +22,8 @@ export const allColumnData = [
         sortable: true,
         property: 'displayName',
         Cell: reactTable.CellName,
-        Header: reactTable.Header
+        Header: reactTable.Header,
+        width: '300px'
     },
     {
         id: 'type',
@@ -29,7 +32,8 @@ export const allColumnData = [
         sortable: true,
         property: 'primaryNodeType.displayName',
         Cell: reactTable.CellType,
-        Header: reactTable.Header
+        Header: reactTable.Header,
+        width: '180px'
     },
     {
         id: 'lastModified',
@@ -38,6 +42,7 @@ export const allColumnData = [
         sortable: true,
         property: 'lastModified.value',
         Cell: reactTable.CellLastModified,
-        Header: reactTable.Header
+        Header: reactTable.Header,
+        width: '290px'
     }
 ];
