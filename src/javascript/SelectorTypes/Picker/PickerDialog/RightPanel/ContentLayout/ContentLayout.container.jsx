@@ -21,11 +21,12 @@ const unsetRefetcher = name => {
 
 export const ContentLayoutContainer = ({pickerConfig}) => {
     const {t} = useTranslation();
-    const {mode, path, filesMode, tableView, searchTerms, searchPath} = useSelector(state => ({
+    const {mode, path, filesMode, tableView, preSearchModeMemo, searchTerms, searchPath} = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
         path: state.contenteditor.picker.path,
         filesMode: 'grid',
         tableView: state.contenteditor.picker.tableView,
+        preSearchModeMemo: state.contenteditor.picker.preSearchModeMemo,
         searchTerms: state.contenteditor.picker.searchTerms,
         searchPath: state.contenteditor.picker.searchPath
     }), shallowEqual);
@@ -33,26 +34,29 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
     const canSelectPages = pickerConfig.selectableTypesTable.includes('jnt:page');
     const openableTypes = registry.get('accordionItem', mode)?.config?.openableTypes;
 
-    const {layoutQuery, layoutQueryParams, result, error, loading, isStructured, refetch} = useLayoutQuery(state => {
-        return ({
-            mode: state.contenteditor.picker.mode,
-            siteKey: state.site,
-            params: {
-                searchTerms,
-                searchPath,
-                searchContentType: pickerConfig.searchSelectorType,
-                selectableTypesTable: pickerConfig.selectableTypesTable,
-                openableTypes
-            },
-            path: state.contenteditor.picker.path,
-            lang: state.language,
-            uilang: state.uilang,
-            filesMode: 'grid',
-            pagination: state.contenteditor.picker.pagination,
-            sort: state.contenteditor.picker.sort,
-            tableView: state.contenteditor.picker.tableView
-        });
-    });
+    const additionalFragments = [];
+    if (mode === Constants.mode.SEARCH && preSearchModeMemo) {
+        additionalFragments.push(...registry.get('accordionItem', preSearchModeMemo)?.queryHandler?.getFragments());
+    }
+
+    const {layoutQuery, layoutQueryParams, result, error, loading, isStructured, refetch} = useLayoutQuery(state => ({
+        mode: state.contenteditor.picker.mode,
+        siteKey: state.site,
+        params: {
+            searchTerms,
+            searchPath,
+            searchContentType: pickerConfig.searchSelectorType,
+            selectableTypesTable: pickerConfig.selectableTypesTable,
+            openableTypes
+        },
+        path: state.contenteditor.picker.path,
+        lang: state.language,
+        uilang: state.uilang,
+        filesMode: 'grid',
+        pagination: state.contenteditor.picker.pagination,
+        sort: state.contenteditor.picker.sort,
+        tableView: state.contenteditor.picker.tableView
+    }), {}, additionalFragments);
 
     // Reset table view type to content if pages cannot be picked, we do not show table view selector if pages cannot
     // be picked

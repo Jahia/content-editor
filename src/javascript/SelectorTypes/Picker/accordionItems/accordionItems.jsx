@@ -1,9 +1,10 @@
 import React from 'react';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {renderer} from '~/SelectorTypes/Picker/accordionItems/renderer';
-import {Collections, FolderUser, SiteWeb} from '@jahia/moonstone';
+import {Collections, FolderUser, Group, SiteWeb} from '@jahia/moonstone';
 import {registry} from '@jahia/ui-extender';
-import {ContentTypeSelector, ViewModeSelector} from '@jahia/jcontent';
+import {ViewModeSelector} from '@jahia/jcontent';
+import {EditorialLinkContentTypeSelector, JContentTypeSelector} from './ContentTypeSelector';
 import {
     cePickerSetPage,
     cePickerSetTableViewMode,
@@ -16,8 +17,10 @@ import {
     PickerPagesQueryHandler,
     PickerSearchQueryHandler,
     PickerTreeQueryHandler,
-    PickerUserQueryHandler
-} from '~/SelectorTypes/Picker/accordionItems/queryHandlers';
+    PickerUserQueryHandler,
+    PickerUserGroupQueryHandler
+} from '~/SelectorTypes/Picker/accordionItems/QueryHandlers/queryHandlers';
+import {PickerEditorialLinkQueryHandler} from './QueryHandlers/PickerEditorialLinkQueryHandler';
 import {getBaseSearchContextData} from '~/SelectorTypes/Picker/Picker2.utils';
 
 // Todo: see with Fran�ois if it's possible to get rid of this and have every picker always come with a key
@@ -97,8 +100,8 @@ export const registerAccordionItems = registry => {
         registry.add(Constants.ACCORDION_ITEM_NAME, `picker-${Constants.ACCORDION_ITEM_TYPES.PAGES}`, {
             ...pagesItem,
             viewSelector: <ViewModeSelector {...viewModeSelectorProps}/>,
-            tableHeader: <ContentTypeSelector {...contentTypeSelectorProps}/>,
-            targets: ['default:50', 'editorial:50', 'editoriallink:50'],
+            tableHeader: <JContentTypeSelector {...contentTypeSelectorProps}/>,
+            targets: ['default:50', 'editorial:50'],
             defaultSort: {orderBy: 'lastModified.value', order: 'DESC'},
             getSearchContextData,
             queryHandler: PickerPagesQueryHandler
@@ -115,6 +118,23 @@ export const registerAccordionItems = registry => {
             getSearchContextData,
             queryHandler: PickerTreeQueryHandler
         }, renderer);
+
+        // Editorial link
+        registry.add(Constants.ACCORDION_ITEM_NAME, `picker-${Constants.ACCORDION_ITEM_TYPES.EDITORIAL_LINK}`, {
+            ...pagesItem,
+            targets: ['editoriallink:40'],
+            defaultPath: site => `/sites/${site}`,
+            queryHandler: PickerEditorialLinkQueryHandler,
+            tableHeader: <EditorialLinkContentTypeSelector/>,
+            getPathForItem: node => node.site.path,
+            getSearchContextData,
+            viewSelector: null,
+            config: {
+                rootPath: '',
+                selectableTypes: ['jnt:page', 'jmix:mainResource'],
+                openableTypes: ['jnt:page', 'jnt:contentFolder']
+            }
+        }, renderer);
     } else {
         console.warn('Picker will not function properly due to missing accordionItem for pages');
     }
@@ -123,7 +143,7 @@ export const registerAccordionItems = registry => {
         registry.add(Constants.ACCORDION_ITEM_NAME, `picker-${Constants.ACCORDION_ITEM_TYPES.CONTENT_FOLDERS}`, {
             ...contentFoldersItem,
             viewSelector: <ViewModeSelector {...viewModeSelectorProps}/>,
-            targets: ['default:60', 'editorial:60', 'editoriallink:60'],
+            targets: ['default:60', 'editorial:60'],
             queryHandler: PickerContentsFolderQueryHandler
         }, renderer);
 
@@ -235,6 +255,46 @@ export const registerAccordionItems = registry => {
             rootPath: '',
             selectableTypes: ['jnt:user'],
             openableTypes: ['jnt:user']
+        }
+    }, renderer);
+
+    // Custom usergroup item
+    registry.add(Constants.ACCORDION_ITEM_NAME, 'picker-usergroup', {
+        targets: ['usergroup:50'],
+        icon: <Group/>,
+        label: 'content-editor:label.contentEditor.picker.navigation.usergroup',
+        defaultPath: () => '/',
+        canDisplayItem: node => /^\/sites\/[^/]+\/groups\/.*/.test(node.path),
+        getSearchContextData: ({currentSite, t}) => {
+            return [
+                {
+                    label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.search'),
+                    searchPath: '',
+                    isDisabled: true
+                },
+                {
+                    label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.allGroups'),
+                    searchPath: '/',
+                    iconStart: <Group/>
+                },
+                {
+                    label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.globalGroups'),
+                    searchPath: '/groups',
+                    iconStart: <Group/>
+                },
+                ...(currentSite ? [{
+                    label: currentSite.substring(0, 1).toUpperCase() + currentSite.substring(1),
+                    searchPath: `/sites/${currentSite}/groups`,
+                    iconStart: <Group/>
+                }] : [])
+            ];
+        },
+        defaultSort: {orderBy: 'displayName', order: 'ASC'},
+        queryHandler: PickerUserGroupQueryHandler,
+        config: {
+            rootPath: '',
+            selectableTypes: ['jnt:group'],
+            openableTypes: ['jnt:group']
         }
     }, renderer);
 

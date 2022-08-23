@@ -9,7 +9,7 @@ import {
     Sql2SearchQueryHandler
 } from '@jahia/jcontent';
 import gql from 'graphql-tag';
-import {UserPickerFragment} from './queryHandlers.gql-queries';
+import {UserGroupPickerFragment, UserPickerFragment} from './queryHandlers.gql-queries';
 
 const selectableTypeFragment = {
     gql: gql`fragment IsSelectable on JCRNode {
@@ -84,4 +84,16 @@ export const PickerUserQueryHandler = transformQueryHandler({
         }
     }),
     getFragments: () => [UserPickerFragment]
+});
+
+export const PickerUserGroupQueryHandler = transformQueryHandler({
+    ...Sql2SearchQueryHandler,
+    getQueryParams: p => Sql2SearchQueryHandler.getQueryParams({
+        ...p,
+        params: {
+            sql2SearchFrom: 'jnt:group',
+            searchPath: '/groups'
+        }
+    }),
+    getFragments: () => [UserGroupPickerFragment]
 });
