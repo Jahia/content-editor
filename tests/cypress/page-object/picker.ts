@@ -184,4 +184,14 @@ export class Picker extends BaseComponent {
     verifyResultsAreEmpty() {
         this.get().should('contain.text', 'No matches found').and('contain.text', 'No results for your search')
     }
+
+    refreshComponents() {
+        this.table = undefined
+        this.selectionTable = undefined
+    }
+
+    switchToSite(site: string) {
+        this.getSiteSwitcher().select(site)
+        this.refreshComponents()
+    }
 }
