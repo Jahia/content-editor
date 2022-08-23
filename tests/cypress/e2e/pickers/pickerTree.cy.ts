@@ -83,10 +83,10 @@ describe('Folder picker tests', () => {
 
         picker.getTable().getRowByIndex(2).get().find('span').first().should('contain', 'ce-picker-files').click()
         picker.getSiteSwitcher().should('contain', 'Digitall')
-        picker.getSiteSwitcher().select('System Site')
+        picker.switchToSite('System Site')
         picker.getSiteSwitcher().should('contain', 'System Site')
         picker.getTable().getRows((el) => expect(el).to.have.length(1))
-        picker.getSiteSwitcher().select('Digitall')
+        picker.switchToSite('Digitall')
         picker.getTableRow('ce-picker-files').should('have.class', 'moonstone-TableRow-highlighted')
     })
 })
