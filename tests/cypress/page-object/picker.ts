@@ -108,7 +108,7 @@ export class Picker extends BaseComponent {
     }
 
     getTableRow(label: string) {
-        this.getTable().get().find('.moonstone-TableRow').eq(1).should('be.visible')
+        this.getTable().get().find('.moonstone-TableRow').should('be.visible')
         return this.getTable()
             .get()
             .find('.moonstone-TableRow')
