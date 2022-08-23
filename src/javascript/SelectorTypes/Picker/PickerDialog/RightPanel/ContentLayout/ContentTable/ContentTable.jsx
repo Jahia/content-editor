@@ -67,12 +67,12 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
     const field = useFieldContext();
     const dispatch = useDispatch();
 
-    const {mode, path, pagination, searchTerm} = useSelector(state => ({
+    const {mode, path, pagination, searchTerm, selection} = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
         path: state.contenteditor.picker.path,
         pagination: state.contenteditor.picker.pagination,
-        tableView: state.contenteditor.picker.tableView,
-        searchTerm: state.contenteditor.picker.searchTerms
+        searchTerm: state.contenteditor.picker.searchTerms,
+        selection: state.contenteditor.picker.selection
     }), shallowEqual);
 
     const allowDoubleClickNavigation = nodeType => {
@@ -85,7 +85,6 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
             if (field.multiple && rows.some(r => r.isSelectable) && !columns.find(c => c.id === 'selection')) {
                 columns.splice((columns[0].id === 'publicationStatus') ? 1 : 0, 0, allColumnData[1]);
             }
-
             return columns;
         }
 
@@ -101,7 +100,8 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
         headerGroups,
         rows: tableRows,
         prepareRow,
-        toggleRowExpanded
+        toggleRowExpanded,
+        expandSelection
     } = useTable(
         {
             columns: columns,
@@ -121,6 +121,15 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
             });
         }
     }, [rows, isStructured, toggleRowExpanded, firstLoad]);
+
+    // Expand structured view selections when root row is changed
+    const rootRowUuid = useRef();
+    useEffect(() => {
+        if (isStructured && rootRowUuid.current !== rows[0]?.uuid && selection && selection.length) {
+            rootRowUuid.current = rows[0].uuid;
+            expandSelection(selection);
+        }
+    }, [isStructured, selection, expandSelection, rootRowUuid, rows]);
 
     const doubleClickNavigation = node => {
         const actions = [];
