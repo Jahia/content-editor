@@ -125,7 +125,16 @@ export const registerPickerConfig = ceRegistry => {
         selectableTypesTable: ['jnt:user'],
         pickerTable: {
             columns: [
-                'name',
+                {
+                    id: 'name',
+                    accessor: row => row.firstName?.value || row.lastName?.value ? `${row.firstName ? row.firstName.value : ''} ${row.lastName ? row.lastName.value : ''} (${row.name})` : row.name,
+                    label: 'jcontent:label.contentManager.listColumns.name',
+                    sortable: true,
+                    property: 'displayName',
+                    Cell: reactTable.CellName,
+                    Header: reactTable.Header,
+                    width: '300px'
+                },
                 {
                     id: 'site',
                     accessor: 'siteInfo.displayName',

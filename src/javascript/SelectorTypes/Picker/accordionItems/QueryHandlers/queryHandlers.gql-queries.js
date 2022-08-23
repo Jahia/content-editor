@@ -3,6 +3,12 @@ import gql from 'graphql-tag';
 export const UserPickerFragment = {
     gql: gql`
         fragment UserPickerFragment on JCRNode {
+            firstName: property(name: "j:firstName") {
+                value
+            }
+            lastName: property(name: "j:lastName") {
+                value
+            }
             siteInfo: site {
                 ...NodeCacheRequiredFields
                 displayName(language: $language)
