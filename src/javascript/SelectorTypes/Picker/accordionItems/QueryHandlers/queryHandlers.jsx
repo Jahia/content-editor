@@ -5,11 +5,9 @@ import {
     ContentFoldersQueryHandler,
     FilesQueryHandler,
     PagesQueryHandler,
-    SearchQueryHandler,
-    Sql2SearchQueryHandler
+    SearchQueryHandler
 } from '@jahia/jcontent';
 import gql from 'graphql-tag';
-import {UserGroupPickerFragment, UserPickerFragment} from './queryHandlers.gql-queries';
 
 const selectableTypeFragment = {
     gql: gql`fragment IsSelectable on JCRNode {
@@ -72,22 +70,4 @@ export const PickerSearchQueryHandler = transformQueryHandler({
             }
         }
     })
-});
-
-export const PickerUserQueryHandler = transformQueryHandler({
-    ...Sql2SearchQueryHandler,
-    getQueryParams: p => ({
-        ...Sql2SearchQueryHandler.getQueryParams(p),
-        query: `SELECT * FROM ['jnt:user'] WHERE ISDESCENDANTNODE('/users') OR ISDESCENDANTNODE('/sites/${p.siteKey}/users')`
-    }),
-    getFragments: () => [UserPickerFragment]
-});
-
-export const PickerUserGroupQueryHandler = transformQueryHandler({
-    ...Sql2SearchQueryHandler,
-    getQueryParams: p => ({
-        ...Sql2SearchQueryHandler.getQueryParams(p),
-        query: `SELECT * FROM ['jnt:group'] WHERE ISDESCENDANTNODE('/groups') OR ISDESCENDANTNODE('/sites/${p.siteKey}/groups')`
-    }),
-    getFragments: () => [UserGroupPickerFragment]
 });

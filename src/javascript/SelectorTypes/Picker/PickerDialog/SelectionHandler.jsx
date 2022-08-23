@@ -15,7 +15,6 @@ import {
     cePickerSite
 } from '~/SelectorTypes/Picker/Picker2.redux';
 import {registry} from '@jahia/ui-extender';
-import {getItemTarget} from '~/SelectorTypes/Picker/accordionItems/accordionItems';
 import {getDetailedPathArray, getPathWithoutFile} from '~/SelectorTypes/Picker/Picker2.utils';
 import {batchActions} from 'redux-batched-actions';
 import PropTypes from 'prop-types';
@@ -69,13 +68,13 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
 
         const allAccordionItems = registry.find({
             type: 'accordionItem',
-            target: getItemTarget(pickerConfig.key)
+            target: pickerConfig.key
         });
 
         let firstMatchingAccordion = allAccordionItems.find(accord =>
             (!accord.isEnabled || accord.isEnabled(newState.site)) &&
             accord.canDisplayItem &&
-            (selectedNode && !previousState.current.isOpen) ? accord.canDisplayItem({selectionNode: selectedNode}) : accord.canDisplayItem({folderNode: currentFolderInfo.node})
+            ((selectedNode && !previousState.current.isOpen) ? accord.canDisplayItem({selectionNode: selectedNode}) : accord.canDisplayItem({folderNode: currentFolderInfo.node}))
         ) || allAccordionItems[0];
 
         // If selection exists we don't care about previous state, need to update state in accordance with selection

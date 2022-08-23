@@ -2,7 +2,6 @@ import React from 'react';
 import {shallowEqual, useSelector} from 'react-redux';
 import {cePickerMode, cePickerOpenPaths, cePickerPath, cePickerSite} from '~/SelectorTypes/Picker/Picker2.redux';
 import {registry} from '@jahia/ui-extender';
-import {getItemTarget} from '~/SelectorTypes/Picker/accordionItems/accordionItems';
 import {getDetailedPathArray} from '~/SelectorTypes/Picker/Picker2.utils';
 import {batchActions} from 'redux-batched-actions';
 import {SiteSwitcher} from '@jahia/jcontent';
@@ -26,7 +25,7 @@ export const PickerSiteSwitcher = ({pickerConfig}) => {
                           actions.push(cePickerSite(siteNode.name));
                           const accordionItems = registry.find({
                               type: 'accordionItem',
-                              target: getItemTarget(pickerConfig.key)
+                              target: pickerConfig.key
                           })
                               .filter(accordionItem => !accordionItem.isEnabled || accordionItem.isEnabled(siteNode.name));
                           const selectedAccordion = accordionItems.find(item => item.key === state.mode) || accordionItems[0];

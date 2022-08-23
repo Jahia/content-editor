@@ -9,7 +9,6 @@ import {
     cePickerPath,
     cePickerSetSearchTerm
 } from '~/SelectorTypes/Picker/Picker2.redux';
-import {getItemTarget} from '~/SelectorTypes/Picker/accordionItems/accordionItems';
 import {batchActions} from 'redux-batched-actions';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 import {booleanValue} from '~/SelectorTypes/Picker/Picker2.utils';
@@ -75,7 +74,7 @@ export const PickerDialog = ({
                                         <PickerSiteSwitcher pickerConfig={pickerConfig}/>
                                     </div>
                                 ))}
-                                accordionItemTarget={getItemTarget(pickerConfig.key)}
+                                accordionItemTarget={pickerConfig.key}
                                 accordionItemProps={accordionItemProps}
                                 selector={selector}
                                 handleNavigationAction={(mode, path) => (batchActions([cePickerPath(path), cePickerMode(mode)]))}
