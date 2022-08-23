@@ -14,7 +14,11 @@ export const registerPickerConfig = ceRegistry => {
     ceRegistry.add(Constants.pickerConfig, 'editoriallink', mergeDeep({}, ContentPickerConfig, {
         searchSelectorType: 'jmix:searchable',
         selectableTypesTable: ['jnt:page', 'jmix:mainResource'],
-        showOnlyNodesWithTemplates: true
+        showOnlyNodesWithTemplates: true,
+        pickerDialog: {
+            dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalEditorialTitle',
+            displayTree: false
+        }
     }));
 
     ceRegistry.add(Constants.pickerConfig, 'editorial', mergeDeep({}, ContentPickerConfig, {

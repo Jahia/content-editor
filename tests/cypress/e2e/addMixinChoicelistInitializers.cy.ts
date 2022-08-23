@@ -84,13 +84,12 @@ describe('Add Mixin by using choice list initializers (Image Reference)', () => 
             .scrollIntoView()
             .should('be.visible')
             .click()
-        cy.wait(2000)
-        cy.get('.moonstone-tab-item')
+        cy.get('.moonstone-loader').should('not.exist') // wait to load
+        cy.get('.moonstone-tab-item[data-cm-view-type="pages"]')
             .should('be.visible')
-            .contains('Sub-pages')
-            .should('be.visible')
-            .click({ force: true })
-        cy.get('.moonstone-tab-item.moonstone-selected').should('be.visible').contains('Sub-pages').should('be.visible')
+            .click()
+            .should('have.class', 'moonstone-selected')
+        cy.get('.moonstone-loader').should('not.exist') // wait to load
         cy.get('tr[data-cm-role="table-content-list-row"]').contains('Search Results').click()
         cy.get('button[data-sel-picker-dialog-action="done"]').click()
         cy.get('[data-sel-content-editor-field="mix\\:title_jcr\\:title"]')
@@ -110,6 +109,7 @@ describe('Add Mixin by using choice list initializers (Image Reference)', () => 
                 `a[href*="/sites/${sitekey}/home/search-results.html"] > img[src*="/sites/${sitekey}/files/snowbearHome.jpeg"]`,
             )
     })
+
     it('Can edit a document manager image reference link', () => {
         const contentEditor = pageComposer.editComponent(
             `a[href*="/sites/${sitekey}/home/search-results.html"] > img[src*="/sites/${sitekey}/files/snowbearHome.jpeg"]`,

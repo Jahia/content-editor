@@ -128,6 +128,7 @@
             "notFoundContent": "Content not found",
             "fileUploadBtn": "Upload file",
             "modalTitle": "Select a content",
+            "modalEditorialTitle": "Select pages and contents displayable in full page",
             "modalFileTitle": "Select a file",
             "modalFolderTitle": "Select a folder",
             "modalCategoryTitle": "Select a category",
@@ -274,6 +275,10 @@
             "globalUsers": "Global users",
             "allGroups": "All groups",
             "globalGsers": "Global groups"
+          },
+          "tabs": {
+            "pages": "Pages",
+            "contentFolders": "Content Folders"
           }
         }
       }

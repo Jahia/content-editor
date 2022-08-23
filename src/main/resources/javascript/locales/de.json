@@ -128,6 +128,7 @@
             "notFoundContent": "Datei nicht gefunden",
             "fileUploadBtn": "Datei hochladen",
             "modalTitle": "Content auswählen",
+            "modalEditorialTitle": "Wählen Sie Seiten und Inhalte aus, die ganzseitig angezeigt werden können",
             "modalFileTitle": "Datei auswählen",
             "modalFolderTitle": "Ordner auswählen",
             "modalCategoryTitle": "Kategorien auswählen",
@@ -275,6 +276,10 @@
             "globalUsers": "Globale Benutzer",
             "allGroups": "Alle Benutzergruppen",
             "globalGsers": "Globale Benutzergruppen"
+          },
+          "tabs": {
+            "pages": "Seiten",
+            "contentFolders": "Inhalts-Ordner"
           }
         }
       }

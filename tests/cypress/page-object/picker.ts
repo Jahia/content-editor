@@ -134,6 +134,10 @@ export class Picker extends BaseComponent {
         return cy.get('[data-cm-role="selection-caption"] [data-sel-role$="item-selected"]')
     }
 
+    getTab(viewType: string) {
+        return cy.get(`.moonstone-tab-item[data-cm-view-type="${viewType}"]`)
+    }
+
     selectItems(count: number) {
         this.getTable()
             .getRows()
@@ -165,6 +169,7 @@ export class Picker extends BaseComponent {
                 cy.get('[data-cm-role="table-content-list"]').find('.moonstone-TableRow').should('be.visible')
             }
         }
+        this.wait()
     }
 
     getSearchInput() {
@@ -172,7 +177,7 @@ export class Picker extends BaseComponent {
     }
 
     verifyResultsLength(length: number) {
-        cy.get('.moonstone-tablePagination').should('be.visible').and('contain', `of ${length}`)
+        cy.get('[data-sel-role="table-pagination-total-rows"]').should('be.visible').and('contain', `of ${length}`)
     }
 
     switchSearchContext(context: string) {
