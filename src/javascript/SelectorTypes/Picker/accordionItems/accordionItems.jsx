@@ -1,7 +1,6 @@
 import React from 'react';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {renderer} from '~/SelectorTypes/Picker/accordionItems/renderer';
-import {Collections, FolderUser, Group, SiteWeb} from '@jahia/moonstone';
 import {registry} from '@jahia/ui-extender';
 import {ViewModeSelector} from '@jahia/jcontent';
 import {EditorialLinkContentTypeSelector, JContentTypeSelector} from './ContentTypeSelector';
@@ -12,21 +11,13 @@ import {
 } from '~/SelectorTypes/Picker/Picker2.redux';
 import {
     PickerContentsFolderQueryHandler,
-    PickerBaseQueryHandler,
     PickerFilesQueryHandler,
     PickerPagesQueryHandler,
     PickerSearchQueryHandler,
-    PickerTreeQueryHandler,
-    PickerUserQueryHandler,
-    PickerUserGroupQueryHandler
+    PickerTreeQueryHandler
 } from '~/SelectorTypes/Picker/accordionItems/QueryHandlers/queryHandlers';
 import {PickerEditorialLinkQueryHandler} from './QueryHandlers/PickerEditorialLinkQueryHandler';
 import {getBaseSearchContextData} from '~/SelectorTypes/Picker/Picker2.utils';
-
-// Todo: see with Fran�ois if it's possible to get rid of this and have every picker always come with a key
-export const getItemTarget = pickerType => {
-    return registry.get(Constants.pickerConfig, pickerType) ? pickerType : 'default';
-};
 
 const viewModeSelectorProps = {
     selector: state => ({
@@ -146,14 +137,6 @@ export const registerAccordionItems = registry => {
             targets: ['default:60', 'editorial:60'],
             queryHandler: PickerContentsFolderQueryHandler
         }, renderer);
-
-        registry.add(Constants.ACCORDION_ITEM_NAME, 'picker-content-folders-tree', {
-            ...contentFoldersItem,
-            targets: ['contentfolder:60'],
-            defaultPath: site => `/sites/${site}`,
-            getPathForItem: null,
-            queryHandler: PickerTreeQueryHandler
-        }, renderer);
     } else {
         console.warn('Picker will not function properly due to missing accordionItem for content-folders');
     }
@@ -166,15 +149,6 @@ export const registerAccordionItems = registry => {
             defaultSort: {orderBy: 'lastModified.value', order: 'DESC'},
             queryHandler: PickerFilesQueryHandler
         }, renderer);
-
-        registry.add(Constants.ACCORDION_ITEM_NAME, 'picker-media-tree', {
-            ...mediaItem,
-            targets: ['folder:70'],
-            defaultPath: site => `/sites/${site}`,
-            getPathForItem: null,
-            defaultSort: {orderBy: 'lastModified.value', order: 'DESC'},
-            queryHandler: PickerTreeQueryHandler
-        }, renderer);
     } else {
         console.warn('Picker will not function properly due to missing accordionItem for media');
     }
@@ -185,118 +159,6 @@ export const registerAccordionItems = registry => {
             queryHandler: PickerSearchQueryHandler
         });
     }
-
-    registry.add(Constants.ACCORDION_ITEM_NAME, `picker-${Constants.ACCORDION_ITEM_TYPES.SITE}`, {
-        targets: ['site:60'],
-        icon: <SiteWeb/>,
-        label: 'content-editor:label.contentEditor.picker.navigation.sites',
-        defaultPath: () => '/sites',
-        canDisplayItem: ({selectionNode, folderNode}) => selectionNode ? /^\/sites\/.*/.test(selectionNode.path) : /^\/sites((\/.*)|$)/.test(folderNode.path),
-        defaultSort: {orderBy: 'displayName', order: 'ASC'},
-        queryHandler: PickerBaseQueryHandler,
-        config: {
-            rootPath: '',
-            selectableTypes: ['jnt:virtualsite'],
-            openableTypes: ['jnt:virtualsite'],
-            rootLabel: 'Sites - This is never shown'
-        }
-    }, renderer);
-
-    // Custom category item
-    registry.add(Constants.ACCORDION_ITEM_NAME, `picker-${Constants.ACCORDION_ITEM_TYPES.CATEGORY}`, {
-        targets: ['category:50'],
-        icon: <Collections/>,
-        label: 'content-editor:label.contentEditor.picker.navigation.categories',
-        defaultPath: () => '/sites/systemsite/categories',
-        canDisplayItem: ({selectedNode, folderNode}) => selectedNode ? /^\/sites\/systemsite\/categories\/.*/.test(selectedNode.path) : /^\/sites\/systemsite\/categories((\/.*)|$)/.test(folderNode.path),
-        defaultSort: {orderBy: 'displayName', order: 'ASC'},
-        queryHandler: PickerTreeQueryHandler,
-        config: {
-            rootPath: '/categories',
-            selectableTypes: ['jnt:category'],
-            openableTypes: ['jnt:category']
-        }
-    }, renderer);
-
-    // Custom category item
-    registry.add(Constants.ACCORDION_ITEM_NAME, 'picker-user', {
-        targets: ['user:50'],
-        icon: <FolderUser/>,
-        label: 'content-editor:label.contentEditor.picker.navigation.users',
-        defaultPath: () => '/',
-        canDisplayItem: node => /^\/sites\/[^/]+\/users\/.*/.test(node.path),
-        getSearchContextData: ({currentSite, t}) => {
-            return [
-                {
-                    label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.search'),
-                    searchPath: '',
-                    isDisabled: true
-                },
-                {
-                    label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.allUsers'),
-                    searchPath: '/',
-                    iconStart: <FolderUser/>
-                },
-                {
-                    label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.globalUsers'),
-                    searchPath: '/users',
-                    iconStart: <FolderUser/>
-                },
-                ...(currentSite ? [{
-                    label: currentSite.substring(0, 1).toUpperCase() + currentSite.substring(1),
-                    searchPath: `/sites/${currentSite}/users`,
-                    iconStart: <FolderUser/>
-                }] : [])
-            ];
-        },
-        defaultSort: {orderBy: 'displayName', order: 'ASC'},
-        queryHandler: PickerUserQueryHandler,
-        config: {
-            rootPath: '',
-            selectableTypes: ['jnt:user'],
-            openableTypes: ['jnt:user']
-        }
-    }, renderer);
-
-    // Custom usergroup item
-    registry.add(Constants.ACCORDION_ITEM_NAME, 'picker-usergroup', {
-        targets: ['usergroup:50'],
-        icon: <Group/>,
-        label: 'content-editor:label.contentEditor.picker.navigation.usergroup',
-        defaultPath: () => '/',
-        canDisplayItem: node => /^\/sites\/[^/]+\/groups\/.*/.test(node.path),
-        getSearchContextData: ({currentSite, t}) => {
-            return [
-                {
-                    label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.search'),
-                    searchPath: '',
-                    isDisabled: true
-                },
-                {
-                    label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.allGroups'),
-                    searchPath: '/',
-                    iconStart: <Group/>
-                },
-                {
-                    label: t('content-editor:label.contentEditor.picker.rightPanel.searchContextOptions.globalGroups'),
-                    searchPath: '/groups',
-                    iconStart: <Group/>
-                },
-                ...(currentSite ? [{
-                    label: currentSite.substring(0, 1).toUpperCase() + currentSite.substring(1),
-                    searchPath: `/sites/${currentSite}/groups`,
-                    iconStart: <Group/>
-                }] : [])
-            ];
-        },
-        defaultSort: {orderBy: 'displayName', order: 'ASC'},
-        queryHandler: PickerUserGroupQueryHandler,
-        config: {
-            rootPath: '',
-            selectableTypes: ['jnt:group'],
-            openableTypes: ['jnt:group']
-        }
-    }, renderer);
 
     setTimeout(() => {
         const openInJContent = registry.get('action', 'openInJContent');
