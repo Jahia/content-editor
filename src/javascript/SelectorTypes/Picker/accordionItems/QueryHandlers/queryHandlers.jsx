@@ -76,24 +76,18 @@ export const PickerSearchQueryHandler = transformQueryHandler({
 
 export const PickerUserQueryHandler = transformQueryHandler({
     ...Sql2SearchQueryHandler,
-    getQueryParams: p => Sql2SearchQueryHandler.getQueryParams({
-        ...p,
-        params: {
-            sql2SearchFrom: 'jnt:user',
-            searchPath: '/users'
-        }
+    getQueryParams: p => ({
+        ...Sql2SearchQueryHandler.getQueryParams(p),
+        query: `SELECT * FROM ['jnt:user'] WHERE ISDESCENDANTNODE('/users') OR ISDESCENDANTNODE('/sites/${p.siteKey}/users')`
     }),
     getFragments: () => [UserPickerFragment]
 });
 
 export const PickerUserGroupQueryHandler = transformQueryHandler({
     ...Sql2SearchQueryHandler,
-    getQueryParams: p => Sql2SearchQueryHandler.getQueryParams({
-        ...p,
-        params: {
-            sql2SearchFrom: 'jnt:group',
-            searchPath: '/groups'
-        }
+    getQueryParams: p => ({
+        ...Sql2SearchQueryHandler.getQueryParams(p),
+        query: `SELECT * FROM ['jnt:group'] WHERE ISDESCENDANTNODE('/groups') OR ISDESCENDANTNODE('/sites/${p.siteKey}/groups')`
     }),
     getFragments: () => [UserGroupPickerFragment]
 });

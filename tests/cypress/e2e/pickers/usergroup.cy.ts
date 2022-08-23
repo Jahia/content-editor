@@ -25,7 +25,7 @@ describe('Picker - Usergroup', () => {
     it('Usergroup Picker - Select administrators', () => {
         const contentEditor = jcontent.createContent('Pickers')
         const picker = contentEditor.getPickerField('qant:pickers_usergrouppicker').open()
-        picker.getTableRow('administrators').click()
-        picker.getSelectionCaption().should('be.visible').and('contain.text', 'administrators')
+        picker.getTableRow('site-administrators').click()
+        picker.getSelectionCaption().should('be.visible').and('contain.text', 'site-administrators')
     })
 })
