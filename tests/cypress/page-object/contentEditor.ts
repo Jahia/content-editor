@@ -9,6 +9,7 @@ import {
     Menu
 } from '@jahia/cypress';
 import {PickerField} from './pickerField';
+import {RichTextField} from './richTextField';
 
 export class ContentEditor extends BasePage {
     languageSwitcher: Dropdown;
@@ -89,6 +90,12 @@ export class ContentEditor extends BasePage {
         cy.iframe('[data-sel-role="edit-preview-frame"]', {timeout: 90000, log: true}).within(() => {
             cy.contains(content, {timeout: 90000}).should('be.visible');
         });
+    }
+
+    getRichTextField(fieldName: string): RichTextField {
+        const r = getComponentByAttr(RichTextField, 'data-sel-content-editor-field', fieldName);
+        r.fieldName = fieldName;
+        return r;
     }
 
     getPickerField(fieldName: string, multiple?: boolean): PickerField {

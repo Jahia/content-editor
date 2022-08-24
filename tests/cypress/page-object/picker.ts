@@ -44,6 +44,10 @@ export class Picker extends BaseComponent {
         getComponent(SecondaryNav, null, el => expect(el).to.not.exist);
     }
 
+    assertHasNoSiteSwitcher(): void {
+        getComponentByAttr(Dropdown, 'data-cm-role', 'site-switcher', null, el => expect(el).to.not.exist);
+    }
+
     /**
      * @param itemName -
      */
