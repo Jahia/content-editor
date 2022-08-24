@@ -1,6 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
-import {useNodeInfo} from '@jahia/data-helper';
+import {useNodeInfo, replaceFragmentsInDocument} from '@jahia/data-helper';
 import {useContentEditorConfigContext} from '~/contexts';
 import {useQuery} from '@apollo/react-hooks';
 import {GET_PICKER_NODE} from '~/SelectorTypes/Picker';
@@ -32,10 +32,12 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
     const state = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
         modes: state.contenteditor.picker.modes,
+        preSearchModeMemo: state.contenteditor.picker.preSearchModeMemo,
         path: state.contenteditor.picker.path,
         openPaths: state.contenteditor.picker.openPaths,
         site: state.contenteditor.picker.site,
         contextSite: state.contenteditor.picker.contextSite,
+        pickerKey: state.contenteditor.picker.pickerKey,
         viewType: state.contenteditor.picker.tableView.viewType
     }), shallowEqual);
 
@@ -45,9 +47,23 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
     const {lang, uilang} = useContentEditorConfigContext();
 
     const paths = (Array.isArray(initialSelectedItem) ? initialSelectedItem : [initialSelectedItem]).filter(f => f);
-    const nodesInfo = useQuery(GET_PICKER_NODE, {
+    let accordion;
+    if (state.mode === '') {
+        accordion = registry.get('accordionItem', 'picker-' + state.pickerKey);
+    } else if (state.mode === Constants.mode.SEARCH) {
+        accordion = registry.get('accordionItem', state.preSearchModeMemo);
+    } else {
+        accordion = registry.get('accordionItem', state.mode);
+    }
+
+    const fragments = accordion?.queryHandler?.getFragments() || [];
+    const selectionQuery = replaceFragmentsInDocument(GET_PICKER_NODE, fragments);
+    const nodesInfo = useQuery(selectionQuery, {
         variables: {
-            paths, lang, uilang
+            paths: paths,
+            language: lang,
+            uilang: uilang,
+            selectableTypesTable: pickerConfig.selectableTypesTable
         }
     });
 

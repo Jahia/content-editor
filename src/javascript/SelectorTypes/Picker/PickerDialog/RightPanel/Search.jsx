@@ -6,10 +6,10 @@ import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import {registry} from '@jahia/ui-extender';
 import {useQuery} from '@apollo/react-hooks';
-import {GET_PICKER_NODE} from '~/SelectorTypes/Picker';
 import {batchActions} from 'redux-batched-actions';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {getBaseSearchContextData} from '~/SelectorTypes/Picker/Picker2.utils';
+import {GET_SEARCH_CONTEXT} from '../PickerDialog2.gql-queries';
 
 export const Search = () => {
     const {t} = useTranslation('content-editor');
@@ -25,9 +25,9 @@ export const Search = () => {
         uilang: state.uilang
     }), shallowEqual);
 
-    const {data} = useQuery(GET_PICKER_NODE, {
+    const {data} = useQuery(GET_SEARCH_CONTEXT, {
         variables: {
-            paths: [currentPath], lang: language, uilang
+            paths: [currentPath], language: language, uilang
         }
     });
 

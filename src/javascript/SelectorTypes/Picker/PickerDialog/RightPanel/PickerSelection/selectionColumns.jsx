@@ -68,5 +68,29 @@ export const selectionColumns = [
     {
         id: 'cellActions',
         Cell: ActionsCell
+    },
+    {
+        id: 'status',
+        label: 'jcontent:label.contentManager.listColumns.status',
+        sortable: false,
+        Header: '',
+        Cell: reactTable.CellStatus
+    },
+    {
+        id: 'createdBy',
+        accessor: 'createdBy.value',
+        label: 'jcontent:label.contentManager.listColumns.createdBy',
+        sortable: true,
+        property: 'createdBy.value',
+        Cell: reactTable.Cell
+
+    },
+    {
+        id: 'lastModified',
+        accessor: 'lastModified.value',
+        label: 'jcontent:label.contentManager.listColumns.lastModified',
+        sortable: true,
+        property: 'lastModified.value',
+        Cell: reactTable.CellLastModified
     }
 ];
