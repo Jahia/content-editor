@@ -12,7 +12,9 @@ const SelectionTable = ({selection, pickerConfig}) => {
 
     const columns = useMemo(() => {
         if (pickerConfig?.pickerTable?.columns) {
-            return pickerConfig.pickerTable.columns.map(c => (typeof c === 'string') ? selectionColumns.find(col => col.id === c) : c);
+            const selectedColumns = pickerConfig.pickerTable.columns.map(c => (typeof c === 'string') ? selectionColumns.find(col => col.id === c) : c);
+            selectedColumns.push(selectionColumns.find(col => col.id === 'cellActions'));
+            return selectedColumns;
         }
 
         // Toggle between showing type or file size column depending on accordion modes
