@@ -6,7 +6,7 @@ import {
     cePickerClearSelection,
     cePickerKey,
     cePickerMode,
-    cePickerPath,
+    cePickerPath, cePickerSetPage,
     cePickerSetSearchTerm
 } from '~/SelectorTypes/Picker/Picker2.redux';
 import {batchActions} from 'redux-batched-actions';
@@ -42,7 +42,8 @@ export const PickerDialog = ({
         if (isOpen) {
             dispatch(batchActions([
                 cePickerKey(pickerConfig.key),
-                cePickerSetSearchTerm('')
+                cePickerSetSearchTerm(''),
+                cePickerSetPage(0)
             ]));
         }
 
