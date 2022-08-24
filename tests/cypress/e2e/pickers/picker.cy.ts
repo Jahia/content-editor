@@ -46,16 +46,16 @@ describe('Picker tests', () => {
 
         cy.log('check table components');
         pickerDialog.getTable().should('exist'); // I have issues checking be.visible; use exist for now
-        pickerDialog.getHeaderByName('Name').should('be.visible');
-        pickerDialog.getHeaderByName('Last modified on').should('be.visible');
-        pickerDialog.getHeaderByName('Type').should('be.visible');
+        pickerDialog.getTable().getHeaderById('name').should('be.visible');
+        pickerDialog.getTable().getHeaderById('lastModified').should('be.visible');
+        pickerDialog.getTable().getHeaderById('type').should('be.visible');
 
         cy.log('selection content folders > contents > ce-picker-files reflects in table');
         contentAccordion.click();
         contentAccordion.getHeader().should('be.visible').and('have.attr', 'aria-expanded').and('equal', 'true');
         contentAccordion.getTreeItem('ce-picker-contents').click(); // Select contents folder
         pickerDialog.getTable().should('exist').and('have.length', 1);
-        cy.wait(500); // Need a wait to load table data
+        pickerDialog.wait();
         pickerDialog
             .getTable()
             .getRows()
@@ -102,13 +102,13 @@ describe('Picker tests', () => {
 
         cy.log('check table components');
         pickerDialog.getTable().should('exist');
-        pickerDialog.getHeaderByName('Name').should('be.visible');
-        pickerDialog.getHeaderByName('Last modified on').should('be.visible');
+        pickerDialog.getTable().getHeaderById('name').should('be.visible');
+        pickerDialog.getTable().getHeaderById('lastModified').should('be.visible');
 
         cy.log('selection media > files > ce-picker-files reflects in table and filtered by type');
         mediaAccordion.getTreeItem('ce-picker-files').click();
         pickerDialog.getTable().should('exist');
-        cy.wait(500); // Need a wait to load table data
+        pickerDialog.wait();
         pickerDialog
             .getTable()
             .getRows()
@@ -197,13 +197,13 @@ describe('Picker tests', () => {
             .getPickerField(contentTypes.fileReference.fieldNodeType, contentTypes.fileReference.multiple);
         const picker = pickerField.open();
 
-        picker.getTable().getRowByIndex(1).get().find('span').should('contain', 'ce-picker-files');
+        picker.getTable().getRowByName('ce-picker-files').should('be.visible');
         picker.getSiteSwitcher().should('contain', 'Digitall');
         picker.getSiteSwitcher().select('System Site');
         picker.getSiteSwitcher().should('contain', 'System Site');
         picker.getTable().getRows().should('have.length', 1);
         picker.getSiteSwitcher().select('Digitall');
-        picker.getTableRow('ce-picker-files');
+        picker.getTable().getRowByName('ce-picker-files');
     });
 
     it('should be able to browse when there is a selection', () => {
@@ -212,14 +212,15 @@ describe('Picker tests', () => {
             .getPickerField(contentTypes.fileReference.fieldNodeType, contentTypes.fileReference.multiple);
         const picker = pickerField.open();
 
-        picker.getTable().getRowByIndex(2).get().find('span').contains('images').dblclick();
-        picker.getTable().getRowByIndex(1).get().find('span').contains('banners').dblclick();
-        picker.getTable().getRowByIndex(1).get().find('span').contains('editing-digitall-site.jpg').click();
+        picker.getTable().getRowByName('images').dblclick();
+        picker.getTable().getRowByName('banners').dblclick();
+        picker.getTable().getRowByName('editing-digitall-site.jpg').dblclick();
+
         picker.getSiteSwitcher().select('System Site');
         picker.getSiteSwitcher().should('contain', 'System Site');
         picker.getTable().getRows().should('have.length', 1);
         picker.getSiteSwitcher().select('Digitall');
-        picker.getTableRow('ce-picker-files');
+        picker.getTable().getRowByName('ce-picker-files');
         const item = picker.getAccordionItem('picker-media');
         item.getTreeItem('files').find('div').should('have.class', 'moonstone-selected');
         item.getTreeItem('companies').click();

@@ -38,7 +38,7 @@ describe('Picker tests', () => {
         const numRows = 3;
         cy.log(`select the first ${numRows} elements`);
         expect(numRows).gte(1); // Need at least one for testing removal
-        picker.selectItems(numRows);
+        picker.getTable().selectItems(numRows);
         picker.select();
 
         cy.log('verify selected is listed in CE modal/page');
@@ -56,7 +56,7 @@ describe('Picker tests', () => {
                     .parent()
                     .find(PickerField.ADD_FIELD_SEL)
                     .click();
-                picker.getSelectedRows().then(rows => expect(rows.length).eq(numRows - 1));
+                picker.getTable().getSelectedRows().then(rows => expect(rows.length).eq(numRows - 1));
             });
     });
 
@@ -83,11 +83,11 @@ describe('Picker tests', () => {
         cy.log('navigate to different folders and select one item');
         const numSelected = 3;
         picker.navigateTo(mediaAccordion, 'files/images/banners');
-        picker.selectItems(1);
+        picker.getTable().selectItems(1);
         picker.navigateTo(mediaAccordion, 'files/images/companies');
-        picker.selectItems(1);
+        picker.getTable().selectItems(1);
         picker.navigateTo(mediaAccordion, 'files/images/devices');
-        picker.selectItems(1);
+        picker.getTable().selectItems(1);
 
         cy.log('toggle open selection table');
         picker
@@ -111,7 +111,7 @@ describe('Picker tests', () => {
             .find('[data-cm-role="actions-cell"] button')
             .click({force: true});
         picker.navigateTo(mediaAccordion, 'files/images/devices');
-        picker.getSelectedRows().should('not.exist');
+        picker.getTable().getSelectedRows().should('not.exist');
 
         cy.log('toggle close selection table');
         cy.get('[data-cm-role="selection-table-container"] [data-cm-role="selection-table-collapse-button"]').click();
@@ -138,17 +138,17 @@ describe('Picker tests', () => {
             .getTable()
             .getRows()
             .get()
-            .then(elems => {
-                const rowCount = elems.length;
-                cy.log(`row count: ${rowCount}`);
+            .then((elems) => {
+                const rowCount = elems.length
+                cy.log(`row count: ${rowCount}`)
 
                 cy.log('test "select all"');
-                picker.getHeaderById('selection').click();
-                picker.getSelectedRows().then(rows => expect(rows.length).eq(rowCount));
+                picker.getTable().getHeaderById('selection').click();
+                picker.getTable().getSelectedRows().then(rows => expect(rows.length).eq(rowCount));
 
                 cy.log('test "unselect all"');
-                picker.getHeaderById('selection').click();
-                picker.getSelectedRows().should('not.exist');
+                picker.getTable().getHeaderById('selection').click();
+                picker.getTable().getSelectedRows().should('not.exist');
             });
     });
 });
