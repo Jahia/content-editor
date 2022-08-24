@@ -199,6 +199,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
                                 <TableRow key={'row' + row.id}
                                           {...rowProps}
                                           data-cm-role="table-content-list-row"
+                                          data-sel-name={node.name}
                                           className={!selectionProps.checked && className}
                                           isHighlighted={selectionProps.checked && !field.multiple}
                                           onClick={e => handleOnClick(e, row)}

@@ -11,6 +11,7 @@ import {
 } from '@jahia/cypress';
 import {PageComposer} from './pageComposer';
 import {AccordionItem} from './accordionItem';
+import {PickerTable} from './pickerTable';
 
 export class Picker extends BaseComponent {
     pageComposer: PageComposer;
@@ -18,7 +19,7 @@ export class Picker extends BaseComponent {
 
     secondaryNav: SecondaryNav;
     accordion: Accordion;
-    table: Table;
+    table: PickerTable;
     selectionTable: Table;
 
     getSiteSwitcher() {
@@ -60,9 +61,8 @@ export class Picker extends BaseComponent {
 
     getTable() {
         if (!this.table) {
-            this.table = getComponentByAttr(Table, 'data-cm-role', 'table-content-list', this);
+            this.table = getComponentByAttr(PickerTable, 'data-cm-role', 'table-content-list', this);
         }
-
         this.wait();
         return this.table;
     }
@@ -88,28 +88,9 @@ export class Picker extends BaseComponent {
         this.wait();
     }
 
-    getTableRow(label: string) {
-        this.getTable().get().find('.moonstone-TableRow').should('be.visible');
-        return this.getTable()
-            .get()
-            .find('.moonstone-TableRow')
-            .filter(`:contains("${label}")`)
-            .first()
-            .scrollIntoView({offset: {top: -150, left: 0}, easing: 'linear', duration: 2000});
-    }
-
-    getHeaderByName(name: string) {
-        return cy.get('.moonstone-tableHead .moonstone-TableRow').filter(`:contains("${name}")`);
-    }
-
-    getHeaderById(id: string) {
-        return cy.get(`[data-cm-role="table-content-list-header-cell-${id}"]`);
-    }
-
-    getSelectedRows() {
-        return this.getTable()
-            .get()
-            .find('tbody [data-cm-role="table-content-list-cell-selection"] input[aria-checked="true"]');
+    // @deprecated use table functions directly
+    getTableRow(name: string) {
+        return this.getTable().getRowByLabel(name);
     }
 
     getSelectionCaption() {
@@ -120,18 +101,9 @@ export class Picker extends BaseComponent {
         return cy.get(`.moonstone-tab-item[data-cm-view-type="${viewType}"]`);
     }
 
-    selectItems(count: number) {
-        this.getTable()
-            .getRows()
-            .get()
-            .then(elems => {
-                expect(elems.length).gte(count);
-                const selectRow = elem =>
-                    cy.wrap(elem).find('[data-cm-role="table-content-list-cell-selection"] input').click();
-                for (let i = 0; i < count; i++) {
-                    selectRow(elems.eq(i));
-                }
-            });
+    selectTab(viewType: string) {
+        this.getTab(viewType).click().should('have.class', 'moonstone-selected');
+        this.wait();
     }
 
     search(query?: string, expectNoResult = false) {
