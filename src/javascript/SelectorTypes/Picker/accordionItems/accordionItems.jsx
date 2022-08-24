@@ -120,6 +120,12 @@ export const registerAccordionItems = registry => {
             getPathForItem: node => node.site.path,
             getSearchContextData,
             viewSelector: null,
+            defaultViewType: Constants.tableView.type.PAGES,
+            getViewTypeForItem: node => {
+                const {CONTENT, PAGES} = Constants.tableView.type;
+                const hasContentParent = node?.ancestors?.map(a => a.primaryNodeType.name)?.indexOf('jnt:contentFolder') > -1;
+                return (node?.primaryNodeType.name !== 'jnt:page' && hasContentParent) ? CONTENT : PAGES;
+            },
             config: {
                 rootPath: '',
                 selectableTypes: ['jnt:page', 'jmix:mainResource'],

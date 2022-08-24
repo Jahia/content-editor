@@ -34,6 +34,7 @@ import classes from './ContentTable.scss';
 import {registry} from '@jahia/ui-extender';
 import {useFieldContext} from '~/contexts/FieldContext';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
+import {flattenTree} from '~/SelectorTypes/Picker/Picker2.utils';
 
 const reduxActions = {
     onPreviewSelectAction: () => ({}),
@@ -67,12 +68,12 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
     const field = useFieldContext();
     const dispatch = useDispatch();
 
-    const {mode, path, pagination, searchTerm} = useSelector(state => ({
+    const {mode, path, pagination, searchTerm, selection} = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
         path: state.contenteditor.picker.path,
         pagination: state.contenteditor.picker.pagination,
-        tableView: state.contenteditor.picker.tableView,
-        searchTerm: state.contenteditor.picker.searchTerms
+        searchTerm: state.contenteditor.picker.searchTerms,
+        selection: state.contenteditor.picker.selection
     }), shallowEqual);
 
     const allowDoubleClickNavigation = nodeType => {
@@ -80,9 +81,10 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
     };
 
     const columns = useMemo(() => {
+        const flattenRows = isStructured ? flattenTree(rows) : rows;
         if (pickerConfig?.pickerTable?.columns) {
             const columns = pickerConfig.pickerTable.columns.map(c => (typeof c === 'string') ? allColumnData.find(col => col.id === c) : c);
-            if (field.multiple && rows.some(r => r.isSelectable) && !columns.find(c => c.id === 'selection')) {
+            if (field.multiple && flattenRows.some(r => r.isSelectable) && !columns.find(c => c.id === 'selection')) {
                 columns.splice((columns[0].id === 'publicationStatus') ? 1 : 0, 0, allColumnData[1]);
             }
 
@@ -93,15 +95,16 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
             // Do not include type column if media mode
             .filter(c => Constants.mode.MEDIA !== mode || c.id !== 'type')
             // Do not include selection if multiple selection is not enabled or if there are no selectable types
-            .filter(c => (field.multiple && rows.some(r => r.isSelectable)) || c.id !== SELECTION_COLUMN_ID);
-    }, [mode, field.multiple, pickerConfig, rows]);
+            .filter(c => (field.multiple && flattenRows.some(r => r.isSelectable)) || c.id !== SELECTION_COLUMN_ID);
+    }, [mode, field.multiple, pickerConfig, rows, isStructured]);
     const {
         getTableProps,
         getTableBodyProps,
         headerGroups,
         rows: tableRows,
         prepareRow,
-        toggleRowExpanded
+        toggleRowExpanded,
+        expandSelection
     } = useTable(
         {
             columns: columns,
@@ -121,6 +124,15 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
             });
         }
     }, [rows, isStructured, toggleRowExpanded, firstLoad]);
+
+    // Expand structured view selections when root row is changed
+    const rootRowUuid = useRef();
+    useEffect(() => {
+        if (isStructured && rootRowUuid.current !== rows[0]?.uuid && selection && selection.length) {
+            rootRowUuid.current = rows[0].uuid;
+            expandSelection(selection);
+        }
+    }, [isStructured, selection, expandSelection, rootRowUuid, rows]);
 
     const doubleClickNavigation = node => {
         const actions = [];

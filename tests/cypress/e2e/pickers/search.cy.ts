@@ -1,5 +1,5 @@
-import { PageComposer } from '../../page-object/pageComposer'
 import { JContent } from '../../page-object/jcontent'
+import {getComponent, SecondaryNav} from "@jahia/cypress";
 
 describe('Picker - Search', () => {
     const siteKey = 'digitall'
@@ -69,10 +69,10 @@ describe('Picker - Search', () => {
         const contentEditor = jcontent.editComponentByText('Leading by Example')
         const picker = contentEditor.getPickerField('jdmix:hasLink_internalLink').open()
         picker.search('tab')
-        picker.verifyResultsLength(1)
+        picker.verifyResultsLength(7)
         picker.getTableRow('Taber').should('be.visible')
-        picker.getAccordionItem('picker-pages').getHeader().should('have.attr', 'aria-expanded', 'false')
-        picker.getAccordionItem('picker-content-folders').getHeader().should('have.attr', 'aria-expanded', 'false')
+        // verify whole left nav is gone
+        cy.get(SecondaryNav.defaultSelector, {timeout: 2000}).should('not.exist')
     })
 
     it('Editorial Picker- Search for tab and them empty search - ensure previous context is restored', () => {
@@ -80,18 +80,18 @@ describe('Picker - Search', () => {
         const picker = contentEditor.getPickerField('jdmix:hasLink_internalLink').open()
         picker.wait()
 
-        picker.getTab("pages").click().then(tabItem => {
+        picker.getTab("content").click().then(tabItem => {
             picker.wait()
-            picker.getTable().should('be.visible')
             cy.wrap(tabItem).should('have.class', 'moonstone-selected')
         })
         picker.search('tab')
         picker.verifyResultsLength(7)
         picker.search()
-        
+
         // Selection is not able to expand yet in structured view
         // Verify tabs are visible and previous tab is selected
-        picker.getTab("pages").should('have.class', 'moonstone-selected')
+        cy.log("empty search restores context")
+        picker.getTab("content").should('have.class', 'moonstone-selected')
     })
 
     it('Media Picker- Search for xylophone and should find nothing no matter the context', () => {

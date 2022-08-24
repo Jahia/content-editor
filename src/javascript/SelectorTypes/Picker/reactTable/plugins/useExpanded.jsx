@@ -221,6 +221,24 @@ function useInstance(instance) {
         {instance: getInstance()}
     );
 
+    const expandSelection = selection => {
+        const expandRows = (rows, selection) => {
+            const {ancestorUuids} = selection;
+            const row = rows.find(r => ancestorUuids.has(r.original.uuid));
+            if (row) {
+                toggleRowExpanded(row.id, true);
+                expandRows(row.subRows, selection);
+            }
+        };
+
+        if (selection && selection.length) {
+            selection.forEach(sel => {
+                const ancestorUuids = new Set(sel.ancestors.map(a => a.uuid));
+                expandRows(rows, {uuid: selection.uuid, ancestorUuids});
+            });
+        }
+    };
+
     Object.assign(instance, {
         preExpandedRows: rows,
         expandedRows,
@@ -229,6 +247,7 @@ function useInstance(instance) {
         isAllRowsExpanded,
         toggleRowExpanded,
         toggleAllRowsExpanded,
+        expandSelection,
         getToggleAllRowsExpandedProps
     });
 }

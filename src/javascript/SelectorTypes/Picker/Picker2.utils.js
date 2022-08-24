@@ -10,6 +10,19 @@ export const getRelativePath = (fullPath, sitePath) => {
     return getPathWithoutFile(fullPath.split(`${sitePath}/`)[1]) || '';
 };
 
+export const flattenTree = rows => {
+    const items = [];
+    collectItems(rows);
+    return items;
+
+    function collectItems(arrayData) {
+        for (let i = 0; i < arrayData.length; i++) {
+            items.push(arrayData[i]);
+            collectItems(arrayData[i].subRows || []);
+        }
+    }
+};
+
 export const getSite = fullPath => {
     return fullPath && fullPath
         .split('/')
