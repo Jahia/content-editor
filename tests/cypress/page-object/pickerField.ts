@@ -1,24 +1,24 @@
-import { BaseComponent, Button, getComponentByAttr, getComponentByRole } from '@jahia/cypress'
-import { Picker } from './picker'
+import {BaseComponent, Button, getComponentByAttr, getComponentByRole} from '@jahia/cypress';
+import {Picker} from './picker';
 
 export class PickerField extends BaseComponent {
-    static ADD_FIELD_SEL = 'button[data-sel-action="addField"]'
+    static ADD_FIELD_SEL = 'button[data-sel-action="addField"]';
 
-    fieldName: string
-    multiple: boolean
+    fieldName: string;
+    multiple: boolean;
 
     open(): Picker {
-        const buttonSelector = this.multiple ? PickerField.ADD_FIELD_SEL : '[data-sel-field-picker-action]'
-        this.get().find(buttonSelector).click()
-        getComponentByAttr(Button, 'data-sel-picker-dialog-action', 'cancel').get().should('be.visible')
-        return getComponentByRole(Picker, 'picker-dialog')
+        const buttonSelector = this.multiple ? PickerField.ADD_FIELD_SEL : '[data-sel-field-picker-action]';
+        this.get().find(buttonSelector).click();
+        getComponentByAttr(Button, 'data-sel-picker-dialog-action', 'cancel').get().should('be.visible');
+        return getComponentByRole(Picker, 'picker-dialog');
     }
 
     assertValue(value) {
-        this.get().find('[data-sel-field-picker-name]').should('have.text', value)
+        this.get().find('[data-sel-field-picker-name]').contains(value);
     }
 
     assertHasNoValue() {
-        this.get().find('[data-sel-field-picker-name]').should('not.exist')
+        this.get().find('[data-sel-field-picker-name]').should('not.exist');
     }
 }
