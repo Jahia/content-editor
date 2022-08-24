@@ -5,16 +5,23 @@ import {useTable} from 'react-table';
 import {selectionColumns} from './selectionColumns';
 import PropTypes from 'prop-types';
 import {useSelector} from 'react-redux';
+import {configPropType} from '../../../configs/configPropType';
 
-const SelectionTable = ({selection}) => {
+const SelectionTable = ({selection, pickerConfig}) => {
     const modes = useSelector(state => state.contenteditor.picker.modes);
+
     const columns = useMemo(() => {
+        if (pickerConfig?.pickerTable?.columns) {
+            return pickerConfig.pickerTable.columns.map(c => (typeof c === 'string') ? selectionColumns.find(col => col.id === c) : c);
+        }
+
         // Toggle between showing type or file size column depending on accordion modes
         const modeSet = new Set(modes);
         return (modeSet.size === 1 && modeSet.has('picker-media')) ?
             selectionColumns.filter(c => c.id !== 'type') :
             selectionColumns.filter(c => c.id !== 'fileSize');
-    }, [modes]);
+    },
+    [modes, pickerConfig]);
 
     const {
         getTableProps,
@@ -51,7 +58,8 @@ const SelectionTable = ({selection}) => {
 };
 
 SelectionTable.propTypes = {
-    selection: PropTypes.object.isRequired
+    selection: PropTypes.object.isRequired,
+    pickerConfig: configPropType.isRequired
 };
 
 export default SelectionTable;

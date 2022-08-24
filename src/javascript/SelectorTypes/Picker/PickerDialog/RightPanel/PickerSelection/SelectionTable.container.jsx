@@ -5,8 +5,9 @@ import styles from './Selection.scss';
 import {useTranslation} from 'react-i18next';
 import {SelectionButton} from './SelectionButton';
 import clsx from 'clsx';
+import {configPropType} from '../../../configs/configPropType';
 
-const SelectionTableContainer = ({selection, expanded}) => {
+const SelectionTableContainer = ({selection, expanded, pickerConfig}) => {
     const [isExpanded, setExpanded] = expanded;
     const {t} = useTranslation('content-editor');
 
@@ -29,7 +30,7 @@ const SelectionTableContainer = ({selection, expanded}) => {
                 expanded={expanded}
             />
             <div className={clsx(styles.selectionTable, {[styles.hidden]: !isExpanded})}>
-                {selection?.length && <SelectionTable selection={selection}/>}
+                {selection?.length && <SelectionTable selection={selection} pickerConfig={pickerConfig}/>}
             </div>
         </div>
     );
@@ -40,7 +41,8 @@ SelectionTableContainer.propTypes = {
     expanded: PropTypes.arrayOf(PropTypes.shape({
         isExpanded: PropTypes.bool.isRequired,
         setExpanded: PropTypes.func.isRequired
-    }))
+    })),
+    pickerConfig: configPropType.isRequired
 };
 
 export default SelectionTableContainer;

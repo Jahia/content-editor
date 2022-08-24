@@ -52,7 +52,7 @@ const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
                 {mode !== '' && <ContentLayout pickerConfig={pickerConfig}/>}
             </div>
 
-            <SelectionTable selection={selection} expanded={selectionExpanded}/>
+            <SelectionTable selection={selection} expanded={selectionExpanded} pickerConfig={pickerConfig}/>
             <footer className={clsx('flexRow', 'alignCenter', css.footer)}>
                 <SelectionCaption selection={selection} pickerConfig={pickerConfig} expanded={selectionExpanded}/>
                 <div className={clsx('flexRow', css.actions)}>
