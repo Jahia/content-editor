@@ -1,33 +1,33 @@
-import { JContent } from '../page-object/jcontent'
-import { PageComposer } from '../page-object/pageComposer'
+import {JContent} from '../page-object/jcontent';
+import {PageComposer} from '../page-object/pageComposer';
 
-const sitekey = 'contentEditorSiteAddMixin'
+const sitekey = 'contentEditorSiteAddMixin';
 describe('Add Mixin by using choice list initializers (Image Reference)', () => {
-    let pageComposer: PageComposer
-    const cypressDocumentManagerImageReferenceLinkTest = 'Cypress document manager image reference link Test'
+    let pageComposer: PageComposer;
+    const cypressDocumentManagerImageReferenceLinkTest = 'Cypress document manager image reference link Test';
     before(function () {
-        cy.executeGroovy('createSiteI18N.groovy', { SITEKEY: sitekey })
-        cy.login() // edit in chief
-        JContent.visit(sitekey, 'en', 'media/file')
-        cy.wait(5000)
+        cy.executeGroovy('createSiteI18N.groovy', {SITEKEY: sitekey});
+        cy.login(); // Edit in chief
+        JContent.visit(sitekey, 'en', 'media/file');
+        cy.wait(5000);
         cy.get('div[data-cm-role="grid-content-list"]')
             .children('div[mode="media"]')
             .selectFile('cypress/fixtures/snowbearHome.jpeg', {
                 action: 'drag-drop',
-                waitForAnimations: true,
-            })
-        cy.wait(5000)
-    })
+                waitForAnimations: true
+            });
+        cy.wait(5000);
+    });
 
     after(function () {
-        cy.logout()
-        cy.executeGroovy('deleteSite.groovy', { SITEKEY: sitekey })
-    })
+        cy.logout();
+        cy.executeGroovy('deleteSite.groovy', {SITEKEY: sitekey});
+    });
 
     beforeEach(() => {
-        Cypress.Cookies.preserveOnce('JSESSIONID')
-        pageComposer = PageComposer.visit(sitekey, 'en', 'home.html')
-    })
+        Cypress.Cookies.preserveOnce('JSESSIONID');
+        pageComposer = PageComposer.visit(sitekey, 'en', 'home.html');
+    });
 
     it('Can create a document manager image reference link', () => {
         const contentEditor = pageComposer
@@ -35,109 +35,109 @@ describe('Add Mixin by using choice list initializers (Image Reference)', () => 
             .getContentTypeSelector()
             .searchForContentType('Document Manager')
             .selectContentType('Document Manager')
-            .create()
+            .create();
         cy.get('#contenteditor-dialog-title')
             .should('be.visible')
-            .and('contain', 'Create Image (from the Document Manager)')
+            .and('contain', 'Create Image (from the Document Manager)');
         cy.get('#select-jnt\\:imageReferenceLink_j\\:linkType')
             .click()
             .find('li[role="option"][data-value="internal"]')
-            .click()
+            .click();
         cy.get('[data-sel-content-editor-field="jmix\\:internalLink_j\\:linknode"]')
             .scrollIntoView()
-            .should('be.visible')
-        contentEditor.getLanguageSwitcher().select('Français')
+            .should('be.visible');
+        contentEditor.getLanguageSwitcher().select('Français');
         cy.get('[data-sel-content-editor-field="jmix\\:internalLink_j\\:linknode"]')
             .as('fr_internal_link')
             .scrollIntoView()
-            .should('be.visible')
+            .should('be.visible');
         cy.get('#select-jnt\\:imageReferenceLink_j\\:linkType')
             .click()
             .find('li[role="option"][data-value="external"]')
-            .click()
-        cy.get('@fr_internal_link').should('not.exist')
+            .click();
+        cy.get('@fr_internal_link').should('not.exist');
         cy.get('[data-sel-content-editor-field="jmix\\:externalLink_j\\:linkTitle"]')
             .scrollIntoView()
-            .should('be.visible')
-        cy.get('[data-sel-content-editor-field="jmix\\:externalLink_j\\:url"]').scrollIntoView().should('be.visible')
-        contentEditor.getLanguageSwitcher().select('Deutsch')
-        cy.get('[data-sel-content-editor-field="jmix\\:internalLink_j\\:linknode"]').should('not.exist')
+            .should('be.visible');
+        cy.get('[data-sel-content-editor-field="jmix\\:externalLink_j\\:url"]').scrollIntoView().should('be.visible');
+        contentEditor.getLanguageSwitcher().select('Deutsch');
+        cy.get('[data-sel-content-editor-field="jmix\\:internalLink_j\\:linknode"]').should('not.exist');
         cy.get('[data-sel-content-editor-field="jmix\\:externalLink_j\\:linkTitle"]')
             .scrollIntoView()
-            .should('be.visible')
+            .should('be.visible');
         cy.get('[data-sel-content-editor-field="jmix\\:externalLink_j\\:url"]')
             .as('de_external_link_url')
             .scrollIntoView()
-            .should('be.visible')
+            .should('be.visible');
         cy.get('#select-jnt\\:imageReferenceLink_j\\:linkType')
             .click()
             .find('li[role="option"][data-value="none"]')
-            .click()
-        cy.get('@de_external_link_url').should('not.exist')
-        contentEditor.getLanguageSwitcher().select('English')
-        cy.get('#select-jnt\\:imageReferenceLink_j\\:linkType').contains('No link')
+            .click();
+        cy.get('@de_external_link_url').should('not.exist');
+        contentEditor.getLanguageSwitcher().select('English');
+        cy.get('#select-jnt\\:imageReferenceLink_j\\:linkType').contains('No link');
         cy.get('#select-jnt\\:imageReferenceLink_j\\:linkType')
             .click()
             .find('li[role="option"][data-value="internal"]')
-            .click()
+            .click();
         cy.get('[data-sel-content-editor-field="jmix\\:internalLink_j\\:linknode"]')
             .scrollIntoView()
             .should('be.visible')
-            .click()
-        cy.get('.moonstone-loader').should('not.exist') // wait to load
+            .click();
+        cy.get('.moonstone-loader').should('not.exist'); // Wait to load
         cy.get('.moonstone-tab-item[data-cm-view-type="pages"]')
             .should('be.visible')
             .click()
-            .should('have.class', 'moonstone-selected')
-        cy.get('.moonstone-loader').should('not.exist') // wait to load
-        cy.get('tr[data-cm-role="table-content-list-row"]').contains('Search Results').click()
-        cy.get('button[data-sel-picker-dialog-action="done"]').click()
+            .should('have.class', 'moonstone-selected');
+        cy.get('.moonstone-loader').should('not.exist'); // Wait to load
+        cy.get('tr[data-cm-role="table-content-list-row"]').contains('Search Results').click();
+        cy.get('button[data-sel-picker-dialog-action="done"]').click();
         cy.get('[data-sel-content-editor-field="mix\\:title_jcr\\:title"]')
             .scrollIntoView()
             .should('be.visible')
-            .type(cypressDocumentManagerImageReferenceLinkTest)
+            .type(cypressDocumentManagerImageReferenceLinkTest);
         cy.get('[data-sel-content-editor-field="jnt\\:imageReferenceLink_j\\:node"]')
             .scrollIntoView()
             .should('be.visible')
-            .click()
-        cy.get('tr[data-cm-role="table-content-list-row"]').should('be.visible').contains('snowbearHome.jpeg').click()
-        cy.get('button[data-sel-picker-dialog-action="done"]').click()
-        contentEditor.save()
+            .click();
+        cy.get('tr[data-cm-role="table-content-list-row"]').should('be.visible').contains('snowbearHome.jpeg').click();
+        cy.get('button[data-sel-picker-dialog-action="done"]').click();
+        contentEditor.save();
         pageComposer
             .refresh()
             .componentShouldBeVisible(
-                `a[href*="/sites/${sitekey}/home/search-results.html"] > img[src*="/sites/${sitekey}/files/snowbearHome.jpeg"]`,
-            )
-    })
+                `a[href*="/sites/${sitekey}/home/search-results.html"] > img[src*="/sites/${sitekey}/files/snowbearHome.jpeg"]`
+            );
+    });
 
     it('Can edit a document manager image reference link', () => {
         const contentEditor = pageComposer.editComponent(
-            `a[href*="/sites/${sitekey}/home/search-results.html"] > img[src*="/sites/${sitekey}/files/snowbearHome.jpeg"]`,
-        )
+            `a[href*="/sites/${sitekey}/home/search-results.html"] > img[src*="/sites/${sitekey}/files/snowbearHome.jpeg"]`
+        );
         cy.get('#contenteditor-dialog-title')
             .should('be.visible')
-            .and('contain', 'Cypress document manager image reference')
+            .and('contain', 'Cypress document manager image reference');
         cy.get('#select-jnt\\:imageReferenceLink_j\\:linkType')
             .click()
             .find('li[role="option"][data-value="none"]')
-            .click()
-        cy.get('[data-sel-content-editor-field="jmix\\:internalLink_j\\:linknode"]').should('not.exist')
-        contentEditor.getLanguageSwitcher().select('Français')
-        cy.get('#select-jnt\\:imageReferenceLink_j\\:linkType').contains('Pas de lien')
+            .click();
+        cy.get('[data-sel-content-editor-field="jmix\\:internalLink_j\\:linknode"]').should('not.exist');
+        contentEditor.getLanguageSwitcher().select('Français');
+        cy.get('#select-jnt\\:imageReferenceLink_j\\:linkType').contains('Pas de lien');
         cy.get('#select-jnt\\:imageReferenceLink_j\\:linkType')
             .click()
             .find('li[role="option"][data-value="internal"]')
-            .click()
+            .click();
         cy.get('[data-sel-content-editor-field="jmix\\:internalLink_j\\:linknode"]')
             .scrollIntoView()
-            .should('be.visible')
-        contentEditor.getLanguageSwitcher().select('English')
-        cy.get('#select-jnt\\:imageReferenceLink_j\\:linkType').contains('Internal')
+            .should('be.visible');
+        contentEditor.getLanguageSwitcher().select('English');
+        cy.get('#select-jnt\\:imageReferenceLink_j\\:linkType').contains('Internal');
         cy.get('[data-sel-content-editor-field="jmix\\:internalLink_j\\:linknode"]')
             .should('exist')
             .scrollIntoView()
-            .should('be.visible')
-        // contentEditor.cancelAndDiscard()
-        contentEditor.cancel()
-    })
-})
+            .should('be.visible');
+        // ContentEditor.cancelAndDiscard()
+        contentEditor.cancel();
+    });
+});

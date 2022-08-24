@@ -16,134 +16,134 @@ const contentTypes: ContentTypes = {
     contentReference: {
         typeName: 'Content reference',
         fieldNodeType: 'jnt:contentReference_j:node',
-        multiple: false,
+        multiple: false
     },
     fileReference: {
         typeName: 'File reference',
         fieldNodeType: 'jnt:fileReference_j:node',
-        multiple: false,
+        multiple: false
     },
     imageReference: {
         typeName: 'Image (from the Document Manager)',
         fieldNodeType: 'jnt:imageReferenceLink_j:node',
-        multiple: false,
+        multiple: false
     },
-    // from qa-module
+    // From qa-module
     fileMultipleReference: {
         typeName: 'Pickers Multiple',
         fieldNodeType: 'qant:pickersMultiple_imagepicker',
-        multiple: true,
+        multiple: true
     },
     filepicker: {
         typeName: 'Pickers',
         fieldNodeType: 'qant:pickers_filepicker',
-        multiple: false,
+        multiple: false
     },
     imagepicker: {
         typeName: 'Pickers',
         fieldNodeType: 'qant:pickers_imagepicker',
-        multiple: false,
+        multiple: false
     },
     folderpicker: {
         typeName: 'Pickers',
         fieldNodeType: 'qant:pickers_folderpicker',
-        multiple: false,
+        multiple: false
     },
     contentfolderpicker: {
         typeName: 'Pickers',
         fieldNodeType: 'qant:pickers_contentfolderpicker',
-        multiple: false,
+        multiple: false
     },
     portletpicker: {
         typeName: 'Pickers',
         fieldNodeType: 'qant:pickers_portletpicker',
-        multiple: false,
+        multiple: false
     },
     editorialpicker: {
         typeName: 'Pickers',
         fieldNodeType: 'qant:pickers_editorialpicker',
-        multiple: false,
+        multiple: false
     },
     editoriallinkpicker: {
         typeName: 'Pickers',
         fieldNodeType: 'qant:pickers_editoriallinkpicker',
-        multiple: false,
+        multiple: false
     },
     categorypicker: {
         typeName: 'Pickers',
         fieldNodeType: 'qant:pickers_categorypicker',
-        multiple: false,
+        multiple: false
     },
     sitepicker: {
         typeName: 'Pickers',
         fieldNodeType: 'qant:pickers_sitepicker',
-        multiple: false,
+        multiple: false
     },
     userpicker: {
         typeName: 'Pickers',
         fieldNodeType: 'qant:pickers_userpicker',
-        multiple: false,
+        multiple: false
     },
     usergrouppicker: {
         typeName: 'Pickers',
         fieldNodeType: 'qant:pickers_usergrouppicker',
-        multiple: false,
+        multiple: false
     },
     filepickerMultiple: {
         typeName: 'Pickers Multiple',
         fieldNodeType: 'qant:pickersMultiple_filepicker',
-        multiple: false,
+        multiple: false
     },
     imagepickerMultiple: {
         typeName: 'Pickers Multiple',
         fieldNodeType: 'qant:pickersMultiple_imagepicker',
-        multiple: false,
+        multiple: false
     },
     folderpickerMultiple: {
         typeName: 'Pickers Multiple',
         fieldNodeType: 'qant:pickersMultiple_folderpicker',
-        multiple: false,
+        multiple: false
     },
     contentfolderpickerMultiple: {
         typeName: 'Pickers Multiple',
         fieldNodeType: 'qant:pickersMultiple_contentfolderpicker',
-        multiple: false,
+        multiple: false
     },
     portletpickerMultiple: {
         typeName: 'Pickers Multiple',
         fieldNodeType: 'qant:pickersMultiple_portletpicker',
-        multiple: false,
+        multiple: false
     },
     editorialpickerMultiple: {
         typeName: 'Pickers Multiple',
         fieldNodeType: 'qant:pickersMultiple_editorialpicker',
-        multiple: false,
+        multiple: false
     },
     editoriallinkpickerMultiple: {
         typeName: 'Pickers Multiple',
         fieldNodeType: 'qant:pickersMultiple_editoriallinkpicker',
-        multiple: false,
+        multiple: false
     },
     categorypickerMultiple: {
         typeName: 'Pickers Multiple',
         fieldNodeType: 'qant:pickersMultiple_categorypicker',
-        multiple: false,
+        multiple: false
     },
     sitepickerMultiple: {
         typeName: 'Pickers Multiple',
         fieldNodeType: 'qant:pickersMultiple_sitepicker',
-        multiple: false,
+        multiple: false
     },
     userpickerMultiple: {
         typeName: 'Pickers Multiple',
         fieldNodeType: 'qant:pickersMultiple_userpicker',
-        multiple: false,
+        multiple: false
     },
     usergrouppickerMultiple: {
         typeName: 'Pickers Multiple',
         fieldNodeType: 'qant:pickersMultiple_usergrouppicker',
-        multiple: false,
-    },
-}
+        multiple: false
+    }
+};
 
-export { contentTypes, ContentType }
+export {contentTypes, ContentType};

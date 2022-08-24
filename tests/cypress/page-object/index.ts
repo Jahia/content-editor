@@ -1,1 +1,1 @@
-export * from './contentEditor'
+export * from './contentEditor';

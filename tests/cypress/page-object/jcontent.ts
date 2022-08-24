@@ -9,34 +9,36 @@ import {
     getElement,
     SecondaryNav,
     Table,
-    TableRow,
-} from '@jahia/cypress'
-import { CreateContent } from './createContent'
-import { ContentEditor } from './contentEditor'
+    TableRow
+} from '@jahia/cypress';
+import {CreateContent} from './createContent';
+import {ContentEditor} from './contentEditor';
 
 export class JContent extends BasePage {
-    secondaryNav: SecondaryNav
-    accordion: Accordion
-    siteSwitcher: Dropdown
-    languageSwitcher: Dropdown
+    secondaryNav: SecondaryNav;
+    accordion: Accordion;
+    siteSwitcher: Dropdown;
+    languageSwitcher: Dropdown;
 
     static visit(site: string, language: string, path: string): JContent {
-        cy.visit(`/jahia/jcontent/${site}/${language}/${path}`)
-        return new JContent()
+        cy.visit(`/jahia/jcontent/${site}/${language}/${path}`);
+        return new JContent();
     }
 
     getSecondaryNav(): SecondaryNav {
         if (!this.secondaryNav) {
-            this.secondaryNav = getComponent(SecondaryNav)
+            this.secondaryNav = getComponent(SecondaryNav);
         }
-        return this.secondaryNav
+
+        return this.secondaryNav;
     }
 
     getSecondaryNavAccordion(): Accordion {
         if (!this.accordion) {
-            this.accordion = getComponent(Accordion, this.getSecondaryNav())
+            this.accordion = getComponent(Accordion, this.getSecondaryNav());
         }
-        return this.accordion
+
+        return this.accordion;
     }
 
     createContent(contentType: string) {
@@ -45,64 +47,66 @@ export class JContent extends BasePage {
             .getContentTypeSelector()
             .searchForContentType(contentType)
             .selectContentType(contentType)
-            .create()
+            .create();
     }
 
     editComponentByText(text: string) {
-        const row = new TableRow(getElement(TableRow.defaultSelector, this.getTable()).contains(text))
-        row.contextMenu().select('Edit')
-        return new ContentEditor()
+        const row = new TableRow(getElement(TableRow.defaultSelector, this.getTable()).contains(text));
+        row.contextMenu().select('Edit');
+        return new ContentEditor();
     }
 
     getSiteSwitcher(): Dropdown {
         if (!this.siteSwitcher) {
-            this.siteSwitcher = getComponentByAttr(Dropdown, 'data-cm-role', 'site-switcher')
+            this.siteSwitcher = getComponentByAttr(Dropdown, 'data-cm-role', 'site-switcher');
         }
-        return this.siteSwitcher
+
+        return this.siteSwitcher;
     }
 
     getLanguageSwitcher(): Dropdown {
         if (!this.languageSwitcher) {
-            this.languageSwitcher = getComponentByAttr(Dropdown, 'data-cm-role', 'language-switcher')
+            this.languageSwitcher = getComponentByAttr(Dropdown, 'data-cm-role', 'language-switcher');
         }
-        return this.languageSwitcher
+
+        return this.languageSwitcher;
     }
 
     getTable(): Table {
-        return getComponent(Table, null, (el) => expect(el).to.be.visible)
+        return getComponent(Table, null, el => expect(el).to.be.visible);
     }
 
     getCreateContent(): CreateContent {
-        return new CreateContent(this)
+        return new CreateContent(this);
     }
 
     selectAccordion(accordion: string): JContent {
-        this.getSecondaryNavAccordion().click(accordion)
-        return this
+        this.getSecondaryNavAccordion().click(accordion);
+        return this;
     }
 
     switchToMode(name: string): JContent {
-        getComponentByRole(Button, `sel-view-mode-${name}`).click()
-        return this
+        getComponentByRole(Button, `sel-view-mode-${name}`).click();
+        return this;
     }
 
     switchToGridMode(): JContent {
-        this.switchToMode('grid')
-        return this
+        this.switchToMode('grid');
+        return this;
     }
 
     switchToListMode(): JContent {
-        this.switchToMode('list')
-        return this
+        this.switchToMode('list');
+        return this;
     }
 
     switchToFlatList(): JContent {
-        this.switchToMode('flatList')
-        return this
+        this.switchToMode('flatList');
+        return this;
     }
 
     switchToStructuredView(): JContent {
-        this.switchToMode('structuredView')
-        return this
+        this.switchToMode('structuredView');
+        return this;
     }
 }

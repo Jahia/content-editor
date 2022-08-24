@@ -1,154 +1,154 @@
-import { contentTypes } from '../../fixtures/pickers/contentTypes'
-import { assertUtils } from '../../utils/assertUtils'
-import { AccordionItem } from '../../page-object/accordionItem'
-import { PickerField } from '../../page-object/pickerField'
-import { JContent } from '../../page-object/jcontent'
+import {contentTypes} from '../../fixtures/pickers/contentTypes';
+import {assertUtils} from '../../utils/assertUtils';
+import {AccordionItem} from '../../page-object/accordionItem';
+import {PickerField} from '../../page-object/pickerField';
+import {JContent} from '../../page-object/jcontent';
 
 describe('Picker tests', () => {
-    const siteKey = 'digitall'
-    let jcontent: JContent
+    const siteKey = 'digitall';
+    let jcontent: JContent;
 
-    // helper
+    // Helper
 
     // setup
 
     beforeEach(() => {
-        cy.login()
-        jcontent = JContent.visit(siteKey, 'en', 'content-folders/contents')
-    })
+        cy.login();
+        jcontent = JContent.visit(siteKey, 'en', 'content-folders/contents');
+    });
 
     afterEach(() => {
-        cy.logout()
-    })
+        cy.logout();
+    });
 
     it('should allow multi-select', () => {
-        const contentType = contentTypes['fileMultipleReference']
+        const contentType = contentTypes.fileMultipleReference;
 
         const pickerField = jcontent
             .createContent(contentType.typeName)
-            .getPickerField(contentType.fieldNodeType, contentType.multiple)
-        const picker = pickerField.open()
-        const pagesAccordion: AccordionItem = picker.getAccordionItem('picker-media')
-        assertUtils.isVisible(pagesAccordion.getHeader())
+            .getPickerField(contentType.fieldNodeType, contentType.multiple);
+        const picker = pickerField.open();
+        const pagesAccordion: AccordionItem = picker.getAccordionItem('picker-media');
+        assertUtils.isVisible(pagesAccordion.getHeader());
 
-        cy.log('navigate to files > images > companies')
-        pagesAccordion.expandTreeItem('images')
-        pagesAccordion.getTreeItem('companies').click()
+        cy.log('navigate to files > images > companies');
+        pagesAccordion.expandTreeItem('images');
+        pagesAccordion.getTreeItem('companies').click();
 
-        const numRows = 3
-        cy.log(`select the first ${numRows} elements`)
-        expect(numRows).gte(1) // need at least one for testing removal
-        picker.selectItems(numRows)
-        picker.select()
+        const numRows = 3;
+        cy.log(`select the first ${numRows} elements`);
+        expect(numRows).gte(1); // Need at least one for testing removal
+        picker.selectItems(numRows);
+        picker.select();
 
-        cy.log('verify selected is listed in CE modal/page')
+        cy.log('verify selected is listed in CE modal/page');
         pickerField
             .get()
             .find('[data-sel-content-editor-multiple-generic-field]')
-            .then((elems) => {
-                expect(elems.length).eq(numRows)
+            .then(elems => {
+                expect(elems.length).eq(numRows);
 
-                cy.log('verify removed element is reflected in selection')
+                cy.log('verify removed element is reflected in selection');
                 cy.wrap(elems.eq(0))
                     .find('button[data-sel-action^="removeField"]')
                     .click()
                     .parent()
                     .parent()
                     .find(PickerField.ADD_FIELD_SEL)
-                    .click()
-                picker.getSelectedRows().then((rows) => expect(rows.length).eq(numRows - 1))
-            })
-    })
+                    .click();
+                picker.getSelectedRows().then(rows => expect(rows.length).eq(numRows - 1));
+            });
+    });
 
     it('should display selection table', () => {
         const pickerField = jcontent
-            .createContent(contentTypes['fileMultipleReference'].typeName)
+            .createContent(contentTypes.fileMultipleReference.typeName)
             .getPickerField(
-                contentTypes['fileMultipleReference'].fieldNodeType,
-                contentTypes['fileMultipleReference'].multiple,
-            )
-        const picker = pickerField.open()
+                contentTypes.fileMultipleReference.fieldNodeType,
+                contentTypes.fileMultipleReference.multiple
+            );
+        const picker = pickerField.open();
 
-        const mediaAccordion: AccordionItem = picker.getAccordionItem('picker-media')
-        assertUtils.isVisible(mediaAccordion.getHeader())
-        picker.wait()
+        const mediaAccordion: AccordionItem = picker.getAccordionItem('picker-media');
+        assertUtils.isVisible(mediaAccordion.getHeader());
+        picker.wait();
 
-        cy.log('verify no selection caption is displayed')
+        cy.log('verify no selection caption is displayed');
         picker
             .getSelectionCaption()
             .should('be.visible')
             .invoke('attr', 'data-sel-role')
-            .should('eq', 'no-item-selected')
+            .should('eq', 'no-item-selected');
 
-        cy.log('navigate to different folders and select one item')
-        const numSelected = 3
-        picker.navigateTo(mediaAccordion, 'files/images/banners')
-        picker.selectItems(1)
-        picker.navigateTo(mediaAccordion, 'files/images/companies')
-        picker.selectItems(1)
-        picker.navigateTo(mediaAccordion, 'files/images/devices')
-        picker.selectItems(1)
+        cy.log('navigate to different folders and select one item');
+        const numSelected = 3;
+        picker.navigateTo(mediaAccordion, 'files/images/banners');
+        picker.selectItems(1);
+        picker.navigateTo(mediaAccordion, 'files/images/companies');
+        picker.selectItems(1);
+        picker.navigateTo(mediaAccordion, 'files/images/devices');
+        picker.selectItems(1);
 
-        cy.log('toggle open selection table')
+        cy.log('toggle open selection table');
         picker
             .getSelectionCaption()
             .should('be.visible')
             .click()
             .invoke('attr', 'data-sel-role')
-            .should('eq', `${numSelected}-item-selected`)
-        picker.getSelectionTable().get().should('be.visible')
+            .should('eq', `${numSelected}-item-selected`);
+        picker.getSelectionTable().get().should('be.visible');
         picker
             .getSelectionTable()
             .getRows()
             .get()
-            .then((rows) => expect(rows.length).eq(numSelected))
+            .then(rows => expect(rows.length).eq(numSelected));
 
-        cy.log('remove selection through selection table')
+        cy.log('remove selection through selection table');
         picker
             .getSelectionTable()
             .get()
             .find('tr[data-sel-path*="files/images/devices"]')
             .find('[data-cm-role="actions-cell"] button')
-            .click({ force: true })
-        picker.navigateTo(mediaAccordion, 'files/images/devices')
-        picker.getSelectedRows().should('not.exist')
+            .click({force: true});
+        picker.navigateTo(mediaAccordion, 'files/images/devices');
+        picker.getSelectedRows().should('not.exist');
 
-        cy.log('toggle close selection table')
-        cy.get('[data-cm-role="selection-table-container"] [data-cm-role="selection-table-collapse-button"]').click()
-        picker.getSelectionTable().get().should('not.be.visible')
-    })
+        cy.log('toggle close selection table');
+        cy.get('[data-cm-role="selection-table-container"] [data-cm-role="selection-table-collapse-button"]').click();
+        picker.getSelectionTable().get().should('not.be.visible');
+    });
 
     it('should select/unselect all', () => {
         const pickerField = jcontent
-            .createContent(contentTypes['fileMultipleReference'].typeName)
+            .createContent(contentTypes.fileMultipleReference.typeName)
             .getPickerField(
-                contentTypes['fileMultipleReference'].fieldNodeType,
-                contentTypes['fileMultipleReference'].multiple,
-            )
-        const picker = pickerField.open()
+                contentTypes.fileMultipleReference.fieldNodeType,
+                contentTypes.fileMultipleReference.multiple
+            );
+        const picker = pickerField.open();
 
-        const mediaAccordion: AccordionItem = picker.getAccordionItem('picker-media')
-        assertUtils.isVisible(mediaAccordion.getHeader())
+        const mediaAccordion: AccordionItem = picker.getAccordionItem('picker-media');
+        assertUtils.isVisible(mediaAccordion.getHeader());
 
-        const path = 'files/images/backgrounds'
-        cy.log(`navigate to ${path}`)
-        picker.navigateTo(mediaAccordion, path)
+        const path = 'files/images/backgrounds';
+        cy.log(`navigate to ${path}`);
+        picker.navigateTo(mediaAccordion, path);
 
         picker
             .getTable()
             .getRows()
             .get()
-            .then((elems) => {
-                const rowCount = elems.length
-                cy.log(`row count: ${rowCount}`)
+            .then(elems => {
+                const rowCount = elems.length;
+                cy.log(`row count: ${rowCount}`);
 
-                cy.log('test "select all"')
-                picker.getHeaderById('selection').click()
-                picker.getSelectedRows().then((rows) => expect(rows.length).eq(rowCount))
+                cy.log('test "select all"');
+                picker.getHeaderById('selection').click();
+                picker.getSelectedRows().then(rows => expect(rows.length).eq(rowCount));
 
-                cy.log('test "unselect all"')
-                picker.getHeaderById('selection').click()
-                picker.getSelectedRows().should('not.exist')
-            })
-    })
-})
+                cy.log('test "unselect all"');
+                picker.getHeaderById('selection').click();
+                picker.getSelectedRows().should('not.exist');
+            });
+    });
+});
