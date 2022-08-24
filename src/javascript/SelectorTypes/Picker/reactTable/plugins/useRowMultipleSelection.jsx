@@ -5,6 +5,7 @@ import {
     cePickerSwitchSelection
 } from '~/SelectorTypes/Picker/Picker2.redux';
 import {useGetLatest} from 'react-table';
+import {flattenTree} from '~/SelectorTypes/Picker/Picker2.utils';
 
 export const useRowMultipleSelection = hooks => {
     hooks.getToggleRowSelectedProps = defaultGetToggleRowSelectedProps;
@@ -36,19 +37,6 @@ const defaultGetToggleAllRowsSelectedProps = instance => ({
     indeterminate: instance.anySelected && !instance.allSelected,
     checked: instance.anySelected
 });
-
-const flattenTree = function (rows) {
-    const items = [];
-    collectItems(rows);
-    return items;
-
-    function collectItems(arrayData) {
-        for (let i = 0; i < arrayData.length; i++) {
-            items.push(arrayData[i]);
-            collectItems(arrayData[i].subRows || []);
-        }
-    }
-};
 
 function useInstance(instance) {
     const {getHooks, rows} = instance;

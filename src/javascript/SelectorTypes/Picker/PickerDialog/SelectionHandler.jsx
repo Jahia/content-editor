@@ -12,6 +12,7 @@ import {
     cePickerPath,
     cePickerSetSelection,
     cePickerSetSort,
+    cePickerSetTableViewType,
     cePickerSite
 } from '~/SelectorTypes/Picker/Picker2.redux';
 import {registry} from '@jahia/ui-extender';
@@ -36,7 +37,8 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
         openPaths: state.contenteditor.picker.openPaths,
         site: state.contenteditor.picker.site,
         contextSite: state.contenteditor.picker.contextSite,
-        pickerKey: state.contenteditor.picker.pickerKey
+        pickerKey: state.contenteditor.picker.pickerKey,
+        viewType: state.contenteditor.picker.tableView.viewType
     }), shallowEqual);
 
     const dispatch = useDispatch();
@@ -106,10 +108,18 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
             } else {
                 newState.path = firstMatchingAccordion.defaultPath(newState.site);
             }
+
+            if (firstMatchingAccordion.getViewTypeForItem) {
+                newState.viewType = firstMatchingAccordion.getViewTypeForItem(selectedNode);
+            }
         } else {
             if (previousState.current.contextSite !== newState.contextSite && newState.site !== newState.contextSite) {
                 // If context site has changed, reset to the current site (otherwise keep current site)
                 newState.site = pickerConfig.targetSite ? pickerConfig.targetSite : newState.contextSite;
+            }
+
+            if (firstMatchingAccordion.defaultViewType && !previousState.current.isOpen) {
+                newState.viewType = firstMatchingAccordion.defaultViewType;
             }
 
             newState.mode = firstMatchingAccordion.key;
@@ -138,6 +148,7 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
             (newState.sort !== state.sort) && cePickerSetSort(newState.sort),
             (newState.modes.length !== state.modes?.length || newState.modes.some(mode => !state.modes.includes(mode))) && cePickerModes(newState.modes),
             (newState.path !== state.path) && cePickerPath(newState.path),
+            (newState.viewType !== state.viewType) && cePickerSetTableViewType(newState.viewType),
             (newState.openPaths.length !== state.openPaths.length || newState.openPaths.some(value => state.openPaths.indexOf(value) === -1)) && cePickerOpenPaths(newState.openPaths)
         ]).filter(f => f);
 
