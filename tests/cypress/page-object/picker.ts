@@ -82,8 +82,8 @@ export class Picker extends BaseComponent {
     getTable() {
         if (!this.table) {
             this.table = getComponentByAttr(Table, 'data-cm-role', 'table-content-list', this)
-            this.table.get().find('.moonstone-TableRow').should('be.visible')
         }
+        this.wait()
         return this.table
     }
 
@@ -113,6 +113,7 @@ export class Picker extends BaseComponent {
             .get()
             .find('.moonstone-TableRow')
             .filter(`:contains("${label}")`)
+            .first()
             .scrollIntoView({ offset: { top: -150, left: 0 }, easing: 'linear', duration: 2000 })
     }
 
