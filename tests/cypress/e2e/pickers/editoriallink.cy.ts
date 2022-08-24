@@ -20,24 +20,24 @@ describe('Picker tests', () => {
 
     it('should display editorial link picker', () => {
         const contentType = contentTypes.editoriallinkpicker;
-        const pickerDialog = pageComposer
+        const picker = pageComposer
             .createContent(contentType.typeName)
             .getPickerField(contentType.fieldNodeType, contentType.multiple)
             .open();
-        pickerDialog.wait();
+        picker.wait();
 
-        pickerDialog.getSiteSwitcher().should('be.visible');
+        picker.getSiteSwitcher().should('be.visible');
 
         cy.log('Verify tabs');
-        pickerDialog.getTab('content')
+        picker.getTab('content')
             .should('be.visible');
-        pickerDialog.getTab('pages')
-            .should('be.visible');
-        //     .should('have.class', 'moonstone-selected')
+        picker.getTab('pages')
+            .should('be.visible')
+            .and('have.class', 'moonstone-selected'); // default selected
 
-        // select pages; verify types
-        cy.log('Verify types in pages tab');
-        pickerDialog
+        // Select pages tab; verify types
+        cy.log('Verify content types in pages tab');
+        picker
             .getTable()
             .getRows()
             .get()
@@ -49,12 +49,9 @@ describe('Picker tests', () => {
             });
 
         // Select content tab; verify types
-        cy.log('Verify types in content tab');
-        pickerDialog.getTab('content').click().then(tabItem => {
-            pickerDialog.wait();
-            cy.wrap(tabItem).should('have.class', 'moonstone-selected');
-        });
-        pickerDialog
+        cy.log('Verify content types in content tab');
+        picker.selectTab('content');
+        picker
             .getTable()
             .getRows()
             .get()
@@ -62,7 +59,31 @@ describe('Picker tests', () => {
             .should(elems => {
                 const texts = elems.get().map(e => e.textContent);
                 const allTypes = texts.sort().every(content => ['Content Folder', 'Person portrait'].includes(content));
-                expect(allTypes).to.equal(true);
+                expect(allTypes).to.be.true;
             });
     });
+
+    it('should expand selection and restore tab', () => {
+        const contentType = contentTypes.editoriallinkpicker;
+        const contentEditor = pageComposer.createContent(contentType.typeName);
+        const picker = contentEditor
+            .getPickerField(contentType.fieldNodeType, contentType.multiple)
+            .open();
+
+        cy.log('select newsroom > news-entry > all organic in pages tab')
+        picker.selectTab('pages');
+        picker.getTable().getRowByName('newsroom').expand().should('be.visible')
+        picker.getTable().getRowByName('news-entry').expand().should('be.visible')
+        picker.getTable().getRowByName('all-organic-foods-network-gains').should('be.visible').click()
+
+        picker.selectTab('content'); // switch tabs
+        picker.select();
+
+        cy.log('verify tab is restored and selection is expanded')
+        contentEditor.getPickerField(contentType.fieldNodeType, contentType.multiple).open();
+        picker.getTab('pages').should('have.class', 'moonstone-selected');
+        picker.getTable().getRowByName('all-organic-foods-network-gains')
+            .should('be.visible') // expanded
+            .and('have.class', 'moonstone-TableRow-highlighted') // selected
+    })
 });

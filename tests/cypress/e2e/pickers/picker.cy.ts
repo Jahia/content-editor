@@ -24,39 +24,39 @@ describe('Picker tests', () => {
     // Tests
 
     it('should display content reference picker', () => {
-        const pickerDialog = jcontent
+        const picker = jcontent
             .createContent(contentTypes.contentReference.typeName)
             .getPickerField(contentTypes.contentReference.fieldNodeType, contentTypes.contentReference.multiple)
             .open();
 
         // Assert components are visible
-        assertUtils.isVisible(pickerDialog.get());
-        assertUtils.isVisible(pickerDialog.getSiteSwitcher());
-        assertUtils.isVisible(pickerDialog.getAccordion());
+        assertUtils.isVisible(picker.get());
+        assertUtils.isVisible(picker.getSiteSwitcher());
+        assertUtils.isVisible(picker.getAccordion());
 
         cy.log('assert pages accordion is expanded and populated');
-        const pagesAccordion: AccordionItem = pickerDialog.getAccordionItem('picker-pages');
+        const pagesAccordion: AccordionItem = picker.getAccordionItem('picker-pages');
         pagesAccordion.getHeader().should('be.visible').and('have.attr', 'aria-expanded').and('equal', 'true');
         const rootTree = pagesAccordion.getTreeItems().first();
         rootTree.should('not.be.empty');
 
         cy.log('assert content accordion is visible');
-        const contentAccordion: AccordionItem = pickerDialog.getAccordionItem('picker-content-folders');
+        const contentAccordion: AccordionItem = picker.getAccordionItem('picker-content-folders');
         contentAccordion.getHeader().should('be.visible').and('have.attr', 'aria-expanded').and('equal', 'false');
 
         cy.log('check table components');
-        pickerDialog.getTable().should('exist'); // I have issues checking be.visible; use exist for now
-        pickerDialog.getTable().getHeaderById('name').should('be.visible');
-        pickerDialog.getTable().getHeaderById('lastModified').should('be.visible');
-        pickerDialog.getTable().getHeaderById('type').should('be.visible');
+        picker.getTable().should('exist'); // I have issues checking be.visible; use exist for now
+        picker.getTable().getHeaderById('name').should('be.visible');
+        picker.getTable().getHeaderById('lastModified').should('be.visible');
+        picker.getTable().getHeaderById('type').should('be.visible');
 
         cy.log('selection content folders > contents > ce-picker-files reflects in table');
         contentAccordion.click();
         contentAccordion.getHeader().should('be.visible').and('have.attr', 'aria-expanded').and('equal', 'true');
         contentAccordion.getTreeItem('ce-picker-contents').click(); // Select contents folder
-        pickerDialog.getTable().should('exist').and('have.length', 1);
-        pickerDialog.wait();
-        pickerDialog
+        picker.getTable().should('exist').and('have.length', 1);
+
+        picker
             .getTable()
             .getRows()
             .get()
@@ -68,9 +68,9 @@ describe('Picker tests', () => {
             });
 
         cy.log('test double-click on table');
-        pickerDialog.getTableRow('content-folder1').dblclick();
+        picker.getTableRow('content-folder1').dblclick();
         contentAccordion.getTreeItem('content-folder1').find('div').should('have.class', 'moonstone-selected');
-        pickerDialog
+        picker
             .getTable()
             .getRows()
             .get()
@@ -83,33 +83,32 @@ describe('Picker tests', () => {
     });
 
     it('should display file/image reference picker', () => {
-        const pickerDialog = jcontent
+        const picker = jcontent
             .createContent(contentTypes.imageReference.typeName)
             .getPickerField(contentTypes.imageReference.fieldNodeType, contentTypes.imageReference.multiple)
             .open();
 
         cy.log('assert components are visible');
-        assertUtils.isVisible(pickerDialog.get());
-        assertUtils.isVisible(pickerDialog.getSiteSwitcher());
-        assertUtils.isVisible(pickerDialog.getAccordion());
-        assertUtils.isVisible(pickerDialog.getTable());
+        assertUtils.isVisible(picker.get());
+        assertUtils.isVisible(picker.getSiteSwitcher());
+        assertUtils.isVisible(picker.getAccordion());
+        assertUtils.isVisible(picker.getTable());
 
         cy.log('assert media accordion is expanded and populated');
-        const mediaAccordion: AccordionItem = pickerDialog.getAccordionItem('picker-media');
+        const mediaAccordion: AccordionItem = picker.getAccordionItem('picker-media');
         assertUtils.isAriaExpanded(mediaAccordion.getHeader());
         const rootTree = mediaAccordion.getTreeItems().first();
         rootTree.should('not.be.empty');
 
         cy.log('check table components');
-        pickerDialog.getTable().should('exist');
-        pickerDialog.getTable().getHeaderById('name').should('be.visible');
-        pickerDialog.getTable().getHeaderById('lastModified').should('be.visible');
+        picker.getTable().should('exist');
+        picker.getTable().getHeaderById('name').should('be.visible');
+        picker.getTable().getHeaderById('lastModified').should('be.visible');
 
         cy.log('selection media > files > ce-picker-files reflects in table and filtered by type');
         mediaAccordion.getTreeItem('ce-picker-files').click();
-        pickerDialog.getTable().should('exist');
-        pickerDialog.wait();
-        pickerDialog
+        picker.getTable().should('exist');
+        picker
             .getTable()
             .getRows()
             .get()
@@ -126,24 +125,24 @@ describe('Picker tests', () => {
     it('should go to previous location', () => {
         const contentEditor = jcontent.createContent(contentTypes.fileReference.typeName);
 
-        let pickerDialog = contentEditor
+        let picker = contentEditor
             .getPickerField(contentTypes.fileReference.fieldNodeType, contentTypes.fileReference.multiple)
             .open();
 
-        let pagesAccordion: AccordionItem = pickerDialog.getAccordionItem('picker-media');
+        let pagesAccordion: AccordionItem = picker.getAccordionItem('picker-media');
         assertUtils.isVisible(pagesAccordion.getHeader());
 
         cy.log('select files > images > companies');
         pagesAccordion.expandTreeItem('images');
         pagesAccordion.getTreeItem('companies').click();
-        pickerDialog.cancel();
+        picker.cancel();
 
         cy.log('re-open file media picker');
 
-        pickerDialog = contentEditor
+        picker = contentEditor
             .getPickerField(contentTypes.fileReference.fieldNodeType, contentTypes.fileReference.multiple)
             .open();
-        pagesAccordion = pickerDialog.getAccordionItem('picker-media');
+        pagesAccordion = picker.getAccordionItem('picker-media');
 
         cy.log('verify files > images > companies still selected');
         pagesAccordion.getTreeItem('companies').find('div').should('have.class', 'moonstone-selected');
@@ -161,16 +160,16 @@ describe('Picker tests', () => {
 
         cy.log('open file picker dialog');
         const contentEditor = jcontent.createContent(contentTypes.fileReference.typeName);
-        let pickerDialog = contentEditor
+        let picker = contentEditor
             .getPickerField(contentTypes.fileReference.fieldNodeType, contentTypes.fileReference.multiple)
             .open();
-        let pagesAccordion: AccordionItem = pickerDialog.getAccordionItem('picker-media');
+        let pagesAccordion: AccordionItem = picker.getAccordionItem('picker-media');
         assertUtils.isVisible(pagesAccordion.getHeader());
 
         cy.log('assert created folder exists and select');
         pagesAccordion.expandTreeItem('images');
         pagesAccordion.getTreeItem(folderName).click().should('be.visible');
-        pickerDialog.cancel();
+        picker.cancel();
 
         cy.log(`delete folder '${folderName}'`);
         cy.apollo({
@@ -181,10 +180,10 @@ describe('Picker tests', () => {
         cy.reload(); // Reload to sync folder
         cy.log('re-open file picker');
 
-        pickerDialog = contentEditor
+        picker = contentEditor
             .getPickerField(contentTypes.fileReference.fieldNodeType, contentTypes.fileReference.multiple)
             .open();
-        pagesAccordion = pickerDialog.getAccordionItem('picker-media');
+        pagesAccordion = picker.getAccordionItem('picker-media');
 
         cy.log(`verify ${folderName} is not selected and root is selected`);
         pagesAccordion.getTreeItem(folderName).should('not.exist');
@@ -197,13 +196,13 @@ describe('Picker tests', () => {
             .getPickerField(contentTypes.fileReference.fieldNodeType, contentTypes.fileReference.multiple);
         const picker = pickerField.open();
 
-        picker.getTable().getRowByName('ce-picker-files').should('be.visible');
+        picker.getTable().getRowByLabel('ce-picker-files').should('be.visible');
         picker.getSiteSwitcher().should('contain', 'Digitall');
         picker.getSiteSwitcher().select('System Site');
         picker.getSiteSwitcher().should('contain', 'System Site');
         picker.getTable().getRows().should('have.length', 1);
         picker.getSiteSwitcher().select('Digitall');
-        picker.getTable().getRowByName('ce-picker-files');
+        picker.getTable().getRowByLabel('ce-picker-files');
     });
 
     it('should be able to browse when there is a selection', () => {
@@ -212,15 +211,15 @@ describe('Picker tests', () => {
             .getPickerField(contentTypes.fileReference.fieldNodeType, contentTypes.fileReference.multiple);
         const picker = pickerField.open();
 
-        picker.getTable().getRowByName('images').dblclick();
-        picker.getTable().getRowByName('banners').dblclick();
-        picker.getTable().getRowByName('editing-digitall-site.jpg').dblclick();
+        picker.getTable().getRowByLabel('images').dblclick();
+        picker.getTable().getRowByLabel('banners').dblclick();
+        picker.getTable().getRowByLabel('editing-digitall-site.jpg').dblclick();
 
         picker.getSiteSwitcher().select('System Site');
         picker.getSiteSwitcher().should('contain', 'System Site');
         picker.getTable().getRows().should('have.length', 1);
         picker.getSiteSwitcher().select('Digitall');
-        picker.getTable().getRowByName('ce-picker-files');
+        picker.getTable().getRowByLabel('ce-picker-files');
         const item = picker.getAccordionItem('picker-media');
         item.getTreeItem('files').find('div').should('have.class', 'moonstone-selected');
         item.getTreeItem('companies').click();

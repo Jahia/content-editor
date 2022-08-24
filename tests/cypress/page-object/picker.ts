@@ -90,7 +90,7 @@ export class Picker extends BaseComponent {
 
     // @deprecated use table functions directly
     getTableRow(name: string) {
-        return this.getTable().getRowByName(name);
+        return this.getTable().getRowByLabel(name);
     }
 
     getSelectionCaption() {
@@ -99,6 +99,11 @@ export class Picker extends BaseComponent {
 
     getTab(viewType: string) {
         return cy.get(`.moonstone-tab-item[data-cm-view-type="${viewType}"]`);
+    }
+
+    selectTab(viewType: string) {
+        this.getTab(viewType).click().should('have.class', 'moonstone-selected');
+        this.wait();
     }
 
     search(query?: string, expectNoResult = false) {

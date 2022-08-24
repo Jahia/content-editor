@@ -1,4 +1,4 @@
-import {getComponent, Table, TableRow} from "@jahia/cypress";
+import {getComponent, getComponentBySelector, Table, TableRow} from "@jahia/cypress";
 
 export class PickerTable extends Table {
 
@@ -6,19 +6,23 @@ export class PickerTable extends Table {
         return cy.get(`[data-cm-role="table-content-list-header-cell-${id}"]`);
     }
 
-    getRowNames() {
-        return this.getRows().get().find('[data-cm-role="table-content-list-cell-name"]')
+    getRows(assertion?: (s: JQuery) => void): PickerTableRow {
+        return getComponent(PickerTableRow, this, assertion)
     }
 
-    getRowByName(label: string) {
-        return getComponent(TableRow, this).get()
-            .filter(`:contains("${label}")`)
-            .first()
-            .scrollIntoView({ offset: { top: -150, left: 0 }, easing: 'linear', duration: 2000 })
+    getRowByName(name: string) {
+        return getComponentBySelector(PickerTableRow, `[data-sel-name="${name}"]`, this);
     }
 
     getSelectedRows() {
         return this.get().find('tbody [data-cm-role="table-content-list-cell-selection"] input[aria-checked="true"]')
+    }
+
+    getRowByLabel(label: string) {
+        return getComponent(TableRow, this).get()
+            .filter(`:contains("${label}")`)
+            .first()
+            .scrollIntoView({ offset: { top: -150, left: 0 }, easing: 'linear', duration: 2000 })
     }
 
     selectItems(count: number) {
@@ -31,5 +35,18 @@ export class PickerTable extends Table {
                     selectRow(elems.eq(i))
                 }
             })
+    }
+}
+
+export class PickerTableRow extends TableRow {
+
+    getCellByRole(role: string) {
+        return this.get().find(`td[data-cm-role="table-content-list-cell-${role}"]`)
+    }
+
+    // for structured view
+    expand() {
+        this.getCellByRole('name').find('> div > svg').click()
+        return this;
     }
 }
