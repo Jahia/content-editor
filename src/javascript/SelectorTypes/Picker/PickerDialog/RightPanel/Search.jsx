@@ -27,7 +27,7 @@ export const Search = () => {
 
     const {data} = useQuery(GET_SEARCH_CONTEXT, {
         variables: {
-            paths: [currentPath], lang: language, uilang
+            paths: [currentPath], language: language, uilang
         }
     });
 

@@ -27,15 +27,6 @@ export const GET_PICKER_NODE = gql`
                         name
                     }
                 }
-                children(names:["jcr:content"], typesFilter:{types:["jnt:resource"]}) {
-                    nodes {
-                        data: property(name: "jcr:data") {
-                            size
-                        }
-                        ...NodeCacheRequiredFields
-                        ...node
-                    }
-                }
                 site {
                     uuid
                     workspace
