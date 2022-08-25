@@ -5,6 +5,7 @@ export const GET_PICKER_NODE = gql`
     query getSelectedNodesInformation($paths: [String!]!, $language:String!,$uilang:String!) {
         jcr {
             nodesByPath(paths:$paths) {
+                name
                 displayName(language:$language)
                 operationsSupport {
                     lock
