@@ -115,6 +115,13 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
         useExpanded
     );
 
+    const mainPanelRef = useRef(null);
+    useEffect(() => {
+        if (mainPanelRef.current) {
+            mainPanelRef.current.scroll(0, 0);
+        }
+    }, [pagination.currentPage]);
+
     const firstLoad = useRef(true);
     useEffect(() => {
         if (isStructured && firstLoad.current) {
@@ -178,6 +185,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
         <>
             {canSelectPages && tableHeader}
             <UploadTransformComponent uploadTargetComponent={ContentTableWrapper}
+                                      reference={mainPanelRef}
                                       uploadPath={path}
                                       mode={mode}
             >
