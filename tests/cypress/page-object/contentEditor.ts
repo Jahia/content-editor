@@ -93,6 +93,10 @@ export class ContentEditor extends BasePage {
     }
 
     getRichTextField(fieldName: string): RichTextField {
+        cy.window().its('CKEDITOR').its('instances').should(instances => {
+            assert(instances[Object.keys(instances)[0]].instanceReady);
+        });
+
         const r = getComponentByAttr(RichTextField, 'data-sel-content-editor-field', fieldName);
         r.fieldName = fieldName;
         return r;

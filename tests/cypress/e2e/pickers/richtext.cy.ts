@@ -18,7 +18,6 @@ describe('Picker - richtext', () => {
     it('Content picker in richtext', () => {
         const contentEditor = jcontent.createContent('Rich text');
         const richText = contentEditor.getRichTextField('jnt:bigText_text');
-        cy.wait(5000);
 
         const linkModal = richText.openLinkModal();
         const picker = linkModal.openBrowseServerContents();
@@ -32,7 +31,6 @@ describe('Picker - richtext', () => {
     it('File picker in richtext', () => {
         const contentEditor = jcontent.createContent('Rich text');
         const richText = contentEditor.getRichTextField('jnt:bigText_text');
-        cy.wait(5000);
 
         const linkModal = richText.openLinkModal();
         const picker = linkModal.openBrowseServerFiles();
