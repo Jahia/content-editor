@@ -19,18 +19,22 @@ describe('Picker - richtext', () => {
         const contentEditor = jcontent.createContent('Rich text');
         const richText = contentEditor.getRichTextField('jnt:bigText_text');
 
+        richText.type('Hello');
+
         const linkModal = richText.openLinkModal();
         const picker = linkModal.openBrowseServerContents();
-        picker.getTable().get().contains('Taber').click();
+        picker.getTable().get().contains('Home').click();
         picker.select();
         linkModal.ok();
 
-        richText.getData().should('have.string', 'person-portrait');
+        richText.getData().should('have.string', 'home');
     });
 
     it('File picker in richtext', () => {
         const contentEditor = jcontent.createContent('Rich text');
         const richText = contentEditor.getRichTextField('jnt:bigText_text');
+
+        richText.type('Hello');
 
         const linkModal = richText.openLinkModal();
         const picker = linkModal.openBrowseServerFiles();

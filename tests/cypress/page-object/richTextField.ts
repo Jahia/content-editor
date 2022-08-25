@@ -5,9 +5,7 @@ export class RichTextField extends BaseComponent {
     fieldName: string;
 
     type(text) {
-        this.get().iframe('.cke_wysiwyg_frame').within(() => {
-            cy.get('body').type(text);
-        });
+        this.get().iframe('.cke_wysiwyg_frame').type(text);
     }
 
     setData(value) {
@@ -28,20 +26,20 @@ export class RichTextField extends BaseComponent {
 
 export class LinkModal extends BaseComponent {
     openBrowseServerContents(): Picker {
-        this.get().find('span.cke_dialog_ui_button').eq(0).click();
+        this.get().find('span.cke_dialog_ui_button').contains('Browse Server (Content)').click();
         return getComponentByRole(Picker, 'picker-dialog');
     }
 
     openBrowseServerFiles(): Picker {
-        this.get().find('span.cke_dialog_ui_button').eq(1).click();
+        this.get().find('span.cke_dialog_ui_button').contains('Browse Server (Files)').click();
         return getComponentByRole(Picker, 'picker-dialog');
     }
 
     cancel() {
-        this.get().find('span.cke_dialog_ui_button').eq(3).click();
+        this.get().find('span.cke_dialog_ui_button').contains('Cancel').click();
     }
 
     ok() {
-        this.get().find('span.cke_dialog_ui_button').eq(4).click();
+        this.get().find('span.cke_dialog_ui_button').contains('OK').click();
     }
 }
