@@ -279,7 +279,7 @@
             "allUsers": "Tous les utilisateurs",
             "globalUsers": "Utilisateurs globaux",
             "allGroups": "Tous les groupes",
-            "globalGsers": "Groupes globaux"
+            "globalGroups": "Groupes globaux"
           },
           "tabs": {
             "pages": "Pages",
