@@ -13,10 +13,10 @@ export const getPickerSelectorType = (registry, options) => {
 
     if (!pickerConfig) {
         console.warn('Picker configuration not found', pickerConfigKey);
-        pickerConfig = registry.get(Constants.pickerConfig, 'editorial');
+        pickerConfig = registry.get(Constants.pickerConfig, 'default');
     } else if (pickerConfig.cmp) {
         console.warn('Legacy picker configuration found', pickerConfigKey);
-        pickerConfig = registry.get(Constants.pickerConfig, 'editorial');
+        pickerConfig = registry.get(Constants.pickerConfig, 'default');
     }
 
     return ({
