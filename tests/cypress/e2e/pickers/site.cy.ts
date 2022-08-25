@@ -52,13 +52,13 @@ describe('Picker - Site', () => {
         const pickerField = contentEditor.getPickerField('qant:pickersMultiple_sitepicker', true);
         const picker = pickerField.open();
 
-        picker.selectItems(3);
+        picker.getTable().selectItems(3);
         picker.select();
         pickerField.assertValue('Digitall');
         pickerField.assertValue('site1');
         pickerField.assertValue('site2');
         pickerField.open();
-        picker.getSelectedRows().should('have.length', 3);
+        picker.getTable().getSelectedRows().should('have.length', 3);
     });
 });
 
