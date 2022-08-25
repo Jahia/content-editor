@@ -1,4 +1,6 @@
 import {JContent} from '../../page-object/jcontent';
+import {getElement} from "@jahia/cypress/dist/page-object/utils";
+import {TableRow} from "@jahia/cypress";
 
 describe('Picker - richtext', () => {
     const siteKey = 'digitall';
@@ -20,7 +22,7 @@ describe('Picker - richtext', () => {
 
         const linkModal = richText.openLinkModal();
         const picker = linkModal.openBrowseServerContents();
-        picker.getTable().getRowByIndex(2).get().click();
+        picker.getTable().get().contains('Taber').click();
         picker.select();
         linkModal.ok();
 
@@ -34,13 +36,13 @@ describe('Picker - richtext', () => {
 
         const linkModal = richText.openLinkModal();
         const picker = linkModal.openBrowseServerFiles();
-        picker.getTable().getRowByIndex(1).get().dblclick();
-        picker.getTable().getRowByIndex(1).get().dblclick();
-        picker.getTable().getRowByIndex(1).get().click();
+        picker.getTable().get().contains('images').dblclick();
+        picker.getTable().get().contains('banners').dblclick();
+        picker.getTable().get().contains('editing-digitall-site').click();
         picker.select();
         linkModal.ok();
 
-        richText.getData().should('have.string', 'glyphicons-halflings');
+        richText.getData().should('have.string', 'editing-digitall-site');
     });
 });
 
