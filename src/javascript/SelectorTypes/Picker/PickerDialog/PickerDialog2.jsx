@@ -6,7 +6,8 @@ import {
     cePickerClearSelection,
     cePickerKey,
     cePickerMode,
-    cePickerPath, cePickerSetPage,
+    cePickerPath,
+    cePickerSetPage,
     cePickerSetSearchTerm
 } from '~/SelectorTypes/Picker/Picker2.redux';
 import {batchActions} from 'redux-batched-actions';
@@ -25,7 +26,7 @@ const Transition = props => {
 const selector = state => ({
     mode: state.contenteditor.picker.mode,
     siteKey: state.contenteditor.picker.site,
-    language: state.language
+    language: state.contenteditor.ceLanguage
 });
 
 export const PickerDialog = ({
