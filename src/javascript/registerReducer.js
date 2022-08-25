@@ -8,13 +8,13 @@ export const COMBINED_REDUCERS_NAME = 'contenteditor';
 export const DEFAULT_OPENED_SECTIONS = {content: true, listOrdering: true};
 const ROUTER_REDUX_ACTION = '@@router/LOCATION_CHANGE';
 
-const extractParamsFromUrl = (pathname, search) => {
+const extractParamsFromUrl = pathname => {
     if (pathname.startsWith('/content-editor')) {
         let [, , language, mode, uuid] = pathname.split('/');
         return {language, mode, uuid};
     }
 
-    return {site: '', language: '', mode: '', path: '', params: {}};
+    return {language: '', mode: '', uuid: ''};
 };
 
 export const registerReducer = registry => {
@@ -23,7 +23,7 @@ export const registerReducer = registry => {
     }, DEFAULT_OPENED_SECTIONS);
 
     const languageReducer = handleActions({
-        [ROUTER_REDUX_ACTION]: (state, action) => action.payload.location.pathname.startsWith('/content-editor/') ? extractParamsFromUrl(action.payload.location.pathname, action.payload.location.search).language : state
+        [ROUTER_REDUX_ACTION]: (state, action) => action.payload.location.pathname.startsWith('/content-editor/') ? extractParamsFromUrl(action.payload.location.pathname).language : state
     }, '');
 
     registry.add('redux-reducer', 'ceToggleSections', {targets: [COMBINED_REDUCERS_NAME], reducer: toggleSections});
