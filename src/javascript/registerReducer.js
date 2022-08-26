@@ -2,6 +2,7 @@ import {createActions, handleActions} from 'redux-actions';
 import {combineReducers} from 'redux';
 
 export const {ceToggleSections} = createActions('CE_TOGGLE_SECTIONS');
+export const {ceSwitchLanguage} = createActions('CE_SWITCH_LANGUAGE');
 
 export const COMBINED_REDUCERS_NAME = 'contenteditor';
 
@@ -23,6 +24,7 @@ export const registerReducer = registry => {
     }, DEFAULT_OPENED_SECTIONS);
 
     const languageReducer = handleActions({
+        [ceSwitchLanguage]: (state, action) => action.payload,
         [ROUTER_REDUX_ACTION]: (state, action) => action.payload.location.pathname.startsWith('/content-editor/') ? extractParamsFromUrl(action.payload.location.pathname).language : state
     }, '');
 
