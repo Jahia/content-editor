@@ -13,7 +13,7 @@ export const PickerEditorialLinkQueryHandler = {
             fieldGrouping: null
         };
 
-        if (selection.tableView.viewType === Constants.tableView.type.PAGES) {
+        if (selection.params.selectableTypesTable.includes('jnt:page') && selection.tableView.viewType === Constants.tableView.type.PAGES) {
             queryParams.typeFilter = ['jnt:page', 'jmix:mainResource'];
             queryParams.recursionTypesFilter = {multi: 'NONE', types: ['jnt:contentFolder']};
         } else { // Content

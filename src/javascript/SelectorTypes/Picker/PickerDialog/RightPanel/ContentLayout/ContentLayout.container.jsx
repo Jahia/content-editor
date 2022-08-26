@@ -1,13 +1,12 @@
 import React, {useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
-import {shallowEqual, useDispatch, useSelector} from 'react-redux';
+import {shallowEqual, useSelector} from 'react-redux';
 import {Loader} from '@jahia/moonstone';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 import ContentTable from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout/ContentTable';
 import {registry} from '@jahia/ui-extender';
 import {useLayoutQuery} from '@jahia/jcontent';
-import {cePickerSetTableViewType} from '~/SelectorTypes/Picker/Picker2.redux';
 
 let currentResult;
 
@@ -21,7 +20,7 @@ const unsetRefetcher = name => {
 
 export const ContentLayoutContainer = ({pickerConfig}) => {
     const {t} = useTranslation();
-    const {mode, path, filesMode, tableView, preSearchModeMemo, searchTerms, searchPath} = useSelector(state => ({
+    const {mode, path, filesMode, preSearchModeMemo, searchTerms, searchPath} = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
         path: state.contenteditor.picker.path,
         filesMode: 'grid',
@@ -30,8 +29,6 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
         searchTerms: state.contenteditor.picker.searchTerms,
         searchPath: state.contenteditor.picker.searchPath
     }), shallowEqual);
-    const dispatch = useDispatch();
-    const canSelectPages = pickerConfig.selectableTypesTable.includes('jnt:page');
     const openableTypes = registry.get('accordionItem', mode)?.config?.openableTypes;
 
     const additionalFragments = [];
@@ -58,14 +55,6 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
         tableView: state.contenteditor.picker.tableView
     }), {}, additionalFragments);
 
-    // Reset table view type to content if pages cannot be picked, we do not show table view selector if pages cannot
-    // be picked
-    useEffect(() => {
-        if (!canSelectPages && tableView.viewType === Constants.tableView.type.PAGES) {
-            dispatch(cePickerSetTableViewType(Constants.tableView.type.CONTENT));
-        }
-    }, [dispatch, canSelectPages, tableView.viewType]);
-
     useEffect(() => {
         setRefetcher('pickerData', {
             query: layoutQuery,
@@ -86,7 +75,6 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
         return (
             <ContentTable isContentNotFound
                           pickerConfig={pickerConfig}
-                          canSelectPages={canSelectPages}
                           path={path}
                           filesMode={filesMode}
                           rows={[]}
@@ -119,7 +107,6 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
                 </div>
             )}
             <ContentTable pickerConfig={pickerConfig}
-                          canSelectPages={canSelectPages}
                           path={path}
                           filesMode={filesMode}
                           rows={rows}

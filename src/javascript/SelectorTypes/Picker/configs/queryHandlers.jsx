@@ -1,14 +1,7 @@
-import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
-import {
-    BaseDescendantsQuery,
-    BaseQueryHandler,
-    ContentFoldersQueryHandler,
-    PagesQueryHandler,
-    SearchQueryHandler
-} from '@jahia/jcontent';
+import {BaseDescendantsQuery, BaseQueryHandler, SearchQueryHandler} from '@jahia/jcontent';
 import gql from 'graphql-tag';
 
-const selectableTypeFragment = {
+export const selectableTypeFragment = {
     gql: gql`fragment IsSelectable on JCRNode {
         isSelectable: isNodeType(type: {types: $selectableTypesTable})
     }`,
@@ -30,8 +23,6 @@ export function transformQueryHandler(queryHandler) {
     };
 }
 
-export const PickerContentsFolderQueryHandler = transformQueryHandler(ContentFoldersQueryHandler);
-
 export const PickerBaseQueryHandler = transformQueryHandler(BaseQueryHandler);
 
 export const PickerTreeQueryHandler = transformQueryHandler({
@@ -45,16 +36,6 @@ export const PickerTreeQueryHandler = transformQueryHandler({
     }),
     isStructured: () => true
 });
-
-export const PickerPagesQueryHandler = {
-    ...PagesQueryHandler,
-    getQueryParams: p => ({
-        ...PagesQueryHandler.getQueryParams(p),
-        selectableTypesTable: p.params.selectableTypesTable,
-        typeFilter: Constants.tableView.type.PAGES === p.tableView.viewType ? ['jnt:page'] : p.params.selectableTypesTable.filter(t => t !== 'jnt:page')
-    }),
-    getFragments: () => [...PagesQueryHandler.getFragments(), selectableTypeFragment]
-};
 
 export const PickerSearchQueryHandler = transformQueryHandler({
     ...SearchQueryHandler,
