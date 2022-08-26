@@ -1,7 +1,7 @@
 import React from 'react';
 import {FolderSpecial, Page, Tab, TabItem} from '@jahia/moonstone';
 import {useDispatch, useSelector} from 'react-redux';
-import classes from './ContentTypeSelector.scss';
+import classes from './EditorialLinkContentTypeSelector.scss';
 import {useTranslation} from 'react-i18next';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {cePickerSetTableViewType} from '~/SelectorTypes/Picker/Picker2.redux';

@@ -3,37 +3,47 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {Typography} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
-import css from './Selection.scss';
+import styles from './Selection.scss';
 import {SelectionButton} from '~/SelectorTypes/Picker/PickerDialog/RightPanel/PickerSelection/SelectionButton';
 import {useFieldContext} from '~/contexts/FieldContext';
 import {NodeIcon} from '@jahia/jcontent';
+import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 
-const SelectionCaption = ({selection, expanded}) => {
+const DefaultCaptionComponent = ({selection}) => (
+    <>
+        <div className={clsx('flexRow_nowrap', 'alignCenter', styles.text)} data-sel-role="item-selected">
+            <NodeIcon node={selection}/>
+            <Typography isNowrap variant="body">{selection.displayName}</Typography>
+        </div>
+        <Typography className={styles.gray} variant="caption">{selection.path}</Typography>
+    </>
+);
+
+DefaultCaptionComponent.propTypes = {
+    selection: PropTypes.object.isRequired
+};
+
+const SelectionCaption = ({selection, expanded, pickerConfig}) => {
     const {t} = useTranslation('content-editor');
     const field = useFieldContext();
     const isExpanded = expanded[0];
+    const CaptionComponent = pickerConfig.pickerCaptionComponent || DefaultCaptionComponent;
     return (
         <div className="flexCol flexFluid alignStart" data-cm-role="selection-caption">
             {selection.length === 0 && (
-                <Typography className={css.caption} data-sel-role="no-item-selected">
+                <Typography className={styles.caption} data-sel-role="no-item-selected">
                     {t('content-editor:label.contentEditor.picker.rightPanel.actionsCaption')}
                 </Typography>)}
 
             {/* Single selection caption */}
             {selection.length > 0 && !field.multiple && (
-                <>
-                    <div className={clsx('flexRow_nowrap', 'alignCenter', css.text)} data-sel-role="item-selected">
-                        <NodeIcon node={selection[0]}/>
-                        <Typography isNowrap variant="body">{selection[0].displayName}</Typography>
-                    </div>
-                    <Typography variant="caption">{selection[0].path}</Typography>
-                </>)}
-
+                <CaptionComponent selection={selection[0]}/>
+            )}
             {/* Multiple selection caption */}
             {selection.length > 0 && field.multiple && (
                 <SelectionButton
                     data-sel-role={`${selection.length}-item-selected`}
-                    className={clsx({[css.hidden]: isExpanded})}
+                    className={clsx({[styles.hidden]: isExpanded})}
                     label={t('content-editor:label.contentEditor.selection.itemsSelected', {count: selection.length})}
                     expanded={expanded}
                 />)}
@@ -43,6 +53,7 @@ const SelectionCaption = ({selection, expanded}) => {
 
 SelectionCaption.propTypes = {
     selection: PropTypes.array.isRequired,
+    pickerConfig: configPropType.isRequired,
     expanded: PropTypes.arrayOf(PropTypes.shape({
         isExpanded: PropTypes.bool.isRequired,
         setExpanded: PropTypes.func.isRequired

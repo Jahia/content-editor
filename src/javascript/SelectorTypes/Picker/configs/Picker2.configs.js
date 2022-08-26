@@ -1,13 +1,17 @@
-import {MediaPickerConfig} from '~/SelectorTypes/Picker/configs/MediaPickerConfig';
-import {ContentPickerConfig} from '~/SelectorTypes/Picker/configs/ContentPickerConfig';
+import {ContentPickerConfig} from './ContentPickerConfig';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {mergeDeep} from '~/SelectorTypes/Picker/Picker2.utils';
-import {registerUserPicker} from '~/SelectorTypes/Picker/configs/userPicker';
-import {registerUsergroupPicker} from '~/SelectorTypes/Picker/configs/usergroupPicker';
-import {registerCategoryPicker} from '~/SelectorTypes/Picker/configs/categoryPicker';
-import {registerSitePicker} from '~/SelectorTypes/Picker/configs/sitePicker';
-import {registerFolderPicker} from '~/SelectorTypes/Picker/configs/folderPicker';
-import {registerContentFolderPicker} from '~/SelectorTypes/Picker/configs/contentFolderPicker';
+import {registerUserPicker} from './userPicker';
+import {registerUsergroupPicker} from './usergroupPicker';
+import {registerCategoryPicker} from './categoryPicker';
+import {registerSitePicker} from './sitePicker';
+import {registerFolderPicker} from './folderPicker';
+import {registerContentFolderPicker} from './contentFolderPicker';
+import {registerMediaPickers} from './mediaPicker/mediaPicker';
+import {registerEditorialLinkPicker} from './editorialLinkPicker';
+import {registerPagePicker} from '~/SelectorTypes/Picker/configs/pagePicker';
+import {PickerSearchQueryHandler} from '~/SelectorTypes/Picker/configs/queryHandlers';
+import {registerEditorialPicker} from '~/SelectorTypes/Picker/configs/editorialPicker';
 
 export const registerPickerConfig = registry => {
     registry.add(Constants.pickerConfig, 'default', mergeDeep({}, ContentPickerConfig, {
@@ -16,56 +20,35 @@ export const registerPickerConfig = registry => {
         showOnlyNodesWithTemplates: false
     }));
 
-    registry.add(Constants.pickerConfig, 'editoriallink', mergeDeep({}, ContentPickerConfig, {
-        searchSelectorType: 'jmix:searchable',
-        selectableTypesTable: ['jnt:page', 'jmix:mainResource'],
-        showOnlyNodesWithTemplates: true,
-        pickerDialog: {
-            dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalEditorialTitle',
-            displayTree: false
-        }
-    }));
-
-    registry.add(Constants.pickerConfig, 'editorial', mergeDeep({}, ContentPickerConfig, {
-        searchSelectorType: 'jmix:searchable',
-        selectableTypesTable: ['jnt:page', 'jnt:contentList', 'jnt:contentFolder', 'jmix:siteContent', 'jmix:editorialContent']
-    }));
-
-    registry.add(Constants.pickerConfig, 'image', mergeDeep({}, MediaPickerConfig, {
-        searchSelectorType: 'jmix:image',
-        selectableTypesTable: ['jmix:image']
-    }));
-
-    registry.add(Constants.pickerConfig, 'page', mergeDeep({}, ContentPickerConfig, {
-        pickerInput: {
-            emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalPageTitle'
-        },
-        pickerDialog: {
-            dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalPageTitle',
-            displayTree: false
-        },
-        pickerTable: {
-            columns: ['name', 'lastModified']
-        },
-        searchSelectorType: 'jnt:page',
-        selectableTypesTable: ['jnt:page']
-    }));
-
-    registry.add(Constants.pickerConfig, 'file', mergeDeep({}, ContentPickerConfig, {
-        pickerInput: {
-            emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalFileTitle'
-        },
-        pickerDialog: {
-            dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalFileTitle'
-        },
-        searchSelectorType: 'jnt:file',
-        selectableTypesTable: ['jnt:file']
-    }));
-
+    registerPagePicker(registry);
+    registerEditorialPicker(registry);
+    registerEditorialLinkPicker(registry);
+    registerMediaPickers(registry);
     registerFolderPicker(registry);
     registerContentFolderPicker(registry);
     registerSitePicker(registry);
     registerCategoryPicker(registry);
     registerUsergroupPicker(registry);
     registerUserPicker(registry);
+
+    const searchItem = registry.get(Constants.ACCORDION_ITEM_NAME, 'search');
+    if (searchItem) {
+        registry.add(Constants.ACCORDION_ITEM_NAME, 'picker-search', {
+            ...searchItem,
+            queryHandler: PickerSearchQueryHandler
+        });
+    }
+
+    setTimeout(() => {
+        const openInJContent = registry.get('action', 'openInJContent');
+        if (openInJContent) {
+            openInJContent.targets.push({id: 'content-editor/pickers/picker-media/header-actions', priority: 0});
+            openInJContent.targets.push({id: 'content-editor/pickers/picker-content-folders/header-actions', priority: 0});
+        }
+
+        const openInPageComposer = registry.get('action', 'pageComposer');
+        if (openInPageComposer) {
+            openInPageComposer.targets.push({id: 'content-editor/pickers/picker-pages/header-actions', priority: 0});
+        }
+    });
 };

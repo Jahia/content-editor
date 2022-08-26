@@ -1,8 +1,8 @@
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {mergeDeep} from '~/SelectorTypes/Picker/Picker2.utils';
 import {ContentPickerConfig} from '~/SelectorTypes/Picker/configs/ContentPickerConfig';
-import {PickerTreeQueryHandler} from '~/SelectorTypes/Picker/accordionItems/QueryHandlers/queryHandlers';
-import {renderer} from '~/SelectorTypes/Picker/accordionItems/renderer';
+import {PickerTreeQueryHandler} from '~/SelectorTypes/Picker/configs/queryHandlers';
+import {renderer} from '~/SelectorTypes/Picker/configs/renderer';
 
 export const registerFolderPicker = registry => {
     registry.add(Constants.pickerConfig, 'folder', mergeDeep({}, ContentPickerConfig, {

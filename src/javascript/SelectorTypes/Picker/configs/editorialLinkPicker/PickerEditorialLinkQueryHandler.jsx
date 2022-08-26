@@ -1,5 +1,5 @@
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
-import {PickerBaseQueryHandler} from '~/SelectorTypes/Picker/accordionItems/QueryHandlers/queryHandlers';
+import {PickerBaseQueryHandler} from '~/SelectorTypes/Picker/configs/queryHandlers';
 import {BaseDescendantsQuery} from '@jahia/jcontent';
 
 export const PickerEditorialLinkQueryHandler = {

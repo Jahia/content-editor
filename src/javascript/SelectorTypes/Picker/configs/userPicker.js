@@ -4,8 +4,8 @@ import {mergeDeep} from '~/SelectorTypes/Picker/Picker2.utils';
 import {ContentPickerConfig} from '~/SelectorTypes/Picker/configs/ContentPickerConfig';
 import {reactTable, Sql2SearchQueryHandler} from '@jahia/jcontent';
 import {FolderUser} from '@jahia/moonstone';
-import {transformQueryHandler} from '~/SelectorTypes/Picker/accordionItems/QueryHandlers/queryHandlers';
-import {renderer} from '~/SelectorTypes/Picker/accordionItems/renderer';
+import {transformQueryHandler} from '~/SelectorTypes/Picker/configs/queryHandlers';
+import {renderer} from '~/SelectorTypes/Picker/configs/renderer';
 import {UserPickerFragment} from './userPicker.gql-queries';
 
 const PickerUserQueryHandler = transformQueryHandler({

@@ -3,7 +3,6 @@ import {
     BaseDescendantsQuery,
     BaseQueryHandler,
     ContentFoldersQueryHandler,
-    FilesQueryHandler,
     PagesQueryHandler,
     SearchQueryHandler
 } from '@jahia/jcontent';
@@ -32,8 +31,6 @@ export function transformQueryHandler(queryHandler) {
 }
 
 export const PickerContentsFolderQueryHandler = transformQueryHandler(ContentFoldersQueryHandler);
-
-export const PickerFilesQueryHandler = transformQueryHandler(FilesQueryHandler);
 
 export const PickerBaseQueryHandler = transformQueryHandler(BaseQueryHandler);
 
