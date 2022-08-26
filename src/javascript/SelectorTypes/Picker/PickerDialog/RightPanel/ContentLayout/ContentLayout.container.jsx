@@ -50,7 +50,7 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
             openableTypes
         },
         path: state.contenteditor.picker.path,
-        lang: state.language,
+        lang: state.contenteditor.ceLanguage,
         uilang: state.uilang,
         filesMode: 'grid',
         pagination: state.contenteditor.picker.pagination,
