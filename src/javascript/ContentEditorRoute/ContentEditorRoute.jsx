@@ -42,7 +42,7 @@ export const ContentEditorRoute = ({mode, uuid, lang, contentType, name}) => {
         return () => {
             dispatch(ceToggleSections(DEFAULT_OPENED_SECTIONS));
         };
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [dispatch]);
 
     const site = data && data.jcr.nodeById.site.name;
 
