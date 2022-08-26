@@ -63,7 +63,7 @@ const clickHandler = {
 
 const SELECTION_COLUMN_ID = 'selection';
 
-export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, canSelectPages, pickerConfig, isStructured}) => {
+export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, pickerConfig, isStructured}) => {
     const {t} = useTranslation();
     const field = useFieldContext();
     const dispatch = useDispatch();
@@ -162,7 +162,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
 
         return (
             <>
-                {canSelectPages && tableHeader}
+                {tableHeader}
                 <ContentEmptyDropZone mode={mode} path={path}/>
             </>
         );
@@ -183,7 +183,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, ca
 
     return (
         <>
-            {canSelectPages && tableHeader}
+            {tableHeader}
             <UploadTransformComponent uploadTargetComponent={ContentTableWrapper}
                                       reference={mainPanelRef}
                                       uploadPath={path}
@@ -242,7 +242,6 @@ ContentTable.propTypes = {
     isStructured: PropTypes.bool,
     rows: PropTypes.array.isRequired,
     totalCount: PropTypes.number.isRequired,
-    canSelectPages: PropTypes.bool.isRequired,
     pickerConfig: configPropType.isRequired
 };
 

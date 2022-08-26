@@ -2,16 +2,13 @@ import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {mergeDeep} from '~/SelectorTypes/Picker/Picker2.utils';
 import {ContentPickerConfig} from '~/SelectorTypes/Picker/configs/ContentPickerConfig';
 import {getPagesSearchContextData} from '~/SelectorTypes/Picker/configs/getPagesSearchContextData';
-import {PickerContentsFolderQueryHandler, PickerPagesQueryHandler} from '~/SelectorTypes/Picker/configs/queryHandlers';
+import {transformQueryHandler} from '~/SelectorTypes/Picker/configs/queryHandlers';
 import {renderer} from '~/SelectorTypes/Picker/configs/renderer';
 import React from 'react';
-import {registry} from '@jahia/ui-extender';
-import {ContentTypeSelector as JContentTypeSelector, ViewModeSelector} from '@jahia/jcontent';
-import {
-    cePickerSetPage,
-    cePickerSetTableViewMode,
-    cePickerSetTableViewType
-} from '~/SelectorTypes/Picker/Picker2.redux';
+import {ContentFoldersQueryHandler, ViewModeSelector} from '@jahia/jcontent';
+import {cePickerSetTableViewMode} from '~/SelectorTypes/Picker/Picker2.redux';
+import {EditorialContentTypeSelector} from './EditorialContentTypeSelector';
+import {PickerPagesQueryHandler} from '~/SelectorTypes/Picker/configs/editorialPicker/PickerPagesQueryHandler';
 
 const viewModeSelectorProps = {
     selector: state => ({
@@ -21,25 +18,7 @@ const viewModeSelectorProps = {
     setTableViewModeAction: mode => cePickerSetTableViewMode(mode)
 };
 
-const contentTypeSelectorProps = {
-    selector: state => ({
-        mode: state.contenteditor.picker.mode,
-        siteKey: state.site,
-        path: state.contenteditor.picker.path,
-        lang: state.language,
-        uilang: state.uilang,
-        params: {
-            selectableTypesTable: registry.get('pickerConfiguration', state.contenteditor.picker.pickerKey)?.selectableTypesTable || []
-        },
-        pagination: state.contenteditor.picker.pagination,
-        sort: state.contenteditor.picker.sort,
-        tableView: state.contenteditor.picker.tableView
-    }),
-    reduxActions: {
-        setPageAction: page => cePickerSetPage(page),
-        setTableViewTypeAction: view => cePickerSetTableViewType(view)
-    }
-};
+const PickerContentsFolderQueryHandler = transformQueryHandler(ContentFoldersQueryHandler);
 
 export const registerEditorialPicker = registry => {
     registry.add(Constants.pickerConfig, 'editorial', mergeDeep({}, ContentPickerConfig, {
@@ -56,7 +35,7 @@ export const registerEditorialPicker = registry => {
         registry.add(Constants.ACCORDION_ITEM_NAME, `picker-${Constants.ACCORDION_ITEM_TYPES.PAGES}`, {
             ...pagesItem,
             viewSelector: <ViewModeSelector {...viewModeSelectorProps}/>,
-            tableHeader: <JContentTypeSelector {...contentTypeSelectorProps}/>,
+            tableHeader: <EditorialContentTypeSelector/>,
             targets: ['default:50', 'editorial:50'],
             defaultSort: {orderBy: 'lastModified.value', order: 'DESC'},
             getSearchContextData: getPagesSearchContextData,
