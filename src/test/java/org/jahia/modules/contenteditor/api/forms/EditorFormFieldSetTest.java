@@ -43,7 +43,7 @@ public final class EditorFormFieldSetTest {
         final EditorFormFieldSet form1 = new EditorFormFieldSetBuilder("form1").build();
         final EditorFormFieldSet form2 = new EditorFormFieldSetBuilder("form2").build();
 
-        EditorFormFieldSet result = form1.mergeWith(form2);
+        EditorFormFieldSet result = form1.mergeWith(form2, new HashSet<>());
 
         assertSame(form1, result);
         assertEquals(new EditorFormFieldSet("form1", "form1DisplayName", "form1Description", false, false, true, true, false,Collections.emptySet()), result);
@@ -57,7 +57,7 @@ public final class EditorFormFieldSetTest {
                 .withFields(new EditorFormFieldBuilder("x").build())
                 .build();
 
-        EditorFormFieldSet result = form1.mergeWith(form2);
+        EditorFormFieldSet result = form1.mergeWith(form2, new HashSet<>());
 
         assertNotSame(form1, result);
         assertNotSame(form2, result);
@@ -73,7 +73,7 @@ public final class EditorFormFieldSetTest {
                 .build();
         final EditorFormFieldSet form2 = new EditorFormFieldSetBuilder("form").build();
 
-        EditorFormFieldSet result = form1.mergeWith(form2);
+        EditorFormFieldSet result = form1.mergeWith(form2, new HashSet<>());
 
         assertNotSame(form1, result);
         assertNotSame(form2, result);
@@ -86,7 +86,7 @@ public final class EditorFormFieldSetTest {
         final EditorFormFieldSet form1 = new EditorFormFieldSetBuilder("form").withPriority(1d).build();
         final EditorFormFieldSet form2 = new EditorFormFieldSetBuilder("form").withPriority(2d).build();
 
-        EditorFormFieldSet result = form1.mergeWith(form2);
+        EditorFormFieldSet result = form1.mergeWith(form2, new HashSet<>());
 
         assertEquals(Double.valueOf(2d), result.getPriority());
     }
@@ -102,7 +102,7 @@ public final class EditorFormFieldSetTest {
                 new EditorFormFieldBuilder("z").build()
         )));
 
-        EditorFormFieldSet result = form1.mergeWith(form2);
+        EditorFormFieldSet result = form1.mergeWith(form2, new HashSet<>());
 
         assertThat(result.getEditorFormFields(), containsInAnyOrder(
                 new EditorFormFieldBuilder("z").build()
@@ -118,7 +118,7 @@ public final class EditorFormFieldSetTest {
             new EditorFormFieldBuilder("y").removed(true).build()
         ));
 
-        EditorFormFieldSet result = form1.mergeWith(form2);
+        EditorFormFieldSet result = form1.mergeWith(form2, new HashSet<>());
 
         assertThat(result.getEditorFormFields(), containsInAnyOrder(
             new EditorFormFieldBuilder("x").build()
@@ -130,9 +130,25 @@ public final class EditorFormFieldSetTest {
         final EditorFormFieldSet form1 = new EditorFormFieldSetBuilder("jmix:description").withRemoved(true).build();
         final EditorFormFieldSet form2 = new EditorFormFieldSetBuilder("jmix:description").withRemoved(false).build();
 
-        assertTrue("Removed should be false", !form1.mergeWith(form2).getRemoved());
-        assertTrue("Removed should be true", form2.mergeWith(form1).getRemoved());
+        assertTrue("Removed should be false", !form1.mergeWith(form2, new HashSet<>()).getRemoved());
+        assertTrue("Removed should be true", form2.mergeWith(form1, new HashSet<>()).getRemoved());
 
     }
 
+
+    @Test
+    public void mergeWithDoesNotAddAlreadyProcessedFields() {
+        final EditorFormFieldSet form1 = new EditorFormFieldSet("form", "displayName", "description", false, false, true, true, false, Collections.singleton(
+            new EditorFormFieldBuilder("x").build()
+        ));
+        final EditorFormFieldSet form2 = new EditorFormFieldSet("form", "displayName", "description", false, false, true, true, false, Collections.singleton(
+            new EditorFormFieldBuilder("y").build()
+        ));
+
+        // y property in that case would have been added by a previous fieldset, so form2 cannot provide his y property as a new prop
+        EditorFormFieldSet result = form1.mergeWith(form2, Collections.singleton("y"));
+
+        assertThat(result.getEditorFormFields(), contains(new EditorFormFieldBuilder("x").build()));
+        assertEquals(result.getEditorFormFields().size(), 1);
+    }
 }

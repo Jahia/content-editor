@@ -254,9 +254,10 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
      * or not, as well as how to add/remove targets and/or fields inside targets.
      *
      * @param otherEditorFormFieldSet the other editor for to merge with.
+     * @param processedProperties Set of property names already existing in current form (to avoid property conflict)
      * @return the resulting merged object.
      */
-    public EditorFormFieldSet mergeWith(EditorFormFieldSet otherEditorFormFieldSet) {
+    public EditorFormFieldSet mergeWith(EditorFormFieldSet otherEditorFormFieldSet, Set<String> processedProperties) {
         if (!name.equals(otherEditorFormFieldSet.name)) {
             // nodetypes are not equal, we won't merge anything.
             return this;
@@ -280,7 +281,7 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
         // we now need to add all the fields that are in the other but not in ours, but only if they are not removed fields
         if (otherEditorFormFieldSet.editorFormFields != null) {
             for (EditorFormField otherEditorFormField : otherEditorFormFieldSet.editorFormFields) {
-                if (editorFormFieldsByName.get(otherEditorFormField.getName()) == null && !otherEditorFormField.isRemoved()) {
+                if (editorFormFieldsByName.get(otherEditorFormField.getName()) == null && !otherEditorFormField.isRemoved() && !processedProperties.contains(otherEditorFormField.getName())) {
                     mergedEditorFormFields.add(otherEditorFormField);
                 }
             }

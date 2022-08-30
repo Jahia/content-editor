@@ -354,7 +354,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         final boolean displayFieldSet = !fieldSetNodeType.isNodeType("jmix:templateMixin") || primaryNodeType.isNodeType("jmix:templateMixin");
         EditorFormFieldSet nodeTypeFieldSet = generateEditorFormFieldSet(processedProperties, fieldSetNodeType, existingNode, parentNode,
             locale, uiLocale, removed, dynamic, activated, displayFieldSet, isForExtendMixin);
-        nodeTypeFieldSet = mergeWithStaticFormFieldSets(fieldSetNodeType.getName(), nodeTypeFieldSet);
+        nodeTypeFieldSet = mergeWithStaticFormFieldSets(fieldSetNodeType.getName(), nodeTypeFieldSet, processedProperties);
 
         if (!nodeTypeFieldSet.isRemoved()) {
             processValueConstraints(nodeTypeFieldSet, locale, existingNode, parentNode, primaryNodeType);
@@ -470,13 +470,13 @@ public class EditorFormServiceImpl implements EditorFormService {
         }
     }
 
-    private EditorFormFieldSet mergeWithStaticFormFieldSets(String nodeTypeName, EditorFormFieldSet mergedEditorFormFieldSet) {
+    private EditorFormFieldSet mergeWithStaticFormFieldSets(String nodeTypeName, EditorFormFieldSet mergedEditorFormFieldSet, Set<String> processedProperties) {
         SortedSet<EditorFormFieldSet> staticEditorFormFieldSets = staticDefinitionsRegistry.getFormFieldSets(nodeTypeName);
         if (staticEditorFormFieldSets == null) {
             return mergedEditorFormFieldSet;
         }
         for (EditorFormFieldSet staticEditorFormFieldSet : staticEditorFormFieldSets) {
-            mergedEditorFormFieldSet = mergedEditorFormFieldSet.mergeWith(staticEditorFormFieldSet);
+            mergedEditorFormFieldSet = mergedEditorFormFieldSet.mergeWith(staticEditorFormFieldSet, processedProperties);
         }
         return mergedEditorFormFieldSet;
     }
