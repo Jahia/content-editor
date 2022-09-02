@@ -112,7 +112,6 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, pi
             isExpanded: row => openPaths.indexOf(row.path) > -1,
             onExpand: (id, value) => {
                 const node = id.split('.').reduce((p, i) => p.subRows[i], {subRows: rows});
-                console.log(path, value);
                 if (value !== false) {
                     dispatch(cePickerOpenPaths([node.path]));
                 } else {
