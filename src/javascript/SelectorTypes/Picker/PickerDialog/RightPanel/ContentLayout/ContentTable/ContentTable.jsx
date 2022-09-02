@@ -14,6 +14,7 @@ import {
 import {allColumnData} from '~/SelectorTypes/Picker/reactTable/columns';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {
+    cePickerClosePaths,
     cePickerMode,
     cePickerOpenPaths,
     cePickerPath,
@@ -68,12 +69,13 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, pi
     const field = useFieldContext();
     const dispatch = useDispatch();
 
-    const {mode, path, pagination, searchTerm, selection} = useSelector(state => ({
+    const {mode, path, pagination, searchTerm, openPaths} = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
         path: state.contenteditor.picker.path,
         pagination: state.contenteditor.picker.pagination,
         searchTerm: state.contenteditor.picker.searchTerms,
-        selection: state.contenteditor.picker.selection
+        selection: state.contenteditor.picker.selection,
+        openPaths: state.contenteditor.picker.openPaths
     }), shallowEqual);
 
     const allowDoubleClickNavigation = nodeType => {
@@ -102,13 +104,21 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, pi
         getTableBodyProps,
         headerGroups,
         rows: tableRows,
-        prepareRow,
-        toggleRowExpanded,
-        expandSelection
+        prepareRow
     } = useTable(
         {
             columns: columns,
-            data: rows
+            data: rows,
+            isExpanded: row => openPaths.indexOf(row.path) > -1,
+            onExpand: (id, value) => {
+                const node = id.split('.').reduce((p, i) => p.subRows[i], {subRows: rows});
+                console.log(path, value);
+                if (value !== false) {
+                    dispatch(cePickerOpenPaths([node.path]));
+                } else {
+                    dispatch(cePickerClosePaths([node.path]));
+                }
+            }
         },
         field.multiple ? useRowMultipleSelection : useRowSelection,
         useSort,
@@ -125,21 +135,12 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, pi
     const firstLoad = useRef(true);
     useEffect(() => {
         if (isStructured && firstLoad.current) {
-            firstLoad.current = rows.length === 0;
-            rows.forEach((r, i) => {
-                toggleRowExpanded(i, true);
-            });
+            if (rows.length > 0) {
+                firstLoad.current = false;
+                dispatch(cePickerOpenPaths(rows.map(r => r.path)));
+            }
         }
-    }, [rows, isStructured, toggleRowExpanded, firstLoad]);
-
-    // Expand structured view selections when root row is changed
-    const rootRowUuid = useRef();
-    useEffect(() => {
-        if (isStructured && rootRowUuid.current !== rows[0]?.uuid && selection && selection.length) {
-            rootRowUuid.current = rows[0].uuid;
-            expandSelection(selection);
-        }
-    }, [isStructured, selection, expandSelection, rootRowUuid, rows]);
+    }, [dispatch, rows, isStructured, firstLoad]);
 
     const doubleClickNavigation = node => {
         const actions = [];

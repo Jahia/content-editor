@@ -136,6 +136,9 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
         newState.modes = accordionItems.map(item => item.key);
 
         newState.openPaths = [...new Set([...newState.openPaths, ...getDetailedPathArray(getPathWithoutFile(newState.path), newState.site)])];
+        if (selectedNode && !previousState.current.isOpen) {
+            newState.openPaths = [...new Set([...newState.openPaths, ...getDetailedPathArray(getPathWithoutFile(selectedNode.path), newState.site)])];
+        }
 
         if (previousState.current.mode !== newState.mode && firstMatchingAccordion.defaultSort) {
             newState.sort = firstMatchingAccordion.defaultSort;

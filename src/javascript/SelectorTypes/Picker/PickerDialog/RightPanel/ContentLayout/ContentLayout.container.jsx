@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {useTranslation} from 'react-i18next';
 import {shallowEqual, useSelector} from 'react-redux';
 import {Loader} from '@jahia/moonstone';
@@ -7,8 +7,8 @@ import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 import ContentTable from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout/ContentTable';
 import {registry} from '@jahia/ui-extender';
 import {useLayoutQuery} from '@jahia/jcontent';
-
-let currentResult;
+import clsx from 'clsx';
+import styles from './ContentLayout.scss';
 
 const setRefetcher = (name, refetcherData) => {
     registry.addOrReplace('refetcher', name, refetcherData);
@@ -20,6 +20,7 @@ const unsetRefetcher = name => {
 
 export const ContentLayoutContainer = ({pickerConfig}) => {
     const {t} = useTranslation();
+    const currentResult = useRef();
     const {mode, path, filesMode, preSearchModeMemo, searchTerms, searchPath} = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
         path: state.contenteditor.picker.path,
@@ -36,7 +37,7 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
         additionalFragments.push(...registry.get('accordionItem', preSearchModeMemo)?.queryHandler?.getFragments());
     }
 
-    const {layoutQuery, layoutQueryParams, result, error, loading, isStructured, refetch} = useLayoutQuery(state => ({
+    const {result, error, loading, isStructured, refetch} = useLayoutQuery(state => ({
         mode: state.contenteditor.picker.mode,
         siteKey: state.site,
         params: {
@@ -52,13 +53,12 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
         filesMode: 'grid',
         pagination: state.contenteditor.picker.pagination,
         sort: state.contenteditor.picker.sort,
-        tableView: state.contenteditor.picker.tableView
+        tableView: state.contenteditor.picker.tableView,
+        openPaths: state.contenteditor.picker.openPaths
     }), {}, additionalFragments);
 
     useEffect(() => {
         setRefetcher('pickerData', {
-            query: layoutQuery,
-            queryParams: layoutQueryParams,
             refetch: refetch
         });
 
@@ -88,21 +88,21 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
     if (loading) {
         // While loading new results, render current ones loaded during previous render invocation (if any).
     } else {
-        currentResult = result;
+        currentResult.current = result;
     }
 
     let rows = [];
     let totalCount = 0;
 
-    if (currentResult) {
-        totalCount = currentResult.pageInfo.totalCount;
-        rows = currentResult.nodes;
+    if (currentResult.current) {
+        totalCount = currentResult.current.pageInfo.totalCount;
+        rows = currentResult.current.nodes;
     }
 
     return (
-        <>
+        <div className="flexFluid flexCol_nowrap" style={{position: 'relative'}}>
             {loading && (
-                <div className="flexFluid flexCol_center alignCenter" style={{flex: '9999', backgroundColor: 'var(--color-light)'}}>
+                <div className={clsx('flexCol_center', 'alignCenter', styles.loader)}>
                     <Loader size="big"/>
                 </div>
             )}
@@ -114,7 +114,7 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
                           isLoading={loading}
                           totalCount={totalCount}
             />
-        </>
+        </div>
     );
 };
 

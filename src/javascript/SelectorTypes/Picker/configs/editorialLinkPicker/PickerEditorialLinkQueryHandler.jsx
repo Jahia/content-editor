@@ -5,9 +5,9 @@ import {BaseDescendantsQuery} from '@jahia/jcontent';
 export const PickerEditorialLinkQueryHandler = {
     ...PickerBaseQueryHandler,
     getQuery: () => BaseDescendantsQuery,
-    getQueryParams: selection => {
+    getQueryVariables: selection => {
         const queryParams = {
-            ...PickerBaseQueryHandler.getQueryParams(selection),
+            ...PickerBaseQueryHandler.getQueryVariables(selection),
             offset: 0,
             limit: 10000,
             fieldGrouping: null

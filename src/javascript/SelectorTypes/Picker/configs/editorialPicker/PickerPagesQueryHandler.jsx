@@ -4,8 +4,8 @@ import {selectableTypeFragment} from '~/SelectorTypes/Picker/configs/queryHandle
 
 export const PickerPagesQueryHandler = {
     ...PagesQueryHandler,
-    getQueryParams: p => ({
-        ...PagesQueryHandler.getQueryParams(p),
+    getQueryVariables: p => ({
+        ...PagesQueryHandler.getQueryVariables(p),
         selectableTypesTable: p.params.selectableTypesTable,
         typeFilter: p.params.selectableTypesTable.includes('jnt:page') && Constants.tableView.type.PAGES === p.tableView.viewType ? ['jnt:page'] : p.params.selectableTypesTable.filter(t => t !== 'jnt:page')
     }),

@@ -19,8 +19,8 @@ export const FieldContextProvider = ({field, children}) => {
 };
 
 FieldContextProvider.propTypes = {
-    field: {
+    field: PropTypes.shape({
         multiple: PropTypes.bool
-    },
+    }),
     children: PropTypes.node.isRequired
 };

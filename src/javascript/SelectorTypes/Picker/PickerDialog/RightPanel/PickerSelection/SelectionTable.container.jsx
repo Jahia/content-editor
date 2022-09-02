@@ -37,11 +37,8 @@ const SelectionTableContainer = ({selection, expanded, pickerConfig}) => {
 };
 
 SelectionTableContainer.propTypes = {
-    selection: PropTypes.object.isRequired,
-    expanded: PropTypes.arrayOf(PropTypes.shape({
-        isExpanded: PropTypes.bool.isRequired,
-        setExpanded: PropTypes.func.isRequired
-    })),
+    selection: PropTypes.array.isRequired,
+    expanded: PropTypes.array.isRequired,
     pickerConfig: configPropType.isRequired
 };
 
