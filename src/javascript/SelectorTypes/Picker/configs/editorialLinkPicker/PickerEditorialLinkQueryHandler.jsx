@@ -1,10 +1,8 @@
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
-import {PickerBaseQueryHandler} from '~/SelectorTypes/Picker/configs/queryHandlers';
-import {BaseDescendantsQuery} from '@jahia/jcontent';
+import {PickerBaseQueryHandler, PickerTreeQueryHandler} from '~/SelectorTypes/Picker/configs/queryHandlers';
 
 export const PickerEditorialLinkQueryHandler = {
-    ...PickerBaseQueryHandler,
-    getQuery: () => BaseDescendantsQuery,
+    ...PickerTreeQueryHandler,
     getQueryVariables: selection => {
         const queryParams = {
             ...PickerBaseQueryHandler.getQueryVariables(selection),

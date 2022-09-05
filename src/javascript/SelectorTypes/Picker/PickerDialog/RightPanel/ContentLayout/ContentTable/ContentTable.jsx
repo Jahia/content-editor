@@ -1,15 +1,12 @@
 import React, {useEffect, useMemo, useRef} from 'react';
 import PropTypes from 'prop-types';
-import * as _ from 'lodash';
 import {useTranslation} from 'react-i18next';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {Table, TableBody, TablePagination, TableRow} from '@jahia/moonstone';
 import {useTable} from 'react-table';
 import {
-    useExpanded,
     useRowMultipleSelection,
-    useRowSelection,
-    useSort
+    useRowSelection
 } from '~/SelectorTypes/Picker/reactTable/plugins';
 import {allColumnData} from '~/SelectorTypes/Picker/reactTable/columns';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
@@ -19,11 +16,12 @@ import {
     cePickerOpenPaths,
     cePickerPath,
     cePickerSetPage,
-    cePickerSetPageSize
+    cePickerSetPageSize, cePickerSetSort
 } from '~/SelectorTypes/Picker/Picker2.redux';
 import {getDetailedPathArray} from '~/SelectorTypes/Picker/Picker2.utils';
 import {batchActions} from 'redux-batched-actions';
 import {
+    reactTable,
     ContentEmptyDropZone,
     ContentListHeader,
     ContentNotFound,
@@ -69,13 +67,14 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, pi
     const field = useFieldContext();
     const dispatch = useDispatch();
 
-    const {mode, path, pagination, searchTerm, openPaths} = useSelector(state => ({
+    const {mode, path, pagination, searchTerm, openPaths, sort} = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
         path: state.contenteditor.picker.path,
         pagination: state.contenteditor.picker.pagination,
         searchTerm: state.contenteditor.picker.searchTerms,
         selection: state.contenteditor.picker.selection,
-        openPaths: state.contenteditor.picker.openPaths
+        openPaths: state.contenteditor.picker.openPaths,
+        sort: state.contenteditor.picker.sort
     }), shallowEqual);
 
     const allowDoubleClickNavigation = nodeType => {
@@ -117,11 +116,15 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, pi
                 } else {
                     dispatch(cePickerClosePaths([node.path]));
                 }
+            },
+            sort,
+            onSort: (column, order) => {
+                dispatch(cePickerSetSort({order, orderBy: column.property}));
             }
         },
         field.multiple ? useRowMultipleSelection : useRowSelection,
-        useSort,
-        useExpanded
+        reactTable.useSort,
+        reactTable.useExpandedControlled
     );
 
     const mainPanelRef = useRef(null);
@@ -155,7 +158,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, pi
 
     const tableHeader = registry.get('accordionItem', mode)?.tableHeader;
 
-    if (_.isEmpty(rows) && !isLoading) {
+    if (!rows?.length && !isLoading) {
         if ((mode === Constants.mode.SEARCH)) {
             return <EmptyTable text={searchTerm}/>;
         }
