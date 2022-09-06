@@ -49,7 +49,7 @@ const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
                 </div>
             </header>
             <div className={clsx('flexFluid', 'flexCol_nowrap', css.body)}>
-                {mode !== '' && <ContentLayout key={mode} pickerConfig={pickerConfig}/>}
+                {mode !== '' && <ContentLayout pickerConfig={pickerConfig}/>}
             </div>
 
             <SelectionTable selection={selection} expanded={selectionExpanded} pickerConfig={pickerConfig}/>

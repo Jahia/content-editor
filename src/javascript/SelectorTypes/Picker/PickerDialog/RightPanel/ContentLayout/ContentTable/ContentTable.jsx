@@ -134,16 +134,6 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, pi
         }
     }, [pagination.currentPage]);
 
-    const firstLoad = useRef(true);
-    useEffect(() => {
-        if (isStructured && firstLoad.current) {
-            if (rows.length > 0) {
-                firstLoad.current = false;
-                dispatch(cePickerOpenPaths(rows.map(r => r.path)));
-            }
-        }
-    }, [dispatch, rows, isStructured, firstLoad]);
-
     const doubleClickNavigation = node => {
         const actions = [];
 
