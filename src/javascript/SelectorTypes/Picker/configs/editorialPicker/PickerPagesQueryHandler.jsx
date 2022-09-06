@@ -4,6 +4,19 @@ import {selectableTypeFragment} from '~/SelectorTypes/Picker/configs/queryHandle
 
 export const PickerPagesQueryHandler = {
     ...PagesQueryHandler,
+
+    getTreeParams: p => {
+        const treeParams = PagesQueryHandler.getTreeParams(p);
+
+        if (treeParams) {
+            return ({
+                ...treeParams,
+                openableTypes: Constants.tableView.type.PAGES === p.tableView.viewType ? ['jnt:page'] : ['jnt:content'],
+                selectableTypes: Constants.tableView.type.PAGES === p.tableView.viewType ? ['jnt:page'] : p.params.selectableTypesTable.filter(t => t !== 'jnt:page')
+            });
+        }
+    },
+
     getQueryVariables: p => ({
         ...PagesQueryHandler.getQueryVariables(p),
         selectableTypesTable: p.params.selectableTypesTable,
