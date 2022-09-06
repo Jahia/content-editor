@@ -46,7 +46,7 @@ const SelectionTable = ({selection, pickerConfig}) => {
                             >
                                 {
                                     row.cells.map(cell => (
-                                        <React.Fragment key={cell.column.id} data-sel-role={`selection-table-${cell.column.id}`}>
+                                        <React.Fragment key={cell.column.id}>
                                             {cell.render('Cell')}
                                         </React.Fragment>
                                     ))
@@ -60,7 +60,7 @@ const SelectionTable = ({selection, pickerConfig}) => {
 };
 
 SelectionTable.propTypes = {
-    selection: PropTypes.object.isRequired,
+    selection: PropTypes.array.isRequired,
     pickerConfig: configPropType.isRequired
 };
 

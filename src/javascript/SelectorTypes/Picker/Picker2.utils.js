@@ -109,7 +109,7 @@ export const getBaseSearchContextData = ({t, currentSite, accordion, node, curre
         {
             label: node?.displayName,
             searchPath: currentPath,
-            iconStart: <NodeIcon node={node}/>
+            iconStart: node && <NodeIcon node={node}/>
         }
     ]
         .filter((currentItem, index, array) => array.findIndex(item => item.searchPath === currentItem.searchPath) === index)

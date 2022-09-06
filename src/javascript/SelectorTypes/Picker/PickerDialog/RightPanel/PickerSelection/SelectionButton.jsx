@@ -31,8 +31,5 @@ export const SelectionButton = ({label, className, expanded, ...otherProps}) => 
 SelectionButton.propTypes = {
     label: PropTypes.string.isRequired,
     className: PropTypes.string,
-    expanded: PropTypes.arrayOf(PropTypes.shape({
-        isExpanded: PropTypes.bool.isRequired,
-        setExpanded: PropTypes.func.isRequired
-    }))
+    expanded: PropTypes.array.isRequired
 };

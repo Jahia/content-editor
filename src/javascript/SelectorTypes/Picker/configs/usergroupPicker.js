@@ -10,8 +10,8 @@ import {UserGroupPickerFragment} from './usergroupPicker.gql-queries';
 
 const PickerUserGroupQueryHandler = transformQueryHandler({
     ...Sql2SearchQueryHandler,
-    getQueryParams: p => ({
-        ...Sql2SearchQueryHandler.getQueryParams(p),
+    getQueryVariables: p => ({
+        ...Sql2SearchQueryHandler.getQueryVariables(p),
         query: `SELECT * FROM ['jnt:group'] WHERE ISDESCENDANTNODE('/groups') OR ISDESCENDANTNODE('/sites/${p.siteKey}/groups')`
     }),
     getFragments: () => [UserGroupPickerFragment]

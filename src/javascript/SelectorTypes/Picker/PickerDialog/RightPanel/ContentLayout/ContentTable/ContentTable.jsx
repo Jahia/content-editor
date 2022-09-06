@@ -1,28 +1,27 @@
 import React, {useEffect, useMemo, useRef} from 'react';
 import PropTypes from 'prop-types';
-import * as _ from 'lodash';
 import {useTranslation} from 'react-i18next';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {Table, TableBody, TablePagination, TableRow} from '@jahia/moonstone';
 import {useTable} from 'react-table';
 import {
-    useExpanded,
     useRowMultipleSelection,
-    useRowSelection,
-    useSort
+    useRowSelection
 } from '~/SelectorTypes/Picker/reactTable/plugins';
 import {allColumnData} from '~/SelectorTypes/Picker/reactTable/columns';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {
+    cePickerClosePaths,
     cePickerMode,
     cePickerOpenPaths,
     cePickerPath,
     cePickerSetPage,
-    cePickerSetPageSize
+    cePickerSetPageSize, cePickerSetSort
 } from '~/SelectorTypes/Picker/Picker2.redux';
 import {getDetailedPathArray} from '~/SelectorTypes/Picker/Picker2.utils';
 import {batchActions} from 'redux-batched-actions';
 import {
+    reactTable,
     ContentEmptyDropZone,
     ContentListHeader,
     ContentNotFound,
@@ -68,12 +67,14 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, pi
     const field = useFieldContext();
     const dispatch = useDispatch();
 
-    const {mode, path, pagination, searchTerm, selection} = useSelector(state => ({
+    const {mode, path, pagination, searchTerm, openPaths, sort} = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
         path: state.contenteditor.picker.path,
         pagination: state.contenteditor.picker.pagination,
         searchTerm: state.contenteditor.picker.searchTerms,
-        selection: state.contenteditor.picker.selection
+        selection: state.contenteditor.picker.selection,
+        openPaths: state.contenteditor.picker.openPaths,
+        sort: state.contenteditor.picker.sort
     }), shallowEqual);
 
     const allowDoubleClickNavigation = nodeType => {
@@ -102,17 +103,28 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, pi
         getTableBodyProps,
         headerGroups,
         rows: tableRows,
-        prepareRow,
-        toggleRowExpanded,
-        expandSelection
+        prepareRow
     } = useTable(
         {
             columns: columns,
-            data: rows
+            data: rows,
+            isExpanded: row => openPaths.indexOf(row.path) > -1,
+            onExpand: (id, value) => {
+                const node = id.split('.').reduce((p, i) => p.subRows[i], {subRows: rows});
+                if (value === false) {
+                    dispatch(cePickerClosePaths([node.path]));
+                } else {
+                    dispatch(cePickerOpenPaths([node.path]));
+                }
+            },
+            sort,
+            onSort: (column, order) => {
+                dispatch(cePickerSetSort({order, orderBy: column.property}));
+            }
         },
         field.multiple ? useRowMultipleSelection : useRowSelection,
-        useSort,
-        useExpanded
+        reactTable.useSort,
+        reactTable.useExpandedControlled
     );
 
     const mainPanelRef = useRef(null);
@@ -121,25 +133,6 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, pi
             mainPanelRef.current.scroll(0, 0);
         }
     }, [pagination.currentPage]);
-
-    const firstLoad = useRef(true);
-    useEffect(() => {
-        if (isStructured && firstLoad.current) {
-            firstLoad.current = rows.length === 0;
-            rows.forEach((r, i) => {
-                toggleRowExpanded(i, true);
-            });
-        }
-    }, [rows, isStructured, toggleRowExpanded, firstLoad]);
-
-    // Expand structured view selections when root row is changed
-    const rootRowUuid = useRef();
-    useEffect(() => {
-        if (isStructured && rootRowUuid.current !== rows[0]?.uuid && selection && selection.length) {
-            rootRowUuid.current = rows[0].uuid;
-            expandSelection(selection);
-        }
-    }, [isStructured, selection, expandSelection, rootRowUuid, rows]);
 
     const doubleClickNavigation = node => {
         const actions = [];
@@ -155,7 +148,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, pi
 
     const tableHeader = registry.get('accordionItem', mode)?.tableHeader;
 
-    if (_.isEmpty(rows) && !isLoading) {
+    if (!rows?.length && !isLoading) {
         if ((mode === Constants.mode.SEARCH)) {
             return <EmptyTable text={searchTerm}/>;
         }

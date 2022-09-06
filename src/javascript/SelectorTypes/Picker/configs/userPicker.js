@@ -10,8 +10,8 @@ import {UserPickerFragment} from './userPicker.gql-queries';
 
 const PickerUserQueryHandler = transformQueryHandler({
     ...Sql2SearchQueryHandler,
-    getQueryParams: p => ({
-        ...Sql2SearchQueryHandler.getQueryParams(p),
+    getQueryVariables: p => ({
+        ...Sql2SearchQueryHandler.getQueryVariables(p),
         query: `SELECT * FROM ['jnt:user'] WHERE ISDESCENDANTNODE('/users') OR ISDESCENDANTNODE('/sites/${p.siteKey}/users')`
     }),
     getFragments: () => [UserPickerFragment]

@@ -54,10 +54,7 @@ const SelectionCaption = ({selection, expanded, pickerConfig}) => {
 SelectionCaption.propTypes = {
     selection: PropTypes.array.isRequired,
     pickerConfig: configPropType.isRequired,
-    expanded: PropTypes.arrayOf(PropTypes.shape({
-        isExpanded: PropTypes.bool.isRequired,
-        setExpanded: PropTypes.func.isRequired
-    }))
+    expanded: PropTypes.array.isRequired
 };
 
 export default SelectionCaption;
