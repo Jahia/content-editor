@@ -19,7 +19,7 @@ export const PickerEditorialLinkQueryHandler = {
         return treeParams;
     }
 
-    // structureData(parentPath, result) {
+    // StructureData(parentPath, result) {
     //     const dataForParentPath = result?.nodes || [];
     //     const structuredData = dataForParentPath.filter(d => d.parent.path === parentPath);
     //     setSubrows(structuredData, dataForParentPath);
