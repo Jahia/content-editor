@@ -12,10 +12,11 @@ import {getButtonRenderer} from '~/utils';
 import {SelectionCaption, SelectionTable} from './PickerSelection';
 import {Search} from './Search';
 import {PickerSiteSwitcher} from '~/SelectorTypes/Picker';
+import {jcontentUtils} from '@jahia/jcontent';
 
 const ButtonRenderer = getButtonRenderer({defaultButtonProps: {variant: 'ghost'}});
 
-const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
+const RightPanel = ({pickerConfig, accordionItemProps, onClose, onItemSelection}) => {
     const {selection, mode, path} = useSelector(state => ({
         path: state.contenteditor.picker.path,
         selection: state.contenteditor.picker.selection,
@@ -32,7 +33,7 @@ const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
         }
     };
 
-    const accordionItem = registry.get('accordionItem', mode);
+    const accordionItem = jcontentUtils.getAccordionItem(registry.get('accordionItem', mode), accordionItemProps);
     const viewSelector = accordionItem?.tableConfig?.viewSelector;
     const actionsTarget = accordionItem?.actionsTarget || 'content-editor/pickers/' + mode + '/header-actions';
 
@@ -41,7 +42,7 @@ const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
             <header className={clsx('flexCol_nowrap', css.header)}>
                 <Typography variant="heading">{t(pickerConfig.pickerDialog.dialogTitle)}</Typography>
                 <div className={clsx('flexRow_nowrap', 'alignCenter', css.headerActions)}>
-                    {!pickerConfig.pickerDialog.displayTree && pickerConfig.pickerDialog.displaySiteSwitcher && <PickerSiteSwitcher pickerConfig={pickerConfig}/>}
+                    {!pickerConfig.pickerDialog.displayTree && pickerConfig.pickerDialog.displaySiteSwitcher && <PickerSiteSwitcher pickerConfig={pickerConfig} accordionItemProps={accordionItemProps}/>}
                     {mode !== '' && <Search pickerConfig={pickerConfig}/>}
                     <div className="flexFluid"/>
                     <DisplayActions target={actionsTarget} render={ButtonRenderer} path={path}/>
@@ -78,6 +79,7 @@ const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
 
 RightPanel.propTypes = {
     pickerConfig: configPropType.isRequired,
+    accordionItemProps: PropTypes.object,
     onItemSelection: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired
 };

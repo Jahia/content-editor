@@ -22,13 +22,14 @@ import PropTypes from 'prop-types';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
+import {jcontentUtils} from '@jahia/jcontent';
 
 function getSite(selectedItem) {
     const pathElements = selectedItem.split('/');
     return (pathElements[1] === 'sites') ? pathElements[2] : undefined;
 }
 
-export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConfig, children}) => {
+export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConfig, accordionItemProps, children}) => {
     const state = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
         modes: state.contenteditor.picker.modes,
@@ -55,6 +56,8 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
     } else {
         accordion = registry.get('accordionItem', state.mode);
     }
+
+    accordion = jcontentUtils.getAccordionItem(accordion, accordionItemProps);
 
     const fragments = accordion?.tableConfig?.queryHandler?.getFragments() || [];
     const selectionQuery = replaceFragmentsInDocument(GET_PICKER_NODE, fragments);
@@ -84,10 +87,7 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
 
         const selectedNode = nodesInfo.data && nodesInfo.data.jcr.nodesByPath.length > 0 && nodesInfo.data.jcr.nodesByPath[0];
 
-        const allAccordionItems = registry.find({
-            type: 'accordionItem',
-            target: pickerConfig.key
-        });
+        const allAccordionItems = jcontentUtils.getAccordionItems(pickerConfig.key, accordionItemProps);
 
         let firstMatchingAccordion = allAccordionItems.find(accord =>
             (!accord.isEnabled || accord.isEnabled(newState.site)) &&
@@ -159,7 +159,7 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
         }
 
         previousState.current = newState;
-    }, [dispatch, editorContext, pickerConfig, state, nodesInfo, currentFolderInfo]);
+    }, [dispatch, editorContext, pickerConfig, state, nodesInfo, currentFolderInfo, accordionItemProps]);
 
     if (currentFolderInfo.loading || nodesInfo.loading) {
         return <LoaderOverlay/>;
@@ -172,5 +172,6 @@ SelectionHandler.propTypes = {
     initialSelectedItem: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
     editorContext: PropTypes.object.isRequired,
     pickerConfig: configPropType.isRequired,
+    accordionItemProps: PropTypes.object,
     children: PropTypes.node
 };
