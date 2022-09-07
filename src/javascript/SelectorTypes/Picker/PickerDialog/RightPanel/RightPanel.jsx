@@ -42,8 +42,8 @@ const RightPanel = ({pickerConfig, accordionItemProps, onClose, onItemSelection}
             <header className={clsx('flexCol_nowrap', css.header)}>
                 <Typography variant="heading">{t(pickerConfig.pickerDialog.dialogTitle)}</Typography>
                 <div className={clsx('flexRow_nowrap', 'alignCenter', css.headerActions)}>
-                    {!pickerConfig.pickerDialog.displayTree && pickerConfig.pickerDialog.displaySiteSwitcher && <PickerSiteSwitcher pickerConfig={pickerConfig} accordionItemProps={accordionItemProps}/>}
-                    {mode !== '' && <Search pickerConfig={pickerConfig}/>}
+                    {!jcontentUtils.booleanValue(pickerConfig.pickerDialog.displayTree) && jcontentUtils.booleanValue(pickerConfig.pickerDialog.displaySiteSwitcher) && <PickerSiteSwitcher pickerConfig={pickerConfig} accordionItemProps={accordionItemProps}/>}
+                    {mode !== '' && jcontentUtils.booleanValue(pickerConfig.pickerDialog.displaySearch) && <Search pickerConfig={pickerConfig}/>}
                     <div className="flexFluid"/>
                     <DisplayActions target={actionsTarget} render={ButtonRenderer} path={path}/>
                     {viewSelector}

@@ -43,7 +43,6 @@ export const ContentPickerConfig = {
         dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalTitle',
         displayTree: true,
         displaySiteSwitcher: true,
-        displaySearch: true,
-        displaySearchContext: true
+        displaySearch: true
     }
 };
