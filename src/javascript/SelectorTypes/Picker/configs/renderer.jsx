@@ -26,5 +26,8 @@ export const renderer = {
         <AccordionItem key={v.id} id={v.id} label={v.label} icon={v.icon}>
             <ContentTree refetcherType="cePickerRefetcher" item={item} selector={selector} {...actions} isReversed={false}/>
         </AccordionItem>
-    )
+    ),
+    getRootPath(site) {
+        return this.rootPath.replace('{site}', site);
+    }
 };

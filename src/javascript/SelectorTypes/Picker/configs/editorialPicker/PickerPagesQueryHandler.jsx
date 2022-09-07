@@ -5,22 +5,22 @@ import {selectableTypeFragment} from '~/SelectorTypes/Picker/configs/queryHandle
 export const PickerPagesQueryHandler = {
     ...PagesQueryHandler,
 
-    getTreeParams: p => {
-        const treeParams = PagesQueryHandler.getTreeParams(p);
+    getTreeParams: options => {
+        const treeParams = PagesQueryHandler.getTreeParams(options);
 
         if (treeParams) {
             return ({
                 ...treeParams,
-                openableTypes: Constants.tableView.type.PAGES === p.tableView.viewType ? ['jnt:page'] : ['jnt:content'],
-                selectableTypes: Constants.tableView.type.PAGES === p.tableView.viewType ? ['jnt:page'] : p.params.selectableTypesTable.filter(t => t !== 'jnt:page')
+                openableTypes: Constants.tableView.type.PAGES === options.tableView.viewType ? ['jnt:page'] : ['jnt:content'],
+                selectableTypes: Constants.tableView.type.PAGES === options.tableView.viewType ? ['jnt:page'] : options.selectableTypesTable.filter(t => t !== 'jnt:page')
             });
         }
     },
 
-    getQueryVariables: p => ({
-        ...PagesQueryHandler.getQueryVariables(p),
-        selectableTypesTable: p.params.selectableTypesTable,
-        typeFilter: p.params.selectableTypesTable.includes('jnt:page') && Constants.tableView.type.PAGES === p.tableView.viewType ? ['jnt:page'] : p.params.selectableTypesTable.filter(t => t !== 'jnt:page')
+    getQueryVariables: options => ({
+        ...PagesQueryHandler.getQueryVariables(options),
+        selectableTypesTable: options.selectableTypesTable,
+        typeFilter: options.selectableTypesTable.includes('jnt:page') && Constants.tableView.type.PAGES === options.tableView.viewType ? ['jnt:page'] : options.selectableTypesTable.filter(t => t !== 'jnt:page')
     }),
     getFragments: () => [...PagesQueryHandler.getFragments(), selectableTypeFragment]
 };

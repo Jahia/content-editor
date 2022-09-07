@@ -29,7 +29,7 @@ export const PickerSiteSwitcher = ({pickerConfig}) => {
                           })
                               .filter(accordionItem => !accordionItem.isEnabled || accordionItem.isEnabled(siteNode.name));
                           const selectedAccordion = accordionItems.find(item => item.key === state.mode) || accordionItems[0];
-                          const newPath = selectedAccordion.defaultPath(siteNode.name);
+                          const newPath = selectedAccordion.getRootPath(siteNode.name);
                           actions.push(cePickerPath(newPath));
                           actions.push(cePickerMode(selectedAccordion.key));
                           actions.push(cePickerOpenPaths([...state.openPaths, ...getDetailedPathArray(newPath, siteNode.name)]));

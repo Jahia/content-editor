@@ -146,7 +146,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, pi
         return <ContentNotFound columnSpan={allColumnData.length} t={t}/>;
     }
 
-    const tableHeader = registry.get('accordionItem', mode)?.tableHeader;
+    const tableHeader = registry.get('accordionItem', mode)?.tableConfig?.tableHeader;
 
     if (!rows?.length && !isLoading) {
         if ((mode === Constants.mode.SEARCH)) {

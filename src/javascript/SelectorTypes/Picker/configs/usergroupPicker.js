@@ -19,7 +19,7 @@ const PickerUserGroupQueryHandler = transformQueryHandler({
 
 export const registerUsergroupPicker = registry => {
     registry.add(Constants.pickerConfig, 'usergroup', mergeDeep({}, ContentPickerConfig, {
-        searchSelectorType: 'jnt:group',
+        searchContentType: 'jnt:group',
         selectableTypesTable: ['jnt:group'],
         pickerTable: {
             columns: [
@@ -58,7 +58,7 @@ export const registerUsergroupPicker = registry => {
         targets: ['usergroup:50'],
         icon: <Group/>,
         label: 'content-editor:label.contentEditor.picker.navigation.usergroup',
-        defaultPath: () => '/',
+        rootPath: '/',
         canDisplayItem: node => /^\/sites\/[^/]+\/groups\/.*/.test(node.path),
         getSearchContextData: ({currentSite, t}) => {
             return [
@@ -84,12 +84,9 @@ export const registerUsergroupPicker = registry => {
                 }] : [])
             ];
         },
-        defaultSort: {orderBy: 'displayName', order: 'ASC'},
-        queryHandler: PickerUserGroupQueryHandler,
-        config: {
-            rootPath: '',
-            selectableTypes: ['jnt:group'],
-            openableTypes: ['jnt:group']
+        tableConfig: {
+            queryHandler: PickerUserGroupQueryHandler,
+            defaultSort: {orderBy: 'displayName', order: 'ASC'}
         }
     }, renderer);
 };

@@ -19,7 +19,7 @@ const PickerUserQueryHandler = transformQueryHandler({
 
 export const registerUserPicker = registry => {
     registry.add(Constants.pickerConfig, 'user', mergeDeep({}, ContentPickerConfig, {
-        searchSelectorType: 'jnt:user',
+        searchContentType: 'jnt:user',
         selectableTypesTable: ['jnt:user'],
         pickerTable: {
             columns: [
@@ -67,7 +67,7 @@ export const registerUserPicker = registry => {
         targets: ['user:50'],
         icon: <FolderUser/>,
         label: 'content-editor:label.contentEditor.picker.navigation.users',
-        defaultPath: () => '/',
+        rootPath: '/',
         canDisplayItem: node => /^\/sites\/[^/]+\/users\/.*/.test(node.path),
         getSearchContextData: ({currentSite, t}) => {
             return [
@@ -93,12 +93,9 @@ export const registerUserPicker = registry => {
                 }] : [])
             ];
         },
-        defaultSort: {orderBy: 'displayName', order: 'ASC'},
-        queryHandler: PickerUserQueryHandler,
-        config: {
-            rootPath: '',
-            selectableTypes: ['jnt:user'],
-            openableTypes: ['jnt:user']
+        tableConfig: {
+            queryHandler: PickerUserQueryHandler,
+            defaultSort: {orderBy: 'displayName', order: 'ASC'}
         }
     }, renderer);
 };

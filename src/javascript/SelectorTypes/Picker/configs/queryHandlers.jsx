@@ -16,8 +16,8 @@ export function transformQueryHandler(queryHandler) {
         ...queryHandler,
         getQueryVariables: p => ({
             ...queryHandler.getQueryVariables(p),
-            selectableTypesTable: p.params.selectableTypesTable,
-            typeFilter: Array.from(new Set([...p.params.selectableTypesTable, ...(p.params.openableTypes ? p.params.openableTypes : [])]))
+            selectableTypesTable: p.selectableTypesTable,
+            typeFilter: Array.from(new Set([...p.selectableTypesTable, ...(p.openableTypes ? p.openableTypes : [])]))
         }),
         getFragments: () => [...queryHandler.getFragments(), selectableTypeFragment]
     };

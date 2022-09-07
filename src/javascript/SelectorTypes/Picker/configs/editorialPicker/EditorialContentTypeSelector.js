@@ -15,9 +15,7 @@ export const EditorialContentTypeSelector = () => {
             path: state.contenteditor.picker.path,
             lang: state.language,
             uilang: state.uilang,
-            params: {
-                selectableTypesTable: selectableTypesTable
-            },
+            selectableTypesTable: selectableTypesTable,
             pagination: state.contenteditor.picker.pagination,
             sort: state.contenteditor.picker.sort,
             tableView: state.contenteditor.picker.tableView

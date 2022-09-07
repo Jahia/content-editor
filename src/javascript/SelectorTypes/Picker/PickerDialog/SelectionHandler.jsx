@@ -56,7 +56,7 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
         accordion = registry.get('accordionItem', state.mode);
     }
 
-    const fragments = accordion?.queryHandler?.getFragments() || [];
+    const fragments = accordion?.tableConfig?.queryHandler?.getFragments() || [];
     const selectionQuery = replaceFragmentsInDocument(GET_PICKER_NODE, fragments);
     const nodesInfo = useQuery(selectionQuery, {
         variables: {
@@ -106,7 +106,7 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
                 // Todo: Must implement something for pages accordion, where the selected path is not the direct parent
                 newState.path = firstMatchingAccordion.getPathForItem(selectedNode);
             } else {
-                newState.path = firstMatchingAccordion.defaultPath(newState.site);
+                newState.path = firstMatchingAccordion.getRootPath(newState.site);
             }
 
             if (firstMatchingAccordion.getViewTypeForItem) {
@@ -118,17 +118,16 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
                 newState.site = pickerConfig.targetSite ? pickerConfig.targetSite : newState.contextSite;
             }
 
-            if (firstMatchingAccordion.defaultViewType && !previousState.current.isOpen) {
-                newState.viewType = firstMatchingAccordion.defaultViewType;
+            if (firstMatchingAccordion.tableConfig.defaultViewType && !previousState.current.isOpen) {
+                newState.viewType = firstMatchingAccordion.tableConfig.defaultViewType;
             }
 
             newState.mode = firstMatchingAccordion.key;
-            const defaultPath = firstMatchingAccordion.defaultPath(newState.site);
+            const rootPath = firstMatchingAccordion.getRootPath(newState.site);
             // If picker default path does not target any site use it
             newState.path = getSite(newState.path) === newState.site &&
-            defaultPath.indexOf(`/${newState.site}`) !== -1 &&
-            previousState.current.mode === newState.mode ? newState.path :
-                defaultPath;
+            rootPath.indexOf(`/${newState.site}`) !== -1 &&
+            previousState.current.mode === newState.mode ? newState.path : rootPath;
         }
 
         const accordionItems = allAccordionItems
@@ -140,8 +139,8 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
             newState.openPaths = [...new Set([...newState.openPaths, ...getDetailedPathArray(getPathWithoutFile(selectedNode.path), newState.site)])];
         }
 
-        if (previousState.current.mode !== newState.mode && firstMatchingAccordion.defaultSort) {
-            newState.sort = firstMatchingAccordion.defaultSort;
+        if (previousState.current.mode !== newState.mode && firstMatchingAccordion.tableConfig.defaultSort) {
+            newState.sort = firstMatchingAccordion.tableConfig.defaultSort;
         }
 
         const actions = ([

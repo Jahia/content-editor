@@ -22,45 +22,43 @@ const unsetRefetcher = name => {
 export const ContentLayoutContainer = ({pickerConfig}) => {
     const {t} = useTranslation();
     const currentResult = useRef();
-    const {mode, path, filesMode, preSearchModeMemo, viewType, searchTerms, searchPath} = useSelector(state => ({
+    const {mode, path, filesMode, preSearchModeMemo, viewType} = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
         path: state.contenteditor.picker.path,
         filesMode: 'grid',
         tableView: state.contenteditor.picker.tableView,
         preSearchModeMemo: state.contenteditor.picker.preSearchModeMemo,
-        viewType: state.contenteditor.picker.tableView.viewType,
-        searchTerms: state.contenteditor.picker.searchTerms,
-        searchPath: state.contenteditor.picker.searchPath
+        viewType: state.contenteditor.picker.tableView.viewType
     }), shallowEqual);
 
     const dispatch = useDispatch();
 
-    const openableTypes = registry.get('accordionItem', mode)?.config?.openableTypes;
-
     const additionalFragments = [];
     if (mode === Constants.mode.SEARCH && preSearchModeMemo) {
-        additionalFragments.push(...registry.get('accordionItem', preSearchModeMemo)?.queryHandler?.getFragments());
+        const fragments = registry.get('accordionItem', preSearchModeMemo)?.tableConfig?.queryHandler?.getFragments();
+        if (fragments) {
+            additionalFragments.push(...fragments);
+        }
     }
 
-    const {result, error, loading, isStructured, refetch} = useLayoutQuery(state => ({
+    const options = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
         siteKey: state.site,
-        params: {
-            searchTerms,
-            searchPath,
-            searchContentType: pickerConfig.searchSelectorType,
-            selectableTypesTable: pickerConfig.selectableTypesTable,
-            openableTypes
-        },
         path: state.contenteditor.picker.path,
         lang: state.contenteditor.ceLanguage,
         uilang: state.uilang,
+        searchPath: state.contenteditor.picker.searchPath,
+        searchContentType: pickerConfig.searchContentType,
+        searchTerms: state.contenteditor.picker.searchTerms,
+        selectableTypesTable: pickerConfig.selectableTypesTable,
         filesMode: 'grid',
         pagination: state.contenteditor.picker.pagination,
         sort: state.contenteditor.picker.sort,
         tableView: state.contenteditor.picker.tableView,
         openPaths: state.contenteditor.picker.openPaths
-    }), {}, additionalFragments);
+    }));
+
+    const {result, error, loading, isStructured, refetch} = useLayoutQuery(options, additionalFragments);
 
     useEffect(() => {
         setRefetcher('pickerData', {

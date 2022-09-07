@@ -4,10 +4,10 @@ import {PickerTreeQueryHandler} from '~/SelectorTypes/Picker/configs/queryHandle
 export const PickerEditorialLinkQueryHandler = {
     ...PickerTreeQueryHandler,
 
-    getTreeParams: selection => {
-        const treeParams = PickerTreeQueryHandler.getTreeParams(selection);
+    getTreeParams: options => {
+        const treeParams = PickerTreeQueryHandler.getTreeParams(options);
 
-        if (selection.tableView.viewType === Constants.tableView.type.PAGES) {
+        if (options.tableView.viewType === Constants.tableView.type.PAGES) {
             treeParams.openableTypes = ['jnt:page'];
         } else { // Content
             treeParams.openableTypes = ['jnt:contentFolder'];

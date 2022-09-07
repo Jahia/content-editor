@@ -103,7 +103,7 @@ export const getBaseSearchContextData = ({t, currentSite, accordion, node, curre
         },
         {
             label: t(accordion.label),
-            searchPath: accordion.defaultPath(currentSite),
+            searchPath: accordion.getRootPath(currentSite),
             iconStart: accordion.icon
         },
         {
