@@ -1,5 +1,5 @@
 {
-    "name": "@jahia/zontent-editor",
+    "name": "@jahia/content-editor",
     "version": "4.0.0",
     "scripts": {
         "build": "yarn webpack",
