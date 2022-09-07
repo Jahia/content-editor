@@ -22,7 +22,7 @@ const PickerContentsFolderQueryHandler = transformQueryHandler(ContentFoldersQue
 
 export const registerEditorialPicker = registry => {
     registry.add(Constants.pickerConfig, 'editorial', mergeDeep({}, ContentPickerConfig, {
-        searchSelectorType: 'jmix:searchable',
+        searchContentType: 'jmix:searchable',
         selectableTypesTable: ['jnt:page', 'jnt:contentList', 'jnt:contentFolder', 'jmix:siteContent', 'jmix:editorialContent']
     }));
 
@@ -34,12 +34,14 @@ export const registerEditorialPicker = registry => {
         // Page content
         registry.add(Constants.ACCORDION_ITEM_NAME, `picker-${Constants.ACCORDION_ITEM_TYPES.PAGES}`, {
             ...pagesItem,
-            viewSelector: <ViewModeSelector {...viewModeSelectorProps}/>,
-            tableHeader: <EditorialContentTypeSelector/>,
             targets: ['default:50', 'editorial:50'],
-            defaultSort: {orderBy: 'lastModified.value', order: 'DESC'},
             getSearchContextData: getPagesSearchContextData,
-            queryHandler: PickerPagesQueryHandler
+            tableConfig: {
+                queryHandler: PickerPagesQueryHandler,
+                defaultSort: {orderBy: 'lastModified.value', order: 'DESC'},
+                viewSelector: <ViewModeSelector {...viewModeSelectorProps}/>,
+                tableHeader: <EditorialContentTypeSelector/>
+            }
         }, renderer);
     } else {
         console.warn('Picker will not function properly due to missing accordionItem for pages');
@@ -48,9 +50,12 @@ export const registerEditorialPicker = registry => {
     if (contentFoldersItem) {
         registry.add(Constants.ACCORDION_ITEM_NAME, `picker-${Constants.ACCORDION_ITEM_TYPES.CONTENT_FOLDERS}`, {
             ...contentFoldersItem,
-            viewSelector: <ViewModeSelector {...viewModeSelectorProps}/>,
             targets: ['default:60', 'editorial:60'],
-            queryHandler: PickerContentsFolderQueryHandler
+            tableConfig: {
+                queryHandler: PickerContentsFolderQueryHandler,
+                viewSelector: <ViewModeSelector {...viewModeSelectorProps}/>
+            }
+
         }, renderer);
     } else {
         console.warn('Picker will not function properly due to missing accordionItem for content-folders');

@@ -15,7 +15,7 @@ import {registerEditorialPicker} from '~/SelectorTypes/Picker/configs/editorialP
 
 export const registerPickerConfig = registry => {
     registry.add(Constants.pickerConfig, 'default', mergeDeep({}, ContentPickerConfig, {
-        searchSelectorType: 'jmix:searchable',
+        searchContentType: 'jmix:searchable',
         selectableTypesTable: ['jnt:content', 'jnt:file', 'jnt:page', 'jmix:navMenuItem'],
         showOnlyNodesWithTemplates: false
     }));
@@ -35,7 +35,9 @@ export const registerPickerConfig = registry => {
     if (searchItem) {
         registry.add(Constants.ACCORDION_ITEM_NAME, 'picker-search', {
             ...searchItem,
-            queryHandler: PickerSearchQueryHandler
+            tableConfig: {
+                queryHandler: PickerSearchQueryHandler
+            }
         });
     }
 

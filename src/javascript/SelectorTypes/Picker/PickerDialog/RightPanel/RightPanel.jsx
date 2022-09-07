@@ -33,7 +33,7 @@ const RightPanel = ({pickerConfig, onClose, onItemSelection}) => {
     };
 
     const accordionItem = registry.get('accordionItem', mode);
-    const viewSelector = accordionItem?.viewSelector;
+    const viewSelector = accordionItem?.tableConfig?.viewSelector;
     const actionsTarget = accordionItem?.actionsTarget || 'content-editor/pickers/' + mode + '/header-actions';
 
     return (

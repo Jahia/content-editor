@@ -9,7 +9,7 @@ import {getPagesSearchContextData} from '~/SelectorTypes/Picker/configs/getPages
 
 export const registerEditorialLinkPicker = registry => {
     registry.add(Constants.pickerConfig, 'editoriallink', mergeDeep({}, ContentPickerConfig, {
-        searchSelectorType: 'jmix:searchable',
+        searchContentType: 'jmix:searchable',
         selectableTypesTable: ['jnt:page', 'jmix:mainResource'],
         showOnlyNodesWithTemplates: true,
         pickerDialog: {
@@ -24,22 +24,19 @@ export const registerEditorialLinkPicker = registry => {
         registry.add(Constants.ACCORDION_ITEM_NAME, `picker-${Constants.ACCORDION_ITEM_TYPES.EDITORIAL_LINK}`, {
             ...pagesItem,
             targets: ['editoriallink:40'],
-            defaultPath: site => `/sites/${site}`,
-            queryHandler: PickerEditorialLinkQueryHandler,
-            tableHeader: <EditorialLinkContentTypeSelector/>,
+            rootPath: '/sites/{site}',
+            canDisplayItem: null,
             getPathForItem: node => node.site.path,
             getSearchContextData: getPagesSearchContextData,
-            viewSelector: null,
-            defaultViewType: Constants.tableView.type.PAGES,
             getViewTypeForItem: node => {
                 const {CONTENT, PAGES} = Constants.tableView.type;
                 const hasContentParent = node?.ancestors?.map(a => a.primaryNodeType.name)?.indexOf('jnt:contentFolder') > -1;
                 return (node?.primaryNodeType.name !== 'jnt:page' && hasContentParent) ? CONTENT : PAGES;
             },
-            config: {
-                rootPath: '',
-                selectableTypes: ['jnt:page', 'jmix:mainResource'],
-                openableTypes: ['jnt:page', 'jnt:contentFolder']
+            tableConfig: {
+                queryHandler: PickerEditorialLinkQueryHandler,
+                tableHeader: <EditorialLinkContentTypeSelector/>,
+                defaultViewType: Constants.tableView.type.PAGES
             }
         }, renderer);
     }

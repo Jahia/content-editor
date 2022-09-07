@@ -8,7 +8,7 @@ import React from 'react';
 
 export const registerCategoryPicker = registry => {
     registry.add(Constants.pickerConfig, 'category', mergeDeep({}, ContentPickerConfig, {
-        searchSelectorType: 'jnt:category',
+        searchContentType: 'jnt:category',
         selectableTypesTable: ['jnt:category'],
         accordionMode: `picker-${Constants.ACCORDION_ITEM_TYPES.CATEGORY}`,
         pickerTable: {
@@ -28,14 +28,12 @@ export const registerCategoryPicker = registry => {
         targets: ['category:50'],
         icon: <Collections/>,
         label: 'content-editor:label.contentEditor.picker.navigation.categories',
-        defaultPath: () => '/sites/systemsite/categories',
+        rootPath: '/sites/systemsite/categories',
         canDisplayItem: ({selectedNode, folderNode}) => selectedNode ? /^\/sites\/systemsite\/categories\/.*/.test(selectedNode.path) : /^\/sites\/systemsite\/categories((\/.*)|$)/.test(folderNode.path),
-        defaultSort: {orderBy: 'displayName', order: 'ASC'},
-        queryHandler: PickerTreeQueryHandler,
-        config: {
-            rootPath: '/categories',
-            selectableTypes: ['jnt:category'],
-            openableTypes: ['jnt:category']
+        tableConfig: {
+            queryHandler: PickerTreeQueryHandler,
+            openableTypes: ['jnt:category'],
+            defaultSort: {orderBy: 'displayName', order: 'ASC'}
         }
     }, renderer);
 };

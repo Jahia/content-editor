@@ -8,7 +8,7 @@ import React from 'react';
 
 export const registerSitePicker = registry => {
     registry.add(Constants.pickerConfig, 'site', mergeDeep({}, ContentPickerConfig, {
-        searchSelectorType: 'jnt:virtualsite',
+        searchContentType: 'jnt:virtualsite',
         selectableTypesTable: ['jnt:virtualsite'],
         pickerTable: {
             columns: ['name']
@@ -27,15 +27,11 @@ export const registerSitePicker = registry => {
         targets: ['site:60'],
         icon: <SiteWeb/>,
         label: 'content-editor:label.contentEditor.picker.navigation.sites',
-        defaultPath: () => '/sites',
+        rootPath: '/sites',
         canDisplayItem: ({selectionNode, folderNode}) => selectionNode ? /^\/sites\/.*/.test(selectionNode.path) : /^\/sites((\/.*)|$)/.test(folderNode.path),
-        defaultSort: {orderBy: 'displayName', order: 'ASC'},
-        queryHandler: PickerBaseQueryHandler,
-        config: {
-            rootPath: '',
-            selectableTypes: ['jnt:virtualsite'],
-            openableTypes: ['jnt:virtualsite'],
-            rootLabel: 'Sites - This is never shown'
+        tableConfig: {
+            queryHandler: PickerBaseQueryHandler,
+            defaultSort: {orderBy: 'displayName', order: 'ASC'}
         }
     }, renderer);
 };

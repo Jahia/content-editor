@@ -17,7 +17,7 @@ export const registerPagePicker = registry => {
         pickerTable: {
             columns: ['name', 'lastModified']
         },
-        searchSelectorType: 'jnt:page',
+        searchContentType: 'jnt:page',
         selectableTypesTable: ['jnt:page']
     }));
 
@@ -26,13 +26,13 @@ export const registerPagePicker = registry => {
         // Pages tree
         registry.add(Constants.ACCORDION_ITEM_NAME, 'picker-pages-tree', {
             ...pagesItem,
-            viewSelector: null,
-            tableHeader: null,
-            getPathForItem: null,
             targets: ['page:50'],
-            defaultSort: {orderBy: ''},
+            getPathForItem: null,
             getSearchContextData: getPagesSearchContextData,
-            queryHandler: PickerTreeQueryHandler
+            tableConfig: {
+                queryHandler: PickerTreeQueryHandler,
+                defaultSort: {orderBy: ''}
+            }
         }, renderer);
     }
 };

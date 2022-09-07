@@ -3,6 +3,8 @@ import {mergeDeep} from '~/SelectorTypes/Picker/Picker2.utils';
 import {ContentPickerConfig} from '~/SelectorTypes/Picker/configs/ContentPickerConfig';
 import {PickerTreeQueryHandler} from '~/SelectorTypes/Picker/configs/queryHandlers';
 import {renderer} from '~/SelectorTypes/Picker/configs/renderer';
+import {Collections} from '@jahia/moonstone';
+import React from 'react';
 
 export const registerFolderPicker = registry => {
     registry.add(Constants.pickerConfig, 'folder', mergeDeep({}, ContentPickerConfig, {
@@ -16,18 +18,18 @@ export const registerFolderPicker = registry => {
         pickerTable: {
             columns: ['name', 'lastModified']
         },
-        searchSelectorType: 'jnt:folder',
+        searchContentType: 'jnt:folder',
         selectableTypesTable: ['jnt:folder']
     }));
 
     registry.add(Constants.ACCORDION_ITEM_NAME, 'picker-media-tree', {
         targets: ['folder:70'],
-        defaultPath: site => `/sites/${site}`,
+        icon: <Collections/>,
+        label: 'jcontent:label.contentManager.navigation.media',
+        rootPath: '/sites/{site}/files',
         defaultSort: {orderBy: 'lastModified.value', order: 'DESC'},
-        queryHandler: PickerTreeQueryHandler,
-        config: {
-            rootPath: '/files',
-            selectableTypes: ['jnt:folder'],
+        tableConfig: {
+            queryHandler: PickerTreeQueryHandler,
             openableTypes: ['jnt:folder']
         }
     }, renderer);

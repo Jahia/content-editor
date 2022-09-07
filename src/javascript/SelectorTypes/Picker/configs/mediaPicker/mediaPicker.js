@@ -23,13 +23,13 @@ export const registerMediaPickers = registry => {
         pickerDialog: {
             dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalFileTitle'
         },
-        searchSelectorType: 'jnt:file',
+        searchContentType: 'jnt:file',
         selectableTypesTable: ['jnt:file'],
         pickerCaptionComponent: FilePickerCaption
     }));
 
     registry.add(Constants.pickerConfig, 'image', mergeDeep({}, MediaPickerConfig, {
-        searchSelectorType: 'jmix:image',
+        searchContentType: 'jmix:image',
         selectableTypesTable: ['jmix:image'],
         pickerCaptionComponent: FilePickerCaption
     }));
@@ -40,8 +40,12 @@ export const registerMediaPickers = registry => {
             ...mediaItem,
             viewSelector: false, // Todo: implement thumbnail and enable selector : <FileModeSelector {...fileModeSelectorProps}/>,
             targets: ['default:70', 'image:70', 'file:70'],
-            defaultSort: {orderBy: 'lastModified.value', order: 'DESC'},
-            queryHandler: transformQueryHandler(FilesQueryHandler)
+            tableConfig: {
+                ...mediaItem.tableConfig,
+                defaultSort: {orderBy: 'lastModified.value', order: 'DESC'},
+                queryHandler: transformQueryHandler(FilesQueryHandler),
+                openableTypes: ['jnt:folder']
+            }
         }, renderer);
     } else {
         console.warn('Picker will not function properly due to missing accordionItem for media');

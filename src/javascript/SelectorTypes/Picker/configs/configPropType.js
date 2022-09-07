@@ -15,5 +15,5 @@ export const configPropType = PropTypes.shape({
     }).isRequired,
     selectableTypesTable: PropTypes.arrayOf(PropTypes.string),
     showOnlyNodesWithTemplates: PropTypes.bool,
-    searchSelectorType: PropTypes.string
+    searchContentType: PropTypes.string
 });
