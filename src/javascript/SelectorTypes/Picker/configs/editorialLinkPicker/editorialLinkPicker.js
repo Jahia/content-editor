@@ -35,9 +35,6 @@ export const registerEditorialLinkPicker = registry => {
             },
             tableConfig: {
                 queryHandler: PickerEditorialLinkQueryHandler,
-                selectableTypes: ['jnt:page', 'jmix:mainResource'],
-                openableTypes: ['jnt:page', 'jnt:contentFolder'],
-                viewSelector: null,
                 tableHeader: <EditorialLinkContentTypeSelector/>,
                 defaultViewType: Constants.tableView.type.PAGES
             }
