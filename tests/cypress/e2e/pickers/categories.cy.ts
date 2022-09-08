@@ -25,7 +25,7 @@ describe('Picker - Categories', () => {
     it('Categories Picker - Select Polymer Manufacturing', () => {
         const contentEditor = jcontent.createContent('Pickers');
         const picker = contentEditor.getPickerField('qant:pickers_categorypicker').open();
-        picker.getTableRow('Chemical And Plastic Industry').find('svg').click();
+        picker.getTableRow('Chemical And Plastic Industry').find('svg');
         picker.getTableRow('Polymer Manufacturing').click();
         picker.getSelectionCaption().should('be.visible').and('contain.text', 'Polymer Manufacturing');
     });

@@ -53,6 +53,7 @@ export const registerEditorialPicker = registry => {
             targets: ['default:60', 'editorial:60'],
             tableConfig: {
                 queryHandler: PickerContentsFolderQueryHandler,
+                openableTypes: ['jnt:contentFolder'],
                 viewSelector: <ViewModeSelector {...viewModeSelectorProps}/>
             }
 

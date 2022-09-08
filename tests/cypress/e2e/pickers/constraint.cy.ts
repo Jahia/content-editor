@@ -1,6 +1,6 @@
 import {JContent} from '../../page-object/jcontent';
 
-describe('Picker - Site', () => {
+describe('Picker - Constraints', () => {
     const siteKey = 'digitall';
     let jcontent: JContent;
 

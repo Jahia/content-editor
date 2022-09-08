@@ -27,9 +27,10 @@ export const registerFolderPicker = registry => {
         icon: <Collections/>,
         label: 'jcontent:label.contentManager.navigation.media',
         rootPath: '/sites/{site}/files',
-        defaultSort: {orderBy: 'lastModified.value', order: 'DESC'},
         tableConfig: {
             queryHandler: PickerTreeQueryHandler,
+            hideRoot: false,
+            defaultSort: {orderBy: 'lastModified.value', order: 'DESC'},
             openableTypes: ['jnt:folder']
         }
     }, renderer);
