@@ -2,7 +2,7 @@ import {contentTypes} from '../../fixtures/pickers/contentTypes';
 import {assertUtils} from '../../utils/assertUtils';
 import {JContent} from '../../page-object/jcontent';
 
-describe('Folder picker tests', () => {
+describe('Picker - Trees', () => {
     const siteKey = 'digitall';
     let jcontent: JContent;
 

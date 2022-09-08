@@ -4,7 +4,7 @@ import {AccordionItem} from '../../page-object/accordionItem';
 import {PickerField} from '../../page-object/pickerField';
 import {JContent} from '../../page-object/jcontent';
 
-describe('Picker tests', () => {
+describe('Picker multiple ests', () => {
     const siteKey = 'digitall';
     let jcontent: JContent;
 

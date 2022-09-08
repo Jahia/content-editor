@@ -1,7 +1,7 @@
 import {contentTypes} from '../../fixtures/pickers/contentTypes';
 import {PageComposer} from '../../page-object/pageComposer';
 
-describe('Picker tests', () => {
+describe('Picker - Editorial link', () => {
     const siteKey = 'digitall';
     let pageComposer: PageComposer;
 
@@ -44,8 +44,10 @@ describe('Picker tests', () => {
             .find('[data-cm-role="table-content-list-cell-type"]')
             .should(elems => {
                 const texts = elems.get().map(e => e.textContent);
-                const allTypes = texts.sort().every(content => ['Page'].includes(content));
-                expect(allTypes).to.equal(true);
+                const allTypes = texts.sort().filter((f, i) => texts.indexOf(f) === i);
+                expect(allTypes).to.contain('Page');
+                expect(allTypes).to.contain('Company');
+                expect(allTypes).to.contain('Person portrait');
             });
 
         // Select content tab; verify types
@@ -70,11 +72,11 @@ describe('Picker tests', () => {
             .getPickerField(contentType.fieldNodeType, contentType.multiple)
             .open();
 
-        cy.log('select newsroom > news-entry > all organic in pages tab')
+        cy.log('select newsroom > news-entry > all organic in pages tab');
         picker.selectTab('pages');
-        picker.getTable().getRowByName('newsroom').expand().should('be.visible')
-        picker.getTable().getRowByName('news-entry').expand().should('be.visible')
-        picker.getTable().getRowByName('all-organic-foods-network-gains').should('be.visible').click()
+        picker.getTable().getRowByName('newsroom').get().scrollIntoView();
+        picker.getTable().getRowByName('news-entry').expand().should('be.visible');
+        picker.getTable().getRowByName('all-organic-foods-network-gains').should('be.visible').click();
 
         picker.selectTab('content'); // switch tabs
         picker.select();
@@ -82,6 +84,7 @@ describe('Picker tests', () => {
         cy.log('verify tab is restored and selection is expanded')
         contentEditor.getPickerField(contentType.fieldNodeType, contentType.multiple).open();
         picker.getTab('pages').should('have.class', 'moonstone-selected');
+        picker.getTable().getRowByName('all-organic-foods-network-gains').get().scrollIntoView();
         picker.getTable().getRowByName('all-organic-foods-network-gains')
             .should('be.visible') // expanded
             .and('have.class', 'moonstone-TableRow-highlighted') // selected
