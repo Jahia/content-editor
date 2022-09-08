@@ -66,14 +66,14 @@ export const PickerDialog = ({
             onClose={onClose}
         >
             <div className="flexFluid flexRow_nowrap">
-                <SelectionHandler editorContext={editorContext} pickerConfig={pickerConfig} initialSelectedItem={initialSelectedItem}>
+                <SelectionHandler editorContext={editorContext} pickerConfig={pickerConfig} accordionItemProps={accordionItemProps} initialSelectedItem={initialSelectedItem}>
                     {booleanValue(pickerConfig.pickerDialog.displayTree) && (
                         <aside>
                             <ContentNavigation
                                 isReversed={false}
                                 header={(booleanValue(pickerConfig.pickerDialog.displaySiteSwitcher) && (
                                     <div>
-                                        <PickerSiteSwitcher pickerConfig={pickerConfig}/>
+                                        <PickerSiteSwitcher pickerConfig={pickerConfig} accordionItemProps={accordionItemProps}/>
                                     </div>
                                 ))}
                                 accordionItemTarget={pickerConfig.key}
@@ -83,7 +83,7 @@ export const PickerDialog = ({
                             />
                         </aside>
                     )}
-                    <RightPanel pickerConfig={pickerConfig} onClose={onClose} onItemSelection={onItemSelection}/>
+                    <RightPanel pickerConfig={pickerConfig} accordionItemProps={accordionItemProps} onClose={onClose} onItemSelection={onItemSelection}/>
                 </SelectionHandler>
             </div>
         </Dialog>

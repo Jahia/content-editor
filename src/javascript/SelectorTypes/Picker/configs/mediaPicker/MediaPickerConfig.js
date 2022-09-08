@@ -48,7 +48,6 @@ export const MediaPickerConfig = {
         dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalImageTitle',
         displayTree: true,
         displaySiteSwitcher: true,
-        displaySearch: true,
-        displaySearchContext: true
+        displaySearch: true
     }
 };

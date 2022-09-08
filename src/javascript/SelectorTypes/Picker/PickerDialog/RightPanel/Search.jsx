@@ -10,8 +10,10 @@ import {batchActions} from 'redux-batched-actions';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {getBaseSearchContextData} from '~/SelectorTypes/Picker/Picker2.utils';
 import {GET_SEARCH_CONTEXT} from '../PickerDialog2.gql-queries';
+import PropTypes from 'prop-types';
+import {jcontentUtils} from '@jahia/jcontent';
 
-export const Search = () => {
+export const Search = ({accordionItemProps}) => {
     const {t} = useTranslation('content-editor');
     const dispatch = useDispatch();
     const {searchTerms, searchPath, preSearchModeMemo, currentPath, currentSite, language, uilang, mode} = useSelector(state => ({
@@ -57,7 +59,7 @@ export const Search = () => {
         ]));
     };
 
-    const accordion = registry.get('accordionItem', previousMode);
+    const accordion = jcontentUtils.getAccordionItem(registry.get('accordionItem', previousMode), accordionItemProps);
     const getSearchContextData = accordion.getSearchContextData || getBaseSearchContextData;
     const searchContextData = getSearchContextData({t, currentSite, accordion, node, currentPath});
 
@@ -77,4 +79,8 @@ export const Search = () => {
             onClear={e => handleClearTerms(e)}
         />
     );
+};
+
+Search.propTypes = {
+    accordionItemProps: PropTypes.object
 };
