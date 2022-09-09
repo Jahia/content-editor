@@ -24,7 +24,8 @@ export const {
     cePickerSetTableViewMode,
     cePickerSetTableViewType,
     cePickerSetSearchTerm,
-    cePickerSetSearchPath} = createActions(
+    cePickerSetSearchPath,
+    cePickerSetFileViewMode} = createActions(
     'CE_PICKER_KEY',
     'CE_PICKER_SITE',
     'CE_PICKER_CONTEXT_SITE',
@@ -45,7 +46,8 @@ export const {
     'CE_PICKER_SET_TABLE_VIEW_MODE',
     'CE_PICKER_SET_TABLE_VIEW_TYPE',
     'CE_PICKER_SET_SEARCH_TERM',
-    'CE_PICKER_SET_SEARCH_PATH');
+    'CE_PICKER_SET_SEARCH_PATH',
+    'CE_PICKER_SET_FILE_VIEW_MODE');
 
 export const registerPickerReducer = registry => {
     const initialState = {
@@ -65,7 +67,10 @@ export const registerPickerReducer = registry => {
             viewType: Constants.tableView.type.CONTENT
         },
         searchTerms: '',
-        searchPath: ''
+        searchPath: '',
+        fileView: {
+            mode: ''
+        }
     };
 
     const picker = handleActions({
@@ -175,6 +180,13 @@ export const registerPickerReducer = registry => {
         [cePickerSetSearchPath]: (state, action) => ({
             ...state,
             searchPath: action.payload
+        }),
+        [cePickerSetFileViewMode]: (state, action) => ({
+            ...state,
+            fileView: {
+                ...state.fileView,
+                mode: action.payload
+            }
         })
     }, initialState);
 
