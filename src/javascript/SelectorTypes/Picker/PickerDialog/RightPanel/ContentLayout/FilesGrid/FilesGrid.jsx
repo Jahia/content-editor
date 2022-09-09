@@ -86,13 +86,6 @@ export const FilesGrid = ({totalCount, rows, isLoading}) => {
                                   }}
                         />
                     ))}
-                    {/* please keep this divs to handle the grid layout when there is less than 6 elements */}
-                    <div/>
-                    <div/>
-                    <div/>
-                    <div/>
-                    <div/>
-                    <div/>
                 </UploadTransformComponent>
             </div>
             <TablePagination totalNumberOfRows={totalCount}

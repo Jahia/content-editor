@@ -1,5 +1,5 @@
 .grid.grid {
-    display: flex;
+    display: block;
     flex: 1 1 0;
     margin: 0 !important;
     padding: var(--spacing-small);
@@ -22,14 +22,18 @@
     display: grid;
     flex: 1;
     gap: var(--spacing-medium);
-    justify-content: center;
+    justify-content: space-evenly;
+    align-content: start;
+    align-items: start;
     margin: var(--spacing-small);
 
     background-color: var(--color-gray_light);
     box-shadow: none;
+    justify-items: stretch;
 }
 
 .detailedGrid.detailedGrid {
+    grid-auto-rows: 360px;
     grid-template-columns: repeat(auto-fit, minmax(200px, 350px));
 }
 

@@ -129,7 +129,7 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
                     <Loader size="big"/>
                 </div>
             )}
-            {!loading && mode === Constants.mode.MEDIA && filesMode === Constants.fileView.mode.THUMBNAILS ?
+            {mode === Constants.mode.MEDIA && filesMode === Constants.fileView.mode.THUMBNAILS ?
                 (<FilesGrid rows={rows} totalCount={totalCount} isLoading={loading}/>) :
                 (<ContentTable pickerConfig={pickerConfig}
                                path={path}
