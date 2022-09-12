@@ -92,7 +92,7 @@ describe('Picker tests', () => {
         assertUtils.isVisible(picker.get());
         assertUtils.isVisible(picker.getSiteSwitcher());
         assertUtils.isVisible(picker.getAccordion());
-        assertUtils.isVisible(picker.getTable());
+        assertUtils.isVisible(picker.getGrid());
 
         cy.log('assert media accordion is expanded and populated');
         const mediaAccordion: AccordionItem = picker.getAccordionItem('picker-media');
@@ -100,19 +100,16 @@ describe('Picker tests', () => {
         const rootTree = mediaAccordion.getTreeItems().first();
         rootTree.should('not.be.empty');
 
-        cy.log('check table components');
-        picker.getTable().should('exist');
-        picker.getTable().getHeaderById('name').should('be.visible');
-        picker.getTable().getHeaderById('lastModified').should('be.visible');
+        cy.log('check grid components');
+        picker.getGrid().should('exist');
 
         cy.log('selection media > files > ce-picker-files reflects in table and filtered by type');
         mediaAccordion.getTreeItem('ce-picker-files').click();
-        picker.getTable().should('exist');
+        picker.getGrid().should('exist');
         picker
-            .getTable()
-            .getRows()
+            .getGrid()
             .get()
-            .find('[data-cm-role="table-content-list-cell-name"]')
+            .find('[data-cm-role="grid-content-list-card-name"]')
             .should(elems => {
                 expect(elems).to.have.length(2);
                 const texts = elems.get().map(e => e.textContent);

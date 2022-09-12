@@ -12,6 +12,7 @@ import {
 import {PageComposer} from './pageComposer';
 import {AccordionItem} from './accordionItem';
 import {PickerTable} from './pickerTable';
+import {PickerGrid} from './pickerGrid';
 
 export class Picker extends BaseComponent {
     pageComposer: PageComposer;
@@ -22,6 +23,7 @@ export class Picker extends BaseComponent {
     table: PickerTable;
     selectionTable: Table;
     viewMode: Dropdown;
+    grid: PickerGrid;
 
     getSiteSwitcher() {
         if (!this.siteSwitcher) {
@@ -36,6 +38,7 @@ export class Picker extends BaseComponent {
         if (!this.viewMode) {
             this.viewMode = getComponentByAttr(Dropdown, 'data-sel-role', 'sel-view-mode-dropdown');
         }
+
         // Make sure dialog is open before returning viewMode
         return this && this.viewMode;
     }
@@ -76,8 +79,18 @@ export class Picker extends BaseComponent {
         if (!this.table) {
             this.table = getComponentByAttr(PickerTable, 'data-cm-role', 'table-content-list', this);
         }
+
         this.wait();
         return this.table;
+    }
+
+    getGrid() {
+        if (!this.grid) {
+            this.grid = getComponentByAttr(PickerGrid, 'data-cm-role', 'grid-content-list', this);
+        }
+
+        this.wait();
+        return this.grid;
     }
 
     getSelectionTable() {
