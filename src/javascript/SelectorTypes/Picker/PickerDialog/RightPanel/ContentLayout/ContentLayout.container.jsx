@@ -10,6 +10,7 @@ import {useLayoutQuery} from '@jahia/jcontent';
 import clsx from 'clsx';
 import styles from './ContentLayout.scss';
 import {cePickerOpenPaths} from '~/SelectorTypes/Picker/Picker2.redux';
+import FilesGrid from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout/FilesGrid';
 
 const setRefetcher = (name, refetcherData) => {
     registry.addOrReplace('refetcher', name, refetcherData);
@@ -19,13 +20,21 @@ const unsetRefetcher = name => {
     delete registry.registry['refetcher-' + name];
 };
 
+const getFilesMode = (state, pickerConfig) => {
+    if (state.contenteditor.picker.fileView.mode === '') {
+        return pickerConfig.pickerDialog.view === 'Thumbnail' ? Constants.fileView.mode.THUMBNAILS : Constants.fileView.mode.LIST;
+    }
+
+    return state.contenteditor.picker.fileView.mode;
+};
+
 export const ContentLayoutContainer = ({pickerConfig}) => {
     const {t} = useTranslation();
     const currentResult = useRef();
     const {mode, path, filesMode, preSearchModeMemo, viewType} = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
         path: state.contenteditor.picker.path,
-        filesMode: 'grid',
+        filesMode: getFilesMode(state, pickerConfig),
         tableView: state.contenteditor.picker.tableView,
         preSearchModeMemo: state.contenteditor.picker.preSearchModeMemo,
         viewType: state.contenteditor.picker.tableView.viewType
@@ -51,7 +60,7 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
         searchContentType: pickerConfig.searchContentType,
         searchTerms: state.contenteditor.picker.searchTerms,
         selectableTypesTable: pickerConfig.selectableTypesTable,
-        filesMode: 'grid',
+        filesMode: getFilesMode(state, pickerConfig),
         pagination: state.contenteditor.picker.pagination,
         sort: state.contenteditor.picker.sort,
         tableView: state.contenteditor.picker.tableView,
@@ -120,14 +129,15 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
                     <Loader size="big"/>
                 </div>
             )}
-            <ContentTable pickerConfig={pickerConfig}
-                          path={path}
-                          filesMode={filesMode}
-                          rows={rows}
-                          isStructured={isStructured}
-                          isLoading={loading}
-                          totalCount={totalCount}
-            />
+            {mode === Constants.mode.MEDIA && filesMode === Constants.fileView.mode.THUMBNAILS ?
+                (<FilesGrid rows={rows} totalCount={totalCount} isLoading={loading}/>) :
+                (<ContentTable pickerConfig={pickerConfig}
+                               path={path}
+                               rows={rows}
+                               isStructured={isStructured}
+                               isLoading={loading}
+                               totalCount={totalCount}
+                />)}
         </div>
     );
 };

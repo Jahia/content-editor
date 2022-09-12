@@ -1,0 +1,44 @@
+.grid.grid {
+    display: block;
+    flex: 1 1 0;
+    margin: 0 !important;
+    padding: var(--spacing-small);
+
+    outline: none;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    background-color: var(--color-gray_light);
+}
+
+.gridEmpty.gridEmpty {
+    flex: 1 1 0;
+    margin: 0 !important;
+
+    background-color: var(--color-gray_light);
+}
+
+.defaultGrid.defaultGrid {
+    display: grid;
+    flex: 1;
+    gap: var(--spacing-medium);
+    justify-content: start;
+    align-content: start;
+    align-items: start;
+    margin: var(--spacing-small);
+
+    background-color: var(--color-gray_light);
+    box-shadow: none;
+    justify-items: stretch;
+}
+
+.detailedGrid.detailedGrid {
+    grid-auto-rows: 360px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 350px));
+}
+
+.empty.empty {
+    margin: var(--spacing-small);
+
+    text-align: center;
+}

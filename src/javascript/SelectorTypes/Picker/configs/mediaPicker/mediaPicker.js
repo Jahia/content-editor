@@ -1,19 +1,34 @@
+import React from 'react';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {mergeDeep} from '~/SelectorTypes/Picker/Picker2.utils';
 import {MediaPickerConfig} from '~/SelectorTypes/Picker/configs/mediaPicker/MediaPickerConfig';
-import {FilesQueryHandler} from '@jahia/jcontent';
+import {FilesQueryHandler, FileModeSelector} from '@jahia/jcontent';
 import {ContentPickerConfig} from '~/SelectorTypes/Picker/configs/ContentPickerConfig';
 import {transformQueryHandler} from '~/SelectorTypes/Picker/configs/queryHandlers';
 import {renderer} from '~/SelectorTypes/Picker/configs/renderer';
 import {FilePickerCaption} from '~/SelectorTypes/Picker/configs/mediaPicker/FilePickerCaption';
+import {cePickerSetFileViewMode} from '~/SelectorTypes/Picker/Picker2.redux';
+import {registry} from '@jahia/ui-extender';
 
-// Todo: implement selector / action
-// const fileModeSelectorProps = {
-//     selector: () => ({
-//         mode: null
-//     }),
-//     setModeAction: () => ({})
-// };
+function getMode(state) {
+    if (state.contenteditor.picker.fileView.mode === '') {
+        const config = registry.get(Constants.pickerConfig, state.contenteditor.picker.pickerKey);
+        if (config === undefined) {
+            return Constants.fileView.mode.LIST;
+        }
+
+        return config.pickerDialog.view === 'Thumbnail' ? Constants.fileView.mode.THUMBNAILS : Constants.fileView.mode.LIST;
+    }
+
+    return state.contenteditor.picker.fileView.mode;
+}
+
+const viewModeSelectorProps = {
+    selector: state => ({
+        mode: getMode(state)
+    }),
+    setModeAction: mode => cePickerSetFileViewMode(mode)
+};
 
 export const registerMediaPickers = registry => {
     registry.add(Constants.pickerConfig, 'file', mergeDeep({}, ContentPickerConfig, {
@@ -38,13 +53,13 @@ export const registerMediaPickers = registry => {
     if (mediaItem) {
         registry.add(Constants.ACCORDION_ITEM_NAME, `picker-${Constants.ACCORDION_ITEM_TYPES.MEDIA}`, {
             ...mediaItem,
-            viewSelector: false, // Todo: implement thumbnail and enable selector : <FileModeSelector {...fileModeSelectorProps}/>,
             targets: ['default:70', 'image:70', 'file:70'],
             tableConfig: {
                 ...mediaItem.tableConfig,
                 defaultSort: {orderBy: 'lastModified.value', order: 'DESC'},
                 queryHandler: transformQueryHandler(FilesQueryHandler),
-                openableTypes: ['jnt:folder']
+                openableTypes: ['jnt:folder'],
+                viewSelector: <FileModeSelector {...viewModeSelectorProps}/>
             }
         }, renderer);
     } else {

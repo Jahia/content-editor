@@ -19,9 +19,14 @@ export const Constants = {
             PAGES: 'pages'
         }
     },
+    fileView: {
+        mode: {
+            LIST: 'list',
+            THUMBNAILS: 'grid'
+        }
+    },
     mode: {
         MEDIA: 'picker-media',
         SEARCH: 'picker-search'
     }
 };
-

@@ -34,7 +34,7 @@ describe('Picker multiple ests', () => {
         cy.log('navigate to files > images > companies');
         pagesAccordion.expandTreeItem('images');
         pagesAccordion.getTreeItem('companies').click();
-
+        picker.switchViewMode('List');
         const numRows = 3;
         cy.log(`select the first ${numRows} elements`);
         expect(numRows).gte(1); // Need at least one for testing removal
@@ -72,7 +72,7 @@ describe('Picker multiple ests', () => {
         const mediaAccordion: AccordionItem = picker.getAccordionItem('picker-media');
         assertUtils.isVisible(mediaAccordion.getHeader());
         picker.wait();
-
+        picker.switchViewMode('List')
         cy.log('verify no selection caption is displayed');
         picker
             .getSelectionCaption()
@@ -129,7 +129,7 @@ describe('Picker multiple ests', () => {
 
         const mediaAccordion: AccordionItem = picker.getAccordionItem('picker-media');
         assertUtils.isVisible(mediaAccordion.getHeader());
-
+        picker.switchViewMode('List');
         const path = 'files/images/backgrounds';
         cy.log(`navigate to ${path}`);
         picker.navigateTo(mediaAccordion, path);
