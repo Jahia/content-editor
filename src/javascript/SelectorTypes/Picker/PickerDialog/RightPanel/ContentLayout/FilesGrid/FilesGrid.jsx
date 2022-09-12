@@ -17,6 +17,7 @@ import {
 } from '~/SelectorTypes/Picker/Picker2.redux';
 import {getDetailedPathArray} from '~/SelectorTypes/Picker/Picker2.utils';
 import {batchActions} from 'redux-batched-actions';
+import {useFieldContext} from '~/contexts/FieldContext';
 
 const reduxActions = {
     setOpenPathAction: path => cePickerOpenPaths(getDetailedPathArray(path)),
@@ -39,11 +40,15 @@ export const FilesGrid = ({totalCount, rows, isLoading}) => {
         selection: state.contenteditor.picker.selection
     }), shallowEqual);
     const dispatch = useDispatch();
+    const field = useFieldContext();
     const onPreviewSelect = previewSelection => {
         const node = rows.find(value => value.path === previewSelection);
         console.log('Selected ', previewSelection, node);
         const actions = [];
-        actions.push(reduxActions.clearSelection());
+        if (!field.multiple) {
+            actions.push(reduxActions.clearSelection());
+        }
+
         actions.push(reduxActions.addToSelection(node));
         dispatch(batchActions(actions));
     };
