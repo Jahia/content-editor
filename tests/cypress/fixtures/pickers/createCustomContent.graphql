@@ -1,0 +1,50 @@
+mutation createContent {
+    jcr {
+        content: mutateNode(pathOrId: "/sites/digitall/contents") {
+            addChild(name: "ce-picker-custom-contents", primaryNodeType: "jnt:contentFolder") {
+                addChildrenBatch(
+                    nodes: [
+                        {
+                            name: "test-loc1"
+                            primaryNodeType: "qant:location"
+                            properties: [{ name: "jcr:title", language: "en", value: "loc 1" }]
+                        }
+                        {
+                            name: "test-loc2"
+                            primaryNodeType: "qant:location"
+                            properties: [{ name: "jcr:title", language: "en", value: "loc 2" }]
+                        }
+                        {
+                            name: "test-loc3"
+                            primaryNodeType: "qant:location"
+                            properties: [{ name: "jcr:title", language: "en", value: "loc 3" }]
+                        }
+                        {
+                            name: "test-content4"
+                            primaryNodeType: "jnt:bigText"
+                            properties: [{ name: "text", language: "en", value: "test 4" }]
+                        }
+                        {
+                            name: "content-folder1"
+                            primaryNodeType: "jnt:contentFolder"
+                            children: [
+                                {
+                                    name: "test-loc5"
+                                    primaryNodeType: "qant:location"
+                                    properties: [{ name: "jcr:title", language: "en", value: "loc 5" }]
+                                }
+                                {
+                                    name: "test-content6"
+                                    primaryNodeType: "jnt:bigText"
+                                    properties: [{ name: "text", language: "en", value: "test 6" }]
+                                }
+                            ]
+                        }
+                    ]
+                ) {
+                    uuid
+                }
+            }
+        }
+    }
+}

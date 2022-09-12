@@ -143,6 +143,11 @@ const contentTypes: ContentTypes = {
         typeName: 'Pickers Multiple',
         fieldNodeType: 'qant:pickersMultiple_usergrouppicker',
         multiple: false
+    },
+    customPicker: {
+        typeName: 'customPicker',
+        fieldNodeType: 'qant:customPicker_myAdress',
+        multiple: false
     }
 };
 
