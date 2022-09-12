@@ -21,6 +21,7 @@ export class Picker extends BaseComponent {
     accordion: Accordion;
     table: PickerTable;
     selectionTable: Table;
+    viewMode: Dropdown;
 
     getSiteSwitcher() {
         if (!this.siteSwitcher) {
@@ -29,6 +30,14 @@ export class Picker extends BaseComponent {
 
         // Make sure dialog is open before returning siteSwitcher
         return this && this.siteSwitcher;
+    }
+
+    getViewMode() {
+        if (!this.viewMode) {
+            this.viewMode = getComponentByAttr(Dropdown, 'data-sel-role', 'sel-view-mode-dropdown');
+        }
+        // Make sure dialog is open before returning viewMode
+        return this && this.viewMode;
     }
 
     getAccordion(): Accordion {
@@ -155,5 +164,10 @@ export class Picker extends BaseComponent {
     switchToSite(site: string) {
         this.getSiteSwitcher().select(site);
         this.refreshComponents();
+    }
+
+    switchViewMode(viewMode: string) {
+        this.getViewMode().select(viewMode);
+        this.wait();
     }
 }
