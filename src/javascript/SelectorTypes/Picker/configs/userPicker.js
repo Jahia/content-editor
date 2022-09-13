@@ -7,6 +7,7 @@ import {FolderUser} from '@jahia/moonstone';
 import {transformQueryHandler} from '~/SelectorTypes/Picker/configs/queryHandlers';
 import {renderer} from '~/SelectorTypes/Picker/configs/renderer';
 import {UserPickerFragment} from './userPicker.gql-queries';
+import {NoIconPickerCaption} from '~/SelectorTypes/Picker/configs/NoIconPickerCaption';
 
 const PickerUserQueryHandler = transformQueryHandler({
     ...Sql2SearchQueryHandler,
@@ -21,6 +22,7 @@ export const registerUserPicker = registry => {
     registry.add(Constants.pickerConfig, 'user', mergeDeep({}, ContentPickerConfig, {
         searchContentType: 'jnt:user',
         selectableTypesTable: ['jnt:user'],
+        pickerCaptionComponent: NoIconPickerCaption,
         pickerTable: {
             columns: [
                 {
@@ -29,7 +31,7 @@ export const registerUserPicker = registry => {
                     label: 'jcontent:label.contentManager.listColumns.name',
                     sortable: true,
                     property: 'displayName',
-                    Cell: reactTable.CellName,
+                    Cell: reactTable.CellNameNoIcon,
                     Header: reactTable.Header,
                     width: '300px'
                 },

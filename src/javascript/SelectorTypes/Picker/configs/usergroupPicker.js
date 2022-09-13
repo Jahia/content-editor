@@ -7,6 +7,7 @@ import {renderer} from '~/SelectorTypes/Picker/configs/renderer';
 import React from 'react';
 import {reactTable, Sql2SearchQueryHandler} from '@jahia/jcontent';
 import {UserGroupPickerFragment} from './usergroupPicker.gql-queries';
+import {NoIconPickerCaption} from '~/SelectorTypes/Picker/configs/NoIconPickerCaption';
 
 const PickerUserGroupQueryHandler = transformQueryHandler({
     ...Sql2SearchQueryHandler,
@@ -21,9 +22,19 @@ export const registerUsergroupPicker = registry => {
     registry.add(Constants.pickerConfig, 'usergroup', mergeDeep({}, ContentPickerConfig, {
         searchContentType: 'jnt:group',
         selectableTypesTable: ['jnt:group'],
+        pickerCaptionComponent: NoIconPickerCaption,
         pickerTable: {
             columns: [
-                'name',
+                {
+                    id: 'name',
+                    accessor: 'displayName',
+                    label: 'jcontent:label.contentManager.listColumns.name',
+                    sortable: true,
+                    property: 'displayName',
+                    Cell: reactTable.CellNameNoIcon,
+                    Header: reactTable.Header,
+                    width: '300px'
+                },
                 {
                     id: 'site',
                     accessor: 'siteInfo.displayName',
