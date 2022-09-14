@@ -31,8 +31,7 @@ export const registerPagePicker = registry => {
             getSearchContextData: getPagesSearchContextData,
             tableConfig: {
                 queryHandler: PickerTreeQueryHandler,
-                defaultSort: {orderBy: ''},
-                uploadType: 'import'
+                defaultSort: {orderBy: ''}
             }
         }, renderer);
     }

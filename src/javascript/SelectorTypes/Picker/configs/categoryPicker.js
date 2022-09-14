@@ -33,8 +33,7 @@ export const registerCategoryPicker = registry => {
         tableConfig: {
             queryHandler: PickerTreeQueryHandler,
             openableTypes: ['jnt:category'],
-            defaultSort: {orderBy: 'displayName', order: 'ASC'},
-            uploadType: 'import'
+            defaultSort: {orderBy: 'displayName', order: 'ASC'}
         }
     }, renderer);
 };
