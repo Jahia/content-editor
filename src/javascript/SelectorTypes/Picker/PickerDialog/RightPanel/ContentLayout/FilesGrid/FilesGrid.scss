@@ -1,7 +1,6 @@
 .grid.grid {
-    display: block;
+    display: flex;
     flex: 1 1 0;
-    margin: 0 !important;
     padding: var(--spacing-small);
 
     outline: none;
