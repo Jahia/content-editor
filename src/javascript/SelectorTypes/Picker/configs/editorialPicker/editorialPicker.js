@@ -40,7 +40,8 @@ export const registerEditorialPicker = registry => {
                 queryHandler: PickerPagesQueryHandler,
                 defaultSort: {orderBy: 'lastModified.value', order: 'DESC'},
                 viewSelector: <ViewModeSelector {...viewModeSelectorProps}/>,
-                tableHeader: <EditorialContentTypeSelector/>
+                tableHeader: <EditorialContentTypeSelector/>,
+                uploadType: 'import'
             }
         }, renderer);
     } else {
@@ -54,7 +55,8 @@ export const registerEditorialPicker = registry => {
             tableConfig: {
                 queryHandler: PickerContentsFolderQueryHandler,
                 openableTypes: ['jnt:contentFolder'],
-                viewSelector: <ViewModeSelector {...viewModeSelectorProps}/>
+                viewSelector: <ViewModeSelector {...viewModeSelectorProps}/>,
+                uploadType: 'import'
             }
 
         }, renderer);

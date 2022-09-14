@@ -36,7 +36,8 @@ export const registerPickerConfig = registry => {
         registry.add(Constants.ACCORDION_ITEM_NAME, 'picker-search', {
             ...searchItem,
             tableConfig: {
-                queryHandler: PickerSearchQueryHandler
+                queryHandler: PickerSearchQueryHandler,
+                uploadType: 'import'
             }
         });
     }

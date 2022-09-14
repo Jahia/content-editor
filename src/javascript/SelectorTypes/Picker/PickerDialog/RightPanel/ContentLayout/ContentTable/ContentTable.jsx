@@ -146,7 +146,8 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, pi
         return <ContentNotFound columnSpan={allColumnData.length} t={t}/>;
     }
 
-    const tableHeader = registry.get('accordionItem', mode)?.tableConfig?.tableHeader;
+    const tableConfig = registry.get('accordionItem', mode)?.tableConfig;
+    const tableHeader = tableConfig?.tableHeader;
 
     if (!rows?.length && !isLoading) {
         if ((mode === Constants.mode.SEARCH)) {
@@ -156,7 +157,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, pi
         return (
             <>
                 {tableHeader}
-                <ContentEmptyDropZone mode={mode} path={path}/>
+                <ContentEmptyDropZone uploadType={tableConfig?.uploadType} path={path}/>
             </>
         );
     }
@@ -180,7 +181,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, pi
             <UploadTransformComponent uploadTargetComponent={ContentTableWrapper}
                                       reference={mainPanelRef}
                                       uploadPath={path}
-                                      mode={mode}
+                                      uploadType={tableConfig?.uploadType}
             >
                 <Table aria-labelledby="tableTitle"
                        data-cm-role="table-content-list"

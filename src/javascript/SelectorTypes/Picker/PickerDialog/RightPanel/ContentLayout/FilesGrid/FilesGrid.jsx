@@ -73,7 +73,7 @@ export const FilesGrid = ({totalCount, rows, isLoading}) => {
             >
                 <UploadTransformComponent uploadTargetComponent={Paper}
                                           uploadPath={path}
-                                          mode="media"
+                                          uploadType="upload"
                                           className={classNames(styles.defaultGrid, styles.detailedGrid)}
                 >
                     {rows.map((node, index) => (

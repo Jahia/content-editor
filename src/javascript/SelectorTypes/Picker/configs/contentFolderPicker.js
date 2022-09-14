@@ -29,7 +29,8 @@ export const registerContentFolderPicker = registry => {
         rootPath: '/sites/{site}/contents',
         tableConfig: {
             queryHandler: PickerTreeQueryHandler,
-            openableTypes: ['jmix:cmContentTreeDisplayable', 'jmix:visibleInContentTree', 'jnt:contentFolder']
+            openableTypes: ['jmix:cmContentTreeDisplayable', 'jmix:visibleInContentTree', 'jnt:contentFolder'],
+            uploadType: 'import'
         }
     }, renderer);
 };
