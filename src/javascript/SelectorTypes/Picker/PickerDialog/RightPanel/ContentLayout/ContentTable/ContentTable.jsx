@@ -67,8 +67,9 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, pi
     const field = useFieldContext();
     const dispatch = useDispatch();
 
-    const {mode, path, pagination, searchTerm, openPaths, sort} = useSelector(state => ({
+    const {mode, pickerKey, path, pagination, searchTerm, openPaths, sort} = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
+        pickerKey: state.contenteditor.picker.pickerKey,
         path: state.contenteditor.picker.path,
         pagination: state.contenteditor.picker.pagination,
         searchTerm: state.contenteditor.picker.searchTerms,
@@ -182,6 +183,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, pi
                                       reference={mainPanelRef}
                                       uploadPath={path}
                                       uploadType={tableConfig?.uploadType}
+                                      uploadFilter={file => !tableConfig?.uploadFilter || tableConfig.uploadFilter(file, mode, pickerKey)}
             >
                 <Table aria-labelledby="tableTitle"
                        data-cm-role="table-content-list"
