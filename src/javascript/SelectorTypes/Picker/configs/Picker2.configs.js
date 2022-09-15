@@ -52,10 +52,10 @@ export const registerPickerConfig = registry => {
         registry.get('action', 'fileUpload')?.targets?.push({id: 'content-editor/pickers/picker-media/header-actions', priority: 3});
         registry.get('action', 'refresh')?.targets?.push({id: 'content-editor/pickers/picker-media/header-actions', priority: 4});
 
-        const refresh = registry.get('action', 'refresh')
+        const refresh = registry.get('action', 'refresh');
         if (refresh) {
             Object.values(Constants.ACCORDION_ITEM_TYPES).forEach(type => {
-                refresh.targets.push({id: `content-editor/pickers/picker-${type}/header-actions`, priority: 0})
+                refresh.targets.push({id: `content-editor/pickers/picker-${type}/header-actions`, priority: 0});
             });
         }
     });
