@@ -20,6 +20,9 @@ export const registerSitePicker = registry => {
             dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalSiteTitle',
             displayTree: false,
             displaySiteSwitcher: false
+        },
+        selectionTable: {
+            columns: ['name']
         }
     }));
 

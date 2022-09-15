@@ -14,6 +14,9 @@ export const registerPagePicker = registry => {
             dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalPageTitle',
             displayTree: false
         },
+        selectionTable: {
+            columns: ['publicationStatus', 'name', 'relPath']
+        },
         searchContentType: 'jnt:page',
         selectableTypesTable: ['jnt:page']
     }));

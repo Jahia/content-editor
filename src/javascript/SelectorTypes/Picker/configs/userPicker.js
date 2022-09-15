@@ -18,6 +18,37 @@ const PickerUserQueryHandler = transformQueryHandler({
     getFragments: () => [UserPickerFragment]
 });
 
+const nameColumn = {
+    id: 'name',
+    accessor: row => row.firstName?.value || row.lastName?.value ? `${row.firstName ? row.firstName.value : ''} ${row.lastName ? row.lastName.value : ''} (${row.name})` : row.name,
+    label: 'jcontent:label.contentManager.listColumns.name',
+    sortable: true,
+    property: 'displayName',
+    Cell: reactTable.CellNameNoIcon,
+    Header: reactTable.Header,
+    width: '300px'
+};
+
+const siteColumn = {
+    id: 'site',
+    accessor: 'siteInfo.displayName',
+    label: 'content-editor:label.contentEditor.edit.fields.contentPicker.userPicker.site',
+    sortable: true,
+    property: 'siteInfo.displayName',
+    Cell: reactTable.Cell,
+    Header: reactTable.Header,
+    width: '300px'
+};
+
+const providerColumn = {
+    id: 'provider',
+    accessor: row => row.userFolderAncestors?.map(f => f.path.match(/^.*\/providers\/([^/]+)$/)).filter(f => f).map(f => f[1]).join('') || 'default',
+    label: 'content-editor:label.contentEditor.edit.fields.contentPicker.userPicker.provider',
+    Cell: reactTable.Cell,
+    Header: reactTable.Header,
+    width: '300px'
+};
+
 export const registerUserPicker = registry => {
     registry.add(Constants.pickerConfig, 'user', mergeDeep({}, ContentPickerConfig, {
         searchContentType: 'jnt:user',
@@ -30,6 +61,9 @@ export const registerUserPicker = registry => {
             dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalUserTitle',
             displayTree: false,
             displaySiteSwitcher: false
+        },
+        selectionTable: {
+            columns: [nameColumn]
         }
     }));
 
@@ -66,36 +100,7 @@ export const registerUserPicker = registry => {
         tableConfig: {
             queryHandler: PickerUserQueryHandler,
             defaultSort: {orderBy: 'displayName', order: 'ASC'},
-            columns: [
-                {
-                    id: 'name',
-                    accessor: row => row.firstName?.value || row.lastName?.value ? `${row.firstName ? row.firstName.value : ''} ${row.lastName ? row.lastName.value : ''} (${row.name})` : row.name,
-                    label: 'jcontent:label.contentManager.listColumns.name',
-                    sortable: true,
-                    property: 'displayName',
-                    Cell: reactTable.CellNameNoIcon,
-                    Header: reactTable.Header,
-                    width: '300px'
-                },
-                {
-                    id: 'site',
-                    accessor: 'siteInfo.displayName',
-                    label: 'content-editor:label.contentEditor.edit.fields.contentPicker.userPicker.site',
-                    sortable: true,
-                    property: 'siteInfo.displayName',
-                    Cell: reactTable.Cell,
-                    Header: reactTable.Header,
-                    width: '300px'
-                },
-                {
-                    id: 'provider',
-                    accessor: row => row.userFolderAncestors?.map(f => f.path.match(/^.*\/providers\/([^/]+)$/)).filter(f => f).map(f => f[1]).join('') || 'default',
-                    label: 'content-editor:label.contentEditor.edit.fields.contentPicker.userPicker.provider',
-                    Cell: reactTable.Cell,
-                    Header: reactTable.Header,
-                    width: '300px'
-                }
-            ]
+            columns: [nameColumn, siteColumn, providerColumn]
         }
     }, renderer);
 };

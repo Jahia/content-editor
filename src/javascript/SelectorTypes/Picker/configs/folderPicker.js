@@ -16,7 +16,10 @@ export const registerFolderPicker = registry => {
             displayTree: false
         },
         searchContentType: 'jnt:folder',
-        selectableTypesTable: ['jnt:folder']
+        selectableTypesTable: ['jnt:folder'],
+        selectionTable: {
+            columns: ['publicationStatus', 'name', 'relPath']
+        }
     }));
 
     registry.add(Constants.ACCORDION_ITEM_NAME, 'picker-media-tree', {

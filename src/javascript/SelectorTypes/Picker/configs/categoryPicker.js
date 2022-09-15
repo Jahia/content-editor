@@ -18,6 +18,9 @@ export const registerCategoryPicker = registry => {
             dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalCategoryTitle',
             displayTree: false,
             displaySiteSwitcher: false
+        },
+        selectionTable: {
+            columns: ['name', 'relPath']
         }
     }));
 
