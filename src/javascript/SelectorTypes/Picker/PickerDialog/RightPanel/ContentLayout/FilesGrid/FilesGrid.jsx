@@ -12,6 +12,7 @@ import {
     cePickerMode,
     cePickerOpenPaths,
     cePickerPath,
+    cePickerRemoveSelection,
     cePickerSetPage,
     cePickerSetPageSize
 } from '~/SelectorTypes/Picker/Picker2.redux';
@@ -27,6 +28,7 @@ const reduxActions = {
     setCurrentPageAction: page => cePickerSetPage(page - 1),
     setPageSizeAction: pageSize => cePickerSetPageSize(pageSize),
     addToSelection: node => cePickerAddSelection(node),
+    removeFromSelection: node => cePickerRemoveSelection(node),
     clearSelection: () => cePickerClearSelection()
 };
 
@@ -52,7 +54,12 @@ export const FilesGrid = ({totalCount, rows, isLoading}) => {
             actions.push(reduxActions.clearSelection());
         }
 
-        actions.push(reduxActions.addToSelection(node));
+        if (selection.find(value => value.path === previewSelection) === undefined) {
+            actions.push(reduxActions.addToSelection(node));
+        } else {
+            actions.push(reduxActions.removeFromSelection(node));
+        }
+
         dispatch(batchActions(actions));
     };
 
