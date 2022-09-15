@@ -42,13 +42,13 @@ export const registerPickerConfig = registry => {
     }
 
     setTimeout(() => {
-        registry.get('action', 'openInJContent').targets.push(
+        registry.get('action', 'openInJContent')?.targets?.push(
             {id: 'content-editor/pickers/picker-media/header-actions', priority: 1},
             {id: 'content-editor/pickers/picker-content-folders/header-actions', priority: 1}
         );
 
-        registry.get('action', 'pageComposer').targets.push({id: 'content-editor/pickers/picker-pages/header-actions', priority: 1});
-        registry.get('action', 'createFolder').targets.push({id: 'content-editor/pickers/picker-media/header-actions', priority: 2});
+        registry.get('action', 'pageComposer')?.targets?.push({id: 'content-editor/pickers/picker-pages/header-actions', priority: 1});
+        registry.get('action', 'createFolder')?.targets?.push({id: 'content-editor/pickers/picker-media/header-actions', priority: 2});
         registry.get('action', 'fileUpload')?.targets?.push({id: 'content-editor/pickers/picker-media/header-actions', priority: 3});
         registry.get('action', 'refresh')?.targets?.push({id: 'content-editor/pickers/picker-media/header-actions', priority: 4});
     });
