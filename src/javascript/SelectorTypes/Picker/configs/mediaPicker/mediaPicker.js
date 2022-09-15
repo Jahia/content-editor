@@ -47,6 +47,9 @@ export const registerMediaPickers = registry => {
     }));
 
     registry.add(Constants.pickerConfig, 'image', mergeDeep({}, MediaPickerConfig, {
+        selectionTable: {
+            columns: ['publicationStatus', 'name', 'fileSize', 'relPath']
+        },
         searchContentType: 'jmix:image',
         selectableTypesTable: ['jmix:image'],
         pickerCaptionComponent: FilePickerCaption

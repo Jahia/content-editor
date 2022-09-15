@@ -18,6 +18,37 @@ const PickerUserGroupQueryHandler = transformQueryHandler({
     getFragments: () => [UserGroupPickerFragment]
 });
 
+const nameColumn = {
+    id: 'name',
+    accessor: 'displayName',
+    label: 'jcontent:label.contentManager.listColumns.name',
+    sortable: true,
+    property: 'displayName',
+    Cell: reactTable.CellNameNoIcon,
+    Header: reactTable.Header,
+    width: '300px'
+};
+
+const siteColumn = {
+    id: 'site',
+    accessor: 'siteInfo.displayName',
+    label: 'content-editor:label.contentEditor.edit.fields.contentPicker.userPicker.site',
+    sortable: true,
+    property: 'siteInfo.displayName',
+    Cell: reactTable.Cell,
+    Header: reactTable.Header,
+    width: '300px'
+};
+
+const providerColumn = {
+    id: 'provider',
+    accessor: row => row.userGroupFolderAncestors?.map(f => f.path.match(/^.*\/providers\/([^/]+)$/)).filter(f => f).map(f => f[1]).join('') || 'default',
+    label: 'content-editor:label.contentEditor.edit.fields.contentPicker.userPicker.provider',
+    Cell: reactTable.Cell,
+    Header: reactTable.Header,
+    width: '300px'
+};
+
 export const registerUsergroupPicker = registry => {
     registry.add(Constants.pickerConfig, 'usergroup', mergeDeep({}, ContentPickerConfig, {
         searchContentType: 'jnt:group',
@@ -30,6 +61,9 @@ export const registerUsergroupPicker = registry => {
             dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalUserGroupTitle',
             displayTree: false,
             displaySiteSwitcher: false
+        },
+        selectionTable: {
+            columns: [nameColumn]
         }
     }));
 
@@ -66,36 +100,7 @@ export const registerUsergroupPicker = registry => {
         tableConfig: {
             queryHandler: PickerUserGroupQueryHandler,
             defaultSort: {orderBy: 'displayName', order: 'ASC'},
-            columns: [
-                {
-                    id: 'name',
-                    accessor: 'displayName',
-                    label: 'jcontent:label.contentManager.listColumns.name',
-                    sortable: true,
-                    property: 'displayName',
-                    Cell: reactTable.CellNameNoIcon,
-                    Header: reactTable.Header,
-                    width: '300px'
-                },
-                {
-                    id: 'site',
-                    accessor: 'siteInfo.displayName',
-                    label: 'content-editor:label.contentEditor.edit.fields.contentPicker.userPicker.site',
-                    sortable: true,
-                    property: 'siteInfo.displayName',
-                    Cell: reactTable.Cell,
-                    Header: reactTable.Header,
-                    width: '300px'
-                },
-                {
-                    id: 'provider',
-                    accessor: row => row.userGroupFolderAncestors?.map(f => f.path.match(/^.*\/providers\/([^/]+)$/)).filter(f => f).map(f => f[1]).join('') || 'default',
-                    label: 'content-editor:label.contentEditor.edit.fields.contentPicker.userPicker.provider',
-                    Cell: reactTable.Cell,
-                    Header: reactTable.Header,
-                    width: '300px'
-                }
-            ]
+            columns: [nameColumn, siteColumn, providerColumn]
         }
     }, renderer);
 };
