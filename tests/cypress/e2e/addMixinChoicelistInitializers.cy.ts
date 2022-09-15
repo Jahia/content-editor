@@ -11,7 +11,7 @@ describe('Add Mixin by using choice list initializers (Image Reference)', () => 
         JContent.visit(sitekey, 'en', 'media/file');
         cy.wait(5000);
         cy.get('div[data-cm-role="grid-content-list"]')
-            .children('div[mode="media"]')
+            .children('div')
             .selectFile('cypress/fixtures/snowbearHome.jpeg', {
                 action: 'drag-drop',
                 waitForAnimations: true
