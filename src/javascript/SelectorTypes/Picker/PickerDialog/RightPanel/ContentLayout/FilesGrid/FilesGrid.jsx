@@ -18,6 +18,7 @@ import {
 import {getDetailedPathArray} from '~/SelectorTypes/Picker/Picker2.utils';
 import {batchActions} from 'redux-batched-actions';
 import {useFieldContext} from '~/contexts/FieldContext';
+import {registry} from '@jahia/ui-extender';
 
 const reduxActions = {
     setOpenPathAction: path => cePickerOpenPaths(getDetailedPathArray(path)),
@@ -31,7 +32,9 @@ const reduxActions = {
 
 export const FilesGrid = ({totalCount, rows, isLoading}) => {
     const {t} = useTranslation('jcontent');
-    const {path, pagination, siteKey, uilang, lang, selection} = useSelector(state => ({
+    const {mode, pickerKey, path, pagination, siteKey, uilang, lang, selection} = useSelector(state => ({
+        mode: state.contenteditor.picker.mode,
+        pickerKey: state.contenteditor.picker.pickerKey,
         path: state.contenteditor.picker.path,
         pagination: state.contenteditor.picker.pagination,
         siteKey: state.site,
@@ -64,6 +67,8 @@ export const FilesGrid = ({totalCount, rows, isLoading}) => {
         return null;
     }
 
+    const tableConfig = registry.get('accordionItem', mode)?.tableConfig;
+
     return (
         <>
             <div
@@ -74,6 +79,7 @@ export const FilesGrid = ({totalCount, rows, isLoading}) => {
                 <UploadTransformComponent uploadTargetComponent={Paper}
                                           uploadPath={path}
                                           uploadType="upload"
+                                          uploadFilter={file => !tableConfig?.uploadFilter || tableConfig.uploadFilter(file, mode, pickerKey)}
                                           className={classNames(styles.defaultGrid, styles.detailedGrid)}
                 >
                     {rows.map((node, index) => (

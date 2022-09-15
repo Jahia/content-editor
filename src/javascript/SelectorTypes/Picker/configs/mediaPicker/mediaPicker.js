@@ -60,7 +60,8 @@ export const registerMediaPickers = registry => {
                 queryHandler: transformQueryHandler(FilesQueryHandler),
                 openableTypes: ['jnt:folder'],
                 viewSelector: <FileModeSelector {...viewModeSelectorProps}/>,
-                contextualMenu: 'contentPickerMenu'
+                contextualMenu: 'contentPickerMenu',
+                uploadFilter: (file, mode, pickerKey) => pickerKey !== 'image' || file.type.startsWith('image/')
             }
         }, renderer);
     } else {
