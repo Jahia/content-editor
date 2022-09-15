@@ -52,4 +52,19 @@ export const registerPickerActions = registry => {
         contentType: 'jnt:file',
         dataSelRole: 'upload'
     });
+
+    setTimeout(() => {
+        registry.add('action', 'contentPickerMenu', registry.get('action', 'menuAction'), {
+            buttonIcon: <MoreVert/>,
+            buttonLabel: 'jcontent:label.contentManager.contentPreview.moreOptions',
+            menuTarget: 'contentPickerActions',
+            menuItemProps: {
+                isShowIcons: true
+            }
+        });
+
+        registry.get('action', 'rename')?.targets?.push({id: 'contentPickerActions', priority: 1});
+        registry.get('action', 'replaceFile')?.targets?.push({id: 'contentPickerActions', priority: 2});
+        registry.get('action', 'editImage')?.targets?.push({id: 'contentPickerActions', priority: 3});
+    });
 };

@@ -92,6 +92,7 @@ export const FilesGrid = ({totalCount, rows, isLoading}) => {
                                   index={index}
                                   node={node}
                                   setPath={setPath}
+                                  contextualMenuAction="contentPickerMenu"
                                   onPreviewSelect={(...args) => {
                                       onPreviewSelect(...args);
                                   }}

@@ -1,4 +1,5 @@
 import {reactTable} from '@jahia/jcontent';
+import {CellVisibleActions} from '~/SelectorTypes/Picker/reactTable/columns/CellVisibleActions';
 
 export const allColumnData = [
     {
@@ -44,5 +45,11 @@ export const allColumnData = [
         Cell: reactTable.CellLastModified,
         Header: reactTable.Header,
         width: '290px'
+    },
+    {
+        id: 'visibleActions',
+        Header: '',
+        Cell: CellVisibleActions,
+        width: '60px'
     }
 ];
