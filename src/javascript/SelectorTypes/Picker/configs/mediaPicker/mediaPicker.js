@@ -59,7 +59,8 @@ export const registerMediaPickers = registry => {
                 defaultSort: {orderBy: 'lastModified.value', order: 'DESC'},
                 queryHandler: transformQueryHandler(FilesQueryHandler),
                 openableTypes: ['jnt:folder'],
-                viewSelector: <FileModeSelector {...viewModeSelectorProps}/>
+                viewSelector: <FileModeSelector {...viewModeSelectorProps}/>,
+                contextualMenu: 'contentPickerMenu'
             }
         }, renderer);
     } else {

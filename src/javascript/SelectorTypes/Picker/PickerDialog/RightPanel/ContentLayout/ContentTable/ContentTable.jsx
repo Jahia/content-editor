@@ -78,6 +78,8 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, pi
         return !isStructured && Constants.mode.SEARCH !== mode && (['jnt:folder', 'jnt:contentFolder'].indexOf(nodeType) !== -1);
     };
 
+    const tableConfig = registry.get('accordionItem', mode)?.tableConfig;
+
     const columns = useMemo(() => {
         const flattenRows = isStructured ? flattenTree(rows) : rows;
         if (pickerConfig?.pickerTable?.columns) {
@@ -93,8 +95,9 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, pi
             // Do not include type column if media mode
             .filter(c => Constants.mode.MEDIA !== mode || c.id !== 'type')
             // Do not include selection if multiple selection is not enabled or if there are no selectable types
-            .filter(c => (field.multiple && flattenRows.some(r => r.isSelectable)) || c.id !== SELECTION_COLUMN_ID);
-    }, [mode, field.multiple, pickerConfig, rows, isStructured]);
+            .filter(c => (field.multiple && flattenRows.some(r => r.isSelectable)) || c.id !== SELECTION_COLUMN_ID)
+            .filter(c => tableConfig?.contextualMenu || c.id !== 'visibleActions');
+    }, [mode, field.multiple, pickerConfig, tableConfig, rows, isStructured]);
     const {
         getTableProps,
         getTableBodyProps,
@@ -145,7 +148,6 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, pi
         return <ContentNotFound columnSpan={allColumnData.length} t={t}/>;
     }
 
-    const tableConfig = registry.get('accordionItem', mode)?.tableConfig;
     const tableHeader = tableConfig?.tableHeader;
 
     if (!rows?.length && !isLoading) {
@@ -210,16 +212,18 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, pi
                                           isHighlighted={selectionProps.checked && !field.multiple}
                                           onClick={e => handleOnClick(e, row)}
                                           onContextMenu={event => {
-                                              event.stopPropagation();
-                                              openContextualMenu(event);
+                                              if (tableConfig.contextualMenu) {
+                                                  event.stopPropagation();
+                                                  openContextualMenu(event);
+                                              }
                                           }}
                                           onDoubleClick={() => allowDoubleClickNavigation(node.primaryNodeType.name) && doubleClickNavigation(node)}
                                 >
-                                    <ContextualMenu
+                                    {tableConfig.contextualMenu && <ContextualMenu
                                         setOpenRef={contextualMenus.current[node.path]}
-                                        actionKey="contentPickerMenu"
+                                        actionKey={tableConfig.contextualMenu}
                                         path={node.path}
-                                    />
+                                    />}
                                     {row.cells.map(cell => <React.Fragment key={cell.column.id}>{cell.render('Cell')}</React.Fragment>)}
                                 </TableRow>
                             );
