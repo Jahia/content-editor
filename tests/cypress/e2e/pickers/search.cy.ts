@@ -20,6 +20,7 @@ describe('Picker - Search', () => {
     it('Media Picker - Search for tab - letter by letter', () => {
         const contentEditor = jcontent.editComponentByText('Leading by Example');
         const picker = contentEditor.getPickerField('jdmix:imgView_image').open();
+        picker.getViewMode().select('List');
         picker.search('t');
         picker.verifyResultsLength(24);
         picker.search('a');
@@ -32,6 +33,7 @@ describe('Picker - Search', () => {
     it('Media Picker - Search for tab - in different context', () => {
         const contentEditor = jcontent.editComponentByText('Leading by Example');
         const picker = contentEditor.getPickerField('jdmix:imgView_image').open();
+        picker.getViewMode().select('List');
         picker.search('tab');
         picker.verifyResultsLength(1);
         picker.getTableRow('person-smartphone-office-table.jpg').should('be.visible');
@@ -44,6 +46,7 @@ describe('Picker - Search', () => {
     it('Media Picker - Search for tab - cancel and reopen - search should be empty', () => {
         const contentEditor = jcontent.editComponentByText('Leading by Example');
         let picker = contentEditor.getPickerField('jdmix:imgView_image').open();
+        picker.getViewMode().select('List');
         picker.search('tab');
         picker.verifyResultsLength(1);
         picker.getTableRow('person-smartphone-office-table.jpg').should('be.visible');
@@ -97,6 +100,7 @@ describe('Picker - Search', () => {
     it('Media Picker- Search for xylophone and should find nothing no matter the context', () => {
         const contentEditor = jcontent.editComponentByText('Leading by Example');
         const picker = contentEditor.getPickerField('jdmix:imgView_image').open();
+        picker.getViewMode().select('List');
         picker.search('xylophone', true);
         picker.verifyResultsAreEmpty();
         picker.switchSearchContext('Media');
