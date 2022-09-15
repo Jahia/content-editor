@@ -20,7 +20,7 @@ export const registerCategoryPicker = registry => {
             displaySiteSwitcher: false
         },
         selectionTable: {
-            columns: ['publicationStatus', 'name', 'relPath']
+            columns: ['name', 'relPath']
         }
     }));
 
