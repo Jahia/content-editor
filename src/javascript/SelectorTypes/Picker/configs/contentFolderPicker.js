@@ -27,7 +27,8 @@ export const registerContentFolderPicker = registry => {
         tableConfig: {
             queryHandler: PickerTreeQueryHandler,
             openableTypes: ['jmix:cmContentTreeDisplayable', 'jmix:visibleInContentTree', 'jnt:contentFolder'],
-            columns: ['name', 'lastModified']
+            columns: ['name', 'lastModified'],
+            contextualMenu: 'contentPickerMenu'
         }
     }, renderer);
 };

@@ -119,7 +119,7 @@
         "fields": {
           "actions": {
             "replace": "Modifier",
-            "newTab": "Ouvrir dans un nouvel onglet",
+            "newTab": "Editer dans un nouvel onglet",
             "clear": "Effacer",
             "selectAll": "Sélectionnez toutes les valeurs",
             "add": "Ajouter"

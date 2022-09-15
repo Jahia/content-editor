@@ -16,6 +16,7 @@ export const CellVisibleActions = ({row, cell, column}) => {
             <DisplayAction
                 actionKey="contentPickerMenu"
                 path={row.original.path}
+                uuid={row.original.uuid}
                 render={ButtonRendererNoLabel}
                 buttonProps={{variant: 'ghost', size: 'big'}}
             />

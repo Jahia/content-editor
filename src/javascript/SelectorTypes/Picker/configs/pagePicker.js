@@ -29,7 +29,8 @@ export const registerPagePicker = registry => {
             tableConfig: {
                 queryHandler: PickerTreeQueryHandler,
                 defaultSort: {orderBy: ''},
-                columns: ['name', 'lastModified']
+                columns: ['name', 'lastModified'],
+                contextualMenu: 'contentPickerMenu'
             }
         }, renderer);
     }

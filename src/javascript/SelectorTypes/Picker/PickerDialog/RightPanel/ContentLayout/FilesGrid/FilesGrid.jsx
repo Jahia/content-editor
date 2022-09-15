@@ -39,7 +39,7 @@ export const FilesGrid = ({totalCount, rows, isLoading}) => {
         pagination: state.contenteditor.picker.pagination,
         siteKey: state.site,
         uilang: state.uilang,
-        lang: state.lang,
+        lang: state.language,
         selection: state.contenteditor.picker.selection
     }), shallowEqual);
     const dispatch = useDispatch();

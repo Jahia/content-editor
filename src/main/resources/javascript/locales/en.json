@@ -119,7 +119,7 @@
         "fields": {
           "actions": {
             "replace": "Change",
-            "newTab": "Open in a new tab",
+            "newTab": "Edit in a new tab",
             "clear": "Clear",
             "selectAll": "Select all values",
             "add": "Add"

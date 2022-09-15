@@ -29,7 +29,8 @@ export const registerFolderPicker = registry => {
             hideRoot: false,
             defaultSort: {orderBy: 'lastModified.value', order: 'DESC'},
             openableTypes: ['jnt:folder'],
-            columns: ['name', 'lastModified']
+            columns: ['name', 'lastModified'],
+            contextualMenu: 'contentPickerMenu'
         }
     }, renderer);
 };
