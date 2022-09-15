@@ -4,10 +4,7 @@ import {useTranslation} from 'react-i18next';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {Table, TableBody, TablePagination, TableRow} from '@jahia/moonstone';
 import {useTable} from 'react-table';
-import {
-    useRowMultipleSelection,
-    useRowSelection
-} from '~/SelectorTypes/Picker/reactTable/plugins';
+import {useRowMultipleSelection, useRowSelection} from '~/SelectorTypes/Picker/reactTable/plugins';
 import {allColumnData} from '~/SelectorTypes/Picker/reactTable/columns';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {
@@ -16,24 +13,24 @@ import {
     cePickerOpenPaths,
     cePickerPath,
     cePickerSetPage,
-    cePickerSetPageSize, cePickerSetSort
+    cePickerSetPageSize,
+    cePickerSetSort
 } from '~/SelectorTypes/Picker/Picker2.redux';
-import {getDetailedPathArray} from '~/SelectorTypes/Picker/Picker2.utils';
+import {flattenTree, getDetailedPathArray} from '~/SelectorTypes/Picker/Picker2.utils';
 import {batchActions} from 'redux-batched-actions';
 import {
-    reactTable,
     ContentEmptyDropZone,
     ContentListHeader,
     ContentNotFound,
     ContentTableWrapper,
     EmptyTable,
+    reactTable,
     UploadTransformComponent
 } from '@jahia/jcontent';
 import classes from './ContentTable.scss';
-import {registry} from '@jahia/ui-extender';
+import {ContextualMenu, registry} from '@jahia/ui-extender';
 import {useFieldContext} from '~/contexts/FieldContext';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
-import {flattenTree} from '~/SelectorTypes/Picker/Picker2.utils';
 
 const reduxActions = {
     onPreviewSelectAction: () => ({}),
@@ -128,6 +125,8 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, pi
     );
 
     const mainPanelRef = useRef(null);
+    const contextualMenus = useRef({});
+
     useEffect(() => {
         if (mainPanelRef.current) {
             mainPanelRef.current.scroll(0, 0);
@@ -196,6 +195,11 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, pi
                             const selectionProps = row.getToggleRowSelectedProps();
                             const node = row.original;
                             const className = node.isSelectable ? classes.selectableRow : classes.doubleClickableRow;
+                            contextualMenus.current[node.path] = contextualMenus.current[node.path] || React.createRef();
+
+                            const openContextualMenu = event => {
+                                contextualMenus.current[node.path].current(event);
+                            };
 
                             return (
                                 <TableRow key={'row' + row.id}
@@ -205,8 +209,17 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, pi
                                           className={!selectionProps.checked && className}
                                           isHighlighted={selectionProps.checked && !field.multiple}
                                           onClick={e => handleOnClick(e, row)}
+                                          onContextMenu={event => {
+                                              event.stopPropagation();
+                                              openContextualMenu(event);
+                                          }}
                                           onDoubleClick={() => allowDoubleClickNavigation(node.primaryNodeType.name) && doubleClickNavigation(node)}
                                 >
+                                    <ContextualMenu
+                                        setOpenRef={contextualMenus.current[node.path]}
+                                        actionKey="contentPickerMenu"
+                                        path={node.path}
+                                    />
                                     {row.cells.map(cell => <React.Fragment key={cell.column.id}>{cell.render('Cell')}</React.Fragment>)}
                                 </TableRow>
                             );
