@@ -2,6 +2,20 @@ import {OpenInTabActionComponent} from './openInTabAction';
 import {Constants} from '~/ContentEditor.constants';
 import {shallow} from '@jahia/test-framework';
 import React from 'react';
+import {setQueryResponseMock} from '@apollo/react-hooks';
+import {useContentEditorContext} from '~/contexts';
+
+jest.mock('@apollo/react-hooks', () => {
+    let queryresponsemock;
+    return {
+        useQuery: () => queryresponsemock,
+        setQueryResponseMock: r => {
+            queryresponsemock = r;
+        }
+    };
+});
+
+jest.mock('~/contexts/ContentEditor/ContentEditor.context');
 
 const button = () => <button type="button"/>;
 
@@ -19,14 +33,15 @@ describe('openInTab action', () => {
                 actionContext: {
                     fieldData: [{
                         uuid: 'this-is-an-id'
-                    }],
-                    editorContext: {
-                        lang: 'fr'
-                    }
+                    }]
                 }
             }
         };
-
+        const contentEditorContext = {
+            lang: 'fr'
+        };
+        useContentEditorContext.mockReturnValue(contentEditorContext);
+        setQueryResponseMock({loading: false});
         const cmp = shallow(<OpenInTabActionComponent {...context} render={button}/>);
         cmp.simulate('click');
 
