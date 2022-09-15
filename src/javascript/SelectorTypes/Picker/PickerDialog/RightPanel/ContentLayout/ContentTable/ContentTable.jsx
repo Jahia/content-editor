@@ -30,7 +30,6 @@ import {
 import classes from './ContentTable.scss';
 import {ContextualMenu, registry} from '@jahia/ui-extender';
 import {useFieldContext} from '~/contexts/FieldContext';
-import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 
 const reduxActions = {
     onPreviewSelectAction: () => ({}),
@@ -59,7 +58,9 @@ const clickHandler = {
 
 const SELECTION_COLUMN_ID = 'selection';
 
-export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, pickerConfig, isStructured}) => {
+const defaultCols = ['publicationStatus', 'name', 'type', 'lastModified'];
+
+export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, isStructured}) => {
     const {t} = useTranslation();
     const field = useFieldContext();
     const dispatch = useDispatch();
@@ -83,22 +84,16 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, pi
 
     const columns = useMemo(() => {
         const flattenRows = isStructured ? flattenTree(rows) : rows;
-        if (pickerConfig?.pickerTable?.columns) {
-            const columns = pickerConfig.pickerTable.columns.map(c => (typeof c === 'string') ? allColumnData.find(col => col.id === c) : c);
-            if (field.multiple && flattenRows.some(r => r.isSelectable) && !columns.find(c => c.id === 'selection')) {
-                columns.splice((columns[0].id === 'publicationStatus') ? 1 : 0, 0, allColumnData[1]);
-            }
+        const colNames = tableConfig?.columns || defaultCols;
+        const columns = colNames.map(c => (typeof c === 'string') ? allColumnData.find(col => col.id === c) : c);
+        const multiple = field.multiple && flattenRows.some(r => r.isSelectable);
+        columns.splice((columns[0].id === 'publicationStatus') ? 1 : 0, 0, allColumnData.find(col => col.id === 'selection'));
+        columns.push(allColumnData.find(col => col.id === 'visibleActions'));
 
-            return columns;
-        }
-
-        return allColumnData
-            // Do not include type column if media mode
-            .filter(c => Constants.mode.MEDIA !== mode || c.id !== 'type')
-            // Do not include selection if multiple selection is not enabled or if there are no selectable types
-            .filter(c => (field.multiple && flattenRows.some(r => r.isSelectable)) || c.id !== SELECTION_COLUMN_ID)
+        return columns
+            .filter(c => multiple || c.id !== SELECTION_COLUMN_ID)
             .filter(c => tableConfig?.contextualMenu || c.id !== 'visibleActions');
-    }, [mode, field.multiple, pickerConfig, tableConfig, rows, isStructured]);
+    }, [field.multiple, tableConfig, rows, isStructured]);
     const {
         getTableProps,
         getTableBodyProps,
@@ -254,8 +249,7 @@ ContentTable.propTypes = {
     isLoading: PropTypes.bool,
     isStructured: PropTypes.bool,
     rows: PropTypes.array.isRequired,
-    totalCount: PropTypes.number.isRequired,
-    pickerConfig: configPropType.isRequired
+    totalCount: PropTypes.number.isRequired
 };
 
 export default ContentTable;

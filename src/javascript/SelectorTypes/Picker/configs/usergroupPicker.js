@@ -23,38 +23,6 @@ export const registerUsergroupPicker = registry => {
         searchContentType: 'jnt:group',
         selectableTypesTable: ['jnt:group'],
         pickerCaptionComponent: NoIconPickerCaption,
-        pickerTable: {
-            columns: [
-                {
-                    id: 'name',
-                    accessor: 'displayName',
-                    label: 'jcontent:label.contentManager.listColumns.name',
-                    sortable: true,
-                    property: 'displayName',
-                    Cell: reactTable.CellNameNoIcon,
-                    Header: reactTable.Header,
-                    width: '300px'
-                },
-                {
-                    id: 'site',
-                    accessor: 'siteInfo.displayName',
-                    label: 'content-editor:label.contentEditor.edit.fields.contentPicker.userPicker.site',
-                    sortable: true,
-                    property: 'siteInfo.displayName',
-                    Cell: reactTable.Cell,
-                    Header: reactTable.Header,
-                    width: '300px'
-                },
-                {
-                    id: 'provider',
-                    accessor: row => row.userGroupFolderAncestors?.map(f => f.path.match(/^.*\/providers\/([^/]+)$/)).filter(f => f).map(f => f[1]).join('') || 'default',
-                    label: 'content-editor:label.contentEditor.edit.fields.contentPicker.userPicker.provider',
-                    Cell: reactTable.Cell,
-                    Header: reactTable.Header,
-                    width: '300px'
-                }
-            ]
-        },
         pickerInput: {
             emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalUserGroupTitle'
         },
@@ -97,7 +65,37 @@ export const registerUsergroupPicker = registry => {
         },
         tableConfig: {
             queryHandler: PickerUserGroupQueryHandler,
-            defaultSort: {orderBy: 'displayName', order: 'ASC'}
+            defaultSort: {orderBy: 'displayName', order: 'ASC'},
+            columns: [
+                {
+                    id: 'name',
+                    accessor: 'displayName',
+                    label: 'jcontent:label.contentManager.listColumns.name',
+                    sortable: true,
+                    property: 'displayName',
+                    Cell: reactTable.CellNameNoIcon,
+                    Header: reactTable.Header,
+                    width: '300px'
+                },
+                {
+                    id: 'site',
+                    accessor: 'siteInfo.displayName',
+                    label: 'content-editor:label.contentEditor.edit.fields.contentPicker.userPicker.site',
+                    sortable: true,
+                    property: 'siteInfo.displayName',
+                    Cell: reactTable.Cell,
+                    Header: reactTable.Header,
+                    width: '300px'
+                },
+                {
+                    id: 'provider',
+                    accessor: row => row.userGroupFolderAncestors?.map(f => f.path.match(/^.*\/providers\/([^/]+)$/)).filter(f => f).map(f => f[1]).join('') || 'default',
+                    label: 'content-editor:label.contentEditor.edit.fields.contentPicker.userPicker.provider',
+                    Cell: reactTable.Cell,
+                    Header: reactTable.Header,
+                    width: '300px'
+                }
+            ]
         }
     }, renderer);
 };

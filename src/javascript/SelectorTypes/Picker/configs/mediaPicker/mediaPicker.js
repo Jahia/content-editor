@@ -38,6 +38,9 @@ export const registerMediaPickers = registry => {
         pickerDialog: {
             dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalFileTitle'
         },
+        selectionTable: {
+            columns: ['publicationStatus', 'name', 'fileSize', 'relPath']
+        },
         searchContentType: 'jnt:file',
         selectableTypesTable: ['jnt:file'],
         pickerCaptionComponent: FilePickerCaption
@@ -61,7 +64,8 @@ export const registerMediaPickers = registry => {
                 openableTypes: ['jnt:folder'],
                 viewSelector: <FileModeSelector {...viewModeSelectorProps}/>,
                 contextualMenu: 'contentPickerMenu',
-                uploadFilter: (file, mode, pickerKey) => pickerKey !== 'image' || file.type.startsWith('image/')
+                uploadFilter: (file, mode, pickerKey) => pickerKey !== 'image' || file.type.startsWith('image/'),
+                columns: ['publicationStatus', 'name', 'lastModified']
             }
         }, renderer);
     } else {

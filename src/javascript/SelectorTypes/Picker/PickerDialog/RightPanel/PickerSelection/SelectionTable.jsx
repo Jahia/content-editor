@@ -4,26 +4,17 @@ import styles from './Selection.scss';
 import {useTable} from 'react-table';
 import {selectionColumns} from './selectionColumns';
 import PropTypes from 'prop-types';
-import {useSelector} from 'react-redux';
 import {configPropType} from '../../../configs/configPropType';
 
+const defaultCols = ['publicationStatus', 'name', 'type', 'relPath'];
+
 const SelectionTable = ({selection, pickerConfig}) => {
-    const modes = useSelector(state => state.contenteditor.picker.modes);
-
     const columns = useMemo(() => {
-        if (pickerConfig?.pickerTable?.columns) {
-            const selectedColumns = pickerConfig.pickerTable.columns.map(c => (typeof c === 'string') ? selectionColumns.find(col => col.id === c) : c);
-            selectedColumns.push(selectionColumns.find(col => col.id === 'cellActions'));
-            return selectedColumns;
-        }
-
-        // Toggle between showing type or file size column depending on accordion modes
-        const modeSet = new Set(modes);
-        return (modeSet.size === 1 && modeSet.has('picker-media')) ?
-            selectionColumns.filter(c => c.id !== 'type') :
-            selectionColumns.filter(c => c.id !== 'fileSize');
-    },
-    [modes, pickerConfig]);
+        const colNames = pickerConfig?.selectionTable?.columns || defaultCols;
+        const selectedColumns = colNames.map(c => (typeof c === 'string') ? selectionColumns.find(col => col.id === c) : c);
+        selectedColumns.push(selectionColumns.find(col => col.id === 'cellActions'));
+        return selectedColumns;
+    }, [pickerConfig]);
 
     const {
         getTableProps,

@@ -1,27 +1,10 @@
-import {reactTable, FileSize} from '@jahia/jcontent';
 import {Button, Close, TableBodyCell} from '@jahia/moonstone';
 import React from 'react';
-import {getRelativePath} from '~/SelectorTypes/Picker/Picker2.utils';
-import PropTypes from 'prop-types';
 import styles from './Selection.scss';
 import {useDispatch} from 'react-redux';
 import {cePickerRemoveSelection} from '~/SelectorTypes/Picker/Picker2.redux';
-
-const rowPropType = {
-    row: PropTypes.shape({original: PropTypes.object.isRequired})
-};
-
-const FileSizeCell = ({row}) => (
-    <TableBodyCell data-cm-role="file-size-cell"><FileSize node={row.original}/></TableBodyCell>
-);
-FileSizeCell.propTypes = rowPropType;
-
-const RelPathCell = ({row}) => (
-    <TableBodyCell data-cm-role="rel-path-cell">
-        {getRelativePath(row.original.path, row.original.site.path)}
-    </TableBodyCell>
-);
-RelPathCell.propTypes = rowPropType;
+import {allColumnData} from '~/SelectorTypes/Picker/reactTable/columns';
+import {rowPropType} from '~/SelectorTypes/Picker/reactTable/columns/rowPropType';
 
 const ActionsCell = ({row}) => {
     const dispatch = useDispatch();
@@ -37,60 +20,9 @@ const ActionsCell = ({row}) => {
 ActionsCell.propTypes = rowPropType;
 
 export const selectionColumns = [
-    {
-        id: 'publicationStatus',
-        sortable: false,
-        Header: '',
-        Cell: reactTable.CellPublicationStatus
-    },
-    {
-        id: 'name',
-        accessor: 'displayName',
-        label: 'jcontent:label.contentManager.listColumns.name',
-        property: 'displayName',
-        Cell: reactTable.CellName
-    },
-    {
-        id: 'type',
-        accessor: 'primaryNodeType.displayName',
-        label: 'jcontent:label.contentManager.listColumns.type',
-        property: 'primaryNodeType.displayName',
-        Cell: reactTable.CellType
-    },
-    {
-        id: 'fileSize',
-        Cell: FileSizeCell
-    },
-    {
-        id: 'relPath',
-        Cell: RelPathCell
-    },
+    ...allColumnData,
     {
         id: 'cellActions',
         Cell: ActionsCell
-    },
-    {
-        id: 'status',
-        label: 'jcontent:label.contentManager.listColumns.status',
-        sortable: false,
-        Header: '',
-        Cell: reactTable.CellStatus
-    },
-    {
-        id: 'createdBy',
-        accessor: 'createdBy.value',
-        label: 'jcontent:label.contentManager.listColumns.createdBy',
-        sortable: true,
-        property: 'createdBy.value',
-        Cell: reactTable.Cell
-
-    },
-    {
-        id: 'lastModified',
-        accessor: 'lastModified.value',
-        label: 'jcontent:label.contentManager.listColumns.lastModified',
-        sortable: true,
-        property: 'lastModified.value',
-        Cell: reactTable.CellLastModified
     }
 ];

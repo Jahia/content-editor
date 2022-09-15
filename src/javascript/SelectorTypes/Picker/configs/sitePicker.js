@@ -13,18 +13,6 @@ export const registerSitePicker = registry => {
         searchContentType: 'jnt:virtualsite',
         selectableTypesTable: ['jnt:virtualsite'],
         pickerCaptionComponent: NoIconPickerCaption,
-        pickerTable: {
-            columns: [{
-                id: 'name',
-                accessor: 'displayName',
-                label: 'jcontent:label.contentManager.listColumns.name',
-                sortable: true,
-                property: 'displayName',
-                Cell: reactTable.CellNameNoIcon,
-                Header: reactTable.Header,
-                width: '300px'
-            }]
-        },
         pickerInput: {
             emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalSiteTitle'
         },
@@ -43,7 +31,17 @@ export const registerSitePicker = registry => {
         canDisplayItem: ({selectionNode, folderNode}) => selectionNode ? /^\/sites\/.*/.test(selectionNode.path) : /^\/sites((\/.*)|$)/.test(folderNode.path),
         tableConfig: {
             queryHandler: PickerBaseQueryHandler,
-            defaultSort: {orderBy: 'displayName', order: 'ASC'}
+            defaultSort: {orderBy: 'displayName', order: 'ASC'},
+            columns: [{
+                id: 'name',
+                accessor: 'displayName',
+                label: 'jcontent:label.contentManager.listColumns.name',
+                sortable: true,
+                property: 'displayName',
+                Cell: reactTable.CellNameNoIcon,
+                Header: reactTable.Header,
+                width: '300px'
+            }]
         }
     }, renderer);
 };

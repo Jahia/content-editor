@@ -15,9 +15,6 @@ export const registerFolderPicker = registry => {
             dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalFolderTitle',
             displayTree: false
         },
-        pickerTable: {
-            columns: ['name', 'lastModified']
-        },
         searchContentType: 'jnt:folder',
         selectableTypesTable: ['jnt:folder']
     }));
@@ -31,7 +28,8 @@ export const registerFolderPicker = registry => {
             queryHandler: PickerTreeQueryHandler,
             hideRoot: false,
             defaultSort: {orderBy: 'lastModified.value', order: 'DESC'},
-            openableTypes: ['jnt:folder']
+            openableTypes: ['jnt:folder'],
+            columns: ['name', 'lastModified']
         }
     }, renderer);
 };
