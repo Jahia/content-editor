@@ -1,5 +1,7 @@
 import {reactTable} from '@jahia/jcontent';
 import {CellVisibleActions} from '~/SelectorTypes/Picker/reactTable/columns/CellVisibleActions';
+import {FileSizeCell} from '~/SelectorTypes/Picker/reactTable/columns/FileSizeCell';
+import {RelPathCell} from '~/SelectorTypes/Picker/reactTable/columns/RelPathCell';
 
 export const allColumnData = [
     {
@@ -45,6 +47,29 @@ export const allColumnData = [
         Cell: reactTable.CellLastModified,
         Header: reactTable.Header,
         width: '290px'
+    },
+    {
+        id: 'createdBy',
+        accessor: 'createdBy.value',
+        label: 'jcontent:label.contentManager.listColumns.createdBy',
+        sortable: true,
+        property: 'createdBy.value',
+        Cell: reactTable.Cell
+    },
+    {
+        id: 'fileSize',
+        Cell: FileSizeCell
+    },
+    {
+        id: 'relPath',
+        Cell: RelPathCell
+    },
+    {
+        id: 'status',
+        label: 'jcontent:label.contentManager.listColumns.status',
+        sortable: false,
+        Header: '',
+        Cell: reactTable.CellStatus
     },
     {
         id: 'visibleActions',

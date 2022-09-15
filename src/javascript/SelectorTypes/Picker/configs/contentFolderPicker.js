@@ -15,9 +15,6 @@ export const registerContentFolderPicker = registry => {
             dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalFolderTitle',
             displayTree: false
         },
-        pickerTable: {
-            columns: ['name', 'lastModified']
-        },
         searchContentType: 'jnt:contentFolder',
         selectableTypesTable: ['jnt:contentFolder']
     }));
@@ -29,7 +26,8 @@ export const registerContentFolderPicker = registry => {
         rootPath: '/sites/{site}/contents',
         tableConfig: {
             queryHandler: PickerTreeQueryHandler,
-            openableTypes: ['jmix:cmContentTreeDisplayable', 'jmix:visibleInContentTree', 'jnt:contentFolder']
+            openableTypes: ['jmix:cmContentTreeDisplayable', 'jmix:visibleInContentTree', 'jnt:contentFolder'],
+            columns: ['name', 'lastModified']
         }
     }, renderer);
 };

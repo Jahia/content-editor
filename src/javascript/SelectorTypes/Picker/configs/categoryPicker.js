@@ -11,9 +11,6 @@ export const registerCategoryPicker = registry => {
         searchContentType: 'jnt:category',
         selectableTypesTable: ['jnt:category'],
         accordionMode: `picker-${Constants.ACCORDION_ITEM_TYPES.CATEGORY}`,
-        pickerTable: {
-            columns: ['name']
-        },
         pickerInput: {
             emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalCategoryTitle'
         },
@@ -33,7 +30,8 @@ export const registerCategoryPicker = registry => {
         tableConfig: {
             queryHandler: PickerTreeQueryHandler,
             openableTypes: ['jnt:category'],
-            defaultSort: {orderBy: 'displayName', order: 'ASC'}
+            defaultSort: {orderBy: 'displayName', order: 'ASC'},
+            columns: ['name']
         }
     }, renderer);
 };

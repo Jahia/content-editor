@@ -97,7 +97,6 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
 
         return (
             <ContentTable isContentNotFound
-                          pickerConfig={pickerConfig}
                           path={path}
                           filesMode={filesMode}
                           rows={[]}
@@ -131,8 +130,7 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
             )}
             {(mode === Constants.mode.MEDIA || preSearchModeMemo === Constants.mode.MEDIA) && filesMode === Constants.fileView.mode.THUMBNAILS ?
                 (<FilesGrid rows={rows} totalCount={totalCount} isLoading={loading}/>) :
-                (<ContentTable pickerConfig={pickerConfig}
-                               path={path}
+                (<ContentTable path={path}
                                rows={rows}
                                isStructured={isStructured}
                                isLoading={loading}

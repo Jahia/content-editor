@@ -14,9 +14,6 @@ export const registerPagePicker = registry => {
             dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalPageTitle',
             displayTree: false
         },
-        pickerTable: {
-            columns: ['name', 'lastModified']
-        },
         searchContentType: 'jnt:page',
         selectableTypesTable: ['jnt:page']
     }));
@@ -31,7 +28,8 @@ export const registerPagePicker = registry => {
             getSearchContextData: getPagesSearchContextData,
             tableConfig: {
                 queryHandler: PickerTreeQueryHandler,
-                defaultSort: {orderBy: ''}
+                defaultSort: {orderBy: ''},
+                columns: ['name', 'lastModified']
             }
         }, renderer);
     }
