@@ -127,6 +127,7 @@ export const ContentEditorRoute = ({mode, uuid, lang, contentType, name}) => {
                        uilang={uilang}
                        site={site}
                        contentType={contentType}
+                       count={0}
                        envProps={envProps}/>
     );
 };
