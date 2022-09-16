@@ -11,7 +11,7 @@ import {Constants} from '~/ContentEditor.constants';
 import {buildFlatFieldObject} from './field.utils';
 import {DisplayAction, registry} from '@jahia/ui-extender';
 import {contentEditorHelper} from './contentEditorHelper';
-import {useContentEditorContext, useContentEditorSectionContext} from '~/contexts';
+import {useContentEditorConfigContext, useContentEditorContext, useContentEditorSectionContext} from '~/contexts';
 import {useApolloClient} from '@apollo/react-hooks';
 import {getButtonRenderer} from '~/utils';
 import {useFormikContext} from 'formik';
@@ -27,6 +27,7 @@ export const Field = ({inputContext, idInput, selectorType, field}) => {
     const {t} = useTranslation('content-editor');
     const formik = useFormikContext();
     const editorContext = useContentEditorContext();
+    const editorConfigContext = useContentEditorConfigContext();
     const sectionsContext = useContentEditorSectionContext();
     const client = useApolloClient();
 
@@ -100,7 +101,7 @@ export const Field = ({inputContext, idInput, selectorType, field}) => {
         return () => {
             registeredOnChangeRef.current(undefined);
         };
-    }, []);
+    }, [editorConfigContext.count]);
 
     useEffect(() => {
         registeredOnChangeRef.current(currentValue);
