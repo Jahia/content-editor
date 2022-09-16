@@ -5,6 +5,7 @@ import {
     Dropdown,
     getComponent,
     getComponentByAttr,
+    getComponentByRole,
     getComponentBySelector,
     SecondaryNav,
     Table
@@ -41,6 +42,10 @@ export class Picker extends BaseComponent {
 
         // Make sure dialog is open before returning viewMode
         return this && this.viewMode;
+    }
+
+    getRefreshButton() {
+        return getComponentByRole(Button, 'refresh');
     }
 
     getAccordion(): Accordion {
