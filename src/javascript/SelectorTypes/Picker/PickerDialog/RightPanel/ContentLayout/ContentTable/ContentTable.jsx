@@ -65,8 +65,9 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
     const field = useFieldContext();
     const dispatch = useDispatch();
 
-    const {mode, pickerKey, path, pagination, searchTerm, openPaths, sort} = useSelector(state => ({
+    const {mode, preSearchModeMemo, pickerKey, path, pagination, searchTerm, openPaths, sort} = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
+        preSearchModeMemo: state.contenteditor.picker.preSearchModeMemo,
         pickerKey: state.contenteditor.picker.pickerKey,
         path: state.contenteditor.picker.path,
         pagination: state.contenteditor.picker.pagination,
@@ -80,11 +81,13 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
         return !isStructured && Constants.mode.SEARCH !== mode && (['jnt:folder', 'jnt:contentFolder'].indexOf(nodeType) !== -1);
     };
 
+    const previousMode = mode === Constants.mode.SEARCH ? preSearchModeMemo : mode;
+    const previousModeTableConfig = registry.get('accordionItem', previousMode)?.tableConfig;
     const tableConfig = registry.get('accordionItem', mode)?.tableConfig;
 
     const columns = useMemo(() => {
         const flattenRows = isStructured ? flattenTree(rows) : rows;
-        const colNames = tableConfig?.columns || defaultCols;
+        const colNames = previousModeTableConfig?.columns || defaultCols;
         const columns = colNames.map(c => (typeof c === 'string') ? allColumnData.find(col => col.id === c) : c);
         const multiple = field.multiple && flattenRows.some(r => r.isSelectable);
         columns.splice((columns[0].id === 'publicationStatus') ? 1 : 0, 0, allColumnData.find(col => col.id === 'selection'));
@@ -92,8 +95,8 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
 
         return columns
             .filter(c => multiple || c.id !== SELECTION_COLUMN_ID)
-            .filter(c => tableConfig?.contextualMenu || c.id !== 'visibleActions');
-    }, [field.multiple, tableConfig, rows, isStructured]);
+            .filter(c => previousModeTableConfig?.contextualMenu || c.id !== 'visibleActions');
+    }, [field.multiple, previousModeTableConfig, rows, isStructured]);
     const {
         getTableProps,
         getTableBodyProps,
@@ -216,9 +219,9 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
                                           }}
                                           onDoubleClick={() => allowDoubleClickNavigation(node.primaryNodeType.name) && doubleClickNavigation(node)}
                                 >
-                                    {tableConfig.contextualMenu && <ContextualMenu
+                                    {previousModeTableConfig.contextualMenu && <ContextualMenu
                                         setOpenRef={contextualMenus.current[node.path]}
-                                        actionKey={tableConfig.contextualMenu}
+                                        actionKey={previousModeTableConfig.contextualMenu}
                                         path={node.path}
                                     />}
                                     {row.cells.map(cell => <React.Fragment key={cell.column.id}>{cell.render('Cell')}</React.Fragment>)}
