@@ -117,6 +117,12 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
                 setEditorConfig(false);
             }
         },
+        onCreateAnother: () => {
+            setEditorConfig({
+                ...editorConfig,
+                count: (editorConfig.count || 0) + 1
+            });
+        },
         switchLanguageCallback: language => {
             setEditorConfig({
                 ...editorConfig,
@@ -170,6 +176,7 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
                            site={editorConfig.site}
                            contentType={editorConfig.contentType}
                            name={editorConfig.name}
+                           count={editorConfig.count || 0}
                            envProps={envProps}
             />
         </Dialog>
@@ -191,6 +198,7 @@ ContentEditorModal.propTypes = {
         onClosedCallback: PropTypes.func,
         useFormDefinition: PropTypes.func,
         dialogProps: PropTypes.object,
+        count: PropTypes.number,
         layout: PropTypes.object,
         useConfirmationDialog: PropTypes.bool
     }).isRequired,

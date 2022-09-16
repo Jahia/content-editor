@@ -50,6 +50,9 @@ const Create = ({createAnother, render: Render, loading: Loading, ...otherProps}
                             formik.resetForm({values: formData.initialValues});
                             resetI18nContext();
                             setClicked(false);
+                            if (envProps.onCreateAnother) {
+                                envProps.onCreateAnother();
+                            }
                         });
                     } else {
                         formik.resetForm({values: formik.values});
