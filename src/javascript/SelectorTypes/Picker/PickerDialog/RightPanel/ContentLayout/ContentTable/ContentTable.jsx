@@ -96,7 +96,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
         return columns
             .filter(c => multiple || c.id !== SELECTION_COLUMN_ID)
             .filter(c => previousModeTableConfig?.contextualMenu || c.id !== 'visibleActions');
-    }, [field.multiple, tableConfig, previousModeTableConfig, rows, isStructured]);
+    }, [field.multiple, previousModeTableConfig, rows, isStructured]);
     const {
         getTableProps,
         getTableBodyProps,
