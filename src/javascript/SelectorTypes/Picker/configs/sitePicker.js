@@ -8,6 +8,17 @@ import React from 'react';
 import {reactTable} from '@jahia/jcontent';
 import {NoIconPickerCaption} from '~/SelectorTypes/Picker/configs/NoIconPickerCaption';
 
+const nameColumn = {
+    id: 'name',
+    accessor: 'displayName',
+    label: 'jcontent:label.contentManager.listColumns.name',
+    sortable: true,
+    property: 'displayName',
+    Cell: reactTable.CellNameNoIcon,
+    Header: reactTable.Header,
+    width: '300px'
+};
+
 export const registerSitePicker = registry => {
     registry.add(Constants.pickerConfig, 'site', mergeDeep({}, ContentPickerConfig, {
         searchContentType: 'jnt:virtualsite',
@@ -22,7 +33,7 @@ export const registerSitePicker = registry => {
             displaySiteSwitcher: false
         },
         selectionTable: {
-            columns: ['name']
+            columns: [nameColumn]
         }
     }));
 
@@ -35,16 +46,7 @@ export const registerSitePicker = registry => {
         tableConfig: {
             queryHandler: PickerBaseQueryHandler,
             defaultSort: {orderBy: 'displayName', order: 'ASC'},
-            columns: [{
-                id: 'name',
-                accessor: 'displayName',
-                label: 'jcontent:label.contentManager.listColumns.name',
-                sortable: true,
-                property: 'displayName',
-                Cell: reactTable.CellNameNoIcon,
-                Header: reactTable.Header,
-                width: '300px'
-            }]
+            columns: [nameColumn]
         }
     }, renderer);
 };
