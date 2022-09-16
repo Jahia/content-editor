@@ -95,7 +95,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
 
         return columns
             .filter(c => multiple || c.id !== SELECTION_COLUMN_ID)
-            .filter(c => tableConfig?.contextualMenu || c.id !== 'visibleActions');
+            .filter(c => previousModeTableConfig?.contextualMenu || c.id !== 'visibleActions');
     }, [field.multiple, tableConfig, previousModeTableConfig, rows, isStructured]);
     const {
         getTableProps,
@@ -219,9 +219,9 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
                                           }}
                                           onDoubleClick={() => allowDoubleClickNavigation(node.primaryNodeType.name) && doubleClickNavigation(node)}
                                 >
-                                    {tableConfig.contextualMenu && <ContextualMenu
+                                    {previousModeTableConfig.contextualMenu && <ContextualMenu
                                         setOpenRef={contextualMenus.current[node.path]}
-                                        actionKey={tableConfig.contextualMenu}
+                                        actionKey={previousModeTableConfig.contextualMenu}
                                         path={node.path}
                                     />}
                                     {row.cells.map(cell => <React.Fragment key={cell.column.id}>{cell.render('Cell')}</React.Fragment>)}
