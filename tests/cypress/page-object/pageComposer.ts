@@ -101,6 +101,32 @@ export class PageComposer extends BasePage {
         });
         return new ContentEditor();
     }
+
+    createPage(title: string): ContentEditor {
+        const ce = new ContentEditor();
+        cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
+            cy.get('#JahiaGxtPagesTab').contains('Home').rightclick({force: true});
+            cy.get('.pagesContextMenuAnthracite').contains('New page').click({force: true});
+        });
+
+        cy.get('#jnt\\:page_jcr\\:title').should('be.visible').type(title);
+        cy.get('#nt\\:base_ce\\:systemName').should('be.visible').type(title);
+        cy.get('#select-jnt\\:page_j\\:templateName').should('be.visible')
+            .click()
+            .find('li[role="option"][data-value="home"]')
+            .click();
+
+        ce.saveUnchecked();
+        return ce;
+    }
+
+    navigateToPage(name: string): PageComposer {
+        cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
+            cy.get('#JahiaGxtPagesTab').contains(name).click({force: true});
+        });
+
+        return new PageComposer();
+    }
 }
 
 export class ContentTypeSelector extends BaseComponent {
