@@ -123,6 +123,13 @@ const requiredFieldValidation = (values, field) => {
     }
 };
 
+const systemNameValidation = (values, field) => {
+    const regex = /[@#$%^&*€§¢ª¶ø°£™¥‰œæÀ-ž]|-$|-{2,}/g;
+    if (field.name === 'nt:base_ce:systemName' && regex.test(values[field.name])) {
+        return 'invalidSystemName';
+    }
+};
+
 export const validate = sections => {
     return values => {
         return sections.reduce((errors, section) => {
@@ -140,7 +147,8 @@ export const validate = sections => {
                         dateFieldValidation(values, field) ||
                         colorFieldValidation(values, field) ||
                         patternFieldValidation(values, field) ||
-                        maxLengthFieldValidation(values, field)
+                        maxLengthFieldValidation(values, field) ||
+                        systemNameValidation(values, field)
                     );
 
                     if (fieldError) {
