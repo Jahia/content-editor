@@ -1,5 +1,6 @@
 import {contentTypes} from '../../fixtures/pickers/contentTypes';
 import {PageComposer} from '../../page-object/pageComposer';
+import gql from "graphql-tag";
 
 describe('Picker - Editorial link', () => {
     const siteKey = 'digitall';
@@ -7,18 +8,45 @@ describe('Picker - Editorial link', () => {
 
     // Helper
 
+    const createNavText = () => {
+        // verify nav text is displayed
+        cy.apollo({mutation: gql`
+                mutation addNavText {
+                    jcr {
+                        mutateNode(pathOrId: "/sites/digitall/home/about") {
+                            addChild(name: "navMenuText", primaryNodeType: "jnt:navMenuText", properties: [
+                                { name: "jcr:title", language: "en", value: "navMenuText" }
+                            ]) {uuid}
+                        }
+                    }
+                }
+            `});
+    }
+
+    const deleteNavText = () => {
+        cy.apollo({mutation: gql`
+                mutation deleteNavText {
+                    jcr {
+                        content: deleteNode(pathOrId: "/sites/digitall/home/about/navMenuText")
+                    }
+                }
+            `});
+    }
+
     // setup
 
     beforeEach(() => {
         cy.login();
         pageComposer = PageComposer.visit(siteKey, 'en', 'home.html');
+        createNavText();
     });
 
     afterEach(() => {
+        deleteNavText();
         cy.logout();
     });
 
-    it('should display editorial link picker', () => {
+    it.only('should display editorial link picker', () => {
         const contentType = contentTypes.editoriallinkpicker;
         const picker = pageComposer
             .createContent(contentType.typeName)
@@ -35,6 +63,7 @@ describe('Picker - Editorial link', () => {
             .should('be.visible')
             .and('have.class', 'moonstone-selected'); // default selected
 
+
         // Select pages tab; verify types
         cy.log('Verify content types in pages tab');
         picker
@@ -48,6 +77,7 @@ describe('Picker - Editorial link', () => {
                 expect(allTypes).to.contain('Page');
                 expect(allTypes).to.contain('Company');
                 expect(allTypes).to.contain('Person portrait');
+                expect(allTypes).to.contain('Navigation menu - Text (separator)');
             });
 
         // Select content tab; verify types
