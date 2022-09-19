@@ -151,6 +151,7 @@
           "invalidDate": "La date est mal formatée",
           "invalidColor": "Veuillez fournir un code couleur valide",
           "invalidPattern": "La valeur ne correspond pas aux contraintes définies dans le fichier de définition des types de contenu.",
+          "invalidSystemName": "Le nom système ne peut démarrer ou finir par ‘-’, il ne put aussi contenir les caractères suivants ‘@#$%^&*’ ou des caractères diacritiques tels que ‘à’",
           "required": "",
           "alreadyExist": "Il y a déjà un objet avec ce nom système, veuillez en choisir un autre",
           "maxLength": "{{selectorOptions.maxLength}} caractères maximum",
