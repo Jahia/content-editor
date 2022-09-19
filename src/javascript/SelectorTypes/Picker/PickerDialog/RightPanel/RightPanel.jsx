@@ -7,7 +7,7 @@ import {shallowEqual, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import ContentLayout from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout';
 import clsx from 'clsx';
-import {DisplayActions, registry} from '@jahia/ui-extender';
+import {DisplayAction, DisplayActions, registry} from '@jahia/ui-extender';
 import {getButtonRenderer} from '~/utils';
 import {SelectionCaption, SelectionTable} from './PickerSelection';
 import {Search} from './Search';
@@ -46,6 +46,7 @@ const RightPanel = ({pickerConfig, accordionItemProps, onClose, onItemSelection}
                     {mode !== '' && jcontentUtils.booleanValue(pickerConfig.pickerDialog.displaySearch) && <Search pickerConfig={pickerConfig}/>}
                     <div className="flexFluid"/>
                     <DisplayActions target={actionsTarget} render={ButtonRenderer} path={path}/>
+                    <DisplayAction actionKey="refresh" render={ButtonRenderer}/>
                     {viewSelector}
                 </div>
             </header>
