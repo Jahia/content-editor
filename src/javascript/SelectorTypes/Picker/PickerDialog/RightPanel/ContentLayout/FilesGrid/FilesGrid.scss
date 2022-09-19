@@ -1,39 +1,30 @@
 .grid.grid {
     display: flex;
     flex: 1 1 0;
-    padding: var(--spacing-small);
 
     outline: none;
-    overflow-y: auto;
-    overflow-x: hidden;
-
-    background-color: var(--color-gray_light);
+    overflow: hidden;
 }
 
 .gridEmpty.gridEmpty {
     flex: 1 1 0;
     margin: 0 !important;
-
-    background-color: var(--color-gray_light);
 }
 
 .defaultGrid.defaultGrid {
     display: grid;
     flex: 1;
     gap: var(--spacing-medium);
-    justify-content: start;
-    align-content: start;
-    align-items: start;
-    margin: var(--spacing-small);
 
-    background-color: var(--color-gray_light);
     box-shadow: none;
-    justify-items: stretch;
 }
 
 .detailedGrid.detailedGrid {
-    grid-auto-rows: 360px;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 350px));
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    padding: 0 var(--spacing-medium) var(--spacing-medium);
 }
 
 .empty.empty {
