@@ -46,7 +46,7 @@ describe('Picker - Editorial link', () => {
         cy.logout();
     });
 
-    it.only('should display editorial link picker', () => {
+    it('should display editorial link picker', () => {
         const contentType = contentTypes.editoriallinkpicker;
         const picker = pageComposer
             .createContent(contentType.typeName)
