@@ -8,14 +8,14 @@ export const PickerEditorialLinkQueryHandler = {
         const treeParams = PickerTreeQueryHandler.getTreeParams(options);
 
         if (options.tableView.viewType === Constants.tableView.type.PAGES) {
-            treeParams.openableTypes = ['jnt:page'];
+            treeParams.openableTypes = ['jnt:page', 'jnt:navMenuText'];
             treeParams.selectableTypes = ['jnt:page', 'jmix:mainResource'];
         } else { // Content
             treeParams.openableTypes = ['jnt:contentFolder'];
             treeParams.selectableTypes = ['jmix:mainResource'];
         }
 
-        treeParams.recursionTypesFilter = {multi: 'NONE', types: ['jnt:contentFolder', 'jnt:page', 'jnt:folder']};
+        treeParams.recursionTypesFilter = {multi: 'NONE', types: ['jnt:contentFolder', 'jnt:page', 'jnt:folder', 'jnt:navMenuText']};
 
         return treeParams;
     }
