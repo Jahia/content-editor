@@ -37,14 +37,17 @@ const NodeDataFragment = {
                     name
                 }
                 parent {
+                    ...NodeCacheRequiredFields
                     displayName(language: $language)
                     path
                 }
                 children(typesFilter:{types: $childrenFilterTypes}) {
                     nodes {
+                        ...NodeCacheRequiredFields
                         name
                         displayName(language: $language)
                         primaryNodeType {
+                            name
                             displayName(language: $language)
                             icon
                         }

@@ -56,6 +56,7 @@ export const ContentDialogPickerQuery = gql`
                         }
                         metadata: children(names: ["jcr:content"]) {
                             nodes {
+                                ...NodeCacheRequiredFields
                                 mimeType: property(name: "jcr:mimeType") {
                                     value
                                 }
@@ -109,6 +110,7 @@ export const SearchContentDialogPickerQuery = gql`
                     displayName(language: $language)
                     name
                     primaryNodeType {
+                        name
                         typeName: displayName(language: $language)
                         icon
                     }
@@ -130,6 +132,7 @@ export const SearchContentDialogPickerQuery = gql`
                     }
                     metadata: children(names: ["jcr:content"]) {
                         nodes {
+                            ...NodeCacheRequiredFields
                             mimeType: property(name: "jcr:mimeType") {
                                 value
                             }
