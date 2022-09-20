@@ -155,7 +155,7 @@
           "invalidDate": "Please provide a valid date value",
           "invalidColor": "Please provide a valid color code",
           "invalidPattern": "The value does not match the constraints defined in the content type definitions file.",
-          "invalidSystemName": "System name cannot start and end with '-' or consist of special characters such as '@#$%^&*' or diacritics such as 'à'",
+          "invalidSystemName": "System name cannot consist of special characters such as '@#$%^&*' or diacritics such as 'à'",
           "required": "",
           "alreadyExist": "An item with the same system name already exists, please choose another one.",
           "maxLength": "{{selectorOptions.maxLength}} characters maximum",

@@ -43,7 +43,7 @@ describe('System name test', () => {
 
         cy.get('div[data-sel-content-editor-fields-group="Content"]').scrollIntoView();
 
-        cy.get('#nt\\:base_ce\\:systemName').should('be.visible').clear().type('anotherincorrectname-');
+        cy.get('#nt\\:base_ce\\:systemName').should('be.visible').clear().type('anotherin^correctname');
         ce.saveUnchecked();
         check();
     })
