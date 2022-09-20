@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
-import {FileCard, UploadTransformComponent} from '@jahia/jcontent';
+import {FileCard, UploadTransformComponent, FilesGridEmptyDropZone} from '@jahia/jcontent';
 import {Paper} from '@material-ui/core';
 import {TablePagination} from '@jahia/moonstone';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
@@ -48,7 +48,6 @@ export const FilesGrid = ({totalCount, rows, isLoading}) => {
     const field = useFieldContext();
     const onPreviewSelect = previewSelection => {
         const node = rows.find(value => value.path === previewSelection);
-        console.log('Selected ', previewSelection, node);
         const actions = [];
         if (!field.multiple) {
             actions.push(reduxActions.clearSelection());
@@ -70,8 +69,12 @@ export const FilesGrid = ({totalCount, rows, isLoading}) => {
         dispatch(batchActions(actions));
     };
 
-    if ((!rows || rows.length === 0) && isLoading) {
-        return null;
+    if ((!rows || rows.length === 0) && !isLoading) {
+        return (
+            <React.Fragment>
+                <FilesGridEmptyDropZone uploadType="upload" path={path}/>
+            </React.Fragment>
+        );
     }
 
     const tableConfig = registry.get('accordionItem', mode)?.tableConfig;
