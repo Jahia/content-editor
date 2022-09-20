@@ -30,6 +30,7 @@ import {
 import classes from './ContentTable.scss';
 import {ContextualMenu, registry} from '@jahia/ui-extender';
 import {useFieldContext} from '~/contexts/FieldContext';
+import clsx from 'clsx';
 
 const reduxActions = {
     onPreviewSelectAction: () => ({}),
@@ -208,7 +209,10 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
                                           {...rowProps}
                                           data-cm-role="table-content-list-row"
                                           data-sel-name={node.name}
-                                          className={!selectionProps.checked && className}
+                                          className={clsx({
+                                              [className]: !selectionProps.checked,
+                                              [classes.disabled]: isStructured && !node.isSelectable
+                                          })}
                                           isHighlighted={selectionProps.checked && !field.multiple}
                                           onClick={e => handleOnClick(e, row)}
                                           onContextMenu={event => {

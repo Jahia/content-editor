@@ -5,3 +5,8 @@
 .doubleClickableRow {
     cursor: grab;
 }
+
+.disabled [data-cm-role="table-content-list-cell-name"] [class*="moonstone-IconTextIcon"],
+.disabled [data-cm-role="table-content-list-cell-type"] {
+    color: var(--color-gray60);
+}
