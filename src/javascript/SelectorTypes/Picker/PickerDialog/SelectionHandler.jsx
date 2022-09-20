@@ -87,7 +87,16 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
 
         const selectedNode = nodesInfo.data && nodesInfo.data.jcr.nodesByPath.length > 0 && nodesInfo.data.jcr.nodesByPath[0];
 
-        const allAccordionItems = jcontentUtils.getAccordionItems(pickerConfig.key, accordionItemProps);
+        let allAccordionItems = jcontentUtils.getAccordionItems(pickerConfig.key, accordionItemProps);
+
+        if (allAccordionItems.length === 0 && pickerConfig.accordions !== undefined && pickerConfig.accordions.length > 0) {
+            allAccordionItems = [];
+            pickerConfig.accordions.forEach(value => {
+                const accordionItem = registry.get('accordionItem', value);
+                accordionItem.targets.push({id: pickerConfig.key, priority: 50});
+                allAccordionItems.push(jcontentUtils.getAccordionItem(accordionItem, accordionItemProps));
+            });
+        }
 
         let firstMatchingAccordion = allAccordionItems.find(accord =>
             (!accord.isEnabled || accord.isEnabled(newState.site)) &&
