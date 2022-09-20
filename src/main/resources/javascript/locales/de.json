@@ -151,6 +151,7 @@
           "invalidDate": "Bitte geben Sie ein gültiges Datum ein",
           "invalidColor": "Bitte geben Sie einen gültigen Farbcode an",
           "invalidPattern": "Die Eingabe entspricht nicht den Vorgaben der Content-Typ-Definition.",
+          "invalidSystemName": "Systemname darf nicht die folgenden Sonderzeichen enthalten: '@#$%^&*' oder Buchstaben mit Zeichen wie zB. 'à'",
           "required": "",
           "alreadyExist": "Ein Element mit demselben Systemnamen ist bereits vorhanden. Bitte wählen Sie ein anderes aus.",
           "maxLength": "Maximal {{selectorOptions.maxLength}} Zeichen.",

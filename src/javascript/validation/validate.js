@@ -124,7 +124,7 @@ const requiredFieldValidation = (values, field) => {
 };
 
 const systemNameValidation = (values, field) => {
-    const regex = /[@#$%^&*€§¢ª¶ø°£™¥‰œæÀ-ž]|-$|-{2,}/g;
+    const regex = /[@#$%^&*€§¢ª¶ø°£™¥‰œæÀ-ž]|-{2,}/g;
     if (field.name === 'nt:base_ce:systemName' && regex.test(values[field.name])) {
         return 'invalidSystemName';
     }

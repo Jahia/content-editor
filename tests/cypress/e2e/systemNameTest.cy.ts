@@ -23,7 +23,7 @@ describe('System name test', () => {
         const check = function() {
             cy.get('p').contains('Your content couldn’t be saved');
             getComponentByRole(Button, 'content-type-dialog-cancel').click();
-            cy.get('p').contains('System name cannot start and end with');
+            cy.get('p').contains('System name cannot consist of');
         };
 
         const ce = pageComposer.createPage('list\'asasa\'an@##$%#$%@#%');
@@ -43,7 +43,7 @@ describe('System name test', () => {
 
         cy.get('div[data-sel-content-editor-fields-group="Content"]').scrollIntoView();
 
-        cy.get('#nt\\:base_ce\\:systemName').should('be.visible').clear().type('anotherincorrectname-');
+        cy.get('#nt\\:base_ce\\:systemName').should('be.visible').clear().type('anotherin^correctname');
         ce.saveUnchecked();
         check();
     })
