@@ -8,12 +8,14 @@ const getTreeOfContentQuery = `forms {
                 label
                 iconURL
                 nodeType {
+                    name
                     mixin
                 }
                 children {
                     id
                     name
                     nodeType {
+                        name
                         mixin
                     }
                     parent {
