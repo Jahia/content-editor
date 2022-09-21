@@ -1,6 +1,6 @@
 import {contentTypes} from '../../fixtures/pickers/contentTypes';
 import {PageComposer} from '../../page-object/pageComposer';
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 describe('Picker - Editorial link', () => {
     const siteKey = 'digitall';
@@ -9,7 +9,7 @@ describe('Picker - Editorial link', () => {
     // Helper
 
     const createNavText = () => {
-        // verify nav text is displayed
+        // Verify nav text is displayed
         cy.apollo({mutation: gql`
                 mutation addNavText {
                     jcr {
@@ -21,7 +21,7 @@ describe('Picker - Editorial link', () => {
                     }
                 }
             `});
-    }
+    };
 
     const deleteNavText = () => {
         cy.apollo({mutation: gql`
@@ -31,9 +31,9 @@ describe('Picker - Editorial link', () => {
                     }
                 }
             `});
-    }
+    };
 
-    // setup
+    // Setup
 
     beforeEach(() => {
         cy.login();
@@ -61,8 +61,7 @@ describe('Picker - Editorial link', () => {
             .should('be.visible');
         picker.getTab('pages')
             .should('be.visible')
-            .and('have.class', 'moonstone-selected'); // default selected
-
+            .and('have.class', 'moonstone-selected'); // Default selected
 
         // Select pages tab; verify types
         cy.log('Verify content types in pages tab');
@@ -108,15 +107,15 @@ describe('Picker - Editorial link', () => {
         picker.getTable().getRowByName('news-entry').expand().should('be.visible');
         picker.getTable().getRowByName('all-organic-foods-network-gains').should('be.visible').click();
 
-        picker.selectTab('content'); // switch tabs
+        picker.selectTab('content'); // Switch tabs
         picker.select();
 
-        cy.log('verify tab is restored and selection is expanded')
+        cy.log('verify tab is restored and selection is expanded');
         contentEditor.getPickerField(contentType.fieldNodeType, contentType.multiple).open();
         picker.getTab('pages').should('have.class', 'moonstone-selected');
         picker.getTable().getRowByName('all-organic-foods-network-gains').get().scrollIntoView();
         picker.getTable().getRowByName('all-organic-foods-network-gains')
-            .should('be.visible') // expanded
-            .and('have.class', 'moonstone-TableRow-highlighted') // selected
-    })
+            .should('be.visible') // Expanded
+            .and('have.class', 'moonstone-TableRow-highlighted'); // Selected
+    });
 });

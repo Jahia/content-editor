@@ -6,21 +6,21 @@ describe('System name test', () => {
     let pageComposer: PageComposer;
 
     before(function () {
-        cy.executeGroovy('createSite.groovy', { SITEKEY: site })
-        cy.login()
-    })
+        cy.executeGroovy('createSite.groovy', {SITEKEY: site});
+        cy.login();
+    });
 
     after(function () {
-        cy.logout()
-        cy.executeGroovy('deleteSite.groovy', { SITEKEY: site })
-    })
+        cy.logout();
+        cy.executeGroovy('deleteSite.groovy', {SITEKEY: site});
+    });
 
     beforeEach(function () {
         pageComposer = PageComposer.visit(site, 'en', 'home.html');
-    })
+    });
 
     it('Cannot save with invalid system name', function () {
-        const check = function() {
+        const check = function () {
             cy.get('p').contains('Your content couldn’t be saved');
             getComponentByRole(Button, 'content-type-dialog-cancel').click();
             cy.get('p').contains('System name cannot consist of');
@@ -46,5 +46,5 @@ describe('System name test', () => {
         cy.get('#nt\\:base_ce\\:systemName').should('be.visible').clear().type('anotherin^correctname');
         ce.saveUnchecked();
         check();
-    })
-})
+    });
+});

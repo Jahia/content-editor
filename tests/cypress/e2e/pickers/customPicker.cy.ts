@@ -2,7 +2,7 @@ import {contentTypes} from '../../fixtures/pickers/contentTypes';
 import {assertUtils} from '../../utils/assertUtils';
 import {AccordionItem} from '../../page-object/accordionItem';
 import {JContent} from '../../page-object/jcontent';
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 describe('Picker tests', () => {
     const siteKey = 'digitall';
@@ -95,5 +95,4 @@ describe('Picker tests', () => {
                 expect(texts.sort()).to.deep.eq(['content-folder1', 'loc 1', 'loc 2', 'loc 3']);
             });
     });
-
 });

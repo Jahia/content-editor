@@ -72,7 +72,7 @@ describe('Picker multiple ests', () => {
         const mediaAccordion: AccordionItem = picker.getAccordionItem('picker-media');
         assertUtils.isVisible(mediaAccordion.getHeader());
         picker.wait();
-        picker.switchViewMode('List')
+        picker.switchViewMode('List');
         cy.log('verify no selection caption is displayed');
         picker
             .getSelectionCaption()
@@ -138,9 +138,9 @@ describe('Picker multiple ests', () => {
             .getTable()
             .getRows()
             .get()
-            .then((elems) => {
-                const rowCount = elems.length
-                cy.log(`row count: ${rowCount}`)
+            .then(elems => {
+                const rowCount = elems.length;
+                cy.log(`row count: ${rowCount}`);
 
                 cy.log('test "select all"');
                 picker.getTable().getHeaderById('selection').click();
