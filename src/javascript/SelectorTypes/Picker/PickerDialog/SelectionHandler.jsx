@@ -87,7 +87,7 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
 
         const selectedNode = nodesInfo.data && nodesInfo.data.jcr.nodesByPath.length > 0 && nodesInfo.data.jcr.nodesByPath[0];
 
-        let allAccordionItems = jcontentUtils.getAccordionItems(pickerConfig.key, accordionItemProps);
+        const allAccordionItems = jcontentUtils.getAccordionItems(pickerConfig.key, accordionItemProps);
 
         let firstMatchingAccordion = allAccordionItems.find(accord =>
             (!accord.isEnabled || accord.isEnabled(newState.site)) &&

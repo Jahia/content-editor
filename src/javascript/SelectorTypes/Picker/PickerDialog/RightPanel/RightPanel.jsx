@@ -54,7 +54,7 @@ const RightPanel = ({pickerConfig, accordionItemProps, onClose, onItemSelection}
                 {mode !== '' && <ContentLayout pickerConfig={pickerConfig} accordionItemProps={accordionItemProps}/>}
             </div>
 
-            <SelectionTable selection={selection} expanded={selectionExpanded} pickerConfig={pickerConfig} accordionItemProps={accordionItemProps}/>
+            <SelectionTable selection={selection} expanded={selectionExpanded} pickerConfig={pickerConfig}/>
             <footer className={clsx('flexRow', 'alignCenter', css.footer)}>
                 <SelectionCaption selection={selection} pickerConfig={pickerConfig} expanded={selectionExpanded}/>
                 <div className={clsx('flexRow', css.actions)}>
