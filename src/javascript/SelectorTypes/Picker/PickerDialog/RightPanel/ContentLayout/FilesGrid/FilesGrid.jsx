@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import {FileCard, UploadTransformComponent, FilesGridEmptyDropZone} from '@jahia/jcontent';
@@ -20,6 +20,7 @@ import {getDetailedPathArray} from '~/SelectorTypes/Picker/Picker2.utils';
 import {batchActions} from 'redux-batched-actions';
 import {useFieldContext} from '~/contexts/FieldContext';
 import {registry} from '@jahia/ui-extender';
+import {jcontentUtils} from '@jahia/jcontent';
 
 const reduxActions = {
     setOpenPathAction: path => cePickerOpenPaths(getDetailedPathArray(path)),
@@ -32,7 +33,7 @@ const reduxActions = {
     clearSelection: () => cePickerClearSelection()
 };
 
-export const FilesGrid = ({totalCount, rows, isLoading}) => {
+export const FilesGrid = ({totalCount, rows, isLoading, accordionItemProps}) => {
     const {t} = useTranslation('jcontent');
     const {mode, pickerKey, path, pagination, siteKey, uilang, lang, selection} = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
@@ -46,6 +47,9 @@ export const FilesGrid = ({totalCount, rows, isLoading}) => {
     }), shallowEqual);
     const dispatch = useDispatch();
     const field = useFieldContext();
+    const tableConfig = useMemo(() => {
+        return jcontentUtils.getAccordionItem(registry.get('accordionItem', mode), accordionItemProps)?.tableConfig;
+    }, [mode, accordionItemProps]);
     const onPreviewSelect = previewSelection => {
         const node = rows.find(value => value.path === previewSelection);
         const actions = [];
@@ -76,8 +80,6 @@ export const FilesGrid = ({totalCount, rows, isLoading}) => {
             </React.Fragment>
         );
     }
-
-    const tableConfig = registry.get('accordionItem', mode)?.tableConfig;
 
     return (
         <>
@@ -128,7 +130,8 @@ export const FilesGrid = ({totalCount, rows, isLoading}) => {
 FilesGrid.propTypes = {
     isLoading: PropTypes.bool.isRequired,
     rows: PropTypes.array.isRequired,
-    totalCount: PropTypes.number.isRequired
+    totalCount: PropTypes.number.isRequired,
+    accordionItemProps: PropTypes.object
 };
 
 export default FilesGrid;

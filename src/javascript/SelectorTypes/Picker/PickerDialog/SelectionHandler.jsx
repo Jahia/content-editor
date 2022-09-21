@@ -89,15 +89,6 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
 
         let allAccordionItems = jcontentUtils.getAccordionItems(pickerConfig.key, accordionItemProps);
 
-        if (allAccordionItems.length === 0 && pickerConfig.accordions !== undefined && pickerConfig.accordions.length > 0) {
-            allAccordionItems = [];
-            pickerConfig.accordions.forEach(value => {
-                const accordionItem = registry.get('accordionItem', value);
-                accordionItem.targets.push({id: pickerConfig.key, priority: 50});
-                allAccordionItems.push(jcontentUtils.getAccordionItem(accordionItem, accordionItemProps));
-            });
-        }
-
         let firstMatchingAccordion = allAccordionItems.find(accord =>
             (!accord.isEnabled || accord.isEnabled(newState.site)) &&
             accord.canDisplayItem &&

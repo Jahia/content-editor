@@ -11,6 +11,7 @@ import clsx from 'clsx';
 import styles from './ContentLayout.scss';
 import {cePickerOpenPaths} from '~/SelectorTypes/Picker/Picker2.redux';
 import FilesGrid from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout/FilesGrid';
+import PropTypes from 'prop-types';
 
 const setRefetcher = (name, refetcherData) => {
     registry.addOrReplace('refetcher', name, refetcherData);
@@ -28,7 +29,7 @@ const getFilesMode = (state, pickerConfig) => {
     return state.contenteditor.picker.fileView.mode;
 };
 
-export const ContentLayoutContainer = ({pickerConfig}) => {
+export const ContentLayoutContainer = ({pickerConfig, accordionItemProps}) => {
     const {t} = useTranslation();
     const currentResult = useRef();
     const {mode, path, filesMode, preSearchModeMemo, viewType} = useSelector(state => ({
@@ -129,19 +130,21 @@ export const ContentLayoutContainer = ({pickerConfig}) => {
                 </div>
             )}
             {(mode === Constants.mode.MEDIA || preSearchModeMemo === Constants.mode.MEDIA) && filesMode === Constants.fileView.mode.THUMBNAILS ?
-                (<FilesGrid rows={rows} totalCount={totalCount} isLoading={loading}/>) :
+                (<FilesGrid rows={rows} totalCount={totalCount} isLoading={loading} accordionItemProps={accordionItemProps}/>) :
                 (<ContentTable path={path}
                                rows={rows}
                                isStructured={isStructured}
                                isLoading={loading}
                                totalCount={totalCount}
+                               accordionItemProps={accordionItemProps}
                 />)}
         </div>
     );
 };
 
 ContentLayoutContainer.propTypes = {
-    pickerConfig: configPropType.isRequired
+    pickerConfig: configPropType.isRequired,
+    accordionItemProps: PropTypes.object
 };
 
 export default ContentLayoutContainer;
