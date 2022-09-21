@@ -1,8 +1,3 @@
-export const limitSystemNameIfNecessary = (currentValue, field) => {
-    const maxLength = field.selectorOptions.find(option => option.name === 'maxLength')?.value;
-    return maxLength ? currentValue?.substring(0, maxLength) : currentValue;
-};
-
 const mapSpecialCharacter = {
     '€': 'e',
     '§': 'ss',
@@ -19,7 +14,8 @@ const mapSpecialCharacter = {
     æ: 'ae'
 };
 
-export const replaceSpecialCharacters = systemName => {
+export const replaceSpecialCharacters = (systemName, field) => {
+    const maxLength = field?.selectorOptions?.find(option => option.name === 'maxLength')?.value;
     if (systemName) {
         return systemName
             .toLowerCase()
@@ -30,10 +26,11 @@ export const replaceSpecialCharacters = systemName => {
             })
             .replace(/-+/g, '-')
             .replace(/^-/, '')
+            .substring(0, maxLength)
             .replace(/-$/, '');
     }
 };
 
 export const isEqualToSystemName = (title, systemName, field) => {
-    return limitSystemNameIfNecessary(replaceSpecialCharacters(title), field) === systemName;
+    return replaceSpecialCharacters(title, field) === systemName;
 };

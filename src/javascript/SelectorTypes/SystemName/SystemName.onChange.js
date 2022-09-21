@@ -1,5 +1,5 @@
 import {Constants} from '~/ContentEditor.constants';
-import {limitSystemNameIfNecessary, replaceSpecialCharacters} from './SystemName.utils';
+import {replaceSpecialCharacters} from './SystemName.utils';
 
 export const registerSystemNameOnChange = registry => {
     registry.add('selectorType.onChange', 'systemNameSync', {
@@ -34,8 +34,8 @@ export const registerSystemNameOnChange = registry => {
                 // I18nContext will be available only after language switch, see useSwitchLanguage for details
                 const canSync = editorContext.i18nContext?.memo?.systemNameLang === undefined || editorContext.i18nContext.memo.systemNameLang === editorContext.lang;
                 if (systemNameField && !systemNameField.readOnly && canSync) {
-                    const cleanedSystemName = replaceSpecialCharacters(currentValue);
-                    editorContext.formik.setFieldValue(Constants.systemName.name, limitSystemNameIfNecessary(cleanedSystemName, systemNameField));
+                    const cleanedSystemName = replaceSpecialCharacters(currentValue, systemNameField);
+                    editorContext.formik.setFieldValue(Constants.systemName.name, cleanedSystemName);
                     editorContext.formik.setFieldTouched(Constants.systemName.name, true, false);
                 }
             }

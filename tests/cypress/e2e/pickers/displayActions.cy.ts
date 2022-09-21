@@ -2,7 +2,7 @@ import {contentTypes} from '../../fixtures/pickers/contentTypes';
 import {assertUtils} from '../../utils/assertUtils';
 import {AccordionItem} from '../../page-object/accordionItem';
 import {JContent} from '../../page-object/jcontent';
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 describe('Picker tests', () => {
     const siteKey = 'digitall';
@@ -52,7 +52,7 @@ describe('Picker tests', () => {
         picker.getTable().getRowByName('test-loc1').get().should('be.visible').click();
 
         cy.log('add components in the background');
-        cy.apollo({mutation:gql`
+        cy.apollo({mutation: gql`
                 mutation addContent {
                     jcr {
                         addFolder: mutateNode(pathOrId: "/sites/digitall/contents") {
@@ -67,17 +67,16 @@ describe('Picker tests', () => {
                 }
             `});
 
-        cy.log('assert refresh works for nav tree and table and does not change selection on both')
+        cy.log('assert refresh works for nav tree and table and does not change selection on both');
         picker.getRefreshButton().click();
         picker.wait();
         contentAccordion.getTreeItem('ce-picker-custom-contents')
             .find('div').should('have.class', 'moonstone-selected');
-        contentAccordion.getTreeItem('refresh1').should('be.visible')
-        picker.getTable().getRowByName('refresh2').should('be.visible')
+        contentAccordion.getTreeItem('refresh1').should('be.visible');
+        picker.getTable().getRowByName('refresh2').should('be.visible');
         picker.getTable().getRowByName('test-loc1')
-            .should('be.visible') // expanded
-            .and('have.class', 'moonstone-TableRow-highlighted') // selected
-
+            .should('be.visible') // Expanded
+            .and('have.class', 'moonstone-TableRow-highlighted'); // Selected
 
         cy.apollo({mutation: gql`
                 mutation deleteContent {
@@ -85,5 +84,4 @@ describe('Picker tests', () => {
                 }
             `});
     });
-
 });

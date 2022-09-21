@@ -3,7 +3,7 @@ import React from 'react';
 import {FieldPropTypes} from '~/ContentEditor.proptypes';
 import {Text} from '~/SelectorTypes/Text';
 import {Constants} from '~/ContentEditor.constants';
-import {isEqualToSystemName, limitSystemNameIfNecessary, replaceSpecialCharacters} from './SystemName.utils';
+import {isEqualToSystemName, replaceSpecialCharacters} from './SystemName.utils';
 import {Button, Copy} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
 import styles from './SystemName.scss';
@@ -35,8 +35,7 @@ export const SystemName = ({field, value, id, editorContext, onChange, onBlur}) 
                     icon={<Copy/>}
                     isDisabled={field.readOnly || isEqualToSystemName(formik.values[titleField], value, field)}
                     onClick={() => {
-                        const cleanedSystemName = replaceSpecialCharacters(formik.values[titleField]);
-                        onChange(limitSystemNameIfNecessary(cleanedSystemName, field));
+                        onChange(replaceSpecialCharacters(formik.values[titleField], field));
                     }}
             />}
         </>
