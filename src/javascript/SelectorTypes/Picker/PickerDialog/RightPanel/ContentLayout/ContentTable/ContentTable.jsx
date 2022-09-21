@@ -31,6 +31,7 @@ import classes from './ContentTable.scss';
 import {ContextualMenu, registry} from '@jahia/ui-extender';
 import {useFieldContext} from '~/contexts/FieldContext';
 import clsx from 'clsx';
+import {jcontentUtils} from '@jahia/jcontent';
 
 const reduxActions = {
     onPreviewSelectAction: () => ({}),
@@ -61,7 +62,7 @@ const SELECTION_COLUMN_ID = 'selection';
 
 const defaultCols = ['publicationStatus', 'name', 'type', 'lastModified'];
 
-export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, isStructured}) => {
+export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, isStructured, accordionItemProps}) => {
     const {t} = useTranslation();
     const field = useFieldContext();
     const dispatch = useDispatch();
@@ -83,9 +84,12 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
     };
 
     const previousMode = mode === Constants.mode.SEARCH ? preSearchModeMemo : mode;
-    const previousModeTableConfig = registry.get('accordionItem', previousMode)?.tableConfig;
-    const tableConfig = registry.get('accordionItem', mode)?.tableConfig;
-
+    const previousModeTableConfig = useMemo(() => {
+        return jcontentUtils.getAccordionItem(registry.get('accordionItem', previousMode), accordionItemProps)?.tableConfig;
+    }, [previousMode, accordionItemProps]);
+    const tableConfig = useMemo(() => {
+        return jcontentUtils.getAccordionItem(registry.get('accordionItem', mode), accordionItemProps)?.tableConfig;
+    }, [mode, accordionItemProps]);
     const columns = useMemo(() => {
         const flattenRows = isStructured ? flattenTree(rows) : rows;
         const colNames = previousModeTableConfig?.columns || defaultCols;
@@ -256,7 +260,8 @@ ContentTable.propTypes = {
     isLoading: PropTypes.bool,
     isStructured: PropTypes.bool,
     rows: PropTypes.array.isRequired,
-    totalCount: PropTypes.number.isRequired
+    totalCount: PropTypes.number.isRequired,
+    accordionItemProps: PropTypes.object
 };
 
 export default ContentTable;

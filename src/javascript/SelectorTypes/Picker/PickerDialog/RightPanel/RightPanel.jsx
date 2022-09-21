@@ -51,7 +51,7 @@ const RightPanel = ({pickerConfig, accordionItemProps, onClose, onItemSelection}
                 </div>
             </header>
             <div className={clsx('flexFluid', 'flexCol_nowrap', css.body)}>
-                {mode !== '' && <ContentLayout pickerConfig={pickerConfig}/>}
+                {mode !== '' && <ContentLayout pickerConfig={pickerConfig} accordionItemProps={accordionItemProps}/>}
             </div>
 
             <SelectionTable selection={selection} expanded={selectionExpanded} pickerConfig={pickerConfig}/>

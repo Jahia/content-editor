@@ -138,7 +138,7 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
                     editorContext={editorContext}
                     pickerConfig={pickerConfig}
                     initialSelectedItem={fieldData && fieldData.map(f => f.path)}
-                    accordionItemProps={parsedOptions.accordionItem}
+                    accordionItemProps={mergeDeep({}, pickerConfig.accordionItem, parsedOptions.accordionItem)}
                     onClose={() => setDialogOpen(false)}
                     onItemSelection={onItemSelection}
                 />
