@@ -26,25 +26,7 @@ describe('System name test', () => {
             cy.get('p').contains('System name cannot consist of');
         };
 
-        const ce = pageComposer.createPage('list\'asasa\'an@##$%#$%@#%');
-        check();
-
-        cy.get('div[data-sel-content-editor-fields-group="Content"]').scrollIntoView();
-
-        cy.get('#nt\\:base_ce\\:systemName').should('be.visible').clear().type('another--incorrectname');
-        ce.saveUnchecked();
-        check();
-
-        cy.get('div[data-sel-content-editor-fields-group="Content"]').scrollIntoView();
-
-        cy.get('#nt\\:base_ce\\:systemName').should('be.visible').clear().type('anotheràincorrectname');
-        ce.saveUnchecked();
-        check();
-
-        cy.get('div[data-sel-content-editor-fields-group="Content"]').scrollIntoView();
-
-        cy.get('#nt\\:base_ce\\:systemName').should('be.visible').clear().type('anotherin^correctname');
-        ce.saveUnchecked();
+        pageComposer.createPage('list\'asasa\'an@##$%#$%@#%');
         check();
     });
 });
