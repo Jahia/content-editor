@@ -1,6 +1,4 @@
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
-import {mergeDeep} from '~/SelectorTypes/Picker/Picker2.utils';
-import {ContentPickerConfig} from '~/SelectorTypes/Picker/configs/ContentPickerConfig';
 import {getPagesSearchContextData} from '~/SelectorTypes/Picker/configs/getPagesSearchContextData';
 import {transformQueryHandler} from '~/SelectorTypes/Picker/configs/queryHandlers';
 import {renderer} from '~/SelectorTypes/Picker/configs/renderer';
@@ -21,10 +19,10 @@ const viewModeSelectorProps = {
 const PickerContentsFolderQueryHandler = transformQueryHandler(ContentFoldersQueryHandler);
 
 export const registerEditorialPicker = registry => {
-    registry.add(Constants.pickerConfig, 'editorial', mergeDeep({}, ContentPickerConfig, {
+    registry.add(Constants.pickerConfig, 'editorial', {
         searchContentType: 'jmix:searchable',
         selectableTypesTable: ['jnt:page', 'jnt:contentList', 'jnt:contentFolder', 'jmix:siteContent', 'jmix:editorialContent']
-    }));
+    });
 
     // These are jcontent accordion items, additional targets are added to enhance selection
     const pagesItem = registry.get(Constants.ACCORDION_ITEM_NAME, Constants.ACCORDION_ITEM_TYPES.PAGES);

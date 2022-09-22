@@ -31,7 +31,10 @@ const usePickerInputData = uuids => {
     return {fieldData, error, loading};
 };
 
-export const ContentPickerConfig = {
+export const DefaultPickerConfig = {
+    searchContentType: 'jmix:searchable',
+    selectableTypesTable: ['jnt:content', 'jnt:file', 'jnt:page', 'jmix:navMenuItem'],
+    showOnlyNodesWithTemplates: false,
     pickerInput: {
         emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalTitle',
         notFoundLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.notFoundContent',

@@ -17,7 +17,11 @@ export default function () {
             registeredPickerConfigurations.forEach(pickerConfig => {
                 pickerConfig.accordions?.forEach(value => {
                     const accordionItem = registry.get('accordionItem', value);
-                    accordionItem.targets.push({id: pickerConfig.key, priority: 50});
+                    if (accordionItem.targets) {
+                        accordionItem.targets.push({id: pickerConfig.key, priority: 50});
+                    } else {
+                        accordionItem.targets = [{id: pickerConfig.key, priority: 50}];
+                    }
                 });
             });
             // Update actions targets

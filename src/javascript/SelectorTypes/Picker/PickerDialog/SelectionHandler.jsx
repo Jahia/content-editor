@@ -59,7 +59,7 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
 
     accordion = jcontentUtils.getAccordionItem(accordion, accordionItemProps);
 
-    const fragments = accordion?.tableConfig?.queryHandler?.getFragments() || [];
+    const fragments = [...(accordion?.tableConfig?.queryHandler?.getFragments() || []), ...(accordion?.tableConfig?.fragments || [])];
     const selectionQuery = replaceFragmentsInDocument(GET_PICKER_NODE, fragments);
     const nodesInfo = useQuery(selectionQuery, {
         variables: {
@@ -79,7 +79,7 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
 
     const previousState = useRef(state);
     useEffect(() => {
-        if (currentFolderInfo.loading || nodesInfo.loading || state.mode === Constants.mode.SEARCH) {
+        if (currentFolderInfo.loading || nodesInfo.loading || state.mode === Constants.mode.SEARCH || !currentFolderInfo.node) {
             return;
         }
 

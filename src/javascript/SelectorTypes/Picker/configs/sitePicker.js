@@ -1,6 +1,4 @@
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
-import {mergeDeep} from '~/SelectorTypes/Picker/Picker2.utils';
-import {ContentPickerConfig} from '~/SelectorTypes/Picker/configs/ContentPickerConfig';
 import {SiteWeb} from '@jahia/moonstone';
 import {PickerBaseQueryHandler} from '~/SelectorTypes/Picker/configs/queryHandlers';
 import {renderer} from '~/SelectorTypes/Picker/configs/renderer';
@@ -20,7 +18,7 @@ const nameColumn = {
 };
 
 export const registerSitePicker = registry => {
-    registry.add(Constants.pickerConfig, 'site', mergeDeep({}, ContentPickerConfig, {
+    registry.add(Constants.pickerConfig, 'site', {
         searchContentType: 'jnt:virtualsite',
         selectableTypesTable: ['jnt:virtualsite'],
         pickerCaptionComponent: NoIconPickerCaption,
@@ -35,7 +33,7 @@ export const registerSitePicker = registry => {
         selectionTable: {
             columns: [nameColumn]
         }
-    }));
+    });
 
     registry.add(Constants.ACCORDION_ITEM_NAME, `picker-${Constants.ACCORDION_ITEM_TYPES.SITE}`, {
         targets: ['site:60'],

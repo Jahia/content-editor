@@ -1,6 +1,4 @@
-import {ContentPickerConfig} from './ContentPickerConfig';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
-import {mergeDeep} from '~/SelectorTypes/Picker/Picker2.utils';
 import {registerUserPicker} from './userPicker';
 import {registerUsergroupPicker} from './usergroupPicker';
 import {registerCategoryPicker} from './categoryPicker';
@@ -14,11 +12,7 @@ import {PickerSearchQueryHandler} from '~/SelectorTypes/Picker/configs/queryHand
 import {registerEditorialPicker} from '~/SelectorTypes/Picker/configs/editorialPicker/editorialPicker';
 
 export const registerPickerConfig = registry => {
-    registry.add(Constants.pickerConfig, 'default', mergeDeep({}, ContentPickerConfig, {
-        searchContentType: 'jmix:searchable',
-        selectableTypesTable: ['jnt:content', 'jnt:file', 'jnt:page', 'jmix:navMenuItem'],
-        showOnlyNodesWithTemplates: false
-    }));
+    registry.add(Constants.pickerConfig, 'default', {});
 
     registerPagePicker(registry);
     registerEditorialPicker(registry);

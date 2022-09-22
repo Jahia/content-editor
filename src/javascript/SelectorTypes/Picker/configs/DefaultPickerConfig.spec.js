@@ -1,4 +1,4 @@
-import {MediaPickerConfig} from './MediaPickerConfig';
+import {DefaultPickerConfig} from './DefaultPickerConfig';
 import {setQueryResponseMock} from '@apollo/react-hooks';
 import {useContentEditorContext} from '~/contexts';
 
@@ -12,9 +12,15 @@ jest.mock('@apollo/react-hooks', () => {
     };
 });
 
+jest.mock('../Picker2', () => {
+    return {
+        Picker: () => {}
+    };
+});
+
 jest.mock('~/contexts/ContentEditor/ContentEditor.context');
 
-describe('MediaPicker config', () => {
+describe('ContentPicker config', () => {
     describe('usePickerInputData', () => {
         let contentEditorContext;
         beforeEach(() => {
@@ -24,10 +30,7 @@ describe('MediaPicker config', () => {
             useContentEditorContext.mockReturnValue(contentEditorContext);
         });
 
-        const usePickerInputData = MediaPickerConfig.pickerInput.usePickerInputData;
-        window.contextJsParameters = {
-            contextPath: 'localContextPath'
-        };
+        const usePickerInputData = DefaultPickerConfig.pickerInput.usePickerInputData;
 
         it('should return no data, no error when loading', () => {
             setQueryResponseMock({loading: true});
@@ -54,15 +57,11 @@ describe('MediaPicker config', () => {
                 jcr: {
                     result: [{
                         uuid: 'this-is-uuid',
-                        height: {value: '1080'},
-                        width: {value: '1920'},
-                        lastModified: {value: 'tomorow'},
                         displayName: 'a cake',
-                        path: 'placeholder.jpg',
-                        children: {
-                            nodes: [{
-                                mimeType: {value: 'image/jpeg'}
-                            }]
+                        path: 'florent/bestArticles',
+                        primaryNodeType: {
+                            displayName: 'article',
+                            icon: 'anUrl'
                         }
                     }]
                 }
@@ -73,10 +72,10 @@ describe('MediaPicker config', () => {
                 error: undefined,
                 fieldData: [{
                     uuid: 'this-is-uuid',
-                    info: 'image/jpeg - 1080x1920px',
+                    info: 'article',
                     name: 'a cake',
-                    path: 'placeholder.jpg',
-                    url: 'localContextPath/files/defaultplaceholder.jpg?lastModified=tomorow&t=thumbnail2'
+                    path: 'florent/bestArticles',
+                    url: 'anUrl.png'
                 }]
             });
         });

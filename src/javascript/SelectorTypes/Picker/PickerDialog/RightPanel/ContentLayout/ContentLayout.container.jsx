@@ -6,7 +6,7 @@ import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 import ContentTable from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout/ContentTable';
 import {registry} from '@jahia/ui-extender';
-import {useLayoutQuery} from '@jahia/jcontent';
+import {jcontentUtils, useLayoutQuery} from '@jahia/jcontent';
 import clsx from 'clsx';
 import styles from './ContentLayout.scss';
 import {cePickerOpenPaths} from '~/SelectorTypes/Picker/Picker2.redux';
@@ -45,9 +45,19 @@ export const ContentLayoutContainer = ({pickerConfig, accordionItemProps}) => {
 
     const additionalFragments = [];
     if (mode === Constants.mode.SEARCH && preSearchModeMemo) {
-        const fragments = registry.get('accordionItem', preSearchModeMemo)?.tableConfig?.queryHandler?.getFragments();
+        const tableConfig = jcontentUtils.getAccordionItem(registry.get('accordionItem', preSearchModeMemo), accordionItemProps)?.tableConfig;
+        if (tableConfig?.fragments) {
+            additionalFragments.push(...tableConfig?.fragments);
+        }
+
+        const fragments = tableConfig?.queryHandler?.getFragments();
         if (fragments) {
             additionalFragments.push(...fragments);
+        }
+    } else {
+        const tableConfig = jcontentUtils.getAccordionItem(registry.get('accordionItem', mode), accordionItemProps)?.tableConfig;
+        if (tableConfig?.fragments) {
+            additionalFragments.push(...tableConfig?.fragments);
         }
     }
 

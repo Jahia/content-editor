@@ -11,6 +11,7 @@ import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 import styles from './Picker2.scss';
 import {Button, Close} from '@jahia/moonstone';
 import {FieldContextProvider} from '~/contexts/FieldContext';
+import {DefaultPickerConfig} from '~/SelectorTypes/Picker/configs/DefaultPickerConfig';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
@@ -31,8 +32,8 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
     });
 
     const pickerConfig = parsedOptions.pickerConfig ?
-        mergeDeep({}, inputContext.selectorType.pickerConfig, parsedOptions.pickerConfig) :
-        inputContext.selectorType.pickerConfig;
+        mergeDeep({}, DefaultPickerConfig, inputContext.selectorType.pickerConfig, parsedOptions.pickerConfig) :
+        mergeDeep({}, DefaultPickerConfig, inputContext.selectorType.pickerConfig);
     const [isDialogOpen, setDialogOpen] = useState(false);
     const {
         fieldData,

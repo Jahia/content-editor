@@ -1,6 +1,4 @@
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
-import {mergeDeep} from '~/SelectorTypes/Picker/Picker2.utils';
-import {ContentPickerConfig} from '~/SelectorTypes/Picker/configs/ContentPickerConfig';
 import {transformQueryHandler} from '~/SelectorTypes/Picker/configs/queryHandlers';
 import {Group} from '@jahia/moonstone';
 import {renderer} from '~/SelectorTypes/Picker/configs/renderer';
@@ -50,7 +48,7 @@ const providerColumn = {
 };
 
 export const registerUsergroupPicker = registry => {
-    registry.add(Constants.pickerConfig, 'usergroup', mergeDeep({}, ContentPickerConfig, {
+    registry.add(Constants.pickerConfig, 'usergroup', {
         searchContentType: 'jnt:group',
         selectableTypesTable: ['jnt:group'],
         pickerCaptionComponent: NoIconPickerCaption,
@@ -65,7 +63,7 @@ export const registerUsergroupPicker = registry => {
         selectionTable: {
             columns: [nameColumn]
         }
-    }));
+    });
 
     registry.add(Constants.ACCORDION_ITEM_NAME, 'picker-usergroup', {
         targets: ['usergroup:50'],

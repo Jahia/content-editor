@@ -1,7 +1,5 @@
 import React from 'react';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
-import {mergeDeep} from '~/SelectorTypes/Picker/Picker2.utils';
-import {ContentPickerConfig} from '~/SelectorTypes/Picker/configs/ContentPickerConfig';
 import {reactTable, Sql2SearchQueryHandler} from '@jahia/jcontent';
 import {FolderUser} from '@jahia/moonstone';
 import {transformQueryHandler} from '~/SelectorTypes/Picker/configs/queryHandlers';
@@ -50,7 +48,7 @@ const providerColumn = {
 };
 
 export const registerUserPicker = registry => {
-    registry.add(Constants.pickerConfig, 'user', mergeDeep({}, ContentPickerConfig, {
+    registry.add(Constants.pickerConfig, 'user', {
         searchContentType: 'jnt:user',
         selectableTypesTable: ['jnt:user'],
         pickerCaptionComponent: NoIconPickerCaption,
@@ -65,7 +63,7 @@ export const registerUserPicker = registry => {
         selectionTable: {
             columns: [nameColumn]
         }
-    }));
+    });
 
     registry.add(Constants.ACCORDION_ITEM_NAME, 'picker-user', {
         targets: ['user:50'],
