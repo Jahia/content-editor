@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {useTranslation} from 'react-i18next';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {Loader} from '@jahia/moonstone';
@@ -6,13 +6,12 @@ import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 import ContentTable from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout/ContentTable';
 import {registry} from '@jahia/ui-extender';
-import {useLayoutQuery} from '@jahia/jcontent';
+import {jcontentUtils, useLayoutQuery} from '@jahia/jcontent';
 import clsx from 'clsx';
 import styles from './ContentLayout.scss';
 import {cePickerOpenPaths} from '~/SelectorTypes/Picker/Picker2.redux';
 import FilesGrid from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout/FilesGrid';
 import PropTypes from 'prop-types';
-import {jcontentUtils} from '@jahia/jcontent';
 
 const setRefetcher = (name, refetcherData) => {
     registry.addOrReplace('refetcher', name, refetcherData);
