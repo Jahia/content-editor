@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useMemo, useRef} from 'react';
 import {useTranslation} from 'react-i18next';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {Loader} from '@jahia/moonstone';
@@ -12,6 +12,7 @@ import styles from './ContentLayout.scss';
 import {cePickerOpenPaths} from '~/SelectorTypes/Picker/Picker2.redux';
 import FilesGrid from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout/FilesGrid';
 import PropTypes from 'prop-types';
+import {jcontentUtils} from '@jahia/jcontent';
 
 const setRefetcher = (name, refetcherData) => {
     registry.addOrReplace('refetcher', name, refetcherData);
@@ -45,9 +46,19 @@ export const ContentLayoutContainer = ({pickerConfig, accordionItemProps}) => {
 
     const additionalFragments = [];
     if (mode === Constants.mode.SEARCH && preSearchModeMemo) {
-        const fragments = registry.get('accordionItem', preSearchModeMemo)?.tableConfig?.queryHandler?.getFragments();
+        const tableConfig = jcontentUtils.getAccordionItem(registry.get('accordionItem', preSearchModeMemo), accordionItemProps)?.tableConfig;
+        if (tableConfig?.fragments) {
+            additionalFragments.push(...tableConfig?.fragments);
+        }
+
+        const fragments = tableConfig?.queryHandler?.getFragments();
         if (fragments) {
             additionalFragments.push(...fragments);
+        }
+    } else {
+        const tableConfig = jcontentUtils.getAccordionItem(registry.get('accordionItem', mode), accordionItemProps)?.tableConfig;
+        if (tableConfig?.fragments) {
+            additionalFragments.push(...tableConfig?.fragments);
         }
     }
 

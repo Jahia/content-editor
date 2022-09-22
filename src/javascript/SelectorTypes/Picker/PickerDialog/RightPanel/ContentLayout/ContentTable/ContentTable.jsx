@@ -93,7 +93,13 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
     const columns = useMemo(() => {
         const flattenRows = isStructured ? flattenTree(rows) : rows;
         const colNames = previousModeTableConfig?.columns || defaultCols;
-        const columns = colNames.map(c => (typeof c === 'string') ? allColumnData.find(col => col.id === c) : c);
+        const columns = colNames
+            .map(c => (typeof c === 'string') ? allColumnData.find(col => col.id === c) : c)
+            .map(c => ({
+                Cell: reactTable.Cell,
+                Header: reactTable.Header,
+                ...c
+            }));
         const multiple = field.multiple && flattenRows.some(r => r.isSelectable);
         columns.splice((columns[0].id === 'publicationStatus') ? 1 : 0, 0, allColumnData.find(col => col.id === 'selection'));
         columns.push(allColumnData.find(col => col.id === 'visibleActions'));
