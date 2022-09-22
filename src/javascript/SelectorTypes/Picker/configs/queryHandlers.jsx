@@ -1,4 +1,4 @@
-import {BaseTreeQueryHandler, BaseQueryHandler, SearchQueryHandler} from '@jahia/jcontent';
+import {BaseQueryHandler, BaseTreeQueryHandler, SearchQueryHandler} from '@jahia/jcontent';
 import gql from 'graphql-tag';
 
 export const selectableTypeFragment = {

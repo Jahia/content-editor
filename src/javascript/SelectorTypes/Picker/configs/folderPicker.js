@@ -1,13 +1,11 @@
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
-import {mergeDeep} from '~/SelectorTypes/Picker/Picker2.utils';
-import {ContentPickerConfig} from '~/SelectorTypes/Picker/configs/ContentPickerConfig';
 import {PickerTreeQueryHandler} from '~/SelectorTypes/Picker/configs/queryHandlers';
 import {renderer} from '~/SelectorTypes/Picker/configs/renderer';
 import {Collections} from '@jahia/moonstone';
 import React from 'react';
 
 export const registerFolderPicker = registry => {
-    registry.add(Constants.pickerConfig, 'folder', mergeDeep({}, ContentPickerConfig, {
+    registry.add(Constants.pickerConfig, 'folder', {
         pickerInput: {
             emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalFolderTitle'
         },
@@ -20,7 +18,7 @@ export const registerFolderPicker = registry => {
         selectionTable: {
             columns: ['publicationStatus', 'name', 'relPath']
         }
-    }));
+    });
 
     registry.add(Constants.ACCORDION_ITEM_NAME, 'picker-media-tree', {
         targets: ['folder:70'],

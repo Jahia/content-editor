@@ -1,6 +1,4 @@
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
-import {mergeDeep} from '~/SelectorTypes/Picker/Picker2.utils';
-import {ContentPickerConfig} from '../ContentPickerConfig';
 import {EditorialLinkContentTypeSelector} from './EditorialLinkContentTypeSelector';
 import {renderer} from '../renderer';
 import React from 'react';
@@ -8,7 +6,7 @@ import {PickerEditorialLinkQueryHandler} from './PickerEditorialLinkQueryHandler
 import {getPagesSearchContextData} from '~/SelectorTypes/Picker/configs/getPagesSearchContextData';
 
 export const registerEditorialLinkPicker = registry => {
-    registry.add(Constants.pickerConfig, 'editoriallink', mergeDeep({}, ContentPickerConfig, {
+    registry.add(Constants.pickerConfig, 'editoriallink', {
         searchContentType: 'jmix:searchable',
         selectableTypesTable: ['jnt:page', 'jmix:mainResource'],
         showOnlyNodesWithTemplates: true,
@@ -16,7 +14,7 @@ export const registerEditorialLinkPicker = registry => {
             dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalEditorialTitle',
             displayTree: false
         }
-    }));
+    });
 
     // Editorial link
     const pagesItem = registry.get(Constants.ACCORDION_ITEM_NAME, Constants.ACCORDION_ITEM_TYPES.PAGES);
