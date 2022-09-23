@@ -74,7 +74,6 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
         path: state.contenteditor.picker.path,
         pagination: state.contenteditor.picker.pagination,
         searchTerm: state.contenteditor.picker.searchTerms,
-        selection: state.contenteditor.picker.selection,
         openPaths: state.contenteditor.picker.openPaths,
         sort: state.contenteditor.picker.sort
     }), shallowEqual);

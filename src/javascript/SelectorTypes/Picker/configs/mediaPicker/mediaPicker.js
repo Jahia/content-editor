@@ -34,6 +34,7 @@ export const registerMediaPickers = registry => {
             dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalFileTitle'
         },
         selectionTable: {
+            getFragments: FilesQueryHandler.getFragments,
             columns: ['publicationStatus', 'name', 'fileSize', 'relPath']
         },
         searchContentType: 'jnt:file',
@@ -56,6 +57,7 @@ export const registerMediaPickers = registry => {
             displaySearch: true
         },
         selectionTable: {
+            getFragments: FilesQueryHandler.getFragments,
             columns: ['publicationStatus', 'name', 'fileSize', 'relPath']
         },
         searchContentType: 'jmix:image',

@@ -12,7 +12,7 @@ const ActionsCell = ({row}) => {
         <TableBodyCell className={styles.cellActions} data-cm-role="actions-cell">
             <Button variant="ghost"
                     icon={<Close/>}
-                    onClick={() => dispatch(cePickerRemoveSelection(row.original))}/>
+                    onClick={() => dispatch(cePickerRemoveSelection(row.original.uuid))}/>
         </TableBodyCell>
     );
 };

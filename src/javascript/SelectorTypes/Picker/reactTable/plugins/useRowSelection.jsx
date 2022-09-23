@@ -22,7 +22,7 @@ const defaultGetToggleRowSelectedProps = (selection, row) => {
         onChange: () => {
             row.toggleRowSelected();
         },
-        checked: selection.find(o => o.path === row.original.path) !== undefined
+        checked: selection.find(o => o === row.original.uuid) !== undefined
     };
 };
 
@@ -36,7 +36,7 @@ function useInstance(instance) {
 
     const toggleRowSelected = row => {
         if (row.original.isSelectable) {
-            dispatch(batchActions([cePickerClearSelection(), cePickerAddSelection(row.original)]));
+            dispatch(batchActions([cePickerClearSelection(), cePickerAddSelection(row.original.uuid)]));
         }
     };
 

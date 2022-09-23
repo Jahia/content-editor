@@ -28,8 +28,8 @@ const reduxActions = {
     setModeAction: mode => cePickerMode(mode),
     setCurrentPageAction: page => cePickerSetPage(page - 1),
     setPageSizeAction: pageSize => cePickerSetPageSize(pageSize),
-    addToSelection: node => cePickerAddSelection(node),
-    removeFromSelection: node => cePickerRemoveSelection(node),
+    addToSelection: uuid => cePickerAddSelection(uuid),
+    removeFromSelection: uuid => cePickerRemoveSelection(uuid),
     clearSelection: () => cePickerClearSelection()
 };
 
@@ -51,16 +51,15 @@ export const FilesGrid = ({totalCount, rows, isLoading, accordionItemProps}) => 
         return jcontentUtils.getAccordionItem(registry.get('accordionItem', mode), accordionItemProps)?.tableConfig;
     }, [mode, accordionItemProps]);
     const onPreviewSelect = previewSelection => {
-        const node = rows.find(value => value.path === previewSelection);
         const actions = [];
         if (!field.multiple) {
             actions.push(reduxActions.clearSelection());
         }
 
-        if (selection.find(value => value.path === previewSelection) === undefined) {
-            actions.push(reduxActions.addToSelection(node));
+        if (selection.indexOf(previewSelection.uuid) === -1) {
+            actions.push(reduxActions.addToSelection(previewSelection.uuid));
         } else {
-            actions.push(reduxActions.removeFromSelection(node));
+            actions.push(reduxActions.removeFromSelection(previewSelection.uuid));
         }
 
         dispatch(batchActions(actions));

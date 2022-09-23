@@ -26,7 +26,7 @@ const defaultGetToggleRowSelectedProps = (selection, row) => {
         onChange: () => {
             row.toggleRowSelected();
         },
-        checked: selection.find(o => o.path === row.original.path) !== undefined
+        checked: selection.find(o => o === row.original.uuid) !== undefined
     };
 };
 
@@ -46,23 +46,22 @@ function useInstance(instance) {
 
     const selectableRows = flattenTree(rows).map(r => r.original).filter(r => r.isSelectable);
     const rowsSet = new Set(selectableRows.map(r => r.uuid));
-    const anySelected = selection.length > 0 && selection.some(r => rowsSet.has(r.uuid));
-    const selIdSet = new Set(selection.map(r => r.uuid));
+    const anySelected = selection.length > 0 && selection.some(r => rowsSet.has(r));
     const allSelected = anySelected &&
         selection.length >= selectableRows.length &&
-        selectableRows.every(r => selIdSet.has(r.uuid)); // Check if all rows are in selection set
+        selectableRows.every(r => selection.indexOf(r.uuid) !== -1); // Check if all rows are in selection set
 
     const toggleRowSelected = row => {
         if (row.original.isSelectable) {
-            dispatch(cePickerSwitchSelection(row.original));
+            dispatch(cePickerSwitchSelection(row.original.uuid));
         }
     };
 
     const toggleAllRowsSelected = () => {
         if (allSelected) {
-            dispatch(cePickerRemoveSelection(selectableRows));
+            dispatch(cePickerRemoveSelection(selectableRows.map(n => n.uuid)));
         } else {
-            dispatch(cePickerAddSelection(selectableRows));
+            dispatch(cePickerAddSelection(selectableRows.map(n => n.uuid)));
         }
     };
 
