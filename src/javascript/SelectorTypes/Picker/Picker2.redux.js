@@ -144,15 +144,15 @@ export const registerPickerReducer = registry => {
         }),
         [cePickerAddSelection]: (state, action) => ({
             ...state,
-            selection: state.selection.concat(toArray(action.payload).filter(p => !state.selection.find(s => s.uuid === p.uuid)))
+            selection: state.selection.concat(toArray(action.payload).filter(p => state.selection.indexOf(p) === -1))
         }),
         [cePickerRemoveSelection]: (state, action) => ({
             ...state,
-            selection: state.selection.filter(s => toArray(action.payload).find(s1 => s1.path === s.path) === undefined)
+            selection: state.selection.filter(s => toArray(action.payload).indexOf(s) === -1)
         }),
         [cePickerSwitchSelection]: (state, action) => ({
             ...state,
-            selection: (state.selection.find(s => s.path === action.payload.path) === undefined) ? [...state.selection, action.payload] : state.selection.filter(s => action.payload.path !== s.path)
+            selection: (state.selection.indexOf(action.payload) === -1) ? [...state.selection, action.payload] : state.selection.filter(s => action.payload !== s)
         }),
         [cePickerClearSelection]: state => ({
             ...state,

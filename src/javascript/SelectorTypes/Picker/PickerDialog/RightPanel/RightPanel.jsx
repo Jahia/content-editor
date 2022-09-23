@@ -13,6 +13,10 @@ import {SelectionCaption, SelectionTable} from './PickerSelection';
 import {Search} from './Search';
 import {PickerSiteSwitcher} from '~/SelectorTypes/Picker';
 import {jcontentUtils} from '@jahia/jcontent';
+import {useContentEditorConfigContext} from '~/contexts';
+import {replaceFragmentsInDocument} from '@jahia/data-helper';
+import {GET_PICKER_NODE_UUID} from '~/SelectorTypes/Picker/PickerDialog/PickerDialog2.gql-queries';
+import {useQuery} from '@apollo/react-hooks';
 
 const ButtonRenderer = getButtonRenderer({defaultButtonProps: {variant: 'ghost'}});
 
@@ -24,10 +28,24 @@ const RightPanel = ({pickerConfig, accordionItemProps, onClose, onItemSelection}
     }), shallowEqual);
     const selectionExpanded = useState(false);
     const {t} = useTranslation('content-editor');
+    const {lang, uilang} = useContentEditorConfigContext();
+
+    const fragments = (pickerConfig?.selectionTable?.getFragments?.() || []);
+    const selectionQuery = replaceFragmentsInDocument(GET_PICKER_NODE_UUID, fragments);
+
+    const {data} = useQuery(selectionQuery, {
+        variables: {
+            uuids: selection,
+            language: lang,
+            uilang: uilang
+        }
+    });
+
+    const nodes = data?.jcr?.nodesById || [];
 
     const selectElement = () => {
-        if (selection) {
-            onItemSelection(selection);
+        if (nodes) {
+            onItemSelection(nodes);
         } else {
             onClose();
         }
@@ -54,9 +72,9 @@ const RightPanel = ({pickerConfig, accordionItemProps, onClose, onItemSelection}
                 {mode !== '' && <ContentLayout pickerConfig={pickerConfig} accordionItemProps={accordionItemProps}/>}
             </div>
 
-            <SelectionTable selection={selection} expanded={selectionExpanded} pickerConfig={pickerConfig}/>
+            <SelectionTable selection={nodes} expanded={selectionExpanded} pickerConfig={pickerConfig}/>
             <footer className={clsx('flexRow', 'alignCenter', css.footer)}>
-                <SelectionCaption selection={selection} pickerConfig={pickerConfig} expanded={selectionExpanded}/>
+                <SelectionCaption selection={nodes} pickerConfig={pickerConfig} expanded={selectionExpanded}/>
                 <div className={clsx('flexRow', css.actions)}>
                     <Button
                         data-sel-picker-dialog-action="cancel"

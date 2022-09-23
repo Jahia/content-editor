@@ -1,6 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
-import {useNodeInfo, replaceFragmentsInDocument} from '@jahia/data-helper';
+import {replaceFragmentsInDocument, useNodeInfo} from '@jahia/data-helper';
 import {useContentEditorConfigContext} from '~/contexts';
 import {useQuery} from '@apollo/react-hooks';
 import {GET_PICKER_NODE} from '~/SelectorTypes/Picker';
@@ -72,8 +72,7 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
 
     useEffect(() => {
         if (nodesInfo.data) {
-            const nodes = nodesInfo.data.jcr.nodesByPath;
-            dispatch(cePickerSetSelection(nodes));
+            dispatch(cePickerSetSelection(nodesInfo.data.jcr.nodesByPath.map(n => n.uuid)));
         }
     }, [nodesInfo.data, dispatch]);
 

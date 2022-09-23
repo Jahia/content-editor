@@ -61,6 +61,7 @@ export const registerUserPicker = registry => {
             displaySiteSwitcher: false
         },
         selectionTable: {
+            getFragments: () => [UserPickerFragment],
             columns: [nameColumn]
         }
     });
