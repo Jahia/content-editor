@@ -139,15 +139,23 @@ export const ContentLayoutContainer = ({pickerConfig, accordionItemProps}) => {
                     <Loader size="big"/>
                 </div>
             )}
-            {(mode === Constants.mode.MEDIA || preSearchModeMemo === Constants.mode.MEDIA) && filesMode === Constants.fileView.mode.THUMBNAILS ?
-                (<FilesGrid rows={rows} totalCount={totalCount} isLoading={loading} accordionItemProps={accordionItemProps}/>) :
-                (<ContentTable path={path}
-                               rows={rows}
-                               isStructured={isStructured}
-                               isLoading={loading}
-                               totalCount={totalCount}
-                               accordionItemProps={accordionItemProps}
-                />)}
+            {(mode === Constants.mode.MEDIA || preSearchModeMemo === Constants.mode.MEDIA) && filesMode === Constants.fileView.mode.THUMBNAILS ? (
+                <FilesGrid rows={rows}
+                           totalCount={totalCount}
+                           isLoading={loading}
+                           pickerConfig={pickerConfig}
+                           accordionItemProps={accordionItemProps}
+                />
+            ) : (
+                <ContentTable path={path}
+                              rows={rows}
+                              isStructured={isStructured}
+                              isLoading={loading}
+                              totalCount={totalCount}
+                              pickerConfig={pickerConfig}
+                              accordionItemProps={accordionItemProps}
+                />
+            )}
         </div>
     );
 };

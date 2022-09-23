@@ -38,7 +38,6 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
         openPaths: state.contenteditor.picker.openPaths,
         site: state.contenteditor.picker.site,
         contextSite: state.contenteditor.picker.contextSite,
-        pickerKey: state.contenteditor.picker.pickerKey,
         viewType: state.contenteditor.picker.tableView.viewType
     }), shallowEqual);
 
@@ -50,7 +49,7 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
     const paths = (Array.isArray(initialSelectedItem) ? initialSelectedItem : [initialSelectedItem]).filter(f => f);
     let accordion;
     if (state.mode === '') {
-        accordion = registry.get('accordionItem', 'picker-' + state.pickerKey);
+        accordion = registry.find({type: 'accordionItem', target: pickerConfig.key})[0];
     } else if (state.mode === Constants.mode.SEARCH) {
         accordion = registry.get('accordionItem', state.preSearchModeMemo);
     } else {
