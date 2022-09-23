@@ -5,6 +5,13 @@ import {FieldContainer} from './Field.container';
 import {registerSelectorTypes} from '~/SelectorTypes';
 import {registry} from '@jahia/ui-extender';
 
+jest.mock('@jahia/jcontent', () => {
+    return {
+        FilesQueryHandler: {},
+        reactTable: {}
+    };
+});
+
 describe('Field container component', () => {
     registerSelectorTypes(registry);
 

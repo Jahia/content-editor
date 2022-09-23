@@ -6,6 +6,13 @@ import {Text} from './Text';
 import {Picker2 as Picker} from './Picker';
 import {ChoiceList} from './ChoiceList';
 
+jest.mock('@jahia/jcontent', () => {
+    return {
+        FilesQueryHandler: {},
+        reactTable: {}
+    };
+});
+
 describe('Selector Types', () => {
     describe('resolveSelectorType', () => {
         registerSelectorTypes(registry);
