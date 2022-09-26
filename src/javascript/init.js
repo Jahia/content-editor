@@ -15,12 +15,12 @@ export default function () {
         callback: () => {
             const registeredPickerConfigurations = registry.find({type: Constants.pickerConfig});
             registeredPickerConfigurations.forEach(pickerConfig => {
-                pickerConfig.accordions?.forEach(value => {
+                pickerConfig.accordions?.forEach((value, index) => {
                     const accordionItem = registry.get('accordionItem', value);
                     if (accordionItem.targets) {
-                        accordionItem.targets.push({id: pickerConfig.key, priority: 50});
+                        accordionItem.targets.push({id: pickerConfig.key, priority: 50 + (index * 10)});
                     } else {
-                        accordionItem.targets = [{id: pickerConfig.key, priority: 50}];
+                        accordionItem.targets = [{id: pickerConfig.key, priority: 50 + (index * 10)}];
                     }
                 });
             });
