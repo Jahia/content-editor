@@ -35,7 +35,8 @@ export const registerEditorialLinkPicker = registry => {
                 queryHandler: PickerEditorialLinkQueryHandler,
                 tableHeader: <EditorialLinkContentTypeSelector/>,
                 defaultViewType: Constants.tableView.type.PAGES,
-                uploadType: 'import'
+                uploadType: 'import',
+                contextualMenu: 'contentPickerMenu'
             }
         }, renderer);
     }
