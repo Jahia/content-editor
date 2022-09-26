@@ -21,6 +21,7 @@ import {batchActions} from 'redux-batched-actions';
 import {useFieldContext} from '~/contexts/FieldContext';
 import {registry} from '@jahia/ui-extender';
 import {jcontentUtils} from '@jahia/jcontent';
+import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 
 const reduxActions = {
     setOpenPathAction: path => cePickerOpenPaths(getDetailedPathArray(path)),
@@ -33,11 +34,10 @@ const reduxActions = {
     clearSelection: () => cePickerClearSelection()
 };
 
-export const FilesGrid = ({totalCount, rows, isLoading, accordionItemProps}) => {
+export const FilesGrid = ({totalCount, rows, isLoading, pickerConfig, accordionItemProps}) => {
     const {t} = useTranslation('jcontent');
-    const {mode, pickerKey, path, pagination, siteKey, uilang, lang, selection} = useSelector(state => ({
+    const {mode, path, pagination, siteKey, uilang, lang, selection} = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
-        pickerKey: state.contenteditor.picker.pickerKey,
         path: state.contenteditor.picker.path,
         pagination: state.contenteditor.picker.pagination,
         siteKey: state.site,
@@ -90,7 +90,7 @@ export const FilesGrid = ({totalCount, rows, isLoading, accordionItemProps}) => 
                 <UploadTransformComponent uploadTargetComponent={Paper}
                                           uploadPath={path}
                                           uploadType="upload"
-                                          uploadFilter={file => !tableConfig?.uploadFilter || tableConfig.uploadFilter(file, mode, pickerKey)}
+                                          uploadFilter={file => !tableConfig?.uploadFilter || tableConfig.uploadFilter(file, mode, pickerConfig.key)}
                                           className={classNames(styles.defaultGrid, styles.detailedGrid)}
                 >
                     {rows.map((node, index) => (
@@ -130,6 +130,7 @@ FilesGrid.propTypes = {
     isLoading: PropTypes.bool.isRequired,
     rows: PropTypes.array.isRequired,
     totalCount: PropTypes.number.isRequired,
+    pickerConfig: configPropType.isRequired,
     accordionItemProps: PropTypes.object
 };
 

@@ -32,6 +32,7 @@ import {ContextualMenu, registry} from '@jahia/ui-extender';
 import {useFieldContext} from '~/contexts/FieldContext';
 import clsx from 'clsx';
 import {jcontentUtils} from '@jahia/jcontent';
+import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 
 const reduxActions = {
     onPreviewSelectAction: () => ({}),
@@ -62,15 +63,14 @@ const SELECTION_COLUMN_ID = 'selection';
 
 const defaultCols = ['publicationStatus', 'name', 'type', 'lastModified'];
 
-export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, isStructured, accordionItemProps}) => {
+export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, isStructured, pickerConfig, accordionItemProps}) => {
     const {t} = useTranslation();
     const field = useFieldContext();
     const dispatch = useDispatch();
 
-    const {mode, preSearchModeMemo, pickerKey, path, pagination, searchTerm, openPaths, sort} = useSelector(state => ({
+    const {mode, preSearchModeMemo, path, pagination, searchTerm, openPaths, sort} = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
         preSearchModeMemo: state.contenteditor.picker.preSearchModeMemo,
-        pickerKey: state.contenteditor.picker.pickerKey,
         path: state.contenteditor.picker.path,
         pagination: state.contenteditor.picker.pagination,
         searchTerm: state.contenteditor.picker.searchTerms,
@@ -157,7 +157,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
         return <ContentNotFound columnSpan={allColumnData.length} t={t}/>;
     }
 
-    const tableHeader = tableConfig?.tableHeader;
+    const tableHeader = tableConfig?.tableHeader && React.cloneElement(tableConfig?.tableHeader, {pickerConfig});
 
     if (!rows?.length && !isLoading) {
         if ((mode === Constants.mode.SEARCH)) {
@@ -192,7 +192,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
                                       reference={mainPanelRef}
                                       uploadPath={path}
                                       uploadType={tableConfig?.uploadType}
-                                      uploadFilter={file => !tableConfig?.uploadFilter || tableConfig.uploadFilter(file, mode, pickerKey)}
+                                      uploadFilter={file => !tableConfig?.uploadFilter || tableConfig.uploadFilter(file, mode, pickerConfig.key)}
             >
                 <Table aria-labelledby="tableTitle"
                        data-cm-role="table-content-list"
@@ -266,6 +266,7 @@ ContentTable.propTypes = {
     isStructured: PropTypes.bool,
     rows: PropTypes.array.isRequired,
     totalCount: PropTypes.number.isRequired,
+    pickerConfig: configPropType.isRequired,
     accordionItemProps: PropTypes.object
 };
 

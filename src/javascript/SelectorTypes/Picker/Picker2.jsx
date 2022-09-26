@@ -23,17 +23,14 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
     });
 
     // Handle value constraints if they are available, note that this overrides default config of each picker.
-    field.valueConstraints.forEach((vc, index) => {
-        if (index === 0) {
-            inputContext.selectorType.pickerConfig.selectableTypesTable = [];
-        }
+    if (field.valueConstraints.length) {
+        inputContext.selectorType.pickerConfig = {
+            ...inputContext.selectorType.pickerConfig,
+            selectableTypesTable: field.valueConstraints.map(vc => vc.value.string)
+        };
+    }
 
-        inputContext.selectorType.pickerConfig.selectableTypesTable.push(vc.value.string);
-    });
-
-    const pickerConfig = parsedOptions.pickerConfig ?
-        mergeDeep({}, DefaultPickerConfig, inputContext.selectorType.pickerConfig, parsedOptions.pickerConfig) :
-        mergeDeep({}, DefaultPickerConfig, inputContext.selectorType.pickerConfig);
+    const pickerConfig = mergeDeep({}, DefaultPickerConfig, inputContext.selectorType.pickerConfig, parsedOptions.pickerConfig);
     const [isDialogOpen, setDialogOpen] = useState(false);
     const {
         fieldData,

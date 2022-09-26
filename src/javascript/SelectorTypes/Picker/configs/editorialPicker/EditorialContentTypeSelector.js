@@ -1,12 +1,10 @@
-import {useSelector} from 'react-redux';
-import {registry} from '@jahia/ui-extender';
 import {cePickerSetPage, cePickerSetTableViewType} from '~/SelectorTypes/Picker/Picker2.redux';
 import React from 'react';
 import {ContentTypeSelector as JContentTypeSelector} from '@jahia/jcontent';
+import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 
-export const EditorialContentTypeSelector = () => {
-    const pickerKey = useSelector(state => state.contenteditor.picker.pickerKey);
-    const selectableTypesTable = registry.get('pickerConfiguration', pickerKey)?.selectableTypesTable || [];
+export const EditorialContentTypeSelector = ({pickerConfig}) => {
+    const selectableTypesTable = pickerConfig.selectableTypesTable || [];
 
     const selector = state => {
         return ({
@@ -32,3 +30,6 @@ export const EditorialContentTypeSelector = () => {
     return canSelectPages && <JContentTypeSelector selector={selector} reduxActions={reduxActions}/>;
 };
 
+EditorialContentTypeSelector.propTypes = {
+    pickerConfig: configPropType.isRequired
+};

@@ -5,17 +5,16 @@ import classes from './EditorialLinkContentTypeSelector.scss';
 import {useTranslation} from 'react-i18next';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {cePickerSetTableViewType} from '~/SelectorTypes/Picker/Picker2.redux';
-import {registry} from '@jahia/ui-extender';
+import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 
 const localStorage = window.localStorage;
 
-const EditorialLinkContentTypeSelector = () => {
+export const EditorialLinkContentTypeSelector = ({pickerConfig}) => {
     const {t} = useTranslation('content-editor');
     const tableView = useSelector(state => state.contenteditor.picker.tableView);
-    const pickerKey = useSelector(state => state.contenteditor.picker.pickerKey);
     const dispatch = useDispatch();
 
-    const selectableTypesTable = registry.get('pickerConfiguration', pickerKey)?.selectableTypesTable || [];
+    const selectableTypesTable = pickerConfig.selectableTypesTable || [];
 
     const {CONTENT, PAGES} = Constants.tableView.type;
     const LOCAL_STORAGE_VIEW_TYPE_KEY = 'jcontent_view_type';
@@ -45,4 +44,7 @@ const EditorialLinkContentTypeSelector = () => {
     );
 };
 
-export {EditorialLinkContentTypeSelector};
+EditorialLinkContentTypeSelector.propTypes = {
+    pickerConfig: configPropType.isRequired
+};
+
