@@ -44,7 +44,7 @@ const RightPanel = ({pickerConfig, accordionItemProps, onClose, onItemSelection}
     const nodes = data?.jcr?.nodesById || [];
 
     const selectElement = () => {
-        if (nodes.length > 0) {
+        if (nodes && nodes.length > 0) {
             onItemSelection(nodes);
         } else {
             onClose();
@@ -84,7 +84,7 @@ const RightPanel = ({pickerConfig, accordionItemProps, onClose, onItemSelection}
                     />
                     <Button
                         data-sel-picker-dialog-action="done"
-                        disabled={selection.length === 0 || nodes.length === 0}
+                        disabled={selection.length === 0 || (nodes && nodes.length === 0)}
                         color="accent"
                         size="big"
                         label={t('content-editor:label.contentEditor.edit.fields.modalDone').toUpperCase()}
