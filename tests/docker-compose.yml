@@ -20,8 +20,6 @@ services:
         # https://github.com/cypress-io/cypress/issues/350
         ipc: host
         container_name: cypress
-        depends_on:
-            - jahia
         environment:
             - MANIFEST=${MANIFEST}
             - SUPER_USER_PASSWORD=${SUPER_USER_PASSWORD}
