@@ -100,7 +100,7 @@ export const ContentLayoutContainer = ({pickerConfig, accordionItemProps}) => {
         }
     }, [dispatch, result, isStructured, path, viewType, loading, autoExpand]);
 
-    if (error || (!loading && !result)) {
+    if (!loading && !result) {
         if (error) {
             const message = t('jcontent:label.contentManager.error.queryingContent', {details: error.message || ''});
             console.error(message);
