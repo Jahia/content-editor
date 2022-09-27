@@ -74,7 +74,7 @@ export function register() {
                 if (contentTypes[0] === 'jnt:page' && newPath) {
                     const dispatch = window.jahia.reduxStore.dispatch;
                     const currentPcPath = window.jahia.reduxStore.getState().pagecomposer.currentPage.path;
-                    dispatch(pcNavigateTo({oldPath: currentPcPath, newPath}));
+                    dispatch(pcNavigateTo({oldPath: currentPcPath, newPath: encodeURIComponent(newPath).replaceAll('%2F', '/')}));
 
                     // Refresh content in repository explorer to see added page
                     if (window.authoringApi.refreshContent && window.location.pathname.endsWith('/jahia/repository-explorer')) {
