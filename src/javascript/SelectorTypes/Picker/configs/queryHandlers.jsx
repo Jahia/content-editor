@@ -17,7 +17,11 @@ export function transformQueryHandler(queryHandler) {
         getQueryVariables: p => ({
             ...queryHandler.getQueryVariables(p),
             selectableTypesTable: p.selectableTypesTable,
-            typeFilter: Array.from(new Set([...p.selectableTypesTable, ...(p.openableTypes ? p.openableTypes : [])]))
+            typeFilter: Array.from(new Set([...p.selectableTypesTable, ...(p.openableTypes ? p.openableTypes : [])])),
+            fieldFilter: {
+                multi: 'ANY',
+                filters: (p.selectableFilter ? p.selectableFilter : [{evaluation: 'NOT_EMPTY', fieldName: 'uuid'}])
+            }
         }),
         getFragments: () => [...queryHandler.getFragments(), selectableTypeFragment]
     };
