@@ -21,11 +21,11 @@ As every project, Content-Editor has is own Language and specific words. Here is
 - *Edit*: Content-Editor can *edit* existing content
 - *EditPanel*: The main panel where we can edit the values of a content
 - *Section*: A section is a group of *FieldSet*. For example, a given content can have: Metadata, content, layout, ...
-- *FieldSet*: A fieldset is a group of Field. Previously called `mixin` (still the case in OSGI).
-- *Field*: A field is a composition of *selectorType*, label and actions.
-- *SelectorType*: A `SelectorType` is basically the input of the field. It answer the question: `how user enter this data ?`.
+- *FieldSet*: A fieldset is a group of Field. Previously called `mixin` (still the case in OSGI)
+- *Field*: A field is a composition of *selectorType*, label and actions
+- *SelectorType*: A `SelectorType` is basically the input of the field. It answer the question: `how user enter this data ?`
 - *Preview*: The preview is the way to have a view of the current state of your *EditPanel*
-- *Details*: The details is the panel that show extra info that cannot be in the *EditPanel* like the publication status.
+- *Details*: The details is the panel that show extra info that cannot be in the *EditPanel* like the publication status
 
 ### File structure
 
