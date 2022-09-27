@@ -1,4 +1,6 @@
 import {registry} from '@jahia/ui-extender';
+import {mergeDeep} from '~/SelectorTypes/Picker/Picker2.utils';
+import {DefaultPickerConfig} from '~/SelectorTypes/Picker/configs/DefaultPickerConfig';
 
 const contextPath = (window.contextJsParameters && window.contextJsParameters.contextPath) || '';
 
@@ -30,7 +32,7 @@ export function fillCKEditorPicker(picker, pickerResult) {
 }
 
 export function buildPickerContext(picker) {
-    const pickerConfig = registry.get('pickerConfiguration', picker.type) || registry.get('pickerConfiguration', 'editorial');
+    const pickerConfig = mergeDeep({}, DefaultPickerConfig, registry.get('pickerConfiguration', picker.type) || registry.get('pickerConfiguration', 'editorial'));
 
     const urlInput = picker.dialog.getContentElement('info', getCKEditorUrlInputId(picker));
     const valueInInput = urlInput ? urlInput.getValue() : '';
