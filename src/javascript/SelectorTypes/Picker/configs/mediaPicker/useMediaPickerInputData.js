@@ -27,7 +27,7 @@ export const useMediaPickerInputData = uuids => {
             }/files/default${encodeJCRPath(imageData.path)}?lastModified=${imageData.lastModified.value}&t=thumbnail2`,
             name: imageData.displayName,
             path: imageData.path,
-            info: `${imageData.content.mimeType.value}${sizeInfo}`
+            info: `${imageData.content && imageData.content.mimeType.value}${sizeInfo}`
         };
     });
 
