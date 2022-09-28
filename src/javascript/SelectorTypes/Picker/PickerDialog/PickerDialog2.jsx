@@ -60,6 +60,7 @@ export const PickerDialog = ({
             fullWidth
             maxWidth="xl"
             data-sel-role="picker-dialog"
+            data-sel-type={pickerConfig.key}
             classes={{paper: styles.paper}}
             open={isOpen}
             TransitionComponent={Transition}

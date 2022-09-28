@@ -148,6 +148,56 @@ const contentTypes: ContentTypes = {
         typeName: 'customPicker',
         fieldNodeType: 'qant:customPicker_myAdress',
         multiple: false
+    },
+    pageDefault: {
+        typeName: 'pickersDefault',
+        fieldNodeType: 'qant:pickersDefault_page',
+        multiple: false
+    },
+    contentfolderDefault: {
+        typeName: 'pickersDefault',
+        fieldNodeType: 'qant:pickersDefault_contentFolder',
+        multiple: false
+    },
+    folderDefault: {
+        typeName: 'pickersDefault',
+        fieldNodeType: 'qant:pickersDefault_folder',
+        multiple: false
+    },
+    fileDefault: {
+        typeName: 'pickersDefault',
+        fieldNodeType: 'qant:pickersDefault_file',
+        multiple: false
+    },
+    imageDefault: {
+        typeName: 'pickersDefault',
+        fieldNodeType: 'qant:pickersDefault_image',
+        multiple: false
+    },
+    editoriallinkDefault: {
+        typeName: 'pickersDefault',
+        fieldNodeType: 'qant:pickersDefault_editoriallink',
+        multiple: false
+    },
+    userDefault: {
+        typeName: 'pickersDefault',
+        fieldNodeType: 'qant:pickersDefault_user',
+        multiple: false
+    },
+    usergroupDefault: {
+        typeName: 'pickersDefault',
+        fieldNodeType: 'qant:pickersDefault_usergroup',
+        multiple: false
+    },
+    siteDefault: {
+        typeName: 'pickersDefault',
+        fieldNodeType: 'qant:pickersDefault_site',
+        multiple: false
+    },
+    categoryDefault: {
+        typeName: 'pickersDefault',
+        fieldNodeType: 'qant:pickersDefault_category',
+        multiple: false
     }
 };
 
