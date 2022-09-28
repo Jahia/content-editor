@@ -14,7 +14,7 @@ import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
  */
 const inferPickerConfig = (registry, field) => {
     const pickerConfigs = registry.find({type: Constants.pickerConfig});
-    const constraints = field.valueConstraints.map(c => c.displayValue) || [];
+    const constraints = field.valueConstraints?.map(c => c.displayValue) || [];
     const pickerConfig = pickerConfigs.find(config => {
         const selectorTypes = config.selectableTypesTable;
         // Check if selectorTypes matches field constraints
