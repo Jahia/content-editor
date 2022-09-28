@@ -39,7 +39,7 @@ export const registerEditorialPicker = registry => {
                 defaultSort: {orderBy: 'lastModified.value', order: 'DESC'},
                 viewSelector: <ViewModeSelector {...viewModeSelectorProps}/>,
                 tableHeader: <EditorialContentTypeSelector/>,
-                uploadType: 'import',
+                uploadType: null,
                 contextualMenu: 'contentPickerMenu'
             }
         }, renderer);
@@ -55,7 +55,7 @@ export const registerEditorialPicker = registry => {
                 queryHandler: PickerContentsFolderQueryHandler,
                 openableTypes: ['jnt:contentFolder'],
                 viewSelector: <ViewModeSelector {...viewModeSelectorProps}/>,
-                uploadType: 'import',
+                uploadType: null,
                 contextualMenu: 'contentPickerMenu'
             }
 
