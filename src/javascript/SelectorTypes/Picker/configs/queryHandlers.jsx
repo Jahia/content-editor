@@ -17,29 +17,45 @@ export function transformQueryHandler(queryHandler) {
         getQueryVariables: p => ({
             ...queryHandler.getQueryVariables(p),
             selectableTypesTable: p.selectableTypesTable,
-            typeFilter: Array.from(new Set([...p.selectableTypesTable, ...(p.openableTypes ? p.openableTypes : [])])),
-            fieldFilter: {
-                multi: 'ANY',
-                filters: (p.selectableFilter ? p.selectableFilter : [{evaluation: 'NOT_EMPTY', fieldName: 'uuid'}])
-            }
+            typeFilter: Array.from(new Set([...p.selectableTypesTable, ...(p.openableTypes ? p.openableTypes : [])]))
         }),
         getFragments: () => [...queryHandler.getFragments(), selectableTypeFragment]
     };
 }
 
-export const PickerBaseQueryHandler = transformQueryHandler(BaseQueryHandler);
+export const PickerBaseQueryHandler = transformQueryHandler({
+    ...BaseQueryHandler,
+    getQueryVariables: p => ({
+        ...BaseQueryHandler.getQueryVariables(p),
+        fieldFilter: {
+            multi: p.selectableFilter ? 'ANY' : 'NONE',
+            filters: (p.selectableFilter ? p.selectableFilter : [])
+        }
+    })
+});
 
-export const PickerTreeQueryHandler = transformQueryHandler(BaseTreeQueryHandler);
+export const PickerTreeQueryHandler = transformQueryHandler({
+    ...BaseTreeQueryHandler,
+    getQueryVariables: p => ({
+        ...BaseTreeQueryHandler.getQueryVariables(p),
+        fieldFilter: {
+            multi: p.selectableFilter ? 'ANY' : 'NONE',
+            filters: (p.selectableFilter ? p.selectableFilter : [])
+        }
+    })
+});
 
 export const PickerSearchQueryHandler = transformQueryHandler({
     ...SearchQueryHandler,
     getQueryVariables: p => ({
         ...SearchQueryHandler.getQueryVariables(p),
         fieldFilter: {
-            filters: {
-                fieldName: 'isSelectable',
-                value: 'true'
-            }
+            filters: (p.selectableFilter ? p.selectableFilter.push() : [
+                {
+                    fieldName: 'isSelectable',
+                    value: 'true'
+                }
+            ])
         }
     })
 });

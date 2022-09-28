@@ -20,7 +20,11 @@ export const PickerPagesQueryHandler = {
     getQueryVariables: options => ({
         ...PagesQueryHandler.getQueryVariables(options),
         selectableTypesTable: options.selectableTypesTable,
-        typeFilter: options.selectableTypesTable.includes('jnt:page') && Constants.tableView.type.PAGES === options.tableView.viewType ? ['jnt:page'] : options.selectableTypesTable.filter(t => t !== 'jnt:page')
+        typeFilter: options.selectableTypesTable.includes('jnt:page') && Constants.tableView.type.PAGES === options.tableView.viewType ? ['jnt:page'] : options.selectableTypesTable.filter(t => t !== 'jnt:page'),
+        fieldFilter: {
+            multi: options.selectableFilter ? 'ANY' : 'NONE',
+            filters: (options.selectableFilter ? options.selectableFilter : [])
+        }
     }),
     getFragments: () => [...PagesQueryHandler.getFragments(), selectableTypeFragment]
 };
