@@ -4,11 +4,33 @@ import {Picker2} from './Picker2';
 import {registerPickerReducer} from '~/SelectorTypes/Picker/Picker2.redux';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 
-export const getPickerSelectorType = (registry, options) => {
-    const option = options && options.find(option => option.name === 'type');
-    const pickerConfigKey = option?.value || 'default';
+/**
+ * If picker type is not specified, infer based on field value constraints
+ * and match against picker config selectable types (selectableTypesTable attribute).
+ *
+ * @param registry
+ * @param field
+ * @returns picker config that matches field value constraints, or default picker config
+ */
+const inferPickerConfig = (registry, field) => {
+    const pickerConfigs = registry.find({type: Constants.pickerConfig});
+    const constraints = field.valueConstraints.map(c => c.displayValue) || [];
+    const pickerConfig = pickerConfigs.find(config => {
+        const selectorTypes = config.selectableTypesTable;
+        // Check if selectorTypes matches field constraints
+        return (selectorTypes?.length > 0) &&
+            constraints.length === selectorTypes.length &&
+            selectorTypes.every(type => constraints.indexOf(type) > -1);
+    });
+    return pickerConfig || registry.get(Constants.pickerConfig, 'default');
+};
 
-    let pickerConfig = registry.get(Constants.pickerConfig, pickerConfigKey);
+export const getPickerSelectorType = (registry, options, field) => {
+    const option = options && options.find(option => option.name === 'type');
+    let pickerConfigKey = option?.value;
+    let pickerConfig = (pickerConfigKey) ?
+        registry.get(Constants.pickerConfig, pickerConfigKey) :
+        inferPickerConfig(registry, field);
 
     if (!pickerConfig) {
         console.warn('Picker configuration not found', pickerConfigKey);
@@ -29,7 +51,7 @@ export const getPickerSelectorType = (registry, options) => {
 export const registerPicker = registry => {
     registerPickerConfig(registry);
     registry.add('selectorType', 'Picker', {
-        resolver: options => getPickerSelectorType(registry, options)
+        resolver: (options, field) => getPickerSelectorType(registry, options, field)
     });
     registerPickerActions(registry);
     registerPickerReducer(registry);

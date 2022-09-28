@@ -4,7 +4,7 @@ export const resolveSelectorType = ({selectorType, selectorOptions, displayName,
     let selector = registry.get('selectorType', selectorType);
     if (selector) {
         if (selector.resolver) {
-            return selector.resolver(selectorOptions);
+            return selector.resolver(selectorOptions, field);
         }
 
         return selector;
