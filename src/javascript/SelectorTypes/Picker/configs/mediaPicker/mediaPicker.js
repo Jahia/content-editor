@@ -1,13 +1,14 @@
 import React from 'react';
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {useMediaPickerInputData} from '~/SelectorTypes/Picker/configs/mediaPicker/useMediaPickerInputData';
-import {FileModeSelector, FilesQueryHandler} from '@jahia/jcontent';
+import {FileModeSelector} from '@jahia/jcontent';
 import {transformQueryHandler} from '~/SelectorTypes/Picker/configs/queryHandlers';
 import {renderer} from '~/SelectorTypes/Picker/configs/renderer';
 import {FilePickerCaption} from '~/SelectorTypes/Picker/configs/mediaPicker/FilePickerCaption';
 import {cePickerSetFileViewMode} from '~/SelectorTypes/Picker/Picker2.redux';
 import {registry} from '@jahia/ui-extender';
 import {FileImage} from '@jahia/moonstone';
+import {PickerFilesQueryHandler} from '~/SelectorTypes/Picker/configs/mediaPicker/PickerFilesQueryHandler';
 
 function getMode(state) {
     if (state.contenteditor.picker.fileView.mode === '') {
@@ -34,7 +35,7 @@ export const registerMediaPickers = registry => {
             dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalFileTitle'
         },
         selectionTable: {
-            getFragments: FilesQueryHandler.getFragments,
+            getFragments: PickerFilesQueryHandler.getFragments,
             columns: ['publicationStatus', 'name', 'fileSize', 'relPath']
         },
         searchContentType: 'jnt:file',
@@ -57,7 +58,7 @@ export const registerMediaPickers = registry => {
             displaySearch: true
         },
         selectionTable: {
-            getFragments: FilesQueryHandler.getFragments,
+            getFragments: PickerFilesQueryHandler.getFragments,
             columns: ['publicationStatus', 'name', 'fileSize', 'relPath']
         },
         searchContentType: 'jmix:image',
@@ -73,7 +74,7 @@ export const registerMediaPickers = registry => {
             tableConfig: {
                 ...mediaItem.tableConfig,
                 defaultSort: {orderBy: 'lastModified.value', order: 'DESC'},
-                queryHandler: transformQueryHandler(FilesQueryHandler),
+                queryHandler: transformQueryHandler(PickerFilesQueryHandler),
                 openableTypes: ['jnt:folder'],
                 viewSelector: <FileModeSelector {...viewModeSelectorProps}/>,
                 contextualMenu: 'contentPickerMenu',

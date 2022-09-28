@@ -57,10 +57,8 @@ describe('useMediaPickerInputData', () => {
                     lastModified: {value: 'tomorow'},
                     displayName: 'a cake',
                     path: 'placeholder.jpg',
-                    children: {
-                        nodes: [{
-                            mimeType: {value: 'image/jpeg'}
-                        }]
+                    content: {
+                        mimeType: {value: 'image/jpeg'}
                     }
                 }]
             }

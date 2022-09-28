@@ -71,6 +71,7 @@ export const ContentLayoutContainer = ({pickerConfig, accordionItemProps}) => {
         searchContentType: pickerConfig.searchContentType,
         searchTerms: state.contenteditor.picker.searchTerms,
         selectableTypesTable: pickerConfig.selectableTypesTable,
+        selectableFilter: pickerConfig.selectableFilter,
         filesMode: getFilesMode(state, pickerConfig),
         pagination: state.contenteditor.picker.pagination,
         sort: state.contenteditor.picker.sort,
