@@ -137,6 +137,8 @@
             "modalSiteTitle": "Site auswählen",
             "modalUserTitle": "Benutzer auswählen",
             "modalUserGroupTitle": "Benutzergruppen auswählen",
+            "modalPDFTitle": "PDF datei auswählen",
+            "modalVideoTitle": "Video auswählen",
             "itemsFound": "{{totalCount}} Einträge gefunden"
           },
           "category": {
