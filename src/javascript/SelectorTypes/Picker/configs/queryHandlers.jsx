@@ -28,8 +28,8 @@ export const PickerBaseQueryHandler = transformQueryHandler({
     getQueryVariables: p => ({
         ...BaseQueryHandler.getQueryVariables(p),
         fieldFilter: {
-            multi: p.selectableFilter ? 'ANY' : 'NONE',
-            filters: (p.selectableFilter ? p.selectableFilter : [])
+            multi: p.tableDisplayFilter ? 'ANY' : 'NONE',
+            filters: (p.tableDisplayFilter ? p.tableDisplayFilter : [])
         }
     })
 });
@@ -39,23 +39,24 @@ export const PickerTreeQueryHandler = transformQueryHandler({
     getQueryVariables: p => ({
         ...BaseTreeQueryHandler.getQueryVariables(p),
         fieldFilter: {
-            multi: p.selectableFilter ? 'ANY' : 'NONE',
-            filters: (p.selectableFilter ? p.selectableFilter : [])
+            multi: p.tableDisplayFilter ? 'ANY' : 'NONE',
+            filters: (p.tableDisplayFilter ? p.tableDisplayFilter : [])
         }
     })
 });
-
+const isTableDisplayFilter = [
+    {
+        fieldName: 'isSelectable',
+        value: 'true'
+    }
+];
 export const PickerSearchQueryHandler = transformQueryHandler({
     ...SearchQueryHandler,
     getQueryVariables: p => ({
         ...SearchQueryHandler.getQueryVariables(p),
         fieldFilter: {
-            filters: (p.selectableFilter ? p.selectableFilter.push() : [
-                {
-                    fieldName: 'isSelectable',
-                    value: 'true'
-                }
-            ])
+            multi: 'ANY',
+            filters: (p.tableDisplayFilter ? p.tableDisplayFilter : isTableDisplayFilter)
         }
     })
 });

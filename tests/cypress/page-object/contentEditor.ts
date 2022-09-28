@@ -112,4 +112,9 @@ export class ContentEditor extends BasePage {
         r.multiple = multiple;
         return r;
     }
+
+    toggleOption(optionType: string, optionFieldName: string) {
+        cy.get(`span[data-sel-role-dynamic-fieldset="${optionType}"]`).scrollIntoView().find('input').click({force: true});
+        cy.contains(optionFieldName, {timeout: 90000}).should('be.visible');
+    }
 }

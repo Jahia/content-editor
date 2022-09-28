@@ -66,11 +66,94 @@ export const registerMediaPickers = registry => {
         pickerCaptionComponent: FilePickerCaption
     });
 
+    registry.add(Constants.pickerConfig, 'pdf', {
+        pickerInput: {
+            emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalPDFTitle'
+        },
+        pickerDialog: {
+            dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalPDFTitle'
+        },
+        selectionTable: {
+            getFragments: PickerFilesQueryHandler.getFragments,
+            columns: ['publicationStatus', 'name', 'fileSize', 'relPath']
+        },
+        searchContentType: 'jnt:file',
+        selectableTypesTable: ['jnt:file'],
+        accordionItem: {
+            'picker-media': {
+                tableConfig: {
+                    tableDisplayFilter: [
+                        {
+                            evaluation: 'CONTAINS',
+                            fieldName: 'content.mimeType.value',
+                            value: 'pdf'
+                        },
+                        {evaluation: 'EQUAL', fieldName: 'isFile', value: 'false'}
+                    ]
+                }
+            },
+            'picker-search': {
+                tableConfig: {
+                    tableDisplayFilter: [
+                        {
+                            evaluation: 'CONTAINS',
+                            fieldName: 'content.mimeType.value',
+                            value: 'pdf'
+                        }
+                    ]
+                }
+            }
+        },
+        pickerCaptionComponent: FilePickerCaption
+    });
+
+    registry.add(Constants.pickerConfig, 'video', {
+        pickerInput: {
+            emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalVideoTitle'
+        },
+        pickerDialog: {
+            view: 'Thumbnail',
+            dialogTitle: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalVideoTitle'
+        },
+        selectionTable: {
+            getFragments: PickerFilesQueryHandler.getFragments,
+            columns: ['publicationStatus', 'name', 'fileSize', 'relPath']
+        },
+        searchContentType: 'jnt:file',
+        selectableTypesTable: ['jnt:file'],
+        accordionItem: {
+            'picker-media': {
+                tableConfig: {
+                    tableDisplayFilter: [
+                        {
+                            evaluation: 'CONTAINS',
+                            fieldName: 'content.mimeType.value',
+                            value: 'video'
+                        },
+                        {evaluation: 'EQUAL', fieldName: 'isFile', value: 'false'}
+                    ]
+                }
+            },
+            'picker-search': {
+                tableConfig: {
+                    tableDisplayFilter: [
+                        {
+                            evaluation: 'CONTAINS',
+                            fieldName: 'content.mimeType.value',
+                            value: 'video'
+                        }
+                    ]
+                }
+            }
+        },
+        pickerCaptionComponent: FilePickerCaption
+    });
+
     const mediaItem = registry.get(Constants.ACCORDION_ITEM_NAME, Constants.ACCORDION_ITEM_TYPES.MEDIA);
     if (mediaItem) {
         registry.add(Constants.ACCORDION_ITEM_NAME, `picker-${Constants.ACCORDION_ITEM_TYPES.MEDIA}`, {
             ...mediaItem,
-            targets: ['default:70', 'image:70', 'file:70'],
+            targets: ['default:70', 'image:70', 'file:70', 'pdf:70', 'video:70'],
             tableConfig: {
                 ...mediaItem.tableConfig,
                 defaultSort: {orderBy: 'lastModified.value', order: 'DESC'},
