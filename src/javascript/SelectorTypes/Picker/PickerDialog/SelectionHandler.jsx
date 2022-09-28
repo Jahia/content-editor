@@ -122,10 +122,12 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
 
             newState.mode = firstMatchingAccordion.key;
             const rootPath = firstMatchingAccordion.getRootPath(newState.site);
+            newState.site = getSite(rootPath);
+
             // If picker default path does not target any site use it
-            newState.path = getSite(newState.path) === newState.site &&
-            rootPath.indexOf(`/${newState.site}`) !== -1 &&
-            previousState.current.mode === newState.mode ? newState.path : rootPath;
+            newState.path = (getSite(newState.path) === newState.site &&
+                rootPath.indexOf(`/${newState.site}`) !== -1 &&
+                previousState.current.mode === newState.mode) ? newState.path : rootPath;
         }
 
         const accordionItems = allAccordionItems
