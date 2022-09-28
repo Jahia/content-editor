@@ -44,18 +44,19 @@ export const PickerTreeQueryHandler = transformQueryHandler({
         }
     })
 });
-
+const isSelectableFilter = [
+    {
+        fieldName: 'isSelectable',
+        value: 'true'
+    }
+];
 export const PickerSearchQueryHandler = transformQueryHandler({
     ...SearchQueryHandler,
     getQueryVariables: p => ({
         ...SearchQueryHandler.getQueryVariables(p),
         fieldFilter: {
-            filters: (p.selectableFilter ? p.selectableFilter.push() : [
-                {
-                    fieldName: 'isSelectable',
-                    value: 'true'
-                }
-            ])
+            multi: 'ANY',
+            filters: (p.selectableFilter ? p.selectableFilter : isSelectableFilter)
         }
     })
 });
