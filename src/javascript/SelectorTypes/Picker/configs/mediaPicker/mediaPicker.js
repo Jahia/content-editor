@@ -79,14 +79,17 @@ export const registerMediaPickers = registry => {
         },
         searchContentType: 'jnt:file',
         selectableTypesTable: ['jnt:file'],
-        selectableFilter: [
-            {
-                evaluation: 'CONTAINS',
-                fieldName: 'content.mimeType.value',
-                value: 'pdf'
-            },
-            {evaluation: 'EQUAL', fieldName: 'isFile', value: 'false'}
-        ],
+        accordionItem: {
+            'picker-media': {
+                tableConfig: {
+                    tableDisplayFilter: [
+                        {
+                            evaluation: 'CONTAINS',
+                            fieldName: 'content.mimeType.value',
+                            value: 'pdf'
+                        },
+                        {evaluation: 'EQUAL', fieldName: 'isFile', value: 'false'}
+                    ]}}},
         pickerCaptionComponent: FilePickerCaption
     });
 
@@ -104,14 +107,17 @@ export const registerMediaPickers = registry => {
         },
         searchContentType: 'jnt:file',
         selectableTypesTable: ['jnt:file'],
-        selectableFilter: [
-            {
-                evaluation: 'CONTAINS',
-                fieldName: 'content.mimeType.value',
-                value: 'video'
-            },
-            {evaluation: 'EQUAL', fieldName: 'isFile', value: 'false'}
-        ],
+        accordionItem: {
+            'picker-media': {
+                tableConfig: {
+                    tableDisplayFilter: [
+                        {
+                            evaluation: 'CONTAINS',
+                            fieldName: 'content.mimeType.value',
+                            value: 'video'
+                        },
+                        {evaluation: 'EQUAL', fieldName: 'isFile', value: 'false'}
+                    ]}}},
         pickerCaptionComponent: FilePickerCaption
     });
 
