@@ -44,7 +44,7 @@ export const PickerTreeQueryHandler = transformQueryHandler({
         }
     })
 });
-const istableDisplayFilter = [
+const isTableDisplayFilter = [
     {
         fieldName: 'isSelectable',
         value: 'true'
@@ -56,7 +56,7 @@ export const PickerSearchQueryHandler = transformQueryHandler({
         ...SearchQueryHandler.getQueryVariables(p),
         fieldFilter: {
             multi: 'ANY',
-            filters: (p.tableDisplayFilter ? p.tableDisplayFilter : istableDisplayFilter)
+            filters: (p.tableDisplayFilter ? p.tableDisplayFilter : isTableDisplayFilter)
         }
     })
 });

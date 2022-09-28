@@ -89,7 +89,21 @@ export const registerMediaPickers = registry => {
                             value: 'pdf'
                         },
                         {evaluation: 'EQUAL', fieldName: 'isFile', value: 'false'}
-                    ]}}},
+                    ]
+                }
+            },
+            'picker-search': {
+                tableConfig: {
+                    tableDisplayFilter: [
+                        {
+                            evaluation: 'CONTAINS',
+                            fieldName: 'content.mimeType.value',
+                            value: 'pdf'
+                        }
+                    ]
+                }
+            }
+        },
         pickerCaptionComponent: FilePickerCaption
     });
 
@@ -117,7 +131,21 @@ export const registerMediaPickers = registry => {
                             value: 'video'
                         },
                         {evaluation: 'EQUAL', fieldName: 'isFile', value: 'false'}
-                    ]}}},
+                    ]
+                }
+            },
+            'picker-search': {
+                tableConfig: {
+                    tableDisplayFilter: [
+                        {
+                            evaluation: 'CONTAINS',
+                            fieldName: 'content.mimeType.value',
+                            value: 'video'
+                        }
+                    ]
+                }
+            }
+        },
         pickerCaptionComponent: FilePickerCaption
     });
 
