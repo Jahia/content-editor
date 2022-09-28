@@ -87,11 +87,13 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
 
         const allAccordionItems = jcontentUtils.getAccordionItems(pickerConfig.key, accordionItemProps);
 
-        let firstMatchingAccordion = allAccordionItems.find(accord =>
+        const valid = accord =>
             (!accord.isEnabled || accord.isEnabled(newState.site)) &&
-            accord.canDisplayItem &&
-            ((selectedNode && !previousState.current.isOpen) ? accord.canDisplayItem({selectionNode: selectedNode}) : accord.canDisplayItem({folderNode: currentFolderInfo.node}))
-        ) || allAccordionItems[0];
+            (!accord.canDisplayItem || ((selectedNode && !previousState.current.isOpen) ? accord.canDisplayItem({selectionNode: selectedNode}) : accord.canDisplayItem({folderNode: currentFolderInfo.node})));
+
+        const firstMatchingAccordion = allAccordionItems.find(accord => (accord.key === accordion.key) && valid(accord)) ||
+            allAccordionItems.find(accord => valid(accord)) ||
+            allAccordionItems[0];
 
         // If selection exists we don't care about previous state, need to update state in accordance with selection
         // Initialize site when opening dialog
@@ -159,7 +161,7 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
         }
 
         previousState.current = newState;
-    }, [dispatch, editorContext, pickerConfig, state, nodesInfo, currentFolderInfo, accordionItemProps]);
+    }, [dispatch, editorContext, pickerConfig, state, nodesInfo, currentFolderInfo, accordion.key, accordionItemProps]);
 
     if (currentFolderInfo.loading || nodesInfo.loading) {
         return <LoaderOverlay/>;
