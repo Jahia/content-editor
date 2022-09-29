@@ -16,7 +16,16 @@ const viewModeSelectorProps = {
     setTableViewModeAction: mode => cePickerSetTableViewMode(mode)
 };
 
-const PickerContentsFolderQueryHandler = transformQueryHandler(ContentFoldersQueryHandler);
+const PickerContentsFolderQueryHandler = transformQueryHandler({
+    ...ContentFoldersQueryHandler,
+    getQueryVariables: p => ({
+        ...ContentFoldersQueryHandler.getQueryVariables(p),
+        fieldFilter: {
+            multi: p.tableDisplayFilter ? 'ANY' : 'NONE',
+            filters: (p.tableDisplayFilter ? p.tableDisplayFilter : [])
+        }
+    })
+});
 
 export const registerEditorialPicker = registry => {
     registry.add(Constants.pickerConfig, 'editorial', {
