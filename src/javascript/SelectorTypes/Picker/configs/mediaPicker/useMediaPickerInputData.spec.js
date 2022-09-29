@@ -54,7 +54,7 @@ describe('useMediaPickerInputData', () => {
                     uuid: 'this-is-uuid',
                     height: {value: '1080'},
                     width: {value: '1920'},
-                    lastModified: {value: 'tomorow'},
+                    lastModified: {value: 'tomorrow'},
                     displayName: 'a cake',
                     path: 'placeholder.jpg',
                     content: {
@@ -72,7 +72,7 @@ describe('useMediaPickerInputData', () => {
                 info: 'image/jpeg - 1080x1920px',
                 name: 'a cake',
                 path: 'placeholder.jpg',
-                url: 'localContextPath/files/defaultplaceholder.jpg?lastModified=tomorow&t=thumbnail2'
+                url: 'localContextPath/files/defaultplaceholder.jpg?lastModified=tomorrow&t=thumbnail2'
             }]
         });
     });
