@@ -12,12 +12,13 @@ const MediaPickerFilledQuery = gql`
                 height: property(name: "j:height") {
                     value
                 }
-                children(names: "jcr:content") {
-                    nodes {
-                        ...NodeCacheRequiredFields
-                        mimeType: property(name: "jcr:mimeType") {
-                            value
-                        }
+                content: descendant(relPath: "jcr:content") {
+                    ...NodeCacheRequiredFields
+                    data: property(name: "jcr:data") {
+                        size
+                    }
+                    mimeType: property(name: "jcr:mimeType") {
+                        value
                     }
                 }
                 lastModified: property(name: "jcr:lastModified") {
