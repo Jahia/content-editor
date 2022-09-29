@@ -79,7 +79,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
     }), shallowEqual);
 
     const allowDoubleClickNavigation = nodeType => {
-        return !isStructured && Constants.mode.SEARCH !== mode && (['jnt:folder', 'jnt:contentFolder'].indexOf(nodeType) !== -1);
+        return Constants.mode.SEARCH !== mode && (['jnt:folder', 'jnt:contentFolder'].indexOf(nodeType) !== -1);
     };
 
     const previousMode = mode === Constants.mode.SEARCH ? preSearchModeMemo : mode;
@@ -148,7 +148,6 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
     const doubleClickNavigation = node => {
         const actions = [];
 
-        actions.push(reduxActions.setOpenPathAction(node.path));
         actions.push(reduxActions.setPathAction(node.path));
         dispatch(batchActions(actions));
     };
