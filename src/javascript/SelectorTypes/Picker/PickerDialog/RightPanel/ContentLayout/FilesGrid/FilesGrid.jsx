@@ -1,14 +1,14 @@
-import React, {useMemo} from 'react';
+import React, {useEffect, useMemo, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
-import {FileCard, UploadTransformComponent, FilesGridEmptyDropZone} from '@jahia/jcontent';
-import {Paper} from '@material-ui/core';
+import {FileCard, FilesGridEmptyDropZone, jcontentUtils, UploadTransformComponent} from '@jahia/jcontent';
 import {TablePagination} from '@jahia/moonstone';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import classNames from 'clsx';
 import styles from './FilesGrid.scss';
 import {
-    cePickerAddSelection, cePickerClearSelection,
+    cePickerAddSelection,
+    cePickerClearSelection,
     cePickerMode,
     cePickerOpenPaths,
     cePickerPath,
@@ -20,7 +20,6 @@ import {getDetailedPathArray} from '~/SelectorTypes/Picker/Picker2.utils';
 import {batchActions} from 'redux-batched-actions';
 import {useFieldContext} from '~/contexts/FieldContext';
 import {registry} from '@jahia/ui-extender';
-import {jcontentUtils} from '@jahia/jcontent';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 
 const reduxActions = {
@@ -32,6 +31,16 @@ const reduxActions = {
     addToSelection: uuid => cePickerAddSelection(uuid),
     removeFromSelection: uuid => cePickerRemoveSelection(uuid),
     clearSelection: () => cePickerClearSelection()
+};
+
+const Grid = React.forwardRef(({children}, ref) => (
+    <div ref={ref} className={classNames(styles.defaultGrid, styles.detailedGrid)}>
+        {children}
+    </div>
+));
+
+Grid.propTypes = {
+    children: PropTypes.node
 };
 
 export const FilesGrid = ({totalCount, rows, isLoading, pickerConfig, accordionItemProps}) => {
@@ -72,6 +81,13 @@ export const FilesGrid = ({totalCount, rows, isLoading, pickerConfig, accordionI
         dispatch(batchActions(actions));
     };
 
+    const mainPanelRef = useRef(null);
+    useEffect(() => {
+        if (mainPanelRef.current) {
+            mainPanelRef.current.scroll(0, 0);
+        }
+    }, [pagination.currentPage]);
+
     if ((!rows || rows.length === 0) && !isLoading) {
         return (
             <React.Fragment>
@@ -87,11 +103,11 @@ export const FilesGrid = ({totalCount, rows, isLoading, pickerConfig, accordionI
                 data-cm-role="grid-content-list"
                 tabIndex="1"
             >
-                <UploadTransformComponent uploadTargetComponent={Paper}
+                <UploadTransformComponent ref={mainPanelRef}
+                                          uploadTargetComponent={Grid}
                                           uploadPath={path}
                                           uploadType="upload"
                                           uploadFilter={file => !tableConfig?.uploadFilter || tableConfig.uploadFilter(file, mode, pickerConfig.key)}
-                                          className={classNames(styles.defaultGrid, styles.detailedGrid)}
                 >
                     {rows.map((node, index) => (
                         <FileCard key={node.uuid}
