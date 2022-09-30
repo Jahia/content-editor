@@ -87,8 +87,8 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
     }, [mode, accordionItemProps]);
 
     const allowDoubleClickNavigation = nodeType => {
-        return  Constants.mode.SEARCH !== mode &&
-            ((tableConfig.canAlwaysDoubleClickOnType && tableConfig.canAlwaysDoubleClickOnType(nodeType)) || (!isStructured && (['jnt:folder', 'jnt:contentFolder'].indexOf(nodeType) !== -1)));
+        return Constants.mode.SEARCH !== mode &&
+            ((tableConfig.canAlwaysDoubleClickOnType && tableConfig.canAlwaysDoubleClickOnType(nodeType)) || (!isStructured && (['jnt:folder', 'jnt:contentFolder'].includes(nodeType))));
     };
 
     const columns = useMemo(() => {
