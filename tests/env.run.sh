@@ -96,7 +96,14 @@ if [[ $INSTALLED_MODULE_VERSION == "UNKNOWN" ]]; then
 fi
 
 echo "$(date +'%d %B %Y - %k:%M') == Run tests =="
-yarn e2e:ci
+if [[ "${JAHIA_CLUSTER_ENABLED}" == "true" ]]; then
+  echo "$(date +'%d %B %Y - %k:%M') == Run ALL specs with cluster enabled =="
+  yarn e2e:ci
+else
+  echo "$(date +'%d %B %Y - %k:%M') == Run REDUCED specs with cluster disabled =="
+  yarn e2e:ci:standalone
+fi
+
 if [[ $? -eq 0 ]]; then
   echo "$(date +'%d %B %Y - %k:%M') == Full execution successful =="
   echo "success" > ./results/test_success
