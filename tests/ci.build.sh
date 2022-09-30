@@ -2,6 +2,8 @@
 # This script can be used to manually build the docker images necessary to run the tests
 # It should be executed from the tests folder
 
+echo " ci.build.sh == Build test image"
+
 source ./set-env.sh
 
 # It assumes that you previously built the module you're going to be testing
