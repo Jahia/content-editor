@@ -27,7 +27,7 @@ export const registerCategoryPicker = registry => {
         icon: <Collections/>,
         label: 'content-editor:label.contentEditor.picker.navigation.categories',
         rootPath: '/sites/systemsite/categories',
-        canDisplayItem: ({selectedNode, folderNode}) => selectedNode ? /^\/sites\/systemsite\/categories\/.*/.test(selectedNode.path) : /^\/sites\/systemsite\/categories((\/.*)|$)/.test(folderNode.path),
+        canDisplayItem: ({selectionNode, folderNode}) => selectionNode ? /^\/sites\/systemsite\/categories\/.*/.test(selectionNode.path) : /^\/sites\/systemsite\/categories((\/.*)|$)/.test(folderNode.path),
         tableConfig: {
             queryHandler: PickerTreeQueryHandler,
             openableTypes: ['jnt:category'],

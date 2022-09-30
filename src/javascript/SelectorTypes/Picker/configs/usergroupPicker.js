@@ -70,7 +70,7 @@ export const registerUsergroupPicker = registry => {
         icon: <Group/>,
         label: 'content-editor:label.contentEditor.picker.navigation.usergroup',
         rootPath: '/',
-        canDisplayItem: node => /^\/sites\/[^/]+\/groups\/.*/.test(node.path),
+        canDisplayItem: ({selectionNode, folderNode}) => selectionNode ? /^(\/sites\/[^/]+)?\/groups\/.*/.test(selectionNode.path) : folderNode.path === '/',
         getSearchContextData: ({currentSite, t}) => {
             return [
                 {

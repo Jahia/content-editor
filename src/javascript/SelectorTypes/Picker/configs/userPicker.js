@@ -71,7 +71,7 @@ export const registerUserPicker = registry => {
         icon: <FolderUser/>,
         label: 'content-editor:label.contentEditor.picker.navigation.users',
         rootPath: '/',
-        canDisplayItem: node => /^\/sites\/[^/]+\/users\/.*/.test(node.path),
+        canDisplayItem: ({selectionNode, folderNode}) => selectionNode ? /^(\/sites\/[^/]+)?\/users\/.*/.test(selectionNode.path) : folderNode.path === '/',
         getSearchContextData: ({currentSite, t}) => {
             return [
                 {
