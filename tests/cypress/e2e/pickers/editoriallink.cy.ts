@@ -75,7 +75,6 @@ describe('Picker - Editorial link', () => {
                 const allTypes = texts.sort().filter((f, i) => texts.indexOf(f) === i);
                 expect(allTypes).to.contain('Page');
                 expect(allTypes).to.contain('Company');
-                expect(allTypes).to.contain('Person portrait');
                 expect(allTypes).to.contain('Navigation menu - Text (separator)');
             });
 
