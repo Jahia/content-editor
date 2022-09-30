@@ -89,7 +89,7 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
 
         const valid = accord =>
             (!accord.isEnabled || accord.isEnabled(newState.site)) &&
-            (!accord.canDisplayItem || ((selectedNode && !previousState.current.isOpen) ? accord.canDisplayItem({selectionNode: selectedNode}) : accord.canDisplayItem({folderNode: currentFolderInfo.node})));
+            (!accord.canDisplayItem || !selectedNode || (!previousState.current.isOpen && accord.canDisplayItem({selectionNode: selectedNode})));
 
         const firstMatchingAccordion = allAccordionItems.find(accord => (accord.key === accordion.key) && valid(accord)) ||
             allAccordionItems.find(accord => valid(accord)) ||
@@ -124,12 +124,13 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
 
             newState.mode = firstMatchingAccordion.key;
             const rootPath = firstMatchingAccordion.getRootPath(newState.site);
-            newState.site = getSite(rootPath);
 
             // If picker default path does not target any site use it
-            newState.path = (getSite(newState.path) === newState.site &&
-                rootPath.indexOf(`/${newState.site}`) !== -1 &&
-                previousState.current.mode === newState.mode) ? newState.path : rootPath;
+            if (getSite(rootPath) === newState.site) {
+                newState.path = (getSite(newState.path) === newState.site &&
+                    rootPath.indexOf(`/${newState.site}`) !== -1 &&
+                    previousState.current.mode === newState.mode) ? newState.path : rootPath;
+            }
         }
 
         const accordionItems = allAccordionItems
