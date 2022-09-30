@@ -65,7 +65,8 @@ export const registerEditorialPicker = registry => {
                 openableTypes: ['jnt:contentFolder'],
                 viewSelector: <ViewModeSelector {...viewModeSelectorProps}/>,
                 uploadType: null,
-                contextualMenu: 'contentPickerMenu'
+                contextualMenu: 'contentPickerMenu',
+                canAlwaysDoubleClickOnType: type => ['jnt:contentFolder'].includes(type)
             }
 
         }, renderer);

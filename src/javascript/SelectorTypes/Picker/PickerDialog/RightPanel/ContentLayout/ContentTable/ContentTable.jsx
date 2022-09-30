@@ -78,10 +78,6 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
         sort: state.contenteditor.picker.sort
     }), shallowEqual);
 
-    const allowDoubleClickNavigation = nodeType => {
-        return Constants.mode.SEARCH !== mode && (['jnt:folder', 'jnt:contentFolder'].indexOf(nodeType) !== -1);
-    };
-
     const previousMode = mode === Constants.mode.SEARCH ? preSearchModeMemo : mode;
     const previousModeTableConfig = useMemo(() => {
         return jcontentUtils.getAccordionItem(registry.get('accordionItem', previousMode), accordionItemProps)?.tableConfig;
@@ -89,6 +85,12 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
     const tableConfig = useMemo(() => {
         return jcontentUtils.getAccordionItem(registry.get('accordionItem', mode), accordionItemProps)?.tableConfig;
     }, [mode, accordionItemProps]);
+
+    const allowDoubleClickNavigation = nodeType => {
+        return  Constants.mode.SEARCH !== mode &&
+            ((tableConfig.canAlwaysDoubleClickOnType && tableConfig.canAlwaysDoubleClickOnType(nodeType)) || (!isStructured && (['jnt:folder', 'jnt:contentFolder'].indexOf(nodeType) !== -1)));
+    };
+
     const columns = useMemo(() => {
         const flattenRows = isStructured ? flattenTree(rows) : rows;
         const colNames = previousModeTableConfig?.columns || defaultCols;
@@ -148,6 +150,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
     const doubleClickNavigation = node => {
         const actions = [];
 
+        actions.push(reduxActions.setOpenPathAction(node.path));
         actions.push(reduxActions.setPathAction(node.path));
         dispatch(batchActions(actions));
     };
