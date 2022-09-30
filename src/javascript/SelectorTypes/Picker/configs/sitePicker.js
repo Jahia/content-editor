@@ -40,7 +40,7 @@ export const registerSitePicker = registry => {
         icon: <SiteWeb/>,
         label: 'content-editor:label.contentEditor.picker.navigation.sites',
         rootPath: '/sites',
-        canDisplayItem: ({selectionNode, folderNode}) => selectionNode ? /^\/sites\/.*/.test(selectionNode.path) : /^\/sites((\/.*)|$)/.test(folderNode.path),
+        canDisplayItem: ({selectionNode, folderNode}) => selectionNode ? /^\/sites\/[^/]*/.test(selectionNode.path) : folderNode.path === '/sites',
         tableConfig: {
             queryHandler: PickerBaseQueryHandler,
             defaultSort: {orderBy: 'displayName', order: 'ASC'},
