@@ -17,14 +17,21 @@ export const PickerPagesQueryHandler = {
         }
     },
 
-    getQueryVariables: options => ({
-        ...PagesQueryHandler.getQueryVariables(options),
-        selectableTypesTable: options.selectableTypesTable,
-        typeFilter: options.selectableTypesTable.includes('jnt:page') && Constants.tableView.type.PAGES === options.tableView.viewType ? ['jnt:page'] : options.selectableTypesTable.filter(t => t !== 'jnt:page'),
-        fieldFilter: {
-            multi: options.tableDisplayFilter ? 'ANY' : 'NONE',
-            filters: (options.tableDisplayFilter ? options.tableDisplayFilter : [])
-        }
-    }),
+    getQueryVariables: options => {
+        const {selectableTypesTable, tableDisplayFilter} = options;
+        const isPagesViewType = Constants.tableView.type.PAGES === options.tableView.viewType;
+        const isPageTypeFn = t => t === 'jnt:page' || t === 'jmix:navMenuItem';
+        let typeFilter = isPagesViewType ? selectableTypesTable.filter(isPageTypeFn) : selectableTypesTable.filter(t => !isPageTypeFn(t));
+
+        return {
+            ...PagesQueryHandler.getQueryVariables(options),
+            selectableTypesTable,
+            typeFilter,
+            fieldFilter: {
+                multi: tableDisplayFilter ? 'ANY' : 'NONE',
+                filters: tableDisplayFilter || []
+            }
+        };
+    },
     getFragments: () => [...PagesQueryHandler.getFragments(), selectableTypeFragment]
 };
