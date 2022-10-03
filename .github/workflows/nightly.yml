@@ -27,7 +27,6 @@ jobs:
           jahia_image: jahia/jahia-ee-dev:8-SNAPSHOT
           jahia_cluster_enabled: true
           should_use_build_artifacts: true
-          ci_startup_script: "ci.startup.sh"
           should_skip_testrail: true
           github_artifact_name: content-editor-cluster-artifacts-${{ github.run_number }}
           bastion_ssh_private_key: ${{ secrets.BASTION_SSH_PRIVATE_KEY_JAHIACI }}
