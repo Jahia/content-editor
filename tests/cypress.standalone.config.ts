@@ -18,7 +18,7 @@ export default defineConfig({
         setupNodeEvents(on, config) {
             return require('./cypress/plugins/index.js')(on, config);
         },
-        specPattern: '**/pickers/*',
+        specPattern: '**/e2e/pickers/*',
         baseUrl: 'http://localhost:8080',
         experimentalSessionAndOrigin: false
     }
