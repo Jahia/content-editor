@@ -54,6 +54,8 @@ describe('Picker - Site', () => {
 
         picker.getTable().selectItems(3);
         picker.select();
+
+        contentEditor.getPickerField('qant:pickersMultiple_sitepicker', true).get().scrollIntoView();
         pickerField.assertValue('Digitall');
         pickerField.assertValue('site1');
         pickerField.assertValue('site2');
