@@ -33,6 +33,11 @@ export const registerEditorialPicker = registry => {
         selectableTypesTable: ['jnt:page', 'jnt:contentList', 'jnt:contentFolder', 'jmix:siteContent', 'jmix:editorialContent']
     });
 
+    registry.add(Constants.pickerConfig, 'droppableContent', {
+        searchContentType: 'jmix:searchable',
+        selectableTypesTable: ['jmix:droppableContent']
+    });
+
     // These are jcontent accordion items, additional targets are added to enhance selection
     const pagesItem = registry.get(Constants.ACCORDION_ITEM_NAME, Constants.ACCORDION_ITEM_TYPES.PAGES);
     const contentFoldersItem = registry.get(Constants.ACCORDION_ITEM_NAME, Constants.ACCORDION_ITEM_TYPES.CONTENT_FOLDERS);
@@ -41,7 +46,7 @@ export const registerEditorialPicker = registry => {
         // Page content
         registry.add(Constants.ACCORDION_ITEM_NAME, `picker-${Constants.ACCORDION_ITEM_TYPES.PAGES}`, {
             ...pagesItem,
-            targets: ['default:50', 'editorial:50'],
+            targets: ['default:50', 'editorial:50', 'droppableContent:50'],
             getSearchContextData: getPagesSearchContextData,
             tableConfig: {
                 queryHandler: PickerPagesQueryHandler,
@@ -59,7 +64,7 @@ export const registerEditorialPicker = registry => {
     if (contentFoldersItem) {
         registry.add(Constants.ACCORDION_ITEM_NAME, `picker-${Constants.ACCORDION_ITEM_TYPES.CONTENT_FOLDERS}`, {
             ...contentFoldersItem,
-            targets: ['default:60', 'editorial:60'],
+            targets: ['default:60', 'editorial:60', 'droppableContent:60'],
             tableConfig: {
                 queryHandler: PickerContentsFolderQueryHandler,
                 openableTypes: ['jnt:contentFolder'],
