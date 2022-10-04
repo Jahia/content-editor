@@ -52,7 +52,11 @@ const RightPanel = ({pickerConfig, accordionItemProps, onClose, onItemSelection}
     };
 
     const accordionItem = jcontentUtils.getAccordionItem(registry.get('accordionItem', mode), accordionItemProps);
-    const viewSelector = accordionItem?.tableConfig?.viewSelector;
+    let viewSelector = accordionItem?.tableConfig?.viewSelector;
+    if (typeof viewSelector === 'function') {
+        viewSelector = viewSelector({pickerConfig});
+    }
+
     const actionsTarget = accordionItem?.actionsTarget || 'content-editor/pickers/' + mode + '/header-actions';
 
     return (

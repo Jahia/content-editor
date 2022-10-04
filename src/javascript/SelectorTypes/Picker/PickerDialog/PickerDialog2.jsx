@@ -4,7 +4,6 @@ import {Dialog, Slide} from '@material-ui/core';
 import styles from './PickerDialog.scss';
 import {
     cePickerClearSelection,
-    cePickerKey,
     cePickerMode,
     cePickerPath,
     cePickerSetPage,
@@ -42,7 +41,6 @@ export const PickerDialog = ({
     useEffect(() => {
         if (isOpen) {
             dispatch(batchActions([
-                cePickerKey(pickerConfig.key),
                 cePickerSetSearchTerm(''),
                 cePickerSetPage(0)
             ]));

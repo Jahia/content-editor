@@ -6,25 +6,23 @@ import {transformQueryHandler} from '~/SelectorTypes/Picker/configs/queryHandler
 import {renderer} from '~/SelectorTypes/Picker/configs/renderer';
 import {FilePickerCaption} from '~/SelectorTypes/Picker/configs/mediaPicker/FilePickerCaption';
 import {cePickerSetFileViewMode} from '~/SelectorTypes/Picker/Picker2.redux';
-import {registry} from '@jahia/ui-extender';
 import {FileImage} from '@jahia/moonstone';
 import {PickerFilesQueryHandler} from '~/SelectorTypes/Picker/configs/mediaPicker/PickerFilesQueryHandler';
 
-function getMode(state) {
+function getMode(state, config) {
     if (state.contenteditor.picker.fileView.mode === '') {
-        const config = registry.get(Constants.pickerConfig, state.contenteditor.picker.pickerKey);
         return config?.pickerDialog?.view === 'Thumbnail' ? Constants.fileView.mode.THUMBNAILS : Constants.fileView.mode.LIST;
     }
 
     return state.contenteditor.picker.fileView.mode;
 }
 
-const viewModeSelectorProps = {
+const viewModeSelectorProps = config => ({
     selector: state => ({
-        mode: getMode(state)
+        mode: getMode(state, config)
     }),
     setModeAction: mode => cePickerSetFileViewMode(mode)
-};
+});
 
 export const registerMediaPickers = registry => {
     registry.add(Constants.pickerConfig, 'file', {
@@ -159,9 +157,9 @@ export const registerMediaPickers = registry => {
                 defaultSort: {orderBy: 'lastModified.value', order: 'DESC'},
                 queryHandler: transformQueryHandler(PickerFilesQueryHandler),
                 openableTypes: ['jnt:folder'],
-                viewSelector: <FileModeSelector {...viewModeSelectorProps}/>,
+                viewSelector: ({pickerConfig}) => <FileModeSelector {...viewModeSelectorProps(pickerConfig)}/>,
                 contextualMenu: 'contentPickerMenu',
-                uploadFilter: (file, mode, pickerKey) => pickerKey !== 'image' || file.type.startsWith('image/'),
+                uploadFilter: (file, mode, pickerConfig) => pickerConfig.key !== 'image' || file.type.startsWith('image/'),
                 columns: ['publicationStatus', 'name', 'lastModified']
             }
         }, renderer);

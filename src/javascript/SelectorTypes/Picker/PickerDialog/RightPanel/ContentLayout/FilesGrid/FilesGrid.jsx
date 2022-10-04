@@ -33,8 +33,8 @@ const reduxActions = {
     clearSelection: () => cePickerClearSelection()
 };
 
-const Grid = React.forwardRef(({children}, ref) => (
-    <div ref={ref} className={classNames(styles.defaultGrid, styles.detailedGrid)}>
+const Grid = React.forwardRef(({children, ...rest}, ref) => (
+    <div ref={ref} className={classNames(styles.defaultGrid, styles.detailedGrid)} {...rest}>
         {children}
     </div>
 ));
@@ -107,7 +107,7 @@ export const FilesGrid = ({totalCount, rows, isLoading, pickerConfig, accordionI
                                           uploadTargetComponent={Grid}
                                           uploadPath={path}
                                           uploadType="upload"
-                                          uploadFilter={file => !tableConfig?.uploadFilter || tableConfig.uploadFilter(file, mode, pickerConfig.key)}
+                                          uploadFilter={file => !tableConfig?.uploadFilter || tableConfig.uploadFilter(file, mode, pickerConfig)}
                 >
                     {rows.map((node, index) => (
                         <FileCard key={node.uuid}
