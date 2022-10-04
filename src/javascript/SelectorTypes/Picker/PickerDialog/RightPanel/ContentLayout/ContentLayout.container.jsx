@@ -29,6 +29,10 @@ const getFilesMode = (state, pickerConfig) => {
     return state.contenteditor.picker.fileView.mode;
 };
 
+function expand(r, level) {
+    return (r && level) ? r.filter(c => c.hasSubRows).flatMap(c => [c.path, ...expand(c.subRows, level - 1)]) : [];
+}
+
 export const ContentLayoutContainer = ({pickerConfig, accordionItemProps}) => {
     const {t} = useTranslation();
     const currentResult = useRef();
@@ -44,6 +48,7 @@ export const ContentLayoutContainer = ({pickerConfig, accordionItemProps}) => {
     const dispatch = useDispatch();
 
     const additionalFragments = [];
+    let autoExpandLevels = 2;
     if (mode === Constants.mode.SEARCH && preSearchModeMemo) {
         const tableConfig = jcontentUtils.getAccordionItem(registry.get('accordionItem', preSearchModeMemo), accordionItemProps)?.tableConfig;
         if (tableConfig?.fragments) {
@@ -58,6 +63,10 @@ export const ContentLayoutContainer = ({pickerConfig, accordionItemProps}) => {
         const tableConfig = jcontentUtils.getAccordionItem(registry.get('accordionItem', mode), accordionItemProps)?.tableConfig;
         if (tableConfig?.fragments) {
             additionalFragments.push(...tableConfig?.fragments);
+        }
+
+        if (tableConfig.autoExpandLevels) {
+            autoExpandLevels = tableConfig.autoExpandLevels;
         }
     }
 
@@ -92,13 +101,13 @@ export const ContentLayoutContainer = ({pickerConfig, accordionItemProps}) => {
 
     const autoExpand = useRef({path: '', level: 1, type: ''});
     useEffect(() => {
-        if (isStructured && !loading && result?.nodes?.length && (autoExpand.current.path !== path || autoExpand.current.type !== viewType || autoExpand.current.level < 2)) {
+        if (isStructured && !loading && result?.nodes?.length && (autoExpand.current.path !== path || autoExpand.current.type !== viewType || autoExpand.current.level < autoExpandLevels)) {
             autoExpand.current.level = (autoExpand.current.path === path && autoExpand.current.type === viewType) ? autoExpand.current.level + 1 : 1;
             autoExpand.current.path = path;
             autoExpand.current.type = viewType;
-            dispatch(cePickerOpenPaths(result.nodes.filter(n => n.hasSubRows).flatMap(r => [r.path, ...r.subRows?.filter(c => c.hasSubRows).map(c => c.path)])));
+            dispatch(cePickerOpenPaths(expand(result.nodes, autoExpand.current.level)));
         }
-    }, [dispatch, result, isStructured, path, viewType, loading, autoExpand]);
+    }, [dispatch, result, isStructured, path, viewType, loading, autoExpand, autoExpandLevels]);
 
     if (!loading && !result) {
         if (error) {

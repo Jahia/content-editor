@@ -54,7 +54,8 @@ export const registerEditorialPicker = registry => {
                 viewSelector: <ViewModeSelector {...viewModeSelectorProps}/>,
                 tableHeader: <EditorialContentTypeSelector/>,
                 uploadType: null,
-                contextualMenu: 'contentPickerMenu'
+                contextualMenu: 'contentPickerMenu',
+                autoExpandLevels: 3
             }
         }, renderer);
     } else {
