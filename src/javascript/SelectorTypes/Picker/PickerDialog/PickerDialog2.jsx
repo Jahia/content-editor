@@ -18,9 +18,15 @@ import {ContentNavigation} from '@jahia/jcontent';
 import {SelectionHandler} from '~/SelectorTypes/Picker/PickerDialog/SelectionHandler';
 import {PickerSiteSwitcher} from '~/SelectorTypes/Picker/PickerDialog/PickerSiteSwitcher';
 
-const Transition = props => {
-    return <Slide direction="up" {...props}/>;
-};
+const Transition = props => (
+    <Slide direction="up"
+           {...props}
+           onEntered={node => {
+               // Remove transform style after transition to fix internal positioning
+               node.style = {};
+           }}
+    />
+);
 
 const selector = state => ({
     mode: state.contenteditor.picker.mode,
