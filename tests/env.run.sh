@@ -7,8 +7,21 @@ source ./set-env.sh
 #!/usr/bin/env bash
 START_TIME=$SECONDS
 
-echo " == Using MANIFEST: ${MANIFEST}"
-echo " == Using JAHIA_URL= ${JAHIA_URL}"
+echo " env.run.sh == Printing the most important environment variables"
+echo " MANIFEST: ${MANIFEST}"
+echo " TESTS_IMAGE: ${TESTS_IMAGE}"
+echo " JAHIA_IMAGE: ${JAHIA_IMAGE}"
+echo " JAHIA_CLUSTER_ENABLED: ${JAHIA_CLUSTER_ENABLED}"
+echo " MODULE_ID: ${MODULE_ID}"
+echo " JAHIA_URL: ${JAHIA_URL}"
+echo " JAHIA_HOST: ${JAHIA_HOST}"
+echo " JAHIA_PORT: ${JAHIA_PORT}"
+echo " JAHIA_USERNAME: ${JAHIA_USERNAME}"
+echo " JAHIA_PASSWORD: ${JAHIA_PASSWORD}"
+echo " JAHIA_USERNAME_TOOLS: ${JAHIA_USERNAME_TOOLS}"
+echo " JAHIA_PASSWORD_TOOLS: ${JAHIA_PASSWORD_TOOLS}"
+echo " SUPER_USER_PASSWORD: ${SUPER_USER_PASSWORD}"
+echo " TIMEZONE: ${TIMEZONE}"
 echo " == Using Node version: $(node -v)"
 echo " == Using yarn version: $(yarn -v)"
 
@@ -96,7 +109,14 @@ if [[ $INSTALLED_MODULE_VERSION == "UNKNOWN" ]]; then
 fi
 
 echo "$(date +'%d %B %Y - %k:%M') == Run tests =="
-yarn e2e:ci
+if [[ "${JAHIA_CLUSTER_ENABLED}" == "true" ]]; then
+  echo "$(date +'%d %B %Y - %k:%M') == Run ALL specs with cluster enabled =="
+  yarn e2e:ci
+else
+  echo "$(date +'%d %B %Y - %k:%M') == Run REDUCED specs with cluster disabled =="
+  yarn e2e:ci:standalone
+fi
+
 if [[ $? -eq 0 ]]; then
   echo "$(date +'%d %B %Y - %k:%M') == Full execution successful =="
   echo "success" > ./results/test_success
