@@ -194,7 +194,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
                                       reference={mainPanelRef}
                                       uploadPath={path}
                                       uploadType={tableConfig?.uploadType}
-                                      uploadFilter={file => !tableConfig?.uploadFilter || tableConfig.uploadFilter(file, mode, pickerConfig.key)}
+                                      uploadFilter={file => !tableConfig?.uploadFilter || tableConfig.uploadFilter(file, mode, pickerConfig)}
             >
                 <Table aria-labelledby="tableTitle"
                        data-cm-role="table-content-list"

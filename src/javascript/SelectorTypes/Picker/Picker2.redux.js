@@ -4,7 +4,6 @@ import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
 import {toArray} from './Picker2.utils';
 
 export const {
-    cePickerKey,
     cePickerSite,
     cePickerContextSite,
     cePickerMode,
@@ -52,7 +51,6 @@ export const {
 export const registerPickerReducer = registry => {
     const initialState = {
         openPaths: [],
-        pickerKey: '',
         mode: '',
         modes: [],
         preSearchModeMemo: '',
@@ -74,10 +72,6 @@ export const registerPickerReducer = registry => {
     };
 
     const picker = handleActions({
-        [cePickerKey]: (state, action) => ({
-            ...state,
-            pickerKey: action.payload
-        }),
         [cePickerSite]: (state, action) => ({
             ...state,
             site: action.payload
@@ -187,6 +181,10 @@ export const registerPickerReducer = registry => {
                 ...state.fileView,
                 mode: action.payload
             }
+        }),
+        FILEUPLOAD_UPDATE_UPLOAD: (state, action) => ({
+            ...state,
+            selection: action.payload.uuid ? [action.payload.uuid] : state.selection
         })
     }, initialState);
 
