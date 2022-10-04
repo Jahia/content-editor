@@ -7,12 +7,17 @@ export const PickerPagesQueryHandler = {
 
     getTreeParams: options => {
         const treeParams = PagesQueryHandler.getTreeParams(options);
+        const isPagesViewType = Constants.tableView.type.PAGES === options.tableView.viewType;
+        const isPageTypeFn = t => t === 'jnt:page' || t === 'jmix:navMenuItem';
+        let typeFilter = isPagesViewType ?
+            options.selectableTypesTable.filter(isPageTypeFn) :
+            options.selectableTypesTable.filter(t => !isPageTypeFn(t));
 
         if (treeParams) {
             return ({
                 ...treeParams,
-                openableTypes: Constants.tableView.type.PAGES === options.tableView.viewType ? ['jnt:page'] : ['jnt:content'],
-                selectableTypes: Constants.tableView.type.PAGES === options.tableView.viewType ? ['jnt:page'] : options.selectableTypesTable.filter(t => t !== 'jnt:page')
+                openableTypes: isPagesViewType ? ['jnt:page'] : ['jnt:content'],
+                selectableTypes: typeFilter
             });
         }
     },
