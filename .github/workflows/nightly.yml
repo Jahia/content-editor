@@ -7,7 +7,6 @@ on:
 jobs:
   integration-tests-cluster:
     name: Integration Tests (Cluster)
-    needs: build
     runs-on: self-hosted
     timeout-minutes: 75
     steps:
