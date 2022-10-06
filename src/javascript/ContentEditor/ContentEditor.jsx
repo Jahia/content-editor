@@ -12,7 +12,7 @@ import {DndProvider} from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
 
 export const ContentEditor = props => {
-    const {mode, envProps} = props;
+    const {mode} = props;
 
     return (
         <ContentEditorConfigContextProvider config={props}>
