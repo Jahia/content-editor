@@ -33,6 +33,5 @@ export const ContentEditor = props => {
 };
 
 ContentEditor.propTypes = {
-    mode: PropTypes.oneOf([Constants.routes.baseCreateRoute, Constants.routes.baseEditRoute]).isRequired,
-    envProps: PropTypes.object.isRequired
+    mode: PropTypes.oneOf([Constants.routes.baseCreateRoute, Constants.routes.baseEditRoute]).isRequired
 };
