@@ -1,13 +1,13 @@
 # This workflow is triggered every time a change is pushed to any branches
 # Github actions command reference: https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions
-name: On merge to master
+name: On merge
 
 # The workflow could also be triggered on PRs
 on:
   push:
     branches:
       - 'master'
-      - '/[0-9]_[0-9]_[Xx]/'
+      - '[0-9]_[0-9]_[Xx]'
     tags-ignore:
       - '**'
 
@@ -86,7 +86,7 @@ jobs:
   publish:
     name: Publish module
     needs: build
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/4_0_x'
     runs-on: ubuntu-latest
     env:
       NEXUS_INTERNAL_URL: https://devtools.jahia.com/nexus/content/groups/internal/
