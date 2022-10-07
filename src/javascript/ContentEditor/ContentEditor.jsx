@@ -11,20 +11,11 @@ import {Constants} from '~/ContentEditor.constants';
 import {DndProvider} from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
 
-export const ContentEditor = ({name, mode, uuid, lang, uilang, site, contentType, envProps}) => {
-    const contentEditorConfig = {
-        name,
-        uuid,
-        lang,
-        uilang,
-        site,
-        contentType,
-        mode,
-        envProps
-    };
+export const ContentEditor = props => {
+    const {mode} = props;
 
     return (
-        <ContentEditorConfigContextProvider config={contentEditorConfig}>
+        <ContentEditorConfigContextProvider config={props}>
             <DndProvider backend={Backend}>
                 { mode === 'edit' && (
                     <ContentEditorContextProvider formQuery={EditFormQuery} formDataAdapter={adaptEditFormData}>
@@ -42,12 +33,5 @@ export const ContentEditor = ({name, mode, uuid, lang, uilang, site, contentType
 };
 
 ContentEditor.propTypes = {
-    mode: PropTypes.oneOf([Constants.routes.baseCreateRoute, Constants.routes.baseEditRoute]).isRequired,
-    envProps: PropTypes.object.isRequired,
-    uuid: PropTypes.string.isRequired,
-    lang: PropTypes.string.isRequired,
-    uilang: PropTypes.string.isRequired,
-    site: PropTypes.string.isRequired,
-    contentType: PropTypes.string,
-    name: PropTypes.string
+    mode: PropTypes.oneOf([Constants.routes.baseCreateRoute, Constants.routes.baseEditRoute]).isRequired
 };
