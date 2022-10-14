@@ -287,7 +287,8 @@
             "contentFolders": "Content Folders"
           }
         }
-      }
+      },
+      "readOnly": "Read-only"
     }
   }
 }
