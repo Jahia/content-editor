@@ -146,7 +146,7 @@ describe('Field component', () => {
 
         // Trigger field update
         cmp.find('SingleField').props().onChange(onChangeCurrentValue);
-        expect(result[0]).toBe(onChangePreviousValue);
+        expect(result[0]).toBe(undefined);
         expect(result[1]).toBe(onChangeCurrentValue);
         expect(formik.setFieldValue).toHaveBeenCalledWith('text', onChangeCurrentValue);
     });
