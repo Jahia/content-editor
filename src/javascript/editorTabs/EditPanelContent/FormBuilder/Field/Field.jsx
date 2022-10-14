@@ -16,7 +16,7 @@ import {useApolloClient} from '@apollo/react-hooks';
 import {getButtonRenderer} from '~/utils';
 import {useFormikContext} from 'formik';
 import styles from './Field.scss';
-import {ReadOnlyBadge} from "~/ContentEditor/EditPanel/HeaderBadges/ReadOnlyBadge";
+import {ReadOnlyBadge} from '~/ContentEditor/EditPanel/HeaderBadges/ReadOnlyBadge';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 

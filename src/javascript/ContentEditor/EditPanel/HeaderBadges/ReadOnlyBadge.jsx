@@ -1,18 +1,28 @@
 import React from 'react';
 import {Chip, Visibility} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
-import {useContentEditorContext} from "~/contexts";
+import {useContentEditorContext, useContentEditorSectionContext} from '~/contexts';
+import {useSelector} from 'react-redux';
+import styles from './ReadOnlyBadge.scss';
 
 export const ReadOnlyBadgeGlobal = () => {
     const {nodeData} = useContentEditorContext();
+    const {sections} = useContentEditorSectionContext();
+    const sectionToggleStates = useSelector(state => state.contenteditor.ceToggleSections);
 
-    if (!nodeData || !nodeData.lockedAndCannotBeEdited) {
-        return null;
+    const sectionsWithReadOnlyFields = sections.reduce((acc, s) => {
+        if (s.fieldSets.find(fs => fs.fields.find(f => f.readOnly))) {
+            acc.push(s.name);
+        }
+
+        return acc;
+    }, []);
+
+    if ((sectionsWithReadOnlyFields.length > 0 && !sectionsWithReadOnlyFields.find(s => sectionToggleStates[s])) || nodeData.lockedAndCannotBeEdited) {
+        return <ReadOnlyBadge/>;
     }
 
-    return (
-        <ReadOnlyBadge/>
-    );
+    return null;
 };
 
 export const ReadOnlyBadge = () => {
@@ -20,8 +30,9 @@ export const ReadOnlyBadge = () => {
 
     return (
         <Chip
+            className={styles.badge}
             data-sel-role="lock-info-badge"
-            label={t("content-editor:label.contentEditor.readOnly")}
+            label={t('content-editor:label.contentEditor.readOnly')}
             icon={<Visibility/>}
             color="warning"
         />
