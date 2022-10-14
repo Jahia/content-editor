@@ -56,7 +56,7 @@ export const Field = ({inputContext, idInput, selectorType, field}) => {
     }, [editorContext, sectionsContext, formik, client]);
 
     const registeredOnChange = useCallback(currentValue => {
-        if (registeredOnChanges && registeredOnChanges.length > 0) {
+        if (registeredOnChanges && registeredOnChanges.length > 0 && onChangeValue.current !== currentValue) {
             registeredOnChanges.forEach(currentOnChange => {
                 if (currentOnChange.onChange) {
                     try {

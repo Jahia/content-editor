@@ -139,7 +139,7 @@ describe('Field component', () => {
 
         // Should init call the onChange
         cmp.debug();
-        expect(result[0]).toBe(onChangePreviousValue);
+        expect(result[0]).toBe(undefined);
         expect(result[1]).toBe(onChangePreviousValue);
         expect(formik.setFieldValue).not.toHaveBeenCalled();
         expect(formik.setFieldTouched).not.toHaveBeenCalled();
