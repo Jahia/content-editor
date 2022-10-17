@@ -37,6 +37,7 @@ export default function () {
             registry.get('action', 'rename')?.targets?.push({id: 'contentPickerActions', priority: 1});
             registry.get('action', 'replaceFile')?.targets?.push({id: 'contentPickerActions', priority: 2});
             registry.get('action', 'editImage')?.targets?.push({id: 'contentPickerActions', priority: 3});
+            registry.get('action', 'downloadFile')?.targets?.push({id: 'contentPickerActions', priority: 3.7});
             registry.get('action', 'openInNewTab')?.targets?.push({id: 'contentPickerActions', priority: 4});
         }
     });
