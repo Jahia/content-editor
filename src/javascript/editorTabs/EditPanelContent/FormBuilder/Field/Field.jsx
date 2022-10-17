@@ -148,7 +148,6 @@ export const Field = ({inputContext, idInput, selectorType, field}) => {
                                 {(!field.i18n && editorContext.siteInfo.languages.length > 1) &&
                                     <Chip
                                         className={styles.badge}
-                                        data-sel-role="wip-info-chip-field"
                                         icon={<Language/>}
                                         label={t('content-editor:label.contentEditor.edit.sharedLanguages')}
                                         color="default"
