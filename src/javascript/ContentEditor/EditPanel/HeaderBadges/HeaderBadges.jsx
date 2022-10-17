@@ -4,7 +4,7 @@ import {PublicationInfoBadge} from './PublicationInfoBadge';
 import {LockInfoChip} from './LockInfoChip';
 import {WipInfoChip} from './WipInfoChip';
 import {UnsavedChip} from './UnsavedChip';
-import {ReadOnlyBadgeGlobal} from './ReadOnlyBadge';
+import {ReadOnlyBadgeGlobal} from './ReadOnlyBadgeGlobal';
 import {Constants} from '~/ContentEditor.constants';
 import styles from './HeaderBadges.scss';
 
