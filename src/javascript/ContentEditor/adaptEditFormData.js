@@ -32,8 +32,12 @@ const getInitialValues = (nodeData, sections) => {
 const getChildrenOrderingFields = (nodeData, dynamicFieldSets) => {
     const orderingInitialValues = {};
 
-    if (!nodeData.isPage && nodeData.primaryNodeType.hasOrderableChildNodes) {
-        orderingInitialValues['Children::Order'] = nodeData.children.nodes;
+    if (nodeData.primaryNodeType.hasOrderableChildNodes) {
+        if (nodeData.isPage) {
+            orderingInitialValues['Children::Order'] = nodeData.children.nodes.filter(n => n.primaryNodeType.name === 'jnt:page' || n.primaryNodeType.name === 'jmix:navMenuItem');
+        } else {
+            orderingInitialValues['Children::Order'] = nodeData.children.nodes;
+        }
     }
 
     // Using === false, because if it's undefined it's mean that the dynamic fieldset doest exist, so we do not need to init the values
