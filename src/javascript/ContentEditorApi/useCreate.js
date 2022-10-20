@@ -1,14 +1,14 @@
-import {getCreatableNodetypes} from '~/actions/jcontent/createContent/createContent.utils';
+import {flattenNodeTypes, getCreatableNodetypesTree} from '~/actions/jcontent/createContent/createContent.utils';
 import {Constants} from '~/ContentEditor.constants';
 import {useCallback} from 'react';
 import {useApolloClient} from '@apollo/react-hooks';
 
 const create = async (setEditorConfig, setContentTypeSelectorConfig, client, data) => {
     const {
-        path, name, uilang, nodeTypes, excludedNodeTypes, includeSubTypes, ...editorConfig
+        path, name, uilang, nodeTypes, excludedNodeTypes, includeSubTypes, nodeTypesTree, ...editorConfig
     } = data;
 
-    const creatableNodeTypes = await getCreatableNodetypes(
+    const resolvedCreatableNodeTypesTree = nodeTypesTree || await getCreatableNodetypesTree(
         client,
         nodeTypes,
         name,
@@ -19,21 +19,23 @@ const create = async (setEditorConfig, setContentTypeSelectorConfig, client, dat
         []
     );
 
+    const flattenedNodeTypes = flattenNodeTypes(resolvedCreatableNodeTypesTree);
+
     // Only one type allowed, open directly CE
-    if (creatableNodeTypes.length === 1) {
+    if (flattenedNodeTypes.length === 1) {
         setEditorConfig({
             name,
             uilang,
-            contentType: creatableNodeTypes[0].name,
+            contentType: flattenedNodeTypes[0].name,
             mode: Constants.routes.baseCreateRoute,
             ...editorConfig
         });
     }
 
     // Multiple nodetypes allowed, open content type selector
-    if (creatableNodeTypes.length > 1) {
+    if (flattenedNodeTypes.length > 1) {
         setContentTypeSelectorConfig({
-            creatableNodeTypes: creatableNodeTypes.map(nodeType => nodeType.name),
+            nodeTypesTree: resolvedCreatableNodeTypesTree,
             includeSubTypes,
             name,
             path,

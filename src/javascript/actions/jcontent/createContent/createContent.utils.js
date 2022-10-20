@@ -4,8 +4,7 @@ import {toIconComponent} from '@jahia/moonstone';
 
 const NB_OF_DISPLAYED_RESTRICTED_SUB_NODES = 3;
 // eslint-disable-next-line
-export const useCreatableNodetypes = (nodeTypes, childNodeName, includeSubTypes, path, uilang, excludedNodeTypes, showOnNodeTypes, transformResultCallback) => {
-    const skip = (nodeTypes && nodeTypes.length === 1 && !includeSubTypes);
+export const useCreatableNodetypesTree = (nodeTypes, childNodeName, includeSubTypes, path, uilang, excludedNodeTypes, showOnNodeTypes) => {
     const {data, error, loadingTypes} = useQuery(getTreeOfContentWithRequirements, {
         variables: {
             nodeTypes: (nodeTypes && nodeTypes.length) > 0 ? nodeTypes : undefined,
@@ -15,30 +14,18 @@ export const useCreatableNodetypes = (nodeTypes, childNodeName, includeSubTypes,
             path,
             excludedNodeTypes,
             showOnNodeTypes
-        },
-        skip: skip
+        }
     });
-
-    if (skip) {
-        let result = nodeTypes.map(n => ({name: n}));
-        return {
-            nodetypes: transformResultCallback ? transformResultCallback(result) : result
-        };
-    }
+    const nodeTypeNotDisplayed = !data?.jcr || (showOnNodeTypes && showOnNodeTypes.length > 0 && data.jcr.nodeByPath && !data.jcr.nodeByPath.isNodeType);
 
     return {
         error,
         loadingTypes,
-        nodetypes: (data && data.jcr) ? getNodeTypes(showOnNodeTypes, data, transformResultCallback) : []
+        nodetypes: nodeTypeNotDisplayed ? [] : data.forms.contentTypesAsTree
     };
 };
 // eslint-disable-next-line
-export async function getCreatableNodetypes(client, nodeTypes, childNodeName, includeSubTypes, path, uilang, excludedNodeTypes, showOnNodeTypes, transformResultCallback) {
-    if (nodeTypes && nodeTypes.length === 1 && !includeSubTypes) {
-        let result = nodeTypes.map(n => ({name: n}));
-        return transformResultCallback ? transformResultCallback(result) : result;
-    }
-
+export async function getCreatableNodetypesTree(client, nodeTypes, childNodeName, includeSubTypes, path, uilang, excludedNodeTypes, showOnNodeTypes) {
     const {data} = await client.query({
         query: getTreeOfContentWithRequirements,
         variables: {
@@ -52,16 +39,12 @@ export async function getCreatableNodetypes(client, nodeTypes, childNodeName, in
         }
     });
 
-    return getNodeTypes(showOnNodeTypes, data, transformResultCallback);
+    const nodeTypeNotDisplayed = !data?.jcr || (showOnNodeTypes && showOnNodeTypes.length > 0 && data.jcr.nodeByPath && !data.jcr.nodeByPath.isNodeType);
+    return nodeTypeNotDisplayed ? [] : data.forms.contentTypesAsTree;
 }
 
-function getNodeTypes(showOnNodeTypes, data, transformResultCallback) {
-    const nodeTypeNotDisplayed = (showOnNodeTypes && showOnNodeTypes.length > 0 && data.jcr.nodeByPath && !data.jcr.nodeByPath.isNodeType);
-    if (nodeTypeNotDisplayed) {
-        return [];
-    }
-
-    const resolvedTypes = data.forms.contentTypesAsTree
+export function flattenNodeTypes(nodeTypes) {
+    const resolvedTypes = nodeTypes
         .map(category => {
             if (category.children && category.children.length > 0) {
                 return category.children;
@@ -74,7 +57,7 @@ function getNodeTypes(showOnNodeTypes, data, transformResultCallback) {
             return sum;
         }, []);
 
-    return transformResultCallback ? transformResultCallback(resolvedTypes) : resolvedTypes || [];
+    return resolvedTypes || [];
 }
 
 export function transformNodeTypesToActions(nodeTypes) {
@@ -84,7 +67,8 @@ export function transformNodeTypesToActions(nodeTypes) {
             .map(nodeType => ({
                 key: nodeType.name,
                 actionKey: nodeType.name,
-                openEditor: true,
+                flattenedNodeTypes: [nodeType],
+                nodeTypesTree: [nodeType],
                 nodeTypes: [nodeType.name],
                 buttonLabel: 'content-editor:label.contentEditor.CMMActions.createNewContent.contentOfType',
                 buttonLabelParams: {typeName: nodeType.label}

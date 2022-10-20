@@ -7,13 +7,13 @@ export const ContentTypeSelectorModal = ({
     setContentTypeSelectorConfig,
     setEditorConfig
 }) => {
-    const {creatableNodeTypes, includeSubTypes, name, path, uilang, ...editorConfig} = contentTypeSelectorConfig;
+    const {nodeTypesTree, includeSubTypes, name, path, uilang, ...editorConfig} = contentTypeSelectorConfig;
 
     return (
         <CreateNewContentDialog
             open
             childNodeName={name}
-            nodeTypes={creatableNodeTypes}
+            nodeTypesTree={nodeTypesTree}
             includeSubTypes={includeSubTypes}
             parentPath={path}
             uilang={uilang}

@@ -24,7 +24,21 @@ export const registerCreateActions = registry => {
         showOnNodeTypes: ['jnt:page', 'jnt:navMenuText'],
         requiredPermission: ['jcr:addChildNodes'],
         nodeTypes: ['jnt:page'],
-        includeSubTypes: false
+        includeSubTypes: false,
+        isModal: true
+    });
+
+    registry.addOrReplace('action', 'createNavMenuItem', {
+        buttonIcon: <AddCircle/>,
+        buttonLabel:
+            'content-editor:label.contentEditor.CMMActions.createNewPage.menu',
+        component: props => Boolean(window.jcontentEnhanced) && <createContentAction.component {...props}/>,
+        targets: ['createMenuActions:3.1', 'contentActions:3.1'],
+        showOnNodeTypes: ['jnt:page', 'jnt:navMenuText'],
+        requiredPermission: ['jcr:addChildNodes'],
+        nodeTypes: ['jnt:navMenuText', 'jnt:nodeLink', 'jnt:externalLink'],
+        includeSubTypes: false,
+        isModal: true
     });
 
     // In app actions

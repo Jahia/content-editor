@@ -143,7 +143,7 @@ public class GqlEditorForms {
         final String nodeIdentifier = parentNode.getIdentifier();
         Locale locale = LocaleUtils.toLocale(uiLocale);
         List<String> allowedNodeTypes = new ArrayList<>(
-            ContentEditorUtils.getAllowedNodeTypesAsChildNode(parentNode, childNodeName, useContribute, nodeTypes));
+            ContentEditorUtils.getAllowedNodeTypesAsChildNode(parentNode, childNodeName, useContribute, includeSubTypes, nodeTypes));
         Set<NodeTypeTreeEntry> entries = NodeTypesUtils
             .getContentTypesAsTree(allowedNodeTypes, excludedNodeTypes, includeSubTypes, nodePath, getSession(locale), locale);
         return entries.stream().map(entry -> new GqlNodeTypeTreeEntry(entry, nodeIdentifier)).collect(Collectors.toList());

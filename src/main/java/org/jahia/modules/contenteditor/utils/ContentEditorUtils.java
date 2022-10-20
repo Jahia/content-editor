@@ -31,6 +31,7 @@ import org.jahia.services.content.nodetypes.ExtendedNodeType;
 import org.jahia.services.content.nodetypes.NodeTypeRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.touk.throwing.ThrowingConsumer;
 
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.RepositoryException;
@@ -60,10 +61,10 @@ public class ContentEditorUtils {
      * @param filterNodeType         returns nodetypes that match this value
      * @return a Set of nodeTypes name allowed to be set as child node of the given node
      */
-    public static Set<String> getAllowedNodeTypesAsChildNode(JCRNodeWrapper currentNode, String childNodeName, boolean useContributeNodeTypes, List<String> filterNodeType) {
+    public static Set<String> getAllowedNodeTypesAsChildNode(JCRNodeWrapper currentNode, String childNodeName, boolean useContributeNodeTypes, boolean includeSubTypes, List<String> filterNodeType) {
         try {
             // look for definition
-            Set<String> definitionAllowedTypes = getChildNodeTypes(currentNode, filterNodeType, childNodeName);
+            Set<String> definitionAllowedTypes = getChildNodeTypes(currentNode, filterNodeType, childNodeName, includeSubTypes);
 
             // Filter contribute types
             if (useContributeNodeTypes) {
@@ -107,7 +108,7 @@ public class ContentEditorUtils {
         }
     }
 
-    private static Set<String> getChildNodeTypes(JCRNodeWrapper node, List<String> filterNodeType, String childNodeName) throws RepositoryException {
+    private static Set<String> getChildNodeTypes(JCRNodeWrapper node, List<String> filterNodeType, String childNodeName, boolean includeSubTypes) throws RepositoryException {
         Set<String> allowedTypes = new HashSet<>();
         Set<String> availableTypes = new HashSet<>(ConstraintsHelper.getConstraintSet(node, childNodeName));
         if (availableTypes.isEmpty()) {
@@ -117,8 +118,8 @@ public class ContentEditorUtils {
                 try {
                     ExtendedNodeType nodeType = NodeTypeRegistry.getInstance().getNodeType(type);
                     Stream<ExtendedNodeType> typesToCheck = Stream.concat(nodeType.getSubtypesAsList().stream(), Stream.of(nodeType));
-                    typesToCheck.forEach(subTyype -> {
-                        getAllowedTypes(allowedTypes, filterNodeType, subTyype);
+                    typesToCheck.forEach(subType -> {
+                        getAllowedTypes(allowedTypes, filterNodeType, subType, includeSubTypes);
                     });
                 } catch (RepositoryException e) {
                     // ignore unknown type
@@ -127,13 +128,19 @@ public class ContentEditorUtils {
         return allowedTypes;
     }
 
-    private static void getAllowedTypes(Set<String> allowedTypes, List<String> filterNodeType, ExtendedNodeType subType) {
+    private static void getAllowedTypes(Set<String> allowedTypes, List<String> filterNodeType, ExtendedNodeType subType, boolean includeSubTypes) {
         if (filterNodeType != null) {
-            filterNodeType.forEach(filterType -> {
-                if (subType.isNodeType(filterType)) {
-                    allowedTypes.add(subType.getName());
+            filterNodeType.forEach(ThrowingConsumer.unchecked(filterType -> {
+                if (NodeTypeRegistry.getInstance().getNodeType(filterType).isMixin() || includeSubTypes) {
+                    if (subType.isNodeType(filterType)) {
+                        allowedTypes.add(subType.getName());
+                    }
+                } else {
+                    if (subType.getName().equals(filterType)) {
+                        allowedTypes.add(subType.getName());
+                    }
                 }
-            });
+            }));
         } else {
             allowedTypes.add(subType.getName());
         }

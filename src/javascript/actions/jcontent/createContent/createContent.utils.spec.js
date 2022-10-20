@@ -1,4 +1,4 @@
-import {filterTree, getCreatableNodetypes, transformNodeTypesToActions} from './createContent.utils';
+import {filterTree, getCreatableNodetypesTree, flattenNodeTypes, transformNodeTypesToActions} from './createContent.utils';
 
 jest.mock('@jahia/moonstone');
 
@@ -7,8 +7,8 @@ describe('CreateNewContent utils', () => {
         let client;
         let queryResponse;
 
-        const getActions = (client, showOnNodeTypes) => {
-            return getCreatableNodetypes(client, 'jnt:page', null, false, '/dummy/path', 'en', ['jmix:studioOnly', 'jmix:hiddenType'], showOnNodeTypes, transformNodeTypesToActions);
+        const getActions = async (client, showOnNodeTypes) => {
+            return transformNodeTypesToActions(flattenNodeTypes(await getCreatableNodetypesTree(client, 'jnt:page', null, false, '/dummy/path', 'en', ['jmix:studioOnly', 'jmix:hiddenType'], showOnNodeTypes)));
         };
 
         beforeEach(() => {
