@@ -29,7 +29,7 @@
     <parent>
         <artifactId>jahia-modules</artifactId>
         <groupId>org.jahia.modules</groupId>
-        <version>8.1.1.0</version>
+        <version>8.1.0.0</version>
         <relativePath />
     </parent>
     <artifactId>content-editor</artifactId>
@@ -49,7 +49,7 @@
         <yarn.arguments>build:production</yarn.arguments>
         <require-capability>osgi.extender;filter:="(osgi.extender=org.jahia.bundles.blueprint.extender.config)"</require-capability>
         <jahia-module-signature>MCwCFB5+Fa/WHCbtVxxuKu0Af4ZF0gUjAhR22ZoFtOrFzNhcvgVlpKZvAcS2Tw==</jahia-module-signature>
-        <jahia-depends>app-shell=2.7,graphql-dxm-provider=2.13,jcontent=2.8</jahia-depends>
+        <jahia-depends>app-shell=(2.6,3),graphql-dxm-provider=2.13,jcontent=(2.7,3)</jahia-depends>
         <import-package>
             com.fasterxml.jackson.annotation;version="[2.10,3)",
             com.fasterxml.jackson.databind;version="[2.10,3)",
