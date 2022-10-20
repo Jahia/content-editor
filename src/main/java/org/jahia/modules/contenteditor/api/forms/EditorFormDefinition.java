@@ -28,9 +28,7 @@ import org.jahia.services.content.nodetypes.NodeTypeRegistry;
 import org.osgi.framework.Bundle;
 
 import javax.jcr.nodetype.NoSuchNodeTypeException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -155,30 +153,38 @@ public class EditorFormDefinition implements Comparable<EditorFormDefinition> {
     }
 
     private List<EditorFormSectionDefinition> mergeSections(List<EditorFormSectionDefinition> sections) {
-        List<EditorFormSectionDefinition> sectionsCopy = this.sections.stream().map(EditorFormSectionDefinition::copy)
-            .collect(Collectors.toList());
+        List<EditorFormSectionDefinition> sectionsCopy = this.sections.stream()
+            .map(EditorFormSectionDefinition::copy)
+            .collect(Collectors.toCollection(LinkedList::new));
 
         if (sections == null) {
             return sectionsCopy;
         }
 
-        List<EditorFormSectionDefinition> addedSections = new ArrayList<>();
+        // Prioritize insertion order of sections first then append remaining sections last
+        List<EditorFormSectionDefinition> sortedSections = new ArrayList<>();
         for (EditorFormSectionDefinition newSection : sections) {
-            Optional<EditorFormSectionDefinition> existingSection = sectionsCopy.stream()
-                .filter(s -> s.getName().equals(newSection.getName())).findFirst();
 
-            if (existingSection.isPresent()) {
-                existingSection.get().mergeWith(newSection);
-            } else {
-                addedSections.add(newSection.copy());
+            EditorFormSectionDefinition sectionDef = null;
+            for (Iterator<EditorFormSectionDefinition> iter = sectionsCopy.iterator(); iter.hasNext();) {
+                EditorFormSectionDefinition e = iter.next();
+                if (e.getName().equals(newSection.getName())) {
+                    sectionDef = e;
+                    iter.remove();
+                    break;
+                }
             }
+
+            if (sectionDef == null) {
+                sectionDef = newSection.copy();
+            } else {
+                sectionDef.mergeWith(newSection);
+            }
+            sortedSections.add(sectionDef);
         }
 
-        if (!addedSections.isEmpty()) {
-            sectionsCopy.addAll(addedSections);
-        }
-
-        return sectionsCopy;
+        sortedSections.addAll(sectionsCopy);
+        return sortedSections;
     }
 
 }
