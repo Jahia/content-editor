@@ -124,9 +124,19 @@ const getTechnicalInfo = (nodeData, t) => {
                 ...nodeData.mixinTypes.map(m => m.name)
             ].filter(v => v).join('; ')
         },
-        {label: t('content-editor:label.contentEditor.edit.advancedOption.technicalInformation.path'), value: nodeData.path},
-        {label: t('content-editor:label.contentEditor.edit.advancedOption.technicalInformation.uuid'), value: nodeData.uuid}
+        {
+            label: t('content-editor:label.contentEditor.edit.advancedOption.technicalInformation.path'),
+            value: nodeData.path
+        },
+        {
+            label: t('content-editor:label.contentEditor.edit.advancedOption.technicalInformation.uuid'),
+            value: nodeData.uuid
+        }
     ];
+};
+
+const getUsagesInfo = nodeData => {
+    return nodeData.usages.nodes.map(nodeData => nodeData.node);
 };
 
 export const adaptEditFormData = (data, lang, t) => {
@@ -142,11 +152,11 @@ export const adaptEditFormData = (data, lang, t) => {
         technicalInfo: getTechnicalInfo(nodeData, t),
         title: nodeData.displayName,
         nodeTypeDisplayName: nodeData.primaryNodeType.displayName,
-        nodeTypeName: nodeData.primaryNodeType.name
+        nodeTypeName: nodeData.primaryNodeType.name,
+        usages: getUsagesInfo(nodeData)
     };
 
     adaptSystemNameField(data, formData, lang, t, nodeData.primaryNodeType, false, nodeData.moveSystemNameToTop, nodeData.isSystemNameReadOnlyMixin);
 
     return formData;
 };
-

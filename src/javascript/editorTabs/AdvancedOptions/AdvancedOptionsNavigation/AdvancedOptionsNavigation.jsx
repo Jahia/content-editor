@@ -1,17 +1,40 @@
 import React from 'react';
 import styles from './AdvancedOptionsNavigation.scss';
 import {DisplayActions, registry} from '@jahia/ui-extender';
-import {MenuItem} from '@jahia/moonstone';
+import {Chip, MenuItem} from '@jahia/moonstone';
 import PropTypes from 'prop-types';
 import {useRegisterEngineTabActions} from './useRegisterEngineTabActions';
 import {registerAdvancedOptionsActions} from './registerAdvancedOptionsActions';
 import {useTranslation} from 'react-i18next';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
+import {useContentEditorContext} from '~/contexts/ContentEditor';
 
-const DEPRECATED_GWT_ACTIONS = ['content', 'layout', 'metadata', 'categories', 'options', 'seo'];
+const DEPRECATED_GWT_ACTIONS = ['content', 'layout', 'metadata', 'categories', 'options', 'seo', 'usages'];
 
 const Renderer = ({activeOption, setActiveOption, buttonLabel, onClick, tabs}) => {
     const tab = tabs ? tabs[0] : 'technicalInformation';
+    const {usages} = useContentEditorContext();
+    if (tab === 'usages') {
+        return (
+            <>
+                <div className={styles.menuItemWithChip}>
+                    <MenuItem
+                        isSelected={activeOption === tab}
+                        label={buttonLabel}
+                        onClick={e => {
+                            if (DEPRECATED_GWT_ACTIONS.includes(tab)) {
+                                setActiveOption(tab);
+                                return;
+                            }
+
+                            onClick(e);
+                        }}
+                    />
+                    <Chip label={usages.length}/>
+                </div>
+            </>
+        );
+    }
 
     return (
         <MenuItem

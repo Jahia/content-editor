@@ -113,6 +113,11 @@
             "mixinTypes": "Content Typ",
             "path": "Pfad",
             "uuid": "UUID"
+          },
+          "usages": {
+            "path": "Location",
+            "none": "Nicht verwendet",
+            "noneDescription": "Dieses Element ist nicht durch einen anderen Content referenziert."
           }
         },
         "sharedLanguages": "Von allen Sprachen geteilt",

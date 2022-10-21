@@ -5,6 +5,7 @@ import styles from './AdvancedOptions.scss';
 import {TechnicalInformation} from './TechnicalInformation/TechnicalInformation';
 import {DeprecatedOption} from './DeprecatedOption';
 import {VanityUrls} from './VanityUrls';
+import {Usages} from './Usages';
 
 export const AdvancedOptions = () => {
     const [activeOption, setActiveOption] = useState('technicalInformation');
@@ -16,7 +17,8 @@ export const AdvancedOptions = () => {
         layout: DeprecatedOption,
         options: DeprecatedOption,
         categories: DeprecatedOption,
-        seo: VanityUrls
+        seo: VanityUrls,
+        usages: Usages
     };
     const SelectedTabComponent = SelectedTabComponents[activeOption];
     return (

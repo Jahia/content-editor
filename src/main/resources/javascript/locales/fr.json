@@ -113,6 +113,11 @@
             "mixinTypes": "Type de contenu complet",
             "path": "Chemin",
             "uuid": "UUID"
+          },
+          "usages": {
+            "path": "Emplacement",
+            "none": "Pas d’utilisations",
+            "noneDescription": "Cet élément n’est référencé par aucun autre contenu."
           }
         },
         "sharedLanguages": "Partagé par toutes les langues",

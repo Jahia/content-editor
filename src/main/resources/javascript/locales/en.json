@@ -113,6 +113,11 @@
             "mixinTypes": "Full content type",
             "path": "Path",
             "uuid": "UUID"
+          },
+          "usages": {
+            "path": "Location",
+            "none": "No usages",
+            "noneDescription": "This element is not referenced by any other content."
           }
         },
         "sharedLanguages": "Shared by all languages",
