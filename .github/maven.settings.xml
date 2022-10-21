@@ -41,6 +41,7 @@
 
     <activeProfiles>
         <activeProfile>jahia-internal-repository</activeProfile>
+        <activeProfile>unit-tests</activeProfile>
     </activeProfiles>
 
     <servers>
