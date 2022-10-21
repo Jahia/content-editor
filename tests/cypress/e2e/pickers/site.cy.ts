@@ -52,7 +52,10 @@ describe('Picker - Site', () => {
         const pickerField = contentEditor.getPickerField('qant:pickersMultiple_sitepicker', true);
         const picker = pickerField.open();
 
-        picker.getTable().selectItems(3);
+        let count = 3;
+        picker.getTable().selectItems(count);
+        cy.get('[data-cm-role="selection-table-collapse-button"] span')
+            .should('be.visible').and('contain', `${count} items selected`);
         picker.select();
 
         contentEditor.getPickerField('qant:pickersMultiple_sitepicker', true).get().scrollIntoView();
