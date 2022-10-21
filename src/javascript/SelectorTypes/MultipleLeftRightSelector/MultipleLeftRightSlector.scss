@@ -1,0 +1,23 @@
+.multipleSelector {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.buttonSection {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-small);
+  width: var(--spacing-big);
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+}
+
+.listHolder {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}

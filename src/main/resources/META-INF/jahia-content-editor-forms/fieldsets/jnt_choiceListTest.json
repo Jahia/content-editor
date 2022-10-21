@@ -1,0 +1,13 @@
+{
+  "name": "jnt:choiceListTest",
+  "fields": [
+    {
+      "name": "mix",
+      "selectorType": "MultipleLeftRightSelector"
+    },
+    {
+      "name": "multimix",
+      "selectorType": "MultipleLeftRightSelector"
+    }
+  ]
+}
