@@ -10,7 +10,7 @@ import {useContentEditorHistory} from '~/contexts/ContentEditorHistory';
 import {useTranslation} from 'react-i18next';
 import {useContentEditorApiContext} from '~/contexts/ContentEditorApi/ContentEditorApi.context';
 
-export const CreateContent = ({contextNodePath, path, showOnNodeTypes, nodeTypes, name, includeSubTypes, isModal, isFullscreen, render: Render, loading: Loading, ...otherProps}) => {
+export const CreateContent = ({contextNodePath, path, showOnNodeTypes, nodeTypes, name, includeSubTypes, isModal, isFullscreen, onCreate, onClosed, render: Render, loading: Loading, ...otherProps}) => {
     const {redirect} = useContentEditorHistory();
     const api = useContentEditorApiContext();
     const {t} = useTranslation('content-editor');
@@ -56,7 +56,7 @@ export const CreateContent = ({contextNodePath, path, showOnNodeTypes, nodeTypes
 
     const onClick = ({flattenedNodeTypes, nodeTypesTree}) => {
         if (isModal) {
-            api.create({uuid: nodeInfo.node.uuid, path, site, lang: language, uilang, nodeTypesTree, name, isFullscreen});
+            api.create({uuid: nodeInfo.node.uuid, path, site, lang: language, uilang, nodeTypesTree, name, isFullscreen, createCallback: onCreate, onClosedCallback: onClosed});
         } else if (flattenedNodeTypes?.length === 1) {
             redirect({mode: Constants.routes.baseCreateRoute, language, uuid: nodeInfo.node.uuid, rest: encodeURI(flattenedNodeTypes[0].name)});
         } else {
@@ -114,6 +114,8 @@ CreateContent.propTypes = {
     name: PropTypes.string,
     includeSubTypes: PropTypes.array,
     render: PropTypes.func.isRequired,
+    onCreate: PropTypes.func,
+    onClosed: PropTypes.func,
     loading: PropTypes.func
 };
 

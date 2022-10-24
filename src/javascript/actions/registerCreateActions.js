@@ -3,6 +3,7 @@ import {AddCircle, Save} from '@jahia/moonstone';
 
 import {createContentAction, CreateContent} from './jcontent/createContent/createContentAction';
 import {createAction} from './contenteditor/create/createAction';
+import {cmGoto} from '~/redux/JContent.redux-actions';
 
 export const registerCreateActions = registry => {
     registry.addOrReplace('action', 'createContent', createContentAction, {
@@ -26,7 +27,10 @@ export const registerCreateActions = registry => {
         requiredPermission: ['jcr:addChildNodes'],
         nodeTypes: ['jnt:page'],
         includeSubTypes: false,
-        isModal: true
+        isModal: true,
+        onCreate: ({path}) => {
+            window.jahia.reduxStore.dispatch(cmGoto({path}));
+        }
     });
 
     registry.addOrReplace('action', 'createNavMenuItem', {
