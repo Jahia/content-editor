@@ -30,8 +30,9 @@ export const registerCreateActions = registry => {
         includeSubTypes: false,
         isModal: true,
         onCreate: ({path}) => {
-            batchActions([])
-            window.jahia.reduxStore.dispatch(cmGoto({path}));
+            window.jahia.reduxStore.dispatch(batchActions([{
+                type: 'CM_OPEN_PATHS', payload: [path.substring(0, path.lastIndexOf('/'))]
+            }, cmGoto({path})]));
         }
     });
 
