@@ -1,23 +1,25 @@
 import React, {useState, useEffect} from 'react';
+import PropTypes from 'prop-types';
 import {ListItem} from '@jahia/moonstone';
-import styles from './ValueList.scss'
+import styles from './ValueList.scss';
 import cslx from 'clsx';
 
 const ValueList = ({values, filter, isMultiple, onSelect}) => {
     const [selected, setSelected] = useState([]);
 
-    //Clear selection if filter changed
+    // Clear selection if filter changed
     useEffect(() => {
         setSelected([]);
         onSelect([]);
-    }, [filter]);
+    }, [filter, onSelect]);
 
     return (
         <ul className={styles.valueList}>
             {values.filter(v => ((!filter || filter === '') || v.value.toLowerCase().indexOf(filter.toLowerCase()) !== -1)).map(v => {
                 const isSelected = selected.includes(v.value);
                return (
-                   <ListItem className={isSelected ? cslx(styles.valueListItem, styles.selected) : cslx(styles.valueListItem)}
+                   <ListItem key={v.label}
+                             className={isSelected ? cslx(styles.valueListItem, styles.selected) : cslx(styles.valueListItem)}
                              typographyVariant="body"
                              label={v.label}
                              onClick={e => {
@@ -42,10 +44,17 @@ const ValueList = ({values, filter, isMultiple, onSelect}) => {
                                  }
                              }}
                    />
-               )
+               );
             })}
         </ul>
     );
+};
+
+ValueList.propTypes = {
+    values: PropTypes.array,
+    filter: PropTypes.string,
+    isMultiple: PropTypes.bool,
+    onSelect: PropTypes.func
 };
 
 export default ValueList;

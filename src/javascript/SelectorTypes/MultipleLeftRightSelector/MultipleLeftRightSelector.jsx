@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import ValueList from "~/SelectorTypes/MultipleLeftRightSelector/ValueList";
+import PropTypes from 'prop-types';
+import ValueList from '~/SelectorTypes/MultipleLeftRightSelector/ValueList';
 import {ChevronLeft, ChevronRight, ChevronDoubleLeft, ChevronDoubleRight, Button, Input} from '@jahia/moonstone';
 import {FieldPropTypes} from '~/ContentEditor.proptypes';
 import styles from './MultipleLeftRightSlector.scss';
@@ -30,7 +31,7 @@ export const MultipleLeftRightSelector = ({field, onChange, value}) => {
                 handleOnChange(actualValues);
             }
         }
-    }, [value, onChange]);
+    }, [value, onChange]); // eslint-disable-line
 
     const options = field.valueConstraints.map(constraint => ({
         label: constraint.displayValue,
@@ -82,11 +83,13 @@ export const MultipleLeftRightSelector = ({field, onChange, value}) => {
                 />
             </div>
         </div>
-    )
+    );
 };
 
 MultipleLeftRightSelector.propTypes = {
-    field: FieldPropTypes.isRequired
+    field: FieldPropTypes.isRequired,
+    onChange: PropTypes.func.isRequired,
+    value: PropTypes.oneOf([PropTypes.string, PropTypes.array])
 };
 
 export default MultipleLeftRightSelector;

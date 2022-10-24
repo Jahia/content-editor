@@ -1,23 +1,23 @@
 .multipleSelector {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
 }
 
 .buttonSection {
-  display: flex;
-  align-items: center;
-  padding: var(--spacing-small);
-  width: var(--spacing-big);
+    display: flex;
+    align-items: center;
+    width: var(--spacing-big);
+    padding: var(--spacing-small);
 }
 
 .buttons {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 .listHolder {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
 }

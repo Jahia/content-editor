@@ -10,7 +10,7 @@ import {registerDateTimePicker} from './DateTimePicker';
 import {registerBoolean} from './Boolean';
 import {registerPicker} from './Picker';
 import {registerSystemName} from './SystemName';
-import {registerMultipleLeftRightSelector} from './MultipleLeftRightSelector'
+import {registerMultipleLeftRightSelector} from './MultipleLeftRightSelector';
 
 export const registerSelectorTypes = ceRegistry => {
     registerSelectorTypesOnChange(ceRegistry);
