@@ -1,7 +1,7 @@
 import React from 'react';
 import {AddCircle, Save} from '@jahia/moonstone';
 
-import {createContentAction} from './jcontent/createContent/createContentAction';
+import {createContentAction, CreateContent} from './jcontent/createContent/createContentAction';
 import {createAction} from './contenteditor/create/createAction';
 
 export const registerCreateActions = registry => {
@@ -12,14 +12,15 @@ export const registerCreateActions = registry => {
         targets: ['createMenuActions:3', 'contentActions:3', 'headerPrimaryActions:1'],
         showOnNodeTypes: ['jnt:contentFolder', 'jnt:content'],
         hideOnNodeTypes: ['jnt:navMenuText', 'jnt:page'],
-        requiredPermission: ['jcr:addChildNodes']
+        requiredPermission: ['jcr:addChildNodes'],
+        isModal: true
     });
 
     registry.addOrReplace('action', 'createPage', {
         buttonIcon: <AddCircle/>,
         buttonLabel:
             'content-editor:label.contentEditor.CMMActions.createNewPage.menu',
-        component: props => Boolean(window.jcontentEnhanced) && <createContentAction.component {...props}/>,
+        component: props => Boolean(window.jcontentEnhanced) && <CreateContent {...props}/>,
         targets: ['createMenuActions:3', 'contentActions:3', 'headerPrimaryActions:1'],
         showOnNodeTypes: ['jnt:page', 'jnt:navMenuText'],
         requiredPermission: ['jcr:addChildNodes'],
@@ -32,7 +33,7 @@ export const registerCreateActions = registry => {
         buttonIcon: <AddCircle/>,
         buttonLabel:
             'content-editor:label.contentEditor.CMMActions.createNewPage.menu',
-        component: props => Boolean(window.jcontentEnhanced) && <createContentAction.component {...props}/>,
+        component: props => Boolean(window.jcontentEnhanced) && <CreateContent {...props}/>,
         targets: ['createMenuActions:3.1', 'contentActions:3.1'],
         showOnNodeTypes: ['jnt:page', 'jnt:navMenuText'],
         requiredPermission: ['jcr:addChildNodes'],
@@ -48,6 +49,7 @@ export const registerCreateActions = registry => {
         color: 'accent',
         variant: 'outlined',
         targets: ['content-editor/header/main-save-actions'],
-        dataSelRole: 'createButton'
+        dataSelRole: 'createButton',
+        isModal: true
     });
 };

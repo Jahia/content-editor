@@ -40,7 +40,6 @@ const create = async (setEditorConfig, setContentTypeSelectorConfig, client, dat
             name,
             path,
             uilang,
-            mode: Constants.routes.baseCreateRoute,
             editorConfig
         });
     }

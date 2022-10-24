@@ -6,6 +6,7 @@ import {FullScreenError} from './FullScreenError';
 import {ContentEditorModal} from './ContentEditorModal';
 import {useContentEditorApiContext} from '~/contexts/ContentEditorApi/ContentEditorApi.context';
 import {ContentTypeSelectorModal} from '~/ContentTypeSelectorModal';
+import {Constants} from '~/ContentEditor.constants';
 
 export const ContentEditorApi = () => {
     const [editorConfig, setEditorConfig] = useState(false);
@@ -61,6 +62,7 @@ export const ContentEditorApi = () => {
                             name: contentTypeSelectorConfig.name,
                             uilang: contentTypeSelectorConfig.uilang,
                             contentType: contentType.name,
+                            mode: Constants.routes.baseCreateRoute,
                             ...contentTypeSelectorConfig.editorConfig
                         });
                     }}
