@@ -11,7 +11,7 @@ const ValueList = ({values, filter, isMultiple, onSelect}) => {
     useEffect(() => {
         setSelected([]);
         onSelect([]);
-    }, [filter, onSelect]);
+    }, [filter]); //eslint-disable-line
 
     return (
         <ul className={styles.valueList}>
