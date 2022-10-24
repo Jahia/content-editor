@@ -4,6 +4,7 @@ import {AddCircle, Save} from '@jahia/moonstone';
 import {createContentAction, CreateContent} from './jcontent/createContent/createContentAction';
 import {createAction} from './contenteditor/create/createAction';
 import {cmGoto} from '~/redux/JContent.redux-actions';
+import {batchActions} from 'redux-batched-actions';
 
 export const registerCreateActions = registry => {
     registry.addOrReplace('action', 'createContent', createContentAction, {
@@ -29,6 +30,7 @@ export const registerCreateActions = registry => {
         includeSubTypes: false,
         isModal: true,
         onCreate: ({path}) => {
+            batchActions([])
             window.jahia.reduxStore.dispatch(cmGoto({path}));
         }
     });
