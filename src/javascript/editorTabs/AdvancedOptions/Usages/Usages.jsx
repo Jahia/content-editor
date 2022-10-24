@@ -45,7 +45,7 @@ export const Usages = () => {
                data-cm-role="table-usages-list"
                {...getTableProps()}
         >
-            <ContentListHeader headerGroups={headerGroups}/>
+            <ContentListHeader headerGroups={headerGroups} headerClasses={styles}/>
             <TableBody {...getTableBodyProps()}>
                 {tableRows.map(row => {
                     prepareRow(row);

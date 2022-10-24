@@ -16,23 +16,19 @@ const Renderer = ({activeOption, setActiveOption, buttonLabel, onClick, tabs}) =
     const {usages} = useContentEditorContext();
     if (tab === 'usages') {
         return (
-            <>
-                <div className={styles.menuItemWithChip}>
-                    <MenuItem
-                        isSelected={activeOption === tab}
-                        label={buttonLabel}
-                        onClick={e => {
-                            if (DEPRECATED_GWT_ACTIONS.includes(tab)) {
-                                setActiveOption(tab);
-                                return;
-                            }
+            <MenuItem
+                isSelected={activeOption === tab}
+                label={buttonLabel}
+                iconEnd={<Chip label={usages.length}/>}
+                onClick={e => {
+                    if (DEPRECATED_GWT_ACTIONS.includes(tab)) {
+                        setActiveOption(tab);
+                        return;
+                    }
 
-                            onClick(e);
-                        }}
-                    />
-                    <Chip label={usages.length}/>
-                </div>
-            </>
+                    onClick(e);
+                }}
+            />
         );
     }
 
