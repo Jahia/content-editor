@@ -3,7 +3,7 @@ import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 
-import {CreateNewContentDialog} from './CreateNewContentDialog';
+import {ContentTypeSelectorModal} from './ContentTypeSelectorModal';
 
 jest.mock('@jahia/moonstone');
 
@@ -52,7 +52,7 @@ describe('CreateNewContentDialog', () => {
 
     it('should display the dialog by default', () => {
         const cmp = shallowWithTheme(
-            <CreateNewContentDialog nodeTypesTree={emptyTree} {...props} open/>,
+            <ContentTypeSelectorModal nodeTypesTree={emptyTree} {...props} open/>,
             {},
             dsGenericTheme
         );
@@ -63,13 +63,13 @@ describe('CreateNewContentDialog', () => {
     it('should close the dialog when click on the cancel button', () => {
         let open = true;
         const cmp = shallowWithTheme(
-            <CreateNewContentDialog {...props}
-                                    nodeTypesTree={emptyTree}
-                                    open={open}
-                                    onClose={() => {
+            <ContentTypeSelectorModal {...props}
+                                      nodeTypesTree={emptyTree}
+                                      open={open}
+                                      onClose={() => {
                                         open = false;
                                     }}
-                                    onExited={() => {
+                                      onExited={() => {
                                         open = false;
                                     }}/>,
             {},
@@ -83,7 +83,7 @@ describe('CreateNewContentDialog', () => {
 
     it('should call onCreateContent when clicking on create button Button', () => {
         const cmp = shallowWithTheme(
-            <CreateNewContentDialog open nodeTypesTree={emptyTree} {...props}/>,
+            <ContentTypeSelectorModal open nodeTypesTree={emptyTree} {...props}/>,
             {},
             dsGenericTheme
         );
@@ -95,7 +95,7 @@ describe('CreateNewContentDialog', () => {
 
     it('should filter properly with id hichem', () => {
         const cmp = shallowWithTheme(
-            <CreateNewContentDialog open nodeTypesTree={tree} {...props}/>,
+            <ContentTypeSelectorModal open nodeTypesTree={tree} {...props}/>,
             {},
             dsGenericTheme
         );
@@ -108,7 +108,7 @@ describe('CreateNewContentDialog', () => {
 
     it('should filter properly with id rom3 with no case sensitive', () => {
         const cmp = shallowWithTheme(
-            <CreateNewContentDialog open nodeTypesTree={tree} {...props}/>,
+            <ContentTypeSelectorModal open nodeTypesTree={tree} {...props}/>,
             {},
             dsGenericTheme
         );
@@ -121,7 +121,7 @@ describe('CreateNewContentDialog', () => {
 
     it('should filter properly with n with no case sensitive', () => {
         const cmp = shallowWithTheme(
-            <CreateNewContentDialog open nodeTypesTree={tree} {...props}/>,
+            <ContentTypeSelectorModal open nodeTypesTree={tree} {...props}/>,
             {},
             dsGenericTheme
         );

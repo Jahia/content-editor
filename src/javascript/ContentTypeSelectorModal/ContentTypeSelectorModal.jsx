@@ -5,10 +5,10 @@ import {Input} from '@jahia/design-system-kit';
 import {Button, Search, Typography, TreeView} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
 
-import {filterTree, isOpenableEntry} from './createContent.utils';
-import styles from './CreateNewContentDialog.scss';
+import {filterTree, isOpenableEntry} from './ContentTypeSelectorModal.utils';
+import styles from './ContentTypeSelectorModal.scss';
 
-export const CreateNewContentDialog = ({nodeTypesTree, open, onExited, onClose, onCreateContent}) => {
+export const ContentTypeSelectorModal = ({nodeTypesTree, open, onExited, onClose, onCreateContent}) => {
     const {t} = useTranslation('content-editor');
     const [selectedType, setSelectedType] = useState(null);
     const [filter, setFilter] = useState();
@@ -82,7 +82,7 @@ export const CreateNewContentDialog = ({nodeTypesTree, open, onExited, onClose, 
     );
 };
 
-CreateNewContentDialog.propTypes = {
+ContentTypeSelectorModal.propTypes = {
     nodeTypesTree: PropTypes.array.isRequired,
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,

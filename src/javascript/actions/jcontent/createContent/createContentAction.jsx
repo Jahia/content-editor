@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {CreateNewContentDialog} from './CreateNewContentDialog';
+import {ContentTypeSelectorModal} from '~/ContentTypeSelectorModal';
 import {Constants} from '~/ContentEditor.constants';
 import {flattenNodeTypes, transformNodeTypesToActions, useCreatableNodetypesTree} from './createContent.utils';
 import {useSelector} from 'react-redux';
@@ -61,10 +61,10 @@ const CreateContent = ({contextNodePath, path, showOnNodeTypes, nodeTypes, name,
             redirect({mode: Constants.routes.baseCreateRoute, language, uuid: nodeInfo.node.uuid, rest: encodeURI(flattenedNodeTypes[0].name)});
         } else {
             const closeDialog = () => {
-                componentRenderer.destroy('CreateNewContentDialog');
+                componentRenderer.destroy('ContentTypeSelectorModal');
             };
 
-            componentRenderer.render('CreateNewContentDialog', CreateNewContentDialog, {
+            componentRenderer.render('ContentTypeSelectorModal', ContentTypeSelectorModal, {
                 open: true,
                 parentPath: path,
                 uilang: uilang,

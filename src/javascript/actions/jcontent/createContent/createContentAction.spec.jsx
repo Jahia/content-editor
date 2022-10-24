@@ -17,7 +17,7 @@ jest.mock('@jahia/data-helper', () => {
     return {useNodeChecks: jest.fn(),
         useNodeInfo: jest.fn()};
 });
-jest.mock('./CreateNewContentDialog', () => jest.fn());
+jest.mock('~/ContentTypeSelectorModal', () => jest.fn());
 jest.mock('./createContent.utils', () => {
     return {
         useCreatableNodetypesTree: jest.fn(),

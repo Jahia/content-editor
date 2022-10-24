@@ -35,6 +35,7 @@
     },
     {
       "name": "listOrdering",
+      "labelKey": "label.engineTab.listOrdering",
       "requiredPermission": "viewContentTab"
     }
   ]

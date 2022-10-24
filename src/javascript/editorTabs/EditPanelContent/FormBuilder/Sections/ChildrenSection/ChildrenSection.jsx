@@ -35,6 +35,9 @@ export const ChildrenSection = ({mode, section, nodeData, isExpanded, onClick}) 
     const {t} = useTranslation('content-editor');
     const {sections} = useContentEditorSectionContext();
 
+    console.log(section.name);
+    console.log(section.displayName);
+
     const canAutomaticallyOrder = values && values[Constants.ordering.automaticOrdering.mixin] !== undefined;
     const canManuallyOrder = nodeData.primaryNodeType.hasOrderableChildNodes;
     const isAutomaticOrder = canAutomaticallyOrder && values[Constants.ordering.automaticOrdering.mixin];
