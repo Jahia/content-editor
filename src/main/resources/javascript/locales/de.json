@@ -127,7 +127,8 @@
             "newTab": "In einem neuen Tab bearbeiten",
             "clear": "Leeren",
             "selectAll": "Alle Werte auswählen",
-            "add": "Hinzufügen"
+            "add": "Hinzufügen",
+            "previewTab": "In einem neuen Tab Vorschau"
           },
           "contentPicker": {
             "notFoundContent": "Datei nicht gefunden",

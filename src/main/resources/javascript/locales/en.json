@@ -127,7 +127,8 @@
             "newTab": "Edit in a new tab",
             "clear": "Clear",
             "selectAll": "Select all values",
-            "add": "Add"
+            "add": "Add",
+            "previewTab": "Preview in a new tab"
           },
           "contentPicker": {
             "notFoundContent": "Content not found",

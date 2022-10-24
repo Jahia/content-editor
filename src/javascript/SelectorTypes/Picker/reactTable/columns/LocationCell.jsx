@@ -11,6 +11,12 @@ export const LocationCell = ({row, column}) => {
                 <Typography variant="body">{row.original.path}</Typography>
                 <div data-cm-role="table-usages-cell-actions">
                     <DisplayAction
+                        actionKey="previewInNewTab"
+                        path={row.original.path}
+                        render={ButtonRendererNoLabel}
+                        buttonProps={{variant: 'ghost', size: 'big'}}
+                    />
+                    <DisplayAction
                         actionKey="openInNewTab"
                         path={row.original.path}
                         render={ButtonRendererNoLabel}

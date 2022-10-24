@@ -127,7 +127,8 @@
             "newTab": "Editer dans un nouvel onglet",
             "clear": "Effacer",
             "selectAll": "Sélectionnez toutes les valeurs",
-            "add": "Ajouter"
+            "add": "Ajouter",
+            "previewTab": "Prévisualisé dans un nouvel onglet"
           },
           "contentPicker": {
             "notFoundContent": "Le contenu n’a pas été trouvé",

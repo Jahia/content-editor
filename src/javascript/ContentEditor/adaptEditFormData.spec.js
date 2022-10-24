@@ -103,6 +103,9 @@ describe('adaptEditFormData', () => {
                     wipInfo: {
                         status: 'DISABLED',
                         languages: []
+                    },
+                    usages: {
+                        nodes: []
                     }
                 }
             }
