@@ -124,7 +124,7 @@ describe('FormBuilder component', () => {
         expect(cmp.find('ChildrenSection').dive().find('Collapsible').exists()).toBeFalsy();
     });
 
-    it('should not display ordering section for page', () => {
+    it('should display ordering section for page', () => {
         sectionContext.sections.push({
             name: 'listOrdering',
             displayName: 'Listordering',
@@ -144,7 +144,7 @@ describe('FormBuilder component', () => {
         context.nodeData.isPage = true;
 
         const cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).find('section');
-        expect(cmp.find('ChildrenSection').dive().find('Collapsible').exists()).toBeFalsy();
+        expect(cmp.find('ChildrenSection').dive().find('Collapsible').exists()).toBeTruthy();
     });
 
     it('should not display ordering section for site', () => {

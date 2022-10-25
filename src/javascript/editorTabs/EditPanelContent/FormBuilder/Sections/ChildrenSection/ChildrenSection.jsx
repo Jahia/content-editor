@@ -40,7 +40,7 @@ export const ChildrenSection = ({mode, section, nodeData, isExpanded, onClick}) 
     const isAutomaticOrder = canAutomaticallyOrder && values[Constants.ordering.automaticOrdering.mixin];
     const automaticOrderingFieldSet = canAutomaticallyOrder && getAutomaticOrderingFieldSet(sections);
 
-    if (mode === Constants.routes.baseEditRoute && !nodeData.isSite && !nodeData.isPage) {
+    if (mode === Constants.routes.baseEditRoute && !nodeData.isSite) {
         const sec = {
             isOrderingSection: true,
             displayName: t('content-editor:label.contentEditor.section.listAndOrdering.title'),
