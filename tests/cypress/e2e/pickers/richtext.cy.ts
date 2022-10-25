@@ -1,8 +1,6 @@
 import {JContent} from '../../page-object/jcontent';
-import {getElement} from '@jahia/cypress/dist/page-object/utils';
-import {TableRow} from '@jahia/cypress';
 
-describe('Picker - richtext', () => {
+describe('Picker tests - richtext', () => {
     const siteKey = 'digitall';
     let jcontent: JContent;
 

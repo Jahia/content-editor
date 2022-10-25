@@ -2,7 +2,7 @@ import {contentTypes} from '../../fixtures/pickers/contentTypes';
 import {assertUtils} from '../../utils/assertUtils';
 import {JContent} from '../../page-object/jcontent';
 
-describe('Picker - Trees', () => {
+describe('Picker tests - Trees', () => {
     const siteKey = 'digitall';
     let jcontent: JContent;
 

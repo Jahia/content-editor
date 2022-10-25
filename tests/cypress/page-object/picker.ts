@@ -28,7 +28,7 @@ export class Picker extends BaseComponent {
 
     getSiteSwitcher() {
         if (!this.siteSwitcher) {
-            this.siteSwitcher = getComponentByAttr(Dropdown, 'data-cm-role', 'site-switcher');
+            this.siteSwitcher = getComponentByAttr(Dropdown, 'data-cm-role', 'site-switcher', this);
         }
 
         // Make sure dialog is open before returning siteSwitcher
@@ -37,7 +37,7 @@ export class Picker extends BaseComponent {
 
     getViewMode() {
         if (!this.viewMode) {
-            this.viewMode = getComponentByAttr(Dropdown, 'data-sel-role', 'sel-view-mode-dropdown');
+            this.viewMode = getComponentByAttr(Dropdown, 'data-sel-role', 'sel-view-mode-dropdown', this);
         }
 
         // Make sure dialog is open before returning viewMode
@@ -45,7 +45,7 @@ export class Picker extends BaseComponent {
     }
 
     getRefreshButton() {
-        return getComponentByRole(Button, 'refresh');
+        return getComponentByRole(Button, 'refresh', this);
     }
 
     getAccordion(): Accordion {
@@ -58,11 +58,11 @@ export class Picker extends BaseComponent {
     }
 
     assertHasNoTree(): void {
-        getComponent(SecondaryNav, null, el => expect(el).to.not.exist);
+        getComponent(SecondaryNav, this, el => expect(el).to.not.exist);
     }
 
     assertHasNoSiteSwitcher(): void {
-        getComponentByAttr(Dropdown, 'data-cm-role', 'site-switcher', null, el => expect(el).to.not.exist);
+        getComponentByAttr(Dropdown, 'data-cm-role', 'site-switcher', this, el => expect(el).to.not.exist);
     }
 
     /**
@@ -125,11 +125,11 @@ export class Picker extends BaseComponent {
     }
 
     getSelectionCaption() {
-        return cy.get('[data-cm-role="selection-caption"] [data-sel-role$="item-selected"]');
+        return this.get().find('[data-cm-role="selection-caption"] [data-sel-role$="item-selected"]');
     }
 
     getTab(viewType: string) {
-        return cy.get(`.moonstone-tab-item[data-cm-view-type="${viewType}"]`);
+        return this.get().find(`.moonstone-tab-item[data-cm-view-type="${viewType}"]`);
     }
 
     selectTab(viewType: string) {
@@ -139,19 +139,19 @@ export class Picker extends BaseComponent {
 
     search(query?: string, expectNoResult = false) {
         if (query === undefined) {
-            cy.get('input[role="search"]').should('be.visible').click().clear({waitForAnimations: true});
+            this.get().find('input[role="search"]').should('be.visible').click().clear({waitForAnimations: true});
             this.table = undefined;
             this.selectionTable = undefined;
-            cy.get('[data-cm-role="table-content-list"]').find('.moonstone-TableRow').should('be.visible');
+            this.get().find('[data-cm-role="table-content-list"]').find('.moonstone-TableRow').should('be.visible');
         } else {
-            cy.get('input[role="search"]')
+            this.get().find('input[role="search"]')
                 .should('be.visible')
                 .click()
                 .type(query, {waitForAnimations: true, delay: 200});
             this.table = undefined;
             this.selectionTable = undefined;
             if (!expectNoResult) {
-                cy.get('[data-cm-role="table-content-list"]').find('.moonstone-TableRow').should('be.visible');
+                this.get().find('[data-cm-role="table-content-list"]').find('.moonstone-TableRow').should('be.visible');
             }
         }
 
@@ -159,11 +159,11 @@ export class Picker extends BaseComponent {
     }
 
     getSearchInput() {
-        return cy.get('input[role="search"]').should('be.visible');
+        return this.get().find('input[role="search"]').should('be.visible');
     }
 
     verifyResultsLength(length: number) {
-        cy.get('[data-sel-role="table-pagination-total-rows"]').should('be.visible').and('contain', `of ${length}`);
+        this.get().find('[data-sel-role="table-pagination-total-rows"]').should('be.visible').and('contain', `of ${length}`);
     }
 
     switchSearchContext(context: string) {

@@ -175,6 +175,8 @@ describe('Picker tests', () => {
         });
 
         cy.reload(); // Reload to sync folder
+        const contentEditor = jcontent.createContent(contentTypes.fileReference.typeName);
+
         cy.log('re-open file picker');
 
         picker = contentEditor

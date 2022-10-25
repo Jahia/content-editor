@@ -2,7 +2,7 @@ import {getComponent, getComponentBySelector, Table, TableRow} from '@jahia/cypr
 
 export class PickerTable extends Table {
     getHeaderById(id: string) {
-        return cy.get(`[data-cm-role="table-content-list-header-cell-${id}"]`);
+        return this.get().find(`[data-cm-role="table-content-list-header-cell-${id}"]`);
     }
 
     getRows(assertion?: (s: JQuery) => void): PickerTableRow {
@@ -30,9 +30,9 @@ export class PickerTable extends Table {
                 expect(elems.length).gte(count);
                 const selectRow = elem =>
                     cy.wrap(elem)
-                      .find('[data-cm-role="table-content-list-cell-selection"] input')
-                      .click()
-                      .should('have.attr', 'aria-checked', "true");
+                        .find('[data-cm-role="table-content-list-cell-selection"] input')
+                        .click()
+                        .should('have.attr', 'aria-checked', 'true');
                 for (let i = 0; i < count; i++) {
                     selectRow(elems.eq(i));
                 }
