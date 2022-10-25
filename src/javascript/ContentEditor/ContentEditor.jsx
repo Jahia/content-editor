@@ -8,8 +8,6 @@ import {EditFormQuery} from './edit.gql-queries';
 import {adaptEditFormData} from './adaptEditFormData';
 import {ContentEditorConfigContextProvider, ContentEditorContextProvider} from '~/contexts';
 import {Constants} from '~/ContentEditor.constants';
-import {DndProvider} from 'react-dnd';
-import {HTML5Backend} from 'react-dnd-html5-backend';
 import {useFormDefinition} from '~/contexts/ContentEditor/useFormDefinitions';
 
 const useEditFormDefinition = () => useFormDefinition(EditFormQuery, adaptEditFormData);
@@ -20,15 +18,15 @@ export const ContentEditor = props => {
 
     return (
         <ContentEditorConfigContextProvider config={props}>
-                { mode === 'edit' && (
-                    <ContentEditorContextProvider useFormDefinition={envProps.useFormDefinition || useEditFormDefinition}>
-                        <Edit/>
-                    </ContentEditorContextProvider>
+            { mode === 'edit' && (
+            <ContentEditorContextProvider useFormDefinition={envProps.useFormDefinition || useEditFormDefinition}>
+                <Edit/>
+            </ContentEditorContextProvider>
                 )}
-                { mode === 'create' && (
-                    <ContentEditorContextProvider useFormDefinition={envProps.useFormDefinition || useCreateFormDefinition}>
-                        <Create/>
-                    </ContentEditorContextProvider>
+            { mode === 'create' && (
+            <ContentEditorContextProvider useFormDefinition={envProps.useFormDefinition || useCreateFormDefinition}>
+                <Create/>
+            </ContentEditorContextProvider>
                 )}
         </ContentEditorConfigContextProvider>
     );
