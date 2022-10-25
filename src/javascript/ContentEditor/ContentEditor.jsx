@@ -9,7 +9,7 @@ import {adaptEditFormData} from './adaptEditFormData';
 import {ContentEditorConfigContextProvider, ContentEditorContextProvider} from '~/contexts';
 import {Constants} from '~/ContentEditor.constants';
 import {DndProvider} from 'react-dnd';
-import Backend from 'react-dnd-html5-backend';
+import {HTML5Backend} from 'react-dnd-html5-backend';
 import {useFormDefinition} from '~/contexts/ContentEditor/useFormDefinitions';
 
 const useEditFormDefinition = () => useFormDefinition(EditFormQuery, adaptEditFormData);
@@ -20,7 +20,6 @@ export const ContentEditor = props => {
 
     return (
         <ContentEditorConfigContextProvider config={props}>
-            <DndProvider backend={Backend}>
                 { mode === 'edit' && (
                     <ContentEditorContextProvider useFormDefinition={envProps.useFormDefinition || useEditFormDefinition}>
                         <Edit/>
@@ -31,7 +30,6 @@ export const ContentEditor = props => {
                         <Create/>
                     </ContentEditorContextProvider>
                 )}
-            </DndProvider>
         </ContentEditorConfigContextProvider>
     );
 };

@@ -10,7 +10,8 @@ export const DraggableReference = ({child}) => {
     const {t} = useTranslation('content-editor');
 
     const [{isDragging}, drag] = useDrag({
-        item: {type: 'REFERENCE_CARD', name: child.name},
+        type: 'REFERENCE_CARD',
+        item: {name: child.name},
         collect: monitor => ({
             isDragging: monitor.isDragging()
         })
