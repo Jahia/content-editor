@@ -2,7 +2,7 @@ import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 
-import {Checkbox} from './Checkbox';
+import {Boolean} from './Boolean';
 
 describe('Checkbox component', () => {
     let props;
@@ -22,23 +22,23 @@ describe('Checkbox component', () => {
     });
 
     const buildComp = props => {
-        return shallowWithTheme(<Checkbox {...props}/>, {}, dsGenericTheme);
+        return shallowWithTheme(<Boolean {...props}/>, {}, dsGenericTheme);
     };
 
     it('should display unchecked', () => {
         const checkboxCmp = buildComp(props);
-        expect(checkboxCmp.dive().dive().props().checked).toBe(false);
+        expect(checkboxCmp.dive().dive().find('input').props().checked).toBe(false);
     });
 
     it('should display checked', () => {
         props.value = true;
         const checkboxCmp = buildComp(props);
-        expect(checkboxCmp.dive().dive().props().checked).toBe(true);
+        expect(checkboxCmp.dive().dive().find('input').props().checked).toBe(true);
     });
 
     it('should change', () => {
         const checkboxCmp = buildComp(props);
-        const innerCmp = checkboxCmp.dive().dive();
+        const innerCmp = checkboxCmp.dive().dive().find('input');
         innerCmp.simulate('change', null, true);
         expect(props.onChange).toHaveBeenCalledWith(true);
     });
@@ -46,7 +46,7 @@ describe('Checkbox component', () => {
     it('should change from false to true', () => {
         props.initialValue = false;
         const checkboxCmp = buildComp(props);
-        const innerCmp = checkboxCmp.dive().dive();
+        const innerCmp = checkboxCmp.dive().dive().find('input');
         innerCmp.simulate('change', null, true);
         expect(props.onChange).toHaveBeenCalledWith(true);
     });
@@ -63,6 +63,6 @@ describe('Checkbox component', () => {
         props.field.readOnly = readOnly;
 
         const checkboxCmp = buildComp(props);
-        expect(checkboxCmp.props().readOnly).toBe(readOnly);
+        expect(checkboxCmp.props().isReadOnly).toBe(readOnly);
     };
 });
