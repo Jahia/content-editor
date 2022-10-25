@@ -111,7 +111,7 @@ export const Field = ({inputContext, idInput, selectorType, field}) => {
     const firstField = sectionsContext.sections ? sectionsContext.sections[0]?.fieldSets[0]?.fields[0] === field : false;
 
     return (
-        <div className={clsx(styles.formControl, {[styles.formControlError]: Boolean(shouldDisplayErrors)})}
+        <div className={clsx(styles.formControl, {[styles.formControlError]: Boolean(shouldDisplayErrors)}, inputContext.selectorType.containerStyle)}
              data-first-field={firstField}
              data-sel-content-editor-field={field.name}
              data-sel-content-editor-field-type={seleniumFieldType}

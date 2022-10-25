@@ -2,7 +2,7 @@ import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 
-import {Checkbox} from './Checkbox';
+import {Boolean} from './Boolean';
 
 describe('Checkbox component', () => {
     let props;
@@ -22,7 +22,7 @@ describe('Checkbox component', () => {
     });
 
     const buildComp = props => {
-        return shallowWithTheme(<Checkbox {...props}/>, {}, dsGenericTheme);
+        return shallowWithTheme(<Boolean {...props}/>, {}, dsGenericTheme);
     };
 
     it('should display unchecked', () => {

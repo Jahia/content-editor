@@ -1,0 +1,14 @@
+.container.container {
+    position: relative;
+
+    margin-left: 12px;
+
+    :global(.moonstone-checkbox) {
+        margin-left: -24px;
+    }
+
+    :global(.flexFluid) > :global(.moonstone-checkbox) {
+        position: absolute;
+        top: var(--spacing-small);
+    }
+}

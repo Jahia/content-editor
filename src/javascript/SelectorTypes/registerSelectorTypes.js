@@ -7,7 +7,7 @@ import {registerTextArea} from './TextAreaField';
 import {registerRichText} from './RichText';
 import {registerColor} from './Color';
 import {registerDateTimePicker} from './DateTimePicker';
-import {registerCheckbox} from './Checkbox';
+import {registerBoolean} from './Boolean';
 import {registerPicker} from './Picker';
 import {registerSystemName} from './SystemName';
 
@@ -21,7 +21,7 @@ export const registerSelectorTypes = ceRegistry => {
     registerRichText(ceRegistry);
     registerColor(ceRegistry);
     registerDateTimePicker(ceRegistry);
-    registerCheckbox(ceRegistry);
+    registerBoolean(ceRegistry);
     registerPicker(ceRegistry);
     registerChoiceList(ceRegistry);
     registerSystemName(ceRegistry);
