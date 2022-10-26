@@ -288,7 +288,8 @@
             "contentFolders": "Inhalts-Ordner"
           }
         }
-      }
+      },
+      "readOnly": "Schreibgeschützt"
     }
   }
 }
