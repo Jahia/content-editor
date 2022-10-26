@@ -1,6 +1,6 @@
 import {JContent} from '../../page-object/jcontent';
 
-describe('Picker - Constraints', () => {
+describe('Picker tests - Constraints', () => {
     const siteKey = 'digitall';
     let jcontent: JContent;
 
@@ -47,7 +47,7 @@ describe('Picker - Constraints', () => {
         cy.logout();
     });
 
-    it('constraints - should see one employee', () => {
+    it('should see one employee', () => {
         const contentEditor = jcontent.createContent('employee');
         const pickerField = contentEditor.getPickerField('qant:employee_supervisor');
         const picker = pickerField.open();
