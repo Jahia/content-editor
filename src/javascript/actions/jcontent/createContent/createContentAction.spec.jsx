@@ -3,7 +3,7 @@ import {useContentEditorHistory} from '~/contexts/ContentEditorHistory';
 import {useSelector} from 'react-redux';
 import {useNodeChecks, useNodeInfo} from '@jahia/data-helper';
 import {shallow} from '@jahia/test-framework';
-import {transformNodeTypesToActions, useCreatableNodetypes} from './createContent.utils';
+import {transformNodeTypesToActions, useCreatableNodetypesTree, flattenNodeTypes} from './createContent.utils';
 
 import {createContentAction} from './createContentAction';
 
@@ -17,9 +17,13 @@ jest.mock('@jahia/data-helper', () => {
     return {useNodeChecks: jest.fn(),
         useNodeInfo: jest.fn()};
 });
-jest.mock('./CreateNewContentDialog', () => jest.fn());
+jest.mock('~/ContentTypeSelectorModal', () => jest.fn());
 jest.mock('./createContent.utils', () => {
-    return {useCreatableNodetypes: jest.fn(), transformNodeTypesToActions: jest.fn()};
+    return {
+        useCreatableNodetypesTree: jest.fn(),
+        flattenNodeTypes: jest.fn(),
+        transformNodeTypesToActions: jest.fn()
+    };
 });
 
 describe('CreateNewContent', () => {
@@ -44,16 +48,22 @@ describe('CreateNewContent', () => {
         useNodeInfo.mockImplementation(() => {
             return {node: {uuid: 'xxx'}, loading: loading};
         });
-        useCreatableNodetypes.mockImplementation(() => {
+        useCreatableNodetypesTree.mockImplementation(() => {
             return {
                 loadingTypes: loading,
                 error: undefined,
                 nodetypes: nodeTypes
             };
         });
-        transformNodeTypesToActions.mockImplementation(() => {
-            return jest.fn();
+        flattenNodeTypes.mockImplementation(l => l);
+        useCreatableNodetypesTree.mockImplementation(() => {
+            return {
+                loadingTypes: loading,
+                error: undefined,
+                nodetypes: nodeTypes
+            };
         });
+        transformNodeTypesToActions.mockImplementation(l => l);
     });
 
     it('should not render CreateNewContent when loading', () => {

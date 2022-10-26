@@ -15,7 +15,8 @@ export const registerEditActions = actionsRegistry => {
         targets: ['contentActions:2'],
         hideOnNodeTypes: ['jnt:virtualsite', 'jnt:page'], // For edit content
         requiredSitePermission: ['editAction'],
-        getDisplayName: true
+        getDisplayName: true,
+        isModal: true
     });
 
     // Edit action button in JContent; need separate actions for content and pages
@@ -25,7 +26,8 @@ export const registerEditActions = actionsRegistry => {
         targets: ['contentActions:2'],
         showOnNodeTypes: ['jnt:page'], // For edit pages
         requiredSitePermission: ['editPageAction'],
-        getDisplayName: true
+        getDisplayName: true,
+        isModal: true
     });
 
     // Edit action button in JContent

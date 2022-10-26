@@ -1,7 +1,7 @@
 import {contentTypes} from '../../fixtures/pickers/contentTypes';
 import {JContent} from '../../page-object/jcontent';
 
-describe('Picker default tests', () => {
+describe('Picker tests - default', () => {
     const siteKey = 'digitall';
     let jcontent: JContent;
 

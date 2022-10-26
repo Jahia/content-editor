@@ -3,9 +3,10 @@ import {ErrorBoundary} from '@jahia/jahia-ui-root';
 import {useEdit} from './useEdit';
 import {useCreate} from './useCreate';
 import {FullScreenError} from './FullScreenError';
-import {ContentTypeSelectorModal} from './ContentTypeSelectorModal';
 import {ContentEditorModal} from './ContentEditorModal';
 import {useContentEditorApiContext} from '~/contexts/ContentEditorApi/ContentEditorApi.context';
+import {ContentTypeSelectorModal} from '~/ContentTypeSelectorModal';
+import {Constants} from '~/ContentEditor.constants';
 
 export const ContentEditorApi = () => {
     const [editorConfig, setEditorConfig] = useState(false);
@@ -43,9 +44,28 @@ export const ContentEditorApi = () => {
         <ErrorBoundary fallback={<FullScreenError/>}>
             {contentTypeSelectorConfig && (
                 <ContentTypeSelectorModal
-                    contentTypeSelectorConfig={contentTypeSelectorConfig}
-                    setContentTypeSelectorConfig={setContentTypeSelectorConfig}
-                    setEditorConfig={setEditorConfig}
+                    open
+                    childNodeName={contentTypeSelectorConfig.name}
+                    nodeTypesTree={contentTypeSelectorConfig.nodeTypesTree}
+                    includeSubTypes={contentTypeSelectorConfig.includeSubTypes}
+                    parentPath={contentTypeSelectorConfig.path}
+                    uilang={contentTypeSelectorConfig.uilang}
+                    onClose={() => {
+                        setContentTypeSelectorConfig(false);
+                    }}
+                    onExited={() => {
+                        setContentTypeSelectorConfig(false);
+                    }}
+                    onCreateContent={contentType => {
+                        setContentTypeSelectorConfig(false);
+                        setEditorConfig({
+                            name: contentTypeSelectorConfig.name,
+                            uilang: contentTypeSelectorConfig.uilang,
+                            contentType: contentType.name,
+                            mode: Constants.routes.baseCreateRoute,
+                            ...contentTypeSelectorConfig.editorConfig
+                        });
+                    }}
                 />
             )}
 

@@ -1,8 +1,10 @@
 import React from 'react';
 import {AddCircle, Save} from '@jahia/moonstone';
 
-import {createContentAction} from './jcontent/createContent/createContentAction';
+import {createContentAction, CreateContent} from './jcontent/createContent/createContentAction';
 import {createAction} from './contenteditor/create/createAction';
+import {cmGoto} from '~/redux/JContent.redux-actions';
+import {batchActions} from 'redux-batched-actions';
 
 export const registerCreateActions = registry => {
     registry.addOrReplace('action', 'createContent', createContentAction, {
@@ -12,19 +14,39 @@ export const registerCreateActions = registry => {
         targets: ['createMenuActions:3', 'contentActions:3', 'headerPrimaryActions:1'],
         showOnNodeTypes: ['jnt:contentFolder', 'jnt:content'],
         hideOnNodeTypes: ['jnt:navMenuText', 'jnt:page'],
-        requiredPermission: ['jcr:addChildNodes']
+        requiredPermission: ['jcr:addChildNodes'],
+        isModal: true
     });
 
     registry.addOrReplace('action', 'createPage', {
         buttonIcon: <AddCircle/>,
         buttonLabel:
             'content-editor:label.contentEditor.CMMActions.createNewPage.menu',
-        component: props => Boolean(window.jcontentEnhanced) && <createContentAction.component {...props}/>,
+        component: props => Boolean(window.jcontentEnhanced) && <CreateContent {...props}/>,
         targets: ['createMenuActions:3', 'contentActions:3', 'headerPrimaryActions:1'],
         showOnNodeTypes: ['jnt:page', 'jnt:navMenuText'],
         requiredPermission: ['jcr:addChildNodes'],
         nodeTypes: ['jnt:page'],
-        includeSubTypes: false
+        includeSubTypes: false,
+        isModal: true,
+        onCreate: ({path}) => {
+            window.jahia.reduxStore.dispatch(batchActions([{
+                type: 'CM_OPEN_PATHS', payload: [path.substring(0, path.lastIndexOf('/'))]
+            }, cmGoto({path})]));
+        }
+    });
+
+    registry.addOrReplace('action', 'createNavMenuItem', {
+        buttonIcon: <AddCircle/>,
+        buttonLabel:
+            'content-editor:label.contentEditor.CMMActions.createNewPage.menu',
+        component: props => Boolean(window.jcontentEnhanced) && <CreateContent {...props}/>,
+        targets: ['createMenuActions:3.1', 'contentActions:3.1'],
+        showOnNodeTypes: ['jnt:page', 'jnt:navMenuText'],
+        requiredPermission: ['jcr:addChildNodes'],
+        nodeTypes: ['jnt:navMenuText', 'jnt:nodeLink', 'jnt:externalLink'],
+        includeSubTypes: false,
+        isModal: true
     });
 
     // In app actions
@@ -34,6 +56,7 @@ export const registerCreateActions = registry => {
         color: 'accent',
         variant: 'outlined',
         targets: ['content-editor/header/main-save-actions'],
-        dataSelRole: 'createButton'
+        dataSelRole: 'createButton',
+        isModal: true
     });
 };

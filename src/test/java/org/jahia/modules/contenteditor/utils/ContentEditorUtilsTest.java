@@ -108,7 +108,7 @@ public class ContentEditorUtilsTest extends AbstractJUnitTest {
         expectedResults.add("jnt:AllowedNodeTypesChild");
         expectedResults.add("jnt:AllowedNodeTypesChildEditorial");
         expectedResults.add("jnt:AllowedNodeTypesChildContribute");
-        Set<String> result = ContentEditorUtils.getAllowedNodeTypesAsChildNode(testedNode, null, false, null);
+        Set<String> result = ContentEditorUtils.getAllowedNodeTypesAsChildNode(testedNode, null, false, true, null);
         validateResult(testedType, result, expectedResults);
         expectedResults.clear();
 
@@ -124,7 +124,7 @@ public class ContentEditorUtilsTest extends AbstractJUnitTest {
         expectedResults.add("jnt:AllowedNodeTypesChildEditorialMixinOnDef");
         expectedResults.add("jnt:AllowedNodeTypesChildContributeMixinOnDef");
         expectedResults.add("jnt:AllowedNodeTypesWithMixin");
-        result = ContentEditorUtils.getAllowedNodeTypesAsChildNode(testedNode, null, false, null);
+        result = ContentEditorUtils.getAllowedNodeTypesAsChildNode(testedNode, null, false, true, null);
         validateResult(testedType, result, expectedResults);
         expectedResults.clear();
 
@@ -141,7 +141,7 @@ public class ContentEditorUtilsTest extends AbstractJUnitTest {
         expectedResults.add("jnt:AllowedNodeTypesChildMixinOnNode");
         expectedResults.add("jnt:AllowedNodeTypesChildEditorialMixinOnNode");
         expectedResults.add("jnt:AllowedNodeTypesChildContributeMixinOnNode");
-        result = ContentEditorUtils.getAllowedNodeTypesAsChildNode(testedNode, null, false, null);
+        result = ContentEditorUtils.getAllowedNodeTypesAsChildNode(testedNode, null, false, true, null);
         validateResult(testdedNodeName, result, expectedResults);
         expectedResults.clear();
 
@@ -153,7 +153,7 @@ public class ContentEditorUtilsTest extends AbstractJUnitTest {
         session.save();
         expectedResults.add("jnt:AllowedNodeTypesChildEditorial");
         expectedResults.add("jnt:AllowedNodeTypesChildEditorialMixinOnNode");
-        result = ContentEditorUtils.getAllowedNodeTypesAsChildNode(testedNode, null, false, Arrays.asList("jmix:editorialContent"));
+        result = ContentEditorUtils.getAllowedNodeTypesAsChildNode(testedNode, null, false, true, Arrays.asList("jmix:editorialContent"));
         validateResult(testdedNodeName, result, expectedResults);
         expectedResults.clear();
 
@@ -169,7 +169,7 @@ public class ContentEditorUtilsTest extends AbstractJUnitTest {
         expectedResults.add("jnt:AllowedNodeTypesChildContributeMixinOnDef");
         expectedResults.add("jnt:AllowedNodeTypesChildContributeMixinOnNode");
         expectedResults.add("jnt:AllowedNodeTypesWithMixin");
-        result = ContentEditorUtils.getAllowedNodeTypesAsChildNode(testedNode, null, true, null);
+        result = ContentEditorUtils.getAllowedNodeTypesAsChildNode(testedNode, null, true, true, null);
         validateResult(testdedNodeName, result, expectedResults);
         expectedResults.clear();
 
@@ -181,7 +181,7 @@ public class ContentEditorUtilsTest extends AbstractJUnitTest {
         expectedResults.add("jnt:AllowedNodeTypesChildContribute");
         expectedResults.add("jnt:AllowedNodeTypesChildContributeMixinOnDef");
         expectedResults.add("jnt:AllowedNodeTypesWithMixin");
-        result = ContentEditorUtils.getAllowedNodeTypesAsChildNode(testedNode, null, true, null);
+        result = ContentEditorUtils.getAllowedNodeTypesAsChildNode(testedNode, null, true, true, null);
         validateResult(testdedNodeName, result, expectedResults);
         expectedResults.clear();
 
@@ -190,7 +190,7 @@ public class ContentEditorUtilsTest extends AbstractJUnitTest {
         testdedNodeName = testedType;
         testedNode = session.getNode(testSite.getJCRLocalPath()).addNode(testdedNodeName, testedType);
         session.save();
-        result = ContentEditorUtils.getAllowedNodeTypesAsChildNode(testedNode, null, false, null);
+        result = ContentEditorUtils.getAllowedNodeTypesAsChildNode(testedNode, null, false, true, null);
         validateResult(testdedNodeName, result, expectedResults);
         expectedResults.clear();
 
@@ -200,13 +200,13 @@ public class ContentEditorUtilsTest extends AbstractJUnitTest {
         testedNode = session.getNode(testSite.getJCRLocalPath()).addNode(testdedNodeName, testedType);
         session.save();
         validateResult(testdedNodeName,
-            ContentEditorUtils.getAllowedNodeTypesAsChildNode(testedNode, "namedChild", true, null),
+            ContentEditorUtils.getAllowedNodeTypesAsChildNode(testedNode, "namedChild", true, true, null),
             Collections.singleton("jnt:AllowedNodeTypesChild"));
         validateResult(testdedNodeName,
-            ContentEditorUtils.getAllowedNodeTypesAsChildNode(testedNode, "namedChildEditorial", true, null),
+            ContentEditorUtils.getAllowedNodeTypesAsChildNode(testedNode, "namedChildEditorial", true, true, null),
             Collections.singleton("jnt:AllowedNodeTypesChildEditorial"));
         validateResult(testdedNodeName,
-            ContentEditorUtils.getAllowedNodeTypesAsChildNode(testedNode, null, true, null),
+            ContentEditorUtils.getAllowedNodeTypesAsChildNode(testedNode, null, true, true, null),
             Collections.singleton("jnt:AllowedNodeTypesChildEditorial"));
     }
 

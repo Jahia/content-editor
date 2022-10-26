@@ -1,6 +1,6 @@
 import {JContent} from '../../page-object/jcontent';
 
-describe('Picker - Usergroup', () => {
+describe('Picker tests - Usergroup', () => {
     const siteKey = 'digitall';
     let jcontent: JContent;
     beforeEach(() => {

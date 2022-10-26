@@ -1,6 +1,6 @@
 import {JContent} from '../../page-object/jcontent';
 
-describe('Picker - Site', () => {
+describe('Picker tests - Site', () => {
     const siteKey = 'digitall';
     let jcontent: JContent;
 
@@ -52,7 +52,7 @@ describe('Picker - Site', () => {
         const pickerField = contentEditor.getPickerField('qant:pickersMultiple_sitepicker', true);
         const picker = pickerField.open();
 
-        let count = 3;
+        const count = 3;
         picker.getTable().selectItems(count);
         cy.get('[data-cm-role="selection-table-collapse-button"] span')
             .should('be.visible').and('contain', `${count} items selected`);

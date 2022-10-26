@@ -1,7 +1,7 @@
 import {JContent} from '../../page-object/jcontent';
 import {SecondaryNav} from '@jahia/cypress';
 
-describe('Picker - Search', () => {
+describe('Picker tests - Search', () => {
     const siteKey = 'digitall';
     let jcontent: JContent;
     beforeEach(() => {
@@ -75,7 +75,7 @@ describe('Picker - Search', () => {
         picker.verifyResultsLength(7);
         picker.getTableRow('Taber').should('be.visible');
         // Verify whole left nav is gone
-        cy.get(SecondaryNav.defaultSelector, {timeout: 2000}).should('not.exist');
+        picker.get().find(SecondaryNav.defaultSelector, {timeout: 2000}).should('not.exist');
     });
 
     it('Editorial Picker- Search for tab and them empty search - ensure previous context is restored', () => {
