@@ -93,6 +93,28 @@ const NodeDataFragment = {
                     status
                     languages
                 }
+                usages: references {
+                    nodes {
+                        node {
+                            ...NodeCacheRequiredFields
+                            displayName
+                            path
+                            primaryNodeType {
+                                icon
+                                name
+                                displayName(language: $language)
+                            }
+                            aggregatedPublicationInfo(language: $language) {
+                                publicationStatus
+                            }
+                            operationsSupport {
+                                lock
+                                markForDeletion
+                                publication
+                            }
+                        }
+                    }
+                }
             }
         }
         ${PredefinedFragments.nodeCacheRequiredFields.gql}`

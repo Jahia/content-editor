@@ -1,8 +1,9 @@
 import React from 'react';
 import {unsetFieldAction} from '~/SelectorTypes/actions/unsetFieldAction';
-import {Close, Edit, MoreVert, OpenInNew, Upload} from '@jahia/moonstone';
+import {Close, Edit, MoreVert, OpenInNew, Upload, Visibility} from '@jahia/moonstone';
 import {replaceAction} from './replaceAction';
 import {openInTabAction} from './openInTabAction';
+import {previewInTabAction} from './previewInTabAction';
 
 export const registerPickerActions = registry => {
     registry.add('action', 'content-editor/field/Picker', registry.get('action', 'menuAction'), {
@@ -51,5 +52,11 @@ export const registerPickerActions = registry => {
         targets: ['pickerDialogAction:0'],
         contentType: 'jnt:file',
         dataSelRole: 'upload'
+    });
+
+    registry.add('action', 'previewInNewTab', previewInTabAction, {
+        buttonIcon: <Visibility/>,
+        buttonLabel: 'content-editor:label.contentEditor.edit.fields.actions.previewTab',
+        targets: ['content-editor/field/Picker:3', 'content-editor/field/MultiplePicker:3']
     });
 };

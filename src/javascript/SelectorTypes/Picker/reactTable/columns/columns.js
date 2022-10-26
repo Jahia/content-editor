@@ -2,6 +2,7 @@ import {reactTable} from '@jahia/jcontent';
 import {CellVisibleActions} from '~/SelectorTypes/Picker/reactTable/columns/CellVisibleActions';
 import {FileSizeCell} from '~/SelectorTypes/Picker/reactTable/columns/FileSizeCell';
 import {RelPathCell} from '~/SelectorTypes/Picker/reactTable/columns/RelPathCell';
+import {LocationCell} from '~/SelectorTypes/Picker/reactTable/columns/LocationCell';
 
 export const allColumnData = [
     {
@@ -65,6 +66,14 @@ export const allColumnData = [
         Cell: RelPathCell
     },
     {
+        id: 'location',
+        Cell: LocationCell,
+        sortable: false,
+        label: 'content-editor:label.contentEditor.edit.advancedOption.usages.path',
+        Header: reactTable.Header,
+        width: '300px'
+    },
+    {
         id: 'status',
         label: 'jcontent:label.contentManager.listColumns.status',
         sortable: false,
@@ -75,6 +84,7 @@ export const allColumnData = [
         id: 'visibleActions',
         Header: '',
         Cell: CellVisibleActions,
-        width: '60px'
+        width: '60px',
+        sortable: false
     }
 ];

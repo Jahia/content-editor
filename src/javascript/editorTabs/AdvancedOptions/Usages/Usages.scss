@@ -1,0 +1,25 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: calc(var(--spacing-big) * 3);
+    padding: 0 250px;
+}
+
+.item {
+    margin-bottom: calc(var(--spacing-big) * 2);
+
+    text-align: center;
+}
+
+.capitalize {
+    text-transform: capitalize;
+}
+
+.marginRight {
+    margin-right: var(--spacing-big);
+}
+
+.header-location {
+    flex-grow: 2;
+}

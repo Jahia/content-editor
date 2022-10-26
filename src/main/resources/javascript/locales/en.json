@@ -113,6 +113,11 @@
             "mixinTypes": "Full content type",
             "path": "Path",
             "uuid": "UUID"
+          },
+          "usages": {
+            "path": "Location",
+            "none": "No usages",
+            "noneDescription": "This element is not referenced by any other content."
           }
         },
         "sharedLanguages": "Shared by all languages",
@@ -122,7 +127,8 @@
             "newTab": "Edit in a new tab",
             "clear": "Clear",
             "selectAll": "Select all values",
-            "add": "Add"
+            "add": "Add",
+            "previewTab": "Preview in a new tab"
           },
           "contentPicker": {
             "notFoundContent": "Content not found",

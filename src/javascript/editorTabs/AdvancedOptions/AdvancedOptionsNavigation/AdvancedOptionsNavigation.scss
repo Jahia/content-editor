@@ -10,3 +10,12 @@
         text-transform: uppercase;
     }
 }
+
+.menuItemWithChip {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    padding-right: 20px;
+}

@@ -113,6 +113,11 @@
             "mixinTypes": "Content Typ",
             "path": "Pfad",
             "uuid": "UUID"
+          },
+          "usages": {
+            "path": "Location",
+            "none": "Nicht verwendet",
+            "noneDescription": "Dieses Element ist nicht durch einen anderen Content referenziert."
           }
         },
         "sharedLanguages": "Von allen Sprachen geteilt",
@@ -122,7 +127,8 @@
             "newTab": "In einem neuen Tab bearbeiten",
             "clear": "Leeren",
             "selectAll": "Alle Werte auswählen",
-            "add": "Hinzufügen"
+            "add": "Hinzufügen",
+            "previewTab": "In einem neuen Tab Vorschau"
           },
           "contentPicker": {
             "notFoundContent": "Datei nicht gefunden",

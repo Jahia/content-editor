@@ -18,7 +18,7 @@ export const ContentEditorContextProvider = ({useFormDefinition, children}) => {
     const {t} = useTranslation('content-editor');
     const [errors, setErrors] = useState(null);
     const contentEditorConfigContext = useContentEditorConfigContext();
-    // Get informations from page composer to display the preview.
+    // Get information from page composer to display the preview.
     const {pageComposerCurrentPage, pageComposerActive} = useSelector(state => ({
         pageComposerCurrentPage: state.pagecomposer.currentPage,
         pageComposerActive: state.pagecomposer.active
@@ -59,7 +59,8 @@ export const ContentEditorContextProvider = ({useFormDefinition, children}) => {
         sections,
         title,
         nodeTypeName,
-        nodeTypeDisplayName
+        nodeTypeDisplayName,
+        usages
     } = formDefinition || {};
     const siteInfoResult = useSiteInfo({
         siteKey: site,
@@ -124,7 +125,8 @@ export const ContentEditorContextProvider = ({useFormDefinition, children}) => {
         setErrors,
         i18nContext,
         setI18nContext,
-        resetI18nContext
+        resetI18nContext,
+        usages
     };
 
     return (

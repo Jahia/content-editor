@@ -113,6 +113,11 @@
             "mixinTypes": "Type de contenu complet",
             "path": "Chemin",
             "uuid": "UUID"
+          },
+          "usages": {
+            "path": "Emplacement",
+            "none": "Pas d’utilisations",
+            "noneDescription": "Cet élément n’est référencé par aucun autre contenu."
           }
         },
         "sharedLanguages": "Partagé par toutes les langues",
@@ -122,7 +127,8 @@
             "newTab": "Editer dans un nouvel onglet",
             "clear": "Effacer",
             "selectAll": "Sélectionnez toutes les valeurs",
-            "add": "Ajouter"
+            "add": "Ajouter",
+            "previewTab": "Prévisualisé dans un nouvel onglet"
           },
           "contentPicker": {
             "notFoundContent": "Le contenu n’a pas été trouvé",

@@ -3,3 +3,16 @@
         width: inherit;
     }
 }
+
+.cellLocation {
+    flex-grow: 2;
+}
+
+.location {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    padding-right: 20px;
+}
