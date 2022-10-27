@@ -1,6 +1,6 @@
 import React from 'react';
 import {unsetFieldAction} from '~/SelectorTypes/actions/unsetFieldAction';
-import {Close, Edit, MoreVert, OpenInNew, Upload, Visibility} from '@jahia/moonstone';
+import {Close, Edit, MoreVert, Upload, Visibility} from '@jahia/moonstone';
 import {replaceAction} from './replaceAction';
 import {openInTabAction} from './openInTabAction';
 import {previewInTabAction} from './previewInTabAction';
@@ -31,7 +31,7 @@ export const registerPickerActions = registry => {
     });
 
     registry.add('action', 'openInNewTab', openInTabAction, {
-        buttonIcon: <OpenInNew/>,
+        buttonIcon: <Edit/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.fields.actions.newTab',
         targets: ['content-editor/field/Picker:2', 'content-editor/field/MultiplePicker:2']
     });
