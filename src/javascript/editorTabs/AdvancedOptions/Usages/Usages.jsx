@@ -41,24 +41,31 @@ export const Usages = () => {
     }
 
     return (
-        <Table aria-labelledby="tableUsages"
-               data-cm-role="table-usages-list"
-               {...getTableProps()}
-        >
-            <ContentListHeader headerGroups={headerGroups} headerClasses={styles}/>
-            <TableBody {...getTableBodyProps()}>
-                {tableRows.map(row => {
-                    prepareRow(row);
-                    return (
-                        <TableRow key={'row' + row.id}
-                                  {...row}
-                        >
-                            {row.cells.map(cell => <React.Fragment key={cell.column.id}>{cell.render('Cell')}</React.Fragment>)}
-                        </TableRow>
-                    );
-                })}
-            </TableBody>
-        </Table>
+        <section className={styles.tableContainer}>
+            <Table aria-labelledby="tableUsages"
+                   data-cm-role="table-usages-list"
+                   {...getTableProps()}
+            >
+                <ContentListHeader headerGroups={headerGroups} headerClasses={styles}/>
+                <TableBody {...getTableBodyProps()}>
+                    {tableRows.map(row => {
+                        prepareRow(row);
+                        return (
+                            <TableRow key={'row' + row.id}
+                                      {...row}
+                            >
+                                {row.cells.map(cell => (
+                                    <React.Fragment
+                                    key={cell.column.id}
+                                    >{cell.render('Cell')}
+                                    </React.Fragment>
+))}
+                            </TableRow>
+                        );
+                    })}
+                </TableBody>
+            </Table>
+        </section>
     );
 };
 

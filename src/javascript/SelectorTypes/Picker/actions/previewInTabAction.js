@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {useContentEditorContext} from '~/contexts';
 import {useQuery} from '@apollo/react-hooks';
 import {PreviewInTabActionQuery} from '~/SelectorTypes/Picker/actions/previewInTabAction.gql-queries';
 
@@ -12,7 +11,6 @@ export const PreviewInTabActionComponent = ({
     inputContext,
     ...others
 }) => {
-    const {lang} = useContentEditorContext();
 
     let uuid;
     if (path === undefined) {
@@ -43,7 +41,7 @@ export const PreviewInTabActionComponent = ({
         <Render
             {...others}
             onClick={() => {
-                window.open(`${window.contextJsParameters.urlbase}/page-composer/default/${lang}${path}.html`, '_blank');
+                window.open(`${window.contextJsParameters.baseUrl}${path}.html`, '_blank');
             }}
         />
     );

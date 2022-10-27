@@ -6,6 +6,10 @@
     padding: 0 250px;
 }
 
+.tableContainer {
+    padding: var(--spacing-big);
+}
+
 .item {
     margin-bottom: calc(var(--spacing-big) * 2);
 
