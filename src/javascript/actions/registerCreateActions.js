@@ -5,6 +5,7 @@ import {createContentAction, CreateContent} from './jcontent/createContent/creat
 import {createAction} from './contenteditor/create/createAction';
 import {cmGoto} from '~/redux/JContent.redux-actions';
 import {batchActions} from 'redux-batched-actions';
+import {booleanValue} from '~/SelectorTypes/Picker/Picker2.utils';
 
 export const registerCreateActions = registry => {
     registry.addOrReplace('action', 'createContent', createContentAction, {
@@ -20,9 +21,8 @@ export const registerCreateActions = registry => {
 
     registry.addOrReplace('action', 'createPage', {
         buttonIcon: <AddCircle/>,
-        buttonLabel:
-            'content-editor:label.contentEditor.CMMActions.createNewPage.menu',
-        component: props => Boolean(window.jcontentEnhanced) && <CreateContent {...props}/>,
+        buttonLabel: 'content-editor:label.contentEditor.CMMActions.createNewPage.menu',
+        component: props => booleanValue(contextJsParameters.config.jcontent?.showPageComposer) && <CreateContent {...props}/>,
         targets: ['createMenuActions:3', 'contentActions:3', 'headerPrimaryActions:1'],
         showOnNodeTypes: ['jnt:page', 'jnt:navMenuText'],
         requiredPermission: ['jcr:addChildNodes'],
@@ -40,7 +40,7 @@ export const registerCreateActions = registry => {
         buttonIcon: <AddCircle/>,
         buttonLabel:
             'content-editor:label.contentEditor.CMMActions.createNewPage.menu',
-        component: props => Boolean(window.jcontentEnhanced) && <CreateContent {...props}/>,
+        component: props => booleanValue(contextJsParameters.config.jcontent?.showPageComposer) && <CreateContent {...props}/>,
         targets: ['createMenuActions:3.1', 'contentActions:3.1'],
         showOnNodeTypes: ['jnt:page', 'jnt:navMenuText'],
         requiredPermission: ['jcr:addChildNodes'],
