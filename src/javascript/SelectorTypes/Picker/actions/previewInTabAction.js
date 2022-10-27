@@ -11,7 +11,6 @@ export const PreviewInTabActionComponent = ({
     inputContext,
     ...others
 }) => {
-
     let uuid;
     if (path === undefined) {
         const {fieldData} = inputContext.actionContext;
