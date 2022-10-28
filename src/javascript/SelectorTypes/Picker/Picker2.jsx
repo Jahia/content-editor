@@ -12,8 +12,59 @@ import styles from './Picker2.scss';
 import {Button, Close} from '@jahia/moonstone';
 import {FieldContextProvider} from '~/contexts/FieldContext';
 import {DefaultPickerConfig} from '~/SelectorTypes/Picker/configs/DefaultPickerConfig';
+import {useDrag, useDrop} from 'react-dnd';
+import {useFormikContext} from 'formik';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
+
+const ReorderableValue = ({field, fieldVal, onFieldRemove, onValueReorder, index}) => {
+    const {t} = useTranslation('content-editor');
+    const name = `${field.name}[${index}]`;
+    const [{isDropping}, drop] = useDrop({
+        accept: 'REFERENCE_CARD', drop: item => onValueReorder(item.name, index), collect: monitor => {
+            return {
+                isDropping: monitor.isOver() && monitor.canDrop() && monitor.getItem().name !== name
+            };
+        }
+    });
+    const [{isDragging}, drag] = useDrag({
+        type: 'REFERENCE_CARD', item: {name: name, uuid: fieldVal.uuid}, collect: monitor => ({
+            isDragging: monitor.isDragging()
+        })
+    });
+    return (
+        <>
+            <div key={name}
+                 ref={drop}
+                 className={styles.fieldComponentContainer}
+                 data-sel-content-editor-multiple-generic-field={name}
+                 data-sel-content-editor-field-readonly={field.readOnly}
+            >
+                <div className={`${styles.referenceDropGhostHidden} ${isDropping ? styles.referenceDropGhost : ''}`}/>
+                <div className={styles.draggableCard}>
+                    <div ref={drag} className={styles.draggableCard}>
+                        {!isDragging &&
+                            <ReferenceCard isDraggable isReadOnly labelledBy={`${name}-label`} fieldData={fieldVal}/>}
+                    </div>
+                    {!field.readOnly && !isDragging && <Button variant="ghost"
+                                                               data-sel-action={`removeField_${index}`}
+                                                               aria-label={t('content-editor:label.contentEditor.edit.fields.actions.clear')}
+                                                               icon={<Close/>}
+                                                               onClick={() => onFieldRemove(index)}
+                    />}
+                </div>
+            </div>
+        </>
+    );
+};
+
+ReorderableValue.propTypes = {
+    field: PropTypes.object.isRequired,
+    fieldVal: PropTypes.object.isRequired,
+    onFieldRemove: PropTypes.func.isRequired,
+    onValueReorder: PropTypes.func.isRequired,
+    index: PropTypes.number.isRequired
+};
 
 export const Picker2 = ({field, value, editorContext, inputContext, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
@@ -32,11 +83,9 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
 
     const pickerConfig = mergeDeep({}, DefaultPickerConfig, inputContext.selectorType.pickerConfig, parsedOptions.pickerConfig);
     const [isDialogOpen, setDialogOpen] = useState(false);
+    const {setFieldValue, setFieldTouched} = useFormikContext();
     const {
-        fieldData,
-        error,
-        loading,
-        notFound
+        fieldData, error, loading, notFound
     } = pickerConfig.pickerInput.usePickerInputData(value && toArray(value));
 
     if (error) {
@@ -76,30 +125,39 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
         onItemSelection(updatedValues);
     };
 
-    return (
-        <div className="flexFluid flexRow_nowrap alignCenter">
-            {field.multiple ?
-                <div className="flexFluid">
-                    {
-                        fieldData && fieldData.length > 0 && fieldData.map((fieldVal, index) => {
-                            const name = `${field.name}[${index}]`;
-                            return (
-                                <div key={name}
-                                     className={styles.fieldComponentContainer}
-                                     data-sel-content-editor-multiple-generic-field={name}
-                                     data-sel-content-editor-field-readonly={field.readOnly}
-                                >
-                                    <ReferenceCard isReadOnly="true" labelledBy={`${name}-label`} fieldData={fieldVal}/>
-                                    {!field.readOnly &&
-                                        <Button variant="ghost"
-                                                data-sel-action={`removeField_${index}`}
-                                                aria-label={t('content-editor:label.contentEditor.edit.fields.actions.clear')}
-                                                icon={<Close/>}
-                                                onClick={() => onFieldRemove(index)}
-                                        />}
-                                </div>
-                            );
-                        })
+    const onValueReorder = (droppedName, index) => {
+        let childrenWithoutDropped = [];
+        let droppedChild = null;
+        let droppedItemIndex = -1;
+        value.forEach((item, index) => {
+            if (droppedItemIndex === -1 && droppedName === `${field.name}[${index}]`) {
+                droppedChild = item;
+                droppedItemIndex = index;
+            } else {
+                childrenWithoutDropped.push(item);
+            }
+        });
+
+        if (droppedChild !== null && droppedItemIndex >= 0) {
+            // +1 for droppedItemIndex here as index parameter from handleReOrder is starting from 1 instead of 0
+            const spliceIndex = ((droppedItemIndex + 1) < index) ? index - 1 : index;
+            const newValue = [...childrenWithoutDropped.slice(0, spliceIndex), droppedChild, ...childrenWithoutDropped.slice(spliceIndex, childrenWithoutDropped.length)];
+            setFieldValue(field.name, newValue);
+            setFieldTouched(field.name, true, false);
+        }
+    };
+
+    return (<div className="flexFluid flexRow_nowrap alignCenter">
+            {field.multiple ? <div className="flexFluid">
+                    {fieldData && fieldData.length > 0 && fieldData.map((fieldVal, index) => {
+                        return (<ReorderableValue
+                            key={`${field.name}_${fieldVal.name}`}
+                            field={field}
+                            fieldVal={fieldVal}
+                            index={index}
+                            onValueReorder={onValueReorder}
+                            onFieldRemove={onFieldRemove}/>);
+                    })
                     }
                     {!field.readOnly &&
                         <Button className={styles.addButton}
