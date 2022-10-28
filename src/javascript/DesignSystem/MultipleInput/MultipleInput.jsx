@@ -42,7 +42,6 @@ const MultipleInputComponent = ({classes, creatable, async, readOnly, ...props})
         <>
             <Cmp
                 isMulti
-                closeMenuOnSelect={false}
                 isClearable={false}
                 components={components}
                 value={selection}
