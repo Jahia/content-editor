@@ -1,7 +1,6 @@
 .multipleSelector {
     display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
+    flex-flow: row nowrap;
 }
 
 .buttonSection {
