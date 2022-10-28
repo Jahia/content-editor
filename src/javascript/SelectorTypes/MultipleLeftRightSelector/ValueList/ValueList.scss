@@ -1,0 +1,23 @@
+.valueList {
+    flex-grow: 1;
+    max-height: 300px;
+    overflow-y: scroll;
+}
+
+.valueListItem {
+    padding: var(--spacing-small);
+
+    cursor: pointer;
+
+    &.selected {
+        color: var(--color-white);
+
+        background-color: var(--color-accent);
+    }
+
+    &:hover {
+        color: var(--color-accent);
+
+        background-color: var(--color-gray_light60);
+    }
+}
