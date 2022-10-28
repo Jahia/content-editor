@@ -1,6 +1,6 @@
 import {BaseComponent, BasePage, Button, getComponent, getComponentByRole, getElement, MUIInput} from '@jahia/cypress';
-import IframeOptions = Cypress.IframeOptions
 import {ContentEditor} from './contentEditor';
+import IframeOptions = Cypress.IframeOptions;
 
 export class PageComposer extends BasePage {
     iFrameOptions: IframeOptions;
@@ -102,15 +102,17 @@ export class PageComposer extends BasePage {
         return new ContentEditor();
     }
 
-    createPage(title: string): ContentEditor {
+    createPage(title: string, implicitSync?: boolean): ContentEditor {
         const ce = new ContentEditor();
         cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
             cy.get('#JahiaGxtPagesTab').contains('Home').rightclick({force: true});
             cy.get('.pagesContextMenuAnthracite').contains('New page').click({force: true});
         });
 
-        cy.get('#jnt\\:page_jcr\\:title').should('be.visible').type(title);
-        cy.get('#nt\\:base_ce\\:systemName').should('be.visible').type(title);
+        cy.get('#jnt\\:page_jcr\\:title').should('be.visible').type(title, {force: true});
+        if (implicitSync) {
+            cy.get('#nt\\:base_ce\\:systemName').should('be.visible').type(title, {force: true});
+        }
         cy.get('#select-jnt\\:page_j\\:templateName').should('be.visible')
             .click()
             .find('li[role="option"][data-value="home"]')
@@ -118,6 +120,26 @@ export class PageComposer extends BasePage {
 
         ce.saveUnchecked();
         return ce;
+    }
+
+    checkSystemNameSync(title: string, expectedSystemName: string): ContentEditor {
+        const ce = new ContentEditor();
+        cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
+            cy.get('#JahiaGxtPagesTab').contains('Home').rightclick({force: true});
+            cy.get('.pagesContextMenuAnthracite').contains('New page').click({force: true});
+        });
+
+        cy.get('#jnt\\:page_jcr\\:title').should('be.visible').type(title, {force: true});
+        cy.get('#select-jnt\\:page_j\\:templateName').should('be.visible')
+            .click()
+            .find('li[role="option"][data-value="home"]')
+            .click();
+
+        cy.get('#nt\\:base_ce\\:systemName').should('have.value', expectedSystemName);
+
+        ce.cancelAndDiscard();
+        return ce;
+
     }
 
     navigateToPage(name: string): PageComposer {
