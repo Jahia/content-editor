@@ -30,7 +30,7 @@ export const PreviewInTabActionComponent = ({
 
     uuid = uuid === undefined ? data.jcr.result.uuid : uuid;
 
-    if (!data.jcr.result.previewAvailable && data.jcr.result.displayableNode.previewAvailable) {
+    if (data !== undefined && !data.jcr.result.previewAvailable && data.jcr.result.displayableNode.previewAvailable) {
         path = data.jcr.result.displayableNode.path;
     } else {
         return <></>;
