@@ -9,7 +9,7 @@ import {useTranslation} from 'react-i18next';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 import {useContentEditorContext} from '~/contexts/ContentEditor';
 
-const DEPRECATED_GWT_ACTIONS = ['content', 'layout', 'metadata', 'categories', 'options', 'seo', 'usages'];
+const DEPRECATED_GWT_ACTIONS = ['content', 'layout', 'metadata', 'categories', 'options', 'seo', 'usages', 'channels'];
 
 const Renderer = ({activeOption, setActiveOption, buttonLabel, onClick, tabs}) => {
     const tab = tabs ? tabs[0] : 'technicalInformation';

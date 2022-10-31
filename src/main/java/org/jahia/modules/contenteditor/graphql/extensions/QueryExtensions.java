@@ -28,7 +28,11 @@ import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLTypeExtension;
 import org.jahia.modules.contenteditor.graphql.api.GqlEditorForms;
+import org.jahia.modules.contenteditor.graphql.api.channels.ChannelHelper;
+import org.jahia.modules.contenteditor.graphql.api.channels.GqlChannel;
 import org.jahia.modules.graphql.provider.dxm.DXGraphQLProvider;
+
+import java.util.List;
 
 /**
  * This extension to the Query is where the content editor GraphQL form API is made available
@@ -41,6 +45,13 @@ public class QueryExtensions {
     @GraphQLDescription("Main access field to the DX GraphQL Form API")
     public static GqlEditorForms getForms() {
         return new GqlEditorForms();
+    }
+
+    @GraphQLField
+    @GraphQLName("channels")
+    @GraphQLDescription("Get available channels")
+    public static List<GqlChannel> getChannels() {
+        return ChannelHelper.getAllChannels();
     }
 
 }
