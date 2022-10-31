@@ -26,6 +26,7 @@
   username: ${env:NEXUS_USERNAME}
   password: ${env:NEXUS_PASSWORD}
 - installBundle:
+  - 'mvn:org.jahia.modules/jcontent'
   - 'mvn:org.jahia.modules/content-editor'
   autoStart: true
   uninstallPreviousVersion: true
