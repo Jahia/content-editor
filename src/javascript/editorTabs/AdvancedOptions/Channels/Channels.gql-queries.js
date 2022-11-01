@@ -11,6 +11,8 @@ export const ALL_CHANNELS_QUERY = gql`query Channels {
 export const NODE_CHANNELS_QUERY = gql`query NodeChannels($path: String!, $language: String!) {
     jcr {
         nodeByPath(path: $path) {
+            uuid
+            workspace
             channels: property(name: "j:channelSelection", language: $language) {
                 values
             }

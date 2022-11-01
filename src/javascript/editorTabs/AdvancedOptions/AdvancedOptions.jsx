@@ -6,7 +6,7 @@ import {TechnicalInformation} from './TechnicalInformation/TechnicalInformation'
 import {DeprecatedOption} from './DeprecatedOption';
 import {VanityUrls} from './VanityUrls';
 import {Usages} from './Usages';
-import {Channels} from './Channels'
+import {Channels} from './Channels';
 
 export const AdvancedOptions = () => {
     const [activeOption, setActiveOption] = useState('technicalInformation');
