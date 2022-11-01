@@ -12,7 +12,7 @@ export const registerEditActions = actionsRegistry => {
     actionsRegistry.add('action', 'edit', editContentAction, {
         buttonIcon: <Edit/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.contentEdit',
-        targets: ['contentActions:2'],
+        targets: ['contentActions:2', 'headerPrimaryActions:1.5', 'selectedContentActions:1'],
         hideOnNodeTypes: ['jnt:virtualsite', 'jnt:page'], // For edit content
         requiredSitePermission: ['editAction'],
         getDisplayName: true,
@@ -23,7 +23,7 @@ export const registerEditActions = actionsRegistry => {
     actionsRegistry.add('action', 'editPage', editContentAction, {
         buttonIcon: <Edit/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.contentEdit',
-        targets: ['contentActions:2'],
+        targets: ['contentActions:2', 'headerPrimaryActions:1.5', 'selectedContentActions:1'],
         showOnNodeTypes: ['jnt:page'], // For edit pages
         requiredSitePermission: ['editPageAction'],
         getDisplayName: true,
@@ -92,4 +92,3 @@ export const registerEditActions = actionsRegistry => {
         targets: ['content-editor/header/3dots:2']
     });
 };
-
