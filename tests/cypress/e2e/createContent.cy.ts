@@ -95,7 +95,7 @@ describe('Create content tests', {retries: 10}, () => {
             .create();
         cy.get('#contenteditor-dialog-title').should('be.visible').and('contain', 'Create News entry');
         const contentSection = contentEditor.openSection('Content');
-        contentSection.get().find('#jnt\\:news_jcr\\:title').clear().type('Cypress news titlez');
+        contentSection.get().find('#jnt\\:news_jcr\\:title').clear({force: true}).type('Cypress news titlez', {force: true});
         contentSection.expand().get().find('.cke_button__source').click();
         contentSection.get().find('textarea').type('Cypress news content');
         contentEditor.save();
@@ -104,8 +104,8 @@ describe('Create content tests', {retries: 10}, () => {
             .get()
             .find('#jnt\\:news_jcr\\:title')
             .should('have.value', 'Cypress news titlez')
-            .clear()
-            .type('Cypress news title');
+            .clear({force: true})
+            .type('Cypress news title', {force: true});
         getComponentByRole(Button, 'submitSave').click();
         // GetComponentByRole(Button, 'backButton').click()
         pageComposer.refresh().shouldContain('Cypress news title');
