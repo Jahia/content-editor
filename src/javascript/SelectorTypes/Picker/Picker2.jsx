@@ -147,18 +147,21 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
         }
     };
 
-    return (<div className="flexFluid flexRow_nowrap alignCenter">
-            {field.multiple ? <div className="flexFluid">
+    return (
+        <div className="flexFluid flexRow_nowrap alignCenter">
+            {field.multiple ?
+                <div className="flexFluid">
                     {fieldData && fieldData.length > 0 && fieldData.map((fieldVal, index) => {
-                        return (<ReorderableValue
-                            key={`${field.name}_${fieldVal.name}`}
-                            field={field}
-                            fieldVal={fieldVal}
-                            index={index}
-                            onValueReorder={onValueReorder}
-                            onFieldRemove={onFieldRemove}/>);
-                    })
-                    }
+                        return (
+                            <ReorderableValue
+                                key={`${field.name}_${fieldVal.name}`}
+                                field={field}
+                                fieldVal={fieldVal}
+                                index={index}
+                                onValueReorder={onValueReorder}
+                                onFieldRemove={onFieldRemove}/>
+                        );
+                    })}
                     {!field.readOnly &&
                         <Button className={styles.addButton}
                                 data-sel-action="addField"
