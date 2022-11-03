@@ -112,7 +112,7 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
             if (firstMatchingAccordion.getViewTypeForItem) {
                 newState.viewType = firstMatchingAccordion.getViewTypeForItem(selectedNode);
             }
-        } else {
+        } else if (state.path.startsWith(currentFolderInfo.node.path)) {
             if (previousState.current.contextSite !== newState.contextSite && newState.site !== newState.contextSite) {
                 // If context site has changed, reset to the current site (otherwise keep current site)
                 newState.site = pickerConfig.targetSite ? pickerConfig.targetSite : newState.contextSite;
