@@ -1,4 +1,9 @@
-import {getCreatableNodetypesTree, flattenNodeTypes, transformNodeTypesToActions} from './createContent.utils';
+import {
+    getCreatableNodetypesTree,
+    flattenNodeTypes,
+    transformNodeTypesToActions,
+    childrenLimitReachedOrExceeded
+} from './createContent.utils';
 
 jest.mock('@jahia/moonstone');
 
@@ -88,5 +93,30 @@ describe('CreateNewContent utils', () => {
             expect(actions[1].key).toEqual('tata');
             expect(actions.length).toBe(2);
         });
+    });
+
+    let node;
+    beforeEach(() => {
+        node = {
+            'jmix:listSizeLimit': true,
+            properties: [{name: 'limit', value: 5}],
+            subNodes: {pageInfo: {totalCount: 6}}
+        };
+    });
+
+    it('should return false when null object', async () => {
+        expect(childrenLimitReachedOrExceeded(null)).toBe(false);
+    });
+
+    it('should return true if child limit is exceeded', async () => {
+        expect(childrenLimitReachedOrExceeded(node)).toBe(true);
+        node.subNodes.pageInfo.totalCount = 4;
+        expect(childrenLimitReachedOrExceeded(node)).toBe(false);
+    });
+
+    it('should return false if jmix:listSizeLimit is false', async () => {
+        expect(childrenLimitReachedOrExceeded(node)).toBe(true);
+        node['jmix:listSizeLimit'] = false;
+        expect(childrenLimitReachedOrExceeded(node)).toBe(false);
     });
 });
