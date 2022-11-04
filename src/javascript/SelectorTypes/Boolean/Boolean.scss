@@ -7,6 +7,14 @@
         margin-left: -24px;
     }
 
+    :global(.moonstone-checkbox_input) {
+        &[disabled]:hover,
+        &[aria-readonly="true"]:hover {
+            --shadow-color: var(--color-gray);
+            --shadow-size: 1px;
+        }
+    }
+
     :global(.flexFluid) > :global(.moonstone-checkbox) {
         position: absolute;
         top: var(--spacing-small);

@@ -9,6 +9,7 @@ export const Boolean = ({field, value, id, onChange, onBlur}) => {
             id={id}
             checked={value === true}
             isReadOnly={field.readOnly}
+            isDisabled={field.readOnly}
             onChange={() => onChange(!value)}
             onBlur={onBlur}
         />
