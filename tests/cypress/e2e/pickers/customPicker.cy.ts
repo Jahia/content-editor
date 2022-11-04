@@ -36,6 +36,7 @@ describe('Picker tests - custom picker', () => {
             .getPickerField(contentTypes.customPicker.fieldNodeType, contentTypes.customPicker.multiple)
             .open();
 
+
         // Assert components are visible
         assertUtils.isVisible(picker.get());
         assertUtils.isVisible(picker.getSiteSwitcher());
@@ -47,7 +48,9 @@ describe('Picker tests - custom picker', () => {
             .should('be.visible')
             .and('have.attr', 'aria-expanded')
             .and('equal', 'true');
-        contentAccordion.getTreeItem('ce-picker-custom-contents').click();
+        picker.wait();
+        picker.navigateTo(contentAccordion, 'contents/ce-picker-custom-contents');
+        // contentAccordion.getTreeItem('ce-picker-custom-contents').click();
 
         cy.log('check table components in List mode');
         picker.switchViewMode('List');
@@ -80,7 +83,8 @@ describe('Picker tests - custom picker', () => {
             .should('be.visible')
             .and('have.attr', 'aria-expanded')
             .and('equal', 'true');
-        contentAccordion.getTreeItem('ce-picker-custom-contents').click();
+        picker.wait();
+        picker.navigateTo(contentAccordion, 'contents/ce-picker-custom-contents');
 
         cy.log('check table components in Structured mode');
         picker.switchViewMode('Structured');
