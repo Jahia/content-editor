@@ -54,8 +54,8 @@ describe('Picker tests - Constraints', () => {
         cy.wait(200);
         const accordionItem = picker.getAccordionItem('picker-content-folders');
         accordionItem.click();
-        cy.wait(200);
-        accordionItem.getTreeItem('constraintsTest').click();
+        picker.wait();
+        picker.navigateTo(accordionItem, 'contents/constraintsTest');
         picker.getTable().getRows().should('have.length', 2);
         picker.getTable().getRows().get().contains('employee1').click();
         picker.getTable().getRows().get().contains('news1').should('not.exist');
