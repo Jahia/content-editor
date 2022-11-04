@@ -47,6 +47,7 @@ describe('Picker tests - Display actions', () => {
             .should('be.visible')
             .and('have.attr', 'aria-expanded')
             .and('equal', 'true');
+        cy.wait(200);
         contentAccordion.getTreeItem('ce-picker-custom-contents').click();
         contentAccordion.expandTreeItem('ce-picker-custom-contents');
         picker.getTable().getRowByName('test-loc1').get().should('be.visible').click();

@@ -47,6 +47,7 @@ describe('Picker tests - custom picker', () => {
             .should('be.visible')
             .and('have.attr', 'aria-expanded')
             .and('equal', 'true');
+        cy.wait(200);
         contentAccordion.getTreeItem('ce-picker-custom-contents').click();
 
         cy.log('check table components in List mode');
@@ -80,6 +81,7 @@ describe('Picker tests - custom picker', () => {
             .should('be.visible')
             .and('have.attr', 'aria-expanded')
             .and('equal', 'true');
+        cy.wait(200);
         contentAccordion.getTreeItem('ce-picker-custom-contents').click();
 
         cy.log('check table components in Structured mode');
