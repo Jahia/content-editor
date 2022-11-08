@@ -28,8 +28,6 @@ import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLTypeExtension;
 import org.jahia.modules.contenteditor.graphql.api.GqlEditorForms;
-import org.jahia.modules.contenteditor.graphql.api.channels.ChannelHelper;
-import org.jahia.modules.contenteditor.graphql.api.channels.GqlChannel;
 import org.jahia.modules.graphql.provider.dxm.DXGraphQLProvider;
 
 import java.util.List;
@@ -46,12 +44,4 @@ public class QueryExtensions {
     public static GqlEditorForms getForms() {
         return new GqlEditorForms();
     }
-
-    @GraphQLField
-    @GraphQLName("channels")
-    @GraphQLDescription("Get available channels")
-    public static List<GqlChannel> getChannels() {
-        return ChannelHelper.getAllChannels();
-    }
-
 }
