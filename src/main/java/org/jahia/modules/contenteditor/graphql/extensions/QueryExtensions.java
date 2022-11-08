@@ -30,8 +30,6 @@ import graphql.annotations.annotationTypes.GraphQLTypeExtension;
 import org.jahia.modules.contenteditor.graphql.api.GqlEditorForms;
 import org.jahia.modules.graphql.provider.dxm.DXGraphQLProvider;
 
-import java.util.List;
-
 /**
  * This extension to the Query is where the content editor GraphQL form API is made available
  */
