@@ -1,7 +1,12 @@
 import React, {useContext} from 'react';
 import {ContentTypeSelectorModal} from '~/ContentTypeSelectorModal';
 import {Constants} from '~/ContentEditor.constants';
-import {flattenNodeTypes, transformNodeTypesToActions, useCreatableNodetypesTree} from './createContent.utils';
+import {
+    childrenLimitReachedOrExceeded,
+    flattenNodeTypes,
+    transformNodeTypesToActions,
+    useCreatableNodetypesTree
+} from './createContent.utils';
 import {useSelector} from 'react-redux';
 import {useNodeChecks, useNodeInfo} from '@jahia/data-helper';
 import {ComponentRendererContext} from '@jahia/ui-extender';
@@ -22,7 +27,7 @@ export const CreateContent = ({contextNodePath, path, showOnNodeTypes, nodeTypes
         {...otherProps}
     );
 
-    const nodeInfo = useNodeInfo({path: path, language}, {getPrimaryNodeType: true});
+    const nodeInfo = useNodeInfo({path: path, language}, {getPrimaryNodeType: true, getSubNodesCount: true, getIsNodeTypes: ['jmix:listSizeLimit'], getProperties: ['limit']});
     const excludedNodeTypes = ['jmix:studioOnly', 'jmix:hiddenType'];
     const {loadingTypes, error, nodetypes: nodeTypesTree} = useCreatableNodetypesTree(
         nodeTypes,
@@ -47,7 +52,7 @@ export const CreateContent = ({contextNodePath, path, showOnNodeTypes, nodeTypes
         return <Render {...otherProps} isVisible={false} onClick={() => {}}/>;
     }
 
-    if (!res || !res.node || (nodeTypesTree && nodeTypesTree.length === 0)) {
+    if (!res || !res.node || (nodeTypesTree && nodeTypesTree.length === 0) || childrenLimitReachedOrExceeded(nodeInfo?.node)) {
         return <Render {...otherProps} isVisible={false} onClick={() => {}}/>;
     }
 

@@ -3,7 +3,7 @@ import {useContentEditorHistory} from '~/contexts/ContentEditorHistory';
 import {useSelector} from 'react-redux';
 import {useNodeChecks, useNodeInfo} from '@jahia/data-helper';
 import {shallow} from '@jahia/test-framework';
-import {transformNodeTypesToActions, useCreatableNodetypesTree, flattenNodeTypes} from './createContent.utils';
+import {transformNodeTypesToActions, useCreatableNodetypesTree, flattenNodeTypes, childrenLimitReachedOrExceeded} from './createContent.utils';
 
 import {createContentAction} from './createContentAction';
 
@@ -22,7 +22,8 @@ jest.mock('./createContent.utils', () => {
     return {
         useCreatableNodetypesTree: jest.fn(),
         flattenNodeTypes: jest.fn(),
-        transformNodeTypesToActions: jest.fn()
+        transformNodeTypesToActions: jest.fn(),
+        childrenLimitReachedOrExceeded: jest.fn()
     };
 });
 
@@ -64,6 +65,7 @@ describe('CreateNewContent', () => {
             };
         });
         transformNodeTypesToActions.mockImplementation(l => l);
+        childrenLimitReachedOrExceeded.mockImplementation(() => false);
     });
 
     it('should not render CreateNewContent when loading', () => {

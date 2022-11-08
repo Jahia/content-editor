@@ -74,3 +74,17 @@ export function transformNodeTypesToActions(nodeTypes) {
             }));
     }
 }
+
+export function childrenLimitReachedOrExceeded(node) {
+    if (!node) {
+        return false;
+    }
+
+    if (node['jmix:listSizeLimit']) {
+        const limit = node?.properties?.find(property => property.name === 'limit')?.value;
+        const childrenNumber = node?.subNodes?.pageInfo?.totalCount;
+        return limit && childrenNumber >= Number(limit);
+    }
+
+    return false;
+}
