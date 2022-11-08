@@ -1,7 +1,6 @@
 import React from 'react';
 import {useContentEditorSectionContext} from '~/contexts';
 import {Validation} from '~/editorTabs/EditPanelContent/FormBuilder/Validation';
-import {Form} from 'formik';
 import {FieldSetsDisplay} from '~/editorTabs/EditPanelContent/FormBuilder/FieldSet';
 import styles from './Channels.scss';
 
@@ -34,13 +33,11 @@ export const Channels = () => {
     }
 
     return (
-        <>
+        <div className={styles.container}>
             <Validation/>
-            <Form>
-                <section className={styles.container}>
-                    <FieldSetsDisplay fieldSets={fieldSets}/>
-                </section>
-            </Form>
-        </>
+            <section>
+                <FieldSetsDisplay fieldSets={fieldSets}/>
+            </section>
+        </div>
     );
 };
