@@ -1,14 +1,36 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {ListItem, Typography} from '@jahia/moonstone';
+import {ListItem, Typography, ChevronRight, ChevronLeft} from '@jahia/moonstone';
 import styles from './ValueList.scss';
 import cslx from 'clsx';
 
-const ValueList = ({values, filter, isMultiple, selected, onSelect}) => {
+const ValueList = ({values, filter, isMultiple, selected, onSelect, onMove, orientation}) => {
     // Clear selection if filter changed
     useEffect(() => {
         onSelect([]);
     }, [filter]); //eslint-disable-line
+
+    const iconProp = value => {
+        if (orientation === 'right') {
+            return {
+                iconEnd: <ChevronRight className={styles.displayNone}
+                                       onClick={e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onMove([value]);
+                }}/>
+            };
+        }
+
+        return {
+            iconStart: <ChevronLeft className={styles.displayNone}
+                                    onClick={e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onMove([value]);
+                }}/>
+        };
+    };
 
     return (
         <>
@@ -38,6 +60,7 @@ const ValueList = ({values, filter, isMultiple, selected, onSelect}) => {
                                          onSelect(newValue);
                                      }
                                  }}
+                                 {...iconProp(v.value)}
                        />
                    );
                 })}
@@ -54,7 +77,9 @@ ValueList.propTypes = {
     filter: PropTypes.string,
     isMultiple: PropTypes.bool,
     selected: PropTypes.array,
-    onSelect: PropTypes.func
+    onSelect: PropTypes.func.isRequired,
+    onMove: PropTypes.func.isRequired,
+    orientation: PropTypes.string.isRequired
 };
 
 export default ValueList;

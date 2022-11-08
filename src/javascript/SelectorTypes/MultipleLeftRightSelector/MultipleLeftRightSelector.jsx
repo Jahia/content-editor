@@ -49,10 +49,12 @@ export const MultipleLeftRightSelector = ({field, onChange, value}) => {
                 <Input variant="search"
                        onChange={e => setFilterLeft(e.target.value.trim())}
                 />
-                <ValueList isMultiple={field.multiple}
+                <ValueList orientation="right"
+                           isMultiple={field.multiple}
                            filter={filterLeft}
                            values={options.filter(o => !arrayValue.includes(o.value))}
                            selected={selectionLeft}
+                           onMove={v => handleOnChange(arrayValue.concat(v))}
                            onSelect={s => setSelectionLeft(s)}
                 />
             </div>
@@ -85,9 +87,11 @@ export const MultipleLeftRightSelector = ({field, onChange, value}) => {
                        onChange={e => setFilterRight(e.target.value.trim())}
                 />
                 <ValueList isMultiple
+                           orientation="left"
                            values={options.filter(o => arrayValue.includes(o.value))}
                            filter={filterRight}
                            selected={selectionRight}
+                           onMove={v => handleOnChange(arrayValue.filter(val => !v.includes(val)))}
                            onSelect={s => setSelectionRight(s)}
                 />
             </div>
