@@ -1,0 +1,38 @@
+.fieldComponentContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: var(--spacing-nano);
+}
+
+.addButton {
+    margin: var(--spacing-small) 0;
+
+    text-transform: uppercase;
+}
+
+.referenceDropGhostHidden {
+    width: 100%;
+    height: 0;
+
+    background-color: var(--color-accent);
+
+    transition: all 0.3s ease;
+}
+
+.referenceDropGhost {
+    height: 72px;
+    margin: 8px 0;
+}
+
+.draggableCard {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    margin-bottom: var(--spacing-nano);
+}
+
+.draggableIcon {
+    cursor: grab;
+}

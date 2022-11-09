@@ -9,62 +9,13 @@ import {DisplayAction} from '@jahia/ui-extender';
 import {getButtonRenderer} from '~/utils';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 import styles from './Picker2.scss';
-import {Button, Close} from '@jahia/moonstone';
+import {Button} from '@jahia/moonstone';
 import {FieldContextProvider} from '~/contexts/FieldContext';
 import {DefaultPickerConfig} from '~/SelectorTypes/Picker/configs/DefaultPickerConfig';
-import {useDrag, useDrop} from 'react-dnd';
 import {useFormikContext} from 'formik';
+import {OrderableValue} from '~/DesignSystem/OrderableValue/OrderableValue';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
-
-const ReorderableValue = ({field, fieldVal, onFieldRemove, onValueReorder, index}) => {
-    const {t} = useTranslation('content-editor');
-    const name = `${field.name}[${index}]`;
-    const [{isDropping}, drop] = useDrop({
-        accept: 'REFERENCE_CARD', drop: item => onValueReorder(item.name, index), collect: monitor => {
-            return {
-                isDropping: monitor.isOver() && monitor.canDrop() && monitor.getItem().name !== name
-            };
-        }
-    });
-    const [{isDragging}, drag] = useDrag({
-        type: 'REFERENCE_CARD', item: {name: name, uuid: fieldVal.uuid}, collect: monitor => ({
-            isDragging: monitor.isDragging()
-        })
-    });
-    return (
-        <>
-            <div key={name}
-                 ref={drop}
-                 className={styles.fieldComponentContainer}
-                 data-sel-content-editor-multiple-generic-field={name}
-                 data-sel-content-editor-field-readonly={field.readOnly}
-            >
-                <div className={`${styles.referenceDropGhostHidden} ${isDropping ? styles.referenceDropGhost : ''}`}/>
-                <div className={styles.draggableCard}>
-                    <div ref={drag} className={styles.draggableCard}>
-                        {!isDragging &&
-                            <ReferenceCard isDraggable isReadOnly labelledBy={`${name}-label`} fieldData={fieldVal}/>}
-                    </div>
-                    {!field.readOnly && !isDragging && <Button variant="ghost"
-                                                               data-sel-action={`removeField_${index}`}
-                                                               aria-label={t('content-editor:label.contentEditor.edit.fields.actions.clear')}
-                                                               icon={<Close/>}
-                                                               onClick={() => onFieldRemove(index)}
-                    />}
-                </div>
-            </div>
-        </>
-    );
-};
-
-ReorderableValue.propTypes = {
-    field: PropTypes.object.isRequired,
-    fieldVal: PropTypes.object.isRequired,
-    onFieldRemove: PropTypes.func.isRequired,
-    onValueReorder: PropTypes.func.isRequired,
-    index: PropTypes.number.isRequired
-};
 
 export const Picker2 = ({field, value, editorContext, inputContext, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
@@ -153,7 +104,7 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
                 <div className="flexFluid">
                     {fieldData && fieldData.length > 0 && fieldData.map((fieldVal, index) => {
                         return (
-                            <ReorderableValue
+                            <OrderableValue
                                 key={`${field.name}_${fieldVal.name}`}
                                 field={field}
                                 fieldVal={fieldVal}
