@@ -51,10 +51,10 @@ describe('Picker tests - Constraints', () => {
         const contentEditor = jcontent.createContent('employee');
         const pickerField = contentEditor.getPickerField('qant:employee_supervisor');
         const picker = pickerField.open();
-        picker.wait(200);
+        picker.wait(250);
         const accordionItem = picker.getAccordionItem('picker-content-folders');
         accordionItem.click();
-        picker.wait(200);
+        picker.wait(250);
         picker.navigateTo(accordionItem, 'contents/constraintsTest');
         picker.getTable().getRows().should('have.length', 2);
         picker.getTable().getRows().get().contains('employee1').click();
