@@ -1,0 +1,23 @@
+{
+  "name": "jmix:channelSelection",
+  "priority": 1.0,
+  "fields": [
+    {
+      "name": "j:channelSelection",
+      "selectorType": "MultipleLeftRightSelector",
+      "target": {
+        "sectionName": "visibility",
+        "fieldSetName": "visibility",
+        "rank": 1
+      }
+    },
+    {
+      "name": "j:channelIncludeOrExclude",
+      "target": {
+        "sectionName": "visibility",
+        "fieldSetName": "visibility",
+        "rank": 1
+      }
+    }
+  ]
+}

@@ -37,6 +37,11 @@
       "name": "listOrdering",
       "labelKey": "label.engineTab.listOrdering",
       "requiredPermission": "viewContentTab"
+    },
+    {
+      "name": "visibility",
+      "labelKey": "label.engineTab.visibility",
+      "requiredPermission": "viewSeoTab"
     }
   ]
 }

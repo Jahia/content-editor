@@ -9,6 +9,8 @@ import {ceToggleSections} from '~/registerReducer';
 import styles from './FormBuilder.scss';
 import {Validation} from './Validation';
 
+const ADVANCED_OPTIONS_SELECTIONS = ['visibility'];
+
 export const FormBuilder = ({mode}) => {
     const {nodeData, errors} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
@@ -45,7 +47,7 @@ export const FormBuilder = ({mode}) => {
     }
 
     let listOrderingIndex = -1;
-    const children = sections.map((section, index) => {
+    const children = sections.filter(s => !ADVANCED_OPTIONS_SELECTIONS.includes(s.name)).map((section, index) => {
         const toggleFcn = e => {
             e.preventDefault();
             dispatch(ceToggleSections({...toggleStates, [section.name]: !toggleStates[section.name]}));

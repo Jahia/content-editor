@@ -20,6 +20,9 @@ export const MultipleLeftRightSelector = ({field, onChange, value}) => {
         } else {
             onChange(v[0]);
         }
+
+        setSelectionRight([]);
+        setSelectionLeft([]);
     };
 
     // Reset selection if previously selected option no longer available
@@ -46,27 +49,34 @@ export const MultipleLeftRightSelector = ({field, onChange, value}) => {
                 <Input variant="search"
                        onChange={e => setFilterLeft(e.target.value.trim())}
                 />
-                <ValueList isMultiple={field.multiple}
+                <ValueList orientation="right"
+                           isMultiple={field.multiple}
                            filter={filterLeft}
                            values={options.filter(o => !arrayValue.includes(o.value))}
+                           selected={selectionLeft}
+                           onMove={v => handleOnChange(arrayValue.concat(v))}
                            onSelect={s => setSelectionLeft(s)}
                 />
             </div>
             <div className={styles.buttonSection}>
                 <div className={styles.buttons}>
-                    <Button isDisabled={readOnly || !field.multiple}
+                    <Button title="Add all"
+                            isDisabled={readOnly || !field.multiple}
                             icon={<ChevronDoubleRight/>}
                             onClick={() => handleOnChange(options.map(o => o.value))}
                     />
-                    <Button isDisabled={readOnly || (!field.multiple && arrayValue.length > 0)}
+                    <Button title="Add selected"
+                            isDisabled={readOnly || (!field.multiple && arrayValue.length > 0) || selectionLeft.length === 0}
                             icon={<ChevronRight/>}
                             onClick={() => handleOnChange(arrayValue.concat(selectionLeft))}
                     />
-                    <Button isDisabled={readOnly}
+                    <Button title="Remove selected"
+                            isDisabled={readOnly || selectionRight.length === 0}
                             icon={<ChevronLeft/>}
                             onClick={() => handleOnChange(arrayValue.filter(v => !selectionRight.includes(v)))}
                     />
-                    <Button isDisabled={readOnly || !field.multiple}
+                    <Button title="Remove all"
+                            isDisabled={readOnly || !field.multiple}
                             icon={<ChevronDoubleLeft/>}
                             onClick={() => handleOnChange([])}
                     />
@@ -77,8 +87,11 @@ export const MultipleLeftRightSelector = ({field, onChange, value}) => {
                        onChange={e => setFilterRight(e.target.value.trim())}
                 />
                 <ValueList isMultiple
+                           orientation="left"
                            values={options.filter(o => arrayValue.includes(o.value))}
                            filter={filterRight}
+                           selected={selectionRight}
+                           onMove={v => handleOnChange(arrayValue.filter(val => !v.includes(val)))}
                            onSelect={s => setSelectionRight(s)}
                 />
             </div>

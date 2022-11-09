@@ -4,6 +4,14 @@
     overflow-y: scroll;
 }
 
+.caption {
+    margin-top: var(--spacing-medium);
+}
+
+.displayNone {
+    display: none;
+}
+
 .valueListItem {
     padding: var(--spacing-small);
 
@@ -19,5 +27,9 @@
         color: var(--color-accent);
 
         background-color: var(--color-gray_light60);
+    }
+
+    &:hover > div > .displayNone {
+        display: block;
     }
 }
