@@ -85,7 +85,7 @@ export class Picker extends BaseComponent {
             this.table = getComponentByAttr(PickerTable, 'data-cm-role', 'table-content-list', this);
         }
 
-        this.wait();
+        this.wait(200);
         return this.table;
     }
 
@@ -94,7 +94,7 @@ export class Picker extends BaseComponent {
             this.grid = getComponentByAttr(PickerGrid, 'data-cm-role', 'grid-content-list', this);
         }
 
-        this.wait();
+        this.wait(200);
         return this.grid;
     }
 
@@ -120,7 +120,7 @@ export class Picker extends BaseComponent {
         const [selectPath] = expandPaths.splice(expandPaths.length - 1, 1);
         expandPaths.forEach(p => accordion.expandTreeItem(p));
         accordion.getTreeItem(selectPath).click();
-        this.wait();
+        this.wait(200);
     }
 
     // @deprecated use table functions directly
@@ -138,7 +138,7 @@ export class Picker extends BaseComponent {
 
     selectTab(viewType: string) {
         this.getTab(viewType).click().should('have.class', 'moonstone-selected');
-        this.wait();
+        this.wait(200);
     }
 
     search(query?: string, expectNoResult = false) {
@@ -159,7 +159,7 @@ export class Picker extends BaseComponent {
             }
         }
 
-        this.wait();
+        this.wait(200);
     }
 
     getSearchInput() {
@@ -190,6 +190,6 @@ export class Picker extends BaseComponent {
 
     switchViewMode(viewMode: string) {
         this.getViewMode().select(viewMode);
-        this.wait();
+        this.wait(200);
     }
 }
