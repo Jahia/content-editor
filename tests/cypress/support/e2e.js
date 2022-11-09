@@ -15,6 +15,7 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands'
+import { slowCypressDown } from 'cypress-slow-down'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('@jahia/cypress/dist/support/registerSupport').registerSupport()
 Cypress.on('uncaught:exception', (err, runnable) => {
@@ -32,3 +33,5 @@ if (Cypress.browser.family === 'chromium') {
         params: { cacheDisabled: true },
     })
 }
+
+slowCypressDown(200);
