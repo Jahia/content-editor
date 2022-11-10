@@ -71,7 +71,6 @@ describe('Multiple component', () => {
             {},
             dsGenericTheme
         );
-        console.log(cmp.debug());
         expect(cmp.find('OrderableValue').length).toBe(2);
     });
 
