@@ -28,7 +28,7 @@ export const OrderableValue = ({field, onFieldRemove, onValueReorder, index, com
                  data-sel-content-editor-multiple-generic-field={name}
                  data-sel-content-editor-field-readonly={field.readOnly}
             >
-                <div className={`${styles.referenceDropGhostHidden} ${isDropping ? styles.referenceDropGhost : ''}`}/>
+                <div className={`${styles.referenceDropGhostHidden} ${isDropping ? styles.referenceDropGhost : ''}`} data-droppable-zone={name}/>
                 <div ref={drag} className={styles.draggableCard}>
                     {!isDragging &&
                         <>
