@@ -1,4 +1,4 @@
-.fieldsetTitleContainer {
+.fieldSetTitleContainer {
     display: flex;
     flex-flow: column wrap;
     margin: 0 var(--spacing-large) 0 0;
@@ -8,15 +8,31 @@
 }
 
 .toggle.toggle {
-    height: var(--spacing-big);
+    height: 24px;
+
+    & > span:nth-child(1) {
+        top: -12px;
+    }
+}
+
+.fieldSet:not(:last-child) {
+    margin-bottom: var(--spacing-large);
+}
+
+.fieldSetOpen:not(:last-child) {
+    margin-bottom: var(--spacing-big);
 }
 
 .fieldSetTitle {
     width: auto;
-
-    text-transform: uppercase;
 }
 
-.staticFieldSetDescription {
-    margin-top: var(--spacing-small);
+.fieldSetDescription {
+    margin-top: var(--spacing-nano);
+
+    color: var(--color-dark60);
+}
+
+.fields {
+    margin-left: var(--spacing-large);
 }
