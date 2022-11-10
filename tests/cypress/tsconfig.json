@@ -10,7 +10,8 @@
     "types": [
       "cypress",
       "node",
-      "@jahia/cypress"
+      "@jahia/cypress",
+      "@4tw/cypress-drag-drop"
     ],
     "lib": [ "es2015" ]
   }

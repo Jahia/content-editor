@@ -10,6 +10,7 @@ import {
 } from '@jahia/cypress';
 import {PickerField} from './pickerField';
 import {RichTextField} from './richTextField';
+import {SmallTextField} from "./smallTextField";
 
 export class ContentEditor extends BasePage {
     languageSwitcher: Dropdown;
@@ -108,6 +109,13 @@ export class ContentEditor extends BasePage {
 
     getPickerField(fieldName: string, multiple?: boolean): PickerField {
         const r = getComponentByAttr(PickerField, 'data-sel-content-editor-field', fieldName);
+        r.fieldName = fieldName;
+        r.multiple = multiple;
+        return r;
+    }
+
+    getSmallTextField(fieldName: string, multiple?: boolean): SmallTextField {
+        const r = getComponentByAttr(SmallTextField, 'data-sel-content-editor-field', fieldName);
         r.fieldName = fieldName;
         r.multiple = multiple;
         return r;
