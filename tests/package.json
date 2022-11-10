@@ -13,6 +13,7 @@
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
+    "@4tw/cypress-drag-drop": "^2.2.1",
     "@jahia/cypress": "^1.1.4",
     "@jahia/jahia-reporter": "^1.0.30",
     "@typescript-eslint/eslint-plugin": "^5.27.0",
