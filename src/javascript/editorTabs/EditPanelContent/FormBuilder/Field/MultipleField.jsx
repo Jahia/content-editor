@@ -1,4 +1,4 @@
-import {Button, Close} from '@jahia/moonstone';
+import {Button} from '@jahia/moonstone';
 import React from 'react';
 import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
@@ -78,7 +78,6 @@ export const MultipleField = ({editorContext, inputContext, field, onChange, onB
                                                                   onBlur={onBlur}
                                             />}
                                             field={field}
-                                            fieldVal={value}
                                             index={index}
                                             onFieldRemove={onFieldRemove}
                                             onValueReorder={onValueReorder}/>

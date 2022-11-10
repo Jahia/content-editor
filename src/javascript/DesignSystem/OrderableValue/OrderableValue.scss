@@ -31,6 +31,10 @@
     align-items: center;
     width: 100%;
     margin-bottom: var(--spacing-nano);
+
+    :global(.moonstone-checkbox) {
+        margin-left: 0 !important;
+    }
 }
 
 .draggableIcon {

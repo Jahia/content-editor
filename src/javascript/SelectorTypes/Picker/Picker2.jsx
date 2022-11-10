@@ -106,8 +106,11 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
                         return (
                             <OrderableValue
                                 key={`${field.name}_${fieldVal.name}`}
+                                component={<ReferenceCard
+                                    isReadOnly
+                                    labelledBy={`${name}-label`}
+                                    fieldData={fieldVal}/>}
                                 field={field}
-                                fieldVal={fieldVal}
                                 index={index}
                                 onValueReorder={onValueReorder}
                                 onFieldRemove={onFieldRemove}/>
