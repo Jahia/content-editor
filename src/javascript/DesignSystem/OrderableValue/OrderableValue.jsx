@@ -54,5 +54,5 @@ OrderableValue.propTypes = {
     onFieldRemove: PropTypes.func.isRequired,
     onValueReorder: PropTypes.func.isRequired,
     index: PropTypes.number.isRequired,
-    component: PropTypes.func.isRequired
+    component: PropTypes.object.isRequired
 };
