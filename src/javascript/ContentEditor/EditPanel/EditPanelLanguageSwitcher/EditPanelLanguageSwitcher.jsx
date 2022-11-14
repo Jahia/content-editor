@@ -22,6 +22,11 @@ export const EditPanelLanguageSwitcher = ({siteInfo}) => {
 
     const switchLanguage = useSwitchLanguage();
 
+    // Do not display language switcher if site is not multi-language
+    if (!languages || languages.length <= 1) {
+        return null;
+    }
+
     return (
         <>
             <Dropdown
