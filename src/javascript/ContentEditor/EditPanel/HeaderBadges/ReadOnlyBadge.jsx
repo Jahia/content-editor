@@ -10,7 +10,7 @@ export const ReadOnlyBadge = ({isGlobal, readOnly}) => {
     const {nodeData} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
 
-    const hasNotReadOnlySection = sections.find(s => s.fieldSets.find(fs => !fs.readOnly));
+    const hasNotReadOnlySection = sections.find(s => s.fieldSets.find(fs => fs.fields.find(f => !f.readOnly)));
 
     const badge = (
         <Chip className={styles.badge}
