@@ -1,5 +1,4 @@
 import MultipleLeftRightSelector from './MultipleLeftRightSelector';
-import {registerMultipleLeftRightSelectorOnChange} from './registerMultipleLeftRightSelectorOnChange';
 
 export const registerMultipleLeftRightSelector = ceRegistry => {
     ceRegistry.add('selectorType', 'MultipleLeftRightSelector', {
@@ -13,5 +12,4 @@ export const registerMultipleLeftRightSelector = ceRegistry => {
             }
         }
     });
-    registerMultipleLeftRightSelectorOnChange(ceRegistry);
 };

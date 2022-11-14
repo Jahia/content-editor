@@ -126,7 +126,7 @@ export const Field = ({inputContext, idInput, selectorType, field}) => {
                                     className={styles.inputLabel}
                                     htmlFor={isMultipleField ? null : idInput}
                         >
-                            <Typography>{field.displayName}</Typography>
+                            <Typography weight="bold">{field.displayName}</Typography>
                         </InputLabel>
                         {inputContext.displayBadges && (
                             <>

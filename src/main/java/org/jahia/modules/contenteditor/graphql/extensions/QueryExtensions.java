@@ -42,5 +42,4 @@ public class QueryExtensions {
     public static GqlEditorForms getForms() {
         return new GqlEditorForms();
     }
-
 }

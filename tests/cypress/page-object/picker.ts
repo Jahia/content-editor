@@ -107,8 +107,12 @@ export class Picker extends BaseComponent {
         return this.selectionTable;
     }
 
-    wait() {
-        cy.get('.moonstone-loader').should('not.exist'); // Wait to load
+    wait(millis?: number) {
+        if (millis) {
+            cy.wait(millis);
+        } else {
+            cy.get('.moonstone-loader').should('not.exist'); // Wait to load
+        }
     }
 
     navigateTo(accordion: AccordionItem, path: string) {

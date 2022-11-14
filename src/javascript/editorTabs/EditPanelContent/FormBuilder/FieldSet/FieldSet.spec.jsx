@@ -32,7 +32,7 @@ describe('FieldSet component', () => {
             <FieldSet {...props}/>,
             {},
             dsGenericTheme
-        ).dive();
+        );
 
         expect(cmp.debug()).toContain(props.fieldset.displayName);
     });
@@ -42,7 +42,7 @@ describe('FieldSet component', () => {
             <FieldSet {...props}/>,
             {},
             dsGenericTheme
-        ).dive();
+        );
 
         props.fieldset.fields.forEach(field => {
             expect(cmp.find({field}).exists()).toBe(true);
@@ -56,7 +56,7 @@ describe('FieldSet component', () => {
             <FieldSet {...props}/>,
             {},
             dsGenericTheme
-        ).dive();
+        );
 
         const toggleCmp = cmp.find('WithStyles(ToggleCmp)');
         expect(toggleCmp.exists()).toBe(true);
@@ -71,7 +71,7 @@ describe('FieldSet component', () => {
             <FieldSet {...props}/>,
             {},
             dsGenericTheme
-        ).dive();
+        );
 
         const toggleCmp = cmp.find('WithStyles(ToggleCmp)');
         expect(toggleCmp.exists()).toBe(true);
@@ -85,7 +85,7 @@ describe('FieldSet component', () => {
             <FieldSet {...props}/>,
             {},
             dsGenericTheme
-        ).dive();
+        );
 
         expect(cmp.find('WithStyles(ToggleCmp)').exists()).toBe(false);
     });

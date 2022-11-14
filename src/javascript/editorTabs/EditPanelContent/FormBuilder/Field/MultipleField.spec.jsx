@@ -16,6 +16,14 @@ jest.mock('react', () => {
     };
 });
 
+jest.mock('react-dnd', () => {
+    return {
+        ...jest.requireActual('react-dnd'),
+        useDrop: jest.fn(() => ['drop', 'drop']),
+        useDrag: jest.fn(() => ['drop', 'drop'])
+    };
+});
+
 describe('Multiple component', () => {
     let defaultProps;
 
@@ -56,19 +64,18 @@ describe('Multiple component', () => {
         };
     });
 
-    it('should contains multiple fields', () => {
+    it('should contain multiple fields', () => {
         defaultProps.inputContext.selectorType.cmp = props => <Text {...props}/>;
         const cmp = shallowWithTheme(
             <MultipleField {...defaultProps}/>,
             {},
             dsGenericTheme
         );
-
-        expect(cmp.find('FormikConnect(FastFieldInner)').length).toBe(2);
+        expect(cmp.find('OrderableValue').length).toBe(2);
     });
 
     it('should call onChange when removing a value', () => {
-        generateFieldArrayCmp().find('Button').at(1).simulate('click');
+        generateFieldArrayCmp().find('OrderableValue').at(1).shallow().find('Button').simulate('click');
         expect(defaultProps.onChange).toHaveBeenCalledWith(['Dummy1', 'Dummy3']);
     });
 
@@ -89,7 +96,7 @@ describe('Multiple component', () => {
     });
 
     it('should display remove button when field is not readOnly', () => {
-        const removeButton = generateFieldArrayCmp().find('Button').at(1);
+        const removeButton = generateFieldArrayCmp().find('OrderableValue').at(1).shallow().find('Button');
         expect(removeButton.exists()).toBe(true);
     });
 
@@ -128,6 +135,6 @@ describe('Multiple component', () => {
     };
 
     const generateFieldCmp = (arrayCmp, index) => {
-        return arrayCmp.find('FormikConnect(FastFieldInner)').at(index);
+        return arrayCmp.find('OrderableValue').at(index).shallow().find('FormikConnect(FastFieldInner)');
     };
 });

@@ -9,9 +9,11 @@ import {DisplayAction} from '@jahia/ui-extender';
 import {getButtonRenderer} from '~/utils';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 import styles from './Picker2.scss';
-import {Button, Close} from '@jahia/moonstone';
+import {Button} from '@jahia/moonstone';
 import {FieldContextProvider} from '~/contexts/FieldContext';
 import {DefaultPickerConfig} from '~/SelectorTypes/Picker/configs/DefaultPickerConfig';
+import {useFormikContext} from 'formik';
+import {OrderableValue} from '~/DesignSystem/OrderableValue/OrderableValue';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
@@ -32,11 +34,9 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
 
     const pickerConfig = mergeDeep({}, DefaultPickerConfig, inputContext.selectorType.pickerConfig, parsedOptions.pickerConfig);
     const [isDialogOpen, setDialogOpen] = useState(false);
+    const {setFieldValue, setFieldTouched} = useFormikContext();
     const {
-        fieldData,
-        error,
-        loading,
-        notFound
+        fieldData, error, loading, notFound
     } = pickerConfig.pickerInput.usePickerInputData(value && toArray(value));
 
     if (error) {
@@ -76,31 +76,46 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
         onItemSelection(updatedValues);
     };
 
+    const onValueReorder = (droppedName, index) => {
+        let childrenWithoutDropped = [];
+        let droppedChild = null;
+        let droppedItemIndex = -1;
+        value.forEach((item, index) => {
+            if (droppedItemIndex === -1 && droppedName === `${field.name}[${index}]`) {
+                droppedChild = item;
+                droppedItemIndex = index;
+            } else {
+                childrenWithoutDropped.push(item);
+            }
+        });
+
+        if (droppedChild !== null && droppedItemIndex >= 0) {
+            // +1 for droppedItemIndex here as index parameter from handleReOrder is starting from 1 instead of 0
+            const spliceIndex = ((droppedItemIndex + 1) < index) ? index - 1 : index;
+            const newValue = [...childrenWithoutDropped.slice(0, spliceIndex), droppedChild, ...childrenWithoutDropped.slice(spliceIndex, childrenWithoutDropped.length)];
+            setFieldValue(field.name, newValue);
+            setFieldTouched(field.name, true, false);
+        }
+    };
+
     return (
         <div className="flexFluid flexRow_nowrap alignCenter">
             {field.multiple ?
                 <div className="flexFluid">
-                    {
-                        fieldData && fieldData.length > 0 && fieldData.map((fieldVal, index) => {
-                            const name = `${field.name}[${index}]`;
-                            return (
-                                <div key={name}
-                                     className={styles.fieldComponentContainer}
-                                     data-sel-content-editor-multiple-generic-field={name}
-                                     data-sel-content-editor-field-readonly={field.readOnly}
-                                >
-                                    <ReferenceCard isReadOnly="true" labelledBy={`${name}-label`} fieldData={fieldVal}/>
-                                    {!field.readOnly &&
-                                        <Button variant="ghost"
-                                                data-sel-action={`removeField_${index}`}
-                                                aria-label={t('content-editor:label.contentEditor.edit.fields.actions.clear')}
-                                                icon={<Close/>}
-                                                onClick={() => onFieldRemove(index)}
-                                        />}
-                                </div>
-                            );
-                        })
-                    }
+                    {fieldData && fieldData.length > 0 && fieldData.map((fieldVal, index) => {
+                        return (
+                            <OrderableValue
+                                key={`${field.name}_${fieldVal.name}`}
+                                component={<ReferenceCard
+                                    isReadOnly
+                                    labelledBy={`${name}-label`}
+                                    fieldData={fieldVal}/>}
+                                field={field}
+                                index={index}
+                                onValueReorder={onValueReorder}
+                                onFieldRemove={onFieldRemove}/>
+                        );
+                    })}
                     {!field.readOnly &&
                         <Button className={styles.addButton}
                                 data-sel-action="addField"

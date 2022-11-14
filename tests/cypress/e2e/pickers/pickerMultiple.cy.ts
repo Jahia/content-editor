@@ -51,13 +51,10 @@ describe('Picker tests - multiple', () => {
                 cy.log('verify removed element is reflected in selection');
                 cy.wrap(elems.eq(0))
                     .find('button[data-sel-action^="removeField"]')
-                    .click()
-                    .parent()
-                    .parent()
-                    .find(PickerField.ADD_FIELD_SEL)
                     .click();
-                picker.getTable().getSelectedRows().then(rows => expect(rows.length).eq(numRows - 1));
             });
+        pickerField.open();
+        picker.getTable().getSelectedRows().then(rows => expect(rows.length).eq(numRows - 1));
     });
 
     it('should display selection table', () => {

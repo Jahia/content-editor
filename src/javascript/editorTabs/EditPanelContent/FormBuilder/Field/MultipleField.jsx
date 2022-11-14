@@ -1,13 +1,14 @@
-import {Button, Close} from '@jahia/moonstone';
+import {Button} from '@jahia/moonstone';
 import React from 'react';
 import * as PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import {FastField, useFormikContext} from 'formik';
 import {FieldPropTypes} from '~/ContentEditor.proptypes';
 import styles from './MultipleField.scss';
+import {OrderableValue} from '~/DesignSystem/OrderableValue/OrderableValue';
 
 export const MultipleField = ({editorContext, inputContext, field, onChange, onBlur}) => {
-    const {values} = useFormikContext();
+    const {values, setFieldValue, setFieldTouched} = useFormikContext();
     const {t} = useTranslation('content-editor');
 
     const multipleFieldOnChange = (index, newData) => {
@@ -31,44 +32,59 @@ export const MultipleField = ({editorContext, inputContext, field, onChange, onB
         onBlur();
     };
 
+    const onValueReorder = (droppedName, index) => {
+        let childrenWithoutDropped = [];
+        let droppedChild = null;
+        let droppedItemIndex = -1;
+        values[field.name].forEach((item, index) => {
+            if (droppedItemIndex === -1 && droppedName === `${field.name}[${index}]`) {
+                droppedChild = item;
+                droppedItemIndex = index;
+            } else {
+                childrenWithoutDropped.push(item);
+            }
+        });
+
+        if (droppedChild !== null && droppedItemIndex >= 0) {
+            // +1 for droppedItemIndex here as index parameter from handleReOrder is starting from 1 instead of 0
+            const spliceIndex = ((droppedItemIndex + 1) < index) ? index - 1 : index;
+            const newValue = [...childrenWithoutDropped.slice(0, spliceIndex), droppedChild, ...childrenWithoutDropped.slice(spliceIndex, childrenWithoutDropped.length)];
+            setFieldValue(field.name, newValue);
+            setFieldTouched(field.name, true, false);
+        }
+    };
+
     return (
         <>
-            {values[field.name] && values[field.name].length > 0 && (
-                values[field.name].map((value, index) => {
-                    const FieldComponent = inputContext.selectorType.cmp;
-                    const name = `${field.name}[${index}]`;
+            <div className="flexFluid">
+                {values[field.name] && values[field.name].length > 0 && (
+                    values[field.name].map((value, index) => {
+                        const FieldComponent = inputContext.selectorType.cmp;
+                        const name = `${field.name}[${index}]`;
 
-                    return (
-                        <div key={name}
-                             className={styles.fieldComponentContainer}
-                             data-sel-content-editor-multiple-generic-field={name}
-                             data-sel-content-editor-field-readonly={field.readOnly}
-                        >
-                            <FastField component={FieldComponent}
-                                       field={field}
-                                       value={value}
-                                       values={values}
-                                       id={name}
-                                       editorContext={editorContext}
-                                       inputContext={inputContext}
-                                       onChange={newData => {
-                                           multipleFieldOnChange(index, newData);
-                                       }}
-                                       onBlur={onBlur}
-                            />
-
-                            {!field.readOnly &&
-                            <Button variant="ghost"
-                                    data-sel-action={`removeField_${index}`}
-                                    aria-label={t('content-editor:label.contentEditor.edit.fields.actions.clear')}
-                                    icon={<Close/>}
-                                    onClick={() => onFieldRemove(index)}
-                            />}
-                        </div>
-                    );
-                })
-            )}
-
+                        return (
+                            // eslint-disable-next-line react/no-array-index-key
+                            <OrderableValue key={`${field.name}_${index}`}
+                                            component={<FastField component={FieldComponent}
+                                                                  field={field}
+                                                                  value={value}
+                                                                  values={values}
+                                                                  id={name}
+                                                                  editorContext={editorContext}
+                                                                  inputContext={inputContext}
+                                                                  onChange={newData => {
+                                                                      multipleFieldOnChange(index, newData);
+                                                                  }}
+                                                                  onBlur={onBlur}
+                                            />}
+                                            field={field}
+                                            index={index}
+                                            onFieldRemove={onFieldRemove}
+                                            onValueReorder={onValueReorder}/>
+                        );
+                    })
+                )}
+            </div>
             {!field.readOnly &&
             <Button className={styles.addButton}
                     data-sel-action="addField"
@@ -88,4 +104,3 @@ MultipleField.propTypes = {
     onChange: PropTypes.func.isRequired,
     onBlur: PropTypes.func.isRequired
 };
-
