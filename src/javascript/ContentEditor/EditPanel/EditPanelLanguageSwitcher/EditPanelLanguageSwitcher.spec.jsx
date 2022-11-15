@@ -2,6 +2,7 @@ import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {EditPanelLanguageSwitcher} from './index';
+import {useFormikContext} from 'formik';
 
 jest.mock('~/contexts/ContentEditor/ContentEditor.context', () => {
     return {
@@ -20,8 +21,11 @@ jest.mock('~/contexts/ContentEditorConfig/ContentEditorConfig.context', () => {
     };
 });
 
+jest.mock('formik');
+
 describe('EditPanelLanguageSwitcher', () => {
     let defaultProps;
+    let formik;
 
     beforeEach(() => {
         defaultProps = {
@@ -35,9 +39,27 @@ describe('EditPanelLanguageSwitcher', () => {
             },
             formik: {}
         };
+        formik = {
+            values: {}
+        };
+        useFormikContext.mockReturnValue(formik);
     });
 
-    it('should show language switcher', () => {
+    it('should NOT show language switcher with one language', () => {
+        const cmp = shallowWithTheme(
+            <EditPanelLanguageSwitcher {...defaultProps}/>,
+            {},
+            dsGenericTheme
+        );
+        expect(cmp.find('Dropdown').exists()).toBeFalsy();
+    });
+
+    it('should show language switcher with more than one language', () => {
+        defaultProps.siteInfo.languages.push({
+            language: 'fr',
+            displayName: 'French'
+        });
+
         const cmp = shallowWithTheme(
             <EditPanelLanguageSwitcher {...defaultProps}/>,
             {},
