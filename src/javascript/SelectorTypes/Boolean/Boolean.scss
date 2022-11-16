@@ -12,6 +12,16 @@
         &[aria-readonly="true"]:hover {
             --shadow-color: var(--color-gray);
             --shadow-size: 1px;
+
+            pointer-events: none;
+
+            &[aria-checked="true"]:hover,
+            &[aria-checked="mixed"]:hover {
+                --shadow-color: var(--color-accent);
+                --shadow-size: 12px;
+
+                border: none;
+            }
         }
     }
 
