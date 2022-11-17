@@ -30,7 +30,7 @@ export async function getCreatableNodetypesTree(client, nodeTypes, childNodeName
         variables: {
             nodeTypes: (nodeTypes && nodeTypes.length) > 0 ? nodeTypes : undefined,
             childNodeName,
-            includeSubTypes,
+            includeSubTypes: includeSubTypes !== false,
             uilang,
             path,
             excludedNodeTypes,
