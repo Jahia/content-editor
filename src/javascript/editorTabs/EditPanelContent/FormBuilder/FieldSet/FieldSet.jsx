@@ -14,7 +14,7 @@ export const FieldSet = ({fieldset}) => {
         <article className={activatedFieldSet && fieldset.fields.length > 0 ? styles.fieldSetOpen : styles.fieldSet}>
             {!fieldset.hideHeader && (
                 <div className={styles.fieldSetTitleContainer}>
-                    <div className="flexRow">
+                    <div className="flexRow_nowrap">
                         {fieldset.dynamic && (
                             <Toggle
                                 classes={{
