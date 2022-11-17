@@ -32,6 +32,7 @@ describe('Children section component', () => {
         };
         formik = {
             values: {
+                'Children::Order': ['item'],
                 'jmix:orderedList': false
             },
             handleChange: jest.fn()
