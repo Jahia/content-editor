@@ -37,7 +37,7 @@ export const ChildrenSection = ({mode, section, nodeData, isExpanded, onClick}) 
     const canManuallyOrder = nodeData.primaryNodeType.hasOrderableChildNodes;
     const isAutomaticOrder = canAutomaticallyOrder && values[Constants.ordering.automaticOrdering.mixin];
     const automaticOrderingFieldSet = canAutomaticallyOrder && getAutomaticOrderingFieldSet(sections);
-    const hasChildrenToReorder = values['Children::Order'].length > 0;
+    const hasChildrenToReorder = values['Children::Order'] && values['Children::Order'].length > 0;
     const childrenFieldSets = section.fieldSets.filter(fieldSet => fieldSet.name === 'jmix:listSizeLimit').map(orderingSectionFieldSetMap);
 
     if ((!canManuallyOrder || !hasChildrenToReorder) && !canAutomaticallyOrder && childrenFieldSets.length === 0) {
