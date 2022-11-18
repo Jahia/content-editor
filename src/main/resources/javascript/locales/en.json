@@ -226,7 +226,7 @@
         "listAndOrdering": {
           "title": "Content list & ordering",
           "ordering": "Ordering",
-          "automatic": "automatic ordering",
+          "automatic": "Automatic ordering",
           "orderBy": "Order by",
           "description": "Activate automatic list ordering to order your sub-content items using a maximum of three criteria, or reorder your sub-contents items manually, using drag and drop."
         },

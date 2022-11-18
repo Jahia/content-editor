@@ -14,31 +14,35 @@ import {useFormikContext} from 'formik';
 import fieldSetStyles from '../../FieldSet/FieldSet.scss';
 import styles from './ChildrenSection.scss';
 import clsx from 'clsx';
-import {ListSizeLimitFieldSet} from './ListSizeLimitFieldSet';
-
-const orderingSectionFieldSetMap = fieldSet => {
-    if (fieldSet.name === 'jmix:listSizeLimit') {
-        fieldSet.comp = ListSizeLimitFieldSet;
-        fieldSet.description = 'content-editor:label.contentEditor.section.listSizeLimit.description';
-        fieldSet.nodeCheck = {
-            options: {
-                requiredPermission: [Constants.permissions.setContentLimitsOnAreas]
-            }
-        };
-        fieldSet.visibilityFunction = (fs, resp) => resp.node && resp.node[Constants.permissions.setContentLimitsOnAreas];
-        return fieldSet;
-    }
-};
 
 export const ChildrenSection = ({mode, section, nodeData, isExpanded, onClick}) => {
     const {values, handleChange} = useFormikContext();
     const {t} = useTranslation('content-editor');
     const {sections} = useContentEditorSectionContext();
 
+    const orderingSectionFieldSetMap = fieldSet => {
+        if (fieldSet.name === 'jmix:listSizeLimit') {
+            fieldSet.description = t('content-editor:label.contentEditor.section.listSizeLimit.description');
+            fieldSet.nodeCheck = {
+                options: {
+                    requiredPermission: [Constants.permissions.setContentLimitsOnAreas]
+                }
+            };
+            fieldSet.visibilityFunction = (fs, resp) => resp.node && resp.node[Constants.permissions.setContentLimitsOnAreas];
+            return fieldSet;
+        }
+    };
+
     const canAutomaticallyOrder = values && values[Constants.ordering.automaticOrdering.mixin] !== undefined;
     const canManuallyOrder = nodeData.primaryNodeType.hasOrderableChildNodes;
     const isAutomaticOrder = canAutomaticallyOrder && values[Constants.ordering.automaticOrdering.mixin];
     const automaticOrderingFieldSet = canAutomaticallyOrder && getAutomaticOrderingFieldSet(sections);
+    const hasChildrenToReorder = values['Children::Order'].length > 0;
+    const childrenFieldSets = section.fieldSets.filter(fieldSet => fieldSet.name === 'jmix:listSizeLimit').map(orderingSectionFieldSetMap);
+
+    if ((!canManuallyOrder || !hasChildrenToReorder) && !canAutomaticallyOrder && childrenFieldSets.length === 0) {
+        return false;
+    }
 
     if (mode === Constants.routes.baseEditRoute && !nodeData.isSite) {
         const sec = {
@@ -53,12 +57,13 @@ export const ChildrenSection = ({mode, section, nodeData, isExpanded, onClick}) 
                          isExpanded={isExpanded}
                          onClick={onClick}
             >
-                <article>
-                    <div className={fieldSetStyles.fieldsetTitleContainer}>
-                        <div className="flexRow alignCenter">
+                <article className={fieldSetStyles.fieldSetOpen}>
+                    <div className={fieldSetStyles.fieldSetTitleContainer}>
+                        <div className="flexRow_nowrap">
                             <Typography component="label"
                                         className={fieldSetStyles.fieldSetTitle}
                                         variant="subheading"
+                                        weight="bold"
                             >
                                 {t('content-editor:label.contentEditor.section.listAndOrdering.ordering')}
                             </Typography>
@@ -71,40 +76,39 @@ export const ChildrenSection = ({mode, section, nodeData, isExpanded, onClick}) 
                     </div>
 
                     {(canAutomaticallyOrder && automaticOrderingFieldSet) && (
-                        <>
-                            <div className="flexRow alignCenter">
-                                <Toggle
-                                    classes={{
-                                        switchBase: fieldSetStyles.toggle,
-                                        disabledSwitchBase: fieldSetStyles.toggle,
-                                        readOnlySwitchBase: fieldSetStyles.toggle,
-                                        focusedSwitchBase: fieldSetStyles.toggle
-                                    }}
-                                    data-sel-role-automatic-ordering={Constants.ordering.automaticOrdering.mixin}
-                                    id={Constants.ordering.automaticOrdering.mixin}
-                                    checked={isAutomaticOrder}
-                                    readOnly={automaticOrderingFieldSet.readOnly}
-                                    onChange={handleChange}
-                                />
+                        <div className="flexRow_nowrap">
+                            <Toggle
+                                classes={{
+                                    root: fieldSetStyles.toggle
+                                }}
+                                data-sel-role-automatic-ordering={Constants.ordering.automaticOrdering.mixin}
+                                id={Constants.ordering.automaticOrdering.mixin}
+                                checked={isAutomaticOrder}
+                                readOnly={automaticOrderingFieldSet.readOnly}
+                                onChange={handleChange}
+                            />
+                            <div className="flexCol">
                                 <Typography component="label"
                                             htmlFor={Constants.ordering.automaticOrdering.mixin}
                                             className={fieldSetStyles.fieldSetTitle}
+                                            variant="subheading"
+                                            weight="bold"
                                 >
                                     {t('content-editor:label.contentEditor.section.listAndOrdering.automatic')}
                                 </Typography>
+                                <Typography component="label"
+                                            variant="caption"
+                                            className={clsx(fieldSetStyles.fieldSetDescription, fieldSetStyles.staticFieldSetDescription)}
+                                >
+                                    {t('content-editor:label.contentEditor.section.listAndOrdering.description')}
+                                </Typography>
                             </div>
-                            <Typography component="label"
-                                        variant="caption"
-                                        className={clsx(fieldSetStyles.fieldSetDescription, fieldSetStyles.staticFieldSetDescription)}
-                            >
-                                {t('content-editor:label.contentEditor.section.listAndOrdering.description')}
-                            </Typography>
-                        </>
+                        </div>
                     )}
                     {!isAutomaticOrder && canManuallyOrder && <ManualOrdering/>}
-                    {isAutomaticOrder && <AutomaticOrdering/>}
+                    {isAutomaticOrder && canAutomaticallyOrder && <AutomaticOrdering/>}
                 </article>
-                <FieldSetsDisplay fieldSets={section.fieldSets.filter(fieldSet => fieldSet.name === 'jmix:listSizeLimit').map(orderingSectionFieldSetMap)}/>
+                <FieldSetsDisplay fieldSets={childrenFieldSets}/>
             </Collapsible>
         );
     }
