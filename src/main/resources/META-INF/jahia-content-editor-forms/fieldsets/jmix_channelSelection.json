@@ -13,6 +13,8 @@
     },
     {
       "name": "j:channelIncludeOrExclude",
+      "mandatory": true,
+      "defaultValues": [{"type":  "j:channelIncludeOrExclude", "value":  "include"}],
       "target": {
         "sectionName": "visibility",
         "fieldSetName": "visibility",
