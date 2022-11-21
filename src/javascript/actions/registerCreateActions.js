@@ -21,9 +21,8 @@ export const registerCreateActions = registry => {
 
     registry.addOrReplace('action', 'createPage', {
         buttonIcon: <AddCircle/>,
-        buttonLabel: 'content-editor:label.contentEditor.CMMActions.createNewPage.menu',
         component: props => booleanValue(contextJsParameters.config.jcontent?.showPageComposer) && <CreateContent {...props}/>,
-        targets: ['createMenuActions:3', 'contentActions:3', 'headerPrimaryActions:1'],
+        targets: ['createMenuActions:-2', 'contentActions:-2', 'headerPrimaryActions:1'],
         showOnNodeTypes: ['jnt:page', 'jnt:navMenuText'],
         requiredPermission: ['jcr:addChildNodes'],
         nodeTypes: ['jnt:page'],
@@ -36,12 +35,18 @@ export const registerCreateActions = registry => {
         }
     });
 
+    registry.add('action', 'createNavMenuItemMenu', registry.get('action', 'menuAction'), {
+        buttonIcon: <AddCircle/>,
+        buttonLabel: 'content-editor:label.contentEditor.CMMActions.createNewContent.newMenu',
+        targets: ['createMenuActions:-1', 'contentActions:-1'],
+        menuTarget: 'createNavMenuItemMenu',
+        isMenuPreload: true
+    });
+
     registry.addOrReplace('action', 'createNavMenuItem', {
         buttonIcon: <AddCircle/>,
-        buttonLabel:
-            'content-editor:label.contentEditor.CMMActions.createNewPage.menu',
         component: props => booleanValue(contextJsParameters.config.jcontent?.showPageComposer) && <CreateContent {...props}/>,
-        targets: ['createMenuActions:3.1', 'contentActions:3.1'],
+        targets: ['createNavMenuItemMenu'],
         showOnNodeTypes: ['jnt:page', 'jnt:navMenuText'],
         requiredPermission: ['jcr:addChildNodes'],
         nodeTypes: ['jnt:navMenuText', 'jnt:nodeLink', 'jnt:externalLink'],

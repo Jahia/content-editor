@@ -201,6 +201,7 @@
       "CMMActions": {
         "createNewContent": {
           "menu": "New content",
+          "newMenu": "New...",
           "contentOfType": "New {{typeName}}",
           "labelModal": "Select Content Type",
           "btnDiscard": "CANCEL",

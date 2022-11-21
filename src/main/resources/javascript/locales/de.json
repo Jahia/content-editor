@@ -202,6 +202,7 @@
       "CMMActions": {
         "createNewContent": {
           "menu": "Neuer Content",
+          "newMenu": "Hinzufügen...",
           "contentOfType": "Hinzufügen: {{typeName}}",
           "labelModal": "Content-Typ Auswählen",
           "btnDiscard": "ABBRECHEN",
