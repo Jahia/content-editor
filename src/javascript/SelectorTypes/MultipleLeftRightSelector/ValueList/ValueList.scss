@@ -5,8 +5,8 @@
 }
 
 .captionContainer {
-    min-height: 30px;
-    margin-top: 10px;
+    min-height: calc(var(--spacing-medium) * 2);
+    margin-top: var(--spacing-small);
 }
 
 .displayNone {
@@ -14,7 +14,7 @@
 }
 
 .iconContainer {
-    min-width: 20px;
+    min-width: var(--spacing-large);
 }
 
 .valueListItem {
