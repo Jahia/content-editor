@@ -1,5 +1,4 @@
 import {JContent} from '../../page-object/jcontent';
-import {SecondaryNav} from '@jahia/cypress';
 
 describe('Picker - PDF', () => {
     const siteKey = 'digitall';
@@ -25,7 +24,7 @@ describe('Picker - PDF', () => {
         picker.getAccordionItem('picker-media').getTreeItem('pdf').click();
         picker.verifyResultsLength(2);
         picker.getAccordionItem('picker-media').getTreeItem('backgrounds').click();
-        picker.getTable().getRowByLabel('Drag and drop').should('have.length', 1);
+        picker.assertHasNoTable();
     });
 
     it('PDF Picker - Only pdf files and folder are found by the search', () => {
