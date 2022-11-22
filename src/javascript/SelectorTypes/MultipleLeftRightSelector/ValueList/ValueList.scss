@@ -13,6 +13,10 @@
     display: none;
 }
 
+.iconContainer {
+    min-width: 20px;
+}
+
 .valueListItem {
     padding: var(--spacing-small);
 
@@ -30,7 +34,7 @@
         background-color: var(--color-gray_light60);
     }
 
-    &:hover > div > .displayNone {
+    &:hover > div > div > .displayNone {
         display: block;
     }
 }

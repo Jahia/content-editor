@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {ListItem, Typography, ChevronRight, ChevronLeft} from '@jahia/moonstone';
+import {ListItem, Typography, ChevronRight, Close} from '@jahia/moonstone';
 import styles from './ValueList.scss';
 import cslx from 'clsx';
 
@@ -13,22 +13,30 @@ const ValueList = ({values, filter, isMultiple, selected, onSelect, onMove, orie
     const iconProp = value => {
         if (orientation === 'right') {
             return {
-                iconEnd: <ChevronRight className={styles.displayNone}
-                                       onClick={e => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    onMove([value]);
-                }}/>
+                iconEnd: (
+                    <div className={styles.iconContainer}>
+                        <ChevronRight className={styles.displayNone}
+                                      onClick={e => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        onMove([value]);
+                                           }}/>
+                    </div>
+                )
             };
         }
 
         return {
-            iconStart: <ChevronLeft className={styles.displayNone}
-                                    onClick={e => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    onMove([value]);
-                }}/>
+            iconEnd: (
+                <div className={styles.iconContainer}>
+                    <Close className={styles.displayNone}
+                           onClick={e => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        onMove([value]);
+                    }}/>
+                </div>
+            )
         };
     };
 
