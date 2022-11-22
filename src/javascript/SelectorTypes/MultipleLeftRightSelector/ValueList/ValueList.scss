@@ -4,12 +4,17 @@
     overflow-y: scroll;
 }
 
-.caption {
-    margin-top: var(--spacing-medium);
+.captionContainer {
+    min-height: calc(var(--spacing-medium) * 2);
+    margin-top: var(--spacing-small);
 }
 
 .displayNone {
     display: none;
+}
+
+.iconContainer {
+    min-width: var(--spacing-large);
 }
 
 .valueListItem {
@@ -29,7 +34,7 @@
         background-color: var(--color-gray_light60);
     }
 
-    &:hover > div > .displayNone {
+    &:hover > div > div > .displayNone {
         display: block;
     }
 }
