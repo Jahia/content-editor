@@ -1,7 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {useQuery} from '@apollo/react-hooks';
-import {PreviewInTabActionQuery} from '~/SelectorTypes/Picker/actions/previewInTabAction.gql-queries';
+import {
+    PreviewInTabActionQueryByPath,
+    PreviewInTabActionQueryByUuid
+} from '~/SelectorTypes/Picker/actions/previewInTabAction.gql-queries';
+
+function getPath(data) {
+    if (data.jcr.result.previewAvailable) {
+        return data.jcr.result.path;
+    }
+
+    if (data.jcr.result.displayableNode.previewAvailable) {
+        return data.jcr.result.displayableNode.path;
+    }
+
+    return false;
+}
 
 export const PreviewInTabActionComponent = ({
     render: Render,
@@ -11,36 +26,26 @@ export const PreviewInTabActionComponent = ({
     inputContext,
     ...others
 }) => {
-    let uuid;
-    if (path === undefined) {
-        const {fieldData} = inputContext.actionContext;
-        uuid = fieldData[0].uuid;
-    }
+    const uuid = inputContext?.actionContext?.fieldData?.[0]?.uuid;
 
-    const {data, error, loading} = useQuery(PreviewInTabActionQuery, {
+    const {data, error, loading} = useQuery(path ? PreviewInTabActionQueryByPath : PreviewInTabActionQueryByUuid, {
         variables: {
-            path: path
+            path, uuid
         },
-        skip: !path
+        skip: !path && !uuid
     });
 
-    if (uuid === undefined && (loading || error || !data)) {
-        return <></>;
+    if (loading || error || !data) {
+        return false;
     }
 
-    uuid = uuid === undefined ? data.jcr.result.uuid : uuid;
-
-    if (data !== undefined && !data.jcr.result.previewAvailable && data.jcr.result.displayableNode.previewAvailable) {
-        path = data.jcr.result.displayableNode.path;
-    } else {
-        return <></>;
-    }
-
-    return (
+    const displayablePath = getPath(data);
+    console.log(displayablePath);
+    return displayablePath && (
         <Render
             {...others}
             onClick={() => {
-                window.open(`${window.contextJsParameters.baseUrl}${path}.html`, '_blank');
+                window.open(`${window.contextJsParameters.baseUrl}${displayablePath}.html`, '_blank');
             }}
         />
     );
