@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
-import {FileCard, FilesGridEmptyDropZone, jcontentUtils, UploadTransformComponent} from '@jahia/jcontent';
+import {FileCard, FilesGridEmptyDropZone, jcontentUtils, useFileDrop} from '@jahia/jcontent';
 import {TablePagination} from '@jahia/moonstone';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import classNames from 'clsx';
@@ -21,6 +21,7 @@ import {batchActions} from 'redux-batched-actions';
 import {useFieldContext} from '~/contexts/FieldContext';
 import {registry} from '@jahia/ui-extender';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
+import clsx from 'clsx';
 
 const reduxActions = {
     setOpenPathAction: path => cePickerOpenPaths(getDetailedPathArray(path)),
@@ -88,27 +89,27 @@ export const FilesGrid = ({totalCount, rows, isLoading, pickerConfig, accordionI
         }
     }, [pagination.currentPage]);
 
+    const {isCanDrop} = useFileDrop({
+        uploadType: 'upload',
+        uploadPath: path,
+        uploadFilter: file => !tableConfig?.uploadFilter || tableConfig.uploadFilter(file, mode, pickerConfig),
+        ref: mainPanelRef
+    });
+
     if ((!rows || rows.length === 0) && !isLoading) {
         return (
-            <React.Fragment>
-                <FilesGridEmptyDropZone uploadType="upload" path={path}/>
-            </React.Fragment>
+            <FilesGridEmptyDropZone uploadType="upload" reference={mainPanelRef} isCanDrop={isCanDrop}/>
         );
     }
 
     return (
         <>
             <div
-                className={styles.grid}
+                className={clsx(styles.grid, isCanDrop && styles.drop)}
                 data-cm-role="grid-content-list"
                 tabIndex="1"
             >
-                <UploadTransformComponent ref={mainPanelRef}
-                                          uploadTargetComponent={Grid}
-                                          uploadPath={path}
-                                          uploadType="upload"
-                                          uploadFilter={file => !tableConfig?.uploadFilter || tableConfig.uploadFilter(file, mode, pickerConfig)}
-                >
+                <Grid ref={mainPanelRef}>
                     {rows.map((node, index) => (
                         <FileCard key={node.uuid}
                                   mode=""
@@ -125,7 +126,7 @@ export const FilesGrid = ({totalCount, rows, isLoading, pickerConfig, accordionI
                                   }}
                         />
                     ))}
-                </UploadTransformComponent>
+                </Grid>
             </div>
             <TablePagination totalNumberOfRows={totalCount}
                              currentPage={pagination.currentPage + 1}

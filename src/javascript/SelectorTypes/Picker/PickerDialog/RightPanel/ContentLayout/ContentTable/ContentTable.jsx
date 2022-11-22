@@ -2,7 +2,7 @@ import React, {useEffect, useMemo, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
-import {Table, TableBody, TablePagination, TableRow} from '@jahia/moonstone';
+import {Table, TableBody, TablePagination} from '@jahia/moonstone';
 import {useTable} from 'react-table';
 import {useRowMultipleSelection, useRowSelection} from '~/SelectorTypes/Picker/reactTable/plugins';
 import {allColumnData} from '~/SelectorTypes/Picker/reactTable/columns';
@@ -24,15 +24,14 @@ import {
     ContentNotFound,
     ContentTableWrapper,
     EmptyTable,
+    jcontentUtils,
     reactTable,
-    UploadTransformComponent
+    useFileDrop
 } from '@jahia/jcontent';
-import classes from './ContentTable.scss';
-import {ContextualMenu, registry} from '@jahia/ui-extender';
+import {registry} from '@jahia/ui-extender';
 import {useFieldContext} from '~/contexts/FieldContext';
-import clsx from 'clsx';
-import {jcontentUtils} from '@jahia/jcontent';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
+import {Row} from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout/ContentTable/Row';
 
 const reduxActions = {
     onPreviewSelectAction: () => ({}),
@@ -138,8 +137,8 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
         reactTable.useExpandedControlled
     );
 
+    const dropReference = useRef();
     const mainPanelRef = useRef(null);
-    const contextualMenus = useRef({});
 
     useEffect(() => {
         if (mainPanelRef.current) {
@@ -155,6 +154,13 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
         dispatch(batchActions(actions));
     };
 
+    const {isCanDrop} = useFileDrop({
+        uploadType: tableConfig?.uploadType,
+        uploadPath: path,
+        uploadFilter: file => !tableConfig?.uploadFilter || tableConfig.uploadFilter(file, mode, pickerConfig),
+        ref: dropReference
+    });
+
     if (isContentNotFound) {
         return <ContentNotFound columnSpan={allColumnData.length} t={t}/>;
     }
@@ -169,7 +175,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
         return (
             <>
                 {tableHeader}
-                <ContentEmptyDropZone uploadType={tableConfig?.uploadType} path={path}/>
+                <ContentEmptyDropZone reference={dropReference} uploadType={tableConfig?.uploadType} isCanDrop={isCanDrop}/>
             </>
         );
     }
@@ -187,14 +193,19 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
         }
     };
 
+    const handleOnDoubleClick = (e, row) => {
+        if (allowDoubleClickNavigation(row.original.primaryNodeType.name)) {
+            doubleClickNavigation(row.original);
+        }
+    };
+
     return (
         <>
             {tableHeader}
-            <UploadTransformComponent uploadTargetComponent={ContentTableWrapper}
-                                      reference={mainPanelRef}
-                                      uploadPath={path}
-                                      uploadType={tableConfig?.uploadType}
-                                      uploadFilter={file => !tableConfig?.uploadFilter || tableConfig.uploadFilter(file, mode, pickerConfig)}
+            <ContentTableWrapper isCanDrop={isCanDrop}
+                                 dropReference={dropReference}
+                                 reference={mainPanelRef}
+                                 uploadType={tableConfig?.uploadType}
             >
                 <Table aria-labelledby="tableTitle"
                        data-cm-role="table-content-list"
@@ -205,47 +216,22 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
                     <TableBody {...getTableBodyProps()}>
                         {tableRows.map(row => {
                             prepareRow(row);
-                            const rowProps = row.getRowProps();
-                            const selectionProps = row.getToggleRowSelectedProps();
-                            const node = row.original;
-                            const className = node.isSelectable ? classes.selectableRow : classes.doubleClickableRow;
-                            contextualMenus.current[node.path] = contextualMenus.current[node.path] || React.createRef();
-
-                            const openContextualMenu = event => {
-                                contextualMenus.current[node.path].current(event);
-                            };
-
                             return (
-                                <TableRow key={'row' + row.id}
-                                          {...rowProps}
-                                          data-cm-role="table-content-list-row"
-                                          data-sel-name={node.name}
-                                          className={clsx({
-                                              [className]: !selectionProps.checked,
-                                              [classes.disabled]: isStructured && !node.isSelectable
-                                          })}
-                                          isHighlighted={selectionProps.checked && !field.multiple}
-                                          onClick={e => handleOnClick(e, row)}
-                                          onContextMenu={event => {
-                                              if (tableConfig.contextualMenu) {
-                                                  event.stopPropagation();
-                                                  openContextualMenu(event);
-                                              }
-                                          }}
-                                          onDoubleClick={() => allowDoubleClickNavigation(node.primaryNodeType.name) && doubleClickNavigation(node)}
-                                >
-                                    {previousModeTableConfig.contextualMenu && <ContextualMenu
-                                        setOpenRef={contextualMenus.current[node.path]}
-                                        actionKey={previousModeTableConfig.contextualMenu}
-                                        path={node.path}
-                                    />}
-                                    {row.cells.map(cell => <React.Fragment key={cell.column.id}>{cell.render('Cell')}</React.Fragment>)}
-                                </TableRow>
+                                <Row key={'row' + row.id}
+                                     isStructured={isStructured}
+                                     row={row}
+                                     field={field}
+                                     tableConfig={tableConfig}
+                                     handleOnClick={handleOnClick}
+                                     handleOnDoubleClick={handleOnDoubleClick}
+                                     previousModeTableConfig={previousModeTableConfig}
+                                     doubleClickNavigation={doubleClickNavigation}
+                                />
                             );
                         })}
                     </TableBody>
                 </Table>
-            </UploadTransformComponent>
+            </ContentTableWrapper>
             {!isStructured &&
             <TablePagination totalNumberOfRows={totalCount}
                              currentPage={pagination.currentPage + 1}

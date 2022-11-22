@@ -199,7 +199,7 @@ describe('Picker tests', () => {
         picker.getSiteSwitcher().should('contain', 'Digitall');
         picker.getSiteSwitcher().select('System Site');
         picker.getSiteSwitcher().should('contain', 'System Site');
-        picker.getTable().getRows().should('have.length', 1);
+        picker.assertHasNoTable();
         picker.getSiteSwitcher().select('Digitall');
         picker.getTable().getRowByLabel('ce-picker-files');
     });
@@ -216,7 +216,7 @@ describe('Picker tests', () => {
 
         picker.getSiteSwitcher().select('System Site');
         picker.getSiteSwitcher().should('contain', 'System Site');
-        picker.getTable().getRows().should('have.length', 1);
+        picker.assertHasNoTable();
         picker.getSiteSwitcher().select('Digitall');
         picker.getTable().getRowByLabel('ce-picker-files');
         const item = picker.getAccordionItem('picker-media');
