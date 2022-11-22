@@ -4,8 +4,9 @@
     overflow-y: scroll;
 }
 
-.caption {
-    margin-top: var(--spacing-medium);
+.captionContainer {
+    min-height: 30px;
+    margin-top: 10px;
 }
 
 .displayNone {

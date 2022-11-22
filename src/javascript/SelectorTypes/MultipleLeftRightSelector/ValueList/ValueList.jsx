@@ -65,9 +65,11 @@ const ValueList = ({values, filter, isMultiple, selected, onSelect, onMove, orie
                    );
                 })}
             </ul>
-            <Typography className={styles.caption} variant="caption" weight="semiBold">
-                {selected.length > 0 && `Selected ${selected.length} items`}
-            </Typography>
+            <div className={styles.captionContainer}>
+                <Typography variant="caption" weight="semiBold">
+                    {selected.length > 0 && `Selected ${selected.length} items`}
+                </Typography>
+            </div>
         </>
     );
 };
