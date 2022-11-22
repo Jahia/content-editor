@@ -3,7 +3,7 @@ import {TableRow} from '@jahia/moonstone';
 import clsx from 'clsx';
 import {ContextualMenu} from '@jahia/ui-extender';
 import PropTypes from 'prop-types';
-import {useFileDrop, useNodeDrop, useNodeDrag} from '@jahia/jcontent';
+import {useFileDrop, useNodeDrop} from '@jahia/jcontent';
 import styles from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout/ContentTable/ContentTable.scss';
 
 export const Row = ({
@@ -25,7 +25,6 @@ export const Row = ({
     const ref = useRef(null);
     const {isCanDrop} = useNodeDrop({dropTarget: node, ref});
     const {isCanDrop: isCanDropFile} = useFileDrop({uploadType: node.primaryNodeType.name === 'jnt:folder' && 'upload', uploadPath: node.path, ref});
-    const {dragging} = useNodeDrag({dragSource: node, ref});
 
     row.ref = ref;
 
@@ -40,7 +39,6 @@ export const Row = ({
                   className={clsx({
                       [className]: !selectionProps.checked,
                       'moonstone-drop_row': (isCanDrop || isCanDropFile),
-                      'moonstone-drag': dragging,
                       [styles.disabled]: isStructured && !node.isSelectable
                   })}
                   isHighlighted={selectionProps.checked && !field.multiple}
