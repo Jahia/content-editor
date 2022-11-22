@@ -93,10 +93,11 @@ const NodeDataFragment = {
                     status
                     languages
                 }
-                usages: references {
+                usages: references(fieldFilter: {filters: {fieldName: "node.visible", value: "true"}}) {
                     nodes {
                         node {
                             ...NodeCacheRequiredFields
+                            visible: isNodeType(type: {types: ["jmix:droppableContent", "jmix:editorialContent"]})
                             displayName
                             path
                             primaryNodeType {
