@@ -40,7 +40,6 @@ export const PreviewInTabActionComponent = ({
     }
 
     const displayablePath = getPath(data);
-    console.log(displayablePath);
     return displayablePath && (
         <Render
             {...others}
