@@ -7,11 +7,11 @@ import {
 } from '~/SelectorTypes/Picker/actions/previewInTabAction.gql-queries';
 
 function getPath(data) {
-    if (data.jcr.result.previewAvailable) {
+    if (data.jcr.result?.previewAvailable) {
         return data.jcr.result.path;
     }
 
-    if (data.jcr.result.displayableNode.previewAvailable) {
+    if (data.jcr.result.displayableNode?.previewAvailable) {
         return data.jcr.result.displayableNode.path;
     }
 
