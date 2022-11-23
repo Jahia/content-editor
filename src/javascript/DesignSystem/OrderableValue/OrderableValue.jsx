@@ -23,27 +23,33 @@ export const OrderableValue = ({field, onFieldRemove, onValueReorder, index, com
     return (
         <>
             <div key={name}
-                 ref={drop}
+                 ref={field.readOnly ? null : drop}
                  className={styles.fieldComponentContainer}
                  data-sel-content-editor-multiple-generic-field={name}
                  data-sel-content-editor-field-readonly={field.readOnly}
             >
                 <div className={`${styles.referenceDropGhostHidden} ${isDropping ? styles.referenceDropGhost : ''}`} data-droppable-zone={name}/>
-                <div ref={drag} className={styles.draggableCard}>
-                    {!isDragging &&
-                        <>
-                            <div className={styles.draggableIcon}>
-                                <HandleDrag size="big"/>
-                            </div>
-                            {component}
-                        </>}
-                    {!field.readOnly && !isDragging && <Button variant="ghost"
-                                                               data-sel-action={`removeField_${index}`}
-                                                               aria-label={t('content-editor:label.contentEditor.edit.fields.actions.clear')}
-                                                               icon={<Close/>}
-                                                               onClick={() => onFieldRemove(index)}
-                    />}
-                </div>
+                {field.readOnly ? (
+                    <div className={styles.draggableCard}>
+                        {component}
+                    </div>
+                ) : (
+                    <div ref={drag} className={styles.draggableCard}>
+                        {!isDragging &&
+                            <>
+                                <div className={styles.draggableIcon}>
+                                    <HandleDrag size="big"/>
+                                </div>
+                                {component}
+                            </>}
+                        {!isDragging && <Button variant="ghost"
+                                                data-sel-action={`removeField_${index}`}
+                                                aria-label={t('content-editor:label.contentEditor.edit.fields.actions.clear')}
+                                                icon={<Close/>}
+                                                onClick={() => onFieldRemove(index)}
+                        />}
+                    </div>
+                )}
             </div>
         </>
     );
