@@ -37,6 +37,10 @@ export const registerEditorialLinkPicker = registry => {
                 defaultViewType: Constants.tableView.type.PAGES,
                 uploadType: null,
                 contextualMenu: 'contentPickerMenu'
+            },
+            treeConfig: {
+                ...pagesItem.treeConfig,
+                dnd: {}
             }
         }, renderer);
     }
