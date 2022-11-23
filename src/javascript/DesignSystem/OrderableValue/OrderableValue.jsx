@@ -34,10 +34,10 @@ export const OrderableValue = ({field, onFieldRemove, onValueReorder, index, com
                         {component}
                     </div>
                 ) : (
-                    <div ref={drag} className={styles.draggableCard}>
+                    <div className={styles.draggableCard}>
                         {!isDragging &&
                             <>
-                                <div className={styles.draggableIcon}>
+                                <div ref={drag} className={styles.draggableIcon}>
                                     <HandleDrag size="big"/>
                                 </div>
                                 {component}
