@@ -8,11 +8,11 @@ import {useContentEditorContext} from '~/contexts/ContentEditor';
 import {ContentListHeader, reactTable} from '@jahia/jcontent';
 
 const defaultCols = ['publicationStatus', 'name', 'type', 'location'];
+const columns = defaultCols.map(c => (typeof c === 'string') ? allColumnData.find(col => col.id === c) : c);
 
 export const Usages = () => {
     const {t} = useTranslation('content-editor');
     const {usages} = useContentEditorContext();
-    const columns = defaultCols.map(c => (typeof c === 'string') ? allColumnData.find(col => col.id === c) : c);
     const {
         getTableProps,
         getTableBodyProps,
