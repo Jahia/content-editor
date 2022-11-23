@@ -71,7 +71,7 @@ describe('Multiple component', () => {
             {},
             dsGenericTheme
         );
-        expect(cmp.find('OrderableValue').length).toBe(2);
+        expect(cmp.find('OrderableValue').length).toBe(3);
     });
 
     it('should call onChange when removing a value', () => {
