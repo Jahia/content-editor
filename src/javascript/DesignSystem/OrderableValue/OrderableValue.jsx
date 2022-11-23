@@ -29,7 +29,7 @@ export const OrderableValue = ({field, onFieldRemove, onValueReorder, index, com
                  data-sel-content-editor-field-readonly={field.readOnly}
             >
                 <div className={`${styles.referenceDropGhostHidden} ${isDropping ? styles.referenceDropGhost : ''}`} data-droppable-zone={name}/>
-                {field.readOnly ? (
+                {(field.readOnly || !component) ? (
                     <div className={styles.draggableCard}>
                         {component}
                     </div>
@@ -57,8 +57,8 @@ export const OrderableValue = ({field, onFieldRemove, onValueReorder, index, com
 
 OrderableValue.propTypes = {
     field: PropTypes.object.isRequired,
-    onFieldRemove: PropTypes.func.isRequired,
-    onValueReorder: PropTypes.func.isRequired,
+    onFieldRemove: PropTypes.func,
+    onValueReorder: PropTypes.func,
     index: PropTypes.number.isRequired,
-    component: PropTypes.object.isRequired
+    component: PropTypes.object
 };
