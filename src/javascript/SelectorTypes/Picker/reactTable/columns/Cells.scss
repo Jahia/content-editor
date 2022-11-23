@@ -16,3 +16,14 @@
 
     padding-right: 20px;
 }
+
+.path {
+    flex-shrink: 1;
+
+    text-overflow: clip;
+    overflow: hidden;
+}
+
+.usagesActions {
+    flex-shrink: 0;
+}

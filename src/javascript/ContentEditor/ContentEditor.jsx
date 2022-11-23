@@ -6,7 +6,7 @@ import {adaptCreateFormData} from './adaptCreateFormData';
 import {Edit} from './Edit';
 import {EditFormQuery} from './edit.gql-queries';
 import {adaptEditFormData} from './adaptEditFormData';
-import {ContentEditorConfigContextProvider, ContentEditorContextProvider} from '~/contexts';
+import {ContentEditorConfigContextProvider, ContentEditorContextProvider, ViewportProvider} from '~/contexts';
 import {Constants} from '~/ContentEditor.constants';
 import {useFormDefinition} from '~/contexts/ContentEditor/useFormDefinitions';
 
@@ -17,18 +17,24 @@ export const ContentEditor = props => {
     const {mode, envProps} = props;
 
     return (
-        <ContentEditorConfigContextProvider config={props}>
-            { mode === 'edit' && (
-            <ContentEditorContextProvider useFormDefinition={envProps.useFormDefinition || useEditFormDefinition}>
-                <Edit/>
-            </ContentEditorContextProvider>
+        <ViewportProvider>
+            <ContentEditorConfigContextProvider config={props}>
+                {mode === 'edit' && (
+                    <ContentEditorContextProvider
+                        useFormDefinition={envProps.useFormDefinition || useEditFormDefinition}
+                    >
+                        <Edit/>
+                    </ContentEditorContextProvider>
                 )}
-            { mode === 'create' && (
-            <ContentEditorContextProvider useFormDefinition={envProps.useFormDefinition || useCreateFormDefinition}>
-                <Create/>
-            </ContentEditorContextProvider>
+                {mode === 'create' && (
+                    <ContentEditorContextProvider
+                        useFormDefinition={envProps.useFormDefinition || useCreateFormDefinition}
+                    >
+                        <Create/>
+                    </ContentEditorContextProvider>
                 )}
-        </ContentEditorConfigContextProvider>
+            </ContentEditorConfigContextProvider>
+        </ViewportProvider>
     );
 };
 
