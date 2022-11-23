@@ -161,6 +161,10 @@ export const registerMediaPickers = registry => {
                 contextualMenu: 'contentPickerMenu',
                 uploadFilter: (file, mode, pickerConfig) => pickerConfig.key !== 'image' || file.type.startsWith('image/'),
                 columns: ['publicationStatus', 'name', 'lastModified']
+            },
+            treeConfig: {
+                ...mediaItem.treeConfig,
+                dnd: {}
             }
         }, renderer);
     } else {

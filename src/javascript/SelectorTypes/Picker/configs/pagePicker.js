@@ -32,6 +32,10 @@ export const registerPagePicker = registry => {
                 defaultSort: {orderBy: ''},
                 columns: ['publicationStatus', 'name', 'lastModified'],
                 contextualMenu: 'contentPickerMenu'
+            },
+            treeConfig: {
+                ...pagesItem.treeConfig,
+                dnd: {}
             }
         }, renderer);
     }

@@ -56,6 +56,10 @@ export const registerEditorialPicker = registry => {
                 uploadType: null,
                 contextualMenu: 'contentPickerMenu',
                 autoExpandLevels: 3
+            },
+            treeConfig: {
+                ...pagesItem.treeConfig,
+                dnd: {}
             }
         }, renderer);
     } else {
@@ -73,8 +77,11 @@ export const registerEditorialPicker = registry => {
                 uploadType: null,
                 contextualMenu: 'contentPickerMenu',
                 canAlwaysDoubleClickOnType: type => ['jnt:contentFolder'].includes(type)
+            },
+            treeConfig: {
+                ...contentFoldersItem.treeConfig,
+                dnd: {}
             }
-
         }, renderer);
     } else {
         console.warn('Picker will not function properly due to missing accordionItem for content-folders');
