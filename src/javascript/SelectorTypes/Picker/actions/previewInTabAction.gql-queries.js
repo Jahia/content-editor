@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 import {PredefinedFragments} from '@jahia/data-helper';
 
-const PreviewInTabActionQuery = gql`
-    query mediaPickerFilledQuery($path: String!) {
+export const PreviewInTabActionQueryByPath = gql`
+    query PreviewInTabActionQueryByPath($path: String!) {
         jcr {
             result: nodeByPath(path: $path) {
                 ...NodeCacheRequiredFields
@@ -17,4 +17,18 @@ const PreviewInTabActionQuery = gql`
     ${PredefinedFragments.nodeCacheRequiredFields.gql}
 `;
 
-export {PreviewInTabActionQuery};
+export const PreviewInTabActionQueryByUuid = gql`
+    query PreviewInTabActionQueryByUuid($uuid: String!) {
+        jcr {
+            result: nodeById(uuid: $uuid) {
+                ...NodeCacheRequiredFields
+                previewAvailable: isNodeType(type: {multi: ANY, types: ["jnt:page","jmix:mainResource"]})
+                displayableNode {
+                    ...NodeCacheRequiredFields
+                    previewAvailable: isNodeType(type: {multi: ANY, types: ["jnt:page","jmix:mainResource"]})
+                }
+            }
+        }
+    }
+    ${PredefinedFragments.nodeCacheRequiredFields.gql}
+`;
