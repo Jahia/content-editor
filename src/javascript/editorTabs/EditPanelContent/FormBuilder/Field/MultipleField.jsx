@@ -84,6 +84,11 @@ export const MultipleField = ({editorContext, inputContext, field, onChange, onB
                         );
                     })
                 )}
+                {values[field.name] && values[field.name].length > 0 && (
+                    <OrderableValue field={field}
+                                    index={values[field.name].length}
+                                    onValueReorder={onValueReorder}/>
+                )}
             </div>
             {!field.readOnly &&
             <Button className={styles.addButton}
