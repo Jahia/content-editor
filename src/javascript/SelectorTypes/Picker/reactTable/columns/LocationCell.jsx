@@ -1,14 +1,20 @@
-import {TableBodyCell, Typography} from '@jahia/moonstone';
+import {Chip, TableBodyCell, Typography} from '@jahia/moonstone';
 import React from 'react';
 import {DisplayAction} from '@jahia/ui-extender';
 import {ButtonRendererNoLabel} from '~/utils';
-import classes from './Cells.scss';
+import styles from './Cells.scss';
 import PropTypes from 'prop-types';
+import {useTranslation} from 'react-i18next';
 export const LocationCell = ({row, column}) => {
+    const {t} = useTranslation();
+    const sortedLanguages = row.original.locales.indexOf(null) >= 0 ? [t('content-editor:label.contentEditor.edit.sharedLanguages')] : row.original.locales.map(l => l.toUpperCase()).sort();
+
     return (
-        <TableBodyCell data-cm-role="location-cell" className={classes.cellLocation} width={column.width}>
-            <div className={classes.location}>
-                <Typography variant="body">{row.original.path}</Typography>
+        <TableBodyCell data-cm-role="location-cell" className={styles.cellLocation} width={column.width}>
+            <div className={styles.location}>
+                <Typography className={styles.text} variant="body">{row.original.path}</Typography>
+                <div className="flexFluid"/>
+                <div className={styles.badges}>{sortedLanguages.map(l => <Chip key={l} color="accent" label={l}/>)}</div>
                 <div data-cm-role="table-usages-cell-actions">
                     <DisplayAction
                         actionKey="previewInNewTab"

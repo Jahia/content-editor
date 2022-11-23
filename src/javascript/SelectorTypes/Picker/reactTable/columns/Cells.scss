@@ -8,6 +8,19 @@
     flex-grow: 2;
 }
 
+.text {
+    min-width: 0;
+
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.badges {
+    & > div {
+        margin-left: var(--spacing-nano);
+    }
+}
+
 .location {
     display: flex;
     flex-direction: row;
