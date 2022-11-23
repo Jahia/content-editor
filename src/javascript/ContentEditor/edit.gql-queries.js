@@ -99,7 +99,7 @@ const NodeDataFragment = {
                         language
                         node {
                             ...NodeCacheRequiredFields
-                            visible: isNodeType(type: {types: ["jmix:droppableContent", "jmix:editorialContent"]})
+                            visible: isNodeType(type: {types: ["jnt:workflowTask"], multi: NONE})
                             displayName
                             path
                             primaryNodeType {
