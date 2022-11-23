@@ -95,6 +95,8 @@ const NodeDataFragment = {
                 }
                 usages: references(fieldFilter: {filters: {fieldName: "node.visible", value: "true"}}) {
                     nodes {
+                        name
+                        language
                         node {
                             ...NodeCacheRequiredFields
                             visible: isNodeType(type: {types: ["jmix:droppableContent", "jmix:editorialContent"]})

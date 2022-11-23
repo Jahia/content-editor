@@ -140,7 +140,9 @@ const getTechnicalInfo = (nodeData, t) => {
 };
 
 const getUsagesInfo = nodeData => {
-    return nodeData.usages.nodes.map(nodeData => nodeData.node);
+    return Object.values(nodeData.usages.nodes.reduce((acc, ref) => (
+        {...acc, [ref.node.uuid]: {...ref.node, locales: acc[ref.node.uuid] ? [...acc[ref.node.uuid]?.locales, ref.language] : [ref.language]}}
+    ), {}));
 };
 
 export const adaptEditFormData = (data, lang, t) => {
