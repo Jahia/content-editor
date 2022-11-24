@@ -1,0 +1,36 @@
+name: Get dependencies updates (new and unused versions)
+
+on:
+  workflow_dispatch:
+  pull_request:
+
+jobs:
+  js-checks:
+    name: Get Javascript dependencies new and unused versions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: jahia/jahia-modules-action/dependencies-get-unused-javascript@TECH-1022
+        with:
+          default_issue_assignee: 'rknj'
+          github_token: ${{ secrets.GH_API_TOKEN }}
+      - uses: jahia/jahia-modules-action/dependencies-get-new-versions-javascript@TECH-1022
+        if: always()
+        with:
+          default_issue_assignee: 'rknj'
+          github_token: ${{ secrets.GH_API_TOKEN }}
+
+  java-checks:
+    name: Get Java dependencies new and unused versions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: jahia/jahia-modules-action/dependencies-get-unused-java@TECH-1022
+        with:
+          default_issue_assignee: 'rknj'
+          github_token: ${{ secrets.GH_API_TOKEN }}
+      - uses: jahia/jahia-modules-action/dependencies-get-new-versions-java@TECH-1022
+        if: always()
+        with:
+          default_issue_assignee: 'rknj'
+          github_token: ${{ secrets.GH_API_TOKEN }}

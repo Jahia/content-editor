@@ -111,3 +111,25 @@ jobs:
           path: tests/artifacts/results/xml_reports/*.xml
           reporter: java-junit
           fail-on-error: 'false'
+
+  js-checks:
+    name: Check Javascript dependencies and licenses
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: jahia/jahia-modules-action/dependencies-check-javascript@TECH-1022
+        with:
+          github_token: ${{ secrets.GH_API_TOKEN }}
+          show_checklist: 'true'
+
+  java-checks:
+    name: Check Java dependencies and licenses
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: jahia/jahia-modules-action/dependencies-check-java@TECH-1022
+        with:
+          github_token: ${{ secrets.GH_API_TOKEN }}
+          show_checklist: 'true'
