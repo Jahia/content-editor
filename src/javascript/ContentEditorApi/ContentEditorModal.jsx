@@ -27,7 +27,7 @@ const Transition = React.forwardRef((props, ref) => {
     return <Slide ref={ref} direction="up" {...props}/>;
 });
 
-export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
+export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEditorConfig}) => {
     const notificationContext = useNotifications();
 
     const needRefresh = useRef(false);
@@ -50,7 +50,7 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
     // Standalone env props
     const envProps = {
         back: () => {
-            setEditorConfig(false);
+            deleteEditorConfig();
         },
         disabledBack: () => false,
         createCallback: ({newNode}) => {
@@ -69,7 +69,7 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
                         variant="outlined"
                         label={t('content-editor:label.contentEditor.edit.contentEdit')}
                         onClick={() => {
-                            setEditorConfig({
+                            updateEditorConfig({
                                 ...editorConfig,
                                 isFullscreen: false,
                                 uuid: newNode.uuid,
@@ -106,7 +106,7 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
             if (newNode && (editorConfig.isFullscreen || forceRedirect)) {
                 // Redirect to CE edit mode, for the created node
                 needRefresh.current = false;
-                setEditorConfig({
+                updateEditorConfig({
                     ...editorConfig,
                     uuid: newNode.uuid,
                     lang: language ? language : editorConfig.lang,
@@ -114,17 +114,17 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
                 });
             } else if (!editorConfig.isFullscreen) {
                 // Otherwise refresh and close
-                setEditorConfig(false);
+                deleteEditorConfig();
             }
         },
         onCreateAnother: () => {
-            setEditorConfig({
+            updateEditorConfig({
                 ...editorConfig,
                 count: (editorConfig.count || 0) + 1
             });
         },
         switchLanguageCallback: language => {
-            setEditorConfig({
+            updateEditorConfig({
                 ...editorConfig,
                 lang: language
             });
@@ -138,7 +138,7 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
             envProps.back();
         },
         setFullscreen: () => {
-            setEditorConfig({
+            updateEditorConfig({
                 ...editorConfig,
                 isFullscreen: true
             });
@@ -147,7 +147,7 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
         useFormDefinition: editorConfig.useFormDefinition,
         isFullscreen: editorConfig.isFullscreen,
         layout: editorConfig.layout || (editorConfig.isFullscreen ? EditPanelFullscreen : EditPanelCompact),
-        confirmationDialog: (editorConfig.useConfirmationDialog !== false) && <OnCloseConfirmationDialog setEditorConfig={setEditorConfig} openDialog={openDialog}/>
+        confirmationDialog: (editorConfig.useConfirmationDialog !== false) && <OnCloseConfirmationDialog deleteEditorConfig={deleteEditorConfig} openDialog={openDialog}/>
     };
 
     const classes = editorConfig.isFullscreen ? {
@@ -165,7 +165,7 @@ export const ContentEditorModal = ({editorConfig, setEditorConfig}) => {
                 TransitionComponent={Transition}
                 aria-labelledby="dialog-content-editor"
                 classes={classes}
-                onClose={() => openDialog.current ? openDialog.current() : setEditorConfig(false)}
+                onClose={() => openDialog.current ? openDialog.current() : deleteEditorConfig()}
                 onRendered={() => window.focus()}
                 {...editorConfig.dialogProps}
         >
@@ -202,5 +202,6 @@ ContentEditorModal.propTypes = {
         layout: PropTypes.object,
         useConfirmationDialog: PropTypes.bool
     }).isRequired,
-    setEditorConfig: PropTypes.func.isRequired
+    updateEditorConfig: PropTypes.func.isRequired,
+    deleteEditorConfig: PropTypes.func.isRequired
 };

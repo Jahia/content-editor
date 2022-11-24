@@ -9,21 +9,34 @@ import {ContentTypeSelectorModal} from '~/ContentTypeSelectorModal';
 import {Constants} from '~/ContentEditor.constants';
 
 export const ContentEditorApi = () => {
-    const [editorConfig, setEditorConfig] = useState(false);
+    const [editorConfigs, setEditorConfigs] = useState([]);
     const [contentTypeSelectorConfig, setContentTypeSelectorConfig] = useState(false);
 
+    let newEditorConfig = (editorConfig) => {
+        setEditorConfigs([...editorConfigs, editorConfig])
+    }
+    let updateEditorConfig = (editorConfig, index) => {
+        let copy = Array.from(editorConfigs)
+        copy[index] = editorConfig;
+        setEditorConfigs(copy)
+    }
+    let deleteEditorConfig = (index) => {
+        let copy = Array.from(editorConfigs)
+        copy.splice(index, 1);
+        setEditorConfigs(copy)
+    }
+
     let context = useContentEditorApiContext();
-    context.edit = useEdit(setEditorConfig);
-    context.create = useCreate(setEditorConfig, setContentTypeSelectorConfig);
+    context.edit = useEdit(newEditorConfig);
+    context.create = useCreate(newEditorConfig, setContentTypeSelectorConfig);
 
     window.CE_API = window.CE_API || {};
     window.CE_API.edit = context.edit;
     window.CE_API.create = context.create;
 
-    const editorConfigDefined = Boolean(editorConfig);
-    const editorConfigLang = editorConfig.lang;
+    const editorConfigLang = editorConfigs.length > 0 ? editorConfigs[0].lang : undefined;
     useEffect(() => {
-        if (editorConfigDefined) {
+        if (Boolean(editorConfigLang)) {
             // Sync GWT language
             window.overrideLang = editorConfigLang;
             window.previousLang = window.jahiaGWTParameters.lang;
@@ -38,7 +51,7 @@ export const ContentEditorApi = () => {
                 window.authoringApi.switchLanguage(window.previousLang);
             }
         };
-    }, [editorConfigDefined, editorConfigLang]);
+    }, [editorConfigLang]);
 
     return (
         <ErrorBoundary fallback={<FullScreenError/>}>
@@ -58,7 +71,7 @@ export const ContentEditorApi = () => {
                     }}
                     onCreateContent={contentType => {
                         setContentTypeSelectorConfig(false);
-                        setEditorConfig({
+                        newEditorConfig({
                             name: contentTypeSelectorConfig.name,
                             uilang: contentTypeSelectorConfig.uilang,
                             contentType: contentType.name,
@@ -69,12 +82,17 @@ export const ContentEditorApi = () => {
                 />
             )}
 
-            {editorConfig && (
-                <ContentEditorModal
+            {editorConfigs.map((editorConfig, index) => {
+                return <ContentEditorModal
                     editorConfig={editorConfig}
-                    setEditorConfig={setEditorConfig}
+                    updateEditorConfig={(updatedEditorConfig) => {
+                        updateEditorConfig(updatedEditorConfig, index)
+                    }}
+                    deleteEditorConfig={() => {
+                        deleteEditorConfig(index)
+                    }}
                 />
-            )}
+            })}
         </ErrorBoundary>
     );
 };
