@@ -12,19 +12,21 @@ export const ContentEditorApi = () => {
     const [editorConfigs, setEditorConfigs] = useState([]);
     const [contentTypeSelectorConfig, setContentTypeSelectorConfig] = useState(false);
 
-    let newEditorConfig = (editorConfig) => {
-        setEditorConfigs([...editorConfigs, editorConfig])
-    }
+    let newEditorConfig = editorConfig => {
+        setEditorConfigs([...editorConfigs, editorConfig]);
+    };
+
     let updateEditorConfig = (editorConfig, index) => {
-        let copy = Array.from(editorConfigs)
+        let copy = Array.from(editorConfigs);
         copy[index] = editorConfig;
-        setEditorConfigs(copy)
-    }
-    let deleteEditorConfig = (index) => {
-        let copy = Array.from(editorConfigs)
+        setEditorConfigs(copy);
+    };
+
+    let deleteEditorConfig = index => {
+        let copy = Array.from(editorConfigs);
         copy.splice(index, 1);
-        setEditorConfigs(copy)
-    }
+        setEditorConfigs(copy);
+    };
 
     let context = useContentEditorApiContext();
     context.edit = useEdit(newEditorConfig);
@@ -36,7 +38,7 @@ export const ContentEditorApi = () => {
 
     const editorConfigLang = editorConfigs.length > 0 ? editorConfigs[0].lang : undefined;
     useEffect(() => {
-        if (Boolean(editorConfigLang)) {
+        if (editorConfigLang) {
             // Sync GWT language
             window.overrideLang = editorConfigLang;
             window.previousLang = window.jahiaGWTParameters.lang;
@@ -83,15 +85,18 @@ export const ContentEditorApi = () => {
             )}
 
             {editorConfigs.map((editorConfig, index) => {
-                return <ContentEditorModal
-                    editorConfig={editorConfig}
-                    updateEditorConfig={(updatedEditorConfig) => {
-                        updateEditorConfig(updatedEditorConfig, index)
-                    }}
-                    deleteEditorConfig={() => {
-                        deleteEditorConfig(index)
-                    }}
-                />
+                return (
+                    <ContentEditorModal
+                        key={editorConfig.mode + '_' + editorConfig.uuid} // TODO: best effort to have a unique KEY for modals (definitely we need control to allow or not open same modal or multiple create at the same time.)
+                        editorConfig={editorConfig}
+                        updateEditorConfig={updatedEditorConfig => {
+                            updateEditorConfig(updatedEditorConfig, index);
+                        }}
+                        deleteEditorConfig={() => {
+                            deleteEditorConfig(index);
+                        }}
+                    />
+                );
             })}
         </ErrorBoundary>
     );
