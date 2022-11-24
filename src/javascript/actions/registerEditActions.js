@@ -6,13 +6,16 @@ import {CloudUpload, Edit, MoreVert, Save} from '@jahia/moonstone';
 import {editContentAction} from './jcontent/editContent/editContentAction';
 import {openWorkInProgressAction} from './contenteditor/openWorkInProgress/openWorkInProgressAction';
 import {copyLanguageAction} from './contenteditor/copyLanguage/copyLanguageAction';
+import {booleanValue} from '~/SelectorTypes/Picker/Picker2.utils';
 
 export const registerEditActions = actionsRegistry => {
+    const showPageComposer = booleanValue(contextJsParameters.config.jcontent?.showPageComposer);
+
     // Edit action button in JContent; need separate actions for content and pages
     actionsRegistry.add('action', 'edit', editContentAction, {
         buttonIcon: <Edit/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.contentEdit',
-        targets: ['contentActions:2', 'headerPrimaryActions:1.5'],
+        targets: showPageComposer ? ['contentActions:2', 'headerPrimaryActions:1.5'] : ['contentActions:2'],
         hideOnNodeTypes: ['jnt:virtualsite', 'jnt:page'], // For edit content
         requiredSitePermission: ['editAction'],
         getDisplayName: true,
@@ -23,7 +26,7 @@ export const registerEditActions = actionsRegistry => {
     actionsRegistry.add('action', 'editPage', editContentAction, {
         buttonIcon: <Edit/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.contentEdit',
-        targets: ['contentActions:2', 'headerPrimaryActions:1.5'],
+        targets: showPageComposer ? ['contentActions:2', 'headerPrimaryActions:1.5'] : ['contentActions:2'],
         showOnNodeTypes: ['jnt:page'], // For edit pages
         requiredSitePermission: ['editPageAction'],
         getDisplayName: true,
