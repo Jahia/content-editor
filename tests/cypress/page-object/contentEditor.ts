@@ -81,7 +81,7 @@ export class ContentEditor extends BasePage {
 
     getLanguageSwitcher(): Dropdown {
         if (!this.languageSwitcher) {
-            this.languageSwitcher = getComponentByAttr(Dropdown, 'data-cm-role', 'language-switcher');
+            this.languageSwitcher = getComponentBySelector(Dropdown, '#contenteditor-dialog-title [data-cm-role="language-switcher"]');
         }
 
         return this.languageSwitcher;
