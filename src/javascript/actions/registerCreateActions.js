@@ -1,7 +1,7 @@
 import React from 'react';
 import {AddCircle, Save} from '@jahia/moonstone';
 
-import {createContentAction, CreateContent} from './jcontent/createContent/createContentAction';
+import {createContentAction} from './jcontent/createContent/createContentAction';
 import {createAction} from './contenteditor/create/createAction';
 import {cmGoto} from '~/redux/JContent.redux-actions';
 import {batchActions} from 'redux-batched-actions';
@@ -19,40 +19,40 @@ export const registerCreateActions = registry => {
         isModal: true
     });
 
-    registry.addOrReplace('action', 'createPage', {
-        buttonIcon: <AddCircle/>,
-        component: props => booleanValue(contextJsParameters.config.jcontent?.showPageComposer) && <CreateContent {...props}/>,
-        targets: ['createMenuActions:-2', 'contentActions:-2', 'headerPrimaryActions:1'],
-        showOnNodeTypes: ['jnt:page', 'jnt:navMenuText'],
-        requiredPermission: ['jcr:addChildNodes'],
-        nodeTypes: ['jnt:page'],
-        includeSubTypes: false,
-        isModal: true,
-        onCreate: ({path}) => {
-            window.jahia.reduxStore.dispatch(batchActions([{
-                type: 'CM_OPEN_PATHS', payload: [path.substring(0, path.lastIndexOf('/'))]
-            }, cmGoto({path})]));
-        }
-    });
+    if (booleanValue(contextJsParameters.config.jcontent?.showPageComposer)) {
+        registry.addOrReplace('action', 'createPage', createContentAction, {
+            buttonIcon: <AddCircle/>,
+            targets: ['createMenuActions:-2', 'contentActions:-2', 'headerPrimaryActions:1'],
+            showOnNodeTypes: ['jnt:page', 'jnt:navMenuText'],
+            requiredPermission: ['jcr:addChildNodes'],
+            nodeTypes: ['jnt:page'],
+            includeSubTypes: false,
+            isModal: true,
+            onCreate: ({path}) => {
+                window.jahia.reduxStore.dispatch(batchActions([{
+                    type: 'CM_OPEN_PATHS', payload: [path.substring(0, path.lastIndexOf('/'))]
+                }, cmGoto({path})]));
+            }
+        });
 
-    registry.add('action', 'createNavMenuItemMenu', registry.get('action', 'menuAction'), {
-        buttonIcon: <AddCircle/>,
-        buttonLabel: 'content-editor:label.contentEditor.CMMActions.createNewContent.newMenu',
-        targets: ['createMenuActions:-1', 'contentActions:-1'],
-        menuTarget: 'createNavMenuItemMenu',
-        isMenuPreload: true
-    });
+        registry.add('action', 'createNavMenuItemMenu', registry.get('action', 'menuAction'), {
+            buttonIcon: <AddCircle/>,
+            buttonLabel: 'content-editor:label.contentEditor.CMMActions.createNewContent.newMenu',
+            targets: ['createMenuActions:-1', 'contentActions:-1'],
+            menuTarget: 'createNavMenuItemMenu',
+            isMenuPreload: true
+        });
 
-    registry.addOrReplace('action', 'createNavMenuItem', {
-        buttonIcon: <AddCircle/>,
-        component: props => booleanValue(contextJsParameters.config.jcontent?.showPageComposer) && <CreateContent {...props}/>,
-        targets: ['createNavMenuItemMenu'],
-        showOnNodeTypes: ['jnt:page', 'jnt:navMenuText'],
-        requiredPermission: ['jcr:addChildNodes'],
-        nodeTypes: ['jnt:navMenuText', 'jnt:nodeLink', 'jnt:externalLink'],
-        includeSubTypes: false,
-        isModal: true
-    });
+        registry.addOrReplace('action', 'createNavMenuItem', createContentAction, {
+            buttonIcon: <AddCircle/>,
+            targets: ['createNavMenuItemMenu'],
+            showOnNodeTypes: ['jnt:page', 'jnt:navMenuText'],
+            requiredPermission: ['jcr:addChildNodes'],
+            nodeTypes: ['jnt:navMenuText', 'jnt:nodeLink', 'jnt:externalLink'],
+            includeSubTypes: false,
+            isModal: true
+        });
+    }
 
     // In app actions
     registry.add('action', 'createButton', createAction, {
