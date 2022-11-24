@@ -4,36 +4,50 @@ import * as PropTypes from 'prop-types';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/contexts';
 import styles from './EditPanelLanguageSwitcher.scss';
 import {getCapitalized, useSwitchLanguage} from '~/utils';
+import {useTranslation} from 'react-i18next';
 
 export const EditPanelLanguageSwitcher = ({siteInfo}) => {
-    const {lang: currentLanguage} = useContentEditorConfigContext();
-    const {i18nContext} = useContentEditorContext();
-    let langLabel;
-
-    const languages = siteInfo.languages.map(item => {
-        const capitalizedDisplayName = getCapitalized(item.displayName);
-
-        if (item.language === currentLanguage) {
-            langLabel = capitalizedDisplayName;
-        }
-
-        return {label: capitalizedDisplayName, value: item.language, iconEnd: i18nContext[item.language] ? <Edit/> : null};
-    });
-
+    const {mode, lang: currentLanguage} = useContentEditorConfigContext();
+    const {i18nContext, nodeData} = useContentEditorContext();
     const switchLanguage = useSwitchLanguage();
+    const {t} = useTranslation('content-editor');
+    const labelPrefix = 'content-editor:label.contentEditor.header.languageSwitcher';
 
-    // Do not display language switcher if site is not multi-language
-    if (!languages || languages.length <= 1) {
-        return null;
+    function getLanguageOptions() {
+        let langLabel; // Current dropdown selection
+        const translatedOption = {groupLabel: t(`${labelPrefix}.switchLanguage`), options: []};
+        const notTranslatedOption = {groupLabel: t(`${labelPrefix}.addTranslation.${mode}`), options: []};
+        const translatedLangs = nodeData?.translationLanguages || [];
+
+        siteInfo.languages.forEach(item => {
+            const label = getCapitalized(item.displayName);
+            if (item.language === currentLanguage) {
+                langLabel = label;
+            }
+
+            // Group language options depending on whether node has been translated to this language already or not
+            const isTranslated = translatedLangs.includes(item.language) || i18nContext[item.language];
+            const group = isTranslated ? translatedOption : notTranslatedOption;
+            group.options.push({
+                label,
+                value: item.language,
+                iconEnd: i18nContext[item.language] ? <Edit/> : null
+            });
+        });
+
+        const langOptions = [translatedOption, notTranslatedOption].filter(o => o.options.length); // Do not display group if empty
+        return {langLabel, langOptions};
     }
 
-    return (
+    const {langLabel, langOptions} = getLanguageOptions();
+    // Hide language switcher if site is not multi-language
+    return (!siteInfo?.languages || siteInfo.languages.length <= 1) ? null : (
         <>
             <Dropdown
                 className={styles.dropdown}
                 icon={<Language/>}
                 data-cm-role="language-switcher"
-                data={languages}
+                data={langOptions}
                 value={currentLanguage}
                 label={langLabel}
                 size="small"
