@@ -121,6 +121,7 @@ export const FilesGrid = ({totalCount, rows, isLoading, pickerConfig, accordionI
                                   node={node}
                                   setPath={setPath}
                                   contextualMenuAction="contentPickerMenu"
+                                  tableConfig={{dnd: undefined}}
                                   onPreviewSelect={(...args) => {
                                       onPreviewSelect(...args);
                                   }}
