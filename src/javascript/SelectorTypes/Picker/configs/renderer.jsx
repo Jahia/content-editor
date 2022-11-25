@@ -1,6 +1,6 @@
 import React from 'react';
 import {AccordionItem} from '@jahia/moonstone';
-import {cePickerClosePaths, cePickerOpenPaths, cePickerPath} from '~/SelectorTypes/Picker/Picker2.redux';
+import {cePickerClosePaths, cePickerOpenPaths, cePickerPath} from '~/SelectorTypes/Picker/Picker.redux';
 import {ContentTree} from '@jahia/jcontent';
 
 const selector = state => ({

@@ -1,11 +1,11 @@
 import React from 'react';
-import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
+import {Constants} from '~/SelectorTypes/Picker/Picker.constants';
 import {useMediaPickerInputData} from '~/SelectorTypes/Picker/configs/mediaPicker/useMediaPickerInputData';
 import {FileModeSelector} from '@jahia/jcontent';
 import {transformQueryHandler} from '~/SelectorTypes/Picker/configs/queryHandlers';
 import {renderer} from '~/SelectorTypes/Picker/configs/renderer';
 import {FilePickerCaption} from '~/SelectorTypes/Picker/configs/mediaPicker/FilePickerCaption';
-import {cePickerSetFileViewMode} from '~/SelectorTypes/Picker/Picker2.redux';
+import {cePickerSetFileViewMode} from '~/SelectorTypes/Picker/Picker.redux';
 import {FileImage} from '@jahia/moonstone';
 import {PickerFilesQueryHandler} from '~/SelectorTypes/Picker/configs/mediaPicker/PickerFilesQueryHandler';
 

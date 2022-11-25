@@ -1,5 +1,5 @@
 import {registry} from '@jahia/ui-extender';
-import {mergeDeep} from '~/SelectorTypes/Picker/Picker2.utils';
+import {mergeDeep} from '~/SelectorTypes/Picker/Picker.utils';
 import {DefaultPickerConfig} from '~/SelectorTypes/Picker/configs/DefaultPickerConfig';
 
 const contextPath = (window.contextJsParameters && window.contextJsParameters.contextPath) || '';

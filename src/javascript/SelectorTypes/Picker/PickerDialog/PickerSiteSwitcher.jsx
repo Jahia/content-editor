@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallowEqual, useSelector} from 'react-redux';
-import {cePickerMode, cePickerOpenPaths, cePickerPath, cePickerSite} from '~/SelectorTypes/Picker/Picker2.redux';
-import {getDetailedPathArray} from '~/SelectorTypes/Picker/Picker2.utils';
+import {cePickerMode, cePickerOpenPaths, cePickerPath, cePickerSite} from '~/SelectorTypes/Picker/Picker.redux';
+import {getDetailedPathArray} from '~/SelectorTypes/Picker/Picker.utils';
 import {batchActions} from 'redux-batched-actions';
 import {SiteSwitcher, jcontentUtils} from '@jahia/jcontent';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';

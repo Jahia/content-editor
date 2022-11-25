@@ -1,4 +1,4 @@
-import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
+import {Constants} from '~/SelectorTypes/Picker/Picker.constants';
 import {transformQueryHandler} from '~/SelectorTypes/Picker/configs/queryHandlers';
 import {Group} from '@jahia/moonstone';
 import {renderer} from '~/SelectorTypes/Picker/configs/renderer';

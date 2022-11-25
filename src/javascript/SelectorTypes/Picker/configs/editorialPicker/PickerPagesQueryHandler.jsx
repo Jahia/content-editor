@@ -1,4 +1,4 @@
-import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
+import {Constants} from '~/SelectorTypes/Picker/Picker.constants';
 import {PagesQueryHandler, BaseTreeQueryHandler} from '@jahia/jcontent';
 import {selectableTypeFragment} from '~/SelectorTypes/Picker/configs/queryHandlers';
 

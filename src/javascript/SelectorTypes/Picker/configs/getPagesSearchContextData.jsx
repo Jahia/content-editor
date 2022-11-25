@@ -1,6 +1,6 @@
 import {registry} from '@jahia/ui-extender';
-import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
-import {getBaseSearchContextData} from '~/SelectorTypes/Picker/Picker2.utils';
+import {Constants} from '~/SelectorTypes/Picker/Picker.constants';
+import {getBaseSearchContextData} from '~/SelectorTypes/Picker/Picker.utils';
 
 export const getPagesSearchContextData = p => {
     const pagesItem = registry.get(Constants.ACCORDION_ITEM_NAME, Constants.ACCORDION_ITEM_TYPES.PAGES);

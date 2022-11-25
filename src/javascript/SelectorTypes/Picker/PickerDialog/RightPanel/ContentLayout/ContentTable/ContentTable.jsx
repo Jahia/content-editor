@@ -6,7 +6,7 @@ import {Table, TableBody, TablePagination} from '@jahia/moonstone';
 import {useTable} from 'react-table';
 import {useRowMultipleSelection, useRowSelection} from '~/SelectorTypes/Picker/reactTable/plugins';
 import {allColumnData} from '~/SelectorTypes/Picker/reactTable/columns';
-import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
+import {Constants} from '~/SelectorTypes/Picker/Picker.constants';
 import {
     cePickerClosePaths,
     cePickerMode,
@@ -15,8 +15,8 @@ import {
     cePickerSetPage,
     cePickerSetPageSize,
     cePickerSetSort
-} from '~/SelectorTypes/Picker/Picker2.redux';
-import {flattenTree, getDetailedPathArray} from '~/SelectorTypes/Picker/Picker2.utils';
+} from '~/SelectorTypes/Picker/Picker.redux';
+import {flattenTree, getDetailedPathArray} from '~/SelectorTypes/Picker/Picker.utils';
 import {batchActions} from 'redux-batched-actions';
 import {
     ContentEmptyDropZone,

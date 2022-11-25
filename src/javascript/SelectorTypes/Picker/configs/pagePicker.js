@@ -1,4 +1,4 @@
-import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
+import {Constants} from '~/SelectorTypes/Picker/Picker.constants';
 import {getPagesSearchContextData} from '~/SelectorTypes/Picker/configs/getPagesSearchContextData';
 import {PickerTreeQueryHandler} from '~/SelectorTypes/Picker/configs/queryHandlers';
 import {renderer} from '~/SelectorTypes/Picker/configs/renderer';

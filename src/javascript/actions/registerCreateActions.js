@@ -5,7 +5,7 @@ import {createContentAction} from './jcontent/createContent/createContentAction'
 import {createAction} from './contenteditor/create/createAction';
 import {cmGoto} from '~/redux/JContent.redux-actions';
 import {batchActions} from 'redux-batched-actions';
-import {booleanValue} from '~/SelectorTypes/Picker/Picker2.utils';
+import {booleanValue} from '~/SelectorTypes/Picker/Picker.utils';
 
 export const registerCreateActions = registry => {
     registry.addOrReplace('action', 'createContent', createContentAction, {

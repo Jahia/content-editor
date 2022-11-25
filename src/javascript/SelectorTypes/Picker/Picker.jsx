@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 import {FieldPropTypes} from '~/ContentEditor.proptypes';
 import {ReferenceCard} from '~/DesignSystem/ReferenceCard';
-import {mergeDeep, set, toArray} from './Picker2.utils';
-import {PickerDialog} from './PickerDialog/PickerDialog2';
+import {mergeDeep, set, toArray} from './Picker.utils';
+import {PickerDialog} from './PickerDialog/PickerDialog';
 import {DisplayAction} from '@jahia/ui-extender';
 import {getButtonRenderer} from '~/utils';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
-import styles from './Picker2.scss';
+import styles from './Picker.scss';
 import {Button} from '@jahia/moonstone';
 import {FieldContextProvider} from '~/contexts/FieldContext';
 import {DefaultPickerConfig} from '~/SelectorTypes/Picker/configs/DefaultPickerConfig';
@@ -17,7 +17,7 @@ import {OrderableValue} from '~/DesignSystem/OrderableValue/OrderableValue';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
-export const Picker2 = ({field, value, editorContext, inputContext, onChange, onBlur}) => {
+export const Picker = ({field, value, editorContext, inputContext, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
     const parsedOptions = {};
     field.selectorOptions.forEach(option => {
@@ -161,7 +161,7 @@ export const Picker2 = ({field, value, editorContext, inputContext, onChange, on
     );
 };
 
-Picker2.propTypes = {
+Picker.propTypes = {
     editorContext: PropTypes.object.isRequired,
     value: PropTypes.string,
     field: FieldPropTypes.isRequired,
@@ -170,4 +170,4 @@ Picker2.propTypes = {
     onBlur: PropTypes.func.isRequired
 };
 
-Picker2.displayName = 'Picker2';
+Picker.displayName = 'Picker2';

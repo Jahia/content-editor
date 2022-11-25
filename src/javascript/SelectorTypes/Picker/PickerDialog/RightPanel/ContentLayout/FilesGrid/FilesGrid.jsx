@@ -15,8 +15,8 @@ import {
     cePickerRemoveSelection,
     cePickerSetPage,
     cePickerSetPageSize
-} from '~/SelectorTypes/Picker/Picker2.redux';
-import {getDetailedPathArray} from '~/SelectorTypes/Picker/Picker2.utils';
+} from '~/SelectorTypes/Picker/Picker.redux';
+import {getDetailedPathArray} from '~/SelectorTypes/Picker/Picker.utils';
 import {batchActions} from 'redux-batched-actions';
 import {useFieldContext} from '~/contexts/FieldContext';
 import {registry} from '@jahia/ui-extender';

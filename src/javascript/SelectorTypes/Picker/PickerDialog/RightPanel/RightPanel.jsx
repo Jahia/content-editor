@@ -15,7 +15,7 @@ import {PickerSiteSwitcher} from '~/SelectorTypes/Picker';
 import {jcontentUtils} from '@jahia/jcontent';
 import {useContentEditorConfigContext} from '~/contexts';
 import {replaceFragmentsInDocument} from '@jahia/data-helper';
-import {GET_PICKER_NODE_UUID} from '~/SelectorTypes/Picker/PickerDialog/PickerDialog2.gql-queries';
+import {GET_PICKER_NODE_UUID} from '~/SelectorTypes/Picker/PickerDialog/PickerDialog.gql-queries';
 import {useQuery} from '@apollo/react-hooks';
 
 const ButtonRenderer = getButtonRenderer({defaultButtonProps: {variant: 'ghost'}});

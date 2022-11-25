@@ -1,4 +1,4 @@
-import {cePickerSetPage, cePickerSetTableViewType} from '~/SelectorTypes/Picker/Picker2.redux';
+import {cePickerSetPage, cePickerSetTableViewType} from '~/SelectorTypes/Picker/Picker.redux';
 import React from 'react';
 import {ContentTypeSelector as JContentTypeSelector} from '@jahia/jcontent';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';

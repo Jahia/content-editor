@@ -2,14 +2,14 @@ import React, {useEffect, useRef} from 'react';
 import {useTranslation} from 'react-i18next';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {Loader} from '@jahia/moonstone';
-import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
+import {Constants} from '~/SelectorTypes/Picker/Picker.constants';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 import ContentTable from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout/ContentTable';
 import {registry} from '@jahia/ui-extender';
 import {jcontentUtils, useLayoutQuery} from '@jahia/jcontent';
 import clsx from 'clsx';
 import styles from './ContentLayout.scss';
-import {cePickerOpenPaths} from '~/SelectorTypes/Picker/Picker2.redux';
+import {cePickerOpenPaths} from '~/SelectorTypes/Picker/Picker.redux';
 import FilesGrid from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout/FilesGrid';
 import PropTypes from 'prop-types';
 

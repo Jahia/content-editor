@@ -1,4 +1,4 @@
-import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
+import {Constants} from '~/SelectorTypes/Picker/Picker.constants';
 import {EditorialLinkContentTypeSelector} from './EditorialLinkContentTypeSelector';
 import {renderer} from '../renderer';
 import React from 'react';
