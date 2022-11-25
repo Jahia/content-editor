@@ -173,10 +173,10 @@
       },
       "header":  {
         "languageSwitcher": {
-          "switchLanguage": "Switch language",
+          "switchLanguage": "Sprache wechseln",
           "addTranslation": {
-            "edit": "Add translation",
-            "create": "Create translation"
+            "edit": "Übersetzung hinzufügen",
+            "create": "Übersetzung erstellen"
           }
         },
         "chips": {
