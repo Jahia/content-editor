@@ -1,7 +1,6 @@
 import {contentTypes} from '../../fixtures/pickers/contentTypes';
 import {assertUtils} from '../../utils/assertUtils';
 import {AccordionItem} from '../../page-object/accordionItem';
-import {PickerField} from '../../page-object/pickerField';
 import {JContent} from '../../page-object/jcontent';
 
 describe('Picker tests - multiple', () => {
