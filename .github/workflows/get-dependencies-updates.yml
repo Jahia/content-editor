@@ -10,11 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: jahia/jahia-modules-action/dependencies-get-unused-javascript@TECH-1022
+      - uses: jahia/jahia-modules-action/dependencies-get-unused-javascript@v2
         with:
           default_issue_assignee: 'rknj'
           github_token: ${{ secrets.GH_API_TOKEN }}
-      - uses: jahia/jahia-modules-action/dependencies-get-new-versions-javascript@TECH-1022
+      - uses: jahia/jahia-modules-action/dependencies-get-new-versions-javascript@v2
         if: always()
         with:
           default_issue_assignee: 'rknj'
@@ -25,11 +25,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: jahia/jahia-modules-action/dependencies-get-unused-java@TECH-1022
+      - uses: jahia/jahia-modules-action/dependencies-get-unused-java@v2
         with:
           default_issue_assignee: 'rknj'
           github_token: ${{ secrets.GH_API_TOKEN }}
-      - uses: jahia/jahia-modules-action/dependencies-get-new-versions-java@TECH-1022
+      - uses: jahia/jahia-modules-action/dependencies-get-new-versions-java@v2
         if: always()
         with:
           default_issue_assignee: 'rknj'
