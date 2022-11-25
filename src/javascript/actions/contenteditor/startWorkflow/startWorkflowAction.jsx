@@ -48,15 +48,13 @@ const StartWorkFlow = ({isMainButton, render: Render, loading: Loading, ...other
                 // Do not display language in request publication button if there is only one language
                 buttonLabelShort={(siteInfo?.languages.length > 1) ?
                     '' : 'content-editor:label.contentEditor.edit.action.startWorkflow.shortName'}
-                onClick={context => {
-                    if (context.enabled) {
-                        window.authoringApi.openPublicationWorkflow(
-                            [nodeData.uuid],
-                            false, // Not publishing all subNodes (AKA sub pages)
-                            false, // Not publishing all language
-                            false // Not unpublish action
-                        );
-                    }
+                onClick={() => {
+                    window.authoringApi.openPublicationWorkflow(
+                        [nodeData.uuid],
+                        false, // Not publishing all subNodes (AKA sub pages)
+                        false, // Not publishing all language
+                        false // Not unpublish action
+                    );
                 }}
         />
     );
