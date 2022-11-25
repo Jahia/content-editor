@@ -7,6 +7,10 @@ on:
   pull_request:
     types: [opened, reopened, synchronize]
 
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   update-signature:
     name: Update module signature
@@ -118,7 +122,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: jahia/jahia-modules-action/dependencies-check-javascript@TECH-1022
+      - uses: jahia/jahia-modules-action/dependencies-check-javascript@v2
         with:
           github_token: ${{ secrets.GH_API_TOKEN }}
           show_checklist: 'true'
@@ -129,7 +133,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: jahia/jahia-modules-action/dependencies-check-java@TECH-1022
+      - uses: jahia/jahia-modules-action/dependencies-check-java@v2
         with:
           github_token: ${{ secrets.GH_API_TOKEN }}
           show_checklist: 'true'
