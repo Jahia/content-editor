@@ -1,17 +1,12 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import {ListItem, Typography, ChevronRight, Close} from '@jahia/moonstone';
+import {ListItem, Typography, ChevronRight, Close, HandleDrag} from '@jahia/moonstone';
 import styles from './ValueList.scss';
 import cslx from 'clsx';
 
-const ValueList = ({values, filter, isMultiple, selected, onSelect, onMove, orientation}) => {
-    // Clear selection if filter changed
-    useEffect(() => {
-        onSelect([]);
-    }, [filter]); //eslint-disable-line
-
-    const iconProp = value => {
-        if (orientation === 'right') {
+const ValueList = ({values, filter, onMove, orientation, listItemProps = () => ({}), iconStartProps = () => ({})}) => {
+    const iconProp = v => {
+        if (orientation === 'left') {
             return {
                 iconEnd: (
                     <div className={styles.iconContainer}>
@@ -19,7 +14,7 @@ const ValueList = ({values, filter, isMultiple, selected, onSelect, onMove, orie
                                       onClick={e => {
                         e.preventDefault();
                         e.stopPropagation();
-                        onMove([value]);
+                        onMove([v.value]);
                                            }}/>
                     </div>
                 )
@@ -33,50 +28,37 @@ const ValueList = ({values, filter, isMultiple, selected, onSelect, onMove, orie
                            onClick={e => {
                         e.preventDefault();
                         e.stopPropagation();
-                        onMove([value]);
+                        onMove([v.value]);
                     }}/>
                 </div>
-            )
+            ),
+            iconStart: <div className={styles.iconContainer} {...iconStartProps(v)}>
+                <HandleDrag/>
+            </div>
         };
     };
 
     return (
         <>
             <ul className={styles.valueList}>
-                {values.filter(v => ((!filter || filter === '') || v.label.toLowerCase().indexOf(filter.toLowerCase()) !== -1)).map(v => {
-                    const isSelected = selected.includes(v.value);
+                {values.filter(v => ((!filter || filter === '') || v.label.toLowerCase().indexOf(filter.toLowerCase()) !== -1)).map((v, index) => {
                    return (
                        <ListItem key={v.label}
-                                 className={isSelected ? cslx(styles.valueListItem, styles.selected) : cslx(styles.valueListItem)}
+                                 className={cslx(styles.valueListItem)}
                                  typographyVariant="body"
                                  label={v.label}
-                                 onClick={e => {
-                                     e.preventDefault();
-                                     e.stopPropagation();
-
-                                     if (isSelected) {
-                                         const newValue = selected.filter(s => s !== v.value);
-                                         onSelect(newValue);
-                                         return;
-                                     }
-
-                                     if (isMultiple) {
-                                         const newValue = Array.from(new Set([...selected, v.value]));
-                                         onSelect(newValue);
-                                     } else {
-                                         const newValue = [v.value];
-                                         onSelect(newValue);
-                                     }
-                                 }}
-                                 {...iconProp(v.value)}
+                                 {...iconProp({value: v.value, index: index})}
+                                 {...listItemProps({value: v.value, index: index})}
                        />
                    );
                 })}
             </ul>
             <div className={styles.captionContainer}>
-                <Typography variant="caption" weight="semiBold">
-                    {selected.length > 0 && `Selected ${selected.length} items`}
-                </Typography>
+                {orientation === 'right' &&
+                    <Typography variant="caption" weight="semiBold">
+                        {values.length > 0 && `Selected ${values.length} items`}
+                    </Typography>
+                }
             </div>
         </>
     );
@@ -85,9 +67,6 @@ const ValueList = ({values, filter, isMultiple, selected, onSelect, onMove, orie
 ValueList.propTypes = {
     values: PropTypes.array,
     filter: PropTypes.string,
-    isMultiple: PropTypes.bool,
-    selected: PropTypes.array,
-    onSelect: PropTypes.func.isRequired,
     onMove: PropTypes.func.isRequired,
     orientation: PropTypes.string.isRequired
 };
