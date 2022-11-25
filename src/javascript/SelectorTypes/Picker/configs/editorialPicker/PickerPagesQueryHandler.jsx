@@ -1,17 +1,33 @@
 import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
-import {PagesQueryHandler} from '@jahia/jcontent';
+import {PagesQueryHandler, BaseTreeQueryHandler} from '@jahia/jcontent';
 import {selectableTypeFragment} from '~/SelectorTypes/Picker/configs/queryHandlers';
+
+const isPageTypeFn = t => t === 'jnt:page' || t === 'jmix:navMenuItem';
+
+const getTypesParams = options => {
+    const {selectableTypesTable, tableView} = options;
+    const isPagesViewType = Constants.tableView.type.PAGES === tableView.viewType && selectableTypesTable.indexOf('jnt:page') > -1;
+    let typeFilter = isPagesViewType ?
+        selectableTypesTable.filter(isPageTypeFn) :
+        selectableTypesTable.filter(t => !isPageTypeFn(t));
+    return {isPagesViewType, typeFilter};
+};
+
+const getTreeParams = (isPagesViewType, options) => {
+    const {openPaths, tableView} = options;
+    if (openPaths && tableView.viewMode === 'structuredView' && !isPagesViewType) {
+        return BaseTreeQueryHandler.getTreeParams(options);
+    }
+
+    return null;
+};
 
 export const PickerPagesQueryHandler = {
     ...PagesQueryHandler,
 
     getTreeParams: options => {
-        const treeParams = PagesQueryHandler.getTreeParams(options);
-        const isPagesViewType = Constants.tableView.type.PAGES === options.tableView.viewType;
-        const isPageTypeFn = t => t === 'jnt:page' || t === 'jmix:navMenuItem';
-        let typeFilter = isPagesViewType ?
-            options.selectableTypesTable.filter(isPageTypeFn) :
-            options.selectableTypesTable.filter(t => !isPageTypeFn(t));
+        let {isPagesViewType, typeFilter} = getTypesParams(options);
+        const treeParams = getTreeParams(isPagesViewType, options);
 
         if (treeParams) {
             return ({
@@ -24,9 +40,7 @@ export const PickerPagesQueryHandler = {
 
     getQueryVariables: options => {
         const {selectableTypesTable, tableDisplayFilter} = options;
-        const isPagesViewType = Constants.tableView.type.PAGES === options.tableView.viewType;
-        const isPageTypeFn = t => t === 'jnt:page' || t === 'jmix:navMenuItem';
-        let typeFilter = isPagesViewType ? selectableTypesTable.filter(isPageTypeFn) : selectableTypesTable.filter(t => !isPageTypeFn(t));
+        let {typeFilter} = getTypesParams(options);
 
         return {
             ...PagesQueryHandler.getQueryVariables(options),
