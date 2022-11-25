@@ -46,7 +46,7 @@ describe('Picker tests - multiple', () => {
             .get()
             .find('[data-sel-content-editor-multiple-generic-field]')
             .then(elems => {
-                expect(elems.length).eq(numRows);
+                expect(elems.length).eq(numRows + 1); // Includes last reorder row
 
                 cy.log('verify removed element is reflected in selection');
                 cy.wrap(elems.eq(0))
