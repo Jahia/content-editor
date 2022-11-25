@@ -1,4 +1,4 @@
-import {registerPickerConfig} from './configs/Picker2.configs';
+import {registerPickerConfig} from './configs/Picker.configs';
 import {registerPickerActions} from './actions/registerPickerActions';
 import {Picker} from './Picker';
 import {registerPickerReducer} from '~/SelectorTypes/Picker/Picker.redux';

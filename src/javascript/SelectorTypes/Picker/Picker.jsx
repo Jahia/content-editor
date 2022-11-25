@@ -170,4 +170,4 @@ Picker.propTypes = {
     onBlur: PropTypes.func.isRequired
 };
 
-Picker.displayName = 'Picker2';
+Picker.displayName = 'Picker';
