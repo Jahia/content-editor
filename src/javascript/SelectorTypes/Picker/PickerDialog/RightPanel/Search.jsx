@@ -1,15 +1,15 @@
 import React from 'react';
 import {Dropdown, SearchContextInput} from '@jahia/moonstone';
 import styles from './Search.scss';
-import {cePickerSetSearchPath, cePickerSetSearchTerm} from '~/SelectorTypes/Picker/Picker2.redux';
+import {cePickerSetSearchPath, cePickerSetSearchTerm} from '~/SelectorTypes/Picker/Picker.redux';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import {registry} from '@jahia/ui-extender';
 import {useQuery} from '@apollo/react-hooks';
 import {batchActions} from 'redux-batched-actions';
-import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
-import {getBaseSearchContextData} from '~/SelectorTypes/Picker/Picker2.utils';
-import {GET_SEARCH_CONTEXT} from '../PickerDialog2.gql-queries';
+import {Constants} from '~/SelectorTypes/Picker/Picker.constants';
+import {getBaseSearchContextData} from '~/SelectorTypes/Picker/Picker.utils';
+import {GET_SEARCH_CONTEXT} from '../PickerDialog.gql-queries';
 import PropTypes from 'prop-types';
 import {jcontentUtils} from '@jahia/jcontent';
 

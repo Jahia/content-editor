@@ -1,8 +1,8 @@
-import {registerPickerConfig} from './configs/Picker2.configs';
+import {registerPickerConfig} from './configs/Picker.configs';
 import {registerPickerActions} from './actions/registerPickerActions';
-import {Picker2} from './Picker2';
-import {registerPickerReducer} from '~/SelectorTypes/Picker/Picker2.redux';
-import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
+import {Picker} from './Picker';
+import {registerPickerReducer} from '~/SelectorTypes/Picker/Picker.redux';
+import {Constants} from '~/SelectorTypes/Picker/Picker.constants';
 
 /**
  * If picker type is not specified, infer based on field value constraints
@@ -41,7 +41,7 @@ export const getPickerSelectorType = (registry, options, field) => {
     }
 
     return ({
-        cmp: Picker2,
+        cmp: Picker,
         supportMultiple: true,
         key: 'Picker',
         pickerConfig

@@ -1,3 +1,3 @@
-export * from './Picker2';
+export * from './Picker';
 export * from './PickerDialog';
 export * from './registerPicker';

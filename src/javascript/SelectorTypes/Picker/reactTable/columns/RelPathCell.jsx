@@ -1,5 +1,5 @@
 import {TableBodyCell} from '@jahia/moonstone';
-import {getRelativePath} from '~/SelectorTypes/Picker/Picker2.utils';
+import {getRelativePath} from '~/SelectorTypes/Picker/Picker.utils';
 import React from 'react';
 import {rowPropType} from '~/SelectorTypes/Picker/reactTable/columns/rowPropType';
 

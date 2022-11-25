@@ -1,6 +1,6 @@
 import {registry} from '@jahia/ui-extender';
 import {register} from './register';
-import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
+import {Constants} from '~/SelectorTypes/Picker/Picker.constants';
 import {MoreVert} from '@jahia/moonstone';
 import React from 'react';
 

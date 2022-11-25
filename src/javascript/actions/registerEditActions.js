@@ -6,7 +6,7 @@ import {CloudUpload, Edit, MoreVert, Save} from '@jahia/moonstone';
 import {editContentAction} from './jcontent/editContent/editContentAction';
 import {openWorkInProgressAction} from './contenteditor/openWorkInProgress/openWorkInProgressAction';
 import {copyLanguageAction} from './contenteditor/copyLanguage/copyLanguageAction';
-import {booleanValue} from '~/SelectorTypes/Picker/Picker2.utils';
+import {booleanValue} from '~/SelectorTypes/Picker/Picker.utils';
 
 export const registerEditActions = actionsRegistry => {
     const showPageComposer = booleanValue(contextJsParameters.config.jcontent?.showPageComposer);

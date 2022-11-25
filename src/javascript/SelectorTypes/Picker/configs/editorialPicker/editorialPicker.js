@@ -1,10 +1,10 @@
-import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
+import {Constants} from '~/SelectorTypes/Picker/Picker.constants';
 import {getPagesSearchContextData} from '~/SelectorTypes/Picker/configs/getPagesSearchContextData';
 import {transformQueryHandler} from '~/SelectorTypes/Picker/configs/queryHandlers';
 import {renderer} from '~/SelectorTypes/Picker/configs/renderer';
 import React from 'react';
 import {ContentFoldersQueryHandler, ViewModeSelector} from '@jahia/jcontent';
-import {cePickerSetTableViewMode} from '~/SelectorTypes/Picker/Picker2.redux';
+import {cePickerSetTableViewMode} from '~/SelectorTypes/Picker/Picker.redux';
 import {EditorialContentTypeSelector} from './EditorialContentTypeSelector';
 import {PickerPagesQueryHandler} from '~/SelectorTypes/Picker/configs/editorialPicker/PickerPagesQueryHandler';
 

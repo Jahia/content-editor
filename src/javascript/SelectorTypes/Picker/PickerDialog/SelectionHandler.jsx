@@ -14,14 +14,14 @@ import {
     cePickerSetSort,
     cePickerSetTableViewType,
     cePickerSite
-} from '~/SelectorTypes/Picker/Picker2.redux';
+} from '~/SelectorTypes/Picker/Picker.redux';
 import {registry} from '@jahia/ui-extender';
-import {getDetailedPathArray, getPathWithoutFile} from '~/SelectorTypes/Picker/Picker2.utils';
+import {getDetailedPathArray, getPathWithoutFile} from '~/SelectorTypes/Picker/Picker.utils';
 import {batchActions} from 'redux-batched-actions';
 import PropTypes from 'prop-types';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
-import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
+import {Constants} from '~/SelectorTypes/Picker/Picker.constants';
 import {jcontentUtils} from '@jahia/jcontent';
 
 function getSite(selectedItem) {

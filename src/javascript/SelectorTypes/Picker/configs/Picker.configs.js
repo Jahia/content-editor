@@ -1,4 +1,4 @@
-import {Constants} from '~/SelectorTypes/Picker/Picker2.constants';
+import {Constants} from '~/SelectorTypes/Picker/Picker.constants';
 import {registerUserPicker} from './userPicker';
 import {registerUsergroupPicker} from './usergroupPicker';
 import {registerCategoryPicker} from './categoryPicker';

@@ -8,10 +8,10 @@ import {
     cePickerPath,
     cePickerSetPage,
     cePickerSetSearchTerm
-} from '~/SelectorTypes/Picker/Picker2.redux';
+} from '~/SelectorTypes/Picker/Picker.redux';
 import {batchActions} from 'redux-batched-actions';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
-import {booleanValue} from '~/SelectorTypes/Picker/Picker2.utils';
+import {booleanValue} from '~/SelectorTypes/Picker/Picker.utils';
 import {useDispatch} from 'react-redux';
 import RightPanel from './RightPanel';
 import {ContentNavigation} from '@jahia/jcontent';
