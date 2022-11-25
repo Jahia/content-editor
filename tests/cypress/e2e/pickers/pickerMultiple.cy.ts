@@ -1,7 +1,6 @@
 import {contentTypes} from '../../fixtures/pickers/contentTypes';
 import {assertUtils} from '../../utils/assertUtils';
 import {AccordionItem} from '../../page-object/accordionItem';
-import {PickerField} from '../../page-object/pickerField';
 import {JContent} from '../../page-object/jcontent';
 
 describe('Picker tests - multiple', () => {
@@ -46,7 +45,7 @@ describe('Picker tests - multiple', () => {
             .get()
             .find('[data-sel-content-editor-multiple-generic-field]')
             .then(elems => {
-                expect(elems.length).eq(numRows);
+                expect(elems.length).eq(numRows + 1); // Includes last reorder row
 
                 cy.log('verify removed element is reflected in selection');
                 cy.wrap(elems.eq(0))

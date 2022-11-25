@@ -116,6 +116,11 @@ export const Picker = ({field, value, editorContext, inputContext, onChange, onB
                                 onFieldRemove={onFieldRemove}/>
                         );
                     })}
+                    {fieldData && fieldData.length > 0 && (
+                        <OrderableValue field={field}
+                                        index={fieldData.length}
+                                        onValueReorder={onValueReorder}/>
+                    )}
                     {!field.readOnly &&
                         <Button className={styles.addButton}
                                 data-sel-action="addField"
