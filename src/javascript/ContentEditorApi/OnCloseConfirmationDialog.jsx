@@ -5,7 +5,7 @@ import {useFormikContext} from 'formik';
 import {useContentEditorContext} from '~/contexts/ContentEditor';
 import {isDirty} from '~/utils';
 
-export const OnCloseConfirmationDialog = ({setEditorConfig, openDialog}) => {
+export const OnCloseConfirmationDialog = ({deleteEditorConfig, openDialog}) => {
     const [confirmationConfig, setConfirmationConfig] = useState(false);
     const formik = useFormikContext();
     const {i18nContext} = useContentEditorContext();
@@ -17,7 +17,7 @@ export const OnCloseConfirmationDialog = ({setEditorConfig, openDialog}) => {
                 formik.validateForm();
                 setConfirmationConfig(true);
             } else {
-                setEditorConfig(false);
+                deleteEditorConfig();
             }
         };
     });
@@ -25,13 +25,13 @@ export const OnCloseConfirmationDialog = ({setEditorConfig, openDialog}) => {
     return confirmationConfig && (
         <CloseConfirmationDialog
             isOpen
-            actionCallback={() => setEditorConfig(false)}
+            actionCallback={() => deleteEditorConfig()}
             onCloseDialog={() => setConfirmationConfig(false)}
         />
     );
 };
 
 OnCloseConfirmationDialog.propTypes = {
-    setEditorConfig: PropTypes.func.isRequired,
+    deleteEditorConfig: PropTypes.func.isRequired,
     openDialog: PropTypes.object.isRequired
 };
