@@ -48,7 +48,7 @@ export const ContentLayoutContainer = ({pickerConfig, accordionItemProps}) => {
     const dispatch = useDispatch();
 
     const additionalFragments = [];
-    let autoExpandLevels = 2;
+    let autoExpandLevels = 1;
     if (mode === Constants.mode.SEARCH && preSearchModeMemo) {
         const tableConfig = jcontentUtils.getAccordionItem(registry.get('accordionItem', preSearchModeMemo), accordionItemProps)?.tableConfig;
         if (tableConfig?.fragments) {

@@ -55,7 +55,7 @@ export const registerEditorialPicker = registry => {
                 tableHeader: <EditorialContentTypeSelector/>,
                 uploadType: null,
                 contextualMenu: 'contentPickerMenu',
-                autoExpandLevels: 3
+                autoExpandLevels: 2
             },
             treeConfig: {
                 ...pagesItem.treeConfig,
