@@ -99,32 +99,41 @@ export const Picker = ({field, value, editorContext, inputContext, onChange, onB
     };
 
     return (
-        <div className="flexFluid flexRow_nowrap alignCenter">
-            {field.multiple ?
-                <div className="flexFluid">
-                    {fieldData && fieldData.length > 0 && fieldData.map((fieldVal, index) => {
-                        return (
-                            <OrderableValue
-                                key={`${field.name}_${fieldVal.name}`}
-                                component={<ReferenceCard
-                                    isReadOnly
-                                    labelledBy={`${name}-label`}
-                                    fieldData={fieldVal}/>}
-                                field={field}
-                                index={index}
-                                onValueReorder={onValueReorder}
-                                onFieldRemove={onFieldRemove}/>
-                        );
-                    })}
-                    {!field.readOnly &&
+        <>
+            {field.multiple ? (
+                <>
+                    <div className="flexFluid">
+                        {fieldData && fieldData.length > 0 && fieldData.map((fieldVal, index) => {
+                            return (
+                                <OrderableValue
+                                    key={`${field.name}_${fieldVal.name}`}
+                                    component={<ReferenceCard
+                                        isReadOnly
+                                        labelledBy={`${name}-label`}
+                                        fieldData={fieldVal}/>}
+                                    field={field}
+                                    index={index}
+                                    onValueReorder={onValueReorder}
+                                    onFieldRemove={onFieldRemove}/>
+                            );
+                        })}
+                        {fieldData && fieldData.length > 0 && (
+                            <OrderableValue field={field}
+                                            index={fieldData.length}
+                                            onValueReorder={onValueReorder}/>
+                        )}
+                    </div>
+                    {!field.readOnly && (
                         <Button className={styles.addButton}
                                 data-sel-action="addField"
                                 variant="outlined"
                                 size="big"
                                 label={t('content-editor:label.contentEditor.edit.fields.actions.add')}
                                 onClick={() => setDialogOpen(!isDialogOpen)}
-                        />}
-                </div> :
+                        />
+                    )}
+                </>
+            ) : (
                 <>
                     <ReferenceCard
                         isReadOnly={field.readOnly}
@@ -143,7 +152,8 @@ export const Picker = ({field, value, editorContext, inputContext, onChange, onB
                             render={ButtonRenderer}
                         />
                     )}
-                </>}
+                </>
+            )}
 
             <FieldContextProvider field={field}>
                 <PickerDialog
@@ -156,8 +166,7 @@ export const Picker = ({field, value, editorContext, inputContext, onChange, onB
                     onItemSelection={onItemSelection}
                 />
             </FieldContextProvider>
-
-        </div>
+        </>
     );
 };
 
