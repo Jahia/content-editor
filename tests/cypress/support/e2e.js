@@ -33,5 +33,3 @@ if (Cypress.browser.family === 'chromium') {
         params: { cacheDisabled: true },
     })
 }
-
-slowCypressDown(200);

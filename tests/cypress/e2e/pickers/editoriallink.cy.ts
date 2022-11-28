@@ -74,8 +74,6 @@ describe('Picker - Editorial link', () => {
                 const texts = elems.get().map(e => e.textContent);
                 const allTypes = texts.sort().filter((f, i) => texts.indexOf(f) === i);
                 expect(allTypes).to.contain('Page');
-                expect(allTypes).to.contain('Company');
-                expect(allTypes).to.contain('Navigation menu - Text (separator)');
             });
 
         // Select content tab; verify types
@@ -103,6 +101,7 @@ describe('Picker - Editorial link', () => {
         cy.log('select newsroom > news-entry > all organic in pages tab');
         picker.selectTab('pages');
         picker.getTable().getRowByName('newsroom').get().scrollIntoView();
+        picker.getTable().getRowByName('newsroom').expand();
         picker.getTable().getRowByName('news-entry').expand().should('be.visible');
         picker.getTable().getRowByName('all-organic-foods-network-gains').should('be.visible').click();
 
