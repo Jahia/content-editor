@@ -19,7 +19,7 @@ const Renderer = ({activeOption, setActiveOption, buttonLabel, onClick, tabs}) =
             <MenuItem
                 isSelected={activeOption === tab}
                 label={buttonLabel}
-                iconEnd={<Chip label={usages.length}/>}
+                iconEnd={<Chip color={activeOption === tab ? 'light' : 'default'} label={usages.length}/>}
                 onClick={e => {
                     if (DEPRECATED_GWT_ACTIONS.includes(tab)) {
                         setActiveOption(tab);
