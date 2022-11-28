@@ -7,6 +7,11 @@ import styles from './MultipleLeftRightSlector.scss';
 
 const toArray = value => (Array.isArray(value) ? value : [value]);
 
+const DATA_TYPES = {
+    MLRS_DRAG_TO_REORDER: 'MLRS_DRAG_TO_REORDER',
+    MLRS_DRAG_TO_MOVE: 'MLRS_DRAG_TO_MOVE',
+}
+
 export const MultipleLeftRightSelector = ({field, onChange, value}) => {
     const [filterLeft, setFilterLeft] = useState(null);
     const [filterRight, setFilterRight] = useState(null);
@@ -34,21 +39,55 @@ export const MultipleLeftRightSelector = ({field, onChange, value}) => {
 
     const readOnly = field.readOnly || field.valueConstraints.length === 0;
 
-    // use memo
+    const leftListIconStartProps = useCallback(value => ({
+        draggable: true,
+        onDragStart: e => {
+            const ct = e.currentTarget;
+            setTimeout(() => {
+                ct.parentNode.parentNode.style.opacity = '0';
+            }, 10);
+            e.dataTransfer.setData(DATA_TYPES.MLRS_DRAG_TO_MOVE, JSON.stringify({type: DATA_TYPES.MLRS_DRAG_TO_MOVE, value: value}));
+            e.dataTransfer.setDragImage(e.currentTarget.parentNode.parentNode, 10, 10);
+            dnd.current.dragging = value;
+        },
+        onDragEnd: e => {
+            e.currentTarget.parentNode.parentNode.style.opacity = '1';
+
+            // Did not drop on required target, restore original state
+            if (e.dataTransfer.types.includes(DATA_TYPES.MLRS_DRAG_TO_MOVE.toLowerCase()) && dnd.current.dragging !== null && dnd.current.dragging.originalIndex) {
+                arrayValue.splice(dnd.current.dragging.index, 1);
+                onChange([...arrayValue]);
+            }
+
+            dnd.current.dragging = null;
+        }
+    }), [arrayValue]);
+
     const rightListIconStartProps = useCallback(value => ({
        draggable: true,
        onDragStart: e => {
-           e.currentTarget.parentNode.parentNode.style.opacity = '0';
-           e.dataTransfer.setData('MLRS_DRAG_TO_REORDER', JSON.stringify({type: 'MLRS_DRAG_TO_REORDER', value: value}));
+           const ct = e.currentTarget;
+           setTimeout(() => {
+               ct.parentNode.parentNode.style.opacity = '0';
+           }, 10);
+           e.dataTransfer.setData(DATA_TYPES.MLRS_DRAG_TO_REORDER, JSON.stringify({type: DATA_TYPES.MLRS_DRAG_TO_REORDER, value: value}));
+           e.dataTransfer.setDragImage(e.currentTarget.parentNode.parentNode, 10, 10);
            dnd.current.dragging = value;
        },
         onDragEnd: e => {
             e.currentTarget.parentNode.parentNode.style.opacity = '1';
             // Did not drop on required target, restore original state
-            if (dnd.current.dragging !== null && dnd.current.dragging.originalIndex) {
+            if (e.dataTransfer.types.includes(DATA_TYPES.MLRS_DRAG_TO_REORDER.toLowerCase()) && dnd.current.dragging !== null && dnd.current.dragging.originalIndex) {
                 const current = arrayValue[dnd.current.dragging.index];
                 arrayValue.splice(dnd.current.dragging.index, 1);
                 arrayValue.splice(dnd.current.dragging.originalIndex, 0, current);
+                dnd.current.dragging = null;
+                onChange([...arrayValue]);
+            }
+
+            // Did not drop on required target, restore original state
+            if (e.dataTransfer.types.includes(DATA_TYPES.MLRS_DRAG_TO_MOVE.toLowerCase()) && dnd.current.dragging !== null && dnd.current.dragging.originalIndex) {
+                arrayValue.splice(dnd.current.dragging.index, 1);
                 dnd.current.dragging = null;
                 onChange([...arrayValue]);
             }
@@ -57,7 +96,8 @@ export const MultipleLeftRightSelector = ({field, onChange, value}) => {
 
     const rightListListItemProps = useCallback(value => ({
         onDragOver: e => {
-           if (e.dataTransfer.types.includes('MLRS_DRAG_TO_REORDER'.toLowerCase())) {
+            // Perform actual move of the item
+           if (e.dataTransfer.types.includes(DATA_TYPES.MLRS_DRAG_TO_REORDER.toLowerCase()) || (e.dataTransfer.types.includes(DATA_TYPES.MLRS_DRAG_TO_MOVE.toLowerCase()) && dnd.current.dragging.moved)) {
                e.preventDefault();
                if (dnd.current.dragging && dnd.current.dragging.index !== value.index) {
                    const rect = e.currentTarget.getBoundingClientRect();
@@ -84,16 +124,26 @@ export const MultipleLeftRightSelector = ({field, onChange, value}) => {
                    arrayValue[dnd.current.dragging.index] = m;
                    dnd.current.dragging.index = value.index;
                    onChange([...arrayValue]);
-
-                   console.log(rect, clientOffset, dnd, value);
                }
            }
+
+            if (e.dataTransfer.types.includes(DATA_TYPES.MLRS_DRAG_TO_MOVE.toLowerCase())) {
+                e.preventDefault();
+                // Add moved item to list
+                if (dnd.current.dragging && dnd.current.dragging.value !== value.value && !dnd.current.dragging.moved) {
+                    arrayValue.splice(value.index, 0, dnd.current.dragging.value);
+                    dnd.current.dragging.index = value.index;
+                    dnd.current.dragging.originalIndex = value.index;
+                    dnd.current.dragging.moved = true;
+                    onChange([...arrayValue]);
+                }
+
+            }
        },
        onDrop: e => {
-            e.preventDefault();
-            console.log(JSON.parse(e.dataTransfer.getData('MLRS_DRAG_TO_REORDER'.toLowerCase())), value);
             // Confirms drop and prevents reordering onDragEnd
-            if (value.value === dnd.current.dragging.value) {
+            if ((e.dataTransfer.types.includes(DATA_TYPES.MLRS_DRAG_TO_REORDER.toLowerCase()) || e.dataTransfer.types.includes(DATA_TYPES.MLRS_DRAG_TO_MOVE.toLowerCase())) && value.value === dnd.current.dragging.value) {
+                e.preventDefault();
                 dnd.current.dragging = null;
             }
        }
@@ -111,6 +161,7 @@ export const MultipleLeftRightSelector = ({field, onChange, value}) => {
                            filter={filterLeft}
                            values={options.filter(o => !arrayValue.includes(o.value))}
                            onMove={v => onChange(arrayValue.concat(v))}
+                           iconStartProps={arrayValue.length > 0 ? leftListIconStartProps : null}
                 />
             </div>
             <div className={styles.buttonSection}>
