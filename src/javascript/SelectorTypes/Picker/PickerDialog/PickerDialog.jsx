@@ -5,7 +5,7 @@ import styles from './PickerDialog.scss';
 import {
     cePickerClearSelection,
     cePickerMode,
-    cePickerPath,
+    cePickerPath, cePickerSetMultiple,
     cePickerSetPage,
     cePickerSetSearchTerm
 } from '~/SelectorTypes/Picker/Picker.redux';
@@ -17,6 +17,7 @@ import RightPanel from './RightPanel';
 import {ContentNavigation} from '@jahia/jcontent';
 import {SelectionHandler} from '~/SelectorTypes/Picker/PickerDialog/SelectionHandler';
 import {PickerSiteSwitcher} from '~/SelectorTypes/Picker/PickerDialog/PickerSiteSwitcher';
+import {useFieldContext} from '~/contexts/FieldContext';
 
 const Transition = props => (
     <Slide direction="up"
@@ -44,11 +45,14 @@ export const PickerDialog = ({
     onItemSelection
 }) => {
     const dispatch = useDispatch();
+    const {multiple} = useFieldContext();
+
     useEffect(() => {
         if (isOpen) {
             dispatch(batchActions([
                 cePickerSetSearchTerm(''),
-                cePickerSetPage(0)
+                cePickerSetPage(0),
+                cePickerSetMultiple(multiple)
             ]));
         }
 
@@ -57,7 +61,7 @@ export const PickerDialog = ({
                 dispatch(cePickerClearSelection());
             }
         };
-    }, [dispatch, pickerConfig.key, isOpen]);
+    }, [dispatch, pickerConfig.key, isOpen, multiple]);
 
     return (
         <Dialog

@@ -24,7 +24,8 @@ export const {
     cePickerSetTableViewType,
     cePickerSetSearchTerm,
     cePickerSetSearchPath,
-    cePickerSetFileViewMode} = createActions(
+    cePickerSetFileViewMode,
+    cePickerSetMultiple} = createActions(
     'CE_PICKER_KEY',
     'CE_PICKER_SITE',
     'CE_PICKER_CONTEXT_SITE',
@@ -46,7 +47,9 @@ export const {
     'CE_PICKER_SET_TABLE_VIEW_TYPE',
     'CE_PICKER_SET_SEARCH_TERM',
     'CE_PICKER_SET_SEARCH_PATH',
-    'CE_PICKER_SET_FILE_VIEW_MODE');
+    'CE_PICKER_SET_FILE_VIEW_MODE',
+    'CE_PICKER_SET_MULTIPLE'
+);
 
 export const registerPickerReducer = registry => {
     const initialState = {
@@ -182,9 +185,13 @@ export const registerPickerReducer = registry => {
                 mode: action.payload
             }
         }),
+        [cePickerSetMultiple]: (state, action) => ({
+            ...state,
+            multiple: action.payload
+        }),
         FILEUPLOAD_UPDATE_UPLOAD: (state, action) => ({
             ...state,
-            selection: action.payload.uuid ? [action.payload.uuid] : state.selection
+            selection: action.payload.uuid ? (state.multiple ? [action.payload.uuid, ...state.selection] : [action.payload.uuid]) : state.selection
         })
     }, initialState);
 
