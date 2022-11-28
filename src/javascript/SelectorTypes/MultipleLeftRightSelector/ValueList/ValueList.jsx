@@ -17,7 +17,10 @@ const ValueList = ({values, filter, onMove, orientation, listItemProps = () => (
                         onMove([v.value]);
                                            }}/>
                     </div>
-                )
+                ),
+                iconStart: iconStartProps && <div className={styles.iconContainer} {...iconStartProps(v)}>
+                    <HandleDrag/>
+                </div>
             };
         }
 
