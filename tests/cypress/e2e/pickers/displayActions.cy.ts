@@ -3,12 +3,14 @@ import {assertUtils} from '../../utils/assertUtils';
 import {AccordionItem} from '../../page-object/accordionItem';
 import {JContent} from '../../page-object/jcontent';
 import gql from 'graphql-tag';
+import {slowCypressDown} from "cypress-slow-down";
 
 describe('Picker tests - Display actions', () => {
     const siteKey = 'digitall';
     let jcontent: JContent;
 
     beforeEach(() => {
+        slowCypressDown(200);
         // I have issues adding these to before()/after() so have to add to beforeEach()/afterEach()
         cy.login(); // Edit in chief
         cy.apollo({mutationFile: 'pickers/createCustomContent.graphql'});
@@ -26,6 +28,7 @@ describe('Picker tests - Display actions', () => {
                 }
             `});
         cy.logout();
+        slowCypressDown(false);
     });
 
     // Tests
