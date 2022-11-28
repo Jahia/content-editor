@@ -100,7 +100,7 @@ const NodeDataFragment = {
                         node {
                             ...NodeCacheRequiredFields
                             visible: isNodeType(type: {types: ["jnt:workflowTask"], multi: NONE})
-                            displayName
+                            displayName(language: $language)
                             path
                             primaryNodeType {
                                 icon
