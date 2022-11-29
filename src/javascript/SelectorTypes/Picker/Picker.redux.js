@@ -5,7 +5,6 @@ import {toArray} from './Picker.utils';
 
 export const {
     cePickerSite,
-    cePickerContextSite,
     cePickerMode,
     cePickerModes,
     cePickerOpenPaths,
@@ -28,7 +27,6 @@ export const {
     cePickerSetMultiple} = createActions(
     'CE_PICKER_KEY',
     'CE_PICKER_SITE',
-    'CE_PICKER_CONTEXT_SITE',
     'CE_PICKER_MODE',
     'CE_PICKER_MODES',
     'CE_PICKER_OPEN_PATHS',
@@ -58,7 +56,6 @@ export const registerPickerReducer = registry => {
         modes: [],
         preSearchModeMemo: '',
         site: 'systemsite',
-        contextSite: 'systemsite',
         path: '/sites/systemsite',
         pagination: {currentPage: 0, pageSize: 25},
         sort: {orderBy: ''},
@@ -78,10 +75,6 @@ export const registerPickerReducer = registry => {
         [cePickerSite]: (state, action) => ({
             ...state,
             site: action.payload
-        }),
-        [cePickerContextSite]: (state, action) => ({
-            ...state,
-            contextSite: action.payload
         }),
         [cePickerMode]: (state, action) => ({
             ...state,

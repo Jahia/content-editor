@@ -5,7 +5,6 @@ import {useContentEditorConfigContext} from '~/contexts';
 import {useQuery} from '@apollo/react-hooks';
 import {GET_PICKER_NODE} from '~/SelectorTypes/Picker';
 import {
-    cePickerContextSite,
     cePickerMode,
     cePickerModes,
     cePickerOpenPaths,
@@ -37,7 +36,6 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
         path: state.contenteditor.picker.path,
         openPaths: state.contenteditor.picker.openPaths,
         site: state.contenteditor.picker.site,
-        contextSite: state.contenteditor.picker.contextSite,
         viewType: state.contenteditor.picker.tableView.viewType
     }), shallowEqual);
 
@@ -95,9 +93,12 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
             allAccordionItems.find(accord => valid(accord)) ||
             allAccordionItems[0];
 
+        if (!previousState.current.isOpen) {
+            newState.site = editorContext.site;
+        }
+
         // If selection exists we don't care about previous state, need to update state in accordance with selection
         // Initialize site when opening dialog
-        newState.contextSite = editorContext.site;
         if (selectedNode && !previousState.current.isOpen) {
             // If an item is selected, preselect site/mode/path
             newState.site = getSite(selectedNode.path);
@@ -113,11 +114,6 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
                 newState.viewType = firstMatchingAccordion.getViewTypeForItem(selectedNode);
             }
         } else if (!currentFolderInfo.node || state.path.startsWith(currentFolderInfo.node.path)) {
-            if (previousState.current.contextSite !== newState.contextSite && newState.site !== newState.contextSite) {
-                // If context site has changed, reset to the current site (otherwise keep current site)
-                newState.site = pickerConfig.targetSite ? pickerConfig.targetSite : newState.contextSite;
-            }
-
             if (firstMatchingAccordion.tableConfig.defaultViewType && !previousState.current.isOpen) {
                 newState.viewType = firstMatchingAccordion.tableConfig.defaultViewType;
             }
@@ -150,7 +146,6 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
 
         const actions = ([
             (newState.site !== state.site) && cePickerSite(newState.site),
-            (newState.contextSite !== state.contextSite) && cePickerContextSite(newState.contextSite),
             (newState.mode !== state.mode) && cePickerMode(newState.mode),
             (newState.sort !== state.sort) && cePickerSetSort(newState.sort),
             (newState.modes.length !== state.modes?.length || newState.modes.some(mode => !state.modes.includes(mode))) && cePickerModes(newState.modes),
