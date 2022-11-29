@@ -89,15 +89,16 @@ export const CreateContent = ({contextNodePath, path, showOnNodeTypes, nodeTypes
         }
     };
 
-    return (actions || [{id: 'allTypes'}]).map(result => (
+    return (actions || [{key: 'allTypes'}]).map(result => (
         <Render
-            key={result.id}
+            key={result.key}
             {...otherProps}
             flattenedNodeTypes={flattenedNodeTypes}
             nodeTypesTree={nodeTypesTree}
             path={path}
             uilang={uilang}
             isVisible={res.checksResult}
+            isAllTypes={result.key === 'allTypes'}
             {...result}
             onClick={onClick}
         />
