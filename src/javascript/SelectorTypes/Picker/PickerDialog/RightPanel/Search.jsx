@@ -22,7 +22,7 @@ export const Search = ({accordionItemProps}) => {
         searchPath: state.contenteditor.picker.searchPath,
         preSearchModeMemo: state.contenteditor.picker.preSearchModeMemo,
         currentPath: state.contenteditor.picker.path,
-        currentSite: state.contenteditor.picker.site ? state.contenteditor.picker.site : state.contenteditor.picker.contextSite,
+        currentSite: state.contenteditor.picker.site ? state.contenteditor.picker.site : state.site,
         language: state.language,
         uilang: state.uilang
     }), shallowEqual);
