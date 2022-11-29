@@ -1,5 +1,6 @@
 .valueList {
     flex-grow: 1;
+    min-height: 300px;
     max-height: 300px;
     overflow-y: scroll;
 }
@@ -37,4 +38,37 @@
     &:hover > div > div > .displayNone {
         display: block;
     }
+}
+
+.wrapper {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    gap: var(--spacing-small);
+}
+
+.listHolder {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    gap: var(--spacing-small);
+    padding: var(--spacing-small);
+
+    border: 1px solid var(--color-gray40);
+}
+
+.noHoveEffect {
+    &:hover {
+        color: inherit;
+
+        background-color: inherit;
+    }
+
+    &:hover > div > div > .displayNone {
+        display: none;
+    }
+}
+
+.noOpacity {
+    opacity: 0;
 }
