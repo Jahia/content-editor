@@ -69,22 +69,34 @@ describe('CreateNewContent', () => {
     });
 
     it('should not render CreateNewContent when loading', () => {
-        defaultProps.loading = 'Loading';
+        defaultProps.loading = () => {
+            return true;
+        };
+
+        defaultProps.path = '/sites/digitall/home';
         loading = true;
         nodeTypes = ['nodetype1', 'nodetype2'];
         const cmp = shallow(<CreateNewContent {...defaultProps}/>);
-        expect(cmp.debug()).toContain('Loading');
+        expect(cmp.debug()).toContain('<mockConstructor isVisible={false} onClick={[Function: onClick]} />');
     });
     it('should contain 2 nodetypes when loading done', () => {
-        defaultProps.loading = false;
+        defaultProps.loading = () => {
+            return false;
+        };
+
+        defaultProps.path = '/sites/digitall/home';
         loading = false;
         nodeTypes = ['nodetype1', 'nodetype2'];
         const cmp = shallow(<CreateNewContent {...defaultProps}/>);
         // 2 is the number of types returned.
         expect(cmp.length).toEqual(nodeTypes.length);
     });
-    it('should contains "allTypes" only when no types found and loading done', () => {
-        defaultProps.loading = false;
+    it('should contain "allTypes" only when no types found and loading done', () => {
+        defaultProps.loading = () => {
+            return true;
+        };
+
+        defaultProps.path = '/sites/digitall/home';
         loading = false;
         nodeTypes = undefined;
         const cmp = shallow(<CreateNewContent {...defaultProps}/>);
