@@ -6,7 +6,7 @@ name: On merge to branch
 on:
   push:
     branches:
-      - '3_4_X'
+      - '3_5_X'
     tags-ignore:
       - '**'
 
