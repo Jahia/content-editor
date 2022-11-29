@@ -51,12 +51,12 @@ describe('Picker tests - Constraints', () => {
         const contentEditor = jcontent.createContent('employee');
         const pickerField = contentEditor.getPickerField('qant:employee_supervisor');
         const picker = pickerField.open();
-        picker.wait();
         const accordionItem = picker.getAccordionItem('picker-content-folders');
         accordionItem.click();
-        picker.wait();
         picker.navigateTo(accordionItem, 'contents/constraintsTest');
-        picker.getTable().getRows().should('have.length', 2);
+        picker.getTable().getRows($div => {
+            expect($div).to.have.length(2);
+        });
         picker.getTable().getRows().get().contains('employee1').click();
         picker.getTable().getRows().get().contains('news1').should('not.exist');
         picker.select();
