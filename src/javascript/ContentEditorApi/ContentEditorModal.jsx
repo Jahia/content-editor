@@ -12,6 +12,7 @@ import {useTranslation} from 'react-i18next';
 import {OnCloseConfirmationDialog} from './OnCloseConfirmationDialog';
 import {EditPanelCompact} from '~/ContentEditor/EditPanel/EditPanelCompact';
 import {EditPanelFullscreen} from '~/ContentEditor/EditPanel/EditPanelFullscreen';
+import {useApolloClient} from '@apollo/react-hooks';
 
 function triggerEvents(nodeUuid, operator) {
     // Refresh contentEditorEventHandlers
@@ -33,6 +34,7 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
     const needRefresh = useRef(false);
     const openDialog = useRef();
     const dispatch = useDispatch();
+    const client = useApolloClient();
 
     // This is the only sure way to tell when content editor is no longer visible
     useEffect(() => {
@@ -102,7 +104,7 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
 
             notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.success'), ['closeButton']);
         },
-        onSavedCallback: ({newNode, language}, forceRedirect) => {
+        onSavedCallback: ({newNode, language, originalNode, updatedNode}, forceRedirect) => {
             if (newNode && (editorConfig.isFullscreen || forceRedirect)) {
                 // Redirect to CE edit mode, for the created node
                 needRefresh.current = false;
@@ -113,8 +115,13 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
                     mode: Constants.routes.baseEditRoute
                 });
             } else if (!editorConfig.isFullscreen) {
-                // Otherwise refresh and close
-                deleteEditorConfig();
+                if (originalNode.path === updatedNode.path) {
+                    deleteEditorConfig();
+                } else {
+                    client.cache.flushNodeEntryByPath(originalNode.path);
+                    Promise.all(window.contentModificationEventHandlers.map(handler => handler(updatedNode.uuid, originalNode.path, updatedNode.path.split('/').pop(), 'update'))).then(() => // Otherwise refresh and close
+                        deleteEditorConfig());
+                }
             }
         },
         onCreateAnother: () => {
