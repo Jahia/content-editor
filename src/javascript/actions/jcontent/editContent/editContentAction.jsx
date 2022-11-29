@@ -18,7 +18,7 @@ export const EditContent = ({path, isModal, isFullscreen, editCallback, render: 
     );
 
     if (Loading && res.loading) {
-        return <Render {...otherProps} isVisible={false} onClick={() => {}}/>;
+        return <Loading {...otherProps}/>;
     }
 
     return (
