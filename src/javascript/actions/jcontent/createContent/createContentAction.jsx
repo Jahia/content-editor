@@ -40,7 +40,7 @@ export const CreateContent = ({contextNodePath, path, showOnNodeTypes, nodeTypes
     );
 
     if (Loading && (loadingTypes || res.loading || nodeInfo.loading)) {
-        return <Loading {...otherProps}/>;
+        return <Render {...otherProps} isVisible={false} onClick={() => {}}/>;
     }
 
     if (error) {
