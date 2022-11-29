@@ -48,7 +48,7 @@
         "@material-ui/core": "^3.9.3",
         "@material-ui/icons": "^3.0.1",
         "@material-ui/lab": "^3.0.0-alpha.30",
-        "ckeditor4-react": "1.2.0",
+        "ckeditor4-react": "1.4.2",
         "clsx": "^1.1.1",
         "connected-react-router": "^6.8.0",
         "dayjs": "1.8.21",
