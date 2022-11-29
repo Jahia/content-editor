@@ -59,7 +59,7 @@ export const Usages = () => {
                                     key={cell.column.id}
                                     >{cell.render('Cell')}
                                     </React.Fragment>
-))}
+                                ))}
                             </TableRow>
                         );
                     })}
