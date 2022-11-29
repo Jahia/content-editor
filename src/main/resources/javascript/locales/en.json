@@ -176,6 +176,13 @@
         }
       },
       "header":  {
+        "languageSwitcher": {
+          "switchLanguage": "Switch language",
+          "addTranslation": {
+            "edit": "Add translation",
+            "create": "Create translation"
+          }
+        },
         "chips": {
           "unsavedLabel": "Unsaved changes",
           "inCountLanguages": "in {{count}} languages",

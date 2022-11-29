@@ -172,15 +172,17 @@
         }
       },
       "header":  {
+        "languageSwitcher": {
+          "switchLanguage": "Sprache wechseln",
+          "addTranslation": {
+            "edit": "Übersetzung hinzufügen",
+            "create": "Übersetzung erstellen"
+          }
+        },
         "chips": {
           "unsavedLabel": "Nicht gespeicherte Änderungen",
           "inCountLanguages": "in {{count}} Sprachen",
           "inAllLanguages": "in alle Sprachen"
-        }
-      },
-      "switchLanguage": {
-        "dialog": {
-          "title": "Wollen Sie die Änderungen speichern, bevor Sie die Sprache wechseln?"
         }
       },
       "error": {
