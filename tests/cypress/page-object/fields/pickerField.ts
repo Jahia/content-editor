@@ -1,11 +1,9 @@
 import {BaseComponent, Button, getComponentByAttr, getComponentByRole} from '@jahia/cypress';
-import {Picker} from './picker';
+import {Picker} from '../picker';
+import {Field} from "./field";
 
-export class PickerField extends BaseComponent {
+export class PickerField extends Field {
     static ADD_FIELD_SEL = 'button[data-sel-action="addField"]';
-
-    fieldName: string;
-    multiple: boolean;
 
     open(): Picker {
         const buttonSelector = this.multiple ? PickerField.ADD_FIELD_SEL : '[data-sel-field-picker-action]';
