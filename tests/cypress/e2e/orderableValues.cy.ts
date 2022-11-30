@@ -22,7 +22,7 @@ describe('Test ordering properties with multiple values', {retries: 0}, () => {
         const smallTextField = contentEditor.getSmallTextField('qant:allFieldsMultiple_sharedSmallText', true);
         const expectedValues = ['test1=1', 'test2=2'];
         smallTextField.checkValues(expectedValues);
-        smallTextField.get().find('input[name="qant:allFieldsMultiple_sharedSmallText[1]"]').parents('div[draggable="true"]').drag('div[data-droppable-zone="qant:allFieldsMultiple_sharedSmallText[0]"]', {
+        smallTextField.get().find('input[name="qant:allFieldsMultiple_sharedSmallText[1]"]').parent().parent().children('div[draggable="true"]').drag('div[data-droppable-zone="qant:allFieldsMultiple_sharedSmallText[0]"]', {
             force: true,
             waitForAnimations: true
         }).then(success => {
@@ -41,7 +41,7 @@ describe('Test ordering properties with multiple values', {retries: 0}, () => {
         smallTextField.checkValues(expectedValues);
         smallTextField.addNewValue('test3=3');
         smallTextField.checkValues(expectedValuesAfterAdd);
-        smallTextField.get().find('input[name="qant:allFieldsMultiple_sharedSmallText[2]"]').parents('div[draggable="true"]').drag('div[data-droppable-zone="qant:allFieldsMultiple_sharedSmallText[1]"]', {
+        smallTextField.get().find('input[name="qant:allFieldsMultiple_sharedSmallText[2]"]').parent().parent().children('div[draggable="true"]').drag('div[data-droppable-zone="qant:allFieldsMultiple_sharedSmallText[1]"]', {
             force: true,
             waitForAnimations: true
         }).then(success => {
