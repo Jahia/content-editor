@@ -4,7 +4,7 @@ import {AccordionItem} from '../../page-object/accordionItem';
 import {JContent} from '../../page-object/jcontent';
 import gql from 'graphql-tag';
 
-describe('Picker tests - custom picker', {waitForAnimations: true}, () => {
+describe('Picker tests - custom picker', {waitForAnimations: true, retries: 3}, () => {
     const siteKey = 'digitall';
     let jcontent: JContent;
 

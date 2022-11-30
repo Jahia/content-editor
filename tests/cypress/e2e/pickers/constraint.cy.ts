@@ -1,6 +1,6 @@
 import {JContent} from '../../page-object/jcontent';
 
-describe('Picker tests - Constraints', () => {
+describe('Picker tests - Constraints', {retries: 3}, () => {
     const siteKey = 'digitall';
     let jcontent: JContent;
 
@@ -65,4 +65,3 @@ describe('Picker tests - Constraints', () => {
         pickerField.assertValue('employee1');
     });
 });
-
