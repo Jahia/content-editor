@@ -115,7 +115,7 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
                     mode: Constants.routes.baseEditRoute
                 });
             } else if (!editorConfig.isFullscreen) {
-                if (originalNode?.path === updatedNode?.path) {
+                if (newNode || originalNode.path === updatedNode.path) {
                     deleteEditorConfig();
                 } else {
                     client.cache.flushNodeEntryByPath(originalNode.path);
