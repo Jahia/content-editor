@@ -71,13 +71,13 @@ describe('CreateNewContent', () => {
         // 2 is the number of types returned.
         expect(cmp.length).toEqual(nodeTypes.length);
     });
-    it('should contains "allTypes" only when no types found and loading done', () => {
+    it('should contain "allTypes" only when no types found and loading done', () => {
         defaultProps.loading = false;
         loading = false;
         nodeTypes = undefined;
         const cmp = shallow(<CreateNewContent {...defaultProps}/>);
         // 2 is the number of types returned.
         expect(cmp.length).toEqual(1);
-        expect(cmp.props().id).toEqual('allTypes');
+        expect(cmp.props().isAllTypes).toBe(true);
     });
 });
