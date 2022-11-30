@@ -131,7 +131,7 @@ export function getDataToMutate({nodeData, formValues, i18nContext, sections, la
             if (field.i18n) {
                 Object.keys(i18nContext).filter(i18nLang => i18nLang !== lang && i18nLang !== 'shared' && i18nLang !== 'memo').forEach(i18nLang => {
                     const translatedValue = i18nContext[i18nLang].values[key];
-                    updateValue({field, value: translatedValue, lang: i18nLang, sections, mixinsToMutate, propsToSave, propsToDelete, propFieldNameMapping});
+                    updateValue({field, value: translatedValue, lang: i18nLang, nodeData, sections, mixinsToMutate, propsToSave, propsToDelete, propFieldNameMapping});
                 });
             }
         }
