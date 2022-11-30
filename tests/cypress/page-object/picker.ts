@@ -125,6 +125,7 @@ export class Picker extends BaseComponent {
         expandPaths.forEach(p => accordion.expandTreeItem(p));
         accordion.getTreeItem(selectPath).click();
         this.wait();
+        accordion.getTreeItem(selectPath).children('div.moonstone-treeView_item').should('have.class', 'moonstone-selected');
     }
 
     // @deprecated use table functions directly
