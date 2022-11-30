@@ -80,13 +80,14 @@ const CreateNewContent = ({contextNodePath, path, showOnNodeTypes, nodeTypes, na
         return <Render {...otherProps} isVisible={false} onClick={() => {}}/>;
     }
 
-    return (creatableNodeTypes || [{id: 'allTypes'}]).map(result => (
+    return (creatableNodeTypes || [{key: 'allTypes'}]).map(result => (
         <Render {...otherProps}
                 {...result}
-                key={result.id}
+                key={result.key}
                 path={path}
                 uilang={uilang}
                 isVisible={res.checksResult}
+                isAllTypes={result.key === 'allTypes'}
                 onClick={ctx => onClick(nodeInfo.node.uuid, language, ctx, redirect, componentRenderer)}/>
     ));
 };
