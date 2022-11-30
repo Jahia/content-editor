@@ -8,9 +8,8 @@ import {
     getComponentBySelector,
     Menu
 } from '@jahia/cypress';
-import {PickerField} from './pickerField';
-import {RichTextField} from './richTextField';
-import {SmallTextField} from "./smallTextField";
+import {ComponentType} from "@jahia/cypress/src/page-object/baseComponent";
+import {Field, PickerField, RichTextField, SmallTextField} from "./fields";
 
 export class ContentEditor extends BasePage {
     languageSwitcher: Dropdown;
@@ -101,21 +100,20 @@ export class ContentEditor extends BasePage {
         cy.window().its('CKEDITOR').its('instances').should(instances => {
             assert(instances[Object.keys(instances)[0]].instanceReady);
         });
-
-        const r = getComponentByAttr(RichTextField, 'data-sel-content-editor-field', fieldName);
-        r.fieldName = fieldName;
-        return r;
+        return this.getField(RichTextField, fieldName, false);
     }
 
     getPickerField(fieldName: string, multiple?: boolean): PickerField {
-        const r = getComponentByAttr(PickerField, 'data-sel-content-editor-field', fieldName);
-        r.fieldName = fieldName;
-        r.multiple = multiple;
-        return r;
+        return this.getField(PickerField, fieldName, multiple);
     }
 
     getSmallTextField(fieldName: string, multiple?: boolean): SmallTextField {
-        const r = getComponentByAttr(SmallTextField, 'data-sel-content-editor-field', fieldName);
+        return this.getField(SmallTextField, fieldName, multiple);
+    }
+
+    getField<FieldType extends Field>(FieldComponent: ComponentType<FieldType>, fieldName: string,
+                                      multiple?: boolean): FieldType {
+        const r = getComponentByAttr(FieldComponent, 'data-sel-content-editor-field', fieldName);
         r.fieldName = fieldName;
         r.multiple = multiple;
         return r;

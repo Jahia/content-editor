@@ -1,16 +1,20 @@
 import {BaseComponent, Button, getComponentByAttr, getComponentByRole} from '@jahia/cypress';
-import {Picker} from './picker';
+import {Picker} from '../picker';
+import {Field} from "./field";
 
-export class SmallTextField extends BaseComponent {
+export class SmallTextField extends Field {
     static ADD_FIELD_SEL = 'button[data-sel-action="addField"]';
-    fieldName: string;
-    multiple: boolean;
 
     addNewValue(newValue: string) {
         if (this.multiple) {
             this.get().find(SmallTextField.ADD_FIELD_SEL).click();
             this.get().find('input').last().type(newValue);
+        } else {
+            this.get().find('input[type="text"]')
+                .clear().type(newValue)
+                .should('have.value', newValue);
         }
+        return this;
     }
 
     checkValue(expectedValue: string) {

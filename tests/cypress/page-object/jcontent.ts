@@ -41,7 +41,7 @@ export class JContent extends BasePage {
         return this.accordion;
     }
 
-    createContent(contentType: string) {
+    createContent(contentType: string): ContentEditor {
         return this.getCreateContent()
             .open()
             .getContentTypeSelector()

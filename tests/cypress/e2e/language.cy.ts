@@ -1,5 +1,6 @@
 import {JContent} from '../page-object/jcontent';
 import gql from 'graphql-tag';
+import {ContentEditor} from "../page-object";
 
 describe('Language switcher tests', () => {
     const siteKey = 'digitall';
@@ -68,7 +69,7 @@ describe('Language switcher tests', () => {
         ce.getLanguageSwitcher().get().find('span[title="English"]').should('be.visible');
 
         // Type text
-        ce.openSection('Content').get().find('input[type="text"]').clear().type('cypress-test');
+        ce.getSmallTextField("jnt:text_text").addNewValue('cypress-test');
 
         // Switch language
         ce.getLanguageSwitcher().select('Deutsch');
@@ -107,4 +108,56 @@ describe('Language switcher tests', () => {
                 }
             `});
     });
+
+    it('Create content - saves multiple languages', () => {
+        const contentName = 'langSwitcherMultipleLang';
+        const ce: ContentEditor = jcontent.createContent('Simple text');
+        cy.get('#contenteditor-dialog-title')
+            .should('be.visible')
+            .and('contain', 'Create Simple text');
+
+        cy.log('Fill text in english');
+        const enText = 'Cypress test - English';
+        ce.getLanguageSwitcher().get().find('span[title="English"]')
+            .should('be.visible')
+            .log('Language set to English');
+        ce.getSmallTextField("jnt:text_text").addNewValue(enText);
+
+        cy.log('Fill text in French');
+        const frText = 'Cypress test - French';
+        ce.getLanguageSwitcher().select('Français').get().find('span[title="Français"]')
+            .should('be.visible')
+            .log('Language set to French');
+        ce.getSmallTextField('jnt:text_text').addNewValue(frText);
+
+        ce.openSection("Options");
+        ce.getSmallTextField("nt:base_ce:systemName", false)
+            .addNewValue(contentName);
+        ce.save();
+
+        cy.log("Verify text has been created in jcr");
+        const query = gql`
+            query($path: String!) {
+                jcr {
+                    nodeByPath(path: $path) {
+                        en: property(name:"text", language:"en") { value }
+                        fr: property(name:"text", language:"fr") { value }
+                    }
+                }
+            }`;
+        const path = `/sites/${siteKey}/contents/${contentName}`;
+        cy.apollo({query, variables: {path}}).should(result => {
+            expect(result?.data?.jcr?.nodeByPath?.en?.value).equals(enText);
+            expect(result?.data?.jcr?.nodeByPath?.fr?.value).equals(frText);
+        });
+
+        cy.log('Cleanup');
+        cy.apollo({
+            mutation: gql`mutation($path: String!) {
+                jcr { deleteNode(pathOrId: $path) }
+            }`,
+            variables:{path}
+        });
+    });
+
 });
