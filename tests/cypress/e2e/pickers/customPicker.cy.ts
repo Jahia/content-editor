@@ -4,20 +4,17 @@ import {AccordionItem} from '../../page-object/accordionItem';
 import {JContent} from '../../page-object/jcontent';
 import gql from 'graphql-tag';
 
-describe('Picker tests - custom picker', () => {
+describe('Picker tests - custom picker', {waitForAnimations: true, retries: 3}, () => {
     const siteKey = 'digitall';
     let jcontent: JContent;
 
-    beforeEach(() => {
+    before(() => {
         // I have issues adding these to before()/after() so have to add to beforeEach()/afterEach()
         cy.login(); // Edit in chief
         cy.apollo({mutationFile: 'pickers/createCustomContent.graphql'});
-
-        // BeforeEach()
-        jcontent = JContent.visit(siteKey, 'en', 'content-folders/contents');
     });
 
-    afterEach(() => {
+    after(() => {
         cy.apollo({mutation: gql`
             mutation deleteContent {
                 jcr {
@@ -25,6 +22,16 @@ describe('Picker tests - custom picker', () => {
                 }
             }
             `});
+        cy.logout();
+    });
+
+    beforeEach(() => {
+        cy.login(); // Edit in chief
+        // BeforeEach()
+        jcontent = JContent.visit(siteKey, 'en', 'content-folders/contents');
+    });
+
+    afterEach(() => {
         cy.logout();
     });
 
@@ -50,7 +57,6 @@ describe('Picker tests - custom picker', () => {
             .and('equal', 'true');
         picker.wait();
         picker.navigateTo(contentAccordion, 'contents/ce-picker-custom-contents');
-        // contentAccordion.getTreeItem('ce-picker-custom-contents').click();
 
         cy.log('check table components in List mode');
         picker.switchViewMode('List');

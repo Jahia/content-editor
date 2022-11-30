@@ -18,7 +18,13 @@ export default defineConfig({
         setupNodeEvents(on, config) {
             return require('./cypress/plugins/index.js')(on, config);
         },
-        specPattern: '**/e2e/pickers/*',
+        specPattern: ['**/e2e/createContentI18N.cy.ts',
+            '**/e2e/orderableValues.cy.ts',
+            '**/e2e/addMixinChoicelistInitializers.cy.ts',
+            '**/e2e/pickers/customPicker.cy.ts',
+            '**/e2e/pickers/search.cy.ts',
+            '**/e2e/pickers/picker*.cy.ts',
+            '**/e2e/pickers/constraint.cy.ts'],
         baseUrl: 'http://localhost:8080',
         experimentalSessionAndOrigin: false
     }
