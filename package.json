@@ -48,6 +48,8 @@
         "@material-ui/core": "^3.9.3",
         "@material-ui/icons": "^3.0.1",
         "@material-ui/lab": "^3.0.0-alpha.30",
+        "@styled-icons/boxicons-regular": "^10.46.0",
+        "@styled-icons/material": "^10.46.0",
         "@udecode/plate": "^18.13.0",
         "@udecode/plate-test-utils": "^13.4.0",
         "ckeditor4-react": "1.2.0",

@@ -1,3 +1,4 @@
+import React from 'react';
 import { CodeBlock } from '@styled-icons/boxicons-regular/CodeBlock';
 import { FormatQuote } from '@styled-icons/material/FormatQuote';
 import { Looks3 } from '@styled-icons/material/Looks3';
@@ -19,11 +20,11 @@ import {
     ELEMENT_H6,
     getPluginType,
     useEventPlateId,
+    usePlateEditorRef,
 } from '@udecode/plate';
-import { useMyPlateEditorRef } from '../typescript/plateTypes';
 
 export const MyToolbar = () => {
-    const editor = useMyPlateEditorRef(useEventPlateId());
+    const editor = usePlateEditorRef(useEventPlateId());
 
     return (
         <>

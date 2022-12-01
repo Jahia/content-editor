@@ -22,11 +22,13 @@ import {
     createUnderlinePlugin,
     Plate,
     PlateProvider,
+    HeadingToolbar,
 } from '@udecode/plate';
 import basicMarksValue from './plate-demo/basicMarksValue';
 import basicElementsValue from './plate-demo/basicElementsValue';
 import {plateUI} from './plate-demo/plateUI';
 import './RichText.scss';
+import {MyToolbar} from '~/SelectorTypes/RichText/plate-demo/myToolbar';
 
 if (window.CKEDITOR) {
     window.CKEDITOR.focusManager._.blurDelay = 0;
@@ -161,6 +163,9 @@ export const RichText = ({field, id, value, onChange, onBlur}) => {
                 initialValue={[...basicElementsValue, ...basicMarksValue]}
                 plugins={pluginsComp}
             >
+                <HeadingToolbar>
+                    <MyToolbar/>
+                </HeadingToolbar>
                 <Plate editableProps={editableProps} />
             </PlateProvider>
 
