@@ -9,6 +9,23 @@ import {PickerDialog} from '~/SelectorTypes/Picker';
 import {useTranslation} from 'react-i18next';
 import {buildPickerContext, fillCKEditorPicker} from './RichText.utils';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
+import {
+    createBlockquotePlugin,
+    createBoldPlugin,
+    createCodeBlockPlugin,
+    createCodePlugin,
+    createHeadingPlugin,
+    createItalicPlugin,
+    createParagraphPlugin,
+    createPlugins,
+    createStrikethroughPlugin,
+    createUnderlinePlugin,
+    Plate,
+    PlateProvider,
+} from '@udecode/plate';
+import basicMarksValue from './plate-demo/basicMarksValue';
+import basicElementsValue from './plate-demo/basicElementsValue';
+import {plateUI} from './plate-demo/plateUI';
 import './RichText.scss';
 
 if (window.CKEDITOR) {
@@ -102,6 +119,32 @@ export const RichText = ({field, id, value, onChange, onBlur}) => {
         fillCKEditorPicker(picker, pickerResult.length > 0 && pickerResult[0]);
     };
 
+    /** START Plate - Slate.js demo */
+
+    const editableProps = {
+        spellCheck: false,
+        autoFocus: false,
+        readOnly: false,
+        placeholder: 'Type…',
+    };
+
+    const plugins = [
+        createParagraphPlugin(),
+        createBlockquotePlugin(),
+        createCodeBlockPlugin(),
+        createHeadingPlugin(),
+
+        createBoldPlugin(),
+        createItalicPlugin(),
+        createUnderlinePlugin(),
+        createStrikethroughPlugin(),
+        createCodePlugin(),
+    ];
+    const pluginsComp = createPlugins(plugins, {components: plateUI});
+
+
+    /** END Plate - Slate.js demo */
+
     return (
         <>
             {picker && <PickerDialog
@@ -113,27 +156,16 @@ export const RichText = ({field, id, value, onChange, onBlur}) => {
                 onItemSelection={handleItemSelection}
                 onClose={() => setPicker(false)}
             />}
-            <CKEditor
-                key={'v' + (i18nContext?.memo?.count || 0)}
-                id={id}
-                data={value}
-                aria-labelledby={`${field.name}-label`}
-                config={config}
-                readOnly={field.readOnly}
-                onMode={evt => {
-                    if (evt.editor.mode === 'source') {
-                        let editable = evt.editor.editable();
-                        editable.attachListener(editable, 'input', inputEvt => onChange(inputEvt.sender.getValue()));
-                    } else {
-                        let element = document.querySelector('div[data-first-field=true] .cke_wysiwyg_frame');
-                        if (element) {
-                            element.contentDocument.querySelector('.cke_editable').focus();
-                        }
-                    }
-                }}
-                onChange={evt => onChange(evt.editor.getData())}
-                onBlur={onBlur}
-            />
+
+            <PlateProvider
+                initialValue={[...basicElementsValue, ...basicMarksValue]}
+                plugins={pluginsComp}
+            >
+                <Plate editableProps={editableProps} />
+            </PlateProvider>
+
+
+
         </>
     );
 };

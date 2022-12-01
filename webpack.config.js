@@ -25,7 +25,10 @@ module.exports = (env, argv) => {
             alias: {
                 '~': path.resolve(__dirname, './src/javascript'),
             },
-            fallback: { "url": false }
+            fallback: {
+                "url": false,
+                "stream": require.resolve('readable-stream')
+            }
         },
         module: {
             rules: [
