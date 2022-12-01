@@ -109,6 +109,8 @@ if [[ $INSTALLED_MODULE_VERSION == "UNKNOWN" ]]; then
 fi
 
 echo "$(date +'%d %B %Y - %k:%M') == Run tests =="
+mkdir -p ./results/reports
+rm -rf ./results/reports
 if [[ "${JAHIA_CLUSTER_ENABLED}" == "true" ]]; then
   echo "$(date +'%d %B %Y - %k:%M') == Run ALL specs with cluster enabled =="
   yarn e2e:ci
