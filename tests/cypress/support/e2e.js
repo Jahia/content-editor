@@ -14,22 +14,25 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands'
-// import { slowCypressDown } from 'cypress-slow-down'
+import './commands';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-require('@jahia/cypress/dist/support/registerSupport').registerSupport()
+require('cypress-terminal-report/src/installLogsCollector')({
+    collectTypes: ['cons:log', 'cons:info', 'cons:warn', 'cons:error']
+});
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+require('@jahia/cypress/dist/support/registerSupport').registerSupport();
 Cypress.on('uncaught:exception', (err, runnable) => {
-    // returning false here prevents Cypress from
+    // Returning false here prevents Cypress from
     // failing the test
-    return false
-})
+    return false;
+});
 if (Cypress.browser.family === 'chromium') {
     Cypress.automation('remote:debugger:protocol', {
         command: 'Network.enable',
-        params: {},
-    })
+        params: {}
+    });
     Cypress.automation('remote:debugger:protocol', {
         command: 'Network.setCacheDisabled',
-        params: { cacheDisabled: true },
-    })
+        params: {cacheDisabled: true}
+    });
 }
