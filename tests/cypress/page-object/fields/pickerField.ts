@@ -1,4 +1,4 @@
-import {BaseComponent, Button, getComponentByAttr, getComponentByRole} from '@jahia/cypress';
+import {Button, getComponentByAttr, getComponentByRole} from '@jahia/cypress';
 import {Picker} from '../picker';
 import {Field} from './field';
 

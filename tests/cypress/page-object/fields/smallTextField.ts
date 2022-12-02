@@ -1,5 +1,3 @@
-import {BaseComponent, Button, getComponentByAttr, getComponentByRole} from '@jahia/cypress';
-import {Picker} from '../picker';
 import {Field} from './field';
 
 export class SmallTextField extends Field {

@@ -19,6 +19,7 @@ describe('Preview tests', () => {
     it('It shows correctly preview of edited page even if not the one currently rendered in PageComposer', () => {
         const contentEditor = pageComposer.editPage('Our Companies');
         contentEditor.switchToAdvancedMode();
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.wait(5000);
         contentEditor.validateContentIsVisibleInPreview('Making a Difference');
     });

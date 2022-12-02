@@ -9,6 +9,7 @@ describe('Add Mixin by using choice list initializers (Image Reference)', () => 
         cy.executeGroovy('createSiteI18N.groovy', {SITEKEY: sitekey});
         cy.login(); // Edit in chief
         JContent.visit(sitekey, 'en', 'media/file');
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.wait(5000);
         cy.get('div[data-cm-role="grid-content-list"]')
             .children('div')
@@ -16,6 +17,7 @@ describe('Add Mixin by using choice list initializers (Image Reference)', () => 
                 action: 'drag-drop',
                 waitForAnimations: true
             });
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.wait(5000);
     });
 
