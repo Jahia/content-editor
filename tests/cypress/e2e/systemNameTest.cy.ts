@@ -92,5 +92,4 @@ describe('System name test', () => {
         pageComposer.checkSystemNameSync('éàöäèü', 'eaoaeu');
         pageComposer.checkSystemNameSync('[]-{}-()-!!', '()-!!');
     });
-
 });

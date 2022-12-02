@@ -43,7 +43,6 @@ describe('Picker tests - custom picker', {waitForAnimations: true, retries: 3}, 
             .getPickerField(contentTypes.customPicker.fieldNodeType, contentTypes.customPicker.multiple)
             .open();
 
-
         // Assert components are visible
         assertUtils.isVisible(picker.get());
         assertUtils.isVisible(picker.getSiteSwitcher());

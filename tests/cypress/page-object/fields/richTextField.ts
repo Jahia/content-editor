@@ -1,9 +1,8 @@
 import {BaseComponent, getComponentByRole} from '@jahia/cypress';
 import {Picker} from '../picker';
-import {Field} from "./field";
+import {Field} from './field';
 
 export class RichTextField extends Field {
-
     type(text) {
         this.get().iframe('.cke_wysiwyg_frame').type(text);
     }

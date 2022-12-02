@@ -87,6 +87,7 @@ describe('Picker - Editorial link', () => {
             .should(elems => {
                 const texts = elems.get().map(e => e.textContent);
                 const allTypes = texts.sort().every(content => ['Content Folder', 'Person portrait'].includes(content));
+                // eslint-disable-next-line no-unused-expressions
                 expect(allTypes).to.be.true;
             });
     });

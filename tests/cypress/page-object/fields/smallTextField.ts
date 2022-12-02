@@ -1,6 +1,4 @@
-import {BaseComponent, Button, getComponentByAttr, getComponentByRole} from '@jahia/cypress';
-import {Picker} from '../picker';
-import {Field} from "./field";
+import {Field} from './field';
 
 export class SmallTextField extends Field {
     static ADD_FIELD_SEL = 'button[data-sel-action="addField"]';
@@ -14,6 +12,7 @@ export class SmallTextField extends Field {
                 .clear().type(newValue)
                 .should('have.value', newValue);
         }
+
         return this;
     }
 

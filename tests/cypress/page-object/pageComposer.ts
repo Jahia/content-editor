@@ -59,6 +59,7 @@ export class PageComposer extends BasePage {
     editComponent(selector: string) {
         cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
             cy.iframe('.gwt-Frame', this.iFrameOptions).within(() => {
+                // eslint-disable-next-line cypress/no-unnecessary-waiting
                 cy.wait(5000);
                 cy.get('.container').find(selector).trigger('mouseover').rightclick({force: true});
             });
@@ -72,6 +73,7 @@ export class PageComposer extends BasePage {
     editComponentByText(text: string): ContentEditor {
         cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
             cy.iframe('.gwt-Frame', this.iFrameOptions).within(() => {
+                // eslint-disable-next-line cypress/no-unnecessary-waiting
                 cy.wait(5000);
                 cy.get('.container').contains(text).trigger('mouseover').rightclick({force: true});
             });
@@ -113,6 +115,7 @@ export class PageComposer extends BasePage {
         if (implicitSync) {
             cy.get('#nt\\:base_ce\\:systemName').should('be.visible').type(title, {force: true});
         }
+
         cy.get('#select-jnt\\:page_j\\:templateName').should('be.visible')
             .click()
             .find('li[role="option"][data-value="home"]')
@@ -139,7 +142,6 @@ export class PageComposer extends BasePage {
 
         ce.cancelAndDiscard();
         return ce;
-
     }
 
     navigateToPage(name: string): PageComposer {
