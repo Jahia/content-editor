@@ -1,6 +1,6 @@
 import {JContent} from '../page-object/jcontent';
 import gql from 'graphql-tag';
-import {ContentEditor} from "../page-object";
+import {ContentEditor} from '../page-object';
 
 describe('Language switcher tests', () => {
     const siteKey = 'digitall';
@@ -69,7 +69,7 @@ describe('Language switcher tests', () => {
         ce.getLanguageSwitcher().get().find('span[title="English"]').should('be.visible');
 
         // Type text
-        ce.getSmallTextField("jnt:text_text").addNewValue('cypress-test');
+        ce.getSmallTextField('jnt:text_text').addNewValue('cypress-test');
 
         // Switch language
         ce.getLanguageSwitcher().select('Deutsch');
@@ -121,7 +121,7 @@ describe('Language switcher tests', () => {
         ce.getLanguageSwitcher().get().find('span[title="English"]')
             .should('be.visible')
             .log('Language set to English');
-        ce.getSmallTextField("jnt:text_text").addNewValue(enText);
+        ce.getSmallTextField('jnt:text_text').addNewValue(enText);
 
         cy.log('Fill text in French');
         const frText = 'Cypress test - French';
@@ -130,12 +130,12 @@ describe('Language switcher tests', () => {
             .log('Language set to French');
         ce.getSmallTextField('jnt:text_text').addNewValue(frText);
 
-        ce.openSection("Options");
-        ce.getSmallTextField("nt:base_ce:systemName", false)
+        ce.openSection('Options');
+        ce.getSmallTextField('nt:base_ce:systemName', false)
             .addNewValue(contentName);
         ce.save();
 
-        cy.log("Verify text has been created in jcr");
+        cy.log('Verify text has been created in jcr');
         const query = gql`
             query($path: String!) {
                 jcr {
@@ -156,8 +156,7 @@ describe('Language switcher tests', () => {
             mutation: gql`mutation($path: String!) {
                 jcr { deleteNode(pathOrId: $path) }
             }`,
-            variables:{path}
+            variables: {path}
         });
     });
-
 });

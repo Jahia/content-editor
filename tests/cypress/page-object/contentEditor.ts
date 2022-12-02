@@ -8,8 +8,8 @@ import {
     getComponentBySelector,
     Menu
 } from '@jahia/cypress';
-import {ComponentType} from "@jahia/cypress/src/page-object/baseComponent";
-import {Field, PickerField, RichTextField, SmallTextField} from "./fields";
+import {ComponentType} from '@jahia/cypress/src/page-object/baseComponent';
+import {Field, PickerField, RichTextField, SmallTextField} from './fields';
 
 export class ContentEditor extends BasePage {
     languageSwitcher: Dropdown;
@@ -112,7 +112,7 @@ export class ContentEditor extends BasePage {
     }
 
     getField<FieldType extends Field>(FieldComponent: ComponentType<FieldType>, fieldName: string,
-                                      multiple?: boolean): FieldType {
+        multiple?: boolean): FieldType {
         const r = getComponentByAttr(FieldComponent, 'data-sel-content-editor-field', fieldName);
         r.fieldName = fieldName;
         r.multiple = multiple;
