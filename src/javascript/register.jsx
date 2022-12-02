@@ -9,6 +9,10 @@ import {registerSelectorTypes} from '~/SelectorTypes';
 import {pcNavigateTo} from '~/redux/pagecomposer.redux-actions';
 import {registerReducer} from './registerReducer';
 import {ContentEditorApiContextProvider} from '~/contexts/ContentEditorApi/ContentEditorApi.context';
+import hashes from './localesHash!';
+
+window.jahia.localeFiles = window.jahia.localeFiles || {};
+window.jahia.localeFiles['content-editor'] = hashes;
 
 export function register() {
     registry.add('app', 'content-editor-history-context', {
