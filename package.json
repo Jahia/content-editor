@@ -90,6 +90,7 @@
         "mammoth": "^1.4.13",
         "node-fetch": "^2.6.1",
         "trim": "^1.0.0",
+        "trim-newlines": "^3.0.1",
         "prismjs": "^1.26.0",
         "glob-parent": "^5.1.2"
     },
