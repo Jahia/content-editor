@@ -133,8 +133,9 @@ export const Picker = ({field, value, editorContext, inputContext, onChange, onB
                 <>
                     <ReferenceCard
                         isReadOnly={field.readOnly}
+                        isError={error || notFound}
                         emptyLabel={t((error || notFound) ? pickerConfig.pickerInput.notFoundLabel : pickerConfig.pickerInput.emptyLabel)}
-                        emptyIcon={pickerConfig.pickerInput.emptyIcon}
+                        emptyIcon={(error || notFound) ? pickerConfig.pickerInput.notFoundIcon : pickerConfig.pickerInput.emptyIcon}
                         labelledBy={`${field.name}-label`}
                         fieldData={fieldData && fieldData[0]}
                         onClick={() => setDialogOpen(!isDialogOpen)}

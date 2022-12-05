@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import {Typography} from '@jahia/design-system-kit';
+import {Typography} from '@jahia/moonstone';
 import {withStyles} from '@material-ui/core';
 import {HandleDrag} from '@jahia/moonstone';
 
@@ -14,9 +14,10 @@ const styles = theme => ({
     },
     add: {
         width: '100%',
+        color: 'var(--color-gray_dark60)',
         height: theme.spacing.unit * 9,
         backgroundColor: theme.palette.ui.epsilon,
-        border: `1px ${theme.palette.ui.zeta} dashed`,
+        border: '1px var(--color-gray40) dashed',
         fontSize: '0.875rem',
         borderRadius: '2px',
         display: 'flex',
@@ -24,21 +25,35 @@ const styles = theme => ({
         justifyContent: 'center',
         cursor: 'pointer',
         '&:hover': {
-            border: `1px solid ${theme.palette.ui.zeta}`
+            border: '1px var(--color-gray40) solid'
         },
         '&:focus': {
             outline: 'none',
-            border: `1px solid ${theme.palette.brand.beta}`
+            border: '1px var(--color-gray40) solid'
         },
         '& svg': {
-            margin: theme.spacing.unit,
-            color: theme.palette.ui.zeta
+            marginBottom: 'var(--spacing-nano)'
+        }
+    },
+    addError: {
+        border: '1px var(--color-warning) solid',
+        '&:hover': {
+            border: '1px var(--color-warning) solid'
+        },
+        '&:focus': {
+            border: '1px var(--color-warning) solid'
         }
     },
     addReadOnly: {
         outline: 'none',
         background: theme.palette.ui.alpha,
-        border: `1px solid ${theme.palette.ui.alpha}!important`,
+        border: '1px var(--color-gray40) solid',
+        '&:hover': {
+            border: '1px var(--color-gray40) solid'
+        },
+        '&:focus': {
+            border: '1px var(--color-gray40) solid'
+        },
         cursor: 'default'
     },
     fieldContainer: {
@@ -96,6 +111,9 @@ const styles = theme => ({
         flexDirection: 'column',
         alignItems: 'center'
     },
+    error: {
+        color: 'var(--color-warning)'
+    },
     draggableIcon: {
         cursor: 'grab'
     }
@@ -104,6 +122,7 @@ const styles = theme => ({
 const ReferenceCardCmp = ({
     classes,
     isReadOnly,
+    isError,
     emptyLabel,
     emptyIcon,
     fieldData,
@@ -144,19 +163,10 @@ const ReferenceCardCmp = ({
                         <img src={fieldData.url} className={classes.fieldImage} aria-labelledby={nameId} alt=""/>
                     </div>
                     <div className={classes.fieldSelectedMetadata}>
-                        <Typography
-                            data-sel-field-picker-name
-                            variant="zeta"
-                            color="alpha"
-                            id={nameId}
-                        >
+                        <Typography data-sel-field-picker-name variant="caption" id={nameId}>
                             {fieldData.name}
                         </Typography>
-                        <Typography
-                            data-sel-field-picker-info
-                            variant="omega"
-                            color="gamma"
-                        >
+                        <Typography data-sel-field-picker-info variant="body">
                             {fieldData.info}
                         </Typography>
                     </div>
@@ -169,7 +179,7 @@ const ReferenceCardCmp = ({
         <button
             data-sel-media-picker="empty"
             data-sel-field-picker-action="openPicker"
-            className={`${classes.add} ${isReadOnly ? classes.addReadOnly : ''}`}
+            className={clsx(classes.add, isReadOnly && classes.addReadOnly, isError && classes.addError)}
             type="button"
             aria-disabled={isReadOnly}
             aria-labelledby={labelledBy}
@@ -182,9 +192,9 @@ const ReferenceCardCmp = ({
             }}
         >
             {!isReadOnly &&
-            <div className={classes.referenceButtonEmptyContainer}>
+            <div className={clsx(classes.referenceButtonEmptyContainer, isError && classes.error)}>
                 {emptyIcon}
-                <Typography variant="omega" color="beta" component="span">
+                <Typography variant="body" component="span">
                     {emptyLabel}
                 </Typography>
             </div>}
@@ -203,6 +213,7 @@ ReferenceCardCmp.defaultProps = {
 
 ReferenceCardCmp.propTypes = {
     isReadOnly: PropTypes.bool,
+    isError: PropTypes.bool,
     classes: PropTypes.object.isRequired,
     onClick: PropTypes.func,
     fieldData: PropTypes.shape({

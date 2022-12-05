@@ -131,7 +131,7 @@
             "previewTab": "Preview in a new tab"
           },
           "contentPicker": {
-            "notFoundContent": "Content not found",
+            "notFoundContent": "Broken reference",
             "fileUploadBtn": "Upload file",
             "modalTitle": "Select a content",
             "modalEditorialTitle": "Select pages and contents displayable in full page",

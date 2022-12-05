@@ -1,5 +1,5 @@
 import React from 'react';
-import {File} from '@jahia/moonstone';
+import {File, FileBroken} from '@jahia/moonstone';
 import {useQuery} from '@apollo/react-hooks';
 import {ContentPickerFilledQuery} from './ContentPicker.gql-queries';
 import {encodeJCRPath} from '~/utils';
@@ -39,6 +39,7 @@ export const DefaultPickerConfig = {
         emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalTitle',
         notFoundLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.notFoundContent',
         emptyIcon: <File/>,
+        notFoundIcon: <FileBroken/>,
         usePickerInputData
     },
     pickerDialog: {
