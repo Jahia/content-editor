@@ -44,7 +44,6 @@ export const registerMediaPickers = registry => {
     registry.add(Constants.pickerConfig, 'image', {
         pickerInput: {
             emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalImageTitle',
-            notFoundLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.notFoundImage',
             emptyIcon: <FileImage/>,
             usePickerInputData: useMediaPickerInputData
         },
