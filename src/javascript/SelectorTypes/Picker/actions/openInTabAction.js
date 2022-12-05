@@ -11,7 +11,7 @@ export const OpenInTabActionComponent = ({render: Render, loading: Loading, path
     let uuid;
     if (path === undefined) {
         const {fieldData} = inputContext.actionContext;
-        uuid = fieldData[0].uuid;
+        uuid = fieldData?.[0]?.uuid;
     }
 
     const {data, error, loading} = useQuery(OpenInTabActionQuery, {
