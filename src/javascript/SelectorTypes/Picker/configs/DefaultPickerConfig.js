@@ -39,6 +39,7 @@ export const DefaultPickerConfig = {
         emptyLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.modalTitle',
         notFoundLabel: 'content-editor:label.contentEditor.edit.fields.contentPicker.notFoundContent',
         emptyIcon: <File/>,
+        notFoundIcon: <File/>,
         usePickerInputData
     },
     pickerDialog: {

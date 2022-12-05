@@ -131,7 +131,7 @@
             "previewTab": "Prévisualisé dans un nouvel onglet"
           },
           "contentPicker": {
-            "notFoundContent": "Le contenu n’a pas été trouvé",
+            "notFoundContent": "Référence cassée",
             "fileUploadBtn": "Uploader un fichier",
             "modalTitle": "Sélectionner un contenu",
             "modalEditorialTitle": "Sélectionner des pages et contenus affichables en pleine page",

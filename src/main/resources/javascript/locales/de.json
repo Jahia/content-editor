@@ -131,7 +131,7 @@
             "previewTab": "In einem neuen Tab Vorschau"
           },
           "contentPicker": {
-            "notFoundContent": "Datei nicht gefunden",
+            "notFoundContent": "Gebrochene Referenz",
             "fileUploadBtn": "Datei hochladen",
             "modalTitle": "Content auswählen",
             "modalEditorialTitle": "Wählen Sie Seiten und Inhalte aus, die ganzseitig angezeigt werden können",
