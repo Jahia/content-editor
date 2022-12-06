@@ -26,7 +26,9 @@ export const EditPanelLanguageSwitcher = ({siteInfo}) => {
             }
 
             // Group language options depending on whether node has been translated to this language already or not
-            const isTranslated = translatedLangs.includes(item.language) || i18nContext[item.language];
+            const isTranslated = translatedLangs.includes(item.language) ||
+                // Check if a translation during create is empty or not
+                (i18nContext[item.language]?.values && Object.values(i18nContext[item.language]?.values).some(Boolean));
             const group = isTranslated ? translatedOption : notTranslatedOption;
             group.options.push({
                 label,
