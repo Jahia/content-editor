@@ -12,7 +12,7 @@ export const FieldSetsDisplay = ({fieldSets}) => {
     return (
         fieldSets.map(fs => {
             if (fs.nodeCheck) {
-                return <FieldSetWithNodeChecks fieldset={fs}/>;
+                return <FieldSetWithNodeChecks key={fs.name} fieldset={fs}/>;
             }
 
             return <FieldSet key={fs.name} fieldset={fs}/>;

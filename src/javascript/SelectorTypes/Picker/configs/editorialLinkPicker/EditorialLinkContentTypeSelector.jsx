@@ -45,6 +45,6 @@ export const EditorialLinkContentTypeSelector = ({pickerConfig}) => {
 };
 
 EditorialLinkContentTypeSelector.propTypes = {
-    pickerConfig: configPropType.isRequired
+    pickerConfig: configPropType
 };
 
