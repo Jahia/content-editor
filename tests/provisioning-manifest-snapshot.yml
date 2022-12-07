@@ -35,7 +35,7 @@
   username: ${env:NEXUS_USERNAME}
   password: ${env:NEXUS_PASSWORD}
 - installBundle:
-  - 'mvn:org.jahia.modules/qa-module/3.1.0-SNAPSHOT'
+  - 'mvn:org.jahia.modules/qa-module'
   autoStart: true
   uninstallPreviousVersion: true
 
