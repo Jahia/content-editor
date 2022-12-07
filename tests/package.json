@@ -22,7 +22,7 @@
     "cypress-iframe": "^1.0.1",
     "cypress-multi-reporters": "^1.6.0",
     "cypress-slow-down": "^1.2.1",
-    "cypress-terminal-report": "^3.5.2",
+    "cypress-terminal-report": "^4.1.2",
     "eslint": "^8.16.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-cypress": "^2.12.1",

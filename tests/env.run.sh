@@ -109,13 +109,16 @@ if [[ $INSTALLED_MODULE_VERSION == "UNKNOWN" ]]; then
 fi
 
 echo "$(date +'%d %B %Y - %k:%M') == Run tests =="
-if [[ "${JAHIA_CLUSTER_ENABLED}" == "true" ]]; then
-  echo "$(date +'%d %B %Y - %k:%M') == Run ALL specs with cluster enabled =="
-  yarn e2e:ci
-else
-  echo "$(date +'%d %B %Y - %k:%M') == Run REDUCED specs with cluster disabled =="
-  yarn e2e:ci:standalone
+mkdir -p ./results/reports
+rm -rf ./results/reports
+
+if [[ -z "${CYPRESS_CONFIGURATION_FILE}" ]]; then
+  CYPRESS_CONFIGURATION_FILE=cypress.full-test-suites.config.ts
 fi
+
+echo "$(date +'%d %B %Y - %k:%M') == Running Cypress with configuration file ${CYPRESS_CONFIGURATION_FILE} =="
+
+yarn e2e:ci  --config-file "${CYPRESS_CONFIGURATION_FILE}"
 
 if [[ $? -eq 0 ]]; then
   echo "$(date +'%d %B %Y - %k:%M') == Full execution successful =="
