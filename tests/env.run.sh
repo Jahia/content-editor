@@ -111,7 +111,13 @@ fi
 echo "$(date +'%d %B %Y - %k:%M') == Run tests =="
 mkdir -p ./results/reports
 rm -rf ./results/reports
+
+if [ -z "${CYPRESS_CONFIGURATION_FILE}" ]
+  set CYPRESS_CONFIGURATION_FILE=cypress.full-test-suites.config.ts
+fi
+
 echo "$(date +'%d %B %Y - %k:%M') == Running Cypress with configuration file ${CYPRESS_CONFIGURATION_FILE} =="
+
 yarn e2e:ci  --config-file "${CYPRESS_CONFIGURATION_FILE}"
 
 if [[ $? -eq 0 ]]; then
