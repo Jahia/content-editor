@@ -113,7 +113,7 @@ mkdir -p ./results/reports
 rm -rf ./results/reports
 
 if [[ -z "${CYPRESS_CONFIGURATION_FILE}" ]]; then
-  set CYPRESS_CONFIGURATION_FILE=cypress.full-test-suites.config.ts
+  CYPRESS_CONFIGURATION_FILE=cypress.full-test-suites.config.ts
 fi
 
 echo "$(date +'%d %B %Y - %k:%M') == Running Cypress with configuration file ${CYPRESS_CONFIGURATION_FILE} =="
