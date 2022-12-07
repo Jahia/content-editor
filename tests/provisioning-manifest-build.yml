@@ -29,7 +29,7 @@
   password: ${env:NEXUS_PASSWORD}
 - installBundle:
   - 'mvn:org.jahia.modules/jcontent'
-  - url: 'mvn:org.jahia.modules/qa-module/3.1.0-SNAPSHOT'
+  - url: 'mvn:org.jahia.modules/qa-module'
   autoStart: true
   uninstallPreviousVersion: true
 
