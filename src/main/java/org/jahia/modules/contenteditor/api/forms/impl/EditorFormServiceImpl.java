@@ -320,7 +320,14 @@ public class EditorFormServiceImpl implements EditorFormService {
 
             EditorFormDefinition mergedFormDefinition = mergeFormDefinitions(formDefinitionsToMerge);
             if (mergedFormDefinition.getSections() != null) {
-                List<EditorFormSectionDefinition> filteredSections = mergedFormDefinition.getSections().stream().filter(section -> section.getRequiredPermission() == null || currentNode.hasPermission(section.getRequiredPermission())).collect(Collectors.toList());
+                List<EditorFormSectionDefinition> filteredSections = mergedFormDefinition
+                    .getSections()
+                    .stream()
+                    .map(editorFormSectionDefinition -> {
+                        editorFormSectionDefinition.setHide(shouldHideSection(editorFormSectionDefinition
+                            , existingNode));
+                        return editorFormSectionDefinition;})
+                    .filter(section -> section.getRequiredPermission() == null || currentNode.hasPermission(section.getRequiredPermission())).collect(Collectors.toList());
                 mergedFormDefinition.setSections(filteredSections);
             }
 
@@ -332,6 +339,11 @@ public class EditorFormServiceImpl implements EditorFormService {
         } catch (RepositoryException e) {
             throw new EditorFormException("Error while building edit form definition for node: " + currentNode.getPath() + " and nodeType: " + primaryNodeType.getName(), e);
         }
+    }
+
+    private boolean shouldHideSection(EditorFormSectionDefinition section, JCRNodeWrapper existingNode){
+        String currentMode = existingNode == null ? "create" : "edit";
+        return section.isHide() || (!section.getDisplayModes().isEmpty() && !section.getDisplayModes().contains(currentMode));
     }
 
     private void checkIfListOrderingSectionIsRequired(ExtendedNodeType primaryNodeType, JCRNodeWrapper existingNode,Map<String, EditorFormSection> formSectionsByName) throws RepositoryException {
@@ -431,7 +443,8 @@ public class EditorFormServiceImpl implements EditorFormService {
         if (targetSection == null) {
             Double targetSectionRank = 1.0;
             Double targetSectionPriority = 1.0;
-            targetSection = new EditorFormSection(targetSectionName, targetSectionName, null, targetSectionRank, targetSectionPriority, new ArrayList<>(), false);
+            targetSection = new EditorFormSection(targetSectionName, targetSectionName, null, targetSectionRank, targetSectionPriority,
+                new ArrayList<>(), false);
         }
 
         if (formFieldSet.getRank().compareTo(0.0) == 0) {
