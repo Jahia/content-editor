@@ -67,7 +67,7 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
         }
     });
 
-    // console.log('SelectionHandler called with: state, currentFolderInfo, nodesInfo', state, currentFolderInfo, nodesInfo);
+    console.log('SelectionHandler called with: state, currentFolderInfo, nodesInfo', state, currentFolderInfo, nodesInfo);
 
     useEffect(() => {
         if (nodesInfo.data) {
