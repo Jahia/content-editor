@@ -55,7 +55,7 @@
         "formik": "^2.2.5",
         "graphql": "^15.4.0",
         "graphql-tag": "^2.11.0",
-        "i18next": "^19.7.0",
+        "i18next": "^22.1.4",
         "mammoth": "^1.4.13",
         "prismjs": "^1.26.0",
         "prop-types": "^15.7.2",
