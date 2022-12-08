@@ -300,6 +300,14 @@
             "pages": "Pages",
             "contentFolders": "Content Folders"
           }
+        },
+        "selectors": {
+          "multipleLeftRightSelector": {
+            "addAll": "Add all",
+            "removeAll": "Remove all",
+            "selected": "Selected",
+            "items": "items"
+          }
         }
       },
       "readOnly": "Read-only"
