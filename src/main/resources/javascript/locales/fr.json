@@ -296,6 +296,14 @@
             "pages": "Pages",
             "contentFolders": "Dossier de contenu"
           }
+        },
+        "selectors": {
+          "multipleLeftRightSelector": {
+            "addAll": "Tout ajouter",
+            "removeAll": "Tout enlever",
+            "selected": "Séléctionnés",
+            "items": "éléments"
+          }
         }
       },
       "readOnly": "Lecture seule"

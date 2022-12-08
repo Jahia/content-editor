@@ -1,11 +1,14 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/ContentEditor.proptypes';
-import MultipleLeftRightSelectorDnd from './MultipleLeftRightSelectorDnd';
+import {ListSelector} from '@jahia/moonstone';
+import {useTranslation} from 'react-i18next';
 
 const toArray = value => (Array.isArray(value) ? value : [value]);
 
 export const MultipleLeftRightSelector = ({field, onChange, value}) => {
+    const {t} = useTranslation('content-editor');
+    const labelBase = 'label.contentEditor.picker.selectors.multipleLeftRightSelector';
     const arrayValue = value ? toArray(value) : [];
 
     // Reset selection if previously selected option no longer available
@@ -26,7 +29,14 @@ export const MultipleLeftRightSelector = ({field, onChange, value}) => {
 
     const readOnly = field.readOnly || field.valueConstraints.length === 0;
 
-    return <MultipleLeftRightSelectorDnd readOnly={readOnly} arrayValue={arrayValue} options={options} onChange={onChange}/>;
+    return (
+        <ListSelector isReadOnly={readOnly}
+                         label={{addAllTitle: t(`${labelBase}.addAll`), removeAllTitle: t(`${labelBase}.removeAll`), selected: t(`${labelBase}.selected`), items: t(`${labelBase}.items`)}}
+                         values={arrayValue}
+                         options={options}
+                         onChange={onChange}
+        />
+    );
 };
 
 MultipleLeftRightSelector.propTypes = {
