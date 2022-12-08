@@ -1,5 +1,5 @@
 import {Tag} from './Tag';
 
 export const registerTag = ceRegistry => {
-    ceRegistry.add('selectorType', 'Tag', {cmp: Tag, supportMultiple: true});
+    ceRegistry.add('selectorType', 'Tag', {dataType: ['String'], cmp: Tag, supportMultiple: true});
 };
