@@ -31,10 +31,10 @@ export const MultipleLeftRightSelector = ({field, onChange, value}) => {
 
     return (
         <ListSelector isReadOnly={readOnly}
-                         label={{addAllTitle: t(`${labelBase}.addAll`), removeAllTitle: t(`${labelBase}.removeAll`), selected: t(`${labelBase}.selected`), items: t(`${labelBase}.items`)}}
-                         values={arrayValue}
-                         options={options}
-                         onChange={onChange}
+                      label={{addAllTitle: t(`${labelBase}.addAll`), removeAllTitle: t(`${labelBase}.removeAll`), selected: t(`${labelBase}.selected`), items: t(`${labelBase}.items`)}}
+                      values={arrayValue}
+                      options={options}
+                      onChange={onChange}
         />
     );
 };
