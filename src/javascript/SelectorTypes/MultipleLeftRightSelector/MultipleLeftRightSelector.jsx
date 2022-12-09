@@ -29,7 +29,7 @@ export const MultipleLeftRightSelector = ({field, onChange, value}) => {
 
     const readOnly = field.readOnly || field.valueConstraints.length === 0;
 
-    const selectedLabel = arrayValue.length > 1 ? t(`${labelBase}.selected_plural`, {count: arrayValue.length}) : t(`${labelBase}.selected`, {count: arrayValue.length});
+    const selectedLabel = arrayValue.length !== 1 ? t(`${labelBase}.selected_plural`, {count: arrayValue.length}) : t(`${labelBase}.selected`, {count: arrayValue.length});
 
     return (
         <ListSelector isReadOnly={readOnly}
