@@ -25,7 +25,7 @@ export function fillCKEditorPicker(setUrl, dialog, contentPicker, pickerResult) 
     setUrl(`${contentPicker ? contentPrefix : filePrefix}${pickerResult.path}${contentPicker ? '.html' : ''}`, {});
 }
 
-export function getPickerValue(type, dialog) {
+export function getPickerValue(dialog) {
     const urlInput = dialog.getContentElement('info', getCKEditorUrlInputId(dialog));
     const valueInInput = urlInput ? urlInput.getValue() : '';
     return valueInInput.startsWith(contentPrefix) ?

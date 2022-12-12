@@ -77,7 +77,7 @@ export const RichText = ({field, id, value, onChange, onBlur}) => {
     }
 
     const handlePickerDialog = (setUrl, type, params, dialog) => {
-        const value = getPickerValue(type, dialog);
+        const value = getPickerValue(dialog);
 
         api.openPicker({
             type,
