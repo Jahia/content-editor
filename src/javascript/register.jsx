@@ -2,7 +2,7 @@ import React from 'react';
 import {registry} from '@jahia/ui-extender';
 import {registerActions} from './registerActions';
 import {Constants} from '~/ContentEditor.constants';
-import {ContentEditorApi} from './ContentEditorApi';
+import {ContentEditorApi, ContentPickerApi} from './ContentEditorApi';
 import {ContentEditorRoute} from './ContentEditorRoute/ContentEditorRoute';
 import {ContentEditorHistoryContextProvider} from '~/contexts';
 import {registerSelectorTypes} from '~/SelectorTypes';
@@ -22,7 +22,7 @@ export function register() {
 
     registry.add('app', 'content-editor-api', {
         targets: ['root:16.5'],
-        render: next => <ContentEditorApiContextProvider><ContentEditorApi/>{next}</ContentEditorApiContextProvider>
+        render: next => <ContentEditorApiContextProvider><ContentEditorApi/><ContentPickerApi/>{next}</ContentEditorApiContextProvider>
     });
 
     registerActions(registry);

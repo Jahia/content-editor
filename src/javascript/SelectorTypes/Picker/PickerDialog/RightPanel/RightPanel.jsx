@@ -13,14 +13,13 @@ import {SelectionCaption, SelectionTable} from './PickerSelection';
 import {Search} from './Search';
 import {PickerSiteSwitcher} from '~/SelectorTypes/Picker';
 import {jcontentUtils} from '@jahia/jcontent';
-import {useContentEditorConfigContext} from '~/contexts';
 import {replaceFragmentsInDocument} from '@jahia/data-helper';
 import {GET_PICKER_NODE_UUID} from '~/SelectorTypes/Picker/PickerDialog/PickerDialog.gql-queries';
 import {useQuery} from '@apollo/react-hooks';
 
 const ButtonRenderer = getButtonRenderer({defaultButtonProps: {variant: 'ghost'}});
 
-const RightPanel = ({pickerConfig, accordionItemProps, onClose, onItemSelection}) => {
+const RightPanel = ({pickerConfig, isMultiple, accordionItemProps, lang, uilang, onClose, onItemSelection}) => {
     const {selection, mode, path} = useSelector(state => ({
         path: state.contenteditor.picker.path,
         selection: state.contenteditor.picker.selection,
@@ -28,7 +27,6 @@ const RightPanel = ({pickerConfig, accordionItemProps, onClose, onItemSelection}
     }), shallowEqual);
     const selectionExpanded = useState(false);
     const {t} = useTranslation('content-editor');
-    const {lang, uilang} = useContentEditorConfigContext();
 
     const fragments = (pickerConfig?.selectionTable?.getFragments?.() || []);
     const selectionQuery = replaceFragmentsInDocument(GET_PICKER_NODE_UUID, fragments);
@@ -73,12 +71,12 @@ const RightPanel = ({pickerConfig, accordionItemProps, onClose, onItemSelection}
                 </div>
             </header>
             <div className={clsx('flexFluid', 'flexCol_nowrap', css.body)}>
-                {mode !== '' && <ContentLayout pickerConfig={pickerConfig} accordionItemProps={accordionItemProps}/>}
+                {mode !== '' && <ContentLayout pickerConfig={pickerConfig} isMultiple={isMultiple} accordionItemProps={accordionItemProps}/>}
             </div>
 
             <SelectionTable selection={nodes} expanded={selectionExpanded} pickerConfig={pickerConfig}/>
             <footer className={clsx('flexRow', 'alignCenter', css.footer)}>
-                <SelectionCaption selection={nodes} pickerConfig={pickerConfig} expanded={selectionExpanded}/>
+                <SelectionCaption selection={nodes} pickerConfig={pickerConfig} expanded={selectionExpanded} isMultiple={isMultiple}/>
                 <div className={clsx('flexRow', css.actions)}>
                     <Button
                         data-sel-picker-dialog-action="cancel"
@@ -102,7 +100,10 @@ const RightPanel = ({pickerConfig, accordionItemProps, onClose, onItemSelection}
 
 RightPanel.propTypes = {
     pickerConfig: configPropType.isRequired,
+    isMultiple: PropTypes.bool,
     accordionItemProps: PropTypes.object,
+    lang: PropTypes.string,
+    uilang: PropTypes.string,
     onItemSelection: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired
 };

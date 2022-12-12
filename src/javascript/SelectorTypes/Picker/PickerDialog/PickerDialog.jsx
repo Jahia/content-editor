@@ -5,7 +5,8 @@ import styles from './PickerDialog.scss';
 import {
     cePickerClearSelection,
     cePickerMode,
-    cePickerPath, cePickerSetMultiple,
+    cePickerPath,
+    cePickerSetMultiple,
     cePickerSetPage,
     cePickerSetSearchTerm
 } from '~/SelectorTypes/Picker/Picker.redux';
@@ -17,7 +18,6 @@ import RightPanel from './RightPanel';
 import {ContentNavigation} from '@jahia/jcontent';
 import {SelectionHandler} from '~/SelectorTypes/Picker/PickerDialog/SelectionHandler';
 import {PickerSiteSwitcher} from '~/SelectorTypes/Picker/PickerDialog/PickerSiteSwitcher';
-import {useFieldContext} from '~/contexts/FieldContext';
 
 const Transition = props => (
     <Slide direction="up"
@@ -39,20 +39,22 @@ export const PickerDialog = ({
     isOpen,
     onClose,
     initialSelectedItem,
-    editorContext,
+    site,
     pickerConfig,
+    lang,
+    uilang,
+    isMultiple,
     accordionItemProps,
     onItemSelection
 }) => {
     const dispatch = useDispatch();
-    const {multiple} = useFieldContext();
 
     useEffect(() => {
         if (isOpen) {
             dispatch(batchActions([
                 cePickerSetSearchTerm(''),
                 cePickerSetPage(0),
-                cePickerSetMultiple(multiple)
+                cePickerSetMultiple(isMultiple)
             ]));
         }
 
@@ -61,7 +63,7 @@ export const PickerDialog = ({
                 dispatch(cePickerClearSelection());
             }
         };
-    }, [dispatch, pickerConfig.key, isOpen, multiple]);
+    }, [dispatch, pickerConfig.key, isOpen, isMultiple]);
 
     return (
         <Dialog
@@ -75,7 +77,7 @@ export const PickerDialog = ({
             onClose={onClose}
         >
             <div className="flexFluid flexRow_nowrap">
-                <SelectionHandler editorContext={editorContext} pickerConfig={pickerConfig} accordionItemProps={accordionItemProps} initialSelectedItem={initialSelectedItem}>
+                <SelectionHandler site={site} pickerConfig={pickerConfig} accordionItemProps={accordionItemProps} initialSelectedItem={initialSelectedItem} lang={lang} uilang={uilang}>
                     {booleanValue(pickerConfig.pickerDialog.displayTree) && (
                         <aside>
                             <ContentNavigation
@@ -92,7 +94,7 @@ export const PickerDialog = ({
                             />
                         </aside>
                     )}
-                    <RightPanel pickerConfig={pickerConfig} accordionItemProps={accordionItemProps} onClose={onClose} onItemSelection={onItemSelection}/>
+                    <RightPanel pickerConfig={pickerConfig} accordionItemProps={accordionItemProps} isMultiple={isMultiple} lang={lang} uilang={uilang} onClose={onClose} onItemSelection={onItemSelection}/>
                 </SelectionHandler>
             </div>
         </Dialog>
@@ -102,10 +104,13 @@ export const PickerDialog = ({
 PickerDialog.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    editorContext: PropTypes.object.isRequired,
+    site: PropTypes.string.isRequired,
     pickerConfig: configPropType.isRequired,
     initialSelectedItem: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
     accordionItemProps: PropTypes.object,
+    lang: PropTypes.string,
+    uilang: PropTypes.string,
+    isMultiple: PropTypes.bool,
     onItemSelection: PropTypes.func.isRequired
 };
 

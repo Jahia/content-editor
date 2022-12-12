@@ -5,7 +5,6 @@ import {Typography} from '@jahia/moonstone';
 import {useTranslation} from 'react-i18next';
 import styles from './Selection.scss';
 import {SelectionButton} from '~/SelectorTypes/Picker/PickerDialog/RightPanel/PickerSelection/SelectionButton';
-import {useFieldContext} from '~/contexts/FieldContext';
 import {NodeIcon} from '@jahia/jcontent';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 
@@ -23,9 +22,8 @@ DefaultCaptionComponent.propTypes = {
     selection: PropTypes.object.isRequired
 };
 
-const SelectionCaption = ({selection, expanded, pickerConfig}) => {
+const SelectionCaption = ({selection, expanded, pickerConfig, isMultiple}) => {
     const {t} = useTranslation('content-editor');
-    const field = useFieldContext();
     const isExpanded = expanded[0];
     const CaptionComponent = pickerConfig.pickerCaptionComponent || DefaultCaptionComponent;
     return (
@@ -36,11 +34,11 @@ const SelectionCaption = ({selection, expanded, pickerConfig}) => {
                 </Typography>)}
 
             {/* Single selection caption */}
-            {selection.length > 0 && !field.multiple && (
+            {selection.length > 0 && !isMultiple && (
                 <CaptionComponent selection={selection[0]}/>
             )}
             {/* Multiple selection caption */}
-            {selection.length > 0 && field.multiple && (
+            {selection.length > 0 && isMultiple && (
                 <SelectionButton
                     data-sel-role={`${selection.length}-item-selected`}
                     className={clsx({[styles.hidden]: isExpanded})}
@@ -54,7 +52,8 @@ const SelectionCaption = ({selection, expanded, pickerConfig}) => {
 SelectionCaption.propTypes = {
     selection: PropTypes.array.isRequired,
     pickerConfig: configPropType.isRequired,
-    expanded: PropTypes.array.isRequired
+    expanded: PropTypes.array.isRequired,
+    isMultiple: PropTypes.bool
 };
 
 export default SelectionCaption;

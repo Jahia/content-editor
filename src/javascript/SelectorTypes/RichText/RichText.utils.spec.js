@@ -1,4 +1,4 @@
-import {buildPickerContext, fillCKEditorPicker} from './RichText.utils';
+import {getPickerValue, fillCKEditorPicker} from './RichText.utils';
 
 jest.mock('@jahia/ui-extender', () => {
     return {
@@ -28,12 +28,12 @@ describe('RichText utils', () => {
         });
 
         it('should always displayTree', () => {
-            const {pickerConfig} = buildPickerContext(picker);
+            const {pickerConfig} = getPickerValue(picker);
             expect(pickerConfig.displayTree).toBe(true);
         });
 
         it('should an empty currentValue when input is empty', () => {
-            const {currentValue} = buildPickerContext(picker);
+            const {currentValue} = getPickerValue(picker);
             expect(currentValue).toBe('');
         });
 
@@ -43,7 +43,7 @@ describe('RichText utils', () => {
                     getValue: () => '/cms/{mode}/{lang}/richTextEdition/toot/al/regal.html'
                 };
             });
-            const {currentValue} = buildPickerContext(picker);
+            const {currentValue} = getPickerValue(picker);
             expect(currentValue).toBe('/richTextEdition/toot/al/regal');
         });
 
@@ -53,7 +53,7 @@ describe('RichText utils', () => {
                     getValue: () => '/files/{workspace}/richTextEdition/toot/al/regal.html'
                 };
             });
-            const {currentValue} = buildPickerContext(picker);
+            const {currentValue} = getPickerValue(picker);
             expect(currentValue).toBe('/richTextEdition/toot/al/regal.html');
         });
 
@@ -67,7 +67,7 @@ describe('RichText utils', () => {
                     getValue: () => '/files/{workspace}/richTextEdition/toot/al/regal.html'
                 };
             });
-            const {currentValue} = buildPickerContext(picker);
+            const {currentValue} = getPickerValue(picker);
             expect(currentValue).toBe('/richTextEdition/toot/al/regal.html');
         });
     });

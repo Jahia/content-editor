@@ -1,4 +1,5 @@
 export * from '../contexts/ContentEditor';
+export * from '../contexts/ContentEditorConfig';
 export * from '../contexts/ContentEditorApi';
 export * from '../contexts/ContentEditorSection';
 export * from '../utils';

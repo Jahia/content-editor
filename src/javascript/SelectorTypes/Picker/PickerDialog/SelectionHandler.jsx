@@ -1,7 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {replaceFragmentsInDocument, useNodeInfo} from '@jahia/data-helper';
-import {useContentEditorConfigContext} from '~/contexts';
 import {useQuery} from '@apollo/react-hooks';
 import {GET_PICKER_NODE} from '~/SelectorTypes/Picker';
 import {
@@ -28,7 +27,7 @@ function getSite(selectedItem) {
     return (pathElements[1] === 'sites') ? pathElements[2] : undefined;
 }
 
-export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConfig, accordionItemProps, children}) => {
+export const SelectionHandler = ({initialSelectedItem, site, pickerConfig, accordionItemProps, lang, uilang, children}) => {
     const state = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
         modes: state.contenteditor.picker.modes,
@@ -42,7 +41,6 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
     const dispatch = useDispatch();
 
     const currentFolderInfo = useNodeInfo({path: state.path}, {skip: !state.path});
-    const {lang, uilang} = useContentEditorConfigContext();
 
     const paths = (Array.isArray(initialSelectedItem) ? initialSelectedItem : [initialSelectedItem]).filter(f => f);
     let accordion;
@@ -94,7 +92,7 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
             allAccordionItems[0];
 
         if (!previousState.current.isOpen) {
-            newState.site = editorContext.site;
+            newState.site = site;
         }
 
         // If selection exists we don't care about previous state, need to update state in accordance with selection
@@ -159,7 +157,7 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
         }
 
         previousState.current = newState;
-    }, [dispatch, editorContext, pickerConfig, state, nodesInfo, currentFolderInfo, accordion.key, accordionItemProps]);
+    }, [dispatch, site, pickerConfig, state, nodesInfo, currentFolderInfo, accordion.key, accordionItemProps]);
 
     if (currentFolderInfo.loading || nodesInfo.loading) {
         return <LoaderOverlay/>;
@@ -170,8 +168,10 @@ export const SelectionHandler = ({initialSelectedItem, editorContext, pickerConf
 
 SelectionHandler.propTypes = {
     initialSelectedItem: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
-    editorContext: PropTypes.object.isRequired,
+    site: PropTypes.string.isRequired,
     pickerConfig: configPropType.isRequired,
     accordionItemProps: PropTypes.object,
+    lang: PropTypes.string,
+    uilang: PropTypes.string,
     children: PropTypes.node
 };

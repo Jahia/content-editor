@@ -1,15 +1,15 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect} from 'react';
 import CKEditor from 'ckeditor4-react';
 import * as PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/ContentEditor.proptypes';
 import {useQuery} from '@apollo/react-hooks';
 import {getCKEditorConfigurationPath} from './CKEditorConfiguration.gql-queries';
-import {ContentEditorContext, useContentEditorContext} from '~/contexts';
-import {PickerDialog} from '~/SelectorTypes/Picker';
+import {ContentEditorContext, useContentEditorConfigContext, useContentEditorContext} from '~/contexts';
 import {useTranslation} from 'react-i18next';
-import {buildPickerContext, fillCKEditorPicker} from './RichText.utils';
+import {fillCKEditorPicker, getPickerValue} from './RichText.utils';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 import './RichText.scss';
+import {useContentEditorApiContext} from '~/contexts/ContentEditorApi/ContentEditorApi.context';
 
 if (window.CKEDITOR) {
     window.CKEDITOR.focusManager._.blurDelay = 0;
@@ -23,8 +23,9 @@ function loadOption(selectorOptions, name) {
 
 export const RichText = ({field, id, value, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
-    const [picker, setPicker] = useState(false);
+    const api = useContentEditorApiContext();
     const {i18nContext} = useContentEditorContext();
+    const {lang, uilang} = useContentEditorConfigContext();
 
     useEffect(() => {
         CKEditor.editorUrl = window.CKEDITOR_BASEPATH + 'ckeditor.js';
@@ -76,12 +77,17 @@ export const RichText = ({field, id, value, onChange, onBlur}) => {
     }
 
     const handlePickerDialog = (setUrl, type, params, dialog) => {
-        setPicker({
-            contentPicker: type === 'editoriallink',
+        const value = getPickerValue(type, dialog);
+
+        api.openPicker({
             type,
-            setUrl,
-            params,
-            dialog
+            value,
+            setValue: pickerResult => {
+                fillCKEditorPicker(setUrl, dialog, type === 'editoriallink', pickerResult.length > 0 && pickerResult[0]);
+            },
+            site: editorContext.site,
+            lang,
+            uilang
         });
     };
 
@@ -96,23 +102,8 @@ export const RichText = ({field, id, value, onChange, onBlur}) => {
         filebrowserLinkBrowseUrl: (dialog, params, setUrl) => handlePickerDialog(setUrl, 'editoriallink', params, dialog)
     };
 
-    const {pickerConfig, currentValue} = picker && buildPickerContext(picker, editorContext, t);
-    const handleItemSelection = pickerResult => {
-        setPicker(false);
-        fillCKEditorPicker(picker, pickerResult.length > 0 && pickerResult[0]);
-    };
-
     return (
         <>
-            {picker && <PickerDialog
-                isOpen={Boolean(picker)}
-                initialSelectedItem={currentValue}
-                editorContext={editorContext}
-                field={field}
-                pickerConfig={pickerConfig}
-                onItemSelection={handleItemSelection}
-                onClose={() => setPicker(false)}
-            />}
             <CKEditor
                 key={'v' + (i18nContext?.memo?.count || 0)}
                 id={id}
