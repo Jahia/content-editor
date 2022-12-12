@@ -96,7 +96,7 @@ export const RichText = ({field, id, value, onChange, onBlur}) => {
         filebrowserLinkBrowseUrl: (dialog, params, setUrl) => handlePickerDialog(setUrl, 'editoriallink', params, dialog)
     };
 
-    const {pickerConfig, pickerValue} = picker && buildPickerContext(picker, editorContext, t);
+    const {pickerConfig, currentValue} = picker && buildPickerContext(picker, editorContext, t);
     const handleItemSelection = pickerResult => {
         setPicker(false);
         fillCKEditorPicker(picker, pickerResult.length > 0 && pickerResult[0]);
@@ -106,7 +106,7 @@ export const RichText = ({field, id, value, onChange, onBlur}) => {
         <>
             {picker && <PickerDialog
                 isOpen={Boolean(picker)}
-                initialSelectedItem={pickerValue}
+                initialSelectedItem={currentValue}
                 editorContext={editorContext}
                 field={field}
                 pickerConfig={pickerConfig}
