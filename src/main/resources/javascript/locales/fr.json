@@ -301,8 +301,8 @@
           "multipleLeftRightSelector": {
             "addAll": "Tout ajouter",
             "removeAll": "Tout enlever",
-            "selected": "Séléctionnés",
-            "items": "éléments"
+            "selected": "{{count}} élément sélectionné",
+            "selected_plural": "{{count}} éléments sélectionnés"
           }
         }
       },
