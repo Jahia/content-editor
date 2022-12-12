@@ -27,16 +27,17 @@ export const MultipleLeftRightSelector = ({field, onChange, value}) => {
         value: constraint.value.string
     }));
 
-    const readOnly = field.readOnly || field.valueConstraints.length === 0;
-
-    const selectedLabel = arrayValue.length !== 1 ? t(`${labelBase}.selected_plural`, {count: arrayValue.length}) : t(`${labelBase}.selected`, {count: arrayValue.length});
-
     return (
-        <ListSelector isReadOnly={readOnly}
-                      label={{addAllTitle: t(`${labelBase}.addAll`), removeAllTitle: t(`${labelBase}.removeAll`), selected: selectedLabel}}
-                      values={arrayValue}
-                      options={options}
-                      onChange={onChange}
+        <ListSelector
+            isReadOnly={field.readOnly || field.valueConstraints.length === 0}
+            label={{
+                addAllTitle: t(`${labelBase}.addAll`),
+                removeAllTitle: t(`${labelBase}.removeAll`),
+                selected: t(`${labelBase}.selected`, {count: arrayValue.length})
+            }}
+            values={arrayValue}
+            options={options}
+            onChange={onChange}
         />
     );
 };
