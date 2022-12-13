@@ -51,6 +51,7 @@ export const getPickerSelectorType = (registry, options, field) => {
 export const registerPicker = registry => {
     registerPickerConfig(registry);
     registry.add('selectorType', 'Picker', {
+        dataType: ['WeakReference'],
         resolver: (options, field) => getPickerSelectorType(registry, options, field)
     });
     registerPickerActions(registry);

@@ -4,6 +4,7 @@ import {registerChoiceListOnChange} from './registerChoiceListOnChange';
 
 export const registerChoiceList = ceRegistry => {
     ceRegistry.add('selectorType', 'Choicelist', {
+        dataType: ['String'],
         cmp: ChoiceList,
         supportMultiple: true,
         initValue: field => {
