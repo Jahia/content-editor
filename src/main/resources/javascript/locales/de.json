@@ -296,6 +296,14 @@
             "pages": "Seiten",
             "contentFolders": "Inhalts-Ordner"
           }
+        },
+        "selectors": {
+          "multipleLeftRightSelector": {
+            "addAll": "Alle hinzufügen",
+            "removeAll": "Alle entfernen",
+            "selected": "{{count}} Element ausgewählt",
+            "selected_plural": "{{count}} Elemente ausgewählt"
+          }
         }
       },
       "readOnly": "Schreibgeschützt"
