@@ -1,6 +1,6 @@
 {
-  "name": "content-editor-cypress",
-  "version": "1.0.0",
+  "name": "@jahia/content-editor-cypress",
+  "version": "4.2.0",
   "scripts": {
     "instrument": "nyc instrument --compact=false cypress instrumented",
     "e2e:ci": "cypress run --browser chrome",
