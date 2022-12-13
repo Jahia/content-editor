@@ -92,6 +92,7 @@ jobs:
   scribe-upload:
     name: Gensbom Image generate bom, upload to scribe
     needs: build
+    runs-on: ubuntu-latest
     steps:
       - uses: scribe-security/action-bom@master
         id: gensbom_dir
