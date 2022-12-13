@@ -2,6 +2,7 @@ import MultipleLeftRightSelector from './MultipleLeftRightSelector';
 
 export const registerMultipleLeftRightSelector = ceRegistry => {
     ceRegistry.add('selectorType', 'MultipleLeftRightSelector', {
+        dataType: ['String'],
         cmp: MultipleLeftRightSelector,
         supportMultiple: true,
         initValue: field => {
