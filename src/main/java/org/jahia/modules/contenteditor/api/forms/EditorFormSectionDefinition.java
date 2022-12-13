@@ -23,6 +23,9 @@
  */
 package org.jahia.modules.contenteditor.api.forms;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * For the moment this object only contains a name but it is planned for the schema to evolve so we decided to use an
  * object instead of just a string.
@@ -34,6 +37,8 @@ public class EditorFormSectionDefinition {
     private String requiredPermission;
     private boolean hide = false;
     private boolean expanded;
+
+    private List<String> displayModes = new ArrayList<>();
 
     public EditorFormSectionDefinition() {
     }
@@ -90,6 +95,14 @@ public class EditorFormSectionDefinition {
         this.expanded = expanded;
     }
 
+    public List<String> getDisplayModes() {
+        return displayModes;
+    }
+
+    public void setDisplayModes(List<String> displayModes) {
+        this.displayModes = displayModes;
+    }
+
     public void mergeWith(EditorFormSectionDefinition section) {
         if (section.getDescriptionKey() != null) {
             this.descriptionKey = section.getDescriptionKey();
@@ -105,6 +118,7 @@ public class EditorFormSectionDefinition {
 
         this.hide = section.isHide();
         this.expanded = section.expanded();
+        this.displayModes = section.getDisplayModes();
     }
 
     public EditorFormSectionDefinition copy() {
@@ -115,6 +129,7 @@ public class EditorFormSectionDefinition {
         newSection.setRequiredPermission(this.requiredPermission);
         newSection.setHide(this.hide);
         newSection.setExpanded(this.expanded);
+        newSection.setDisplayModes(this.displayModes);
         return newSection;
     }
 }

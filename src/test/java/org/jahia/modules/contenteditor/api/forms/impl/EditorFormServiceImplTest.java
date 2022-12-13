@@ -323,6 +323,32 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         Assert.isNotNull(section, "Override does not contains \"layout\" section");
     }
 
+
+    @Test
+    public void testSectionHidden() throws Exception {
+        // inject custom section
+        staticDefinitionsRegistry.readEditorFormDefinition(getResource("META-INF/jahia-content-editor-forms/forms/nt_base.override"
+            + ".displayModes.json"), new DummyBundle(0));
+
+        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
+        Assert.isTrue(form.getSections().size() == 5, "Override contains more than one section");
+        EditorFormSection section = form.getSections().stream().filter(s -> s.getName().equals("layout")).findFirst().orElse(null);
+
+        Assert.isNotNull(section, "Override does not contains \"layout\" section");
+
+        Assert.isTrue(!section.isHide(), "Override should set the hide value of the \"layout\" section to false");
+
+        EditorForm createForm = editorFormService.getCreateForm("jnt:text", Locale.ENGLISH, Locale.ENGLISH, testSite.getJCRLocalPath());
+
+        Assert.isTrue(createForm.getSections().size() == 5, "Override contains more than one section");
+        EditorFormSection sectionInCreateMode =
+            createForm.getSections().stream().filter(s -> s.getName().equals("layout")).findFirst().orElse(null);
+
+        Assert.isNotNull(sectionInCreateMode, "Override does not contains \"layout\" section");
+
+        Assert.isTrue(sectionInCreateMode.isHide(), "Override should set the hide value of the \"layout\" section to true");
+    }
+
     @Test
     public void testSectionPriorityOverride() throws Exception {
         // inject custom sections on base with higher priority.
