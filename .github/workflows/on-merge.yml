@@ -90,22 +90,22 @@ jobs:
           reporter: java-junit
           fail-on-error: 'false'
 
-#publish:
-#  name: Publish module
-#  needs: build
-#  if: github.ref == 'refs/heads/easy-feature'
-#  runs-on: ubuntu-latest
-#  env:
-#    NEXUS_INTERNAL_URL: https://devtools.jahia.com/nexus/content/groups/internal/
-#  container:
-#    image: jahia/cimg-mvn-cache:ga_cimg_openjdk_8.0.312-node
-#    credentials:
-#      username: ${{ secrets.DOCKERHUB_USERNAME }}
-#      password: ${{ secrets.DOCKERHUB_PASSWORD }}
-#  steps:
-#    - uses: actions/checkout@v2
-#    - uses: jahia/jahia-modules-action/publish@v2
-#      with:
-#        nexus_username: ${{ secrets.NEXUS_USERNAME }}
-#        nexus_password: ${{ secrets.NEXUS_PASSWORD }}
-#        mvn_settings_filepath: '.github/maven.settings.xml'
+  publish:
+    name: Publish module
+    needs: build
+    if: github.ref == 'refs/heads/easy-feature'
+    runs-on: ubuntu-latest
+    env:
+      NEXUS_INTERNAL_URL: https://devtools.jahia.com/nexus/content/groups/internal/
+    container:
+      image: jahia/cimg-mvn-cache:ga_cimg_openjdk_8.0.312-node
+      credentials:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: jahia/jahia-modules-action/publish@v2
+        with:
+          nexus_username: ${{ secrets.NEXUS_USERNAME }}
+          nexus_password: ${{ secrets.NEXUS_PASSWORD }}
+          mvn_settings_filepath: '.github/maven.settings.xml'
