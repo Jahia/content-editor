@@ -64,7 +64,11 @@ import java.util.stream.Collectors;
 public class EditorFormServiceImpl implements EditorFormService {
 
     private static final Logger logger = LoggerFactory.getLogger(EditorFormServiceImpl.class);
-    public static final String DEFAULT_FORM_DEFINITION_NAME = "default";
+
+    private static final String EDIT = "edit";
+
+    private static final String CREATE = "create";
+
     public static final String DEFAULT_SECTION = "content";
     private NodeTypeRegistry nodeTypeRegistry;
     private ChoiceListInitializerService choiceListInitializerService;
@@ -260,7 +264,8 @@ public class EditorFormServiceImpl implements EditorFormService {
     }
 
     private EditorForm getEditorForm(ExtendedNodeType primaryNodeType, Locale uiLocale, Locale locale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode) throws EditorFormException {
-        final JCRNodeWrapper currentNode = existingNode != null ? existingNode : parentNode;
+        final String mode = existingNode == null ? CREATE : EDIT;
+        final JCRNodeWrapper currentNode = EDIT.equals(mode) ? existingNode : parentNode;
 
         try {
             String primaryNodeTypeName = primaryNodeType.getName();
@@ -285,7 +290,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             // This inserts listOrdering section for types which require it but don't come with one
             checkIfListOrderingSectionIsRequired(primaryNodeType, currentNode, formSectionsByName);
             JCRSiteNode resolvedSite;
-            if (existingNode != null && existingNode.isNodeType("jnt:virtualsite")) {
+            if (EDIT.equals(mode) && existingNode.isNodeType("jnt:virtualsite")) {
                 resolvedSite = (JCRSiteNode) existingNode;
             } else {
                 resolvedSite = parentNode.getResolveSite();
@@ -297,10 +302,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                     // ignore already process node types
                     continue;
                 }
-                boolean activated = false;
-                if (existingNode != null && existingNode.isNodeType(extendMixinNodeType.getName())) {
-                    activated = true;
-                }
+                boolean activated = EDIT.equals(mode) && existingNode.isNodeType(extendMixinNodeType.getName());
                 generateAndMergeFieldSetForType(extendMixinNodeType, uiLocale, locale, existingNode, parentNode, primaryNodeType,
                     formSectionsByName, false, true, activated, processedProperties, true);
                 processedNodeTypes.add(extendMixinNodeType.getName());
@@ -308,7 +310,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             // Get all form definitions to merge from the primary type.
             final SortedSet<EditorFormDefinition> formDefinitionsToMerge = staticDefinitionsRegistry.getFormDefinitionsForType(primaryNodeType);
 
-            if (existingNode != null) {
+            if (EDIT.equals(mode)) {
                 Set<ExtendedNodeType> addMixins = Arrays.stream(existingNode.getMixinNodeTypes()).filter(nodetype -> !processedNodeTypes.contains(nodetype.getName())).collect(Collectors.toSet());
                 for (ExtendedNodeType addMixin : addMixins) {
                     generateAndMergeFieldSetForType(addMixin, uiLocale, locale, existingNode, parentNode, primaryNodeType,
@@ -320,7 +322,14 @@ public class EditorFormServiceImpl implements EditorFormService {
 
             EditorFormDefinition mergedFormDefinition = mergeFormDefinitions(formDefinitionsToMerge);
             if (mergedFormDefinition.getSections() != null) {
-                List<EditorFormSectionDefinition> filteredSections = mergedFormDefinition.getSections().stream().filter(section -> section.getRequiredPermission() == null || currentNode.hasPermission(section.getRequiredPermission())).collect(Collectors.toList());
+                List<EditorFormSectionDefinition> filteredSections = mergedFormDefinition
+                    .getSections()
+                    .stream()
+                    .map(editorFormSectionDefinition -> {
+                        editorFormSectionDefinition.setHide(shouldHideSection(editorFormSectionDefinition
+                            , mode));
+                        return editorFormSectionDefinition;})
+                    .filter(section -> section.getRequiredPermission() == null || currentNode.hasPermission(section.getRequiredPermission())).collect(Collectors.toList());
                 mergedFormDefinition.setSections(filteredSections);
             }
 
@@ -332,6 +341,10 @@ public class EditorFormServiceImpl implements EditorFormService {
         } catch (RepositoryException e) {
             throw new EditorFormException("Error while building edit form definition for node: " + currentNode.getPath() + " and nodeType: " + primaryNodeType.getName(), e);
         }
+    }
+
+    private boolean shouldHideSection(EditorFormSectionDefinition section, String mode){
+        return section.isHide() || (!section.getDisplayModes().isEmpty() && !section.getDisplayModes().contains(mode));
     }
 
     private void checkIfListOrderingSectionIsRequired(ExtendedNodeType primaryNodeType, JCRNodeWrapper existingNode,Map<String, EditorFormSection> formSectionsByName) throws RepositoryException {
@@ -431,7 +444,8 @@ public class EditorFormServiceImpl implements EditorFormService {
         if (targetSection == null) {
             Double targetSectionRank = 1.0;
             Double targetSectionPriority = 1.0;
-            targetSection = new EditorFormSection(targetSectionName, targetSectionName, null, targetSectionRank, targetSectionPriority, new ArrayList<>(), false);
+            targetSection = new EditorFormSection(targetSectionName, targetSectionName, null, targetSectionRank, targetSectionPriority,
+                new ArrayList<>(), false);
         }
 
         if (formFieldSet.getRank().compareTo(0.0) == 0) {
