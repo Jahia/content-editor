@@ -32,6 +32,7 @@ import {registry} from '@jahia/ui-extender';
 import {useFieldContext} from '~/contexts/FieldContext';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 import {Row} from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout/ContentTable/Row';
+import clsx from 'clsx';
 
 const reduxActions = {
     onPreviewSelectAction: () => ({}),
@@ -137,7 +138,6 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
         reactTable.useExpandedControlled
     );
 
-    const dropReference = useRef();
     const mainPanelRef = useRef(null);
 
     useEffect(() => {
@@ -154,11 +154,10 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
         dispatch(batchActions(actions));
     };
 
-    const {isCanDrop} = useFileDrop({
+    const [{isCanDrop}, drop] = useFileDrop({
         uploadType: tableConfig?.uploadType,
         uploadPath: path,
-        uploadFilter: file => !tableConfig?.uploadFilter || tableConfig.uploadFilter(file, mode, pickerConfig),
-        ref: dropReference
+        uploadFilter: file => !tableConfig?.uploadFilter || tableConfig.uploadFilter(file, mode, pickerConfig)
     });
 
     if (isContentNotFound) {
@@ -175,7 +174,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
         return (
             <>
                 {tableHeader}
-                <ContentEmptyDropZone reference={dropReference} uploadType={tableConfig?.uploadType} isCanDrop={isCanDrop}/>
+                <ContentEmptyDropZone reference={drop} uploadType={tableConfig?.uploadType} isCanDrop={isCanDrop}/>
             </>
         );
     }
@@ -200,10 +199,9 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
     };
 
     return (
-        <>
+        <div ref={drop} className={clsx({'moonstone-drop_card': isCanDrop}, 'flexFluid', 'flexCol')}>
             {tableHeader}
             <ContentTableWrapper isCanDrop={isCanDrop}
-                                 dropReference={dropReference}
                                  reference={mainPanelRef}
                                  uploadType={tableConfig?.uploadType}
             >
@@ -244,7 +242,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
                              onPageChange={page => dispatch(reduxActions.setCurrentPageAction(page))}
                              onRowsPerPageChange={size => dispatch(reduxActions.setPageSizeAction(size))}
             />}
-        </>
+        </div>
     );
 };
 
