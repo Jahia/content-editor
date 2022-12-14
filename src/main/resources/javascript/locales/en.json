@@ -310,7 +310,13 @@
           }
         }
       },
-      "readOnly": "Read-only"
+      "readOnly": "Read-only",
+      "selectorTypes": {
+        "checkbox": {
+          "displayValue": "Checkbox",
+          "description": "Displays a checkbox"
+        }
+      }
     }
   }
 }

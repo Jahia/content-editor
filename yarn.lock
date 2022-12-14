@@ -1479,7 +1479,7 @@
     mdi-material-ui "^5.10.0"
     recompose "^0.30.0"
 
-"@jahia/moonstone@^2.4.22":
+"@jahia/moonstone@^2.4.24":
   version "2.4.24"
   resolved "https://registry.yarnpkg.com/@jahia/moonstone/-/moonstone-2.4.24.tgz#537cbf595d608252206f96713d7d6482c2e72b66"
   integrity sha512-M0kPZtabvg84JVE4TFXmJVG9PSXFISgpdPQ5sln/dIuu7jEdvXOUjxCR+WrxgOTaSzJwOsNMFPG0K8tqS091LQ==

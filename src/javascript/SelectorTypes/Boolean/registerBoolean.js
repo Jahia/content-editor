@@ -6,6 +6,11 @@ export const registerBoolean = ceRegistry => {
         dataType: ['Boolean'],
         cmp: Boolean,
         containerStyle: styles.container,
+        displayValue: 'content-editor:label.contentEditor.selectorTypes.checkbox.displayValue',
+        properties: [
+            {name: 'description', value: 'content-editor:label.contentEditor.selectorTypes.checkbox.description'},
+            {name: 'iconStart', value: 'Boolean'}
+        ],
         initValue: field => {
             return field.mandatory && !field.multiple ? false : undefined;
         },
