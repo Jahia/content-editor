@@ -89,12 +89,13 @@ export const FilesGrid = ({totalCount, rows, isLoading, pickerConfig, accordionI
         }
     }, [pagination.currentPage]);
 
-    const {isCanDrop} = useFileDrop({
+    const [{isCanDrop}, dropFile] = useFileDrop({
         uploadType: 'upload',
         uploadPath: path,
-        uploadFilter: file => !tableConfig?.uploadFilter || tableConfig.uploadFilter(file, mode, pickerConfig),
-        ref: mainPanelRef
+        uploadFilter: file => !tableConfig?.uploadFilter || tableConfig.uploadFilter(file, mode, pickerConfig)
     });
+
+    dropFile(mainPanelRef);
 
     if ((!rows || rows.length === 0) && !isLoading) {
         return (
@@ -121,7 +122,7 @@ export const FilesGrid = ({totalCount, rows, isLoading, pickerConfig, accordionI
                                   node={node}
                                   setPath={setPath}
                                   contextualMenuAction="contentPickerMenu"
-                                  tableConfig={{dnd: undefined}}
+                                  tableConfig={tableConfig}
                                   onPreviewSelect={(...args) => {
                                       onPreviewSelect(...args);
                                   }}
