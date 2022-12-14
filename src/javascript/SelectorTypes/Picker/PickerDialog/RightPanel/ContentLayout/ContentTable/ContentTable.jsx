@@ -157,7 +157,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
     const [{isCanDrop}, drop] = useFileDrop({
         uploadType: tableConfig?.uploadType,
         uploadPath: path,
-        uploadFilter: file => !tableConfig?.uploadFilter || tableConfig.uploadFilter(file, mode, pickerConfig),
+        uploadFilter: file => !tableConfig?.uploadFilter || tableConfig.uploadFilter(file, mode, pickerConfig)
     });
 
     if (isContentNotFound) {
