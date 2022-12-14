@@ -4,6 +4,11 @@ export const registerText = ceRegistry => {
     ceRegistry.add('selectorType', 'Text', {
         dataType: ['String', 'Double', 'Long'],
         cmp: Text,
+        displayValue: 'content-editor:label.contentEditor.selectorTypes.text.displayValue',
+        properties: [
+            {name: 'description', value: 'content-editor:label.contentEditor.selectorTypes.text.description'},
+            {name: 'iconStart', value: 'Text'}
+        ],
         supportMultiple: false,
         adaptValue: (field, property) => {
             if (field.selectorOptions?.find(option => option.name === 'password')) {

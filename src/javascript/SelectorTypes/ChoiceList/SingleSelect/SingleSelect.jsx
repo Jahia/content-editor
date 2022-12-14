@@ -8,6 +8,13 @@ import {getButtonRenderer} from '~/utils';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
+const getIconOfField = (field, value) => {
+    return field.valueConstraints
+        .find(item => item.value.string === value)
+        ?.properties
+        ?.find(property => property.name === 'iconStart')?.value;
+};
+
 export const SingleSelect = ({field, value, id, inputContext, onChange, onBlur}) => {
     const {t} = useTranslation();
     inputContext.actionContext = {
@@ -15,9 +22,10 @@ export const SingleSelect = ({field, value, id, inputContext, onChange, onBlur})
         onBlur
     };
 
-    const {readOnly, label, dropdownData} = React.useMemo(() => ({
+    const {readOnly, label, iconName, dropdownData} = React.useMemo(() => ({
         readOnly: field.readOnly || field.valueConstraints.length === 0,
         label: t(field.valueConstraints.find(item => item.value.string === value)?.displayValue) || '',
+        iconName: getIconOfField(field, value) || '',
         dropdownData: field.valueConstraints.length > 0 ? field.valueConstraints.map(item => {
             const image = item.properties?.find(property => property.name === 'image')?.value;
             const description = item.properties?.find(property => property.name === 'description')?.value;
@@ -35,7 +43,7 @@ export const SingleSelect = ({field, value, id, inputContext, onChange, onBlur})
                 }
             };
         }) : [{label: '', value: ''}]
-    }), [field, value]);
+    }), [t, field, value]);
 
     React.useEffect(() => {
         // Reset value if constraints doesnt contains the actual value.
@@ -59,6 +67,7 @@ export const SingleSelect = ({field, value, id, inputContext, onChange, onBlur})
                 data={dropdownData}
                 label={label}
                 value={value}
+                icon={iconName && toIconComponent(iconName)}
                 hasSearch={dropdownData && dropdownData.length >= 5}
                 searchEmptyText={t('content-editor:label.contentEditor.global.noResult')}
                 onChange={(evt, item) => {

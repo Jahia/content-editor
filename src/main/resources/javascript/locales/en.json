@@ -315,6 +315,50 @@
         "checkbox": {
           "displayValue": "Checkbox",
           "description": "Displays a checkbox"
+        },
+        "color": {
+          "displayValue": "Color",
+          "description": "Enter hexadecimal code or select color visually"
+        },
+        "textArea": {
+          "displayValue": "Text Area",
+          "description": "Multiple lines of unformatted text."
+        },
+        "richText": {
+          "displayValue": "Rich text",
+          "description": "Formatted text (titles, images, links, ..)"
+        },
+        "dropdown": {
+          "displayValue": "Dropdown",
+          "description": "Select value(s) from a list"
+        },
+        "picker": {
+          "displayValue": "Picker",
+          "description": "Pick medias, files or content items"
+        },
+        "dateTimePicker": {
+          "displayValue": "Date time",
+          "description": "Select date and time from a calendar"
+        },
+        "datePicker": {
+          "displayValue": "Date",
+          "description": "Select a date from a calendar"
+        },
+        "text": {
+          "displayValue": "Text",
+          "description": "Simple text input"
+        },
+        "category": {
+          "displayValue": "Hierarchical Tree selector",
+          "description": "Select a value from a tree"
+        },
+        "tag": {
+          "displayValue": "Tag",
+          "description": "Select from a list of existing values or create new ones"
+        },
+        "multipleLeftRightSelector": {
+          "displayValue": "Multiple list",
+          "description": "Alternative to multiple dropdown when there are many values to select"
         }
       }
     }
