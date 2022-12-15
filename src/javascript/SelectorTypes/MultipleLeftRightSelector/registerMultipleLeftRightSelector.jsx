@@ -4,7 +4,7 @@ export const registerMultipleLeftRightSelector = ceRegistry => {
     ceRegistry.add('selectorType', 'MultipleLeftRightSelector', {
         dataType: ['String'],
         cmp: MultipleLeftRightSelector,
-        displayValue: 'content-editor:label.contentEditor.selectorTypes.multipleLeftRightSelector.displayValue',
+        displayValueKey: 'content-editor:label.contentEditor.selectorTypes.multipleLeftRightSelector.displayValue',
         properties: [
             {name: 'description', value: 'content-editor:label.contentEditor.selectorTypes.multipleLeftRightSelector.description'},
             {name: 'iconStart', value: 'MultipleListSelection'}

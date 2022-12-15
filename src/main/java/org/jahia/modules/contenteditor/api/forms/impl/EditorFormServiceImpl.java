@@ -595,7 +595,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                     // it's not, keep value as it is
                 }
             }
-            valueConstraints.add(new EditorFormFieldValueConstraint(valueConstraint, new EditorFormFieldValue("String", valueConstraint), null));
+            valueConstraints.add(new EditorFormFieldValueConstraint(valueConstraint, null, new EditorFormFieldValue("String", valueConstraint), null));
         }
         List<EditorFormProperty> selectorOptions = null;
         if (propertyDefinition.getSelectorOptions() != null) {
@@ -701,40 +701,30 @@ public class EditorFormServiceImpl implements EditorFormService {
                     initialChoiceListValues = initializers.get(selectorProperty.getName()).getChoiceListValues(propertyDefinition, selectorProperty.getValue(), initialChoiceListValues, locale, context);
                 }
             }
-        } else {
-            for (EditorFormFieldValueConstraint editorFormFieldValueConstraint : editorFormField.getValueConstraints()) {
-                ChoiceListValue choiceListValue = new ChoiceListValue(editorFormFieldValueConstraint.getDisplayValue(),
-                    editorFormFieldValueConstraint.getValue().getStringValue());
-                if (editorFormFieldValueConstraint.getPropertyList() != null) {
-                    editorFormFieldValueConstraint.getPropertyList().forEach(constraint -> {
-                        choiceListValue.addProperty(constraint.getName(), constraint.getValue());
-                    });
-                }
-                initialChoiceListValues.add(choiceListValue);
-            }
-        }
-
-        List<EditorFormFieldValueConstraint> valueConstraints = null;
-        if (initialChoiceListValues != null) {
-            valueConstraints = new ArrayList<>();
-            for (ChoiceListValue choiceListValue : initialChoiceListValues) {
-                List<EditorFormProperty> propertyList = new ArrayList<>();
-                if (choiceListValue.getProperties() != null) {
-                    for (Map.Entry<String, Object> choiceListPropertyEntry : choiceListValue.getProperties().entrySet()) {
-                        propertyList.add(new EditorFormProperty(choiceListPropertyEntry.getKey(), choiceListPropertyEntry.getValue().toString()));
+            List<EditorFormFieldValueConstraint> valueConstraints = null;
+            if (initialChoiceListValues != null) {
+                valueConstraints = new ArrayList<>();
+                for (ChoiceListValue choiceListValue : initialChoiceListValues) {
+                    List<EditorFormProperty> propertyList = new ArrayList<>();
+                    if (choiceListValue.getProperties() != null) {
+                        for (Map.Entry<String, Object> choiceListPropertyEntry : choiceListValue.getProperties().entrySet()) {
+                            propertyList.add(new EditorFormProperty(choiceListPropertyEntry.getKey(), choiceListPropertyEntry.getValue().toString()));
+                        }
+                    }
+                    try {
+                        valueConstraints.add(new EditorFormFieldValueConstraint(choiceListValue.getDisplayName(), null,
+                            new EditorFormFieldValue(choiceListValue.getValue()),
+                            propertyList
+                        ));
+                    } catch (RepositoryException e) {
+                        logger.error("Error retrieving choice list value", e);
                     }
                 }
-                try {
-                    valueConstraints.add(new EditorFormFieldValueConstraint(choiceListValue.getDisplayName(),
-                        new EditorFormFieldValue(choiceListValue.getValue()),
-                        propertyList
-                    ));
-                } catch (RepositoryException e) {
-                    logger.error("Error retrieving choice list value", e);
-                }
             }
+            return valueConstraints;
+        } else {
+            return editorFormField.getValueConstraints();
         }
-        return valueConstraints;
     }
 
     private boolean isFieldReadOnly(ExtendedPropertyDefinition propertyDefinition, boolean sharedFieldsEditable, boolean i18nFieldsEditable) {

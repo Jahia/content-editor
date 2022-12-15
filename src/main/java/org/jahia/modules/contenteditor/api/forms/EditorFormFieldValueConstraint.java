@@ -37,14 +37,18 @@ import java.util.stream.Collectors;
 public class EditorFormFieldValueConstraint {
 
     private String displayValue;
+
+    private String displayValueKey;
+
     private EditorFormFieldValue value;
     private List<EditorFormProperty> propertyList;
 
     public EditorFormFieldValueConstraint() {
     }
 
-    public EditorFormFieldValueConstraint(String displayValue, EditorFormFieldValue value, List<EditorFormProperty> propertyList) {
+    public EditorFormFieldValueConstraint(String displayValue, String displayValueKey, EditorFormFieldValue value, List<EditorFormProperty> propertyList) {
         this.displayValue = displayValue;
+        this.displayValueKey = displayValueKey;
         this.value = value;
         this.propertyList = propertyList;
     }
@@ -52,6 +56,7 @@ public class EditorFormFieldValueConstraint {
     public EditorFormFieldValueConstraint(EditorFormFieldValueConstraint constraint) {
         this(
             constraint.displayValue,
+            constraint.displayValueKey,
             constraint.value,
             constraint.propertyList == null ? null : constraint.propertyList.stream()
                 .map(property -> new EditorFormProperty(property))
@@ -67,6 +72,16 @@ public class EditorFormFieldValueConstraint {
 
     public void setDisplayValue(String displayValue) {
         this.displayValue = displayValue;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("The key of the value to get the translated value from the client side")
+    public String getDisplayValueKey() {
+        return displayValueKey;
+    }
+
+    public void setDisplayValueKey(String displayValueKey) {
+        this.displayValueKey = displayValueKey;
     }
 
     @GraphQLField

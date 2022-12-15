@@ -15,6 +15,15 @@ const getIconOfField = (field, value) => {
         ?.find(property => property.name === 'iconStart')?.value;
 };
 
+const getLabel = (field, value, t) => {
+    const valueConstraint = field.valueConstraints.find(item => item.value.string === value);
+    if (valueConstraint) {
+        return valueConstraint.displayValueKey ? t(valueConstraint.displayValueKey) : valueConstraint?.displayValue;
+    }
+
+    return '';
+};
+
 export const SingleSelect = ({field, value, id, inputContext, onChange, onBlur}) => {
     const {t} = useTranslation();
     inputContext.actionContext = {
@@ -24,7 +33,7 @@ export const SingleSelect = ({field, value, id, inputContext, onChange, onBlur})
 
     const {readOnly, label, iconName, dropdownData} = React.useMemo(() => ({
         readOnly: field.readOnly || field.valueConstraints.length === 0,
-        label: t(field.valueConstraints.find(item => item.value.string === value)?.displayValue) || '',
+        label: getLabel(field, value, t),
         iconName: getIconOfField(field, value) || '',
         dropdownData: field.valueConstraints.length > 0 ? field.valueConstraints.map(item => {
             const image = item.properties?.find(property => property.name === 'image')?.value;
@@ -32,7 +41,7 @@ export const SingleSelect = ({field, value, id, inputContext, onChange, onBlur})
             const iconStart = item.properties?.find(property => property.name === 'iconStart')?.value;
             const iconEnd = item.properties?.find(property => property.name === 'iconEnd')?.value;
             return {
-                label: t(item.displayValue),
+                label: item.displayValueKey ? t(item.displayValueKey) : item.displayValue,
                 value: item.value.string,
                 description: t(description),
                 iconStart: iconStart && toIconComponent(iconStart),

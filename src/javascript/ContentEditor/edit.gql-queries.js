@@ -188,6 +188,7 @@ export const EditFormQuery = gql`
                                     string
                                 }
                                 displayValue
+                                displayValueKey
                                 properties {
                                     name
                                     value

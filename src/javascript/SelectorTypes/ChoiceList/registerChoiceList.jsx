@@ -7,7 +7,7 @@ export const registerChoiceList = ceRegistry => {
         dataType: ['String'],
         cmp: ChoiceList,
         supportMultiple: true,
-        displayValue: 'content-editor:label.contentEditor.selectorTypes.dropdown.displayValue',
+        displayValueKey: 'content-editor:label.contentEditor.selectorTypes.dropdown.displayValue',
         properties: [
             {name: 'description', value: 'content-editor:label.contentEditor.selectorTypes.dropdown.description'},
             {name: 'iconStart', value: 'ListSelection'}

@@ -4,7 +4,7 @@ export const registerTextArea = ceRegistry => {
     ceRegistry.add('selectorType', 'TextArea', {
         dataType: ['String'],
         cmp: TextAreaField,
-        displayValue: 'content-editor:label.contentEditor.selectorTypes.textArea.displayValue',
+        displayValueKey: 'content-editor:label.contentEditor.selectorTypes.textArea.displayValue',
         properties: [
             {name: 'description', value: 'content-editor:label.contentEditor.selectorTypes.textArea.description'},
             {name: 'iconStart', value: 'Textarea'}
