@@ -302,51 +302,51 @@
       "selectorTypes": {
         "checkbox": {
           "displayValue": "Checkbox",
-          "description": "Displays a checkbox"
+          "description": "Eine Checkbox anzeigen"
         },
         "color": {
           "displayValue": "Color",
-          "description": "Enter hexadecimal code or select color visually"
+          "description": "Hexadezimal Code eingeben oder Farbe visuell wählen"
         },
         "textArea": {
           "displayValue": "Text Area",
-          "description": "Multiple lines of unformatted text."
+          "description": "Mehrere Zeilen von unformatiertem Text."
         },
         "richText": {
           "displayValue": "Rich text",
-          "description": "Formatted text (titles, images, links, ..)"
+          "description": "Formatierter Text (Titel, Bild, Links,…)"
         },
         "dropdown": {
           "displayValue": "Dropdown",
-          "description": "Select a value from a list"
+          "description": "Wert(e) aus einer Liste wählen"
         },
         "picker": {
           "displayValue": "Picker",
-          "description": "Pick medias, files or content items"
+          "description": "Medien, Dateien oder Content-Items wählen"
         },
         "dateTimePicker": {
           "displayValue": "Date time",
-          "description": "Select date and time from a calendar"
+          "description": "Datum und Uhrzeit aus einem Kalender wählen"
         },
         "datePicker": {
           "displayValue": "Date",
-          "description": "Select a date from a calendar"
+          "description": "Datum aus einem Kalender wählen"
         },
         "text": {
           "displayValue": "Text",
-          "description": "Simple text input"
+          "description": "Simple-Text Eingabe"
         },
         "category": {
           "displayValue": "Hierarchical Tree selector",
-          "description": "Select a value from a tree"
+          "description": "Wert aus einem Baum wählen"
         },
         "tag": {
           "displayValue": "Tag",
-          "description": "Select from a list of existing values or create new ones"
+          "description": "Aus einer existierenden Liste von Werten wählen oder neue erstellen"
         },
         "multipleLeftRightSelector": {
           "displayValue": "Multiple list",
-          "description": "Alternative to multiple dropdown when there are many values to select"
+          "description": "Alternative zu mehreren Drop Downs wenn viele Werte gewählt werden können"
         }
       }
     }
