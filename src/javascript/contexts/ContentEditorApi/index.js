@@ -1,1 +1,1 @@
-export * from '../../ContentEditorApi/ContentEditorApi';
+export * from './ContentEditorApi.context';
