@@ -18,16 +18,16 @@ export const ContentEditor = props => {
 
     return (
         <ContentEditorConfigContextProvider config={props}>
-            { mode === 'edit' && (
-            <ContentEditorContextProvider useFormDefinition={envProps.useFormDefinition || useEditFormDefinition}>
-                <Edit/>
-            </ContentEditorContextProvider>
-                )}
-            { mode === 'create' && (
-            <ContentEditorContextProvider useFormDefinition={envProps.useFormDefinition || useCreateFormDefinition}>
-                <Create/>
-            </ContentEditorContextProvider>
-                )}
+            {mode === 'edit' && (
+                <ContentEditorContextProvider useFormDefinition={envProps.useFormDefinition || useEditFormDefinition}>
+                    <Edit/>
+                </ContentEditorContextProvider>
+            )}
+            {mode === 'create' && (
+                <ContentEditorContextProvider useFormDefinition={envProps.useFormDefinition || useCreateFormDefinition}>
+                    <Create/>
+                </ContentEditorContextProvider>
+            )}
         </ContentEditorConfigContextProvider>
     );
 };

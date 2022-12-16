@@ -2,14 +2,21 @@ import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import {EditPanelLanguageSwitcher} from './index';
-import {useFormikContext} from 'formik';
 
 jest.mock('~/contexts/ContentEditor/ContentEditor.context', () => {
     return {
         useContentEditorContext: () => ({
             i18nContext: {},
             setI18nContext: jest.fn(),
-            resetI18nContext: jest.fn()
+            resetI18nContext: jest.fn(),
+            siteInfo: {
+                languages: [
+                    {
+                        language: 'en',
+                        displayName: 'English'
+                    }
+                ]
+            }
         })
     };
 });
@@ -21,33 +28,11 @@ jest.mock('~/contexts/ContentEditorConfig/ContentEditorConfig.context', () => {
     };
 });
 
-jest.mock('formik');
-
 describe('EditPanelLanguageSwitcher', () => {
     let defaultProps;
-    let formik;
-
-    beforeEach(() => {
-        defaultProps = {
-            siteInfo: {
-                languages: [
-                    {
-                        language: 'en',
-                        displayName: 'English'
-                    }
-                ]
-            },
-            formik: {}
-        };
-        formik = {
-            values: {}
-        };
-        useFormikContext.mockReturnValue(formik);
-    });
-
     it('should NOT show language switcher with one language', () => {
         const cmp = shallowWithTheme(
-            <EditPanelLanguageSwitcher {...defaultProps}/>,
+            <EditPanelLanguageSwitcher/>,
             {},
             dsGenericTheme
         );
@@ -61,7 +46,7 @@ describe('EditPanelLanguageSwitcher', () => {
         });
 
         const cmp = shallowWithTheme(
-            <EditPanelLanguageSwitcher {...defaultProps}/>,
+            <EditPanelLanguageSwitcher/>,
             {},
             dsGenericTheme
         );
