@@ -43,6 +43,7 @@ export const CreateFormQuery = gql`
                                     string
                                 }
                                 displayValue
+                                displayValueKey
                                 properties {
                                     name
                                     value

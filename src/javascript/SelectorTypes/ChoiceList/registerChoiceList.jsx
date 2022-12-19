@@ -7,6 +7,11 @@ export const registerChoiceList = ceRegistry => {
         dataType: ['String'],
         cmp: ChoiceList,
         supportMultiple: true,
+        labelKey: 'content-editor:label.contentEditor.selectorTypes.dropdown.displayValue',
+        properties: [
+            {name: 'description', value: 'content-editor:label.contentEditor.selectorTypes.dropdown.description'},
+            {name: 'iconStart', value: 'ListSelection'}
+        ],
         initValue: field => {
             const defaultValueConstraints = field.valueConstraints.filter(v => v?.properties?.find(p => p.name === 'defaultProperty' && p.value === 'true'));
 
