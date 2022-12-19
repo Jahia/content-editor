@@ -1,14 +1,13 @@
 import React from 'react';
 import {Dropdown, Edit, Language} from '@jahia/moonstone';
-import * as PropTypes from 'prop-types';
 import {useContentEditorConfigContext, useContentEditorContext} from '~/contexts';
 import styles from './EditPanelLanguageSwitcher.scss';
 import {getCapitalized, useSwitchLanguage} from '~/utils';
 import {useTranslation} from 'react-i18next';
 
-export const EditPanelLanguageSwitcher = ({siteInfo}) => {
+export const EditPanelLanguageSwitcher = () => {
     const {mode, lang: currentLanguage} = useContentEditorConfigContext();
-    const {i18nContext, nodeData} = useContentEditorContext();
+    const {i18nContext, nodeData, siteInfo} = useContentEditorContext();
     const switchLanguage = useSwitchLanguage();
     const {t} = useTranslation('content-editor');
     const labelPrefix = 'content-editor:label.contentEditor.header.languageSwitcher';
@@ -61,9 +60,5 @@ export const EditPanelLanguageSwitcher = ({siteInfo}) => {
             />
         </>
     );
-};
-
-EditPanelLanguageSwitcher.propTypes = {
-    siteInfo: PropTypes.object.isRequired
 };
 
