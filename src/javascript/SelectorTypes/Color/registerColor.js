@@ -4,7 +4,7 @@ export const registerColor = ceRegistry => {
     ceRegistry.add('selectorType', 'Color', {
         dataType: ['String'],
         cmp: Color,
-        displayValueKey: 'content-editor:label.contentEditor.selectorTypes.color.displayValue',
+        labelKey: 'content-editor:label.contentEditor.selectorTypes.color.displayValue',
         properties: [
             {name: 'description', value: 'content-editor:label.contentEditor.selectorTypes.color.description'},
             {name: 'iconStart', value: 'Palette'}

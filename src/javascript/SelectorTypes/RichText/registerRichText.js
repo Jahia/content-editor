@@ -4,7 +4,7 @@ export const registerRichText = ceRegistry => {
     ceRegistry.add('selectorType', 'RichText', {
         dataType: ['String'],
         cmp: RichText,
-        displayValueKey: 'content-editor:label.contentEditor.selectorTypes.richText.displayValue',
+        labelKey: 'content-editor:label.contentEditor.selectorTypes.richText.displayValue',
         properties: [
             {name: 'description', value: 'content-editor:label.contentEditor.selectorTypes.richText.description'},
             {name: 'iconStart', value: 'RichText'}

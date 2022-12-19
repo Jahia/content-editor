@@ -8,7 +8,7 @@ export const registerDateTimePicker = ceRegistry => {
     ceRegistry.add('selectorType', 'DateTimePicker', {
         dataType: ['Date'],
         cmp: DateTimePicker,
-        displayValueKey: 'content-editor:label.contentEditor.selectorTypes.dateTimePicker.displayValue',
+        labelKey: 'content-editor:label.contentEditor.selectorTypes.dateTimePicker.displayValue',
         properties: [
             {name: 'description', value: 'content-editor:label.contentEditor.selectorTypes.dateTimePicker.description'},
             {name: 'iconStart', value: 'Clock'}
@@ -19,7 +19,7 @@ export const registerDateTimePicker = ceRegistry => {
     ceRegistry.add('selectorType', 'DatePicker', {
         dataType: ['Date'],
         cmp: DateTimePicker,
-        displayValueKey: 'content-editor:label.contentEditor.selectorTypes.datePicker.displayValue',
+        labelKey: 'content-editor:label.contentEditor.selectorTypes.datePicker.displayValue',
         properties: [
             {name: 'description', value: 'content-editor:label.contentEditor.selectorTypes.datePicker.description'},
             {name: 'iconStart', value: 'Calendar'}

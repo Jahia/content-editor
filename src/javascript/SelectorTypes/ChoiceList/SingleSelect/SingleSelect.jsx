@@ -18,7 +18,7 @@ const getIconOfField = (field, value) => {
 const getLabel = (field, value, t) => {
     const valueConstraint = field.valueConstraints.find(item => item.value.string === value);
     if (valueConstraint) {
-        return valueConstraint.displayValueKey ? t(valueConstraint.displayValueKey) : valueConstraint?.displayValue;
+        return valueConstraint.displayValueKey ? t(valueConstraint.displayValueKey) : valueConstraint.displayValue;
     }
 
     return '';

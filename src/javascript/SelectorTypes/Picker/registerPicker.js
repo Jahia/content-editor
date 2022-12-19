@@ -52,7 +52,7 @@ export const registerPicker = registry => {
     registerPickerConfig(registry);
     registry.add('selectorType', 'Picker', {
         dataType: ['WeakReference'],
-        displayValueKey: 'content-editor:label.contentEditor.selectorTypes.picker.displayValue',
+        labelKey: 'content-editor:label.contentEditor.selectorTypes.picker.displayValue',
         properties: [
             {name: 'description', value: 'content-editor:label.contentEditor.selectorTypes.picker.description'},
             {name: 'iconStart', value: 'WeakReference'}
