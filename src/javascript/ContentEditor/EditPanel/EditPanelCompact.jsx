@@ -31,7 +31,7 @@ const accentColorButtonProps = {
 };
 
 export const EditPanelCompact = ({title, createAnother}) => {
-    const {siteInfo, lang, mode} = useContentEditorContext();
+    const {mode} = useContentEditorContext();
     const contentEditorConfigContext = useContentEditorConfigContext();
     const {t} = useTranslation('content-editor');
 
@@ -50,7 +50,7 @@ export const EditPanelCompact = ({title, createAnother}) => {
                     <DisplayAction actionKey="content-editor/header/3dots" render={DotsButtonRenderer}/>
                 </div>
                 <div className={clsx('flexRow', styles.languageSwitcher)}>
-                    <EditPanelLanguageSwitcher lang={lang} siteInfo={siteInfo}/>
+                    <EditPanelLanguageSwitcher/>
                     <div className="flexFluid"/>
                     <HeaderBadges mode={mode}/>
                 </div>

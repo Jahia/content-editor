@@ -42,7 +42,7 @@ const DotsButtonRenderer = getButtonRenderer({
 });
 
 export const EditPanelHeader = ({title, isShowPublish, activeTab, setActiveTab}) => {
-    const {nodeData, nodeTypeName, nodeTypeDisplayName, mode, siteInfo, lang} = useContentEditorContext();
+    const {nodeData, nodeTypeName, nodeTypeDisplayName, mode} = useContentEditorContext();
 
     const backButton = (
         <DisplayAction actionKey="backButton" render={ButtonRendererNoLabel} buttonProps={{variant: 'outlined', icon: <ArrowLeft/>}}/>
@@ -86,7 +86,7 @@ export const EditPanelHeader = ({title, isShowPublish, activeTab, setActiveTab})
                 )}
                 toolbarLeft={(
                     <div className={styles.headerToolBar}>
-                        <EditPanelLanguageSwitcher lang={lang} siteInfo={siteInfo}/>
+                        <EditPanelLanguageSwitcher/>
 
                         <Separator variant="vertical" size="medium"/>
 
