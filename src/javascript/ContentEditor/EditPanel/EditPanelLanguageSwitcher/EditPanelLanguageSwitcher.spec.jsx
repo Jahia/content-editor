@@ -4,15 +4,29 @@ import {dsGenericTheme} from '@jahia/design-system-kit';
 import {EditPanelLanguageSwitcher} from './index';
 import {useFormikContext} from 'formik';
 
+const siteInfo = {
+    languages: [
+        {
+            language: 'en',
+            displayName: 'English'
+        }
+    ]
+};
+
 jest.mock('~/contexts/ContentEditor/ContentEditor.context', () => {
     return {
         useContentEditorContext: () => ({
             i18nContext: {},
             setI18nContext: jest.fn(),
-            resetI18nContext: jest.fn()
+            resetI18nContext: jest.fn(),
+            siteInfo,
+            formik: {}
         })
     };
 });
+
+jest.mock('formik');
+
 jest.mock('~/contexts/ContentEditorConfig/ContentEditorConfig.context', () => {
     return {
         useContentEditorConfigContext: () => ({
@@ -21,33 +35,14 @@ jest.mock('~/contexts/ContentEditorConfig/ContentEditorConfig.context', () => {
     };
 });
 
-jest.mock('formik');
-
 describe('EditPanelLanguageSwitcher', () => {
-    let defaultProps;
     let formik;
-
     beforeEach(() => {
-        defaultProps = {
-            siteInfo: {
-                languages: [
-                    {
-                        language: 'en',
-                        displayName: 'English'
-                    }
-                ]
-            },
-            formik: {}
-        };
-        formik = {
-            values: {}
-        };
         useFormikContext.mockReturnValue(formik);
     });
-
     it('should NOT show language switcher with one language', () => {
         const cmp = shallowWithTheme(
-            <EditPanelLanguageSwitcher {...defaultProps}/>,
+            <EditPanelLanguageSwitcher/>,
             {},
             dsGenericTheme
         );
@@ -55,13 +50,13 @@ describe('EditPanelLanguageSwitcher', () => {
     });
 
     it('should show language switcher with more than one language', () => {
-        defaultProps.siteInfo.languages.push({
+        siteInfo.languages.push({
             language: 'fr',
             displayName: 'French'
         });
 
         const cmp = shallowWithTheme(
-            <EditPanelLanguageSwitcher {...defaultProps}/>,
+            <EditPanelLanguageSwitcher/>,
             {},
             dsGenericTheme
         );

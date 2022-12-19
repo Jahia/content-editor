@@ -7,11 +7,23 @@ import {Constants} from '~/ContentEditor.constants';
 import {useTranslation} from 'react-i18next';
 import {useContentEditorApiContext} from '~/contexts/ContentEditorApi/ContentEditorApi.context';
 
-export const EditContent = ({path, isModal, isFullscreen, editCallback, render: Render, loading: Loading, ...otherProps}) => {
+export const EditContent = ({
+    path,
+    isModal,
+    isFullscreen,
+    editCallback,
+    render: Render,
+    loading: Loading,
+    ...otherProps
+}) => {
     const {redirect} = useContentEditorHistory();
     useTranslation('content-editor');
     const api = useContentEditorApiContext();
-    const {language, uilang, site} = useSelector(state => ({language: state.language, site: state.site, uilang: state.uilang}));
+    const {language, uilang, site} = useSelector(state => ({
+        language: state.language,
+        site: state.site,
+        uilang: state.uilang
+    }));
     const res = useNodeChecks(
         {path: path, language: language},
         {...otherProps}
@@ -24,7 +36,15 @@ export const EditContent = ({path, isModal, isFullscreen, editCallback, render: 
     return (
         <Render {...otherProps}
                 isVisible={res.checksResult}
-                onClick={() => isModal ? api.edit(res.node.uuid, site, language, uilang, isFullscreen, editCallback) : redirect({language, mode: Constants.routes.baseEditRoute, uuid: res.node.uuid})}
+                onClick={() => isModal ? api.edit({
+                    uuid: res.node.uuid,
+                    site,
+                    lang: language,
+                    uilang,
+                    isFullscreen,
+                    editCallback,
+                    ...otherProps.editConfig
+                }) : redirect({language, mode: Constants.routes.baseEditRoute, uuid: res.node.uuid})}
         />
     );
 };
