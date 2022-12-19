@@ -141,20 +141,20 @@ public final class EditorFormFieldSetFieldTest {
     public void mergeWithCanOverrideValueConstraints() {
         final EditorFormField field1 = new EditorFormFieldBuilder("a")
                 .withValueConstraints(
-                        new EditorFormFieldValueConstraint("x", null, null),
-                        new EditorFormFieldValueConstraint("y", null, null)
+                        new EditorFormFieldValueConstraint("x", null, null, null),
+                        new EditorFormFieldValueConstraint("y", null, null, null)
                 ).build();
         final EditorFormField field2 = new EditorFormFieldBuilder("a")
                 .withValueConstraints(
-                        new EditorFormFieldValueConstraint("z", null, null)
+                        new EditorFormFieldValueConstraint("z", null, null, null)
                 ).build();
 
         assertThat(field1.mergeWith(field2).getValueConstraints(), contains(
-                new EditorFormFieldValueConstraint("z", null, null)
+                new EditorFormFieldValueConstraint("z", null, null, null)
         ));
         assertThat(field2.mergeWith(field1).getValueConstraints(), contains(
-                new EditorFormFieldValueConstraint("x", null, null),
-                new EditorFormFieldValueConstraint("y", null, null)
+                new EditorFormFieldValueConstraint("x", null, null, null),
+                new EditorFormFieldValueConstraint("y", null, null, null)
         ));
     }
 
@@ -167,7 +167,7 @@ public final class EditorFormFieldSetFieldTest {
             .withSelectorType("MyCustomSelector")
             .withSelectorOptions(new EditorFormProperty("x", "y"))
             .target(new EditorFormFieldTarget("MySection", "MyFieldSet", 0d))
-            .withValueConstraints(new EditorFormFieldValueConstraint("MyConstraint", null, null))
+            .withValueConstraints(new EditorFormFieldValueConstraint("MyConstraint", null, null, null))
             .i18n(true)
             .mandatory(true)
             .multiple(true)
