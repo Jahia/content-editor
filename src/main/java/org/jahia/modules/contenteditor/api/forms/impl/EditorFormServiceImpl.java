@@ -459,12 +459,12 @@ public class EditorFormServiceImpl implements EditorFormService {
     private String resolveMainSectionName(EditorFormFieldSet fieldSet) {
         String targetSectionName = fieldSet.getTarget().getSectionName() != null ? fieldSet.getTarget().getSectionName() : DEFAULT_SECTION;
         for (EditorFormField field : fieldSet.getEditorFormFields()) {
-            String sectionName = field.getTarget().getSectionName();
+            EditorFormFieldTarget sectionTarget = field.getTarget();
             // Keep in mind that it could be the case that targetSectionName name will not be the same as section name for all fields (based on previous code).
             // It is not clear where to put that field at that point. The concept itself is quite strange since intuition would suggest that a fieldset cannot be
             // in more than one section at a time. I preserved original behaviour here to not get into a lot of refactoring.
-            if (sectionName != null) {
-                targetSectionName = sectionName;
+            if (sectionTarget != null && sectionTarget.getSectionName() != null) {
+                targetSectionName = sectionTarget.getSectionName();
                 break;
             }
         }
