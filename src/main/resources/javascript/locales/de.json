@@ -306,7 +306,57 @@
           }
         }
       },
-      "readOnly": "Schreibgeschützt"
+      "readOnly": "Schreibgeschützt",
+      "selectorTypes": {
+        "checkbox": {
+          "displayValue": "Checkbox",
+          "description": "Eine Checkbox anzeigen"
+        },
+        "color": {
+          "displayValue": "Color",
+          "description": "Hexadezimal Code eingeben oder Farbe visuell wählen"
+        },
+        "textArea": {
+          "displayValue": "Text Area",
+          "description": "Mehrere Zeilen von unformatiertem Text."
+        },
+        "richText": {
+          "displayValue": "Rich text",
+          "description": "Formatierter Text (Titel, Bild, Links,…)"
+        },
+        "dropdown": {
+          "displayValue": "Dropdown",
+          "description": "Wert(e) aus einer Liste wählen"
+        },
+        "picker": {
+          "displayValue": "Picker",
+          "description": "Medien, Dateien oder Content-Items wählen"
+        },
+        "dateTimePicker": {
+          "displayValue": "Date time",
+          "description": "Datum und Uhrzeit aus einem Kalender wählen"
+        },
+        "datePicker": {
+          "displayValue": "Date",
+          "description": "Datum aus einem Kalender wählen"
+        },
+        "text": {
+          "displayValue": "Text",
+          "description": "Simple-Text Eingabe"
+        },
+        "category": {
+          "displayValue": "Hierarchical Tree selector",
+          "description": "Wert aus einem Baum wählen"
+        },
+        "tag": {
+          "displayValue": "Tag",
+          "description": "Aus einer existierenden Liste von Werten wählen oder neue erstellen"
+        },
+        "multipleLeftRightSelector": {
+          "displayValue": "Multiple list",
+          "description": "Alternative zu mehreren Drop Downs wenn viele Werte gewählt werden können"
+        }
+      }
     }
   }
 }

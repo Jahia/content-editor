@@ -64,7 +64,11 @@ import java.util.stream.Collectors;
 public class EditorFormServiceImpl implements EditorFormService {
 
     private static final Logger logger = LoggerFactory.getLogger(EditorFormServiceImpl.class);
-    public static final String DEFAULT_FORM_DEFINITION_NAME = "default";
+
+    private static final String EDIT = "edit";
+
+    private static final String CREATE = "create";
+
     public static final String DEFAULT_SECTION = "content";
     private NodeTypeRegistry nodeTypeRegistry;
     private ChoiceListInitializerService choiceListInitializerService;
@@ -260,7 +264,8 @@ public class EditorFormServiceImpl implements EditorFormService {
     }
 
     private EditorForm getEditorForm(ExtendedNodeType primaryNodeType, Locale uiLocale, Locale locale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode) throws EditorFormException {
-        final JCRNodeWrapper currentNode = existingNode != null ? existingNode : parentNode;
+        final String mode = existingNode == null ? CREATE : EDIT;
+        final JCRNodeWrapper currentNode = EDIT.equals(mode) ? existingNode : parentNode;
 
         try {
             String primaryNodeTypeName = primaryNodeType.getName();
@@ -285,7 +290,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             // This inserts listOrdering section for types which require it but don't come with one
             checkIfListOrderingSectionIsRequired(primaryNodeType, currentNode, formSectionsByName);
             JCRSiteNode resolvedSite;
-            if (existingNode != null && existingNode.isNodeType("jnt:virtualsite")) {
+            if (EDIT.equals(mode) && existingNode.isNodeType("jnt:virtualsite")) {
                 resolvedSite = (JCRSiteNode) existingNode;
             } else {
                 resolvedSite = parentNode.getResolveSite();
@@ -297,10 +302,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                     // ignore already process node types
                     continue;
                 }
-                boolean activated = false;
-                if (existingNode != null && existingNode.isNodeType(extendMixinNodeType.getName())) {
-                    activated = true;
-                }
+                boolean activated = EDIT.equals(mode) && existingNode.isNodeType(extendMixinNodeType.getName());
                 generateAndMergeFieldSetForType(extendMixinNodeType, uiLocale, locale, existingNode, parentNode, primaryNodeType,
                     formSectionsByName, false, true, activated, processedProperties, true);
                 processedNodeTypes.add(extendMixinNodeType.getName());
@@ -308,7 +310,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             // Get all form definitions to merge from the primary type.
             final SortedSet<EditorFormDefinition> formDefinitionsToMerge = staticDefinitionsRegistry.getFormDefinitionsForType(primaryNodeType);
 
-            if (existingNode != null) {
+            if (EDIT.equals(mode)) {
                 Set<ExtendedNodeType> addMixins = Arrays.stream(existingNode.getMixinNodeTypes()).filter(nodetype -> !processedNodeTypes.contains(nodetype.getName())).collect(Collectors.toSet());
                 for (ExtendedNodeType addMixin : addMixins) {
                     generateAndMergeFieldSetForType(addMixin, uiLocale, locale, existingNode, parentNode, primaryNodeType,
@@ -320,7 +322,14 @@ public class EditorFormServiceImpl implements EditorFormService {
 
             EditorFormDefinition mergedFormDefinition = mergeFormDefinitions(formDefinitionsToMerge);
             if (mergedFormDefinition.getSections() != null) {
-                List<EditorFormSectionDefinition> filteredSections = mergedFormDefinition.getSections().stream().filter(section -> section.getRequiredPermission() == null || currentNode.hasPermission(section.getRequiredPermission())).collect(Collectors.toList());
+                List<EditorFormSectionDefinition> filteredSections = mergedFormDefinition
+                    .getSections()
+                    .stream()
+                    .map(editorFormSectionDefinition -> {
+                        editorFormSectionDefinition.setHide(shouldHideSection(editorFormSectionDefinition
+                            , mode));
+                        return editorFormSectionDefinition;})
+                    .filter(section -> section.getRequiredPermission() == null || currentNode.hasPermission(section.getRequiredPermission())).collect(Collectors.toList());
                 mergedFormDefinition.setSections(filteredSections);
             }
 
@@ -332,6 +341,10 @@ public class EditorFormServiceImpl implements EditorFormService {
         } catch (RepositoryException e) {
             throw new EditorFormException("Error while building edit form definition for node: " + currentNode.getPath() + " and nodeType: " + primaryNodeType.getName(), e);
         }
+    }
+
+    private boolean shouldHideSection(EditorFormSectionDefinition section, String mode){
+        return section.isHide() || (!section.getDisplayModes().isEmpty() && !section.getDisplayModes().contains(mode));
     }
 
     private void checkIfListOrderingSectionIsRequired(ExtendedNodeType primaryNodeType, JCRNodeWrapper existingNode,Map<String, EditorFormSection> formSectionsByName) throws RepositoryException {
@@ -431,7 +444,8 @@ public class EditorFormServiceImpl implements EditorFormService {
         if (targetSection == null) {
             Double targetSectionRank = 1.0;
             Double targetSectionPriority = 1.0;
-            targetSection = new EditorFormSection(targetSectionName, targetSectionName, null, targetSectionRank, targetSectionPriority, new ArrayList<>(), false);
+            targetSection = new EditorFormSection(targetSectionName, targetSectionName, null, targetSectionRank, targetSectionPriority,
+                new ArrayList<>(), false);
         }
 
         if (formFieldSet.getRank().compareTo(0.0) == 0) {
@@ -445,12 +459,12 @@ public class EditorFormServiceImpl implements EditorFormService {
     private String resolveMainSectionName(EditorFormFieldSet fieldSet) {
         String targetSectionName = fieldSet.getTarget().getSectionName() != null ? fieldSet.getTarget().getSectionName() : DEFAULT_SECTION;
         for (EditorFormField field : fieldSet.getEditorFormFields()) {
-            String sectionName = field.getTarget().getSectionName();
+            EditorFormFieldTarget sectionTarget = field.getTarget();
             // Keep in mind that it could be the case that targetSectionName name will not be the same as section name for all fields (based on previous code).
             // It is not clear where to put that field at that point. The concept itself is quite strange since intuition would suggest that a fieldset cannot be
             // in more than one section at a time. I preserved original behaviour here to not get into a lot of refactoring.
-            if (sectionName != null) {
-                targetSectionName = sectionName;
+            if (sectionTarget != null && sectionTarget.getSectionName() != null) {
+                targetSectionName = sectionTarget.getSectionName();
                 break;
             }
         }
@@ -581,7 +595,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                     // it's not, keep value as it is
                 }
             }
-            valueConstraints.add(new EditorFormFieldValueConstraint(valueConstraint, new EditorFormFieldValue("String", valueConstraint), null));
+            valueConstraints.add(new EditorFormFieldValueConstraint(valueConstraint, null, new EditorFormFieldValue("String", valueConstraint), null));
         }
         List<EditorFormProperty> selectorOptions = null;
         if (propertyDefinition.getSelectorOptions() != null) {
@@ -687,40 +701,30 @@ public class EditorFormServiceImpl implements EditorFormService {
                     initialChoiceListValues = initializers.get(selectorProperty.getName()).getChoiceListValues(propertyDefinition, selectorProperty.getValue(), initialChoiceListValues, locale, context);
                 }
             }
-        } else {
-            for (EditorFormFieldValueConstraint editorFormFieldValueConstraint : editorFormField.getValueConstraints()) {
-                ChoiceListValue choiceListValue = new ChoiceListValue(editorFormFieldValueConstraint.getDisplayValue(),
-                    editorFormFieldValueConstraint.getValue().getStringValue());
-                if (editorFormFieldValueConstraint.getPropertyList() != null) {
-                    editorFormFieldValueConstraint.getPropertyList().forEach(constraint -> {
-                        choiceListValue.addProperty(constraint.getName(), constraint.getValue());
-                    });
-                }
-                initialChoiceListValues.add(choiceListValue);
-            }
-        }
-
-        List<EditorFormFieldValueConstraint> valueConstraints = null;
-        if (initialChoiceListValues != null) {
-            valueConstraints = new ArrayList<>();
-            for (ChoiceListValue choiceListValue : initialChoiceListValues) {
-                List<EditorFormProperty> propertyList = new ArrayList<>();
-                if (choiceListValue.getProperties() != null) {
-                    for (Map.Entry<String, Object> choiceListPropertyEntry : choiceListValue.getProperties().entrySet()) {
-                        propertyList.add(new EditorFormProperty(choiceListPropertyEntry.getKey(), choiceListPropertyEntry.getValue().toString()));
+            List<EditorFormFieldValueConstraint> valueConstraints = null;
+            if (initialChoiceListValues != null) {
+                valueConstraints = new ArrayList<>();
+                for (ChoiceListValue choiceListValue : initialChoiceListValues) {
+                    List<EditorFormProperty> propertyList = new ArrayList<>();
+                    if (choiceListValue.getProperties() != null) {
+                        for (Map.Entry<String, Object> choiceListPropertyEntry : choiceListValue.getProperties().entrySet()) {
+                            propertyList.add(new EditorFormProperty(choiceListPropertyEntry.getKey(), choiceListPropertyEntry.getValue().toString()));
+                        }
+                    }
+                    try {
+                        valueConstraints.add(new EditorFormFieldValueConstraint(choiceListValue.getDisplayName(), null,
+                            new EditorFormFieldValue(choiceListValue.getValue()),
+                            propertyList
+                        ));
+                    } catch (RepositoryException e) {
+                        logger.error("Error retrieving choice list value", e);
                     }
                 }
-                try {
-                    valueConstraints.add(new EditorFormFieldValueConstraint(choiceListValue.getDisplayName(),
-                        new EditorFormFieldValue(choiceListValue.getValue()),
-                        propertyList
-                    ));
-                } catch (RepositoryException e) {
-                    logger.error("Error retrieving choice list value", e);
-                }
             }
+            return valueConstraints;
+        } else {
+            return editorFormField.getValueConstraints();
         }
-        return valueConstraints;
     }
 
     private boolean isFieldReadOnly(ExtendedPropertyDefinition propertyDefinition, boolean sharedFieldsEditable, boolean i18nFieldsEditable) {

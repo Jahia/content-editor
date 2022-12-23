@@ -306,7 +306,57 @@
           }
         }
       },
-      "readOnly": "Lecture seule"
+      "readOnly": "Lecture seule",
+      "selectorTypes": {
+        "checkbox": {
+          "displayValue": "Checkbox",
+          "description": "Affiche une checkbox"
+        },
+        "color": {
+          "displayValue": "Color",
+          "description": "Sélectionner une couleur visuellement ou entrer une valeur hexadécimale"
+        },
+        "textArea": {
+          "displayValue": "Text Area",
+          "description": "Textes non-formatés, sur plusieurs lignes."
+        },
+        "richText": {
+          "displayValue": "Rich text",
+          "description": "Textes formatés sur plusieurs lignes (titres, images, liens, ...)"
+        },
+        "dropdown": {
+          "displayValue": "Dropdown",
+          "description": "Sélectionner une/des valeur(s) à partir d'une liste"
+        },
+        "picker": {
+          "displayValue": "Picker",
+          "description": "Choisir des médias, fichiers ou contenus"
+        },
+        "dateTimePicker": {
+          "displayValue": "Date time",
+          "description": "Sélectionner une date et un horaire dans un calendrier"
+        },
+        "datePicker": {
+          "displayValue": "Date",
+          "description": "Sélectionner une date dans un calendrier"
+        },
+        "text": {
+          "displayValue": "Text",
+          "description": "Champ texte"
+        },
+        "category": {
+          "displayValue": "Hierarchical Tree selector",
+          "description": "Sélectionner une valeur à partir de données en arbre"
+        },
+        "tag": {
+          "displayValue": "Tag",
+          "description": "Sélectionner à partir d'une liste ou créer de nouvelles valeurs"
+        },
+        "multipleLeftRightSelector": {
+          "displayValue": "Multiple list",
+          "description": "Sélectionner de nombreuses valeurs à partir d'une liste"
+        }
+      }
     }
   }
 }

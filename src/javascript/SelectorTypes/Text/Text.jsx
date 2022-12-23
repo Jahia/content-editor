@@ -20,7 +20,7 @@ export const Text = ({field, value, id, editorContext, onChange, onBlur}) => {
         }}/>
     };
 
-    const maxLength = field.selectorOptions.find(option => option.name === 'maxLength');
+    const maxLength = field.selectorOptions?.find(option => option.name === 'maxLength');
     return (
         <Input
             fullWidth
