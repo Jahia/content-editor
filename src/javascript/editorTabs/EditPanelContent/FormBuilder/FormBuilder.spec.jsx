@@ -93,13 +93,13 @@ describe('FormBuilder component', () => {
 
     it('should be empty', () => {
         sectionContext.sections = [];
-        const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme);
+        const cmp = shallowWithTheme(<FormBuilder mode="create" uuid="dummy-uuid-create"/>, {}, dsGenericTheme);
 
         expect(cmp.debug()).toBe('<Fragment />');
     });
 
     it('should display each section', () => {
-        const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).find('section');
+        const cmp = shallowWithTheme(<FormBuilder mode="create" uuid="dummy-uuid-create-1"/>, {}, dsGenericTheme).find('section');
         expect(cmp.props()['data-sel-mode']).toBe('create');
         expect(cmp.children().length).toEqual(sectionContext.sections.length);
     });
@@ -120,7 +120,7 @@ describe('FormBuilder component', () => {
                 }
             ]
         });
-        const cmp = shallowWithTheme(<FormBuilder mode="create"/>, {}, dsGenericTheme).find('section');
+        const cmp = shallowWithTheme(<FormBuilder mode="create" uuid="dummy-uuid-create-2"/>, {}, dsGenericTheme).find('section');
         expect(cmp.find('ChildrenSection').dive().find('Collapsible').exists()).toBeFalsy();
     });
 
@@ -143,7 +143,7 @@ describe('FormBuilder component', () => {
 
         context.nodeData.isPage = true;
 
-        const cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).find('section');
+        const cmp = shallowWithTheme(<FormBuilder mode="edit" uuid="dummy-uuid-edit"/>, {}, dsGenericTheme).find('section');
         expect(cmp.find('ChildrenSection').dive().find('Collapsible').exists()).toBeTruthy();
     });
 
@@ -166,7 +166,7 @@ describe('FormBuilder component', () => {
 
         context.nodeData.isSite = true;
 
-        const cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).find('section');
+        const cmp = shallowWithTheme(<FormBuilder mode="edit" uuid="dummy-uuid-edit-1"/>, {}, dsGenericTheme).find('section');
         expect(cmp.find('ChildrenSection').dive().find('Collapsible').exists()).toBeFalsy();
     });
 
@@ -186,7 +186,7 @@ describe('FormBuilder component', () => {
                 }
             ]
         });
-        const cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).find('section');
+        const cmp = shallowWithTheme(<FormBuilder mode="edit" uuid="dummy-uuid-edit-2"/>, {}, dsGenericTheme).find('section');
         expect(cmp.find('ChildrenSection').dive().find('Collapsible').exists()).toBeTruthy();
     });
 
@@ -206,7 +206,7 @@ describe('FormBuilder component', () => {
                 }
             ]
         });
-        const cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).find('section');
+        const cmp = shallowWithTheme(<FormBuilder mode="edit" uuid="dummy-uuid-edit-3"/>, {}, dsGenericTheme).find('section');
         expect(cmp.childAt(1).find('ChildrenSection').exists()).toBeTruthy();
     });
 
@@ -227,7 +227,7 @@ describe('FormBuilder component', () => {
             ]
         });
 
-        const cmp = shallowWithTheme(<FormBuilder mode="edit"/>, {}, dsGenericTheme).find('section');
+        const cmp = shallowWithTheme(<FormBuilder mode="edit" uuid="dummy-uuid-edit-4"/>, {}, dsGenericTheme).find('section');
         let props = cmp.childAt(0).dive().find('Collapsible').props();
         expect(props.label).toBe('Content');
         expect(props.isExpanded).toBeTruthy();
