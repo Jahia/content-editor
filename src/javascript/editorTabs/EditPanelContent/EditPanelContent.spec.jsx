@@ -5,7 +5,10 @@ import {shallow} from '@jahia/test-framework';
 jest.mock('~/contexts/ContentEditor/ContentEditor.context', () => {
     return {
         useContentEditorContext: () => ({
-            hasPreview: true
+            hasPreview: true,
+            nodeData: {
+                uuid: 'edit-editpanelcontent'
+            }
         })
     };
 });

@@ -20,8 +20,10 @@ const extractParamsFromUrl = pathname => {
 
 export const registerReducer = registry => {
     const toggleSections = handleActions({
-        [ceToggleSections]: (state, action) => action.payload
-    }, DEFAULT_OPENED_SECTIONS);
+        [ceToggleSections]: (state, action) => ({
+            ...state,
+            [action.payload.key]: action.payload.sections
+        })}, {});
 
     const languageReducer = handleActions({
         [ceSwitchLanguage]: (state, action) => action.payload,
