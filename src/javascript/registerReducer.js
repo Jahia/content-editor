@@ -6,7 +6,6 @@ export const {ceSwitchLanguage} = createActions('CE_SWITCH_LANGUAGE');
 
 export const COMBINED_REDUCERS_NAME = 'contenteditor';
 
-export const DEFAULT_OPENED_SECTIONS = {content: true, listOrdering: true};
 const ROUTER_REDUX_ACTION = '@@router/LOCATION_CHANGE';
 
 const extractParamsFromUrl = pathname => {

@@ -26,8 +26,12 @@ export const adaptCreateFormData = (data, lang, t, contentEditorConfigContext) =
     const nodeData = data.jcr.result;
     const sections = adaptSections(data.forms.createForm.sections);
 
+    // Always use expanded sections from the form definition.
+    const expandedSections = sections ? sections.reduce((result, section) => ({...result, [section.name]: section.expanded}), {}) : {};
+
     const formData = {
-        sections: sections,
+        sections,
+        expandedSections,
         initialValues: {
             ...getInitialValues(sections, nodeData)
         },

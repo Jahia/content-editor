@@ -5,17 +5,16 @@ import {useContentEditorContext, useContentEditorSectionContext} from '~/context
 import {SectionsPropTypes} from '~/ContentEditor.proptypes';
 import {ChildrenSection, Section} from './Sections';
 import {useDispatch, useSelector} from 'react-redux';
-import {ceToggleSections, DEFAULT_OPENED_SECTIONS} from '~/registerReducer';
+import {ceToggleSections} from '~/registerReducer';
 import styles from './FormBuilder.scss';
 import {Validation} from './Validation';
-import {Constants} from '~/ContentEditor.constants';
 
 const ADVANCED_OPTIONS_SELECTIONS = ['visibility'];
 
 export const FormBuilder = ({mode, uuid}) => {
-    const {nodeData, errors} = useContentEditorContext();
+    const {nodeData, errors, expandedSections} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
-    const toggleStates = useSelector(state => state.contenteditor.ceToggleSections[mode + '_' + uuid] || DEFAULT_OPENED_SECTIONS);
+    const toggleStates = useSelector(state => state.contenteditor.ceToggleSections[mode + '_' + uuid]);
     const dispatch = useDispatch();
 
     // Update toggle state if there are errors
@@ -38,15 +37,8 @@ export const FormBuilder = ({mode, uuid}) => {
     // On mount/unmount hook
     useEffect(() => {
         document.querySelector('div[data-first-field=true] input')?.focus();
-        // Update section states for this node type
-        const sectionStates = sections ? sections.reduce((acc, curr) => ({
-            ...acc,
-            [curr.name]: acc[curr.name] ? acc[curr.name] : curr.expanded
-        }), toggleStates) : {};
-        // Always open default sections in create mode.
-        const newStates = mode === Constants.routes.baseCreateRoute ? {...DEFAULT_OPENED_SECTIONS, sectionStates} : sectionStates;
-        dispatch(ceToggleSections({key: mode + '_' + uuid, sections: newStates}));
-    }, [dispatch, ceToggleSections, mode, uuid]); // eslint-disable-line react-hooks/exhaustive-deps
+        dispatch(ceToggleSections({key: mode + '_' + uuid, sections: expandedSections}));
+    }, [dispatch, ceToggleSections, mode, uuid, expandedSections]); // eslint-disable-line react-hooks/exhaustive-deps
 
     if (!nodeData || !sections || sections.length === 0) {
         return <></>;
