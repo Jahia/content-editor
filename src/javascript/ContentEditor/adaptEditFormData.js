@@ -145,12 +145,16 @@ const getUsagesInfo = nodeData => {
     ), {}));
 };
 
-export const adaptEditFormData = (data, lang, t) => {
+export const adaptEditFormData = (data, lang, t, contentEditorConfigContext) => {
     const nodeData = data.jcr.result;
     const sections = adaptSections(data.forms.editForm.sections);
 
+    // Take expanded section from existing config, or use the one from the form definition.
+    const expandedSections = contentEditorConfigContext.expandedSections ? contentEditorConfigContext.expandedSections : (sections ? sections.reduce((result, section) => ({...result, [section.name]: section.expanded}), {}) : {});
+
     const formData = {
-        sections: sections,
+        sections,
+        expandedSections,
         initialValues: getInitialValues(nodeData, sections),
         hasPreview: data.forms.editForm.hasPreview,
         nodeData,

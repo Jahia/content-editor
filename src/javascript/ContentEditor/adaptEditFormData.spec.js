@@ -113,7 +113,7 @@ describe('adaptEditFormData', () => {
     });
 
     it('should extract node type info', () => {
-        const adaptedForm = adaptEditFormData(graphqlResponse, 'fr', t);
+        const adaptedForm = adaptEditFormData(graphqlResponse, 'fr', t, {});
 
         expect(adaptedForm.nodeTypeName).toEqual(fieldSetName);
         expect(adaptedForm.nodeTypeDisplayName).toEqual('ContentType');
@@ -121,7 +121,7 @@ describe('adaptEditFormData', () => {
 
     it('should return initialValues', () => {
         graphqlResponse.forms.editForm.sections = [];
-        const initialValues = adaptEditFormData(graphqlResponse, 'fr', t).initialValues;
+        const initialValues = adaptEditFormData(graphqlResponse, 'fr', t, {}).initialValues;
         expect(initialValues).toEqual({
             'WIP::Info': {
                 status: 'DISABLED',
@@ -130,7 +130,7 @@ describe('adaptEditFormData', () => {
     });
 
     it('should extract initialValues from fields', () => {
-        const adaptedForm = adaptEditFormData(graphqlResponse, 'fr', t);
+        const adaptedForm = adaptEditFormData(graphqlResponse, 'fr', t, {});
 
         expect(adaptedForm.initialValues).toEqual({
             [fieldSetName + '_field1']: '2019-05-07T11:33:31.056',
@@ -143,7 +143,7 @@ describe('adaptEditFormData', () => {
 
     it('should extract initialValues with selectorType own logic', () => {
         graphqlResponse.forms.editForm.sections[0].fieldSets[0].fields[0].selectorType = 'Checkbox';
-        const initialValues = adaptEditFormData(graphqlResponse, 'fr', t).initialValues;
+        const initialValues = adaptEditFormData(graphqlResponse, 'fr', t, {}).initialValues;
 
         expect(initialValues).toEqual({
             [fieldSetName + '_field1']: false,
@@ -166,7 +166,7 @@ describe('adaptEditFormData', () => {
             values: ['value1', 'value2']
         }];
 
-        const initialValues = adaptEditFormData(graphqlResponse, 'fr', t).initialValues;
+        const initialValues = adaptEditFormData(graphqlResponse, 'fr', t, {}).initialValues;
 
         expect(initialValues).toEqual({
             [fieldSetName + '_field1']: ['value1', 'value2'],
@@ -181,7 +181,7 @@ describe('adaptEditFormData', () => {
         graphqlResponse.forms.editForm.sections[0].name = 'metadata';
         graphqlResponse.forms.editForm.sections[0].fieldSets[0].fields[0].name = 'jcr:created';
         graphqlResponse.jcr.result.properties[0].name = 'jcr:created';
-        expect(adaptEditFormData(graphqlResponse, 'fr', t).details).toEqual([
+        expect(adaptEditFormData(graphqlResponse, 'fr', t, {}).details).toEqual([
             {
                 label: 'labelled',
                 value: '2019-05-07T11:33:31.056'
@@ -194,7 +194,7 @@ describe('adaptEditFormData', () => {
         graphqlResponse.forms.editForm.sections[0].fieldSets[0].fields[0].selectorType = 'DatePicker';
         graphqlResponse.forms.editForm.sections[0].fieldSets[0].fields[0].name = 'jcr:lastModified';
         graphqlResponse.jcr.result.properties[0].name = 'jcr:lastModified';
-        expect(adaptEditFormData(graphqlResponse, 'fr', t).details).toEqual([
+        expect(adaptEditFormData(graphqlResponse, 'fr', t, {}).details).toEqual([
             {
                 label: 'labelled',
                 value: 'formatted date: 2019-05-07T11:33:31.056 format: L HH:mm'
@@ -203,7 +203,7 @@ describe('adaptEditFormData', () => {
     });
 
     it('should add technicalInfo object', () => {
-        expect(adaptEditFormData(graphqlResponse, 'fr', t).technicalInfo).toEqual([
+        expect(adaptEditFormData(graphqlResponse, 'fr', t, {}).technicalInfo).toEqual([
             {
                 label: 'content-editor:label.contentEditor.edit.advancedOption.technicalInformation.contentType',
                 value: 'ContentType'
@@ -227,31 +227,31 @@ describe('adaptEditFormData', () => {
         graphqlResponse.forms.editForm.sections[0].name = 'metadata';
         graphqlResponse.forms.editForm.sections[0].fieldSets[0].fields[0].readOnly = true;
 
-        expect(adaptEditFormData(graphqlResponse, 'fr', t).sections).toEqual([]);
+        expect(adaptEditFormData(graphqlResponse, 'fr', t, {}).sections).toEqual([]);
     });
 
     it('should adapt field data', () => {
-        const adaptedSections = adaptEditFormData(graphqlResponse, 'fr', t).sections;
+        const adaptedSections = adaptEditFormData(graphqlResponse, 'fr', t, {}).sections;
         expect(adaptedSections[0].fieldSets[0].fields[0].name).toEqual('jcr:contentType_field1');
         expect(adaptedSections[0].fieldSets[0].fields[0].propertyName).toEqual('field1');
         expect(adaptedSections[0].fieldSets[0].fields[0].nodeType).toEqual('jcr:contentType');
     });
 
     it('should return the nodeData name when editing', () => {
-        expect(adaptEditFormData(graphqlResponse, 'fr', t).title).toEqual('nameOfNode');
+        expect(adaptEditFormData(graphqlResponse, 'fr', t, {}).title).toEqual('nameOfNode');
     });
 
     it('should add ChildrenOrder field when we are not on a page and hasOrderableChildNodes', () => {
         graphqlResponse.jcr.result.isPage = false;
         graphqlResponse.jcr.result.primaryNodeType.hasOrderableChildNodes = true;
 
-        expect(adaptEditFormData(graphqlResponse, 'fr', t).initialValues['Children::Order']).toEqual([]);
+        expect(adaptEditFormData(graphqlResponse, 'fr', t, {}).initialValues['Children::Order']).toEqual([]);
     });
 
     it('shouldn\'t add ChildrenOrder field when we are not on a page', () => {
         graphqlResponse.jcr.result.isPage = true;
 
-        expect(adaptEditFormData(graphqlResponse, 'fr', t).initialValues['Children::Order']).not.toEqual([]);
+        expect(adaptEditFormData(graphqlResponse, 'fr', t, {}).initialValues['Children::Order']).not.toEqual([]);
     });
 
     it('Should initialize automatic ordering values if fieldSet is not enabled', () => {
@@ -263,7 +263,7 @@ describe('adaptEditFormData', () => {
             fields: []
         });
 
-        const adaptedData = adaptEditFormData(graphqlResponse, 'fr', t);
+        const adaptedData = adaptEditFormData(graphqlResponse, 'fr', t, {});
         expect(adaptedData.initialValues[Constants.ordering.automaticOrdering.mixin + '_firstField']).toEqual('jcr:lastModified');
         expect(adaptedData.initialValues[Constants.ordering.automaticOrdering.mixin + '_firstDirection']).toEqual('desc');
         expect(adaptedData.initialValues[Constants.ordering.automaticOrdering.mixin + '_secondField']).toEqual(undefined);
@@ -297,7 +297,7 @@ describe('adaptEditFormData', () => {
         graphqlResponse.jcr.result.properties.push({name: 'thirdField', value: 'titi', properties: true, definition});
         graphqlResponse.jcr.result.properties.push({name: 'thirdDirection', value: 'desc', properties: true, definition});
 
-        const adaptedData = adaptEditFormData(graphqlResponse, 'fr', t);
+        const adaptedData = adaptEditFormData(graphqlResponse, 'fr', t, {});
         expect(adaptedData.initialValues[Constants.ordering.automaticOrdering.mixin + '_firstField']).toEqual('toto');
         expect(adaptedData.initialValues[Constants.ordering.automaticOrdering.mixin + '_firstDirection']).toEqual('asc');
         expect(adaptedData.initialValues[Constants.ordering.automaticOrdering.mixin + '_secondField']).toEqual(undefined);
@@ -307,7 +307,7 @@ describe('adaptEditFormData', () => {
     });
 
     it('Should not initialize automatic ordering values if fieldSet doest exist in form definition', () => {
-        const adaptedData = adaptEditFormData(graphqlResponse, 'fr', t);
+        const adaptedData = adaptEditFormData(graphqlResponse, 'fr', t, {});
         expect(adaptedData.initialValues[Constants.ordering.automaticOrdering.mixin + '_firstField']).toEqual(undefined);
         expect(adaptedData.initialValues[Constants.ordering.automaticOrdering.mixin + '_firstDirection']).toEqual(undefined);
         expect(adaptedData.initialValues[Constants.ordering.automaticOrdering.mixin + '_secondField']).toEqual(undefined);
@@ -340,6 +340,6 @@ describe('adaptEditFormData', () => {
             ]
         });
 
-        expect(adaptEditFormData(graphqlResponse, 'fr', t).initialValues.notEnabledFS_field2).toEqual('2019-05-07T11:33:31.056');
+        expect(adaptEditFormData(graphqlResponse, 'fr', t, {}).initialValues.notEnabledFS_field2).toEqual('2019-05-07T11:33:31.056');
     });
 });

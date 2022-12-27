@@ -52,6 +52,7 @@ export const ContentEditorContextProvider = ({useFormDefinition, children}) => {
 
     const {
         nodeData,
+        expandedSections,
         initialValues,
         hasPreview,
         details,
@@ -115,6 +116,7 @@ export const ContentEditorContextProvider = ({useFormDefinition, children}) => {
         details,
         technicalInfo,
         initialValues,
+        expandedSections,
         hasPreview,
         title,
         formQueryParams,
