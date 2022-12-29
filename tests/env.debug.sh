@@ -9,6 +9,7 @@ START_TIME=$SECONDS
 
 echo " == Using MANIFEST: ${MANIFEST}"
 echo " == Using JAHIA_URL= ${JAHIA_URL}"
+echo " == Using CYPRESS_CONFIGURATION_FILE=${CYPRESS_CONFIGURATION_FILE}"
 echo " == Using Node version: $(node -v)"
 echo " == Using yarn version: $(yarn -v)"
 
@@ -20,4 +21,4 @@ done
 ELAPSED_TIME=$(($SECONDS - $START_TIME))
 echo " == Jahia became alive in ${ELAPSED_TIME} seconds"
 
-yarn e2e:debug
+yarn e2e:debug --config-file "${CYPRESS_CONFIGURATION_FILE}"
