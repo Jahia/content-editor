@@ -3,7 +3,7 @@ import {getDynamicFieldSets, getFields} from '~/utils';
 import {resolveSelectorType} from '~/SelectorTypes/resolveSelectorType';
 import {adaptSystemNameField} from './adaptSystemNameField';
 import {Constants} from '~/ContentEditor.constants';
-import {adaptSections} from '~/ContentEditor/adaptSections';
+import {adaptSections, getExpandedSections} from '~/ContentEditor/adaptSections';
 import {getFieldValuesFromDefaultValues} from '~/ContentEditor/getFieldValuesFromDefaultValues';
 import {EditFormQuery} from '~/ContentEditor/edit.gql-queries';
 import {useFormDefinition} from '~/ContentEditor/useFormDefinitions';
@@ -151,16 +151,13 @@ const getUsagesInfo = nodeData => {
     ), {}));
 };
 
-export const adaptEditFormData = (data, lang, t, contentEditorConfigContext) => {
+export const adaptEditFormData = (data, lang, t) => {
     const nodeData = data.jcr.result;
     const sections = adaptSections(data.forms.editForm.sections);
 
-    // Take expanded section from existing config, or use the one from the form definition.
-    const expandedSections = contentEditorConfigContext.expandedSections ? contentEditorConfigContext.expandedSections : (sections ? sections.reduce((result, section) => ({...result, [section.name]: section.expanded}), {}) : {});
-
     const formData = {
         sections,
-        expandedSections,
+        expandedSections: getExpandedSections(sections),
         initialValues: getInitialValues(nodeData, sections),
         hasPreview: data.forms.editForm.hasPreview,
         nodeData,

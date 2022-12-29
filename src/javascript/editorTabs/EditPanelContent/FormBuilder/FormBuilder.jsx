@@ -4,17 +4,18 @@ import {Form} from 'formik';
 import {useContentEditorContext, useContentEditorSectionContext} from '~/contexts';
 import {SectionsPropTypes} from '~/ContentEditor.proptypes';
 import {ChildrenSection, Section} from './Sections';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector, shallowEqual} from 'react-redux';
 import {ceToggleSections} from '~/registerReducer';
 import styles from './FormBuilder.scss';
 import {Validation} from './Validation';
+import {Constants} from '~/ContentEditor.constants';
 
 const ADVANCED_OPTIONS_SELECTIONS = ['visibility'];
 
 export const FormBuilder = ({mode, uuid}) => {
     const {nodeData, errors, expandedSections} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
-    const toggleStates = useSelector(state => state.contenteditor.ceToggleSections[mode + '_' + uuid]);
+    const toggleStates = useSelector(state => state.contenteditor.ceToggleSections[mode + '_' + uuid], shallowEqual);
     const dispatch = useDispatch();
 
     // Update toggle state if there are errors
@@ -37,8 +38,9 @@ export const FormBuilder = ({mode, uuid}) => {
     // On mount/unmount hook
     useEffect(() => {
         document.querySelector('div[data-first-field=true] input')?.focus();
-        dispatch(ceToggleSections({key: mode + '_' + uuid, sections: expandedSections}));
-    }, [dispatch, ceToggleSections, mode, uuid, expandedSections]); // eslint-disable-line react-hooks/exhaustive-deps
+        const sections = mode === Constants.routes.baseCreateRoute ? expandedSections : (toggleStates || expandedSections);
+        dispatch(ceToggleSections({key: mode + '_' + uuid, sections}));
+    }, [dispatch, mode, uuid, expandedSections]); // eslint-disable-line react-hooks/exhaustive-deps
 
     if (!nodeData || !sections || sections.length === 0) {
         return <></>;
