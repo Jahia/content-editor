@@ -9,7 +9,7 @@ import styles from './EditPanelContent.scss';
 
 export const EditPanelContent = () => {
     const {mode, envProps} = useContentEditorConfigContext();
-    const {hasPreview} = useContentEditorContext();
+    const {hasPreview, nodeData} = useContentEditorContext();
 
     return (
         <>
@@ -21,7 +21,7 @@ export const EditPanelContent = () => {
                         rightCol={<Preview/>}
                         data-sel-mode={mode}
                     >
-                        <FormBuilder mode={mode}/>
+                        <FormBuilder mode={mode} uuid={nodeData.uuid}/>
                     </TwoColumnsContent>
                 ) :
                 (
@@ -29,7 +29,7 @@ export const EditPanelContent = () => {
                         classes={{root: styles.fullWidthRoot}}
                         data-sel-mode={mode}
                     >
-                        <FormBuilder mode={mode}/>
+                        <FormBuilder mode={mode} uuid={nodeData.uuid}/>
                     </FullWidthContent>
                 )}
         </>

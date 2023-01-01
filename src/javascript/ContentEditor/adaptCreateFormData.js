@@ -1,7 +1,7 @@
 import {adaptSystemNameField} from './adaptSystemNameField';
 import {getFields} from '~/utils/fields.utils';
 import {Constants} from '~/ContentEditor.constants';
-import {adaptSections} from '~/ContentEditor/adaptSections';
+import {adaptSections, getExpandedSections} from '~/ContentEditor/adaptSections';
 import {getFieldValuesFromDefaultValues} from '~/ContentEditor/getFieldValuesFromDefaultValues';
 
 // TODO https://jira.jahia.org/browse/TECH-300
@@ -25,7 +25,8 @@ export const adaptCreateFormData = (data, lang, t, contentEditorConfigContext) =
     const sections = adaptSections(data.forms.createForm.sections);
 
     const formData = {
-        sections: sections,
+        sections,
+        expandedSections: getExpandedSections(sections),
         initialValues: {
             ...getInitialValues(sections, nodeData)
         },

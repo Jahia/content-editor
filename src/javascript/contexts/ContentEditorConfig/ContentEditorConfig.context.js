@@ -4,11 +4,14 @@ import * as PropTypes from 'prop-types';
 export const ContentEditorConfigContext = React.createContext({});
 export const useContentEditorConfigContext = () => useContext(ContentEditorConfigContext);
 
-export const ContentEditorConfigContextProvider = ({config, children}) => (
-    <ContentEditorConfigContext.Provider value={config}>
-        {children}
-    </ContentEditorConfigContext.Provider>
-);
+export const ContentEditorConfigContextProvider = ({config, children}) => {
+    // Read expanded sections only once
+    return (
+        <ContentEditorConfigContext.Provider value={{...config}}>
+            {children}
+        </ContentEditorConfigContext.Provider>
+    );
+};
 
 ContentEditorConfigContextProvider.propTypes = {
     config: PropTypes.object.isRequired,
