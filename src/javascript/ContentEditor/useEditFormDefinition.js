@@ -5,6 +5,8 @@ import {adaptSystemNameField} from './adaptSystemNameField';
 import {Constants} from '~/ContentEditor.constants';
 import {adaptSections} from '~/ContentEditor/adaptSections';
 import {getFieldValuesFromDefaultValues} from '~/ContentEditor/getFieldValuesFromDefaultValues';
+import {EditFormQuery} from '~/ContentEditor/edit.gql-queries';
+import {useFormDefinition} from '~/ContentEditor/useFormDefinitions';
 
 // TODO https://jira.jahia.org/browse/TECH-300
 
@@ -166,3 +168,5 @@ export const adaptEditFormData = (data, lang, t) => {
 
     return formData;
 };
+
+export const useEditFormDefinition = () => useFormDefinition(EditFormQuery, adaptEditFormData);

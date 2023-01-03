@@ -13,7 +13,7 @@ export const useFormDefinition = (query, adapter) => {
     const formQueryParams = {
         uuid,
         language: lang,
-        uilang: Constants.supportedLocales.includes(uilang) ? uilang : Constants.defaultLocale,
+        uilang,
         primaryNodeType: contentType,
         writePermission: `jcr:modifyProperties_default_${lang}`,
         childrenFilterTypes: Constants.childrenFilterTypes
@@ -26,18 +26,17 @@ export const useFormDefinition = (query, adapter) => {
 
     const dataCached = useMemo(() => {
         if (!error && !loading && data.jcr) {
-            return adapter(data, formQueryParams.uilang, t, contentEditorConfigContext);
+            return adapter(data, uilang, t, contentEditorConfigContext);
         }
-    }, [data, formQueryParams.uilang, t, contentEditorConfigContext, error, loading, adapter]);
+    }, [data, uilang, t, contentEditorConfigContext, error, loading, adapter]);
 
     if (error || loading || !data.jcr) {
         return {
             loading,
             error,
-            formQueryParams,
             errorMessage: error && t('content-editor:label.contentEditor.error.queryingContent', {details: (error.message ? error.message : '')})
         };
     }
 
-    return {data: dataCached, formQueryParams, refetch};
+    return {data: dataCached, refetch};
 };
