@@ -21,7 +21,7 @@ function getFieldsInError(fields, errors) {
 export const Validation = () => {
     const formik = useFormikContext();
     const {sections} = useContentEditorSectionContext();
-    const {siteInfo, i18nContext, lang, nodeData, mode} = useContentEditorContext();
+    const {siteInfo, i18nContext, lang} = useContentEditorContext();
     const {t} = useTranslation('content-editor');
     const toggleStates = useSelector(state => state.contenteditor.ceToggleSections);
     const dispatch = useDispatch();
@@ -51,10 +51,10 @@ export const Validation = () => {
         if (toggleStates[section.name]) {
             scrollTo(field);
         } else {
-            dispatch(ceToggleSections({key: mode + '_' + nodeData.uuid, sections: {
-                ...toggleStates[mode + '_' + nodeData.uuid],
+            dispatch(ceToggleSections({
+                ...toggleStates,
                 [section.name]: true
-            }}));
+            }));
             setTimeout(() => scrollTo(field), 0);
         }
     };
