@@ -30,8 +30,3 @@ export const adaptSections = sections => {
         }, [])
         .filter(section => (section.name === 'listOrdering' || (section.fieldSets && section.fieldSets.length > 0)));
 };
-
-/** Utility function to return an object of expanded status for the given sections **/
-export const getExpandedSections = sections => {
-    return sections ? sections.reduce((result, section) => ({...result, [section.name]: section.expanded}), {}) : {};
-};
