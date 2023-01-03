@@ -8,7 +8,6 @@ import {Constants} from '~/ContentEditor.constants';
 import {WindowListeners} from './WindowListeners';
 import {DialogActions, DialogContent, DialogTitle} from '@material-ui/core';
 import {Button, Checkbox, Edit, Typography} from '@jahia/moonstone';
-import {GoBack} from '~/actions/contenteditor/goBackAction';
 import {getButtonRenderer, truncate} from '~/utils';
 import {EditPanelLanguageSwitcher} from './EditPanelLanguageSwitcher';
 import {useTranslation} from 'react-i18next';
@@ -70,7 +69,7 @@ export const EditPanelCompact = ({title, createAnother}) => {
                     </>
                 )}
                 <div className="flexFluid"/>
-                <GoBack
+                <DisplayAction
                     buttonLabel={t('label.contentEditor.cancel')}
                     actionKey="backButton"
                     render={ButtonRenderer}

@@ -1,6 +1,5 @@
 import {SavePropertiesMutation} from './updateNode.gql-mutation';
 import {getChildrenOrder, getDataToMutate} from '~/utils';
-import {NodeQuery} from '../edit.gql-queries';
 import {refetchPreview} from '../EditPanel/EditPanel.refetches';
 import {getPreviewPath} from '~/editorTabs/EditPanelContent/Preview/Preview.utils';
 import {PublicationInfoQuery} from '~/contexts/PublicationInfo/PublicationInfo.gql-queries';
@@ -20,8 +19,7 @@ export const updateNode = ({
         sections,
         values,
         language,
-        i18nContext,
-        uilang
+        i18nContext
     }
 }) => {
     const dataToMutate = getDataToMutate({nodeData, formValues: values, i18nContext, sections, lang: language});
@@ -54,16 +52,6 @@ export const updateNode = ({
         variables,
         mutation: SavePropertiesMutation,
         refetchQueries: [
-            {
-                query: NodeQuery,
-                variables: {
-                    uuid: nodeData.uuid,
-                    language,
-                    uilang: uilang,
-                    writePermission: `jcr:modifyProperties_default_${language}`,
-                    childrenFilterTypes: Constants.childrenFilterTypes
-                }
-            },
             {
                 query: PublicationInfoQuery,
                 variables: {

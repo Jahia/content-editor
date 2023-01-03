@@ -5,8 +5,7 @@ import styles from './RenameLayout.scss';
 import {Typography} from '@jahia/moonstone';
 import clsx from 'clsx';
 import {EditPanelContent} from '~/editorTabs/EditPanelContent';
-import {GoBack} from '~/actions/contenteditor/goBackAction';
-import {DisplayActions} from '@jahia/ui-extender';
+import {DisplayAction, DisplayActions} from '@jahia/ui-extender';
 import {getButtonRenderer} from '~/utils';
 
 const ButtonRenderer = getButtonRenderer({
@@ -36,7 +35,7 @@ export const RenameLayout = () => {
             </DialogContent>
             <DialogActions className={styles.dialogActions}>
                 <div className="flexFluid"/>
-                <GoBack
+                <DisplayAction
                     buttonLabel={t('label.contentEditor.cancel')}
                     actionKey="backButton"
                     render={ButtonRenderer}

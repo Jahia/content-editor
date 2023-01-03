@@ -14,7 +14,7 @@ export const Create = () => {
     const client = useApolloClient();
     const {t} = useTranslation('content-editor');
     const contentEditorConfigContext = useContentEditorConfigContext();
-    const {nodeData, formQueryParams, initialValues, title, i18nContext} = useContentEditorContext();
+    const {nodeData, initialValues, title, i18nContext} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
     const createAnotherState = useState(false);
     const createAnother = {
@@ -36,10 +36,11 @@ export const Create = () => {
             notificationContext,
             actions,
             data: {
-                ...formQueryParams,
+                primaryNodeType: contentEditorConfigContext.contentType,
                 nodeData,
                 sections,
                 values,
+                language: contentEditorConfigContext.lang,
                 i18nContext
             },
             createCallback: info => {

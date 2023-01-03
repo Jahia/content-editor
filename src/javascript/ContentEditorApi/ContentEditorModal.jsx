@@ -13,6 +13,8 @@ import {OnCloseConfirmationDialog} from './OnCloseConfirmationDialog';
 import {EditPanelCompact} from '~/ContentEditor/EditPanel/EditPanelCompact';
 import {EditPanelFullscreen} from '~/ContentEditor/EditPanel/EditPanelFullscreen';
 import {useApolloClient} from '@apollo/react-hooks';
+import {useCreateFormDefinition} from '~/ContentEditor/useCreateFormDefinition';
+import {useEditFormDefinition} from '~/ContentEditor/useEditFormDefinition';
 
 function triggerEvents(nodeUuid, operator) {
     // Refresh contentEditorEventHandlers
@@ -151,7 +153,7 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
             });
         },
         isModal: true,
-        useFormDefinition: editorConfig.useFormDefinition,
+        useFormDefinition: editorConfig.useFormDefinition || (editorConfig.mode === 'edit' ? useEditFormDefinition : useCreateFormDefinition),
         isFullscreen: editorConfig.isFullscreen,
         layout: editorConfig.layout || (editorConfig.isFullscreen ? EditPanelFullscreen : EditPanelCompact),
         confirmationDialog: (editorConfig.useConfirmationDialog !== false) && <OnCloseConfirmationDialog deleteEditorConfig={deleteEditorConfig} openDialog={openDialog}/>

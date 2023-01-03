@@ -46,8 +46,7 @@ export const ContentEditorContextProvider = ({useFormDefinition, children}) => {
         loading,
         error,
         data: formDefinition,
-        refetch: refetchFormData,
-        formQueryParams
+        refetch: refetchFormData
     } = useFormDefinition();
 
     const {
@@ -117,7 +116,6 @@ export const ContentEditorContextProvider = ({useFormDefinition, children}) => {
         initialValues,
         hasPreview,
         title,
-        formQueryParams,
         nodeTypeName,
         nodeTypeDisplayName,
         refetchFormData,

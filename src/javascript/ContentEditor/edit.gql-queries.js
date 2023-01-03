@@ -208,12 +208,3 @@ export const EditFormQuery = gql`
     }
     ${NodeDataFragment.nodeData.gql}
 `;
-
-export const NodeQuery = gql`
-    query getNodeProperties($uuid:String!, $language:String!, $uilang:String!, $writePermission: String!, $childrenFilterTypes: [String]!) {
-        jcr {
-            ...NodeData
-        }
-    }
-    ${NodeDataFragment.nodeData.gql}
-`;

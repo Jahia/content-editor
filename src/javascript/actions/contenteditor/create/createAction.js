@@ -6,16 +6,13 @@ import * as PropTypes from 'prop-types';
 import {useFormikContext} from 'formik';
 import {useContentEditorConfigContext, useContentEditorContext, useContentEditorSectionContext} from '~/contexts';
 import {useKeydownListener} from '~/utils';
-import {adaptCreateFormData} from '~/ContentEditor/adaptCreateFormData';
-import {useTranslation} from 'react-i18next';
 
 const Create = ({createAnother, render: Render, loading: Loading, ...otherProps}) => {
-    const {t} = useTranslation('content-editor');
     const componentRenderer = useContext(ComponentRendererContext);
     const formik = useFormikContext();
     const contentEditorConfigContext = useContentEditorConfigContext();
     const {envProps} = contentEditorConfigContext;
-    const {mode, resetI18nContext, setErrors, siteInfo, lang, refetchFormData, i18nContext} = useContentEditorContext();
+    const {mode, resetI18nContext, setErrors, siteInfo, lang, refetchFormData, initialValues, i18nContext} = useContentEditorContext();
     const [clicked, setClicked] = useState(false);
     const {sections} = useContentEditorSectionContext();
 
@@ -45,9 +42,8 @@ const Create = ({createAnother, render: Render, loading: Loading, ...otherProps}
                 if (data) {
                     if (createAnother) {
                         // Refetch only to generate a new valid system name
-                        refetchFormData().then(res => {
-                            const formData = adaptCreateFormData(res.data, lang, t, contentEditorConfigContext);
-                            formik.resetForm({values: formData.initialValues});
+                        refetchFormData().then(() => {
+                            formik.resetForm({values: initialValues});
                             resetI18nContext();
                             setClicked(false);
                             if (envProps.onCreateAnother) {

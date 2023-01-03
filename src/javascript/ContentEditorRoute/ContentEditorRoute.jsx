@@ -12,6 +12,8 @@ import gql from 'graphql-tag';
 import {PredefinedFragments} from '@jahia/data-helper';
 import {ceToggleSections, DEFAULT_OPENED_SECTIONS} from '~/registerReducer';
 import {useNotifications} from '@jahia/react-material';
+import {useCreateFormDefinition} from '~/ContentEditor/useCreateFormDefinition';
+import {useEditFormDefinition} from '~/ContentEditor/useEditFormDefinition';
 
 export const ContentEditorRoute = ({mode, uuid, lang, contentType, name}) => {
     const notificationContext = useNotifications();
@@ -117,7 +119,8 @@ export const ContentEditorRoute = ({mode, uuid, lang, contentType, name}) => {
         switchLanguageCallback: language => {
             redirect({language});
         },
-        confirmationDialog: true
+        confirmationDialog: true,
+        useFormDefinition: (mode === 'edit' ? useEditFormDefinition : useCreateFormDefinition)
     };
     return Boolean(site) && (
         <ContentEditor name={name}

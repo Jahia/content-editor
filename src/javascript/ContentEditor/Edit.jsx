@@ -19,7 +19,7 @@ export const Edit = () => {
     const client = useApolloClient();
     const {t} = useTranslation('content-editor');
     const contentEditorConfigContext = useContentEditorConfigContext();
-    const {lang, nodeData, formQueryParams, initialValues, title, i18nContext} = useContentEditorContext();
+    const {lang, nodeData, initialValues, title, i18nContext} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
 
     useEffect(() => {
@@ -38,10 +38,10 @@ export const Edit = () => {
             notificationContext,
             actions,
             data: {
-                ...formQueryParams,
                 nodeData,
                 sections,
                 values,
+                language: lang,
                 i18nContext
             },
             editCallback: info => {
@@ -60,7 +60,7 @@ export const Edit = () => {
                 }
             }
         });
-    }, [client, t, notificationContext, contentEditorConfigContext, formQueryParams, nodeData, sections, i18nContext]);
+    }, [client, t, notificationContext, contentEditorConfigContext, lang, nodeData, sections, i18nContext]);
 
     return (
         <>
