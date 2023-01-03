@@ -10,15 +10,17 @@ import {getButtonRenderer} from '~/utils';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 import styles from './Picker.scss';
 import {Button} from '@jahia/moonstone';
-import {FieldContextProvider} from '~/contexts/FieldContext';
 import {DefaultPickerConfig} from '~/SelectorTypes/Picker/configs/DefaultPickerConfig';
 import {useFormikContext} from 'formik';
 import {OrderableValue} from '~/DesignSystem/OrderableValue/OrderableValue';
+import {useContentEditorConfigContext} from '~/contexts';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
 export const Picker = ({field, value, editorContext, inputContext, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
+    const {lang, uilang} = useContentEditorConfigContext();
+
     const parsedOptions = {};
     field.selectorOptions.forEach(option => {
         set(parsedOptions, option.name, option.value || option.values);
@@ -151,18 +153,18 @@ export const Picker = ({field, value, editorContext, inputContext, onChange, onB
                     )}
                 </>}
 
-            <FieldContextProvider field={field}>
-                <PickerDialog
-                    isOpen={isDialogOpen}
-                    editorContext={editorContext}
-                    pickerConfig={pickerConfig}
-                    initialSelectedItem={fieldData && fieldData.map(f => f.path)}
-                    accordionItemProps={mergeDeep({}, pickerConfig.accordionItem, parsedOptions.accordionItem)}
-                    onClose={() => setDialogOpen(false)}
-                    onItemSelection={onItemSelection}
-                />
-            </FieldContextProvider>
-
+            <PickerDialog
+                isOpen={isDialogOpen}
+                site={editorContext.site}
+                pickerConfig={pickerConfig}
+                initialSelectedItem={fieldData && fieldData.map(f => f.path)}
+                accordionItemProps={mergeDeep({}, pickerConfig.accordionItem, parsedOptions.accordionItem)}
+                lang={lang}
+                uilang={uilang}
+                isMultiple={field.multiple}
+                onClose={() => setDialogOpen(false)}
+                onItemSelection={onItemSelection}
+            />
         </div>
     );
 };

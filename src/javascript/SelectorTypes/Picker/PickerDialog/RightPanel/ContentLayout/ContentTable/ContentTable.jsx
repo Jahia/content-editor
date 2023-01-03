@@ -29,7 +29,6 @@ import {
     useFileDrop
 } from '@jahia/jcontent';
 import {registry} from '@jahia/ui-extender';
-import {useFieldContext} from '~/contexts/FieldContext';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 import {Row} from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout/ContentTable/Row';
 import clsx from 'clsx';
@@ -63,9 +62,8 @@ const SELECTION_COLUMN_ID = 'selection';
 
 const defaultCols = ['publicationStatus', 'name', 'type', 'lastModified'];
 
-export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, isStructured, pickerConfig, accordionItemProps}) => {
+export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, isStructured, pickerConfig, isMultiple, accordionItemProps}) => {
     const {t} = useTranslation();
-    const field = useFieldContext();
     const dispatch = useDispatch();
 
     const {mode, preSearchModeMemo, path, pagination, searchTerm, openPaths, sort} = useSelector(state => ({
@@ -101,14 +99,14 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
                 Header: reactTable.Header,
                 ...c
             }));
-        const multiple = field.multiple && flattenRows.some(r => r.isSelectable);
+        const multiple = isMultiple && flattenRows.some(r => r.isSelectable);
         columns.splice((columns[0].id === 'publicationStatus') ? 1 : 0, 0, allColumnData.find(col => col.id === 'selection'));
         columns.push(allColumnData.find(col => col.id === 'visibleActions'));
 
         return columns
             .filter(c => multiple || c.id !== SELECTION_COLUMN_ID)
             .filter(c => previousModeTableConfig?.contextualMenu || c.id !== 'visibleActions');
-    }, [field.multiple, previousModeTableConfig, rows, isStructured]);
+    }, [isMultiple, previousModeTableConfig, rows, isStructured]);
     const {
         getTableProps,
         getTableBodyProps,
@@ -133,7 +131,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
                 dispatch(cePickerSetSort({order, orderBy: column.property}));
             }
         },
-        field.multiple ? useRowMultipleSelection : useRowSelection,
+        isMultiple ? useRowMultipleSelection : useRowSelection,
         reactTable.useSort,
         reactTable.useExpandedControlled
     );
@@ -180,7 +178,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
     }
 
     const handleOnClick = (e, row) => {
-        if (field.multiple) {
+        if (isMultiple) {
             return; // Use selection column instead of row click for multiple selection
         }
 
@@ -218,7 +216,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
                                 <Row key={'row' + row.id}
                                      isStructured={isStructured}
                                      row={row}
-                                     field={field}
+                                     isMultiple={isMultiple}
                                      tableConfig={tableConfig}
                                      handleOnClick={handleOnClick}
                                      handleOnDoubleClick={handleOnDoubleClick}
@@ -253,6 +251,7 @@ ContentTable.propTypes = {
     rows: PropTypes.array.isRequired,
     totalCount: PropTypes.number.isRequired,
     pickerConfig: configPropType.isRequired,
+    isMultiple: PropTypes.bool,
     accordionItemProps: PropTypes.object
 };
 

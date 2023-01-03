@@ -11,7 +11,7 @@ export const Row = ({
     isStructured,
     row,
     tableConfig,
-    field,
+    isMultiple,
     previousModeTableConfig,
     handleOnDoubleClick,
     handleOnClick
@@ -50,7 +50,7 @@ export const Row = ({
                       'moonstone-drop_row': (isCanDrop || isCanDropFile),
                       [styles.disabled]: isStructured && !node.isSelectable
                   })}
-                  isHighlighted={selectionProps.checked && !field.multiple}
+                  isHighlighted={selectionProps.checked && !isMultiple}
                   onClick={e => handleOnClick(e, row)}
                   onContextMenu={event => {
                       if (tableConfig.contextualMenu) {
@@ -74,7 +74,7 @@ Row.propTypes = {
     isStructured: PropTypes.bool,
     row: PropTypes.object.isRequired,
     previousModeTableConfig: PropTypes.object,
-    field: PropTypes.object,
+    isMultiple: PropTypes.bool,
     tableConfig: PropTypes.object,
     doubleClickNavigation: PropTypes.func,
     handleOnClick: PropTypes.func,

@@ -33,7 +33,7 @@ function expand(r, level) {
     return (r && level) ? r.filter(c => c.hasSubRows).flatMap(c => [c.path, ...expand(c.subRows, level - 1)]) : [];
 }
 
-export const ContentLayoutContainer = ({pickerConfig, accordionItemProps}) => {
+export const ContentLayoutContainer = ({pickerConfig, isMultiple, accordionItemProps}) => {
     const {t} = useTranslation();
     const currentResult = useRef();
     const {mode, path, filesMode, preSearchModeMemo, viewType} = useSelector(state => ({
@@ -117,6 +117,7 @@ export const ContentLayoutContainer = ({pickerConfig, accordionItemProps}) => {
 
         return (
             <ContentTable isContentNotFound
+                          isMultiple={isMultiple}
                           path={path}
                           filesMode={filesMode}
                           rows={[]}
@@ -150,6 +151,7 @@ export const ContentLayoutContainer = ({pickerConfig, accordionItemProps}) => {
             )}
             {(mode === Constants.mode.MEDIA || preSearchModeMemo === Constants.mode.MEDIA) && filesMode === Constants.fileView.mode.THUMBNAILS ? (
                 <FilesGrid rows={rows}
+                           isMultiple={isMultiple}
                            totalCount={totalCount}
                            isLoading={loading}
                            pickerConfig={pickerConfig}
@@ -157,6 +159,7 @@ export const ContentLayoutContainer = ({pickerConfig, accordionItemProps}) => {
                 />
             ) : (
                 <ContentTable path={path}
+                              isMultiple={isMultiple}
                               rows={rows}
                               isStructured={isStructured}
                               isLoading={loading}
@@ -171,6 +174,7 @@ export const ContentLayoutContainer = ({pickerConfig, accordionItemProps}) => {
 
 ContentLayoutContainer.propTypes = {
     pickerConfig: configPropType.isRequired,
+    isMultiple: PropTypes.bool,
     accordionItemProps: PropTypes.object
 };
 
