@@ -1,5 +1,5 @@
 function getMixinList(field, fieldValue) {
-    let mixins = [];
+    const mixins = [];
 
     const findAddMixin = value => field.valueConstraints
         ?.find(valueConstraint => valueConstraint.value.string === value)?.properties
@@ -25,10 +25,9 @@ function getMixinList(field, fieldValue) {
 export const registerChoiceListOnChange = registry => {
     registry.add('selectorType.onChange', 'addMixinChoicelist', {
         targets: ['Choicelist', 'MultipleLeftRightSelector'],
-        onChange: (previousValue, currentValue, field, onChangeContext, selectorType, helper) => {
-            let editorSection = onChangeContext.sections;
-
-            let oldMixins = previousValue ? getMixinList(field, previousValue) : [];
+        onChange: (previousValue, currentValue, field, onChangeContext) => {
+            const {setAddedMixins, formik} = onChangeContext;
+            const oldMixins = previousValue ? getMixinList(field, previousValue) : [];
 
             if (oldMixins.length === 0 && currentValue === undefined) {
                 // If no mixin and no new value, do nothing
@@ -36,15 +35,23 @@ export const registerChoiceListOnChange = registry => {
             }
 
             oldMixins.forEach(mixin => {
-                helper.moveMixinToInitialFieldset(mixin, editorSection, onChangeContext.formik);
+                setAddedMixins(prev => {
+                    const {[mixin]: _, ...rest} = prev;
+                    return rest;
+                });
+                formik.setFieldValue(mixin, false);
+                formik.setFieldTouched(mixin);
             });
 
-            let newMixins = currentValue ? getMixinList(field, currentValue) : [];
+            const newMixins = currentValue ? getMixinList(field, currentValue) : [];
             newMixins.forEach(mixin => {
-                helper.moveMixinToTargetFieldset(mixin, field.nodeType, editorSection, field, onChangeContext.formik);
+                setAddedMixins(prev => ({
+                    ...prev,
+                    [mixin]: {targetFieldSet: field.nodeType, field}
+                }));
+                formik.setFieldValue(mixin, true);
+                formik.setFieldTouched(mixin);
             });
-
-            onChangeContext.onSectionsUpdate();
         }
     });
 };

@@ -13,6 +13,24 @@ export const ContentEditorContext = React.createContext({});
 
 export const useContentEditorContext = () => useContext(ContentEditorContext);
 
+function getCurrentPage(nodeData, pageComposerActive, pageComposerCurrentPage) {
+    // Don't use full page preview rendering for folders.
+    const isFullPage = nodeData.displayableNode && !nodeData.displayableNode.isFolder;
+    // Set main resource path, currently used by preview:
+    //  - path: path to display
+    //  - template: view or template to use
+    //  - templatetype: extension to use
+    //  - config: page if content can be displayed as full page or module
+    const currentPage = pageComposerActive ? pageComposerCurrentPage :
+        {
+            path: (isFullPage && nodeData.displayableNode.path) || nodeData.path,
+            template: nodeData.displayableNode ? 'default' : 'cm',
+            templateType: '.html'
+        };
+    currentPage.config = isFullPage ? 'page' : 'module';
+    return currentPage;
+}
+
 export const ContentEditorContextProvider = ({useFormDefinition, children}) => {
     const notificationContext = useNotifications();
     const {t} = useTranslation('content-editor');
@@ -77,29 +95,10 @@ export const ContentEditorContextProvider = ({useFormDefinition, children}) => {
         return null;
     }
 
-    if (loading || siteInfoResult.loading) {
-        return <LoaderOverlay/>;
-    }
-
-    // Don't use full page rendering for folders.
-    const isFullPage = nodeData.displayableNode && !nodeData.displayableNode.isFolder;
-    // Set main resource path, currently used by preview:
-    //  - path: path to display
-    //  - template: view or template to use
-    //  - templatetype: extension to use
-    //  - config: page if content can be displayed as full page or module
-    const currentPage = pageComposerActive ? pageComposerCurrentPage :
-        {
-            path: (isFullPage && nodeData.displayableNode.path) || nodeData.path,
-            template: nodeData.displayableNode ? 'default' : 'cm',
-            templateType: '.html'
-        };
-    currentPage.config = isFullPage ? 'page' : 'module';
-
     // Build editor context
-    const editorContext = {
+    const editorContext = nodeData ? {
         path: nodeData.path,
-        currentPage,
+        currentPage: getCurrentPage(nodeData, pageComposerActive, pageComposerCurrentPage),
         lang,
         uilang,
         browserLang,
@@ -125,13 +124,13 @@ export const ContentEditorContextProvider = ({useFormDefinition, children}) => {
         setI18nContext,
         resetI18nContext,
         usages
-    };
+    } : {};
 
     return (
         <ContentEditorContext.Provider value={editorContext}>
-            <ContentEditorSectionContextProvider formSections={JSON.parse(JSON.stringify(sections))}>
+            <ContentEditorSectionContextProvider formSections={sections}>
                 <ApolloCacheFlushOnGWTSave/>
-                {children}
+                {loading || siteInfoResult.loading ? <LoaderOverlay/> : children}
             </ContentEditorSectionContextProvider>
         </ContentEditorContext.Provider>
     );

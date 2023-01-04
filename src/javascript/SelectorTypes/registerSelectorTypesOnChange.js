@@ -1,20 +1,19 @@
 import {getFields} from '~/utils/fields.utils';
 import {FieldConstraints} from './registerSelectorTypesOnChange.gql-queries';
 
-function arrayEquals(arr1, arr2) {
-    return arr1.length === arr2.length && arr1.every((value, index) => value === arr2[index]);
-}
-
 export const registerSelectorTypesOnChange = registry => {
     registry.add('selectorType.onChange', 'dependentProperties', {
         targets: ['*'],
         onChange: (previousValue, currentValue, field, onChangeContext) => {
-            const sections = onChangeContext.sections;
+            const {sections, setAddedConstraints, formik} = onChangeContext;
             const fields = getFields(sections);
             const dependentPropertiesFields = fields
                 .filter(f => f.selectorOptions
                     .find(s => s.name === 'dependentProperties' && s.value.includes(field.propertyName))
                 );
+
+            // Store timestamp to ensure that we keep latest promise resolution
+            const now = Date.now();
 
             Promise.all(dependentPropertiesFields.map(dependentPropertiesField => {
                 const dependentProperties = dependentPropertiesField.selectorOptions.find(f => f.name === 'dependentProperties').value.split(',');
@@ -29,7 +28,7 @@ export const registerSelectorTypesOnChange = registry => {
                         if (dependentField) {
                             context.push({
                                 key: dependentProperty,
-                                value: onChangeContext.formik.values[dependentField.name]
+                                value: formik.values[dependentField.name]
                             });
                         }
                     });
@@ -59,31 +58,20 @@ export const registerSelectorTypesOnChange = registry => {
 
                 return undefined;
             })).then(results => {
-                let updated = false;
                 results.forEach(({data, dependentPropertiesField}) => {
                     if (data) {
                         if (data?.forms?.fieldConstraints) {
-                            const fieldToUpdate = getFields(sections).find(f => f.name === dependentPropertiesField.name);
-                            if (fieldToUpdate && !arrayEquals(fieldToUpdate.valueConstraints, data.forms.fieldConstraints)) {
-                                // Update field in place (for those who keep a constant ref on sectionsContext)
-                                fieldToUpdate.valueConstraints = data.forms.fieldConstraints;
-                                // And recreate the full sections object to make change detection work
-                                sections.forEach(section => {
-                                    section.fieldSets = section.fieldSets.map(fieldSet => ({
-                                        ...fieldSet,
-                                        fields: fieldSet.fields.map(f => ({
-                                            ...f
-                                        }))
-                                    }));
-                                });
-                                updated = true;
-                            }
+                            setAddedConstraints(prev => !prev[dependentPropertiesField.name] || prev[dependentPropertiesField.name].ts < now ? {
+                                ...prev,
+                                [dependentPropertiesField.name]: {
+                                    field: dependentPropertiesField,
+                                    constraints: data.forms.fieldConstraints,
+                                    ts: now
+                                }
+                            } : prev);
                         }
                     }
                 });
-                if (updated) {
-                    onChangeContext.onSectionsUpdate();
-                }
             });
         }
     });
