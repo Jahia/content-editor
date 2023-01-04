@@ -46,7 +46,8 @@ describe('Work in progress Utils', () => {
             wipInfo: {
                 status: 'ALL_CONTENT',
                 languages: []
-            }
+            },
+            defaultWipInfo: {status: 'DISABLED', languages: []}
         };
         expect(showChipHeader(nodeData.wipInfo)).toBe(true);
     });
@@ -56,7 +57,8 @@ describe('Work in progress Utils', () => {
             wipInfo: {
                 status: 'DISABLED',
                 languages: []
-            }
+            },
+            defaultWipInfo: {status: 'DISABLED', languages: []}
         };
         expect(showChipHeader(nodeData.wipInfo)).toBe(false);
     });
@@ -66,7 +68,8 @@ describe('Work in progress Utils', () => {
             wipInfo: {
                 status: 'LANGUAGES',
                 languages: ['en', 'fr']
-            }
+            },
+            defaultWipInfo: {status: 'DISABLED', languages: []}
         };
         expect(showChipHeader(nodeData.wipInfo, 'en')).toBe(true);
     });
@@ -76,7 +79,8 @@ describe('Work in progress Utils', () => {
             wipInfo: {
                 status: 'LANGUAGES',
                 languages: ['en', 'fr']
-            }
+            },
+            defaultWipInfo: {status: 'DISABLED', languages: []}
         };
         expect(showChipHeader(nodeData.wipInfo, 'de')).toBe(false);
     });
@@ -87,7 +91,8 @@ describe('Work in progress Utils', () => {
             wipInfo: {
                 status: 'ALL_CONTENT',
                 languages: []
-            }
+            },
+            defaultWipInfo: {status: 'DISABLED', languages: []}
         };
 
         expect(getChipContent(nodeData.wipInfo, 'en', t)).toBe('translated_content-editor:label.contentEditor.edit.action.workInProgress.chipLabelAllContent');
@@ -99,7 +104,8 @@ describe('Work in progress Utils', () => {
             wipInfo: {
                 status: 'LANGUAGES',
                 languages: ['fr', 'en']
-            }
+            },
+            defaultWipInfo: {status: 'DISABLED', languages: []}
         };
 
         expect(getChipContent(nodeData.wipInfo, 'en', t)).toBe('translated_content-editor:label.contentEditor.edit.action.workInProgress.chipLabelLanguagesEN');
