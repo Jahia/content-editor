@@ -288,7 +288,8 @@ describe('Work in progress Utils', () => {
             wipInfo: {
                 status: 'LANGUAGES',
                 languages: ['fr', 'en']
-            }
+            },
+            defaultWipInfo: {status: 'DISABLED', languages: []}
         };
 
         expect(showChipField(true, nodeData.wipInfo, 'en')).toBe(true);
@@ -299,7 +300,8 @@ describe('Work in progress Utils', () => {
             wipInfo: {
                 status: 'LANGUAGES',
                 languages: ['fr', 'en']
-            }
+            },
+            defaultWipInfo: {status: 'DISABLED', languages: []}
         };
 
         expect(showChipField(true, nodeData, 'de')).toBe(false);
@@ -310,7 +312,8 @@ describe('Work in progress Utils', () => {
             wipInfo: {
                 status: 'ALL_CONTENT',
                 languages: []
-            }
+            },
+            defaultWipInfo: {status: 'DISABLED', languages: []}
         };
 
         expect(showChipField(true, nodeData.wipInfo, 'en')).toBe(false);
@@ -321,7 +324,8 @@ describe('Work in progress Utils', () => {
             wipInfo: {
                 status: 'LANGUAGES',
                 languages: ['fr', 'en']
-            }
+            },
+            defaultWipInfo: {status: 'DISABLED', languages: []}
         };
 
         expect(showChipField(false, nodeData.wipInfo, 'en')).toBe(false);
