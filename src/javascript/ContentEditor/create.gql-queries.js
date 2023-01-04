@@ -88,7 +88,7 @@ export const CreateFormQuery = gql`
                     }
                     hasOrderableChildNodes
                 }
-                defaultWipInfo{
+                defaultWipInfo {
                     status
                     languages
                 }
