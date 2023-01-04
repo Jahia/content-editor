@@ -25,33 +25,26 @@ function getMixinList(field, fieldValue) {
 export const registerChoiceListOnChange = registry => {
     registry.add('selectorType.onChange', 'addMixinChoicelist', {
         targets: ['Choicelist', 'MultipleLeftRightSelector'],
-        onChange: (previousValue, currentValue, field, onChangeContext) => {
-            const {setAddedMixins, formik} = onChangeContext;
-            const oldMixins = previousValue ? getMixinList(field, previousValue) : [];
+        onChange: (previousValue, currentValue, field, onChangeContext, selectorType, helper) => {
+            const editorSection = onChangeContext.sections;
 
-            if (oldMixins.length === 0 && currentValue === undefined) {
+            const oldMixins = previousValue ? getMixinList(field, previousValue) : [];
+            const newMixins = currentValue ? getMixinList(field, currentValue) : [];
+
+            if (oldMixins.length === 0 && newMixins.length === 0) {
                 // If no mixin and no new value, do nothing
                 return;
             }
 
             oldMixins.forEach(mixin => {
-                setAddedMixins(prev => {
-                    const {[mixin]: _, ...rest} = prev;
-                    return rest;
-                });
-                formik.setFieldValue(mixin, false);
-                formik.setFieldTouched(mixin);
+                helper.moveMixinToInitialFieldset(mixin, editorSection, onChangeContext.formik);
             });
 
-            const newMixins = currentValue ? getMixinList(field, currentValue) : [];
             newMixins.forEach(mixin => {
-                setAddedMixins(prev => ({
-                    ...prev,
-                    [mixin]: {targetFieldSet: field.nodeType, field}
-                }));
-                formik.setFieldValue(mixin, true);
-                formik.setFieldTouched(mixin);
+                helper.moveMixinToTargetFieldset(mixin, field.nodeType, editorSection, field, onChangeContext.formik);
             });
+
+            onChangeContext.onSectionsUpdate();
         }
     });
 };

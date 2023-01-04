@@ -1,59 +1,46 @@
 import React, {useContext, useEffect, useState} from 'react';
 import * as PropTypes from 'prop-types';
-import {contentEditorHelper} from '~/editorTabs/EditPanelContent/FormBuilder/Field/contentEditorHelper';
-import {getFields} from '~/utils';
-
-function arrayEquals(arr1, arr2) {
-    return arr1.length === arr2.length && arr1.every((value, index) => value === arr2[index]);
-}
 
 export const ContentEditorSectionContext = React.createContext({});
 
 export const useContentEditorSectionContext = () => useContext(ContentEditorSectionContext);
 
 export const ContentEditorSectionContextProvider = ({formSections, children}) => {
-    const sections = formSections && JSON.parse(JSON.stringify(formSections));
+    const [sections, setSectionsState] = useState([]);
     const [expanded, setExpanded] = useState({});
-    const [addedMixins, setAddedMixins] = useState({});
-    const [addedConstraints, setAddedConstraints] = useState({});
+    const [, setChangeCount] = useState(0);
+
+    useEffect(() => {
+        if (formSections) {
+            setSectionsState(JSON.parse(JSON.stringify(formSections)));
+        }
+    }, [formSections]);
 
     useEffect(() => {
         // Only expand section on initial setup, when expanded is still empty
-        if (Object.keys(expanded).length === 0 && sections) {
-            setExpanded(sections.reduce((acc, curr) => ({
+        if (Object.keys(expanded).length === 0 && formSections) {
+            setExpanded(formSections.reduce((acc, curr) => ({
                 ...acc,
                 [curr.name]: acc[curr.name] ? acc[curr.name] : curr.expanded
             }), {}));
         }
-    }, [sections, expanded]);
+    }, [formSections, expanded]);
 
     const onSectionsUpdate = () => {
-        console.warn('Sections update is deprecated');
+        setChangeCount(i => i + 1);
     };
 
     const getSections = () => {
         return sections;
     };
 
-    const setSections = onSectionsUpdate;
-
-    if (sections) {
-        // Apply mixins and constraints
-        Object.keys(addedMixins).forEach(mixin => {
-            contentEditorHelper.moveFieldsToAnotherFieldset(mixin, addedMixins[mixin].targetFieldSet, sections, addedMixins[mixin].field);
-        });
-
-        Object.keys(addedConstraints).forEach(fieldName => {
-            const fieldToUpdate = getFields(sections).find(f => f.name === fieldName);
-            const valueConstraints = addedConstraints[fieldName].constraints;
-            if (fieldToUpdate && !arrayEquals(fieldToUpdate.valueConstraints, valueConstraints)) {
-                fieldToUpdate.valueConstraints = valueConstraints;
-            }
-        });
-    }
+    const setSections = () => {
+        console.warn('Sections update is deprecated');
+        onSectionsUpdate();
+    };
 
     return (
-        <ContentEditorSectionContext.Provider value={{sections, getSections, onSectionsUpdate, setSections, expanded, setExpanded, addedMixins, setAddedMixins, addedConstraints, setAddedConstraints}}>
+        <ContentEditorSectionContext.Provider value={{sections, getSections, onSectionsUpdate, setSections, expanded, setExpanded}}>
             {children}
         </ContentEditorSectionContext.Provider>
     );
