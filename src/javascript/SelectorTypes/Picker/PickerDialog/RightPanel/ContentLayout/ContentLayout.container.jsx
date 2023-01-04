@@ -65,7 +65,7 @@ export const ContentLayoutContainer = ({pickerConfig, accordionItemProps}) => {
             additionalFragments.push(...tableConfig?.fragments);
         }
 
-        if (tableConfig.autoExpandLevels) {
+        if (Number.isInteger(tableConfig.autoExpandLevels)) {
             autoExpandLevels = tableConfig.autoExpandLevels;
         }
     }
@@ -101,8 +101,8 @@ export const ContentLayoutContainer = ({pickerConfig, accordionItemProps}) => {
 
     const autoExpand = useRef({path: '', level: 1, type: ''});
     useEffect(() => {
-        if (isStructured && !loading && result?.nodes?.length && (autoExpand.current.path !== path || autoExpand.current.type !== viewType || autoExpand.current.level < autoExpandLevels)) {
-            autoExpand.current.level = (autoExpand.current.path === path && autoExpand.current.type === viewType) ? autoExpand.current.level + 1 : 1;
+        if (isStructured && !loading && result?.nodes?.length && (autoExpand.current.path !== path || autoExpand.current.type !== viewType)) {
+            autoExpand.current.level = (autoExpand.current.path === path && autoExpand.current.type === viewType) ? autoExpand.current.level + 1 : autoExpandLevels;
             autoExpand.current.path = path;
             autoExpand.current.type = viewType;
             dispatch(cePickerOpenPaths(expand(result.nodes, autoExpand.current.level)));
