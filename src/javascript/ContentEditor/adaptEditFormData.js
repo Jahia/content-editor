@@ -25,6 +25,10 @@ const getInitialValues = (nodeData, sections) => {
     // Work in progress
     const wipInfo = {[Constants.wip.fieldName]: {status: nodeData.wipInfo.status, languages: nodeData.wipInfo.languages}};
 
+    if (nodeData.defaultWipInfo.status === Constants.wip.status.ALL_CONTENT && nodeData.wipInfo.status === Constants.wip.status.DISABLED) {
+        wipInfo[Constants.wip.fieldName] = {status: nodeData.defaultWipInfo.status, languages: nodeData.defaultWipInfo.languages};
+    }
+
     // Return object contains fields and dynamic fieldSets
     return {...nodeValues, ...extendsMixinFieldsDefaultValues, ...dynamicFieldSets, ...childrenOrderingFields, ...wipInfo};
 };

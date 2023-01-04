@@ -94,6 +94,10 @@ const NodeDataFragment = {
                     status
                     languages
                 }
+                defaultWipInfo {
+                    status
+                    languages
+                }
                 usages: references(fieldFilter: {filters: {fieldName: "node.visible", value: "true"}}) {
                     nodes {
                         name
