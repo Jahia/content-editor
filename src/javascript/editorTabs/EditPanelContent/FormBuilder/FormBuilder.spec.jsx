@@ -82,8 +82,8 @@ describe('FormBuilder component', () => {
                 }
             ],
             expanded: {
-                'content': true,
-                'listOrdering': true
+                content: true,
+                listOrdering: true
             }
         };
         useContentEditorSectionContext.mockReturnValue(sectionContext);
