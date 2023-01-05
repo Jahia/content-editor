@@ -17,10 +17,7 @@ export const ContentEditorSectionContextProvider = ({formSections, children}) =>
         const sectionsCopy = JSON.parse(stringifiedSections);
         setSectionsState(sectionsCopy);
         if (Object.keys(expanded).length === 0) {
-            setExpanded(sectionsCopy.reduce((acc, curr) => ({
-                ...acc,
-                [curr.name]: acc[curr.name] ? acc[curr.name] : curr.expanded
-            }), {}));
+            setExpanded(sectionsCopy.reduce((acc, curr) => ({...acc, [curr.name]: curr.expanded}), {}));
         }
     }
 
