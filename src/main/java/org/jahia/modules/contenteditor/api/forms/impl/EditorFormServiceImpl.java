@@ -167,9 +167,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                 Map<String, Object> extendContext = new HashMap<>();
                 editorFormField.getSelectorOptions().forEach(option -> extendContext.put(option.getName(), option.getValue()));
                 for (ContextEntryInput contextEntry : context) {
-                    if (contextEntry.getValue() != null) {
-                        extendContext.put(contextEntry.getKey(), contextEntry.getValue());
-                    }
+                    extendContext.put(contextEntry.getKey(), contextEntry.getValue());
                 }
 
                 return getValueConstraints(nodeTypeRegistry.getNodeType(primaryNodeType), editorFormField, node, parentNode, locale, extendContext);
@@ -698,7 +696,11 @@ public class EditorFormServiceImpl implements EditorFormService {
             context.putAll(extendContext);
             for (EditorFormProperty selectorProperty : selectorOptions) {
                 if (initializers.containsKey(selectorProperty.getName())) {
-                    initialChoiceListValues = initializers.get(selectorProperty.getName()).getChoiceListValues(propertyDefinition, selectorProperty.getValue(), initialChoiceListValues, locale, context);
+                    try {
+                        initialChoiceListValues = initializers.get(selectorProperty.getName()).getChoiceListValues(propertyDefinition, selectorProperty.getValue(), initialChoiceListValues, locale, context);
+                    } catch (Exception e) {
+                        initialChoiceListValues = Collections.emptyList();
+                    }
                 }
             }
             List<EditorFormFieldValueConstraint> valueConstraints = null;
