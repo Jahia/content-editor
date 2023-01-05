@@ -10,7 +10,6 @@ import {registry} from '@jahia/ui-extender';
 import {useQuery} from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import {PredefinedFragments} from '@jahia/data-helper';
-import {ceToggleSections, DEFAULT_OPENED_SECTIONS} from '~/registerReducer';
 import {useNotifications} from '@jahia/react-material';
 import {useCreateFormDefinition} from '~/ContentEditor/useCreateFormDefinition';
 import {useEditFormDefinition} from '~/ContentEditor/useEditFormDefinition';
@@ -39,12 +38,6 @@ export const ContentEditorRoute = ({mode, uuid, lang, contentType, name}) => {
             uuid
         }
     });
-
-    useEffect(() => {
-        return () => {
-            dispatch(ceToggleSections(DEFAULT_OPENED_SECTIONS));
-        };
-    }, [dispatch]);
 
     const site = data && data.jcr.nodeById.site.name;
 

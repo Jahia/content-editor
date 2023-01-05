@@ -5,6 +5,8 @@ function arrayEquals(arr1, arr2) {
     return arr1.length === arr2.length && arr1.every((value, index) => value === arr2[index]);
 }
 
+const debounceCounts = {};
+
 export const registerSelectorTypesOnChange = registry => {
     registry.add('selectorType.onChange', 'dependentProperties', {
         targets: ['*'],
@@ -15,6 +17,9 @@ export const registerSelectorTypesOnChange = registry => {
                 .filter(f => f.selectorOptions
                     .find(s => s.name === 'dependentProperties' && s.value.includes(field.propertyName))
                 );
+
+            debounceCounts[field.name] = debounceCounts[field.name] ? debounceCounts[field.name] + 1 : 1;
+            const current = debounceCounts[field.name];
 
             Promise.all(dependentPropertiesFields.map(dependentPropertiesField => {
                 const dependentProperties = dependentPropertiesField.selectorOptions.find(f => f.name === 'dependentProperties').value.split(',');
@@ -61,7 +66,7 @@ export const registerSelectorTypesOnChange = registry => {
             })).then(results => {
                 let updated = false;
                 results.forEach(({data, dependentPropertiesField}) => {
-                    if (data) {
+                    if (debounceCounts[field.name] === current && data) {
                         if (data?.forms?.fieldConstraints) {
                             const fieldToUpdate = getFields(sections).find(f => f.name === dependentPropertiesField.name);
                             if (fieldToUpdate && !arrayEquals(fieldToUpdate.valueConstraints, data.forms.fieldConstraints)) {

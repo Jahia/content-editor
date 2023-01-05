@@ -4,8 +4,6 @@ import {Form} from 'formik';
 import {useContentEditorContext, useContentEditorSectionContext} from '~/contexts';
 import {SectionsPropTypes} from '~/ContentEditor.proptypes';
 import {ChildrenSection, Section} from './Sections';
-import {useDispatch, useSelector} from 'react-redux';
-import {ceToggleSections} from '~/registerReducer';
 import styles from './FormBuilder.scss';
 import {Validation} from './Validation';
 
@@ -13,34 +11,27 @@ const ADVANCED_OPTIONS_SELECTIONS = ['visibility'];
 
 export const FormBuilder = ({mode}) => {
     const {nodeData, errors} = useContentEditorContext();
-    const {sections} = useContentEditorSectionContext();
-    const toggleStates = useSelector(state => state.contenteditor.ceToggleSections);
-    const dispatch = useDispatch();
+    const {sections, expanded, setExpanded} = useContentEditorSectionContext();
 
     // Update toggle state if there are errors
     useEffect(() => {
         if (errors) {
-            const newToggleState = {...toggleStates};
             sections.forEach(section => {
                 section.fieldSets.forEach(fieldSet => {
                     fieldSet.fields.forEach(field => {
-                        if (errors[field.name]) {
-                            newToggleState[section.name] = true;
+                        if (errors[field.name] && !expanded[section.name]) {
+                            setExpanded({...expanded, [section.name]: true});
                         }
                     });
                 });
             });
-            dispatch(ceToggleSections(newToggleState));
         }
     }, [errors]); // eslint-disable-line react-hooks/exhaustive-deps
 
     // On mount/unmount hook
     useEffect(() => {
         document.querySelector('div[data-first-field=true] input')?.focus();
-        // Update section states for this node type
-        const newStates = sections ? sections.reduce((acc, curr) => ({...acc, [curr.name]: acc[curr.name] ? acc[curr.name] : curr.expanded}), toggleStates) : {};
-        dispatch(ceToggleSections(newStates));
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    }, []);
 
     if (!nodeData || !sections || sections.length === 0) {
         return <></>;
@@ -50,7 +41,7 @@ export const FormBuilder = ({mode}) => {
     const children = sections.filter(s => !ADVANCED_OPTIONS_SELECTIONS.includes(s.name)).map((section, index) => {
         const toggleFcn = e => {
             e.preventDefault();
-            dispatch(ceToggleSections({...toggleStates, [section.name]: !toggleStates[section.name]}));
+            setExpanded({...expanded, [section.name]: !expanded[section.name]});
         };
 
         if (section.name === 'listOrdering') {
@@ -60,7 +51,7 @@ export const FormBuilder = ({mode}) => {
                                  mode={mode}
                                  nodeData={nodeData}
                                  section={section}
-                                 isExpanded={toggleStates[section.name]}
+                                 isExpanded={expanded[section.name]}
                                  onClick={toggleFcn}
                 />
             );
@@ -70,7 +61,7 @@ export const FormBuilder = ({mode}) => {
             return (
                 <Section key={section.name}
                          section={section}
-                         isExpanded={toggleStates[section.name] || false}
+                         isExpanded={expanded[section.name]}
                          onClick={toggleFcn}
                 />
             );
