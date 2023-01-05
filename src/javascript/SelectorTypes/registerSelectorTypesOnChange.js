@@ -87,7 +87,7 @@ export const registerSelectorTypesOnChange = registry => {
                     }
                 });
                 if (updated) {
-                    onChangeContext.setSections(sections);
+                    onChangeContext.onSectionsUpdate();
                 }
             });
         }

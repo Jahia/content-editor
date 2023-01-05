@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useContext, useRef, useState} from 'react';
 import * as PropTypes from 'prop-types';
 
 export const ContentEditorSectionContext = React.createContext({});
@@ -23,10 +23,6 @@ export const ContentEditorSectionContextProvider = ({formSections, children}) =>
             }), {}));
         }
     }
-
-    useEffect(() => {
-        // Only expand section on initial setup, when expanded is still empty
-    }, [formSections, expanded]);
 
     const onSectionsUpdate = () => {
         setChangeCount(i => i + 1);
