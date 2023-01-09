@@ -99,10 +99,10 @@ export const ContentLayoutContainer = ({pickerConfig, isMultiple, accordionItemP
         };
     });
 
-    const autoExpand = useRef({path: '', level: 1, type: ''});
+    const autoExpand = useRef({path: '', level: 0, type: ''});
     useEffect(() => {
-        if (isStructured && !loading && result?.nodes?.length && (autoExpand.current.path !== path || autoExpand.current.type !== viewType)) {
-            autoExpand.current.level = (autoExpand.current.path === path && autoExpand.current.type === viewType) ? autoExpand.current.level + 1 : autoExpandLevels;
+        if (isStructured && !loading && result?.nodes?.length && (autoExpand.current.path !== path || autoExpand.current.type !== viewType || autoExpand.current.level < autoExpandLevels)) {
+            autoExpand.current.level = (autoExpand.current.path === path && autoExpand.current.type === viewType) ? autoExpand.current.level + 1 : 0;
             autoExpand.current.path = path;
             autoExpand.current.type = viewType;
             dispatch(cePickerOpenPaths(expand(result.nodes, autoExpand.current.level)));
