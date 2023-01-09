@@ -82,7 +82,7 @@ export const FieldCmp = ({classes, inputContext, idInput, selectorType, field, f
         target: selectorType.key
     }), ...registry.find({type: 'selectorType.onChange', target: '*'})];
     const registeredOnChange = currentValue => {
-        if (registeredOnChanges && registeredOnChanges.length > 0) {
+        if (registeredOnChanges && registeredOnChanges.length > 0 && onChangeValue.current !== currentValue) {
             registeredOnChanges.forEach(registeredOnChange => {
                 if (registeredOnChange.onChange) {
                     const onChangeContext = {...editorContext, ...sectionsContext, formik, client};
