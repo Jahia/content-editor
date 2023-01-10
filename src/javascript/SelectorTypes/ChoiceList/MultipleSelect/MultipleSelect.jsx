@@ -20,7 +20,7 @@ export const MultipleSelect = ({field, id, value, inputContext, onChange, onBlur
 
     const readOnly = field.readOnly || field.valueConstraints.length === 0;
     // Reset value if constraints doesnt contains the actual value.
-    if (value && value.length > 0) {
+    if (!field.constraintsLoading && value && value.length > 0) {
         const availableValues = field.valueConstraints.map(valueConstraint => valueConstraint.value.string);
         const actualValues = value.filter(v => availableValues.includes(v));
         if (actualValues.length !== value.length) {
