@@ -9,11 +9,12 @@ export const ContentEditorSectionContextProvider = ({formSections, children}) =>
     const sections = useRef();
     const {expanded, setExpanded} = useContentEditorConfigContext();
 
-    if (!sections.current && Object.keys(expanded).length === 0) {
-        setExpanded(formSections.reduce((acc, curr) => ({...acc, [curr.name]: curr.expanded}), {}));
+    if (!sections.current) {
+        sections.current = formSections;
+        if (Object.keys(expanded).length === 0) {
+            setExpanded(formSections.reduce((acc, curr) => ({...acc, [curr.name]: curr.expanded}), {}));
+        }
     }
-
-    sections.current = formSections;
 
     const [, setChangeCount] = useState(0);
 
