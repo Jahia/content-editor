@@ -1,32 +1,29 @@
 import React, {useContext, useRef, useState} from 'react';
 import * as PropTypes from 'prop-types';
+import {useContentEditorConfigContext} from '~/contexts';
 
 export const ContentEditorSectionContext = React.createContext({});
 
 export const useContentEditorSectionContext = () => useContext(ContentEditorSectionContext);
-
 export const ContentEditorSectionContextProvider = ({formSections, children}) => {
-    const previousValue = useRef();
-    const [sections, setSectionsState] = useState([]);
-    const [expanded, setExpanded] = useState({});
-    const [, setChangeCount] = useState(0);
+    const sections = useRef();
+    const {expanded, setExpanded} = useContentEditorConfigContext();
 
-    const stringifiedSections = formSections && JSON.stringify(formSections);
-    if (stringifiedSections && previousValue.current !== stringifiedSections) {
-        previousValue.current = stringifiedSections;
-        const sectionsCopy = JSON.parse(stringifiedSections);
-        setSectionsState(sectionsCopy);
+    if (!sections.current) {
+        sections.current = formSections;
         if (Object.keys(expanded).length === 0) {
-            setExpanded(sectionsCopy.reduce((acc, curr) => ({...acc, [curr.name]: curr.expanded}), {}));
+            setExpanded(formSections.reduce((acc, curr) => ({...acc, [curr.name]: curr.expanded}), {}));
         }
     }
+
+    const [, setChangeCount] = useState(0);
 
     const onSectionsUpdate = () => {
         setChangeCount(i => i + 1);
     };
 
     const getSections = () => {
-        return sections;
+        return sections.current;
     };
 
     const setSections = () => {
@@ -35,7 +32,7 @@ export const ContentEditorSectionContextProvider = ({formSections, children}) =>
     };
 
     return (
-        <ContentEditorSectionContext.Provider value={{sections, getSections, onSectionsUpdate, setSections, expanded, setExpanded}}>
+        <ContentEditorSectionContext.Provider value={{sections: sections.current, getSections, onSectionsUpdate, setSections}}>
             {children}
         </ContentEditorSectionContext.Provider>
     );

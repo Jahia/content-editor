@@ -56,10 +56,10 @@ export const SingleSelect = ({field, value, id, inputContext, onChange, onBlur})
 
     React.useEffect(() => {
         // Reset value if constraints doesnt contains the actual value.
-        if (value && !field.constraintsLoading && field.valueConstraints.find(v => v.value.string === value) === undefined) {
-            onChange(undefined);
+        if (value && field.valueConstraints.find(v => v.value.string === value) === undefined) {
+            onChange(null);
         }
-    }, [value, field.valueConstraints, onChange, field.constraintsLoading]);
+    }, [value, field.valueConstraints, onChange]);
 
     return (
         <div className="flexFluid flexRow alignCenter">

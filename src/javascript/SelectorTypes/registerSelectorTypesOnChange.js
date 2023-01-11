@@ -5,8 +5,6 @@ function arrayEquals(arr1, arr2) {
     return arr1.length === arr2.length && arr1.every((value, index) => value === arr2[index]);
 }
 
-const debounceCounts = {};
-
 export const registerSelectorTypesOnChange = registry => {
     registry.add('selectorType.onChange', 'dependentProperties', {
         targets: ['*'],
@@ -20,10 +18,6 @@ export const registerSelectorTypesOnChange = registry => {
 
             Promise.all(dependentPropertiesFields.map(dependentPropertiesField => {
                 const dependentProperties = dependentPropertiesField.selectorOptions.find(f => f.name === 'dependentProperties').value.split(',');
-                debounceCounts[dependentPropertiesField.name] = debounceCounts[dependentPropertiesField.name] ? debounceCounts[dependentPropertiesField.name] + 1 : 1;
-                const current = debounceCounts[dependentPropertiesField.name];
-
-                dependentPropertiesField.constraintsLoading = true;
                 if (dependentProperties.length > 0) {
                     const context = [{
                         key: 'dependentProperties', value: dependentProperties.join(',')
@@ -59,41 +53,37 @@ export const registerSelectorTypesOnChange = registry => {
                         }
                     }).then(({data}) => ({
                         data,
-                        dependentPropertiesField,
-                        requestId: current
+                        dependentPropertiesField
                     }));
                 }
 
                 return undefined;
             })).then(results => {
-                setTimeout(() => {
-                    let updated = false;
-                    results.forEach(({data, dependentPropertiesField, requestId}) => {
-                        if (debounceCounts[dependentPropertiesField.name] === requestId && data) {
-                            if (data?.forms?.fieldConstraints) {
-                                dependentPropertiesField.constraintsLoading = false;
-                                const fieldToUpdate = getFields(sections).find(f => f.name === dependentPropertiesField.name);
-                                if (fieldToUpdate && !arrayEquals(fieldToUpdate.valueConstraints, data.forms.fieldConstraints)) {
-                                    // Update field in place (for those who keep a constant ref on sectionsContext)
-                                    fieldToUpdate.valueConstraints = data.forms.fieldConstraints;
-                                    // And recreate the full sections object to make change detection work
-                                    sections.forEach(section => {
-                                        section.fieldSets = section.fieldSets.map(fieldSet => ({
-                                            ...fieldSet,
-                                            fields: fieldSet.fields.map(f => ({
-                                                ...f
-                                            }))
-                                        }));
-                                    });
-                                    updated = true;
-                                }
+                let updated = false;
+                results.forEach(({data, dependentPropertiesField}) => {
+                    if (data) {
+                        if (data?.forms?.fieldConstraints) {
+                            const fieldToUpdate = getFields(sections).find(f => f.name === dependentPropertiesField.name);
+                            if (fieldToUpdate && !arrayEquals(fieldToUpdate.valueConstraints, data.forms.fieldConstraints)) {
+                                // Update field in place (for those who keep a constant ref on sectionsContext)
+                                fieldToUpdate.valueConstraints = data.forms.fieldConstraints;
+                                // And recreate the full sections object to make change detection work
+                                sections.forEach(section => {
+                                    section.fieldSets = section.fieldSets.map(fieldSet => ({
+                                        ...fieldSet,
+                                        fields: fieldSet.fields.map(f => ({
+                                            ...f
+                                        }))
+                                    }));
+                                });
+                                updated = true;
                             }
                         }
-                    });
-                    if (updated) {
-                        onChangeContext.onSectionsUpdate();
                     }
                 });
+                if (updated) {
+                    onChangeContext.onSectionsUpdate();
+                }
             });
         }
     });

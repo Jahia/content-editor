@@ -4,7 +4,7 @@ import {dsGenericTheme} from '@jahia/design-system-kit';
 
 import {FormBuilder} from './FormBuilder';
 import {useFormikContext} from 'formik';
-import {useContentEditorContext, useContentEditorSectionContext} from '~/contexts';
+import {useContentEditorConfigContext, useContentEditorContext, useContentEditorSectionContext} from '~/contexts';
 import {Constants} from '~/ContentEditor.constants';
 
 jest.mock('connected-react-router', () => ({}));
@@ -80,13 +80,16 @@ describe('FormBuilder component', () => {
                         }
                     ]
                 }
-            ],
+            ]
+        };
+        useContentEditorSectionContext.mockReturnValue(sectionContext);
+        useContentEditorConfigContext.mockReturnValue({
             expanded: {
                 content: true,
                 listOrdering: true
             }
-        };
-        useContentEditorSectionContext.mockReturnValue(sectionContext);
+        });
+
         formik = {
             values: {
                 [Constants.ordering.childrenKey]: [{}]

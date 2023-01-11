@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {Form} from 'formik';
-import {useContentEditorContext, useContentEditorSectionContext} from '~/contexts';
+import {useContentEditorConfigContext, useContentEditorContext, useContentEditorSectionContext} from '~/contexts';
 import {SectionsPropTypes} from '~/ContentEditor.proptypes';
 import {ChildrenSection, Section} from './Sections';
 import styles from './FormBuilder.scss';
@@ -11,7 +11,8 @@ const ADVANCED_OPTIONS_SELECTIONS = ['visibility'];
 
 export const FormBuilder = ({mode}) => {
     const {nodeData, errors} = useContentEditorContext();
-    const {sections, expanded, setExpanded} = useContentEditorSectionContext();
+    const {expanded, setExpanded} = useContentEditorConfigContext();
+    const {sections} = useContentEditorSectionContext();
 
     // Update toggle state if there are errors
     useEffect(() => {
