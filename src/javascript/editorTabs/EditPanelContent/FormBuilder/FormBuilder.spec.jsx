@@ -80,11 +80,7 @@ describe('FormBuilder component', () => {
                         }
                     ]
                 }
-            ],
-            expanded: {
-                content: true,
-                listOrdering: true
-            }
+            ]
         };
         useContentEditorSectionContext.mockReturnValue(sectionContext);
         formik = {

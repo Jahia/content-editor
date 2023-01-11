@@ -1,5 +1,5 @@
 function getMixinList(field, fieldValue) {
-    const mixins = [];
+    let mixins = [];
 
     const findAddMixin = value => field.valueConstraints
         ?.find(valueConstraint => valueConstraint.value.string === value)?.properties
@@ -26,12 +26,11 @@ export const registerChoiceListOnChange = registry => {
     registry.add('selectorType.onChange', 'addMixinChoicelist', {
         targets: ['Choicelist', 'MultipleLeftRightSelector'],
         onChange: (previousValue, currentValue, field, onChangeContext, selectorType, helper) => {
-            const editorSection = onChangeContext.sections;
+            let editorSection = onChangeContext.sections;
 
-            const oldMixins = previousValue ? getMixinList(field, previousValue) : [];
-            const newMixins = currentValue ? getMixinList(field, currentValue) : [];
+            let oldMixins = previousValue ? getMixinList(field, previousValue) : [];
 
-            if (oldMixins.length === 0 && newMixins.length === 0) {
+            if (oldMixins.length === 0 && currentValue === undefined) {
                 // If no mixin and no new value, do nothing
                 return;
             }
@@ -40,6 +39,7 @@ export const registerChoiceListOnChange = registry => {
                 helper.moveMixinToInitialFieldset(mixin, editorSection, onChangeContext.formik);
             });
 
+            let newMixins = currentValue ? getMixinList(field, currentValue) : [];
             newMixins.forEach(mixin => {
                 helper.moveMixinToTargetFieldset(mixin, field.nodeType, editorSection, field, onChangeContext.formik);
             });
