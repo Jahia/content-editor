@@ -6,7 +6,8 @@
     {
       "name": "content",
       "labelKey": "label.engineTab.content",
-      "requiredPermission": "viewContentTab"
+      "requiredPermission": "viewContentTab",
+      "expanded": true
     },
     {
       "name": "classification",
@@ -36,7 +37,8 @@
     {
       "name": "listOrdering",
       "labelKey": "label.engineTab.listOrdering",
-      "requiredPermission": "viewContentTab"
+      "requiredPermission": "viewContentTab",
+      "expanded": true
     },
     {
       "name": "visibility",

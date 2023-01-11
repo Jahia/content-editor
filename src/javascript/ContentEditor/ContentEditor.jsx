@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {Create} from './Create';
 import {Edit} from './Edit';
@@ -7,9 +7,10 @@ import {Constants} from '~/ContentEditor.constants';
 
 export const ContentEditor = props => {
     const {mode, envProps} = props;
+    const [expanded, setExpanded] = useState({});
 
     return (
-        <ContentEditorConfigContextProvider config={props}>
+        <ContentEditorConfigContextProvider config={{...props, expanded, setExpanded}}>
             <ContentEditorContextProvider useFormDefinition={envProps.useFormDefinition}>
                 {mode === 'edit' ? <Edit/> : <Create/>}
             </ContentEditorContextProvider>
