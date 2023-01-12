@@ -3,13 +3,15 @@ import React, {useMemo} from 'react';
 import {useFormikContext} from 'formik';
 import {useContentEditorContext, useContentEditorSectionContext} from '~/contexts';
 import {useTranslation} from 'react-i18next';
+import {useDispatch, useSelector} from 'react-redux';
+import {ceToggleSections} from '~/registerReducer';
 import {Typography, Warning} from '@jahia/moonstone';
 import clsx from 'clsx';
 import {getCapitalized, useSwitchLanguage} from '~/utils';
 
 function scrollTo(field) {
     const fieldElement = window.document.querySelector('div[data-sel-content-editor-field="' + field + '"]');
-    fieldElement.closest('form').scroll(0, fieldElement.offsetTop);
+    window.document.querySelector('form').scroll(0, fieldElement.offsetTop);
 }
 
 function getFieldsInError(fields, errors) {
@@ -18,9 +20,11 @@ function getFieldsInError(fields, errors) {
 
 export const Validation = () => {
     const formik = useFormikContext();
-    const {sections, expanded, setExpanded} = useContentEditorSectionContext();
+    const {sections} = useContentEditorSectionContext();
     const {siteInfo, i18nContext, lang} = useContentEditorContext();
     const {t} = useTranslation('content-editor');
+    const toggleStates = useSelector(state => state.contenteditor.ceToggleSections);
+    const dispatch = useDispatch();
     const switchLanguage = useSwitchLanguage();
 
     const [fields, sectionsForField] = useMemo(() => {
@@ -44,10 +48,13 @@ export const Validation = () => {
 
     const onClick = field => {
         const section = sectionsForField[field];
-        if (expanded[section.name]) {
+        if (toggleStates[section.name]) {
             scrollTo(field);
         } else {
-            setExpanded({...expanded, [section.name]: true});
+            dispatch(ceToggleSections({
+                ...toggleStates,
+                [section.name]: true
+            }));
             setTimeout(() => scrollTo(field), 0);
         }
     };
