@@ -5,7 +5,7 @@ import {Dialog, IconButton, Slide} from '@material-ui/core';
 import styles from './ContentEditorModal.scss';
 import PropTypes from 'prop-types';
 import {useDispatch} from 'react-redux';
-import {ceSwitchLanguage} from '~/registerReducer';
+import {ceSwitchLanguage, ceToggleSections, DEFAULT_OPENED_SECTIONS} from '~/registerReducer';
 import {Button, Close} from '@jahia/moonstone';
 import {useNotifications} from '@jahia/react-material';
 import {useTranslation} from 'react-i18next';
@@ -37,6 +37,13 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
     const openDialog = useRef();
     const dispatch = useDispatch();
     const client = useApolloClient();
+
+    // This is the only sure way to tell when content editor is no longer visible
+    useEffect(() => {
+        return () => {
+            dispatch(ceToggleSections(DEFAULT_OPENED_SECTIONS));
+        };
+    }, [dispatch]);
 
     useEffect(() => {
         dispatch(ceSwitchLanguage(editorConfig.lang));

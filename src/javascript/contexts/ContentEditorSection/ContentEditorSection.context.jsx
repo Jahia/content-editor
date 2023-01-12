@@ -1,19 +1,11 @@
 import React, {useContext, useRef, useState} from 'react';
 import * as PropTypes from 'prop-types';
-import {useContentEditorConfigContext} from '~/contexts';
 
 export const ContentEditorSectionContext = React.createContext({});
 
 export const useContentEditorSectionContext = () => useContext(ContentEditorSectionContext);
 export const ContentEditorSectionContextProvider = ({formSections, children}) => {
-    const sections = useRef();
-    const {expanded, setExpanded} = useContentEditorConfigContext();
-
-    if (!sections.current && Object.keys(expanded).length === 0) {
-        setExpanded(formSections.reduce((acc, curr) => ({...acc, [curr.name]: curr.expanded}), {}));
-    }
-
-    sections.current = formSections;
+    const sections = useRef(formSections);
 
     const [, setChangeCount] = useState(0);
 
