@@ -10,6 +10,7 @@ import {registry} from '@jahia/ui-extender';
 import {useQuery} from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import {PredefinedFragments} from '@jahia/data-helper';
+import {ceToggleSections} from '~/registerReducer';
 import {useNotifications} from '@jahia/react-material';
 import {useCreateFormDefinition} from '~/ContentEditor/useCreateFormDefinition';
 import {useEditFormDefinition} from '~/ContentEditor/useEditFormDefinition';
@@ -113,8 +114,17 @@ export const ContentEditorRoute = ({mode, uuid, lang, contentType, name}) => {
             redirect({language});
         },
         confirmationDialog: true,
-        useFormDefinition: (mode === 'edit' ? useEditFormDefinition : useCreateFormDefinition)
+        useFormDefinition: (mode === 'edit' ? useEditFormDefinition : useCreateFormDefinition),
+        formKey: 'route'
     };
+
+    // This is the only sure way to tell when content editor is no longer visible
+    useEffect(() => {
+        return () => {
+            dispatch(ceToggleSections({key: envProps.formKey, sections: null}));
+        };
+    }, [dispatch, envProps.formKey]);
+
     return Boolean(site) && (
         <ContentEditor name={name}
                        mode={mode}

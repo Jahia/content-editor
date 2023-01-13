@@ -1,7 +1,7 @@
 import {adaptSystemNameField} from './adaptSystemNameField';
 import {getFields} from '~/utils/fields.utils';
 import {Constants} from '~/ContentEditor.constants';
-import {adaptSections} from '~/ContentEditor/adaptSections';
+import {adaptSections, getExpandedSections} from '~/ContentEditor/adaptSections';
 import {getFieldValuesFromDefaultValues} from '~/ContentEditor/getFieldValuesFromDefaultValues';
 import {CreateFormQuery} from '~/ContentEditor/create.gql-queries';
 import {useFormDefinition} from '~/ContentEditor/useFormDefinitions';
@@ -28,6 +28,7 @@ export const adaptCreateFormData = (data, lang, t, contentEditorConfigContext) =
 
     const formData = {
         sections,
+        expandedSections: getExpandedSections(sections),
         initialValues: {
             ...getInitialValues(sections, nodeData)
         },

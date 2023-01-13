@@ -5,7 +5,7 @@ import {Dialog, IconButton, Slide} from '@material-ui/core';
 import styles from './ContentEditorModal.scss';
 import PropTypes from 'prop-types';
 import {useDispatch} from 'react-redux';
-import {ceSwitchLanguage} from '~/registerReducer';
+import {ceSwitchLanguage, ceToggleSections} from '~/registerReducer';
 import {Button, Close} from '@jahia/moonstone';
 import {useNotifications} from '@jahia/react-material';
 import {useTranslation} from 'react-i18next';
@@ -149,8 +149,16 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
         useFormDefinition: editorConfig.useFormDefinition || (editorConfig.mode === 'edit' ? useEditFormDefinition : useCreateFormDefinition),
         isFullscreen: editorConfig.isFullscreen,
         layout: editorConfig.layout || (editorConfig.isFullscreen ? EditPanelFullscreen : EditPanelCompact),
-        confirmationDialog: (editorConfig.useConfirmationDialog !== false) && <OnCloseConfirmationDialog deleteEditorConfig={deleteEditorConfig} openDialog={openDialog}/>
+        confirmationDialog: (editorConfig.useConfirmationDialog !== false) && <OnCloseConfirmationDialog deleteEditorConfig={deleteEditorConfig} openDialog={openDialog}/>,
+        formKey: editorConfig.formKey || 'modal'
     };
+
+    // This is the only sure way to tell when content editor is no longer visible
+    useEffect(() => {
+        return () => {
+            dispatch(ceToggleSections({key: envProps.formKey, sections: null}));
+        };
+    }, [dispatch, envProps.formKey]);
 
     const classes = editorConfig.isFullscreen ? {
         root: styles.ceDialogRootFullscreen
@@ -202,6 +210,7 @@ ContentEditorModal.propTypes = {
         dialogProps: PropTypes.object,
         count: PropTypes.number,
         layout: PropTypes.object,
+        formKey: PropTypes.string,
         useConfirmationDialog: PropTypes.bool
     }).isRequired,
     updateEditorConfig: PropTypes.func.isRequired,
