@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {Form} from 'formik';
-import {useContentEditorContext, useContentEditorSectionContext} from '~/contexts';
+import {useContentEditorConfigContext, useContentEditorContext, useContentEditorSectionContext} from '~/contexts';
 import {SectionsPropTypes} from '~/ContentEditor.proptypes';
 import {ChildrenSection, Section} from './Sections';
 import {useDispatch, useSelector, shallowEqual} from 'react-redux';
@@ -11,10 +11,11 @@ import {Validation} from './Validation';
 
 const ADVANCED_OPTIONS_SELECTIONS = ['visibility'];
 
-export const FormBuilder = ({mode, formKey}) => {
+export const FormBuilder = ({mode}) => {
     const {nodeData, errors, expandedSections} = useContentEditorContext();
+    const {envProps} = useContentEditorConfigContext();
     const {sections} = useContentEditorSectionContext();
-    const toggleStates = useSelector(state => state.contenteditor.ceToggleSections[formKey], shallowEqual);
+    const toggleStates = useSelector(state => state.contenteditor.ceToggleSections[envProps.formKey], shallowEqual);
     const dispatch = useDispatch();
 
     // Update toggle state if there are errors
@@ -30,7 +31,7 @@ export const FormBuilder = ({mode, formKey}) => {
                     });
                 });
             });
-            dispatch(ceToggleSections({key: formKey, sections: newToggleState}));
+            dispatch(ceToggleSections({key: envProps.formKey, sections: newToggleState}));
         }
     }, [errors]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -38,8 +39,8 @@ export const FormBuilder = ({mode, formKey}) => {
     useEffect(() => {
         document.querySelector('div[data-first-field=true] input')?.focus();
         const sections = (toggleStates || expandedSections);
-        dispatch(ceToggleSections({key: formKey, sections}));
-    }, [dispatch, mode, formKey, expandedSections]); // eslint-disable-line react-hooks/exhaustive-deps
+        dispatch(ceToggleSections({key: envProps.formKey, sections}));
+    }, [dispatch, mode, envProps.formKey, expandedSections]); // eslint-disable-line react-hooks/exhaustive-deps
 
     if (!nodeData || !sections || sections.length === 0) {
         return <></>;
@@ -50,7 +51,7 @@ export const FormBuilder = ({mode, formKey}) => {
         const toggleFcn = e => {
             e.preventDefault();
             dispatch(ceToggleSections({
-                key: formKey,
+                key: envProps.formKey,
                 sections: {...toggleStates, [section.name]: !toggleStates[section.name]}
             }));
         };
@@ -106,6 +107,5 @@ FormBuilder.contextTypes = {
 };
 
 FormBuilder.propTypes = {
-    mode: PropTypes.string.isRequired,
-    formKey: PropTypes.string.isRequired
+    mode: PropTypes.string.isRequired
 };

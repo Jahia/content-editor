@@ -21,7 +21,7 @@ export const EditPanelContent = () => {
                         rightCol={<Preview/>}
                         data-sel-mode={mode}
                     >
-                        <FormBuilder mode={mode} formKey={envProps.formKey}/>
+                        <FormBuilder mode={mode}/>
                     </TwoColumnsContent>
                 ) :
                 (
@@ -29,7 +29,7 @@ export const EditPanelContent = () => {
                         classes={{root: styles.fullWidthRoot}}
                         data-sel-mode={mode}
                     >
-                        <FormBuilder mode={mode} formKey={envProps.formKey}/>
+                        <FormBuilder mode={mode}/>
                     </FullWidthContent>
                 )}
         </>
