@@ -13,6 +13,10 @@ export const ContentEditorApi = () => {
     const [contentTypeSelectorConfig, setContentTypeSelectorConfig] = useState(false);
 
     let newEditorConfig = editorConfig => {
+        if (!editorConfig.formKey) {
+            editorConfig.formKey = 'modal_' + editorConfigs.length;
+        }
+
         setEditorConfigs([...editorConfigs, editorConfig]);
     };
 

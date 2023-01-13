@@ -1,7 +1,7 @@
 import styles from './Validation.scss';
 import React, {useMemo} from 'react';
 import {useFormikContext} from 'formik';
-import {useContentEditorContext, useContentEditorSectionContext} from '~/contexts';
+import {useContentEditorConfigContext, useContentEditorContext, useContentEditorSectionContext} from '~/contexts';
 import {useTranslation} from 'react-i18next';
 import {useDispatch, useSelector} from 'react-redux';
 import {ceToggleSections} from '~/registerReducer';
@@ -22,6 +22,7 @@ export const Validation = () => {
     const formik = useFormikContext();
     const {sections} = useContentEditorSectionContext();
     const {siteInfo, i18nContext, lang} = useContentEditorContext();
+    const {envProps} = useContentEditorConfigContext();
     const {t} = useTranslation('content-editor');
     const toggleStates = useSelector(state => state.contenteditor.ceToggleSections);
     const dispatch = useDispatch();
@@ -51,10 +52,10 @@ export const Validation = () => {
         if (toggleStates[section.name]) {
             scrollTo(field);
         } else {
-            dispatch(ceToggleSections({
-                ...toggleStates,
+            dispatch(ceToggleSections({key: envProps.formKey, sections: {
+                ...toggleStates[envProps.formKey],
                 [section.name]: true
-            }));
+            }}));
             setTimeout(() => scrollTo(field), 0);
         }
     };
