@@ -4,7 +4,7 @@ import {dsGenericTheme} from '@jahia/design-system-kit';
 
 import {FormBuilder} from './FormBuilder';
 import {useFormikContext} from 'formik';
-import {useContentEditorContext, useContentEditorSectionContext} from '~/contexts';
+import {useContentEditorContext, useContentEditorConfigContext, useContentEditorSectionContext} from '~/contexts';
 import {Constants} from '~/ContentEditor.constants';
 
 jest.mock('connected-react-router', () => ({}));
@@ -32,6 +32,7 @@ describe('FormBuilder component', () => {
             }
         };
         useContentEditorContext.mockReturnValue(context);
+        useContentEditorConfigContext.mockReturnValue({envProps: {}});
         sectionContext = {
             sections: [
                 {
