@@ -3,7 +3,7 @@ import {getDynamicFieldSets, getFields} from '~/utils';
 import {resolveSelectorType} from '~/SelectorTypes/resolveSelectorType';
 import {adaptSystemNameField} from './adaptSystemNameField';
 import {Constants} from '~/ContentEditor.constants';
-import {adaptSections, getExpandedSections} from '~/ContentEditor/adaptSections';
+import {adaptSections} from '~/ContentEditor/adaptSections';
 import {getFieldValuesFromDefaultValues} from '~/ContentEditor/getFieldValuesFromDefaultValues';
 import {EditFormQuery} from '~/ContentEditor/edit.gql-queries';
 import {useFormDefinition} from '~/ContentEditor/useFormDefinitions';
@@ -157,7 +157,6 @@ export const adaptEditFormData = (data, lang, t) => {
 
     const formData = {
         sections,
-        expandedSections: getExpandedSections(sections),
         initialValues: getInitialValues(nodeData, sections),
         hasPreview: data.forms.editForm.hasPreview,
         nodeData,

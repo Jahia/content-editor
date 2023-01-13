@@ -9,12 +9,14 @@ import {ceToggleSections} from '~/registerReducer';
 import styles from './FormBuilder.scss';
 import {Validation} from './Validation';
 import {Constants} from '~/ContentEditor.constants';
+import {getExpandedSections} from '~/ContentEditor/adaptSections';
 
 const ADVANCED_OPTIONS_SELECTIONS = ['visibility'];
 
 export const FormBuilder = ({mode, uuid}) => {
-    const {nodeData, errors, expandedSections} = useContentEditorContext();
+    const {nodeData, errors} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
+    const expandedSections = getExpandedSections(sections);
     const toggleStates = useSelector(state => state.contenteditor.ceToggleSections[mode + '_' + uuid], shallowEqual);
     const dispatch = useDispatch();
 
