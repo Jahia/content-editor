@@ -52,15 +52,6 @@ jobs:
           nexus_password: ${{ secrets.NEXUS_PASSWORD }}
           module_id: content-editor
           mvn_settings_filepath: '.github/maven.settings.xml'
-      - uses: |
-          # publish cypress lib to npm 
-          cd tests
-          version=$(jq '.version' package.json)
-          version=${version: 1 : -1}-$(date '+%s')
-          oldVersion = $version
-          jq --arg version $version '.version = $version' package.json  > pkg-tmp.json
-          mv  pkg-tmp.json package.json
-          npm publish --access public
 
   sonar-analysis:
     name: Sonar Analysis
