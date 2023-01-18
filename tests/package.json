@@ -1,7 +1,7 @@
 {
   "name": "@jahia/content-editor-cypress",
   "private": false,
-  "version": "4.2.0-tests.6",
+  "version": "4.2.0-tests.7",
   "scripts": {
     "instrument": "nyc instrument --compact=false cypress instrumented",
     "e2e:ci": "cypress run --browser chrome",
@@ -13,7 +13,9 @@
     "publish-tests": "yarn version --prerelease --preid=tests && git push --follow-tags && npm publish --access public"
   },
   "main": "index.js",
-  "files": ["cypress"],
+  "files": [
+    "cypress"
+  ],
   "license": "MIT",
   "devDependencies": {
     "@4tw/cypress-drag-drop": "^2.2.1",
