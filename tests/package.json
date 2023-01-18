@@ -10,7 +10,7 @@
     "lint": "eslint . -c .eslintrc.json --ext .ts",
     "report:merge": "mochawesome-merge results/reports/cypress*.json > results/reports/report.json && rm results/reports/cypress*.json",
     "report:html": "marge --inline results/reports/report.json --reportDir results/reports/",
-    "publish": "yarn version --prerelease --preid=tests && git push --follow-tags && npm publish"
+    "publish-tests": "yarn version --prerelease --preid=tests && git push --follow-tags && npm publish --access public"
   },
   "main": "index.js",
   "license": "MIT",
