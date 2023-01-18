@@ -1,7 +1,7 @@
 {
   "name": "@jahia/content-editor-cypress",
   "private": false,
-  "version": "4.2.0-tests.0",
+  "version": "4.2.0-tests.1",
   "scripts": {
     "instrument": "nyc instrument --compact=false cypress instrumented",
     "e2e:ci": "cypress run --browser chrome",
