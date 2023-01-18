@@ -44,6 +44,7 @@ export const ContentLayoutContainer = ({pickerConfig, isMultiple, accordionItemP
         preSearchModeMemo: state.contenteditor.picker.preSearchModeMemo,
         viewType: state.contenteditor.picker.tableView.viewType
     }), shallowEqual);
+    const MAX_AUTO_EXPAND_LEVELS = 5;
 
     const dispatch = useDispatch();
 
@@ -66,7 +67,7 @@ export const ContentLayoutContainer = ({pickerConfig, isMultiple, accordionItemP
         }
 
         if (Number.isInteger(tableConfig.autoExpandLevels)) {
-            autoExpandLevels = tableConfig.autoExpandLevels;
+            autoExpandLevels = Math.min(tableConfig.autoExpandLevels, MAX_AUTO_EXPAND_LEVELS);
         }
     }
 
