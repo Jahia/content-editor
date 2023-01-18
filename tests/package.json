@@ -10,11 +10,12 @@
     "lint": "eslint . -c .eslintrc.json --ext .ts",
     "report:merge": "mochawesome-merge results/reports/cypress*.json > results/reports/report.json && rm results/reports/cypress*.json",
     "report:html": "marge --inline results/reports/report.json --reportDir results/reports/",
+    "build": "tsc -p ./lib-tsconfig.json",
     "publish-tests": "yarn version --prerelease --preid=tests && git push --follow-tags && npm publish --access public"
   },
   "main": "index.js",
   "files": [
-    "cypress"
+    "dist"
   ],
   "license": "MIT",
   "devDependencies": {
