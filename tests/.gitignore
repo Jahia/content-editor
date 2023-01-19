@@ -7,3 +7,6 @@ run-artifacts
 .env
 artifacts
 build-dependencies
+dist
+results
+
