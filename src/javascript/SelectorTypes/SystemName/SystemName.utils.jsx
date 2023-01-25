@@ -1,28 +1,14 @@
-const mapSpecialCharacter = {
-    '€': 'e',
-    '§': 'ss',
-    '¢': 'c',
-    ª: 'a',
-    '¶': 'p',
-    ø: 'o',
-    '°': 'd',
-    '£': 'ps',
-    '™': 'tm',
-    '¥': 'y',
-    '‰': '0',
-    œ: 'oe',
-    æ: 'ae'
-};
+import charmap from './charmap.json';
 
 export const replaceSpecialCharacters = (systemName, field) => {
     const maxLength = field?.selectorOptions?.find(option => option.name === 'maxLength')?.value;
     if (systemName) {
         return systemName
             .toLowerCase()
-            .normalize('NFD')
+            .normalize('NFKD')
             .replace(/[\u0300-\u036f]/g, '')
-            .replace(/[^A-Z0-9-_,()!]/ig, character => {
-                return mapSpecialCharacter[character] || '-';
+            .replace(/[^\w\-,()!]/ig, character => {
+                return charmap[character] || '-';
             })
             .replace(/-+/g, '-')
             .replace(/^-/, '')
