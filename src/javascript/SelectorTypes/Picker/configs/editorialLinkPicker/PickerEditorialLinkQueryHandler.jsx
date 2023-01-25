@@ -15,7 +15,11 @@ export const PickerEditorialLinkQueryHandler = {
             treeParams.selectableTypes = ['jmix:mainResource'];
         }
 
-        treeParams.recursionTypesFilter = {multi: 'NONE', types: ['jmix:mainResource', 'jnt:contentFolder', 'jnt:page', 'jnt:folder', 'jnt:navMenuText']};
+        treeParams.recursionTypesFilter = {
+            multi: 'NONE',
+            types: ['jmix:mainResource', 'jnt:contentFolder', 'jnt:page', 'jnt:folder',
+                'jnt:navMenuText', 'jnt:usersFolder', 'jnt:groupsFolder']
+        };
 
         return treeParams;
     }
