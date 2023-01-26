@@ -52,7 +52,7 @@ const styles = theme => ({
             '& .dropdown-content': {
                 position: 'absolute',
                 padding: '4px',
-                zIndex: 1,
+                zIndex: 100,
                 top: '44px',
                 width: '100%',
                 background: 'white',
