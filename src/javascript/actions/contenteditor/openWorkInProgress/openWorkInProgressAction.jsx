@@ -50,7 +50,7 @@ export const OpenWorkInProgressModal = ({render: Render, ...otherProps}) => {
             <Render
                 {...otherProps}
                 buttonLabel={buttonLabel}
-                enabled={nodeData.hasWritePermission && !Constants.wip.notAvailableFor.includes(nodeData.primaryNodeType.name)}
+                enabled={!nodeData.lockedAndCannotBeEdited && nodeData.hasWritePermission && !Constants.wip.notAvailableFor.includes(nodeData.primaryNodeType.name)}
                 onClick={singleLanguage ? switchButton : openModal}/>
         </>
     );
