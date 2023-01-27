@@ -28,7 +28,7 @@ describe('SystemName utils', () => {
 
     it('should replace every special character when present', () => {
         const newSystemName = replaceSpecialCharacters('-ffee_ek,veéèëÊË€éèëÊË€§çÇ¢ùÙÛàÅåÁª¶øôÔØÓ°£™Ÿ¥‰îïÎÍŒÆ$.+*');
-        expect(newSystemName).toBe('ffee_ek,veeeeeeeuroeeeeeeuro-cccentuuuaaaaa-ooooo-poundTMyyen-iiiioeaedollar');
+        expect(newSystemName).toBe('ffee_ek-veeeeee-eeeee-cc-uuuaaaaa-ooooo-TMy-iiiioeae');
     });
 
     it('should be equal to system name', () => {
