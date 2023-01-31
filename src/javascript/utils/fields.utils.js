@@ -58,7 +58,7 @@ const _adaptDecimalValues = (fieldType, value) => {
     return fieldType === 'DECIMAL' || fieldType === 'DOUBLE' ? value && value.replace(',', '.') : value;
 };
 
-function updateValue({field, value, lang, nodeData, sections, mixinsToMutate, propsToSave, propsToDelete, propFieldNameMapping}) {
+function updateValue({field, value, lang, nodeData, sections, mixinsToMutate, propsToSave, propsToDelete, propFieldNameMapping, forceUpdate}) {
     if (value !== undefined && value !== null && value !== '') {
         const fieldType = field.requiredType;
 
@@ -73,7 +73,7 @@ function updateValue({field, value, lang, nodeData, sections, mixinsToMutate, pr
         }
 
         // Check if property has changed
-        if (propertyHasChanged(valueToSave, field, nodeData)) {
+        if (propertyHasChanged(valueToSave, field, nodeData) || forceUpdate) {
             const fieldSetName = getDynamicFieldSetNameOfField(sections, field);
 
             // Is not dynamic OR is dynamic and node have the mixin
@@ -132,6 +132,9 @@ export function getDataToMutate({nodeData, formValues, i18nContext, sections, la
                 Object.keys(i18nContext).filter(i18nLang => i18nLang !== lang && i18nLang !== 'shared' && i18nLang !== 'memo').forEach(i18nLang => {
                     const translatedValue = i18nContext[i18nLang].values[key];
                     if (typeof translatedValue !== 'undefined') {
+                        // This means there are updated values in other languages and we want to save them without relaying on propertyHasChanged()
+                        // as the value in i18nContext may be identical to value in current language as is the case when copy-to-language is used.
+                        const forceUpdate = true;
                         updateValue({
                             field,
                             value: translatedValue,
@@ -141,7 +144,8 @@ export function getDataToMutate({nodeData, formValues, i18nContext, sections, la
                             mixinsToMutate,
                             propsToSave,
                             propsToDelete,
-                            propFieldNameMapping
+                            propFieldNameMapping,
+                            forceUpdate
                         });
                     }
                 });
