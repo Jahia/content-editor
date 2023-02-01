@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/ContentEditor.proptypes';
-import {DropdownTreeSelect} from '~/DesignSystem/DropdownTreeSelect';
 import {useQuery} from '@apollo/react-hooks';
 import {GetCategories} from './category.gql-queries';
 import {useTranslation} from 'react-i18next';
 import {adaptToCategoryTree} from './category.adapter';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
+import {Dropdown} from '@jahia/moonstone';
 
 export const Category = ({field, value, id, editorContext, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
@@ -17,12 +17,20 @@ export const Category = ({field, value, id, editorContext, onChange, onBlur}) =>
         }
     });
 
-    const handleChange = (_, selectedValues) => {
-        const newValues = selectedValues.map(v => v.value);
+    const handleClear = () => {
         if (field.multiple) {
-            onChange(newValues);
+            onChange([]);
         } else {
-            onChange(newValues[0]);
+            onChange(null);
+        }
+    };
+
+    const handleChange = (_, selectedValue) => {
+        if (field.multiple) {
+            const prev = value || [];
+            onChange(prev.indexOf(selectedValue.value) > -1 ? prev.filter(i => i !== selectedValue.value) : [...prev, selectedValue.value]);
+        } else {
+            onChange(selectedValue.value);
         }
     };
 
@@ -45,16 +53,22 @@ export const Category = ({field, value, id, editorContext, onChange, onBlur}) =>
         locale: editorContext.lang
     });
 
+    const singleValue = !field.multiple ? value : null;
+    const multipleValue = field.multiple ? (value || []) : null;
+
     return (
-        <DropdownTreeSelect
-            clearSearchOnChange
-            keepTreeOnSearch
-            id={id}
-            noMatchesLabel={t('content-editor:label.contentEditor.edit.fields.category.noMatches')}
-            aria-labelledby={`${field.name}-label`}
-            data={tree}
-            mode={field.multiple ? 'multiSelect' : 'radioSelect'}
-            readOnly={field.readOnly}
+        <Dropdown
+            hasSearch
+            className="flexFluid"
+            treeData={tree}
+            variant="outlined"
+            size="medium"
+            maxWidth="unset"
+            placeholder="cat"
+            value={singleValue}
+            values={multipleValue}
+            isDisabled={field.readOnly}
+            onClear={handleClear}
             onChange={handleChange}
             onBlur={onBlur}
         />

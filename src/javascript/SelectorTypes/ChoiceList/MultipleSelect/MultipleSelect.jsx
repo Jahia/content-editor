@@ -1,9 +1,9 @@
 import React from 'react';
-import {MultipleInput} from '~/DesignSystem/MultipleInput';
 import PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/ContentEditor.proptypes';
 import {DisplayAction} from '@jahia/ui-extender';
 import {getButtonRenderer} from '~/utils';
+import {Dropdown} from '@jahia/moonstone';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
@@ -30,20 +30,19 @@ export const MultipleSelect = ({field, id, value, inputContext, onChange, onBlur
 
     return (
         <div className="flexFluid flexRow alignCenter">
-            <MultipleInput
-                className="flexFluid"
-                id={id}
-                options={options}
-                value={value && options.filter(data => value.includes(data.value))}
-                readOnly={readOnly}
-                inputProps={{
-                    'data-sel-content-editor-select-readonly': readOnly
-                }}
-                onChange={selection => {
-                    const newSelection = selection && selection.map(data => data.value);
-                    onChange(newSelection);
-                }}
-                onBlur={onBlur}
+            <Dropdown hasSearch
+                      className="flexFluid"
+                      id={id}
+                      variant="outlined"
+                      data={options}
+                      values={value || []}
+                      isDisabled={readOnly}
+                      data-sel-content-editor-select-readonly={readOnly}
+                      onChange={(_, selectedValue) => {
+                          const prev = value || [];
+                          onChange(prev.indexOf(selectedValue.value) > -1 ? prev.filter(i => i !== selectedValue.value) : [...prev, selectedValue.value]);
+                      }}
+                      onBlur={onBlur}
             />
             {inputContext.displayActions && (
                 <DisplayAction actionKey="content-editor/field/Choicelist"
