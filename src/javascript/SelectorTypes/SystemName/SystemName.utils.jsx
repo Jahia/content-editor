@@ -7,7 +7,7 @@ export const replaceSpecialCharacters = (systemName, field) => {
             .toLowerCase()
             .normalize('NFKD')
             .replace(/[\u0300-\u036f]/g, '')
-            .replace(/[^\w\-,()!]/ig, character => {
+            .replace(/[^\w\-]/ig, character => {
                 return charmap[character] || '-';
             })
             .replace(/-+/g, '-')
