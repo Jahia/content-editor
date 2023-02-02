@@ -176,7 +176,7 @@ export class Picker extends BaseComponent {
     }
 
     switchSearchContext(context: string) {
-        getComponentBySelector(Dropdown, '.moonstone-searchContext-element').select(context);
+        getComponentBySelector(Dropdown, '.moonstone-searchContextInput_element').select(context);
     }
 
     verifyResultsAreEmpty() {
