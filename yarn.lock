@@ -1158,6 +1158,13 @@
   dependencies:
     regenerator-runtime "^0.13.11"
 
+"@babel/runtime@^7.20.13":
+  version "7.20.13"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.20.13.tgz#7055ab8a7cff2b8f6058bf6ae45ff84ad2aded4b"
+  integrity sha512-gt3PKXs0DBoL9xCvOIIZ2NEqAGZqHjAnmVbfQtB620V0uReIQutpel14KcneZuer7UioY8ALKZ7iocavvzTNFA==
+  dependencies:
+    regenerator-runtime "^0.13.11"
+
 "@babel/template@^7.12.7", "@babel/template@^7.18.10", "@babel/template@^7.3.3":
   version "7.18.10"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.18.10.tgz#6f9134835970d1dbf0835c0d100c9f38de0c5e71"
@@ -1479,16 +1486,16 @@
     mdi-material-ui "^5.10.0"
     recompose "^0.30.0"
 
-"@jahia/moonstone@^2.4.24":
-  version "2.4.24"
-  resolved "https://registry.yarnpkg.com/@jahia/moonstone/-/moonstone-2.4.24.tgz#537cbf595d608252206f96713d7d6482c2e72b66"
-  integrity sha512-M0kPZtabvg84JVE4TFXmJVG9PSXFISgpdPQ5sln/dIuu7jEdvXOUjxCR+WrxgOTaSzJwOsNMFPG0K8tqS091LQ==
+"@jahia/moonstone@^2.5.0":
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/@jahia/moonstone/-/moonstone-2.5.0.tgz#a33c08d1014ab12fb366c5341cf52e511ee94e19"
+  integrity sha512-q+/o6d7jihdFSIOM4BAFCP2SM/18AzOkCQJNfmjlCp9lCJlJM+TTL0P6VWJUMPmN5Es3BH8PF+JSyILSs8LyUQ==
   dependencies:
-    "@babel/runtime" "^7.12.5"
-    clsx "^1.1.1"
-    prop-types "^15.7.2"
-    re-resizable "^6.9.1"
-    react-is "^17.0.2"
+    "@babel/runtime" "^7.20.13"
+    clsx "^1.2.1"
+    prop-types "^15.8.1"
+    re-resizable "^6.9.9"
+    react-is "^18.2.0"
     to-px "^1.1.0"
 
 "@jahia/react-material@^3.0.5":
@@ -5072,7 +5079,7 @@ clone-regexp@^2.1.0:
   dependencies:
     is-regexp "^2.0.0"
 
-clsx@^1.1.1:
+clsx@^1.1.1, clsx@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.2.1.tgz#0ddc4a20a549b59c93a4116bb26f5294ca17dc12"
   integrity sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==
@@ -11313,7 +11320,7 @@ raw-loader@^4.0.2:
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
 
-re-resizable@^6.9.1:
+re-resizable@^6.9.9:
   version "6.9.9"
   resolved "https://registry.yarnpkg.com/re-resizable/-/re-resizable-6.9.9.tgz#99e8b31c67a62115dc9c5394b7e55892265be216"
   integrity sha512-l+MBlKZffv/SicxDySKEEh42hR6m5bAHfNu3Tvxks2c4Ah+ldnWjfnVRwxo/nxF27SsUsxDS0raAzFuJNKABXA==
@@ -11542,6 +11549,11 @@ react-is@^16.13.1, react-is@^16.6.0, react-is@^16.6.3, react-is@^16.7.0, react-i
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
+
+react-is@^18.2.0:
+  version "18.2.0"
+  resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.2.0.tgz#199431eeaaa2e09f86427efbb4f1473edb47609b"
+  integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
 
 react-lifecycles-compat@^3.0.2, react-lifecycles-compat@^3.0.4:
   version "3.0.4"

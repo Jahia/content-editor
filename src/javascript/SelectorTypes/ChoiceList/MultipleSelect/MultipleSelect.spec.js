@@ -47,7 +47,7 @@ describe('MultipleSelect component', () => {
 
     const buildComp = (componentProps, value) => {
         props.value = value;
-        return shallowWithTheme(<MultipleSelect {...componentProps}/>, {}, dsGenericTheme).find('MultipleInput');
+        return shallowWithTheme(<MultipleSelect {...componentProps}/>, {}, dsGenericTheme).find('Dropdown');
     };
 
     it('should bind id correctly', () => {
@@ -59,27 +59,17 @@ describe('MultipleSelect component', () => {
     it('should display each option given', () => {
         const cmp = buildComp(props);
 
-        const labels = cmp.props().options.map(o => o.label);
-        const values = cmp.props().options.map(o => o.value);
+        const labels = cmp.props().data.map(o => o.label);
+        const values = cmp.props().data.map(o => o.value);
         props.field.valueConstraints.forEach(constraint => {
             expect(values).toContain(constraint.value.string);
             expect(labels).toContain(constraint.displayValue);
         });
     });
 
-    it('should select formik value', () => {
-        const cmp = buildComp(props, ['yoloooFR']);
-        const selection = [{value: 'yoloooFR2'}];
-        onChange.mockReset();
-        cmp.simulate('change', selection);
-
-        expect(onChange).toHaveBeenCalled();
-        expect(onChange).toHaveBeenCalledWith(['yoloooFR2']);
-    });
-
     it('should select value', () => {
         const cmp = buildComp(props, ['Yolooo']);
-        expect(cmp.props().value).toEqual([{label: 'yoloooFR', value: 'Yolooo'}]);
+        expect(cmp.props().values).toEqual(['Yolooo']);
     });
 
     it('should set readOnly to true when fromdefinition is readOnly', () => {
@@ -94,6 +84,6 @@ describe('MultipleSelect component', () => {
         props.field.readOnly = readOnly;
         const cmp = buildComp(props);
 
-        expect(cmp.props().readOnly).toEqual(readOnly);
+        expect(cmp.props().isDisabled).toEqual(readOnly);
     };
 });

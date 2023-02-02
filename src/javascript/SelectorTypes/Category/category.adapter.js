@@ -8,7 +8,9 @@ export const adaptToCategoryTree = ({nodes, parent, selectedValues, locale}) => 
         .filter(category => category.parent.uuid === parent.uuid)
         .map(category => {
             return {
-                ...category,
+                id: category.value,
+                value: category.value,
+                label: category.label,
                 expanded: nodes.filter(cat => cat.parent.uuid === category.uuid).filter(cat => selectedValues && selectedValues.includes(cat.uuid)).length > 0,
                 checked: selectedValues ? selectedValues.includes(category.uuid) : undefined,
                 children: adaptToCategoryTree({

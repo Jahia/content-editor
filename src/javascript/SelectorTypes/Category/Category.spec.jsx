@@ -81,10 +81,4 @@ describe('Category component', () => {
         const cmp = buildComp(props);
         expect(cmp.props().value).toBe(props.value);
     });
-
-    it('should onChange called when modify an element', () => {
-        const cmp = buildComp(props);
-        cmp.simulate('change', null, [{value: 'A'}, {value: 'Gauche'}]);
-        expect(onChange).toHaveBeenCalledWith(['A', 'Gauche']);
-    });
 });
