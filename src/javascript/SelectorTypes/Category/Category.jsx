@@ -53,8 +53,8 @@ export const Category = ({field, value, id, editorContext, onChange, onBlur}) =>
         locale: editorContext.lang
     });
 
-    const singleValue = !field.multiple ? value : null;
-    const multipleValue = field.multiple ? (value || []) : null;
+    const singleValue = !field.multiple ? value : undefined;
+    const multipleValue = field.multiple ? (value || []) : undefined;
 
     return (
         <Dropdown
