@@ -59,11 +59,11 @@ export const Category = ({field, value, id, editorContext, onChange, onBlur}) =>
     return (
         <Dropdown
             hasSearch
+            id={id}
             className="flexFluid"
             treeData={tree}
             variant="outlined"
             size="medium"
-            maxWidth="unset"
             placeholder="cat"
             value={singleValue}
             values={multipleValue}
