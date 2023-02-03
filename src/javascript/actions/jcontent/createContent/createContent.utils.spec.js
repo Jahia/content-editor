@@ -1,12 +1,12 @@
 import {
-    getCreatableNodetypesTree,
+    childrenLimitReachedOrExceeded,
     flattenNodeTypes,
-    transformNodeTypesToActions,
-    childrenLimitReachedOrExceeded
+    getCreatableNodetypesTree,
+    transformNodeTypesToActions
 } from './createContent.utils';
 
 jest.mock('@jahia/moonstone');
-
+global.contextJsParameters = {config: {contentEditor: {'createChildrenDirectButtons.limit': 3}}};
 describe('CreateNewContent utils', () => {
     describe('getActions', () => {
         let client;
