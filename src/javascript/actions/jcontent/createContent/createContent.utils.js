@@ -1,7 +1,6 @@
 import {getTreeOfContentWithRequirements} from './createContent.gql-queries';
 import {useQuery} from '@apollo/react-hooks';
 
-const NB_OF_DISPLAYED_RESTRICTED_SUB_NODES = 3;
 // eslint-disable-next-line
 export const useCreatableNodetypesTree = (nodeTypes, childNodeName, includeSubTypes, path, uilang, excludedNodeTypes, showOnNodeTypes) => {
     const {data, error, loadingTypes} = useQuery(getTreeOfContentWithRequirements, {
@@ -60,7 +59,8 @@ export function flattenNodeTypes(nodeTypes) {
 }
 
 export function transformNodeTypesToActions(nodeTypes) {
-    if (nodeTypes.length <= NB_OF_DISPLAYED_RESTRICTED_SUB_NODES) {
+    const value = contextJsParameters.config.contentEditor['createChildrenDirectButtons.limit'];
+    if (nodeTypes.length <= Math.min(Number(value), 10)) {
         return nodeTypes
             .filter(f => f.name !== 'jnt:resource')
             .map(nodeType => ({
