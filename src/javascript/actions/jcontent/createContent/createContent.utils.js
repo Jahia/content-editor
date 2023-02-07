@@ -59,8 +59,8 @@ export function flattenNodeTypes(nodeTypes) {
 }
 
 export function transformNodeTypesToActions(nodeTypes) {
-    const value = contextJsParameters.config.contentEditor['createChildrenDirectButtons.limit'];
-    if (nodeTypes.length <= Math.min(Number(value), 10)) {
+    const nodeTypesButtonLimit = contextJsParameters.config.contentEditor['createChildrenDirectButtons.limit'];
+    if (nodeTypes.length <= Number(nodeTypesButtonLimit)) {
         return nodeTypes
             .filter(f => f.name !== 'jnt:resource')
             .map(nodeType => ({
