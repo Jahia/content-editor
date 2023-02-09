@@ -32,6 +32,7 @@ export const registerEditorialLinkPicker = registry => {
                 return (node?.primaryNodeType.name !== 'jnt:page' && hasContentParent) ? CONTENT : PAGES;
             },
             tableConfig: {
+                defaultSort: {orderBy: ''},
                 queryHandler: PickerEditorialLinkQueryHandler,
                 tableHeader: <EditorialLinkContentTypeSelector/>,
                 defaultViewType: Constants.tableView.type.PAGES,
