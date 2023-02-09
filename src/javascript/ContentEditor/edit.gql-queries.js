@@ -52,6 +52,9 @@ const NodeDataFragment = {
                             name
                             displayName(language: $language)
                             icon
+                            supertypes {
+                                name
+                            }
                         }
                     }
                 }
