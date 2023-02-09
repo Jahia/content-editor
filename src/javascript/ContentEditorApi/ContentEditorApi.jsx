@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {ErrorBoundary} from '@jahia/jahia-ui-root';
 import {useEdit} from './useEdit';
 import {useCreate} from './useCreate';
@@ -7,6 +7,8 @@ import {ContentEditorModal} from './ContentEditorModal';
 import {useContentEditorApiContext} from '~/contexts/ContentEditorApi/ContentEditorApi.context';
 import {ContentTypeSelectorModal} from '~/ContentTypeSelectorModal';
 import {Constants} from '~/ContentEditor.constants';
+import {useHistory, useLocation} from 'react-router-dom';
+import rison from 'rison';
 
 export const ContentEditorApi = () => {
     const [editorConfigs, setEditorConfigs] = useState([]);
@@ -39,6 +41,38 @@ export const ContentEditorApi = () => {
     window.CE_API = window.CE_API || {};
     window.CE_API.edit = context.edit;
     window.CE_API.create = context.create;
+
+    const history = useHistory();
+    const location = useLocation();
+    const first = useRef();
+
+    useEffect(() => {
+        let values = {};
+        try {
+            values = location.hash ? rison.decode(location.hash.substring(1)) : {};
+        } catch {
+            //
+        }
+
+        const {contentEditor, ...others} = values;
+        if (contentEditor && !first.current) {
+            setEditorConfigs(contentEditor);
+        } else {
+            const filtered = editorConfigs.filter(config => Object.values(config).every(o => typeof o !== 'function'));
+
+            if (contentEditor && filtered.length === 0) {
+                history.replace({hash: Object.keys(others).length > 0 ? rison.encode_uri(others) : null});
+            } else if (filtered.length > 0) {
+                const cleaned = JSON.parse(JSON.stringify(filtered));
+                const hash = '#' + rison.encode_uri({...others, contentEditor: cleaned});
+                if (location.hash !== hash) {
+                    history.replace({hash});
+                }
+            }
+        }
+
+        first.current = true;
+    }, [editorConfigs, location.hash, history, context.edit]);
 
     const editorConfigLang = editorConfigs.length > 0 ? editorConfigs[0].lang : undefined;
     useEffect(() => {
