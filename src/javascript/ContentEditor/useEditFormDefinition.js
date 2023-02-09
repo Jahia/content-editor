@@ -40,7 +40,7 @@ const getChildrenOrderingFields = (nodeData, dynamicFieldSets) => {
 
     if (nodeData.primaryNodeType.hasOrderableChildNodes) {
         if (nodeData.isPage) {
-            orderingInitialValues['Children::Order'] = nodeData.children.nodes.filter(n => n.primaryNodeType.name === 'jnt:page' || n.primaryNodeType.name === 'jmix:navMenuItem');
+            orderingInitialValues['Children::Order'] = nodeData.children.nodes.filter(n => n.primaryNodeType.name === 'jnt:page' || n.primaryNodeType.supertypes.find(type => type.name === 'jmix:navMenuItem') !== undefined);
         } else {
             orderingInitialValues['Children::Order'] = nodeData.children.nodes;
         }
