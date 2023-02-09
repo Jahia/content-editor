@@ -64,7 +64,6 @@ export const Category = ({field, value, id, editorContext, onChange, onBlur}) =>
             treeData={tree}
             variant="outlined"
             size="medium"
-            placeholder="cat"
             value={singleValue}
             values={multipleValue}
             isDisabled={field.readOnly}
