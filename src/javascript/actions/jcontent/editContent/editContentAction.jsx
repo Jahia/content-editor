@@ -42,7 +42,7 @@ export const EditContent = ({
                     lang: language,
                     uilang,
                     isFullscreen,
-                    editCallback,
+                    ...(editCallback ? {editCallback} : {}),
                     ...otherProps.editConfig
                 }) : redirect({language, mode: Constants.routes.baseEditRoute, uuid: res.node.uuid})}
         />

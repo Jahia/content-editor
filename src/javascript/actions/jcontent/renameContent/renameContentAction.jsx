@@ -30,7 +30,7 @@ export const RenameContent = ({path, editCallback, render: Render, loading: Load
                         lang: language,
                         uilang,
                         isFullscreen: false,
-                        editCallback,
+                        ...(editCallback ? {editCallback} : {}),
                         dialogProps: {
                             classes: {}
                         },

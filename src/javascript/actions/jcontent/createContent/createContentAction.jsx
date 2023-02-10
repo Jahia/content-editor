@@ -61,7 +61,7 @@ export const CreateContent = ({contextNodePath, path, showOnNodeTypes, nodeTypes
 
     const onClick = ({flattenedNodeTypes, nodeTypesTree}) => {
         if (isModal) {
-            api.create({uuid: nodeInfo.node.uuid, path, site, lang: language, uilang, nodeTypesTree, name, isFullscreen, createCallback: onCreate, onClosedCallback: onClosed});
+            api.create({uuid: nodeInfo.node.uuid, path, site, lang: language, uilang, nodeTypesTree, name, isFullscreen, ...(onCreate ? {createCallback: onCreate} : {}), ...(onClosed ? {onClosedCallback: onClosed} : {})});
         } else if (flattenedNodeTypes?.length === 1) {
             redirect({mode: Constants.routes.baseCreateRoute, language, uuid: nodeInfo.node.uuid, rest: encodeURI(flattenedNodeTypes[0].name)});
         } else {

@@ -58,13 +58,12 @@ export const ContentEditorApi = () => {
         if (contentEditor && !first.current) {
             setEditorConfigs(contentEditor);
         } else {
-            const filtered = editorConfigs.filter(config => Object.values(config).every(o => typeof o !== 'function'));
+            const valid = editorConfigs.every(config => Object.values(config).every(o => typeof o !== 'function'));
 
-            if (contentEditor && filtered.length === 0) {
+            if (contentEditor && (!valid || editorConfigs.length === 0)) {
                 history.replace({hash: Object.keys(others).length > 0 ? rison.encode_uri(others) : null});
-            } else if (filtered.length > 0) {
-                const cleaned = JSON.parse(JSON.stringify(filtered));
-                const hash = '#' + rison.encode_uri({...others, contentEditor: cleaned});
+            } else if (valid && editorConfigs.length > 0) {
+                const hash = '#' + rison.encode_uri({...others, contentEditor: editorConfigs});
                 if (location.hash !== hash) {
                     history.replace({hash});
                 }
