@@ -167,7 +167,7 @@ describe('Picker tests', () => {
         pagesAccordion.expandTreeItem('images');
         pagesAccordion.getTreeItem(folderName).click().should('be.visible');
         picker.cancel();
-
+        contentEditor.cancel();
         cy.log(`delete folder '${folderName}'`);
         cy.apollo({
             mutationFile: 'pickers/deleteFolder.graphql',
@@ -175,11 +175,11 @@ describe('Picker tests', () => {
         });
 
         cy.reload(); // Reload to sync folder
-        const contentEditor = jcontent.createContent(contentTypes.fileReference.typeName);
+        const contentEditor2 = jcontent.createContent(contentTypes.fileReference.typeName);
 
         cy.log('re-open file picker');
 
-        picker = contentEditor
+        picker = contentEditor2
             .getPickerField(contentTypes.fileReference.fieldNodeType, contentTypes.fileReference.multiple)
             .open();
         pagesAccordion = picker.getAccordionItem('picker-media');

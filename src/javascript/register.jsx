@@ -31,6 +31,50 @@ export function register() {
 
     registerReducer(registry);
 
+    registry.add('content-editor-config', 'gwtedit', {
+        editCallback: (updatedNode, originalNode) => {
+            // Trigger Page Composer to reload iframe if system name was renamed
+            if (originalNode.path !== updatedNode.path) {
+                const dispatch = window.jahia.reduxStore.dispatch;
+                dispatch(pcNavigateTo({oldPath: originalNode.path, newPath: updatedNode.path}));
+            }
+        },
+        onClosedCallback: (envProps, needRefresh) => {
+            if (needRefresh && window.authoringApi.refreshContent) {
+                window.authoringApi.refreshContent();
+            }
+        }
+    });
+
+    registry.add('content-editor-config', 'gwtcreate', {
+        onClosedCallback: (envProps, needRefresh) => {
+            if (needRefresh && window.authoringApi.refreshContent) {
+                window.authoringApi.refreshContent();
+            }
+        }
+    });
+
+    registry.add('content-editor-config', 'gwtcreatepage', {
+        newPath: null,
+        createCallback: function ({path}) {
+            this.newPath = path;
+        },
+        onClosedCallback: function (envProps, needRefresh) {
+            if (this.newPath) {
+                const dispatch = window.jahia.reduxStore.dispatch;
+                const currentPcPath = window.jahia.reduxStore.getState().pagecomposer.currentPage.path;
+                dispatch(pcNavigateTo({oldPath: currentPcPath, newPath: encodeURIComponent(this.newPath).replaceAll('%2F', '/')}));
+
+                // Refresh content in repository explorer to see added page
+                if (window.authoringApi.refreshContent && window.location.pathname.endsWith('/jahia/repository-explorer')) {
+                    window.authoringApi.refreshContent();
+                }
+            } else if (needRefresh && window.authoringApi.refreshContent) {
+                window.authoringApi.refreshContent();
+            }
+        }
+    });
+
     registry.add('route', 'content-editor-edit-route', {
         targets: ['main:2.1'],
         path: '/content-editor/:lang/edit/:uuid',
@@ -57,37 +101,11 @@ export function register() {
     window.top.jahiaGwtHook = {
         // Hook on edit engine opening
         edit: ({uuid, lang, siteKey, uilang}) => {
-            window.CE_API.edit(uuid, siteKey, lang, uilang, false, (updatedNode, originalNode) => {
-                // Trigger Page Composer to reload iframe if system name was renamed
-                if (originalNode.path !== updatedNode.path) {
-                    const dispatch = window.jahia.reduxStore.dispatch;
-                    dispatch(pcNavigateTo({oldPath: originalNode.path, newPath: updatedNode.path}));
-                }
-            }, (envProps, needRefresh) => {
-                if (needRefresh && window.authoringApi.refreshContent) {
-                    window.authoringApi.refreshContent();
-                }
-            });
+            window.CE_API.edit({uuid, site: siteKey, lang, uilang, isFullscreen: false, configName: 'gwtedit'});
         },
         // Hook on create engine opening, also hook on create content type selector
         create: ({name, uuid, path, lang, siteKey, uilang, contentTypes, excludedNodeTypes, includeSubTypes}) => {
-            let newPath;
-            window.CE_API.create(uuid, path, siteKey, lang, uilang, contentTypes, excludedNodeTypes, includeSubTypes, name, false, ({path}) => {
-                newPath = path;
-            }, (envProps, needRefresh) => {
-                if (contentTypes[0] === 'jnt:page' && newPath) {
-                    const dispatch = window.jahia.reduxStore.dispatch;
-                    const currentPcPath = window.jahia.reduxStore.getState().pagecomposer.currentPage.path;
-                    dispatch(pcNavigateTo({oldPath: currentPcPath, newPath: encodeURIComponent(newPath).replaceAll('%2F', '/')}));
-
-                    // Refresh content in repository explorer to see added page
-                    if (window.authoringApi.refreshContent && window.location.pathname.endsWith('/jahia/repository-explorer')) {
-                        window.authoringApi.refreshContent();
-                    }
-                } else if (needRefresh && window.authoringApi.refreshContent) {
-                    window.authoringApi.refreshContent();
-                }
-            });
+            window.CE_API.create({uuid, path, site: siteKey, lang, uilang, nodeTypes: contentTypes, excludedNodeTypes, includeSubTypes, name, isFullscreen: false, configName: contentTypes[0] === 'jnt:page' ? 'gwtcreatepage' : 'gwtcreate'});
         }
     };
 
