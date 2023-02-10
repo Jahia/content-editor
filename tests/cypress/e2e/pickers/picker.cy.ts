@@ -189,7 +189,7 @@ describe('Picker tests', () => {
         pagesAccordion.getTreeItem('files').find('div').should('have.class', 'moonstone-selected');
     });
 
-    // it('should be able to switch site', () => {
+    // It('should be able to switch site', () => {
     //     const pickerField = jcontent
     //         .createContent(contentTypes.fileReference.typeName)
     //         .getPickerField(contentTypes.fileReference.fieldNodeType, contentTypes.fileReference.multiple);
