@@ -8,7 +8,7 @@ import {useContentEditorApiContext} from '~/contexts/ContentEditorApi/ContentEdi
 import {ContentTypeSelectorModal} from '~/ContentTypeSelectorModal';
 import {Constants} from '~/ContentEditor.constants';
 import {useHistory, useLocation} from 'react-router-dom';
-import rison from 'rison';
+import rison from 'rison-node';
 
 export const ContentEditorApi = () => {
     const [editorConfigs, setEditorConfigs] = useState([]);
@@ -49,7 +49,7 @@ export const ContentEditorApi = () => {
     useEffect(() => {
         let values = {};
         try {
-            values = location.hash ? rison.decode(location.hash.substring(1)) : {};
+            values = location.hash ? rison.decode_uri(location.hash.substring(1)) : {};
         } catch {
             //
         }

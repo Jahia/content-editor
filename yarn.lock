@@ -12215,10 +12215,10 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
-rison@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/rison/-/rison-0.1.1.tgz#4dcc0557b241aff60e76178e7792135713f33120"
-  integrity sha512-8C+/PKKTaAYE2quDtOUwny/eQpNn9YGby7T80wntbVWSGvw0aUT9M0YgLdLkUgIQzQwaB1ZTr80rwLVKyohHig==
+rison-node@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/rison-node/-/rison-node-2.1.1.tgz#3db68c6a736442a5494826f86fc8d675933934a5"
+  integrity sha512-GuV0OnSL2erZJ0j/9YUsrAdfSh3mGcrq+4wM4PqRftOYT7+TRhxbMrpVZaGC5YIPwncIoOM7PPnskDku5Ywg1Q==
 
 rst-selector-parser@^2.2.3:
   version "2.2.3"
