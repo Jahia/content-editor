@@ -63,7 +63,9 @@ export const ContentEditorApi = () => {
             if (contentEditor && (!valid || editorConfigs.length === 0)) {
                 history.replace({hash: Object.keys(others).length > 0 ? rison.encode_uri(others) : null});
             } else if (valid && editorConfigs.length > 0) {
-                const hash = '#' + rison.encode_uri({...others, contentEditor: editorConfigs});
+                // Remove undefined fields
+                const cleaned = JSON.parse(JSON.stringify(editorConfigs));
+                const hash = '#' + rison.encode_uri({...others, contentEditor: cleaned});
                 if (location.hash !== hash) {
                     history.replace({hash});
                 }
