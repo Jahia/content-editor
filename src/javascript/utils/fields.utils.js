@@ -132,7 +132,7 @@ export function getDataToMutate({nodeData, formValues, i18nContext, sections, la
                 Object.keys(i18nContext).filter(i18nLang => i18nLang !== lang && i18nLang !== 'shared' && i18nLang !== 'memo').forEach(i18nLang => {
                     const translatedValue = i18nContext[i18nLang].values[key];
                     if (typeof translatedValue !== 'undefined') {
-                        // This means there are updated values in other languages and we want to save them without relaying on propertyHasChanged()
+                        // This means there are updated values in other languages, and we want to save them without relaying on propertyHasChanged()
                         // as the value in i18nContext may be identical to value in current language as is the case when copy-to-language is used.
                         const forceUpdate = true;
                         updateValue({

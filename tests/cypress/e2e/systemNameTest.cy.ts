@@ -53,7 +53,7 @@ describe('System name test', () => {
         check();
     });
 
-    it('Create a page with a accented characters', function () {
+    it('Create a page with an accented characters', function () {
         const check = function () {
             pageComposer.refresh();
             cy.url({decode: true}).should('contain', 'eaoaeuéàöäèü');

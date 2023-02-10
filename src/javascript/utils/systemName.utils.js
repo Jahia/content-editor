@@ -18,7 +18,7 @@ export const decodeSystemName = systemName => {
 };
 
 /**
- * JCR system name doesnt allow this characters: ['/', ':', '[', ']', '|', '*']
+ * JCR system name doesn't allow those characters: ['/', ':', '[', ']', '|', '*']
  * So we will encode them
  *
  * @param systemName the system name to be encode

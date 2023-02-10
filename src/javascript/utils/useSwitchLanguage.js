@@ -62,6 +62,12 @@ export const useSwitchLanguage = () => {
             };
 
             fillValues(formik.values, previousValue, fieldsObj, i18nValues, nonI18nValues, dynamicFieldSets);
+
+            if (Object.keys(i18nValues.values).length > 0 && Object.keys(nonI18nValues.values).length === 0) {
+                const systemName = Object.keys(formik.values).find(fieldname => fieldname.endsWith('systemName'));
+                nonI18nValues.values[systemName] = formik.values[systemName];
+            }
+
             const newValues = Object.keys(nonI18nValues.values).length > 0 ? {shared: nonI18nValues} : {};
 
             if (Object.keys(i18nValues.values).length > 0) {
