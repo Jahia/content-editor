@@ -7,7 +7,7 @@ export const registerMultipleLeftRightSelector = ceRegistry => {
         labelKey: 'content-editor:label.contentEditor.selectorTypes.multipleLeftRightSelector.displayValue',
         properties: [
             {name: 'description', value: 'content-editor:label.contentEditor.selectorTypes.multipleLeftRightSelector.description'},
-            {name: 'iconStart', value: 'MultipleListSelection'}
+            {name: 'iconStart', value: 'MultipleListSelector'}
         ],
         supportMultiple: true,
         initValue: field => {
