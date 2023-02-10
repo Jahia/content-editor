@@ -27,29 +27,17 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
-import org.apache.commons.lang.LocaleUtils;
-import org.jahia.api.Constants;
-import org.jahia.exceptions.JahiaRuntimeException;
 import org.jahia.modules.contenteditor.api.forms.EditorFormException;
 import org.jahia.modules.contenteditor.api.forms.EditorFormService;
-import org.jahia.modules.contenteditor.api.forms.impl.EditorFormServiceImpl;
 import org.jahia.modules.contenteditor.api.lock.StaticEditorLockService;
 import org.jahia.modules.graphql.provider.dxm.DataFetchingException;
 import org.jahia.modules.graphql.provider.dxm.osgi.annotations.GraphQLOsgiService;
-import org.jahia.osgi.BundleUtils;
-import org.jahia.services.content.*;
-import org.jahia.services.scheduler.BackgroundJob;
-import org.jahia.services.scheduler.SchedulerService;
-import org.quartz.JobDataMap;
-import org.quartz.JobDetail;
-import org.quartz.SchedulerException;
+import org.jahia.utils.LanguageCodeConverters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.jcr.RepositoryException;
-import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * The root class for the GraphQL form mutations API
@@ -93,7 +81,7 @@ public class GqlEditorFormMutations {
         @GraphQLName("locale") @GraphQLNonNull @GraphQLDescription("A string representation of a locale, in IETF BCP 47 language tag format, ie en_US, en, fr, fr_CH, ...") String locale
     ) {
         try {
-            return editorFormService.publishForm(LocaleUtils.toLocale(locale), uuidOrPath);
+            return editorFormService.publishForm(LanguageCodeConverters.getLocaleFromCode(locale), uuidOrPath);
         } catch (EditorFormException e) {
             throw new DataFetchingException(e);
         }
