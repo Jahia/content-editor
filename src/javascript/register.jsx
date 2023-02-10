@@ -105,7 +105,7 @@ export function register() {
         },
         // Hook on create engine opening, also hook on create content type selector
         create: ({name, uuid, path, lang, siteKey, uilang, contentTypes, excludedNodeTypes, includeSubTypes}) => {
-            window.CE_API.create({uuid, path, siteKey, lang, uilang, nodeTypes: contentTypes, excludedNodeTypes, includeSubTypes, name, isFullscreen: false, configName: contentTypes[0] === 'jnt:page' ? 'gwtcreatepage' : 'gwtcreate'});
+            window.CE_API.create({uuid, path, site: siteKey, lang, uilang, nodeTypes: contentTypes, excludedNodeTypes, includeSubTypes, name, isFullscreen: false, configName: contentTypes[0] === 'jnt:page' ? 'gwtcreatepage' : 'gwtcreate'});
         }
     };
 
