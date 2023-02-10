@@ -23,12 +23,7 @@
  */
 package org.jahia.modules.contenteditor.graphql.api;
 
-import graphql.annotations.annotationTypes.GraphQLDefaultValue;
-import graphql.annotations.annotationTypes.GraphQLDescription;
-import graphql.annotations.annotationTypes.GraphQLField;
-import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.annotations.annotationTypes.GraphQLNonNull;
-import org.apache.commons.lang.LocaleUtils;
+import graphql.annotations.annotationTypes.*;
 import org.jahia.api.Constants;
 import org.jahia.data.templates.JahiaTemplatesPackage;
 import org.jahia.modules.contenteditor.api.forms.EditorForm;
@@ -44,6 +39,7 @@ import org.jahia.services.content.JCRContentUtils;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRSessionFactory;
 import org.jahia.services.content.JCRSessionWrapper;
+import org.jahia.utils.LanguageCodeConverters;
 import org.jahia.utils.NodeTypeTreeEntry;
 import org.jahia.utils.NodeTypesUtils;
 import org.osgi.framework.Bundle;
@@ -55,11 +51,7 @@ import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -86,7 +78,7 @@ public class GqlEditorForms {
         @GraphQLName("locale") @GraphQLNonNull @GraphQLDescription("A string representation of a locale, in IETF BCP 47 language tag format, ie en_US, en, fr, fr_CH, ...") String locale,
         @GraphQLName("uuidOrPath") @GraphQLNonNull @GraphQLDescription("uuid or path of an existing node under with the new content will be created.") String uuidOrPath)
         throws EditorFormException {
-        return editorFormService.getCreateForm(nodeType, LocaleUtils.toLocale(uiLocale), LocaleUtils.toLocale(locale), uuidOrPath);
+        return editorFormService.getCreateForm(nodeType, LanguageCodeConverters.getLocaleFromCode(uiLocale), LanguageCodeConverters.getLocaleFromCode(locale), uuidOrPath);
     }
 
     @GraphQLField
@@ -97,7 +89,7 @@ public class GqlEditorForms {
         @GraphQLName("locale") @GraphQLNonNull @GraphQLDescription("A string representation of a locale, in IETF BCP 47 language tag format, ie en_US, en, fr, fr_CH, ...") String locale,
         @GraphQLName("uuidOrPath") @GraphQLNonNull @GraphQLDescription("UUID or path of an existing node under with the new content will be created.") String uuidOrPath)
         throws EditorFormException {
-        return editorFormService.getEditForm(LocaleUtils.toLocale(uiLocale), LocaleUtils.toLocale(locale), uuidOrPath);
+        return editorFormService.getEditForm(LanguageCodeConverters.getLocaleFromCode(uiLocale), LanguageCodeConverters.getLocaleFromCode(locale), uuidOrPath);
     }
 
     @GraphQLField
@@ -115,7 +107,7 @@ public class GqlEditorForms {
         throws EditorFormException {
         return editorFormService
             .getFieldConstraints(nodeUuidOrPath, parentNodeUuidOrPath, primaryNodeType, fieldNodeType, fieldName, context,
-                LocaleUtils.toLocale(uiLocale), LocaleUtils.toLocale(locale));
+                LanguageCodeConverters.getLocaleFromCode(uiLocale), LanguageCodeConverters.getLocaleFromCode(locale));
     }
 
     @GraphQLField
@@ -141,7 +133,7 @@ public class GqlEditorForms {
             return Collections.emptyList();
         }
         final String nodeIdentifier = parentNode.getIdentifier();
-        Locale locale = LocaleUtils.toLocale(uiLocale);
+        Locale locale = LanguageCodeConverters.getLocaleFromCode(uiLocale);
         List<String> allowedNodeTypes = new ArrayList<>(
             ContentEditorUtils.getAllowedNodeTypesAsChildNode(parentNode, childNodeName, useContribute, includeSubTypes, nodeTypes));
         Set<NodeTypeTreeEntry> entries = NodeTypesUtils
