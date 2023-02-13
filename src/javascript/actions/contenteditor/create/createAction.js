@@ -43,16 +43,16 @@ const Create = ({createAnother, render: Render, loading: Loading, ...otherProps}
                     if (createAnother) {
                         // Refetch only to generate a new valid system name
                         refetchFormData().then(() => {
-                            resetI18nContext();
                             formik.resetForm({values: initialValues});
+                            resetI18nContext();
                             setClicked(false);
                             if (envProps.onCreateAnother) {
                                 envProps.onCreateAnother();
                             }
                         });
                     } else {
-                        resetI18nContext();
                         formik.resetForm({values: formik.values});
+                        resetI18nContext();
                         if (envProps.onSavedCallback) {
                             envProps.onSavedCallback(data);
                         }
@@ -85,3 +85,4 @@ Create.propTypes = {
 export const createAction = {
     component: Create
 };
+
