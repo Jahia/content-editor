@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {useNotifications} from '@jahia/react-material';
 import {Formik} from 'formik';
 import {EditPanel} from './EditPanel';
@@ -14,12 +14,8 @@ export const Create = () => {
     const client = useApolloClient();
     const {t} = useTranslation('content-editor');
     const contentEditorConfigContext = useContentEditorConfigContext();
-    const {nodeData, initialValues, title, i18nContext} = useContentEditorContext();
+    const {nodeData, initialValues, title, i18nContext, createAnother} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
-    const createAnotherState = useState(false);
-    const createAnother = {
-        value: createAnotherState[0], set: createAnotherState[1]
-    };
 
     useEffect(() => {
         return () => {
