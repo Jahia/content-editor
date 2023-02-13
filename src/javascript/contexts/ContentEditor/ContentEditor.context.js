@@ -31,7 +31,6 @@ export const ContentEditorContextProvider = ({useFormDefinition, children}) => {
     const resetI18nContext = useCallback(() => {
         setI18nContext(prev => ({
             memo: {
-                ...prev.memo,
                 count: (prev.memo?.count || 0) + 1
             }
         }));
