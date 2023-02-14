@@ -9,7 +9,7 @@ import {
 } from '@jahia/cypress';
 import {ComponentType} from '@jahia/cypress/src/page-object/baseComponent';
 import {Field, PickerField, RichTextField, SmallTextField} from './fields';
-import {LanguageSwitcher} from '@jahia/design-system-kit';
+import {LanguageSwitcher} from './languageSwitcher';
 
 export class ContentEditor extends BasePage {
     languageSwitcher: LanguageSwitcher;
