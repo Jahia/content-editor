@@ -15,7 +15,7 @@ import {useContentEditorHistory} from '~/contexts/ContentEditorHistory';
 import {useTranslation} from 'react-i18next';
 import {useContentEditorApiContext} from '~/contexts/ContentEditorApi/ContentEditorApi.context';
 
-export const CreateContent = ({contextNodePath, path, showOnNodeTypes, nodeTypes, name, includeSubTypes, isModal, isFullscreen, onCreate, onClosed, render: Render, loading: Loading, ...otherProps}) => {
+export const CreateContent = ({contextNodePath, path, showOnNodeTypes, nodeTypes, name, includeSubTypes, isModal, isFullscreen, hasBypassChildrenLimit, onCreate, onClosed, render: Render, loading: Loading, ...otherProps}) => {
     const {redirect} = useContentEditorHistory();
     const api = useContentEditorApiContext();
     const {t} = useTranslation('content-editor');
@@ -57,7 +57,7 @@ export const CreateContent = ({contextNodePath, path, showOnNodeTypes, nodeTypes
     }
 
     const flattenedNodeTypes = flattenNodeTypes(nodeTypesTree);
-    const actions = transformNodeTypesToActions(flattenedNodeTypes);
+    const actions = transformNodeTypesToActions(flattenedNodeTypes, hasBypassChildrenLimit);
 
     const onClick = ({flattenedNodeTypes, nodeTypesTree}) => {
         if (isModal) {
@@ -122,7 +122,8 @@ CreateContent.propTypes = {
     render: PropTypes.func.isRequired,
     onCreate: PropTypes.func,
     onClosed: PropTypes.func,
-    loading: PropTypes.func
+    loading: PropTypes.func,
+    hasBypassChildrenLimit: PropTypes.bool
 };
 
 export const createContentAction = {

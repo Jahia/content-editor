@@ -16,7 +16,8 @@ export const registerCreateActions = registry => {
         showOnNodeTypes: ['jnt:contentFolder', 'jnt:content'],
         hideOnNodeTypes: ['jnt:navMenuText', 'jnt:page'],
         requiredPermission: ['jcr:addChildNodes'],
-        isModal: true
+        isModal: true,
+        hasBypassChildrenLimit: false
     });
 
     if (booleanValue(contextJsParameters.config.jcontent?.showPageComposer)) {
@@ -28,6 +29,7 @@ export const registerCreateActions = registry => {
             nodeTypes: ['jnt:page'],
             includeSubTypes: false,
             isModal: true,
+            hasBypassChildrenLimit: true,
             onCreate: ({path}) => {
                 window.jahia.reduxStore.dispatch(batchActions([{
                     type: 'CM_OPEN_PATHS', payload: [path.substring(0, path.lastIndexOf('/'))]
@@ -50,7 +52,8 @@ export const registerCreateActions = registry => {
             requiredPermission: ['jcr:addChildNodes'],
             nodeTypes: ['jnt:navMenuText', 'jnt:nodeLink', 'jnt:externalLink'],
             includeSubTypes: false,
-            isModal: true
+            isModal: true,
+            hasBypassChildrenLimit: true
         });
     }
 
