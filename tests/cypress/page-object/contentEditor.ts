@@ -2,7 +2,6 @@ import {
     BasePage,
     Button,
     Collapsible,
-    Dropdown,
     getComponentByAttr,
     getComponentByRole,
     getComponentBySelector,
@@ -10,9 +9,10 @@ import {
 } from '@jahia/cypress';
 import {ComponentType} from '@jahia/cypress/src/page-object/baseComponent';
 import {Field, PickerField, RichTextField, SmallTextField} from './fields';
+import {LanguageSwitcher} from '@jahia/design-system-kit';
 
 export class ContentEditor extends BasePage {
-    languageSwitcher: Dropdown;
+    languageSwitcher: LanguageSwitcher;
 
     openSection(sectionName: string) {
         return getComponentBySelector(Collapsible, `[data-sel-content-editor-fields-group="${sectionName}"]`).expand();
@@ -45,11 +45,11 @@ export class ContentEditor extends BasePage {
     }
 
     addAnotherContent() {
-        cy.get('#createAnother').check();
+        cy.get('#createAnother').check().should('have.attr', 'aria-checked', 'true');
     }
 
     removeAnotherContent() {
-        cy.get('#createAnother').uncheck();
+        cy.get('#createAnother').uncheck().should('have.attr', 'aria-checked', 'false');
     }
 
     activateWorkInProgressMode(language?: string) {
@@ -78,9 +78,9 @@ export class ContentEditor extends BasePage {
         }
     }
 
-    getLanguageSwitcher(): Dropdown {
+    getLanguageSwitcher(): LanguageSwitcher {
         if (!this.languageSwitcher) {
-            this.languageSwitcher = getComponentBySelector(Dropdown, '#contenteditor-dialog-title [data-cm-role="language-switcher"]');
+            this.languageSwitcher = getComponentBySelector(LanguageSwitcher, '#contenteditor-dialog-title [data-cm-role="language-switcher"]');
         }
 
         return this.languageSwitcher;
