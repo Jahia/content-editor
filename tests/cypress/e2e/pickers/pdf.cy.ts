@@ -1,4 +1,5 @@
 import {JContent} from '../../page-object/jcontent';
+import {AccordionItem} from '../../page-object/accordionItem';
 
 describe('Picker - PDF', () => {
     const siteKey = 'digitall';
@@ -20,8 +21,10 @@ describe('Picker - PDF', () => {
         const contentEditor = jcontent.editComponentByText('CEOs of The Digital Roundtable');
         contentEditor.toggleOption('jdmix:fileAttachment', 'pdfVersion');
         const picker = contentEditor.getPickerField('jdmix:fileAttachment_pdfVersion').open();
-        picker.getAccordionItem('picker-media').expandTreeItem('images');
-        picker.getAccordionItem('picker-media').getTreeItem('pdf').click();
+        const pagesAccordion: AccordionItem = picker.getAccordionItem('picker-media');
+        pagesAccordion.getHeader().should('be.visible');
+        pagesAccordion.expandTreeItem('images');
+        pagesAccordion.getTreeItem('pdf').click();
         picker.verifyResultsLength(2);
         picker.getAccordionItem('picker-media').getTreeItem('backgrounds').click();
         picker.assertHasNoTable();
@@ -31,11 +34,12 @@ describe('Picker - PDF', () => {
         const contentEditor = jcontent.editComponentByText('CEOs of The Digital Roundtable');
         contentEditor.toggleOption('jdmix:fileAttachment', 'pdfVersion');
         const picker = contentEditor.getPickerField('jdmix:fileAttachment_pdfVersion').open();
-        picker.getAccordionItem('picker-media').expandTreeItem('images');
-        picker.getAccordionItem('picker-media').getTreeItem('pdf').click();
-        picker.verifyResultsLength(2);
-        picker.search('digitall');
+        picker.get().find('header p').contains('Select a PDF file').should('be.visible');
+        const pagesAccordion: AccordionItem = picker.getAccordionItem('picker-media');
+        pagesAccordion.getHeader().should('be.visible');
+
         picker.switchSearchContext('Digitall');
+        picker.search('digitall');
         picker.verifyResultsLength(1);
     });
 });
