@@ -38,6 +38,8 @@ describe('Picker tests - multiple', () => {
         cy.log(`select the first ${numRows} elements`);
         expect(numRows).gte(1); // Need at least one for testing removal
         picker.getTable().selectItems(numRows);
+        cy.get('[data-cm-role="selection-table-collapse-button"] span')
+            .should('be.visible').and('contain', `${numRows} items selected`);
         picker.select();
 
         cy.log('verify selected is listed in CE modal/page');

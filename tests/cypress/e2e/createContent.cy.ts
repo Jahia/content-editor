@@ -110,4 +110,31 @@ describe('Create content tests', {retries: 10}, () => {
         // GetComponentByRole(Button, 'backButton').click()
         pageComposer.refresh().shouldContain('Cypress news title');
     });
+
+    it('keeps "create another" checkbox state after save', () => {
+        const contentEditor = pageComposer
+            .openCreateContent()
+            .getContentTypeSelector()
+            .searchForContentType('Simple Text')
+            .selectContentType('Simple text')
+            .create();
+        cy.get('#contenteditor-dialog-title')
+            .should('be.visible')
+            .and('contain', 'Create Simple text');
+
+        contentEditor.openSection('Options').get().find('input[type="text"]').clear().type('create-another-1');
+        contentEditor.closeSection('Options');
+        contentEditor.openSection('Content').get().find('input[name="jnt:text_text"]')
+            .type('Create another - test 1');
+        contentEditor.addAnotherContent();
+        contentEditor.save();
+
+        cy.get('#createAnother').should('have.attr', 'aria-checked', 'true');
+        contentEditor.openSection('Options').get().find('input[type="text"]').clear().type('create-another-2');
+        contentEditor.openSection('Content').get().find('input[type="text"]').type('Create another - test 2');
+        contentEditor.removeAnotherContent();
+        contentEditor.save();
+        pageComposer.refresh().shouldContain('Create another - test 1');
+        pageComposer.refresh().shouldContain('Create another - test 2');
+    });
 });

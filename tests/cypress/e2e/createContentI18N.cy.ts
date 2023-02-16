@@ -113,4 +113,23 @@ describe('Create content tests in I18N site', () => {
         pageComposer.refresh().shouldContain('Cypress Work In Progress FR/EN Test');
         pageComposer.shouldContainWIPOverlay();
     });
+
+    it('keeps "create another" checkbox state when switching languages ', () => {
+        const contentEditor = pageComposer
+            .openCreateContent()
+            .getContentTypeSelector()
+            .searchForContentType('Rich Text')
+            .selectContentType('Rich text')
+            .create();
+        cy.get('#contenteditor-dialog-title')
+            .should('be.visible')
+            .and('contain', 'Create Rich text');
+
+        contentEditor.getLanguageSwitcher().selectLang('English');
+        contentEditor.addAnotherContent();
+        contentEditor.getLanguageSwitcher().selectLang('Français');
+        cy.get('#createAnother').should('have.attr', 'aria-checked', 'true');
+
+        contentEditor.cancel();
+    });
 });

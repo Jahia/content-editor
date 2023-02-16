@@ -28,6 +28,13 @@ export const ContentEditorContextProvider = ({useFormDefinition, children}) => {
             count: 1
         }
     });
+
+    // Persist 'create another' chekbox state during language switch
+    const createAnotherState = useState(false);
+    const createAnother = {
+        value: createAnotherState[0], set: createAnotherState[1]
+    };
+
     const resetI18nContext = useCallback(() => {
         setI18nContext(prev => ({
             memo: {
@@ -125,7 +132,8 @@ export const ContentEditorContextProvider = ({useFormDefinition, children}) => {
         i18nContext,
         setI18nContext,
         resetI18nContext,
-        usages
+        usages,
+        createAnother
     };
 
     return (
