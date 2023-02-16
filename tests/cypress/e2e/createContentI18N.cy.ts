@@ -42,13 +42,12 @@ describe('Create content tests in I18N site', () => {
             .selectContentType('Rich text')
             .create();
         cy.get('#contenteditor-dialog-title').should('be.visible').and('contain', 'Create Rich text');
-        let contentSection = contentEditor.openSection('Content');
+        const contentSection = contentEditor.openSection('Content');
         contentEditor.openSection('Options').get().find('input[type="text"]').clear().type('cypress-test-multiple-1');
         contentSection.expand();
         contentEditor.getRichTextField('jnt:bigText_text').type('Cypress Multiple Content Test 1');
         contentEditor.addAnotherContent();
         contentEditor.save();
-        cy.wait(1000);
         contentEditor.closeSection('Content');
         contentEditor
             .openSection('Options')
@@ -152,7 +151,6 @@ describe('Create content tests in I18N site', () => {
         contentEditor.getRichTextField('jnt:news_desc').type('Cypress contenu actualite');
         contentSection.get().find('#jnt\\:news_jcr\\:title').focus().click({force: true});
         contentEditor.save();
-        cy.wait(1000);
         contentSection.get().find('#jnt\\:news_jcr\\:title').click({force: true}).focus();
         contentEditor.getLanguageSwitcher().select('English');
         cy.get('#contenteditor-dialog-content').should('not.contain.text', 'Invalid form');
@@ -160,7 +158,6 @@ describe('Create content tests in I18N site', () => {
         contentEditor.getRichTextField('jnt:news_desc').type('Cypress news content 2');
         contentSection.get().find('#jnt\\:news_jcr\\:title').focus().click({force: true});
         contentEditor.save();
-        cy.wait(1000);
         contentEditor.getLanguageSwitcher().select('Français');
         cy.get('#contenteditor-dialog-content', {timeout: 1000}).should('not.contain.text', 'Invalid form');
         contentSection.get().find('#jnt\\:news_jcr\\:title').clear({force: true}).type('Cypress titre actualite 3', {force: true});
