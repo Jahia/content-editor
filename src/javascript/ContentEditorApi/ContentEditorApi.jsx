@@ -76,7 +76,7 @@ export const ContentEditorApi = () => {
     useEffect(() => {
         const {contentEditor} = decode(location.hash);
         if (contentEditor) {
-            setEditorConfigs(previous => JSON.stringify(contentEditor) !== JSON.stringify(previous) ? contentEditor : previous);
+            setEditorConfigs(previous => JSON.stringify(contentEditor) === JSON.stringify(previous) ? previous : contentEditor);
         }
     }, [location]);
 
