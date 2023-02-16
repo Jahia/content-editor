@@ -15,6 +15,7 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands';
+import addContext from 'mochawesome/addContext';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('cypress-terminal-report/src/installLogsCollector')({
     collectTypes: ['cons:log', 'cons:info', 'cons:warn', 'cons:error']
@@ -36,3 +37,14 @@ if (Cypress.browser.family === 'chromium') {
         params: {cacheDisabled: true}
     });
 }
+
+Cypress.on('test:after:run', (test, runnable) => {
+    let videoName = Cypress.spec.name;
+    videoName = videoName.replace('/.cy.*', '');
+    const videoUrl = 'videos/' + videoName + '.mp4';
+    addContext({test}, videoUrl);
+    if (test.state === 'failed') {
+        const screenshot = `screenshots/${Cypress.spec.name}/${runnable.parent.title} -- ${test.title} (failed).png`;
+        addContext({test}, screenshot);
+    }
+});

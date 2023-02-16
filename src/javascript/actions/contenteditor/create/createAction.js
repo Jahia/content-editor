@@ -41,8 +41,9 @@ const Create = ({createAnother, render: Render, loading: Loading, ...otherProps}
             .then(data => {
                 if (data) {
                     if (createAnother) {
-                        // Refetch only to generate a new valid system name
+                        // Fetch only to generate a new valid system name
                         refetchFormData().then(() => {
+                            resetI18nContext();
                             formik.resetForm({values: initialValues});
                             resetI18nContext();
                             setClicked(false);
@@ -85,4 +86,3 @@ Create.propTypes = {
 export const createAction = {
     component: Create
 };
-

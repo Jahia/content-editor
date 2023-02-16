@@ -20,6 +20,5 @@ export default defineConfig({
         },
         excludeSpecPattern: '*.ignore.ts',
         baseUrl: 'http://localhost:8080',
-        experimentalSessionAndOrigin: false
     }
 });

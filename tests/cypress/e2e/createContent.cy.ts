@@ -6,8 +6,6 @@ describe('Create content tests', {retries: 10}, () => {
 
     before(function () {
         cy.executeGroovy('createSite.groovy', {SITEKEY: 'contentEditorSite'});
-        cy.login(); // Edit in chief
-        pageComposer = PageComposer.visit('contentEditorSite', 'en', 'home.html');
     });
 
     after(function () {
@@ -16,7 +14,8 @@ describe('Create content tests', {retries: 10}, () => {
     });
 
     beforeEach(() => {
-        Cypress.Cookies.preserveOnce('JSESSIONID');
+        cy.loginEditor();
+        pageComposer = PageComposer.visit('contentEditorSite', 'en', 'home.html');
     });
 
     it('Can create content', function () {
