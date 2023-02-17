@@ -17,7 +17,7 @@ describe('Picker tests - Site', () => {
     });
 
     beforeEach(() => {
-        cy.login();
+        cy.loginEditor();
         jcontent = JContent.visit(siteKey, 'en', 'content-folders/contents');
     });
 
@@ -66,4 +66,3 @@ describe('Picker tests - Site', () => {
         picker.getTable().getSelectedRows().should('have.length', 3);
     });
 });
-

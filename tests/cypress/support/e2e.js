@@ -39,12 +39,12 @@ if (Cypress.browser.family === 'chromium') {
 }
 
 Cypress.on('test:after:run', (test, runnable) => {
-    let videoName = Cypress.spec.name;
-    videoName = videoName.replace('/.cy.*', '');
+    let videoName = Cypress.spec.relative;
+    videoName = videoName.replace('/.cy.*', '').replace('cypress/e2e/', '');
     const videoUrl = 'videos/' + videoName + '.mp4';
     addContext({test}, videoUrl);
     if (test.state === 'failed') {
-        const screenshot = `screenshots/${Cypress.spec.name}/${runnable.parent.title} -- ${test.title} (failed).png`;
+        const screenshot = `screenshots/${Cypress.spec.relative.replace('cypress/e2e/', '')}/${runnable.parent.title} -- ${test.title} (failed).png`;
         addContext({test}, screenshot);
     }
 });

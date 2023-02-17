@@ -6,7 +6,7 @@ describe('Picker - PDF', () => {
     let jcontent: JContent;
     beforeEach(() => {
         // I have issues adding these to before()/after() so have to add to beforeEach()/afterEach()
-        cy.login(); // Edit in chief
+        cy.loginEditor(); // Edit in chief
 
         // beforeEach()
         jcontent = JContent.visit(siteKey, 'en', 'pages/home/investors/events');

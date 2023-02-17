@@ -20,11 +20,11 @@
   "license": "MIT",
   "devDependencies": {
     "@4tw/cypress-drag-drop": "^2.2.1",
-    "@jahia/cypress": "^1.1.4",
+    "@jahia/cypress": "^2.0.0",
     "@jahia/jahia-reporter": "^1.0.30",
     "@typescript-eslint/eslint-plugin": "^5.27.0",
     "@typescript-eslint/parser": "^5.27.0",
-    "cypress": "12.5.1",
+    "cypress": "12.6.0",
     "cypress-iframe": "^1.0.1",
     "cypress-multi-reporters": "^1.6.2",
     "cypress-slow-down": "^1.2.1",
