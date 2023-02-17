@@ -7,7 +7,7 @@ describe('Add Mixin by using choice list initializers (Image Reference)', () => 
     const cypressDocumentManagerImageReferenceLinkTest = 'Cypress document manager image reference link Test';
     before(function () {
         cy.executeGroovy('createSiteI18N.groovy', {SITEKEY: sitekey});
-        cy.login(); // Edit in chief
+        cy.loginEditor(); // Edit in chief
         JContent.visit(sitekey, 'en', 'media/file');
         // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.wait(5000);
@@ -27,7 +27,7 @@ describe('Add Mixin by using choice list initializers (Image Reference)', () => 
     });
 
     beforeEach(() => {
-        Cypress.Cookies.preserveOnce('JSESSIONID');
+        cy.loginEditor();
         pageComposer = PageComposer.visit(sitekey, 'en', 'home.html');
     });
 

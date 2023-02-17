@@ -3,17 +3,14 @@ import {PageComposer} from '../page-object/pageComposer';
 describe('Preview tests', () => {
     const siteKey = 'digitall';
     let pageComposer: PageComposer;
-    before(() => {
-        cy.login(); // Edit in chief
-        pageComposer = PageComposer.visit(siteKey, 'en', 'home.html');
-    });
 
     after(() => {
         cy.logout();
     });
 
     beforeEach(() => {
-        Cypress.Cookies.preserveOnce('JSESSIONID');
+        cy.loginEditor();
+        pageComposer = PageComposer.visit(siteKey, 'en', 'home.html');
     });
 
     it('It shows correctly preview of edited page even if not the one currently rendered in PageComposer', () => {

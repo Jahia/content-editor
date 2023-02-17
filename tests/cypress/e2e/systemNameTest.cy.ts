@@ -7,7 +7,6 @@ describe('System name test', () => {
 
     before(function () {
         cy.executeGroovy('createSite.groovy', {SITEKEY: site});
-        cy.login();
     });
 
     after(function () {
@@ -16,7 +15,7 @@ describe('System name test', () => {
     });
 
     beforeEach(function () {
-        Cypress.Cookies.preserveOnce('JSESSIONID');
+        cy.loginEditor();
         pageComposer = PageComposer.visit(site, 'en', 'home.html');
     });
 

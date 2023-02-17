@@ -58,15 +58,15 @@ export class Picker extends BaseComponent {
     }
 
     assertHasNoTree(): void {
-        getComponent(SecondaryNav, this, el => expect(el).to.not.exist);
+        this.get().find(`${SecondaryNav.defaultSelector}`).should('not.exist');
     }
 
     assertHasNoTable(): void {
-        getComponentByAttr(PickerTable, 'data-cm-role', 'table-content-list', this, el => expect(el).to.not.exist);
+        this.get().find(`${PickerTable.defaultSelector}[data-cm-role=table-content-list]`).should('not.exist');
     }
 
     assertHasNoSiteSwitcher(): void {
-        getComponentByAttr(Dropdown, 'data-cm-role', 'site-switcher', this, el => expect(el).to.not.exist);
+        this.get().find(`${PickerTable.defaultSelector}[data-cm-role=site-switcher]`).should('not.exist');
     }
 
     /**

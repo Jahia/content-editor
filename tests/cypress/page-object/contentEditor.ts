@@ -24,6 +24,7 @@ export class ContentEditor extends BasePage {
 
     save() {
         getComponentByRole(Button, 'createButton').click();
+        cy.get('#dialog-errorBeforeSave', {timeout: 1000}).should('not.exist');
         cy.get('[role="alertdialog"]').should('be.visible').should('contain', 'Content successfully created');
     }
 
