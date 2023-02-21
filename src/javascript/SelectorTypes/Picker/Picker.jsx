@@ -110,7 +110,7 @@ export const Picker = ({field, value, editorContext, inputContext, onChange, onB
                                 key={`${field.name}_${fieldVal.name}`}
                                 component={<ReferenceCard
                                     isReadOnly
-                                    labelledBy={`${name}-label`}
+                                    labelledBy={`${fieldVal.name}-label`}
                                     fieldData={fieldVal}/>}
                                 field={field}
                                 index={index}
