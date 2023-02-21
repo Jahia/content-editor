@@ -26,6 +26,8 @@ package org.jahia.modules.contenteditor.api.forms.impl;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jahia.api.Constants;
+import org.jahia.api.templates.JahiaTemplateManagerService;
+import org.jahia.data.templates.JahiaTemplatesPackage;
 import org.jahia.modules.contenteditor.api.forms.*;
 import org.jahia.modules.contenteditor.graphql.api.types.ContextEntryInput;
 import org.jahia.modules.graphql.provider.dxm.node.GqlJcrPropertyType;
@@ -39,6 +41,7 @@ import org.jahia.services.scheduler.BackgroundJob;
 import org.jahia.services.scheduler.SchedulerService;
 import org.jahia.utils.LanguageCodeConverters;
 import org.jahia.utils.i18n.Messages;
+import org.osgi.framework.Bundle;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.quartz.JobDataMap;
@@ -75,6 +78,7 @@ public class EditorFormServiceImpl implements EditorFormService {
     private StaticDefinitionsRegistry staticDefinitionsRegistry;
     private ComplexPublicationService publicationService;
     private SchedulerService schedulerService;
+    private JahiaTemplateManagerService jahiaTemplateManagerService;
 
     // we extend the map from SelectorType.defaultSelectors to add more.
     private static Map<Integer, Integer> defaultSelectors = new HashMap<>();
@@ -107,6 +111,11 @@ public class EditorFormServiceImpl implements EditorFormService {
     @Reference
     public void setNodeTypeRegistry(NodeTypeRegistry nodeTypeRegistry) {
         this.nodeTypeRegistry = nodeTypeRegistry;
+    }
+
+    @Reference
+    public void setJahiaTemplateManagerService(JahiaTemplateManagerService jahiaTemplateManagerService) {
+        this.jahiaTemplateManagerService = jahiaTemplateManagerService;
     }
 
     @Reference
@@ -320,7 +329,9 @@ public class EditorFormServiceImpl implements EditorFormService {
                 }
             }
 
-            EditorFormDefinition mergedFormDefinition = mergeFormDefinitions(formDefinitionsToMerge);
+            JCRSiteNode site = existingNode != null ? existingNode.getResolveSite() : parentNode.getResolveSite();
+
+            EditorFormDefinition mergedFormDefinition = mergeFormDefinitions(formDefinitionsToMerge, site);
             if (mergedFormDefinition.getSections() != null) {
                 List<EditorFormSectionDefinition> filteredSections = mergedFormDefinition
                     .getSections()
@@ -367,7 +378,10 @@ public class EditorFormServiceImpl implements EditorFormService {
         final boolean displayFieldSet = !fieldSetNodeType.isNodeType("jmix:templateMixin") || primaryNodeType.isNodeType("jmix:templateMixin");
         EditorFormFieldSet nodeTypeFieldSet = generateEditorFormFieldSet(processedProperties, fieldSetNodeType, existingNode, parentNode,
             locale, uiLocale, removed, dynamic, activated, displayFieldSet, isForExtendMixin);
-        nodeTypeFieldSet = mergeWithStaticFormFieldSets(fieldSetNodeType.getName(), nodeTypeFieldSet, processedProperties);
+
+        JCRSiteNode site = existingNode != null ? existingNode.getResolveSite() : parentNode.getResolveSite();
+
+        nodeTypeFieldSet = mergeWithStaticFormFieldSets(fieldSetNodeType.getName(), nodeTypeFieldSet, processedProperties, site);
 
         if (!nodeTypeFieldSet.isRemoved()) {
             processValueConstraints(nodeTypeFieldSet, locale, existingNode, parentNode, primaryNodeType);
@@ -375,13 +389,15 @@ public class EditorFormServiceImpl implements EditorFormService {
         }
     }
 
-    private EditorFormDefinition mergeFormDefinitions(SortedSet<EditorFormDefinition> editorFormDefinitions) {
+    private EditorFormDefinition mergeFormDefinitions(SortedSet<EditorFormDefinition> editorFormDefinitions, JCRSiteNode site) {
         EditorFormDefinition mergedEditorFormDefinition = null;
         for (EditorFormDefinition editorFormDefinition : editorFormDefinitions) {
-            if (mergedEditorFormDefinition == null) {
-                mergedEditorFormDefinition = new EditorFormDefinition(editorFormDefinition.getNodeType(), editorFormDefinition.getPriority(), editorFormDefinition.hasPreview(), editorFormDefinition.getSections(), editorFormDefinition.getOriginBundle());
-            } else {
-                mergedEditorFormDefinition = mergedEditorFormDefinition.mergeWith(editorFormDefinition);
+            if (isApplicable(editorFormDefinition.getOriginBundle(), site)) {
+                if (mergedEditorFormDefinition == null) {
+                    mergedEditorFormDefinition = new EditorFormDefinition(editorFormDefinition.getNodeType(), editorFormDefinition.getPriority(), editorFormDefinition.hasPreview(), editorFormDefinition.getSections(), editorFormDefinition.getOriginBundle());
+                } else {
+                    mergedEditorFormDefinition = mergedEditorFormDefinition.mergeWith(editorFormDefinition);
+                }
             }
         }
         return mergedEditorFormDefinition != null ? mergedEditorFormDefinition : new EditorFormDefinition();
@@ -484,13 +500,16 @@ public class EditorFormServiceImpl implements EditorFormService {
         }
     }
 
-    private EditorFormFieldSet mergeWithStaticFormFieldSets(String nodeTypeName, EditorFormFieldSet mergedEditorFormFieldSet, Set<String> processedProperties) {
+    private EditorFormFieldSet mergeWithStaticFormFieldSets(String nodeTypeName, EditorFormFieldSet mergedEditorFormFieldSet, Set<String> processedProperties, JCRSiteNode site) {
         SortedSet<EditorFormFieldSet> staticEditorFormFieldSets = staticDefinitionsRegistry.getFormFieldSets(nodeTypeName);
         if (staticEditorFormFieldSets == null) {
             return mergedEditorFormFieldSet;
         }
+
         for (EditorFormFieldSet staticEditorFormFieldSet : staticEditorFormFieldSets) {
-            mergedEditorFormFieldSet = mergedEditorFormFieldSet.mergeWith(staticEditorFormFieldSet, processedProperties);
+            if (isApplicable(staticEditorFormFieldSet.getOriginBundle(), site)) {
+                mergedEditorFormFieldSet = mergedEditorFormFieldSet.mergeWith(staticEditorFormFieldSet, processedProperties);
+            }
         }
         return mergedEditorFormFieldSet;
     }
@@ -780,5 +799,14 @@ public class EditorFormServiceImpl implements EditorFormService {
         }
 
         return res;
+    }
+
+    boolean isApplicable(Bundle bundle, JCRSiteNode site) {
+        JahiaTemplatesPackage tpl = jahiaTemplateManagerService.getTemplatePackageById(bundle.getSymbolicName());
+        if ("system".equals(tpl.getModuleType())) {
+            return true;
+        }
+
+        return site.getInstalledModulesWithAllDependencies().contains(bundle.getSymbolicName());
     }
 }

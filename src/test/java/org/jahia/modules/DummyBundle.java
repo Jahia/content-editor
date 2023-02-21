@@ -133,7 +133,7 @@ public class DummyBundle implements Bundle {
 
     @Override
     public String getSymbolicName() {
-        return null;
+        return "templates-web";
     }
 
     @Override
