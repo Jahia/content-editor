@@ -71,6 +71,7 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         ((EditorFormServiceImpl) editorFormService).setChoiceListInitializerService(ChoiceListInitializerService.getInstance());
         ((EditorFormServiceImpl) editorFormService).setNodeTypeRegistry(NodeTypeRegistry.getInstance());
         ((EditorFormServiceImpl) editorFormService).setStaticDefinitionsRegistry(staticDefinitionsRegistry);
+        ((EditorFormServiceImpl) editorFormService).setJahiaTemplateManagerService(ServicesRegistry.getInstance().getJahiaTemplateManagerService());
 
 
         // init sessions
