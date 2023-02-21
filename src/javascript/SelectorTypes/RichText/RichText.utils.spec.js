@@ -72,6 +72,7 @@ describe('RichText utils', () => {
 
         beforeEach(() => {
             dialog = {
+                getName: jest.fn(() => 'image'),
                 getContentElement: jest.fn(() => {
                     return {
                         setValue: jest.fn(),
