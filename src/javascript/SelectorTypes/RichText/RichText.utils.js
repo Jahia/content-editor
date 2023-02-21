@@ -17,8 +17,10 @@ export function fillCKEditorPicker(setUrl, dialog, contentPicker, pickerResult) 
     // Fill Dialog alt title
     const eltId = getCKEditorUrlInputId(dialog);
 
+    const altElementId = dialog.getName() === 'image2' ? 'alt' : 'txtAlt';
+
     dialog
-        .getContentElement('info', eltId === 'url' ? 'advTitle' : 'txtAlt')
+        .getContentElement('info', eltId === 'url' ? 'advTitle' : altElementId)
         .setValue(pickerResult.name);
 
     // Wrap path to build Jahia url.
