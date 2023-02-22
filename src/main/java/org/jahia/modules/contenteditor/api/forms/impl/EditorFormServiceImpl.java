@@ -319,15 +319,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             // Get all form definitions to merge from the primary type.
             final SortedSet<EditorFormDefinition> formDefinitionsToMerge = staticDefinitionsRegistry.getFormDefinitionsForType(primaryNodeType);
 
-            if (EDIT.equals(mode)) {
-                Set<ExtendedNodeType> addMixins = Arrays.stream(existingNode.getMixinNodeTypes()).filter(nodetype -> !processedNodeTypes.contains(nodetype.getName())).collect(Collectors.toSet());
-                for (ExtendedNodeType addMixin : addMixins) {
-                    generateAndMergeFieldSetForType(addMixin, uiLocale, locale, existingNode, parentNode, primaryNodeType,
-                        formSectionsByName, false, false, true, processedProperties, false);
-                    // Add mixins form definitions to merge that are set on the node.
-                    formDefinitionsToMerge.addAll(staticDefinitionsRegistry.getFormDefinitionsForType(addMixin));
-                }
-            }
+            addMixinsNodeType(primaryNodeType, uiLocale, locale, existingNode, parentNode, mode, formSectionsByName, processedProperties, processedNodeTypes, formDefinitionsToMerge);
 
             JCRSiteNode site = existingNode != null ? existingNode.getResolveSite() : parentNode.getResolveSite();
 
@@ -354,11 +346,42 @@ public class EditorFormServiceImpl implements EditorFormService {
         }
     }
 
-    private boolean shouldHideSection(EditorFormSectionDefinition section, String mode){
+    private void addMixinsNodeType(ExtendedNodeType primaryNodeType, Locale uiLocale, Locale locale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, String mode, Map<String, EditorFormSection> formSectionsByName, Set<String> processedProperties, Set<String> processedNodeTypes, SortedSet<EditorFormDefinition> formDefinitionsToMerge) throws RepositoryException {
+//        Add all the fields for the mixins and their supertypes added on the node
+        Set<ExtendedNodeType> nodeTypesToProcess;
+        if (EDIT.equals(mode)) {
+            Set<ExtendedNodeType> addMixins = Arrays.stream(existingNode.getMixinNodeTypes()).filter(nodetype -> !processedNodeTypes.contains(nodetype.getName())).collect(Collectors.toSet());
+            for (ExtendedNodeType addMixin : addMixins) {
+                if (processedNodeTypes.contains(addMixin.getName())) {
+                    // ignore already process node types
+                    continue;
+                }
+                generateAndMergeFieldSetForType(addMixin, uiLocale, locale, existingNode, parentNode, primaryNodeType,
+                    formSectionsByName, false, false, true, processedProperties, false);
+                processedNodeTypes.add(addMixin.getName());
+                nodeTypesToProcess =
+                    Arrays.stream(addMixin.getSupertypes()).collect(Collectors.toCollection(LinkedHashSet::new));
+
+                for (ExtendedNodeType superType : nodeTypesToProcess) {
+                    if (processedNodeTypes.contains(superType.getName())) {
+                        // ignore already process node types
+                        continue;
+                    }
+                    generateAndMergeFieldSetForType(superType, uiLocale, locale, existingNode, parentNode, primaryNodeType,
+                        formSectionsByName, false, false, true, processedProperties, false);
+                    processedNodeTypes.add(superType.getName());
+                }
+                // Add mixins form definitions to merge that are set on the node.
+                formDefinitionsToMerge.addAll(staticDefinitionsRegistry.getFormDefinitionsForType(addMixin));
+            }
+        }
+    }
+
+    private boolean shouldHideSection(EditorFormSectionDefinition section, String mode) {
         return section.isHide() || (!section.getDisplayModes().isEmpty() && !section.getDisplayModes().contains(mode));
     }
 
-    private void checkIfListOrderingSectionIsRequired(ExtendedNodeType primaryNodeType, JCRNodeWrapper existingNode,Map<String, EditorFormSection> formSectionsByName) throws RepositoryException {
+    private void checkIfListOrderingSectionIsRequired(ExtendedNodeType primaryNodeType, JCRNodeWrapper existingNode, Map<String, EditorFormSection> formSectionsByName) throws RepositoryException {
         if (formSectionsByName.containsKey("listOrdering")) {
             return;
         }

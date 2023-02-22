@@ -124,6 +124,9 @@ extends=jnt:text
  extends = jnt:mapServiceSimple
 - subTitle (string) mandatory internationalized
 
+[jmix:mapLinkNoExtends] > jmix:linkCommonsSecond mixin
+ - subTitle (string) mandatory internationalized
+
 [jmix:hasPreview] mixin
 
 [jnt:externalLinkIssueExample] > jnt:content, jmix:basicContent, jmix:externalLink
