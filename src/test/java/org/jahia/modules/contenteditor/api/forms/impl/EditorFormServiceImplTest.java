@@ -582,6 +582,10 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         Assert.isTrue(constraintsSize == fieldValueConstraints.size(), "We should have the same number of constraints, either if the node exists or not");
     }
 
+    /**
+     * Extends mixin willl group all the properties from their supertypes under same fieldset
+     * @throws Exception
+     */
     @Test
     public void testExtendsMixins() throws Exception {
         JCRNodeWrapper simpleContent = session.getNode(testSite.getJCRLocalPath()).addNode("testNode", "jnt:mapServiceSimple");
@@ -603,6 +607,34 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         Assert.isTrue(hasField(form, "content", "jmix:mapLink", "internalLink"), "could not find internalLink in jmix:mapLink "
             + "section");
         Assert.isTrue(hasField(form, "content", "jmix:mapLink", "externalLink"), "could not find externalLink in jmix:mapLink "
+            + "section");
+    }
+
+    /**
+     * Mixin added on a specific node should behave as mixin added on node types (all supertypes are in different fieldset)
+     * @throws Exception
+     */
+    @Test
+    public void testAddedMixins() throws Exception {
+        JCRNodeWrapper simpleContent = session.getNode(testSite.getJCRLocalPath()).addNode("testNode", "jnt:mapServiceSimple");
+        simpleContent.addMixin("jmix:mapLinkNoExtends");
+        simpleContent.setProperty("subTitle", "sub title");
+        simpleContent.setProperty("secondTitle", "second title");
+        simpleContent.setProperty("titleLink", "title");
+        session.save();
+        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
+
+        Assert.isTrue(hasField(form, "content", "jnt:mapServiceSimple", "thematicColor"), "could not find thematicColor in content "
+            + "section");
+        Assert.isTrue(hasField(form, "content", "jmix:mapLink", "subTitle"), "could not find subTitle in jmix:mapLink "
+            + "section");
+        Assert.isTrue(hasField(form, "content", "jmix:linkCommonsSecond", "secondTitle"), "could not find secondTitle in jmix:linkCommonsSecond "
+            + "section");
+        Assert.isTrue(hasField(form, "content", "jmix:linkCommons", "titleLink"), "could not find titleLink in jmix:linkCommons "
+            + "section");
+        Assert.isTrue(hasField(form, "content", "jmix:linkCommons", "internalLink"), "could not find internalLink in jmix:linkCommons "
+            + "section");
+        Assert.isTrue(hasField(form, "content", "jmix:linkCommons", "externalLink"), "could not find externalLink in jmix:linkCommons "
             + "section");
     }
 
@@ -730,6 +762,11 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         Assert.isTrue(fields.get(0).getMandatory(), "Override of field is not mandatory");
         Assert.isTrue(fields.get(1).getName().equals("prop1"), "Override of field does not contain prop1");
         Assert.isTrue(fields.get(2).getName().equals("prop2"), "Override of field does not contain prop2");
+
+        fieldSet = getFieldSet(form, sectionName, "jmix:mix2");
+        fields = new ArrayList<>(fieldSet.getEditorFormFields());
+        Assert.isTrue(fields.size() == 1, "Expected 1 fields but receive " + fields.size());
+        Assert.isTrue(fields.get(0).getName().equals("propMix2"), "Override of field does not contain propMix2");
     }
 
     private List<EditorFormFieldValueConstraint> getValueConstraints(final EditorForm form, final String searchedSection,
