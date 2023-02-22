@@ -26,11 +26,12 @@ package org.jahia.modules.contenteditor.api.forms;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 
+import java.util.Objects;
+
 /**
  * Represents a form target (aka classification) alongside with the rank within that target.
  */
 public class EditorFormFieldTarget implements Comparable<EditorFormFieldTarget> {
-    private static final double THRESHOLD = .0001;
     private String sectionName;
     private String fieldSetName;
     private Double rank;
@@ -80,19 +81,13 @@ public class EditorFormFieldTarget implements Comparable<EditorFormFieldTarget> 
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         EditorFormFieldTarget that = (EditorFormFieldTarget) o;
-
-        if (sectionName != null ? !sectionName.equals(that.sectionName) : that.sectionName != null) return false;
-        if (fieldSetName != null ? !fieldSetName.equals(that.fieldSetName) : that.fieldSetName != null) return false;
-        return rank != null ? Math.abs(rank - that.rank) < THRESHOLD : that.rank == null;
+        return Objects.equals(sectionName, that.sectionName) && Objects.equals(fieldSetName, that.fieldSetName) && Objects.equals(rank, that.rank);
     }
 
     @Override
     public int hashCode() {
-        int result = sectionName != null ? sectionName.hashCode() : 0;
-        result = 31 * result + (rank != null ? rank.hashCode() : 0);
-        return result;
+        return Objects.hash(sectionName, fieldSetName, rank);
     }
 
     @Override
