@@ -35,7 +35,6 @@ import java.util.*;
  * This structure represents a logical set of fields
  */
 public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
-    private static final double THRESHOLD = .0001;
     private String name;
     private String displayName;
     private String description;
@@ -104,9 +103,13 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
         this.description = description;
     }
 
-    public Boolean getRemoved() { return removed; }
+    public Boolean getRemoved() {
+        return removed;
+    }
 
-    public void setRemoved(Boolean removed) { this.removed = removed; }
+    public void setRemoved(Boolean removed) {
+        this.removed = removed;
+    }
 
     @GraphQLField
     @GraphQLDescription("True if this is dynamic field set (meaningin it can be activated or not)")
@@ -207,16 +210,12 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
         if (o == null || getClass() != o.getClass()) return false;
 
         EditorFormFieldSet that = (EditorFormFieldSet) o;
-
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        return priority != null ? Math.abs(priority - that.priority) < THRESHOLD : that.priority == null;
+        return Objects.equals(name, that.name) && Objects.equals(originBundle, that.originBundle) && Objects.equals(rank, that.rank) && Objects.equals(priority, that.priority);
     }
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (priority != null ? priority.hashCode() : 0);
-        return result;
+        return Objects.hash(name, originBundle, rank, priority);
     }
 
     @Override
@@ -234,11 +233,22 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
             }
         }
         if (priority == null) {
-            if (otherEditorFormFieldSet.priority != null) return -1;
-            else return 0;
+            if (otherEditorFormFieldSet.priority != null) {
+                return -1;
+            } else {
+                return otherEditorFormFieldSet.hashCode() - this.hashCode();
+            }
         } else {
-            if (otherEditorFormFieldSet.priority == null) return 1;
-            return priority.compareTo(otherEditorFormFieldSet.priority);
+            if (otherEditorFormFieldSet.priority == null) {
+                return 1;
+            } else {
+                int comparePriority = priority.compareTo(otherEditorFormFieldSet.priority);
+                if (comparePriority == 0) {
+                    return otherEditorFormFieldSet.hashCode() - this.hashCode();
+                } else {
+                    return comparePriority;
+                }
+            }
         }
     }
 
@@ -254,7 +264,7 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
      * or not, as well as how to add/remove targets and/or fields inside targets.
      *
      * @param otherEditorFormFieldSet the other editor for to merge with.
-     * @param processedProperties Set of property names already existing in current form (to avoid property conflict)
+     * @param processedProperties     Set of property names already existing in current form (to avoid property conflict)
      * @return the resulting merged object.
      */
     public EditorFormFieldSet mergeWith(EditorFormFieldSet otherEditorFormFieldSet, Set<String> processedProperties) {
