@@ -46,7 +46,7 @@ public final class EditorFormFieldSetTest {
         EditorFormFieldSet result = form1.mergeWith(form2, new HashSet<>());
 
         assertSame(form1, result);
-        assertEquals(new EditorFormFieldSet("form1", "form1DisplayName", "form1Description", false, false, true, true, false,Collections.emptySet()), result);
+        assertEquals(new EditorFormFieldSetBuilder("form1").build(), result);
     }
 
     @Test
