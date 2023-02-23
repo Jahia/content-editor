@@ -1,5 +1,5 @@
 import {JContent} from '../../page-object/jcontent';
-import {AccordionItem} from "../../page-object/accordionItem";
+import {AccordionItem} from '../../page-object/accordionItem';
 
 describe('Picker - PDF', () => {
     const siteKey = 'digitall';
