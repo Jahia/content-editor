@@ -15,7 +15,7 @@ export const registerEditActions = actionsRegistry => {
     actionsRegistry.add('action', 'edit', editContentAction, {
         buttonIcon: <Edit/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.contentEdit',
-        targets: showPageComposer ? ['contentActions:2', 'headerPrimaryActions:1.5'] : ['contentActions:2'],
+        targets: showPageComposer ? ['contentActions:2', 'headerPrimaryActions:1.5', 'narrowHeaderMenu:1'] : ['contentActions:2', 'narrowHeaderMenu:1'],
         hideOnNodeTypes: ['jnt:virtualsite', 'jnt:page'], // For edit content
         requiredSitePermission: ['editAction'],
         getDisplayName: true,
@@ -26,7 +26,7 @@ export const registerEditActions = actionsRegistry => {
     actionsRegistry.add('action', 'editPage', editContentAction, {
         buttonIcon: <Edit/>,
         buttonLabel: 'content-editor:label.contentEditor.edit.contentEdit',
-        targets: showPageComposer ? ['contentActions:2', 'headerPrimaryActions:1.5'] : ['contentActions:2'],
+        targets: showPageComposer ? ['contentActions:2', 'headerPrimaryActions:1.5', 'narrowHeaderMenu:1'] : ['contentActions:2', 'narrowHeaderMenu:1'],
         showOnNodeTypes: ['jnt:page'], // For edit pages
         requiredSitePermission: ['editPageAction'],
         getDisplayName: true,
