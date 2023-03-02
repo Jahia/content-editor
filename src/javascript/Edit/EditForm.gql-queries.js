@@ -28,6 +28,7 @@ const NodeDataFragment = {
                     "jmix:mainResource"
                 ]})
                 displayableNode {
+                    ...NodeCacheRequiredFields
                     path
                     isFolder:isNodeType(type: {multi: ANY, types: ["jnt:contentFolder", "jnt:folder"]})
                 }
