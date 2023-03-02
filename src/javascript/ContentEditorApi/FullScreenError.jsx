@@ -6,7 +6,13 @@ export const FullScreenError = props => {
         <div style={{height: '100vh', display: 'flex'}}>
             {React.cloneElement(ErrorBoundary.defaultProps.fallback, {
                 ...props, goBack: () => {
-                    window.location.reload();
+                    const cePartIndex = window.location.href.indexOf('#(contentEditor');
+
+                    if (cePartIndex !== -1) {
+                        window.location.href = window.location.href.slice(0, cePartIndex);
+                    } else {
+                        window.history.back();
+                    }
                 }
             })}
         </div>
