@@ -1158,10 +1158,10 @@
   dependencies:
     regenerator-runtime "^0.13.11"
 
-"@babel/runtime@^7.20.13":
-  version "7.20.13"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.20.13.tgz#7055ab8a7cff2b8f6058bf6ae45ff84ad2aded4b"
-  integrity sha512-gt3PKXs0DBoL9xCvOIIZ2NEqAGZqHjAnmVbfQtB620V0uReIQutpel14KcneZuer7UioY8ALKZ7iocavvzTNFA==
+"@babel/runtime@^7.21.0":
+  version "7.21.0"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.21.0.tgz#5b55c9d394e5fcf304909a8b00c07dc217b56673"
+  integrity sha512-xwII0//EObnq89Ji5AKYQaRYiW/nZ3llSv29d49IuxPhKbtJoLP+9QUUZ4nVragQVtaVGeZrpB+ZtG/Pdy/POw==
   dependencies:
     regenerator-runtime "^0.13.11"
 
@@ -1486,12 +1486,12 @@
     mdi-material-ui "^5.10.0"
     recompose "^0.30.0"
 
-"@jahia/moonstone@^2.5.0":
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/@jahia/moonstone/-/moonstone-2.5.1.tgz#3bb19e0235cf45d91480ff9ceed2fab3d5351225"
-  integrity sha512-6RICXp/z9DTlWYfZt6sVe/GyZwAirPDa8m2S7QC6zvz+3REQJkin9ZPxogQOAL1r/dT1PF5isp4l8PI9MhY4aQ==
+"@jahia/moonstone@^2.5.4":
+  version "2.5.4"
+  resolved "https://npm.jahia.com/@jahia%2fmoonstone/-/moonstone-2.5.4.tgz#a7194af6f2e791563368b640cc68de86d9f554aa"
+  integrity sha512-2DJuhTNXNYeZ9yKufIHLT5xiKVCh131Vg+cIffqVo7iOmeGWzHeVDU1FspQnuL8UtBOpVzkSaNFkcUYKfQEKpw==
   dependencies:
-    "@babel/runtime" "^7.20.13"
+    "@babel/runtime" "^7.21.0"
     clsx "^1.2.1"
     prop-types "^15.8.1"
     re-resizable "^6.9.9"
