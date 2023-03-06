@@ -72,10 +72,8 @@ export const RichText = ({field, id, value, onChange, onBlur}) => {
         definitionConfig.customConfig = data.forms.ckeditorConfigPath.replace('$context', window.contextJsParameters.contextPath);
 
         // Custom config coming from the template set, let's populate the contextJsParameters for retro compatibility
-        if (definitionConfig.customConfig) {
-            if (window.contextJsParameters) {
-                window.contextJsParameters.ckeCfg = definitionConfig.customConfig;
-            }
+        if (definitionConfig.customConfig && window.contextJsParameters) {
+            window.contextJsParameters.ckeCfg = definitionConfig.customConfig;
         }
     }
 
@@ -95,7 +93,7 @@ export const RichText = ({field, id, value, onChange, onBlur}) => {
     };
 
     const config = {
-        ...definitionConfig,
+        customConfig: '',
         width: '100%',
         contentEditorFieldName: id, // Used by selenium to get CKEditor instance
         filebrowserBrowseUrl: (dialog, params, setUrl) => handlePickerDialog(setUrl, 'file', params, dialog),
@@ -103,7 +101,8 @@ export const RichText = ({field, id, value, onChange, onBlur}) => {
         filebrowserFlashBrowseUrl: (dialog, params, setUrl) => handlePickerDialog(setUrl, 'file', params, dialog),
         filebrowserLinkBrowseUrl: (dialog, params, setUrl) => handlePickerDialog(setUrl, 'editoriallink', params, dialog),
         disableNativeSpellChecker: false,
-        baseFloatZIndex: 1000
+        baseFloatZIndex: 1000,
+        ...definitionConfig
     };
 
     return (
