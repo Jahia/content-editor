@@ -81,7 +81,11 @@ export const ContentEditorApi = () => {
         if (loaded.current) {
             const currentEncodedLocation = rison.encode({search: history.location.search, hash: history.location.hash});
             if (currentEncodedLocation !== locationFromState) {
-                history.replace(rison.decode(locationFromState));
+                if (currentEncodedLocation.includes('contentEditor:')) {
+                    history.replace(rison.decode(locationFromState));
+                } else {
+                    history.push(rison.decode(locationFromState));
+                }
             }
         }
     }, [history, locationFromState]);
