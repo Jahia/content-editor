@@ -48,7 +48,7 @@ export const OnCloseConfirmationDialog = ({deleteEditorConfig, openDialog}) => {
                 deleteEditorConfig();
             }
         }
-    }, [deleteEditorConfig, location.hash]);
+    }, [deleteEditorConfig, dirty, formik, location.hash]);
 
     return confirmationConfig && (
         <CloseConfirmationDialog
