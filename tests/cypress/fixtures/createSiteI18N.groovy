@@ -24,7 +24,11 @@ if (sitesService.getSiteByKey("SITEKEY") == null) {
         @Override
         Object doInJCR(JCRSessionWrapper jcrSessionWrapper) throws RepositoryException {
             JCRSiteNode siteByKey = sitesService.getSiteByKey("SITEKEY", jcrSessionWrapper)
-            siteByKey.setLanguages(new HashSet<String>(Arrays.asList("en","fr","de")))
+            Set<String> languages = new HashSet<String>(Arrays.asList("en","fr","de"))
+            siteByKey.setLanguages(languages)
+            languages.remove("de")
+            siteByKey.setMandatoryLanguages(languages)
+            siteByKey.setDefaultLanguage("en")
             jcrSessionWrapper.save()
             return null
         }
