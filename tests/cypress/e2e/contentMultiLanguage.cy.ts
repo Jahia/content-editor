@@ -1,12 +1,13 @@
 import {PageComposer} from '../page-object/pageComposer';
+import {Picker} from '../page-object/picker';
+import {getComponentByRole} from "@jahia/cypress";
 
 const sitekey = 'contentMultiLanguage';
 describe('Create multi language content and verify that it is different in all languages', () => {
     let pageComposer: PageComposer;
 
     before(function () {
-        cy.executeGroovy('createSiteI18N.groovy', {SITEKEY: sitekey});
-        cy.wait(10000)
+        cy.executeGroovy('contentMultiLanguageSite.groovy', {SITEKEY: sitekey});
     });
 
     after(function () {
@@ -28,8 +29,12 @@ describe('Create multi language content and verify that it is different in all l
             .create();
         cy.get('#contenteditor-dialog-title').should('be.visible').and('contain', 'Create News entry');
         const contentSection = contentEditor.openSection('Content');
-        contentSection.expand().get().find('.cke_button__source').click();
+        contentSection.expand();
+        contentSection.get().find('input[id="jnt:news_jcr:title"]').type('My news');
+        contentSection.get().find('.cke_button__source.cke_button_off').should('be.visible').click();
         contentSection.get().find('textarea').should('have.value', '').type('Multi language test en');
+        // contentSection.get().find('[data-sel-field-picker-action="openPicker"]').click();
+        // const picker = getComponentByRole(Picker, 'picker-dialog');
         contentEditor.save();
         pageComposer.refresh().shouldContain('Multi language test en');
     })
