@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ErrorBoundary} from '@jahia/jahia-ui-root';
 import {useEdit} from './useEdit';
 import {useCreate} from './useCreate';
@@ -20,23 +20,6 @@ function decode(hash) {
 
     return values;
 }
-
-let getEncodedLocations = function (location, editorConfigs) {
-    const {contentEditor, ...others} = decode(location.hash);
-
-    const valid = editorConfigs.every(config => Object.values(config).every(o => typeof o !== 'function'));
-
-    const cleanedHash = Object.keys(others).length > 0 ? rison.encode_uri(others) : '';
-    const locationWithoutEditors = rison.encode({search: location.search, hash: cleanedHash});
-    const locationFromState = (valid && editorConfigs.length > 0) ?
-        rison.encode({search: location.search, hash: '#' + rison.encode_uri({...others, contentEditor: JSON.parse(JSON.stringify(editorConfigs))})}) :
-        locationWithoutEditors;
-
-    return {
-        locationFromState,
-        locationWithoutEditors
-    };
-};
 
 export const ContentEditorApi = () => {
     const [editorConfigs, setEditorConfigs] = useState([]);
@@ -73,42 +56,29 @@ export const ContentEditorApi = () => {
     const history = useHistory();
     const location = useLocation();
 
-    const loaded = useRef();
-    const {locationFromState, locationWithoutEditors} = getEncodedLocations(location, editorConfigs);
-
     useEffect(() => {
-        // Copy editor state to hash (don't do on load)
-        if (loaded.current) {
-            const currentEncodedLocation = rison.encode({search: history.location.search, hash: history.location.hash});
-            if (currentEncodedLocation !== locationFromState) {
-                history.replace(rison.decode(locationFromState));
+        const {contentEditor, ...others} = decode(location.hash);
+
+        const valid = editorConfigs.every(config => Object.values(config).every(o => typeof o !== 'function'));
+
+        if (contentEditor && (!valid || editorConfigs.length === 0)) {
+            history.replace({hash: Object.keys(others).length > 0 ? rison.encode_uri(others) : null, search: location.search});
+        } else if (valid && editorConfigs.length > 0) {
+            // Remove undefined fields
+            const cleaned = JSON.parse(JSON.stringify(editorConfigs));
+            const hash = '#' + rison.encode_uri({...others, contentEditor: cleaned});
+            if (location.hash !== hash) {
+                history.replace({hash, search: location.search});
             }
         }
-    }, [history, locationFromState]);
+    }, [location, editorConfigs, history, context.edit]);
 
     useEffect(() => {
-        // Read hash to set/unset editors
         const {contentEditor} = decode(location.hash);
         if (contentEditor) {
-            setEditorConfigs(previous => {
-                const newValue = rison.encode(contentEditor);
-                const previousValue = rison.encode(previous);
-                return newValue === previousValue ? previous : contentEditor;
-            });
+            setEditorConfigs(previous => JSON.stringify(contentEditor) === JSON.stringify(previous) ? previous : contentEditor);
         }
-    }, [location.hash]);
-
-    useEffect(() => {
-        // Reset all states/hash after location change
-        if (loaded.current) {
-            history.replace(rison.decode(locationWithoutEditors));
-            setEditorConfigs([]);
-        }
-    }, [history, location.pathname, locationWithoutEditors]);
-
-    useEffect(() => {
-        loaded.current = true;
-    }, []);
+    }, [location]);
 
     const editorConfigLang = editorConfigs.length > 0 ? editorConfigs[0].lang : undefined;
     useEffect(() => {
