@@ -1,6 +1,16 @@
 import {PageComposer} from '../page-object/pageComposer';
 import {PickerGrid} from '../page-object/pickerGrid';
-import {getComponentByRole} from "@jahia/cypress";
+import {Collapsible, getComponentByRole} from '@jahia/cypress';
+import {ContentEditor} from '../page-object';
+
+interface FillContentType {
+    contentEditor: ContentEditor,
+    contentSection: Collapsible,
+    lang: string,
+    title: string,
+    description:string,
+    image: string
+}
 
 const sitekey = 'contentMultiLanguage';
 describe('Create multi language content and verify that it is different in all languages', () => {
@@ -20,7 +30,43 @@ describe('Create multi language content and verify that it is different in all l
         pageComposer = PageComposer.visit(sitekey, 'en', 'home.html');
     });
 
-    it('Can create content', {retries: 0}, function () {
+    const newsByLanguage = {
+        'en': {
+            title: 'English news',
+            description: 'Something new happened in England',
+            image: 'cypress/fixtures/snowbearHome.jpeg',
+            lang: 'English'
+        },
+        'de': {
+            title: 'German news',
+            description: 'Something new happened in Germany',
+            image: 'cypress/fixtures/snowCat.jpeg',
+            lang: 'Deutsch'
+        },
+        'fr': {
+            title: 'French news',
+            description: 'Something new happened in France',
+            image: 'cypress/fixtures/snowWolf.jpeg',
+            lang: 'Français'
+        }
+    }
+
+    const fillNews = (data: FillContentType) => {
+        data.contentEditor.getLanguageSwitcher().select(data.lang);
+        data.contentSection.collapse();
+        data.contentSection.expand();
+        data.contentSection.get().find('input[id="jnt:news_jcr:title"]').should('be.visible').type(data.title);
+        data.contentSection.get().find('.cke_button__source.cke_button_off').should('be.visible').click();
+        data.contentSection.get().find('textarea').should('be.visible').type(data.description);
+        data.contentSection.get().find('[data-sel-field-picker-action="openPicker"]').click();
+        const picker = getComponentByRole(PickerGrid, 'picker-dialog');
+        picker.uploadFile(data.image);
+        picker.wait(1000);
+        picker.select();
+        picker.wait(1000);
+    }
+
+    it('Can create content in 3 languages', {retries: 0}, function () {
         const contentEditor = pageComposer
             .openCreateContent()
             .getContentTypeSelector()
@@ -30,14 +76,11 @@ describe('Create multi language content and verify that it is different in all l
         cy.get('#contenteditor-dialog-title').should('be.visible').and('contain', 'Create News entry');
         const contentSection = contentEditor.openSection('Content');
         contentSection.expand();
-        contentSection.get().find('input[id="jnt:news_jcr:title"]').type('My news');
-        contentSection.get().find('.cke_button__source.cke_button_off').should('be.visible').click();
-        contentSection.get().find('textarea').should('have.value', '').type('Multi language test en');
-        contentSection.get().find('[data-sel-field-picker-action="openPicker"]').click();
-        const picker = getComponentByRole(PickerGrid, 'picker-dialog');
-        picker.uploadFile('cypress/fixtures/snowbearHome.jpeg');
-        picker.wait(1000);
-        picker.select();
+
+        Object.keys(newsByLanguage).forEach(key => {
+            fillNews({contentEditor, contentSection, ...newsByLanguage[key]});
+        });
+
         contentEditor.save();
         pageComposer.refresh().shouldContain('Multi language test en');
     })
