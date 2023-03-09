@@ -13,6 +13,7 @@ interface FillContentType {
 }
 
 const sitekey = 'contentMultiLanguage';
+
 describe('Create multi language content and verify that it is different in all languages', () => {
     let pageComposer: PageComposer;
 
