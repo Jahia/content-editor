@@ -12,6 +12,19 @@ interface FillContentType {
     image: string
 }
 
+interface Subject {
+    title: string,
+    description: string,
+    lang: string,
+    locale: string,
+    editPresent?: boolean,
+    livePresent?: boolean
+}
+interface TestNewsType {
+    pageComposer: PageComposer,
+    subjects: Array<Subject>
+}
+
 const sitekey = 'contentMultiLanguage';
 
 describe('Create multi language content and verify that it is different in all languages', () => {
@@ -36,19 +49,22 @@ describe('Create multi language content and verify that it is different in all l
             title: 'English news',
             description: 'Something new happened in England',
             image: 'cypress/fixtures/snowbearHome.jpeg',
-            lang: 'English'
+            lang: 'English',
+            locale: 'en'
         },
         'de': {
             title: 'German news',
             description: 'Something new happened in Germany',
             image: 'cypress/fixtures/snowCat.jpeg',
-            lang: 'Deutsch'
+            lang: 'Deutsch',
+            locale: 'de'
         },
         'fr': {
             title: 'French news',
             description: 'Something new happened in France',
             image: 'cypress/fixtures/snowWolf.jpeg',
-            lang: 'Français'
+            lang: 'Français',
+            locale: 'fr'
         }
     }
 
@@ -73,6 +89,33 @@ describe('Create multi language content and verify that it is different in all l
         picker.wait(1000);
     }
 
+    const testNewsCreation = (data: TestNewsType) => {
+        data.subjects.forEach(s => {
+            data.pageComposer.switchLanguage(s.lang);
+            // Will be skipped in undefined
+            if (s.editPresent !== undefined && s.editPresent) {
+                pageComposer.shouldContain(s.title);
+                pageComposer.doInsideInnerFrame(() => {
+                    cy.get('a').contains('Read More').click();
+                });
+
+                pageComposer.doInsideInnerFrame(() => {
+                    cy.get('h2').contains(s.title);
+                    cy.get('p').contains(s.description);
+                });
+
+                PageComposer.visit(sitekey, s.locale, 'home.html');
+                cy.wait(3000);
+            }
+
+            if (s.livePresent !== undefined && s.livePresent) {
+                PageComposer.visitLive(sitekey, s.locale, 'home/area-main/english-news.html');
+                cy.get('h2').contains(s.title);
+                PageComposer.visit(sitekey, s.locale, 'home.html');
+            }
+        });
+    }
+
     it('Can create content in 3 languages', {retries: 0}, function () {
         const contentEditor = pageComposer
             .openCreateContent()
@@ -84,11 +127,19 @@ describe('Create multi language content and verify that it is different in all l
         const contentSection = contentEditor.openSection('Content');
         contentSection.expand();
 
-        Object.keys(newsByLanguage).sort((a, b) => a === 'English' ? 1 : 0).forEach(key => {
+        Object.keys(newsByLanguage).sort((a) => a === 'English' ? 1 : 0).forEach(key => {
             fillNews({contentEditor, contentSection, ...newsByLanguage[key]});
         });
 
         contentEditor.save();
-        pageComposer.refresh().shouldContain(newsByLanguage.en.title);
+        pageComposer.refresh();
+
+        const subjects = <Subject[]>Object.keys(newsByLanguage).sort((a) => a === 'English' ? 1 : 0).map(s => ({...newsByLanguage[s], editPresent: true, livePresent: false}));
+        testNewsCreation({pageComposer, subjects});
+
+        //Switch to english
+        pageComposer.switchLanguage(subjects[0].lang);
+        pageComposer.publishCurrentPage();
+        testNewsCreation({pageComposer, subjects: [{...subjects[0], livePresent: true}]});
     })
 });

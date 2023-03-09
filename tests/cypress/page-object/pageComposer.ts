@@ -15,6 +15,11 @@ export class PageComposer extends BasePage {
         return new PageComposer();
     }
 
+    static visitLive(site: string, language: string, path: string): PageComposer {
+        cy.visit(`/${language}/sites/${site}/${path}`);
+        return new PageComposer();
+    }
+
     openCreateContent(): PageComposer {
         cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
             cy.iframe('.gwt-Frame', this.iFrameOptions).within(() => {
@@ -150,6 +155,29 @@ export class PageComposer extends BasePage {
         });
 
         return new PageComposer();
+    }
+
+    switchLanguage(language: string) {
+        cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
+            cy.get('.toolbar-itemsgroup-languageswitcher').click();
+            cy.get('.x-combo-list-item').contains(language).click();
+        });
+    }
+
+    doInsideInnerFrame(fcn: () => void) {
+        cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
+            cy.iframe('.gwt-Frame', this.iFrameOptions).within(() => {
+                fcn();
+            });
+        });
+    }
+
+    publishCurrentPage() {
+        cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
+            cy.get('.edit-menu-publication').click();
+            cy.get('.menu-edit-menu-publication').find('.toolbar-item-publishone').first().click();
+            cy.get('button').contains('Publish now').click();
+        });
     }
 }
 
