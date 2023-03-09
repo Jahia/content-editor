@@ -29,6 +29,9 @@ if (sitesService.getSiteByKey("SITEKEY") == null) {
             languages.remove("de")
             siteByKey.setMandatoryLanguages(languages)
             siteByKey.setDefaultLanguage("en")
+            List<String> installedModules = siteByKey.getInstalledModules();
+            installedModules.add('dx-base-demo-components');
+            siteByKey.setInstalledModules(installedModules);
             jcrSessionWrapper.save()
             return null
         }

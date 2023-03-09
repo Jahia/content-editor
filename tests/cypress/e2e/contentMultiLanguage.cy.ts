@@ -59,7 +59,13 @@ describe('Create multi language content and verify that it is different in all l
         data.contentSection.get().find('input[id="jnt:news_jcr:title"]').should('be.visible').type(data.title);
         data.contentSection.get().find('.cke_button__source.cke_button_off').should('be.visible').click();
         data.contentSection.get().find('textarea').should('be.visible').type(data.description);
-        data.contentSection.get().find('[data-sel-field-picker-action="openPicker"]').click();
+
+        if (data.lang !== 'English') {
+            data.contentSection.get().find('[data-sel-action="addField"]').click();
+        } else {
+            data.contentSection.get().find('input[id="jdmix:imgGallery"]').click();
+            data.contentSection.get().find('[data-sel-action="addField"]').click();
+        }
         const picker = getComponentByRole(PickerGrid, 'picker-dialog');
         picker.uploadFile(data.image);
         picker.wait(1000);
@@ -78,11 +84,11 @@ describe('Create multi language content and verify that it is different in all l
         const contentSection = contentEditor.openSection('Content');
         contentSection.expand();
 
-        Object.keys(newsByLanguage).forEach(key => {
+        Object.keys(newsByLanguage).sort((a, b) => a === 'English' ? 1 : 0).forEach(key => {
             fillNews({contentEditor, contentSection, ...newsByLanguage[key]});
         });
 
         contentEditor.save();
-        pageComposer.refresh().shouldContain('Multi language test en');
+        pageComposer.refresh().shouldContain(newsByLanguage.en.title);
     })
 });
