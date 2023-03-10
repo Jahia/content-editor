@@ -12,6 +12,7 @@ import {Field, PickerField, RichTextField, SmallTextField} from './fields';
 import {LanguageSwitcher} from './languageSwitcher';
 
 export class ContentEditor extends BasePage {
+    static defaultSelector = '[aria-labelledby="dialog-content-editor"]';
     languageSwitcher: LanguageSwitcher;
 
     openSection(sectionName: string) {

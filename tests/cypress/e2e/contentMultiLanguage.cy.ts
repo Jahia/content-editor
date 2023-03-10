@@ -1,7 +1,7 @@
 import {DocumentNode} from 'graphql';
 import {PageComposer} from '../page-object/pageComposer';
-import {PickerGrid} from '../page-object/pickerGrid';
-import {Collapsible, getComponentByRole} from '@jahia/cypress';
+import {Picker} from '../page-object/picker';
+import {Collapsible, getComponentByRole, getComponentBySelector} from '@jahia/cypress';
 import {ContentEditor} from '../page-object';
 
 interface FillContentType {
@@ -10,7 +10,8 @@ interface FillContentType {
     lang: string,
     title: string,
     description:string,
-    image: string
+    image: string,
+    modify?: boolean
 }
 
 interface Subject {
@@ -35,6 +36,14 @@ describe('Create multi language content and verify that it is different in all l
 
     before(function () {
         setProperty = require('graphql-tag/loader!../fixtures/contentMultiLanguage/setPropertyValue.graphql');
+    });
+
+    afterEach(function () {
+        cy.logout();
+        cy.executeGroovy('deleteSite.groovy', {SITEKEY: sitekey});
+    });
+
+    beforeEach(() => {
         cy.executeGroovy('contentMultiLanguage/contentMultiLanguageSite.groovy', {SITEKEY: sitekey}).then(() => {
             cy.apollo({
                 mutation: setProperty,
@@ -59,17 +68,10 @@ describe('Create multi language content and verify that it is different in all l
             }).then(response => {
                 expect(response.data.jcr.mutateNode.mutateProperty.setValue).to.be.true;
             });
+
+            cy.loginEditor();
+            pageComposer = PageComposer.visit(sitekey, 'en', 'home.html');
         });
-    });
-
-    after(function () {
-        cy.logout();
-        cy.executeGroovy('deleteSite.groovy', {SITEKEY: sitekey});
-    });
-
-    beforeEach(() => {
-        cy.loginEditor();
-        pageComposer = PageComposer.visit(sitekey, 'en', 'home.html');
     });
 
     const newsByLanguage = {
@@ -97,6 +99,7 @@ describe('Create multi language content and verify that it is different in all l
     };
 
     const fillNews = (data: FillContentType) => {
+        // Fill title and description
         data.contentEditor.getLanguageSwitcher().select(data.lang);
         data.contentSection.collapse();
         data.contentSection.expand();
@@ -104,15 +107,29 @@ describe('Create multi language content and verify that it is different in all l
         data.contentSection.get().find('.cke_button__source.cke_button_off').should('be.visible').click();
         data.contentSection.get().find('textarea').should('be.visible').type(data.description);
 
-        if (data.lang !== 'English') {
+        // Toggle should be ON if modifying
+        if (data.modify) {
+            data.contentSection.get().find('[data-sel-content-editor-multiple-generic-field="jdmix:imgGallery_galleryImg[0]"]').find('button[aria-label="Clear"]').click();
+        }
+
+        // This condition is here because once jdmix:imgGallery toggle is ON it stays on for next languages
+        if (data.lang !== 'English' || data.modify) {
             data.contentSection.get().find('[data-sel-action="addField"]').click();
         } else {
             data.contentSection.get().find('input[id="jdmix:imgGallery"]').click();
             data.contentSection.get().find('[data-sel-action="addField"]').click();
         }
 
-        const picker = getComponentByRole(PickerGrid, 'picker-dialog');
-        picker.uploadFile(data.image);
+        const picker = getComponentByRole(Picker, 'picker-dialog');
+        picker.switchViewMode('List');
+
+        // Image should exist in the table if modifying
+        if (data.modify) {
+            picker.getTableRow(data.image.split('/')[3]).find('input').click();
+        } else {
+            picker.uploadFile(data.image);
+        }
+
         picker.wait(1000);
         picker.select();
         picker.wait(1000);
@@ -122,7 +139,7 @@ describe('Create multi language content and verify that it is different in all l
         data.subjects.forEach(s => {
             data.pageComposer.switchLanguage(s.lang);
             pageComposer.navigateToPage('Home');
-            // Will be skipped in undefined
+            // Will be skipped in  editPresent undefined
             if (s.editPresent !== undefined && s.editPresent) {
                 pageComposer.shouldContain(s.title);
                 pageComposer.doInsideInnerFrame(() => {
@@ -135,6 +152,7 @@ describe('Create multi language content and verify that it is different in all l
                 });
             }
 
+            // Will be skipped in  livePresent undefined
             if (s.livePresent !== undefined && s.livePresent) {
                 PageComposer.visitLive(sitekey, s.locale, 'home.html');
                 cy.contains(s.title);
@@ -152,6 +170,8 @@ describe('Create multi language content and verify that it is different in all l
     it('Can create content in 3 languages and publish respecting mandatory language rules', {retries: 0}, function () {
         // Publish in all languages first to make site available in live
         pageComposer.publish('Publish Home in all languages', 'Publish all now');
+        // There is gwt snackbar but it's quite tricky to catch so I'm using this temporarily
+        /* eslint-disable cypress/no-unnecessary-waiting */
         cy.wait(3000);
         const contentEditor = pageComposer
             .openCreateContent()
@@ -181,6 +201,7 @@ describe('Create multi language content and verify that it is different in all l
         pageComposer.switchLanguage(newsByLanguage.en.lang);
         pageComposer.navigateToPage('Home');
         pageComposer.publish('Publish Home - English', 'Publish now');
+        /* eslint-disable cypress/no-unnecessary-waiting */
         cy.wait(3000);
         testNewsCreation({pageComposer, subjects: [{...newsByLanguage.en, livePresent: false}]});
 
@@ -188,6 +209,7 @@ describe('Create multi language content and verify that it is different in all l
         pageComposer.switchLanguage(newsByLanguage.fr.lang);
         pageComposer.navigateToPage('Home');
         pageComposer.publish('Publish Home - Français', 'Publish now');
+        /* eslint-disable cypress/no-unnecessary-waiting */
         cy.wait(3000);
         testNewsCreation({pageComposer, subjects: [{...newsByLanguage.en, livePresent: true}, {...newsByLanguage.fr, livePresent: true}, {...newsByLanguage.de, livePresent: false}]});
 
@@ -195,7 +217,82 @@ describe('Create multi language content and verify that it is different in all l
         pageComposer.switchLanguage(newsByLanguage.de.lang);
         pageComposer.navigateToPage('Home');
         pageComposer.publish('Publish Home - Deutsch', 'Publish now');
+        /* eslint-disable cypress/no-unnecessary-waiting */
         cy.wait(3000);
         testNewsCreation({pageComposer, subjects: [{...newsByLanguage.en, livePresent: true}, {...newsByLanguage.fr, livePresent: true}, {...newsByLanguage.de, livePresent: true}]});
+    });
+
+    it('Can create and modify content in 2 languages and publish respecting mandatory language rules', {retries: 0}, function () {
+        const reducedNewsByLanguage = newsByLanguage;
+        delete reducedNewsByLanguage.de;
+        // Publish in all languages first to make site available in live
+        pageComposer.publish('Publish Home in all languages', 'Publish all now');
+        // There is gwt snackbar but it's quite tricky to catch so I'm using this temporarily
+        /* eslint-disable cypress/no-unnecessary-waiting */
+        cy.wait(3000);
+        let contentEditor = pageComposer
+            .openCreateContent()
+            .getContentTypeSelector()
+            .searchForContentType('News entry')
+            .selectContentType('News entry')
+            .create();
+
+        // Create news entry in 3 languages
+        cy.get('#contenteditor-dialog-title').should('be.visible').and('contain', 'Create News entry');
+        let contentSection = contentEditor.openSection('Content');
+        contentSection.expand();
+
+        Object.keys(reducedNewsByLanguage).sort(a => a === 'English' ? 1 : 0).forEach(key => {
+            fillNews({contentEditor, contentSection, ...reducedNewsByLanguage[key]});
+        });
+
+        contentEditor.save();
+        pageComposer.refresh();
+
+        // Test publication
+        // Should be absent in live because 2nd mandatory language was not published
+        pageComposer.switchLanguage(reducedNewsByLanguage.en.lang);
+        pageComposer.navigateToPage('Home');
+        pageComposer.publish('Publish Home - English', 'Publish now');
+        pageComposer.switchLanguage(reducedNewsByLanguage.fr.lang);
+        pageComposer.navigateToPage('Home');
+        pageComposer.publish('Publish Home - Français', 'Publish now');
+        /* eslint-disable cypress/no-unnecessary-waiting */
+        cy.wait(3000);
+        testNewsCreation({pageComposer, subjects: [{...reducedNewsByLanguage.en, livePresent: true}, {...reducedNewsByLanguage.fr, livePresent: true}]});
+
+        // Modify news
+
+        pageComposer.editComponent('.news-v3-in-sm');
+        cy.get('#contenteditor-dialog-title').should('be.visible');
+        contentSection = contentEditor.openSection('Content');
+        contentSection.expand();
+
+        reducedNewsByLanguage.en.title += ' modified';
+        reducedNewsByLanguage.fr.title += ' modified';
+        reducedNewsByLanguage.en.description += ' modified';
+        reducedNewsByLanguage.fr.description += ' modified';
+        const image = reducedNewsByLanguage.en.image;
+        reducedNewsByLanguage.en.image = reducedNewsByLanguage.fr.image;
+        reducedNewsByLanguage.en.image = image;
+
+        Object.keys(reducedNewsByLanguage).forEach(key => {
+            fillNews({contentEditor, contentSection, ...reducedNewsByLanguage[key], modify: true});
+        });
+
+        contentEditor.save();
+        pageComposer.refresh();
+
+        // Test publication
+        // Should be present in live in modified form
+        pageComposer.switchLanguage(reducedNewsByLanguage.en.lang);
+        pageComposer.navigateToPage('Home');
+        pageComposer.publish('Publish Home - English', 'Publish now');
+        pageComposer.switchLanguage(reducedNewsByLanguage.fr.lang);
+        pageComposer.navigateToPage('Home');
+        pageComposer.publish('Publish Home - Français', 'Publish now');
+        /* eslint-disable cypress/no-unnecessary-waiting */
+        cy.wait(3000);
+        testNewsCreation({pageComposer, subjects: [{...reducedNewsByLanguage.en, livePresent: true}, {...reducedNewsByLanguage.fr, livePresent: true}]});
     });
 });

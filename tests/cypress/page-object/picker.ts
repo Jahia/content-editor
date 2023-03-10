@@ -13,6 +13,7 @@ import {
 import {PageComposer} from './pageComposer';
 import {AccordionItem} from './accordionItem';
 import {PickerTable} from './pickerTable';
+import {PickerGrid} from './pickerGrid';
 
 export class Picker extends BaseComponent {
     pageComposer: PageComposer;
@@ -23,6 +24,7 @@ export class Picker extends BaseComponent {
     table: PickerTable;
     selectionTable: Table;
     viewMode: Dropdown;
+    grid: PickerGrid;
 
     getSiteSwitcher() {
         if (!this.siteSwitcher) {
@@ -185,5 +187,22 @@ export class Picker extends BaseComponent {
     switchViewMode(viewMode: string) {
         this.getViewMode().select(viewMode);
         this.wait();
+    }
+
+    getGrid() {
+        if (!this.grid) {
+            this.grid = getComponentByAttr(PickerGrid, 'data-cm-role', 'grid-content-list', this);
+        }
+
+        this.wait();
+        return this.grid;
+    }
+
+    uploadFile(pathToFixture: string) {
+        this.get().find('table[data-cm-role="table-content-list"]')
+            .selectFile(pathToFixture, {
+                action: 'drag-drop',
+                waitForAnimations: true
+            });
     }
 }
