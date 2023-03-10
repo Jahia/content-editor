@@ -1,3 +1,4 @@
+import { DocumentNode } from 'graphql';
 import {PageComposer} from '../page-object/pageComposer';
 import {PickerGrid} from '../page-object/pickerGrid';
 import {Collapsible, getComponentByRole} from '@jahia/cypress';
@@ -29,9 +30,36 @@ const sitekey = 'contentMultiLanguage';
 
 describe('Create multi language content and verify that it is different in all languages', () => {
     let pageComposer: PageComposer;
+    let setProperty: DocumentNode;
 
     before(function () {
-        cy.executeGroovy('contentMultiLanguageSite.groovy', {SITEKEY: sitekey});
+        setProperty = require(`graphql-tag/loader!../fixtures/setPropertyValue.graphql`);
+        cy.executeGroovy('contentMultiLanguageSite.groovy', {SITEKEY: sitekey}).then(() => {
+            cy.apollo({
+                mutation: setProperty,
+                variables: {
+                    prop: 'jcr:title',
+                    lang: 'de',
+                    value: 'Home',
+                    path: `/sites/${sitekey}/home`
+                }
+            }).then((response) => {
+                expect(response.data.jcr.mutateNode.mutateProperty.setValue).to.be.true;
+            });
+
+            cy.apollo({
+                mutation: setProperty,
+                variables: {
+                    prop: 'jcr:title',
+                    lang: 'fr',
+                    value: 'Home',
+                    path: `/sites/${sitekey}/home`
+                }
+            }).then((response) => {
+                expect(response.data.jcr.mutateNode.mutateProperty.setValue).to.be.true;
+            })
+        })
+
     });
 
     after(function () {
@@ -92,6 +120,7 @@ describe('Create multi language content and verify that it is different in all l
     const testNewsCreation = (data: TestNewsType) => {
         data.subjects.forEach(s => {
             data.pageComposer.switchLanguage(s.lang);
+            pageComposer.navigateToPage('Home');
             // Will be skipped in undefined
             if (s.editPresent !== undefined && s.editPresent) {
                 pageComposer.shouldContain(s.title);
@@ -104,25 +133,34 @@ describe('Create multi language content and verify that it is different in all l
                     cy.get('p').contains(s.description);
                 });
 
-                PageComposer.visit(sitekey, s.locale, 'home.html');
-                cy.wait(3000);
+                // PageComposer.visit(sitekey, s.locale, 'home.html');
+                // cy.wait(3000);
             }
 
             if (s.livePresent !== undefined && s.livePresent) {
-                PageComposer.visitLive(sitekey, s.locale, 'home/area-main/english-news.html');
-                cy.get('h2').contains(s.title);
+                PageComposer.visitLive(sitekey, s.locale, 'home.html');
+                cy.contains(s.title);
+                PageComposer.visit(sitekey, s.locale, 'home.html');
+            } else if (s.livePresent !== undefined && !s.livePresent) {
+                PageComposer.visitLive(sitekey, s.locale, 'home.html');
+                cy.contains(s.title).should('not.exist');
                 PageComposer.visit(sitekey, s.locale, 'home.html');
             }
         });
     }
 
-    it('Can create content in 3 languages', {retries: 0}, function () {
+    it('Can create content in 3 languages and publish respecting mandatory language rules', {retries: 0}, function () {
+        // Publish in all languages first to make site available in live
+        pageComposer.publish('Publish Home in all languages', 'Publish all now');
+        cy.wait(3000);
         const contentEditor = pageComposer
             .openCreateContent()
             .getContentTypeSelector()
             .searchForContentType('News entry')
             .selectContentType('News entry')
             .create();
+
+        // Create news entry in 3 languages
         cy.get('#contenteditor-dialog-title').should('be.visible').and('contain', 'Create News entry');
         const contentSection = contentEditor.openSection('Content');
         contentSection.expand();
@@ -134,12 +172,30 @@ describe('Create multi language content and verify that it is different in all l
         contentEditor.save();
         pageComposer.refresh();
 
-        const subjects = <Subject[]>Object.keys(newsByLanguage).sort((a) => a === 'English' ? 1 : 0).map(s => ({...newsByLanguage[s], editPresent: true, livePresent: false}));
+        // Verify news entries were created in 3 languages
+        const subjects = <Subject[]>Object.keys(newsByLanguage).sort((a) => a === 'English' ? 1 : 0).map(s => ({...newsByLanguage[s], editPresent: true}));
         testNewsCreation({pageComposer, subjects});
 
-        //Switch to english
-        pageComposer.switchLanguage(subjects[0].lang);
-        pageComposer.publishCurrentPage();
-        testNewsCreation({pageComposer, subjects: [{...subjects[0], livePresent: true}]});
+        // Test publication
+        // Should be absent in live because 2nd mandatory language was not published
+        pageComposer.switchLanguage(newsByLanguage.en.lang);
+        pageComposer.navigateToPage('Home');
+        pageComposer.publish('Publish Home - English', 'Publish now');
+        cy.wait(3000);
+        testNewsCreation({pageComposer, subjects: [{...newsByLanguage.en, livePresent: false}]});
+
+        // Publish 2nd mandatory language and check for presence in live
+        pageComposer.switchLanguage(newsByLanguage.fr.lang);
+        pageComposer.navigateToPage('Home');
+        pageComposer.publish('Publish Home - Français', 'Publish now');
+        cy.wait(3000);
+        testNewsCreation({pageComposer, subjects: [{...newsByLanguage.en, livePresent: true}, {...newsByLanguage.fr, livePresent: true}, {...newsByLanguage.de, livePresent: false}]});
+
+        // Publish in German and everything should be available
+        pageComposer.switchLanguage(newsByLanguage.de.lang);
+        pageComposer.navigateToPage('Home');
+        pageComposer.publish('Publish Home - Deutsch', 'Publish now');
+        cy.wait(3000);
+        testNewsCreation({pageComposer, subjects: [{...newsByLanguage.en, livePresent: true}, {...newsByLanguage.fr, livePresent: true}, {...newsByLanguage.de, livePresent: true}]});
     })
 });

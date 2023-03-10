@@ -16,7 +16,7 @@ export class PageComposer extends BasePage {
     }
 
     static visitLive(site: string, language: string, path: string): PageComposer {
-        cy.visit(`/${language}/sites/${site}/${path}`);
+        cy.visit(`${Cypress.env('JAHIA_URL')}/${language}/sites/${site}/${path}`);
         return new PageComposer();
     }
 
@@ -151,7 +151,7 @@ export class PageComposer extends BasePage {
 
     navigateToPage(name: string): PageComposer {
         cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
-            cy.get('#JahiaGxtPagesTab').contains(name).click({force: true});
+            cy.get('#JahiaGxtPagesTab').find('span').contains(name).click({force: true});
         });
 
         return new PageComposer();
@@ -172,11 +172,11 @@ export class PageComposer extends BasePage {
         });
     }
 
-    publishCurrentPage() {
+    publish(menuEntry: string, selectorText: string) {
         cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
             cy.get('.edit-menu-publication').click();
-            cy.get('.menu-edit-menu-publication').find('.toolbar-item-publishone').first().click();
-            cy.get('button').contains('Publish now').click();
+            cy.get('.menu-edit-menu-publication').find('span').contains(menuEntry).click();
+            cy.get('button').contains(selectorText).click();
         });
     }
 }

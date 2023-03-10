@@ -1,0 +1,9 @@
+mutation setTitle($path:String!, $prop:String!, $lang:String!, $value:String!) {
+  jcr {
+    mutateNode(pathOrId:$path) {
+      mutateProperty(name:$prop) {
+        setValue(language:$lang, value:$value)
+      }
+    }
+  }
+}
