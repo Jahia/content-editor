@@ -1,8 +1,7 @@
 import {Picker} from './picker';
-import {getComponentByAttr} from "@jahia/cypress";
+import {getComponentByAttr} from '@jahia/cypress';
 
 export class PickerGrid extends Picker {
-
     grid: PickerGrid;
 
     getGrid() {

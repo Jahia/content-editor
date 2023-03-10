@@ -1,4 +1,4 @@
-import { DocumentNode } from 'graphql';
+import {DocumentNode} from 'graphql';
 import {PageComposer} from '../page-object/pageComposer';
 import {PickerGrid} from '../page-object/pickerGrid';
 import {Collapsible, getComponentByRole} from '@jahia/cypress';
@@ -16,6 +16,7 @@ interface FillContentType {
 interface Subject {
     title: string,
     description: string,
+    image: string,
     lang: string,
     locale: string,
     editPresent?: boolean,
@@ -33,8 +34,8 @@ describe('Create multi language content and verify that it is different in all l
     let setProperty: DocumentNode;
 
     before(function () {
-        setProperty = require(`graphql-tag/loader!../fixtures/setPropertyValue.graphql`);
-        cy.executeGroovy('contentMultiLanguageSite.groovy', {SITEKEY: sitekey}).then(() => {
+        setProperty = require('graphql-tag/loader!../fixtures/contentMultiLanguage/setPropertyValue.graphql');
+        cy.executeGroovy('contentMultiLanguage/contentMultiLanguageSite.groovy', {SITEKEY: sitekey}).then(() => {
             cy.apollo({
                 mutation: setProperty,
                 variables: {
@@ -43,7 +44,7 @@ describe('Create multi language content and verify that it is different in all l
                     value: 'Home',
                     path: `/sites/${sitekey}/home`
                 }
-            }).then((response) => {
+            }).then(response => {
                 expect(response.data.jcr.mutateNode.mutateProperty.setValue).to.be.true;
             });
 
@@ -55,11 +56,10 @@ describe('Create multi language content and verify that it is different in all l
                     value: 'Home',
                     path: `/sites/${sitekey}/home`
                 }
-            }).then((response) => {
+            }).then(response => {
                 expect(response.data.jcr.mutateNode.mutateProperty.setValue).to.be.true;
-            })
-        })
-
+            });
+        });
     });
 
     after(function () {
@@ -73,28 +73,28 @@ describe('Create multi language content and verify that it is different in all l
     });
 
     const newsByLanguage = {
-        'en': {
+        en: {
             title: 'English news',
             description: 'Something new happened in England',
-            image: 'cypress/fixtures/snowbearHome.jpeg',
+            image: 'cypress/fixtures/contentMultiLanguage/snowBear.jpeg',
             lang: 'English',
             locale: 'en'
         },
-        'de': {
+        de: {
             title: 'German news',
             description: 'Something new happened in Germany',
-            image: 'cypress/fixtures/snowCat.jpeg',
+            image: 'cypress/fixtures/contentMultiLanguage/snowCat.jpeg',
             lang: 'Deutsch',
             locale: 'de'
         },
-        'fr': {
+        fr: {
             title: 'French news',
             description: 'Something new happened in France',
-            image: 'cypress/fixtures/snowWolf.jpeg',
+            image: 'cypress/fixtures/contentMultiLanguage/snowWolf.jpeg',
             lang: 'Français',
             locale: 'fr'
         }
-    }
+    };
 
     const fillNews = (data: FillContentType) => {
         data.contentEditor.getLanguageSwitcher().select(data.lang);
@@ -110,12 +110,13 @@ describe('Create multi language content and verify that it is different in all l
             data.contentSection.get().find('input[id="jdmix:imgGallery"]').click();
             data.contentSection.get().find('[data-sel-action="addField"]').click();
         }
+
         const picker = getComponentByRole(PickerGrid, 'picker-dialog');
         picker.uploadFile(data.image);
         picker.wait(1000);
         picker.select();
         picker.wait(1000);
-    }
+    };
 
     const testNewsCreation = (data: TestNewsType) => {
         data.subjects.forEach(s => {
@@ -132,14 +133,13 @@ describe('Create multi language content and verify that it is different in all l
                     cy.get('h2').contains(s.title);
                     cy.get('p').contains(s.description);
                 });
-
-                // PageComposer.visit(sitekey, s.locale, 'home.html');
-                // cy.wait(3000);
             }
 
             if (s.livePresent !== undefined && s.livePresent) {
                 PageComposer.visitLive(sitekey, s.locale, 'home.html');
                 cy.contains(s.title);
+                cy.get('a').contains('Read More').click();
+                cy.get('.news-v3').find(`img[src="/files/live/sites/${sitekey}/files/${s.image.split('/')[3]}"]`).should('exist');
                 PageComposer.visit(sitekey, s.locale, 'home.html');
             } else if (s.livePresent !== undefined && !s.livePresent) {
                 PageComposer.visitLive(sitekey, s.locale, 'home.html');
@@ -147,7 +147,7 @@ describe('Create multi language content and verify that it is different in all l
                 PageComposer.visit(sitekey, s.locale, 'home.html');
             }
         });
-    }
+    };
 
     it('Can create content in 3 languages and publish respecting mandatory language rules', {retries: 0}, function () {
         // Publish in all languages first to make site available in live
@@ -165,7 +165,7 @@ describe('Create multi language content and verify that it is different in all l
         const contentSection = contentEditor.openSection('Content');
         contentSection.expand();
 
-        Object.keys(newsByLanguage).sort((a) => a === 'English' ? 1 : 0).forEach(key => {
+        Object.keys(newsByLanguage).sort(a => a === 'English' ? 1 : 0).forEach(key => {
             fillNews({contentEditor, contentSection, ...newsByLanguage[key]});
         });
 
@@ -173,7 +173,7 @@ describe('Create multi language content and verify that it is different in all l
         pageComposer.refresh();
 
         // Verify news entries were created in 3 languages
-        const subjects = <Subject[]>Object.keys(newsByLanguage).sort((a) => a === 'English' ? 1 : 0).map(s => ({...newsByLanguage[s], editPresent: true}));
+        const subjects = <Subject[]>Object.keys(newsByLanguage).sort(a => a === 'English' ? 1 : 0).map(s => ({...newsByLanguage[s], editPresent: true}));
         testNewsCreation({pageComposer, subjects});
 
         // Test publication
@@ -197,5 +197,5 @@ describe('Create multi language content and verify that it is different in all l
         pageComposer.publish('Publish Home - Deutsch', 'Publish now');
         cy.wait(3000);
         testNewsCreation({pageComposer, subjects: [{...newsByLanguage.en, livePresent: true}, {...newsByLanguage.fr, livePresent: true}, {...newsByLanguage.de, livePresent: true}]});
-    })
+    });
 });
