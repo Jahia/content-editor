@@ -103,21 +103,28 @@ describe('Create multi language content and verify that it is different in all l
         data.contentEditor.getLanguageSwitcher().select(data.lang);
         data.contentSection.collapse();
         data.contentSection.expand();
-        data.contentSection.get().find('input[id="jnt:news_jcr:title"]').should('be.visible').type(data.title);
-        data.contentSection.get().find('.cke_button__source.cke_button_off').should('be.visible').click();
-        data.contentSection.get().find('textarea').should('be.visible').type(data.description);
+
+        // Clear fields on modification
+        if (data.modify) {
+            data.contentSection.get().find('.cke_button__source.cke_button_off').scrollIntoView().click();
+            data.contentSection.get().find('textarea').scrollIntoView().should('be.visible').clear().type(data.description);
+        } else {
+            data.contentSection.get().find('input[id="jnt:news_jcr:title"]').should('be.visible').type(data.title);
+            data.contentSection.get().find('.cke_button__source.cke_button_off').should('be.visible').click();
+            data.contentSection.get().find('textarea').should('be.visible').type(data.description);
+        }
 
         // Toggle should be ON if modifying
         if (data.modify) {
-            data.contentSection.get().find('[data-sel-content-editor-multiple-generic-field="jdmix:imgGallery_galleryImg[0]"]').find('button[aria-label="Clear"]').click();
+            data.contentSection.get().find('[data-sel-content-editor-multiple-generic-field="jdmix:imgGallery_galleryImg[0]"]').find('button[aria-label="Clear"]').scrollIntoView().click();
         }
 
         // This condition is here because once jdmix:imgGallery toggle is ON it stays on for next languages
         if (data.lang !== 'English' || data.modify) {
-            data.contentSection.get().find('[data-sel-action="addField"]').click();
+            data.contentSection.get().find('[data-sel-action="addField"]').scrollIntoView().click();
         } else {
-            data.contentSection.get().find('input[id="jdmix:imgGallery"]').click();
-            data.contentSection.get().find('[data-sel-action="addField"]').click();
+            data.contentSection.get().find('input[id="jdmix:imgGallery"]').scrollIntoView().click();
+            data.contentSection.get().find('[data-sel-action="addField"]').scrollIntoView().click();
         }
 
         const picker = getComponentByRole(Picker, 'picker-dialog');
@@ -189,7 +196,7 @@ describe('Create multi language content and verify that it is different in all l
             fillNews({contentEditor, contentSection, ...newsByLanguage[key]});
         });
 
-        contentEditor.save();
+        contentEditor.create();
         pageComposer.refresh();
 
         // Verify news entries were created in 3 languages
@@ -227,7 +234,7 @@ describe('Create multi language content and verify that it is different in all l
         delete reducedNewsByLanguage.de;
         // Publish in all languages first to make site available in live
         pageComposer.publish('Publish Home in all languages', 'Publish all now');
-        // There is gwt snackbar but it's quite tricky to catch so I'm using this temporarily
+        // There is gwt snackbar but catching it doesn't mean everything is published
         /* eslint-disable cypress/no-unnecessary-waiting */
         cy.wait(3000);
         let contentEditor = pageComposer
@@ -246,7 +253,7 @@ describe('Create multi language content and verify that it is different in all l
             fillNews({contentEditor, contentSection, ...reducedNewsByLanguage[key]});
         });
 
-        contentEditor.save();
+        contentEditor.create();
         pageComposer.refresh();
 
         // Test publication
@@ -254,7 +261,9 @@ describe('Create multi language content and verify that it is different in all l
         pageComposer.switchLanguage(reducedNewsByLanguage.en.lang);
         pageComposer.navigateToPage('Home');
         pageComposer.publish('Publish Home - English', 'Publish now');
+
         pageComposer.switchLanguage(reducedNewsByLanguage.fr.lang);
+        PageComposer.visit(sitekey, 'fr', 'home.html');
         pageComposer.navigateToPage('Home');
         pageComposer.publish('Publish Home - Français', 'Publish now');
         /* eslint-disable cypress/no-unnecessary-waiting */
@@ -268,8 +277,6 @@ describe('Create multi language content and verify that it is different in all l
         contentSection = contentEditor.openSection('Content');
         contentSection.expand();
 
-        reducedNewsByLanguage.en.title += ' modified';
-        reducedNewsByLanguage.fr.title += ' modified';
         reducedNewsByLanguage.en.description += ' modified';
         reducedNewsByLanguage.fr.description += ' modified';
         const image = reducedNewsByLanguage.en.image;
@@ -288,7 +295,9 @@ describe('Create multi language content and verify that it is different in all l
         pageComposer.switchLanguage(reducedNewsByLanguage.en.lang);
         pageComposer.navigateToPage('Home');
         pageComposer.publish('Publish Home - English', 'Publish now');
+
         pageComposer.switchLanguage(reducedNewsByLanguage.fr.lang);
+        PageComposer.visit(sitekey, 'fr', 'home.html');
         pageComposer.navigateToPage('Home');
         pageComposer.publish('Publish Home - Français', 'Publish now');
         /* eslint-disable cypress/no-unnecessary-waiting */

@@ -23,10 +23,16 @@ export class ContentEditor extends BasePage {
         return getComponentBySelector(Collapsible, `[data-sel-content-editor-fields-group="${sectionName}"]`).collapse();
     }
 
-    save() {
+    create() {
         getComponentByRole(Button, 'createButton').click();
         cy.get('#dialog-errorBeforeSave', {timeout: 1000}).should('not.exist');
         cy.get('[role="alertdialog"]').should('be.visible').should('contain', 'Content successfully created');
+    }
+
+    save() {
+        getComponentByRole(Button, 'submitSave').click();
+        cy.get('#dialog-errorBeforeSave', {timeout: 1000}).should('not.exist');
+        cy.get('[role="alertdialog"]').should('be.visible').should('contain', 'Content successfully saved');
     }
 
     saveUnchecked() {

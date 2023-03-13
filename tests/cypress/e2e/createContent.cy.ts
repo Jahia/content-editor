@@ -30,7 +30,7 @@ describe('Create content tests', {retries: 10}, () => {
         contentEditor.openSection('Options').get().find('input[type="text"]').clear().type('cypress-test');
         contentSection.expand().get().find('.cke_button__source').click();
         contentSection.get().find('textarea').should('have.value', '').type('Cypress Test');
-        contentEditor.save();
+        contentEditor.create();
         pageComposer.refresh().shouldContain('Cypress Test');
     });
 
@@ -47,7 +47,7 @@ describe('Create content tests', {retries: 10}, () => {
         contentSection.expand().get().find('.cke_button__source').click();
         contentSection.get().find('textarea').should('have.value', '').type('Cypress Multiple Content Test 1');
         contentEditor.addAnotherContent();
-        contentEditor.save();
+        contentEditor.create();
         contentEditor.closeSection('Content');
         contentEditor
             .openSection('Options')
@@ -61,7 +61,7 @@ describe('Create content tests', {retries: 10}, () => {
         contentSection.expand().get().find('.cke_button__source').click();
         contentSection.get().find('textarea').should('have.value', '').type('Cypress Multiple Content Test 2');
         contentEditor.removeAnotherContent();
-        contentEditor.save();
+        contentEditor.create();
         pageComposer.refresh().shouldContain('Cypress Multiple Content Test 1');
         pageComposer.shouldContain('Cypress Multiple Content Test 2');
     });
@@ -80,7 +80,7 @@ describe('Create content tests', {retries: 10}, () => {
         contentEditor.openSection('Options').get().find('input[type="text"]').clear().type('cypress-wip-test');
         contentSection.expand().get().find('.cke_button__source').click();
         contentSection.get().find('textarea').should('have.value', '').type('Cypress Work In Progress Test');
-        contentEditor.save();
+        contentEditor.create();
         pageComposer.refresh().shouldContain('Cypress Work In Progress Test');
         pageComposer.shouldContainWIPOverlay();
     });
@@ -97,7 +97,7 @@ describe('Create content tests', {retries: 10}, () => {
         contentSection.get().find('#jnt\\:news_jcr\\:title').clear({force: true}).type('Cypress news titlez', {force: true});
         contentSection.expand().get().find('.cke_button__source').click();
         contentSection.get().find('textarea').type('Cypress news content');
-        contentEditor.save();
+        contentEditor.create();
         contentEditor.editSavedContent();
         contentSection
             .get()
@@ -126,13 +126,13 @@ describe('Create content tests', {retries: 10}, () => {
         contentEditor.openSection('Content').get().find('input[name="jnt:text_text"]')
             .type('Create another - test 1');
         contentEditor.addAnotherContent();
-        contentEditor.save();
+        contentEditor.create();
 
         cy.get('#createAnother').should('have.attr', 'aria-checked', 'true');
         contentEditor.openSection('Options').get().find('input[type="text"]').clear().type('create-another-2');
         contentEditor.openSection('Content').get().find('input[type="text"]').type('Create another - test 2');
         contentEditor.removeAnotherContent();
-        contentEditor.save();
+        contentEditor.create();
         pageComposer.refresh().shouldContain('Create another - test 1');
         pageComposer.refresh().shouldContain('Create another - test 2');
     });

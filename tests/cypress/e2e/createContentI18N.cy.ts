@@ -30,7 +30,7 @@ describe('Create content tests in I18N site', () => {
         contentEditor.openSection('Options').get().find('input[type="text"]').clear().type('cypress-test');
         contentSection.expand().get().find('.cke_button__source').click();
         contentSection.get().find('textarea').should('have.value', '').type('Cypress Test');
-        contentEditor.save();
+        contentEditor.create();
         pageComposer.refresh().shouldContain('Cypress Test');
     });
 
@@ -47,7 +47,7 @@ describe('Create content tests in I18N site', () => {
         contentSection.expand();
         contentEditor.getRichTextField('jnt:bigText_text').type('Cypress Multiple Content Test 1');
         contentEditor.addAnotherContent();
-        contentEditor.save();
+        contentEditor.create();
         contentEditor.closeSection('Content');
         contentEditor
             .openSection('Options')
@@ -61,7 +61,7 @@ describe('Create content tests in I18N site', () => {
         contentEditor.getRichTextField('jnt:bigText_text').getData().should('be.empty');
         contentEditor.getRichTextField('jnt:bigText_text').type('Cypress Multiple Content Test 2');
         contentEditor.removeAnotherContent();
-        contentEditor.save();
+        contentEditor.create();
         pageComposer.refresh().shouldContain('Cypress Multiple Content Test 1');
         pageComposer.shouldContain('Cypress Multiple Content Test 2');
     });
@@ -80,7 +80,7 @@ describe('Create content tests in I18N site', () => {
         contentEditor.openSection('Options').get().find('input[type="text"]').clear().type('cypress-wip-all-test');
         contentSection.expand().get().find('.cke_button__source').click();
         contentSection.get().find('textarea').should('have.value', '').type('Cypress Work In Progress ALL Test');
-        contentEditor.save();
+        contentEditor.create();
         pageComposer.refresh().shouldContain('Cypress Work In Progress ALL Test');
         pageComposer.shouldContainWIPOverlay();
     });
@@ -105,7 +105,7 @@ describe('Create content tests in I18N site', () => {
         cy.focused().frameLoaded('iframe.cke_wysiwyg_frame');
         contentSection.expand().get().find('.cke_button__source').click();
         contentSection.get().find('textarea').should('have.value', '').type('Cypress Work In Progress FR/EN Test');
-        contentEditor.save();
+        contentEditor.create();
         pageComposer.refresh().shouldContain('Cypress Work In Progress EN/FR Test');
         pageComposer.shouldContainWIPOverlay();
         PageComposer.visit(sitekey, 'fr', 'home.html');
@@ -150,18 +150,18 @@ describe('Create content tests in I18N site', () => {
         contentSection.get().find('#jnt\\:news_jcr\\:title').clear({force: true}).type('Cypress titre actualite', {force: true});
         contentEditor.getRichTextField('jnt:news_desc').type('Cypress contenu actualite');
         contentSection.get().find('#jnt\\:news_jcr\\:title').focus().click({force: true});
-        contentEditor.save();
+        contentEditor.create();
         contentSection.get().find('#jnt\\:news_jcr\\:title').click({force: true}).focus();
         contentEditor.getLanguageSwitcher().select('English');
         cy.get('#contenteditor-dialog-content').should('not.contain.text', 'Invalid form');
         contentSection.get().find('#jnt\\:news_jcr\\:title').clear({force: true}).type('Cypress news title 2', {force: true});
         contentEditor.getRichTextField('jnt:news_desc').type('Cypress news content 2');
         contentSection.get().find('#jnt\\:news_jcr\\:title').focus().click({force: true});
-        contentEditor.save();
+        contentEditor.create();
         contentEditor.getLanguageSwitcher().select('Français');
         cy.get('#contenteditor-dialog-content', {timeout: 1000}).should('not.contain.text', 'Invalid form');
         contentSection.get().find('#jnt\\:news_jcr\\:title').clear({force: true}).type('Cypress titre actualite 3', {force: true});
-        contentEditor.save();
+        contentEditor.create();
         contentEditor.cancelAndDiscard();
         pageComposer.refresh().shouldContain('Cypress news content');
         pageComposer.shouldContain('Cypress news content 2');

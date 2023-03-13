@@ -23,6 +23,7 @@ export default defineConfig({
         specPattern: ['**/e2e/createContentI18N.cy.ts',
             '**/e2e/orderableValues.cy.ts',
             '**/e2e/addMixinChoicelistInitializers.cy.ts',
+            '**/e2e/contentMultiLanguage.cy.ts',
             '**/e2e/pickers/customPicker.cy.ts',
             '**/e2e/pickers/search.cy.ts',
             '**/e2e/pickers/picker*.cy.ts',
