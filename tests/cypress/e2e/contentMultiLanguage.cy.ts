@@ -1,7 +1,7 @@
 import {DocumentNode} from 'graphql';
 import {PageComposer} from '../page-object/pageComposer';
 import {Picker} from '../page-object/picker';
-import {Collapsible, getComponentByRole, getComponentBySelector} from '@jahia/cypress';
+import {Collapsible, getComponentByRole} from '@jahia/cypress';
 import {ContentEditor} from '../page-object';
 
 interface FillContentType {
@@ -54,7 +54,8 @@ describe('Create multi language content and verify that it is different in all l
                     path: `/sites/${sitekey}/home`
                 }
             }).then(response => {
-                expect(response.data.jcr.mutateNode.mutateProperty.setValue).to.be.true;
+                // eslint-disable-next-line
+                expect(response?.data?.jcr?.mutateNode?.mutateProperty?.setValue).to.be.true;
             });
 
             cy.apollo({
@@ -66,7 +67,8 @@ describe('Create multi language content and verify that it is different in all l
                     path: `/sites/${sitekey}/home`
                 }
             }).then(response => {
-                expect(response.data.jcr.mutateNode.mutateProperty.setValue).to.be.true;
+                // eslint-disable-next-line
+                expect(response?.data?.jcr?.mutateNode?.mutateProperty?.setValue).to.be.true;
             });
 
             cy.loginEditor();
@@ -177,9 +179,7 @@ describe('Create multi language content and verify that it is different in all l
     it('Can create content in 3 languages and publish respecting mandatory language rules', {retries: 0}, function () {
         // Publish in all languages first to make site available in live
         pageComposer.publish('Publish Home in all languages', 'Publish all now');
-        // There is gwt snackbar but it's quite tricky to catch so I'm using this temporarily
-        /* eslint-disable cypress/no-unnecessary-waiting */
-        cy.wait(3000);
+        pageComposer.checkIfPublished();
         const contentEditor = pageComposer
             .openCreateContent()
             .getContentTypeSelector()
@@ -208,43 +208,38 @@ describe('Create multi language content and verify that it is different in all l
         pageComposer.switchLanguage(newsByLanguage.en.lang);
         pageComposer.navigateToPage('Home');
         pageComposer.publish('Publish Home - English', 'Publish now');
-        /* eslint-disable cypress/no-unnecessary-waiting */
-        cy.wait(3000);
+        pageComposer.checkIfPublished();
         testNewsCreation({pageComposer, subjects: [{...newsByLanguage.en, livePresent: false}]});
 
         // Publish 2nd mandatory language and check for presence in live
         pageComposer.switchLanguage(newsByLanguage.fr.lang);
         pageComposer.navigateToPage('Home');
         pageComposer.publish('Publish Home - Français', 'Publish now');
-        /* eslint-disable cypress/no-unnecessary-waiting */
-        cy.wait(3000);
+        pageComposer.checkIfPublished();
         testNewsCreation({pageComposer, subjects: [{...newsByLanguage.en, livePresent: true}, {...newsByLanguage.fr, livePresent: true}, {...newsByLanguage.de, livePresent: false}]});
 
         // Publish in German and everything should be available
         pageComposer.switchLanguage(newsByLanguage.de.lang);
         pageComposer.navigateToPage('Home');
         pageComposer.publish('Publish Home - Deutsch', 'Publish now');
-        /* eslint-disable cypress/no-unnecessary-waiting */
-        cy.wait(3000);
+        pageComposer.checkIfPublished();
         testNewsCreation({pageComposer, subjects: [{...newsByLanguage.en, livePresent: true}, {...newsByLanguage.fr, livePresent: true}, {...newsByLanguage.de, livePresent: true}]});
     });
 
     it('Can create and modify content in 2 languages and publish respecting mandatory language rules', {retries: 0}, function () {
-        const reducedNewsByLanguage = newsByLanguage;
+        const reducedNewsByLanguage = {...newsByLanguage};
         delete reducedNewsByLanguage.de;
         // Publish in all languages first to make site available in live
         pageComposer.publish('Publish Home in all languages', 'Publish all now');
-        // There is gwt snackbar but catching it doesn't mean everything is published
-        /* eslint-disable cypress/no-unnecessary-waiting */
-        cy.wait(3000);
-        let contentEditor = pageComposer
+        pageComposer.checkIfPublished();
+        const contentEditor = pageComposer
             .openCreateContent()
             .getContentTypeSelector()
             .searchForContentType('News entry')
             .selectContentType('News entry')
             .create();
 
-        // Create news entry in 3 languages
+        // Create news entry in 2 mandatory languages
         cy.get('#contenteditor-dialog-title').should('be.visible').and('contain', 'Create News entry');
         let contentSection = contentEditor.openSection('Content');
         contentSection.expand();
@@ -257,7 +252,7 @@ describe('Create multi language content and verify that it is different in all l
         pageComposer.refresh();
 
         // Test publication
-        // Should be absent in live because 2nd mandatory language was not published
+        // Publish news in both languages and test for presence in live
         pageComposer.switchLanguage(reducedNewsByLanguage.en.lang);
         pageComposer.navigateToPage('Home');
         pageComposer.publish('Publish Home - English', 'Publish now');
@@ -266,12 +261,10 @@ describe('Create multi language content and verify that it is different in all l
         PageComposer.visit(sitekey, 'fr', 'home.html');
         pageComposer.navigateToPage('Home');
         pageComposer.publish('Publish Home - Français', 'Publish now');
-        /* eslint-disable cypress/no-unnecessary-waiting */
-        cy.wait(3000);
+        pageComposer.checkIfPublished();
         testNewsCreation({pageComposer, subjects: [{...reducedNewsByLanguage.en, livePresent: true}, {...reducedNewsByLanguage.fr, livePresent: true}]});
 
         // Modify news
-
         pageComposer.editComponent('.news-v3-in-sm');
         cy.get('#contenteditor-dialog-title').should('be.visible');
         contentSection = contentEditor.openSection('Content');
@@ -300,8 +293,7 @@ describe('Create multi language content and verify that it is different in all l
         PageComposer.visit(sitekey, 'fr', 'home.html');
         pageComposer.navigateToPage('Home');
         pageComposer.publish('Publish Home - Français', 'Publish now');
-        /* eslint-disable cypress/no-unnecessary-waiting */
-        cy.wait(3000);
+        pageComposer.checkIfPublished();
         testNewsCreation({pageComposer, subjects: [{...reducedNewsByLanguage.en, livePresent: true}, {...reducedNewsByLanguage.fr, livePresent: true}]});
     });
 });

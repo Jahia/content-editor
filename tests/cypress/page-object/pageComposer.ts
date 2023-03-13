@@ -179,6 +179,11 @@ export class PageComposer extends BasePage {
             cy.get('button').contains(selectorText).click();
         });
     }
+
+    checkIfPublished() {
+        /* eslint-disable cypress/no-unnecessary-waiting */
+        cy.wait(3000);
+    }
 }
 
 export class ContentTypeSelector extends BaseComponent {
