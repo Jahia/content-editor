@@ -195,7 +195,7 @@ export class PageComposer extends BasePage {
                     return pubDate && date < new Date(pubDate);
                 });
             },
-            {timeout: 10000, interval: 2000, errorMsg: 'Visibility check timeout'}
+            {timeout: 10000, interval: 2000, errorMsg: 'Publication check timeout'}
         );
     }
 }
