@@ -1,17 +1,25 @@
 import {BaseComponent, BasePage, Button, getComponent, getComponentByRole, getElement, MUIInput} from '@jahia/cypress';
 import {ContentEditor} from './contentEditor';
 import IframeOptions = Cypress.IframeOptions;
+import {DocumentNode} from 'graphql';
 
 export class PageComposer extends BasePage {
     iFrameOptions: IframeOptions;
+    published: DocumentNode;
 
     constructor() {
         super();
         this.iFrameOptions = {timeout: 90000, log: true};
+        this.published = require('graphql-tag/loader!../fixtures/publication/published.graphql');
     }
 
     static visit(site: string, language: string, path: string): PageComposer {
         cy.visit(`/jahia/page-composer/default/${language}/sites/${site}/${path}`);
+        return new PageComposer();
+    }
+
+    static visitLive(site: string, language: string, path: string): PageComposer {
+        cy.visit(`${Cypress.env('JAHIA_URL')}/${language}/sites/${site}/${path}`);
         return new PageComposer();
     }
 
@@ -146,10 +154,49 @@ export class PageComposer extends BasePage {
 
     navigateToPage(name: string): PageComposer {
         cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
-            cy.get('#JahiaGxtPagesTab').contains(name).click({force: true});
+            cy.get('#JahiaGxtPagesTab').find('span').contains(name).click({force: true});
         });
 
         return new PageComposer();
+    }
+
+    switchLanguage(language: string) {
+        cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
+            cy.get('.toolbar-itemsgroup-languageswitcher').click();
+            cy.get('.x-combo-list-item').contains(language).click();
+        });
+    }
+
+    doInsideInnerFrame(fcn: () => void) {
+        cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
+            cy.iframe('.gwt-Frame', this.iFrameOptions).within(() => {
+                fcn();
+            });
+        });
+    }
+
+    publish(menuEntry: string, selectorText: string) {
+        cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
+            cy.get('.edit-menu-publication').click();
+            cy.get('.menu-edit-menu-publication').find('span').contains(menuEntry).click();
+            cy.get('button').contains(selectorText).click();
+        });
+    }
+
+    publishedAfter(path: string, lang: string, date: Date) {
+        cy.waitUntil(
+            () => {
+                return cy.apollo({query: this.published, variables: {path: path, lang: lang}}).then(resp => {
+                    if (resp?.graphQLErrors) {
+                        return false;
+                    }
+
+                    const pubDate = resp?.data?.jcr?.nodeByPath?.lastPublished?.value;
+                    return pubDate && date < new Date(pubDate);
+                });
+            },
+            {timeout: 10000, interval: 2000, errorMsg: 'Publication check timeout'}
+        );
     }
 }
 

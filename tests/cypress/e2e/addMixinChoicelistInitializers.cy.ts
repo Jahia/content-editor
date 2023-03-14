@@ -104,7 +104,7 @@ describe('Add Mixin by using choice list initializers (Image Reference)', () => 
             .click();
         cy.get('[data-sel-role-card="snowbearHome.jpeg"]').should('be.visible').contains('snowbearHome.jpeg').click();
         cy.get('button[data-sel-picker-dialog-action="done"]').click();
-        contentEditor.save();
+        contentEditor.create();
         pageComposer
             .refresh()
             .componentShouldBeVisible(

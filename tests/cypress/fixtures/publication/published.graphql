@@ -1,0 +1,9 @@
+query published($path: String!, $lang:String!) {
+  jcr(workspace:LIVE) {
+    nodeByPath(path:$path) {
+      lastPublished: property(name:"j:lastPublished", language:$lang) {
+        value
+      }
+    }
+  }
+}

@@ -35,3 +35,5 @@ Cypress.Commands.add('loginEditor', () => {
         }
     });
 });
+
+import 'cypress-wait-until';

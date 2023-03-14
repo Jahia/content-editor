@@ -133,7 +133,7 @@ describe('Language switcher tests', () => {
         ce.openSection('Options');
         ce.getSmallTextField('nt:base_ce:systemName', false)
             .addNewValue(contentName);
-        ce.save();
+        ce.create();
 
         cy.log('Verify text has been created in jcr');
         const query = gql`

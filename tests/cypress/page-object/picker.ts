@@ -93,15 +93,6 @@ export class Picker extends BaseComponent {
         return this.table;
     }
 
-    getGrid() {
-        if (!this.grid) {
-            this.grid = getComponentByAttr(PickerGrid, 'data-cm-role', 'grid-content-list', this);
-        }
-
-        this.wait();
-        return this.grid;
-    }
-
     getSelectionTable() {
         if (!this.selectionTable) {
             this.selectionTable = getComponentByAttr(Table, 'data-cm-role', 'selection-table', this);
@@ -196,5 +187,22 @@ export class Picker extends BaseComponent {
     switchViewMode(viewMode: string) {
         this.getViewMode().select(viewMode);
         this.wait();
+    }
+
+    getGrid() {
+        if (!this.grid) {
+            this.grid = getComponentByAttr(PickerGrid, 'data-cm-role', 'grid-content-list', this);
+        }
+
+        this.wait();
+        return this.grid;
+    }
+
+    uploadFile(pathToFixture: string) {
+        this.get().find('table[data-cm-role="table-content-list"]')
+            .selectFile(pathToFixture, {
+                action: 'drag-drop',
+                waitForAnimations: true
+            });
     }
 }
