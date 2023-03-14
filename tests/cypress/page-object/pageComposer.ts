@@ -1,13 +1,16 @@
 import {BaseComponent, BasePage, Button, getComponent, getComponentByRole, getElement, MUIInput} from '@jahia/cypress';
 import {ContentEditor} from './contentEditor';
 import IframeOptions = Cypress.IframeOptions;
+import {DocumentNode} from 'graphql';
 
 export class PageComposer extends BasePage {
     iFrameOptions: IframeOptions;
+    published: DocumentNode;
 
     constructor() {
         super();
         this.iFrameOptions = {timeout: 90000, log: true};
+        this.published = require('graphql-tag/loader!../fixtures/publication/published.graphql');
     }
 
     static visit(site: string, language: string, path: string): PageComposer {
@@ -180,9 +183,20 @@ export class PageComposer extends BasePage {
         });
     }
 
-    checkIfPublished() {
-        /* eslint-disable cypress/no-unnecessary-waiting */
-        cy.wait(3000);
+    publishedAfter(path: string, lang: string, date: Date) {
+        cy.waitUntil(
+            () => {
+                return cy.apollo({query: this.published, variables: {path: path, lang: lang}}).then(resp => {
+                    if (resp?.graphQLErrors) {
+                        return false;
+                    }
+
+                    const pubDate = resp?.data?.jcr?.nodeByPath?.lastPublished?.value;
+                    return pubDate && date < new Date(pubDate);
+                });
+            },
+            {timeout: 10000, interval: 2000, errorMsg: 'Visibility check timeout'}
+        );
     }
 }
 

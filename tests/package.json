@@ -29,6 +29,7 @@
     "cypress-multi-reporters": "^1.6.2",
     "cypress-slow-down": "^1.2.1",
     "cypress-terminal-report": "^5.0.2",
+    "cypress-wait-until": "^1.7.2",
     "eslint": "^8.16.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-cypress": "^2.12.1",

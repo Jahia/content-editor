@@ -29,6 +29,7 @@ interface TestNewsType {
 }
 
 const sitekey = 'contentMultiLanguage';
+const publishedNewsPath = `/sites/${sitekey}/home/area-main/english-news`;
 
 describe('Create multi language content and verify that it is different in all languages', () => {
     let pageComposer: PageComposer;
@@ -178,8 +179,9 @@ describe('Create multi language content and verify that it is different in all l
 
     it('Can create content in 3 languages and publish respecting mandatory language rules', {retries: 0}, function () {
         // Publish in all languages first to make site available in live
+        let pubDate = new Date();
         pageComposer.publish('Publish Home in all languages', 'Publish all now');
-        pageComposer.checkIfPublished();
+        pageComposer.publishedAfter(`/sites/${sitekey}/home`, 'en', pubDate);
         const contentEditor = pageComposer
             .openCreateContent()
             .getContentTypeSelector()
@@ -207,22 +209,25 @@ describe('Create multi language content and verify that it is different in all l
         // Should be absent in live because 2nd mandatory language was not published
         pageComposer.switchLanguage(newsByLanguage.en.lang);
         pageComposer.navigateToPage('Home');
+        pubDate = new Date();
         pageComposer.publish('Publish Home - English', 'Publish now');
-        pageComposer.checkIfPublished();
+        pageComposer.publishedAfter(publishedNewsPath, 'en', pubDate);
         testNewsCreation({pageComposer, subjects: [{...newsByLanguage.en, livePresent: false}]});
 
         // Publish 2nd mandatory language and check for presence in live
         pageComposer.switchLanguage(newsByLanguage.fr.lang);
         pageComposer.navigateToPage('Home');
+        pubDate = new Date();
         pageComposer.publish('Publish Home - Français', 'Publish now');
-        pageComposer.checkIfPublished();
+        pageComposer.publishedAfter(publishedNewsPath, 'fr', pubDate);
         testNewsCreation({pageComposer, subjects: [{...newsByLanguage.en, livePresent: true}, {...newsByLanguage.fr, livePresent: true}, {...newsByLanguage.de, livePresent: false}]});
 
         // Publish in German and everything should be available
         pageComposer.switchLanguage(newsByLanguage.de.lang);
         pageComposer.navigateToPage('Home');
+        pubDate = new Date();
         pageComposer.publish('Publish Home - Deutsch', 'Publish now');
-        pageComposer.checkIfPublished();
+        pageComposer.publishedAfter(publishedNewsPath, 'de', pubDate);
         testNewsCreation({pageComposer, subjects: [{...newsByLanguage.en, livePresent: true}, {...newsByLanguage.fr, livePresent: true}, {...newsByLanguage.de, livePresent: true}]});
     });
 
@@ -230,8 +235,9 @@ describe('Create multi language content and verify that it is different in all l
         const reducedNewsByLanguage = {...newsByLanguage};
         delete reducedNewsByLanguage.de;
         // Publish in all languages first to make site available in live
+        let pubDate = new Date();
         pageComposer.publish('Publish Home in all languages', 'Publish all now');
-        pageComposer.checkIfPublished();
+        pageComposer.publishedAfter(`/sites/${sitekey}/home`, 'en', pubDate);
         const contentEditor = pageComposer
             .openCreateContent()
             .getContentTypeSelector()
@@ -255,13 +261,16 @@ describe('Create multi language content and verify that it is different in all l
         // Publish news in both languages and test for presence in live
         pageComposer.switchLanguage(reducedNewsByLanguage.en.lang);
         pageComposer.navigateToPage('Home');
+        pubDate = new Date();
         pageComposer.publish('Publish Home - English', 'Publish now');
+        pageComposer.publishedAfter(publishedNewsPath, 'en', pubDate);
 
         pageComposer.switchLanguage(reducedNewsByLanguage.fr.lang);
         PageComposer.visit(sitekey, 'fr', 'home.html');
         pageComposer.navigateToPage('Home');
+        pubDate = new Date();
         pageComposer.publish('Publish Home - Français', 'Publish now');
-        pageComposer.checkIfPublished();
+        pageComposer.publishedAfter(publishedNewsPath, 'fr', pubDate);
         testNewsCreation({pageComposer, subjects: [{...reducedNewsByLanguage.en, livePresent: true}, {...reducedNewsByLanguage.fr, livePresent: true}]});
 
         // Modify news
@@ -287,13 +296,16 @@ describe('Create multi language content and verify that it is different in all l
         // Should be present in live in modified form
         pageComposer.switchLanguage(reducedNewsByLanguage.en.lang);
         pageComposer.navigateToPage('Home');
+        pubDate = new Date();
         pageComposer.publish('Publish Home - English', 'Publish now');
+        pageComposer.publishedAfter(publishedNewsPath, 'en', pubDate);
 
         pageComposer.switchLanguage(reducedNewsByLanguage.fr.lang);
         PageComposer.visit(sitekey, 'fr', 'home.html');
         pageComposer.navigateToPage('Home');
+        pubDate = new Date();
         pageComposer.publish('Publish Home - Français', 'Publish now');
-        pageComposer.checkIfPublished();
+        pageComposer.publishedAfter(publishedNewsPath, 'fr', pubDate);
         testNewsCreation({pageComposer, subjects: [{...reducedNewsByLanguage.en, livePresent: true}, {...reducedNewsByLanguage.fr, livePresent: true}]});
     });
 });
