@@ -133,7 +133,7 @@ services:
       deploy:
         resources:
           limits:
-            memory: 4gb
+            memory: 8gb
       depends_on:
         - jahia
       environment:
