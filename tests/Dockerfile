@@ -1,5 +1,4 @@
-FROM cypress/included:12.7.0
-#FROM cypress/browsers:node14.19.0-chrome100-ff99-edge
+FROM cypress/browsers:node14.19.0-chrome100-ff99-edge
 
 ARG MAVEN_VER="3.8.1"
 ARG MAVEN_BASE_URL="https://archive.apache.org/dist/maven/maven-3"
@@ -20,7 +19,13 @@ RUN CI=true yarn install
 
 COPY --chown=jahians:jahians . /home/jahians
 
-#RUN CI=true /home/jahians/node_modules/.bin/cypress install
+RUN CI=true /home/jahians/node_modules/.bin/cypress install
+
+RUN cypress verify
+RUN cypress cache path
+RUN cypress cache list
+RUN cypress info
+RUN cypress version
 
 COPY --chown=jahians:jahians maven.settings.xml /home/jahians/.m2/settings.xml
 
