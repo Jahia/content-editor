@@ -8,3 +8,7 @@
 :global(.cke_dialog_container) {
     z-index: 1300 !important;
 }
+
+:global(.cke_inner.cke_reset.cke_maximized) {
+    width: calc(100vw + 1px - 1px) !important;
+}
