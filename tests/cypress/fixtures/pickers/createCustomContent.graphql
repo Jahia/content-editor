@@ -23,6 +23,11 @@ mutation createContent {
                             name: "test-content4"
                             primaryNodeType: "jnt:bigText"
                             properties: [{ name: "text", language: "en", value: "test 4" }]
+                        },
+                        {
+                            name: "test-content5"
+                            primaryNodeType: "jnt:text"
+                            properties: [{ name: "text", language: "en", value: "test 5" }]
                         }
                         {
                             name: "content-folder1"
