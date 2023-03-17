@@ -193,9 +193,9 @@ describe('Create multi language content and verify that it is different in all l
         const contentSection = contentEditor.openSection('Content');
         contentSection.expand();
 
-        fillNews({contentEditor, contentSection, ...newsByLanguage["en"]});
-        fillNews({contentEditor, contentSection, ...newsByLanguage["de"]});
-        fillNews({contentEditor, contentSection, ...newsByLanguage["fr"]});
+        fillNews({contentEditor, contentSection, ...newsByLanguage.en});
+        fillNews({contentEditor, contentSection, ...newsByLanguage.de});
+        fillNews({contentEditor, contentSection, ...newsByLanguage.fr});
 
         contentEditor.create();
         pageComposer.refresh();
@@ -255,8 +255,8 @@ describe('Create multi language content and verify that it is different in all l
         let contentSection = contentEditor.openSection('Content');
         contentSection.expand();
 
-        fillNews({contentEditor, contentSection, ...reducedNewsByLanguage["en"]});
-        fillNews({contentEditor, contentSection, ...reducedNewsByLanguage["fr"]});
+        fillNews({contentEditor, contentSection, ...reducedNewsByLanguage.en});
+        fillNews({contentEditor, contentSection, ...reducedNewsByLanguage.fr});
 
         contentEditor.create();
         pageComposer.refresh();
@@ -290,8 +290,8 @@ describe('Create multi language content and verify that it is different in all l
         reducedNewsByLanguage.en.image = reducedNewsByLanguage.fr.image;
         reducedNewsByLanguage.en.image = image;
 
-        fillNews({contentEditor, contentSection, ...reducedNewsByLanguage["en"], modify: true});
-        fillNews({contentEditor, contentSection, ...reducedNewsByLanguage["fr"], modify: true});
+        fillNews({contentEditor, contentSection, ...reducedNewsByLanguage.en, modify: true});
+        fillNews({contentEditor, contentSection, ...reducedNewsByLanguage.fr, modify: true});
 
         contentEditor.save();
         pageComposer.refresh();
