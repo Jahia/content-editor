@@ -134,6 +134,7 @@ services:
         resources:
           limits:
             memory: 8gb
+            cpus: 4
       depends_on:
         - jahia
       environment:
