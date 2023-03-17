@@ -290,9 +290,8 @@ describe('Create multi language content and verify that it is different in all l
         reducedNewsByLanguage.en.image = reducedNewsByLanguage.fr.image;
         reducedNewsByLanguage.en.image = image;
 
-        Object.keys(reducedNewsByLanguage).forEach(key => {
-            fillNews({contentEditor, contentSection, ...reducedNewsByLanguage[key], modify: true});
-        });
+        fillNews({contentEditor, contentSection, ...reducedNewsByLanguage["en"], modify: true});
+        fillNews({contentEditor, contentSection, ...reducedNewsByLanguage["fr"], modify: true});
 
         contentEditor.save();
         pageComposer.refresh();
