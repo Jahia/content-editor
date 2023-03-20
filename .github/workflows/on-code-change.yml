@@ -90,7 +90,15 @@ jobs:
           name: merged-sbom
           path: |
             sbom-all.cdx.json
-          retention-days: 2          
+          retention-days: 2
+      - uses: DependencyTrack/gh-upload-sbom@v1.0.0
+        with:
+            bomfilename: sbom-all.cdx.json
+            serverhostname: 'dependency-track-dev.jahia.com'
+            apikey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
+            autocreate: true
+            projectname: 'Content Editor'
+            projectversion: 'master'
 
   sonar-analysis:
     name: Sonar Analysis
