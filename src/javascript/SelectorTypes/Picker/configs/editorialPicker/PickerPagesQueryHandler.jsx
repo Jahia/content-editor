@@ -32,7 +32,7 @@ export const PickerPagesQueryHandler = {
         if (treeParams) {
             return ({
                 ...treeParams,
-                openableTypes: isPagesViewType ? ['jnt:page'] : ['jnt:content'],
+                openableTypes: isPagesViewType ? ['jmix:navMenuItem'] : ['jnt:content'],
                 selectableTypes: typeFilter
             });
         }
