@@ -8,18 +8,25 @@ import {registerAdvancedOptionsActions} from './registerAdvancedOptionsActions';
 import {useTranslation} from 'react-i18next';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 import {useContentEditorContext} from '~/contexts/ContentEditor';
+import {useQuery} from '@apollo/react-hooks';
+import {UsagesCountQuery} from '~/editorTabs/AdvancedOptions/Usages/Usages.gql-queries';
 
 const DEPRECATED_GWT_ACTIONS = ['content', 'layout', 'metadata', 'categories', 'options', 'seo', 'usages', 'channels'];
 
 const Renderer = ({activeOption, setActiveOption, buttonLabel, onClick, tabs}) => {
     const tab = tabs ? tabs[0] : 'technicalInformation';
-    const {usages} = useContentEditorContext();
+    const {nodeData} = useContentEditorContext();
+
+    const {data} = useQuery(UsagesCountQuery, {
+        variables: {path: nodeData.path}
+    });
+
     if (tab === 'usages') {
         return (
             <MenuItem
                 isSelected={activeOption === tab}
                 label={buttonLabel}
-                iconEnd={<Chip color={activeOption === tab ? 'light' : 'default'} label={usages.length}/>}
+                iconEnd={<Chip color={activeOption === tab ? 'light' : 'default'} label={data?.jcr?.nodeByPath?.usages?.pageInfo?.nodesCount}/>}
                 onClick={e => {
                     if (DEPRECATED_GWT_ACTIONS.includes(tab)) {
                         setActiveOption(tab);

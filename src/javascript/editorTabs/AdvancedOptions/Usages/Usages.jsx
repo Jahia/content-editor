@@ -6,13 +6,28 @@ import {useTable} from 'react-table';
 import {allColumnData} from '~/SelectorTypes/Picker/reactTable/columns';
 import {useContentEditorContext} from '~/contexts/ContentEditor';
 import {ContentListHeader, reactTable} from '@jahia/jcontent';
+import {useQuery} from '@apollo/react-hooks';
+import {useContentEditorConfigContext} from '~/contexts';
+import {UsagesQuery} from './Usages.gql-queries';
+import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 
 const defaultCols = ['publicationStatus', 'name', 'type', 'location'];
 const columns = defaultCols.map(c => (typeof c === 'string') ? allColumnData.find(col => col.id === c) : c);
 
 export const Usages = () => {
     const {t} = useTranslation('content-editor');
-    const {usages} = useContentEditorContext();
+
+    const {nodeData} = useContentEditorContext();
+    const {lang} = useContentEditorConfigContext();
+
+    const {data, loading} = useQuery(UsagesQuery, {
+        variables: {path: nodeData.path, language: lang}
+    });
+
+    const usages = data?.jcr?.nodeByPath?.usages?.nodes ? Object.values(data.jcr.nodeByPath.usages.nodes.reduce((acc, ref) => (
+        {...acc, [ref.node.uuid]: {...ref.node, locales: acc[ref.node.uuid] ? [...acc[ref.node.uuid]?.locales, ref.language] : [ref.language]}}
+    ), {})) : [];
+
     const {
         getTableProps,
         getTableBodyProps,
@@ -27,6 +42,11 @@ export const Usages = () => {
         },
         reactTable.useSort
     );
+
+    if (loading) {
+        return <LoaderOverlay/>;
+    }
+
     if (usages.length === 0) {
         return (
             <section className={styles.container}>
