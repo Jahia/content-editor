@@ -56,7 +56,7 @@ export const Tag = ({field, value, id, onChange, onBlur}) => {
             onChange={selection => {
                 const newSelection = selection && selection.map(data => data.value);
                 const adaptedSelection = adaptSelection(newSelection, separator);
-                onChange(adaptedSelection.length ? adaptedSelection : undefined);
+                onChange(adaptedSelection);
             }}
             onBlur={onBlur}
         />
