@@ -25,7 +25,7 @@ interface Subject {
 }
 interface TestNewsType {
     pageComposer: PageComposer,
-    subjects: Array<Subject>
+    subject: Subject
 }
 
 const sitekey = 'contentMultiLanguage';
@@ -146,35 +146,34 @@ describe('Create multi language content and verify that it is different in all l
     };
 
     const testNewsCreation = (data: TestNewsType) => {
-        data.subjects.forEach(s => {
-            data.pageComposer.switchLanguage(s.lang);
-            pageComposer.navigateToPage('Home');
-            // Will be skipped in  editPresent undefined
-            if (s.editPresent !== undefined && s.editPresent) {
-                pageComposer.shouldContain(s.title);
-                pageComposer.doInsideInnerFrame(() => {
-                    cy.get('a').contains('Read More').click();
-                });
-
-                pageComposer.doInsideInnerFrame(() => {
-                    cy.get('h2').contains(s.title);
-                    cy.get('p').contains(s.description);
-                });
-            }
-
-            // Will be skipped in  livePresent undefined
-            if (s.livePresent !== undefined && s.livePresent) {
-                PageComposer.visitLive(sitekey, s.locale, 'home.html');
-                cy.contains(s.title);
+        const s = data.subject;
+        data.pageComposer.switchLanguage(s.lang);
+        pageComposer.navigateToPage('Home');
+        // Will be skipped in  editPresent undefined
+        if (s.editPresent !== undefined && s.editPresent) {
+            pageComposer.shouldContain(s.title);
+            pageComposer.doInsideInnerFrame(() => {
                 cy.get('a').contains('Read More').click();
-                cy.get('.news-v3').find(`img[src="/files/live/sites/${sitekey}/files/${s.image.split('/')[3]}"]`).should('exist');
-                PageComposer.visit(sitekey, s.locale, 'home.html');
-            } else if (s.livePresent !== undefined && !s.livePresent) {
-                PageComposer.visitLive(sitekey, s.locale, 'home.html');
-                cy.contains(s.title).should('not.exist');
-                PageComposer.visit(sitekey, s.locale, 'home.html');
-            }
-        });
+            });
+
+            pageComposer.doInsideInnerFrame(() => {
+                cy.get('h2').contains(s.title);
+                cy.get('p').contains(s.description);
+            });
+        }
+
+        // Will be skipped in  livePresent undefined
+        if (s.livePresent !== undefined && s.livePresent) {
+            PageComposer.visitLive(sitekey, s.locale, 'home.html');
+            cy.contains(s.title);
+            cy.get('a').contains('Read More').click();
+            cy.get('.news-v3').find(`img[src="/files/live/sites/${sitekey}/files/${s.image.split('/')[3]}"]`).should('exist');
+            PageComposer.visit(sitekey, s.locale, 'home.html');
+        } else if (s.livePresent !== undefined && !s.livePresent) {
+            PageComposer.visitLive(sitekey, s.locale, 'home.html');
+            cy.contains(s.title).should('not.exist');
+            PageComposer.visit(sitekey, s.locale, 'home.html');
+        }
     };
 
     it('Can create content in 3 languages and publish respecting mandatory language rules', {retries: 0}, function () {
@@ -194,16 +193,18 @@ describe('Create multi language content and verify that it is different in all l
         const contentSection = contentEditor.openSection('Content');
         contentSection.expand();
 
-        Object.keys(newsByLanguage).sort(a => a === 'English' ? 1 : 0).forEach(key => {
-            fillNews({contentEditor, contentSection, ...newsByLanguage[key]});
-        });
+        fillNews({contentEditor, contentSection, ...newsByLanguage.en});
+        fillNews({contentEditor, contentSection, ...newsByLanguage.de});
+        fillNews({contentEditor, contentSection, ...newsByLanguage.fr});
 
         contentEditor.create();
         pageComposer.refresh();
 
         // Verify news entries were created in 3 languages
         const subjects = <Subject[]>Object.keys(newsByLanguage).sort(a => a === 'English' ? 1 : 0).map(s => ({...newsByLanguage[s], editPresent: true}));
-        testNewsCreation({pageComposer, subjects});
+        testNewsCreation({pageComposer, subject: subjects[0]});
+        testNewsCreation({pageComposer, subject: subjects[1]});
+        testNewsCreation({pageComposer, subject: subjects[2]});
 
         // Test publication
         // Should be absent in live because 2nd mandatory language was not published
@@ -212,7 +213,7 @@ describe('Create multi language content and verify that it is different in all l
         pubDate = new Date();
         pageComposer.publish('Publish Home - English', 'Publish now');
         pageComposer.publishedAfter(publishedNewsPath, 'en', pubDate);
-        testNewsCreation({pageComposer, subjects: [{...newsByLanguage.en, livePresent: false}]});
+        testNewsCreation({pageComposer, subject: {...newsByLanguage.en, livePresent: false}});
 
         // Publish 2nd mandatory language and check for presence in live
         pageComposer.switchLanguage(newsByLanguage.fr.lang);
@@ -220,7 +221,9 @@ describe('Create multi language content and verify that it is different in all l
         pubDate = new Date();
         pageComposer.publish('Publish Home - Français', 'Publish now');
         pageComposer.publishedAfter(publishedNewsPath, 'fr', pubDate);
-        testNewsCreation({pageComposer, subjects: [{...newsByLanguage.en, livePresent: true}, {...newsByLanguage.fr, livePresent: true}, {...newsByLanguage.de, livePresent: false}]});
+        testNewsCreation({pageComposer, subject: {...newsByLanguage.en, livePresent: true}});
+        testNewsCreation({pageComposer, subject: {...newsByLanguage.fr, livePresent: true}});
+        testNewsCreation({pageComposer, subject: {...newsByLanguage.de, livePresent: false}});
 
         // Publish in German and everything should be available
         pageComposer.switchLanguage(newsByLanguage.de.lang);
@@ -228,7 +231,9 @@ describe('Create multi language content and verify that it is different in all l
         pubDate = new Date();
         pageComposer.publish('Publish Home - Deutsch', 'Publish now');
         pageComposer.publishedAfter(publishedNewsPath, 'de', pubDate);
-        testNewsCreation({pageComposer, subjects: [{...newsByLanguage.en, livePresent: true}, {...newsByLanguage.fr, livePresent: true}, {...newsByLanguage.de, livePresent: true}]});
+        testNewsCreation({pageComposer, subject: {...newsByLanguage.en, livePresent: true}});
+        testNewsCreation({pageComposer, subject: {...newsByLanguage.fr, livePresent: true}});
+        testNewsCreation({pageComposer, subject: {...newsByLanguage.de, livePresent: true}});
     });
 
     it('Can create and modify content in 2 languages and publish respecting mandatory language rules', {retries: 0}, function () {
@@ -250,9 +255,8 @@ describe('Create multi language content and verify that it is different in all l
         let contentSection = contentEditor.openSection('Content');
         contentSection.expand();
 
-        Object.keys(reducedNewsByLanguage).sort(a => a === 'English' ? 1 : 0).forEach(key => {
-            fillNews({contentEditor, contentSection, ...reducedNewsByLanguage[key]});
-        });
+        fillNews({contentEditor, contentSection, ...reducedNewsByLanguage.en});
+        fillNews({contentEditor, contentSection, ...reducedNewsByLanguage.fr});
 
         contentEditor.create();
         pageComposer.refresh();
@@ -271,7 +275,8 @@ describe('Create multi language content and verify that it is different in all l
         pubDate = new Date();
         pageComposer.publish('Publish Home - Français', 'Publish now');
         pageComposer.publishedAfter(publishedNewsPath, 'fr', pubDate);
-        testNewsCreation({pageComposer, subjects: [{...reducedNewsByLanguage.en, livePresent: true}, {...reducedNewsByLanguage.fr, livePresent: true}]});
+        testNewsCreation({pageComposer, subject: {...reducedNewsByLanguage.en, livePresent: true}});
+        testNewsCreation({pageComposer, subject: {...reducedNewsByLanguage.fr, livePresent: true}});
 
         // Modify news
         pageComposer.editComponent('.news-v3-in-sm');
@@ -285,9 +290,8 @@ describe('Create multi language content and verify that it is different in all l
         reducedNewsByLanguage.en.image = reducedNewsByLanguage.fr.image;
         reducedNewsByLanguage.en.image = image;
 
-        Object.keys(reducedNewsByLanguage).forEach(key => {
-            fillNews({contentEditor, contentSection, ...reducedNewsByLanguage[key], modify: true});
-        });
+        fillNews({contentEditor, contentSection, ...reducedNewsByLanguage.en, modify: true});
+        fillNews({contentEditor, contentSection, ...reducedNewsByLanguage.fr, modify: true});
 
         contentEditor.save();
         pageComposer.refresh();
@@ -306,6 +310,7 @@ describe('Create multi language content and verify that it is different in all l
         pubDate = new Date();
         pageComposer.publish('Publish Home - Français', 'Publish now');
         pageComposer.publishedAfter(publishedNewsPath, 'fr', pubDate);
-        testNewsCreation({pageComposer, subjects: [{...reducedNewsByLanguage.en, livePresent: true}, {...reducedNewsByLanguage.fr, livePresent: true}]});
+        testNewsCreation({pageComposer, subject: {...reducedNewsByLanguage.en, livePresent: true}});
+        testNewsCreation({pageComposer, subject: {...reducedNewsByLanguage.fr, livePresent: true}});
     });
 });
