@@ -4,10 +4,8 @@ describe('Picker - Pages', () => {
     const siteKey = 'digitall';
     let jcontent: JContent;
     beforeEach(() => {
-        // I have issues adding these to before()/after() so have to add to beforeEach()/afterEach()
         cy.loginEditor(); // Edit in chief
         cy.apollo({mutationFile: 'pickers/createContent.graphql'});
-        // beforeEach()
         jcontent = JContent.visit(siteKey, 'en', 'content-folders/contents');
     });
 
@@ -17,7 +15,7 @@ describe('Picker - Pages', () => {
     });
 
     // Tests
-    it('Categories Picker - Search for transportation - letter by letter', () => {
+    it('Page Picker - Ensure we can open navMenuItem like navMenuText element and find sub-pages', () => {
         const contentEditor = jcontent.createContent('Pickers');
         const picker = contentEditor.getPickerField('qant:pickers_pagepicker').open();
         picker.getTable().getRowByName('ce-picker-pages').getCellByRole('name').scrollIntoView({
