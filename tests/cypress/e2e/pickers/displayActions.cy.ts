@@ -35,8 +35,8 @@ describe('Picker tests - Display actions', () => {
 
     it('should refresh picker dialog', () => {
         const picker = jcontent
-            .createContent(contentTypes.customPicker.typeName)
-            .getPickerField(contentTypes.customPicker.fieldNodeType, contentTypes.customPicker.multiple)
+            .createContent(contentTypes.editorialpicker.typeName)
+            .getPickerField(contentTypes.editorialpicker.fieldNodeType, contentTypes.editorialpicker.multiple)
             .open();
 
         // Assert components are visible
