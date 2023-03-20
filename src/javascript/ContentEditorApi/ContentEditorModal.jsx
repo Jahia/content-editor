@@ -58,7 +58,11 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
 
             triggerEvents(newNode.uuid, Constants.operators.create);
 
-            const opts = editorConfig.isFullscreen ? ['closeButton'] : {
+            const predefined = editorConfig.isFullscreen ? ['closeButton'] : [];
+            const opts = editorConfig.isFullscreen ? {
+                autoHideDuration: 3000
+            } : {
+                autoHideDuration: 3000,
                 action: [
                     <Button
                         key="edit"
@@ -86,7 +90,7 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
                 ]
             };
 
-            notificationContext.notify(t('content-editor:label.contentEditor.create.createButton.success'), opts);
+            notificationContext.notify(t('content-editor:label.contentEditor.create.createButton.success'), predefined, opts);
         },
 
         editCallback: ({originalNode, updatedNode}) => {
@@ -97,7 +101,7 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
 
             triggerEvents(updatedNode.uuid, Constants.operators.update);
 
-            notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.success'), ['closeButton']);
+            notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.success'), ['closeButton'], {autoHideDuration: 3000});
         },
         onSavedCallback: ({newNode, language, originalNode, updatedNode}, forceRedirect) => {
             if (newNode && (editorConfig.isFullscreen || forceRedirect)) {
