@@ -68,6 +68,7 @@ jobs:
         shell: bash
         run: |
           find . \( -name "*.cdx.json" -o -name "*bom.json" \) -exec cyclonedx merge --output-file sbom-all.cdx.json --input-files "{}" +
+          apt-get update && apt-get install -y jq
           jq '. |
           {
             "bomFormat": .bomFormat,
