@@ -67,7 +67,7 @@ jobs:
       - name: Merge sbom
         shell: bash
         run: |
-          find . -name "*.cdx.json" -exec cyclonedx merge --output-file gl-sbom-all.cdx.json --input-files "{}" +
+          find . \( -name "*.cdx.json" -o -name "*bom.json" \) -exec cyclonedx merge --output-file sbom-all.cdx.json --input-files "{}" +
           jq '. |
           {
             "bomFormat": .bomFormat,
@@ -82,13 +82,13 @@ jobs:
             "components": [
               (.components | unique[])
             ]
-          }' "gl-sbom-all.cdx.json" > gl-sbom-all.cdx.json.tmp && mv gl-sbom-all.cdx.json.tmp gl-sbom-all.cdx.json
-          cyclonedx validate --input-version v1_4 --input-file gl-sbom-all.cdx.json
+          }' "sbom-all.cdx.json" > sbom-all.cdx.json.tmp && mv sbom-all.cdx.json.tmp sbom-all.cdx.json
+          cyclonedx validate --input-version v1_4 --input-file sbom-all.cdx.json
       - uses: actions/upload-artifact@v3
         with:
           name: merged-sbom
           path: |
-            gl-sbom-all.cdx.json
+            sbom-all.cdx.json
           retention-days: 2          
 
   sonar-analysis:
