@@ -68,5 +68,24 @@ mutation createContent {
         ]) {
             uuid
         }
+        page: mutateNode(pathOrId: "/sites/digitall/home") {
+            addChild(name: "ce-picker-pages", primaryNodeType: "jnt:navMenuText") {
+                mutateProperty(name: "jcr:title") {
+                    setValue(language: "en", value: "Menu Test 1")
+                }
+                addChildrenBatch(
+                    nodes: [
+                        {
+                            name: "test-page1"
+                            primaryNodeType: "jnt:page"
+                            properties: [{ name: "jcr:title", language: "en", value: "Page Test 1" },
+                                { name: "j:templateName", value: "default" }]
+                        }
+                    ]
+                ) {
+                    uuid
+                }
+            }
+        }
     }
 }

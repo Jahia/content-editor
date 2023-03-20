@@ -31,7 +31,8 @@ export const registerPagePicker = registry => {
                 queryHandler: PickerTreeQueryHandler,
                 defaultSort: {orderBy: ''},
                 columns: ['publicationStatus', 'name', 'lastModified'],
-                contextualMenu: 'contentPickerMenu'
+                contextualMenu: 'contentPickerMenu',
+                openableTypes: ['jmix:navMenuItem']
             },
             treeConfig: {
                 ...pagesItem.treeConfig,
