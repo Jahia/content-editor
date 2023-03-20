@@ -46,12 +46,50 @@ jobs:
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
     steps:
       - uses: actions/checkout@v3
-      - uses: jahia/jahia-modules-action/build@v2
+      - uses: jahia/jahia-modules-action/build@TECH-1019
         with:
           nexus_username: ${{ secrets.NEXUS_USERNAME }}
           nexus_password: ${{ secrets.NEXUS_PASSWORD }}
           module_id: content-editor
           mvn_settings_filepath: '.github/maven.settings.xml'
+
+  sbom:
+    name: Handle sbom
+    needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: cyclonedx/cyclonedx-cli:0.24.2   
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
+        with:
+          name: sbom-artifacts
+      - name: Merge sbom
+        shell: bash
+        run: |
+          find . -name "*.cdx.json" -exec cyclonedx merge --output-file gl-sbom-all.cdx.json --input-files "{}" +
+          jq '. |
+          {
+            "bomFormat": .bomFormat,
+            "specVersion": .specVersion,
+            "serialNumber": .serialNumber,
+            "version": .version,
+            "metadata": {
+              "tools": [
+                (.metadata.tools | unique[])
+              ]
+            },
+            "components": [
+              (.components | unique[])
+            ]
+          }' "gl-sbom-all.cdx.json" > gl-sbom-all.cdx.json.tmp && mv gl-sbom-all.cdx.json.tmp gl-sbom-all.cdx.json
+          cyclonedx validate --input-version v1_4 --input-file gl-sbom-all.cdx.json
+      - uses: actions/upload-artifact@v3
+        with:
+          name: merged-sbom
+          path: |
+            gl-sbom-all.cdx.json
+          retention-days: 2          
 
   sonar-analysis:
     name: Sonar Analysis
