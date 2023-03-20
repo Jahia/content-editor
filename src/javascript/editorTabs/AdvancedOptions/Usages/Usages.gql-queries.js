@@ -1,11 +1,11 @@
 import gql from 'graphql-tag';
 import {PredefinedFragments} from '@jahia/data-helper';
 
-export const UsagesQuery = gql`query($path:String!, $language: String!) {
+export const UsagesQuery = gql`query($path:String!, $language: String!, $pageSize: Int!, $currentPage: Int!) {
     jcr {
         nodeByPath(path: $path) {
             ...NodeCacheRequiredFields
-            usages: references(fieldFilter: {filters: {fieldName: "node.visible", value: "true"}}) {
+            usages: references(fieldFilter: {filters: {fieldName: "node.visible", value: "true"}}, limit: $pageSize, offset: $currentPage) {
                 nodes {
                     name
                     language
@@ -46,6 +46,9 @@ export const UsagesQuery = gql`query($path:String!, $language: String!) {
                             publication
                         }
                     }
+                }
+                pageInfo {
+                    totalCount
                 }
             }
         }
