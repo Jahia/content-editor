@@ -26,7 +26,7 @@ export class PageComposer extends BasePage {
     openCreateContent(): PageComposer {
         cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
             cy.iframe('.gwt-Frame', this.iFrameOptions).within(() => {
-                cy.get('.container').contains('Any content').click();
+                cy.get('.container').contains('Any content').click({force: true});
             });
         });
         return this;
@@ -177,7 +177,7 @@ export class PageComposer extends BasePage {
 
     publish(menuEntry: string, selectorText: string) {
         cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
-            cy.get('.edit-menu-publication').click();
+            cy.get('.edit-menu-publication').click({force: true});
             cy.get('.menu-edit-menu-publication').find('span').contains(menuEntry).click();
             cy.get('button').contains(selectorText).click();
         });
