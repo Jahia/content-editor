@@ -24,7 +24,8 @@ export function fillCKEditorPicker(setUrl, dialog, contentPicker, pickerResult) 
         .setValue(pickerResult.name);
 
     // Wrap path to build Jahia url.
-    setUrl(`${contentPicker ? contentPrefix : filePrefix}${pickerResult.path}${contentPicker ? '.html' : ''}`, {});
+    const pathWithEncodedFileName = pickerResult.path.replace(/\/([^/]+\.[^/?#]+)(\?|#|$)/, (_, fileName, suffix) => `/${encodeURIComponent(fileName)}${suffix}`);
+    setUrl(`${contentPicker ? contentPrefix : filePrefix}${pathWithEncodedFileName}${contentPicker ? '.html' : ''}`, {});
 }
 
 export function getPickerValue(dialog) {
