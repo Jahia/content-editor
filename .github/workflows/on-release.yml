@@ -39,7 +39,7 @@ jobs:
           NEXUS_INTERNAL_URL: https://devtools.jahia.com/nexus/content/groups/internal/
         with:
           github_slug: Jahia/content-editor
-          primary_release_branch: master
+          primary_release_branch: 4_3_X
           release_id: ${{ github.event.release.id }}
           release_version: ${{ github.event.release.tag_name }}
           github_api_token: ${{ secrets.GH_API_TOKEN }}
@@ -51,7 +51,7 @@ jobs:
         with:
           nexus_username: ${{ secrets.NEXUS_USERNAME }}
           nexus_password: ${{ secrets.NEXUS_PASSWORD }}
-          nexus_enterprise_releases_url: ${{ secrets.NEXUS_ENTERPRISE_RELEASES_URL }}
+          nexus_internal_releases_url: ${{ secrets.NEXUS_ENTERPRISE_RELEASES_URL }}
           force_signature: true
 
       - uses: jahia/jahia-modules-action/release-publication@v2
