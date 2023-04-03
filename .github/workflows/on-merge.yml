@@ -1,6 +1,6 @@
 # This workflow is triggered every time a change is pushed to any branches
 # Github actions command reference: https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions
-name: On merge to master
+name: On merge to 4_3_X
 
 # The workflow could also be triggered on PRs
 on:
@@ -21,7 +21,7 @@ jobs:
         with:
           nexus_username: ${{ secrets.NEXUS_USERNAME }}
           nexus_password: ${{ secrets.NEXUS_PASSWORD }}
-          nexus_enterprise_releases_url: ${{ secrets.NEXUS_ENTERPRISE_RELEASES_URL }}
+          nexus_internal_releases_url: ${{ secrets.NEXUS_ENTERPRISE_RELEASES_URL }}
 
   build:
     name: Build Module
@@ -94,7 +94,7 @@ jobs:
   publish:
     name: Publish module
     needs: build
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/4_3_X'
     runs-on: ubuntu-latest
     env:
       NEXUS_INTERNAL_URL: https://devtools.jahia.com/nexus/content/groups/internal/
