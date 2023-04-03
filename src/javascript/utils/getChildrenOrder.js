@@ -1,6 +1,6 @@
 export function getChildrenOrder(formValues, nodeData) {
     const doNotModifyReturn = {shouldModifyChildren: false, childrenOrder: []};
-    if (!formValues['Children::Order']) {
+    if (!formValues['Children::Order'] || formValues['Children::Order'].length === 1) {
         return doNotModifyReturn;
     }
 
