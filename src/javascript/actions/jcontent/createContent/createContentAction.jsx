@@ -99,8 +99,8 @@ export const CreateContent = ({contextNodePath, path, showOnNodeTypes, nodeTypes
 
     return (actions || [{key: 'allTypes'}]).map(result => (
         <Render
-            enabled={!res.node?.lockOwner}
             key={result.key}
+            enabled={!res.node?.lockOwner}
             {...otherProps}
             flattenedNodeTypes={flattenedNodeTypes}
             nodeTypesTree={nodeTypesTree}
