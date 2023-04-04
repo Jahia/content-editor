@@ -24,10 +24,18 @@ export const CreateContent = ({contextNodePath, path, showOnNodeTypes, nodeTypes
 
     const res = useNodeChecks(
         {path: contextNodePath || path, language: language},
-        {...otherProps}
+        {...otherProps, getLockInfo: true}
     );
 
-    const nodeInfo = useNodeInfo({path: path, language}, {getPrimaryNodeType: true, getSubNodesCount: true, getIsNodeTypes: ['jmix:listSizeLimit'], getProperties: ['limit']});
+    const nodeInfo = useNodeInfo(
+        {path: path, language},
+        {
+            getPrimaryNodeType: true,
+            getSubNodesCount: true,
+            getIsNodeTypes: ['jmix:listSizeLimit'],
+            getProperties: ['limit']
+        }
+    );
     const excludedNodeTypes = ['jmix:studioOnly', 'jmix:hiddenType'];
     const {loadingTypes, error, nodetypes: nodeTypesTree} = useCreatableNodetypesTree(
         nodeTypes,
@@ -91,6 +99,7 @@ export const CreateContent = ({contextNodePath, path, showOnNodeTypes, nodeTypes
 
     return (actions || [{key: 'allTypes'}]).map(result => (
         <Render
+            enabled={!res.node?.lockOwner}
             key={result.key}
             {...otherProps}
             flattenedNodeTypes={flattenedNodeTypes}
