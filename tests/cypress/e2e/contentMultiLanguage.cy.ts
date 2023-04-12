@@ -3,6 +3,7 @@ import {PageComposer} from '../page-object/pageComposer';
 import {Picker} from '../page-object/picker';
 import {Collapsible, getComponentByRole} from '@jahia/cypress';
 import {ContentEditor} from '../page-object';
+import gql from 'graphql-tag';
 
 interface FillContentType {
     contentEditor: ContentEditor,
@@ -30,10 +31,19 @@ interface TestNewsType {
 
 const sitekey = 'contentMultiLanguage';
 const publishedNewsPath = `/sites/${sitekey}/home/area-main/english-news`;
+const homePath = `/sites/${sitekey}/home`;
 
 describe('Create multi language content and verify that it is different in all languages', () => {
     let pageComposer: PageComposer;
     let setProperty: DocumentNode;
+
+    const publishMutation = gql`mutation publish($path:String!, $languages:[String!]) {
+      jcr(workspace:EDIT) {
+        mutateNode(pathOrId:$path) {
+          publish(languages:$languages)
+        }
+      }
+    }`;
 
     before(function () {
         setProperty = require('graphql-tag/loader!../fixtures/contentMultiLanguage/setPropertyValue.graphql');
@@ -179,7 +189,11 @@ describe('Create multi language content and verify that it is different in all l
     it('Can create content in 3 languages and publish respecting mandatory language rules', {retries: 0}, function () {
         // Publish in all languages first to make site available in live
         let pubDate = new Date();
-        pageComposer.publish('Publish Home in all languages', 'Publish all now');
+        cy.apollo({mutation: publishMutation, variables: {
+            path:homePath,
+                languages: ['en', 'fr', 'de']
+            }
+        });
         pageComposer.publishedAfter(`/sites/${sitekey}/home`, 'en', pubDate);
         const contentEditor = pageComposer
             .openCreateContent()
@@ -211,7 +225,11 @@ describe('Create multi language content and verify that it is different in all l
         pageComposer.switchLanguage(newsByLanguage.en.lang);
         pageComposer.navigateToPage('Home');
         pubDate = new Date();
-        pageComposer.publish('Publish Home - English', 'Publish now');
+        cy.apollo({mutation: publishMutation, variables: {
+                path:homePath,
+                languages: ['en']
+            }
+        });
         pageComposer.publishedAfter(publishedNewsPath, 'en', pubDate);
         testNewsCreation({pageComposer, subject: {...newsByLanguage.en, livePresent: false}});
 
@@ -219,7 +237,11 @@ describe('Create multi language content and verify that it is different in all l
         pageComposer.switchLanguage(newsByLanguage.fr.lang);
         pageComposer.navigateToPage('Home');
         pubDate = new Date();
-        pageComposer.publish('Publish Home - Français', 'Publish now');
+        cy.apollo({mutation: publishMutation, variables: {
+                path:homePath,
+                languages: ['fr']
+            }
+        });
         pageComposer.publishedAfter(publishedNewsPath, 'fr', pubDate);
         testNewsCreation({pageComposer, subject: {...newsByLanguage.en, livePresent: true}});
         testNewsCreation({pageComposer, subject: {...newsByLanguage.fr, livePresent: true}});
@@ -229,7 +251,11 @@ describe('Create multi language content and verify that it is different in all l
         pageComposer.switchLanguage(newsByLanguage.de.lang);
         pageComposer.navigateToPage('Home');
         pubDate = new Date();
-        pageComposer.publish('Publish Home - Deutsch', 'Publish now');
+        cy.apollo({mutation: publishMutation, variables: {
+                path:homePath,
+                languages: ['de']
+            }
+        });
         pageComposer.publishedAfter(publishedNewsPath, 'de', pubDate);
         testNewsCreation({pageComposer, subject: {...newsByLanguage.en, livePresent: true}});
         testNewsCreation({pageComposer, subject: {...newsByLanguage.fr, livePresent: true}});
@@ -241,7 +267,11 @@ describe('Create multi language content and verify that it is different in all l
         delete reducedNewsByLanguage.de;
         // Publish in all languages first to make site available in live
         let pubDate = new Date();
-        pageComposer.publish('Publish Home in all languages', 'Publish all now');
+        cy.apollo({mutation: publishMutation, variables: {
+                path:homePath,
+                languages: ['en', 'fr', 'de']
+            }
+        });
         pageComposer.publishedAfter(`/sites/${sitekey}/home`, 'en', pubDate);
         const contentEditor = pageComposer
             .openCreateContent()
@@ -266,14 +296,22 @@ describe('Create multi language content and verify that it is different in all l
         pageComposer.switchLanguage(reducedNewsByLanguage.en.lang);
         pageComposer.navigateToPage('Home');
         pubDate = new Date();
-        pageComposer.publish('Publish Home - English', 'Publish now');
+        cy.apollo({mutation: publishMutation, variables: {
+                path:homePath,
+                languages: ['en']
+            }
+        });
         pageComposer.publishedAfter(publishedNewsPath, 'en', pubDate);
 
         pageComposer.switchLanguage(reducedNewsByLanguage.fr.lang);
         PageComposer.visit(sitekey, 'fr', 'home.html');
         pageComposer.navigateToPage('Home');
         pubDate = new Date();
-        pageComposer.publish('Publish Home - Français', 'Publish now');
+        cy.apollo({mutation: publishMutation, variables: {
+                path:homePath,
+                languages: ['fr']
+            }
+        });
         pageComposer.publishedAfter(publishedNewsPath, 'fr', pubDate);
         testNewsCreation({pageComposer, subject: {...reducedNewsByLanguage.en, livePresent: true}});
         testNewsCreation({pageComposer, subject: {...reducedNewsByLanguage.fr, livePresent: true}});
@@ -301,14 +339,22 @@ describe('Create multi language content and verify that it is different in all l
         pageComposer.switchLanguage(reducedNewsByLanguage.en.lang);
         pageComposer.navigateToPage('Home');
         pubDate = new Date();
-        pageComposer.publish('Publish Home - English', 'Publish now');
+        cy.apollo({mutation: publishMutation, variables: {
+                path:homePath,
+                languages: ['en']
+            }
+        });
         pageComposer.publishedAfter(publishedNewsPath, 'en', pubDate);
 
         pageComposer.switchLanguage(reducedNewsByLanguage.fr.lang);
         PageComposer.visit(sitekey, 'fr', 'home.html');
         pageComposer.navigateToPage('Home');
         pubDate = new Date();
-        pageComposer.publish('Publish Home - Français', 'Publish now');
+        cy.apollo({mutation: publishMutation, variables: {
+                path:homePath,
+                languages: ['fr']
+            }
+        });
         pageComposer.publishedAfter(publishedNewsPath, 'fr', pubDate);
         testNewsCreation({pageComposer, subject: {...reducedNewsByLanguage.en, livePresent: true}});
         testNewsCreation({pageComposer, subject: {...reducedNewsByLanguage.fr, livePresent: true}});
