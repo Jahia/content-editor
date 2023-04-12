@@ -192,8 +192,7 @@ describe('Create multi language content and verify that it is different in all l
         cy.apollo({mutation: publishMutation, variables: {
             path: homePath,
             languages: ['en', 'fr', 'de']
-        }
-        });
+        }});
         pageComposer.publishedAfter(`/sites/${sitekey}/home`, 'en', pubDate);
         const contentEditor = pageComposer
             .openCreateContent()
@@ -228,8 +227,7 @@ describe('Create multi language content and verify that it is different in all l
         cy.apollo({mutation: publishMutation, variables: {
             path: homePath,
             languages: ['en']
-        }
-        });
+        }});
         pageComposer.publishedAfter(publishedNewsPath, 'en', pubDate);
         testNewsCreation({pageComposer, subject: {...newsByLanguage.en, livePresent: false}});
 
@@ -240,8 +238,7 @@ describe('Create multi language content and verify that it is different in all l
         cy.apollo({mutation: publishMutation, variables: {
             path: homePath,
             languages: ['fr']
-        }
-        });
+        }});
         pageComposer.publishedAfter(publishedNewsPath, 'fr', pubDate);
         testNewsCreation({pageComposer, subject: {...newsByLanguage.en, livePresent: true}});
         testNewsCreation({pageComposer, subject: {...newsByLanguage.fr, livePresent: true}});
@@ -254,8 +251,7 @@ describe('Create multi language content and verify that it is different in all l
         cy.apollo({mutation: publishMutation, variables: {
             path: homePath,
             languages: ['de']
-        }
-        });
+        }});
         pageComposer.publishedAfter(publishedNewsPath, 'de', pubDate);
         testNewsCreation({pageComposer, subject: {...newsByLanguage.en, livePresent: true}});
         testNewsCreation({pageComposer, subject: {...newsByLanguage.fr, livePresent: true}});
@@ -270,8 +266,7 @@ describe('Create multi language content and verify that it is different in all l
         cy.apollo({mutation: publishMutation, variables: {
             path: homePath,
             languages: ['en', 'fr', 'de']
-        }
-        });
+        }});
         pageComposer.publishedAfter(`/sites/${sitekey}/home`, 'en', pubDate);
         const contentEditor = pageComposer
             .openCreateContent()
@@ -299,8 +294,7 @@ describe('Create multi language content and verify that it is different in all l
         cy.apollo({mutation: publishMutation, variables: {
             path: homePath,
             languages: ['en']
-        }
-        });
+        }});
         pageComposer.publishedAfter(publishedNewsPath, 'en', pubDate);
 
         pageComposer.switchLanguage(reducedNewsByLanguage.fr.lang);
@@ -310,8 +304,7 @@ describe('Create multi language content and verify that it is different in all l
         cy.apollo({mutation: publishMutation, variables: {
             path: homePath,
             languages: ['fr']
-        }
-        });
+        }});
         pageComposer.publishedAfter(publishedNewsPath, 'fr', pubDate);
         testNewsCreation({pageComposer, subject: {...reducedNewsByLanguage.en, livePresent: true}});
         testNewsCreation({pageComposer, subject: {...reducedNewsByLanguage.fr, livePresent: true}});
@@ -342,8 +335,7 @@ describe('Create multi language content and verify that it is different in all l
         cy.apollo({mutation: publishMutation, variables: {
             path: homePath,
             languages: ['en']
-        }
-        });
+        }});
         pageComposer.publishedAfter(publishedNewsPath, 'en', pubDate);
 
         pageComposer.switchLanguage(reducedNewsByLanguage.fr.lang);
@@ -353,8 +345,7 @@ describe('Create multi language content and verify that it is different in all l
         cy.apollo({mutation: publishMutation, variables: {
             path: homePath,
             languages: ['fr']
-        }
-        });
+        }});
         pageComposer.publishedAfter(publishedNewsPath, 'fr', pubDate);
         testNewsCreation({pageComposer, subject: {...reducedNewsByLanguage.en, livePresent: true}});
         testNewsCreation({pageComposer, subject: {...reducedNewsByLanguage.fr, livePresent: true}});
