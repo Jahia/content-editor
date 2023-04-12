@@ -190,9 +190,9 @@ describe('Create multi language content and verify that it is different in all l
         // Publish in all languages first to make site available in live
         let pubDate = new Date();
         cy.apollo({mutation: publishMutation, variables: {
-            path:homePath,
-                languages: ['en', 'fr', 'de']
-            }
+            path: homePath,
+            languages: ['en', 'fr', 'de']
+        }
         });
         pageComposer.publishedAfter(`/sites/${sitekey}/home`, 'en', pubDate);
         const contentEditor = pageComposer
@@ -226,9 +226,9 @@ describe('Create multi language content and verify that it is different in all l
         pageComposer.navigateToPage('Home');
         pubDate = new Date();
         cy.apollo({mutation: publishMutation, variables: {
-                path:homePath,
-                languages: ['en']
-            }
+            path: homePath,
+            languages: ['en']
+        }
         });
         pageComposer.publishedAfter(publishedNewsPath, 'en', pubDate);
         testNewsCreation({pageComposer, subject: {...newsByLanguage.en, livePresent: false}});
@@ -238,9 +238,9 @@ describe('Create multi language content and verify that it is different in all l
         pageComposer.navigateToPage('Home');
         pubDate = new Date();
         cy.apollo({mutation: publishMutation, variables: {
-                path:homePath,
-                languages: ['fr']
-            }
+            path: homePath,
+            languages: ['fr']
+        }
         });
         pageComposer.publishedAfter(publishedNewsPath, 'fr', pubDate);
         testNewsCreation({pageComposer, subject: {...newsByLanguage.en, livePresent: true}});
@@ -252,9 +252,9 @@ describe('Create multi language content and verify that it is different in all l
         pageComposer.navigateToPage('Home');
         pubDate = new Date();
         cy.apollo({mutation: publishMutation, variables: {
-                path:homePath,
-                languages: ['de']
-            }
+            path: homePath,
+            languages: ['de']
+        }
         });
         pageComposer.publishedAfter(publishedNewsPath, 'de', pubDate);
         testNewsCreation({pageComposer, subject: {...newsByLanguage.en, livePresent: true}});
@@ -268,9 +268,9 @@ describe('Create multi language content and verify that it is different in all l
         // Publish in all languages first to make site available in live
         let pubDate = new Date();
         cy.apollo({mutation: publishMutation, variables: {
-                path:homePath,
-                languages: ['en', 'fr', 'de']
-            }
+            path: homePath,
+            languages: ['en', 'fr', 'de']
+        }
         });
         pageComposer.publishedAfter(`/sites/${sitekey}/home`, 'en', pubDate);
         const contentEditor = pageComposer
@@ -297,9 +297,9 @@ describe('Create multi language content and verify that it is different in all l
         pageComposer.navigateToPage('Home');
         pubDate = new Date();
         cy.apollo({mutation: publishMutation, variables: {
-                path:homePath,
-                languages: ['en']
-            }
+            path: homePath,
+            languages: ['en']
+        }
         });
         pageComposer.publishedAfter(publishedNewsPath, 'en', pubDate);
 
@@ -308,9 +308,9 @@ describe('Create multi language content and verify that it is different in all l
         pageComposer.navigateToPage('Home');
         pubDate = new Date();
         cy.apollo({mutation: publishMutation, variables: {
-                path:homePath,
-                languages: ['fr']
-            }
+            path: homePath,
+            languages: ['fr']
+        }
         });
         pageComposer.publishedAfter(publishedNewsPath, 'fr', pubDate);
         testNewsCreation({pageComposer, subject: {...reducedNewsByLanguage.en, livePresent: true}});
@@ -340,9 +340,9 @@ describe('Create multi language content and verify that it is different in all l
         pageComposer.navigateToPage('Home');
         pubDate = new Date();
         cy.apollo({mutation: publishMutation, variables: {
-                path:homePath,
-                languages: ['en']
-            }
+            path: homePath,
+            languages: ['en']
+        }
         });
         pageComposer.publishedAfter(publishedNewsPath, 'en', pubDate);
 
@@ -351,9 +351,9 @@ describe('Create multi language content and verify that it is different in all l
         pageComposer.navigateToPage('Home');
         pubDate = new Date();
         cy.apollo({mutation: publishMutation, variables: {
-                path:homePath,
-                languages: ['fr']
-            }
+            path: homePath,
+            languages: ['fr']
+        }
         });
         pageComposer.publishedAfter(publishedNewsPath, 'fr', pubDate);
         testNewsCreation({pageComposer, subject: {...reducedNewsByLanguage.en, livePresent: true}});
