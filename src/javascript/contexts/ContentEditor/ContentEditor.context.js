@@ -65,8 +65,7 @@ export const ContentEditorContextProvider = ({useFormDefinition, children}) => {
         sections,
         title,
         nodeTypeName,
-        nodeTypeDisplayName,
-        usages
+        nodeTypeDisplayName
     } = formDefinition || {};
     const siteInfoResult = useSiteInfo({
         siteKey: site,
@@ -132,7 +131,6 @@ export const ContentEditorContextProvider = ({useFormDefinition, children}) => {
         i18nContext,
         setI18nContext,
         resetI18nContext,
-        usages,
         createAnother
     };
 

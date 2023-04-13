@@ -9,7 +9,6 @@ describe('Picker tests - custom picker', {waitForAnimations: true, retries: 3}, 
     let jcontent: JContent;
 
     before(() => {
-        // I have issues adding these to before()/after() so have to add to beforeEach()/afterEach()
         cy.login(); // Edit in chief
         cy.apollo({mutationFile: 'pickers/createCustomContent.graphql'});
     });
@@ -37,7 +36,7 @@ describe('Picker tests - custom picker', {waitForAnimations: true, retries: 3}, 
 
     // Tests
 
-    it('should display qant:location items in List table', () => {
+    it('should use a custom picker with different root path', () => {
         const picker = jcontent
             .createContent(contentTypes.customPicker.typeName)
             .getPickerField(contentTypes.customPicker.fieldNodeType, contentTypes.customPicker.multiple)
@@ -45,36 +44,24 @@ describe('Picker tests - custom picker', {waitForAnimations: true, retries: 3}, 
 
         // Assert components are visible
         assertUtils.isVisible(picker.get());
-        assertUtils.isVisible(picker.getSiteSwitcher());
-        assertUtils.isVisible(picker.getAccordion());
+        picker.assertHasNoSiteSwitcher();
+        picker.assertHasNoTree();
 
-        cy.log('assert content accordion is visible');
-        const contentAccordion: AccordionItem = picker.getAccordionItem('picker-content-folders');
-        contentAccordion.click().getHeader()
-            .should('be.visible')
-            .and('have.attr', 'aria-expanded')
-            .and('equal', 'true');
-        picker.wait();
-        picker.navigateTo(contentAccordion, 'contents/ce-picker-custom-contents');
-
-        cy.log('check table components in List mode');
-        picker.switchViewMode('List');
-        picker.getTable().should('be.visible');
         picker
             .getTable()
             .getRows()
             .getCellByRole('name')
             .should(elems => {
-                expect(elems).to.have.length(4);
+                expect(elems).to.have.length(5);
                 const texts = elems.get().map(e => e.textContent);
-                expect(texts.sort()).to.deep.eq(['content-folder1', 'loc 1', 'loc 2', 'loc 3']);
+                expect(texts.sort()).to.deep.eq(['Goods', 'Healthcare', 'Media', 'Retail', 'Technology']);
             });
     });
 
-    it('should display qant:location items in Structured table', () => {
+    it('should use an override on editorial picker with different root path and constraints', () => {
         const picker = jcontent
-            .createContent(contentTypes.customPicker.typeName)
-            .getPickerField(contentTypes.customPicker.fieldNodeType, contentTypes.customPicker.multiple)
+            .createContent(contentTypes.pickerWithOverride.typeName)
+            .getPickerField(contentTypes.pickerWithOverride.fieldNodeType, contentTypes.pickerWithOverride.multiple)
             .open();
 
         // Assert components are visible
@@ -86,22 +73,22 @@ describe('Picker tests - custom picker', {waitForAnimations: true, retries: 3}, 
         const contentAccordion: AccordionItem = picker.getAccordionItem('picker-content-folders');
         contentAccordion.click().getHeader()
             .should('be.visible')
+            .and('contain', 'My items content-folder')
             .and('have.attr', 'aria-expanded')
             .and('equal', 'true');
         picker.wait();
-        picker.navigateTo(contentAccordion, 'contents/ce-picker-custom-contents');
+        picker.navigateTo(contentAccordion, 'ce-picker-custom-contents');
 
         cy.log('check table components in Structured mode');
-        picker.switchViewMode('Structured');
         picker.getTable().should('be.visible');
         picker
             .getTable()
             .getRows()
             .getCellByRole('name')
             .should(elems => {
-                expect(elems).to.have.length(4);
+                expect(elems).to.have.length(2);
                 const texts = elems.get().map(e => e.textContent);
-                expect(texts.sort()).to.deep.eq(['content-folder1', 'loc 1', 'loc 2', 'loc 3']);
+                expect(texts.sort()).to.deep.eq(['content-folder1', 'test 5']);
             });
     });
 });

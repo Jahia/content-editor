@@ -145,12 +145,6 @@ const getTechnicalInfo = (nodeData, t) => {
     ];
 };
 
-const getUsagesInfo = nodeData => {
-    return nodeData?.usages?.nodes ? Object.values(nodeData.usages.nodes.reduce((acc, ref) => (
-        {...acc, [ref.node.uuid]: {...ref.node, locales: acc[ref.node.uuid] ? [...acc[ref.node.uuid]?.locales, ref.language] : [ref.language]}}
-    ), {})) : [];
-};
-
 export const adaptEditFormData = (data, lang, t) => {
     const nodeData = data.jcr.result;
     const sections = adaptSections(data.forms.editForm.sections);
@@ -165,8 +159,7 @@ export const adaptEditFormData = (data, lang, t) => {
         technicalInfo: getTechnicalInfo(nodeData, t),
         title: nodeData.displayName,
         nodeTypeDisplayName: nodeData.primaryNodeType.displayName,
-        nodeTypeName: nodeData.primaryNodeType.name,
-        usages: getUsagesInfo(nodeData)
+        nodeTypeName: nodeData.primaryNodeType.name
     };
 
     adaptSystemNameField(data, formData, lang, t, nodeData.primaryNodeType, false, nodeData.moveSystemNameToTop, nodeData.isSystemNameReadOnlyMixin);

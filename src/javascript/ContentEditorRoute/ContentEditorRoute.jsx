@@ -104,11 +104,11 @@ export const ContentEditorRoute = ({mode, uuid, lang, contentType, name}) => {
             }
         },
         createCallback: () => {
-            notificationContext.notify(t('content-editor:label.contentEditor.create.createButton.success'), ['closeButton']);
+            notificationContext.notify(t('content-editor:label.contentEditor.create.createButton.success'), ['closeButton'], {autoHideDuration: 3000});
         },
         editCallback: data => {
             envProps.overriddenStoredLocation = handleRename(data);
-            notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.success'), ['closeButton']);
+            notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.success'), ['closeButton'], {autoHideDuration: 3000});
         },
         switchLanguageCallback: language => {
             redirect({language});

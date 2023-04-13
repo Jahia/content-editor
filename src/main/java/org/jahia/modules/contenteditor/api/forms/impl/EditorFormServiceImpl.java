@@ -565,6 +565,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         for (ExtendedItemDefinition itemDefinition : itemDefinitions) {
             // do not return hidden props
             if (itemDefinition.isNode() || itemDefinition.isHidden() || itemDefinition.isUnstructured() || processedProperties.contains(itemDefinition.getName())) {
+                processedProperties.add(itemDefinition.getName());
                 continue;
             }
 

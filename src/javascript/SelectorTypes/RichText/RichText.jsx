@@ -17,10 +17,6 @@ if (window.CKEDITOR) {
 
 CKEditor.displayName = 'CKEditor';
 
-function loadOption(selectorOptions, name) {
-    return selectorOptions && selectorOptions.find(option => option.name === name);
-}
-
 export const RichText = ({field, id, value, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
     const api = useContentEditorApiContext();
@@ -53,26 +49,31 @@ export const RichText = ({field, id, value, onChange, onBlur}) => {
         return <LoaderOverlay/>;
     }
 
-    const toolbar = loadOption(field.selectorOptions, 'ckeditor.toolbar');
-    const customConfig = loadOption(field.selectorOptions, 'ckeditor.customConfig');
+    const definitionConfig = {};
+    const CK_EDITOR_PREFIX = 'ckeditor.';
+    field.selectorOptions
+        .filter(option => option.name.startsWith(CK_EDITOR_PREFIX))
+        .forEach(option => {
+            definitionConfig[option.name.substring(CK_EDITOR_PREFIX.length)] = option.value;
+        });
+
+    // Resolve Toolbar
+    definitionConfig.toolbar = definitionConfig.toolbar || data.forms.ckeditorToolbar;
 
     // Delete the config set by GWTInitializer, as it may be wrong (Wrong site detection into DX, we will set it manually after)
     if (window.contextJsParameters && window.contextJsParameters.ckeCfg) {
         delete window.contextJsParameters.ckeCfg;
     }
 
-    let ckeditorCustomConfig = '';
-    if (customConfig && customConfig.value) {
+    if (definitionConfig.customConfig) {
         // Custom config from CND
-        ckeditorCustomConfig = customConfig.value.replace('$context', window.contextJsParameters.contextPath);
+        definitionConfig.customConfig = definitionConfig.customConfig.replace('$context', window.contextJsParameters.contextPath);
     } else if (data.forms.ckeditorConfigPath) {
-        ckeditorCustomConfig = data.forms.ckeditorConfigPath.replace('$context', window.contextJsParameters.contextPath);
+        definitionConfig.customConfig = data.forms.ckeditorConfigPath.replace('$context', window.contextJsParameters.contextPath);
 
         // Custom config coming from the template set, let's populate the contextJsParameters for retro compatibility
-        if (ckeditorCustomConfig) {
-            if (window.contextJsParameters) {
-                window.contextJsParameters.ckeCfg = ckeditorCustomConfig;
-            }
+        if (definitionConfig.customConfig && window.contextJsParameters) {
+            window.contextJsParameters.ckeCfg = definitionConfig.customConfig;
         }
     }
 
@@ -92,8 +93,7 @@ export const RichText = ({field, id, value, onChange, onBlur}) => {
     };
 
     const config = {
-        customConfig: ckeditorCustomConfig,
-        toolbar: toolbar ? toolbar.value : data.forms.ckeditorToolbar,
+        customConfig: '',
         width: '100%',
         contentEditorFieldName: id, // Used by selenium to get CKEditor instance
         filebrowserBrowseUrl: (dialog, params, setUrl) => handlePickerDialog(setUrl, 'file', params, dialog),
@@ -101,7 +101,8 @@ export const RichText = ({field, id, value, onChange, onBlur}) => {
         filebrowserFlashBrowseUrl: (dialog, params, setUrl) => handlePickerDialog(setUrl, 'file', params, dialog),
         filebrowserLinkBrowseUrl: (dialog, params, setUrl) => handlePickerDialog(setUrl, 'editoriallink', params, dialog),
         disableNativeSpellChecker: false,
-        baseFloatZIndex: 1000
+        baseFloatZIndex: 1000,
+        ...definitionConfig
     };
 
     return (

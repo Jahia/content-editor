@@ -101,49 +101,6 @@ const NodeDataFragment = {
                     status
                     languages
                 }
-                usages: references(fieldFilter: {filters: {fieldName: "node.visible", value: "true"}}) {
-                    nodes {
-                        name
-                        language
-                        node {
-                            ...NodeCacheRequiredFields
-                            visible: isNodeType(type: {types: ["jnt:workflowTask"], multi: NONE})
-                            displayName(language: $language)
-                            path
-                            primaryNodeType {
-                                icon
-                                name
-                                displayName(language: $language)
-                            }
-                            aggregatedPublicationInfo(language: $language) {
-                                publicationStatus
-                            }
-                            lastModifiedBy: property(name: "jcr:lastModifiedBy", language: $language) {
-                                value
-                            }
-                            lastModified: property(name: "jcr:lastModified", language: $language) {
-                                value
-                            }
-                            lastPublished: property(name: "j:lastPublished", language: $language) {
-                                value
-                            }
-                            lastPublishedBy: property(name: "j:lastPublishedBy", language: $language) {
-                                value
-                            }
-                            deletedBy: property(name: "j:deletionUser", language: $language) {
-                                value
-                            }
-                            deleted: property(name: "j:deletionDate", language: $language) {
-                                value
-                            }
-                            operationsSupport {
-                                lock
-                                markForDeletion
-                                publication
-                            }
-                        }
-                    }
-                }
             }
         }
         ${PredefinedFragments.nodeCacheRequiredFields.gql}`

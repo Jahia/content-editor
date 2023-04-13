@@ -146,7 +146,12 @@ const contentTypes: ContentTypes = {
     },
     customPicker: {
         typeName: 'customPicker',
-        fieldNodeType: 'qant:customPicker_myAdress',
+        fieldNodeType: 'qant:customPicker_myCategoryPicker',
+        multiple: false
+    },
+    pickerWithOverride: {
+        typeName: 'customPicker',
+        fieldNodeType: 'qant:customPicker_myOverridenEditorialPicker',
         multiple: false
     },
     pageDefault: {
