@@ -1,0 +1,75 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1681286690879
+Build-Jdk: 19.0.2
+Built-By: carp
+Bundle-Category: jahia-module
+Bundle-Description: This is the custom module (text-field-initializer) f
+ or content-editor cypress tests.
+Bundle-DocURL: http://www.jahia.com
+Bundle-ManifestVersion: 2
+Bundle-Name: Test module for content-editor
+Bundle-SymbolicName: content-editor-test-module
+Bundle-Vendor: Jahia Solutions Group SA
+Bundle-Version: 4.4.0.SNAPSHOT
+Created-By: Apache Maven Bundle Plugin
+Dynamic-ImportPackage: *
+Git-branch: TECH-1144-textFieldInitializerTest
+Git-commit-desc: QA-14670 : allow any configuration for CK EDITOR from t
+ he definition.… (#1568)* fix ckeditor config* QA-14670 : clean up cod
+ e + fix test
+Git-last-commit-id: 8a809f85953a76168853fc54c15937bc9f0dd8fe
+Git-last-commit-time: 2023-04-07T10:57:57+0200
+Implementation-Title: Test module for content-editor
+Implementation-URL: http://www.jahia.com
+Implementation-Vendor: Jahia Solutions Group SA
+Implementation-Version: 4.4.0-SNAPSHOT
+Import-Package: javax.jcr;version="[2.0,3)",org.jahia.services.content.n
+ odetypes,org.apache.jackrabbit.value;version="[2.18,3)",org.jahia.servi
+ ces.content.nodetypes.initializers,org.apache.naming.java,org.apache.ta
+ glibs.standard.functions,org.apache.taglibs.standard.tag.common.core,or
+ g.apache.taglibs.standard.tag.rt.core,org.apache.taglibs.standard.tei,o
+ rg.jahia.defaults.config.spring,org.jahia.exceptions,org.jahia.services
+ ,org.jahia.services.content,org.jahia.services.content.decorator,org.ja
+ hia.services.render,org.jahia.services.render.scripting,org.jahia.tagli
+ bs;version="[8.1,9)",org.jahia.taglibs.jcr;version="[8.1,9)",org.jahia.
+ taglibs.jcr.node;version="[8.1,9)",org.jahia.taglibs.jcr.query;version=
+ "[8.1,9)",org.jahia.taglibs.query;version="[8.1,9)",org.jahia.taglibs.t
+ emplate;version="[8.1,9)",org.jahia.taglibs.template.gwt;version="[8.1,
+ 9)",org.jahia.taglibs.template.include;version="[8.1,9)",org.jahia.tagl
+ ibs.template.layoutmanager;version="[8.1,9)",org.jahia.taglibs.template
+ .pager;version="[8.1,9)",org.jahia.taglibs.user;version="[8.1,9)"
+Jahia-Depends: default
+Jahia-Download-Sources-Available: true
+Jahia-GroupId: org.jahia.test
+Jahia-Module-Type: module
+Jahia-Required-Version: 8.1.1.0
+Jahia-Signature: MCwCFAcSeckcHaD8fZd7cfvJhGJnACb+AhQwFP3aS3BfhY8IponyZsd
+ RJsL+oA==
+Jahia-Source-Control-Connection: scm:git:git@github.com:Jahia/content-ed
+ itor.git/content-editor-test-module
+Jahia-Source-Control-DeveloperConnection: scm:git:git@github.com:Jahia/c
+ ontent-editor.git/content-editor-test-module
+Jahia-Source-Control-Tag: HEAD
+Jahia-Source-Folders: /home/carp/Development/content-editor/test-module
+Jahia-Static-Resources: /css,/icons,/images,/img,/javascript
+Provide-Capability: com.jahia.services.content;nodetypes:List<String>="j
+ nt:defaultValueTest,jnt:textFieldInitializer",com.jahia.modules.depende
+ ncies;moduleIdentifier=content-editor-test-module;moduleVersion:Version
+ ="4.4.0.SNAPSHOT",com.jahia.modules.dependencies;moduleIdentifier="Test
+  module for content-editor";moduleVersion:Version="4.4.0.SNAPSHOT"
+Require-Capability: com.jahia.services.content;filter:="(nodetypes=jmix:
+ basicContent)",com.jahia.services.content;filter:="(nodetypes=jmix:hasE
+ xternalProviderExtension)",com.jahia.services.content;filter:="(nodetyp
+ es=jnt:content)",com.jahia.services.content;filter:="(nodetypes=jnt:con
+ tentFolder)",com.jahia.services.content;filter:="(nodetypes=jnt:folder)
+ ",com.jahia.services.content;filter:="(nodetypes=jnt:module)",com.jahia
+ .services.content;filter:="(nodetypes=jnt:modules)",com.jahia.services.
+ content;filter:="(nodetypes=jnt:portletFolder)",com.jahia.services.cont
+ ent;filter:="(nodetypes=jnt:templatesFolder)",com.jahia.services.conten
+ t;filter:="(nodetypes=mix:title)",com.jahia.modules.dependencies;filter
+ :="(moduleIdentifier=default)",osgi.ee;filter:="(&(osgi.ee=JavaSE)(vers
+ ion=1.8))"
+Specification-Title: Test module for content-editor
+Specification-Vendor: Jahia Solutions Group SA
+Specification-Version: 4.4.0-SNAPSHOT
+Tool: Bnd-6.1.0.202111221555
