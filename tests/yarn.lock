@@ -96,10 +96,10 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@jahia/cypress@^2.0.0":
-  version "2.0.0"
-  resolved "https://npm.jahia.com/@jahia%2fcypress/-/cypress-2.0.0.tgz#19cfd880e765b43648ccafc9704abf4a93f738cc"
-  integrity sha512-e0PDRRWitQDnBYktE4q0+aOaEMHuK950Dm93auUqJTkqD20CMxQBfwxfdclXN/CkDYX0PXk3HRM4zdpjaPvr5g==
+"@jahia/cypress@^3.0.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@jahia/cypress/-/cypress-3.2.0.tgz#f3a82328b0856b3322b0a35be6382039e0eaa390"
+  integrity sha512-rjGSAdNYFeojG6bJ07koodEW/aM8Q6wjEnpn3G/3YGUZ1pApGThzf1yi6FYBjGjfA8Trgi4zPHVX1RbWSOeW5Q==
   dependencies:
     "@apollo/client" "^3.4.9"
     graphql "^15.5.0"
@@ -1020,10 +1020,10 @@ cypress-wait-until@^1.7.2:
   resolved "https://registry.yarnpkg.com/cypress-wait-until/-/cypress-wait-until-1.7.2.tgz#7f534dd5a11c89b65359e7a0210f20d3dfc22107"
   integrity sha512-uZ+M8/MqRcpf+FII/UZrU7g1qYZ4aVlHcgyVopnladyoBrpoaMJ4PKZDrdOJ05H5RHbr7s9Tid635X3E+ZLU/Q==
 
-cypress@12.7.0:
-  version "12.7.0"
-  resolved "https://registry.yarnpkg.com/cypress/-/cypress-12.7.0.tgz#69900f82af76cf3ba0ddb9b59ec3b0d38222ab22"
-  integrity sha512-7rq+nmhzz0u6yabCFyPtADU2OOrYt6pvUau9qV7xyifJ/hnsaw/vkr0tnLlcuuQKUAOC1v1M1e4Z0zG7S0IAvA==
+cypress@12.9.0:
+  version "12.9.0"
+  resolved "https://registry.yarnpkg.com/cypress/-/cypress-12.9.0.tgz#e6ab43cf329fd7c821ef7645517649d72ccf0a12"
+  integrity sha512-Ofe09LbHKgSqX89Iy1xen2WvpgbvNxDzsWx3mgU1mfILouELeXYGwIib3ItCwoRrRifoQwcBFmY54Vs0zw7QCg==
   dependencies:
     "@cypress/request" "^2.88.10"
     "@cypress/xvfb" "^1.2.4"

@@ -3,13 +3,13 @@ import {Field} from './field';
 export class SmallTextField extends Field {
     static ADD_FIELD_SEL = 'button[data-sel-action="addField"]';
 
-    addNewValue(newValue: string) {
+    addNewValue(newValue: string, force?: boolean) {
         if (this.multiple) {
             this.get().find(SmallTextField.ADD_FIELD_SEL).click();
-            this.get().find('input').last().type(newValue);
+            this.get().find('input').last().type(newValue, {force: force});
         } else {
             this.get().find('input[type="text"]')
-                .clear().type(newValue)
+                .clear({force: force}).type(newValue, {force: force})
                 .should('have.value', newValue);
         }
 
@@ -17,7 +17,7 @@ export class SmallTextField extends Field {
     }
 
     checkValue(expectedValue: string) {
-        this.get().children('input').should('have.value', expectedValue);
+        this.get().find('input').last().should('have.value', expectedValue);
     }
 
     checkValues(expectedValues: string[]) {
