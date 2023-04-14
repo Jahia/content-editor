@@ -2,6 +2,7 @@ import {BaseComponent, BasePage, Button, getComponent, getComponentByRole, getEl
 import {ContentEditor} from './contentEditor';
 import IframeOptions = Cypress.IframeOptions;
 import {DocumentNode} from 'graphql';
+import {PageComposerContextualMenu} from './pageComposerContextualMenu';
 
 export class PageComposer extends BasePage {
     iFrameOptions: IframeOptions;
@@ -90,6 +91,28 @@ export class PageComposer extends BasePage {
             cy.get('.editModeContextMenu').scrollIntoView().contains('Edit').click();
         });
         return new ContentEditor();
+    }
+
+    openContextualMenuOnContent(selector: string | number | symbol) {
+        cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
+            cy.waitUntil(
+                () => {
+                    cy.iframe('.gwt-Frame', this.iFrameOptions).within(() => {
+                        // eslint-disable-next-line cypress/no-unnecessary-waiting
+                        cy.wait(5000);
+                        cy.get(selector).rightclick({force: true});
+                    });
+                    return cy.get('.editModeContextMenu').then(element => expect(element).to.be.not.null);
+                },
+                {
+                    errorMsg: 'Menu not opened in required time',
+                    timeout: 10000,
+                    interval: 1000
+                }
+            );
+        });
+
+        return new PageComposerContextualMenu('.editModeContextMenu');
     }
 
     getContentTypeSelector(): ContentTypeSelector {
