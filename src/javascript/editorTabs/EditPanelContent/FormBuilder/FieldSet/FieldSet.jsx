@@ -38,7 +38,8 @@ export const FieldSet = ({fieldset}) => {
                             </Typography>
                             {fieldset.description && (
                                 <Typography component="label" className={styles.fieldSetDescription} variant="caption">
-                                    {fieldset.description}
+                                    {/* eslint-disable-next-line react/no-danger */}
+                                    <span dangerouslySetInnerHTML={{__html: fieldset.description}}/>
                                 </Typography>
                             )}
                         </div>
