@@ -7,6 +7,9 @@ on:
   schedule:
     - cron: '0 4 * * 1,3,5' # At 4AM, on Monday, Wednesday and Friday
 
+env:
+  MODULE_ID: content-editor
+
 jobs:
   sonar-analysis:
     name: Sonar Analysis
@@ -14,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-         supported_branches: [${{ github.event.repository.default_branch }}, '3_5_x']
+         supported_branches: ["${{ github.event.repository.default_branch }}", '3_5_x']
     container:
       image: jahia/cimg-mvn-cache:ga_cimg_openjdk_8.0.312-node
       credentials:
@@ -28,7 +31,7 @@ jobs:
         with:
           nexus_username: ${{ secrets.NEXUS_USERNAME }}
           nexus_password: ${{ secrets.NEXUS_PASSWORD }}
-          module_id: content-editor
+          module_id: ${{ env.MODULE_ID }}
           mvn_settings_filepath: '.github/maven.settings.xml'
       - uses: jahia/jahia-modules-action/sonar-analysis@v2
         with:
