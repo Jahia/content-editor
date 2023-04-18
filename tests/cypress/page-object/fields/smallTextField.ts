@@ -3,7 +3,7 @@ import {Field} from './field';
 export class SmallTextField extends Field {
     static ADD_FIELD_SEL = 'button[data-sel-action="addField"]';
 
-    addNewValue(newValue: string, force?: boolean) {
+    addNewValue(newValue: string, force = false) {
         if (this.multiple) {
             this.get().find(SmallTextField.ADD_FIELD_SEL).click();
             this.get().find('input').last().type(newValue, {force: force});

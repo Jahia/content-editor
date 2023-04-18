@@ -1,5 +1,6 @@
-import {createSite, deleteSite} from '@jahia/cypress';
+import {createSite, deleteSite, enableModule} from '@jahia/cypress';
 import {PageComposer} from '../page-object/pageComposer';
+import {SmallTextField, DateField} from '../page-object/fields';
 
 describe('Test the text field initializer)', () => {
     const siteKey = 'extFieldInitializerTest';
@@ -16,7 +17,7 @@ describe('Test the text field initializer)', () => {
 
     before(function () {
         createSite(siteKey, siteConfig);
-        cy.runProvisioningScript({fileName: 'provisioning/enableModule.yaml', type: 'application/yaml'});
+        enableModule('content-editor-test-module', siteKey);
     });
 
     after(function () {
@@ -24,20 +25,9 @@ describe('Test the text field initializer)', () => {
     });
 
     const checkFieldValues = (contentEditor, fields, lang) => {
-        // eslint-disable-next-line guard-for-in
-        for (const fieldId in fields) {
-            const field = fields[fieldId];
-            switch (field.type) {
-                case 'smallText':
-                    contentEditor.getSmallTextField(fieldId).checkValue(field.values[lang]);
-                    break;
-                case 'date':
-                    contentEditor.getDateField(fieldId).checkValue(field.values[lang]);
-                    break;
-                default:
-                    cy.log('unknown type field');
-            }
-        }
+        fields.forEach(field => {
+            contentEditor.getField(SmallTextField, field.key).checkValue(field.values[lang]);
+        });
     };
 
     const checkValuesDisplayedInPageComposer = (pageComposer, valuesToCheck, lang) => {
@@ -48,155 +38,182 @@ describe('Test the text field initializer)', () => {
     };
 
     const editFieldValues = (contentEditor, fields, lang) => {
-        // eslint-disable-next-line guard-for-in
-        for (const fieldId in fields) {
-            const field = fields[fieldId];
-            switch (field.type) {
-                case 'smallText':
-                    contentEditor.getSmallTextField(fieldId).addNewValue(field.values[lang], true);
-                    break;
-                case 'date':
-                    contentEditor.getDateField(fieldId).addNewValue(field.values[lang], true);
-                    break;
-                default:
-                    cy.log('unknown type field');
-            }
-        }
+        fields.forEach(field => {
+            contentEditor.getField(field.type, field.key).addNewValue(field.values[lang], true);
+        });
     };
 
-    it('Verify initial values of the text field initializer', () => {
-        const fieldsToCheck = {
-            'jnt:textFieldInitializer_defaultString': {
-                type: 'smallText',
+    const testValuesInPageComposer = (pageComposer, valuesToCheck, languagesToCheck) => {
+        const langData = {
+            [langFR]: 'Français',
+            [langDE]: 'Deutsch',
+            [langEN]: 'English'
+        };
+
+        languagesToCheck.forEach(lang => {
+            const data = langData[lang];
+
+            if (!data) {
+                console.log(`Unsupported language: ${lang}`);
+                return;
+            }
+
+            pageComposer.switchLanguage(data);
+            checkValuesDisplayedInPageComposer(pageComposer, valuesToCheck, lang);
+        });
+    };
+
+    it('Check text field initializer', () => {
+        cy.log('Create en check initial values of extFieldInitializerTest content');
+
+        const initialFields = [
+            {
+                key: 'cent:textFieldInitializer_defaultString',
+                type: SmallTextField,
                 values: {
                     en: 'Default string',
                     fr: 'Default string',
                     de: 'Default string'
                 }
             },
-            'jnt:textFieldInitializer_defaultI18nString': {
-                type: 'smallText',
+            {
+                key: 'cent:textFieldInitializer_defaultI18nString',
+                type: SmallTextField,
                 values: {
                     en: 'Default i18n string',
                     fr: 'Default i18n string',
                     de: 'Default i18n string'
                 }
             },
-            'jnt:textFieldInitializer_defaultDate': {
-                type: 'date',
+            {
+                key: 'cent:textFieldInitializer_defaultDate',
+                type: DateField,
                 values: {
-                    en: '07/03/1988 19:40',
-                    fr: '07/03/1988 19:40',
-                    de: '07/03/1988 19:40'
+                    en: '03/07/1988 19:40',
+                    fr: '03/07/1988 19:40',
+                    de: '03/07/1988 19:40'
                 }
             },
-            'jnt:textFieldInitializer_defaultI18nDate': {
-                type: 'date',
+            {
+                key: 'cent:textFieldInitializer_defaultI18nDate',
+                type: DateField,
                 values: {
-                    en: '07/03/2006 19:40',
-                    fr: '07/03/2006 19:40',
-                    de: '07/03/2006 19:40'
+                    en: '03/07/2006 19:40',
+                    fr: '03/07/2006 19:40',
+                    de: '03/07/2006 19:40'
                 }
             },
-            'jnt:textFieldInitializer_defaultStringAutocreated': {
-                type: 'smallText',
+            {
+                key: 'cent:textFieldInitializer_defaultStringAutocreated',
+                type: SmallTextField,
                 values: {
                     en: 'Default string Autocreated',
                     fr: 'Default string Autocreated',
                     de: 'Default string Autocreated'
                 }
             },
-            'jnt:textFieldInitializer_defaultI18nStringAutocreated': {
-                type: 'smallText',
+            {
+                key: 'cent:textFieldInitializer_defaultI18nStringAutocreated',
+                type: SmallTextField,
                 values: {
                     en: 'Default Autocreated i18n string',
                     fr: 'Default Autocreated i18n string',
                     de: 'Default Autocreated i18n string'
                 }
             },
-            'jnt:textFieldInitializer_defaultDateAutocreated': {
-                type: 'date',
+            {
+                key: 'cent:textFieldInitializer_defaultDateAutocreated',
+                type: DateField,
                 values: {
-                    en: '07/03/2008 19:40',
-                    fr: '07/03/2008 19:40',
-                    de: '07/03/2008 19:40'
+                    en: '03/07/2008 19:40',
+                    fr: '03/07/2008 19:40',
+                    de: '03/07/2008 19:40'
                 }
             },
-            'jnt:textFieldInitializer_defaultI18nDateAutocreated': {
-                type: 'date',
+            {
+                key: 'cent:textFieldInitializer_defaultI18nDateAutocreated',
+                type: DateField,
                 values: {
-                    en: '02/03/2013 19:00',
-                    fr: '02/03/2013 19:00',
-                    de: '02/03/2013 19:00'
+                    en: '03/02/2013 19:00',
+                    fr: '03/02/2013 19:00',
+                    de: '03/02/2013 19:00'
                 }
             },
-            'jnt:textFieldInitializer_systemRBTitle': {
-                type: 'smallText',
+            {
+                key: 'cent:textFieldInitializer_systemRBTitle',
+                type: SmallTextField,
                 values: {
                     en: 'My settings',
                     fr: 'Mes paramètres',
                     de: 'Meine Einstellungen'
                 }
             },
-            'jnt:textFieldInitializer_systemI18nRBFirstName': {
-                type: 'smallText',
+            {
+                key: 'cent:textFieldInitializer_systemI18nRBFirstName',
+                type: SmallTextField,
                 values: {
                     en: 'First name',
                     fr: 'Prénom',
                     de: 'Vorname'
                 }
             },
-            'jnt:textFieldInitializer_systemRBAutocreatedPreferredLanguage': {
-                type: 'smallText',
+            {
+                key: 'cent:textFieldInitializer_systemRBAutocreatedPreferredLanguage',
+                type: SmallTextField,
                 values: {
                     en: 'Preferred language',
                     fr: 'Langue de préférence',
                     de: 'Bevorzugte Sprache'
                 }
             },
-            'jnt:textFieldInitializer_systemI18nRBAutocreatedMySettings': {
-                type: 'smallText',
+            {
+                key: 'cent:textFieldInitializer_systemI18nRBAutocreatedMySettings',
+                type: SmallTextField,
                 values: {
                     en: 'My settings',
                     fr: 'Mes paramètres',
                     de: 'Meine Einstellungen'
                 }
             },
-            'jnt:textFieldInitializer_moduleRBString': {
-                type: 'smallText',
+            {
+                key: 'cent:textFieldInitializer_moduleRBString',
+                type: SmallTextField,
                 values: {
                     en: 'This is the default string value',
                     fr: 'This is the default string value',
                     de: 'This is the default string value'
                 }
             },
-            'jnt:textFieldInitializer_moduleI18nRBString': {
-                type: 'smallText',
+            {
+                key: 'cent:textFieldInitializer_moduleI18nRBString',
+                type: SmallTextField,
                 values: {
                     en: 'Hello',
                     fr: 'Bonjour',
                     de: 'Guten Tag'
                 }
             },
-            'jnt:textFieldInitializer_moduleRBAutocreatedString': {
-                type: 'smallText',
+            {
+                key: 'cent:textFieldInitializer_moduleRBAutocreatedString',
+                type: SmallTextField,
                 values: {
                     en: 'Jahia rocks',
                     fr: 'Jahia rocks',
                     de: 'Jahia rocks'
                 }
             },
-            'jnt:textFieldInitializer_moduleI18nRBAutocreatedString': {
-                type: 'smallText',
+            {
+                key: 'cent:textFieldInitializer_moduleI18nRBAutocreatedString',
+                type: SmallTextField,
                 values: {
                     en: 'Kiss',
                     fr: 'Bisous',
                     de: 'Kussen'
                 }
             }
-        };
+        ];
 
-        const valuesToCheck = {
+        const initialDisplayedValues = {
             fr: ['1988-03-07T19:40:00.000', '2008-03-07T19:40:00.000', '2013-03-02T19:00:00.000'],
             de: ['1988-03-07T19:40:00.000', '2008-03-07T19:40:00.000', '2013-03-02T19:00:00.000'],
             en: ['1988-03-07T19:40:00.000', '2006-03-07T19:40:00.000', '2008-03-07T19:40:00.000', '2013-03-02T19:00:00.000']
@@ -204,252 +221,256 @@ describe('Test the text field initializer)', () => {
 
         cy.login();
         const pageComposer = PageComposer.visit(siteKey, langEN, 'home.html');
-        const contentEditor = pageComposer
+        const contentEditorToCreate = pageComposer
             .openCreateContent()
             .getContentTypeSelector()
             .searchForContentType('textFieldInitializer')
             .selectContentType('textFieldInitializer')
             .create();
-        checkFieldValues(contentEditor, fieldsToCheck, langEN);
-        contentEditor.getSmallTextField('mix:title_jcr:title').addNewValue('englishTitle', true);
-        contentEditor.getLanguageSwitcher().selectLang('Français');
-        checkFieldValues(contentEditor, fieldsToCheck, langFR);
-        contentEditor.getSmallTextField('mix:title_jcr:title').addNewValue('frenchTitle', true);
-        contentEditor.getLanguageSwitcher().selectLang('Deutsch');
-        checkFieldValues(contentEditor, fieldsToCheck, langDE);
-        contentEditor.getSmallTextField('mix:title_jcr:title').addNewValue('deutschTitle', true);
-        contentEditor.getLanguageSwitcher().selectLang('English');
-        contentEditor.create();
-        pageComposer.switchLanguage('Français');
-        checkValuesDisplayedInPageComposer(pageComposer, valuesToCheck, langFR);
-        pageComposer.switchLanguage('Deutsch');
-        checkValuesDisplayedInPageComposer(pageComposer, valuesToCheck, langDE);
-        pageComposer.switchLanguage('English');
-        checkValuesDisplayedInPageComposer(pageComposer, valuesToCheck, langEN);
-    });
+        checkFieldValues(contentEditorToCreate, initialFields, langEN);
+        contentEditorToCreate.getSmallTextField('mix:title_jcr:title').addNewValue('englishTitle', true);
+        contentEditorToCreate.getLanguageSwitcher().selectLang('Français');
+        checkFieldValues(contentEditorToCreate, initialFields, langFR);
+        contentEditorToCreate.getSmallTextField('mix:title_jcr:title').addNewValue('frenchTitle', true);
+        contentEditorToCreate.getLanguageSwitcher().selectLang('Deutsch');
+        checkFieldValues(contentEditorToCreate, initialFields, langDE);
+        contentEditorToCreate.getSmallTextField('mix:title_jcr:title').addNewValue('deutschTitle', true);
+        contentEditorToCreate.getLanguageSwitcher().selectLang('English');
+        contentEditorToCreate.create();
+        testValuesInPageComposer(pageComposer, initialDisplayedValues, [langFR, langDE, langEN]);
 
-    it('Verify the edition of previous text initializer', () => {
-        const fieldsToEdit = {
-            'jnt:textFieldInitializer_defaultString': {
-                type: 'smallText',
+        cy.log('Edit and save textFieldInitializerTest content');
+
+        const editFields = [
+            {
+                key: 'cent:textFieldInitializer_defaultString',
+                type: SmallTextField,
                 values: {
                     en: 'Default string edited',
                     fr: 'Default string edited',
                     de: 'Default string edited'
                 }
             },
-            'jnt:textFieldInitializer_defaultI18nString': {
-                type: 'smallText',
+            {
+                key: 'cent:textFieldInitializer_defaultI18nString',
+                type: SmallTextField,
                 values: {
                     en: 'Default i18n string english',
                     fr: 'Default i18n string français',
                     de: 'Default i18n string deutsch'
                 }
             },
-            'jnt:textFieldInitializer_defaultDate': {
-                type: 'date',
+            {
+                key: 'cent:textFieldInitializer_defaultDate',
+                type: DateField,
                 values: {
-                    en: '12/07/1998 19:40',
-                    fr: '12/07/1998 19:40',
-                    de: '12/07/1998 19:40'
+                    en: '07/12/1998 19:40',
+                    fr: '07/12/1998 19:40',
+                    de: '07/12/1998 19:40'
                 }
             },
-            'jnt:textFieldInitializer_defaultI18nDate': {
-                type: 'date',
+            {
+                key: 'cent:textFieldInitializer_defaultI18nDate',
+                type: DateField,
                 values: {
-                    en: '12/07/2002 19:40',
-                    fr: '12/07/2000 19:40',
-                    de: '12/07/2004 19:40'
+                    en: '07/12/2002 19:40',
+                    fr: '07/12/2000 19:40',
+                    de: '07/12/2004 19:40'
                 }
             },
-            'jnt:textFieldInitializer_defaultStringAutocreated': {
-                type: 'smallText',
+            {
+                key: 'cent:textFieldInitializer_defaultStringAutocreated',
+                type: SmallTextField,
                 values: {
                     en: 'Default string Autocreated edited',
                     fr: 'Default string Autocreated edited',
                     de: 'Default string Autocreated edited'
                 }
             },
-            'jnt:textFieldInitializer_defaultI18nStringAutocreated': {
-                type: 'smallText',
+            {
+                key: 'cent:textFieldInitializer_defaultI18nStringAutocreated',
+                type: SmallTextField,
                 values: {
                     en: 'Default Autocreated i18n string english',
                     fr: 'Default Autocreated i18n string français',
                     de: 'Default Autocreated i18n string deutsch'
                 }
             },
-            'jnt:textFieldInitializer_defaultDateAutocreated': {
-                type: 'date',
+            {
+                key: 'cent:textFieldInitializer_defaultDateAutocreated',
+                type: DateField,
                 values: {
-                    en: '07/03/2009 19:40',
-                    fr: '07/03/2009 19:40',
-                    de: '07/03/2009 19:40'
+                    en: '03/07/2009 19:40',
+                    fr: '03/07/2009 19:40',
+                    de: '03/07/2009 19:40'
                 }
             },
-            'jnt:textFieldInitializer_defaultI18nDateAutocreated': {
-                type: 'date',
+            {
+                key: 'cent:textFieldInitializer_defaultI18nDateAutocreated',
+                type: DateField,
                 values: {
-                    en: '07/05/2008 19:40',
-                    fr: '07/04/2008 19:40',
-                    de: '07/06/2008 19:40'
+                    en: '05/07/2008 19:40',
+                    fr: '04/07/2008 19:40',
+                    de: '06/07/2008 19:40'
                 }
             },
-            'jnt:textFieldInitializer_systemRBTitle': {
-                type: 'smallText',
+            {
+                key: 'cent:textFieldInitializer_systemRBTitle',
+                type: SmallTextField,
                 values: {
                     en: 'My settings edited',
                     fr: 'My settings edited',
                     de: 'My settings edited'
                 }
             },
-            'jnt:textFieldInitializer_systemI18nRBFirstName': {
-                type: 'smallText',
+            {
+                key: 'cent:textFieldInitializer_systemI18nRBFirstName',
+                type: SmallTextField,
                 values: {
                     en: 'First name english',
                     fr: 'Prénom français',
                     de: 'Vorname deutsch'
                 }
             },
-            'jnt:textFieldInitializer_systemRBAutocreatedPreferredLanguage': {
-                type: 'smallText',
+            {
+                key: 'cent:textFieldInitializer_systemRBAutocreatedPreferredLanguage',
+                type: SmallTextField,
                 values: {
                     en: 'Preferred language edited',
                     fr: 'Preferred language edited',
                     de: 'Preferred language edited'
                 }
             },
-            'jnt:textFieldInitializer_systemI18nRBAutocreatedMySettings': {
-                type: 'smallText',
+            {
+                key: 'cent:textFieldInitializer_systemI18nRBAutocreatedMySettings',
+                type: SmallTextField,
                 values: {
                     en: 'My settings english',
                     fr: 'Mes paramètres français',
                     de: 'Meine Einstellungen deutsch'
                 }
             },
-            'jnt:textFieldInitializer_moduleRBString': {
-                type: 'smallText',
+            {
+                key: 'cent:textFieldInitializer_moduleRBString',
+                type: SmallTextField,
                 values: {
                     en: 'This is the default string value edited',
                     fr: 'This is the default string value edited',
                     de: 'This is the default string value edited'
                 }
             },
-            'jnt:textFieldInitializer_moduleI18nRBString': {
-                type: 'smallText',
+            {
+                key: 'cent:textFieldInitializer_moduleI18nRBString',
+                type: SmallTextField,
                 values: {
                     en: 'Hello english',
                     fr: 'Bonjour français',
                     de: 'Guten Tag deutsch'
                 }
             },
-            'jnt:textFieldInitializer_moduleRBAutocreatedString': {
-                type: 'smallText',
+            {
+                key: 'cent:textFieldInitializer_moduleRBAutocreatedString',
+                type: SmallTextField,
                 values: {
                     en: 'Jahia rocks edited',
                     fr: 'Jahia rocks edited',
                     de: 'Jahia rocks edited'
                 }
             },
-            'jnt:textFieldInitializer_moduleI18nRBAutocreatedString': {
-                type: 'smallText',
+            {
+                key: 'cent:textFieldInitializer_moduleI18nRBAutocreatedString',
+                type: SmallTextField,
                 values: {
                     en: 'Kiss english',
                     fr: 'Bisous français',
                     de: 'Kussen deutsch'
                 }
             }
-        };
+        ];
 
-        const valuesToCheck = {
+        const displayedValues = {
             fr: ['1998-07-12T19:40:00.000', '2000-07-12T19:40:00.000', '2009-03-07T19:40:00.000', '2008-04-07T19:40:00.000'],
             de: ['1998-07-12T19:40:00.000', '2004-07-12T19:40:00.000', '2009-03-07T19:40:00.000', '2008-06-07T19:40:00.000'],
             en: ['1998-07-12T19:40:00.000', '2002-07-12T19:40:00.000', '2009-03-07T19:40:00.000', '2008-05-07T19:40:00.000']
         };
 
-        cy.login();
-        const pageComposer = PageComposer.visit(siteKey, langEN, 'home.html');
-        const contentEditor = pageComposer.editComponentByText(' defaultDate:');
-        editFieldValues(contentEditor, fieldsToEdit, langEN);
-        contentEditor.getLanguageSwitcher().selectLang('Français');
-        editFieldValues(contentEditor, fieldsToEdit, langFR);
-        contentEditor.getLanguageSwitcher().selectLang('Deutsch');
-        editFieldValues(contentEditor, fieldsToEdit, langDE);
-        contentEditor.getLanguageSwitcher().selectLang('English');
-        contentEditor.save();
-        pageComposer.refresh();
-        pageComposer.switchLanguage('Français');
-        checkValuesDisplayedInPageComposer(pageComposer, valuesToCheck, langFR);
-        pageComposer.switchLanguage('Deutsch');
-        checkValuesDisplayedInPageComposer(pageComposer, valuesToCheck, langDE);
-        pageComposer.switchLanguage('English');
-        checkValuesDisplayedInPageComposer(pageComposer, valuesToCheck, langEN);
-    });
+        const contentEditorToEdit = pageComposer.editComponentByText(' defaultDate:');
 
-    it('Verify the deletion of previous text initializer', () => {
-        const fieldsToEdit = {
-            'jnt:textFieldInitializer_defaultDate': {
-                type: 'date',
+        editFieldValues(contentEditorToEdit, editFields, langEN);
+        contentEditorToEdit.getLanguageSwitcher().selectLang('Français');
+        editFieldValues(contentEditorToEdit, editFields, langFR);
+        contentEditorToEdit.getLanguageSwitcher().selectLang('Deutsch');
+        editFieldValues(contentEditorToEdit, editFields, langDE);
+        contentEditorToEdit.getLanguageSwitcher().selectLang('English');
+        contentEditorToEdit.save();
+        pageComposer.refresh();
+        testValuesInPageComposer(pageComposer, displayedValues, [langFR, langDE, langEN]);
+
+        cy.log('Delete previous extFieldInitializerTest content');
+        pageComposer.openContextualMenuOnContent('div[path="/sites/extFieldInitializerTest/home/area-main/englishtitle"] div.gwt-HTML.x-component').delete();
+        pageComposer.openContextualMenuOnContent('div[path="/sites/extFieldInitializerTest/home/area-main/englishtitle"] div.gwt-HTML.x-component').deletePermanently();
+
+        cy.log('Create en check new extFieldInitializerTest content');
+
+        const newEditFields = [
+            {
+                key: 'cent:textFieldInitializer_defaultDate',
+                type: DateField,
                 values: {
-                    en: '12/07/1998 19:40',
-                    fr: '12/07/1998 19:40',
-                    de: '12/07/1998 19:40'
+                    en: '07/12/1998 19:40',
+                    fr: '07/12/1998 19:40',
+                    de: '07/12/1998 19:40'
                 }
             },
-            'jnt:textFieldInitializer_defaultI18nDate': {
-                type: 'date',
+            {
+                key: 'cent:textFieldInitializer_defaultI18nDate',
+                type: DateField,
                 values: {
-                    en: '12/07/2002 19:40',
-                    fr: '12/07/2000 19:40',
-                    de: '12/07/2004 19:40'
+                    en: '07/12/2002 19:40',
+                    fr: '07/12/2000 19:40',
+                    de: '07/12/2004 19:40'
                 }
             },
-            'jnt:textFieldInitializer_defaultDateAutocreated': {
-                type: 'date',
+            {
+                key: 'cent:textFieldInitializer_defaultDateAutocreated',
+                type: DateField,
                 values: {
-                    en: '07/03/2009 19:40',
-                    fr: '07/03/2009 19:40',
-                    de: '07/03/2009 19:40'
+                    en: '03/07/2009 19:40',
+                    fr: '03/07/2009 19:40',
+                    de: '03/07/2009 19:40'
                 }
             },
-            'jnt:textFieldInitializer_defaultI18nDateAutocreated': {
-                type: 'date',
+            {
+                key: 'cent:textFieldInitializer_defaultI18nDateAutocreated',
+                type: DateField,
                 values: {
-                    en: '07/05/2008 19:40',
-                    fr: '07/04/2008 19:40',
-                    de: '07/06/2008 19:40'
+                    en: '05/07/2008 19:40',
+                    fr: '04/07/2008 19:40',
+                    de: '06/07/2008 19:40'
                 }
             }
-        };
+        ];
 
-        const valuesToCheck = {
+        const newDisplayedValues = {
             fr: ['1998-07-12T19:40:00.000', '2000-07-12T19:40:00.000', '2009-03-07T19:40:00.000', '2008-04-07T19:40:00.000'],
             de: ['1998-07-12T19:40:00.000', '2004-07-12T19:40:00.000', '2009-03-07T19:40:00.000', '2008-06-07T19:40:00.000'],
             en: ['1998-07-12T19:40:00.000', '2002-07-12T19:40:00.000', '2009-03-07T19:40:00.000', '2008-05-07T19:40:00.000']
         };
 
-        cy.login();
-        const pageComposer = PageComposer.visit(siteKey, langEN, 'home.html');
-        pageComposer.openContextualMenuOnContent('div[path="/sites/extFieldInitializerTest/home/area-main/textfieldinitializer"] div.gwt-HTML.x-component').delete();
-        pageComposer.openContextualMenuOnContent('div[path="/sites/extFieldInitializerTest/home/area-main/textfieldinitializer"] div.gwt-HTML.x-component').deletePermanently();
         const contentEditor = pageComposer
             .openCreateContent()
             .getContentTypeSelector()
             .searchForContentType('textFieldInitializer')
             .selectContentType('textFieldInitializer')
             .create();
-        editFieldValues(contentEditor, fieldsToEdit, langEN);
+        editFieldValues(contentEditor, newEditFields, langEN);
         contentEditor.getLanguageSwitcher().selectLang('Français');
-        editFieldValues(contentEditor, fieldsToEdit, langFR);
+        editFieldValues(contentEditor, newEditFields, langFR);
         contentEditor.getLanguageSwitcher().selectLang('Deutsch');
-        editFieldValues(contentEditor, fieldsToEdit, langDE);
+        editFieldValues(contentEditor, newEditFields, langDE);
         contentEditor.getLanguageSwitcher().selectLang('English');
         contentEditor.create();
         pageComposer.refresh();
-        pageComposer.switchLanguage('Français');
-        checkValuesDisplayedInPageComposer(pageComposer, valuesToCheck, langFR);
-        pageComposer.switchLanguage('Deutsch');
-        checkValuesDisplayedInPageComposer(pageComposer, valuesToCheck, langDE);
-        pageComposer.switchLanguage('English');
-        checkValuesDisplayedInPageComposer(pageComposer, valuesToCheck, langEN);
+        testValuesInPageComposer(pageComposer, newDisplayedValues, [langFR, langDE, langEN]);
     });
 });

@@ -80,7 +80,6 @@
                 <configuration>
                     <instructions>
                         <Jahia-Depends>default</Jahia-Depends>
-                        <Jahia-Signature>MCwCFAcSeckcHaD8fZd7cfvJhGJnACb+AhQwFP3aS3BfhY8IponyZsdRJsL+oA==</Jahia-Signature>
                     </instructions>
                 </configuration>
             </plugin>
