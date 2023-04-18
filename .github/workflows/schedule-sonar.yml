@@ -14,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-         supported_branches: ['master', '3_5_x']
+         supported_branches: [${{ github.event.repository.default_branch }}, '3_5_x']
     container:
       image: jahia/cimg-mvn-cache:ga_cimg_openjdk_8.0.312-node
       credentials:
