@@ -9,7 +9,7 @@ on:
 
 jobs:
   sonar-analysis:
-    name: Sonar Analysis (Branch: ${{ matrix.supported_branches }})
+    name: Sonar Analysis
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
