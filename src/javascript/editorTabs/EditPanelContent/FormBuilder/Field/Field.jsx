@@ -169,7 +169,8 @@ export const Field = ({inputContext, idInput, selectorType, field}) => {
                     </div>}
                 {field.description && (
                     <Typography className={styles.inputDescription} variant="caption">
-                        {field.description}
+                        {/* eslint-disable-next-line react/no-danger */}
+                        <span dangerouslySetInnerHTML={{__html: field.description}}/>
                     </Typography>
                 )}
                 <div className="flexRow_nowrap alignCenter">
