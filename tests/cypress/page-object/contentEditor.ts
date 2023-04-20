@@ -8,7 +8,7 @@ import {
     Menu
 } from '@jahia/cypress';
 import {ComponentType} from '@jahia/cypress/src/page-object/baseComponent';
-import {Field, PickerField, RichTextField, SmallTextField} from './fields';
+import {Field, PickerField, RichTextField, SmallTextField, DateField} from './fields';
 import {LanguageSwitcher} from './languageSwitcher';
 
 export class ContentEditor extends BasePage {
@@ -117,6 +117,10 @@ export class ContentEditor extends BasePage {
 
     getSmallTextField(fieldName: string, multiple?: boolean): SmallTextField {
         return this.getField(SmallTextField, fieldName, multiple);
+    }
+
+    getDateField(fieldName: string): DateField {
+        return this.getField(DateField, fieldName);
     }
 
     getField<FieldType extends Field>(FieldComponent: ComponentType<FieldType>, fieldName: string,
