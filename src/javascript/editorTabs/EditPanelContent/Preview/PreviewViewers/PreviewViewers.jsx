@@ -32,8 +32,8 @@ export const PreviewViewer = ({data, previewContext, onContentNotFound}) => {
             );
         }
 
-        const type = getFileType(data.nodeByPath.path);
-        const isMedia = (type === 'avi' || type === 'mp4' || type === 'video');
+        const type = getFileType(data.nodeByPath);
+        const isMedia = (type === 'webm' || type === 'mp4');
         return (
             <div className={clsx(styles.previewContainer, isMedia && styles.mediaContainer)}
                  data-sel-role="preview-type-document"
