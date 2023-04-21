@@ -98,9 +98,9 @@
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
 "@jahia/cypress@^3.0.0":
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/@jahia/cypress/-/cypress-3.5.0.tgz#6c6e7eaa2d64f304bcae0c1acdc39a0210066154"
-  integrity sha512-TJ0jACq3DPz6nU4rBRDU4IIMtywdy3k151WvCRvY/qOvixu9lWxjrpKZC1W+XzOvv4j/5R7MWOa4WhPRa46azA==
+  version "3.10.0"
+  resolved "https://registry.yarnpkg.com/@jahia/cypress/-/cypress-3.10.0.tgz#107f3f4b4ee44a6b426a83b6a63a8dd652ae0226"
+  integrity sha512-3S64MsWJsyd7jCYdqIWgPswM6bE7g4BwfUp9uQ2gEiAdvRRBOeUGmjTB85lU4Cu3JOozCAU0VL9KIn0MwY9xbA==
   dependencies:
     "@apollo/client" "^3.4.9"
     graphql "^15.5.0"
