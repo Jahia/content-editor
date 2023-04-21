@@ -135,4 +135,18 @@ export class ContentEditor extends BasePage {
         cy.get(`span[data-sel-role-dynamic-fieldset="${optionType}"]`).scrollIntoView().find('input').click({force: true});
         cy.contains(optionFieldName, {timeout: 90000}).should('be.visible');
     }
+
+    checkButtonStatus(role: string, enabled: boolean) {
+        getComponentByRole(Button, role).should('be.visible').should(enabled ? 'not.be.disabled' : 'be.disabled');
+    }
+
+    openContentEditorHeaderMenu() {
+        getComponentByRole(Button, 'ContentEditorHeaderMenu').click();
+    }
+
+    publish() {
+        getComponentByRole(Button, 'publishAction').click();
+        cy.get('#dialog-errorBeforeSave', {timeout: 1000}).should('not.exist');
+        cy.get('[role="alertdialog"]').should('be.visible').should('contain', 'Publication has been queue');
+    }
 }
