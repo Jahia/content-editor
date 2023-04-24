@@ -38,7 +38,7 @@ describe('Date picker tests', () => {
     });
 
     beforeEach('Check datePicker is empty', () => {
-        cy.login();
+        cy.login('myUser', 'password');
         getNodeByPath('/sites/testsite/contents/contentEditorPickers')
             .its('data.jcr.nodeByPath.uuid').as('datePicker');
         cy.get('@datePicker').then(uuid => {
