@@ -1,5 +1,4 @@
 export class DatePicker {
-
     private getTodayDate(separator: string): string {
         const date = new Date();
         const day = date.getDate();
@@ -7,12 +6,12 @@ export class DatePicker {
         const year = date.getFullYear();
         const trueDay = day < 10 ? '0' + day : day;
         const trueMonth = month < 10 ? '0' + month : month;
-    
+
         return `${trueMonth}${separator}${trueDay}${separator}${year}`;
     }
 
     public getDatePicker(): Cypress.Chainable {
-        return cy.get('input[id="qant:pickers_datepicker"]')
+        return cy.get('input[id="qant:pickers_datepicker"]');
     }
 
     public open() {
@@ -20,8 +19,8 @@ export class DatePicker {
     }
 
     public pickTodayDate() {
-        this.open()
-        cy.get('.DayPicker-Day--today').click()
+        this.open();
+        cy.get('.DayPicker-Day--today').click();
     }
 
     public typeDate(value: string) {

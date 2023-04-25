@@ -9,8 +9,8 @@ import {
     deleteNodeProperty
 } from '@jahia/cypress';
 
-import { ContentEditor } from '../../page-object/ContentEditor'
-import { DatePicker } from '../../page-object/datePicker'
+import {ContentEditor} from '../../page-object/ContentEditor';
+import {DatePicker} from '../../page-object/datePicker';
 
 describe('Date picker tests', () => {
     before('Create required content', () => {
