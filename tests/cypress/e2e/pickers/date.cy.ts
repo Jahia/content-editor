@@ -9,7 +9,7 @@ import {
     deleteNodeProperty
 } from '@jahia/cypress';
 
-import {ContentEditor} from '../../page-object/ContentEditor';
+import {ContentEditor} from '../../page-object/contentEditor';
 import {DatePicker} from '../../page-object/datePicker';
 
 describe('Date picker tests', () => {
