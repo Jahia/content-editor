@@ -106,7 +106,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: jahia/jahia-modules-action/sonar-analysis@TECH-1019-owasp
+      - uses: jahia/jahia-modules-action/sonar-analysis@v2
         with:
           primary_release_branch: master
           github_pr_id: ${{github.event.number}}
