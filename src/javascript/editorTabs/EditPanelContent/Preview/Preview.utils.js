@@ -1,3 +1,5 @@
+import mime from 'mime';
+
 export const getPreviewContext = editorContext => {
     let path = editorContext.currentPage.path;
     const requestAttributes = [{
@@ -103,25 +105,61 @@ export const forceDisplay = element => {
     }
 };
 
-export const isBrowserImage = function (filename) {
-    switch (filename.split('.').pop().toLowerCase()) {
-        case 'png':
-        case 'jpeg':
-        case 'jpg':
-        case 'gif':
-        case 'img':
-        case 'svg':
-        case 'bmp':
-            return true;
-        default:
-            return false;
+export const isBrowserImage = function (node) {
+    if (node.isFile) {
+        let mimetype = node.content !== undefined ? node.content.mimeType.value : node.resourceChildren.nodes[0].mimeType.value;
+        if (mimetype === 'application/binary' || mimetype === 'application/octet-stream') {
+            switch (node.path.split('.').pop().toLowerCase()) {
+                case 'avif':
+                case 'png':
+                case 'jpeg':
+                case 'jpg':
+                case 'gif':
+                case 'svg':
+                case 'img':
+                case 'webp':
+                case 'bmp':
+                    return true;
+                default:
+                    return false;
+            }
+        } else {
+            return mimetype.startsWith('image/');
+        }
     }
+
+    return false;
 };
 
-export const isPDF = function (filename) {
-    return filename.split('.').pop().toLowerCase() === 'pdf';
+export const isPDF = function (node) {
+    if (node.isFile) {
+        let mimetype = node.content !== undefined ? node.content.mimeType.value : node.resourceChildren.nodes[0].mimeType.value;
+        if (mimetype === 'application/binary' || mimetype === 'application/octet-stream') {
+            switch (node.path.split('.').pop().toLowerCase()) {
+                case 'pdf':
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        return mimetype.toLowerCase().indexOf('pdf') > 0;
+    }
+
+    return false;
 };
 
-export const getFileType = function (filename) {
-    return filename.split('.').pop().toLowerCase();
+export const getFileType = function (node) {
+    if (node.isFile) {
+        let mimetype = node.content === undefined ? node.resourceChildren.nodes[0].mimeType.value : node.content.mimeType.value;
+        if (mimetype === 'application/binary' || mimetype === 'application/octet-stream') {
+            return node.path.split('.').pop().toLowerCase();
+        }
+
+        if (mimetype === 'audio/mpeg') {
+            return 'mp3';
+        }
+
+        return mime.getExtension(mimetype);
+    }
 };

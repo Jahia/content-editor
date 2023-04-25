@@ -14,7 +14,7 @@ export const PreviewViewer = ({data, previewContext, onContentNotFound}) => {
     const isFile = data && data.nodeByPath && data.nodeByPath.lastModified && data.nodeByPath.isFile;
     if (isFile) {
         const file = window.contextJsParameters.contextPath + '/files/' + (previewContext.workspace === 'edit' ? 'default' : 'live') + data.nodeByPath.path.replace(/[^/]/g, encodeURIComponent) + (data.nodeByPath.lastModified ? ('?lastModified=' + data.nodeByPath.lastModified.value) : '');
-        if (isPDF(data.nodeByPath.path)) {
+        if (isPDF(data.nodeByPath)) {
             return (
                 <div className={styles.previewContainer} data-sel-role="preview-type-pdf">
                     <PDFViewer file={file} isFullScreen={false}/>
@@ -22,7 +22,7 @@ export const PreviewViewer = ({data, previewContext, onContentNotFound}) => {
             );
         }
 
-        if (isBrowserImage(data.nodeByPath.path)) {
+        if (isBrowserImage(data.nodeByPath)) {
             return (
                 <div className={clsx(styles.previewContainer, styles.mediaContainer)}
                      data-sel-role="preview-type-image"
@@ -32,8 +32,8 @@ export const PreviewViewer = ({data, previewContext, onContentNotFound}) => {
             );
         }
 
-        const type = getFileType(data.nodeByPath.path);
-        const isMedia = (type === 'avi' || type === 'mp4' || type === 'video');
+        const type = getFileType(data.nodeByPath);
+        const isMedia = (type === 'webm' || type === 'mp4');
         return (
             <div className={clsx(styles.previewContainer, isMedia && styles.mediaContainer)}
                  data-sel-role="preview-type-document"

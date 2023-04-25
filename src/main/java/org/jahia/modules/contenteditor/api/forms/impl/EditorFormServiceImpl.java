@@ -44,6 +44,7 @@ import org.jahia.utils.i18n.Messages;
 import org.osgi.framework.Bundle;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.owasp.html.Sanitizers;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.SchedulerException;
@@ -585,8 +586,8 @@ public class EditorFormServiceImpl implements EditorFormService {
             }
         }
 
-        String displayName = nodeType.getLabel(uiLocale);
-        String description = nodeType.getDescription(uiLocale);
+        String displayName = StringEscapeUtils.unescapeHtml(nodeType.getLabel(uiLocale));
+        String description = Sanitizers.FORMATTING.sanitize(nodeType.getDescription(uiLocale));
 
         EditorFormFieldSet fieldset = new EditorFormFieldSet(
             nodeType.getName(),
@@ -680,7 +681,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         Optional<ExtendedItemDefinition> optionalItem = extendedNodeType.getItems().stream().filter(item -> StringUtils.equals(item.getName(), propertyDefinition.getName())).findAny();
         ExtendedItemDefinition item = optionalItem.isPresent() ? optionalItem.get() : propertyDefinition;
         String propertyLabel = StringEscapeUtils.unescapeHtml(item.getLabel(uiLocale, extendedNodeType));
-        String propertyDescription = StringEscapeUtils.unescapeHtml(item.getTooltip(uiLocale, extendedNodeType));
+        String propertyDescription = Sanitizers.FORMATTING.sanitize(item.getTooltip(uiLocale, extendedNodeType));
 
         String key = item.getResourceBundleKey() + ".constraint.error.message";
         if (item.getDeclaringNodeType().getTemplatePackage() != null) {

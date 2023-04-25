@@ -1,0 +1,37 @@
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<cent = 'http://www.jahia.org/ce/nt/1.0'>
+
+[cent:textFieldInitializer] > jnt:content, jmix:basicContent, mix:title noquery
+ - defaultString (string) = 'Default string'
+ - defaultI18nString (string) = 'Default i18n string' internationalized
+ - defaultDate (date) = '1988-03-07T19:40:00.000Z'
+ - defaultI18nDate (date) = '2006-03-07T19:40:00.000Z' internationalized
+ - defaultStringAutocreated (string) = 'Default string Autocreated' autocreated
+ - defaultI18nStringAutocreated (string) = 'Default Autocreated i18n string' autocreated internationalized
+ - defaultDateAutocreated (date) = '2008-03-07T19:40:00.000Z' autocreated
+ - defaultI18nDateAutocreated (date) = '2013-03-02T19:00:00.000Z' autocreated internationalized
+ - systemRBTitle (string) = resourceBundle('mySettings.title')
+ - systemI18nRBFirstName (string) = resourceBundle('mySettings.firstname') internationalized
+ - systemRBAutocreatedPreferredLanguage (string) = resourceBundle('mySettings.preferredLanguage') autocreated
+ - systemI18nRBAutocreatedMySettings (string) = resourceBundle('mySettings.title') autocreated internationalized
+ - moduleRBString (string) = resourceBundle('default')
+ - moduleI18nRBString (string) = resourceBundle('hello') internationalized
+ - moduleRBAutocreatedString (string) = resourceBundle('love') autocreated
+ - moduleI18nRBAutocreatedString (string) = resourceBundle('kiss') autocreated internationalized
+ - moduleClassInitString (string) = useClass(org.jahia.modules.textfieldinitializer.InitTextValue)
+
+ [cent:defaultValueTest] > jnt:content, jmix:basicContent, mix:title noquery
+ - defaultString (string) = 'Default string'
+ - defaultI18nString (string) = 'Default i18n string' internationalized
+ - defaultDate (date) = now()
+ - defaultI18nDate (date) = now() internationalized
+ - defaultRB (string) = resourceBundle('system.doWithJahia')
+ - defaultI18nRB (string) = resourceBundle('system.doWithJahia') internationalized
+ - defaultStringAutocreated (string) = 'Default string' autocreated
+ - defaultI18nStringAutocreated (string) = 'Default i18n string' autocreated internationalized
+ - defaultDateAutocreated (date) = now() autocreated
+ - defaultI18nDateAutocreated (date) = now() autocreated internationalized
+ - defaultRBAutocreated (string) = resourceBundle('system.doWithJahia') autocreated
+ - defaultI18nRBAutocreated (string) = resourceBundle('system.doWithJahia') autocreated internationalized

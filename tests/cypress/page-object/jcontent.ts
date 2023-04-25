@@ -56,6 +56,11 @@ export class JContent extends BasePage {
         return new ContentEditor();
     }
 
+    viewSubContentComponentByText(text: string) {
+        const row = new TableRow(getElement(TableRow.defaultSelector, this.getTable()).contains(text));
+        row.contextMenu().select('View sub-contents');
+    }
+
     getSiteSwitcher(): Dropdown {
         if (!this.siteSwitcher) {
             this.siteSwitcher = getComponentByAttr(Dropdown, 'data-cm-role', 'site-switcher');

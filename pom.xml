@@ -34,7 +34,7 @@
     </parent>
     <artifactId>content-editor</artifactId>
     <name>Jahia Content Editor</name>
-    <version>4.4.0-SNAPSHOT</version>
+    <version>4.5.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <description>Jahia Content Editor React extension.</description>
 
@@ -48,7 +48,7 @@
         <jahia-module-type>system</jahia-module-type>
         <yarn.arguments>build:production</yarn.arguments>
         <require-capability>osgi.extender;filter:="(osgi.extender=org.jahia.bundles.blueprint.extender.config)"</require-capability>
-        <jahia-module-signature>MC0CFBfrKq9ZTAGiCp+a973hPXf/B7XTAhUAjQ+Dagy3MovC5Om6EaCicxA1TbY=</jahia-module-signature>
+        <jahia-module-signature>MCwCFC14zrQFrhdlrI26e0IEXNTj5OY6AhRL9HwaSH2xVfqUuS03309iaYYBRg==</jahia-module-signature>
         <jahia-depends>app-shell=2.7,graphql-dxm-provider=2.15,jcontent=2.9</jahia-depends>
         <jahia.plugin.version>6.5</jahia.plugin.version>
         <import-package>
@@ -171,6 +171,12 @@
             <artifactId>graphql-java-servlet</artifactId>
             <version>${graphql-java-servlet.version}</version>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
+            <artifactId>owasp-java-html-sanitizer</artifactId>
+            <version>20220608.1</version>
         </dependency>
 
         <dependency>

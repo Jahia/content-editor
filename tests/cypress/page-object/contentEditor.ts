@@ -8,7 +8,7 @@ import {
     Menu
 } from '@jahia/cypress';
 import {ComponentType} from '@jahia/cypress/src/page-object/baseComponent';
-import {Field, PickerField, RichTextField, SmallTextField} from './fields';
+import {Field, PickerField, RichTextField, SmallTextField, DateField} from './fields';
 import {LanguageSwitcher} from './languageSwitcher';
 
 export class ContentEditor extends BasePage {
@@ -119,6 +119,10 @@ export class ContentEditor extends BasePage {
         return this.getField(SmallTextField, fieldName, multiple);
     }
 
+    getDateField(fieldName: string): DateField {
+        return this.getField(DateField, fieldName);
+    }
+
     getField<FieldType extends Field>(FieldComponent: ComponentType<FieldType>, fieldName: string,
         multiple?: boolean): FieldType {
         const r = getComponentByAttr(FieldComponent, 'data-sel-content-editor-field', fieldName);
@@ -130,5 +134,19 @@ export class ContentEditor extends BasePage {
     toggleOption(optionType: string, optionFieldName: string) {
         cy.get(`span[data-sel-role-dynamic-fieldset="${optionType}"]`).scrollIntoView().find('input').click({force: true});
         cy.contains(optionFieldName, {timeout: 90000}).should('be.visible');
+    }
+
+    checkButtonStatus(role: string, enabled: boolean) {
+        getComponentByRole(Button, role).should('be.visible').should(enabled ? 'not.be.disabled' : 'be.disabled');
+    }
+
+    openContentEditorHeaderMenu() {
+        getComponentByRole(Button, 'ContentEditorHeaderMenu').click();
+    }
+
+    publish() {
+        getComponentByRole(Button, 'publishAction').click();
+        cy.get('#dialog-errorBeforeSave', {timeout: 1000}).should('not.exist');
+        cy.get('[role="alertdialog"]').should('be.visible').should('contain', 'Publication has been queue');
     }
 }
