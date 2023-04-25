@@ -9,16 +9,8 @@ import {
     deleteNodeProperty
 } from '@jahia/cypress';
 
-const getDate = (separator: string): string => {
-    const date = new Date();
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-    const trueDay = day < 10 ? '0' + day : day;
-    const trueMonth = month < 10 ? '0' + month : month;
-
-    return `${trueMonth}${separator}${trueDay}${separator}${year}`;
-};
+import { ContentEditor } from '../../page-object/ContentEditor'
+import { DatePicker } from '../../page-object/datePicker'
 
 describe('Date picker tests', () => {
     before('Create required content', () => {
@@ -38,35 +30,39 @@ describe('Date picker tests', () => {
     });
 
     beforeEach('Check datePicker is empty', () => {
+        const datePicker = new DatePicker();
         cy.login('myUser', 'password');
         getNodeByPath('/sites/testsite/contents/contentEditorPickers')
             .its('data.jcr.nodeByPath.uuid').as('datePicker');
         cy.get('@datePicker').then(uuid => {
             cy.visit(`/jahia/content-editor/en/edit/${uuid}`);
         });
-        cy.get('input[id="qant:pickers_datepicker"]').should('have.value', '');
+        datePicker.checkDate('');
     });
 
     it('Test Date Picker', () => {
-        cy.get('input[id="qant:pickers_datepicker"]').parent().find('button').click();
-        cy.get('.DayPicker-Day--today').click();
+        const datePicker = new DatePicker();
+        datePicker.pickTodayDate();
     });
 
     it('Test without using picker', () => {
-        cy.get('input[id="qant:pickers_datepicker"]').type(getDate(''));
+        const datePicker = new DatePicker();
+        datePicker.typeTodayDate();
     });
 
     afterEach('Check Value is kept after saving and clean picker', () => {
+        const contentEditor = new ContentEditor();
+        const datePicker = new DatePicker();
         cy.get('body').click();
-        cy.get('input[id="qant:pickers_datepicker"]').should('have.value', getDate('/'));
-        cy.get('span').contains('SAVE').click();
+        datePicker.checkTodayDate();
+        contentEditor.save();
         cy.get('@datePicker').then(uuid => {
             cy.visit(`/jahia/content-editor/en/edit/${uuid}`);
         });
-        cy.get('input[id="qant:pickers_datepicker"]').should('have.value', getDate('/'));
+        datePicker.checkTodayDate();
         deleteNodeProperty('/sites/testsite/contents/contentEditorPickers', 'datepicker', 'en');
         cy.reload();
-        cy.get('input[id="qant:pickers_datepicker"]').should('have.value', '');
+        datePicker.checkDate('');
         cy.logout();
     });
 
