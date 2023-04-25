@@ -6,11 +6,11 @@ describe('Picker tests - Constraints', {retries: 3}, () => {
 
     before(() => {
         cy.apollo({
-            mutationFile: 'graphql/jcr/addNode.graphql',
+            mutationFile: 'graphql/jcr/mutation/addNode.graphql',
             variables: {
                 parentPathOrId: '/sites/digitall/contents',
-                nodeName: 'constraintsTest',
-                nodeType: 'jnt:contentFolder',
+                name: 'constraintsTest',
+                primaryNodeType: 'jnt:contentFolder',
                 children: [
                     {
                         name: 'employee1',
@@ -31,7 +31,7 @@ describe('Picker tests - Constraints', {retries: 3}, () => {
 
     after(() => {
         cy.apollo({
-            mutationFile: 'graphql/jcr/deleteNode.graphql',
+            mutationFile: 'graphql/jcr/mutation/deleteNode.graphql',
             variables: {
                 pathOrId: '/sites/digitall/contents/constraintsTest'
             }

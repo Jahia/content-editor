@@ -1,0 +1,10 @@
+query ($path: String!, $language: String = "en") {
+    jcr {
+        nodeByPath(path: $path) {
+            uuid
+            aggregatedPublicationInfo(language: $language, subNodes: true) {
+                publicationStatus
+            }
+        }
+    }
+}

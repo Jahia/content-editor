@@ -10,7 +10,7 @@ const FileViewer = React.lazy(() => import(/* webpackChunkName: "reactFileViewer
 export const DocumentViewer = ({file, type, isFullScreen}) => (
     <React.Suspense fallback={<LoaderOverlay/>}>
         <div className={clsx(styles.container, isFullScreen && styles.fullScreen)}>
-            {(type === 'docx' || type === 'doc' || type === 'avi' || type === 'mp4' || type === 'video') ? (
+            {(type === 'docx' || type === 'xlsx' || type === 'csv' || type === 'webm' || type === 'mp4' || type === 'mp3') ? (
                 <FileViewer fileType={type} filePath={file}/>
             ) : (
                 <FileIcon filename={file} color="disabled" classes={{root: styles.icon}}/>
