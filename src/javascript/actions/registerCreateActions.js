@@ -24,7 +24,7 @@ export const registerCreateActions = registry => {
         registry.addOrReplace('action', 'createPage', createContentAction, {
             buttonIcon: <AddCircle/>,
             targets: ['createMenuActions:-2', 'contentActions:-2', 'headerPrimaryActions:1'],
-            showOnNodeTypes: ['jnt:page', 'jnt:navMenuText'],
+            showOnNodeTypes: ['jnt:page', 'jnt:navMenuText', 'jnt:virtualsite'],
             requiredPermission: ['jcr:addChildNodes'],
             nodeTypes: ['jnt:page'],
             includeSubTypes: false,
@@ -48,7 +48,7 @@ export const registerCreateActions = registry => {
         registry.addOrReplace('action', 'createNavMenuItem', createContentAction, {
             buttonIcon: <AddCircle/>,
             targets: ['createNavMenuItemMenu'],
-            showOnNodeTypes: ['jnt:page', 'jnt:navMenuText'],
+            showOnNodeTypes: ['jnt:page', 'jnt:navMenuText', 'jnt:virtualsite'],
             requiredPermission: ['jcr:addChildNodes'],
             nodeTypes: ['jnt:navMenuText', 'jnt:nodeLink', 'jnt:externalLink'],
             includeSubTypes: false,
