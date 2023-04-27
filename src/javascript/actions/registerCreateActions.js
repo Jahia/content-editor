@@ -9,7 +9,7 @@ import {booleanValue} from '~/SelectorTypes/Picker/Picker.utils';
 
 export const registerCreateActions = registry => {
     registry.addOrReplace('action', 'createContent', createContentAction, {
-        buttonIcon: <AddCircle/>,
+        defaultIcon: <AddCircle/>,
         buttonLabel:
             'content-editor:label.contentEditor.CMMActions.createNewContent.menu',
         targets: ['createMenuActions:3', 'contentActions:3', 'headerPrimaryActions:1'],
