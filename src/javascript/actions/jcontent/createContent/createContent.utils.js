@@ -1,5 +1,7 @@
 import {getTreeOfContentWithRequirements} from './createContent.gql-queries';
 import {useQuery} from '@apollo/react-hooks';
+import {AddCircle, toIconComponent} from '@jahia/moonstone';
+import React from 'react';
 
 // eslint-disable-next-line
 export const useCreatableNodetypesTree = (nodeTypes, childNodeName, includeSubTypes, path, uilang, excludedNodeTypes, showOnNodeTypes) => {
@@ -69,6 +71,7 @@ export function transformNodeTypesToActions(nodeTypes, hasBypassChildrenLimit) {
                 flattenedNodeTypes: [nodeType],
                 nodeTypesTree: [nodeType],
                 nodeTypes: [nodeType.name],
+                buttonIcon: nodeType.iconURL ? toIconComponent(nodeType.iconURL) : <AddCircle/>,
                 buttonLabel: 'content-editor:label.contentEditor.CMMActions.createNewContent.contentOfType',
                 buttonLabelParams: {typeName: nodeType.label}
             }));
