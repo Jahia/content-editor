@@ -36,15 +36,18 @@ export const EditContent = ({
     return (
         <Render {...otherProps}
                 isVisible={res.checksResult}
-                onClick={() => isModal ? api.edit({
-                    uuid: res.node.uuid,
-                    site,
-                    lang: language,
-                    uilang,
-                    isFullscreen,
-                    editCallback,
-                    ...otherProps.editConfig
-                }) : redirect({language, mode: Constants.routes.baseEditRoute, uuid: res.node.uuid})}
+                onClick={() => {
+                    otherProps.onClick && otherProps.onClick();
+                    isModal ? api.edit({
+                        uuid: res.node.uuid,
+                        site,
+                        lang: language,
+                        uilang,
+                        isFullscreen,
+                        editCallback,
+                        ...otherProps.editConfig
+                    }) : redirect({language, mode: Constants.routes.baseEditRoute, uuid: res.node.uuid})
+                }}
         />
     );
 };
