@@ -37,8 +37,11 @@ export const EditContent = ({
         <Render {...otherProps}
                 isVisible={res.checksResult}
                 onClick={() => {
-                    otherProps.onClick && otherProps.onClick();
-                    isModal ? api.edit({
+                    if (otherProps.onClick) {
+                        otherProps.onClick();
+                    }
+
+                    return isModal ? api.edit({
                         uuid: res.node.uuid,
                         site,
                         lang: language,
@@ -46,7 +49,7 @@ export const EditContent = ({
                         isFullscreen,
                         editCallback,
                         ...otherProps.editConfig
-                    }) : redirect({language, mode: Constants.routes.baseEditRoute, uuid: res.node.uuid})
+                    }) : redirect({language, mode: Constants.routes.baseEditRoute, uuid: res.node.uuid});
                 }}
         />
     );
