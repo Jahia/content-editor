@@ -1,4 +1,9 @@
-import {toIconComponent} from '@jahia/moonstone';
+import React from 'react';
+import {AddCircle, toIconComponent} from '@jahia/moonstone';
+
+let getIconStart = function (node) {
+    return (node.iconURL && !node.iconURL.endsWith('/nt_base.png') && toIconComponent(node.iconURL)) || <AddCircle/>;
+};
 
 export const filterTree = (tree, selectedType, filter) => tree
     .map(category => {
@@ -8,11 +13,11 @@ export const filterTree = (tree, selectedType, filter) => tree
 
         return {
             ...category,
-            iconStart: toIconComponent(category.iconURL),
+            iconStart: getIconStart(category),
             children: filteredNodes.map(node => {
                 return {
                     ...node,
-                    iconStart: toIconComponent(node.iconURL)
+                    iconStart: getIconStart(node)
                 };
             })
         };
