@@ -70,7 +70,7 @@ export function transformNodeTypesToActions(nodeTypes, hasBypassChildrenLimit) {
                 flattenedNodeTypes: [nodeType],
                 nodeTypesTree: [nodeType],
                 nodeTypes: [nodeType.name],
-                nodeTypeIcon: nodeType.iconURL && toIconComponent(nodeType.iconURL),
+                nodeTypeIcon: nodeType.iconURL && !nodeType.iconURL.endsWith('/nt_base.png') && toIconComponent(nodeType.iconURL),
                 buttonLabel: 'content-editor:label.contentEditor.CMMActions.createNewContent.contentOfType',
                 buttonLabelParams: {typeName: nodeType.label}
             }));
