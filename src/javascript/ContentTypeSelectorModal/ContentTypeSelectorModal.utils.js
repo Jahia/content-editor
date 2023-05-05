@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {AddCircle, toIconComponent} from '@jahia/moonstone';
 
 let getIconStart = function (node) {
