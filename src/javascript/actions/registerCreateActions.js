@@ -23,7 +23,7 @@ export const registerCreateActions = registry => {
     if (booleanValue(contextJsParameters.config.jcontent?.showPageComposer)) {
         registry.addOrReplace('action', 'createPage', createContentAction, {
             buttonIcon: <AddCircle/>,
-            targets: ['createMenuActions:-2', 'contentActions:-2', 'headerPrimaryActions:1'],
+            targets: ['createMenuActions:-2', 'contentActions:-2', 'rootContentActions:-2', 'headerPrimaryActions:1'],
             showOnNodeTypes: ['jnt:page', 'jnt:navMenuText', 'jnt:virtualsite'],
             requiredPermission: ['jcr:addChildNodes'],
             nodeTypes: ['jnt:page'],
@@ -40,7 +40,7 @@ export const registerCreateActions = registry => {
         registry.add('action', 'createNavMenuItemMenu', registry.get('action', 'menuAction'), {
             buttonIcon: <AddCircle/>,
             buttonLabel: 'content-editor:label.contentEditor.CMMActions.createNewContent.newMenu',
-            targets: ['createMenuActions:-1', 'contentActions:-1'],
+            targets: ['createMenuActions:-1', 'contentActions:-1', 'rootContentActions:-1'],
             menuTarget: 'createNavMenuItemMenu',
             isMenuPreload: true
         });
