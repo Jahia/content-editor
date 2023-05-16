@@ -14,6 +14,8 @@ export const getPreviewContext = editorContext => {
         // We need to update the path to the one of the edited page and not the current page
         if (editorContext.nodeData.isPage) {
             path = editorContext.path;
+        } else {
+            path = decodeURIComponent(path);
         }
     }
 
