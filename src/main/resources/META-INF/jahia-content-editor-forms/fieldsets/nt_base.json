@@ -16,7 +16,7 @@
       "multiple": false,
       "mandatory": true,
       "target": {
-        "sectionName": "options",
+        "sectionName": "systemSection",
         "rank": 0.0
       }
     }
