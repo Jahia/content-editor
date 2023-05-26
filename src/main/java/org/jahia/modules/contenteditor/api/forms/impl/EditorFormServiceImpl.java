@@ -460,7 +460,6 @@ public class EditorFormServiceImpl implements EditorFormService {
         if (optionsSection.getFieldSets().isEmpty()) {
             optionsSection.setName("options");
             optionsSection.setDisplayName("Options");
-            optionsSection.setDescription("Options section");
             optionsSection.setRank(1.0);
             optionsSection.setPriority(1.0);
             optionsSection.setExpanded(false);
@@ -469,6 +468,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         }
 
         optionsSection.getFieldSets().addAll(0, systemSection.getFieldSets());
+        sections.remove(systemSection);
     }
 
     private static String resolveResourceKey(String key, Locale locale, JCRSiteNode site) {
