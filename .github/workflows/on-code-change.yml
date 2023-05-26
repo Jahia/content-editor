@@ -60,45 +60,10 @@ jobs:
     container:
       image: cyclonedx/cyclonedx-cli:0.24.2   
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/download-artifact@v3
+      - uses: jahia/jahia-modules-action/sbom-handling@TECH-1019
         with:
-          name: sbom-artifacts
-      - name: Merge sbom
-        shell: bash
-        run: |
-          find . \( -name "*.cdx.json" -o -name "*bom.json" \) -exec cyclonedx merge --output-file sbom-all.cdx.json --input-files "{}" +
-          apt-get update && apt-get install -y jq
-          jq '. |
-          {
-            "bomFormat": .bomFormat,
-            "specVersion": .specVersion,
-            "serialNumber": .serialNumber,
-            "version": .version,
-            "metadata": {
-              "tools": [
-                (.metadata.tools | unique[])
-              ]
-            },
-            "components": [
-              (.components | unique[])
-            ]
-          }' "sbom-all.cdx.json" > sbom-all.cdx.json.tmp && mv sbom-all.cdx.json.tmp sbom-all.cdx.json
-          cyclonedx validate --input-version v1_4 --input-file sbom-all.cdx.json
-      - uses: actions/upload-artifact@v3
-        with:
-          name: merged-sbom
-          path: |
-            sbom-all.cdx.json
-          retention-days: 2
-      - uses: DependencyTrack/gh-upload-sbom@v1.0.0
-        with:
-            bomfilename: sbom-all.cdx.json
-            serverhostname: 'dependency-track-dev.jahia.com'
-            apikey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
-            autocreate: true
-            projectname: 'Content Editor'
-            projectversion: 'master'
+          dependencytrack_url: ${{ secrets.DEPENDENCYTRACK_URL }}
+          dependencytrack_apikey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
 
   sonar-analysis:
     name: Sonar Analysis
