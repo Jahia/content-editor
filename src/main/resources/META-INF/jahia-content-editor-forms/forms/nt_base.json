@@ -44,10 +44,6 @@
       "name": "visibility",
       "labelKey": "label.engineTab.visibility",
       "requiredPermission": "viewSeoTab"
-    },
-    {
-      "name": "systemSection",
-      "labelKey": "noLabel"
     }
   ]
 }
