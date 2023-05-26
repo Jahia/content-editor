@@ -83,7 +83,7 @@ export const AdvancedOptionsNavigation = ({activeOption, setActiveOption}) => {
     }
 
     return (
-        <div className={styles.container}>
+        <div data-sel-role="advanced-options-nav" className={styles.container}>
             <ul>
                 <DisplayActions activeOption={activeOption}
                                 setActiveOption={setActiveOption}

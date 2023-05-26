@@ -9,7 +9,7 @@ import {booleanValue} from '~/SelectorTypes/Picker/Picker.utils';
 
 export const registerCreateActions = registry => {
     registry.addOrReplace('action', 'createContent', createContentAction, {
-        buttonIcon: <AddCircle/>,
+        defaultIcon: <AddCircle/>,
         buttonLabel:
             'content-editor:label.contentEditor.CMMActions.createNewContent.menu',
         targets: ['createMenuActions:3', 'contentActions:3', 'headerPrimaryActions:1'],
@@ -23,8 +23,8 @@ export const registerCreateActions = registry => {
     if (booleanValue(contextJsParameters.config.jcontent?.showPageComposer)) {
         registry.addOrReplace('action', 'createPage', createContentAction, {
             buttonIcon: <AddCircle/>,
-            targets: ['createMenuActions:-2', 'contentActions:-2', 'headerPrimaryActions:1'],
-            showOnNodeTypes: ['jnt:page', 'jnt:navMenuText'],
+            targets: ['createMenuActions:-2', 'contentActions:-2', 'rootContentActions:-2', 'headerPrimaryActions:1'],
+            showOnNodeTypes: ['jnt:page', 'jnt:navMenuText', 'jnt:virtualsite'],
             requiredPermission: ['jcr:addChildNodes'],
             nodeTypes: ['jnt:page'],
             includeSubTypes: false,
@@ -40,7 +40,7 @@ export const registerCreateActions = registry => {
         registry.add('action', 'createNavMenuItemMenu', registry.get('action', 'menuAction'), {
             buttonIcon: <AddCircle/>,
             buttonLabel: 'content-editor:label.contentEditor.CMMActions.createNewContent.newMenu',
-            targets: ['createMenuActions:-1', 'contentActions:-1'],
+            targets: ['createMenuActions:-1', 'contentActions:-1', 'rootContentActions:-1'],
             menuTarget: 'createNavMenuItemMenu',
             isMenuPreload: true
         });
@@ -48,7 +48,7 @@ export const registerCreateActions = registry => {
         registry.addOrReplace('action', 'createNavMenuItem', createContentAction, {
             buttonIcon: <AddCircle/>,
             targets: ['createNavMenuItemMenu'],
-            showOnNodeTypes: ['jnt:page', 'jnt:navMenuText'],
+            showOnNodeTypes: ['jnt:page', 'jnt:navMenuText', 'jnt:virtualsite'],
             requiredPermission: ['jcr:addChildNodes'],
             nodeTypes: ['jnt:navMenuText', 'jnt:nodeLink', 'jnt:externalLink'],
             includeSubTypes: false,

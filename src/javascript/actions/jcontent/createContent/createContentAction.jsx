@@ -97,10 +97,11 @@ export const CreateContent = ({contextNodePath, path, showOnNodeTypes, nodeTypes
         }
     };
 
-    return (actions || [{key: 'allTypes'}]).map(result => (
+    return (actions || [{key: 'allTypes', nodeTypeIcon: otherProps.defaultIcon}]).map(result => (
         <Render
             key={result.key}
             enabled={!res.node?.lockOwner}
+            buttonIcon={result.nodeTypeIcon || otherProps.defaultIcon}
             {...otherProps}
             flattenedNodeTypes={flattenedNodeTypes}
             nodeTypesTree={nodeTypesTree}
@@ -127,7 +128,7 @@ CreateContent.propTypes = {
     showOnNodeTypes: PropTypes.array,
     nodeTypes: PropTypes.array,
     name: PropTypes.string,
-    includeSubTypes: PropTypes.array,
+    includeSubTypes: PropTypes.bool,
     render: PropTypes.func.isRequired,
     onCreate: PropTypes.func,
     onClosed: PropTypes.func,
