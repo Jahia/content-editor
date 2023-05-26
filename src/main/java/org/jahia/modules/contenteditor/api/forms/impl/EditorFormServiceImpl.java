@@ -455,7 +455,13 @@ public class EditorFormServiceImpl implements EditorFormService {
 
     private void moveSystemNameToOptions(List<EditorFormSection> sections) {
         EditorFormSection optionsSection = sections.stream().filter(s -> s.getName().equals("options")).findFirst().orElse(new EditorFormSection());
-        EditorFormSection systemSection = sections.stream().filter(s -> s.getName().equals("systemSection")).findFirst().get();
+        Optional<EditorFormSection> optional = sections.stream().filter(s -> s.getName().equals("systemSection")).findFirst();
+
+        if (!optional.isPresent()) {
+            return;
+        }
+
+        EditorFormSection systemSection = optional.get();
 
         if (optionsSection.getFieldSets().isEmpty()) {
             optionsSection.setName("options");
