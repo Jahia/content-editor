@@ -75,14 +75,21 @@ const patternFieldValidation = (values, field) => {
 
     const constraints = field.valueConstraints && field.valueConstraints.map(constraint => constraint.value.string);
 
+    // QA-14633: choicelist values are passed as value constraints, so we only need to do an equals comparison
+    // instead of running the selector options through Regex.
+    const strictValidation = field.selectorType === Constants.field.selectorType.CHOICELIST;
+
     if (constraints && constraints.length > 0 && field.requiredType === 'STRING') {
         const fieldValues = field.multiple ? (values[field.name] || []) : [values[field.name]];
+        const constraintTestFn = (strictValidation) ?
+            (constraint, value) => constraint === value :
+            (constraint, value) => RegExp(constraint).test(String(value));
 
         // If one pattern is invalid, error!
         if (fieldValues.some(value =>
             value &&
             constraints
-                .map(constraint => RegExp(constraint).test(String(value)))
+                .map(constraint => constraintTestFn(constraint, value))
                 .filter(value => value)
                 .length === 0
         )) {
