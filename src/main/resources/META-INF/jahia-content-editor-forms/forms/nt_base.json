@@ -47,7 +47,7 @@
     },
     {
       "name": "systemSection",
-      "labelKey": "noLabel"
+      "labelKey": "noLabel - the section is hidden from view by design"
     }
   ]
 }

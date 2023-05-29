@@ -338,6 +338,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             }
 
             List<EditorFormSection> sortedSections = sortSections(formSectionsByName, mergedFormDefinition, uiLocale, parentNode.getResolveSite());
+            moveSystemNameToOptions(sortedSections);
             String formDisplayName = primaryNodeType.getLabel(uiLocale);
             String formDescription = primaryNodeType.getDescription(uiLocale);
 
@@ -450,6 +451,29 @@ public class EditorFormServiceImpl implements EditorFormService {
             }
         }
         return sortedFormSections;
+    }
+
+    private void moveSystemNameToOptions(List<EditorFormSection> sections) {
+        EditorFormSection optionsSection = sections.stream().filter(s -> s.getName().equals("options")).findFirst().orElse(new EditorFormSection());
+        Optional<EditorFormSection> optional = sections.stream().filter(s -> s.getName().equals("systemSection")).findFirst();
+
+        if (!optional.isPresent()) {
+            return;
+        }
+
+        EditorFormSection systemSection = optional.get();
+
+        if (optionsSection.getFieldSets().isEmpty()) {
+            optionsSection.setName("options");
+            optionsSection.setDisplayName("Options");
+            optionsSection.setRank(1.0);
+            optionsSection.setPriority(1.0);
+            optionsSection.setExpanded(false);
+            sections.add(optionsSection);
+        }
+
+        optionsSection.getFieldSets().addAll(0, systemSection.getFieldSets());
+        sections.remove(systemSection);
     }
 
     private static String resolveResourceKey(String key, Locale locale, JCRSiteNode site) {

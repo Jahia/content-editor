@@ -68,10 +68,6 @@ const moveSystemNameToTheTopOfTheForm = (primaryNodeType, sections, systemNameFi
     toBeMovedToFieldSet.fields.unshift(systemNameField);
 };
 
-const moveToOptionsSection = (sections, ntBaseFieldSet) => {
-    sections.find(section => section.name === 'options')?.fieldSets?.unshift(ntBaseFieldSet);
-};
-
 export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType, isCreate, canBeMovedToTop, readOnlyByMixin) => {
     let ntBaseFieldSet;
     let systemNameField;
@@ -127,11 +123,7 @@ export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType
             if (moved) {
                 // Remove system fieldSet, not used anymore
                 sectionContainingSystemName.fieldSets = sectionContainingSystemName.fieldSets.filter(fieldSet => fieldSet.name !== 'nt:base');
-            } else {
-                moveToOptionsSection(formData.sections, ntBaseFieldSet);
             }
-
-            formData.sections = formData.sections.filter(section => section.name !== 'systemSection');
         }
     }
 
@@ -142,3 +134,4 @@ export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType
         formData.initialValues[Constants.systemName.name] = decodeSystemName(rawData.jcr.result.name);
     }
 };
+
