@@ -16,6 +16,11 @@ export const Constants = {
         },
         editTab: 'EDIT'
     },
+    field: {
+        selectorType: {
+            CHOICELIST: 'Choicelist'
+        }
+    },
     supportedLocales: ['en', 'fr', 'de'],
     defaultLocale: 'en',
     routes: {

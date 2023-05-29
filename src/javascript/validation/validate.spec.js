@@ -586,6 +586,36 @@ describe('validate', () => {
                 field4: undefined
             });
         });
+
+        it('should do equals comparison for choicelist values', () => {
+            const {sections} = buildSections({
+                requiredType: 'STRING',
+                selectorType: Constants.field.selectorType.CHOICELIST,
+                valueConstraints: [
+                    {value: {string: '{"versions":["2.0.1","2.0.2","2.3.2-RELEASE"],"name":"account-button"}'}}
+                ]
+            });
+            const values = {
+                field1: '{"versions":["2.0.1","2.0.2","2.3.2-RELEASE"],"name":"account-button"}'
+            };
+
+            expect(validate(sections)(values)).toEqual({field1: undefined});
+        });
+
+        it('should do pattern matching comparison for non-choicelist values', () => {
+            const {sections} = buildSections({
+                requiredType: 'STRING',
+                // 'selectorType' not specified
+                valueConstraints: [
+                    {value: {string: '{"versions":["2.0.1","2.0.2","2.3.2-RELEASE"],"name":"account-button"}'}}
+                ]
+            });
+            const values = {
+                field1: '{"versions":["2.0.1","2.0.2","2.3.2-RELEASE"],"name":"account-button"}'
+            };
+
+            expect(validate(sections)(values)).toEqual({field1: 'invalidPattern'});
+        });
     });
 
     describe('max-length', () => {
