@@ -469,8 +469,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             optionsSection.setRank(1.0);
             optionsSection.setPriority(1.0);
             optionsSection.setExpanded(false);
-            // Inject after layout tab
-            sections.add(4, optionsSection);
+            sections.add(optionsSection);
         }
 
         optionsSection.getFieldSets().addAll(0, systemSection.getFieldSets());
