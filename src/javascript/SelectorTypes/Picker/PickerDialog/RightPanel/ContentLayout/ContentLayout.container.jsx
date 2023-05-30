@@ -33,7 +33,7 @@ function expand(r, level) {
     return (r && level) ? r.filter(c => c.hasSubRows).flatMap(c => [c.path, ...expand(c.subRows, level - 1)]) : [];
 }
 
-export const ContentLayoutContainer = ({pickerConfig, isMultiple, accordionItemProps}) => {
+export const ContentLayoutContainer = ({pickerConfig, isMultiple, accordionItemProps, dblClickSelect}) => {
     const {t} = useTranslation();
     const currentResult = useRef();
     const {mode, path, filesMode, preSearchModeMemo, viewType} = useSelector(state => ({
@@ -157,6 +157,7 @@ export const ContentLayoutContainer = ({pickerConfig, isMultiple, accordionItemP
                            isLoading={loading}
                            pickerConfig={pickerConfig}
                            accordionItemProps={accordionItemProps}
+                           dblClickSelect={dblClickSelect}
                 />
             ) : (
                 <ContentTable path={path}
@@ -176,7 +177,8 @@ export const ContentLayoutContainer = ({pickerConfig, isMultiple, accordionItemP
 ContentLayoutContainer.propTypes = {
     pickerConfig: configPropType.isRequired,
     isMultiple: PropTypes.bool,
-    accordionItemProps: PropTypes.object
+    accordionItemProps: PropTypes.object,
+    dblClickSelect: PropTypes.func.isRequired
 };
 
 export default ContentLayoutContainer;

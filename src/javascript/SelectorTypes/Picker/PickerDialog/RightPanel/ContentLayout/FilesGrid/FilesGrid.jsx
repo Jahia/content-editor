@@ -43,7 +43,7 @@ Grid.propTypes = {
     children: PropTypes.node
 };
 
-export const FilesGrid = ({totalCount, rows, isLoading, pickerConfig, isMultiple, accordionItemProps}) => {
+export const FilesGrid = ({totalCount, rows, isLoading, pickerConfig, isMultiple, accordionItemProps, dblClickSelect}) => {
     const {t} = useTranslation('jcontent');
     const {mode, path, pagination, siteKey, uilang, lang, selection} = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
@@ -124,6 +124,13 @@ export const FilesGrid = ({totalCount, rows, isLoading, pickerConfig, isMultiple
                                   onPreviewSelect={(...args) => {
                                       onPreviewSelect(...args);
                                   }}
+                                  onDoubleClick={() => {
+                                      if (['jnt:page', 'jnt:folder', 'jnt:contentFolder'].indexOf(node.primaryNodeType.name) !== -1) {
+                                          setPath(siteKey, node.path, mode);
+                                      } else {
+                                          dblClickSelect(node.uuid);
+                                      }
+                                  }}
                         />
                     ))}
                 </Grid>
@@ -149,7 +156,8 @@ FilesGrid.propTypes = {
     totalCount: PropTypes.number.isRequired,
     pickerConfig: configPropType.isRequired,
     isMultiple: PropTypes.bool,
-    accordionItemProps: PropTypes.object
+    accordionItemProps: PropTypes.object,
+    dblClickSelect: PropTypes.func.isRequired
 };
 
 export default FilesGrid;
