@@ -707,9 +707,9 @@ public class EditorFormServiceImpl implements EditorFormService {
         String propertyLabel = StringEscapeUtils.unescapeHtml(item.getLabel(uiLocale, extendedNodeType));
         String propertyDescription = Sanitizers.FORMATTING.sanitize(item.getTooltip(uiLocale, extendedNodeType));
 
-        String key = item.getResourceBundleKey() + ".constraint.error.message";
-        if (item.getDeclaringNodeType().getTemplatePackage() != null) {
-            key += "@" + item.getDeclaringNodeType().getTemplatePackage().getResourceBundleName();
+        String key = itemDefinition.getResourceBundleKey() + ".constraint.error.message";
+        if (itemDefinition.getDeclaringNodeType().getTemplatePackage() != null) {
+            key += "@" + itemDefinition.getDeclaringNodeType().getTemplatePackage().getResourceBundleName();
         }
         String propertyErrorMessage = resolveResourceKey(key, uiLocale, parentNode.getResolveSite());
 
