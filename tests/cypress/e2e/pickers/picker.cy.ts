@@ -224,4 +224,20 @@ describe('Picker tests', () => {
         item.getTreeItem('companies').click();
         item.getTreeItem('companies').find('div').should('have.class', 'moonstone-selected');
     });
+
+    it('should pick thumbnail on double click', () => {
+        const contentEditor = jcontent.createContent(contentTypes.fileReference.typeName);
+
+        const picker = contentEditor
+            .getPickerField(contentTypes.fileReference.fieldNodeType, contentTypes.fileReference.multiple)
+            .open();
+
+        const pagesAccordion: AccordionItem = picker.getAccordionItem('picker-media');
+
+        pagesAccordion.expandTreeItem('images');
+        pagesAccordion.getTreeItem('companies').click();
+        picker.switchViewMode('Thumbnails');
+        picker.getGrid().get().find('div[data-sel-role-card="allrealtylogo_light.png"]').dblclick({force: true});
+        contentEditor.getPickerField(contentTypes.fileReference.fieldNodeType, contentTypes.fileReference.multiple).checkValue('allrealtylogo_light.png');
+    });
 });
