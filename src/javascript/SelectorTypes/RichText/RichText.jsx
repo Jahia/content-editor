@@ -1,5 +1,5 @@
 import React, {useContext, useEffect} from 'react';
-import CKEditor from 'ckeditor4-react';
+import {CKEditor} from 'ckeditor4-react';
 import * as PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/ContentEditor.proptypes';
 import {useQuery} from '@apollo/react-hooks';
@@ -15,17 +15,11 @@ if (window.CKEDITOR) {
     window.CKEDITOR.focusManager._.blurDelay = 0;
 }
 
-CKEditor.displayName = 'CKEditor';
-
 export const RichText = ({field, id, value, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
     const api = useContentEditorApiContext();
     const {i18nContext} = useContentEditorContext();
     const {lang, uilang} = useContentEditorConfigContext();
-
-    useEffect(() => {
-        CKEditor.editorUrl = window.CKEDITOR_BASEPATH + 'ckeditor.js';
-    }, []);
 
     const editorContext = useContext(ContentEditorContext);
     const {data, error, loading} = useQuery(
@@ -105,15 +99,17 @@ export const RichText = ({field, id, value, onChange, onBlur}) => {
         ...definitionConfig
     };
 
+    let name = 'v' + (i18nContext?.memo?.count || 0);
     return (
         <>
             <CKEditor
                 key={'v' + (i18nContext?.memo?.count || 0)}
                 id={id}
-                data={value}
+                initData={value}
                 aria-labelledby={`${field.name}-label`}
                 config={config}
                 readOnly={field.readOnly}
+                editorUrl={window.CKEDITOR_BASEPATH + 'ckeditor.js'}
                 onMode={evt => {
                     if (evt.editor.mode === 'source') {
                         let editable = evt.editor.editable();
