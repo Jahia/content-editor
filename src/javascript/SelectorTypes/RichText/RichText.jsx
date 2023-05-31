@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext} from 'react';
 import {CKEditor} from 'ckeditor4-react';
 import * as PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/ContentEditor.proptypes';
@@ -99,7 +99,6 @@ export const RichText = ({field, id, value, onChange, onBlur}) => {
         ...definitionConfig
     };
 
-    let name = 'v' + (i18nContext?.memo?.count || 0);
     return (
         <>
             <CKEditor
