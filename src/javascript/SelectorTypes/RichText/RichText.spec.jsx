@@ -63,7 +63,7 @@ describe('RichText component', () => {
         const cmp = shallow(<RichText {...props}/>);
 
         expect(cmp.find(RICH_TEXT_COMPONENT_TAG)
-            .prop('data')
+            .prop('initData')
         ).toEqual('some dummy value');
     });
 
