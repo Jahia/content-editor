@@ -1,6 +1,6 @@
-import {JContent} from "../page-object/jcontent";
-import {SmallTextField} from "../page-object/fields";
-import {Button, getComponentByRole} from "@jahia/cypress";
+import {JContent} from '../page-object/jcontent';
+import {SmallTextField} from '../page-object/fields';
+import {Button, getComponentByRole} from '@jahia/cypress';
 
 describe('Create content tests', () => {
     let jcontent: JContent;
@@ -16,7 +16,7 @@ describe('Create content tests', () => {
 
     beforeEach(() => {
         cy.loginEditor();
-        jcontent = JContent.visit('contentEditorSite', 'en', 'content-folders/contents')
+        jcontent = JContent.visit('contentEditorSite', 'en', 'content-folders/contents');
     });
 
     it('Should display custom title label and error message', function () {
