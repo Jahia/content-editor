@@ -136,7 +136,7 @@ export class PageComposer extends BasePage {
     }
 
     createPage(title: string, implicitSync?: boolean): ContentEditor {
-        const ce = new ContentEditor();
+        const ce = new ContentEditor(true);
         cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
             cy.get('#JahiaGxtPagesTab').contains('Home').rightclick({force: true});
             cy.get('.pagesContextMenuAnthracite').contains('New page').click({force: true});
