@@ -46,6 +46,7 @@ export const SaveErrorModal = ({i18nErrors, fields, open, siteInfo, onClose}) =>
                 classes={{paper: styles.dialog}}
                 open={open}
                 aria-labelledby="dialog-errorBeforeSave"
+                data-sel-role="dialog-errorBeforeSave"
                 onClose={onClose}
         >
             <DialogTitle id="dialog-errorBeforeSave" className={styles.dialogTitle}>
