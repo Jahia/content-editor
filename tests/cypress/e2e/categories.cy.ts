@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import {BaseComponent, Button, getComponentByRole} from '@jahia/cypress';
+import {BaseComponent, getComponentByRole} from '@jahia/cypress';
 
 describe('Category tests', () => {
     const getNodeId = gql`
