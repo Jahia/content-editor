@@ -39,8 +39,8 @@ describe('Picker - Editorial link', {testIsolation: false}, () => {
 
     before(() => {
         cy.login();
-        jcontent = JContent.visit(siteKey, 'en', 'content-folders/contents');
         createNavText();
+        jcontent = JContent.visit(siteKey, 'en', 'content-folders/contents');
     });
 
     after(() => {

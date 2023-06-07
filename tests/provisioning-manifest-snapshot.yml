@@ -1,4 +1,5 @@
 - installBundle:
+    - 'mvn:org.jahia.modules/article/3.0.0'
     - 'mvn:org.jahia.modules/press/3.1.0'
     - 'mvn:org.jahia.modules/person/3.2.0'
     - 'mvn:org.jahia.modules/news/3.4.0'
