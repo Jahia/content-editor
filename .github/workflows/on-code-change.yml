@@ -46,7 +46,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
     steps:
       - uses: actions/checkout@v3
-      - name: Initialize CodeQL
+      - name: Initialize CodeQL action
         uses: github/codeql-action/init@v2
         with:
           languages: java, javascript
