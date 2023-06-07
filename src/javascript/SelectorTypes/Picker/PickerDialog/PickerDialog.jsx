@@ -18,6 +18,7 @@ import RightPanel from './RightPanel';
 import {ContentNavigation} from '@jahia/jcontent';
 import {SelectionHandler} from '~/SelectorTypes/Picker/PickerDialog/SelectionHandler';
 import {PickerSiteSwitcher} from '~/SelectorTypes/Picker/PickerDialog/PickerSiteSwitcher';
+import clsx from 'clsx';
 
 const Transition = props => (
     <Slide direction="up"
@@ -76,7 +77,7 @@ export const PickerDialog = ({
             TransitionComponent={Transition}
             onClose={onClose}
         >
-            <div className="flexFluid flexRow_nowrap">
+            <div className={clsx('flexFluid', 'flexRow_nowrap', styles.navigation)}>
                 <SelectionHandler site={site} pickerConfig={pickerConfig} accordionItemProps={accordionItemProps} initialSelectedItem={initialSelectedItem} lang={lang} uilang={uilang}>
                     {booleanValue(pickerConfig.pickerDialog.displayTree) && (
                         <aside>
