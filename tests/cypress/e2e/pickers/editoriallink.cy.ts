@@ -1,6 +1,6 @@
 import {contentTypes} from '../../fixtures/pickers/contentTypes';
 import gql from 'graphql-tag';
-import {JContent} from "../../page-object/jcontent";
+import {JContent} from '../../page-object/jcontent';
 
 describe('Picker - Editorial link', {testIsolation: false}, () => {
     const siteKey = 'digitall';
