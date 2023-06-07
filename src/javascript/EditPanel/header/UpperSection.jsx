@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {Typography, ButtonGroup, Chip, Edit} from '@jahia/moonstone';
+import {Typography, ButtonGroup, Chip, Edit, ChevronDown} from '@jahia/moonstone';
 import {DisplayActions, DisplayAction} from '@jahia/ui-extender';
 
 import {useTranslation} from 'react-i18next';
@@ -97,6 +97,7 @@ export const HeaderUpperSection = ({title, actionContext, isCompact, isShowPubli
                                     size: 'big',
                                     className: styles.menu
                                 }}
+                                buttonIcon={<ChevronDown/>}
                                 enabled={!formik.dirty && !nodeData.lockedAndCannotBeEdited && !isWip}
                                 render={ButtonRenderer}
                             />
