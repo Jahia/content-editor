@@ -29,7 +29,7 @@ describe('Picker - Editorial link', {testIsolation: false}, () => {
                 mutation deleteNavText {
                     jcr {
                         content: deleteNode(pathOrId: "/sites/digitall/home/about/navMenuText")
-                        content2: deleteNode(pathOrId: "/sites/digitall/content/article")
+                        content2: deleteNode(pathOrId: "/sites/digitall/contents/article")
                     }
                 }
             `});
