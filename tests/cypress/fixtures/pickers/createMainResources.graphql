@@ -1,0 +1,24 @@
+mutation addMainResources {
+  jcr {
+    mutateNode(pathOrId: "/sites/digitall/contents") {
+      addChild(
+        name: "article"
+        primaryNodeType: "jnt:article"
+        properties: [{ name: "jcr:title", language: "en", value: "article" }]
+      ) {
+        addMixins(mixins: "jmix:mainResource")
+        addChild(
+          name: "paragraph"
+          primaryNodeType: "jnt:paragraph"
+          properties: [
+            { name: "jcr:title", language: "en", value: "paragraph" }
+          ]
+        ) {
+          addMixins(mixins: "jmix:mainResource")
+          uuid
+        }
+        uuid
+      }
+    }
+  }
+}
