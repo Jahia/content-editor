@@ -73,58 +73,30 @@ export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType
     let systemNameField;
     let sectionContainingSystemName;
     formData.sections.every(section => {
-        ntBaseFieldSet = section.fieldSets.find(fieldSet => fieldSet.name === 'nt:base');
-        if (ntBaseFieldSet) {
-            systemNameField = ntBaseFieldSet.fields.find(field => field.name === Constants.systemName.name);
-            sectionContainingSystemName = systemNameField && section;
-            return false;
-        }
-
-        return true;
+        return section.fieldSets.every(fs => {
+            return fs.fields.every(f => {
+                if (f.name === Constants.systemName.name) {
+                    ntBaseFieldSet = fs;
+                    systemNameField = f;
+                    return false;
+                }
+                return true;
+            });
+        })
     });
-    if (ntBaseFieldSet) {
+    if (ntBaseFieldSet && ntBaseFieldSet.name === 'nt:base') {
         // Add i18ns label to System fieldset
         ntBaseFieldSet.displayName = t('content-editor:label.contentEditor.section.fieldSet.system.displayName');
-        if (systemNameField) {
-            // Add i18ns label to field
-            systemNameField.displayName = t('content-editor:label.contentEditor.section.fieldSet.system.fields.systemName');
+    }
 
-            // Add description to the field
-            systemNameField.description = readOnlyByMixin ?
-                t('content-editor:label.contentEditor.section.fieldSet.system.fields.systemNameDescriptionReadOnly') :
-                t('content-editor:label.contentEditor.section.fieldSet.system.fields.systemNameDescription', {maxNameSize: window.contextJsParameters.config.maxNameSize});
+    if (systemNameField) {
+        // Add i18ns label to field
+        systemNameField.displayName = t('content-editor:label.contentEditor.section.fieldSet.system.fields.systemName');
 
-            // Add max name size validation
-            systemNameField.selectorOptions = [
-                {
-                    name: 'maxLength',
-                    value: window.contextJsParameters.config.maxNameSize
-                }
-            ];
-
-            // System name should be readonly for this specific nodetypes
-            if (readOnlyByMixin ||
-                Constants.systemName.READONLY_FOR_NODE_TYPES.includes(primaryNodeType.name) ||
-                isContentOrFileNode(formData) ||
-                (!isCreate && !formData.nodeData.hasWritePermission) ||
-                formData.nodeData.lockedAndCannotBeEdited) {
-                systemNameField.readOnly = true;
-            }
-
-            // Move to mix:title fieldSet if fieldSet exist
-            let moved = checkMoveSystemNameToUnderJcrTitleField(formData.sections, systemNameField);
-
-            // Move the systemName field to the top first section, fieldset, for specifics nodetypes
-            if (!moved && canBeMovedToTop) {
-                moveSystemNameToTheTopOfTheForm(primaryNodeType, formData.sections, systemNameField, t);
-                moved = true;
-            }
-
-            if (moved) {
-                // Remove system fieldSet, not used anymore
-                sectionContainingSystemName.fieldSets = sectionContainingSystemName.fieldSets.filter(fieldSet => fieldSet.name !== 'nt:base');
-            }
-        }
+        // Add description to the field
+        systemNameField.description = readOnlyByMixin ?
+            t('content-editor:label.contentEditor.section.fieldSet.system.fields.systemNameDescriptionReadOnly') :
+            t('content-editor:label.contentEditor.section.fieldSet.system.fields.systemNameDescription', {maxNameSize: window.contextJsParameters.config.maxNameSize});
     }
 
     // Set initial value for system name

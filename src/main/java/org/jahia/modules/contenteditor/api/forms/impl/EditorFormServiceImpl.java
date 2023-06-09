@@ -39,6 +39,7 @@ import org.jahia.services.content.nodetypes.initializers.ChoiceListInitializerSe
 import org.jahia.services.content.nodetypes.initializers.ChoiceListValue;
 import org.jahia.services.scheduler.BackgroundJob;
 import org.jahia.services.scheduler.SchedulerService;
+import org.jahia.settings.SettingsBean;
 import org.jahia.utils.LanguageCodeConverters;
 import org.jahia.utils.i18n.Messages;
 import org.osgi.framework.Bundle;
@@ -338,7 +339,8 @@ public class EditorFormServiceImpl implements EditorFormService {
             }
 
             List<EditorFormSection> sortedSections = sortSections(formSectionsByName, mergedFormDefinition, uiLocale, parentNode.getResolveSite());
-            moveSystemNameToOptions(sortedSections);
+//            moveSystemNameToOptions(sortedSections);
+            moveSystemName(sortedSections, primaryNodeType, currentNode, locale, mode);
             String formDisplayName = primaryNodeType.getLabel(uiLocale);
             String formDescription = primaryNodeType.getDescription(uiLocale);
 
@@ -474,6 +476,106 @@ public class EditorFormServiceImpl implements EditorFormService {
 
         optionsSection.getFieldSets().addAll(0, systemSection.getFieldSets());
         sections.remove(systemSection);
+    }
+
+    private void moveSystemName(List<EditorFormSection> sections, ExtendedNodeType primaryNodeType, JCRNodeWrapper existingOrParentNode, Locale locale, String mode) throws RepositoryException {
+        moveSystemNameToOptions(sections);
+        EditorFormSection sectionWithNtBase = sections.stream().filter(s -> s.getFieldSets().stream().anyMatch(fs -> fs.getName().equals("nt:base"))).findFirst().orElseThrow(() -> new RuntimeException("Couldn't find section with nt:base"));
+        EditorFormFieldSet ntBaseFieldSet = sectionWithNtBase.getFieldSets().stream().filter(fs -> fs.getName().equals("nt:base")).findFirst().orElseThrow(() -> new RuntimeException("Could not find nt:base field set"));
+        EditorFormField systemNameField = ntBaseFieldSet.getEditorFormFields().stream().filter(ff -> ff.getName().equals("ce:systemName")).findFirst().orElseThrow(() -> new RuntimeException("Could not find ce:systemName field"));
+
+        EditorFormProperty maxLength = new EditorFormProperty();
+        maxLength.setName("maxLength");
+        maxLength.setValue(String.valueOf(SettingsBean.getInstance().getMaxNameSize()));
+        systemNameField.setSelectorOptions(Collections.singletonList(maxLength));
+
+        List<String> readOnlyNodeTypes =  Arrays.asList(
+            "jnt:group",
+            "jnt:groupsFolder",
+            "jnt:mounts",
+            "jnt:remotePublications",
+            "jnt:modules",
+            "jnt:module",
+            "jnt:moduleVersion",
+            "jnt:templateSets",
+            "jnt:user",
+            "jnt:usersFolder",
+            "jnt:virtualsite",
+            "jnt:virtualsitesFolder"
+        );
+        List<String> systemNameOnTopNodeTypes = Arrays.asList(
+            "jnt:page",
+            "jnt:contentFolder",
+            "jnt:folder",
+            "jnt:file",
+            "jnt:category",
+            "jmix:mainResource"
+        );
+
+        Pattern pathPattern = Pattern.compile("^/sites/[^/]*/(contents|files)$");
+        if (existingOrParentNode.isNodeType("jmix:systemNameReadonly")
+            || readOnlyNodeTypes.contains(primaryNodeType.getName())
+            || pathPattern.matcher(existingOrParentNode.getPath()).matches()
+            || (!CREATE.equals(mode) && !existingOrParentNode.hasPermission("jcr:modifyProperties_default_" + locale.getLanguage()))
+            || JCRContentUtils.isLockedAndCannotBeEdited(existingOrParentNode)) {
+            systemNameField.setReadOnly(true);
+        }
+
+        // Move system name field under jcr title field if one exists
+        boolean movedSystemNameField = moveSystemNameFieldUnderTitleField(sections, systemNameField);
+
+        if (!movedSystemNameField && systemNameOnTopNodeTypes.contains(primaryNodeType.getName())) {
+            movedSystemNameField = moveSystemNameToTheTopOfTheForm(sections, systemNameField, primaryNodeType);
+        }
+
+        if (movedSystemNameField) {
+            sectionWithNtBase.getFieldSets().remove(ntBaseFieldSet);
+        }
+        // TODO need to remove options if user doesn't have permission for content and options
+        // Remove empty sections, this will clean up useless options section etc.
+        sections.removeIf(s -> s.getFieldSets().isEmpty());
+    }
+
+    private boolean moveSystemNameFieldUnderTitleField(List<EditorFormSection> sections, EditorFormField systemNameField) {
+        for (EditorFormSection s : sections) {
+            for (EditorFormFieldSet fs : s.getFieldSets()) {
+                for (EditorFormField f : fs.getEditorFormFields()) {
+                    if (f.getName().equals("jcr:title")) {
+                        // TODO handle index correctly
+                        fs.getEditorFormFields().add(systemNameField);
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private boolean moveSystemNameToTheTopOfTheForm(List<EditorFormSection> sections, EditorFormField systemNameField, ExtendedNodeType primaryNodeType) {
+        EditorFormSection contentSection = sections.stream().filter(s -> s.getName().equals("content")).findFirst().orElse(new EditorFormSection());
+        EditorFormFieldSet nodeTypeFiledSet = contentSection.getFieldSets().stream().filter(fs -> fs.getName().equals(primaryNodeType.getName())).findFirst().orElse(new EditorFormFieldSet());
+
+        // TODO return here as we the user probably doesn't have the right permission
+        if (contentSection.getName() == null) {
+            contentSection.setName("content");
+            contentSection.setDisplayName("content-editor:label.contentEditor.section.fieldSet.content.displayName");
+            sections.add(0, contentSection);
+        }
+
+        if (nodeTypeFiledSet.getName() == null) {
+            nodeTypeFiledSet.setName(primaryNodeType.getName());
+            // TODO check this to be proper display name
+            nodeTypeFiledSet.setDisplayName(primaryNodeType.getLocalName());
+            nodeTypeFiledSet.setActivated(true);
+            nodeTypeFiledSet.setDisplayed(true);
+            nodeTypeFiledSet.setDynamic(false);
+            contentSection.getFieldSets().add(0, nodeTypeFiledSet);
+        }
+
+        // TODO add at the beginning
+        nodeTypeFiledSet.getEditorFormFields().add(systemNameField);
+        return true;
     }
 
     private static String resolveResourceKey(String key, Locale locale, JCRSiteNode site) {
