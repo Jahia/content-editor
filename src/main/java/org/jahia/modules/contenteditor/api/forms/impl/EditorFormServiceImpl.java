@@ -516,6 +516,8 @@ public class EditorFormServiceImpl implements EditorFormService {
             || (!CREATE.equals(mode) && !currentNode.hasPermission("jcr:modifyProperties_default_" + locale.getLanguage()))
             || JCRContentUtils.isLockedAndCannotBeEdited(currentNode)) {
             systemNameField.setReadOnly(true);
+        } else {
+            systemNameField.setReadOnly(false);
         }
 
         // Move system name field under jcr title field if one exists

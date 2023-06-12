@@ -1,7 +1,7 @@
 import {Constants} from '~/ContentEditor.constants';
 import {decodeSystemName} from '~/utils';
 
-export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType, isCreate, canBeMovedToTop, readOnlyByMixin) => {
+export const adaptSystemNameField = (rawData, formData, t, isCreate, readOnlyByMixin) => {
     let ntBaseFieldSet;
     let systemNameField;
     formData.sections.every(section => {
