@@ -500,7 +500,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         Pattern pathPattern = Pattern.compile("^/sites/[^/]*/(contents|files)$");
         systemNameField.setReadOnly(currentNode.isNodeType("jmix:systemNameReadonly")
             || readOnlyNodeTypes.contains(primaryNodeType.getName())
-            || pathPattern.matcher(currentNode.getPath()).matches()
+            // || pathPattern.matcher(currentNode.getPath()).matches()
             || (!CREATE.equals(mode) && !currentNode.hasPermission("jcr:modifyProperties_default_" + locale.getLanguage()))
             || JCRContentUtils.isLockedAndCannotBeEdited(currentNode));
 
