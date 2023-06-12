@@ -339,7 +339,6 @@ public class EditorFormServiceImpl implements EditorFormService {
             }
 
             List<EditorFormSection> sortedSections = sortSections(formSectionsByName, mergedFormDefinition, uiLocale, parentNode.getResolveSite());
-//            moveSystemNameToOptions(sortedSections);
             moveSystemName(sortedSections, primaryNodeType, currentNode, locale, mode);
             String formDisplayName = primaryNodeType.getLabel(uiLocale);
             String formDescription = primaryNodeType.getDescription(uiLocale);
@@ -455,23 +454,31 @@ public class EditorFormServiceImpl implements EditorFormService {
         return sortedFormSections;
     }
 
-    private void moveSystemNameToOptions(List<EditorFormSection> sections) {
-        Optional<EditorFormSection> optionsOptional = sections.stream().filter(s -> s.getName().equals("options")).findFirst();
+    private void moveSystemNameToOptions(List<EditorFormSection> sections, JCRNodeWrapper currentNode) {
+        EditorFormSection optionsSection = sections.stream().filter(s -> s.getName().equals("options")).findFirst().orElse(new EditorFormSection());
         Optional<EditorFormSection> optional = sections.stream().filter(s -> s.getName().equals("systemSection")).findFirst();
 
-        if (!optional.isPresent() || !optionsOptional.isPresent()) {
+        if ((!optional.isPresent() && !currentNode.hasPermission("viewOptionsTab")) || !optional.isPresent()) {
             return;
         }
 
         EditorFormSection systemSection = optional.get();
-        EditorFormSection optionsSection = optionsOptional.get();
+
+        if (optionsSection.getFieldSets().isEmpty()) {
+            optionsSection.setName("options");
+            optionsSection.setDisplayName("Options");
+            optionsSection.setRank(1.0);
+            optionsSection.setPriority(1.0);
+            optionsSection.setExpanded(false);
+            sections.add(optionsSection);
+        }
 
         optionsSection.getFieldSets().addAll(0, systemSection.getFieldSets());
         sections.remove(systemSection);
     }
 
     private void moveSystemName(List<EditorFormSection> sections, ExtendedNodeType primaryNodeType, JCRNodeWrapper currentNode, Locale locale, String mode) throws RepositoryException {
-        moveSystemNameToOptions(sections);
+        moveSystemNameToOptions(sections, currentNode);
         EditorFormSection sectionWithNtBase = sections.stream().filter(s -> s.getFieldSets().stream().anyMatch(fs -> fs.getName().equals("nt:base"))).findFirst().orElse(null);
 
         if (sectionWithNtBase == null) {
