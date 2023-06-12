@@ -1,77 +1,9 @@
 import {Constants} from '~/ContentEditor.constants';
 import {decodeSystemName} from '~/utils';
 
-const isContentOrFileNode = formData => {
-    const pattern = '^/sites/[^/]*/(contents|files)$';
-    const regex = RegExp(pattern);
-    return formData.technicalInfo.filter(info => {
-        return regex.test(info.value);
-    }).length !== 0;
-};
-
-/**
- * Check if system name field should be moved under jcr:title field and perform the move
- * @param sections the form sections
- * @param systemNameField the system name field
- * @returns {boolean} true in case the field have been moved, false otherwise
- */
-const checkMoveSystemNameToUnderJcrTitleField = (sections, systemNameField) => {
-    for (const section of sections) {
-        for (const fieldSet of section.fieldSets) {
-            const jcrTitleIndex = fieldSet.fields.findIndex(field => field.propertyName === 'jcr:title');
-            if (jcrTitleIndex > -1) {
-                fieldSet.fields.splice(jcrTitleIndex + 1, 0, systemNameField);
-                return true;
-            }
-        }
-    }
-
-    return false;
-};
-
-/**
- * Check if system name field should be moved to top section, top fieldSet of the form to be the first field displayed
- * Only for specific node types: page, folder, categories, etc..
- * @param primaryNodeType the primary node type
- * @param sections the form sections
- * @param systemNameField the system name field
- * @returns {boolean} true in case the field have been moved, false otherwise
- */
-const moveSystemNameToTheTopOfTheForm = (primaryNodeType, sections, systemNameField, t) => {
-    let contentSection = sections.find(section => section.name === 'content');
-    if (!contentSection) {
-        // Section doesnt exist, create it
-        contentSection = {
-            name: 'content',
-            displayName: t('content-editor:label.contentEditor.section.fieldSet.content.displayName'),
-            fieldSets: []
-        };
-        sections.unshift(contentSection);
-    }
-
-    let toBeMovedToFieldSet = contentSection.fieldSets.find(fieldSet => fieldSet.name === primaryNodeType.name);
-    if (!toBeMovedToFieldSet) {
-        // FieldSet doesnt exist, create it
-        toBeMovedToFieldSet = {
-            name: primaryNodeType.name,
-            displayName: primaryNodeType.displayName,
-            description: '',
-            dynamic: false,
-            activated: true,
-            displayed: true,
-            fields: []
-        };
-        contentSection.fieldSets.unshift(toBeMovedToFieldSet);
-    }
-
-    // Move system name field on top of this fieldset
-    toBeMovedToFieldSet.fields.unshift(systemNameField);
-};
-
 export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType, isCreate, canBeMovedToTop, readOnlyByMixin) => {
     let ntBaseFieldSet;
     let systemNameField;
-    let sectionContainingSystemName;
     formData.sections.every(section => {
         return section.fieldSets.every(fs => {
             return fs.fields.every(f => {
@@ -80,10 +12,17 @@ export const adaptSystemNameField = (rawData, formData, lang, t, primaryNodeType
                     systemNameField = f;
                     return false;
                 }
+
                 return true;
             });
-        })
+        });
     });
+    const contentSection = formData.sections.find(section => section.name === 'content');
+
+    if (contentSection) {
+        contentSection.displayName = t('content-editor:label.contentEditor.section.fieldSet.content.displayName');
+    }
+
     if (ntBaseFieldSet && ntBaseFieldSet.name === 'nt:base') {
         // Add i18ns label to System fieldset
         ntBaseFieldSet.displayName = t('content-editor:label.contentEditor.section.fieldSet.system.displayName');

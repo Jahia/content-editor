@@ -1,4 +1,4 @@
-import {Constants} from "~/ContentEditor.constants";
+import {Constants} from '~/ContentEditor.constants';
 
 export const adaptSections = sections => {
     const cloneSections = JSON.parse(JSON.stringify(sections));

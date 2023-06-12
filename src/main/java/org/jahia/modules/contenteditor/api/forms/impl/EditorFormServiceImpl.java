@@ -456,31 +456,28 @@ public class EditorFormServiceImpl implements EditorFormService {
     }
 
     private void moveSystemNameToOptions(List<EditorFormSection> sections) {
-        EditorFormSection optionsSection = sections.stream().filter(s -> s.getName().equals("options")).findFirst().orElse(new EditorFormSection());
+        Optional<EditorFormSection> optionsOptional = sections.stream().filter(s -> s.getName().equals("options")).findFirst();
         Optional<EditorFormSection> optional = sections.stream().filter(s -> s.getName().equals("systemSection")).findFirst();
 
-        if (!optional.isPresent()) {
+        if (!optional.isPresent() || !optionsOptional.isPresent()) {
             return;
         }
 
         EditorFormSection systemSection = optional.get();
-
-        if (optionsSection.getFieldSets().isEmpty()) {
-            optionsSection.setName("options");
-            optionsSection.setDisplayName("Options");
-            optionsSection.setRank(1.0);
-            optionsSection.setPriority(1.0);
-            optionsSection.setExpanded(false);
-            sections.add(optionsSection);
-        }
+        EditorFormSection optionsSection = optionsOptional.get();
 
         optionsSection.getFieldSets().addAll(0, systemSection.getFieldSets());
         sections.remove(systemSection);
     }
 
-    private void moveSystemName(List<EditorFormSection> sections, ExtendedNodeType primaryNodeType, JCRNodeWrapper existingOrParentNode, Locale locale, String mode) throws RepositoryException {
+    private void moveSystemName(List<EditorFormSection> sections, ExtendedNodeType primaryNodeType, JCRNodeWrapper currentNode, Locale locale, String mode) throws RepositoryException {
         moveSystemNameToOptions(sections);
-        EditorFormSection sectionWithNtBase = sections.stream().filter(s -> s.getFieldSets().stream().anyMatch(fs -> fs.getName().equals("nt:base"))).findFirst().orElseThrow(() -> new RuntimeException("Couldn't find section with nt:base"));
+        EditorFormSection sectionWithNtBase = sections.stream().filter(s -> s.getFieldSets().stream().anyMatch(fs -> fs.getName().equals("nt:base"))).findFirst().orElse(null);
+
+        if (sectionWithNtBase == null) {
+            return;
+        }
+
         EditorFormFieldSet ntBaseFieldSet = sectionWithNtBase.getFieldSets().stream().filter(fs -> fs.getName().equals("nt:base")).findFirst().orElseThrow(() -> new RuntimeException("Could not find nt:base field set"));
         EditorFormField systemNameField = ntBaseFieldSet.getEditorFormFields().stream().filter(ff -> ff.getName().equals("ce:systemName")).findFirst().orElseThrow(() -> new RuntimeException("Could not find ce:systemName field"));
 
@@ -513,11 +510,11 @@ public class EditorFormServiceImpl implements EditorFormService {
         );
 
         Pattern pathPattern = Pattern.compile("^/sites/[^/]*/(contents|files)$");
-        if (existingOrParentNode.isNodeType("jmix:systemNameReadonly")
+        if (currentNode.isNodeType("jmix:systemNameReadonly")
             || readOnlyNodeTypes.contains(primaryNodeType.getName())
-            || pathPattern.matcher(existingOrParentNode.getPath()).matches()
-            || (!CREATE.equals(mode) && !existingOrParentNode.hasPermission("jcr:modifyProperties_default_" + locale.getLanguage()))
-            || JCRContentUtils.isLockedAndCannotBeEdited(existingOrParentNode)) {
+            || pathPattern.matcher(currentNode.getPath()).matches()
+            || (!CREATE.equals(mode) && !currentNode.hasPermission("jcr:modifyProperties_default_" + locale.getLanguage()))
+            || JCRContentUtils.isLockedAndCannotBeEdited(currentNode)) {
             systemNameField.setReadOnly(true);
         }
 
@@ -525,26 +522,36 @@ public class EditorFormServiceImpl implements EditorFormService {
         boolean movedSystemNameField = moveSystemNameFieldUnderTitleField(sections, systemNameField);
 
         if (!movedSystemNameField && systemNameOnTopNodeTypes.contains(primaryNodeType.getName())) {
-            movedSystemNameField = moveSystemNameToTheTopOfTheForm(sections, systemNameField, primaryNodeType);
+            movedSystemNameField = moveSystemNameToTheTopOfTheForm(sections, systemNameField, primaryNodeType, currentNode);
         }
 
         if (movedSystemNameField) {
             sectionWithNtBase.getFieldSets().remove(ntBaseFieldSet);
         }
-        // TODO need to remove options if user doesn't have permission for content and options
-        // Remove empty sections, this will clean up useless options section etc.
+
+        // Remove empty sections
         sections.removeIf(s -> s.getFieldSets().isEmpty());
+
+        // Always remove systemSection if it exists
+        sections.remove(sections.stream().filter(s -> s.getName().equals("systemSection")).findFirst().orElse(null));
     }
 
     private boolean moveSystemNameFieldUnderTitleField(List<EditorFormSection> sections, EditorFormField systemNameField) {
+        boolean moved = false;
         for (EditorFormSection s : sections) {
             for (EditorFormFieldSet fs : s.getFieldSets()) {
+                LinkedHashSet<EditorFormField> newSet = new LinkedHashSet<>();
                 for (EditorFormField f : fs.getEditorFormFields()) {
+                    newSet.add(f);
                     if (f.getName().equals("jcr:title")) {
-                        // TODO handle index correctly
-                        fs.getEditorFormFields().add(systemNameField);
-                        return true;
+                        newSet.add(systemNameField);
+                        moved = true;
                     }
+                }
+
+                if (moved) {
+                    fs.setEditorFormFields(newSet);
+                    return true;
                 }
             }
         }
@@ -552,20 +559,21 @@ public class EditorFormServiceImpl implements EditorFormService {
         return false;
     }
 
-    private boolean moveSystemNameToTheTopOfTheForm(List<EditorFormSection> sections, EditorFormField systemNameField, ExtendedNodeType primaryNodeType) {
+    private boolean moveSystemNameToTheTopOfTheForm(List<EditorFormSection> sections, EditorFormField systemNameField, ExtendedNodeType primaryNodeType, JCRNodeWrapper currentNode) {
         EditorFormSection contentSection = sections.stream().filter(s -> s.getName().equals("content")).findFirst().orElse(new EditorFormSection());
         EditorFormFieldSet nodeTypeFiledSet = contentSection.getFieldSets().stream().filter(fs -> fs.getName().equals(primaryNodeType.getName())).findFirst().orElse(new EditorFormFieldSet());
 
-        // TODO return here as we the user probably doesn't have the right permission
+        if (contentSection.getName() == null && !currentNode.hasPermission("viewContentTab")) {
+            return false;
+        }
+
         if (contentSection.getName() == null) {
             contentSection.setName("content");
-            contentSection.setDisplayName("content-editor:label.contentEditor.section.fieldSet.content.displayName");
             sections.add(0, contentSection);
         }
 
         if (nodeTypeFiledSet.getName() == null) {
             nodeTypeFiledSet.setName(primaryNodeType.getName());
-            // TODO check this to be proper display name
             nodeTypeFiledSet.setDisplayName(primaryNodeType.getLocalName());
             nodeTypeFiledSet.setActivated(true);
             nodeTypeFiledSet.setDisplayed(true);
@@ -573,8 +581,10 @@ public class EditorFormServiceImpl implements EditorFormService {
             contentSection.getFieldSets().add(0, nodeTypeFiledSet);
         }
 
-        // TODO add at the beginning
-        nodeTypeFiledSet.getEditorFormFields().add(systemNameField);
+        LinkedHashSet<EditorFormField> newSet = new LinkedHashSet<>();
+        newSet.add(systemNameField);
+        newSet.addAll(nodeTypeFiledSet.getEditorFormFields());
+        nodeTypeFiledSet.setEditorFormFields(newSet);
         return true;
     }
 
