@@ -334,12 +334,17 @@ public class EditorFormServiceImpl implements EditorFormService {
                         editorFormSectionDefinition.setHide(shouldHideSection(editorFormSectionDefinition
                             , mode));
                         return editorFormSectionDefinition;})
-                    .filter(section -> section.getRequiredPermission() == null || currentNode.hasPermission(section.getRequiredPermission())).collect(Collectors.toList());
+                    .collect(Collectors.toList());
                 mergedFormDefinition.setSections(filteredSections);
             }
 
             List<EditorFormSection> sortedSections = sortSections(formSectionsByName, mergedFormDefinition, uiLocale, parentNode.getResolveSite());
             moveSystemName(sortedSections, primaryNodeType, currentNode, locale, mode);
+            sortedSections = sortedSections.stream().filter(section -> {
+                    EditorFormSectionDefinition sectionDefinition = mergedFormDefinition.getSections().stream().filter(s -> s.getName().equals(section.getName())).findFirst().orElse(null);
+                    return sectionDefinition != null && (sectionDefinition.getRequiredPermission() == null || currentNode.hasPermission(sectionDefinition.getRequiredPermission()));
+                })
+                .collect(Collectors.toList());
             String formDisplayName = primaryNodeType.getLabel(uiLocale);
             String formDescription = primaryNodeType.getDescription(uiLocale);
 
@@ -454,31 +459,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         return sortedFormSections;
     }
 
-    private void moveSystemNameToOptions(List<EditorFormSection> sections, JCRNodeWrapper currentNode) {
-        EditorFormSection optionsSection = sections.stream().filter(s -> s.getName().equals("options")).findFirst().orElse(new EditorFormSection());
-        Optional<EditorFormSection> optional = sections.stream().filter(s -> s.getName().equals("systemSection")).findFirst();
-
-        if ((!optional.isPresent() && !currentNode.hasPermission("viewOptionsTab")) || !optional.isPresent()) {
-            return;
-        }
-
-        EditorFormSection systemSection = optional.get();
-
-        if (optionsSection.getFieldSets().isEmpty()) {
-            optionsSection.setName("options");
-            optionsSection.setDisplayName("Options");
-            optionsSection.setRank(1.0);
-            optionsSection.setPriority(1.0);
-            optionsSection.setExpanded(false);
-            sections.add(optionsSection);
-        }
-
-        optionsSection.getFieldSets().addAll(0, systemSection.getFieldSets());
-        sections.remove(systemSection);
-    }
-
     private void moveSystemName(List<EditorFormSection> sections, ExtendedNodeType primaryNodeType, JCRNodeWrapper currentNode, Locale locale, String mode) throws RepositoryException {
-        moveSystemNameToOptions(sections, currentNode);
         EditorFormSection sectionWithNtBase = sections.stream().filter(s -> s.getFieldSets().stream().anyMatch(fs -> fs.getName().equals("nt:base"))).findFirst().orElse(null);
 
         if (sectionWithNtBase == null) {
@@ -517,15 +498,11 @@ public class EditorFormServiceImpl implements EditorFormService {
         );
 
         Pattern pathPattern = Pattern.compile("^/sites/[^/]*/(contents|files)$");
-        if (currentNode.isNodeType("jmix:systemNameReadonly")
+        systemNameField.setReadOnly(currentNode.isNodeType("jmix:systemNameReadonly")
             || readOnlyNodeTypes.contains(primaryNodeType.getName())
             || pathPattern.matcher(currentNode.getPath()).matches()
             || (!CREATE.equals(mode) && !currentNode.hasPermission("jcr:modifyProperties_default_" + locale.getLanguage()))
-            || JCRContentUtils.isLockedAndCannotBeEdited(currentNode)) {
-            systemNameField.setReadOnly(true);
-        } else {
-            systemNameField.setReadOnly(false);
-        }
+            || JCRContentUtils.isLockedAndCannotBeEdited(currentNode));
 
         // Move system name field under jcr title field if one exists
         boolean movedSystemNameField = moveSystemNameFieldUnderTitleField(sections, systemNameField);
@@ -540,9 +517,6 @@ public class EditorFormServiceImpl implements EditorFormService {
 
         // Remove empty sections
         sections.removeIf(s -> s.getFieldSets().isEmpty());
-
-        // Always remove systemSection if it exists
-        sections.remove(sections.stream().filter(s -> s.getName().equals("systemSection")).findFirst().orElse(null));
     }
 
     private boolean moveSystemNameFieldUnderTitleField(List<EditorFormSection> sections, EditorFormField systemNameField) {
