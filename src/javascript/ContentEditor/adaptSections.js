@@ -1,3 +1,5 @@
+import {Constants} from '~/ContentEditor.constants';
+
 export const adaptSections = sections => {
     const cloneSections = JSON.parse(JSON.stringify(sections));
 
@@ -19,7 +21,7 @@ export const adaptSections = sections => {
                         return {
                             ...field,
                             nodeType: fieldSet.name, // Store fieldSet original inside the field, useful for testing the nodeType declaring this prop
-                            name: fieldSet.name + '_' + field.name, // Generate input name
+                            name: field.name === 'ce:systemName' ? Constants.systemName.name : fieldSet.name + '_' + field.name, // Generate input name
                             propertyName: field.name // JCR property name, used for saving
                         };
                     })
