@@ -520,7 +520,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         }
 
         // Remove empty sections
-        sections.removeIf(s -> s.getFieldSets().isEmpty());
+        sections.removeIf(s -> !s.getName().equals("listOrdering") && s.getFieldSets().isEmpty());
     }
 
     private boolean moveSystemNameFieldUnderTitleField(List<EditorFormSection> sections, EditorFormField systemNameField) {
