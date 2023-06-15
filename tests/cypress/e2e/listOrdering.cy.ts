@@ -1,4 +1,5 @@
 import {JContent} from '../page-object/jcontent';
+import {Collapsible, getComponentBySelector} from '@jahia/cypress';
 
 describe('Test list ordering', {retries: 0}, () => {
     const siteKey = 'digitall';
@@ -15,7 +16,7 @@ describe('Test list ordering', {retries: 0}, () => {
     it('Verifies that list ordering section is available', () => {
         jcontent = JContent.visit(siteKey, 'en', 'pages/home/investors/events');
         jcontent.switchToStructuredView();
-        const contentEditor = jcontent.editComponentByText('Events');
-        contentEditor.closeSection('Content list & ordering');
+        jcontent.editComponentByText('Events');
+        getComponentBySelector(Collapsible, '[data-sel-content-editor-fields-group="Content list & ordering"]').get().should('exist');
     });
 });
