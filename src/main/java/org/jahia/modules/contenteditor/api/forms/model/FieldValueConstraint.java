@@ -21,74 +21,58 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.jahia.modules.contenteditor.api.forms;
-
-import graphql.annotations.annotationTypes.GraphQLDescription;
-import graphql.annotations.annotationTypes.GraphQLField;
+package org.jahia.modules.contenteditor.api.forms.model;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
-/**
- * Represents a string property name-value pair
+/*
+ * Represents a single value constraint among a list of possible values for a field
  */
-public class EditorFormProperty {
-    private String name;
-    private String value;
-    private List<String> values;
+public class FieldValueConstraint {
 
-    public EditorFormProperty() {
+    private String displayValue;
+    private String displayValueKey;
+    private FieldValue value;
+    private List<Property> propertyList;
+
+    public String getDisplayValue() {
+        return displayValue;
     }
 
-    public EditorFormProperty(String name, String value) {
-        this.name = name;
-        this.value = value;
+    public void setDisplayValue(String displayValue) {
+        this.displayValue = displayValue;
     }
 
-    public EditorFormProperty(String name, List<String> values) {
-        this.name = name;
-        this.values = values;
+    public String getDisplayValueKey() {
+        return displayValueKey;
     }
 
-    public EditorFormProperty(EditorFormProperty property) {
-        this.name = property.name;
-        this.value = property.value;
-        this.values = property.values;
+    public void setDisplayValueKey(String displayValueKey) {
+        this.displayValueKey = displayValueKey;
     }
 
-    @GraphQLField
-    @GraphQLDescription("Property name")
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @GraphQLField
-    @GraphQLDescription("Property value")
-    public String getValue() {
+    public FieldValue getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(FieldValue value) {
         this.value = value;
     }
 
-    @GraphQLField
-    @GraphQLDescription("Property values")
-    public List<String> getValues() {
-        return values;
+    public List<Property> getPropertyList() {
+        return propertyList;
     }
 
-    public void setValues(List<String> values) {
-        this.values = values;
+    public void setPropertyList(List<Property> propertyList) {
+        this.propertyList = propertyList;
     }
 
     @Override
     public String toString() {
-        return "EditorFormProperty{name='" + name + '\'' + ", value='" + value + '\'' + ", values='" + values + '\'' + '}';
+        return "EditorFormFieldValueConstraint{displayValue='" + displayValue + '\'' + ", value=" + value + ", propertyList="
+            + propertyList + '}';
     }
 
     @Override
@@ -97,12 +81,14 @@ public class EditorFormProperty {
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
-        EditorFormProperty that = (EditorFormProperty) o;
-        return Objects.equals(name, that.name) && Objects.equals(value, that.value);
+        FieldValueConstraint that = (FieldValueConstraint) o;
+        return Objects.equals(displayValue, that.displayValue)
+            && Objects.equals(value, that.value)
+            && Objects.equals(propertyList, that.propertyList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, value);
+        return Objects.hash(displayValue, value, propertyList);
     }
 }

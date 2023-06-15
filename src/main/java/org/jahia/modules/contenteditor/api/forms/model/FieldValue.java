@@ -21,57 +21,62 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.jahia.modules.contenteditor.api.forms;
+package org.jahia.modules.contenteditor.api.forms.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import graphql.annotations.annotationTypes.GraphQLDescription;
-import graphql.annotations.annotationTypes.GraphQLField;
-import graphql.annotations.annotationTypes.GraphQLName;
 import org.jahia.modules.graphql.provider.dxm.node.GqlJcrMutationSupport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.jcr.PropertyType;
 import javax.jcr.RepositoryException;
 import javax.jcr.Value;
-import java.text.SimpleDateFormat;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
-
-import static org.jahia.utils.DateUtils.DEFAULT_DATE_FORMAT;
 
 /**
  * Represents a form field value
  */
-public class EditorFormFieldValue {
+public class FieldValue {
+    private static final Logger logger = LoggerFactory.getLogger(FieldValue.class);
 
     private String type; // for the moment the type names used are the same as the JCR PropertyType names.
     private String value;
 
-    public EditorFormFieldValue() {
+    public FieldValue() {
     }
 
-    public EditorFormFieldValue(String type, String value) {
+    public FieldValue(String type, String value) {
         this.type = type;
         this.value = value;
     }
 
-    public EditorFormFieldValue(Long longValue) {
+    public FieldValue(Long longValue) {
         this.type = PropertyType.TYPENAME_LONG;
         this.value = String.valueOf(longValue);
     }
 
-    public EditorFormFieldValue(Double doubleValue) {
+    public FieldValue(Double doubleValue) {
         this.type = PropertyType.TYPENAME_DOUBLE;
         this.value = String.valueOf(doubleValue);
     }
 
-    public EditorFormFieldValue(Boolean booleanValue) {
+    public FieldValue(Boolean booleanValue) {
         this.type = PropertyType.TYPENAME_BOOLEAN;
         this.value = String.valueOf(booleanValue);
     }
 
-    public EditorFormFieldValue(Value value) throws RepositoryException {
-        this.type = PropertyType.nameFromValue(value.getType());
+    public static FieldValue convert(Value value) {
+        try {
+            return new FieldValue(PropertyType.nameFromValue(value.getType()), convertToString(value));
+        } catch (RepositoryException e) {
+            logger.error("Error converting field default value", e);
+        }
+
+        return null;
+    }
+
+    private static String convertToString(Value value) throws RepositoryException {
         switch (value.getType()) {
             case PropertyType.NAME:
             case PropertyType.PATH:
@@ -80,41 +85,31 @@ public class EditorFormFieldValue {
             case PropertyType.UNDEFINED:
             case PropertyType.URI:
             case PropertyType.WEAKREFERENCE:
-                this.value = value.getString();
-                break;
+                return value.getString();
             case PropertyType.LONG:
-                this.value = String.valueOf(value.getLong());
-                break;
+                return String.valueOf(value.getLong());
             case PropertyType.DOUBLE:
-                this.value = String.valueOf(value.getDouble());
-                break;
+                return String.valueOf(value.getDouble());
             case PropertyType.DECIMAL:
-                this.value = String.valueOf(value.getDecimal());
-                break;
+                return String.valueOf(value.getDecimal());
             case PropertyType.DATE:
                 // Handle date for the content editor
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern(GqlJcrMutationSupport.DEFAULT_DATE_FORMAT).withZone(value.getDate().getTimeZone().toZoneId());
-                this.value = formatter.format(value.getDate().toInstant());
-                break;
+                return formatter.format(value.getDate().toInstant());
             case PropertyType.BOOLEAN:
-                this.value = String.valueOf(value.getBoolean());
-                break;
+                return String.valueOf(value.getBoolean());
             case PropertyType.BINARY:
                 // todo to be implemented
-                break;
         }
+
+        throw new RepositoryException("Type not supported");
     }
 
-    @GraphQLField
-    @GraphQLName("string")
-    @GraphQLDescription("This value's string representation")
     @JsonProperty("string")
     public String getStringValue() {
         return value;
     }
 
-    @GraphQLField
-    @GraphQLDescription("The type of this value")
     public String getType() {
         return type;
     }
@@ -126,18 +121,15 @@ public class EditorFormFieldValue {
 
     @Override
     public String toString() {
-        return "EditorFormFieldValue{type='" + type + '\''+ ", value='" + value + '\'' + '}';
+        return "EditorFormFieldValue{type='" + type + '\'' + ", value='" + value + '\'' + '}';
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-        EditorFormFieldValue that = (EditorFormFieldValue) o;
-        return Objects.equals(type, that.type)
-            && Objects.equals(value, that.value);
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FieldValue that = (FieldValue) o;
+        return Objects.equals(type, that.type) && Objects.equals(value, that.value);
     }
 
     @Override

@@ -21,86 +21,58 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.jahia.modules.contenteditor.api.forms;
+package org.jahia.modules.contenteditor.graphql.api.forms;
 
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
+import org.jahia.modules.contenteditor.api.forms.model.Form;
+import org.jahia.services.content.nodetypes.NodeTypeRegistry;
 
+import javax.jcr.nodetype.NoSuchNodeTypeException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * An editor form represents the complete structure that is used to edit a primary node type. It contains an ordered
  * list of sections that contain the sub-structured data
  */
-public class EditorForm {
+public class GqlEditorForm {
 
-    private String name;
-    private String displayName;
-    private String description;
-    private Boolean hasPreview;
+    private Form form;
 
-    private List<EditorFormSection> sections = new ArrayList<>();
-
-    public EditorForm() {
-    }
-
-    public EditorForm(String name, String displayName, String description, Boolean hasPreview, List<EditorFormSection> sections) {
-        this.name = name;
-        this.displayName = displayName;
-        this.description = description;
-        this.hasPreview = hasPreview;
-        this.sections = sections;
+    public GqlEditorForm(Form form) {
+        this.form = form;
     }
 
     @GraphQLField
     @GraphQLDescription("Retrieve the name (aka identifier) of the form")
     public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        return form.getNodeType();
     }
 
     @GraphQLField
     @GraphQLDescription("Retrieve the displayable name of the form (in a specific language)")
     public String getDisplayName() {
-        return displayName;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+        return form.getLabel();
     }
 
     @GraphQLField
     @GraphQLDescription("Retrieve a description text for the form, might contain explanations on how to use the form")
     public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+        return form.getDescription();
     }
 
     @GraphQLField
     @GraphQLDescription("Retrieve the sections that make up the form")
-    public List<EditorFormSection> getSections() {
-        return sections;
-    }
-
-    public void setSections(List<EditorFormSection> sections) {
-        this.sections = sections;
+    public List<GqlEditorFormSection> getSections() {
+        return form.getSections().stream().map(GqlEditorFormSection::new).collect(Collectors.toList());
     }
 
     @GraphQLField
     @GraphQLDescription("Returns the preview status of the form. If true, the form can display a preview.")
-    public Boolean hasPreview() {
-        return hasPreview;
-    }
-
-    public void setHasPreview(Boolean hasPreview) {
-        this.hasPreview = hasPreview;
+    public boolean hasPreview() {
+        return form.hasPreview() != null && form.hasPreview();
     }
 
 }

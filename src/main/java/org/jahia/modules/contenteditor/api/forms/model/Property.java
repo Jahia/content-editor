@@ -21,25 +21,59 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.jahia.modules.contenteditor.graphql.extensions;
+package org.jahia.modules.contenteditor.api.forms.model;
 
-import graphql.annotations.annotationTypes.GraphQLDescription;
-import graphql.annotations.annotationTypes.GraphQLField;
-import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.annotations.annotationTypes.GraphQLTypeExtension;
-import org.jahia.modules.contenteditor.graphql.api.forms.GqlEditorForms;
-import org.jahia.modules.graphql.provider.dxm.DXGraphQLProvider;
+import java.util.List;
+import java.util.Objects;
 
 /**
- * This extension to the Query is where the content editor GraphQL form API is made available
+ * Represents a string property name-value pair
  */
-@GraphQLTypeExtension(DXGraphQLProvider.Query.class)
-public class QueryExtensions {
+public class Property {
+    private String name;
+    private String value;
 
-    @GraphQLField
-    @GraphQLName("forms")
-    @GraphQLDescription("Main access field to the DX GraphQL Form API")
-    public static GqlEditorForms getForms() {
-        return new GqlEditorForms();
+    public Property() {
+    }
+
+    public Property(String name, String value) {
+        this.name = name;
+        this.value = value;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return "EditorFormProperty{name='" + name + '\'' + ", value='" + value + '\'' + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Property that = (Property) o;
+        return Objects.equals(name, that.name) && Objects.equals(value, that.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, value);
     }
 }

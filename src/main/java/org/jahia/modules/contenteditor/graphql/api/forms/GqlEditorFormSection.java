@@ -21,118 +21,63 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.jahia.modules.contenteditor.api.forms;
+package org.jahia.modules.contenteditor.graphql.api.forms;
 
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
+import org.jahia.modules.contenteditor.api.forms.model.Section;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Represents a logical section of field sets.
  */
-public class EditorFormSection {
+public class GqlEditorFormSection {
+    private Section section;
 
-    private String name;
-    List<EditorFormFieldSet> fieldSets = new ArrayList<>();
-    private String displayName;
-    private Double rank;
-    private Double priority;
-    private String description;
-    private boolean hide = false;
-    private boolean expanded;
-
-    public EditorFormSection() {
-    }
-
-    public EditorFormSection(String name, String displayName, String description, Double rank, Double priority, List<EditorFormFieldSet> fieldSets, boolean expanded) {
-        this.name = name;
-        this.displayName = displayName;
-        this.description = description;
-        this.rank = rank;
-        this.priority = priority;
-        this.fieldSets = fieldSets;
-        this.expanded = expanded;
+    public GqlEditorFormSection(Section section) {
+        this.section = section;
     }
 
     @GraphQLField
     @GraphQLDescription("Retrieve the name (aka identifier) of the section")
     public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        return section.getName();
     }
 
     @GraphQLField
     @GraphQLDescription("Retrieve the displayable name of the section")
     public String getDisplayName() {
-        return displayName;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+        return section.getLabel();
     }
 
     @GraphQLField
     @GraphQLDescription("Returns the description of the section")
     public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Double getRank() {
-        return rank;
-    }
-
-    public void setRank(Double rank) {
-        this.rank = rank;
-    }
-
-    public Double getPriority() {
-        return priority;
-    }
-
-    public void setPriority(Double priority) {
-        this.priority = priority;
+        return section.getDescription();
     }
 
     @GraphQLField
     @GraphQLName("hide")
     @GraphQLDescription("Check if this section should be hide")
     public boolean isHide() {
-        return hide;
-    }
-
-    public void setHide(boolean hide) {
-        this.hide = hide;
+        return section.isHide() != null && section.isHide();
     }
 
     @GraphQLField
     @GraphQLName("fieldSets")
     @GraphQLDescription("Returns the field sets contained in this section")
-    public List<EditorFormFieldSet> getFieldSets() {
-        return fieldSets;
-    }
-
-    public void setFieldSets(List<EditorFormFieldSet> fieldSets) {
-        this.fieldSets = fieldSets;
+    public List<GqlEditorFormFieldSet> getFieldSets() {
+        return section.getFieldSets().stream().map(GqlEditorFormFieldSet::new).collect(Collectors.toList());
     }
 
     @GraphQLField
     @GraphQLName("expanded")
     @GraphQLDescription("Is the section expanded")
     public boolean expanded() {
-        return expanded;
-    }
-
-    public void setExpanded(boolean expanded) {
-        this.expanded = expanded;
+        return section.isExpanded() != null && section.isExpanded();
     }
 }
