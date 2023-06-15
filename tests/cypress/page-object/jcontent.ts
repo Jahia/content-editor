@@ -110,7 +110,7 @@ export class JContent extends BasePage {
     }
 
     switchToStructuredView(): JContent {
-        this.switchToMode('structuredView');
+        this.switchToMode('Structured');
         return this;
     }
 }
