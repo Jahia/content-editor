@@ -1,10 +1,16 @@
 package org.jahia.modules.contenteditor.api.forms.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.jahia.services.content.nodetypes.ExtendedNodeType;
+import org.jahia.services.content.nodetypes.NodeTypeRegistry;
+import org.owasp.html.Sanitizers;
 
+import javax.jcr.nodetype.NoSuchNodeTypeException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class FieldSet implements Cloneable, Comparable<FieldSet> {
@@ -17,6 +23,7 @@ public class FieldSet implements Cloneable, Comparable<FieldSet> {
     private Boolean readOnly;
     private Double rank = 0.0;
     private List<Field> fields = new ArrayList<>();
+    private ExtendedNodeType nodeType;
 
     private boolean dynamic = false;
     private boolean activated = true;
@@ -27,6 +34,11 @@ public class FieldSet implements Cloneable, Comparable<FieldSet> {
 
     public void setName(String name) {
         this.name = name;
+        try {
+            this.nodeType = NodeTypeRegistry.getInstance().getNodeType(name);
+        } catch (NoSuchNodeTypeException e) {
+            // No node type
+        }
     }
 
     public String getLabelKey() {
@@ -109,6 +121,18 @@ public class FieldSet implements Cloneable, Comparable<FieldSet> {
 
     public void setActivated(boolean activated) {
         this.activated = activated;
+    }
+
+    @JsonIgnore
+    public ExtendedNodeType getNodeType() {
+        return nodeType;
+    }
+
+    public void initializeLabel(Locale uiLocale) {
+        if (nodeType != null) {
+            label = label == null ? StringEscapeUtils.unescapeHtml(nodeType.getLabel(uiLocale)) : label;
+            description = description == null ? Sanitizers.FORMATTING.sanitize(nodeType.getDescription(uiLocale)) : description;
+        }
     }
 
     @Override

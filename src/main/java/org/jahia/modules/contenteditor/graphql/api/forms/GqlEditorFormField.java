@@ -161,15 +161,4 @@ public class GqlEditorFormField {
     public boolean getMandatory() {
         return field.isMandatory();
     }
-
-    @GraphQLField
-    @GraphQLDescription("This value contains the current existing values for the field.")
-    public List<GqlEditorFormValue> getCurrentValues() {
-        if (field.getCurrentValues() != null) {
-            return field.getCurrentValues().stream().map(GqlEditorFormValue::new).collect(Collectors.toList());
-        }
-
-        return Collections.emptyList();
-    }
-
 }

@@ -174,15 +174,6 @@ public class Field implements Cloneable, Comparable<Field> {
         this.valueConstraints = valueConstraints;
     }
 
-    @JsonIgnore
-    public List<FieldValue> getCurrentValues() {
-        return currentValues;
-    }
-
-    public void setCurrentValues(List<FieldValue> currentValues) {
-        this.currentValues = currentValues;
-    }
-
     public List<FieldValue> getDefaultValues() {
         return defaultValues;
     }

@@ -68,7 +68,7 @@ public class FormGenerator {
 
             String itemType = itemDefinition.getItemType();
             Field editorFormField = generateEditorFormField(itemDefinition, uiLocale, locale);
-            FieldSet fieldSet = generateFieldSetForSection(sections, itemType, itemDefinition.getDeclaringNodeType(), uiLocale);
+            FieldSet fieldSet = generateFieldSetForSection(sections, itemType, itemDefinition.getDeclaringNodeType().getName(), uiLocale);
             fieldSet.getFields().add(editorFormField);
             editorFormField.setRank((double) fieldSet.getFields().size());
 
@@ -78,7 +78,7 @@ public class FormGenerator {
         return new ArrayList<>(sections.values());
     }
 
-    public static FieldSet generateFieldSetForSection(Map<String, Section> sections, String sectionName, ExtendedNodeType nodeTypeForFieldSet, Locale uiLocale) {
+    public static FieldSet generateFieldSetForSection(Map<String, Section> sections, String sectionName, String fieldSetName, Locale uiLocale) {
         if (!sections.containsKey(sectionName)) {
             Section section = new Section();
             section.setName(sectionName);
@@ -87,18 +87,11 @@ public class FormGenerator {
         }
         List<FieldSet> fieldSets = sections.get(sectionName).getFieldSets();
 
-        String fieldSetName = nodeTypeForFieldSet.getName();
-
         Optional<FieldSet> fieldSet = fieldSets.stream().filter(f -> f.getName().equals(fieldSetName)).findFirst();
 
         return fieldSet.orElseGet(() -> {
-            String displayName = StringEscapeUtils.unescapeHtml(nodeTypeForFieldSet.getLabel(uiLocale));
-            String description = Sanitizers.FORMATTING.sanitize(nodeTypeForFieldSet.getDescription(uiLocale));
-
             FieldSet fieldset = new FieldSet();
             fieldset.setName(fieldSetName);
-            fieldset.setLabel(displayName);
-            fieldset.setDescription(description);
             fieldset.setHide(false);
             fieldset.setFields(new ArrayList<>());
             fieldSets.add(fieldset);

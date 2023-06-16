@@ -110,24 +110,39 @@ public class EditorFormServiceImpl implements EditorFormService {
         try {
             final JCRSiteNode site = currentNode.getResolveSite();
 
+            // Gather all nodetypes and get associated forms
             Set<String> processedNodeTypes = new HashSet<>();
-
             final SortedSet<Form> formDefinitionsToMerge = new TreeSet<>();
+
+            // First, primarty node type and inherited
             addFormNodeType(primaryNodeType, formDefinitionsToMerge, uiLocale, locale, processedNodeTypes);
 
+            // Available extends mixins
             List<ExtendedNodeType> extendMixins = getExtendMixins(primaryNodeType, site);
             for (ExtendedNodeType extendMixin : extendMixins) {
                 addFormNodeType(extendMixin, formDefinitionsToMerge, uiLocale, locale, processedNodeTypes);
             }
 
+            // Mixins added on node
             if (existingNode != null) {
                 for (ExtendedNodeType mixinNodeType : existingNode.getMixinNodeTypes()) {
                     addFormNodeType(mixinNodeType, formDefinitionsToMerge, uiLocale, locale, processedNodeTypes);
                 }
             }
 
-            Form form = mergeFormDefinitions(formDefinitionsToMerge, site);
+            // Merge all forms
+            Form form = null;
+            for (Form current : formDefinitionsToMerge) {
+                if (current.getOriginBundle() == null || isApplicable(current.getOriginBundle(), site)) {
+                    if (form == null) {
+                        form = current.clone();
+                    } else {
+                        form.mergeWith(current);
+                    }
+                }
+            }
 
+            // Post process on sections / fieldSets / fields
             JCRSessionWrapper session = existingNode != null ? existingNode.getSession() : parentNode.getSession();
             boolean isLockedAndCannotBeEdited = JCRContentUtils.isLockedAndCannotBeEdited(existingNode);
             boolean fieldSetEditable = existingNode == null || (!isLockedAndCannotBeEdited && existingNode.hasPermission("jcr:nodeTypeManagement"));
@@ -136,51 +151,59 @@ public class EditorFormServiceImpl implements EditorFormService {
 
             form.setLabel(form.getLabel() == null && form.getLabelKey() != null ? resolveResourceKey(form.getLabelKey(), uiLocale, site) : form.getLabel());
             form.setDescription(form.getDescription() == null && form.getDescriptionKey() != null ? resolveResourceKey(form.getDescriptionKey(), uiLocale, site) : form.getDescription());
-            form.getSections().forEach(section -> {
+
+            // Remove sections the user cannot see
+            form.setSections(form.getSections().stream().filter(s -> s.getRequiredPermission() == null || currentNode.hasPermission(s.getRequiredPermission())).collect(Collectors.toList()));
+
+            for (Section section : form.getSections()) {
+                // Set section label and description if not set
                 section.setLabel(section.getLabel() == null && section.getLabelKey() != null ? resolveResourceKey(section.getLabelKey(), uiLocale, site) : section.getLabel());
                 section.setDescription(section.getDescription() == null && section.getDescriptionKey() != null ? resolveResourceKey(section.getDescriptionKey(), uiLocale, site) : section.getDescription());
+
+                // Check if section is available in current mode
                 section.setHide((section.isHide() != null && section.isHide()) || (section.getDisplayModes() != null && !section.getDisplayModes().contains(mode)));
+
+                // Remove empty fieldSets
                 section.setFieldSets(section.getFieldSets().stream().filter(s -> !s.getFields().isEmpty()).collect(Collectors.toList()));
-                section.getFieldSets().forEach(fieldSet -> {
+                for (FieldSet fieldSet : section.getFieldSets()) {
+                    // Set fieldSet label and description if not set
                     fieldSet.setLabel(fieldSet.getLabel() == null && fieldSet.getLabelKey() != null ? resolveResourceKey(fieldSet.getLabelKey(), uiLocale, site) : fieldSet.getLabel());
                     fieldSet.setDescription(fieldSet.getDescription() == null && fieldSet.getDescriptionKey() != null ? resolveResourceKey(fieldSet.getDescriptionKey(), uiLocale, site) : fieldSet.getDescription());
-                    fieldSet.setReadOnly((fieldSet.isReadOnly() != null && fieldSet.isReadOnly()) || !fieldSetEditable);
 
-                    try {
-                        if (NodeTypeRegistry.getInstance().hasNodeType(fieldSet.getName())) {
-                            ExtendedNodeType nodeType = NodeTypeRegistry.getInstance().getNodeType(fieldSet.getName());
-                            boolean isExtend = !nodeType.getMixinExtends().isEmpty() && !primaryNodeType.isNodeType(nodeType.getName());
-                            if (isExtend) {
-                                fieldSet.setDynamic(true);
-                                fieldSet.setActivated(existingNode.isNodeType(fieldSet.getName()));
-                            }
+                    // Check if fieldset is dynamic
+                    if (fieldSet.getNodeType() != null) {
+                        fieldSet.initializeLabel(uiLocale);
+                        ExtendedNodeType nodeType = fieldSet.getNodeType();
+                        boolean isExtend = !nodeType.getMixinExtends().isEmpty() && !primaryNodeType.isNodeType(nodeType.getName());
+                        if (isExtend) {
+                            fieldSet.setDynamic(true);
+                            fieldSet.setActivated(existingNode != null && existingNode.isNodeType(fieldSet.getName()));
+
+                            // Update readonly if user does not have permission to add/remove mixin
+                            fieldSet.setReadOnly((fieldSet.isReadOnly() != null && fieldSet.isReadOnly()) || !fieldSetEditable);
                         }
-                    } catch (RepositoryException e) {
-                        throw new RuntimeException(e);
                     }
 
-                    fieldSet.getFields().forEach(field -> {
+                    for (Field field : fieldSet.getFields()) {
+                        // Set field label and description if not set
                         field.setLabel(field.getLabel() == null && field.getLabelKey() != null ? resolveResourceKey(field.getLabelKey(), uiLocale, site) : field.getLabel());
                         field.setDescription(field.getDescription() == null && field.getDescriptionKey() != null ? resolveResourceKey(field.getDescriptionKey(), uiLocale, site) : field.getDescription());
                         field.setErrorMessage(field.getErrorMessage() == null && field.getErrorMessageKey() != null ? resolveResourceKey(field.getErrorMessageKey(), uiLocale, site) : field.getErrorMessage());
-                        field.setCurrentValues(getPropertiesValues(existingNode, field.getExtendedPropertyDefinition()));
+
+                        // Update readonly if user does not have permission to edit
                         boolean forceReadOnly = field.getExtendedPropertyDefinition() != null && field.getExtendedPropertyDefinition().isInternationalized() ? !i18nFieldsEditable : !sharedFieldsEditable;
                         field.setReadOnly((field.isReadOnly() != null && field.isReadOnly()) || forceReadOnly);
 
-                        try {
-                            if (field.getValueConstraints() != null && field.getExtendedPropertyDefinition() != null) {
-                                List<FieldValueConstraint> valueConstraints = getValueConstraints(primaryNodeType, field, existingNode, parentNode, locale, new HashMap<>());
-                                if (valueConstraints != null && !valueConstraints.isEmpty()) {
-                                    field.setValueConstraints(valueConstraints);
-                                }
+                        if (field.getValueConstraints() != null && field.getExtendedPropertyDefinition() != null) {
+                            List<FieldValueConstraint> valueConstraints = getValueConstraints(primaryNodeType, field, existingNode, parentNode, locale, new HashMap<>());
+                            if (valueConstraints != null && !valueConstraints.isEmpty()) {
+                                field.setValueConstraints(valueConstraints);
                             }
-                        } catch (RepositoryException e) {
-                            throw new RuntimeException(e);
                         }
-
-                    });
-                });
-            });
+                    }
+                };
+            };
+            // Remove empty sections
             form.setSections(form.getSections().stream().filter(s -> !s.getFieldSets().isEmpty()).collect(Collectors.toList()));
 
             return form;
@@ -197,64 +220,6 @@ public class EditorFormServiceImpl implements EditorFormService {
             processedNodeTypes.add(nodeType.getName());
             processedNodeTypes.addAll(nodeType.getSupertypeSet().stream().map(ExtendedNodeType::getName).collect(Collectors.toList()));
         }
-    }
-
-//    private void addMixinsNodeType(ExtendedNodeType primaryNodeType, Locale uiLocale, Locale locale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, String mode, Map<String, GqlEditorFormSection> formSectionsByName, Set<String> processedProperties, Set<String> processedNodeTypes, SortedSet<EditorFormDefinition> formDefinitionsToMerge) throws RepositoryException {
-////        Add all the fields for the mixins and their supertypes added on the node
-//        Set<ExtendedNodeType> nodeTypesToProcess;
-//        if (EDIT.equals(mode)) {
-//            Set<ExtendedNodeType> addMixins = Arrays.stream(existingNode.getMixinNodeTypes()).filter(nodetype -> !processedNodeTypes.contains(nodetype.getName())).collect(Collectors.toSet());
-//            for (ExtendedNodeType addMixin : addMixins) {
-//                if (processedNodeTypes.contains(addMixin.getName())) {
-//                    // ignore already process node types
-//                    continue;
-//                }
-//                generateAndMergeFieldSetForType(addMixin, uiLocale, locale, existingNode, parentNode, primaryNodeType, formSectionsByName, false, false, true, processedProperties, false);
-//                processedNodeTypes.add(addMixin.getName());
-//                nodeTypesToProcess = Arrays.stream(addMixin.getSupertypes()).collect(Collectors.toCollection(LinkedHashSet::new));
-//
-//                for (ExtendedNodeType superType : nodeTypesToProcess) {
-//                    if (processedNodeTypes.contains(superType.getName())) {
-//                        // ignore already process node types
-//                        continue;
-//                    }
-//                    generateAndMergeFieldSetForType(superType, uiLocale, locale, existingNode, parentNode, primaryNodeType, formSectionsByName, false, false, true, processedProperties, false);
-//                    processedNodeTypes.add(superType.getName());
-//                }
-//                // Add mixins form definitions to merge that are set on the node.
-//                formDefinitionsToMerge.addAll(staticDefinitionsRegistry.getFormDefinitionsForType(addMixin));
-//            }
-//        }
-//    }
-
-    private List<FieldValue> getPropertiesValues(JCRNodeWrapper existingNode, ExtendedPropertyDefinition propertyDefinition) {
-        try {
-            if (existingNode != null && propertyDefinition != null && existingNode.hasProperty(propertyDefinition.getName())) {
-                JCRPropertyWrapper existingProperty = existingNode.getProperty(propertyDefinition.getName());
-                return propertyDefinition.isMultiple() ?
-                    Arrays.stream(existingProperty.getValues()).map(FieldValue::convert).collect(Collectors.toList()) :
-                    Collections.singletonList(FieldValue.convert(existingProperty.getValue()));
-            }
-        } catch (RepositoryException e) {
-            logger.error("Cannot read properties for node {}", existingNode.getPath());
-        }
-
-        return Collections.emptyList();
-    }
-
-
-    private Form mergeFormDefinitions(SortedSet<Form> forms, JCRSiteNode site) {
-        Form mergedForm = null;
-        for (Form form : forms) {
-            if (form.getOriginBundle() == null || isApplicable(form.getOriginBundle(), site)) {
-                if (mergedForm == null) {
-                    mergedForm = form.clone();
-                } else {
-                    mergedForm.mergeWith(form);
-                }
-            }
-        }
-        return mergedForm != null ? mergedForm : new Form();
     }
 
     private static String resolveResourceKey(String key, Locale locale, JCRSiteNode site) {
