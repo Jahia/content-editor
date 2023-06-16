@@ -83,7 +83,12 @@ const patternFieldValidation = (values, field) => {
         const fieldValues = field.multiple ? (values[field.name] || []) : [values[field.name]];
         const constraintTestFn = (strictValidation) ?
             (constraint, value) => constraint === value :
-            (constraint, value) => RegExp(constraint).test(String(value));
+            (constraint, value) => {
+                // The regexp should always start and end with anchors to ensure that the full value respect the pattern.
+                const cleanedConstraint = constraint.replace(/^\^|\$$/g, '');
+                const regex = new RegExp(`^${cleanedConstraint}$`);
+                return regex.test(String(value));
+            };
 
         // If one pattern is invalid, error!
         if (fieldValues.some(value =>
