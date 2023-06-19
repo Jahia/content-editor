@@ -23,10 +23,15 @@
  */
 package org.jahia.modules.contenteditor.api.forms.model;
 
+import org.jahia.services.content.decorator.JCRSiteNode;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
+
+import static org.jahia.modules.contenteditor.api.forms.EditorFormServiceImpl.resolveResourceKey;
 
 /**
  * For the moment this object only contains a name but it is planned for the schema to evolve so we decided to use an
@@ -133,6 +138,11 @@ public class Section implements Cloneable, Comparable<Section> {
         this.fieldSets = fieldSets;
     }
 
+    public void initializeLabel(Locale uiLocale, JCRSiteNode site) {
+        label = label == null && labelKey !=  null ? resolveResourceKey(labelKey, uiLocale, site) : label;
+        description = description == null && descriptionKey != null ? resolveResourceKey(descriptionKey, uiLocale, site) : description;
+    }
+
     @Override
     public int compareTo(Section other) {
         if (other == null || other.getRank() == null) {
@@ -181,7 +191,7 @@ public class Section implements Cloneable, Comparable<Section> {
 
     private void mergeFieldSets(List<FieldSet> otherFieldSets, Form form) {
         for (FieldSet otherFieldSet : otherFieldSets) {
-            String key = otherFieldSet.getName().equals("<main>") ? form.getNodeType() : otherFieldSet.getName();
+            String key = otherFieldSet.getName().equals("<main>") ? form.getNodeType().getName() : otherFieldSet.getName();
             FieldSet mergedFieldSet = fieldSets.stream().filter(fieldSet -> fieldSet.getName().equals(key)).findFirst().orElseGet(FieldSet::new);
             mergedFieldSet.mergeWith(otherFieldSet, form);
             if (!fieldSets.contains(mergedFieldSet)) {

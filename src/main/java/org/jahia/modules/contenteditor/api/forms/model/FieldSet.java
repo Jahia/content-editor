@@ -2,6 +2,7 @@ package org.jahia.modules.contenteditor.api.forms.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.jahia.services.content.decorator.JCRSiteNode;
 import org.jahia.services.content.nodetypes.ExtendedNodeType;
 import org.jahia.services.content.nodetypes.NodeTypeRegistry;
 import org.owasp.html.Sanitizers;
@@ -12,6 +13,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
+
+import static org.jahia.modules.contenteditor.api.forms.EditorFormServiceImpl.resolveResourceKey;
 
 public class FieldSet implements Cloneable, Comparable<FieldSet> {
     private String name;
@@ -26,6 +29,7 @@ public class FieldSet implements Cloneable, Comparable<FieldSet> {
     private ExtendedNodeType nodeType;
 
     private boolean dynamic = false;
+    private boolean hasEnableSwitch = false;
     private boolean activated = true;
 
     public String getName() {
@@ -115,7 +119,16 @@ public class FieldSet implements Cloneable, Comparable<FieldSet> {
     }
 
     @JsonIgnore
-    public boolean getActivated() {
+    public boolean isHasEnableSwitch() {
+        return hasEnableSwitch;
+    }
+
+    public void setHasEnableSwitch(boolean hasEnableSwitch) {
+        this.hasEnableSwitch = hasEnableSwitch;
+    }
+
+    @JsonIgnore
+    public boolean isActivated() {
         return activated;
     }
 
@@ -128,7 +141,10 @@ public class FieldSet implements Cloneable, Comparable<FieldSet> {
         return nodeType;
     }
 
-    public void initializeLabel(Locale uiLocale) {
+    public void initializeLabel(Locale uiLocale, JCRSiteNode site) {
+        label = label == null && labelKey != null ? resolveResourceKey(labelKey, uiLocale, site) : label;
+        description = description == null && descriptionKey != null ? resolveResourceKey(descriptionKey, uiLocale, site) : description;
+
         if (nodeType != null) {
             label = label == null ? StringEscapeUtils.unescapeHtml(nodeType.getLabel(uiLocale)) : label;
             description = description == null ? Sanitizers.FORMATTING.sanitize(nodeType.getDescription(uiLocale)) : description;
@@ -172,8 +188,6 @@ public class FieldSet implements Cloneable, Comparable<FieldSet> {
         setDescriptionKey(otherFieldSet.getDescriptionKey() != null || otherFieldSet.getDescription() != null ? otherFieldSet.getDescriptionKey() : descriptionKey);
         setHide(otherFieldSet.isHide() != null ? otherFieldSet.isHide() : hide);
         setRank(otherFieldSet.getRank() != null ? otherFieldSet.getRank() : rank);
-
-        setDynamic(otherFieldSet.isDynamic() || isDynamic());
 
         mergeFields(otherFieldSet.getFields(), form);
     }

@@ -1,10 +1,7 @@
 package org.jahia.modules.contenteditor.api.forms;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
 import org.jahia.modules.contenteditor.api.forms.model.*;
 import org.jahia.services.content.nodetypes.*;
-import org.owasp.html.Sanitizers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,18 +36,16 @@ public class FormGenerator {
         defaultSelectors.put(PropertyType.BINARY, SelectorType.SMALLTEXT);
     }
 
-    public static Form generateForm(ExtendedNodeType nodeType, Locale uiLocale, Locale locale) throws RepositoryException {
+    public static Form generateForm(ExtendedNodeType nodeType, Locale locale) throws RepositoryException {
         Form form = new Form();
         form.setNodeType(nodeType.getName());
-        form.setLabel(nodeType.getLabel(uiLocale));
-        form.setDescription(nodeType.getDescription(uiLocale));
         form.setPriority(0.);
         form.setHasPreview(true);
-        form.setSections(generateFormSections(nodeType, uiLocale, locale));
+        form.setSections(generateFormSections(nodeType, locale));
         return form;
     }
 
-    public static List<Section> generateFormSections(ExtendedNodeType nodeType, Locale uiLocale, Locale locale) throws RepositoryException {
+    public static List<Section> generateFormSections(ExtendedNodeType nodeType, Locale locale) throws RepositoryException {
         Map<String, Section> sections = new HashMap<>();
         Set<String> processedProperties = new HashSet<>();
 
@@ -67,8 +62,8 @@ public class FormGenerator {
             }
 
             String itemType = itemDefinition.getItemType();
-            Field editorFormField = generateEditorFormField(itemDefinition, uiLocale, locale);
-            FieldSet fieldSet = generateFieldSetForSection(sections, itemType, itemDefinition.getDeclaringNodeType().getName(), uiLocale);
+            Field editorFormField = generateEditorFormField(itemDefinition, locale);
+            FieldSet fieldSet = generateFieldSetForSection(sections, itemType, itemDefinition.getDeclaringNodeType().getName());
             fieldSet.getFields().add(editorFormField);
             editorFormField.setRank((double) fieldSet.getFields().size());
 
@@ -78,7 +73,7 @@ public class FormGenerator {
         return new ArrayList<>(sections.values());
     }
 
-    public static FieldSet generateFieldSetForSection(Map<String, Section> sections, String sectionName, String fieldSetName, Locale uiLocale) {
+    public static FieldSet generateFieldSetForSection(Map<String, Section> sections, String sectionName, String fieldSetName) {
         if (!sections.containsKey(sectionName)) {
             Section section = new Section();
             section.setName(sectionName);
@@ -100,7 +95,7 @@ public class FormGenerator {
         });
     }
 
-    public static Field generateEditorFormField(ExtendedItemDefinition itemDefinition, Locale uiLocale, Locale locale) throws RepositoryException {
+    public static Field generateEditorFormField(ExtendedItemDefinition itemDefinition, Locale locale) throws RepositoryException {
         ExtendedPropertyDefinition propertyDefinition = (ExtendedPropertyDefinition) itemDefinition;
 
         ExtendedNodeType declaringNodeType = propertyDefinition.getDeclaringNodeType();
@@ -136,12 +131,6 @@ public class FormGenerator {
             defaultValues = Arrays.stream(propertyDefinition.getDefaultValues(locale)).map(FieldValue::convert).filter(Objects::nonNull).collect(Collectors.toList());
         }
 
-        ExtendedNodeType extendedNodeType = NodeTypeRegistry.getInstance().getNodeType(propertyDefinition.getDeclaringNodeType().getAlias());
-        // Use item definition to resolve labels. (same way as ContentDefinitionHelper.getGWTJahiaNodeType())
-        ExtendedItemDefinition item = extendedNodeType.getItems().stream().filter(item1 -> StringUtils.equals(item1.getName(), propertyDefinition.getName())).findAny().orElse(propertyDefinition);
-        String propertyLabel = StringEscapeUtils.unescapeHtml(item.getLabel(uiLocale, extendedNodeType));
-        String propertyDescription = Sanitizers.FORMATTING.sanitize(item.getTooltip(uiLocale, extendedNodeType));
-
         String errorMessageKey = itemDefinition.getResourceBundleKey() + ".constraint.error.message";
         if (itemDefinition.getDeclaringNodeType().getTemplatePackage() != null) {
             errorMessageKey += "@" + itemDefinition.getDeclaringNodeType().getTemplatePackage().getResourceBundleName();
@@ -159,8 +148,6 @@ public class FormGenerator {
 
         Field field = new Field();
         field.setName(propertyDefinition.getName());
-        field.setLabel(propertyLabel);
-        field.setDescription(propertyDescription);
         field.setErrorMessageKey(errorMessageKey);
         field.setExtendedPropertyDefinition(propertyDefinition);
         field.setRequiredType(PropertyType.nameFromValue(propertyDefinition.getRequiredType()));

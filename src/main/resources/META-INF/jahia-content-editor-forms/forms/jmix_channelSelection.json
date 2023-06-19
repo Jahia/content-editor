@@ -4,7 +4,6 @@
   "sections": [
     {
       "name": "visibility",
-      "labelKey": "label.engineTab.options",
       "fieldSets": [
         {
           "name": "jmix:channelSelection",

@@ -48,7 +48,7 @@ public class GqlEditorForm {
     @GraphQLField
     @GraphQLDescription("Retrieve the name (aka identifier) of the form")
     public String getName() {
-        return form.getNodeType();
+        return form.getNodeType().getName();
     }
 
     @GraphQLField

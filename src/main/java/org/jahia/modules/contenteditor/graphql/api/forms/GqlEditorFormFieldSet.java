@@ -60,7 +60,7 @@ public class GqlEditorFormFieldSet {
     }
 
     @GraphQLField
-    @GraphQLDescription("True if this is dynamic field set (meaningin it can be activated or not)")
+    @GraphQLDescription("True if this is dynamic field set (meaning it can be activated or not)")
     public Boolean getDynamic() {
         return fieldSet.isDynamic();
     }
@@ -68,7 +68,13 @@ public class GqlEditorFormFieldSet {
     @GraphQLField
     @GraphQLDescription("Only used in the case of a dynamic field set. Set to true if it is activated")
     public Boolean getActivated() {
-        return fieldSet.getActivated();
+        return fieldSet.isActivated();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("Only used in the case of a dynamic field set. Set to true if it is activated")
+    public Boolean getHasEnableSwitch() {
+        return fieldSet.isHasEnableSwitch();
     }
 
     @GraphQLField

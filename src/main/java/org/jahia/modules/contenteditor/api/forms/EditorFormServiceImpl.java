@@ -23,6 +23,7 @@
  */
 package org.jahia.modules.contenteditor.api.forms;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jahia.api.templates.JahiaTemplateManagerService;
 import org.jahia.data.templates.JahiaTemplatesPackage;
@@ -151,44 +152,48 @@ public class EditorFormServiceImpl implements EditorFormService {
 
             form.setLabel(form.getLabel() == null && form.getLabelKey() != null ? resolveResourceKey(form.getLabelKey(), uiLocale, site) : form.getLabel());
             form.setDescription(form.getDescription() == null && form.getDescriptionKey() != null ? resolveResourceKey(form.getDescriptionKey(), uiLocale, site) : form.getDescription());
+            form.initializeLabel(uiLocale);
 
             // Remove sections the user cannot see
-            form.setSections(form.getSections().stream().filter(s -> s.getRequiredPermission() == null || currentNode.hasPermission(s.getRequiredPermission())).collect(Collectors.toList()));
+            form.setSections(form.getSections().stream().filter(s -> (s.isHide() == null || !s.isHide()) &&
+                    (s.getRequiredPermission() == null || currentNode.hasPermission(s.getRequiredPermission())) &&
+                    (s.getDisplayModes() == null || s.getDisplayModes().contains(mode)))
+                .collect(Collectors.toList())
+            );
+
+            // Keep track of the list of all fieldSets per nodetype
+            Map<String, Collection<FieldSet>> fieldSetsMap = form.getSections().stream()
+                .flatMap(s -> s.getFieldSets().stream())
+                .collect(Collectors.<FieldSet, String, Collection<FieldSet>>toMap(FieldSet::getName, Collections::singleton, CollectionUtils::union));
 
             for (Section section : form.getSections()) {
                 // Set section label and description if not set
-                section.setLabel(section.getLabel() == null && section.getLabelKey() != null ? resolveResourceKey(section.getLabelKey(), uiLocale, site) : section.getLabel());
-                section.setDescription(section.getDescription() == null && section.getDescriptionKey() != null ? resolveResourceKey(section.getDescriptionKey(), uiLocale, site) : section.getDescription());
+                section.initializeLabel(uiLocale, site);
 
-                // Check if section is available in current mode
-                section.setHide((section.isHide() != null && section.isHide()) || (section.getDisplayModes() != null && !section.getDisplayModes().contains(mode)));
-
-                // Remove empty fieldSets
-                section.setFieldSets(section.getFieldSets().stream().filter(s -> !s.getFields().isEmpty()).collect(Collectors.toList()));
                 for (FieldSet fieldSet : section.getFieldSets()) {
                     // Set fieldSet label and description if not set
-                    fieldSet.setLabel(fieldSet.getLabel() == null && fieldSet.getLabelKey() != null ? resolveResourceKey(fieldSet.getLabelKey(), uiLocale, site) : fieldSet.getLabel());
-                    fieldSet.setDescription(fieldSet.getDescription() == null && fieldSet.getDescriptionKey() != null ? resolveResourceKey(fieldSet.getDescriptionKey(), uiLocale, site) : fieldSet.getDescription());
+                    fieldSet.initializeLabel(uiLocale, site);
 
                     // Check if fieldset is dynamic
                     if (fieldSet.getNodeType() != null) {
-                        fieldSet.initializeLabel(uiLocale);
                         ExtendedNodeType nodeType = fieldSet.getNodeType();
                         boolean isExtend = !nodeType.getMixinExtends().isEmpty() && !primaryNodeType.isNodeType(nodeType.getName());
                         if (isExtend) {
                             fieldSet.setDynamic(true);
                             fieldSet.setActivated(existingNode != null && existingNode.isNodeType(fieldSet.getName()));
+                            fieldSet.setHasEnableSwitch(!nodeType.isNodeType("jmix:templateMixin"));
 
                             // Update readonly if user does not have permission to add/remove mixin
                             fieldSet.setReadOnly((fieldSet.isReadOnly() != null && fieldSet.isReadOnly()) || !fieldSetEditable);
                         }
                     }
 
+                    // Remove hidden fields
+                    fieldSet.setFields(fieldSet.getFields().stream().filter(f -> (f.isHide() == null || !f.isHide())).collect(Collectors.toList()));
+
                     for (Field field : fieldSet.getFields()) {
                         // Set field label and description if not set
-                        field.setLabel(field.getLabel() == null && field.getLabelKey() != null ? resolveResourceKey(field.getLabelKey(), uiLocale, site) : field.getLabel());
-                        field.setDescription(field.getDescription() == null && field.getDescriptionKey() != null ? resolveResourceKey(field.getDescriptionKey(), uiLocale, site) : field.getDescription());
-                        field.setErrorMessage(field.getErrorMessage() == null && field.getErrorMessageKey() != null ? resolveResourceKey(field.getErrorMessageKey(), uiLocale, site) : field.getErrorMessage());
+                        field.initializeLabel(uiLocale, site);
 
                         // Update readonly if user does not have permission to edit
                         boolean forceReadOnly = field.getExtendedPropertyDefinition() != null && field.getExtendedPropertyDefinition().isInternationalized() ? !i18nFieldsEditable : !sharedFieldsEditable;
@@ -201,8 +206,15 @@ public class EditorFormServiceImpl implements EditorFormService {
                             }
                         }
                     }
-                };
-            };
+                }
+
+                // Remove empty fieldSets - only keep empty dynamic field set which do not have matching mixin in another section
+                // (if the dynamic mixin is present in multiple sections, keep only the non-empty ones)
+                section.setFieldSets(section.getFieldSets().stream()
+                    .filter(fs -> (fs.isDynamic() && fieldSetsMap.get(fs.getName()).size() == 1) || !fs.getFields().isEmpty())
+                    .collect(Collectors.toList()));
+            }
+
             // Remove empty sections
             form.setSections(form.getSections().stream().filter(s -> !s.getFieldSets().isEmpty()).collect(Collectors.toList()));
 
@@ -214,7 +226,7 @@ public class EditorFormServiceImpl implements EditorFormService {
 
     private void addFormNodeType(ExtendedNodeType nodeType, SortedSet<Form> formDefinitionsToMerge, Locale uiLocale, Locale locale, Set<String> processedNodeTypes) throws RepositoryException {
         if (!processedNodeTypes.contains(nodeType.getName())) {
-            formDefinitionsToMerge.add(FormGenerator.generateForm(nodeType, uiLocale, locale));
+            formDefinitionsToMerge.add(FormGenerator.generateForm(nodeType, locale));
             formDefinitionsToMerge.addAll(staticDefinitionsRegistry.getFormDefinitionsForType(nodeType));
             
             processedNodeTypes.add(nodeType.getName());
@@ -222,7 +234,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         }
     }
 
-    private static String resolveResourceKey(String key, Locale locale, JCRSiteNode site) {
+    public static String resolveResourceKey(String key, Locale locale, JCRSiteNode site) {
         // Copied from org.jahia.ajax.gwt.helper.UIConfigHelper.getResources
         // Todo: BACKLOG-10823 - avoid code duplication and use a static shared utility function
         if (key == null || key.length() == 0) {
@@ -334,7 +346,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             ExtendedPropertyDefinition fieldPropertyDefinition = nodeTypeRegistry.getNodeType(fieldNodeType).getPropertyDefinition(fieldName);
 
             if (fieldPropertyDefinition != null) {
-                Field editorFormField = FormGenerator.generateEditorFormField(fieldPropertyDefinition, uiLocale, locale);
+                Field editorFormField = FormGenerator.generateEditorFormField(fieldPropertyDefinition, locale);
 
                 Map<String, Object> extendContext = new HashMap<>();
                 editorFormField.getSelectorOptions().entrySet().forEach(option -> extendContext.put(option.getKey(), option.getValue()));

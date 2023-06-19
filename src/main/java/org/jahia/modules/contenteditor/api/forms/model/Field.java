@@ -1,11 +1,22 @@
 package org.jahia.modules.contenteditor.api.forms.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
+import org.jahia.services.content.decorator.JCRSiteNode;
+import org.jahia.services.content.nodetypes.ExtendedItemDefinition;
+import org.jahia.services.content.nodetypes.ExtendedNodeType;
 import org.jahia.services.content.nodetypes.ExtendedPropertyDefinition;
+import org.jahia.services.content.nodetypes.NodeTypeRegistry;
+import org.owasp.html.Sanitizers;
 
 import javax.jcr.PropertyType;
+import javax.jcr.nodetype.NoSuchNodeTypeException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+
+import static org.jahia.modules.contenteditor.api.forms.EditorFormServiceImpl.resolveResourceKey;
 
 public class Field implements Cloneable, Comparable<Field> {
     private String name;
@@ -180,6 +191,25 @@ public class Field implements Cloneable, Comparable<Field> {
 
     public void setDefaultValues(List<FieldValue> defaultValues) {
         this.defaultValues = defaultValues;
+    }
+
+    public void initializeLabel(Locale uiLocale, JCRSiteNode site) {
+        label = label == null && labelKey != null ? resolveResourceKey(labelKey, uiLocale, site) : label;
+        description = description == null && descriptionKey != null ? resolveResourceKey(descriptionKey, uiLocale, site) : description;
+        errorMessage = errorMessage == null && errorMessageKey != null ? resolveResourceKey(errorMessageKey, uiLocale, site) : errorMessage;
+
+        if (extendedPropertyDefinition != null) {
+            // Use item definition to resolve labels. (same way as ContentDefinitionHelper.getGWTJahiaNodeType()) ???
+            try {
+                ExtendedNodeType extendedNodeType = NodeTypeRegistry.getInstance().getNodeType(extendedPropertyDefinition.getDeclaringNodeType().getAlias());
+                ExtendedItemDefinition item = extendedNodeType.getItems().stream().filter(item1 -> StringUtils.equals(item1.getName(), extendedPropertyDefinition.getName())).findAny().orElse(extendedPropertyDefinition);
+
+                label = label == null ? StringEscapeUtils.unescapeHtml(item.getLabel(uiLocale, extendedNodeType)) : label;
+                description = description == null ? Sanitizers.FORMATTING.sanitize(item.getTooltip(uiLocale, extendedNodeType)) : description;
+            } catch (NoSuchNodeTypeException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     @Override

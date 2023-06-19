@@ -125,7 +125,7 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
             form = objectMapper.readValue(editorFormURL, Form.class);
             form.setOriginBundle(bundle);
 
-            String name = form.getNodeType();
+            String name = form.getNodeType().getName();
 
             if (StringUtils.isNotBlank(name)) {
                 SortedSet<Form> forms = staticEditorFormDefinitionsByName.get(name);
@@ -150,10 +150,10 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
             return;
         }
         for (Form bundleForm : bundleForms) {
-            SortedSet<Form> forms = staticEditorFormDefinitionsByName.get(bundleForm.getNodeType());
+            SortedSet<Form> forms = staticEditorFormDefinitionsByName.get(bundleForm.getNodeType().getName());
             if (forms != null) {
                 forms.remove(bundleForm);
-                staticEditorFormDefinitionsByName.put(bundleForm.getNodeType(), forms);
+                staticEditorFormDefinitionsByName.put(bundleForm.getNodeType().getName(), forms);
             }
         }
     }

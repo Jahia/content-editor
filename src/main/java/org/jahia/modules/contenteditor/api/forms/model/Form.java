@@ -38,7 +38,7 @@ import java.util.stream.Stream;
  * Represents the definition of an editor form, including the ordering of sections
  */
 public class Form implements Cloneable, Comparable<Form> {
-    private String nodeType;
+    private ExtendedNodeType nodeType;
     private String labelKey;
     private String descriptionKey;
     private String label;
@@ -48,12 +48,16 @@ public class Form implements Cloneable, Comparable<Form> {
     private Bundle originBundle;
     private Boolean hasPreview;
 
-    public String getNodeType() {
+    public ExtendedNodeType getNodeType() {
         return nodeType;
     }
 
-    public void setNodeType(String nodeType) {
-        this.nodeType = nodeType;
+    public void setNodeType(String nodeTypeName) {
+        try {
+            nodeType = NodeTypeRegistry.getInstance().getNodeType(nodeTypeName);
+        } catch (NoSuchNodeTypeException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public String getLabelKey() {
@@ -121,6 +125,11 @@ public class Form implements Cloneable, Comparable<Form> {
         this.originBundle = originBundle;
     }
 
+    public void initializeLabel(Locale uiLocale) {
+        label = label == null ? nodeType.getLabel(uiLocale) : label;
+        description = description == null ? nodeType.getDescription(uiLocale) : descriptionKey;
+    }
+
     @Override
     public int compareTo(Form otherForm) {
         if (otherForm == null) {
@@ -131,23 +140,16 @@ public class Form implements Cloneable, Comparable<Form> {
             return Double.compare(priority, otherForm.getPriority());
         }
 
-        final String otherName = otherForm.getNodeType();
-        try {
-            ExtendedNodeType extendedNodeType = NodeTypeRegistry.getInstance().getNodeType(this.nodeType);
-            ExtendedNodeType otherNodeType = NodeTypeRegistry.getInstance().getNodeType(otherName);
-            if (!extendedNodeType.equals(otherNodeType)) {
-                if (extendedNodeType.isNodeType(otherNodeType.getName())) {
-                    return 1;
-                }
-                if (otherNodeType.isNodeType(extendedNodeType.getName())) {
-                    return -1;
-                }
-                // put types that not inherit to the end (as they are set as mixin to an existing node)
+        final ExtendedNodeType otherNodeType = otherForm.getNodeType();
+        if (!nodeType.equals(otherNodeType)) {
+            if (nodeType.isNodeType(otherNodeType.getName())) {
                 return 1;
             }
-        } catch (NoSuchNodeTypeException e) {
-            throw new EditorFormRuntimeException(String.format("unable to resolve one of the types %s and %s", this.nodeType, otherName),
-                e);
+            if (otherNodeType.isNodeType(nodeType.getName())) {
+                return -1;
+            }
+            // put types that not inherit to the end (as they are set as mixin to an existing node)
+            return 1;
         }
 
         int result = 0;
