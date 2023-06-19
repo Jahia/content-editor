@@ -127,7 +127,7 @@ export const EditFormQuery = gql`
                         description
                         dynamic
                         activated
-                        displayed
+                        hasEnableSwitch
                         readOnly
                         fields {
                             name
