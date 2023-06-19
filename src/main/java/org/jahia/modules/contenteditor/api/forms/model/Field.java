@@ -10,7 +10,6 @@ import org.jahia.services.content.nodetypes.ExtendedPropertyDefinition;
 import org.jahia.services.content.nodetypes.NodeTypeRegistry;
 import org.owasp.html.Sanitizers;
 
-import javax.jcr.PropertyType;
 import javax.jcr.nodetype.NoSuchNodeTypeException;
 import java.util.List;
 import java.util.Locale;
@@ -28,6 +27,7 @@ public class Field implements Cloneable, Comparable<Field> {
     private String errorMessageKey;
     private Boolean hide;
     private Double rank;
+    private String declaringNodeType;
     private ExtendedPropertyDefinition extendedPropertyDefinition;
     private String requiredType;
     private Map<String, Object> selectorOptions;
@@ -112,6 +112,15 @@ public class Field implements Cloneable, Comparable<Field> {
         this.rank = rank;
     }
 
+
+    public String getDeclaringNodeType() {
+        return declaringNodeType;
+    }
+
+    public void setDeclaringNodeType(String declaringNodeType) {
+        this.declaringNodeType = declaringNodeType;
+    }
+
     @JsonIgnore
     public ExtendedPropertyDefinition getExtendedPropertyDefinition() {
         return extendedPropertyDefinition;
@@ -119,6 +128,12 @@ public class Field implements Cloneable, Comparable<Field> {
 
     public void setExtendedPropertyDefinition(ExtendedPropertyDefinition extendedPropertyDefinition) {
         this.extendedPropertyDefinition = extendedPropertyDefinition;
+        if (extendedPropertyDefinition != null) {
+            if (this.declaringNodeType != null && !declaringNodeType.equals(extendedPropertyDefinition.getDeclaringNodeType().getName())) {
+                System.out.println(name);
+            }
+            this.declaringNodeType = extendedPropertyDefinition.getDeclaringNodeType().getName();
+        }
     }
 
     public String getRequiredType() {
@@ -191,6 +206,10 @@ public class Field implements Cloneable, Comparable<Field> {
 
     public void setDefaultValues(List<FieldValue> defaultValues) {
         this.defaultValues = defaultValues;
+    }
+
+    public String getKey() {
+        return (declaringNodeType != null ? (declaringNodeType + "_") : "") + name;
     }
 
     public void initializeLabel(Locale uiLocale, JCRSiteNode site) {

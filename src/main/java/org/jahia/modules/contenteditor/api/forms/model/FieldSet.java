@@ -194,7 +194,7 @@ public class FieldSet implements Cloneable, Comparable<FieldSet> {
 
     private void mergeFields(List<Field> otherFields, Form form) {
         for (Field otherField : otherFields) {
-            Field existingField = form.findAndRemoveField(otherField.getName()).orElseGet(Field::new);
+            Field existingField = form.findAndRemoveField(otherField).orElseGet(Field::new);
             existingField.mergeWith(otherField);
             if (!fields.contains(existingField)) {
                 fields.add(existingField);

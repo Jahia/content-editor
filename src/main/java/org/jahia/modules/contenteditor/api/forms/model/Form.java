@@ -24,7 +24,6 @@
 package org.jahia.modules.contenteditor.api.forms.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.jahia.modules.contenteditor.api.forms.EditorFormRuntimeException;
 import org.jahia.services.content.nodetypes.ExtendedNodeType;
 import org.jahia.services.content.nodetypes.NodeTypeRegistry;
 import org.osgi.framework.Bundle;
@@ -193,10 +192,10 @@ public class Form implements Cloneable, Comparable<Form> {
         Collections.sort(sections);
     }
 
-    public Optional<Field> findAndRemoveField(String name) {
+    public Optional<Field> findAndRemoveField(Field otherField) {
         return sections.stream().flatMap(section ->
             section.getFieldSets().stream().flatMap(fieldSet -> {
-                Optional<Field> foundField = fieldSet.getFields().stream().filter(field -> field.getName().equals(name)).findFirst();
+                Optional<Field> foundField = fieldSet.getFields().stream().filter(field -> otherField.getExtendedPropertyDefinition() != null ? field.getKey().equals(otherField.getKey()) : field.getName().equals(otherField.getName())).findFirst();
                 if (foundField.isPresent()) {
                     fieldSet.getFields().remove(foundField.get());
                     return Stream.of(foundField.get());

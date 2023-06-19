@@ -25,8 +25,12 @@ package org.jahia.modules.contenteditor.api.forms;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang.StringUtils;
+import org.jahia.modules.contenteditor.api.forms.model.Field;
+import org.jahia.modules.contenteditor.api.forms.model.FieldSet;
 import org.jahia.modules.contenteditor.api.forms.model.Form;
+import org.jahia.modules.contenteditor.api.forms.model.Section;
 import org.jahia.services.content.nodetypes.ExtendedNodeType;
+import org.jahia.services.content.nodetypes.NodeTypeRegistry;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
@@ -37,6 +41,7 @@ import org.osgi.service.component.annotations.Deactivate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.jcr.nodetype.NoSuchNodeTypeException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
@@ -120,10 +125,24 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
     }
 
     private Form readEditorFormDefinition(URL editorFormURL, Bundle bundle) {
-        Form form = null;
         try {
-            form = objectMapper.readValue(editorFormURL, Form.class);
+            Form form = objectMapper.readValue(editorFormURL, Form.class);
             form.setOriginBundle(bundle);
+
+            for (Section section : form.getSections()) {
+                for (FieldSet fieldSet : section.getFieldSets()) {
+                    for (Field field : fieldSet.getFields()) {
+                        try {
+                            if (field.getDeclaringNodeType() != null) {
+                                ExtendedNodeType declaringNodeType = NodeTypeRegistry.getInstance().getNodeType(field.getDeclaringNodeType());
+                                field.setExtendedPropertyDefinition(declaringNodeType.getPropertyDefinitionsAsMap().get(field.getName()));
+                            }
+                        } catch (NoSuchNodeTypeException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            }
 
             String name = form.getNodeType().getName();
 
@@ -138,10 +157,12 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
             } else {
                 logger.error("Could not serialize the object with the {} from {}", Form.class, editorFormURL);
             }
+
+            return form;
         } catch (IOException e) {
             logger.error("Error loading editor form from " + editorFormURL, e);
         }
-        return form;
+        return null;
     }
 
     private void unregisterStaticEditorFormDefinitions(Bundle bundle) {
