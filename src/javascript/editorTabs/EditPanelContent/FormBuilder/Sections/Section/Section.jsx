@@ -1,5 +1,5 @@
 import {Collapsible} from '@jahia/moonstone';
-import {FieldSetsDisplay} from '../../FieldSet';
+import {FieldSet, FieldSetsDisplay} from '../../FieldSet';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {SectionPropTypes} from '~/ContentEditor.proptypes';
@@ -32,9 +32,7 @@ export const Section = ({section, isExpanded, onClick}) => {
     const sectionName = section.displayName !== '' ? section.displayName : section.name;
 
     if (section.hideHeader) {
-        return (
-            <FieldSetsDisplay fieldSets={fieldSets}/>
-        );
+        return fieldSets?.map(fs => <FieldSet key={fs.name} fieldset={fs}/>);
     }
 
     return (
@@ -43,7 +41,7 @@ export const Section = ({section, isExpanded, onClick}) => {
                      isExpanded={isExpanded}
                      onClick={onClick}
         >
-            <FieldSetsDisplay fieldSets={fieldSets}/>
+            { fieldSets?.map(fs => <FieldSet key={fs.name} fieldset={fs}/>) }
         </Collapsible>
     );
 };

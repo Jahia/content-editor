@@ -1,7 +1,7 @@
 import React from 'react';
 import {useContentEditorSectionContext} from '~/contexts';
 import {Validation} from '~/editorTabs/EditPanelContent/FormBuilder/Validation';
-import {FieldSetsDisplay} from '~/editorTabs/EditPanelContent/FormBuilder/FieldSet';
+import {FieldSet, FieldSetsDisplay} from '~/editorTabs/EditPanelContent/FormBuilder/FieldSet';
 import styles from './Channels.scss';
 
 const filterRegularFieldSets = fieldSets => {
@@ -36,7 +36,7 @@ export const Channels = () => {
         <div className={styles.container}>
             <Validation/>
             <section>
-                <FieldSetsDisplay fieldSets={fieldSets}/>
+                { fieldSets?.map(fs => <FieldSet key={fs.name} fieldset={fs}/>) }
             </section>
         </div>
     );

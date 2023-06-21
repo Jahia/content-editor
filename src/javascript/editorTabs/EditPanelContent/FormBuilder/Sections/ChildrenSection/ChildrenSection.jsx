@@ -7,7 +7,7 @@ import {useTranslation} from 'react-i18next';
 import {AutomaticOrdering} from './AutomaticOrdering';
 import {Constants} from '~/ContentEditor.constants';
 import {Chip, Collapsible, Language, Typography} from '@jahia/moonstone';
-import {FieldSetsDisplay} from '../../FieldSet';
+import {FieldSet, FieldSetsDisplay} from '../../FieldSet';
 import {useFormikContext} from 'formik';
 import fieldSetStyles from '../../FieldSet/FieldSet.scss';
 import styles from './ChildrenSection.scss';
@@ -92,7 +92,7 @@ export const ChildrenSection = ({mode, section, nodeData, isExpanded, onClick}) 
                     {!isAutomaticOrder && manuallyOrderField && <ManualOrdering/>}
                     {isAutomaticOrder && automaticallyOrderField && <AutomaticOrdering orderingFieldSet={orderingFieldSet}/>}
                 </article>
-                <FieldSetsDisplay fieldSets={childrenFieldSets}/>
+                { childrenFieldSets?.map(fs => <FieldSet key={fs.name} fieldset={fs}/>) }
             </Collapsible>
         );
     }
