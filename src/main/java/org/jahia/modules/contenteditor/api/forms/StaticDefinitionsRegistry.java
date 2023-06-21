@@ -45,6 +45,7 @@ import javax.jcr.nodetype.NoSuchNodeTypeException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component(immediate = true, service = StaticDefinitionsRegistry.class)
 public class StaticDefinitionsRegistry implements SynchronousBundleListener {
@@ -52,7 +53,7 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
     private static final Logger logger = LoggerFactory.getLogger(StaticDefinitionsRegistry.class);
 
     private final Map<Bundle, List<Form>> staticEditorFormDefinitionsByBundle = new LinkedHashMap<>();
-    private final Map<String, SortedSet<Form>> staticEditorFormDefinitionsByName = new LinkedHashMap<>();
+    private final List<Form> staticEditorForms = new ArrayList<>();
     private final ObjectMapper objectMapper = new ObjectMapper();
     private BundleContext bundleContext;
 
@@ -83,10 +84,6 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
         }
     }
 
-    SortedSet<Form> getFormDefinitions(String name) {
-        return staticEditorFormDefinitionsByName.get(name);
-    }
-
     /**
      * Retrieve all forms definition for the given type.
      *
@@ -94,13 +91,10 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
      * @return form definitions that match the type
      */
     SortedSet<Form> getFormDefinitionsForType(ExtendedNodeType type) {
-        SortedSet<Form> forms = new TreeSet<>();
-        staticEditorFormDefinitionsByName.forEach((nodeType, definitions) -> {
-            if (type.isNodeType(nodeType)) {
-                forms.addAll(definitions);
-            }
-        });
-        return forms;
+        return staticEditorForms.stream()
+            .filter(definition -> type.isNodeType(definition.getNodeType().getName()) &&
+                    (definition.getOrderable() == null || type.hasOrderableChildNodes()))
+            .collect(Collectors.toCollection(TreeSet::new));
     }
 
     private void registerStaticEditorFormDefinitions(Bundle bundle) {
@@ -147,12 +141,7 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
             String name = form.getNodeType().getName();
 
             if (StringUtils.isNotBlank(name)) {
-                SortedSet<Form> forms = staticEditorFormDefinitionsByName.get(name);
-                if (forms == null) {
-                    forms = new TreeSet<>();
-                }
-                forms.add(form);
-                staticEditorFormDefinitionsByName.put(name, forms);
+                staticEditorForms.add(form);
                 logger.info("Successfully loaded static form for name {} from {}", name, editorFormURL);
             } else {
                 logger.error("Could not serialize the object with the {} from {}", Form.class, editorFormURL);
@@ -170,13 +159,7 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
         if (bundleForms == null) {
             return;
         }
-        for (Form bundleForm : bundleForms) {
-            SortedSet<Form> forms = staticEditorFormDefinitionsByName.get(bundleForm.getNodeType().getName());
-            if (forms != null) {
-                forms.remove(bundleForm);
-                staticEditorFormDefinitionsByName.put(bundleForm.getNodeType().getName(), forms);
-            }
-        }
+        staticEditorForms.removeAll(bundleForms);
     }
 
 }

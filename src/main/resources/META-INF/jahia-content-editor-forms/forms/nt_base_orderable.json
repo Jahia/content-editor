@@ -1,0 +1,27 @@
+{
+  "nodeType": "nt:base",
+  "orderable" : true,
+  "priority": 2.0,
+  "hasPreview": true,
+  "sections": [
+    {
+      "name": "listOrdering",
+      "fieldSets": [
+        {
+          "name": "jmix:orderedList",
+          "fields": [
+            {
+              "rank": 0.0,
+              "name": "ce:manualOrdering",
+              "descriptionKey": "",
+              "requiredType": "String",
+              "selectorType": "Text",
+              "i18n": false,
+              "readOnly": false,
+              "multiple": false,
+              "mandatory": true
+            }]
+        }]
+    }
+  ]
+}

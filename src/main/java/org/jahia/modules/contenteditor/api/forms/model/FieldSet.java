@@ -22,6 +22,7 @@ public class FieldSet implements Cloneable, Comparable<FieldSet> {
     private String descriptionKey;
     private String label;
     private String description;
+    private String requiredPermission;
     private Boolean hide;
     private Boolean readOnly;
     private Double rank = 0.0;
@@ -75,6 +76,14 @@ public class FieldSet implements Cloneable, Comparable<FieldSet> {
 
     public void setDescriptionKey(String descriptionKey) {
         this.descriptionKey = descriptionKey;
+    }
+
+    public String getRequiredPermission() {
+        return requiredPermission;
+    }
+
+    public void setRequiredPermission(String requiredPermission) {
+        this.requiredPermission = requiredPermission;
     }
 
     public Boolean isHide() {
@@ -186,6 +195,7 @@ public class FieldSet implements Cloneable, Comparable<FieldSet> {
         setLabelKey(otherFieldSet.getLabelKey() != null || otherFieldSet.getLabel() != null ? otherFieldSet.getLabelKey() : labelKey);
         setDescription(otherFieldSet.getDescriptionKey() != null || otherFieldSet.getDescription() != null ? otherFieldSet.getDescription() : description);
         setDescriptionKey(otherFieldSet.getDescriptionKey() != null || otherFieldSet.getDescription() != null ? otherFieldSet.getDescriptionKey() : descriptionKey);
+        setRequiredPermission(otherFieldSet.getRequiredPermission() != null ? otherFieldSet.getRequiredPermission() : requiredPermission);
         setHide(otherFieldSet.isHide() != null ? otherFieldSet.isHide() : hide);
         setRank(otherFieldSet.getRank() != null ? otherFieldSet.getRank() : rank);
 

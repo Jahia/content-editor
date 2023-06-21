@@ -170,6 +170,12 @@ public class EditorFormServiceImpl implements EditorFormService {
                 // Set section label and description if not set
                 section.initializeLabel(uiLocale, site);
 
+                // Remove fieldsSets the user cannot see
+                section.setFieldSets(section.getFieldSets().stream().filter(fs -> (fs.isHide() == null || !fs.isHide()) &&
+                        (fs.getRequiredPermission() == null || currentNode.hasPermission(fs.getRequiredPermission())))
+                    .collect(Collectors.toList())
+                );
+
                 for (FieldSet fieldSet : section.getFieldSets()) {
                     // Set fieldSet label and description if not set
                     fieldSet.initializeLabel(uiLocale, site);

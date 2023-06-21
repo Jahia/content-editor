@@ -38,6 +38,7 @@ import java.util.stream.Stream;
  */
 public class Form implements Cloneable, Comparable<Form> {
     private ExtendedNodeType nodeType;
+    private Boolean orderable;
     private String labelKey;
     private String descriptionKey;
     private String label;
@@ -57,6 +58,14 @@ public class Form implements Cloneable, Comparable<Form> {
         } catch (NoSuchNodeTypeException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public Boolean getOrderable() {
+        return orderable;
+    }
+
+    public void setOrderable(Boolean orderable) {
+        this.orderable = orderable;
     }
 
     public String getLabelKey() {
@@ -161,7 +170,11 @@ public class Form implements Cloneable, Comparable<Form> {
         } else {
             result = originBundle.compareTo(otherForm.originBundle);
         }
-        return result;
+        if (result != 0) {
+            return result;
+        }
+
+        return 1;
     }
 
     public Form clone() {

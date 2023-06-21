@@ -1,17 +1,16 @@
 import React, {useState} from 'react';
-import {useContentEditorSectionContext} from '~/contexts';
 import {FieldContainer} from '../../../Field';
 import {useFormikContext} from 'formik';
 import {useTranslation} from 'react-i18next';
 import {adaptSectionToDisplayableRows, getDisplayedRows} from './AutomaticOrdering.utils';
 import {Button, Close} from '@jahia/moonstone';
 import styles from './AutomaticOrdering.scss';
+import PropTypes from 'prop-types';
 
-export const AutomaticOrdering = () => {
+export const AutomaticOrdering = ({orderingFieldSet}) => {
     const {values, setFieldValue, setFieldTouched} = useFormikContext();
     const {t} = useTranslation('content-editor');
-    const {sections} = useContentEditorSectionContext();
-    const rows = adaptSectionToDisplayableRows(sections, t);
+    const rows = adaptSectionToDisplayableRows(orderingFieldSet, t);
     const [displayedRows, setDisplayedRows] = useState(getDisplayedRows(rows, values));
 
     const _getNextRowIndexToAdd = () => {
@@ -101,3 +100,6 @@ export const AutomaticOrdering = () => {
     );
 };
 
+AutomaticOrdering.propTypes = {
+    orderingFieldSet: PropTypes.arrayOf(PropTypes.object).isRequired
+};

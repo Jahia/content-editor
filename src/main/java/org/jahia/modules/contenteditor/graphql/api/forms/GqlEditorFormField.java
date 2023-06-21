@@ -67,9 +67,8 @@ public class GqlEditorFormField {
                     flattenedOptions.add(new GqlEditorFormProperty(baseKey + key, value.toString()));
                 }
             }
-            return flattenedOptions;
         }
-        return null;
+        return flattenedOptions;
     }
 
     @GraphQLField
@@ -141,24 +140,24 @@ public class GqlEditorFormField {
     @GraphQLField
     @GraphQLDescription("This value is true if the field allows for internationalized values")
     public boolean getI18n() {
-        return field.isI18n();
+        return field.isI18n() != null && field.isI18n();
     }
 
     @GraphQLField
     @GraphQLDescription("This value is true if the field is readonly. This could be due to locks or permissions")
     public boolean getReadOnly() {
-        return field.isReadOnly();
+        return field.isReadOnly() != null && field.isReadOnly();
     }
 
     @GraphQLField
     @GraphQLDescription("This value is true if the field value is multi-valued.")
     public boolean getMultiple() {
-        return field.isMultiple();
+        return field.isMultiple() != null && field.isMultiple();
     }
 
     @GraphQLField
     @GraphQLDescription("This value is true if the field is mandatory")
     public boolean getMandatory() {
-        return field.isMandatory();
+        return field.isMandatory() != null && field.isMandatory();
     }
 }

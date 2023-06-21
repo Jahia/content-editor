@@ -78,12 +78,6 @@ public class GqlEditorFormFieldSet {
     }
 
     @GraphQLField
-    @GraphQLDescription("Defines if the field has to be displayed or not")
-    public Boolean getDisplayed() {
-        return fieldSet.isHide() == null || !fieldSet.isHide();
-    }
-
-    @GraphQLField
     @GraphQLDescription("This value is true if the fieldset is readonly. This could be due to locks or permissions")
     public boolean getReadOnly() {
         return fieldSet.isReadOnly() != null && fieldSet.isReadOnly();

@@ -7,8 +7,6 @@ import {useTranslation} from 'react-i18next';
 import {AutomaticOrdering} from './AutomaticOrdering';
 import {Constants} from '~/ContentEditor.constants';
 import {Chip, Collapsible, Language, Typography} from '@jahia/moonstone';
-import {getAutomaticOrderingFieldSet} from './AutomaticOrdering/AutomaticOrdering.utils';
-import {useContentEditorSectionContext} from '~/contexts';
 import {FieldSetsDisplay} from '../../FieldSet';
 import {useFormikContext} from 'formik';
 import fieldSetStyles from '../../FieldSet/FieldSet.scss';
@@ -18,29 +16,15 @@ import clsx from 'clsx';
 export const ChildrenSection = ({mode, section, nodeData, isExpanded, onClick}) => {
     const {values, handleChange} = useFormikContext();
     const {t} = useTranslation('content-editor');
-    const {sections} = useContentEditorSectionContext();
 
-    const orderingSectionFieldSetMap = fieldSet => {
-        if (fieldSet.name === 'jmix:listSizeLimit') {
-            fieldSet.description = t('content-editor:label.contentEditor.section.listSizeLimit.description');
-            fieldSet.nodeCheck = {
-                options: {
-                    requiredPermission: [Constants.permissions.setContentLimitsOnAreas]
-                }
-            };
-            fieldSet.visibilityFunction = (fs, resp) => resp.node && resp.node[Constants.permissions.setContentLimitsOnAreas];
-            return fieldSet;
-        }
-    };
-
-    const canAutomaticallyOrder = values && values[Constants.ordering.automaticOrdering.mixin] !== undefined;
-    const canManuallyOrder = nodeData.primaryNodeType.hasOrderableChildNodes;
-    const isAutomaticOrder = canAutomaticallyOrder && values[Constants.ordering.automaticOrdering.mixin];
-    const automaticOrderingFieldSet = canAutomaticallyOrder && getAutomaticOrderingFieldSet(sections);
+    const orderingFieldSet = section.fieldSets.find(fs => fs.name === 'jmix:orderedList');
+    const automaticallyOrderField = orderingFieldSet.fields.find(f => f.name === 'jmix:orderedList_firstField');
+    const manuallyOrderField = orderingFieldSet.fields.find(f => f.name === 'jmix:orderedList_ce:manualOrdering');
+    const isAutomaticOrder = automaticallyOrderField && values[Constants.ordering.automaticOrdering.mixin];
     const hasChildrenToReorder = values['Children::Order'] && values['Children::Order'].length > 0;
-    const childrenFieldSets = section.fieldSets.filter(fieldSet => fieldSet.name === 'jmix:listSizeLimit').map(orderingSectionFieldSetMap);
+    const childrenFieldSets = section.fieldSets.filter(fieldSet => fieldSet.name !== 'jmix:orderedList');
 
-    if ((!canManuallyOrder || !hasChildrenToReorder) && !canAutomaticallyOrder && childrenFieldSets.length === 0) {
+    if ((!manuallyOrderField || !hasChildrenToReorder) && !automaticallyOrderField && childrenFieldSets.length === 0) {
         return false;
     }
 
@@ -75,7 +59,7 @@ export const ChildrenSection = ({mode, section, nodeData, isExpanded, onClick}) 
                         </div>
                     </div>
 
-                    {(canAutomaticallyOrder && automaticOrderingFieldSet) && (
+                    {automaticallyOrderField && (
                         <div className="flexRow_nowrap">
                             <Toggle
                                 classes={{
@@ -84,7 +68,7 @@ export const ChildrenSection = ({mode, section, nodeData, isExpanded, onClick}) 
                                 data-sel-role-automatic-ordering={Constants.ordering.automaticOrdering.mixin}
                                 id={Constants.ordering.automaticOrdering.mixin}
                                 checked={isAutomaticOrder}
-                                readOnly={automaticOrderingFieldSet.readOnly}
+                                readOnly={orderingFieldSet.readOnly || automaticallyOrderField.readOnly}
                                 onChange={handleChange}
                             />
                             <div className="flexCol">
@@ -105,8 +89,8 @@ export const ChildrenSection = ({mode, section, nodeData, isExpanded, onClick}) 
                             </div>
                         </div>
                     )}
-                    {!isAutomaticOrder && canManuallyOrder && <ManualOrdering/>}
-                    {isAutomaticOrder && canAutomaticallyOrder && <AutomaticOrdering/>}
+                    {!isAutomaticOrder && manuallyOrderField && <ManualOrdering/>}
+                    {isAutomaticOrder && automaticallyOrderField && <AutomaticOrdering orderingFieldSet={orderingFieldSet}/>}
                 </article>
                 <FieldSetsDisplay fieldSets={childrenFieldSets}/>
             </Collapsible>
