@@ -49,7 +49,7 @@ export const ContentEditorApi = () => {
     const unsetEditorConfigs = () => {
         history.replace(rison.decode(locationWithoutEditors));
         setEditorConfigs([]);
-    }
+    };
 
     let newEditorConfig = editorConfig => {
         if (!editorConfig.formKey) {
@@ -110,14 +110,14 @@ export const ContentEditorApi = () => {
         } else {
             unsetEditorConfigs();
         }
-    }, [location.hash]);
+    }, [location.hash]); // eslint-disable-line
 
     useEffect(() => {
         // Reset all states/hash after location change
         if (loaded.current) {
             unsetEditorConfigs();
         }
-    }, [history, location.pathname, locationWithoutEditors]);
+    }, [history, location.pathname, locationWithoutEditors]); // eslint-disable-line
 
     useEffect(() => {
         loaded.current = true;
