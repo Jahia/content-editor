@@ -7,7 +7,7 @@ import {useTranslation} from 'react-i18next';
 import {AutomaticOrdering} from './AutomaticOrdering';
 import {Constants} from '~/ContentEditor.constants';
 import {Chip, Collapsible, Language, Typography} from '@jahia/moonstone';
-import {FieldSet, FieldSetsDisplay} from '../../FieldSet';
+import {FieldSet} from '../../FieldSet';
 import {useFormikContext} from 'formik';
 import fieldSetStyles from '../../FieldSet/FieldSet.scss';
 import styles from './ChildrenSection.scss';

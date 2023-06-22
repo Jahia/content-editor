@@ -1,5 +1,5 @@
 import {Collapsible} from '@jahia/moonstone';
-import {FieldSet, FieldSetsDisplay} from '../../FieldSet';
+import {FieldSet} from '../../FieldSet';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {SectionPropTypes} from '~/ContentEditor.proptypes';
