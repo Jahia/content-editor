@@ -41,6 +41,15 @@ let getEncodedLocations = function (location, editorConfigs) {
 export const ContentEditorApi = () => {
     const [editorConfigs, setEditorConfigs] = useState([]);
     const [contentTypeSelectorConfig, setContentTypeSelectorConfig] = useState(false);
+    const history = useHistory();
+    const location = useLocation();
+    const loaded = useRef();
+    const {locationFromState, locationWithoutEditors} = getEncodedLocations(location, editorConfigs);
+
+    const unsetEditorConfigs = () => {
+        history.replace(rison.decode(locationWithoutEditors));
+        setEditorConfigs([]);
+    }
 
     let newEditorConfig = editorConfig => {
         if (!editorConfig.formKey) {
@@ -60,6 +69,7 @@ export const ContentEditorApi = () => {
         let copy = Array.from(editorConfigs);
         copy.splice(index, 1);
         setEditorConfigs(copy);
+        history.replace(rison.decode(locationWithoutEditors));
     };
 
     let context = useContentEditorApiContext();
@@ -70,22 +80,20 @@ export const ContentEditorApi = () => {
     window.CE_API.edit = context.edit;
     window.CE_API.create = context.create;
 
-    const history = useHistory();
-    const location = useLocation();
-
-    const loaded = useRef();
-    const {locationFromState, locationWithoutEditors} = getEncodedLocations(location, editorConfigs);
-
     useEffect(() => {
         // Copy editor state to hash (don't do on load)
         if (loaded.current) {
             const currentEncodedLocation = rison.encode({search: history.location.search, hash: history.location.hash});
-            if (currentEncodedLocation !== locationFromState) {
+            // Add hash to history only if full screen configuration available, otherwise update config state directly
+            if (currentEncodedLocation !== locationFromState && locationFromState.includes('contentEditor:') && locationFromState.includes('isFullscreen:!!t')) {
                 if (currentEncodedLocation.includes('contentEditor:')) {
                     history.replace(rison.decode(locationFromState));
                 } else {
                     history.push(rison.decode(locationFromState));
                 }
+            } else if (currentEncodedLocation !== locationFromState && locationFromState.includes('contentEditor:')) {
+                const {contentEditor} = decode(rison.decode(locationFromState).hash);
+                setEditorConfigs(contentEditor);
             }
         }
     }, [history, locationFromState]);
@@ -99,14 +107,15 @@ export const ContentEditorApi = () => {
                 const previousValue = rison.encode(previous);
                 return newValue === previousValue ? previous : contentEditor;
             });
+        } else {
+            unsetEditorConfigs();
         }
     }, [location.hash]);
 
     useEffect(() => {
         // Reset all states/hash after location change
         if (loaded.current) {
-            history.replace(rison.decode(locationWithoutEditors));
-            setEditorConfigs([]);
+            unsetEditorConfigs();
         }
     }, [history, location.pathname, locationWithoutEditors]);
 
