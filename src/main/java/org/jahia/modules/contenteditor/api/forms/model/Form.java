@@ -24,6 +24,8 @@
 package org.jahia.modules.contenteditor.api.forms.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.jahia.modules.contenteditor.api.forms.DefinitionRegistryItem;
+import org.jahia.modules.contenteditor.api.forms.RankedComparator;
 import org.jahia.services.content.nodetypes.ExtendedNodeType;
 import org.jahia.services.content.nodetypes.NodeTypeRegistry;
 import org.osgi.framework.Bundle;
@@ -36,17 +38,17 @@ import java.util.stream.Stream;
 /**
  * Represents the definition of an editor form, including the ordering of sections
  */
-public class Form implements Cloneable, Comparable<Form> {
+public class Form implements Cloneable, DefinitionRegistryItem {
     private ExtendedNodeType nodeType;
     private Boolean orderable;
     private String labelKey;
     private String descriptionKey;
     private String label;
     private String description;
-    private double priority = 1.;
-    private List<Section> sections = new ArrayList<>();
-    private Bundle originBundle;
     private Boolean hasPreview;
+    private List<Section> sections = new ArrayList<>();
+    private double priority = 1.;
+    private Bundle originBundle;
 
     public ExtendedNodeType getNodeType() {
         return nodeType;
@@ -100,14 +102,6 @@ public class Form implements Cloneable, Comparable<Form> {
         this.description = description;
     }
 
-    public double getPriority() {
-        return priority;
-    }
-
-    public void setPriority(double priority) {
-        this.priority = priority;
-    }
-
     public Boolean hasPreview() {
         return hasPreview;
     }
@@ -124,6 +118,14 @@ public class Form implements Cloneable, Comparable<Form> {
         this.sections = sections;
     }
 
+    public double getPriority() {
+        return priority;
+    }
+
+    public void setPriority(double priority) {
+        this.priority = priority;
+    }
+
     @JsonIgnore
     public Bundle getOriginBundle() {
         return originBundle;
@@ -138,45 +140,6 @@ public class Form implements Cloneable, Comparable<Form> {
         description = description == null ? nodeType.getDescription(uiLocale) : descriptionKey;
     }
 
-    @Override
-    public int compareTo(Form otherForm) {
-        if (otherForm == null) {
-            return -1;
-        }
-
-        if (priority != otherForm.getPriority()) {
-            return Double.compare(priority, otherForm.getPriority());
-        }
-
-        final ExtendedNodeType otherNodeType = otherForm.getNodeType();
-        if (!nodeType.equals(otherNodeType)) {
-            if (nodeType.isNodeType(otherNodeType.getName())) {
-                return 1;
-            }
-            if (otherNodeType.isNodeType(nodeType.getName())) {
-                return -1;
-            }
-            // put types that not inherit to the end (as they are set as mixin to an existing node)
-            return 1;
-        }
-
-        int result = 0;
-        if (originBundle == null) {
-            if (otherForm.originBundle != null) {
-                result = -1;
-            }
-        } else if (otherForm.originBundle == null) {
-            result = 1;
-        } else {
-            result = originBundle.compareTo(otherForm.originBundle);
-        }
-        if (result != 0) {
-            return result;
-        }
-
-        return 1;
-    }
-
     public Form clone() {
         try {
             Form newForm = (Form) super.clone();
@@ -189,9 +152,27 @@ public class Form implements Cloneable, Comparable<Form> {
         }
     }
 
+    public void mergeWith(DefinitionRegistryItem item) {
+        if (item instanceof Form) {
+            mergeWith((Form) item);
+        } else if (item instanceof FieldSet) {
+            mergeWith((FieldSet) item);
+        }
+    }
     public void mergeWith(Form otherForm) {
         setHasPreview(otherForm.hasPreview() != null ? otherForm.hasPreview() : hasPreview);
         mergeSections(otherForm.getSections());
+    }
+
+    public void mergeWith(FieldSet otherFieldSet) {
+        for (Section section : sections) {
+            for (FieldSet fieldSet : section.getFieldSets()) {
+                // Merge with all field set with matching name
+                if (fieldSet.getName().equals(otherFieldSet.getName())) {
+                    fieldSet.mergeWith(otherFieldSet, this);
+                }
+            }
+        }
     }
 
     private void mergeSections(List<Section> otherSections) {
@@ -202,7 +183,7 @@ public class Form implements Cloneable, Comparable<Form> {
                 sections.add(mergedSection);
             }
         }
-        Collections.sort(sections);
+        sections.sort(RankedComparator.INSTANCE);
     }
 
     public Optional<Field> findAndRemoveField(Field otherField) {

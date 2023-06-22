@@ -23,10 +23,11 @@
  */
 package org.jahia.modules.contenteditor.api.forms.model;
 
+import org.jahia.modules.contenteditor.api.forms.Ranked;
+import org.jahia.modules.contenteditor.api.forms.RankedComparator;
 import org.jahia.services.content.decorator.JCRSiteNode;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -37,7 +38,7 @@ import static org.jahia.modules.contenteditor.api.forms.EditorFormServiceImpl.re
  * For the moment this object only contains a name but it is planned for the schema to evolve so we decided to use an
  * object instead of just a string.
  */
-public class Section implements Cloneable, Comparable<Section> {
+public class Section implements Cloneable, Ranked {
     private String name;
     private String labelKey;
     private String descriptionKey;
@@ -143,22 +144,6 @@ public class Section implements Cloneable, Comparable<Section> {
         description = description == null && descriptionKey != null ? resolveResourceKey(descriptionKey, uiLocale, site) : description;
     }
 
-    @Override
-    public int compareTo(Section other) {
-        if (other == null || other.getRank() == null) {
-            return -1;
-        }
-
-        if (rank == null) {
-            return 1;
-        }
-
-        if (!rank.equals(other.getRank())) {
-            return rank.compareTo(other.getRank());
-        }
-        return name.compareTo(other.getName());
-    }
-
     public Section clone() {
         try {
             Section newSection = (Section) super.clone();
@@ -198,6 +183,6 @@ public class Section implements Cloneable, Comparable<Section> {
                 fieldSets.add(mergedFieldSet);
             }
         }
-        Collections.sort(fieldSets);
+        fieldSets.sort(RankedComparator.INSTANCE);
     }
 }

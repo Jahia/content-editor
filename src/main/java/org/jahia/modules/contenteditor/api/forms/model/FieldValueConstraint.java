@@ -25,7 +25,6 @@ package org.jahia.modules.contenteditor.api.forms.model;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /*
  * Represents a single value constraint among a list of possible values for a field

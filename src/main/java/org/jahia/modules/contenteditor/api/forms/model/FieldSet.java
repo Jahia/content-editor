@@ -1,23 +1,28 @@
 package org.jahia.modules.contenteditor.api.forms.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.jahia.modules.contenteditor.api.forms.DefinitionRegistryItem;
+import org.jahia.modules.contenteditor.api.forms.Ranked;
+import org.jahia.modules.contenteditor.api.forms.RankedComparator;
 import org.jahia.services.content.decorator.JCRSiteNode;
 import org.jahia.services.content.nodetypes.ExtendedNodeType;
 import org.jahia.services.content.nodetypes.NodeTypeRegistry;
+import org.osgi.framework.Bundle;
 import org.owasp.html.Sanitizers;
 
 import javax.jcr.nodetype.NoSuchNodeTypeException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
 import static org.jahia.modules.contenteditor.api.forms.EditorFormServiceImpl.resolveResourceKey;
 
-public class FieldSet implements Cloneable, Comparable<FieldSet> {
+public class FieldSet implements Cloneable, DefinitionRegistryItem, Ranked {
     private String name;
+    private ExtendedNodeType nodeType;
     private String labelKey;
     private String descriptionKey;
     private String label;
@@ -27,7 +32,8 @@ public class FieldSet implements Cloneable, Comparable<FieldSet> {
     private Boolean readOnly;
     private Double rank = 0.0;
     private List<Field> fields = new ArrayList<>();
-    private ExtendedNodeType nodeType;
+    private double priority = 1.;
+    private Bundle originBundle;
 
     private boolean dynamic = false;
     private boolean hasEnableSwitch = false;
@@ -62,6 +68,11 @@ public class FieldSet implements Cloneable, Comparable<FieldSet> {
         this.label = label;
     }
 
+    @Deprecated
+    public void setDisplayName(String displayName) {
+        this.label = displayName;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -94,6 +105,11 @@ public class FieldSet implements Cloneable, Comparable<FieldSet> {
         this.hide = hide;
     }
 
+    @Deprecated
+    public void setRemoved(Boolean removed) {
+        this.hide = removed;
+    }
+
     public Boolean isReadOnly() {
         return readOnly;
     }
@@ -116,6 +132,24 @@ public class FieldSet implements Cloneable, Comparable<FieldSet> {
 
     public void setFields(List<Field> fields) {
         this.fields = fields;
+    }
+
+    @Override
+    public double getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Double priority) {
+        this.priority = priority;
+    }
+
+    @JsonIgnore
+    public Bundle getOriginBundle() {
+        return originBundle;
+    }
+
+    public void setOriginBundle(Bundle originBundle) {
+        this.originBundle = originBundle;
     }
 
     @JsonIgnore
@@ -160,22 +194,6 @@ public class FieldSet implements Cloneable, Comparable<FieldSet> {
         }
     }
 
-    @Override
-    public int compareTo(FieldSet other) {
-        if (other == null || other.getRank() == null) {
-            return -1;
-        }
-
-        if (rank == null) {
-            return 1;
-        }
-
-        if (!rank.equals(other.getRank())) {
-            return rank.compareTo(other.getRank());
-        }
-        return name.compareTo(other.getName());
-    }
-
     public FieldSet clone() {
         try {
             FieldSet newFieldSet = (FieldSet) super.clone();
@@ -210,7 +228,7 @@ public class FieldSet implements Cloneable, Comparable<FieldSet> {
                 fields.add(existingField);
             }
         }
-        Collections.sort(fields);
+        fields.sort(RankedComparator.INSTANCE);
     }
 
 }

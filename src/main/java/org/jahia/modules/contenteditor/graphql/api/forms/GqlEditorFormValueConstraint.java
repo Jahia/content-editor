@@ -2,7 +2,6 @@ package org.jahia.modules.contenteditor.graphql.api.forms;
 
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
-import graphql.annotations.annotationTypes.GraphQLName;
 import org.jahia.modules.contenteditor.api.forms.model.FieldValueConstraint;
 
 import java.util.Collections;
@@ -36,9 +35,8 @@ public class GqlEditorFormValueConstraint {
     }
 
     @GraphQLField
-    @GraphQLName("properties")
     @GraphQLDescription("The properties for the value")
-    public List<GqlEditorFormProperty> getPropertyList() {
+    public List<GqlEditorFormProperty> getProperties() {
         if (constraint.getPropertyList() != null) {
             return constraint.getPropertyList().stream().map(p -> new GqlEditorFormProperty(p.getName(), p.getValue())).collect(Collectors.toList());
         }

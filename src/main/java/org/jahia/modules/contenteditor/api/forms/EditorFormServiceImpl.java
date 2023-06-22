@@ -113,30 +113,33 @@ public class EditorFormServiceImpl implements EditorFormService {
 
             // Gather all nodetypes and get associated forms
             Set<String> processedNodeTypes = new HashSet<>();
-            final SortedSet<Form> formDefinitionsToMerge = new TreeSet<>();
+            final SortedSet<DefinitionRegistryItem> mergeSet = new TreeSet<>(DefinitionRegistryItemComparator.INSTANCE);
 
-            // First, primarty node type and inherited
-            addFormNodeType(primaryNodeType, formDefinitionsToMerge, uiLocale, locale, processedNodeTypes);
+            // First, primary node type and inherited
+            addFormNodeType(primaryNodeType, mergeSet, locale, processedNodeTypes);
 
             // Available extends mixins
             List<ExtendedNodeType> extendMixins = getExtendMixins(primaryNodeType, site);
             for (ExtendedNodeType extendMixin : extendMixins) {
-                addFormNodeType(extendMixin, formDefinitionsToMerge, uiLocale, locale, processedNodeTypes);
+                addFormNodeType(extendMixin, mergeSet, locale, processedNodeTypes);
             }
 
             // Mixins added on node
             if (existingNode != null) {
                 for (ExtendedNodeType mixinNodeType : existingNode.getMixinNodeTypes()) {
-                    addFormNodeType(mixinNodeType, formDefinitionsToMerge, uiLocale, locale, processedNodeTypes);
+                    addFormNodeType(mixinNodeType, mergeSet, locale, processedNodeTypes);
                 }
             }
 
             // Merge all forms
             Form form = null;
-            for (Form current : formDefinitionsToMerge) {
+            for (DefinitionRegistryItem current : mergeSet) {
                 if (current.getOriginBundle() == null || isApplicable(current.getOriginBundle(), site)) {
                     if (form == null) {
-                        form = current.clone();
+                        if (current instanceof Form) {
+                            // First item must always be a form, previous fieldset will be ignored
+                            form = ((Form)current).clone();
+                        }
                     } else {
                         form.mergeWith(current);
                     }
@@ -230,11 +233,12 @@ public class EditorFormServiceImpl implements EditorFormService {
         }
     }
 
-    private void addFormNodeType(ExtendedNodeType nodeType, SortedSet<Form> formDefinitionsToMerge, Locale uiLocale, Locale locale, Set<String> processedNodeTypes) throws RepositoryException {
+    private void addFormNodeType(ExtendedNodeType nodeType, SortedSet<DefinitionRegistryItem> formDefinitionsToMerge, Locale locale, Set<String> processedNodeTypes) throws RepositoryException {
         if (!processedNodeTypes.contains(nodeType.getName())) {
             formDefinitionsToMerge.add(FormGenerator.generateForm(nodeType, locale));
             formDefinitionsToMerge.addAll(staticDefinitionsRegistry.getFormDefinitionsForType(nodeType));
-            
+            formDefinitionsToMerge.addAll(staticDefinitionsRegistry.getFieldSetsForType(nodeType));
+
             processedNodeTypes.add(nodeType.getName());
             processedNodeTypes.addAll(nodeType.getSupertypeSet().stream().map(ExtendedNodeType::getName).collect(Collectors.toList()));
         }
@@ -268,7 +272,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             return Collections.emptyList();
         }
 
-        Map<String,Object> selectorOptions = editorFormField.getSelectorOptions();
+        Map<String,Object> selectorOptions = editorFormField.getSelectorOptionsMap();
         List<ChoiceListValue> initialChoiceListValues = new ArrayList<>();
 
         if (selectorOptions != null && !selectorOptions.isEmpty()) {
@@ -302,14 +306,6 @@ public class EditorFormServiceImpl implements EditorFormService {
         } else {
             return editorFormField.getValueConstraints();
         }
-    }
-
-    private boolean isFieldReadOnly(ExtendedPropertyDefinition propertyDefinition, boolean sharedFieldsEditable, boolean i18nFieldsEditable) {
-        if (propertyDefinition.isProtected()) {
-            return true;
-        }
-
-        return propertyDefinition.isInternationalized() ? !i18nFieldsEditable : !sharedFieldsEditable;
     }
 
     private List<ExtendedNodeType> getExtendMixins(ExtendedNodeType type, JCRSiteNode site) throws NoSuchNodeTypeException {
@@ -354,8 +350,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             if (fieldPropertyDefinition != null) {
                 Field editorFormField = FormGenerator.generateEditorFormField(fieldPropertyDefinition, locale);
 
-                Map<String, Object> extendContext = new HashMap<>();
-                editorFormField.getSelectorOptions().entrySet().forEach(option -> extendContext.put(option.getKey(), option.getValue()));
+                Map<String, Object> extendContext = new HashMap<>(editorFormField.getSelectorOptionsMap());
                 for (ContextEntryInput contextEntry : context) {
                     if (contextEntry.getValue() != null) {
                         extendContext.put(contextEntry.getKey(), contextEntry.getValue());

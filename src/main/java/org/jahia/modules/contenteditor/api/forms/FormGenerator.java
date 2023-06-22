@@ -152,7 +152,7 @@ public class FormGenerator {
         field.setExtendedPropertyDefinition(propertyDefinition);
         field.setRequiredType(PropertyType.nameFromValue(propertyDefinition.getRequiredType()));
         field.setSelectorType(selectorType);
-        field.setSelectorOptions(selectorOptions);
+        field.setSelectorOptionsMap(selectorOptions);
         field.setI18n(propertyDefinition.isInternationalized());
         field.setReadOnly(propertyDefinition.isProtected());
         field.setMultiple(propertyDefinition.isMultiple());

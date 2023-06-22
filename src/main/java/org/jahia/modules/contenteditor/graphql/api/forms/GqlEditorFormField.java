@@ -30,7 +30,6 @@ import org.jahia.modules.graphql.provider.dxm.node.GqlJcrPropertyType;
 
 import javax.jcr.PropertyType;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -74,7 +73,7 @@ public class GqlEditorFormField {
     @GraphQLField
     @GraphQLDescription("Options for the selector type. For JCR definitions, this will usually include choicelist initializer name and properties.")
     public List<GqlEditorFormProperty> getSelectorOptions() {
-        return serializeMap(new ArrayList<>(), "", field.getSelectorOptions());
+        return serializeMap(new ArrayList<>(), "", field.getSelectorOptionsMap());
     }
 
     @GraphQLField

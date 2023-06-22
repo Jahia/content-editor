@@ -1,8 +1,10 @@
 package org.jahia.modules.contenteditor.api.forms.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
+import org.jahia.modules.contenteditor.api.forms.Ranked;
 import org.jahia.services.content.decorator.JCRSiteNode;
 import org.jahia.services.content.nodetypes.ExtendedItemDefinition;
 import org.jahia.services.content.nodetypes.ExtendedNodeType;
@@ -17,7 +19,7 @@ import java.util.Map;
 
 import static org.jahia.modules.contenteditor.api.forms.EditorFormServiceImpl.resolveResourceKey;
 
-public class Field implements Cloneable, Comparable<Field> {
+public class Field implements Cloneable, Ranked {
     private String name;
     private String label;
     private String labelKey;
@@ -30,7 +32,7 @@ public class Field implements Cloneable, Comparable<Field> {
     private String declaringNodeType;
     private ExtendedPropertyDefinition extendedPropertyDefinition;
     private String requiredType;
-    private Map<String, Object> selectorOptions;
+    private Map<String, Object> selectorOptionsMap;
     private String selectorType;
     private Boolean i18n;
     private Boolean readOnly;
@@ -112,7 +114,6 @@ public class Field implements Cloneable, Comparable<Field> {
         this.rank = rank;
     }
 
-
     public String getDeclaringNodeType() {
         return declaringNodeType;
     }
@@ -144,12 +145,16 @@ public class Field implements Cloneable, Comparable<Field> {
         this.requiredType = requiredType;
     }
 
-    public Map<String, Object> getSelectorOptions() {
-        return selectorOptions;
+    public Map<String, Object> getSelectorOptionsMap() {
+        return selectorOptionsMap;
     }
 
-    public void setSelectorOptions(Map<String, Object> selectorOptions) {
-        this.selectorOptions = selectorOptions;
+    public void setSelectorOptionsMap(Map<String, Object> selectorOptionsMap) {
+        this.selectorOptionsMap = selectorOptionsMap;
+    }
+
+    public void setSelectorOptions(List<Property> properties) {
+        System.out.println(properties);
     }
 
     public String getSelectorType() {
@@ -231,22 +236,6 @@ public class Field implements Cloneable, Comparable<Field> {
         }
     }
 
-    @Override
-    public int compareTo(Field other) {
-        if (other == null || other.getRank() == null) {
-            return -1;
-        }
-
-        if (rank == null) {
-            return 1;
-        }
-
-        if (!rank.equals(other.getRank())) {
-            return rank.compareTo(other.getRank());
-        }
-        return name.compareTo(other.getName());
-    }
-
     public Field clone() {
         try {
             Field newField = (Field) super.clone();
@@ -268,7 +257,7 @@ public class Field implements Cloneable, Comparable<Field> {
         setErrorMessage(otherField.getErrorMessage() != null ? otherField.getErrorMessage() : errorMessage);
         setExtendedPropertyDefinition(otherField.getExtendedPropertyDefinition() != null ? otherField.getExtendedPropertyDefinition() : extendedPropertyDefinition);
         setRequiredType(otherField.getRequiredType() != null ? otherField.getRequiredType() : requiredType);
-        setSelectorOptions(otherField.getSelectorOptions() != null ? otherField.getSelectorOptions() : selectorOptions);
+        setSelectorOptionsMap(otherField.getSelectorOptionsMap() != null ? otherField.getSelectorOptionsMap() : selectorOptionsMap);
         setSelectorType(otherField.getSelectorType() != null ? otherField.getSelectorType() : selectorType);
         setI18n(otherField.isI18n() != null ? otherField.isI18n() : i18n);
         setReadOnly(otherField.isReadOnly() != null ? otherField.isReadOnly() : readOnly);
