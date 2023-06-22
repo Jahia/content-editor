@@ -67,12 +67,11 @@ describe('adaptFormData', () => {
     });
 
     it('sets labels and initial data correctly', () => {
-        adaptSystemNameField(rawData, formData, t, false, true);
-        expect(formData.sections[1].fieldSets[0].displayName).toEqual('content-editor:label.contentEditor.section.fieldSet.system.displayName');
+        adaptSystemNameField(rawData, formData, t, 'nt:any', false, true);
         expect(formData.sections[1].fieldSets[0].fields[0].displayName).toEqual('content-editor:label.contentEditor.section.fieldSet.system.fields.systemName');
         expect(formData.initialValues[Constants.systemName.name]).toEqual(rawData.jcr.result.name);
 
-        adaptSystemNameField(rawData, formData, t, true, true);
+        adaptSystemNameField(rawData, formData, t, 'nt:any', true, true);
         expect(formData.initialValues[Constants.systemName.name]).toEqual(rawData.jcr.result.newName);
     });
 });

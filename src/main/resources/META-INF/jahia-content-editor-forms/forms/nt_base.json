@@ -71,7 +71,8 @@
       "labelKey": "label.engineTab.listOrdering",
       "rank": 7.0,
       "requiredPermission": "viewContentTab",
-      "expanded": true
+      "expanded": true,
+      "displayModes": ["edit"]
     },
     {
       "name": "visibility",
