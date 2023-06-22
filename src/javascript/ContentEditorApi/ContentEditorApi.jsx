@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {ErrorBoundary} from '@jahia/jahia-ui-root';
 import {useEdit} from './useEdit';
 import {useCreate} from './useCreate';
@@ -7,6 +7,36 @@ import {ContentEditorModal} from './ContentEditorModal';
 import {useContentEditorApiContext} from '~/contexts/ContentEditorApi/ContentEditorApi.context';
 import {ContentTypeSelectorModal} from '~/ContentTypeSelectorModal';
 import {Constants} from '~/ContentEditor.constants';
+import {useHistory, useLocation} from 'react-router-dom';
+import rison from 'rison-node';
+
+function decode(hash) {
+    let values = {};
+    try {
+        values = hash ? rison.decode_uri(hash.substring(1)) : {};
+    } catch {
+        //
+    }
+
+    return values;
+}
+
+let getEncodedLocations = function (location, editorConfigs) {
+    const {contentEditor, ...others} = decode(location.hash);
+
+    const valid = editorConfigs.every(config => Object.values(config).every(o => typeof o !== 'function'));
+
+    const cleanedHash = Object.keys(others).length > 0 ? rison.encode_uri(others) : '';
+    const locationWithoutEditors = rison.encode({search: location.search, hash: cleanedHash});
+    const locationFromState = (valid && editorConfigs.length > 0) ?
+        rison.encode({search: location.search, hash: '#' + rison.encode_uri({...others, contentEditor: JSON.parse(JSON.stringify(editorConfigs))})}) :
+        locationWithoutEditors;
+
+    return {
+        locationFromState,
+        locationWithoutEditors
+    };
+};
 
 export const ContentEditorApi = () => {
     const [editorConfigs, setEditorConfigs] = useState([]);
@@ -39,6 +69,50 @@ export const ContentEditorApi = () => {
     window.CE_API = window.CE_API || {};
     window.CE_API.edit = context.edit;
     window.CE_API.create = context.create;
+
+    const history = useHistory();
+    const location = useLocation();
+
+    const loaded = useRef();
+    const {locationFromState, locationWithoutEditors} = getEncodedLocations(location, editorConfigs);
+
+    useEffect(() => {
+        // Copy editor state to hash (don't do on load)
+        if (loaded.current) {
+            const currentEncodedLocation = rison.encode({search: history.location.search, hash: history.location.hash});
+            if (currentEncodedLocation !== locationFromState) {
+                if (currentEncodedLocation.includes('contentEditor:')) {
+                    history.replace(rison.decode(locationFromState));
+                } else {
+                    history.push(rison.decode(locationFromState));
+                }
+            }
+        }
+    }, [history, locationFromState]);
+
+    useEffect(() => {
+        // Read hash to set/unset editors
+        const {contentEditor} = decode(location.hash);
+        if (contentEditor) {
+            setEditorConfigs(previous => {
+                const newValue = rison.encode(contentEditor);
+                const previousValue = rison.encode(previous);
+                return newValue === previousValue ? previous : contentEditor;
+            });
+        }
+    }, [location.hash]);
+
+    useEffect(() => {
+        // Reset all states/hash after location change
+        if (loaded.current) {
+            history.replace(rison.decode(locationWithoutEditors));
+            setEditorConfigs([]);
+        }
+    }, [history, location.pathname, locationWithoutEditors]);
+
+    useEffect(() => {
+        loaded.current = true;
+    }, []);
 
     const editorConfigLang = editorConfigs.length > 0 ? editorConfigs[0].lang : undefined;
     useEffect(() => {

@@ -5,6 +5,20 @@ import {useFormikContext} from 'formik';
 import {useContentEditorContext} from '~/contexts/ContentEditor';
 import {isDirty} from '~/utils';
 
+import rison from 'rison-node';
+import {useLocation} from 'react-router-dom';
+
+function decode(hash) {
+    let values = {};
+    try {
+        values = hash ? rison.decode_uri(hash.substring(1)) : {};
+    } catch {
+        //
+    }
+
+    return values;
+}
+
 export const OnCloseConfirmationDialog = ({deleteEditorConfig, openDialog}) => {
     const [confirmationConfig, setConfirmationConfig] = useState(false);
     const formik = useFormikContext();
@@ -21,6 +35,20 @@ export const OnCloseConfirmationDialog = ({deleteEditorConfig, openDialog}) => {
             }
         };
     });
+
+    const location = useLocation();
+    useEffect(() => {
+        // Read hash to set/unset editors
+        const {contentEditor} = decode(location.hash);
+        if (contentEditor === undefined) {
+            if (dirty) {
+                formik.validateForm();
+                setConfirmationConfig(true);
+            } else {
+                deleteEditorConfig();
+            }
+        }
+    }, [deleteEditorConfig, dirty, formik, location.hash]);
 
     return confirmationConfig && (
         <CloseConfirmationDialog
