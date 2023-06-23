@@ -183,7 +183,6 @@ public class Form implements Cloneable, DefinitionRegistryItem {
                 sections.add(mergedSection);
             }
         }
-        sections.sort(RankedComparator.INSTANCE);
     }
 
     public Optional<Field> findAndRemoveField(Field otherField) {

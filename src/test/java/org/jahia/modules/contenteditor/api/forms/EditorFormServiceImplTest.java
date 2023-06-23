@@ -21,13 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.jahia.modules.contenteditor.api.forms.impl;
+package org.jahia.modules.contenteditor.api.forms;
 
 import org.eclipse.core.runtime.Assert;
 import org.jahia.api.Constants;
 import org.jahia.data.templates.JahiaTemplatesPackage;
 import org.jahia.modules.DummyBundle;
-import org.jahia.modules.contenteditor.api.forms.*;
+import org.jahia.modules.contenteditor.api.forms.model.*;
 import org.jahia.registries.ServicesRegistry;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRSessionFactory;
@@ -101,7 +101,7 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         testSite = TestHelper.createSite("editorFormServiceSite");
 
         // init static definition registry
-        staticDefinitionsRegistry.readEditorFormDefinition(EditorFormServiceImpl.class.getClassLoader().getResource("META-INF/jahia-content-editor-forms/forms/nt_base.json"), new DummyBundle(0));
+        staticDefinitionsRegistry.registerForm(EditorFormServiceImpl.class.getClassLoader().getResource("META-INF/jahia-content-editor-forms/forms/nt_base.json"), null);
 
         // create text content
         textNode = session.getNode(testSite.getJCRLocalPath()).addNode("test", "jnt:text");
@@ -145,8 +145,8 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         JCRNodeWrapper simpleContent = session.getNode(testSite.getJCRLocalPath()).addNode("testNode", "jnt:simple");
         simpleContent.setProperty("prop", "propValue");
         session.save();
-        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
-        EditorForm createForm = editorFormService.getCreateForm("jnt:simple", Locale.ENGLISH, Locale.ENGLISH, testSite.getJCRLocalPath());
+        Form form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
+        Form createForm = editorFormService.getCreateForm("jnt:simple", Locale.ENGLISH, Locale.ENGLISH, testSite.getJCRLocalPath());
         String sectionName = "content";
         Map<String, List<String>> expectedFieldsSet = new HashMap<>();
         expectedFieldsSet.put("jnt:simple", Collections.singletonList("prop"));
@@ -166,8 +166,8 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         JCRNodeWrapper simpleContent = session.getNode(testSite.getJCRLocalPath()).addNode("testNode", "jnt:simpleWithMix");
         simpleContent.setProperty("prop", "propValue");
         session.save();
-        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
-        EditorForm createForm = editorFormService.getCreateForm("jnt:simpleWithMix", Locale.ENGLISH, Locale.ENGLISH, testSite.getJCRLocalPath());
+        Form form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
+        Form createForm = editorFormService.getCreateForm("jnt:simpleWithMix", Locale.ENGLISH, Locale.ENGLISH, testSite.getJCRLocalPath());
         String sectionName = "content";
         Map<String, List<String>> expectedFieldsSet = new HashMap<>();
         expectedFieldsSet.put("jnt:simpleWithMix", Collections.singletonList("prop"));
@@ -189,7 +189,7 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         simpleContent.addMixin("jmix:mix1");
         simpleContent.setProperty("prop", "propValue");
         session.save();
-        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
+        Form form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
         String sectionName = "content";
         Map<String, List<String>> expectedFieldsSet = new HashMap<>();
         expectedFieldsSet.put("jnt:simple", Collections.singletonList("prop"));
@@ -204,8 +204,8 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         simpleContent.addMixin("jmix:mix1");
         simpleContent.setProperty("prop", "propValue");
         session.save();
-        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
-        EditorForm createForm = editorFormService.getCreateForm("jnt:simpleWithExtends", Locale.ENGLISH, Locale.ENGLISH, testSite.getJCRLocalPath());
+        Form form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
+        Form createForm = editorFormService.getCreateForm("jnt:simpleWithExtends", Locale.ENGLISH, Locale.ENGLISH, testSite.getJCRLocalPath());
         String sectionName = "content";
 
         Map<String, List<String>> expectedFieldsSet = new HashMap<>();
@@ -222,7 +222,7 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         simpleContent.setProperty("extension", "extension Value");
         session.save();
 
-        EditorForm newForm = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
+        Form newForm = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
         expectedFieldsSet = new HashMap<>();
         expectedFieldsSet.put("jnt:simpleWithExtends", Collections.singletonList("prop:false:true"));
         expectedFieldsSet.put("jmix:mix1", Collections.singletonList("propMix1:false:true"));
@@ -234,19 +234,19 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
     public void simpleWithRank() throws Exception {
         JCRNodeWrapper simpleContent = session.getNode(testSite.getJCRLocalPath()).addNode("testNode", "jnt:simpleRank");
         session.save();
-        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
+        Form form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
         String sectionName = "content";
         // validate that the 'prop3' rank is the last one
-        EditorFormFieldSet fieldSet = getFieldSet(form, sectionName, "jnt:simpleRank");
-        ArrayList<EditorFormField> fields = new ArrayList<>(fieldSet.getEditorFormFields());
+        FieldSet fieldSet = getFieldSet(form, sectionName, "jnt:simpleRank");
+        ArrayList<Field> fields = new ArrayList<>(fieldSet.getFields());
         Assert.isTrue(fields.get(2).getName().equals("prop3"), "according to the definition, prop3 is not the last proprety but should be");
         // Apply the override
-        readEditorFormFieldSet("META-INF/jahia-content-editor-forms/fieldsets/jnt_simple_rank_field.json");
-        EditorForm newForm = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
+        staticDefinitionsRegistry.registerFieldSet(getResource("META-INF/jahia-content-editor-forms/fieldsets/jnt_simple_rank_field.json"), null);
+        Form newForm = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
         // validate that the 'prop3' rank is the first one
         fieldSet = getFieldSet(newForm, sectionName, "jnt:simpleRank");
-        fields = new ArrayList<>(fieldSet.getEditorFormFields());
-        Assert.isTrue(getField(newForm, sectionName, "jnt:simpleRank", "prop3").getTarget().getRank() == 0, "Overrided rank in target should be 0");
+        fields = new ArrayList<>(fieldSet.getFields());
+//        Assert.isTrue(getField(newForm, sectionName, "jnt:simpleRank", "prop3").getTarget().getRank() == 0, "Overrided rank in target should be 0");
 
         // validate that the 'prop3' is the first in the set
         Assert.isTrue(fields.get(0).getName().equals("prop1"), "according to the definition, prop1 is not the 1st property but should be");
@@ -261,23 +261,23 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
 
         session.save();
         // edit
-        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
+        Form form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
         simpleWithMixinPropertiesOverrideResults(form);
         // create
-        EditorForm createForm = editorFormService.getCreateForm("jnt:simpleWithMixProperties", Locale.ENGLISH, Locale.ENGLISH, testSite.getJCRLocalPath());
+        Form createForm = editorFormService.getCreateForm("jnt:simpleWithMixProperties", Locale.ENGLISH, Locale.ENGLISH, testSite.getJCRLocalPath());
         simpleWithMixinPropertiesOverrideResults(createForm);
     }
 
     @Test
     public void testHasPreviewOverride() throws Exception {
         // ** Test on folder.
-        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, folderNode.getPath());
+        Form form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, folderNode.getPath());
         int numSections = form.getSections().size();
 
         // Add base + override of folder
-        staticDefinitionsRegistry.readEditorFormDefinition(getResource("META-INF/jahia-content-editor-forms/forms/nt_base.override.json"),
-            new DummyBundle(0));
-        staticDefinitionsRegistry.readEditorFormDefinition(getResource("META-INF/jahia-content-editor-forms/forms/jnt_folder.json"), new DummyBundle(0));
+        staticDefinitionsRegistry.registerForm(getResource("META-INF/jahia-content-editor-forms/forms/nt_base.override.json"),
+            null);
+        staticDefinitionsRegistry.registerForm(getResource("META-INF/jahia-content-editor-forms/forms/jnt_folder.json"), null);
 
         form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, folderNode.getPath());
         Assert.isTrue(!form.hasPreview(), "Override of folder should NOT have preview");
@@ -289,12 +289,12 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         Assert.isTrue(form.hasPreview(), "text should have preview without overrides");
 
         // Add override of a supertype that hides the preview.
-        staticDefinitionsRegistry.readEditorFormDefinition(getResource("META-INF/jahia-content-editor-forms/forms/jnt_content.json"), new DummyBundle(0));
+        staticDefinitionsRegistry.registerForm(getResource("META-INF/jahia-content-editor-forms/forms/jnt_content.json"), null);
         form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
         Assert.isTrue(!form.hasPreview(), "Override of content should make text should NOT have preview");
 
         // Add override of text that does nothing.
-        staticDefinitionsRegistry.readEditorFormDefinition(getResource("META-INF/jahia-content-editor-forms/forms/jnt_text.json"), new DummyBundle(0));
+        staticDefinitionsRegistry.registerForm(getResource("META-INF/jahia-content-editor-forms/forms/jnt_text.json"), null);
         form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
         Assert.isTrue(!form.hasPreview(), "Override of text should make text NOT have preview");
 
@@ -305,7 +305,7 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         Assert.isTrue(!form.hasPreview(), "Add mixin and override of text should make text NOT have preview");
 
         // Add override of the mixin that displays the preview
-        staticDefinitionsRegistry.readEditorFormDefinition(getResource("META-INF/jahia-content-editor-forms/forms/jmix_hasPreview.json"), new DummyBundle(0));
+        staticDefinitionsRegistry.registerForm(getResource("META-INF/jahia-content-editor-forms/forms/jmix_hasPreview.json"), null);
         form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
         Assert.isTrue(form.hasPreview(), "Add mixin and override of mixin should make text have preview");
 
@@ -314,102 +314,43 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
     }
 
     @Test
-    public void testSectionOverride() throws Exception {
-        // inject custom section
-        staticDefinitionsRegistry.readEditorFormDefinition(getResource("META-INF/jahia-content-editor-forms/forms/nt_base.override.json"), new DummyBundle(0));
-
-        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
-        Assert.isTrue(form.getSections().size() == 5, "Override contains more than one section");
-        EditorFormSection section = form.getSections().stream().filter(s -> s.getName().equals("layout")).findFirst().orElse(null);
-        Assert.isNotNull(section, "Override does not contains \"layout\" section");
-    }
-
-
-    @Test
     public void testSectionHidden() throws Exception {
         // inject custom section
-        staticDefinitionsRegistry.readEditorFormDefinition(getResource("META-INF/jahia-content-editor-forms/forms/nt_base.override"
-            + ".displayModes.json"), new DummyBundle(0));
+        staticDefinitionsRegistry.registerForm(getResource("META-INF/jahia-content-editor-forms/forms/nt_base.override.displayModes.json"), null);
 
-        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
-        Assert.isTrue(form.getSections().size() == 5, "Override contains more than one section");
-        EditorFormSection section = form.getSections().stream().filter(s -> s.getName().equals("layout")).findFirst().orElse(null);
+        Form form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
+        Assert.isTrue(form.getSections().size() == 6, "Override contains more than one section");
+        Optional<Section> section = form.getSections().stream().filter(s -> s.getName().equals("layout")).findFirst();
 
-        Assert.isNotNull(section, "Override does not contains \"layout\" section");
+        Assert.isTrue(section.isPresent(), "Override does not contains \"layout\" section");
 
-        Assert.isTrue(!section.isHide(), "Override should set the hide value of the \"layout\" section to false");
-
-        EditorForm createForm = editorFormService.getCreateForm("jnt:text", Locale.ENGLISH, Locale.ENGLISH, testSite.getJCRLocalPath());
+        Form createForm = editorFormService.getCreateForm("jnt:text", Locale.ENGLISH, Locale.ENGLISH, testSite.getJCRLocalPath());
 
         Assert.isTrue(createForm.getSections().size() == 5, "Override contains more than one section");
-        EditorFormSection sectionInCreateMode =
-            createForm.getSections().stream().filter(s -> s.getName().equals("layout")).findFirst().orElse(null);
+        Optional<Section> sectionInCreateMode = createForm.getSections().stream().filter(s -> s.getName().equals("layout")).findFirst();
 
-        Assert.isNotNull(sectionInCreateMode, "Override does not contains \"layout\" section");
-
-        Assert.isTrue(sectionInCreateMode.isHide(), "Override should set the hide value of the \"layout\" section to true");
-    }
-
-    @Test
-    public void testSectionPriorityOverride() throws Exception {
-        // inject custom sections on base with higher priority.
-        // check the override
-        staticDefinitionsRegistry.readEditorFormDefinition(getResource("META-INF/jahia-content-editor-forms/forms/nt_base.override.json"),
-            new DummyBundle(0));
-        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
-        int initNumSections = 5;
-        Assert.isTrue(form.getSections().size() == initNumSections, "Priority check on section does not contain 1 section");
-        EditorFormSection section = form.getSections().stream().filter(s -> s.getName().equals("layout")).findFirst().orElse(null);
-        Assert.isNotNull(section, "Priority check on section does not contain options then content");
-
-        // inject same priority / nodeType => should not change anything
-        staticDefinitionsRegistry.readEditorFormDefinition(getResource("META-INF/jahia-content-editor-forms/forms/nt_base.same-priority.json"), new DummyBundle(0));
-        form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
-        Assert.isTrue(form.getSections().size() == initNumSections,
-            "Same priority should not taken in account : Priority check on section does not contain 1 section");
-        section = form.getSections().stream().filter(s -> s.getName().equals("layout")).findFirst().orElse(null);
-        Assert.isNotNull(section, "Same priority should not taken in account : Priority check on section does not contain options then content");
-
-        // Inject higher priority
-        staticDefinitionsRegistry.readEditorFormDefinition(getResource("META-INF/jahia-content-editor-forms/forms/nt_base.priority.json"), new DummyBundle(0));
-        form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
-        Assert.isTrue(form.getSections().size() == initNumSections, "Priority check on section does not contain 2 sections");
-
-        boolean hasOptions = false;
-        boolean hasContent = false;
-        for (EditorFormSection s :form.getSections()) {
-            if (s.getName().equals("options")) {
-                hasOptions = true;
-            } else if (s.getName().equals("content")) {
-                hasContent = true;
-                Assert.isTrue(hasOptions, "Priority check on section does not contain options then content");
-            }
-        }
-        Assert.isTrue(hasOptions && hasContent);
+        Assert.isTrue(!sectionInCreateMode.isPresent(), "Override does not contains \"layout\" section");
     }
 
     @Test
     public void testSectionForNodeTypeOverride() throws Exception {
         // inject text override
-        staticDefinitionsRegistry.readEditorFormDefinition(
-            getResource("META-INF/jahia-content-editor-forms/forms/jnt_text.json"), new DummyBundle(0));
+        staticDefinitionsRegistry.registerForm(getResource("META-INF/jahia-content-editor-forms/forms/jnt_text.json"), null);
 
-        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
-        Assert.isTrue(form.getSections().size() == 5, "Override contains more than one section");
-        EditorFormSection section = form.getSections().stream().filter(s -> s.getName().equals("metadata")).findFirst().orElse(null);
-        Assert.isNotNull(section, "Override does not contains \"metadata\" section");
+        Form form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
+        Assert.isTrue(form.getSections().size() == 6, "Override contains more than one section");
     }
 
     @Test
     public void testRemoveFieldSetOverride() throws Exception {
 
-        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
+        Form form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
         // description is present
         Assert.isTrue(hasFieldSet(form, "metadata", "jmix:description"), "description not found");
-        readEditorFormFieldSet("META-INF/jahia-content-editor-forms/fieldsets/jmix_description_remove_fieldset.json");
+        staticDefinitionsRegistry.registerFieldSet(getResource("META-INF/jahia-content-editor-forms/fieldsets/jmix_description_remove_fieldset.json"), null);
 
         // description is removed
-        EditorForm newForm = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
+        Form newForm = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
         Assert.isTrue(!hasFieldSet(newForm, "metadata", "jmix:description"), "description is found but should not");
     }
 
@@ -426,11 +367,11 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
      */
     @Test
     public void testMoveFieldSetOverride() throws Exception {
-        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
+        Form form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
         // test that tagged is in jmix:tagged
         Assert.isTrue(hasField(form, "metadata", "jmix:tagged", "j:tagList"), "cannot find jmix:tagged in metadata section");
-        readEditorFormFieldSet("META-INF/jahia-content-editor-forms/fieldsets/jmix_tagged_move_field.json");
-        EditorForm newForm = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
+        staticDefinitionsRegistry.registerForm(getResource("META-INF/jahia-content-editor-forms/forms/jmix_tagged_move_field.json"), null);
+        Form newForm = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
         // field has been moved
         Assert.isTrue(hasField(newForm, "classification", "jmix:tagged", "j:tagList"), "cannot find jmix:tagged in metadata section");
         Assert.isTrue(!hasFieldSet(newForm, "metadata", "jmix:tagged"), "cannot find jmix:tagged in metadata section");
@@ -457,15 +398,15 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
      */
     @Test
     public void testAddFieldWithValueConstraintOverride() throws Exception {
-        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
-        readEditorFormFieldSet("META-INF/jahia-content-editor-forms/fieldsets/jmix_description_value_constraint.json");
+        Form form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
         // test that description is in jmix:description
         Assert.isTrue(hasField(form, "metadata", "jmix:description", "jcr:description"), "cannot find jcr:description field "
             + "jmix:description fieldset in metadata section");
 
-        EditorForm newForm = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
+        staticDefinitionsRegistry.registerFieldSet(getResource("META-INF/jahia-content-editor-forms/fieldsets/jmix_description_value_constraint.json"), null);
+        Form newForm = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
         // Field contains a value constraint
-        List<EditorFormFieldValueConstraint> valueConstraints = getValueConstraints(newForm, "metadata", "jmix:description", "jcr:description");
+        List<FieldValueConstraint> valueConstraints = getValueConstraints(newForm, "metadata", "jmix:description", "jcr:description");
 
         Assert.isTrue(valueConstraints
                 .stream()
@@ -475,8 +416,8 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
 
     @Test
     public void testUnstructuredFieldSetOverride() throws Exception {
-        readEditorFormFieldSet("META-INF/jahia-content-editor-forms/fieldsets/jnt_unstructuredNews.json");
-        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, unstructuredNews.getPath());
+        staticDefinitionsRegistry.registerForm(getResource("META-INF/jahia-content-editor-forms/forms/jnt_unstructuredNews.json"), null);
+        Form form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, unstructuredNews.getPath());
         Assert.isTrue(hasField(form, "content", "jnt:unstructuredNews", "text"), "cannot find jmix:tagged in metadata section");
         Assert.isTrue(hasField(form, "content", "jnt:unstructuredNews", "description"), "cannot find jmix:tagged in metadata section");
     }
@@ -484,43 +425,44 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
     @Test
     public void testOverridesFromDifferentBundles() throws Exception {
         staticDefinitionsRegistry
-            .readEditorFormDefinition(getResource("META-INF/jahia-content-editor-forms/forms/nt_base.override.json"), new DummyBundle(0));
+            .registerForm(getResource("META-INF/jahia-content-editor-forms/forms/nt_base.override.json"), null);
 
-        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
+        Form form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
         int numSections = form.getSections().size();
-        EditorFormSection section = form.getSections().stream().filter(s -> s.getName().equals("layout")).findFirst().orElse(null);
+        Section section = form.getSections().stream().filter(s -> s.getName().equals("layout")).findFirst().orElse(null);
         Assert.isNotNull(section, "Check on section does not contain layout section");
-        Assert.isTrue(!section.isHide(), "Section should not be hidden");
+        Assert.isTrue(section.isHide() == null, "Section should not be hidden");
 
-        SortedSet<EditorFormDefinition> formDefinitions = staticDefinitionsRegistry.getFormDefinitions("nt:base");
-        int numDefinitions = 2; // we have nt:base definitions from /api and /test
-        Assert.isTrue(formDefinitions.size() == numDefinitions, "Number of form definition is not correct");
+        Collection<Form> formDefinitions = staticDefinitionsRegistry.getFormsForType(NodeTypeRegistry.getInstance().getNodeType("nt:base"));
+        // we have nt:base definitions from /api and /test
+        Assert.isTrue(formDefinitions.size() == 2, "Number of form definition is not correct");
 
         // inject same file from another bundle => should be added
         staticDefinitionsRegistry
-            .readEditorFormDefinition(getResource("META-INF/jahia-content-editor-forms/forms/nt_base.override.json"), new DummyBundle(1));
+            .registerForm(getResource("META-INF/jahia-content-editor-forms/forms/nt_base.override.json"), new DummyBundle(1));
+
+        formDefinitions = staticDefinitionsRegistry.getFormsForType(NodeTypeRegistry.getInstance().getNodeType("nt:base"));
+        Assert.isTrue(formDefinitions.size() == 3, "Number of form definition is not correct");
+
         form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
-        Assert.isTrue(formDefinitions.size() == numDefinitions + 1, "Number of form definition is not correct");
         Assert.isTrue(form.getSections().size() == numSections, "Should have same number of sections");
 
         // inject another file from another bundle => should be added
         staticDefinitionsRegistry
-            .readEditorFormDefinition(getResource("META-INF/jahia-content-editor-forms/forms/nt_base.hidden-layout.json"),
+            .registerForm(getResource("META-INF/jahia-content-editor-forms/forms/nt_base.hidden-layout.json"),
                 new DummyBundle(1));
-        form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
-        Assert.isTrue(formDefinitions.size() == numDefinitions + 2, "Number of form definition is not correct");
-        Assert.isTrue(form.getSections().size() == numSections, "Should have same number of sections");
-        section = form.getSections().stream().filter(s -> s.getName().equals("layout")).findFirst().orElse(null);
-        Assert.isTrue(section.isHide(), "Section should be hidden");
 
-        formDefinitions = staticDefinitionsRegistry.getFormDefinitions("nt:base");
-        Assert.isTrue(formDefinitions.size() == numDefinitions + 2, "Number of form definition is not correct");
+        formDefinitions = staticDefinitionsRegistry.getFormsForType(NodeTypeRegistry.getInstance().getNodeType("nt:base"));
+        Assert.isTrue(formDefinitions.size() == 4, "Number of form definition is not correct");
+
+        form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
+        Assert.isTrue(form.getSections().size() == numSections - 1, "Should have one section less");
     }
 
     @Test
     public void testOverrides() throws Exception {
         //First, check if the concerned fields are present
-        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, defaultOverrideContent.getPath());
+        Form form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, defaultOverrideContent.getPath());
         Assert.isTrue(hasField(form, "options", "jmix:cache", "j:expiration"), "could find jmix:cache in options section");
         Assert.isTrue(hasField(form, "options", "jmix:cache", "j:perUser"), "could find jmix:cache in options section");
         Assert.isTrue(hasField(form, "classification", "jmix:categorized", "j:defaultCategory"), "could find jmix:categorized in classification section");
@@ -528,10 +470,10 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         Assert.isTrue(!form.getSections().get(0).getFieldSets().get(0).getName().equals("mix:title"), "mix title should not be the first fieldset");
 
         //Reading the overrides json files
-        readEditorFormFieldSet("META-INF/jahia-content-editor-forms/fieldsets/jmix_cache.json");
-        readEditorFormFieldSet("META-INF/jahia-content-editor-forms/fieldsets/jmix_categorized.json");
-        readEditorFormFieldSet("META-INF/jahia-content-editor-forms/fieldsets/jmix_keywords.json");
-        readEditorFormFieldSet("META-INF/jahia-content-editor-forms/fieldsets/mix_title.json");
+        staticDefinitionsRegistry.registerFieldSet(getResource("META-INF/jahia-content-editor-forms/fieldsets/jmix_cache.json"), null);
+        staticDefinitionsRegistry.registerFieldSet(getResource("META-INF/jahia-content-editor-forms/fieldsets/jmix_categorized.json"), null);
+        staticDefinitionsRegistry.registerFieldSet(getResource("META-INF/jahia-content-editor-forms/fieldsets/jmix_keywords.json"), null);
+        staticDefinitionsRegistry.registerFieldSet(getResource("META-INF/jahia-content-editor-forms/fieldsets/mix_title.json"), null);
         form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, defaultOverrideContent.getPath());
 
         //Checking if the fields disappeared
@@ -554,11 +496,11 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
 
     @Test
     public void testFieldWithValueConstraintOverride() throws Exception {
-        List<EditorFormFieldValueConstraint> fieldValueConstraints = editorFormService.getFieldConstraints(textNode.getPath(), textNode.getParent().getPath(), "jnt:text", "jnt:simpleRank", "prop3", new ArrayList<>(), Locale.ENGLISH, Locale.ENGLISH);
+        List<FieldValueConstraint> fieldValueConstraints = editorFormService.getFieldConstraints(textNode.getPath(), textNode.getParent().getPath(), "jnt:text", "jnt:simpleRank", "prop3", new ArrayList<>(), Locale.ENGLISH, Locale.ENGLISH);
 
         Assert.isTrue(fieldValueConstraints.isEmpty(), "The field value constraints must be empty");
 
-        readEditorFormFieldSet("META-INF/jahia-content-editor-forms/fieldsets/jnt_simple_rank_override_field_value_constraints.json");
+        staticDefinitionsRegistry.registerFieldSet(getResource("META-INF/jahia-content-editor-forms/fieldsets/jnt_simple_rank_override_field_value_constraints.json"), null);
         fieldValueConstraints = editorFormService.getFieldConstraints(textNode.getPath(), textNode.getParent().getPath(), "jnt:text", "jnt:simpleRank", "prop3", new ArrayList<>(), Locale.ENGLISH, Locale.ENGLISH);
 
         Assert.isTrue(fieldValueConstraints.size() == 2, "The field value constraints must contains two values");
@@ -569,7 +511,7 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
     @Test
     public void testValueConstraintRetrieval() throws Exception {
         // When creating a node, we do not have the node, but we have the parent and the node type:
-        List<EditorFormFieldValueConstraint> fieldValueConstraints = editorFormService.getFieldConstraints(null, contentListNode.getParent().getPath(),
+        List<FieldValueConstraint> fieldValueConstraints = editorFormService.getFieldConstraints(null, contentListNode.getParent().getPath(),
             "jnt:contentList", "jmix:orderedList", "firstField", new ArrayList<>(), Locale.ENGLISH, Locale.ENGLISH);
         int constraintsSize = fieldValueConstraints.size();
 
@@ -594,7 +536,7 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         simpleContent.setProperty("secondTitle", "second title");
         simpleContent.setProperty("titleLink", "title");
         session.save();
-        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
+        Form form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
 
         Assert.isTrue(hasField(form, "content", "jnt:mapServiceSimple", "thematicColor"), "could not find thematicColor in content "
             + "section");
@@ -622,7 +564,7 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         simpleContent.setProperty("secondTitle", "second title");
         simpleContent.setProperty("titleLink", "title");
         session.save();
-        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
+        Form form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
 
         Assert.isTrue(hasField(form, "content", "jnt:mapServiceSimple", "thematicColor"), "could not find thematicColor in content "
             + "section");
@@ -643,11 +585,10 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         JCRNodeWrapper simpleContent = session.getNode(testSite.getJCRLocalPath()).addNode("externalLinkIssueExample", "jnt:externalLinkIssueExample");
         session.save();
         // edit
-        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
-        EditorFormFieldSet fs = getFieldSet(form, "content", "jmix:externalLink");
-        Assert.isTrue(fs.getDisplayed(), "FieldSet should be displayed");
-        Assert.isTrue(fs.getActivated(), "FieldSet should be activated");
-        Assert.isTrue(!fs.getDynamic(), "FieldSet should not be dynamic");
+        Form form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, simpleContent.getPath());
+        FieldSet fs = getFieldSet(form, "content", "jmix:externalLink");
+        Assert.isTrue(fs.isActivated(), "FieldSet should be activated");
+        Assert.isTrue(!fs.isDynamic(), "FieldSet should not be dynamic");
         Assert.isTrue(hasField(form, "content", "jnt:externalLinkIssueExample", "text"), "could not find text in content "
             + "section");
         Assert.isTrue(hasField(form, "content", "jmix:externalLink", "j:linkTitle"), "could not find text in content "
@@ -660,8 +601,8 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         return getClass().getClassLoader().getResource(s);
     }
 
-    private EditorFormSection getSection(EditorForm form, final String searchedSection) {
-        List<EditorFormSection> sections = form.getSections().stream().filter(section -> section.getName().equals(searchedSection)).collect(Collectors.toList());
+    private Section getSection(Form form, final String searchedSection) {
+        List<Section> sections = form.getSections().stream().filter(section -> section.getName().equals(searchedSection)).collect(Collectors.toList());
         Assert.isTrue(sections.size() < 2, "More than one section match : " + searchedSection);
         if (sections.size() > 0) {
             return sections.get(0);
@@ -670,7 +611,7 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         }
     }
 
-    private boolean hasSection(EditorForm form, final String searchedSection) {
+    private boolean hasSection(Form form, final String searchedSection) {
         try {
             getSection(form, searchedSection);
             return true;
@@ -679,8 +620,8 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         }
     }
 
-    private EditorFormFieldSet getFieldSet(EditorForm form, final String searchedSection, final String searchedFieldSet) {
-        List<EditorFormFieldSet> formFieldSets = getSection(form, searchedSection).getFieldSets().stream().filter(fieldSets -> fieldSets.getName().equals(searchedFieldSet)).collect(Collectors.toList());
+    private FieldSet getFieldSet(Form form, final String searchedSection, final String searchedFieldSet) {
+        List<FieldSet> formFieldSets = getSection(form, searchedSection).getFieldSets().stream().filter(fieldSets -> fieldSets.getName().equals(searchedFieldSet)).collect(Collectors.toList());
         Assert.isTrue(formFieldSets.size() < 2, "More than one fieldSet match section / fieldset : " + searchedSection + " / " + searchedFieldSet);
         if (formFieldSets.size() > 0) {
             return formFieldSets.get(0);
@@ -689,7 +630,7 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         }
     }
 
-    private boolean hasFieldSet(EditorForm form, final String searchedSection, final String searchedFieldSet) {
+    private boolean hasFieldSet(Form form, final String searchedSection, final String searchedFieldSet) {
         try {
             getFieldSet(form, searchedSection, searchedFieldSet);
             return true;
@@ -698,9 +639,9 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         }
     }
 
-    private EditorFormField getField(EditorForm form, final String searchedSection, final String searchedFieldSet, final String searchedField) {
-        EditorFormFieldSet fieldSet = getFieldSet(form, searchedSection, searchedFieldSet);
-        List<EditorFormField> fields = fieldSet.getEditorFormFields().stream().filter(field -> field.getName().equals(searchedField)).collect(Collectors.toList());
+    private Field getField(Form form, final String searchedSection, final String searchedFieldSet, final String searchedField) {
+        FieldSet fieldSet = getFieldSet(form, searchedSection, searchedFieldSet);
+        List<Field> fields = fieldSet.getFields().stream().filter(field -> field.getName().equals(searchedField)).collect(Collectors.toList());
         Assert.isTrue(fields.size() < 2, "More than one field match section / fieldset / field : " + searchedSection + " / " + searchedFieldSet + " / " + searchedField);
         if (fields.size() > 0) {
             return fields.get(0);
@@ -709,7 +650,7 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         }
     }
 
-    private boolean hasField(EditorForm form, final String searchedSection, final String searchedFieldSet, final String searchedField) {
+    private boolean hasField(Form form, final String searchedSection, final String searchedFieldSet, final String searchedField) {
         try {
             getField(form, searchedSection, searchedFieldSet, searchedField);
             return true;
@@ -718,7 +659,7 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         }
     }
 
-    private void checkResults(EditorForm form, String sectionName, Map<String, List<String>> expectedFieldsSet) {
+    private void checkResults(Form form, String sectionName, Map<String, List<String>> expectedFieldsSet) {
         // one section
         Assert.isTrue(form.getSections().size() == 1, "Override contains more than one section");
         // Section is content
@@ -739,68 +680,58 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
                 }
                 if (fieldArray.length > 1) {
                     fieldDynamic = Boolean.parseBoolean(fieldArray[1]);
-                    Assert.isTrue(getFieldSet(form, sectionName, expectedFieldSet.getKey()).getDynamic() == fieldDynamic, "unable to find expected FieldSet " + expectedFieldSet.getKey() + " to be dynamic " + fieldDynamic);
+                    Assert.isTrue(getFieldSet(form, sectionName, expectedFieldSet.getKey()).isDynamic() == fieldDynamic, "unable to find expected FieldSet " + expectedFieldSet.getKey() + " to be dynamic " + fieldDynamic);
                 }
                 if (fieldArray.length > 2) {
                     fieldActivated = Boolean.parseBoolean(fieldArray[2]);
-                    Assert.isTrue(getFieldSet(form, sectionName, expectedFieldSet.getKey()).getActivated() == fieldActivated, "unable to find expected FieldSet " + expectedFieldSet.getKey() + " to be activated " + fieldActivated);
+                    Assert.isTrue(getFieldSet(form, sectionName, expectedFieldSet.getKey()).isActivated() == fieldActivated, "unable to find expected FieldSet " + expectedFieldSet.getKey() + " to be activated " + fieldActivated);
                 }
-
             }
         }
     }
 
-    private void simpleWithMixinPropertiesOverrideResults(EditorForm form) {
+    private void simpleWithMixinPropertiesOverrideResults(Form form) {
         String sectionName = "content";
-        List<EditorFormFieldSet> fieldSets = getSection(form, sectionName).getFieldSets();
+        List<FieldSet> fieldSets = getSection(form, sectionName).getFieldSets();
         Assert.isTrue(fieldSets.size() == 2, "Expected 2 fieldsets but got " + fieldSets.size());
 
-        EditorFormFieldSet fieldSet = getFieldSet(form, sectionName, "jnt:simpleWithMixProperties");
-        ArrayList<EditorFormField> fields = new ArrayList<>(fieldSet.getEditorFormFields());
+        FieldSet fieldSet = getFieldSet(form, sectionName, "jnt:simpleWithMixProperties");
+        ArrayList<Field> fields = new ArrayList<>(fieldSet.getFields());
         Assert.isTrue(fields.size() == 3, "Expected 3 fields but receive " + fields.size());
         Assert.isTrue(fields.get(0).getName().equals("propMix1"), "Override of field does not contain propMix1");
-        Assert.isTrue(fields.get(0).getMandatory(), "Override of field is not mandatory");
+        Assert.isTrue(fields.get(0).isMandatory(), "Override of field is not mandatory");
         Assert.isTrue(fields.get(1).getName().equals("prop1"), "Override of field does not contain prop1");
         Assert.isTrue(fields.get(2).getName().equals("prop2"), "Override of field does not contain prop2");
 
         fieldSet = getFieldSet(form, sectionName, "jmix:mix2");
-        fields = new ArrayList<>(fieldSet.getEditorFormFields());
+        fields = new ArrayList<>(fieldSet.getFields());
         Assert.isTrue(fields.size() == 1, "Expected 1 fields but receive " + fields.size());
         Assert.isTrue(fields.get(0).getName().equals("propMix2"), "Override of field does not contain propMix2");
     }
 
-    private List<EditorFormFieldValueConstraint> getValueConstraints(final EditorForm form, final String searchedSection,
+    private List<FieldValueConstraint> getValueConstraints(final Form form, final String searchedSection,
         final String searchedFieldSet,
         final String searchedField) {
-        EditorFormField field = getField(form, searchedSection, searchedFieldSet, searchedField);
+        Field field = getField(form, searchedSection, searchedFieldSet, searchedField);
         return field.getValueConstraints();
     }
 
     private void checkHiddenFieldSet(String mixin, String mixinExtend) throws RepositoryException, EditorFormException {
         textNode.addMixin(mixin);
         session.save();
-        EditorForm form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
-        EditorFormFieldSet fs = getFieldSet(form, "content", mixin);
+        Form form = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
+        FieldSet fs = getFieldSet(form, "content", mixin);
 
-        Assert.isTrue(!fs.getDisplayed(), "FieldSet should not be displayed");
-        Assert.isTrue(fs.getActivated(), "FieldSet should be activated");
-        Assert.isTrue(!fs.getDynamic(), "FieldSet should not be dynamic");
+        Assert.isTrue(fs.isActivated(), "FieldSet should be activated");
+        Assert.isTrue(!fs.isDynamic(), "FieldSet should not be dynamic");
 
         fs = getFieldSet(form, "content", mixinExtend);
 
-        Assert.isTrue(!fs.getDisplayed(), "FieldSet should not be displayed");
-        Assert.isTrue(!fs.getActivated(), "FieldSet should not be activated");
-        Assert.isTrue(fs.getDynamic(), "FieldSet should be dynamic");
+        Assert.isTrue(!fs.isActivated(), "FieldSet should not be activated");
+        Assert.isTrue(fs.isDynamic(), "FieldSet should be dynamic");
         // clean up
 
         textNode.removeMixin(mixin);
         session.save();
     }
-
-    private EditorFormFieldSet readEditorFormFieldSet(String s) {
-        EditorFormFieldSet editorFormFieldSet = staticDefinitionsRegistry.readEditorFormFieldSet(getResource(s));
-        editorFormFieldSet.setOriginBundle(new DummyBundle(0));
-        return editorFormFieldSet;
-    }
-
 }

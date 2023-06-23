@@ -228,7 +228,6 @@ public class FieldSet implements Cloneable, DefinitionRegistryItem, Ranked {
                 fields.add(existingField);
             }
         }
-        fields.sort(RankedComparator.INSTANCE);
     }
 
 }

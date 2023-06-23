@@ -24,7 +24,6 @@
 package org.jahia.modules.contenteditor.api.forms;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang.StringUtils;
 import org.jahia.modules.contenteditor.api.forms.model.Field;
 import org.jahia.modules.contenteditor.api.forms.model.FieldSet;
 import org.jahia.modules.contenteditor.api.forms.model.Form;
@@ -52,10 +51,11 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
 
     private static final Logger logger = LoggerFactory.getLogger(StaticDefinitionsRegistry.class);
 
-    private final Map<Bundle, List<Form>> staticEditorFormDefinitionsByBundle = new LinkedHashMap<>();
-    private final List<Form> staticEditorForms = new ArrayList<>();
-    private final Map<Bundle, List<FieldSet>> staticEditorFieldSetsByBundle = new LinkedHashMap<>();
-    private final List<FieldSet> staticEditorFieldSets = new ArrayList<>();
+    private final Map<Bundle, List<Form>> formsByBundle = new LinkedHashMap<>();
+    private final List<Form> forms = new ArrayList<>();
+    private final Map<Bundle, List<FieldSet>> fieldSetsByBundle = new LinkedHashMap<>();
+    private final List<FieldSet> fieldSets = new ArrayList<>();
+
     private final ObjectMapper objectMapper = new ObjectMapper();
     private BundleContext bundleContext;
 
@@ -64,8 +64,8 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
         this.bundleContext = bundleContext;
         for (Bundle bundle : bundleContext.getBundles()) {
             if (bundle.getBundleContext() != null) {
-                registerStaticEditorFormDefinitions(bundle);
-                registerStaticEditorFormFieldSets(bundle);
+                registerForm(bundle);
+                registerFieldSets(bundle);
             }
         }
         bundleContext.addBundleListener(this);
@@ -80,12 +80,12 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
     public void bundleChanged(BundleEvent event) {
         switch (event.getType()) {
             case BundleEvent.STARTED:
-                registerStaticEditorFormDefinitions(event.getBundle());
-                registerStaticEditorFormFieldSets(event.getBundle());
+                registerForm(event.getBundle());
+                registerFieldSets(event.getBundle());
                 break;
             case BundleEvent.STOPPED:
-                unregisterStaticEditorFormDefinitions(event.getBundle());
-                unregisterStaticEditorFormFieldSets(event.getBundle());
+                unregisterForms(event.getBundle());
+                unregisterFieldSets(event.getBundle());
         }
     }
 
@@ -95,8 +95,8 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
      * @param type to look at
      * @return form definitions that match the type
      */
-    public Collection<Form> getFormDefinitionsForType(ExtendedNodeType type) {
-        return staticEditorForms.stream()
+    public Collection<Form> getFormsForType(ExtendedNodeType type) {
+        return forms.stream()
             .filter(definition -> type.isNodeType(definition.getNodeType().getName()) &&
                     (definition.getOrderable() == null || type.hasOrderableChildNodes()))
             .collect(Collectors.toCollection(ArrayList::new));
@@ -109,12 +109,12 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
      * @return form definitions that match the type
      */
     public Collection<FieldSet> getFieldSetsForType(ExtendedNodeType type) {
-        return staticEditorFieldSets.stream()
+        return fieldSets.stream()
             .filter(definition -> type.isNodeType(definition.getNodeType().getName()))
             .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    private void registerStaticEditorFormDefinitions(Bundle bundle) {
+    private void registerForm(Bundle bundle) {
         if (bundle.getBundleContext() == null) {
             return;
         }
@@ -124,19 +124,12 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
         }
         List<Form> bundleForms = new ArrayList<>();
         while (editorFormURLs.hasMoreElements()) {
-            URL editorFormURL = editorFormURLs.nextElement();
-            Form form = readEditorFormDefinition(editorFormURL, bundle);
-
-            if (form != null) {
-                staticEditorForms.add(form);
-                bundleForms.add(form);
-                logger.info("Successfully loaded static form for name {} from {}", form.getNodeType().getName(), editorFormURL);
-            }
+            registerForm(editorFormURLs.nextElement(), bundle);
         }
-        staticEditorFormDefinitionsByBundle.put(bundle, bundleForms);
+        formsByBundle.put(bundle, bundleForms);
     }
 
-    private Form readEditorFormDefinition(URL editorFormURL, Bundle bundle) {
+    public void registerForm(URL editorFormURL, Bundle bundle) {
         try {
             Form form = objectMapper.readValue(editorFormURL, Form.class);
             form.setOriginBundle(bundle);
@@ -147,22 +140,23 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
                 }
             }
 
-            return form;
+            forms.add(form);
+            formsByBundle.computeIfAbsent(bundle, b -> new ArrayList<>()).add(form);
+            logger.info("Successfully loaded static form for name {} from {}", form.getNodeType().getName(), editorFormURL);
         } catch (IOException e) {
             logger.error("Error loading editor form from " + editorFormURL, e);
         }
-        return null;
     }
 
-    private void unregisterStaticEditorFormDefinitions(Bundle bundle) {
-        List<Form> bundleForms = staticEditorFormDefinitionsByBundle.remove(bundle);
+    private void unregisterForms(Bundle bundle) {
+        List<Form> bundleForms = formsByBundle.remove(bundle);
         if (bundleForms == null) {
             return;
         }
-        staticEditorForms.removeAll(bundleForms);
+        forms.removeAll(bundleForms);
     }
 
-    private void registerStaticEditorFormFieldSets(Bundle bundle) {
+    public void registerFieldSets(Bundle bundle) {
         if (bundle.getBundleContext() == null) {
             return;
         }
@@ -172,35 +166,30 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
         }
         List<FieldSet> bundleFieldSets = new ArrayList<>();
         while (editorFieldSetsURLs.hasMoreElements()) {
-            URL editorFormURL = editorFieldSetsURLs.nextElement();
-            FieldSet fieldSet = readEditorFormFieldSet(editorFormURL, bundle);
-
-            if (fieldSet != null) {
-                staticEditorFieldSets.add(fieldSet);
-                bundleFieldSets.add(fieldSet);
-                logger.info("Successfully loaded static fieldSets for name {} from {}", fieldSet.getName(), editorFormURL);
-            }
+            registerFieldSet(editorFieldSetsURLs.nextElement(), bundle);
         }
-        staticEditorFieldSetsByBundle.put(bundle, bundleFieldSets);
+        fieldSetsByBundle.put(bundle, bundleFieldSets);
     }
 
-    FieldSet readEditorFormFieldSet(URL editorFormURL, Bundle bundle) {
+    public void registerFieldSet(URL editorFormURL, Bundle bundle) {
         try {
             FieldSet fieldSet = objectMapper.readValue(editorFormURL, FieldSet.class);
             initFieldSet(fieldSet, bundle);
-            return fieldSet;
+
+            fieldSets.add(fieldSet);
+            fieldSetsByBundle.computeIfAbsent(bundle, b -> new ArrayList<>()).add(fieldSet);
+            logger.info("Successfully loaded static fieldSets for name {} from {}", fieldSet.getName(), editorFormURL);
         } catch (IOException e) {
             logger.error("Error loading editor form from " + editorFormURL, e);
         }
-        return null;
     }
 
-    private void unregisterStaticEditorFormFieldSets(Bundle bundle) {
-        List<FieldSet> fieldSets = staticEditorFieldSetsByBundle.remove(bundle);
+    private void unregisterFieldSets(Bundle bundle) {
+        List<FieldSet> fieldSets = fieldSetsByBundle.remove(bundle);
         if (fieldSets == null) {
             return;
         }
-        staticEditorFieldSets.removeAll(fieldSets);
+        this.fieldSets.removeAll(fieldSets);
     }
 
     private static void initFieldSet(FieldSet fieldSet, Bundle originBundle) {

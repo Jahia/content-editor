@@ -41,6 +41,7 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.touk.throwing.ThrowingFunction;
 
 import javax.jcr.RepositoryException;
 import javax.jcr.nodetype.NoSuchNodeTypeException;
@@ -116,18 +117,18 @@ public class EditorFormServiceImpl implements EditorFormService {
             final SortedSet<DefinitionRegistryItem> mergeSet = new TreeSet<>(DefinitionRegistryItemComparator.INSTANCE);
 
             // First, primary node type and inherited
-            addFormNodeType(primaryNodeType, mergeSet, locale, processedNodeTypes);
+            addFormNodeType(primaryNodeType, mergeSet, locale, false, processedNodeTypes);
 
             // Available extends mixins
             List<ExtendedNodeType> extendMixins = getExtendMixins(primaryNodeType, site);
             for (ExtendedNodeType extendMixin : extendMixins) {
-                addFormNodeType(extendMixin, mergeSet, locale, processedNodeTypes);
+                addFormNodeType(extendMixin, mergeSet, locale, true, processedNodeTypes);
             }
 
             // Mixins added on node
             if (existingNode != null) {
                 for (ExtendedNodeType mixinNodeType : existingNode.getMixinNodeTypes()) {
-                    addFormNodeType(mixinNodeType, mergeSet, locale, processedNodeTypes);
+                    addFormNodeType(mixinNodeType, mergeSet, locale, false, processedNodeTypes);
                 }
             }
 
@@ -198,7 +199,10 @@ public class EditorFormServiceImpl implements EditorFormService {
                     }
 
                     // Remove hidden fields
-                    fieldSet.setFields(fieldSet.getFields().stream().filter(f -> (f.isHide() == null || !f.isHide())).collect(Collectors.toList()));
+                    fieldSet.setFields(fieldSet.getFields().stream()
+                        .filter(f -> (f.isHide() == null || !f.isHide()))
+                        .sorted(RankedComparator.INSTANCE)
+                        .collect(Collectors.toList()));
 
                     for (Field field : fieldSet.getFields()) {
                         // Set field label and description if not set
@@ -221,11 +225,15 @@ public class EditorFormServiceImpl implements EditorFormService {
                 // (if the dynamic mixin is present in multiple sections, keep only the non-empty ones)
                 section.setFieldSets(section.getFieldSets().stream()
                     .filter(fs -> (fs.isDynamic() && fieldSetsMap.get(fs.getName()).size() == 1) || !fs.getFields().isEmpty())
+                    .sorted(RankedComparator.INSTANCE)
                     .collect(Collectors.toList()));
             }
 
             // Remove empty sections
-            form.setSections(form.getSections().stream().filter(s -> !s.getFieldSets().isEmpty()).collect(Collectors.toList()));
+            form.setSections(form.getSections().stream()
+                .filter(s -> !s.getFieldSets().isEmpty())
+                .sorted(RankedComparator.INSTANCE)
+                .collect(Collectors.toList()));
 
             return form;
       } catch (RepositoryException e) {
@@ -233,10 +241,10 @@ public class EditorFormServiceImpl implements EditorFormService {
         }
     }
 
-    private void addFormNodeType(ExtendedNodeType nodeType, SortedSet<DefinitionRegistryItem> formDefinitionsToMerge, Locale locale, Set<String> processedNodeTypes) throws RepositoryException {
+    private void addFormNodeType(ExtendedNodeType nodeType, SortedSet<DefinitionRegistryItem> formDefinitionsToMerge, Locale locale, boolean singleFieldSet, Set<String> processedNodeTypes) throws RepositoryException {
         if (!processedNodeTypes.contains(nodeType.getName())) {
-            formDefinitionsToMerge.add(FormGenerator.generateForm(nodeType, locale));
-            formDefinitionsToMerge.addAll(staticDefinitionsRegistry.getFormDefinitionsForType(nodeType));
+            formDefinitionsToMerge.add(FormGenerator.generateForm(nodeType, locale, singleFieldSet));
+            formDefinitionsToMerge.addAll(staticDefinitionsRegistry.getFormsForType(nodeType));
             formDefinitionsToMerge.addAll(staticDefinitionsRegistry.getFieldSetsForType(nodeType));
 
             processedNodeTypes.add(nodeType.getName());
@@ -345,22 +353,23 @@ public class EditorFormServiceImpl implements EditorFormService {
         try {
             JCRNodeWrapper node = nodeUuidOrPath != null ? resolveNodeFromPathorUUID(nodeUuidOrPath, locale) : null;
             JCRNodeWrapper parentNode = resolveNodeFromPathorUUID(parentNodeUuidOrPath, locale);
-            ExtendedPropertyDefinition fieldPropertyDefinition = nodeTypeRegistry.getNodeType(fieldNodeType).getPropertyDefinition(fieldName);
+            ExtendedNodeType nodeType = NodeTypeRegistry.getInstance().getNodeType(primaryNodeType);
 
-            if (fieldPropertyDefinition != null) {
-                Field editorFormField = FormGenerator.generateEditorFormField(fieldPropertyDefinition, locale);
-
-                Map<String, Object> extendContext = new HashMap<>(editorFormField.getSelectorOptionsMap());
-                for (ContextEntryInput contextEntry : context) {
-                    if (contextEntry.getValue() != null) {
-                        extendContext.put(contextEntry.getKey(), contextEntry.getValue());
-                    }
+            Map<String, Object> extendContext = new HashMap<>();
+            for (ContextEntryInput contextEntry : context) {
+                if (contextEntry.getValue() != null) {
+                    extendContext.put(contextEntry.getKey(), contextEntry.getValue());
                 }
-
-                return getValueConstraints(nodeTypeRegistry.getNodeType(primaryNodeType), editorFormField, node, parentNode, locale, extendContext);
             }
 
-            return Collections.emptyList();
+            Form f = getEditorForm(nodeType, uiLocale, locale, node, parentNode);
+            return f.getSections().stream()
+                .flatMap(section -> section.getFieldSets().stream())
+                .flatMap(fieldSet -> fieldSet.getFields().stream())
+                .filter(field -> fieldNodeType.equals(field.getDeclaringNodeType()) && fieldName.equals(field.getName()))
+                .findFirst()
+                .map(ThrowingFunction.unchecked(field -> getValueConstraints(nodeType, field, node, parentNode, locale, extendContext)))
+                .orElse(Collections.emptyList());
         } catch (RepositoryException e) {
             throw new EditorFormException("Error while building field constraints for" + " node: " + nodeUuidOrPath + ", node type: " + primaryNodeType + ", parent node: " + parentNodeUuidOrPath + ", field node type: " + fieldNodeType + ", field name: " + fieldName, e);
         }

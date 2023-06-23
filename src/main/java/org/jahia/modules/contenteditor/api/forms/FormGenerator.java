@@ -36,16 +36,16 @@ public class FormGenerator {
         defaultSelectors.put(PropertyType.BINARY, SelectorType.SMALLTEXT);
     }
 
-    public static Form generateForm(ExtendedNodeType nodeType, Locale locale) throws RepositoryException {
+    public static Form generateForm(ExtendedNodeType nodeType, Locale locale, boolean singleFieldSet) throws RepositoryException {
         Form form = new Form();
         form.setNodeType(nodeType.getName());
         form.setPriority(0.);
         form.setHasPreview(true);
-        form.setSections(generateFormSections(nodeType, locale));
+        form.setSections(generateFormSections(nodeType, locale, singleFieldSet));
         return form;
     }
 
-    public static List<Section> generateFormSections(ExtendedNodeType nodeType, Locale locale) throws RepositoryException {
+    public static List<Section> generateFormSections(ExtendedNodeType nodeType, Locale locale, boolean singleFieldSet) throws RepositoryException {
         Map<String, Section> sections = new HashMap<>();
         Set<String> processedProperties = new HashSet<>();
 
@@ -63,7 +63,7 @@ public class FormGenerator {
 
             String itemType = itemDefinition.getItemType();
             Field editorFormField = generateEditorFormField(itemDefinition, locale);
-            FieldSet fieldSet = generateFieldSetForSection(sections, itemType, itemDefinition.getDeclaringNodeType().getName());
+            FieldSet fieldSet = generateFieldSetForSection(sections, itemType, singleFieldSet ? nodeType.getName() : itemDefinition.getDeclaringNodeType().getName());
             fieldSet.getFields().add(editorFormField);
             editorFormField.setRank((double) fieldSet.getFields().size());
 

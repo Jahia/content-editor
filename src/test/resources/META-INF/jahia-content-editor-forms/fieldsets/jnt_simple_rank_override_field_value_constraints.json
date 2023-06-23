@@ -4,9 +4,6 @@
   "fields": [
     {
       "name": "prop3",
-      "target": {
-        "rank": 0
-      },
       "valueConstraints": [
         {
           "displayValue": "First constraint",

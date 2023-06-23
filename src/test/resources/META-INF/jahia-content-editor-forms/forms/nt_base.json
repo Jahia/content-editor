@@ -6,31 +6,37 @@
     {
       "name": "content",
       "labelKey": "label.engineTab.content",
+      "rank": 1.0,
       "requiredPermission": "viewContentTab"
     },
     {
       "name": "classification",
       "labelKey": "label.engineTab.categories",
+      "rank": 2.0,
       "requiredPermission": "viewCategoriesTab"
     },
     {
       "name": "metadata",
       "labelKey": "label.engineTab.metadata",
+      "rank": 3.0,
       "requiredPermission": "viewMetadataTab"
     },
     {
       "name": "layout",
       "labelKey": "label.engineTab.layout",
+      "rank": 4.0,
       "requiredPermission": "viewLayoutTab"
     },
     {
       "name": "options",
       "labelKey": "label.engineTab.options",
+      "rank": 5.0,
       "requiredPermission": "viewOptionsTab"
     },
     {
       "name": "seo",
       "labelKey": "label.engineTab.seo",
+      "rank": 6.0,
       "requiredPermission": "viewSeoTab"
     }
   ]

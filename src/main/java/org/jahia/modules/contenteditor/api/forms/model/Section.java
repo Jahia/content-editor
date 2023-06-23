@@ -183,6 +183,5 @@ public class Section implements Cloneable, Ranked {
                 fieldSets.add(mergedFieldSet);
             }
         }
-        fieldSets.sort(RankedComparator.INSTANCE);
     }
 }
