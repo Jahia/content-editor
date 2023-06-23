@@ -163,7 +163,7 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
         useFormDefinition: mergedConfig.useFormDefinition || (mergedConfig.mode === 'edit' ? useEditFormDefinition : useCreateFormDefinition),
         isFullscreen: mergedConfig.isFullscreen,
         layout: mergedConfig.layout || (mergedConfig.isFullscreen ? EditPanelFullscreen : EditPanelCompact),
-        confirmationDialog: mergedConfig.mode === 'edit' && <OnCloseConfirmationDialog deleteEditorConfig={deleteEditorConfig} openDialog={openDialog}/>,
+        confirmationDialog: <OnCloseConfirmationDialog deleteEditorConfig={deleteEditorConfig} openDialog={openDialog}/>,
         formKey: mergedConfig.formKey || 'modal'
     };
 

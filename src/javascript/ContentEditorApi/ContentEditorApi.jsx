@@ -15,7 +15,7 @@ function decode(hash) {
     try {
         values = hash ? rison.decode_uri(hash.substring(1)) : {};
     } catch {
-        //
+        // Do nothing
     }
 
     return values;
