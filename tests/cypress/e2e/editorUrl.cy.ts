@@ -4,7 +4,18 @@ import {ContentEditor} from '../page-object';
 describe('Editor url test', () => {
     let jcontent: JContent;
     let contentEditor: ContentEditor;
-    const peopleFirstUrl = `${Cypress.env('JAHIA_URL')}/jahia/jcontent/digitall/en/pages/home#(contentEditor:!((formKey:modal_0,isFullscreen:!t,lang:en,mode:edit,site:digitall,uilang:en,uuid:\'8cc9b843-7340-4533-a150-50ae0b771c84\')))`;
+    let peopleFirstUrl;
+
+    before(() => {
+        cy.loginEditor();
+        jcontent = JContent.visit('digitall', 'en', 'pages/home');
+        contentEditor = jcontent.editComponentByText('People First');
+        contentEditor.switchToAdvancedMode();
+        cy.url().then(url => {
+            peopleFirstUrl = url;
+            cy.logout();
+        });
+    });
 
     beforeEach(() => {
         cy.loginEditor();
