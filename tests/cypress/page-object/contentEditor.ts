@@ -15,6 +15,10 @@ export class ContentEditor extends BasePage {
     static defaultSelector = '[aria-labelledby="dialog-content-editor"]';
     languageSwitcher: LanguageSwitcher;
 
+    static getContentEditor() : ContentEditor {
+        return getComponentBySelector(ContentEditor, ContentEditor.defaultSelector);
+    }
+
     openSection(sectionName: string) {
         return getComponentBySelector(Collapsible, `[data-sel-content-editor-fields-group="${sectionName}"]`).expand();
     }
@@ -89,6 +93,14 @@ export class ContentEditor extends BasePage {
     getLanguageSwitcher(): LanguageSwitcher {
         if (!this.languageSwitcher) {
             this.languageSwitcher = getComponentBySelector(LanguageSwitcher, '#contenteditor-dialog-title [data-cm-role="language-switcher"]');
+        }
+
+        return this.languageSwitcher;
+    }
+
+    getLanguageSwitcherAdvancedMode(): LanguageSwitcher {
+        if (!this.languageSwitcher) {
+            this.languageSwitcher = getComponentBySelector(LanguageSwitcher, '.moonstone-dropdown_container [data-cm-role="language-switcher"]');
         }
 
         return this.languageSwitcher;
