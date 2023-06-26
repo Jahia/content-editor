@@ -38,7 +38,6 @@ public class Field implements Ranked {
     private Boolean multiple;
     private Boolean mandatory;
     private List<FieldValueConstraint> valueConstraints;
-    private List<FieldValue> currentValues;
     private List<FieldValue> defaultValues;
 
     public String getName() {
@@ -103,6 +102,11 @@ public class Field implements Ranked {
 
     public void setHide(Boolean hide) {
         this.hide = hide;
+    }
+
+    @Deprecated
+    public void setRemoved(Boolean removed) {
+        this.hide = removed;
     }
 
     public Double getRank() {
