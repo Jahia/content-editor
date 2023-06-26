@@ -2,7 +2,7 @@ import {JContent} from '../page-object/jcontent';
 import {SmallTextField} from '../page-object/fields';
 import {Button, getComponentByRole} from '@jahia/cypress';
 
-describe('Create content tests', () => {
+describe('Content editor form', () => {
     let jcontent: JContent;
 
     before(function () {

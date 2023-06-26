@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 import static org.jahia.modules.contenteditor.utils.ContentEditorUtils.resolveNodeFromPathorUUID;
 
-@Component(immediate = true)
+@Component(immediate = true, service = PublicationService.class)
 public class PublicationService {
     private static final List<String> PUBLISHED_TECHNICAL_NODES = Arrays.asList("vanityUrlMapping", "j:conditionalVisibility");
 

@@ -94,7 +94,7 @@ describe('Add Mixin by using choice list initializers (Image Reference)', () => 
         cy.get('.moonstone-loader').should('not.exist'); // Wait to load
         cy.get('tr[data-cm-role="table-content-list-row"]').contains('Search Results').click();
         cy.get('button[data-sel-picker-dialog-action="done"]').click();
-        cy.get('[data-sel-content-editor-field="mix\\:title_jcr\\:title"]')
+        cy.get('[data-sel-content-editor-field="jnt\\:imageReferenceLink_jcr\\:title"]')
             .scrollIntoView()
             .should('be.visible')
             .type(cypressDocumentManagerImageReferenceLinkTest);

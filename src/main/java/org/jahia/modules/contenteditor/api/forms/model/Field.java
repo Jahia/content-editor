@@ -224,15 +224,24 @@ public class Field implements Ranked {
         if (extendedPropertyDefinition != null) {
             // Use item definition to resolve labels. (same way as ContentDefinitionHelper.getGWTJahiaNodeType()) ???
             try {
+                initializeLabelFromItemDefinition(extendedPropertyDefinition, uiLocale, site);
+
                 ExtendedNodeType extendedNodeType = NodeTypeRegistry.getInstance().getNodeType(extendedPropertyDefinition.getDeclaringNodeType().getAlias());
                 ExtendedItemDefinition item = extendedNodeType.getItems().stream().filter(item1 -> StringUtils.equals(item1.getName(), extendedPropertyDefinition.getName())).findAny().orElse(extendedPropertyDefinition);
-
-                label = label == null ? StringEscapeUtils.unescapeHtml(item.getLabel(uiLocale, extendedNodeType)) : label;
-                description = description == null ? Sanitizers.FORMATTING.sanitize(item.getTooltip(uiLocale, extendedNodeType)) : description;
+                initializeLabelFromItemDefinition(item, uiLocale, site);
             } catch (NoSuchNodeTypeException e) {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    private void initializeLabelFromItemDefinition(ExtendedItemDefinition definition, Locale uiLocale, JCRSiteNode site) {
+        String suffix = definition.getDeclaringNodeType().getTemplatePackage() != null ? "@" + definition.getDeclaringNodeType().getTemplatePackage().getResourceBundleName() : "";
+
+        ExtendedNodeType nodeType = definition.getDeclaringNodeType();
+        label = StringUtils.isEmpty(label) ? StringEscapeUtils.unescapeHtml(resolveResourceKey(definition.getResourceBundleKey(nodeType) + suffix, uiLocale, site)) : label;
+        description = StringUtils.isEmpty(description) ? Sanitizers.FORMATTING.sanitize(resolveResourceKey(definition.getResourceBundleKey(nodeType) + ".ui.tooltip" + suffix, uiLocale, site)) : description;
+        errorMessage = StringUtils.isEmpty(errorMessage)? Sanitizers.FORMATTING.sanitize(resolveResourceKey(definition.getResourceBundleKey(nodeType) + ".constraint.error.message" + suffix, uiLocale, site)) : errorMessage;
     }
 
     public void mergeWith(Field otherField) {
