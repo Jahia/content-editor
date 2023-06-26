@@ -496,12 +496,12 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
 
     @Test
     public void testFieldWithValueConstraintOverride() throws Exception {
-        List<FieldValueConstraint> fieldValueConstraints = editorFormService.getFieldConstraints(textNode.getPath(), textNode.getParent().getPath(), "jnt:text", "jnt:simpleRank", "prop3", new ArrayList<>(), Locale.ENGLISH, Locale.ENGLISH);
+        List<FieldValueConstraint> fieldValueConstraints = editorFormService.getFieldConstraints(textNode.getPath(), textNode.getParent().getPath(), "jnt:text", "jmix:simpleRank", "prop3", new ArrayList<>(), Locale.ENGLISH, Locale.ENGLISH);
 
         Assert.isTrue(fieldValueConstraints.isEmpty(), "The field value constraints must be empty");
 
         staticDefinitionsRegistry.registerFieldSet(getResource("META-INF/jahia-content-editor-forms/fieldsets/jnt_simple_rank_override_field_value_constraints.json"), null);
-        fieldValueConstraints = editorFormService.getFieldConstraints(textNode.getPath(), textNode.getParent().getPath(), "jnt:text", "jnt:simpleRank", "prop3", new ArrayList<>(), Locale.ENGLISH, Locale.ENGLISH);
+        fieldValueConstraints = editorFormService.getFieldConstraints(textNode.getPath(), textNode.getParent().getPath(), "jnt:text", "jmix:simpleRank", "prop3", new ArrayList<>(), Locale.ENGLISH, Locale.ENGLISH);
 
         Assert.isTrue(fieldValueConstraints.size() == 2, "The field value constraints must contains two values");
         Assert.isTrue(fieldValueConstraints.get(0).getDisplayValue().equals("First constraint"), "according to the definition override in jnt_simple_rank_override_field_value_constraints.json");
