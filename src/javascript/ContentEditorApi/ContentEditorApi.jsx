@@ -66,10 +66,15 @@ export const ContentEditorApi = () => {
     };
 
     let deleteEditorConfig = index => {
-        let copy = Array.from(editorConfigs);
-        copy.splice(index, 1);
+        const copy = Array.from(editorConfigs);
+        const spliced = copy.splice(index, 1);
         setEditorConfigs(copy);
-        history.replace(rison.decode(locationWithoutEditors));
+
+        if (spliced[0]?.isFullscreen && !window.history.state.prevUrl?.contains('/cms/login')) {
+            history.go(-1);
+        } else {
+            history.replace(rison.decode(locationWithoutEditors));
+        }
     };
 
     let context = useContentEditorApiContext();

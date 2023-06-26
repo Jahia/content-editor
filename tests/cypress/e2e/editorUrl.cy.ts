@@ -52,4 +52,31 @@ describe('Editor url test', () => {
         cy.hash().should('contain', 'contentEditor:');
         cy.hash().should('contain', 'lang:en');
     });
+
+    it('History is handled consistently', function () {
+        jcontent = JContent.visit('digitall', 'en', 'pages/home');
+        contentEditor = jcontent.editComponentByText('People First');
+        contentEditor.switchToAdvancedMode();
+        cy.get('h1').contains('People First').should('exist');
+        cy.go('back');
+        cy.get('h1').contains('People First').should('not.exist');
+        cy.go('forward');
+        cy.get('h1').contains('People First').should('exist');
+        contentEditor.cancel();
+        cy.go('forward');
+        cy.get('h1').contains('People First').should('exist');
+        contentEditor.cancel();
+
+        contentEditor = jcontent.editComponentByText('Our Companies');
+        contentEditor.switchToAdvancedMode();
+        cy.get('h1').contains('Our Companies').should('exist');
+        cy.go('back');
+        cy.get('h1').contains('Our Companies').should('not.exist');
+        cy.go('forward');
+        cy.get('h1').contains('Our Companies').should('exist');
+        contentEditor.cancel();
+        cy.go('forward');
+        cy.get('h1').contains('Our Companies').should('exist');
+        contentEditor.cancel();
+    });
 });
