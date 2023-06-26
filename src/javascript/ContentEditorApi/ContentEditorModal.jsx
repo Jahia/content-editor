@@ -15,6 +15,7 @@ import {EditPanelFullscreen} from '~/ContentEditor/EditPanel/EditPanelFullscreen
 import {useApolloClient} from '@apollo/react-hooks';
 import {useCreateFormDefinition} from '~/ContentEditor/useCreateFormDefinition';
 import {useEditFormDefinition} from '~/ContentEditor/useEditFormDefinition';
+import {registry} from '@jahia/ui-extender';
 
 function triggerEvents(nodeUuid, operator) {
     // Refresh contentEditorEventHandlers
@@ -44,6 +45,12 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
 
     const {t} = useTranslation();
 
+    const editorConfigFromRegistry = registry.get('content-editor-config', editorConfig.configName);
+    const mergedConfig = {
+        ...editorConfigFromRegistry,
+        ...editorConfig
+    };
+
     // Standalone env props
     const envProps = {
         back: () => {
@@ -52,14 +59,14 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
         disabledBack: () => false,
         createCallback: ({newNode}) => {
             needRefresh.current = true;
-            if (editorConfig.createCallback) {
-                editorConfig.createCallback(newNode, envProps);
+            if (mergedConfig.createCallback) {
+                mergedConfig.createCallback(newNode, envProps);
             }
 
             triggerEvents(newNode.uuid, Constants.operators.create);
 
-            const predefined = editorConfig.isFullscreen ? ['closeButton'] : [];
-            const opts = editorConfig.isFullscreen ? {
+            const predefined = mergedConfig.isFullscreen ? ['closeButton'] : [];
+            const opts = mergedConfig.isFullscreen ? {
                 autoHideDuration: 3000
             } : {
                 autoHideDuration: 3000,
@@ -95,8 +102,8 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
 
         editCallback: ({originalNode, updatedNode}) => {
             needRefresh.current = true;
-            if (editorConfig.editCallback) {
-                editorConfig.editCallback(updatedNode, originalNode, envProps);
+            if (mergedConfig.editCallback) {
+                mergedConfig.editCallback(updatedNode, originalNode, envProps);
             }
 
             triggerEvents(updatedNode.uuid, Constants.operators.update);
@@ -104,16 +111,16 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
             notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.success'), ['closeButton'], {autoHideDuration: 3000});
         },
         onSavedCallback: ({newNode, language, originalNode, updatedNode}, forceRedirect) => {
-            if (newNode && (editorConfig.isFullscreen || forceRedirect)) {
+            if (newNode && (mergedConfig.isFullscreen || forceRedirect)) {
                 // Redirect to CE edit mode, for the created node
                 needRefresh.current = false;
                 updateEditorConfig({
                     ...editorConfig,
                     uuid: newNode.uuid,
-                    lang: language ? language : editorConfig.lang,
+                    lang: language ? language : mergedConfig.lang,
                     mode: Constants.routes.baseEditRoute
                 });
-            } else if (!editorConfig.isFullscreen) {
+            } else if (!mergedConfig.isFullscreen) {
                 if (newNode) {
                     Promise.all(window.contentModificationEventHandlers.map(handler => handler(newNode.uuid, newNode.path, newNode.path.split('/').pop(), 'update'))).then(() => // Otherwise refresh and close
                         deleteEditorConfig());
@@ -129,7 +136,7 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
         onCreateAnother: () => {
             updateEditorConfig({
                 ...editorConfig,
-                count: (editorConfig.count || 0) + 1
+                count: (mergedConfig.count || 0) + 1
             });
         },
         switchLanguageCallback: language => {
@@ -139,8 +146,8 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
             });
         },
         onClosedCallback: () => {
-            if (editorConfig.onClosedCallback) {
-                editorConfig.onClosedCallback(envProps, needRefresh.current);
+            if (mergedConfig.onClosedCallback) {
+                mergedConfig.onClosedCallback(envProps, needRefresh.current);
             }
         },
         redirectBreadcrumbCallback: () => {
@@ -153,11 +160,11 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
             });
         },
         isModal: true,
-        useFormDefinition: editorConfig.useFormDefinition || (editorConfig.mode === 'edit' ? useEditFormDefinition : useCreateFormDefinition),
-        isFullscreen: editorConfig.isFullscreen,
-        layout: editorConfig.layout || (editorConfig.isFullscreen ? EditPanelFullscreen : EditPanelCompact),
-        confirmationDialog: (editorConfig.useConfirmationDialog !== false) && <OnCloseConfirmationDialog deleteEditorConfig={deleteEditorConfig} openDialog={openDialog}/>,
-        formKey: editorConfig.formKey || 'modal'
+        useFormDefinition: mergedConfig.useFormDefinition || (mergedConfig.mode === 'edit' ? useEditFormDefinition : useCreateFormDefinition),
+        isFullscreen: mergedConfig.isFullscreen,
+        layout: mergedConfig.layout || (mergedConfig.isFullscreen ? EditPanelFullscreen : EditPanelCompact),
+        confirmationDialog: <OnCloseConfirmationDialog deleteEditorConfig={deleteEditorConfig} openDialog={openDialog}/>,
+        formKey: mergedConfig.formKey || 'modal'
     };
 
     // This is the only sure way to tell when content editor is no longer visible
@@ -167,7 +174,7 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
         };
     }, [dispatch, envProps.formKey]);
 
-    const classes = editorConfig.isFullscreen ? {
+    const classes = mergedConfig.isFullscreen ? {
         root: styles.ceDialogRootFullscreen
     } : {
         paper: styles.ceDialogContent
@@ -178,22 +185,22 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
                 disableAutoFocus
                 disableEnforceFocus
                 maxWidth="md"
-                fullScreen={editorConfig.isFullscreen}
+                fullScreen={mergedConfig.isFullscreen}
                 TransitionComponent={Transition}
                 aria-labelledby="dialog-content-editor"
                 classes={classes}
                 onClose={() => openDialog.current ? openDialog.current() : deleteEditorConfig()}
                 onRendered={() => window.focus()}
-                {...editorConfig.dialogProps}
+                {...mergedConfig.dialogProps}
         >
-            <ContentEditor mode={editorConfig.mode}
-                           uuid={editorConfig.uuid}
-                           lang={editorConfig.lang}
-                           uilang={editorConfig.uilang}
-                           site={editorConfig.site}
-                           contentType={editorConfig.contentType}
-                           name={editorConfig.name}
-                           count={editorConfig.count || 0}
+            <ContentEditor mode={mergedConfig.mode}
+                           uuid={mergedConfig.uuid}
+                           lang={mergedConfig.lang}
+                           uilang={mergedConfig.uilang}
+                           site={mergedConfig.site}
+                           contentType={mergedConfig.contentType}
+                           name={mergedConfig.name}
+                           count={mergedConfig.count || 0}
                            envProps={envProps}
             />
         </Dialog>
@@ -202,6 +209,7 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
 
 ContentEditorModal.propTypes = {
     editorConfig: PropTypes.shape({
+        configName: PropTypes.string,
         mode: PropTypes.oneOf([Constants.routes.baseCreateRoute, Constants.routes.baseEditRoute]).isRequired,
         uuid: PropTypes.string,
         lang: PropTypes.string,
