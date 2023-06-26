@@ -40,27 +40,27 @@ public interface EditorFormService {
      * existing node type definitions and also merging with overrides defined in other modules.
      *
      * @param primaryNodeTypeName the name of the primary node type for which we want to generate the form structure
+     * @param uuidOrPath          uuid or path of the parent node path under with the new node will be created.
      * @param uiLocale            The locale used to display the labels
      * @param locale              The locale used to get nodes data
-     * @param uuidOrPath          uuid or path of the parent node path under with the new node will be created.
      * @return the generated form structure with all the proper default values (as well as choicelists) as well as meta-
      * data such as readonly, etc...
      * @throws EditorFormException if there was an error during the generation of the form.
      */
-    Form getCreateForm(String primaryNodeTypeName, Locale uiLocale, Locale locale, String uuidOrPath) throws EditorFormException;
+    Form getCreateForm(String primaryNodeTypeName, String uuidOrPath, Locale uiLocale, Locale locale) throws EditorFormException;
 
     /**
      * Retrieves a form editor structure for a given node, by combining automatically generated structures from
      * existing node type definitions and also merging with overrides defined in other modules.
      *
+     * @param uuidOrPath UUID or path of the node path of the node to be edited.
      * @param uiLocale   The locale used to display the labels
      * @param locale     The locale used to get nodes data
-     * @param uuidOrPath UUID or path of the node path of the node to be edited.
      * @return the generated form structure with all the proper default values (as well as choicelists) as well as meta-
      * data such as readonly, etc...
      * @throws EditorFormException if there was an error during the generation of the form.
      */
-    Form getEditForm(Locale uiLocale, Locale locale, String uuidOrPath) throws EditorFormException;
+    Form getEditForm(String uuidOrPath, Locale uiLocale, Locale locale) throws EditorFormException;
 
     /**
      * Retrieve field constraints for given node

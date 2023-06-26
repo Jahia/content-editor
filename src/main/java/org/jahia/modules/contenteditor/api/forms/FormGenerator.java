@@ -54,6 +54,16 @@ public class FormGenerator {
             itemDefinitions.addAll(supertype.getDeclaredItems(true));
         }
 
+        if (singleFieldSet) {
+            // Add fieldset even if there's no field
+            String itemsType = nodeType.getItemsType();
+            if (itemsType == null) {
+                itemsType = "content";
+            }
+
+            generateFieldSetForSection(sections, itemsType, nodeType.getName());
+        }
+
         for (ExtendedItemDefinition itemDefinition : itemDefinitions) {
             // do not return hidden props
             if (itemDefinition.isNode() || itemDefinition.isHidden() || itemDefinition.isUnstructured() || processedProperties.contains(itemDefinition.getName())) {

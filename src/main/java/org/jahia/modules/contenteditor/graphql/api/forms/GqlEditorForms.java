@@ -27,7 +27,6 @@ import graphql.annotations.annotationTypes.*;
 import org.jahia.api.Constants;
 import org.jahia.data.templates.JahiaTemplatesPackage;
 import org.jahia.modules.contenteditor.api.forms.EditorFormException;
-import org.jahia.modules.contenteditor.api.forms.model.FieldValueConstraint;
 import org.jahia.modules.contenteditor.api.forms.EditorFormService;
 import org.jahia.modules.contenteditor.api.forms.model.Form;
 import org.jahia.modules.contenteditor.graphql.api.GqlUtils;
@@ -79,7 +78,7 @@ public class GqlEditorForms {
         @GraphQLName("locale") @GraphQLNonNull @GraphQLDescription("A string representation of a locale, in IETF BCP 47 language tag format, ie en_US, en, fr, fr_CH, ...") String locale,
         @GraphQLName("uuidOrPath") @GraphQLNonNull @GraphQLDescription("uuid or path of an existing node under with the new content will be created.") String uuidOrPath)
         throws EditorFormException {
-        Form form = editorFormService.getCreateForm(nodeType, LanguageCodeConverters.getLocaleFromCode(uiLocale), LanguageCodeConverters.getLocaleFromCode(locale), uuidOrPath);
+        Form form = editorFormService.getCreateForm(nodeType, uuidOrPath, LanguageCodeConverters.getLocaleFromCode(uiLocale), LanguageCodeConverters.getLocaleFromCode(locale));
         return new GqlEditorForm(form);
     }
 
@@ -91,7 +90,7 @@ public class GqlEditorForms {
         @GraphQLName("locale") @GraphQLNonNull @GraphQLDescription("A string representation of a locale, in IETF BCP 47 language tag format, ie en_US, en, fr, fr_CH, ...") String locale,
         @GraphQLName("uuidOrPath") @GraphQLNonNull @GraphQLDescription("UUID or path of an existing node under with the new content will be created.") String uuidOrPath)
         throws EditorFormException {
-        Form form = editorFormService.getEditForm(LanguageCodeConverters.getLocaleFromCode(uiLocale), LanguageCodeConverters.getLocaleFromCode(locale), uuidOrPath);
+        Form form = editorFormService.getEditForm(uuidOrPath, LanguageCodeConverters.getLocaleFromCode(uiLocale), LanguageCodeConverters.getLocaleFromCode(locale));
         return new GqlEditorForm(form);
     }
 

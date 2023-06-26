@@ -87,25 +87,25 @@ public class EditorFormServiceImpl implements EditorFormService {
     }
 
     @Override
-    public Form getCreateForm(String primaryNodeTypeName, Locale uiLocale, Locale locale, String uuidOrPath) throws EditorFormException {
+    public Form getCreateForm(String primaryNodeTypeName, String uuidOrPath, Locale uiLocale, Locale locale) throws EditorFormException {
         try {
-            return getEditorForm(nodeTypeRegistry.getNodeType(primaryNodeTypeName), uiLocale, locale, null, resolveNodeFromPathorUUID(uuidOrPath, locale));
+            return getEditorForm(nodeTypeRegistry.getNodeType(primaryNodeTypeName), null, resolveNodeFromPathorUUID(uuidOrPath, locale), uiLocale, locale);
         } catch (RepositoryException e) {
             throw new EditorFormException("Error while building create form definition for node: " + uuidOrPath + " and nodeType: " + primaryNodeTypeName, e);
         }
     }
 
     @Override
-    public Form getEditForm(Locale uiLocale, Locale locale, String uuidOrPath) throws EditorFormException {
+    public Form getEditForm(String uuidOrPath, Locale uiLocale, Locale locale) throws EditorFormException {
         try {
             JCRNodeWrapper node = resolveNodeFromPathorUUID(uuidOrPath, locale);
-            return getEditorForm(node.getPrimaryNodeType(), uiLocale, locale, node, node.getParent());
+            return getEditorForm(node.getPrimaryNodeType(), node, node.getParent(), uiLocale, locale);
         } catch (RepositoryException e) {
             throw new EditorFormException("Error while building edit form definition for node: " + uuidOrPath, e);
         }
     }
 
-    private Form getEditorForm(ExtendedNodeType primaryNodeType, Locale uiLocale, Locale locale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode) throws EditorFormException {
+    private Form getEditorForm(ExtendedNodeType primaryNodeType, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale uiLocale, Locale locale) throws EditorFormException {
         final String mode = existingNode == null ? CREATE : EDIT;
         final JCRNodeWrapper currentNode = EDIT.equals(mode) ? existingNode : parentNode;
 
@@ -355,7 +355,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                 }
             }
 
-            Form f = getEditorForm(nodeType, uiLocale, locale, node, parentNode);
+            Form f = getEditorForm(nodeType, node, parentNode, uiLocale, locale);
             return f.getSections().stream()
                 .flatMap(section -> section.getFieldSets().stream())
                 .flatMap(fieldSet -> fieldSet.getFields().stream())

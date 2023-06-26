@@ -137,3 +137,6 @@ extends=jnt:text
 
 [jnt:externalLinkIssueExample] > jnt:content, jmix:basicContent, jmix:externalLink
  - text (string, richtext) internationalized
+
+[jmix:emptyExtend] mixin
+ extends = jnt:text
