@@ -7,6 +7,7 @@
       "fieldSets": [
         {
           "name": "jmix:tagged",
+          "rank": 0.0,
           "fields": [
             {
               "name": "j:tagList"

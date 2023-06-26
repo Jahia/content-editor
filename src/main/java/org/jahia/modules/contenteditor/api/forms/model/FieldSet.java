@@ -1,11 +1,9 @@
 package org.jahia.modules.contenteditor.api.forms.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.jahia.modules.contenteditor.api.forms.DefinitionRegistryItem;
 import org.jahia.modules.contenteditor.api.forms.Ranked;
-import org.jahia.modules.contenteditor.api.forms.RankedComparator;
 import org.jahia.services.content.decorator.JCRSiteNode;
 import org.jahia.services.content.nodetypes.ExtendedNodeType;
 import org.jahia.services.content.nodetypes.NodeTypeRegistry;
@@ -16,11 +14,10 @@ import javax.jcr.nodetype.NoSuchNodeTypeException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 import static org.jahia.modules.contenteditor.api.forms.EditorFormServiceImpl.resolveResourceKey;
 
-public class FieldSet implements Cloneable, DefinitionRegistryItem, Ranked {
+public class FieldSet implements DefinitionRegistryItem, Ranked {
     private String name;
     private ExtendedNodeType nodeType;
     private String labelKey;
@@ -30,9 +27,9 @@ public class FieldSet implements Cloneable, DefinitionRegistryItem, Ranked {
     private String requiredPermission;
     private Boolean hide;
     private Boolean readOnly;
-    private Double rank = 0.0;
+    private Double rank;
     private List<Field> fields = new ArrayList<>();
-    private double priority = 1.;
+    private Double priority;
     private Bundle originBundle;
 
     private boolean dynamic = false;
@@ -135,7 +132,7 @@ public class FieldSet implements Cloneable, DefinitionRegistryItem, Ranked {
     }
 
     @Override
-    public double getPriority() {
+    public Double getPriority() {
         return priority;
     }
 
@@ -194,16 +191,11 @@ public class FieldSet implements Cloneable, DefinitionRegistryItem, Ranked {
         }
     }
 
-    public FieldSet clone() {
-        try {
-            FieldSet newFieldSet = (FieldSet) super.clone();
-            if (fields != null) {
-                newFieldSet.setFields(fields.stream().map(Field::clone).collect(Collectors.toList()));
-            }
-            return newFieldSet;
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
-        }
+    private Field addField() {
+        Field f = new Field();
+        fields.add(f);
+        f.setRank((double) fields.size());
+        return f;
     }
 
     public void mergeWith(FieldSet otherFieldSet, Form form) {
@@ -222,7 +214,7 @@ public class FieldSet implements Cloneable, DefinitionRegistryItem, Ranked {
 
     private void mergeFields(List<Field> otherFields, Form form) {
         for (Field otherField : otherFields) {
-            Field existingField = form.findAndRemoveField(otherField).orElseGet(Field::new);
+            Field existingField = form.findAndRemoveField(otherField).orElseGet(this::addField);
             existingField.mergeWith(otherField);
             if (!fields.contains(existingField)) {
                 fields.add(existingField);

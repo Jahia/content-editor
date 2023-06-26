@@ -17,7 +17,7 @@ public class DefinitionRegistryItemComparator implements Comparator<DefinitionRe
             return -1;
         }
 
-        if (o1.getPriority() != o2.getPriority()) {
+        if (o1.getPriority().doubleValue() != o2.getPriority().doubleValue()) {
             return Double.compare(o1.getPriority() , o2.getPriority());
         }
 

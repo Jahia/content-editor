@@ -133,6 +133,9 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
         try {
             Form form = objectMapper.readValue(editorFormURL, Form.class);
             form.setOriginBundle(bundle);
+            if (form.getPriority() == null) {
+                form.setPriority(1.);
+            }
 
             for (Section section : form.getSections()) {
                 for (FieldSet fieldSet : section.getFieldSets()) {
@@ -194,6 +197,9 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
 
     private static void initFieldSet(FieldSet fieldSet, Bundle originBundle) {
         fieldSet.setOriginBundle(originBundle);
+        if (fieldSet.getPriority() == null) {
+            fieldSet.setPriority(1.);
+        }
         for (Field field : fieldSet.getFields()) {
             try {
                 if (field.getDeclaringNodeType() != null) {

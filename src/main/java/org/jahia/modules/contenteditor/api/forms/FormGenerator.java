@@ -65,7 +65,6 @@ public class FormGenerator {
             Field editorFormField = generateEditorFormField(itemDefinition, locale);
             FieldSet fieldSet = generateFieldSetForSection(sections, itemType, singleFieldSet ? nodeType.getName() : itemDefinition.getDeclaringNodeType().getName());
             fieldSet.getFields().add(editorFormField);
-            editorFormField.setRank((double) fieldSet.getFields().size());
 
             processedProperties.add(itemDefinition.getName());
         }
@@ -90,7 +89,6 @@ public class FormGenerator {
             fieldset.setHide(false);
             fieldset.setFields(new ArrayList<>());
             fieldSets.add(fieldset);
-            fieldset.setRank((double) fieldSets.size());
             return fieldset;
         });
     }

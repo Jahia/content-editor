@@ -25,20 +25,21 @@ package org.jahia.modules.contenteditor.api.forms.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.jahia.modules.contenteditor.api.forms.DefinitionRegistryItem;
-import org.jahia.modules.contenteditor.api.forms.RankedComparator;
 import org.jahia.services.content.nodetypes.ExtendedNodeType;
 import org.jahia.services.content.nodetypes.NodeTypeRegistry;
 import org.osgi.framework.Bundle;
 
 import javax.jcr.nodetype.NoSuchNodeTypeException;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
  * Represents the definition of an editor form, including the ordering of sections
  */
-public class Form implements Cloneable, DefinitionRegistryItem {
+public class Form implements DefinitionRegistryItem {
     private ExtendedNodeType nodeType;
     private Boolean orderable;
     private String labelKey;
@@ -47,7 +48,7 @@ public class Form implements Cloneable, DefinitionRegistryItem {
     private String description;
     private Boolean hasPreview;
     private List<Section> sections = new ArrayList<>();
-    private double priority = 1.;
+    private Double priority;
     private Bundle originBundle;
 
     public ExtendedNodeType getNodeType() {
@@ -118,11 +119,11 @@ public class Form implements Cloneable, DefinitionRegistryItem {
         this.sections = sections;
     }
 
-    public double getPriority() {
+    public Double getPriority() {
         return priority;
     }
 
-    public void setPriority(double priority) {
+    public void setPriority(Double priority) {
         this.priority = priority;
     }
 
@@ -140,18 +141,6 @@ public class Form implements Cloneable, DefinitionRegistryItem {
         description = description == null ? nodeType.getDescription(uiLocale) : descriptionKey;
     }
 
-    public Form clone() {
-        try {
-            Form newForm = (Form) super.clone();
-            if (sections != null) {
-                newForm.setSections(sections.stream().map(Section::clone).collect(Collectors.toList()));
-            }
-            return newForm;
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public void mergeWith(DefinitionRegistryItem item) {
         if (item instanceof Form) {
             mergeWith((Form) item);
@@ -159,7 +148,10 @@ public class Form implements Cloneable, DefinitionRegistryItem {
             mergeWith((FieldSet) item);
         }
     }
+
     public void mergeWith(Form otherForm) {
+        setNodeType(nodeType == null ? otherForm.getNodeType().getName() : nodeType.getName());
+
         setHasPreview(otherForm.hasPreview() != null ? otherForm.hasPreview() : hasPreview);
         mergeSections(otherForm.getSections());
     }

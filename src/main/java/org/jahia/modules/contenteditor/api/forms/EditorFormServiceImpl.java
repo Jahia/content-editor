@@ -132,18 +132,11 @@ public class EditorFormServiceImpl implements EditorFormService {
                 }
             }
 
-            // Merge all forms
-            Form form = null;
+            // Merge all forms into a new form
+            Form form = new Form();
             for (DefinitionRegistryItem current : mergeSet) {
                 if (current.getOriginBundle() == null || isApplicable(current.getOriginBundle(), site)) {
-                    if (form == null) {
-                        if (current instanceof Form) {
-                            // First item must always be a form, previous fieldset will be ignored
-                            form = ((Form)current).clone();
-                        }
-                    } else {
-                        form.mergeWith(current);
-                    }
+                    form.mergeWith(current);
                 }
             }
 

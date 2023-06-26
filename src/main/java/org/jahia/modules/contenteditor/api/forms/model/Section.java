@@ -26,6 +26,7 @@ package org.jahia.modules.contenteditor.api.forms.model;
 import org.jahia.modules.contenteditor.api.forms.Ranked;
 import org.jahia.modules.contenteditor.api.forms.RankedComparator;
 import org.jahia.services.content.decorator.JCRSiteNode;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -144,19 +145,11 @@ public class Section implements Cloneable, Ranked {
         description = description == null && descriptionKey != null ? resolveResourceKey(descriptionKey, uiLocale, site) : description;
     }
 
-    public Section clone() {
-        try {
-            Section newSection = (Section) super.clone();
-            if (displayModes != null) {
-                newSection.setDisplayModes(new ArrayList<>(displayModes));
-            }
-            if (fieldSets != null) {
-                newSection.setFieldSets(fieldSets.stream().map(FieldSet::clone).collect(Collectors.toList()));
-            }
-            return newSection;
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
-        }
+    private FieldSet addFieldSet() {
+        FieldSet fs = new FieldSet();
+        fieldSets.add(fs);
+        fs.setRank((double) fieldSets.size());;
+        return fs;
     }
 
     public void mergeWith(Section otherSection, Form form) {
@@ -177,11 +170,12 @@ public class Section implements Cloneable, Ranked {
     private void mergeFieldSets(List<FieldSet> otherFieldSets, Form form) {
         for (FieldSet otherFieldSet : otherFieldSets) {
             String key = otherFieldSet.getName().equals("<main>") ? form.getNodeType().getName() : otherFieldSet.getName();
-            FieldSet mergedFieldSet = fieldSets.stream().filter(fieldSet -> fieldSet.getName().equals(key)).findFirst().orElseGet(FieldSet::new);
+            FieldSet mergedFieldSet = fieldSets.stream().filter(fieldSet -> fieldSet.getName().equals(key)).findFirst().orElseGet(this::addFieldSet);
             mergedFieldSet.mergeWith(otherFieldSet, form);
             if (!fieldSets.contains(mergedFieldSet)) {
                 fieldSets.add(mergedFieldSet);
             }
         }
     }
+
 }

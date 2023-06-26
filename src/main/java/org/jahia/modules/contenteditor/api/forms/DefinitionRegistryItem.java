@@ -4,7 +4,7 @@ import org.jahia.services.content.nodetypes.ExtendedNodeType;
 import org.osgi.framework.Bundle;
 
 public interface DefinitionRegistryItem {
-    double getPriority();
+    Double getPriority();
 
     ExtendedNodeType getNodeType();
 

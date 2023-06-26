@@ -1,7 +1,6 @@
 package org.jahia.modules.contenteditor.api.forms.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jahia.modules.contenteditor.api.forms.Ranked;
@@ -19,7 +18,7 @@ import java.util.Map;
 
 import static org.jahia.modules.contenteditor.api.forms.EditorFormServiceImpl.resolveResourceKey;
 
-public class Field implements Cloneable, Ranked {
+public class Field implements Ranked {
     private String name;
     private String label;
     private String labelKey;
@@ -233,15 +232,6 @@ public class Field implements Cloneable, Ranked {
             } catch (NoSuchNodeTypeException e) {
                 throw new RuntimeException(e);
             }
-        }
-    }
-
-    public Field clone() {
-        try {
-            Field newField = (Field) super.clone();
-            return newField;
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
         }
     }
 
