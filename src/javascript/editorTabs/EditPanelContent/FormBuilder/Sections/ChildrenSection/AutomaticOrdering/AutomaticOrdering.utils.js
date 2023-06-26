@@ -9,16 +9,8 @@ const orderingFieldsMapping = {
     [Constants.ordering.automaticOrdering.mixin + '_thirdDirection']: {type: 'directionField', index: 2}
 };
 
-export const getAutomaticOrderingFieldSet = sections => {
-    const listOrderingSection = sections.find(section => section.name === Constants.ordering.automaticOrdering.section);
-    if (listOrderingSection) {
-        return listOrderingSection.fieldSets.find(fieldSet => fieldSet.name === Constants.ordering.automaticOrdering.mixin);
-    }
-};
-
-export const adaptSectionToDisplayableRows = (sections, t) => {
+export const adaptSectionToDisplayableRows = (orderedListFieldSet, t) => {
     const rows = [];
-    const orderedListFieldSet = getAutomaticOrderingFieldSet(sections);
     if (orderedListFieldSet) {
         orderedListFieldSet.fields.forEach(field => {
             const fieldMapped = orderingFieldsMapping[field.name];

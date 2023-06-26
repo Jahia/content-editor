@@ -21,10 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.jahia.modules.contenteditor.api.forms;
-
-import graphql.annotations.annotationTypes.GraphQLDescription;
-import graphql.annotations.annotationTypes.GraphQLField;
+package org.jahia.modules.contenteditor.api.forms.model;
 
 import java.util.List;
 import java.util.Objects;
@@ -32,32 +29,18 @@ import java.util.Objects;
 /**
  * Represents a string property name-value pair
  */
-public class EditorFormProperty {
+public class Property {
     private String name;
     private String value;
-    private List<String> values;
 
-    public EditorFormProperty() {
+    public Property() {
     }
 
-    public EditorFormProperty(String name, String value) {
+    public Property(String name, String value) {
         this.name = name;
         this.value = value;
     }
 
-    public EditorFormProperty(String name, List<String> values) {
-        this.name = name;
-        this.values = values;
-    }
-
-    public EditorFormProperty(EditorFormProperty property) {
-        this.name = property.name;
-        this.value = property.value;
-        this.values = property.values;
-    }
-
-    @GraphQLField
-    @GraphQLDescription("Property name")
     public String getName() {
         return name;
     }
@@ -66,8 +49,6 @@ public class EditorFormProperty {
         this.name = name;
     }
 
-    @GraphQLField
-    @GraphQLDescription("Property value")
     public String getValue() {
         return value;
     }
@@ -76,19 +57,9 @@ public class EditorFormProperty {
         this.value = value;
     }
 
-    @GraphQLField
-    @GraphQLDescription("Property values")
-    public List<String> getValues() {
-        return values;
-    }
-
-    public void setValues(List<String> values) {
-        this.values = values;
-    }
-
     @Override
     public String toString() {
-        return "EditorFormProperty{name='" + name + '\'' + ", value='" + value + '\'' + ", values='" + values + '\'' + '}';
+        return "EditorFormProperty{name='" + name + '\'' + ", value='" + value + '\'' + '}';
     }
 
     @Override
@@ -97,7 +68,7 @@ public class EditorFormProperty {
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
-        EditorFormProperty that = (EditorFormProperty) o;
+        Property that = (Property) o;
         return Objects.equals(name, that.name) && Objects.equals(value, that.value);
     }
 

@@ -174,7 +174,7 @@ describe('Create content tests in I18N site', () => {
     it('Correctly handles i18n title with jcr:title property on the node itself', function () {
         const jcontent = JContent.visit(sitekey, 'en', 'media/file');
         const fileName = 'snowbearHome.jpeg';
-        const fieldName = 'mix:title_jcr:title';
+        const fieldName = 'jnt:file_jcr:title';
         cy.get('div[data-cm-role="grid-content-list"]')
             .children('div')
             .selectFile(`cypress/fixtures/${fileName}`, {

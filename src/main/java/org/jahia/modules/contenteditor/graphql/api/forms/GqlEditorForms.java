@@ -21,15 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.jahia.modules.contenteditor.graphql.api;
+package org.jahia.modules.contenteditor.graphql.api.forms;
 
 import graphql.annotations.annotationTypes.*;
 import org.jahia.api.Constants;
 import org.jahia.data.templates.JahiaTemplatesPackage;
-import org.jahia.modules.contenteditor.api.forms.EditorForm;
 import org.jahia.modules.contenteditor.api.forms.EditorFormException;
-import org.jahia.modules.contenteditor.api.forms.EditorFormFieldValueConstraint;
 import org.jahia.modules.contenteditor.api.forms.EditorFormService;
+import org.jahia.modules.contenteditor.api.forms.model.Form;
+import org.jahia.modules.contenteditor.graphql.api.GqlUtils;
 import org.jahia.modules.contenteditor.graphql.api.definitions.GqlNodeTypeTreeEntry;
 import org.jahia.modules.contenteditor.graphql.api.types.ContextEntryInput;
 import org.jahia.modules.contenteditor.utils.ContentEditorUtils;
@@ -72,30 +72,32 @@ public class GqlEditorForms {
     @GraphQLField
     @GraphQLName("createForm")
     @GraphQLDescription("Get a editor form to create a new content from its nodetype and parent")
-    public EditorForm getCreateForm(
+    public GqlEditorForm getCreateForm(
         @GraphQLName("primaryNodeType") @GraphQLNonNull @GraphQLDescription("The primary node type name identifying the form we want to retrieve") String nodeType,
         @GraphQLName("uiLocale") @GraphQLNonNull @GraphQLDescription("A string representation of a locale, in IETF BCP 47 language tag format, ie en_US, en, fr, fr_CH, ...") String uiLocale,
         @GraphQLName("locale") @GraphQLNonNull @GraphQLDescription("A string representation of a locale, in IETF BCP 47 language tag format, ie en_US, en, fr, fr_CH, ...") String locale,
         @GraphQLName("uuidOrPath") @GraphQLNonNull @GraphQLDescription("uuid or path of an existing node under with the new content will be created.") String uuidOrPath)
         throws EditorFormException {
-        return editorFormService.getCreateForm(nodeType, LanguageCodeConverters.getLocaleFromCode(uiLocale), LanguageCodeConverters.getLocaleFromCode(locale), uuidOrPath);
+        Form form = editorFormService.getCreateForm(nodeType, uuidOrPath, LanguageCodeConverters.getLocaleFromCode(uiLocale), LanguageCodeConverters.getLocaleFromCode(locale));
+        return new GqlEditorForm(form);
     }
 
     @GraphQLField
     @GraphQLName("editForm")
     @GraphQLDescription("Get a editor form from a locale and an existing node")
-    public EditorForm getEditForm(
+    public GqlEditorForm getEditForm(
         @GraphQLName("uiLocale") @GraphQLNonNull @GraphQLDescription("A string representation of a locale, in IETF BCP 47 language tag format, ie en_US, en, fr, fr_CH, ...") String uiLocale,
         @GraphQLName("locale") @GraphQLNonNull @GraphQLDescription("A string representation of a locale, in IETF BCP 47 language tag format, ie en_US, en, fr, fr_CH, ...") String locale,
         @GraphQLName("uuidOrPath") @GraphQLNonNull @GraphQLDescription("UUID or path of an existing node under with the new content will be created.") String uuidOrPath)
         throws EditorFormException {
-        return editorFormService.getEditForm(LanguageCodeConverters.getLocaleFromCode(uiLocale), LanguageCodeConverters.getLocaleFromCode(locale), uuidOrPath);
+        Form form = editorFormService.getEditForm(uuidOrPath, LanguageCodeConverters.getLocaleFromCode(uiLocale), LanguageCodeConverters.getLocaleFromCode(locale));
+        return new GqlEditorForm(form);
     }
 
     @GraphQLField
     @GraphQLName("fieldConstraints")
     @GraphQLDescription("Get field constraints")
-    public List<EditorFormFieldValueConstraint> getFieldConstraints(
+    public List<GqlEditorFormValueConstraint> getFieldConstraints(
         @GraphQLName("nodeUuidOrPath") @GraphQLDescription("UUID or path of the node (optional in case you are creating it, and it doesnt exist yet)") String nodeUuidOrPath,
         @GraphQLName("parentNodeUuidOrPath") @GraphQLNonNull @GraphQLDescription("UUID or path of the parent node") String parentNodeUuidOrPath,
         @GraphQLName("primaryNodeType") @GraphQLNonNull @GraphQLDescription("A string representation of the primary node type of the node") String primaryNodeType,
@@ -105,9 +107,8 @@ public class GqlEditorForms {
         @GraphQLName("uiLocale") @GraphQLNonNull @GraphQLDescription("A string representation of a locale, in IETF BCP 47 language tag format, ie en_US, en, fr, fr_CH, ...") String uiLocale,
         @GraphQLName("locale") @GraphQLNonNull @GraphQLDescription("A string representation of a locale, in IETF BCP 47 language tag format, ie en_US, en, fr, fr_CH, ...") String locale)
         throws EditorFormException {
-        return editorFormService
-            .getFieldConstraints(nodeUuidOrPath, parentNodeUuidOrPath, primaryNodeType, fieldNodeType, fieldName, context,
-                LanguageCodeConverters.getLocaleFromCode(uiLocale), LanguageCodeConverters.getLocaleFromCode(locale));
+        return editorFormService.getFieldConstraints(nodeUuidOrPath, parentNodeUuidOrPath, primaryNodeType, fieldNodeType, fieldName, context, LanguageCodeConverters.getLocaleFromCode(uiLocale), LanguageCodeConverters.getLocaleFromCode(locale)).stream()
+            .map(GqlEditorFormValueConstraint::new).collect(Collectors.toList());
     }
 
     @GraphQLField
@@ -134,10 +135,8 @@ public class GqlEditorForms {
         }
         final String nodeIdentifier = parentNode.getIdentifier();
         Locale locale = LanguageCodeConverters.getLocaleFromCode(uiLocale);
-        List<String> allowedNodeTypes = new ArrayList<>(
-            ContentEditorUtils.getAllowedNodeTypesAsChildNode(parentNode, childNodeName, useContribute, includeSubTypes, nodeTypes));
-        Set<NodeTypeTreeEntry> entries = NodeTypesUtils
-            .getContentTypesAsTree(allowedNodeTypes, excludedNodeTypes, includeSubTypes, nodePath, getSession(locale), locale);
+        List<String> allowedNodeTypes = new ArrayList<>(ContentEditorUtils.getAllowedNodeTypesAsChildNode(parentNode, childNodeName, useContribute, includeSubTypes, nodeTypes));
+        Set<NodeTypeTreeEntry> entries = NodeTypesUtils.getContentTypesAsTree(allowedNodeTypes, excludedNodeTypes, includeSubTypes, nodePath, getSession(locale), locale);
         return entries.stream().map(entry -> new GqlNodeTypeTreeEntry(entry, nodeIdentifier)).collect(Collectors.toList());
     }
 
@@ -184,9 +183,11 @@ public class GqlEditorForms {
     @GraphQLField
     @GraphQLName("subContentsCount")
     @GraphQLDescription("Retrieve the number of sub contents under the node for given types")
-    public Integer subContentsCounts(@GraphQLName("nodePath") @GraphQLDescription("node path") String nodePath,
+    public Integer subContentsCounts(
+        @GraphQLName("nodePath") @GraphQLDescription("node path") String nodePath,
         @GraphQLName("includeTypes") @GraphQLDescription("List of node types to check for") List<String> nodeTypes,
-        @GraphQLName("limit") @GraphQLDescription("Limit of sub contents count") Integer limit) throws RepositoryException {
+        @GraphQLName("limit") @GraphQLDescription("Limit of sub contents count") Integer limit)
+        throws RepositoryException {
         int count = 0;
 
         JCRSessionWrapper session = getSession();
@@ -199,9 +200,7 @@ public class GqlEditorForms {
 
         QueryManager queryManager = session.getWorkspace().getQueryManager();
         for (String type : nodeTypes) {
-            count += queryManager.createQuery(
-                "SELECT count " + "AS [rep:count()] " + "FROM [" + type + "] " + "WHERE isdescendantnode(['" + JCRContentUtils
-                    .sqlEncode(node.getPath()) + "'])", Query.JCR_SQL2).execute().getRows().nextRow().getValue("count").getLong();
+            count += queryManager.createQuery("SELECT count " + "AS [rep:count()] " + "FROM [" + type + "] " + "WHERE isdescendantnode(['" + JCRContentUtils.sqlEncode(node.getPath()) + "'])", Query.JCR_SQL2).execute().getRows().nextRow().getValue("count").getLong();
             if (limit != null && limit > 0 && count >= limit) {
                 return limit;
             }
@@ -212,8 +211,7 @@ public class GqlEditorForms {
 
     private String getConfigPath(String moduleId, String resource) {
         String configPath = "";
-        JahiaTemplatesPackage ckeditorModule = ServicesRegistry.getInstance().getJahiaTemplateManagerService()
-            .getTemplatePackageById(moduleId);
+        JahiaTemplatesPackage ckeditorModule = ServicesRegistry.getInstance().getJahiaTemplateManagerService().getTemplatePackageById(moduleId);
 
         if (ckeditorModule != null) {
             Bundle ckeditorBundle = ckeditorModule.getBundle();

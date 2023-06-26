@@ -1,0 +1,20 @@
+{
+  "nodeType": "jmix:tagged",
+  "priority": 2.0,
+  "sections": [
+    {
+      "name": "classification",
+      "fieldSets": [
+        {
+          "name": "jmix:tagged",
+          "rank": 0.0,
+          "fields": [
+            {
+              "name": "j:tagList"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "nodeType" : "jnt:unstructuredNews",
+  "sections": [
+    {
+      "name": "content",
+      "fieldSets": [
+        {
+          "name": "jnt:unstructuredNews",
+          "fields" : [
+            {
+              "name" : "text",
+              "i18n" : true,
+              "selectorType" : "richText"
+            },
+            {
+              "name" : "description",
+              "i18n" : true,
+              "selectorType" : "richText"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

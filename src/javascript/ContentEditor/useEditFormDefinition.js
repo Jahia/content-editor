@@ -162,7 +162,7 @@ export const adaptEditFormData = (data, lang, t) => {
         nodeTypeName: nodeData.primaryNodeType.name
     };
 
-    adaptSystemNameField(data, formData, t, false, nodeData.isSystemNameReadOnlyMixin);
+    adaptSystemNameField(data, formData, t, nodeData.primaryNodeType, false, nodeData.isSystemNameReadOnlyMixin);
 
     return formData;
 };

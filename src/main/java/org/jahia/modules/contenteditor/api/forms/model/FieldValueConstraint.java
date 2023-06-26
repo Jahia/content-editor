@@ -21,51 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.jahia.modules.contenteditor.api.forms;
-
-import graphql.annotations.annotationTypes.GraphQLDescription;
-import graphql.annotations.annotationTypes.GraphQLField;
-import graphql.annotations.annotationTypes.GraphQLName;
+package org.jahia.modules.contenteditor.api.forms.model;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /*
  * Represents a single value constraint among a list of possible values for a field
  */
-public class EditorFormFieldValueConstraint {
+public class FieldValueConstraint {
 
     private String displayValue;
-
     private String displayValueKey;
+    private FieldValue value;
+    private List<Property> propertyList;
 
-    private EditorFormFieldValue value;
-    private List<EditorFormProperty> propertyList;
-
-    public EditorFormFieldValueConstraint() {
-    }
-
-    public EditorFormFieldValueConstraint(String displayValue, String displayValueKey, EditorFormFieldValue value, List<EditorFormProperty> propertyList) {
-        this.displayValue = displayValue;
-        this.displayValueKey = displayValueKey;
-        this.value = value;
-        this.propertyList = propertyList;
-    }
-
-    public EditorFormFieldValueConstraint(EditorFormFieldValueConstraint constraint) {
-        this(
-            constraint.displayValue,
-            constraint.displayValueKey,
-            constraint.value,
-            constraint.propertyList == null ? null : constraint.propertyList.stream()
-                .map(property -> new EditorFormProperty(property))
-                .collect(Collectors.toList())
-        );
-    }
-
-    @GraphQLField
-    @GraphQLDescription("The value as it is intended to be displayed in UIs")
     public String getDisplayValue() {
         return displayValue;
     }
@@ -74,8 +44,6 @@ public class EditorFormFieldValueConstraint {
         this.displayValue = displayValue;
     }
 
-    @GraphQLField
-    @GraphQLDescription("The key of the value to get the translated value from the client side")
     public String getDisplayValueKey() {
         return displayValueKey;
     }
@@ -84,24 +52,19 @@ public class EditorFormFieldValueConstraint {
         this.displayValueKey = displayValueKey;
     }
 
-    @GraphQLField
-    @GraphQLDescription("The actual value to be used in storage")
-    public EditorFormFieldValue getValue() {
+    public FieldValue getValue() {
         return value;
     }
 
-    public void setValue(EditorFormFieldValue value) {
+    public void setValue(FieldValue value) {
         this.value = value;
     }
 
-    @GraphQLField
-    @GraphQLName("properties")
-    @GraphQLDescription("The properties for the value")
-    public List<EditorFormProperty> getPropertyList() {
+    public List<Property> getPropertyList() {
         return propertyList;
     }
 
-    public void setPropertyList(List<EditorFormProperty> propertyList) {
+    public void setPropertyList(List<Property> propertyList) {
         this.propertyList = propertyList;
     }
 
@@ -117,7 +80,7 @@ public class EditorFormFieldValueConstraint {
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
-        EditorFormFieldValueConstraint that = (EditorFormFieldValueConstraint) o;
+        FieldValueConstraint that = (FieldValueConstraint) o;
         return Objects.equals(displayValue, that.displayValue)
             && Objects.equals(value, that.value)
             && Objects.equals(propertyList, that.propertyList);

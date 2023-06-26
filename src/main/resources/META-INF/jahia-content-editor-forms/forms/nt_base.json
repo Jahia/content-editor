@@ -6,44 +6,83 @@
     {
       "name": "content",
       "labelKey": "label.engineTab.content",
+      "rank": 1.0,
       "requiredPermission": "viewContentTab",
       "expanded": true
     },
     {
       "name": "classification",
       "labelKey": "label.engineTab.classification",
+      "rank": 2.0,
       "requiredPermission": "viewCategoriesTab"
     },
     {
       "name": "metadata",
       "labelKey": "label.engineTab.metadata",
+      "rank": 3.0,
       "requiredPermission": "viewMetadataTab"
     },
     {
       "name": "layout",
       "labelKey": "label.engineTab.layout",
+      "rank": 4.0,
       "requiredPermission": "viewLayoutTab"
     },
     {
       "name": "options",
       "labelKey": "label.engineTab.options",
-      "requiredPermission": "viewOptionsTab"
+      "rank": 5.0,
+      "requiredPermission": "viewOptionsTab",
+      "fieldSets": [
+        {
+          "name": "system",
+          "labelKey": "label.contentEditor.section.fieldSet.system.displayName",
+          "fields": [
+            {
+              "rank": 0.0,
+              "name": "ce:systemName",
+              "descriptionKey": "",
+              "requiredType": "String",
+              "selectorType": "SystemName",
+              "i18n": false,
+              "readOnly": false,
+              "multiple": false,
+              "mandatory": true
+            }]
+        }]
     },
     {
       "name": "seo",
       "labelKey": "label.engineTab.seo",
-      "requiredPermission": "viewSeoTab"
+      "rank": 6.0,
+      "requiredPermission": "viewSeoTab",
+      "fieldSets": [
+        {
+          "name": "jmix:description",
+          "fields": [
+            {
+              "rank": 0.0,
+              "name": "jcr:description"
+            }]
+        }]
     },
     {
       "name": "listOrdering",
       "labelKey": "label.engineTab.listOrdering",
+      "rank": 7.0,
       "requiredPermission": "viewContentTab",
-      "expanded": true
+      "expanded": true,
+      "displayModes": ["edit"]
     },
     {
       "name": "visibility",
       "labelKey": "label.engineTab.visibility",
+      "rank": 8.0,
       "requiredPermission": "viewSeoTab"
+    },
+    {
+      "name": "permissions",
+      "hide": true
     }
   ]
 }

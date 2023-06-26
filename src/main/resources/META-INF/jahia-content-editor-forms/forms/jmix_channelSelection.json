@@ -1,0 +1,25 @@
+{
+  "nodeType": "jmix:channelSelection",
+  "priority": 2.0,
+  "sections": [
+    {
+      "name": "visibility",
+      "fieldSets": [
+        {
+          "name": "jmix:channelSelection",
+          "fields": [
+            {
+              "name": "j:channelSelection",
+              "selectorType": "MultipleLeftRightSelector"
+            },
+            {
+              "name": "j:channelIncludeOrExclude",
+              "mandatory": true,
+              "defaultValues": [{"type":  "j:channelIncludeOrExclude", "value":  "include"}]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

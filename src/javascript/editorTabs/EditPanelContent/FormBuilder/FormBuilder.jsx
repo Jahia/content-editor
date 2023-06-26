@@ -60,8 +60,6 @@ export const FormBuilder = ({mode}) => {
             listOrderingIndex = index;
             return (
                 <ChildrenSection key={section.name}
-                                 mode={mode}
-                                 nodeData={nodeData}
                                  section={section}
                                  isExpanded={toggleStates && toggleStates[section.name]}
                                  onClick={toggleFcn}

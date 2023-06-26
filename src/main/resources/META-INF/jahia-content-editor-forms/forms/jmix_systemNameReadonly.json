@@ -1,0 +1,21 @@
+{
+  "nodeType": "jmix:systemNameReadonly",
+  "priority": 1.1,
+  "hasPreview": true,
+  "sections": [
+    {
+      "name": "options",
+      "fieldSets": [
+        {
+          "name": "system",
+          "fields": [
+            {
+              "name": "ce:systemName",
+              "readOnly": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

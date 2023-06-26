@@ -1,0 +1,15 @@
+{
+  "nodeType": "jmix:listSizeLimit",
+  "priority": 2.0,
+  "sections": [
+    {
+      "name": "listOrdering",
+      "fieldSets": [
+        {
+          "name": "jmix:listSizeLimit",
+          "requiredPermission": "setContentLimitsOnAreas"
+        }
+      ]
+    }
+  ]
+}

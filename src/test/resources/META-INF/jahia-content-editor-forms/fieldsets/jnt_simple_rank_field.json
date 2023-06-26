@@ -4,9 +4,7 @@
   "fields": [
     {
       "name": "prop3",
-      "target": {
-        "rank": 0
-      }
+      "rank": 1.5
     }
   ]
 }
