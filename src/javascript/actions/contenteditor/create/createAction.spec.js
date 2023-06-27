@@ -50,7 +50,9 @@ describe('create action', () => {
             setI18nContext: jest.fn(),
             resetI18nContext: jest.fn()
         }));
-        useContentEditorConfigContext.mockImplementation(() => ({envProps: {}}));
+        useContentEditorConfigContext.mockImplementation(() => ({
+            onSavedCallback: () => {}
+        }));
         useContentEditorSectionContext.mockReturnValue({sections});
 
         defaultProps = {

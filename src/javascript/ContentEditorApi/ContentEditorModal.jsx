@@ -60,7 +60,7 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
     mergedConfig.createCallback = ({newNode}) => {
         needRefresh.current = true;
         if (createCallback) {
-            createCallback(newNode, envProps);
+            createCallback(newNode, mergedConfig);
         }
 
         triggerEvents(newNode.uuid, Constants.operators.create);

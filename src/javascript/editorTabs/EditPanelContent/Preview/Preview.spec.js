@@ -40,9 +40,7 @@ describe('Preview Container', () => {
         };
         useEffect.mockReset();
         useContentEditorContext.mockReturnValue(editorContext);
-        useContentEditorConfigContext.mockReturnValue({
-            envProps: {}
-        });
+        useContentEditorConfigContext.mockReturnValue({});
 
         useFormikContext.mockReturnValue(formik);
     });

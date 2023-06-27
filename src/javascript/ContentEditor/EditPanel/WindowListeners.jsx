@@ -8,18 +8,18 @@ const handleBeforeUnloadEvent = ev => {
     ev.returnValue = '';
 };
 
-const registerListeners = envProps => {
+const registerListeners = configContext => {
     // Prevent close browser's tab when there is unsaved content
     window.addEventListener('beforeunload', handleBeforeUnloadEvent);
-    if (envProps.registerListeners) {
-        envProps.registerListeners();
+    if (configContext.registerListeners) {
+        configContext.registerListeners();
     }
 };
 
-const unregisterListeners = envProps => {
+const unregisterListeners = configContext => {
     window.removeEventListener('beforeunload', handleBeforeUnloadEvent);
-    if (envProps.unregisterListeners) {
-        envProps.unregisterListeners();
+    if (configContext.unregisterListeners) {
+        configContext.unregisterListeners();
     }
 };
 

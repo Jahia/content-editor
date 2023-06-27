@@ -47,9 +47,7 @@ describe('startWorkflow action', () => {
             }
         };
         useContentEditorContext.mockReturnValue(contentEditorContext);
-        contentEditorConfigContext = {
-            envProps: {}
-        };
+        contentEditorConfigContext = {};
         useContentEditorConfigContext.mockReturnValue(contentEditorConfigContext);
     });
 

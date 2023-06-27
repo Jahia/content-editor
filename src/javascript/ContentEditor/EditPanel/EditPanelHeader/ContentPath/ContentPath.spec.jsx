@@ -39,7 +39,7 @@ describe('ContentPathContainer', () => {
 
     let dispatch = jest.fn();
     let contentEditorContext;
-    let envProps;
+    let contentEditorConfigContext;
 
     beforeEach(() => {
         useFormikContext.mockReturnValue({dirty: false});
@@ -53,19 +53,20 @@ describe('ContentPathContainer', () => {
             language: 'fr'
         }));
 
-        envProps = {
+        contentEditorConfigContext = {
             back: jest.fn(),
-        };
-        useContentEditorConfigContext.mockImplementation(() => ({
-            envProps: envProps,
             site: 'mySiteXD'
-        }));
+        };
+        useContentEditorConfigContext.mockImplementation(() => contentEditorConfigContext);
         contentEditorContext = {
             i18nContext: {}
         };
         useContentEditorContext.mockImplementation(() => contentEditorContext);
 
         useDispatch.mockImplementation(() => dispatch);
+
+        console.log('new mocks', contentEditorConfigContext.back.mock.calls);
+
     });
 
     afterEach(() => {
@@ -164,7 +165,7 @@ describe('ContentPathContainer', () => {
         }));
 
         useContentEditorConfigContext.mockImplementation(() => ({
-            envProps: envProps,
+            ...contentEditorConfigContext,
             mode: Constants.routes.baseCreateRoute
         }));
 
@@ -219,11 +220,12 @@ describe('ContentPathContainer', () => {
 
         expect(dispatch).toHaveBeenCalled();
         expect(cmGoto).toHaveBeenCalledWith({mode: 'pages', path: '/x/y/z'});
-        expect(envProps.back).not.toHaveBeenCalled();
+        expect(contentEditorConfigContext.back).toHaveBeenCalled();
         expect(wrapper.find('CloseConfirmationDialog').props.isOpen).toBeFalsy();
     });
 
     it('handle redirects on item click with dirty form', () => {
+        console.log(contentEditorConfigContext.back.mock.calls);
         contentEditorContext.i18nContext.en = {
             validation: {},
             values: {}
@@ -233,7 +235,7 @@ describe('ContentPathContainer', () => {
         wrapper.find('ContentPathView').simulate('itemClick', '/x/y/z');
 
         expect(dispatch).not.toHaveBeenCalled();
-        expect(envProps.back).not.toHaveBeenCalled();
+        expect(contentEditorConfigContext.back).not.toHaveBeenCalled();
 
         expect(wrapper.find('CloseConfirmationDialog').props().isOpen).toBeTruthy();
 
@@ -243,7 +245,7 @@ describe('ContentPathContainer', () => {
         wrapper.find('ContentPathView').simulate('itemClick', '/x/y/z');
         expect(wrapper.find('CloseConfirmationDialog').props().isOpen).toBeTruthy();
         wrapper.find('CloseConfirmationDialog').props().actionCallback();
-        expect(envProps.back).toHaveBeenCalled();
+        expect(contentEditorConfigContext.back).toHaveBeenCalled();
     });
 
     it('handle redirects on item click when path start with files', () => {
@@ -252,7 +254,7 @@ describe('ContentPathContainer', () => {
 
         expect(dispatch).toHaveBeenCalled();
         expect(cmGoto).toHaveBeenCalledWith({mode: 'media', path: '/sites/mySiteXD/files/chocolate'});
-        expect(envProps.back).not.toHaveBeenCalled();
+        expect(contentEditorConfigContext.back).toHaveBeenCalled();
         expect(wrapper.find('CloseConfirmationDialog').props.isOpen).toBeFalsy();
     });
 
@@ -262,7 +264,7 @@ describe('ContentPathContainer', () => {
 
         expect(dispatch).toHaveBeenCalled();
         expect(cmGoto).toHaveBeenCalledWith({mode: 'content-folders', path: '/sites/mySiteXD/contents/fruits'});
-        expect(envProps.back).not.toHaveBeenCalled();
+        expect(contentEditorConfigContext.back).toHaveBeenCalled();
         expect(wrapper.find('CloseConfirmationDialog').props.isOpen).toBeFalsy();
     });
 
@@ -272,7 +274,7 @@ describe('ContentPathContainer', () => {
 
         expect(dispatch).toHaveBeenCalled();
         expect(cmGoto).toHaveBeenCalledWith({mode: 'pages', path: '/sites/mySiteXD/lord/rings'});
-        expect(envProps.back).toHaveBeenCalled();
+        expect(contentEditorConfigContext.back).toHaveBeenCalled();
         expect(wrapper.find('CloseConfirmationDialog').props.isOpen).toBeFalsy();
     });
 
@@ -282,7 +284,7 @@ describe('ContentPathContainer', () => {
 
         expect(dispatch).toHaveBeenCalled();
         expect(push).toHaveBeenCalledWith('/category-manager');
-        expect(envProps.back).not.toHaveBeenCalled();
+        expect(contentEditorConfigContext.back).toHaveBeenCalled();
         expect(wrapper.find('CloseConfirmationDialog').props.isOpen).toBeFalsy();
     });
 });
