@@ -7,7 +7,7 @@ describe('Category tests', () => {
             jcr {
                 nodeByPath(path: $path) {
                     uuid
-                }   
+                }
             }
         }`;
 
