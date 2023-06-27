@@ -53,15 +53,14 @@ export function register() {
     });
 
     registry.add('content-editor-config', 'gwtcreatepage', {
-        newPath: null,
-        createCallback: function ({path}) {
-            this.newPath = path;
+        createCallback: function ({path}, config) {
+            config.newPath = path;
         },
-        onClosedCallback: function (envProps, needRefresh) {
-            if (this.newPath) {
+        onClosedCallback: function (config, needRefresh) {
+            if (config.newPath) {
                 const dispatch = window.jahia.reduxStore.dispatch;
                 const currentPcPath = window.jahia.reduxStore.getState().pagecomposer.currentPage.path;
-                dispatch(pcNavigateTo({oldPath: currentPcPath, newPath: encodeURIComponent(this.newPath).replaceAll('%2F', '/')}));
+                dispatch(pcNavigateTo({oldPath: currentPcPath, newPath: encodeURIComponent(config.newPath).replaceAll('%2F', '/')}));
 
                 // Refresh content in repository explorer to see added page
                 if (window.authoringApi.refreshContent && window.location.pathname.endsWith('/jahia/repository-explorer')) {
