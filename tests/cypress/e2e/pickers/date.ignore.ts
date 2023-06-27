@@ -5,7 +5,6 @@ import {
     deleteUser,
     grantRoles,
     addNode,
-    getNodeByPath,
     deleteNodeProperty
 } from '@jahia/cypress';
 
