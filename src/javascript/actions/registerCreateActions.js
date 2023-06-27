@@ -61,6 +61,6 @@ export const registerCreateActions = registry => {
         color: 'accent',
         variant: 'outlined',
         targets: ['content-editor/header/main-save-actions'],
-        dataSelRole: 'createButton',
+        dataSelRole: 'createButton'
     });
 };

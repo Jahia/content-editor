@@ -32,5 +32,5 @@ export const OnCloseConfirmationDialog = React.forwardRef(({deleteEditorConfig},
 });
 
 OnCloseConfirmationDialog.propTypes = {
-    deleteEditorConfig: PropTypes.func.isRequired,
+    deleteEditorConfig: PropTypes.func.isRequired
 };

@@ -1,9 +1,7 @@
 import React from 'react';
-import {useContentEditorHistory} from '~/contexts';
 import {useNodeChecks} from '@jahia/data-helper';
 import * as PropTypes from 'prop-types';
 import {useSelector} from 'react-redux';
-import {Constants} from '~/ContentEditor.constants';
 import {useTranslation} from 'react-i18next';
 import {useContentEditorApiContext} from '~/contexts/ContentEditorApi/ContentEditorApi.context';
 
@@ -15,7 +13,6 @@ export const EditContent = ({
     loading: Loading,
     ...otherProps
 }) => {
-    const {redirect} = useContentEditorHistory();
     useTranslation('content-editor');
     const api = useContentEditorApiContext();
     const {language, uilang, site} = useSelector(state => ({

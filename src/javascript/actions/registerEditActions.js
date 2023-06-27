@@ -19,7 +19,7 @@ export const registerEditActions = actionsRegistry => {
         targets: showPageComposer || showCatMan ? ['contentActions:2', 'headerPrimaryActions:1.5', 'narrowHeaderMenu:1'] : ['contentActions:2', 'narrowHeaderMenu:1'],
         hideOnNodeTypes: ['jnt:virtualsite', 'jnt:page'], // For edit content
         requiredSitePermission: ['editAction'],
-        getDisplayName: true,
+        getDisplayName: true
     });
 
     // Edit action button in JContent; need separate actions for content and pages
@@ -29,7 +29,7 @@ export const registerEditActions = actionsRegistry => {
         targets: showPageComposer ? ['contentActions:2', 'headerPrimaryActions:1.5', 'narrowHeaderMenu:1'] : ['contentActions:2', 'narrowHeaderMenu:1'],
         showOnNodeTypes: ['jnt:page'], // For edit pages
         requiredSitePermission: ['editPageAction'],
-        getDisplayName: true,
+        getDisplayName: true
     });
 
     // Edit action button in JContent

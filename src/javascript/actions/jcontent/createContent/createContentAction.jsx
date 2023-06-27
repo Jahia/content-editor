@@ -1,6 +1,4 @@
-import React, {useContext} from 'react';
-import {ContentTypeSelectorModal} from '~/ContentTypeSelectorModal';
-import {Constants} from '~/ContentEditor.constants';
+import React from 'react';
 import {
     childrenLimitReachedOrExceeded,
     flattenNodeTypes,
@@ -9,9 +7,7 @@ import {
 } from './createContent.utils';
 import {useSelector} from 'react-redux';
 import {useNodeChecks, useNodeInfo} from '@jahia/data-helper';
-import {ComponentRendererContext} from '@jahia/ui-extender';
 import * as PropTypes from 'prop-types';
-import {useContentEditorHistory} from '~/contexts/ContentEditorHistory';
 import {useTranslation} from 'react-i18next';
 import {useContentEditorApiContext} from '~/contexts/ContentEditorApi/ContentEditorApi.context';
 
