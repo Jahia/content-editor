@@ -58,7 +58,7 @@ const getItems = (mode, node) => {
 
 export const ContentPath = ({path}) => {
     const [open, setOpen] = useState(false);
-    const {back, site, mode} = useContentEditorConfigContext();
+    const {deleteEditorConfig, site, mode} = useContentEditorConfigContext();
     const formik = useFormikContext();
     const {i18nContext} = useContentEditorContext();
 
@@ -97,7 +97,7 @@ export const ContentPath = ({path}) => {
                 }));
             }
 
-            back();
+            deleteEditorConfig();
         }
     };
 
@@ -105,7 +105,7 @@ export const ContentPath = ({path}) => {
     const items = useMemo(() => getItems(mode, node), [mode, node]);
 
     let onCloseDialog = useCallback(() => setOpen(false), [setOpen]);
-    let actionCallback = back;
+    let actionCallback = deleteEditorConfig;
 
     if (error) {
         return <>{error.message}</>;

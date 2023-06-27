@@ -31,11 +31,15 @@ const accentColorButtonProps = {
 
 export const EditPanelCompact = ({title, createAnother}) => {
     const {mode} = useContentEditorContext();
-    const {setFullscreen} = useContentEditorConfigContext();
+    const {updateEditorConfig} = useContentEditorConfigContext();
     const {t} = useTranslation('content-editor');
 
     const tabs = registry.find({target: 'editHeaderTabsActions'});
     const EditPanelContent = tabs.find(tab => tab.value === Constants.editPanel.editTab).displayableComponent;
+
+    const setFullscreen = () => updateEditorConfig({
+        isFullscreen: true
+    });
 
     return (
         <>

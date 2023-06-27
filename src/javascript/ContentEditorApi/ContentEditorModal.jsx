@@ -37,7 +37,7 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
     const notificationContext = useNotifications();
 
     const needRefresh = useRef(false);
-    const openDialog = useRef();
+    const confirmationDialog = useRef();
     const dispatch = useDispatch();
     const client = useApolloClient();
 
@@ -55,8 +55,8 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
 
     const {createCallback, editCallback, onClosedCallback} = mergedConfig;
 
-    // Standalone env props
-    mergedConfig.back = deleteEditorConfig;
+    mergedConfig.updateEditorConfig = updateEditorConfig;
+    mergedConfig.deleteEditorConfig = deleteEditorConfig;
     mergedConfig.createCallback = ({newNode}) => {
         needRefresh.current = true;
         if (createCallback) {
@@ -78,7 +78,6 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
                     label={t('content-editor:label.contentEditor.edit.contentEdit')}
                     onClick={() => {
                         updateEditorConfig({
-                            ...editorConfig,
                             isFullscreen: false,
                             uuid: newNode.uuid,
                             mode: Constants.routes.baseEditRoute
@@ -103,7 +102,7 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
     mergedConfig.editCallback = ({originalNode, updatedNode}) => {
         needRefresh.current = true;
         if (editCallback) {
-            editCallback(updatedNode, originalNode, envProps);
+            editCallback(updatedNode, originalNode, mergedConfig);
         }
 
         triggerEvents(updatedNode.uuid, Constants.operators.update);
@@ -116,7 +115,6 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
             // Redirect to CE edit mode, for the created node
             needRefresh.current = false;
             updateEditorConfig({
-                ...editorConfig,
                 uuid: newNode.uuid,
                 lang: language ? language : mergedConfig.lang,
                 mode: Constants.routes.baseEditRoute
@@ -135,35 +133,14 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
         }
     };
 
-    mergedConfig.onCreateAnother = () => {
-        updateEditorConfig({
-            ...editorConfig,
-            count: (mergedConfig.count || 0) + 1
-        });
-    };
-
-    mergedConfig.switchLanguageCallback = language => {
-        updateEditorConfig({
-            ...editorConfig,
-            lang: language
-        });
-    };
-
     mergedConfig.onClosedCallback = () => {
         if (onClosedCallback) {
             onClosedCallback(mergedConfig, needRefresh.current);
         }
     };
 
-    mergedConfig.setFullscreen = () => {
-        updateEditorConfig({
-            ...editorConfig,
-            isFullscreen: true
-        });
-    };
-
     mergedConfig.layout = mergedConfig.layout || (mergedConfig.isFullscreen ? EditPanelFullscreen : EditPanelCompact);
-    mergedConfig.confirmationDialog = <OnCloseConfirmationDialog deleteEditorConfig={deleteEditorConfig} openDialog={openDialog}/>;
+    mergedConfig.confirmationDialog = <OnCloseConfirmationDialog ref={confirmationDialog} deleteEditorConfig={deleteEditorConfig}/>;
     mergedConfig.formKey = mergedConfig.formKey || 'modal';
 
     mergedConfig.count = mergedConfig.count || 0;
@@ -192,7 +169,7 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
                 TransitionComponent={Transition}
                 aria-labelledby="dialog-content-editor"
                 classes={classes}
-                onClose={() => openDialog.current ? openDialog.current() : deleteEditorConfig()}
+                onClose={() => confirmationDialog.current ? confirmationDialog.current.openDialog() : deleteEditorConfig()}
                 onRendered={() => window.focus()}
                 {...mergedConfig.dialogProps}
         >

@@ -35,7 +35,7 @@ export const useSwitchLanguage = () => {
     const formik = useFormikContext();
     const {setI18nContext} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
-    const {lang: previousLanguage, switchLanguageCallback} = useContentEditorConfigContext();
+    const {lang: previousLanguage, updateEditorConfig} = useContentEditorConfigContext();
 
     return useCallback(newLanguage => {
         const fields = sections && getFields(sections).filter(field => !field.readOnly);
@@ -88,7 +88,8 @@ export const useSwitchLanguage = () => {
                 ...newValues
             };
         });
-
-        switchLanguageCallback(newLanguage, previousLanguage);
-    }, [switchLanguageCallback, formik, sections, setI18nContext, previousLanguage]);
+        updateEditorConfig({
+            lang: newLanguage
+        });
+    }, [updateEditorConfig, formik, sections, setI18nContext, previousLanguage]);
 };

@@ -10,7 +10,7 @@ import {useKeydownListener} from '~/utils';
 const Create = ({createAnother, render: Render, loading: Loading, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
     const formik = useFormikContext();
-    const {onCreateAnother, onSavedCallback} = useContentEditorConfigContext();
+    const {updateEditorConfig, count, onSavedCallback} = useContentEditorConfigContext();
     const {
         mode,
         resetI18nContext,
@@ -58,7 +58,9 @@ const Create = ({createAnother, render: Render, loading: Loading, ...otherProps}
                             formik.resetForm({values: initialValues});
                             resetI18nContext();
                             setClicked(false);
-                            onCreateAnother();
+                            updateEditorConfig({
+                                count: count + 1
+                            });
                         });
                     } else {
                         formik.resetForm({values: formik.values});
