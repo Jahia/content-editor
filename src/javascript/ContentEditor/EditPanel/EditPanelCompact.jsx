@@ -31,7 +31,7 @@ const accentColorButtonProps = {
 
 export const EditPanelCompact = ({title, createAnother}) => {
     const {mode} = useContentEditorContext();
-    const contentEditorConfigContext = useContentEditorConfigContext();
+    const {setFullscreen} = useContentEditorConfigContext();
     const {t} = useTranslation('content-editor');
 
     const tabs = registry.find({target: 'editHeaderTabsActions'});
@@ -45,7 +45,7 @@ export const EditPanelCompact = ({title, createAnother}) => {
                 <div className="flexRow">
                     <Typography variant="heading">{truncate(title, 40)}</Typography>
                     <div className="flexFluid"/>
-                    {mode !== Constants.routes.baseCreateRoute && <Button className={styles.uppercase} label={t('label.contentEditor.create.advanced')} icon={<Edit/>} data-sel-role="advancedMode" onClick={contentEditorConfigContext.envProps.setFullscreen}/>}
+                    {mode !== Constants.routes.baseCreateRoute && <Button className={styles.uppercase} label={t('label.contentEditor.create.advanced')} icon={<Edit/>} data-sel-role="advancedMode" onClick={setFullscreen}/>}
                     <DisplayAction actionKey="content-editor/header/3dots" render={DotsButtonRenderer}/>
                 </div>
                 <div className={clsx('flexRow', styles.languageSwitcher)}>

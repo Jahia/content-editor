@@ -1,9 +1,7 @@
 import React from 'react';
 import {registry} from '@jahia/ui-extender';
 import {registerActions} from './registerActions';
-import {Constants} from '~/ContentEditor.constants';
 import {ContentEditorApi, ContentPickerApi} from './ContentEditorApi';
-import {ContentEditorRoute} from './ContentEditorRoute/ContentEditorRoute';
 import {ContentEditorHistoryContextProvider} from '~/contexts';
 import {registerSelectorTypes} from '~/SelectorTypes';
 import {pcNavigateTo} from '~/redux/pagecomposer.redux-actions';
@@ -73,28 +71,6 @@ export function register() {
                 window.authoringApi.refreshContent();
             }
         }
-    });
-
-    registry.add('route', 'content-editor-edit-route', {
-        targets: ['main:2.1'],
-        path: '/content-editor/:lang/edit/:uuid',
-        render: ({match}) => (
-            <ContentEditorRoute uuid={match.params.uuid}
-                                mode={Constants.routes.baseEditRoute}
-                                lang={match.params.lang}/>
-        )
-    });
-
-    registry.add('route', 'content-editor-create-route', {
-        targets: ['main:2.1'],
-        path: '/content-editor/:lang/create/:parentUuid/:contentType?/:name?',
-        render: ({match}) => (
-            <ContentEditorRoute uuid={match.params.parentUuid}
-                                mode={Constants.routes.baseCreateRoute}
-                                lang={match.params.lang}
-                                contentType={decodeURI(match.params.contentType)}
-                                name={match.params.name}/>
-        )
     });
 
     // Register GWT Hooks

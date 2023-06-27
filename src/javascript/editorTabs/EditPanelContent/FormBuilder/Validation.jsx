@@ -22,7 +22,7 @@ export const Validation = () => {
     const formik = useFormikContext();
     const {sections} = useContentEditorSectionContext();
     const {siteInfo, i18nContext, lang} = useContentEditorContext();
-    const {envProps} = useContentEditorConfigContext();
+    const {formKey} = useContentEditorConfigContext();
     const {t} = useTranslation('content-editor');
     const toggleStates = useSelector(state => state.contenteditor.ceToggleSections);
     const dispatch = useDispatch();
@@ -52,8 +52,8 @@ export const Validation = () => {
         if (toggleStates[section.name]) {
             scrollTo(field);
         } else {
-            dispatch(ceToggleSections({key: envProps.formKey, sections: {
-                ...toggleStates[envProps.formKey],
+            dispatch(ceToggleSections({key: formKey, sections: {
+                ...toggleStates[formKey],
                 [section.name]: true
             }}));
             setTimeout(() => scrollTo(field), 0);

@@ -10,9 +10,17 @@ import {useKeydownListener} from '~/utils';
 const Create = ({createAnother, render: Render, loading: Loading, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
     const formik = useFormikContext();
-    const contentEditorConfigContext = useContentEditorConfigContext();
-    const {envProps} = contentEditorConfigContext;
-    const {mode, resetI18nContext, setErrors, siteInfo, lang, refetchFormData, initialValues, i18nContext} = useContentEditorContext();
+    const {onCreateAnother, onSavedCallback} = useContentEditorConfigContext();
+    const {
+        mode,
+        resetI18nContext,
+        setErrors,
+        siteInfo,
+        lang,
+        refetchFormData,
+        initialValues,
+        i18nContext
+    } = useContentEditorContext();
     const [clicked, setClicked] = useState(false);
     const {sections} = useContentEditorSectionContext();
 
@@ -28,7 +36,10 @@ const Create = ({createAnother, render: Render, loading: Loading, ...otherProps}
     });
 
     const save = async formik => {
-        const {errors, i18nErrors} = await validateForm(formik, i18nContext, sections, lang, siteInfo, componentRenderer);
+        const {
+            errors,
+            i18nErrors
+        } = await validateForm(formik, i18nContext, sections, lang, siteInfo, componentRenderer);
 
         if (errors || i18nErrors) {
             setErrors({...errors});
@@ -47,16 +58,12 @@ const Create = ({createAnother, render: Render, loading: Loading, ...otherProps}
                             formik.resetForm({values: initialValues});
                             resetI18nContext();
                             setClicked(false);
-                            if (envProps.onCreateAnother) {
-                                envProps.onCreateAnother();
-                            }
+                            onCreateAnother();
                         });
                     } else {
                         formik.resetForm({values: formik.values});
                         resetI18nContext();
-                        if (envProps.onSavedCallback) {
-                            envProps.onSavedCallback(data);
-                        }
+                        onSavedCallback(data);
                     }
                 } else {
                     setClicked(false);

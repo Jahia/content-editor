@@ -27,23 +27,23 @@ export const WindowListeners = () => {
     const registered = useRef(false);
     const formik = useFormikContext();
     const {i18nContext} = useContentEditorContext();
-    const {envProps} = useContentEditorConfigContext();
+    const contentEditorConfigContext = useContentEditorConfigContext();
 
     const dirty = isDirty(formik, i18nContext);
 
     useEffect(() => {
         if (!registered.current && dirty) {
             registered.current = true;
-            registerListeners(envProps);
+            registerListeners(contentEditorConfigContext);
         }
 
         return () => {
             if (registered.current) {
                 registered.current = false;
-                unregisterListeners(envProps);
+                unregisterListeners(contentEditorConfigContext);
             }
         };
-    }, [registered, envProps, dirty]);
+    }, [registered, contentEditorConfigContext, dirty]);
 
     return false;
 };

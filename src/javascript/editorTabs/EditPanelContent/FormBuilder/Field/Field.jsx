@@ -28,7 +28,7 @@ export const Field = ({inputContext, idInput, selectorType, field}) => {
     const {t} = useTranslation('content-editor');
     const formik = useFormikContext();
     const editorContext = useContentEditorContext();
-    const editorConfigContext = useContentEditorConfigContext();
+    const {count} = useContentEditorConfigContext();
     const sectionsContext = useContentEditorSectionContext();
     const client = useApolloClient();
 
@@ -103,7 +103,7 @@ export const Field = ({inputContext, idInput, selectorType, field}) => {
         return () => {
             registeredOnChangeRef.current(undefined);
         };
-    }, [editorConfigContext.count]);
+    }, [count]);
 
     useEffect(() => {
         registeredOnChangeRef.current(currentValue);

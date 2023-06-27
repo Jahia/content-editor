@@ -9,7 +9,6 @@ import {useContentEditorApiContext} from '~/contexts/ContentEditorApi/ContentEdi
 
 export const EditContent = ({
     path,
-    isModal,
     isFullscreen,
     editCallback,
     render: Render,
@@ -36,7 +35,7 @@ export const EditContent = ({
     return (
         <Render {...otherProps}
                 isVisible={res.checksResult}
-                onClick={() => isModal ? api.edit({
+                onClick={() => api.edit({
                     uuid: res.node.uuid,
                     site,
                     lang: language,
@@ -44,21 +43,19 @@ export const EditContent = ({
                     isFullscreen,
                     editCallback,
                     ...otherProps.editConfig
-                }) : redirect({language, mode: Constants.routes.baseEditRoute, uuid: res.node.uuid})}
+                })}
         />
     );
 };
 
 EditContent.defaultProps = {
     loading: undefined,
-    isModal: false,
     isFullscreen: false,
     editCallback: undefined
 };
 
 EditContent.propTypes = {
     path: PropTypes.string.isRequired,
-    isModal: PropTypes.bool,
     isFullscreen: PropTypes.bool,
     editCallback: PropTypes.func,
     render: PropTypes.func.isRequired,

@@ -55,7 +55,6 @@ describe('ContentPathContainer', () => {
 
         envProps = {
             back: jest.fn(),
-            redirectBreadcrumbCallback: jest.fn()
         };
         useContentEditorConfigContext.mockImplementation(() => ({
             envProps: envProps,
@@ -268,10 +267,6 @@ describe('ContentPathContainer', () => {
     });
 
     it('handle redirects on item click with option to go back', () => {
-        envProps.redirectBreadcrumbCallback = () => {
-            envProps.back();
-        };
-
         const wrapper = shallow(<ContentPath {...defaultProps}/>);
         wrapper.find('ContentPathView').simulate('itemClick', '/sites/mySiteXD/lord/rings');
 

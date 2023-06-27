@@ -8,13 +8,13 @@ import {Constants} from '~/ContentEditor.constants';
 import styles from './EditPanelContent.scss';
 
 export const EditPanelContent = () => {
-    const {mode, envProps} = useContentEditorConfigContext();
+    const {mode, isFullscreen} = useContentEditorConfigContext();
     const {hasPreview} = useContentEditorContext();
 
     return (
         <>
             {mode === Constants.routes.baseEditRoute && <PublicationInfoProgress/>}
-            {hasPreview && (!envProps || !envProps.isModal || envProps.isFullscreen) ?
+            {hasPreview && isFullscreen ?
                 (
                     <TwoColumnsContent
                         classes={{root: styles.twoColumnsRoot, left: styles.col, right: styles.col}}

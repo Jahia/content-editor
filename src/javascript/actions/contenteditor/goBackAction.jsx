@@ -7,14 +7,14 @@ import {isDirty, useKeydownListener} from '~/utils';
 import {useFormikContext} from 'formik';
 
 export const GoBack = ({render: Render, ...otherProps}) => {
-    const {envProps} = useContentEditorConfigContext();
+    const {confirmationDialog, back} = useContentEditorConfigContext();
     const [open, setOpen] = useState(false);
     const formik = useFormikContext();
     const {i18nContext} = useContentEditorContext();
     const onCloseDialog = useCallback(() => setOpen(false), [setOpen]);
 
     useKeydownListener(event => {
-        if (event.keyCode === Constants.keyCodes.esc && !envProps.disabledBack()) {
+        if (event.keyCode === Constants.keyCodes.esc) {
             goBack();
         }
     });
@@ -22,25 +22,24 @@ export const GoBack = ({render: Render, ...otherProps}) => {
     const dirty = isDirty(formik, i18nContext);
 
     const goBack = () => {
-        if (dirty && envProps.confirmationDialog) {
+        if (dirty && confirmationDialog) {
             formik.validateForm();
             setOpen(true);
         } else {
-            envProps.back();
+            back();
         }
     };
 
     return (
         <>
-            { envProps.confirmationDialog && (
+            { confirmationDialog && (
                 <CloseConfirmationDialog
                     isOpen={open}
-                    actionCallback={envProps.back}
+                    actionCallback={back}
                     onCloseDialog={onCloseDialog}
                 />
             )}
             <Render
-                enabled={!envProps.disabledBack()}
                 onClick={() => goBack()}
                 {...otherProps}
             />
