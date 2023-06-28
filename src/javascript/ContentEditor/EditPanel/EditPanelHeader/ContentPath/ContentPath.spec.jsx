@@ -34,6 +34,15 @@ jest.mock('@apollo/react-hooks', () => ({
 
 jest.mock('formik');
 
+Object.defineProperty(window, 'location', {
+    value: {
+        url: {
+            contains: () => false
+        }
+    },
+    writable: true
+});
+
 describe('ContentPathContainer', () => {
     let defaultProps;
 

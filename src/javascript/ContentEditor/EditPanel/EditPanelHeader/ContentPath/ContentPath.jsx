@@ -97,7 +97,7 @@ export const ContentPath = ({path}) => {
                 }));
             }
 
-            deleteEditorConfig();
+            deleteEditorConfig(window.location.url.contains('/jahia/page-composer/'));
         }
     };
 

@@ -65,12 +65,12 @@ export const ContentEditorApi = () => {
         setEditorConfigs(copy);
     };
 
-    let deleteEditorConfig = index => {
+    let deleteEditorConfig = (index, isGWT) => {
         const copy = Array.from(editorConfigs);
         const spliced = copy.splice(index, 1);
         setEditorConfigs(copy);
 
-        if (spliced[0]?.isFullscreen && !window.history.state.prevUrl?.contains('/cms/login')) {
+        if (spliced[0]?.isFullscreen && !window.history?.state?.prevUrl?.contains('/cms/login') && !isGWT) {
             history.go(-1);
         } else {
             history.replace(rison.decode(locationWithoutEditors));
@@ -184,8 +184,8 @@ export const ContentEditorApi = () => {
                         updateEditorConfig={updatedEditorConfig => {
                             updateEditorConfig(updatedEditorConfig, index);
                         }}
-                        deleteEditorConfig={() => {
-                            deleteEditorConfig(index);
+                        deleteEditorConfig={isGWT => {
+                            deleteEditorConfig(index, isGWT);
                         }}
                     />
                 );
