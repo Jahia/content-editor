@@ -1,5 +1,6 @@
 import {JContent} from '../page-object/jcontent';
 import {ContentEditor} from '../page-object';
+import {PageComposer} from '../page-object/pageComposer';
 
 describe('Editor url test', () => {
     let jcontent: JContent;
@@ -78,5 +79,13 @@ describe('Editor url test', () => {
         cy.go('forward');
         cy.get('h1').contains('Our Companies').should('exist');
         contentEditor.cancel();
+    });
+
+    it('Handles breadcrum in GWT correctly', function () {
+        const hashIndex = peopleFirstUrl.indexOf('#');
+        const hash = peopleFirstUrl.substring(hashIndex);
+        PageComposer.visit('digitall', 'en', `home.html${hash}`);
+        contentEditor.getBreadcrumb('highlights').click();
+        cy.get('h1').contains('highlights').should('exist');
     });
 });
