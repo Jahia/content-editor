@@ -62,7 +62,7 @@ jobs:
     steps:
       - uses: jahia/jahia-modules-action/sbom-handling@TECH-1019
         with:
-          dependencytrack_url: ${{ secrets.DEPENDENCYTRACK_URL }}
+          dependencytrack_hostname: ${{ vars.DEPENDENCYTRACK_HOSTNAME }}
           dependencytrack_apikey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
 
   sonar-analysis:
