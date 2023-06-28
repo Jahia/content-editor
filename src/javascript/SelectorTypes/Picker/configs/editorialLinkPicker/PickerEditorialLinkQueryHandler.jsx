@@ -11,7 +11,7 @@ export const PickerEditorialLinkQueryHandler = {
             treeParams.openableTypes = ['jmix:mainResource', 'jnt:page', 'jnt:navMenuText'];
             treeParams.selectableTypes = ['jnt:page', 'jmix:mainResource'];
         } else { // Content
-            treeParams.openableTypes = ['jnt:contentFolder'];
+            treeParams.openableTypes = ['jmix:mainResource', 'jnt:contentFolder'];
             treeParams.selectableTypes = ['jmix:mainResource'];
         }
 

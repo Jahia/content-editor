@@ -32,7 +32,7 @@ describe('FormBuilder component', () => {
             }
         };
         useContentEditorContext.mockReturnValue(context);
-        useContentEditorConfigContext.mockReturnValue({envProps: {}});
+        useContentEditorConfigContext.mockReturnValue({});
         sectionContext = {
             sections: [
                 {
@@ -105,89 +105,35 @@ describe('FormBuilder component', () => {
         expect(cmp.children().length).toEqual(sectionContext.sections.length);
     });
 
-    it('should not display ordering section in create mode', () => {
+    it('should not display ordering section if not there', () => {
         sectionContext.sections.push({
             name: 'listOrdering',
             displayName: 'Listordering',
             expanded: false,
             fieldSets: [
-                {
-                    displayName: 'yo1',
-                    displayed: true,
-                    fields: [
-                        {name: 'field1', displayName: 'field 1'},
-                        {name: 'field2', displayName: 'field 2'}
-                    ]
-                }
             ]
         });
         const cmp = shallowWithTheme(<FormBuilder mode="create" formKey="dummy-uuid-create-2"/>, {}, dsGenericTheme).find('section');
         expect(cmp.find('ChildrenSection').dive().find('Collapsible').exists()).toBeFalsy();
     });
 
-    it('should display ordering section for page', () => {
+    it('should display ordering section if available', () => {
         sectionContext.sections.push({
             name: 'listOrdering',
             displayName: 'Listordering',
             expanded: false,
             fieldSets: [
                 {
-                    displayName: 'yo1',
+                    name: 'jmix:orderedList',
                     displayed: true,
                     fields: [
-                        {name: 'field1', displayName: 'field 1'},
-                        {name: 'field2', displayName: 'field 2'}
+                        {name: 'jmix:orderedList_ce:manualOrdering'}
                     ]
                 }
             ]
         });
-
-        context.nodeData.isPage = true;
 
         const cmp = shallowWithTheme(<FormBuilder mode="edit" formKey="dummy-uuid-edit"/>, {}, dsGenericTheme).find('section');
-        expect(cmp.find('ChildrenSection').dive().find('Collapsible').exists()).toBeTruthy();
-    });
-
-    it('should not display ordering section for site', () => {
-        sectionContext.sections.push({
-            name: 'listOrdering',
-            displayName: 'Listordering',
-            expanded: false,
-            fieldSets: [
-                {
-                    displayName: 'yo1',
-                    displayed: true,
-                    fields: [
-                        {name: 'field1', displayName: 'field 1'},
-                        {name: 'field2', displayName: 'field 2'}
-                    ]
-                }
-            ]
-        });
-
-        context.nodeData.isSite = true;
-
-        const cmp = shallowWithTheme(<FormBuilder mode="edit" formKey="dummy-uuid-edit-1"/>, {}, dsGenericTheme).find('section');
-        expect(cmp.find('ChildrenSection').dive().find('Collapsible').exists()).toBeFalsy();
-    });
-
-    it('should display ordering section', () => {
-        sectionContext.sections.push({
-            name: 'listOrdering',
-            displayName: 'Listordering',
-            expanded: false,
-            fieldSets: [
-                {
-                    displayName: 'yo1',
-                    displayed: true,
-                    fields: [
-                        {name: 'field1', displayName: 'field 1'},
-                        {name: 'field2', displayName: 'field 2'}
-                    ]
-                }
-            ]
-        });
-        const cmp = shallowWithTheme(<FormBuilder mode="edit" formKey="dummy-uuid-edit-2"/>, {}, dsGenericTheme).find('section');
         expect(cmp.find('ChildrenSection').dive().find('Collapsible').exists()).toBeTruthy();
     });
 
@@ -198,11 +144,10 @@ describe('FormBuilder component', () => {
             expanded: false,
             fieldSets: [
                 {
-                    displayName: 'yo1',
+                    name: 'jmix:orderedList',
                     displayed: true,
                     fields: [
-                        {name: 'field1', displayName: 'field 1'},
-                        {name: 'field2', displayName: 'field 2'}
+                        {name: 'jmix:orderedList_ce:manualOrdering'}
                     ]
                 }
             ]

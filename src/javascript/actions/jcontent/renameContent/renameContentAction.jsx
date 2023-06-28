@@ -45,14 +45,12 @@ export const RenameContent = ({path, editCallback, render: Render, loading: Load
 
 RenameContent.defaultProps = {
     loading: undefined,
-    isModal: false,
     isFullscreen: false,
     editCallback: undefined
 };
 
 RenameContent.propTypes = {
     path: PropTypes.string.isRequired,
-    isModal: PropTypes.bool,
     isFullscreen: PropTypes.bool,
     editCallback: PropTypes.func,
     render: PropTypes.func.isRequired,

@@ -5,12 +5,12 @@ import {useContentEditorConfigContext} from '~/contexts';
 import {I18nContextHandler} from './I18nContextHandler';
 
 export const EditPanel = React.memo(props => {
-    const {envProps} = useContentEditorConfigContext();
-    const Layout = envProps.layout || EditPanelFullscreen;
+    const {layout, confirmationDialog} = useContentEditorConfigContext();
+    const Layout = layout || EditPanelFullscreen;
     return (
         <>
             <Layout {...props}/>
-            {envProps.confirmationDialog}
+            {confirmationDialog}
             <I18nContextHandler/>
         </>
     );

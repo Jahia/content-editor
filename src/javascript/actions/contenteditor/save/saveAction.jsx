@@ -16,7 +16,7 @@ const Save = ({render: Render, loading: Loading, ...otherProps}) => {
     const componentRenderer = useContext(ComponentRendererContext);
     const {publicationInfoPolling} = usePublicationInfoContext();
     const {mode, i18nContext, siteInfo, lang, resetI18nContext, setErrors} = useContentEditorContext();
-    const {envProps} = useContentEditorConfigContext();
+    const {onSavedCallback} = useContentEditorConfigContext();
     const {sections} = useContentEditorSectionContext();
     const formik = useFormikContext();
 
@@ -48,9 +48,7 @@ const Save = ({render: Render, loading: Loading, ...otherProps}) => {
                     if (data) {
                         resetI18nContext();
                         formik.resetForm({values: formik.values});
-                        if (envProps.onSavedCallback) {
-                            envProps.onSavedCallback(data);
-                        }
+                        onSavedCallback(data);
                     }
                 });
         }

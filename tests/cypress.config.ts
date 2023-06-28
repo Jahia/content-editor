@@ -13,6 +13,7 @@ export default defineConfig({
     viewportWidth: 1366,
     viewportHeight: 768,
     trashAssetsBeforeRuns: true,
+    watchForFileChanges: false,
     e2e: {
         setupNodeEvents(on, config) {
             // eslint-disable-next-line @typescript-eslint/no-var-requires

@@ -29,12 +29,12 @@
     <parent>
         <artifactId>jahia-modules</artifactId>
         <groupId>org.jahia.modules</groupId>
-        <version>8.1.1.0</version>
+        <version>8.1.3.0</version>
         <relativePath />
     </parent>
     <artifactId>content-editor</artifactId>
     <name>Jahia Content Editor</name>
-    <version>4.5.0-SNAPSHOT</version>
+    <version>4.6.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <description>Jahia Content Editor React extension.</description>
 
@@ -48,7 +48,7 @@
         <jahia-module-type>system</jahia-module-type>
         <yarn.arguments>build:production</yarn.arguments>
         <require-capability>osgi.extender;filter:="(osgi.extender=org.jahia.bundles.blueprint.extender.config)"</require-capability>
-        <jahia-module-signature>MCwCFC14zrQFrhdlrI26e0IEXNTj5OY6AhRL9HwaSH2xVfqUuS03309iaYYBRg==</jahia-module-signature>
+        <jahia-module-signature>MCwCFCCXODSzmgBsUjmtRXe/+KqHwSu1AhRX1IYqO841oaXpjs4l11Pk20TmCg==</jahia-module-signature>
         <jahia-depends>app-shell=2.7,graphql-dxm-provider=2.15,jcontent=2.9</jahia-depends>
         <jahia.plugin.version>6.5</jahia.plugin.version>
         <import-package>
@@ -322,8 +322,42 @@
                                     <arguments>${yarn.arguments}</arguments>
                                 </configuration>
                             </execution>
+                            <execution>
+                                <id>sync-pom</id>
+                                <phase>none</phase>
+                                <goals>
+                                    <goal>yarn</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>sync-pom</arguments>
+                                </configuration>
+                            </execution> 
                         </executions>
                     </plugin>
+                    <plugin>
+                        <artifactId>maven-scm-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>package-json</id>
+                                <phase>none</phase>
+                                <goals>
+                                    <goal>checkin</goal>
+                                </goals>
+                                <configuration>
+                                    <includes>package.json</includes>
+                                    <message>[maven-scm-plugin] [skip ci] synchronize package.json</message>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-release-plugin</artifactId>
+                        <configuration>
+                            <preparationGoals>clean verify frontend:yarn@sync-pom scm:checkin@package-json</preparationGoals>
+                            <completionGoals>frontend:yarn@sync-pom scm:checkin@package-json</completionGoals>
+                        </configuration>
+                    </plugin> 
                 </plugins>
             </build>
         </profile>

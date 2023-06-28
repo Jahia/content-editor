@@ -15,11 +15,12 @@ import {PickerSiteSwitcher} from '~/SelectorTypes/Picker';
 import {jcontentUtils} from '@jahia/jcontent';
 import {replaceFragmentsInDocument} from '@jahia/data-helper';
 import {GET_PICKER_NODE_UUID} from '~/SelectorTypes/Picker/PickerDialog/PickerDialog.gql-queries';
-import {useQuery} from '@apollo/react-hooks';
+import {useQuery, useApolloClient} from '@apollo/react-hooks';
 
 const ButtonRenderer = getButtonRenderer({defaultButtonProps: {variant: 'ghost'}});
 
 const RightPanel = ({pickerConfig, isMultiple, accordionItemProps, lang, uilang, onClose, onItemSelection}) => {
+    const client = useApolloClient();
     const {selection, mode, path} = useSelector(state => ({
         path: state.contenteditor.picker.path,
         selection: state.contenteditor.picker.selection,
@@ -49,6 +50,27 @@ const RightPanel = ({pickerConfig, isMultiple, accordionItemProps, lang, uilang,
         }
     };
 
+    const dblClickSelect = uuid => {
+        client.query({
+            query: selectionQuery,
+            variables: {
+                uuids: [uuid],
+                language: lang,
+                uilang: uilang
+            },
+            fetchPolicy: 'network-only'
+        }).then(res => {
+            const nodes = res?.data?.jcr?.nodesById;
+            if (nodes && nodes.length > 0) {
+                onItemSelection(nodes);
+            }
+
+            onClose();
+        }).catch(e => {
+            console.error('Failed to select node', e);
+        });
+    };
+
     const accordionItem = jcontentUtils.getAccordionItem(registry.get('accordionItem', mode), accordionItemProps);
     let viewSelector = accordionItem?.tableConfig?.viewSelector;
     if (typeof viewSelector === 'function') {
@@ -71,7 +93,7 @@ const RightPanel = ({pickerConfig, isMultiple, accordionItemProps, lang, uilang,
                 </div>
             </header>
             <div className={clsx('flexFluid', 'flexCol_nowrap', css.body)}>
-                {mode !== '' && <ContentLayout pickerConfig={pickerConfig} isMultiple={isMultiple} accordionItemProps={accordionItemProps}/>}
+                {mode !== '' && <ContentLayout pickerConfig={pickerConfig} isMultiple={isMultiple} accordionItemProps={accordionItemProps} dblClickSelect={dblClickSelect}/>}
             </div>
 
             <SelectionTable selection={nodes} expanded={selectionExpanded} pickerConfig={pickerConfig}/>

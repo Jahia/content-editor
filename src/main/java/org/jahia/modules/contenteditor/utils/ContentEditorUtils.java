@@ -23,12 +23,18 @@
  */
 package org.jahia.modules.contenteditor.utils;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
+import org.jahia.api.Constants;
 import org.jahia.modules.graphql.provider.dxm.DataFetchingException;
 import org.jahia.services.content.JCRNodeWrapper;
+import org.jahia.services.content.JCRSessionFactory;
+import org.jahia.services.content.JCRSessionWrapper;
+import org.jahia.services.content.JCRTemplate;
+import org.jahia.services.content.decorator.JCRSiteNode;
 import org.jahia.services.content.nodetypes.ConstraintsHelper;
 import org.jahia.services.content.nodetypes.ExtendedNodeType;
 import org.jahia.services.content.nodetypes.NodeTypeRegistry;
+import org.jahia.utils.LanguageCodeConverters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.touk.throwing.ThrowingConsumer;
@@ -143,6 +149,31 @@ public class ContentEditorUtils {
             }));
         } else {
             allowedTypes.add(subType.getName());
+        }
+    }
+
+    public static JCRNodeWrapper resolveNodeFromPathorUUID(String uuidOrPath, Locale locale) throws RepositoryException {
+        Locale fallbackLocale = JCRTemplate.getInstance().doExecuteWithSystemSession(jcrSessionWrapper -> {
+            JCRNodeWrapper node;
+            if (org.apache.commons.lang.StringUtils.startsWith(uuidOrPath, "/")) {
+                node = jcrSessionWrapper.getNode(uuidOrPath);
+            } else {
+                node = jcrSessionWrapper.getNodeByIdentifier(uuidOrPath);
+            }
+
+            JCRSiteNode site = node.getResolveSite();
+            if (site != null && site.isMixLanguagesActive()) {
+                return LanguageCodeConverters.getLocaleFromCode(site.getDefaultLanguage());
+            }
+
+            return null;
+        });
+
+        JCRSessionWrapper session = JCRSessionFactory.getInstance().getCurrentUserSession(Constants.EDIT_WORKSPACE, locale, fallbackLocale);
+        if (StringUtils.startsWith(uuidOrPath, "/")) {
+            return session.getNode(uuidOrPath);
+        } else {
+            return session.getNodeByIdentifier(uuidOrPath);
         }
     }
 

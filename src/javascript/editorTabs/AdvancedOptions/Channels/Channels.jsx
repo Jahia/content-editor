@@ -1,25 +1,25 @@
 import React from 'react';
 import {useContentEditorSectionContext} from '~/contexts';
 import {Validation} from '~/editorTabs/EditPanelContent/FormBuilder/Validation';
-import {FieldSetsDisplay} from '~/editorTabs/EditPanelContent/FormBuilder/FieldSet';
+import {FieldSet} from '~/editorTabs/EditPanelContent/FormBuilder/FieldSet';
 import styles from './Channels.scss';
 
 const filterRegularFieldSets = fieldSets => {
-    const hideFieldSet = fieldSet => {
+    const showFieldSet = fieldSet => {
         if (!fieldSet) {
             return false;
         }
 
-        if (!fieldSet.displayed) {
-            return true;
+        if (fieldSet.dynamic && !fieldSet.hasEnableSwitch && !fieldSet.activated) {
+            return false;
         }
 
         // We must hide fieldSet in the section when the fieldSet is not dynamic and
         // the fieldSet doesn't contain any fields (empty).
-        return !fieldSet.dynamic && fieldSet.fields.length === 0;
+        return fieldSet.dynamic || fieldSet.fields.length > 0;
     };
 
-    return fieldSets.filter(fs => !hideFieldSet(fs));
+    return fieldSets.filter(fs => showFieldSet(fs));
 };
 
 export const Channels = () => {
@@ -36,7 +36,7 @@ export const Channels = () => {
         <div className={styles.container}>
             <Validation/>
             <section>
-                <FieldSetsDisplay fieldSets={fieldSets}/>
+                { fieldSets?.map(fs => <FieldSet key={fs.name} fieldset={fs}/>) }
             </section>
         </div>
     );

@@ -53,7 +53,7 @@ describe('save action', () => {
         };
         useContentEditorContext.mockReturnValue(contentEditorContext);
         const contentEditorConfigContext = {
-            envProps: {}
+            onSavedCallback: () => {}
         };
         useContentEditorSectionContext.mockReturnValue({sections});
         useContentEditorConfigContext.mockReturnValue(contentEditorConfigContext);

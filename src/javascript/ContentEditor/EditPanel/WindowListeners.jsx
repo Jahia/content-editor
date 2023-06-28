@@ -8,18 +8,18 @@ const handleBeforeUnloadEvent = ev => {
     ev.returnValue = '';
 };
 
-const registerListeners = envProps => {
+const registerListeners = configContext => {
     // Prevent close browser's tab when there is unsaved content
     window.addEventListener('beforeunload', handleBeforeUnloadEvent);
-    if (envProps.registerListeners) {
-        envProps.registerListeners();
+    if (configContext.registerListeners) {
+        configContext.registerListeners();
     }
 };
 
-const unregisterListeners = envProps => {
+const unregisterListeners = configContext => {
     window.removeEventListener('beforeunload', handleBeforeUnloadEvent);
-    if (envProps.unregisterListeners) {
-        envProps.unregisterListeners();
+    if (configContext.unregisterListeners) {
+        configContext.unregisterListeners();
     }
 };
 
@@ -27,23 +27,23 @@ export const WindowListeners = () => {
     const registered = useRef(false);
     const formik = useFormikContext();
     const {i18nContext} = useContentEditorContext();
-    const {envProps} = useContentEditorConfigContext();
+    const contentEditorConfigContext = useContentEditorConfigContext();
 
     const dirty = isDirty(formik, i18nContext);
 
     useEffect(() => {
         if (!registered.current && dirty) {
             registered.current = true;
-            registerListeners(envProps);
+            registerListeners(contentEditorConfigContext);
         }
 
         return () => {
             if (registered.current) {
                 registered.current = false;
-                unregisterListeners(envProps);
+                unregisterListeners(contentEditorConfigContext);
             }
         };
-    }, [registered, envProps, dirty]);
+    }, [registered, contentEditorConfigContext, dirty]);
 
     return false;
 };

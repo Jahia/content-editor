@@ -3,7 +3,7 @@
 <mix = 'http://www.jcp.org/jcr/mix/1.0'>
 <cent = 'http://www.jahia.org/ce/nt/1.0'>
 
-[cent:textFieldInitializer] > jnt:content, jmix:basicContent, mix:title noquery
+[cent:textFieldInitializer] > jnt:content, jmix:basicContent, jmix:editorialContent, mix:title noquery
  - defaultString (string) = 'Default string'
  - defaultI18nString (string) = 'Default i18n string' internationalized
  - defaultDate (date) = '1988-03-07T19:40:00.000Z'
@@ -22,7 +22,7 @@
  - moduleI18nRBAutocreatedString (string) = resourceBundle('kiss') autocreated internationalized
  - moduleClassInitString (string) = useClass(org.jahia.modules.textfieldinitializer.InitTextValue)
 
- [cent:defaultValueTest] > jnt:content, jmix:basicContent, mix:title noquery
+ [cent:defaultValueTest] > jnt:content, jmix:basicContent, jmix:editorialContent, mix:title noquery
  - defaultString (string) = 'Default string'
  - defaultI18nString (string) = 'Default i18n string' internationalized
  - defaultDate (date) = now()
@@ -35,3 +35,10 @@
  - defaultI18nDateAutocreated (date) = now() autocreated internationalized
  - defaultRBAutocreated (string) = resourceBundle('system.doWithJahia') autocreated
  - defaultI18nRBAutocreated (string) = resourceBundle('system.doWithJahia') autocreated internationalized
+
+[cent:testOverride] > jnt:content, mix:title, jmix:basicContent, jmix:editorialContent
+ - jcr:title (string) < '^.{0,10}$'
+
+[cent:testRegExp] > jnt:content, jmix:basicContent
+- badge (string) mandatory < '[a-z0-9]+'
+- comment (string) mandatory < '^.{1,15}$'

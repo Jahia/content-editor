@@ -1,0 +1,24 @@
+{
+  "nodeType": "mix:title",
+  "priority": 2.0,
+  "sections": [
+    {
+      "name": "content",
+      "fieldSets": [
+        {
+          "name": "<main>",
+          "rank": 0.0,
+          "fields": [
+            {
+              "rank": 0.0,
+              "name": "jcr:title"
+            }, {
+              "rank": 1.0,
+              "name": "ce:systemName"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

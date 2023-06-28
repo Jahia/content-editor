@@ -1,6 +1,4 @@
-import React, {useContext} from 'react';
-import {ContentTypeSelectorModal} from '~/ContentTypeSelectorModal';
-import {Constants} from '~/ContentEditor.constants';
+import React from 'react';
 import {
     childrenLimitReachedOrExceeded,
     flattenNodeTypes,
@@ -9,17 +7,13 @@ import {
 } from './createContent.utils';
 import {useSelector} from 'react-redux';
 import {useNodeChecks, useNodeInfo} from '@jahia/data-helper';
-import {ComponentRendererContext} from '@jahia/ui-extender';
 import * as PropTypes from 'prop-types';
-import {useContentEditorHistory} from '~/contexts/ContentEditorHistory';
 import {useTranslation} from 'react-i18next';
 import {useContentEditorApiContext} from '~/contexts/ContentEditorApi/ContentEditorApi.context';
 
-export const CreateContent = ({contextNodePath, path, showOnNodeTypes, nodeTypes, name, includeSubTypes, isModal, isFullscreen, hasBypassChildrenLimit, onCreate, onClosed, render: Render, loading: Loading, ...otherProps}) => {
-    const {redirect} = useContentEditorHistory();
+export const CreateContent = ({contextNodePath, path, showOnNodeTypes, nodeTypes, name, includeSubTypes, isFullscreen, hasBypassChildrenLimit, onCreate, onClosed, render: Render, loading: Loading, ...otherProps}) => {
     const api = useContentEditorApiContext();
     const {t} = useTranslation('content-editor');
-    const componentRenderer = useContext(ComponentRendererContext);
     const {language, uilang, site} = useSelector(state => ({language: state.language, site: state.site, uilang: state.uilang}));
 
     const res = useNodeChecks(
@@ -67,34 +61,8 @@ export const CreateContent = ({contextNodePath, path, showOnNodeTypes, nodeTypes
     const flattenedNodeTypes = flattenNodeTypes(nodeTypesTree);
     const actions = transformNodeTypesToActions(flattenedNodeTypes, hasBypassChildrenLimit);
 
-    const onClick = ({flattenedNodeTypes, nodeTypesTree}) => {
-        if (isModal) {
-            api.create({uuid: nodeInfo.node.uuid, path, site, lang: language, uilang, nodeTypesTree, name, isFullscreen, createCallback: onCreate, onClosedCallback: onClosed});
-        } else if (flattenedNodeTypes?.length === 1) {
-            redirect({mode: Constants.routes.baseCreateRoute, language, uuid: nodeInfo.node.uuid, rest: encodeURI(flattenedNodeTypes[0].name)});
-        } else {
-            const closeDialog = () => {
-                componentRenderer.destroy('ContentTypeSelectorModal');
-            };
-
-            componentRenderer.render('ContentTypeSelectorModal', ContentTypeSelectorModal, {
-                open: true,
-                parentPath: path,
-                uilang: uilang,
-                nodeTypesTree: nodeTypesTree,
-                onClose: closeDialog,
-                onExited: closeDialog,
-                onCreateContent: contentType => {
-                    redirect({
-                        mode: Constants.routes.baseCreateRoute,
-                        language,
-                        uuid: nodeInfo.node.uuid,
-                        rest: encodeURI(contentType.name) + (name ? '/' + encodeURI(name) : '')
-                    });
-                    closeDialog();
-                }
-            });
-        }
+    const onClick = ({nodeTypesTree}) => {
+        api.create({uuid: nodeInfo.node.uuid, path, site, lang: language, uilang, nodeTypesTree, name, isFullscreen, createCallback: onCreate, onClosedCallback: onClosed});
     };
 
     return (actions || [{key: 'allTypes', nodeTypeIcon: otherProps.defaultIcon}]).map(result => (
@@ -123,7 +91,6 @@ CreateContent.defaultProps = {
 CreateContent.propTypes = {
     contextNodePath: PropTypes.string,
     path: PropTypes.string.isRequired,
-    isModal: PropTypes.bool,
     isFullscreen: PropTypes.bool,
     showOnNodeTypes: PropTypes.array,
     nodeTypes: PropTypes.array,

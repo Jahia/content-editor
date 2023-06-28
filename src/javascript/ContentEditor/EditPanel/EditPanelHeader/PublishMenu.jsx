@@ -5,6 +5,7 @@ import React from 'react';
 import styles from './PublishMenu.scss';
 import {DisplayAction} from '@jahia/ui-extender';
 import {getButtonRenderer, isDirty} from '~/utils';
+import {ChevronDown} from '@jahia/moonstone';
 
 const ButtonRenderer = getButtonRenderer({
     labelStyle: 'none',
@@ -34,6 +35,7 @@ export const PublishMenu = () => {
             language={lang}
             path={nodeData.path}
             render={ButtonRenderer}
+            buttonProps={{icon: <ChevronDown/>}}
         />
     );
 };

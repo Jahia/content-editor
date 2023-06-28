@@ -1,10 +1,10 @@
 import {contentTypes} from '../../fixtures/pickers/contentTypes';
-import {PageComposer} from '../../page-object/pageComposer';
 import gql from 'graphql-tag';
+import {JContent} from '../../page-object/jcontent';
 
-describe('Picker - Editorial link', () => {
+describe('Picker - Editorial link', {testIsolation: false}, () => {
     const siteKey = 'digitall';
-    let pageComposer: PageComposer;
+    let jcontent: JContent;
 
     // Helper
 
@@ -21,6 +21,7 @@ describe('Picker - Editorial link', () => {
                     }
                 }
             `});
+        cy.apollo({mutationFile: 'pickers/createMainResources.graphql'});
     };
 
     const deleteNavText = () => {
@@ -28,6 +29,7 @@ describe('Picker - Editorial link', () => {
                 mutation deleteNavText {
                     jcr {
                         content: deleteNode(pathOrId: "/sites/digitall/home/about/navMenuText")
+                        content2: deleteNode(pathOrId: "/sites/digitall/contents/article")
                     }
                 }
             `});
@@ -35,21 +37,21 @@ describe('Picker - Editorial link', () => {
 
     // Setup
 
-    beforeEach(() => {
+    before(() => {
         cy.login();
-        pageComposer = PageComposer.visit(siteKey, 'en', 'home.html');
         createNavText();
+        jcontent = JContent.visit(siteKey, 'en', 'content-folders/contents');
     });
 
-    afterEach(() => {
+    after(() => {
         deleteNavText();
         cy.logout();
     });
 
     it('should display editorial link picker', () => {
         const contentType = contentTypes.editoriallinkpicker;
-        const picker = pageComposer
-            .createContent(contentType.typeName)
+        const contentEditor = jcontent.createContent(contentType.typeName);
+        const picker = contentEditor
             .getPickerField(contentType.fieldNodeType, contentType.multiple)
             .open();
         picker.wait();
@@ -86,15 +88,17 @@ describe('Picker - Editorial link', () => {
             .find('[data-cm-role="table-content-list-cell-type"]')
             .should(elems => {
                 const texts = elems.get().map(e => e.textContent);
-                const allTypes = texts.sort().every(content => ['Content Folder', 'Person portrait'].includes(content));
+                const allTypes = texts.sort().every(content => ['Content Folder', 'Person portrait', 'Article (title and introduction)'].includes(content));
                 // eslint-disable-next-line no-unused-expressions
                 expect(allTypes).to.be.true;
             });
+        picker.cancel();
+        contentEditor.cancel();
     });
 
     it('should expand selection and restore tab', () => {
         const contentType = contentTypes.editoriallinkpicker;
-        const contentEditor = pageComposer.createContent(contentType.typeName);
+        const contentEditor = jcontent.createContent(contentType.typeName);
         const picker = contentEditor
             .getPickerField(contentType.fieldNodeType, contentType.multiple)
             .open();
@@ -116,5 +120,26 @@ describe('Picker - Editorial link', () => {
         picker.getTable().getRowByName('all-organic-foods-network-gains')
             .should('be.visible') // Expanded
             .and('have.class', 'moonstone-TableRow-highlighted'); // Selected
+        picker.cancel();
+        contentEditor.cancel();
+        cy.get('[data-sel-role="close-dialog-discard"]').click();
+    });
+
+    it('can select main resource and sub-main resource', () => {
+        const contentType = contentTypes.editoriallinkpicker;
+        const contentEditor = jcontent.createContent(contentType.typeName);
+        const picker = contentEditor
+            .getPickerField(contentType.fieldNodeType, contentType.multiple)
+            .open();
+
+        picker.selectTab('content');
+
+        picker.getTable().getRowByName('article').get().scrollIntoView();
+        picker.getTable().getRowByName('article').expand();
+        picker.getTable().getRowByName('paragraph').should('be.visible').click();
+        picker.select();
+
+        contentEditor.cancel();
+        cy.get('[data-sel-role="close-dialog-discard"]').click();
     });
 });

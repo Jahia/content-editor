@@ -228,13 +228,13 @@ describe('Test the text field initializer)', () => {
             .selectContentType('textFieldInitializer')
             .create();
         checkFieldValues(contentEditorToCreate, initialFields, langEN);
-        contentEditorToCreate.getSmallTextField('mix:title_jcr:title').addNewValue('englishTitle', true);
+        contentEditorToCreate.getSmallTextField('cent:textFieldInitializer_jcr:title').addNewValue('englishTitle', true);
         contentEditorToCreate.getLanguageSwitcher().selectLang('Français');
         checkFieldValues(contentEditorToCreate, initialFields, langFR);
-        contentEditorToCreate.getSmallTextField('mix:title_jcr:title').addNewValue('frenchTitle', true);
+        contentEditorToCreate.getSmallTextField('cent:textFieldInitializer_jcr:title').addNewValue('frenchTitle', true);
         contentEditorToCreate.getLanguageSwitcher().selectLang('Deutsch');
         checkFieldValues(contentEditorToCreate, initialFields, langDE);
-        contentEditorToCreate.getSmallTextField('mix:title_jcr:title').addNewValue('deutschTitle', true);
+        contentEditorToCreate.getSmallTextField('cent:textFieldInitializer_jcr:title').addNewValue('deutschTitle', true);
         contentEditorToCreate.getLanguageSwitcher().selectLang('English');
         contentEditorToCreate.create();
         testValuesInPageComposer(pageComposer, initialDisplayedValues, [langFR, langDE, langEN]);

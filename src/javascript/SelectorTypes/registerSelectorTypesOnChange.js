@@ -42,9 +42,9 @@ export const registerSelectorTypesOnChange = registry => {
                     return onChangeContext.client.query({
                         query: FieldConstraints,
                         variables: {
-                            uuid: onChangeContext.nodeData.uuid,
-                            parentUuid: onChangeContext.nodeData.parent.path,
-                            primaryNodeType: onChangeContext.nodeData.primaryNodeType.name,
+                            uuid: onChangeContext.mode === 'create' ? null : onChangeContext.nodeData.uuid,
+                            parentUuid: onChangeContext.mode === 'create' ? onChangeContext.nodeData.uuid : onChangeContext.nodeData.parent.uuid,
+                            primaryNodeType: onChangeContext.mode === 'create' ? onChangeContext.nodeTypeName : onChangeContext.nodeData.primaryNodeType.name,
                             nodeType: dependentPropertiesField.nodeType,
                             fieldName: dependentPropertiesField.propertyName,
                             context: context,

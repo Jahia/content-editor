@@ -20,7 +20,7 @@ export const CreateFormQuery = gql`
                         description
                         dynamic
                         activated
-                        displayed
+                        hasEnableSwitch
                         fields {
                             name
                             displayName

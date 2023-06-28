@@ -13,6 +13,7 @@ export default defineConfig({
     viewportWidth: 1366,
     viewportHeight: 768,
     trashAssetsBeforeRuns: true,
+    watchForFileChanges: false,
     e2e: {
         // We've imported your old cypress plugins here.
         // You may want to clean this up later by importing these.
@@ -27,7 +28,6 @@ export default defineConfig({
             '**/e2e/pickers/search.cy.ts',
             '**/e2e/pickers/picker*.cy.ts',
             '**/e2e/pickers/constraint.cy.ts'],
-        baseUrl: 'http://localhost:8080',
-        experimentalSessionAndOrigin: false
+        baseUrl: 'http://localhost:8080'
     }
 });

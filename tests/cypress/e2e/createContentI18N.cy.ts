@@ -1,11 +1,15 @@
 import {PageComposer} from '../page-object/pageComposer';
+import {DocumentNode} from 'graphql';
+import {JContent} from '../page-object/jcontent';
 
 const sitekey = 'contentEditorSiteI18N';
 describe('Create content tests in I18N site', () => {
     let pageComposer: PageComposer;
+    let setProperty: DocumentNode;
 
     before(function () {
         cy.executeGroovy('createSiteI18N.groovy', {SITEKEY: sitekey});
+        setProperty = require('graphql-tag/loader!../fixtures/createContent/addJcrTitleWithLang.graphql');
     });
 
     after(function () {
@@ -165,5 +169,39 @@ describe('Create content tests in I18N site', () => {
         contentEditor.cancelAndDiscard();
         pageComposer.refresh().shouldContain('Cypress news content');
         pageComposer.shouldContain('Cypress news content 2');
+    });
+
+    it('Correctly handles i18n title with jcr:title property on the node itself', function () {
+        const jcontent = JContent.visit(sitekey, 'en', 'media/file');
+        const fileName = 'snowbearHome.jpeg';
+        const fieldName = 'jnt:file_jcr:title';
+        cy.get('div[data-cm-role="grid-content-list"]')
+            .children('div')
+            .selectFile(`cypress/fixtures/${fileName}`, {
+                action: 'drag-drop',
+                waitForAnimations: true
+            }).then(() => {
+                // Unfortunately, this one seems necessary as it takes some time for uploaded file to register in JCR
+                // eslint-disable-next-line cypress/no-unnecessary-waiting
+                cy.wait(2000);
+                cy.apollo({mutation: setProperty, variables: {
+                    path: `/sites/${sitekey}/files/${fileName}`,
+                    value: 'No lang'
+                }});
+
+                cy.apollo({mutation: setProperty, variables: {
+                    path: `/sites/${sitekey}/files/${fileName}`,
+                    value: 'With lang',
+                    lang: 'en'
+                }});
+
+                jcontent.switchToListMode();
+                let contentEditor = jcontent.editComponentByText(fileName);
+                contentEditor.getSmallTextField(fieldName).checkValue('With lang');
+                contentEditor.getSmallTextField(fieldName).addNewValue('New value', true);
+                contentEditor.save();
+                contentEditor = jcontent.editComponentByText(fileName);
+                contentEditor.getSmallTextField(fieldName).checkValue('New value');
+            });
     });
 });

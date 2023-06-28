@@ -1,9 +1,9 @@
 import {shallowWithTheme} from '@jahia/test-framework';
 import {dsGenericTheme} from '@jahia/design-system-kit';
 import React from 'react';
-import {listOrderingSection} from './AutomaticOrdering.spec.data';
+import {listOrderingFieldSet} from './AutomaticOrdering.spec.data';
 import {AutomaticOrdering} from './AutomaticOrdering';
-import {useContentEditorContext, useContentEditorSectionContext} from '~/contexts';
+import {useContentEditorContext} from '~/contexts';
 import {adaptSectionToDisplayableRows, getDisplayedRows} from './AutomaticOrdering.utils';
 import {Constants} from '~/ContentEditor.constants';
 import {useFormikContext} from 'formik';
@@ -17,7 +17,7 @@ describe('Automatic ordering component', () => {
     let props;
     let formik;
     let context;
-    let sectionContext;
+
     beforeEach(() => {
         context = {
             nodeData: {
@@ -26,9 +26,6 @@ describe('Automatic ordering component', () => {
             }
         };
         useContentEditorContext.mockReturnValue(context);
-        sectionContext = {
-        };
-        useContentEditorSectionContext.mockReturnValue(sectionContext);
         formik = {
             values: {
                 [Constants.ordering.automaticOrdering.mixin + '_firstField']: undefined,
@@ -48,17 +45,18 @@ describe('Automatic ordering component', () => {
     });
 
     it('should display one row only when no props set', () => {
-        sectionContext.sections = [listOrderingSection(false, false)];
+        props.orderingFieldSet = listOrderingFieldSet(false, false);
         const cmp = shallowWithTheme(
             <AutomaticOrdering {...props}/>,
             {},
             dsGenericTheme
         );
+        console.log(cmp.debug());
         expect(cmp.find('FieldContainer').length).toBe(2);
     });
 
     it('should display rows when properties exists', () => {
-        sectionContext.sections = [listOrderingSection(false, false)];
+        props.orderingFieldSet = listOrderingFieldSet(false, false);
         formik.values[Constants.ordering.automaticOrdering.mixin + '_secondField'] = 'jcr:created';
         formik.values[Constants.ordering.automaticOrdering.mixin + '_thirdField'] = 'jcr:createdBy';
 
@@ -71,7 +69,7 @@ describe('Automatic ordering component', () => {
     });
 
     it('should disable add when props are readOnly', () => {
-        sectionContext.sections = [listOrderingSection(true, true)];
+        props.orderingFieldSet = listOrderingFieldSet(true, true);
 
         const cmp = shallowWithTheme(
             <AutomaticOrdering {...props}/>,
@@ -82,7 +80,7 @@ describe('Automatic ordering component', () => {
     });
 
     it('should disable remove when props are readOnly', () => {
-        sectionContext.sections = [listOrderingSection(true, true)];
+        props.orderingFieldSet = listOrderingFieldSet(true, true);
         formik.values[Constants.ordering.automaticOrdering.mixin + '_secondField'] = 'jcr:created';
         formik.values[Constants.ordering.automaticOrdering.mixin + '_thirdField'] = 'jcr:createdBy';
 
@@ -96,7 +94,7 @@ describe('Automatic ordering component', () => {
     });
 
     it('should add rows when click on "Add" button, to a maximum of 3 rows, then the button should be disabled', () => {
-        sectionContext.sections = [listOrderingSection(false, false)];
+        props.orderingFieldSet = listOrderingFieldSet(false, false);
 
         const cmp = shallowWithTheme(
             <AutomaticOrdering {...props}/>,
@@ -124,7 +122,7 @@ describe('Automatic ordering component', () => {
     });
 
     it('should remove rows when click on "Remove" button', () => {
-        sectionContext.sections = [listOrderingSection(false, false)];
+        props.orderingFieldSet = listOrderingFieldSet(false, false);
         formik.values[Constants.ordering.automaticOrdering.mixin + '_secondField'] = 'jcr:created';
         formik.values[Constants.ordering.automaticOrdering.mixin + '_thirdField'] = 'jcr:createdBy';
 
@@ -153,7 +151,7 @@ describe('Automatic ordering component', () => {
     });
 
     it('should getRows, and displayed rows', () => {
-        const rows = adaptSectionToDisplayableRows([listOrderingSection(false, false)], s => s);
+        const rows = adaptSectionToDisplayableRows(listOrderingFieldSet(false, false), t => t);
 
         // Should transform section in displayable rows
         expect(rows.length).toBe(3);

@@ -1,7 +1,6 @@
 import {
     Accordion,
     BasePage,
-    Button,
     Dropdown,
     getComponent,
     getComponentByAttr,
@@ -91,7 +90,7 @@ export class JContent extends BasePage {
     }
 
     switchToMode(name: string): JContent {
-        getComponentByRole(Button, `sel-view-mode-${name}`).click();
+        getComponentByRole(Dropdown, 'sel-view-mode-dropdown').select(name).get().should('contain', name);
         return this;
     }
 
@@ -101,7 +100,7 @@ export class JContent extends BasePage {
     }
 
     switchToListMode(): JContent {
-        this.switchToMode('list');
+        this.switchToMode('List');
         return this;
     }
 
@@ -111,7 +110,7 @@ export class JContent extends BasePage {
     }
 
     switchToStructuredView(): JContent {
-        this.switchToMode('structuredView');
+        this.switchToMode('Structured');
         return this;
     }
 }

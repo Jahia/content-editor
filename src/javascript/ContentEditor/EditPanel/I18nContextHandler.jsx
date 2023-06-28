@@ -20,7 +20,7 @@ export const I18nContextHandler = () => {
                 ...i18nContext[lang]?.values
             }, i18nContext[lang]);
         }
-    }, [contentEditorConfigContext.envProps, i18nContext, lang]);
+    }, [contentEditorConfigContext, i18nContext, lang]);
 
     useEffect(() => {
         setI18nContext(prev => ({

@@ -27,7 +27,7 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLTypeExtension;
-import org.jahia.modules.contenteditor.graphql.api.GqlEditorForms;
+import org.jahia.modules.contenteditor.graphql.api.forms.GqlEditorForms;
 import org.jahia.modules.graphql.provider.dxm.DXGraphQLProvider;
 
 /**

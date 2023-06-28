@@ -14,16 +14,15 @@ export const Create = () => {
     const client = useApolloClient();
     const {t} = useTranslation('content-editor');
     const contentEditorConfigContext = useContentEditorConfigContext();
+    const {onClosedCallback, contentType, lang, createCallback} = contentEditorConfigContext;
     const {nodeData, initialValues, title, i18nContext, createAnother} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
 
     useEffect(() => {
         return () => {
-            if (contentEditorConfigContext.envProps.onClosedCallback) {
-                contentEditorConfigContext.envProps.onClosedCallback();
-            }
+            onClosedCallback();
         };
-    }, [contentEditorConfigContext.envProps]);
+    }, [onClosedCallback]);
 
     const handleSubmit = (values, actions) => {
         return createNode({
@@ -32,18 +31,15 @@ export const Create = () => {
             notificationContext,
             actions,
             data: {
-                primaryNodeType: contentEditorConfigContext.contentType,
+                primaryNodeType: contentType,
                 nodeData,
                 sections,
                 values,
-                language: contentEditorConfigContext.lang,
+                language: lang,
                 i18nContext
             },
             createCallback: info => {
-                const envCreateCallback = contentEditorConfigContext.envProps.createCallback;
-                if (envCreateCallback) {
-                    envCreateCallback(info, contentEditorConfigContext);
-                }
+                createCallback(info, contentEditorConfigContext);
             }
         });
     };

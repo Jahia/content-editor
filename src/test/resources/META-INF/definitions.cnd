@@ -21,6 +21,12 @@
     - prop2 (string)
     - prop3 (string)
 
+[jmix:simpleRank] mixin
+   extends=jnt:text
+    - prop1 (string)
+    - prop2 (string)
+    - prop3 (string)
+
 [jnt:simpleWithMix] > nt:base, jmix:mix1, jmix:mix2
     - prop (string)
 
@@ -131,3 +137,6 @@ extends=jnt:text
 
 [jnt:externalLinkIssueExample] > jnt:content, jmix:basicContent, jmix:externalLink
  - text (string, richtext) internationalized
+
+[jmix:emptyExtend] mixin
+ extends = jnt:text

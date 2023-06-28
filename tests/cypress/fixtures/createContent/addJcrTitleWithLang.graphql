@@ -1,0 +1,9 @@
+mutation addJcrTitleNoLang($path:String!, $value: String!, $lang: String){
+    jcr {
+      mutateNode(pathOrId:$path) {
+        mutateProperty(name:"jcr:title") {
+          setValue(value:$value, language:$lang)
+        }
+      }
+    }
+}

@@ -19,17 +19,18 @@ export const Edit = () => {
     const client = useApolloClient();
     const {t} = useTranslation('content-editor');
     const contentEditorConfigContext = useContentEditorConfigContext();
+    const {onClosedCallback, editCallback} = contentEditorConfigContext;
     const {lang, nodeData, initialValues, title, i18nContext} = useContentEditorContext();
     const {sections} = useContentEditorSectionContext();
 
     useEffect(() => {
         return () => {
             // If nodeData.lockedAndCannotBeEdited, rely on callback after lock released
-            if (nodeData.lockedAndCannotBeEdited && contentEditorConfigContext.envProps.onClosedCallback) {
-                contentEditorConfigContext.envProps.onClosedCallback();
+            if (nodeData.lockedAndCannotBeEdited) {
+                onClosedCallback();
             }
         };
-    }, [contentEditorConfigContext.envProps, nodeData.lockedAndCannotBeEdited]);
+    }, [onClosedCallback, nodeData.lockedAndCannotBeEdited]);
 
     const handleSubmit = useCallback((values, actions) => {
         return updateNode({
@@ -47,10 +48,7 @@ export const Edit = () => {
             editCallback: info => {
                 const {originalNode, updatedNode} = info;
 
-                const envEditCallback = contentEditorConfigContext.envProps.editCallback;
-                if (envEditCallback) {
-                    envEditCallback(info, contentEditorConfigContext);
-                }
+                editCallback(info, contentEditorConfigContext);
 
                 // Hard reFetch to be able to enable publication menu from jContent menu displayed in header
                 // Note that node cache is flushed in save.request.js, we should probably replace this operation with
@@ -60,7 +58,7 @@ export const Edit = () => {
                 }
             }
         });
-    }, [client, t, notificationContext, contentEditorConfigContext, lang, nodeData, sections, i18nContext]);
+    }, [client, t, notificationContext, editCallback, contentEditorConfigContext, lang, nodeData, sections, i18nContext]);
 
     return (
         <>
@@ -75,7 +73,7 @@ export const Edit = () => {
                     {() => <EditPanel title={title}/>}
                 </Formik>
             </PublicationInfoContextProvider>
-            {!nodeData.lockedAndCannotBeEdited && <LockManager uuid={nodeData.uuid} onLockReleased={contentEditorConfigContext.envProps.onClosedCallback}/>}
+            {!nodeData.lockedAndCannotBeEdited && <LockManager uuid={nodeData.uuid} onLockReleased={onClosedCallback}/>}
         </>
     );
 };

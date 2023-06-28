@@ -167,7 +167,7 @@ describe('Picker tests', () => {
         pagesAccordion.expandTreeItem('images');
         pagesAccordion.getTreeItem(folderName).click().should('be.visible');
         picker.cancel();
-
+        contentEditor.cancel();
         cy.log(`delete folder '${folderName}'`);
         cy.apollo({
             mutationFile: 'pickers/deleteFolder.graphql',
@@ -175,11 +175,11 @@ describe('Picker tests', () => {
         });
 
         cy.reload(); // Reload to sync folder
-        const contentEditor = jcontent.createContent(contentTypes.fileReference.typeName);
+        const contentEditor2 = jcontent.createContent(contentTypes.fileReference.typeName);
 
         cy.log('re-open file picker');
 
-        picker = contentEditor
+        picker = contentEditor2
             .getPickerField(contentTypes.fileReference.fieldNodeType, contentTypes.fileReference.multiple)
             .open();
         pagesAccordion = picker.getAccordionItem('picker-media');
@@ -223,5 +223,21 @@ describe('Picker tests', () => {
         item.getTreeItem('files').find('div').should('have.class', 'moonstone-selected');
         item.getTreeItem('companies').click();
         item.getTreeItem('companies').find('div').should('have.class', 'moonstone-selected');
+    });
+
+    it('should pick thumbnail on double click', () => {
+        const contentEditor = jcontent.createContent(contentTypes.fileReference.typeName);
+
+        const picker = contentEditor
+            .getPickerField(contentTypes.fileReference.fieldNodeType, contentTypes.fileReference.multiple)
+            .open();
+
+        const pagesAccordion: AccordionItem = picker.getAccordionItem('picker-media');
+
+        pagesAccordion.expandTreeItem('images');
+        pagesAccordion.getTreeItem('companies').click();
+        picker.switchViewMode('Thumbnails');
+        picker.getGrid().get().find('div[data-sel-role-card="allrealtylogo_light.png"]').dblclick({force: true});
+        contentEditor.getPickerField(contentTypes.fileReference.fieldNodeType, contentTypes.fileReference.multiple).checkValue('allrealtylogo_light.png');
     });
 });

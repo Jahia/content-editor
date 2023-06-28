@@ -13,9 +13,9 @@ const ADVANCED_OPTIONS_SELECTIONS = ['visibility'];
 
 export const FormBuilder = ({mode}) => {
     const {nodeData, errors, expandedSections} = useContentEditorContext();
-    const {envProps} = useContentEditorConfigContext();
+    const {formKey} = useContentEditorConfigContext();
     const {sections} = useContentEditorSectionContext();
-    const toggleStates = useSelector(state => state.contenteditor.ceToggleSections[envProps.formKey], shallowEqual);
+    const toggleStates = useSelector(state => state.contenteditor.ceToggleSections[formKey], shallowEqual);
     const dispatch = useDispatch();
 
     // Update toggle state if there are errors
@@ -31,7 +31,7 @@ export const FormBuilder = ({mode}) => {
                     });
                 });
             });
-            dispatch(ceToggleSections({key: envProps.formKey, sections: newToggleState}));
+            dispatch(ceToggleSections({key: formKey, sections: newToggleState}));
         }
     }, [errors]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -39,8 +39,8 @@ export const FormBuilder = ({mode}) => {
     useEffect(() => {
         document.querySelector('div[data-first-field=true] input')?.focus();
         const sections = (toggleStates || expandedSections);
-        dispatch(ceToggleSections({key: envProps.formKey, sections}));
-    }, [dispatch, mode, envProps.formKey, expandedSections]); // eslint-disable-line react-hooks/exhaustive-deps
+        dispatch(ceToggleSections({key: formKey, sections}));
+    }, [dispatch, mode, formKey, expandedSections]); // eslint-disable-line react-hooks/exhaustive-deps
 
     if (!nodeData || !sections || sections.length === 0) {
         return <></>;
@@ -51,7 +51,7 @@ export const FormBuilder = ({mode}) => {
         const toggleFcn = e => {
             e.preventDefault();
             dispatch(ceToggleSections({
-                key: envProps.formKey,
+                key: formKey,
                 sections: {...toggleStates, [section.name]: !toggleStates[section.name]}
             }));
         };
@@ -60,8 +60,6 @@ export const FormBuilder = ({mode}) => {
             listOrderingIndex = index;
             return (
                 <ChildrenSection key={section.name}
-                                 mode={mode}
-                                 nodeData={nodeData}
                                  section={section}
                                  isExpanded={toggleStates && toggleStates[section.name]}
                                  onClick={toggleFcn}

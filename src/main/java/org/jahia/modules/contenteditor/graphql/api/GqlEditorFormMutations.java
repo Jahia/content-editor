@@ -29,6 +29,7 @@ import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import org.jahia.modules.contenteditor.api.forms.EditorFormException;
 import org.jahia.modules.contenteditor.api.forms.EditorFormService;
+import org.jahia.modules.contenteditor.api.forms.PublicationService;
 import org.jahia.modules.contenteditor.api.lock.StaticEditorLockService;
 import org.jahia.modules.graphql.provider.dxm.DataFetchingException;
 import org.jahia.modules.graphql.provider.dxm.osgi.annotations.GraphQLOsgiService;
@@ -46,11 +47,18 @@ public class GqlEditorFormMutations {
     private static final Logger logger = LoggerFactory.getLogger(GqlEditorFormMutations.class);
 
     private EditorFormService editorFormService;
+    private PublicationService publicationService;
 
     @Inject
     @GraphQLOsgiService
     public void setEditorFormService(EditorFormService editorFormService) {
         this.editorFormService = editorFormService;
+    }
+
+    @Inject
+    @GraphQLOsgiService
+    public void setPublicationService(PublicationService publicationService) {
+        this.publicationService = publicationService;
     }
 
     /**
@@ -81,7 +89,7 @@ public class GqlEditorFormMutations {
         @GraphQLName("locale") @GraphQLNonNull @GraphQLDescription("A string representation of a locale, in IETF BCP 47 language tag format, ie en_US, en, fr, fr_CH, ...") String locale
     ) {
         try {
-            return editorFormService.publishForm(LanguageCodeConverters.getLocaleFromCode(locale), uuidOrPath);
+            return publicationService.publish(LanguageCodeConverters.getLocaleFromCode(locale), uuidOrPath);
         } catch (EditorFormException e) {
             throw new DataFetchingException(e);
         }
