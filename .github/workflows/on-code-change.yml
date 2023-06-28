@@ -60,7 +60,7 @@ jobs:
     container:
       image: cyclonedx/cyclonedx-cli:0.24.2   
     steps:
-      - uses: jahia/jahia-modules-action/sbom-handling@TECH-1019
+      - uses: jahia/jahia-modules-action/sbom-processing@TECH-1019
         with:
           dependencytrack_hostname: ${{ vars.DEPENDENCYTRACK_HOSTNAME }}
           dependencytrack_apikey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
