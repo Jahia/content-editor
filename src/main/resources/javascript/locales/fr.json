@@ -263,6 +263,7 @@
         "noResult": "Aucun résultat trouvé."
       },
       "cancel": "Annuler",
+      "close": "Fermer",
       "gwtTabsDeprecation": {
         "title": "Ancienne interface",
         "openLegacy": "Ouvrir l'ancienne interface",
