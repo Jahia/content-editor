@@ -54,7 +54,7 @@ jobs:
           mvn_settings_filepath: '.github/maven.settings.xml'
 
   sbom:
-    name: Handle sbom
+    name: SBOM processing
     needs: build
     runs-on: ubuntu-latest
     container:
@@ -64,6 +64,7 @@ jobs:
         with:
           dependencytrack_hostname: ${{ vars.DEPENDENCYTRACK_HOSTNAME }}
           dependencytrack_apikey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
+          sbom_artifacts: 'build-artifacts'
 
   sonar-analysis:
     name: Sonar Analysis
