@@ -64,6 +64,9 @@ describe('Editor url test', () => {
         cy.go('forward');
         cy.get('h1').contains('People First').should('exist');
         contentEditor.cancel();
+        // Wait for transition
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(500);
         cy.go('forward');
         cy.get('h1').contains('People First').should('exist');
         contentEditor.cancel();
@@ -76,6 +79,9 @@ describe('Editor url test', () => {
         cy.go('forward');
         cy.get('h1').contains('Our Companies').should('exist');
         contentEditor.cancel();
+        // Wait for transition
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(500);
         cy.go('forward');
         cy.get('h1').contains('Our Companies').should('exist');
         contentEditor.cancel();

@@ -7,7 +7,7 @@ import {isDirty, useKeydownListener} from '~/utils';
 import {useFormikContext} from 'formik';
 
 export const GoBack = ({render: Render, ...otherProps}) => {
-    const {confirmationDialog, deleteEditorConfig} = useContentEditorConfigContext();
+    const {confirmationDialog, updateEditorConfig} = useContentEditorConfigContext();
     const [open, setOpen] = useState(false);
     const formik = useFormikContext();
     const {i18nContext} = useContentEditorContext();
@@ -26,7 +26,7 @@ export const GoBack = ({render: Render, ...otherProps}) => {
             formik.validateForm();
             setOpen(true);
         } else {
-            deleteEditorConfig();
+            updateEditorConfig({closed: 'back'});
         }
     };
 
@@ -35,7 +35,7 @@ export const GoBack = ({render: Render, ...otherProps}) => {
             { confirmationDialog && (
                 <CloseConfirmationDialog
                     isOpen={open}
-                    actionCallback={deleteEditorConfig}
+                    actionCallback={() => updateEditorConfig({closed: 'back-confirmed'})}
                     onCloseDialog={onCloseDialog}
                 />
             )}

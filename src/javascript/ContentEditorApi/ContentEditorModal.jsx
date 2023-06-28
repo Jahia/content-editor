@@ -140,7 +140,7 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
     };
 
     mergedConfig.layout = mergedConfig.layout || (mergedConfig.isFullscreen ? EditPanelFullscreen : EditPanelCompact);
-    mergedConfig.confirmationDialog = <OnCloseConfirmationDialog ref={confirmationDialog} deleteEditorConfig={deleteEditorConfig}/>;
+    mergedConfig.confirmationDialog = <OnCloseConfirmationDialog ref={confirmationDialog}/>;
     mergedConfig.formKey = mergedConfig.formKey || 'modal';
 
     mergedConfig.count = mergedConfig.count || 0;
@@ -161,15 +161,16 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
     const useFormDefinition = mergedConfig.useFormDefinition || (mergedConfig.mode === 'edit' ? useEditFormDefinition : useCreateFormDefinition);
 
     return (
-        <Dialog open
-                disableAutoFocus
+        <Dialog disableAutoFocus
                 disableEnforceFocus
+                open={!editorConfig.closed}
                 maxWidth="md"
                 fullScreen={mergedConfig.isFullscreen}
                 TransitionComponent={Transition}
                 aria-labelledby="dialog-content-editor"
                 classes={classes}
-                onClose={() => confirmationDialog.current ? confirmationDialog.current.openDialog() : deleteEditorConfig()}
+                onClose={() => confirmationDialog.current ? confirmationDialog.current.openDialog() : updateEditorConfig({closed: 'dialog'})}
+                onExited={deleteEditorConfig}
                 onRendered={() => window.focus()}
                 {...mergedConfig.dialogProps}
         >
@@ -201,7 +202,8 @@ ContentEditorModal.propTypes = {
         count: PropTypes.number,
         layout: PropTypes.object,
         formKey: PropTypes.string,
-        useConfirmationDialog: PropTypes.bool
+        useConfirmationDialog: PropTypes.bool,
+        closed: PropTypes.string
     }).isRequired,
     updateEditorConfig: PropTypes.func.isRequired,
     deleteEditorConfig: PropTypes.func.isRequired

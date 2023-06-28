@@ -5,7 +5,6 @@ import styles from './EditPanel.scss';
 import clsx from 'clsx';
 import {DisplayAction, DisplayActions, registry} from '@jahia/ui-extender';
 import {Constants} from '~/ContentEditor.constants';
-import {WindowListeners} from './WindowListeners';
 import {DialogActions, DialogContent, DialogTitle} from '@material-ui/core';
 import {Button, Checkbox, Edit, Typography} from '@jahia/moonstone';
 import {getButtonRenderer, truncate} from '~/utils';
@@ -43,8 +42,6 @@ export const EditPanelCompact = ({title, createAnother}) => {
 
     return (
         <>
-            <WindowListeners/>
-
             <DialogTitle disableTypography className={styles.dialogTitle} id="contenteditor-dialog-title">
                 <div className="flexRow">
                     <Typography variant="heading">{truncate(title, 40)}</Typography>

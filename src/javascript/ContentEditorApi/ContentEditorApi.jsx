@@ -29,7 +29,7 @@ let getEncodedLocations = function (location, editorConfigs) {
     const cleanedHash = Object.keys(others).length > 0 ? rison.encode_uri(others) : '';
     const locationWithoutEditors = rison.encode({search: location.search, hash: cleanedHash});
     const locationFromState = (valid && editorConfigs.length > 0) ?
-        rison.encode({search: location.search, hash: '#' + rison.encode_uri({...others, contentEditor: JSON.parse(JSON.stringify(editorConfigs))})}) :
+        rison.encode({search: location.search, hash: '#' + rison.encode_uri({...others, contentEditor: JSON.parse(JSON.stringify(editorConfigs.map((({closed, ...obj}) => obj))))})}) :
         locationWithoutEditors;
 
     return {
@@ -48,7 +48,7 @@ export const ContentEditorApi = () => {
 
     const unsetEditorConfigs = () => {
         history.replace(rison.decode(locationWithoutEditors));
-        setEditorConfigs([]);
+        setEditorConfigs(editorConfigs.map(e => ({...e, closed: 'history'})));
     };
 
     let newEditorConfig = editorConfig => {
@@ -65,15 +65,19 @@ export const ContentEditorApi = () => {
         setEditorConfigs(copy);
     };
 
-    let deleteEditorConfig = (index, isGWT) => {
+    let deleteEditorConfig = index => {
         const copy = Array.from(editorConfigs);
         const spliced = copy.splice(index, 1);
+        const closed = spliced[0].closed;
+
         setEditorConfigs(copy);
 
-        if (spliced[0]?.isFullscreen && !window.history?.state?.prevUrl?.contains('/cms/login') && !isGWT) {
-            history.go(-1);
-        } else {
-            history.replace(rison.decode(locationWithoutEditors));
+        if (closed !== 'history') {
+            if (spliced[0]?.isFullscreen && !window.history.state.prevUrl?.contains('/cms/login')) {
+                history.go(-1);
+            } else {
+                history.replace(rison.decode(locationWithoutEditors));
+            }
         }
     };
 

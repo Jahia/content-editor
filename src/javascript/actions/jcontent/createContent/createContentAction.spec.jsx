@@ -1,5 +1,4 @@
 import React from 'react';
-import {useContentEditorHistory} from '~/contexts/ContentEditorHistory';
 import {useSelector} from 'react-redux';
 import {useNodeChecks, useNodeInfo} from '@jahia/data-helper';
 import {shallow} from '@jahia/test-framework';
@@ -13,9 +12,6 @@ import {
 
 import {createContentAction} from './createContentAction';
 
-jest.mock('~/contexts/ContentEditorHistory/useContentEditorHistory', () => {
-    return {useContentEditorHistory: jest.fn()};
-});
 jest.mock('react-redux', () => {
     return {useSelector: jest.fn()};
 });
@@ -45,9 +41,6 @@ describe('CreateNewContent', () => {
                 return <Typography>render</Typography>;
             })
         };
-        useContentEditorHistory.mockImplementation(() => {
-            return {redirect: jest.fn()};
-        });
         useSelector.mockImplementation(() => {
             return {language: 'en', uilang: 'en'};
         });

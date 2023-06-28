@@ -58,7 +58,7 @@ const getItems = (mode, node) => {
 
 export const ContentPath = ({path}) => {
     const [open, setOpen] = useState(false);
-    const {deleteEditorConfig, site, mode} = useContentEditorConfigContext();
+    const {updateEditorConfig, site, mode} = useContentEditorConfigContext();
     const formik = useFormikContext();
     const {i18nContext} = useContentEditorContext();
 
@@ -97,7 +97,7 @@ export const ContentPath = ({path}) => {
                 }));
             }
 
-            deleteEditorConfig(window.location.url.contains('/jahia/page-composer/'));
+            updateEditorConfig({closed: 'breadcrumb'});
         }
     };
 
@@ -105,8 +105,6 @@ export const ContentPath = ({path}) => {
     const items = useMemo(() => getItems(mode, node), [mode, node]);
 
     let onCloseDialog = useCallback(() => setOpen(false), [setOpen]);
-    let actionCallback = deleteEditorConfig;
-
     if (error) {
         return <>{error.message}</>;
     }
@@ -115,7 +113,7 @@ export const ContentPath = ({path}) => {
         <>
             <CloseConfirmationDialog
                 isOpen={open}
-                actionCallback={actionCallback}
+                actionCallback={() => updateEditorConfig({closed: 'breadcrumb-confirmed'})}
                 onCloseDialog={onCloseDialog}
             />
 

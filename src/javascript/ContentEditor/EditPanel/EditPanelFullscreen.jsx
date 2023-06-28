@@ -6,7 +6,6 @@ import clsx from 'clsx';
 import {registry} from '@jahia/ui-extender';
 import {LayoutContent} from '@jahia/moonstone';
 import {Constants} from '~/ContentEditor.constants';
-import {WindowListeners} from './WindowListeners';
 import {EditPanelHeader} from './EditPanelHeader';
 
 export const EditPanelFullscreen = ({title}) => {
@@ -31,7 +30,6 @@ export const EditPanelFullscreen = ({title}) => {
             )}
             content={(
                 <>
-                    <WindowListeners/>
                     <div className={clsx(
                         activeTab === Constants.editPanel.editTab ? 'flexFluid' : styles.hideTab,
                         'flexCol'

@@ -2,7 +2,6 @@ import React from 'react';
 import {registry} from '@jahia/ui-extender';
 import {registerActions} from './registerActions';
 import {ContentEditorApi, ContentPickerApi} from './ContentEditorApi';
-import {ContentEditorHistoryContextProvider} from '~/contexts';
 import {registerSelectorTypes} from '~/SelectorTypes';
 import {pcNavigateTo} from '~/redux/pagecomposer.redux-actions';
 import {registerReducer} from './registerReducer';
@@ -13,11 +12,6 @@ window.jahia.localeFiles = window.jahia.localeFiles || {};
 window.jahia.localeFiles['content-editor'] = hashes;
 
 export function register() {
-    registry.add('app', 'content-editor-history-context', {
-        targets: ['root:2.05'],
-        render: next => <ContentEditorHistoryContextProvider>{next}</ContentEditorHistoryContextProvider>
-    });
-
     registry.add('app', 'content-editor-api', {
         targets: ['root:16.5'],
         render: next => <ContentEditorApiContextProvider><ContentEditorApi/><ContentPickerApi/>{next}</ContentEditorApiContextProvider>
