@@ -1,6 +1,5 @@
 import React, {useEffect, useRef} from 'react';
 import {Constants} from '~/ContentEditor.constants';
-import {ContentEditor} from '~/ContentEditor';
 import {Dialog, IconButton, Slide} from '@material-ui/core';
 import styles from './ContentEditorModal.scss';
 import PropTypes from 'prop-types';
@@ -16,6 +15,9 @@ import {useApolloClient} from '@apollo/react-hooks';
 import {useCreateFormDefinition} from '~/ContentEditor/useCreateFormDefinition';
 import {useEditFormDefinition} from '~/ContentEditor/useEditFormDefinition';
 import {registry} from '@jahia/ui-extender';
+import {ContentEditorConfigContextProvider, ContentEditorContextProvider} from '~/contexts';
+import {Edit} from '~/ContentEditor/Edit';
+import {Create} from '~/ContentEditor/Create';
 
 function triggerEvents(nodeUuid, operator) {
     // Refresh contentEditorEventHandlers
@@ -35,7 +37,7 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
     const notificationContext = useNotifications();
 
     const needRefresh = useRef(false);
-    const openDialog = useRef();
+    const confirmationDialog = useRef();
     const dispatch = useDispatch();
     const client = useApolloClient();
 
@@ -51,134 +53,112 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
         ...editorConfig
     };
 
-    // Standalone env props
-    const envProps = {
-        back: () => {
-            deleteEditorConfig();
-        },
-        disabledBack: () => false,
-        createCallback: ({newNode}) => {
-            needRefresh.current = true;
-            if (mergedConfig.createCallback) {
-                mergedConfig.createCallback(newNode, envProps);
-            }
+    const {createCallback, editCallback, onClosedCallback} = mergedConfig;
 
-            triggerEvents(newNode.uuid, Constants.operators.create);
+    mergedConfig.updateEditorConfig = updateEditorConfig;
+    mergedConfig.deleteEditorConfig = deleteEditorConfig;
+    mergedConfig.createCallback = ({newNode}) => {
+        needRefresh.current = true;
+        if (createCallback) {
+            createCallback(newNode, mergedConfig);
+        }
 
-            const predefined = mergedConfig.isFullscreen ? ['closeButton'] : [];
-            const opts = mergedConfig.isFullscreen ? {
-                autoHideDuration: 3000
-            } : {
-                autoHideDuration: 3000,
-                action: [
-                    <Button
-                        key="edit"
-                        isReversed
-                        variant="outlined"
-                        label={t('content-editor:label.contentEditor.edit.contentEdit')}
-                        onClick={() => {
-                            updateEditorConfig({
-                                ...editorConfig,
-                                isFullscreen: false,
-                                uuid: newNode.uuid,
-                                mode: Constants.routes.baseEditRoute
-                            });
-                            notificationContext.closeNotification();
-                        }}
-                    />,
-                    <IconButton
-                        key="close"
-                        aria-label="Close"
-                        color="inherit"
-                        onClick={() => notificationContext.closeNotification()}
-                    >
-                        <Close/>
-                    </IconButton>
-                ]
-            };
+        triggerEvents(newNode.uuid, Constants.operators.create);
 
-            notificationContext.notify(t('content-editor:label.contentEditor.create.createButton.success'), predefined, opts);
-        },
+        const predefined = mergedConfig.isFullscreen ? ['closeButton'] : [];
+        const opts = mergedConfig.isFullscreen ? {
+            autoHideDuration: 3000
+        } : {
+            autoHideDuration: 3000,
+            action: [
+                <Button
+                    key="edit"
+                    isReversed
+                    variant="outlined"
+                    label={t('content-editor:label.contentEditor.edit.contentEdit')}
+                    onClick={() => {
+                        updateEditorConfig({
+                            isFullscreen: false,
+                            uuid: newNode.uuid,
+                            mode: Constants.routes.baseEditRoute
+                        });
+                        notificationContext.closeNotification();
+                    }}
+                />,
+                <IconButton
+                    key="close"
+                    aria-label="Close"
+                    color="inherit"
+                    onClick={() => notificationContext.closeNotification()}
+                >
+                    <Close/>
+                </IconButton>
+            ]
+        };
 
-        editCallback: ({originalNode, updatedNode}) => {
-            needRefresh.current = true;
-            if (mergedConfig.editCallback) {
-                mergedConfig.editCallback(updatedNode, originalNode, envProps);
-            }
-
-            triggerEvents(updatedNode.uuid, Constants.operators.update);
-
-            notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.success'), ['closeButton'], {autoHideDuration: 3000});
-        },
-        onSavedCallback: ({newNode, language, originalNode, updatedNode}, forceRedirect) => {
-            if (newNode && (mergedConfig.isFullscreen || forceRedirect)) {
-                // Redirect to CE edit mode, for the created node
-                needRefresh.current = false;
-                updateEditorConfig({
-                    ...editorConfig,
-                    uuid: newNode.uuid,
-                    lang: language ? language : mergedConfig.lang,
-                    mode: Constants.routes.baseEditRoute
-                });
-            } else if (!mergedConfig.isFullscreen) {
-                if (newNode) {
-                    Promise.all(window.contentModificationEventHandlers.map(handler => handler(newNode.uuid, newNode.path, newNode.path.split('/').pop(), 'update'))).then(() => // Otherwise refresh and close
-                        deleteEditorConfig());
-                } else if (originalNode.path === updatedNode.path) {
-                    deleteEditorConfig();
-                } else {
-                    client.cache.flushNodeEntryByPath(originalNode.path);
-                    Promise.all(window.contentModificationEventHandlers.map(handler => handler(updatedNode.uuid, originalNode.path, updatedNode.path.split('/').pop(), 'update'))).then(() => // Otherwise refresh and close
-                        deleteEditorConfig());
-                }
-            }
-        },
-        onCreateAnother: () => {
-            updateEditorConfig({
-                ...editorConfig,
-                count: (mergedConfig.count || 0) + 1
-            });
-        },
-        switchLanguageCallback: language => {
-            updateEditorConfig({
-                ...editorConfig,
-                lang: language
-            });
-        },
-        onClosedCallback: () => {
-            if (mergedConfig.onClosedCallback) {
-                mergedConfig.onClosedCallback(envProps, needRefresh.current);
-            }
-        },
-        redirectBreadcrumbCallback: () => {
-            envProps.back();
-        },
-        setFullscreen: () => {
-            updateEditorConfig({
-                ...editorConfig,
-                isFullscreen: true
-            });
-        },
-        isModal: true,
-        useFormDefinition: mergedConfig.useFormDefinition || (mergedConfig.mode === 'edit' ? useEditFormDefinition : useCreateFormDefinition),
-        isFullscreen: mergedConfig.isFullscreen,
-        layout: mergedConfig.layout || (mergedConfig.isFullscreen ? EditPanelFullscreen : EditPanelCompact),
-        confirmationDialog: <OnCloseConfirmationDialog deleteEditorConfig={deleteEditorConfig} openDialog={openDialog}/>,
-        formKey: mergedConfig.formKey || 'modal'
+        notificationContext.notify(t('content-editor:label.contentEditor.create.createButton.success'), predefined, opts);
     };
+
+    mergedConfig.editCallback = ({originalNode, updatedNode}) => {
+        needRefresh.current = true;
+        if (editCallback) {
+            editCallback(updatedNode, originalNode, mergedConfig);
+        }
+
+        triggerEvents(updatedNode.uuid, Constants.operators.update);
+
+        notificationContext.notify(t('content-editor:label.contentEditor.edit.action.save.success'), ['closeButton'], {autoHideDuration: 3000});
+    };
+
+    mergedConfig.onSavedCallback = ({newNode, language, originalNode, updatedNode}, forceRedirect) => {
+        if (newNode && (mergedConfig.isFullscreen || forceRedirect)) {
+            // Redirect to CE edit mode, for the created node
+            needRefresh.current = false;
+            updateEditorConfig({
+                uuid: newNode.uuid,
+                lang: language ? language : mergedConfig.lang,
+                mode: Constants.routes.baseEditRoute
+            });
+        } else if (!mergedConfig.isFullscreen) {
+            if (newNode) {
+                Promise.all(window.contentModificationEventHandlers.map(handler => handler(newNode.uuid, newNode.path, newNode.path.split('/').pop(), 'update'))).then(() => // Otherwise refresh and close
+                    deleteEditorConfig());
+            } else if (originalNode.path === updatedNode.path) {
+                deleteEditorConfig();
+            } else {
+                client.cache.flushNodeEntryByPath(originalNode.path);
+                Promise.all(window.contentModificationEventHandlers.map(handler => handler(updatedNode.uuid, originalNode.path, updatedNode.path.split('/').pop(), 'update'))).then(() => // Otherwise refresh and close
+                    deleteEditorConfig());
+            }
+        }
+    };
+
+    mergedConfig.onClosedCallback = () => {
+        if (onClosedCallback) {
+            onClosedCallback(mergedConfig, needRefresh.current);
+        }
+    };
+
+    mergedConfig.layout = mergedConfig.layout || (mergedConfig.isFullscreen ? EditPanelFullscreen : EditPanelCompact);
+    mergedConfig.confirmationDialog = <OnCloseConfirmationDialog ref={confirmationDialog} deleteEditorConfig={deleteEditorConfig}/>;
+    mergedConfig.formKey = mergedConfig.formKey || 'modal';
+
+    mergedConfig.count = mergedConfig.count || 0;
 
     // This is the only sure way to tell when content editor is no longer visible
     useEffect(() => {
         return () => {
-            dispatch(ceToggleSections({key: envProps.formKey, sections: null}));
+            dispatch(ceToggleSections({key: mergedConfig.formKey, sections: null}));
         };
-    }, [dispatch, envProps.formKey]);
+    }, [dispatch, mergedConfig.formKey]);
 
     const classes = mergedConfig.isFullscreen ? {
         root: styles.ceDialogRootFullscreen
     } : {
         paper: styles.ceDialogContent
     };
+
+    const useFormDefinition = mergedConfig.useFormDefinition || (mergedConfig.mode === 'edit' ? useEditFormDefinition : useCreateFormDefinition);
 
     return (
         <Dialog open
@@ -189,20 +169,15 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
                 TransitionComponent={Transition}
                 aria-labelledby="dialog-content-editor"
                 classes={classes}
-                onClose={() => openDialog.current ? openDialog.current() : deleteEditorConfig()}
+                onClose={() => confirmationDialog.current ? confirmationDialog.current.openDialog() : deleteEditorConfig()}
                 onRendered={() => window.focus()}
                 {...mergedConfig.dialogProps}
         >
-            <ContentEditor mode={mergedConfig.mode}
-                           uuid={mergedConfig.uuid}
-                           lang={mergedConfig.lang}
-                           uilang={mergedConfig.uilang}
-                           site={mergedConfig.site}
-                           contentType={mergedConfig.contentType}
-                           name={mergedConfig.name}
-                           count={mergedConfig.count || 0}
-                           envProps={envProps}
-            />
+            <ContentEditorConfigContextProvider config={mergedConfig}>
+                <ContentEditorContextProvider useFormDefinition={useFormDefinition}>
+                    {mergedConfig.mode === 'edit' ? <Edit/> : <Create/>}
+                </ContentEditorContextProvider>
+            </ContentEditorConfigContextProvider>
         </Dialog>
     );
 };

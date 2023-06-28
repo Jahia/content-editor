@@ -1,9 +1,7 @@
 import React from 'react';
 import {registry} from '@jahia/ui-extender';
 import {registerActions} from './registerActions';
-import {Constants} from '~/ContentEditor.constants';
 import {ContentEditorApi, ContentPickerApi} from './ContentEditorApi';
-import {ContentEditorRoute} from './ContentEditorRoute/ContentEditorRoute';
 import {ContentEditorHistoryContextProvider} from '~/contexts';
 import {registerSelectorTypes} from '~/SelectorTypes';
 import {pcNavigateTo} from '~/redux/pagecomposer.redux-actions';
@@ -55,15 +53,14 @@ export function register() {
     });
 
     registry.add('content-editor-config', 'gwtcreatepage', {
-        newPath: null,
-        createCallback: function ({path}) {
-            this.newPath = path;
+        createCallback: function ({path}, config) {
+            config.newPath = path;
         },
-        onClosedCallback: function (envProps, needRefresh) {
-            if (this.newPath) {
+        onClosedCallback: function (config, needRefresh) {
+            if (config.newPath) {
                 const dispatch = window.jahia.reduxStore.dispatch;
                 const currentPcPath = window.jahia.reduxStore.getState().pagecomposer.currentPage.path;
-                dispatch(pcNavigateTo({oldPath: currentPcPath, newPath: encodeURIComponent(this.newPath).replaceAll('%2F', '/')}));
+                dispatch(pcNavigateTo({oldPath: currentPcPath, newPath: encodeURIComponent(config.newPath).replaceAll('%2F', '/')}));
 
                 // Refresh content in repository explorer to see added page
                 if (window.authoringApi.refreshContent && window.location.pathname.endsWith('/jahia/repository-explorer')) {
@@ -73,28 +70,6 @@ export function register() {
                 window.authoringApi.refreshContent();
             }
         }
-    });
-
-    registry.add('route', 'content-editor-edit-route', {
-        targets: ['main:2.1'],
-        path: '/content-editor/:lang/edit/:uuid',
-        render: ({match}) => (
-            <ContentEditorRoute uuid={match.params.uuid}
-                                mode={Constants.routes.baseEditRoute}
-                                lang={match.params.lang}/>
-        )
-    });
-
-    registry.add('route', 'content-editor-create-route', {
-        targets: ['main:2.1'],
-        path: '/content-editor/:lang/create/:parentUuid/:contentType?/:name?',
-        render: ({match}) => (
-            <ContentEditorRoute uuid={match.params.parentUuid}
-                                mode={Constants.routes.baseCreateRoute}
-                                lang={match.params.lang}
-                                contentType={decodeURI(match.params.contentType)}
-                                name={match.params.name}/>
-        )
     });
 
     // Register GWT Hooks

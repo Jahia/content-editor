@@ -32,7 +32,7 @@ describe('FormBuilder component', () => {
             }
         };
         useContentEditorContext.mockReturnValue(context);
-        useContentEditorConfigContext.mockReturnValue({envProps: {}});
+        useContentEditorConfigContext.mockReturnValue({});
         sectionContext = {
             sections: [
                 {

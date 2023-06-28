@@ -16,7 +16,6 @@ export const registerCreateActions = registry => {
         showOnNodeTypes: ['jnt:contentFolder', 'jnt:content', 'jnt:category'],
         hideOnNodeTypes: ['jnt:navMenuText', 'jnt:page'],
         requiredPermission: ['jcr:addChildNodes'],
-        isModal: true,
         hasBypassChildrenLimit: false
     });
 
@@ -28,7 +27,6 @@ export const registerCreateActions = registry => {
             requiredPermission: ['jcr:addChildNodes'],
             nodeTypes: ['jnt:page'],
             includeSubTypes: false,
-            isModal: true,
             hasBypassChildrenLimit: true,
             onCreate: ({path}) => {
                 window.jahia.reduxStore.dispatch(batchActions([{
@@ -52,7 +50,6 @@ export const registerCreateActions = registry => {
             requiredPermission: ['jcr:addChildNodes'],
             nodeTypes: ['jnt:navMenuText', 'jnt:nodeLink', 'jnt:externalLink'],
             includeSubTypes: false,
-            isModal: true,
             hasBypassChildrenLimit: true
         });
     }
@@ -64,7 +61,6 @@ export const registerCreateActions = registry => {
         color: 'accent',
         variant: 'outlined',
         targets: ['content-editor/header/main-save-actions'],
-        dataSelRole: 'createButton',
-        isModal: true
+        dataSelRole: 'createButton'
     });
 };

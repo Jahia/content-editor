@@ -5,12 +5,12 @@ import {
     deleteUser,
     grantRoles,
     addNode,
-    getNodeByPath,
     deleteNodeProperty
 } from '@jahia/cypress';
 
 import {ContentEditor} from '../../page-object/contentEditor';
 import {DatePicker} from '../../page-object/datePicker';
+import {JContent} from '../../page-object/jcontent';
 
 const saveAndCheck = () => {
     const datePicker = new DatePicker();
@@ -48,11 +48,7 @@ describe('Date picker tests', () => {
 
     beforeEach('Check datePicker is empty', () => {
         cy.login('myUser', 'password');
-        getNodeByPath('/sites/testsite/contents/contentEditorPickers')
-            .its('data.jcr.nodeByPath.uuid').as('datePicker');
-        cy.get('@datePicker').then(uuid => {
-            cy.visit(`/jahia/content-editor/en/edit/${uuid}`);
-        });
+        JContent.visit('testsite', 'en', 'content-folders/contents').editComponentByText('contentEditorPickers');
     });
 
     it('Test Date Picker', () => {

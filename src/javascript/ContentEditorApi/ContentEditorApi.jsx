@@ -61,7 +61,7 @@ export const ContentEditorApi = () => {
 
     let updateEditorConfig = (editorConfig, index) => {
         let copy = Array.from(editorConfigs);
-        copy[index] = editorConfig;
+        copy[index] = {...copy[index], ...editorConfig};
         setEditorConfigs(copy);
     };
 
