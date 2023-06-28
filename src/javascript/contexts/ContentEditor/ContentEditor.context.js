@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useState} from 'react';
 import {useNotifications} from '@jahia/react-material';
 import {useSiteInfo} from '@jahia/data-helper';
 import * as PropTypes from 'prop-types';
@@ -8,8 +8,6 @@ import {ContentEditorSectionContextProvider} from '../ContentEditorSection';
 import {useContentEditorConfigContext} from '../ContentEditorConfig';
 import {shallowEqual, useSelector} from 'react-redux';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
-import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core';
-import {Button} from '@jahia/moonstone';
 import {CeModalError} from '~/ContentEditorApi/ContentEditorError';
 
 export const ContentEditorContext = React.createContext({});
@@ -79,10 +77,10 @@ export const ContentEditorContextProvider = ({useFormDefinition, children}) => {
     });
 
     if (error) {
-        // check for ItemNotFound exception
-        const is404 = (error.graphQLErrors || []).some(e => e.message?.includes("ItemNotFoundException"));
+        // Check for ItemNotFound exception
+        const is404 = (error.graphQLErrors || []).some(e => e.message?.includes('ItemNotFoundException'));
         if (is404) {
-            throw new CeModalError("ItemNotFoundException", {cause: error});
+            throw new CeModalError('ItemNotFoundException', {cause: error});
         }
     }
 

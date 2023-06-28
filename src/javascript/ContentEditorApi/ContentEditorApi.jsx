@@ -50,6 +50,7 @@ export const ContentEditorApi = () => {
     } catch (error) {
         throw new CeModalError(error.message, {cause: error});
     }
+
     const {locationFromState, locationWithoutEditors} = encodedLoc;
 
     const unsetEditorConfigs = () => {

@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import PropTypes from 'prop-types';
 import {Dialog, DialogActions, DialogContent, DialogTitle} from '@material-ui/core';
 import {ErrorBoundary} from '@jahia/jahia-ui-root';
 import {Button} from '@jahia/moonstone';
@@ -12,8 +13,6 @@ const FullScreenError = props => {
     const handleClose = () => {
         setOpen(false);
     };
-
-    const error = props.error; //inspect data here
 
     return (
         <Dialog fullScreen
@@ -39,7 +38,7 @@ const FullScreenError = props => {
     );
 };
 
-const ModalError = props => {
+const ModalError = () => {
     const {t} = useTranslation('content-editor');
     const [isOpen, setOpen] = useState(true);
     const onClose = () => setOpen(false);
@@ -68,9 +67,15 @@ const ModalError = props => {
             </DialogActions>
         </Dialog>
     );
-}
+};
 
-export const ContentEditorError = props => {
-    const ErrorCmp = (props.error instanceof CeModalError) ? ModalError : FullScreenError;
-    return <ErrorCmp {...props}/>;
-}
+export const ContentEditorError = errorProps => {
+    const ErrorCmp = (errorProps.error instanceof CeModalError) ? ModalError : FullScreenError;
+    return <ErrorCmp {...errorProps}/>;
+};
+
+ContentEditorError.propTypes = {
+    errorProps: {
+        error: PropTypes.object
+    }
+};
