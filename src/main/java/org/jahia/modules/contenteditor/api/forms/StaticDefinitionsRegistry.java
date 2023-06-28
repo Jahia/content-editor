@@ -147,7 +147,7 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
             formsByBundle.computeIfAbsent(bundle, b -> new ArrayList<>()).add(form);
             logger.info("Successfully loaded static form for name {} from {}", form.getNodeType().getName(), editorFormURL);
         } catch (IOException e) {
-            logger.error("Error loading editor form from " + editorFormURL, e);
+            logger.warn("Error loading editor form from " + editorFormURL + " : " + e.getMessage());
         }
     }
 
@@ -183,7 +183,7 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
             fieldSetsByBundle.computeIfAbsent(bundle, b -> new ArrayList<>()).add(fieldSet);
             logger.info("Successfully loaded static fieldSets for name {} from {}", fieldSet.getName(), editorFormURL);
         } catch (IOException e) {
-            logger.error("Error loading editor form from " + editorFormURL, e);
+            logger.warn("Error loading editor fieldset from " + editorFormURL + " : " + e.getMessage());
         }
     }
 
