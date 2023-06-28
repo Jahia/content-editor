@@ -70,7 +70,7 @@ export const ContentEditorApi = () => {
         const spliced = copy.splice(index, 1);
         setEditorConfigs(copy);
 
-        if (spliced[0]?.isFullscreen && !window.history.state.prevUrl?.contains('/cms/login') && !isGWT) {
+        if (spliced[0]?.isFullscreen && !window.history?.state?.prevUrl?.contains('/cms/login') && !isGWT) {
             history.go(-1);
         } else {
             history.replace(rison.decode(locationWithoutEditors));
