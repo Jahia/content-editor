@@ -69,12 +69,12 @@ export function register() {
     // Register GWT Hooks
     window.top.jahiaGwtHook = {
         // Hook on edit engine opening
-        edit: ({uuid, lang, siteKey}) => {
-            window.CE_API.edit({uuid, site: siteKey, lang, isFullscreen: false, configName: 'gwtedit'});
+        edit: ({uuid, lang}) => {
+            window.CE_API.edit({uuid, lang, isFullscreen: false, configName: 'gwtedit'});
         },
         // Hook on create engine opening, also hook on create content type selector
-        create: ({name, uuid, path, lang, siteKey, _, contentTypes, excludedNodeTypes, includeSubTypes}) => {
-            window.CE_API.create({uuid, path, site: siteKey, lang, nodeTypes: contentTypes, excludedNodeTypes, includeSubTypes, name, isFullscreen: false, configName: contentTypes[0] === 'jnt:page' ? 'gwtcreatepage' : 'gwtcreate'});
+        create: ({name, uuid, path, lang, contentTypes, excludedNodeTypes, includeSubTypes}) => {
+            window.CE_API.create({uuid, path, lang, nodeTypes: contentTypes, excludedNodeTypes, includeSubTypes, name, isFullscreen: false, configName: contentTypes[0] === 'jnt:page' ? 'gwtcreatepage' : 'gwtcreate'});
         }
     };
 

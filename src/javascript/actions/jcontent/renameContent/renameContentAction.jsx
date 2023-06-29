@@ -1,7 +1,7 @@
 import React from 'react';
 import {useNodeChecks} from '@jahia/data-helper';
 import * as PropTypes from 'prop-types';
-import {shallowEqual, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import {useContentEditorApiContext} from '~/contexts/ContentEditorApi/ContentEditorApi.context';
 import {RenameLayout} from '~/actions/jcontent/renameContent/RenameLayout';
@@ -10,7 +10,7 @@ import {useRenameFormDefinition} from '~/actions/jcontent/renameContent/useRenam
 export const RenameContent = ({path, editCallback, render: Render, loading: Loading, ...otherProps}) => {
     useTranslation('content-editor');
     const api = useContentEditorApiContext();
-    const {language, site} = useSelector(state => ({language: state.language, site: state.site}), shallowEqual);
+    const language = useSelector(state => state.language);
     const res = useNodeChecks(
         {path: path, language: language},
         {...otherProps}
@@ -26,7 +26,6 @@ export const RenameContent = ({path, editCallback, render: Render, loading: Load
                 onClick={() => {
                     api.edit({
                         uuid: res.node.uuid,
-                        site,
                         lang: language,
                         isFullscreen: false,
                         editCallback,

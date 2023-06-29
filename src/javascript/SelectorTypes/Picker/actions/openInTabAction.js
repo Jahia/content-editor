@@ -3,36 +3,36 @@ import PropTypes from 'prop-types';
 import {Constants} from '~/ContentEditor.constants';
 import {useContentEditorContext} from '~/contexts';
 import {useQuery} from '@apollo/react-hooks';
-import {
-    OpenInTabActionQueryPath,
-    OpenInTabActionQueryUuid
-} from '~/SelectorTypes/Picker/actions/openInTabAction.gql-queries';
 import rison from 'rison-node';
+import {OpenInTabActionQuery} from '~/SelectorTypes/Picker/actions/openInTabAction.gql-queries';
 
 export const OpenInTabActionComponent = ({render: Render, loading: Loading, path, field, inputContext, ...others}) => {
     const {lang} = useContentEditorContext();
 
-    const queryInfo = (path === undefined) ? ({
-        variables: {uuid: inputContext.actionContext?.fieldData?.[0]?.uuid},
-        query: OpenInTabActionQueryUuid
-    }) : ({
-        variables: {path: path},
-        query: OpenInTabActionQueryPath
+    let uuid;
+    if (path === undefined) {
+        const {fieldData} = inputContext.actionContext;
+        uuid = fieldData?.[0]?.uuid;
+    }
+
+    const {data, error, loading} = useQuery(OpenInTabActionQuery, {
+        variables: {
+            path: path
+        },
+        skip: !path
     });
 
-    const {data, error, loading} = useQuery(queryInfo.query, {variables: queryInfo.variables});
-
-    if (loading || error || !data) {
+    if (uuid === undefined && (loading || error || !data)) {
         return <></>;
     }
 
-    const uuid = data.jcr.result.uuid;
-    const site = data.jcr.result.site;
+    uuid = uuid === undefined ? data.jcr.result.uuid : uuid;
+
     return (
         <Render
             {...others}
             onClick={() => {
-                const hash = rison.encode_uri({contentEditor: [{uuid, site: site.name, lang, mode: Constants.routes.baseEditRoute, isFullscreen: true}]});
+                const hash = rison.encode_uri({contentEditor: [{uuid, lang, mode: Constants.routes.baseEditRoute, isFullscreen: true}]});
 
                 // Todo : Reuse the logic from locate in jcontent when merge is done
                 const location = window.location;
