@@ -61,6 +61,10 @@ export const CreateFormQuery = gql`
             result:nodeById(uuid: $uuid) {
                 ...NodeCacheRequiredFields
                 newName: findAvailableNodeName(nodeType: $primaryNodeType, language: $language)
+                site {
+                    ...NodeCacheRequiredFields
+                    name
+                }
                 lockedAndCannotBeEdited
                 displayableNode {
                     ...NodeCacheRequiredFields

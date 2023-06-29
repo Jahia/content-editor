@@ -10,7 +10,6 @@ import {fillCKEditorPicker, getPickerValue} from './RichText.utils';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 import './RichText.scss';
 import {useContentEditorApiContext} from '~/contexts/ContentEditorApi/ContentEditorApi.context';
-import {useSelector} from 'react-redux';
 
 if (window.CKEDITOR) {
     window.CKEDITOR.focusManager._.blurDelay = 0;

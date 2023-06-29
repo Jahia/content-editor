@@ -32,7 +32,7 @@ export const OpenInTabActionComponent = ({render: Render, loading: Loading, path
         <Render
             {...others}
             onClick={() => {
-                const hash = rison.encode_uri({contentEditor: [{uuid, site: site.uuid, lang, mode: Constants.routes.baseEditRoute, isFullscreen: true}]});
+                const hash = rison.encode_uri({contentEditor: [{uuid, site: site.name, lang, mode: Constants.routes.baseEditRoute, isFullscreen: true}]});
 
                 // Todo : Reuse the logic from locate in jcontent when merge is done
                 const location = window.location;

@@ -58,9 +58,9 @@ const getItems = (mode, node) => {
 
 export const ContentPath = ({path}) => {
     const [dialogState, setDialogState] = useState({open: false});
-    const {updateEditorConfig, site, mode} = useContentEditorConfigContext();
+    const {updateEditorConfig, mode} = useContentEditorConfigContext();
     const formik = useFormikContext();
-    const {i18nContext} = useContentEditorContext();
+    const {i18nContext, site} = useContentEditorContext();
 
     const dispatch = useDispatch();
     const {language} = useSelector(state => ({

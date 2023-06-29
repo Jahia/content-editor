@@ -14,7 +14,6 @@ import {DefaultPickerConfig} from '~/SelectorTypes/Picker/configs/DefaultPickerC
 import {useFormikContext} from 'formik';
 import {OrderableValue} from '~/DesignSystem/OrderableValue/OrderableValue';
 import {useContentEditorConfigContext} from '~/contexts';
-import {useSelector} from 'react-redux';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 

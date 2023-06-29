@@ -43,7 +43,7 @@ export const ContentEditorContextProvider = ({useFormDefinition, children}) => {
         }));
     }, [setI18nContext]);
 
-    const {lang, site, mode, name} = contentEditorConfigContext;
+    const {lang, mode, name} = contentEditorConfigContext;
 
     // Get user navigator locale preference
     const browserLang = navigator.language;
@@ -67,6 +67,9 @@ export const ContentEditorContextProvider = ({useFormDefinition, children}) => {
         nodeTypeName,
         nodeTypeDisplayName
     } = formDefinition || {};
+
+    const site = nodeData?.site?.name || 'systemsite';
+
     const siteInfoResult = useSiteInfo({
         siteKey: site,
         displayLanguage: lang

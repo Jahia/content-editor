@@ -38,7 +38,7 @@ describe('DateTimePicker component', () => {
                 selectorType: 'DatePicker'
             },
             editorContext: {
-                lang: 'fr',
+                lang: 'fr'
             },
             value: ''
         };
