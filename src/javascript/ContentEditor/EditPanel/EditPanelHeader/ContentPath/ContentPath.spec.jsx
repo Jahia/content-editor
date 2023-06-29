@@ -62,8 +62,14 @@ describe('ContentPathContainer', () => {
             language: 'fr'
         }));
 
+        const updateEditorConfig = jest.fn();
+        updateEditorConfig.mockImplementation(({closed, onExited}) => {
+            if (closed) {
+                onExited();
+            }
+        });
         contentEditorConfigContext = {
-            updateEditorConfig: jest.fn(),
+            updateEditorConfig: updateEditorConfig,
             site: 'mySiteXD'
         };
         useContentEditorConfigContext.mockImplementation(() => contentEditorConfigContext);

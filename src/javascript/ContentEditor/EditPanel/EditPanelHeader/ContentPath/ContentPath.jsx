@@ -86,9 +86,9 @@ export const ContentPath = ({path}) => {
         } else {
             let mode = 'pages';
 
-            if (path.startsWith(`/sites/${site}/files/`) || path === `/sites/${site}/files`) {
+            if (itemPath.startsWith(`/sites/${site}/files/`) || itemPath === `/sites/${site}/files`) {
                 mode = 'media';
-            } else if (path.startsWith(`/sites/${site}/contents/`) || path === `/sites/${site}/contents`) {
+            } else if (itemPath.startsWith(`/sites/${site}/contents/`) || itemPath === `/sites/${site}/contents`) {
                 mode = 'content-folders';
             }
 
