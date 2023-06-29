@@ -1,5 +1,4 @@
 import {OpenInTabActionComponent} from './openInTabAction';
-import {Constants} from '~/ContentEditor.constants';
 import {shallow} from '@jahia/test-framework';
 import React from 'react';
 import {setQueryResponseMock} from '@apollo/react-hooks';
@@ -41,10 +40,13 @@ describe('openInTab action', () => {
             lang: 'fr'
         };
         useContentEditorContext.mockReturnValue(contentEditorContext);
-        setQueryResponseMock({loading: false});
+        setQueryResponseMock({
+            loading: false,
+            data: {jcr: {result: {uuid: 'this-is-an-id', site: {uuid: 'site-id', name: 'site-name'}}}}
+        });
         const cmp = shallow(<OpenInTabActionComponent {...context} render={button}/>);
         cmp.simulate('click');
 
-        expect(window.open).toHaveBeenCalledWith(`/jahia/jahia/${Constants.appName}/fr/${Constants.routes.baseEditRoute}/this-is-an-id`, '_blank');
+        expect(window.open).toHaveBeenCalledWith('http://localhost/#(contentEditor:!((isFullscreen:!t,lang:fr,mode:edit,site:site-id,uuid:this-is-an-id)))', '_blank');
     });
 });
