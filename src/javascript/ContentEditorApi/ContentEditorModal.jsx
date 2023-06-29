@@ -121,14 +121,18 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
             });
         } else if (!mergedConfig.isFullscreen) {
             if (newNode) {
-                Promise.all(window.contentModificationEventHandlers.map(handler => handler(newNode.uuid, newNode.path, newNode.path.split('/').pop(), 'update'))).then(() => // Otherwise refresh and close
-                    deleteEditorConfig());
+                Promise.all(window.contentModificationEventHandlers.map(handler => handler(newNode.uuid, newNode.path, newNode.path.split('/').pop(), 'update'))).then(() => {
+                    // Otherwise refresh and close
+                    updateEditorConfig({closed: true});
+                });
             } else if (originalNode.path === updatedNode.path) {
-                deleteEditorConfig();
+                updateEditorConfig({closed: true});
             } else {
                 client.cache.flushNodeEntryByPath(originalNode.path);
-                Promise.all(window.contentModificationEventHandlers.map(handler => handler(updatedNode.uuid, originalNode.path, updatedNode.path.split('/').pop(), 'update'))).then(() => // Otherwise refresh and close
-                    deleteEditorConfig());
+                Promise.all(window.contentModificationEventHandlers.map(handler => handler(updatedNode.uuid, originalNode.path, updatedNode.path.split('/').pop(), 'update'))).then(() => {
+                    // Otherwise refresh and close
+                    updateEditorConfig({closed: true});
+                });
             }
         }
     };
@@ -169,7 +173,7 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
                 TransitionComponent={Transition}
                 aria-labelledby="dialog-content-editor"
                 classes={classes}
-                onClose={() => confirmationDialog.current ? confirmationDialog.current.openDialog() : updateEditorConfig({closed: 'dialog'})}
+                onClose={() => confirmationDialog.current ? confirmationDialog.current.openDialog() : updateEditorConfig({closed: true})}
                 onExited={deleteEditorConfig}
                 onRendered={() => window.focus()}
                 {...mergedConfig.dialogProps}
@@ -203,7 +207,8 @@ ContentEditorModal.propTypes = {
         layout: PropTypes.object,
         formKey: PropTypes.string,
         useConfirmationDialog: PropTypes.bool,
-        closed: PropTypes.string
+        closed: PropTypes.bool,
+        closeCallback: PropTypes.func
     }).isRequired,
     updateEditorConfig: PropTypes.func.isRequired,
     deleteEditorConfig: PropTypes.func.isRequired

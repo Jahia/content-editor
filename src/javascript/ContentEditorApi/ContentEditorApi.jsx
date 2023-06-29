@@ -48,7 +48,7 @@ export const ContentEditorApi = () => {
 
     const unsetEditorConfigs = () => {
         history.replace(rison.decode(locationWithoutEditors));
-        setEditorConfigs(editorConfigs.map(e => ({...e, closed: 'history'})));
+        setEditorConfigs(editorConfigs.map(e => ({...e, closed: 'history', closeCallback: () => {}})));
     };
 
     let newEditorConfig = editorConfig => {
@@ -68,16 +68,16 @@ export const ContentEditorApi = () => {
     let deleteEditorConfig = index => {
         const copy = Array.from(editorConfigs);
         const spliced = copy.splice(index, 1);
-        const closed = spliced[0].closed;
+        const closeCallback = spliced[0].closeCallback;
 
         setEditorConfigs(copy);
 
-        if (closed !== 'history') {
-            if (spliced[0]?.isFullscreen && !window.history.state.prevUrl?.contains('/cms/login')) {
-                history.go(-1);
-            } else {
-                history.replace(rison.decode(locationWithoutEditors));
-            }
+        if (closeCallback) {
+            closeCallback();
+        } else if (spliced[0]?.isFullscreen && !window.history.state.prevUrl?.contains('/cms/login')) {
+            history.go(-1);
+        } else {
+            history.replace(rison.decode(locationWithoutEditors));
         }
     };
 

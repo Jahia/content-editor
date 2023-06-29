@@ -18,7 +18,7 @@ export const OnCloseConfirmationDialog = React.forwardRef((props, ref) => {
                 formik.validateForm();
                 setConfirmationConfig(true);
             } else {
-                updateEditorConfig({closed: 'dialog'});
+                updateEditorConfig({closed: true});
             }
         }
     }));
@@ -26,7 +26,7 @@ export const OnCloseConfirmationDialog = React.forwardRef((props, ref) => {
     return confirmationConfig && (
         <CloseConfirmationDialog
             isOpen
-            actionCallback={() => updateEditorConfig({closed: 'dialog-confirmed'})}
+            actionCallback={() => updateEditorConfig({closed: true})}
             onCloseDialog={() => setConfirmationConfig(false)}
         />
     );

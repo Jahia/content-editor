@@ -36,7 +36,6 @@ export const WindowListeners = () => {
             if (registered.current) {
                 registered.current = false;
                 window.removeEventListener('beforeunload', handleBeforeUnloadEvent);
-                console.log('unblock');
                 unblock.current();
                 unblock.current = null;
             }

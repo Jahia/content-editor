@@ -26,7 +26,7 @@ export const GoBack = ({render: Render, ...otherProps}) => {
             formik.validateForm();
             setOpen(true);
         } else {
-            updateEditorConfig({closed: 'back'});
+            updateEditorConfig({closed: true});
         }
     };
 
@@ -35,7 +35,7 @@ export const GoBack = ({render: Render, ...otherProps}) => {
             { confirmationDialog && (
                 <CloseConfirmationDialog
                     isOpen={open}
-                    actionCallback={() => updateEditorConfig({closed: 'back-confirmed'})}
+                    actionCallback={() => updateEditorConfig({closed: true})}
                     onCloseDialog={onCloseDialog}
                 />
             )}
