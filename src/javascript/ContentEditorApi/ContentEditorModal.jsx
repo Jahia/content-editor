@@ -33,7 +33,7 @@ const Transition = React.forwardRef((props, ref) => {
     return <Slide ref={ref} direction="up" {...props}/>;
 });
 
-export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEditorConfig}) => {
+export const ContentEditorModal = ({editorConfig, updateEditorConfig, onExited}) => {
     const notificationContext = useNotifications();
 
     const needRefresh = useRef(false);
@@ -56,7 +56,6 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
     const {createCallback, editCallback, onClosedCallback} = mergedConfig;
 
     mergedConfig.updateEditorConfig = updateEditorConfig;
-    mergedConfig.deleteEditorConfig = deleteEditorConfig;
     mergedConfig.createCallback = ({newNode}) => {
         needRefresh.current = true;
         if (createCallback) {
@@ -174,7 +173,7 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
                 aria-labelledby="dialog-content-editor"
                 classes={classes}
                 onClose={() => confirmationDialog.current ? confirmationDialog.current.openDialog() : updateEditorConfig({closed: true})}
-                onExited={deleteEditorConfig}
+                onExited={onExited}
                 onRendered={() => window.focus()}
                 {...mergedConfig.dialogProps}
         >
@@ -208,8 +207,8 @@ ContentEditorModal.propTypes = {
         formKey: PropTypes.string,
         useConfirmationDialog: PropTypes.bool,
         closed: PropTypes.bool,
-        closeCallback: PropTypes.func
+        onExited: PropTypes.func
     }).isRequired,
     updateEditorConfig: PropTypes.func.isRequired,
-    deleteEditorConfig: PropTypes.func.isRequired
+    onExited: PropTypes.func.isRequired
 };

@@ -57,7 +57,7 @@ const getItems = (mode, node) => {
 };
 
 export const ContentPath = ({path}) => {
-    const [dialogState, setDialogState] = useState({closed: true});
+    const [dialogState, setDialogState] = useState({open: false});
     const {updateEditorConfig, site, mode} = useContentEditorConfigContext();
     const formik = useFormikContext();
     const {i18nContext} = useContentEditorContext();
@@ -78,11 +78,11 @@ export const ContentPath = ({path}) => {
 
     const doRedirect = itemPath => {
         if (itemPath.startsWith('/sites/systemsite/categories/') || itemPath === '/sites/systemsite/categories') {
-            const closeCallback = () => {
+            const onExited = () => {
                 dispatch(push('/category-manager'));
             };
 
-            updateEditorConfig({closed: true, closeCallback});
+            updateEditorConfig({closed: true, onExited});
         } else {
             let mode = 'pages';
 
@@ -92,11 +92,11 @@ export const ContentPath = ({path}) => {
                 mode = 'content-folders';
             }
 
-            const closeCallback = () => {
-                dispatch(cmGoto({mode: mode, path}));
+            const onExited = () => {
+                dispatch(cmGoto({mode: mode, path: itemPath}));
             };
 
-            updateEditorConfig({closed: true, closeCallback});
+            updateEditorConfig({closed: true, onExited});
         }
     };
 
@@ -111,7 +111,7 @@ export const ContentPath = ({path}) => {
     const node = data?.jcr?.node;
     const items = useMemo(() => getItems(mode, node), [mode, node]);
 
-    let onCloseDialog = useCallback(() => setDialogState({closed: true}), [setDialogState]);
+    let onCloseDialog = useCallback(() => setDialogState({open: false}), [setDialogState]);
     if (error) {
         return <>{error.message}</>;
     }
