@@ -3,35 +3,40 @@ import PropTypes from 'prop-types';
 import {Constants} from '~/ContentEditor.constants';
 import {useContentEditorContext} from '~/contexts';
 import {useQuery} from '@apollo/react-hooks';
-import {OpenInTabActionQuery} from '~/SelectorTypes/Picker/actions/openInTabAction.gql-queries';
+import {
+    OpenInTabActionQueryPath,
+    OpenInTabActionQueryUuid
+} from '~/SelectorTypes/Picker/actions/openInTabAction.gql-queries';
+import rison from 'rison-node';
 
 export const OpenInTabActionComponent = ({render: Render, loading: Loading, path, field, inputContext, ...others}) => {
-    const {lang} = useContentEditorContext();
+    const {lang, uilang} = useContentEditorContext();
 
-    let uuid;
-    if (path === undefined) {
-        const {fieldData} = inputContext.actionContext;
-        uuid = fieldData?.[0]?.uuid;
-    }
-
-    const {data, error, loading} = useQuery(OpenInTabActionQuery, {
-        variables: {
-            path: path
-        },
-        skip: !path
+    const queryInfo = (path === undefined) ? ({
+        variables: {uuid: inputContext.actionContext?.fieldData?.[0]?.uuid},
+        query: OpenInTabActionQueryUuid
+    }) : ({
+        variables: {path: path},
+        query: OpenInTabActionQueryPath
     });
 
-    if (uuid === undefined && (loading || error || !data)) {
+    const {data, error, loading} = useQuery(queryInfo.query, {variables: queryInfo.variables});
+
+    if (loading || error || !data) {
         return <></>;
     }
 
-    uuid = uuid === undefined ? data.jcr.result.uuid : uuid;
-
+    const uuid = data.jcr.result.uuid;
+    const site = data.jcr.result.site;
     return (
         <Render
             {...others}
             onClick={() => {
-                window.open(`${window.contextJsParameters.urlbase}/${Constants.appName}/${lang}/${Constants.routes.baseEditRoute}/${uuid}`, '_blank');
+                const hash = rison.encode_uri({contentEditor: [{uuid, site: site.uuid, lang, uilang, mode: Constants.routes.baseEditRoute, isFullscreen: true}]});
+
+                // Todo : Reuse the logic from locate in jcontent when merge is done
+                const location = window.location;
+                window.open(`${location}#${hash}`, '_blank');
             }}
         />
     );
