@@ -19,7 +19,7 @@ describe('Picker - PDF', () => {
     // Tests
     it('PDF Picker - Only pdf folder display files', () => {
         const contentEditor = jcontent.editComponentByText('CEOs of The Digital Roundtable');
-        contentEditor.toggleOption('jdmix:fileAttachment', 'pdfVersion');
+        contentEditor.toggleOption('jdmix:fileAttachment', 'File');
         const picker = contentEditor.getPickerField('jdmix:fileAttachment_pdfVersion').open();
         const pagesAccordion: AccordionItem = picker.getAccordionItem('picker-media');
         pagesAccordion.getHeader().should('be.visible');

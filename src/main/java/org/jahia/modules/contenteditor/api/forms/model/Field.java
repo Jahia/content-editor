@@ -239,9 +239,10 @@ public class Field implements Ranked {
         String suffix = definition.getDeclaringNodeType().getTemplatePackage() != null ? "@" + definition.getDeclaringNodeType().getTemplatePackage().getResourceBundleName() : "";
 
         ExtendedNodeType nodeType = definition.getDeclaringNodeType();
-        label = StringUtils.isEmpty(label) ? StringEscapeUtils.unescapeHtml(resolveResourceKey(definition.getResourceBundleKey(nodeType) + suffix, uiLocale, site)) : label;
-        description = StringUtils.isEmpty(description) ? Sanitizers.FORMATTING.sanitize(resolveResourceKey(definition.getResourceBundleKey(nodeType) + ".ui.tooltip" + suffix, uiLocale, site)) : description;
-        errorMessage = StringUtils.isEmpty(errorMessage)? Sanitizers.FORMATTING.sanitize(resolveResourceKey(definition.getResourceBundleKey(nodeType) + ".constraint.error.message" + suffix, uiLocale, site)) : errorMessage;
+        String key = definition.getResourceBundleKey(nodeType);
+        label = StringUtils.isEmpty(label) ? StringEscapeUtils.unescapeHtml(resolveResourceKey(key + suffix, uiLocale, site)) : label;
+        description = StringUtils.isEmpty(description) ? Sanitizers.FORMATTING.sanitize(resolveResourceKey(key + ".ui.tooltip" + suffix, uiLocale, site)) : description;
+        errorMessage = StringUtils.isEmpty(errorMessage)? Sanitizers.FORMATTING.sanitize(resolveResourceKey(key + ".constraint.error.message" + suffix, uiLocale, site)) : errorMessage;
     }
 
     public void mergeWith(Field otherField) {
