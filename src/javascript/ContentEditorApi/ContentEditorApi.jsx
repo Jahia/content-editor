@@ -171,7 +171,6 @@ export const ContentEditorApi = () => {
                         setContentTypeSelectorConfig(false);
                         newEditorConfig({
                             name: contentTypeSelectorConfig.name,
-                            uilang: contentTypeSelectorConfig.uilang,
                             contentType: contentType.name,
                             mode: Constants.routes.baseCreateRoute,
                             ...contentTypeSelectorConfig.editorConfig

@@ -19,12 +19,13 @@ import {useQuery, useApolloClient} from '@apollo/react-hooks';
 
 const ButtonRenderer = getButtonRenderer({defaultButtonProps: {variant: 'ghost'}});
 
-const RightPanel = ({pickerConfig, isMultiple, accordionItemProps, lang, uilang, onClose, onItemSelection}) => {
+const RightPanel = ({pickerConfig, isMultiple, accordionItemProps, lang, onClose, onItemSelection}) => {
     const client = useApolloClient();
-    const {selection, mode, path} = useSelector(state => ({
+    const {selection, mode, path, uilang} = useSelector(state => ({
         path: state.contenteditor.picker.path,
         selection: state.contenteditor.picker.selection,
-        mode: state.contenteditor.picker.mode
+        mode: state.contenteditor.picker.mode,
+        uilang: state.uilang
     }), shallowEqual);
     const selectionExpanded = useState(false);
     const {t} = useTranslation('content-editor');
@@ -125,7 +126,6 @@ RightPanel.propTypes = {
     isMultiple: PropTypes.bool,
     accordionItemProps: PropTypes.object,
     lang: PropTypes.string,
-    uilang: PropTypes.string,
     onItemSelection: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired
 };

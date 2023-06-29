@@ -62,7 +62,7 @@ export const CreateContent = ({contextNodePath, path, showOnNodeTypes, nodeTypes
     const actions = transformNodeTypesToActions(flattenedNodeTypes, hasBypassChildrenLimit);
 
     const onClick = ({nodeTypesTree}) => {
-        api.create({uuid: nodeInfo.node.uuid, path, site, lang: language, uilang, nodeTypesTree, name, isFullscreen, createCallback: onCreate, onClosedCallback: onClosed});
+        api.create({uuid: nodeInfo.node.uuid, path, site, lang: language, nodeTypesTree, name, isFullscreen, createCallback: onCreate, onClosedCallback: onClosed});
     };
 
     return (actions || [{key: 'allTypes', nodeTypeIcon: otherProps.defaultIcon}]).map(result => (

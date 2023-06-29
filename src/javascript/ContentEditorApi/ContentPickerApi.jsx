@@ -31,7 +31,6 @@ export const ContentPickerApi = () => {
             site={picker?.site}
             pickerConfig={pickerConfig}
             lang={picker?.lang}
-            uilang={picker?.uilang}
             isMultiple={picker?.isMultiple}
             onItemSelection={handleItemSelection}
             onClose={() => setPicker(false)}

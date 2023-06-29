@@ -14,12 +14,13 @@ import {DefaultPickerConfig} from '~/SelectorTypes/Picker/configs/DefaultPickerC
 import {useFormikContext} from 'formik';
 import {OrderableValue} from '~/DesignSystem/OrderableValue/OrderableValue';
 import {useContentEditorConfigContext} from '~/contexts';
+import {useSelector} from 'react-redux';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
 export const Picker = ({field, value, editorContext, inputContext, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
-    const {lang, uilang} = useContentEditorConfigContext();
+    const {lang} = useContentEditorConfigContext();
 
     const parsedOptions = {};
     field.selectorOptions.forEach(option => {
@@ -160,7 +161,6 @@ export const Picker = ({field, value, editorContext, inputContext, onChange, onB
                 initialSelectedItem={fieldData && fieldData.map(f => f.path)}
                 accordionItemProps={mergeDeep({}, pickerConfig.accordionItem, parsedOptions.accordionItem)}
                 lang={lang}
-                uilang={uilang}
                 isMultiple={field.multiple}
                 onClose={() => setDialogOpen(false)}
                 onItemSelection={onItemSelection}

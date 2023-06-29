@@ -7,9 +7,9 @@ export const useEdit = setEditorConfig => {
      * @param uuid the uuid of the node to edit
      * @param site the current site
      * @param lang the current lang from url
-     * @param uilang the preferred user lang for ui
+     * @param uilang deprecated
      */
-    return useCallback((uuid, site, lang, uilang, isFullscreen, editCallback, onClosedCallback) => {
+    return useCallback((uuid, site, lang, _, isFullscreen, editCallback, onClosedCallback) => {
         if (typeof uuid === 'object') {
             setEditorConfig({
                 mode: Constants.routes.baseEditRoute,
@@ -20,7 +20,6 @@ export const useEdit = setEditorConfig => {
                 uuid,
                 site,
                 lang,
-                uilang,
                 mode: Constants.routes.baseEditRoute,
                 isFullscreen,
                 editCallback,
