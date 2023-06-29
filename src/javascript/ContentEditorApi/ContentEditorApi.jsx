@@ -74,6 +74,9 @@ export const ContentEditorApi = () => {
 
         if (onExited) {
             onExited();
+        } else if (copy.length > 0) {
+            const {locationFromState} = getEncodedLocations(location, copy);
+            history.replace(rison.decode(locationFromState));
         } else if (spliced[0]?.isFullscreen && !window.history.state.prevUrl?.contains('/cms/login')) {
             history.go(-1);
         } else {
@@ -96,6 +99,7 @@ export const ContentEditorApi = () => {
             // Add hash to history only if full screen configuration available, otherwise update config state directly
             if (currentEncodedLocation !== locationFromState && locationFromState.includes('contentEditor:') && locationFromState.includes('isFullscreen:!!t')) {
                 if (currentEncodedLocation.includes('contentEditor:')) {
+                    // Todo : handle the case when stacking a new content-editor - we should push
                     history.replace(rison.decode(locationFromState));
                 } else {
                     history.push(rison.decode(locationFromState));
@@ -156,11 +160,7 @@ export const ContentEditorApi = () => {
             {contentTypeSelectorConfig && (
                 <ContentTypeSelectorModal
                     open
-                    childNodeName={contentTypeSelectorConfig.name}
                     nodeTypesTree={contentTypeSelectorConfig.nodeTypesTree}
-                    includeSubTypes={contentTypeSelectorConfig.includeSubTypes}
-                    parentPath={contentTypeSelectorConfig.path}
-                    uilang={contentTypeSelectorConfig.uilang}
                     onClose={() => {
                         setContentTypeSelectorConfig(false);
                     }}
