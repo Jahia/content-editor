@@ -57,8 +57,8 @@ const getItems = (mode, node) => {
 };
 
 export const ContentPath = ({path}) => {
-    const [open, setOpen] = useState(false);
-    const {deleteEditorConfig, site, mode} = useContentEditorConfigContext();
+    const [dialogState, setDialogState] = useState({open: false});
+    const {updateEditorConfig, site, mode} = useContentEditorConfigContext();
     const formik = useFormikContext();
     const {i18nContext} = useContentEditorContext();
 
@@ -76,37 +76,42 @@ export const ContentPath = ({path}) => {
 
     const dirty = isDirty(formik, i18nContext);
 
-    const handleNavigation = path => {
-        if (dirty) {
-            setOpen(true);
-        } else {
-            if (path.startsWith('/sites/systemsite/categories/') || path === '/sites/systemsite/categories') {
+    const doRedirect = itemPath => {
+        if (itemPath.startsWith('/sites/systemsite/categories/') || itemPath === '/sites/systemsite/categories') {
+            const onExited = () => {
                 dispatch(push('/category-manager'));
-            } else {
-                let mode = 'pages';
+            };
 
-                if (path.startsWith(`/sites/${site}/files/`) || path === `/sites/${site}/files`) {
-                    mode = 'media';
-                } else if (path.startsWith(`/sites/${site}/contents/`) || path === `/sites/${site}/contents`) {
-                    mode = 'content-folders';
-                }
+            updateEditorConfig({closed: true, onExited});
+        } else {
+            let mode = 'pages';
 
-                dispatch(cmGoto({
-                    mode: mode,
-                    path
-                }));
+            if (itemPath.startsWith(`/sites/${site}/files/`) || itemPath === `/sites/${site}/files`) {
+                mode = 'media';
+            } else if (itemPath.startsWith(`/sites/${site}/contents/`) || itemPath === `/sites/${site}/contents`) {
+                mode = 'content-folders';
             }
 
-            deleteEditorConfig(window.location.url.contains('/jahia/page-composer/'));
+            const onExited = () => {
+                dispatch(cmGoto({mode: mode, path: itemPath}));
+            };
+
+            updateEditorConfig({closed: true, onExited});
+        }
+    };
+
+    const handleNavigation = itemPath => {
+        if (dirty) {
+            setDialogState({open: true, itemPath});
+        } else {
+            doRedirect(itemPath);
         }
     };
 
     const node = data?.jcr?.node;
     const items = useMemo(() => getItems(mode, node), [mode, node]);
 
-    let onCloseDialog = useCallback(() => setOpen(false), [setOpen]);
-    let actionCallback = deleteEditorConfig;
-
+    let onCloseDialog = useCallback(() => setDialogState({open: false}), [setDialogState]);
     if (error) {
         return <>{error.message}</>;
     }
@@ -114,8 +119,8 @@ export const ContentPath = ({path}) => {
     return (
         <>
             <CloseConfirmationDialog
-                isOpen={open}
-                actionCallback={actionCallback}
+                isOpen={dialogState.open}
+                actionCallback={() => doRedirect(dialogState.itemPath)}
                 onCloseDialog={onCloseDialog}
             />
 

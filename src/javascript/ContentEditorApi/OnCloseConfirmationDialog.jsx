@@ -1,13 +1,14 @@
 import React, {useImperativeHandle, useState} from 'react';
 import {CloseConfirmationDialog} from '~/CloseConfirmationDialog';
-import * as PropTypes from 'prop-types';
 import {useFormikContext} from 'formik';
 import {useContentEditorContext} from '~/contexts/ContentEditor';
 import {isDirty} from '~/utils';
+import {useContentEditorConfigContext} from '~/contexts';
 
-export const OnCloseConfirmationDialog = React.forwardRef(({deleteEditorConfig}, ref) => {
+export const OnCloseConfirmationDialog = React.forwardRef((props, ref) => {
     const [confirmationConfig, setConfirmationConfig] = useState(false);
     const formik = useFormikContext();
+    const {updateEditorConfig} = useContentEditorConfigContext();
     const {i18nContext} = useContentEditorContext();
     const dirty = isDirty(formik, i18nContext);
 
@@ -17,7 +18,7 @@ export const OnCloseConfirmationDialog = React.forwardRef(({deleteEditorConfig},
                 formik.validateForm();
                 setConfirmationConfig(true);
             } else {
-                deleteEditorConfig();
+                updateEditorConfig({closed: true});
             }
         }
     }));
@@ -25,12 +26,8 @@ export const OnCloseConfirmationDialog = React.forwardRef(({deleteEditorConfig},
     return confirmationConfig && (
         <CloseConfirmationDialog
             isOpen
-            actionCallback={() => deleteEditorConfig()}
+            actionCallback={() => updateEditorConfig({closed: true})}
             onCloseDialog={() => setConfirmationConfig(false)}
         />
     );
 });
-
-OnCloseConfirmationDialog.propTypes = {
-    deleteEditorConfig: PropTypes.func.isRequired
-};
