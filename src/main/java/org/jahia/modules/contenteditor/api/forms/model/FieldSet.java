@@ -2,8 +2,10 @@ package org.jahia.modules.contenteditor.api.forms.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.jahia.modules.contenteditor.api.forms.DefinitionRegistryItem;
 import org.jahia.modules.contenteditor.api.forms.Ranked;
+import org.jahia.services.content.JCRContentUtils;
 import org.jahia.services.content.decorator.JCRSiteNode;
 import org.jahia.services.content.nodetypes.ExtendedNodeType;
 import org.jahia.services.content.nodetypes.NodeTypeRegistry;
@@ -186,10 +188,13 @@ public class FieldSet implements DefinitionRegistryItem, Ranked {
         description = description == null && descriptionKey != null ? resolveResourceKey(descriptionKey, uiLocale, site) : description;
 
         if (nodeType != null) {
-            label = label == null ? StringEscapeUtils.unescapeHtml(nodeType.getLabel(uiLocale)) : label;
-            description = description == null ? Sanitizers.FORMATTING.sanitize(nodeType.getDescription(uiLocale)) : description;
+            String suffix = nodeType.getTemplatePackage() != null ? "@" + nodeType.getTemplatePackage().getResourceBundleName() : "";
+            String key =  JCRContentUtils.replaceColon(nodeType.getName());
+            label = StringUtils.isEmpty(label) ? StringEscapeUtils.unescapeHtml(resolveResourceKey(key + suffix, uiLocale, site)) : label;
+            description = StringUtils.isEmpty(description) ? Sanitizers.FORMATTING.sanitize(resolveResourceKey(key + ".ui.tooltip" + suffix, uiLocale, site)) : description;
         }
     }
+
 
     private Field addField() {
         Field f = new Field();
