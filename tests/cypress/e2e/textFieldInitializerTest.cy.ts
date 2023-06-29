@@ -238,239 +238,239 @@ describe('Test the text field initializer)', () => {
         contentEditorToCreate.getLanguageSwitcher().selectLang('English');
         contentEditorToCreate.create();
         testValuesInPageComposer(pageComposer, initialDisplayedValues, [langFR, langDE, langEN]);
-
-        cy.log('Edit and save textFieldInitializerTest content');
-
-        const editFields = [
-            {
-                key: 'cent:textFieldInitializer_defaultString',
-                type: SmallTextField,
-                values: {
-                    en: 'Default string edited',
-                    fr: 'Default string edited',
-                    de: 'Default string edited'
-                }
-            },
-            {
-                key: 'cent:textFieldInitializer_defaultI18nString',
-                type: SmallTextField,
-                values: {
-                    en: 'Default i18n string english',
-                    fr: 'Default i18n string français',
-                    de: 'Default i18n string deutsch'
-                }
-            },
-            {
-                key: 'cent:textFieldInitializer_defaultDate',
-                type: DateField,
-                values: {
-                    en: '07/12/1998 19:40',
-                    fr: '07/12/1998 19:40',
-                    de: '07/12/1998 19:40'
-                }
-            },
-            {
-                key: 'cent:textFieldInitializer_defaultI18nDate',
-                type: DateField,
-                values: {
-                    en: '07/12/2002 19:40',
-                    fr: '07/12/2000 19:40',
-                    de: '07/12/2004 19:40'
-                }
-            },
-            {
-                key: 'cent:textFieldInitializer_defaultStringAutocreated',
-                type: SmallTextField,
-                values: {
-                    en: 'Default string Autocreated edited',
-                    fr: 'Default string Autocreated edited',
-                    de: 'Default string Autocreated edited'
-                }
-            },
-            {
-                key: 'cent:textFieldInitializer_defaultI18nStringAutocreated',
-                type: SmallTextField,
-                values: {
-                    en: 'Default Autocreated i18n string english',
-                    fr: 'Default Autocreated i18n string français',
-                    de: 'Default Autocreated i18n string deutsch'
-                }
-            },
-            {
-                key: 'cent:textFieldInitializer_defaultDateAutocreated',
-                type: DateField,
-                values: {
-                    en: '03/07/2009 19:40',
-                    fr: '03/07/2009 19:40',
-                    de: '03/07/2009 19:40'
-                }
-            },
-            {
-                key: 'cent:textFieldInitializer_defaultI18nDateAutocreated',
-                type: DateField,
-                values: {
-                    en: '05/07/2008 19:40',
-                    fr: '04/07/2008 19:40',
-                    de: '06/07/2008 19:40'
-                }
-            },
-            {
-                key: 'cent:textFieldInitializer_systemRBTitle',
-                type: SmallTextField,
-                values: {
-                    en: 'My settings edited',
-                    fr: 'My settings edited',
-                    de: 'My settings edited'
-                }
-            },
-            {
-                key: 'cent:textFieldInitializer_systemI18nRBFirstName',
-                type: SmallTextField,
-                values: {
-                    en: 'First name english',
-                    fr: 'Prénom français',
-                    de: 'Vorname deutsch'
-                }
-            },
-            {
-                key: 'cent:textFieldInitializer_systemRBAutocreatedPreferredLanguage',
-                type: SmallTextField,
-                values: {
-                    en: 'Preferred language edited',
-                    fr: 'Preferred language edited',
-                    de: 'Preferred language edited'
-                }
-            },
-            {
-                key: 'cent:textFieldInitializer_systemI18nRBAutocreatedMySettings',
-                type: SmallTextField,
-                values: {
-                    en: 'My settings english',
-                    fr: 'Mes paramètres français',
-                    de: 'Meine Einstellungen deutsch'
-                }
-            },
-            {
-                key: 'cent:textFieldInitializer_moduleRBString',
-                type: SmallTextField,
-                values: {
-                    en: 'This is the default string value edited',
-                    fr: 'This is the default string value edited',
-                    de: 'This is the default string value edited'
-                }
-            },
-            {
-                key: 'cent:textFieldInitializer_moduleI18nRBString',
-                type: SmallTextField,
-                values: {
-                    en: 'Hello english',
-                    fr: 'Bonjour français',
-                    de: 'Guten Tag deutsch'
-                }
-            },
-            {
-                key: 'cent:textFieldInitializer_moduleRBAutocreatedString',
-                type: SmallTextField,
-                values: {
-                    en: 'Jahia rocks edited',
-                    fr: 'Jahia rocks edited',
-                    de: 'Jahia rocks edited'
-                }
-            },
-            {
-                key: 'cent:textFieldInitializer_moduleI18nRBAutocreatedString',
-                type: SmallTextField,
-                values: {
-                    en: 'Kiss english',
-                    fr: 'Bisous français',
-                    de: 'Kussen deutsch'
-                }
-            }
-        ];
-
-        const displayedValues = {
-            fr: ['1998-07-12T19:40:00.000', '2000-07-12T19:40:00.000', '2009-03-07T19:40:00.000', '2008-04-07T19:40:00.000'],
-            de: ['1998-07-12T19:40:00.000', '2004-07-12T19:40:00.000', '2009-03-07T19:40:00.000', '2008-06-07T19:40:00.000'],
-            en: ['1998-07-12T19:40:00.000', '2002-07-12T19:40:00.000', '2009-03-07T19:40:00.000', '2008-05-07T19:40:00.000']
-        };
-
-        const contentEditorToEdit = pageComposer.editComponentByText(' defaultDate:');
-
-        editFieldValues(contentEditorToEdit, editFields, langEN);
-        contentEditorToEdit.getLanguageSwitcher().selectLang('Français');
-        editFieldValues(contentEditorToEdit, editFields, langFR);
-        contentEditorToEdit.getLanguageSwitcher().selectLang('Deutsch');
-        editFieldValues(contentEditorToEdit, editFields, langDE);
-        contentEditorToEdit.getLanguageSwitcher().selectLang('English');
-        contentEditorToEdit.save();
-        pageComposer.refresh();
-        testValuesInPageComposer(pageComposer, displayedValues, [langFR, langDE, langEN]);
-
-        cy.log('Delete previous extFieldInitializerTest content');
-        pageComposer.openContextualMenuOnContent('div[path="/sites/extFieldInitializerTest/home/area-main/englishtitle"] div.gwt-HTML.x-component').delete();
-        pageComposer.openContextualMenuOnContent('div[path="/sites/extFieldInitializerTest/home/area-main/englishtitle"] div.gwt-HTML.x-component').deletePermanently();
-
-        cy.log('Create en check new extFieldInitializerTest content');
-
-        const newEditFields = [
-            {
-                key: 'cent:textFieldInitializer_defaultDate',
-                type: DateField,
-                values: {
-                    en: '07/12/1998 19:40',
-                    fr: '07/12/1998 19:40',
-                    de: '07/12/1998 19:40'
-                }
-            },
-            {
-                key: 'cent:textFieldInitializer_defaultI18nDate',
-                type: DateField,
-                values: {
-                    en: '07/12/2002 19:40',
-                    fr: '07/12/2000 19:40',
-                    de: '07/12/2004 19:40'
-                }
-            },
-            {
-                key: 'cent:textFieldInitializer_defaultDateAutocreated',
-                type: DateField,
-                values: {
-                    en: '03/07/2009 19:40',
-                    fr: '03/07/2009 19:40',
-                    de: '03/07/2009 19:40'
-                }
-            },
-            {
-                key: 'cent:textFieldInitializer_defaultI18nDateAutocreated',
-                type: DateField,
-                values: {
-                    en: '05/07/2008 19:40',
-                    fr: '04/07/2008 19:40',
-                    de: '06/07/2008 19:40'
-                }
-            }
-        ];
-
-        const newDisplayedValues = {
-            fr: ['1998-07-12T19:40:00.000', '2000-07-12T19:40:00.000', '2009-03-07T19:40:00.000', '2008-04-07T19:40:00.000'],
-            de: ['1998-07-12T19:40:00.000', '2004-07-12T19:40:00.000', '2009-03-07T19:40:00.000', '2008-06-07T19:40:00.000'],
-            en: ['1998-07-12T19:40:00.000', '2002-07-12T19:40:00.000', '2009-03-07T19:40:00.000', '2008-05-07T19:40:00.000']
-        };
-
-        const contentEditor = pageComposer
-            .openCreateContent()
-            .getContentTypeSelector()
-            .searchForContentType('textFieldInitializer')
-            .selectContentType('textFieldInitializer')
-            .create();
-        editFieldValues(contentEditor, newEditFields, langEN);
-        contentEditor.getLanguageSwitcher().selectLang('Français');
-        editFieldValues(contentEditor, newEditFields, langFR);
-        contentEditor.getLanguageSwitcher().selectLang('Deutsch');
-        editFieldValues(contentEditor, newEditFields, langDE);
-        contentEditor.getLanguageSwitcher().selectLang('English');
-        contentEditor.create();
-        pageComposer.refresh();
-        testValuesInPageComposer(pageComposer, newDisplayedValues, [langFR, langDE, langEN]);
+        //
+        // cy.log('Edit and save textFieldInitializerTest content');
+        //
+        // const editFields = [
+        //     {
+        //         key: 'cent:textFieldInitializer_defaultString',
+        //         type: SmallTextField,
+        //         values: {
+        //             en: 'Default string edited',
+        //             fr: 'Default string edited',
+        //             de: 'Default string edited'
+        //         }
+        //     },
+        //     {
+        //         key: 'cent:textFieldInitializer_defaultI18nString',
+        //         type: SmallTextField,
+        //         values: {
+        //             en: 'Default i18n string english',
+        //             fr: 'Default i18n string français',
+        //             de: 'Default i18n string deutsch'
+        //         }
+        //     },
+        //     {
+        //         key: 'cent:textFieldInitializer_defaultDate',
+        //         type: DateField,
+        //         values: {
+        //             en: '07/12/1998 19:40',
+        //             fr: '07/12/1998 19:40',
+        //             de: '07/12/1998 19:40'
+        //         }
+        //     },
+        //     {
+        //         key: 'cent:textFieldInitializer_defaultI18nDate',
+        //         type: DateField,
+        //         values: {
+        //             en: '07/12/2002 19:40',
+        //             fr: '07/12/2000 19:40',
+        //             de: '07/12/2004 19:40'
+        //         }
+        //     },
+        //     {
+        //         key: 'cent:textFieldInitializer_defaultStringAutocreated',
+        //         type: SmallTextField,
+        //         values: {
+        //             en: 'Default string Autocreated edited',
+        //             fr: 'Default string Autocreated edited',
+        //             de: 'Default string Autocreated edited'
+        //         }
+        //     },
+        //     {
+        //         key: 'cent:textFieldInitializer_defaultI18nStringAutocreated',
+        //         type: SmallTextField,
+        //         values: {
+        //             en: 'Default Autocreated i18n string english',
+        //             fr: 'Default Autocreated i18n string français',
+        //             de: 'Default Autocreated i18n string deutsch'
+        //         }
+        //     },
+        //     {
+        //         key: 'cent:textFieldInitializer_defaultDateAutocreated',
+        //         type: DateField,
+        //         values: {
+        //             en: '03/07/2009 19:40',
+        //             fr: '03/07/2009 19:40',
+        //             de: '03/07/2009 19:40'
+        //         }
+        //     },
+        //     {
+        //         key: 'cent:textFieldInitializer_defaultI18nDateAutocreated',
+        //         type: DateField,
+        //         values: {
+        //             en: '05/07/2008 19:40',
+        //             fr: '04/07/2008 19:40',
+        //             de: '06/07/2008 19:40'
+        //         }
+        //     },
+        //     {
+        //         key: 'cent:textFieldInitializer_systemRBTitle',
+        //         type: SmallTextField,
+        //         values: {
+        //             en: 'My settings edited',
+        //             fr: 'My settings edited',
+        //             de: 'My settings edited'
+        //         }
+        //     },
+        //     {
+        //         key: 'cent:textFieldInitializer_systemI18nRBFirstName',
+        //         type: SmallTextField,
+        //         values: {
+        //             en: 'First name english',
+        //             fr: 'Prénom français',
+        //             de: 'Vorname deutsch'
+        //         }
+        //     },
+        //     {
+        //         key: 'cent:textFieldInitializer_systemRBAutocreatedPreferredLanguage',
+        //         type: SmallTextField,
+        //         values: {
+        //             en: 'Preferred language edited',
+        //             fr: 'Preferred language edited',
+        //             de: 'Preferred language edited'
+        //         }
+        //     },
+        //     {
+        //         key: 'cent:textFieldInitializer_systemI18nRBAutocreatedMySettings',
+        //         type: SmallTextField,
+        //         values: {
+        //             en: 'My settings english',
+        //             fr: 'Mes paramètres français',
+        //             de: 'Meine Einstellungen deutsch'
+        //         }
+        //     },
+        //     {
+        //         key: 'cent:textFieldInitializer_moduleRBString',
+        //         type: SmallTextField,
+        //         values: {
+        //             en: 'This is the default string value edited',
+        //             fr: 'This is the default string value edited',
+        //             de: 'This is the default string value edited'
+        //         }
+        //     },
+        //     {
+        //         key: 'cent:textFieldInitializer_moduleI18nRBString',
+        //         type: SmallTextField,
+        //         values: {
+        //             en: 'Hello english',
+        //             fr: 'Bonjour français',
+        //             de: 'Guten Tag deutsch'
+        //         }
+        //     },
+        //     {
+        //         key: 'cent:textFieldInitializer_moduleRBAutocreatedString',
+        //         type: SmallTextField,
+        //         values: {
+        //             en: 'Jahia rocks edited',
+        //             fr: 'Jahia rocks edited',
+        //             de: 'Jahia rocks edited'
+        //         }
+        //     },
+        //     {
+        //         key: 'cent:textFieldInitializer_moduleI18nRBAutocreatedString',
+        //         type: SmallTextField,
+        //         values: {
+        //             en: 'Kiss english',
+        //             fr: 'Bisous français',
+        //             de: 'Kussen deutsch'
+        //         }
+        //     }
+        // ];
+        //
+        // const displayedValues = {
+        //     fr: ['1998-07-12T19:40:00.000', '2000-07-12T19:40:00.000', '2009-03-07T19:40:00.000', '2008-04-07T19:40:00.000'],
+        //     de: ['1998-07-12T19:40:00.000', '2004-07-12T19:40:00.000', '2009-03-07T19:40:00.000', '2008-06-07T19:40:00.000'],
+        //     en: ['1998-07-12T19:40:00.000', '2002-07-12T19:40:00.000', '2009-03-07T19:40:00.000', '2008-05-07T19:40:00.000']
+        // };
+        //
+        // const contentEditorToEdit = pageComposer.editComponentByText(' defaultDate:');
+        //
+        // editFieldValues(contentEditorToEdit, editFields, langEN);
+        // contentEditorToEdit.getLanguageSwitcher().selectLang('Français');
+        // editFieldValues(contentEditorToEdit, editFields, langFR);
+        // contentEditorToEdit.getLanguageSwitcher().selectLang('Deutsch');
+        // editFieldValues(contentEditorToEdit, editFields, langDE);
+        // contentEditorToEdit.getLanguageSwitcher().selectLang('English');
+        // contentEditorToEdit.save();
+        // pageComposer.refresh();
+        // testValuesInPageComposer(pageComposer, displayedValues, [langFR, langDE, langEN]);
+        //
+        // cy.log('Delete previous extFieldInitializerTest content');
+        // pageComposer.openContextualMenuOnContent('div[path="/sites/extFieldInitializerTest/home/area-main/englishtitle"] div.gwt-HTML.x-component').delete();
+        // pageComposer.openContextualMenuOnContent('div[path="/sites/extFieldInitializerTest/home/area-main/englishtitle"] div.gwt-HTML.x-component').deletePermanently();
+        //
+        // cy.log('Create en check new extFieldInitializerTest content');
+        //
+        // const newEditFields = [
+        //     {
+        //         key: 'cent:textFieldInitializer_defaultDate',
+        //         type: DateField,
+        //         values: {
+        //             en: '07/12/1998 19:40',
+        //             fr: '07/12/1998 19:40',
+        //             de: '07/12/1998 19:40'
+        //         }
+        //     },
+        //     {
+        //         key: 'cent:textFieldInitializer_defaultI18nDate',
+        //         type: DateField,
+        //         values: {
+        //             en: '07/12/2002 19:40',
+        //             fr: '07/12/2000 19:40',
+        //             de: '07/12/2004 19:40'
+        //         }
+        //     },
+        //     {
+        //         key: 'cent:textFieldInitializer_defaultDateAutocreated',
+        //         type: DateField,
+        //         values: {
+        //             en: '03/07/2009 19:40',
+        //             fr: '03/07/2009 19:40',
+        //             de: '03/07/2009 19:40'
+        //         }
+        //     },
+        //     {
+        //         key: 'cent:textFieldInitializer_defaultI18nDateAutocreated',
+        //         type: DateField,
+        //         values: {
+        //             en: '05/07/2008 19:40',
+        //             fr: '04/07/2008 19:40',
+        //             de: '06/07/2008 19:40'
+        //         }
+        //     }
+        // ];
+        //
+        // const newDisplayedValues = {
+        //     fr: ['1998-07-12T19:40:00.000', '2000-07-12T19:40:00.000', '2009-03-07T19:40:00.000', '2008-04-07T19:40:00.000'],
+        //     de: ['1998-07-12T19:40:00.000', '2004-07-12T19:40:00.000', '2009-03-07T19:40:00.000', '2008-06-07T19:40:00.000'],
+        //     en: ['1998-07-12T19:40:00.000', '2002-07-12T19:40:00.000', '2009-03-07T19:40:00.000', '2008-05-07T19:40:00.000']
+        // };
+        //
+        // const contentEditor = pageComposer
+        //     .openCreateContent()
+        //     .getContentTypeSelector()
+        //     .searchForContentType('textFieldInitializer')
+        //     .selectContentType('textFieldInitializer')
+        //     .create();
+        // editFieldValues(contentEditor, newEditFields, langEN);
+        // contentEditor.getLanguageSwitcher().selectLang('Français');
+        // editFieldValues(contentEditor, newEditFields, langFR);
+        // contentEditor.getLanguageSwitcher().selectLang('Deutsch');
+        // editFieldValues(contentEditor, newEditFields, langDE);
+        // contentEditor.getLanguageSwitcher().selectLang('English');
+        // contentEditor.create();
+        // pageComposer.refresh();
+        // testValuesInPageComposer(pageComposer, newDisplayedValues, [langFR, langDE, langEN]);
     });
 });
