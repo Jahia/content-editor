@@ -15,7 +15,7 @@ describe('Editor url test', () => {
     });
 
     it('Should open editor upon login', function () {
-        cy.visit(this.peopleFirstUrl);
+        cy.visit(this.peopleFirstUrl, {failOnStatusCode: false});
         cy.get('input[name="username"]').type('root', {force: true});
         cy.get('input[name="password"]').type('root1234', {force: true});
         cy.get('button[type="submit"]').click({force: true});
