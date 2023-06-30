@@ -6,25 +6,15 @@ describe('Editor url test', () => {
     let jcontent: JContent;
     let contentEditor: ContentEditor;
 
-    before(() => {
-        cy.loginEditor();
+    it('should open editor', function () {
+        cy.login();
         jcontent = JContent.visit('digitall', 'en', 'pages/home');
         contentEditor = jcontent.editComponentByText('People First');
         contentEditor.switchToAdvancedMode();
         cy.url().as('peopleFirstUrl');
-        cy.logout();
-    });
-
-    beforeEach(() => {
-        cy.loginEditor();
-    });
-
-    after(() => {
-        cy.logout();
     });
 
     it('Should open editor upon login', function () {
-        cy.logout();
         cy.visit(this.peopleFirstUrl);
         cy.get('input[name="username"]').type('root', {force: true});
         cy.get('input[name="password"]').type('root1234', {force: true});
@@ -36,6 +26,7 @@ describe('Editor url test', () => {
     });
 
     it('Should open editor already logged in', function () {
+        cy.login();
         cy.visit(this.peopleFirstUrl);
         cy.get('h1').contains('People First').should('exist');
         contentEditor = ContentEditor.getContentEditor();
@@ -44,6 +35,7 @@ describe('Editor url test', () => {
     });
 
     it('Should create hash', function () {
+        cy.login();
         jcontent = JContent.visit('digitall', 'en', 'pages/home');
         contentEditor = jcontent.editComponentByText('People First');
         contentEditor.switchToAdvancedMode();
@@ -52,6 +44,7 @@ describe('Editor url test', () => {
     });
 
     it('History is handled consistently', function () {
+        cy.login();
         jcontent = JContent.visit('digitall', 'en', 'pages/home');
         contentEditor = jcontent.editComponentByText('People First');
         contentEditor.switchToAdvancedMode();
@@ -85,9 +78,10 @@ describe('Editor url test', () => {
     });
 
     it('Handles breadcrum in GWT correctly', function () {
+        cy.login();
         const hashIndex = this.peopleFirstUrl.indexOf('#');
         const hash = this.peopleFirstUrl.substring(hashIndex);
-        PageComposer.visit('digitall', 'en', `home.html${hash}`);
+        PageComposer.visit('digitall', 'en', `home.html?redirect=false${hash}`);
         contentEditor.getBreadcrumb('highlights').click();
         cy.get('h1').contains('highlights').should('exist');
     });
