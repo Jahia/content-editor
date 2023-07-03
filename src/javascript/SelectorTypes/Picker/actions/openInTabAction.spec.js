@@ -7,6 +7,7 @@ import {useContentEditorContext} from '~/contexts';
 jest.mock('@apollo/react-hooks', () => {
     let queryresponsemock;
     return {
+        useApolloClient: jest.fn(),
         useQuery: () => queryresponsemock,
         setQueryResponseMock: r => {
             queryresponsemock = r;
@@ -15,6 +16,15 @@ jest.mock('@apollo/react-hooks', () => {
 });
 
 jest.mock('~/contexts/ContentEditor/ContentEditor.context');
+
+jest.mock('@jahia/jcontent', () => ({
+    jcontentUtils: {
+        expandTree: () => ({
+            then: cb => cb({})
+        }),
+        buildUrl: () => '/jcontent/url'
+    }
+}));
 
 const button = () => <button type="button"/>;
 
@@ -47,6 +57,6 @@ describe('openInTab action', () => {
         const cmp = shallow(<OpenInTabActionComponent {...context} render={button}/>);
         cmp.simulate('click');
 
-        expect(window.open).toHaveBeenCalledWith('http://localhost/#(contentEditor:!((isFullscreen:!t,lang:fr,mode:edit,site:site-id,uuid:this-is-an-id)))', '_blank');
+        expect(window.open).toHaveBeenCalledWith('/jahia/jahia/jcontent/url#(contentEditor:!((isFullscreen:!t,lang:fr,mode:edit,uuid:this-is-an-id)))', '_blank');
     });
 });

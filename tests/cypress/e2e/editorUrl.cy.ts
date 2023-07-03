@@ -5,30 +5,17 @@ import {PageComposer} from '../page-object/pageComposer';
 describe('Editor url test', () => {
     let jcontent: JContent;
     let contentEditor: ContentEditor;
-    let peopleFirstUrl;
 
-    before(() => {
-        cy.loginEditor();
+    it('should open editor', function () {
+        cy.login();
         jcontent = JContent.visit('digitall', 'en', 'pages/home');
         contentEditor = jcontent.editComponentByText('People First');
         contentEditor.switchToAdvancedMode();
-        cy.url().then(url => {
-            peopleFirstUrl = url;
-            cy.logout();
-        });
-    });
-
-    beforeEach(() => {
-        cy.loginEditor();
-    });
-
-    after(() => {
-        cy.logout();
+        cy.url().as('peopleFirstUrl');
     });
 
     it('Should open editor upon login', function () {
-        cy.logout();
-        cy.visit(peopleFirstUrl);
+        cy.visit(this.peopleFirstUrl, {failOnStatusCode: false});
         cy.get('input[name="username"]').type('root', {force: true});
         cy.get('input[name="password"]').type('root1234', {force: true});
         cy.get('button[type="submit"]').click({force: true});
@@ -39,7 +26,8 @@ describe('Editor url test', () => {
     });
 
     it('Should open editor already logged in', function () {
-        cy.visit(peopleFirstUrl);
+        cy.login();
+        cy.visit(this.peopleFirstUrl);
         cy.get('h1').contains('People First').should('exist');
         contentEditor = ContentEditor.getContentEditor();
         contentEditor.cancel();
@@ -47,6 +35,7 @@ describe('Editor url test', () => {
     });
 
     it('Should create hash', function () {
+        cy.login();
         jcontent = JContent.visit('digitall', 'en', 'pages/home');
         contentEditor = jcontent.editComponentByText('People First');
         contentEditor.switchToAdvancedMode();
@@ -55,6 +44,7 @@ describe('Editor url test', () => {
     });
 
     it('History is handled consistently', function () {
+        cy.login();
         jcontent = JContent.visit('digitall', 'en', 'pages/home');
         contentEditor = jcontent.editComponentByText('People First');
         contentEditor.switchToAdvancedMode();
@@ -88,9 +78,10 @@ describe('Editor url test', () => {
     });
 
     it('Handles breadcrum in GWT correctly', function () {
-        const hashIndex = peopleFirstUrl.indexOf('#');
-        const hash = peopleFirstUrl.substring(hashIndex);
-        PageComposer.visit('digitall', 'en', `home.html${hash}`);
+        cy.login();
+        const hashIndex = this.peopleFirstUrl.indexOf('#');
+        const hash = this.peopleFirstUrl.substring(hashIndex);
+        PageComposer.visit('digitall', 'en', `home.html?redirect=false${hash}`);
         contentEditor.getBreadcrumb('highlights').click();
         cy.get('h1').contains('highlights').should('exist');
     });

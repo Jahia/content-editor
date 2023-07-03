@@ -1,14 +1,15 @@
 import React from 'react';
-import {useContentEditorConfigContext, usePublicationInfoContext} from '~/contexts';
+import {usePublicationInfoContext} from '~/contexts';
 import {useTranslation} from 'react-i18next';
 import {Constants} from '~/ContentEditor.constants';
 import {PublicationStatus} from './PublicationStatus';
 import {getTooltip} from './PublicationInfoBadge.tooltip';
+import {useSelector} from 'react-redux';
 
 export const PublicationInfoBadge = () => {
     const {t} = useTranslation('content-editor');
     const publicationInfoContext = usePublicationInfoContext();
-    const {uilang} = useContentEditorConfigContext();
+    const uilang = useSelector(state => state.uilang);
 
     const statuses = {
         modified: false,

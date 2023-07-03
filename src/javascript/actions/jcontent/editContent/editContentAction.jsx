@@ -15,11 +15,7 @@ export const EditContent = ({
 }) => {
     useTranslation('content-editor');
     const api = useContentEditorApiContext();
-    const {language, uilang, site} = useSelector(state => ({
-        language: state.language,
-        site: state.site,
-        uilang: state.uilang
-    }));
+    const language = useSelector(state => state.language);
     const res = useNodeChecks(
         {path: path, language: language},
         {...otherProps}
@@ -34,9 +30,7 @@ export const EditContent = ({
                 isVisible={res.checksResult}
                 onClick={() => api.edit({
                     uuid: res.node.uuid,
-                    site,
                     lang: language,
-                    uilang,
                     isFullscreen,
                     editCallback,
                     ...otherProps.editConfig

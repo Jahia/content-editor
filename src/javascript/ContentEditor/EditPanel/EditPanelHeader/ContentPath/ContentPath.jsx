@@ -58,7 +58,7 @@ const getItems = (mode, node) => {
 
 export const ContentPath = ({path}) => {
     const [dialogState, setDialogState] = useState({open: false});
-    const {updateEditorConfig, site, mode} = useContentEditorConfigContext();
+    const {updateEditorConfig, mode} = useContentEditorConfigContext();
     const formik = useFormikContext();
     const {i18nContext} = useContentEditorContext();
 
@@ -85,10 +85,9 @@ export const ContentPath = ({path}) => {
             updateEditorConfig({closed: true, onExited});
         } else {
             let mode = 'pages';
-
-            if (itemPath.startsWith(`/sites/${site}/files/`) || itemPath === `/sites/${site}/files`) {
+            if (/^\/sites\/[^/]+\/files(\/.*)?$/.test(itemPath)) {
                 mode = 'media';
-            } else if (itemPath.startsWith(`/sites/${site}/contents/`) || itemPath === `/sites/${site}/contents`) {
+            } else if (/^\/sites\/[^/]+\/contents(\/.*)?$/.test(itemPath)) {
                 mode = 'content-folders';
             }
 

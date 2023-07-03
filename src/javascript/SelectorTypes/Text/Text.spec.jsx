@@ -1,17 +1,26 @@
 import React from 'react';
 import {shallow} from '@jahia/test-framework';
+import {useSelector} from 'react-redux';
 
 import {Text} from './Text';
 
+jest.mock('react-redux', () => {
+    return {
+        ...jest.requireActual('react-redux'),
+        useSelector: jest.fn()
+    };
+});
+
 describe('Text component', () => {
     let props;
+    let state = {
+        uilang: 'en'
+    };
+
     beforeEach(() => {
         props = {
             onChange: jest.fn(),
             id: 'toto[1]',
-            editorContext: {
-                uilang: 'en'
-            },
             field: {
                 name: 'toto',
                 displayName: 'toto',
@@ -22,6 +31,8 @@ describe('Text component', () => {
                 selectorOptions: []
             }
         };
+
+        useSelector.mockImplementation(cb => cb(state));
     });
 
     it('should contain aria-labelledby attribute', () => {
@@ -99,14 +110,14 @@ describe('Text component', () => {
     });
 
     it('should input of type number use point as decimal separator when language is "en"', () => {
-        props.editorContext.uilang = 'en';
+        state.uilang = 'en';
         const cmp = shallow(<Text {...props}/>);
 
         expect(cmp.props().decimalSeparator).toBe('.');
     });
 
     it('should input of type number use comma as decimal separator when language is "fr"', () => {
-        props.editorContext.uilang = 'fr';
+        state.uilang = 'fr';
         const cmp = shallow(<Text {...props}/>);
 
         expect(cmp.props().decimalSeparator).toBe(',');

@@ -21,7 +21,7 @@ export const RichText = ({field, id, value, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
     const api = useContentEditorApiContext();
     const {i18nContext} = useContentEditorContext();
-    const {lang, uilang} = useContentEditorConfigContext();
+    const {lang} = useContentEditorConfigContext();
 
     useEffect(() => {
         CKEditor.editorUrl = window.CKEDITOR_BASEPATH + 'ckeditor.js';
@@ -87,8 +87,7 @@ export const RichText = ({field, id, value, onChange, onBlur}) => {
                 fillCKEditorPicker(setUrl, dialog, type === 'editoriallink', pickerResult.length > 0 && pickerResult[0]);
             },
             site: editorContext.site,
-            lang,
-            uilang
+            lang
         });
     };
 

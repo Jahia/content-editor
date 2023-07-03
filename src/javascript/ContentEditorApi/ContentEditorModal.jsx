@@ -192,8 +192,6 @@ ContentEditorModal.propTypes = {
         mode: PropTypes.oneOf([Constants.routes.baseCreateRoute, Constants.routes.baseEditRoute]).isRequired,
         uuid: PropTypes.string,
         lang: PropTypes.string,
-        uilang: PropTypes.string,
-        site: PropTypes.string,
         contentType: PropTypes.string,
         name: PropTypes.string,
         isFullscreen: PropTypes.bool,

@@ -14,7 +14,7 @@ import {useContentEditorApiContext} from '~/contexts/ContentEditorApi/ContentEdi
 export const CreateContent = ({contextNodePath, path, showOnNodeTypes, nodeTypes, name, includeSubTypes, isFullscreen, hasBypassChildrenLimit, onCreate, onClosed, render: Render, loading: Loading, ...otherProps}) => {
     const api = useContentEditorApiContext();
     const {t} = useTranslation('content-editor');
-    const {language, uilang, site} = useSelector(state => ({language: state.language, site: state.site, uilang: state.uilang}));
+    const {language, uilang} = useSelector(state => ({language: state.language, uilang: state.uilang}));
 
     const res = useNodeChecks(
         {path: contextNodePath || path, language: language},
@@ -62,7 +62,7 @@ export const CreateContent = ({contextNodePath, path, showOnNodeTypes, nodeTypes
     const actions = transformNodeTypesToActions(flattenedNodeTypes, hasBypassChildrenLimit);
 
     const onClick = ({nodeTypesTree}) => {
-        api.create({uuid: nodeInfo.node.uuid, path, site, lang: language, uilang, nodeTypesTree, name, isFullscreen, createCallback: onCreate, onClosedCallback: onClosed});
+        api.create({uuid: nodeInfo.node.uuid, path, lang: language, nodeTypesTree, name, isFullscreen, createCallback: onCreate, onClosedCallback: onClosed});
     };
 
     return (actions || [{key: 'allTypes', nodeTypeIcon: otherProps.defaultIcon}]).map(result => (

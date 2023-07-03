@@ -15,6 +15,10 @@ const NodeDataFragment = {
             result:nodeById(uuid: $uuid) {
                 ...NodeCacheRequiredFields
                 lockedAndCannotBeEdited
+                site {
+                    ...NodeCacheRequiredFields
+                    name
+                }
                 isSite: isNodeType(type: {multi: ANY, types: ["jnt:virtualsite"]})
                 isPage: isNodeType(type: {multi: ANY, types: ["jnt:page"]})
                 isFolder:isNodeType(type: {multi: ANY, types: ["jnt:contentFolder", "jnt:folder"]})

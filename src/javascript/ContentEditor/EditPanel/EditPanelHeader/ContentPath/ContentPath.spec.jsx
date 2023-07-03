@@ -69,12 +69,12 @@ describe('ContentPathContainer', () => {
             }
         });
         contentEditorConfigContext = {
-            updateEditorConfig: updateEditorConfig,
-            site: 'mySiteXD'
+            updateEditorConfig: updateEditorConfig
         };
         useContentEditorConfigContext.mockImplementation(() => contentEditorConfigContext);
         contentEditorContext = {
-            i18nContext: {}
+            i18nContext: {},
+            site: 'mySiteXD'
         };
         useContentEditorContext.mockImplementation(() => contentEditorContext);
 

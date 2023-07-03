@@ -77,7 +77,7 @@ export const ContentEditorApi = () => {
         } else if (copy.length > 0) {
             const {locationFromState} = getEncodedLocations(location, copy);
             history.replace(rison.decode(locationFromState));
-        } else if (spliced[0]?.isFullscreen && !window.history.state.prevUrl?.contains('/cms/login')) {
+        } else if (spliced[0]?.isFullscreen && window.history.state && !window.history.state.prevUrl?.contains('/cms/login')) {
             history.go(-1);
         } else {
             history.replace(rison.decode(locationWithoutEditors));
@@ -171,7 +171,6 @@ export const ContentEditorApi = () => {
                         setContentTypeSelectorConfig(false);
                         newEditorConfig({
                             name: contentTypeSelectorConfig.name,
-                            uilang: contentTypeSelectorConfig.uilang,
                             contentType: contentType.name,
                             mode: Constants.routes.baseCreateRoute,
                             ...contentTypeSelectorConfig.editorConfig
