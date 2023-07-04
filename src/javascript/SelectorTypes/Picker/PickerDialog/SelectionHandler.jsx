@@ -27,7 +27,7 @@ function getSite(selectedItem) {
     return (pathElements[1] === 'sites') ? pathElements[2] : undefined;
 }
 
-export const SelectionHandler = ({initialSelectedItem, site, pickerConfig, accordionItemProps, lang, uilang, children}) => {
+export const SelectionHandler = ({initialSelectedItem, site, pickerConfig, accordionItemProps, lang, children}) => {
     const state = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
         modes: state.contenteditor.picker.modes,
@@ -39,9 +39,9 @@ export const SelectionHandler = ({initialSelectedItem, site, pickerConfig, accor
     }), shallowEqual);
 
     const dispatch = useDispatch();
+    const uilang = useSelector(state => state.uilang);
 
     const currentFolderInfo = useNodeInfo({path: state.path}, {skip: !state.path});
-
     const paths = (Array.isArray(initialSelectedItem) ? initialSelectedItem : [initialSelectedItem]).filter(f => f);
     let accordion;
     if (state.mode === '') {
@@ -172,6 +172,5 @@ SelectionHandler.propTypes = {
     pickerConfig: configPropType.isRequired,
     accordionItemProps: PropTypes.object,
     lang: PropTypes.string,
-    uilang: PropTypes.string,
     children: PropTypes.node
 };

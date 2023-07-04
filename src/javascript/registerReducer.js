@@ -6,17 +6,6 @@ export const {ceSwitchLanguage} = createActions('CE_SWITCH_LANGUAGE');
 
 export const COMBINED_REDUCERS_NAME = 'contenteditor';
 
-const ROUTER_REDUX_ACTION = '@@router/LOCATION_CHANGE';
-
-const extractParamsFromUrl = pathname => {
-    if (pathname.startsWith('/content-editor')) {
-        let [, , language, mode, uuid] = pathname.split('/');
-        return {language, mode, uuid};
-    }
-
-    return {language: '', mode: '', uuid: ''};
-};
-
 export const registerReducer = registry => {
     const toggleSections = handleActions({
         [ceToggleSections]: (state, action) => ({
@@ -25,8 +14,7 @@ export const registerReducer = registry => {
         })}, {});
 
     const languageReducer = handleActions({
-        [ceSwitchLanguage]: (state, action) => action.payload,
-        [ROUTER_REDUX_ACTION]: (state, action) => action.payload.location.pathname.startsWith('/content-editor/') ? extractParamsFromUrl(action.payload.location.pathname).language : state
+        [ceSwitchLanguage]: (state, action) => action.payload
     }, '');
 
     registry.add('redux-reducer', 'ceToggleSections', {targets: [COMBINED_REDUCERS_NAME], reducer: toggleSections});

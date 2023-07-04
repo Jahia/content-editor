@@ -2,11 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Constants} from '~/ContentEditor.constants';
 import {useContentEditorContext} from '~/contexts';
-import {useQuery} from '@apollo/react-hooks';
+import {useApolloClient, useQuery} from '@apollo/react-hooks';
+import rison from 'rison-node';
 import {OpenInTabActionQuery} from '~/SelectorTypes/Picker/actions/openInTabAction.gql-queries';
+import {jcontentUtils} from '@jahia/jcontent';
 
 export const OpenInTabActionComponent = ({render: Render, loading: Loading, path, field, inputContext, ...others}) => {
     const {lang} = useContentEditorContext();
+    const client = useApolloClient();
 
     let uuid;
     if (path === undefined) {
@@ -31,7 +34,11 @@ export const OpenInTabActionComponent = ({render: Render, loading: Loading, path
         <Render
             {...others}
             onClick={() => {
-                window.open(`${window.contextJsParameters.urlbase}/${Constants.appName}/${lang}/${Constants.routes.baseEditRoute}/${uuid}`, '_blank');
+                jcontentUtils.expandTree({uuid}, client).then(({mode, parentPath, site}) => {
+                    const hash = rison.encode_uri({contentEditor: [{uuid, lang, mode: Constants.routes.baseEditRoute, isFullscreen: true}]});
+                    const url = jcontentUtils.buildUrl({site, language: lang, mode, path: parentPath});
+                    window.open(`${window.contextJsParameters.urlbase}${url}#${hash}`, '_blank');
+                });
             }}
         />
     );

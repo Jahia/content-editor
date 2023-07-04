@@ -3,6 +3,13 @@ import React from 'react';
 import {shallow} from '@jahia/test-framework';
 import {PublicationStatus} from './PublicationStatus';
 
+jest.mock('react-redux', () => {
+    return {
+        ...jest.requireActual('react-redux'),
+        useSelector: cb => cb({uilang: 'en'})
+    };
+});
+
 jest.mock('~/contexts/PublicationInfo', () => {
     let callCount = 0;
     const contexts = [

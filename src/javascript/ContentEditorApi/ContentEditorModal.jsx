@@ -33,7 +33,7 @@ const Transition = React.forwardRef((props, ref) => {
     return <Slide ref={ref} direction="up" {...props}/>;
 });
 
-export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEditorConfig}) => {
+export const ContentEditorModal = ({editorConfig, updateEditorConfig, onExited}) => {
     const notificationContext = useNotifications();
 
     const needRefresh = useRef(false);
@@ -56,7 +56,6 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
     const {createCallback, editCallback, onClosedCallback} = mergedConfig;
 
     mergedConfig.updateEditorConfig = updateEditorConfig;
-    mergedConfig.deleteEditorConfig = deleteEditorConfig;
     mergedConfig.createCallback = ({newNode}) => {
         needRefresh.current = true;
         if (createCallback) {
@@ -121,14 +120,18 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
             });
         } else if (!mergedConfig.isFullscreen) {
             if (newNode) {
-                Promise.all(window.contentModificationEventHandlers.map(handler => handler(newNode.uuid, newNode.path, newNode.path.split('/').pop(), 'update'))).then(() => // Otherwise refresh and close
-                    deleteEditorConfig());
+                Promise.all(window.contentModificationEventHandlers.map(handler => handler(newNode.uuid, newNode.path, newNode.path.split('/').pop(), 'update'))).then(() => {
+                    // Otherwise refresh and close
+                    updateEditorConfig({closed: true});
+                });
             } else if (originalNode.path === updatedNode.path) {
-                deleteEditorConfig();
+                updateEditorConfig({closed: true});
             } else {
                 client.cache.flushNodeEntryByPath(originalNode.path);
-                Promise.all(window.contentModificationEventHandlers.map(handler => handler(updatedNode.uuid, originalNode.path, updatedNode.path.split('/').pop(), 'update'))).then(() => // Otherwise refresh and close
-                    deleteEditorConfig());
+                Promise.all(window.contentModificationEventHandlers.map(handler => handler(updatedNode.uuid, originalNode.path, updatedNode.path.split('/').pop(), 'update'))).then(() => {
+                    // Otherwise refresh and close
+                    updateEditorConfig({closed: true});
+                });
             }
         }
     };
@@ -140,7 +143,7 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
     };
 
     mergedConfig.layout = mergedConfig.layout || (mergedConfig.isFullscreen ? EditPanelFullscreen : EditPanelCompact);
-    mergedConfig.confirmationDialog = <OnCloseConfirmationDialog ref={confirmationDialog} deleteEditorConfig={deleteEditorConfig}/>;
+    mergedConfig.confirmationDialog = <OnCloseConfirmationDialog ref={confirmationDialog}/>;
     mergedConfig.formKey = mergedConfig.formKey || 'modal';
 
     mergedConfig.count = mergedConfig.count || 0;
@@ -161,15 +164,16 @@ export const ContentEditorModal = ({editorConfig, updateEditorConfig, deleteEdit
     const useFormDefinition = mergedConfig.useFormDefinition || (mergedConfig.mode === 'edit' ? useEditFormDefinition : useCreateFormDefinition);
 
     return (
-        <Dialog open
-                disableAutoFocus
+        <Dialog disableAutoFocus
                 disableEnforceFocus
+                open={!editorConfig.closed}
                 maxWidth="md"
                 fullScreen={mergedConfig.isFullscreen}
                 TransitionComponent={Transition}
                 aria-labelledby="dialog-content-editor"
                 classes={classes}
-                onClose={() => confirmationDialog.current ? confirmationDialog.current.openDialog() : deleteEditorConfig()}
+                onClose={() => confirmationDialog.current ? confirmationDialog.current.openDialog() : updateEditorConfig({closed: true})}
+                onExited={onExited}
                 onRendered={() => window.focus()}
                 {...mergedConfig.dialogProps}
         >
@@ -188,8 +192,6 @@ ContentEditorModal.propTypes = {
         mode: PropTypes.oneOf([Constants.routes.baseCreateRoute, Constants.routes.baseEditRoute]).isRequired,
         uuid: PropTypes.string,
         lang: PropTypes.string,
-        uilang: PropTypes.string,
-        site: PropTypes.string,
         contentType: PropTypes.string,
         name: PropTypes.string,
         isFullscreen: PropTypes.bool,
@@ -201,8 +203,10 @@ ContentEditorModal.propTypes = {
         count: PropTypes.number,
         layout: PropTypes.object,
         formKey: PropTypes.string,
-        useConfirmationDialog: PropTypes.bool
+        useConfirmationDialog: PropTypes.bool,
+        closed: PropTypes.bool,
+        onExited: PropTypes.func
     }).isRequired,
     updateEditorConfig: PropTypes.func.isRequired,
-    deleteEditorConfig: PropTypes.func.isRequired
+    onExited: PropTypes.func.isRequired
 };

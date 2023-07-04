@@ -10,6 +10,13 @@ jest.mock('react', () => {
     };
 });
 
+jest.mock('react-redux', () => {
+    return {
+        ...jest.requireActual('react-redux'),
+        useSelector: cb => cb({uilang: 'en'})
+    };
+});
+
 describe('DateTimePicker component', () => {
     let props;
     let testDateFormat = (navigatorLocale, format) => {
@@ -31,8 +38,7 @@ describe('DateTimePicker component', () => {
                 selectorType: 'DatePicker'
             },
             editorContext: {
-                lang: 'fr',
-                uilang: 'fr'
+                lang: 'fr'
             },
             value: ''
         };

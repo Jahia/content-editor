@@ -3,11 +3,13 @@ import {useMemo} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useContentEditorConfigContext} from '~/contexts';
 import {Constants} from '~/ContentEditor.constants';
+import {useSelector} from 'react-redux';
 
 export const useFormDefinition = (query, adapter) => {
     const {t} = useTranslation();
     const contentEditorConfigContext = useContentEditorConfigContext();
-    const {lang, uilang, uuid, contentType} = contentEditorConfigContext;
+    const {lang, uuid, contentType} = contentEditorConfigContext;
+    const uilang = useSelector(state => state.uilang);
 
     // Get Data
     const formQueryParams = {

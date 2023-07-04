@@ -3,13 +3,15 @@ import PropTypes from 'prop-types';
 import {Input} from '@jahia/design-system-kit';
 import {FieldPropTypes} from '~/ContentEditor.proptypes';
 import {Hidden, Visibility} from '@jahia/moonstone';
+import {useSelector} from 'react-redux';
 
-export const Text = ({field, value, id, editorContext, onChange, onBlur}) => {
+export const Text = ({field, value, id, onChange, onBlur}) => {
     const [hidePassword, setHidePassword] = useState(true);
 
+    const uilang = useSelector(state => state.uilang);
     const fieldType = field.requiredType;
     const isNumber = fieldType === 'DOUBLE' || fieldType === 'LONG' || fieldType === 'DECIMAL';
-    const decimalSeparator = editorContext.uilang === 'en' ? '.' : ',';
+    const decimalSeparator = uilang === 'en' ? '.' : ',';
     const controlledValue = value === undefined ? '' : (isNumber ? value?.replace('.', decimalSeparator) : value);
 
     const isPassword = field.selectorOptions?.find(option => option.name === 'password');
@@ -46,7 +48,6 @@ export const Text = ({field, value, id, editorContext, onChange, onBlur}) => {
 Text.propTypes = {
     id: PropTypes.string.isRequired,
     value: PropTypes.string,
-    editorContext: PropTypes.object.isRequired,
     field: FieldPropTypes.isRequired,
     onChange: PropTypes.func.isRequired,
     onBlur: PropTypes.func

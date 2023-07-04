@@ -2,7 +2,6 @@ import React from 'react';
 import {registry} from '@jahia/ui-extender';
 import {registerActions} from './registerActions';
 import {ContentEditorApi, ContentPickerApi} from './ContentEditorApi';
-import {ContentEditorHistoryContextProvider} from '~/contexts';
 import {registerSelectorTypes} from '~/SelectorTypes';
 import {pcNavigateTo} from '~/redux/pagecomposer.redux-actions';
 import {registerReducer} from './registerReducer';
@@ -13,11 +12,6 @@ window.jahia.localeFiles = window.jahia.localeFiles || {};
 window.jahia.localeFiles['content-editor'] = hashes;
 
 export function register() {
-    registry.add('app', 'content-editor-history-context', {
-        targets: ['root:2.05'],
-        render: next => <ContentEditorHistoryContextProvider>{next}</ContentEditorHistoryContextProvider>
-    });
-
     registry.add('app', 'content-editor-api', {
         targets: ['root:16.5'],
         render: next => <ContentEditorApiContextProvider><ContentEditorApi/><ContentPickerApi/>{next}</ContentEditorApiContextProvider>
@@ -75,12 +69,12 @@ export function register() {
     // Register GWT Hooks
     window.top.jahiaGwtHook = {
         // Hook on edit engine opening
-        edit: ({uuid, lang, siteKey, uilang}) => {
-            window.CE_API.edit({uuid, site: siteKey, lang, uilang, isFullscreen: false, configName: 'gwtedit'});
+        edit: ({uuid, lang}) => {
+            window.CE_API.edit({uuid, lang, isFullscreen: false, configName: 'gwtedit'});
         },
         // Hook on create engine opening, also hook on create content type selector
-        create: ({name, uuid, path, lang, siteKey, uilang, contentTypes, excludedNodeTypes, includeSubTypes}) => {
-            window.CE_API.create({uuid, path, site: siteKey, lang, uilang, nodeTypes: contentTypes, excludedNodeTypes, includeSubTypes, name, isFullscreen: false, configName: contentTypes[0] === 'jnt:page' ? 'gwtcreatepage' : 'gwtcreate'});
+        create: ({name, uuid, path, lang, contentTypes, excludedNodeTypes, includeSubTypes}) => {
+            window.CE_API.create({uuid, path, lang, nodeTypes: contentTypes, excludedNodeTypes, includeSubTypes, name, isFullscreen: false, configName: contentTypes[0] === 'jnt:page' ? 'gwtcreatepage' : 'gwtcreate'});
         }
     };
 

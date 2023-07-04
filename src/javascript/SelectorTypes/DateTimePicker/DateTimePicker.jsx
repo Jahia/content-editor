@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import {fillDisabledDaysFromJCRConstraints} from './DateTimePicker.utils';
 import {FieldPropTypes} from '~/ContentEditor.proptypes';
 import {specificDateFormat} from './DateTimePicker.formats';
+import {useSelector} from 'react-redux';
 
 const variantMapper = {
     DatePicker: 'date',
@@ -16,6 +17,7 @@ export const DateTimePicker = ({id, field, value, editorContext, onChange, onBlu
     const variant = variantMapper[field.selectorType];
     const isDateTime = variant === 'datetime';
     const disabledDays = fillDisabledDaysFromJCRConstraints(field, isDateTime);
+    const uilang = useSelector(state => state.uilang);
 
     const userNavigatorLocale = editorContext.browserLang;
 
@@ -29,7 +31,7 @@ export const DateTimePicker = ({id, field, value, editorContext, onChange, onBlu
     return (
         <DatePickerInput
             dayPickerProps={{disabledDays}}
-            lang={editorContext.uilang}
+            lang={uilang}
             initialValue={value ? dayjs(value).toDate() : null}
             displayDateFormat={displayDateFormat}
             displayDateMask={displayDateMask}
@@ -54,7 +56,6 @@ DateTimePicker.defaultProps = {
 DateTimePicker.propTypes = {
     id: PropTypes.string.isRequired,
     editorContext: PropTypes.shape({
-        uilang: PropTypes.string.isRequired,
         browserLang: PropTypes.string.isRequired
     }).isRequired,
     field: FieldPropTypes.isRequired,

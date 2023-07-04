@@ -10,6 +10,7 @@ import {
 import {ComponentType} from '@jahia/cypress/src/page-object/baseComponent';
 import {Field, PickerField, RichTextField, SmallTextField, DateField} from './fields';
 import {LanguageSwitcher} from './languageSwitcher';
+import {Breadcrumb} from './breadcrumb';
 
 export class ContentEditor extends BasePage {
     static defaultSelector = '[aria-labelledby="dialog-content-editor"]';
@@ -144,7 +145,7 @@ export class ContentEditor extends BasePage {
     }
 
     toggleOption(optionType: string, optionFieldName: string) {
-        cy.get(`span[data-sel-role-dynamic-fieldset="${optionType}"]`).scrollIntoView().find('input').click({force: true});
+        cy.get(`span[data-sel-role-dynamic-fieldset="${optionType}"]`).scrollIntoView({offset: {left: 0, top: -100}}).find('input').click({force: true});
         cy.contains(optionFieldName, {timeout: 90000}).should('be.visible');
     }
 
@@ -160,5 +161,9 @@ export class ContentEditor extends BasePage {
         getComponentByRole(Button, 'publishAction').click();
         cy.get('#dialog-errorBeforeSave', {timeout: 1000}).should('not.exist');
         cy.get('[role="alertdialog"]').should('be.visible').should('contain', 'Publication has been queue');
+    }
+
+    getBreadcrumb(content: string): Breadcrumb {
+        return Breadcrumb.findByContent(content);
     }
 }

@@ -29,7 +29,7 @@ let getEncodedLocations = function (location, editorConfigs) {
     const cleanedHash = Object.keys(others).length > 0 ? rison.encode_uri(others) : '';
     const locationWithoutEditors = rison.encode({search: location.search, hash: cleanedHash});
     const locationFromState = (valid && editorConfigs.length > 0) ?
-        rison.encode({search: location.search, hash: '#' + rison.encode_uri({...others, contentEditor: JSON.parse(JSON.stringify(editorConfigs))})}) :
+        rison.encode({search: location.search, hash: '#' + rison.encode_uri({...others, contentEditor: JSON.parse(JSON.stringify(editorConfigs.map((({closed, ...obj}) => obj))))})}) :
         locationWithoutEditors;
 
     return {
@@ -48,7 +48,7 @@ export const ContentEditorApi = () => {
 
     const unsetEditorConfigs = () => {
         history.replace(rison.decode(locationWithoutEditors));
-        setEditorConfigs([]);
+        setEditorConfigs(editorConfigs.map(e => ({...e, closed: 'history', onExited: () => {}})));
     };
 
     let newEditorConfig = editorConfig => {
@@ -65,12 +65,19 @@ export const ContentEditorApi = () => {
         setEditorConfigs(copy);
     };
 
-    let deleteEditorConfig = index => {
+    let onExited = index => {
         const copy = Array.from(editorConfigs);
         const spliced = copy.splice(index, 1);
+        const onExited = spliced[0].onExited;
+
         setEditorConfigs(copy);
 
-        if (spliced[0]?.isFullscreen && !window.history.state.prevUrl?.contains('/cms/login')) {
+        if (onExited) {
+            onExited();
+        } else if (copy.length > 0) {
+            const {locationFromState} = getEncodedLocations(location, copy);
+            history.replace(rison.decode(locationFromState));
+        } else if (spliced[0]?.isFullscreen && window.history.state && !window.history.state.prevUrl?.contains('/cms/login')) {
             history.go(-1);
         } else {
             history.replace(rison.decode(locationWithoutEditors));
@@ -92,6 +99,7 @@ export const ContentEditorApi = () => {
             // Add hash to history only if full screen configuration available, otherwise update config state directly
             if (currentEncodedLocation !== locationFromState && locationFromState.includes('contentEditor:') && locationFromState.includes('isFullscreen:!!t')) {
                 if (currentEncodedLocation.includes('contentEditor:')) {
+                    // Todo : handle the case when stacking a new content-editor - we should push
                     history.replace(rison.decode(locationFromState));
                 } else {
                     history.push(rison.decode(locationFromState));
@@ -152,11 +160,7 @@ export const ContentEditorApi = () => {
             {contentTypeSelectorConfig && (
                 <ContentTypeSelectorModal
                     open
-                    childNodeName={contentTypeSelectorConfig.name}
                     nodeTypesTree={contentTypeSelectorConfig.nodeTypesTree}
-                    includeSubTypes={contentTypeSelectorConfig.includeSubTypes}
-                    parentPath={contentTypeSelectorConfig.path}
-                    uilang={contentTypeSelectorConfig.uilang}
                     onClose={() => {
                         setContentTypeSelectorConfig(false);
                     }}
@@ -167,7 +171,6 @@ export const ContentEditorApi = () => {
                         setContentTypeSelectorConfig(false);
                         newEditorConfig({
                             name: contentTypeSelectorConfig.name,
-                            uilang: contentTypeSelectorConfig.uilang,
                             contentType: contentType.name,
                             mode: Constants.routes.baseCreateRoute,
                             ...contentTypeSelectorConfig.editorConfig
@@ -184,8 +187,8 @@ export const ContentEditorApi = () => {
                         updateEditorConfig={updatedEditorConfig => {
                             updateEditorConfig(updatedEditorConfig, index);
                         }}
-                        deleteEditorConfig={() => {
-                            deleteEditorConfig(index);
+                        onExited={() => {
+                            onExited(index);
                         }}
                     />
                 );
