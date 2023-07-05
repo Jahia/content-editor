@@ -97,10 +97,10 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@jahia/cypress@^3.0.0":
-  version "3.10.0"
-  resolved "https://registry.yarnpkg.com/@jahia/cypress/-/cypress-3.10.0.tgz#107f3f4b4ee44a6b426a83b6a63a8dd652ae0226"
-  integrity sha512-3S64MsWJsyd7jCYdqIWgPswM6bE7g4BwfUp9uQ2gEiAdvRRBOeUGmjTB85lU4Cu3JOozCAU0VL9KIn0MwY9xbA==
+"@jahia/cypress@^3.14.1":
+  version "3.14.1"
+  resolved "https://registry.yarnpkg.com/@jahia/cypress/-/cypress-3.14.1.tgz#ddde10974405f1649cec566fe911cd4dc58e5349"
+  integrity sha512-ypTN/oaboUb+clA+8/peo8O7na+Aw3kB0NqpzuvGaJdfvPKU01NVXnjLbaEPDeDCYbGTq+k1NzDJkGehGJ+54g==
   dependencies:
     "@apollo/client" "^3.4.9"
     graphql "^15.5.0"

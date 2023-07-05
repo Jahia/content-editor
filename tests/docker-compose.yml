@@ -56,6 +56,7 @@ services:
             JPDA: 'true'
 
     jahia-browsing-a:
+        profiles: ["cluster"]
         image: '${JAHIA_IMAGE}'
         container_name: jahia-browsing-a
         restart: 'no'
@@ -91,6 +92,7 @@ services:
             TZ: ${TIMEZONE}
 
     jahia-browsing-b:
+        profiles: ["cluster"]
         image: '${JAHIA_IMAGE}'
         container_name: jahia-browsing-b
         restart: 'no'
@@ -126,6 +128,7 @@ services:
             NEXUS_PASSWORD: ${NEXUS_PASSWORD}
     # Cypress container
     cypress:
+      profiles: ["test"]
       image: '${TESTS_IMAGE}'
       # https://github.com/cypress-io/cypress/issues/350
       ipc: host
