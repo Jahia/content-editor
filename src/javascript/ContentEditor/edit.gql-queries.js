@@ -123,12 +123,13 @@ export const EditFormQuery = gql`
                     name
                     displayName
                     description
-                    hide
+                    visible
                     expanded
                     fieldSets {
                         name
                         displayName
                         description
+                        visible
                         dynamic
                         activated
                         hasEnableSwitch
@@ -138,6 +139,7 @@ export const EditFormQuery = gql`
                             displayName
                             description
                             errorMessage
+                            visible
                             mandatory
                             i18n
                             multiple

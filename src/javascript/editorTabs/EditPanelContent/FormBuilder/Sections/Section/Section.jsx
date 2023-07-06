@@ -6,7 +6,7 @@ import {SectionPropTypes} from '~/ContentEditor.proptypes';
 
 const filterRegularFieldSets = fieldSets => {
     const showFieldSet = fieldSet => {
-        if (!fieldSet) {
+        if (!fieldSet || !fieldSet.visible) {
             return false;
         }
 

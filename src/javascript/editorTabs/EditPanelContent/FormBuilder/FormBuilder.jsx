@@ -67,7 +67,7 @@ export const FormBuilder = ({mode}) => {
             );
         }
 
-        if (!section.hide) {
+        if (section.visible) {
             return (
                 <Section key={section.name}
                          section={section}

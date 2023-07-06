@@ -61,13 +61,6 @@ public class GqlEditorFormSection {
     }
 
     @GraphQLField
-    @GraphQLName("hide")
-    @GraphQLDescription("Check if this section should be hide")
-    public boolean isHide() {
-        return section.isHide() != null && section.isHide();
-    }
-
-    @GraphQLField
     @GraphQLName("fieldSets")
     @GraphQLDescription("Returns the field sets contained in this section")
     public List<GqlEditorFormFieldSet> getFieldSets() {
@@ -79,5 +72,11 @@ public class GqlEditorFormSection {
     @GraphQLDescription("Is the section expanded")
     public boolean expanded() {
         return section.isExpanded() != null && section.isExpanded();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("")
+    public boolean isVisible() {
+        return section.isVisible();
     }
 }

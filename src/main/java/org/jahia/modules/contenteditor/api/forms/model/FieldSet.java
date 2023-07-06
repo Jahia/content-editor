@@ -37,6 +37,7 @@ public class FieldSet implements DefinitionRegistryItem, Ranked {
     private boolean dynamic = false;
     private boolean hasEnableSwitch = false;
     private boolean activated = true;
+    private boolean visible = true;
 
     public String getName() {
         return name;
@@ -176,6 +177,14 @@ public class FieldSet implements DefinitionRegistryItem, Ranked {
 
     public void setActivated(boolean activated) {
         this.activated = activated;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 
     @JsonIgnore

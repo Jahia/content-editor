@@ -119,7 +119,7 @@ export function getDataToMutate({nodeData, formValues, i18nContext, sections, la
 
     const keys = new Set(Object.keys(formValues));
     Object.values(i18nContext).filter(ctx => ctx.values !== undefined).forEach(ctx => Object.keys(ctx.values).forEach(k => keys.add(k)));
-    const fields = sections && getFields(sections).filter(field => !field.readOnly);
+    const fields = sections && getFields(sections);
     const mixinsToMutate = getMixinsToMutate(nodeData, formValues, sections);
 
     keys.forEach(key => {
