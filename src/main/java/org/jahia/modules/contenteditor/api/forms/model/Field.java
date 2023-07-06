@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jahia.modules.contenteditor.api.forms.Ranked;
+import org.jahia.services.content.JCRContentUtils;
 import org.jahia.services.content.decorator.JCRSiteNode;
 import org.jahia.services.content.nodetypes.ExtendedItemDefinition;
 import org.jahia.services.content.nodetypes.ExtendedNodeType;
@@ -38,7 +39,6 @@ public class Field implements Ranked {
     private Boolean multiple;
     private Boolean mandatory;
     private List<FieldValueConstraint> valueConstraints;
-    private List<FieldValue> currentValues;
     private List<FieldValue> defaultValues;
 
     public String getName() {
@@ -229,6 +229,8 @@ public class Field implements Ranked {
                 ExtendedNodeType extendedNodeType = NodeTypeRegistry.getInstance().getNodeType(extendedPropertyDefinition.getDeclaringNodeType().getAlias());
                 ExtendedItemDefinition item = extendedNodeType.getItems().stream().filter(item1 -> StringUtils.equals(item1.getName(), extendedPropertyDefinition.getName())).findAny().orElse(extendedPropertyDefinition);
                 initializeLabelFromItemDefinition(item, uiLocale, site);
+
+                label = StringUtils.isEmpty(label) ? JCRContentUtils.replaceColon(extendedPropertyDefinition.getName()) : label;
             } catch (NoSuchNodeTypeException e) {
                 throw new RuntimeException(e);
             }

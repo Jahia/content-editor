@@ -192,6 +192,8 @@ public class FieldSet implements DefinitionRegistryItem, Ranked {
             String key =  JCRContentUtils.replaceColon(nodeType.getName());
             label = StringUtils.isEmpty(label) ? StringEscapeUtils.unescapeHtml(resolveResourceKey(key + suffix, uiLocale, site)) : label;
             description = StringUtils.isEmpty(description) ? Sanitizers.FORMATTING.sanitize(resolveResourceKey(key + ".ui.tooltip" + suffix, uiLocale, site)) : description;
+
+            label = StringUtils.isEmpty(label) ? StringUtils.substringAfter(nodeType.getName(), ":") : label;
         }
     }
 
