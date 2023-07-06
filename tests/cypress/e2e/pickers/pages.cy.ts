@@ -4,7 +4,7 @@ describe('Picker - Pages', () => {
     const siteKey = 'digitall';
     let jcontent: JContent;
     beforeEach(() => {
-        cy.loginEditor(); // Edit in chief
+        cy.loginAndStoreSession(); // Edit in chief
         cy.apollo({mutationFile: 'pickers/createContent.graphql'});
         jcontent = JContent.visit(siteKey, 'en', 'content-folders/contents');
     });

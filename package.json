@@ -1,6 +1,6 @@
 {
     "name": "@jahia/content-editor",
-    "version": "4.4.0-SNAPSHOT",
+    "version": "4.6.0-SNAPSHOT",
     "scripts": {
         "build": "yarn webpack",
         "webpack": "node --max_old_space_size=2048 ./node_modules/webpack/bin/webpack.js",
@@ -43,7 +43,7 @@
         "@jahia/data-helper": "^1.0.8",
         "@jahia/design-system-kit": "^1.1.8",
         "@jahia/icons": "^1.1.2",
-        "@jahia/moonstone": "^2.5.4",
+        "@jahia/moonstone": "^2.5.10",
         "@jahia/react-material": "^3.0.5",
         "@jahia/ui-extender": "^1.0.6",
         "@material-ui/core": "^3.9.3",

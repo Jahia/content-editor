@@ -82,7 +82,7 @@ describe('Create multi language content and verify that it is different in all l
                 expect(response?.data?.jcr?.mutateNode?.mutateProperty?.setValue).to.be.true;
             });
 
-            cy.loginEditor();
+            cy.loginAndStoreSession();
             pageComposer = PageComposer.visit(sitekey, 'en', 'home.html');
         });
     });

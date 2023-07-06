@@ -6,7 +6,7 @@ describe('Preview tests', () => {
     let pageComposer: PageComposer;
 
     it('It shows correctly preview of edited page even if not the one currently rendered in PageComposer', () => {
-        cy.loginEditor();
+        cy.loginAndStoreSession();
         pageComposer = PageComposer.visit(siteKey, 'en', 'home.html');
         const contentEditor = pageComposer.editPage('Our Companies');
         contentEditor.switchToAdvancedMode();
@@ -16,7 +16,7 @@ describe('Preview tests', () => {
     });
 
     it('It shows correctly preview of edited page even if the parent node name have special character', () => {
-        cy.loginEditor();
+        cy.loginAndStoreSession();
         const variables = {
             parentPathOrId: '/sites/' + siteKey + '/home',
             name: 'chocolate,-sweets,-cakes',
