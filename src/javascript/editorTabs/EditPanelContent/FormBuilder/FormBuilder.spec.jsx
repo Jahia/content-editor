@@ -39,21 +39,24 @@ describe('FormBuilder component', () => {
                     name: 'content',
                     displayName: 'Content',
                     expanded: false,
+                    visible: true,
                     fieldSets: [
                         {
                             displayName: 'yo1',
                             displayed: true,
+                            visible: true,
                             fields: [
-                                {name: 'field1', displayName: 'field 1'},
-                                {name: 'field2', displayName: 'field 2'}
+                                {name: 'field1', displayName: 'field 1', visible: true},
+                                {name: 'field2', displayName: 'field 2', visible: true}
                             ]
                         },
                         {
                             displayName: 'yo2',
                             displayed: true,
+                            visible: true,
                             fields: [
-                                {name: 'field21', displayName: 'field 21'},
-                                {name: 'field22', displayName: 'field 22'}
+                                {name: 'field21', displayName: 'field 21', visible: true},
+                                {name: 'field22', displayName: 'field 22', visible: true}
                             ]
                         }
                     ]
@@ -62,21 +65,24 @@ describe('FormBuilder component', () => {
                     name: 'layout',
                     displayName: 'Layout',
                     expanded: false,
+                    visible: true,
                     fieldSets: [
                         {
                             displayName: 'yo1',
                             displayed: true,
+                            visible: true,
                             fields: [
-                                {name: 'field1', displayName: 'field 1'},
-                                {name: 'field2', displayName: 'field 2'}
+                                {name: 'field1', displayName: 'field 1', visible: true},
+                                {name: 'field2', displayName: 'field 2', visible: true}
                             ]
                         },
                         {
                             displayName: 'yo2',
                             displayed: true,
+                            visible: true,
                             fields: [
-                                {name: 'field21', displayName: 'field 21'},
-                                {name: 'field22', displayName: 'field 22'}
+                                {name: 'field21', displayName: 'field 21', visible: true},
+                                {name: 'field22', displayName: 'field 22', visible: true}
                             ]
                         }
                     ]

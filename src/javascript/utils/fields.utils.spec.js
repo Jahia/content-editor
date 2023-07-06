@@ -333,6 +333,16 @@ describe('EditPanel utils', () => {
             },
             formValues: {
                 [sections[0].fieldSets[2].name + '_readOnly']: 'new value'
+            },
+            ExpectedPropsToSave: [{
+                language: 'fr',
+                name: 'readOnly',
+                option: undefined,
+                type: 'type',
+                value: 'new value'
+            }],
+            expectedPropsFieldMapping: {
+                readOnly: sections[0].fieldSets[2].name + '_readOnly'
             }
         },
         {
