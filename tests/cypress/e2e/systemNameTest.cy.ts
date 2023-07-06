@@ -15,7 +15,7 @@ describe('System name test', () => {
     });
 
     beforeEach(function () {
-        cy.loginEditor();
+        cy.loginAndStoreSession();
         pageComposer = PageComposer.visit(site, 'en', 'home.html');
     });
 

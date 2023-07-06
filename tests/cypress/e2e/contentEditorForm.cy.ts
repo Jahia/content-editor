@@ -15,7 +15,7 @@ describe('Content editor form', () => {
     });
 
     beforeEach(() => {
-        cy.loginEditor();
+        cy.loginAndStoreSession();
         jcontent = JContent.visit('contentEditorSite', 'en', 'content-folders/contents');
     });
 

@@ -8,7 +8,7 @@ describe('Picker tests - Trees', () => {
 
     beforeEach(() => {
         // I have issues adding these to before()/after() so have to add to beforeEach()/afterEach()
-        cy.loginEditor(); // Edit in chief
+        cy.loginAndStoreSession(); // Edit in chief
         cy.apollo({mutationFile: 'pickers/createContent.graphql'});
 
         // BeforeEach()

@@ -17,7 +17,7 @@ describe('Picker tests - Site', () => {
     });
 
     beforeEach(() => {
-        cy.loginEditor();
+        cy.loginAndStoreSession();
         jcontent = JContent.visit(siteKey, 'en', 'content-folders/contents');
     });
 

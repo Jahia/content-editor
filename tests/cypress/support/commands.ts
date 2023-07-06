@@ -26,14 +26,4 @@
 import 'cypress-iframe';
 import '@4tw/cypress-drag-drop';
 
-Cypress.Commands.add('loginEditor', () => {
-    cy.session('editor', () => {
-        cy.login(); // Edit in chief
-    }, {
-        validate() {
-            cy.request('/start').its('status').should('eq', 200);
-        }
-    });
-});
-
 import 'cypress-wait-until';
