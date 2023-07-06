@@ -14,7 +14,7 @@ describe('Create content tests', {retries: 10}, () => {
     });
 
     beforeEach(() => {
-        cy.loginEditor();
+        cy.loginAndStoreSession();
         pageComposer = PageComposer.visit('contentEditorSite', 'en', 'home.html');
     });
 

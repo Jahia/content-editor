@@ -1,2 +1,2 @@
 #!/bin/bash
-npx --yes --package @jahia/cypress@latest env.debug
+npx --yes --package @jahia/cypress env.debug

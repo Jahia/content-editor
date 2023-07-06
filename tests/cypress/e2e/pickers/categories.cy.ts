@@ -5,7 +5,7 @@ describe('Picker - Categories', () => {
     let jcontent: JContent;
     beforeEach(() => {
         // I have issues adding these to before()/after() so have to add to beforeEach()/afterEach()
-        cy.loginEditor(); // Edit in chief
+        cy.loginAndStoreSession(); // Edit in chief
 
         // beforeEach()
         jcontent = JContent.visit(siteKey, 'en', 'content-folders/contents');

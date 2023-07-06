@@ -18,7 +18,7 @@ describe('Create content tests in I18N site', () => {
     });
 
     beforeEach(() => {
-        cy.loginEditor();
+        cy.loginAndStoreSession();
         pageComposer = PageComposer.visit(sitekey, 'en', 'home.html');
     });
 

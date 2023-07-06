@@ -1,2 +1,2 @@
 #!/bin/bash
-npx --yes --package @jahia/cypress@latest ci.build
+npx --yes --package @jahia/cypress ci.build
