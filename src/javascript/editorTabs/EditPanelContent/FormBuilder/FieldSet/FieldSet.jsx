@@ -10,12 +10,16 @@ export const FieldSet = ({fieldset}) => {
     const {values, handleChange} = useFormikContext();
     const activatedFieldSet = !fieldset.dynamic || (values && values[fieldset.name]);
 
+    if (!fieldset.hasEnableSwitch && fieldset.fields.filter(f => f.visible).length === 0) {
+        return false;
+    }
+
     return (
-        <article className={activatedFieldSet && fieldset.fields.length > 0 ? styles.fieldSetOpen : styles.fieldSet}>
+        <article className={activatedFieldSet && fieldset.fields.filter(f => f.visible).length > 0 ? styles.fieldSetOpen : styles.fieldSet}>
             {!fieldset.hideHeader && (
                 <div className={styles.fieldSetTitleContainer}>
                     <div className="flexRow_nowrap">
-                        {fieldset.dynamic && (
+                        {fieldset.dynamic && fieldset.hasEnableSwitch && (
                             <Toggle
                                 classes={{
                                     root: styles.toggle
