@@ -711,15 +711,21 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
     private void simpleWithMixinPropertiesOverrideResults(Form form) {
         String sectionName = "content";
         List<FieldSet> fieldSets = getSection(form, sectionName).getFieldSets();
-        Assert.isTrue(fieldSets.size() == 2, "Expected 2 fieldsets but got " + fieldSets.size());
+        Assert.isTrue(fieldSets.size() == 3, "Expected 3 fieldsets but got " + fieldSets.size());
 
-        FieldSet fieldSet = getFieldSet(form, sectionName, "jnt:simpleWithMixProperties");
+        FieldSet fieldSet = getFieldSet(form, sectionName, "jmix:mix1");
         ArrayList<Field> fields = new ArrayList<>(fieldSet.getFields());
-        Assert.isTrue(fields.size() == 3, "Expected 3 fields but receive " + fields.size());
+
+        Assert.isTrue(fields.size() == 1, "Expected 1 fields but receive " + fields.size());
         Assert.isTrue(fields.get(0).getName().equals("propMix1"), "Override of field does not contain propMix1");
         Assert.isTrue(fields.get(0).isMandatory(), "Override of field is not mandatory");
-        Assert.isTrue(fields.get(1).getName().equals("prop1"), "Override of field does not contain prop1");
-        Assert.isTrue(fields.get(2).getName().equals("prop2"), "Override of field does not contain prop2");
+
+        fieldSet = getFieldSet(form, sectionName, "jnt:simpleWithMixProperties");
+        fields = new ArrayList<>(fieldSet.getFields());
+
+        Assert.isTrue(fields.size() == 2, "Expected 2 fields but receive " + fields.size());
+        Assert.isTrue(fields.get(0).getName().equals("prop1"), "Override of field does not contain prop1");
+        Assert.isTrue(fields.get(1).getName().equals("prop2"), "Override of field does not contain prop2");
 
         fieldSet = getFieldSet(form, sectionName, "jmix:mix2");
         fields = new ArrayList<>(fieldSet.getFields());

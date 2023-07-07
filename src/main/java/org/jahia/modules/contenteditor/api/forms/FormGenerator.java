@@ -73,7 +73,7 @@ public class FormGenerator {
 
             String itemType = itemDefinition.getItemType();
             Field editorFormField = generateEditorFormField(itemDefinition, locale);
-            FieldSet fieldSet = generateFieldSetForSection(sections, itemType, singleFieldSet ? nodeType.getName() : itemDefinition.getDeclaringNodeType().getName());
+            FieldSet fieldSet = generateFieldSetForSection(sections, itemType, singleFieldSet ? nodeType.getName() : itemDefinition.getOverridenDefinition().getDeclaringNodeType().getName());
             fieldSet.getFields().add(editorFormField);
 
             processedProperties.add(itemDefinition.getName());

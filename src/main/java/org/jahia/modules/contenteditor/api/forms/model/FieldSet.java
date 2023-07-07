@@ -215,7 +215,7 @@ public class FieldSet implements DefinitionRegistryItem, Ranked {
     }
 
     public void mergeWith(FieldSet otherFieldSet, Form form) {
-        setName(name == null ? otherFieldSet.getName() : name);
+        setName(name == null ? (otherFieldSet.getName().equals("<main>") ? form.getNodeType().getName() : otherFieldSet.getName()) : name);
 
         setLabel(otherFieldSet.getLabelKey() != null || otherFieldSet.getLabel() != null ? otherFieldSet.getLabel() : label);
         setLabelKey(otherFieldSet.getLabelKey() != null || otherFieldSet.getLabel() != null ? otherFieldSet.getLabelKey() : labelKey);

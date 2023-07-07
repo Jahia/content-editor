@@ -122,11 +122,9 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
         if (editorFormURLs == null) {
             return;
         }
-        List<Form> bundleForms = new ArrayList<>();
         while (editorFormURLs.hasMoreElements()) {
             registerForm(editorFormURLs.nextElement(), bundle);
         }
-        formsByBundle.put(bundle, bundleForms);
     }
 
     public void registerForm(URL editorFormURL, Bundle bundle) {
@@ -167,11 +165,9 @@ public class StaticDefinitionsRegistry implements SynchronousBundleListener {
         if (editorFieldSetsURLs == null) {
             return;
         }
-        List<FieldSet> bundleFieldSets = new ArrayList<>();
         while (editorFieldSetsURLs.hasMoreElements()) {
             registerFieldSet(editorFieldSetsURLs.nextElement(), bundle);
         }
-        fieldSetsByBundle.put(bundle, bundleFieldSets);
     }
 
     public void registerFieldSet(URL editorFormURL, Bundle bundle) {
