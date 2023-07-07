@@ -226,31 +226,26 @@ public class Field implements Ranked {
         return (declaringNodeType != null ? (declaringNodeType + "_") : "") + name;
     }
 
-    public void initializeLabel(Locale uiLocale, JCRSiteNode site) {
+    public void initializeLabel(Locale uiLocale, JCRSiteNode site, ExtendedNodeType primaryNodeType) {
         label = label == null && labelKey != null ? resolveResourceKey(labelKey, uiLocale, site) : label;
         description = description == null && descriptionKey != null ? resolveResourceKey(descriptionKey, uiLocale, site) : description;
         errorMessage = errorMessage == null && errorMessageKey != null ? resolveResourceKey(errorMessageKey, uiLocale, site) : errorMessage;
 
         if (extendedPropertyDefinition != null) {
-            // Use item definition to resolve labels. (same way as ContentDefinitionHelper.getGWTJahiaNodeType()) ???
-            try {
-                initializeLabelFromItemDefinition(extendedPropertyDefinition, uiLocale, site);
-
-                ExtendedNodeType extendedNodeType = NodeTypeRegistry.getInstance().getNodeType(extendedPropertyDefinition.getDeclaringNodeType().getAlias());
-                ExtendedItemDefinition item = extendedNodeType.getItems().stream().filter(item1 -> StringUtils.equals(item1.getName(), extendedPropertyDefinition.getName())).findAny().orElse(extendedPropertyDefinition);
-                initializeLabelFromItemDefinition(item, uiLocale, site);
-
-                label = StringUtils.isEmpty(label) ? JCRContentUtils.replaceColon(extendedPropertyDefinition.getName()) : label;
-            } catch (NoSuchNodeTypeException e) {
-                throw new RuntimeException(e);
-            }
+            // Allow labels from primary node type
+            initializeLabelFromItemDefinition(extendedPropertyDefinition, uiLocale, site, primaryNodeType);
+            // Looks for labels in override property
+            initializeLabelFromItemDefinition(extendedPropertyDefinition, uiLocale, site, extendedPropertyDefinition.getDeclaringNodeType());
+            // Then in original overridden property
+            ExtendedItemDefinition overridenDefinition = extendedPropertyDefinition.getOverridenDefinition();
+            initializeLabelFromItemDefinition(overridenDefinition, uiLocale, site, overridenDefinition.getDeclaringNodeType());
+            // Fallback on untranslated system name
+            label = StringUtils.isEmpty(label) ? JCRContentUtils.replaceColon(extendedPropertyDefinition.getName()) : label;
         }
     }
 
-    private void initializeLabelFromItemDefinition(ExtendedItemDefinition definition, Locale uiLocale, JCRSiteNode site) {
-        String suffix = definition.getDeclaringNodeType().getTemplatePackage() != null ? "@" + definition.getDeclaringNodeType().getTemplatePackage().getResourceBundleName() : "";
-
-        ExtendedNodeType nodeType = definition.getDeclaringNodeType();
+    private void initializeLabelFromItemDefinition(ExtendedItemDefinition definition, Locale uiLocale, JCRSiteNode site, ExtendedNodeType nodeType) {
+        String suffix = nodeType.getTemplatePackage() != null ? "@" + nodeType.getTemplatePackage().getResourceBundleName() : "";
         String key = definition.getResourceBundleKey(nodeType);
         label = StringUtils.isEmpty(label) ? StringEscapeUtils.unescapeHtml(resolveResourceKey(key + suffix, uiLocale, site)) : label;
         description = StringUtils.isEmpty(description) ? Sanitizers.FORMATTING.sanitize(resolveResourceKey(key + ".ui.tooltip" + suffix, uiLocale, site)) : description;
