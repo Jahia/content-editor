@@ -41,6 +41,8 @@ public class Field implements Ranked {
     private List<FieldValueConstraint> valueConstraints;
     private List<FieldValue> defaultValues;
 
+    private boolean visible = true;
+
     public String getName() {
         return name;
     }
@@ -210,6 +212,14 @@ public class Field implements Ranked {
 
     public void setDefaultValues(List<FieldValue> defaultValues) {
         this.defaultValues = defaultValues;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 
     public String getKey() {

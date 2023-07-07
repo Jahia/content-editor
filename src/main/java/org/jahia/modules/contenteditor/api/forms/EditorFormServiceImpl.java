@@ -150,13 +150,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             form.setLabel(form.getLabel() == null && form.getLabelKey() != null ? resolveResourceKey(form.getLabelKey(), uiLocale, site) : form.getLabel());
             form.setDescription(form.getDescription() == null && form.getDescriptionKey() != null ? resolveResourceKey(form.getDescriptionKey(), uiLocale, site) : form.getDescription());
             form.initializeLabel(uiLocale);
-
-            // Remove sections the user cannot see
-            form.setSections(form.getSections().stream().filter(s -> (s.isHide() == null || !s.isHide()) &&
-                    (s.getRequiredPermission() == null || currentNode.hasPermission(s.getRequiredPermission())) &&
-                    (s.getDisplayModes() == null || s.getDisplayModes().contains(mode)))
-                .collect(Collectors.toList())
-            );
+            form.getSections().sort(RankedComparator.INSTANCE);
 
             // Keep track of the list of all fieldSets per nodetype
             Map<String, Collection<FieldSet>> fieldSetsMap = form.getSections().stream()
@@ -166,16 +160,17 @@ public class EditorFormServiceImpl implements EditorFormService {
             for (Section section : form.getSections()) {
                 // Set section label and description if not set
                 section.initializeLabel(uiLocale, site);
-
-                // Remove fieldsSets the user cannot see
-                section.setFieldSets(section.getFieldSets().stream().filter(fs -> (fs.isHide() == null || !fs.isHide()) &&
-                        (fs.getRequiredPermission() == null || currentNode.hasPermission(fs.getRequiredPermission())))
-                    .collect(Collectors.toList())
-                );
+                section.setVisible((section.isHide() == null || !section.isHide()) &&
+                    (section.getRequiredPermission() == null || currentNode.hasPermission(section.getRequiredPermission())) &&
+                    (section.getDisplayModes() == null || section.getDisplayModes().contains(mode)));
+                section.getFieldSets().sort(RankedComparator.INSTANCE);
 
                 for (FieldSet fieldSet : section.getFieldSets()) {
                     // Set fieldSet label and description if not set
                     fieldSet.initializeLabel(uiLocale, site);
+                    fieldSet.setVisible((fieldSet.isHide() == null || !fieldSet.isHide()) &&
+                        (fieldSet.getRequiredPermission() == null || currentNode.hasPermission(fieldSet.getRequiredPermission())));
+                    fieldSet.getFields().sort(RankedComparator.INSTANCE);
 
                     // Check if fieldset is dynamic
                     if (fieldSet.getNodeType() != null) {
@@ -191,15 +186,10 @@ public class EditorFormServiceImpl implements EditorFormService {
                         }
                     }
 
-                    // Remove hidden fields
-                    fieldSet.setFields(fieldSet.getFields().stream()
-                        .filter(f -> (f.isHide() == null || !f.isHide()))
-                        .sorted(RankedComparator.INSTANCE)
-                        .collect(Collectors.toList()));
-
                     for (Field field : fieldSet.getFields()) {
                         // Set field label and description if not set
                         field.initializeLabel(uiLocale, site, primaryNodeType);
+                        field.setVisible(field.isHide() == null || !field.isHide());
 
                         // Update readonly if user does not have permission to edit
                         boolean forceReadOnly = field.getExtendedPropertyDefinition() != null && field.getExtendedPropertyDefinition().isInternationalized() ? !i18nFieldsEditable : !sharedFieldsEditable;
@@ -212,20 +202,22 @@ public class EditorFormServiceImpl implements EditorFormService {
                             }
                         }
                     }
+
+                    fieldSet.setVisible(fieldSet.isVisible() && (fieldSet.isHasEnableSwitch() || fieldSet.getFields().stream().anyMatch(Field::isVisible)));
                 }
 
                 // Remove empty fieldSets - only keep empty dynamic field set which do not have matching mixin in another section
                 // (if the dynamic mixin is present in multiple sections, keep only the non-empty ones)
                 section.setFieldSets(section.getFieldSets().stream()
                     .filter(fs -> (fs.isDynamic() && fieldSetsMap.get(fs.getName()).size() == 1) || !fs.getFields().isEmpty())
-                    .sorted(RankedComparator.INSTANCE)
                     .collect(Collectors.toList()));
+
+                section.setVisible(section.isVisible() && section.getFieldSets().stream().anyMatch(FieldSet::isVisible));
             }
 
             // Remove empty sections
             form.setSections(form.getSections().stream()
                 .filter(s -> !s.getFieldSets().isEmpty())
-                .sorted(RankedComparator.INSTANCE)
                 .collect(Collectors.toList()));
 
             return form;

@@ -52,6 +52,8 @@ public class Section implements Cloneable, Ranked {
     private List<String> displayModes;
     private List<FieldSet> fieldSets = new ArrayList<>();
 
+    private boolean visible = false;
+
     public String getName() {
         return name;
     }
@@ -140,9 +142,19 @@ public class Section implements Cloneable, Ranked {
         this.fieldSets = fieldSets;
     }
 
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
     public void initializeLabel(Locale uiLocale, JCRSiteNode site) {
         label = label == null && labelKey !=  null ? resolveResourceKey(labelKey, uiLocale, site) : label;
         description = description == null && descriptionKey != null ? resolveResourceKey(descriptionKey, uiLocale, site) : description;
+
+        label = label == null ? name : label;
     }
 
     private FieldSet addFieldSet() {
