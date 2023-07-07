@@ -15,9 +15,10 @@ describe('FieldSet component', () => {
                 displayName: 'FieldSet1',
                 dynamic: false,
                 readOnly: false,
+                visible: true,
                 fields: [
-                    {displayName: 'field1', name: 'field1'},
-                    {displayName: 'field2', name: 'field2'}
+                    {displayName: 'field1', name: 'field1', visible: true},
+                    {displayName: 'field2', name: 'field2', visible: true}
                 ]
             }
         };

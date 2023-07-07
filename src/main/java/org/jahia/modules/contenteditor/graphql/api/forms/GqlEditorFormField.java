@@ -159,4 +159,10 @@ public class GqlEditorFormField {
     public boolean getMandatory() {
         return field.isMandatory() != null && field.isMandatory();
     }
+
+    @GraphQLField
+    @GraphQLDescription("")
+    public boolean isVisible() {
+        return field.isVisible();
+    }
 }

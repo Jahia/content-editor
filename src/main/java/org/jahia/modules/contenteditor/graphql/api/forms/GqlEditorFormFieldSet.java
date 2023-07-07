@@ -89,4 +89,11 @@ public class GqlEditorFormFieldSet {
     public List<GqlEditorFormField> getEditorFormFields() {
         return fieldSet.getFields().stream().map(GqlEditorFormField::new).collect(Collectors.toList());
     }
+
+    @GraphQLField
+    @GraphQLDescription("")
+    public boolean isVisible() {
+        return fieldSet.isVisible();
+    }
+
 }

@@ -47,7 +47,7 @@ export const FieldSet = ({fieldset}) => {
                 </div>
             )}
             <div className={styles.fields}>
-                {activatedFieldSet && fieldset.fields.map(field => <FieldContainer key={field.name} field={field}/>)}
+                {activatedFieldSet && fieldset.fields.filter(f => f.visible).map(field => <FieldContainer key={field.name} field={field}/>)}
             </div>
         </article>
     );
