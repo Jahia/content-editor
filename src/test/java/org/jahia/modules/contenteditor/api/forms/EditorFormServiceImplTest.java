@@ -326,8 +326,8 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
 
         Form createForm = editorFormService.getCreateForm("jnt:text", testSite.getJCRLocalPath(), Locale.ENGLISH, Locale.ENGLISH);
 
-        Assert.isTrue(createForm.getSections().size() == 5, "Override contains more than one section");
-        Optional<Section> sectionInCreateMode = createForm.getSections().stream().filter(s -> s.getName().equals("layout")).findFirst();
+        Assert.isTrue(createForm.getSections().stream().filter(Section::isVisible).count() == 5, "Override contains more than one section");
+        Optional<Section> sectionInCreateMode = createForm.getSections().stream().filter(Section::isVisible).filter(s -> s.getName().equals("layout")).findFirst();
 
         Assert.isTrue(!sectionInCreateMode.isPresent(), "Override does not contains \"layout\" section");
     }
@@ -351,7 +351,7 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
 
         // description is removed
         Form newForm = editorFormService.getEditForm(textNode.getPath(), Locale.ENGLISH, Locale.ENGLISH);
-        Assert.isTrue(!hasFieldSet(newForm, "metadata", "jmix:description"), "description is found but should not");
+        Assert.isTrue(!isVisibleFieldSet(newForm, "metadata", "jmix:description"), "description is found but should not");
     }
 
     /**
@@ -456,17 +456,17 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         Assert.isTrue(formDefinitions.size() == 4, "Number of form definition is not correct");
 
         form = editorFormService.getEditForm(textNode.getPath(), Locale.ENGLISH, Locale.ENGLISH);
-        Assert.isTrue(form.getSections().size() == numSections - 1, "Should have one section less");
+        Assert.isTrue(form.getSections().stream().filter(Section::isVisible).count() == numSections - 1, "Should have one section less");
     }
 
     @Test
     public void testOverrides() throws Exception {
         //First, check if the concerned fields are present
         Form form = editorFormService.getEditForm(defaultOverrideContent.getPath(), Locale.ENGLISH, Locale.ENGLISH);
-        Assert.isTrue(hasField(form, "options", "jmix:cache", "j:expiration"), "could find jmix:cache in options section");
-        Assert.isTrue(hasField(form, "options", "jmix:cache", "j:perUser"), "could find jmix:cache in options section");
-        Assert.isTrue(hasField(form, "classification", "jmix:categorized", "j:defaultCategory"), "could find jmix:categorized in classification section");
-        Assert.isTrue(hasField(form, "metadata", "jmix:keywords", "j:keywords"), "could find jmix:tags in options section");
+        Assert.isTrue(isVisibleField(form, "options", "jmix:cache", "j:expiration"), "could not find jmix:cache in options section");
+        Assert.isTrue(isVisibleField(form, "options", "jmix:cache", "j:perUser"), "could not find jmix:cache in options section");
+        Assert.isTrue(isVisibleField(form, "classification", "jmix:categorized", "j:defaultCategory"), "could not find jmix:categorized in classification section");
+        Assert.isTrue(isVisibleField(form, "metadata", "jmix:keywords", "j:keywords"), "could not find jmix:tags in options section");
         Assert.isTrue(!form.getSections().get(0).getFieldSets().get(0).getName().equals("mix:title"), "mix title should not be the first fieldset");
 
         //Reading the overrides json files
@@ -477,10 +477,10 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         form = editorFormService.getEditForm(defaultOverrideContent.getPath(), Locale.ENGLISH, Locale.ENGLISH);
 
         //Checking if the fields disappeared
-        Assert.isTrue(!hasField(form, "options", "jmix:cache", "j:expiration"), "could find jmix:cache in options section");
-        Assert.isTrue(!hasField(form, "options", "jmix:cache", "j:perUser"), "could find jmix:cache in options section");
-        Assert.isTrue(!hasField(form, "classification", "jmix:categorized", "j:defaultCategory"), "could find jmix:categorized in classification section");
-        Assert.isTrue(!hasField(form, "metadata", "jmix:keywords", "j:keywords"), "could find jmix:tags in options section");
+        Assert.isTrue(!isVisibleField(form, "options", "jmix:cache", "j:expiration"), "could find jmix:cache in options section");
+        Assert.isTrue(!isVisibleField(form, "options", "jmix:cache", "j:perUser"), "could find jmix:cache in options section");
+        Assert.isTrue(!isVisibleField(form, "classification", "jmix:categorized", "j:defaultCategory"), "could find jmix:categorized in classification section");
+        Assert.isTrue(!isVisibleField(form, "metadata", "jmix:keywords", "j:keywords"), "could find jmix:tags in options section");
         Assert.isTrue(form.getSections().get(0).getFieldSets().get(0).getName().equals("mix:title"), "mix title should be the first fieldset");
     }
 
@@ -646,6 +646,11 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         }
     }
 
+    private boolean isVisibleFieldSet(Form form, final String searchedSection, final String searchedFieldSet) {
+        return hasFieldSet(form, searchedSection, searchedFieldSet) &&
+            getFieldSet(form, searchedSection, searchedFieldSet).isVisible();
+    }
+
     private Field getField(Form form, final String searchedSection, final String searchedFieldSet, final String searchedField) {
         FieldSet fieldSet = getFieldSet(form, searchedSection, searchedFieldSet);
         List<Field> fields = fieldSet.getFields().stream().filter(field -> field.getName().equals(searchedField)).collect(Collectors.toList());
@@ -664,6 +669,12 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         } catch (NoSuchElementException e) {
             return false;
         }
+    }
+
+    private boolean isVisibleField(Form form, final String searchedSection, final String searchedFieldSet, final String searchedField) {
+        return hasField(form, searchedSection, searchedFieldSet, searchedField) &&
+            getFieldSet(form, searchedSection, searchedFieldSet).isVisible()  &&
+            getField(form, searchedSection, searchedFieldSet, searchedField).isVisible();
     }
 
     private void checkResults(Form form, String sectionName, Map<String, List<String>> expectedFieldsSet) {
