@@ -199,7 +199,7 @@ public class EditorFormServiceImpl implements EditorFormService {
 
                     for (Field field : fieldSet.getFields()) {
                         // Set field label and description if not set
-                        field.initializeLabel(uiLocale, site);
+                        field.initializeLabel(uiLocale, site, primaryNodeType);
 
                         // Update readonly if user does not have permission to edit
                         boolean forceReadOnly = field.getExtendedPropertyDefinition() != null && field.getExtendedPropertyDefinition().isInternationalized() ? !i18nFieldsEditable : !sharedFieldsEditable;
