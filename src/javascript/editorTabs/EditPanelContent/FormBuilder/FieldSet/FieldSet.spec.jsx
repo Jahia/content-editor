@@ -52,6 +52,7 @@ describe('FieldSet component', () => {
 
     it('should display not readOnly toggle for dynamic FieldSet when editor is not locked', () => {
         props.fieldset.dynamic = true;
+        props.fieldset.hasEnableSwitch = true;
 
         const cmp = shallowWithTheme(
             <FieldSet {...props}/>,
@@ -67,6 +68,7 @@ describe('FieldSet component', () => {
     it('should display readOnly toggle for dynamic FieldSet when editor is locked', () => {
         props.fieldset.dynamic = true;
         props.fieldset.readOnly = true;
+        props.fieldset.hasEnableSwitch = true;
 
         const cmp = shallowWithTheme(
             <FieldSet {...props}/>,
