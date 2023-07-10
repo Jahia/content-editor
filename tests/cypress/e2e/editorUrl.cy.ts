@@ -11,7 +11,7 @@ describe('Editor url test', () => {
 
     before(() => {
         getValidUuid();
-    })
+    });
 
     function getValidUuid() {
         cy.apollo({

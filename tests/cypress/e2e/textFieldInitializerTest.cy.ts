@@ -37,6 +37,12 @@ describe('Test the text field initializer)', () => {
         });
     };
 
+    // Const editFieldValues = (contentEditor, fields, lang) => {
+    //     fields.forEach(field => {
+    //         contentEditor.getField(field.type, field.key).addNewValue(field.values[lang], true);
+    //     });
+    // };
+
     const testValuesInPageComposer = (pageComposer, valuesToCheck, languagesToCheck) => {
         const langData = {
             [langFR]: 'Français',
