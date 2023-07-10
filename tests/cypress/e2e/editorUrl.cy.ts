@@ -107,11 +107,24 @@ describe('Editor url test', () => {
         cy.get('h1').contains('highlights').should('exist');
     });
 
+    it('Should not show error modal for valid uuid', () => {
+        cy.login();
+        const baseUrl = '/jahia/jcontent/digitall/en/pages/home/about';
+        const ceParams = `(contentEditor:!((formKey:modal_0,isFullscreen:!t,lang:en,mode:edit,site:digitall,uilang:en,uuid:'${validUuid}')))`;
+        cy.logout();
+        cy.login('irina', 'password');
+        JContent.visit('digitall', 'en', 'pages/home');
+        cy.visit(`${baseUrl}#${ceParams}`);
+        cy.get('[data-sel-role="ce-error-dialog"]')
+            .should('not.exist', {timeout: 10000});
+        cy.get('[data-sel-mode="edit"]').should('be.visible');
+    });
+
     it('Should show error modal for opening CE url for invalid UUID', () => {
         cy.login();
         const uuid = 'invalidUuid';
         const baseUrl = '/jahia/jcontent/digitall/en/pages/home/about';
-        const ceParams = `(contentEditor:!((formKey:modal_0,isFullscreen:!t,lang:en,mode:edit,site:digitall,uilang:en,uuid:${uuid})))`;
+        const ceParams = `(contentEditor:!((formKey:modal_0,isFullscreen:!t,lang:en,mode:edit,site:digitall,uilang:en,uuid:'${uuid}')))`;
         cy.visit(`${baseUrl}#${ceParams}`);
         cy.get('[data-sel-role="ce-error-dialog"]')
             .should('be.visible')
@@ -123,7 +136,7 @@ describe('Editor url test', () => {
     it('should break all inheritance for node', () => {
         cy.login();
         const baseUrl = '/jahia/jcontent/digitall/en/pages/home/about';
-        const ceParams = `(contentEditor:!((formKey:modal_0,isFullscreen:!t,lang:en,mode:edit,site:digitall,uilang:en,uuid:${validUuid})))`;
+        const ceParams = `(contentEditor:!((formKey:modal_0,isFullscreen:!t,lang:en,mode:edit,site:digitall,uilang:en,uuid:'${validUuid}')))`;
         cy.visit(`${baseUrl}#${ceParams}`);
         cy.get('[data-sel-role="tab-advanced-options"]')
             .click()
@@ -138,7 +151,7 @@ describe('Editor url test', () => {
     it('Should show error modal for opening CE url for user with no permission', () => {
         cy.login();
         const baseUrl = '/jahia/jcontent/digitall/en/pages/home/about';
-        const ceParams = `(contentEditor:!((formKey:modal_0,isFullscreen:!t,lang:en,mode:edit,site:digitall,uilang:en,uuid:${validUuid})))`;
+        const ceParams = `(contentEditor:!((formKey:modal_0,isFullscreen:!t,lang:en,mode:edit,site:digitall,uilang:en,uuid:'${validUuid}')))`;
         cy.logout();
         cy.login('irina', 'password');
         JContent.visit('digitall', 'en', 'pages/home');
@@ -153,7 +166,7 @@ describe('Editor url test', () => {
     it('Should restore all inheritance for node', () => {
         cy.login();
         const baseUrl = '/jahia/jcontent/digitall/en/pages/home/about';
-        const ceParams = `(contentEditor:!((formKey:modal_0,isFullscreen:!t,lang:en,mode:edit,site:digitall,uilang:en,uuid:${validUuid})))`;
+        const ceParams = `(contentEditor:!((formKey:modal_0,isFullscreen:!t,lang:en,mode:edit,site:digitall,uilang:en,uuid:'${validUuid}')))`;
         cy.visit(`${baseUrl}#${ceParams}`);
         cy.get('[data-sel-role="tab-advanced-options"]')
             .click()
@@ -169,7 +182,7 @@ describe('Editor url test', () => {
         cy.login();
         const baseUrl = '/jahia/jcontent/digitall/en/pages/home/about';
         // Missing end parens
-        const ceParams = `(contentEditor:!((formKey:modal_0,lang:en,mode:edit,site:digitall,uilang:en,uuid:${validUuid})`;
+        const ceParams = `(contentEditor:!((formKey:modal_0,lang:en,mode:edit,site:digitall,uilang:en,uuid:'${validUuid}')`;
         cy.visit(`${baseUrl}#${ceParams}`);
         cy.get('[data-sel-role="ce-error-dialog"]')
             .should('be.visible')
