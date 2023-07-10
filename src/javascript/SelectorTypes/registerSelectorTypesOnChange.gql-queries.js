@@ -9,6 +9,7 @@ export const FieldConstraints = gql`
                     string
                 }
                 displayValue
+                displayValueKey
                 properties {
                     name
                     value
