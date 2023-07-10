@@ -77,6 +77,8 @@ const addFieldsToFieldset = (fieldsToAdd, fieldset, afterField) => {
         }, []);
     } else {
         fieldset.fields = fieldset.fields.concat(fieldsToAdd);
+        // Deactivated fieldset once moved back original fieldset
+        fieldset.activated = false;
     }
 
     return fieldset;
