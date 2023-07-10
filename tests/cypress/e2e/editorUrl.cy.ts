@@ -7,28 +7,11 @@ import gql from 'graphql-tag';
 describe('Editor url test', () => {
     let jcontent: JContent;
     let contentEditor: ContentEditor;
-    let peopleFirstUrl;
     let validUuid;
 
-    it('should open editor', function () {
-        cy.login();
-        jcontent = JContent.visit('digitall', 'en', 'pages/home');
-        contentEditor = jcontent.editComponentByText('People First');
-        contentEditor.switchToAdvancedMode();
-        cy.url().then(url => {
-            peopleFirstUrl = url;
-            cy.logout();
-        });
+    before(() => {
         getValidUuid();
-    });
-
-    beforeEach(() => {
-        cy.loginEditor();
-    });
-
-    after(() => {
-        cy.logout();
-    });
+    })
 
     function getValidUuid() {
         cy.apollo({
@@ -43,6 +26,14 @@ describe('Editor url test', () => {
             validUuid = resp?.data?.jcr?.nodeByPath?.uuid;
         });
     }
+
+    it('should open editor', function () {
+        cy.login();
+        jcontent = JContent.visit('digitall', 'en', 'pages/home');
+        contentEditor = jcontent.editComponentByText('People First');
+        contentEditor.switchToAdvancedMode();
+        cy.url().as('peopleFirstUrl');
+    });
 
     it('Should open editor upon login', function () {
         cy.visit(this.peopleFirstUrl, {failOnStatusCode: false});
@@ -117,6 +108,7 @@ describe('Editor url test', () => {
     });
 
     it('Should show error modal for opening CE url for invalid UUID', () => {
+        cy.login();
         const uuid = 'invalidUuid';
         const baseUrl = '/jahia/jcontent/digitall/en/pages/home/about';
         const ceParams = `(contentEditor:!((formKey:modal_0,isFullscreen:!t,lang:en,mode:edit,site:digitall,uilang:en,uuid:${uuid})))`;
@@ -129,6 +121,7 @@ describe('Editor url test', () => {
     });
 
     it('should break all inheritance for node', () => {
+        cy.login();
         const baseUrl = '/jahia/jcontent/digitall/en/pages/home/about';
         const ceParams = `(contentEditor:!((formKey:modal_0,isFullscreen:!t,lang:en,mode:edit,site:digitall,uilang:en,uuid:${validUuid})))`;
         cy.visit(`${baseUrl}#${ceParams}`);
@@ -143,6 +136,7 @@ describe('Editor url test', () => {
     });
 
     it('Should show error modal for opening CE url for user with no permission', () => {
+        cy.login();
         const baseUrl = '/jahia/jcontent/digitall/en/pages/home/about';
         const ceParams = `(contentEditor:!((formKey:modal_0,isFullscreen:!t,lang:en,mode:edit,site:digitall,uilang:en,uuid:${validUuid})))`;
         cy.logout();
@@ -157,6 +151,7 @@ describe('Editor url test', () => {
     });
 
     it('Should restore all inheritance for node', () => {
+        cy.login();
         const baseUrl = '/jahia/jcontent/digitall/en/pages/home/about';
         const ceParams = `(contentEditor:!((formKey:modal_0,isFullscreen:!t,lang:en,mode:edit,site:digitall,uilang:en,uuid:${validUuid})))`;
         cy.visit(`${baseUrl}#${ceParams}`);
@@ -171,7 +166,7 @@ describe('Editor url test', () => {
     });
 
     it('Should show error modal for opening CE url for missing/invalid params', () => {
-        const uuid = 'invalidUuid';
+        cy.login();
         const baseUrl = '/jahia/jcontent/digitall/en/pages/home/about';
         // Missing end parens
         const ceParams = `(contentEditor:!((formKey:modal_0,lang:en,mode:edit,site:digitall,uilang:en,uuid:${validUuid})`;
