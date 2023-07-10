@@ -6,12 +6,13 @@ describe('System name test', () => {
     let pageComposer: PageComposer;
 
     before(function () {
+        cy.loginAndStoreSession();
         cy.executeGroovy('createSite.groovy', {SITEKEY: site});
     });
 
     after(function () {
-        cy.logout();
         cy.executeGroovy('deleteSite.groovy', {SITEKEY: site});
+        cy.logout();
     });
 
     beforeEach(function () {
@@ -85,10 +86,13 @@ describe('System name test', () => {
         check();
     });
 
-    it.only('Check system name sync', function () {
+    it('Check system name sync', function () {
         pageComposer.checkSystemNameSync('-', '');
+        pageComposer = PageComposer.visit(site, 'en', 'home.html');
         pageComposer.checkSystemNameSync('-1-1-', '1-1');
+        pageComposer = PageComposer.visit(site, 'en', 'home.html');
         pageComposer.checkSystemNameSync('éàöäèü', 'eaoaeu');
+        pageComposer = PageComposer.visit(site, 'en', 'home.html');
         pageComposer.checkSystemNameSync('[]-{}-()-!!', '');
     });
 });

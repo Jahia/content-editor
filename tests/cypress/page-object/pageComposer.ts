@@ -147,7 +147,7 @@ export class PageComposer extends BasePage {
             cy.get('#nt\\:base_ce\\:systemName').should('be.visible').type(title, {force: true});
         }
 
-        cy.get('#select-jnt\\:page_j\\:templateName').should('be.visible')
+        cy.get('#select-jmix\\:hasTemplateNode_j\\:templateName').should('be.visible')
             .click()
             .find('li[role="option"][data-value="home"]')
             .click();
@@ -164,7 +164,7 @@ export class PageComposer extends BasePage {
         });
 
         cy.get('#jnt\\:page_jcr\\:title').should('be.visible').type(title, {force: true});
-        cy.get('#select-jnt\\:page_j\\:templateName').should('be.visible')
+        cy.get('#select-jmix\\:hasTemplateNode_j\\:templateName').should('be.visible')
             .click()
             .find('li[role="option"][data-value="home"]')
             .click();
