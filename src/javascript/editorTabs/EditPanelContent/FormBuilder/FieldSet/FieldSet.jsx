@@ -14,8 +14,9 @@ export const FieldSet = ({fieldset}) => {
         return false;
     }
 
+    let filteredFields = fieldset.fields.filter(f => f.visible);
     return (
-        <article className={activatedFieldSet && fieldset.fields.filter(f => f.visible).length > 0 ? styles.fieldSetOpen : styles.fieldSet}>
+        <article className={activatedFieldSet && filteredFields.length > 0 ? styles.fieldSetOpen : styles.fieldSet}>
             {!fieldset.hideHeader && (
                 <div className={styles.fieldSetTitleContainer}>
                     <div className="flexRow_nowrap">
@@ -51,7 +52,7 @@ export const FieldSet = ({fieldset}) => {
                 </div>
             )}
             <div className={styles.fields}>
-                {activatedFieldSet && fieldset.fields.filter(f => f.visible).map(field => <FieldContainer key={field.name} field={field}/>)}
+                {activatedFieldSet && filteredFields.map(field => <FieldContainer key={field.name} field={field}/>)}
             </div>
         </article>
     );
