@@ -86,7 +86,7 @@ describe('System name test', () => {
         check();
     });
 
-    it.only('Check system name sync', function () {
+    it('Check system name sync', function () {
         pageComposer.checkSystemNameSync('-', '');
         pageComposer = PageComposer.visit(site, 'en', 'home.html');
         pageComposer.checkSystemNameSync('-1-1-', '1-1');
