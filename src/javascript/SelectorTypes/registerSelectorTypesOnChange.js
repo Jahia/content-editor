@@ -16,7 +16,7 @@ function arrayEquals(arr1, arr2) {
 }
 
 const isObject = object => {
-    return object != null && typeof object === 'object';
+    return object !== null && typeof object === 'object';
 };
 
 const isArray = array => {
