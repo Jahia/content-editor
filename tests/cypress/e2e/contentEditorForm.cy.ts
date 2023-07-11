@@ -30,4 +30,12 @@ describe('Content editor form', () => {
         getComponentByRole(Button, 'content-type-dialog-cancel').click();
         cy.contains('My constraint message 1234');
     });
+
+    it('Should display overridden property in correct section', function () {
+        jcontent.createContent('myComponent');
+        cy.get('article').contains('myComponent').parents('article').find('div[data-sel-content-editor-field]').should('have.length', 2);
+        cy.get('article').contains('categorizedContent').parents('article').find('div[data-sel-content-editor-field]').should('have.length', 2).as('categorizedContentFields');
+        cy.get('@categorizedContentFields').first().should('contain.text', 'category');
+        cy.get('@categorizedContentFields').last().should('contain.text', 'subcategory');
+    });
 });
