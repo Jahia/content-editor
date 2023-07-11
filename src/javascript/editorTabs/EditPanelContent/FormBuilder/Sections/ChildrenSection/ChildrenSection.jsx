@@ -19,12 +19,11 @@ export const ChildrenSection = ({section, isExpanded, onClick}) => {
 
     const orderingFieldSet = section.fieldSets.find(fs => fs.name === 'jmix:orderedList');
     const automaticallyOrderField = orderingFieldSet?.fields?.find(f => f.name === 'jmix:orderedList_firstField');
-    const manuallyOrderField = orderingFieldSet?.fields?.find(f => f.name === 'jmix:orderedList_ce:manualOrdering');
     const isAutomaticOrder = automaticallyOrderField && values[Constants.ordering.automaticOrdering.mixin];
     const hasChildrenToReorder = values['Children::Order'] && values['Children::Order'].length > 0;
     const childrenFieldSets = section.fieldSets.filter(fieldSet => fieldSet.name !== 'jmix:orderedList');
 
-    if ((!manuallyOrderField || !hasChildrenToReorder) && !automaticallyOrderField && childrenFieldSets.length === 0) {
+    if (!hasChildrenToReorder && !automaticallyOrderField && childrenFieldSets.length === 0) {
         return false;
     }
 
@@ -88,7 +87,7 @@ export const ChildrenSection = ({section, isExpanded, onClick}) => {
                         </div>
                     </div>
                 )}
-                {!isAutomaticOrder && manuallyOrderField && <ManualOrdering/>}
+                {!isAutomaticOrder && <ManualOrdering/>}
                 {isAutomaticOrder && automaticallyOrderField && <AutomaticOrdering orderingFieldSet={orderingFieldSet}/>}
             </article>
             { childrenFieldSets?.map(fs => <FieldSet key={fs.name} fieldset={fs}/>) }
