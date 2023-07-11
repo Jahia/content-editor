@@ -2,6 +2,8 @@
 <jnt = 'http://www.jahia.org/jahia/nt/1.0'>
 <mix = 'http://www.jcp.org/jcr/mix/1.0'>
 <cent = 'http://www.jahia.org/ce/nt/1.0'>
+<foomix = 'http://www.foo.org/jahia/mix/1.0'>
+<foont = 'http://www.foo.org/jahia/nt/1.0'>
 
 [cent:textFieldInitializer] > jnt:content, jmix:basicContent, jmix:editorialContent, mix:title noquery
  - defaultString (string) = 'Default string'
@@ -42,3 +44,15 @@
 [cent:testRegExp] > jnt:content, jmix:basicContent
 - badge (string) mandatory < '[a-z0-9]+'
 - comment (string) mandatory < '^.{1,15}$'
+
+
+[foomix:genericContent] mixin
+ - defaultValue (string) = 'kW' autocreated
+
+[foomix:categorizedContent] mixin
+ - category (weakreference, choicelist[nodes='/sites/systemsite/categories//*;jnt:category', sort]) < 'jnt:category'
+ - subcategory (weakreference, choicelist[dependentCategory, dependentProperties='category', sort]) < 'jnt:category'
+
+[foont:myComponent] > jnt:content, jmix:basicContent, jmix:editorialContent, mix:title, foomix:genericContent, foomix:categorizedContent
+ - category (weakreference, choicelist[nodes='/sites/systemsite/categories//*;jnt:category', sort]) mandatory < 'jnt:category'
+ - defaultValue (string) hidden
