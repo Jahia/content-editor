@@ -1,4 +1,1 @@
 - include: 'provisioning.yml'
-- installBundle: 'mvn:org.jahia.test/content-editor-test-module'
-  autoStart: true
-  uninstallPreviousVersion: true
