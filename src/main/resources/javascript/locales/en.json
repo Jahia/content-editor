@@ -193,7 +193,9 @@
         "queryingContent": "Error querying content: {{details}}",
         "changeSystemName": "Please choose another system name",
         "constraintViolations": "There are some validation errors! Correct the inputs and save again",
-        "accessDenied": "Some content cannot be displayed because of permissions that were applied"
+        "accessDenied": "Some content cannot be displayed because of permissions that were applied",
+        "cannotOpen": "Content Editor could not be opened",
+        "notFound": "The content does not exist or you do not have permission to see it"
       },
       "preview": {
         "contentNotFound": "Content cannot be previewed in the page",
@@ -265,6 +267,7 @@
         "noResult": "No results found."
       },
       "cancel": "Cancel",
+      "close": "Close",
       "gwtTabsDeprecation": {
         "title": "Legacy interface",
         "openLegacy": "Open legacy interface",

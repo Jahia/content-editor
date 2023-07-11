@@ -8,6 +8,7 @@ import {ContentEditorSectionContextProvider} from '../ContentEditorSection';
 import {useContentEditorConfigContext} from '../ContentEditorConfig';
 import {shallowEqual, useSelector} from 'react-redux';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
+import {CeModalError} from '~/ContentEditorApi/ContentEditorError';
 
 export const ContentEditorContext = React.createContext({});
 
@@ -76,7 +77,11 @@ export const ContentEditorContextProvider = ({useFormDefinition, children}) => {
     });
 
     if (error) {
-        throw error;
+        // Check for ItemNotFound exception
+        const is404 = (error.graphQLErrors || []).some(e => e.message?.includes('ItemNotFoundException'));
+        if (is404) {
+            throw new CeModalError('ItemNotFoundException', {cause: error});
+        }
     }
 
     if (siteInfoResult.error) {

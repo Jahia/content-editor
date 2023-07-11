@@ -1,21 +1,20 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {ErrorBoundary} from '@jahia/jahia-ui-root';
 import {useEdit} from './useEdit';
 import {useCreate} from './useCreate';
-import {FullScreenError} from './FullScreenError';
 import {ContentEditorModal} from './ContentEditorModal';
 import {useContentEditorApiContext} from '~/contexts/ContentEditorApi/ContentEditorApi.context';
 import {ContentTypeSelectorModal} from '~/ContentTypeSelectorModal';
 import {Constants} from '~/ContentEditor.constants';
 import {useHistory, useLocation} from 'react-router-dom';
 import rison from 'rison-node';
+import {CeModalError} from '~/ContentEditorApi/ContentEditorError';
 
 function decode(hash) {
     let values = {};
     try {
         values = hash ? rison.decode_uri(hash.substring(1)) : {};
     } catch {
-        // Do nothing
+        throw new Error(`Unable to decode URI hash: ${hash.substring(1)}`);
     }
 
     return values;
@@ -44,7 +43,15 @@ export const ContentEditorApi = () => {
     const history = useHistory();
     const location = useLocation();
     const loaded = useRef();
-    const {locationFromState, locationWithoutEditors} = getEncodedLocations(location, editorConfigs);
+
+    let encodedLoc = {};
+    try {
+        encodedLoc = getEncodedLocations(location, editorConfigs);
+    } catch (error) {
+        throw new CeModalError(error.message, {cause: error});
+    }
+
+    const {locationFromState, locationWithoutEditors} = encodedLoc;
 
     const unsetEditorConfigs = () => {
         history.replace(rison.decode(locationWithoutEditors));
@@ -156,7 +163,7 @@ export const ContentEditorApi = () => {
     }, [editorConfigLang]);
 
     return (
-        <ErrorBoundary fallback={<FullScreenError/>}>
+        <>
             {contentTypeSelectorConfig && (
                 <ContentTypeSelectorModal
                     open
@@ -193,6 +200,6 @@ export const ContentEditorApi = () => {
                     />
                 );
             })}
-        </ErrorBoundary>
+        </>
     );
 };

@@ -189,7 +189,9 @@
         "queryingContent": "Fehler während Content-Abfrage: {{details}}",
         "changeSystemName": "Bitte wählen Sie einen anderen Systemnamen",
         "constraintViolations": "Es gibt einige Validierungsfehler! Korrigieren Sie die Eingaben und speichern Sie erneut",
-        "accessDenied": "Einige Inhalte können aufgrund der angewendeten Berechtigungen nicht angezeigt werden"
+        "accessDenied": "Einige Inhalte können aufgrund der angewendeten Berechtigungen nicht angezeigt werden",
+        "cannotOpen": "Content Editor konnte nicht geöffnet werden",
+        "notFound": "Der Inhalt existiert nicht oder Sie haben keine Berechtigung, ihn anzuzeigen"
       },
       "preview": {
         "contentNotFound": "Inhalte können auf der Seite nicht in der Vorschau angezeigt werden",
@@ -261,6 +263,7 @@
         "noResult": "Keine ergebnisse gefunden."
       },
       "cancel": "Abbrechen",
+      "close": "Schließen",
       "gwtTabsDeprecation": {
         "title": "Vormaliges Interface",
         "openLegacy": "Vormaliges Interface öffnen",

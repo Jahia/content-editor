@@ -1,0 +1,18 @@
+.dialogTitle.dialogTitle {
+    padding-bottom: var(--spacing-large);
+}
+
+.dialogContent.dialogContent {
+    padding-bottom: var(--spacing-large);
+}
+
+.dialogActions.dialogActions {
+    margin: 0;
+    padding: var(--spacing-medium);
+
+    border-top: 1px solid var(--color-gray_light);
+}
+
+.url {
+    color: var(--color-gray);
+}

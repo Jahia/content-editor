@@ -7,6 +7,8 @@ import {pcNavigateTo} from '~/redux/pagecomposer.redux-actions';
 import {registerReducer} from './registerReducer';
 import {ContentEditorApiContextProvider} from '~/contexts/ContentEditorApi/ContentEditorApi.context';
 import hashes from './localesHash!';
+import {ContentEditorError} from '~/ContentEditorApi/ContentEditorError';
+import {ErrorBoundary} from '@jahia/jahia-ui-root';
 
 window.jahia.localeFiles = window.jahia.localeFiles || {};
 window.jahia.localeFiles['content-editor'] = hashes;
@@ -14,7 +16,15 @@ window.jahia.localeFiles['content-editor'] = hashes;
 export function register() {
     registry.add('app', 'content-editor-api', {
         targets: ['root:16.5'],
-        render: next => <ContentEditorApiContextProvider><ContentEditorApi/><ContentPickerApi/>{next}</ContentEditorApiContextProvider>
+        render: next => (
+            <ContentEditorApiContextProvider>
+                <ErrorBoundary fallback={<ContentEditorError/>}>
+                    <ContentEditorApi/>
+                </ErrorBoundary>
+                <ContentPickerApi/>
+                {next}
+            </ContentEditorApiContextProvider>
+        )
     });
 
     registerActions(registry);

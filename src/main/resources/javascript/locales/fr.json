@@ -189,7 +189,9 @@
         "queryingContent": "Erreur lors de l'interrogation du contenu: {{details}}",
         "changeSystemName": "Veuillez choisir un autre nom système",
         "constraintViolations": "Il y a des erreurs de validation! Corrigez les entrées et sauvegarder à nouveau",
-        "accessDenied": "Certains contenus ne peuvent pas être affichés en raison des autorisations qui ont été appliquées"
+        "accessDenied": "Certains contenus ne peuvent pas être affichés en raison des autorisations qui ont été appliquées",
+        "cannotOpen": "Content Editor n’a pas pu être ouvert",
+        "notFound": "Le contenu n’existe pas ou vous n’avez pas la permission de le voir"
       },
       "preview": {
         "contentNotFound": "Le contenu ne peut pas être prévisualisé dans la page",
@@ -261,6 +263,7 @@
         "noResult": "Aucun résultat trouvé."
       },
       "cancel": "Annuler",
+      "close": "Fermer",
       "gwtTabsDeprecation": {
         "title": "Ancienne interface",
         "openLegacy": "Ouvrir l'ancienne interface",
