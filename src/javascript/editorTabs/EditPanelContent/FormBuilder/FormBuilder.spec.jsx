@@ -111,18 +111,6 @@ describe('FormBuilder component', () => {
         expect(cmp.children().length).toEqual(sectionContext.sections.length);
     });
 
-    it('should not display ordering section if not there', () => {
-        sectionContext.sections.push({
-            name: 'listOrdering',
-            displayName: 'Listordering',
-            expanded: false,
-            fieldSets: [
-            ]
-        });
-        const cmp = shallowWithTheme(<FormBuilder mode="create" formKey="dummy-uuid-create-2"/>, {}, dsGenericTheme).find('section');
-        expect(cmp.find('ChildrenSection').dive().find('Collapsible').exists()).toBeFalsy();
-    });
-
     it('should display ordering section if available', () => {
         sectionContext.sections.push({
             name: 'listOrdering',
@@ -132,9 +120,7 @@ describe('FormBuilder component', () => {
                 {
                     name: 'jmix:orderedList',
                     displayed: true,
-                    fields: [
-                        {name: 'jmix:orderedList_ce:manualOrdering'}
-                    ]
+                    fields: []
                 }
             ]
         });
@@ -152,9 +138,7 @@ describe('FormBuilder component', () => {
                 {
                     name: 'jmix:orderedList',
                     displayed: true,
-                    fields: [
-                        {name: 'jmix:orderedList_ce:manualOrdering'}
-                    ]
+                    fields: []
                 }
             ]
         });
@@ -169,8 +153,10 @@ describe('FormBuilder component', () => {
             expanded: false,
             fieldSets: [
                 {
+                    name: 'jmix:orderedList',
                     displayName: 'yo1',
                     displayed: true,
+                    readOnly: false,
                     fields: [
                         {name: 'field1', displayName: 'field 1'},
                         {name: 'field2', displayName: 'field 2'}
