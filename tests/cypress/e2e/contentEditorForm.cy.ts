@@ -1,5 +1,5 @@
 import {JContent} from '../page-object/jcontent';
-import {SmallTextField} from '../page-object/fields';
+import {Field, SmallTextField} from '../page-object/fields';
 import {Button, getComponentByRole} from '@jahia/cypress';
 
 describe('Content editor form', () => {
@@ -29,6 +29,12 @@ describe('Content editor form', () => {
         cy.get('[data-sel-role=dialog-errorBeforeSave]').contains('My title 1234');
         getComponentByRole(Button, 'content-type-dialog-cancel').click();
         cy.contains('My constraint message 1234');
+    });
+
+    it('Should display overridden title label for boolean buttons', function () {
+        const contentEditor = jcontent.createContent('mesiHeaderBanner');
+        const field = contentEditor.getField(Field, 'jmix:mesiBannerStory_buttonTransverse', false);
+        field.get().find('label').should('contain', 'Contribuer le bouton transverse Header ?');
     });
 
     it('Should display overridden property in correct section', function () {
