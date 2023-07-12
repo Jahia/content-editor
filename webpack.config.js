@@ -6,6 +6,14 @@ const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
 const shared = require("./webpack.shared")
 const moonstone = require("@jahia/moonstone/dist/rulesconfig-wp");
+const {CycloneDxWebpackPlugin} = require('@cyclonedx/webpack-plugin');
+
+/** @type {import('@cyclonedx/webpack-plugin').CycloneDxWebpackPluginOptions} */
+const cycloneDxWebpackPluginOptions = {
+    specVersion: '1.4',
+    rootComponentType: 'library',
+    outputLocation: './bom'
+};
 
 module.exports = (env, argv) => {
     let _argv = argv || {};
@@ -106,7 +114,8 @@ module.exports = (env, argv) => {
                     to: ''
                 }]
             }),
-            new CaseSensitivePathsPlugin()
+            new CaseSensitivePathsPlugin(),
+            new CycloneDxWebpackPlugin(cycloneDxWebpackPluginOptions)
         ],
         mode: 'development'
     };

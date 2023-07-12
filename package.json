@@ -1,6 +1,6 @@
 {
     "name": "@jahia/content-editor",
-    "version": "4.0.0",
+    "version": "4.6.0-SNAPSHOT",
     "scripts": {
         "build": "yarn webpack",
         "webpack": "node --max_old_space_size=2048 ./node_modules/webpack/bin/webpack.js",
@@ -105,6 +105,7 @@
         "@babel/polyfill": "^7.11.5",
         "@babel/preset-env": "^7.11.5",
         "@babel/preset-react": "^7.9.4",
+        "@cyclonedx/webpack-plugin": "^3.6.1",
         "@jahia/eslint-config": "^1.1.0",
         "@jahia/stylelint-config": "^0.0.3",
         "@jahia/test-framework": "^1.1.5",
