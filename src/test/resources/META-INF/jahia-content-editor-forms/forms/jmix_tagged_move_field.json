@@ -3,7 +3,7 @@
   "priority": 2.0,
   "sections": [
     {
-      "name": "classification",
+      "name": "metadata",
       "fieldSets": [
         {
           "name": "jmix:tagged",

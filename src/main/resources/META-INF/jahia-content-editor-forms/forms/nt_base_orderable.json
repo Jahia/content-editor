@@ -1,8 +1,7 @@
 {
   "nodeType": "nt:base",
   "orderable" : true,
-  "priority": 2.0,
-  "hasPreview": true,
+  "priority": 1.1,
   "sections": [
     {
       "name": "listOrdering",

@@ -40,7 +40,7 @@ public class FormGenerator {
         Form form = new Form();
         form.setNodeType(nodeType.getName());
         form.setPriority(0.);
-        form.setHasPreview(true);
+        form.setHasPreview(false);
         form.setSections(generateFormSections(nodeType, locale, singleFieldSet));
         return form;
     }
