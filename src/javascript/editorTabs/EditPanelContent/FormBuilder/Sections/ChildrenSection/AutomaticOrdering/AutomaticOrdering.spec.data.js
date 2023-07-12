@@ -8,9 +8,6 @@ export const listOrderingFieldSet = (fieldSetReadOnly, propsReadOnly) => ({
     readOnly: fieldSetReadOnly,
     fields: [
         {
-            name: 'jmix:orderedList_ce:manualOrdering'
-        },
-        {
             nodeType: 'jmix:orderedList',
             name: 'jmix:orderedList_ignoreCase',
             propertyName: 'ignoreCase',

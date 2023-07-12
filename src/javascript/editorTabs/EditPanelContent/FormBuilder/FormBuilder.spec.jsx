@@ -120,9 +120,7 @@ describe('FormBuilder component', () => {
                 {
                     name: 'jmix:orderedList',
                     displayed: true,
-                    fields: [
-                        {name: 'jmix:orderedList_ce:manualOrdering'}
-                    ]
+                    fields: []
                 }
             ]
         });
@@ -140,9 +138,7 @@ describe('FormBuilder component', () => {
                 {
                     name: 'jmix:orderedList',
                     displayed: true,
-                    fields: [
-                        {name: 'jmix:orderedList_ce:manualOrdering'}
-                    ]
+                    fields: []
                 }
             ]
         });
