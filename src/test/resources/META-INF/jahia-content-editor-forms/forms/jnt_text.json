@@ -1,9 +1,26 @@
 {
   "nodeType": "jnt:text",
-  "priority": 3.0,
+  "priority": 1.0,
   "sections": [
     {
-      "name": "metadata"
+      "name": "classification",
+      "hide": true
+    },
+    {
+      "name": "layout",
+      "hide": true
+    },
+    {
+      "name": "options",
+      "hide": true
+    },
+    {
+      "name": "seo",
+      "hide": true
+    },
+    {
+      "name": "permissions",
+      "hide": true
     }
   ]
 }
