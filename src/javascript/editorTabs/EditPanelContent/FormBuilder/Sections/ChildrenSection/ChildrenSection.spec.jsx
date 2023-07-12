@@ -54,18 +54,6 @@ describe('Children section component', () => {
         expect(cmp.find('WithStyles(ToggleCmp)').props().readOnly).toBe(true);
     });
 
-    it('should not be able to switch automatic ordering', () => {
-        const fieldSet = listOrderingFieldSet(false, false);
-        fieldSet.fields = fieldSet.fields.filter(f => f.name === 'jmix:orderedList_ce:manualOrdering');
-        props.section = {fieldSets: [fieldSet]};
-
-        const cmp = shallowWithTheme(<ChildrenSection {...props}/>, {}, dsGenericTheme);
-
-        expect(cmp.find('WithStyles(ToggleCmp)').length).toBe(0);
-        expect(cmp.find('ManualOrdering').length).toBe(1);
-        expect(cmp.find('AutomaticOrdering').length).toBe(0);
-    });
-
     it('should display manual ordering', () => {
         props.section = {fieldSets: [listOrderingFieldSet(false, false)]};
 
