@@ -93,6 +93,7 @@
             org.jahia.services,
             org.jahia.settings
         </import-package>
+        <sonar.sources>src/javascript,src/main/resources/javascript</sonar.sources>
     </properties>
 
     <repositories>
