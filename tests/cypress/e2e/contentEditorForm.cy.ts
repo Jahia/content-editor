@@ -1,23 +1,42 @@
 import {JContent} from '../page-object/jcontent';
-import {SmallTextField} from '../page-object/fields';
+import {Field, SmallTextField} from '../page-object/fields';
 import {Button, getComponentByRole} from '@jahia/cypress';
+import gql from "graphql-tag";
 
 describe('Content editor form', () => {
     let jcontent: JContent;
+    let siteKey = 'contentEditorSite';
 
     before(function () {
-        cy.executeGroovy('createSite.groovy', {SITEKEY: 'contentEditorSite'});
+        cy.executeGroovy('createSite.groovy', {SITEKEY: siteKey});
     });
 
     after(function () {
         cy.logout();
-        cy.executeGroovy('deleteSite.groovy', {SITEKEY: 'contentEditorSite'});
+        cy.executeGroovy('deleteSite.groovy', {SITEKEY: siteKey});
     });
 
     beforeEach(() => {
         cy.loginAndStoreSession();
         jcontent = JContent.visit('contentEditorSite', 'en', 'content-folders/contents');
     });
+
+    function setDefaultSiteTemplate(templateName) {
+        cy.apollo({
+            mutation: gql`
+                mutation setDefaultTemplate {
+                    jcr {
+                        mutateNode(pathOrId:"/sites/${siteKey}") {
+                            mutateProperty(name:"j:defaultTemplateName") {
+                                setValue(value:"${templateName}")
+                            }
+                        }
+                    }
+                }`
+        }).should(resp => {
+            expect(resp?.data?.jcr?.mutateNode.mutateProperty.setValue).to.be.true;
+        });
+    }
 
     it('Should display custom title label and error message', function () {
         const contentEditor = jcontent.createContent('testOverride');
@@ -38,4 +57,22 @@ describe('Content editor form', () => {
         cy.get('@categorizedContentFields').first().should('contain.text', 'category');
         cy.get('@categorizedContentFields').last().should('contain.text', 'subcategory');
     });
+
+    it('Should use site default template value', () => {
+        const contentTypeName = 'testDefaultTemplate';
+        const templateName = 'events';
+        const fieldName = 'cent:testDefaultTemplate_j:templateName';
+
+        cy.log('Set default template value for site');
+        setDefaultSiteTemplate(templateName);
+
+        cy.log('verify default template is shown in new component');
+        let contentEditor = jcontent.createContent(contentTypeName);
+        let field = contentEditor.getField(Field, fieldName);
+        field.get().find('[role="dropdown"]')
+            .should('contain', templateName)
+            .and('have.class', 'moonstone-disabled'); // read-only
+        contentEditor.create(); // no errors on create
+    });
+
 });
