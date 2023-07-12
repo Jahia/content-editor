@@ -56,3 +56,16 @@
 [foont:myComponent] > jnt:content, jmix:basicContent, jmix:editorialContent, mix:title, foomix:genericContent, foomix:categorizedContent
  - category (weakreference, choicelist[nodes='/sites/systemsite/categories//*;jnt:category', sort]) mandatory < 'jnt:category'
  - defaultValue (string) hidden
+
+[jnt:mesiHeaderBanner] > jnt:content, jmix:basicContent, jmix:mesiBannerStory, mix:title, jmix:editorialContent
+ - jcr:title (string) mandatory
+ - inclusRecherche (boolean) = 'false'
+ - triResultats (long) = '10' hidden
+
+[jmix:mesiBannerStory] > jmix:templateMixin mixin
+ - sousTitre (string)
+ - barreRecherche (boolean)
+ - descriptif (string, textarea)
+ - info (string, richtext)
+ - style (string, choicelist[resourceBundle]) < 'style-news', 'style-safety', 'style-decouverte-dsi', 'style-calendar', 'style-evolution-si', 'style-offer', 'style-recette', 'style-security'
+ - buttonTransverse (boolean)
