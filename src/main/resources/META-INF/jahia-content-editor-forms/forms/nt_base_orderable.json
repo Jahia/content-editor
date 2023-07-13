@@ -7,7 +7,19 @@
       "name": "listOrdering",
       "fieldSets": [
         {
-          "name": "jmix:orderedList"
+          "name": "jmix:orderedList",
+          "fields": [
+            {
+              "rank": 0.0,
+              "name": "ce:manualOrdering",
+              "descriptionKey": "",
+              "requiredType": "String",
+              "selectorType": "Text",
+              "i18n": false,
+              "readOnly": false,
+              "multiple": false,
+              "mandatory": true
+            }]
         }]
     }
   ]

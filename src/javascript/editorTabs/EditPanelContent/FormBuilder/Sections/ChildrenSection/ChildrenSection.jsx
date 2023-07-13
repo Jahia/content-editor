@@ -18,11 +18,13 @@ export const ChildrenSection = ({section, isExpanded, onClick}) => {
     const {t} = useTranslation('content-editor');
 
     const orderingFieldSet = section.fieldSets.find(fs => fs.name === 'jmix:orderedList');
-    const isAutomaticOrder = values[Constants.ordering.automaticOrdering.mixin];
+    const automaticallyOrderField = orderingFieldSet?.fields?.find(f => f.name === 'jmix:orderedList_firstField');
+    const manuallyOrderField = orderingFieldSet?.fields?.find(f => f.name === 'jmix:orderedList_ce:manualOrdering');
+    const isAutomaticOrder = automaticallyOrderField && values[Constants.ordering.automaticOrdering.mixin];
     const hasChildrenToReorder = values['Children::Order'] && values['Children::Order'].length > 0;
     const childrenFieldSets = section.fieldSets.filter(fieldSet => fieldSet.name !== 'jmix:orderedList');
 
-    if (!hasChildrenToReorder && childrenFieldSets.length === 0) {
+    if ((!manuallyOrderField || !hasChildrenToReorder) && !automaticallyOrderField && childrenFieldSets.length === 0) {
         return false;
     }
 
@@ -56,36 +58,38 @@ export const ChildrenSection = ({section, isExpanded, onClick}) => {
                     </div>
                 </div>
 
-                <div className="flexRow_nowrap">
-                    <Toggle
-                        classes={{
-                            root: fieldSetStyles.toggle
-                        }}
-                        data-sel-role-automatic-ordering={Constants.ordering.automaticOrdering.mixin}
-                        id={Constants.ordering.automaticOrdering.mixin}
-                        checked={isAutomaticOrder}
-                        readOnly={orderingFieldSet.readOnly}
-                        onChange={handleChange}
-                    />
-                    <div className="flexCol">
-                        <Typography component="label"
-                                    htmlFor={Constants.ordering.automaticOrdering.mixin}
-                                    className={fieldSetStyles.fieldSetTitle}
-                                    variant="subheading"
-                                    weight="bold"
-                        >
-                            {t('content-editor:label.contentEditor.section.listAndOrdering.automatic')}
-                        </Typography>
-                        <Typography component="label"
-                                    variant="caption"
-                                    className={clsx(fieldSetStyles.fieldSetDescription, fieldSetStyles.staticFieldSetDescription)}
-                        >
-                            {t('content-editor:label.contentEditor.section.listAndOrdering.description')}
-                        </Typography>
+                {automaticallyOrderField && (
+                    <div className="flexRow_nowrap">
+                        <Toggle
+                            classes={{
+                                root: fieldSetStyles.toggle
+                            }}
+                            data-sel-role-automatic-ordering={Constants.ordering.automaticOrdering.mixin}
+                            id={Constants.ordering.automaticOrdering.mixin}
+                            checked={isAutomaticOrder}
+                            readOnly={orderingFieldSet.readOnly || automaticallyOrderField.readOnly}
+                            onChange={handleChange}
+                        />
+                        <div className="flexCol">
+                            <Typography component="label"
+                                        htmlFor={Constants.ordering.automaticOrdering.mixin}
+                                        className={fieldSetStyles.fieldSetTitle}
+                                        variant="subheading"
+                                        weight="bold"
+                            >
+                                {t('content-editor:label.contentEditor.section.listAndOrdering.automatic')}
+                            </Typography>
+                            <Typography component="label"
+                                        variant="caption"
+                                        className={clsx(fieldSetStyles.fieldSetDescription, fieldSetStyles.staticFieldSetDescription)}
+                            >
+                                {t('content-editor:label.contentEditor.section.listAndOrdering.description')}
+                            </Typography>
+                        </div>
                     </div>
-                </div>
-                {!isAutomaticOrder && <ManualOrdering/>}
-                {isAutomaticOrder && <AutomaticOrdering orderingFieldSet={orderingFieldSet}/>}
+                )}
+                {!isAutomaticOrder && manuallyOrderField && <ManualOrdering/>}
+                {isAutomaticOrder && automaticallyOrderField && <AutomaticOrdering orderingFieldSet={orderingFieldSet}/>}
             </article>
             { childrenFieldSets?.map(fs => <FieldSet key={fs.name} fieldset={fs}/>) }
         </Collapsible>
