@@ -40,6 +40,11 @@
 [cent:testOverride] > jnt:content, mix:title, jmix:basicContent, jmix:editorialContent
  - jcr:title (string) < '^.{0,10}$'
 
+
+[cent:testDefaultTemplate] > jnt:content, mix:title, jmix:basicContent, jmix:editorialContent, jmix:hasTemplateNode
+- j:templateName (string,choicelist[templatesNode=pageTemplate]) mandatory nofulltext
+
+
 [cent:testRegExp] > jnt:content, jmix:basicContent
 - badge (string) mandatory < '[a-z0-9]+'
 - comment (string) mandatory < '^.{1,15}$'

@@ -1,0 +1,10 @@
+{
+  "name": "cent:testDefaultTemplate",
+  "priority": 2.0,
+  "fields": [
+    {
+      "name": "j:templateName",
+      "readOnly": true
+    }
+  ]
+}
