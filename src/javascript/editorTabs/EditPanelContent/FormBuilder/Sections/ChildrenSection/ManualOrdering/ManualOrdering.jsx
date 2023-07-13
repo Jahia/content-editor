@@ -6,6 +6,11 @@ export const ManualOrdering = () => {
     return (
         <FastField name="Children::Order">
             {({field, form: {setFieldValue, setFieldTouched}}) => {
+                if (field.value === undefined) {
+                    // Field has no children
+                    return null;
+                }
+
                 const handleReorder = (droppedName, index) => {
                     let childrenWithoutDropped = [];
                     let droppedChild = null;
