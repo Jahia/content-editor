@@ -96,6 +96,5 @@ describe('Content editor form', () => {
             .should('contain', templateName)
             .and('have.class', 'moonstone-disabled'); // Read-only
         contentEditor.create(); // No errors on create
-
     });
 });
