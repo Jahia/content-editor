@@ -221,7 +221,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                 .collect(Collectors.toList()));
 
             return form;
-      } catch (RepositoryException e) {
+        } catch (RepositoryException e) {
             throw new EditorFormException("Error while building edit form definition for node: " + currentNode.getPath() + " and nodeType: " + primaryNodeType.getName(), e);
         }
     }
@@ -265,7 +265,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             return Collections.emptyList();
         }
 
-        Map<String,Object> selectorOptions = editorFormField.getSelectorOptionsMap();
+        Map<String, Object> selectorOptions = editorFormField.getSelectorOptionsMap();
         List<ChoiceListValue> initialChoiceListValues = new ArrayList<>();
 
         if (selectorOptions != null && !selectorOptions.isEmpty()) {
@@ -302,8 +302,7 @@ public class EditorFormServiceImpl implements EditorFormService {
     }
 
     private List<ExtendedNodeType> getExtendMixins(ExtendedNodeType type, JCRSiteNode site) throws NoSuchNodeTypeException {
-        ArrayList<ExtendedNodeType> res = new ArrayList<ExtendedNodeType>();
-        Set<String> foundTypes = new HashSet<String>();
+        ArrayList<ExtendedNodeType> res = new ArrayList<>();
 
         Set<String> installedModules = site != null && site.getPath().startsWith("/sites/") ? site.getInstalledModulesWithAllDependencies() : null;
 
@@ -315,7 +314,6 @@ public class EditorFormServiceImpl implements EditorFormService {
 //                        ctx.put("contextType", realType);
                     if (installedModules == null || extension.getTemplatePackage() == null || extension.getTemplatePackage().getModuleType().equalsIgnoreCase("system") || installedModules.contains(extension.getTemplatePackage().getId())) {
                         res.add(extension);
-                        foundTypes.add(extension.getName());
                     }
                 }
             }
@@ -351,7 +349,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             return f.getSections().stream()
                 .flatMap(section -> section.getFieldSets().stream())
                 .flatMap(fieldSet -> fieldSet.getFields().stream())
-                .filter(field -> fieldNodeType.equals(field.getDeclaringNodeType()) && fieldName.equals(field.getName()))
+                .filter(field -> (fieldNodeType.equals(field.getDeclaringNodeType()) || primaryNodeType.equals(field.getDeclaringNodeType())) && fieldName.equals(field.getName()))
                 .findFirst()
                 .map(ThrowingFunction.unchecked(field -> getValueConstraints(nodeType, field, node, parentNode, locale, extendContext)))
                 .orElse(Collections.emptyList());
