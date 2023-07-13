@@ -77,7 +77,7 @@
 [cemix:retrievableContentCETest] mixin
 
 [cent:contentRetrievalCETest] > jnt:content, jmix:list, jmix:renderableList, jmix:queryContent, mix:title, jmix:cache, jmix:editorialContent
-- j:type (string, choicelist[subnodetypes = 'jnt:page,jmix:basicContent,jmix:editorialContent,jmix:retrievableContent',resourceBundle]) indexed=no mandatory
+- j:type (string, choicelist[subnodetypes = 'jnt:page,jmix:basicContent,jmix:editorialContent,jmix:retrievableContent',resourceBundle]) indexed=no
 - j:criteria (string,choicelist[resourceBundle]) = 'jcr:created' autocreated indexed=no < 'jcr:created','jcr:lastModified','j:lastPublished'
 - j:sortDirection (string, choicelist[resourceBundle]) = 'asc' autocreated indexed=no < 'asc','desc'
 - maxItems (long) indexed=no

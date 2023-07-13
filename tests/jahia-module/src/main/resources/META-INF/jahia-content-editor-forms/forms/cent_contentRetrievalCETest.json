@@ -1,0 +1,24 @@
+{
+  "nodeType": "cent:contentRetrievalCETest",
+  "priority": 2.0,
+  "sections": [
+    {
+      "name": "content",
+      "fieldSets": [
+        {
+          "name": "<main>",
+          "rank": "2.0",
+          "fields": [
+            {
+              "name": "j:invalidLanguages",
+              "declaringNodeType": "jmix:i18n",
+              "label": "Do not display in",
+              "multiple": true,
+              "hide": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
