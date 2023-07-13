@@ -25,7 +25,7 @@ export const OpenEngineTabs = ({tabs, render: Render, ...otherProps}) => {
 
                     openEngineTab(nodeData, tabs);
                 }}
-                onCloseDialog={() => setOpen(false)}
+                onCloseDialog={() => setOpen(true)}
             />
             <Render {...otherProps}
                     onClick={() => {
