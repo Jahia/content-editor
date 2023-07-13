@@ -1,11 +1,11 @@
 import {JContent} from '../page-object/jcontent';
 import {Field, SmallTextField} from '../page-object/fields';
 import {Button, getComponentByRole} from '@jahia/cypress';
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 describe('Content editor form', () => {
     let jcontent: JContent;
-    let siteKey = 'contentEditorSite';
+    const siteKey = 'contentEditorSite';
 
     before(function () {
         cy.executeGroovy('createSite.groovy', {SITEKEY: siteKey});
@@ -34,6 +34,7 @@ describe('Content editor form', () => {
                     }
                 }`
         }).should(resp => {
+            // eslint-disable-next-line  no-unused-expressions
             expect(resp?.data?.jcr?.mutateNode.mutateProperty.setValue).to.be.true;
         });
     }
@@ -67,12 +68,11 @@ describe('Content editor form', () => {
         setDefaultSiteTemplate(templateName);
 
         cy.log('verify default template is shown in new component');
-        let contentEditor = jcontent.createContent(contentTypeName);
-        let field = contentEditor.getField(Field, fieldName);
+        const contentEditor = jcontent.createContent(contentTypeName);
+        const field = contentEditor.getField(Field, fieldName);
         field.get().find('[role="dropdown"]')
             .should('contain', templateName)
-            .and('have.class', 'moonstone-disabled'); // read-only
-        contentEditor.create(); // no errors on create
+            .and('have.class', 'moonstone-disabled'); // Read-only
+        contentEditor.create(); // No errors on create
     });
-
 });
