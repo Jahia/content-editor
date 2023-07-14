@@ -84,7 +84,7 @@ export const ContentEditorApi = () => {
         } else if (copy.length > 0) {
             const {locationFromState} = getEncodedLocations(location, copy);
             history.replace(rison.decode(locationFromState));
-        } else if (spliced[0]?.isFullscreen && window.history.state && !window.history.state.prevUrl?.contains('/cms/login') && window.location.pathname !== '/jahia/workflow') {
+        } else if (spliced[0]?.isFullscreen && window.history.state && !window.history.state.prevUrl?.contains('/cms/login') && window.location.pathname.indexOf('/jahia/workflow') === -1) {
             history.go(-1);
         } else {
             history.replace(rison.decode(locationWithoutEditors));
