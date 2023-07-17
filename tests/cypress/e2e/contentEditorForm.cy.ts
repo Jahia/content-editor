@@ -98,7 +98,7 @@ describe('Content editor form', () => {
         contentEditor.create(); // No errors on create
     });
 
-    it.only('Should display hidden property with overridden hide flag', () => {
+    it('Should display hidden property with overridden hide flag', () => {
         const contentEditor = jcontent.createContent('contentRetrievalCETest');
         const field = contentEditor.getField(SmallTextField, 'cent:contentRetrievalCETest_j:invalidLanguages', true);
         field.addNewValue('fr', true);
