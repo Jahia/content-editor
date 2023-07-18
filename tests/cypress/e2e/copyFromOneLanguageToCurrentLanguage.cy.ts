@@ -103,7 +103,7 @@ describe('test copyFromOneLanguageToCurrentLanguage', () => {
         cy.logout();
     });
 
-    // after('Delete testsites', () => {
+    // After('Delete testsites', () => {
     //     deleteSite(TwoLanguagesSiteKey);
     //     deleteSite(OneLanguageSiteKey);
     // });
