@@ -28,16 +28,18 @@ const checkFields = (siteKey, fieldValue, language) => {
 };
 
 const setCopyLanguage = uuid => {
-    cy.visit('/jahia/content-editor/fr/edit/' + uuid);
+    cy.visit(`http://localhost:8080/jahia/jcontent/severalLanguages/fr/content-folders/contents#(contentEditor:!((formKey:modal_0,isFullscreen:!t,lang:fr,mode:edit,uuid:'${uuid}')))`);
     cy.get('button[data-sel-role=\'3dotsMenuAction\']').click();
     cy.get('[data-sel-role=\'jcontent-content-editor/header/3dots\']').find('li:contains(\'Copy from languages\')').click();
-    cy.get('div[role=\'document\']').find('div[role=\'dropdown\']').click();
+    cy.get('div[role=\'document\']').find('div[role=\'dropdown\']:contains(\'Unselected\')').find('span').click();
     cy.get('menu:contains(\'English\')').find('li:contains(\'English\')').click();
 };
 
 describe('test copyFromOneLanguageToCurrentLanguage', () => {
     before('Create testsites', () => {
         cy.login();
+        deleteSite(TwoLanguagesSiteKey);
+        deleteSite(OneLanguageSiteKey);
         createSite(TwoLanguagesSiteKey, {languages: 'en,fr', templateSet: 'dx-base-demo-template', serverName: 'localhost', locale: 'en'});
         createSite(OneLanguageSiteKey, {templateSet: 'qa-simpleTemplateSet', serverName: 'localhost', locale: 'en'});
         createUser(editorLogin.username, editorLogin.password);
@@ -101,8 +103,8 @@ describe('test copyFromOneLanguageToCurrentLanguage', () => {
         cy.logout();
     });
 
-    after('Delete testsites', () => {
-        deleteSite(TwoLanguagesSiteKey);
-        deleteSite(OneLanguageSiteKey);
-    });
+    // after('Delete testsites', () => {
+    //     deleteSite(TwoLanguagesSiteKey);
+    //     deleteSite(OneLanguageSiteKey);
+    // });
 });
