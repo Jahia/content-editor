@@ -28,7 +28,7 @@ const checkFields = (siteKey, fieldValue, language) => {
 };
 
 const setCopyLanguage = uuid => {
-    cy.visit(`http://localhost:8080/jahia/jcontent/severalLanguages/fr/content-folders/contents#(contentEditor:!((formKey:modal_0,isFullscreen:!t,lang:fr,mode:edit,uuid:'${uuid}')))`);
+    cy.visit(`/jahia/jcontent/severalLanguages/fr/content-folders/contents#(contentEditor:!((formKey:modal_0,isFullscreen:!t,lang:fr,mode:edit,uuid:'${uuid}')))`);
     cy.get('button[data-sel-role=\'3dotsMenuAction\']').click();
     cy.get('[data-sel-role=\'jcontent-content-editor/header/3dots\']').find('li:contains(\'Copy from languages\')').click();
     cy.get('div[role=\'document\']').find('div[role=\'dropdown\']:contains(\'Unselected\')').find('span').click();
