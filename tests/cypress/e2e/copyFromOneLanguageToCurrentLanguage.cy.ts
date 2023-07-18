@@ -38,8 +38,6 @@ const setCopyLanguage = uuid => {
 describe('test copyFromOneLanguageToCurrentLanguage', () => {
     before('Create testsites', () => {
         cy.login();
-        deleteSite(TwoLanguagesSiteKey);
-        deleteSite(OneLanguageSiteKey);
         createSite(TwoLanguagesSiteKey, {languages: 'en,fr', templateSet: 'dx-base-demo-template', serverName: 'localhost', locale: 'en'});
         createSite(OneLanguageSiteKey, {templateSet: 'qa-simpleTemplateSet', serverName: 'localhost', locale: 'en'});
         createUser(editorLogin.username, editorLogin.password);
@@ -103,8 +101,8 @@ describe('test copyFromOneLanguageToCurrentLanguage', () => {
         cy.logout();
     });
 
-    // After('Delete testsites', () => {
-    //     deleteSite(TwoLanguagesSiteKey);
-    //     deleteSite(OneLanguageSiteKey);
-    // });
+    after('Delete testsites', () => {
+        deleteSite(TwoLanguagesSiteKey);
+        deleteSite(OneLanguageSiteKey);
+    });
 });
