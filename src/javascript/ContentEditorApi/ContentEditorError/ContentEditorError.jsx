@@ -49,7 +49,7 @@ const ModalError = () => {
     const onClose = () => {
         setOpen(false);
         updateWindowLocation();
-    }
+    };
 
     return (
         <Dialog
