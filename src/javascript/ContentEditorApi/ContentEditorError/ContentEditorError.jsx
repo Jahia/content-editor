@@ -8,10 +8,19 @@ import {useTranslation} from 'react-i18next';
 import styles from '../ContentEditorModal.scss';
 import modalStyles from './ContentEditorError.scss';
 
+function updateWindowLocation() {
+    const cePartIndex = window.location.href.indexOf('#(contentEditor');
+    // Clean up the url if necessary
+    if (cePartIndex !== -1) {
+        window.location.href = window.location.href.slice(0, cePartIndex);
+    }
+}
+
 const FullScreenError = props => {
     const [open, setOpen] = useState(true);
     const handleClose = () => {
         setOpen(false);
+        updateWindowLocation();
     };
 
     return (
@@ -27,11 +36,7 @@ const FullScreenError = props => {
                 ...props, goBack: () => {
                     // Close the modal to go back to the previous screen
                     setOpen(false);
-                    const cePartIndex = window.location.href.indexOf('#(contentEditor');
-                    // Clean up the url if necessary
-                    if (cePartIndex !== -1) {
-                        window.location.href = window.location.href.slice(0, cePartIndex);
-                    }
+                    updateWindowLocation();
                 }
             })}
         </Dialog>
@@ -41,7 +46,10 @@ const FullScreenError = props => {
 const ModalError = () => {
     const {t} = useTranslation('content-editor');
     const [isOpen, setOpen] = useState(true);
-    const onClose = () => setOpen(false);
+    const onClose = () => {
+        setOpen(false);
+        updateWindowLocation();
+    };
 
     return (
         <Dialog
