@@ -15,6 +15,13 @@
               "label": "Do not display in",
               "multiple": true,
               "hide": false
+            },
+            {
+              "rank": 5.0,
+              "name": "jcr:title",
+              "declaringNodeType": "mix:title",
+              "labelKey": "content-editor-test-module@label.textoverride",
+              "descriptionKey": "label.information"
             }
           ]
         }

@@ -108,4 +108,11 @@ describe('Content editor form', () => {
         const fieldEdit = contentEditor.getField(SmallTextField, 'cent:contentRetrievalCETest_j:invalidLanguages', true);
         fieldEdit.checkValues(['fr', 'de']);
     });
+
+    it('Should display overridden title label and description label from json overrides define by labelKey and descriptionKey', () => {
+        const contentEditor = jcontent.createContent('contentRetrievalCETest');
+        const field = contentEditor.getField(SmallTextField, 'cent:contentRetrievalCETest_jcr:title', false);
+        field.get().find('label').should('contain', 'Title JSON override');
+        field.get().scrollIntoView().contains('Information').should('be.visible');
+    });
 });
