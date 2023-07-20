@@ -29,6 +29,7 @@ import org.jahia.api.templates.JahiaTemplateManagerService;
 import org.jahia.data.templates.JahiaTemplatesPackage;
 import org.jahia.modules.contenteditor.api.forms.model.*;
 import org.jahia.modules.contenteditor.graphql.api.types.ContextEntryInput;
+import org.jahia.registries.ServicesRegistry;
 import org.jahia.services.content.*;
 import org.jahia.services.content.decorator.JCRSiteNode;
 import org.jahia.services.content.nodetypes.*;
@@ -247,12 +248,20 @@ public class EditorFormServiceImpl implements EditorFormService {
         String baseName = null;
         String value;
         if (key.contains("@")) {
-            baseName = StringUtils.substringAfter(key, "@");
-            key = StringUtils.substringBefore(key, "@");
+            if (key.contains("resources.")) {
+                baseName = StringUtils.substringAfter(key, "@");
+                key = StringUtils.substringBefore(key, "@");
+            } else {
+                baseName = StringUtils.substringBefore(key, "@");
+                key = StringUtils.substringAfter(key, "@");
+            }
         }
 
         value = Messages.get(baseName, site != null ? site.getTemplatePackage() : null, key, locale, StringUtils.EMPTY);
-        if (value == null) {
+        if (StringUtils.isEmpty(value) && baseName != null) {
+            JahiaTemplatesPackage jahiaTemplatesPackage = ServicesRegistry.getInstance().getJahiaTemplateManagerService().getTemplatePackageRegistry().lookupById(baseName);
+            value = Messages.get(baseName, jahiaTemplatesPackage, key, locale, StringUtils.EMPTY);
+        } else if (value == null) {
             value = Messages.getInternal(key, locale);
         }
         return value;
