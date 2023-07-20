@@ -153,7 +153,7 @@ public class ContentEditorUtilsTest extends AbstractJUnitTest {
         session.save();
         expectedResults.add("jnt:AllowedNodeTypesChildEditorial");
         expectedResults.add("jnt:AllowedNodeTypesChildEditorialMixinOnNode");
-        result = ContentEditorUtils.getAllowedNodeTypesAsChildNode(testedNode, null, false, true, Arrays.asList("jmix:droppableContent"));
+        result = ContentEditorUtils.getAllowedNodeTypesAsChildNode(testedNode, null, false, true, Arrays.asList("jmix:editorialContent"));
         validateResult(testdedNodeName, result, expectedResults);
         expectedResults.clear();
 
