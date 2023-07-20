@@ -8,6 +8,7 @@ import {useDispatch, useSelector, shallowEqual} from 'react-redux';
 import {ceToggleSections} from '~/registerReducer';
 import styles from './FormBuilder.scss';
 import {Validation} from './Validation';
+import {CeModalError} from '~/ContentEditorApi/ContentEditorError';
 
 const ADVANCED_OPTIONS_SELECTIONS = ['visibility'];
 
@@ -79,6 +80,10 @@ export const FormBuilder = ({mode}) => {
 
         return null;
     });
+
+    if (children.every(currentValue => currentValue === null)) {
+        throw new CeModalError('NoAccessToItem');
+    }
 
     if (listOrderingIndex !== -1) {
         const lo = children.splice(listOrderingIndex, 1);
