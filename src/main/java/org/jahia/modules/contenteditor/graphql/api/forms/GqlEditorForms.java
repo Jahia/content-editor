@@ -127,7 +127,7 @@ public class GqlEditorForms {
 
         // Only jmix:editorialContent on jnt:contentFolder
         if (parentNode.isNodeType("jnt:contentFolder") && (nodeTypes == null || nodeTypes.isEmpty())) {
-            nodeTypes = Collections.singletonList("jmix:editorialContent");
+            nodeTypes = Collections.singletonList("jmix:droppableContent");
         }
         // check write access
         if (!parentNode.hasPermission("jcr:addChildNodes")) {
