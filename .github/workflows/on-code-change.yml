@@ -71,7 +71,7 @@ jobs:
     name: Integration Tests (Standalone)
     needs: build
     runs-on: self-hosted
-    timeout-minutes: 60
+    timeout-minutes: 120
     steps:
       - uses: jahia/jahia-modules-action/helper@v2
       - uses: KengoTODA/actions-setup-docker-compose@main
@@ -108,6 +108,7 @@ jobs:
           incident_google_api_key_base64: ${{ secrets.INCIDENT_GOOGLE_PRIVATE_KEY_BASE64 }}
           zencrepes_secret: ${{ secrets.ZENCREPES_WEBHOOK_SECRET }}
           cypress_configuration_file: cypress.pull-requests.config.ts
+          timeout_minutes: 90
       - name: Test Report
         uses: dorny/test-reporter@v1
         if: success() || failure()
