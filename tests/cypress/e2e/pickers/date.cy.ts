@@ -13,22 +13,24 @@ import {ContentEditor} from '../../page-object/contentEditor';
 import {DatePicker} from '../../page-object/datePicker';
 import {JContent} from '../../page-object/jcontent';
 
+const visitDatePicker = () => {
+    cy.get('@datePicker').then(uuid => {
+        cy.visit(`/jahia/jcontent/severalLanguages/fr/content-folders/contents#(contentEditor:!((formKey:modal_0,isFullscreen:!t,lang:fr,mode:edit,uuid:'${uuid}')))`);
+    });
+}
+
 const saveAndCheck = () => {
     const datePicker = new DatePicker();
     const contentEditor = new ContentEditor();
     contentEditor.save();
-    cy.get('@datePicker').then(uuid => {
-        cy.visit(`/jahia/jcontent/severalLanguages/fr/content-folders/contents#(contentEditor:!((formKey:modal_0,isFullscreen:!t,lang:fr,mode:edit,uuid:'${uuid}')))`);
-    });
+    visitDatePicker();
     datePicker.checkTodayDate();
 };
 
 const deleteAndCheck = () => {
     const datePicker = new DatePicker();
     deleteNodeProperty('/sites/testsite/contents/contentEditorPickers', 'datepicker', 'en');
-    cy.get('@datePicker').then(uuid => {
-        cy.visit(`/jahia/jcontent/severalLanguages/en/content-folders/contents#(contentEditor:!((formKey:modal_0,isFullscreen:!t,lang:en,mode:edit,uuid:'${uuid}')))`);
-    });
+    visitDatePicker();
     datePicker.checkDate('');
 };
 
@@ -58,9 +60,7 @@ describe('Date picker tests', () => {
     it('Test Date Picker', () => {
         cy.login();
         const datePicker = new DatePicker();
-        cy.get('@datePicker').then(uuid => {
-            cy.visit(`/jahia/jcontent/severalLanguages/en/content-folders/contents#(contentEditor:!((formKey:modal_0,isFullscreen:!t,lang:en,mode:edit,uuid:'${uuid}')))`);
-        });
+        visitDatePicker();
         datePicker.checkDate('');
         datePicker.pickTodayDate();
         cy.get('body').click();
@@ -72,9 +72,7 @@ describe('Date picker tests', () => {
     it('Test without using picker', () => {
         cy.login();
         const datePicker = new DatePicker();
-        cy.get('@datePicker').then(uuid => {
-            cy.visit(`/jahia/jcontent/severalLanguages/fr/content-folders/contents#(contentEditor:!((formKey:modal_0,isFullscreen:!t,lang:fr,mode:edit,uuid:'${uuid}')))`);
-        });
+        visitDatePicker();
         datePicker.checkDate('');
         datePicker.typeTodayDate();
         cy.get('body').click();

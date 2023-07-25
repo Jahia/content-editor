@@ -48,7 +48,7 @@ describe('test copyFromOneLanguageToCurrentLanguage', () => {
         cy.logout();
     });
 
-    it('test', () => {
+    it('test the Copy from one language to the Current Language', () => {
         cy.login(editorLogin.username, editorLogin.password);
 
         addNode({
