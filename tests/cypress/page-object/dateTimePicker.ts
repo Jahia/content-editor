@@ -1,4 +1,4 @@
-import { DatePicker } from "./datePicker";
+import {DatePicker} from './datePicker';
 
 export class DateTimePicker extends DatePicker {
     protected getNowTime(separator: string): string {
@@ -13,15 +13,15 @@ export class DateTimePicker extends DatePicker {
         const nowTime = this.getNowTime(separator);
         const hourParts = nowTime.split(separator);
         const hourPartsInt = [];
-        for(let i = 0; i < hourParts.length; i++) {
-            hourPartsInt[i] = parseInt(hourParts[i]);
+        for (let i = 0; i < hourParts.length; i++) {
+            hourPartsInt[i] = parseInt(hourParts[i], 10);
         }
 
         if (hourPartsInt[1] >= 45) {
             hourPartsInt[0]++;
         }
 
-        if( hourPartsInt[1] <= 15 || hourPartsInt[1] >= 45) {
+        if (hourPartsInt[1] <= 15 || hourPartsInt[1] >= 45) {
             hourPartsInt[1] = 0;
         } else {
             hourPartsInt[1] = 30;
@@ -31,7 +31,6 @@ export class DateTimePicker extends DatePicker {
         const stringMinutes = hourPartsInt[1] < 10 ? `0${hourPartsInt[1]}` : hourPartsInt[1];
 
         return `${stringHour}${separator}${stringMinutes}`;
-
     }
 
     public getTimePicker(): Cypress.Chainable {
@@ -70,5 +69,4 @@ export class DateTimePicker extends DatePicker {
         const nowTime = `${this.getTodayDate('/')} ${this.getNowTime(':')}`;
         this.getTimePicker().should('have.value', nowTime);
     }
-
 }

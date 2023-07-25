@@ -17,7 +17,7 @@ const visitDatePicker = () => {
     cy.get('@datePicker').then(uuid => {
         cy.visit(`/jahia/jcontent/severalLanguages/fr/content-folders/contents#(contentEditor:!((formKey:modal_0,isFullscreen:!t,lang:fr,mode:edit,uuid:'${uuid}')))`);
     });
-}
+};
 
 const saveAndCheck = () => {
     const datePicker = new DatePicker();
@@ -48,7 +48,7 @@ describe('Date picker tests', () => {
             parentPathOrId: '/sites/testsite/contents',
             name: 'contentEditorPickers',
             primaryNodeType: 'qant:pickers'
-        })
+        });
     });
 
     beforeEach('Check datePicker is empty', () => {
