@@ -6,7 +6,10 @@ export class DateTimePicker extends DatePicker {
         const hours = date.getHours();
         const minutes = date.getMinutes();
 
-        return `${hours}${separator}${minutes}`;
+        const stringHour = hours < 10 ? `0${hours}` : hours;
+        const stringMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+        return `${stringHour}${separator}${stringMinutes}`;
     }
 
     protected nearestHalfHour(separator: string) {

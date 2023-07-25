@@ -31,6 +31,7 @@ const deleteAndCheck = () => {
     const datePicker = new DatePicker();
     deleteNodeProperty('/sites/testsite/contents/contentEditorPickers', 'datepicker', 'en');
     visitDatePicker();
+    cy.reload();
     datePicker.checkDate('');
 };
 
