@@ -88,5 +88,11 @@ export function register() {
         }
     };
 
+    if (window?.Anthracite?.nav) {
+        window.Anthracite.nav.pushState = () => {};
+        window.Anthracite.nav.pullState = () => {};
+        window.Anthracite.nav.onPopState = () => {};
+    }
+
     console.debug('%c Content Editor is activated', 'color: #3c8cba');
 }
