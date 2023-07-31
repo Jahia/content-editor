@@ -137,7 +137,7 @@ export const ContentEditorApi = () => {
         if (loaded.current) {
             unsetEditorConfigs();
         }
-    }, [history, location.pathname, locationWithoutEditors]); // eslint-disable-line
+    }, [history, location.pathname, locationWithoutEditors.hash]); // eslint-disable-line
 
     useEffect(() => {
         loaded.current = true;
