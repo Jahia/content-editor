@@ -1,8 +1,7 @@
 name: Nightly Test run
 
 on:
-  schedule:
-    - cron:  '0 0 * * *'
+  workflow_dispatch:
 
 jobs:
   integration-tests-cluster:
@@ -28,8 +27,9 @@ jobs:
           should_use_build_artifacts: false
           should_skip_artifacts: true
           should_skip_notifications: true
-          should_skip_testrail: false
+          should_skip_testrail: true
           should_skip_zencrepes: true
+          should_skip_pagerduty: true
           github_artifact_name: content-editor-cluster-artifacts-${{ github.run_number }}
           bastion_ssh_private_key: ${{ secrets.BASTION_SSH_PRIVATE_KEY_JAHIACI }}
           jahia_license: ${{ secrets.JAHIA_LICENSE_8X_FULL }}
