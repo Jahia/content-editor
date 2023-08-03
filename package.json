@@ -50,7 +50,7 @@
         "@material-ui/icons": "^3.0.1",
         "@material-ui/lab": "^3.0.0-alpha.30",
         "ckeditor4-react": "1.2.0",
-        "clsx": "^1.1.1",
+        "clsx": "^2.0.0",
         "connected-react-router": "^6.8.0",
         "dayjs": "1.8.21",
         "formik": "^2.2.5",
