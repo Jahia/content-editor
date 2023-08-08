@@ -1521,10 +1521,10 @@
     re-resizable "^6.9.9"
     to-px "^1.1.0"
 
-"@jahia/react-material@^3.0.5":
-  version "3.0.5"
-  resolved "https://registry.yarnpkg.com/@jahia/react-material/-/react-material-3.0.5.tgz#6a888a6d699524a0af069a0644db755e07bbf181"
-  integrity sha512-E5+Ba9wknBZC+mGtlJmkclYeGzyiYpev8aIFFV77dKZR/2QOQUHqLMnR6bK5WbdtkgHVqv2IQyhn5HgvPgZ4BQ==
+"@jahia/react-material@^3.0.6":
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/@jahia/react-material/-/react-material-3.0.6.tgz#aa55b8a95ae35ca0cc9f6a8740171dd4488798fd"
+  integrity sha512-AnluDT2SBRGzjYVFNg4UPoZ4eLwTB2lA+olvOQn7TqpK+eZBtTIMkuXtF7SZ+HOYt7PLTOH+Z4+RmUjSdmRBJQ==
   dependencies:
     lodash "^4.17.13"
     prop-types "^15.6.1"
