@@ -4,8 +4,6 @@ name: Sonar Analysis - Scheduled
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 4 * * 1,3,5' # At 4AM, on Monday, Wednesday and Friday
 
 env:
   MODULE_ID: content-editor
