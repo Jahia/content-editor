@@ -3,6 +3,7 @@ import {registerPickerActions} from './actions/registerPickerActions';
 import {Picker} from './Picker';
 import {registerPickerReducer} from '~/SelectorTypes/Picker/Picker.redux';
 import {Constants} from '~/SelectorTypes/Picker/Picker.constants';
+import {registerPickerDialogSelector} from './PickerDialogSelector';
 
 /**
  * If picker type is not specified, infer based on field value constraints
@@ -61,4 +62,5 @@ export const registerPicker = registry => {
     });
     registerPickerActions(registry);
     registerPickerReducer(registry);
+    registerPickerDialogSelector(registry);
 };

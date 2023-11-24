@@ -367,6 +367,15 @@
           "description": "Alternative to multiple dropdown when there are many values to select"
         }
       }
+    },
+    "damSelector": {
+      "selectorConfig": {
+        "label": "Jahia",
+        "description": "Pick a content from Jahia"
+      },
+      "dropDown": {
+        "emptyLabel": "Select a provider"
+      }
     }
   }
 }

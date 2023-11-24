@@ -4,7 +4,7 @@ import {useTranslation} from 'react-i18next';
 import {FieldPropTypes} from '~/ContentEditor.proptypes';
 import {ReferenceCard} from '~/DesignSystem/ReferenceCard';
 import {mergeDeep, set, toArray} from './Picker.utils';
-import {PickerDialog} from './PickerDialog/PickerDialog';
+// Import {PickerDialog} from './PickerDialog/PickerDialog';
 import {DisplayAction} from '@jahia/ui-extender';
 import {getButtonRenderer} from '~/utils';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
@@ -14,6 +14,7 @@ import {DefaultPickerConfig} from '~/SelectorTypes/Picker/configs/DefaultPickerC
 import {useFormikContext} from 'formik';
 import {OrderableValue} from '~/DesignSystem/OrderableValue/OrderableValue';
 import {useContentEditorConfigContext} from '~/contexts';
+import {PickerDialogSelector} from './PickerDialogSelector';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
@@ -153,11 +154,11 @@ export const Picker = ({field, value, editorContext, inputContext, onChange, onB
                     )}
                 </>}
 
-            <PickerDialog
+            <PickerDialogSelector
                 isOpen={isDialogOpen}
                 site={editorContext.site}
                 pickerConfig={pickerConfig}
-                initialSelectedItem={fieldData && fieldData.map(f => f.path)}
+                initialSelectedItem={fieldData && fieldData.map(({uuid, path}) => ({uuid, path}))}
                 accordionItemProps={mergeDeep({}, pickerConfig.accordionItem, parsedOptions.accordionItem)}
                 lang={lang}
                 isMultiple={field.multiple}

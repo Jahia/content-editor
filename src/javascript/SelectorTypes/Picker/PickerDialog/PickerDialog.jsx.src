@@ -36,35 +36,6 @@ const selector = state => ({
     language: state.contenteditor.ceLanguage
 });
 
-const Wrapper = ({isOpen, onClose, pickerConfig, inlineContainer, children}) => {
-    if (inlineContainer) {
-        return children;
-    }
-
-    return (
-        <Dialog
-            fullWidth
-            maxWidth="xl"
-            data-sel-role="picker-dialog"
-            data-sel-type={pickerConfig.key}
-            classes={{paper: styles.paper}}
-            open={isOpen}
-            TransitionComponent={Transition}
-            onClose={onClose}
-        >
-            {children}
-        </Dialog>
-    );
-};
-
-Wrapper.propTypes = {
-    isOpen: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired,
-    pickerConfig: configPropType.isRequired,
-    inlineContainer: PropTypes.bool,
-    children: PropTypes.node.isRequired
-};
-
 export const PickerDialog = ({
     isOpen,
     onClose,
@@ -74,8 +45,7 @@ export const PickerDialog = ({
     lang,
     isMultiple,
     accordionItemProps,
-    onItemSelection,
-    inlineContainer
+    onItemSelection
 }) => {
     const dispatch = useDispatch();
 
@@ -96,12 +66,15 @@ export const PickerDialog = ({
     }, [dispatch, pickerConfig.key, isOpen, isMultiple]);
 
     return (
-        <Wrapper {...{
-            isOpen,
-            onClose,
-            pickerConfig,
-            inlineContainer
-        }}
+        <Dialog
+            fullWidth
+            maxWidth="xl"
+            data-sel-role="picker-dialog"
+            data-sel-type={pickerConfig.key}
+            classes={{paper: styles.paper}}
+            open={isOpen}
+            TransitionComponent={Transition}
+            onClose={onClose}
         >
             <div className={clsx('flexFluid', 'flexRow_nowrap', styles.navigation)}>
                 <SelectionHandler site={site} pickerConfig={pickerConfig} accordionItemProps={accordionItemProps} initialSelectedItem={initialSelectedItem} lang={lang}>
@@ -124,7 +97,7 @@ export const PickerDialog = ({
                     <RightPanel pickerConfig={pickerConfig} accordionItemProps={accordionItemProps} isMultiple={isMultiple} lang={lang} onClose={onClose} onItemSelection={onItemSelection}/>
                 </SelectionHandler>
             </div>
-        </Wrapper>
+        </Dialog>
     );
 };
 
@@ -137,11 +110,9 @@ PickerDialog.propTypes = {
     accordionItemProps: PropTypes.object,
     lang: PropTypes.string,
     isMultiple: PropTypes.bool,
-    onItemSelection: PropTypes.func.isRequired,
-    inlineContainer: PropTypes.bool
+    onItemSelection: PropTypes.func.isRequired
 };
 
 PickerDialog.defaultValues = {
-    initialSelectedItem: [],
-    inlineContainer: false
+    initialSelectedItem: []
 };

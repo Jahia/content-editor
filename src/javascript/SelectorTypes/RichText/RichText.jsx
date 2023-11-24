@@ -4,12 +4,13 @@ import * as PropTypes from 'prop-types';
 import {FieldPropTypes} from '~/ContentEditor.proptypes';
 import {useQuery} from '@apollo/react-hooks';
 import {getCKEditorConfigurationPath} from './CKEditorConfiguration.gql-queries';
-import {ContentEditorContext, useContentEditorConfigContext, useContentEditorContext} from '~/contexts';
+import {ContentEditorContext, useContentEditorContext, useContentEditorConfigContext} from '~/contexts';
 import {useTranslation} from 'react-i18next';
 import {fillCKEditorPicker, getPickerValue} from './RichText.utils';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 import './RichText.scss';
 import {useContentEditorApiContext} from '~/contexts/ContentEditorApi/ContentEditorApi.context';
+// Import {DamPickerDialog} from '../DamSelector/PickerDialog';
 
 if (window.CKEDITOR) {
     window.CKEDITOR.focusManager._.blurDelay = 0;
@@ -79,8 +80,8 @@ export const RichText = ({field, id, value, onChange, onBlur}) => {
 
     const handlePickerDialog = (setUrl, type, params, dialog) => {
         const value = getPickerValue(dialog);
-
-        api.openPicker({
+        // Is Dam congfigured ? Dam selector return selection/cmp and popup
+        api.openDamPicker({
             type,
             value,
             setValue: pickerResult => {
@@ -89,6 +90,15 @@ export const RichText = ({field, id, value, onChange, onBlur}) => {
             site: editorContext.site,
             lang
         });
+        // Api.openPicker({
+        //     type,
+        //     value,
+        //     setValue: pickerResult => {
+        //         fillCKEditorPicker(setUrl, dialog, type === 'editoriallink', pickerResult.length > 0 && pickerResult[0]);
+        //     },
+        //     site: editorContext.site,
+        //     lang
+        // });
     };
 
     const config = {

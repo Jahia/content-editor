@@ -1,7 +1,7 @@
 import React from 'react';
 import {registry} from '@jahia/ui-extender';
 import {registerActions} from './registerActions';
-import {ContentEditorApi, ContentPickerApi} from './ContentEditorApi';
+import {ContentEditorApi, ContentPickerApi, DamPickerApi} from './ContentEditorApi';
 import {registerSelectorTypes} from '~/SelectorTypes';
 import {pcNavigateTo} from '~/redux/pagecomposer.redux-actions';
 import {registerReducer} from './registerReducer';
@@ -22,6 +22,7 @@ export function register() {
                     <ContentEditorApi/>
                 </ErrorBoundary>
                 <ContentPickerApi/>
+                <DamPickerApi/>
                 {next}
             </ContentEditorApiContextProvider>
         )

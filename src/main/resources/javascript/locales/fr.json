@@ -363,6 +363,15 @@
           "description": "Sélectionner de nombreuses valeurs à partir d'une liste"
         }
       }
+    },
+    "damSelector": {
+      "selectorConfig": {
+        "label": "Jahia",
+        "description": "Sélectionner un contenu à partir de Jahia"
+      },
+      "dropDown": {
+        "emptyLabel": "Sélectionner une source"
+      }
     }
   }
 }

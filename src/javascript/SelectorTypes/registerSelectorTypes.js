@@ -11,6 +11,7 @@ import {registerBoolean} from './Boolean';
 import {registerPicker} from './Picker';
 import {registerSystemName} from './SystemName';
 import {registerMultipleLeftRightSelector} from './MultipleLeftRightSelector';
+// Import {registerDamSelector} from "./DamSelector";
 
 export const registerSelectorTypes = ceRegistry => {
     registerSelectorTypesOnChange(ceRegistry);
@@ -24,6 +25,7 @@ export const registerSelectorTypes = ceRegistry => {
     registerDateTimePicker(ceRegistry);
     registerBoolean(ceRegistry);
     registerPicker(ceRegistry);
+    // RegisterDamSelector(ceRegistry);
     registerChoiceList(ceRegistry);
     registerSystemName(ceRegistry);
     registerMultipleLeftRightSelector(ceRegistry);
