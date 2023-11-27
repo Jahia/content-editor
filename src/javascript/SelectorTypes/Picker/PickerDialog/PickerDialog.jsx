@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {Dialog, Slide} from '@material-ui/core';
+// import {Dialog, Slide} from '@material-ui/core';
+import {Dialog} from '~/SelectorTypes/Picker/Dialog';
 import styles from './PickerDialog.scss';
 import {
     cePickerClearSelection,
@@ -20,15 +21,15 @@ import {SelectionHandler} from '~/SelectorTypes/Picker/PickerDialog/SelectionHan
 import {PickerSiteSwitcher} from '~/SelectorTypes/Picker/PickerDialog/PickerSiteSwitcher';
 import clsx from 'clsx';
 
-const Transition = props => (
-    <Slide direction="up"
-           {...props}
-           onEntered={node => {
-               // Remove transform style after transition to fix internal positioning
-               node.style = {};
-           }}
-    />
-);
+// const Transition = props => (
+//     <Slide direction="up"
+//            {...props}
+//            onEntered={node => {
+//                // Remove transform style after transition to fix internal positioning
+//                node.style = {};
+//            }}
+//     />
+// );
 
 const selector = state => ({
     mode: state.contenteditor.picker.mode,
@@ -36,27 +37,42 @@ const selector = state => ({
     language: state.contenteditor.ceLanguage
 });
 
+// const Wrapper = ({isOpen, onClose, pickerConfig, inlineContainer, children}) => {
+//     if (inlineContainer) {
+//         return children;
+//     }
+//
+//     return (
+//         <Dialog
+//             fullWidth
+//             maxWidth="xl"
+//             data-sel-role="picker-dialog"
+//             data-sel-type={pickerConfig.key}
+//             classes={{paper: styles.paper}}
+//             open={isOpen}
+//             TransitionComponent={Transition}
+//             onClose={onClose}
+//         >
+//             {children}
+//         </Dialog>
+//     );
+// };
+
 const Wrapper = ({isOpen, onClose, pickerConfig, inlineContainer, children}) => {
     if (inlineContainer) {
         return children;
     }
 
     return (
-        <Dialog
-            fullWidth
-            maxWidth="xl"
-            data-sel-role="picker-dialog"
-            data-sel-type={pickerConfig.key}
-            classes={{paper: styles.paper}}
-            open={isOpen}
-            TransitionComponent={Transition}
-            onClose={onClose}
-        >
+        <Dialog {...{
+            isOpen,
+            onClose,
+            pickerConfig
+        }}>
             {children}
         </Dialog>
     );
 };
-
 Wrapper.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
