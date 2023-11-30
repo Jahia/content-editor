@@ -13,26 +13,31 @@ export const getPicker = (damSelectorConfig, field) => {
     return selectorType;
 };
 
-export const getDamSelectorConfig = siteNode => {
+// Export const getPickerDialogSelectorConfig = siteNode => {
+//     const installedModules = siteNode?.installedModulesWithAllDependencies;
+//     return registry.find({type: 'pickerDialogSelectorConfiguration'}).filter(({module}) => installedModules.includes(module));
+// };
+
+export const getPickerConfiguration = siteNode => {
     const installedModules = siteNode?.installedModulesWithAllDependencies;
-    return registry.find({type: 'damSelectorConfiguration'}).filter(({module}) => installedModules.includes(module));
+    return registry.find({type: 'pickerConfiguration'}).filter(({module}) => installedModules.includes(module));
 };
 
-export const getValueNodeTypes = weakNode => {
-    const superTypes = weakNode?.primaryNodeType.supertypes?.map(({name}) => name) || [];
-    const mixinTypes = weakNode?.mixinTypes.map(({name}) => name) || [];
-    const primaryNodeType = weakNode?.primaryNodeType?.name;
+export const getValueNodeTypes = node => {
+    const superTypes = node?.primaryNodeType.supertypes?.map(({name}) => name) || [];
+    const mixinTypes = node?.mixinTypes.map(({name}) => name) || [];
+    const primaryNodeType = node?.primaryNodeType?.name;
     return [primaryNodeType, ...superTypes, ...mixinTypes];
 };
 
-export const getSelectorOptionsTypesTable = field => {
-    const selectorOptionsTypesObject = field.selectorOptions?.find(({name}) => name === 'pickerConfig.selectableTypesTable');
-    if (!selectorOptionsTypesObject) {
-        return [];
-    }
-
-    return selectorOptionsTypesObject.value ? [selectorOptionsTypesObject.value] : (selectorOptionsTypesObject.values || []);
-};
+// Export const getSelectorOptionsTypesTable = field => {
+//     const selectorOptionsTypesObject = field.selectorOptions?.find(({name}) => name === 'pickerConfig.selectableTypesTable');
+//     if (!selectorOptionsTypesObject) {
+//         return [];
+//     }
+//
+//     return selectorOptionsTypesObject.value ? [selectorOptionsTypesObject.value] : (selectorOptionsTypesObject.values || []);
+// };
 
 export const getValueChoiceListConfig = ({damSelectorConfigs, selectorOptionsTypesTable, valueNodeTypes}) => {
     return damSelectorConfigs.find(({types, key}) => {

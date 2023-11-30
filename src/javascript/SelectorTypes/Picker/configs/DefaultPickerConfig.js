@@ -4,6 +4,7 @@ import {useQuery} from '@apollo/react-hooks';
 import {ContentPickerFilledQuery} from './ContentPicker.gql-queries';
 import {encodeJCRPath} from '~/utils';
 import {useContentEditorContext} from '~/contexts';
+import {PickerDialog} from '~/SelectorTypes/Picker';
 
 const usePickerInputData = uuids => {
     const {lang} = useContentEditorContext();

@@ -15,10 +15,10 @@ import PropTypes from 'prop-types';
 // Import {mergeDeep} from "../Picker.utils";
 import {PickerDialog} from '../PickerDialog';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
-import styles from "./PickerDialogSelector.scss";
-import {DialogContent, DialogTitle} from "@material-ui/core";
+import styles from './PickerDialogSelector.scss';
+import {DialogContent, DialogTitle} from '@material-ui/core';
 import {Dialog} from '~/SelectorTypes/Picker/Dialog';
-import clsx from "clsx";
+import clsx from 'clsx';
 
 // Create a dropdown list with by default "jahia", then get from the config the list of DAM to enable <name><selectorType>
 export const PickerDialogSelector = ({
@@ -104,19 +104,19 @@ export const PickerDialogSelector = ({
     //     valueNodeTypes
     // });
 
-
     return (
         <Dialog {...{
             isOpen,
             onClose,
             pickerConfig
-        }}>
+        }}
+        >
             <DialogTitle id="customized-dialog-title">
                 <ul>
                     {pickerDialogSelectorConfigs.map(({key, label}) => (
-                            <li key={key}>
-                                <a href="#" onClick={() => setIsVisible(key)}>{t(label)}</a>
-                            </li>
+                        <li key={key}>
+                            <a href="#" onClick={() => setIsVisible(key)}>{t(label)}</a>
+                        </li>
                         )
                     )}
                 </ul>
@@ -124,9 +124,8 @@ export const PickerDialogSelector = ({
             <DialogContent dividers id="PickerWebHook">
                 {pickerDialogSelectorConfigs.map(({key, pickerDialog: Component}) => {
                     return (
-                        <div className={clsx({[styles.displayNone]:isVisible !== key})}>
+                        <div key={key} className={clsx({[styles.displayNone]: isVisible !== key})}>
                             <Component {...{
-                                key,
                                 isOpen,
                                 site,
                                 pickerConfig,

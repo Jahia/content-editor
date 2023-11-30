@@ -1,7 +1,7 @@
-import {Dialog as MuiDialog, Slide} from "@material-ui/core";
-import styles from "./Dialog.scss";
-import React from "react";
-import PropTypes from "prop-types";
+import {Dialog as MuiDialog, Slide} from '@material-ui/core';
+import styles from './Dialog.scss';
+import React from 'react';
+import PropTypes from 'prop-types';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 const DefaultTransition = props => (
     <Slide direction="up"

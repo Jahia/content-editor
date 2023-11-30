@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-// import {Dialog, Slide} from '@material-ui/core';
+// Import {Dialog, Slide} from '@material-ui/core';
 import {Dialog} from '~/SelectorTypes/Picker/Dialog';
 import styles from './PickerDialog.scss';
 import {
@@ -21,7 +21,7 @@ import {SelectionHandler} from '~/SelectorTypes/Picker/PickerDialog/SelectionHan
 import {PickerSiteSwitcher} from '~/SelectorTypes/Picker/PickerDialog/PickerSiteSwitcher';
 import clsx from 'clsx';
 
-// const Transition = props => (
+// Const Transition = props => (
 //     <Slide direction="up"
 //            {...props}
 //            onEntered={node => {
@@ -37,7 +37,7 @@ const selector = state => ({
     language: state.contenteditor.ceLanguage
 });
 
-// const Wrapper = ({isOpen, onClose, pickerConfig, inlineContainer, children}) => {
+// Const Wrapper = ({isOpen, onClose, pickerConfig, inlineContainer, children}) => {
 //     if (inlineContainer) {
 //         return children;
 //     }
@@ -68,11 +68,13 @@ const Wrapper = ({isOpen, onClose, pickerConfig, inlineContainer, children}) => 
             isOpen,
             onClose,
             pickerConfig
-        }}>
+        }}
+        >
             {children}
         </Dialog>
     );
 };
+
 Wrapper.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
