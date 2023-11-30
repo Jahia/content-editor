@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import {ContextualMenu} from '@jahia/ui-extender';
 import PropTypes from 'prop-types';
 import {useFileDrop, useNodeDrop} from '@jahia/jcontent';
-import styles from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout/ContentTable/ContentTable.scss';
+import styles from '~/SelectorTypes/Picker/JahiaPicker/RightPanel/ContentLayout/ContentTable/ContentTable.scss';
 import {booleanValue} from '~/SelectorTypes/Picker/Picker.utils';
 
 export const Row = ({

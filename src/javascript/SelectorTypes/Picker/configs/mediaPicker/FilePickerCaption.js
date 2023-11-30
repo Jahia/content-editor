@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import styles from '~/SelectorTypes/Picker/PickerDialog/RightPanel/PickerSelection/Selection.scss';
+import styles from '~/SelectorTypes/Picker/JahiaPicker/RightPanel/PickerSelection/Selection.scss';
 import {Typography} from '@jahia/moonstone';
 import React from 'react';
 import {FileSize, NodeIcon} from '@jahia/jcontent';

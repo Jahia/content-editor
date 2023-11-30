@@ -5,7 +5,7 @@ import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 import {Button, Typography} from '@jahia/moonstone';
 import {shallowEqual, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
-import ContentLayout from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout';
+import ContentLayout from '~/SelectorTypes/Picker/JahiaPicker/RightPanel/ContentLayout';
 import clsx from 'clsx';
 import {DisplayAction, DisplayActions, registry} from '@jahia/ui-extender';
 import {getButtonRenderer} from '~/utils';
@@ -14,7 +14,7 @@ import {Search} from './Search';
 import {PickerSiteSwitcher} from '~/SelectorTypes/Picker';
 import {jcontentUtils} from '@jahia/jcontent';
 import {replaceFragmentsInDocument} from '@jahia/data-helper';
-import {GET_PICKER_NODE_UUID} from '~/SelectorTypes/Picker/PickerDialog/PickerDialog.gql-queries';
+import {GET_PICKER_NODE_UUID} from '~/SelectorTypes/Picker/JahiaPicker/JahiaPicker.gql-queries';
 import {useQuery, useApolloClient} from '@apollo/react-hooks';
 
 const ButtonRenderer = getButtonRenderer({defaultButtonProps: {variant: 'ghost'}});

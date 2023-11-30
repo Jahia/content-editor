@@ -30,7 +30,7 @@ import {
 } from '@jahia/jcontent';
 import {registry} from '@jahia/ui-extender';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
-import {Row} from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout/ContentTable/Row';
+import {Row} from '~/SelectorTypes/Picker/JahiaPicker/RightPanel/ContentLayout/ContentTable/Row';
 import clsx from 'clsx';
 
 const reduxActions = {
