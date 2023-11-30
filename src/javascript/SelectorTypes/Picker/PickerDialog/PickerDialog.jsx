@@ -2,24 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Dialog, Slide} from '@material-ui/core';
 import styles from './PickerDialog.scss';
-// Import {
-//     cePickerClearSelection,
-//     cePickerMode,
-//     cePickerPath,
-//     cePickerSetMultiple,
-//     cePickerSetPage,
-//     cePickerSetSearchTerm
-// } from '~/SelectorTypes/Picker/Picker.redux';
-// import {batchActions} from 'redux-batched-actions';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
-// Import {booleanValue} from '~/SelectorTypes/Picker/Picker.utils';
-// import {useDispatch} from 'react-redux';
-// import RightPanel from './RightPanel';
-// import {ContentNavigation} from '@jahia/jcontent';
-// import {SelectionHandler} from '~/SelectorTypes/Picker/PickerDialog/SelectionHandler';
-// import {PickerSiteSwitcher} from '~/SelectorTypes/Picker/PickerDialog/PickerSiteSwitcher';
-import clsx from 'clsx';
-import {JahiaPicker} from '~/SelectorTypes/Picker';
+import {getInitialOption, getPickerConfigsEnabled, JahiaPicker} from '~/SelectorTypes/Picker';
+import {useValueTypes} from '~/SelectorTypes/Picker/PickerDialog/useValueTypes';
+import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
+import {useNodeInfo} from '@jahia/data-helper';
+import {useTranslation} from 'react-i18next';
+import {PickerSelector} from '~/SelectorTypes/Picker/PickerDialog/PickerSelector';
 
 const Transition = props => (
     <Slide direction="up"
@@ -30,12 +19,6 @@ const Transition = props => (
            }}
     />
 );
-
-// Const selector = state => ({
-//     mode: state.contenteditor.picker.mode,
-//     siteKey: state.contenteditor.picker.site,
-//     language: state.contenteditor.ceLanguage
-// });
 
 export const PickerDialog = ({
     isOpen,
@@ -48,23 +31,64 @@ export const PickerDialog = ({
     accordionItemProps,
     onItemSelection
 }) => {
-    // Const dispatch = useDispatch();
-    //
-    // useEffect(() => {
-    //     if (isOpen) {
-    //         dispatch(batchActions([
-    //             cePickerSetSearchTerm(''),
-    //             cePickerSetPage(0),
-    //             cePickerSetMultiple(isMultiple)
-    //         ]));
-    //     }
-    //
-    //     return () => {
-    //         if (isOpen) {
-    //             dispatch(cePickerClearSelection());
-    //         }
-    //     };
-    // }, [dispatch, pickerConfig.key, isOpen, isMultiple]);
+    const [{uuid}] = initialSelectedItem;
+    const {t} = useTranslation();
+
+    // Check modules loaded to prepare the selector
+    const siteNodeInfo = useNodeInfo({path: `/sites/${site}`}, {
+        getSiteInstalledModules: true
+    });
+
+    // Get all the nodes types associated to the value. Assumption : all the nodes are from the same type
+    const valueNodeTypes = useValueTypes(uuid) || [];
+
+    const error = siteNodeInfo?.error || valueNodeTypes?.error;
+    const loading = siteNodeInfo?.loading || valueNodeTypes?.loading;
+
+    if (error) {
+        const message = t(
+            'jcontent:label.jcontent.error.queryingContent',
+            {details: error.message ? error.message : ''}
+        );
+
+        console.warn(message);
+    }
+
+    if (loading) {
+        return <LoaderOverlay/>;
+    }
+
+    const siteNode = siteNodeInfo.node.site;
+    const {valueTypes} = valueNodeTypes;
+    // Get Dam Modules selector config
+    const pickerConfigsEnabled = getPickerConfigsEnabled(siteNode);
+
+    if (pickerConfigsEnabled.length === 1) {
+        return (
+            <Dialog
+                fullWidth
+                maxWidth="xl"
+                data-sel-role="picker-dialog"
+                data-sel-type={pickerConfig.key}
+                classes={{paper: styles.paper}}
+                open={isOpen}
+                TransitionComponent={Transition}
+                onClose={onClose}
+            >
+                <JahiaPicker {...{
+                        isOpen,
+                        onClose,
+                        site,
+                        pickerConfig,
+                        initialSelectedItem: initialSelectedItem && initialSelectedItem.map(f => f.path),
+                        accordionItemProps,
+                        lang,
+                        isMultiple,
+                        onItemSelection}}/>
+
+            </Dialog>
+        );
+    }
 
     return (
         <Dialog
@@ -77,20 +101,63 @@ export const PickerDialog = ({
             TransitionComponent={Transition}
             onClose={onClose}
         >
-            <div className={clsx('flexFluid', 'flexRow_nowrap', styles.navigation)}>
-                <JahiaPicker {...{
-                    isOpen,
-                    onClose,
-                    site,
-                    pickerConfig,
-                    initialSelectedItem,
-                    accordionItemProps,
-                    lang,
-                    isMultiple,
-                    onItemSelection}}/>
-            </div>
+            <PickerSelector {...{
+                pickerConfigsEnabled,
+                initialOption: getInitialOption({pickerConfigsEnabled, valueTypes}),
+                isOpen,
+                onClose,
+                site,
+                pickerConfig,
+                initialSelectedItem,
+                accordionItemProps,
+                lang,
+                isMultiple,
+                onItemSelection}}/>
         </Dialog>
     );
+
+    // Return (
+    //     <Dialog
+    //         fullWidth
+    //         maxWidth="xl"
+    //         data-sel-role="picker-dialog"
+    //         data-sel-type={pickerConfig.key}
+    //         classes={{paper: styles.paper}}
+    //         open={isOpen}
+    //         TransitionComponent={Transition}
+    //         onClose={onClose}
+    //     >
+    //         <DialogTitle id="customized-dialog-title">
+    //             <ul>
+    //                 {pickerConfigsEnabled.map(({key, pickerDialog: {label}}) => (
+    //                     <li key={key}>
+    //                         <a href="#" onClick={() => setIsVisible(key)}>{t(label)}</a>
+    //                     </li>
+    //                     )
+    //                 )}
+    //             </ul>
+    //         </DialogTitle>
+    //         <DialogContent dividers id="PickerWebHook">
+    //             {pickerConfigsEnabled.map(({key, pickerDialog: {cmp: Component}}) => {
+    //                 return (
+    //                     <div key={key} className={clsx('flexFluid', 'flexRow_nowrap', styles.navigation, {[styles.displayNone]: isVisible !== key})}>
+    //                         <Component {...{
+    //                             isOpen,
+    //                             site,
+    //                             pickerConfig,
+    //                             initialSelectedItem: initialSelectedItem && initialSelectedItem.map(f => f.path),
+    //                             accordionItemProps,
+    //                             lang,
+    //                             isMultiple,
+    //                             onClose,
+    //                             onItemSelection
+    //                         }}/>
+    //                     </div>
+    //                 );
+    //             })}
+    //         </DialogContent>
+    //     </Dialog>
+    // );
 };
 
 PickerDialog.propTypes = {

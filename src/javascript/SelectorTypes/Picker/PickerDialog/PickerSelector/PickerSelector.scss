@@ -1,0 +1,43 @@
+.picker_wrapper {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    gap: var(--spacing-medium);
+
+    margin: 40px;
+}
+
+.picker_header {
+    gap: var(--spacing-small);
+    padding: var(--spacing-nano);
+
+    border-radius: 4px;
+    background-color: var(--color-light);
+}
+
+.picker_header_selector {
+    min-width: 110px;
+}
+
+.picker_body {
+    border-radius: 4px;
+    background: var(--color-light);
+
+    > * {
+        transition: opacity ease-in 0.8s;
+    }
+
+    > *:not(.isVisible) {
+        position: absolute;
+        visibility: hidden;
+        opacity: 0;
+    }
+
+    > .isVisible {
+        visibility: visible;
+        opacity: 1;
+    }
+}

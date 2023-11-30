@@ -157,7 +157,7 @@ export const Picker = ({field, value, editorContext, inputContext, onChange, onB
                 isOpen={isDialogOpen}
                 site={editorContext.site}
                 pickerConfig={pickerConfig}
-                initialSelectedItem={fieldData && fieldData.map(f => f.path)}
+                initialSelectedItem={fieldData && fieldData.map(({uuid, path}) => ({uuid, path}))}
                 accordionItemProps={mergeDeep({}, pickerConfig.accordionItem, parsedOptions.accordionItem)}
                 lang={lang}
                 isMultiple={field.multiple}

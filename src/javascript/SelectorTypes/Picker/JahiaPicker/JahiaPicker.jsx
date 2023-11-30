@@ -16,6 +16,8 @@ import RightPanel from './RightPanel';
 import {ContentNavigation} from '@jahia/jcontent';
 import {SelectionHandler} from '~/SelectorTypes/Picker/JahiaPicker/SelectionHandler';
 import {PickerSiteSwitcher} from '~/SelectorTypes/Picker/JahiaPicker/PickerSiteSwitcher';
+import clsx from 'clsx';
+import styles from './JahiaPicker.scss';
 
 const selector = state => ({
     mode: state.contenteditor.picker.mode,
@@ -53,25 +55,27 @@ export const JahiaPicker = ({
     }, [dispatch, pickerConfig.key, isOpen, isMultiple]);
 
     return (
-        <SelectionHandler site={site} pickerConfig={pickerConfig} accordionItemProps={accordionItemProps} initialSelectedItem={initialSelectedItem} lang={lang}>
-            {booleanValue(pickerConfig.pickerDialog.displayTree) && (
-                <aside>
-                    <ContentNavigation
-                        isReversed={false}
-                        header={(booleanValue(pickerConfig.pickerDialog.displaySiteSwitcher) && (
-                            <div>
-                                <PickerSiteSwitcher pickerConfig={pickerConfig} accordionItemProps={accordionItemProps}/>
-                            </div>
-                        ))}
-                        accordionItemTarget={pickerConfig.key}
-                        accordionItemProps={accordionItemProps}
-                        selector={selector}
-                        handleNavigationAction={(mode, path) => (batchActions([cePickerPath(path), cePickerMode(mode)]))}
-                    />
-                </aside>
-            )}
-            <RightPanel pickerConfig={pickerConfig} accordionItemProps={accordionItemProps} isMultiple={isMultiple} lang={lang} onClose={onClose} onItemSelection={onItemSelection}/>
-        </SelectionHandler>
+        <div className={clsx('flexFluid', 'flexRow_nowrap', styles.navigation)}>
+            <SelectionHandler site={site} pickerConfig={pickerConfig} accordionItemProps={accordionItemProps} initialSelectedItem={initialSelectedItem} lang={lang}>
+                {booleanValue(pickerConfig.pickerDialog.displayTree) && (
+                    <aside>
+                        <ContentNavigation
+                            isReversed={false}
+                            header={(booleanValue(pickerConfig.pickerDialog.displaySiteSwitcher) && (
+                                <div>
+                                    <PickerSiteSwitcher pickerConfig={pickerConfig} accordionItemProps={accordionItemProps}/>
+                                </div>
+                            ))}
+                            accordionItemTarget={pickerConfig.key}
+                            accordionItemProps={accordionItemProps}
+                            selector={selector}
+                            handleNavigationAction={(mode, path) => (batchActions([cePickerPath(path), cePickerMode(mode)]))}
+                        />
+                    </aside>
+                )}
+                <RightPanel pickerConfig={pickerConfig} accordionItemProps={accordionItemProps} isMultiple={isMultiple} lang={lang} onClose={onClose} onItemSelection={onItemSelection}/>
+            </SelectionHandler>
+        </div>
     );
 };
 
