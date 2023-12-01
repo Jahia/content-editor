@@ -1,17 +1,20 @@
-import {registry} from '@jahia/ui-extender';
 
-export const getValueNodeTypes = weakNode => {
-    const superTypes = weakNode?.primaryNodeType.supertypes?.map(({name}) => name) || [];
-    const mixinTypes = weakNode?.mixinTypes.map(({name}) => name) || [];
-    const primaryNodeType = weakNode?.primaryNodeType?.name;
-    return [primaryNodeType, ...superTypes, ...mixinTypes];
-};
+export const formatInitialSelectedItem = value => {
+    if (!value) {
+        return [{}];
+    }
 
-export const getPickerConfigsEnabled = siteNode => {
-    const installedModules = siteNode?.installedModulesWithAllDependencies;
-    return registry.find({type: 'pickerConfiguration'}).filter(({module}) => installedModules.includes(module));
-};
+    if (typeof value === 'string') {
+        return [{path: value}];
+    }
 
-export const getInitialOption = ({pickerConfigsEnabled, valueTypes}) => {
-    return pickerConfigsEnabled.find(({selectableTypes}) => selectableTypes.filter(selectableType => valueTypes.includes(selectableType)).length);
+    if (Array.isArray(value)) {
+        return value.map(item => {
+            if (typeof item === 'string') {
+                return {path: value};
+            }
+
+            return item;
+        });
+    }
 };

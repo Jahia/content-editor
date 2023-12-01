@@ -3,7 +3,8 @@ import {resolveSelectorType} from './resolveSelectorType';
 import {registry} from '@jahia/ui-extender';
 import {Category} from './Category';
 import {Text} from './Text';
-import {Picker} from './Picker';
+// Import {Picker} from './Picker';
+import {PickerWrapper} from './Picker';
 import {ChoiceList} from './ChoiceList';
 
 jest.mock('@jahia/jcontent', () => {
@@ -54,18 +55,18 @@ describe('Selector Types', () => {
                 selectorType: 'Picker',
                 selectorOptions: [{name: 'type', value: 'file'}]
             });
-            expect(selector.cmp).toEqual(Picker);
+            expect(selector.cmp).toEqual(PickerWrapper);
             expect(selector.pickerConfig.key).toEqual('file');
 
             selector = resolveSelectorType({
                 selectorType: 'Picker',
                 selectorOptions: [{name: 'type', value: 'editorial'}]
             });
-            expect(selector.cmp).toEqual(Picker);
+            expect(selector.cmp).toEqual(PickerWrapper);
             expect(selector.pickerConfig.key).toEqual('editorial');
 
             selector = resolveSelectorType({selectorType: 'Picker', selectorOptions: [{name: 'type', value: 'image'}]});
-            expect(selector.cmp).toEqual(Picker);
+            expect(selector.cmp).toEqual(PickerWrapper);
             expect(selector.pickerConfig.key).toEqual('image');
         });
 

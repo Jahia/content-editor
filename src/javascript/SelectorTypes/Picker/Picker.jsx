@@ -14,10 +14,11 @@ import {DefaultPickerConfig} from '~/SelectorTypes/Picker/configs/DefaultPickerC
 import {useFormikContext} from 'formik';
 import {OrderableValue} from '~/DesignSystem/OrderableValue/OrderableValue';
 import {useContentEditorConfigContext} from '~/contexts';
+import {DamPropsTypes} from '~/SelectorTypes/Picker/PickerWrapper';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
-export const Picker = ({field, value, editorContext, inputContext, onChange, onBlur}) => {
+export const Picker = ({dam, field, value, editorContext, inputContext, onChange, onBlur}) => {
     const {t} = useTranslation('content-editor');
     const {lang} = useContentEditorConfigContext();
 
@@ -37,9 +38,14 @@ export const Picker = ({field, value, editorContext, inputContext, onChange, onB
     const pickerConfig = mergeDeep({}, DefaultPickerConfig, inputContext.selectorType.pickerConfig, parsedOptions.pickerConfig);
     const [isDialogOpen, setDialogOpen] = useState(false);
     const {setFieldValue, setFieldTouched} = useFormikContext();
+
+    const usePickerInputData = dam.currentPickerConfiguration.module === 'default' ?
+        pickerConfig.pickerInput.usePickerInputData :
+        dam.currentPickerConfiguration.pickerInput.usePickerInputData;
+
     const {
         fieldData, error, loading, notFound
-    } = pickerConfig.pickerInput.usePickerInputData(value && toArray(value));
+    } = usePickerInputData(value && toArray(value));
 
     if (error) {
         const message = t(
@@ -154,6 +160,7 @@ export const Picker = ({field, value, editorContext, inputContext, onChange, onB
                 </>}
 
             <PickerDialog
+                dam={dam}
                 isOpen={isDialogOpen}
                 site={editorContext.site}
                 pickerConfig={pickerConfig}
@@ -174,7 +181,8 @@ Picker.propTypes = {
     field: FieldPropTypes.isRequired,
     inputContext: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
-    onBlur: PropTypes.func.isRequired
+    onBlur: PropTypes.func.isRequired,
+    dam: DamPropsTypes.isRequired
 };
 
 Picker.displayName = 'Picker';

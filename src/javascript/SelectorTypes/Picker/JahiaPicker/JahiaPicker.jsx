@@ -55,7 +55,7 @@ export const JahiaPicker = ({
     }, [dispatch, pickerConfig.key, isOpen, isMultiple]);
 
     return (
-        <div className={clsx('flexFluid', 'flexRow_nowrap', styles.navigation)}>
+        <div className={clsx('flexFluid', 'flexRow_nowrap', styles.navigation, styles.bgWhite)}>
             <SelectionHandler site={site} pickerConfig={pickerConfig} accordionItemProps={accordionItemProps} initialSelectedItem={initialSelectedItem} lang={lang}>
                 {booleanValue(pickerConfig.pickerDialog.displayTree) && (
                     <aside>

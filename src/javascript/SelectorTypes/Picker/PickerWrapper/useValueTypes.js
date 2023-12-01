@@ -1,6 +1,6 @@
 import {useQuery} from '@apollo/react-hooks';
 import {valueTypesQuery} from './valueTypes.gql-queries';
-import {getValueNodeTypes} from './Pickers.utils';
+import {getValueNodeTypes} from './PickersWrapper.utils';
 
 export const useValueTypes = uuid => {
     const {data, error, loading} = useQuery(valueTypesQuery, {

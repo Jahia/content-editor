@@ -26,12 +26,13 @@
     border-radius: 4px;
     background: var(--color-light);
 
-    > * {
-        transition: opacity ease-in 0.8s;
-    }
+    //> * {
+    //    transition: opacity ease-in 0.8s;
+    //}
 
     > *:not(.isVisible) {
         position: absolute;
+
         visibility: hidden;
         opacity: 0;
     }

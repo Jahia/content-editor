@@ -5,6 +5,7 @@ import styles from './PickerSelector.scss';
 import PropTypes from 'prop-types';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 import clsx from 'clsx';
+import {PickerWrapperConfigPropsTypes} from '~/SelectorTypes/Picker/PickerWrapper/PickerWrapper.proptypes';
 
 // Create a dropdown list with by default "jahia", then get from the config the list of DAM to enable <name><selectorType>
 export const PickerSelector = ({
@@ -57,7 +58,7 @@ export const PickerSelector = ({
 
     return (
         // Maybe you don't need picker-wrapper
-        <div className={clsx('flexCol', styles.picker_wrapper)}>
+        <div className={clsx('flexCol_nowrap', styles.picker_wrapper)}>
             <div className={clsx('flexRow_center', 'alignCenter', styles.picker_header)} {...props}>
                 <Typography variant="body" weight="bold">{t('content-editor:label.contentEditor.selectorTypes.picker.dialog.dropdown.label')}</Typography>
                 <Dropdown
@@ -69,11 +70,12 @@ export const PickerSelector = ({
                     onChange={(evt, item) => handleOnChange(item)}
                 />
             </div>
-            <div className={clsx('flexFluid', styles.picker_body)}>
+            <div className={clsx('flexFluid', 'flexCol_nowrap', styles.picker_body)}>
                 {pickerConfigsEnabled.map(({key, pickerDialog: {cmp: Component}}) => {
                     return (
-                        <div key={key} className={currentOption.key === key ? 'isVisible' : null}>
+                        <div key={key} className={clsx('flexFluid', 'flexCol_nowrap', currentOption.key === key ? styles.isVisible : null)}>
                             <Component {...{
+                                className: 'flexFluid',
                                 isOpen,
                                 site,
                                 pickerConfig,
@@ -92,19 +94,9 @@ export const PickerSelector = ({
     );
 };
 
-const PickerConfigPropsTypes = PropTypes.shape({
-    key: PropTypes.string.isRequired,
-    pickerDialog: PropTypes.shape({
-        cmp: PropTypes.elementType.isRequired,
-        label: PropTypes.string.isRequired,
-        description: PropTypes.string,
-        icon: PropTypes.string
-    })
-});
-
 PickerSelector.propTypes = {
-    pickerConfigsEnabled: PropTypes.arrayOf(PickerConfigPropsTypes),
-    initialOption: PickerConfigPropsTypes,
+    pickerConfigsEnabled: PropTypes.arrayOf(PickerWrapperConfigPropsTypes),
+    initialOption: PickerWrapperConfigPropsTypes,
     isOpen: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     site: PropTypes.string.isRequired,

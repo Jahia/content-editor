@@ -1,6 +1,13 @@
 .paper.paper {
     height: 100vh;
+
+    background: transparent;
 }
+
+//.pickerDam.pickerDam {
+//    height: 100vh;
+//
+//}
 
 .navigation :global(.moonstone-secondaryNav_buttonToggle) {
     display: none;
