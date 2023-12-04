@@ -5,16 +5,11 @@ import styles from './PickerDialog.scss';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 import {DamPropsTypes} from '~/SelectorTypes/Picker/PickerWrapper/PickerWrapper.proptypes';
 import {
-    formatInitialSelectedItem,
-    // GetInitialOption,
-    // getPickerConfigsEnabled,
-    JahiaPicker
-} from '~/SelectorTypes/Picker';
-// Import {useValueTypes} from '~/SelectorTypes/Picker/PickerWrapper/useValueTypes';
-// import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
-// import {useNodeInfo} from '@jahia/data-helper';
-// import {useTranslation} from 'react-i18next';
+    formatInitialSelectedItem, getInitialOption
+} from '~/SelectorTypes/Picker/PickerDialog/Pickers.utils';
+
 import {PickerSelector} from '~/SelectorTypes/Picker/PickerDialog/PickerSelector';
+import {JahiaPicker} from '~/SelectorTypes/Picker';
 
 const Transition = props => (
     <Slide direction="up"
@@ -39,38 +34,12 @@ export const PickerDialog = ({
     onItemSelection
 }) => {
     const initialSelectedValues = formatInitialSelectedItem(initialSelectedItem);
-    // Const [{uuid}] = initialSelectedValues;
-    // const {t} = useTranslation();
-    const {pickerConfigsEnabled, currentPickerConfiguration} = dam;
+    const {pickerConfigsEnabled} = dam;
+    let {currentPickerConfiguration} = dam;
 
-    // // Check modules loaded to prepare the selector
-    // const siteNodeInfo = useNodeInfo({path: `/sites/${site}`}, {
-    //     getSiteInstalledModules: true
-    // });
-    //
-    // // Get all the nodes types associated to the value. Assumption : all the nodes are from the same type
-    // const valueNodeTypes = useValueTypes(uuid);
-    //
-    // const error = siteNodeInfo?.error || valueNodeTypes?.error;
-    // const loading = siteNodeInfo?.loading || valueNodeTypes?.loading;
-    //
-    // if (error) {
-    //     const message = t(
-    //         'jcontent:label.jcontent.error.queryingContent',
-    //         {details: error.message ? error.message : ''}
-    //     );
-    //
-    //     console.warn(message);
-    // }
-    //
-    // if (loading) {
-    //     return <LoaderOverlay/>;
-    // }
-    //
-    // const siteNode = siteNodeInfo.node.site;
-    // const {valueTypes} = valueNodeTypes;
-    // // Get Dam Modules selector config
-    // const pickerConfigsEnabled = getPickerConfigsEnabled(siteNode);
+    if (!currentPickerConfiguration) {
+        currentPickerConfiguration = getInitialOption({pickerConfigsEnabled, valuePath: initialSelectedItem});
+    }
 
     if (pickerConfigsEnabled.length === 1) {
         return (

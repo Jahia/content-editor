@@ -26,6 +26,7 @@ export const ContentPickerApi = () => {
 
     return picker && (
         <PickerDialog
+            dam={picker?.dam}
             isOpen={Boolean(picker)}
             initialSelectedItem={picker?.value}
             site={picker?.site}

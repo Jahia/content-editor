@@ -10,6 +10,8 @@ import {fillCKEditorPicker, getPickerValue} from './RichText.utils';
 import {LoaderOverlay} from '~/DesignSystem/LoaderOverlay';
 import './RichText.scss';
 import {useContentEditorApiContext} from '~/contexts/ContentEditorApi/ContentEditorApi.context';
+import {useNodeInfo} from '@jahia/data-helper';
+import {getPickerConfigsEnabled} from '~/SelectorTypes/Picker';
 
 if (window.CKEDITOR) {
     window.CKEDITOR.focusManager._.blurDelay = 0;
@@ -28,7 +30,13 @@ export const RichText = ({field, id, value, onChange, onBlur}) => {
     }, []);
 
     const editorContext = useContext(ContentEditorContext);
-    const {data, error, loading} = useQuery(
+
+    // Check modules loaded to prepare the Dam selector
+    const siteNodeInfo = useNodeInfo({path: `/sites/${editorContext.site}`}, {
+        getSiteInstalledModules: true
+    });
+
+    const {data, error: ckError, loading: ckLoading} = useQuery(
         getCKEditorConfigurationPath,
         {
             variables: {
@@ -36,6 +44,9 @@ export const RichText = ({field, id, value, onChange, onBlur}) => {
             }
         }
     );
+
+    const error = siteNodeInfo?.error || ckError;
+    const loading = siteNodeInfo?.loading || ckLoading;
 
     if (error) {
         const message = t(
@@ -79,8 +90,11 @@ export const RichText = ({field, id, value, onChange, onBlur}) => {
 
     const handlePickerDialog = (setUrl, type, params, dialog) => {
         const value = getPickerValue(dialog);
+        // Get Dam Modules selector config
+        const pickerConfigsEnabled = getPickerConfigsEnabled(siteNodeInfo.node.site);
 
         api.openPicker({
+            dam: {pickerConfigsEnabled},
             type,
             value,
             setValue: pickerResult => {

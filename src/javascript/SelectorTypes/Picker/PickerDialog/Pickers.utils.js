@@ -18,3 +18,20 @@ export const formatInitialSelectedItem = value => {
         });
     }
 };
+
+export const getInitialOption = ({pickerConfigsEnabled, valuePath}) => {
+    const defaultPickerConfig = pickerConfigsEnabled.find(({module}) => module === 'default');
+    let ret;
+    if (!valuePath) {
+        return defaultPickerConfig;
+    }
+
+    try {
+        const contentURL = new URL(valuePath);
+        ret = pickerConfigsEnabled.find(({keyUrlPath}) => contentURL.hostname.includes(keyUrlPath));
+    } catch {
+        return defaultPickerConfig;
+    }
+
+    return ret || defaultPickerConfig;
+};
