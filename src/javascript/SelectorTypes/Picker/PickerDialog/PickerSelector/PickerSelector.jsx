@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
 import clsx from 'clsx';
 import {PickerWrapperConfigPropsTypes} from '~/SelectorTypes/Picker/PickerWrapper/PickerWrapper.proptypes';
+import {getInitialSelectedItem} from '~/SelectorTypes/Picker/PickerDialog/PickerSelector/PickerSelector.utils';
 
 // Create a dropdown list with by default "jahia", then get from the config the list of DAM to enable <name><selectorType>
 export const PickerSelector = ({
@@ -79,7 +80,7 @@ export const PickerSelector = ({
                                 isOpen,
                                 site,
                                 pickerConfig,
-                                initialSelectedItem: key === 'default' ? initialSelectedItem && initialSelectedItem.map(f => f.path) : initialSelectedItem && initialSelectedItem.map(f => f.uuid),
+                                initialSelectedItem: getInitialSelectedItem({initialOption, initialSelectedItem, provider: key}),
                                 accordionItemProps,
                                 lang,
                                 isMultiple,
