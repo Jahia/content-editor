@@ -95,6 +95,7 @@ export const RichText = ({field, id, value, onChange, onBlur}) => {
 
         api.openPicker({
             dam: {pickerConfigsEnabled},
+            isCkEditor: true,
             type,
             value,
             setValue: pickerResult => {

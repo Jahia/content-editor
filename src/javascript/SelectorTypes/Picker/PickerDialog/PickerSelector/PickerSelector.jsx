@@ -12,6 +12,7 @@ import {getInitialSelectedItem} from '~/SelectorTypes/Picker/PickerDialog/Picker
 export const PickerSelector = ({
     pickerConfigsEnabled,
     initialOption,
+    isCkEditor,
     isOpen,
     onClose,
     initialSelectedItem,
@@ -77,6 +78,7 @@ export const PickerSelector = ({
                         <div key={key} className={clsx('flexFluid', 'flexCol_nowrap', currentOption.key === key ? styles.isVisible : null)}>
                             <Component {...{
                                 className: 'flexFluid',
+                                isCkEditor,
                                 isOpen,
                                 site,
                                 pickerConfig,
@@ -98,6 +100,7 @@ export const PickerSelector = ({
 PickerSelector.propTypes = {
     pickerConfigsEnabled: PropTypes.arrayOf(PickerWrapperConfigPropsTypes),
     initialOption: PickerWrapperConfigPropsTypes,
+    isCkEditor: PropTypes.bool,
     isOpen: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     site: PropTypes.string.isRequired,

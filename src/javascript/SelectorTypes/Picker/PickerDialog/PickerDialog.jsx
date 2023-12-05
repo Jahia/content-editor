@@ -23,6 +23,7 @@ const Transition = props => (
 
 export const PickerDialog = ({
     dam,
+    isCkEditor,
     isOpen,
     onClose,
     initialSelectedItem,
@@ -82,6 +83,7 @@ export const PickerDialog = ({
             <PickerSelector {...{
                 pickerConfigsEnabled,
                 initialOption: currentPickerConfiguration, // GetInitialOption({pickerConfigsEnabled, valueTypes}),
+                isCkEditor,
                 isOpen,
                 onClose,
                 site,
@@ -97,6 +99,7 @@ export const PickerDialog = ({
 
 PickerDialog.propTypes = {
     dam: DamPropsTypes,
+    isCkEditor: PropTypes.bool,
     isOpen: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     site: PropTypes.string.isRequired,
@@ -109,5 +112,6 @@ PickerDialog.propTypes = {
 };
 
 PickerDialog.defaultValues = {
-    initialSelectedItem: []
+    initialSelectedItem: [],
+    isCkEditor: false
 };
