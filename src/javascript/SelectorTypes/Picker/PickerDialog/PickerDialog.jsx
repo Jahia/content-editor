@@ -1,24 +1,11 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import {Dialog, Slide} from '@material-ui/core';
+import {Dialog, Paper, Slide} from '@material-ui/core';
 import styles from './PickerDialog.scss';
-import {
-    cePickerClearSelection,
-    cePickerMode,
-    cePickerPath,
-    cePickerSetMultiple,
-    cePickerSetPage,
-    cePickerSetSearchTerm
-} from '~/SelectorTypes/Picker/Picker.redux';
-import {batchActions} from 'redux-batched-actions';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
-import {booleanValue} from '~/SelectorTypes/Picker/Picker.utils';
-import {useDispatch} from 'react-redux';
-import RightPanel from './RightPanel';
-import {ContentNavigation} from '@jahia/jcontent';
-import {SelectionHandler} from '~/SelectorTypes/Picker/PickerDialog/SelectionHandler';
-import {PickerSiteSwitcher} from '~/SelectorTypes/Picker/PickerDialog/PickerSiteSwitcher';
 import clsx from 'clsx';
+import {useExternalPickersInfo} from '~/SelectorTypes/Picker/useExternalPickersInfo';
+import {PaperWithSelector} from '~/SelectorTypes/Picker/PickerDialog/PaperWithSelector';
 
 const Transition = props => (
     <Slide direction="up"
@@ -29,12 +16,6 @@ const Transition = props => (
            }}
     />
 );
-
-const selector = state => ({
-    mode: state.contenteditor.picker.mode,
-    siteKey: state.contenteditor.picker.site,
-    language: state.contenteditor.ceLanguage
-});
 
 export const PickerDialog = ({
     isOpen,
@@ -47,23 +28,11 @@ export const PickerDialog = ({
     accordionItemProps,
     onItemSelection
 }) => {
-    const dispatch = useDispatch();
+    const {availableExternalPickerConfigs, externalPickerConfig, loading} = useExternalPickersInfo(site, initialSelectedItem, pickerConfig);
+    const [currentExternalPicker, setCurrentExternalPicker] = React.useState();
 
-    useEffect(() => {
-        if (isOpen) {
-            dispatch(batchActions([
-                cePickerSetSearchTerm(''),
-                cePickerSetPage(0),
-                cePickerSetMultiple(isMultiple)
-            ]));
-        }
-
-        return () => {
-            if (isOpen) {
-                dispatch(cePickerClearSelection());
-            }
-        };
-    }, [dispatch, pickerConfig.key, isOpen, isMultiple]);
+    const damSelector = availableExternalPickerConfigs?.length > 1;
+    const current = currentExternalPicker || externalPickerConfig;
 
     return (
         <Dialog
@@ -72,31 +41,30 @@ export const PickerDialog = ({
             data-sel-role="picker-dialog"
             data-sel-type={pickerConfig.key}
             classes={{paper: styles.paper}}
-            open={isOpen}
+            open={isOpen && !loading}
+            PaperComponent={damSelector ? PaperWithSelector : Paper}
+            PaperProps={damSelector ? {currentExternalPicker: current, setCurrentExternalPicker, availableExternalPickerConfigs} : {}}
             TransitionComponent={Transition}
             onClose={onClose}
         >
-            <div className={clsx('flexFluid', 'flexRow_nowrap', styles.navigation)}>
-                <SelectionHandler site={site} pickerConfig={pickerConfig} accordionItemProps={accordionItemProps} initialSelectedItem={initialSelectedItem} lang={lang}>
-                    {booleanValue(pickerConfig.pickerDialog.displayTree) && (
-                        <aside>
-                            <ContentNavigation
-                                isReversed={false}
-                                header={(booleanValue(pickerConfig.pickerDialog.displaySiteSwitcher) && (
-                                    <div>
-                                        <PickerSiteSwitcher pickerConfig={pickerConfig} accordionItemProps={accordionItemProps}/>
-                                    </div>
-                                ))}
-                                accordionItemTarget={pickerConfig.key}
-                                accordionItemProps={accordionItemProps}
-                                selector={selector}
-                                handleNavigationAction={(mode, path) => (batchActions([cePickerPath(path), cePickerMode(mode)]))}
-                            />
-                        </aside>
-                    )}
-                    <RightPanel pickerConfig={pickerConfig} accordionItemProps={accordionItemProps} isMultiple={isMultiple} lang={lang} onClose={onClose} onItemSelection={onItemSelection}/>
-                </SelectionHandler>
-            </div>
+            {availableExternalPickerConfigs && availableExternalPickerConfigs.map(({key, pickerDialog: {cmp: Component}}) => {
+                return (
+                    <div key={key} className={clsx('flexFluid', 'flexRow_nowrap', styles.navigation, {[styles.isVisible]: current?.key === key})}>
+                        <Component {...{
+                            className: 'flexFluid',
+                            isOpen,
+                            site,
+                            pickerConfig,
+                            initialSelectedItem,
+                            accordionItemProps,
+                            lang,
+                            isMultiple,
+                            onClose,
+                            onItemSelection
+                        }}/>
+                    </div>
+                );
+            })}
         </Dialog>
     );
 };
@@ -106,7 +74,7 @@ PickerDialog.propTypes = {
     onClose: PropTypes.func.isRequired,
     site: PropTypes.string.isRequired,
     pickerConfig: configPropType.isRequired,
-    initialSelectedItem: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+    initialSelectedItem: PropTypes.arrayOf(PropTypes.object),
     accordionItemProps: PropTypes.object,
     lang: PropTypes.string,
     isMultiple: PropTypes.bool,

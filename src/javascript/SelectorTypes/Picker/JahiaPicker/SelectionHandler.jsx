@@ -2,7 +2,7 @@ import React, {useEffect, useRef} from 'react';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {replaceFragmentsInDocument, useNodeInfo} from '@jahia/data-helper';
 import {useQuery} from '@apollo/react-hooks';
-import {GET_PICKER_NODE} from '~/SelectorTypes/Picker';
+import {GET_PICKER_NODE} from './JahiaPicker.gql-queries';
 import {
     cePickerMode,
     cePickerModes,
@@ -42,7 +42,7 @@ export const SelectionHandler = ({initialSelectedItem, site, pickerConfig, accor
     const uilang = useSelector(state => state.uilang);
 
     const currentFolderInfo = useNodeInfo({path: state.path}, {skip: !state.path});
-    const paths = (Array.isArray(initialSelectedItem) ? initialSelectedItem : [initialSelectedItem]).filter(f => f);
+    const paths = initialSelectedItem ? initialSelectedItem.map(f => f.path) : [];
     let accordion;
     if (state.mode === '') {
         accordion = registry.find({type: 'accordionItem', target: pickerConfig.key})[0];
@@ -167,7 +167,7 @@ export const SelectionHandler = ({initialSelectedItem, site, pickerConfig, accor
 };
 
 SelectionHandler.propTypes = {
-    initialSelectedItem: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+    initialSelectedItem: PropTypes.arrayOf(PropTypes.object),
     site: PropTypes.string.isRequired,
     pickerConfig: configPropType.isRequired,
     accordionItemProps: PropTypes.object,

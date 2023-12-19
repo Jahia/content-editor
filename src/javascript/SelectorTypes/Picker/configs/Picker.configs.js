@@ -10,9 +10,20 @@ import {registerEditorialLinkPicker} from './editorialLinkPicker';
 import {registerPagePicker} from '~/SelectorTypes/Picker/configs/pagePicker';
 import {PickerSearchQueryHandler} from '~/SelectorTypes/Picker/configs/queryHandlers';
 import {registerEditorialPicker} from '~/SelectorTypes/Picker/configs/editorialPicker/editorialPicker';
+import {JahiaPicker} from '~/SelectorTypes/Picker/JahiaPicker';
+import svgJahiaLogo from './jahiaLogo.svg';
 
 export const registerPickerConfig = registry => {
     registry.add(Constants.pickerConfig, 'default', {});
+
+    registry.add('externalPickerConfiguration', 'default', {
+        pickerDialog: {
+            cmp: JahiaPicker,
+            label: 'jcontent:label.contentEditor.selectorTypes.picker.dialog.label',
+            description: 'jcontent:label.contentEditor.selectorTypes.picker.dialog.description',
+            icon: svgJahiaLogo
+        }
+    });
 
     registerPagePicker(registry);
     registerEditorialPicker(registry);

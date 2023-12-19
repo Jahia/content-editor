@@ -1,7 +1,28 @@
 .paper.paper {
-    height: 100vh;
+    height: calc(100% - 96px);
+}
+
+.paperWithSelector.paperWithSelector {
+    height: calc(100% - 144px);
+    margin-top: 96px;
+}
+
+.selector {
+    position: absolute;
+    top: 0;
+
+    width: calc(100% - 96px);
+    max-width: 1920px;
+    height: 36px;
+    margin: 48px;
 }
 
 .navigation :global(.moonstone-secondaryNav_buttonToggle) {
     display: none;
+}
+
+.navigation {
+    &:not(.isVisible) {
+        display: none;
+    }
 }

@@ -14,13 +14,11 @@ import {DefaultPickerConfig} from '~/SelectorTypes/Picker/configs/DefaultPickerC
 import {useFormikContext} from 'formik';
 import {OrderableValue} from '~/DesignSystem/OrderableValue/OrderableValue';
 import {useContentEditorConfigContext} from '~/contexts';
+import {useExternalPickersInfo} from '~/SelectorTypes/Picker/useExternalPickersInfo';
 
 const ButtonRenderer = getButtonRenderer({labelStyle: 'none', defaultButtonProps: {variant: 'ghost'}});
 
-export const Picker = ({field, value, editorContext, inputContext, onChange, onBlur}) => {
-    const {t} = useTranslation('content-editor');
-    const {lang} = useContentEditorConfigContext();
-
+function getOptions(field, inputContext) {
     const parsedOptions = {};
     field.selectorOptions.forEach(option => {
         set(parsedOptions, option.name, option.value || option.values);
@@ -34,12 +32,28 @@ export const Picker = ({field, value, editorContext, inputContext, onChange, onB
         };
     }
 
-    const pickerConfig = mergeDeep({}, DefaultPickerConfig, inputContext.selectorType.pickerConfig, parsedOptions.pickerConfig);
+    return parsedOptions;
+}
+
+export const Picker = ({field, value, editorContext, inputContext, onChange, onBlur}) => {
+    const {t} = useTranslation('content-editor');
+    const {lang} = useContentEditorConfigContext();
     const [isDialogOpen, setDialogOpen] = useState(false);
     const {setFieldValue, setFieldTouched} = useFormikContext();
+
+    const parsedOptions = getOptions(field, inputContext);
+    const pickerConfig = mergeDeep({}, DefaultPickerConfig, inputContext.selectorType.pickerConfig, parsedOptions.pickerConfig);
+
+    const {
+        availableExternalPickerConfigs,
+        externalPickerConfig,
+        loading: infoLoading
+    } = useExternalPickersInfo(editorContext.site, value ? toArray(value).map(uuid => ({uuid})) : [], pickerConfig);
+
+    const usePickerInputData = pickerConfig.pickerInput.usePickerInputData;
     const {
         fieldData, error, loading, notFound
-    } = pickerConfig.pickerInput.usePickerInputData(value && toArray(value));
+    } = usePickerInputData(value && toArray(value));
 
     if (error) {
         const message = t(
@@ -50,7 +64,7 @@ export const Picker = ({field, value, editorContext, inputContext, onChange, onB
         console.warn(message);
     }
 
-    if (loading) {
+    if (infoLoading || loading) {
         return <LoaderOverlay/>;
     }
 
@@ -157,7 +171,9 @@ export const Picker = ({field, value, editorContext, inputContext, onChange, onB
                 isOpen={isDialogOpen}
                 site={editorContext.site}
                 pickerConfig={pickerConfig}
-                initialSelectedItem={fieldData && fieldData.map(f => f.path)}
+                availableExternalPickerConfigs={availableExternalPickerConfigs}
+                externalPickerConfig={externalPickerConfig}
+                initialSelectedItem={fieldData || []}
                 accordionItemProps={mergeDeep({}, pickerConfig.accordionItem, parsedOptions.accordionItem)}
                 lang={lang}
                 isMultiple={field.multiple}
@@ -170,11 +186,9 @@ export const Picker = ({field, value, editorContext, inputContext, onChange, onB
 
 Picker.propTypes = {
     editorContext: PropTypes.object.isRequired,
-    value: PropTypes.string,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
     field: FieldPropTypes.isRequired,
     inputContext: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
     onBlur: PropTypes.func.isRequired
 };
-
-Picker.displayName = 'Picker';
