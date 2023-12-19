@@ -10,6 +10,9 @@ import {withStyles} from '@material-ui/core/styles';
 import frLocale from 'dayjs/locale/fr';
 import deLocale from 'dayjs/locale/de';
 import enLocale from 'dayjs/locale/en';
+import esLocale from 'dayjs/locale/es';
+import ptLocale from 'dayjs/locale/pt';
+import itLocale from 'dayjs/locale/it';
 
 import dayjs from 'dayjs';
 import {
@@ -21,7 +24,10 @@ import {
 const locales = {
     fr: generateWeekdaysShort(frLocale),
     de: generateWeekdaysShort(deLocale),
-    en: generateWeekdaysShort(enLocale)
+    en: generateWeekdaysShort(enLocale),
+    es: generateWeekdaysShort(esLocale),
+    pt: generateWeekdaysShort(ptLocale),
+    it: generateWeekdaysShort(itLocale)
 };
 
 const DatePickerCmp = ({
@@ -36,7 +42,7 @@ const DatePickerCmp = ({
     const [month, setMonth] = useState(selectedDateTime ? new Date(selectedDateTime) : new Date());
 
     const isDateTime = variant === 'datetime';
-    const locale = locales[lang] || {};
+    const locale = locales[lang] || locales.en;
 
     const selectedDays = selectedDateTime ? [selectedDateTime] : [];
     const selectedHour = selectedDateTime ? dayjs(selectedDateTime).format('HH:mm') : '00:00';
