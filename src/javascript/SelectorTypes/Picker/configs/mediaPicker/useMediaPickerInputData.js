@@ -1,6 +1,5 @@
 import {useQuery} from '@apollo/react-hooks';
 import {MediaPickerFilledQuery} from './MediaPicker.gql-queries';
-import {encodeJCRPath} from '~/utils';
 import {useContentEditorContext} from '~/contexts';
 
 export const useMediaPickerInputData = uuids => {
@@ -21,14 +20,13 @@ export const useMediaPickerInputData = uuids => {
 
     const fieldData = data.jcr.result.map(imageData => {
         const sizeInfo = (imageData.height && imageData.width) ? ` - ${parseInt(imageData.height.value, 10)}x${parseInt(imageData.width.value, 10)}px` : '';
+        const url = imageData.thumbnailUrl + (imageData.thumbnailUrl.indexOf('?') > 0 ? '&' : '?') + 'lastModified=' + imageData.lastModified?.value;
         return {
             uuid: imageData.uuid,
-            url: `${
-                window.contextJsParameters.contextPath
-            }/files/default${encodeJCRPath(imageData.path)}?lastModified=${imageData.lastModified.value}&t=thumbnail2`,
+            url,
             name: imageData.displayName,
             path: imageData.path,
-            info: `${imageData.content && imageData.content.mimeType.value}${sizeInfo}`
+            info: `${imageData.content && imageData.content?.mimeType?.value}${sizeInfo}`
         };
     });
 

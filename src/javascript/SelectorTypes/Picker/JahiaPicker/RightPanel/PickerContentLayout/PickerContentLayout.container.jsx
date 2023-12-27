@@ -4,13 +4,13 @@ import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {Loader} from '@jahia/moonstone';
 import {Constants} from '~/SelectorTypes/Picker/Picker.constants';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
-import ContentTable from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout/ContentTable';
+import {PickerContentTable} from './PickerContentTable';
 import {registry} from '@jahia/ui-extender';
 import {jcontentUtils, useLayoutQuery} from '@jahia/jcontent';
 import clsx from 'clsx';
-import styles from './ContentLayout.scss';
+import styles from './PickerContentLayout.scss';
 import {cePickerOpenPaths} from '~/SelectorTypes/Picker/Picker.redux';
-import FilesGrid from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout/FilesGrid';
+import PickerFilesGrid from './PickerFilesGrid';
 import PropTypes from 'prop-types';
 
 const setRefetcher = (name, refetcherData) => {
@@ -33,7 +33,7 @@ function expand(r, level) {
     return (r && level) ? r.filter(c => c.hasSubRows).flatMap(c => [c.path, ...expand(c.subRows, level - 1)]) : [];
 }
 
-export const ContentLayoutContainer = ({pickerConfig, isMultiple, accordionItemProps, dblClickSelect}) => {
+export const PickerContentLayoutContainer = ({pickerConfig, isMultiple, accordionItemProps, dblClickSelect}) => {
     const {t} = useTranslation();
     const currentResult = useRef();
     const {mode, path, filesMode, preSearchModeMemo, viewType} = useSelector(state => ({
@@ -117,14 +117,14 @@ export const ContentLayoutContainer = ({pickerConfig, isMultiple, accordionItemP
         }
 
         return (
-            <ContentTable isContentNotFound
-                          isMultiple={isMultiple}
-                          path={path}
-                          filesMode={filesMode}
-                          rows={[]}
-                          isStructured={isStructured}
-                          isLoading={loading}
-                          totalCount={0}
+            <PickerContentTable isContentNotFound
+                                isMultiple={isMultiple}
+                                path={path}
+                                filesMode={filesMode}
+                                rows={[]}
+                                isStructured={isStructured}
+                                isLoading={loading}
+                                totalCount={0}
             />
         );
     }
@@ -151,34 +151,34 @@ export const ContentLayoutContainer = ({pickerConfig, isMultiple, accordionItemP
                 </div>
             )}
             {(mode === Constants.mode.MEDIA || preSearchModeMemo === Constants.mode.MEDIA) && filesMode === Constants.fileView.mode.THUMBNAILS ? (
-                <FilesGrid rows={rows}
-                           isMultiple={isMultiple}
-                           totalCount={totalCount}
-                           isLoading={loading}
-                           pickerConfig={pickerConfig}
-                           accordionItemProps={accordionItemProps}
-                           dblClickSelect={dblClickSelect}
+                <PickerFilesGrid rows={rows}
+                                 isMultiple={isMultiple}
+                                 totalCount={totalCount}
+                                 isLoading={loading}
+                                 pickerConfig={pickerConfig}
+                                 accordionItemProps={accordionItemProps}
+                                 dblClickSelect={dblClickSelect}
                 />
             ) : (
-                <ContentTable path={path}
-                              isMultiple={isMultiple}
-                              rows={rows}
-                              isStructured={isStructured}
-                              isLoading={loading}
-                              totalCount={totalCount}
-                              pickerConfig={pickerConfig}
-                              accordionItemProps={accordionItemProps}
+                <PickerContentTable path={path}
+                                    isMultiple={isMultiple}
+                                    rows={rows}
+                                    isStructured={isStructured}
+                                    isLoading={loading}
+                                    totalCount={totalCount}
+                                    pickerConfig={pickerConfig}
+                                    accordionItemProps={accordionItemProps}
                 />
             )}
         </div>
     );
 };
 
-ContentLayoutContainer.propTypes = {
+PickerContentLayoutContainer.propTypes = {
     pickerConfig: configPropType.isRequired,
     isMultiple: PropTypes.bool,
     accordionItemProps: PropTypes.object,
     dblClickSelect: PropTypes.func.isRequired
 };
 
-export default ContentLayoutContainer;
+export default PickerContentLayoutContainer;
