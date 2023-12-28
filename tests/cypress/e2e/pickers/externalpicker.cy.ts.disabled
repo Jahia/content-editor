@@ -1,6 +1,3 @@
-import {contentTypes} from '../../fixtures/pickers/contentTypes';
-import {assertUtils} from '../../utils/assertUtils';
-import {AccordionItem} from '../../page-object/accordionItem';
 import {JContent} from '../../page-object/jcontent';
 import {createSite, deleteSite, Dropdown, enableModule, getComponentByRole} from '@jahia/cypress';
 
