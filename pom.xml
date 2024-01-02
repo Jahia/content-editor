@@ -42,7 +42,7 @@
         <connection>scm:git:git@github.com:Jahia/content-editor.git</connection>
         <developerConnection>scm:git:git@github.com:Jahia/content-editor.git</developerConnection>
         <url>https://github.com/Jahia/content-editor</url>
-        <tag>HEAD</tag>
+        <tag>4_5_X</tag>
     </scm>
     <properties>
         <jahia-module-type>system</jahia-module-type>
