@@ -49,7 +49,7 @@
         <yarn.arguments>build:production</yarn.arguments>
         <require-capability>osgi.extender;filter:="(osgi.extender=org.jahia.bundles.blueprint.extender.config)"</require-capability>
         <jahia-module-signature>MCwCFC14zrQFrhdlrI26e0IEXNTj5OY6AhRL9HwaSH2xVfqUuS03309iaYYBRg==</jahia-module-signature>
-        <jahia-depends>app-shell=2.7,graphql-dxm-provider=2.15,jcontent=2.9</jahia-depends>
+        <jahia-depends>app-shell=2.7,graphql-dxm-provider=2.19.1,jcontent=2.9</jahia-depends>
         <jahia.plugin.version>6.5</jahia.plugin.version>
         <import-package>
             com.fasterxml.jackson.annotation;version="[2.10,3)",
