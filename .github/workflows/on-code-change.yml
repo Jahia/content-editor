@@ -89,7 +89,7 @@ jobs:
           should_use_build_artifacts: true
           jahia_cluster_enabled: false
           should_skip_testrail: true
-          jahia_image: jahia/jahia-ee-dev:8-SNAPSHOT
+          jahia_image: jahia/jahia-ee-dev:8.1-SNAPSHOT
           github_artifact_name: content-editor-standalone-artifacts-${{ github.run_number }}
           bastion_ssh_private_key: ${{ secrets.BASTION_SSH_PRIVATE_KEY_JAHIACI }}
           jahia_license: ${{ secrets.JAHIA_LICENSE_8X_FULL }}
