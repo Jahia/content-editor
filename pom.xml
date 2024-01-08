@@ -275,6 +275,15 @@
                         <directory>src/main/resources</directory>
                     </resource>
                 </resources>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.jahia.server</groupId>
+                            <artifactId>jahia-maven-plugin</artifactId>
+                            <version>6.9</version>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
                 <plugins>
                     <plugin>
                         <artifactId>maven-clean-plugin</artifactId>
@@ -302,8 +311,8 @@
                                     <goal>install-node-and-yarn</goal>
                                 </goals>
                                 <configuration>
-                                    <nodeVersion>v14.21.3</nodeVersion>
-                                    <yarnVersion>v1.22.19</yarnVersion>
+                                    <nodeVersion>v16.15.0</nodeVersion>
+                                    <yarnVersion>v1.22.10</yarnVersion>
                                 </configuration>
                             </execution>
                             <execution>
