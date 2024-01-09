@@ -1453,10 +1453,10 @@
     lodash "^4.17.13"
     react-apollo "^3.1.3"
 
-"@jahia/design-system-kit@^1.1.8":
-  version "1.1.11"
-  resolved "https://registry.yarnpkg.com/@jahia/design-system-kit/-/design-system-kit-1.1.11.tgz#bb1d561da538e6158c0e53a969934e3023d3d6a1"
-  integrity sha512-oyh5y/0biSBl4J8592XGLpnZYqnREKXsJDwNYUyz/+fKhrAkkF1ve4XVFEqUBRJEIXA0Lafk0WznuXFcWAndqg==
+"@jahia/design-system-kit@^1.1.12":
+  version "1.1.12"
+  resolved "https://registry.yarnpkg.com/@jahia/design-system-kit/-/design-system-kit-1.1.12.tgz#59d3427f75b9d52c0ec4fdf51be2bcc0315b2941"
+  integrity sha512-tA/0D1i7gcDQZipwgfy14XmqWUwg8spnegE3C967fC/OHG+cL7JmZb8XmJJKjWht83DvyIs7QDUcl4maAPqrBA==
   dependencies:
     "@material-ui/core" "^3.9.3"
     classnames "^2.2.6"
