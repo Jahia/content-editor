@@ -1527,16 +1527,14 @@
     enzyme-adapter-react-16 "^1.12.1"
     identity-obj-proxy "^3.0.0"
 
-"@jahia/ui-extender@^1.0.6":
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/@jahia/ui-extender/-/ui-extender-1.0.6.tgz#d64b1df970bf674696298b5c996c2b9a7966755d"
-  integrity sha512-fBiBVk1heIgCtAD7DxH2ucuJ1Wc5zFDJd1bnTPgUOLcrKU3ayqpiroEFTealVJAWiFSDzQnPLn36L9Y4fW/jbw==
+"@jahia/ui-extender@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@jahia/ui-extender/-/ui-extender-1.1.0.tgz#845d3d57d82335f8c4128016b2c696a88a6c69a4"
+  integrity sha512-N//oM7kx4wu1um+U2Zy5z24joCL4NrWInH8zoguq8e66GcWSkjb7AwMAOhsxYQRIZmIHsPE2G+YmtKqt6imhVw==
   dependencies:
     prop-types "^15.6.1"
     react "^16.12.0"
     react-iframe "^1.8.0"
-    react-redux "^7.2.0"
-    redux "^4.0.5"
     rxjs "^6.5.3"
 
 "@jest/console@^26.6.2":
