@@ -19,9 +19,11 @@ export function fillCKEditorPicker(setUrl, dialog, contentPicker, pickerResult) 
 
     const altElementId = dialog.getName() === 'image2' ? 'alt' : 'txtAlt';
 
-    dialog
-        .getContentElement('info', eltId === 'url' ? 'advTitle' : altElementId)
-        .setValue(pickerResult.name);
+    const contentElement = dialog.getContentElement('info', eltId === 'url' ? 'advTitle' : altElementId);
+
+    if (contentElement !== undefined) {
+        contentElement.setValue(pickerResult.name);
+    }
 
     if (pickerResult.url) {
         setUrl(pickerResult.url);
