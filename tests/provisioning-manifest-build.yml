@@ -34,7 +34,6 @@
   username: ${env:NEXUS_USERNAME}
   password: ${env:NEXUS_PASSWORD}
 - installBundle:
-  - 'mvn:org.jahia.modules/jcontent'
   - 'mvn:org.jahia.modules/site-settings-seo/4.4.0-SNAPSHOT'
   - url: 'mvn:org.jahia.modules/qa-module'
   autoStart: true
