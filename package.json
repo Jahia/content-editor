@@ -67,7 +67,7 @@
         "react-dnd": "^15.1.2",
         "react-dnd-html5-backend": "^16.0.1",
         "react-dom": "^16.13.1",
-        "react-draggable": "^4.4.2",
+        "react-draggable": "^4.4.6",
         "react-dropdown-tree-select": "^2.3.2",
         "react-fast-compare": "^3.2.0",
         "react-file-viewer": "^1.2.1",
