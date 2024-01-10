@@ -19,9 +19,11 @@ export function fillCKEditorPicker(setUrl, dialog, contentPicker, pickerResult) 
 
     const altElementId = dialog.getName() === 'image2' ? 'alt' : 'txtAlt';
 
-    dialog
-        .getContentElement('info', eltId === 'url' ? 'advTitle' : altElementId)
-        .setValue(pickerResult.name);
+    const contentElement = dialog.getContentElement('info', eltId === 'url' ? 'advTitle' : altElementId);
+
+    if (contentElement !== undefined) {
+        contentElement.setValue(pickerResult.name);
+    }
 
     // Wrap path to build Jahia url.
     const pathWithEncodedFileName = pickerResult.path.replace(/\/([^/]+\.[^/?#]+)(\?|#|$)/, (_, fileName, suffix) => `/${encodeURIComponent(fileName)}${suffix}`);
