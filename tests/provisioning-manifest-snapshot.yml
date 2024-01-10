@@ -27,6 +27,7 @@
   username: ${env:NEXUS_USERNAME}
   password: ${env:NEXUS_PASSWORD}
 - installBundle:
+  - 'mvn:org.jahia.modules/site-settings-seo/4.4.0-SNAPSHOT'
   - 'mvn:org.jahia.modules/jcontent/2.12.0'
   - 'mvn:org.jahia.modules/content-editor'
   - 'mvn:org.jahia.test/content-editor-test-module'
