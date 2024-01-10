@@ -6,7 +6,7 @@ import {TablePagination} from '@jahia/moonstone';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import classNames from 'clsx';
 import clsx from 'clsx';
-import styles from './FilesGrid.scss';
+import styles from './PickerFilesGrid.scss';
 import {
     cePickerAddSelection,
     cePickerClearSelection,
@@ -43,7 +43,7 @@ Grid.propTypes = {
     children: PropTypes.node
 };
 
-export const FilesGrid = ({totalCount, rows, isLoading, pickerConfig, isMultiple, accordionItemProps, dblClickSelect}) => {
+export const PickerFilesGrid = ({totalCount, rows, isLoading, pickerConfig, isMultiple, accordionItemProps, dblClickSelect}) => {
     const {t} = useTranslation('jcontent');
     const {mode, path, pagination, siteKey, uilang, lang, selection} = useSelector(state => ({
         mode: state.contenteditor.picker.mode,
@@ -150,7 +150,7 @@ export const FilesGrid = ({totalCount, rows, isLoading, pickerConfig, isMultiple
     );
 };
 
-FilesGrid.propTypes = {
+PickerFilesGrid.propTypes = {
     isLoading: PropTypes.bool.isRequired,
     rows: PropTypes.array.isRequired,
     totalCount: PropTypes.number.isRequired,
@@ -160,4 +160,4 @@ FilesGrid.propTypes = {
     dblClickSelect: PropTypes.func.isRequired
 };
 
-export default FilesGrid;
+export default PickerFilesGrid;

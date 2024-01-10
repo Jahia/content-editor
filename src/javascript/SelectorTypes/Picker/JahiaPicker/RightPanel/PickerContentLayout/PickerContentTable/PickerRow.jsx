@@ -4,10 +4,10 @@ import clsx from 'clsx';
 import {ContextualMenu} from '@jahia/ui-extender';
 import PropTypes from 'prop-types';
 import {useFileDrop, useNodeDrop} from '@jahia/jcontent';
-import styles from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout/ContentTable/ContentTable.scss';
+import styles from '~/SelectorTypes/Picker/JahiaPicker/RightPanel/PickerContentLayout/PickerContentTable/PickerContentTable.scss';
 import {booleanValue} from '~/SelectorTypes/Picker/Picker.utils';
 
-export const Row = ({
+export const PickerRow = ({
     isStructured,
     row,
     tableConfig,
@@ -70,7 +70,7 @@ export const Row = ({
     );
 };
 
-Row.propTypes = {
+PickerRow.propTypes = {
     isStructured: PropTypes.bool,
     row: PropTypes.object.isRequired,
     previousModeTableConfig: PropTypes.object,

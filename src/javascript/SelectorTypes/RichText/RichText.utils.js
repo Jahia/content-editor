@@ -25,15 +25,24 @@ export function fillCKEditorPicker(setUrl, dialog, contentPicker, pickerResult) 
         contentElement.setValue(pickerResult.name);
     }
 
-    // Wrap path to build Jahia url.
-    const pathWithEncodedFileName = pickerResult.path.replace(/\/([^/]+\.[^/?#]+)(\?|#|$)/, (_, fileName, suffix) => `/${encodeURIComponent(fileName)}${suffix}`);
-    setUrl(`${contentPicker ? contentPrefix : filePrefix}${pathWithEncodedFileName}${contentPicker ? '.html' : ''}`, {});
+    if (pickerResult.url) {
+        setUrl(pickerResult.url);
+    } else {
+        // Wrap path to build Jahia url.
+        const pathWithEncodedFileName = pickerResult.path.replace(/\/([^/]+\.[^/?#]+)(\?|#|$)/, (_, fileName, suffix) => `/${encodeURIComponent(fileName)}${suffix}`);
+        setUrl(`${contentPicker ? contentPrefix : filePrefix}${pathWithEncodedFileName}${contentPicker ? '.html' : ''}`, {});
+    }
 }
 
 export function getPickerValue(dialog) {
     const urlInput = dialog.getContentElement('info', getCKEditorUrlInputId(dialog));
     const valueInInput = urlInput ? urlInput.getValue() : '';
-    return valueInInput.startsWith(contentPrefix) ?
-        valueInInput.substr(contentPrefix.length).slice(0, -('.html').length) :
-        valueInInput.substr(filePrefix.length);
+    try {
+        const contentURL = new URL(valueInInput);
+        return contentURL.toString();
+    } catch {
+        return valueInInput.startsWith(contentPrefix) ?
+            valueInInput.substr(contentPrefix.length).slice(0, -('.html').length) :
+            valueInInput.substr(filePrefix.length);
+    }
 }

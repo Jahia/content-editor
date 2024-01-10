@@ -30,7 +30,7 @@ import {
 } from '@jahia/jcontent';
 import {registry} from '@jahia/ui-extender';
 import {configPropType} from '~/SelectorTypes/Picker/configs/configPropType';
-import {Row} from '~/SelectorTypes/Picker/PickerDialog/RightPanel/ContentLayout/ContentTable/Row';
+import {PickerRow} from '~/SelectorTypes/Picker/JahiaPicker/RightPanel/PickerContentLayout/PickerContentTable/PickerRow';
 import clsx from 'clsx';
 
 const reduxActions = {
@@ -62,7 +62,7 @@ const SELECTION_COLUMN_ID = 'selection';
 
 const defaultCols = ['publicationStatus', 'name', 'type', 'lastModified'];
 
-export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, isStructured, pickerConfig, isMultiple, accordionItemProps}) => {
+export const PickerContentTable = ({rows, isContentNotFound, totalCount, isLoading, isStructured, pickerConfig, isMultiple, accordionItemProps}) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
 
@@ -213,15 +213,15 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
                         {tableRows.map(row => {
                             prepareRow(row);
                             return (
-                                <Row key={'row' + row.id}
-                                     isStructured={isStructured}
-                                     row={row}
-                                     isMultiple={isMultiple}
-                                     tableConfig={tableConfig}
-                                     handleOnClick={handleOnClick}
-                                     handleOnDoubleClick={handleOnDoubleClick}
-                                     previousModeTableConfig={previousModeTableConfig}
-                                     doubleClickNavigation={doubleClickNavigation}
+                                <PickerRow key={'row' + row.id}
+                                           isStructured={isStructured}
+                                           row={row}
+                                           isMultiple={isMultiple}
+                                           tableConfig={tableConfig}
+                                           handleOnClick={handleOnClick}
+                                           handleOnDoubleClick={handleOnDoubleClick}
+                                           previousModeTableConfig={previousModeTableConfig}
+                                           doubleClickNavigation={doubleClickNavigation}
                                 />
                             );
                         })}
@@ -244,7 +244,7 @@ export const ContentTable = ({rows, isContentNotFound, totalCount, isLoading, is
     );
 };
 
-ContentTable.propTypes = {
+PickerContentTable.propTypes = {
     isContentNotFound: PropTypes.bool,
     isLoading: PropTypes.bool,
     isStructured: PropTypes.bool,
@@ -255,4 +255,4 @@ ContentTable.propTypes = {
     accordionItemProps: PropTypes.object
 };
 
-export default ContentTable;
+export default PickerContentTable;

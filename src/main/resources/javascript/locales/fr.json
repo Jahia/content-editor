@@ -333,7 +333,14 @@
         },
         "picker": {
           "displayValue": "Picker",
-          "description": "Choisir des médias, fichiers ou contenus"
+          "description": "Choisir des médias, fichiers ou contenus",
+          "dialog": {
+            "label": "Jahia",
+            "description": "Sélectionner un contenu à partir de Jahia",
+            "dropdown": {
+              "label": "Fournisseur"
+            }
+          }
         },
         "dateTimePicker": {
           "displayValue": "Date time",

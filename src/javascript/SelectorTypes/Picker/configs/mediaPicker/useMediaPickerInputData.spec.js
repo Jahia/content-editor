@@ -59,7 +59,9 @@ describe('useMediaPickerInputData', () => {
                     path: 'placeholder.jpg',
                     content: {
                         mimeType: {value: 'image/jpeg'}
-                    }
+                    },
+                    thumbnailUrl: 'http://placeholder.jpg?t=thumbnail2'
+
                 }]
             }
         }});
@@ -72,7 +74,7 @@ describe('useMediaPickerInputData', () => {
                 info: 'image/jpeg - 1080x1920px',
                 name: 'a cake',
                 path: 'placeholder.jpg',
-                url: 'localContextPath/files/defaultplaceholder.jpg?lastModified=tomorrow&t=thumbnail2'
+                url: 'http://placeholder.jpg?t=thumbnail2&lastModified=tomorrow'
             }]
         });
     });

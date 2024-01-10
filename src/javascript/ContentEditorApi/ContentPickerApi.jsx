@@ -5,6 +5,21 @@ import {mergeDeep} from '~/SelectorTypes/Picker/Picker.utils';
 import {DefaultPickerConfig} from '~/SelectorTypes/Picker/configs/DefaultPickerConfig';
 import {registry} from '@jahia/ui-extender';
 
+function fillValue(value, initialSelectedItem) {
+    if (typeof value === 'object') {
+        initialSelectedItem.push(value);
+    } else if (value.toLowerCase().startsWith('http')) {
+        try {
+            initialSelectedItem.push({fileUrl: new URL(value)});
+        } catch {
+        }
+    } else if (value.startsWith('/')) {
+        initialSelectedItem.push({path: value});
+    } else {
+        initialSelectedItem.push({uuid: value});
+    }
+}
+
 export const ContentPickerApi = () => {
     const [picker, setPicker] = useState(false);
 
@@ -24,10 +39,19 @@ export const ContentPickerApi = () => {
         picker.setValue(pickerResult);
     };
 
+    const initialSelectedItem = [];
+    if (picker?.value) {
+        if (Array.isArray(picker.value)) {
+            picker.value.forEach(value => fillValue(value, initialSelectedItem));
+        } else {
+            fillValue(picker.value, initialSelectedItem);
+        }
+    }
+
     return picker && (
         <PickerDialog
             isOpen={Boolean(picker)}
-            initialSelectedItem={picker?.value}
+            initialSelectedItem={initialSelectedItem}
             site={picker?.site}
             pickerConfig={pickerConfig}
             lang={picker?.lang}

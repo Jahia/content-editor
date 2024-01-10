@@ -21,6 +21,7 @@ const MediaPickerFilledQuery = gql`
                         value
                     }
                 }
+                thumbnailUrl(name: "thumbnail2")
                 lastModified: property(name: "jcr:lastModified") {
                     value
                 }

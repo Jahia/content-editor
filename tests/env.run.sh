@@ -33,6 +33,9 @@ done
 ELAPSED_TIME=$(($SECONDS - $START_TIME))
 echo " == Jahia became alive in ${ELAPSED_TIME} seconds"
 
+# Install the latest version of graphql-dxm-provider which is needed for compatibility with CE 4.5.x until a newer version of Jahia 81x is released
+curl -u root:${SUPER_USER_PASSWORD} -X POST ${JAHIA_URL}/modules/api/provisioning --form script='[{"installAndStartBundle":"mvn:org.jahia.modules/graphql-dxm-provider/2.19.1", "forceUpdate":true}]'
+
 mkdir -p ./run-artifacts
 mkdir -p ./results
 
