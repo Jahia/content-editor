@@ -23,6 +23,7 @@ jobs:
         with:
           module_id: content-editor
           testrail_project: Content Editor
+          timeout_minutes: 50
           tests_manifest: provisioning-manifest-snapshot.yml
           jahia_image: jahia/jahia-ee-dev:8.1-SNAPSHOT
           jahia_cluster_enabled: true
