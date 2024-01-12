@@ -36,7 +36,7 @@
   uninstallPreviousVersion: true
 
 - installBundle:
-  - 'mvn:org.jahia.modules/site-settings-seo/4.5.0-SNAPSHOT'
+  - 'mvn:org.jahia.modules/site-settings-seo/4.4.0'
   - url: 'mvn:org.jahia.modules/qa-module'
   autoStart: true
   uninstallPreviousVersion: true
