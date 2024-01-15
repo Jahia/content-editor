@@ -25,16 +25,18 @@
 - importSite: "jar:mvn:org.jahia.modules/digitall/2.3.0/zip/import!/Digitall.zip"
 
 - addMavenRepository: 'https://devtools.jahia.com/nexus/content/groups/public/'
-- installBundle:
-  - 'mvn:org.jahia.modules/jcontent/2.12.0'
-  autoStart: true
-  uninstallPreviousVersion: true
 
 - addMavenRepository: 'https://devtools.jahia.com/nexus/content/groups/internal@id=jahia-internal@snapshots'
   username: ${env:NEXUS_USERNAME}
   password: ${env:NEXUS_PASSWORD}
+
 - installBundle:
-  - 'mvn:org.jahia.modules/site-settings-seo/4.4.0-SNAPSHOT'
+    - 'mvn:org.jahia.modules/jcontent/2.13.0-SNAPSHOT'
+  autoStart: true
+  uninstallPreviousVersion: true
+
+- installBundle:
+  - 'mvn:org.jahia.modules/site-settings-seo/4.4.0'
   - url: 'mvn:org.jahia.modules/qa-module'
   autoStart: true
   uninstallPreviousVersion: true

@@ -162,6 +162,8 @@ describe('Create multi language content and verify that it is different in all l
         // Will be skipped in  editPresent undefined
         if (s.editPresent !== undefined && s.editPresent) {
             pageComposer.shouldContain(s.title);
+            // eslint-disable-next-line cypress/no-unnecessary-waiting
+            cy.wait(5000);
             pageComposer.doInsideInnerFrame(() => {
                 cy.get('a').contains('Read More').click();
             });

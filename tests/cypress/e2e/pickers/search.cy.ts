@@ -57,7 +57,7 @@ describe('Picker tests - Search', () => {
         picker.getSearchInput().should('be.empty');
     });
 
-    it('Editorial Picker- Search for tab - letter by letter', () => {
+    it('Editorial Picker - Search for tab - letter by letter', () => {
         const contentEditor = jcontent.editComponentByText('Leading by Example');
         const picker = contentEditor.getPickerField('jdmix:hasLink_internalLink').open();
         picker.search('t');
