@@ -59,6 +59,7 @@ describe('Test the text field initializer', () => {
             }
 
             pageComposer.switchLanguage(data);
+            // eslint-disable-next-line cypress/no-unnecessary-waiting
             cy.wait(5000);
             checkValuesDisplayedInPageComposer(pageComposer, valuesToCheck, lang);
         });
@@ -238,6 +239,7 @@ describe('Test the text field initializer', () => {
         contentEditorToCreate.getSmallTextField('mix:title_jcr:title').addNewValue('deutschTitle', true);
         contentEditorToCreate.getLanguageSwitcher().selectLang('English');
         contentEditorToCreate.create();
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.wait(5000);
         cy.log('Test initial values of textFieldInitializerTest content');
         testValuesInPageComposer(pageComposer, initialDisplayedValues, [langFR, langDE, langEN]);
@@ -406,6 +408,7 @@ describe('Test the text field initializer', () => {
         contentEditorToEdit.getLanguageSwitcher().selectLang('English');
         contentEditorToEdit.save();
         pageComposer.refresh();
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.wait(5000);
         testValuesInPageComposer(pageComposer, displayedValues, [langFR, langDE, langEN]);
 
@@ -474,6 +477,7 @@ describe('Test the text field initializer', () => {
         contentEditor.getLanguageSwitcher().selectLang('English');
         contentEditor.create();
         pageComposer.refresh();
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
         cy.wait(5000);
         testValuesInPageComposer(pageComposer, newDisplayedValues, [langFR, langDE, langEN]);
     });
