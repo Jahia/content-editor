@@ -3,7 +3,7 @@ import {PageComposer} from '../page-object/pageComposer';
 import {SmallTextField, DateField} from '../page-object/fields';
 
 describe('Test the text field initializer', () => {
-    const siteKey = 'extFieldInitializerTest';
+    const siteKey = 'textFieldInitializerTest';
     const langEN = 'en';
     const langFR = 'fr';
     const langDE = 'de';
@@ -59,12 +59,13 @@ describe('Test the text field initializer', () => {
             }
 
             pageComposer.switchLanguage(data);
+            cy.wait(5000);
             checkValuesDisplayedInPageComposer(pageComposer, valuesToCheck, lang);
         });
     };
 
     it('Check text field initializer', () => {
-        cy.log('Create en check initial values of extFieldInitializerTest content');
+        cy.log('Create en check initial values of textFieldInitializerTest content');
 
         const initialFields = [
             {
@@ -237,10 +238,11 @@ describe('Test the text field initializer', () => {
         contentEditorToCreate.getSmallTextField('mix:title_jcr:title').addNewValue('deutschTitle', true);
         contentEditorToCreate.getLanguageSwitcher().selectLang('English');
         contentEditorToCreate.create();
+        cy.wait(5000);
+        cy.log('Test initial values of textFieldInitializerTest content');
         testValuesInPageComposer(pageComposer, initialDisplayedValues, [langFR, langDE, langEN]);
 
         cy.log('Edit and save textFieldInitializerTest content');
-
         const editFields = [
             {
                 key: 'cent:textFieldInitializer_defaultString',
@@ -404,13 +406,14 @@ describe('Test the text field initializer', () => {
         contentEditorToEdit.getLanguageSwitcher().selectLang('English');
         contentEditorToEdit.save();
         pageComposer.refresh();
+        cy.wait(5000);
         testValuesInPageComposer(pageComposer, displayedValues, [langFR, langDE, langEN]);
 
-        cy.log('Delete previous extFieldInitializerTest content');
-        pageComposer.openContextualMenuOnContent('div[path="/sites/extFieldInitializerTest/home/area-main/englishtitle"] div.gwt-HTML.x-component').delete();
-        pageComposer.openContextualMenuOnContent('div[path="/sites/extFieldInitializerTest/home/area-main/englishtitle"] div.gwt-HTML.x-component').deletePermanently();
+        cy.log('Delete previous textFieldInitializerTest content');
+        pageComposer.openContextualMenuOnContent(`div[path="/sites/${siteKey}/home/area-main/englishtitle"] div.gwt-HTML.x-component`).delete();
+        pageComposer.openContextualMenuOnContent(`div[path="/sites/${siteKey}/home/area-main/englishtitle"] div.gwt-HTML.x-component`).deletePermanently();
 
-        cy.log('Create en check new extFieldInitializerTest content');
+        cy.log('Create en check new textFieldInitializerTest content');
 
         const newEditFields = [
             {
@@ -471,6 +474,7 @@ describe('Test the text field initializer', () => {
         contentEditor.getLanguageSwitcher().selectLang('English');
         contentEditor.create();
         pageComposer.refresh();
+        cy.wait(5000);
         testValuesInPageComposer(pageComposer, newDisplayedValues, [langFR, langDE, langEN]);
     });
 });
