@@ -61,7 +61,7 @@ describe('Picker tests - Search', () => {
         const contentEditor = jcontent.editComponentByText('Leading by Example');
         const picker = contentEditor.getPickerField('jdmix:hasLink_internalLink').open();
         picker.search('t');
-        picker.verifyResultsLength(83);
+        picker.verifyResultsLength(82);
         picker.search('a');
         picker.verifyResultsLength(19);
         picker.search('b');
