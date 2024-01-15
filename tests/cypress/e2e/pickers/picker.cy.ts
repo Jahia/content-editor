@@ -156,7 +156,7 @@ describe('Picker tests', () => {
         });
 
         cy.log('open file picker dialog');
-        const contentEditor = jcontent.createContent(contentTypes.fileReference.typeName);
+        let contentEditor = jcontent.createContent(contentTypes.fileReference.typeName);
         let picker = contentEditor
             .getPickerField(contentTypes.fileReference.fieldNodeType, contentTypes.fileReference.multiple)
             .open();
@@ -165,7 +165,7 @@ describe('Picker tests', () => {
 
         cy.log('assert created folder exists and select');
         pagesAccordion.expandTreeItem('images');
-        pagesAccordion.getTreeItem(folderName).click().should('be.visible');
+        pagesAccordion.getTreeItem(folderName).should('be.visible').click();
         picker.cancel();
 
         cy.log(`delete folder '${folderName}'`);
@@ -175,7 +175,7 @@ describe('Picker tests', () => {
         });
 
         cy.reload(); // Reload to sync folder
-        const contentEditor = jcontent.createContent(contentTypes.fileReference.typeName);
+        contentEditor = jcontent.createContent(contentTypes.fileReference.typeName);
 
         cy.log('re-open file picker');
 
