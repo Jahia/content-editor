@@ -133,7 +133,6 @@ export const SelectionHandler = ({initialSelectedItem, site, pickerConfig, accor
             .filter(accordionItem => !accordionItem.isEnabled || accordionItem.isEnabled(newState.site));
         newState.modes = accordionItems.map(item => item.key);
 
-        newState.openPaths = [...new Set([...newState.openPaths, ...getDetailedPathArray(getPathWithoutFile(newState.path), newState.site)])];
         if (selectedNode && !previousState.current.isOpen) {
             newState.openPaths = [...new Set([...newState.openPaths, ...getDetailedPathArray(getPathWithoutFile(selectedNode.path), newState.site)])];
         }
