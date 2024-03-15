@@ -85,7 +85,7 @@ jobs:
         with:
           module_id: content-editor
           testrail_project: Content Editor
-          timeout_minutes: 50
+          timeout_minutes: 65
           tests_manifest: provisioning-manifest-build.yml
           should_use_build_artifacts: true
           jahia_cluster_enabled: false
