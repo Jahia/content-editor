@@ -31,7 +31,7 @@
   password: ${env:NEXUS_PASSWORD}
 
 - installBundle:
-    - 'mvn:org.jahia.modules/jcontent/2.13.0-SNAPSHOT'
+    - 'mvn:org.jahia.modules/jcontent/2.13.0'
   autoStart: true
   uninstallPreviousVersion: true
 
