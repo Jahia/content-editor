@@ -41,8 +41,8 @@ export function getPickerValue(dialog) {
         const contentURL = new URL(valueInInput);
         return contentURL.toString();
     } catch {
-        return valueInInput.startsWith(contentPrefix) ?
+        return decodeURIComponent(valueInInput.startsWith(contentPrefix) ?
             valueInInput.substr(contentPrefix.length).slice(0, -('.html').length) :
-            valueInInput.substr(filePrefix.length);
+            valueInInput.substr(filePrefix.length));
     }
 }
