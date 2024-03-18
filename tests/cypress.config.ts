@@ -1,25 +1,4 @@
 import {defineConfig} from 'cypress';
+import {baseConfig} from './cypress.config.common';
 
-export default defineConfig({
-    chromeWebSecurity: false,
-    defaultCommandTimeout: 10000,
-    videoUploadOnPasses: false,
-    reporter: 'cypress-multi-reporters',
-    reporterOptions: {
-        configFile: 'reporter-config.json'
-    },
-    screenshotsFolder: './results/screenshots',
-    videosFolder: './results/videos',
-    viewportWidth: 1366,
-    viewportHeight: 768,
-    trashAssetsBeforeRuns: true,
-    watchForFileChanges: false,
-    e2e: {
-        setupNodeEvents(on, config) {
-            // eslint-disable-next-line @typescript-eslint/no-var-requires
-            return require('./cypress/plugins/index.js')(on, config);
-        },
-        excludeSpecPattern: '*.ignore.ts',
-        baseUrl: 'http://localhost:8080'
-    }
-});
+export default defineConfig(baseConfig);
