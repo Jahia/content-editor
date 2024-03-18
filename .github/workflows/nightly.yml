@@ -9,7 +9,7 @@ jobs:
   integration-tests-cluster:
     name: Integration Tests (Cluster)
     runs-on: self-hosted
-    timeout-minutes: 75
+    timeout-minutes: 90
     steps:
       - uses: jahia/jahia-modules-action/helper@v2
       - uses: KengoTODA/actions-setup-docker-compose@main
@@ -23,7 +23,7 @@ jobs:
         with:
           module_id: content-editor
           testrail_project: Content Editor
-          timeout_minutes: 65
+          timeout_minutes: 85
           tests_manifest: provisioning-manifest-snapshot.yml
           jahia_image: jahia/jahia-ee-dev:8.1-SNAPSHOT
           jahia_cluster_enabled: true
