@@ -67,8 +67,8 @@ jobs:
           sonar_token: ${{ secrets.SONAR_TOKEN }}
           mvn_settings_filepath: '.github/maven.settings.xml'
 
-  integration-tests-standalone:
-    name: Integration Tests (Standalone)
+  integration-tests:
+    name: Int. Tests (Standalone)
     needs: build
     runs-on: self-hosted
     timeout-minutes: 65

@@ -6,8 +6,8 @@ on:
     - cron:  '0 0 * * *'
 
 jobs:
-  integration-tests-cluster:
-    name: Integration Tests ${{ matrix.config_file }}
+  integration-tests:
+    name: Int. Tests ${{ matrix.config_file }}
     runs-on: self-hosted
     strategy:
       fail-fast: false
