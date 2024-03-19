@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        jahia_image: ["jahia/jahia-ee-dev:8-SNAPSHOT"]
+        jahia_image: ["jahia/jahia-ee-dev:8.1-SNAPSHOT"]
         config_file:
           - cypress.config-others.ts
           - cypress.config-pickers.ts
