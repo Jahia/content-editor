@@ -34,8 +34,8 @@
 
 - installBundle:
     - 'mvn:org.jahia.modules/jcontent/2.13.0'
-    - 'mvn:org.jahia.modules/content-editor/4.7.0-SNAPSHOT'
-    - 'mvn:org.jahia.test/content-editor-test-module/4.7.0-SNAPSHOT'
+    - 'mvn:org.jahia.modules/content-editor'
+    - 'mvn:org.jahia.test/content-editor-test-module'
     - 'mvn:org.jahia.modules/site-settings-seo/4.4.0'
   autoStart: true
   uninstallPreviousVersion: true
