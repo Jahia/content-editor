@@ -43,11 +43,17 @@ jobs:
           module_id: content-editor
           mvn_settings_filepath: '.github/maven.settings.xml'
 
-  integration-tests-standalone:
-    name: Integration Tests (Standalone)
-    needs: build
+  integration-tests:
+    name: Int. Tests ${{ matrix.config_file }}
     runs-on: self-hosted
-    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      matrix:
+        jahia_image: ["jahia/jahia-ee-dev:8.1-SNAPSHOT"]
+        config_file:
+          - cypress.config-others.ts
+          - cypress.config-pickers.ts
+    timeout-minutes: 65
     steps:
       - uses: jahia/jahia-modules-action/helper@v2
       - uses: KengoTODA/actions-setup-docker-compose@main
@@ -60,20 +66,27 @@ jobs:
       - uses: jahia/jahia-modules-action/integration-tests@v2
         with:
           module_id: content-editor
+          incident_service: content-editor-${{ matrix.config_file }}
           testrail_project: Content Editor
           timeout_minutes: 50
           tests_manifest: provisioning-manifest-build.yml
-          jahia_image: jahia/jahia-ee-dev:8.1-SNAPSHOT
-          should_use_build_artifacts: true
-          should_skip_testrail: true
-          github_artifact_name: content-editor-standalone-artifacts-${{ github.run_number }}
+          jahia_image: ${{ matrix.jahia_image }}
+          jahia_cluster_enabled: true
+          tests_profile: ${{ matrix.config_file }}
+          should_use_build_artifacts: false
+          should_skip_artifacts: true
+          should_skip_notifications: true
+          should_skip_testrail: false
+          should_skip_zencrepes: true
+          github_artifact_name: ce-nightly-${{ matrix.config_file }}-${{ github.run_number }}
+          jahia_artifact_name: ce-nightly-${{ matrix.config_file }}-${{ github.run_number }}          
           bastion_ssh_private_key: ${{ secrets.BASTION_SSH_PRIVATE_KEY_JAHIACI }}
           jahia_license: ${{ secrets.JAHIA_LICENSE_8X_FULL }}
           docker_username: ${{ secrets.DOCKERHUB_USERNAME }}
           docker_password: ${{ secrets.DOCKERHUB_PASSWORD }}
           nexus_username: ${{ secrets.NEXUS_USERNAME }}
           nexus_password: ${{ secrets.NEXUS_PASSWORD }}
-          tests_report_name: Test report (Standalone)
+          tests_report_name: Nightly ${{ matrix.config_file }}
           testrail_username: ${{ secrets.TESTRAIL_USERNAME }}
           testrail_password: ${{ secrets.TESTRAIL_PASSWORD }}
           incident_pagerduty_api_key: ${{ secrets.INCIDENT_PAGERDUTY_API_KEY }}
@@ -83,14 +96,18 @@ jobs:
           incident_google_client_email: ${{ secrets.INCIDENT_GOOGLE_CLIENT_EMAIL }}
           incident_google_api_key_base64: ${{ secrets.INCIDENT_GOOGLE_PRIVATE_KEY_BASE64 }}
           zencrepes_secret: ${{ secrets.ZENCREPES_WEBHOOK_SECRET }}
+          logging_mode: 'partial'
       - name: Test Report
         uses: dorny/test-reporter@v1
         if: success() || failure()
         with:
-          name: Tests Report (Standalone)
+          name: Nightly ${{ matrix.config_file }}
           path: tests/artifacts/results/xml_reports/**/*.xml
           reporter: java-junit
           fail-on-error: 'false'
+      - name: Print test report URL
+        run: |
+          echo "Test report URL is ${{ steps.test-report.outputs.runHtmlUrl }}"
 
   publish:
     name: Publish module

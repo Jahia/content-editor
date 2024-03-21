@@ -6,10 +6,17 @@ on:
     - cron:  '0 0 * * *'
 
 jobs:
-  integration-tests-cluster:
-    name: Integration Tests (Cluster)
+  integration-tests:
+    name: Int. Tests ${{ matrix.config_file }}
     runs-on: self-hosted
-    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      matrix:
+        jahia_image: ["jahia/jahia-ee-dev:8.1-SNAPSHOT"]
+        config_file:
+          - cypress.config-others.ts
+          - cypress.config-pickers.ts
+    timeout-minutes: 65
     steps:
       - uses: jahia/jahia-modules-action/helper@v2
       - uses: KengoTODA/actions-setup-docker-compose@main
@@ -22,24 +29,27 @@ jobs:
       - uses: jahia/jahia-modules-action/integration-tests@v2
         with:
           module_id: content-editor
+          incident_service: content-editor-${{ matrix.config_file }}
           testrail_project: Content Editor
           timeout_minutes: 50
           tests_manifest: provisioning-manifest-snapshot.yml
-          jahia_image: jahia/jahia-ee-dev:8.1-SNAPSHOT
+          jahia_image: ${{ matrix.jahia_image }}
           jahia_cluster_enabled: true
+          tests_profile: ${{ matrix.config_file }}
           should_use_build_artifacts: false
           should_skip_artifacts: true
           should_skip_notifications: true
           should_skip_testrail: false
           should_skip_zencrepes: true
-          github_artifact_name: content-editor-cluster-artifacts-${{ github.run_number }}
+          github_artifact_name: ce-nightly-${{ matrix.config_file }}-${{ github.run_number }}
+          jahia_artifact_name: ce-nightly-${{ matrix.config_file }}-${{ github.run_number }}          
           bastion_ssh_private_key: ${{ secrets.BASTION_SSH_PRIVATE_KEY_JAHIACI }}
           jahia_license: ${{ secrets.JAHIA_LICENSE_8X_FULL }}
           docker_username: ${{ secrets.DOCKERHUB_USERNAME }}
           docker_password: ${{ secrets.DOCKERHUB_PASSWORD }}
           nexus_username: ${{ secrets.NEXUS_USERNAME }}
           nexus_password: ${{ secrets.NEXUS_PASSWORD }}
-          tests_report_name: Test report (Cluster)
+          tests_report_name: Nightly ${{ matrix.config_file }}
           testrail_username: ${{ secrets.TESTRAIL_USERNAME }}
           testrail_password: ${{ secrets.TESTRAIL_PASSWORD }}
           incident_pagerduty_api_key: ${{ secrets.INCIDENT_PAGERDUTY_API_KEY }}
@@ -54,7 +64,11 @@ jobs:
         uses: dorny/test-reporter@v1
         if: success() || failure()
         with:
-          name: Tests Report (Cluster)
+          name: Nightly ${{ matrix.config_file }}
           path: tests/artifacts/results/xml_reports/**/*.xml
           reporter: java-junit
           fail-on-error: 'false'
+      - name: Print test report URL
+        run: |
+          echo "Test report URL is ${{ steps.test-report.outputs.runHtmlUrl }}"
+

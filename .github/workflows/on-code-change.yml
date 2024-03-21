@@ -67,11 +67,18 @@ jobs:
           sonar_token: ${{ secrets.SONAR_TOKEN }}
           mvn_settings_filepath: '.github/maven.settings.xml'
 
-  integration-tests-standalone:
-    name: Integration Tests (Standalone)
+  integration-tests:
+    name: Int. Tests ${{ matrix.config_file }}
     needs: build
     runs-on: self-hosted
-    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      matrix:
+        jahia_image: ["jahia/jahia-ee-dev:8.1-SNAPSHOT"]
+        config_file:
+          - cypress.config-others.ts
+          - cypress.config-pickers.ts    
+    timeout-minutes: 65
     steps:
       - uses: jahia/jahia-modules-action/helper@v2
       - uses: KengoTODA/actions-setup-docker-compose@main
@@ -87,11 +94,13 @@ jobs:
           testrail_project: Content Editor
           timeout_minutes: 50
           tests_manifest: provisioning-manifest-build.yml
+          tests_profile: ${{ matrix.config_file }}
           should_use_build_artifacts: true
           jahia_cluster_enabled: false
           should_skip_testrail: true
-          jahia_image: jahia/jahia-ee-dev:8.1-SNAPSHOT
-          github_artifact_name: content-editor-standalone-artifacts-${{ github.run_number }}
+          jahia_image: ${{ matrix.jahia_image }}
+          github_artifact_name: ce-nightly-${{ matrix.config_file }}-${{ github.run_number }}
+          jahia_artifact_name: ce-nightly-${{ matrix.config_file }}-${{ github.run_number }}
           bastion_ssh_private_key: ${{ secrets.BASTION_SSH_PRIVATE_KEY_JAHIACI }}
           jahia_license: ${{ secrets.JAHIA_LICENSE_8X_FULL }}
           docker_username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -108,7 +117,7 @@ jobs:
           incident_google_client_email: ${{ secrets.INCIDENT_GOOGLE_CLIENT_EMAIL }}
           incident_google_api_key_base64: ${{ secrets.INCIDENT_GOOGLE_PRIVATE_KEY_BASE64 }}
           zencrepes_secret: ${{ secrets.ZENCREPES_WEBHOOK_SECRET }}
-          cypress_configuration_file: cypress.pull-requests.config.ts
+          logging_mode: 'partial'
       - name: Test Report
         uses: dorny/test-reporter@v1
         if: success() || failure()
