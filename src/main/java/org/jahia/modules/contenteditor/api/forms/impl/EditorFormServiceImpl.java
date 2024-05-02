@@ -602,6 +602,22 @@ public class EditorFormServiceImpl implements EditorFormService {
             return;
         }
 
+        // Move fields to their final section/fieldset
+        List<EditorFormField> toBeRemoved = new ArrayList<>();
+        formFieldSet.getEditorFormFields().forEach(editorFormField -> {
+            if (!(editorFormField.getTarget() == null || editorFormField.getTarget().getFieldSetName() == null || editorFormField.getTarget().getFieldSetName().equals(formFieldSet.getName()))) {
+                toBeRemoved.add(editorFormField);
+                EditorFormSection editorFormSection = formSectionsByName.get(editorFormField.getTarget().getSectionName());
+                if(editorFormSection != null) {
+                    editorFormSection.getFieldSets().forEach(editorFormFieldSet -> {
+                        if (editorFormFieldSet.getName().equals(editorFormField.getTarget().getFieldSetName())) {
+                            editorFormFieldSet.getEditorFormFields().add(editorFormField);
+                        }
+                    });
+                }
+            }
+        });
+        toBeRemoved.forEach(formFieldSet.getEditorFormFields()::remove);
         String targetSectionName = resolveMainSectionName(formFieldSet);
         EditorFormSection targetSection = formSectionsByName.get(targetSectionName);
         if (targetSection == null) {
