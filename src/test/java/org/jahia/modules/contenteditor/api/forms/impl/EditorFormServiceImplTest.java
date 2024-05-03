@@ -39,9 +39,12 @@ import org.jahia.services.sites.JahiaSite;
 import org.jahia.services.templates.ModuleVersion;
 import org.jahia.test.framework.AbstractJUnitTest;
 import org.jahia.test.utils.TestHelper;
+import org.json.simple.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.jcr.RepositoryException;
 import java.net.URL;
@@ -50,6 +53,7 @@ import java.util.stream.Collectors;
 
 public class EditorFormServiceImplTest extends AbstractJUnitTest {
 
+    private static final Logger log = LoggerFactory.getLogger(EditorFormServiceImplTest.class);
     private EditorFormService editorFormService;
     private StaticDefinitionsRegistry staticDefinitionsRegistry;
 
@@ -432,8 +436,8 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         readEditorFormFieldSet("META-INF/jahia-content-editor-forms/fieldsets/jmix_tagged_move_field.json");
         EditorForm newForm = editorFormService.getEditForm(Locale.ENGLISH, Locale.ENGLISH, textNode.getPath());
         // field has been moved
-        Assert.isTrue(hasField(newForm, "classification", "jmix:tagged", "j:tagList"), "cannot find jmix:tagged in metadata section");
-        Assert.isTrue(!hasFieldSet(newForm, "metadata", "jmix:tagged"), "cannot find jmix:tagged in metadata section");
+        Assert.isTrue(hasField(newForm, "classification", "jmix:categorized", "j:tagList"), "cannot find j:tagList in jmix:categorized fieldsetName in classification section");
+        Assert.isTrue(!hasFieldSet(newForm, "metadata", "jmix:tagged"), "can find jmix:tagged in metadata section");
     }
 
     /**
@@ -682,7 +686,7 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
     private EditorFormFieldSet getFieldSet(EditorForm form, final String searchedSection, final String searchedFieldSet) {
         List<EditorFormFieldSet> formFieldSets = getSection(form, searchedSection).getFieldSets().stream().filter(fieldSets -> fieldSets.getName().equals(searchedFieldSet)).collect(Collectors.toList());
         Assert.isTrue(formFieldSets.size() < 2, "More than one fieldSet match section / fieldset : " + searchedSection + " / " + searchedFieldSet);
-        if (formFieldSets.size() > 0) {
+        if (!formFieldSets.isEmpty()) {
             return formFieldSets.get(0);
         } else {
             throw new NoSuchElementException("No fieldSet match section / fieldset : " + searchedSection + " / " + searchedFieldSet);
@@ -702,9 +706,11 @@ public class EditorFormServiceImplTest extends AbstractJUnitTest {
         EditorFormFieldSet fieldSet = getFieldSet(form, searchedSection, searchedFieldSet);
         List<EditorFormField> fields = fieldSet.getEditorFormFields().stream().filter(field -> field.getName().equals(searchedField)).collect(Collectors.toList());
         Assert.isTrue(fields.size() < 2, "More than one field match section / fieldset / field : " + searchedSection + " / " + searchedFieldSet + " / " + searchedField);
-        if (fields.size() > 0) {
+        if (!fields.isEmpty()) {
             return fields.get(0);
         } else {
+            log.error("Fields in fieldset : " + fieldSet.getName() + " : " + fieldSet.getEditorFormFields().stream().map(EditorFormField::getName).collect(Collectors.joining(", ")) + " for section " + searchedSection);
+            log.error(getSection(form, searchedSection).getFieldSets().stream().map(EditorFormFieldSet::getName).collect(Collectors.joining(", ")));
             throw new NoSuchElementException("No field match section / fieldset / field : " + searchedSection + " / " + searchedFieldSet + " / " + searchedField);
         }
     }

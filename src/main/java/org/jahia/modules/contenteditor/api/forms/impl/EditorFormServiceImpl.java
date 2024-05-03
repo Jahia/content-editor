@@ -333,7 +333,8 @@ public class EditorFormServiceImpl implements EditorFormService {
                     .map(editorFormSectionDefinition -> {
                         editorFormSectionDefinition.setHide(shouldHideSection(editorFormSectionDefinition
                             , mode));
-                        return editorFormSectionDefinition;})
+                        return editorFormSectionDefinition;
+                    })
                     .collect(Collectors.toList());
                 mergedFormDefinition.setSections(filteredSections);
             }
@@ -474,7 +475,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         maxLength.setValue(String.valueOf(SettingsBean.getInstance().getMaxNameSize()));
         systemNameField.setSelectorOptions(Collections.singletonList(maxLength));
 
-        List<String> readOnlyNodeTypes =  Arrays.asList(
+        List<String> readOnlyNodeTypes = Arrays.asList(
             "jnt:group",
             "jnt:groupsFolder",
             "jnt:mounts",
@@ -498,7 +499,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         );
 
         Pattern pathPattern = Pattern.compile("^/sites/[^/]*/(contents|files)$");
-        if  (readOnlyNodeTypes.contains(primaryNodeType.getName())
+        if (readOnlyNodeTypes.contains(primaryNodeType.getName())
             || (EDIT.equals(mode) && currentNode.isNodeType("jmix:systemNameReadonly"))
             || (EDIT.equals(mode) && pathPattern.matcher(currentNode.getPath()).matches())
             || (EDIT.equals(mode) && !currentNode.hasPermission("jcr:modifyProperties_default_" + locale.getLanguage()))
@@ -605,19 +606,32 @@ public class EditorFormServiceImpl implements EditorFormService {
         // Move fields to their final section/fieldset
         List<EditorFormField> toBeRemoved = new ArrayList<>();
         formFieldSet.getEditorFormFields().forEach(editorFormField -> {
-            if (!(editorFormField.getTarget() == null || editorFormField.getTarget().getFieldSetName() == null || editorFormField.getTarget().getFieldSetName().equals(formFieldSet.getName()))) {
-                toBeRemoved.add(editorFormField);
+            String fieldSetName = editorFormField.getTarget().getFieldSetName();
+            if (!(editorFormField.getTarget() == null || fieldSetName == null || fieldSetName.equals(formFieldSet.getName()))) {
                 EditorFormSection editorFormSection = formSectionsByName.get(editorFormField.getTarget().getSectionName());
-                if(editorFormSection != null) {
-                    editorFormSection.getFieldSets().forEach(editorFormFieldSet -> {
-                        if (editorFormFieldSet.getName().equals(editorFormField.getTarget().getFieldSetName())) {
-                            editorFormFieldSet.getEditorFormFields().add(editorFormField);
-                        }
-                    });
+                if (editorFormSection != null) {
+                    if (fieldSetName.equals("<main>")) {
+                        logger.debug("Moving field {} to <main> in fieldset {} of section {}", editorFormField.getName(), editorFormSection.getFieldSets().get(0).getName(), editorFormSection.getName());
+                        editorFormSection.getFieldSets().get(0).getEditorFormFields().add(editorFormField);
+                        toBeRemoved.add(editorFormField);
+                    } else {
+                        editorFormSection.getFieldSets().forEach(editorFormFieldSet -> {
+                            if (editorFormFieldSet.getName().equals(fieldSetName)) {
+                                logger.debug("Moving field {} to fieldset {} of section {}", editorFormField.getName(), editorFormFieldSet.getName(), editorFormSection.getName());
+                                editorFormFieldSet.getEditorFormFields().add(editorFormField);
+                                toBeRemoved.add(editorFormField);
+                            }
+                        });
+                    }
                 }
             }
         });
-        toBeRemoved.forEach(formFieldSet.getEditorFormFields()::remove);
+        if (!toBeRemoved.isEmpty()) {
+            if(logger.isDebugEnabled()) {
+                logger.debug("Removing {} fields from fieldset {}", toBeRemoved.stream().map(EditorFormField::getName).collect(Collectors.joining(",")), formFieldSet.getName());
+            }
+            toBeRemoved.forEach(formFieldSet.getEditorFormFields()::remove);
+        }
         String targetSectionName = resolveMainSectionName(formFieldSet);
         EditorFormSection targetSection = formSectionsByName.get(targetSectionName);
         if (targetSection == null) {
@@ -763,8 +777,8 @@ public class EditorFormServiceImpl implements EditorFormService {
             // Always take the lower boundary
             if (propertyDefinition.getSelector() == SelectorType.CHOICELIST && (
                 propertyDefinition.getRequiredType() == PropertyType.DOUBLE ||
-                propertyDefinition.getRequiredType() == PropertyType.LONG ||
-                propertyDefinition.getRequiredType() == PropertyType.DECIMAL)) {
+                    propertyDefinition.getRequiredType() == PropertyType.LONG ||
+                    propertyDefinition.getRequiredType() == PropertyType.DECIMAL)) {
                 try {
                     Matcher rangeMatcher = RANGE_PATTERN.matcher(valueConstraint);
                     if (rangeMatcher.matches()) {
