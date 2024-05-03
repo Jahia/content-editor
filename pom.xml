@@ -50,7 +50,7 @@
         <require-capability>osgi.extender;filter:="(osgi.extender=org.jahia.bundles.blueprint.extender.config)"</require-capability>
         <jahia-module-signature>MCwCFHS/tlAVMrxcdz/eBw1/SsqniubGAhQSGKYTXaCXeO/U7GWGOfsH3bgvKg==</jahia-module-signature>
         <jahia-depends>app-shell=2.7,graphql-dxm-provider=2.19.1,jcontent=2.9</jahia-depends>
-        <jahia.plugin.version>6.5</jahia.plugin.version>
+        <jahia.plugin.version>6.9</jahia.plugin.version>
         <import-package>
             com.fasterxml.jackson.annotation;version="[2.10,3)",
             com.fasterxml.jackson.databind;version="[2.10,3)",
@@ -274,8 +274,8 @@
                                     <goal>install-node-and-yarn</goal>
                                 </goals>
                                 <configuration>
-                                    <nodeVersion>v14.16.0</nodeVersion>
-                                    <yarnVersion>v1.22.10</yarnVersion>
+                                    <nodeVersion>v18.16.0</nodeVersion>
+                                    <yarnVersion>v1.22.19</yarnVersion>
                                 </configuration>
                             </execution>
                             <execution>
