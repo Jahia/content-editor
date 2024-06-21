@@ -275,7 +275,8 @@
       },
       "vanityTab": {
         "title": "URLs personnalisées",
-        "label": "Les URLs personnalisées peuvent être gérées depuis un écran dédié, accessible depuis le menu aux 3 points verticaux de la barre d'action, ou via le bouton  \"Gérer les URLs personnalisées\" ci-dessous."
+        "label": "Les URLs personnalisées peuvent être gérées depuis un écran dédié, accessible depuis le menu aux 3 points verticaux de la barre d'action, ou via le bouton  \"Gérer les URLs personnalisées\" ci-dessous.",
+        "noPermissionLabel": "Vous n'avez pas la permission de gérer les URLs personnalisées."
       },
       "selection": {
         "itemsSelected": "{{count}} élément sélectionné",

@@ -279,7 +279,8 @@
       },
       "vanityTab": {
         "title": "Vanity URLs",
-        "label": "Vanity URLs can be managed through a dedicated feature, available in the \"3 dots icon\" button in the toolbar, or using the Manage vanity URLs button below."
+        "label": "Vanity URLs can be managed through a dedicated feature, available in the \"3 dots icon\" button in the toolbar, or using the Manage vanity URLs button below.",
+        "noPermissionLabel": "You do not have permission to manage vanity URLs."
       },
       "selection": {
         "itemsSelected": "{{count}} item selected",
