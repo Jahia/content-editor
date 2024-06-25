@@ -7,7 +7,6 @@ describe('Test the text field initializer', {testIsolation: false}, () => {
     let jcontent : JContent;
 
     before(function () {
-        cy.apollo({mutationFile: 'jcontent/enableLegacyPageComposer.graphql'});
         createSite(siteKey);
         enableModule('jcontent-test-module', siteKey);
         cy.login();
