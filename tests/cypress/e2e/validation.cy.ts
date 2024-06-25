@@ -8,7 +8,7 @@ describe('Test the text field initializer', {testIsolation: false}, () => {
 
     before(function () {
         createSite(siteKey);
-        enableModule('jcontent-test-module', siteKey);
+        enableModule('content-editor-test-module', siteKey);
         cy.login();
         jcontent = JContent
             .visit(siteKey, 'en', 'content-folders/contents')
