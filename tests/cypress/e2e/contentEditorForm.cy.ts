@@ -30,4 +30,10 @@ describe('Create content tests', () => {
         getComponentByRole(Button, 'content-type-dialog-cancel').click();
         cy.contains('My constraint message 1234');
     });
+
+    it('Should display overridden title label for boolean buttons', function () {
+        const contentEditor = jcontent.createContent('mesiHeaderBanner');
+        const field = contentEditor.getField(Field, 'jmix:mesiBannerStory_buttonTransverse', false);
+        field.get().find('label').should('contain', 'Contribuer le bouton transverse Header ?');
+    });
 });
