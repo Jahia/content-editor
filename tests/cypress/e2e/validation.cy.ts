@@ -21,39 +21,39 @@ describe('Test the text field initializer', {testIsolation: false}, () => {
 
     it('should handle constraint on create/normal prop', () => {
         const ce = jcontent.createContent('textFieldInitializer');
-        ce.getField(SmallTextField, 'nt:base_ce:systemName', false).addNewValue('test-validator-shared');
-        ce.getField(SmallTextField, 'cent:textFieldInitializer_defaultString', false).clearValue();
+        ce.getField(SmallTextField, 'nt:base_ce:systemName', false).addNewValue('test-validator-shared', true);
+        ce.getField(SmallTextField, 'cent:textFieldInitializer_defaultString', false).clearValue(true);
         ce.createUnchecked();
         cy.contains('There is one validation error');
-        ce.getField(SmallTextField, 'cent:textFieldInitializer_defaultString', false).addNewValue('1234');
+        ce.getField(SmallTextField, 'cent:textFieldInitializer_defaultString', false).addNewValue('1234', true);
         ce.create();
     });
 
     it('should handle constraint on edit/normal prop', () => {
         const ce = jcontent.editComponentByText('test-validator-shared');
-        ce.getField(SmallTextField, 'cent:textFieldInitializer_defaultString', false).clearValue();
+        ce.getField(SmallTextField, 'cent:textFieldInitializer_defaultString', false).clearValue(true);
         ce.saveUnchecked();
         cy.contains('There is one validation error');
-        ce.getField(SmallTextField, 'cent:textFieldInitializer_defaultString', false).addNewValue('12345');
+        ce.getField(SmallTextField, 'cent:textFieldInitializer_defaultString', false).addNewValue('12345', true);
         ce.save();
     });
 
     it('should handle constraint on create/i18n prop', () => {
         const ce = jcontent.createContent('textFieldInitializer');
-        ce.getField(SmallTextField, 'nt:base_ce:systemName', false).addNewValue('test-validator-i18n');
-        ce.getField(SmallTextField, 'cent:textFieldInitializer_defaultI18nString', false).addNewValue('1');
+        ce.getField(SmallTextField, 'nt:base_ce:systemName', false).addNewValue('test-validator-i18n', true);
+        ce.getField(SmallTextField, 'cent:textFieldInitializer_defaultI18nString', false).addNewValue('1', true);
         ce.createUnchecked();
         cy.contains('There is one validation error');
-        ce.getField(SmallTextField, 'cent:textFieldInitializer_defaultI18nString', false).addNewValue('1234');
+        ce.getField(SmallTextField, 'cent:textFieldInitializer_defaultI18nString', false).addNewValue('1234', true);
         ce.create();
     });
 
     it('should handle constraint on edit/i18n prop', () => {
         const ce = jcontent.editComponentByText('test-validator-i18n');
-        ce.getField(SmallTextField, 'cent:textFieldInitializer_defaultI18nString', false).addNewValue('12');
+        ce.getField(SmallTextField, 'cent:textFieldInitializer_defaultI18nString', false).addNewValue('12', true);
         ce.saveUnchecked();
         cy.contains('There is one validation error');
-        ce.getField(SmallTextField, 'cent:textFieldInitializer_defaultI18nString', false).addNewValue('12345');
+        ce.getField(SmallTextField, 'cent:textFieldInitializer_defaultI18nString', false).addNewValue('12345', true);
         ce.save();
     });
 });

@@ -36,7 +36,7 @@ export class ContentEditor extends BasePage {
     }
 
     saveUnchecked() {
-        getComponentByRole(Button, 'saveButton').click();
+        getComponentByRole(Button, 'submitSave').click();
     }
 
     createUnchecked() {
