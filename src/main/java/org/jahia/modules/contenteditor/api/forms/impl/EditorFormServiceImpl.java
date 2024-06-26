@@ -160,7 +160,7 @@ public class EditorFormServiceImpl implements EditorFormService {
     @Override
     public List<EditorFormFieldValueConstraint> getFieldConstraints(String nodeUuidOrPath,
                                                                     String parentNodeUuidOrPath,
-                                                                    String primaryNodeType,
+                                                                    String primaryNodeTypeName,
                                                                     String fieldNodeType,
                                                                     String fieldName,
                                                                     List<ContextEntryInput> context,
@@ -172,7 +172,10 @@ public class EditorFormServiceImpl implements EditorFormService {
             ExtendedPropertyDefinition fieldPropertyDefinition = nodeTypeRegistry.getNodeType(fieldNodeType).getPropertyDefinition(fieldName);
 
             if (fieldPropertyDefinition != null) {
-                EditorFormField editorFormField = generateEditorFormField(fieldPropertyDefinition, node, parentNode, uiLocale, locale, 0.0);
+                ExtendedNodeType primaryNodeType = nodeTypeRegistry.getNodeType(primaryNodeTypeName);
+                EditorFormField editorFormField = generateEditorFormField(fieldPropertyDefinition, primaryNodeType, node, parentNode,
+                    uiLocale, locale,
+                    0.0);
                 editorFormField = mergeWithStaticFormField(fieldNodeType, editorFormField);
 
                 Map<String, Object> extendContext = new HashMap<>();
@@ -183,14 +186,14 @@ public class EditorFormServiceImpl implements EditorFormService {
                     }
                 }
 
-                return getValueConstraints(nodeTypeRegistry.getNodeType(primaryNodeType), editorFormField, node, parentNode, locale, extendContext);
+                return getValueConstraints(primaryNodeType, editorFormField, node, parentNode, locale, extendContext);
             }
 
             return Collections.emptyList();
         } catch (RepositoryException e) {
             throw new EditorFormException("Error while building field constraints for" +
                 " node: " + nodeUuidOrPath +
-                ", node type: " + primaryNodeType +
+                ", node type: " + primaryNodeTypeName +
                 ", parent node: " + parentNodeUuidOrPath +
                 ", field node type: " + fieldNodeType +
                 ", field name: " + fieldName, e);
@@ -408,8 +411,8 @@ public class EditorFormServiceImpl implements EditorFormService {
                                                  Set<String> processedProperties, boolean isForExtendMixin) throws RepositoryException {
 
         final boolean displayFieldSet = !fieldSetNodeType.isNodeType("jmix:templateMixin") || primaryNodeType.isNodeType("jmix:templateMixin");
-        EditorFormFieldSet nodeTypeFieldSet = generateEditorFormFieldSet(processedProperties, fieldSetNodeType, existingNode, parentNode,
-            locale, uiLocale, removed, dynamic, activated, displayFieldSet, isForExtendMixin);
+        EditorFormFieldSet nodeTypeFieldSet = generateEditorFormFieldSet(processedProperties, fieldSetNodeType, primaryNodeType,
+            existingNode, parentNode, locale, uiLocale, removed, dynamic, activated, displayFieldSet, isForExtendMixin);
 
         JCRSiteNode site = existingNode != null ? existingNode.getResolveSite() : parentNode.getResolveSite();
 
@@ -701,8 +704,8 @@ public class EditorFormServiceImpl implements EditorFormService {
     }
 
     private EditorFormFieldSet generateEditorFormFieldSet(Set<String> processedProperties, ExtendedNodeType nodeType,
-                                                          JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale locale, Locale uiLocale, Boolean removed, Boolean dynamic,
-                                                          Boolean activated, Boolean displayed, Boolean isForExtendMixin) throws RepositoryException {
+        ExtendedNodeType primaryNodeType, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale locale, Locale uiLocale,
+        Boolean removed, Boolean dynamic, Boolean activated, Boolean displayed, Boolean isForExtendMixin) throws RepositoryException {
         boolean isLockedAndCannotBeEdited = JCRContentUtils.isLockedAndCannotBeEdited(existingNode);
         boolean fieldSetEditable = existingNode == null || (!isLockedAndCannotBeEdited && existingNode.hasPermission("jcr:nodeTypeManagement"));
 
@@ -725,7 +728,8 @@ public class EditorFormServiceImpl implements EditorFormService {
             rank++;
             maxTargetRank.put(itemType, rank);
 
-            EditorFormField editorFormField = generateEditorFormField(itemDefinition, existingNode, parentNode, uiLocale, locale, rank);
+            EditorFormField editorFormField = generateEditorFormField(itemDefinition, primaryNodeType,
+                existingNode, parentNode, uiLocale, locale, rank);
 
             editorFormFields.add(editorFormField);
             if (!dynamic) {
@@ -754,7 +758,8 @@ public class EditorFormServiceImpl implements EditorFormService {
         return fieldset;
     }
 
-    private EditorFormField generateEditorFormField(ExtendedItemDefinition itemDefinition, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale uiLocale, Locale locale, Double rank) throws RepositoryException {
+    private EditorFormField generateEditorFormField(ExtendedItemDefinition itemDefinition, ExtendedNodeType primaryNodeType,
+        JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale uiLocale, Locale locale, Double rank) throws RepositoryException {
         JCRSessionWrapper session = existingNode != null ? existingNode.getSession() : parentNode.getSession();
 
         boolean isLockedAndCannotBeEdited = JCRContentUtils.isLockedAndCannotBeEdited(existingNode);
@@ -827,8 +832,13 @@ public class EditorFormServiceImpl implements EditorFormService {
         // Use item definition to resolve labels. (same way as ContentDefinitionHelper.getGWTJahiaNodeType())
         Optional<ExtendedItemDefinition> optionalItem = extendedNodeType.getItems().stream().filter(item -> StringUtils.equals(item.getName(), propertyDefinition.getName())).findAny();
         ExtendedItemDefinition item = optionalItem.isPresent() ? optionalItem.get() : propertyDefinition;
-        String propertyLabel = StringEscapeUtils.unescapeHtml(item.getLabel(uiLocale, extendedNodeType));
-        String propertyDescription = Sanitizers.FORMATTING.sanitize(item.getTooltip(uiLocale, extendedNodeType));
+
+        String propertyLabel = StringEscapeUtils.unescapeHtml(item.getLabel(uiLocale, primaryNodeType));
+        String propertyDescription = Sanitizers.FORMATTING.sanitize(item.getTooltip(uiLocale, primaryNodeType));
+        propertyLabel = StringUtils.isEmpty(propertyLabel) ? StringEscapeUtils.unescapeHtml(item.getLabel(uiLocale, extendedNodeType)) :
+            propertyLabel;
+        propertyDescription = StringUtils.isEmpty(propertyDescription) ? Sanitizers.FORMATTING.sanitize(
+            item.getTooltip(uiLocale,extendedNodeType)) : propertyDescription;
 
         String key = itemDefinition.getResourceBundleKey() + ".constraint.error.message";
         if (itemDefinition.getDeclaringNodeType().getTemplatePackage() != null) {
