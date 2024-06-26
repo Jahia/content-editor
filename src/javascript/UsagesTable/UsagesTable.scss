@@ -1,0 +1,46 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: calc(var(--spacing-big) * 3);
+    padding: 0 250px;
+}
+
+.item {
+    margin-bottom: calc(var(--spacing-big) * 2);
+
+    text-align: center;
+}
+
+.capitalize {
+    text-transform: capitalize;
+}
+
+.marginRight {
+    margin-right: var(--spacing-big);
+}
+
+.header-location {
+    flex-grow: 2;
+}
+
+.tableWrapper {
+    position: relative;
+
+    max-width: 100%;
+
+    outline: none;
+    overflow: auto;
+}
+
+.pagination {
+    min-height: 64px;
+}
+
+.contentPaper.contentPaper {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
+}
