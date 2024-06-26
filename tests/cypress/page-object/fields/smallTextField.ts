@@ -30,4 +30,17 @@ export class SmallTextField extends Field {
             }).last().focus();
         }
     }
+
+    clearValue(force = false) {
+        if (this.multiple) {
+            // Todo
+        } else {
+            this.get().find('input[type="text"]').as('textinput');
+            // Prevent field from being hidden by sticky header
+            this.get().scrollIntoView();
+            cy.get('@textinput').clear({force: force, scrollBehavior: false});
+        }
+
+        return this;
+    }
 }
