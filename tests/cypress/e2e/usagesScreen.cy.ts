@@ -18,7 +18,7 @@ describe('Create content tests', () => {
     });
 
     beforeEach(() => {
-        cy.loginAndStoreSession();
+        cy.login();
         jcontent = JContent.visit('digitall', 'en', 'media/files/images/backgrounds');
     });
 
@@ -26,7 +26,7 @@ describe('Create content tests', () => {
         cy.logout();
     });
 
-    it('display 17 usages', () => {
+    it('display 16 usages', () => {
         jcontent.switchToListMode().getTable().getRowByLabel('boy-father.jpg').contextMenu().select('Edit');
         const contentEditor = new ContentEditor();
         const advancedOptions = contentEditor.switchToAdvancedOptions();
@@ -34,7 +34,9 @@ describe('Create content tests', () => {
         advancedOptions.switchToOption('Usages');
         cy.get('table[data-cm-role="table-usages-list"]').as('usagesTable').should('be.visible');
         cy.get('@usagesTable').find('tbody > tr').should('have.length', 10);
-        const pagination = getComponentByRole(Dropdown, 'table-pagination-dropdown-rows-per-page', getComponentByRole(BaseComponent, 'usages'));
+        const usagesPaperComponent = getComponentByRole(BaseComponent, 'usages');
+        usagesPaperComponent.get().should('be.visible');
+        const pagination = getComponentByRole(Dropdown, 'table-pagination-dropdown-rows-per-page', usagesPaperComponent);
         pagination.select('20');
         cy.get('table[data-cm-role="table-usages-list"]').as('usagesTable2').should('be.visible');
         cy.get('@usagesTable2').find('tbody > tr').should('have.length', 16);
