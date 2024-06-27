@@ -7,11 +7,11 @@ import {
     getComponentByRole,
     getElement,
     SecondaryNav,
-    Table,
     TableRow
 } from '@jahia/cypress';
 import {CreateContent} from './createContent';
 import {ContentEditor} from './contentEditor';
+import {ContentTable} from './contentTable';
 
 export class JContent extends BasePage {
     secondaryNav: SecondaryNav;
@@ -76,8 +76,8 @@ export class JContent extends BasePage {
         return this.languageSwitcher;
     }
 
-    getTable(): Table {
-        return getComponent(Table, null, el => expect(el).to.be.visible);
+    getTable(): ContentTable {
+        return getComponent(ContentTable, null, el => expect(el).to.be.visible);
     }
 
     getCreateContent(): CreateContent {

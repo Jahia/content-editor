@@ -73,7 +73,7 @@ export const Usages = () => {
     }
 
     return (
-        <section className={styles.tableContainer}>
+        <section className={styles.tableContainer} data-sel-role="usages">
             <Table aria-labelledby="tableUsages"
                    data-cm-role="table-usages-list"
                    {...getTableProps()}

@@ -1,0 +1,134 @@
+mutation {
+    jcr {
+        mutateNode(pathOrId: "/sites/digitall/contents") {
+            addChild(name: "ce-usages-contents", primaryNodeType: "jnt:contentFolder") {
+                addChildrenBatch(
+                    nodes: [
+                        {
+                            name: "usage"
+                            primaryNodeType: "jnt:imageReferenceLink"
+                            properties: [
+                                { name: "j:node", language: "en", type: REFERENCE, value: "/sites/digitall/files/images/backgrounds/boy-father.jpg" },
+                                { name: "j:linkType", value: "none"}
+                            ]
+                        },
+                        {
+                            name: "usage1"
+                            primaryNodeType: "jnt:imageReferenceLink"
+                            properties: [
+                                { name: "j:node", language: "en", type: REFERENCE, value: "/sites/digitall/files/images/backgrounds/boy-father.jpg" },
+                                { name: "j:linkType", value: "none"}
+                            ]
+                        },
+                        {
+                            name: "usage2"
+                            primaryNodeType: "jnt:imageReferenceLink"
+                            properties: [
+                                { name: "j:node", language: "en", type: REFERENCE, value: "/sites/digitall/files/images/backgrounds/boy-father.jpg" },
+                                { name: "j:linkType", value: "none"}
+                            ]
+                        },
+                        {
+                            name: "usage3"
+                            primaryNodeType: "jnt:imageReferenceLink"
+                            properties: [
+                                { name: "j:node", language: "en", type: REFERENCE, value: "/sites/digitall/files/images/backgrounds/boy-father.jpg" },
+                                { name: "j:linkType", value: "none"}
+                            ]
+                        },
+                        {
+                            name: "usage4"
+                            primaryNodeType: "jnt:imageReferenceLink"
+                            properties: [
+                                { name: "j:node", language: "en", type: REFERENCE, value: "/sites/digitall/files/images/backgrounds/boy-father.jpg" },
+                                { name: "j:linkType", value: "none"}
+                            ]
+                        },
+                        {
+                            name: "usage5"
+                            primaryNodeType: "jnt:imageReferenceLink"
+                            properties: [
+                                { name: "j:node", language: "en", type: REFERENCE, value: "/sites/digitall/files/images/backgrounds/boy-father.jpg" },
+                                { name: "j:linkType", value: "none"}
+                            ]
+                        },
+                        {
+                            name: "usage6"
+                            primaryNodeType: "jnt:imageReferenceLink"
+                            properties: [
+                                { name: "j:node", language: "en", type: REFERENCE, value: "/sites/digitall/files/images/backgrounds/boy-father.jpg" },
+                                { name: "j:linkType", value: "none"}
+                            ]
+                        },
+                        {
+                            name: "usage7"
+                            primaryNodeType: "jnt:imageReferenceLink"
+                            properties: [
+                                { name: "j:node", language: "en", type: REFERENCE, value: "/sites/digitall/files/images/backgrounds/boy-father.jpg" },
+                                { name: "j:linkType", value: "none"}
+                            ]
+                        },
+                        {
+                            name: "usage8"
+                            primaryNodeType: "jnt:imageReferenceLink"
+                            properties: [
+                                { name: "j:node", language: "en", type: REFERENCE, value: "/sites/digitall/files/images/backgrounds/boy-father.jpg" },
+                                { name: "j:linkType", value: "none"}
+                            ]
+                        },
+                        {
+                            name: "usage9"
+                            primaryNodeType: "jnt:imageReferenceLink"
+                            properties: [
+                                { name: "j:node", language: "en", type: REFERENCE, value: "/sites/digitall/files/images/backgrounds/boy-father.jpg" },
+                                { name: "j:linkType", value: "none"}
+                            ]
+                        },
+                        {
+                            name: "usage10"
+                            primaryNodeType: "jnt:imageReferenceLink"
+                            properties: [
+                                { name: "j:node", language: "en", type: REFERENCE, value: "/sites/digitall/files/images/backgrounds/boy-father.jpg" },
+                                { name: "j:linkType", value: "none"}
+                            ]
+                        },
+                        {
+                            name: "usage11"
+                            primaryNodeType: "jnt:imageReferenceLink"
+                            properties: [
+                                { name: "j:node", language: "en", type: REFERENCE, value: "/sites/digitall/files/images/backgrounds/boy-father.jpg" },
+                                { name: "j:linkType", value: "none"}
+                            ]
+                        },
+                        {
+                            name: "usage12"
+                            primaryNodeType: "jnt:imageReferenceLink"
+                            properties: [
+                                { name: "j:node", language: "en", type: REFERENCE, value: "/sites/digitall/files/images/backgrounds/boy-father.jpg" },
+                                { name: "j:linkType", value: "none"}
+                            ]
+                        },
+                        {
+                            name: "usage13"
+                            primaryNodeType: "jnt:imageReferenceLink"
+                            properties: [
+                                { name: "j:node", language: "en", type: REFERENCE, value: "/sites/digitall/files/images/backgrounds/boy-father.jpg" },
+                                { name: "j:linkType", value: "none"}
+                            ]
+                        },
+                        {
+                            name: "usage14"
+                            primaryNodeType: "jnt:imageReferenceLink"
+                            properties: [
+                                { name: "j:node", language: "en", type: REFERENCE, value: "/sites/digitall/files/images/backgrounds/boy-father.jpg" },
+                                { name: "j:linkType", value: "none"}
+                            ]
+                        }
+                    ]
+                ) {
+                    uuid
+                }
+            }
+        }
+    }
+}

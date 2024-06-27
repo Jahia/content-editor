@@ -13,20 +13,31 @@ import {UsagesCountQuery} from '~/editorTabs/AdvancedOptions/Usages/Usages.gql-q
 
 const DEPRECATED_GWT_ACTIONS = ['content', 'layout', 'metadata', 'categories', 'options', 'seo', 'usages', 'channels'];
 
+function getNodesCount(data) {
+    const nodesCount = data?.jcr?.nodeByPath?.usages?.pageInfo?.nodesCount;
+    if (nodesCount === undefined) {
+        return '0';
+    }
+
+    return nodesCount > 100 ? '99+' : nodesCount;
+}
+
 const Renderer = ({activeOption, setActiveOption, buttonLabel, onClick, tabs}) => {
     const tab = tabs ? tabs[0] : 'technicalInformation';
     const {nodeData} = useContentEditorContext();
 
     const {data} = useQuery(UsagesCountQuery, {
-        variables: {path: nodeData.path}
+        variables: {path: nodeData.path},
+        fetchPolicy: 'cache-and-network'
     });
 
     if (tab === 'usages') {
         return (
             <MenuItem
+                className={styles.menuItemWithChip}
                 isSelected={activeOption === tab}
                 label={buttonLabel}
-                iconEnd={<Chip color={activeOption === tab ? 'light' : 'default'} label={data?.jcr?.nodeByPath?.usages?.pageInfo?.nodesCount}/>}
+                iconEnd={<Chip color={activeOption === tab ? 'light' : 'default'} label={getNodesCount(data)}/>}
                 onClick={e => {
                     if (DEPRECATED_GWT_ACTIONS.includes(tab)) {
                         setActiveOption(tab);

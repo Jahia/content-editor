@@ -10,10 +10,12 @@ import {
 import {ComponentType} from '@jahia/cypress/src/page-object/baseComponent';
 import {Field, PickerField, RichTextField, SmallTextField, DateField} from './fields';
 import {LanguageSwitcher} from './languageSwitcher';
+import {AdvancedOptions} from './advancedOptions';
 
 export class ContentEditor extends BasePage {
     static defaultSelector = '[aria-labelledby="dialog-content-editor"]';
     languageSwitcher: LanguageSwitcher;
+    advancedMode = false;
 
     openSection(sectionName: string) {
         return getComponentBySelector(Collapsible, `[data-sel-content-editor-fields-group="${sectionName}"]`).expand();
@@ -96,6 +98,7 @@ export class ContentEditor extends BasePage {
 
     switchToAdvancedMode() {
         getComponentByRole(Button, 'advancedMode').should('be.visible').click();
+        this.advancedMode = !this.advancedMode;
     }
 
     validateContentIsVisibleInPreview(content: string) {
@@ -148,5 +151,15 @@ export class ContentEditor extends BasePage {
         getComponentByRole(Button, 'publishAction').click();
         cy.get('#dialog-errorBeforeSave', {timeout: 1000}).should('not.exist');
         cy.get('[role="alertdialog"]').should('be.visible').should('contain', 'Publication has been queue');
+    }
+
+    switchToAdvancedOptions(): AdvancedOptions {
+        if (this.advancedMode) {
+            cy.get('.moonstone-tab-item[data-sel-role="tab-advanced-options"]').should('be.visible').click();
+            return new AdvancedOptions();
+        }
+
+        this.switchToAdvancedMode();
+        return this.switchToAdvancedOptions();
     }
 }
