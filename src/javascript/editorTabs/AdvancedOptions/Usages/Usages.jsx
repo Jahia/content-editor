@@ -104,8 +104,13 @@ export const Usages = () => {
                                      of: t('jcontent:label.pagination.of')
                                  }}
                                  rowsPerPageOptions={[10, 20, 50]}
-                                 onPageChange={page => setCurrentPage(page - 1)}
-                                 onRowsPerPageChange={size => setPageSize(size)}
+                                 onPageChange={page => {
+                                     setCurrentPage(page - 1);
+                                 }}
+                                 onRowsPerPageChange={size => {
+                                     setCurrentPage(Math.floor(currentPage * pageSize / size));
+                                     setPageSize(size);
+                                 }}
                 />
             </Table>
         </section>
