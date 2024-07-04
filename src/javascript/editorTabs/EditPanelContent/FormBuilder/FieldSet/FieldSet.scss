@@ -31,6 +31,19 @@
     margin-top: var(--spacing-nano);
 
     color: var(--color-dark60);
+
+    // Add html formatting back for field descriptions which was disabled from moonstone css reset
+    i {
+        font-style: italic;
+    }
+
+    b {
+        font-weight: bold;
+    }
+
+    small {
+        font-size: smaller;
+    }
 }
 
 .fields {
