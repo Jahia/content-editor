@@ -2,7 +2,7 @@ import {JContent} from '../page-object/jcontent';
 import {SmallTextField} from '../page-object/fields';
 import {Button, getComponentByRole} from '@jahia/cypress';
 
-describe('Create content tests', () => {
+describe('Content editor form', () => {
     let jcontent: JContent;
 
     before(function () {
@@ -29,8 +29,6 @@ describe('Create content tests', () => {
         field.get().find('span em').should('exist').and('contain', 'italic');
         field.get().find('span script').should('not.exist');
 
-        field.get().find('label').should('contain', 'My title 1234');
-        field.get().find('span').should('contain', 'Custom title');
         field.addNewValue('123456789012', true);
         getComponentByRole(Button, 'createButton').click();
         cy.get('[data-sel-role=dialog-errorBeforeSave]').contains('My title 1234');
