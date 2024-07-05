@@ -1,7 +1,7 @@
 import {ContentEditor, JContent} from '../page-object';
 import {BaseComponent, Dropdown, getComponentByRole} from '@jahia/cypress';
 
-describe('Create content tests', () => {
+describe('Usages screen tests', () => {
     let jcontent: JContent;
 
     before(function () {

@@ -72,6 +72,11 @@ if [[ -d artifacts/ && $MANIFEST == *"build"* ]]; then
   cd artifacts/
   echo "$(date +'%d %B %Y - %k:%M') == Content of the artifacts/ folder"
   ls -lah
+  if [ -z "$(ls -A .)" ]; then
+    echo "Build directory is empty; artifacts missing - try rerunning the full PR workflow in case of expired artifacts"
+    exit 1
+  fi
+
   echo "$(date +'%d %B %Y - %k:%M') [MODULE_INSTALL] == Will start submitting files"
   for file in $(ls -1 *-SNAPSHOT.jar | sort -n)
   do
