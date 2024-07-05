@@ -1,5 +1,5 @@
 import {JContent} from '../page-object/jcontent';
-import {SmallTextField} from '../page-object/fields';
+import {Field, SmallTextField} from '../page-object/fields';
 import {Button, getComponentByRole} from '@jahia/cypress';
 
 describe('Content editor form', () => {
