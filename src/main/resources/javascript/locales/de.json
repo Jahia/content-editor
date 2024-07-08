@@ -275,7 +275,8 @@
       },
       "vanityTab": {
         "title": "Vanity URLs",
-        "label": "Vanity URLs sollten direkt im zugehörigen Feature, auffindbar unter dem \"3 Punkte\" - Button in der Toolbar, editiert werden. Dies kann auch mit dem \"Vanity URLs verwalten\"-Button weiter unten geöffnet werden."
+        "label": "Vanity URLs sollten direkt im zugehörigen Feature, auffindbar unter dem \"3 Punkte\" - Button in der Toolbar, editiert werden. Dies kann auch mit dem \"Vanity URLs verwalten\"-Button weiter unten geöffnet werden.",
+        "noPermissionLabel": "Sie haben keine Berechtigung, Vanity URLs zu verwalten."
       },
       "selection": {
         "itemsSelected": "{{count}} element ausgewählt",

@@ -42,3 +42,16 @@
 [cent:testRegExp] > jnt:content, jmix:basicContent
 - badge (string) mandatory < '[a-z0-9]+'
 - comment (string) mandatory < '^.{1,15}$'
+
+[jnt:mesiHeaderBanner] > jnt:content, jmix:basicContent, jmix:mesiBannerStory, mix:title, jmix:editorialContent
+ - jcr:title (string) mandatory
+ - inclusRecherche (boolean) = 'false'
+ - triResultats (long) = '10' hidden
+
+[jmix:mesiBannerStory] > jmix:templateMixin mixin
+ - sousTitre (string)
+ - barreRecherche (boolean)
+ - descriptif (string, textarea)
+ - info (string, richtext)
+ - style (string, choicelist[resourceBundle]) < 'style-news', 'style-safety', 'style-decouverte-dsi', 'style-calendar', 'style-evolution-si', 'style-offer', 'style-recette', 'style-security'
+ - buttonTransverse (boolean)
