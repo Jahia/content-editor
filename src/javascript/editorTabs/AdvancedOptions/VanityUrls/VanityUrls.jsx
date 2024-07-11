@@ -34,8 +34,8 @@ export const VanityUrls = () => {
             </Typography>
             <Typography className={styles.item}>
                 {hasPermission ?
-                    t('jcontent:label.contentEditor.vanityTab.label') :
-                    t('jcontent:label.contentEditor.vanityTab.noPermissionLabel')}
+                    t('content-editor:label.contentEditor.vanityTab.label') :
+                    t('content-editor:label.contentEditor.vanityTab.noPermissionLabel')}
             </Typography>
             <div className={styles.item}>
                 <DisplayAction actionKey="vanityUrls"
