@@ -5,16 +5,16 @@
     - 'mvn:org.jahia.modules/news/3.4.0'
     - 'mvn:org.jahia.modules/font-awesome/6.1.5'
     - 'mvn:org.jahia.modules/calendar/3.2.0'
-    - 'mvn:org.jahia.modules/bootstrap3-core/4.2.0'
-    - 'mvn:org.jahia.modules/bootstrap3-components/4.2.0'
+    - 'mvn:org.jahia.modules/bootstrap3-core/4.3.0'
+    - 'mvn:org.jahia.modules/bootstrap3-components/4.3.0'
     - 'mvn:org.jahia.modules/location/3.2.0'
     - 'mvn:org.jahia.modules/topstories/3.0.0'
     - 'mvn:org.jahia.modules/rating/3.2.0'
     - 'mvn:org.jahia.modules/event/3.1.0'
     - 'mvn:org.jahia.modules/bookmarks/3.1.0'
-    - 'mvn:org.jahia.modules/dx-base-demo-core/2.3.0'
-    - 'mvn:org.jahia.modules/dx-base-demo-templates/3.1.0'
-    - 'mvn:org.jahia.modules/dx-base-demo-components/2.2.0'
+    - 'mvn:org.jahia.modules/dx-base-demo-core/2.6.0'
+    - 'mvn:org.jahia.modules/dx-base-demo-templates/3.4.0'
+    - 'mvn:org.jahia.modules/dx-base-demo-components/2.4.0'
     - 'mvn:org.jahia.modules/digitall/2.3.0'
   autoStart: true
   uninstallPreviousVersion: true
@@ -33,7 +33,7 @@
   password: ${env:NEXUS_PASSWORD}
 
 - installBundle:
-    - 'mvn:org.jahia.modules/jcontent/2.13.0'
+    - 'mvn:org.jahia.modules/jcontent/2.15.0'
     - 'mvn:org.jahia.modules/content-editor'
     - 'mvn:org.jahia.test/content-editor-test-module'
     - 'mvn:org.jahia.modules/site-settings-seo/4.4.0'
