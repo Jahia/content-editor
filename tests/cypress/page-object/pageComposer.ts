@@ -152,7 +152,7 @@ export class PageComposer extends BasePage {
             .find('li[role="option"][data-value="home"]')
             .click();
 
-        ce.saveUnchecked();
+        ce.createUnchecked();
         return ce;
     }
 
