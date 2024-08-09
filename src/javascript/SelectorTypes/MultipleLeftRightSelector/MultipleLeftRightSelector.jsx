@@ -19,18 +19,18 @@ export const MultipleLeftRightSelector = ({field, onChange, value}) => {
         label: constraint.displayValue,
         value: constraint.value.string
     }));
+    const consistentValues = constraintsConsistentValues(arrayValue, options);
 
     // Reset selection if previously selected option no longer available
     useEffect(() => {
         if (arrayValue && arrayValue.length > 0) {
-            const actualValues = constraintsConsistentValues(arrayValue, options);
-            if (actualValues.length !== arrayValue.length) {
-                onChange(actualValues);
+            if (consistentValues.length !== arrayValue.length) {
+                onChange(consistentValues);
             }
         }
-    }, [value, arrayValue, onChange, options]);  // eslint-disable-line
+    }, [value, arrayValue, onChange, options, consistentValues]);  // eslint-disable-line
 
-    if (arrayValue.length !== constraintsConsistentValues(arrayValue, options).length) {
+    if (arrayValue.length !== consistentValues.length) {
         return null;
     }
 
