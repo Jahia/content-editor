@@ -888,7 +888,7 @@ public class EditorFormServiceImpl implements EditorFormService {
 
         List<EditorFormProperty> selectorOptions = editorFormField.getSelectorOptions();
 
-        if (propertyDefinition.getSelector() == SelectorType.CHOICELIST) {
+        if (!selectorOptions.isEmpty() && propertyDefinition.getSelector() == SelectorType.CHOICELIST) {
             Map<String, ChoiceListInitializer> initializers = choiceListInitializerService.getInitializers();
 
             Map<String, Object> context = new HashMap<>();
