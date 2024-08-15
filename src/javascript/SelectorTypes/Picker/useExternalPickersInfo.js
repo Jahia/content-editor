@@ -24,11 +24,10 @@ const useValueTypes = values => {
         return {error, loading};
     }
 
-    let node = data?.jcr?.result;
-
+    const node = data?.jcr?.result;
     const superTypes = node?.flatMap(n => n.primaryNodeType.supertypes?.map(({name}) => name)) || [];
     const mixinTypes = node?.flatMap(n => n.mixinTypes.map(({name}) => name)) || [];
-    const primaryNodeType = node?.flatMap(n => n.primaryNodeType?.name);
+    const primaryNodeType = node?.flatMap(n => n.primaryNodeType?.name) || [];
     const valueTypes = new Set([...primaryNodeType, ...superTypes, ...mixinTypes]);
 
     return {valueTypes, error, loading};

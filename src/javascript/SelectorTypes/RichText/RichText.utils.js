@@ -35,14 +35,35 @@ export function fillCKEditorPicker(setUrl, dialog, contentPicker, pickerResult) 
 }
 
 export function getPickerValue(dialog) {
-    const urlInput = dialog.getContentElement('info', getCKEditorUrlInputId(dialog));
-    const valueInInput = urlInput ? urlInput.getValue() : '';
+    const urlInputVal = dialog.getContentElement('info', getCKEditorUrlInputId(dialog))?.getValue() || '';
+    const protocolVal = dialog.getContentElement('info', 'protocol')?.getValue() || '';
+
+    const hasContentPrefix = urlInputVal.startsWith(contentPrefix);
+    const hasFilePrefix = urlInputVal.startsWith(filePrefix);
+
+    if (canParse(urlInputVal)) {
+        return new URL(urlInputVal).toString();
+    }
+
+    if (canParse(`${protocolVal}${urlInputVal}`)) {
+        return new URL(`${protocolVal}${urlInputVal}`).toString();
+    }
+
+    if (hasContentPrefix) {
+        return decodeURIComponent(urlInputVal.substring(contentPrefix.length).slice(0, -('.html').length));
+    }
+
+    if (hasFilePrefix) {
+        return decodeURIComponent(urlInputVal.substring(filePrefix.length));
+    }
+
+    return decodeURIComponent(urlInputVal);
+}
+
+function canParse(val) {
     try {
-        const contentURL = new URL(valueInInput);
-        return contentURL.toString();
+        return Boolean(new URL(val));
     } catch {
-        return decodeURIComponent(valueInInput.startsWith(contentPrefix) ?
-            valueInInput.substr(contentPrefix.length).slice(0, -('.html').length) :
-            valueInInput.substr(filePrefix.length));
+        return false;
     }
 }

@@ -63,6 +63,26 @@ describe('RichText utils', () => {
             const currentValue = getPickerValue(dialog);
             expect(currentValue).toBe('/richTextEdition/toot/al/regal.html');
         });
+
+        it('should parse URL', () => {
+            dialog.getContentElement.mockImplementation((_, id) => {
+                return (id === 'protocol') ?
+                    {getValue: () => 'https://'} :
+                    {getValue: () => 'www.google.com'};
+            });
+            const currentValue = getPickerValue(dialog);
+            expect(currentValue).toBe('https://www.google.com/');
+        });
+
+        it('should return URL value', () => {
+            dialog.getContentElement.mockImplementation((_, id) => {
+                return (id === 'protocol') ?
+                    {getValue: () => ''} :
+                    {getValue: () => 'www.google.com'}; // Invalid URL object; missing protocol
+            });
+            const currentValue = getPickerValue(dialog);
+            expect(currentValue).toBe('www.google.com');
+        });
     });
 
     describe('fillCKEditorPicker', () => {

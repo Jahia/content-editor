@@ -34,6 +34,10 @@ export class LinkModal extends BaseComponent {
         return getComponentByRole(Picker, 'picker-dialog');
     }
 
+    getURLField(): Cypress.Chainable<JQuery> {
+        return this.get().find('div.cke_dialog_ui_text').contains('URL').parent().find('input.cke_dialog_ui_input_text');
+    }
+
     cancel() {
         this.get().find('span.cke_dialog_ui_button').contains('Cancel').click();
     }
