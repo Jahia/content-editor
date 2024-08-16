@@ -35,6 +35,8 @@ describe('Picker tests - richtext', () => {
         richText.type('Hello');
 
         const linkModal = richText.openLinkModal();
+        // Test to make sure parsing of existing URLs do not break picker
+        linkModal.getURLField().type('https://www.interregemr.eu/projets/marhetak-fr');
         const picker = linkModal.openBrowseServerFiles();
         picker.getTable().get().contains('images').dblclick();
         picker.getTable().get().contains('banners').dblclick();
