@@ -44,6 +44,7 @@ public class PreviewWrapperFilter extends AbstractFilter {
     public PreviewWrapperFilter() {
         setPriority(45);
         setApplyOnModes("preview");
+        setApplyOnConfigurations("module");
         addCondition((renderContext, resource) -> {
             String ceAttribute = (String) renderContext.getRequest().getAttribute(CE_PREVIEW_WRAPPER);
             return StringUtils.isNotEmpty(ceAttribute) && ceAttribute.equals(resource.getNodePath());
