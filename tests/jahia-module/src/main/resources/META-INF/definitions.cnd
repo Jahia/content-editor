@@ -55,3 +55,5 @@
  - info (string, richtext)
  - style (string, choicelist[resourceBundle]) < 'style-news', 'style-safety', 'style-decouverte-dsi', 'style-calendar', 'style-evolution-si', 'style-offer', 'style-recette', 'style-security'
  - buttonTransverse (boolean)
+
+[cent:previewWrapper] > jnt:content, jmix:basicContent
