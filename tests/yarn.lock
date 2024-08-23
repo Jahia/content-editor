@@ -97,12 +97,13 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@jahia/cypress@^3.0.0":
-  version "3.10.0"
-  resolved "https://registry.yarnpkg.com/@jahia/cypress/-/cypress-3.10.0.tgz#107f3f4b4ee44a6b426a83b6a63a8dd652ae0226"
-  integrity sha512-3S64MsWJsyd7jCYdqIWgPswM6bE7g4BwfUp9uQ2gEiAdvRRBOeUGmjTB85lU4Cu3JOozCAU0VL9KIn0MwY9xbA==
+"@jahia/cypress@^3.21.2":
+  version "3.21.2"
+  resolved "https://registry.yarnpkg.com/@jahia/cypress/-/cypress-3.21.2.tgz#a5e8bc6487e03861d1e963314fafcbbceba1fd0b"
+  integrity sha512-LGVbkC9gwIUmHWy0O/UGirHJ2ho8IJfN8V4d5IDnMwJypw3SYBFE8aDQYzfQbxjyx1aeMDQCBMhJBFEsKHEYMw==
   dependencies:
     "@apollo/client" "^3.4.9"
+    cypress-real-events "^1.11.0"
     graphql "^15.5.0"
     graphql-tag "^2.11.0"
 
@@ -998,6 +999,11 @@ cypress-plugin-config@^1.0.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/cypress-plugin-config/-/cypress-plugin-config-1.2.0.tgz#814671e75b802d5b1e17229621996114e3cd2ce1"
   integrity sha512-vgMMwjeI/L+2xptqkyhJ20LRuZrrsdbPaGMNNLVq+Cwox5+9dm0E312gpMXgXRs05uyUAzL/nCm/tdTckSAgoQ==
+
+cypress-real-events@^1.11.0:
+  version "1.13.0"
+  resolved "https://registry.yarnpkg.com/cypress-real-events/-/cypress-real-events-1.13.0.tgz#6b7cd32dcac172db1493608f97a2576c7d0bd5af"
+  integrity sha512-LoejtK+dyZ1jaT8wGT5oASTPfsNV8/ClRp99ruN60oPj8cBJYod80iJDyNwfPAu4GCxTXOhhAv9FO65Hpwt6Hg==
 
 cypress-slow-down@^1.2.1:
   version "1.2.1"

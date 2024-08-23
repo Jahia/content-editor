@@ -107,6 +107,12 @@ export class ContentEditor extends BasePage {
         });
     }
 
+    validateContentIsNotVisibleInPreview(content: string) {
+        cy.iframe('[data-sel-role="edit-preview-frame"]', {timeout: 30000, log: true}).within(() => {
+            cy.contains(content, {timeout: 5000}).should('not.exist');
+        });
+    }
+
     getRichTextField(fieldName: string): RichTextField {
         cy.window().its('CKEDITOR').its('instances').should(instances => {
             assert(instances[Object.keys(instances)[0]].instanceReady);

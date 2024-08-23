@@ -1,41 +1,25 @@
-import {JContent} from '../../page-object/jcontent';
+import {JContent} from '../../page-object';
+import {addNode, deleteNode} from '@jahia/cypress';
 
 describe('Picker tests - Constraints', {retries: 3}, () => {
     const siteKey = 'digitall';
     let jcontent: JContent;
 
     before(() => {
-        cy.apollo({
-            mutationFile: 'graphql/jcr/mutation/addNode.graphql',
-            variables: {
-                parentPathOrId: '/sites/digitall/contents',
-                name: 'constraintsTest',
-                primaryNodeType: 'jnt:contentFolder',
-                children: [
-                    {
-                        name: 'employee1',
-                        primaryNodeType: 'qant:employee'
-                    },
-                    {
-                        name: 'employee2',
-                        primaryNodeType: 'qant:employee'
-                    },
-                    {
-                        name: 'news1',
-                        primaryNodeType: 'jnt:news'
-                    }
-                ]
-            }
+        addNode({
+            parentPathOrId: `/sites/${siteKey}/contents`,
+            name: 'constraintsTest',
+            primaryNodeType: 'jnt:contentFolder',
+            children: [
+                {name: 'employee1', primaryNodeType: 'qant:employee'},
+                {name: 'employee2', primaryNodeType: 'qant:employee'},
+                {name: 'news1', primaryNodeType: 'jnt:news'}
+            ]
         });
     });
 
     after(() => {
-        cy.apollo({
-            mutationFile: 'graphql/jcr/mutation/deleteNode.graphql',
-            variables: {
-                pathOrId: '/sites/digitall/contents/constraintsTest'
-            }
-        });
+        deleteNode(`/sites/${siteKey}/contents/constraintsTest`);
     });
 
     beforeEach(() => {
