@@ -881,14 +881,8 @@ public class EditorFormServiceImpl implements EditorFormService {
 
     private List<EditorFormFieldValueConstraint> getValueConstraints(ExtendedNodeType primaryNodeType, EditorFormField editorFormField, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale locale, Map<String, Object> extendContext) throws RepositoryException {
         ExtendedPropertyDefinition propertyDefinition = editorFormField.getExtendedPropertyDefinition();
-        if (propertyDefinition == null) {
-            logger.error("Missing property definition to resolve choice list values, cannot process");
-            return editorFormField.getValueConstraints();
-        }
-
-        List<EditorFormProperty> selectorOptions = editorFormField.getSelectorOptions();
-
-        if (!selectorOptions.isEmpty() && propertyDefinition.getSelector() == SelectorType.CHOICELIST) {
+        if (propertyDefinition != null && propertyDefinition.getSelector() == SelectorType.CHOICELIST) {
+            List<EditorFormProperty> selectorOptions = editorFormField.getSelectorOptions();
             Map<String, ChoiceListInitializer> initializers = choiceListInitializerService.getInitializers();
 
             Map<String, Object> context = new HashMap<>();
