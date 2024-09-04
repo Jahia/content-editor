@@ -39,7 +39,7 @@
     },
     "dependencies": {
         "@apollo/react-hooks": "^3.1.5",
-        "@jahia/data-helper": "^1.0.8",
+        "@jahia/data-helper": "1.0.12",
         "@jahia/design-system-kit": "^1.1.8",
         "@jahia/icons": "^1.1.2",
         "@jahia/moonstone": "^2.7.1",
