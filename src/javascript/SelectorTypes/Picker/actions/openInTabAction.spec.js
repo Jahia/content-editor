@@ -4,6 +4,7 @@ import {shallow} from '@jahia/test-framework';
 import React from 'react';
 import {setQueryResponseMock} from '@apollo/react-hooks';
 import {useContentEditorContext} from '~/contexts';
+import {useSelector} from 'react-redux';
 
 jest.mock('@apollo/react-hooks', () => {
     let queryresponsemock;
@@ -17,9 +18,25 @@ jest.mock('@apollo/react-hooks', () => {
 
 jest.mock('~/contexts/ContentEditor/ContentEditor.context');
 
+jest.mock('react-redux', () => ({
+    useSelector: jest.fn()
+}));
+
 const button = () => <button type="button"/>;
 
 describe('openInTab action', () => {
+    beforeEach(() => {
+        useSelector.mockImplementation(callback => callback({
+            contenteditor: {
+                ceLang: 'fr'
+            }
+        }));
+    });
+
+    afterEach(() => {
+        useSelector.mockClear();
+    });
+
     it('should open in new tab on click', () => {
         window.open = jest.fn();
 
