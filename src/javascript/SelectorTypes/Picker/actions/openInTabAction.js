@@ -4,9 +4,13 @@ import {Constants} from '~/ContentEditor.constants';
 import {useContentEditorContext} from '~/contexts';
 import {useQuery} from '@apollo/react-hooks';
 import {OpenInTabActionQuery} from '~/SelectorTypes/Picker/actions/openInTabAction.gql-queries';
+import {useSelector} from 'react-redux';
 
 export const OpenInTabActionComponent = ({render: Render, loading: Loading, path, field, inputContext, ...others}) => {
     const {lang} = useContentEditorContext();
+    const {ceLang} = useSelector(state => ({
+        ceLang: state.contenteditor.ceLanguage
+    }));
 
     let uuid;
     if (path === undefined) {
@@ -31,7 +35,7 @@ export const OpenInTabActionComponent = ({render: Render, loading: Loading, path
         <Render
             {...others}
             onClick={() => {
-                window.open(`${window.contextJsParameters.urlbase}/${Constants.appName}/${lang}/${Constants.routes.baseEditRoute}/${uuid}`, '_blank');
+                window.open(`${window.contextJsParameters.urlbase}/${Constants.appName}/${lang ? lang : ceLang}/${Constants.routes.baseEditRoute}/${uuid}`, '_blank');
             }}
         />
     );
