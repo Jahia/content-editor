@@ -48,7 +48,7 @@
         <jahia-module-type>system</jahia-module-type>
         <yarn.arguments>build:production</yarn.arguments>
         <require-capability>osgi.extender;filter:="(osgi.extender=org.jahia.bundles.blueprint.extender.config)"</require-capability>
-        <jahia-module-signature>MC0CFQCLaDkr07pTfmQhj9ek+KSi7LMq2gIUNJwRLvXSKf1SwbpcdVwsrH/ksj4=</jahia-module-signature>
+        <jahia-module-signature>MCwCFE4OVvnWhjqE542bdSiPUFABwy08AhRYXgcH+X2dx3gUa83GhsxidqF8OQ==</jahia-module-signature>
         <import-package>
             com.fasterxml.jackson.annotation;version="[2.10,3)",
             com.fasterxml.jackson.databind;version="[2.10,3)",
