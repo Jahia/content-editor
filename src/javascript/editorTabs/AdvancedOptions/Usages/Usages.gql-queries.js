@@ -1,14 +1,16 @@
 import gql from 'graphql-tag';
 import {PredefinedFragments} from '@jahia/data-helper';
 
-export const UsagesQuery = gql`query($path:String!, $language: String!, $pageSize: Int!, $currentPage: Int!) {
+export const UsagesQuery = gql`query($path:String!, $language: String!, $pageSize: Int!, $currentPage: Int!, $fieldSorter: InputFieldSorterInput) {
     jcr {
         nodeByPath(path: $path) {
             ...NodeCacheRequiredFields
-            usages: references(fieldFilter: {filters: {fieldName: "node.visible", value: "true"}}, limit: $pageSize, offset: $currentPage) {
+            usages: usages(fieldFilter: {filters: {fieldName: "node.visible", value: "true"}}, limit: $pageSize, offset: $currentPage, fieldSorter: $fieldSorter) {
                 nodes {
-                    name
-                    language
+                    properties {
+                        name
+                        language
+                    }
                     node {
                         ...NodeCacheRequiredFields
                         visible: isNodeType(type: {types: ["jnt:workflowTask"], multi: NONE})
@@ -61,13 +63,12 @@ export const UsagesCountQuery = gql`query($path:String!) {
     jcr {
         nodeByPath(path: $path) {
             ...NodeCacheRequiredFields
-            usages: references(fieldFilter: {filters: {fieldName: "node.visible", value: "true"}}) {
+            usages: usages(fieldFilter: {filters: {fieldName: "node.visible", value: "true"}}) {
                 nodes {
                     node {
                         ...NodeCacheRequiredFields
                         visible: isNodeType(type: {types: ["jnt:workflowTask"], multi: NONE})
                     }
-
                 }
                 pageInfo {
                     nodesCount

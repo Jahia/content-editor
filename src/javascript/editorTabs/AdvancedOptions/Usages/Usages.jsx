@@ -35,7 +35,7 @@ export const Usages = () => {
             ...acc,
             [ref.node.uuid]: {
                 ...ref.node,
-                locales: acc[ref.node.uuid] ? [...acc[ref.node.uuid]?.locales, ref.language] : [ref.language]
+                locales: ref.properties.map(property => property.language)
             }
         }
     ), {})) : [];
