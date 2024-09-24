@@ -1,5 +1,5 @@
 import {JContent} from '../page-object';
-import {createSite, deleteSite, Dropdown, getComponentBySelector} from '@jahia/cypress';
+import {createSite, deleteSite, Dropdown, enableModule, getComponentBySelector} from '@jahia/cypress';
 
 // Override defined in jcontent-test-module, forms/cent_choiceListSelectorTypeOverride.json
 describe('Choicelist tests', {defaultCommandTimeout: 10000}, () => {
@@ -9,6 +9,7 @@ describe('Choicelist tests', {defaultCommandTimeout: 10000}, () => {
 
     before(() => {
         createSite(siteKey);
+        enableModule('content-editor-test-module', siteKey);
     });
 
     beforeEach(() => {
