@@ -39,6 +39,9 @@
 [cent:testOverride] > jnt:content, mix:title, jmix:basicContent, jmix:editorialContent
  - jcr:title (string) < '^.{0,10}$'
 
+[cent:choiceListSelectorTypeOverride] > jnt:content, mix:title, jmix:basicContent, jmix:editorialContent
+ - noDefaultList (string, choicelist) < 'choice1', 'choice2'
+
 [cent:testRegExp] > jnt:content, jmix:basicContent
 - badge (string) mandatory < '[a-z0-9]+'
 - comment (string) mandatory < '^.{1,15}$'
