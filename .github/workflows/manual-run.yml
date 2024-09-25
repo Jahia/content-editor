@@ -43,7 +43,7 @@ jobs:
           incident_service: content-editor-${{ matrix.config_file }}
           testrail_project: Content Editor
           timeout_minutes: 50
-          tests_manifest: provisioning-manifest-snapshot.yml
+          tests_manifest: ${{ github.event.inputs.manifest }}
           jahia_image: ${{ github.event.inputs.jahia_image }}
           jahia_cluster_enabled: true
           tests_profile: ${{ matrix.config_file }}
