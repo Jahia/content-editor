@@ -37,6 +37,7 @@ public class EditorFormSectionDefinition {
     private String requiredPermission;
     private boolean hide = false;
     private boolean expanded;
+    private List<EditorFormFieldSet> fieldSets = new ArrayList<>();
 
     private List<String> displayModes = new ArrayList<>();
 
@@ -103,6 +104,14 @@ public class EditorFormSectionDefinition {
         this.displayModes = displayModes;
     }
 
+    public List<EditorFormFieldSet> getFieldSets() {
+        return fieldSets;
+    }
+
+    public void setFieldSets(List<EditorFormFieldSet> fieldSets) {
+        this.fieldSets = fieldSets;
+    }
+
     public void mergeWith(EditorFormSectionDefinition section) {
         if (section.getDescriptionKey() != null) {
             this.descriptionKey = section.getDescriptionKey();
@@ -119,6 +128,7 @@ public class EditorFormSectionDefinition {
         this.hide = section.isHide();
         this.expanded = section.expanded();
         this.displayModes = section.getDisplayModes();
+        this.fieldSets = section.getFieldSets();
     }
 
     public EditorFormSectionDefinition copy() {
