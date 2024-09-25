@@ -805,7 +805,9 @@ public class EditorFormServiceImpl implements EditorFormService {
 
             EditorFormField editorFormField = generateEditorFormField(itemDefinition, primaryNodeType,
                 existingNode, parentNode, uiLocale, locale, rank);
-
+            if (isForExtendMixin) {
+                editorFormField.getTarget().setFieldSetName(nodeType.getName());
+            }
             editorFormFields.add(editorFormField);
             if (!dynamic) {
                 processedProperties.add(itemDefinition.getName());
