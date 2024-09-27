@@ -1,5 +1,11 @@
 {
   "nodeType": "jnt:virtualsite",
   "priority": 1.0,
-  "hasPreview": false
+  "hasPreview": false,
+  "sections": [
+    {
+      "name": "seo",
+      "hide": true
+    }
+  ]
 }
