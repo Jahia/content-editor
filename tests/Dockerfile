@@ -1,7 +1,8 @@
-FROM cypress/browsers:latest
+FROM cypress/browsers:node-20.10.0-chrome-118.0.5993.88-1-ff-118.0.2-edge-118.0.2088.46-1
 
 ARG MAVEN_VER="3.8.1"
 ARG MAVEN_BASE_URL="https://archive.apache.org/dist/maven/maven-3"
+ARG YARN_VERSION="1.22.19"
 
 RUN apt-get update && apt-get install -y jq curl
 
