@@ -1,6 +1,5 @@
 {
   "name": "@jahia/content-editor-cypress",
-  "private": false,
   "version": "4.2.0-tests.9",
   "scripts": {
     "instrument": "nyc instrument --compact=false cypress instrumented",
@@ -25,7 +24,7 @@
     "@jahia/jahia-reporter": "^1.0.30",
     "@typescript-eslint/eslint-plugin": "^5.27.0",
     "@typescript-eslint/parser": "^5.27.0",
-    "cypress": "12.9.0",
+    "cypress": "13.2.0",
     "cypress-iframe": "^1.0.1",
     "cypress-multi-reporters": "^1.6.2",
     "cypress-slow-down": "^1.2.1",
