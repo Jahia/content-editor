@@ -1,8 +1,8 @@
 import {BaseComponent, BasePage, Button, getComponent, getComponentByRole, getElement, MUIInput} from '@jahia/cypress';
 import {ContentEditor} from './contentEditor';
-import IframeOptions = Cypress.IframeOptions;
 import {DocumentNode} from 'graphql';
 import {PageComposerContextualMenu} from './pageComposerContextualMenu';
+import IframeOptions = Cypress.IframeOptions;
 
 export class PageComposer extends BasePage {
     iFrameOptions: IframeOptions;
@@ -60,7 +60,8 @@ export class PageComposer extends BasePage {
     componentShouldBeVisible(selector: string) {
         cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
             cy.iframe('.gwt-Frame', this.iFrameOptions).within(() => {
-                cy.get('.container').find(selector).should('exist').scrollIntoView().should('be.visible');
+                cy.get('.container').find(selector).should('exist').scrollIntoView();
+                cy.get('.container').find(selector).should('be.visible');
             });
         });
     }
@@ -70,10 +71,12 @@ export class PageComposer extends BasePage {
             cy.iframe('.gwt-Frame', this.iFrameOptions).within(() => {
                 // eslint-disable-next-line cypress/no-unnecessary-waiting
                 cy.wait(5000);
+                // eslint-disable-next-line cypress/unsafe-to-chain-command
                 cy.get('.container').find(selector).trigger('mouseover').rightclick({force: true});
             });
         });
         cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
+            // eslint-disable-next-line cypress/unsafe-to-chain-command
             cy.get('.editModeContextMenu').scrollIntoView().contains('Edit').click();
         });
         return new ContentEditor();
@@ -84,10 +87,12 @@ export class PageComposer extends BasePage {
             cy.iframe('.gwt-Frame', this.iFrameOptions).within(() => {
                 // eslint-disable-next-line cypress/no-unnecessary-waiting
                 cy.wait(5000);
+                // eslint-disable-next-line cypress/unsafe-to-chain-command
                 cy.get('.container').contains(text).trigger('mouseover').rightclick({force: true});
             });
         });
         cy.iframe('#page-composer-frame', this.iFrameOptions).within(() => {
+            // eslint-disable-next-line cypress/unsafe-to-chain-command
             cy.get('.editModeContextMenu').scrollIntoView().contains('Edit').click();
         });
         return new ContentEditor();
@@ -148,7 +153,8 @@ export class PageComposer extends BasePage {
         }
 
         cy.get('#select-jnt\\:page_j\\:templateName').should('be.visible')
-            .click()
+            .click();
+        cy.get('#select-jnt\\:page_j\\:templateName')
             .find('li[role="option"][data-value="home"]')
             .click();
 
@@ -165,7 +171,8 @@ export class PageComposer extends BasePage {
 
         cy.get('#jnt\\:page_jcr\\:title').should('be.visible').type(title, {force: true});
         cy.get('#select-jnt\\:page_j\\:templateName').should('be.visible')
-            .click()
+            .click();
+        cy.get('#select-jnt\\:page_j\\:templateName')
             .find('li[role="option"][data-value="home"]')
             .click();
 

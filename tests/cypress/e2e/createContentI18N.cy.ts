@@ -175,6 +175,7 @@ describe('Create content tests in I18N site', () => {
         const jcontent = JContent.visit(sitekey, 'en', 'media/file');
         const fileName = 'snowbearHome.jpeg';
         const fieldName = 'mix:title_jcr:title';
+        // eslint-disable-next-line cypress/unsafe-to-chain-command
         cy.get('div[data-cm-role="grid-content-list"]')
             .children('div')
             .selectFile(`cypress/fixtures/${fileName}`, {

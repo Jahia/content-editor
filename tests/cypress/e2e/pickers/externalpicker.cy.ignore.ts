@@ -26,7 +26,7 @@ describe('Picker tests', () => {
         const pickerField = jcontent
             .createContent('Pickers')
             .getPickerField('qant:pickers_filepicker');
-        const picker = pickerField.open();
+        pickerField.open();
         getComponentByRole(Dropdown, 'picker-selector').select('Custom picker');
         cy.contains('Test picker');
         cy.get('button[data-sel-role="custom-selector"]').click();
