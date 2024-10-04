@@ -420,7 +420,7 @@ public class EditorFormServiceImpl implements EditorFormService {
 
         if (!nodeTypeFieldSet.isRemoved()) {
             processValueConstraints(nodeTypeFieldSet, locale, existingNode, parentNode, primaryNodeType);
-            addFieldSetToSections(formSectionsByName, nodeTypeFieldSet);
+            addFieldSetToSections(formSectionsByName, nodeTypeFieldSet, locale, processedProperties);
         }
     }
 
@@ -456,6 +456,15 @@ public class EditorFormServiceImpl implements EditorFormService {
                 }
                 formSection.setHide(sectionDefinition.isHide());
                 formSection.setExpanded(sectionDefinition.expanded());
+
+
+                for(EditorFormFieldSet formFieldSet : formSection.getFieldSets()){
+                    for(EditorFormFieldSet formDefinitionFieldSet : sectionDefinition.getFieldSets()){
+                        if(formFieldSet.getName().equals(formDefinitionFieldSet.getName())){
+                            formFieldSet.setRank(formDefinitionFieldSet.getRank());
+                        }
+                    }
+                }
                 Collections.sort(formSection.getFieldSets());
                 sortedFormSections.add(formSection);
             }
@@ -600,7 +609,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         return value;
     }
 
-    private void addFieldSetToSections(Map<String, EditorFormSection> formSectionsByName, EditorFormFieldSet formFieldSet) {
+    private void addFieldSetToSections(Map<String, EditorFormSection> formSectionsByName, EditorFormFieldSet formFieldSet, Locale locale, Set<String> processedProperties) {
         if (Boolean.FALSE.equals(formFieldSet.getDynamic()) && formFieldSet.getEditorFormFields().isEmpty()) {
             // in the case of an empty static mixin or parent type we don't add it to the form
             return;
@@ -635,7 +644,73 @@ public class EditorFormServiceImpl implements EditorFormService {
             }
             toBeRemoved.forEach(formFieldSet.getEditorFormFields()::remove);
         }
-        String targetSectionName = resolveMainSectionName(formFieldSet);
+
+        final String formFieldSetTargetSectionName = resolveMainSectionName(formFieldSet);
+
+        // We retrieve the list of fields that should be move to another fieldset
+        final List<EditorFormField>  editorFormFieldsToMove = new ArrayList<>();
+        for(EditorFormField editorFormField : formFieldSet.getEditorFormFields()){
+            final String fieldTargetSectionName = editorFormField.getTarget().getFieldSetName();
+            if (fieldTargetSectionName != null && !fieldTargetSectionName.equals(formFieldSet.getName())) {
+                editorFormFieldsToMove.add(editorFormField);
+            }
+        }
+
+        // We remove the fields from their current fieldset to prevent any duplicate
+        formFieldSet.getEditorFormFields().removeAll(editorFormFieldsToMove);
+
+        // For each field to move
+        for (EditorFormField editorFormField : editorFormFieldsToMove) {
+            // We retrieve its section
+            final String fieldTargetSectionName = editorFormField.getTarget().getSectionName();
+            final EditorFormSection editorFormSection = getTargetSection(formSectionsByName, formFieldSet, fieldTargetSectionName);
+
+            // We retrieve its fieldset
+            EditorFormFieldSet editorFormFieldSet = null;
+            final String fieldTargetFieldSetName = editorFormField.getTarget().getFieldSetName();
+            for (EditorFormFieldSet editorFormFieldSetAvailable : editorFormSection.getFieldSets()) {
+                if (editorFormFieldSetAvailable.getName().equals(fieldTargetFieldSetName)) {
+                    editorFormFieldSet = editorFormFieldSetAvailable;
+                }
+            }
+
+            // If the fieldset doesn't exist, we create it
+            if (editorFormFieldSet == null) {
+                editorFormFieldSet = new EditorFormFieldSet();
+                editorFormFieldSet.setName(fieldTargetFieldSetName);
+                try {
+                    final ExtendedNodeType nodeType = NodeTypeRegistry.getInstance().getNodeType(fieldTargetFieldSetName, false);
+                    if (nodeType == null) {
+                        logger.error("Node type {} not found for form {}", fieldTargetFieldSetName, formFieldSet.getName());
+                    } else {
+                        editorFormFieldSet.setDisplayName(nodeType.getLabel(locale));
+                        // and add it for the section
+                        editorFormSection.getFieldSets().add(editorFormFieldSet);
+                        // then we add the field
+                        editorFormFieldSet.addField(editorFormField);
+                        processedProperties.add(editorFormField.getName());
+                    }
+                } catch (NoSuchNodeTypeException ex) {
+                    logger.error(String.format("Impossible to retrieve display name for %s", fieldTargetFieldSetName), ex);
+                }
+            }
+        }
+
+        final EditorFormSection formFieldSetTargetSection = getTargetSection(formSectionsByName, formFieldSet, formFieldSetTargetSectionName);
+        boolean fieldSetNotFound = true;
+        for(EditorFormFieldSet editorFormFieldSet :  formFieldSetTargetSection.getFieldSets()){
+            if(editorFormFieldSet.getName().equals(formFieldSet.getName())){
+                fieldSetNotFound = false;
+            }
+        }
+        if (fieldSetNotFound) {
+            formFieldSetTargetSection.getFieldSets().add(formFieldSet);
+            formSectionsByName.put(formFieldSetTargetSection.getName(), formFieldSetTargetSection);
+        }
+
+    }
+
+    private EditorFormSection getTargetSection(Map<String, EditorFormSection> formSectionsByName, EditorFormFieldSet formFieldSet, String targetSectionName){
         EditorFormSection targetSection = formSectionsByName.get(targetSectionName);
         if (targetSection == null) {
             Double targetSectionRank = 1.0;
@@ -648,8 +723,8 @@ public class EditorFormServiceImpl implements EditorFormService {
             formFieldSet.setRank((double) targetSection.getFieldSets().size() + 1);
         }
 
-        targetSection.getFieldSets().add(formFieldSet);
         formSectionsByName.put(targetSection.getName(), targetSection);
+        return targetSection;
     }
 
     private String resolveMainSectionName(EditorFormFieldSet fieldSet) {
@@ -704,8 +779,8 @@ public class EditorFormServiceImpl implements EditorFormService {
     }
 
     private EditorFormFieldSet generateEditorFormFieldSet(Set<String> processedProperties, ExtendedNodeType nodeType,
-        ExtendedNodeType primaryNodeType, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale locale, Locale uiLocale,
-        Boolean removed, Boolean dynamic, Boolean activated, Boolean displayed, Boolean isForExtendMixin) throws RepositoryException {
+                                                          ExtendedNodeType primaryNodeType, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale locale, Locale uiLocale,
+                                                          Boolean removed, Boolean dynamic, Boolean activated, Boolean displayed, Boolean isForExtendMixin) throws RepositoryException {
         boolean isLockedAndCannotBeEdited = JCRContentUtils.isLockedAndCannotBeEdited(existingNode);
         boolean fieldSetEditable = existingNode == null || (!isLockedAndCannotBeEdited && existingNode.hasPermission("jcr:nodeTypeManagement"));
 
@@ -730,7 +805,9 @@ public class EditorFormServiceImpl implements EditorFormService {
 
             EditorFormField editorFormField = generateEditorFormField(itemDefinition, primaryNodeType,
                 existingNode, parentNode, uiLocale, locale, rank);
-
+            if (isForExtendMixin) {
+                editorFormField.getTarget().setFieldSetName(nodeType.getName());
+            }
             editorFormFields.add(editorFormField);
             if (!dynamic) {
                 processedProperties.add(itemDefinition.getName());
@@ -759,7 +836,7 @@ public class EditorFormServiceImpl implements EditorFormService {
     }
 
     private EditorFormField generateEditorFormField(ExtendedItemDefinition itemDefinition, ExtendedNodeType primaryNodeType,
-        JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale uiLocale, Locale locale, Double rank) throws RepositoryException {
+                                                    JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, Locale uiLocale, Locale locale, Double rank) throws RepositoryException {
         JCRSessionWrapper session = existingNode != null ? existingNode.getSession() : parentNode.getSession();
 
         boolean isLockedAndCannotBeEdited = JCRContentUtils.isLockedAndCannotBeEdited(existingNode);

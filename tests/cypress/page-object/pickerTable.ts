@@ -29,6 +29,7 @@ export class PickerTable extends Table {
             .then(elems => {
                 expect(elems.length).gte(count);
                 const selectRow = elem =>
+                    // eslint-disable-next-line cypress/unsafe-to-chain-command
                     cy.wrap(elem)
                         .find('[data-cm-role="table-content-list-cell-selection"] input')
                         .click()
