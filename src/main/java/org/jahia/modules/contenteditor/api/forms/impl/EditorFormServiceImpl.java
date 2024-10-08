@@ -674,15 +674,19 @@ public class EditorFormServiceImpl implements EditorFormService {
                 }
             }
 
-            // If the fieldset doesn't exist, we create it
             if (editorFormFieldSet == null) {
-                editorFormFieldSet = new EditorFormFieldSet();
-                editorFormFieldSet.setName(fieldTargetFieldSetName);
                 try {
+                    // Check first if target fieldset is valid node type
                     final ExtendedNodeType nodeType = NodeTypeRegistry.getInstance().getNodeType(fieldTargetFieldSetName, false);
                     if (nodeType == null) {
-                        logger.error("Node type {} not found for form {}", fieldTargetFieldSetName, formFieldSet.getName());
+                        logger.warn("Node type {} not found for form {}. Keeping {} field in {} fieldset.",
+                            fieldTargetFieldSetName, formFieldSet.getName(), editorFormField.getName(), formFieldSet.getName());
+                        // Put that thing back where it came from, or so help me
+                        formFieldSet.getEditorFormFields().add(editorFormField);
                     } else {
+                        // Fieldset doesn't exist, so we create it
+                        editorFormFieldSet = new EditorFormFieldSet();
+                        editorFormFieldSet.setName(fieldTargetFieldSetName);
                         editorFormFieldSet.setDisplayName(nodeType.getLabel(locale));
                         // and add it for the section
                         editorFormSection.getFieldSets().add(editorFormFieldSet);
