@@ -462,6 +462,10 @@ public class EditorFormServiceImpl implements EditorFormService {
                     for(EditorFormFieldSet formDefinitionFieldSet : sectionDefinition.getFieldSets()){
                         if(formFieldSet.getName().equals(formDefinitionFieldSet.getName())){
                             formFieldSet.setRank(formDefinitionFieldSet.getRank());
+                            String fieldSetDisplayName = resolveResourceKey(formDefinitionFieldSet.getDisplayName(), uiLocale, site);
+                            if (fieldSetDisplayName != null) {
+                                formFieldSet.setDisplayName(fieldSetDisplayName);
+                            }
                         }
                     }
                 }
