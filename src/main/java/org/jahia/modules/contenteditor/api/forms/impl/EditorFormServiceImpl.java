@@ -310,7 +310,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                 resolvedSite = parentNode.getResolveSite();
             }
 
-            List<ExtendedNodeType> extendMixins = getExtendMixins(primaryNodeTypeName, resolvedSite);
+            List<ExtendedNodeType> extendMixins = getExtendMixins(primaryNodeType, resolvedSite);
             for (ExtendedNodeType extendMixinNodeType : extendMixins) {
                 if (processedNodeTypes.contains(extendMixinNodeType.getName())) {
                     // ignore already process node types
@@ -462,6 +462,10 @@ public class EditorFormServiceImpl implements EditorFormService {
                     for(EditorFormFieldSet formDefinitionFieldSet : sectionDefinition.getFieldSets()){
                         if(formFieldSet.getName().equals(formDefinitionFieldSet.getName())){
                             formFieldSet.setRank(formDefinitionFieldSet.getRank());
+                            String fieldSetDisplayName = resolveResourceKey(formDefinitionFieldSet.getDisplayName(), uiLocale, site);
+                            if (fieldSetDisplayName != null) {
+                                formFieldSet.setDisplayName(fieldSetDisplayName);
+                            }
                         }
                     }
                 }
@@ -674,15 +678,19 @@ public class EditorFormServiceImpl implements EditorFormService {
                 }
             }
 
-            // If the fieldset doesn't exist, we create it
             if (editorFormFieldSet == null) {
-                editorFormFieldSet = new EditorFormFieldSet();
-                editorFormFieldSet.setName(fieldTargetFieldSetName);
                 try {
+                    // Check first if target fieldset is valid node type
                     final ExtendedNodeType nodeType = NodeTypeRegistry.getInstance().getNodeType(fieldTargetFieldSetName, false);
                     if (nodeType == null) {
-                        logger.error("Node type {} not found for form {}", fieldTargetFieldSetName, formFieldSet.getName());
+                        logger.warn("Node type {} not found for form {}. Keeping {} field in {} fieldset.",
+                            fieldTargetFieldSetName, formFieldSet.getName(), editorFormField.getName(), formFieldSet.getName());
+                        // Put that thing back where it came from, or so help me
+                        formFieldSet.getEditorFormFields().add(editorFormField);
                     } else {
+                        // Fieldset doesn't exist, so we create it
+                        editorFormFieldSet = new EditorFormFieldSet();
+                        editorFormFieldSet.setName(fieldTargetFieldSetName);
                         editorFormFieldSet.setDisplayName(nodeType.getLabel(locale));
                         // and add it for the section
                         editorFormSection.getFieldSets().add(editorFormFieldSet);
@@ -1025,25 +1033,21 @@ public class EditorFormServiceImpl implements EditorFormService {
         return JCRSessionFactory.getInstance().getCurrentUserSession(Constants.EDIT_WORKSPACE, locale, fallbackLocale);
     }
 
-    private List<ExtendedNodeType> getExtendMixins(String type, JCRSiteNode site) throws NoSuchNodeTypeException {
-        ArrayList<ExtendedNodeType> res = new ArrayList<ExtendedNodeType>();
-        Set<String> foundTypes = new HashSet<String>();
+    private List<ExtendedNodeType> getExtendMixins(ExtendedNodeType type, JCRSiteNode site) throws NoSuchNodeTypeException {
+        ArrayList<ExtendedNodeType> res = new ArrayList<>();
 
-        Set<String> installedModules = site != null && site.getPath().startsWith("/sites/") ? site.getInstalledModulesWithAllDependencies()
-            : null;
+        Set<String> installedModules = site != null && site.getPath().startsWith("/sites/") ? site.getInstalledModulesWithAllDependencies() : null;
 
         Map<ExtendedNodeType, Set<ExtendedNodeType>> m = NodeTypeRegistry.getInstance().getMixinExtensions();
 
-        ExtendedNodeType realType = NodeTypeRegistry.getInstance().getNodeType(type);
         for (ExtendedNodeType nodeType : m.keySet()) {
-            if (realType.isNodeType(nodeType.getName())) {
+            if (type.isNodeType(nodeType.getName())) {
                 for (ExtendedNodeType extension : m.get(nodeType)) {
-//                        ctx.put("contextType", realType);
-                    if (installedModules == null || extension.getTemplatePackage() == null ||
+                    if (installedModules == null ||
+                        extension.getTemplatePackage() == null ||
                         extension.getTemplatePackage().getModuleType().equalsIgnoreCase("system") ||
                         installedModules.contains(extension.getTemplatePackage().getId())) {
                         res.add(extension);
-                        foundTypes.add(extension.getName());
                     }
                 }
             }
