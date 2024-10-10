@@ -310,7 +310,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                 resolvedSite = parentNode.getResolveSite();
             }
 
-            List<ExtendedNodeType> extendMixins = getExtendMixins(primaryNodeTypeName, resolvedSite);
+            List<ExtendedNodeType> extendMixins = getExtendMixins(primaryNodeType, resolvedSite);
             for (ExtendedNodeType extendMixinNodeType : extendMixins) {
                 if (processedNodeTypes.contains(extendMixinNodeType.getName())) {
                     // ignore already process node types
@@ -1029,25 +1029,21 @@ public class EditorFormServiceImpl implements EditorFormService {
         return JCRSessionFactory.getInstance().getCurrentUserSession(Constants.EDIT_WORKSPACE, locale, fallbackLocale);
     }
 
-    private List<ExtendedNodeType> getExtendMixins(String type, JCRSiteNode site) throws NoSuchNodeTypeException {
-        ArrayList<ExtendedNodeType> res = new ArrayList<ExtendedNodeType>();
-        Set<String> foundTypes = new HashSet<String>();
+    private List<ExtendedNodeType> getExtendMixins(ExtendedNodeType type, JCRSiteNode site) throws NoSuchNodeTypeException {
+        ArrayList<ExtendedNodeType> res = new ArrayList<>();
 
-        Set<String> installedModules = site != null && site.getPath().startsWith("/sites/") ? site.getInstalledModulesWithAllDependencies()
-            : null;
+        Set<String> installedModules = site != null && site.getPath().startsWith("/sites/") ? site.getInstalledModulesWithAllDependencies() : null;
 
         Map<ExtendedNodeType, Set<ExtendedNodeType>> m = NodeTypeRegistry.getInstance().getMixinExtensions();
 
-        ExtendedNodeType realType = NodeTypeRegistry.getInstance().getNodeType(type);
         for (ExtendedNodeType nodeType : m.keySet()) {
-            if (realType.isNodeType(nodeType.getName())) {
+            if (type.isNodeType(nodeType.getName())) {
                 for (ExtendedNodeType extension : m.get(nodeType)) {
-//                        ctx.put("contextType", realType);
-                    if (installedModules == null || extension.getTemplatePackage() == null ||
+                    if (installedModules == null ||
+                        extension.getTemplatePackage() == null ||
                         extension.getTemplatePackage().getModuleType().equalsIgnoreCase("system") ||
                         installedModules.contains(extension.getTemplatePackage().getId())) {
                         res.add(extension);
-                        foundTypes.add(extension.getName());
                     }
                 }
             }
